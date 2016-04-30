@@ -1,0 +1,63 @@
+<head>
+    <title>Cuttle V2</title>
+</head>
+
+<div ng-app="app">
+    <!-- Highest level controller -->
+    <div id="menuController" ng-controller="menuController as menu" ng-cloak>
+        <!-- Sign Up/Login Tab Buttons -->
+        <div id="buttonWrapper">
+            <button ng-click="menu.tab='signup'">Sign Up</button>
+            <button ng-click="menu.tab='login'">Log In</button>
+        </div>
+
+        <!-- Displays either signup, or login form -->
+        <div id="formWrapper">
+            <!-- Sign up form -->
+            <div ng-controller="signUpController as signup">
+                <form ng-if="menu.tab==='signup'" name="signupForm" novalidate ng-submit="signupForm.$valid && signup.submitSignUp()" class="container-fluid">
+                    <div class="row">
+                        <p class="col-xs-2 col-xs-offset-5">Sign Up</p>
+                    </div>
+                    <div class="row">
+                        <p class="col-xs-offset-2 col-xs-2">Email</p>
+                        <input ng-model="signup.email" type="text" class="col-xs-4" required>
+                    </div>
+                    <div class="row">
+                        <p class="col-xs-offset-2 col-xs-2">Password</p>
+                        <input ng-model="signup.password" type="text" class="col-xs-4" required>
+                    </div>
+                    <div class="row">
+                        <p class="col-xs-offset-2 col-xs-2">Repeat Password</p>
+                        <input ng-model="signup.repeatPassword" type="text" class="col-xs-4" required>
+                    </div>
+                    <div class="row">
+                        <input class="button button-lg col-xs-offset-5" type="submit"></input>
+                    </div>
+                </form> <!-- End of signup form -->
+            </div> <!-- End signup controller -->
+
+            <div ng-controller="loginController as login">
+                <!-- Log in form -->
+                <form ng-if="menu.tab==='login'" class="container-fluid">
+                    <div class="row">
+                        <p class="col-xs-2 col-xs-offset-5">Log In</p>
+                    </div>
+                    <div class="row">
+                        <p class="col-xs-2 col-xs-offset-2">Email</p>
+                        <input ng-model="login.email" class="col-xs-4" type="text">
+                    </div>
+                    <div class="row">
+                        <p class="col-xs-2 col-xs-offset-2">Password</p>
+                        <input ng-model="login.password" class="col-xs-4" type="text">
+                    </div>
+                    <div class="row">
+                        <button class="button button-lg col-xs-offset-5">Log</button>
+                    </div>
+                </form> <!-- End of login form -->
+            </div> <!-- End login controller -->
+
+        </div> <!-- End of formWrapper -->
+
+    </div> <!-- End of menuController -->
+</div><!-- End of app -->
