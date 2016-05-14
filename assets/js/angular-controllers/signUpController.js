@@ -5,12 +5,11 @@ app.controller("signUpController", ['$scope', function ($scope) {
 	self.repeatPassword = "";
 
 	self.submitSignUp = function () {
-		console.log("Submit signup");
 		io.socket.get("/user/signup", {
 			email: self.email,
 			password: self.password,
 		}, function (res) {
-
+			console.log(res);
 		});
 	};
 
