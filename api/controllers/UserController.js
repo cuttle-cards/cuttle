@@ -69,47 +69,47 @@ var findUserbyEmail = function(email) {
 		});
 	});
 };
-///////////////////////////////////////////////
-//	BROKEN FUNCTION - DOES NOT RETURN PROMISE//
-///////////////////////////////////////////////
+
 var createUser = function (email, encryptedPassword) {
 	return new Promise(function (resolve, reject) {
 		User.create({
 			email: email,
 			encryptedPassword: encryptedPassword
-		}).exec(function (err, user) {
+		}, 
+		function (err, user) {
 			if (err || !user) { //Failed user creation
 				return reject(err);
 			} else { //Made new user
 				console.log(user);
 				return resolve(user);
 			}
-		});
-	});
+		}); //End of User.create
+	}); //End of returned promise
 };
 
 
 
 module.exports = {
 	signup: function (req, res) {
-		console.log("Signing up");
-		console.log(req.body);
 		if (req.isSocket && req.body.password && req.body.email) {
 			// data from client
 			var email = req.body.email;
 			var pass  = req.body.password;
 			// promises
-			var promiseEPass = encryptPass(pass);
-			promiseEPass.then(function (encryptedPassword){ //Use encrypted password to make new user
-				var promiseUser = createUser(email, encryptedPassword);
-				User.create({
-					email: email,
-					encryptedPassword: encryptedPassword
-				}).exec(function (err, user) {
-					console.log(user);
+			encryptPass(pass)
+				.then(function (encryptedPassword){ //Use encrypted password to make new user
+				return createUser(email, encryptedPassword)
+				.then(function (user) { //Successfully created User
+					res.ok();
+				})
+				.catch(function (reason) { //Failed to create User
+					console.log(reason);
+					res.badRequest(reason);
 				});
+
 			})	//End promiseEpass success
 			.catch(function (reason) { //Password could not be encrypted
+				console.log("Failed to create user:");
 				console.log(reason);
 				res.badRequest(reason);
 			});
