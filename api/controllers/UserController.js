@@ -8,84 +8,10 @@
  //////////////////
  // DEPENDENCIES //
  //////////////////
-var passwords = require("machinepack-passwords");
 var Promise = require('bluebird');
-
-//////////////////
-// PASSWORD API //
-//////////////////
-
-var encryptPass = function(pass) {
-	return new Promise(function (resolve, reject) {
-		passwords.encryptPassword({password: pass}).exec({
-			error: function(err) {
-				return reject(err);
-			},
-			success: function (encryptedPass) {
-				return resolve(encryptedPass);
-			}
-		});
-	});
-};
-
-var checkPass = function(pass, encryptedPass) {
-	return new Promise(function (resolve, reject) {
-		passwords.checkPassword({
-			passwordAttempt: pass,
-			encryptedPassword: encryptedPass
-		}).exec({
-			error: function(err) {
-				console.log("Error checking pass");
-				console.log(err);
-				return reject(err);
-			},
-			incorrect: function() {
-				console.log("Wrong password");
-				return reject("Wrong password");
-			}, 
-			success: function() {
-				console.log("Correct password, red leader standing by");
-				return resolve(true);
-			}
-		});
-	});
-};
-
-///////////////
-// Model API //
-///////////////
-var findUserbyEmail = function(email) {
-	return new Promise(function (resolve, reject) {
-		User.findOne({
-			email: email
-		}).exec(function (error, user) {
-			if (error || !user) {
-				console.log("Got error or user doesn't exist");
-				console.log(error);
-				return reject(error);
-			} else {
-				return resolve(user);
-			}
-		});
-	});
-};
-
-var createUser = function (email, encryptedPassword) {
-	return new Promise(function (resolve, reject) {
-		User.create({
-			email: email,
-			encryptedPassword: encryptedPassword
-		}, 
-		function (err, user) {
-			if (err || !user) { //Failed user creation
-				return reject(err);
-			} else { //Made new user
-				console.log(user);
-				return resolve(user);
-			}
-		}); //End of User.create
-	}); //End of returned promise
-};
+//Hooks
+var userAPI = sails.hooks['customuserhook'];
+var passwordAPI = sails.hooks['custompasswordhook'];
 
 
 
@@ -96,10 +22,12 @@ module.exports = {
 			var email = req.body.email;
 			var pass  = req.body.password;
 			// promises
-			encryptPass(pass)
+			passwordAPI.encryptPass(pass)
 				.then(function (encryptedPassword){ //Use encrypted password to make new user
-				return createUser(email, encryptedPassword)
+				return userAPI.createUser(email, encryptedPassword)
 				.then(function (user) { //Successfully created User
+					console.log(req.session);
+					req.session.loggedIn = true;
 					res.ok();
 				})
 				.catch(function (reason) { //Failed to create User
