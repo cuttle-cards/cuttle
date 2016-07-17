@@ -10,7 +10,6 @@
             <button ng-click="menu.tab='signup'">Sign Up</button>
             <button ng-click="menu.tab='login'">Log In</button>
         </div>
-
         <!-- Displays either signup, or login form -->
         <div id="formWrapper">
             <!-- Sign up form -->
@@ -39,7 +38,7 @@
 
             <div ng-controller="loginController as login">
                 <!-- Log in form -->
-                <form ng-if="menu.tab==='login'" class="container-fluid">
+                <form ng-show="menu.tab==='login'" class="container-fluid">
                     <div class="row">
                         <p class="col-xs-2 col-xs-offset-5">Log In</p>
                     </div>
@@ -52,7 +51,7 @@
                         <input ng-model="login.password" class="col-xs-4" type="text">
                     </div>
                     <div class="row">
-                        <button class="button button-lg col-xs-offset-5">Log</button>
+                        <button ng-click="login.submitLogin()" class="button button-lg col-xs-offset-5">Log In</button>
                     </div>
                 </form> <!-- End of login form -->
             </div> <!-- End login controller -->

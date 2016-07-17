@@ -28,7 +28,7 @@ module.exports = function (sails) {
 					},
 					incorrect: function() {
 						console.log("Wrong password");
-						return reject("Wrong password");
+						return reject(new Error("Wrong password"));
 					}, 
 					success: function() {
 						console.log("Correct password, red leader standing by");
