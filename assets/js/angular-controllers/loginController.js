@@ -3,26 +3,28 @@ app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
 	self.email = "";
 	self.password = "";
 	self.submitLogin = function() {
-		// console.log("firing login");
-		// $http({
-		// 	method: 'POST',
-		// 	url: '/user/login',
-		// 	data: {
-		// 		email: self.email,
-		// 		password: self.password
-		// 	},
-		// 	withCredential: true
-		// }).then(
-		// 	function successCallback (res) {
-		// 		console.log("successful login");
-		// 		res.header("Access-Control-Allow-Credentials", true);
-		// 	},
+			// 	Use $http for request (angular)
+	// 	$http({
+	// 		method: 'POST',
+	// 		url: '/user/login',
+	// 		data: {
+	// 			email: self.email,
+	// 			password: self.password
+	// 		},
+	// 		withCredential: true
+	// 	}).then(
+	// 		function successCallback (res) {
+	// 			console.log("Now logged in");
+	// 			console.log(res);
+	// 		},
 
-		// 	function errorCallback (res) {
+	// 		function errorCallback (res) {
+	// 			console.log("Error logging in");
+	// 			console.log(res);
+	// 		}
 
-		// 	}
-
-		// );
+	// 	);
+				//Use socket for request 
 		io.socket.post("/user/login", {
 			email: self.email,
 			password: self.password

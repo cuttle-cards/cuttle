@@ -17,12 +17,9 @@ var passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
 	signup: function (req, res) {
-		console.log("\nsession data during signup:");
+		console.log("\nSigning up. current session: ");
 		console.log(req.session);
-		console.log(req.session.myVar);
-		req.session.myVar = 'myVal';
-		console.log("var after assignment:" + req.session.myVar);
-		if (req.isSocket && req.body.password && req.body.email) {
+		if (req.body.password && req.body.email) {
 			// data from client
 			var email = req.body.email;
 			var pass  = req.body.password;
@@ -32,6 +29,7 @@ module.exports = {
 				return userAPI.createUser(email, encryptedPassword)
 					.then(function (user) { //Successfully created User
 						req.session.loggedIn = true;
+						req.session.usr = user.id;
 						res.ok();
 					})
 					.catch(function (reason) { //Failed to create User
@@ -51,17 +49,16 @@ module.exports = {
 
 	},	
 	login: function (req, res) {
-		console.log("\nattempting login. Logging session status:");
-		console.log(req.session.loggedIn);
+		console.log("\nLogging in. current session: ");
 		console.log(req.session);
-		console.log("logging auth: " + req.session.auth);
 		if (req.body.email) {
 			var userPromise = userAPI.findUserByEmail(req.body.email)
 				.then(function gotUser (user) {
 					return passwordAPI.checkPass(req.body.password, user.encryptedPassword)
 						.then(function correctPw () {
-							req.session.myVar = 'OTHERval';
-							console.log(req.session);
+							req.session.loggedIn = true;
+							req.session.usr = user.id;
+							res.ok();
 						})
 						.catch(function failure (reason) {
 							console.log(reason);

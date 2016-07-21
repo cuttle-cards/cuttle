@@ -61,7 +61,7 @@
             </div> <!-- End login controller -->
 
             <div ng-controller="gamesOverviewController as gamesOverview">
-                <div ng-show="menu.tab='gamesOverview'" class="table table-striped">
+                <div ng-show="menu.tab==='gamesOverview'" class="table table-striped">
                     <form ng-submit="gamesOverview.createGame()">
                         <h1>Game Name</h1>
                         <input ng-model="gamesOverview.gameName" type="text" placeholder="Create Game">
