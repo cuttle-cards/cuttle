@@ -1,5 +1,4 @@
 app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
-	console.log($http.defaults);
 	var self = this;
 	self.email = "";
 	self.password = "";

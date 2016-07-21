@@ -47,6 +47,7 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/user/signup'    :   'userController.signup',
-  '/user/login'     :   'userController.login'
+  '/user/login'     :   'userController.login',
+  '/game/create'    :   'gameController.create',
 
 };

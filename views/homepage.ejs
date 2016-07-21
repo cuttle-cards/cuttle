@@ -1,4 +1,7 @@
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cuttle V2</title>
 </head>
 
@@ -6,9 +9,10 @@
     <!-- Highest level controller -->
     <div id="menuController" ng-controller="menuController as menu" ng-cloak>
         <!-- Sign Up/Login Tab Buttons -->
-        <div id="buttonWrapper">
-            <button ng-click="menu.tab='signup'">Sign Up</button>
-            <button ng-click="menu.tab='login'">Log In</button>
+        <div id="buttonWrapper" class="btn-group">
+            <button ng-click="menu.tab='signup'" class="btn btn-default">Sign Up</button>
+            <button ng-click="menu.tab='login'" class="btn btn-default">Log In</button>
+            <button ng-click="menu.tab='gamesOverview'" class="btn btn-default">Games</button>
         </div>
         <!-- Displays either signup, or login form -->
         <div id="formWrapper">
@@ -55,6 +59,31 @@
                     </div>
                 </form> <!-- End of login form -->
             </div> <!-- End login controller -->
+
+            <div ng-controller="gamesOverviewController as gamesOverview">
+                <div ng-show="menu.tab='gamesOverview'" class="table table-striped">
+                    <form ng-submit="gamesOverview.createGame()">
+                        <h1>Game Name</h1>
+                        <input ng-model="gamesOverview.gameName" type="text" placeholder="Create Game">
+                        <input type="submit">
+                    </form>
+                    <table>
+                        <th>#</th>
+                        <th>Game Name</th>
+                        <th>Status</th>
+                        <th>Join</th>
+                            <tr ng-repeat="game in gamesOverview.games">
+                                <td>{{$index}}</td>
+                                <td>{{game.name}}</td>
+                                <td>{{game.status}}</td>
+                                <td>
+                                    <button ng-if="game.status===true" class="btn btn-default">Join</button>
+                                    <button ng-if="game.status===false" class="btn btn-default" disabled="disabled">Full</button>
+                                </td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
 
         </div> <!-- End of formWrapper -->
 
