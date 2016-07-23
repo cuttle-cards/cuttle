@@ -10,13 +10,21 @@
  //////////////////
 var Promise = require('bluebird');
 var gameAPI = sails.hooks['customgamehook'];
+var userAPI = sails.hooks['customuserhook'];
 
 
 module.exports = {
 	create: function(req, res) {
 		console.log(req.body);
 		if (req.body.gameName) {
-			gameAPI.createGame(req.body.gameName).then(function (game) {
+			var promiseCreateGame = gameAPI.createGame(req.body.gameName);
+			var promiseUser = userAPI.findUserById(req.session.usr);
+			Promise.all([promiseCreateGame, promiseUser]).then(function (array) {
+				var game = array[0];
+				var player = array[1];
+				req.session.game = game.id;
+				game.players.add(player);
+				game.save();
 				res.ok();
 				//Maybe do a publish create
 			}).catch(function (reason) {

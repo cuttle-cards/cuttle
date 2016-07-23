@@ -42,7 +42,26 @@ var Promise = require('bluebird');
 					}
 				}); //End of User.create
 			}); //End of returned promise
-		}
+		},
 
+		findUserById: function(id) {
+			return new Promise(function (resolve, reject) {
+				User.findOne({
+					id: id
+				}).exec(function (error, user) {
+					if (error || !user) {
+						var res;
+						if (error) {
+							res = error;
+						} else {
+							res = new Error("User doesn't exist");
+						}
+						return reject(res);
+					} else {
+						return resolve(user);
+					}
+				});
+			});
+		},
 	};
 }

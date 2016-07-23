@@ -8,7 +8,37 @@
 module.exports = {
 
   attributes: {
-
+  	email: {
+  		type: 'string',
+  		required: true,
+  	},
+  	encryptedPassword: {
+  		type: 'string',
+  		required: true,
+  	},
+  	game: {
+  		model: 'game',
+  	},
+    pNum: {
+        type: 'integer'
+    },
+  // hand: {
+  // 	collection: 'card',
+  // 	via: 'hand',
+  // },
+  // 	points: {
+  // 		collection: 'card',
+  // 		via: 'points',
+  // 	},
+  // 	runes: {
+  // 		collection: 'card',
+  // 		via: 'runes',
+  // 	},
+  //   frozenId: {
+  //     type: 'integer',
+  //     defaultsTo: null
+  //   },
+  // }
   }
 };
 

@@ -16,7 +16,11 @@ module.exports = {
   		type: 'boolean',
   		defaultsTo: true,
   		required: true,
-  	}
+  	},
+    players: {
+      collection: 'user',
+      defaultsTo: [],
+    },
   }
 };
 
