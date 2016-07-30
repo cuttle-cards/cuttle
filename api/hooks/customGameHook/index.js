@@ -25,6 +25,23 @@ var Promise = require('bluebird');
 					}
 				})
 			});
+		},
+		findAllGames: function () {
+			return new Promise(function (resolve, reject) {
+				Game.find({}).exec(function (error, games) {
+					if (error || !games) {
+						var res;
+						if (error) {
+							res = error;
+						} else {
+							res = new Error("Can't find games");
+						}
+						return reject(res);
+					} else {
+						return resolve(games);
+					}
+				});
+			});
 		}
 	}
 

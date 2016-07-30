@@ -12,7 +12,7 @@
         <div id="buttonWrapper" class="btn-group">
             <button ng-click="menu.tab='signup'" class="btn btn-default">Sign Up</button>
             <button ng-click="menu.tab='login'" class="btn btn-default">Log In</button>
-            <button ng-click="menu.tab='gamesOverview'" class="btn btn-default">Games</button>
+            <button ng-click="menu.requestGames()" class="btn btn-default">Games</button>
         </div>
         <!-- Displays either signup, or login form -->
         <div id="formWrapper">
@@ -70,14 +70,14 @@
                     <table>
                         <th>#</th>
                         <th>Game Name</th>
-                        <th>Status</th>
+                        <th>Open</th>
                         <th>Join</th>
-                            <tr ng-repeat="game in gamesOverview.games">
+                            <tr ng-repeat="game in menu.games">
                                 <td>{{$index}}</td>
                                 <td>{{game.name}}</td>
                                 <td>{{game.status}}</td>
                                 <td>
-                                    <button ng-if="game.status===true" class="btn btn-default">Join</button>
+                                    <button ng-if="game.status===true" class="btn btn-default" ng-click="gamesOverview.joinGame($index)">Join</button >
                                     <button ng-if="game.status===false" class="btn btn-default" disabled="disabled">Full</button>
                                 </td>
                             </tr>

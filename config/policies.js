@@ -50,5 +50,7 @@ module.exports.policies = {
 	// }
   GameController: {
     create : 'isLoggedIn',
+    getList: 'isLoggedIn',
+    subscribe: 'isLoggedIn',
   }
 };

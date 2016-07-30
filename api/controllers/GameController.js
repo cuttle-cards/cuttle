@@ -25,12 +25,50 @@ module.exports = {
 				req.session.game = game.id;
 				game.players.add(player);
 				game.save();
+				Game.publishCreate({
+					id: game.id,
+					name: game.name,
+					status: game.status
+				});
 				res.ok();
-				//Maybe do a publish create
+
+				// gameAPI.findAllGames()
+				// .then(function foundGames (games) {
+				// 	res.ok();
+				// 	return Game.publishCreate({
+				// 		id: 0,
+				// 		games: games
+				// 	});
+				// })
+				// .catch(function failed (error) {
+				// 	return res.badRequest(error);
+				// });
 			}).catch(function (reason) {
 				console.log(reason);
 				res.badRequest(reason);
 			});
+		}
+	},
+
+	getList: function (req, res) {
+		Game.watch(req);
+		gameAPI.findAllGames()
+		.then(function success (games) {
+			return res.send(games);
+		})
+		.catch(function failure (error) {
+			return res.badRequest(error);
+		});		
+	},
+
+	subscribe: function (req, res) {
+		console.log("subscribing:");
+		console.log(req.body);
+		if (req.body.id) {
+			Game.subscribe(req, req.body.id);
+			res.ok();
+		} else {
+			res.badRequest("No game id received for subscription");
 		}
 	}
 };

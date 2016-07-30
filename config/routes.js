@@ -49,5 +49,7 @@ module.exports.routes = {
   '/user/signup'    :   'userController.signup',
   '/user/login'     :   'userController.login',
   '/game/create'    :   'gameController.create',
+  '/game/getList'   :   'gameController.getList',
+  '/game/subscribe' :   'gameController.subscribe',
 
 };

@@ -22,7 +22,9 @@ app.controller("signUpController", ['$scope', '$http', function ($scope, $http) 
 			}
 		}).then(
 		function success(res) {
-			console.log("Created new user:");
+			self.email = "";
+			self.password = "";
+			self.repeatPassword = "";
 			// res.header("Access-Control-Allow-Credentials", true);
 			console.log(res);
 		},
