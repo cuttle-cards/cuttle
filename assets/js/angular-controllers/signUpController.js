@@ -26,7 +26,6 @@ app.controller("signUpController", ['$scope', '$http', function ($scope, $http) 
 			self.password = "";
 			self.repeatPassword = "";
 			// res.header("Access-Control-Allow-Credentials", true);
-			console.log(res);
 		},
 		function error(res) {
 			console.log("Error creating user:");

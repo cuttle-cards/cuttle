@@ -11,7 +11,6 @@ app.controller("menuController", ['$scope', function ($scope) {
 			if (jwres.statusCode === 200) {
 
 				self.tab = "gamesOverview";
-				console.log(res);
 				self.games = res;
 
 

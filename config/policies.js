@@ -52,5 +52,6 @@ module.exports.policies = {
     create : 'isLoggedIn',
     getList: 'isLoggedIn',
     subscribe: 'isLoggedIn',
+    lobbyView: ['isLoggedIn', 'isInGame']
   }
 };

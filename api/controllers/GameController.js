@@ -15,7 +15,6 @@ var userAPI = sails.hooks['customuserhook'];
 
 module.exports = {
 	create: function(req, res) {
-		console.log(req.body);
 		if (req.body.gameName) {
 			var promiseCreateGame = gameAPI.createGame(req.body.gameName);
 			var promiseUser = userAPI.findUserById(req.session.usr);
@@ -62,14 +61,16 @@ module.exports = {
 	},
 
 	subscribe: function (req, res) {
-		console.log("subscribing:");
-		console.log(req.body);
 		if (req.body.id) {
 			Game.subscribe(req, req.body.id);
 			res.ok();
 		} else {
 			res.badRequest("No game id received for subscription");
 		}
+	},
+
+	lobbyView: function (req, res) {
+		return res.view("lobbyview");
 	}
 };
 

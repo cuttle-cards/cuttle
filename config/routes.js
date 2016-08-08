@@ -51,5 +51,6 @@ module.exports.routes = {
   '/game/create'    :   'gameController.create',
   '/game/getList'   :   'gameController.getList',
   '/game/subscribe' :   'gameController.subscribe',
+  '/game/gameView'  :   'gameController.lobbyView',
 
 };
