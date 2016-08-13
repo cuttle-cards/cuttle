@@ -29,29 +29,31 @@ app.controller("gamesOverviewController", ['$scope', '$http', function($scope, $
 			console.log(jwres);
 			// Successful subscription
 			if (jwres.statusCode === 200) {
+				menu.tab = "lobby";
 				// Request to be brought to waiting lobby
-				$http({
-					method: 'PUT',
-					url: 'game/lobbyView',
-					data: {
-						gameId: gameId,
-					}
-				})
-				.then(
-				function success (res) {
-					// Replace page content with html from server
-					document.querySelector("html").innerHTML = res.data;
+				// $http({
+				// 	method: 'PUT',
+				// 	url: 'game/lobbyView',
+				// 	data: {
+				// 		gameId: gameId,
+				// 	}
+				// })
+				// .then(
+				// function success (res) {
+				// 	// Replace page content with html from server
+				// 	document.querySelector("html").innerHTML = res.data;
 
-				},
-				function error (res) {
-					console.log("Bad request for lobby view");
-				}
-				); //End of $http()
+				// },
+				// function error (res) {
+				// 	console.log("Bad request for lobby view");
+				// }
+				//); //End of $http()
 
 			// Could not subscribe
 			} else {
 				console.log("Unknown error subscribing to game: " + menu.games[index].id);
 			}
+			$scope.$apply();
 		});
 	};
 

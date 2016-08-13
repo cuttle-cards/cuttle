@@ -85,7 +85,43 @@
                 </div>
             </div>
 
+
         </div> <!-- End of formWrapper -->
+        <div ng-controller="lobbyController as lobby">
+            <div ng-show="menu.tab==='lobby'">
+                <p>
+                    Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button>Ready</button> button.  If you wish to review any of the rules, click on the any off the buttons below.
+                </p>
+
+                <h2>One Offs</h2>
+                <table>         
+                    <tr>
+                        <td><button ng-click="lobby.aceRules()">Ace</button></td>
+                        <td><button>Two</button></td>
+                        <td><button>Three</button></td>
+                        <td><button>Four</button></td>
+                    </tr>
+                    <tr>
+                        <td><button>Five</button></td>
+                        <td><button>Six</button></td>
+                        <td><button>Seven</button></td>
+                        <td><button>Nine</button></td>
+                    </tr>
+                </table> <!-- End of One Offs table -->
+                <h2>Runes</h2>
+                <table>
+                    <tr>
+                        <td><button>Eight</button></td>
+                        <td><button>Jack</button></td>
+                        <td><button>Queen</button></td>
+                        <td><button>King</button></td>
+                    </tr>
+                </table> <!-- End of Runes table -->
+
+
+                <h2>Scuttling</h2>
+            </div> <!-- End of lobby contorller -->
+        </div> <!-- End of ng-show -->
 
     </div> <!-- End of menuController -->
 </div><!-- End of app -->
