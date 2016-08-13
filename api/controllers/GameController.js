@@ -16,14 +16,8 @@ var userAPI = sails.hooks['customuserhook'];
 module.exports = {
 	create: function(req, res) {
 		if (req.body.gameName) {
-			var promiseCreateGame = gameAPI.createGame(req.body.gameName);
-			var promiseUser = userAPI.findUserById(req.session.usr);
-			Promise.all([promiseCreateGame, promiseUser]).then(function (array) {
-				var game = array[0];
-				var player = array[1];
-				req.session.game = game.id;
-				game.players.add(player);
-				game.save();
+			var promiseCreateGame = gameAPI.createGame(req.body.gameName)
+			.then(function (game) {
 				Game.publishCreate({
 					id: game.id,
 					name: game.name,
@@ -62,15 +56,85 @@ module.exports = {
 
 	subscribe: function (req, res) {
 		if (req.body.id) {
+
 			Game.subscribe(req, req.body.id);
-			res.ok();
+			var promiseGame = gameAPI.findGame(req.body.id);
+			var promiseUser = userAPI.findUser(req.session.usr);
+			Promise.all([promiseGame, promiseUser]).then(function success (arr) {
+				// Catch promise values
+				var game = arr[0];
+				var user = arr[1];
+				var pNum;
+				if (game.players) {
+					pNum = game.players.length;
+				} else {
+					pNum = 0;
+				}
+				// Set session data
+				req.session.game = game.id;
+				req.session.pNum = pNum;
+				// Update models
+				user.pNum = pNum;
+				game.players.add(user.id);
+				game.save();
+				user.save();
+				// Respond with 200
+				res.ok();
+			})
+			.catch(function failure (error) {
+				return res.badRequest(error);
+			});
 		} else {
 			res.badRequest("No game id received for subscription");
 		}
 	},
 
-	lobbyView: function (req, res) {
-		return res.view("lobbyview");
+	ready: function (req, res) {
+		if (req.session.game && req.session.usr) {
+			var promiseGame = gameAPI.findGame(req.session.game);
+			var promiseUser = userAPI.findUser(req.session.usr);
+			Promise.all([promiseGame, promiseUser])
+			.then(function success (arr) {
+				var game = arr[0];
+				var user = arr[1];
+				var bothReady = false;
+				var pNum = user.pNum;
+				switch (pNum) {
+					case 0:
+						game.p0Ready = true;
+						break;
+					case 1:
+						game.p1Ready = true;
+						break;
+				}
+				// Check if everyone is ready
+				if (game.p0Ready && game.p1Ready) {
+					// Deal
+					bothReady = true;
+				}
+				game.save(function (savedGame) {
+					res.ok({
+						bothReady: bothReady,
+						game: savedGame,
+						p0Ready: game.p0Ready,
+						p1Ready: game.p1Ready
+					});
+					
+				});
+
+			})
+			.catch(function failure (error) {
+				console.log(error);
+				res.badRequest(error);
+			});
+		} else {
+			var err = new Error("Missing game or player id");
+			return res.badRequest(err);
+		}
 	}
+
+	// lobbyView: function (req, res) {
+	// 	return res.view("lobbyview");
+	// }
 };
 

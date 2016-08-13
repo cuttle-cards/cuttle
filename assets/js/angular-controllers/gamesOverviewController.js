@@ -52,6 +52,7 @@ app.controller("gamesOverviewController", ['$scope', '$http', function($scope, $
 			// Could not subscribe
 			} else {
 				console.log("Unknown error subscribing to game: " + menu.games[index].id);
+				console.log(res);
 			}
 			$scope.$apply();
 		});

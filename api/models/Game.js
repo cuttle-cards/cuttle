@@ -12,15 +12,27 @@ module.exports = {
   		type: 'string',
   		required: true,
   	},
+
   	status: {
   		type: 'boolean',
   		defaultsTo: true,
   		required: true,
   	},
+
     players: {
       collection: 'user',
       defaultsTo: [],
     },
+
+    p0Ready: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
+    p1Ready: {
+      type: 'boolean',
+      defaultsTo: false
+    }
   }
 };
 

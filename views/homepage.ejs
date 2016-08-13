@@ -90,7 +90,7 @@
         <div ng-controller="lobbyController as lobby">
             <div ng-show="menu.tab==='lobby'">
                 <p>
-                    Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button>Ready</button> button.  If you wish to review any of the rules, click on the any off the buttons below.
+                    Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()">Ready</button> button.  If you wish to review any of the rules, click on the any off the buttons below.
                 </p>
 
                 <h2>One Offs</h2>

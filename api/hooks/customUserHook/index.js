@@ -24,6 +24,24 @@ var Promise = require('bluebird');
 			});
 		},
 
+		findUser: function(id) {
+			return new Promise(function (resolve, reject) {
+				User.findOne(id).exec(function (error, user) {
+					if (error || !user) {
+						var res;
+						if (error) {
+							res = error;
+						} else {
+							res = new Error("User doesn't exist");
+						} 
+						return reject(res);
+					} else {
+						return resolve(user);
+					}
+				});
+			});
+		},
+
 		createUser: function (email, encryptedPassword) {
 			return new Promise(function (resolve, reject) {
 				User.create({

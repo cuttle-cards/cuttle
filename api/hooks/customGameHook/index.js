@@ -42,6 +42,23 @@ var Promise = require('bluebird');
 					}
 				});
 			});
+		},
+		findGame: function (id) {
+			return new Promise(function (resolve, reject) {
+				Game.findOne(id).populateAll().exec(function (error, game) {
+					if (error || !game) {
+						var res;
+						if (error) {
+							res = error;
+						} else {
+							res = new Error("Can't find game");
+						}
+						return reject(res);
+					} else {
+						resolve(game);
+					}
+				});
+			});
 		}
 	}
 
