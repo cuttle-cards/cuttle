@@ -96,7 +96,12 @@
                 <h2>One Offs</h2>
                 <table>         
                     <tr>
-                        <td><button ng-click="lobby.aceRules()">Ace</button></td>
+                        <td>
+                            <button ng-click="lobby.aceRules()">Ace</button>
+                            <div ng-if="lobby.displayAce">
+                                <p>Testing</p>
+                            </div>
+                        </td>
                         <td><button>Two</button></td>
                         <td><button>Three</button></td>
                         <td><button>Four</button></td>
