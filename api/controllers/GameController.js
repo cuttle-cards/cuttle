@@ -94,11 +94,12 @@ module.exports = {
 			var promiseGame = gameAPI.findGame(req.session.game);
 			var promiseUser = userAPI.findUser(req.session.usr);
 			Promise.all([promiseGame, promiseUser])
-			.then(function success (arr) {
-				var game = arr[0];
-				var user = arr[1];
-				var bothReady = false;
+			// Assign player readiness
+			.then(function foundRecords (values) {
+				var game = values[0];
+				var user = values[1];
 				var pNum = user.pNum;
+				var bothReady = false;
 				switch (pNum) {
 					case 0:
 						game.p0Ready = true;
@@ -108,24 +109,51 @@ module.exports = {
 						break;
 				}
 				// Check if everyone is ready
-				if (game.p0Ready && game.p1Ready) {
-					// Deal
-					bothReady = true;
-				}
-				game.save(function (savedGame) {
-					res.ok({
-						bothReady: bothReady,
-						game: savedGame,
-						p0Ready: game.p0Ready,
-						p1Ready: game.p1Ready
-					});
-					
-				});
-
+				if (game.p0Ready && game.p1Ready) bothReady = true;
+				return Promise.resolve([game, user, bothReady]);
 			})
-			.catch(function failure (error) {
-				console.log(error);
-				res.badRequest(error);
+			// Deal if both ready
+			.then(function dealIfBothReady (values) {
+				var game = values[0];
+				var user = values[1];
+				var bothReady = values[2];
+				if (bothReady) {
+					// Deal, then publishUpdate
+				}
+				// This will change once the logic is complete
+				return Promise.resolve(values);
+			})
+			// Save
+			.then(function readyToSave (values) {
+				var game = values[0];
+				var user = values[1];
+				var bothReady = values[2];
+				// Save records w/ promises
+				var saveGame = gameService.saveGame({game: game});
+				var saveUser = userService.saveUser({user: user});
+				return Promise.all([saveGame, saveUser])
+				.then(function successfullySaved (values) {
+					var result = values.concat([bothReady]);
+					return Promise.resolve(result);
+				})
+				.catch(function failedToSave (err) {
+					return Promise.reject(err);
+				});
+			})
+			// Publish
+			.then(function readyToPublish (values) {
+				var game = values[0];
+				var user = values[1];
+				var bothReady = values[2];
+				// Handle dealing if both ready
+				return res.ok({
+					bothReady: bothReady,
+					game: game
+				});
+			})
+			// Handle errors
+			.catch(function handleError (err) {
+				return res.badRequest(err);
 			});
 		} else {
 			var err = new Error("Missing game or player id");

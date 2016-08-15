@@ -17,8 +17,6 @@ var passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
 	signup: function (req, res) {
-		console.log("\nSigning up. current session: ");
-		console.log(req.session);
 		if (req.body.password && req.body.email) {
 			// data from client
 			var email = req.body.email;
@@ -49,8 +47,6 @@ module.exports = {
 
 	},	
 	login: function (req, res) {
-		console.log("\nLogging in. current session: ");
-		console.log(req.session);
 		if (req.body.email) {
 			var userPromise = userAPI.findUserByEmail(req.body.email)
 				.then(function gotUser (user) {
