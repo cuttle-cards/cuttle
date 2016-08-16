@@ -98,8 +98,9 @@
                     <tr>
                         <td>
                             <button ng-click="lobby.aceRules()">Ace</button>
-                            <div ng-if="lobby.displayAce">
-                                <p>Testing</p>
+                            <div ng-show="lobby.displayAce">
+                                <button ng-click="lobby.startAce()">Start</button>
+                                <div ng-show="lobby.aceClicked" class="fading-test">Testing</div>
                             </div>
                         </td>
                         <td><button>Two</button></td>
