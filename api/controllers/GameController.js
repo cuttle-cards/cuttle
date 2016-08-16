@@ -119,6 +119,16 @@ module.exports = {
 				var bothReady = values[2];
 				if (bothReady) {
 					// Deal, then publishUpdate
+					cardService.createCard({
+						suit: 3,
+						rank: 1,
+						gameId: game.id}).then(function madeCard(newCard) {
+							console.log(newCard);
+							return Promise.resolve(newCard);
+						}).catch(function failedCard(err) {
+							console.log(err);
+							return Promise.reject(err);
+						});
 				}
 				// This will change once the logic is complete
 				return Promise.resolve(values);

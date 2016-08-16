@@ -32,7 +32,12 @@ module.exports = {
     p1Ready: {
       type: 'boolean',
       defaultsTo: false
-    }
+    },
+
+    deck: {
+      collection: 'card',
+      via: 'deck'
+    },
   }
 };
 
