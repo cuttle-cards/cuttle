@@ -56,7 +56,6 @@ module.exports = {
 
 	subscribe: function (req, res) {
 		if (req.body.id) {
-
 			Game.subscribe(req, req.body.id);
 			var promiseGame = gameAPI.findGame(req.body.id);
 			var promiseUser = userAPI.findUser(req.session.usr);
@@ -117,20 +116,40 @@ module.exports = {
 				var game = values[0];
 				var user = values[1];
 				var bothReady = values[2];
+				var promiseDeck = [];
 				if (bothReady) {
 					// Deal, then publishUpdate
-					cardService.createCard({
-						suit: 3,
-						rank: 1,
-						gameId: game.id}).then(function madeCard(newCard) {
-							console.log(newCard);
-							return Promise.resolve(newCard);
-						}).catch(function failedCard(err) {
-							console.log(err);
-							return Promise.reject(err);
-						});
+					for (suit = 0; suit<4; suit++) {
+						for (rank = 1; rank < 14; rank++) {
+							var promiseCard = cardService.createCard({
+								gameId: game.id,
+								suit: suit,
+								rank: rank
+							});
+							promiseDeck.push(promiseCard);
+						}
+					};
+
+					Promise.all(promiseDeck)
+					// Return all cards
+					.then(function dealt (cards) {
+						values.push(cards);
+					})
+					.catch(function failedDealing (err) {
+						return Promise.reject(err);
+					});
+
+					// cardService.createCard({
+					// 	suit: 3,
+					// 	rank: 1,
+					// 	gameId: game.id}).then(function madeCard(newCard) {
+					// 		console.log(newCard);
+					// 		return Promise.resolve(newCard);
+					// 	}).catch(function failedCard(err) {
+					// 		console.log(err);
+					// 		return Promise.reject(err);
+					// 	});
 				}
-				// This will change once the logic is complete
 				return Promise.resolve(values);
 			})
 			// Save
@@ -138,6 +157,9 @@ module.exports = {
 				var game = values[0];
 				var user = values[1];
 				var bothReady = values[2];
+				if (bothReady) {
+					var cards = values[3];
+				}
 				// Save records w/ promises
 				var saveGame = gameService.saveGame({game: game});
 				var saveUser = userService.saveUser({user: user});
