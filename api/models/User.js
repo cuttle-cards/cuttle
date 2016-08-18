@@ -22,10 +22,10 @@ module.exports = {
     pNum: {
         type: 'integer'
     },
-  // hand: {
-  // 	collection: 'card',
-  // 	via: 'hand',
-  // },
+    hand: {
+    	collection: 'card',
+    	via: 'hand',
+    },
   // 	points: {
   // 		collection: 'card',
   // 		via: 'points',

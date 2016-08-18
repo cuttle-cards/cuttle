@@ -23,11 +23,14 @@ module.exports = {
 
 	/*
 	** Save game and return it as a Promise
+	****options = {game: GameModel}
 	*/
 	saveGame: function (options, done) {
 		return new Promise(function (resolve, reject) {
+			console.log(options.game);
 			options.game.save(function (err) {
 				if (err) {
+					console.log("error saving game");
 					return reject(err);
 				} else {
 					return resolve(options.game);
