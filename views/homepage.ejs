@@ -94,7 +94,7 @@
                 </p>
 
                 <h2>One Offs</h2>
-                <table>         
+               <!-- <table>         
                     <tr>
                         <td>
                             <button ng-click="lobby.aceRules()">Ace</button>
@@ -113,7 +113,7 @@
                         <td><button>Seven</button></td>
                         <td><button>Nine</button></td>
                     </tr>
-                </table> <!-- End of One Offs table -->
+                </table> End of One Offs table -->
                 <h2>Runes</h2>
                 <table>
                     <tr>
@@ -122,7 +122,18 @@
                         <td><button>Queen</button></td>
                         <td><button>King</button></td>
                     </tr>
-                </table> <!-- End of Runes table -->
+                </table> End of Runes table -->
+
+                <div ng-init="checked = true">
+                    <label>
+                        <input type="checkbox" ng-model="checked" />
+                            Is visible
+                    </label>
+                    <div class="content-area sample-show-hide" ng-show="checked">
+                        Content...
+                        <img src="http://cdn.bulbagarden.net/upload/thumb/7/73/004Charmander.png/250px-004Charmander.png"></img>
+                    </div>
+                </div>
 
 
                 <h2>Scuttling</h2>
