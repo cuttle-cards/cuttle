@@ -113,7 +113,7 @@
                         <td><button>Seven</button></td>
                         <td><button>Nine</button></td>
                     </tr>
-                </table> End of One Offs table -->
+                </table> End of One Offs table
                 <h2>Runes</h2>
                 <table>
                     <tr>
@@ -124,14 +124,21 @@
                     </tr>
                 </table> End of Runes table -->
 
-                <div ng-init="checked = true">
+                <div ng-init="checked = false">
                     <label>
-                        <input type="checkbox" ng-model="checked" />
-                            Is visible
+                        <input type="checkbox" ng-model="checked">
+                        Ace Rules
                     </label>
-                    <div class="content-area sample-show-hide" ng-show="checked">
-                        Content...
-                        <img src="http://cdn.bulbagarden.net/upload/thumb/7/73/004Charmander.png/250px-004Charmander.png"></img>
+                    <div class="sample-show-hide" ng-show="checked">
+                        <img class="transition_1 lobbyCard" src='/images/cards/card_0_9.png'>
+                        <div>
+                            Click on the ace to activate your trap card
+                            <img src="/images/cards/ace_of_spades2.png" ng-click="cardCheck = !cardCheck" ng-init="cardCheck = true">
+                            <div class="sevenTest-hide" ng-show="cardCheck">
+                                <img class="transition_2 lobbyCard" src='/images/cards/card_2_7.png'>
+                                <img class="transition_3 lobbyCard" src='/images/cards/card_2_4.png'>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

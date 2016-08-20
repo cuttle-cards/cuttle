@@ -1,16 +1,3 @@
-.fading-test {
-	 transition: background 0.5s linear;
-    -moz-transition: background 0.5s linear; /* Firefox 4 */
-    -webkit-transition: background 0.5s linear; /* Safari and Chrome */
-    -o-transition: background 0.5s linear; /* Opera */
-    -ms-transition: background 0.5s linear; /* Explorer 10 */
-	padding-left: 10px;
-}
-
-.fading-test.ng-hide {
-	opacity: 0;
-}
-
 .content-area {
   border: 1px solid black;
   margin-top: 10px;
@@ -20,6 +7,24 @@
 .sample-show-hide {
   transition: all linear 0.5s;
 }
+.sample-show-hide.ng-hide {
+  opacity: 0;
+}
+
+.lobbyCard {
+  height: 30%;
+  width: 21%;
+}
+
+#lobbyScarp{
+  height: 30%;
+  width: 21%;
+}
+
+.sevenTest-hide {
+  transition: all linear 0.1s;
+}
+
 .sample-show-hide.ng-hide {
   opacity: 0;
 }
