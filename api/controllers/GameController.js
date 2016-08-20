@@ -217,6 +217,7 @@ module.exports = {
 				if (game.p0Ready && game.p1Ready) {
 					bothReady = true;
 					return new Promise(function makeDeck (resolveMakeDeck, rejectmakeDeck) {
+						console.log(game);
 						var findP0 = userService.findUser({userId: game.players[0].id});
 						var findP1 = userService.findUser({userId: game.players[1].id});
 						var data = [findP0, findP1];
@@ -289,7 +290,7 @@ module.exports = {
 					.then(function publish (values) {
 						console.log("\npublishing");
 						var game = values[0];
-						Game.publishUpdate(game.id, {game: game});
+						Game.publishUpdate(game.id, {change: "Initialize", game: game});
 						return Promise.resolve(values);
 					})
 					.catch(function failedToDeal (err) {
@@ -298,6 +299,7 @@ module.exports = {
 				// If this player is first to be ready, save and respond
 				} else {
 					return new Promise(function save (resolveSave, rejectSave) {
+						console.log("Saving 1st player ready");
 						var saveGame = gameService.saveGame({game: game});
 						var saveUser = userService.saveUser({user: user});
 						return Promise.all([saveGame, saveUser]);
@@ -307,8 +309,8 @@ module.exports = {
 			}) //End foundRecords
 			.then(function respond (values) {
 				console.log("responding");
-				return Promise.resolve(values);
 				res.ok();
+				return Promise.resolve(values);
 			})
 			.catch(function failed (err) {
 				// console.log("error in ready action");

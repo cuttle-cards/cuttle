@@ -72,7 +72,7 @@
                         <th>Game Name</th>
                         <th>Open</th>
                         <th>Join</th>
-                            <tr ng-repeat="game in menu.games">
+                            <tr ng-repeat="game in menu.games track by $index">
                                 <td>{{$index}}</td>
                                 <td>{{game.name}}</td>
                                 <td>{{game.status}}</td>
@@ -145,7 +145,10 @@
 
                 <h2>Scuttling</h2>
             </div> <!-- End of lobby contorller -->
-        </div> <!-- End of ng-show -->
+        </div> <!-- End of ng-show for lobby-->
+
+        <!-- Game View -->
+        <div ng-show="menu.tab==='gameView'">HELLO WORLD</div>
 
     </div> <!-- End of menuController -->
 </div><!-- End of app -->

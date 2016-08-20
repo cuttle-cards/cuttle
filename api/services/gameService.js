@@ -2,6 +2,7 @@ var Promise = require('bluebird');
 module.exports = {
 	/**
 	* Find game by id and return it as a Promise
+	**** options = {gameId: integer}
 	*/	
 	findGame: function (options, done) {
 		return new Promise(function (resolve, reject) {
@@ -26,6 +27,7 @@ module.exports = {
 	****options = {game: GameModel}
 	*/
 	saveGame: function (options, done) {
+		console.log("saving game");
 		return new Promise(function (resolve, reject) {
 			console.log(options.game);
 			options.game.save(function (err) {
@@ -33,6 +35,7 @@ module.exports = {
 					console.log("error saving game");
 					return reject(err);
 				} else {
+					console.log("Saved game successfully");
 					return resolve(options.game);
 				}
 			});

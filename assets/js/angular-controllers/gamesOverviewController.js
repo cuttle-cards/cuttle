@@ -58,17 +58,5 @@ app.controller("gamesOverviewController", ['$scope', '$http', function($scope, $
 		});
 	};
 
-	///////////////////////////
-	// Socket Event Handlers //
-	///////////////////////////
-	io.socket.on("game", function(obj) {
-		console.log("game event");
-		console.log(obj);
-		switch (obj.verb) {
-			case 'created':
-				menu.games.push(obj.data);
-				break;
-		}
-		$scope.$apply();
-	});
+
 }]);
