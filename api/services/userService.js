@@ -8,7 +8,7 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			if (options) {
 				if (options.hasOwnProperty("userId") ) {
-					User.findOne(options.userId).exec(function (err, usr) {
+					User.findOne(options.userId).populateAll().exec(function (err, usr) {
 						if (err) {
 							return reject(err);
 						} else if(!usr) {

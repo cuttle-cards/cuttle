@@ -122,10 +122,10 @@ module.exports = {
 	**Find all card in player's hand from player id
 	*****options = {userId: integer}
 	*/
-	findCardsInHand: function (options, done) {
+	findPoints: function (options, done) {
 		return new Promise(function (resolve, reject) {
 			if (options.userId) {
-				Card.find({hand: options.userId}).exec(function (err, cards) {
+				Card.find({points: options.userId}).populate("attachments").exec(function (err, cards) {
 					if (err) {
 						return reject(err);
 					} else if (!cards) {
@@ -139,5 +139,25 @@ module.exports = {
 			}
 
 		}); //End returned Promise
+	},
+
+	/*
+	**Saves a card and returns it as a Promise
+	****options = {card: CardRecord}
+	*/
+	saveCard: function (options) {
+		return new Promise (function (resolve, reject) {
+			if (options.card) {
+				card.save(function (err) {
+					if (err) {
+						return reject(err);
+					} else {
+						return resolve(card);
+					}
+				});
+			} else {
+				return reject(new Error("Can't save card without card record"))
+			}
+		});
 	}
 };

@@ -21,8 +21,16 @@ module.exports = {
   	},
 
   	scrap: {
-  		model: 'game'
+  		model: 'game',
   	},
+
+    topCard: {
+      model: 'game'
+    },
+
+    secondCard: {
+      model: 'game'
+    },
 
   	hand: {
   		model: 'user'

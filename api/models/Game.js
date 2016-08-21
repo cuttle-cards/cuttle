@@ -38,6 +38,21 @@ module.exports = {
       collection: 'card',
       via: 'deck'
     },
+
+    topCard: {
+      model: 'card',
+      via: 'topCard'
+    },
+
+    secondCard: {
+      model: 'card',
+      via: 'secondCard'
+    },
+
+    log: {
+      type: "array",
+      defaultsTo: []
+    }
   }
 };
 

@@ -3,7 +3,7 @@ app.controller("menuController", ['$scope', function ($scope) {
 	self.tab = "signup";
 	self.games = [];
 
-	this.requestGames = function () {
+	self.requestGames = function () {
 		console.log("requesting game list");
 		io.socket.get("/game/getList", function (res, jwres) {
 			console.log(jwres);
@@ -19,6 +19,12 @@ app.controller("menuController", ['$scope', function ($scope) {
 				console.log("Could not load games. Are you logged in?");
 			}
 			$scope.$apply();
+		});
+	};
+
+	self.populateGameTest = function () {
+		io.socket.get("/game/populateGameTest", function (res, jwres) {
+			console.log(jwres);
 		});
 	}
 

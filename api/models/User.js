@@ -26,19 +26,18 @@ module.exports = {
     	collection: 'card',
     	via: 'hand',
     },
-  // 	points: {
-  // 		collection: 'card',
-  // 		via: 'points',
-  // 	},
-  // 	runes: {
-  // 		collection: 'card',
-  // 		via: 'runes',
-  // 	},
-  //   frozenId: {
-  //     type: 'integer',
-  //     defaultsTo: null
-  //   },
-  // }
+  	points: {
+  		collection: 'card',
+  		via: 'points',
+  	},
+  	runes: {
+  		collection: 'card',
+  		via: 'runes',
+  	},
+    frozenId: {
+      type: 'integer',
+      defaultsTo: null
+    },
   }
 };
 

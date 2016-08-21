@@ -217,7 +217,6 @@ module.exports = {
 				if (game.p0Ready && game.p1Ready) {
 					bothReady = true;
 					return new Promise(function makeDeck (resolveMakeDeck, rejectmakeDeck) {
-						console.log(game);
 						var findP0 = userService.findUser({userId: game.players[0].id});
 						var findP1 = userService.findUser({userId: game.players[1].id});
 						var data = [findP0, findP1];
@@ -278,6 +277,16 @@ module.exports = {
 						game.deck.remove(deck[random].id);
 						dealt.push(random);		
 						console.log("finishedDealing");
+						
+					/////////////////////////////////////////////////////////////////
+					// ADD CARDS TO POINTS, AND ATTACHMENTS TO TEST POPULATEGAME() //
+					/////////////////////////////////////////////////////////////////
+
+					// p0.points.add([deck[0].id, deck[1].id, deck[3].id]);
+					// p1.points.add([deck[4].id, deck[5].id]);
+					// deck[0].attachments.add(deck[2].id);
+					// deck[0].save();
+
 						return Promise.resolve([game, p0, p1]);
 					})
 					.then(function save (values) {
@@ -324,10 +333,18 @@ module.exports = {
 			var err = new Error("Missing game or player id");
 			return res.badRequest(err);
 		}
-	}
+	},
 
-	// lobbyView: function (req, res) {
-	// 	return res.view("lobbyview");
-	// }
+	populateGameTest: function (req, res) {
+		console.log("\npopulate game test");
+		var popGame = gameService.populateGame({gameId: req.session.game})
+		.then(function gotPop(fullGame) {
+			res.ok(fullGame);
+		})
+		.catch(function failed (err) {
+			console.log(err);
+			res.badRequest(err);
+		});
+	}
 };
 
