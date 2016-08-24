@@ -149,7 +149,20 @@
         </div> <!-- End of ng-show for lobby-->
 
         <!-- Game View -->
-        <div ng-show="menu.tab==='gameView'">HELLO WORLD</div>
+        <div ng-controller="gameController as game">
+            <div ng-show="menu.tab==='gameView'">
+                <div id = "topWrap" class = "row">
+                    <div id="oppHand">
+                        <!-- ng-repeat of opponents hand -->
+                    </div>
+                    <p id="oppWinCon">
+                        Win Condition:
+                        <!-- angular view of wincondition -->
+                    </p>
+                </div>
+                HELLO WORLD
+            </div> <!-- End of ng-show for game -->
+        </div> <!-- End of game controller -->
 
     </div> <!-- End of menuController -->
 </div><!-- End of app -->
