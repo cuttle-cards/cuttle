@@ -4,210 +4,211 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cuttle V2</title>
 </head>
-
-<div ng-app="app">
-    <!-- Highest level controller -->
-    <div id="menuController" ng-controller="menuController as menu" ng-cloak>
-        <!-- Sign Up/Login Tab Buttons -->
-        <div id="buttonWrapper" class="btn-group">
-            <button ng-click="menu.tab='signup'" class="btn btn-default">Sign Up</button>
-            <button ng-click="menu.tab='login'" class="btn btn-default">Log In</button>
-            <button ng-click="menu.requestGames()" class="btn btn-default">Games</button>
-            <button ng-click="menu.populateGameTest()">Pop Game Test</button>
-        </div>
-        <!-- Displays either signup, or login form -->
-        <div id="formWrapper">
-            <!-- Sign up form -->
-            <div ng-controller="signUpController as signup">
-                <form ng-if="menu.tab==='signup'" name="signupForm" novalidate ng-submit="signupForm.$valid && signup.submitSignUp()" class="container-fluid">
-                    <div class="row">
-                        <p class="col-xs-2 col-xs-offset-5">Sign Up</p>
-                    </div>
-                    <div class="row">
-                        <p class="col-xs-offset-2 col-xs-2">Email</p>
-                        <input ng-model="signup.email" type="text" class="col-xs-4" required>
-                    </div>
-                    <div class="row">
-                        <p class="col-xs-offset-2 col-xs-2">Password</p>
-                        <input ng-model="signup.password" type="text" class="col-xs-4" required>
-                    </div>
-                    <div class="row">
-                        <p class="col-xs-offset-2 col-xs-2">Repeat Password</p>
-                        <input ng-model="signup.repeatPassword" type="text" class="col-xs-4" required>
-                    </div>
-                    <div class="row">
-                        <input class="button button-lg col-xs-offset-5" type="submit"></input>
-                    </div>
-                </form> <!-- End of signup form -->
-            </div> <!-- End signup controller -->
-
-            <div ng-controller="loginController as login">
-                <!-- Log in form -->
-                <form ng-show="menu.tab==='login'" class="container-fluid">
-                    <div class="row">
-                        <p class="col-xs-2 col-xs-offset-5">Log In</p>
-                    </div>
-                    <div class="row">
-                        <p class="col-xs-2 col-xs-offset-2">Email</p>
-                        <input ng-model="login.email" class="col-xs-4" type="text">
-                    </div>
-                    <div class="row">
-                        <p class="col-xs-2 col-xs-offset-2">Password</p>
-                        <input ng-model="login.password" class="col-xs-4" type="text">
-                    </div>
-                    <div class="row">
-                        <button ng-click="login.submitLogin()" class="button button-lg col-xs-offset-5">Log In</button>
-                    </div>
-                </form> <!-- End of login form -->
-            </div> <!-- End login controller -->
-
-            <div ng-controller="gamesOverviewController as gamesOverview">
-                <div ng-show="menu.tab==='gamesOverview'" class="table table-striped">
-                    <form ng-submit="gamesOverview.createGame()">
-                        <h1>Game Name</h1>
-                        <input ng-model="gamesOverview.gameName" type="text" placeholder="Create Game">
-                        <input type="submit">
-                    </form>
-                    <table>
-                        <th>#</th>
-                        <th>Game Name</th>
-                        <th>Open</th>
-                        <th>Join</th>
-                            <tr ng-repeat="game in menu.games track by $index">
-                                <td>{{$index}}</td>
-                                <td>{{game.name}}</td>
-                                <td>{{game.status}}</td>
-                                <td>
-                                    <button ng-if="game.status===true" class="btn btn-default" ng-click="gamesOverview.joinGame($index)">Join</button >
-                                    <button ng-if="game.status===false" class="btn btn-default" disabled="disabled">Full</button>
-                                </td>
-                            </tr>
-                    </table>
-                </div>
+<body>
+    <div ng-app="app">
+        <!-- Highest level controller -->
+        <div id="menuController" ng-controller="menuController as menu" ng-cloak>
+            <!-- Sign Up/Login Tab Buttons -->
+            <div id="buttonWrapper" class="btn-group">
+                <button ng-click="menu.tab='signup'" class="btn btn-default">Sign Up</button>
+                <button ng-click="menu.tab='login'" class="btn btn-default">Log In</button>
+                <button ng-click="menu.requestGames()" class="btn btn-default">Games</button>
+                <button ng-click="menu.populateGameTest()">Pop Game Test</button>
             </div>
-
-
-        </div> <!-- End of formWrapper -->
-        <div ng-controller="lobbyController as lobby">
-            <div ng-show="menu.tab==='lobby'">
-                <p>
-                    Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()">Ready</button> button.  If you wish to review any of the rules, click on the any off the buttons below.
-                </p>
-
-                <h2>One Offs</h2>
-               <!-- <table>         
-                    <tr>
-                        <td>
-                            <button ng-click="lobby.aceRules()">Ace</button>
-                            <div ng-show="lobby.displayAce">
-                                <button ng-click="lobby.startAce()">Start</button>
-                                <div ng-show="lobby.aceClicked" class="fading-test">Testing</div>
-                            </div>
-                        </td>
-                        <td><button>Two</button></td>
-                        <td><button>Three</button></td>
-                        <td><button>Four</button></td>
-                    </tr>
-                    <tr>
-                        <td><button>Five</button></td>
-                        <td><button>Six</button></td>
-                        <td><button>Seven</button></td>
-                        <td><button>Nine</button></td>
-                    </tr>
-                </table> End of One Offs table
-                <h2>Runes</h2>
-                <table>
-                    <tr>
-                        <td><button>Eight</button></td>
-                        <td><button>Jack</button></td>
-                        <td><button>Queen</button></td>
-                        <td><button>King</button></td>
-                    </tr>
-                </table> End of Runes table -->
-
-                <div ng-init="checked = false">
-                    <label>
-                        <input type="checkbox" ng-model="checked">
-                        Ace Rules
-                    </label>
-                    <div class="sample-show-hide" ng-show="checked">
-                        <img class="transition_1 lobbyCard" src='/images/cards/card_0_9.png'>
-                        <div>
-                            Click on the ace to activate your trap card
-                            <img src="/images/cards/ace_of_spades2.png" ng-click="cardCheck = !cardCheck" ng-init="cardCheck = true">
-                            <div class="sevenTest-hide" ng-show="cardCheck">
-                                <img class="transition_2 lobbyCard" src='/images/cards/card_2_7.png'>
-                                <img class="transition_3 lobbyCard" src='/images/cards/card_2_4.png'>
-                            </div>
+            <!-- Displays either signup, or login form -->
+            <div id="formWrapper">
+                <!-- Sign up form -->
+                <div ng-controller="signUpController as signup">
+                    <form ng-if="menu.tab==='signup'" name="signupForm" novalidate ng-submit="signupForm.$valid && signup.submitSignUp()" class="container-fluid">
+                        <div class="row">
+                            <p class="col-xs-2 col-xs-offset-5">Sign Up</p>
                         </div>
+                        <div class="row">
+                            <p class="col-xs-offset-2 col-xs-2">Email</p>
+                            <input ng-model="signup.email" type="text" class="col-xs-4" required>
+                        </div>
+                        <div class="row">
+                            <p class="col-xs-offset-2 col-xs-2">Password</p>
+                            <input ng-model="signup.password" type="text" class="col-xs-4" required>
+                        </div>
+                        <div class="row">
+                            <p class="col-xs-offset-2 col-xs-2">Repeat Password</p>
+                            <input ng-model="signup.repeatPassword" type="text" class="col-xs-4" required>
+                        </div>
+                        <div class="row">
+                            <input class="button button-lg col-xs-offset-5" type="submit"></input>
+                        </div>
+                    </form> <!-- End of signup form -->
+                </div> <!-- End signup controller -->
+
+                <div ng-controller="loginController as login">
+                    <!-- Log in form -->
+                    <form ng-show="menu.tab==='login'" class="container-fluid">
+                        <div class="row">
+                            <p class="col-xs-2 col-xs-offset-5">Log In</p>
+                        </div>
+                        <div class="row">
+                            <p class="col-xs-2 col-xs-offset-2">Email</p>
+                            <input ng-model="login.email" class="col-xs-4" type="text">
+                        </div>
+                        <div class="row">
+                            <p class="col-xs-2 col-xs-offset-2">Password</p>
+                            <input ng-model="login.password" class="col-xs-4" type="text">
+                        </div>
+                        <div class="row">
+                            <button ng-click="login.submitLogin()" class="button button-lg col-xs-offset-5">Log In</button>
+                        </div>
+                    </form> <!-- End of login form -->
+                </div> <!-- End login controller -->
+
+                <div ng-controller="gamesOverviewController as gamesOverview">
+                    <div ng-show="menu.tab==='gamesOverview'" class="table table-striped">
+                        <form ng-submit="gamesOverview.createGame()">
+                            <h1>Game Name</h1>
+                            <input ng-model="gamesOverview.gameName" type="text" placeholder="Create Game">
+                            <input type="submit">
+                        </form>
+                        <table>
+                            <th>#</th>
+                            <th>Game Name</th>
+                            <th>Open</th>
+                            <th>Join</th>
+                                <tr ng-repeat="game in menu.games track by $index">
+                                    <td>{{$index}}</td>
+                                    <td>{{game.name}}</td>
+                                    <td>{{game.status}}</td>
+                                    <td>
+                                        <button ng-if="game.status===true" class="btn btn-default" ng-click="gamesOverview.joinGame($index)">Join</button >
+                                        <button ng-if="game.status===false" class="btn btn-default" disabled="disabled">Full</button>
+                                    </td>
+                                </tr>
+                        </table>
                     </div>
                 </div>
 
 
-                <h2>Scuttling</h2>
-            </div> <!-- End of lobby contorller -->
-        </div> <!-- End of ng-show for lobby-->
+            </div> <!-- End of formWrapper -->
+            <div ng-controller="lobbyController as lobby">
+                <div ng-show="menu.tab==='lobby'">
+                    <p>
+                        Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()">Ready</button> button.  If you wish to review any of the rules, click on the any off the buttons below.
+                    </p>
 
-        <!-- Game View -->
-        <div ng-controller="gamesController as game" class="container-fluid">
-            <div ng-show="menu.tab==='gameView'">
-                <div id="background">
-                    <!-- Top Wrap -->
-                    <div id = "topWrap" class = "row">
-                        <div id="oppHand">
-                            <!-- ng-repeat of opponents hand -->
-                        </div>
-                        <p id="oppWinCon">
-                            Win Condition:
-                            <!-- angular view of wincondition -->
-                        </p>
-                        <div id="oppCounter">
-                            <!-- Put king squares -->
-                        </div>
-                    </div> <!-- End of topWrap -->
-                    <!-- Middle Wrap -->
-                    <div id="midWrap" class="row">
-                        <div class="col-xs-2 col-md-2" id="deckScrap">
-                            <!-- Deck and Scrap -->
-                        </div>
-                        <div class="col-xs-4 col-md-4 field row" id='points'>
-                            <!-- Points -->
-                            <div id="oppPoints">
-                                <!-- Opponent Points -->
+                    <h2>One Offs</h2>
+                   <!-- <table>         
+                        <tr>
+                            <td>
+                                <button ng-click="lobby.aceRules()">Ace</button>
+                                <div ng-show="lobby.displayAce">
+                                    <button ng-click="lobby.startAce()">Start</button>
+                                    <div ng-show="lobby.aceClicked" class="fading-test">Testing</div>
+                                </div>
+                            </td>
+                            <td><button>Two</button></td>
+                            <td><button>Three</button></td>
+                            <td><button>Four</button></td>
+                        </tr>
+                        <tr>
+                            <td><button>Five</button></td>
+                            <td><button>Six</button></td>
+                            <td><button>Seven</button></td>
+                            <td><button>Nine</button></td>
+                        </tr>
+                    </table> End of One Offs table
+                    <h2>Runes</h2>
+                    <table>
+                        <tr>
+                            <td><button>Eight</button></td>
+                            <td><button>Jack</button></td>
+                            <td><button>Queen</button></td>
+                            <td><button>King</button></td>
+                        </tr>
+                    </table> End of Runes table -->
+
+                    <div ng-init="checked = false">
+                        <label>
+                            <input type="checkbox" ng-model="checked">
+                            Ace Rules
+                        </label>
+                        <div class="sample-show-hide" ng-show="checked">
+                            <img class="transition_1 lobbyCard" src='/images/cards/card_0_9.png'>
+                            <div>
+                                Click on the ace to activate your trap card
+                                <img src="/images/cards/ace_of_spades2.png" ng-click="cardCheck = !cardCheck" ng-init="cardCheck = true">
+                                <div class="sevenTest-hide" ng-show="cardCheck">
+                                    <img class="transition_2 lobbyCard" src='/images/cards/card_2_7.png'>
+                                    <img class="transition_3 lobbyCard" src='/images/cards/card_2_4.png'>
+                                </div>
                             </div>
-                            <div id="yourPoints">
-                                <!-- Your points -->
-                            </div>
-                        </div>
-                        <div class="col-xs-4 col-md-4 field row" id="runes">
-                            <!-- Runes -->
-                            <div id="oppRunes">
-                                <!-- Opponent Runes -->
-                            </div>
-                            <div id="yourRunes">
-                                <!-- Your Runes -->
-                            </div>
-                        </div>
-                        <div class="col-xs-2 col-md-2" id="gameLog">
-                            <!-- gameLog -->
-                        </div>
-                    </div> <!-- End of middle wrap -->
-                    <!-- Bottom Wrap -->
-                    <div id="bottomWrap" class="row">
-                        <div id="yourHand">
-                            <!-- Your Hand -->
-                        </div>
-                        <p id="winCon">
-                            <!-- Win Condition -->
-                        </p>
-                        <div id="yourCounter">
-                            <!-- Your king squares -->
                         </div>
                     </div>
-                    HELLO WORLD
-                </div>
-            </div> <!-- End of ng-show for game -->
-        </div> <!-- End of game controller -->
 
-    </div> <!-- End of menuController -->
-</div><!-- End of app -->
+
+                    <h2>Scuttling</h2>
+                </div> <!-- End of lobby contorller -->
+            </div> <!-- End of ng-show for lobby-->
+
+            <!-- Game View -->
+            <div ng-controller="gamesController as game" class="container-fluid">
+                <div ng-show="menu.tab==='gameView'">
+                    <div id="bg">
+                        <!-- Top Wrap -->
+                        <div id = "topWrap" class = "row">
+                            <div id="oppHand">
+                                <!-- ng-repeat of opponents hand -->
+                            </div>
+                            <p id="oppWinCon">
+                                Win Condition:
+                                <!-- angular view of wincondition -->
+                            </p>
+                            <div id="oppCounter">
+                                <!-- Put king squares -->
+                            </div>
+                        </div> <!-- End of topWrap -->
+                        <!-- Middle Wrap -->
+                        <div id="midWrap" class="row">
+                            <div class="col-xs-2 col-md-2" id="deckScrap">
+                                <!-- Deck and Scrap -->
+                            </div>
+                            <div class="col-xs-4 col-md-4 field row" id='points'>
+                                <!-- Points -->
+                                <div id="oppPoints">
+                                    <!-- Opponent Points -->
+                                </div>
+                                <div id="yourPoints">
+                                    <!-- Your points -->
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-md-4 field row" id="runes">
+                                <!-- Runes -->
+                                <div id="oppRunes">
+                                    <!-- Opponent Runes -->
+                                </div>
+                                <div id="yourRunes">
+                                    <!-- Your Runes -->
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-md-2" id="gameLog">
+                                <!-- gameLog -->
+                            </div>
+                        </div> <!-- End of middle wrap -->
+                        <!-- Bottom Wrap -->
+                        <div id="bottomWrap" class="row">
+                            <div id="yourHand">
+                                <!-- Your Hand -->
+                            </div>
+                            <p id="winCon">
+                                <!-- Win Condition -->
+                            </p>
+                            <div id="yourCounter">
+                                <!-- Your king squares -->
+                            </div>
+                        </div>
+                        HELLO WORLD
+                    </div>
+                </div> <!-- End of ng-show for game -->
+            </div> <!-- End of game controller -->
+
+        </div> <!-- End of menuController -->
+    </div><!-- End of app -->
+</div><!-- End of body -->
