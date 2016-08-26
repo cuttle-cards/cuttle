@@ -1,3 +1,5 @@
+/*Lobby CSS*/
+
 .content-area {
   border: 1px solid black;
   margin-top: 10px;
@@ -27,4 +29,16 @@
 
 .sample-show-hide.ng-hide {
   opacity: 0;
+}
+
+/*End of Lobby CSS*/
+
+/*Gameview CSS*/
+
+#background { 
+  background: url(../images/woodenTableImage.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }

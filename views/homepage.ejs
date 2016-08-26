@@ -149,18 +149,63 @@
         </div> <!-- End of ng-show for lobby-->
 
         <!-- Game View -->
-        <div ng-controller="gameController as game">
+        <div ng-controller="gamesController as game" class="container-fluid">
             <div ng-show="menu.tab==='gameView'">
-                <div id = "topWrap" class = "row">
-                    <div id="oppHand">
-                        <!-- ng-repeat of opponents hand -->
+                <div id="background">
+                    <!-- Top Wrap -->
+                    <div id = "topWrap" class = "row">
+                        <div id="oppHand">
+                            <!-- ng-repeat of opponents hand -->
+                        </div>
+                        <p id="oppWinCon">
+                            Win Condition:
+                            <!-- angular view of wincondition -->
+                        </p>
+                        <div id="oppCounter">
+                            <!-- Put king squares -->
+                        </div>
+                    </div> <!-- End of topWrap -->
+                    <!-- Middle Wrap -->
+                    <div id="midWrap" class="row">
+                        <div class="col-xs-2 col-md-2" id="deckScrap">
+                            <!-- Deck and Scrap -->
+                        </div>
+                        <div class="col-xs-4 col-md-4 field row" id='points'>
+                            <!-- Points -->
+                            <div id="oppPoints">
+                                <!-- Opponent Points -->
+                            </div>
+                            <div id="yourPoints">
+                                <!-- Your points -->
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-md-4 field row" id="runes">
+                            <!-- Runes -->
+                            <div id="oppRunes">
+                                <!-- Opponent Runes -->
+                            </div>
+                            <div id="yourRunes">
+                                <!-- Your Runes -->
+                            </div>
+                        </div>
+                        <div class="col-xs-2 col-md-2" id="gameLog">
+                            <!-- gameLog -->
+                        </div>
+                    </div> <!-- End of middle wrap -->
+                    <!-- Bottom Wrap -->
+                    <div id="bottomWrap" class="row">
+                        <div id="yourHand">
+                            <!-- Your Hand -->
+                        </div>
+                        <p id="winCon">
+                            <!-- Win Condition -->
+                        </p>
+                        <div id="yourCounter">
+                            <!-- Your king squares -->
+                        </div>
                     </div>
-                    <p id="oppWinCon">
-                        Win Condition:
-                        <!-- angular view of wincondition -->
-                    </p>
+                    HELLO WORLD
                 </div>
-                HELLO WORLD
             </div> <!-- End of ng-show for game -->
         </div> <!-- End of game controller -->
 
