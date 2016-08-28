@@ -241,8 +241,8 @@ module.exports = {
 						var max = 51;
 						var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
 
-						// Deal one extra card to p0
-						p0.hand.add(deck[random]);
+						// Deal one extra card to p1
+						p1.hand.add(deck[random]);
 						game.deck.remove(deck[random].id);
 						dealt.push(random);
 						// Then deal 5 cards to each player
@@ -333,6 +333,65 @@ module.exports = {
 			var err = new Error("Missing game or player id");
 			return res.badRequest(err);
 		}
+	},
+
+	draw: function (req, res) {
+		console.log("\nDrawing Card for p" + req.session.pNum + " in game: " + req.session.game);
+		var pGame = gameService.findGame({gameId: req.session.game})
+		.then(function checkTurn (game) {
+			if (req.session.pNum === game.turn % 2) {
+				return Promise.resolve(game);
+			} else {
+				return Promise.reject(new Error("It's not your turn."));
+			}
+		});
+
+		var pUser = userService.findUser({userId: req.session.usr})
+		.then(function handLimit (user) {
+			if (user.hand.length < 8) {
+				return Promise.resolve(user);
+			} else {
+				return Promise.reject(new Error("You are at the hand limit; you cannot draw."));
+			}
+		});
+
+		// Make changes after finding records
+		Promise.all([pGame, pUser])
+		.then(function changeAndSave (values) {
+			var game = values[0], user=values[1];
+			user.hand.add(game.topCard.id);
+			game.topCard = game.secondCard;
+			var min = 0;
+			var max = game.deck.length;
+			var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+			game.secondCard = game.deck[random];
+			game.deck.remove(game.deck[random].id);	
+			game.log.push("Player " + user.pNum + " Drew a card");
+			game.turn++;
+			var saveGame = gameService.saveGame({game: game})		;
+			var saveUser = userService.saveUser({user: user});
+			return Promise.all([saveGame, saveUser]);
+
+		}) //End changeAndSave
+		.then(function getPopulatedGame (values) {
+			var game = values[0], user=values[1];
+			return gameService.populateGame({gameId: game.id});
+		}) //End getPopulatedGame
+		.then(function publishAndRespond (fullGame) {
+			console.log("Publishing Update for draw");
+			Game.publishUpdate(fullGame.id,
+				{
+					change: 'draw',
+					game: fullGame
+				}
+			);
+			return res.ok();
+		}) //End publishAndRespond
+		.catch(function failed (err) {
+			console.log("Failed to draw card:");
+			console.log(err);
+			return res.badRequest(err);
+		});
 	},
 
 	populateGameTest: function (req, res) {

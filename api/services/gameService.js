@@ -8,6 +8,7 @@ function tempUser (usr, points) {
 	this.frozenId = usr.frozenId;
 };
 function tempGame (game, p0, p1) {
+	this.id = game.id;
 	this.players = [p0, p1];
 	this.deck = game.deck;
 	this.scrap = game.scrap;
@@ -48,15 +49,12 @@ module.exports = {
 	****options = {game: GameModel}
 	*/
 	saveGame: function (options) {
-		console.log("saving game");
 		return new Promise(function (resolve, reject) {
-			console.log(options.game);
 			options.game.save(function (err) {
 				if (err) {
 					console.log("error saving game");
 					return reject(err);
 				} else {
-					console.log("Saved game successfully");
 					return resolve(options.game);
 				}
 			});
@@ -119,16 +117,12 @@ module.exports = {
 						})
 						// then format results & resolve
 						.then(function finish (values) {
-							console.log("\n\nFINISHING");
-							// console.log(values);
 							var game = values[0];
 							var p0Points = values[3];
 							var p1Points = values[4];
 							var p0 = new tempUser(values[1], p0Points);
 							var p1 = new tempUser(values[2], p1Points);
 							var result = new tempGame(game, p0, p1);
-							console.log("popGame result:")
-							console.log(result);
 							return resolve(result);
 						})
 						.catch(function failed (err) {

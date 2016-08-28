@@ -54,5 +54,6 @@ module.exports.policies = {
     subscribe: 'isLoggedIn',
     lobbyView: 'isLoggedIn',
     ready:     'isLoggedIn',
+    draw: ['isLoggedIn', 'isInGame']
   }
 };

@@ -49,6 +49,11 @@ module.exports = {
       via: 'secondCard'
     },
 
+    turn: {
+      type: 'integer',
+      defaultsTo: 0
+    },
+
     log: {
       type: "array",
       defaultsTo: []
