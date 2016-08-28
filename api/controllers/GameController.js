@@ -291,16 +291,18 @@ module.exports = {
 					})
 					.then(function save (values) {
 						console.log("saving");
-						var saveGame = gameService.saveGame({game: game});
+						var saveGame = gameService.saveGame({game: game})
 						var saveP0 = userService.saveUser({user: values[1]});
 						var saveP1 = userService.saveUser({user: values[2]});
 						return Promise.all([saveGame, saveP0, saveP1]);
 					})
-					.then(function publish (values) {
+					.then(function getPopulatedGame (values) {
+						return gameService.populateGame({gameId: values[0].id});
+					})
+					.then(function publish (fullGame) {
 						console.log("\npublishing");
-						var game = values[0];
-						Game.publishUpdate(game.id, {change: "Initialize", game: game});
-						return Promise.resolve(values);
+						Game.publishUpdate(fullGame.id, {change: "Initialize", game: fullGame});
+						return Promise.resolve(fullGame);
 					})
 					.catch(function failedToDeal (err) {
 						return Promise.reject(err);

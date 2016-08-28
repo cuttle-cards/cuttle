@@ -45,7 +45,12 @@ var Promise = require('bluebird');
 		},
 		findGame: function (id) {
 			return new Promise(function (resolve, reject) {
-				Game.findOne(id).populateAll().exec(function (error, game) {
+				Game.findOne(id)
+				.populate('players', {sort: 'pNum'})
+				.populate('deck')
+				.populate('topCard')
+				.populate('secondCard')
+				.exec(function (error, game) {
 					if (error || !game) {
 						var res;
 						if (error) {
