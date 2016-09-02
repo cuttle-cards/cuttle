@@ -42,6 +42,8 @@
   -o-background-size: cover;
   background-size: cover;
   min-height: 100%;
+  min-width: 100%;
+  position: absolute;
 }
 
 html {
@@ -50,4 +52,18 @@ html {
 
 body {
   min-height: 100%;
+}
+
+.gameDiv {
+  border: 2px black dotted;
+  min-height: 100%;
+  min-width: 100%;
+  position: absolute;
+}
+
+.wrappingDiv {
+  border: 2px black dotted;
+  position: absolute;
+  min-height: 100%;
+  min-width: 100%;
 }
