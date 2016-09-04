@@ -166,12 +166,38 @@
                                 <!-- angular view of wincondition -->
                             </p>
                             <div id="oppCounter">
+                                <div id="oppKingSlot1" class="kingSlot" ng-class="{fullKing: game.oppPointCap <= 14}">
+                                    <p class="cap1">14</p>
+                                </div>
+                                <div id="oppKingSlot2" class="kingSlot" ng-class="{fullKing: game.oppPointCap <= 10}">
+                                    <p class="cap2">10</p>
+                                </div>
+                                <div>
+                                    <div id="oppPointTotal" class="pointTotal">
+                                        <div>
+                                            {{gameView.oppPointTotal}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div id="oppKingSlot3" class="kingSlot" ng-class="{fullKing: game.oppPointCap <= 7}">
+                                        <p class="cap3">7</p>
+                                    </div>
+                                    <div id="oppKingSlot4" class="kingSlot" ng-class="{fullKing: game.oppPointCap <= 5}">
+                                        <p class="cap4">5</p>
+                                    </div>
+                                </div>
                                 <!-- Put king squares -->
                             </div>
                         </div> <!-- End of topWrap -->
                         <!-- Middle Wrap -->
                         <div id="midWrap" class="row">
-                            <div class="col-xs-2 col-md-2" id="deckScrap">
+                            <div class="col-xs-2 col-md-2" id="deckScrapStack">
+                                <img src="images/deck.jpg" id="deck"></img>
+                                <img src="images/scrap.jpg" id="scrap"></img>
+                                <div id="stack">
+                                    <p>Stack</p>
+                                </div>
                                 <!-- Deck and Scrap -->
                             </div>
                             <div class="col-xs-4 col-md-4 field row" id='points'>

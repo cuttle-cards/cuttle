@@ -1,3 +1,5 @@
+/* # id, . class*/
+
 /*Lobby CSS*/
 
 .content-area {
@@ -67,3 +69,80 @@ body {
   min-height: 100%;
   min-width: 100%;
 }
+
+      /*Top Wrap*/
+
+      #topWrap {
+        min-height: 33%;
+        min-width: 100%;
+        position: absolute;
+      }
+
+          /*Opponent CSS*/
+
+          #oppCounter {
+            display: inline-block;
+            position: absolute;
+            left: 12%;
+            top: 5%;
+            font-size: 2em;
+            color: #BAA1C9;
+            min-width: 10%;
+            min-height: 75%;
+          }
+
+          .fullKing {
+          background-color: #599532;
+          opacity: .7;
+          }
+
+          #oppKingSlot1 {
+            display: inline-block;
+            position: absolute;
+            height: 50%;
+            width: 50%;
+            border: 2px solid black;
+          }
+
+          #oppKingSlot2 {
+            display: inline-block;
+            position: absolute;
+            height: 50%;
+            width: 50%;
+            border: 2px solid black;
+            left: 50%;
+          }
+
+          #oppKingSlot3 {
+            display: inline-block;
+            position: absolute;
+            height: 50%;
+            width: 50%;
+            border: 2px solid black;
+            top: 50%;
+          }
+
+          #oppKingSlot4 {
+            display: inline-block;
+            position: absolute;
+            height: 50%;
+            width: 50%;
+            border: 2px solid black;
+            top: 50%;
+            left: 50%;
+          }
+
+    /*Mid Wrap*/
+
+      #midWrap {
+        min-height: 100%;
+        min-width: 100%;
+        position: absolute;
+      }
+          /*Deck, Scrap and Stack*/
+
+          #deckScrapStack {
+            position: absolute;
+            min-height: 100%;
+            min-width: 20%;
+          }
