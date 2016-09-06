@@ -30,6 +30,7 @@ var jsFilesToInject = [
   'js/dependencies/angular.js',
   'js/dependencies/**/*.js',
   'js/app.js',
+  'js/angular-directives/**/*.js',
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
   'js/**/*.js'

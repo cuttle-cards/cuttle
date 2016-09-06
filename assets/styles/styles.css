@@ -146,3 +146,7 @@ body {
             min-height: 100%;
             min-width: 20%;
           }
+
+.dragover {
+  background-color: green;
+}
