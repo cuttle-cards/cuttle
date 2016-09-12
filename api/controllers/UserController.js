@@ -17,6 +17,7 @@ var passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
 	signup: function (req, res) {
+		console.log("received signup request");
 		if (req.body.password && req.body.email) {
 			// data from client
 			var email = req.body.email;

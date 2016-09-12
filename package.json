@@ -6,6 +6,7 @@
   "keywords": [],
   "dependencies": {
     "bluebird": "^3.4.6",
+    "chai": "^3.5.0",
     "ejs": "~0.8.4",
     "grunt": "0.4.5",
     "grunt-contrib-clean": "~0.6.0",
@@ -24,7 +25,9 @@
     "machinepack-passwords": "^2.3.0",
     "rc": "~1.0.1",
     "sails": "~0.12.0-rc2",
-    "sails-disk": "~0.10.7"
+    "sails-disk": "~0.10.7",
+    "sails.io.js": "^0.13.8",
+    "socket.io-client": "^1.4.8"
   },
   "scripts": {
     "debug": "node debug app.js",

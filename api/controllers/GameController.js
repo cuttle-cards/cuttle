@@ -44,6 +44,7 @@ module.exports = {
 	},
 
 	getList: function (req, res) {
+		console.log(req.session);
 		Game.watch(req);
 		gameAPI.findAllGames()
 		.then(function success (games) {

@@ -19,6 +19,9 @@ module.exports = {
 				var img = "";
 				// Stringify Rank
 				switch (rank) {
+					case 1:
+						str_rank = "Ace";
+						break;
 					case 11:
 						str_rank = "Jack";
 						break;
@@ -50,7 +53,7 @@ module.exports = {
 						break;
 				}
 				str_name = str_rank + " of " + str_suit; //Assign str name
-				img = "images/cards/card_" + suit + "_" + rank; //Assign img
+				img = "images/cards/card_" + suit + "_" + rank + ".png"; //Assign img
 
 				// Assign Rule Text
 				switch (rank) {
