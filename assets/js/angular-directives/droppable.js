@@ -10,7 +10,7 @@ app.directive('tsDroppable', function () {
 			var counter = 0;
 			el.addEventListener('dragover', function (ev) {
 				var allowDrop = scope.allowDrop();
-				if (allowDrop(dragIndex, scope.index)) {
+				if (allowDrop(scope.index)) {
 					ev.preventDefault();
 				}
 			}); //End dragover handler
@@ -34,7 +34,7 @@ app.directive('tsDroppable', function () {
 			el.addEventListener("drop", function (ev) {
 				el.classList.remove("dragover");
 				var drop = scope.uponDrop();
-				drop(dragIndex, scope.index);
+				drop(scope.index);
 				counter = 0;
 			}); //End drop handler
 		}

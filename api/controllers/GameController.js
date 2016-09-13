@@ -23,7 +23,7 @@ module.exports = {
 					name: game.name,
 					status: game.status
 				});
-				res.ok();
+				return res.ok();
 
 				// gameAPI.findAllGames()
 				// .then(function foundGames (games) {
@@ -78,7 +78,7 @@ module.exports = {
 				game.save();
 				user.save();
 				// Respond with 200
-				res.ok();
+				res.ok({playerId: user.id});
 			})
 			.catch(function failure (error) {
 				return res.badRequest(error);
@@ -394,6 +394,11 @@ module.exports = {
 			console.log(err);
 			return res.badRequest(err);
 		});
+	},
+
+	points: function (req, res) {
+		console.log("playing points");
+		res.ok();
 	},
 
 	populateGameTest: function (req, res) {

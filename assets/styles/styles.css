@@ -174,3 +174,17 @@ body {
 .dragover {
   background-color: green;
 }
+
+#yourPoints {
+  display: inline-block;
+  position: absolute;
+  height: 300px;
+  width: 700px;
+  border: 2px solid purple;
+}
+
+.handCard {
+  display: inline-block;
+  position: relative;
+  z-index: 3;
+}
