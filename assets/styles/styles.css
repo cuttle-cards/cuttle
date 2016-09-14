@@ -183,8 +183,20 @@ body {
   border: 2px solid purple;
 }
 
+#yourHand {
+  position: absolute;
+  display: block;
+  top: 60%;
+}
 .handCard {
   display: inline-block;
   position: relative;
+  width: 10%;
+  margin-left: 3px;
+}
+.handCardImg {
+  position: relative;
   z-index: 3;
+  width: 100%;
+  display: inline-block;
 }
