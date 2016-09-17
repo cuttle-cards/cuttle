@@ -6,6 +6,7 @@ function tempUser (usr, points) {
 	this.points = points;
 	this.runes = usr.runes;
 	this.frozenId = usr.frozenId;
+	this.id = usr.id;
 };
 function tempGame (game, p0, p1) {
 	this.id = game.id;
@@ -15,6 +16,7 @@ function tempGame (game, p0, p1) {
 	this.topCard = game.topCard;
 	this.secondCard = game.secondCard;
 	this.log = game.log;
+	this.id = game.id;
 };
 module.exports = {
 	/**

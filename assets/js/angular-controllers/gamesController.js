@@ -1,6 +1,7 @@
 app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
-	var menu = $scope.menu;
-	var self = this;
+ 	var self = this;
+ 	var menu = $scope.menu;
+	self.game = null;
 	self.oppPointCap = 21;
 	self.yourPointCap = 21;
 	self.yourPointTotal;
@@ -24,7 +25,50 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	}
 
-	self.testDrop = function (handIndex, targetIndex) {
-		console.log("dropped: " + handIndex + " into " + targetIndex);
-	}
+	////////////////////////
+	// Dragover Callbacks //
+	////////////////////////
+	self.dragoverPoints = function (targetIndex) {
+		if (self.game.players[self.pNum].hand[dragIndex].rank < 11) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	////////////////////
+	// Drop Callbacks //
+	////////////////////
+	self.dropPoints = function (targetIndex) {
+		io.socket.put("/game/points", 
+		{
+			cardId: self.game.players[self.pNum].hand[dragIndex].id
+		},
+		function (res, jwres) {
+			if (jwres.statusCode != 200) alert(jwres.error);
+		}
+		);
+	};
+	///////////////////////////
+	// Socket Event Handlers //
+	///////////////////////////
+	io.socket.on('game', function (obj) {
+		console.log(obj)
+		switch (obj.verb) {
+			case 'updated':
+				switch (obj.data.change) {
+					case 'Initialize':
+						self.game = obj.data.game;
+						if (self.game.players[0].id === menu.userId) {
+							self.pNum = 0;
+						} else {
+							self.pNum = 1;
+						}
+						break;
+				}
+				break;
+		}
+		$scope.$apply();
+	});
+
 }]);

@@ -151,10 +151,10 @@
             </div> <!-- End of ng-show for lobby-->
 
             <!-- Game View -->
-            <div ng-controller="gamesController as game" class="container-fluid gameDiv">
+            <div ng-controller="gamesController as gc" class="container-fluid gameDiv">
                 <div ng-show="menu.tab==='gameView'" class="gameDiv">
                     <div id="bg">
-                        <button ng-click="game.draw()">Draw</button>
+                        <button ng-click="gc.draw()">Draw</button>
                         <!-- TEST DRAW ACTION -->
                         <!-- Top Wrap -->
                         <div id = "topWrap" class = "row">
@@ -165,11 +165,11 @@
                                 Win Condition:
                                 <!-- angular view of wincondition -->
                             </p>
-                            <div id="oppCounter" >
-                                <div id="oppKingSlot1" class="kingSlot" ng-class="{fullKing: game.oppPointCap <= 14}">
+                            <div id="oppCounter">
+                                <div id="oppKingSlot1" class="kingSlot" ng-class="{fullKing: gc.oppPointCap <= 14}">
                                     <p class="cap1">14</p>
                                 </div>
-                                <div id="oppKingSlot2" class="kingSlot" ng-class="{fullKing: game.oppPointCap <= 10}">
+                                <div id="oppKingSlot2" class="kingSlot" ng-class="{fullKing: gc.oppPointCap <= 10}">
                                     <p class="cap2">10</p>
                                 </div>
                                 <div>
@@ -180,10 +180,10 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div id="oppKingSlot3" class="kingSlot" ng-class="{fullKing: game.oppPointCap <= 7}">
+                                    <div id="oppKingSlot3" class="kingSlot" ng-class="{fullKing: gc.oppPointCap <= 7}">
                                         <p class="cap3">7</p>
                                     </div>
-                                    <div id="oppKingSlot4" class="kingSlot" ng-class="{fullKing: game.oppPointCap <= 5}">
+                                    <div id="oppKingSlot4" class="kingSlot" ng-class="{fullKing: gc.oppPointCap <= 5}">
                                         <p class="cap4">5</p>
                                     </div>
                                 </div>
@@ -203,7 +203,7 @@
                                 <div id="oppPoints">
                                     <!-- Opponent Points -->
                                 </div>
-                                <div id="yourPoints">
+                                <div id="yourPoints" ts-droppable allow-drop="gc.dragoverPoints" index="0" upon-drop="gc.dropPoints">
                                     <!-- Your points -->
                                 </div>
                             </div>
@@ -224,6 +224,10 @@
                         <div id="bottomWrap" class="row">
                             <div id="yourHand">
                                 <!-- Your Hand -->
+                                <div ng-repeat="card in gc.game.players[gc.pNum].hand" class="handCard">
+                                    <img ng-src="{{card.img}}" ts-draggable index="$index" class="handCardImg">
+                                    {{card.rank}} of {{card.suit}}
+                                </div>
                             </div>
                             <p id="winCon">
                                 <!-- Win Condition -->
