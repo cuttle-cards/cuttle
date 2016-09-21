@@ -55,7 +55,6 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			options.game.save(function (err) {
 				if (err) {
-					console.log("error saving game");
 					return reject(err);
 				} else {
 					return resolve(options.game);
@@ -69,7 +68,6 @@ module.exports = {
 	****options = {gameId: gameId}
 	*/
 	populateGame: function (options, done) {
-		console.log("\nPopulateGame Helper");
 		return new Promise (function (resolve, reject) {
 			if (options) {
 				if (options.hasOwnProperty('gameId')) {
@@ -129,7 +127,6 @@ module.exports = {
 							return resolve(result);
 						})
 						.catch(function failed (err) {
-							console.log("Had gameId; failed in chain");
 							return reject(err);
 						});
 					} else {

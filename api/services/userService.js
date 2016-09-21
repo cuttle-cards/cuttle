@@ -36,7 +36,6 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			options.user.save(function (err) {
 				if (err) {
-					console.log("error saving user");
 					return reject(err);
 				} else {
 					return resolve(options.user);
