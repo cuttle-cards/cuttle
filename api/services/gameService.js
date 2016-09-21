@@ -1,4 +1,5 @@
 var Promise = require('bluebird');
+var userService = require("../../api/services/userService.js");
 // Used to create fully populated game
 function tempUser (usr, points) {
 	this.pNum = usr.pNum;
@@ -140,6 +141,28 @@ module.exports = {
 			} else {
 				return reject(new Error("Cannot populate Game without gameId"));
 			}
+		});
+	},
+	/*Checks a game to determine if either player has won
+	***options = {game: GameModel}
+	*/
+	checkWinGame: function (options) {
+		var res = {
+			gameOver: false,
+			winner: null
+		};
+		var p0Wins = userService.checkWin({user: options.game.players[0]});
+		var p1Wins = userService.checkWin({user: options.game.players[1]});
+		return Promise.all([p0Wins, p1Wins])
+		.then(function gotData (values) {
+			var p0Won = values[0], p1Won = values[1];
+			if (p0Won || p1Won) res.gameOver = true;
+			if (p0Won) {
+				res.winner = 0;
+			} else if (p1Won) {
+				res.winner = 1;
+			}
+			return Promise.resolve(res);
 		});
 	}
 

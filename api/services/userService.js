@@ -49,32 +49,33 @@ module.exports = {
 	**Check whether user has won
 	****options = {user: UserModel}
 	*/
-	checkWin: function (options) {
-		var res = false, user = options.user, points = user.points, runes = user.runes, pointTotal = 0, kings = 0;
-		points.forEach(function (point) {
-			pointTotal += point.rank;
-		});
-		runes.forEach(function (rune) {
-			kings++;
-		});
-		switch (kings) {
-			case 0:
-				if (pointTotal >= 21) res = true;
-				break;
-			case 1:
-				if (pointTotal >= 14) res = true;
-				break;
-			case 2:
-				if (pointTotal >= 10) res = true;
-				break;
-			case 3:
-				if (pointTotal >= 7) res = true;
-				break;
-			case 4:
-				if (pointTotal >= 5) res = true;
-				break;
-		}
-		return res;
+	// checkWin: function (options) {
+	// 	var res = false, user = options.user, points = user.points, runes = user.runes, pointTotal = 0, kings = 0;
+	// 	points.forEach(function (point) {
+	// 		pointTotal += point.rank;
+	// 	});
+	// 	runes.forEach(function (rune) {
+	// 		kings++;
+	// 	});
+	// 	switch (kings) {
+	// 		case 0:
+	// 			if (pointTotal >= 21) res = true;
+	// 			break;
+	// 		case 1:
+	// 			if (pointTotal >= 14) res = true;
+	// 			break;
+	// 		case 2:
+	// 			if (pointTotal >= 10) res = true;
+	// 			break;
+	// 		case 3:
+	// 			if (pointTotal >= 7) res = true;
+	// 			break;
+	// 		case 4:
+	// 			if (pointTotal >= 5) res = true;
+	// 			break;
+	// 	}
+	// 	return res;
+	// }
 	/*
 	**Check if user has won
 	***options = {user: UserModel}
