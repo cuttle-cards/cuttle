@@ -75,5 +75,38 @@ module.exports = {
 				break;
 		}
 		return res;
+	/*
+	**Check if user has won
+	***options = {user: UserModel}
+	*/
+	checkWin: function (options) {
+		var res = false;
+		var player = options.user;
+		var points = 0;
+		var kings = 0;
+		player.points.forEach(function (point) {
+			points += point.rank;
+		});
+		player.runes.forEach(function (rune) {
+			if (rune.rank === 13) kings++;
+		});
+		switch (kings) {
+			case 0:
+				if (points >= 21) res = true;
+				break;
+			case 1:
+				if (points >= 14) res = true;
+				break;
+			case 2:
+				if (points >= 10) res = true
+				break;
+			case 3:
+				if (points >= 7) res = true;
+				break;
+			case 4:
+				if (points >= 5) res = true;
+				break;
+		}
+		return Promise.resolve(res);
 	}
 };

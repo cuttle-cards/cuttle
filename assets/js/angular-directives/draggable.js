@@ -6,11 +6,11 @@ app.directive('tsDraggable', function () {
 		link: function (scope, element) {
 			var el = element[0];
 			el.addEventListener('dragstart', function (ev) {
-				// ev.dataTransfer.setData('text', scope.index);
-				// console.log("\nDragging: " + ev.dataTransfer.getData('text'));
+				console.log("In dragstart");
 				dragIndex = scope.index;
 			});
 			el.addEventListener('dragend', function (ev) {
+				console.log("In dragend");
 				dragIndex = null;
 			});
 		}

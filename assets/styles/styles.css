@@ -83,11 +83,11 @@ body {
           #oppCounter {
             display: inline-block;
             position: absolute;
-            left: 12%;
-            top: 5%;
+            left: 5%;
+            top: 3%;
             font-size: 2em;
             color: #BAA1C9;
-            min-width: 10%;
+            min-width: 20%;
             min-height: 75%;
           }
 
@@ -99,16 +99,17 @@ body {
           #oppKingSlot1 {
             display: inline-block;
             position: absolute;
-            height: 50%;
-            width: 50%;
+            height: 40%;
+            width: 20%;
             border: 2px solid black;
+            left: 30%
           }
 
           #oppKingSlot2 {
             display: inline-block;
             position: absolute;
-            height: 50%;
-            width: 50%;
+            height: 40%;
+            width: 20%;
             border: 2px solid black;
             left: 50%;
           }
@@ -116,19 +117,20 @@ body {
           #oppKingSlot3 {
             display: inline-block;
             position: absolute;
-            height: 50%;
-            width: 50%;
+            height: 40%;
+            width: 20%;
             border: 2px solid black;
-            top: 50%;
+            top: 40%;
+            left: 30%;
           }
 
           #oppKingSlot4 {
             display: inline-block;
             position: absolute;
-            height: 50%;
-            width: 50%;
+            height: 40%;
+            width: 20%;
             border: 2px solid black;
-            top: 50%;
+            top: 40%;
             left: 50%;
           }
 
@@ -147,6 +149,91 @@ body {
             min-width: 20%;
           }
 
-.dragover {
-  background-color: green;
-}
+              #deck {
+                position: absolute;
+                left: 3%;
+                top: 15%;
+              }
+
+              #scrap {
+                position: absolute;
+                left: 3%;
+                top: 55%;
+              }
+
+              #stack {
+                display: inline-block;
+                position: absolute;
+                height: 65%;
+                width: 45%;
+                border: 4px solid black;
+                top: 25%;
+                left: 50%;
+              }
+
+
+          /*Points*/
+
+          #points {
+            position: absolute;
+            min-width: 60%;
+            min-height: 65%;
+            left: 20%;
+            top: 10%;
+          }
+
+              .dragover {
+                background-color: green;
+              }
+
+                    #oppPoints {
+                      display: inline-block;
+                      position: absolute;
+                      top: 6%;
+                      height: 40%;
+                      width: 100%;
+                      border: 2px solid red;
+                    }
+
+                    #yourPoints {
+                      display: inline-block;
+                      position: absolute;
+                      top: 46%;
+                      height: 40%;
+                      width: 100%;
+                      border: 2px solid blue;
+                      z-index: 2;
+                    }
+
+    /*Bottom Wrap*/
+
+    #bottomWrap {
+      min-height: 100%;
+      min-width: 100%;
+      position: absolute;
+    }
+
+        #yourHand {
+          position: absolute;
+          display: block;
+          top: 70%;
+          min-height: 30%;
+          min-width: 80%;
+          left: 25%;
+        }
+
+            .handCard {
+              display: inline-block;
+              position: relative;
+              height: 20%;
+              width: 8%;
+              border: 2px dotted;
+            }
+            .handCardImg {
+              display: inline-block;
+              position: relative;
+              z-index: 3;
+              height: 100%;
+              width: 100%;
+              border: 2px dotted;
+            }
