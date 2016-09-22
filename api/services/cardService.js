@@ -2,6 +2,29 @@ var Promise = require('bluebird');
 module.exports = {
 
 	/*
+	**Find Card by id
+	*****options = {cardId: integer}
+	*/
+	findCard: function (options) {
+		return new Promise(function (resolve, reject) {
+			if (options.hasOwnProperty("cardId") && typeof(options.cardId) === "number") {
+				Card.findOne(options.cardId)
+				.exec(function (err, card) {
+					if (err) {
+						return reject(err);
+					} else if (!card) {
+						return reject(new Error("Can't find card " + options.cardId));
+					} else {
+						return resolve(card);
+					}
+				});
+			} else {
+				return Promise.reject(new Error("Invalid arguments for findCard"));
+			}
+		});
+	},
+
+	/*
 	**Create Card from suit, rank, and gameId
 	*****options = {suit: integer, rank: integer, gameId: integer}
 	*/

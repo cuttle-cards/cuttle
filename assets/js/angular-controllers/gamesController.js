@@ -11,6 +11,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		console.log("Drawing");
 		io.socket.post("/game/draw", function (res, jwres) {
 			console.log(jwres);
+			if (jwres.statusCode != 200) alert(jwres.error.message);
 		});
 	};
 
@@ -42,10 +43,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.dropPoints = function (targetIndex) {
 		io.socket.put("/game/points", 
 		{
-			cardId: self.game.players[self.pNum].hand[dragIndex].id
+			cardId: self.game.players[self.pNum].hand[dragIndex].id,
+			// opId: self.game.players[(self.pNum + 1) % 2].id
 		},
 		function (res, jwres) {
-			if (jwres.statusCode != 200) alert(jwres.error);
+			console.log(jwres);
+			if (jwres.statusCode != 200) alert(jwres.error.message);
 		}
 		);
 	};
@@ -53,12 +56,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Socket Event Handlers //
 	///////////////////////////
 	io.socket.on('game', function (obj) {
+		console.log("Game event");
 		console.log(obj)
 		switch (obj.verb) {
 			case 'updated':
+				self.game = obj.data.game;
 				switch (obj.data.change) {
 					case 'Initialize':
-						self.game = obj.data.game;
 						if (self.game.players[0].id === menu.userId) {
 							self.pNum = 0;
 						} else {

@@ -37,14 +37,12 @@ module.exports = {
 				// 	return res.badRequest(error);
 				// });
 			}).catch(function (reason) {
-				console.log(reason);
 				res.badRequest(reason);
 			});
 		}
 	},
 
 	getList: function (req, res) {
-		console.log(req.session);
 		Game.watch(req);
 		gameAPI.findAllGames()
 		.then(function success (games) {
@@ -277,7 +275,6 @@ module.exports = {
 						game.secondCard = deck[random];
 						game.deck.remove(deck[random].id);
 						dealt.push(random);		
-						console.log("finishedDealing");
 						
 					/////////////////////////////////////////////////////////////////
 					// ADD CARDS TO POINTS, AND ATTACHMENTS TO TEST POPULATEGAME() //
@@ -291,7 +288,6 @@ module.exports = {
 						return Promise.resolve([game, p0, p1]);
 					})
 					.then(function save (values) {
-						console.log("saving");
 						var saveGame = gameService.saveGame({game: game})
 						var saveP0 = userService.saveUser({user: values[1]});
 						var saveP1 = userService.saveUser({user: values[2]});
@@ -301,7 +297,6 @@ module.exports = {
 						return gameService.populateGame({gameId: values[0].id});
 					})
 					.then(function publish (fullGame) {
-						console.log("\npublishing");
 						Game.publishUpdate(fullGame.id, {change: "Initialize", game: fullGame});
 						return Promise.resolve(fullGame);
 					})
@@ -311,7 +306,6 @@ module.exports = {
 				// If this player is first to be ready, save and respond
 				} else {
 					return new Promise(function save (resolveSave, rejectSave) {
-						console.log("Saving 1st player ready");
 						var saveGame = gameService.saveGame({game: game});
 						var saveUser = userService.saveUser({user: user});
 						return Promise.all([saveGame, saveUser]);
@@ -320,13 +314,10 @@ module.exports = {
 
 			}) //End foundRecords
 			.then(function respond (values) {
-				console.log("responding");
 				res.ok();
 				return Promise.resolve(values);
 			})
 			.catch(function failed (err) {
-				// console.log("error in ready action");
-				// console.log(err);
 				return res.badRequest(err);
 			});
 
@@ -339,7 +330,7 @@ module.exports = {
 	},
 
 	draw: function (req, res) {
-		console.log("\nDrawing Card for p" + req.session.pNum + " in game: " + req.session.game);
+		// console.log("\nDrawing Card for p" + req.session.pNum + " in game: " + req.session.game);
 		var pGame = gameService.findGame({gameId: req.session.game})
 		.then(function checkTurn (game) {
 			if (req.session.pNum === game.turn % 2) {
@@ -381,7 +372,6 @@ module.exports = {
 			return gameService.populateGame({gameId: game.id});
 		}) //End getPopulatedGame
 		.then(function publishAndRespond (fullGame) {
-			console.log("Publishing Update for draw");
 			Game.publishUpdate(fullGame.id,
 				{
 					change: 'draw',
@@ -391,15 +381,58 @@ module.exports = {
 			return res.ok();
 		}) //End publishAndRespond
 		.catch(function failed (err) {
-			console.log("Failed to draw card:");
-			console.log(err);
 			return res.badRequest(err);
 		});
 	},
 
 	points: function (req, res) {
-		console.log("playing points");
-		res.ok();
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		Promise.all([promiseGame, promisePlayer, promiseCard])
+		.then(function changeAndSave (values) {
+			var game = values [0], player = values[1], card = values[2];
+			if (game.turn % 2 === player.pNum) {
+				if (card.hand === player.id) {
+					if (card.rank <= 10) {
+						// Move is legal; make changes
+						player.points.add(card.id);
+						player.hand.remove(card.id);
+						game.log.push("Player " + player.pNum + " played the " + card.name + " for points");
+						game.turn++;
+						var saveGame = gameService.saveGame({game: game});
+						var savePlayer = userService.saveUser({user: player});
+						return Promise.all([saveGame, savePlayer]);
+					} else {
+						return Promise.reject(new Error("You can only play a number card as points."));
+					}
+				} else {
+					return Promise.reject(new Error("You can only play a card that is in your hand."));
+				}
+			} else {
+				return Promise.reject(new Error("It's not your turn."));
+			}
+		})
+		.then(function populateGame (values) {
+			var game = values[0];
+			return gameService.populateGame({gameId: game.id});
+		})
+		.then(function checkForWin (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			return Promise.all([Promise.resolve(fullGame), victory]);
+		})
+		.then(function publishAndRespond (values) {
+			var game = values[0], victory = values[1];
+			Game.publishUpdate(game.id, {
+				change: "points",
+				game: game,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
 	},
 
 	populateGameTest: function (req, res) {
