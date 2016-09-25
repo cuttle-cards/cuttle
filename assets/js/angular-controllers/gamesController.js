@@ -36,6 +36,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			return false;
 		}
 	};
+	self.dragoverRunes = function (targetIndex) {
+		if ((self.game.players[self.pNum].hand[dragIndex].rank >= 12 && self.game.players[self.pNum].hand[dragIndex].rank <= 13) || self.game.players[self.pNum].hand[dragIndex].rank === 8) {
+			return true;
+		} else {
+			return false;
+		}
+	};
 
 	////////////////////
 	// Drop Callbacks //
@@ -52,6 +59,16 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 		);
 	};
+	self.dropRunes = function (targetIndex) {
+		io.socket.put("/game/runes", 
+		{
+			cardId: self.game.players[self.pNum].hand[dragIndex].id
+		},
+		function (res, jwres) {
+			if (jwres.statusCode != 200) alert(jwres.error.message);
+		}
+		)
+	}
 	///////////////////////////
 	// Socket Event Handlers //
 	///////////////////////////
