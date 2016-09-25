@@ -417,15 +417,16 @@ module.exports = {
 			var game = values[0];
 			return gameService.populateGame({gameId: game.id});
 		})
-		.then(function checkForWin (fullGame) {
+		// .then(function checkForWin (fullGame) {
+		// 	var victory = gameService.checkWinGame({game: fullGame});
+		// 	return Promise.all([Promise.resolve(fullGame), victory]);
+		// })
+		.then(function publishAndRespond (fullGame) {
+			// var game = values[0], victory = values[1];
 			var victory = gameService.checkWinGame({game: fullGame});
-			return Promise.all([Promise.resolve(fullGame), victory]);
-		})
-		.then(function publishAndRespond (values) {
-			var game = values[0], victory = values[1];
-			Game.publishUpdate(game.id, {
+			Game.publishUpdate(fullGame.id, {
 				change: "points",
-				game: game,
+				game: fullGame,
 				victory: victory
 			});
 			return res.ok();

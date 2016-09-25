@@ -150,17 +150,14 @@ module.exports = {
 		};
 		var p0Wins = userService.checkWin({user: options.game.players[0]});
 		var p1Wins = userService.checkWin({user: options.game.players[1]});
-		return Promise.all([p0Wins, p1Wins])
-		.then(function gotData (values) {
-			var p0Won = values[0], p1Won = values[1];
-			if (p0Won || p1Won) res.gameOver = true;
-			if (p0Won) {
+			if (p0Wins || p1Wins) res.gameOver = true;
+			if (p0Wins) {
 				res.winner = 0;
-			} else if (p1Won) {
+			} else if (p1Wins) {
 				res.winner = 1;
 			}
-			return Promise.resolve(res);
-		});
+			// return Promise.resolve(res);
+			return res;
 	}
 
 };
