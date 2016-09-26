@@ -153,6 +153,8 @@ body {
                 position: absolute;
                 left: 3%;
                 top: 15%;
+                z-index: 3;
+
               }
 
               #scrap {
@@ -204,6 +206,22 @@ body {
                       border: 2px solid blue;
                       z-index: 2;
                     }
+                      .pointCard {
+                        display: inline-block;
+                        position: relative;
+                        height: 100%;
+                        width: 20%;
+                        border: 2px dotted;
+                      }
+                      .pointCardImg {
+                        display: inline-block;
+                        position: relative;
+                        z-index: 3;
+                        height: 100%;
+                        width: 100%;
+                        border: 2px dotted;
+                      }
+
 
     /*Bottom Wrap*/
 

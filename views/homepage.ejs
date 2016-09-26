@@ -204,6 +204,9 @@
                                     <!-- Opponent Points -->
                                 </div>
                                 <div id="yourPoints" ts-droppable allow-drop="gc.dragoverPoints" index="0" upon-drop="gc.dropPoints">
+                                    <div ng-repeat="card in gc.game.players[gc.pNum].points" class="pointCard">
+                                        <img ng-src="{{card.img}}" class="pointCardImg">
+                                    </div>
                                     <!-- Your points -->
                                 </div>
                             </div>
