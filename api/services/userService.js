@@ -107,6 +107,7 @@ module.exports = {
 				if (points >= 5) res = true;
 				break;
 		}
-		return Promise.resolve(res);
+		// return Promise.resolve(res);
+		return res;
 	}
 };

@@ -417,15 +417,60 @@ module.exports = {
 			var game = values[0];
 			return gameService.populateGame({gameId: game.id});
 		})
-		.then(function checkForWin (fullGame) {
+		.then(function publishAndRespond (fullGame) {
+			// var game = values[0], victory = values[1];
 			var victory = gameService.checkWinGame({game: fullGame});
-			return Promise.all([Promise.resolve(fullGame), victory]);
-		})
-		.then(function publishAndRespond (values) {
-			var game = values[0], victory = values[1];
-			Game.publishUpdate(game.id, {
+			Game.publishUpdate(fullGame.id, {
 				change: "points",
-				game: game,
+				game: fullGame,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	},
+
+	runes: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		Promise.all([promiseGame, promisePlayer, promiseCard])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], card = values[2];
+			console.log("\nplaying rune:");
+			console.log(player);
+			console.log(card);
+			if (game.turn % 2 === player.pNum) {
+				if (card.hand === player.id) {
+					if ((card.rank >= 12 && card.rank <= 13) || card.rank === 8) {
+						// Everything okay; make changes
+						player.runes.add(card.id);
+						player.hand.remove(card.id);
+						game.log.push("Player " + player.pNum + " played the " + card.name + " as a rune");
+						game.turn++;
+						var saveGame = gameService.saveGame({game: game});
+						var savePlayer = userService.saveUser({user: player});
+						return Promise.all([saveGame, savePlayer]);
+					} else {
+						return Promise.reject(new Error("Only Kings, Queens, and Eights may be played as Runes without a target"));
+					}
+				} else {
+					return Promise.reject(new Error("You can only play a card that is in your hand.") );
+				}
+			} else {
+				return Promise.reject(new Error ("It's not your turn."));
+			}
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id, {
+				change: "runes",
+				game: fullGame,
 				victory: victory
 			});
 			return res.ok();

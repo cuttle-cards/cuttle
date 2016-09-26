@@ -50,7 +50,7 @@ describe("gameService.checkWinGame", function () {
 			topCard: null,
 			secondCard: null
 		}
-		return gameService.checkWinGame({game: game}).should.become({gameOver: true, winner: 0});
+		gameService.checkWinGame({game: game}).should.deep.equal({gameOver: true, winner: 0});
 	});
 
 	it("should calculate that p1 should win with 14 points and 1 king", function () {
@@ -102,7 +102,7 @@ describe("gameService.checkWinGame", function () {
 			topCard: null,
 			secondCard: null
 		}
-		return gameService.checkWinGame({game: game}).should.become({gameOver: true, winner: 1});
+		gameService.checkWinGame({game: game}).should.deep.equal({gameOver: true, winner: 1});
 	});
 	it("should calculate that p2 wins with 10 points and 2 kings");
 	it("should calculate that p1 wins with 7 points and 3 kings");
