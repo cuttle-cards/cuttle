@@ -55,6 +55,7 @@ module.exports.routes = {
   '/game/draw'      :   'gameController.draw',
   '/game/points'    :   'gameController.points',
   '/game/runes'     :   'gameController.runes',
+  '/game/scuttle'   :   'gameController.scuttle',
   // '/game/gameView'  :   'gameController.lobbyView',
 
 };

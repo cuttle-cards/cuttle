@@ -480,6 +480,61 @@ module.exports = {
 		});
 	},
 
+	scuttle: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		var promiseCard = cardService.findCard({req.body.cardId});
+		var promiseTarget = cardService.findCard({req.body.targetId});
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
+			if (game.turn  % 2 === player.pNum) {
+				if (card.hand === player.id) {
+					if (target.points === opponent.id) {
+						if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
+							// Everything is good; make changes
+							game.scrap.add(target.id);
+							game.scrap.add(card.id);
+							opponent.points.remove(points.id);
+							player.hand.remove(card.id);
+							game.log.push("Player " + player.pNum + " scuttled Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
+							game.turn++;
+							// Save changes
+							var saveGame = gameService.saveGame({game: game});
+							var savePlayer = userService.saveUser({user: player});
+							var saveOpponent = userService.saveUser({user: opponent});
+							return Promise.all([saveGame, savePlayer, saveOpponent]);
+						} else {
+							return Promise.reject(new Error("You can only scuttle an opponent's point card with a higher rank point card, or the same rank with a higher suit. Suit order (low to high) is: Clubs < Diamonds < Hearts < Spades"));
+						}
+					} else {
+						return Promise.reject(new Error("You can only scuttle a card your opponent has played for points"));
+					}
+				} else {
+					return Promise.reject(new Error("You can only play a card that is in your hand"));
+				}
+			} else {
+				return Promise.reject(new Error("It's not your turn."));
+			}
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id, {
+				change: "scuttle",
+				game: fullGame,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	},
+
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");
 		var popGame = gameService.populateGame({gameId: req.session.game})
