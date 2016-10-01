@@ -484,8 +484,8 @@ module.exports = {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseOpponent = userService.findUser({userId: req.body.opId});
-		var promiseCard = cardService.findCard({req.body.cardId});
-		var promiseTarget = cardService.findCard({req.body.targetId});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		var promiseTarget = cardService.findCard({cardId: req.body.targetId});
 		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget])
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
