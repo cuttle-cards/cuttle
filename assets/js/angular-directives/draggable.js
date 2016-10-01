@@ -1,17 +1,31 @@
 app.directive('tsDraggable', function () {
 	return {
 		scope: {
-			index: '='
+			type: '=',
+			index: '=',
+			suit: '=',
+			rank: '=',
+			cardId: '='
 		},
 		link: function (scope, element) {
 			var el = element[0];
 			el.addEventListener('dragstart', function (ev) {
-				console.log("In dragstart");
-				dragIndex = scope.index;
+				dragData = {
+					type: scope.type,
+					index: scope.index,
+					suit: scope.suit,
+					rank: scope.rank,
+					id: scope.cardId
+				};
 			});
 			el.addEventListener('dragend', function (ev) {
-				console.log("In dragend");
-				dragIndex = null;
+				dragData = {
+					type: null,
+					index: null,
+					rank: null,
+					suit: null,
+					id: null
+				};				
 			});
 		}
 	}

@@ -30,12 +30,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	///////////////////////////////////
 	// Target Opponent Point Helpers //
 	///////////////////////////////////
-	self.scuttle = function (card, target) {
+	self.scuttle = function (cardId, targetId) {
 		io.socket.put("game/scuttle", 
 			{
 				opId: self.game.players[(self.pNum + 1) % 2].id,
-				cardId: card.id,
-				targetId: target.id
+				cardId: cardId,
+				targetId: targetId
 			},
 			function (res, jwres) {
 				if (jwres.statusCode != 200) alert(jwres.error.message);
@@ -49,21 +49,21 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Dragover Callbacks //
 	////////////////////////
 	self.dragoverPoints = function (targetIndex) {
-		if (self.game.players[self.pNum].hand[dragIndex].rank < 11) {
+		if (dragData.rank < 11) {
 			return true;
 		} else {
 			return false;
 		}
 	};
 	self.dragoverRunes = function (targetIndex) {
-		if ((self.game.players[self.pNum].hand[dragIndex].rank >= 12 && self.game.players[self.pNum].hand[dragIndex].rank <= 13) || self.game.players[self.pNum].hand[dragIndex].rank === 8) {
+		if ((dragData.rank >= 12 && dragData.rank <= 13) || dragData.rank === 8) {
 			return true;
 		} else {
 			return false;
 		}
 	};
 	self.dragoverOpPoint = function (targetIndex) {
-		if (self.game.players[self.pNum].hand[dragIndex].rank <= 10) {
+		if (dragData.rank <= 10) {
 			return true;
 		} else {
 			return false;
@@ -74,10 +74,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Drop Callbacks //
 	////////////////////
 	self.dropPoints = function (targetIndex) {
+		// TODO: Handle Seven resolution
 		io.socket.put("/game/points", 
 		{
-			cardId: self.game.players[self.pNum].hand[dragIndex].id,
-			// opId: self.game.players[(self.pNum + 1) % 2].id
+			cardId: dragData.id,
 		},
 		function (res, jwres) {
 			console.log(jwres);
@@ -86,9 +86,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		);
 	};
 	self.dropRunes = function (targetIndex) {
+		// TODO: Handle Seven resolution
 		io.socket.put("/game/runes", 
 		{
-			cardId: self.game.players[self.pNum].hand[dragIndex].id
+			cardId: dragData.id
 		},
 		function (res, jwres) {
 			if (jwres.statusCode != 200) alert(jwres.error.message);
@@ -96,7 +97,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		)
 	}
 	self.dropOpPoint = function (targetIndex) {
-		switch (self.game.players[self.pNum].hand[dragIndex].rank) {
+		switch (dragData.rank) {
 			case 9:
 				break;
 			case 11:
@@ -107,7 +108,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				alert("You can only play Kings and Queens in your own Runes");
 				break;
 			default:
-				self.scuttle(self.game.players[self.pNum].hand[dragIndex], self.game.players[(self.pNum + 1) % 2].points[targetIndex]);
+				self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
 				break;
 		}
 	};

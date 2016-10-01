@@ -92,112 +92,6 @@ module.exports = {
 		if (req.session.game && req.session.usr) {
 			var promiseGame = gameAPI.findGame(req.session.game);
 			var promiseUser = userAPI.findUser(req.session.usr);
-			// Promise.all([promiseGame, promiseUser])
-			// // Assign player readiness
-			// .then(function foundRecords (values) {
-			// 	var game = values[0];
-			// 	var user = values[1];
-			// 	var pNum = user.pNum;
-			// 	var bothReady = false;
-			// 	switch (pNum) {
-			// 		case 0:
-			// 			game.p0Ready = true;
-			// 			break;
-			// 		case 1:
-			// 			game.p1Ready = true;
-			// 			break;
-			// 	}
-			// 	// Check if everyone is ready
-			// 	if (game.p0Ready && game.p1Ready) bothReady = true;
-			// 	return Promise.resolve([game, user, bothReady]);
-			// })
-			// // Deal if both ready
-			// .then(function makeDeckIfBothReady (values) {
-			// 	var game = values[0];
-			// 	var user = values[1];
-			// 	var bothReady = values[2];
-			// 	var promiseDeck = [];
-			// 	if (bothReady) {
-			// 		var findP0 = userService.findUser(game.players[0]);
-			// 		var findP1 = userService.findUser(game.players[1]);
-			// 		var data = [findP0, findP1];
-			// 		// Deal, then publishUpdate
-			// 		for (suit = 0; suit<4; suit++) {
-			// 			for (rank = 1; rank < 14; rank++) {
-			// 				var promiseCard = cardService.createCard({
-			// 					gameId: game.id,
-			// 					suit: suit,
-			// 					rank: rank
-			// 				});
-			// 				data.push(promiseCard);
-			// 			}
-			// 		};
-
-			// 		Promise.all(data)
-			// 		// Then deal cards into hands
-			// 		.then(function deal (playersAndDeck) {
-			// 			var p0 = playersAndDeck[0];
-			// 			var p1 = playersAndDeck[1];
-			// 			var deck = playersAndDeck.slice(2);
-
-			// 		})
-			// 		.catch(function failedDealing (err) {
-			// 			return Promise.reject(err);
-			// 		});
-
-			// 		// cardService.createCard({
-			// 		// 	suit: 3,
-			// 		// 	rank: 1,
-			// 		// 	gameId: game.id}).then(function madeCard(newCard) {
-			// 		// 		console.log(newCard);
-			// 		// 		return Promise.resolve(newCard);
-			// 		// 	}).catch(function failedCard(err) {
-			// 		// 		console.log(err);
-			// 		// 		return Promise.reject(err);
-			// 		// 	});
-			// 	}
-			// 	return Promise.resolve(values);
-			// })
-			// // Save
-			// .then(function readyToSave (values) {
-			// 	var game = values[0];
-			// 	var user = values[1];
-			// 	var bothReady = values[2];
-			// 	if (bothReady) {
-			// 		var cards = values[3];
-			// 	}
-			// 	// Save records w/ promises
-			// 	var saveGame = gameService.saveGame({game: game});
-			// 	var saveUser = userService.saveUser({user: user});
-			// 	return Promise.all([saveGame, saveUser])
-			// 	.then(function successfullySaved (values) {
-			// 		var result = values.concat([bothReady]);
-			// 		return Promise.resolve(result);
-			// 	})
-			// 	.catch(function failedToSave (err) {
-			// 		return Promise.reject(err);
-			// 	});
-			// })
-			// // Publish
-			// .then(function readyToPublish (values) {
-			// 	var game = values[0];
-			// 	var user = values[1];
-			// 	var bothReady = values[2];
-			// 	// Handle dealing if both ready
-			// 	return res.ok({
-			// 		bothReady: bothReady,
-			// 		game: game
-			// 	});
-			// })
-			// // Handle errors
-			// .catch(function handleError (err) {
-			// 	return res.badRequest(err);
-			// });
-
-
-
-
-
 			Promise.all([promiseGame, promiseUser])
 			// Assign player readiness
 			.then(function foundRecords (values) {
@@ -275,15 +169,6 @@ module.exports = {
 						game.secondCard = deck[random];
 						game.deck.remove(deck[random].id);
 						dealt.push(random);		
-						
-					/////////////////////////////////////////////////////////////////
-					// ADD CARDS TO POINTS, AND ATTACHMENTS TO TEST POPULATEGAME() //
-					/////////////////////////////////////////////////////////////////
-
-					// p0.points.add([deck[0].id, deck[1].id, deck[3].id]);
-					// p1.points.add([deck[4].id, deck[5].id]);
-					// deck[0].attachments.add(deck[2].id);
-					// deck[0].save();
 
 						return Promise.resolve([game, p0, p1]);
 					})
@@ -330,7 +215,6 @@ module.exports = {
 	},
 
 	draw: function (req, res) {
-		// console.log("\nDrawing Card for p" + req.session.pNum + " in game: " + req.session.game);
 		var pGame = gameService.findGame({gameId: req.session.game})
 		.then(function checkTurn (game) {
 			if (req.session.pNum === game.turn % 2) {
@@ -450,9 +334,6 @@ module.exports = {
 		Promise.all([promiseGame, promisePlayer, promiseCard])
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], card = values[2];
-			console.log("\nplaying rune:");
-			console.log(player);
-			console.log(card);
 			if (game.turn % 2 === player.pNum) {
 				if (card.hand === player.id) {
 					if ((card.rank >= 12 && card.rank <= 13) || card.rank === 8) {
