@@ -494,6 +494,11 @@ module.exports = {
 					if (target.points === opponent.id) {
 						if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
 							// Everything is good; make changes
+								// Remove attachments from target
+							target.attachments.forEach(function (jackId) {
+								target.attachments.remove(jackId);
+								game.scrap.add(jackId);
+							});
 							game.scrap.add(target.id);
 							game.scrap.add(card.id);
 							opponent.points.remove(points.id);

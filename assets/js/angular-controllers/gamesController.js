@@ -24,7 +24,26 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		} else {
 			return false;
 		}
-	}
+	};
+
+
+	///////////////////////////////////
+	// Target Opponent Point Helpers //
+	///////////////////////////////////
+	self.scuttle = function (card, target) {
+		io.socket.put("game/scuttle", 
+			{
+				opId: self.game.players[(self.pNum + 1) % 2].id,
+				cardId: card.id,
+				targetId: target.id
+			},
+			function (res, jwres) {
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			}
+		);
+	};
+	// TODO: Target OneOff
+	// TODO: Jack
 
 	////////////////////////
 	// Dragover Callbacks //
@@ -38,6 +57,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	};
 	self.dragoverRunes = function (targetIndex) {
 		if ((self.game.players[self.pNum].hand[dragIndex].rank >= 12 && self.game.players[self.pNum].hand[dragIndex].rank <= 13) || self.game.players[self.pNum].hand[dragIndex].rank === 8) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+	self.dragoverOpPoint = function (targetIndex) {
+		if (self.game.players[self.pNum].hand[dragIndex].rank <= 10) {
 			return true;
 		} else {
 			return false;
@@ -69,6 +95,22 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 		)
 	}
+	self.dropOpPoint = function (targetIndex) {
+		switch (self.game.players[self.pNum].hand[dragIndex].rank) {
+			case 9:
+				break;
+			case 11:
+				break;
+			// Can't play kings and queens on point card
+			case 12:
+			case 13:
+				alert("You can only play Kings and Queens in your own Runes");
+				break;
+			default:
+				self.scuttle(self.game.players[self.pNum].hand[dragIndex], self.game.players[(self.pNum + 1) % 2].points[targetIndex]);
+				break;
+		}
+	};
 	///////////////////////////
 	// Socket Event Handlers //
 	///////////////////////////
