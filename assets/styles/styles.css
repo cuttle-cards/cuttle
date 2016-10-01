@@ -178,7 +178,7 @@ body {
 
           #points {
             position: absolute;
-            min-width: 60%;
+            min-width: 30%;
             min-height: 65%;
             left: 20%;
             top: 10%;
@@ -193,8 +193,9 @@ body {
                       position: absolute;
                       top: 6%;
                       height: 40%;
-                      width: 100%;
+                      width: 90%;
                       border: 2px solid red;
+                      z-index: 2;
                     }
 
                     #yourPoints {
@@ -202,7 +203,7 @@ body {
                       position: absolute;
                       top: 46%;
                       height: 40%;
-                      width: 100%;
+                      width: 90%;
                       border: 2px solid blue;
                       z-index: 2;
                     }
@@ -210,10 +211,53 @@ body {
                         display: inline-block;
                         position: relative;
                         height: 100%;
-                        width: 20%;
+                        width: 25%;
                         border: 2px dotted;
                       }
                       .pointCardImg {
+                        display: inline-block;
+                        position: relative;
+                        z-index: 3;
+                        height: 100%;
+                        width: 100%;
+                        border: 2px dotted;
+                      }
+          #runes {
+            position: absolute;
+            min-width: 30%;
+            min-height: 65%;
+            left: 50%;
+            top: 10%;
+          }
+              .dragover {
+                background-color: green;
+              }
+                  #oppRunes {
+                      display: inline-block;
+                      position: absolute;
+                      top: 6%;
+                      height: 40%;
+                      width: 90%;
+                      border: 2px solid green;
+                      z-index: 2;
+                  }
+                  #yourRunes {
+                      display: inline-block;
+                      position: absolute;
+                      top: 46%;
+                      height: 40%;
+                      width: 90%;
+                      border: 2px solid blue;
+                      z-index: 2;
+                  }
+                      .runeCard {
+                        display: inline-block;
+                        position: relative;
+                        height: 100%;
+                        width: 25%;
+                        border: 2px dotted;
+                      }
+                      .runeCardImg {
                         display: inline-block;
                         position: relative;
                         z-index: 3;

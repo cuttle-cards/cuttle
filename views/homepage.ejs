@@ -201,6 +201,9 @@
                             <div class="col-xs-4 col-md-4 field row" id='points'>
                                 <!-- Points -->
                                 <div id="oppPoints">
+                                    <div ng-repeat="card in gc.game.players[(gc.pNum+1)%2].points" class="pointCard">
+                                        <img ng-src="{{card.img}}" class="pointCardImg">
+                                    </div>
                                     <!-- Opponent Points -->
                                 </div>
                                 <div id="yourPoints" ts-droppable allow-drop="gc.dragoverPoints" index="0" upon-drop="gc.dropPoints">
@@ -216,6 +219,9 @@
                                     <!-- Opponent Runes -->
                                 </div>
                                 <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes">
+                                    <div ng-repeat="card in gc.game.players[gc.pNum].runes" class="runeCard">
+                                        <img ng-src="{{card.img}}" class="runeCardImg">
+                                    </div>
                                     <!-- Your Runes -->
                                 </div>
                             </div>
