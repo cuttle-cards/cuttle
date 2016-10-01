@@ -334,7 +334,12 @@ module.exports = {
 		var pGame = gameService.findGame({gameId: req.session.game})
 		.then(function checkTurn (game) {
 			if (req.session.pNum === game.turn % 2) {
-				return Promise.resolve(game);
+				if (game.topCard) {
+					return Promise.resolve(game);
+				} else {
+					// TODO: Handle passing
+					return Promise.reject(new Error("The deck is empty; you cannot draw"));
+				}
 			} else {
 				return Promise.reject(new Error("It's not your turn."));
 			}
@@ -354,12 +359,18 @@ module.exports = {
 		.then(function changeAndSave (values) {
 			var game = values[0], user=values[1];
 			user.hand.add(game.topCard.id);
-			game.topCard = game.secondCard;
-			var min = 0;
-			var max = game.deck.length;
-			var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-			game.secondCard = game.deck[random];
-			game.deck.remove(game.deck[random].id);	
+			if (game.secondCard) {
+				game.topCard = game.secondCard;
+				if (game.deck.length > 0) {				
+					var min = 0;
+					var max = game.deck.length;
+					var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+					game.secondCard = game.deck[random];
+					game.deck.remove(game.deck[random].id);	
+				} else {
+					game.secondCard = null;
+				}
+			}
 			game.log.push("Player " + user.pNum + " Drew a card");
 			game.turn++;
 			var saveGame = gameService.saveGame({game: game})		;
