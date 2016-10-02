@@ -24,23 +24,11 @@ module.exports = {
 					status: game.status
 				});
 				return res.ok();
-
-				// gameAPI.findAllGames()
-				// .then(function foundGames (games) {
-				// 	res.ok();
-				// 	return Game.publishCreate({
-				// 		id: 0,
-				// 		games: games
-				// 	});
-				// })
-				// .catch(function failed (error) {
-				// 	return res.badRequest(error);
-				// });
 			}).catch(function (reason) {
 				res.badRequest(reason);
 			});
 		}
-	},
+	}, //End create()
 
 	getList: function (req, res) {
 		Game.watch(req);
@@ -51,7 +39,7 @@ module.exports = {
 		.catch(function failure (error) {
 			return res.badRequest(error);
 		});		
-	},
+	}, //End getList()
 
 	subscribe: function (req, res) {
 		if (req.body.id) {
@@ -85,7 +73,7 @@ module.exports = {
 		} else {
 			res.badRequest("No game id received for subscription");
 		}
-	},
+	}, //End subscribe()
 
 	ready: function (req, res) {
 		console.log("\nReady");
@@ -212,7 +200,7 @@ module.exports = {
 			var err = new Error("Missing game or player id");
 			return res.badRequest(err);
 		}
-	},
+	}, //End ready()
 
 	draw: function (req, res) {
 		var pGame = gameService.findGame({gameId: req.session.game})
@@ -278,7 +266,7 @@ module.exports = {
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		});
-	},
+	}, //End draw()
 
 	points: function (req, res) {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
@@ -325,7 +313,7 @@ module.exports = {
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		});
-	},
+	}, //End points()
 
 	runes: function (req, res) {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
@@ -370,7 +358,7 @@ module.exports = {
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		});
-	},
+	}, //End rune()
 
 	scuttle: function (req, res) {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
@@ -430,7 +418,67 @@ module.exports = {
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		});
-	},
+	}, //End scuttle()
+
+	jack: function (req, res) {
+		var game = gameService.findGame({gameId: req.session.game});
+		var player = userService.findUser({userId: req.session.usr});
+		var opponent = userService.findUser({userId: req.body.opId});
+		var card = cardService.findCard({cardId: req.body.cardId});
+		var target = cardService.findCard({cardId: req.body.cardId});
+		Promise.all([game, player, opponent, card, target])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
+			if (game.turn % 2 === player.pNum) {
+				if (card.hand === player.id) {
+					if (card.rank === 11)  {
+						if (target.points === opponent.id) {
+							var queenCount = userService.queenCount({user: opponent});
+							if (queenCount === 0) {
+								// Everything good; change and save
+								player.points.add(target.id); //This also removes card from opponent's points (foreign key is 1:1)
+								player.hand.remove(card.id);
+								target.attachments.add(card.id);
+								game.log.push("Player " + player.pNum + " stole Player " + opponent.pNum + "'s " + target.name + "with the " + card.name);
+								game.turn++;
+								var saveGame = gameService.saveGame({game: game});
+								var savePlayer = userService.saveUser({user: player});
+								var saveOpponent = userService.saveUser({user: opponent});
+								var saveTarget = cardService.saveCard({card: target});
+								return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
+
+							} else {
+								return Promise.reject(new Error("You cannot use a Jack while your opponent has a Queen."));
+							}
+						} else {
+							return Promise.reject(new Error("You can only play a Jack on an opponent's Point card."));
+						}
+					} else {
+						return Promise.reject(new Error("You can only use a Jack to steal an opponent's Point card"));
+					}
+				} else {
+					return Promise.reject(new Error("You can only play a card that is in your hand"));
+				}
+			} else {
+				return Promise.reject(new Error("It's not your turn"));
+			}
+		}) //End changeAndSave()
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0]});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: 'jack',
+				game: fullGame,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {});
+
+	}, //End jack()
 
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");

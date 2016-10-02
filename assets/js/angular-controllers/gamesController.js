@@ -42,8 +42,19 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}
 		);
 	};
+	self.jack = function (cardId, targetId) {
+		io.socket.put("/game/jack", 
+			{
+				opId: self.game.players[(self.pNum + 1) % 2].id,
+				cardId: cardId,
+				targetId: targetId
+			},
+			function (res, jwres) {
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			}
+		)
+	}
 	// TODO: Target OneOff
-	// TODO: Jack
 
 	////////////////////////
 	// Dragover Callbacks //
@@ -99,8 +110,15 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.dropOpPoint = function (targetIndex) {
 		switch (dragData.rank) {
 			case 9:
+				var conf = confirm("Press 'Ok' to Scuttle, and 'Cancel' to play your Nine as a One-Off");
+				if (conf) {
+					self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
+				} else {
+					// Play nine as one-off
+				}
 				break;
 			case 11:
+				self.jack(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex]);
 				break;
 			// Can't play kings and queens on point card
 			case 12:
