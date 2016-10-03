@@ -9,6 +9,7 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			if (options.hasOwnProperty("cardId") && typeof(options.cardId) === "number") {
 				Card.findOne(options.cardId)
+				.populate("attachments")
 				.exec(function (err, card) {
 					if (err) {
 						return reject(err);
@@ -174,11 +175,11 @@ module.exports = {
 	saveCard: function (options) {
 		return new Promise (function (resolve, reject) {
 			if (options.card) {
-				card.save(function (err) {
+				options.card.save(function (err) {
 					if (err) {
 						return reject(err);
 					} else {
-						return resolve(card);
+						return resolve(options.card);
 					}
 				});
 			} else {

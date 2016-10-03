@@ -49,6 +49,11 @@ module.exports = {
       via: 'secondCard'
     },
 
+    scrap: {
+      collection: 'card',
+      via: 'scrap'
+    },
+
     turn: {
       type: 'integer',
       defaultsTo: 0

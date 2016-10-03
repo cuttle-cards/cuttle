@@ -29,6 +29,7 @@ module.exports = {
 			Game.findOne(options.gameId)
 			.populate("players", {sort: 'pNum'})
 			.populate("deck")
+			.populate("scrap")
 			.populate("topCard")
 			.populate("secondCard")
 			.exec(function (error, game) {

@@ -154,7 +154,6 @@
             <div ng-controller="gamesController as gc" class="container-fluid gameDiv">
                 <div ng-show="menu.tab==='gameView'" class="gameDiv">
                     <div id="bg">
-                        <button ng-click="gc.draw()">Draw</button>
                         <!-- TEST DRAW ACTION -->
                         <!-- Top Wrap -->
                         <div id = "topWrap" class = "row">
@@ -202,7 +201,7 @@
                                 <!-- Points -->
                                 <div id="oppPoints">
                                     <div ng-repeat="card in gc.game.players[(gc.pNum+1)%2].points" class="pointCard">
-                                        <img ng-src="{{card.img}}" class="pointCardImg">
+                                        <img ng-src="{{card.img}}" class="pointCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="0">
                                     </div>
                                     <!-- Opponent Points -->
                                 </div>

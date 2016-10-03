@@ -375,13 +375,13 @@ module.exports = {
 						if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
 							// Everything is good; make changes
 								// Remove attachments from target
-							target.attachments.forEach(function (jackId) {
-								target.attachments.remove(jackId);
-								game.scrap.add(jackId);
+							target.attachments.forEach(function (jack) {
+								target.attachments.remove(jack.id);
+								game.scrap.add(jack.id);
 							});
 							game.scrap.add(target.id);
 							game.scrap.add(card.id);
-							opponent.points.remove(points.id);
+							opponent.points.remove(target.id);
 							player.hand.remove(card.id);
 							game.log.push("Player " + player.pNum + " scuttled Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
 							game.turn++;
@@ -389,7 +389,8 @@ module.exports = {
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});
 							var saveOpponent = userService.saveUser({user: opponent});
-							return Promise.all([saveGame, savePlayer, saveOpponent]);
+							var saveTarget = cardService.saveCard({card: target});
+							return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
 						} else {
 							return Promise.reject(new Error("You can only scuttle an opponent's point card with a higher rank point card, or the same rank with a higher suit. Suit order (low to high) is: Clubs < Diamonds < Hearts < Spades"));
 						}
@@ -425,7 +426,7 @@ module.exports = {
 		var player = userService.findUser({userId: req.session.usr});
 		var opponent = userService.findUser({userId: req.body.opId});
 		var card = cardService.findCard({cardId: req.body.cardId});
-		var target = cardService.findCard({cardId: req.body.cardId});
+		var target = cardService.findCard({cardId: req.body.targetId});
 		Promise.all([game, player, opponent, card, target])
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
@@ -439,7 +440,7 @@ module.exports = {
 								player.points.add(target.id); //This also removes card from opponent's points (foreign key is 1:1)
 								player.hand.remove(card.id);
 								target.attachments.add(card.id);
-								game.log.push("Player " + player.pNum + " stole Player " + opponent.pNum + "'s " + target.name + "with the " + card.name);
+								game.log.push("Player " + player.pNum + " stole Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
 								game.turn++;
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
@@ -464,7 +465,7 @@ module.exports = {
 			}
 		}) //End changeAndSave()
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0]});
+			return gameService.populateGame({gameId: values[0].id});
 		})
 		.then(function publishAndRespond (fullGame) {
 			var victory = gameService.checkWinGame({game: fullGame});
@@ -476,7 +477,9 @@ module.exports = {
 			});
 			return res.ok();
 		})
-		.catch(function failed (err) {});
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
 
 	}, //End jack()
 

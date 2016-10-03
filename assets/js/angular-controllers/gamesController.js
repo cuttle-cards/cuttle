@@ -31,18 +31,22 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Target Opponent Point Helpers //
 	///////////////////////////////////
 	self.scuttle = function (cardId, targetId) {
-		io.socket.put("game/scuttle", 
+		// console.log("scuttling:");
+		// console.log("opId: " + self.game.players[(self.pNum + 1) % 2].id + "\ncardId:" + cardId + "\ntargetId: " + targetId);
+		io.socket.put("/game/scuttle", 
 			{
 				opId: self.game.players[(self.pNum + 1) % 2].id,
 				cardId: cardId,
 				targetId: targetId
 			},
 			function (res, jwres) {
+				console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			}
 		);
 	};
 	self.jack = function (cardId, targetId) {
+		console.log("Playing jack:");
 		io.socket.put("/game/jack", 
 			{
 				opId: self.game.players[(self.pNum + 1) % 2].id,
@@ -50,6 +54,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				targetId: targetId
 			},
 			function (res, jwres) {
+				console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			}
 		)
@@ -74,7 +79,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dragoverOpPoint = function (targetIndex) {
-		if (dragData.rank <= 10) {
+		if (dragData.rank <= 11) {
 			return true;
 		} else {
 			return false;
@@ -118,7 +123,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				}
 				break;
 			case 11:
-				self.jack(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex]);
+				self.jack(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
 				break;
 			// Can't play kings and queens on point card
 			case 12:
