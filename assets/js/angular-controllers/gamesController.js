@@ -7,6 +7,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.yourPointTotal;
 	self.opponentPointTotal;
 
+
+
 	self.draw = function () {
 		console.log("Drawing");
 		io.socket.post("/game/draw", function (res, jwres) {
@@ -14,18 +16,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			if (jwres.statusCode != 200) alert(jwres.error.message);
 		});
 	};
-
-	self.testDropAllowed = function (handIndex, targetIndex) {
-		// console.log("testing drop allowed");
-		// console.log([handIndex, targetIndex]);
-		handIndex = parseInt(handIndex);
-		if (handIndex === targetIndex) {
-			return true;
-		} else {
-			return false;
-		}
-	};
-
 
 	///////////////////////////////////
 	// Target Opponent Point Helpers //
@@ -151,6 +141,16 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						} else {
 							self.pNum = 1;
 						}
+						// getter attributes
+						Object.defineProperty(self, 'glasses', {
+							get: function () {
+								var res = false;
+								self.game.players[self.pNum].runes.forEach(function (rune) {
+									if (rune.rank === 8) res = true;
+								});
+								return res;
+							}
+						});
 						break;
 				}
 				break;

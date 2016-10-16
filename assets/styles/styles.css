@@ -91,6 +91,25 @@ body {
             min-height: 75%;
           }
 
+
+          /*TEMPORARY FOR OPPONENT'S HAND*/
+          #oppHand {
+            position: relative;
+            left: 23%;
+          }
+          .opHandCard {
+            display: inline-block;
+            position: relative;
+            margin-left: 10px;
+            height: 200px;
+          }
+          .opHandCardImg {
+            height: 80px;
+          }
+          /*END TEMP CSS FOR OPPONENT'S HAND*/
+
+
+
           .fullKing {
           background-color: #599532;
           opacity: .7;
