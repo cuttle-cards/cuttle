@@ -94,18 +94,26 @@ body {
 
           /*TEMPORARY FOR OPPONENT'S HAND*/
           #oppHand {
-            position: relative;
-            left: 23%;
+            position: absolute;
+            display: block;
+            left: 40%;
+            height: 40%;
+            width: 80%;
           }
-          .opHandCard {
-            display: inline-block;
-            position: relative;
-            margin-left: 10px;
-            height: 200px;
-          }
-          .opHandCardImg {
-            height: 80px;
-          }
+            .opHandCard {
+              display: inline-block;
+              position: relative;
+              width: 5%;
+              height: 100%;
+            }
+
+            .opHandCardImg {
+              display: inline-block;
+              position: relative;
+              z-index: 3;
+              height: 100%;
+              width: 100%;
+            }
           /*END TEMP CSS FOR OPPONENT'S HAND*/
 
 
@@ -300,7 +308,7 @@ body {
           top: 70%;
           min-height: 30%;
           min-width: 80%;
-          left: 25%;
+          left: 35%;
         }
 
             .handCard {
