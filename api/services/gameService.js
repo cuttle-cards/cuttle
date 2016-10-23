@@ -16,6 +16,8 @@ function tempGame (game, p0, p1) {
 	this.scrap = game.scrap;
 	this.topCard = game.topCard;
 	this.secondCard = game.secondCard;
+	this.oneOff = game.oneOff;
+	this.twos = game.twos;
 	this.log = game.log;
 	this.id = game.id;
 };

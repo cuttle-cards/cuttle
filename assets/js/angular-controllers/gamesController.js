@@ -75,6 +75,21 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			return false;
 		}
 	};
+	self.dragoverScrap = function (targetIndex) {
+		switch (dragData.rank) {
+			case 1:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+				return true;
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
 
 	////////////////////
 	// Drop Callbacks //
@@ -125,6 +140,19 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				break;
 		}
 	};
+	self.dropScrap = function (targetIndex) {
+		io.socket.put("/game/untargetedOneOff", 
+			{
+				cardId: dragData.id
+			},
+
+			function (res, jwres) {
+				if (jwres.statusCode != 200) {
+					alert(jwres.error.message);
+				}
+			}
+		);
+	};
 	///////////////////////////
 	// Socket Event Handlers //
 	///////////////////////////
@@ -141,7 +169,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						} else {
 							self.pNum = 1;
 						}
-						// getter attributes
+						/*
+						** Getter Attributes
+						**
+						*/
+						//glasses (true iff player has glasses eight)
 						Object.defineProperty(self, 'glasses', {
 							get: function () {
 								var res = false;
@@ -151,6 +183,27 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								return res;
 							}
 						});
+						//player (player whose session this is)
+						Object.defineProperty(self, 'player', {
+							get: function () {
+								return self.game.players[self.pNum];
+							}
+						});
+						//opponent (other player)
+						Object.defineProperty(self, 'opponent', {
+							get: function () {
+								return self.game.players[(self.pNum + 1) % 2];
+							}
+						})
+						break;
+					case 'oneOff':
+					var counteringPnum = (obj.data.pNum + 1) % 2;
+					console.log("self.pNum: " + self.pNum + ". counter if pNum = " + counteringPnum); 
+					console.log(self.pNum == counteringPnum);
+						if (self.pNum == parseInt(counteringPnum)) {
+							console.log("Will counter");
+							var willCounter = confirm(self.game.log[self.game.log.length - 1] + " Would you like to counter with a two?");
+						}
 						break;
 				}
 				break;

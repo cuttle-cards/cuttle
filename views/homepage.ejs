@@ -199,10 +199,10 @@
                         <!-- Middle Wrap -->
                         <div id="midWrap" class="row">
                             <div class="col-xs-2 col-md-2" id="deckScrapStack">
-                                <img src="images/deck.jpg" id="deck" ng-click="gc.draw()"></img>
-                                <img src="images/scrap.jpg" id="scrap"></img>
-                                <div id="stack">Stack</div>
                                 <!-- Deck and Scrap -->
+                                <img src="images/deck.jpg" id="deck" ng-click="gc.draw()"></img>
+                                <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap"></img>
+                                <div id="stack">Stack</div>
                             </div>
                             <div class="col-xs-4 col-md-4 field row" id='points'>
                                 <div id="oppPoints">

@@ -54,6 +54,16 @@ module.exports = {
       via: 'scrap'
     },
 
+    oneOff: {
+      model: 'card',
+      via: 'oneOff'
+    },
+
+    twos: {
+      collection: 'card',
+      via: 'twos'
+    },
+
     turn: {
       type: 'integer',
       defaultsTo: 0

@@ -128,6 +128,7 @@ module.exports = {
 					rank: rank,
 					img: img,
 					name: str_name,
+					ruleText: ruleText,
 					deck: gameId
 				}).exec(function (err, newCard) {
 					if (err) {

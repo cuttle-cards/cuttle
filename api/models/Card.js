@@ -24,6 +24,14 @@ module.exports = {
   		model: 'game',
   	},
 
+    oneOff: {
+      model: 'game'
+    },
+
+    twos: {
+      model: 'game'
+    },
+    
     topCard: {
       model: 'game'
     },
@@ -32,17 +40,18 @@ module.exports = {
       model: 'game'
     },
 
-  	hand: {
-  		model: 'user'
-  	},
+    hand: {
+      model: 'user'
+    },
 
-  	points: {
-  		model: 'user'
-  	},
+    points: {
+      model: 'user'
+    },
 
-  	runes: {
-  		model: 'user'
-  	},
+    runes: {
+      model: 'user'
+    },
+
 
     attachments: {
       collection: 'card',
@@ -51,7 +60,8 @@ module.exports = {
 
     attachedTo: {
     	model: 'card'
-    }
+    },
+
   }
 };
 

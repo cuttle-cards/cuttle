@@ -188,6 +188,7 @@ body {
                 position: absolute;
                 left: 3%;
                 top: 55%;
+                z-index: 3;
               }
 
               #stack {

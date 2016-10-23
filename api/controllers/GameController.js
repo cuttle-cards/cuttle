@@ -483,6 +483,64 @@ module.exports = {
 
 	}, //End jack()
 
+	// Play an untargeted one-off
+	untargetedOneOff: function (req, res) {
+		console.log("untargeted one-off");
+		console.log(req.body);
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+
+		Promise.all([promiseGame, promisePlayer, promiseCard])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], card = values[2];
+			if (game.turn % 2 === player.pNum) { //Check Turn
+				if (!game.oneOff) { //Check that no other one-off is in play
+					if (card.hand === player.id) { //Check that card was in hand
+						switch (card.rank) {
+							case 1:
+							case 3:
+							case 4:
+							case 5:
+							case 6:
+							case 7:
+								game.oneOff = card;
+								player.hand.remove(card.id);
+								game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText);
+								var saveGame = gameService.saveGame({game: game});
+								var savePlayer = userService.saveUser({user: player});
+								return Promise.all([saveGame, savePlayer]);
+								break;
+							default:
+							return Promise.reject(new Error("You cannot play that card as a one-off without a target."));
+								break;
+						}
+					} else {
+						return Promise.reject(new Error("You cannot play a card that is not in your hand"));
+					}
+				} else {
+					return Promise.reject(new Error("It's not your turn."));
+				}
+			}
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id, {
+				change: 'oneOff',
+				game: fullGame,
+				pNum: req.session.pNum,
+				victory: victory 
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	},
+
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");
 		var popGame = gameService.populateGame({gameId: req.session.game})

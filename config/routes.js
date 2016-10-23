@@ -46,17 +46,18 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/user/signup'    :   'userController.signup',
-  '/user/login'     :   'userController.login',
-  '/game/create'    :   'gameController.create',
-  '/game/getList'   :   'gameController.getList',
-  '/game/subscribe' :   'gameController.subscribe',
-  '/game/ready'     :   'gameController.ready',
-  '/game/draw'      :   'gameController.draw',
-  '/game/points'    :   'gameController.points',
-  '/game/runes'     :   'gameController.runes',
-  '/game/scuttle'   :   'gameController.scuttle',
-  '/game/jack'      :   'gameController.jack',
+  '/user/signup'            :   'userController.signup',
+  '/user/login'             :   'userController.login',
+  '/game/create'            :   'gameController.create',
+  '/game/getList'           :   'gameController.getList',
+  '/game/subscribe'         :   'gameController.subscribe',
+  '/game/ready'             :   'gameController.ready',
+  '/game/draw'              :   'gameController.draw',
+  '/game/points'            :   'gameController.points',
+  '/game/runes'             :   'gameController.runes',
+  '/game/scuttle'           :   'gameController.scuttle',
+  '/game/jack'              :   'gameController.jack',
+  '/game/untargetedOneOff'  :   'gameController.untargetedOneOff',
   // '/game/gameView'  :   'gameController.lobbyView',
 
 };
