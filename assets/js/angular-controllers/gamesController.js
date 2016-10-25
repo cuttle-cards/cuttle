@@ -7,10 +7,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.yourPointTotal;
 	self.opponentPointTotal;
 
+	self.askToCounter = function () {
 
+	};
 
 	self.draw = function () {
-		console.log("Drawing");
 		io.socket.post("/game/draw", function (res, jwres) {
 			console.log(jwres);
 			if (jwres.statusCode != 200) alert(jwres.error.message);
@@ -36,7 +37,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		);
 	};
 	self.jack = function (cardId, targetId) {
-		console.log("Playing jack:");
 		io.socket.put("/game/jack", 
 			{
 				opId: self.game.players[(self.pNum + 1) % 2].id,
@@ -55,41 +55,56 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Dragover Callbacks //
 	////////////////////////
 	self.dragoverPoints = function (targetIndex) {
-		if (dragData.rank < 11) {
-			return true;
-		} else {
-			return false;
+		if (!self.countering) {
+			if (dragData.rank < 11) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	};
 	self.dragoverRunes = function (targetIndex) {
-		if ((dragData.rank >= 12 && dragData.rank <= 13) || dragData.rank === 8) {
-			return true;
-		} else {
-			return false;
+		if (!self.countering) {
+			if ((dragData.rank >= 12 && dragData.rank <= 13) || dragData.rank === 8) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	};
 	self.dragoverOpPoint = function (targetIndex) {
-		if (dragData.rank <= 11) {
-			return true;
-		} else {
-			return false;
+		if (!self.countering) {
+			if (dragData.rank <= 11) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	};
 	self.dragoverScrap = function (targetIndex) {
-		switch (dragData.rank) {
-			case 1:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-				return true;
-				break;
-			default:
+		if (!self.countering) {
+			switch (dragData.rank) {
+				case 1:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+					return true;
+					break;
+				default:
+					return false;
+					break;
+			}
+		} else {
+			// If countering, only allow playing a two
+			if (dragData.rank === 2) {
+				return true
+			} else {
 				return false;
-				break;
+			}
 		}
-	}
+	};
 
 	////////////////////
 	// Drop Callbacks //
@@ -141,17 +156,44 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dropScrap = function (targetIndex) {
-		io.socket.put("/game/untargetedOneOff", 
-			{
-				cardId: dragData.id
-			},
+		if (!self.countering) {		
+			io.socket.put("/game/untargetedOneOff", 
+				{
+					cardId: dragData.id
+				},
 
-			function (res, jwres) {
-				if (jwres.statusCode != 200) {
-					alert(jwres.error.message);
+				function (res, jwres) {
+					if (jwres.statusCode != 200) {
+						alert(jwres.error.message);
+					}
 				}
-			}
-		);
+			);
+		} else {
+			// If player dropped a two to counter, request to counter
+			io.socket.put("/game/counter", 
+			{
+				opId: self.opponent.id,
+				cardId: self.player.hand[dragData.index].id
+			},
+			function (res, jwres) {
+				if (jwres.statusCode != 200){
+					var willCounter = confirm("Failed to counter: " + jwres.error.message + " Would you like to counter with a two?");
+					if (!willCounter) {
+						self.countering = false;
+						// Request resolution if not countering
+						io.socket.put("/game/resolve", 
+							{
+								opId: self.opponent.id
+							},
+							function (res, jwres) {
+								if (jwres.statusCode != 200) alert(jwres.error.message);
+						});						
+					}
+				} else {
+					self.countering = false;
+				} 
+			});
+		}
 	};
 	///////////////////////////
 	// Socket Event Handlers //
@@ -194,15 +236,50 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							get: function () {
 								return self.game.players[(self.pNum + 1) % 2];
 							}
-						})
+						});
+						//two's in player's hand
+						Object.defineProperty(self, 'twosInHand', {
+							get: function () {
+								var res = 0;
+								self.player.hand.forEach(function (card) {
+									if (card.rank === 2) res++;
+								});
+								return res;
+							}
+						});
 						break;
 					case 'oneOff':
+					case 'counter':
 					var counteringPnum = (obj.data.pNum + 1) % 2;
 					console.log("self.pNum: " + self.pNum + ". counter if pNum = " + counteringPnum); 
 					console.log(self.pNum == counteringPnum);
 						if (self.pNum == parseInt(counteringPnum)) {
-							console.log("Will counter");
-							var willCounter = confirm(self.game.log[self.game.log.length - 1] + " Would you like to counter with a two?");
+							if (self.twosInHand > 0) {
+								var willCounter = confirm(self.game.log[self.game.log.length - 1] + " Would you like to counter with a two?");
+								if (!willCounter) {
+									// Request resolution if not countering
+									io.socket.put("/game/resolve", 
+										{
+											opId: self.opponent.id
+										},
+										function (res, jwres) {
+											if (jwres.statusCode != 200) alert(jwres.error.message);
+									});
+								} else {
+									// Allow user to counter
+									self.countering = true;
+								}
+							} else {
+								alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
+								// Request resolution if can't counter
+								io.socket.put("/game/resolve", 
+									{
+										opId: self.opponent.id
+									},
+									function (res, jwres) {
+										if (jwres.statusCode != 200) alert(jwres.error.message);
+								});
+							}
 						}
 						break;
 				}

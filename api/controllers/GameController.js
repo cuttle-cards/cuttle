@@ -485,8 +485,6 @@ module.exports = {
 
 	// Play an untargeted one-off
 	untargetedOneOff: function (req, res) {
-		console.log("untargeted one-off");
-		console.log(req.body);
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseCard = cardService.findCard({cardId: req.body.cardId});
@@ -506,7 +504,7 @@ module.exports = {
 							case 7:
 								game.oneOff = card;
 								player.hand.remove(card.id);
-								game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText);
+								game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText + ".");
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
 								return Promise.all([saveGame, savePlayer]);
@@ -519,8 +517,10 @@ module.exports = {
 						return Promise.reject(new Error("You cannot play a card that is not in your hand"));
 					}
 				} else {
-					return Promise.reject(new Error("It's not your turn."));
+					return Promise.reject(new Error("There is already a one-off in play; You cannot play any card, except a two to counter."));
 				}
+			} else {
+				return Promise.reject(new Error("It's not your turn"));
 			}
 		})
 		.then(function populateGame (values) {
@@ -539,7 +539,114 @@ module.exports = {
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		});
-	},
+	}, //End untargetedOneOff()
+
+	counter: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], opponent = values[2], card = values[3];
+				var opHasQueen = false;
+				opponent.runes.forEach(function (rune) {
+					if (rune.rank === 12) opHasQueen = true;
+				});
+				if (card.hand === player.id) {
+					if (game.oneOff) {
+						if (card.rank === 2) {
+							if (!opHasQueen) {
+								var opPnum = (player.pNum + 1) % 2;
+								if (game.twos.length > 0) {
+									game.log.push("Player " + player.pNum + " played the " + card.name + " to COUNTER Player " + opPnum + "'s " + game.twos[game.twos.length - 1].name + ".");
+								} else {
+									game.log.push("Player " + player.pNum + " played the " + card.name + " to COUNTER Player " + opPnum + "'s " +  game.oneOff.name + ".");
+								}
+								game.twos.add(card.id);
+								player.hand.remove(card.id);
+								var saveGame = gameService.saveGame({game: game});
+								var savePlayer = userService.saveUser({user: player});
+								return Promise.all([saveGame, savePlayer]);
+							} else {
+								return (Promise.reject(new Error("You cannot COUNTER your opponent's one-off, if she has a QUEEN.")));
+							}
+						} else {
+							return Promise.reject(new Error("You can only play a TWO to counter a one-off"));
+						}
+					} else {
+						return Promise.reject(new Error("You can only counter a one-off that is already in play"));
+					}
+				} else {
+					return Promise.reject(new Error("You can only play a card that is in your hand"));
+				}
+
+		}) //End changeAndSave
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: "counter",
+				game: fullGame,
+				pNum: req.session.pNum,
+				victory: victory,
+
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End counter()
+
+	resolve: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		Promise.all([promiseGame, promisePlayer, promiseOpponent])
+		.then(function changeAndSave (values) {
+			console.log("found records");
+			var game = values[0], player = values[1], opponent = values[2], card = values[3];
+			if (game.twos.length % 2 === 1) {
+				// One of is countered
+				console.log("One-off is countered; cleaning up");
+				game.log.push("The " + game.oneOff.name + " is countered, and all cards played this turn are scrapped.");
+			} else {
+				// One Off will resolve; perform effect
+				console.log("One-off is uncountered; performing effect");
+			}
+			game.scrap.add(game.oneOff.id);
+			game.oneOff = null;
+			game.twos.forEach(function (two, index) {
+				game.scrap.add(two.id);
+				game.twos.remove(two.id);
+			});
+			game.turn++;
+			var saveGame = gameService.saveGame({game: game});
+			var savePlayer = userService.saveUser({user: player});
+			var saveOpponent = userService.saveUser({user: opponent});
+			return Promise.all([saveGame, savePlayer, saveOpponent]);
+		}) //End changeAndSave
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id, 
+			{
+				change: "resolve",
+				game: fullGame,
+				victory: victory
+
+			});
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End resolve()
 
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");

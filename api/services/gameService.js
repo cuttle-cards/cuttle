@@ -34,6 +34,8 @@ module.exports = {
 			.populate("scrap")
 			.populate("topCard")
 			.populate("secondCard")
+			.populate("oneOff")
+			.populate("twos")
 			.exec(function (error, game) {
 				if (error || !game) {
 					var res;
