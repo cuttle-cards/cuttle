@@ -617,6 +617,20 @@ module.exports = {
 			} else {
 				// One Off will resolve; perform effect
 				console.log("One-off is uncountered; performing effect");
+				// handle different one-offs
+				switch (game.oneOff.rank) {
+					case 1:
+						player.points.forEach(function (point) {
+							game.scrap.add(point.id);
+							player.points.remove(point.id);
+						});
+						opponent.points.forEach(function (point) {
+							game.scrap.add(point.id);
+							player.points.remove(point.id);
+						});
+						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
+						break;
+				} //End switch
 			}
 			game.scrap.add(game.oneOff.id);
 			game.oneOff = null;
