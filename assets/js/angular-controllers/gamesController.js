@@ -6,10 +6,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.yourPointCap = 21;
 	self.yourPointTotal;
 	self.opponentPointTotal;
-
-	self.askToCounter = function () {
-
-	};
+	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
+	self.showDeck = false;
 
 	self.draw = function () {
 		io.socket.post("/game/draw", function (res, jwres) {
@@ -48,7 +46,18 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			}
 		)
-	}
+	};
+
+	self.stackDeck = function (cardId) {
+		io.socket.put("/game/stackDeck", 
+			{
+				cardId: cardId
+			},
+			function (res, jwres) {
+				console.log(jwres);
+			}
+		);
+	};
 	// TODO: Target OneOff
 
 	////////////////////////
@@ -279,11 +288,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						});	
 						//Number of points player has
 						Object.defineProperty(self, 'yourPointCount', {
-							res = 0;
-							self.player.points.forEach(function (card) {
-								res += card.rank;
-							});
-							return res;
+							get: function () {
+								res = 0;
+								self.player.points.forEach(function (card) {
+									res += card.rank;
+								});
+								return res;
+							}
 						});							
 						break;
 					case 'oneOff':

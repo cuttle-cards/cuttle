@@ -327,3 +327,23 @@ body {
               width: 100%;
               border: 2px dotted;
             }
+
+
+    /*Shown deck for development testing*/
+    #toggleDeck {
+      position: relative;
+      top: 750px;
+      left: 25px;
+    }
+    #shownDeck {
+      position: relative;
+      display: block;
+      top: 800px;
+    }
+
+        .shownDeckCard {
+          position: relative;
+          display: inline-block;
+          height: 70px;
+          margin-left: 2px;
+        }

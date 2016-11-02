@@ -60,4 +60,5 @@ module.exports.routes = {
   '/game/untargetedOneOff'  :   'gameController.untargetedOneOff',
   '/game/counter'           :   'gameController.counter',
   '/game/resolve'           :   'gameController.resolve',
+  '/game/stackDeck'         :   'gameController.stackDeck',
 };

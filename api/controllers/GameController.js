@@ -672,6 +672,31 @@ module.exports = {
 			console.log(err);
 			res.badRequest(err);
 		});
+	},
+
+	stackDeck: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game})
+		.then(function changeAndSave (game) {
+			game.deck.add(game.topCard);
+			game.topCard = req.body.cardId;
+			game.deck.remove(req.body.cardId);
+			return gameService.saveGame({game: game});
+		})
+		.then(function populateGame (game) {
+			return gameService.populateGame({gameId: game.id});
+		})
+		.then(function publishUpdate (game) {
+			Game.publishUpdate(game.id, 
+			{
+				change: 'stackDeck',
+				game: game,
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			console.log(err);
+			return res.badRequest(err);
+		});
 	}
 };
 

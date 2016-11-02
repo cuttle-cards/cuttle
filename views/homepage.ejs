@@ -167,28 +167,27 @@
                                 </div>
                             </div>
                             <p id="oppWinCon">
-                                Win Condition:
                                 <!-- angular view of wincondition -->
                             </p>
                             <div id="oppCounter">
-                                <div id="oppKingSlot1" class="kingSlot" ng-class="{fullKing: gc.oppPointCap <= 14}">
+                                <div id="oppKingSlot1" class="kingSlot" ng-class="{fullKing: gc.opKingCount >= 1}">
                                     <p class="cap1">14</p>
                                 </div>
-                                <div id="oppKingSlot2" class="kingSlot" ng-class="{fullKing: gc.oppPointCap <= 10}">
+                                <div id="oppKingSlot2" class="kingSlot" ng-class="{fullKing: gc.opKingCount >= 2}">
                                     <p class="cap2">10</p>
                                 </div>
                                 <div>
                                     <div id="oppPointTotal" class="pointTotal">
                                         <div>
-                                            {{gameView.oppPointTotal}}
+                                            {{gc.opPointCount}}
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div id="oppKingSlot3" class="kingSlot" ng-class="{fullKing: gc.oppPointCap <= 7}">
+                                    <div id="oppKingSlot3" class="kingSlot" ng-class="{fullKing: gc.opKingCount >= 3}">
                                         <p class="cap3">7</p>
                                     </div>
-                                    <div id="oppKingSlot4" class="kingSlot" ng-class="{fullKing: gc.oppPointCap <= 5}">
+                                    <div id="oppKingSlot4" class="kingSlot" ng-class="{fullKing: gc.opKingCount >= 4}">
                                         <p class="cap4">5</p>
                                     </div>
                                 </div>
@@ -251,7 +250,12 @@
                             <div id="yourCounter">
                                 <!-- Your king squares -->
                             </div>
-                        </div>
+                            <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
+                            <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
+                            <div ng-show="gc.showDeck" id="shownDeck">
+                                <img ng-repeat="card in gc.game.deck" ng-src="{{card.img}}" class="shownDeckCard" ng-click="gc.stackDeck(gc.game.deck[$index].id)">
+                            </div>
+                        </div> <!-- End of bottom wrap -->
                     </div>
                 </div> <!-- End of ng-show for game -->
             </div> <!-- End of game controller -->
