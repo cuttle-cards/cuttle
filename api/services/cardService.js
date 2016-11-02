@@ -150,20 +150,20 @@ module.exports = {
 	**Find all card in player's hand from player id
 	*****options = {userId: integer}
 	*/
-	findPoints: function (options, done) {
+	findPoints: function (options) {
 		return new Promise(function (resolve, reject) {
 			if (options.userId) {
 				Card.find({points: options.userId}).populate("attachments").exec(function (err, cards) {
 					if (err) {
 						return reject(err);
 					} else if (!cards) {
-						return reject(new Error("Can't find cards in hand"));
+						return reject(new Error("Can't find cards in points"));
 					} else {
 						return resolve(cards);
 					}
 				}); //End find()
 			} else {
-				return reject(new Error("Don't have userId to find cards in user's hand"));
+				return reject(new Error("Don't have userId to find cards in user's points"));
 			}
 
 		}); //End returned Promise

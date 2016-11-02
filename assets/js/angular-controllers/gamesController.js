@@ -300,8 +300,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					case 'oneOff':
 					case 'counter':
 					var counteringPnum = (obj.data.pNum + 1) % 2;
-					console.log("self.pNum: " + self.pNum + ". counter if pNum = " + counteringPnum); 
-					console.log(self.pNum == counteringPnum);
 						if (self.pNum == parseInt(counteringPnum)) {
 							if (self.twosInHand > 0) {
 								var willCounter = confirm(self.game.log[self.game.log.length - 1] + " Would you like to counter with a two?");
@@ -312,7 +310,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 											opId: self.opponent.id
 										},
 										function (res, jwres) {
-											if (jwres.statusCode != 200) alert(jwres.error.message);
+											if (jwres.statusCode != 200) {
+												alert(jwres.error.message);
+												console.log(jwres);
+											}
 									});
 								} else {
 									// Allow user to counter
@@ -326,7 +327,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 										opId: self.opponent.id
 									},
 									function (res, jwres) {
-										if (jwres.statusCode != 200) alert(jwres.error.message);
+										if (jwres.statusCode != 200) {
+											alert(jwres.error.message);
+											console.log(jwres);
+										}
 								});
 							}
 						}

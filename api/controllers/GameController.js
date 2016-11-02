@@ -606,10 +606,11 @@ module.exports = {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseOpponent = userService.findUser({userId: req.body.opId});
-		Promise.all([promiseGame, promisePlayer, promiseOpponent])
+		var promisePlayerPoints = cardService.findPoints({userId: req.session.usr});
+		var promiseOpPoints = cardService.findPoints({userId: req.body.opId});
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promisePlayerPoints, promiseOpPoints])
 		.then(function changeAndSave (values) {
-			console.log("found records");
-			var game = values[0], player = values[1], opponent = values[2], card = values[3];
+			var game = values[0], player = values[1], opponent = values[2], playerPoints = values[3], opPoints = values[4];
 			if (game.twos.length % 2 === 1) {
 				// One of is countered
 				console.log("One-off is countered; cleaning up");
@@ -617,6 +618,7 @@ module.exports = {
 			} else {
 				// One Off will resolve; perform effect
 				console.log("One-off is uncountered; performing effect");
+				var cardsToSave = [];
 				// handle different one-offs
 				switch (game.oneOff.rank) {
 					case 1:
@@ -629,9 +631,56 @@ module.exports = {
 							player.points.remove(point.id);
 						});
 						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
-						break;
-				} //End switch
+						break; //End resolve ACE
+					case 6:
+						player.runes.forEach(function (rune) {
+							game.scrap.add(rune.id);
+							player.runes.remove(rune.id);
+						});
+						opponent.runes.forEach(function (rune) {
+							game.scrap.add(rune.id);
+							player.runes.remove(rune.id);
+						});
+						var cardsToSave = [];
+						if (playerPoints) {
+							playerPoints.forEach(function (point) {
+								var jackCount = point.attachments.length;
+								if (jackCount > 0) {
+									point.attachments.forEach(function (jack) {
+										game.scrap.add(jack.id);
+										point.attachments.remove(jack.id);
+										cardsToSave.push(cardService.saveCard({card: point}));
+									});
+									// If odd number of jacks were attached, switch control
+									if (jackCount % 2 === 1) {
+										opponent.points.add(point.id);
+										// player.points.remove(point.id);
+									} 
+								} //End jackCount > 0
+							});
+						}
+						if (opPoints) {
+							opPoints.forEach(function (point) {
+								var jackCount = point.attachments.length;
+								if (jackCount > 0) {
+									point.attachments.forEach(function (jack) {
+										game.scrap.add(jack.id);
+										point.attachments.remove(jack.id);
+										cardsToSave.push(cardService.saveCard({card: point}));
+									});
+									// If odd number of jacks were attached, switch control
+									if (jackCount % 2 === 1) {
+										player.points.add(point.id);
+										// opponent.points.remove(point.id);
+									} 
+								} //End jackCount > 0
+							});	
+						}
+						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");					
+						break; //End resolve SIX
+				} //End switch on oneOff rank
 			}
+			var oneOff = game.oneOff;
 			game.scrap.add(game.oneOff.id);
 			game.oneOff = null;
 			game.twos.forEach(function (two, index) {
@@ -642,16 +691,18 @@ module.exports = {
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});
 			var saveOpponent = userService.saveUser({user: opponent});
-			return Promise.all([saveGame, savePlayer, saveOpponent]);
+			return Promise.all([saveGame, Promise.resolve(oneOff), savePlayer, saveOpponent].concat(cardsToSave));
 		}) //End changeAndSave
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), Promise.resolve(values[1])]);
 		})
-		.then(function publishAndRespond (fullGame) {
+		.then(function publishAndRespond (values) {
+			var fullGame = values[0], oneOff = values[1];
 			var victory = gameService.checkWinGame({game: fullGame});
 			Game.publishUpdate(fullGame.id, 
 			{
 				change: "resolve",
+				oneOff: oneOff,
 				game: fullGame,
 				victory: victory
 

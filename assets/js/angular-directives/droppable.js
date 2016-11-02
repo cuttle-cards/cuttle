@@ -10,7 +10,6 @@ app.directive('tsDroppable', function () {
 			var counter = 0;
 			el.addEventListener('dragover', function (ev) {
 				var allowDrop = scope.allowDrop();
-				console.log("In dragover\n");
 				if (allowDrop(scope.index)) {
 					ev.preventDefault();
 				}
