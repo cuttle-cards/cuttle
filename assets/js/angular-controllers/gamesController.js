@@ -247,6 +247,44 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								return res;
 							}
 						});
+						// Number of Kings opponent has
+						Object.defineProperty(self, 'opKingCount', {
+							get: function () {
+								var res = 0;
+								self.opponent.runes.forEach(function (card) {
+									if (card.rank === 13) res++;
+								});
+								return res;
+							}
+						});
+						// Number of Kings player has
+						Object.defineProperty(self, 'yourKingCount', {
+							get: function () {
+								var res = 0;
+								self.player.runes.forEach(function (card) {
+									if (card.rank === 13) res++;
+								});
+								return res;
+							}
+						});	
+						//Number of points opponent has
+						Object.defineProperty(self, 'opPointCount', {
+							get: function () {
+								res = 0;
+								self.opponent.points.forEach(function (card) {
+									res += card.rank;
+								});
+								return res;
+							}
+						});	
+						//Number of points player has
+						Object.defineProperty(self, 'yourPointCount', {
+							res = 0;
+							self.player.points.forEach(function (card) {
+								res += card.rank;
+							});
+							return res;
+						});							
 						break;
 					case 'oneOff':
 					case 'counter':
