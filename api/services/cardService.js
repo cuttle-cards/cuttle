@@ -147,7 +147,7 @@ module.exports = {
 	},
 
 	/*
-	**Find all card in player's hand from player id
+	**Find all points in player's hand from player id
 	*****options = {userId: integer}
 	*/
 	findPoints: function (options) {

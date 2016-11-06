@@ -4,8 +4,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.game = null;
 	self.oppPointCap = 21;
 	self.yourPointCap = 21;
-	self.yourPointTotal;
-	self.opponentPointTotal;
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	self.showDeck = false;
 

@@ -200,7 +200,7 @@
                                 <!-- Deck and Scrap -->
                                 <img src="images/deck.jpg" id="deck" ng-click="gc.draw()"></img>
                                 <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap"></img>
-                                <div id="stack">Stack</div>
+<!--                                 <div id="stack">Stack</div> -->
                             </div>
                             <div class="col-xs-4 col-md-4 field row" id='points'>
                                 <div id="oppPoints">
@@ -248,6 +248,27 @@
                                 <!-- Win Condition -->
                             </p>
                             <div id="yourCounter">
+                                <div id="yourKingSlot1" class="kingSlot" ng-class="{fullKing: gc.yourKingCount >= 1}">
+                                    <p class="cap1">14</p>
+                                </div>
+                                <div id="yourKingSlot2" class="kingSlot" ng-class="{fullKing: gc.yourKingCount >= 2}">
+                                    <p class="cap2">10</p>
+                                </div>
+                                <div>
+                                    <div id="yourPointTotal" class="pointTotal">
+                                        <div>
+                                            <p>{{gc.yourPointCount}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div id="yourKingSlot3" class="kingSlot" ng-class="{fullKing: gc.yourKingCount >= 3}">
+                                        <p class="cap3">7</p>
+                                    </div>
+                                    <div id="yourKingSlot4" class="kingSlot" ng-class="{fullKing: gc.yourKingCount >= 4}">
+                                        <p class="cap4">5</p>
+                                    </div>
+                                </div>
                                 <!-- Your king squares -->
                             </div>
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
