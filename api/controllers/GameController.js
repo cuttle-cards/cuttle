@@ -235,7 +235,7 @@ module.exports = {
 				game.topCard = game.secondCard;
 				if (game.deck.length > 0) {				
 					var min = 0;
-					var max = game.deck.length;
+					var max = game.deck.length - 1;
 					var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
 					game.secondCard = game.deck[random];
 					game.deck.remove(game.deck[random].id);	
@@ -502,9 +502,22 @@ module.exports = {
 							case 5:
 							case 6:
 							case 7:
+								switch (card.rank) {
+									case 3:
+										if (game.scrap.length < 1) return Promise.reject(new Error("You can only play a 3 as a one-off, if there are cards in the scrap pile"));
+										break;
+									case 4:
+										break;
+									case 5:
+									case 7:
+										if (!game.topCard) return Promise.reject(new Error("You can't play that card as a one-off, unless there are cards in the deck"));
+										break;
+									default:
+										break;
+								}
 								game.oneOff = card;
 								player.hand.remove(card.id);
-								game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText + ".");
+								game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText);
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
 								return Promise.all([saveGame, savePlayer]);
@@ -603,11 +616,12 @@ module.exports = {
 	}, //End counter()
 
 	resolve: function (req, res) {
+		//Note: the player calling resolve is the opponent of the one playing the one-off, if it resolves
 		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseOpponent = userService.findUser({userId: req.body.opId});
-		var promisePlayerPoints = cardService.findPoints({userId: req.session.usr});
-		var promiseOpPoints = cardService.findPoints({userId: req.body.opId});
+		var promisePlayer = userService.findUser({userId: req.body.opId});
+		var promiseOpponent = userService.findUser({userId: req.session.usr});
+		var promisePlayerPoints = cardService.findPoints({userId: req.body.opId});
+		var promiseOpPoints = cardService.findPoints({userId: req.session.usr});
 		Promise.all([promiseGame, promisePlayer, promiseOpponent, promisePlayerPoints, promiseOpPoints])
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], opponent = values[2], playerPoints = values[3], opPoints = values[4];
@@ -632,6 +646,34 @@ module.exports = {
 						});
 						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
 						break; //End resolve ACE
+					case 5:
+						//Draw top card
+						player.hand.add(game.topCard.id);
+						game.topCard = null;
+						//Draw second card, if it exists
+						if (game.secondCard) {
+							game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " draws two cards.");
+							player.hand.add(game.secondCard.id);
+							game.secondCard = null;
+							//Replace top card, if there's a card in deck
+							if (game.deck.length > 0) {
+								var min = 0;
+								var max = game.deck.length - 1;
+								var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+								game.topCard = game.deck[random].id;
+								game.deck.remove(game.deck[random].id);
+								if (game.deck.length > 0) {
+									var min = 0;
+									var max = game.deck.length - 1;
+									var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+									game.secondCard = game.deck[random].id;
+									game.deck.remove(game.deck[random].id);
+								}								
+							}
+						} else {
+							game.log.push("The " + game.oneOff.name + " one-off resolves; player" + player.pNum + " draws the last card.");
+						}
+						break; //End resolve FIVE
 					case 6:
 						player.runes.forEach(function (rune) {
 							game.scrap.add(rune.id);
@@ -670,8 +712,8 @@ module.exports = {
 									});
 									// If odd number of jacks were attached, switch control
 									if (jackCount % 2 === 1) {
+										//This switches the card to the other player's points
 										player.points.add(point.id);
-										// opponent.points.remove(point.id);
 									} 
 								} //End jackCount > 0
 							});	
@@ -691,21 +733,22 @@ module.exports = {
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});
 			var saveOpponent = userService.saveUser({user: opponent});
-			return Promise.all([saveGame, Promise.resolve(oneOff), savePlayer, saveOpponent].concat(cardsToSave));
+			return Promise.all([saveGame, Promise.resolve(oneOff), Promise.resolve(player.pNum), savePlayer, saveOpponent].concat(cardsToSave));
 		}) //End changeAndSave
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), Promise.resolve(values[1])]);
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), Promise.resolve(values[1]), Promise.resolve(values[2])]);
 		})
 		.then(function publishAndRespond (values) {
 			var fullGame = values[0], oneOff = values[1];
+			var pNum = values[2];
 			var victory = gameService.checkWinGame({game: fullGame});
 			Game.publishUpdate(fullGame.id, 
 			{
 				change: "resolve",
 				oneOff: oneOff,
 				game: fullGame,
-				victory: victory
-
+				victory: victory,
+				pNum: pNum
 			});
 		})
 		.catch(function failed (err) {

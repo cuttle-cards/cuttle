@@ -94,7 +94,7 @@ module.exports = {
 						ruleText = "ONE-OFF: Your opponent discards two cards of her choice from her HAND (directly to the SCRAP PILE)";
 						break;
 					case 5:
-						ruleText = "ONE-OFF: Discard one card from your HAND (to the SCRAP PILE), then draw three from the DECK.";
+						ruleText = "ONE-OFF: Draw two cards from the DECK.";
 						break;
 					case 6:
 						ruleText = "ONE-OFF: Destroy ALL RUNES";

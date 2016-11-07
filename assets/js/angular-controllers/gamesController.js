@@ -332,7 +332,20 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								});
 							}
 						}
-						break;
+						break; //End oneOff & counter cases
+					case 'resolve':
+					// obj.data.pNum is the pNum who played the oneOff
+						switch(obj.data.oneOff.rank) {
+							case 3:
+								break; //End resolve 3 case
+							case 4:
+								break; //End resolve 4 case
+							case 7:
+								break; //End resolve 7 case
+							default:
+								break; //End resolve default case
+						}
+						break; //End resolve case
 				}
 				break;
 		}
