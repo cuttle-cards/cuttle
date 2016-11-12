@@ -252,12 +252,12 @@ body {
                       border: 2px solid blue;
                       z-index: 2;
                     }
+
                       .pointCard {
                         display: inline-block;
                         position: relative;
                         height: 100%;
                         width: 25%;
-                        border: 2px dotted;
                       }
                       .pointCardImg {
                         display: inline-block;
@@ -265,8 +265,37 @@ body {
                         z-index: 3;
                         height: 100%;
                         width: 100%;
-                        border: 2px dotted;
                       }
+
+                    .jackCard {
+                      display: inline-block;
+                      position: relative;
+                      height: 100%;
+                      width: 100%;
+                      bottom: 100%;
+                    }
+                      #oppJackCardImg {
+                        display: inline-block;
+                        position: relative;
+                        height: 55%;
+                        width: 50%;
+                        left: 50%;
+                        bottom: 15%;
+                        z-index: 4;
+                        margin-bottom: -95%;
+
+                      }
+                      #jackCardImg {
+                        display: inline-block;
+                        position: relative;
+                        height: 55%;
+                        width: 50%;
+                        left: 50%;
+                        bottom: 15%;
+                        z-index: 4;
+                        margin-bottom: -95%;
+                      }
+
           #runes {
             position: absolute;
             min-width: 30%;
