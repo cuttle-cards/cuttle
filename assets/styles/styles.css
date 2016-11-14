@@ -381,6 +381,10 @@ body {
               border: 2px dotted;
             }
 
+            .discarding {
+              border: 2px solid red;
+            }
+
           #yourCounter {
             display: inline-block;
             position: absolute;

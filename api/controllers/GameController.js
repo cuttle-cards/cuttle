@@ -625,10 +625,12 @@ module.exports = {
 		Promise.all([promiseGame, promisePlayer, promiseOpponent, promisePlayerPoints, promiseOpPoints])
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], opponent = values[2], playerPoints = values[3], opPoints = values[4];
+			var happened = true;
 			if (game.twos.length % 2 === 1) {
 				// One of is countered
 				console.log("One-off is countered; cleaning up");
 				game.log.push("The " + game.oneOff.name + " is countered, and all cards played this turn are scrapped.");
+				happened = false;
 			} else {
 				// One Off will resolve; perform effect
 				console.log("One-off is uncountered; performing effect");
@@ -646,6 +648,9 @@ module.exports = {
 						});
 						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
 						break; //End resolve ACE
+					case 4:
+						game.log.push("The " + game.oneOff.name + " one-off resolves; player " + opponent.pNum + " must discard two cards");
+						break;
 					case 5:
 						//Draw top card
 						player.hand.add(game.topCard.id);
@@ -733,14 +738,15 @@ module.exports = {
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});
 			var saveOpponent = userService.saveUser({user: opponent});
-			return Promise.all([saveGame, Promise.resolve(oneOff), Promise.resolve(player.pNum), savePlayer, saveOpponent].concat(cardsToSave));
+			return Promise.all([saveGame, Promise.resolve(oneOff), Promise.resolve(player.pNum), Promise.resolve(happened), savePlayer, saveOpponent].concat(cardsToSave));
 		}) //End changeAndSave
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), Promise.resolve(values[1]), Promise.resolve(values[2])]);
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), Promise.resolve(values[1]), Promise.resolve(values[2]), Promise.resolve(values[3])]);
 		})
 		.then(function publishAndRespond (values) {
 			var fullGame = values[0], oneOff = values[1];
 			var pNum = values[2];
+			var happened = values[3];
 			var victory = gameService.checkWinGame({game: fullGame});
 			Game.publishUpdate(fullGame.id, 
 			{
@@ -748,13 +754,34 @@ module.exports = {
 				oneOff: oneOff,
 				game: fullGame,
 				victory: victory,
-				pNum: pNum
+				playedBy: pNum,
+				happened: happened
 			});
 		})
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		});
 	}, //End resolve()
+
+	resolveFour: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseCard1 = cardService.findCard({cardId: req.body.cardId1});
+		var promiseCard2 = cardService.findCard({cardId: req.body.cardId2});
+		Promise.all([promiseGame, promisePlayer, promiseCard1, promiseCard2])
+		.then(function changeAndSave (values) {
+			return values;
+		}) // End changeAndSave
+		.then(function populateGame (values) {
+			return values;
+		})
+		.then(function publishAndRespond (values) {
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		})
+	},
 
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");

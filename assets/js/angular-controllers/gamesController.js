@@ -4,6 +4,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.game = null;
 	self.oppPointCap = 21;
 	self.yourPointCap = 21;
+	self.resolvingFour = false;
+	self.cardsToDiscard = [];
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	self.showDeck = false;
 
@@ -62,7 +64,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Dragover Callbacks //
 	////////////////////////
 	self.dragoverPoints = function (targetIndex) {
-		if (!self.countering) {
+		if (!self.countering && !self.resolvingFour) {
 			if (dragData.rank < 11) {
 				return true;
 			} else {
@@ -71,7 +73,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dragoverRunes = function (targetIndex) {
-		if (!self.countering) {
+		if (!self.countering && !self.resolvingFour) {
 			if ((dragData.rank >= 12 && dragData.rank <= 13) || dragData.rank === 8) {
 				return true;
 			} else {
@@ -80,7 +82,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dragoverOpPoint = function (targetIndex) {
-		if (!self.countering) {
+		if (!self.countering && !self.resolvingFour) {
 			if (dragData.rank <= 11) {
 				return true;
 			} else {
@@ -201,6 +203,33 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				} 
 			});
 		}
+	};
+	// Upon clicking a card in your hand,
+	// Check if a 4 is being resolved, and discard that card
+	self.clickHandCard = function (index)  {
+		if (self.resolvingFour) {
+			if (self.cardsToDiscard.indexOf(self.player.hand[index]) > -1) {
+				cardsToDiscard = [];
+			} else {
+				self.cardsToDiscard.push(self.player.hand[index]);
+				if (self.cardsToDiscard.length == 2) {
+					io.socket.put("/game/resolveFour", 
+						{
+							cardId1: self.cardsToDiscard[0].id,
+							cardId2: self.cardsToDiscard[1].id
+						},
+						function (res, jwres) {
+							console.log("got response");
+							self.resolvingFour = false;
+							self.cardsToDiscard = [];
+							if (jwres.statusCode != 200) alert(jwres.error.message);
+							$scope.$apply();
+						}
+					)
+				}
+			}
+		}
+
 	};
 	///////////////////////////
 	// Socket Event Handlers //
@@ -339,6 +368,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							case 3:
 								break; //End resolve 3 case
 							case 4:
+								if (obj.data.happened) {
+									if (obj.data.playedBy === self.opponent.pNum) {
+										self.resolvingFour = true;
+										alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
+									}
+								}
+
 								break; //End resolve 4 case
 							case 7:
 								break; //End resolve 7 case
