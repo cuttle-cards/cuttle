@@ -159,11 +159,11 @@
                             <div id="oppHand">
                                 <!-- Opponent's hand CARDBACKS -->
                                 <div ng-repeat="card in gc.opponent.hand" ng-show="!gc.glasses" class="opHandCard">
-                                    <img src="images/deck.jpg" class="opHandCardImg">
+                                    <img src="images/deck.jpg" class="opHandCardImg" draggable="false">
                                 </div>
                                 <!-- Oponent's hand REVEALED -->
                                 <div ng-repeat="card in gc.opponent.hand" ng-show="gc.glasses" class="opHandCard">
-                                    <img ng-src="{{card.img}}" class="opHandCardImg">
+                                    <img ng-src="{{card.img}}" class="opHandCardImg" draggable="false">
                                 </div>
                             </div>
                             <p id="oppWinCon">
@@ -198,23 +198,23 @@
                         <div id="midWrap" class="row">
                             <div class="col-xs-2 col-md-2" id="deckScrapStack">
                                 <!-- Deck and Scrap -->
-                                <img src="images/deck.jpg" id="deck" ng-click="gc.draw()"></img>
-                                <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap"></img>
+                                <img src="images/deck.jpg" id="deck" ng-click="gc.draw()" draggable="false"></img>
+                                <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false"></img>
 <!--                                 <div id="stack">Stack</div> -->
                             </div>
                             <div class="col-xs-4 col-md-4 field row" id='points'>
                                 <div id="oppPoints">
                                     <div ng-repeat="card in gc.opponent.points" class="pointCard">
-                                        <img ng-src="{{card.img}}" class="pointCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="$index">
+                                        <img ng-src="{{card.img}}" class="pointCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="$index" draggable="false">
                                         <div ng-repeat="jack in card.attachments" class="jackCard">
-                                            <img ng-src="{{jack.img}}" id="oppJackCardImg">
+                                            <img ng-src="{{jack.img}}" id="oppJackCardImg" draggable="false">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div id="yourPoints" ts-droppable allow-drop="gc.dragoverPoints" index="0" upon-drop="gc.dropPoints">
                                     <div ng-repeat="card in gc.player.points" class="pointCard">
-                                        <img ng-src="{{card.img}}" class="pointCardImg">
+                                        <img ng-src="{{card.img}}" class="pointCardImg" draggable="false">
                                         <div ng-repeat="jack in card.attachments" class="jackCard">
                                             <img ng-src="{{jack.img}}" id="jackCardImg">
                                         </div>
@@ -230,19 +230,22 @@
                                 <div id="oppRunes">
                                     <!-- Opponent Runes -->
                                     <div ng-repeat="card in gc.opponent.runes" class="runeCard">
-                                        <img ng-src="{{card.img}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="0">
+                                        <img ng-src="{{card.img}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="0" draggable="false">
                                     </div>
                                 </div>
                                 <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes">
                                     <div ng-repeat="card in gc.player.runes" class="runeCard">
-                                        <img ng-src="{{card.img}}" class="runeCardImg">
+                                        <img ng-src="{{card.img}}" class="runeCardImg" draggable="false">
                                     </div>
                                     <!-- Your Runes -->
                                 </div>
                             </div>
                             <div class="col-xs-2 col-md-2" id="gameLog">
-                                <div ng-repeat="text in gc.game.log">
+                                <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree">
                                     {{text}}
+                                </div>
+                                <div ng-repeat="card in gc.game.scrap track by $index" ng-show="gc.resolvingThree" class="scrapCard">
+                                    <img ng-src="{{card.img}}" ng-click="gc.chooseScrapCard($index)" class="scrapCardImg" draggable="false">
                                 </div>
                                 <!-- gameLog -->
                             </div>

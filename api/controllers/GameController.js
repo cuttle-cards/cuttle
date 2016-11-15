@@ -628,13 +628,11 @@ module.exports = {
 			var happened = true;
 			if (game.twos.length % 2 === 1) {
 				// One of is countered
-				console.log("One-off is countered; cleaning up");
 				game.turn++;
 				game.log.push("The " + game.oneOff.name + " is countered, and all cards played this turn are scrapped.");
 				happened = false;
 			} else {
 				// One Off will resolve; perform effect
-				console.log("One-off is uncountered; performing effect");
 				var cardsToSave = [];
 				// handle different one-offs
 				switch (game.oneOff.rank) {
@@ -650,6 +648,9 @@ module.exports = {
 						game.turn++;
 						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
 						break; //End resolve ACE
+					case 3:
+						game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " will draw one card of her choice from the SCRAP pile");
+						break;
 					case 4:
 						game.log.push("The " + game.oneOff.name + " one-off resolves; player " + opponent.pNum + " must discard two cards");
 						break;
@@ -732,8 +733,10 @@ module.exports = {
 				} //End switch on oneOff rank
 			}
 			var oneOff = game.oneOff;
-			game.scrap.add(game.oneOff.id);
-			game.oneOff = null;
+			if (oneOff.rank != 3 || !happened) {
+				game.scrap.add(game.oneOff.id);
+				game.oneOff = null;
+			}
 			game.twos.forEach(function (two, index) {
 				game.scrap.add(two.id);
 				game.twos.remove(two.id);
@@ -800,7 +803,43 @@ module.exports = {
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		})
-	},
+	}, //End resolveFour()
+
+	resolveThree: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		Promise.all([promiseGame, promisePlayer, promiseCard])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], card = values[2];
+			player.hand.add(card.id);
+			game.scrap.remove(card.id);
+			game.scrap.add(game.oneOff.id);
+			game.oneOff = null;
+			game.log.push("Player " + player.pNum + " took the " + card.name + " from the scrap pile to her hand");
+			game.turn++;
+			//Save changes
+			var saveGame = gameService.saveGame({game: game});
+			var savePlayer = userService.saveUser({user: player});
+			return Promise.all([saveGame, savePlayer]);
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: 'resolveFour',
+				game: fullGame,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End resolveThree()
 
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");

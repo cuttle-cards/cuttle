@@ -345,6 +345,15 @@ body {
             width: 15%;
             left: 80%;
           }
+              /*These cards are only displayed while a three is being resolved*/
+              .scrapCard {
+                position: relative;
+                display: inline-block;
+                height: 15%;
+              }
+                  .scrapCardImg {
+                    height: 100%;
+                  }
 
 
     /*Bottom Wrap*/

@@ -61,5 +61,6 @@ module.exports.routes = {
   '/game/counter'           :   'gameController.counter',
   '/game/resolve'           :   'gameController.resolve',
   'game/resolveFour'        :   'gameController.resolveFour', 
+  '/game/resolveThree'      :   'gameController.resolveThree',
   '/game/stackDeck'         :   'gameController.stackDeck',
 };

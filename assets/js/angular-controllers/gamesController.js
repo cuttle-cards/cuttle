@@ -6,6 +6,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.yourPointCap = 21;
 	self.resolvingFour = false;
 	self.cardsToDiscard = [];
+	self.resolvingThree = false;
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	self.showDeck = false;
 
@@ -64,7 +65,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Dragover Callbacks //
 	////////////////////////
 	self.dragoverPoints = function (targetIndex) {
-		if (!self.countering && !self.resolvingFour) {
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
 			if (dragData.rank < 11) {
 				return true;
 			} else {
@@ -73,7 +74,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dragoverRunes = function (targetIndex) {
-		if (!self.countering && !self.resolvingFour) {
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
 			if ((dragData.rank >= 12 && dragData.rank <= 13) || dragData.rank === 8) {
 				return true;
 			} else {
@@ -82,7 +83,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dragoverOpPoint = function (targetIndex) {
-		if (!self.countering && !self.resolvingFour) {
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
 			if (dragData.rank <= 11) {
 				return true;
 			} else {
@@ -91,7 +92,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dragoverScrap = function (targetIndex) {
-		if (!self.countering) {
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
 			switch (dragData.rank) {
 				case 1:
 				case 3:
@@ -142,14 +143,18 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		)
 	}
 	self.dropOpPoint = function (targetIndex) {
+		/*
+		BUG: Confirm() and alert() in this function cause a page-redirect to the image of the card being played	
+		*/
+		// alert("wtf");
 		switch (dragData.rank) {
 			case 9:
-				var conf = confirm("Press 'Ok' to Scuttle, and 'Cancel' to play your Nine as a One-Off");
-				if (conf) {
+				// var conf = confirm("Press 'Ok' to Scuttle, and 'Cancel' to play your Nine as a One-Off");
+				// if (conf) {
 					self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
-				} else {
+				// } else {
 					// Play nine as one-off
-				}
+				// }
 				break;
 			case 11:
 				self.jack(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
@@ -163,6 +168,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
 				break;
 		}
+		// alert("left switch statement");
 	};
 	self.dropScrap = function (targetIndex) {
 		if (!self.countering) {		
@@ -230,7 +236,25 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}
 		}
 
-	};
+	}; //End clickHandCard()
+
+	//Upon clicking a card in the scrap pile, request to draw that card
+	self.chooseScrapCard = function (index) {
+		console.log("Choosing scrap card: ");
+		console.log(self.game.scrap[index]);
+		io.socket.put("/game/resolveThree", {
+			cardId: self.game.scrap[index].id
+		}, function (res, jwres) {
+			self.resolvingThree = false;
+			$scope.$apply();
+			if (jwres.statusCode != 200) {
+				alert(jwres.error.message);
+				console.log(jwres);
+			}
+		})
+	}; //End chooseScrapCard()
+
+
 	///////////////////////////
 	// Socket Event Handlers //
 	///////////////////////////
@@ -366,6 +390,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					// obj.data.pNum is the pNum who played the oneOff
 						switch(obj.data.oneOff.rank) {
 							case 3:
+								if (obj.data.happened) {
+									if (obj.data.playedBy === self.player.pNum) {
+										self.resolvingThree = true;
+										alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");
+									}
+								}
 								break; //End resolve 3 case
 							case 4:
 								if (obj.data.happened) {
