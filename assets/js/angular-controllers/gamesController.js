@@ -209,7 +209,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.clickHandCard = function (index)  {
 		if (self.resolvingFour) {
 			if (self.cardsToDiscard.indexOf(self.player.hand[index]) > -1) {
-				cardsToDiscard = [];
+				self.cardsToDiscard = [];
 			} else {
 				self.cardsToDiscard.push(self.player.hand[index]);
 				if (self.cardsToDiscard.length == 2) {

@@ -629,6 +629,7 @@ module.exports = {
 			if (game.twos.length % 2 === 1) {
 				// One of is countered
 				console.log("One-off is countered; cleaning up");
+				game.turn++;
 				game.log.push("The " + game.oneOff.name + " is countered, and all cards played this turn are scrapped.");
 				happened = false;
 			} else {
@@ -646,6 +647,7 @@ module.exports = {
 							game.scrap.add(point.id);
 							player.points.remove(point.id);
 						});
+						game.turn++;
 						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
 						break; //End resolve ACE
 					case 4:
@@ -678,6 +680,7 @@ module.exports = {
 						} else {
 							game.log.push("The " + game.oneOff.name + " one-off resolves; player" + player.pNum + " draws the last card.");
 						}
+						game.turn++;
 						break; //End resolve FIVE
 					case 6:
 						player.runes.forEach(function (rune) {
@@ -723,6 +726,7 @@ module.exports = {
 								} //End jackCount > 0
 							});	
 						}
+						game.turn++;
 						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");					
 						break; //End resolve SIX
 				} //End switch on oneOff rank
@@ -734,7 +738,6 @@ module.exports = {
 				game.scrap.add(two.id);
 				game.twos.remove(two.id);
 			});
-			game.turn++;
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});
 			var saveOpponent = userService.saveUser({user: opponent});
@@ -770,12 +773,28 @@ module.exports = {
 		var promiseCard2 = cardService.findCard({cardId: req.body.cardId2});
 		Promise.all([promiseGame, promisePlayer, promiseCard1, promiseCard2])
 		.then(function changeAndSave (values) {
-			return values;
+			var game = values[0], player = values[1], card1 = values[2], card2 = values[3];
+			game.scrap.add(card1.id);
+			game.scrap.add(card2.id);
+			player.hand.remove(card1.id);
+			player.hand.remove(card2.id);
+			game.log.push("Player " + player.pNum + " discarded the " + card1.name + " and the " + card2.name + ".");
+			game.turn++;
+			var saveGame = gameService.saveGame({game: game});
+			var savePlayer = userService.saveUser({user: player});
+			return Promise.all([saveGame, savePlayer]);
 		}) // End changeAndSave
 		.then(function populateGame (values) {
-			return values;
+			return gameService.populateGame({gameId: values[0].id});
 		})
-		.then(function publishAndRespond (values) {
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: "resolveFour",
+				game: fullGame,
+				victory: victory
+			});
 			return res.ok();
 		})
 		.catch(function failed (err) {
