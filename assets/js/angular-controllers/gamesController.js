@@ -143,18 +143,14 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		)
 	}
 	self.dropOpPoint = function (targetIndex) {
-		/*
-		BUG: Confirm() and alert() in this function cause a page-redirect to the image of the card being played	
-		*/
-		// alert("wtf");
 		switch (dragData.rank) {
 			case 9:
-				// var conf = confirm("Press 'Ok' to Scuttle, and 'Cancel' to play your Nine as a One-Off");
-				// if (conf) {
+				var conf = confirm("Press 'Ok' to Scuttle, and 'Cancel' to play your Nine as a One-Off");
+				if (conf) {
 					self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
-				// } else {
-					// Play nine as one-off
-				// }
+				} else {
+					//Play nine as one-off
+				}
 				break;
 			case 11:
 				self.jack(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
