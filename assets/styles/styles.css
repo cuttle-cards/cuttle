@@ -1,5 +1,7 @@
 /* # id, . class*/
-
+body {
+  font-family: 'Roboto Slab', serif;
+}
 /*Lobby CSS*/
 
 .content-area {
