@@ -235,7 +235,7 @@ module.exports = {
 				game.topCard = game.secondCard;
 				if (game.deck.length > 0) {				
 					var min = 0;
-					var max = game.deck.length;
+					var max = game.deck.length - 1;
 					var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
 					game.secondCard = game.deck[random];
 					game.deck.remove(game.deck[random].id);	
@@ -439,14 +439,16 @@ module.exports = {
 								// Everything good; change and save
 								player.points.add(target.id); //This also removes card from opponent's points (foreign key is 1:1)
 								player.hand.remove(card.id);
+								card.index = target.attachments.length;
 								target.attachments.add(card.id);
 								game.log.push("Player " + player.pNum + " stole Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
 								game.turn++;
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
 								var saveOpponent = userService.saveUser({user: opponent});
+								var saveCard = cardService.saveCard({card: card});
 								var saveTarget = cardService.saveCard({card: target});
-								return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
+								return Promise.all([saveGame, savePlayer, saveOpponent, saveCard, saveTarget]);
 
 							} else {
 								return Promise.reject(new Error("You cannot use a Jack while your opponent has a Queen."));
@@ -483,6 +485,466 @@ module.exports = {
 
 	}, //End jack()
 
+	// Play an untargeted one-off
+	untargetedOneOff: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+
+		Promise.all([promiseGame, promisePlayer, promiseCard])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], card = values[2];
+			if (game.turn % 2 === player.pNum) { //Check Turn
+				if (!game.oneOff) { //Check that no other one-off is in play
+					if (card.hand === player.id) { //Check that card was in hand
+						switch (card.rank) {
+							case 1:
+							case 3:
+							case 4:
+							case 5:
+							case 6:
+							case 7:
+								switch (card.rank) {
+									case 3:
+										if (game.scrap.length < 1) return Promise.reject(new Error("You can only play a 3 as a one-off, if there are cards in the scrap pile"));
+										break;
+									case 4:
+										break;
+									case 5:
+									case 7:
+										if (!game.topCard) return Promise.reject(new Error("You can't play that card as a one-off, unless there are cards in the deck"));
+										break;
+									default:
+										break;
+								}
+								game.oneOff = card;
+								player.hand.remove(card.id);
+								game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText);
+								var saveGame = gameService.saveGame({game: game});
+								var savePlayer = userService.saveUser({user: player});
+								return Promise.all([saveGame, savePlayer]);
+								break;
+							default:
+							return Promise.reject(new Error("You cannot play that card as a one-off without a target."));
+								break;
+						}
+					} else {
+						return Promise.reject(new Error("You cannot play a card that is not in your hand"));
+					}
+				} else {
+					return Promise.reject(new Error("There is already a one-off in play; You cannot play any card, except a two to counter."));
+				}
+			} else {
+				return Promise.reject(new Error("It's not your turn"));
+			}
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id, {
+				change: 'oneOff',
+				game: fullGame,
+				pNum: req.session.pNum,
+				victory: victory 
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End untargetedOneOff()
+
+	targetedOneOff: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		var promiseTarget = cardService.findCard({cardId: req.body.targetId});
+		var promisePoint = null;
+		var targetType = req.body.targetType;
+		if (targetType === "jack") {
+			promisePoint = cardService.findCard({cardId: req.body.pointId});
+		} else {
+			promisePoint = Promise.resolve(null);
+		}
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, Promise.resolve(targetType), promisePoint])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4], targetType = values[5], point = values[6];
+			if (player.pNum === game.turn % 2) {
+				if (!game.oneOff) {
+					if (card.hand === player.id) {
+						if (card.rank === 2 || card.rank === 9) {
+							var queenCount = userService.queenCount({user: opponent});
+							switch (queenCount) {
+								case 0:
+									break;
+								case 1:
+									if (target.runes === opponent.id && target.rank === 12) {
+									} else {
+										return Promise.reject(new Error("You may only TARGET your opponent's queen, while she has one."))
+									}
+									break;
+								default:
+									return Promise.reject(new Error("You cannot play a TARGETTED ONE-OFF when your opponent has more than one Queen"));
+									break;
+							}
+							game.oneOff = card;
+							player.hand.remove(card.id);
+							game.oneOffTarget = target;
+							game.oneOffTargetType = targetType;
+							game.attachedToTarget = null;
+							if (point) game.attachedToTarget = point;
+							game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
+							var saveGame = gameService.saveGame({game: game});
+							var savePlayer = userService.saveUser({user: player});
+							return Promise.all([saveGame, savePlayer]);
+
+						} else {
+							return Promise.reject(new Error("You can only play a 2, or a 9 as targeted one-offs."));
+						}
+					} else {
+						return Promise.reject(new Error("You cannot play a card that is not in your hand"));
+					}
+				} else {
+					return Promise.reject(new Error("There is already a one-off in play; you cannot play any card, except a two to counter."));
+				}
+			} else {	
+				return Promise.reject(new Error("It's not your turn."));
+			}
+		}) //End changeAndSave()
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id})
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: 'targetedOneOff',
+				game: fullGame,
+				victory: victory,
+				pNum: req.session.pNum
+			});
+			return res.ok();
+		}) //End publishAndRespond
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End targetedOneOff
+
+	counter: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], opponent = values[2], card = values[3];
+				var opHasQueen = false;
+				opponent.runes.forEach(function (rune) {
+					if (rune.rank === 12) opHasQueen = true;
+				});
+				if (card.hand === player.id) {
+					if (game.oneOff) {
+						if (card.rank === 2) {
+							if (!opHasQueen) {
+								var opPnum = (player.pNum + 1) % 2;
+								if (game.twos.length > 0) {
+									game.log.push("Player " + player.pNum + " played the " + card.name + " to COUNTER Player " + opPnum + "'s " + game.twos[game.twos.length - 1].name + ".");
+								} else {
+									game.log.push("Player " + player.pNum + " played the " + card.name + " to COUNTER Player " + opPnum + "'s " +  game.oneOff.name + ".");
+								}
+								game.twos.add(card.id);
+								player.hand.remove(card.id);
+								var saveGame = gameService.saveGame({game: game});
+								var savePlayer = userService.saveUser({user: player});
+								return Promise.all([saveGame, savePlayer]);
+							} else {
+								return (Promise.reject(new Error("You cannot COUNTER your opponent's one-off, if she has a QUEEN.")));
+							}
+						} else {
+							return Promise.reject(new Error("You can only play a TWO to counter a one-off"));
+						}
+					} else {
+						return Promise.reject(new Error("You can only counter a one-off that is already in play"));
+					}
+				} else {
+					return Promise.reject(new Error("You can only play a card that is in your hand"));
+				}
+
+		}) //End changeAndSave
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: "counter",
+				game: fullGame,
+				pNum: req.session.pNum,
+				victory: victory,
+
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End counter()
+
+	resolve: function (req, res) {
+		//Note: the player calling resolve is the opponent of the one playing the one-off, if it resolves
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.body.opId});
+		var promiseOpponent = userService.findUser({userId: req.session.usr});
+		var promisePlayerPoints = cardService.findPoints({userId: req.body.opId});
+		var promiseOpPoints = cardService.findPoints({userId: req.session.usr});
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promisePlayerPoints, promiseOpPoints])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], opponent = values[2], playerPoints = values[3], opPoints = values[4];
+			var happened = true;
+			var cardsToSave = [];
+			if (game.twos.length % 2 === 1) {
+				// One of is countered
+				game.turn++;
+				game.log.push("The " + game.oneOff.name + " is countered, and all cards played this turn are scrapped.");
+				happened = false;
+			} else {
+				// One Off will resolve; perform effect
+				var cardsToSave = [];
+				// handle different one-offs
+				switch (game.oneOff.rank) {
+					case 1:
+						player.points.forEach(function (point) {
+							game.scrap.add(point.id);
+							player.points.remove(point.id);
+						});
+						opponent.points.forEach(function (point) {
+							game.scrap.add(point.id);
+							player.points.remove(point.id);
+						});
+						game.turn++;
+						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
+						break; //End resolve ACE
+					case 2:
+						console.log("Resolving the " + game.oneOff.name + " on the " + game.oneOffTarget.name + " of type: " + game.oneOffTargetType);
+						game.log.push("The " + game.oneOff.name + " resolves; the " + game.oneOffTarget.name + " is DESTROYED.");
+						game.scrap.add(game.oneOffTarget.id);
+						switch (game.oneOffTargetType) {
+							case 'rune':
+								opponent.runes.remove(game.oneOffTarget.id);
+								break;
+							case 'jack':
+								game.oneOffTarget.attachedTo = null;
+								cardsToSave.push(cardService.saveCard({card: game.oneOffTarget}));
+								player.points.add(game.attachedToTarget.id);
+								game.oneOffTarget = null;
+								game.attachedToTarget = null;
+								break;
+						} //End switch(oneOffTargetType)
+						game.oneOffTargetType = null;
+						game.oneOffTarget = null;
+						if (game.attachedToTarget) console.log("Targetting jack attached to: " + game.attachedToTarget.name);
+						game.turn++;
+						break; //End resolve TWO
+					case 3:
+						game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " will draw one card of her choice from the SCRAP pile");
+						break;
+					case 4:
+						game.log.push("The " + game.oneOff.name + " one-off resolves; player " + opponent.pNum + " must discard two cards");
+						break;
+					case 5:
+						//Draw top card
+						player.hand.add(game.topCard.id);
+						game.topCard = null;
+						//Draw second card, if it exists
+						if (game.secondCard) {
+							game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " draws two cards.");
+							player.hand.add(game.secondCard.id);
+							game.secondCard = null;
+							//Replace top card, if there's a card in deck
+							if (game.deck.length > 0) {
+								var min = 0;
+								var max = game.deck.length - 1;
+								var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+								game.topCard = game.deck[random].id;
+								game.deck.remove(game.deck[random].id);
+								if (game.deck.length > 0) {
+									var min = 0;
+									var max = game.deck.length - 1;
+									var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+									game.secondCard = game.deck[random].id;
+									game.deck.remove(game.deck[random].id);
+								}								
+							}
+						} else {
+							game.log.push("The " + game.oneOff.name + " one-off resolves; player" + player.pNum + " draws the last card.");
+						}
+						game.turn++;
+						break; //End resolve FIVE
+					case 6:
+						player.runes.forEach(function (rune) {
+							game.scrap.add(rune.id);
+							player.runes.remove(rune.id);
+						});
+						opponent.runes.forEach(function (rune) {
+							game.scrap.add(rune.id);
+							player.runes.remove(rune.id);
+						});
+						if (playerPoints) {
+							playerPoints.forEach(function (point) {
+								var jackCount = point.attachments.length;
+								if (jackCount > 0) {
+									point.attachments.forEach(function (jack) {
+										game.scrap.add(jack.id);
+										point.attachments.remove(jack.id);
+										cardsToSave.push(cardService.saveCard({card: point}));
+									});
+									// If odd number of jacks were attached, switch control
+									if (jackCount % 2 === 1) {
+										opponent.points.add(point.id);
+										// player.points.remove(point.id);
+									} 
+								} //End jackCount > 0
+							});
+						}
+						if (opPoints) {
+							opPoints.forEach(function (point) {
+								var jackCount = point.attachments.length;
+								if (jackCount > 0) {
+									point.attachments.forEach(function (jack) {
+										game.scrap.add(jack.id);
+										point.attachments.remove(jack.id);
+										cardsToSave.push(cardService.saveCard({card: point}));
+									});
+									// If odd number of jacks were attached, switch control
+									if (jackCount % 2 === 1) {
+										//This switches the card to the other player's points
+										player.points.add(point.id);
+									} 
+								} //End jackCount > 0
+							});	
+						}
+						game.turn++;
+						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");					
+						break; //End resolve SIX
+					case 9:
+						console.log("Resolving the " + game.oneOff.name + " on the " + game.oneOffTarget.name + " of type: " + game.oneOffTargetType);
+						if (game.attachedToTarget) console.log("Targetting jack attached to: " + game.attachedToTarget.name);
+						break; //End resolve NINE
+				} //End switch on oneOff rank
+			}
+			var oneOff = game.oneOff;
+			if (oneOff.rank != 3 || !happened) {
+				game.scrap.add(game.oneOff.id);
+				game.oneOff = null;
+			}
+			game.twos.forEach(function (two, index) {
+				game.scrap.add(two.id);
+				game.twos.remove(two.id);
+			});
+			var saveGame = gameService.saveGame({game: game});
+			var savePlayer = userService.saveUser({user: player});
+			var saveOpponent = userService.saveUser({user: opponent});
+			return Promise.all([saveGame, Promise.resolve(oneOff), Promise.resolve(player.pNum), Promise.resolve(happened), savePlayer, saveOpponent].concat(cardsToSave));
+		}) //End changeAndSave
+		.then(function populateGame (values) {
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), Promise.resolve(values[1]), Promise.resolve(values[2]), Promise.resolve(values[3])]);
+		})
+		.then(function publishAndRespond (values) {
+			var fullGame = values[0], oneOff = values[1];
+			var pNum = values[2];
+			var happened = values[3];
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id, 
+			{
+				change: "resolve",
+				oneOff: oneOff,
+				game: fullGame,
+				victory: victory,
+				playedBy: pNum,
+				happened: happened
+			});
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End resolve()
+
+	resolveFour: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseCard1 = cardService.findCard({cardId: req.body.cardId1});
+		var promiseCard2 = cardService.findCard({cardId: req.body.cardId2});
+		Promise.all([promiseGame, promisePlayer, promiseCard1, promiseCard2])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], card1 = values[2], card2 = values[3];
+			game.scrap.add(card1.id);
+			game.scrap.add(card2.id);
+			player.hand.remove(card1.id);
+			player.hand.remove(card2.id);
+			game.log.push("Player " + player.pNum + " discarded the " + card1.name + " and the " + card2.name + ".");
+			game.turn++;
+			var saveGame = gameService.saveGame({game: game});
+			var savePlayer = userService.saveUser({user: player});
+			return Promise.all([saveGame, savePlayer]);
+		}) // End changeAndSave
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: "resolveFour",
+				game: fullGame,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		})
+	}, //End resolveFour()
+
+	resolveThree: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		Promise.all([promiseGame, promisePlayer, promiseCard])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], card = values[2];
+			player.hand.add(card.id);
+			game.scrap.remove(card.id);
+			game.scrap.add(game.oneOff.id);
+			game.oneOff = null;
+			game.log.push("Player " + player.pNum + " took the " + card.name + " from the scrap pile to her hand");
+			game.turn++;
+			//Save changes
+			var saveGame = gameService.saveGame({game: game});
+			var savePlayer = userService.saveUser({user: player});
+			return Promise.all([saveGame, savePlayer]);
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: 'resolveFour',
+				game: fullGame,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End resolveThree()
+
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");
 		var popGame = gameService.populateGame({gameId: req.session.game})
@@ -492,6 +954,31 @@ module.exports = {
 		.catch(function failed (err) {
 			console.log(err);
 			res.badRequest(err);
+		});
+	},
+
+	stackDeck: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game})
+		.then(function changeAndSave (game) {
+			game.deck.add(game.topCard);
+			game.topCard = req.body.cardId;
+			game.deck.remove(req.body.cardId);
+			return gameService.saveGame({game: game});
+		})
+		.then(function populateGame (game) {
+			return gameService.populateGame({gameId: game.id});
+		})
+		.then(function publishUpdate (game) {
+			Game.publishUpdate(game.id, 
+			{
+				change: 'stackDeck',
+				game: game,
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			console.log(err);
+			return res.badRequest(err);
 		});
 	}
 };

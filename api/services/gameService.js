@@ -16,6 +16,8 @@ function tempGame (game, p0, p1) {
 	this.scrap = game.scrap;
 	this.topCard = game.topCard;
 	this.secondCard = game.secondCard;
+	this.oneOff = game.oneOff;
+	this.twos = game.twos;
 	this.log = game.log;
 	this.id = game.id;
 };
@@ -32,6 +34,10 @@ module.exports = {
 			.populate("scrap")
 			.populate("topCard")
 			.populate("secondCard")
+			.populate("oneOff")
+			.populate("twos")
+			.populate("oneOffTarget")
+			.populate("attachedToTarget")
 			.exec(function (error, game) {
 				if (error || !game) {
 					var res;
@@ -106,16 +112,6 @@ module.exports = {
 									p1Points
 								]
 							);
-							// var p0PointIds = [];
-							// var p1PointIds = [];
-
-							// p0.points.forEach(function (point) {
-							// 	p0PointIds.push(point.id);
-							// });
-							// p1.points.forEach(function (point) {
-							// 	p1PointIds.push(point.id);
-							// });
-
 						})
 						// then format results & resolve
 						.then(function finish (values) {

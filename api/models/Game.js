@@ -54,6 +54,30 @@ module.exports = {
       via: 'scrap'
     },
 
+    oneOff: {
+      model: 'card',
+      via: 'oneOff'
+    },
+
+    oneOffTarget: {
+      model: 'card',
+      via: 'targeted'
+    },
+
+    oneOffTargetType: {
+      type: 'string'
+    },
+
+    attachedToTarget: {
+      model: 'card',
+      via: 'attachedToTarget'
+    },
+
+    twos: {
+      collection: 'card',
+      via: 'twos'
+    },
+
     turn: {
       type: 'integer',
       defaultsTo: 0

@@ -24,6 +24,14 @@ module.exports = {
   		model: 'game',
   	},
 
+    oneOff: {
+      model: 'game'
+    },
+
+    twos: {
+      model: 'game'
+    },
+    
     topCard: {
       model: 'game'
     },
@@ -32,17 +40,21 @@ module.exports = {
       model: 'game'
     },
 
-  	hand: {
-  		model: 'user'
-  	},
+    hand: {
+      model: 'user'
+    },
 
-  	points: {
-  		model: 'user'
-  	},
+    points: {
+      model: 'user'
+    },
 
-  	runes: {
-  		model: 'user'
-  	},
+    runes: {
+      model: 'user'
+    },
+    //Used to order attachments
+    index: {
+      type: 'integer',
+    },
 
     attachments: {
       collection: 'card',
@@ -51,7 +63,21 @@ module.exports = {
 
     attachedTo: {
     	model: 'card'
-    }
+    },
+
+    // Used to track if this card is targeted
+    //by a one-off
+    targeted: {
+      model: 'game'
+    },
+
+    //Used to track if this card is the point card
+    //to which a jack that is targed by a one-off
+    //is attached
+    attachedToTarget: {
+      model: 'game'
+    },
+
   }
 };
 
