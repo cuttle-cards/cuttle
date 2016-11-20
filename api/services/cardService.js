@@ -153,7 +153,7 @@ module.exports = {
 	findPoints: function (options) {
 		return new Promise(function (resolve, reject) {
 			if (options.userId) {
-				Card.find({points: options.userId}).populate("attachments").exec(function (err, cards) {
+				Card.find({points: options.userId}).populate("attachments", {sort: "index"}).exec(function (err, cards) {
 					if (err) {
 						return reject(err);
 					} else if (!cards) {

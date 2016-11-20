@@ -51,7 +51,10 @@ module.exports = {
     runes: {
       model: 'user'
     },
-
+    //Used to order attachments
+    index: {
+      type: 'integer',
+    },
 
     attachments: {
       collection: 'card',

@@ -439,14 +439,16 @@ module.exports = {
 								// Everything good; change and save
 								player.points.add(target.id); //This also removes card from opponent's points (foreign key is 1:1)
 								player.hand.remove(card.id);
+								card.index = target.attachments.length;
 								target.attachments.add(card.id);
 								game.log.push("Player " + player.pNum + " stole Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
 								game.turn++;
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
 								var saveOpponent = userService.saveUser({user: opponent});
+								var saveCard = cardService.saveCard({card: card});
 								var saveTarget = cardService.saveCard({card: target});
-								return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
+								return Promise.all([saveGame, savePlayer, saveOpponent, saveCard, saveTarget]);
 
 							} else {
 								return Promise.reject(new Error("You cannot use a Jack while your opponent has a Queen."));
