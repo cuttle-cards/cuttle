@@ -576,6 +576,20 @@ module.exports = {
 				if (!game.oneOff) {
 					if (card.hand === player.id) {
 						if (card.rank === 2 || card.rank === 9) {
+							var queenCount = userService.queenCount({user: opponent});
+							switch (queenCount) {
+								case 0:
+									break;
+								case 1:
+									if (target.runes === opponent.id && target.rank === 12) {
+									} else {
+										return Promise.reject(new Error("You may only TARGET your opponent's queen, while she has one."))
+									}
+									break;
+								default:
+									return Promise.reject(new Error("You cannot play a TARGETTED ONE-OFF when your opponent has more than one Queen"));
+									break;
+							}
 							game.oneOff = card;
 							player.hand.remove(card.id);
 							game.oneOffTarget = target;
@@ -691,6 +705,7 @@ module.exports = {
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], opponent = values[2], playerPoints = values[3], opPoints = values[4];
 			var happened = true;
+			var cardsToSave = [];
 			if (game.twos.length % 2 === 1) {
 				// One of is countered
 				game.turn++;
@@ -715,7 +730,24 @@ module.exports = {
 						break; //End resolve ACE
 					case 2:
 						console.log("Resolving the " + game.oneOff.name + " on the " + game.oneOffTarget.name + " of type: " + game.oneOffTargetType);
+						game.log.push("The " + game.oneOff.name + " resolves; the " + game.oneOffTarget.name + " is DESTROYED.");
+						game.scrap.add(game.oneOffTarget.id);
+						switch (game.oneOffTargetType) {
+							case 'rune':
+								opponent.runes.remove(game.oneOffTarget.id);
+								break;
+							case 'jack':
+								game.oneOffTarget.attachedTo = null;
+								cardsToSave.push(cardService.saveCard({card: game.oneOffTarget}));
+								player.points.add(game.attachedToTarget.id);
+								game.oneOffTarget = null;
+								game.attachedToTarget = null;
+								break;
+						} //End switch(oneOffTargetType)
+						game.oneOffTargetType = null;
+						game.oneOffTarget = null;
 						if (game.attachedToTarget) console.log("Targetting jack attached to: " + game.attachedToTarget.name);
+						game.turn++;
 						break; //End resolve TWO
 					case 3:
 						game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " will draw one card of her choice from the SCRAP pile");
@@ -761,7 +793,6 @@ module.exports = {
 							game.scrap.add(rune.id);
 							player.runes.remove(rune.id);
 						});
-						var cardsToSave = [];
 						if (playerPoints) {
 							playerPoints.forEach(function (point) {
 								var jackCount = point.attachments.length;

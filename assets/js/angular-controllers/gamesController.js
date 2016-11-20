@@ -398,7 +398,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									self.countering = true;
 								}
 							} else {
-								alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
+								alert(self.game.log[self.game.log.length - 1] + ". You cannot counter, because you do not have a two");
 								// Request resolution if can't counter
 								io.socket.put("/game/resolve", 
 									{

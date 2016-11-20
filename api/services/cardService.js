@@ -85,7 +85,7 @@ module.exports = {
 						ruleText = "ONE-OFF: Destroy ALL POINTS";
 						break;
 					case 2:
-						ruleText = "ONE-OFF: Counter TARGET ONE-OFF that was just played. (Can be played out of turn)\nOR\nONE-OFF: Destroy target RUNE (Cannot be played out of turn).";
+						ruleText = "ONE-OFF: Destroy target RUNE";
 						break;
 					case 3:
 						ruleText = "ONE-OFF: Choose 1 SCRAPPED card and bring it to your HAND.";
