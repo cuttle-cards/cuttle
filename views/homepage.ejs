@@ -208,7 +208,7 @@
                                     <div ng-repeat="card in gc.opponent.points" class="pointCard">
                                         <img ng-src="{{card.img}}" class="pointCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="$index" draggable="false">
                                         <div ng-repeat="jack in card.attachments" class="jackCard">
-                                            <img ng-src="{{jack.img}}" id="oppJackCardImg" draggable="false">
+                                            <img ng-src="{{jack.img}}" id="oppJackCardImg" draggable="false" ts-droppable allow-drop="gc.dragoverOpJack" upon-drop="gc.dropOpJack" index="gc.opponent.points.indexOf(card)">
                                         </div>
                                     </div>
                                 </div>
@@ -231,7 +231,7 @@
                                 <div id="oppRunes">
                                     <!-- Opponent Runes -->
                                     <div ng-repeat="card in gc.opponent.runes" class="runeCard">
-                                        <img ng-src="{{card.img}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="0" draggable="false">
+                                        <img ng-src="{{card.img}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpRune" upon-drop="gc.dropOpRune" index="0" draggable="false">
                                     </div>
                                 </div>
                                 <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes">

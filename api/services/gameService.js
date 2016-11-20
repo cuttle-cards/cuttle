@@ -36,6 +36,8 @@ module.exports = {
 			.populate("secondCard")
 			.populate("oneOff")
 			.populate("twos")
+			.populate("oneOffTarget")
+			.populate("attachedToTarget")
 			.exec(function (error, game) {
 				if (error || !game) {
 					var res;

@@ -58,6 +58,7 @@ module.exports.routes = {
   '/game/scuttle'           :   'gameController.scuttle',
   '/game/jack'              :   'gameController.jack',
   '/game/untargetedOneOff'  :   'gameController.untargetedOneOff',
+  '/game/targetedOneOff'    :   'gameController.targetedOneOff',
   '/game/counter'           :   'gameController.counter',
   '/game/resolve'           :   'gameController.resolve',
   'game/resolveFour'        :   'gameController.resolveFour', 

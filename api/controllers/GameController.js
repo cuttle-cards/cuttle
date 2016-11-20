@@ -556,6 +556,69 @@ module.exports = {
 		});
 	}, //End untargetedOneOff()
 
+	targetedOneOff: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		var promiseTarget = cardService.findCard({cardId: req.body.targetId});
+		var promisePoint = null;
+		var targetType = req.body.targetType;
+		if (targetType === "jack") {
+			promisePoint = cardService.findCard({cardId: req.body.pointId});
+		} else {
+			promisePoint = Promise.resolve(null);
+		}
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, Promise.resolve(targetType), promisePoint])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4], targetType = values[5], point = values[6];
+			if (player.pNum === game.turn % 2) {
+				if (!game.oneOff) {
+					if (card.hand === player.id) {
+						if (card.rank === 2 || card.rank === 9) {
+							game.oneOff = card;
+							player.hand.remove(card.id);
+							game.oneOffTarget = target;
+							game.oneOffTargetType = targetType;
+							game.attachedToTarget = null;
+							if (point) game.attachedToTarget = point;
+							game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
+							var saveGame = gameService.saveGame({game: game});
+							var savePlayer = userService.saveUser({user: player});
+							return Promise.all([saveGame, savePlayer]);
+
+						} else {
+							return Promise.reject(new Error("You can only play a 2, or a 9 as targeted one-offs."));
+						}
+					} else {
+						return Promise.reject(new Error("You cannot play a card that is not in your hand"));
+					}
+				} else {
+					return Promise.reject(new Error("There is already a one-off in play; you cannot play any card, except a two to counter."));
+				}
+			} else {	
+				return Promise.reject(new Error("It's not your turn."));
+			}
+		}) //End changeAndSave()
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id})
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: 'targetedOneOff',
+				game: fullGame,
+				victory: victory,
+				pNum: req.session.pNum
+			});
+			return res.ok();
+		}) //End publishAndRespond
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End targetedOneOff
+
 	counter: function (req, res) {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
@@ -650,6 +713,10 @@ module.exports = {
 						game.turn++;
 						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
 						break; //End resolve ACE
+					case 2:
+						console.log("Resolving the " + game.oneOff.name + " on the " + game.oneOffTarget.name + " of type: " + game.oneOffTargetType);
+						if (game.attachedToTarget) console.log("Targetting jack attached to: " + game.attachedToTarget.name);
+						break; //End resolve TWO
 					case 3:
 						game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " will draw one card of her choice from the SCRAP pile");
 						break;
@@ -732,6 +799,10 @@ module.exports = {
 						game.turn++;
 						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");					
 						break; //End resolve SIX
+					case 9:
+						console.log("Resolving the " + game.oneOff.name + " on the " + game.oneOffTarget.name + " of type: " + game.oneOffTargetType);
+						if (game.attachedToTarget) console.log("Targetting jack attached to: " + game.attachedToTarget.name);
+						break; //End resolve NINE
 				} //End switch on oneOff rank
 			}
 			var oneOff = game.oneOff;

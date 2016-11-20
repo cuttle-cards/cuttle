@@ -59,6 +59,20 @@ module.exports = {
       via: 'oneOff'
     },
 
+    oneOffTarget: {
+      model: 'card',
+      via: 'targeted'
+    },
+
+    oneOffTargetType: {
+      type: 'string'
+    },
+
+    attachedToTarget: {
+      model: 'card',
+      via: 'attachedToTarget'
+    },
+
     twos: {
       collection: 'card',
       via: 'twos'

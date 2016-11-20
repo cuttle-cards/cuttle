@@ -65,6 +65,19 @@ module.exports = {
     	model: 'card'
     },
 
+    // Used to track if this card is targeted
+    //by a one-off
+    targeted: {
+      model: 'game'
+    },
+
+    //Used to track if this card is the point card
+    //to which a jack that is targed by a one-off
+    //is attached
+    attachedToTarget: {
+      model: 'game'
+    },
+
   }
 };
 
