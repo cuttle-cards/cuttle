@@ -253,7 +253,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							cardId2: self.cardsToDiscard[1].id
 						},
 						function (res, jwres) {
-							console.log("got response");
+							console.log(jwres);
 							self.resolvingFour = false;
 							self.cardsToDiscard = [];
 							if (jwres.statusCode != 200) alert(jwres.error.message);

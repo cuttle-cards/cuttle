@@ -243,6 +243,7 @@ module.exports = {
 					game.secondCard = null;
 				}
 			}
+			user.frozenId = null;
 			game.log.push("Player " + user.pNum + " Drew a card");
 			game.turn++;
 			var saveGame = gameService.saveGame({game: game})		;
@@ -277,18 +278,23 @@ module.exports = {
 			var game = values [0], player = values[1], card = values[2];
 			if (game.turn % 2 === player.pNum) {
 				if (card.hand === player.id) {
-					if (card.rank <= 10) {
-						// Move is legal; make changes
-						player.points.add(card.id);
-						player.hand.remove(card.id);
-						game.log.push("Player " + player.pNum + " played the " + card.name + " for points");
-						game.turn++;
-						var saveGame = gameService.saveGame({game: game});
-						var savePlayer = userService.saveUser({user: player});
-						return Promise.all([saveGame, savePlayer]);
-					} else {
-						return Promise.reject(new Error("You can only play a number card as points."));
-					}
+						if (card.rank <= 10) {
+							if (player.frozenId != card.id) {
+								// Move is legal; make changes
+								player.points.add(card.id);
+								player.hand.remove(card.id);
+								player.frozenId = null;
+								game.log.push("Player " + player.pNum + " played the " + card.name + " for points");
+								game.turn++;
+								var saveGame = gameService.saveGame({game: game});
+								var savePlayer = userService.saveUser({user: player});
+								return Promise.all([saveGame, savePlayer]);
+							} else {
+								return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
+							}								
+						} else {
+							return Promise.reject(new Error("You can only play a number card as points."));
+						}
 				} else {
 					return Promise.reject(new Error("You can only play a card that is in your hand."));
 				}
@@ -325,14 +331,19 @@ module.exports = {
 			if (game.turn % 2 === player.pNum) {
 				if (card.hand === player.id) {
 					if ((card.rank >= 12 && card.rank <= 13) || card.rank === 8) {
-						// Everything okay; make changes
-						player.runes.add(card.id);
-						player.hand.remove(card.id);
-						game.log.push("Player " + player.pNum + " played the " + card.name + " as a rune");
-						game.turn++;
-						var saveGame = gameService.saveGame({game: game});
-						var savePlayer = userService.saveUser({user: player});
-						return Promise.all([saveGame, savePlayer]);
+						if (player.frozenId != card.id) {
+							// Everything okay; make changes
+							player.runes.add(card.id);
+							player.hand.remove(card.id);
+							player.frozenId = null;
+							game.log.push("Player " + player.pNum + " played the " + card.name + " as a rune");
+							game.turn++;
+							var saveGame = gameService.saveGame({game: game});
+							var savePlayer = userService.saveUser({user: player});
+							return Promise.all([saveGame, savePlayer]);
+						} else {
+							return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
+						}
 					} else {
 						return Promise.reject(new Error("Only Kings, Queens, and Eights may be played as Runes without a target"));
 					}
@@ -373,24 +384,29 @@ module.exports = {
 				if (card.hand === player.id) {
 					if (target.points === opponent.id) {
 						if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
-							// Everything is good; make changes
-								// Remove attachments from target
-							target.attachments.forEach(function (jack) {
-								target.attachments.remove(jack.id);
-								game.scrap.add(jack.id);
-							});
-							game.scrap.add(target.id);
-							game.scrap.add(card.id);
-							opponent.points.remove(target.id);
-							player.hand.remove(card.id);
-							game.log.push("Player " + player.pNum + " scuttled Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
-							game.turn++;
-							// Save changes
-							var saveGame = gameService.saveGame({game: game});
-							var savePlayer = userService.saveUser({user: player});
-							var saveOpponent = userService.saveUser({user: opponent});
-							var saveTarget = cardService.saveCard({card: target});
-							return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
+							if (player.frozenId != card.id) {
+								// Move is legal; make changes
+									// Remove attachments from target
+								target.attachments.forEach(function (jack) {
+									target.attachments.remove(jack.id);
+									game.scrap.add(jack.id);
+								});
+								game.scrap.add(target.id);
+								game.scrap.add(card.id);
+								opponent.points.remove(target.id);
+								player.hand.remove(card.id);
+								player.frozenId = null;
+								game.log.push("Player " + player.pNum + " scuttled Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
+								game.turn++;
+								// Save changes
+								var saveGame = gameService.saveGame({game: game});
+								var savePlayer = userService.saveUser({user: player});
+								var saveOpponent = userService.saveUser({user: opponent});
+								var saveTarget = cardService.saveCard({card: target});
+								return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
+							} else {
+								return Promise.reject(new Error("That card is frozen! You must wait a turn to play it."));
+							}
 						} else {
 							return Promise.reject(new Error("You can only scuttle an opponent's point card with a higher rank point card, or the same rank with a higher suit. Suit order (low to high) is: Clubs < Diamonds < Hearts < Spades"));
 						}
@@ -436,19 +452,24 @@ module.exports = {
 						if (target.points === opponent.id) {
 							var queenCount = userService.queenCount({user: opponent});
 							if (queenCount === 0) {
-								// Everything good; change and save
-								player.points.add(target.id); //This also removes card from opponent's points (foreign key is 1:1)
-								player.hand.remove(card.id);
-								card.index = target.attachments.length;
-								target.attachments.add(card.id);
-								game.log.push("Player " + player.pNum + " stole Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
-								game.turn++;
-								var saveGame = gameService.saveGame({game: game});
-								var savePlayer = userService.saveUser({user: player});
-								var saveOpponent = userService.saveUser({user: opponent});
-								var saveCard = cardService.saveCard({card: card});
-								var saveTarget = cardService.saveCard({card: target});
-								return Promise.all([saveGame, savePlayer, saveOpponent, saveCard, saveTarget]);
+								if (player.pNum != card.id) {
+									// Everything good; change and save
+									player.points.add(target.id); //This also removes card from opponent's points (foreign key is 1:1)
+									player.hand.remove(card.id);
+									player.frozenId = null;
+									card.index = target.attachments.length;
+									target.attachments.add(card.id);
+									game.log.push("Player " + player.pNum + " stole Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
+									game.turn++;
+									var saveGame = gameService.saveGame({game: game});
+									var savePlayer = userService.saveUser({user: player});
+									var saveOpponent = userService.saveUser({user: opponent});
+									var saveCard = cardService.saveCard({card: card});
+									var saveTarget = cardService.saveCard({card: target});
+									return Promise.all([saveGame, savePlayer, saveOpponent, saveCard, saveTarget]);
+								} else {
+									return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
+								}
 
 							} else {
 								return Promise.reject(new Error("You cannot use a Jack while your opponent has a Queen."));
@@ -517,12 +538,16 @@ module.exports = {
 									default:
 										break;
 								}
-								game.oneOff = card;
-								player.hand.remove(card.id);
-								game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText);
-								var saveGame = gameService.saveGame({game: game});
-								var savePlayer = userService.saveUser({user: player});
-								return Promise.all([saveGame, savePlayer]);
+								if (player.frozenId != card.id) {
+									game.oneOff = card;
+									player.hand.remove(card.id);
+									game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText);
+									var saveGame = gameService.saveGame({game: game});
+									var savePlayer = userService.saveUser({user: player});
+									return Promise.all([saveGame, savePlayer]);
+								} else {
+									return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
+								}
 								break;
 							default:
 							return Promise.reject(new Error("You cannot play that card as a one-off without a target."));
@@ -590,16 +615,20 @@ module.exports = {
 									return Promise.reject(new Error("You cannot play a TARGETTED ONE-OFF when your opponent has more than one Queen"));
 									break;
 							}
-							game.oneOff = card;
-							player.hand.remove(card.id);
-							game.oneOffTarget = target;
-							game.oneOffTargetType = targetType;
-							game.attachedToTarget = null;
-							if (point) game.attachedToTarget = point;
-							game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
-							var saveGame = gameService.saveGame({game: game});
-							var savePlayer = userService.saveUser({user: player});
-							return Promise.all([saveGame, savePlayer]);
+							if (player.frozenId != card.id) {
+								game.oneOff = card;
+								player.hand.remove(card.id);
+								game.oneOffTarget = target;
+								game.oneOffTargetType = targetType;
+								game.attachedToTarget = null;
+								if (point) game.attachedToTarget = point;
+								game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
+								var saveGame = gameService.saveGame({game: game});
+								var savePlayer = userService.saveUser({user: player});
+								return Promise.all([saveGame, savePlayer]);
+							} else {
+								return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
+							}
 
 						} else {
 							return Promise.reject(new Error("You can only play a 2, or a 9 as targeted one-offs."));
@@ -729,7 +758,6 @@ module.exports = {
 						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
 						break; //End resolve ACE
 					case 2:
-						console.log("Resolving the " + game.oneOff.name + " on the " + game.oneOffTarget.name + " of type: " + game.oneOffTargetType);
 						game.log.push("The " + game.oneOff.name + " resolves; the " + game.oneOffTarget.name + " is DESTROYED.");
 						game.scrap.add(game.oneOffTarget.id);
 						switch (game.oneOffTargetType) {
@@ -746,7 +774,6 @@ module.exports = {
 						} //End switch(oneOffTargetType)
 						game.oneOffTargetType = null;
 						game.oneOffTarget = null;
-						if (game.attachedToTarget) console.log("Targetting jack attached to: " + game.attachedToTarget.name);
 						game.turn++;
 						break; //End resolve TWO
 					case 3:
@@ -831,12 +858,30 @@ module.exports = {
 						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");					
 						break; //End resolve SIX
 					case 9:
-						console.log("Resolving the " + game.oneOff.name + " on the " + game.oneOffTarget.name + " of type: " + game.oneOffTargetType);
-						if (game.attachedToTarget) console.log("Targetting jack attached to: " + game.attachedToTarget.name);
+						opponent.hand.add(game.oneOffTarget.id);
+						game.log.push("The " + game.oneOff.name + " resolves on the" + game.oneOffTarget.name + ". The " + game.oneOffTarget.name + " is returned to player " + opponent.pNum + "'s hand, and she may not play it next turn" );
+						opponent.frozenId = game.oneOffTarget.id;
+						switch(game.oneOffTargetType) {
+							case 'rune':
+								opponent.runes.remove(game.oneOffTarget.id);
+								break;
+							case 'point':
+								opponent.points.remove(game.oneOffTarget.id);
+								break;
+							case 'jack':
+								game.oneOffTarget.attachedTo = null;
+								cardsToSave.push(cardService.saveCard({card: game.oneOffTarget}));
+								player.points.add(game.attachedToTarget.id);
+								game.oneOffTarget = null;
+								game.attachedToTarget = null;								
+								break;
+						}
+						game.turn++;
 						break; //End resolve NINE
 				} //End switch on oneOff rank
 			}
 			var oneOff = game.oneOff;
+			player.frozenId = null;
 			if (oneOff.rank != 3 || !happened) {
 				game.scrap.add(game.oneOff.id);
 				game.oneOff = null;
