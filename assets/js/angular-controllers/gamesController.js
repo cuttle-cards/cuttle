@@ -7,6 +7,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.resolvingFour = false;
 	self.cardsToDiscard = [];
 	self.resolvingThree = false;
+	self.resolvingSeven = false;
+	self.opResolvingSeven = false;
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	self.showDeck = false;
 
@@ -21,46 +23,58 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Target Opponent Card Helpers //
 	//////////////////////////////////
 	self.scuttle = function (cardId, targetId) {
-		io.socket.put("/game/scuttle", 
-			{
-				opId: self.game.players[(self.pNum + 1) % 2].id,
-				cardId: cardId,
-				targetId: targetId
-			},
-			function (res, jwres) {
-				console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
-			}
-		);
+		if (!self.resolvingSeven) {		
+			io.socket.put("/game/scuttle", 
+				{
+					opId: self.game.players[(self.pNum + 1) % 2].id,
+					cardId: cardId,
+					targetId: targetId
+				},
+				function (res, jwres) {
+					console.log(jwres);
+					if (jwres.statusCode != 200) alert(jwres.error.message);
+				}
+			);
+		} else {
+			// Resolve seven case
+		}
 	};
 	self.jack = function (cardId, targetId) {
-		io.socket.put("/game/jack", 
+		if (!self.resolvingSeven) {		
+			io.socket.put("/game/jack", 
+				{
+					opId: self.game.players[(self.pNum + 1) % 2].id,
+					cardId: cardId,
+					targetId: targetId
+				},
+				function (res, jwres) {
+					console.log(jwres);
+					if (jwres.statusCode != 200) alert(jwres.error.message);
+				}
+			)
+		} else {
+			// Resolve seven case
+		}
+	};
+	self.targetedOneOff = function (cardId, targetId, targetType, pointId) {
+		if (!resolvingSeven) {		
+			var pId = null;
+			if (pointId) pId = pointId;
+			io.socket.put("/game/targetedOneOff", 
 			{
-				opId: self.game.players[(self.pNum + 1) % 2].id,
+				opId: self.opponent.id,
 				cardId: cardId,
-				targetId: targetId
+				targetId: targetId,
+				targetType: targetType,
+				pointId: pId
 			},
 			function (res, jwres) {
 				console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
-			}
-		)
-	};
-	self.targetedOneOff = function (cardId, targetId, targetType, pointId) {
-		var pId = null;
-		if (pointId) pId = pointId;
-		io.socket.put("/game/targetedOneOff", 
-		{
-			opId: self.opponent.id,
-			cardId: cardId,
-			targetId: targetId,
-			targetType: targetType,
-			pointId: pId
-		},
-		function (res, jwres) {
-			console.log(jwres);
-			if (jwres.statusCode != 200) alert(jwres.error.message);
-		});
+			});
+		} else {
+			// Resolving seven case
+		}
 	};
 	self.stackDeck = function (cardId) {
 		io.socket.put("/game/stackDeck", 
@@ -80,7 +94,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.dragoverPoints = function (targetIndex) {
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
 			if (dragData.rank < 11) {
-				return true;
+				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
+					return true;
+				}
 			} else {
 				return false;
 			}
@@ -89,7 +105,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.dragoverRunes = function (targetIndex) {
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
 			if ((dragData.rank >= 12 && dragData.rank <= 13) || dragData.rank === 8) {
-				return true;
+				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
+					return true;
+				}
 			} else {
 				return false;
 			}
@@ -98,7 +116,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.dragoverOpPoint = function (targetIndex) {
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
 			if (dragData.rank <= 11) {
-				return true;
+				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
+					return true;
+				}
 			} else {
 				return false;
 			}
@@ -106,13 +126,21 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	};
 	self.dragoverOpRune = function (targetIndex) {
 		if (!self.countering && !self.resolvingThree && !self.resolvingFour) {
-			if (dragData.rank === 9 || dragData.rank === 2) return true;
+			if (dragData.rank === 9 || dragData.rank === 2) {
+				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
+					return true;
+				}
+			}
 			return false;
 		}
 	};
 	self.dragoverOpJack = function (targetIndex) {
 		if (!self.countering && !self.resolvingThree && !self.resolvingFour) {
-			if (dragData.rank === 9 || dragData.rank === 2) return true;
+			if (dragData.rank === 9 || dragData.rank === 2) {
+				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
+					return true;
+				}
+			}
 			return false;
 		}
 	}
@@ -125,7 +153,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				case 5:
 				case 6:
 				case 7:
-					return true;
+					if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
+						return true;
+					}
 					break;
 				default:
 					return false;
@@ -145,27 +175,43 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Drop Callbacks //
 	////////////////////
 	self.dropPoints = function (targetIndex) {
-		// TODO: Handle Seven resolution
-		io.socket.put("/game/points", 
-		{
-			cardId: dragData.id,
-		},
-		function (res, jwres) {
-			console.log(jwres);
-			if (jwres.statusCode != 200) alert(jwres.error.message);
+		if (!self.resolvingSeven) {		
+			io.socket.put("/game/points", 
+			{
+				cardId: dragData.id,
+			},
+			function (res, jwres) {
+				console.log(jwres);
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			});
+		//Resolving Seven case
+		} else {
+			console.log(dragData);
+			console.log(self.game);
+			io.socket.put("/game/seven/points", 
+			{
+				cardId: dragData.id,
+				index: dragData.index
+			},
+			function (res,jwres) {
+				console.log(jwres);
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			});
 		}
-		);
 	};
 	self.dropRunes = function (targetIndex) {
-		// TODO: Handle Seven resolution
-		io.socket.put("/game/runes", 
-		{
-			cardId: dragData.id
-		},
-		function (res, jwres) {
-			if (jwres.statusCode != 200) alert(jwres.error.message);
+		if (!self.resolvingSeven) {
+			io.socket.put("/game/runes", 
+			{
+				cardId: dragData.id
+			},
+			function (res, jwres) {
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			}
+			)
+		} else {
+			//Resolving seven case
 		}
-		)
 	}
 	self.dropOpPoint = function (targetIndex) {
 		switch (dragData.rank) {
@@ -195,22 +241,25 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		self.targetedOneOff(dragData.id, self.opponent.runes[targetIndex].id, "rune");
 	};
 	self.dropOpJack = function (targetIndex) {
-
 		self.targetedOneOff(dragData.id, self.opponent.points[targetIndex].attachments[self.opponent.points[targetIndex].attachments.length - 1].id, "jack", self.opponent.points[targetIndex].id);
 	};
 	self.dropScrap = function (targetIndex) {
 		if (!self.countering) {		
-			io.socket.put("/game/untargetedOneOff", 
-				{
-					cardId: dragData.id
-				},
+			if (!self.resolvingSeven) {			
+				io.socket.put("/game/untargetedOneOff", 
+					{
+						cardId: dragData.id
+					},
 
-				function (res, jwres) {
-					if (jwres.statusCode != 200) {
-						alert(jwres.error.message);
+					function (res, jwres) {
+						if (jwres.statusCode != 200) {
+							alert(jwres.error.message);
+						}
 					}
-				}
-			);
+				);
+			} else {
+				//Resolving seven case
+			}
 		} else {
 			// If player dropped a two to counter, request to counter
 			io.socket.put("/game/counter", 
@@ -431,16 +480,32 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 										alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
 									}
 								}
-
 								break; //End resolve 4 case
 							case 7:
+								if (obj.data.happened) {
+									if (obj.data.playedBy === self.pNum) {
+										self.resolvingSeven = true;
+										alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
+									} else {
+										self.opResolvingSeven = true;
+									}
+								}
 								break; //End resolve 7 case
 							default:
 								break; //End resolve default case
 						}
 						break; //End resolve case
-				}
-				break;
+					case 'sevenPoints':
+					case 'sevenRunes':
+					case 'sevenScuttle':
+					case 'sevenJack':
+					case 'sevenUntargetedOneOff':
+					case 'sevenTargetedOneOff':
+						self.resolvingSeven = false;
+						self.opResolvingSeven = false;
+						break;
+				} //End switch on change
+				break; //End obj.verb = "updated" case
 		}
 		$scope.$apply();
 	});

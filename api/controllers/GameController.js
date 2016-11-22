@@ -857,6 +857,9 @@ module.exports = {
 						game.turn++;
 						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");					
 						break; //End resolve SIX
+					case 7:
+						game.log.push("The " + game.oneOff.name + " resolves; she will choose one card from the top two in the deck, and play it however she likes. Top two cards: " + game.topCard.name + " and " + game.secondCard.name);
+						break; //End resolve SEVEN
 					case 9:
 						opponent.hand.add(game.oneOffTarget.id);
 						game.log.push("The " + game.oneOff.name + " resolves on the" + game.oneOffTarget.name + ". The " + game.oneOffTarget.name + " is returned to player " + opponent.pNum + "'s hand, and she may not play it next turn" );
@@ -989,6 +992,70 @@ module.exports = {
 			return res.badRequest(err);
 		});
 	}, //End resolveThree()
+
+	/*
+	***Seven-Resolution Plays
+	*/
+	sevenPoints: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		Promise.all([promiseGame, promisePlayer, promiseCard])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], card = values[2];
+			if (game.turn % 2 === player.pNum) {
+				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
+					if (card.rank < 11) {
+						player.points.add(card.id);
+						if (req.body.index === 0) {
+							if (game.secondCard) {
+								game.topCard = game.secondCard.id;
+							} else {
+								game.topCard = null;
+							}
+						}
+						// If there are more cards in the deck, assign secondCard
+						if (game.deck.length > 0) {
+							var min = 0;
+							var max = game.deck.length - 1;
+							var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+							game.secondCard = game.deck[random]	;
+							game.deck.remove(game.deck[random].id);
+						} else {
+							game.secondCard = null;
+						}
+						game.log.push("Player " + player.pNum + " played the " + card.name + " off the top of the deck as points");
+						game.turn++;	
+						var saveGame = gameService.saveGame({game: game})					;
+						var savePlayer = userService.saveUser({user: player});
+						return Promise.all([saveGame, savePlayer]);
+					} else {
+						return Promise.reject(new Error("You can only play Ace - Ten cards as points"));
+					}
+				} else {
+					return Promise.reject(new Error("You must pick a card from the deck to play when resolving a seven"));
+				}
+			} else {
+				return Promise.reject(new Error("It's not your turn"));
+			}
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: 'sevenPoints',
+				game: fullGame,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	},
 
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");

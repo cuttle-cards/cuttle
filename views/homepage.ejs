@@ -201,6 +201,10 @@
                                 <!-- Deck and Scrap -->
                                 <img src="images/deck.jpg" id="deck" ng-click="gc.draw()" draggable="false"></img>
                                 <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false"></img>
+                                <img ng-show="gc.resolvingSeven" ng-src="{{gc.game.topCard.img}}" ts-draggable class="deckCard"  card-id="gc.game.topCard.id" index="0" type="'deck'" suit="gc.game.topCard.suit" rank="gc.game.topCard.rank">
+                                <img ng-show="gc.resolvingSeven" ng-src="{{gc.game.secondCard.img}}" ts-draggable class="deckCard" card-id="gc.game.secondCard.id" index="1" type="'deck'" suit="gc.game.secondCard.suit" rank="gc.game.secondCard.rank">
+                                <img ng-show="gc.opResolvingSeven" ng-src="{{gc.game.topCard.img}}" draggable="false" class="deckCard">
+                                <img ng-show="gc.opResolvingSeven" ng-src="{{gc.game.secondCard.img}}" draggable="false" class="deckCard">  
 <!--                                 <div id="stack">Stack</div> -->
                             </div>
                             <div class="col-xs-4 col-md-4 field row" id='points'>

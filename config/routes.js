@@ -64,4 +64,6 @@ module.exports.routes = {
   'game/resolveFour'        :   'gameController.resolveFour', 
   '/game/resolveThree'      :   'gameController.resolveThree',
   '/game/stackDeck'         :   'gameController.stackDeck',
+  // Resolving Sevens
+  '/game/seven/points'      :   'gameController.sevenPoints',
 };

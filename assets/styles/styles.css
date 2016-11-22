@@ -354,6 +354,15 @@ body {
                   .scrapCardImg {
                     height: 100%;
                   }
+              /*These cards only display while resolving a seven*/
+              .deckCard {
+                position: relative;
+                height: 100px;
+                display: inline-block;
+                top: 200px;
+                left: 450%;  
+                z-index: 4;              
+              }
 
 
     /*Bottom Wrap*/
