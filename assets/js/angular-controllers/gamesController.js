@@ -211,6 +211,14 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			)
 		} else {
 			//Resolving seven case
+			io.socket.put("/game/seven/runes",
+			{
+				cardId: dragData.id,
+				index: dragData.index
+			}, function (res, jwres) {
+				console.log(jwres);
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			});
 		}
 	}
 	self.dropOpPoint = function (targetIndex) {
