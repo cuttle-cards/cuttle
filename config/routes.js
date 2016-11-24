@@ -67,4 +67,5 @@ module.exports.routes = {
   // Resolving Sevens
   '/game/seven/points'      :   'gameController.sevenPoints',
   '/game/seven/runes'       :   'gameController.sevenRunes',
+  '/game/seven/scuttle'     :   'gameController.sevenScuttle',
 };

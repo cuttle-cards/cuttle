@@ -1007,23 +1007,7 @@ module.exports = {
 				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
 					if (card.rank < 11) {
 						player.points.add(card.id);
-						if (req.body.index === 0) {
-							if (game.secondCard) {
-								game.topCard = game.secondCard.id;
-							} else {
-								game.topCard = null;
-							}
-						}
-						// If there are more cards in the deck, assign secondCard
-						if (game.deck.length > 0) {
-							var min = 0;
-							var max = game.deck.length - 1;
-							var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-							game.secondCard = game.deck[random]	;
-							game.deck.remove(game.deck[random].id);
-						} else {
-							game.secondCard = null;
-						}
+						game = gameService.sevenCleanUp({game: game, index: req.body.index});
 						game.log.push("Player " + player.pNum + " played the " + card.name + " off the top of the deck as points");
 						game.turn++;	
 						var saveGame = gameService.saveGame({game: game})					;
@@ -1068,23 +1052,7 @@ module.exports = {
 				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
 					if (card.rank === 12 || card.rank === 13 || card.rank === 8) {
 						player.runes.add(card.id);
-						if (req.body.index === 0) {
-							if (game.secondCard) {
-								game.topCard = game.secondCard.id;
-							} else {
-								game.topCard = null;
-							}
-						}
-						// If there are more cards in the deck, assign secondCard
-						if (game.deck.length > 0) {
-							var min = 0;
-							var max = game.deck.length - 1;
-							var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-							game.secondCard = game.deck[random]	;
-							game.deck.remove(game.deck[random].id);
-						} else {
-							game.secondCard = null;
-						}
+						game = gameService.sevenCleanUp({game: game, index: req.body.index});
 						game.log.push("Player " + player.pNum + " played the " + card.name + " off the top of the deck, as a rune");
 						game.turn++;
 						var saveGame = gameService.saveGame({game: game});
@@ -1117,6 +1085,65 @@ module.exports = {
 			return res.badRequest(err);
 		});		
 	}, //End sevenRunes
+
+	sevenScuttle: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		var promiseTarget = cardService.findCard({cardId: req.body.targetId});
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
+			if (game.turn % 2 === player.pNum) {
+				if (card.id === game.topCard.id || card.id === game.secondCard.id) {
+					if (card.rank < 11) {
+						if (target.points === opponent.id) {
+							if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
+								opponent.points.remove(target.id);
+								player.hand.remove(card.id);
+								game.scrap.add(target.id);
+								game.scrap.add(card.id);
+								game = gameService.sevenCleanUp({game: game, index: req.body.index});
+								game.log.push("Player " + player.pNum + " scuttled player " + opponent.pNum + "'s " + target.name + " with the " + card.name + " from the top of the deck");
+								game.turn++;
+								var saveGame = gameService.saveGame({game: game});
+								var savePlayer = userService.saveUser({user: player});
+								var saveOpponent = userService.saveUser({user: opponent});
+								return Promise.all([saveGame, savePlayer, saveOpponent]);
+							} else {
+								return Promise.reject(new Error("You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)"));
+							}
+						} else {
+							return Promise.reject(new Error("You can only scuttle a card in your oppponent's points"));
+						}
+					} else {
+						return Promise.reject(new Error("You can only scuttle with an ace through ten"));;
+					}
+				} else {
+					return Promise.reject(new Error("You can only one of the top two cards from the deck while resolving a seven"));
+				}
+			} else {
+				return Promise.reject(new Error("It's not your turn"));
+			}
+		}) //End changeAndSave()
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: 'sevenScuttle',
+				game: fullGame,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End sevenScuttle()
 
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");

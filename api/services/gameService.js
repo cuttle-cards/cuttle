@@ -136,9 +136,10 @@ module.exports = {
 				return reject(new Error("Cannot populate Game without gameId"));
 			}
 		});
-	},
+	}, //End populateGame()
 	/*Checks a game to determine if either player has won
 	***options = {game: GameModel}
+	**SYNCRONOUS
 	*/
 	checkWinGame: function (options) {
 		var res = {
@@ -155,6 +156,33 @@ module.exports = {
 			}
 			// return Promise.resolve(res);
 			return res;
+	},
+
+	/*Replaces card played during a seven from the deck
+	***options = {game: GameModel, index: integer}
+	**index = 0 if played from top card, index = 1 if played from second card
+	**SYNCRONOUS
+	*/
+	sevenCleanUp: function (options) {
+		var game = options.game, index = options.index;
+		if (options.index === 0) {
+			if (game.secondCard) {
+				game.topCard = game.secondCard.id;
+			} else {
+				game.topCard = null;
+			}
+		}
+		// If there are more cards in the deck, assign secondCard
+		if (game.deck.length > 0) {
+			var min = 0;
+			var max = game.deck.length - 1;
+			var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+			game.secondCard = game.deck[random]	;
+			game.deck.remove(game.deck[random].id);
+		} else {
+			game.secondCard = null;
+		}
+		return game;		
 	}
 
 };

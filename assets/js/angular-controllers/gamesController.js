@@ -28,7 +28,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				{
 					opId: self.game.players[(self.pNum + 1) % 2].id,
 					cardId: cardId,
-					targetId: targetId
+					targetId: targetId,
+					index: dragData.index
 				},
 				function (res, jwres) {
 					console.log(jwres);
@@ -37,8 +38,18 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			);
 		} else {
 			// Resolve seven case
+			io.socket.put("/game/seven/scuttle", 
+			{
+				opId: self.opponent.id,
+				cardId: cardId,
+				targetId: targetId
+			},
+			function (res, jwres) {
+				console.log(jwres);
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			});
 		}
-	};
+	}; //End scuttle()
 	self.jack = function (cardId, targetId) {
 		if (!self.resolvingSeven) {		
 			io.socket.put("/game/jack", 
@@ -55,7 +66,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		} else {
 			// Resolve seven case
 		}
-	};
+	}; //End jack()
 	self.targetedOneOff = function (cardId, targetId, targetType, pointId) {
 		if (!resolvingSeven) {		
 			var pId = null;
