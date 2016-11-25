@@ -1007,6 +1007,7 @@ module.exports = {
 				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
 					if (card.rank < 11) {
 						player.points.add(card.id);
+						player.frozenId = null;
 						game = gameService.sevenCleanUp({game: game, index: req.body.index});
 						game.log.push("Player " + player.pNum + " played the " + card.name + " off the top of the deck as points");
 						game.turn++;	
@@ -1052,6 +1053,7 @@ module.exports = {
 				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
 					if (card.rank === 12 || card.rank === 13 || card.rank === 8) {
 						player.runes.add(card.id);
+						player.frozenId = null;
 						game = gameService.sevenCleanUp({game: game, index: req.body.index});
 						game.log.push("Player " + player.pNum + " played the " + card.name + " off the top of the deck, as a rune");
 						game.turn++;
@@ -1100,8 +1102,15 @@ module.exports = {
 					if (card.rank < 11) {
 						if (target.points === opponent.id) {
 							if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
+								// Move is legal; make changes
+									// Remove attachments from target
+								target.attachments.forEach(function (jack) {
+									target.attachments.remove(jack.id);
+									game.scrap.add(jack.id);
+								});								
 								opponent.points.remove(target.id);
 								player.hand.remove(card.id);
+								player.frozenId = null;
 								game.scrap.add(target.id);
 								game.scrap.add(card.id);
 								game = gameService.sevenCleanUp({game: game, index: req.body.index});
@@ -1110,7 +1119,8 @@ module.exports = {
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
 								var saveOpponent = userService.saveUser({user: opponent});
-								return Promise.all([saveGame, savePlayer, saveOpponent]);
+								var saveTarget = cardService.saveCard({card: target});
+								return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
 							} else {
 								return Promise.reject(new Error("You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)"));
 							}
