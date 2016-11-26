@@ -50,4 +50,13 @@ app.controller("menuController", ['$scope', function ($scope) {
 		$scope.$apply();
 	});
 
+	io.socket.on("gameFull", function (obj) {
+		console.log("gameFull");
+		console.log(obj);
+		self.games.forEach(function (game) {
+			if (game.id === obj.id) game.status = false;
+		});
+		$scope.$apply();
+	});
+
 }]);

@@ -53,6 +53,7 @@ module.exports = {
 				var pNum;
 				if (game.players) {
 					pNum = game.players.length;
+					if (game.players.length === 1) sails.sockets.blast("gameFull", {id: game.id});
 				} else {
 					pNum = 0;
 				}
@@ -1277,7 +1278,6 @@ module.exports = {
 	}, //End sevenUntargetedOneOff()
 
 	sevenTargetedOneOff: function (req, res) {
-		console.log(req.body);
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseOpponent = userService.findUser({userId: req.body.opId});
@@ -1343,6 +1343,46 @@ module.exports = {
 			return res.ok();
 		})
 		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End sevenTargetedOneOff
+
+	gameOver: function (req, res) {
+		var promisePlayer = userService.findUser({userId: req.session.usr})
+		.then(function changeAndSave (player) {
+			var ids = [];
+			// Remove cards in hand
+			for (i=0; i<player.hand.length; i++) {
+				ids.push(player.hand[i].id);
+			}
+			ids.forEach(function (id) {
+				player.hand.remove(id);
+			});
+			ids = [];
+			// Remove cards in points
+			for (i=0; i<player.points.length; i++) {
+				ids.push(player.points[i].id);
+			}
+			ids.forEach(function (id) {
+				player.points.remove(id);
+			});
+			ids = [];
+			// Remove cards in runes
+			for (i=0;i<player.runes.length; i++) {
+				ids.push(player.runes[i].id)
+			} 
+			ids.forEach(function (id) {
+				player.runes.remove(id);
+			});
+			player.game = null;
+			player.pNum = null;
+			player.frozenId = null;
+			return userService.saveUser({user: player});
+		}) //End changeAndSave
+		.then(function respond (player) {
+			return res.ok();
+		})
+		.catch(function failed(err) {
 			return res.badRequest(err);
 		});
 	},
