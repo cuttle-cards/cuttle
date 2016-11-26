@@ -530,6 +530,7 @@ module.exports = {
 										if (game.scrap.length < 1) return Promise.reject(new Error("You can only play a 3 as a one-off, if there are cards in the scrap pile"));
 										break;
 									case 4:
+									// TODO: FIND OPPONENT AND CHECK THEIR HAND SIZE
 										break;
 									case 5:
 									case 7:
@@ -1208,7 +1209,72 @@ module.exports = {
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		});		
-	},
+	}, //End sevenJack()
+
+	sevenUntargetedOneOff: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		Promise.all([promiseGame, promisePlayer, promiseCard])		
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], card = values[2];
+			if (game.turn % 2 === player.pNum) {
+				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
+					switch (card.rank) {
+						case 1:
+						case 3:
+						case 4:
+						case 5:
+						case 6:
+						case 7:
+							switch (card.rank) {
+								case 3:
+									if (game.scrap.length === 0) return Promise.reject(new Error("You can only play a 3 ONE-OFF if there are cards in the scrap pile"));
+									break;
+								case 4:
+									break;
+								case 5:
+								case 7:
+									if (!game.topCard) return Promise.reject(new Error("You can only play a " + card.rank + " as a ONE-OFF if there are cards in the deck"))
+									break;
+							}
+							// Move is legal; proceed
+							game.oneOff = card;
+							game = gameService.sevenCleanUp({game: game, index: req.body.index});
+							game.log.push("Player " + player.pNum + " played the " + card.name + " from the top of the deck as a " + card.ruleText);
+							var saveGame = gameService.saveGame({game: game});
+							var savePlayer = userService.saveUser({user: player});
+							return Promise.all([saveGame, savePlayer]);
+							break;
+						default:
+							return Promise.reject(new Error("You cannot play that card as a ONE-OFF without a target"));
+							break;
+					}
+				} else {
+					return Promise.reject(new Error("You can only play cards from the top of the deck while resolving a seven"));
+				}
+			} else {
+				return Promise.reject(new Error("It's not your turn"));
+			}
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: 'sevenOneOff',
+				game: fullGame,
+				pNum: req.session.pNum,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End sevenUntargetedOneOff()
 
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");

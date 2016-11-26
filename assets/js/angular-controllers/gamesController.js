@@ -69,7 +69,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				{
 					opId: self.opponent.id,
 					cardId: cardId,
-					targetId: targetId
+					targetId: targetId,
+					index: dragData.index
 				},
 				function (res, jwres) {
 					console.log(jwres);
@@ -280,8 +281,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					{
 						cardId: dragData.id
 					},
-
 					function (res, jwres) {
+						console.log(jwres);
 						if (jwres.statusCode != 200) {
 							alert(jwres.error.message);
 						}
@@ -289,6 +290,15 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				);
 			} else {
 				//Resolving seven case
+				io.socket.put("/game/seven/untargetedOneOff",
+				{
+					cardId: dragData.id,
+					index: dragData.index
+				},
+				function (res, jwres) {
+					console.log(jwres);
+					if (jwres.statusCode != 200) alert(jwres.error.message);
+				});
 			}
 		} else {
 			// If player dropped a two to counter, request to counter
@@ -456,7 +466,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					case 'oneOff':
 					case 'counter':
 					case 'targetedOneOff':
-					var counteringPnum = (obj.data.pNum + 1) % 2;
+					case 'sevenOneOff':
+					case 'sevenTargetedOneOff':
+						self.resolvingSeven = false;
+						self.opResolvingSeven = false;
+						var counteringPnum = (obj.data.pNum + 1) % 2;
 						if (self.pNum == parseInt(counteringPnum)) {
 							if (self.twosInHand > 0) {
 								var willCounter = confirm(self.game.log[self.game.log.length - 1] + " Would you like to counter with a two?");
