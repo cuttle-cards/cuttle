@@ -1155,6 +1155,61 @@ module.exports = {
 		});
 	}, //End sevenScuttle()
 
+	sevenJack: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		var promiseTarget = cardService.findCard({cardId: req.body.targetId});
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
+			if (game.turn % 2 === player.pNum) {
+				if (card.id === game.topCard.id || card.id === game.secondCard.id) {
+					if (target.points === opponent.id) {
+						if (card.rank === 11) {
+							card.index = target.attachments.length;
+							target.attachments.add(card.id);
+							player.points.add(target.id);
+							player.frozenId = null;
+							game = gameService.sevenCleanUp({game: game, index: req.body.index});
+							game.log.push("Player " + player.pNum + " stole player " + opponent.pNum + "'s " + target.name + " with the " + card.name + " from the top of the deck");
+							game.turn++;
+							var saveGame = gameService.saveGame({game: game});
+							var savePlayer = userService.saveUser({user: player});
+							var saveTarget = cardService.saveCard({card: target});
+							return Promise.all([saveGame, savePlayer, saveTarget]);
+						} else {
+							return Promise.reject(new Error("You can only steal your opponent's points with a jack"));
+						}
+					} else {
+						return Promise.reject(new Error("You can only jack your opponent's point cards"));
+					}
+				} else {
+					return Promise.reject(new Error("You can only one of the top two cards from the deck while resolving a seven"));
+				}
+			} else {
+				return Promise.reject(new Error("It's not your turn"));
+			}		
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: 'sevenJack',
+				game: fullGame,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});		
+	},
+
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");
 		var popGame = gameService.populateGame({gameId: req.session.game})

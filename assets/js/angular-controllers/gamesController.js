@@ -65,6 +65,17 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			)
 		} else {
 			// Resolve seven case
+			io.socket.put("/game/seven/jack", 
+				{
+					opId: self.opponent.id,
+					cardId: cardId,
+					targetId: targetId
+				},
+				function (res, jwres) {
+					console.log(jwres);
+					if (jwres.statusCode != 200) alert(jwres.error.message);
+				}
+			);
 		}
 	}; //End jack()
 	self.targetedOneOff = function (cardId, targetId, targetType, pointId) {
