@@ -80,9 +80,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	}; //End jack()
 	self.targetedOneOff = function (cardId, targetId, targetType, pointId) {
-		if (!resolvingSeven) {		
-			var pId = null;
-			if (pointId) pId = pointId;
+		var pId = null;
+		if (pointId) pId = pointId;
+		if (!self.resolvingSeven) {		
 			io.socket.put("/game/targetedOneOff", 
 			{
 				opId: self.opponent.id,
@@ -97,8 +97,20 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			});
 		} else {
 			// Resolving seven case
+			io.socket.put("/game/seven/targetedOneOff", 
+			{
+				opId: self.opponent.id,
+				cardId: cardId,
+				targetId: targetId,
+				targetType: targetType,
+				pointId: pId,
+				index: dragData.index
+			}, function (res, jwres) {
+				console.log(jwres);
+				if(jwres.statusCode != 200) alert(jwres.error.message);	
+			})
 		}
-	};
+	}; //End targetedOneOff()
 	self.stackDeck = function (cardId) {
 		io.socket.put("/game/stackDeck", 
 			{
@@ -543,8 +555,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					case 'sevenRunes':
 					case 'sevenScuttle':
 					case 'sevenJack':
-					case 'sevenUntargetedOneOff':
-					case 'sevenTargetedOneOff':
 						self.resolvingSeven = false;
 						self.opResolvingSeven = false;
 						break;

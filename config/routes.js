@@ -69,5 +69,6 @@ module.exports.routes = {
   '/game/seven/runes'             :   'gameController.sevenRunes',
   '/game/seven/scuttle'           :   'gameController.sevenScuttle',
   '/game/seven/jack'              :   'gameController.sevenJack',
-  '/game/seven/untargetedOneOff'  : 'gameController.sevenUntargetedOneOff',
+  '/game/seven/untargetedOneOff'  :   'gameController.sevenUntargetedOneOff',
+  '/game/seven/targetedOneOff'    :   'gameController.sevenTargetedOneOff',
 };

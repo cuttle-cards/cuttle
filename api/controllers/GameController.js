@@ -1276,6 +1276,77 @@ module.exports = {
 		});
 	}, //End sevenUntargetedOneOff()
 
+	sevenTargetedOneOff: function (req, res) {
+		console.log(req.body);
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		var promiseTarget = cardService.findCard({cardId: req.body.targetId});
+		var promisePoint = null;
+		var targetType = req.body.targetType;
+		if (targetType === "jack") {
+			promisePoint = cardService.findCard({cardId: req.body.pointId});
+		} else {
+			promisePoint = Promise.resolve(null);
+		}
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, Promise.resolve(targetType), promisePoint])		
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4], targetType = values[5], point = values[6];
+			if (game.turn % 2 === player.pNum) {
+				if (card.id === game.topCard.id || card.id === game.secondCard.id) {
+					if (card.rank === 2 || card.rank === 9) {
+						var queenCount = userService.queenCount({user: opponent});
+						switch (queenCount) {
+							case 0:
+								break;
+							case 1:
+								if (target.runes === opponent.id && target.rank === 12) {
+								} else {
+									return Promise.reject(new Error("You may only TARGET your opponent's queen, while she has one."))
+								}
+								break;
+							default:
+								return Promise.reject(new Error("You cannot play a TARGETTED ONE-OFF when your opponent has more than one Queen"));
+								break;
+						} //End queenCount validation		
+							game.oneOff = card;
+							game.oneOffTarget = target;
+							game.oneOffTargetType = targetType;
+							game.attachedToTarget = null;
+							if (point) game.attachedToTarget = point;
+							game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
+							game = gameService.sevenCleanUp({game: game, index: req.body.index});
+							var saveGame = gameService.saveGame({game: game});
+							var savePlayer = userService.saveUser({user: player});
+							return Promise.all([saveGame, savePlayer]);
+					}
+				} else {
+					return Promise.reject(new Error("You can only play cards from the top of the deck while resolving a seven"));
+				}
+			} else {
+				return Promise.reject(new Error("It's not your turn"));
+			}
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (fullGame) {
+			var victory = gameService.checkWinGame({game: fullGame});
+			Game.publishUpdate(fullGame.id,
+			{
+				change: 'sevenTargetedOneOff',
+				game: fullGame,
+				pNum: req.session.pNum,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	},
+
 	populateGameTest: function (req, res) {
 		console.log("\npopulate game test");
 		var popGame = gameService.populateGame({gameId: req.session.game})
