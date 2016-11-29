@@ -353,6 +353,11 @@ body {
               }
                   .scrapCardImg {
                     height: 100%;
+                    width: 12%;
+                  }
+
+                  .scrapCardImg1 {
+                    width: 20%;
                   }
               /*These cards only display while resolving a seven*/
               .deckCard {

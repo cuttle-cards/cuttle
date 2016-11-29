@@ -249,8 +249,12 @@
                                 <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree">
                                     {{text}}
                                 </div>
-                                <div ng-repeat="card in gc.game.scrap track by $index" ng-show="gc.resolvingThree" class="scrapCard">
+                                <!-- Internet went out, check for the length of a collection -->
+                                <div ng-repeat="card in gc.game.scrap track by $index" ng-if="gc.game.scrap.length > 30" ng-show="gc.resolvingThree" class="scrapCard">
                                     <img ng-src="{{card.img}}" ng-click="gc.chooseScrapCard($index)" class="scrapCardImg" draggable="false">
+                                </div>
+                                <div ng-repeat="card in gc.game.scrap track by $index" ng-if="gc.game.scrap.length < 30" ng-show="gc.resolvingThree" class="scrapCard">
+                                    <img ng-src="{{card.img}}" ng-click="gc.chooseScrapCard($index)" class="scrapCardImg1" draggable="false">
                                 </div>
                                 <!-- gameLog -->
                             </div>
