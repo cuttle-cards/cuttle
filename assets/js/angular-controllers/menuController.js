@@ -2,18 +2,21 @@ app.controller("menuController", ['$scope', function ($scope) {
 	var self = this;
 	self.tab = "signup";
 	self.games = [];
+	self.userId = null;
 
 	self.requestGames = function () {
-		console.log("requesting game list");
 		io.socket.get("/game/getList", function (res, jwres) {
 			console.log(jwres);
 			// Success
 			if (jwres.statusCode === 200) {
-
-				self.tab = "gamesOverview";
-				self.games = res;
-
-
+				if (res.inGame) {
+					self.tab = 'gameView';
+					self.userId = res.userId;
+					console.log(self.userId);
+				} else {
+					self.tab = "gamesOverview";
+				}
+				self.games = res.games;
 			// Failure
 			} else {
 				console.log("Could not load games. Are you logged in?");
@@ -33,6 +36,7 @@ app.controller("menuController", ['$scope', function ($scope) {
 	// Socket Event Handlers //
 	///////////////////////////
 	io.socket.on("game", function(obj) {
+		console.log(obj);
 		switch (obj.verb) {
 			case 'created':
 				self.games.push(obj.data);
@@ -51,8 +55,6 @@ app.controller("menuController", ['$scope', function ($scope) {
 	});
 
 	io.socket.on("gameFull", function (obj) {
-		console.log("gameFull");
-		console.log(obj);
 		self.games.forEach(function (game) {
 			if (game.id === obj.id) game.status = false;
 		});

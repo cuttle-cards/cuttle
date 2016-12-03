@@ -31,14 +31,41 @@ module.exports = {
 	}, //End create()
 
 	getList: function (req, res) {
+		// HANDLE REQ.SESSION.GAME = GAME ID CASE
 		Game.watch(req);
-		gameAPI.findAllGames()
-		.then(function success (games) {
-			return res.send(games);
-		})
-		.catch(function failure (error) {
-			return res.badRequest(error);
-		});		
+		if (req.session.game != null) {
+			var promiseGame = gameService.populateGame({gameId: req.session.game})
+			var promiseList = gameAPI.findAllGames();
+			Promise.all([promiseGame, promiseList])
+			.then(function publishAndRespond (values) {
+				var game = values[0], list = values[1];
+				Game.subscribe(req, game.id);
+				Game.publishUpdate(req.session.game,
+					{
+					change: 'Initialize',
+					pNum: req.session.pNum,
+					game: game,
+					pNum: req.session.pNum
+				});
+				return res.ok({
+					inGame: true,
+					game: game,
+					userId: req.session.usr,
+					games: list
+				});
+			});
+		} else {
+			gameAPI.findAllGames()
+			.then(function success (games) {
+				return res.send({
+					inGame: false,
+					games: games
+				});
+			})
+			.catch(function failure (error) {
+				return res.badRequest(error);
+			});		
+		}
 	}, //End getList()
 
 	subscribe: function (req, res) {
@@ -53,7 +80,11 @@ module.exports = {
 				var pNum;
 				if (game.players) {
 					pNum = game.players.length;
-					if (game.players.length === 1) sails.sockets.blast("gameFull", {id: game.id});
+
+					if (game.players.length === 1) {
+						sails.sockets.blast("gameFull", {id: game.id});
+						game.status = false;
+					}
 				} else {
 					pNum = 0;
 				}
@@ -1377,6 +1408,8 @@ module.exports = {
 			player.game = null;
 			player.pNum = null;
 			player.frozenId = null;
+			req.session.game = null;
+			req.session.pNum = null;
 			return userService.saveUser({user: player});
 		}) //End changeAndSave
 		.then(function respond (player) {
