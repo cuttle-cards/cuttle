@@ -197,15 +197,13 @@
                         </div> <!-- End of topWrap -->
                         <!-- Middle Wrap -->
                         <div id="midWrap" class="row">
-                            <div class="col-xs-2 col-md-2" id="deckScrapStack">
+                            <div class="col-xs-2 col-md-2" id="deckScrap">
                                 <!-- Deck and Scrap -->
                                 <img src="images/deck.jpg" id="deck" ng-click="gc.draw()" draggable="false"></img>
                                 <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false"></img>
-                                <img ng-show="gc.resolvingSeven" ng-src="{{gc.game.topCard.img}}" ts-draggable class="deckCard"  card-id="gc.game.topCard.id" index="0" type="'deck'" suit="gc.game.topCard.suit" rank="gc.game.topCard.rank">
-                                <img ng-show="gc.resolvingSeven" ng-src="{{gc.game.secondCard.img}}" ts-draggable class="deckCard" card-id="gc.game.secondCard.id" index="1" type="'deck'" suit="gc.game.secondCard.suit" rank="gc.game.secondCard.rank">
-                                <img ng-show="gc.opResolvingSeven" ng-src="{{gc.game.topCard.img}}" draggable="false" class="deckCard">
-                                <img ng-show="gc.opResolvingSeven" ng-src="{{gc.game.secondCard.img}}" draggable="false" class="deckCard">  
-<!--                                 <div id="stack">Stack</div> -->
+                                <p class="yourTurn" ng-if="gc.opponent">
+                                    Opponent's Turn
+                                </p>
                             </div>
                             <div class="col-xs-4 col-md-4 field row" id='points'>
                                 <div id="oppPoints">
@@ -246,9 +244,17 @@
                                 </div>
                             </div>
                             <div class="col-xs-2 col-md-2" id="gameLog">
-                                <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree">
+                                <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven">
                                     {{text}}
                                 </div>
+
+
+                                <img ng-show="gc.resolvingSeven" ng-src="{{gc.game.topCard.img}}" ts-draggable class="sevenCard"  card-id="gc.game.topCard.id" index="0" type="'deck'" suit="gc.game.topCard.suit" rank="gc.game.topCard.rank">
+                                <img ng-show="gc.resolvingSeven" ng-src="{{gc.game.secondCard.img}}" ts-draggable class="sevenCard" card-id="gc.game.secondCard.id" index="1" type="'deck'" suit="gc.game.secondCard.suit" rank="gc.game.secondCard.rank">
+                                <img ng-show="gc.opResolvingSeven" ng-src="{{gc.game.topCard.img}}" draggable="false" class="sevenCard">
+                                <img ng-show="gc.opResolvingSeven" ng-src="{{gc.game.secondCard.img}}" draggable="false" class="sevenCard">
+
+
                                 <!-- Internet went out, check for the length of a collection -->
                                 <div ng-repeat="card in gc.game.scrap track by $index" ng-if="gc.game.scrap.length > 30" ng-show="gc.resolvingThree" class="scrapCard">
                                     <img ng-src="{{card.img}}" ng-click="gc.chooseScrapCard($index)" class="scrapCardImg" draggable="false">
