@@ -134,6 +134,11 @@ body {
             line-height: 50%;
           }
 
+            .cap1 {
+              text-align: center;
+              margin-top: 50%;
+            }
+
           #oppKingSlot2 {
             display: inline-block;
             position: absolute;
@@ -144,6 +149,11 @@ body {
             text-align: center;
             line-height: 50%;
           }
+
+            .cap2 {
+              text-align: center;
+              margin-top: 50%;
+            }
 
               #oppPointTotal {
                 display: inline-block;
@@ -169,6 +179,11 @@ body {
             line-height: 50%;
           }
 
+            .cap3 {
+              text-align: center;
+              margin-top: 50%;
+            }
+
           #oppKingSlot4 {
             display: inline-block;
             position: absolute;
@@ -181,6 +196,11 @@ body {
             line-height: 50%;
           }
 
+            .cap4 {
+              text-align: center;
+              margin-top: 50%;
+            }
+
     /*Mid Wrap*/
 
       #midWrap {
@@ -189,9 +209,13 @@ body {
         min-width: 100%;
         position: absolute;
       }
-          /*Deck, Scrap and Stack*/
+          /*Deck, Scrap and Turn*/
 
-          #deckScrapStack {
+          #yourTurn {
+            text-align: center;
+          }
+
+          #deckScrap {
             position: absolute;
             min-height: 100%;
             min-width: 20%;
@@ -211,17 +235,6 @@ body {
                 top: 20%;
                 z-index: 3;
               }
-
-/*              #stack {
-                display: inline-block;
-                position: absolute;
-                height: 65%;
-                width: 45%;
-                border: 4px solid black;
-                top: 25%;
-                left: 50%;
-              }*/
-
 
           /*Points*/
 
@@ -360,12 +373,11 @@ body {
                     width: 20%;
                   }
               /*These cards only display while resolving a seven*/
-              .deckCard {
+              .sevenCard {
                 position: relative;
-                height: 100px;
+                height: 35%;
                 display: inline-block;
-                top: 200px;
-                left: 450%;  
+                top: 32%;
                 z-index: 4;              
               }
 
