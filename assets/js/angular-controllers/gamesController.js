@@ -2,6 +2,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
  	var self = this;
  	var menu = $scope.menu;
 	self.game = null;
+	self.pNum = null;
 	self.oppPointCap = 21;
 	self.yourPointCap = 21;
 	self.resolvingFour = false;
@@ -390,95 +391,107 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		switch (obj.verb) {
 			case 'updated':
 				self.game = obj.data.game;
+				console.log(self.game);
+				console.log("pNum: " + self.pNum);
 				switch (obj.data.change) {
 					case 'Initialize':
-						self.gameCount++;
-						if (self.game.players[0].id === menu.userId) {
-							self.pNum = 0;
-						} else {
-							self.pNum = 1;
-						}
+						if (self.pNum === null) {
+							self.gameCount++;
+							if (obj.data.hasOwnProperty('pNum')) {
+								self.pNum = obj.data.pNum;
+							} else {
+								if (self.game.players[0].id === menu.userId) {
+									self.pNum = 0;
+								} else {
+									self.pNum = 1;
+								}
+							}
 
-						/*
-						** Getter Attributes
-						**
-						*/
-						if (self.gameCount === 1) {
+							/*
+							** Getter Attributes
+							**
+							*/
+							console.log("Game count: " + self.gameCount);
+							if (self.gameCount === 1) {
 
-							//glasses (true iff player has glasses eight)
-							Object.defineProperty(self, 'glasses', {
-								get: function () {
-									var res = false;
-									self.game.players[self.pNum].runes.forEach(function (rune) {
-										if (rune.rank === 8) res = true;
-									});
-									return res;
-								}
-							});
-							//player (player whose session this is)
-							Object.defineProperty(self, 'player', {
-								get: function () {
-									return self.game.players[self.pNum];
-								}
-							});
-							//opponent (other player)
-							Object.defineProperty(self, 'opponent', {
-								get: function () {
-									return self.game.players[(self.pNum + 1) % 2];
-								}
-							});
-							//two's in player's hand
-							Object.defineProperty(self, 'twosInHand', {
-								get: function () {
-									var res = 0;
-									self.player.hand.forEach(function (card) {
-										if (card.rank === 2) res++;
-									});
-									return res;
-								}
-							});
-							// Number of Kings opponent has
-							Object.defineProperty(self, 'opKingCount', {
-								get: function () {
-									var res = 0;
-									self.opponent.runes.forEach(function (card) {
-										if (card.rank === 13) res++;
-									});
-									return res;
-								}
-							});
-							// Number of Kings player has
-							Object.defineProperty(self, 'yourKingCount', {
-								get: function () {
-									var res = 0;
-									self.player.runes.forEach(function (card) {
-										if (card.rank === 13) res++;
-									});
-									return res;
-								}
-							});	
-							//Number of points opponent has
-							Object.defineProperty(self, 'opPointCount', {
-								get: function () {
-									res = 0;
-									self.opponent.points.forEach(function (card) {
-										res += card.rank;
-									});
-									return res;
-								}
-							});	
-							//Number of points player has
-							Object.defineProperty(self, 'yourPointCount', {
-								get: function () {
-									res = 0;
-									self.player.points.forEach(function (card) {
-										res += card.rank;
-									});
-									return res;
-								}
-							});							
-						}//End gameCount = 0 case
-						break;
+								//glasses (true iff player has glasses eight)
+								Object.defineProperty(self, 'glasses', {
+									get: function () {
+										var res = false;
+										self.game.players[self.pNum].runes.forEach(function (rune) {
+											if (rune.rank === 8) res = true;
+										});
+										return res;
+									}
+								});
+								//player (player whose session this is)
+								Object.defineProperty(self, 'player', {
+									get: function () {
+										return self.game.players[self.pNum];
+									}
+								});
+								//opponent (other player)
+								Object.defineProperty(self, 'opponent', {
+									get: function () {
+										return self.game.players[(self.pNum + 1) % 2];
+									}
+								});
+								//two's in player's hand
+								Object.defineProperty(self, 'twosInHand', {
+									get: function () {
+										var res = 0;
+										self.player.hand.forEach(function (card) {
+											if (card.rank === 2) res++;
+										});
+										return res;
+									}
+								});
+								// Number of Kings opponent has
+								Object.defineProperty(self, 'opKingCount', {
+									get: function () {
+										var res = 0;
+										self.opponent.runes.forEach(function (card) {
+											if (card.rank === 13) res++;
+										});
+										return res;
+									}
+								});
+								// Number of Kings player has
+								Object.defineProperty(self, 'yourKingCount', {
+									get: function () {
+										var res = 0;
+										self.player.runes.forEach(function (card) {
+											if (card.rank === 13) res++;
+										});
+										return res;
+									}
+								});	
+								//Number of points opponent has
+								Object.defineProperty(self, 'opPointCount', {
+									get: function () {
+										res = 0;
+										self.opponent.points.forEach(function (card) {
+											res += card.rank;
+										});
+										return res;
+									}
+								});	
+								//Number of points player has
+								Object.defineProperty(self, 'yourPointCount', {
+									get: function () {
+										res = 0;
+										self.player.points.forEach(function (card) {
+											res += card.rank;
+										});
+										return res;
+									}
+								});							
+							}//End gameCount = 0 case
+						} //End pNum = null case
+						console.log("pNum after initialize: " + self.pNum);
+						console.log(self.player.hand);
+						console.log(self.game.players[self.pNum]);
+						break; //End Initialize case
 					case 'oneOff':
 					case 'counter':
 					case 'targetedOneOff':

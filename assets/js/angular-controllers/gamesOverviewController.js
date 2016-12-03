@@ -31,7 +31,7 @@ app.controller("gamesOverviewController", ['$scope', '$http', function($scope, $
 			if (jwres.statusCode === 200) {
 				menu.tab = "lobby";
 				menu.userId = res.playerId;
-				console.log("set userId: " +menu.userId);
+				console.log("set userId: " + menu.userId);
 				// Request to be brought to waiting lobby
 				// $http({
 				// 	method: 'PUT',
