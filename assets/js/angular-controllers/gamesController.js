@@ -485,7 +485,14 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 										});
 										return res;
 									}
-								});							
+								});		
+								//Whether it is this player's turn
+								Object.defineProperty(self, 'yourTurn', {
+									get: function () {
+										res = self.pNum = self.game.turn % 2;
+										return res;
+									}
+								});					
 							}//End gameCount = 0 case
 						} //End pNum = null case
 						console.log("pNum after initialize: " + self.pNum);
