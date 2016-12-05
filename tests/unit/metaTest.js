@@ -1,3 +1,17 @@
+before(function () {
+	var request = function (socket, url, data) {
+		return new Promise(function(resolve, reject) {
+			socket.put(url, data, function (res, jwres) {
+				console.log("made request");
+				if (jwres.statusCode === 200) {
+					return resolve(jwres);
+				} else {
+					return reject(jwres);
+				}
+			})
+		});
+	}
+})
 describe('The meta test', function () {
 	// var passwordAPI = sails.hooks['custompasswordhook'];
 	// var foo = 'bar';
@@ -45,5 +59,20 @@ describe('The meta test', function () {
 		io.socket.get('game/getList', function (res, jwres) {
 			jwres.statusCode.should.equal(200);
 		});
-	})
+	});
+	it('Should make a separate socket connection', function () {
+		socket2.get('game/getList', function (res, jwres) {
+			jwres.statusCode.should.not.equal(200);
+		});
+	});
+	it('Should use helper to make request', function() {
+
+		return request(socket1, '/user/signup', 
+			{
+				email: 'n@tesla.com',
+				password: 'lightening'
+			}
+		);
+
+	});
 });
