@@ -25,7 +25,6 @@ describe('The meta test', function () {
 		});
 	});
 	it('Should make a socket request', function () {
-		console.log("making request");
 		io.socket.get('user/signup', 
 			{
 				email: 'nicola@tesla.com',
@@ -42,4 +41,9 @@ describe('The meta test', function () {
 			}
 		);
 	});
+	it('Should still be authenticated', function () {
+		io.socket.get('game/getList', function (res, jwres) {
+			jwres.statusCode.should.equal(200);
+		});
+	})
 });
