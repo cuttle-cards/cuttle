@@ -17,7 +17,6 @@ var passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
 	signup: function (req, res) {
-		console.log("received signup request");
 		if (req.body.password && req.body.email) {
 			// data from client
 			var email = req.body.email;
@@ -33,17 +32,17 @@ module.exports = {
 					})
 					.catch(function (reason) { //Failed to create User
 						console.log(reason);
-						res.badRequest(reason);
+						return res.badRequest(reason);
 					});
 
 			})	//End promiseEpass success
 			.catch(function (reason) { //Password could not be encrypted
 				console.log("Failed to create user:");
 				console.log(reason);
-				res.badRequest(reason);
+				return res.badRequest(reason);
 			});
 		} else { //Bad data sent from client
-			res.badRequest("You did not submit an email, or password");
+			return res.badRequest("You did not submit an email, or password");
 		}
 
 	},	

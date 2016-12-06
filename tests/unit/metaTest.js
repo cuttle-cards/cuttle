@@ -1,17 +1,4 @@
-before(function () {
-	var request = function (socket, url, data) {
-		return new Promise(function(resolve, reject) {
-			socket.put(url, data, function (res, jwres) {
-				console.log("made request");
-				if (jwres.statusCode === 200) {
-					return resolve(jwres);
-				} else {
-					return reject(jwres);
-				}
-			})
-		});
-	}
-})
+
 describe('The meta test', function () {
 	// var passwordAPI = sails.hooks['custompasswordhook'];
 	// var foo = 'bar';

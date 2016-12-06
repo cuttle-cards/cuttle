@@ -23,7 +23,7 @@ module.exports = {
 					name: game.name,
 					status: game.status
 				});
-				return res.ok();
+				return res.ok({gameId: game.id});
 			}).catch(function (reason) {
 				res.badRequest(reason);
 			});

@@ -55,7 +55,6 @@ var Promise = require('bluebird');
 						else {res = new Error("Could not create user")}
 						return reject(res);
 					} else { //Made new user
-						console.log(user);
 						return resolve(user);
 					}
 				}); //End of User.create

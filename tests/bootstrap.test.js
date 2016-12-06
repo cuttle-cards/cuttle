@@ -19,10 +19,11 @@ before(function(done) {
       io.sails.url = 'http://localhost:1337';
       global.socket1 = io.sails.connect('http://localhost:1337');
       global.socket2 = io.sails.connect('http://localhost:1337');
+      global.socket3 = io.sails.connect('http://localhost:1337');
 
-
+      // Socket Request making helper
       global.request = function (socket, url, data) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
           socket.put(url, data, function (res, jwres) {
             if (jwres.statusCode === 200) {
               return resolve(jwres);
@@ -31,7 +32,19 @@ before(function(done) {
             }
           })
         });
-      }   
+      };
+      //Socket request making helper (expects bad request)   
+      global.badRequest = function (socket, url, data) {
+        return new Promise(function (resolve, reject) {
+          socket.put(url, data, function (res, jwres) {
+            if (jwres.statusCode != 200) {
+              return resolve(jwres);
+            } else {
+              return reject(jwres);
+            }            
+          });
+        });
+      }
 
      if (err) return done(err);
      done(); 
