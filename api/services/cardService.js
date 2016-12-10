@@ -78,6 +78,11 @@ module.exports = {
 				}
 				str_name = str_rank + " of " + str_suit; //Assign str name
 				img = "images/cards/card_" + suit + "_" + rank + ".png"; //Assign img
+				if(options.rank === 8){
+					runeImg = "images/cards/Glasses_" + str_suit + ".jpg";
+				} else {
+					runeImg = img;
+				}
 
 				// Assign Rule Text
 				switch (rank) {
@@ -127,6 +132,7 @@ module.exports = {
 					suit: suit,
 					rank: rank,
 					img: img,
+					runeImg : runeImg,
 					name: str_name,
 					ruleText: ruleText,
 					deck: gameId

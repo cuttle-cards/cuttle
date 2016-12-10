@@ -16,6 +16,14 @@ module.exports = {
   		type: 'integer'
   	},
 
+    img: {
+      type: 'string'
+    },
+
+    runeImg: {
+      type: 'string'
+    },
+
   	deck: {
   		model: 'game'
   	},

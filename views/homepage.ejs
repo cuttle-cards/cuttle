@@ -70,14 +70,16 @@
                             <input ng-model="gamesOverview.gameName" type="text" placeholder="Create Game">
                             <input type="submit">
                         </form>
-                        <table>
-                            <th>#</th>
-                            <th>Game Name</th>
-                            <th>Open</th>
-                            <th>Join</th>
+                        <table id="gamesTable">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Open</th>
+                                <th>Join</th>
+                            </tr>
                                 <tr ng-repeat="game in menu.games track by $index">
                                     <td>{{$index}}</td>
-                                    <td>{{game.name}}</td>
+                                    <td id="gameName">{{game.name}}</td>
                                     <td>{{game.status}}</td>
                                     <td>
                                         <button ng-if="game.status===true" class="btn btn-default" ng-click="gamesOverview.joinGame($index)">Join</button >
@@ -167,32 +169,30 @@
                                     <img ng-src="{{card.img}}" class="opHandCardImg" draggable="false">
                                 </div>
                             </div>
-                            <p id="oppWinCon">
-                                <!-- angular view of wincondition -->
                             </p>
                             <div id="oppCounter">
-                                <div id="oppKingSlot1" class="kingSlot" ng-class="{fullKing: gc.opKingCount >= 1}">
+                                <div id="oppKingSlot1" class="kingSlot" ng-class="{fullKing: gc.opKingCount == 1}">
                                     <p class="cap1">14</p>
                                 </div>
-                                <div id="oppKingSlot2" class="kingSlot" ng-class="{fullKing: gc.opKingCount >= 2}">
+                                <div id="oppKingSlot2" class="kingSlot" ng-class="{fullKing: gc.opKingCount == 2}">
                                     <p class="cap2">10</p>
                                 </div>
                                 <div>
-                                    <div id="oppPointTotal" class="pointTotal">
+                                    <div id="oppKingSlot0" class="pointTotal" ng-class="{fullKing: gc.opKingCount == 0}">
                                         <div>
-                                            {{gc.opPointCount}}
+                                            21
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div id="oppKingSlot3" class="kingSlot" ng-class="{fullKing: gc.opKingCount >= 3}">
+                                    <div id="oppKingSlot3" class="kingSlot" ng-class="{fullKing: gc.opKingCount == 3}">
                                         <p class="cap3">7</p>
                                     </div>
-                                    <div id="oppKingSlot4" class="kingSlot" ng-class="{fullKing: gc.opKingCount >= 4}">
+                                    <div id="oppKingSlot4" class="kingSlot" ng-class="{fullKing: gc.opKingCount == 4}">
                                         <p class="cap4">5</p>
                                     </div>
                                 </div>
-                                <!-- Put king squares -->
+                                <p id="oppPointTotal">Opponent Point Total: {{gc.opPointCount}}</p>
                             </div>
                         </div> <!-- End of topWrap -->
                         <!-- Middle Wrap -->
@@ -201,7 +201,10 @@
                                 <!-- Deck and Scrap -->
                                 <img src="images/deck.jpg" id="deck" ng-click="gc.draw()" draggable="false"></img>
                                 <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false"></img>
-                                <p class="yourTurn" ng-if="gc.opponent">
+                                <p class="yourTurn" ng-if="gc.yourTurn">
+                                    Your Turn
+                                </p>
+                                <p class="oppTurn" ng-if="!gc.yourTurn">
                                     Opponent's Turn
                                 </p>
                             </div>
@@ -233,12 +236,12 @@
                                 <div id="oppRunes">
                                     <!-- Opponent Runes -->
                                     <div ng-repeat="card in gc.opponent.runes" class="runeCard">
-                                        <img ng-src="{{card.img}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpRune" upon-drop="gc.dropOpRune" index="0" draggable="false">
+                                        <img ng-src="{{card.runeImg}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpRune" upon-drop="gc.dropOpRune" index="0" draggable="false">
                                     </div>
                                 </div>
                                 <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes">
                                     <div ng-repeat="card in gc.player.runes" class="runeCard">
-                                        <img ng-src="{{card.img}}" class="runeCardImg" draggable="false">
+                                        <img ng-src="{{card.runeImg}}" class="runeCardImg" draggable="false">
                                     </div>
                                     <!-- Your Runes -->
                                 </div>
@@ -274,28 +277,26 @@
                                     {{card.rank}} of {{card.suit}}
                                 </div>
                             </div>
-                            <p id="winCon">
-                                <!-- Win Condition -->
-                            </p>
                             <div id="yourCounter">
-                                <div id="yourKingSlot1" class="kingSlot" ng-class="{fullKing: gc.yourKingCount >= 1}">
+                                <p id="yourPointTotal">Your Point Total: {{gc.yourPointCount}}</p>
+                                <div id="yourKingSlot1" class="kingSlot" ng-class="{fullKing: gc.yourKingCount == 1}">
                                     <p class="cap1">14</p>
                                 </div>
-                                <div id="yourKingSlot2" class="kingSlot" ng-class="{fullKing: gc.yourKingCount >= 2}">
+                                <div id="yourKingSlot2" class="kingSlot" ng-class="{fullKing: gc.yourKingCount == 2}">
                                     <p class="cap2">10</p>
                                 </div>
                                 <div>
-                                    <div id="yourPointTotal" class="pointTotal">
+                                    <div id="yourKingSlot0" class="kingSlot" ng-class="{fullKing: gc.yourKingCount == 0}">
                                         <div>
-                                            <p>{{gc.yourPointCount}}</p>
+                                            <p>21</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div id="yourKingSlot3" class="kingSlot" ng-class="{fullKing: gc.yourKingCount >= 3}">
+                                    <div id="yourKingSlot3" class="kingSlot" ng-class="{fullKing: gc.yourKingCount == 3}">
                                         <p class="cap3">7</p>
                                     </div>
-                                    <div id="yourKingSlot4" class="kingSlot" ng-class="{fullKing: gc.yourKingCount >= 4}">
+                                    <div id="yourKingSlot4" class="kingSlot" ng-class="{fullKing: gc.yourKingCount == 4}">
                                         <p class="cap4">5</p>
                                     </div>
                                 </div>

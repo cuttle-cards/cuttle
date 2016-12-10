@@ -489,7 +489,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								//Whether it is this player's turn
 								Object.defineProperty(self, 'yourTurn', {
 									get: function () {
-										res = self.pNum = self.game.turn % 2;
+										res = self.pNum === self.game.turn % 2;
 										return res;
 									}
 								});					
@@ -595,6 +595,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				}				
 				break; //End obj.verb = "updated" case
 		}
+		console.log("Whose turn is it? " + self.yourTurn);
+		console.log(self.game);
+		console.log("pNum" + self.pNum);
+		console.log("Whole boolean " + self.pNum === self.game.turn % 2);
+		console.log("Right side of boolean " + self.game.turn % 2);
 		$scope.$apply();
 	});
 
