@@ -7,7 +7,6 @@ before(function(done) {
   this.timeout(50000);
   Sails.lift({
   }, function(err, server) {
-    console.log("lifted");
       sails = server;
       global.foo = "bar";
       global.bun = "mediocre";
@@ -28,7 +27,8 @@ before(function(done) {
             if (jwres.statusCode === 200) {
               return resolve(jwres);
             } else {
-              return reject(new Error(jwres.statusCode));
+              console.log(jwres);
+              return reject(new Error(jwres));
             }
           })
         });
@@ -40,7 +40,7 @@ before(function(done) {
             if (jwres.statusCode != 200) {
               return resolve(jwres);
             } else {
-              return reject(jwres);
+              return reject(new Error(jwres));
             }            
           });
         });

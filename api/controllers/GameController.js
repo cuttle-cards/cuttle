@@ -94,10 +94,15 @@ module.exports = {
 				// Update models
 				user.pNum = pNum;
 				game.players.add(user.id);
-				game.save();
-				user.save();
+				var saveGame = gameService.saveGame({game: game});
+				var savePlayer = userService.saveUser({user: user});
+				return Promise.all([saveGame, savePlayer]);
+				
+			})
+			.then(function respond (values) {
 				// Respond with 200
-				res.ok({playerId: user.id});
+				var user = values[1];
+				return res.ok({playerId: user.id});
 			})
 			.catch(function failure (error) {
 				return res.badRequest(error);
@@ -108,7 +113,7 @@ module.exports = {
 	}, //End subscribe()
 
 	ready: function (req, res) {
-		console.log("\nReady");
+		// console.log("\nReady");
 		if (req.session.game && req.session.usr) {
 			var promiseGame = gameAPI.findGame(req.session.game);
 			var promiseUser = userAPI.findUser(req.session.usr);
@@ -210,17 +215,13 @@ module.exports = {
 					});
 				// If this player is first to be ready, save and respond
 				} else {
-					return new Promise(function save (resolveSave, rejectSave) {
-						var saveGame = gameService.saveGame({game: game});
-						var saveUser = userService.saveUser({user: user});
-						return Promise.all([saveGame, saveUser]);
-					});
+					var saveGame = gameService.saveGame({game: game});
+					var saveUser = userService.saveUser({user: user});
+					return Promise.all([saveGame, saveUser]);
 				}
-
 			}) //End foundRecords
 			.then(function respond (values) {
-				res.ok();
-				return Promise.resolve(values);
+				return res.ok();
 			})
 			.catch(function failed (err) {
 				return res.badRequest(err);

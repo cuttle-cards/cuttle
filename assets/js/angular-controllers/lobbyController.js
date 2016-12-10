@@ -15,9 +15,8 @@ app.controller("lobbyController", ['$scope', '$http', function ($scope, $http) {
 		console.log("\nready");
 		io.socket.put("/game/ready", function (res, jwres) {
 			console.log(jwres);
-			if (jwres.statusCode === 200) {
-				menu.tab = 'gameView';
-				$scope.$apply();
+			if (jwres.statusCode != 200) {
+				alert(jwres.error.message);
 			}
 		});
 	};

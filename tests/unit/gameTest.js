@@ -1,4 +1,5 @@
 describe("Game Test", function () {
+	this.timeout(100000);
 	it("Should sign up user 1", function () {
 		return request(socket1, '/user/signup', 
 			{
@@ -43,4 +44,13 @@ describe("Game Test", function () {
 			id: gameId
 		});
 	});
+	//THIS FAILS IF DONE IN PARALLEL W/ PROMISE.ALL
+	//Game will be unplayable if two players join at the same time!
+	it("Should subscribe both users", function () {
+		return ready1 = request(socket1, '/game/ready')
+		.then(function () {return request(socket2, '/game/ready')});
+		// var ready2 = request(socket2, '/game/ready');
+		// return Promise.all(ready1, ready2);
+	});
+	it("Should ")
 });
