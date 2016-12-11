@@ -1,9 +1,9 @@
 /**
- * sessionAuth
+ * isInGame
  *
  * @module      :: Policy
- * @description :: Simple policy to allow any authenticated user
- *                 Assumes that your login action in one of your controllers sets `req.session.authenticated = true;`
+ * @description :: Simple policy to allow user who is in game
+ *                 Assumes that your login action in one of your controllers sets `req.session.game = integer;`
  * @docs        :: http://sailsjs.org/#!/documentation/concepts/Policies
  *
  */

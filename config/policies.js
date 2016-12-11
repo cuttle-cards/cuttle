@@ -49,11 +49,33 @@ module.exports.policies = {
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
   GameController: {
+    '*': false,
     create : 'isLoggedIn',
     getList: 'isLoggedIn',
     subscribe: 'isLoggedIn',
     lobbyView: 'isLoggedIn',
     ready:     'isLoggedIn',
-    draw: ['isLoggedIn', 'isInGame']
+    draw: ['isLoggedIn', 'isInGame'],
+    points: ['isLoggedIn', 'isInGame', 'hasCardId'],
+    runes: ['isLoggedIn', 'isInGame', 'hasCardId'],
+    scuttle: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+    jack: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+    untargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId'],
+    targetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
+    counter: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
+    resolve: ['isLoggedIn', 'isInGame', 'hasOpId'],
+    resolveFour: ['isLoggedIn', 'isInGame', 'hasCardIdOneAndTwo'],
+    resolveThree: ['isLoggedIn', 'isInGame', 'hasCardId'],
+    sevenPoints: ['isLoggedIn', 'isInGame', 'hasCardId'],
+    sevenRunes: ['isLoggedIn', 'isInGame', 'hasCardId'],
+    sevenScuttle: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+    sevenJack: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+    sevenUntargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId'],
+    sevenTargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
+    gameOver: ['isLoggedIn', 'isInGame'],
+
+    // DEVELOPMENT ONLY
+    stackDeck: true
+
   }
 };
