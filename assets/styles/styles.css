@@ -5,7 +5,6 @@ body {
 /*Lobby CSS*/
 
 .content-area {
-  border: 1px solid black;
   margin-top: 10px;
   padding: 10px;
 }
@@ -72,14 +71,12 @@ body {
 }
 
 .gameDiv {
-  border: 2px black dotted;
   min-height: 100%;
   min-width: 100%;
   position: absolute;
 }
 
 .wrappingDiv {
-  border: 2px black dotted;
   position: absolute;
   min-height: 100%;
   min-width: 100%;
@@ -356,7 +353,7 @@ body {
                       position: absolute;
                       height: 50%;
                       width: 90%;
-                      border: 2px solid green;
+                      border: 2px solid red;
                       z-index: 2;
                   }
                   #yourRunes {
@@ -373,7 +370,6 @@ body {
                         position: relative;
                         height: 100%;
                         width: 25%;
-                        border: 2px dotted;
                       }
                       .runeCardImg {
                         display: inline-block;
@@ -381,7 +377,6 @@ body {
                         z-index: 3;
                         height: 100%;
                         width: 100%;
-                        border: 2px dotted;
                       }
           #gameLog {
             display: inline-block;
@@ -391,6 +386,7 @@ body {
             width: 15%;
             left: 80%;
             overflow-y: scroll; 
+            color: chartreuse;
           }
               /*These cards are only displayed while a three is being resolved*/
               .scrapCard {
@@ -439,7 +435,6 @@ body {
               position: relative;
               height: 20%;
               width: 8%;
-              border: 2px dotted;
             }
             .handCardImg {
               display: inline-block;
@@ -447,7 +442,6 @@ body {
               z-index: 3;
               height: 100%;
               width: 100%;
-              border: 2px dotted;
             }
 
             .discarding {
@@ -528,6 +522,12 @@ body {
             width: 135%;
             left: -10%;
             font-size: 28px;
+          }
+
+          #concedeButton {
+            position: absolute;
+            left: 85%;
+            top: 36%;
           }
 
 
