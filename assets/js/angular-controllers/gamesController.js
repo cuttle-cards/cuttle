@@ -87,6 +87,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	}; //End jack()
 	self.targetedOneOff = function (cardId, targetId, targetType, pointId) {
 		var pId = null;
+		self.waitingForOp = true;
 		if (pointId) pId = pointId;
 		if (!self.resolvingSeven) {		
 			io.socket.put("/game/targetedOneOff", 
@@ -99,7 +100,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			},
 			function (res, jwres) {
 				console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					alert(jwres.error.message);
+					self.waitingForOp = false;
+				}
 			});
 		} else {
 			// Resolving seven case
@@ -113,7 +117,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				index: dragData.index
 			}, function (res, jwres) {
 				console.log(jwres);
-				if(jwres.statusCode != 200) alert(jwres.error.message);	
+				if(jwres.statusCode != 200) {
+					alert(jwres.error.message);
+					self.waitingForOp = false;
+				}	
 			})
 		}
 	}; //End targetedOneOff()
@@ -133,7 +140,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Dragover Callbacks //
 	////////////////////////
 	self.dragoverPoints = function (targetIndex) {
-		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
 			if (dragData.rank < 11) {
 				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
 					return true;
@@ -144,7 +151,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dragoverRunes = function (targetIndex) {
-		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
 			if ((dragData.rank >= 12 && dragData.rank <= 13) || dragData.rank === 8) {
 				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
 					return true;
@@ -155,7 +162,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dragoverOpPoint = function (targetIndex) {
-		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
 			if (dragData.rank <= 11) {
 				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
 					return true;
@@ -168,7 +175,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.dragoverOpRune = function (targetIndex) {
 		if (!self.countering && !self.resolvingThree && !self.resolvingFour) {
 			if (dragData.rank === 9 || dragData.rank === 2) {
-				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
+				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand' && !self.waitingForOp) || (self.resolvingSeven && dragData.type === 'deck')) {
 					return true;
 				}
 			}
@@ -176,7 +183,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dragoverOpJack = function (targetIndex) {
-		if (!self.countering && !self.resolvingThree && !self.resolvingFour) {
+		if (!self.countering && !self.resolvingThree && !self.resolvingFour && !self.waitingForOp) {
 			if (dragData.rank === 9 || dragData.rank === 2) {
 				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
 					return true;
@@ -186,7 +193,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	}
 	self.dragoverScrap = function (targetIndex) {
-		if (!self.countering && !self.resolvingFour && !self.resolvingThree) {
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
 			switch (dragData.rank) {
 				case 1:
 				case 3:
@@ -302,6 +309,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						console.log(jwres);
 						if (jwres.statusCode != 200) {
 							alert(jwres.error.message);
+							self.waitingForOp = false;
 						}
 					}
 				);
@@ -314,7 +322,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				},
 				function (res, jwres) {
 					console.log(jwres);
-					if (jwres.statusCode != 200) alert(jwres.error.message);
+					if (jwres.statusCode != 200) {
+						alert(jwres.error.message);
+						self.waitingForOp = false;
+					}
 				});
 			}
 		} else {
@@ -550,6 +561,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						break; //End oneOff & counter cases
 					case 'resolve':
 					// obj.data.pNum is the pNum who played the oneOff
+						if (!obj.data.happened) self.waitingForOp = false;
 						switch(obj.data.oneOff.rank) {
 							case 3:
 								if (obj.data.happened) {
@@ -588,6 +600,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					case 'sevenJack':
 						self.resolvingSeven = false;
 						self.opResolvingSeven = false;
+						self.waitingForOp = false;
+						break;
+					case 'resolveThree':
+					case 'resolveFour':
 						self.waitingForOp = false;
 						break;
 				} //End switch on change
