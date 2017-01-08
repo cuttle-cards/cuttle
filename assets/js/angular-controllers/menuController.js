@@ -36,7 +36,7 @@ app.controller("menuController", ['$scope', function ($scope) {
 	// Socket Event Handlers //
 	///////////////////////////
 	io.socket.on("game", function(obj) {
-		console.log(obj);
+		// console.log(obj);
 		switch (obj.verb) {
 			case 'created':
 				self.games.push(obj.data);

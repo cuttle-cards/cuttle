@@ -9,16 +9,20 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.cardsToDiscard = [];
 	self.resolvingThree = false;
 	self.resolvingSeven = false;
+	self.waitingForOp = false;
 	self.opResolvingSeven = false;
 	self.gameCount = 0;
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	self.showDeck = false;
 
 	self.draw = function () {
-		io.socket.post("/game/draw", function (res, jwres) {
-			console.log(jwres);
-			if (jwres.statusCode != 200) alert(jwres.error.message);
-		});
+		console.log("\nDrawing. waitingForOp: " + self.waitingForOp + ", countering: " + self.countering);
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
+			io.socket.post("/game/draw", function (res, jwres) {
+				console.log(jwres);
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			});
+		}
 	};
 
 	//////////////////////////////////
@@ -287,6 +291,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		self.targetedOneOff(dragData.id, self.opponent.points[targetIndex].attachments[self.opponent.points[targetIndex].attachments.length - 1].id, "jack", self.opponent.points[targetIndex].id);
 	};
 	self.dropScrap = function (targetIndex) {
+		self.waitingForOp =  true;
 		if (!self.countering) {		
 			if (!self.resolvingSeven) {			
 				io.socket.put("/game/untargetedOneOff", 
@@ -508,6 +513,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						self.opResolvingSeven = false;
 						var counteringPnum = (obj.data.pNum + 1) % 2;
 						if (self.pNum == parseInt(counteringPnum)) {
+							self.waitingForOp = false;
 							if (self.twosInHand > 0) {
 								var willCounter = confirm(self.game.log[self.game.log.length - 1] + " Would you like to counter with a two?");
 								if (!willCounter) {
@@ -572,6 +578,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								}
 								break; //End resolve 7 case
 							default:
+								self.waitingForOp = false;
 								break; //End resolve default case
 						}
 						break; //End resolve case
@@ -581,6 +588,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					case 'sevenJack':
 						self.resolvingSeven = false;
 						self.opResolvingSeven = false;
+						self.waitingForOp = false;
 						break;
 				} //End switch on change
 				if (obj.data.victory) {
@@ -595,11 +603,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				}				
 				break; //End obj.verb = "updated" case
 		}
-		console.log("Whose turn is it? " + self.yourTurn);
-		console.log(self.game);
-		console.log("pNum" + self.pNum);
-		console.log("Whole boolean " + self.pNum === self.game.turn % 2);
-		console.log("Right side of boolean " + self.game.turn % 2);
+		// console.log("Whose turn is it? " + self.yourTurn);
+		// console.log(self.game);
+		// console.log("pNum" + self.pNum);
+		// console.log("Whole boolean " + self.pNum === self.game.turn % 2);
+		// console.log("Right side of boolean " + self.game.turn % 2);
 		$scope.$apply();
 	});
 
