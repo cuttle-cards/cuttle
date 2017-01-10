@@ -427,13 +427,14 @@ body {
           top: 10%;
           min-height: 30%;
           min-width: 80%;
-          left: 30%;
+          left: 25%;
         }
 
             .handCard {
               display: inline-block;
               position: relative;
               height: 20%;
+              margin-left: 1%;
               width: 8%;
             }
             .handCardImg {
