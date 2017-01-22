@@ -16,14 +16,34 @@ body {
   opacity: 0;
 }
 
-.lobbyCard {
-  height: 30%;
-  width: 21%;
+.sampleAnimation.ng-leave {
+  animation: boardWipe 1s linear;
+  -webkit-animation: boardWipe 1s linear;
 }
 
-#lobbyScarp{
-  height: 30%;
-  width: 21%;
+.move {
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -ms-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+}
+
+.lobbyCard {
+  position: relative;
+  width: 6%;
+  opacity: 100%;
+}
+
+.movedLobbyCard {
+  position: relative;
+  width: 10%;
+  left: 50%;
+  opacity: 0%;
+}
+
+.aceLobby {
+  width: 8%;
 }
 
 .sevenTest-hide {
@@ -550,3 +570,21 @@ body {
           height: 70px;
           margin-left: 2px;
         }
+
+
+/*/////////////
+//Animations//
+////////////*/
+
+
+
+/*
+@keyframes boardWipe{
+  100% {right:264%, bottom:42%, height:88%;  }
+
+}
+
+"class on ng-show" {
+  animation: boardWipe 3s ease-out;
+}
+*/

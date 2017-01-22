@@ -135,13 +135,15 @@
                             Ace Rules
                         </label>
                         <div class="sample-show-hide" ng-show="checked">
-                            <img class="transition_1 lobbyCard" src='/images/cards/card_0_9.png'>
                             <div>
-                                Click on the ace to activate your trap card
-                                <img src="/images/cards/ace_of_spades2.png" ng-click="cardCheck = !cardCheck" ng-init="cardCheck = true">
-                                <div class="sevenTest-hide" ng-show="cardCheck">
-                                    <img class="transition_2 lobbyCard" src='/images/cards/card_2_7.png'>
-                                    <img class="transition_3 lobbyCard" src='/images/cards/card_2_4.png'>
+                                <div>
+                                    <img class="lobbyCard move" ng-class="{'movedLobbyCard': !cardCheck, 'lobbyCard': cardCheck}" src='/images/cards/card_0_9.png'>
+                                </div>
+                                <img class="aceLobby" src="/images/cards/ace_of_spades2.png" ng-click="cardCheck = !cardCheck" ng-model="cardCheck">
+                                Click on the ace to destroy all point cards on the field
+                                <div class="sample-show-hide" ng-show="cardCheck">
+                                    <img class="lobbyCard" src='/images/cards/card_2_7.png'>
+                                    <img class="lobbyCard" src='/images/cards/card_2_4.png'>
                                 </div>
                             </div>
                         </div>

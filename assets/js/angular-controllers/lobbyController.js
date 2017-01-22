@@ -3,6 +3,7 @@ app.controller("lobbyController", ['$scope', '$http', function ($scope, $http) {
 	var self = this;
 	self.displayAce = false;
 	self.aceClicked = false;
+	$scope.cardCheck = true;
 	self.aceRules = function() {
 		self.displayAce = !self.displayAce;
 	};
