@@ -42,6 +42,18 @@ body {
   opacity: 0%;
 }
 
+.ready {
+  color: green;
+}
+
+.readySign {
+  color: red;
+  text-align: center;
+  top: 40%;
+  left: 50%;
+  font-size: 30px;
+}
+
 .aceLobby {
   width: 8%;
 }
