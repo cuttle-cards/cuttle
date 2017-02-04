@@ -21,6 +21,22 @@ body {
   -webkit-animation: boardWipe 1s linear;
 }
 
+.newGame{
+  -webkit-transition: 1s linear;
+  -moz-transition: 1s linear;
+  -ms-transition: 1s linear;
+  -o-transition: 1s linear;
+  transition: 1s linear;
+}
+
+.newGame.ng-enter {
+  opacity: 0;
+}
+
+.newGame.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
 .move {
   -webkit-transition: all 1s ease-in-out;
   -moz-transition: all 1s ease-in-out;
@@ -336,7 +352,25 @@ body {
                         position: relative;
                         height: 100%;
                         width: 25%;
+                        -webkit-transition: 1s linear;
+                        -moz-transition: 1s linear;
+                        -ms-transition: 1s linear;
+                        -o-transition: 1s linear;
+                        transition: 1s linear;
                       }
+                      .pointCard.ng-leave {
+                        opacity: 1;
+                      }
+                      .pointCard.ng-leave.ng-leave-active {
+                        opacity: 0;
+                      }
+                      .pointCard.ng-enter {
+                        opacity: 0;
+                      }
+                      .pointCard.ng-enter.ng-enter-active {
+                        opacity: 1;
+                      }
+
                       .pointCardImg {
                         display: inline-block;
                         position: relative;
