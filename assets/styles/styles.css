@@ -5,7 +5,6 @@ body {
 /*Lobby CSS*/
 
 .content-area {
-  border: 1px solid black;
   margin-top: 10px;
   padding: 10px;
 }
@@ -17,14 +16,46 @@ body {
   opacity: 0;
 }
 
-.lobbyCard {
-  height: 30%;
-  width: 21%;
+.sampleAnimation.ng-leave {
+  animation: boardWipe 1s linear;
+  -webkit-animation: boardWipe 1s linear;
 }
 
-#lobbyScarp{
-  height: 30%;
-  width: 21%;
+.move {
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -ms-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+}
+
+.lobbyCard {
+  position: relative;
+  width: 6%;
+  opacity: 100%;
+}
+
+.movedLobbyCard {
+  position: relative;
+  width: 10%;
+  left: 50%;
+  opacity: 0%;
+}
+
+.ready {
+  color: green;
+}
+
+.readySign {
+  color: red;
+  text-align: center;
+  top: 40%;
+  left: 50%;
+  font-size: 30px;
+}
+
+.aceLobby {
+  width: 8%;
 }
 
 .sevenTest-hide {
@@ -72,14 +103,12 @@ body {
 }
 
 .gameDiv {
-  border: 2px black dotted;
   min-height: 100%;
   min-width: 100%;
   position: absolute;
 }
 
 .wrappingDiv {
-  border: 2px black dotted;
   position: absolute;
   min-height: 100%;
   min-width: 100%;
@@ -356,7 +385,7 @@ body {
                       position: absolute;
                       height: 50%;
                       width: 90%;
-                      border: 2px solid green;
+                      border: 2px solid red;
                       z-index: 2;
                   }
                   #yourRunes {
@@ -373,7 +402,6 @@ body {
                         position: relative;
                         height: 100%;
                         width: 25%;
-                        border: 2px dotted;
                       }
                       .runeCardImg {
                         display: inline-block;
@@ -381,7 +409,6 @@ body {
                         z-index: 3;
                         height: 100%;
                         width: 100%;
-                        border: 2px dotted;
                       }
           #gameLog {
             display: inline-block;
@@ -391,6 +418,7 @@ body {
             width: 15%;
             left: 80%;
             overflow-y: scroll; 
+            color: chartreuse;
           }
               /*These cards are only displayed while a three is being resolved*/
               .scrapCard {
@@ -431,15 +459,15 @@ body {
           top: 10%;
           min-height: 30%;
           min-width: 80%;
-          left: 30%;
+          left: 25%;
         }
 
             .handCard {
               display: inline-block;
               position: relative;
               height: 20%;
+              margin-left: 1%;
               width: 8%;
-              border: 2px dotted;
             }
             .handCardImg {
               display: inline-block;
@@ -447,7 +475,6 @@ body {
               z-index: 3;
               height: 100%;
               width: 100%;
-              border: 2px dotted;
             }
 
             .discarding {
@@ -530,6 +557,12 @@ body {
             font-size: 28px;
           }
 
+          #concedeButton {
+            position: absolute;
+            left: 85%;
+            top: 36%;
+          }
+
 
     /*Shown deck for development testing*/
     #toggleDeck {
@@ -549,3 +582,21 @@ body {
           height: 70px;
           margin-left: 2px;
         }
+
+
+/*/////////////
+//Animations//
+////////////*/
+
+
+
+/*
+@keyframes boardWipe{
+  100% {right:264%, bottom:42%, height:88%;  }
+
+}
+
+"class on ng-show" {
+  animation: boardWipe 3s ease-out;
+}
+*/

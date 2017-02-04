@@ -93,63 +93,41 @@
 
             </div> <!-- End of formWrapper -->
             <div ng-controller="lobbyController as lobby">
-                <div ng-show="menu.tab==='lobby'">
-                    <p>
-                        Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()">Ready</button> button.  If you wish to review any of the rules, click on the any off the buttons below.
-                    </p>
-
-                    <h2>One Offs</h2>
-                   <!-- <table>         
-                        <tr>
-                            <td>
-                                <button ng-click="lobby.aceRules()">Ace</button>
-                                <div ng-show="lobby.displayAce">
-                                    <button ng-click="lobby.startAce()">Start</button>
-                                    <div ng-show="lobby.aceClicked" class="fading-test">Testing</div>
-                                </div>
-                            </td>
-                            <td><button>Two</button></td>
-                            <td><button>Three</button></td>
-                            <td><button>Four</button></td>
-                        </tr>
-                        <tr>
-                            <td><button>Five</button></td>
-                            <td><button>Six</button></td>
-                            <td><button>Seven</button></td>
-                            <td><button>Nine</button></td>
-                        </tr>
-                    </table> End of One Offs table
-                    <h2>Runes</h2>
-                    <table>
-                        <tr>
-                            <td><button>Eight</button></td>
-                            <td><button>Jack</button></td>
-                            <td><button>Queen</button></td>
-                            <td><button>King</button></td>
-                        </tr>
-                    </table> End of Runes table -->
-
-                    <div ng-init="checked = false">
-                        <label>
-                            <input type="checkbox" ng-model="checked">
-                            Ace Rules
-                        </label>
-                        <div class="sample-show-hide" ng-show="checked">
-                            <img class="transition_1 lobbyCard" src='/images/cards/card_0_9.png'>
-                            <div>
-                                Click on the ace to activate your trap card
-                                <img src="/images/cards/ace_of_spades2.png" ng-click="cardCheck = !cardCheck" ng-init="cardCheck = true">
-                                <div class="sevenTest-hide" ng-show="cardCheck">
-                                    <img class="transition_2 lobbyCard" src='/images/cards/card_2_7.png'>
-                                    <img class="transition_3 lobbyCard" src='/images/cards/card_2_4.png'>
+                <div ng-class="{'ready': lobby.oneReady}">
+                    <div ng-show="menu.tab==='lobby'"> 
+                        <p>
+                            Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()">Ready</button> button.  If you wish to review any of the rules, click on the any off the buttons below.
+                        </p>
+                        <p ng-if="lobby.oneReady" class="readySign">Congratulations on being ready!</p>
+                        <h2>One Offs</h2>
+                        <div ng-init="checked = false">
+                            <label>
+                                <input type="checkbox" ng-model="checked">
+                                Ace Rules
+                            </label>
+                            <div class="sample-show-hide" ng-show="checked">
+                                <div>
+                                    <div>
+                                        <img class="lobbyCard move" ng-class="{'movedLobbyCard': !cardCheck, 'lobbyCard': cardCheck}" src='/images/cards/card_0_9.png'>
+                                    </div>
+                                    <img class="aceLobby" src="/images/cards/ace_of_spades2.png" ng-click="cardCheck = !cardCheck" ng-model="cardCheck">
+                                    Click on the ace to destroy all point cards on the field
+                                    <div class="sample-show-hide" ng-show="cardCheck">
+                                        <img class="lobbyCard" src='/images/cards/card_2_7.png'>
+                                        <img class="lobbyCard" src='/images/cards/card_2_4.png'>
+                                    </div>
                                 </div>
                             </div>
+                            <label>
+                                <input type="checkbox" ng-model="rulesChecked">
+                                All rules
+                            </label>
+                            <div class="rulesText" ng-show="rulesChecked">
+                            </div>
                         </div>
-                    </div>
-
-
-                    <h2>Scuttling</h2>
-                </div> <!-- End of lobby contorller -->
+                        <h2>Scuttling</h2>
+                    </div> <!-- End of lobby contorller -->
+                </div>
             </div> <!-- End of ng-show for lobby-->
 
             <!-- Game View -->
@@ -274,7 +252,6 @@
                                 <!-- Your Hand -->
                                 <div ng-repeat="card in gc.player.hand" class="handCard">
                                     <img ng-src="{{card.img}}" ts-draggable index="$index" class="handCardImg" card-id="card.id" type="'hand'" suit="card.suit" rank="card.rank" ng-click="gc.clickHandCard($index)" ng-class="{discarding: gc.cardsToDiscard.indexOf(gc.player.hand[$index]) > -1}">
-                                    {{card.rank}} of {{card.suit}}
                                 </div>
                             </div>
                             <div id="yourCounter">
@@ -302,6 +279,7 @@
                                 </div>
                                 <!-- Your king squares -->
                             </div>
+                            <button type="button" class="btn btn-primary btn-lg btn-secondary" id="concedeButton">Concede</button>
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
                             <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
                             <div ng-show="gc.showDeck" id="shownDeck">
