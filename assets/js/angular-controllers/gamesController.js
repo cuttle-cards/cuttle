@@ -406,9 +406,17 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		console.log(obj)
 		switch (obj.verb) {
 			case 'updated':
-				self.game = obj.data.game;
+				if (obj.data.change != 'Initialize') {
+					/* Update controller game from data in this event
+					 	*	updateGame() is defined in js/app.js
+					 */
+					updateGame(self.game, obj.data.game);
+				} else {
+					self.game = obj.data.game;
+				}
+	
 				console.log(self.game);
-				console.log("pNum: " + self.pNum);
+
 				switch (obj.data.change) {
 					case 'Initialize':
 						if (self.pNum === null) {
@@ -427,7 +435,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							** Getter Attributes
 							**
 							*/
-							console.log("Game count: " + self.gameCount);
 							if (self.gameCount === 1) {
 
 								//glasses (true iff player has glasses eight)
@@ -511,9 +518,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								});					
 							}//End gameCount = 0 case
 						} //End pNum = null case
-						console.log("pNum after initialize: " + self.pNum);
-						console.log(self.player.hand);
-						console.log(self.game.players[self.pNum]);
 						break; //End Initialize case
 					case 'oneOff':
 					case 'counter':
@@ -619,11 +623,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				}				
 				break; //End obj.verb = "updated" case
 		}
-		// console.log("Whose turn is it? " + self.yourTurn);
-		// console.log(self.game);
-		// console.log("pNum" + self.pNum);
-		// console.log("Whole boolean " + self.pNum === self.game.turn % 2);
-		// console.log("Right side of boolean " + self.game.turn % 2);
 		$scope.$apply();
 	});
 
