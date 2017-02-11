@@ -570,6 +570,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							case 3:
 								if (obj.data.happened) {
 									if (obj.data.playedBy === self.player.pNum) {
+										self.waitingForOp = false;
 										self.resolvingThree = true;
 										alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");
 									}
@@ -578,6 +579,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							case 4:
 								if (obj.data.happened) {
 									if (obj.data.playedBy === self.opponent.pNum) {
+										self.waitingForOp = false;
 										self.resolvingFour = true;
 										alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
 									}
@@ -586,6 +588,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							case 7:
 								if (obj.data.happened) {
 									if (obj.data.playedBy === self.pNum) {
+										self.waitingForOp = false;
 										self.resolvingSeven = true;
 										alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
 									} else {
