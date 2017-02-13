@@ -1,5 +1,5 @@
 describe("Game Test", function () {
-	this.timeout(100000);
+	// this.timeout(100000);
 	it("Should sign up user 1", function () {
 		return request(socket1, '/user/signup', 
 			{
