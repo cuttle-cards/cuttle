@@ -52,6 +52,20 @@ describe('Policy Test', function () {
 		hasCardIdOneAndTwo(req, res, next).should.equal(false, "Passed hasCardIdOneAndTwo while missing req.body.cardId2");
 	});
 
+	it("hasGameName", function () {
+		var hasGameName = require("../../api/policies/hasGameName.js");
+		req = newReq();
+		// Valid request
+		req.body.gameName = "myGame";
+		hasGameName(req, res, next).should.equal(true, "Valid request failed hasGameName");
+		// Invalid request (req.body.gameName is not a string)
+		req.body.gameName = 4;
+		hasGameName(req, res, next).should.equal(false, "Passed hasGameName while req.body.gameName is not a string");
+		// Invalid request (req.body.gameName missing)
+		delete (req.body.gameName);
+		hasGameName(req, res, next).should.equal(false, "Passed hasGameName while missing req.body.gameName");
+	});
+
 	it("hasOpId", function () {
 		var hasOpId = require("../../api/policies/hasOpId.js");
 		req = newReq();
