@@ -48,6 +48,13 @@ module.exports.policies = {
 		// before letting any users feed our rabbits
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
+
+  UserController: {
+    '*': false,
+    signup: ['hasPassword'],
+    login: ['hasPassword']
+  },
+  
   GameController: {
     '*': false,
     create : ['isLoggedIn', 'hasGameName'],

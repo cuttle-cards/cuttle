@@ -80,6 +80,20 @@ describe('Policy Test', function () {
 		hasOpId(req, res, next).should.equal(false, "Passed hasOpId while missing req.body.opId");
 	});
 
+	it("hasPassword", function () {
+		var hasPassword = require("../../api/policies/hasPassword.js");
+		req = newReq();
+		// Valid request
+		req.body.password = "1A2b3cKJI!";
+		hasPassword(req, res, next).should.equal(true, "Valid request failed hasPassword");
+		// Invalid request (req.body.password is not a string)
+		req.body.password = 1347852;
+		hasPassword(req, res, next).should.equal(false, "Passed hasPassword while req.body.password is not a string");
+		// Invalid request (missing req.body.password)
+		delete(req.body.password);
+		hasPassword(req, res, next).should.equal(false, "Passed hasPassword while missing req.body.password");
+	});
+
 	it("hasTargetId", function () {
 		var hasTargetId = require("../../api/policies/hasTargetId");
 		req = newReq();

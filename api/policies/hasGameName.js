@@ -1,8 +1,8 @@
 /**
- * hasTargetId
+ * hasGameName
  *
  * @module      :: Policy
- * @description :: Only allows requests that contain a 'gameName' parameter, which is a number
+ * @description :: Only allows requests that contain a 'gameName' parameter, which is a string
  * @docs        :: http://sailsjs.org/#!/documentation/concepts/Policies
  *
  */
