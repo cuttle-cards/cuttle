@@ -72,4 +72,5 @@ module.exports.routes = {
   '/game/seven/untargetedOneOff'  :   'gameController.sevenUntargetedOneOff',
   '/game/seven/targetedOneOff'    :   'gameController.sevenTargetedOneOff',
   '/game/over'                    :   'gameController.gameOver',
+  '/game/concede'                 :   'gameController.concede',
 };

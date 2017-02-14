@@ -69,6 +69,7 @@ module.exports = {
 	}, //End getList()
 
 	subscribe: function (req, res) {
+		console.log(req.session);
 		if (req.body.id) {
 			Game.subscribe(req, req.body.id);
 			var promiseGame = gameAPI.findGame(req.body.id);
@@ -1379,6 +1380,26 @@ module.exports = {
 		});
 	}, //End sevenTargetedOneOff
 
+	// Player requests to concede game
+	concede: function (req, res) {
+		var promiseGame = gameService.populateGame({gameId: req.session.game})
+		.then(function publishAndRespond (game) {
+			var victory = {
+				gameOver: true,
+				winner: (req.session.pNum + 1) % 2
+			};
+			Game.publishUpdate(game.id,
+			{
+				change: 'concede',
+				game: game,
+				victory: victory
+			});
+			return res.ok();
+		}).catch(function failed (err) {
+			return res.badRequest(err);
+		});	
+	},
+
 	gameOver: function (req, res) {
 		var promisePlayer = userService.findUser({userId: req.session.usr})
 		.then(function changeAndSave (player) {
@@ -1409,8 +1430,9 @@ module.exports = {
 			player.game = null;
 			player.pNum = null;
 			player.frozenId = null;
-			req.session.game = null;
-			req.session.pNum = null;
+			delete(req.session.game);
+			delete(req.session.pNum);
+			console.log(req.session);
 			return userService.saveUser({user: player});
 		}) //End changeAndSave
 		.then(function respond (player) {

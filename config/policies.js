@@ -79,6 +79,7 @@ module.exports.policies = {
     sevenJack: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
     sevenUntargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId'],
     sevenTargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
+    concede: ['isLoggedIn', 'isInGame'],
     gameOver: ['isLoggedIn', 'isInGame'],
 
     // DEVELOPMENT ONLY

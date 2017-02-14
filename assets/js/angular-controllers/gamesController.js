@@ -15,6 +15,17 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	self.showDeck = false;
 
+	// Concede game
+	self.concede = function () {
+		var conf = confirm("Are you sure you want to concede?");
+		if (conf) {
+			io.socket.post("/game/concede", function (res, jwres) {
+				console.log(jwres);
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			});
+		}
+	};
+
 	self.draw = function () {
 		console.log("\nDrawing. waitingForOp: " + self.waitingForOp + ", countering: " + self.countering);
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
@@ -620,7 +631,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						function (res, jwres) {
 							console.log(jwres);
 						});
-						alert("Player " + obj.data.victory.winner + " has won!");
+						if (obj.data.change != 'concede') {
+							alert("Player " + obj.data.victory.winner + " has won!");
+						} else {
+							var loser = (obj.data.victory.winner + 1) % 2;
+							alert("Player " + loser + " has conceded; Player " + obj.data.victory.winner + " has won!");
+						}
 						menu.tab = 'gamesOverview';
 					}
 				}				

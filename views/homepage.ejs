@@ -279,7 +279,7 @@
                                 </div>
                                 <!-- Your king squares -->
                             </div>
-                            <button type="button" class="btn btn-primary btn-lg btn-secondary" id="concedeButton">Concede</button>
+                            <button type="button" class="btn btn-primary btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
                             <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
                             <div ng-show="gc.showDeck" id="shownDeck">
