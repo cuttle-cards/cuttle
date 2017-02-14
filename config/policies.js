@@ -50,13 +50,13 @@ module.exports.policies = {
 	// }
 
   UserController: {
-    // '*': false,
+    '*': false,
     signup: ['hasPassword'],
     login: ['hasPassword']
   },
   
   GameController: {
-    // '*': false,
+    '*': false,
     create : ['isLoggedIn', 'hasGameName'],
     getList: 'isLoggedIn',
     subscribe: 'isLoggedIn',
