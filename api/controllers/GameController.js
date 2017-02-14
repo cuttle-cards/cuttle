@@ -1427,8 +1427,10 @@ module.exports = {
 			ids.forEach(function (id) {
 				player.runes.remove(id);
 			});
-			player.game = null;
-			player.pNum = null;
+			delete(player.game);
+			delete(player.pNum);
+			// player.game = null;
+			// player.pNum = null;
 			player.frozenId = null;
 			delete(req.session.game);
 			delete(req.session.pNum);

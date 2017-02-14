@@ -637,6 +637,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							var loser = (obj.data.victory.winner + 1) % 2;
 							alert("Player " + loser + " has conceded; Player " + obj.data.victory.winner + " has won!");
 						}
+						self.pNum = null;
+						self.game = null;
 						menu.tab = 'gamesOverview';
 					}
 				}				
