@@ -164,6 +164,23 @@ body {
               position: relative;
               width: 7%;
               height: 100%;
+              -webkit-transition: 1s linear;
+              -moz-transition: 1s linear;
+              -ms-transition: 1s linear;
+              -o-transition: 1s linear;
+              transition: 1s linear;
+            }
+            .opHandCard.ng-leave {
+              opacity: 1;
+            }
+            .opHandCard.ng-leave.ng-leave-active {
+              opacity: 0;
+            }
+            .opHandCard.ng-enter {
+              opacity: 0;
+            }
+            .opHandCard.ng-enter.ng-enter-active {
+              opacity: 1;
             }
 
             .opHandCardImg {
@@ -436,6 +453,23 @@ body {
                         position: relative;
                         height: 100%;
                         width: 25%;
+                        -webkit-transition: 1s linear;
+                        -moz-transition: 1s linear;
+                        -ms-transition: 1s linear;
+                        -o-transition: 1s linear;
+                        transition: 1s linear;
+                      }
+                      .runeCard.ng-leave {
+                        opacity: 1;
+                      }
+                      .runeCard.ng-leave.ng-leave-active {
+                        opacity: 0;
+                      }
+                      .runeCard.ng-enter {
+                        opacity: 0;
+                      }
+                      .runeCard.ng-enter.ng-enter-active {
+                        opacity: 1;
                       }
                       .runeCardImg {
                         display: inline-block;
@@ -502,6 +536,23 @@ body {
               height: 20%;
               margin-left: 1%;
               width: 8%;
+              -webkit-transition: 1s linear;
+              -moz-transition: 1s linear;
+              -ms-transition: 1s linear;
+              -o-transition: 1s linear;
+              transition: 1s linear;
+            }
+            .handCard.ng-leave {
+              opacity: 1;
+            }
+            .handCard.ng-leave.ng-leave-active {
+              opacity: 0;
+            }
+            .handCard.ng-enter {
+              opacity: 0;
+            }
+            .handCard.ng-enter.ng-enter-active {
+              opacity: 1;
             }
             .handCardImg {
               display: inline-block;
