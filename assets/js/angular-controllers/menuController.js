@@ -3,6 +3,8 @@ app.controller("menuController", ['$scope', function ($scope) {
 	self.tab = "signup";
 	self.games = [];
 	self.userId = null;
+	self.playerReady = false;
+	self.opReady = false;
 
 	self.requestGames = function () {
 		io.socket.get("/game/getList", function (res, jwres) {
@@ -43,6 +45,13 @@ app.controller("menuController", ['$scope', function ($scope) {
 				break;
 			case 'updated':
 				switch (obj.data.change) {
+					case 'ready':
+						if (obj.data.userId === self.userId) {
+							self.playerReady = true;
+						} else {
+							self.opReady = true;
+						}
+						break;
 					case 'Initialize':
 						self.tab = "gameView";
 						break;

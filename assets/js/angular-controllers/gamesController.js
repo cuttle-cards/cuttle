@@ -639,6 +639,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						}
 						self.pNum = null;
 						self.game = null;
+						menu.playerReady = false;
+						menu.opReady = false;
 						menu.tab = 'gamesOverview';
 					}
 				}				

@@ -93,12 +93,12 @@
 
             </div> <!-- End of formWrapper -->
             <div ng-controller="lobbyController as lobby">
-                <div ng-class="{'ready': lobby.oneReady}">
+                <div ng-class="{'ready': menu.playerReady}">
                     <div ng-show="menu.tab==='lobby'"> 
                         <p>
                             Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()">Ready</button> button.  If you wish to review any of the rules, click on the any off the buttons below.
                         </p>
-                        <p ng-if="lobby.oneReady" class="readySign">Congratulations on being ready!</p>
+                        <p ng-if="menu.playerReady" class="readySign">Congratulations on being ready!</p>
                         <h2>One Offs</h2>
                         <div ng-init="checked = false">
                             <label>

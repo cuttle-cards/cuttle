@@ -218,6 +218,11 @@ module.exports = {
 				} else {
 					var saveGame = gameService.saveGame({game: game});
 					var saveUser = userService.saveUser({user: user});
+					Game.publishUpdate(game.id, 
+					{
+						change: 'ready',
+						userId: user.id,
+					})
 					return Promise.all([saveGame, saveUser]);
 				}
 			}) //End foundRecords

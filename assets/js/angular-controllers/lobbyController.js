@@ -4,7 +4,7 @@ app.controller("lobbyController", ['$scope', '$http', function ($scope, $http) {
 	self.displayAce = false;
 	self.aceClicked = false;
 	$scope.cardCheck = true;
-	self.oneReady = false;
+	// self.oneReady = false;
 	self.aceRules = function() {
 		self.displayAce = !self.displayAce;
 	};
