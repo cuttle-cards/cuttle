@@ -1,5 +1,5 @@
 /**
- * sessionAuth
+ * hasCardId
  *
  * @module      :: Policy
  * @description :: Only allows requests that contain a 'cardId' parameter, which is a number

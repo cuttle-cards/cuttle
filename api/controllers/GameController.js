@@ -69,7 +69,6 @@ module.exports = {
 	}, //End getList()
 
 	subscribe: function (req, res) {
-		console.log(req.session);
 		if (req.body.id) {
 			Game.subscribe(req, req.body.id);
 			var promiseGame = gameAPI.findGame(req.body.id);

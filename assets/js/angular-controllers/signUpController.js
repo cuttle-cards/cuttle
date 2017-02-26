@@ -29,7 +29,11 @@ app.controller("signUpController", ['$scope', '$http', function ($scope, $http) 
 		},
 		function error(res) {
 			console.log("Error creating user:");
-			console.log(res)
+			console.log(res);
+			self.email = "";
+			self.password = "";
+			self.repeatPassword = "";
+			alert(res.data);
 		});
 
 	};

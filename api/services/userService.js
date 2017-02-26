@@ -1,4 +1,5 @@
 var Promise = require('bluebird');
+var email = require('machinepack-emailaddresses');
 module.exports = {
 	/*
 	**Find User by Id
@@ -90,5 +91,22 @@ module.exports = {
 		}
 		// return Promise.resolve(res);
 		return res;
+	},
+
+	validateEmail: function (options) {
+		return new Promise(function (resolve, reject) {
+			email.validate({string: options.email},
+			{
+				error: function (err) {
+					return reject(error)
+				},
+				invalid: function () {
+					return reject(new Error("That's not a valid email address"));
+				},
+				success: function () {
+					return resolve(true);
+				}
+			})
+		}) ;
 	}
 };

@@ -1,4 +1,5 @@
 require('chai').should();
+var Promise = require('bluebird');
 var req = {
 	session: {},
 	body: {}
@@ -121,6 +122,29 @@ describe('Policy Test', function () {
 		delete(req.body.targetType);
 		hasTargetType(req, res, next).should.equal(false, "Passed hasTargetType while missing req.body.targetType");
 
+	});
+
+	it("hasValidEmail", function (done) {
+		var hasValidEmail = require("../../api/policies/hasValidEmail.js");
+		req = newReq();
+		console.log(hasValidEmail);
+		// Valid request
+		req.body.email = "joeBlow@gmail.com"
+		var x = hasValidEmail(req, res, next);
+		console.log("\nx:")
+		console.log(x);
+		x.should.equal(true);
+		done();
+		// return new Promise(function (resolve, reject) {
+		// 	var x = hasValidEmail(req, res, next);
+		// 	console.log("x:");
+		// 	console.log(x);
+
+
+		// });
+		// var x = hasValidEmail(req, res, next);
+		// console.log(x);
+		// return hasValidEmail(req, res, next).should.equal(true, "Valid request failed hasValidEmail");
 	});
 	
 	it("isLoggedIn", function () {
