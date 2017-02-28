@@ -22,21 +22,25 @@ module.exports = {
 			var email = req.body.email;
 			var pass  = req.body.password;
 			// promises
-			passwordAPI.encryptPass(pass)
-				.then(function (encryptedPassword){ //Use encrypted password to make new user
-				return userAPI.createUser(email, encryptedPassword)
-					.then(function (user) { //Successfully created User
-						req.session.loggedIn = true;
-						req.session.usr = user.id;
-						res.ok();
-					})
-					.catch(function (reason) { //Failed to create User
-						console.log(reason);
-						return res.badRequest(reason);
-					});
+			User.find({email: req.body.email})
+			.then(function checkForUniqueEmail (users) {
+				if (users.length > 0) return Promise.reject(new Error("That email is already registered to another user; try logging in!"));
+				return passwordAPI.encryptPass(pass)
+			})
+			.then(function createUser (encryptedPassword){ //Use encrypted password to make new user
+			return userAPI.createUser(email, encryptedPassword)
+				.then(function setSessionData (user) { //Successfully created User
+					req.session.loggedIn = true;
+					req.session.usr = user.id;
+					res.ok();
+				})
+				.catch(function failedCreate (reason) { //Failed to create User
+					console.log(reason);
+					return res.badRequest(reason);
+				});
 
 			})	//End promiseEpass success
-			.catch(function (reason) { //Password could not be encrypted
+			.catch(function failed (reason) { //Password could not be encrypted
 				console.log("Failed to create user:");
 				console.log(reason);
 				return res.badRequest(reason);
