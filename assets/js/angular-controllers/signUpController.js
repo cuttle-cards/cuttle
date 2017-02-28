@@ -28,21 +28,12 @@ app.controller("signUpController", ['$scope', '$http', function ($scope, $http) 
 			// res.header("Access-Control-Allow-Credentials", true);
 		},
 		function error(res) {
-			console.log("Error creating user:");
-			console.log(res);
-			console.log(typeof(res.data));
-			console.log("isObject: " + typeof(res.data) === "object");
 			self.email = "";
 			self.password = "";
 			self.repeatPassword = "";
 			if(typeof(res.data) === "string") {
-				console.log(typeof(res.data));
-				console.log(typeof(res.data) === "string");
-				console.log("string error");
 				alert(res.data);
 			} else {
-				console.log("complex error");
-				console.log(res.data.message);
 				alert(res.data.message);
 			}
 			
