@@ -493,6 +493,22 @@ body {
                 position: relative;
                 display: inline-block;
                 height: 15%;
+                -webkit-transition: 1s linear;
+                -moz-transition: 1s linear;
+                -ms-transition: 1s linear;
+                -o-transition: 1s linear;          
+              }
+              .scrapCard.ng-hide-remove {
+                opacity: 1;
+              }
+              .scrapCard.ng-hide-remove.ng-hide-remove-active {
+                opacity: 0;
+              }
+              .scrapCard.ng-hide-add {
+                opacity: 0;
+              }
+              .scrapCard.ng-hide-add.ng-hide-add-active {
+                opacity: 1;
               }
                   .scrapCardImg {
                     height: 100%;
@@ -508,7 +524,23 @@ body {
                 height: 35%;
                 display: inline-block;
                 top: 32%;
-                z-index: 4;              
+                z-index: 4;
+                -webkit-transition: 1s linear;
+                -moz-transition: 1s linear;
+                -ms-transition: 1s linear;
+                -o-transition: 1s linear;          
+              }
+              .sevenCard.ng-hide-remove {
+                opacity: 1;
+              }
+              .sevenCard.ng-hide-remove.ng-hide-remove-active {
+                opacity: 0;
+              }
+              .sevenCard.ng-hide-add {
+                opacity: 0;
+              }
+              .sevenCard.ng-hide-add.ng-hide-add-active {
+                opacity: 1;
               }
 
 
