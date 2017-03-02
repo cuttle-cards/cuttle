@@ -9,7 +9,13 @@
 module.exports = function (req, res, next) {
 	if ( req.body.hasOwnProperty('password') ) {
 		if (typeof(req.body.password) === 'string'){
-			return next();
+			// PLACE PASSWORD RESTRICTIONS HERE
+				// e.g. at least 8 characters, etc.
+				if (req.body.password.length >= 8) {
+					return next();
+				} else {
+					return res.badRequest("Your password must contain at least eight characters");
+				}
 		}
 	}
 	// User not allowed

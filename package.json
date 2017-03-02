@@ -23,6 +23,7 @@
     "grunt-sync": "~0.2.3",
     "include-all": "~0.1.6",
     "lodash": "^4.15.0",
+    "machinepack-emailaddresses": "^0.4.0",
     "machinepack-passwords": "^2.3.0",
     "rc": "~1.0.1",
     "sails": "~0.12.0-rc2",

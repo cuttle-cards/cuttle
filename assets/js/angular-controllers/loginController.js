@@ -20,7 +20,7 @@ app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
 
 			function errorCallback (res) {
 				console.log("Error logging in");
-				console.log(res);
+				alert(res.data);
 			}
 
 		);
