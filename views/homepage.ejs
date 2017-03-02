@@ -149,6 +149,7 @@
                             </div>
                             </p>
                             <div id="oppCounter">
+                                <div id="oppName">{{gc.opponent.email}}</div>
                                 <div id="oppKingSlot1" class="kingSlot" ng-class="{fullKing: gc.opKingCount == 1}">
                                     <p class="cap1">14</p>
                                 </div>
@@ -225,7 +226,7 @@
                                 </div>
                             </div>
                             <div class="col-xs-2 col-md-2" id="gameLog">
-                                <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven">
+                                <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree">
                                     {{text}}
                                 </div>
 
@@ -255,6 +256,7 @@
                                 </div>
                             </div>
                             <div id="yourCounter">
+                                <div id="oppName">{{gc.player.email}}</div>
                                 <p id="yourPointTotal">Your Point Total: {{gc.yourPointCount}}</p>
                                 <div id="yourKingSlot1" class="kingSlot" ng-class="{fullKing: gc.yourKingCount == 1}">
                                     <p class="cap1">14</p>
