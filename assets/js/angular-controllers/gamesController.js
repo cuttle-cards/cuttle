@@ -234,6 +234,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Drop Callbacks //
 	////////////////////
 	self.dropPoints = function (targetIndex) {
+		// alert("played points!");
+		console.log(dragData);
 		if (!self.resolvingSeven) {		
 			io.socket.put("/game/points", 
 			{
@@ -241,6 +243,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			},
 			function (res, jwres) {
 				console.log(jwres);
+				// alert("console printed");
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
 		//Resolving Seven case

@@ -1,5 +1,6 @@
 app.controller("signUpController", ['$scope', '$http', function ($scope, $http) {
 	var self = this;
+	var menu = $scope.menu;
 	self.email = "";
 	self.password = "";
 	self.repeatPassword = "";
@@ -25,6 +26,7 @@ app.controller("signUpController", ['$scope', '$http', function ($scope, $http) 
 			self.email = "";
 			self.password = "";
 			self.repeatPassword = "";
+			menu.requestGames();
 			// res.header("Access-Control-Allow-Credentials", true);
 		},
 		function error(res) {

@@ -35,7 +35,7 @@ module.exports = {
 		Game.watch(req);
 		if (req.session.game != null) {
 			var promiseGame = gameService.populateGame({gameId: req.session.game})
-			var promiseList = gameAPI.findAllGames();
+			var promiseList = gameAPI.findOpenGames();
 			Promise.all([promiseGame, promiseList])
 			.then(function publishAndRespond (values) {
 				var game = values[0], list = values[1];
@@ -55,7 +55,7 @@ module.exports = {
 				});
 			});
 		} else {
-			gameAPI.findAllGames()
+			gameAPI.findOpenGames()
 			.then(function success (games) {
 				return res.send({
 					inGame: false,

@@ -32,10 +32,22 @@ app.directive('tsDroppable', function () {
 				// console.log("dragleave. Counter: " + counter);
 			});
 			el.addEventListener("drop", function (ev) {
+				// alert("Drop directive handler");
 				el.classList.remove("dragover");
+				ev.preventDefault();
 				var drop = scope.uponDrop();
+				// alert("Assigned uponDrop()");
 				drop(scope.index);
+				// alert("Finished uponDrop() call");
 				counter = 0;
+				// Reset drag data 
+				dragData = {
+					type: null,
+					index: null,
+					rank: null,
+					suit: null,
+					id: null
+				};					
 			}); //End drop handler
 		}
 	}

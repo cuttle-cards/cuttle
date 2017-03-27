@@ -13,10 +13,10 @@ module.exports = function(req, res, next) {
   	if (typeof(req.body.cardId) === "number") {
     	return next();
   	} else {
-  		return res.forbidden("Error with user's session: 'game' must be an integer");
+  		return res.forbidden("Error: You must provide a valid card for your move (ID was non-integer)");
   	}
   } else {
-  	return res.forbidden("You must join a game to draw a card");
+  	return res.forbidden("Error You must provide a valid card to make that move (No ID given)");
   }
 
   // User is not allowed

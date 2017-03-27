@@ -1,5 +1,6 @@
 app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
 	var self = this;
+	var menu = $scope.menu;
 	self.email = "";
 	self.password = "";
 	self.submitLogin = function() {
@@ -16,6 +17,7 @@ app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
 			function successCallback (res) {
 				self.email = "";
 				self.password = "";
+				menu.requestGames
 			},
 
 			function errorCallback (res) {

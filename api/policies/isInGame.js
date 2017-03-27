@@ -17,7 +17,7 @@ module.exports = function(req, res, next) {
   		return res.forbidden("Error with user's session: 'game' must be an integer");
   	}
   } else {
-  	return res.forbidden("You must join a game to draw a card");
+  	return res.forbidden("Session Error: You must join a game to perform that move");
   }
 
   // User is not allowed
