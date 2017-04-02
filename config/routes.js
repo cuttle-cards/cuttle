@@ -32,9 +32,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'homepage'
-  },
+  // '/': {
+  //   view: 'homepage'
+  // },
 
   /***************************************************************************
   *                                                                          *
@@ -46,8 +46,10 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  '/'                             :   'userController.homepage',
   '/user/signup'                  :   'userController.signup',
   '/user/login'                   :   'userController.login',
+  '/user/logout'                  :   'userController.logout',
   '/game/create'                  :   'gameController.create',
   '/game/getList'                 :   'gameController.getList',
   '/game/subscribe'               :   'gameController.subscribe',

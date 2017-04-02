@@ -1,10 +1,11 @@
-app.controller("menuController", ['$scope', function ($scope) {
+app.controller("menuController", ['$scope', '$window', function ($scope, $window) {
 	var self = this;
 	self.tab = "signup";
 	self.games = [];
 	self.userId = null;
 	self.playerReady = false;
 	self.opReady = false;
+	self.loggedIn = $window.loggedIn;
 
 	self.requestGames = function () {
 		io.socket.get("/game/getList", function (res, jwres) {
@@ -26,6 +27,22 @@ app.controller("menuController", ['$scope', function ($scope) {
 			$scope.$apply();
 		});
 	};
+
+	self.logOut = function () {
+		io.socket.get("/user/logout", function (res, jwres) {
+			console.log("\n logging out");
+			console.log(jwres);
+			// Success
+			if (jwres.statusCode === 200) {
+				console.log("successfully logged out");
+				self.tab = "signup";
+				self.loggedIn = false;
+				$scope.$apply();
+			} else {
+				alert(jwres.error.message);
+			}
+		})
+	}
 
 	self.populateGameTest = function () {
 		io.socket.get("/game/populateGameTest", function (res, jwres) {

@@ -23,6 +23,7 @@ app.controller("signUpController", ['$scope', '$http', function ($scope, $http) 
 			}
 		}).then(
 		function success(res) {
+			menu.loggedIn = true;
 			self.email = "";
 			self.password = "";
 			self.repeatPassword = "";

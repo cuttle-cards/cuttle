@@ -8,13 +8,18 @@
     <title>Cuttle V2</title>
 </head>
 <body>
+    <!-- Capture local variables for angular.js access (yes, this is hideous)-->
+    <script type="text/javascript">
+        var loggedIn = <%= loggedIn %>;
+    </script>
     <div ng-app="app" class="wrappingDiv">
         <!-- Highest level controller -->
         <div id="menuController" ng-controller="menuController as menu" ng-cloak class="wrappingDiv">
             <!-- Sign Up/Login Tab Buttons -->
             <div id="buttonWrapper" class="btn-group">
-                <button ng-click="menu.tab='signup'" class="btn btn-default">Sign Up</button>
-                <button ng-click="menu.tab='login'" class="btn btn-default">Log In</button>
+                <button ng-click="menu.tab='signup'" ng-hide="menu.loggedIn" class="btn btn-default">Sign Up</button>
+                <button ng-click="menu.tab='login'" ng-hide="menu.loggedIn" class="btn btn-default">Log In</button>
+                <button ng-click="menu.logOut()" ng-show="menu.loggedIn" class="btn btn-default">Log Out</button>
                 <button ng-click="menu.requestGames()" class="btn btn-default">Games</button>
             </div>
             <!-- Displays either signup, or login form -->

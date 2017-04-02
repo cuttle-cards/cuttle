@@ -15,9 +15,10 @@ app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
 			withCredential: true
 		}).then(
 			function successCallback (res) {
+				menu.loggedIn = true;
 				self.email = "";
 				self.password = "";
-				menu.requestGames
+				menu.requestGames();
 			},
 
 			function errorCallback (res) {

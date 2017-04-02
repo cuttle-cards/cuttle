@@ -51,8 +51,10 @@ module.exports.policies = {
 
   UserController: {
     '*': false,
+    homepage: true,
     signup: ['hasValidEmail', 'hasValidPassword'],
-    login: ['hasValidEmail', 'hasPassword']
+    login: ['hasValidEmail', 'hasPassword'],
+    logout: 'isLoggedIn',
   },
   
   GameController: {

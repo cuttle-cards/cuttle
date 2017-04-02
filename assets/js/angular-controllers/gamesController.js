@@ -454,80 +454,115 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								//glasses (true iff player has glasses eight)
 								Object.defineProperty(self, 'glasses', {
 									get: function () {
-										var res = false;
-										self.game.players[self.pNum].runes.forEach(function (rune) {
-											if (rune.rank === 8) res = true;
-										});
-										return res;
+										if (self.game) {
+											var res = false;
+											self.game.players[self.pNum].runes.forEach(function (rune) {
+												if (rune.rank === 8) res = true;
+											});
+											return res;
+										} else {
+											return null;
+										}
 									}
 								});
 								//player (player whose session this is)
 								Object.defineProperty(self, 'player', {
 									get: function () {
-										return self.game.players[self.pNum];
+										if (self.game) {
+											return self.game.players[self.pNum];
+										} else {
+											return null;
+										}
 									}
 								});
 								//opponent (other player)
 								Object.defineProperty(self, 'opponent', {
 									get: function () {
-										return self.game.players[(self.pNum + 1) % 2];
+										if (self.game) {
+											return self.game.players[(self.pNum + 1) % 2];
+										} else {
+											return null;
+										}
 									}
 								});
 								//two's in player's hand
 								Object.defineProperty(self, 'twosInHand', {
 									get: function () {
-										var res = 0;
-										self.player.hand.forEach(function (card) {
-											if (card.rank === 2) res++;
-										});
-										return res;
+										if (self.game) {
+											var res = 0;
+											self.player.hand.forEach(function (card) {
+												if (card.rank === 2) res++;
+											});
+											return res;
+										} else {
+											return null;
+										}
 									}
 								});
 								// Number of Kings opponent has
 								Object.defineProperty(self, 'opKingCount', {
 									get: function () {
-										var res = 0;
-										self.opponent.runes.forEach(function (card) {
-											if (card.rank === 13) res++;
-										});
-										return res;
+										if (self.game) {
+											var res = 0;
+											self.opponent.runes.forEach(function (card) {
+												if (card.rank === 13) res++;
+											});
+											return res;
+										} else {
+											return null;
+										}
 									}
 								});
 								// Number of Kings player has
 								Object.defineProperty(self, 'yourKingCount', {
 									get: function () {
-										var res = 0;
-										self.player.runes.forEach(function (card) {
-											if (card.rank === 13) res++;
-										});
-										return res;
+										if (self.game) {
+											var res = 0;
+											self.player.runes.forEach(function (card) {
+												if (card.rank === 13) res++;
+											});
+											return res;
+										} else {
+											return null;
+										}
 									}
 								});	
 								//Number of points opponent has
 								Object.defineProperty(self, 'opPointCount', {
 									get: function () {
-										res = 0;
-										self.opponent.points.forEach(function (card) {
-											res += card.rank;
-										});
-										return res;
+										if (self.game) {
+											res = 0;
+											self.opponent.points.forEach(function (card) {
+												res += card.rank;
+											});
+											return res;
+										} else {
+											return null;
+										}
 									}
 								});	
 								//Number of points player has
 								Object.defineProperty(self, 'yourPointCount', {
 									get: function () {
-										res = 0;
-										self.player.points.forEach(function (card) {
-											res += card.rank;
-										});
-										return res;
+										if (self.game) {
+											res = 0;
+											self.player.points.forEach(function (card) {
+												res += card.rank;
+											});
+											return res;
+										} else {
+											return null;
+										}
 									}
 								});		
 								//Whether it is this player's turn
 								Object.defineProperty(self, 'yourTurn', {
 									get: function () {
-										res = self.pNum === self.game.turn % 2;
-										return res;
+										if (self.game) {
+											return self.pNum === self.game.turn % 2;
+										} else {
+											return null;
+										}
 									}
 								});					
 							}//End gameCount = 0 case
@@ -640,6 +675,15 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							var loser = (obj.data.victory.winner + 1) % 2;
 							alert("Player " + loser + " has conceded; Player " + obj.data.victory.winner + " has won!");
 						}
+						// delete(menu.glasses);
+						// delete(menu.player);
+						// delete(menu.opponent);
+						// delete(menu.twosInHand);
+						// delete(menu.opKingCount);
+						// delete(menu.yourKingCount);
+						// delete(menu.opPointCount);
+						// delete(menu.yourPointCount);
+						// delete(menu.yourTurn);
 						self.pNum = null;
 						self.game = null;
 						menu.playerReady = false;

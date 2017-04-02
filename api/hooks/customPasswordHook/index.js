@@ -27,11 +27,9 @@ module.exports = function (sails) {
 						return reject(err);
 					},
 					incorrect: function() {
-						console.log("Wrong password");
 						return reject(new Error("Wrong password"));
 					}, 
 					success: function() {
-						console.log("Correct password, red leader standing by");
 						return resolve(true);
 					}
 				});

@@ -16,6 +16,10 @@ var passwordAPI = sails.hooks['custompasswordhook'];
 
 
 module.exports = {
+	homepage: function (req, res) {
+		return res.view("homepage", {loggedIn: req.session.loggedIn});
+	},
+
 	signup: function (req, res) {
 		if (req.body.password && req.body.email) {
 			// data from client
@@ -71,6 +75,12 @@ module.exports = {
 					res.badRequest(reason);
 				});
 		}
-	}
+	}, //End login
+
+	logout: function (req, res) {
+		delete(req.session.usr);
+		req.session.loggedIn = false;
+		return res.ok();
+	},
 };
 
