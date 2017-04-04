@@ -549,10 +549,10 @@ module.exports = {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseCard = cardService.findCard({cardId: req.body.cardId});
-
-		Promise.all([promiseGame, promisePlayer, promiseCard])
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		Promise.all([promiseGame, promisePlayer, promiseCard, promiseOpponent])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], card = values[2];
+			var game = values[0], player = values[1], card = values[2], opponent = values[3];
 			if (game.turn % 2 === player.pNum) { //Check Turn
 				if (!game.oneOff) { //Check that no other one-off is in play
 					if (card.hand === player.id) { //Check that card was in hand
@@ -563,12 +563,13 @@ module.exports = {
 							case 5:
 							case 6:
 							case 7:
+								//Check for legality of move (edge cases, per one-off)
 								switch (card.rank) {
 									case 3:
 										if (game.scrap.length < 1) return Promise.reject(new Error("You can only play a 3 as a one-off, if there are cards in the scrap pile"));
 										break;
 									case 4:
-									// TODO: FIND OPPONENT AND CHECK THEIR HAND SIZE
+										if (opponent.hand.length === 0) return Promise.reject(new Error("You cannot play a 4 as a one-off while your opponent has no cards in hand"));
 										break;
 									case 5:
 									case 7:

@@ -317,7 +317,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			if (!self.resolvingSeven) {			
 				io.socket.put("/game/untargetedOneOff", 
 					{
-						cardId: dragData.id
+						cardId: dragData.id,
+						opId: self.opponent.id
 					},
 					function (res, jwres) {
 						console.log(jwres);

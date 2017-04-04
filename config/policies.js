@@ -69,7 +69,7 @@ module.exports.policies = {
     runes: ['isLoggedIn', 'isInGame', 'hasCardId'],
     scuttle: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
     jack: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
-    untargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId'],
+    untargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
     targetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
     counter: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
     resolve: ['isLoggedIn', 'isInGame', 'hasOpId'],
