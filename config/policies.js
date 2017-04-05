@@ -73,7 +73,7 @@ module.exports.policies = {
     targetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
     counter: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
     resolve: ['isLoggedIn', 'isInGame', 'hasOpId'],
-    resolveFour: ['isLoggedIn', 'isInGame', 'hasCardIdOneAndTwo'],
+    resolveFour: ['isLoggedIn', 'isInGame', 'hasCardIdOne'],
     resolveThree: ['isLoggedIn', 'isInGame', 'hasCardId'],
     sevenPoints: ['isLoggedIn', 'isInGame', 'hasCardId'],
     sevenRunes: ['isLoggedIn', 'isInGame', 'hasCardId'],

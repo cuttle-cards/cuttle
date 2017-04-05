@@ -965,15 +965,23 @@ module.exports = {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseCard1 = cardService.findCard({cardId: req.body.cardId1});
-		var promiseCard2 = cardService.findCard({cardId: req.body.cardId2});
+		if ( req.body.hasOwnProperty("cardId2") ) {
+			var promiseCard2 = cardService.findCard({cardId: req.body.cardId2});
+		} else {
+			var promiseCard2 = Promise.resolve(null);
+		}
 		Promise.all([promiseGame, promisePlayer, promiseCard1, promiseCard2])
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], card1 = values[2], card2 = values[3];
 			game.scrap.add(card1.id);
-			game.scrap.add(card2.id);
 			player.hand.remove(card1.id);
-			player.hand.remove(card2.id);
-			game.log.push("Player " + player.pNum + " discarded the " + card1.name + " and the " + card2.name + ".");
+			if (card2 != null) {
+				game.scrap.add(card2.id);
+				player.hand.remove(card2.id);
+				game.log.push("Player " + player.pNum + " discarded the " + card1.name + " and the " + card2.name + ".");
+			} else {
+				game.log.push("Player " + player.pNum + " discarded the " + card1.name + ".");
+			}
 			game.turn++;
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});

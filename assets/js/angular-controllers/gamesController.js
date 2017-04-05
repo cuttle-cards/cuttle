@@ -392,6 +392,20 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							$scope.$apply();
 						}
 					)
+					// Check if user has only 1 card in hand (this must be discarded)
+				} else if(self.player.hand.length === 1) {
+					io.socket.put("/game/resolveFour", 
+						{
+							cardId1: self.cardsToDiscard[0].id
+						},
+						function (res, jwres) {
+							console.log(jwres);
+							self.resolvingFour = false;
+							self.cardsToDiscard = [];
+							if (jwres.statusCode != 200) alert(jwres.error.message);
+							$scope.$apply();
+						}
+					); 
 				}
 			}
 		}
@@ -631,7 +645,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									if (obj.data.playedBy === self.opponent.pNum) {
 										self.waitingForOp = false;
 										self.resolvingFour = true;
-										alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
+										if (self.player.hand.length > 1) {
+											alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
+										} else {
+											alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
+										}
 									}
 								}
 								break; //End resolve 4 case
