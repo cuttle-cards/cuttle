@@ -162,6 +162,7 @@ body {
             .opHandCard {
               display: inline-block;
               position: relative;
+              margin-left: 1%;
               width: 7%;
               height: 100%;
               -webkit-transition: 1s linear;
@@ -327,7 +328,7 @@ body {
 
               #scrap {
                 position: absolute;
-                left: 3%;
+                left: 7%;
                 top: 20%;
                 z-index: 3;
               }
