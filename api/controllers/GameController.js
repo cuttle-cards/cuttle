@@ -824,30 +824,57 @@ module.exports = {
 						break;
 					case 5:
 						//Draw top card
+						var handLen = player.hand.length;
 						player.hand.add(game.topCard.id);
 						game.topCard = null;
-						//Draw second card, if it exists
-						if (game.secondCard) {
-							game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " draws two cards.");
-							player.hand.add(game.secondCard.id);
-							game.secondCard = null;
-							//Replace top card, if there's a card in deck
-							if (game.deck.length > 0) {
-								var min = 0;
-								var max = game.deck.length - 1;
-								var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-								game.topCard = game.deck[random].id;
-								game.deck.remove(game.deck[random].id);
+						if (handLen < 7) {						
+							//Draw second card, if it exists
+							if (game.secondCard) {
+								game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " draws two cards.");
+								player.hand.add(game.secondCard.id);
+								game.secondCard = null;
+								//Replace top card, if there's a card in deck
 								if (game.deck.length > 0) {
 									var min = 0;
 									var max = game.deck.length - 1;
 									var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-									game.secondCard = game.deck[random].id;
+									game.topCard = game.deck[random].id;
 									game.deck.remove(game.deck[random].id);
-								}								
+									// Replace second card, if possible
+									if (game.deck.length > 0) {
+										min = 0;
+										max = game.deck.length - 1;
+										random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+										game.secondCard = game.deck[random].id;
+										game.deck.remove(game.deck[random].id);
+									}								
+								}
+							} else {
+								game.log.push("The " + game.oneOff.name + " one-off resolves; player" + player.pNum + " draws the last card.");
 							}
+							//Player could only draw one card, due to hand limit
 						} else {
-							game.log.push("The " + game.oneOff.name + " one-off resolves; player" + player.pNum + " draws the last card.");
+							// Replace top card with second card, if second card exists
+							if (game.secondCard) {
+								game.topCard = game.secondCard;
+								var min = 0;
+								var max = game.deck.length - 1;
+								var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+								game.topCard = game.deck[random].id;
+								game.deck.remove(game.deck[random].id);		
+								// If more cards are left in deck, replace second card with card from deck
+								if (game.deck.length > 0) {
+									game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " draws one card to reach the hand limit.");							
+									min = 0;
+									max = game.deck.length - 1;
+									random = Math.floor((Math.random() * ((max + 1) - min)) + min);
+									game.secondCard = game.deck[random].id;
+									game.deck.remove(game.deck[random].id);		
+									// Player draws last card in deck, to reach hand limit (only draws 1)
+								} else {
+									game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " draws one card (last in deck) to reach the hand limit.")
+								}						
+							}
 						}
 						game.turn++;
 						break; //End resolve FIVE
