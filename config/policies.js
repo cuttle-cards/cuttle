@@ -58,7 +58,7 @@ module.exports.policies = {
   },
   
   GameController: {
-    '*': false,
+    // '*': false,
     create : ['isLoggedIn', 'hasGameName'],
     getList: 'isLoggedIn',
     subscribe: 'isLoggedIn',
@@ -85,7 +85,8 @@ module.exports.policies = {
     gameOver: ['isLoggedIn', 'isInGame'],
 
     // DEVELOPMENT ONLY
-    stackDeck: true
+    stackDeck: true,
+    deleteDeck: true,
 
   }
 };

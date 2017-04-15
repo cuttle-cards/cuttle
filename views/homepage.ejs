@@ -236,10 +236,10 @@
                                 </div>
 
 
-                                <img ng-show="gc.resolvingSeven" ng-src="{{gc.game.topCard.img}}" ts-draggable class="sevenCard"  card-id="gc.game.topCard.id" index="0" type="'deck'" suit="gc.game.topCard.suit" rank="gc.game.topCard.rank">
-                                <img ng-show="gc.resolvingSeven" ng-src="{{gc.game.secondCard.img}}" ts-draggable class="sevenCard" card-id="gc.game.secondCard.id" index="1" type="'deck'" suit="gc.game.secondCard.suit" rank="gc.game.secondCard.rank">
-                                <img ng-show="gc.opResolvingSeven" ng-src="{{gc.game.topCard.img}}" draggable="false" class="sevenCard">
-                                <img ng-show="gc.opResolvingSeven" ng-src="{{gc.game.secondCard.img}}" draggable="false" class="sevenCard">
+                                <img ng-show="gc.resolvingSeven && gc.game.topCard" ng-src="{{gc.game.topCard.img}}" ts-draggable class="sevenCard"  card-id="gc.game.topCard.id" index="0" type="'deck'" suit="gc.game.topCard.suit" rank="gc.game.topCard.rank">
+                                <img ng-show="gc.resolvingSeven && gc.game.secondCard" ng-src="{{gc.game.secondCard.img}}" ts-draggable class="sevenCard" card-id="gc.game.secondCard.id" index="1" type="'deck'" suit="gc.game.secondCard.suit" rank="gc.game.secondCard.rank">
+                                <img ng-show="gc.opResolvingSeven && gc.game.topCard" ng-src="{{gc.game.topCard.img}}" draggable="false" class="sevenCard">
+                                <img ng-show="gc.opResolvingSeven && gc.game.secondCard" ng-src="{{gc.game.secondCard.img}}" draggable="false" class="sevenCard">
 
 
                                 <!-- Internet went out, check for the length of a collection -->
@@ -289,6 +289,7 @@
                             <button type="button" class="btn btn-primary btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
                             <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
+                            <button ng-click="gc.deleteDeck()" id="deleteDeck">Delete Deck</button>
                             <div ng-show="gc.showDeck" id="shownDeck">
                                 <img ng-repeat="card in gc.game.deck" ng-src="{{card.img}}" class="shownDeckCard" ng-click="gc.stackDeck(gc.game.deck[$index].id)">
                             </div>

@@ -41,8 +41,16 @@ function updateGame (oldGame, newGame) {
 
 	// Update attributes which can be directly assigned
 	oldGame.deck = newGame.deck;
-	oldGame.topCard = newGame.topCard;
-	oldGame.secondCard = newGame.secondCard;
+	if (newGame.hasOwnProperty('topCard')) {
+		oldGame.topCard = newGame.topCard;
+	} else {
+		oldGame.topCard = null;
+	}
+	if (oldGame.hasOwnProperty('secondCard')) {
+		oldGame.secondCard = newGame.secondCard;
+	} else {
+		oldGame.secondCard = null;
+	}
 	oldGame.log = newGame.log;
 	oldGame.turn = newGame.turn;
 }

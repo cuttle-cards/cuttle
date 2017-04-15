@@ -65,7 +65,6 @@ module.exports.routes = {
   '/game/resolve'                 :   'gameController.resolve',
   'game/resolveFour'              :   'gameController.resolveFour', 
   '/game/resolveThree'            :   'gameController.resolveThree',
-  '/game/stackDeck'               :   'gameController.stackDeck',
   // Resolving Sevens
   '/game/seven/points'            :   'gameController.sevenPoints',
   '/game/seven/runes'             :   'gameController.sevenRunes',
@@ -75,4 +74,8 @@ module.exports.routes = {
   '/game/seven/targetedOneOff'    :   'gameController.sevenTargetedOneOff',
   '/game/over'                    :   'gameController.gameOver',
   '/game/concede'                 :   'gameController.concede',
+
+  // DEVELOPMENT ONLY
+  '/game/stackDeck'               :   'gameController.stackDeck',
+  '/game/deleteDeck'              :   'gameController.deleteDeck',
 };

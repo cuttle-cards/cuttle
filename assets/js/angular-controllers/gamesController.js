@@ -135,6 +135,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			})
 		}
 	}; //End targetedOneOff()
+
+	////////////////////////////////////
+	// DEVELOPMENT ONLY - FOR TESTING //
+	////////////////////////////////////
 	self.stackDeck = function (cardId) {
 		io.socket.put("/game/stackDeck", 
 			{
@@ -145,7 +149,14 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}
 		);
 	};
-	// TODO: Target OneOff
+
+	self.deleteDeck = function () {
+		console.log("deleting deck");
+		io.socket.put("/game/deleteDeck", 
+			function (res, jwres) {
+				console.log(jwres);
+			});
+	};
 
 	////////////////////////
 	// Dragover Callbacks //

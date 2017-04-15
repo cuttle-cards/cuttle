@@ -925,7 +925,11 @@ module.exports = {
 						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");					
 						break; //End resolve SIX
 					case 7:
-						game.log.push("The " + game.oneOff.name + " resolves; she will choose one card from the top two in the deck, and play it however she likes. Top two cards: " + game.topCard.name + " and " + game.secondCard.name);
+						if (game.secondCard) {
+							game.log.push("The " + game.oneOff.name + " resolves; she will choose one card from the top two in the deck, and play it however she likes. Top two cards: " + game.topCard.name + " and " + game.secondCard.name);
+						} else {
+							game.log.push("The " + game.oneOff.name + " resolves, but there is only one card in the deck; she will that card any way she likes");
+						}
 						break; //End resolve SEVEN
 					case 9:
 						opponent.hand.add(game.oneOffTarget.id);
@@ -1497,6 +1501,11 @@ module.exports = {
 		});
 	},
 
+	/////////////////////////////////////////
+	// DEVELOPMENT ONLY - TESTING HELPERS //
+	////////////////////////////////////////
+
+	//Places card of choice on top of deck
 	stackDeck: function (req, res) {
 		var promiseGame = gameService.findGame({gameId: req.session.game})
 		.then(function changeAndSave (game) {
@@ -1520,6 +1529,32 @@ module.exports = {
 			console.log(err);
 			return res.badRequest(err);
 		});
-	}
+	}, //End stackDeck
+
+	deleteDeck: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game})
+		.then(function changeAndSave (game) {
+			game.deck.forEach(function (card) {
+				game.deck.remove(card.id);
+				game.scrap.add(card.id);
+			});
+			return gameService.saveGame({game: game});
+		})
+		.then(function populateGame (game) {
+			return gameService.populateGame({gameId: game.id});
+		})
+		.then(function publishUpdate (game) {
+			Game.publishUpdate(game.id,
+			{
+				change: 'deleteDeck',
+				game: game,
+			})
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			console.log(err);
+			return res.badRequest(err);
+		});
+	}, //End deleteDeck
 };
 
