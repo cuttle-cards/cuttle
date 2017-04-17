@@ -58,13 +58,14 @@ module.exports.policies = {
   },
   
   GameController: {
-    '*': false,
+    // '*': false,
     create : ['isLoggedIn', 'hasGameName'],
     getList: 'isLoggedIn',
     subscribe: 'isLoggedIn',
     lobbyView: 'isLoggedIn',
     ready:     'isLoggedIn',
     draw: ['isLoggedIn', 'isInGame'],
+    pass: ['isLoggedIn', 'isInGame'],
     points: ['isLoggedIn', 'isInGame', 'hasCardId'],
     runes: ['isLoggedIn', 'isInGame', 'hasCardId'],
     scuttle: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
@@ -73,7 +74,7 @@ module.exports.policies = {
     targetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
     counter: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
     resolve: ['isLoggedIn', 'isInGame', 'hasOpId'],
-    resolveFour: ['isLoggedIn', 'isInGame', 'hasCardIdOneAndTwo'],
+    resolveFour: ['isLoggedIn', 'isInGame', 'hasCardIdOne'],
     resolveThree: ['isLoggedIn', 'isInGame', 'hasCardId'],
     sevenPoints: ['isLoggedIn', 'isInGame', 'hasCardId'],
     sevenRunes: ['isLoggedIn', 'isInGame', 'hasCardId'],
@@ -85,7 +86,8 @@ module.exports.policies = {
     gameOver: ['isLoggedIn', 'isInGame'],
 
     // DEVELOPMENT ONLY
-    stackDeck: true
+    stackDeck: true,
+    deleteDeck: true,
 
   }
 };

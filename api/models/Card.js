@@ -16,6 +16,14 @@ module.exports = {
   		type: 'integer'
   	},
 
+    name: {
+      type: 'string'
+    },
+
+    ruleText: {
+      type: 'string'
+    },
+
     img: {
       type: 'string'
     },

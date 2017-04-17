@@ -723,6 +723,11 @@ body {
       top: 750px;
       left: 25px;
     }
+    #deleteDeck {
+      position: relative;
+      top: 750px;
+      left: 25px;
+    }
     #shownDeck {
       position: relative;
       display: block;

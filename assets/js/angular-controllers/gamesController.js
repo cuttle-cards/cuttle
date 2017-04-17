@@ -27,9 +27,18 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	};
 
 	self.draw = function () {
-		console.log("\nDrawing. waitingForOp: " + self.waitingForOp + ", countering: " + self.countering);
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
 			io.socket.post("/game/draw", function (res, jwres) {
+				console.log(jwres);
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			});
+		}
+	};
+
+	self.pass = function () {
+		console.log("Requesting to pass");
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
+			io.socket.post("/game/pass", function (res, jwres) {
 				console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
@@ -135,6 +144,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			})
 		}
 	}; //End targetedOneOff()
+
+	////////////////////////////////////
+	// DEVELOPMENT ONLY - FOR TESTING //
+	////////////////////////////////////
 	self.stackDeck = function (cardId) {
 		io.socket.put("/game/stackDeck", 
 			{
@@ -145,7 +158,14 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}
 		);
 	};
-	// TODO: Target OneOff
+
+	self.deleteDeck = function () {
+		console.log("deleting deck");
+		io.socket.put("/game/deleteDeck", 
+			function (res, jwres) {
+				console.log(jwres);
+			});
+	};
 
 	////////////////////////
 	// Dragover Callbacks //
@@ -392,6 +412,20 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							$scope.$apply();
 						}
 					)
+					// Check if user has only 1 card in hand (this must be discarded)
+				} else if(self.player.hand.length === 1) {
+					io.socket.put("/game/resolveFour", 
+						{
+							cardId1: self.cardsToDiscard[0].id
+						},
+						function (res, jwres) {
+							console.log(jwres);
+							self.resolvingFour = false;
+							self.cardsToDiscard = [];
+							if (jwres.statusCode != 200) alert(jwres.error.message);
+							$scope.$apply();
+						}
+					); 
 				}
 			}
 		}
@@ -565,7 +599,16 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 											return null;
 										}
 									}
-								});					
+								});		
+								//Number of cards in the deck (since deck = game.deck + game.topCard + game.secondCard)			
+								Object.defineProperty(self, 'cardsInDeck', {
+									get: function () {
+										var res = self.game.deck.length;
+										if (self.game.topCard) res++;
+										if (self.game.secondCard) res++;
+										return res;
+									}
+								});
 							}//End gameCount = 0 case
 						} //End pNum = null case
 						break; //End Initialize case
@@ -631,7 +674,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									if (obj.data.playedBy === self.opponent.pNum) {
 										self.waitingForOp = false;
 										self.resolvingFour = true;
-										alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
+										if (self.player.hand.length > 1) {
+											alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
+										} else {
+											alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
+										}
 									}
 								}
 								break; //End resolve 4 case
@@ -664,14 +711,22 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						self.waitingForOp = false;
 						break;
 				} //End switch on change
+				// Handle Game Over (Winner, or Stalemate)
 				if (obj.data.victory) {
 					if (obj.data.victory.gameOver) {
 						io.socket.put("/game/over", 
 						function (res, jwres) {
 							console.log(jwres);
 						});
+						// Game Ended with Legal Move (no one conceded)
 						if (obj.data.change != 'concede') {
-							alert("Player " + obj.data.victory.winner + " has won!");
+							// Game has winner
+							if (obj.data.victory.winner != null) {
+								alert("Player " + obj.data.victory.winner + " has won!");
+							// Game ends in stalemate (no winner)
+							} else {
+								alert("Three passes in a row makes this game a stalemate. Well Played!");
+							}
 						} else {
 							var loser = (obj.data.victory.winner + 1) % 2;
 							alert("Player " + loser + " has conceded; Player " + obj.data.victory.winner + " has won!");
