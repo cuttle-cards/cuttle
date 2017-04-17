@@ -183,7 +183,8 @@
                         <div id="midWrap" class="row">
                             <div class="col-xs-2 col-md-2" id="deckScrap">
                                 <!-- Deck and Scrap -->
-                                <img src="images/deck.jpg" id="deck" ng-click="gc.draw()" draggable="false"></img>
+                                <img src="images/deck.jpg" id="deck" ng-click="gc.draw()" ng-show="gc.cardsInDeck > 0" draggable="false"></img>
+                                <img src="images/pass.jpg" id="deck" ng-click="gc.pass()" ng-show="gc.cardsInDeck === 0" draggable="false">
                                 <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false"></img>
                                 <p class="yourTurn" ng-if="gc.yourTurn">
                                     Your Turn

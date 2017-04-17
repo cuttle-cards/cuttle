@@ -27,9 +27,18 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	};
 
 	self.draw = function () {
-		console.log("\nDrawing. waitingForOp: " + self.waitingForOp + ", countering: " + self.countering);
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
 			io.socket.post("/game/draw", function (res, jwres) {
+				console.log(jwres);
+				if (jwres.statusCode != 200) alert(jwres.error.message);
+			});
+		}
+	};
+
+	self.pass = function () {
+		console.log("Requesting to pass");
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
+			io.socket.post("/game/pass", function (res, jwres) {
 				console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
@@ -590,7 +599,16 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 											return null;
 										}
 									}
-								});					
+								});		
+								//Number of cards in the deck (since deck = game.deck + game.topCard + game.secondCard)			
+								Object.defineProperty(self, 'cardsInDeck', {
+									get: function () {
+										var res = self.game.deck.length;
+										if (self.game.topCard) res++;
+										if (self.game.secondCard) res++;
+										return res;
+									}
+								});
 							}//End gameCount = 0 case
 						} //End pNum = null case
 						break; //End Initialize case
@@ -693,14 +711,22 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						self.waitingForOp = false;
 						break;
 				} //End switch on change
+				// Handle Game Over (Winner, or Stalemate)
 				if (obj.data.victory) {
 					if (obj.data.victory.gameOver) {
 						io.socket.put("/game/over", 
 						function (res, jwres) {
 							console.log(jwres);
 						});
+						// Game Ended with Legal Move (no one conceded)
 						if (obj.data.change != 'concede') {
-							alert("Player " + obj.data.victory.winner + " has won!");
+							// Game has winner
+							if (obj.data.victory.winner != null) {
+								alert("Player " + obj.data.victory.winner + " has won!");
+							// Game ends in stalemate (no winner)
+							} else {
+								alert("Three passes in a row makes this game a stalemate. Well Played!");
+							}
 						} else {
 							var loser = (obj.data.victory.winner + 1) % 2;
 							alert("Player " + loser + " has conceded; Player " + obj.data.victory.winner + " has won!");

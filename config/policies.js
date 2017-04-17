@@ -65,6 +65,7 @@ module.exports.policies = {
     lobbyView: 'isLoggedIn',
     ready:     'isLoggedIn',
     draw: ['isLoggedIn', 'isInGame'],
+    pass: ['isLoggedIn', 'isInGame'],
     points: ['isLoggedIn', 'isInGame', 'hasCardId'],
     runes: ['isLoggedIn', 'isInGame', 'hasCardId'],
     scuttle: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],

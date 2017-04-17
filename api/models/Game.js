@@ -34,6 +34,11 @@ module.exports = {
       defaultsTo: false
     },
 
+    passes: {
+      type: 'integer',
+      defaultsTo: 0
+    },
+
     deck: {
       collection: 'card',
       via: 'deck'

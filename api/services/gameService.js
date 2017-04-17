@@ -21,6 +21,7 @@ function tempGame (game, p0, p1) {
 	this.log = game.log;
 	this.id = game.id;
 	this.turn = game.turn;
+	this.passes = game.passes;
 };
 module.exports = {
 	/**

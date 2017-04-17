@@ -269,6 +269,7 @@ module.exports = {
 		.then(function changeAndSave (values) {
 			var game = values[0], user=values[1];
 			user.hand.add(game.topCard.id);
+			game.topCard = null;
 			if (game.secondCard) {
 				game.topCard = game.secondCard;
 				if (game.deck.length > 0) {				
@@ -307,6 +308,56 @@ module.exports = {
 		});
 	}, //End draw()
 
+	// Pass turn to other player (when deck has run out)
+	pass: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		Promise.all([promiseGame, promisePlayer])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1];
+			if ( (game.turn % 2) === player.pNum) {
+				// Passing is only allowed if the deck is empty
+				if (!game.topCard) {
+					player.frozenId = null;
+					game.turn++;
+					game.passes++;
+					game.log.push("Player " + player.pNum + " passes.");
+				} else {
+					return Promise.reject(new Error("You can only pass when there are no cards in the deck"));
+				}
+				var saveGame = gameService.saveGame({game: game});
+				var savePlayer = userService.saveUser({user: player});
+				return Promise.all([saveGame, savePlayer]);
+			} else {
+				return Promise.reject(new Error("It's not your turn."));
+			}
+		})
+		.then(function populateGame (values) {
+			return gameService.populateGame({gameId: values[0].id});
+		})
+		.then(function publishAndRespond (game) {
+			// Game ends in stalemate if 3 passes are made consecutively
+			var victory = {
+				gameOver: false,
+				winner: null
+			};
+			if (game.passes > 2) {
+				console.log("Game is a stalemate");
+				victory.gameOver = true
+			}
+			Game.publishUpdate(game.id,
+			{
+				change: "pass",
+				game: game,
+				victory: victory
+			});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	}, //End pass()
+
 	points: function (req, res) {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
@@ -323,6 +374,7 @@ module.exports = {
 								player.hand.remove(card.id);
 								player.frozenId = null;
 								game.log.push("Player " + player.pNum + " played the " + card.name + " for points");
+								game.passes = 0;
 								game.turn++;
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
@@ -375,6 +427,7 @@ module.exports = {
 							player.hand.remove(card.id);
 							player.frozenId = null;
 							game.log.push("Player " + player.pNum + " played the " + card.name + " as a rune");
+							game.passes = 0;
 							game.turn++;
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});
@@ -435,6 +488,7 @@ module.exports = {
 								player.hand.remove(card.id);
 								player.frozenId = null;
 								game.log.push("Player " + player.pNum + " scuttled Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
+								game.passes = 0;
 								game.turn++;
 								// Save changes
 								var saveGame = gameService.saveGame({game: game});
@@ -490,7 +544,7 @@ module.exports = {
 						if (target.points === opponent.id) {
 							var queenCount = userService.queenCount({user: opponent});
 							if (queenCount === 0) {
-								if (player.pNum != card.id) {
+								if (player.frozenId != card.id) {
 									// Everything good; change and save
 									player.points.add(target.id); //This also removes card from opponent's points (foreign key is 1:1)
 									player.hand.remove(card.id);
@@ -498,6 +552,7 @@ module.exports = {
 									card.index = target.attachments.length;
 									target.attachments.add(card.id);
 									game.log.push("Player " + player.pNum + " stole Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
+									game.passes = 0;
 									game.turn++;
 									var saveGame = gameService.saveGame({game: game});
 									var savePlayer = userService.saveUser({user: player});
@@ -777,10 +832,13 @@ module.exports = {
 			var cardsToSave = [];
 			if (game.twos.length % 2 === 1) {
 				// One of is countered
+				opponent.frozenId = null;
+				game.passes = 0;
 				game.turn++;
 				game.log.push("The " + game.oneOff.name + " is countered, and all cards played this turn are scrapped.");
 				happened = false;
 			} else {
+				player.frozenId = null;
 				// One Off will resolve; perform effect
 				var cardsToSave = [];
 				// handle different one-offs
@@ -794,6 +852,7 @@ module.exports = {
 							game.scrap.add(point.id);
 							player.points.remove(point.id);
 						});
+						game.passes = 0;
 						game.turn++;
 						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
 						break; //End resolve ACE
@@ -814,6 +873,7 @@ module.exports = {
 						} //End switch(oneOffTargetType)
 						game.oneOffTargetType = null;
 						game.oneOffTarget = null;
+						game.passes = 0;
 						game.turn++;
 						break; //End resolve TWO
 					case 3:
@@ -876,6 +936,7 @@ module.exports = {
 								}						
 							}
 						}
+						game.passes = 0;
 						game.turn++;
 						break; //End resolve FIVE
 					case 6:
@@ -921,6 +982,7 @@ module.exports = {
 								} //End jackCount > 0
 							});	
 						}
+						game.passes = 0;
 						game.turn++;
 						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");					
 						break; //End resolve SIX
@@ -950,12 +1012,12 @@ module.exports = {
 								game.attachedToTarget = null;								
 								break;
 						}
+						game.passes = 0;
 						game.turn++;
 						break; //End resolve NINE
 				} //End switch on oneOff rank
 			}
 			var oneOff = game.oneOff;
-			player.frozenId = null;
 			if (oneOff.rank != 3 || !happened) {
 				game.scrap.add(game.oneOff.id);
 				game.oneOff = null;
@@ -1013,6 +1075,7 @@ module.exports = {
 			} else {
 				game.log.push("Player " + player.pNum + " discarded the " + card1.name + ".");
 			}
+			game.passes = 0;
 			game.turn++;
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});
@@ -1044,10 +1107,12 @@ module.exports = {
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], card = values[2];
 			player.hand.add(card.id);
+			player.frozenId = null;
 			game.scrap.remove(card.id);
 			game.scrap.add(game.oneOff.id);
 			game.oneOff = null;
 			game.log.push("Player " + player.pNum + " took the " + card.name + " from the scrap pile to her hand");
+			game.passes = 0;
 			game.turn++;
 			//Save changes
 			var saveGame = gameService.saveGame({game: game});
@@ -1089,6 +1154,7 @@ module.exports = {
 						player.frozenId = null;
 						game = gameService.sevenCleanUp({game: game, index: req.body.index});
 						game.log.push("Player " + player.pNum + " played the " + card.name + " off the top of the deck as points");
+						game.passes = 0;
 						game.turn++;	
 						var saveGame = gameService.saveGame({game: game})					;
 						var savePlayer = userService.saveUser({user: player});
@@ -1135,6 +1201,7 @@ module.exports = {
 						player.frozenId = null;
 						game = gameService.sevenCleanUp({game: game, index: req.body.index});
 						game.log.push("Player " + player.pNum + " played the " + card.name + " off the top of the deck, as a rune");
+						game.passes = 0;
 						game.turn++;
 						var saveGame = gameService.saveGame({game: game});
 						var savePlayer = userService.saveUser({user: player});
@@ -1194,6 +1261,7 @@ module.exports = {
 								game.scrap.add(card.id);
 								game = gameService.sevenCleanUp({game: game, index: req.body.index});
 								game.log.push("Player " + player.pNum + " scuttled player " + opponent.pNum + "'s " + target.name + " with the " + card.name + " from the top of the deck");
+								game.passes = 0;
 								game.turn++;
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
@@ -1253,6 +1321,7 @@ module.exports = {
 							player.frozenId = null;
 							game = gameService.sevenCleanUp({game: game, index: req.body.index});
 							game.log.push("Player " + player.pNum + " stole player " + opponent.pNum + "'s " + target.name + " with the " + card.name + " from the top of the deck");
+							game.passes = 0;
 							game.turn++;
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});

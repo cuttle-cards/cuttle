@@ -55,6 +55,7 @@ module.exports.routes = {
   '/game/subscribe'               :   'gameController.subscribe',
   '/game/ready'                   :   'gameController.ready',
   '/game/draw'                    :   'gameController.draw',
+  '/game/pass'                    :   'gameController.pass',
   '/game/points'                  :   'gameController.points',
   '/game/runes'                   :   'gameController.runes',
   '/game/scuttle'                 :   'gameController.scuttle',
