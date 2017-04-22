@@ -98,9 +98,11 @@
 
             </div> <!-- End of formWrapper -->
             <div ng-controller="lobbyController as lobby" class="lobbyController">
-                <div ng-class="{'ready': menu.playerReady}" class="readyClass">
-                    <div ng-show="menu.tab==='lobby'"> 
-                        <p>
+                <div ng-class="{'ready': menu.playerReady}" class="readyClass">    
+                <div ng-show="menu.tab==='lobby'" class="rulesDiv">
+<!--                 </div>
+                <div ng-show="menu.tab==='lobby'">  -->
+                        <p class="readyLine">
                             Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()">Ready</button> button.  If you wish to review any of the rules, click on the any off the buttons below.
                         </p>
                         <p ng-if="menu.playerReady" class="readySign">Congratulations on being ready!</p>
@@ -131,12 +133,10 @@
                             </div>
                         </div>
                         <h2>Scuttling</h2> -->
-                    </div> <!-- End of lobby contorller -->
-                </div>
-                <div ng-show="menu.tab==='lobby'" class="rulesDiv">
                     <img src="images/Cuttle_Rules-page-001.jpg" width="60%" height="100%" class="rules1"/>
                     <img src="images/Cuttle_Rules-page-002.jpg" width="60%" height="100%" class="rules2"/>
                     <img src="images/Cuttle_Rules-page-003.jpg" width="60%" height="100%" class="rules3"/>
+                    </div> <!-- End of lobby contorller -->
                 </div>
             </div> <!-- End of ng-show for lobby-->
 

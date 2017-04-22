@@ -75,10 +75,11 @@ body {
 }
 
 .readySign {
+  position: absolute;
   color: red;
   text-align: center;
-  top: 40%;
-  left: 50%;
+  top: 4%;
+  left: 37%;
   font-size: 30px;
 }
 
@@ -94,16 +95,24 @@ body {
   opacity: 0;
 }
 
+.readyLine{
+  position: absolute;
+  z-index: 5;
+  left: 18%;
+}
+
 .rulesDiv {
   position: absolute;
   min-height: 100%;
   min-width: 100%;
+  padding-top: 2%;
 }
 
 .rules1 {
     position: relative;
-    padding-top: 2%;
     padding-left: 25%;
+    z-index: 2;
+    padding-top: 10%;
 }
 
 .rules2 {
