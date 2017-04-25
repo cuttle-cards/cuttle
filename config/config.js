@@ -1,5 +1,13 @@
 
-var url = require('url').parse(process.env.DATABASE_URL);
+if (process.env.DATABASE_URL) {
+	var url = require('url').parse(process.env.DATABASE_URL);
+} else {
+	var url = {
+		host: '',
+		path: '',
+		auth: ''
+	}
+}
 module.exports = {
 	connections: {
 		sqlHeroku: {
@@ -12,7 +20,7 @@ module.exports = {
 		    password: url.auth.split(':')[1],
 		    port: url.port,			
 		}
-	} //End connections
+	}, //End connections
 
 	models: {
 	    // connection: 'localDiskDb',
