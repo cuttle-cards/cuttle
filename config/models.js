@@ -28,8 +28,8 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
 
-  migrate: 'drop',
-  connection: 'cuttleSql',
+  // migrate: 'drop',
+  // connection: 'cuttleSql',
 
 
 };
