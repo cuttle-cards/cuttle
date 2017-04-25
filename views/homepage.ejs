@@ -149,11 +149,11 @@
                         <div id = "topWrap" class = "row">
                             <div id="oppHand">
                                 <!-- Opponent's hand CARDBACKS -->
-                                <div ng-repeat="card in gc.opponent.hand" ng-show="!gc.glasses" class="opHandCard">
+                                <div ng-repeat="card in gc.opponent.hand" ng-if="!gc.glasses" class="opHandCard">
                                     <img src="images/finalCardback.png" class="opHandCardImg" draggable="false">
                                 </div>
                                 <!-- Oponent's hand REVEALED -->
-                                <div ng-repeat="card in gc.opponent.hand" ng-show="gc.glasses" class="opHandCard">
+                                <div ng-repeat="card in gc.opponent.hand" ng-if="gc.glasses" class="opHandCard">
                                     <img ng-src="{{card.img}}" class="opHandCardImg" draggable="false">
                                 </div>
                             </div>
@@ -296,8 +296,8 @@
                             </div>
                             <button type="button" class="btn btn-primary btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
-                            <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
-                            <button ng-click="gc.deleteDeck()" id="deleteDeck">Delete Deck</button>
+                            <!-- <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button> -->
+                            <!-- <button ng-click="gc.deleteDeck()" id="deleteDeck">Delete Deck</button> -->
                             <div ng-show="gc.showDeck" id="shownDeck">
                                 <img ng-repeat="card in gc.game.deck" ng-src="{{card.img}}" class="shownDeckCard" ng-click="gc.stackDeck(gc.game.deck[$index].id)">
                             </div>
