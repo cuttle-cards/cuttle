@@ -1,4 +1,5 @@
 
+console.log("\ncurrent env: " + process.env.NODE_ENV+"\n")
 if (process.env.DATABASE_URL) {
 	var url = require('url').parse(process.env.DATABASE_URL);
 } else {
