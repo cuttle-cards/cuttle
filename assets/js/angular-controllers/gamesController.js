@@ -609,6 +609,16 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 										return res;
 									}
 								});
+								// Number of queens your opponent has
+								Object.defineProperty(self, 'opQueenCount', {
+									get: function () {
+										var res = 0;
+										self.opponent.runes.forEach(function (rune) {
+											if (rune.rank === 12) res++; 
+										});
+										return res;
+									}
+								});
 							}//End gameCount = 0 case
 						} //End pNum = null case
 						break; //End Initialize case
@@ -623,22 +633,35 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						if (self.pNum == parseInt(counteringPnum)) {
 							self.waitingForOp = false;
 							if (self.twosInHand > 0) {
-								var willCounter = confirm(self.game.log[self.game.log.length - 1] + " Would you like to counter with a two?");
-								if (!willCounter) {
-									// Request resolution if not countering
+								if (self.opQueenCount < 1) {								
+									var willCounter = confirm(self.game.log[self.game.log.length - 1] + " Would you like to counter with a two?");
+									if (!willCounter) {
+										// Request resolution if not countering
+										io.socket.put("/game/resolve", 
+											{
+												opId: self.opponent.id
+											},
+											function (res, jwres) {
+												if (jwres.statusCode != 200) {
+													alert(jwres.error.message);
+													console.log(jwres);
+												}
+										});
+									} else {
+										// Allow user to counter
+										self.countering = true;
+									}
+								} else {
+									console.log("Cannot counter, because opponent has queen; resolving");
+									alert(self.game.log[self.game.log.length - 1] + ". You cannot counter, because your opponent has a queen");
 									io.socket.put("/game/resolve", 
-										{
-											opId: self.opponent.id
-										},
+										{opId: self.opponent.id},
 										function (res, jwres) {
 											if (jwres.statusCode != 200) {
 												alert(jwres.error.message);
 												console.log(jwres);
 											}
-									});
-								} else {
-									// Allow user to counter
-									self.countering = true;
+										});
 								}
 							} else {
 								alert(self.game.log[self.game.log.length - 1] + ". You cannot counter, because you do not have a two");
