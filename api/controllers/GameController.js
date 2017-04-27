@@ -850,7 +850,7 @@ module.exports = {
 						});
 						opponent.points.forEach(function (point) {
 							game.scrap.add(point.id);
-							player.points.remove(point.id);
+							opponent.points.remove(point.id);
 						});
 						game.passes = 0;
 						game.turn++;
@@ -946,7 +946,7 @@ module.exports = {
 						});
 						opponent.runes.forEach(function (rune) {
 							game.scrap.add(rune.id);
-							player.runes.remove(rune.id);
+							opponent.runes.remove(rune.id);
 						});
 						if (playerPoints) {
 							playerPoints.forEach(function (point) {
