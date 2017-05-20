@@ -228,7 +228,7 @@
                                 <div id="oppRunes">
                                     <!-- Opponent Runes -->
                                     <div ng-repeat="card in gc.opponent.runes" class="runeCard">
-                                        <img ng-src="{{card.runeImg}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpRune" upon-drop="gc.dropOpRune" index="0" draggable="false">
+                                        <img ng-src="{{card.runeImg}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpRune" upon-drop="gc.dropOpRune" index="$index" draggable="false">
                                     </div>
                                 </div>
                                 <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes">
