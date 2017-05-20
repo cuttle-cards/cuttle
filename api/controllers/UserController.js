@@ -65,7 +65,7 @@ module.exports = {
 							res.ok();
 						})
 						.catch(function failure (reason) {
-							console.log(reason);
+							// console.log(reason);
 							res.badRequest(reason);
 						});
 

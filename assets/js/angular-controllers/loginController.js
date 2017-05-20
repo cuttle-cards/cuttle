@@ -23,7 +23,12 @@ app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
 
 			function errorCallback (res) {
 				console.log("Error logging in");
-				alert(res.data);
+				console.log(res);
+				if (typeof(res.data) === 'string') {
+					alert(res.data);
+				} else {
+					alert(res.data.message);
+				};
 			}
 
 		);
