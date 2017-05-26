@@ -35,6 +35,8 @@ module.exports = {
 
    pubsub: {
    		_hookTimeout: 50000
-   }
+   },
+
+   keepResponseErrors: true,
 
 }; //End exports
