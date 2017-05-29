@@ -13,7 +13,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.opResolvingSeven = false;
 	self.gameCount = 0;
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
-	self.showDeck = false;
+	// self.showDeck = false;
 
 	// Concede game
 	self.concede = function () {
