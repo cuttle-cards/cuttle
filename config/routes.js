@@ -54,6 +54,7 @@ module.exports.routes = {
   '/game/getList'                 :   'gameController.getList',
   '/game/subscribe'               :   'gameController.subscribe',
   '/game/ready'                   :   'gameController.ready',
+  '/game/leaveLobby'              :   'gameController.leaveLobby',
   '/game/draw'                    :   'gameController.draw',
   '/game/pass'                    :   'gameController.pass',
   '/game/points'                  :   'gameController.points',

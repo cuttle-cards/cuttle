@@ -231,14 +231,49 @@ module.exports = {
 			.catch(function failed (err) {
 				return res.badRequest(err);
 			});
-
-
-
 		} else {
 			var err = new Error("Missing game or player id");
 			return res.badRequest(err);
 		}
 	}, //End ready()
+
+	leaveLobby: function (req, res) {
+		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promisePlayer = userService.findUser({userId: req.session.usr});
+		Promise.all([promiseGame, promisePlayer])
+		.then(function changeAndSave (values) {
+			var game = values[0], player = values[1];
+			if (player.pNum === 0) {
+				game.p0Ready = false;
+			} else {
+				game.p1Ready = false;
+			}
+			// Update models
+			player.pNum = null;
+			game.players.remove(player.id);
+			game.status = true;
+
+			// Unsubscribe user from updates to this game
+			Game.unsubscribe(req, game.id);
+
+			// Save changes
+			var saveGame = gameService.saveGame({game: game});
+			var savePlayer = userService.saveUser({user: player});
+			return Promise.all([saveGame, savePlayer]);
+		})
+		.then(function publishAndRespond (values) {
+			// Remove session data for game
+			delete(req.session.game);
+			delete(req.session.pNum);
+			// Publish update to all users, then respond w/ 200
+			console.log(values[0]);
+			sails.sockets.blast("leftGame", {id: values[0].id});
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			res.badRequest(err);
+		});
+	}, //End leaveLobby()
 
 	draw: function (req, res) {
 		var pGame = gameService.findGame({gameId: req.session.game})
@@ -1540,6 +1575,7 @@ module.exports = {
 			ids.forEach(function (id) {
 				player.runes.remove(id);
 			});
+			Game.unsubscribe(req, req.session.game);
 			delete(player.game);
 			delete(player.pNum);
 			// player.game = null;
@@ -1547,7 +1583,6 @@ module.exports = {
 			player.frozenId = null;
 			delete(req.session.game);
 			delete(req.session.pNum);
-			console.log(req.session);
 			return userService.saveUser({user: player});
 		}) //End changeAndSave
 		.then(function respond (player) {

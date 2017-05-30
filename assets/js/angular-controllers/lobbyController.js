@@ -24,6 +24,19 @@ app.controller("lobbyController", ['$scope', '$http', function ($scope, $http) {
 		});
 	};
 
+	self.leave = function () {
+		console.log("\nLeaving lobby");
+		io.socket.put("/game/leaveLobby", function (res, jwres) {
+			console.log(jwres);
+			menu.tab = "gamesOverview";
+			menu.playerReady = false;
+			if (jwres.statusCode != 200) {
+				alert(jwres.error.message);
+			}
+			$scope.$apply();
+		});
+	};
+
 
 
 }]);

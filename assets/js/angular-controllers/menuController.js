@@ -87,4 +87,11 @@ app.controller("menuController", ['$scope', '$window', function ($scope, $window
 		$scope.$apply();
 	});
 
-}]);
+	io.socket.on("leftGame", function (obj) {
+		self.games.forEach(function (game) {
+			var bool = (game.id === obj.id);
+			if (game.id === obj.id) game.status = true;
+		});
+		$scope.$apply();
+	});
+}]); //End menuController()
