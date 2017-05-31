@@ -37,6 +37,10 @@ module.exports = {
    		_hookTimeout: 50000
    },
 
+   grunt: {
+   	_hookTimeout: 50000
+   },
+
    keepResponseErrors: true,
 
 }; //End exports

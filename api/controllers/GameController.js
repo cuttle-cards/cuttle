@@ -79,9 +79,11 @@ module.exports = {
 				var user = arr[1];
 				var pNum;
 				if (game.players) {
-					pNum = game.players.length;
-
-					if (game.players.length === 1) {
+					// Determine pNum of new player
+					if (game.players.length === 0) {
+						pNum = 0;
+					} else {
+						pNum = (game.players[0].pNum + 1) % 2;
 						sails.sockets.blast("gameFull", {id: game.id});
 						game.status = false;
 					}
@@ -113,7 +115,7 @@ module.exports = {
 	}, //End subscribe()
 
 	ready: function (req, res) {
-		// console.log("\nReady");
+		console.log("\nReady");
 		if (req.session.game && req.session.usr) {
 			var promiseGame = gameAPI.findGame(req.session.game);
 			var promiseUser = userAPI.findUser(req.session.usr);
@@ -266,7 +268,6 @@ module.exports = {
 			delete(req.session.game);
 			delete(req.session.pNum);
 			// Publish update to all users, then respond w/ 200
-			console.log(values[0]);
 			sails.sockets.blast("leftGame", {id: values[0].id});
 			return res.ok();
 		})
