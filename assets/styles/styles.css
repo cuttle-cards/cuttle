@@ -536,19 +536,19 @@ body {
               /*These cards are only displayed while a three is being resolved*/
               .scrapCard {
                 position: relative;
-                display: inline-block;
+                display: inline;
                 height: 15%;
                 -webkit-transition: 1s linear;
                 -moz-transition: 1s linear;
                 -ms-transition: 1s linear;
-                -o-transition: 1s linear;          
+                -o-transition: 1s linear;
               }
-              .scrapCard.ng-hide-remove {
+/*              .scrapCard.ng-hide-remove {
                 opacity: 1;
               }
               .scrapCard.ng-hide-remove.ng-hide-remove-active {
                 opacity: 0;
-              }
+              }*/
               .scrapCard.ng-hide-add {
                 opacity: 0;
               }
@@ -556,12 +556,13 @@ body {
                 opacity: 1;
               }
                   .scrapCardImg {
-                    height: 100%;
-                    width: 12%;
+                    width: 17%;
+                    margin-top: 1%;
                   }
 
                   .scrapCardImg1 {
-                    width: 20%;
+                    width: 30%;
+                    margin-top: 1%;
                   }
               /*These cards only display while resolving a seven*/
               .sevenCard {
