@@ -12,6 +12,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.waitingForOp = false;
 	self.opResolvingSeven = false;
 	self.gameCount = 0;
+	self.gameOver = false;
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	// self.showDeck = false;
 
@@ -741,11 +742,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						function (res, jwres) {
 							console.log(jwres);
 						});
+						self.gameOver = true;
 						// Game Ended with Legal Move (no one conceded)
 						if (obj.data.change != 'concede') {
 							// Game has winner
 							if (obj.data.victory.winner != null) {
-								alert("Player " + obj.data.victory.winner + " has won!");
+								// alert("Player " + obj.data.victory.winner + " has won!");
 							// Game ends in stalemate (no winner)
 							} else {
 								alert("Three passes in a row makes this game a stalemate. Well Played!");
@@ -763,16 +765,23 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						// delete(menu.opPointCount);
 						// delete(menu.yourPointCount);
 						// delete(menu.yourTurn);
-						self.pNum = null;
-						self.game = null;
-						menu.playerReady = false;
-						menu.opReady = false;
-						menu.tab = 'gamesOverview';
+
 					}
 				}				
 				break; //End obj.verb = "updated" case
 		}
 		$scope.$apply();
+		if (self.gameOver) {
+			setTimeout(function () {			
+				alert("Player " + obj.data.victory.winner + " has won!");
+				self.pNum = null;
+				self.game = null;
+				menu.playerReady = false;
+				menu.opReady = false;
+				menu.tab = 'gamesOverview';
+				$scope.$apply();
+			}, 3000);
+		}
 	});
 
 }]);
