@@ -724,7 +724,7 @@ body {
               }
           #yourPointTotal {
             position: absolute;
-            bottom: 65%;
+            bottom: 100%;
             width: 135%;
             left: -10%;
             font-size: 18px;
