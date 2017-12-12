@@ -373,18 +373,18 @@ body {
               #deck {
                 position: absolute;
                 left: 50%;
-                top: 30%;
+                top: 25%;
                 z-index: 3;
-                height: 30%;
+                height: 35%;
 
               }
 
               #scrap {
                 position: absolute;
                 left: 7%;
-                top: 30%;
+                top: 25%;
                 z-index: 3;
-                height: 30%;
+                height: 35%;
               }
 
           /*Points*/
@@ -726,7 +726,7 @@ body {
             position: absolute;
             bottom: 100%;
             width: 135%;
-            left: -10%;
+            left: -1%;
             font-size: 18px;
           }
 
