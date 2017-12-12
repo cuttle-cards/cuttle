@@ -776,6 +776,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				alert("Player " + obj.data.victory.winner + " has won!");
 				self.pNum = null;
 				self.game = null;
+				self.gameOver = false;
 				menu.playerReady = false;
 				menu.opReady = false;
 				menu.tab = 'gamesOverview';
