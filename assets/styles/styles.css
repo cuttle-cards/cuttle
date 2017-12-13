@@ -249,7 +249,7 @@ body {
           #oppPointTotal {
             position: absolute;
             width: 200%;
-            left: -30%;
+            left: -7%;
             top: 135%;
             font-size: 18px;
           }
@@ -373,18 +373,18 @@ body {
               #deck {
                 position: absolute;
                 left: 50%;
-                top: 25%;
+                top: 20%;
                 z-index: 3;
-                height: 35%;
+                height: 42%;
 
               }
 
               #scrap {
                 position: absolute;
                 left: 7%;
-                top: 25%;
+                top: 20%;
                 z-index: 3;
-                height: 35%;
+                height: 42%;
               }
 
           /*Points*/
@@ -726,7 +726,7 @@ body {
             position: absolute;
             bottom: 100%;
             width: 135%;
-            left: -1%;
+            left: 0%;
             font-size: 18px;
           }
 
