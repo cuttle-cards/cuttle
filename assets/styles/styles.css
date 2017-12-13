@@ -173,7 +173,14 @@ body {
   min-height: 100%;
   min-width: 100%;
 }
+    #buttonWrapper {
+      margin-top: .5%;
+      margin-left: .5%;
+    }
 
+    #gamesOverview {
+      margin-left: .5%;
+    }
       /*Top Wrap*/
 
       #topWrap {
@@ -234,6 +241,7 @@ body {
               z-index: 3;
               height: 100%;
               width: 100%;
+              margin-top: 2.5%;
             }
           /*END TEMP CSS FOR OPPONENT'S HAND*/
 
@@ -241,9 +249,9 @@ body {
           #oppPointTotal {
             position: absolute;
             width: 200%;
-            left: -30%;
+            left: -7%;
             top: 135%;
-            font-size: 26px;
+            font-size: 18px;
           }
 
           .fullKing {
@@ -367,6 +375,7 @@ body {
                 left: 50%;
                 top: 20%;
                 z-index: 3;
+                height: 42%;
 
               }
 
@@ -375,6 +384,7 @@ body {
                 left: 7%;
                 top: 20%;
                 z-index: 3;
+                height: 42%;
               }
 
           /*Points*/
@@ -716,8 +726,8 @@ body {
             position: absolute;
             bottom: 100%;
             width: 135%;
-            left: -10%;
-            font-size: 28px;
+            left: 0%;
+            font-size: 18px;
           }
 
           #concedeButton {
