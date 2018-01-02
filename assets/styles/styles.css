@@ -369,14 +369,24 @@ body {
             min-width: 20%;
             top: 10%;
           }
-
-              #deck {
+/*              #deck-wrapper {
                 position: absolute;
-                left: 50%;
-                top: 20%;
-                z-index: 3;
-                height: 42%;
 
+              }*/
+
+                #deck {
+                  position: absolute;
+                  left: 50%;
+                  top: 20%;
+                  z-index: 3;
+                  height: 42%;
+
+                }
+              #deck-count {
+                position: absolute;
+                left: 60%;
+                top: 55%;
+                z-index: 4;
               }
 
               #scrap {
@@ -386,6 +396,12 @@ body {
                 z-index: 3;
                 height: 42%;
               }
+                #scrap-count {
+                  position: absolute;
+                  top: 55%;
+                  z-index: 4;
+                  left: 15%;
+                }
 
           /*Points*/
 
