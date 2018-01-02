@@ -384,7 +384,7 @@ body {
                 }
               #deck-count {
                 position: absolute;
-                left: 60%;
+                left: 61%;
                 top: 55%;
                 z-index: 4;
               }
@@ -400,7 +400,7 @@ body {
                   position: absolute;
                   top: 55%;
                   z-index: 4;
-                  left: 15%;
+                  left: 18%;
                 }
 
           /*Points*/
