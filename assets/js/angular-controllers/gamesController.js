@@ -771,6 +771,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				break; //End obj.verb = "updated" case
 		}
 		$scope.$apply();
+		log = document.getElementById("gameLog");
+		log.scrollTop = log.scrollHeight;
 		if (self.gameOver) {
 			setTimeout(function () {			
 				alert("Player " + obj.data.victory.winner + " has won!");
