@@ -10,6 +10,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.resolvingThree = false;
 	self.resolvingSeven = false;
 	self.waitingForOp = false;
+	self.countering = false;
 	self.opResolvingSeven = false;
 	self.gameCount = 0;
 	self.gameOver = false;

@@ -228,21 +228,23 @@
 
                                 </div>
                             </div>
+                            <!-- Runes -->
                             <div class="col-xs-4 col-md-4 field row" id="runes">
-                                <!-- Runes -->
+                                <!-- Opponent Runes -->
                                 <div id="oppRunes">
-                                    <!-- Opponent Runes -->
                                     <div ng-repeat="card in gc.opponent.runes" class="runeCard">
                                         <img ng-src="{{card.runeImg}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpRune" upon-drop="gc.dropOpRune" index="$index" draggable="false">
                                     </div>
                                 </div>
+                                <!-- Your Runes -->
                                 <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes">
                                     <div ng-repeat="card in gc.player.runes" class="runeCard">
                                         <img ng-src="{{card.runeImg}}" class="runeCardImg" draggable="false">
                                     </div>
-                                    <!-- Your Runes -->
                                 </div>
-                            </div>
+                            </div> <!-- End of Runes -->
+
+                            <!-- Game Log -->
                             <div class="col-xs-2 col-md-2" id="gameLog">
                                 <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree">
                                     {{text}}
@@ -255,15 +257,31 @@
                                 <img ng-if="gc.opResolvingSeven && gc.game.secondCard" ng-src="{{gc.game.secondCard.img}}" draggable="false" class="sevenCard">
 
 
-                                <!-- Internet went out, check for the length of a collection -->
+                                <!-- Cards in scrap pile (differently sized if > 30 cards in scrap) -->
                                 <div ng-repeat="card in gc.game.scrap track by $index" ng-if="gc.game.scrap.length > 30" ng-show="gc.resolvingThree" class="scrapCard">
                                     <img ng-src="{{card.img}}" ng-click="gc.chooseScrapCard($index)" class="scrapCardImg" draggable="false">
                                 </div>
                                 <div ng-repeat="card in gc.game.scrap track by $index" ng-if="gc.game.scrap.length < 30" ng-show="gc.resolvingThree" class="scrapCard">
                                     <img ng-src="{{card.img}}" ng-click="gc.chooseScrapCard($index)" class="scrapCardImg1" draggable="false">
                                 </div>
-                                <!-- gameLog -->
-                            </div>
+                            </div><!-- End of Gamee Log -->
+
+                            <!-- Modal for countering one-offs -->
+                            <div class="modal-dialog" ng-show="gc.countering">
+                            <div class="modal-content">
+                                <h4 class="modal-header">
+                                Confirmation
+                                </h4>
+                                <div class="modal-body">
+                                <p>Custom value: {{ctrl.str}}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-default" ng-click="ctrl.str='Counter'">Counter</button>
+                                    <button class="btn btn-default" ng-click="ctrl.str='Save'">Save</button>
+                                </div> <!--    End Modal Footer       -->
+                            </div><!--  End Modal Content   -->
+                          </div> <!--   End Modal wrapper     -->
+
                         </div> <!-- End of middle wrap -->
                         <!-- Bottom Wrap -->
                         <div id="bottomWrap" class="row">
