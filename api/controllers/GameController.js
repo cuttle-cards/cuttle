@@ -103,8 +103,9 @@ module.exports = {
 			})
 			.then(function respond (values) {
 				// Respond with 200
+				var game = values [0];
 				var user = values[1];
-				return res.ok({playerId: user.id});
+				return res.ok({game: game, playerId: user.id});
 			})
 			.catch(function failure (error) {
 				return res.badRequest(error);
@@ -115,7 +116,6 @@ module.exports = {
 	}, //End subscribe()
 
 	ready: function (req, res) {
-		console.log("\nReady");
 		if (req.session.game && req.session.usr) {
 			var promiseGame = gameAPI.findGame(req.session.game);
 			var promiseUser = userAPI.findUser(req.session.usr);
@@ -319,7 +319,7 @@ module.exports = {
 				}
 			}
 			user.frozenId = null;
-			game.log.push("Player " + user.pNum + " Drew a card");
+			game.log.push(userService.truncateEmail(user.email) + " Drew a card");
 			game.turn++;
 			var saveGame = gameService.saveGame({game: game})		;
 			var saveUser = userService.saveUser({user: user});
@@ -357,7 +357,7 @@ module.exports = {
 					player.frozenId = null;
 					game.turn++;
 					game.passes++;
-					game.log.push("Player " + player.pNum + " passes.");
+					game.log.push(userService.truncateEmail(player.email) + " passes.");
 				} else {
 					return Promise.reject(new Error("You can only pass when there are no cards in the deck"));
 				}
@@ -409,7 +409,7 @@ module.exports = {
 								player.points.add(card.id);
 								player.hand.remove(card.id);
 								player.frozenId = null;
-								game.log.push("Player " + player.pNum + " played the " + card.name + " for points");
+								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " for points");
 								game.passes = 0;
 								game.turn++;
 								var saveGame = gameService.saveGame({game: game});
@@ -462,7 +462,7 @@ module.exports = {
 							player.runes.add(card.id);
 							player.hand.remove(card.id);
 							player.frozenId = null;
-							game.log.push("Player " + player.pNum + " played the " + card.name + " as a rune");
+							game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a rune");
 							game.passes = 0;
 							game.turn++;
 							var saveGame = gameService.saveGame({game: game});
@@ -523,7 +523,7 @@ module.exports = {
 								opponent.points.remove(target.id);
 								player.hand.remove(card.id);
 								player.frozenId = null;
-								game.log.push("Player " + player.pNum + " scuttled Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
+								game.log.push(userService.truncateEmail(player.email) + " scuttled " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name);
 								game.passes = 0;
 								game.turn++;
 								// Save changes
@@ -587,7 +587,7 @@ module.exports = {
 									player.frozenId = null;
 									card.index = target.attachments.length;
 									target.attachments.add(card.id);
-									game.log.push("Player " + player.pNum + " stole Player " + opponent.pNum + "'s " + target.name + " with the " + card.name);
+									game.log.push(userService.truncateEmail(player.email) + " stole " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name);
 									game.passes = 0;
 									game.turn++;
 									var saveGame = gameService.saveGame({game: game});
@@ -672,7 +672,7 @@ module.exports = {
 								if (player.frozenId != card.id) {
 									game.oneOff = card;
 									player.hand.remove(card.id);
-									game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText);
+									game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText);
 									var saveGame = gameService.saveGame({game: game});
 									var savePlayer = userService.saveUser({user: player});
 									return Promise.all([saveGame, savePlayer]);
@@ -753,7 +753,7 @@ module.exports = {
 								game.oneOffTargetType = targetType;
 								game.attachedToTarget = null;
 								if (point) game.attachedToTarget = point;
-								game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
+								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
 								return Promise.all([saveGame, savePlayer]);
@@ -811,9 +811,9 @@ module.exports = {
 							if (!opHasQueen) {
 								var opPnum = (player.pNum + 1) % 2;
 								if (game.twos.length > 0) {
-									game.log.push("Player " + player.pNum + " played the " + card.name + " to COUNTER Player " + opPnum + "'s " + game.twos[game.twos.length - 1].name + ".");
+									game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to COUNTER " + userService.truncateEmail(opponent.email) + "'s " + game.twos[game.twos.length - 1].name + ".");
 								} else {
-									game.log.push("Player " + player.pNum + " played the " + card.name + " to COUNTER Player " + opPnum + "'s " +  game.oneOff.name + ".");
+									game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to COUNTER " + userService.truncateEmail(opponent.email) + "'s " +  game.oneOff.name + ".");
 								}
 								game.twos.add(card.id);
 								player.hand.remove(card.id);
@@ -913,10 +913,10 @@ module.exports = {
 						game.turn++;
 						break; //End resolve TWO
 					case 3:
-						game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " will draw one card of her choice from the SCRAP pile");
+						game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " will draw one card of her choice from the SCRAP pile");
 						break;
 					case 4:
-						game.log.push("The " + game.oneOff.name + " one-off resolves; player " + opponent.pNum + " must discard two cards");
+						game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(opponent.email) + " must discard two cards");
 						break;
 					case 5:
 						//Draw top card
@@ -926,7 +926,7 @@ module.exports = {
 						if (handLen < 7) {						
 							//Draw second card, if it exists
 							if (game.secondCard) {
-								game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " draws two cards.");
+								game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws two cards.");
 								player.hand.add(game.secondCard.id);
 								game.secondCard = null;
 								//Replace top card, if there's a card in deck
@@ -946,7 +946,7 @@ module.exports = {
 									}								
 								}
 							} else {
-								game.log.push("The " + game.oneOff.name + " one-off resolves; player" + player.pNum + " draws the last card.");
+								game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws the last card.");
 							}
 							//Player could only draw one card, due to hand limit
 						} else {
@@ -960,7 +960,7 @@ module.exports = {
 								game.deck.remove(game.deck[random].id);		
 								// If more cards are left in deck, replace second card with card from deck
 								if (game.deck.length > 0) {
-									game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " draws one card to reach the hand limit.");							
+									game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws one card to reach the hand limit.");							
 									min = 0;
 									max = game.deck.length - 1;
 									random = Math.floor((Math.random() * ((max + 1) - min)) + min);
@@ -968,7 +968,7 @@ module.exports = {
 									game.deck.remove(game.deck[random].id);		
 									// Player draws last card in deck, to reach hand limit (only draws 1)
 								} else {
-									game.log.push("The " + game.oneOff.name + " one-off resolves; player " + player.pNum + " draws one card (last in deck) to reach the hand limit.")
+									game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws one card (last in deck) to reach the hand limit.");
 								}						
 							}
 						}
@@ -1031,7 +1031,7 @@ module.exports = {
 						break; //End resolve SEVEN
 					case 9:
 						opponent.hand.add(game.oneOffTarget.id);
-						game.log.push("The " + game.oneOff.name + " resolves on the" + game.oneOffTarget.name + ". The " + game.oneOffTarget.name + " is returned to player " + opponent.pNum + "'s hand, and she may not play it next turn" );
+						game.log.push("The " + game.oneOff.name + " resolves on the" + game.oneOffTarget.name + ". The " + game.oneOffTarget.name + " is returned to " + userService.truncateEmail(opponent.email) + "'s hand, and she may not play it next turn" );
 						opponent.frozenId = game.oneOffTarget.id;
 						switch(game.oneOffTargetType) {
 							case 'rune':
@@ -1107,9 +1107,9 @@ module.exports = {
 			if (card2 != null) {
 				game.scrap.add(card2.id);
 				player.hand.remove(card2.id);
-				game.log.push("Player " + player.pNum + " discarded the " + card1.name + " and the " + card2.name + ".");
+				game.log.push(userService.truncateEmail(player.email) + " discarded the " + card1.name + " and the " + card2.name + ".");
 			} else {
-				game.log.push("Player " + player.pNum + " discarded the " + card1.name + ".");
+				game.log.push(userService.truncateEmail(player.email) + " discarded the " + card1.name + ".");
 			}
 			game.passes = 0;
 			game.turn++;
@@ -1147,7 +1147,7 @@ module.exports = {
 			game.scrap.remove(card.id);
 			game.scrap.add(game.oneOff.id);
 			game.oneOff = null;
-			game.log.push("Player " + player.pNum + " took the " + card.name + " from the scrap pile to her hand");
+			game.log.push(userService.truncateEmail(player.email) + " took the " + card.name + " from the scrap pile to her hand");
 			game.passes = 0;
 			game.turn++;
 			//Save changes
@@ -1189,7 +1189,7 @@ module.exports = {
 						player.points.add(card.id);
 						player.frozenId = null;
 						game = gameService.sevenCleanUp({game: game, index: req.body.index});
-						game.log.push("Player " + player.pNum + " played the " + card.name + " off the top of the deck as points");
+						game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " off the top of the deck as points");
 						game.passes = 0;
 						game.turn++;	
 						var saveGame = gameService.saveGame({game: game})					;
@@ -1236,7 +1236,7 @@ module.exports = {
 						player.runes.add(card.id);
 						player.frozenId = null;
 						game = gameService.sevenCleanUp({game: game, index: req.body.index});
-						game.log.push("Player " + player.pNum + " played the " + card.name + " off the top of the deck, as a rune");
+						game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " off the top of the deck, as a rune");
 						game.passes = 0;
 						game.turn++;
 						var saveGame = gameService.saveGame({game: game});
@@ -1296,7 +1296,7 @@ module.exports = {
 								game.scrap.add(target.id);
 								game.scrap.add(card.id);
 								game = gameService.sevenCleanUp({game: game, index: req.body.index});
-								game.log.push("Player " + player.pNum + " scuttled player " + opponent.pNum + "'s " + target.name + " with the " + card.name + " from the top of the deck");
+								game.log.push(userService.truncateEmail(player.email) + " scuttled " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name + " from the top of the deck");
 								game.passes = 0;
 								game.turn++;
 								var saveGame = gameService.saveGame({game: game});
@@ -1356,7 +1356,7 @@ module.exports = {
 							player.points.add(target.id);
 							player.frozenId = null;
 							game = gameService.sevenCleanUp({game: game, index: req.body.index});
-							game.log.push("Player " + player.pNum + " stole player " + opponent.pNum + "'s " + target.name + " with the " + card.name + " from the top of the deck");
+							game.log.push(userService.truncateEmail(player.email) + " stole " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name + " from the top of the deck");
 							game.passes = 0;
 							game.turn++;
 							var saveGame = gameService.saveGame({game: game});
@@ -1424,7 +1424,7 @@ module.exports = {
 							// Move is legal; proceed
 							game.oneOff = card;
 							game = gameService.sevenCleanUp({game: game, index: req.body.index});
-							game.log.push("Player " + player.pNum + " played the " + card.name + " from the top of the deck as a " + card.ruleText);
+							game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " from the top of the deck as a " + card.ruleText);
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});
 							return Promise.all([saveGame, savePlayer]);
@@ -1497,7 +1497,7 @@ module.exports = {
 							game.oneOffTargetType = targetType;
 							game.attachedToTarget = null;
 							if (point) game.attachedToTarget = point;
-							game.log.push("Player " + player.pNum + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
+							game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
 							game = gameService.sevenCleanUp({game: game, index: req.body.index});
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});

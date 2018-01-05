@@ -568,6 +568,10 @@ body {
             overflow-y: scroll; 
             color: chartreuse;
           }
+              .logEntry {
+                position: relative;
+                margin-top: 7%;
+              }
               /*These cards are only displayed while a three is being resolved*/
               .scrapCard {
                 position: relative;

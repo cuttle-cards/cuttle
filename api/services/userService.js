@@ -108,5 +108,9 @@ module.exports = {
 				}
 			})
 		}) ;
+	},
+	// returns email up until @
+	truncateEmail: function(email) {
+		return email.split("@")[0];
 	}
 };

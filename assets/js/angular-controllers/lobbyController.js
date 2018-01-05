@@ -30,6 +30,7 @@ app.controller("lobbyController", ['$scope', '$http', function ($scope, $http) {
 			console.log(jwres);
 			menu.tab = "gamesOverview";
 			menu.playerReady = false;
+			menu.gameId = null;
 			if (jwres.statusCode != 200) {
 				alert(jwres.error.message);
 			}
@@ -37,6 +38,18 @@ app.controller("lobbyController", ['$scope', '$http', function ($scope, $http) {
 		});
 	};
 
-
+// Player left game handler
+io.socket.on("leftGame", function (obj) {
+	console.log("someone left a game");
+	console.log(obj);
+	console.log(menu.gameId);
+	if (menu.gameId) {
+		console.log("someone left my game");
+		if (menu.gameId == obj.id) {
+			menu.opReady = false;
+			$scope.$apply();
+		}
+	}
+});
 
 }]);

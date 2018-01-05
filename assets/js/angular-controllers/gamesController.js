@@ -782,10 +782,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				self.gameOver = false;
 				menu.playerReady = false;
 				menu.opReady = false;
+				menu.gameId = null;
 				menu.tab = 'gamesOverview';
 				$scope.$apply();
 			}, 3000);
 		}
-	});
+	}); //End event handler for game objects
+
 
 }]);
