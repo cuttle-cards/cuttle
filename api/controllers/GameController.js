@@ -103,8 +103,9 @@ module.exports = {
 			})
 			.then(function respond (values) {
 				// Respond with 200
+				var game = values [0];
 				var user = values[1];
-				return res.ok({playerId: user.id});
+				return res.ok({game: game, playerId: user.id});
 			})
 			.catch(function failure (error) {
 				return res.badRequest(error);
