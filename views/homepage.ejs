@@ -106,6 +106,7 @@
                             Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()">Ready</button> button. To leave the game, click the <button ng-click="lobby.leave()">Leave Lobby</button>  If you wish to review any of the rules, click on the any off the buttons below.
                         </p>
                         <p ng-if="menu.playerReady" class="readySign">Congratulations on being ready!</p>
+                        <p ng-if="menu.opReady" class="opReadySign">Your Challenger Is Waiting</p>
                         <!-- <h2>One Offs</h2>
                         <div ng-init="checked = false">
                             <label>
