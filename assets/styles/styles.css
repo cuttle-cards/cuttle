@@ -83,6 +83,15 @@ body {
   font-size: 30px;
 }
 
+.opReadySign {
+  position: absolute;
+  color: blue;
+  text-align: center;
+  top: 7%;
+  left: 37%;
+  font-size: 30px;
+}
+
 .aceLobby {
   width: 8%;
 }
@@ -112,7 +121,7 @@ body {
     position: relative;
     padding-left: 25%;
     z-index: 2;
-    padding-top: 10%;
+    padding-top: 12%;
 }
 
 .rules2 {
