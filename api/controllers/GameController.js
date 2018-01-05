@@ -115,7 +115,6 @@ module.exports = {
 	}, //End subscribe()
 
 	ready: function (req, res) {
-		console.log("\nReady");
 		if (req.session.game && req.session.usr) {
 			var promiseGame = gameAPI.findGame(req.session.game);
 			var promiseUser = userAPI.findUser(req.session.usr);

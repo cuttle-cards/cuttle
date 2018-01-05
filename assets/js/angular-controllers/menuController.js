@@ -5,6 +5,7 @@ app.controller("menuController", ['$scope', '$window', function ($scope, $window
 	self.userId = null;
 	self.playerReady = false;
 	self.opReady = false;
+	self.gameId = null;
 	self.loggedIn = $window.loggedIn;
 
 	self.requestGames = function () {
