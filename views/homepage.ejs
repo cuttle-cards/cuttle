@@ -244,7 +244,7 @@
                                 </div>
                             </div>
                             <div class="col-xs-2 col-md-2" id="gameLog">
-                                <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree">
+                                <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree" class="logEntry">
                                     {{text}}
                                 </div>
 
