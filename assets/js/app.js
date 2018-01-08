@@ -36,7 +36,8 @@ function updateGame (oldGame, newGame) {
 	// Update Scrap
 	updateList(oldGame.scrap, newGame.scrap);
 
-	// Update twos
+	// Update one-off and twos
+	oldGame.oneOff = newGame.oneOff;
 	updateList(oldGame.twos, newGame.twos);
 
 	// Update attributes which can be directly assigned

@@ -1,4 +1,4 @@
-/* # id, . class*/
+ # id, . class*/
 body {
   font-family: 'Roboto Slab', serif;
 }
@@ -348,7 +348,7 @@ body {
 
       #midWrap {
         top: 20%;
-        min-height: 50%;
+        height: 50%;
         min-width: 100%;
         position: absolute;
       }
@@ -378,6 +378,27 @@ body {
             min-width: 20%;
             top: 10%;
           }
+
+          /*Modals*/
+          .modal-dialog {
+            height: 100%;
+            bottom: 8%;
+          }
+              .modal-content {
+                z-index: 5;
+                height: 100%;
+              }
+                  .modal-body {
+                    height: 50%;
+                  }
+                    #counterOneOff {
+                      position: absolute;
+                      display: block;
+                      left: 41%;
+                      height: 85%;
+                      left: 45%;
+                      top: 2%;
+                    }
 /*              #deck-wrapper {
                 position: absolute;
 
@@ -806,4 +827,3 @@ body {
 "class on ng-show" {
   animation: boardWipe 3s ease-out;
 }
-*/

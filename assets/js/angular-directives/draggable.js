@@ -10,8 +10,8 @@ app.directive('tsDraggable', function () {
 		link: function (scope, element) {
 			var el = element[0];
 			el.addEventListener('dragstart', function (ev) {
-				console.log("Dragstart:");
-				console.log(scope.index);
+				// console.log("Dragstart:");
+				// console.log(scope.index);
 				dragData = {
 					type: scope.type,
 					index: scope.index,
@@ -19,7 +19,7 @@ app.directive('tsDraggable', function () {
 					rank: scope.rank,
 					id: scope.cardId
 				};
-				console.log(dragData);
+				// console.log(dragData);
 			});
 			el.addEventListener('dragend', function (ev) {
 				// alert("drag end");

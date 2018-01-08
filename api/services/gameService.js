@@ -10,6 +10,8 @@ function tempUser (usr, points) {
 	this.id = usr.id;
 };
 function tempGame (game, p0, p1) {
+	// console.log("\nMaking temp game:");
+	// console.log(game);
 	this.id = game.id;
 	this.players = [p0, p1];
 	this.deck = game.deck;
@@ -104,7 +106,8 @@ module.exports = {
 							var p1 = values[2];
 							var p0Points = cardService.findPoints({userId: p0.id});
 							var p1Points = cardService.findPoints({userId: p1.id});
-
+							// console.log("\n\nFound game for populate:");
+							// console.log(game);
 							return Promise.all(
 								[
 									Promise.resolve(game), 
@@ -123,6 +126,11 @@ module.exports = {
 							var p0 = new tempUser(values[1], p0Points);
 							var p1 = new tempUser(values[2], p1Points);
 							var result = new tempGame(game, p0, p1);
+
+							// console.log("\n game inside finish:");
+							// console.log(game);
+							// console.log("\nResult:");
+							// console.log(result);
 							return resolve(result);
 						})
 						.catch(function failed (err) {

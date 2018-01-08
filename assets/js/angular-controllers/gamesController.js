@@ -10,6 +10,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.resolvingThree = false;
 	self.resolvingSeven = false;
 	self.waitingForOp = false;
+	self.askCounter = false;
 	self.countering = false;
 	self.opResolvingSeven = false;
 	self.gameCount = 0;
@@ -27,7 +28,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			});
 		}
 	};
-
+	// Draw a card
 	self.draw = function () {
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
 			io.socket.post("/game/draw", function (res, jwres) {
@@ -36,7 +37,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			});
 		}
 	};
-
+	// Pass your turn (only when deck is empty)
 	self.pass = function () {
 		console.log("Requesting to pass");
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
@@ -45,6 +46,20 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
 		}
+	};
+	// Request to resolve opponent's one-off (decline to counter)
+	self.resolve = function () {
+		self.askCounter = false;
+		io.socket.put("/game/resolve", 
+			{
+				opId: self.opponent.id
+			},
+			function (res, jwres) {
+				if (jwres.statusCode != 200) {
+					alert(jwres.error.message);
+					console.log(jwres);
+				}
+		});
 	};
 
 	//////////////////////////////////
@@ -635,24 +650,25 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						if (self.pNum == parseInt(counteringPnum)) {
 							self.waitingForOp = false;
 							if (self.twosInHand > 0) {
-								if (self.opQueenCount < 1) {								
-									var willCounter = confirm(self.game.log[self.game.log.length - 1] + " Would you like to counter with a two?");
-									if (!willCounter) {
+								if (self.opQueenCount < 1) {
+									self.askCounter = true;								
+									// var willCounter = confirm(self.game.log[self.game.log.length - 1] + " Would you like to counter with a two?");
+									// if (!willCounter) {
 										// Request resolution if not countering
-										io.socket.put("/game/resolve", 
-											{
-												opId: self.opponent.id
-											},
-											function (res, jwres) {
-												if (jwres.statusCode != 200) {
-													alert(jwres.error.message);
-													console.log(jwres);
-												}
-										});
-									} else {
-										// Allow user to counter
-										self.countering = true;
-									}
+										// io.socket.put("/game/resolve", 
+										// 	{
+										// 		opId: self.opponent.id
+										// 	},
+										// 	function (res, jwres) {
+										// 		if (jwres.statusCode != 200) {
+										// 			alert(jwres.error.message);
+										// 			console.log(jwres);
+										// 		}
+										// });
+									// } else {
+									// 	// Allow user to counter
+									// 	self.countering = true;
+									// }
 								} else {
 									console.log("Cannot counter, because opponent has queen; resolving");
 									alert(self.game.log[self.game.log.length - 1] + ". You cannot counter, because your opponent has a queen");
