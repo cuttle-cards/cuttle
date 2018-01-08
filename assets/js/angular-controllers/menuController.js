@@ -65,9 +65,9 @@ app.controller("menuController", ['$scope', '$window', function ($scope, $window
 				switch (obj.data.change) {
 					case 'ready':
 						if (obj.data.userId === self.userId) {
-							self.playerReady = true;
+							self.playerReady = !self.playerReady;
 						} else {
-							self.opReady = true;
+							self.opReady = !self.opReady;
 						}
 						break;
 					case 'Initialize':
