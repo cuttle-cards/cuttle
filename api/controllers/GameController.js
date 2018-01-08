@@ -128,10 +128,10 @@ module.exports = {
 				var bothReady = false;
 				switch (pNum) {
 					case 0:
-						game.p0Ready = true;
+						game.p0Ready = !game.p0Ready;
 						break;
 					case 1:
-						game.p1Ready = true;
+						game.p1Ready = !game.p1Ready;
 						break;
 				}
 				if (game.p0Ready && game.p1Ready) {
