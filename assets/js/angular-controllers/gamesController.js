@@ -266,6 +266,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}
 		}
 	};
+	self.dragoverOneOff = function (targetIndex) {
+		if (dragData.rank == 2) {
+			return true;
+		} else {
+			return false;
+		}
+	};
 
 	////////////////////
 	// Drop Callbacks //
@@ -406,6 +413,23 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				} 
 			});
 		}
+	};
+	// Request to counter opponent's oneoff
+	self.counter = function (index) {
+		io.socket.put("/game/counter", 
+		{
+			opId: self.opponent.id,
+			cardId: self.player.hand[dragData.index].id
+		},
+		function (res, jwres) {
+			console.log(jwres);
+			if (jwres.statusCode != 200) {
+				// Handle error
+			} else {
+				self.askCounter = false;
+				$scope.$apply();
+			}
+		});
 	};
 	// Upon clicking a card in your hand,
 	// Check if a 4 is being resolved, and discard that card
@@ -670,7 +694,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									// 	self.countering = true;
 									// }
 								} else {
-									console.log("Cannot counter, because opponent has queen; resolving");
 									alert(self.game.log[self.game.log.length - 1] + ". You cannot counter, because your opponent has a queen");
 									io.socket.put("/game/resolve", 
 										{opId: self.opponent.id},

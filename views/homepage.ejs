@@ -270,14 +270,14 @@
                             <div class="modal-dialog" ng-show="gc.askCounter">
                             <div class="modal-content">
                                 <h4 class="modal-header">
-                                Opponent has played a ONE-OFF:
+                                {{gc.game.oneOff.ruleText}}
                                 </h4>
                                 <div class="modal-body">
-                                    <img ng-src="{{gc.game.oneOff.img}}" id="counterOneOff">
+                                    <p>Drag a two onto the {{gc.game.oneOff.name}} to counter it</p>
+                                    <img ng-src="{{gc.game.oneOff.img}}" id="counterOneOff" draggable="false" ts-droppable allow-drop="gc.dragoverOneOff" upon-drop="gc.counter">
                                 </div>
                                 <div class="modal-footer">
-                                    <p>Drag a two onto the ONE-OFF to counter it. Click "Resolve" to allow the ONE-OFF to happen</p>
-                                    <button class="btn btn-default" ng-click="">Counter</button>
+                                    <p>Click "Resolve" to allow the ONE-OFF to happen</p>
                                     <button class="btn btn-default" ng-click="gc.resolve()">Resolve</button>
                                 </div> <!--    End Modal Footer       -->
                             </div><!--  End Modal Content   -->
