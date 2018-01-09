@@ -103,7 +103,7 @@
 <!--                 </div>
                 <div ng-show="menu.tab==='lobby'">  -->
                         <p class="readyLine">
-                            Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()">{{menu.playerReady && "Unready" || "Ready"}}</button> button. To leave the game, click the <button ng-click="lobby.leave()">Leave Lobby</button>  If you wish to review any of the rules, click on the any off the buttons below.
+                            Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()">{{menu.playerReady && "Unready" || "Ready"}}</button> button. To leave the game, click the <button ng-click="lobby.leave()">Leave Lobby</button>  If you are having issues with the screen resolution, press CTRL (Windows) or CMD (Mac) +/- to adjust to a good size.
                         </p>
                         <p ng-if="menu.playerReady" class="readySign">Congratulations on being ready!</p>
                         <p ng-if="menu.opReady" class="opReadySign">Your Challenger Is Waiting</p>
