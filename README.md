@@ -13,28 +13,29 @@ Each player starts on one side of the game board and is dealt a hand from the de
 On your turn you must make exactly one of the following **legal moves** below.
 
 ## Legal Moves
-1. **Draw**
+1. **Draw:**
 You may draw one card from the deck and put it in your hand. If the deck is empty, you may pass. If three consecutive turns end with a pass, the game is a draw.
+	* Click the deck to draw a card
 
-2. **Points**
+2. **Points:**
 You may play any number card, Ace-Ten for the number of points shown on the card (Ace is one point). The first player to have 21 **or more** points wins.
 
-To play a card for points, drag it to your **Points** area, on the left.
+	* To play a card for points, drag it to your **Points** area, on the left.
 
-3. **Scuttling**
+3. **Scuttling:**
 You may player a number card from your hand onto a lower valued number card that your opponent has played for points; this destroys both cards. You may also scuttle a card of the same rank, if your card has the higher suit. The suit order is Clubs (weakest) < Diamonds < Hearts < Spades (strongest).
 
-To scuttle an opponent's point card, drag a higher point card from your hand on top of it.
+	* To scuttle an opponent's point card, drag a higher point card from your hand on top of it.
 
-4. **Boons**
+4. **Boons:**
 Face cards and eights can be played as **Boons**. While on your board, Boons provide you advantages. An explanation of the different Boons can be found below.
 
-To play a Boon, drag a card from your hand into the **Boons** area on your right.
+	* To play a Boon, drag a card from your hand into the **Boons** area on your right.
 
-5. One-Offs
+5. **One-Offs:**
 Ace-Sevens and also Nines can be played as **One-Offs**. Playing a card for a One-Off effect discards (to the scrap pile) in exchange for an effect, based on the rank of the card. A list of all the effects can be found below.
 
-To play a card as a **One-Off**, drag it to the **Scrap Pile** or a valid **Target**, if required
+	* To play a card as a **One-Off**, drag it to the **Scrap Pile** or a valid **Target**, if required
 
 ## One-Offs
 
@@ -75,3 +76,6 @@ Yes. If you meet the required number of points, you win immediately. This means 
 
 ### If I play an Ace or a Six, are my cards destroyed as well?
 Yes. Aces and Sixes destroy all **Point Cards** and all **Boons**, respectively. That includes any that you have out. Try to avoid destroying many of your own cards!
+
+### Where can I play Cuttle?
+You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, there is only one place: [Play Cuttle!](https://cuttle-v2.herokuapp.com/)
