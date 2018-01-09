@@ -273,12 +273,12 @@
                                 {{gc.game.oneOff.ruleText}}
                                 </h4>
                                 <div class="modal-body">
-                                    <p>Drag a two onto the {{gc.game.oneOff.name}} to counter it</p>
-                                    <img ng-src="{{gc.game.oneOff.img}}" id="counterOneOff" draggable="false" ts-droppable allow-drop="gc.dragoverOneOff" upon-drop="gc.counter">
+                                    <p>Drag a two onto the {{gc.game.twos.length > 0 && gc.game.twos[gc.game.twos.length - 1].name || gc.game.oneOff.name}} to counter it</p>
+                                    <img ng-src="{{gc.game.twos.length > 0 && gc.game.twos[gc.game.twos.length - 1].img || gc.game.oneOff.img}}" id="counterOneOff" draggable="false" ts-droppable allow-drop="gc.dragoverOneOff" upon-drop="gc.counter">
                                 </div>
                                 <div class="modal-footer">
                                     <p>Click "Resolve" to allow the ONE-OFF to happen</p>
-                                    <button class="btn btn-default" ng-click="gc.resolve()">Resolve</button>
+                                    <button class="btn btn-primary" ng-click="gc.resolve()">Resolve</button>
                                 </div> <!--    End Modal Footer       -->
                             </div><!--  End Modal Content   -->
                           </div> <!--   End Modal wrapper     -->
@@ -320,7 +320,7 @@
                             </div>
                             <button type="button" class="btn btn-primary btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
-                            <!-- <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button> -->
+                            <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
                             <!-- <button ng-click="gc.deleteDeck()" id="deleteDeck">Delete Deck</button> -->
                             <div ng-show="gc.showDeck" id="shownDeck">
                                 <img ng-repeat="card in gc.game.deck" ng-src="{{card.img}}" class="shownDeckCard" ng-click="gc.stackDeck(gc.game.deck[$index].id)">

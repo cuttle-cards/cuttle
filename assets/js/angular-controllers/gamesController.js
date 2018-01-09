@@ -694,7 +694,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									// 	self.countering = true;
 									// }
 								} else {
-									alert(self.game.log[self.game.log.length - 1] + ". You cannot counter, because your opponent has a queen");
+									alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because your opponent has a queen");
 									io.socket.put("/game/resolve", 
 										{opId: self.opponent.id},
 										function (res, jwres) {
@@ -705,7 +705,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 										});
 								}
 							} else {
-								alert(self.game.log[self.game.log.length - 1] + ". You cannot counter, because you do not have a two");
+								alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
 								// Request resolution if can't counter
 								io.socket.put("/game/resolve", 
 									{
