@@ -87,7 +87,7 @@ module.exports.policies = {
     gameOver: ['isLoggedIn', 'isInGame'],
 
     // DEVELOPMENT ONLY
-    stackDeck: true,
+    // stackDeck: true,
     // deleteDeck: true,
 
   }

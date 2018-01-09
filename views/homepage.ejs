@@ -320,11 +320,11 @@
                             </div>
                             <button type="button" class="btn btn-primary btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
-                            <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
+                            <!-- <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button> -->
                             <!-- <button ng-click="gc.deleteDeck()" id="deleteDeck">Delete Deck</button> -->
-                            <div ng-show="gc.showDeck" id="shownDeck">
+<!--                             <div ng-show="gc.showDeck" id="shownDeck">
                                 <img ng-repeat="card in gc.game.deck" ng-src="{{card.img}}" class="shownDeckCard" ng-click="gc.stackDeck(gc.game.deck[$index].id)">
-                            </div>
+                            </div> -->
                         </div> <!-- End of bottom wrap -->
                     </div>
                 </div> <!-- End of ng-show for game -->
