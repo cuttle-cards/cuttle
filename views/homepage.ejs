@@ -43,7 +43,7 @@
                             <input ng-model="signup.repeatPassword" type="password" class="col-xs-4" required>
                         </div>
                         <div class="row">
-                            <input class="button button-lg col-xs-offset-5" type="submit"></input>
+                            <input class="btn btn-default col-xs-offset-5" type="submit"></input>
                         </div>
                     </form> <!-- End of signup form -->
                 </div> <!-- End signup controller -->
@@ -63,7 +63,7 @@
                             <input ng-model="login.password" class="col-xs-4" type="password">
                         </div>
                         <div class="row">
-                            <button ng-click="login.submitLogin()" class="button button-lg col-xs-offset-5">Log In</button>
+                            <button ng-click="login.submitLogin()" class="btn btn-default col-xs-offset-5">Log In</button>
                         </div>
                     </form> <!-- End of login form -->
                 </div> <!-- End login controller -->
@@ -245,11 +245,25 @@
                             </div> <!-- End of Runes -->
 
                             <!-- Game Log -->
+                            <div id="logButtons">
+                                <button ng-click="gc.logDisplay='gameLog'" class="btn btn-default" ng-class="{'activeTab': gc.logDisplay == 'gameLog'}">Game Log</button>
+                                <button ng-click="gc.logDisplay='chat'" class="btn btn-default" ng-class="{'activeTab': gc.logDisplay == 'chat'}">Chat</button>
+                            </div>
                             <div class="col-xs-2 col-md-2" id="gameLog">
-                                <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree" class="logEntry">
-                                    {{text}}
+                                <div id="logText">
+                                    <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree || gc.logDisplay != 'gameLog'" class="logEntry">
+                                        {{text}}
+                                    </div>
+                                    <div ng-repeat="text in gc.game.chat track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree || gc.logDisplay != 'chat'" class="logEntry"> 
+                                        {{text}}
+                                    </div>
                                 </div>
-
+                                <div id="logNav">
+                                    <form ng-submit="gc.chat()" id="chatForm" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree || gc.logDisplay != 'chat'">
+                                        <input type="text" ng-model="gc.chatEntry" id="chatBox">
+                                        <input type="submit" class="btn btn-default">
+                                    </form>
+                                </div>
 
                                 <img ng-if="gc.resolvingSeven && gc.game.topCard" ng-src="{{gc.game.topCard.img}}" ts-draggable class="sevenCard"  card-id="gc.game.topCard.id" index="0" type="'deck'" suit="gc.game.topCard.suit" rank="gc.game.topCard.rank">
                                 <img ng-if="gc.resolvingSeven && gc.game.secondCard" ng-src="{{gc.game.secondCard.img}}" ts-draggable class="sevenCard" card-id="gc.game.secondCard.id" index="1" type="'deck'" suit="gc.game.secondCard.suit" rank="gc.game.secondCard.rank">
@@ -318,7 +332,7 @@
                                 </div>
                                 <!-- Your king squares -->
                             </div>
-                            <button type="button" class="btn btn-primary btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
+                            <button type="button" class="btn btn-danger btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
                             <!-- <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button> -->
                             <!-- <button ng-click="gc.deleteDeck()" id="deleteDeck">Delete Deck</button> -->

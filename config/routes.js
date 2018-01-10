@@ -76,6 +76,7 @@ module.exports.routes = {
   '/game/seven/targetedOneOff'    :   'gameController.sevenTargetedOneOff',
   '/game/over'                    :   'gameController.gameOver',
   '/game/concede'                 :   'gameController.concede',
+  '/game/chat'                    :   'gameController.chat',
 
   // DEVELOPMENT ONLY
   '/game/stackDeck'               :   'gameController.stackDeck',

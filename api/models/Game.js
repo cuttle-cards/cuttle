@@ -91,7 +91,11 @@ module.exports = {
     log: {
       type: "array",
       defaultsTo: []
-    }
+    },
+    chat: {
+      type: "array",
+      defaultsTo: []
+    },
   }
 };
 

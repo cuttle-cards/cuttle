@@ -15,6 +15,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.opResolvingSeven = false;
 	self.gameCount = 0;
 	self.gameOver = false;
+	self.logDisplay = "gameLog";
+	self.chatEntry = "";
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	// self.showDeck = false;
 
@@ -59,6 +61,21 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					alert(jwres.error.message);
 					console.log(jwres);
 				}
+		});
+	};
+	self.chat = function () {
+		console.log("requesting to chat: " + self.chatEntry);
+		io.socket.put("/game/chat", 
+		{
+			msg: self.chatEntry
+		},
+		function (res, jwres) {
+			self.chatEntry = "";
+			$scope.$apply();
+			if (jwres.statusCode != 200) {
+				console.log("Error with chat:");
+				console.log(jwres)
+			}
 		});
 	};
 
@@ -493,7 +510,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	///////////////////////////
 	io.socket.on('game', function (obj) {
 		console.log("Game event");
-		console.log(obj)
+		console.log(obj);
 		switch (obj.verb) {
 			case 'updated':
 				if (obj.data.change != 'Initialize') {
@@ -811,7 +828,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				break; //End obj.verb = "updated" case
 		}
 		$scope.$apply();
-		log = document.getElementById("gameLog");
+		log = document.getElementById("logText");
 		log.scrollTop = log.scrollHeight;
 		if (self.gameOver) {
 			setTimeout(function () {			
