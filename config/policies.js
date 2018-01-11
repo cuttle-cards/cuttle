@@ -85,6 +85,7 @@ module.exports.policies = {
     sevenTargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
     concede: ['isLoggedIn', 'isInGame'],
     gameOver: ['isLoggedIn', 'isInGame'],
+    chat: ['isLoggedIn', 'isInGame'],
 
     // DEVELOPMENT ONLY
     // stackDeck: true,

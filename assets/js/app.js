@@ -53,5 +53,6 @@ function updateGame (oldGame, newGame) {
 		oldGame.secondCard = null;
 	}
 	oldGame.log = newGame.log;
+	oldGame.chat = newGame.chat;
 	oldGame.turn = newGame.turn;
 }

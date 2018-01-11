@@ -21,6 +21,7 @@ function tempGame (game, p0, p1) {
 	this.oneOff = game.oneOff;
 	this.twos = game.twos;
 	this.log = game.log;
+	this.chat = game.chat;
 	this.id = game.id;
 	this.turn = game.turn;
 	this.passes = game.passes;

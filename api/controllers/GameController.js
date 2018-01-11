@@ -1606,6 +1606,39 @@ module.exports = {
 		});
 	},
 
+	chat: function (req, res) {
+		var promiseGame = gameService.findGame({"gameId": req.session.game});
+		var promisePlayer = userService.findUser({"userId": req.session.usr});
+		return Promise.all([promiseGame, promisePlayer])
+		.then(function changeAndSave (values) {
+			var game = values [0], player = values[1];
+			// console.log(game);
+			game.chat.push(userService.truncateEmail(player.email) + ": " + req.body.msg);
+			return gameService.saveGame({game: game});
+		})
+		.then(function populateGame (game) {
+			return gameService.populateGame({gameId: game.id});
+		})
+		.then(function publishAndRespond (game) {
+			var victory = {
+				gameOver: false,
+				winner: null
+			}
+			 Game.publishUpdate(game.id,
+			 {
+			 	change: 'chat',
+			 	game: game,
+			 	victory: victory
+			 });
+			 return res.ok();
+		})
+		.catch(function failed (err) {
+			console.log(err);
+			res.badRequest(err);
+		});
+
+	},
+
 	/////////////////////////////////////////
 	// DEVELOPMENT ONLY - TESTING HELPERS //
 	////////////////////////////////////////
