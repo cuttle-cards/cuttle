@@ -195,7 +195,7 @@
                                 </div>
                                 <img src="images/pass.jpg" id="deck" ng-click="gc.pass()" ng-show="gc.cardsInDeck === 0" draggable="false">
                                 <div id="scrap-wrapper">
-                                    <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false"></img>
+                                    <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false" ng-class="{'legalMove': gc.legalMoves.indexOf('scrap') > -1}"></img>
                                     <p id="scrap-count">{{gc.game.scrap.length}} Cards</p>
                                 </div>
                                 <p class="yourTurn" ng-if="gc.yourTurn">
@@ -208,14 +208,14 @@
                             <div class="col-xs-4 col-md-4 field row" id='points'>
                                 <div id="oppPoints">
                                     <div ng-repeat="card in gc.opponent.points" class="pointCard">
-                                        <img ng-src="{{card.img}}" class="pointCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="$index" draggable="false">
+                                        <img ng-src="{{card.img}}" class="pointCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="$index" draggable="false" ng-class="{'legalMove': gc.legalMoves.indexOf(card.id) > -1 || gc.legalMoves.indexOf('allPoints') > -1}">
                                         <div ng-repeat="jack in card.attachments" class="jackCard">
-                                            <img ng-src="{{jack.img}}" id="oppJackCardImg" draggable="false" ts-droppable allow-drop="gc.dragoverOpJack" upon-drop="gc.dropOpJack" index="gc.opponent.points.indexOf(card)">
+                                            <img ng-src="{{jack.img}}" id="oppJackCardImg" draggable="false" ts-droppable allow-drop="gc.dragoverOpJack" upon-drop="gc.dropOpJack" index="gc.opponent.points.indexOf(card)" ng-class="{'legalMove': gc.legalMoves.indexOf('allRunes') > -1}">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div id="yourPoints" ts-droppable allow-drop="gc.dragoverPoints" index="0" upon-drop="gc.dropPoints">
+                                <div id="yourPoints" ts-droppable allow-drop="gc.dragoverPoints" index="0" upon-drop="gc.dropPoints" ng-class="{'legalMove': gc.legalMoves.indexOf('points') > -1}">
                                     <div ng-repeat="card in gc.player.points" class="pointCard">
                                         <img ng-src="{{card.img}}" class="pointCardImg" draggable="false">
                                         <div ng-repeat="jack in card.attachments" class="jackCard">
@@ -225,7 +225,6 @@
 <!--                                     <div ng-repeat="jack in gc.player.points.attachments" class="jackCard">
                                         <img ng-src="{{jack.img}}" class="jackCardImg">
                                     </div> -->
-
                                 </div>
                             </div>
                             <!-- Runes -->
@@ -233,11 +232,11 @@
                                 <!-- Opponent Runes -->
                                 <div id="oppRunes">
                                     <div ng-repeat="card in gc.opponent.runes" class="runeCard">
-                                        <img ng-src="{{card.runeImg}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpRune" upon-drop="gc.dropOpRune" index="$index" draggable="false">
+                                        <img ng-src="{{card.runeImg}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpRune" upon-drop="gc.dropOpRune" index="$index" draggable="false" ng-class="{'legalMove': gc.legalMoves.indexOf(card.id) > -1 || gc.legalMoves.indexOf('allRunes') > -1}">
                                     </div>
                                 </div>
                                 <!-- Your Runes -->
-                                <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes">
+                                <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes" ng-class="{'legalMove': gc.legalMoves.indexOf('runes') > -1}">
                                     <div ng-repeat="card in gc.player.runes" class="runeCard">
                                         <img ng-src="{{card.runeImg}}" class="runeCardImg" draggable="false">
                                     </div>
@@ -265,8 +264,8 @@
                                     </form>
                                 </div>
 
-                                <img ng-if="gc.resolvingSeven && gc.game.topCard" ng-src="{{gc.game.topCard.img}}" ts-draggable class="sevenCard"  card-id="gc.game.topCard.id" index="0" type="'deck'" suit="gc.game.topCard.suit" rank="gc.game.topCard.rank">
-                                <img ng-if="gc.resolvingSeven && gc.game.secondCard" ng-src="{{gc.game.secondCard.img}}" ts-draggable class="sevenCard" card-id="gc.game.secondCard.id" index="1" type="'deck'" suit="gc.game.secondCard.suit" rank="gc.game.secondCard.rank">
+                                <img ng-if="gc.resolvingSeven && gc.game.topCard" ng-src="{{gc.game.topCard.img}}" ts-draggable class="sevenCard"  card-id="gc.game.topCard.id" index="0" type="'deck'" suit="gc.game.topCard.suit" rank="gc.game.topCard.rank" upon-drag="gc.findLegalMoves" drag-end="gc.clearLegalMoves">
+                                <img ng-if="gc.resolvingSeven && gc.game.secondCard" ng-src="{{gc.game.secondCard.img}}" ts-draggable upon-drag="gc.findLegalMoves" drag-end="gc.clearLegalMoves" class="sevenCard" card-id="gc.game.secondCard.id" index="1" type="'deck'" suit="gc.game.secondCard.suit" rank="gc.game.secondCard.rank">
                                 <img ng-if="gc.opResolvingSeven && gc.game.topCard" ng-src="{{gc.game.topCard.img}}" draggable="false" class="sevenCard">
                                 <img ng-if="gc.opResolvingSeven && gc.game.secondCard" ng-src="{{gc.game.secondCard.img}}" draggable="false" class="sevenCard">
 
@@ -303,7 +302,7 @@
                             <div id="yourHand">
                                 <!-- Your Hand -->
                                 <div ng-repeat="card in gc.player.hand" class="handCard">
-                                    <img ng-src="{{card.img}}" ts-draggable index="$index" class="handCardImg" card-id="card.id" type="'hand'" suit="card.suit" rank="card.rank" ng-click="gc.clickHandCard($index)" ng-class="{discarding: gc.cardsToDiscard.indexOf(gc.player.hand[$index]) > -1}">
+                                    <img ng-src="{{card.img}}" ts-draggable index="$index" class="handCardImg" card-id="card.id" type="'hand'" suit="card.suit" rank="card.rank" ng-click="gc.clickHandCard($index)" ng-class="{discarding: gc.cardsToDiscard.indexOf(gc.player.hand[$index]) > -1}" upon-drag="gc.findLegalMoves" drag-end="gc.clearLegalMoves">
                                 </div>
                             </div>
                             <div id="yourCounter">
@@ -333,6 +332,7 @@
                                 <!-- Your king squares -->
                             </div>
                             <button type="button" class="btn btn-danger btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
+
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
                             <!-- <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button> -->
                             <!-- <button ng-click="gc.deleteDeck()" id="deleteDeck">Delete Deck</button> -->

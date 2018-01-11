@@ -5,7 +5,9 @@ app.directive('tsDraggable', function () {
 			index: '=',
 			suit: '=',
 			rank: '=',
-			cardId: '='
+			cardId: '=',
+			uponDrag: '&',
+			dragEnd: '&',
 		},
 		link: function (scope, element) {
 			var el = element[0];
@@ -20,8 +22,12 @@ app.directive('tsDraggable', function () {
 					id: scope.cardId
 				};
 				// console.log(dragData);
+				uponDrag = scope.uponDrag();
+				uponDrag();
 			});
 			el.addEventListener('dragend', function (ev) {
+				dragEnd = scope.dragEnd();
+				dragEnd();
 				// alert("drag end");
 				// dragData = {
 				// 	type: null,

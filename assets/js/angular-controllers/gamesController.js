@@ -17,6 +17,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.gameOver = false;
 	self.logDisplay = "gameLog";
 	self.chatEntry = "";
+	self.legalMoves = [];
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	// self.showDeck = false;
 
@@ -63,6 +64,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				}
 		});
 	};
+	// Request to add message to game chat
 	self.chat = function () {
 		console.log("requesting to chat: " + self.chatEntry);
 		io.socket.put("/game/chat", 
@@ -78,7 +80,105 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}
 		});
 	};
+	// Determine legal moves while dragging card for highlighting
+	self.findLegalMoves = function() {
+		self.legalMoves = [];
+		switch (dragData.rank) {
+			case 1:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+				self.legalMoves.push("points");
+				self.legalMoves.push("scrap");
+				// Determine legal scuttles
+				self.opponent.points.forEach(function (point) {
+					if ( point.rank < dragData.rank || (point.rank == dragData.rank && point.suit < dragData.suit) ) {
+						self.legalMoves.push(point.id);
+					}
+				});
+				break;
+			case 2:
+				self.legalMoves.push("points");
+				self.opponent.points.forEach(function (point) {
+					if ( point.rank < dragData.rank || (point.rank == dragData.rank && point.suit < dragData.suit) ) {
+						self.legalMoves.push(point.id);
+					}
+				});
+				switch (self.opQueenCount) {
+					case 0:
+						self.legalMoves.push("allRunes");
+						// Determine legal scuttles
+						break;
+					case 1:
+						// Find Queen among runes
+						self.opponent.runes.forEach(function (rune) {
+							if (rune.rank == 12) {
+								self.legalMoves.push(rune.id);
+							}
+						});
+						break;
+				}
+				break;
+			case 8:
+				self.legalMoves.push("points");
+				self.legalMoves.push("runes");
+				// Find legal scuttles
+				self.opponent.points.forEach(function (point) {
+					if ( point.rank < dragData.rank || (point.rank == dragData.rank && point.suit < dragData.suit) ) {
+						self.legalMoves.push(point.id);
+					} 
+				});
+				break;
+			case 9:
+				self.legalMoves.push("points");
+				// Find legal scuttles
+				self.opponent.points.forEach(function (point) {
+					if ( point.rank < dragData.rank || (point.rank == dragData.rank && point.suit < dragData.suit) ) {
+						self.legalMoves.push(point.id);
+					}
+				});
+				switch (self.opQueenCount) {
+					case 0:
+						self.legalMoves.push("allRunes");
+						self.legalMoves.push("allPoints");
+						break;
+					case 1:
+						// Find Queen among opponent's runes
+						self.opponent.runes.forEach(function (rune) {
+							if (rune.rank == 12) {
+								self.legalMoves.push(rune.id);
+							}
+						});
+						break;
+				}
+				break;
+			case 10:
+				self.legalMoves.push("points");
+				self.opponent.points.forEach(function (point) {
+					if ( point.rank < dragData.rank || (point.rank == dragData.rank && point.suit < dragData.suit) ) {
+						self.legalMoves.push(point.id);
+					}
+				});
+				break;
+			case 11:
+				if (self.opQueenCount == 0) {
+					self.legalMoves.push("allPoints");
+				}
+				break;
+			case 12:
+			case 13:
+				self.legalMoves.push("runes");
+				break;
 
+		}
+		$scope.$apply();
+	};
+	self.clearLegalMoves = function () {
+		self.legalMoves = [];
+		$scope.$apply();
+	};
 	//////////////////////////////////
 	// Target Opponent Card Helpers //
 	//////////////////////////////////
