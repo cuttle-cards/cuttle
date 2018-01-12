@@ -634,6 +634,12 @@ body {
                     width: 60%;
                     color: black;
                   }
+              #threeCardWrapper {
+                position: absolute;
+                top: 0%;
+                height: 100%;
+                z-index: 6;
+              }
               /*These cards are only displayed while a three is being resolved*/
               .scrapCard {
                 position: relative;
@@ -666,29 +672,35 @@ body {
                     margin-top: 1%;
                   }
               /*These cards only display while resolving a seven*/
-              .sevenCard {
-                position: relative;
-                height: 35%;
-                display: inline-block;
-                top: 32%;
-                z-index: 4;
-                -webkit-transition: 1s linear;
-                -moz-transition: 1s linear;
-                -ms-transition: 1s linear;
-                -o-transition: 1s linear;          
+              #sevenCardWrapper {
+                position: absolute;
+                top: 0%;
+                height: 100%;
+                z-index: 6;
               }
-              .sevenCard.ng-leave {
-                opacity: 1;
-              }
-              .sevenCard.ng-leave.ng-leave-active {
-                opacity: 0;
-              }
-              .sevenCard.ng-enter {
-                opacity: 0;
-              }
-              .sevenCard.ng-enter.ng-enter-active {
-                opacity: 1;
-              }
+                  .sevenCard {
+                    position: relative;
+                    height: 35%;
+                    display: inline-block;
+                    top: 32%;
+                    z-index: 4;
+                    -webkit-transition: 1s linear;
+                    -moz-transition: 1s linear;
+                    -ms-transition: 1s linear;
+                    -o-transition: 1s linear;          
+                  }
+                  .sevenCard.ng-leave {
+                    opacity: 1;
+                  }
+                  .sevenCard.ng-leave.ng-leave-active {
+                    opacity: 0;
+                  }
+                  .sevenCard.ng-enter {
+                    opacity: 0;
+                  }
+                  .sevenCard.ng-enter.ng-enter-active {
+                    opacity: 1;
+                  }
 
 
     /*Bottom Wrap*/
