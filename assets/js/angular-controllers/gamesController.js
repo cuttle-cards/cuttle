@@ -33,7 +33,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	};
 	// Draw a card
 	self.draw = function () {
-		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp && !self.resolvingSeven && !self.opResolvingSeven) {
 			io.socket.post("/game/draw", function (res, jwres) {
 				console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
@@ -43,7 +43,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Pass your turn (only when deck is empty)
 	self.pass = function () {
 		console.log("Requesting to pass");
-		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
+		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp && !self.resolvingSeven && !self.opResolvingSeven) {
 			io.socket.post("/game/pass", function (res, jwres) {
 				console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
