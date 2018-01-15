@@ -39,14 +39,14 @@ module.exports = {
 					res.ok();
 				})
 				.catch(function failedCreate (reason) { //Failed to create User
-					console.log(reason);
+					// console.log(reason);
 					return res.badRequest(reason);
 				});
 
 			})	//End promiseEpass success
 			.catch(function failed (reason) { //Password could not be encrypted
-				console.log("Failed to create user:");
-				console.log(reason);
+				// console.log("Failed to create user:");
+				// console.log(reason);
 				return res.badRequest(reason);
 			});
 		} else { //Bad data sent from client

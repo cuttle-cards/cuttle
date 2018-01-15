@@ -32,7 +32,7 @@ app.controller("signUpController", ['$scope', '$http', function ($scope, $http) 
 				// res.header("Access-Control-Allow-Credentials", true);
 			},
 			function error(res) {
-				self.email = "";
+				// self.email = "";
 				self.password = "";
 				self.repeatPassword = "";
 				if(typeof(res.data) === "string") {

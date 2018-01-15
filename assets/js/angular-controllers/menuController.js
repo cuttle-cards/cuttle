@@ -9,6 +9,7 @@ app.controller("menuController", ['$scope', '$window', function ($scope, $window
 	self.loggedIn = $window.loggedIn;
 
 	self.requestGames = function () {
+		console.log("requesting games");
 		io.socket.get("/game/getList", function (res, jwres) {
 			console.log(jwres);
 			// Success

@@ -21,6 +21,7 @@
                 <button ng-click="menu.tab='login'" ng-hide="menu.loggedIn" class="btn btn-default">Log In</button>
                 <button ng-click="menu.logOut()" ng-show="menu.loggedIn" class="btn btn-default">Log Out</button>
                 <button ng-click="menu.requestGames()" class="btn btn-default">Games</button>
+                <button ng-click="menu.tab='rules'" class="btn btn-default" ng-if="menu.tab !='lobby'">Rules</button>
             </div>
             <!-- Displays either signup, or login form -->
             <div id="formWrapper">
@@ -67,6 +68,101 @@
                         </div>
                     </form> <!-- End of login form -->
                 </div> <!-- End login controller -->
+
+                <!-- Rules Page -->
+                <div ng-if="menu.tab==='rules'" class="container-fluid">
+                    <h1>Cuttle Rules</h1>
+                    <h2>Players and Cards</h2>
+                    <p>Cuttle is a 2-player card game, played with a standard 52 card deck, without jokers.</p>
+                    <h2>Goal</h2>
+                    <p>The goal is to be the first player to have 21 <strong>or more</strong> points. When a player has 21 or more points, the game is over.</p>
+                    <h2>Setting Up</h2>
+                    <p>Each player starts on one side of the game board and is dealt a hand from the deck. One player is dealt six cards; the other is dealt 5 and goes first. A <em>scrap pile</em> area is designated for destroyed cards.</p>
+                    <h2>Playing</h2>
+                    <p>On your turn you must make exactly one of the following <strong>legal moves</strong> below.</p>
+                    <h2>Legal Moves</h2>
+                    <ol>
+                    <li>
+                    <p><strong>Draw:</strong>
+                    You may draw one card from the deck and put it in your hand. If the deck is empty, you may pass. If three consecutive turns end with a pass, the game is a draw.</p>
+                    <ul>
+                    <li>Click the deck to draw a card</li>
+                    </ul>
+                    </li>
+                    <li>
+                    <p><strong>Points:</strong>
+                    You may play any number card, Ace-Ten for the number of points shown on the card (Ace is one point). The first player to have 21 <strong>or more</strong> points wins.</p>
+                    <ul>
+                    <li>To play a card for points, drag it to your <strong>Points</strong> area, on the left.</li>
+                    </ul>
+                    </li>
+                    <li>
+                    <p><strong>Scuttling:</strong>
+                    You may player a number card from your hand onto a lower valued number card that your opponent has played for points; this destroys both cards. You may also scuttle a card of the same rank, if your card has the higher suit. The suit order is Clubs (weakest) &lt; Diamonds &lt; Hearts &lt; Spades (strongest).</p>
+                    <ul>
+                    <li>To scuttle an opponent's point card, drag a higher point card from your hand on top of it.</li>
+                    </ul>
+                    </li>
+                    <li>
+                    <p><strong>Boons:</strong>
+                    Face cards and eights can be played as <strong>Boons</strong>. While on your board, Boons provide you advantages. An explanation of the different Boons can be found below.</p>
+                    <ul>
+                    <li>To play a Boon, drag a card from your hand into the <strong>Boons</strong> area on your right.</li>
+                    </ul>
+                    </li>
+                    <li>
+                    <p><strong>One-Offs:</strong>
+                    Ace-Sevens and also Nines can be played as <strong>One-Offs</strong>. Playing a card for a One-Off effect discards (to the scrap pile) in exchange for an effect, based on the rank of the card. A list of all the effects can be found below.</p>
+                    <ul>
+                    <li>To play a card as a <strong>One-Off</strong>, drag it to the <strong>Scrap Pile</strong> or a valid <strong>Target</strong>, if required</li>
+                    </ul>
+                    </li>
+                    </ol>
+                    <h2>One-Offs</h2>
+                    <ul>
+                    <li><strong>Ace</strong>: Destroy all <strong>Point</strong> cards</li>
+                    <li><strong>Two</strong>: One of two effects:
+                    <ol>
+                    <li>Destroy <strong>target Boon</strong></li>
+                    <li>Counter <strong>target One-Off</strong> (play this when an opponent plays a <strong>One-Off</strong> effect to stop it from happening)</li>
+                    </ol>
+                    </li>
+                    <li><strong>Three</strong>: Choose one card from the <strong>Scrap Pile</strong> and put it in your hand.</li>
+                    <li><strong>Four</strong>: Your opponent discards two cards of her choice from her hand to the <strong>Scrap Pile</strong></li>
+                    <li><strong>Five</strong>: Draw two cards from the <strong>Deck</strong>.</li>
+                    <li><strong>Six</strong>: Destroy all <strong>Boons</strong></li>
+                    <li><strong>Seven</strong>: Reveal the top two cards from the <strong>Deck</strong> and choose one of them to play immediately. Play this card however you would like. The other card is placed back on top of the deck.</li>
+                    <li><strong>Nine</strong>: Return an opponent's card on the board to their hand. It can't be played next turn.</li>
+                    </ul>
+                    <h2>Boons</h2>
+                    <ul>
+                    <li><strong>Eight</strong>: While you control an Eight as a <strong>Boon</strong> (called a <strong>"Glasses Eight"</strong>), your opponent plays with her hand revealed to you.</li>
+                    <li><strong>Jack</strong>: Play a jack on top of a <strong>Point Card</strong> to move it to your side of the board. You keep control of the point card as long as you control the top jack.</li>
+                    <li><strong>Queen</strong>: While you control a Queen, your other cards cannot be <strong>targeted</strong> by your opponent's cards.</li>
+                    <li><strong>King</strong>: While you have a King, the minimum points needed to win is reduced. Each additional King further reduces the limit.
+                    <ul>
+                    <li>1 King: 14 points to win</li>
+                    <li>2 Kings: 10 points to win</li>
+                    <li>3 Kings: 7 points to win</li>
+                    <li>4 Kings: 5 points to win</li>
+                    </ul>
+                    </li>
+                    </ul>
+                    <h2>FAQ</h2>
+                    <h3>Can I play a two to counter a point card? What about a scuttle? Can I play a two to destroy my opponent's Boon on her turn?</h3>
+                    <p>Nope! Twos can only counter One-Offs. You can play a two to destroy a Boon, but this takes your turn, unlike countering.</p>
+                    <h3>Do Queens protect against countering with a two?</h3>
+                    <p>Yes! Queens protect against <strong>targeting</strong>, when a card applies a unique effect to one specific card. This means your other cards (not the Queen, herself) are protected against Twos (either effect), Nines, and Jacks.</p>
+                    <h3>Can I counter a Two with a Two?</h3>
+                    <p>Heck yeah! Playing a Two to counter is a <strong>One-Off</strong>, which can be <strong>countered</strong> with a two. Stacked counters make for exciting plays.</p>
+                    <h3>Can I win by playing a King?</h3>
+                    <p>Yes. If you meet the required number of points, you win immediately. This means if you play a King when you already have enough points to meet the new limit, you win on that turn.</p>
+                    <h3>If I play an Ace or a Six, are my cards destroyed as well?</h3>
+                    <p>Yes. Aces and Sixes destroy all <strong>Point Cards</strong> and all <strong>Boons</strong>, respectively. That includes any that you have out. Try to avoid destroying many of your own cards!</p>
+                    <h3>Where can I play Cuttle?</h3>
+                    <p>You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, this is the only place! We hope you enjoy our passion project :)</p>
+
+                </div> <!-- End of Rules page -->
 
                 <div ng-controller="gamesOverviewController as gamesOverview" id="gamesOverview">
                     <div ng-show="menu.tab==='gamesOverview'" class="table table-striped">
