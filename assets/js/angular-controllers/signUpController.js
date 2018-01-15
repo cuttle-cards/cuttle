@@ -13,34 +13,40 @@ app.controller("signUpController", ['$scope', '$http', function ($scope, $http) 
 		// }, function (res, jwres) {
 		// 	console.log(jwres);
 		// });
+		if (self.password == self.repeatPassword) {
 
-		$http({
-			method: 'POST',
-			url: '/user/signup',
-			data: {
-				email: self.email,
-				password: self.password
-			}
-		}).then(
-		function success(res) {
-			menu.loggedIn = true;
-			self.email = "";
+			$http({
+				method: 'POST',
+				url: '/user/signup',
+				data: {
+					email: self.email,
+					password: self.password
+				}
+			}).then(
+			function success(res) {
+				menu.loggedIn = true;
+				self.email = "";
+				self.password = "";
+				self.repeatPassword = "";
+				menu.requestGames();
+				// res.header("Access-Control-Allow-Credentials", true);
+			},
+			function error(res) {
+				self.email = "";
+				self.password = "";
+				self.repeatPassword = "";
+				if(typeof(res.data) === "string") {
+					alert(res.data);
+				} else {
+					alert(res.data.message);
+				}
+				
+			});
+		} else {
+			alert("The passwords must match");
 			self.password = "";
 			self.repeatPassword = "";
-			menu.requestGames();
-			// res.header("Access-Control-Allow-Credentials", true);
-		},
-		function error(res) {
-			self.email = "";
-			self.password = "";
-			self.repeatPassword = "";
-			if(typeof(res.data) === "string") {
-				alert(res.data);
-			} else {
-				alert(res.data.message);
-			}
-			
-		});
+		}
 
 	};
 
