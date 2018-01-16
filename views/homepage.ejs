@@ -16,7 +16,7 @@
         <!-- Highest level controller -->
         <div id="menuController" ng-controller="menuController as menu" ng-cloak class="wrappingDiv">
             <!-- Sign Up/Login Tab Buttons -->
-            <div id="buttonWrapper" class="btn-group">
+            <div id="buttonWrapper" class="btn-group" ng-hide="menu.tab === 'lobby'">
                 <button ng-click="menu.tab='signup'" ng-hide="menu.loggedIn" class="btn btn-default" ng-class="{'activeTab': menu.tab==='signup'}" id="signupButton">Sign Up</button>
                 <button ng-click="menu.tab='login'" ng-hide="menu.loggedIn" class="btn btn-default" ng-class="{'activeTab': menu.tab==='login'}">Log In</button>
                 <button ng-click="menu.logOut()" ng-show="menu.loggedIn" class="btn btn-default">Log Out</button>

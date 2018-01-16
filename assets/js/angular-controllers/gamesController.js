@@ -26,7 +26,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		var conf = confirm("Are you sure you want to concede?");
 		if (conf) {
 			io.socket.post("/game/concede", function (res, jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
 		}
@@ -35,17 +35,17 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.draw = function () {
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp && !self.resolvingSeven && !self.opResolvingSeven) {
 			io.socket.post("/game/draw", function (res, jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
 		}
 	};
 	// Pass your turn (only when deck is empty)
 	self.pass = function () {
-		console.log("Requesting to pass");
+		// console.log("Requesting to pass");
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp && !self.resolvingSeven && !self.opResolvingSeven) {
 			io.socket.post("/game/pass", function (res, jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
 		}
@@ -66,7 +66,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	};
 	// Request to add message to game chat
 	self.chat = function () {
-		console.log("requesting to chat: " + self.chatEntry);
+		// console.log("requesting to chat: " + self.chatEntry);
 		io.socket.put("/game/chat", 
 		{
 			msg: self.chatEntry
@@ -76,7 +76,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			$scope.$apply();
 			if (jwres.statusCode != 200) {
 				console.log("Error with chat:");
-				console.log(jwres)
+				console.log(jwres);
 			}
 		});
 	};
@@ -192,7 +192,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					index: dragData.index
 				},
 				function (res, jwres) {
-					console.log(jwres);
+					// console.log(jwres);
 					if (jwres.statusCode != 200) alert(jwres.error.message);
 				}
 			);
@@ -205,7 +205,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				targetId: targetId
 			},
 			function (res, jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
 		}
@@ -219,7 +219,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					targetId: targetId
 				},
 				function (res, jwres) {
-					console.log(jwres);
+					// console.log(jwres);
 					if (jwres.statusCode != 200) alert(jwres.error.message);
 				}
 			)
@@ -233,7 +233,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					index: dragData.index
 				},
 				function (res, jwres) {
-					console.log(jwres);
+					// console.log(jwres);
 					if (jwres.statusCode != 200) alert(jwres.error.message);
 				}
 			);
@@ -253,7 +253,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				pointId: pId
 			},
 			function (res, jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 				if (jwres.statusCode != 200) {
 					alert(jwres.error.message);
 					self.waitingForOp = false;
@@ -270,7 +270,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				pointId: pId,
 				index: dragData.index
 			}, function (res, jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 				if(jwres.statusCode != 200) {
 					alert(jwres.error.message);
 					self.waitingForOp = false;
@@ -396,14 +396,14 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	////////////////////
 	self.dropPoints = function (targetIndex) {
 		// alert("played points!");
-		console.log(dragData);
+		// console.log(dragData);
 		if (!self.resolvingSeven) {		
 			io.socket.put("/game/points", 
 			{
 				cardId: dragData.id,
 			},
 			function (res, jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 				// alert("console printed");
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
@@ -415,7 +415,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				index: dragData.index
 			},
 			function (res,jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
 		}
@@ -437,7 +437,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				cardId: dragData.id,
 				index: dragData.index
 			}, function (res, jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
 		}
@@ -482,7 +482,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						opId: self.opponent.id
 					},
 					function (res, jwres) {
-						console.log(jwres);
+						// console.log(jwres);
 						if (jwres.statusCode != 200) {
 							alert(jwres.error.message);
 							self.waitingForOp = false;
@@ -497,7 +497,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					index: dragData.index
 				},
 				function (res, jwres) {
-					console.log(jwres);
+					// console.log(jwres);
 					if (jwres.statusCode != 200) {
 						alert(jwres.error.message);
 						self.waitingForOp = false;
@@ -539,7 +539,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			cardId: self.player.hand[dragData.index].id
 		},
 		function (res, jwres) {
-			console.log(jwres);
+			// console.log(jwres);
 			if (jwres.statusCode != 200) {
 				// Handle error
 			} else {
@@ -563,7 +563,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							cardId2: self.cardsToDiscard[1].id
 						},
 						function (res, jwres) {
-							console.log(jwres);
+							// console.log(jwres);
 							self.resolvingFour = false;
 							self.cardsToDiscard = [];
 							if (jwres.statusCode != 200) alert(jwres.error.message);
@@ -577,7 +577,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							cardId1: self.cardsToDiscard[0].id
 						},
 						function (res, jwres) {
-							console.log(jwres);
+							// console.log(jwres);
 							self.resolvingFour = false;
 							self.cardsToDiscard = [];
 							if (jwres.statusCode != 200) alert(jwres.error.message);
@@ -609,11 +609,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Socket Event Handlers //
 	///////////////////////////
 	io.socket.on('game', function (obj) {
-		console.log("Game event");
-		console.log(obj);
+		// console.log("Game event");
+		// console.log(obj);
 		switch (obj.verb) {
 			case 'updated':
-				if (obj.data.change != 'Initialize') {
+				if (obj.data.change != 'Initialize' && obj.data.change != 'ready') {
 					/* Update controller game from data in this event
 					 	*	updateGame() is defined in js/app.js
 					 */
@@ -622,7 +622,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					self.game = obj.data.game;
 				}
 	
-				console.log(self.game);
+				// console.log(self.game);
 
 				switch (obj.data.change) {
 					case 'Initialize':
@@ -897,7 +897,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					if (obj.data.victory.gameOver) {
 						io.socket.put("/game/over", 
 						function (res, jwres) {
-							console.log(jwres);
+							// console.log(jwres);
 						});
 						self.gameOver = true;
 						// Game Ended with Legal Move (no one conceded)
