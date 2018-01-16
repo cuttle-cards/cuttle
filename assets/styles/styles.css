@@ -2,6 +2,11 @@
 body {
   font-family: 'Roboto Slab', serif;
 }
+/*Navbar CS*/
+#signupButton {
+  z-index: 2;
+}
+
 /*Lobby CSS*/
 
 .content-area {
