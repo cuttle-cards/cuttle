@@ -194,9 +194,9 @@
 
 
             </div> <!-- End of formWrapper -->
-            <div ng-controller="lobbyController as lobby" class="lobbyController">
+            <div ng-controller="lobbyController as lobby" class="lobbyController" ng-show="menu.tab==='lobby'">
                 <div ng-class="{'ready': menu.playerReady}" class="readyClass">    
-                <div ng-show="menu.tab==='lobby'" class="rulesDiv">
+                <div class="rulesDiv">
 <!--                 </div>
                 <div ng-show="menu.tab==='lobby'">  -->
                         <p class="readyLine">
@@ -239,8 +239,8 @@
             </div> <!-- End of ng-show for lobby-->
 
             <!-- Game View -->
-            <div ng-controller="gamesController as gc" class="container-fluid gameDiv">
-                <div ng-show="menu.tab==='gameView'" class="gameDiv">
+            <div ng-controller="gamesController as gc" class="container-fluid gameDiv" ng-show="menu.tab==='gameView'">
+                <div class="gameDiv">
                     <div id="bg">
                         <!-- TEST DRAW ACTION -->
                         <!-- Top Wrap -->
