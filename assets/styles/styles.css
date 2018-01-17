@@ -548,6 +548,13 @@ body {
                       border: 2px solid red;
                       z-index: 2;
                   }
+                      .areaLabel {
+                        display: inline-block;
+                        position: absolute;
+                        left: 40%;
+                        top: 40%;
+                        font-size: 200%;
+                      }
                   #yourRunes {
                       display: inline-block;
                       position: absolute;
@@ -557,6 +564,7 @@ body {
                       border: 2px solid blue;
                       z-index: 2;
                   }
+
                       .runeCard {
                         display: inline-block;
                         position: relative;
