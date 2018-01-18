@@ -621,7 +621,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					 	*	updateGame() is defined in js/app.js
 					 */
 					updateGame(self.game, obj.data.game);
-					if (self.yourTurn) soundPlayCard.play();
+					if (obj.data.change != 'chat') soundPlayCard.play();
 				} else {
 					self.game = obj.data.game;
 				}
