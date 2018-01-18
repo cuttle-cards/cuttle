@@ -13,6 +13,33 @@ body {
   margin-top: 10px;
   padding: 10px;
 }
+.readyLine{
+  position: relative;
+  z-index: 5;
+  text-align: center;
+}
+    #lobbyButtons {
+      display: block;
+      text-align: center;
+    }
+.readySign {
+  position: relative;
+  color: red;
+  text-align: center;
+  top: 4%;
+  /*left: 37%;*/
+  font-size: 30px;
+}
+
+
+.opReadySign {
+  position: relative;
+  color: blue;
+  text-align: center;
+  top: 4%;
+  /*left: 37%;*/
+  font-size: 30px;
+}
 
 .sample-show-hide {
   transition: all linear 0.5s;
@@ -79,23 +106,6 @@ body {
   color: green;
 }
 
-.readySign {
-  position: absolute;
-  color: red;
-  text-align: center;
-  top: 4%;
-  left: 37%;
-  font-size: 30px;
-}
-
-.opReadySign {
-  position: absolute;
-  color: blue;
-  text-align: center;
-  top: 7%;
-  left: 37%;
-  font-size: 30px;
-}
 
 .aceLobby {
   width: 8%;
@@ -109,11 +119,6 @@ body {
   opacity: 0;
 }
 
-.readyLine{
-  position: absolute;
-  z-index: 5;
-  left: 18%;
-}
 
 .rulesDiv {
   position: absolute;

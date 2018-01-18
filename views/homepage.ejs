@@ -200,8 +200,14 @@
 <!--                 </div>
                 <div ng-show="menu.tab==='lobby'">  -->
                         <p class="readyLine">
-                            Welcome to the lobby of (Game name here possibly).  When you are ready, hit the <button ng-click="lobby.ready()" ng-class="{'btn btn-success': !menu.playerReady, 'btn btn-warning': menu.playerReady}">{{menu.playerReady && "Unready" || "Ready"}}</button> button. To leave the game, click the <button ng-click="lobby.leave()" class="btn btn-danger">Leave Lobby</button>  If you are having issues with the screen resolution, press CTRL (Windows) or CMD (Mac) +/- to adjust to a good size.
+                            Welcome to the lobby of (Game name here possibly).  {{!menu.playerReady && "When you are ready, hit the Ready button." || "If you are no longer ready, hit the Unready button."}}
+                            To leave the game, click Leave Lobby. 
+                            <br> If you are having issues with the screen resolution, press CTRL (Windows) or CMD (Mac) +/- to adjust to a good size.
                         </p>
+                        <div id="lobbyButtons">
+                            <button ng-click="lobby.ready()" ng-class="{'btn btn-success': !menu.playerReady, 'btn btn-warning': menu.playerReady}">{{menu.playerReady && "Unready" || "Ready"}}</button>
+                             <button ng-click="lobby.leave()" class="btn btn-danger">Leave Lobby</button>  
+                        </div>
                         <p ng-if="menu.playerReady" class="readySign">Congratulations on being ready!</p>
                         <p ng-if="menu.opReady" class="opReadySign">Your Challenger Is Waiting</p>
                         <!-- <h2>One Offs</h2>
@@ -231,9 +237,9 @@
                             </div>
                         </div>
                         <h2>Scuttling</h2> -->
-                    <img src="images/Cuttle_Rules-page-001.jpg" width="60%" height="100%" class="rules1"/>
+      <!--               <img src="images/Cuttle_Rules-page-001.jpg" width="60%" height="100%" class="rules1"/>
                     <img src="images/Cuttle_Rules-page-002.jpg" width="60%" height="100%" class="rules2"/>
-                    <img src="images/Cuttle_Rules-page-003.jpg" width="60%" height="100%" class="rules3"/>
+                    <img src="images/Cuttle_Rules-page-003.jpg" width="60%" height="100%" class="rules3"/> -->
                     </div> <!-- End of lobby contorller -->
                 </div>
             </div> <!-- End of ng-show for lobby-->
