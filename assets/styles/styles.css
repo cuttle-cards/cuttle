@@ -49,16 +49,16 @@ body {
 }
 
 .sampleAnimation.ng-leave {
-  animation: boardWipe 1s linear;
-  -webkit-animation: boardWipe 1s linear;
+  animation: boardWipe .4s linear;
+  -webkit-animation: boardWipe .4s linear;
 }
 
 .newGame{
-  -webkit-transition: 1s linear;
-  -moz-transition: 1s linear;
-  -ms-transition: 1s linear;
-  -o-transition: 1s linear;
-  transition: 1s linear;
+  -webkit-transition: .4s linear;
+  -moz-transition: .4s linear;
+  -ms-transition: .4s linear;
+  -o-transition: .4s linear;
+  transition: .4s linear;
 }
 
 .newGame.ng-enter {
@@ -238,11 +238,11 @@ body {
               margin-left: 1%;
               width: 7%;
               height: 100%;
-              -webkit-transition: 1s linear;
-              -moz-transition: 1s linear;
-              -ms-transition: 1s linear;
-              -o-transition: 1s linear;
-              transition: 1s linear;
+              -webkit-transition: .4s linear;
+              -moz-transition: .4s linear;
+              -ms-transition: .4s linear;
+              -o-transition: .4s linear;
+              transition: .4s linear;
             }
             .opHandCard.ng-leave {
               opacity: 1;
@@ -483,11 +483,11 @@ body {
                         position: relative;
                         height: 100%;
                         width: 25%;
-                        -webkit-transition: 1s linear;
-                        -moz-transition: 1s linear;
-                        -ms-transition: 1s linear;
-                        -o-transition: 1s linear;
-                        transition: 1s linear;
+                        -webkit-transition: .4s linear;
+                        -moz-transition: .4s linear;
+                        -ms-transition: .4s linear;
+                        -o-transition: .4s linear;
+                        transition: .4s linear;
                       }
                       .pointCard.ng-leave {
                         opacity: 1;
@@ -575,11 +575,11 @@ body {
                         position: relative;
                         height: 100%;
                         width: 25%;
-                        -webkit-transition: 1s linear;
-                        -moz-transition: 1s linear;
-                        -ms-transition: 1s linear;
-                        -o-transition: 1s linear;
-                        transition: 1s linear;
+                        -webkit-transition: .4s linear;
+                        -moz-transition: .4s linear;
+                        -ms-transition: .4s linear;
+                        -o-transition: .4s linear;
+                        transition: .4s linear;
                       }
                       .runeCard.ng-leave {
                         opacity: 1;
@@ -663,10 +663,10 @@ body {
                 position: relative;
                 display: inline;
                 height: 15%;
-                -webkit-transition: 1s linear;
-                -moz-transition: 1s linear;
-                -ms-transition: 1s linear;
-                -o-transition: 1s linear;
+                -webkit-transition: .4s linear;
+                -moz-transition: .4s linear;
+                -ms-transition: .4s linear;
+                -o-transition: .4s linear;
               }
 /*              .scrapCard.ng-hide-remove {
                 opacity: 1;
@@ -702,10 +702,10 @@ body {
                     display: inline-block;
                     top: 32%;
                     z-index: 4;
-                    -webkit-transition: 1s linear;
-                    -moz-transition: 1s linear;
-                    -ms-transition: 1s linear;
-                    -o-transition: 1s linear;          
+                    -webkit-transition: .4s linear;
+                    -moz-transition: .4s linear;
+                    -ms-transition: .4s linear;
+                    -o-transition: .4s linear;          
                   }
                   .sevenCard.ng-leave {
                     opacity: 1;
@@ -745,11 +745,11 @@ body {
               height: 20%;
               margin-left: 1%;
               width: 8%;
-              -webkit-transition: 1s linear;
-              -moz-transition: 1s linear;
-              -ms-transition: 1s linear;
-              -o-transition: 1s linear;
-              transition: 1s linear;
+              -webkit-transition: .4s linear;
+              -moz-transition: .4s linear;
+              -ms-transition: .4s linear;
+              -o-transition: .4s linear;
+              transition: .4s linear;
             }
             .handCard.ng-leave {
               opacity: 1;
