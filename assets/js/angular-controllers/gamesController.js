@@ -18,6 +18,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.logDisplay = "gameLog";
 	self.chatEntry = "";
 	self.legalMoves = [];
+
+	var soundPlayCard = document.createElement("audio");
+	soundPlayCard.src = "./sounds/play_card.mp3";
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	// self.showDeck = false;
 
@@ -618,6 +621,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					 	*	updateGame() is defined in js/app.js
 					 */
 					updateGame(self.game, obj.data.game);
+					if (self.yourTurn) soundPlayCard.play();
 				} else {
 					self.game = obj.data.game;
 				}
