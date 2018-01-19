@@ -193,13 +193,10 @@ body {
   min-width: 100%;
 }
     .legalMove {
-      background-color: #26d3ff;
-      opacity: 45%;
+      border: 8px solid #26d3ff !important;
     }
     .legalMoveScrap {
-      border-color: rgb(66, 134, 244);
-      border-style: solid;
-      border-width: 10px;
+      border: 10px solid rgb(66, 134, 244);
     }
     #buttonWrapper {
       margin-top: .5%;
@@ -448,6 +445,11 @@ body {
                 z-index: 3;
                 height: 42%;
               }
+
+                .dragover {
+                  background-color: green;
+                }
+
                 #scrap-count {
                   position: absolute;
                   top: 55%;
@@ -464,9 +466,9 @@ body {
             left: 19%;
           }
 
-/*              .dragover {
-                background-color: green;
-              }*/
+              .dragover {
+                background-color: #26d3ff;
+              }
 
                     #oppPoints {
                       display: inline-block;
@@ -551,9 +553,9 @@ body {
             min-height: 100%;
             left: 50%;;
           }
-              /*.dragover {
-                background-color: green;
-              }*/
+              .dragover {
+                background-color: #26d3ff;
+              }
                   #oppRunes {
                       display: inline-block;
                       position: absolute;
