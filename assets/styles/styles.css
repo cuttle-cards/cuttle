@@ -193,7 +193,13 @@ body {
   min-width: 100%;
 }
     .legalMove {
-      border: 2px solid #7BC47B !important;
+      background-color: #26d3ff;
+      opacity: 45%;
+    }
+    .legalMoveScrap {
+      border-color: rgb(66, 134, 244);
+      border-style: solid;
+      border-width: 10px;
     }
     #buttonWrapper {
       margin-top: .5%;
@@ -203,7 +209,9 @@ body {
     #gamesOverview {
       margin-left: .5%;
     }
+      /**********/
       /*Top Wrap*/
+      /**********/
 
       #topWrap {
         min-height: 20%;
@@ -228,6 +236,7 @@ body {
           #oppHand {
             position: absolute;
             display: block;
+            top: 3%;
             left: 30%;
             height: 90%;
             width: 80%;
@@ -452,12 +461,12 @@ body {
             position: absolute;
             min-width: 30%;
             min-height: 100%;
-            left: 20%;
+            left: 19%;
           }
 
-              .dragover {
+/*              .dragover {
                 background-color: green;
-              }
+              }*/
 
                     #oppPoints {
                       display: inline-block;
@@ -471,7 +480,7 @@ body {
                     #yourPoints {
                       display: inline-block;
                       position: absolute;
-                      top: 50%;
+                      top: 55%;
                       height: 50%;
                       width: 90%;
                       border: 2px solid blue;
@@ -542,9 +551,9 @@ body {
             min-height: 100%;
             left: 50%;;
           }
-              .dragover {
+              /*.dragover {
                 background-color: green;
-              }
+              }*/
                   #oppRunes {
                       display: inline-block;
                       position: absolute;
@@ -563,7 +572,7 @@ body {
                   #yourRunes {
                       display: inline-block;
                       position: absolute;
-                      top: 50%;
+                      top: 55%;
                       height: 50%;
                       width: 90%;
                       border: 2px solid blue;
@@ -733,10 +742,10 @@ body {
         #yourHand {
           position: absolute;
           display: block;
-          top: 10%;
+          top: 25%;
           min-height: 30%;
           min-width: 80%;
-          left: 25%;
+          text-align: center;
         }
 
             .handCard {
@@ -744,7 +753,7 @@ body {
               position: relative;
               height: 20%;
               margin-left: 1%;
-              width: 8%;
+              width: 6%;
               -webkit-transition: 1s linear;
               -moz-transition: 1s linear;
               -ms-transition: 1s linear;

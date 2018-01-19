@@ -298,7 +298,7 @@
                                 </div>
                                 <img src="images/pass.jpg" id="deck" ng-click="gc.pass()" ng-show="gc.cardsInDeck === 0" draggable="false">
                                 <div id="scrap-wrapper">
-                                    <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false" ng-class="{'legalMove': gc.legalMoves.indexOf('scrap') > -1}"></img>
+                                    <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false" ng-class="{'legalMoveScrap': gc.legalMoves.indexOf('scrap') > -1  && gc.yourTurn}"></img>
                                     <p id="scrap-count">{{gc.game.scrap.length}} Cards</p>
                                 </div>
                                 <p class="yourTurn" ng-if="gc.yourTurn">
@@ -319,7 +319,7 @@
                                     </div>
                                 </div>
 
-                                <div id="yourPoints" ts-droppable allow-drop="gc.dragoverPoints" index="0" upon-drop="gc.dropPoints" ng-class="{'legalMove': gc.legalMoves.indexOf('points') > -1}">
+                                <div id="yourPoints" ts-droppable allow-drop="gc.dragoverPoints" index="0" upon-drop="gc.dropPoints" ng-class="{'legalMove': gc.legalMoves.indexOf('points') > -1 && gc.yourTurn}">
                                     <p class="areaLabel" ng-show="gc.player.points.length < 2">Points</p>
                                     <div ng-repeat="card in gc.player.points" class="pointCard">
                                         <img ng-src="{{card.img}}" class="pointCardImg" draggable="false">
@@ -342,7 +342,7 @@
                                     </div>
                                 </div>
                                 <!-- Your Runes -->
-                                <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes" ng-class="{'legalMove': gc.legalMoves.indexOf('runes') > -1}">
+                                <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes" ng-class="{'legalMove': gc.legalMoves.indexOf('runes') > -1 && gc.yourTurn}">
                                     <p class="areaLabel" ng-show="gc.player.runes.length < 2">Boons</p>
                                     <div ng-repeat="card in gc.player.runes" class="runeCard">
                                         <img ng-src="{{card.runeImg}}" class="runeCardImg" draggable="false">
