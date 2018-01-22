@@ -352,8 +352,8 @@
 
                             <!-- Game Log -->
                             <div id="logButtons">
-                                <button ng-click="gc.logDisplay='gameLog'" class="btn btn-default" ng-class="{'activeTab': gc.logDisplay == 'gameLog'}">Game Log</button>
-                                <button ng-click="gc.logDisplay='chat'" class="btn btn-default" ng-class="{'activeTab': gc.logDisplay == 'chat'}">Chat</button>
+                                <button ng-click="gc.toggleLog('gameLog')" class="btn btn-default" ng-class="{'activeTab': gc.logDisplay == 'gameLog'}">Game Log</button>
+                                <button ng-click="gc.toggleLog('chat')" class="btn btn-default" ng-class="{'activeTab': gc.logDisplay == 'chat'}">Chat</button>
                             </div>
                             <div class="col-xs-2 col-md-2" id="gameLog">
                                 <div id="logText">

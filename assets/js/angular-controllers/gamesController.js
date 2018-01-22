@@ -86,6 +86,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}
 		});
 	};
+	// Switch between game log and chat
+	self.toggleLog = function (str) {
+		self.logDisplay = str;
+		log = document.getElementById("logText");
+		log.scrollTop = log.scrollHeight;
+		// $scope.$apply();
+	};
 	// Determine legal moves while dragging card for highlighting
 	self.findLegalMoves = function() {
 		self.legalMoves = [];
@@ -615,8 +622,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Socket Event Handlers //
 	///////////////////////////
 	io.socket.on('game', function (obj) {
-		// console.log("Game event");
-		// console.log(obj);
 		switch (obj.verb) {
 			case 'updated':
 				if (obj.data.change != 'Initialize' && obj.data.change != 'ready') {
@@ -624,9 +629,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					 	*	updateGame() is defined in js/app.js
 					 */
 					updateGame(self.game, obj.data.game);
-					if (obj.data.change != 'chat') {
+					// Play sound effect
+					if (obj.data.change != 'chat' && obj.data.change != 'concede') {
 						soundPlayCard.play();
-					} else {
+					} else if (obj.data.change == 'chat') {
 						soundChat.play();
 					}
 				} else {
