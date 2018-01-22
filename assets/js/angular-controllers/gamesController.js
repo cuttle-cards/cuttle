@@ -18,9 +18,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.logDisplay = "gameLog";
 	self.chatEntry = "";
 	self.legalMoves = [];
-
+	// Sounds
 	var soundPlayCard = document.createElement("audio");
 	soundPlayCard.src = "./sounds/play_card.mp3";
+	soundChat = document.createElement("audio");
+	soundChat.src = "./sounds/chat.mp3";
+
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	// self.showDeck = false;
 
@@ -621,7 +624,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					 	*	updateGame() is defined in js/app.js
 					 */
 					updateGame(self.game, obj.data.game);
-					if (obj.data.change != 'chat') soundPlayCard.play();
+					if (obj.data.change != 'chat') {
+						soundPlayCard.play();
+					} else {
+						soundChat.play();
+					}
 				} else {
 					self.game = obj.data.game;
 				}
