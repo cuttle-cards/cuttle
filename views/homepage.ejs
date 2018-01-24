@@ -298,7 +298,7 @@
                                 </div>
                                 <img src="images/pass.jpg" id="deck" ng-click="gc.pass()" ng-show="gc.cardsInDeck === 0" draggable="false">
                                 <div id="scrap-wrapper">
-                                    <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false" ng-class="{'legalMoveScrap': gc.legalMoves.indexOf('scrap') > -1 && gc.yourTurn}"></img>
+                                    <img src="images/scrap.jpg" id="scrap" ts-droppable allow-drop="gc.dragoverScrap" index="0" upon-drop="gc.dropScrap" draggable="false" ng-class="{'legalMove': gc.legalMoves.indexOf('scrap') > -1 && gc.yourTurn}"></img>
                                     <p id="scrap-count">{{gc.game.scrap.length}} Cards</p>
                                 </div>
                                 <p class="yourTurn" ng-if="gc.yourTurn">
