@@ -327,13 +327,19 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	};
 	self.dragoverOpPoint = function (targetIndex) {
-		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
-			if (dragData.rank <= 11) {
-				if ((!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck')) {
-					return true;
+		// console.log("TargetIndex:" + targetIndex);
+		// console.log(self.opponent.points[targetIndex]);
+		if (targetIndex != null) {
+			if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp) {
+				if (dragData.rank <= 11) {
+										//Confirm that card is being played from hand 									or from deck if resolving seven 														and that scuttle is legal 																												  or that you are playing a 9 one-off or jack legally																					
+					if ( ( (!self.resolvingSeven && !self.opResolvingSeven && dragData.type === 'hand') || (self.resolvingSeven && dragData.type === 'deck') ) && ((dragData.rank > self.opponent.points[targetIndex].rank || (dragData.rank === self.opponent.points[targetIndex].rank && dragData.suit > self.opponent.points[targetIndex].suit) ) || ([9, 11].indexOf(dragData.rank) > -1 && self.opQueenCount === 0) ) ) {
+						// console.log("targetIndex: " + targetIndex);
+						return true;
+					}
+				} else {
+					return false;
 				}
-			} else {
-				return false;
 			}
 		}
 	};

@@ -196,7 +196,8 @@ body {
       border: 8px solid #26d3ff !important;
     }
     .legalMoveScrap {
-      border: 10px solid rgb(66, 134, 244);
+      /*border: 10px solid rgb(66, 134, 244);*/
+      border: 10px solid #26d3ff;
     }
     #buttonWrapper {
       margin-top: .5%;
@@ -431,30 +432,44 @@ body {
                   height: 42%;
 
                 }
-              #deck-count {
-                position: absolute;
-                left: 61%;
-                top: 55%;
-                z-index: 4;
-              }
+                  .cardDropHighlight {
+                    position: absolute;
+                    height: 100%;
+                    width: 100%;
 
-              #scrap {
+                  }
+                  #deck-count {
+                    position: absolute;
+                    left: 61%;
+                    top: 55%;
+                    z-index: 4;
+                  }
+
+              #scrap-wrapper {
+                background-color: #26d3ff;
                 position: absolute;
+                height: 42%;
                 left: 7%;
                 top: 20%;
                 z-index: 3;
-                height: 42%;
               }
 
-                .dragover {
+              #scrap {
+/*                position: absolute;
+                left: 7%;
+                top: 20%;
+                z-index: 3;*/
+                height: 100%;
+              }
+/*                .dragover {
                   background-color: green;
-                }
+                }*/
 
                 #scrap-count {
                   position: absolute;
-                  top: 55%;
+                  top: 84%;
                   z-index: 4;
-                  left: 18%;
+                  left: 27%;
                 }
 
           /*Points*/
@@ -468,6 +483,7 @@ body {
 
               .dragover {
                 background-color: #26d3ff;
+                opacity: .5;
               }
 
                     #oppPoints {
@@ -494,6 +510,7 @@ body {
                         position: relative;
                         height: 100%;
                         width: 25%;
+                        background-color: #26d3ff;
                         -webkit-transition: 1s linear;
                         -moz-transition: 1s linear;
                         -ms-transition: 1s linear;
@@ -523,27 +540,31 @@ body {
 
                     .jackCard {
                       position: relative;
-                      height: 25%;
-                      width: 100%;
-                      bottom: 73%;
-                      margin-bottom: -20%;
+                      height: 50%;
+                      width: 53%;
+                      bottom: 100%;
+                      left: 46%;
+                      margin-bottom: -59%;
+                      z-index: 4;
+                      background-color: #26d3ff;
+
                     }
                       #oppJackCardImg {
-                        display: inline-block;
-                        position: absolute;
-                        height: 200%;
-                        width: 50%;
-                        left: 50%;
-                        bottom: 5%;
+                        display: block;
+                        position: relative;
+                        height: 100%;
+                        /*width: 50%;*/
+                        /*left: 50%;*/
+                        /*bottom: 5%;*/
                         z-index: 4;
                       }
                       #jackCardImg {
-                        display: inline-block;
-                        position: absolute;
-                        height: 200%;
-                        width: 50%;
-                        left: 50%;
-                        bottom: 5%;
+                        display: block;
+                        position: relative;
+                        height: 100%;
+                        /*width: 50%;*/
+                        /*left: 50%;*/
+                        /*bottom: 5%;*/
                         z-index: 4;
                       }
 
@@ -553,9 +574,9 @@ body {
             min-height: 100%;
             left: 50%;;
           }
-              .dragover {
+/*              .dragover {
                 background-color: #26d3ff;
-              }
+              }*/
                   #oppRunes {
                       display: inline-block;
                       position: absolute;
@@ -586,6 +607,7 @@ body {
                         position: relative;
                         height: 100%;
                         width: 25%;
+                        background-color: #26d3ff;
                         -webkit-transition: 1s linear;
                         -moz-transition: 1s linear;
                         -ms-transition: 1s linear;

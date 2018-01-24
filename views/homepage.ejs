@@ -312,9 +312,9 @@
                                 <div id="oppPoints">
                                     <p class="areaLabel" ng-show="gc.opponent.points.length < 2">Points</p>
                                     <div ng-repeat="card in gc.opponent.points" class="pointCard">
-                                        <img ng-src="{{card.img}}" class="pointCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="$index" draggable="false" ng-class="{'legalMove': gc.legalMoves.indexOf(card.id) > -1 || gc.legalMoves.indexOf('allPoints') > -1 && gc.yourTurn}">
+                                        <img ng-src="{{card.img}}" class="pointCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="$index" draggable="false" ng-class="{'legalMove': (gc.legalMoves.indexOf(card.id) > -1 || gc.legalMoves.indexOf('allPoints') > -1) && gc.yourTurn}">
                                         <div ng-repeat="jack in card.attachments" class="jackCard">
-                                            <img ng-src="{{jack.img}}" id="oppJackCardImg" draggable="false" ts-droppable allow-drop="gc.dragoverOpJack" upon-drop="gc.dropOpJack" index="gc.opponent.points.indexOf(card)" ng-class="{'legalMove': gc.legalMoves.indexOf('allRunes') > -1}">
+                                            <img ng-src="{{jack.img}}" id="oppJackCardImg" draggable="false" ts-droppable allow-drop="gc.dragoverOpJack" upon-drop="gc.dropOpJack" index="gc.opponent.points.indexOf(card)" ng-class="{'legalMove': gc.legalMoves.indexOf('allRunes') > -1 && card.attachments.indexOf(jack) === card.attachments.length - 1}">
                                         </div>
                                     </div>
                                 </div>
