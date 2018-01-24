@@ -17,7 +17,7 @@ app.directive('tsDroppable', function () {
 			el.addEventListener('dragenter', function (ev) {
 				ev.preventDefault(); //For IE
 				var allowDrop = scope.allowDrop();
-				if (allowDrop(dragIndex, scope.index)) {
+				if (allowDrop(scope.index)) {
 					el.classList.add('dragover');
 					counter++;
 				}
@@ -25,7 +25,7 @@ app.directive('tsDroppable', function () {
 			});
 			el.addEventListener('dragleave', function (ev) {
 				var allowDrop = scope.allowDrop();
-				if (allowDrop(dragIndex, scope.index)) {
+				if (allowDrop(scope.index)) {
 					counter--;
 					if (counter === 0) el.classList.remove('dragover');
 				}

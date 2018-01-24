@@ -193,7 +193,11 @@ body {
   min-width: 100%;
 }
     .legalMove {
-      border: 2px solid #7BC47B !important;
+      border: 8px solid #26d3ff !important;
+    }
+    .legalMoveScrap {
+      /*border: 10px solid rgb(66, 134, 244);*/
+      border: 10px solid #26d3ff;
     }
     #buttonWrapper {
       margin-top: .5%;
@@ -203,7 +207,9 @@ body {
     #gamesOverview {
       margin-left: .5%;
     }
+      /**********/
       /*Top Wrap*/
+      /**********/
 
       #topWrap {
         min-height: 20%;
@@ -228,6 +234,7 @@ body {
           #oppHand {
             position: absolute;
             display: block;
+            top: 3%;
             left: 30%;
             height: 90%;
             width: 80%;
@@ -425,25 +432,44 @@ body {
                   height: 42%;
 
                 }
-              #deck-count {
-                position: absolute;
-                left: 61%;
-                top: 55%;
-                z-index: 4;
-              }
+                  .cardDropHighlight {
+                    position: absolute;
+                    height: 100%;
+                    width: 100%;
 
-              #scrap {
+                  }
+                  #deck-count {
+                    position: absolute;
+                    left: 61%;
+                    top: 55%;
+                    z-index: 4;
+                  }
+
+              #scrap-wrapper {
+                background-color: #26d3ff;
                 position: absolute;
+                height: 42%;
                 left: 7%;
                 top: 20%;
                 z-index: 3;
-                height: 42%;
               }
+
+              #scrap {
+/*                position: absolute;
+                left: 7%;
+                top: 20%;
+                z-index: 3;*/
+                height: 100%;
+              }
+/*                .dragover {
+                  background-color: green;
+                }*/
+
                 #scrap-count {
                   position: absolute;
-                  top: 55%;
+                  top: 84%;
                   z-index: 4;
-                  left: 18%;
+                  left: 27%;
                 }
 
           /*Points*/
@@ -452,11 +478,12 @@ body {
             position: absolute;
             min-width: 30%;
             min-height: 100%;
-            left: 20%;
+            left: 19%;
           }
 
               .dragover {
-                background-color: green;
+                background-color: #26d3ff;
+                opacity: .5;
               }
 
                     #oppPoints {
@@ -471,7 +498,7 @@ body {
                     #yourPoints {
                       display: inline-block;
                       position: absolute;
-                      top: 50%;
+                      top: 55%;
                       height: 50%;
                       width: 90%;
                       border: 2px solid blue;
@@ -483,6 +510,7 @@ body {
                         position: relative;
                         height: 100%;
                         width: 25%;
+                        background-color: #26d3ff;
                         -webkit-transition: .4s linear;
                         -moz-transition: .4s linear;
                         -ms-transition: .4s linear;
@@ -512,27 +540,31 @@ body {
 
                     .jackCard {
                       position: relative;
-                      height: 25%;
-                      width: 100%;
-                      bottom: 73%;
-                      margin-bottom: -20%;
+                      height: 50%;
+                      width: 53%;
+                      bottom: 100%;
+                      left: 46%;
+                      margin-bottom: -59%;
+                      z-index: 4;
+                      background-color: #26d3ff;
+
                     }
                       #oppJackCardImg {
-                        display: inline-block;
-                        position: absolute;
-                        height: 200%;
-                        width: 50%;
-                        left: 50%;
-                        bottom: 5%;
+                        display: block;
+                        position: relative;
+                        height: 100%;
+                        /*width: 50%;*/
+                        /*left: 50%;*/
+                        /*bottom: 5%;*/
                         z-index: 4;
                       }
                       #jackCardImg {
-                        display: inline-block;
-                        position: absolute;
-                        height: 200%;
-                        width: 50%;
-                        left: 50%;
-                        bottom: 5%;
+                        display: block;
+                        position: relative;
+                        height: 100%;
+                        /*width: 50%;*/
+                        /*left: 50%;*/
+                        /*bottom: 5%;*/
                         z-index: 4;
                       }
 
@@ -542,9 +574,9 @@ body {
             min-height: 100%;
             left: 50%;;
           }
-              .dragover {
-                background-color: green;
-              }
+/*              .dragover {
+                background-color: #26d3ff;
+              }*/
                   #oppRunes {
                       display: inline-block;
                       position: absolute;
@@ -563,7 +595,7 @@ body {
                   #yourRunes {
                       display: inline-block;
                       position: absolute;
-                      top: 50%;
+                      top: 55%;
                       height: 50%;
                       width: 90%;
                       border: 2px solid blue;
@@ -575,6 +607,7 @@ body {
                         position: relative;
                         height: 100%;
                         width: 25%;
+                        background-color: #26d3ff;
                         -webkit-transition: .4s linear;
                         -moz-transition: .4s linear;
                         -ms-transition: .4s linear;
@@ -733,23 +766,22 @@ body {
         #yourHand {
           position: absolute;
           display: block;
-          top: 10%;
+          top: 25%;
           min-height: 30%;
           min-width: 80%;
-          left: 25%;
+          text-align: center;
         }
-
             .handCard {
               display: inline-block;
               position: relative;
               height: 20%;
               margin-left: 1%;
-              width: 8%;
               -webkit-transition: .4s linear;
               -moz-transition: .4s linear;
               -ms-transition: .4s linear;
               -o-transition: .4s linear;
               transition: .4s linear;
+              width: 6%;
             }
             .handCard.ng-leave {
               opacity: 1;
