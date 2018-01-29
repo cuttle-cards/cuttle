@@ -54,6 +54,7 @@ module.exports.policies = {
     homepage: true,
     signup: ['hasValidEmail', 'hasValidPassword'],
     login: ['hasValidEmail', 'hasPassword'],
+    reLogin: ['hasValidEmail', 'hasPassword'],
     logout: 'isLoggedIn',
   },
   
@@ -65,7 +66,8 @@ module.exports.policies = {
     lobbyView: 'isLoggedIn',
     ready:     'isLoggedIn',
     leaveLobby: ['isSocket', 'isLoggedIn', 'isInGame'],
-    draw: ['isLoggedIn', 'isInGame'],
+    // draw: ['isLoggedIn', 'isInGame'],
+    draw: false,
     pass: ['isLoggedIn', 'isInGame'],
     points: ['isLoggedIn', 'isInGame', 'hasCardId'],
     runes: ['isLoggedIn', 'isInGame', 'hasCardId'],

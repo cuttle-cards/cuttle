@@ -76,6 +76,9 @@ module.exports = {
 				});
 		}
 	}, //End login
+	reLogin: function (req, res) {
+		console.log("relog requested");
+	},
 
 	logout: function (req, res) {
 		delete(req.session.usr);

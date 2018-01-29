@@ -52,7 +52,7 @@
 
                 <div ng-controller="loginController as login">
                     <!-- Log in form -->
-                    <form ng-show="menu.tab==='login'" class="container-fluid">
+                    <form ng-show="menu.tab==='login' || menu.tab==='reLogin'" class="container-fluid">
                         <div class="row">
                             <p class="col-xs-2 col-xs-offset-5">Log In</p>
                         </div>
@@ -65,7 +65,8 @@
                             <input ng-model="login.password" class="col-xs-4" type="password">
                         </div>
                         <div class="row">
-                            <button ng-click="login.submitLogin()" class="btn btn-default col-xs-offset-5">Log In</button>
+                            <button ng-click="login.submitLogin()" ng-show="menu.tab==='login'" class="btn btn-default col-xs-offset-5">Log In</button>
+                            <button ng-click="login.reLogin()" ng-show="menu.tab==='reLogin'" class="btn btn-default col-xs-offset-5">Log in (again)</button>
                         </div>
                     </form> <!-- End of login form -->
                 </div> <!-- End login controller -->

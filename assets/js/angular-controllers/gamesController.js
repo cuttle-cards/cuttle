@@ -33,7 +33,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		if (conf) {
 			io.socket.post("/game/concede", function (res, jwres) {
 				// console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					alert(jwres.error.message);
+					if (jwres.statusCode === 403) {
+						menu.tab = 'reLogin';
+					}
+				}
 			});
 		}
 	};
@@ -42,7 +47,15 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp && !self.resolvingSeven && !self.opResolvingSeven) {
 			io.socket.post("/game/draw", function (res, jwres) {
 				// console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					alert(jwres.error.message);
+					console.log(jwres);
+					if (jwres.statusCode === 403) {
+						console.log("access denied");
+						menu.tab = 'reLogin';
+						$scope.$apply();
+					}
+				}
 			});
 		}
 	};
@@ -52,7 +65,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp && !self.resolvingSeven && !self.opResolvingSeven) {
 			io.socket.post("/game/pass", function (res, jwres) {
 				// console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					alert(jwres.error.message);
+					console.log(jwres);
+					if (jwres.statusCode === 403) {
+						menu.tab = 'reLogin';
+					}
+				}
 			});
 		}
 	};
@@ -67,6 +86,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				if (jwres.statusCode != 200) {
 					alert(jwres.error.message);
 					console.log(jwres);
+					if (jwres.statusCode === 403) {
+						menu.tab = 'reLogin';
+					}
 				}
 		});
 	};
@@ -83,6 +105,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			if (jwres.statusCode != 200) {
 				console.log("Error with chat:");
 				console.log(jwres);
+				if (jwres.statusCode === 403) {
+					menu.tab = 'reLogin';
+				}
 			}
 		});
 	};
@@ -206,7 +231,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				},
 				function (res, jwres) {
 					// console.log(jwres);
-					if (jwres.statusCode != 200) alert(jwres.error.message);
+					if (jwres.statusCode != 200) {
+						alert(jwres.error.message);
+						if (jwres.statusCode === 403) {
+							menu.tab = 'reLogin';
+						}
+					}
 				}
 			);
 		} else {
@@ -219,7 +249,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			},
 			function (res, jwres) {
 				// console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					alert(jwres.error.message);
+					if (jwres.statusCode === 403) {
+						menu.tab = 'reLogin';
+					}
+				}
 			});
 		}
 	}; //End scuttle()
@@ -233,7 +268,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				},
 				function (res, jwres) {
 					// console.log(jwres);
-					if (jwres.statusCode != 200) alert(jwres.error.message);
+					if (jwres.statusCode != 200) {
+						alert(jwres.error.message);
+						if (jwres.statusCode === 403) {
+							menu.tab = 'reLogin';
+						}
+					}
 				}
 			)
 		} else {
@@ -247,7 +287,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				},
 				function (res, jwres) {
 					// console.log(jwres);
-					if (jwres.statusCode != 200) alert(jwres.error.message);
+					if (jwres.statusCode != 200) {
+						alert(jwres.error.message);
+						if (jwres.statusCode === 403) {
+							menu.tab = 'reLogin';
+						}
+					}
 				}
 			);
 		}
@@ -270,6 +315,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				if (jwres.statusCode != 200) {
 					alert(jwres.error.message);
 					self.waitingForOp = false;
+					if (jwres.statusCode === 403) {
+						menu.tab = 'reLogin';
+					}
 				}
 			});
 		} else {
@@ -287,6 +335,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				if(jwres.statusCode != 200) {
 					alert(jwres.error.message);
 					self.waitingForOp = false;
+					if (jwres.statusCode === 403) {
+						menu.tab = 'reLogin';
+					}
 				}	
 			})
 		}

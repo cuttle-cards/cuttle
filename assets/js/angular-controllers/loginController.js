@@ -38,4 +38,20 @@ app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
 		// 	password: self.password
 		// });
 	};
+
+	self.reLogin = function () {
+		console.log("relogging");
+		io.socket.put('/user/reLogin', 
+			{
+				email: self.email,
+				password: self.password
+			},
+			function (res, jwres) {
+			if (jwres.statusCode === 200) {
+				// Success
+			} else {
+				// Error
+			}
+		});
+	};
 }]);
