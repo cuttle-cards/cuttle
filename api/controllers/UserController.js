@@ -66,18 +66,31 @@ module.exports = {
 						})
 						.catch(function failure (reason) {
 							// console.log(reason);
-							res.badRequest(reason);
+							return res.badRequest(reason);
 						});
 
 					// return true;
 				})
 				.catch(function noUser (reason) {
-					res.badRequest(reason);
+					return res.badRequest(reason);
 				});
 		}
 	}, //End login
 	reLogin: function (req, res) {
 		console.log("relog requested");
+		var promiseUser = userAPI.findUserByEmail(req.body.email)
+		.then(function gotUser (user) {
+			var checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword);
+			return Promise.all([Promise.resolve(user), checkPass]);
+		})
+		.then(function correctPw (values) {
+			var user = values[0];
+			console.log("correct password:");
+			console.log(user);
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
 	},
 
 	logout: function (req, res) {
