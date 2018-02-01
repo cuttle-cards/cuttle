@@ -570,6 +570,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Upon clicking a card in your hand,
 	// Check if a 4 is being resolved, and discard that card
 	self.clickHandCard = function (index)  {
+		console.log("clickHandCard happening");
 		if (self.resolvingFour) {
 			if (self.cardsToDiscard.indexOf(self.player.hand[index]) > -1) {
 				self.cardsToDiscard = [];
@@ -605,6 +606,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					); 
 				}
 			}
+		} else {
+			self.viewCard = self.player.hand[index];
 		}
 
 	}; //End clickHandCard()

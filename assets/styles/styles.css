@@ -803,6 +803,10 @@ body {
               width: 100%;
             }
 
+            .viewingCard {
+              border: 10px solid blue;
+            }
+
             .discarding {
               border: 2px solid red;
             }
