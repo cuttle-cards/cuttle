@@ -65,13 +65,15 @@ module.exports = {
 							res.ok();
 						})
 						.catch(function failure (reason) {
-							// console.log(reason);
+							console.log("failed to login");
+							console.log(reason);
 							return res.badRequest(reason);
 						});
 
 					// return true;
 				})
 				.catch(function noUser (reason) {
+					console.log("couldn't find user");
 					return res.badRequest(reason);
 				});
 		}
@@ -81,14 +83,27 @@ module.exports = {
 		var promiseUser = userAPI.findUserByEmail(req.body.email)
 		.then(function gotUser (user) {
 			var checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword);
-			return Promise.all([Promise.resolve(user), checkPass]);
+			var promiseGame = gameService.populateGame({gameId: user.game});
+			return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
 		})
 		.then(function correctPw (values) {
-			var user = values[0];
-			console.log("correct password:");
-			console.log(user);
+			console.log("correctPw");
+			console.log(values);
+			var game = values[0];
+			var user = values[1];
+			req.session.loggedIn = true;
+			req.session.usr = user.id;
+			Game.subscribe(req, game.id);
+			Game.publishUpdate(game.id,
+			{
+				change: 'reLogin',
+				game: game,
+			});
+			return res.ok();
 		})
 		.catch(function failed (err) {
+			console.log("failed relog");
+			console.log(err);
 			return res.badRequest(err);
 		});
 	},

@@ -47,11 +47,16 @@ app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
 				password: self.password
 			},
 			function (res, jwres) {
+			self.password = "";
 			if (jwres.statusCode === 200) {
 				// Success
+				menu.tab = 'gameView';
 			} else {
 				// Error
+				console.log(jwres);
+				alert(jwres.error.message);
 			}
+			$scope.$apply();
 		});
 	};
 }]);
