@@ -65,8 +65,6 @@ module.exports = {
 							res.ok();
 						})
 						.catch(function failure (reason) {
-							console.log("failed to login");
-							console.log(reason);
 							return res.badRequest(reason);
 						});
 
@@ -79,7 +77,6 @@ module.exports = {
 		}
 	}, //End login
 	reLogin: function (req, res) {
-		console.log("relog requested");
 		var promiseUser = userAPI.findUserByEmail(req.body.email)
 		.then(function gotUser (user) {
 			var checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword);
@@ -87,8 +84,6 @@ module.exports = {
 			return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
 		})
 		.then(function correctPw (values) {
-			console.log("correctPw");
-			console.log(values);
 			var game = values[0];
 			var user = values[1];
 			req.session.loggedIn = true;
@@ -102,8 +97,6 @@ module.exports = {
 			return res.ok();
 		})
 		.catch(function failed (err) {
-			console.log("failed relog");
-			console.log(err);
 			return res.badRequest(err);
 		});
 	},
