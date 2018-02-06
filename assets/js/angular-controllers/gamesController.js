@@ -1071,5 +1071,22 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	}); //End event handler for game objects
 
+// Reconnect handler
+	io.socket.on('connect', function (obj) {
+		// Only attempt reconnect if front end already has game object
+		if (self.game != null) {
+			io.socket.put("/game/reconnect", function (res, jwres) {
+				// Error reconnecting
+				if (jwres.statusCode != 200) {
+					if (jwres.statusCode === 403) {
+						self.requestDenied();
+					} else {
+						alert("Error reconnecting websocket to server. Please log out, then log in again");
+					}
+				}
+			});
+		}
+	});
+
 
 }]);
