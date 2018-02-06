@@ -14,6 +14,14 @@ var userAPI = sails.hooks['customuserhook'];
 
 
 module.exports = {
+	///////////////////////////////////
+	// Outside of Game Actions       //
+	// (creating, connecting, etc.)  //
+	///////////////////////////////////
+	reconnect: function (req, res) {
+		Game.subscribe(req, req.session.game);
+		return res.ok();
+	},	
 	create: function(req, res) {
 		if (req.body.gameName) {
 			var promiseCreateGame = gameAPI.createGame(req.body.gameName)
@@ -276,6 +284,12 @@ module.exports = {
 		});
 	}, //End leaveLobby()
 
+
+	/////////////////////
+	// In-Game actions //
+	// (plays, etc.)   //
+	/////////////////////
+
 	draw: function (req, res) {
 		var pGame = gameService.findGame({gameId: req.session.game})
 		.then(function checkTurn (game) {
@@ -378,7 +392,7 @@ module.exports = {
 				winner: null
 			};
 			if (game.passes > 2) {
-				console.log("Game is a stalemate");
+				// console.log("Game is a stalemate");
 				victory.gameOver = true
 			}
 			Game.publishUpdate(game.id,
@@ -1612,7 +1626,6 @@ module.exports = {
 		return Promise.all([promiseGame, promisePlayer])
 		.then(function changeAndSave (values) {
 			var game = values [0], player = values[1];
-			// console.log(game);
 			game.chat.push(userService.truncateEmail(player.email) + ": " + req.body.msg);
 			return gameService.saveGame({game: game});
 		})
@@ -1638,6 +1651,7 @@ module.exports = {
 		});
 
 	},
+
 
 	/////////////////////////////////////////
 	// DEVELOPMENT ONLY - TESTING HELPERS //

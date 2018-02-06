@@ -14,7 +14,6 @@ var userAPI = sails.hooks['customuserhook'];
 var passwordAPI = sails.hooks['custompasswordhook'];
 
 
-
 module.exports = {
 	homepage: function (req, res) {
 		return res.view("homepage", {loggedIn: req.session.loggedIn});
@@ -90,11 +89,13 @@ module.exports = {
 			req.session.usr = user.id;
 			req.session.game = game.id;
 			Game.subscribe(req, game.id);
+
 			Game.publishUpdate(game.id,
 			{
 				change: 'reLogin',
 				game: game,
 			});
+			
 			return res.ok();
 		})
 		.catch(function failed (err) {

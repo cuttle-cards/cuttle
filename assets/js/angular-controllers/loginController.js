@@ -3,6 +3,19 @@ app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
 	var menu = $scope.menu;
 	self.email = "";
 	self.password = "";
+
+
+	// call submitLogin() or relog()
+	// depending on menu.tab
+	self.logOrRelog = function () {
+		if (menu.tab === 'login') {
+			self.submitLogin();
+		} else if (menu.tab == 'reLogin') {
+			self.reLogin();
+		}
+	};
+
+	var loginCount = 0;
 	self.submitLogin = function() {
 			// 	Use $http for request (angular)
 		$http({
@@ -40,7 +53,6 @@ app.controller("loginController", ['$scope', '$http', function ($scope, $http) {
 	};
 
 	self.reLogin = function () {
-		console.log("relogging");
 		io.socket.put('/user/reLogin', 
 			{
 				email: self.email,

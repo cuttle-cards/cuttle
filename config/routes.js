@@ -54,6 +54,7 @@ module.exports.routes = {
   '/game/create'                  :   'gameController.create',
   '/game/getList'                 :   'gameController.getList',
   '/game/subscribe'               :   'gameController.subscribe',
+  '/game/reconnect'               :   'gameController.reconnect',
   '/game/ready'                   :   'gameController.ready',
   '/game/leaveLobby'              :   'gameController.leaveLobby',
   '/game/draw'                    :   'gameController.draw',
