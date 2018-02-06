@@ -20,6 +20,7 @@ module.exports = {
 	///////////////////////////////////
 	reconnect: function (req, res) {
 		Game.subscribe(req, req.session.game);
+		Game.watch(req);
 		return res.ok();
 	},	
 	create: function(req, res) {

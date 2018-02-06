@@ -89,6 +89,7 @@ module.exports = {
 			req.session.usr = user.id;
 			req.session.game = game.id;
 			Game.subscribe(req, game.id);
+			Game.watch(req);
 
 			Game.publishUpdate(game.id,
 			{
