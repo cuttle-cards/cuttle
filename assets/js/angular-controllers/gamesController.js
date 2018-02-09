@@ -18,6 +18,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.logDisplay = "gameLog";
 	self.chatEntry = "";
 	self.legalMoves = [];
+	self.cardCloseUp = false;
 	// Sounds
 	var soundPlayCard = document.createElement("audio");
 	soundPlayCard.src = "./sounds/play_card.mp3";
@@ -569,8 +570,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	};
 	// Upon clicking a card in your hand,
 	// Check if a 4 is being resolved, and discard that card
-	self.clickHandCard = function (index)  {
-		console.log("clickHandCard happening");
+	self.clickHandCard = function (index, $event)  {
 		if (self.resolvingFour) {
 			if (self.cardsToDiscard.indexOf(self.player.hand[index]) > -1) {
 				self.cardsToDiscard = [];
@@ -607,10 +607,22 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				}
 			}
 		} else {
+			console.log($event);
+			$event.stopPropagation();
+			console.log("In clickhandcard else");
+			if(self.viewCard != null) {
+				self.viewCard = null;
+			} else {
 			self.viewCard = self.player.hand[index];
+			}
 		}
 
 	}; //End clickHandCard()
+
+	self.disableCardView = function() {
+		console.log("In disable cardview");
+		self.viewCard = null;
+	}
 
 	//Upon clicking a card in the scrap pile, request to draw that card
 	self.chooseScrapCard = function (index) {
