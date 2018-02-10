@@ -88,8 +88,8 @@ module.exports.policies = {
     chat: ['isLoggedIn', 'isInGame'],
 
     // DEVELOPMENT ONLY
-    // stackDeck: true,
-    // deleteDeck: true,
+    stackDeck: true,
+    deleteDeck: true,
 
   }
 };

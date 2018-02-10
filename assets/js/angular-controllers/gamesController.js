@@ -19,6 +19,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.chatEntry = "";
 	self.legalMoves = [];
 	self.cardCloseUp = false;
+	self.viewCard = null;
 	// Sounds
 	var soundPlayCard = document.createElement("audio");
 	soundPlayCard.src = "./sounds/play_card.mp3";
@@ -97,6 +98,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Determine legal moves while dragging card for highlighting
 	self.findLegalMoves = function() {
 		self.legalMoves = [];
+		self.viewCard = null;
 		switch (dragData.rank) {
 			case 1:
 			case 3:
@@ -609,15 +611,66 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		} else {
 			console.log($event);
 			$event.stopPropagation();
-			console.log("In clickhandcard else");
-			if(self.viewCard != null) {
-				self.viewCard = null;
+			if(self.viewCard != self.player.hand[index]) {
+				self.viewCard = self.player.hand[index];
 			} else {
-			self.viewCard = self.player.hand[index];
+				self.viewCard = null;
 			}
 		}
 
 	}; //End clickHandCard()
+
+	self.clickOppPointCard = function (index, $event)  {
+		$event.stopPropagation();
+		if(self.viewCard != self.opponent.points[index]) {
+			self.viewCard = self.opponent.points[index];
+		} else {
+			self.viewCard = null;
+		}
+	} //End clickOppPointCard
+
+	self.clickYourPointCard = function(index, $event) {
+		$event.stopPropagation();
+		if(self.viewCard != self.player.points[index]) {
+			self.viewCard = self.player.points[index];
+		} else {
+			self.viewCard = null;
+		}
+	} //End clickYourPointCard
+
+	self.clickOppRuneCard = function(index, $event) {
+		$event.stopPropagation();
+		if(self.viewCard != self.opponent.runes[index]) {
+			self.viewCard = self.opponent.runes[index];
+		} else {
+			self.viewCard = null;
+		}
+	} //End clickOppRuneCard
+
+	self.clickYourRuneCard = function(index, $event) {
+		$event.stopPropagation();
+		if(self.viewCard != self.player.runes[index]) {
+			self.viewCard = self.player.runes[index];
+		} else {
+			self.viewCard = null;
+		}
+	} //End clickYourRuneCard
+
+	
+	self.clickOppHandCard = function(index, $event) {
+		$event.stopPropagation();
+		self.game.players[self.pNum].runes.forEach(function (rune) {
+			if (rune.rank === 8) {
+				if(self.viewCard != self.opponent.hand[index]) {
+					self.viewCard = self.opponent.hand[index];
+				} else {
+					self.viewCard = null;
+				}
+			}
+		});
+	}
+
+	
 
 	self.disableCardView = function() {
 		console.log("In disable cardview");
