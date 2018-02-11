@@ -88,6 +88,7 @@ module.exports = {
 			req.session.loggedIn = true;
 			req.session.usr = user.id;
 			req.session.game = game.id;
+			req.session.pNum = user.pNum;
 			Game.subscribe(req, game.id);
 			Game.watch(req);
 
