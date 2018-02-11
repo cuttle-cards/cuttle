@@ -1,4 +1,4 @@
-var app = angular.module("app", ['ngAnimate']);
+var app = angular.module("app", ['ngAnimate', 'al-click']);
 var dragIndex = null; //Used to determine which card is being dragged
 var dragData = {
 	type: null,

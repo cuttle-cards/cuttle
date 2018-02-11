@@ -87,43 +87,43 @@ module.exports = {
 				// Assign Rule Text
 				switch (rank) {
 					case 1:
-						ruleText = "ONE-OFF: Destroy ALL POINTS";
+						ruleText = "ONE-OFF: Destroy all POINTS.";
 						break;
 					case 2:
-						ruleText = "ONE-OFF: Destroy target RUNE";
+						ruleText = "ONE-OFF: Destroy target BOON.";
 						break;
 					case 3:
-						ruleText = "ONE-OFF: Choose 1 SCRAPPED card and bring it to your HAND.";
+						ruleText = "ONE-OFF: Choose 1 card in the SCRAP and put it to your hand.";
 						break;
 					case 4:
-						ruleText = "ONE-OFF: Your opponent discards two cards of her choice from her HAND (directly to the SCRAP PILE)";
+						ruleText = "ONE-OFF: Your opponent discards two cards of her choice from her hand.";
 						break;
 					case 5:
-						ruleText = "ONE-OFF: Draw two cards from the DECK.";
+						ruleText = "ONE-OFF: Draw two cards from the deck.";
 						break;
 					case 6:
-						ruleText = "ONE-OFF: Destroy ALL RUNES";
+						ruleText = "ONE-OFF: Destroy ALL BOONS.";
 						break;
 					case 7:
-						ruleText = "ONE-OFF: Reveal the top two cards from the deck. Play one however you like. The other is returned to the top of the DECK.";
+						ruleText = "Play one of the top two cards of the deck and put the other back. (Both are revealed)";
 						break;
 					case 8:
-						ruleText = "RUNE: Your opponent plays with an open HAND (Her cards are revealed to you).";
+						ruleText = "BOON: Your opponent plays with an open HAND (Her cards are revealed to you).";
 						break;
 					case 9:
-						ruleText = "ONE-OFF: Return TARGET card to it's controller's HAND. That card may NOT be played next turn.";
+						ruleText = "ONE-OFF: Return target card to its controller's HAND. She can't play it next turn.";
 						break;
 					case 10:
-						ruleText = "NO EFFECT";
+						ruleText = "No effect";
 						break;
 					case 11:
-						ruleText = "RUNE: Play on top of TARGET POINT card to steal it.";
+						ruleText = "BOON: Play on top of target POINT card to steal it.";
 						break;
 					case 12:
-						ruleText = "RUNE: Your opponent's TARGETTING cards may only TARGET this card (2, 9, & Jack effects). Your POINTS may still be scuttled.";
+						ruleText = "BOON: Your other cards may only be targeted by scuttles.";
 						break;
 					case 13:
-						ruleText = "RUNE: Reduces the points you need to win. 1 King - 14pts, 2 Kings - 10pts, 3 Kings - 7pts, 4 Kings -  5pts";
+						ruleText = "BOON: Reduces the points you need to win. See counter on the left.";
 						break;
 				}
 

@@ -378,7 +378,7 @@ module.exports = {
 				winner: null
 			};
 			if (game.passes > 2) {
-				console.log("Game is a stalemate");
+				// console.log("Game is a stalemate");
 				victory.gameOver = true
 			}
 			Game.publishUpdate(game.id,
@@ -794,7 +794,7 @@ module.exports = {
 	}, //End targetedOneOff
 
 	counter: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
+		var promiseGame = gameService.populateGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseOpponent = userService.findUser({userId: req.body.opId});
 		var promiseCard = cardService.findCard({cardId: req.body.cardId});
@@ -1038,7 +1038,13 @@ module.exports = {
 								opponent.runes.remove(game.oneOffTarget.id);
 								break;
 							case 'point':
+								// console.log(game.oneOffTarget);
+								// game.oneOffTarget.attachments.forEach(function (jack) {
+								// 	console.log("Found attachment on 9 target");
+								// 	console.log(jack);
+								// });
 								opponent.points.remove(game.oneOffTarget.id);
+
 								break;
 							case 'jack':
 								game.oneOffTarget.attachedTo = null;
