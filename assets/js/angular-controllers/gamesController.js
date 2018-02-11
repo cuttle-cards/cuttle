@@ -83,7 +83,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			self.chatEntry = "";
 			$scope.$apply();
 			if (jwres.statusCode != 200) {
-				console.log("Error with chat:");
 				console.log(jwres);
 			}
 		});
@@ -298,7 +297,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	////////////////////////////////////
 	// DEVELOPMENT ONLY - FOR TESTING //
 	////////////////////////////////////
-	self.stackDeck = function (cardId) {
+	self.stackDeck = function (cardId, $event) {
+		$event.stopPropagation();
 		io.socket.put("/game/stackDeck", 
 			{
 				cardId: cardId
@@ -309,7 +309,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		);
 	};
 
-	self.deleteDeck = function () {
+	self.deleteDeck = function ($event) {
+		$event.stopPropagation();
 		console.log("deleting deck");
 		io.socket.put("/game/deleteDeck", 
 			function (res, jwres) {
@@ -463,7 +464,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				if (jwres.statusCode != 200) alert(jwres.error.message);
 			});
 		}
-	}
+	};
 	self.dropOpPoint = function (targetIndex) {
 		switch (dragData.rank) {
 			case 9:
@@ -563,6 +564,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		function (res, jwres) {
 			// console.log(jwres);
 			if (jwres.statusCode != 200) {
+				console.log(jwres);
 				// Handle error
 			} else {
 				self.askCounter = false;
@@ -572,12 +574,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	};
 	// Upon clicking a card in your hand,
 	// Check if a 4 is being resolved, and discard that card
-	self.clickHandCard = function (index, $event)  {
+	self.clickCard = function (card, $event)  {
 		if (self.resolvingFour) {
-			if (self.cardsToDiscard.indexOf(self.player.hand[index]) > -1) {
+			if (self.cardsToDiscard.indexOf(card) > -1) {
 				self.cardsToDiscard = [];
 			} else {
-				self.cardsToDiscard.push(self.player.hand[index]);
+				self.cardsToDiscard.push(card);
 				if (self.cardsToDiscard.length == 2) {
 					io.socket.put("/game/resolveFour", 
 						{
@@ -588,8 +590,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							// console.log(jwres);
 							self.resolvingFour = false;
 							self.cardsToDiscard = [];
-							if (jwres.statusCode != 200) alert(jwres.error.message);
 							$scope.$apply();
+							if (jwres.statusCode != 200) alert(jwres.error.message);
 						}
 					)
 					// Check if user has only 1 card in hand (this must be discarded)
@@ -602,78 +604,25 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							// console.log(jwres);
 							self.resolvingFour = false;
 							self.cardsToDiscard = [];
-							if (jwres.statusCode != 200) alert(jwres.error.message);
 							$scope.$apply();
+							if (jwres.statusCode != 200) alert(jwres.error.message);
 						}
 					); 
 				}
 			}
 		} else {
-			console.log($event);
 			$event.stopPropagation();
-			if(self.viewCard != self.player.hand[index]) {
-				self.viewCard = self.player.hand[index];
+			if(self.viewCard != card) {
+				self.viewCard = card;
 			} else {
 				self.viewCard = null;
 			}
 		}
 
-	}; //End clickHandCard()
-
-	self.clickOppPointCard = function (index, $event)  {
-		$event.stopPropagation();
-		if(self.viewCard != self.opponent.points[index]) {
-			self.viewCard = self.opponent.points[index];
-		} else {
-			self.viewCard = null;
-		}
-	} //End clickOppPointCard
-
-	self.clickYourPointCard = function(index, $event) {
-		$event.stopPropagation();
-		if(self.viewCard != self.player.points[index]) {
-			self.viewCard = self.player.points[index];
-		} else {
-			self.viewCard = null;
-		}
-	} //End clickYourPointCard
-
-	self.clickOppRuneCard = function(index, $event) {
-		$event.stopPropagation();
-		if(self.viewCard != self.opponent.runes[index]) {
-			self.viewCard = self.opponent.runes[index];
-		} else {
-			self.viewCard = null;
-		}
-	} //End clickOppRuneCard
-
-	self.clickYourRuneCard = function(index, $event) {
-		$event.stopPropagation();
-		if(self.viewCard != self.player.runes[index]) {
-			self.viewCard = self.player.runes[index];
-		} else {
-			self.viewCard = null;
-		}
-	} //End clickYourRuneCard
-
-	
-	self.clickOppHandCard = function(index, $event) {
-		$event.stopPropagation();
-		self.game.players[self.pNum].runes.forEach(function (rune) {
-			if (rune.rank === 8) {
-				if(self.viewCard != self.opponent.hand[index]) {
-					self.viewCard = self.opponent.hand[index];
-				} else {
-					self.viewCard = null;
-				}
-			}
-		});
-	}
-
+	}; //End clickCard()
 	
 
 	self.disableCardView = function() {
-		console.log("In disable cardview");
 		self.viewCard = null;
 	}
 

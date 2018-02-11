@@ -258,7 +258,7 @@
                                 </div>
                                 <!-- Oponent's hand REVEALED -->
                                 <div ng-repeat="card in gc.opponent.hand" ng-if="gc.glasses" class="opHandCard">
-                                    <img ng-src="{{card.img}}" ng-click="gc.clickOppHandCard($index, $event)" class="opHandCardImg" draggable="false">
+                                    <img ng-src="{{card.img}}" ng-click="gc.clickCard(card, $event)" class="opHandCardImg" draggable="false">
                                 </div>
                             </div>
                             </p>
@@ -312,9 +312,9 @@
                                 <div id="oppPoints">
                                     <p class="areaLabel" ng-show="gc.opponent.points.length < 2">Points</p>
                                     <div ng-repeat="card in gc.opponent.points" class="pointCard">
-                                        <img ng-src="{{card.img}}" class="pointCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="$index" draggable="false" ng-click="gc.clickOppPointCard($index, $event)" ng-class="{'legalMove': (gc.legalMoves.indexOf(card.id) > -1 || gc.legalMoves.indexOf('allPoints') > -1) && gc.yourTurn}">
+                                        <img ng-src="{{card.img}}" class="pointCardImg" ts-droppable allow-drop="gc.dragoverOpPoint" upon-drop="gc.dropOpPoint" index="$index" draggable="false" ng-click="gc.clickCard(card, $event)" ng-class="{'legalMove': (gc.legalMoves.indexOf(card.id) > -1 || gc.legalMoves.indexOf('allPoints') > -1) && gc.yourTurn}">
                                         <div ng-repeat="jack in card.attachments" class="jackCard">
-                                            <img ng-src="{{jack.img}}" id="oppJackCardImg" draggable="false" ts-droppable allow-drop="gc.dragoverOpJack" upon-drop="gc.dropOpJack" index="gc.opponent.points.indexOf(card)" ng-class="{'legalMove': gc.legalMoves.indexOf('allRunes') > -1 && card.attachments.indexOf(jack) === card.attachments.length - 1}">
+                                            <img ng-src="{{jack.img}}" ng-click="gc.clickCard(jack, $event)"  id="oppJackCardImg" draggable="false" ts-droppable allow-drop="gc.dragoverOpJack" upon-drop="gc.dropOpJack" index="gc.opponent.points.indexOf(card)" ng-class="{'legalMove': gc.legalMoves.indexOf('allRunes') > -1 && card.attachments.indexOf(jack) === card.attachments.length - 1}">
                                         </div>
                                     </div>
                                 </div>
@@ -322,9 +322,9 @@
                                 <div id="yourPoints" ts-droppable allow-drop="gc.dragoverPoints" index="0" upon-drop="gc.dropPoints" ng-class="{'legalMove': gc.legalMoves.indexOf('points') > -1 && gc.yourTurn}">
                                     <p class="areaLabel" ng-show="gc.player.points.length < 2">Points</p>
                                     <div ng-repeat="card in gc.player.points" class="pointCard">
-                                        <img ng-src="{{card.img}}" ng-click="gc.clickYourPointCard($index, $event)" class="pointCardImg" draggable="false">
+                                        <img ng-src="{{card.img}}" ng-click="gc.clickCard(card, $event)" class="pointCardImg" draggable="false">
                                         <div ng-repeat="jack in card.attachments" class="jackCard">
-                                            <img ng-src="{{jack.img}}" id="jackCardImg">
+                                            <img ng-src="{{jack.img}}" ng-click="gc.clickCard(jack, $event)" id="jackCardImg">
                                         </div>
                                     </div>
 <!--                                     <div ng-repeat="jack in gc.player.points.attachments" class="jackCard">
@@ -338,14 +338,14 @@
                                 <div id="oppRunes">
                                     <p class="areaLabel" ng-show="gc.opponent.runes.length < 2">Boons</p>
                                     <div ng-repeat="card in gc.opponent.runes" class="runeCard">
-                                        <img ng-src="{{card.runeImg}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpRune" upon-drop="gc.dropOppRuneCard" index="$index" draggable="false" ng-click="gc.clickOppRuneCard($index, $event)" ng-class="{'legalMove': gc.legalMoves.indexOf(card.id) > -1 || gc.legalMoves.indexOf('allRunes') > -1 && gc.yourTurn}">
+                                        <img ng-src="{{card.runeImg}}" class="runeCardImg" ts-droppable allow-drop="gc.dragoverOpRune" upon-drop="gc.dropOpRune" index="$index" draggable="false" ng-click="gc.clickCard(card, $event)" ng-class="{'legalMove': gc.legalMoves.indexOf(card.id) > -1 || gc.legalMoves.indexOf('allRunes') > -1 && gc.yourTurn}">
                                     </div>
                                 </div>
                                 <!-- Your Runes -->
                                 <div id="yourRunes" ts-droppable allow-drop="gc.dragoverRunes" index="0" upon-drop="gc.dropRunes" ng-class="{'legalMove': gc.legalMoves.indexOf('runes') > -1 && gc.yourTurn}">
                                     <p class="areaLabel" ng-show="gc.player.runes.length < 2">Boons</p>
                                     <div ng-repeat="card in gc.player.runes" class="runeCard">
-                                        <img ng-src="{{card.runeImg}}" ng-click="gc.clickYourRuneCard($index, $event)" class="runeCardImg" draggable="false">
+                                        <img ng-src="{{card.runeImg}}" ng-click="gc.clickCard(card, $event)" class="runeCardImg" draggable="false">
                                     </div>
                                 </div>
                             </div> <!-- End of Runes -->
@@ -420,7 +420,7 @@
                                             NEED TO FIX THE IMAGE AND MAKE NEW IMAGES!!!!!!!!!!!!!!!!!!!!!
                                 -->
                                 <div ng-repeat="card in gc.player.hand" class="handCard">
-                                    <img ng-src="{{card.img}}" ts-draggable index="$index" class="handCardImg" card-id="card.id" type="'hand'" suit="card.suit" rank="card.rank" ng-click="gc.clickHandCard($index, $event)" ng-class="{discarding: gc.cardsToDiscard.indexOf(gc.player.hand[$index])}> -1" upon-drag="gc.findLegalMoves" drag-end="gc.clearLegalMoves">
+                                    <img ng-src="{{card.img}}" ts-draggable index="$index" class="handCardImg" card-id="card.id" type="'hand'" suit="card.suit" rank="card.rank" ng-click="gc.clickCard(card, $event)" ng-class="{'discarding': gc.cardsToDiscard.indexOf(gc.player.hand[$index]) > -1}" upon-drag="gc.findLegalMoves" drag-end="gc.clearLegalMoves">
                                 </div>
                             </div>
                             <div id="yourCounter">
@@ -452,11 +452,11 @@
                             <button type="button" class="btn btn-danger btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
 
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
-<!--                             <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
-                            <button ng-click="gc.deleteDeck()" id="deleteDeck">Delete Deck</button>
+                            <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
+                            <button ng-click="gc.deleteDeck($event)" id="deleteDeck">Delete Deck</button>
                             <div ng-show="gc.showDeck" id="shownDeck">
-                                <img ng-repeat="card in gc.game.deck" ng-src="{{card.img}}" class="shownDeckCard" ng-click="gc.stackDeck(gc.game.deck[$index].id)">
-                            </div> -->
+                                <img ng-repeat="card in gc.game.deck" ng-src="{{card.img}}" class="shownDeckCard" ng-click="gc.stackDeck(gc.game.deck[$index].id, $event)">
+                            </div>
                         </div> <!-- End of bottom wrap -->
                     </div>
                 </div> <!-- End of ng-show for game -->

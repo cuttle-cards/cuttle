@@ -794,7 +794,7 @@ module.exports = {
 	}, //End targetedOneOff
 
 	counter: function (req, res) {
-		var promiseGame = gameService.populateGame({gameId: req.session.game});
+		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseOpponent = userService.findUser({userId: req.body.opId});
 		var promiseCard = cardService.findCard({cardId: req.body.cardId});
