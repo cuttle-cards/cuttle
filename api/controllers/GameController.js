@@ -378,7 +378,7 @@ module.exports = {
 				winner: null
 			};
 			if (game.passes > 2) {
-				console.log("Game is a stalemate");
+				// console.log("Game is a stalemate");
 				victory.gameOver = true
 			}
 			Game.publishUpdate(game.id,
@@ -1038,11 +1038,11 @@ module.exports = {
 								opponent.runes.remove(game.oneOffTarget.id);
 								break;
 							case 'point':
-								console.log(game.oneOffTarget);
-								game.oneOffTarget.attachments.forEach(function (jack) {
-									console.log("Found attachment on 9 target");
-									console.log(jack);
-								});
+								// console.log(game.oneOffTarget);
+								// game.oneOffTarget.attachments.forEach(function (jack) {
+								// 	console.log("Found attachment on 9 target");
+								// 	console.log(jack);
+								// });
 								opponent.points.remove(game.oneOffTarget.id);
 
 								break;
