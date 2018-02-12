@@ -25,6 +25,7 @@ function tempGame (game, p0, p1) {
 	this.id = game.id;
 	this.turn = game.turn;
 	this.passes = game.passes;
+	this.resolving = game.resolving;
 };
 module.exports = {
 	/**
@@ -40,6 +41,7 @@ module.exports = {
 			.populate("topCard")
 			.populate("secondCard")
 			.populate("oneOff")
+			.populate("resolving")
 			.populate("twos")
 			.populate("oneOffTarget")
 			.populate("attachedToTarget")

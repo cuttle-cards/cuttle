@@ -941,9 +941,11 @@ module.exports = {
 						game.turn++;
 						break; //End resolve TWO
 					case 3:
+						game.resolving = game.oneOff;
 						game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " will draw one card of her choice from the SCRAP pile");
 						break;
 					case 4:
+						game.resolving = game.oneOff;
 						game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(opponent.email) + " must discard two cards");
 						break;
 					case 5:
@@ -1051,6 +1053,7 @@ module.exports = {
 						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");					
 						break; //End resolve SIX
 					case 7:
+						game.resolving = game.oneOff;
 						if (game.secondCard) {
 							game.log.push("The " + game.oneOff.name + " resolves; she will choose one card from the top two in the deck, and play it however she likes. Top two cards: " + game.topCard.name + " and " + game.secondCard.name);
 						} else {
@@ -1152,6 +1155,7 @@ module.exports = {
 			}
 			game.passes = 0;
 			game.turn++;
+			game.resolving = null;
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});
 			return Promise.all([saveGame, savePlayer]);
@@ -1189,6 +1193,7 @@ module.exports = {
 			game.log.push(userService.truncateEmail(player.email) + " took the " + card.name + " from the scrap pile to her hand");
 			game.passes = 0;
 			game.turn++;
+			game.resolving = null;
 			//Save changes
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});
@@ -1231,6 +1236,7 @@ module.exports = {
 						game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " off the top of the deck as points");
 						game.passes = 0;
 						game.turn++;	
+						game.resolving = null;
 						var saveGame = gameService.saveGame({game: game})					;
 						var savePlayer = userService.saveUser({user: player});
 						return Promise.all([saveGame, savePlayer]);
@@ -1278,6 +1284,7 @@ module.exports = {
 						game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " off the top of the deck, as a rune");
 						game.passes = 0;
 						game.turn++;
+						game.resolving = null;
 						var saveGame = gameService.saveGame({game: game});
 						var savePlayer = userService.saveUser({user: player});
 						return Promise.all([saveGame, savePlayer]);
@@ -1338,6 +1345,7 @@ module.exports = {
 								game.log.push(userService.truncateEmail(player.email) + " scuttled " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name + " from the top of the deck");
 								game.passes = 0;
 								game.turn++;
+								game.resolving = null;
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
 								var saveOpponent = userService.saveUser({user: opponent});
@@ -1398,6 +1406,7 @@ module.exports = {
 							game.log.push(userService.truncateEmail(player.email) + " stole " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name + " from the top of the deck");
 							game.passes = 0;
 							game.turn++;
+							game.resolving = null;
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});
 							var saveTarget = cardService.saveCard({card: target});
@@ -1461,6 +1470,7 @@ module.exports = {
 									break;
 							}
 							// Move is legal; proceed
+							game.resolving = null;
 							game.oneOff = card;
 							game = gameService.sevenCleanUp({game: game, index: req.body.index});
 							game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " from the top of the deck as a " + card.ruleText);
@@ -1531,6 +1541,7 @@ module.exports = {
 								return Promise.reject(new Error("You cannot play a TARGETTED ONE-OFF when your opponent has more than one Queen"));
 								break;
 						} //End queenCount validation		
+							game.resolving = null;
 							game.oneOff = card;
 							game.oneOffTarget = target;
 							game.oneOffTargetType = targetType;
@@ -1633,11 +1644,11 @@ module.exports = {
 		});
 	},
 
-	populateGameTest: function (req, res) {
-		console.log("\npopulate game test");
+	gameData: function (req, res) {
 		var popGame = gameService.populateGame({gameId: req.session.game})
 		.then(function gotPop(fullGame) {
-			res.ok(fullGame);
+			Game.subscribe(req, req.session.game);
+			res.ok({'game': fullGame, 'pNum': req.session.pNum});
 		})
 		.catch(function failed (err) {
 			console.log(err);

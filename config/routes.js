@@ -50,6 +50,7 @@ module.exports.routes = {
   '/user/signup'                  :   'userController.signup',
   '/user/login'                   :   'userController.login',
   '/user/logout'                  :   'userController.logout',
+
   '/game/create'                  :   'gameController.create',
   '/game/getList'                 :   'gameController.getList',
   '/game/subscribe'               :   'gameController.subscribe',
@@ -77,6 +78,7 @@ module.exports.routes = {
   '/game/over'                    :   'gameController.gameOver',
   '/game/concede'                 :   'gameController.concede',
   '/game/chat'                    :   'gameController.chat',
+  '/game/gameData'                :   'gameController.gameData',
 
   // DEVELOPMENT ONLY
   '/game/stackDeck'               :   'gameController.stackDeck',
