@@ -880,14 +880,42 @@ module.exports = {
 				// handle different one-offs
 				switch (game.oneOff.rank) {
 					case 1:
-						player.points.forEach(function (point) {
-							game.scrap.add(point.id);
-							player.points.remove(point.id);
-						});
-						opponent.points.forEach(function (point) {
-							game.scrap.add(point.id);
-							opponent.points.remove(point.id);
-						});
+						// Player's points
+						if (playerPoints) {
+							playerPoints.forEach(function (point) {
+								// Remove jacks
+								point.attachments.forEach(function (jack) {
+									point.attachments.remove(jack.id);
+									game.scrap.add(jack.id);
+								});
+								//Scrap points
+								game.scrap.add(point.id);
+								player.points.remove(point.id);
+								cardsToSave.push(cardService.saveCard({card: point}));
+							});
+						}
+						// Opponent's points
+						if (opPoints) {
+							opPoints.forEach(function (point) {
+								// Remove jacks
+								point.attachments.forEach(function (jack) {
+									point.attachments.remove(jack.id);
+									game.scrap.add(jack);
+								});
+								// Scrap points
+								game.scrap.add(point.id);
+								opponent.points.remove(point.id);
+								cardsToSave.push(cardService.saveCard({card: point}));
+							});
+						}
+						// player.points.forEach(function (point) {
+						// 	game.scrap.add(point.id);
+						// 	player.points.remove(point.id);
+						// });
+						// opponent.points.forEach(function (point) {
+						// 	game.scrap.add(point.id);
+						// 	opponent.points.remove(point.id);
+						// });
 						game.passes = 0;
 						game.turn++;
 						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
@@ -1038,11 +1066,16 @@ module.exports = {
 								opponent.runes.remove(game.oneOffTarget.id);
 								break;
 							case 'point':
-								// console.log(game.oneOffTarget);
-								// game.oneOffTarget.attachments.forEach(function (jack) {
-								// 	console.log("Found attachment on 9 target");
-								// 	console.log(jack);
-								// });
+								// Remove jacks from targeted point (and scrap them)
+								opPoints.forEach(function (point) {
+									if (point.id === game.oneOffTarget.id) {
+										point.attachments.forEach(function (jack) {
+											game.scrap.add(jack.id);
+											point.attachments.remove(jack.id);
+										});
+										cardsToSave.push(cardService.saveCard({card: point}));
+									}
+								});
 								opponent.points.remove(game.oneOffTarget.id);
 
 								break;
