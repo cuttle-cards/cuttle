@@ -14,6 +14,15 @@ var userAPI = sails.hooks['customuserhook'];
 
 
 module.exports = {
+	///////////////////////////////////
+	// Outside of Game Actions       //
+	// (creating, connecting, etc.)  //
+	///////////////////////////////////
+	reconnect: function (req, res) {
+		Game.subscribe(req, req.session.game);
+		Game.watch(req);
+		return res.ok();
+	},	
 	create: function(req, res) {
 		if (req.body.gameName) {
 			var promiseCreateGame = gameAPI.createGame(req.body.gameName)
@@ -276,6 +285,12 @@ module.exports = {
 		});
 	}, //End leaveLobby()
 
+
+	/////////////////////
+	// In-Game actions //
+	// (plays, etc.)   //
+	/////////////////////
+
 	draw: function (req, res) {
 		var pGame = gameService.findGame({gameId: req.session.game})
 		.then(function checkTurn (game) {
@@ -401,6 +416,7 @@ module.exports = {
 		Promise.all([promiseGame, promisePlayer, promiseCard])
 		.then(function changeAndSave (values) {
 			var game = values [0], player = values[1], card = values[2];
+
 			if (game.turn % 2 === player.pNum) {
 				if (card.hand === player.id) {
 						if (card.rank <= 10) {
@@ -801,37 +817,38 @@ module.exports = {
 		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard])
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], opponent = values[2], card = values[3];
-				var opHasQueen = false;
-				opponent.runes.forEach(function (rune) {
-					if (rune.rank === 12) opHasQueen = true;
-				});
-				if (card.hand === player.id) {
-					if (game.oneOff) {
-						if (card.rank === 2) {
-							if (!opHasQueen) {
-								var opPnum = (player.pNum + 1) % 2;
-								if (game.twos.length > 0) {
-									game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to COUNTER " + userService.truncateEmail(opponent.email) + "'s " + game.twos[game.twos.length - 1].name + ".");
-								} else {
-									game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to COUNTER " + userService.truncateEmail(opponent.email) + "'s " +  game.oneOff.name + ".");
-								}
-								game.twos.add(card.id);
-								player.hand.remove(card.id);
-								var saveGame = gameService.saveGame({game: game});
-								var savePlayer = userService.saveUser({user: player});
-								return Promise.all([saveGame, savePlayer]);
+
+			var opHasQueen = false;
+			opponent.runes.forEach(function (rune) {
+				if (rune.rank === 12) opHasQueen = true;
+			});
+			if (card.hand === player.id) {
+				if (game.oneOff) {
+					if (card.rank === 2) {
+						if (!opHasQueen) {
+							var opPnum = (player.pNum + 1) % 2;
+							if (game.twos.length > 0) {
+								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to COUNTER " + userService.truncateEmail(opponent.email) + "'s " + game.twos[game.twos.length - 1].name + ".");
 							} else {
-								return (Promise.reject(new Error("You cannot COUNTER your opponent's one-off, if she has a QUEEN.")));
+								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to COUNTER " + userService.truncateEmail(opponent.email) + "'s " +  game.oneOff.name + ".");
 							}
+							game.twos.add(card.id);
+							player.hand.remove(card.id);
+							var saveGame = gameService.saveGame({game: game});
+							var savePlayer = userService.saveUser({user: player});
+							return Promise.all([saveGame, savePlayer]);
 						} else {
-							return Promise.reject(new Error("You can only play a TWO to counter a one-off"));
+							return (Promise.reject(new Error("You cannot COUNTER your opponent's one-off, if she has a QUEEN.")));
 						}
 					} else {
-						return Promise.reject(new Error("You can only counter a one-off that is already in play"));
+						return Promise.reject(new Error("You can only play a TWO to counter a one-off"));
 					}
 				} else {
-					return Promise.reject(new Error("You can only play a card that is in your hand"));
+					return Promise.reject(new Error("You can only counter a one-off that is already in play"));
 				}
+			} else {
+				return Promise.reject(new Error("You can only play a card that is in your hand"));
+			}
 
 		}) //End changeAndSave
 		.then(function populateGame (values) {
@@ -855,6 +872,7 @@ module.exports = {
 	}, //End counter()
 
 	resolve: function (req, res) {
+
 		//Note: the player calling resolve is the opponent of the one playing the one-off, if it resolves
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.body.opId});
@@ -866,6 +884,7 @@ module.exports = {
 			var game = values[0], player = values[1], opponent = values[2], playerPoints = values[3], opPoints = values[4];
 			var happened = true;
 			var cardsToSave = [];
+
 			if (game.twos.length % 2 === 1) {
 				// One of is countered
 				opponent.frozenId = null;
@@ -1117,6 +1136,8 @@ module.exports = {
 			var pNum = values[2];
 			var happened = values[3];
 			var victory = gameService.checkWinGame({game: fullGame});
+
+
 			Game.publishUpdate(fullGame.id, 
 			{
 				change: "resolve",
@@ -1662,7 +1683,6 @@ module.exports = {
 		return Promise.all([promiseGame, promisePlayer])
 		.then(function changeAndSave (values) {
 			var game = values [0], player = values[1];
-			// console.log(game);
 			game.chat.push(userService.truncateEmail(player.email) + ": " + req.body.msg);
 			return gameService.saveGame({game: game});
 		})
@@ -1688,6 +1708,7 @@ module.exports = {
 		});
 
 	},
+
 
 	/////////////////////////////////////////
 	// DEVELOPMENT ONLY - TESTING HELPERS //

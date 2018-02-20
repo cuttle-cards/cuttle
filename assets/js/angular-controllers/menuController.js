@@ -10,15 +10,12 @@ app.controller("menuController", ['$scope', '$window', function ($scope, $window
 	self.gameId = $window.gameId;
 
 	self.requestGames = function () {
-		console.log("requesting games");
 		io.socket.get("/game/getList", function (res, jwres) {
-			console.log(jwres);
 			// Success
 			if (jwres.statusCode === 200) {
 				if (res.inGame) {
 					self.tab = 'gameView';
 					self.userId = res.userId;
-					console.log(self.userId);
 				} else {
 					self.tab = "gamesOverview";
 				}
@@ -33,11 +30,8 @@ app.controller("menuController", ['$scope', '$window', function ($scope, $window
 
 	self.logOut = function () {
 		io.socket.get("/user/logout", function (res, jwres) {
-			console.log("\n logging out");
-			console.log(jwres);
 			// Success
 			if (jwres.statusCode === 200) {
-				console.log("successfully logged out");
 				self.tab = "signup";
 				self.loggedIn = false;
 				$scope.$apply();
@@ -58,7 +52,6 @@ app.controller("menuController", ['$scope', '$window', function ($scope, $window
 	// Socket Event Handlers //
 	///////////////////////////
 	io.socket.on("game", function(obj) {
-		// console.log(obj);
 		switch (obj.verb) {
 			case 'created':
 				self.games.push(obj.data);

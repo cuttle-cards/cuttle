@@ -29,13 +29,31 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	// self.showDeck = false;
 
+	self.requestDenied = function (jwres) {
+		if (typeof(jwres.error) === "string") {
+			alert(jwres.error);
+		} else {
+			alert(jwres.error.message);
+		}
+		if (jwres.statusCode === 403) {
+			menu.tab = 'reLogin';
+			$scope.$apply();
+		}
+	};
+
 	// Concede game
 	self.concede = function () {
 		var conf = confirm("Are you sure you want to concede?");
 		if (conf) {
 			io.socket.post("/game/concede", function (res, jwres) {
 				// console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					// alert(jwres.error.message);
+					// if (jwres.statusCode === 403) {
+					// 	menu.tab = 'reLogin';
+					// }
+					self.requestDenied(jwres);
+				}
 			});
 		}
 	};
@@ -44,7 +62,16 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp && !self.resolvingSeven && !self.opResolvingSeven) {
 			io.socket.post("/game/draw", function (res, jwres) {
 				// console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					// alert(jwres.error.message);
+					// console.log(jwres);
+					// if (jwres.statusCode === 403) {
+					// 	console.log("access denied");
+					// 	menu.tab = 'reLogin';
+					// 	$scope.$apply();
+					// }
+					self.requestDenied(jwres);
+				}
 			});
 		}
 	};
@@ -54,7 +81,14 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		if (!self.countering && !self.resolvingFour && !self.resolvingThree && !self.waitingForOp && !self.resolvingSeven && !self.opResolvingSeven) {
 			io.socket.post("/game/pass", function (res, jwres) {
 				// console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					// alert(jwres.error.message);
+					// console.log(jwres);
+					// if (jwres.statusCode === 403) {
+					// 	menu.tab = 'reLogin';
+					// }
+					self.requestDenied(jwres);
+				}
 			});
 		}
 	};
@@ -67,8 +101,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			},
 			function (res, jwres) {
 				if (jwres.statusCode != 200) {
-					alert(jwres.error.message);
-					console.log(jwres);
+					// alert(jwres.error.message);
+					// console.log(jwres);
+					// if (jwres.statusCode === 403) {
+					// 	menu.tab = 'reLogin';
+					// }
+					self.requestDenied(jwres);
 				}
 		});
 	};
@@ -83,7 +121,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			self.chatEntry = "";
 			$scope.$apply();
 			if (jwres.statusCode != 200) {
-				console.log(jwres);
+				// console.log("Error with chat:");
+				// console.log(jwres);
+				// if (jwres.statusCode === 403) {
+				// 	menu.tab = 'reLogin';
+				// }
+				self.requestDenied(jwres);
 			}
 		});
 	};
@@ -208,7 +251,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				},
 				function (res, jwres) {
 					// console.log(jwres);
-					if (jwres.statusCode != 200) alert(jwres.error.message);
+					if (jwres.statusCode != 200) {
+						// alert(jwres.error.message);
+						// if (jwres.statusCode === 403) {
+						// 	menu.tab = 'reLogin';
+						// }
+						self.requestDenied(jwres);
+					}
 				}
 			);
 		} else {
@@ -221,7 +270,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			},
 			function (res, jwres) {
 				// console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					// alert(jwres.error.message);
+					// if (jwres.statusCode === 403) {
+					// 	menu.tab = 'reLogin';
+					// }
+					self.requestDenied(jwres);
+				}
 			});
 		}
 	}; //End scuttle()
@@ -235,7 +290,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				},
 				function (res, jwres) {
 					// console.log(jwres);
-					if (jwres.statusCode != 200) alert(jwres.error.message);
+					if (jwres.statusCode != 200) {
+						// alert(jwres.error.message);
+						// if (jwres.statusCode === 403) {
+						// 	menu.tab = 'reLogin';
+						// }
+						self.requestDenied(jwres);
+					}
 				}
 			)
 		} else {
@@ -249,7 +310,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				},
 				function (res, jwres) {
 					// console.log(jwres);
-					if (jwres.statusCode != 200) alert(jwres.error.message);
+					if (jwres.statusCode != 200) {
+						// alert(jwres.error.message);
+						// if (jwres.statusCode === 403) {
+						// 	menu.tab = 'reLogin';
+						// }
+						self.requestDenied(jwres);
+					}
 				}
 			);
 		}
@@ -270,8 +337,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			function (res, jwres) {
 				// console.log(jwres);
 				if (jwres.statusCode != 200) {
-					alert(jwres.error.message);
+					// alert(jwres.error.message);
+					// if (jwres.statusCode === 403) {
+					// 	menu.tab = 'reLogin';
+					// }
 					self.waitingForOp = false;
+					self.requestDenied(jwres);
 				}
 			});
 		} else {
@@ -287,10 +358,14 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}, function (res, jwres) {
 				// console.log(jwres);
 				if(jwres.statusCode != 200) {
-					alert(jwres.error.message);
+					// alert(jwres.error.message);
+					// if (jwres.statusCode === 403) {
+					// 	menu.tab = 'reLogin';
+					// }
 					self.waitingForOp = false;
+					self.requestDenied(jwres);
 				}	
-			})
+			});
 		}
 	}; //End targetedOneOff()
 
@@ -426,9 +501,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				cardId: dragData.id,
 			},
 			function (res, jwres) {
-				// console.log(jwres);
 				// alert("console printed");
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					self.requestDenied(jwres);
+				}
 			});
 		//Resolving Seven case
 		} else {
@@ -439,7 +515,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			},
 			function (res,jwres) {
 				// console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					// alert(jwres.error.message);
+					self.requestDenied(jwres);
+				}
 			});
 		}
 	};
@@ -450,7 +529,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				cardId: dragData.id
 			},
 			function (res, jwres) {
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					// alert(jwres.error.message);
+					self.requestDenied(jwres);
+				}
 			}
 			)
 		} else {
@@ -461,7 +543,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				index: dragData.index
 			}, function (res, jwres) {
 				// console.log(jwres);
-				if (jwres.statusCode != 200) alert(jwres.error.message);
+				if (jwres.statusCode != 200) {
+					// alert(jwres.error.message);
+					self.requestDenied(jwres);
+				}
 			});
 		}
 	};
@@ -507,8 +592,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					function (res, jwres) {
 						// console.log(jwres);
 						if (jwres.statusCode != 200) {
-							alert(jwres.error.message);
+							// alert(jwres.error.message);
 							self.waitingForOp = false;
+							self.requestDenied(jwres);
 						}
 					}
 				);
@@ -522,8 +608,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				function (res, jwres) {
 					// console.log(jwres);
 					if (jwres.statusCode != 200) {
-						alert(jwres.error.message);
+						// alert(jwres.error.message);
 						self.waitingForOp = false;
+						self.requestDenied(jwres);
 					}
 				});
 			}
@@ -545,7 +632,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								opId: self.opponent.id
 							},
 							function (res, jwres) {
-								if (jwres.statusCode != 200) alert(jwres.error.message);
+								if (jwres.statusCode != 200) {
+									// alert(jwres.error.message);
+									self.requestDenied(jwres);
+								}
 						});						
 					}
 				} else {
@@ -566,6 +656,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			if (jwres.statusCode != 200) {
 				console.log(jwres);
 				// Handle error
+				self.requestDenied(jwres);
 			} else {
 				self.askCounter = false;
 				$scope.$apply();
@@ -590,10 +681,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							// console.log(jwres);
 							self.resolvingFour = false;
 							self.cardsToDiscard = [];
-							$scope.$apply();
-							if (jwres.statusCode != 200) alert(jwres.error.message);
-						}
-					)
+							if (jwres.statusCode != 200) {
+								// alert(jwres.error.message);
+								self.requestDenied(jwres);
+							} else {
+								$scope.$apply();
+							}
+						});
 					// Check if user has only 1 card in hand (this must be discarded)
 				} else if(self.player.hand.length === 1) {
 					io.socket.put("/game/resolveFour", 
@@ -604,10 +698,14 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 							// console.log(jwres);
 							self.resolvingFour = false;
 							self.cardsToDiscard = [];
-							$scope.$apply();
-							if (jwres.statusCode != 200) alert(jwres.error.message);
-						}
-					); 
+							if (jwres.statusCode != 200) {
+								// alert(jwres.error.message);
+								self.requestDenied(jwres);
+							} else {
+								$scope.$apply();
+							}
+
+						}); 
 				}
 			}
 		} else {
@@ -634,8 +732,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			self.resolvingThree = false;
 			$scope.$apply();
 			if (jwres.statusCode != 200) {
-				alert(jwres.error.message);
-				console.log(jwres);
+				// alert(jwres.error.message);
+				self.requestDenied(jwres);
+				// console.log(jwres);
 			}
 		})
 	}; //End chooseScrapCard()
@@ -858,7 +957,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 										{opId: self.opponent.id},
 										function (res, jwres) {
 											if (jwres.statusCode != 200) {
-												alert(jwres.error.message);
+												// alert(jwres.error.message);
+												self.requestDenied(jwres);
 												console.log(jwres);
 											}
 									});
@@ -872,7 +972,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									},
 									function (res, jwres) {
 										if (jwres.statusCode != 200) {
-											alert(jwres.error.message);
+											// alert(jwres.error.message);
+											self.requestDenied(jwres);
 											console.log(jwres);
 										}
 								});
@@ -986,6 +1087,23 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}, 3000);
 		}
 	}); //End event handler for game objects
+
+// Reconnect handler
+	io.socket.on('connect', function (obj) {
+		// Only attempt reconnect if front end already has game object
+		if (self.game != null) {
+			io.socket.put("/game/reconnect", function (res, jwres) {
+				// Error reconnecting
+				if (jwres.statusCode != 200) {
+					if (jwres.statusCode === 403) {
+						self.requestDenied();
+					} else {
+						alert("Error reconnecting websocket to server. Please log out, then log in again");
+					}
+				}
+			});
+		}
+	});
 
 
 

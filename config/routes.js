@@ -49,11 +49,13 @@ module.exports.routes = {
   '/'                             :   'userController.homepage',
   '/user/signup'                  :   'userController.signup',
   '/user/login'                   :   'userController.login',
+  '/user/reLogin'                 :   'userController.reLogin',
   '/user/logout'                  :   'userController.logout',
 
   '/game/create'                  :   'gameController.create',
   '/game/getList'                 :   'gameController.getList',
   '/game/subscribe'               :   'gameController.subscribe',
+  '/game/reconnect'               :   'gameController.reconnect',
   '/game/ready'                   :   'gameController.ready',
   '/game/leaveLobby'              :   'gameController.leaveLobby',
   '/game/draw'                    :   'gameController.draw',

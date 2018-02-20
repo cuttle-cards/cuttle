@@ -14,7 +14,6 @@ var userAPI = sails.hooks['customuserhook'];
 var passwordAPI = sails.hooks['custompasswordhook'];
 
 
-
 module.exports = {
 	homepage: function (req, res) {
 		return res.view("homepage", {loggedIn: req.session.loggedIn, game: req.session.game});
@@ -65,17 +64,46 @@ module.exports = {
 							res.ok();
 						})
 						.catch(function failure (reason) {
-							// console.log(reason);
-							res.badRequest(reason);
+							return res.badRequest(reason);
 						});
 
 					// return true;
 				})
 				.catch(function noUser (reason) {
-					res.badRequest(reason);
+					// console.log("couldn't find user");
+					return res.badRequest(reason);
 				});
 		}
 	}, //End login
+	reLogin: function (req, res) {
+		var promiseUser = userAPI.findUserByEmail(req.body.email)
+		.then(function gotUser (user) {
+			var checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword);
+			var promiseGame = gameService.populateGame({gameId: user.game});
+			return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
+		})
+		.then(function correctPw (values) {
+			var game = values[0];
+			var user = values[1];
+			req.session.loggedIn = true;
+			req.session.usr = user.id;
+			req.session.game = game.id;
+			req.session.pNum = user.pNum;
+			Game.subscribe(req, game.id);
+			Game.watch(req);
+
+			Game.publishUpdate(game.id,
+			{
+				change: 'reLogin',
+				game: game,
+			});
+			
+			return res.ok();
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
+		});
+	},
 
 	logout: function (req, res) {
 		delete(req.session.usr);

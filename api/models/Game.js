@@ -21,6 +21,7 @@ module.exports = {
 
     players: {
       collection: 'user',
+      via: 'game',
       defaultsTo: [],
     },
 
