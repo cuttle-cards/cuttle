@@ -496,8 +496,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				cardId: dragData.id,
 			},
 			function (res, jwres) {
-				console.log("points response:");
-				console.log(jwres);
 				// alert("console printed");
 				if (jwres.statusCode != 200) {
 					self.requestDenied(jwres);

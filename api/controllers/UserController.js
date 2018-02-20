@@ -70,7 +70,7 @@ module.exports = {
 					// return true;
 				})
 				.catch(function noUser (reason) {
-					console.log("couldn't find user");
+					// console.log("couldn't find user");
 					return res.badRequest(reason);
 				});
 		}
