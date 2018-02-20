@@ -17,7 +17,7 @@ var passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
 	homepage: function (req, res) {
-		return res.view("homepage", {loggedIn: req.session.loggedIn});
+		return res.view("homepage", {loggedIn: req.session.loggedIn, game: req.session.game});
 	},
 
 	signup: function (req, res) {

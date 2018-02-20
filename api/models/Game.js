@@ -39,6 +39,7 @@ module.exports = {
       defaultsTo: 0
     },
 
+
     deck: {
       collection: 'card',
       via: 'deck'
@@ -64,6 +65,11 @@ module.exports = {
       via: 'oneOff'
     },
 
+    resolving: {
+      model: 'card',
+      via: 'resolving'
+    },
+    
     oneOffTarget: {
       model: 'card',
       via: 'targeted'

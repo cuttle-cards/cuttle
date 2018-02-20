@@ -86,6 +86,7 @@ module.exports.policies = {
     concede: ['isLoggedIn', 'isInGame'],
     gameOver: ['isLoggedIn', 'isInGame'],
     chat: ['isLoggedIn', 'isInGame'],
+    gameData: ['isLoggedIn', 'isInGame'],
 
     // DEVELOPMENT ONLY
     // stackDeck: true,

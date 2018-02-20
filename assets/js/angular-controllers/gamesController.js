@@ -645,6 +645,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Socket Event Handlers //
 	///////////////////////////
 	io.socket.on('game', function (obj) {
+		// console.log("game event'");
+		// console.log(obj);
 		switch (obj.verb) {
 			case 'updated':
 				if (obj.data.change != 'Initialize' && obj.data.change != 'ready') {
@@ -859,7 +861,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 												alert(jwres.error.message);
 												console.log(jwres);
 											}
-										});
+									});
 								}
 							} else {
 								alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
@@ -985,5 +987,239 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	}); //End event handler for game objects
 
+
+
+	// If server says we are in a game, request game data on page load
+	console.log(menu.gameId);
+	if (menu.gameId) {
+		menu.tab = "gameView";
+		console.log("requesting game data");
+		io.socket.put("/game/gameData", function (res, jwres) {
+			if (jwres.statusCode != 200) {
+				console.log(jwres);
+			} else {
+				// console.log(res);
+				self.pNum = res.pNum;
+				self.game = res.game;
+				self.gameCount = 1;
+				// console.log("controller game");
+				// console.log(self.game);
+
+
+				/////////////////////////////////
+				// Initialize Getter functions //
+				/////////////////////////////////
+				//glasses (true iff player has glasses eight)
+				Object.defineProperty(self, 'glasses', {
+					get: function () {
+						if (self.game) {
+							var res = false;
+							self.game.players[self.pNum].runes.forEach(function (rune) {
+								if (rune.rank === 8) res = true;
+							});
+							return res;
+						} else {
+							return null;
+						}
+					}
+				});
+				//player (player whose session this is)
+				Object.defineProperty(self, 'player', {
+					get: function () {
+						if (self.game) {
+							return self.game.players[self.pNum];
+						} else {
+							return null;
+						}
+					}
+				});
+				//opponent (other player)
+				Object.defineProperty(self, 'opponent', {
+					get: function () {
+						if (self.game) {
+							return self.game.players[(self.pNum + 1) % 2];
+						} else {
+							return null;
+						}
+					}
+				});
+				//two's in player's hand
+				Object.defineProperty(self, 'twosInHand', {
+					get: function () {
+						if (self.game) {
+							var res = 0;
+							self.player.hand.forEach(function (card) {
+								if (card.rank === 2) res++;
+							});
+							return res;
+						} else {
+							return null;
+						}
+					}
+				});
+				// Number of Kings opponent has
+				Object.defineProperty(self, 'opKingCount', {
+					get: function () {
+						if (self.game) {
+							var res = 0;
+							self.opponent.runes.forEach(function (card) {
+								if (card.rank === 13) res++;
+							});
+							return res;
+						} else {
+							return null;
+						}
+					}
+				});
+				// Number of Kings player has
+				Object.defineProperty(self, 'yourKingCount', {
+					get: function () {
+						if (self.game) {
+							var res = 0;
+							self.player.runes.forEach(function (card) {
+								if (card.rank === 13) res++;
+							});
+							return res;
+						} else {
+							return null;
+						}
+					}
+				});	
+				//Number of points opponent has
+				Object.defineProperty(self, 'opPointCount', {
+					get: function () {
+						if (self.game) {
+							res = 0;
+							self.opponent.points.forEach(function (card) {
+								res += card.rank;
+							});
+							return res;
+						} else {
+							return null;
+						}
+					}
+				});	
+				//Number of points player has
+				Object.defineProperty(self, 'yourPointCount', {
+					get: function () {
+						if (self.game) {
+							res = 0;
+							self.player.points.forEach(function (card) {
+								res += card.rank;
+							});
+							return res;
+						} else {
+							return null;
+						}
+					}
+				});		
+				//Whether it is this player's turn
+				Object.defineProperty(self, 'yourTurn', {
+					get: function () {
+						if (self.game) {
+							return self.pNum === self.game.turn % 2;
+						} else {
+							return null;
+						}
+					}
+				});		
+				//Number of cards in the deck (since deck = game.deck + game.topCard + game.secondCard)			
+				Object.defineProperty(self, 'cardsInDeck', {
+					get: function () {
+						var res = self.game.deck.length;
+						if (self.game.topCard) res++;
+						if (self.game.secondCard) res++;
+						return res;
+					}
+				});
+				// Number of queens your opponent has
+				Object.defineProperty(self, 'opQueenCount', {
+					get: function () {
+						var res = 0;
+						self.opponent.runes.forEach(function (rune) {
+							if (rune.rank === 12) res++; 
+						});
+						return res;
+					}
+				});
+
+
+
+				// Determine if either player is countering
+				if (self.game.oneOff && !self.game.resolving) {
+						if ( (!self.yourTurn && self.game.twos.length % 2 === 0) || (self.yourTurn && self.game.twos.length % 2 === 1)) {
+								if (self.twosInHand > 0) {
+									if (self.opQueenCount == 0) {
+										self.askCounter = true;
+									} else {
+										// Opponent has a queen; can't counter
+										alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because your opponent has a queen");
+										io.socket.put("/game/resolve", 
+											{opId: self.opponent.id},
+											function (res, jwres) {
+												if (jwres.statusCode != 200) {
+													alert(jwres.error.message);
+													console.log(jwres);
+												}
+										});
+									}
+								} else {
+									// No two's in hand; can't counter
+									alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
+									// Request resolution if can't counter
+									io.socket.put("/game/resolve", 
+										{
+											opId: self.opponent.id
+										},
+										function (res, jwres) {
+											if (jwres.statusCode != 200) {
+												alert(jwres.error.message);
+												console.log(jwres);
+											}
+									});
+								}
+						} else {
+							self.waitingForOp = true;
+						}
+				} 
+				// Determine if we are in the middle of resolving a three, four, or seven
+					if (self.game.resolving) {
+						switch(self.game.resolving.rank) {
+							case 3:
+								if (self.yourTurn) {
+									self.waitingForOp = false;
+									self.resolvingThree = true;		
+									alert("You have resolved the " + self.game.resolving.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");							
+								}
+								break;
+							case 4:
+								if (!self.yourTurn) {
+									self.waitingForOp = false;
+									self.resolvingFour = true;
+									if (self.player.hand.length > 1) {
+										alert("Your opponent has resolved the " + self.game.resolving.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
+									} else {
+										alert("Your opponent has resolved the " + self.game.resolving.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
+									}
+								} else {
+									self.waitingForOp = true;
+								}
+								break;
+							case 7:
+								self.waitingForOp = false;
+								if (self.yourTurn) {
+									self.resolvingSeven = true;
+									alert("You have resolved the " + self.game.resolving.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
+								} else {
+									self.opResolvingSeven = true;
+								}
+								break;
+						}
+					}
+
+				$scope.$apply();
+			}
+		});
+	} // End if (menu.game) {} (page refresh during game)
 
 }]);

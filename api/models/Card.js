@@ -44,6 +44,10 @@ module.exports = {
       model: 'game'
     },
 
+    resolving: {
+      model: 'game'
+    },
+
     twos: {
       model: 'game'
     },
