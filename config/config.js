@@ -26,7 +26,7 @@ module.exports = {
 	models: {
 	    // connection: 'localDiskDb',
 	    connection: 'sqlHeroku',
-	    migrate: 'drop'
+	    migrate: 'safe'
    },
 
    orm: {
