@@ -404,7 +404,7 @@
                                 <div class="modal-footer">
                                     <button class="btn btn-primary" ng-show="gc.modalButtons === 'Okay'" ng-click="gc.clearModal()">Okay</button>
                                     <button class="btn btn-primary" ng-show="gc.modalButtons === 'Nine'" ng-click="gc.nineScuttle()">Scuttle</button>
-                                    <button class="btn btn-primary" ng-show="gc.modalButtons === 'Nine'" ng-click="self.targetedOneOff(dragData.id, self.opponent.points[targetIndex].id, 'point');">One-Off</button>
+                                    <button class="btn btn-primary" ng-show="gc.modalButtons === 'Nine'" ng-click="gc.nineTargetedOneOff()">One-Off</button>
                                 </div> <!--    End Modal Footer       -->
                             </div><!--  End Modal Content   -->
                           </div> <!--   End Modal wrapper     -->

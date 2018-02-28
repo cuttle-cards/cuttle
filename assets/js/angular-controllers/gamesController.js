@@ -357,11 +357,24 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		}
 	}; //End jack()
 
+	// Called when player chooses to play a nine as a one-off
+	// 		targeting a point card
+	self.nineTargetedOneOff = function () {
+		console.log("nineTargetedOneOff");
+		self.targetedOneOff(self.nineId, self.nineTargetId, "points");
+		self.displayModal = false;
+		self.modalHeader = "";
+		self.modalBody = "";
+		self.modalButtons = "";
+		self.nineId = null;
+		self.nineTargetId = null;
+	};
 
 	self.targetedOneOff = function (cardId, targetId, targetType, pointId) {
+		console.log("targetedOneOff");
 		var pId = null;
 		self.waitingForOp = true;
-		if (pointId) pId = pointId;
+		if (pointId) pId = pointId; //pointId only applies if player is targeting a jack; pointId is the ID of the attached point card
 		if (!self.resolvingSeven) {		
 			io.socket.put("/game/targetedOneOff", 
 			{
@@ -372,6 +385,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				pointId: pId
 			},
 			function (res, jwres) {
+				console.log("targetedOneOff response");
+				console.log(jwres);
 				// console.log(jwres);
 				if (jwres.statusCode != 200) {
 					// alert(jwres.error.message);
