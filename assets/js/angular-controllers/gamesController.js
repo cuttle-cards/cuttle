@@ -361,7 +361,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// 		targeting a point card
 	self.nineTargetedOneOff = function () {
 		console.log("nineTargetedOneOff");
-		self.targetedOneOff(self.nineId, self.nineTargetId, "points");
+		self.targetedOneOff(self.nineId, self.nineTargetId, "point");
 		self.displayModal = false;
 		self.modalHeader = "";
 		self.modalBody = "";
@@ -371,7 +371,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	};
 
 	self.targetedOneOff = function (cardId, targetId, targetType, pointId) {
-		console.log("targetedOneOff");
 		var pId = null;
 		self.waitingForOp = true;
 		if (pointId) pId = pointId; //pointId only applies if player is targeting a jack; pointId is the ID of the attached point card
@@ -385,8 +384,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				pointId: pId
 			},
 			function (res, jwres) {
-				console.log("targetedOneOff response");
-				console.log(jwres);
 				// console.log(jwres);
 				if (jwres.statusCode != 200) {
 					// alert(jwres.error.message);
