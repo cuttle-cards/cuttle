@@ -92,8 +92,8 @@ module.exports.policies = {
     gameData: ['isLoggedIn', 'isInGame'],
 
     // DEVELOPMENT ONLY
-    // stackDeck: true,
-    // deleteDeck: true,
+    stackDeck: true,
+    deleteDeck: true,
 
   }
 };

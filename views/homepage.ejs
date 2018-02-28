@@ -392,6 +392,23 @@
                                 </div>
                             </div><!-- End of Gamee Log -->
 
+                            <!-- Modal for alerts -->
+                            <div class="modal-dialog" ng-show="gc.displayModal">
+                            <div class="modal-content">
+                                <h4 class="modal-header">
+                                {{gc.modalHeader}}
+                                </h4>
+                                <div class="modal-body">
+                                    <p>{{gc.modalBody}}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" ng-show="gc.modalButtons === 'Okay'" ng-click="gc.clearModal()">Okay</button>
+                                    <button class="btn btn-primary" ng-show="gc.modalButtons === 'Nine'" ng-click="gc.nineScuttle()">Scuttle</button>
+                                    <button class="btn btn-primary" ng-show="gc.modalButtons === 'Nine'" ng-click="self.targetedOneOff(dragData.id, self.opponent.points[targetIndex].id, 'point');">One-Off</button>
+                                </div> <!--    End Modal Footer       -->
+                            </div><!--  End Modal Content   -->
+                          </div> <!--   End Modal wrapper     -->
+
                             <!-- Modal for countering one-offs -->
                             <div class="modal-dialog" ng-show="gc.askCounter">
                             <div class="modal-content">
@@ -418,7 +435,6 @@
                         <div id="bottomWrap" class="row">
                             <div id="yourHand">
                                 <!-- Your Hand 
-
                                             NEED TO FIX THE IMAGE AND MAKE NEW IMAGES!!!!!!!!!!!!!!!!!!!!!
                                 -->
                                 <div ng-repeat="card in gc.player.hand" class="handCard">
@@ -454,11 +470,11 @@
                             <button type="button" class="btn btn-danger btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
 
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
-<!--                             <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
+                            <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
                             <button ng-click="gc.deleteDeck($event)" id="deleteDeck">Delete Deck</button>
                             <div ng-show="gc.showDeck" id="shownDeck">
                                 <img ng-repeat="card in gc.game.deck" ng-src="{{card.img}}" class="shownDeckCard" ng-click="gc.stackDeck(gc.game.deck[$index].id, $event)">
-                            </div> -->
+                            </div>
                         </div> <!-- End of bottom wrap -->
                     </div>
                 </div> <!-- End of ng-show for game -->

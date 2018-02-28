@@ -14,7 +14,6 @@ app.controller("lobbyController", ['$scope', '$http', function ($scope, $http) {
 
 	// Upon clicking ready button
 	self.ready = function () {
-		console.log("\nready");
 		self.oneReady = true;
 		io.socket.put("/game/ready", function (res, jwres) {
 			console.log(jwres);

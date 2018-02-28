@@ -20,6 +20,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.legalMoves = [];
 	self.cardCloseUp = false;
 	self.viewCard = null;
+	self.displayModal = false;
+	self.modalHeader = "";
+	self.modalBody = "";
+	self.modalButtons = "";
+	self.nineId = null;
+	self.nineTargetId = null;
 	// Sounds
 	var soundPlayCard = document.createElement("audio");
 	soundPlayCard.src = "./sounds/play_card.mp3";
@@ -29,16 +35,29 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	// self.showDeck = false;
 
+
 	self.requestDenied = function (jwres) {
+		self.displayModal = true;
+		self.modalHeader = "Illegal Action";
+		self.modalButtons = "Okay";
 		if (typeof(jwres.error) === "string") {
-			alert(jwres.error);
+			// alert(jwres.error);
+			self.modalBody = jwres.error;
 		} else {
-			alert(jwres.error.message);
+			// alert(jwres.error.message);
+			self.modalBody = jwres.error.message;
 		}
 		if (jwres.statusCode === 403) {
 			menu.tab = 'reLogin';
-			$scope.$apply();
 		}
+		$scope.$apply();
+	};
+
+	self.clearModal = function () {
+		self.displayModal = false;
+		self.modalHeader = "";
+		self.modalBody = "";
+		self.modalButtons = "";	
 	};
 
 	// Concede game
@@ -237,9 +256,23 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		self.legalMoves = [];
 		$scope.$apply();
 	};
+
+
 	//////////////////////////////////
 	// Target Opponent Card Helpers //
 	//////////////////////////////////
+
+	// Called when you play a nine, if you then choose to scuttle
+	self.nineScuttle = function () {
+		self.scuttle(self.nineId, self.nineTargetId);
+		self.displayModal = false;
+		self.modalHeader = "";
+		self.modalBody = "";
+		self.modalButtons = "";
+		self.nineId = null;
+		self.nineTargetId = null;
+	};
+
 	self.scuttle = function (cardId, targetId) {
 		if (!self.resolvingSeven) {		
 			io.socket.put("/game/scuttle", 
@@ -247,7 +280,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					opId: self.game.players[(self.pNum + 1) % 2].id,
 					cardId: cardId,
 					targetId: targetId,
-					index: dragData.index
+					// index: dragData.index
 				},
 				function (res, jwres) {
 					// console.log(jwres);
@@ -258,6 +291,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						// }
 						self.requestDenied(jwres);
 					}
+					self.nineId = null;
+					self.nineTargetId = null;
 				}
 			);
 		} else {
@@ -321,6 +356,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			);
 		}
 	}; //End jack()
+
+
 	self.targetedOneOff = function (cardId, targetId, targetType, pointId) {
 		var pId = null;
 		self.waitingForOp = true;
@@ -553,12 +590,18 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.dropOpPoint = function (targetIndex) {
 		switch (dragData.rank) {
 			case 9:
-				var conf = confirm("Press 'Ok' to Scuttle, and 'Cancel' to play your Nine as a One-Off");
-				if (conf) {
-					self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
-				} else {
-					self.targetedOneOff(dragData.id, self.opponent.points[targetIndex].id, "point");
-				}
+				// var conf = confirm("Press 'Ok' to Scuttle, and 'Cancel' to play your Nine as a One-Off");
+				// if (conf) {
+				// 	self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
+				// } else {
+				// 	self.targetedOneOff(dragData.id, self.opponent.points[targetIndex].id, "point");
+				// }
+				self.displayModal = true;
+				self.modalHeader = "Choose your move";
+				self.modalBody = "Would you like to Scuttle, or Play your nine as a One-Off?";
+				self.modalButtons = "Nine";
+				self.nineTargetId = self.opponent.points[targetIndex].id;
+				self.nineId = dragData.id;
 				break;
 			case 11:
 				self.jack(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
