@@ -114,6 +114,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Request to resolve opponent's one-off (decline to counter)
 	self.resolve = function () {
 		self.askCounter = false;
+		self.displayModal = false;
+		self.modalHeader = "";
+		self.modalBody = "";
+		self.modalButtons = "";
 		io.socket.put("/game/resolve", 
 			{
 				opId: self.opponent.id
@@ -621,7 +625,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			// Can't play kings and queens on point card
 			case 12:
 			case 13:
-				alert("You can only play Kings and Queens in your own Runes");
+				self.displayModal = true;
+				self.modalHeader = "Illegal Action";
+				self.modalBody = "You can only play Kings and Queens in your Boons area";
+				self.modalButtons = "Okay";
+				// alert("You can only play Kings and Queens in your own Runes");
 				break;
 			default:
 				self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
@@ -1007,31 +1015,41 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									// 	self.countering = true;
 									// }
 								} else {
-									alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because your opponent has a queen");
-									io.socket.put("/game/resolve", 
-										{opId: self.opponent.id},
-										function (res, jwres) {
-											if (jwres.statusCode != 200) {
-												// alert(jwres.error.message);
-												self.requestDenied(jwres);
-												console.log(jwres);
-											}
-									});
+									self.displayModal = true;
+									self.modalHeader = self.game.log[self.game.log.length - 1];
+									self.modalBody = "You cannot counter, because your opponent has a queen.";
+									self.modalButtons = "Resolve";
+									// alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because your opponent has a queen");
+									// io.socket.put("/game/resolve", 
+									// 	{opId: self.opponent.id},
+									// 	function (res, jwres) {
+									// 		if (jwres.statusCode != 200) {
+									// 			// alert(jwres.error.message);
+									// 			self.requestDenied(jwres);
+									// 			console.log(jwres);
+									// 		}
+									// });
 								}
 							} else {
-								alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
+								// alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
 								// Request resolution if can't counter
-								io.socket.put("/game/resolve", 
-									{
-										opId: self.opponent.id
-									},
-									function (res, jwres) {
-										if (jwres.statusCode != 200) {
-											// alert(jwres.error.message);
-											self.requestDenied(jwres);
-											console.log(jwres);
-										}
-								});
+								self.displayModal = true;
+								self.modalHeader = self.game.log[self.game.log.length - 1];
+								self.modalBody = "You cannot counter, because you do not have a two.";
+								self.modalButtons = "Resolve";
+
+
+								// io.socket.put("/game/resolve", 
+								// 	{
+								// 		opId: self.opponent.id
+								// 	},
+								// 	function (res, jwres) {
+								// 		if (jwres.statusCode != 200) {
+								// 			// alert(jwres.error.message);
+								// 			self.requestDenied(jwres);
+								// 			console.log(jwres);
+								// 		}
+								// });
 							}
 						}
 						break; //End oneOff & counter cases
