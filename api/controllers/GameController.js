@@ -1709,6 +1709,13 @@ module.exports = {
 
 	},
 
+	clearGame: function (req, res) {
+		gameService.clearGame({userId: req.session.usr}).then(function postClear (result) {
+			console.log("clearGame action after service call");
+			return res.ok();
+		});
+	},
+
 
 	/////////////////////////////////////////
 	// DEVELOPMENT ONLY - TESTING HELPERS //

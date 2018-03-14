@@ -1340,4 +1340,14 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		});
 	} // End if (menu.game) {} (page refresh during game)
 
+
+
+	self.clearGame = function () {
+		console.log("calling clearGame");
+		io.socket.put("/game/clear", function (res, jwres) {
+			console.log(res);
+			console.log(jwres);
+		});
+	}
+
 }]);

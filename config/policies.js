@@ -94,6 +94,7 @@ module.exports.policies = {
     // DEVELOPMENT ONLY
     // stackDeck: true,
     // deleteDeck: true,
+    clearGame: true,
 
   }
 };

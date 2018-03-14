@@ -171,6 +171,67 @@ module.exports = {
 			return res;
 	},
 
+	/* Takes a user id and clears all game data 
+	* from the associated user
+	*/
+	clearGame: function (options) {
+		return User.findOne(options.userId)
+		.populateAll()
+		.then(function clearUserData (player) {
+			// Delete User data
+			player.hand.forEach(function (card) {
+				player.hand.remove(card.id);
+			});
+			player.points.forEach(function (card) {
+				player.points.remove(card.id);
+			});
+			player.runes.forEach(function (card) {
+				player.runes.remove(card.id);
+			});
+			player.frozenId = null;
+			saveUser = userService.saveUser({user: player});
+			if (player.game) {
+				var promiseGame = gameService.findGame({gameId: player.game.id});
+			}else {
+				var promiseGame = Promise.resolve(null);
+			}
+			return Promise.all([promiseGame, saveUser])
+			.then(function clearGameData (values) {
+				var game = values[0], player = values[1];
+				if (game) {
+					var opponent = game.players[(player.pNum + 1) % 2];
+					opponent.hand.forEach(function (card) {
+						opponent.hand.remove(card.id);
+					});
+					opponent.points.forEach(function (card) {
+						opponent.points.remove(card.id);
+					});
+					opponent.runes.forEach(function (card) {
+						opponent.runes.remove(card.id);
+					});
+					opponent.frozenId = null;
+					opponent.pNum = null;
+					game.players.remove(player.id);
+					game.players.remove(opponent.id);
+					var saveGame = gameService.saveGame({game: game});
+					var saveOpponent = userService.saveUser({user: opponent});
+				} else {
+					var saveGame = Promise.resolve(null);
+					var saveOpponent = Promise.resolve(null);
+				}
+				player.pNum = null;
+				var savePlayer = userService.saveUser({user: player});
+				return Promise.all([saveGame, savePlayer, saveOpponent]);
+
+			})
+			.catch(function failed (err) {
+				console.log(err);
+				return res.badRequest(err);
+			});
+		});
+	},
+
+
 	/*Replaces card played during a seven from the deck
 	***options = {game: GameModel, index: integer}
 	**index = 0 if played from top card, index = 1 if played from second card
@@ -196,6 +257,6 @@ module.exports = {
 			game.secondCard = null;
 		}
 		return game;		
-	}
+	},
 
 };
