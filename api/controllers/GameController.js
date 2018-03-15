@@ -80,9 +80,10 @@ module.exports = {
 	subscribe: function (req, res) {
 		if (req.body.id) {
 			Game.subscribe(req, req.body.id);
+			var promiseClearOldGame = gameService.clearGame({userId: req.session.usr});
 			var promiseGame = gameAPI.findGame(req.body.id);
 			var promiseUser = userAPI.findUser(req.session.usr);
-			Promise.all([promiseGame, promiseUser]).then(function success (arr) {
+			Promise.all([promiseGame, promiseUser, promiseClearOldGame]).then(function success (arr) {
 				// Catch promise values
 				var game = arr[0];
 				var user = arr[1];
@@ -120,7 +121,7 @@ module.exports = {
 				return res.badRequest(error);
 			});
 		} else {
-			res.badRequest("No game id received for subscription");
+			return res.badRequest("No game id received for subscription");
 		}
 	}, //End subscribe()
 

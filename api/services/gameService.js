@@ -222,7 +222,6 @@ module.exports = {
 				player.pNum = null;
 				var savePlayer = userService.saveUser({user: player});
 				return Promise.all([saveGame, savePlayer, saveOpponent]);
-
 			})
 			.catch(function failed (err) {
 				console.log(err);
