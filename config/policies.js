@@ -91,10 +91,12 @@ module.exports.policies = {
     chat: ['isLoggedIn', 'isInGame'],
     gameData: ['isLoggedIn', 'isInGame'],
 
-    // DEVELOPMENT ONLY
+    //////////////////////
+    // DEVELOPMENT ONLY //
+    //////////////////////
     // stackDeck: true,
     // deleteDeck: true,
-    clearGame: true,
+    // clearGame: true,
 
   }
 };

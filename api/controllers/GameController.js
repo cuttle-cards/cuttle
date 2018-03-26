@@ -457,6 +457,8 @@ module.exports = {
 				game: fullGame,
 				victory: victory
 			});
+			// If the game is over, clean it up
+			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -508,6 +510,8 @@ module.exports = {
 				game: fullGame,
 				victory: victory
 			});
+			// If the game is over, clean it up
+			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -644,6 +648,8 @@ module.exports = {
 				game: fullGame,
 				victory: victory
 			});
+			// If the game is over, clean it up
+			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -1148,6 +1154,9 @@ module.exports = {
 				playedBy: pNum,
 				happened: happened
 			});
+			// If the game is over, clean it up
+			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
+			return res.ok();
 		})
 		.catch(function failed (err) {
 			return res.badRequest(err);
@@ -1283,6 +1292,8 @@ module.exports = {
 				game: fullGame,
 				victory: victory
 			});
+			// If the game is over, clean it up
+			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -1331,6 +1342,8 @@ module.exports = {
 				game: fullGame,
 				victory: victory
 			});
+			// If the game is over, clean it up
+			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -1457,6 +1470,8 @@ module.exports = {
 				game: fullGame,
 				victory: victory
 			});
+			// If the game is over, clean it up
+			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -1603,7 +1618,10 @@ module.exports = {
 
 	// Player requests to concede game
 	concede: function (req, res) {
-		var promiseGame = gameService.populateGame({gameId: req.session.game})
+		var promiseClearOldGame = gameService.clearGame({userId: req.session.usr})
+		.then(function clearGame (game) {
+			return  gameService.populateGame({gameId: req.session.game})
+		})
 		.then(function publishAndRespond (game) {
 			var victory = {
 				gameOver: true,
@@ -1623,44 +1641,12 @@ module.exports = {
 
 	gameOver: function (req, res) {
 		var promisePlayer = userService.findUser({userId: req.session.usr})
-		.then(function changeAndSave (player) {
-			var ids = [];
-			// Remove cards in hand
-			for (i=0; i<player.hand.length; i++) {
-				ids.push(player.hand[i].id);
-			}
-			ids.forEach(function (id) {
-				player.hand.remove(id);
-			});
-			ids = [];
-			// Remove cards in points
-			for (i=0; i<player.points.length; i++) {
-				ids.push(player.points[i].id);
-			}
-			ids.forEach(function (id) {
-				player.points.remove(id);
-			});
-			ids = [];
-			// Remove cards in runes
-			for (i=0;i<player.runes.length; i++) {
-				ids.push(player.runes[i].id)
-			} 
-			ids.forEach(function (id) {
-				player.runes.remove(id);
-			});
+		.then(function deleteSessionData (player) {
 			Game.unsubscribe(req, req.session.game);
-			delete(player.game);
-			delete(player.pNum);
-			// player.game = null;
-			// player.pNum = null;
-			player.frozenId = null;
 			delete(req.session.game);
 			delete(req.session.pNum);
-			return userService.saveUser({user: player});
-		}) //End changeAndSave
-		.then(function respond (player) {
 			return res.ok();
-		})
+		}) //End changeAndSave
 		.catch(function failed(err) {
 			return res.badRequest(err);
 		});
