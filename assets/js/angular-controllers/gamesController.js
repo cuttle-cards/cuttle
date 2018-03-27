@@ -114,10 +114,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Request to resolve opponent's one-off (decline to counter)
 	self.resolve = function () {
 		self.askCounter = false;
-		self.displayModal = false;
-		self.modalHeader = "";
-		self.modalBody = "";
-		self.modalButtons = "";
+		self.clearModal();
 		io.socket.put("/game/resolve", 
 			{
 				opId: self.opponent.id
@@ -269,10 +266,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Called when you play a nine, if you then choose to scuttle
 	self.nineScuttle = function () {
 		self.scuttle(self.nineId, self.nineTargetId);
-		self.displayModal = false;
-		self.modalHeader = "";
-		self.modalBody = "";
-		self.modalButtons = "";
+		self.clearModal();
 		self.nineId = null;
 		self.nineTargetId = null;
 	};
@@ -315,6 +309,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					// 	menu.tab = 'reLogin';
 					// }
 					self.requestDenied(jwres);
+				} else {
+					self.clearModal();
+					$scope.$apply();				
 				}
 			});
 		}
@@ -355,6 +352,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						// 	menu.tab = 'reLogin';
 						// }
 						self.requestDenied(jwres);
+					} else {
+						self.clearModal();
+						$scope.$apply();
 					}
 				}
 			);
@@ -366,10 +366,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.nineTargetedOneOff = function () {
 		console.log("nineTargetedOneOff");
 		self.targetedOneOff(self.nineId, self.nineTargetId, "point");
-		self.displayModal = false;
-		self.modalHeader = "";
-		self.modalBody = "";
-		self.modalButtons = "";
+		self.clearModal();
 		self.nineId = null;
 		self.nineTargetId = null;
 	};
@@ -417,7 +414,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					// }
 					self.waitingForOp = false;
 					self.requestDenied(jwres);
-				}	
+				} else {
+					self.clearModal();
+					$scope.$apply();
+				}
 			});
 		}
 	}; //End targetedOneOff()
@@ -432,7 +432,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				cardId: cardId
 			},
 			function (res, jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 			}
 		);
 	};
@@ -571,6 +571,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				if (jwres.statusCode != 200) {
 					// alert(jwres.error.message);
 					self.requestDenied(jwres);
+				} else {
+					self.clearModal();
+					$scope.$apply();
 				}
 			});
 		}
@@ -599,6 +602,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				if (jwres.statusCode != 200) {
 					// alert(jwres.error.message);
 					self.requestDenied(jwres);
+				} else {
+					self.clearModal();
+					$scope.$apply();
 				}
 			});
 		}
@@ -674,6 +680,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						// alert(jwres.error.message);
 						self.waitingForOp = false;
 						self.requestDenied(jwres);
+					} else {
+						self.clearModal();
+						$scope.$apply();
 					}
 				});
 			}
@@ -742,12 +751,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						},
 						function (res, jwres) {
 							// console.log(jwres);
-							self.resolvingFour = false;
-							self.cardsToDiscard = [];
 							if (jwres.statusCode != 200) {
 								// alert(jwres.error.message);
 								self.requestDenied(jwres);
 							} else {
+								self.resolvingFour = false;
+								self.cardsToDiscard = [];
+								self.clearModal();
 								$scope.$apply();
 							}
 						});
@@ -759,12 +769,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						},
 						function (res, jwres) {
 							// console.log(jwres);
-							self.resolvingFour = false;
-							self.cardsToDiscard = [];
 							if (jwres.statusCode != 200) {
 								// alert(jwres.error.message);
 								self.requestDenied(jwres);
 							} else {
+								self.resolvingFour = false;
+								self.cardsToDiscard = [];
+								self.clearModal();						
 								$scope.$apply();
 							}
 
@@ -793,11 +804,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			cardId: self.game.scrap[index].id
 		}, function (res, jwres) {
 			self.resolvingThree = false;
-			$scope.$apply();
 			if (jwres.statusCode != 200) {
 				// alert(jwres.error.message);
 				self.requestDenied(jwres);
 				// console.log(jwres);
+			} else {
+				self.clearModal();
+				$scope.$apply();
 			}
 		})
 	}; //End chooseScrapCard()

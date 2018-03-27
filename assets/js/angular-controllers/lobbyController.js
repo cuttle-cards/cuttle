@@ -16,7 +16,6 @@ app.controller("lobbyController", ['$scope', '$http', function ($scope, $http) {
 	self.ready = function () {
 		self.oneReady = true;
 		io.socket.put("/game/ready", function (res, jwres) {
-			console.log(jwres);
 			if (jwres.statusCode != 200) {
 				alert(jwres.error.message);
 			}
@@ -24,9 +23,8 @@ app.controller("lobbyController", ['$scope', '$http', function ($scope, $http) {
 	};
 
 	self.leave = function () {
-		console.log("\nLeaving lobby");
 		io.socket.put("/game/leaveLobby", function (res, jwres) {
-			console.log(jwres);
+			// console.log(jwres);
 			menu.tab = "gamesOverview";
 			menu.playerReady = false;
 			menu.gameId = null;
@@ -39,9 +37,6 @@ app.controller("lobbyController", ['$scope', '$http', function ($scope, $http) {
 
 // Player left game handler
 io.socket.on("leftGame", function (obj) {
-	console.log("someone left a game");
-	console.log(obj);
-	console.log(menu.gameId);
 	if (menu.gameId) {
 		console.log("someone left my game");
 		if (menu.gameId == obj.id) {
