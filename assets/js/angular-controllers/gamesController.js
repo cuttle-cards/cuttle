@@ -1062,7 +1062,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									if (obj.data.playedBy === self.player.pNum) {
 										self.waitingForOp = false;
 										self.resolvingThree = true;
-										alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");
+										self.displayModal = true;
+										self.modalHeader = "Your " + obj.data.oneOff.name + " has resolved";
+										self.modalBody = " Choose a card from the scrap pile to place in your hand."
+										self.modalButtons = "Okay";
+										// alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");
 									}
 								}
 								break; //End resolve 3 case
@@ -1071,10 +1075,15 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									if (obj.data.playedBy === self.opponent.pNum) {
 										self.waitingForOp = false;
 										self.resolvingFour = true;
+										self.displayModal = true;
+										self.modalHeader = "Your opponent's " + obj.data.oneOff.name + " has resolved";
+										self.modalButtons = "Okay";
 										if (self.player.hand.length > 1) {
-											alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
+											self.modalBody = "You must discard two cards; click cards in your hand to discard them.";
+											// alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
 										} else {
-											alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
+											self.modalBody = "You only have one card in your hand; you must click it to discard it.";
+											// alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
 										}
 									}
 								}
@@ -1084,7 +1093,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									if (obj.data.playedBy === self.pNum) {
 										self.waitingForOp = false;
 										self.resolvingSeven = true;
-										alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
+										self.displayModal = true;
+										self.modalHeader = "Your " + obj.data.oneOff.name + " has resolved";
+										self.modalButtons = "Okay";
+										self.modalBody = " Choose a card from the top two in the deck, and play it however you like.";
+										// alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
 									} else {
 										self.opResolvingSeven = true;
 									}
@@ -1123,7 +1136,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								// alert("Player " + obj.data.victory.winner + " has won!");
 							// Game ends in stalemate (no winner)
 							} else {
-								alert("Three passes in a row makes this game a stalemate. Well Played!");
+								self.displayModal = true;
+								self.modalHeader = "Stalemate";
+								self.modalBody = "Three passes in a row makes a stalemate. Well played!";
+								self.modalButtons = "Okay";
+								// alert("Three passes in a row makes this game a stalemate. Well Played!");
 							}
 						} else {
 							var loser = (obj.data.victory.winner + 1) % 2;
@@ -1181,10 +1198,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 
 
 	// If server says we are in a game, request game data on page load
-	console.log(menu.gameId);
 	if (menu.gameId) {
 		menu.tab = "gameView";
-		console.log("requesting game data");
 		io.socket.put("/game/gameData", function (res, jwres) {
 			if (jwres.statusCode != 200) {
 				console.log(jwres);
@@ -1375,22 +1390,32 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				} 
 				// Determine if we are in the middle of resolving a three, four, or seven
 					if (self.game.resolving) {
+						// console.log(self.game);
 						switch(self.game.resolving.rank) {
 							case 3:
 								if (self.yourTurn) {
 									self.waitingForOp = false;
 									self.resolvingThree = true;		
-									alert("You have resolved the " + self.game.resolving.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");							
+									self.displayModal = true;
+									self.modalHeader = "Your " + self.game.resolving.name + " has resolved";
+									self.modalBody = " Choose a card from the scrap pile to place in your hand."
+									self.modalButtons = "Okay";
+									// alert("You have resolved the " + self.game.resolving.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");							
 								}
 								break;
 							case 4:
 								if (!self.yourTurn) {
 									self.waitingForOp = false;
 									self.resolvingFour = true;
+									self.displayModal = true;
+									self.modalHeader = "Your opponent's " + self.game.resolving.name + " has resolved";
+									self.modalButtons = "Okay";
 									if (self.player.hand.length > 1) {
-										alert("Your opponent has resolved the " + self.game.resolving.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
+										self.modalBody = "You must discard two cards; click cards in your hand to discard them.";
+										// alert("Your opponent has resolved the " + self.game.resolving.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
 									} else {
-										alert("Your opponent has resolved the " + self.game.resolving.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
+										self.modalBody = "You only have one card in your hand; you must click it to discard it.";
+										// alert("Your opponent has resolved the " + self.game.resolving.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
 									}
 								} else {
 									self.waitingForOp = true;
@@ -1400,7 +1425,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								self.waitingForOp = false;
 								if (self.yourTurn) {
 									self.resolvingSeven = true;
-									alert("You have resolved the " + self.game.resolving.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
+									self.displayModal = true;
+									self.modalHeader = "Your " + self.game.resolving.name + " has resolved";
+									self.modalButtons = "Okay";
+									self.modalBody = " Choose a card from the top two in the deck, and play it however you like.";									
+									// alert("You have resolved the " + self.game.resolving.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
 								} else {
 									self.opResolvingSeven = true;
 								}
