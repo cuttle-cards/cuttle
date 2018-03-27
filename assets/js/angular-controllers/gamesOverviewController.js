@@ -19,14 +19,11 @@ app.controller("gamesOverviewController", ['$scope', '$http', function($scope, $
 	};
 
 	self.joinGame = function(index) {
-		console.log("\njoining game");
 		var gameId = menu.games[index].id
 		io.socket.put('/game/subscribe', {
 			id: gameId
 		},
 		function (res, jwres) {
-			console.log("received subscription response");
-			console.log(jwres);
 			// Successful subscription
 			if (jwres.statusCode === 200) {
 				menu.tab = "lobby";

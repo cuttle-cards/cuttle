@@ -91,6 +91,7 @@ module.exports.policies = {
     chat: ['isLoggedIn', 'isInGame'],
     gameData: ['isLoggedIn', 'isInGame'],
 
+
     //////////////////////
     // DEVELOPMENT ONLY //
     //////////////////////

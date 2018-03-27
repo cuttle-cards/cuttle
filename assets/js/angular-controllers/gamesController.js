@@ -20,6 +20,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.legalMoves = [];
 	self.cardCloseUp = false;
 	self.viewCard = null;
+	self.displayModal = false;
+	self.modalHeader = "";
+	self.modalBody = "";
+	self.modalButtons = "";
+	self.nineId = null;
+	self.nineTargetId = null;
 	// Sounds
 	var soundPlayCard = document.createElement("audio");
 	soundPlayCard.src = "./sounds/play_card.mp3";
@@ -29,16 +35,29 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	//DEVELOPMENT ONLY - REMOVE IN PRODUCTION
 	// self.showDeck = false;
 
+
 	self.requestDenied = function (jwres) {
+		self.displayModal = true;
+		self.modalHeader = "Illegal Action";
+		self.modalButtons = "Okay";
 		if (typeof(jwres.error) === "string") {
-			alert(jwres.error);
+			// alert(jwres.error);
+			self.modalBody = jwres.error;
 		} else {
-			alert(jwres.error.message);
+			// alert(jwres.error.message);
+			self.modalBody = jwres.error.message;
 		}
 		if (jwres.statusCode === 403) {
 			menu.tab = 'reLogin';
-			$scope.$apply();
 		}
+		$scope.$apply();
+	};
+
+	self.clearModal = function () {
+		self.displayModal = false;
+		self.modalHeader = "";
+		self.modalBody = "";
+		self.modalButtons = "";	
 	};
 
 	// Concede game
@@ -95,6 +114,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	// Request to resolve opponent's one-off (decline to counter)
 	self.resolve = function () {
 		self.askCounter = false;
+		self.clearModal();
 		io.socket.put("/game/resolve", 
 			{
 				opId: self.opponent.id
@@ -237,9 +257,20 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 		self.legalMoves = [];
 		$scope.$apply();
 	};
+
+
 	//////////////////////////////////
 	// Target Opponent Card Helpers //
 	//////////////////////////////////
+
+	// Called when you play a nine, if you then choose to scuttle
+	self.nineScuttle = function () {
+		self.scuttle(self.nineId, self.nineTargetId);
+		self.clearModal();
+		self.nineId = null;
+		self.nineTargetId = null;
+	};
+
 	self.scuttle = function (cardId, targetId) {
 		if (!self.resolvingSeven) {		
 			io.socket.put("/game/scuttle", 
@@ -247,7 +278,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					opId: self.game.players[(self.pNum + 1) % 2].id,
 					cardId: cardId,
 					targetId: targetId,
-					index: dragData.index
+					// index: dragData.index
 				},
 				function (res, jwres) {
 					// console.log(jwres);
@@ -258,6 +289,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						// }
 						self.requestDenied(jwres);
 					}
+					self.nineId = null;
+					self.nineTargetId = null;
 				}
 			);
 		} else {
@@ -276,6 +309,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					// 	menu.tab = 'reLogin';
 					// }
 					self.requestDenied(jwres);
+				} else {
+					self.clearModal();
+					$scope.$apply();				
 				}
 			});
 		}
@@ -316,15 +352,29 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						// 	menu.tab = 'reLogin';
 						// }
 						self.requestDenied(jwres);
+					} else {
+						self.clearModal();
+						$scope.$apply();
 					}
 				}
 			);
 		}
 	}; //End jack()
+
+	// Called when player chooses to play a nine as a one-off
+	// 		targeting a point card
+	self.nineTargetedOneOff = function () {
+		console.log("nineTargetedOneOff");
+		self.targetedOneOff(self.nineId, self.nineTargetId, "point");
+		self.clearModal();
+		self.nineId = null;
+		self.nineTargetId = null;
+	};
+
 	self.targetedOneOff = function (cardId, targetId, targetType, pointId) {
 		var pId = null;
 		self.waitingForOp = true;
-		if (pointId) pId = pointId;
+		if (pointId) pId = pointId; //pointId only applies if player is targeting a jack; pointId is the ID of the attached point card
 		if (!self.resolvingSeven) {		
 			io.socket.put("/game/targetedOneOff", 
 			{
@@ -364,7 +414,10 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					// }
 					self.waitingForOp = false;
 					self.requestDenied(jwres);
-				}	
+				} else {
+					self.clearModal();
+					$scope.$apply();
+				}
 			});
 		}
 	}; //End targetedOneOff()
@@ -379,7 +432,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				cardId: cardId
 			},
 			function (res, jwres) {
-				console.log(jwres);
+				// console.log(jwres);
 			}
 		);
 	};
@@ -518,6 +571,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				if (jwres.statusCode != 200) {
 					// alert(jwres.error.message);
 					self.requestDenied(jwres);
+				} else {
+					self.clearModal();
+					$scope.$apply();
 				}
 			});
 		}
@@ -546,6 +602,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				if (jwres.statusCode != 200) {
 					// alert(jwres.error.message);
 					self.requestDenied(jwres);
+				} else {
+					self.clearModal();
+					$scope.$apply();
 				}
 			});
 		}
@@ -553,12 +612,18 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.dropOpPoint = function (targetIndex) {
 		switch (dragData.rank) {
 			case 9:
-				var conf = confirm("Press 'Ok' to Scuttle, and 'Cancel' to play your Nine as a One-Off");
-				if (conf) {
-					self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
-				} else {
-					self.targetedOneOff(dragData.id, self.opponent.points[targetIndex].id, "point");
-				}
+				// var conf = confirm("Press 'Ok' to Scuttle, and 'Cancel' to play your Nine as a One-Off");
+				// if (conf) {
+				// 	self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
+				// } else {
+				// 	self.targetedOneOff(dragData.id, self.opponent.points[targetIndex].id, "point");
+				// }
+				self.displayModal = true;
+				self.modalHeader = "Choose your move";
+				self.modalBody = "Would you like to Scuttle, or Play your nine as a One-Off?";
+				self.modalButtons = "Nine";
+				self.nineTargetId = self.opponent.points[targetIndex].id;
+				self.nineId = dragData.id;
 				break;
 			case 11:
 				self.jack(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
@@ -566,7 +631,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			// Can't play kings and queens on point card
 			case 12:
 			case 13:
-				alert("You can only play Kings and Queens in your own Runes");
+				self.displayModal = true;
+				self.modalHeader = "Illegal Action";
+				self.modalBody = "You can only play Kings and Queens in your Boons area";
+				self.modalButtons = "Okay";
+				// alert("You can only play Kings and Queens in your own Runes");
 				break;
 			default:
 				self.scuttle(dragData.id, self.game.players[(self.pNum + 1) % 2].points[targetIndex].id);
@@ -611,6 +680,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						// alert(jwres.error.message);
 						self.waitingForOp = false;
 						self.requestDenied(jwres);
+					} else {
+						self.clearModal();
+						$scope.$apply();
 					}
 				});
 			}
@@ -679,12 +751,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						},
 						function (res, jwres) {
 							// console.log(jwres);
-							self.resolvingFour = false;
-							self.cardsToDiscard = [];
 							if (jwres.statusCode != 200) {
 								// alert(jwres.error.message);
 								self.requestDenied(jwres);
 							} else {
+								self.resolvingFour = false;
+								self.cardsToDiscard = [];
+								self.clearModal();
 								$scope.$apply();
 							}
 						});
@@ -696,12 +769,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 						},
 						function (res, jwres) {
 							// console.log(jwres);
-							self.resolvingFour = false;
-							self.cardsToDiscard = [];
 							if (jwres.statusCode != 200) {
 								// alert(jwres.error.message);
 								self.requestDenied(jwres);
 							} else {
+								self.resolvingFour = false;
+								self.cardsToDiscard = [];
+								self.clearModal();						
 								$scope.$apply();
 							}
 
@@ -710,10 +784,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}
 		} else {
 			$event.stopPropagation();
-			if(self.viewCard != card) {
-				self.viewCard = card;
-			} else {
-				self.viewCard = null;
+			if (!self.displayModal && ! self.askCounter) {
+				if(self.viewCard != card) {
+					self.viewCard = card;
+				} else {
+					self.viewCard = null;
+				}
 			}
 		}
 
@@ -730,11 +806,13 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			cardId: self.game.scrap[index].id
 		}, function (res, jwres) {
 			self.resolvingThree = false;
-			$scope.$apply();
 			if (jwres.statusCode != 200) {
 				// alert(jwres.error.message);
 				self.requestDenied(jwres);
 				// console.log(jwres);
+			} else {
+				self.clearModal();
+				$scope.$apply();
 			}
 		})
 	}; //End chooseScrapCard()
@@ -952,31 +1030,41 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									// 	self.countering = true;
 									// }
 								} else {
-									alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because your opponent has a queen");
-									io.socket.put("/game/resolve", 
-										{opId: self.opponent.id},
-										function (res, jwres) {
-											if (jwres.statusCode != 200) {
-												// alert(jwres.error.message);
-												self.requestDenied(jwres);
-												console.log(jwres);
-											}
-									});
+									self.displayModal = true;
+									self.modalHeader = self.game.log[self.game.log.length - 1];
+									self.modalBody = "You cannot counter, because your opponent has a queen.";
+									self.modalButtons = "Resolve";
+									// alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because your opponent has a queen");
+									// io.socket.put("/game/resolve", 
+									// 	{opId: self.opponent.id},
+									// 	function (res, jwres) {
+									// 		if (jwres.statusCode != 200) {
+									// 			// alert(jwres.error.message);
+									// 			self.requestDenied(jwres);
+									// 			console.log(jwres);
+									// 		}
+									// });
 								}
 							} else {
-								alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
+								// alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
 								// Request resolution if can't counter
-								io.socket.put("/game/resolve", 
-									{
-										opId: self.opponent.id
-									},
-									function (res, jwres) {
-										if (jwres.statusCode != 200) {
-											// alert(jwres.error.message);
-											self.requestDenied(jwres);
-											console.log(jwres);
-										}
-								});
+								self.displayModal = true;
+								self.modalHeader = self.game.log[self.game.log.length - 1];
+								self.modalBody = "You cannot counter, because you do not have a two.";
+								self.modalButtons = "Resolve";
+
+
+								// io.socket.put("/game/resolve", 
+								// 	{
+								// 		opId: self.opponent.id
+								// 	},
+								// 	function (res, jwres) {
+								// 		if (jwres.statusCode != 200) {
+								// 			// alert(jwres.error.message);
+								// 			self.requestDenied(jwres);
+								// 			console.log(jwres);
+								// 		}
+								// });
 							}
 						}
 						break; //End oneOff & counter cases
@@ -989,7 +1077,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									if (obj.data.playedBy === self.player.pNum) {
 										self.waitingForOp = false;
 										self.resolvingThree = true;
-										alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");
+										self.displayModal = true;
+										self.modalHeader = "Your " + obj.data.oneOff.name + " has resolved";
+										self.modalBody = " Choose a card from the scrap pile to place in your hand."
+										self.modalButtons = "Okay";
+										// alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");
 									}
 								}
 								break; //End resolve 3 case
@@ -998,10 +1090,15 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									if (obj.data.playedBy === self.opponent.pNum) {
 										self.waitingForOp = false;
 										self.resolvingFour = true;
+										self.displayModal = true;
+										self.modalHeader = "Your opponent's " + obj.data.oneOff.name + " has resolved";
+										self.modalButtons = "Okay";
 										if (self.player.hand.length > 1) {
-											alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
+											self.modalBody = "You must discard two cards; click cards in your hand to discard them.";
+											// alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
 										} else {
-											alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
+											self.modalBody = "You only have one card in your hand; you must click it to discard it.";
+											// alert("Your opponent has resolved the " + obj.data.oneOff.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
 										}
 									}
 								}
@@ -1011,7 +1108,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 									if (obj.data.playedBy === self.pNum) {
 										self.waitingForOp = false;
 										self.resolvingSeven = true;
-										alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
+										self.displayModal = true;
+										self.modalHeader = "Your " + obj.data.oneOff.name + " has resolved";
+										self.modalButtons = "Okay";
+										self.modalBody = " Choose a card from the top two in the deck, and play it however you like.";
+										// alert("You have resolved the " + obj.data.oneOff.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
 									} else {
 										self.opResolvingSeven = true;
 									}
@@ -1050,7 +1151,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								// alert("Player " + obj.data.victory.winner + " has won!");
 							// Game ends in stalemate (no winner)
 							} else {
-								alert("Three passes in a row makes this game a stalemate. Well Played!");
+								self.displayModal = true;
+								self.modalHeader = "Stalemate";
+								self.modalBody = "Three passes in a row makes a stalemate. Well played!";
+								self.modalButtons = "Okay";
+								// alert("Three passes in a row makes this game a stalemate. Well Played!");
 							}
 						} else {
 							var loser = (obj.data.victory.winner + 1) % 2;
@@ -1108,10 +1213,8 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 
 
 	// If server says we are in a game, request game data on page load
-	console.log(menu.gameId);
 	if (menu.gameId) {
 		menu.tab = "gameView";
-		console.log("requesting game data");
 		io.socket.put("/game/gameData", function (res, jwres) {
 			if (jwres.statusCode != 200) {
 				console.log(jwres);
@@ -1261,7 +1364,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					}
 				});
 
-
+				///////////////////////////////////
+				// Check game status on refresh: //
+				///////////////////////////////////
 
 				// Determine if either player is countering
 				if (self.game.oneOff && !self.game.resolving) {
@@ -1271,30 +1376,38 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 										self.askCounter = true;
 									} else {
 										// Opponent has a queen; can't counter
-										alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because your opponent has a queen");
-										io.socket.put("/game/resolve", 
-											{opId: self.opponent.id},
-											function (res, jwres) {
-												if (jwres.statusCode != 200) {
-													alert(jwres.error.message);
-													console.log(jwres);
-												}
-										});
+										self.displayModal = true;
+										self.modalHeader = self.game.log[self.game.log.length - 1];
+										self.modalBody = "You cannot counter, because your opponent has a queen.";
+										self.modalButtons = "Resolve";
+										// alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because your opponent has a queen");
+
+										// io.socket.put("/game/resolve", 
+										// 	{opId: self.opponent.id},
+										// 	function (res, jwres) {
+										// 		if (jwres.statusCode != 200) {
+										// 			alert(jwres.error.message);
+										// 			console.log(jwres);
+										// 		}
+										// });
 									}
 								} else {
 									// No two's in hand; can't counter
-									alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
-									// Request resolution if can't counter
-									io.socket.put("/game/resolve", 
-										{
-											opId: self.opponent.id
-										},
-										function (res, jwres) {
-											if (jwres.statusCode != 200) {
-												alert(jwres.error.message);
-												console.log(jwres);
-											}
-									});
+									self.displayModal = true;
+									self.modalHeader = self.game.log[self.game.log.length - 1];
+									self.modalBody = "You cannot counter, because you do not have a two.";
+									self.modalButtons = "Resolve";									
+									// alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
+									// io.socket.put("/game/resolve", 
+									// 	{
+									// 		opId: self.opponent.id
+									// 	},
+									// 	function (res, jwres) {
+									// 		if (jwres.statusCode != 200) {
+									// 			alert(jwres.error.message);
+									// 			console.log(jwres);
+									// 		}
+									// });
 								}
 						} else {
 							self.waitingForOp = true;
@@ -1307,17 +1420,26 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								if (self.yourTurn) {
 									self.waitingForOp = false;
 									self.resolvingThree = true;		
-									alert("You have resolved the " + self.game.resolving.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");							
+									self.displayModal = true;
+									self.modalHeader = "Your " + self.game.resolving.name + " has resolved";
+									self.modalBody = " Choose a card from the scrap pile to place in your hand."
+									self.modalButtons = "Okay";
+									// alert("You have resolved the " + self.game.resolving.name + " as a one-off; now choose one card from the scrap pile to place in your hand.");							
 								}
 								break;
 							case 4:
 								if (!self.yourTurn) {
 									self.waitingForOp = false;
 									self.resolvingFour = true;
+									self.displayModal = true;
+									self.modalHeader = "Your opponent's " + self.game.resolving.name + " has resolved";
+									self.modalButtons = "Okay";
 									if (self.player.hand.length > 1) {
-										alert("Your opponent has resolved the " + self.game.resolving.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
+										self.modalBody = "You must discard two cards; click cards in your hand to discard them.";
+										// alert("Your opponent has resolved the " + self.game.resolving.name + " as a one-off; you must discard two cards. Click cards in your hand to discard them");
 									} else {
-										alert("Your opponent has resolved the " + self.game.resolving.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
+										self.modalBody = "You only have one card in your hand; you must click it to discard it.";
+										// alert("Your opponent has resolved the " + self.game.resolving.name + " as a one-off, and you only have one card in your hand; you must click it to discard it.");
 									}
 								} else {
 									self.waitingForOp = true;
@@ -1327,7 +1449,11 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 								self.waitingForOp = false;
 								if (self.yourTurn) {
 									self.resolvingSeven = true;
-									alert("You have resolved the " + self.game.resolving.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
+									self.displayModal = true;
+									self.modalHeader = "Your " + self.game.resolving.name + " has resolved";
+									self.modalButtons = "Okay";
+									self.modalBody = " Choose a card from the top two in the deck, and play it however you like.";									
+									// alert("You have resolved the " + self.game.resolving.name + " as a one-off; now choose a card from the top two in the deck, and play it however you like");
 								} else {
 									self.opResolvingSeven = true;
 								}
