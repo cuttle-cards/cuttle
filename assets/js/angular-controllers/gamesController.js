@@ -784,10 +784,12 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 			}
 		} else {
 			$event.stopPropagation();
-			if(self.viewCard != card) {
-				self.viewCard = card;
-			} else {
-				self.viewCard = null;
+			if (!self.displayModal && ! self.askCounter) {
+				if(self.viewCard != card) {
+					self.viewCard = card;
+				} else {
+					self.viewCard = null;
+				}
 			}
 		}
 
