@@ -1349,7 +1349,9 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 					}
 				});
 
-
+				///////////////////////////////////
+				// Check game status on refresh: //
+				///////////////////////////////////
 
 				// Determine if either player is countering
 				if (self.game.oneOff && !self.game.resolving) {
@@ -1359,30 +1361,38 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 										self.askCounter = true;
 									} else {
 										// Opponent has a queen; can't counter
-										alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because your opponent has a queen");
-										io.socket.put("/game/resolve", 
-											{opId: self.opponent.id},
-											function (res, jwres) {
-												if (jwres.statusCode != 200) {
-													alert(jwres.error.message);
-													console.log(jwres);
-												}
-										});
+										self.displayModal = true;
+										self.modalHeader = self.game.log[self.game.log.length - 1];
+										self.modalBody = "You cannot counter, because your opponent has a queen.";
+										self.modalButtons = "Resolve";
+										// alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because your opponent has a queen");
+
+										// io.socket.put("/game/resolve", 
+										// 	{opId: self.opponent.id},
+										// 	function (res, jwres) {
+										// 		if (jwres.statusCode != 200) {
+										// 			alert(jwres.error.message);
+										// 			console.log(jwres);
+										// 		}
+										// });
 									}
 								} else {
 									// No two's in hand; can't counter
-									alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
-									// Request resolution if can't counter
-									io.socket.put("/game/resolve", 
-										{
-											opId: self.opponent.id
-										},
-										function (res, jwres) {
-											if (jwres.statusCode != 200) {
-												alert(jwres.error.message);
-												console.log(jwres);
-											}
-									});
+									self.displayModal = true;
+									self.modalHeader = self.game.log[self.game.log.length - 1];
+									self.modalBody = "You cannot counter, because you do not have a two.";
+									self.modalButtons = "Resolve";									
+									// alert(self.game.log[self.game.log.length - 1] + " You cannot counter, because you do not have a two");
+									// io.socket.put("/game/resolve", 
+									// 	{
+									// 		opId: self.opponent.id
+									// 	},
+									// 	function (res, jwres) {
+									// 		if (jwres.statusCode != 200) {
+									// 			alert(jwres.error.message);
+									// 			console.log(jwres);
+									// 		}
+									// });
 								}
 						} else {
 							self.waitingForOp = true;
@@ -1390,7 +1400,6 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 				} 
 				// Determine if we are in the middle of resolving a three, four, or seven
 					if (self.game.resolving) {
-						// console.log(self.game);
 						switch(self.game.resolving.rank) {
 							case 3:
 								if (self.yourTurn) {
