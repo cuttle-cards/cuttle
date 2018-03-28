@@ -419,6 +419,12 @@ body {
                       left: 62%;
                       top: 2%;
                     }
+                  .modalOkay {
+                    position: absolute;
+                    display: inline-block;
+                    bottom: 10%;
+                    right: 5%;
+                  }
 /*              #deck-wrapper {
                 position: absolute;
 

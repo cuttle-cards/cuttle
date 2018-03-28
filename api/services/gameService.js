@@ -8,6 +8,7 @@ function tempUser (usr, points) {
 	this.runes = usr.runes;
 	this.frozenId = usr.frozenId;
 	this.id = usr.id;
+	this.userName = userService.truncateEmail(usr.email);
 };
 function tempGame (game, p0, p1) {
 	// console.log("\nMaking temp game:");
@@ -157,7 +158,8 @@ module.exports = {
 	checkWinGame: function (options) {
 		var res = {
 			gameOver: false,
-			winner: null
+			winner: null,
+			conceded: false
 		};
 		var p0Wins = userService.checkWin({user: options.game.players[0]});
 		var p1Wins = userService.checkWin({user: options.game.players[1]});

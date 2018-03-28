@@ -68,7 +68,6 @@ module.exports.policies = {
     ready:     'isLoggedIn',
     leaveLobby: ['isSocket', 'isLoggedIn', 'isInGame'],
     draw: ['isLoggedIn', 'isInGame'],
-    // draw: 'deleteSession',
     pass: ['isLoggedIn', 'isInGame'],
     points: ['isLoggedIn', 'isInGame', 'hasCardId'],
     runes: ['isLoggedIn', 'isInGame', 'hasCardId'],
@@ -92,8 +91,8 @@ module.exports.policies = {
     gameData: ['isLoggedIn', 'isInGame'],
 
     // DEVELOPMENT ONLY
-    stackDeck: false,
-    deleteDeck: false,
+    // stackDeck: true,
+    // deleteDeck: true,
 
   }
 };

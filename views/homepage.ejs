@@ -402,10 +402,13 @@
                                     <p>{{gc.modalBody}}</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-primary" ng-show="gc.modalButtons === 'Okay'" ng-click="gc.clearModal()">Okay</button>
-                                    <button class="btn btn-primary" ng-show="gc.modalButtons === 'Resolve'" ng-click="gc.resolve()">Okay</button>
+                                    <button class="btn btn-primary modalOkay" ng-show="gc.modalButtons === 'Okay'" ng-click="gc.clearModal()">Okay</button>
+                                    <button class="btn btn-primary modalOkay" ng-show="gc.modalButtons === 'Resolve'" ng-click="gc.resolve()">Okay</button>
                                     <button class="btn btn-primary" ng-show="gc.modalButtons === 'Nine'" ng-click="gc.nineScuttle()">Scuttle</button>
                                     <button class="btn btn-primary" ng-show="gc.modalButtons === 'Nine'" ng-click="gc.nineTargetedOneOff()">One-Off</button>
+                                    <button class="btn btn-primary modalOkay" ng-show="gc.modalButtons === 'gameOver'" ng-click="gc.returnToHome()">Leave Game</button>
+                                    <button class="btn btn-danger" ng-show="gc.modalButtons === 'Concede'" ng-click="gc.concede()">Concede</button>
+                                    <button class="btn btn-primary" ng-show="gc.modalButtons === 'Concede'" ng-click="gc.clearModal()">Fight on!</button>
                                 </div> <!--    End Modal Footer       -->
                             </div><!--  End Modal Content   -->
                           </div> <!--   End Modal wrapper     -->
@@ -422,7 +425,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <p>Click "Resolve" to allow the ONE-OFF to happen</p>
-                                    <button class="btn btn-primary" ng-click="gc.resolve()">Resolve</button>
+                                    <button class="btn btn-primary modalOkay" ng-click="gc.resolve()">Resolve</button>
                                 </div> <!--    End Modal Footer       -->
                             </div><!--  End Modal Content   -->
                           </div> <!--   End Modal wrapper     -->
@@ -468,7 +471,7 @@
                                 </div>
                                 <!-- Your king squares -->
                             </div>
-                            <button type="button" class="btn btn-danger btn-lg btn-secondary" id="concedeButton" ng-click="gc.concede()">Concede</button>
+                            <button type="button" class="btn btn-danger btn-lg btn-secondary" id="concedeButton" ng-click="gc.askConcede()">Concede</button>
 
                             <!-- DEVELOPMENT ONLY - REMOVE IN PRODUCTION -->
 <!--                             <button ng-click="gc.showDeck = !gc.showDeck" id="toggleDeck">Toggle Deck</button>
