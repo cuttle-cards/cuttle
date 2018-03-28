@@ -29,7 +29,6 @@ app.controller("gamesOverviewController", ['$scope', '$http', function($scope, $
 				menu.tab = "lobby";
 				menu.userId = res.playerId;
 				menu.gameId = gameId;
-				console.log("set userId: " + menu.userId);
 				if (res.game.p0Ready || res.game.p1Ready) {
 					menu.opReady = true;
 				}

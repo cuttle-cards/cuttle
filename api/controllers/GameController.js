@@ -695,7 +695,7 @@ module.exports = {
 								if (player.frozenId != card.id) {
 									game.oneOff = card;
 									player.hand.remove(card.id);
-									game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText);
+									game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a one-off to" + card.ruleText);
 									var saveGame = gameService.saveGame({game: game});
 									var savePlayer = userService.saveUser({user: player});
 									return Promise.all([saveGame, savePlayer]);
@@ -1625,7 +1625,8 @@ module.exports = {
 		.then(function publishAndRespond (game) {
 			var victory = {
 				gameOver: true,
-				winner: (req.session.pNum + 1) % 2
+				winner: (req.session.pNum + 1) % 2,
+				conceded: true
 			};
 			Game.publishUpdate(game.id,
 			{
