@@ -75,7 +75,7 @@ app.controller("gamesController", ['$scope', '$http', function ($scope, $http) {
 	self.askConcede = function () {
 		self.displayModal = true;
 		self.modalHeader = "Are you sure you want to concede?";
-		self.modalBody = "Your opponent will will the game, and you will both be brought to the homepage";
+		self.modalBody = "Your opponent will win the game, and you will both be brought to the homepage";
 		self.modalButtons = "Concede";
 	};
 

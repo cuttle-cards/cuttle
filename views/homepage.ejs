@@ -20,7 +20,7 @@
             <div id="buttonWrapper" class="btn-group" ng-hide="menu.tab === 'lobby'">
                 <button ng-click="menu.tab='signup'" ng-hide="menu.loggedIn" class="btn btn-default" ng-class="{'activeTab': menu.tab==='signup'}" id="signupButton">Sign Up</button>
                 <button ng-click="menu.tab='login'" ng-hide="menu.loggedIn" class="btn btn-default" ng-class="{'activeTab': menu.tab==='login'}">Log In</button>
-                <button ng-click="menu.logOut()" ng-show="menu.loggedIn" class="btn btn-default">Log Out</button>
+                <button ng-click="menu.logOut()" ng-show="menu.loggedIn && menu.tab != 'gameView' && menu.tab != 'rules'" class="btn btn-default">Log Out</button>
                 <button ng-click="menu.requestGames()" ng-hide="!menu.loggedIn || menu.tab==='lobby' || menu.tab==='gameView' || (menu.tab==='rules' && menu.gameId != null)" class="btn btn-default" ng-class="{'activeTab': menu.tab === 'gamesOverview'}">Games</button>
                 <button ng-click="menu.tab='gameView'" ng-show="(menu.tab==='rules' && menu.gameId != null) || menu.tab==='gameView'" class="btn btn-default" ng-class="{'activeTab': menu.tab==='gameView'}">Game</button>
                 <button ng-click="menu.tab='rules'" class="btn btn-default" ng-show="menu.tab !='lobby'" ng-class="{'activeTab': menu.tab==='rules'}">Rules</button>

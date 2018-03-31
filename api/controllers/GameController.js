@@ -1618,11 +1618,12 @@ module.exports = {
 
 	// Player requests to concede game
 	concede: function (req, res) {
-		var promiseClearOldGame = gameService.clearGame({userId: req.session.usr})
+		var fullGame = gameService.populateGame({gameId: req.session.game})
 		.then(function clearGame (game) {
-			return  gameService.populateGame({gameId: req.session.game})
+			return  Promise.all([Promise.resolve(game), gameService.clearGame({userId: req.session.usr})]);
 		})
-		.then(function publishAndRespond (game) {
+		.then(function publishAndRespond (values) {
+			game = values[0];
 			var victory = {
 				gameOver: true,
 				winner: (req.session.pNum + 1) % 2,
