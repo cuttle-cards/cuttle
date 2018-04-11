@@ -202,21 +202,25 @@ module.exports = {
 				var game = values[0], player = values[1];
 				if (game) {
 					var opponent = game.players[(player.pNum + 1) % 2];
-					opponent.hand.forEach(function (card) {
-						opponent.hand.remove(card.id);
-					});
-					opponent.points.forEach(function (card) {
-						opponent.points.remove(card.id);
-					});
-					opponent.runes.forEach(function (card) {
-						opponent.runes.remove(card.id);
-					});
-					opponent.frozenId = null;
-					opponent.pNum = null;
+					if (opponent) {
+						opponent.hand.forEach(function (card) {
+							opponent.hand.remove(card.id);
+						});
+						opponent.points.forEach(function (card) {
+							opponent.points.remove(card.id);
+						});
+						opponent.runes.forEach(function (card) {
+							opponent.runes.remove(card.id);
+						});
+						opponent.frozenId = null;
+						opponent.pNum = null;
+						game.players.remove(opponent.id);
+						var saveOpponent = userService.saveUser({user: opponent});
+					} else {
+						var saveOpponent = Promise.resolve(null);
+					}
 					game.players.remove(player.id);
-					game.players.remove(opponent.id);
 					var saveGame = gameService.saveGame({game: game});
-					var saveOpponent = userService.saveUser({user: opponent});
 				} else {
 					var saveGame = Promise.resolve(null);
 					var saveOpponent = Promise.resolve(null);
@@ -227,7 +231,7 @@ module.exports = {
 			})
 			.catch(function failed (err) {
 				console.log(err);
-				return res.badRequest(err);
+				return Promise.reject(err);
 			});
 		});
 	},
