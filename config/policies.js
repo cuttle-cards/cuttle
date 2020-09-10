@@ -94,10 +94,11 @@ module.exports.policies = {
     //////////////////////
     // DEVELOPMENT ONLY //
     //////////////////////
-    // stackDeck: true,
-    // deleteDeck: true,
-    // clearGame: true,
-
-
+    stackDeck: 'developmentOnly',
+    deleteDeck: 'developmentOnly',
+    clearGame: 'developmentOnly',
+  },
+  TestController: {
+    '*': 'developmentOnly',
   }
 };
