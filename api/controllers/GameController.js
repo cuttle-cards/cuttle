@@ -115,7 +115,7 @@ module.exports = {
 				// Respond with 200
 				var game = values [0];
 				var user = values[1];
-				return res.ok({game: game, playerId: user.id});
+				return res.ok({game: game, playerId: user.id, pNum: user.pNum});
 			})
 			.catch(function failure (error) {
 				return res.badRequest(error);
@@ -233,6 +233,7 @@ module.exports = {
 					{
 						change: 'ready',
 						userId: user.id,
+						pNum: user.pNum
 					})
 					return Promise.all([saveGame, saveUser]);
 				}
@@ -394,7 +395,6 @@ module.exports = {
 				winner: null
 			};
 			if (game.passes > 2) {
-				// console.log("Game is a stalemate");
 				victory.gameOver = true
 			}
 			Game.publishUpdate(game.id,
@@ -1700,7 +1700,6 @@ module.exports = {
 
 	clearGame: function (req, res) {
 		gameService.clearGame({userId: req.session.usr}).then(function postClear (result) {
-			console.log("clearGame action after service call");
 			return res.ok();
 		});
 	},
