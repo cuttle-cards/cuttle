@@ -28,7 +28,7 @@ var Promise = require('bluebird');
 		},
 		findOpenGames: function () {
 			return new Promise(function (resolve, reject) {
-				Game.find({status: true}).exec(function (error, games) {
+				Game.find({status: true}).populate('players').exec(function (error, games) {
 					if (error || !games) {
 						var res;
 						if (error) {

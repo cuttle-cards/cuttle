@@ -30,7 +30,8 @@ module.exports = {
 				Game.publishCreate({
 					id: game.id,
 					name: game.name,
-					status: game.status
+					status: game.status,
+					players: [],
 				});
 				return res.ok({gameId: game.id});
 			}).catch(function (reason) {
@@ -94,8 +95,8 @@ module.exports = {
 						pNum = 0;
 					} else {
 						pNum = (game.players[0].pNum + 1) % 2;
-						sails.sockets.blast("gameFull", {id: game.id});
 						game.status = false;
+						sails.sockets.blast("gameFull", {id: game.id});
 					}
 				} else {
 					pNum = 0;
@@ -112,9 +113,16 @@ module.exports = {
 				
 			})
 			.then(function respond (values) {
-				// Respond with 200
 				var game = values [0];
 				var user = values[1];
+				// Socket announcement that player joined game
+				sails.sockets.blast('join',
+					{
+						gameId: game.id,
+						newPlayer: user,
+						newStatus: game.status,
+					});
+				// Respond with 200
 				return res.ok({game: game, playerId: user.id, pNum: user.pNum});
 			})
 			.catch(function failure (error) {
