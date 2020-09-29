@@ -81,7 +81,7 @@ module.exports.routes = {
   '/game/concede'                 :   'gameController.concede',
   '/game/chat'                    :   'gameController.chat',
   '/game/gameData'                :   'gameController.gameData',
-
+  '/game/lobbyData'               :   'gameController.lobbyData',
   // DEVELOPMENT ONLY
   '/game/stackDeck'               :   'gameController.stackDeck',
   '/game/deleteDeck'              :   'gameController.deleteDeck',
