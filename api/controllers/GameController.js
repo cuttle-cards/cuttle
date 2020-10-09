@@ -289,7 +289,7 @@ module.exports = {
 			delete(req.session.game);
 			delete(req.session.pNum);
 			// Publish update to all users, then respond w/ 200
-			sails.sockets.blast("leftGame", {id: values[0].id});
+			sails.sockets.blast("leftGame", {id: values[0].id}, req);
 			return res.ok();
 		})
 		.catch(function failed (err) {
