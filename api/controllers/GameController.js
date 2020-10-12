@@ -9,7 +9,6 @@
  // Dependencies //
  //////////////////
 var Promise = require('bluebird');
-const gameService = require('../services/gameService');
 var gameAPI = sails.hooks['customgamehook'];
 var userAPI = sails.hooks['customuserhook'];
 
