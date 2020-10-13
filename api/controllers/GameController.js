@@ -119,11 +119,12 @@ module.exports = {
 				sails.sockets.blast('join',
 					{
 						gameId: game.id,
-						newPlayer: user,
+						newPlayer: {email: user.email, pNum: user.pNum},
 						newStatus: game.status,
-					});
+					},
+					req);
 				// Respond with 200
-				return res.ok({game: game, playerId: user.id, pNum: user.pNum});
+				return res.ok({game: game, playerEmail: user.email, pNum: user.pNum});
 			})
 			.catch(function failure (error) {
 				return res.badRequest(error);
@@ -287,7 +288,7 @@ module.exports = {
 			delete(req.session.game);
 			delete(req.session.pNum);
 			// Publish update to all users, then respond w/ 200
-			sails.sockets.blast("leftGame", {id: values[0].id});
+			sails.sockets.blast("leftGame", {id: values[0].id}, req);
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -1671,6 +1672,29 @@ module.exports = {
 		.catch(function failed (err) {
 			console.log(err);
 			res.badRequest(err);
+		});
+	},
+
+	lobbyData: function (req, res) {
+		gameService.findGame({gameId: req.session.game})
+		.then(function sendResponse(game) {
+			const players = [];
+			if (game.players.length > 0) {
+				players.push({email: game.players[0].email, pNum: 0});
+				if (game.players.length > 1) {
+					players.push({email: game.players[1].email, pNum: 1});
+				}
+			}
+			const lobbyData = {
+				id: game.id,
+				players: players,
+				p0Ready: game.p0Ready,
+				p1Ready: game.p1Ready
+			}
+			return res.ok(lobbyData);
+		})
+		.catch(function failed (err) {
+			return res.badRequest(err);
 		});
 	},
 

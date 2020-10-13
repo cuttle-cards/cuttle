@@ -89,6 +89,7 @@ module.exports.policies = {
     gameOver: ['isLoggedIn', 'isInGame'],
     chat: ['isLoggedIn', 'isInGame'],
     gameData: ['isLoggedIn', 'isInGame'],
+    lobbyData: ['isLoggedIn', 'isInGame'],
 
 
     //////////////////////
