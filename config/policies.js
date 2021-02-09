@@ -98,6 +98,7 @@ module.exports.policies = {
     stackDeck: 'developmentOnly',
     deleteDeck: 'developmentOnly',
     clearGame: 'developmentOnly',
+    loadFixture: 'developmentOnly',
   },
   TestController: {
     '*': 'developmentOnly',
