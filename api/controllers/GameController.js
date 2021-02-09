@@ -1905,28 +1905,22 @@ module.exports = {
 			// Add cards to p1's face cards
 			p1.runes.add(cardId);
 		});
-		return Promise.all([game.save(), p0.save(), p1.save()])
-		.then(async (savedValues) => {
-			let game;
-			try {
-				game = await gameService.populateGame({gameId: req.session.game});
-			}
-			catch (err) {
-				console.log('error populating game for update when loading fixture');
-				console.log(err);
-				return res.badRequest(err);
-			}
-			Game.publishUpdate(game.id,
-				{
-					change: 'loadFixture',
-					game,
-				});
-				return res.ok(game);
-		})
-		.catch((err) => {
-			console.log('error saving records when loading fixture');
+		try {
+			await Promise.all([game.save(), p0.save(), p1.save()])
+			game = await gameService.populateGame({gameId: req.session.game});
+		}
+		catch (err) {
+			console.log('error saving or populating game for update when loading fixture');
+			console.log(err);
 			return res.badRequest(err);
-		});
+		}
+		Game.publishUpdate(game.id,
+			{
+				change: 'loadFixture',
+				game,
+			}
+		);
+		return res.ok(game);
 	},
 };
 
