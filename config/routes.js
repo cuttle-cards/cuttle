@@ -85,7 +85,7 @@ module.exports.routes = {
   // DEVELOPMENT ONLY
   '/game/stackDeck'               :   'gameController.stackDeck',
   '/game/deleteDeck'              :   'gameController.deleteDeck',
-  
+  '/game/loadFixture'              :   'gameController.loadFixture',
   '/game/clear'                   :   'gameController.clearGame',
   
   // Testing helpers

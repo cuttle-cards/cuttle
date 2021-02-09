@@ -9,6 +9,7 @@
  // Dependencies //
  //////////////////
 var Promise = require('bluebird');
+const gameService = require('../services/gameService');
 var gameAPI = sails.hooks['customgamehook'];
 var userAPI = sails.hooks['customuserhook'];
 
@@ -1792,5 +1793,140 @@ module.exports = {
 			return res.badRequest(err);
 		});
 	}, //End deleteDeck
+
+	loadFixture: async function(req, res) {
+		let p0HandCardIds;
+		let p1HandCardIds;
+		let p0PointCardIds;
+		let p1PointCardIds;
+		let p0FaceCardIds;
+		let p1FaceCardIds;
+		let game;
+		let p0;
+		let p1;
+		try {
+			game = await Game.findOne({id: req.session.game});
+			p0 = await User.findOne({id: req.body.p0Id}).populateAll();
+			p1 = await User.findOne({id: req.body.p1Id}).populateAll();
+			({
+				p0HandCardIds,
+				p1HandCardIds,
+				p0PointCardIds,
+				p1PointCardIds,
+				p0FaceCardIds,
+				p1FaceCardIds,
+			} = req.body);
+		}
+		catch (err) {
+			console.log('Error finding records to load fixture');
+			console.log(err);
+			return res.badRequest(err);
+		}
+		// Clear hands
+		p0.hand.forEach((card) => {
+			if (!p0HandCardIds.includes(card.id)) {
+				p0.hand.remove(card.id);
+			}
+		});
+		p1.hand.forEach((card) => {
+			if (!p1HandCardIds.includes(card.id)) {
+				p1.hand.remove(card.id);
+			}
+		});
+		// P0 Hand
+		p0HandCardIds.forEach((cardId) => {
+			// Remove cards from wherever they are
+			p0.points.remove(cardId);
+			p0.runes.remove(cardId);
+			p1.points.remove(cardId);
+			p1.runes.remove(cardId);
+			game.deck.remove(cardId);
+			game.scrap.remove(cardId);
+			// Add cards to p0's hand
+			p0.hand.add(cardId);
+		});
+		// P1 Hand
+		p1HandCardIds.forEach((cardId) => {
+			// Remove cards from wherever they are
+			p0.points.remove(cardId);
+			p0.runes.remove(cardId);
+			p1.points.remove(cardId);
+			p1.runes.remove(cardId);
+			game.deck.remove(cardId);
+			game.scrap.remove(cardId);
+			// Add cards to p1's hand
+			p1.hand.add(cardId);
+		});
+		// P0 Points
+		p0PointCardIds.forEach((cardId) => {
+			// Remove cards from wherever they are
+			p0.runes.remove(cardId);
+			p0.hand.remove(cardId);
+			p1.runes.remove(cardId);
+			p1.hand.remove(cardId);
+			game.deck.remove(cardId);
+			game.scrap.remove(cardId);
+			// Add cards to p0's points
+			p0.points.add(cardId);
+		});
+		// P1 Points
+		p1PointCardIds.forEach((cardId) => {
+			// Remove cards from wherever they are
+			p0.hand.remove(cardId);
+			p0.runes.remove(cardId);
+			p1.hand.remove(cardId);
+			p1.runes.remove(cardId);
+			game.deck.remove(cardId);
+			game.scrap.remove(cardId);
+			// Add cards to p1's points
+			p1.points.add(cardId);
+		});
+		// P0 Face Cards
+		p0FaceCardIds.forEach((cardId) => {
+			// Remove cards from wherever they are
+			p0.hand.remove(cardId);
+			p0.points.remove(cardId);
+			p1.hand.remove(cardId);
+			p1.points.remove(cardId);
+			game.deck.remove(cardId);
+			game.scrap.remove(cardId);
+			// Add cards to p0's face cards
+			p0.runes.add(cardId);
+		});
+		// P1 Face Cards
+		p1FaceCardIds.forEach((cardId) => {
+			// Remove cards from wherever they are
+			p0.hand.remove(cardId);
+			p0.points.remove(cardId);
+			p1.hand.remove(cardId);
+			p1.points.remove(cardId);
+			game.deck.remove(cardId);
+			game.scrap.remove(cardId);
+			// Add cards to p1's face cards
+			p1.runes.add(cardId);
+		});
+		return Promise.all([game.save(), p0.save(), p1.save()])
+		.then(async (savedValues) => {
+			let game;
+			try {
+				game = await gameService.populateGame({gameId: req.session.game});
+			}
+			catch (err) {
+				console.log('error populating game for update when loading fixture');
+				console.log(err);
+				return res.badRequest(err);
+			}
+			Game.publishUpdate(game.id,
+				{
+					change: 'loadFixture',
+					game,
+				});
+				return res.ok(game);
+		})
+		.catch((err) => {
+			console.log('error saving records when loading fixture');
+			return res.badRequest(err);
+		});
+	},
 };
 
