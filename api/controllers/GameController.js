@@ -208,7 +208,7 @@ module.exports = {
 						game.topCard = deck[random];
 						game.deck.remove(deck[random].id);
 						dealt.push(random);
-						// Then assign secon card
+						// Then assign second card
 						while (dealt.indexOf(random) >= 0) {
 							random = Math.floor((Math.random() * ((max + 1) - min)) + min);
 						}
@@ -1825,11 +1825,13 @@ module.exports = {
 		p0.hand.forEach((card) => {
 			if (!p0HandCardIds.includes(card.id)) {
 				p0.hand.remove(card.id);
+				game.deck.add(card.id);
 			}
 		});
 		p1.hand.forEach((card) => {
 			if (!p1HandCardIds.includes(card.id)) {
 				p1.hand.remove(card.id);
+				game.deck.add(card.id);
 			}
 		});
 		// P0 Hand
@@ -1912,6 +1914,21 @@ module.exports = {
 			console.log('error saving or populating game for update when loading fixture');
 			console.log(err);
 			return res.badRequest(err);
+		}
+		let replacedTopOrSecondCard = false;
+		if (!game.topCard) {
+			game.topCard = game.deck[0];
+			game.deck.remove(game.deck[0]);
+			replacedTopOrSecondCard = true;
+		}
+		if (!game.secondCard) {
+			game.secondCard = game.deck[1];
+			game.deck.remove(game.deck[0]);
+			replacedTopOrSecondCard = true;
+		}
+		if (replacedTopOrSecondCard) {
+			game = await game.save();
+			game = await gameService.populateGame({gameId: req.session.game});
 		}
 		Game.publishUpdate(game.id,
 			{
