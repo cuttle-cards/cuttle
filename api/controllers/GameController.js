@@ -1800,6 +1800,8 @@ module.exports = {
 		let p1PointCardIds;
 		let p0FaceCardIds;
 		let p1FaceCardIds;
+		let topCardId;
+		let secondCardId;
 		let game;
 		let p0;
 		let p1;
@@ -1814,6 +1816,8 @@ module.exports = {
 				p1PointCardIds,
 				p0FaceCardIds,
 				p1FaceCardIds,
+				topCardId,
+				secondCardId
 			} = req.body);
 		}
 		catch (err) {
@@ -1906,6 +1910,31 @@ module.exports = {
 			// Add cards to p1's face cards
 			p1.runes.add(cardId);
 		});
+		// Top & Second Cards
+		if (topCardId) {
+			p0.hand.remove(topCardId);
+			p0.points.remove(topCardId);
+			p0.runes.remove(topCardId);
+			p1.hand.remove(topCardId);
+			p1.points.remove(topCardId);
+			p1.runes.remove(topCardId);
+			game.deck.remove(topCardId);
+			game.scrap.remove(topCardId);
+
+			game.topCard = topCardId;
+		}
+		if (secondCardId) {
+			p0.hand.remove(secondCardId);
+			p0.points.remove(secondCardId);
+			p0.runes.remove(secondCardId);
+			p1.hand.remove(secondCardId);
+			p1.points.remove(secondCardId);
+			p1.runes.remove(secondCardId);
+			game.deck.remove(secondCardId);
+			game.scrap.remove(secondCardId);
+
+			game.secondCard = secondCardId;
+		}
 		try {
 			await Promise.all([game.save(), p0.save(), p1.save()])
 			game = await gameService.populateGame({gameId: req.session.game});
