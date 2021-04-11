@@ -1246,7 +1246,7 @@ module.exports = {
 			var victory = gameService.checkWinGame({game: fullGame});
 			Game.publishUpdate(fullGame.id,
 			{
-				change: 'resolveFour',
+				change: 'resolveThree',
 				game: fullGame,
 				victory: victory
 			});
