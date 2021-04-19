@@ -22,7 +22,7 @@ module.exports = {
 		Game.subscribe(req, req.session.game);
 		Game.watch(req);
 		return res.ok();
-	},	
+	},
 	create: function(req, res) {
 		if (req.body.gameName) {
 			var promiseCreateGame = gameAPI.createGame(req.body.gameName)
@@ -74,7 +74,7 @@ module.exports = {
 			})
 			.catch(function failure (error) {
 				return res.badRequest(error);
-			});		
+			});
 		}
 	}, //End getList()
 
@@ -110,7 +110,7 @@ module.exports = {
 				var saveGame = gameService.saveGame({game: game});
 				var savePlayer = userService.saveUser({user: user});
 				return Promise.all([saveGame, savePlayer]);
-				
+
 			})
 			.then(function respond (values) {
 				var game = values [0];
@@ -169,7 +169,7 @@ module.exports = {
 								data.push(promiseCard);
 							}
 						};
-						return resolveMakeDeck(Promise.all(data));			
+						return resolveMakeDeck(Promise.all(data));
 					})
 					.then(function deal (values) {
 						var p0 = values[0];
@@ -214,7 +214,7 @@ module.exports = {
 						}
 						game.secondCard = deck[random];
 						game.deck.remove(deck[random].id);
-						dealt.push(random);		
+						dealt.push(random);
 
 						return Promise.resolve([game, p0, p1]);
 					})
@@ -238,7 +238,7 @@ module.exports = {
 				} else {
 					var saveGame = gameService.saveGame({game: game});
 					var saveUser = userService.saveUser({user: user});
-					Game.publishUpdate(game.id, 
+					Game.publishUpdate(game.id,
 					{
 						change: 'ready',
 						userId: user.id,
@@ -334,12 +334,12 @@ module.exports = {
 			game.topCard = null;
 			if (game.secondCard) {
 				game.topCard = game.secondCard;
-				if (game.deck.length > 0) {				
+				if (game.deck.length > 0) {
 					var min = 0;
 					var max = game.deck.length - 1;
 					var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
 					game.secondCard = game.deck[random];
-					game.deck.remove(game.deck[random].id);	
+					game.deck.remove(game.deck[random].id);
 				} else {
 					game.secondCard = null;
 				}
@@ -443,7 +443,7 @@ module.exports = {
 								return Promise.all([saveGame, savePlayer]);
 							} else {
 								return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
-							}								
+							}
 						} else {
 							return Promise.reject(new Error("You can only play a number card as points."));
 						}
@@ -735,7 +735,7 @@ module.exports = {
 				change: 'oneOff',
 				game: fullGame,
 				pNum: req.session.pNum,
-				victory: victory 
+				victory: victory
 			});
 			return res.ok();
 		})
@@ -785,7 +785,7 @@ module.exports = {
 								game.oneOffTargetType = targetType;
 								game.attachedToTarget = null;
 								if (point) game.attachedToTarget = point;
-								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
+								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
 								return Promise.all([saveGame, savePlayer]);
@@ -802,7 +802,7 @@ module.exports = {
 				} else {
 					return Promise.reject(new Error("There is already a one-off in play; you cannot play any card, except a two to counter."));
 				}
-			} else {	
+			} else {
 				return Promise.reject(new Error("It's not your turn."));
 			}
 		}) //End changeAndSave()
@@ -988,7 +988,7 @@ module.exports = {
 						var handLen = player.hand.length;
 						player.hand.add(game.topCard.id);
 						game.topCard = null;
-						if (handLen < 7) {						
+						if (handLen < 7) {
 							//Draw second card, if it exists
 							if (game.secondCard) {
 								game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws two cards.");
@@ -1008,7 +1008,7 @@ module.exports = {
 										random = Math.floor((Math.random() * ((max + 1) - min)) + min);
 										game.secondCard = game.deck[random].id;
 										game.deck.remove(game.deck[random].id);
-									}								
+									}
 								}
 							} else {
 								game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws the last card.");
@@ -1022,19 +1022,19 @@ module.exports = {
 								var max = game.deck.length - 1;
 								var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
 								game.topCard = game.deck[random].id;
-								game.deck.remove(game.deck[random].id);		
+								game.deck.remove(game.deck[random].id);
 								// If more cards are left in deck, replace second card with card from deck
 								if (game.deck.length > 0) {
-									game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws one card to reach the hand limit.");							
+									game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws one card to reach the hand limit.");
 									min = 0;
 									max = game.deck.length - 1;
 									random = Math.floor((Math.random() * ((max + 1) - min)) + min);
 									game.secondCard = game.deck[random].id;
-									game.deck.remove(game.deck[random].id);		
+									game.deck.remove(game.deck[random].id);
 									// Player draws last card in deck, to reach hand limit (only draws 1)
 								} else {
 									game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws one card (last in deck) to reach the hand limit.");
-								}						
+								}
 							}
 						}
 						game.passes = 0;
@@ -1062,7 +1062,7 @@ module.exports = {
 									if (jackCount % 2 === 1) {
 										opponent.points.add(point.id);
 										// player.points.remove(point.id);
-									} 
+									}
 								} //End jackCount > 0
 							});
 						}
@@ -1079,13 +1079,13 @@ module.exports = {
 									if (jackCount % 2 === 1) {
 										//This switches the card to the other player's points
 										player.points.add(point.id);
-									} 
+									}
 								} //End jackCount > 0
-							});	
+							});
 						}
 						game.passes = 0;
 						game.turn++;
-						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");					
+						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");
 						break; //End resolve SIX
 					case 7:
 						game.resolving = game.oneOff;
@@ -1122,7 +1122,7 @@ module.exports = {
 								cardsToSave.push(cardService.saveCard({card: game.oneOffTarget}));
 								player.points.add(game.attachedToTarget.id);
 								game.oneOffTarget = null;
-								game.attachedToTarget = null;								
+								game.attachedToTarget = null;
 								break;
 						}
 						game.passes = 0;
@@ -1154,7 +1154,7 @@ module.exports = {
 			var victory = gameService.checkWinGame({game: fullGame});
 
 
-			Game.publishUpdate(fullGame.id, 
+			Game.publishUpdate(fullGame.id,
 			{
 				change: "resolve",
 				oneOff: oneOff,
@@ -1275,7 +1275,7 @@ module.exports = {
 						game = gameService.sevenCleanUp({game: game, index: req.body.index});
 						game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " off the top of the deck as points");
 						game.passes = 0;
-						game.turn++;	
+						game.turn++;
 						game.resolving = null;
 						var saveGame = gameService.saveGame({game: game})					;
 						var savePlayer = userService.saveUser({user: player});
@@ -1357,7 +1357,7 @@ module.exports = {
 		})
 		.catch(function failed (err) {
 			return res.badRequest(err);
-		});		
+		});
 	}, //End sevenRunes
 
 	sevenScuttle: function (req, res) {
@@ -1379,7 +1379,7 @@ module.exports = {
 								target.attachments.forEach(function (jack) {
 									target.attachments.remove(jack.id);
 									game.scrap.add(jack.id);
-								});								
+								});
 								opponent.points.remove(target.id);
 								player.hand.remove(card.id);
 								player.frozenId = null;
@@ -1466,7 +1466,7 @@ module.exports = {
 				}
 			} else {
 				return Promise.reject(new Error("It's not your turn"));
-			}		
+			}
 		})
 		.then(function populateGame (values) {
 			return gameService.populateGame({gameId: values[0].id});
@@ -1485,14 +1485,14 @@ module.exports = {
 		})
 		.catch(function failed (err) {
 			return res.badRequest(err);
-		});		
+		});
 	}, //End sevenJack()
 
 	sevenUntargetedOneOff: function (req, res) {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseCard = cardService.findCard({cardId: req.body.cardId});
-		Promise.all([promiseGame, promisePlayer, promiseCard])		
+		Promise.all([promiseGame, promisePlayer, promiseCard])
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], card = values[2];
 			if (game.turn % 2 === player.pNum) {
@@ -1567,7 +1567,7 @@ module.exports = {
 		} else {
 			promisePoint = Promise.resolve(null);
 		}
-		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, Promise.resolve(targetType), promisePoint])		
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, Promise.resolve(targetType), promisePoint])
 		.then(function changeAndSave (values) {
 			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4], targetType = values[5], point = values[6];
 			if (game.turn % 2 === player.pNum) {
@@ -1586,14 +1586,14 @@ module.exports = {
 							default:
 								return Promise.reject(new Error("You cannot play a TARGETTED ONE-OFF when your opponent has more than one Queen"));
 								break;
-						} //End queenCount validation		
+						} //End queenCount validation
 							game.resolving = null;
 							game.oneOff = card;
 							game.oneOffTarget = target;
 							game.oneOffTargetType = targetType;
 							game.attachedToTarget = null;
 							if (point) game.attachedToTarget = point;
-							game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);							
+							game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);
 							game = gameService.sevenCleanUp({game: game, index: req.body.index});
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});
@@ -1647,7 +1647,7 @@ module.exports = {
 			return res.ok();
 		}).catch(function failed (err) {
 			return res.badRequest(err);
-		});	
+		});
 	},
 
 	gameOver: function (req, res) {
@@ -1754,7 +1754,7 @@ module.exports = {
 			return gameService.populateGame({gameId: game.id});
 		})
 		.then(function publishUpdate (game) {
-			Game.publishUpdate(game.id, 
+			Game.publishUpdate(game.id,
 			{
 				change: 'stackDeck',
 				game: game,
