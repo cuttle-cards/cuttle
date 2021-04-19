@@ -1802,6 +1802,7 @@ module.exports = {
 		let p1FaceCardIds;
 		let topCardId;
 		let secondCardId;
+    let scrapCardIds;
 		let game;
 		let p0;
 		let p1;
@@ -1817,7 +1818,8 @@ module.exports = {
 				p0FaceCardIds,
 				p1FaceCardIds,
 				topCardId,
-				secondCardId
+				secondCardId,
+        scrapCardIds
 			} = req.body);
 		}
 		catch (err) {
@@ -1935,6 +1937,14 @@ module.exports = {
 
 			game.secondCard = secondCardId;
 		}
+    if (scrapCardIds) {
+      scrapCardIds.forEach((cardId) => {
+			  // Remove cards from wherever they ar
+			  game.deck.remove(cardId);
+			  // Add cards to scrap
+			  game.scrap.add(cardId)
+		  })
+    }
 		try {
 			await Promise.all([game.save(), p0.save(), p1.save()])
 			game = await gameService.populateGame({gameId: req.session.game});
