@@ -1806,6 +1806,8 @@ module.exports = {
 		let game;
 		let p0;
 		let p1;
+
+		
 		try {
 			game = await Game.findOne({id: req.session.game});
 			p0 = await User.findOne({id: req.body.p0Id}).populateAll();
@@ -1819,7 +1821,7 @@ module.exports = {
 				p1FaceCardIds,
 				topCardId,
 				secondCardId,
-        scrapCardIds
+				scrapCardIds
 			} = req.body);
 		}
 		catch (err) {
@@ -1942,8 +1944,8 @@ module.exports = {
 			  // Remove cards from wherever they ar
 			  game.deck.remove(cardId);
 			  // Add cards to scrap
-			  game.scrap.add(cardId)
-		  })
+			  game.scrap.add(cardId);
+		  });
     }
 		try {
 			await Promise.all([game.save(), p0.save(), p1.save()])
