@@ -711,10 +711,8 @@ module.exports = {
 								} else {
 									return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
 								}
-								break;
 							default:
-							return Promise.reject(new Error("You cannot play that card as a one-off without a target."));
-								break;
+								return Promise.reject(new Error("You cannot play that card as a one-off without a target."));
 						}
 					} else {
 						return Promise.reject(new Error("You cannot play a card that is not in your hand"));
@@ -1492,9 +1490,10 @@ module.exports = {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseCard = cardService.findCard({cardId: req.body.cardId});
-		Promise.all([promiseGame, promisePlayer, promiseCard])
+		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		Promise.all([promiseGame, promisePlayer, promiseCard, promiseOpponent])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], card = values[2];
+			var game = values[0], player = values[1], card = values[2], opponent = values[3];
 			if (game.turn % 2 === player.pNum) {
 				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
 					switch (card.rank) {
@@ -1509,6 +1508,7 @@ module.exports = {
 									if (game.scrap.length === 0) return Promise.reject(new Error("You can only play a 3 ONE-OFF if there are cards in the scrap pile"));
 									break;
 								case 4:
+									if (opponent.hand.length === 0) return Promise.reject(new Error("You cannot play a 4 as a one-off while your opponent has no cards in hand"));
 									break;
 								case 5:
 								case 7:
@@ -1523,10 +1523,8 @@ module.exports = {
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});
 							return Promise.all([saveGame, savePlayer]);
-							break;
 						default:
 							return Promise.reject(new Error("You cannot play that card as a ONE-OFF without a target"));
-							break;
 					}
 				} else {
 					return Promise.reject(new Error("You can only play cards from the top of the deck while resolving a seven"));
