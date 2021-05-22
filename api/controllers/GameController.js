@@ -309,7 +309,6 @@ module.exports = {
 				if (game.topCard) {
 					return Promise.resolve(game);
 				} else {
-					// TODO: Handle passing
 					return Promise.reject(new Error("The deck is empty; you cannot draw"));
 				}
 			} else {
@@ -347,7 +346,7 @@ module.exports = {
 			user.frozenId = null;
 			game.log.push(userService.truncateEmail(user.email) + " Drew a card");
 			game.turn++;
-			var saveGame = gameService.saveGame({game: game})		;
+			var saveGame = gameService.saveGame({game: game});
 			var saveUser = userService.saveUser({user: user});
 			return Promise.all([saveGame, saveUser]);
 
@@ -404,7 +403,7 @@ module.exports = {
 				winner: null
 			};
 			if (game.passes > 2) {
-				victory.gameOver = true
+				victory.gameOver = true;
 			}
 			Game.publishUpdate(game.id,
 			{
@@ -526,7 +525,7 @@ module.exports = {
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		});
-	}, //End rune()
+	}, //End runes()
 
 	scuttle: function (req, res) {
 		var promiseGame = gameService.findGame({gameId: req.session.game});
@@ -543,7 +542,7 @@ module.exports = {
 						if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
 							if (player.frozenId != card.id) {
 								// Move is legal; make changes
-									// Remove attachments from target
+								// Remove attachments from target
 								target.attachments.forEach(function (jack) {
 									target.attachments.remove(jack.id);
 									game.scrap.add(jack.id);
@@ -774,7 +773,6 @@ module.exports = {
 									break;
 								default:
 									return Promise.reject(new Error("You cannot play a TARGETTED ONE-OFF when your opponent has more than one Queen"));
-									break;
 							}
 							if (player.frozenId != card.id) {
 								game.oneOff = card;
@@ -805,7 +803,7 @@ module.exports = {
 			}
 		}) //End changeAndSave()
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id})
+			return gameService.populateGame({gameId: values[0].id});
 		})
 		.then(function publishAndRespond (fullGame) {
 			var victory = gameService.checkWinGame({game: fullGame});
@@ -840,7 +838,6 @@ module.exports = {
 				if (game.oneOff) {
 					if (card.rank === 2) {
 						if (!opHasQueen) {
-							var opPnum = (player.pNum + 1) % 2;
 							if (game.twos.length > 0) {
 								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to COUNTER " + userService.truncateEmail(opponent.email) + "'s " + game.twos[game.twos.length - 1].name + ".");
 							} else {
@@ -941,14 +938,6 @@ module.exports = {
 								cardsToSave.push(cardService.saveCard({card: point}));
 							});
 						}
-						// player.points.forEach(function (point) {
-						// 	game.scrap.add(point.id);
-						// 	player.points.remove(point.id);
-						// });
-						// opponent.points.forEach(function (point) {
-						// 	game.scrap.add(point.id);
-						// 	opponent.points.remove(point.id);
-						// });
 						game.passes = 0;
 						game.turn++;
 						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are scrapped.");
@@ -1011,7 +1000,7 @@ module.exports = {
 							} else {
 								game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws the last card.");
 							}
-							//Player could only draw one card, due to hand limit
+						//Player could only draw one card, due to hand limit
 						} else {
 							// Replace top card with second card, if second card exists
 							if (game.secondCard) {
@@ -1059,7 +1048,6 @@ module.exports = {
 									// If odd number of jacks were attached, switch control
 									if (jackCount % 2 === 1) {
 										opponent.points.add(point.id);
-										// player.points.remove(point.id);
 									}
 								} //End jackCount > 0
 							});
@@ -1133,7 +1121,7 @@ module.exports = {
 				game.scrap.add(game.oneOff.id);
 				game.oneOff = null;
 			}
-			game.twos.forEach(function (two, index) {
+			game.twos.forEach(function (two) {
 				game.scrap.add(two.id);
 				game.twos.remove(two.id);
 			});
@@ -1583,7 +1571,6 @@ module.exports = {
 								break;
 							default:
 								return Promise.reject(new Error("You cannot play a targeted one-off when your opponent has more than one Queen"));
-								break;
 						} //End queenCount validation
 							game.resolving = null;
 							game.oneOff = card;
