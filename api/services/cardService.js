@@ -96,7 +96,7 @@ module.exports = {
 						ruleText = "ONE-OFF: Choose 1 card in the Scrap and put it to your hand.";
 						break;
 					case 4:
-						ruleText = "ONE-OFF: Your opponent discards two cards of her choice from her hand.";
+						ruleText = "ONE-OFF: Your opponent discards two cards of their choice from their hand.";
 						break;
 					case 5:
 						ruleText = "ONE-OFF: Draw two cards from the deck.";
@@ -108,10 +108,10 @@ module.exports = {
 						ruleText = "Play one of the top two cards of the deck and put the other back. (Both are revealed)";
 						break;
 					case 8:
-						ruleText = "GLASSES: Your opponent plays with an open hand (Her cards are revealed to you).";
+						ruleText = "GLASSES: Your opponent plays with an open hand (their cards are revealed to you).";
 						break;
 					case 9:
-						ruleText = "ONE-OFF: Return target card to its controller's hand. She can't play it next turn.";
+						ruleText = "ONE-OFF: Return target card to its controller's hand. They can't play it next turn.";
 						break;
 					case 10:
 						ruleText = "No effect";
