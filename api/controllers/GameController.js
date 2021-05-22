@@ -951,10 +951,10 @@ module.exports = {
 						// });
 						game.passes = 0;
 						game.turn++;
-						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are destroyed.");
+						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are scrapped.");
 						break; //End resolve ACE
 					case 2:
-						game.log.push("The " + game.oneOff.name + " resolves; the " + game.oneOffTarget.name + " is DESTROYED.");
+						game.log.push("The " + game.oneOff.name + " resolves; the " + game.oneOffTarget.name + " is scrapped.");
 						game.scrap.add(game.oneOffTarget.id);
 						switch (game.oneOffTargetType) {
 							case 'rune':
@@ -1083,7 +1083,7 @@ module.exports = {
 						}
 						game.passes = 0;
 						game.turn++;
-						game.log.push("The " + game.oneOff.name + " resolves; all RUNES are destroyed");
+						game.log.push("The " + game.oneOff.name + " resolves; all face cards are scrapped");
 						break; //End resolve SIX
 					case 7:
 						game.resolving = game.oneOff;
