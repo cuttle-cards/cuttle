@@ -123,7 +123,7 @@ module.exports = {
 						ruleText = "FACE CARD: Your other cards may only be targeted by scuttles.";
 						break;
 					case 13:
-						ruleText = "FACE CARD: Reduces the points you need to win. See counter on the left.";
+						ruleText = "FACE CARD: Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 7pts, 4K: 5pts).";
 						break;
 				}
 
