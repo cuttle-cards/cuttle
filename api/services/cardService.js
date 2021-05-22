@@ -87,7 +87,7 @@ module.exports = {
 				// Assign Rule Text
 				switch (rank) {
 					case 1:
-						ruleText = "ONE-OFF: Scrap all POINTS.";
+						ruleText = "ONE-OFF: Scrap all points.";
 						break;
 					case 2:
 						ruleText = "ONE-OFF: Scrap target face card (or glasses eight).";
@@ -102,22 +102,22 @@ module.exports = {
 						ruleText = "ONE-OFF: Draw two cards from the deck.";
 						break;
 					case 6:
-						ruleText = "ONE-OFF: Scrap ALL face cards and glasses eights.";
+						ruleText = "ONE-OFF: Scrap all face cards and glasses eights.";
 						break;
 					case 7:
 						ruleText = "Play one of the top two cards of the deck and put the other back. (Both are revealed)";
 						break;
 					case 8:
-						ruleText = "GLASSES: Your opponent plays with an open HAND (Her cards are revealed to you).";
+						ruleText = "GLASSES: Your opponent plays with an open hand (Her cards are revealed to you).";
 						break;
 					case 9:
-						ruleText = "ONE-OFF: Return target card to its controller's HAND. She can't play it next turn.";
+						ruleText = "ONE-OFF: Return target card to its controller's hand. She can't play it next turn.";
 						break;
 					case 10:
 						ruleText = "No effect";
 						break;
 					case 11:
-						ruleText = "FACE CARD: Play on top of target POINT card to steal it.";
+						ruleText = "FACE CARD: Play on top of target point card to steal it.";
 						break;
 					case 12:
 						ruleText = "FACE CARD: Your other cards may only be targeted by scuttles.";
