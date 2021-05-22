@@ -105,7 +105,7 @@ module.exports = {
 						ruleText = "ONE-OFF: Scrap all face cards and glasses eights.";
 						break;
 					case 7:
-						ruleText = "Play one of the top two cards of the deck and put the other back. (Both are revealed)";
+						ruleText = "ONE-OFF: Play one of the top two cards of the deck and put the other back. (Both are revealed)";
 						break;
 					case 8:
 						ruleText = "GLASSES: Your opponent plays with an open hand (their cards are revealed to you).";
