@@ -769,7 +769,7 @@ module.exports = {
 								case 1:
 									if (target.runes === opponent.id && target.rank === 12) {
 									} else {
-										return Promise.reject(new Error("You may only TARGET your opponent's queen, while she has one."))
+										return Promise.reject(new Error("Your opponent's queen prevents you from targeting their other cards"))
 									}
 									break;
 								default:
@@ -852,10 +852,10 @@ module.exports = {
 							var savePlayer = userService.saveUser({user: player});
 							return Promise.all([saveGame, savePlayer]);
 						} else {
-							return (Promise.reject(new Error("You cannot COUNTER your opponent's one-off, if she has a QUEEN.")));
+							return (Promise.reject(new Error("You cannot counter your opponent's one-off while they have a Queen.")));
 						}
 					} else {
-						return Promise.reject(new Error("You can only play a TWO to counter a one-off"));
+						return Promise.reject(new Error("You can only play a Two to counter a one-off"));
 					}
 				} else {
 					return Promise.reject(new Error("You can only counter a one-off that is already in play"));
@@ -975,7 +975,7 @@ module.exports = {
 						break; //End resolve TWO
 					case 3:
 						game.resolving = game.oneOff;
-						game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " will draw one card of her choice from the SCRAP pile");
+						game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " will draw one card of their choice from the SCRAP pile");
 						break;
 					case 4:
 						game.resolving = game.oneOff;
@@ -1088,14 +1088,14 @@ module.exports = {
 					case 7:
 						game.resolving = game.oneOff;
 						if (game.secondCard) {
-							game.log.push("The " + game.oneOff.name + " resolves; she will choose one card from the top two in the deck, and play it however she likes. Top two cards: " + game.topCard.name + " and " + game.secondCard.name);
+							game.log.push("The " + game.oneOff.name + " resolves; they will play one card from the top two in the deck. Top two cards: " + game.topCard.name + " and " + game.secondCard.name);
 						} else {
-							game.log.push("The " + game.oneOff.name + " resolves, but there is only one card in the deck; she will that card any way she likes");
+							game.log.push("The " + game.oneOff.name + " resolves. They will play the " + game.topCard.name + " as it is the last card in the deck");
 						}
 						break; //End resolve SEVEN
 					case 9:
 						opponent.hand.add(game.oneOffTarget.id);
-						game.log.push("The " + game.oneOff.name + " resolves on the" + game.oneOffTarget.name + ". The " + game.oneOffTarget.name + " is returned to " + userService.truncateEmail(opponent.email) + "'s hand, and she may not play it next turn" );
+						game.log.push("The " + game.oneOff.name + " resolves on the" + game.oneOffTarget.name + ". The " + game.oneOffTarget.name + " is returned to " + userService.truncateEmail(opponent.email) + "'s hand, and they may not play it next turn" );
 						opponent.frozenId = game.oneOffTarget.id;
 						switch(game.oneOffTargetType) {
 							case 'rune':
@@ -1228,7 +1228,7 @@ module.exports = {
 			game.scrap.remove(card.id);
 			game.scrap.add(game.oneOff.id);
 			game.oneOff = null;
-			game.log.push(userService.truncateEmail(player.email) + " took the " + card.name + " from the scrap pile to her hand");
+			game.log.push(userService.truncateEmail(player.email) + " took the " + card.name + " from the scrap pile to their hand");
 			game.passes = 0;
 			game.turn++;
 			game.resolving = null;
@@ -1578,11 +1578,11 @@ module.exports = {
 							case 1:
 								if (target.runes === opponent.id && target.rank === 12) {
 								} else {
-									return Promise.reject(new Error("You may only TARGET your opponent's queen, while she has one."))
+									return Promise.reject(new Error("Your opponent's queen prevents you from targeting their other cards"));
 								}
 								break;
 							default:
-								return Promise.reject(new Error("You cannot play a TARGETTED ONE-OFF when your opponent has more than one Queen"));
+								return Promise.reject(new Error("You cannot play a targeted one-off when your opponent has more than one Queen"));
 								break;
 						} //End queenCount validation
 							game.resolving = null;
