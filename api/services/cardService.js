@@ -87,13 +87,13 @@ module.exports = {
 				// Assign Rule Text
 				switch (rank) {
 					case 1:
-						ruleText = "ONE-OFF: Destroy all POINTS.";
+						ruleText = "ONE-OFF: Scrap all POINTS.";
 						break;
 					case 2:
-						ruleText = "ONE-OFF: Destroy target BOON.";
+						ruleText = "ONE-OFF: Scrap target BOON.";
 						break;
 					case 3:
-						ruleText = "ONE-OFF: Choose 1 card in the SCRAP and put it to your hand.";
+						ruleText = "ONE-OFF: Choose 1 card in the Scrap and put it to your hand.";
 						break;
 					case 4:
 						ruleText = "ONE-OFF: Your opponent discards two cards of her choice from her hand.";
@@ -102,7 +102,7 @@ module.exports = {
 						ruleText = "ONE-OFF: Draw two cards from the deck.";
 						break;
 					case 6:
-						ruleText = "ONE-OFF: Destroy ALL BOONS.";
+						ruleText = "ONE-OFF: Scrap ALL BOONS.";
 						break;
 					case 7:
 						ruleText = "Play one of the top two cards of the deck and put the other back. (Both are revealed)";
