@@ -90,7 +90,7 @@ module.exports = {
 						ruleText = "ONE-OFF: Scrap all POINTS.";
 						break;
 					case 2:
-						ruleText = "ONE-OFF: Scrap target BOON.";
+						ruleText = "ONE-OFF: Scrap target face card (or glasses eight).";
 						break;
 					case 3:
 						ruleText = "ONE-OFF: Choose 1 card in the Scrap and put it to your hand.";
@@ -102,13 +102,13 @@ module.exports = {
 						ruleText = "ONE-OFF: Draw two cards from the deck.";
 						break;
 					case 6:
-						ruleText = "ONE-OFF: Scrap ALL BOONS.";
+						ruleText = "ONE-OFF: Scrap ALL face cards and glasses eights.";
 						break;
 					case 7:
 						ruleText = "Play one of the top two cards of the deck and put the other back. (Both are revealed)";
 						break;
 					case 8:
-						ruleText = "BOON: Your opponent plays with an open HAND (Her cards are revealed to you).";
+						ruleText = "GLASSES: Your opponent plays with an open HAND (Her cards are revealed to you).";
 						break;
 					case 9:
 						ruleText = "ONE-OFF: Return target card to its controller's HAND. She can't play it next turn.";
@@ -117,13 +117,13 @@ module.exports = {
 						ruleText = "No effect";
 						break;
 					case 11:
-						ruleText = "BOON: Play on top of target POINT card to steal it.";
+						ruleText = "FACE CARD: Play on top of target POINT card to steal it.";
 						break;
 					case 12:
-						ruleText = "BOON: Your other cards may only be targeted by scuttles.";
+						ruleText = "FACE CARD: Your other cards may only be targeted by scuttles.";
 						break;
 					case 13:
-						ruleText = "BOON: Reduces the points you need to win. See counter on the left.";
+						ruleText = "FACE CARD: Reduces the points you need to win. See counter on the left.";
 						break;
 				}
 
