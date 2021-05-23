@@ -434,7 +434,7 @@ module.exports = {
 								player.points.add(card.id);
 								player.hand.remove(card.id);
 								player.frozenId = null;
-								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " for points");
+								game.g492(userService.truncateEmail(player.email) + " played the " + card.name + " for points");
 								game.passes = 0;
 								game.turn++;
 								var saveGame = gameService.saveGame({game: game});
@@ -489,7 +489,7 @@ module.exports = {
 							player.runes.add(card.id);
 							player.hand.remove(card.id);
 							player.frozenId = null;
-							let logEntry = userService.truncateEmail(player.email) + " played the " + card.name 
+							let logEntry = userService.truncateEmail(player.email) + " played the " + card.name;
 							if (card.rank === 8) {
 								logEntry += ' as a Glasses Eight';
 							}
