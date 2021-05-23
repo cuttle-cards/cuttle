@@ -944,7 +944,7 @@ module.exports = {
 						}
 						game.passes = 0;
 						game.turn++;
-						game.log.push("The " + game.oneOff.name + " one-off resolves; all POINT cards are scrapped.");
+						game.log.push("The " + game.oneOff.name + " one-off resolves; all point cards are scrapped.");
 						break; //End resolve ACE
 					case 2:
 						game.log.push("The " + game.oneOff.name + " resolves; the " + game.oneOffTarget.name + " is scrapped.");
@@ -968,7 +968,7 @@ module.exports = {
 						break; //End resolve TWO
 					case 3:
 						game.resolving = game.oneOff;
-						game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " will draw one card of their choice from the SCRAP pile");
+						game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " will draw one card of their choice from the Scrap pile");
 						break;
 					case 4:
 						game.resolving = game.oneOff;
