@@ -776,7 +776,7 @@ module.exports = {
 									}
 									break;
 								default:
-									return Promise.reject(new Error("You cannot play a TARGETTED ONE-OFF when your opponent has more than one Queen"));
+									return Promise.reject(new Error("You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen"));
 							}
 							if (player.frozenId != card.id) {
 								game.oneOff = card;
