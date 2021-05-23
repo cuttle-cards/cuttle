@@ -87,43 +87,43 @@ module.exports = {
 				// Assign Rule Text
 				switch (rank) {
 					case 1:
-						ruleText = "ONE-OFF: Destroy all POINTS.";
+						ruleText = "ONE-OFF: Scrap all points.";
 						break;
 					case 2:
-						ruleText = "ONE-OFF: Destroy target BOON.";
+						ruleText = "ONE-OFF: Scrap target face card (or glasses eight).";
 						break;
 					case 3:
-						ruleText = "ONE-OFF: Choose 1 card in the SCRAP and put it to your hand.";
+						ruleText = "ONE-OFF: Choose 1 card in the Scrap and put it to your hand.";
 						break;
 					case 4:
-						ruleText = "ONE-OFF: Your opponent discards two cards of her choice from her hand.";
+						ruleText = "ONE-OFF: Your opponent discards two cards of their choice from their hand.";
 						break;
 					case 5:
 						ruleText = "ONE-OFF: Draw two cards from the deck.";
 						break;
 					case 6:
-						ruleText = "ONE-OFF: Destroy ALL BOONS.";
+						ruleText = "ONE-OFF: Scrap all face cards and glasses eights.";
 						break;
 					case 7:
-						ruleText = "Play one of the top two cards of the deck and put the other back. (Both are revealed)";
+						ruleText = "ONE-OFF: Play one of the top two cards of the deck and put the other back. (Both are revealed)";
 						break;
 					case 8:
-						ruleText = "BOON: Your opponent plays with an open HAND (Her cards are revealed to you).";
+						ruleText = "GLASSES: Your opponent plays with an open hand (their cards are revealed to you).";
 						break;
 					case 9:
-						ruleText = "ONE-OFF: Return target card to its controller's HAND. She can't play it next turn.";
+						ruleText = "ONE-OFF: Return target card to its controller's hand. They can't play it next turn.";
 						break;
 					case 10:
 						ruleText = "No effect";
 						break;
 					case 11:
-						ruleText = "BOON: Play on top of target POINT card to steal it.";
+						ruleText = "FACE CARD: Play on top of target point card to steal it.";
 						break;
 					case 12:
-						ruleText = "BOON: Your other cards may only be targeted by scuttles.";
+						ruleText = "FACE CARD: Your other cards may only be targeted by scuttles.";
 						break;
 					case 13:
-						ruleText = "BOON: Reduces the points you need to win. See counter on the left.";
+						ruleText = "FACE CARD: Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 7pts, 4K: 5pts).";
 						break;
 				}
 
