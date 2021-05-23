@@ -843,9 +843,9 @@ module.exports = {
 					if (card.rank === 2) {
 						if (!opHasQueen) {
 							if (game.twos.length > 0) {
-								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to COUNTER " + userService.truncateEmail(opponent.email) + "'s " + game.twos[game.twos.length - 1].name + ".");
+								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to counter " + userService.truncateEmail(opponent.email) + "'s " + game.twos[game.twos.length - 1].name + ".");
 							} else {
-								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to COUNTER " + userService.truncateEmail(opponent.email) + "'s " +  game.oneOff.name + ".");
+								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to counter " + userService.truncateEmail(opponent.email) + "'s " +  game.oneOff.name + ".");
 							}
 							game.twos.add(card.id);
 							player.hand.remove(card.id);
