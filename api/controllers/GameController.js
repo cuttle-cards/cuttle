@@ -434,7 +434,7 @@ module.exports = {
 								player.points.add(card.id);
 								player.hand.remove(card.id);
 								player.frozenId = null;
-								game.g492(userService.truncateEmail(player.email) + " played the " + card.name + " for points");
+								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " for points");
 								game.passes = 0;
 								game.turn++;
 								var saveGame = gameService.saveGame({game: game});
