@@ -20,6 +20,7 @@ function tempGame (game, p0, p1) {
 	this.topCard = game.topCard;
 	this.secondCard = game.secondCard;
 	this.oneOff = game.oneOff;
+	this.oneOffTarget = game.oneOffTarget;
 	this.twos = game.twos;
 	this.log = game.log;
 	this.chat = game.chat;
