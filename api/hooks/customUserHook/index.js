@@ -14,7 +14,7 @@ var Promise = require('bluebird');
 						if (error) {
 							res = error;
 						} else {
-							res = new Error("User doesn't exist");
+							res = new Error("User does not exist");
 						} 
 						return reject(res);
 					} else {
@@ -32,7 +32,7 @@ var Promise = require('bluebird');
 						if (error) {
 							res = error;
 						} else {
-							res = new Error("User doesn't exist");
+							res = new Error("User does not exist");
 						} 
 						return reject(res);
 					} else {
@@ -71,7 +71,7 @@ var Promise = require('bluebird');
 						if (error) {
 							res = error;
 						} else {
-							res = new Error("User doesn't exist");
+							res = new Error("User does not exist");
 						}
 						return reject(res);
 					} else {
