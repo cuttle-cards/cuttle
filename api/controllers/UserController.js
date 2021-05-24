@@ -38,14 +38,11 @@ module.exports = {
 					res.ok();
 				})
 				.catch(function failedCreate (reason) { //Failed to create User
-					// console.log(reason);
 					return res.badRequest(reason);
 				});
 
 			})	//End promiseEpass success
 			.catch(function failed (reason) { //Password could not be encrypted
-				// console.log("Failed to create user:");
-				// console.log(reason);
 				return res.badRequest(reason);
 			});
 		} else { //Bad data sent from client
@@ -71,7 +68,7 @@ module.exports = {
 				})
 				.catch(function noUser (reason) {
 					// console.log("couldn't find user");
-					return res.badRequest(reason);
+					return res.badRequest(new Error('Could not find that User with that Username. Try signing up!'));
 				});
 		}
 	}, //End login
