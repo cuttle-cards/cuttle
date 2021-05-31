@@ -344,7 +344,7 @@ module.exports = {
 				}
 			}
 			user.frozenId = null;
-			game.log.push(userService.truncateEmail(user.email) + " Drew a card");
+			game.log.push(userService.truncateEmail(user.email) + " drew a card");
 			game.turn++;
 			var saveGame = gameService.saveGame({game: game});
 			var saveUser = userService.saveUser({user: user});
