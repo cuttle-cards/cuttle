@@ -74,12 +74,12 @@ You may draw one card from the deck and put it in your hand. If the deck is empt
 2. **Points:**
 You may play any number card, Ace-Ten for the number of points shown on the card (Ace is one point). The first player to have 21 **or more** points wins.
 
-	* To play a card for points, drag it to your **Points** area, on the left.
+	* To play a card for points, click a card in your hand to select it, then click your field.
 
 3. **Scuttling:**
 You may player a number card from your hand onto a lower valued number card that your opponent has played for points; this destroys both cards. You may also scuttle a card of the same rank, if your card has the higher suit. The suit order is Clubs (weakest) < Diamonds < Hearts < Spades (strongest).
 
-	* To scuttle an opponent's point card, drag a higher point card from your hand on top of it.
+	* To scuttle an opponent's point card, click a higher number card (Ace - Ten) in your hand to select it, then click the card you'd like to scuttle.
 
 4. **Face Cards and Glasses Eights:**
 Face cards and eights can be played as **Face Cards and Glasses Eights**. While on your board, Face Cards and Glasses Eights provide you advantages. An explanation of the different Face Cards and Glasses Eights can be found below.
@@ -88,7 +88,7 @@ Face cards and eights can be played as **Face Cards and Glasses Eights**. While 
 5. **One-Offs:**
 Ace-Sevens and also Nines can be played as **One-Offs**. Playing a card for a One-Off effect discards (to the scrap pile) in exchange for an effect, based on the rank of the card. A list of all the effects can be found below.
 
-	* To play a card as a **One-Off**, drag it to the **Scrap Pile** or a valid **Target**, if required
+	* To play a card as a **One-Off**, click a card in your hand to select it, then click the **Scrap Pile** or an opponent's card to target.
 
 ### One-Offs
 
