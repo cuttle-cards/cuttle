@@ -26,8 +26,6 @@ function tempUser (usr, points) {
 	this.hand.sort(comapreByRankThenSuit);
 };
 function tempGame (game, p0, p1) {
-	// console.log("\nMaking temp game:");
-	// console.log(game);
 	this.id = game.id;
 	this.players = [p0, p1];
 	this.deck = game.deck;
