@@ -26,7 +26,6 @@ npm install
 ```
 npm start
 ```
-Once the front & back-ends are booted, you can play the game in your browser at `localhost:8080`
 
 ### Front End Setup
 #### Download Front-End Code
