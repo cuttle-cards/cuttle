@@ -1,5 +1,18 @@
 var Promise = require('bluebird');
 var userService = require("../../api/services/userService.js");
+
+/**
+ * @returns int <= 0 if card1 is lower rank or same rank & lower suit
+ * @param {rank: number, suit: number} card1 
+ * @param {rank: number, suit: number} card2 
+ */
+function comapreByRankThenSuit(card1, card2) {
+	let res = card1.rank - card2.rank;
+	if (res === 0) {
+		res = card1.suit - card2.suit;
+	}
+	return res;
+}
 // Used to create fully populated game
 function tempUser (usr, points) {
 	this.pNum = usr.pNum;
@@ -9,6 +22,8 @@ function tempUser (usr, points) {
 	this.frozenId = usr.frozenId;
 	this.id = usr.id;
 	this.userName = userService.truncateEmail(usr.email);
+
+	this.hand.sort(comapreByRankThenSuit);
 };
 function tempGame (game, p0, p1) {
 	// console.log("\nMaking temp game:");
