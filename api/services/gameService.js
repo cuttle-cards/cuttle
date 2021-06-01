@@ -1,6 +1,5 @@
 var Promise = require('bluebird');
 var userService = require("../../api/services/userService.js");
-const { compact } = require('lodash');
 
 /**
  * @returns int <= 0 if card1 is lower rank or same rank & lower suit
