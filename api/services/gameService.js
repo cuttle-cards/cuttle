@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
 var userService = require("../../api/services/userService.js");
+const { compact } = require('lodash');
 
 /**
  * @returns int <= 0 if card1 is lower rank or same rank & lower suit
@@ -25,6 +26,7 @@ function tempUser (usr, points) {
 
 	this.hand.sort(comapreByRankThenSuit);
 	this.points.sort(comapreByRankThenSuit);
+	this.runes.sort(comapreByRankThenSuit);
 };
 function tempGame (game, p0, p1) {
 	this.id = game.id;
