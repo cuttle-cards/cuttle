@@ -24,6 +24,7 @@ function tempUser (usr, points) {
 	this.userName = userService.truncateEmail(usr.email);
 
 	this.hand.sort(comapreByRankThenSuit);
+	this.points.sort(comapreByRankThenSuit);
 };
 function tempGame (game, p0, p1) {
 	this.id = game.id;
