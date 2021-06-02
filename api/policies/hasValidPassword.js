@@ -15,12 +15,12 @@ module.exports = function (req, res, next) {
 					return next();
 				} else {
 					if (req.body.password.length === 0) {
-						return res.badRequest('Password is required');
+						return res.badRequest(new Error('Password is required'));
 					}
-					return res.badRequest("Your password must contain at least eight characters");
+					return res.badRequest(new Error("Your password must contain at least eight characters"));
 				}
 		}
 	}
 	// User not allowed
-  return res.forbidden('You are not permitted to perform this action.');
+  return res.forbidden(new Error('You are not permitted to perform this action.'));
 }
