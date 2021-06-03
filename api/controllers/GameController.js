@@ -1105,6 +1105,7 @@ module.exports = {
 									}
 								});
 								opponent.points.remove(game.oneOffTarget.id);
+                game.oneOffTarget = null
 
 								break;
 							case 'jack':
@@ -1796,7 +1797,7 @@ module.exports = {
 		let p0;
 		let p1;
 
-		
+
 		try {
 			game = await Game.findOne({id: req.session.game});
 			p0 = await User.findOne({id: req.body.p0Id}).populateAll();
