@@ -9,6 +9,9 @@ if (process.env.DATABASE_URL) {
 		auth: ''
 	}
 }
+// Use postgress connection in production and in-memory localDb otherwise
+const dbConnection = process.env.NODE_ENV === 'production' ? 'sqlHeroku' : 'localDiskDb';
+const migratePolicy = process.env.NODE_ENV === 'production' ? 'safe' : 'drop';
 module.exports = {
 	connections: {
 		sqlHeroku: {
@@ -24,9 +27,8 @@ module.exports = {
 	}, //End connections
 
 	models: {
-	    // connection: 'localDiskDb',
-	    connection: 'sqlHeroku',
-	    migrate: 'safe'
+		connection: dbConnection,
+		migrate: migratePolicy,
    },
 
    orm: {
