@@ -1425,33 +1425,51 @@ module.exports = {
 		var promisePlayer = userService.findUser({userId: req.session.usr});
 		var promiseOpponent = userService.findUser({userId: req.body.opId});
 		var promiseCard = cardService.findCard({cardId: req.body.cardId});
-		var promiseTarget = cardService.findCard({cardId: req.body.targetId});
-		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget])
+		var promiseTarget = req.body.targetId !== -1 ? cardService.findCard({cardId: req.body.targetId}) : -1; // -1 for double jacks with no points to steal special case
+    let promises = [promiseGame, promisePlayer, promiseOpponent, promiseCard];
+    if (promiseTarget !== -1) {
+      promises.push(promiseTarget);
+    }
+		Promise.all(promises)
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
+			var game = values[0], player = values[1], opponent = values[2], card = values[3], target;
+      if (promiseTarget !== -1) target = values[4];
 			if (game.turn % 2 === player.pNum) {
 				if (card.id === game.topCard.id || card.id === game.secondCard.id) {
-					if (target.points === opponent.id) {
-						if (card.rank === 11) {
-							card.index = target.attachments.length;
-							target.attachments.add(card.id);
-							player.points.add(target.id);
-							player.frozenId = null;
-							game = gameService.sevenCleanUp({game: game, index: req.body.index});
-							game.log.push(userService.truncateEmail(player.email) + " stole " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name + " from the top of the deck");
-							game.passes = 0;
-							game.turn++;
-							game.resolving = null;
-							var saveGame = gameService.saveGame({game: game});
-							var savePlayer = userService.saveUser({user: player});
-							var saveTarget = cardService.saveCard({card: target});
-							return Promise.all([saveGame, savePlayer, saveTarget]);
-						} else {
-							return Promise.reject(new Error("You can only steal your opponent's points with a jack"));
-						}
-					} else {
-						return Promise.reject(new Error("You can only jack your opponent's point cards"));
-					}
+          if (!target){ // special case - seven double jacks with no points to steal
+            game = gameService.sevenCleanUp({game: game, index: req.body.index});
+            game.log.push(userService.truncateEmail(player.email) + " put " + card.name + " into scrap, since there is no point cards to steal on " + userService.truncateEmail(opponent.email) + "'s field");
+            game.passes = 0;
+            game.turn ++;
+            game.resolving = null;
+            game.scrap.add(card.id);
+            var saveGame = gameService.saveGame({game: game});
+            var savePlayer = userService.saveUser({user: player});
+            return Promise.all([saveGame, savePlayer]);
+          } else {
+            // Normal sevens
+            if (target.points === opponent.id) {
+              if (card.rank === 11) {
+                card.index = target.attachments.length;
+                target.attachments.add(card.id);
+                player.points.add(target.id);
+                player.frozenId = null;
+                game = gameService.sevenCleanUp({game: game, index: req.body.index});
+                game.log.push(userService.truncateEmail(player.email) + " stole " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name + " from the top of the deck");
+                game.passes = 0;
+                game.turn++;
+                game.resolving = null;
+                var saveGame = gameService.saveGame({game: game});
+                var savePlayer = userService.saveUser({user: player});
+                var saveTarget = cardService.saveCard({card: target});
+                return Promise.all([saveGame, savePlayer, saveTarget]);
+              } else {
+                return Promise.reject(new Error("You can only steal your opponent's points with a jack"));
+              }
+            } else {
+              return Promise.reject(new Error("You can only jack your opponent's point cards"));
+            }
+          }
 				} else {
 					return Promise.reject(new Error("You can only one of the top two cards from the deck while resolving a seven"));
 				}
