@@ -6,7 +6,6 @@
 */
 
 module.exports = {
-
   attributes: {
   	email: {
   		type: 'string',
@@ -37,7 +36,11 @@ module.exports = {
     frozenId: {
       type: 'integer',
       defaultsTo: null
-    },
-  }
-};
+	},
+	rank: {
+		type: 'integer',
+		defaultsTo: 1000,
+	},
+  } // end attributes
+}; // end exports
 
