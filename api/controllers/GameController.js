@@ -394,9 +394,13 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]])
 		})
-		.then(function publishAndRespond (game) {
+		.then(function publishAndRespond (values) {
+			// populated game to send to client
+			const game = values[0];
+			// game model for saving updates
+			const gameModel = values[1];
 			// Game ends in stalemate if 3 passes are made consecutively
 			var victory = {
 				gameOver: false,
@@ -404,6 +408,10 @@ module.exports = {
 			};
 			if (game.passes > 2) {
 				victory.gameOver = true;
+				gameModel.p0 = game.players[0];
+				gameModel.p1 = game.players[1];
+				gameModel.result = gameService.GameResult.STALEMATE;
+				gameService.saveGame({game: gameModel});
 			}
 			Game.publishUpdate(game.id,
 			{
@@ -455,11 +463,15 @@ module.exports = {
 		})
 		.then(function populateGame (values) {
 			var game = values[0];
-			return gameService.populateGame({gameId: game.id});
+			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			// var game = values[0], victory = values[1];
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id, {
 				change: "points",
 				game: fullGame,
@@ -513,10 +525,15 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id, {
 				change: "runes",
 				game: fullGame,
@@ -582,10 +599,15 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id, {
 				change: "scuttle",
 				game: fullGame,
@@ -650,10 +672,15 @@ module.exports = {
 			}
 		}) //End changeAndSave()
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: 'jack',
@@ -728,10 +755,15 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id, {
 				change: 'oneOff',
 				game: fullGame,
@@ -807,10 +839,15 @@ module.exports = {
 			}
 		}) //End changeAndSave()
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: 'targetedOneOff',
@@ -867,10 +904,15 @@ module.exports = {
 
 		}) //End changeAndSave
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: "counter",
@@ -1136,14 +1178,17 @@ module.exports = {
 			return Promise.all([saveGame, Promise.resolve(oneOff), Promise.resolve(player.pNum), Promise.resolve(happened), savePlayer, saveOpponent].concat(cardsToSave));
 		}) //End changeAndSave
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), Promise.resolve(values[1]), Promise.resolve(values[2]), Promise.resolve(values[3])]);
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), Promise.resolve(values[1]), Promise.resolve(values[2]), Promise.resolve(values[3]), values[0]]);
 		})
 		.then(function publishAndRespond (values) {
-			var fullGame = values[0], oneOff = values[1];
+			const fullGame = values[0], oneOff = values[1];
 			var pNum = values[2];
 			var happened = values[3];
-			var victory = gameService.checkWinGame({game: fullGame});
-
+			var gameModel = values[4];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 
 			Game.publishUpdate(fullGame.id,
 			{
@@ -1192,10 +1237,15 @@ module.exports = {
 			return Promise.all([saveGame, savePlayer]);
 		}) // End changeAndSave
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: "resolveFour",
@@ -1231,10 +1281,15 @@ module.exports = {
 			return Promise.all([saveGame, savePlayer]);
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}),values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: 'resolveThree',
@@ -1282,10 +1337,15 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: 'sevenPoints',
@@ -1332,10 +1392,15 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: 'sevenRunes',
@@ -1403,10 +1468,15 @@ module.exports = {
 			}
 		}) //End changeAndSave()
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: 'sevenScuttle',
@@ -1478,10 +1548,15 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: 'sevenJack',
@@ -1545,10 +1620,15 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: 'sevenOneOff',
@@ -1615,10 +1695,15 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (fullGame) {
-			var victory = gameService.checkWinGame({game: fullGame});
+		.then(function publishAndRespond (values) {
+			const fullGame = values[0];
+			const gameModel = values[1];
+			var victory = gameService.checkWinGame({
+				game: fullGame,
+				gameModel,
+			});
 			Game.publishUpdate(fullGame.id,
 			{
 				change: 'sevenTargetedOneOff',
@@ -1635,7 +1720,7 @@ module.exports = {
 
 	// Player requests to concede game
 	concede: function (req, res) {
-		var fullGame = gameService.populateGame({gameId: req.session.game})
+		return gameService.populateGame({gameId: req.session.game})
 		.then(function clearGame (game) {
 			return  Promise.all([Promise.resolve(game), gameService.clearGame({userId: req.session.usr})]);
 		})

@@ -2,6 +2,16 @@ var Promise = require('bluebird');
 var userService = require("../../api/services/userService.js");
 
 /**
+ * Game result states
+ */
+const GameResult = Object.freeze({
+	INCOMPLETE: -1,
+	P0_WINS: 0,
+	P1_WINS: 1,
+	STALEMATE: 2,
+});
+
+/**
  * @returns int <= 0 if card1 is lower rank or same rank & lower suit
  * @param {rank: number, suit: number} card1 
  * @param {rank: number, suit: number} card2 
@@ -45,6 +55,7 @@ function tempGame (game, p0, p1) {
 	this.resolving = game.resolving;
 };
 module.exports = {
+	GameResult,
 	/**
 	* Find game by id and return it as a Promise
 	**** options = {gameId: integer}
@@ -167,9 +178,9 @@ module.exports = {
 			}
 		});
 	}, //End populateGame()
-	/*Checks a game to determine if either player has won
-	***options = {game: GameModel}
-	**SYNCRONOUS
+	/* 
+	** Checks a game to determine if either player has won
+	* @param options = {game: tmpGame, gameModel: GameModel}
 	*/
 	checkWinGame: function (options) {
 		var res = {
@@ -177,15 +188,22 @@ module.exports = {
 			winner: null,
 			conceded: false
 		};
-		var p0Wins = userService.checkWin({user: options.game.players[0]});
-		var p1Wins = userService.checkWin({user: options.game.players[1]});
-			if (p0Wins || p1Wins) res.gameOver = true;
-			if (p0Wins) {
-				res.winner = 0;
-			} else if (p1Wins) {
-				res.winner = 1;
+		const { game, gameModel } = options;
+		var p0Wins = userService.checkWin({user: game.players[0]});
+		var p1Wins = userService.checkWin({user: game.players[1]});
+			if (p0Wins || p1Wins) {
+				res.gameOver = true;
+				gameModel.p0 = game.players[0];
+				gameModel.p1 = game.players[1];
+				if (p0Wins) {
+					res.winner = 0;
+					gameModel.result = GameResult.P0_WINS;
+				} else if (p1Wins) {
+					res.winner = 1;
+					gameModel.result = GameResult.P1_WINS;
+				}
+				gameService.saveGame({game: gameModel});
 			}
-			// return Promise.resolve(res);
 			return res;
 	},
 
