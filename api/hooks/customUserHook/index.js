@@ -53,6 +53,7 @@ var Promise = require('bluebird');
 						return resolve(user);
 					})
 					.catch((err) => {
+						let res;
 						if (err) {
 							res = err
 						} else {
