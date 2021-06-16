@@ -11,7 +11,9 @@ var Promise = require('bluebird');
 					name: gameName,
 					status: true,
 				}
-				).exec(function (error, game) {
+				)
+					.fetch()
+					.exec(function (error, game) {
 					if (error || !game) {
 						var res;
 						if (error) {
