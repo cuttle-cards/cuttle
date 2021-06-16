@@ -136,7 +136,9 @@ module.exports = {
 					name: str_name,
 					ruleText: ruleText,
 					deck: gameId
-				}).exec(function (err, newCard) {
+				})
+					.fetch()
+					.exec(function (err, newCard) {
 					if (err) {
 						return reject(err);
 					} else if (!newCard) {
