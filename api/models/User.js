@@ -34,13 +34,13 @@ module.exports = {
   		via: 'runes',
   	},
     frozenId: {
-      type: 'number',
+      type: 'integer',
       defaultsTo: 0,
-	},
-	rank: {
-		type: 'number',
-		defaultsTo: 1000,
-	},
-  } // end attributes
-}; // end exports
+		},
+		rank: {
+			type: 'number',
+			defaultsTo: 1000,
+		},
+  }
+};
 

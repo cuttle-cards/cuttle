@@ -8,6 +8,7 @@
  * For more info on Sails models, see:
  * http://sailsjs.org/#!/documentation/concepts/ORM
  */
+const migratePolicy = process.env.NODE_ENV === 'production' ? 'alter' : 'drop';
 
 module.exports.models = {
 
