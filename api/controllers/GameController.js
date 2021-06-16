@@ -9,6 +9,7 @@
  // Dependencies //
  //////////////////
 var Promise = require('bluebird');
+const Game = require('../models/Game');
 var gameAPI = sails.hooks['customgamehook'];
 var userAPI = sails.hooks['customuserhook'];
 
@@ -20,18 +21,22 @@ module.exports = {
 	///////////////////////////////////
 	reconnect: function (req, res) {
 		Game.subscribe(req, req.session.game);
+		sails.sockets.join(req, 'GameList');
 		return res.ok();
 	},
 	create: function(req, res) {
 		if (req.body.gameName) {
 			var promiseCreateGame = gameAPI.createGame(req.body.gameName)
 			.then(function (game) {
-				sails.sockets.blast('gameCreated', {
-					id: game.id,
-					name: game.name,
-					status: game.status,
-					players: [],
-				})
+				sails.sockets.broadcast('GameList', 'game', {
+					verb: 'created',
+					data: {
+						id: game.id,
+						name: game.name,
+						status: game.status,
+						players: [],
+					},
+				});
 				return res.ok({gameId: game.id});
 			}).catch(function (reason) {
 				res.badRequest(reason);
@@ -41,6 +46,7 @@ module.exports = {
 
 	getList: function (req, res) {
 		// HANDLE REQ.SESSION.GAME = GAME ID CASE
+		sails.sockets.join(req, 'GameList');
 		if (req.session.game != null) {
 			var promiseGame = gameService.populateGame({gameId: req.session.game})
 			var promiseList = gameAPI.findOpenGames();
@@ -48,13 +54,16 @@ module.exports = {
 			.then(function publishAndRespond (values) {
 				var game = values[0], list = values[1];
 				Game.subscribe(req, game.id);
-				Game.publishUpdate(req.session.game,
+				Game.publish(req.session.game,
 					{
-					change: 'Initialize',
-					pNum: req.session.pNum,
-					game: game,
-					pNum: req.session.pNum
-				});
+						verb: 'updated',
+						data: {
+							change: 'Initialize',
+							pNum: req.session.pNum,
+							game: game,
+							pNum: req.session.pNum
+						}
+					});
 				return res.ok({
 					inGame: true,
 					game: game,
@@ -228,7 +237,13 @@ module.exports = {
 						return gameService.populateGame({gameId: values[0].id});
 					})
 					.then(function publish (fullGame) {
-						Game.publishUpdate(fullGame.id, {change: "Initialize", game: fullGame});
+						Game.publish(fullGame.id, {
+							verb: 'updated',
+							data: {
+								change: 'Initialize',
+								game: fullGame,
+							}
+						});
 						return Promise.resolve(fullGame);
 					})
 					.catch(function failedToDeal (err) {
@@ -238,12 +253,14 @@ module.exports = {
 				} else {
 					var saveGame = gameService.saveGame({game: game});
 					var saveUser = userService.saveUser({user: user});
-					Game.publishUpdate(game.id,
-					{
-						change: 'ready',
-						userId: user.id,
-						pNum: user.pNum
-					})
+					Game.publish(game.id, {
+						verb: 'updated',
+						data: {
+							change: 'ready',
+							userId: user.id,
+							pNum: user.pNum,
+						},
+					});
 					return Promise.all([saveGame, saveUser]);
 				}
 			}) //End foundRecords
@@ -359,12 +376,13 @@ module.exports = {
 			return gameService.populateGame({gameId: game.id});
 		}) //End getPopulatedGame
 		.then(function publishAndRespond (fullGame) {
-			Game.publishUpdate(fullGame.id,
-				{
+			Game.publish(fullGame.id, {
+				verb: 'updated',
+				data: {
 					change: 'draw',
-					game: fullGame
-				}
-			);
+					game: fullGame,
+				},
+			});
 			return res.ok();
 		}) //End publishAndRespond
 		.catch(function failed (err) {
@@ -419,11 +437,13 @@ module.exports = {
 				gameModel.result = gameService.GameResult.STALEMATE;
 				gameService.saveGame({game: gameModel});
 			}
-			Game.publishUpdate(game.id,
-			{
-				change: "pass",
-				game: game,
-				victory: victory
+			Game.publish(game.id, {
+				change: 'updated',
+				data: {
+					change: 'pass',
+					game,
+					victory,
+				},
 			});
 			return res.ok();
 		})
@@ -481,10 +501,13 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id, {
-				change: "points",
-				game: fullGame,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'points',
+					game: fullGame,
+					victory,
+				},
 			});
 			// If the game is over, clean it up
 			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
@@ -546,10 +569,13 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id, {
-				change: "runes",
-				game: fullGame,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'runes',
+					game: fullGame,
+					victory,
+				},
 			});
 			// If the game is over, clean it up
 			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
@@ -623,10 +649,13 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id, {
-				change: "scuttle",
-				game: fullGame,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'scuttle',
+					game: fullGame,
+					victory,
+				},
 			});
 			return res.ok();
 		})
@@ -699,11 +728,13 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: 'jack',
-				game: fullGame,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'jack',
+					game: fullGame,
+					victory,
+				},
 			});
 			// If the game is over, clean it up
 			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
@@ -786,11 +817,14 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id, {
-				change: 'oneOff',
-				game: fullGame,
-				pNum: req.session.pNum,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'oneOff',
+					game: fullGame,
+					pNum: req.session.pNum,
+					victory,
+				},
 			});
 			return res.ok();
 		})
@@ -874,12 +908,14 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: 'targetedOneOff',
-				game: fullGame,
-				victory: victory,
-				pNum: req.session.pNum
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'targetedOneOff',
+					game: fullGame,
+					pNum: req.session.pNum,
+					victory,
+				},
 			});
 			return res.ok();
 		}) //End publishAndRespond
@@ -943,12 +979,14 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: "counter",
-				game: fullGame,
-				pNum: req.session.pNum,
-				victory: victory,
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'counter',
+					game: fullGame,
+					pNum: req.session.pNum,
+					victory,
+				},
 			});
 			return res.ok();
 		})
@@ -1226,14 +1264,16 @@ module.exports = {
 				gameModel,
 			});
 
-			Game.publishUpdate(fullGame.id,
-			{
-				change: "resolve",
-				oneOff: oneOff,
-				game: fullGame,
-				victory: victory,
-				playedBy: pNum,
-				happened: happened
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'resolve',
+					oneOff,
+					game: fullGame,
+					victory,
+					playedBy: pNum,
+					happened,
+				},
 			});
 			// If the game is over, clean it up
 			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
@@ -1285,11 +1325,13 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: "resolveFour",
-				game: fullGame,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'resolveFour',
+					game: fullGame,
+					victory,
+				},
 			});
 			return res.ok();
 		})
@@ -1332,11 +1374,13 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: 'resolveThree',
-				game: fullGame,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'resolveThree',
+					game: fullGame,
+					victory,
+				},
 			});
 			return res.ok();
 		})
@@ -1391,11 +1435,13 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: 'sevenPoints',
-				game: fullGame,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'sevenPoints',
+					game: fullGame,
+					victory,
+				},
 			});
 			// If the game is over, clean it up
 			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
@@ -1449,11 +1495,13 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: 'sevenRunes',
-				game: fullGame,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'sevenRunes',
+					game: fullGame,
+					victory,
+				},
 			});
 			// If the game is over, clean it up
 			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
@@ -1528,11 +1576,13 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: 'sevenScuttle',
-				game: fullGame,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'sevenScuttle',
+					game: fullGame,
+					victory,
+				},
 			});
 			return res.ok();
 		})
@@ -1624,11 +1674,13 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: 'sevenJack',
-				game: fullGame,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'sevenJack',
+					game: fullGame,
+					victory,
+				},
 			});
 			// If the game is over, clean it up
 			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
@@ -1700,12 +1752,14 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: 'sevenOneOff',
-				game: fullGame,
-				pNum: req.session.pNum,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'sevenOneOff',
+					game: fullGame,
+					pNum: req.session.pNum,
+					victory,
+				},
 			});
 			return res.ok();
 		})
@@ -1779,12 +1833,14 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publishUpdate(fullGame.id,
-			{
-				change: 'sevenTargetedOneOff',
-				game: fullGame,
-				pNum: req.session.pNum,
-				victory: victory
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'sevenTargetedOneOff',
+					game: fullGame,
+					victory,
+					pNum: req.session.pNum,
+				},
 			});
 			return res.ok();
 		})
@@ -1806,11 +1862,13 @@ module.exports = {
 				winner: (req.session.pNum + 1) % 2,
 				conceded: true
 			};
-			Game.publishUpdate(game.id,
-			{
-				change: 'concede',
-				game: game,
-				victory: victory
+			Game.publish(game.id, {
+				change: 'updated',
+				data: {
+					change: 'concede',
+					game,
+					victory,
+				},
 			});
 			return res.ok();
 		}).catch(function failed (err) {
@@ -1883,12 +1941,14 @@ module.exports = {
 				gameOver: false,
 				winner: null
 			}
-			 Game.publishUpdate(game.id,
-			 {
-			 	change: 'chat',
-			 	game: game,
-			 	victory: victory
-			 });
+			Game.publish(game.id, {
+				change: 'updated',
+				data: {
+					change: 'chat',
+					game,
+					victory,
+				},
+			});
 			 return res.ok();
 		})
 		.catch(function failed (err) {
@@ -1922,10 +1982,13 @@ module.exports = {
 			return gameService.populateGame({gameId: game.id});
 		})
 		.then(function publishUpdate (game) {
-			Game.publishUpdate(game.id,
-			{
-				change: 'stackDeck',
-				game: game,
+			Game.publish(game.id, {
+				change: 'updated',
+				data: {
+					change: 'stackDeck',
+					game,
+					victory,
+				},
 			});
 			return res.ok();
 		})
@@ -1948,11 +2011,13 @@ module.exports = {
 			return gameService.populateGame({gameId: game.id});
 		})
 		.then(function publishUpdate (game) {
-			Game.publishUpdate(game.id,
-			{
-				change: 'deleteDeck',
-				game: game,
-			})
+			Game.publish(fullGame.id, {
+				change: 'updated',
+				data: {
+					change: 'deleteDeck',
+					game,
+				},
+			});
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -2139,12 +2204,13 @@ module.exports = {
 			game = await game.save();
 			game = await gameService.populateGame({gameId: req.session.game});
 		}
-		Game.publishUpdate(game.id,
-			{
+		Game.publish(fullGame.id, {
+			change: 'updated',
+			data: {
 				change: 'loadFixture',
 				game,
-			}
-		);
+			},
+		});
 		return res.ok(game);
 	},
 };

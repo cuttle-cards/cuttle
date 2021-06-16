@@ -230,37 +230,37 @@ In Sails 1.0, many Resourceful PubSub methods have been removed, and replaced by
 In addition, the `.watch()` and `.unwatch()` methods have been removed (use `autoWatch` instead).
 Found the following references to unsupported RPS methods:
 
-* .watch() in api/controllers/GameController.js:23
-* .publishCreate() in api/controllers/GameController.js:30
-* .watch() in api/controllers/GameController.js:45
-* .publishUpdate() in api/controllers/GameController.js:53
-* .publishUpdate() in api/controllers/GameController.js:231
-* .publishUpdate() in api/controllers/GameController.js:241
-* .publishUpdate() in api/controllers/GameController.js:359
-* .publishUpdate() in api/controllers/GameController.js:408
-* .publishUpdate() in api/controllers/GameController.js:463
-* .publishUpdate() in api/controllers/GameController.js:520
-* .publishUpdate() in api/controllers/GameController.js:589
-* .publishUpdate() in api/controllers/GameController.js:657
-* .publishUpdate() in api/controllers/GameController.js:735
-* .publishUpdate() in api/controllers/GameController.js:814
-* .publishUpdate() in api/controllers/GameController.js:874
-* .publishUpdate() in api/controllers/GameController.js:1148
-* .publishUpdate() in api/controllers/GameController.js:1199
-* .publishUpdate() in api/controllers/GameController.js:1238
-* .publishUpdate() in api/controllers/GameController.js:1289
-* .publishUpdate() in api/controllers/GameController.js:1339
-* .publishUpdate() in api/controllers/GameController.js:1410
-* .publishUpdate() in api/controllers/GameController.js:1485
-* .publishUpdate() in api/controllers/GameController.js:1552
-* .publishUpdate() in api/controllers/GameController.js:1622
-* .publishUpdate() in api/controllers/GameController.js:1649
-* .publishUpdate() in api/controllers/GameController.js:1726
-* .publishUpdate() in api/controllers/GameController.js:1765
-* .publishUpdate() in api/controllers/GameController.js:1791
-* .publishUpdate() in api/controllers/GameController.js:1982
-* .watch() in api/controllers/UserController.js:90
-* .publishUpdate() in api/controllers/UserController.js:92
+//* .watch() in api/controllers/GameController.js:23
+// * .publishCreate() in api/controllers/GameController.js:30
+//* .watch() in api/controllers/GameController.js:45
+//* .publishUpdate() in api/controllers/GameController.js:53
+//* .publishUpdate() in api/controllers/GameController.js:231
+//* .publishUpdate() in api/controllers/GameController.js:241
+//* .publishUpdate() in api/controllers/GameController.js:359
+//* .publishUpdate() in api/controllers/GameController.js:408
+//* .publishUpdate() in api/controllers/GameController.js:463
+//* .publishUpdate() in api/controllers/GameController.js:520
+//* .publishUpdate() in api/controllers/GameController.js:589
+//* .publishUpdate() in api/controllers/GameController.js:657
+//* .publishUpdate() in api/controllers/GameController.js:735
+//* .publishUpdate() in api/controllers/GameController.js:814
+//* .publishUpdate() in api/controllers/GameController.js:874
+//* .publishUpdate() in api/controllers/GameController.js:1148
+//* .publishUpdate() in api/controllers/GameController.js:1199
+//* .publishUpdate() in api/controllers/GameController.js:1238
+//* .publishUpdate() in api/controllers/GameController.js:1289
+//* .publishUpdate() in api/controllers/GameController.js:1339
+//* .publishUpdate() in api/controllers/GameController.js:1410
+//* .publishUpdate() in api/controllers/GameController.js:1485
+//* .publishUpdate() in api/controllers/GameController.js:1552
+//* .publishUpdate() in api/controllers/GameController.js:1622
+//* .publishUpdate() in api/controllers/GameController.js:1649
+//* .publishUpdate() in api/controllers/GameController.js:1726
+//* .publishUpdate() in api/controllers/GameController.js:1765
+//* .publishUpdate() in api/controllers/GameController.js:1791
+//* .publishUpdate() in api/controllers/GameController.js:1982
+//* .watch() in api/controllers/UserController.js:90
+//* .publishUpdate() in api/controllers/UserController.js:92
 
 See the following for more info:
 http://sailsjs.com/docs/upgrading/to-v-1-0#?resourceful-pubsub
