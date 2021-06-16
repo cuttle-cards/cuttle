@@ -138,16 +138,14 @@ module.exports = {
 					deck: gameId
 				})
 					.fetch()
-					.exec(function (err, newCard) {
-					if (err) {
-						return reject(err);
-					} else if (!newCard) {
-						return reject(new Error(`Error creating card: ${suit} of ${rank}`));
-					//Everything ok -> resolve promise
-					} else {
-						return resolve(newCard);
-					}
-				});
+					.then((newCard) => newCard)
+					.catch((err) => {
+						if (err) {
+							return reject(err)
+						} else {
+							return reject(new Error(`Error creating card: ${suit} of ${rank}`));
+						}
+					})
 			} else {
 				return reject(new Error("Invalid Arguments for createCard service"));
 			}
