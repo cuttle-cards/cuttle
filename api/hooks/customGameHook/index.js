@@ -13,17 +13,16 @@ var Promise = require('bluebird');
 				}
 				)
 					.fetch()
-					.then((game) => {
-						return resolve(game);
-					})
-					.catch((err) => {
-						let res;
-						if (err) {
-							res = err;
-						} else {
-							res = new Error(`Unknown error creating game ${gameName}`);
+					.exec(function (error, game) {
+						if (error || !game) {
+							var res;
+							if (error) {
+								res = error;
+							} else {
+								res = new Error(`Unknown error creating game ${gameName}`);
+							}
+							return reject(res);
 						}
-						return reject(res);
 					});
 			});
 		},
