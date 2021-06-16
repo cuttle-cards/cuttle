@@ -231,6 +231,9 @@ In addition, the `.watch()` and `.unwatch()` methods have been removed (use `aut
 Found the following references to unsupported RPS methods:
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> fix: update resourceful pubsub (e.g. publishUpdate) to use sails 1.0 api (.publish etc)
 //* .watch() in api/controllers/GameController.js:23
 // * .publishCreate() in api/controllers/GameController.js:30
 //* .watch() in api/controllers/GameController.js:45
@@ -262,6 +265,7 @@ Found the following references to unsupported RPS methods:
 //* .publishUpdate() in api/controllers/GameController.js:1982
 //* .watch() in api/controllers/UserController.js:90
 //* .publishUpdate() in api/controllers/UserController.js:92
+<<<<<<< HEAD
 =======
 * .watch() in api/controllers/GameController.js:23
 * .publishCreate() in api/controllers/GameController.js:30
@@ -295,6 +299,8 @@ Found the following references to unsupported RPS methods:
 * .watch() in api/controllers/UserController.js:90
 * .publishUpdate() in api/controllers/UserController.js:92
 >>>>>>> chore: iniital upgrade to sails v1! Boots in development mode w/ runtime errors
+=======
+>>>>>>> fix: update resourceful pubsub (e.g. publishUpdate) to use sails 1.0 api (.publish etc)
 
 See the following for more info:
 http://sailsjs.com/docs/upgrading/to-v-1-0#?resourceful-pubsub
