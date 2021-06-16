@@ -49,18 +49,16 @@ var Promise = require('bluebird');
 					encryptedPassword: encryptedPassword
 				})
 					.fetch()
-					.then((user) => {
-						return resolve(user);
-					})
-					.catch((err) => {
-						let res;
-						if (err) {
-							res = err
-						} else {
-							res = new Error("Could not create user")
+					.exec((err, user) => {
+						if (err || !user) { //Failed user creation
+							var res;
+							if (err) {res = err}
+							else {res = new Error("Could not create user")}
+							return reject(res);
+						} else { //Made new user
+							return resolve(user);
 						}
-						return reject(res);						
-					});
+					})
 			}); //End of returned promise
 		},
 
