@@ -10,9 +10,9 @@ module.exports.models = {
   // This is pretty ineffecient, so if you don't _always_ need this feature, you
   // should turn these off and instead chain `.meta({fetch: true})` onto the
   // individual calls where you _do_ need records returned.
-  fetchRecordsOnUpdate: true,
-  fetchRecordsOnCreate: true,
-  fetchRecordsOnCreateEach: true,
+  // fetchRecordsOnUpdate: true,
+  // fetchRecordsOnCreate: true,
+  // fetchRecordsOnCreateEach: true,
 
   // Fetching records on destroy was experimental, but if you were using it,
   // uncomment the next line.
@@ -27,7 +27,7 @@ module.exports.models = {
   // Because you can't have the old `connection` setting at the same time as the new
   // `datastore` setting, we'll set it to `null` here.  When you merge this file into your
   // existing `config/models.js` file, just remove any reference to `connection`.
-  connection: null,
+  // connection: null,
 
   // These attributes will be added to all of your models.  When you create a new Sails 1.0
   // app with "sails new", a similar configuration will be generated for you.
@@ -37,13 +37,13 @@ module.exports.models = {
     // timestamps.  By default, "sails new" will generate these two attributes as numbers,
     // giving you the most flexibility.  But for compatibility with your existing project,
     // we'll define them as strings.
-    createdAt: { type: 'string', autoCreatedAt: true, },
-    updatedAt: { type: 'string', autoUpdatedAt: true, },
+    // createdAt: { type: 'string', autoCreatedAt: true, },
+    // updatedAt: { type: 'string', autoUpdatedAt: true, },
     // In Sails 1.0, the primary key field is no longer created for you, and `autoPK` is
     // not a valid model option.  Instead, you define it yourself and tell Sails which
     // attribute to use as the primary key by setting the `primaryKey` setting on the model.
     // That setting defaults to `id`.
-    id: { type: 'number', autoIncrement: true, }
+    // id: { type: 'number', autoIncrement: true, }
   },
 
   /******************************************************************************
