@@ -91,7 +91,7 @@ module.exports = {
 			var promiseClearOldGame = gameService.clearGame({userId: req.session.usr});
 			var promiseGame = gameAPI.findGame(req.body.id);
 			var promiseUser = userAPI.findUser(req.session.usr);
-			Promise.all([promiseGame, promiseUser, promiseClearOldGame]).then(function success (arr) {
+			Promise.all([promiseGame, promiseUser, promiseClearOldGame]).then(async function success (arr) {
 				// Catch promise values
 				var game = arr[0];
 				var user = arr[1];
@@ -102,7 +102,10 @@ module.exports = {
 						pNum = 0;
 					} else {
 						pNum = (game.players[0].pNum + 1) % 2;
-						game.status = false;
+						await Game.updateOne({id: game.id})
+							.set({
+								status: false
+							});
 						sails.sockets.blast("gameFull", {id: game.id});
 					}
 				} else {
@@ -113,10 +116,13 @@ module.exports = {
 				req.session.pNum = pNum;
 				// Update models
 				user.pNum = pNum;
-				game.players.add(user.id);
-				var saveGame = gameService.saveGame({game: game});
-				var savePlayer = userService.saveUser({user: user});
-				return Promise.all([saveGame, savePlayer]);
+				const addPlayerToGame = Game.addToCollection(game.id, 'players')
+					.members([user.id])
+					.fetch();
+				const updatePlayer = User.updateOne({id: user.id})
+					.set({pNum});
+
+				return Promise.all([addPlayerToGame, updatePlayer]);
 
 			})
 			.then(function respond (values) {
