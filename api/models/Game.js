@@ -28,7 +28,7 @@ module.exports = {
       defaultsTo: false
     },
     passes: {
-      type: 'integer',
+      type: 'number',
       defaultsTo: 0
     },
     deck: {
@@ -65,7 +65,7 @@ module.exports = {
       via: 'twos'
     },
     turn: {
-      type: 'integer',
+      type: 'number',
       defaultsTo: 0
     },
     log: {
@@ -99,7 +99,7 @@ module.exports = {
      * 2: stalemate
      */
     result: {
-      type: 'integer',
+      type: 'number',
       defaultsTo: -1,
     },
   } // end attributes

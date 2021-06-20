@@ -19,7 +19,7 @@ module.exports = {
   		model: 'game',
   	},
     pNum: {
-        type: 'integer'
+        type: 'number'
     },
     hand: {
     	collection: 'card',
@@ -34,11 +34,11 @@ module.exports = {
   		via: 'runes',
   	},
     frozenId: {
-      type: 'integer',
+      type: 'number',
       defaultsTo: 0,
 	},
 	rank: {
-		type: 'integer',
+		type: 'number',
 		defaultsTo: 1000,
 	},
   } // end attributes

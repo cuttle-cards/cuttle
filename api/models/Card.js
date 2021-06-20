@@ -9,11 +9,11 @@ module.exports = {
 
   attributes: {
   	suit: {
-  		type: 'integer'
+  		type: 'number'
   	},
 
   	rank: {
-  		type: 'integer'
+  		type: 'number'
   	},
 
     name: {
@@ -73,7 +73,7 @@ module.exports = {
     },
     //Used to order attachments
     index: {
-      type: 'integer',
+      type: 'number',
     },
 
     attachments: {
