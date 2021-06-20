@@ -1,0 +1,267 @@
+██████╗ ███████╗██████╗  ██████╗ ██████╗ ████████╗
+██╔══██╗██╔════╝██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝
+██████╔╝█████╗  ██████╔╝██║   ██║██████╔╝   ██║   
+██╔══██╗██╔══╝  ██╔═══╝ ██║   ██║██╔══██╗   ██║   
+██║  ██║███████╗██║     ╚██████╔╝██║  ██║   ██║   
+╚═╝  ╚═╝╚══════╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
+                                                  
+==================================================
+
+This report highlights various issues that may need to be addressed before your app will work with Sails 1.0.
+After implementing these suggestions, some good next steps are:
+* Address the issues in this report, and run the updater again with --reportOnly to regenerate the report.
+  Repeat until there are no more issues!
+* Review the full migration guide at: https://github.com/balderdashy/sails-docs/blob/1.0/upgrading/To1.0.md
+* Attempt to lift and run your app with Sails 1.0.
+* See http://sailsjs.com/support for support options!
+
+
+┌┐ ┬  ┬ ┬┌─┐┌─┐┬─┐┬┌┐┌┌┬┐┌─┐  ┌─┐┌─┐┌┐┌┌─┐┬┌─┐
+├┴┐│  │ │├┤ ├─┘├┬┘││││ │ └─┐  │  │ ││││├┤ ││ ┬
+└─┘┴─┘└─┘└─┘┴  ┴└─┴┘└┘ ┴ └─┘  └─┘└─┘┘└┘└  ┴└─┘
+
+In Sails 1.0, the `actions` blueprint routes are turned _off_ by default.
+This is a change from v0.12.x, so if you're relying on Sails to create
+a route for each of your custom controller actions automatically, be sure
+to set `actions` to `true` in your config/blueprints.js file.
+
+┌┬┐┌─┐┌┬┐┌─┐┌┐ ┌─┐┌─┐┌─┐  ┌─┐┌─┐┌┐┌┌─┐┬┌─┐
+ ││├─┤ │ ├─┤├┴┐├─┤└─┐├┤   │  │ ││││├┤ ││ ┬
+─┴┘┴ ┴ ┴ ┴ ┴└─┘┴ ┴└─┘└─┘  └─┘└─┘┘└┘└  ┴└─┘
+
+In Sails 1.0, the `connections` config has been replaced with `datastores`,
+and the `models.connection` config has been replaced with `models.datastore`.
+It looks like there are still some config files that need to be changed:
+
+* In config/config.js:29, change `connections:` to `datastores:`
+
+* In config/config.js:53, change `connection:` to `datastore:`
+
+┌─┐┌┬┐┌┬┐   ┬─┐┌─┐┌┬┐┌─┐┬  ┬┌─┐  ┌─┐┌┐┌┌┬┐  ┌─┐┌─┐┬  ┬┌─┐  ┌┬┐┌─┐┌┬┐┬ ┬┌─┐┌┬┐┌─┐
+├─┤ ││ ││   ├┬┘├┤ ││││ │└┐┌┘├┤   ├─┤│││ ││  └─┐├─┤└┐┌┘├┤   │││├┤  │ ├─┤│ │ ││└─┐
+┴ ┴─┴┘─┴┘┘  ┴└─└─┘┴ ┴└─┘ └┘ └─┘  ┴ ┴┘└┘─┴┘  └─┘┴ ┴ └┘ └─┘  ┴ ┴└─┘ ┴ ┴ ┴└─┘─┴┘└─┘
+
+In Sails 1.0, records no longer support .add() and .remove() for adding and removing
+child records in a collection attribute.  Records also don't support the .save() method.
+Instead, use the model class methods
+`.update()`, `.addToCollection()`, `.removeFromCollection()` and `.replaceCollection()`.
+
+Found the following possible references to `.add()`, `.remove() and `.save()`:
+
+* .save() in api/services/cardService.js:185
+* .save() in api/services/gameService.js:87
+* .remove() in api/services/gameService.js:201
+* .remove() in api/services/gameService.js:204
+* .remove() in api/services/gameService.js:207
+* .remove() in api/services/gameService.js:223
+* .remove() in api/services/gameService.js:226
+* .remove() in api/services/gameService.js:229
+* .remove() in api/services/gameService.js:233
+* .remove() in api/services/gameService.js:238
+* .remove() in api/services/gameService.js:276
+* .save() in api/services/userService.js:38
+* .add() in api/controllers/GameController.js:109
+* .add() in api/controllers/GameController.js:184
+* .remove() in api/controllers/GameController.js:185
+* .add() in api/controllers/GameController.js:193
+* .remove() in api/controllers/GameController.js:194
+* .add() in api/controllers/GameController.js:200
+* .remove() in api/controllers/GameController.js:201
+* .remove() in api/controllers/GameController.js:209
+* .remove() in api/controllers/GameController.js:216
+* .remove() in api/controllers/GameController.js:275
+* .add() in api/controllers/GameController.js:332
+* .remove() in api/controllers/GameController.js:341
+* .add() in api/controllers/GameController.js:434
+* .remove() in api/controllers/GameController.js:435
+* .add() in api/controllers/GameController.js:489
+* .remove() in api/controllers/GameController.js:490
+* .remove() in api/controllers/GameController.js:551
+* .add() in api/controllers/GameController.js:552
+* .add() in api/controllers/GameController.js:554
+* .add() in api/controllers/GameController.js:555
+* .remove() in api/controllers/GameController.js:556
+* .remove() in api/controllers/GameController.js:557
+* .add() in api/controllers/GameController.js:618
+* .remove() in api/controllers/GameController.js:619
+* .add() in api/controllers/GameController.js:622
+* .remove() in api/controllers/GameController.js:709
+* .remove() in api/controllers/GameController.js:783
+* .add() in api/controllers/GameController.js:850
+* .remove() in api/controllers/GameController.js:851
+* .remove() in api/controllers/GameController.js:922
+* .add() in api/controllers/GameController.js:923
+* .add() in api/controllers/GameController.js:926
+* .remove() in api/controllers/GameController.js:927
+* .remove() in api/controllers/GameController.js:936
+* .add() in api/controllers/GameController.js:937
+* .add() in api/controllers/GameController.js:940
+* .remove() in api/controllers/GameController.js:941
+* .add() in api/controllers/GameController.js:951
+* .remove() in api/controllers/GameController.js:954
+* .add() in api/controllers/GameController.js:959
+* .add() in api/controllers/GameController.js:980
+* .add() in api/controllers/GameController.js:986
+* .remove() in api/controllers/GameController.js:994
+* .remove() in api/controllers/GameController.js:1001
+* .remove() in api/controllers/GameController.js:1016
+* .remove() in api/controllers/GameController.js:1024
+* .add() in api/controllers/GameController.js:1036
+* .remove() in api/controllers/GameController.js:1037
+* .add() in api/controllers/GameController.js:1040
+* .remove() in api/controllers/GameController.js:1041
+* .add() in api/controllers/GameController.js:1048
+* .remove() in api/controllers/GameController.js:1049
+* .add() in api/controllers/GameController.js:1054
+* .add() in api/controllers/GameController.js:1064
+* .remove() in api/controllers/GameController.js:1065
+* .add() in api/controllers/GameController.js:1071
+* .add() in api/controllers/GameController.js:1089
+* .remove() in api/controllers/GameController.js:1094
+* .add() in api/controllers/GameController.js:1101
+* .remove() in api/controllers/GameController.js:1102
+* .remove() in api/controllers/GameController.js:1107
+* .add() in api/controllers/GameController.js:1114
+* .add() in api/controllers/GameController.js:1126
+* .add() in api/controllers/GameController.js:1130
+* .remove() in api/controllers/GameController.js:1131
+* .add() in api/controllers/GameController.js:1178
+* .remove() in api/controllers/GameController.js:1179
+* .add() in api/controllers/GameController.js:1181
+* .remove() in api/controllers/GameController.js:1182
+* .add() in api/controllers/GameController.js:1219
+* .remove() in api/controllers/GameController.js:1221
+* .add() in api/controllers/GameController.js:1222
+* .add() in api/controllers/GameController.js:1264
+* .add() in api/controllers/GameController.js:1314
+* .remove() in api/controllers/GameController.js:1371
+* .add() in api/controllers/GameController.js:1372
+* .remove() in api/controllers/GameController.js:1374
+* .remove() in api/controllers/GameController.js:1375
+* .add() in api/controllers/GameController.js:1377
+* .add() in api/controllers/GameController.js:1378
+* .add() in api/controllers/GameController.js:1445
+* .add() in api/controllers/GameController.js:1454
+* .add() in api/controllers/GameController.js:1455
+* .add() in api/controllers/GameController.js:1756
+* .remove() in api/controllers/GameController.js:1758
+* .remove() in api/controllers/GameController.js:1782
+* .add() in api/controllers/GameController.js:1783
+* .remove() in api/controllers/GameController.js:1843
+* .add() in api/controllers/GameController.js:1844
+* .remove() in api/controllers/GameController.js:1849
+* .add() in api/controllers/GameController.js:1850
+* .remove() in api/controllers/GameController.js:1856
+* .remove() in api/controllers/GameController.js:1857
+* .remove() in api/controllers/GameController.js:1858
+* .remove() in api/controllers/GameController.js:1859
+* .remove() in api/controllers/GameController.js:1860
+* .remove() in api/controllers/GameController.js:1861
+* .add() in api/controllers/GameController.js:1863
+* .remove() in api/controllers/GameController.js:1868
+* .remove() in api/controllers/GameController.js:1869
+* .remove() in api/controllers/GameController.js:1870
+* .remove() in api/controllers/GameController.js:1871
+* .remove() in api/controllers/GameController.js:1872
+* .remove() in api/controllers/GameController.js:1873
+* .add() in api/controllers/GameController.js:1875
+* .remove() in api/controllers/GameController.js:1880
+* .remove() in api/controllers/GameController.js:1881
+* .remove() in api/controllers/GameController.js:1882
+* .remove() in api/controllers/GameController.js:1883
+* .remove() in api/controllers/GameController.js:1884
+* .remove() in api/controllers/GameController.js:1885
+* .add() in api/controllers/GameController.js:1887
+* .remove() in api/controllers/GameController.js:1892
+* .remove() in api/controllers/GameController.js:1893
+* .remove() in api/controllers/GameController.js:1894
+* .remove() in api/controllers/GameController.js:1895
+* .remove() in api/controllers/GameController.js:1896
+* .remove() in api/controllers/GameController.js:1897
+* .add() in api/controllers/GameController.js:1899
+* .remove() in api/controllers/GameController.js:1904
+* .remove() in api/controllers/GameController.js:1905
+* .remove() in api/controllers/GameController.js:1906
+* .remove() in api/controllers/GameController.js:1907
+* .remove() in api/controllers/GameController.js:1908
+* .remove() in api/controllers/GameController.js:1909
+* .add() in api/controllers/GameController.js:1911
+* .remove() in api/controllers/GameController.js:1916
+* .remove() in api/controllers/GameController.js:1917
+* .remove() in api/controllers/GameController.js:1918
+* .remove() in api/controllers/GameController.js:1919
+* .remove() in api/controllers/GameController.js:1920
+* .remove() in api/controllers/GameController.js:1921
+* .add() in api/controllers/GameController.js:1923
+* .remove() in api/controllers/GameController.js:1927
+* .remove() in api/controllers/GameController.js:1928
+* .remove() in api/controllers/GameController.js:1929
+* .remove() in api/controllers/GameController.js:1930
+* .remove() in api/controllers/GameController.js:1931
+* .remove() in api/controllers/GameController.js:1932
+* .remove() in api/controllers/GameController.js:1933
+* .remove() in api/controllers/GameController.js:1934
+* .remove() in api/controllers/GameController.js:1939
+* .remove() in api/controllers/GameController.js:1940
+* .remove() in api/controllers/GameController.js:1941
+* .remove() in api/controllers/GameController.js:1942
+* .remove() in api/controllers/GameController.js:1943
+* .remove() in api/controllers/GameController.js:1944
+* .remove() in api/controllers/GameController.js:1945
+* .remove() in api/controllers/GameController.js:1946
+* .remove() in api/controllers/GameController.js:1953
+* .add() in api/controllers/GameController.js:1955
+* .save() in api/controllers/GameController.js:1959
+* .remove() in api/controllers/GameController.js:1970
+* .remove() in api/controllers/GameController.js:1975
+* .save() in api/controllers/GameController.js:1979
+
+See the reference docs for more info:
+.update(): https://sailsjs.com/docs/reference/waterline/models/update
+.addToCollection(): https://sailsjs.com/docs/reference/waterline/models/addToCollection
+.removeFromCollection(): https://sailsjs.com/docs/reference/waterline/models/removeFromCollection
+.replaceCollection(): https://sailsjs.com/docs/reference/waterline/models/replaceCollection
+
+╔═╗┬ ┬┌┐ ╔═╗┬ ┬┌┐   ┌┬┐┌─┐┌┬┐┬ ┬┌─┐┌┬┐┌─┐
+╠═╝│ │├┴┐╚═╗│ │├┴┐  │││├┤  │ ├─┤│ │ ││└─┐
+╩  └─┘└─┘╚═╝└─┘└─┘  ┴ ┴└─┘ ┴ ┴ ┴└─┘─┴┘└─┘
+
+In Sails 1.0, many Resourceful PubSub methods have been removed, and replaced by `.publish()`.
+In addition, the `.watch()` and `.unwatch()` methods have been removed (use `autoWatch` instead).
+Found the following references to unsupported RPS methods:
+
+* .watch() in api/controllers/GameController.js:23
+* .publishCreate() in api/controllers/GameController.js:30
+* .watch() in api/controllers/GameController.js:45
+* .publishUpdate() in api/controllers/GameController.js:53
+* .publishUpdate() in api/controllers/GameController.js:231
+* .publishUpdate() in api/controllers/GameController.js:241
+* .publishUpdate() in api/controllers/GameController.js:359
+* .publishUpdate() in api/controllers/GameController.js:408
+* .publishUpdate() in api/controllers/GameController.js:463
+* .publishUpdate() in api/controllers/GameController.js:520
+* .publishUpdate() in api/controllers/GameController.js:589
+* .publishUpdate() in api/controllers/GameController.js:657
+* .publishUpdate() in api/controllers/GameController.js:735
+* .publishUpdate() in api/controllers/GameController.js:814
+* .publishUpdate() in api/controllers/GameController.js:874
+* .publishUpdate() in api/controllers/GameController.js:1148
+* .publishUpdate() in api/controllers/GameController.js:1199
+* .publishUpdate() in api/controllers/GameController.js:1238
+* .publishUpdate() in api/controllers/GameController.js:1289
+* .publishUpdate() in api/controllers/GameController.js:1339
+* .publishUpdate() in api/controllers/GameController.js:1410
+* .publishUpdate() in api/controllers/GameController.js:1485
+* .publishUpdate() in api/controllers/GameController.js:1552
+* .publishUpdate() in api/controllers/GameController.js:1622
+* .publishUpdate() in api/controllers/GameController.js:1649
+* .publishUpdate() in api/controllers/GameController.js:1726
+* .publishUpdate() in api/controllers/GameController.js:1765
+* .publishUpdate() in api/controllers/GameController.js:1791
+* .publishUpdate() in api/controllers/GameController.js:1982
+* .watch() in api/controllers/UserController.js:90
+* .publishUpdate() in api/controllers/UserController.js:92
+
+See the following for more info:
+http://sailsjs.com/docs/upgrading/to-v-1-0#?resourceful-pubsub
+http://sailsjs.com/config/blueprints#?actionrelated-settings

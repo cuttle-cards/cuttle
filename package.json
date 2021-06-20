@@ -8,6 +8,8 @@
     "node": "12.18.3"
   },
   "dependencies": {
+    "@sailshq/upgrade": "^1.0.9",
+    "async": "2.1.4",
     "bluebird": "^3.4.6",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
@@ -30,10 +32,13 @@
     "machinepack-emailaddresses": "^0.4.0",
     "machinepack-passwords": "^2.3.0",
     "rc": "^1.2.8",
-    "sails": "~0.12.0-rc2",
-    "sails-disk": "~0.10.7",
-    "sails-mongo": "^0.12.2",
-    "sails-postgresql": "^0.11.4",
+    "sails": "^1.4.3",
+    "sails-disk": "^2.1.0",
+    "sails-hook-grunt": "^1.0.8",
+    "sails-hook-orm": "^2.1.1",
+    "sails-hook-sockets": "^1.5.5",
+    "sails-mongo": "^1.2.0",
+    "sails-postgresql": "^1.0.2",
     "sails.io.js": "^0.13.8",
     "socket.io-client": "^1.4.8"
   },

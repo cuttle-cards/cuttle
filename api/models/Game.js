@@ -14,12 +14,10 @@ module.exports = {
   	status: {
   		type: 'boolean',
   		defaultsTo: true,
-  		required: true,
   	},
     players: {
       collection: 'user',
       via: 'game',
-      defaultsTo: [],
     },
     p0Ready: {
       type: 'boolean',
@@ -77,11 +75,11 @@ module.exports = {
       defaultsTo: 0
     },
     log: {
-      type: "array",
+      type: 'ref',
       defaultsTo: []
     },
     chat: {
-      type: "array",
+      type: 'ref',
       defaultsTo: []
     },
     isRanked: {
