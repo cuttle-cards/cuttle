@@ -37,11 +37,9 @@ module.exports = {
     },
     topCard: {
       model: 'card',
-      via: 'topCard'
     },
     secondCard: {
       model: 'card',
-      via: 'secondCard'
     },
     scrap: {
       collection: 'card',
@@ -49,22 +47,18 @@ module.exports = {
     },
     oneOff: {
       model: 'card',
-      via: 'oneOff'
     },
     resolving: {
       model: 'card',
-      via: 'resolving'
     },
     oneOffTarget: {
       model: 'card',
-      via: 'targeted'
     },
     oneOffTargetType: {
       type: 'string'
     },
     attachedToTarget: {
       model: 'card',
-      via: 'attachedToTarget'
     },
     twos: {
       collection: 'card',
@@ -78,6 +72,7 @@ module.exports = {
       type: 'ref',
       defaultsTo: []
     },
+
     chat: {
       type: 'ref',
       defaultsTo: []
