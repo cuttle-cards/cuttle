@@ -52,8 +52,8 @@ module.exports = {
 			Promise.all([promiseGame, promiseList])
 			.then(function publishAndRespond (values) {
 				var game = values[0], list = values[1];
-				Game.subscribe(req, game.id);
-				Game.publish(req.session.game,
+				Game.subscribe(req, [game.id]);
+				Game.publish([req.session.game],
 					{
 						verb: 'updated',
 						data: {
@@ -86,7 +86,7 @@ module.exports = {
 
 	subscribe: function (req, res) {
 		if (req.body.id) {
-			Game.subscribe(req, req.body.id);
+			Game.subscribe(req, [req.body.id]);
 			const promiseClearOldGame = gameService.clearGame({userId: req.session.usr});
 			const promiseGame = gameAPI.findGame(req.body.id);
 			const promiseUser = userAPI.findUser(req.session.usr);
