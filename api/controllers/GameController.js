@@ -87,14 +87,14 @@ module.exports = {
 	subscribe: function (req, res) {
 		if (req.body.id) {
 			Game.subscribe(req, req.body.id);
-			var promiseClearOldGame = gameService.clearGame({userId: req.session.usr});
-			var promiseGame = gameAPI.findGame(req.body.id);
-			var promiseUser = userAPI.findUser(req.session.usr);
+			const promiseClearOldGame = gameService.clearGame({userId: req.session.usr});
+			const promiseGame = gameAPI.findGame(req.body.id);
+			const promiseUser = userAPI.findUser(req.session.usr);
 			Promise.all([promiseGame, promiseUser, promiseClearOldGame]).then(async function success (arr) {
 				// Catch promise values
-				var game = arr[0];
-				var user = arr[1];
-				var pNum;
+				const game = arr[0];
+				const user = arr[1];
+				let pNum;
 				if (game.players) {
 					// Determine pNum of new player
 					if (game.players.length === 0) {
