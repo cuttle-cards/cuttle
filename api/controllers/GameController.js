@@ -283,7 +283,7 @@ module.exports = {
 						return gameService.populateGame({gameId: values[0].id});
 					})
 					.then(function publish (fullGame) {
-						Game.publish(fullGame.id, {
+						Game.publish([fullGame.id], {
 							verb: 'updated',
 							data: {
 								change: 'Initialize',
@@ -299,7 +299,7 @@ module.exports = {
 				} else {
 					var saveGame = gameService.saveGame({game: game});
 					var saveUser = userService.saveUser({user: user});
-					Game.publish(game.id, {
+					Game.publish([game.id], {
 						verb: 'updated',
 						data: {
 							change: 'ready',
@@ -422,7 +422,7 @@ module.exports = {
 			return gameService.populateGame({gameId: game.id});
 		}) //End getPopulatedGame
 		.then(function publishAndRespond (fullGame) {
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				verb: 'updated',
 				data: {
 					change: 'draw',
@@ -483,7 +483,7 @@ module.exports = {
 				gameModel.result = gameService.GameResult.STALEMATE;
 				gameService.saveGame({game: gameModel});
 			}
-			Game.publish(game.id, {
+			Game.publish([game.id], {
 				change: 'updated',
 				data: {
 					change: 'pass',
@@ -547,7 +547,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'points',
@@ -615,7 +615,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'runes',
@@ -695,7 +695,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'scuttle',
@@ -774,7 +774,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'jack',
@@ -863,7 +863,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'oneOff',
@@ -954,7 +954,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'targetedOneOff',
@@ -1025,7 +1025,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'counter',
@@ -1310,7 +1310,7 @@ module.exports = {
 				gameModel,
 			});
 
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'resolve',
@@ -1371,7 +1371,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'resolveFour',
@@ -1420,7 +1420,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'resolveThree',
@@ -1481,7 +1481,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'sevenPoints',
@@ -1541,7 +1541,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'sevenRunes',
@@ -1622,7 +1622,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'sevenScuttle',
@@ -1720,7 +1720,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'sevenJack',
@@ -1798,7 +1798,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'sevenOneOff',
@@ -1879,7 +1879,7 @@ module.exports = {
 				game: fullGame,
 				gameModel,
 			});
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'sevenTargetedOneOff',
@@ -1908,7 +1908,7 @@ module.exports = {
 				winner: (req.session.pNum + 1) % 2,
 				conceded: true
 			};
-			Game.publish(game.id, {
+			Game.publish([game.id], {
 				change: 'updated',
 				data: {
 					change: 'concede',
@@ -1987,7 +1987,7 @@ module.exports = {
 				gameOver: false,
 				winner: null
 			}
-			Game.publish(game.id, {
+			Game.publish([game.id], {
 				change: 'updated',
 				data: {
 					change: 'chat',
@@ -2028,7 +2028,7 @@ module.exports = {
 			return gameService.populateGame({gameId: game.id});
 		})
 		.then(function publishUpdate (game) {
-			Game.publish(game.id, {
+			Game.publish([game.id], {
 				change: 'updated',
 				data: {
 					change: 'stackDeck',
@@ -2057,7 +2057,7 @@ module.exports = {
 			return gameService.populateGame({gameId: game.id});
 		})
 		.then(function publishUpdate (game) {
-			Game.publish(fullGame.id, {
+			Game.publish([fullGame.id], {
 				change: 'updated',
 				data: {
 					change: 'deleteDeck',
@@ -2250,7 +2250,7 @@ module.exports = {
 			game = await game.save();
 			game = await gameService.populateGame({gameId: req.session.game});
 		}
-		Game.publish(fullGame.id, {
+		Game.publish([fullGame.id], {
 			change: 'updated',
 			data: {
 				change: 'loadFixture',
