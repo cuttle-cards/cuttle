@@ -9,7 +9,6 @@
  // Dependencies //
  //////////////////
 var Promise = require('bluebird');
-const Game = require('../models/Game');
 var gameAPI = sails.hooks['customgamehook'];
 var userAPI = sails.hooks['customuserhook'];
 
@@ -86,65 +85,68 @@ module.exports = {
 	}, //End getList()
 
 	subscribe: function (req, res) {
-		if (req.body.id) {
-			Game.subscribe(req, req.body.id);
-			var promiseClearOldGame = gameService.clearGame({userId: req.session.usr});
-			var promiseGame = gameAPI.findGame(req.body.id);
-			var promiseUser = userAPI.findUser(req.session.usr);
-			Promise.all([promiseGame, promiseUser, promiseClearOldGame]).then(async function success (arr) {
-				// Catch promise values
-				var game = arr[0];
-				var user = arr[1];
-				var pNum;
-				if (game.players) {
-					// Determine pNum of new player
-					if (game.players.length === 0) {
-						pNum = 0;
-					} else {
-						pNum = (game.players[0].pNum + 1) % 2;
-						await Game.updateOne({id: game.id})
-							.set({
-								status: false
-							});
-						sails.sockets.blast("gameFull", {id: game.id});
-					}
-				} else {
-					pNum = 0;
-				}
-				// Set session data
-				req.session.game = game.id;
-				req.session.pNum = pNum;
-				// Update models
-				user.pNum = pNum;
-				const addPlayerToGame = Game.addToCollection(game.id, 'players')
-					.members([user.id])
-					.fetch();
-				const updatePlayer = User.updateOne({id: user.id})
-					.set({pNum});
+		Game.subscribe(req, [req.body.id]);
+		// User.subscribe(req, [req.body.id]);
+		return res.ok();
+		// if (req.body.id) {
+		// 	Game.subscribe(req, req.body.id);
+		// 	var promiseClearOldGame = gameService.clearGame({userId: req.session.usr});
+		// 	var promiseGame = gameAPI.findGame(req.body.id);
+		// 	var promiseUser = userAPI.findUser(req.session.usr);
+		// 	Promise.all([promiseGame, promiseUser, promiseClearOldGame]).then(async function success (arr) {
+		// 		// Catch promise values
+		// 		var game = arr[0];
+		// 		var user = arr[1];
+		// 		var pNum;
+		// 		if (game.players) {
+		// 			// Determine pNum of new player
+		// 			if (game.players.length === 0) {
+		// 				pNum = 0;
+		// 			} else {
+		// 				pNum = (game.players[0].pNum + 1) % 2;
+		// 				await Game.updateOne({id: game.id})
+		// 					.set({
+		// 						status: false
+		// 					});
+		// 				sails.sockets.blast("gameFull", {id: game.id});
+		// 			}
+		// 		} else {
+		// 			pNum = 0;
+		// 		}
+		// 		// Set session data
+		// 		req.session.game = game.id;
+		// 		req.session.pNum = pNum;
+		// 		// Update models
+		// 		user.pNum = pNum;
+		// 		const addPlayerToGame = Game.addToCollection(game.id, 'players')
+		// 			.members([user.id])
+		// 			.fetch();
+		// 		const updatePlayer = User.updateOne({id: user.id})
+		// 			.set({pNum});
 
-				return Promise.all([addPlayerToGame, updatePlayer]);
+		// 		return Promise.all([addPlayerToGame, updatePlayer]);
 
-			})
-			.then(function respond (values) {
-				var game = values [0];
-				var user = values[1];
-				// Socket announcement that player joined game
-				sails.sockets.blast('join',
-					{
-						gameId: game.id,
-						newPlayer: {email: user.email, pNum: user.pNum},
-						newStatus: game.status,
-					},
-					req);
-				// Respond with 200
-				return res.ok({game: game, playerEmail: user.email, pNum: user.pNum});
-			})
-			.catch(function failure (error) {
-				return res.badRequest(error);
-			});
-		} else {
-			return res.badRequest("No game id received for subscription");
-		}
+		// 	})
+		// 	.then(function respond (values) {
+		// 		var game = values [0];
+		// 		var user = values[1];
+		// 		// Socket announcement that player joined game
+		// 		sails.sockets.blast('join',
+		// 			{
+		// 				gameId: game.id,
+		// 				newPlayer: {email: user.email, pNum: user.pNum},
+		// 				newStatus: game.status,
+		// 			},
+		// 			req);
+		// 		// Respond with 200
+		// 		return res.ok({game: game, playerEmail: user.email, pNum: user.pNum});
+		// 	})
+		// 	.catch(function failure (error) {
+		// 		return res.badRequest(error);
+		// 	});
+		// } else {
+		// 	return res.badRequest("No game id received for subscription");
+		// }
 	}, //End subscribe()
 
 	ready: function (req, res) {
