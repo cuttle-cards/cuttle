@@ -151,7 +151,7 @@ module.exports = {
 			Promise.all([promiseGame, promiseUser])
 			// Assign player readiness
 			.then(function foundRecords (values) {
-				var game = values[0];
+				const game = values[0];
 				const user = values[1];
 				let pNum = user.pNum;
 				let bothReady = false;
@@ -177,7 +177,7 @@ module.exports = {
 					return new Promise(function makeDeck (resolveMakeDeck, rejectmakeDeck) {
 						const findP0 = userService.findUser({userId: game.players[0].id});
 						const findP1 = userService.findUser({userId: game.players[1].id});
-						const data = [findP0, findP1];
+						const data = [game, findP0, findP1];
 						for (suit = 0; suit<4; suit++) {
 							for (rank = 1; rank < 14; rank++) {
 								const promiseCard = cardService.createCard({
@@ -191,9 +191,7 @@ module.exports = {
 						return resolveMakeDeck(Promise.all(data));
 					})
 					.then(function deal (values) {
-						const p0 = values[0];
-						const p1 = values[1];
-						const deck = values.slice(2);
+						const [game, p0, p1, ...deck] = values;
 						const dealt = []; //Prevents doubly dealing one card
 						const min = 0;
 						const max = 51;
