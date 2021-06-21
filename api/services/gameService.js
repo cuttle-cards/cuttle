@@ -138,8 +138,6 @@ module.exports = {
 							var p1 = values[2];
 							var p0Points = cardService.findPoints({userId: p0.id});
 							var p1Points = cardService.findPoints({userId: p1.id});
-							// console.log("\n\nFound game for populate:");
-							// console.log(game);
 							return Promise.all(
 								[
 									Promise.resolve(game), 
@@ -159,10 +157,6 @@ module.exports = {
 							var p1 = new tempUser(values[2], p1Points);
 							var result = new tempGame(game, p0, p1);
 
-							// console.log("\n game inside finish:");
-							// console.log(game);
-							// console.log("\nResult:");
-							// console.log(result);
 							return resolve(result);
 						})
 						.catch(function failed (err) {
@@ -215,56 +209,57 @@ module.exports = {
 		return User.findOne(options.userId)
 		.populateAll()
 		.then(function clearUserData (player) {
-			// Delete User data
-			player.hand.forEach(function (card) {
-				player.hand.remove(card.id);
-			});
-			player.points.forEach(function (card) {
-				player.points.remove(card.id);
-			});
-			player.runes.forEach(function (card) {
-				player.runes.remove(card.id);
-			});
-			player.frozenId = null;
-			saveUser = userService.saveUser({user: player});
+			const updatePromises = [
+				// Delete User data
+				User.replaceCollection(player.id, 'hand')
+					.members([]),
+				User.replaceCollection(player.id, 'points')
+					.members([]),
+				User.replaceCollection(player.id, 'runes')
+					.members([]),
+				User.updateOne({id: player.id})
+					.set({
+						'frozenId': 0,
+						'pNum': null,
+					})
+			];
+			let promiseGame = null;
 			if (player.game) {
-				var promiseGame = gameService.findGame({gameId: player.game.id});
-			}else {
-				var promiseGame = Promise.resolve(null);
+				promiseGame = gameService.findGame({gameId: player.game.id});
 			}
-			return Promise.all([promiseGame, saveUser])
+			return Promise.all([promiseGame, player, ...updatePromises])
 			.then(function clearGameData (values) {
-				var game = values[0], player = values[1];
+				const game = values[0];
+				const player = values[1];
+				const updatePromises = [];
 				if (game) {
-					var opponent = game.players[(player.pNum + 1) % 2];
+					const opponent = game.players[(player.pNum + 1) % 2];
+					updatePromises.push(
+						// Update game
+						Game.replaceCollection(game.id, 'players')
+							.members([])
+					)
 					if (opponent) {
-						opponent.hand.forEach(function (card) {
-							opponent.hand.remove(card.id);
-						});
-						opponent.points.forEach(function (card) {
-							opponent.points.remove(card.id);
-						});
-						opponent.runes.forEach(function (card) {
-							opponent.runes.remove(card.id);
-						});
-						opponent.frozenId = null;
-						opponent.pNum = null;
-						game.players.remove(opponent.id);
-						var saveOpponent = userService.saveUser({user: opponent});
-					} else {
-						var saveOpponent = Promise.resolve(null);
+						updatePromises.push(
+							// Update Opponent
+							User.replaceCollection(opponent.id, 'hand')
+								.members([]),
+							User.replaceCollection(opponent.id, 'points')
+								.members([]),
+							User.replaceCollection(opponent.id, 'runes')
+								.members([]),
+							User.updateOne({id: opponent.id})
+								.set({
+									'frozenId': 0,
+									'pNum': null,
+								}),
+						);
 					}
-					game.players.remove(player.id);
-					var saveGame = gameService.saveGame({game: game});
-				} else {
-					var saveGame = Promise.resolve(null);
-					var saveOpponent = Promise.resolve(null);
 				}
-				player.pNum = null;
-				var savePlayer = userService.saveUser({user: player});
-				return Promise.all([saveGame, savePlayer, saveOpponent]);
-			})
+				return Promise.all(updatePromises);
+			}) // End clearGameData()
 			.catch(function failed (err) {
+				console.log('\nError clearing game');
 				console.log(err);
 				return Promise.reject(err);
 			});
