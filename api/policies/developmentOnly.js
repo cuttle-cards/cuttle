@@ -12,6 +12,6 @@ module.exports = function(req, res, next) {
     if (sails.config.environment === 'development') {
         return next();
     } else {
-        return res.forbidden(new Error("Error: This action is only permitted in development"));
+        return res.forbidden({message: "Error: This action is only permitted in development"});
     }
   };

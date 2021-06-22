@@ -14,13 +14,13 @@ module.exports = {
 					if (err) {
 						return reject(err);
 					} else if (!card) {
-						return reject(new Error("Can't find card " + options.cardId));
+						return reject({message: "Can't find card " + options.cardId});
 					} else {
 						return resolve(card);
 					}
 				});
 			} else {
-				return Promise.reject(new Error("Invalid arguments for findCard"));
+				return Promise.reject({message: "Invalid arguments for findCard"});
 			}
 		});
 	},
@@ -145,11 +145,11 @@ module.exports = {
 						if (err) {
 							return reject(err)
 						} else {
-							return reject(new Error(`Error creating card: ${suit} of ${rank}`));
+							return reject({message: `Error creating card: ${suit} of ${rank}`});
 						}
 					})
 			} else {
-				return reject(new Error("Invalid Arguments for createCard service"));
+				return reject({message: "Invalid Arguments for createCard service"});
 			}
 		});
 	},
@@ -165,13 +165,13 @@ module.exports = {
 					if (err) {
 						return reject(err);
 					} else if (!cards) {
-						return reject(new Error("Can't find cards in points"));
+						return reject({message: "Can't find cards in points"});
 					} else {
 						return resolve(cards);
 					}
 				}); //End find()
 			} else {
-				return reject(new Error("Don't have userId to find cards in user's points"));
+				return reject({message: "Don't have userId to find cards in user's points"});
 			}
 
 		}); //End returned Promise
@@ -192,7 +192,7 @@ module.exports = {
 					}
 				});
 			} else {
-				return reject(new Error("Can't save card without card record"))
+				return reject({message: "Can't save card without card record"});
 			}
 		});
 	}

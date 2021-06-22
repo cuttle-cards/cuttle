@@ -13,18 +13,18 @@ module.exports = {
 						if (err) {
 							return reject(err);
 						} else if(!usr) {
-							return reject(new Error("Could not find user: " + options.userId));
+							return reject({message: "Could not find user: " + options.userId});
 						} else {
 							return resolve(usr);
 						}
 					});
 				// end if options has userId
 				} else {
-					return reject(new Error("No id given when finding user"));
+					return reject({message: "No id given when finding user"});
 				}
 			//end if(options)
 			} else {
-				return reject(new Error("No id given when finding user"));
+				return reject({message: "No id given when finding user"});
 			}  
 		});
 	},
@@ -101,7 +101,7 @@ module.exports = {
 					return reject(error)
 				},
 				invalid: function () {
-					return reject(new Error("That's not a valid email address"));
+					return reject({message: "That's not a valid email address"});
 				},
 				success: function () {
 					return resolve(true);
