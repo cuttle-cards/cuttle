@@ -268,7 +268,7 @@ module.exports = {
 				return res.badRequest(err);
 			});
 		} else {
-			const err = new Error("Missing game or player id");
+			const err = {message: "Missing game or player id"};
 			return res.badRequest(err);
 		}
 	}, //End ready()
@@ -333,10 +333,10 @@ module.exports = {
 				if (game.topCard) {
 					return Promise.resolve(game);
 				} else {
-					return Promise.reject(new Error("The deck is empty; you cannot draw"));
+					return Promise.reject({message: "The deck is empty; you cannot draw"});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn."));
+				return Promise.reject({message: "It's not your turn."});
 			}
 		});
 
@@ -345,7 +345,7 @@ module.exports = {
 			if (user.hand.length < 8) {
 				return Promise.resolve(user);
 			} else {
-				return Promise.reject(new Error("You are at the hand limit; you cannot draw."));
+				return Promise.reject({message: "You are at the hand limit; you cannot draw."});
 			}
 		});
 
@@ -415,13 +415,13 @@ module.exports = {
 						change: 'pass',
 					};
 				} else {
-					return Promise.reject(new Error("You can only pass when there are no cards in the deck"));
+					return Promise.reject({message: "You can only pass when there are no cards in the deck"});
 				}
 				var saveGame = gameService.saveGame({game: game});
 				var savePlayer = userService.saveUser({user: player});
 				return Promise.all([saveGame, savePlayer]);
 			} else {
-				return Promise.reject(new Error("It's not your turn."));
+				return Promise.reject({message: "It's not your turn."});
 			}
 		})
 		.then(function populateGame (values) {
@@ -485,16 +485,16 @@ module.exports = {
 								var savePlayer = userService.saveUser({user: player});
 								return Promise.all([saveGame, savePlayer]);
 							} else {
-								return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
+								return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 							}
 						} else {
-							return Promise.reject(new Error("You can only play a number card as points."));
+							return Promise.reject({message: "You can only play a number card as points."});
 						}
 				} else {
-					return Promise.reject(new Error("You can only play a card that is in your hand."));
+					return Promise.reject({message: "You can only play a card that is in your hand."});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn."));
+				return Promise.reject({message: "It's not your turn."});
 			}
 		})
 		.then(function populateGame (values) {
@@ -554,16 +554,16 @@ module.exports = {
 							var savePlayer = userService.saveUser({user: player});
 							return Promise.all([saveGame, savePlayer]);
 						} else {
-							return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
+							return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 						}
 					} else {
-						return Promise.reject(new Error("Only Kings, Queens, and Eights may be played as Runes without a target"));
+						return Promise.reject({message: "Only Kings, Queens, and Eights may be played as Runes without a target"});
 					}
 				} else {
-					return Promise.reject(new Error("You can only play a card that is in your hand.") );
+					return Promise.reject({message: "You can only play a card that is in your hand."});
 				}
 			} else {
-				return Promise.reject(new Error ("It's not your turn."));
+				return Promise.reject({message: "It's not your turn."});
 			}
 		})
 		.then(function populateGame (values) {
@@ -631,19 +631,19 @@ module.exports = {
 								var saveTarget = cardService.saveCard({card: target});
 								return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
 							} else {
-								return Promise.reject(new Error("That card is frozen! You must wait a turn to play it."));
+								return Promise.reject({message: "That card is frozen! You must wait a turn to play it."});
 							}
 						} else {
-							return Promise.reject(new Error("You can only scuttle an opponent's point card with a higher rank point card, or the same rank with a higher suit. Suit order (low to high) is: Clubs < Diamonds < Hearts < Spades"));
+							return Promise.reject({message: "You can only scuttle an opponent's point card with a higher rank point card, or the same rank with a higher suit. Suit order (low to high) is: Clubs < Diamonds < Hearts < Spades"});
 						}
 					} else {
-						return Promise.reject(new Error("You can only scuttle a card your opponent has played for points"));
+						return Promise.reject({message: "You can only scuttle a card your opponent has played for points"});
 					}
 				} else {
-					return Promise.reject(new Error("You can only play a card that is in your hand"));
+					return Promise.reject({message: "You can only play a card that is in your hand"});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn."));
+				return Promise.reject({message: "It's not your turn."});
 			}
 		})
 		.then(function populateGame (values) {
@@ -706,23 +706,23 @@ module.exports = {
 									var saveTarget = cardService.saveCard({card: target});
 									return Promise.all([saveGame, savePlayer, saveOpponent, saveCard, saveTarget]);
 								} else {
-									return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
+									return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 								}
 
 							} else {
-								return Promise.reject(new Error("You cannot use a Jack while your opponent has a Queen."));
+								return Promise.reject({message: "You cannot use a Jack while your opponent has a Queen."});
 							}
 						} else {
-							return Promise.reject(new Error("You can only play a Jack on an opponent's Point card."));
+							return Promise.reject({message: "You can only play a Jack on an opponent's Point card."});
 						}
 					} else {
-						return Promise.reject(new Error("You can only use a Jack to steal an opponent's Point card"));
+						return Promise.reject({message: "You can only use a Jack to steal an opponent's Point card"});
 					}
 				} else {
-					return Promise.reject(new Error("You can only play a card that is in your hand"));
+					return Promise.reject({message: "You can only play a card that is in your hand"});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn"));
+				return Promise.reject({message: "It's not your turn"});
 			}
 		}) //End changeAndSave()
 		.then(function populateGame (values) {
@@ -775,14 +775,14 @@ module.exports = {
 								//Check for legality of move (edge cases, per one-off)
 								switch (card.rank) {
 									case 3:
-										if (game.scrap.length < 1) return Promise.reject(new Error("You can only play a 3 as a one-off, if there are cards in the scrap pile"));
+										if (game.scrap.length < 1) return Promise.reject({message: "You can only play a 3 as a one-off, if there are cards in the scrap pile"});
 										break;
 									case 4:
-										if (opponent.hand.length === 0) return Promise.reject(new Error("You cannot play a 4 as a one-off while your opponent has no cards in hand"));
+										if (opponent.hand.length === 0) return Promise.reject({message: "You cannot play a 4 as a one-off while your opponent has no cards in hand"});
 										break;
 									case 5:
 									case 7:
-										if (!game.topCard) return Promise.reject(new Error("You can't play that card as a one-off, unless there are cards in the deck"));
+										if (!game.topCard) return Promise.reject({message: "You can't play that card as a one-off, unless there are cards in the deck"});
 										break;
 									default:
 										break;
@@ -799,19 +799,19 @@ module.exports = {
 									var savePlayer = userService.saveUser({user: player});
 									return Promise.all([saveGame, savePlayer]);
 								} else {
-									return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
+									return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 								}
 							default:
-								return Promise.reject(new Error("You cannot play that card as a one-off without a target."));
+								return Promise.reject({message: "You cannot play that card as a one-off without a target."});
 						}
 					} else {
-						return Promise.reject(new Error("You cannot play a card that is not in your hand"));
+						return Promise.reject({message: "You cannot play a card that is not in your hand"});
 					}
 				} else {
-					return Promise.reject(new Error("There is already a one-off in play; You cannot play any card, except a two to counter."));
+					return Promise.reject({message: "There is already a one-off in play; You cannot play any card, except a two to counter."});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn"));
+				return Promise.reject({message: "It's not your turn"});
 			}
 		})
 		.then(function populateGame (values) {
@@ -867,11 +867,11 @@ module.exports = {
 								case 1:
 									if (target.runes === opponent.id && target.rank === 12) {
 									} else {
-										return Promise.reject(new Error("Your opponent's queen prevents you from targeting their other cards"))
+										return Promise.reject({message: "Your opponent's queen prevents you from targeting their other cards"});
 									}
 									break;
 								default:
-									return Promise.reject(new Error("You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen"));
+									return Promise.reject({message: "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen"});
 							}
 							if (player.frozenId != card.id) {
 								game.oneOff = card;
@@ -889,20 +889,20 @@ module.exports = {
 								var savePlayer = userService.saveUser({user: player});
 								return Promise.all([saveGame, savePlayer]);
 							} else {
-								return Promise.reject(new Error("That card is frozen! You must wait a turn to play it"));
+								return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 							}
 
 						} else {
-							return Promise.reject(new Error("You can only play a 2, or a 9 as targeted one-offs."));
+							return Promise.reject({message: "You can only play a 2, or a 9 as targeted one-offs."});
 						}
 					} else {
-						return Promise.reject(new Error("You cannot play a card that is not in your hand"));
+						return Promise.reject({message: "You cannot play a card that is not in your hand"});
 					}
 				} else {
-					return Promise.reject(new Error("There is already a one-off in play; you cannot play any card, except a two to counter."));
+					return Promise.reject({message: "There is already a one-off in play; you cannot play any card, except a two to counter."});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn."));
+				return Promise.reject({message: "It's not your turn."});
 			}
 		}) //End changeAndSave()
 		.then(function populateGame (values) {
@@ -963,16 +963,16 @@ module.exports = {
 							var savePlayer = userService.saveUser({user: player});
 							return Promise.all([saveGame, savePlayer]);
 						} else {
-							return (Promise.reject(new Error("You cannot counter your opponent's one-off while they have a Queen.")));
+							return Promise.reject({message: "You cannot counter your opponent's one-off while they have a Queen."});
 						}
 					} else {
-						return Promise.reject(new Error("You can only play a Two to counter a one-off"));
+						return Promise.reject({message: "You can only play a Two to counter a one-off"});
 					}
 				} else {
-					return Promise.reject(new Error("You can only counter a one-off that is already in play"));
+					return Promise.reject({message: "You can only counter a one-off that is already in play"});
 				}
 			} else {
-				return Promise.reject(new Error("You can only play a card that is in your hand"));
+				return Promise.reject({message: "You can only play a card that is in your hand"});
 			}
 
 		}) //End changeAndSave
@@ -1423,13 +1423,13 @@ module.exports = {
 						var savePlayer = userService.saveUser({user: player});
 						return Promise.all([saveGame, savePlayer]);
 					} else {
-						return Promise.reject(new Error("You can only play Ace - Ten cards as points"));
+						return Promise.reject({message: "You can only play Ace - Ten cards as points"});
 					}
 				} else {
-					return Promise.reject(new Error("You must pick a card from the deck to play when resolving a seven"));
+					return Promise.reject({message: "You must pick a card from the deck to play when resolving a seven"});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn"));
+				return Promise.reject({message: "It's not your turn"});
 			}
 		})
 		.then(function populateGame (values) {
@@ -1483,13 +1483,13 @@ module.exports = {
 						var savePlayer = userService.saveUser({user: player});
 						return Promise.all([saveGame, savePlayer]);
 					} else {
-						return Promise.reject(new Error("You can only play Kings, Queens, and Eights as runes, without a TARGET"));
+						return Promise.reject({message: "You can only play Kings, Queens, and Eights as runes, without a TARGET"});
 					}
 				} else {
-					return Promise.reject(new Error("You must pick a card from the deck to play when resolving a seven"));
+					return Promise.reject({message: "You must pick a card from the deck to play when resolving a seven"});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn"));
+				return Promise.reject({message: "It's not your turn"});
 			}
 		})
 		.then(function populateGame (values) {
@@ -1558,19 +1558,19 @@ module.exports = {
 								var saveTarget = cardService.saveCard({card: target});
 								return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
 							} else {
-								return Promise.reject(new Error("You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)"));
+								return Promise.reject({message: "You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)"});
 							}
 						} else {
-							return Promise.reject(new Error("You can only scuttle a card in your oppponent's points"));
+							return Promise.reject({message: "You can only scuttle a card in your oppponent's points"});
 						}
 					} else {
-						return Promise.reject(new Error("You can only scuttle with an ace through ten"));;
+						return Promise.reject({message: "You can only scuttle with an ace through ten"});
 					}
 				} else {
-					return Promise.reject(new Error("You can only one of the top two cards from the deck while resolving a seven"));
+					return Promise.reject({message: "You can only one of the top two cards from the deck while resolving a seven"});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn"));
+				return Promise.reject({message: "It's not your turn"});
 			}
 		}) //End changeAndSave()
 		.then(function populateGame (values) {
@@ -1658,17 +1658,17 @@ module.exports = {
                 var saveTarget = cardService.saveCard({card: target});
                 return Promise.all([saveGame, savePlayer, saveTarget]);
               } else {
-                return Promise.reject(new Error("You can only steal your opponent's points with a jack"));
+                return Promise.reject({message: "You can only steal your opponent's points with a jack"});
               }
             } else {
-              return Promise.reject(new Error("You can only jack your opponent's point cards"));
+              return Promise.reject({message: "You can only jack your opponent's point cards"});
             }
           }
 				} else {
-					return Promise.reject(new Error("You can only one of the top two cards from the deck while resolving a seven"));
+					return Promise.reject({message: "You can only one of the top two cards from the deck while resolving a seven"});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn"));
+				return Promise.reject({message: "It's not your turn"});
 			}
 		})
 		.then(function populateGame (values) {
@@ -1717,14 +1717,14 @@ module.exports = {
 						case 7:
 							switch (card.rank) {
 								case 3:
-									if (game.scrap.length === 0) return Promise.reject(new Error("You can only play a 3 ONE-OFF if there are cards in the scrap pile"));
+									if (game.scrap.length === 0) return Promise.reject({message: "You can only play a 3 ONE-OFF if there are cards in the scrap pile"});
 									break;
 								case 4:
-									if (opponent.hand.length === 0) return Promise.reject(new Error("You cannot play a 4 as a one-off while your opponent has no cards in hand"));
+									if (opponent.hand.length === 0) return Promise.reject({message: "You cannot play a 4 as a one-off while your opponent has no cards in hand"});
 									break;
 								case 5:
 								case 7:
-									if (!game.topCard) return Promise.reject(new Error("You can only play a " + card.rank + " as a ONE-OFF if there are cards in the deck"))
+									if (!game.topCard) return Promise.reject({message: "You can only play a " + card.rank + " as a ONE-OFF if there are cards in the deck"});
 									break;
 							}
 							// Move is legal; proceed
@@ -1740,13 +1740,13 @@ module.exports = {
 							var savePlayer = userService.saveUser({user: player});
 							return Promise.all([saveGame, savePlayer]);
 						default:
-							return Promise.reject(new Error("You cannot play that card as a ONE-OFF without a target"));
+							return Promise.reject({message: "You cannot play that card as a ONE-OFF without a target"});
 					}
 				} else {
-					return Promise.reject(new Error("You can only play cards from the top of the deck while resolving a seven"));
+					return Promise.reject({message: "You can only play cards from the top of the deck while resolving a seven"});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn"));
+				return Promise.reject({message: "It's not your turn"});
 			}
 		})
 		.then(function populateGame (values) {
@@ -1801,11 +1801,11 @@ module.exports = {
 							case 1:
 								if (target.runes === opponent.id && target.rank === 12) {
 								} else {
-									return Promise.reject(new Error("Your opponent's queen prevents you from targeting their other cards"));
+									return Promise.reject({message: "Your opponent's queen prevents you from targeting their other cards"});
 								}
 								break;
 							default:
-								return Promise.reject(new Error("You cannot play a targeted one-off when your opponent has more than one Queen"));
+								return Promise.reject({message: "You cannot play a targeted one-off when your opponent has more than one Queen"});
 						} //End queenCount validation
 							game.resolving = null;
 							game.oneOff = card;
@@ -1824,10 +1824,10 @@ module.exports = {
 							return Promise.all([saveGame, savePlayer]);
 					}
 				} else {
-					return Promise.reject(new Error("You can only play cards from the top of the deck while resolving a seven"));
+					return Promise.reject({message: "You can only play cards from the top of the deck while resolving a seven"});
 				}
 			} else {
-				return Promise.reject(new Error("It's not your turn"));
+				return Promise.reject({message: "It's not your turn"});
 			}
 		})
 		.then(function populateGame (values) {
