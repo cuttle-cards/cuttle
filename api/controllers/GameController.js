@@ -272,28 +272,38 @@ module.exports = {
 	}, //End ready()
 
 	leaveLobby: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
 		Promise.all([promiseGame, promisePlayer])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1];
+			const [game, player] = values;
+			const gameUpdates = {};
+			const playerUpdates = {
+				pNum: null
+			};
 			if (player.pNum === 0) {
-				game.p0Ready = false;
+				gameUpdates.p0Ready = false;
 			} else {
-				game.p1Ready = false;
+				gameUpdates.p1Ready = false;
 			}
 			// Update models
-			player.pNum = null;
-			game.players.remove(player.id);
-			game.status = true;
+			gameUpdates.status = true;
 
 			// Unsubscribe user from updates to this game
-			Game.unsubscribe(req, game.id);
+			Game.unsubscribe(req, [game.id]);
 
-			// Save changes
-			var saveGame = gameService.saveGame({game: game});
-			var savePlayer = userService.saveUser({user: player});
-			return Promise.all([saveGame, savePlayer]);
+			// Update records
+			const updatePromises = [
+				Game.updateOne({id: game.id})
+					.set(gameUpdates),
+
+				User.updateOne({id: player.id})
+					.set(playerUpdates),
+
+				Game.removeFromCollection(game.id, 'players')
+					.members(player.id)
+			];
+			return Promise.all(updatePromises);
 		})
 		.then(function publishAndRespond (values) {
 			// Remove session data for game
