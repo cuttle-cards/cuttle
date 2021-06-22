@@ -27,7 +27,7 @@ module.exports = function (sails) {
 						return reject(err);
 					},
 					incorrect: function() {
-						return reject(new Error("Username and password do not match"));
+						return reject({message: "Username and password do not match"});
 					}, 
 					success: function() {
 						return resolve(true);

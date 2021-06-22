@@ -27,7 +27,7 @@ module.exports = {
 			// promises
 			User.find({email: req.body.email})
 			.then(function checkForUniqueEmail (users) {
-				if (users.length > 0) return Promise.reject(new Error("That email is already registered to another user; try logging in!"));
+				if (users.length > 0) return Promise.reject({message: "That email is already registered to another user; try logging in!"});
 				return passwordAPI.encryptPass(pass)
 			})
 			.then(function createUser (encryptedPassword){ //Use encrypted password to make new user
@@ -67,8 +67,7 @@ module.exports = {
 					// return true;
 				})
 				.catch(function noUser (reason) {
-					// console.log("couldn't find user");
-					return res.badRequest(new Error('Could not find that User with that Username. Try signing up!'));
+					return res.badRequest({message: 'Could not find that User with that Username. Try signing up!'});
 				});
 		}
 	}, //End login
