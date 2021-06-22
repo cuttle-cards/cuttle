@@ -128,7 +128,7 @@ module.exports = {
 				}
 
 				// Create card record
-				Card.create({
+				return Card.create({
 					suit: suit,
 					rank: rank,
 					img: img,
@@ -138,7 +138,9 @@ module.exports = {
 					deck: gameId
 				})
 					.fetch()
-					.then((newCard) => newCard)
+					.then((card) => {
+						return resolve(card);
+					})
 					.catch((err) => {
 						if (err) {
 							return reject(err)

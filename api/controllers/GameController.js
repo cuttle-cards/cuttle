@@ -162,14 +162,12 @@ module.exports = {
 						if (game.p1Ready) {
 							bothReady = true;
 						}
-						// game.p0Ready = !game.p0Ready;
 						break;
 					case 1:
 						gameUpdates.p1Ready = !game.p1Ready;
 						if (game.p0Ready) {
 							bothReady = true;
 						}
-						// game.p1Ready = !game.p1Ready;
 						break;
 				}
 				if (bothReady) {
@@ -177,13 +175,17 @@ module.exports = {
 					return new Promise(function makeDeck (resolveMakeDeck, rejectmakeDeck) {
 						const findP0 = userService.findUser({userId: game.players[0].id});
 						const findP1 = userService.findUser({userId: game.players[1].id});
-						const data = [game, findP0, findP1];
-						for (suit = 0; suit<4; suit++) {
+						const data = [
+							Promise.resolve(game), 
+							findP0, 
+							findP1
+						];
+						for (suit = 0; suit < 4; suit++) {
 							for (rank = 1; rank < 14; rank++) {
 								const promiseCard = cardService.createCard({
 									gameId: game.id,
-									suit: suit,
-									rank: rank
+									suit,
+									rank,
 								});
 								data.push(promiseCard);
 							}
@@ -192,90 +194,40 @@ module.exports = {
 					})
 					.then(function deal (values) {
 						const [game, p0, p1, ...deck] = values;
-						const dealt = []; //Prevents doubly dealing one card
-						const min = 0;
-						const max = 51;
-						let random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-						const updatePromises = [];
-						// Deal one extra card to p1
-						updatePromises.push(
-							// Add to hand
-							User.addToCollection(p1.id, 'hand')
-								.members(deck[random].id),
-							// Remove from deck
-							Game.removeFromCollection(game.id, 'deck')
-								.members(deck[random].id)
-						);
-						dealt.push(random);
-						// Then deal 5 cards to each player
-						for (var i = 0; i < 5; i++) {
-							// deal to p1
-							while (dealt.indexOf(random) >= 0) {
-								random = random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-							}
-							// Deal one card to p1
-							updatePromises.push(
-								// Add to hand
-								User.addToCollection(p1.id, 'hand')
-									.members(deck[random].id),
-								// Remove from deck
-								Game.removeFromCollection(game.id, 'deck')
-									.members(deck[random].id)
-							);
-							dealt.push(random);
-							// Deal one card to p0
-							while (dealt.indexOf(random) >= 0) {
-								random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-							}
-							updatePromises.push(
-								// Add to hand
-								User.addToCollection(p0.id, 'hand')
-									.members(deck[random].id),
-								// Remove from deck
-								Game.removeFromCollection(game.id, 'deck')
-									.members(deck[random].id)
-							);
-							dealt.push(random);
-						} // end dealing
-						// Now assign top card
-						while (dealt.indexOf(random) >= 0) {
-							random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-						}
-						// Dict of changes to make to game
-						const gameUpdates = {
-							topCard: deck[random].id,
-						}
-						// Remove new topcard from deck
-						updatePromises.push(
-							Game.removeFromCollection(game.id, 'deck')
-								.members(deck[random].id)
-						);
-						dealt.push(random);
-						// Then assign second card
-						while (dealt.indexOf(random) >= 0) {
-							random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-						}
-						gameUpdates.secondCard = deck[random].id;
-						updatePromises.push(
-							Game.removeFromCollection(game.id, 'deck')
-								.members(deck[random].id)
-						);
-						dealt.push(random);
-						game.lastEvent = {
-							change: 'Initialize',
-						}
+
+						// Shuffle deck & map cards => thier ids
+						const shuffledDeck = _.shuffle(deck)
+							.map((card) => card.id);
+						// Take 1st 5 cards for p0
+						const dealToP0 = shuffledDeck.splice(0, 5);
+						// Take next 6 cards for p1
+						const dealToP1 = shuffledDeck.splice(0, 6);
+						// Take next 2 cards for topcard & secondCard
+						gameUpdates.topCard = shuffledDeck.shift();;
+						gameUpdates.secondCard = shuffledDeck.shift();
+
+						// Update records
+						const updatePromises = [
+							// Deal to p0
+							User.replaceCollection(p0.id, 'hand')
+								.members(dealToP0),
+							// Deal to p1
+							User.replaceCollection(p1.id, 'hand')
+								.members(dealToP1),
+							// Replace Deck
+							Game.replaceCollection(game.id, 'deck')
+								.members(shuffledDeck),
+							// Other game updates
+							Game.updateOne({id: game.id})
+								.set(gameUpdates)
+						];
+
 						return Promise.all([
 							game,
 							p0,
 							p1,
 							...updatePromises
 						]);
-					})
-					.then(function save (values) {
-						var saveGame = gameService.saveGame({game: game})
-						var saveP0 = userService.saveUser({user: values[1]});
-						var saveP1 = userService.saveUser({user: values[2]});
-						return Promise.all([saveGame, saveP0, saveP1]);
 					})
 					.then(function getPopulatedGame (values) {
 						return gameService.populateGame({gameId: values[0].id});
@@ -295,8 +247,6 @@ module.exports = {
 					});
 				// If this player is first to be ready, save and respond
 				} else {
-					var saveGame = gameService.saveGame({game: game});
-					var saveUser = userService.saveUser({user: user});
 					Game.publish([game.id], {
 						verb: 'updated',
 						data: {
@@ -305,7 +255,8 @@ module.exports = {
 							pNum: user.pNum,
 						},
 					});
-					return Promise.all([saveGame, saveUser]);
+					return Game.updateOne({id: game.id})
+						.set(gameUpdates);
 				}
 			}) //End foundRecords
 			.then(function respond (values) {
@@ -315,7 +266,7 @@ module.exports = {
 				return res.badRequest(err);
 			});
 		} else {
-			var err = new Error("Missing game or player id");
+			const err = new Error("Missing game or player id");
 			return res.badRequest(err);
 		}
 	}, //End ready()
