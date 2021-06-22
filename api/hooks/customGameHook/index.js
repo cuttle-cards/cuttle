@@ -21,7 +21,7 @@ var Promise = require('bluebird');
 						if (err) {
 							res = err;
 						} else {
-							res = new Error(`Unknown error creating game ${gameName}`);
+							res = {message: `Unknown error creating game ${gameName}`};
 						}
 						return reject(res);
 					});
@@ -35,7 +35,7 @@ var Promise = require('bluebird');
 						if (error) {
 							res = error;
 						} else {
-							res = new Error("Can't find games");
+							res = {message: "Can't find games"};
 						}
 						return reject(res);
 					} else {
@@ -57,7 +57,7 @@ var Promise = require('bluebird');
 						if (error) {
 							res = error;
 						} else {
-							res = new Error("Can't find game");
+							res = {message: "Can't find game"};
 						}
 						return reject(res);
 					} else {
