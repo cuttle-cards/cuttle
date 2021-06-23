@@ -488,36 +488,49 @@ module.exports = {
 	}, //End pass()
 
 	points: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseCard = cardService.findCard({cardId: req.body.cardId});
 		Promise.all([promiseGame, promisePlayer, promiseCard])
 		.then(function changeAndSave (values) {
-			var game = values [0], player = values[1], card = values[2];
+			const [ game, player, card ] = values;
 
 			if (game.turn % 2 === player.pNum) {
 				if (card.hand === player.id) {
-						if (card.rank <= 10) {
-							if (player.frozenId != card.id) {
-								// Move is legal; make changes
-								player.points.add(card.id);
-								player.hand.remove(card.id);
-								player.frozenId = null;
-								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " for points");
-								game.passes = 0;
-								game.lastEvent = {
+					if (card.rank <= 10) {
+						if (player.frozenId != card.id) {
+							// Move is legal; make changes
+							const gameUpdates = {
+								passes: 0,
+								turn: game.turn + 1,
+								log: [
+									...game.log,
+									`${userService.truncateEmail(player.email)} played the ${card.name} for points`
+								],
+								lastEvent = {
 									change: 'points',
 								},
-								game.turn++;
-								var saveGame = gameService.saveGame({game: game});
-								var savePlayer = userService.saveUser({user: player});
-								return Promise.all([saveGame, savePlayer]);
-							} else {
-								return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 							}
+							const playerUpdates = {
+								frozenId: null,
+							};
+							const updatePromises = [
+								Game.updateOne({id: game.id})
+									.set(gameUpdates),
+								User.updateOne({id: player.id})
+									.set(playerUpdates),
+								User.removeFromCollection(player.id, 'hand')
+									.members(card.id),
+								User.addToCollection(player.id, 'points')
+									.members(card.id),
+							];
+							return Promise.all([game, ...updatePromises]);
 						} else {
-							return Promise.reject({message: "You can only play a number card as points."});
+							return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 						}
+					} else {
+						return Promise.reject({message: "You can only play a number card as points."});
+					}
 				} else {
 					return Promise.reject({message: "You can only play a card that is in your hand."});
 				}
@@ -526,13 +539,13 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			var game = values[0];
+			const game = values[0];
 			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
 		.then(function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -549,6 +562,7 @@ module.exports = {
 			return res.ok();
 		})
 		.catch(function failed (err) {
+			console.log('error playing points', err);
 			return res.badRequest(err);
 		});
 	}, //End points()
