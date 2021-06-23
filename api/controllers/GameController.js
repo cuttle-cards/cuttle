@@ -2076,161 +2076,145 @@ module.exports = {
 	}, //End deleteDeck
 
 	loadFixture: async function(req, res) {
-		let p0HandCardIds;
-		let p1HandCardIds;
-		let p0PointCardIds;
-		let p1PointCardIds;
-		let p0FaceCardIds;
-		let p1FaceCardIds;
-		let topCardId;
-		let secondCardId;
-    let scrapCardIds;
-		let game;
-		let p0;
-		let p1;
-
 
 		try {
 			game = await Game.findOne({id: req.session.game});
 			p0 = await User.findOne({id: req.body.p0Id}).populateAll();
 			p1 = await User.findOne({id: req.body.p1Id}).populateAll();
-			({
-				p0HandCardIds,
-				p1HandCardIds,
-				p0PointCardIds,
-				p1PointCardIds,
-				p0FaceCardIds,
-				p1FaceCardIds,
-				topCardId,
-				secondCardId,
-				scrapCardIds
-			} = req.body);
 		}
 		catch (err) {
 			console.log('Error finding records to load fixture');
 			console.log(err);
 			return res.badRequest(err);
 		}
-		// Clear hands
-		p0.hand.forEach((card) => {
-			if (!p0HandCardIds.includes(card.id)) {
-				p0.hand.remove(card.id);
-				game.deck.add(card.id);
-			}
-		});
-		p1.hand.forEach((card) => {
-			if (!p1HandCardIds.includes(card.id)) {
-				p1.hand.remove(card.id);
-				game.deck.add(card.id);
-			}
-		});
-		// P0 Hand
-		p0HandCardIds.forEach((cardId) => {
-			// Remove cards from wherever they are
-			p0.points.remove(cardId);
-			p0.runes.remove(cardId);
-			p1.points.remove(cardId);
-			p1.runes.remove(cardId);
-			game.deck.remove(cardId);
-			game.scrap.remove(cardId);
-			// Add cards to p0's hand
-			p0.hand.add(cardId);
-		});
-		// P1 Hand
-		p1HandCardIds.forEach((cardId) => {
-			// Remove cards from wherever they are
-			p0.points.remove(cardId);
-			p0.runes.remove(cardId);
-			p1.points.remove(cardId);
-			p1.runes.remove(cardId);
-			game.deck.remove(cardId);
-			game.scrap.remove(cardId);
-			// Add cards to p1's hand
-			p1.hand.add(cardId);
-		});
-		// P0 Points
-		p0PointCardIds.forEach((cardId) => {
-			// Remove cards from wherever they are
-			p0.runes.remove(cardId);
-			p0.hand.remove(cardId);
-			p1.runes.remove(cardId);
-			p1.hand.remove(cardId);
-			game.deck.remove(cardId);
-			game.scrap.remove(cardId);
-			// Add cards to p0's points
-			p0.points.add(cardId);
-		});
-		// P1 Points
-		p1PointCardIds.forEach((cardId) => {
-			// Remove cards from wherever they are
-			p0.hand.remove(cardId);
-			p0.runes.remove(cardId);
-			p1.hand.remove(cardId);
-			p1.runes.remove(cardId);
-			game.deck.remove(cardId);
-			game.scrap.remove(cardId);
-			// Add cards to p1's points
-			p1.points.add(cardId);
-		});
-		// P0 Face Cards
-		p0FaceCardIds.forEach((cardId) => {
-			// Remove cards from wherever they are
-			p0.hand.remove(cardId);
-			p0.points.remove(cardId);
-			p1.hand.remove(cardId);
-			p1.points.remove(cardId);
-			game.deck.remove(cardId);
-			game.scrap.remove(cardId);
-			// Add cards to p0's face cards
-			p0.runes.add(cardId);
-		});
-		// P1 Face Cards
-		p1FaceCardIds.forEach((cardId) => {
-			// Remove cards from wherever they are
-			p0.hand.remove(cardId);
-			p0.points.remove(cardId);
-			p1.hand.remove(cardId);
-			p1.points.remove(cardId);
-			game.deck.remove(cardId);
-			game.scrap.remove(cardId);
-			// Add cards to p1's face cards
-			p1.runes.add(cardId);
-		});
-		// Top & Second Cards
-		if (topCardId) {
-			p0.hand.remove(topCardId);
-			p0.points.remove(topCardId);
-			p0.runes.remove(topCardId);
-			p1.hand.remove(topCardId);
-			p1.points.remove(topCardId);
-			p1.runes.remove(topCardId);
-			game.deck.remove(topCardId);
-			game.scrap.remove(topCardId);
+		const p0HandCardIds = req.body.p0HandCardIds || [];
+		const p0PointCardIds = req.body.p0PointCardIds || [];
+		const p0FaceCardIds = req.body.p0FaceCardIds || [];
+		const p1HandCardIds = req.body.p1HandCardIds || [];
+		const p1PointCardIds = req.body.p1PointCardIds || [];
+		const p1FaceCardIds = req.body.p1FaceCardIds || [];
+		const scrapCardIds = req.body.scrapCardIds || [];
+		const topCardId = req.body.topCard || null;
+		const secondCardId = req.body.secondCardId || null;
 
-			game.topCard = topCardId;
-		}
-		if (secondCardId) {
-			p0.hand.remove(secondCardId);
-			p0.points.remove(secondCardId);
-			p0.runes.remove(secondCardId);
-			p1.hand.remove(secondCardId);
-			p1.points.remove(secondCardId);
-			p1.runes.remove(secondCardId);
-			game.deck.remove(secondCardId);
-			game.scrap.remove(secondCardId);
+		const allRequestedCards = [
+			topCardId,
+			secondCardId,
+			...p0HandCardIds,
+			...p0PointCardIds,
+			...p0FaceCardIds,
+			...p1HandCardIds,
+			...p1PointCardIds,
+			...p1FaceCardIds,
+			...scrapCardIds
+		];
+		/////////////////////////////////////////
+		// Calculate which cards must be moved //
+		/////////////////////////////////////////
+		const fromP0HandToDeck = p0.hand.filter((card) => {
+			return !p0HandCardIds.includes(card.id) &&
+				!p0PointCardIds.includes(card.id) &&
+				!p0FaceCardIds.includes(card.id) &&
+				!p1HandCardIds.includes(card.id) &&
+				!p1PointCardIds.includes(card.id) &&
+				!p1FaceCardIds.includes(card.id) &&
+				!scrapCardIds.includes(card.id) &&
+				topCardId !== card.id &&
+				secondCardId !== card.id;
+		})
+			.map(card => card.id);
 
-			game.secondCard = secondCardId;
+		const fromP1HandToDeck = p1.hand.filter((card) => {
+			return !p0HandCardIds.includes(card.id) &&
+				!p0PointCardIds.includes(card.id) &&
+				!p0FaceCardIds.includes(card.id) &&
+				!p1HandCardIds.includes(card.id) &&
+				!p1PointCardIds.includes(card.id) &&
+				!p1FaceCardIds.includes(card.id) &&
+				!scrapCardIds.includes(card.id) &&
+				topCardId !== card.id &&
+				secondCardId !== card.id;
+		})
+			.map(card => card.id);
+
+		const oldTopCardId = game.topCard;
+		const oldTopCardWasMoved = p0HandCardIds.includes(oldTopCardId) ||
+			p0PointCardIds.includes(oldTopCardId) ||
+			p0FaceCardIds.includes(oldTopCardId) ||
+			p1HandCardIds.includes(oldTopCardId) ||
+			p1PointCardIds.includes(oldTopCardId) ||
+			p1FaceCardIds.includes(oldTopCardId) ||
+			scrapCardIds.includes(oldTopCardId) ||
+			secondCardId === oldTopCardId;
+
+		const oldSecondCardId = game.secondCard;
+		const oldSecondCardWasMoved = p0HandCardIds.includes(oldTopCardId) ||
+			p0PointCardIds.includes(oldSecondCardId) ||
+			p0FaceCardIds.includes(oldSecondCardId) ||
+			p1HandCardIds.includes(oldSecondCardId) ||
+			p1PointCardIds.includes(oldSecondCardId) ||
+			p1FaceCardIds.includes(oldSecondCardId) ||
+			scrapCardIds.includes(oldSecondCardId) ||
+			secondCardId === oldSecondCardId;
+		
+		const cardsToAddToDeck = [
+			...fromP0HandToDeck,
+			...fromP1HandToDeck
+		];
+		
+		if (!oldTopCardWasMoved && topCardId) {
+			cardsToAddToDeck.push(oldTopCardId);
 		}
-    if (scrapCardIds) {
-      scrapCardIds.forEach((cardId) => {
-			  // Remove cards from wherever they ar
-			  game.deck.remove(cardId);
-			  // Add cards to scrap
-			  game.scrap.add(cardId);
-		  });
-    }
+		if (!oldSecondCardWasMoved && secondCardId) {
+			cardsToAddToDeck.push(oldSecondCardId);
+		}
+		////////////////
+		// Move Cards //
+		////////////////
+		const updatePromises = [
+			// P0 updates
+			User.replaceCollection(p0.id, 'hand')
+				.members(p0HandCardIds),
+			User.replaceCollection(p0.id, 'points')
+				.members(p0PointCardIds),
+			User.replaceCollection(p0.id, 'runes')
+				.members(p0FaceCardIds),
+			// P1 updates
+			User.replaceCollection(p1.id, 'hand')
+				.members(p1HandCardIds),
+			User.replaceCollection(p1.id, 'points')
+				.members(p1PointCardIds),
+			User.replaceCollection(p1.id, 'runes')
+				.members(p1FaceCardIds),
+			// Game updates
+			Game.addToCollection(game.id, 'deck')
+				.members(cardsToAddToDeck),
+			Game.replaceCollection(game.id, 'scrap')
+				.members(scrapCardIds)
+		];
+
+		// Replace Top & Second Cards if necessary
+		const gameUpdates = {};
+		if (oldTopCardWasMoved && !topCardId) {
+			let newTopCardId = _.sample(game.deck)
+			while (allRequestedCards.includes(newTopCardId)) {
+				newTopCardId = _.sample(game.deck);
+			}
+			gameUpdates.topCard = newTopCardId;
+		}
+		if (oldSecondCardWasMoved && !secondCardId) {
+			let newSecondCardId = _.sample(game.deck);
+			while (allRequestedCards.includes(newSecondCardId) || newSecondCardId === newTopCardId) {
+				newSecondCardId = _.sample(game.deck);
+			}
+			gameUpdates.secondCard = newSecondCardId;
+		}
+		updatePromises.push(
+			Game.updateOne({id: game.id})
+				.set(gameUpdates)
+		);
 		try {
-			await Promise.all([game.save(), p0.save(), p1.save()])
+			await Promise.all(updatePromises)
 			game = await gameService.populateGame({gameId: req.session.game});
 		}
 		catch (err) {
@@ -2238,23 +2222,9 @@ module.exports = {
 			console.log(err);
 			return res.badRequest(err);
 		}
-		let replacedTopOrSecondCard = false;
-		if (!game.topCard) {
-			game.topCard = game.deck[0];
-			game.deck.remove(game.deck[0]);
-			replacedTopOrSecondCard = true;
-		}
-		if (!game.secondCard) {
-			game.secondCard = game.deck[1];
-			game.deck.remove(game.deck[0]);
-			replacedTopOrSecondCard = true;
-		}
-		if (replacedTopOrSecondCard) {
-			game = await game.save();
-			game = await gameService.populateGame({gameId: req.session.game});
-		}
-		Game.publish([fullGame.id], {
-			change: 'updated',
+
+		Game.publish([game.id], {
+			verb: 'updated',
 			data: {
 				change: 'loadFixture',
 				game,
