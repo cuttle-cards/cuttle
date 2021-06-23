@@ -473,7 +473,7 @@ module.exports = {
 					.set(gameUpdates);
 			}
 			Game.publish([game.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'pass',
 					game,
@@ -550,7 +550,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'points',
 					game: fullGame,
@@ -562,7 +562,6 @@ module.exports = {
 			return res.ok();
 		})
 		.catch(function failed (err) {
-			console.log('error playing points', err);
 			return res.badRequest(err);
 		});
 	}, //End points()
@@ -619,7 +618,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'runes',
 					game: fullGame,
@@ -699,7 +698,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'scuttle',
 					game: fullGame,
@@ -778,7 +777,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'jack',
 					game: fullGame,
@@ -867,7 +866,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'oneOff',
 					game: fullGame,
@@ -958,7 +957,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'targetedOneOff',
 					game: fullGame,
@@ -1029,7 +1028,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'counter',
 					game: fullGame,
@@ -1314,7 +1313,7 @@ module.exports = {
 			});
 
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'resolve',
 					oneOff,
@@ -1375,7 +1374,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'resolveFour',
 					game: fullGame,
@@ -1424,7 +1423,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'resolveThree',
 					game: fullGame,
@@ -1485,7 +1484,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'sevenPoints',
 					game: fullGame,
@@ -1545,7 +1544,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'sevenRunes',
 					game: fullGame,
@@ -1626,7 +1625,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'sevenScuttle',
 					game: fullGame,
@@ -1724,7 +1723,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'sevenJack',
 					game: fullGame,
@@ -1802,7 +1801,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'sevenOneOff',
 					game: fullGame,
@@ -1883,7 +1882,7 @@ module.exports = {
 				gameModel,
 			});
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'sevenTargetedOneOff',
 					game: fullGame,
@@ -1912,7 +1911,7 @@ module.exports = {
 				conceded: true
 			};
 			Game.publish([game.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'concede',
 					game,
@@ -1991,7 +1990,7 @@ module.exports = {
 				winner: null
 			}
 			Game.publish([game.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'chat',
 					game,
@@ -2032,7 +2031,7 @@ module.exports = {
 		})
 		.then(function publishUpdate (game) {
 			Game.publish([game.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'stackDeck',
 					game,
@@ -2061,7 +2060,7 @@ module.exports = {
 		})
 		.then(function publishUpdate (game) {
 			Game.publish([fullGame.id], {
-				change: 'updated',
+				verb: 'updated',
 				data: {
 					change: 'deleteDeck',
 					game,
