@@ -352,34 +352,50 @@ module.exports = {
 		// Make changes after finding records
 		Promise.all([pGame, pUser])
 		.then(function changeAndSave (values) {
-			var game = values[0], user=values[1];
-			user.hand.add(game.topCard.id);
-			game.topCard = null;
+			const [ game, user ] = values;
+			const updatePromises = [
+				game,
+				User.addToCollection(user.id, 'hand')
+					.members(game.topCard.id),
+			];
+			const gameUpdates = {
+				topCard: null,
+				log: [...game.log, userService.truncateEmail(user.email) + " drew a card"],
+				turn: game.turn + 1,
+				lastEvent: {
+					change: 'draw',
+				},
+			};
+			const userUpdates = {
+				frozenId: null,
+			};
 			if (game.secondCard) {
-				game.topCard = game.secondCard;
+				// Replace Top card if second card exists
+				gameUpdates.topCard = game.secondCard.id;
+				// Replace second card if deck isn't empty
 				if (game.deck.length > 0) {
-					var min = 0;
-					var max = game.deck.length - 1;
-					var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-					game.secondCard = game.deck[random];
-					game.deck.remove(game.deck[random].id);
+					const newSecondCard = _.sample(game.deck);
+					gameUpdates.secondCard = newSecondCard.id;
+					updatePromises.push(
+						Game.removeFromCollection(game.id, 'deck')
+							.members(newSecondCard.id)
+					);
 				} else {
-					game.secondCard = null;
+					gameUpdates.secondCard = null;
 				}
 			}
-			user.frozenId = null;
-			game.log.push(userService.truncateEmail(user.email) + " drew a card");
-			game.lastEvent = {
-				change: 'draw',
-			};
-			game.turn++;
-			var saveGame = gameService.saveGame({game: game});
-			var saveUser = userService.saveUser({user: user});
-			return Promise.all([saveGame, saveUser]);
+			updatePromises.push(
+				Game.updateOne({id: game.id})
+					.set(gameUpdates),
+				User.updateOne({id: user.id})
+					.set(userUpdates)
+			);
+
+			return Promise.all(updatePromises);
 
 		}) //End changeAndSave
 		.then(function getPopulatedGame (values) {
-			var game = values[0], user=values[1];
+			const game = values[0];
 			return gameService.populateGame({gameId: game.id});
 		}) //End getPopulatedGame
 		.then(function publishAndRespond (fullGame) {
