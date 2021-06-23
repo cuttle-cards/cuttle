@@ -415,50 +415,62 @@ module.exports = {
 
 	// Pass turn to other player (when deck has run out)
 	pass: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
 		Promise.all([promiseGame, promisePlayer])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1];
+			const [ game, player ] = values;
+			const playerUpdates = {};
+			let gameUpdates = {
+				turn: game.turn + 1,
+				passes: game.passes + 1,
+				log: [...game.log, `${userService.truncateEmail(player.email)} passess`],
+			};
+			const updatePromises = [];
 			if ( (game.turn % 2) === player.pNum) {
 				// Passing is only allowed if the deck is empty
 				if (!game.topCard) {
-					player.frozenId = null;
-					game.turn++;
-					game.passes++;
-					game.log.push(userService.truncateEmail(player.email) + " passes.");
-					game.lastEvent = {
-						change: 'pass',
+					playerUpdates.frozenId = null;
+					gameUpdates = {
+						turn: game.turn + 1,
+						passes: game.passes + 1,
+						log: [...game.log, `${userService.truncateEmail(player.email)} passess`],
+						lastEvent = {
+							change: 'pass',
+						}
 					};
 				} else {
 					return Promise.reject({message: "You can only pass when there are no cards in the deck"});
 				}
-				var saveGame = gameService.saveGame({game: game});
-				var savePlayer = userService.saveUser({user: player});
-				return Promise.all([saveGame, savePlayer]);
+				updatePromises.push(
+					Game.UpdateOne({id: game.id})
+						.set(gameUpdates),
+					User.updateOne({id: player.id})
+						.set(playerUpdates)
+				);
+				return Promise.all([game, ...updatePromises]);
 			} else {
 				return Promise.reject({message: "It's not your turn."});
 			}
 		})
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]])
+			return gameService.populateGame({gameId: values[0].id});
 		})
-		.then(function publishAndRespond (values) {
-			// populated game to send to client
-			const game = values[0];
-			// game model for saving updates
-			const gameModel = values[1];
-			// Game ends in stalemate if 3 passes are made consecutively
+		.then(function publishAndRespond (game) {
 			var victory = {
 				gameOver: false,
 				winner: null
 			};
+			// Game ends in stalemate if 3 passes are made consecutively
 			if (game.passes > 2) {
 				victory.gameOver = true;
-				gameModel.p0 = game.players[0];
-				gameModel.p1 = game.players[1];
-				gameModel.result = gameService.GameResult.STALEMATE;
-				gameService.saveGame({game: gameModel});
+				gameUpdates = {
+					p0: game.players[0].id,
+					p1: game.players[1].id,
+					result: gameService.GameResult.STALEMATE,
+				}
+				Game.updateOne({id: game.id})
+					.set(gameUpdates);
 			}
 			Game.publish([game.id], {
 				change: 'updated',
