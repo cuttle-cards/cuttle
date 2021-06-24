@@ -1,7 +1,7 @@
 {
   "name": "cuttleV2",
   "private": true,
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "a Two Player Card Game",
   "engines": {
     "node": "14.17.1"
