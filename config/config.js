@@ -60,11 +60,7 @@ module.exports = {
    },
 
    pubsub: {
-   		_hookTimeout: 50000
-   },
-
-   grunt: {
-   	_hookTimeout: 100000
+   		_hookTimeout: 100000
    },
 
    keepResponseErrors: true,
