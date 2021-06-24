@@ -1,9 +1,20 @@
 
-// console.log("\ncurrent env: " + process.env.NODE_ENV+"\n");
+let dbUrl;
+let sessionUrl;
 if (process.env.DATABASE_URL) {
-	var url = require('url').parse(process.env.DATABASE_URL);
+	dbUrl = require('url').parse(process.env.DATABASE_URL);
 } else {
-	var url = {
+	dbUrl = {
+		host: '',
+		path: '',
+		auth: ''
+	}
+}
+
+if (process.env.REDIS_TLS_URL) {
+	sessionUrl = require('url').parse(process.env.REDIS_TLS_URL);
+} else {
+	sessionUrl = {
 		host: '',
 		path: '',
 		auth: ''
@@ -11,24 +22,37 @@ if (process.env.DATABASE_URL) {
 }
 // Use postgress connection in production and in-memory localDb otherwise
 const dbConnection = process.env.NODE_ENV === 'production' ? 'sqlHeroku' : 'localDiskDb';
-const migratePolicy = process.env.NODE_ENV === 'production' ? 'safe' : 'drop';
+const sessionConnection = process.env.NODE_ENV === 'production' ? 'redisHeroku' : undefined;
+const migratePolicy = process.env.NODE_ENV === 'production' ? 'alter' : 'drop';
+
 module.exports = {
 	connections: {
 		sqlHeroku: {
 		    adapter: 'sails-postgresql',
 		    ssl: true,
 		    schema: true,
-		    host: url.host.split(':')[0],
-		    database: url.path.substring(1),
-		    user: url.auth.split(':')[0],
-		    password: url.auth.split(':')[1],
-		    port: url.port,			
+		    host: dbUrl.host.split(':')[0],
+		    database: dbUrl.path.substring(1),
+		    user: dbUrl.auth.split(':')[0],
+		    password: dbUrl.auth.split(':')[1],
+		    port: dbUrl.port,
+		},
+		redisHeroku: {
+		    adapter: 'connect-redis',
+		    ssl: true,
+		    schema: true,
+		    host: sessionUrl.host.split(':')[0],
+		    // database: sessionUrl.path.substring(1),
+		    user: sessionUrl.auth.split(':')[0],
+		    password: sessionUrl.auth.split(':')[1],
+		    port: sessionUrl.port,
 		}
 	}, //End connections
 
 	models: {
 		connection: dbConnection,
 		migrate: migratePolicy,
+		session: sessionConnection,
    },
 
    orm: {
