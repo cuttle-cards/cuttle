@@ -26,6 +26,7 @@ const sessionConnection = process.env.NODE_ENV === 'production' ? 'redisHeroku' 
 const migratePolicy = process.env.NODE_ENV === 'production' ? 'safe' : 'drop';
 
 module.exports = {
+	port: process.env.PORT || 1337,
 	connections: {
 		sqlHeroku: {
 		    adapter: 'sails-postgresql',
