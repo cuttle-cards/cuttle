@@ -56,7 +56,7 @@ module.exports = {
    },
 
    orm: {
-   		_hookTimeout: 50000
+   		_hookTimeout: 100000
    },
 
    pubsub: {
