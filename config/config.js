@@ -64,7 +64,7 @@ module.exports = {
    },
 
    grunt: {
-   	_hookTimeout: 50000
+   	_hookTimeout: 100000
    },
 
    keepResponseErrors: true,
