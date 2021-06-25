@@ -32,8 +32,7 @@
     "sails-mongo": "^0.12.2",
     "sails-postgresql": "^0.11.4",
     "sails.io.js": "^0.13.8",
-    "socket.io-client": "^1.4.8",
-    "waterline": "^0.13.6"
+    "socket.io-client": "^1.4.8"
   },
   "scripts": {
     "debug": "node debug app.js",
