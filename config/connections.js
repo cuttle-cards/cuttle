@@ -33,8 +33,8 @@
 module.exports.connections = {
   sqlHeroku: {
     adapter: 'sails-postgresql',
-    ssl: true,
-    schema: true,
+    // ssl: true,
+    // schema: true,
     host: dbUrl.host.split(':')[0],
     database: dbUrl.path.substring(1),
     user: dbUrl.auth.split(':')[0],
