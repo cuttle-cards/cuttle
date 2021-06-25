@@ -18,7 +18,18 @@
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.connections.html
  */
-
+ let dbUrl;
+ let sessionUrl;
+ if (process.env.DATABASE_URL) {
+   dbUrl = require('url').parse(process.env.DATABASE_URL);
+ } else {
+   dbUrl = {
+     host: '',
+     path: '',
+     auth: ''
+   }
+ }
+ console.log("db", dbUrl)
 module.exports.connections = {
   sqlHeroku: {
     adapter: 'sails-postgresql',

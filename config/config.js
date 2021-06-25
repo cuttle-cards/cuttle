@@ -28,23 +28,23 @@ const sessionConnection = 'redisHeroku';
 const migratePolicy = 'safe';
 // const migratePolicy = process.env.NODE_ENV === 'production' ? 'safe' : 'drop';
 
-console.log('session', sessionUrl)
-console.log('db', dbUrl)
-console.log('port', process.env.PORT)
+// console.log('session', sessionUrl)
+// console.log('db', dbUrl)
+// console.log('port', process.env.PORT)
 
 module.exports = {
 	port: process.env.PORT || 1337,
 	connections: {
-		sqlHeroku: {
-		    adapter: 'sails-postgresql',
-		    ssl: true,
-		    schema: true,
-		    host: dbUrl.host.split(':')[0],
-		    database: dbUrl.path.substring(1),
-		    user: dbUrl.auth.split(':')[0],
-		    password: dbUrl.auth.split(':')[1],
-		    port: dbUrl.port,
-		},
+		// sqlHeroku: {
+		//     adapter: 'sails-postgresql',
+		//     ssl: true,
+		//     schema: true,
+		//     host: dbUrl.host.split(':')[0],
+		//     database: dbUrl.path.substring(1),
+		//     user: dbUrl.auth.split(':')[0],
+		//     password: dbUrl.auth.split(':')[1],
+		//     port: dbUrl.port,
+		// },
 		// redisHeroku: {
 		//     adapter: 'connect-redis',
 		//     ssl: false,
