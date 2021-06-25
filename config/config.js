@@ -30,6 +30,7 @@ const migratePolicy = 'alter';
 
 console.log('session', sessionUrl)
 console.log('db', dbUrl)
+console.log('port', process.env.PORT)
 
 module.exports = {
 	port: process.env.PORT || 1337,
