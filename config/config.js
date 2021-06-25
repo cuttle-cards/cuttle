@@ -35,16 +35,6 @@ const migratePolicy = 'safe';
 module.exports = {
 	port: process.env.PORT || 1337,
 	connections: {
-		// sqlHeroku: {
-		//     adapter: 'sails-postgresql',
-		//     ssl: true,
-		//     schema: true,
-		//     host: dbUrl.host.split(':')[0],
-		//     database: dbUrl.path.substring(1),
-		//     user: dbUrl.auth.split(':')[0],
-		//     password: dbUrl.auth.split(':')[1],
-		//     port: dbUrl.port,
-		// },
 		// redisHeroku: {
 		//     adapter: 'connect-redis',
 		//     ssl: false,
@@ -61,10 +51,6 @@ module.exports = {
 		connection: dbConnection,
 		migrate: migratePolicy,
 		// session: sessionConnection,
-   },
-
-   orm: {
-   		_hookTimeout: 60000
    },
 
    pubsub: {
