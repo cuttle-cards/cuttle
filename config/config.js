@@ -28,7 +28,7 @@ const sessionConnection = 'redisHeroku';
 const migratePolicy = 'alter';
 // const migratePolicy = process.env.NODE_ENV === 'production' ? 'safe' : 'drop';
 
-
+console.log('session', sessionUrl)
 
 module.exports = {
 	port: process.env.PORT || 1337,
