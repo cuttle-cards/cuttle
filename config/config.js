@@ -25,7 +25,7 @@ if (process.env.REDIS_TLS_URL) {
 // const sessionConnection = process.env.NODE_ENV === 'production' ? 'redisHeroku' : undefined;
 const dbConnection = 'sqlHeroku';
 const sessionConnection = 'redisHeroku';
-const migratePolicy = 'alter';
+const migratePolicy = 'safe';
 // const migratePolicy = process.env.NODE_ENV === 'production' ? 'safe' : 'drop';
 
 console.log('session', sessionUrl)
