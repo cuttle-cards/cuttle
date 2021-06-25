@@ -37,7 +37,7 @@
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "PORT=$PORT node app.js",
+    "start": "sails lift",
     "start:prod": "node app.js"
   },
   "main": "app.js",
