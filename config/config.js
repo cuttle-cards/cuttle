@@ -12,7 +12,7 @@ if (process.env.DATABASE_URL) {
 }
 
 if (process.env.REDIS_TLS_URL) {
-	sessionUrl = require('url').parse(process.env.REDIS_TLS_URL);
+	sessionUrl = require('url').parse(process.env.REDIS_URL);
 } else {
 	sessionUrl = {
 		host: '',
