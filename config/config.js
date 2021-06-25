@@ -39,11 +39,7 @@ module.exports = {
 		    adapter: 'connect-redis',
 		    ssl: false,
 		    schema: true,
-		    host: sessionUrl.host.split(':')[0],
-		    // database: sessionUrl.path.substring(1),
-		    user: sessionUrl.auth.split(':')[0],
-		    password: sessionUrl.auth.split(':')[1],
-		    port: sessionUrl.port,
+		    url: process.env.REDIS_TLS_URL
 		}
 	}, //End connections
 
