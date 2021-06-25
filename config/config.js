@@ -60,7 +60,7 @@ module.exports = {
 	models: {
 		connection: dbConnection,
 		migrate: migratePolicy,
-		session: sessionConnection,
+		// session: sessionConnection,
    },
 
    pubsub: {
