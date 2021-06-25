@@ -4,6 +4,9 @@
   "version": "2.0.5",
   "description": "The Greatest Two Player Card Game",
   "keywords": [],
+  "engines": {
+    "node": "12.18.3"
+  },
   "dependencies": {
     "bluebird": "^3.4.6",
     "chai": "^3.5.0",
