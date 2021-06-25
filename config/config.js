@@ -57,8 +57,8 @@ module.exports = {
 
 	models: {
 		connection: dbConnection,
-		migrate: migratePolicy
-		// session: sessionConnection,
+		migrate: migratePolicy,
+		session: sessionConnection,
    },
 
    orm: {
