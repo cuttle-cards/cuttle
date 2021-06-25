@@ -36,7 +36,7 @@ module.exports = {
 	connections: {
 		sqlHeroku: {
 		    adapter: 'sails-postgresql',
-		    ssl: true,
+		    ssl: false,
 		    schema: true,
 		    host: dbUrl.host.split(':')[0],
 		    database: dbUrl.path.substring(1),
@@ -46,7 +46,7 @@ module.exports = {
 		},
 		redisHeroku: {
 		    adapter: 'connect-redis',
-		    ssl: true,
+		    ssl: false,
 		    schema: true,
 		    host: sessionUrl.host.split(':')[0],
 		    // database: sessionUrl.path.substring(1),
