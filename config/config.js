@@ -47,8 +47,6 @@ module.exports = {
     },
 		redisHeroku: {
 		    adapter: 'connect-redis',
-		    ssl: false,
-		    schema: true,
         ttl: 3600 * 24,
 		    host: sessionUrl.host.split(':')[0],
 		    // database: sessionUrl.path.substring(1),
