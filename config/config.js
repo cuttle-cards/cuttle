@@ -12,7 +12,7 @@ if (process.env.DATABASE_URL) {
 }
 
 if (process.env.REDIS_TLS_URL) {
-	sessionUrl = require('url').parse(process.env.REDIS_URL);
+	sessionUrl = require('url').parse(process.env.REDIS_TLS_URL);
 } else {
 	sessionUrl = {
 		host: '',
@@ -29,6 +29,7 @@ const migratePolicy = 'alter';
 // const migratePolicy = process.env.NODE_ENV === 'production' ? 'safe' : 'drop';
 
 console.log('session', sessionUrl)
+console.log('db', dbUrl)
 
 module.exports = {
 	port: process.env.PORT || 1337,
