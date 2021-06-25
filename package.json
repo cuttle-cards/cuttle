@@ -40,7 +40,7 @@
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "node app.js",
+    "start": "NODE_ENV=production node app.js",
     "start:prod": "NODE_ENV=production node app.js"
   },
   "main": "app.js",
