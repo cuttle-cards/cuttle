@@ -64,11 +64,11 @@ module.exports = {
    },
 
    orm: {
-   		_hookTimeout: 100000
+   		_hookTimeout: 60000
    },
 
    pubsub: {
-   		_hookTimeout: 100000
+   		_hookTimeout: 60000
    },
 
    keepResponseErrors: true,
