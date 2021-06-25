@@ -21,9 +21,14 @@ if (process.env.REDIS_TLS_URL) {
 	}
 }
 // Use postgress connection in production and in-memory localDb otherwise
-const dbConnection = process.env.NODE_ENV === 'production' ? 'sqlHeroku' : 'localDiskDb';
-const sessionConnection = process.env.NODE_ENV === 'production' ? 'redisHeroku' : undefined;
-const migratePolicy = process.env.NODE_ENV === 'production' ? 'safe' : 'drop';
+// const dbConnection = process.env.NODE_ENV === 'production' ? 'sqlHeroku' : 'localDiskDb';
+// const sessionConnection = process.env.NODE_ENV === 'production' ? 'redisHeroku' : undefined;
+const dbConnection = 'sqlHeroku';
+const sessionConnection = 'redisHeroku';
+const migratePolicy = 'alter';
+// const migratePolicy = process.env.NODE_ENV === 'production' ? 'safe' : 'drop';
+
+
 
 module.exports = {
 	port: process.env.PORT || 1337,
@@ -52,8 +57,8 @@ module.exports = {
 
 	models: {
 		connection: dbConnection,
-		migrate: migratePolicy,
-		session: sessionConnection,
+		migrate: migratePolicy
+		// session: sessionConnection,
    },
 
    orm: {
