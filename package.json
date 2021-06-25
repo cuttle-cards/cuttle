@@ -37,7 +37,7 @@
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "node app.js",
+    "start": "node app.js -p $PORT",
     "start:prod": "node app.js"
   },
   "main": "app.js",
