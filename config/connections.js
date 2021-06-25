@@ -31,12 +31,7 @@
  }
  console.log("db", dbUrl)
 module.exports.connections = {
-  sqlHeroku: {
-    adapter: 'sails-postgresql',
-    ssl: true,
-    schema: true,
-    url: process.env.DATABASE_URL
-  }
+
   // /***************************************************************************
   // *                                                                          *
   // * Local disk storage for DEVELOPMENT ONLY                                  *

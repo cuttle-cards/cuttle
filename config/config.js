@@ -35,11 +35,25 @@ const migratePolicy = 'alter';
 module.exports = {
 	port: process.env.PORT || 1337,
 	connections: {
+    sqlHeroku: {
+      adapter: 'sails-postgresql',
+      ssl: true,
+      schema: true,
+      host: dbUrl.host.split(':')[0],
+      database: dbUrl.path.substring(1),
+      user: dbUrl.auth.split(':')[0],
+      password: dbUrl.auth.split(':')[1],
+      port: dbUrl.port,
+    },
 		redisHeroku: {
 		    adapter: 'connect-redis',
 		    ssl: false,
 		    schema: true,
-		    url: process.env.REDIS_TLS_URL
+		    host: sessionUrl.host.split(':')[0],
+		    // database: sessionUrl.path.substring(1),
+		    user: sessionUrl.auth.split(':')[0],
+		    password: sessionUrl.auth.split(':')[1],
+		    port: sessionUrl.port,
 		}
 	}, //End connections
 
