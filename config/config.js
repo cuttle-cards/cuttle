@@ -45,22 +45,22 @@ module.exports = {
 		    password: dbUrl.auth.split(':')[1],
 		    port: dbUrl.port,
 		},
-		redisHeroku: {
-		    adapter: 'connect-redis',
-		    ssl: false,
-		    schema: true,
-		    host: sessionUrl.host.split(':')[0],
-		    // database: sessionUrl.path.substring(1),
-		    user: sessionUrl.auth.split(':')[0],
-		    password: sessionUrl.auth.split(':')[1],
-		    port: sessionUrl.port,
-		}
+		// redisHeroku: {
+		//     adapter: 'connect-redis',
+		//     ssl: false,
+		//     schema: true,
+		//     host: sessionUrl.host.split(':')[0],
+		//     // database: sessionUrl.path.substring(1),
+		//     user: sessionUrl.auth.split(':')[0],
+		//     password: sessionUrl.auth.split(':')[1],
+		//     port: sessionUrl.port,
+		// }
 	}, //End connections
 
 	models: {
 		connection: dbConnection,
 		migrate: migratePolicy,
-		session: sessionConnection,
+		// session: sessionConnection,
    },
 
    orm: {
