@@ -49,8 +49,6 @@ module.exports = {
 		    adapter: 'connect-redis',
         ttl: 3600 * 24,
 		    host: sessionUrl.host.split(':')[0],
-		    // database: sessionUrl.path.substring(1),
-        db: 0,
 		    pass: sessionUrl.auth.split(':')[1],
 		    port: sessionUrl.port,
         prefix: "sess:"

@@ -3,8 +3,7 @@
     "modules": {}
   },
   "hooks": {
-    "grunt": false,
-    "session": false
+    "grunt": false
   },
   "paths": {
     "public": "assets"
