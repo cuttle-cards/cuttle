@@ -12,6 +12,18 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.session.html
  */
 
+ let sessionUrl;
+
+ if (process.env.REDIS_TLS_URL) {
+   sessionUrl = require('url').parse(process.env.REDIS_TLS_URL);
+ } else {
+   sessionUrl = {
+     host: '',
+     path: '',
+     auth: ''
+   }
+ }
+
 module.exports.session = {
 
   /***************************************************************************
