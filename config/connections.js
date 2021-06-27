@@ -19,7 +19,6 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.connections.html
  */
  let dbUrl;
- let sessionUrl;
  if (process.env.DATABASE_URL) {
    dbUrl = require('url').parse(process.env.DATABASE_URL);
  } else {
@@ -29,7 +28,6 @@
      auth: ''
    }
  }
- console.log("db", dbUrl)
 module.exports.connections = {
 
   // /***************************************************************************
@@ -39,9 +37,20 @@ module.exports.connections = {
   // * Installed by default.                                                    *
   // *                                                                          *
   // ***************************************************************************/
-  // localDiskDb: {
-  //   adapter: 'sails-disk'
-  // },
+  localDiskDb: {
+    adapter: 'sails-disk'
+  },
+  
+  sqlHeroku: {
+    adapter: 'sails-postgresql',
+    ssl: true,
+    schema: true,
+    host: dbUrl.host.split(':')[0],
+    database: dbUrl.path.substring(1),
+    user: dbUrl.auth.split(':')[0],
+    password: dbUrl.auth.split(':')[1],
+    port: dbUrl.port,
+  },
 
   // /***************************************************************************
   // *                                                                          *

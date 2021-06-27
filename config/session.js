@@ -54,13 +54,13 @@ module.exports.session = {
   ***************************************************************************/
 
   // adapter: 'connect-redis',
-  adapter: 'connect-redis',
-  ttl: 3600 * 24,
-  db: 0,
-  host: sessionUrl.host.split(':')[0],
-  pass: sessionUrl.auth.split(':')[1],
-  port: sessionUrl.port,
-  prefix: "sess:",
+  // adapter: 'connect-redis',
+  // ttl: 3600 * 24,
+  // db: 0,
+  // host: sessionUrl.host.split(':')[0],
+  // pass: sessionUrl.auth.split(':')[1],
+  // port: sessionUrl.port,
+  // prefix: "sess:",
 
   /***************************************************************************
   *                                                                          *
