@@ -9,6 +9,16 @@
  * any private information to this file!
  *
  */
+let sessionUrl;
+if (process.env.REDIS_URL) {
+	sessionUrl = require('url').parse(process.env.REDIS_URL);
+} else {
+	sessionUrl = {
+		host: '',
+		path: '',
+		auth: ''
+	}
+}
 
 module.exports = {
 
@@ -17,16 +27,24 @@ module.exports = {
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
 
-  // models: {
-  //   connection: 'someMysqlServer'
-  // },
+  models: {
+    connection: 'sqlHeroku',
+    migrate: 'safe',
+  },
 
   /***************************************************************************
    * Set the port in the production environment to 80                        *
    ***************************************************************************/
 
-  // port: 80,
+  port: process.env.PORT || 80,
 
+  session: {
+			adapter: 'connect-redis',
+        ttl: 3600 * 24,
+		    host: sessionUrl.host.split(':')[0],
+		    pass: sessionUrl.auth.split(':')[1],
+		    port: sessionUrl.port,
+  }
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
    ***************************************************************************/

@@ -12,6 +12,18 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.session.html
  */
 
+ let sessionUrl;
+
+ if (process.env.REDIS_TLS_URL) {
+   sessionUrl = require('url').parse(process.env.REDIS_TLS_URL);
+ } else {
+   sessionUrl = {
+     host: '',
+     path: '',
+     auth: ''
+   }
+ }
+
 module.exports.session = {
 
   /***************************************************************************
@@ -41,7 +53,13 @@ module.exports.session = {
   * session store that can be shared across multiple Sails.js servers        *
   ***************************************************************************/
 
-  // adapter: 'redis',
+  // adapter: 'connect-redis',
+  // ttl: 3600 * 24,
+  // db: 0,
+  // host: sessionUrl.host.split(':')[0],
+  // pass: sessionUrl.auth.split(':')[1],
+  // port: sessionUrl.port,
+  // prefix: "sess:",
 
   /***************************************************************************
   *                                                                          *
