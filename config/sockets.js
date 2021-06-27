@@ -11,7 +11,7 @@
  */
 
 module.exports.sockets = {
-  onlyAllowOrigins: ["http://localhost:1337", "http://cuttle-v3-hlitest.herokuapp.com", "https://cuttle-v3-hlitest.herokuapp.com/"],
+  // onlyAllowOrigins: ["http://localhost:1337", "http://cuttle-v3-hlitest.herokuapp.com", "https://cuttle-v3-hlitest.herokuapp.com/"],
 
   /***************************************************************************
   *                                                                          *
