@@ -1517,6 +1517,19 @@ module.exports = {
             var savePlayer = userService.saveUser({user: player});
             return Promise.all([saveGame, savePlayer]);
           } else {
+            var queenCount = userService.queenCount({user: opponent});
+						switch (queenCount) {
+							case 0:
+								break;
+							case 1:
+								if (target.runes === opponent.id && target.rank === 12) {
+								} else {
+									return Promise.reject(new Error("Your opponent's queen prevents you from targeting their other cards"));
+								}
+								break;
+							default:
+								return Promise.reject(new Error("You cannot play a targeted one-off when your opponent has more than one Queen"));
+						} //End queenCount validation
             // Normal sevens
             if (target.points === opponent.id) {
               if (card.rank === 11) {
