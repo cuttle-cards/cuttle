@@ -1134,7 +1134,7 @@ module.exports = {
 						switch(game.oneOffTargetType) {
 							case 'rune':
 								opponent.runes.remove(game.oneOffTarget.id);
-                game.oneOffTarget = null
+                game.oneOffTarget = null;
 								break;
 							case 'point':
 								// Remove jacks from targeted point (and scrap them)
