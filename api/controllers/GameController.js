@@ -20,19 +20,18 @@ module.exports = {
 	///////////////////////////////////
 	reconnect: function (req, res) {
 		Game.subscribe(req, req.session.game);
-		Game.watch(req);
 		return res.ok();
 	},
 	create: function(req, res) {
 		if (req.body.gameName) {
 			var promiseCreateGame = gameAPI.createGame(req.body.gameName)
 			.then(function (game) {
-				Game.publishCreate({
+				sails.sockets.blast('gameCreated', {
 					id: game.id,
 					name: game.name,
 					status: game.status,
 					players: [],
-				});
+				})
 				return res.ok({gameId: game.id});
 			}).catch(function (reason) {
 				res.badRequest(reason);
@@ -42,7 +41,6 @@ module.exports = {
 
 	getList: function (req, res) {
 		// HANDLE REQ.SESSION.GAME = GAME ID CASE
-		Game.watch(req);
 		if (req.session.game != null) {
 			var promiseGame = gameService.populateGame({gameId: req.session.game})
 			var promiseList = gameAPI.findOpenGames();
