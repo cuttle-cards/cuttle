@@ -53,6 +53,7 @@ function tempGame (game, p0, p1) {
 	this.turn = game.turn;
 	this.passes = game.passes;
 	this.resolving = game.resolving;
+	this.lastEvent = game.lastEvent;
 };
 module.exports = {
 	GameResult,
