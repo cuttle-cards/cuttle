@@ -94,6 +94,10 @@ module.exports = {
     p1: {
       model: 'user',
     },
+    lastEvent: {
+      type: 'json',
+      defaultsTo: {},
+    },
     /**
      *  Enum for game result:
      * -1: incomplete
