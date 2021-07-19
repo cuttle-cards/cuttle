@@ -87,10 +87,9 @@ module.exports = {
 			req.session.game = game.id;
 			req.session.pNum = user.pNum;
 			Game.subscribe(req, game.id);
-
 			Game.publishUpdate(game.id,
 			{
-				change: 'reLogin',
+				...game.lastEvent,
 				game: game,
 			});
 			

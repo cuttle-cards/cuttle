@@ -213,7 +213,9 @@ module.exports = {
 						game.secondCard = deck[random];
 						game.deck.remove(deck[random].id);
 						dealt.push(random);
-
+						game.lastEvent = {
+							change: 'Initialize',
+						}
 						return Promise.resolve([game, p0, p1]);
 					})
 					.then(function save (values) {
@@ -343,6 +345,9 @@ module.exports = {
 			}
 			user.frozenId = null;
 			game.log.push(userService.truncateEmail(user.email) + " drew a card");
+			game.lastEvent = {
+				change: 'draw',
+			};
 			game.turn++;
 			var saveGame = gameService.saveGame({game: game});
 			var saveUser = userService.saveUser({user: user});
@@ -381,6 +386,9 @@ module.exports = {
 					game.turn++;
 					game.passes++;
 					game.log.push(userService.truncateEmail(player.email) + " passes.");
+					game.lastEvent = {
+						change: 'pass',
+					};
 				} else {
 					return Promise.reject(new Error("You can only pass when there are no cards in the deck"));
 				}
@@ -442,6 +450,9 @@ module.exports = {
 								player.frozenId = null;
 								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " for points");
 								game.passes = 0;
+								game.lastEvent = {
+									change: 'points',
+								},
 								game.turn++;
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
@@ -504,6 +515,9 @@ module.exports = {
 								logEntry += ' as a Glasses Eight';
 							}
 							game.log.push(logEntry);
+							game.lastEvent = {
+								change: 'runes',
+							},
 							game.passes = 0;
 							game.turn++;
 							var saveGame = gameService.saveGame({game: game});
@@ -572,6 +586,9 @@ module.exports = {
 								player.hand.remove(card.id);
 								player.frozenId = null;
 								game.log.push(userService.truncateEmail(player.email) + " scuttled " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name);
+								game.lastEvent = {
+									change: 'scuttle',
+								},
 								game.passes = 0;
 								game.turn++;
 								// Save changes
@@ -641,6 +658,9 @@ module.exports = {
 									card.index = target.attachments.length;
 									target.attachments.add(card.id);
 									game.log.push(userService.truncateEmail(player.email) + " stole " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name);
+									game.lastEvent = {
+										change: 'jack',
+									},
 									game.passes = 0;
 									game.turn++;
 									var saveGame = gameService.saveGame({game: game});
@@ -733,6 +753,10 @@ module.exports = {
 									game.oneOff = card;
 									player.hand.remove(card.id);
 									game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a one-off to" + card.ruleText);
+									game.lastEvent = {
+										change: 'oneOff',
+										pNum: req.session.pNum,
+									};
 									var saveGame = gameService.saveGame({game: game});
 									var savePlayer = userService.saveUser({user: player});
 									return Promise.all([saveGame, savePlayer]);
@@ -816,6 +840,10 @@ module.exports = {
 								game.attachedToTarget = null;
 								if (point) game.attachedToTarget = point;
 								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);
+								game.lastEvent = {
+									change: 'targetedOneOff',
+									pNum: req.session.pNum,
+								};
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
 								return Promise.all([saveGame, savePlayer]);
@@ -884,6 +912,10 @@ module.exports = {
 							}
 							game.twos.add(card.id);
 							player.hand.remove(card.id);
+							game.lastEvent = {
+								change: 'counter',
+								pNum: req.session.pNum,
+							};
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});
 							return Promise.all([saveGame, savePlayer]);
@@ -917,7 +949,6 @@ module.exports = {
 				game: fullGame,
 				pNum: req.session.pNum,
 				victory: victory,
-
 			});
 			return res.ok();
 		})
@@ -1171,6 +1202,12 @@ module.exports = {
 				game.scrap.add(two.id);
 				game.twos.remove(two.id);
 			});
+			game.lastEvent = {
+				change: 'resolve',
+				playedBy: player.pNum,
+				happened,
+				oneOff,
+			};
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});
 			var saveOpponent = userService.saveUser({user: opponent});
@@ -1231,6 +1268,9 @@ module.exports = {
 			game.passes = 0;
 			game.turn++;
 			game.resolving = null;
+			game.lastEvent = {
+				change: 'resolveFour',
+			};
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});
 			return Promise.all([saveGame, savePlayer]);
@@ -1274,6 +1314,9 @@ module.exports = {
 			game.passes = 0;
 			game.turn++;
 			game.resolving = null;
+			game.lastEvent = {
+				change: 'resolveThree',
+			};
 			//Save changes
 			var saveGame = gameService.saveGame({game: game});
 			var savePlayer = userService.saveUser({user: player});
@@ -1322,6 +1365,9 @@ module.exports = {
 						game.passes = 0;
 						game.turn++;
 						game.resolving = null;
+						game.lastEvent = {
+							change: 'sevenPoints',
+						};
 						var saveGame = gameService.saveGame({game: game})					;
 						var savePlayer = userService.saveUser({user: player});
 						return Promise.all([saveGame, savePlayer]);
@@ -1377,6 +1423,9 @@ module.exports = {
 						game.passes = 0;
 						game.turn++;
 						game.resolving = null;
+						game.lastEvent = {
+							change: 'sevenRunes',
+						};
 						var saveGame = gameService.saveGame({game: game});
 						var savePlayer = userService.saveUser({user: player});
 						return Promise.all([saveGame, savePlayer]);
@@ -1445,6 +1494,9 @@ module.exports = {
 								game.passes = 0;
 								game.turn++;
 								game.resolving = null;
+								game.lastEvent = {
+									change: 'sevenScuttle',
+								};
 								var saveGame = gameService.saveGame({game: game});
 								var savePlayer = userService.saveUser({user: player});
 								var saveOpponent = userService.saveUser({user: opponent});
@@ -1540,7 +1592,10 @@ module.exports = {
                 game.log.push(userService.truncateEmail(player.email) + " stole " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name + " from the top of the deck");
                 game.passes = 0;
                 game.turn++;
-                game.resolving = null;
+								game.resolving = null;
+								game.lastEvent = {
+									change: 'sevenJack',
+								};
                 var saveGame = gameService.saveGame({game: game});
                 var savePlayer = userService.saveUser({user: player});
                 var saveTarget = cardService.saveCard({card: target});
@@ -1618,6 +1673,10 @@ module.exports = {
 							game.oneOff = card;
 							game = gameService.sevenCleanUp({game: game, index: req.body.index});
 							game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " from the top of the deck as a " + card.ruleText);
+							game.lastEvent = {
+								change: 'sevenOneOff',
+								pNum:req.session.pNum,
+							};
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});
 							return Promise.all([saveGame, savePlayer]);
@@ -1695,6 +1754,10 @@ module.exports = {
 							if (point) game.attachedToTarget = point;
 							game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);
 							game = gameService.sevenCleanUp({game: game, index: req.body.index});
+							game.lastEvent = {
+								change: 'sevenTargetedOneOff',
+								pNum:req.session.pNum,
+							};
 							var saveGame = gameService.saveGame({game: game});
 							var savePlayer = userService.saveUser({user: player});
 							return Promise.all([saveGame, savePlayer]);
