@@ -10,7 +10,11 @@ module.exports = function (req, res, next) {
 	if ( req.body.hasOwnProperty('gameName') ) {
 		if (typeof(req.body.gameName) === 'string'){
 			// Could add restrictions on allowable game names
-			return next();
+      if (req.body.gameName.length > 0) {
+        return next();
+      } else {
+        return res.badRequest(new Error('Game name cannot be blank'));
+      }
 		}
 	}
 	// User not allowed
