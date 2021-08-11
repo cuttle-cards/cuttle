@@ -9,7 +9,6 @@
  // Dependencies //
  //////////////////
 var Promise = require('bluebird');
-const Game = require('../models/Game');
 var gameAPI = sails.hooks['customgamehook'];
 var userAPI = sails.hooks['customuserhook'];
 
@@ -27,14 +26,11 @@ module.exports = {
 		if (req.body.gameName) {
 			var promiseCreateGame = gameAPI.createGame(req.body.gameName)
 			.then(function (game) {
-				sails.sockets.broadcast('GameList', 'game', {
-					verb: 'created',
-					data: {
-						id: game.id,
-						name: game.name,
-						status: game.status,
-						players: [],
-					},
+				sails.sockets.broadcast('GameList', 'gameCreated', {
+					id: game.id,
+					name: game.name,
+					status: game.status,
+					players: [],
 				});
 				return res.ok({gameId: game.id});
 			}).catch(function (reason) {
@@ -435,7 +431,7 @@ module.exports = {
 						turn: game.turn + 1,
 						passes: game.passes + 1,
 						log: [...game.log, `${userService.truncateEmail(player.email)} passess`],
-						lastEvent = {
+						lastEvent: {
 							change: 'pass',
 						}
 					};
@@ -507,7 +503,7 @@ module.exports = {
 									...game.log,
 									`${userService.truncateEmail(player.email)} played the ${card.name} for points`
 								],
-								lastEvent = {
+								lastEvent: {
 									change: 'points',
 								},
 							}

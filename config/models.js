@@ -8,12 +8,11 @@
  * For more info on Sails models, see:
  * http://sailsjs.org/#!/documentation/concepts/ORM
  */
-const migratePolicy = process.env.NODE_ENV === 'production' ? 'alter' : 'drop';
 
 module.exports.models = {
 
   // DEVELOPMENT SETTINGS
-  connection: 'localDiskDb',
+  datastore: 'localDiskDb',
   migrate: 'drop',
   attributes: {
     createdAt: { type: 'number', autoCreatedAt: true, },

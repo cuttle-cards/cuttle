@@ -43,7 +43,7 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    connection: 'sqlHeroku',
+    datastore: 'sqlHeroku',
     migrate: 'safe',
   },
 
