@@ -13,7 +13,7 @@ module.exports = function (req, res, next) {
       if (req.body.gameName.length > 0) {
         return next();
       } else {
-        return res.badRequest(new Error('Game name cannot be blank'));
+        return res.badRequest({message: 'Game name cannot be blank'});
       }
 		}
 	}
