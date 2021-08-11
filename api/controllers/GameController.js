@@ -24,7 +24,7 @@ module.exports = {
 	},
 	create: function(req, res) {
 		if (req.body.gameName) {
-			var promiseCreateGame = gameAPI.createGame(req.body.gameName)
+			gameAPI.createGame(req.body.gameName)
 			.then(function (game) {
 				sails.sockets.broadcast('GameList', 'gameCreated', {
 					id: game.id,
