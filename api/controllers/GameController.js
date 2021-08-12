@@ -121,8 +121,8 @@ module.exports = {
 
 			})
 			.then(function respond (values) {
-				var game = values [0];
-				var user = values[1];
+				const game = values [0];
+				const user = values[1];
 				// Socket announcement that player joined game
 				sails.sockets.blast('join',
 					{
