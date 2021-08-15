@@ -563,33 +563,46 @@ module.exports = {
 	}, //End points()
 
 	runes: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseCard = cardService.findCard({cardId: req.body.cardId});
 		Promise.all([promiseGame, promisePlayer, promiseCard])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], card = values[2];
+			const [game, player, card] = values;
 			if (game.turn % 2 === player.pNum) {
 				if (card.hand === player.id) {
 					if ((card.rank >= 12 && card.rank <= 13) || card.rank === 8) {
 						if (player.frozenId != card.id) {
 							// Everything okay; make changes
-							player.runes.add(card.id);
-							player.hand.remove(card.id);
-							player.frozenId = null;
+
 							let logEntry = userService.truncateEmail(player.email) + " played the " + card.name;
 							if (card.rank === 8) {
 								logEntry += ' as a Glasses Eight';
+							}							const gameUpdates = {
+								turn: game.turn + 1,
+								log: [...game.log, logEntry],
+								passes: 0,
+								lastEvent: {
+									change: 'runes',
+								},
 							}
-							game.log.push(logEntry);
-							game.lastEvent = {
-								change: 'runes',
-							},
-							game.passes = 0;
-							game.turn++;
-							var saveGame = gameService.saveGame({game: game});
-							var savePlayer = userService.saveUser({user: player});
-							return Promise.all([saveGame, savePlayer]);
+
+							const playerUpdates = {
+								frozenId: null,
+							}
+
+							const updatePromises = [
+								Game.updateOne({id: game.id})
+									.set(gameUpdates),
+								User.updateOne({id: player.id})
+									.set(playerUpdates),
+								User.removeFromCollection(player.id, 'hand')
+									.members(card.id),
+								User.addToCollection(player.id, 'runes')
+									.members(card.id),
+							];
+
+							return Promise.all([game, ...updatePromises]);
 						} else {
 							return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 						}
@@ -604,7 +617,8 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
+			const game = values[0];
+			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
 		.then(function publishAndRespond (values) {
 			const fullGame = values[0];
@@ -2191,7 +2205,7 @@ module.exports = {
 		// Replace Top & Second Cards if necessary
 		const gameUpdates = {};
 		if (oldTopCardWasMoved && !topCardId) {
-			let newTopCardId = _.sample(game.deck)
+			let newTopCardId = _.sample(game.deck);
 			while (allRequestedCards.includes(newTopCardId)) {
 				newTopCardId = _.sample(game.deck);
 			}
