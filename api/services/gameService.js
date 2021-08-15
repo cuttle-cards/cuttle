@@ -178,26 +178,29 @@ module.exports = {
 	* @param options = {game: tmpGame, gameModel: GameModel}
 	*/
 	checkWinGame: function (options) {
-		var res = {
+		const res = {
 			gameOver: false,
 			winner: null,
 			conceded: false
 		};
 		const { game, gameModel } = options;
-		var p0Wins = userService.checkWin({user: game.players[0]});
-		var p1Wins = userService.checkWin({user: game.players[1]});
+		const p0Wins = userService.checkWin({user: game.players[0]});
+		const p1Wins = userService.checkWin({user: game.players[1]});
 			if (p0Wins || p1Wins) {
 				res.gameOver = true;
-				gameModel.p0 = game.players[0];
-				gameModel.p1 = game.players[1];
+				const gameUpdates = {
+					p0: game.players[0],
+					p1: game.players[1]
+				};
 				if (p0Wins) {
 					res.winner = 0;
-					gameModel.result = GameResult.P0_WINS;
+					gameUpdates.result = GameResult.P0_WINS;
 				} else if (p1Wins) {
 					res.winner = 1;
-					gameModel.result = GameResult.P1_WINS;
+					gameUpdates.result = GameResult.P1_WINS;
 				}
-				gameService.saveGame({game: gameModel});
+				Game.updateOne({id: game.id})
+				.set(gameUpdates);
 			}
 			return res;
 	},
