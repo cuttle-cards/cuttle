@@ -95,15 +95,9 @@ module.exports = {
 	****options = {game: GameModel}
 	*/
 	saveGame: function (options) {
-		return new Promise(function (resolve, reject) {
-			options.game.save(function (err) {
-				if (err) {
-					return reject(err);
-				} else {
-					return resolve(options.game);
-				}
-			});
-		});
+		const { game } = options;
+		return Game.updateOne({id: game.id})
+			.set(game);
 	},
 
 	/*
