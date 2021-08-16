@@ -645,42 +645,67 @@ module.exports = {
 	}, //End runes()
 
 	scuttle: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseOpponent = userService.findUser({userId: req.body.opId});
-		var promiseCard = cardService.findCard({cardId: req.body.cardId});
-		var promiseTarget = cardService.findCard({cardId: req.body.targetId});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseOpponent = userService.findUser({userId: req.body.opId});
+		const promiseCard = cardService.findCard({cardId: req.body.cardId});
+		const promiseTarget = cardService.findCard({cardId: req.body.targetId});
 		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
+			const [ game, player, opponent, card, target ] = values;
 			if (game.turn  % 2 === player.pNum) {
 				if (card.hand === player.id) {
 					if (target.points === opponent.id) {
 						if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
 							if (player.frozenId != card.id) {
 								// Move is legal; make changes
-								// Remove attachments from target
-								target.attachments.forEach(function (jack) {
-									target.attachments.remove(jack.id);
-									game.scrap.add(jack.id);
-								});
-								game.scrap.add(target.id);
-								game.scrap.add(card.id);
-								opponent.points.remove(target.id);
-								player.hand.remove(card.id);
-								player.frozenId = null;
-								game.log.push(userService.truncateEmail(player.email) + " scuttled " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name);
-								game.lastEvent = {
-									change: 'scuttle',
-								},
-								game.passes = 0;
-								game.turn++;
-								// Save changes
-								var saveGame = gameService.saveGame({game: game});
-								var savePlayer = userService.saveUser({user: player});
-								var saveOpponent = userService.saveUser({user: opponent});
-								var saveTarget = cardService.saveCard({card: target});
-								return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
+								const attachmentIds =  target.attachments.map(card => card.id);
+								const logMessage = `${userService.truncateEmail(player.email)} scuttled 
+									${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name}`;
+								// Define update dictionaries
+								const gameUpdates = {
+									passes: 0,
+									turn: game.turn + 1,
+									log: [
+										...game.log,
+										logMessage,
+									],
+									lastEvent: {
+										change: 'scuttle',
+									}
+								};
+								const playerUpdates = {
+									frozenId: null,
+								};
+								// Consolidate update promises into array
+								const updatePromises = [
+									// Include game record so it can be retrieved downstream
+									game,
+									// Updates to game record e.g. turn
+									Game.updateOne(game.id)
+										.set(gameUpdates),
+									// Updates to player record i.e. frozenId
+									User.updateOne(player.id)
+										.set(playerUpdates),
+									// Clear target's attachments
+									Card.replaceCollection(target.id, 'attachments')
+										.members([]),
+									// Remove card from player's hand
+									User.removeFromCollection(player.id, 'hand')
+										.members([card.id]),
+									// Remove target from opponent's points
+									User.removeFromCollection(opponent.id, 'points')
+										.members([target.id]),
+									// Scrap cards
+									Game.addToCollection(game.id, 'scrap')
+										.members([
+											...attachmentIds,
+											card.id,
+											target.id,
+										]),
+								];
+
+								return Promise.all(updatePromises);
 							} else {
 								return Promise.reject({message: "That card is frozen! You must wait a turn to play it."});
 							}
@@ -698,12 +723,13 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
+			const [ game ] = values;
+			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
 		.then(function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
