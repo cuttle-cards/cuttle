@@ -2110,18 +2110,8 @@ module.exports = {
 		});
 	}, //End deleteDeck
 
-	loadFixture: async function(req, res) {
-
-		try {
-			game = await Game.findOne({id: req.session.game});
-			p0 = await User.findOne({id: req.body.p0Id}).populateAll();
-			p1 = await User.findOne({id: req.body.p1Id}).populateAll();
-		}
-		catch (err) {
-			console.log('Error finding records to load fixture');
-			console.log(err);
-			return res.badRequest(err);
-		}
+	loadFixture: function (req, res) {
+		// Capture request data
 		const p0HandCardIds = req.body.p0HandCardIds || [];
 		const p0PointCardIds = req.body.p0PointCardIds || [];
 		const p0FaceCardIds = req.body.p0FaceCardIds || [];
@@ -2131,10 +2121,8 @@ module.exports = {
 		const scrapCardIds = req.body.scrapCardIds || [];
 		const topCardId = req.body.topCard || null;
 		const secondCardId = req.body.secondCardId || null;
-
+		// Aggregate list of all cards being requested
 		const allRequestedCards = [
-			topCardId,
-			secondCardId,
 			...p0HandCardIds,
 			...p0PointCardIds,
 			...p0FaceCardIds,
@@ -2143,129 +2131,134 @@ module.exports = {
 			...p1FaceCardIds,
 			...scrapCardIds
 		];
-		/////////////////////////////////////////
-		// Calculate which cards must be moved //
-		/////////////////////////////////////////
-		const fromP0HandToDeck = p0.hand.filter((card) => {
-			return !p0HandCardIds.includes(card.id) &&
-				!p0PointCardIds.includes(card.id) &&
-				!p0FaceCardIds.includes(card.id) &&
-				!p1HandCardIds.includes(card.id) &&
-				!p1PointCardIds.includes(card.id) &&
-				!p1FaceCardIds.includes(card.id) &&
-				!scrapCardIds.includes(card.id) &&
-				topCardId !== card.id &&
-				secondCardId !== card.id;
-		})
-			.map(card => card.id);
-
-		const fromP1HandToDeck = p1.hand.filter((card) => {
-			return !p0HandCardIds.includes(card.id) &&
-				!p0PointCardIds.includes(card.id) &&
-				!p0FaceCardIds.includes(card.id) &&
-				!p1HandCardIds.includes(card.id) &&
-				!p1PointCardIds.includes(card.id) &&
-				!p1FaceCardIds.includes(card.id) &&
-				!scrapCardIds.includes(card.id) &&
-				topCardId !== card.id &&
-				secondCardId !== card.id;
-		})
-			.map(card => card.id);
-
-		const oldTopCardId = game.topCard;
-		const oldTopCardWasMoved = p0HandCardIds.includes(oldTopCardId) ||
-			p0PointCardIds.includes(oldTopCardId) ||
-			p0FaceCardIds.includes(oldTopCardId) ||
-			p1HandCardIds.includes(oldTopCardId) ||
-			p1PointCardIds.includes(oldTopCardId) ||
-			p1FaceCardIds.includes(oldTopCardId) ||
-			scrapCardIds.includes(oldTopCardId) ||
-			secondCardId === oldTopCardId;
-
-		const oldSecondCardId = game.secondCard;
-		const oldSecondCardWasMoved = p0HandCardIds.includes(oldTopCardId) ||
-			p0PointCardIds.includes(oldSecondCardId) ||
-			p0FaceCardIds.includes(oldSecondCardId) ||
-			p1HandCardIds.includes(oldSecondCardId) ||
-			p1PointCardIds.includes(oldSecondCardId) ||
-			p1FaceCardIds.includes(oldSecondCardId) ||
-			scrapCardIds.includes(oldSecondCardId) ||
-			secondCardId === oldSecondCardId;
-		
-		const cardsToAddToDeck = [
-			...fromP0HandToDeck,
-			...fromP1HandToDeck
-		];
-		
-		if (!oldTopCardWasMoved && topCardId) {
-			cardsToAddToDeck.push(oldTopCardId);
+		if (topCardId) {
+			allRequestedCards.push(topCardId);
 		}
-		if (!oldSecondCardWasMoved && secondCardId) {
-			cardsToAddToDeck.push(oldSecondCardId);
-		}
-		////////////////
-		// Move Cards //
-		////////////////
-		const updatePromises = [
-			// P0 updates
-			User.replaceCollection(p0.id, 'hand')
-				.members(p0HandCardIds),
-			User.replaceCollection(p0.id, 'points')
-				.members(p0PointCardIds),
-			User.replaceCollection(p0.id, 'runes')
-				.members(p0FaceCardIds),
-			// P1 updates
-			User.replaceCollection(p1.id, 'hand')
-				.members(p1HandCardIds),
-			User.replaceCollection(p1.id, 'points')
-				.members(p1PointCardIds),
-			User.replaceCollection(p1.id, 'runes')
-				.members(p1FaceCardIds),
-			// Game updates
-			Game.addToCollection(game.id, 'deck')
-				.members(cardsToAddToDeck),
-			Game.replaceCollection(game.id, 'scrap')
-				.members(scrapCardIds)
-		];
-
-		// Replace Top & Second Cards if necessary
-		const gameUpdates = {};
-		if (oldTopCardWasMoved && !topCardId) {
-			let newTopCardId = _.sample(game.deck);
-			while (allRequestedCards.includes(newTopCardId)) {
-				newTopCardId = _.sample(game.deck);
-			}
-			gameUpdates.topCard = newTopCardId;
-		}
-		if (oldSecondCardWasMoved && !secondCardId) {
-			let newSecondCardId = _.sample(game.deck);
-			while (allRequestedCards.includes(newSecondCardId) || newSecondCardId === newTopCardId) {
-				newSecondCardId = _.sample(game.deck);
-			}
-			gameUpdates.secondCard = newSecondCardId;
-		}
-		updatePromises.push(
-			Game.updateOne({id: game.id})
-				.set(gameUpdates)
-		);
-		try {
-			await Promise.all(updatePromises)
-			game = await gameService.populateGame({gameId: req.session.game});
-		}
-		catch (err) {
-			console.log('error saving or populating game for update when loading fixture');
-			console.log(err);
-			return res.badRequest(err);
+		if (secondCardId) {
+			allRequestedCards.push(secondCardId);
 		}
 
-		Game.publish([game.id], {
-			verb: 'updated',
-			data: {
-				change: 'loadFixture',
-				game,
-			},
-		});
-		return res.ok(game);
+		// Find records
+		const findGame = Game.findOne({id: req.session.game}).populate('deck');
+		const findP0 = User.findOne({id: req.body.p0Id}).populateAll();
+		const findP1 = User.findOne({id: req.body.p1Id}).populateAll();
+
+		return Promise.all([findGame, findP0, findP1])
+			.then(function resetGame(values) {
+				// Put all cards back in deck
+				const [game, p0, p1] = values;
+
+				const oldP0Hand = p0.hand.map((card) => card.id);
+				const oldP0Points = p0.points.map((card) => card.id);
+				const oldP0FaceCards = p0.runes.map((card) => card.id);
+				const oldP1Hand = p1.hand.map((card) => card.id);
+				const oldP1Points = p1.points.map((card) => card.id);
+				const oldP1FaceCards = p1.runes.map((card) => card.id);
+				const addToDeck = [
+					game.topCard,
+					game.secondCard,
+					...oldP0Hand,
+					...oldP0Points,
+					...oldP0FaceCards,
+					...oldP1Hand,
+					...oldP1Points,
+					...oldP1FaceCards,
+				];
+				const updatePromises = [
+					Game.addToCollection(game.id, 'deck')
+						.members(addToDeck),
+					User.replaceCollection(p0.id, 'hand')
+						.members([]),
+					User.replaceCollection(p0.id, 'points')
+						.members([]),
+					User.replaceCollection(p0.id, 'runes')
+						.members([]),
+					User.replaceCollection(p1.id, 'hand')
+						.members([]),
+					User.replaceCollection(p1.id, 'points')
+						.members([]),
+					User.replaceCollection(p1.id, 'runes')
+						.members([]),
+				];
+
+				return Promise.all([game, p0, p1, ...updatePromises]);
+			})
+			.then(function placeCards(values) {
+				// Load game according to fixture
+				const [ game, p0, p1 ] = values;
+				let topCard = null;
+				let secondCard = null;
+				// Take top card from fixture if specified
+				if (topCardId) {
+					topCard = topCardId;
+				}
+				// Otherwise select it randomly from remaining cards
+				else {
+					topCard = _.sample(game.deck).id;
+					while (allRequestedCards.includes(topCard)) {
+						topCard = _.sample(game.deck).id;
+					}
+					allRequestedCards.push(topCard);
+				}
+				// Take second card from fixture if specified
+				if (secondCardId) {
+					secondCard = secondCardId;
+				}
+				// Otherwise select it randomly from remaining cards
+				else {
+					secondCard = _.sample(game.deck).id;
+					while (allRequestedCards.includes(secondCard)) {
+						secondCard = _.sample(game.deck).id;
+					}
+					allRequestedCards.push(secondCard);
+				}
+
+				const gameUpdates = {
+					topCard,
+					secondCard,
+				};
+				const updatePromises = [
+					Game.updateOne(game.id)
+						.set(gameUpdates),
+					User.replaceCollection(p0.id, 'hand')
+						.members(p0HandCardIds),
+					User.replaceCollection(p0.id, 'points')
+						.members(p0PointCardIds),
+					User.replaceCollection(p0.id, 'runes')
+						.members(p0FaceCardIds),
+					User.replaceCollection(p1.id, 'hand')
+						.members(p1HandCardIds),
+					User.replaceCollection(p1.id, 'points')
+						.members(p1PointCardIds),
+					User.replaceCollection(p1.id, 'runes')
+						.members(p1FaceCardIds),
+					Game.replaceCollection(game.id, 'scrap')
+						.members(scrapCardIds),
+					Game.removeFromCollection(game.id, 'deck')
+						.members(allRequestedCards)
+				];
+
+				return Promise.all([game, ...updatePromises]);
+			})
+			.then(function populateGame(values) {
+				const [ game ] = values;
+				return gameService.populateGame({ gameId: game.id});
+			})
+			.then(function publishAndRespond(game) {
+				// Announce update through socket
+				Game.publish([game.id], {
+					verb: 'updated',
+					data: {
+						change: 'loadFixture',
+						game,
+					},
+				});
+				// Respond 200 OK
+				return res.ok(game);
+			})
+			.catch(function handleError(err) {
+				return res.badRequest(err);
+			});
 	},
 };
 
