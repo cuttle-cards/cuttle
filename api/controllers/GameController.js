@@ -749,39 +749,54 @@ module.exports = {
 	}, //End scuttle()
 
 	jack: function (req, res) {
-		var game = gameService.findGame({gameId: req.session.game});
-		var player = userService.findUser({userId: req.session.usr});
-		var opponent = userService.findUser({userId: req.body.opId});
-		var card = cardService.findCard({cardId: req.body.cardId});
-		var target = cardService.findCard({cardId: req.body.targetId});
+		const game = gameService.findGame({gameId: req.session.game});
+		const player = userService.findUser({userId: req.session.usr});
+		const opponent = userService.findUser({userId: req.body.opId});
+		const card = cardService.findCard({cardId: req.body.cardId});
+		const target = cardService.findCard({cardId: req.body.targetId});
 		Promise.all([game, player, opponent, card, target])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
+			const [ game, player, opponent, card, target ] = values;
 			if (game.turn % 2 === player.pNum) {
 				if (card.hand === player.id) {
 					if (card.rank === 11)  {
 						if (target.points === opponent.id) {
-							var queenCount = userService.queenCount({user: opponent});
+							const queenCount = userService.queenCount({user: opponent});
 							if (queenCount === 0) {
 								if (player.frozenId != card.id) {
-									// Everything good; change and save
-									player.points.add(target.id); //This also removes card from opponent's points (foreign key is 1:1)
-									player.hand.remove(card.id);
-									player.frozenId = null;
-									card.index = target.attachments.length;
-									target.attachments.add(card.id);
-									game.log.push(userService.truncateEmail(player.email) + " stole " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name);
-									game.lastEvent = {
-										change: 'jack',
-									},
-									game.passes = 0;
-									game.turn++;
-									var saveGame = gameService.saveGame({game: game});
-									var savePlayer = userService.saveUser({user: player});
-									var saveOpponent = userService.saveUser({user: opponent});
-									var saveCard = cardService.saveCard({card: card});
-									var saveTarget = cardService.saveCard({card: target});
-									return Promise.all([saveGame, savePlayer, saveOpponent, saveCard, saveTarget]);
+									// Valid move; change and save
+									const gameUpdates = {
+										log: [
+											...game.log,
+											`${userService.truncateEmail(player.email)} stole ${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name}`
+										],
+										turn: game.turn + 1,
+										passes: 0,
+										lastEvent: {
+											change: 'jack',
+										},
+									};
+									const playerUpdates = {
+										frozenId: null,
+									};
+									const cardUpdates = {
+										index: target.attachments.length,
+									};
+									const updatePromises = [
+										Game.updateOne(game.id)
+											.set(gameUpdates),
+										User.updateOne(player.id)
+											.set(playerUpdates),
+										User.addToCollection(player.id, 'points')
+											.members([target.id]),
+										User.removeFromCollection(player.id, 'hand')
+											.members([card.id]),
+										Card.updateOne(card.id)
+											.set(cardUpdates),
+										Card.addToCollection(target.id, 'attachments')
+											.members([card.id])
+									];
+									return Promise.all([game, ...updatePromises]);
 								} else {
 									return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 								}
@@ -803,15 +818,16 @@ module.exports = {
 			}
 		}) //End changeAndSave()
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
+			const game = values[0];
+			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
 		.then(function publishAndRespond (values) {
-			const fullGame = values[0];
-			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const [ fullGame, gameModel ] = values;
+			const victory = gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
+
 			Game.publish([fullGame.id], {
 				verb: 'updated',
 				data: {
