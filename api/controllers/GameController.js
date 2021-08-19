@@ -538,10 +538,10 @@ module.exports = {
 			const game = values[0];
 			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			const victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -554,7 +554,7 @@ module.exports = {
 				},
 			});
 			// If the game is over, clean it up
-			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
+			if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -620,10 +620,10 @@ module.exports = {
 			const game = values[0];
 			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -636,7 +636,7 @@ module.exports = {
 				},
 			});
 			// If the game is over, clean it up
-			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
+			if (victory.gameOver) await gameService.clearGame({userId: req.session.usr});
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -726,10 +726,10 @@ module.exports = {
 			const [ game ] = values;
 			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			const victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -821,9 +821,9 @@ module.exports = {
 			const game = values[0];
 			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const [ fullGame, gameModel ] = values;
-			const victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -837,7 +837,7 @@ module.exports = {
 				},
 			});
 			// If the game is over, clean it up
-			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
+			if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -910,10 +910,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1001,10 +1001,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1072,10 +1072,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1354,12 +1354,12 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), Promise.resolve(values[1]), Promise.resolve(values[2]), Promise.resolve(values[3]), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0], oneOff = values[1];
 			var pNum = values[2];
 			var happened = values[3];
 			var gameModel = values[4];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1376,7 +1376,7 @@ module.exports = {
 				},
 			});
 			// If the game is over, clean it up
-			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
+			if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -1418,10 +1418,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1467,10 +1467,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}),values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1528,10 +1528,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1544,7 +1544,7 @@ module.exports = {
 				},
 			});
 			// If the game is over, clean it up
-			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
+			if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -1588,10 +1588,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1604,7 +1604,7 @@ module.exports = {
 				},
 			});
 			// If the game is over, clean it up
-			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
+			if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -1669,10 +1669,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1767,10 +1767,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1783,7 +1783,7 @@ module.exports = {
 				},
 			});
 			// If the game is over, clean it up
-			if (victory.gameOver) gameService.clearGame({userId: req.session.usr})
+			if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
 			return res.ok();
 		})
 		.catch(function failed (err) {
@@ -1845,10 +1845,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -1926,10 +1926,10 @@ module.exports = {
 		.then(function populateGame (values) {
 			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
 		})
-		.then(function publishAndRespond (values) {
+		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
 			const gameModel = values[1];
-			var victory = gameService.checkWinGame({
+			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
 			});
@@ -2059,7 +2059,7 @@ module.exports = {
 	},
 
 	clearGame: function (req, res) {
-		gameService.clearGame({userId: req.session.usr}).then(function postClear (result) {
+		return gameService.clearGame({userId: req.session.usr}).then(function postClear (result) {
 			return res.ok();
 		});
 	},

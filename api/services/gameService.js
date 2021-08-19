@@ -171,7 +171,7 @@ module.exports = {
 	** Checks a game to determine if either player has won
 	* @param options = {game: tmpGame, gameModel: GameModel}
 	*/
-	checkWinGame: function (options) {
+	checkWinGame: async function (options) {
 		const res = {
 			gameOver: false,
 			winner: null,
@@ -183,8 +183,8 @@ module.exports = {
 			if (p0Wins || p1Wins) {
 				res.gameOver = true;
 				const gameUpdates = {
-					p0: game.players[0],
-					p1: game.players[1]
+					p0: game.players[0].id,
+					p1: game.players[1].id
 				};
 				if (p0Wins) {
 					res.winner = 0;
@@ -193,7 +193,7 @@ module.exports = {
 					res.winner = 1;
 					gameUpdates.result = GameResult.P1_WINS;
 				}
-				Game.updateOne({id: game.id})
+				await Game.updateOne({id: game.id})
 				.set(gameUpdates);
 			}
 			return res;
@@ -202,7 +202,7 @@ module.exports = {
 	/* Takes a user id and clears all game data 
 	* from the associated user
 	*/
-	clearGame: function (options) {
+	clearGame: async function (options) {
 		return User.findOne(options.userId)
 		.populateAll()
 		.then(function clearUserData (player) {
