@@ -2213,7 +2213,7 @@ module.exports = {
 		const p1PointCardIds = req.body.p1PointCardIds || [];
 		const p1FaceCardIds = req.body.p1FaceCardIds || [];
 		const scrapCardIds = req.body.scrapCardIds || [];
-		const topCardId = req.body.topCard || null;
+		const topCardId = req.body.topCardId || null;
 		const secondCardId = req.body.secondCardId || null;
 		// Aggregate list of all cards being requested
 		const allRequestedCards = [
