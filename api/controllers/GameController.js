@@ -848,13 +848,13 @@ module.exports = {
 
 	// Play an untargeted one-off
 	untargetedOneOff: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseCard = cardService.findCard({cardId: req.body.cardId});
-		var promiseOpponent = userService.findUser({userId: req.body.opId});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseCard = cardService.findCard({cardId: req.body.cardId});
+		const promiseOpponent = userService.findUser({userId: req.body.opId});
 		Promise.all([promiseGame, promisePlayer, promiseCard, promiseOpponent])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], card = values[2], opponent = values[3];
+			const [ game, player, card, opponent ] = values;
 			if (game.turn % 2 === player.pNum) { //Check Turn
 				if (!game.oneOff) { //Check that no other one-off is in play
 					if (card.hand === player.id) { //Check that card was in hand
@@ -881,16 +881,25 @@ module.exports = {
 										break;
 								}
 								if (player.frozenId != card.id) {
-									game.oneOff = card;
-									player.hand.remove(card.id);
-									game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a one-off to" + card.ruleText);
-									game.lastEvent = {
-										change: 'oneOff',
-										pNum: req.session.pNum,
+									// Move was valid; update records
+									const gameUpdates = {
+										oneOff: card.id,
+										log: [
+											...game.log,
+											`${userService.truncateEmail(player.email)} played the ${card.name} as a one-off to ${card.ruleText}`,
+										],
+										lastEvent: {
+											change: 'oneOff',
+											pNum: req.session.pNum,
+										},
 									};
-									var saveGame = gameService.saveGame({game: game});
-									var savePlayer = userService.saveUser({user: player});
-									return Promise.all([saveGame, savePlayer]);
+									const updatePromises = [
+										Game.updateOne(game.id)
+											.set(gameUpdates),
+										User.removeFromCollection(player.id, 'hand')
+											.members([card.id]),
+									];
+									return Promise.all([game, ...updatePromises]);
 								} else {
 									return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 								}
@@ -1098,62 +1107,89 @@ module.exports = {
 	resolve: function (req, res) {
 
 		//Note: the player calling resolve is the opponent of the one playing the one-off, if it resolves
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.body.opId});
-		var promiseOpponent = userService.findUser({userId: req.session.usr});
-		var promisePlayerPoints = cardService.findPoints({userId: req.body.opId});
-		var promiseOpPoints = cardService.findPoints({userId: req.session.usr});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.body.opId});
+		const promiseOpponent = userService.findUser({userId: req.session.usr});
+		const promisePlayerPoints = cardService.findPoints({userId: req.body.opId});
+		const promiseOpPoints = cardService.findPoints({userId: req.session.usr});
+		console.log('Resolving one-off');
 		Promise.all([promiseGame, promisePlayer, promiseOpponent, promisePlayerPoints, promiseOpPoints])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], opponent = values[2], playerPoints = values[3], opPoints = values[4];
-			var happened = true;
-			var cardsToSave = [];
-
+			const [ game, player, opponent, playerPoints, opPoints ] = values;
+			let happened = true;
+			const playerUpdates = {};
+			const opponentUpdates = {};
+			const gameUpdates = {
+				turn: game.turn + 1,
+				passes: 0,
+			};
+			let cardsToScrap = [];
+			let updatePromises = [];
 			if (game.twos.length % 2 === 1) {
-				// One of is countered
-				opponent.frozenId = null;
-				game.passes = 0;
-				game.turn++;
-				game.log.push("The " + game.oneOff.name + " is countered, and all cards played this turn are scrapped.");
+				// One-off is countered
+				opponentUpdates.frozenId = null;
+				gameUpdates.log = [
+					...game.log,
+					`The ${game.oneOff.name} is countered, and all cards played this turn are scrapped.`,
+				];
 				happened = false;
 			} else {
-				player.frozenId = null;
-				// One Off will resolve; perform effect
-				var cardsToSave = [];
-				// handle different one-offs
+				playerUpdates.frozenId = null;
+				// One Off will resolve; perform effect based on card rank
 				switch (game.oneOff.rank) {
 					case 1:
+						console.log('resolving ace');
+						let playerPointIds = [];
+						let opponentPointIds = [];
+						let jackIds = [];
 						// Player's points
 						if (playerPoints) {
+
 							playerPoints.forEach(function (point) {
-								// Remove jacks
-								point.attachments.forEach(function (jack) {
-									point.attachments.remove(jack.id);
-									game.scrap.add(jack.id);
-								});
-								//Scrap points
-								game.scrap.add(point.id);
-								player.points.remove(point.id);
-								cardsToSave.push(cardService.saveCard({card: point}));
+								playerPointIds.push(point.id);
+								jackIds = [
+									...jackIds,
+									...point.attachments.map((jack) => jack.id),
+								]
 							});
 						}
+
 						// Opponent's points
 						if (opPoints) {
 							opPoints.forEach(function (point) {
-								// Remove jacks
-								point.attachments.forEach(function (jack) {
-									point.attachments.remove(jack.id);
-									game.scrap.add(jack);
-								});
-								// Scrap points
-								game.scrap.add(point.id);
-								opponent.points.remove(point.id);
-								cardsToSave.push(cardService.saveCard({card: point}));
+								opponentPointIds.push(point.id);
+								jackIds = [
+									...jackIds,
+									...point.attachments.map(jack => jack.id),
+								];
 							});
 						}
-						game.passes = 0;
-						game.turn++;
-						game.log.push("The " + game.oneOff.name + " one-off resolves; all point cards are scrapped.");
+						cardsToScrap = [
+							...playerPointIds,
+							...opponentPointIds,
+							...jackIds,
+						];
+						// Update log
+						gameUpdates.log = [
+							...game.log,
+							`The ${game.oneOff.name} one-off resolves; all point cards are scrapped`,
+						];
+						updatePromises = [
+							User.updateOne(player.id)
+								.set(playerUpdates),
+							// Remove all jacks from point cards
+							Card.replaceCollection([...playerPointIds, ...opponentPointIds], 'attachments')
+								.members([]),
+							// Scrap all point cards and jacks
+							Game.addToCollection(game.id, 'scrap')
+								.members(cardsToScrap),
+							// Remove player's points
+							User.removeFromCollection(player.id, 'points')
+								.members(playerPointIds),
+							// Remove opponent's points
+							User.removeFromCollection(opponent.id, 'points')
+								.members(opponentPointIds)
+						];
 						break; //End resolve ACE
 					case 2:
 						game.log.push("The " + game.oneOff.name + " resolves; the " + game.oneOffTarget.name + " is scrapped.");
@@ -1331,34 +1367,49 @@ module.exports = {
 						break; //End resolve NINE
 				} //End switch on oneOff rank
 			}
-			var oneOff = game.oneOff;
+			// Add twos to the cards to scrap
+			cardsToScrap = [
+				...cardsToScrap,
+				...game.twos.map(two => two.id),
+			];
+			const oneOff = game.oneOff;
 			if (oneOff.rank != 3 || !happened) {
-				game.scrap.add(game.oneOff.id);
-				game.oneOff = null;
+				gameUpdates.oneOff = null;
+				cardsToScrap.push(game.oneOff.id);
 			}
-			game.twos.forEach(function (two) {
-				game.scrap.add(two.id);
-				game.twos.remove(two.id);
-			});
-			game.lastEvent = {
+			gameUpdates.lastEvent = {
 				change: 'resolve',
 				playedBy: player.pNum,
 				happened,
 				oneOff,
-			};
-			var saveGame = gameService.saveGame({game: game});
-			var savePlayer = userService.saveUser({user: player});
-			var saveOpponent = userService.saveUser({user: opponent});
-			return Promise.all([saveGame, Promise.resolve(oneOff), Promise.resolve(player.pNum), Promise.resolve(happened), savePlayer, saveOpponent].concat(cardsToSave));
+			},
+			updatePromises = [
+				...updatePromises,
+				// Update game with turn, log, passes, oneOff, and lastEvent
+				Game.updateOne(game.id)
+					.set(gameUpdates),
+					// Scrap the specified cards
+				Game.addToCollection(game.id, 'scrap')
+					.members(cardsToScrap),
+			];
+			const dataToReturn = [
+				game,
+				oneOff,
+				player.pNum,
+				happened,
+				...updatePromises,
+			];
+
+			return Promise.all(dataToReturn);
 		}) //End changeAndSave
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), Promise.resolve(values[1]), Promise.resolve(values[2]), Promise.resolve(values[3]), values[0]]);
+			console.log('Finished updating records');
+			const [ game, oneOff, pNum, happened ] = values;
+			return Promise.all([gameService.populateGame({gameId: game.id}), oneOff, pNum, happened, game]);
 		})
 		.then(async function publishAndRespond (values) {
-			const fullGame = values[0], oneOff = values[1];
-			var pNum = values[2];
-			var happened = values[3];
-			var gameModel = values[4];
+			console.log('populated game; publishing');
+			const [ fullGame, oneOff, pNum, happened, gameModel ] = values;
 			const victory = await gameService.checkWinGame({
 				game: fullGame,
 				gameModel,
@@ -1380,6 +1431,7 @@ module.exports = {
 			return res.ok();
 		})
 		.catch(function failed (err) {
+			console.log('error resolving one-off', err);
 			return res.badRequest(err);
 		});
 	}, //End resolve()
