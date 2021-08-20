@@ -1221,60 +1221,86 @@ module.exports = {
 						break;
 					case 5:
 						//Draw top card
-						var handLen = player.hand.length;
-						player.hand.add(game.topCard.id);
-						game.topCard = null;
+						const handLen = player.hand.length;
+						const cardsToDraw = [ game.topCard.id ];
+						gameUpdates.topCard = null;
+						let cardsToRemoveFromDeck = [];
+						// player.hand.add(game.topCard.id);
+						// game.topCard = null;
 						if (handLen < 7) {
 							//Draw second card, if it exists
 							if (game.secondCard) {
-								game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws two cards.");
-								player.hand.add(game.secondCard.id);
-								game.secondCard = null;
+								gameUpdates.log = [
+									...game.log,
+									`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws two cards`,
+								];
+								cardsToDraw.push(game.secondCard.id);
+								gameUpdates.secondCard = null;
+								cardsToRemoveFromDeck = [
+									...cardsToDraw,
+								];
+
 								//Replace top card, if there's a card in deck
-								if (game.deck.length > 0) {
-									var min = 0;
-									var max = game.deck.length - 1;
-									var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-									game.topCard = game.deck[random].id;
-									game.deck.remove(game.deck[random].id);
+								if (game.deck.length >= 1) {
+									const newTopCard = _.sample(game.deck).id;
+									gameUpdates.topCard = newTopCard;
+									cardsToRemoveFromDeck.push(newTopCard);
+
+									// game.deck.remove(game.deck[random].id);
+
 									// Replace second card, if possible
-									if (game.deck.length > 0) {
-										min = 0;
-										max = game.deck.length - 1;
-										random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-										game.secondCard = game.deck[random].id;
-										game.deck.remove(game.deck[random].id);
+									if (game.deck.length >= 2) {
+										const newSecondCard = _.sample(game.deck).id;
+										// Ensure new second card is distinct from new topcard and cards drawn
+										while (cardsToRemoveFromDeck.includes(newSecondCard)) {
+											newSecondCard = _.sample(game.deck).id;
+										}
+										gameUpdates.secondCard = newSecondCard;
+										cardsToRemoveFromDeck.push(newSecondCard);
 									}
 								}
+							// Player drew last card
 							} else {
-								game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws the last card.");
+								gameUpdates.log = [
+									...game.log,
+									`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws the last card.`,
+								];
 							}
 						//Player could only draw one card, due to hand limit
 						} else {
 							// Replace top card with second card, if second card exists
 							if (game.secondCard) {
-								game.topCard = game.secondCard;
-								var min = 0;
-								var max = game.deck.length - 1;
-								var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-								game.topCard = game.deck[random].id;
-								game.deck.remove(game.deck[random].id);
+								gameUpdates.topCard = game.secondCard.id;
+								gameUpdates.secondCard = null;
+								
 								// If more cards are left in deck, replace second card with card from deck
-								if (game.deck.length > 0) {
-									game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws one card to reach the hand limit.");
-									min = 0;
-									max = game.deck.length - 1;
-									random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-									game.secondCard = game.deck[random].id;
-									game.deck.remove(game.deck[random].id);
-									// Player draws last card in deck, to reach hand limit (only draws 1)
+								if (game.deck.length >= 1) {
+									const newSecondCard = _.sample(game.deck).id;
+									// Ensure new second card is distinct from cards drawn and new top card
+									while (cardsToRemoveFromDeck.includes(newSecondCard)) {
+										newSecondCard = _.sample(game.deck).id;
+									}
+									gameUpdates.secondCard = newSecondCard;
+									gameUpdates.log = [
+										...game.log,
+										`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws one card to reach the hand limit (8).`,
+									];
+								// Player draws last card in deck, to reach hand limit (only draws 1)
 								} else {
-									game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " draws one card (last in deck) to reach the hand limit.");
+									gameUpdates.log = [
+										...game.log,
+										`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws one card (last in deck) to reach the hand limit.`,
+									];
 								}
 							}
 						}
-						game.passes = 0;
-						game.turn++;
+						updatePromises = [
+							...updatePromises,
+							Game.removeFromCollection(game.id, 'deck')
+								.members(cardsToRemoveFromDeck),
+							User.addToCollection(player.id, 'hand')
+								.members(cardsToDraw),
+						];
 						break; //End resolve FIVE
 					case 6:
 						player.runes.forEach(function (rune) {
