@@ -1303,50 +1303,72 @@ module.exports = {
 						];
 						break; //End resolve FIVE
 					case 6:
-						player.runes.forEach(function (rune) {
-							game.scrap.add(rune.id);
-							player.runes.remove(rune.id);
-						});
-						opponent.runes.forEach(function (rune) {
-							game.scrap.add(rune.id);
-							opponent.runes.remove(rune.id);
-						});
+						const playerFaceCardIds = player.runes.map(faceCard => faceCard.id);
+						const opponentFaceCardIds = opponent.runes.map(faceCard => faceCard.id);
+						cardsToScrap = [
+							...cardsToScrap,
+							...playerFaceCardIds,
+							...opponentFaceCardIds,
+						];
+						updatePromises = [
+							...updatePromises,
+							User.removeFromCollection(player.id, 'runes')
+								.members(playerFaceCardIds),
+							User.removeFromCollection(opponent.id, 'runes')
+								.members(opponentFaceCardIds),
+						];
+						// All points will need their attachments emptied
+						const allPoints = [];
+						const pointsGoingToPlayer = [];
+						const pointsGoingToOpponent = [];
 						if (playerPoints) {
 							playerPoints.forEach(function (point) {
-								var jackCount = point.attachments.length;
-								if (jackCount > 0) {
-									point.attachments.forEach(function (jack) {
-										game.scrap.add(jack.id);
-										point.attachments.remove(jack.id);
-										cardsToSave.push(cardService.saveCard({card: point}));
-									});
-									// If odd number of jacks were attached, switch control
-									if (jackCount % 2 === 1) {
-										opponent.points.add(point.id);
-									}
-								} //End jackCount > 0
+								allPoints.push(point.id);
+								// Collect all jacks for scrap
+								const jackCount = point.attachments.length;
+								const jacks = point.attachments.map(jack => jack.id);
+								cardsToScrap = [
+									...cardsToScrap,
+									...jacks
+								];
+								// If odd number of jacks were attached, switch control
+								if (jackCount % 2 === 1) {
+									pointsGoingToPlayer.push(point.id);
+								}
 							});
 						}
 						if (opPoints) {
 							opPoints.forEach(function (point) {
-								var jackCount = point.attachments.length;
-								if (jackCount > 0) {
-									point.attachments.forEach(function (jack) {
-										game.scrap.add(jack.id);
-										point.attachments.remove(jack.id);
-										cardsToSave.push(cardService.saveCard({card: point}));
-									});
-									// If odd number of jacks were attached, switch control
-									if (jackCount % 2 === 1) {
-										//This switches the card to the other player's points
-										player.points.add(point.id);
-									}
-								} //End jackCount > 0
+								allPoints.push(point.id);
+								// Collect all jacks for scrap
+								const jackCount = point.attachments.length;
+								const jacks = point.attachments.map(jack => jack.id);
+								cardsToScrap = [
+									...cardsToScrap,
+									...jacks,
+								];
+								// If odd number of jacks were attached, switch control
+								if (jackCount % 2 === 2) {
+									pointsGoingToOpponent.push(point.id);
+								}
 							});
 						}
-						game.passes = 0;
-						game.turn++;
-						game.log.push("The " + game.oneOff.name + " resolves; all face cards are scrapped");
+						gameUpdates.log = [
+							...game.log,
+							`The ${game.oneOff.name} one-off resolves; all face cards are scrapped`,
+						];
+						updatePromises = [
+							...updatePromises,
+							// Remove all attachments from all points
+							Card.replaceCollection(allPoints, 'attachments')
+								.members([]),
+							// Give player the point cards that return to them
+							User.addToCollection(player.id, 'points')
+								.members(pointsGoingToPlayer),
+							// Give opponent the point cards that return to them
+							User.addToCollection(opponent.id, 'points')
+								.members(pointsGoingToOpponent),
+						];
 						break; //End resolve SIX
 					case 7:
 						game.resolving = game.oneOff;
