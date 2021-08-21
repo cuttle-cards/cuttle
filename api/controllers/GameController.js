@@ -943,26 +943,27 @@ module.exports = {
 	}, //End untargetedOneOff()
 
 	targetedOneOff: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseOpponent = userService.findUser({userId: req.body.opId});
-		var promiseCard = cardService.findCard({cardId: req.body.cardId});
-		var promiseTarget = cardService.findCard({cardId: req.body.targetId});
-		var promisePoint = null;
-		var targetType = req.body.targetType;
-		if (targetType === "jack") {
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseOpponent = userService.findUser({userId: req.body.opId});
+		const promiseCard = cardService.findCard({cardId: req.body.cardId});
+		const promiseTarget = cardService.findCard({cardId: req.body.targetId});
+		const targetType = req.body.targetType;
+		let promisePoint = null;
+		if (targetType === 'jack') {
 			promisePoint = cardService.findCard({cardId: req.body.pointId});
 		} else {
 			promisePoint = Promise.resolve(null);
 		}
-		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, Promise.resolve(targetType), promisePoint])
+		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, targetType, promisePoint])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4], targetType = values[5], point = values[6];
+			const [ game, player, opponent, card, target, targetType, point ] = values;
+			// var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4], targetType = values[5], point = values[6];
 			if (player.pNum === game.turn % 2) {
 				if (!game.oneOff) {
 					if (card.hand === player.id) {
 						if (card.rank === 2 || card.rank === 9) {
-							var queenCount = userService.queenCount({user: opponent});
+							const queenCount = userService.queenCount({user: opponent});
 							switch (queenCount) {
 								case 0:
 									break;
@@ -976,20 +977,45 @@ module.exports = {
 									return Promise.reject({message: "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen"});
 							}
 							if (player.frozenId != card.id) {
-								game.oneOff = card;
-								player.hand.remove(card.id);
-								game.oneOffTarget = target;
-								game.oneOffTargetType = targetType;
-								game.attachedToTarget = null;
-								if (point) game.attachedToTarget = point;
-								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);
-								game.lastEvent = {
-									change: 'targetedOneOff',
-									pNum: req.session.pNum,
+								// Move is valid -- make changes
+								const gameUpdates = {
+									oneOff: card.id,
+									oneOffTarget: target.id,
+									oneOffTargetType: targetType,
+									attachedToTarget: null,
+									log: [
+										...game.log,
+										`${userService.truncateEmail(player.email)} played the ${card.name} as a ${card.ruleText}, targeting the ${target.name}`,
+									],
+									lastEvent: {
+										change: 'targetedOneOff',
+										pNum: req.session.pNum,
+									},
 								};
-								var saveGame = gameService.saveGame({game: game});
-								var savePlayer = userService.saveUser({user: player});
-								return Promise.all([saveGame, savePlayer]);
+								if (point) gameUpdates.attachedToTarget = point.id;
+
+								const updatePromises = [
+									Game.updateOne(game.id)
+										.set(gameUpdates),
+									// Remove one-off from player's hand
+									User.removeFromCollection(player.id, 'hand')
+										.members([card.id]),
+								]
+								// game.oneOff = card;
+								// player.hand.remove(card.id);
+								// game.oneOffTarget = target;
+								// game.oneOffTargetType = targetType;
+								// game.attachedToTarget = null;
+								
+								// game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);
+								// game.lastEvent = {
+								// 	change: 'targetedOneOff',
+								// 	pNum: req.session.pNum,
+								// };
+								// var saveGame = gameService.saveGame({game: game});
+								// var savePlayer = userService.saveUser({user: player});
+								// return Promise.all([saveGame, savePlayer]);
+								return Promise.all([game, ...updatePromises]);
 							} else {
 								return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 							}
@@ -1119,7 +1145,7 @@ module.exports = {
 			let happened = true;
 			const playerUpdates = {};
 			const opponentUpdates = {};
-			const gameUpdates = {
+			let gameUpdates = {
 				turn: game.turn + 1,
 				passes: 0,
 			};
@@ -1379,39 +1405,57 @@ module.exports = {
 						}
 						break; //End resolve SEVEN
 					case 9:
-						opponent.hand.add(game.oneOffTarget.id);
-						game.log.push("The " + game.oneOff.name + " resolves on the" + game.oneOffTarget.name + ". The " + game.oneOffTarget.name + " is returned to " + userService.truncateEmail(opponent.email) + "'s hand, and they may not play it next turn" );
-						opponent.frozenId = game.oneOffTarget.id;
+						updatePromises.push(
+							// Place target back in opponent's hand
+							User.addToCollection(opponent.id, 'hand')
+								.members(game.oneOffTarget.id),
+						);
+						opponentUpdates.frozenId = game.oneOffTarget.id;
+						// opponent.hand.add(game.oneOffTarget.id);
+						gameUpdates = {
+							...gameUpdates,
+							oneOffTarget: null,
+							log: [
+								...game.log,
+								`The ${game.oneOff.name} one-off resolves, returning the ${game.oneOffTarget.name} to ${userService.truncateEmail(opponent.email)}'s hand. It cannot be played next turn.`,
+							],
+						};
 						switch(game.oneOffTargetType) {
 							case 'rune':
-								opponent.runes.remove(game.oneOffTarget.id);
-                game.oneOffTarget = null;
+								updatePromises.push(
+									User.removeFromCollection(opponent.id, 'runes')
+										.members(game.oneOffTarget.id),
+								);
 								break;
 							case 'point':
-								// Remove jacks from targeted point (and scrap them)
-								opPoints.forEach(function (point) {
-									if (point.id === game.oneOffTarget.id) {
-										point.attachments.forEach(function (jack) {
-											game.scrap.add(jack.id);
-											point.attachments.remove(jack.id);
-										});
-										cardsToSave.push(cardService.saveCard({card: point}));
-									}
-								});
-								opponent.points.remove(game.oneOffTarget.id);
-                game.oneOffTarget = null
-
+								targetCard = opPoints.find(point => point.id === game.oneOffTarget.id);
+								if (!targetCard) return Promise.reject({message: `Could not find target point card ${game.oneOffTarget.id} to return to opponent's hand`});
+								// Scrap all jacks attached to target
+								cardsToScrap = [
+									...cardsToScrap,
+									...targetCard.attachments.map(jack => jack.id),
+								];
+								updatePromises.push(
+									// Remove card from opponent's points
+									User.removeFromCollection(opponent.id, 'points')
+										.members([targetCard.id]),
+									// Clear jacks from target
+									Card.replaceCollection(targetCard.id, 'attachments')
+										.members([]),
+								);
 								break;
 							case 'jack':
-								game.oneOffTarget.attachedTo = null;
-								cardsToSave.push(cardService.saveCard({card: game.oneOffTarget}));
-								player.points.add(game.attachedToTarget.id);
-								game.oneOffTarget = null;
-								game.attachedToTarget = null;
+								updatePromises.push(
+									// Remove targeted jack from the attachments of the point card it's on
+									Card.removeFromCollection(game.oneOffTarget.attachedTo, 'attachments')
+										.members([game.oneOffTarget.id]),
+									// Return the stolen point card back to the player
+									User.addToCollection(player.id, 'points')
+										.members([game.attachedToTarget.id]),
+								);
+								gameUpdates.attachedToTarget = null;
 								break;
 						}
-						game.passes = 0;
-						game.turn++;
 						break; //End resolve NINE
 				} //End switch on oneOff rank
 			}
