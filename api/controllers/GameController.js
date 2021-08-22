@@ -1257,8 +1257,15 @@ module.exports = {
 						};
 						break;
 					case 4:
-						game.resolving = game.oneOff;
-						game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(opponent.email) + " must discard two cards");
+						console.log('resolve action for four');
+						gameUpdates = {
+							...gameUpdates,
+							resolving: game.oneOff.id,
+							log: [
+								...game.log,
+								`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(opponent.email)} must discard two cards`,
+							],
+						};
 						break;
 					case 5:
 						//Draw top card
@@ -1556,38 +1563,50 @@ module.exports = {
 	}, //End resolve()
 
 	resolveFour: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseCard1 = cardService.findCard({cardId: req.body.cardId1});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseCard1 = cardService.findCard({cardId: req.body.cardId1});
+		let promiseCard2 = null;
 		if ( req.body.hasOwnProperty("cardId2") ) {
-			var promiseCard2 = cardService.findCard({cardId: req.body.cardId2});
-		} else {
-			var promiseCard2 = Promise.resolve(null);
+			promiseCard2 = cardService.findCard({cardId: req.body.cardId2});
 		}
 		Promise.all([promiseGame, promisePlayer, promiseCard1, promiseCard2])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], card1 = values[2], card2 = values[3];
-			game.scrap.add(card1.id);
-			player.hand.remove(card1.id);
-			if (card2 != null) {
-				game.scrap.add(card2.id);
-				player.hand.remove(card2.id);
-				game.log.push(userService.truncateEmail(player.email) + " discarded the " + card1.name + " and the " + card2.name + ".");
-			} else {
-				game.log.push(userService.truncateEmail(player.email) + " discarded the " + card1.name + ".");
-			}
-			game.passes = 0;
-			game.turn++;
-			game.resolving = null;
-			game.lastEvent = {
-				change: 'resolveFour',
+			const [ game, player, card1, card2 ] = values;
+			const cardsToScrap = [ card1.id ];
+			const gameUpdates = {
+				passes: 0,
+				turn: game.turn + 1,
+				resolving: null,
+				lastEvent: {
+					change: 'resolveFour',
+				},
 			};
-			var saveGame = gameService.saveGame({game: game});
-			var savePlayer = userService.saveUser({user: player});
-			return Promise.all([saveGame, savePlayer]);
+			if (card2 != null) {
+				cardsToScrap.push(card2.id);
+				gameUpdates.log = [
+					...game.log,
+					`${userService.truncateEmail(player.email)} discarded the ${card1.name} and the ${card2.name}`,
+				];
+			} else {
+				gameUpdates.log = [
+					...game.log,
+					`${userService.truncateEmail(player.email)} discarded the ${card1.name}`,
+				];
+			}
+			const updatePromises = [
+				Game.updateOne(game.id)
+					.set(gameUpdates),
+				Game.addToCollection(game.id, 'scrap')
+					.members(cardsToScrap),
+				User.removeFromCollection(player.id, 'hand')
+					.members(cardsToScrap),
+			];
+			return Promise.all([game, ...updatePromises]);
 		}) // End changeAndSave
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
+			const [ game ] = values;
+			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
 		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
