@@ -1218,24 +1218,36 @@ module.exports = {
 						];
 						break; //End resolve ACE
 					case 2:
-						game.log.push("The " + game.oneOff.name + " resolves; the " + game.oneOffTarget.name + " is scrapped.");
-						game.scrap.add(game.oneOffTarget.id);
+						gameUpdates= {
+							...gameUpdates,
+							oneOffTarget: null,
+							oneOffTargetType: '',
+							log: [
+								...game.log,
+								`The ${game.oneOff.name} resolves; the ${game.oneOffTarget.name} is scrapped`,
+							],
+						};
+						// Scrap the one-off target
+						cardsToScrap.push(game.oneOffTarget.id);
 						switch (game.oneOffTargetType) {
 							case 'rune':
-								opponent.runes.remove(game.oneOffTarget.id);
+								updatePromises.push(
+									User.removeFromCollection(opponent.id, 'runes')
+										.members([game.oneOffTarget.id]),
+								);
 								break;
 							case 'jack':
-								game.oneOffTarget.attachedTo = null;
-								cardsToSave.push(cardService.saveCard({card: game.oneOffTarget}));
-								player.points.add(game.attachedToTarget.id);
-								game.oneOffTarget = null;
-								game.attachedToTarget = null;
+								updatePromises = [
+									...updatePromises,
+									// Remove targeted jack from attachments of the point card it was on
+									Card.removeFromCollection(game.oneOffTarget.id, 'attachments')
+										.members([game.oneOffTarget.id]),
+									// Place oneOff 
+									User.addToCollection(player.id, 'points')
+										.members([game.attachedToTarget.id]),
+								];
 								break;
 						} //End switch(oneOffTargetType)
-						game.oneOffTargetType = null;
-						game.oneOffTarget = null;
-						game.passes = 0;
-						game.turn++;
 						break; //End resolve TWO
 					case 3:
 						game.resolving = game.oneOff;
