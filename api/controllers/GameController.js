@@ -1457,6 +1457,7 @@ module.exports = {
 								);
 								break;
 							case 'jack':
+								console.log('resolving nine that was played on a jack');
 								updatePromises.push(
 									// Remove targeted jack from the attachments of the point card it's on
 									Card.removeFromCollection(game.oneOffTarget.attachedTo, 'attachments')
@@ -1495,6 +1496,9 @@ module.exports = {
 					// Scrap the specified cards
 				Game.addToCollection(game.id, 'scrap')
 					.members(cardsToScrap),
+				// Update opponent, as specified
+				User.updateOne(opponent.id)
+					.set(opponentUpdates),
 			];
 			const dataToReturn = [
 				game,
