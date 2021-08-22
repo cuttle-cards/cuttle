@@ -1145,10 +1145,7 @@ module.exports = {
 			let happened = true;
 			const playerUpdates = {};
 			const opponentUpdates = {};
-			let gameUpdates = {
-				turn: game.turn + 1,
-				passes: 0,
-			};
+			let gameUpdates = {};
 			let cardsToScrap = [];
 			let updatePromises = [];
 			if (game.twos.length % 2 === 1) {
@@ -1250,8 +1247,14 @@ module.exports = {
 						} //End switch(oneOffTargetType)
 						break; //End resolve TWO
 					case 3:
-						game.resolving = game.oneOff;
-						game.log.push("The " + game.oneOff.name + " one-off resolves; " + userService.truncateEmail(player.email) + " will draw one card of their choice from the Scrap pile");
+						gameUpdates = {
+							...gameUpdates,
+							resolving: game.oneOff.id,
+							log: [
+								...game.log,
+								`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} will draw one card of their choice from the Scrap pile`,
+							]
+						};
 						break;
 					case 4:
 						game.resolving = game.oneOff;
@@ -1482,6 +1485,14 @@ module.exports = {
 				gameUpdates.oneOff = null;
 				cardsToScrap.push(game.oneOff.id);
 			}
+			// Increment turn for anything except three, four, and seven (which require follow up)
+			if (![3, 4, 7].includes(oneOff.rank)) {
+				gameUpdates = {
+					...gameUpdates,
+					turn: game.turn + 1,
+					passes: 0,
+				}
+			}
 			gameUpdates.lastEvent = {
 				change: 'resolve',
 				playedBy: player.pNum,
@@ -1601,31 +1612,49 @@ module.exports = {
 	}, //End resolveFour()
 
 	resolveThree: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseCard = cardService.findCard({cardId: req.body.cardId});
 		Promise.all([promiseGame, promisePlayer, promiseCard])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], card = values[2];
-			player.hand.add(card.id);
-			player.frozenId = null;
-			game.scrap.remove(card.id);
-			game.scrap.add(game.oneOff.id);
-			game.oneOff = null;
-			game.log.push(userService.truncateEmail(player.email) + " took the " + card.name + " from the scrap pile to their hand");
-			game.passes = 0;
-			game.turn++;
-			game.resolving = null;
-			game.lastEvent = {
-				change: 'resolveThree',
+			const [ game, player, card ] = values;
+			const gameUpdates = {
+				oneOff: null,
+				resolving: null,
+				passes: 0,
+				turn: game.turn + 1,
+				log: [
+					...game.log,
+					`${userService.truncateEmail(player.email)} took the ${card.name} from the Scrap pile to their hand.`,
+				],
+				lastEvent: {
+					change: 'resolveThree',
+				},
 			};
-			//Save changes
-			var saveGame = gameService.saveGame({game: game});
-			var savePlayer = userService.saveUser({user: player});
-			return Promise.all([saveGame, savePlayer]);
+			const updatePromises = [
+				// Update game
+				Game.updateOne(game.id)
+					.set(gameUpdates),
+				// Scrap the three that just resolved
+				Game.addToCollection(game.id, 'scrap')
+					.members([game.oneOff.id]),
+				// Return selected card to player's hand
+				User.addToCollection(player.id, 'hand')
+					.members([card.id]),
+				// Remove selected card from scrap
+				Game.removeFromCollection(game.id, 'scrap')
+					.members([card.id]),
+				// Clear player's frozenId
+				User.updateOne(player.id)
+					.set({
+						frozenId: null,
+					}),
+			];
+			return Promise.all([game, ...updatePromises]);
 		})
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}),values[0]]);
+			const [ game ] = values;
+			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
 		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
