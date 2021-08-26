@@ -263,14 +263,22 @@ module.exports = {
 		});
 	},
 
-
-	/*Replaces card played during a seven from the deck
-	***options = {game: GameModel, index: integer}
-	**index = 0 if played from top card, index = 1 if played from second card
-	**SYNCRONOUS
-	*/
+/**
+ * Used to replace card played via a seven from the deck
+ * @param {*} options: {game: GameModel, index: integer}
+ * index = 0 iff topcard was played, 1 iff secondCard was played
+ * @returns {topCard: int, secondCard: int, cardsToRemove: int[]}
+ * Does not change records -- only returns obj for game updates
+ * SYNCHRONOUS
+ */
 	sevenCleanUp: function (options) {
-		var game = options.game, index = options.index;
+		const { game, index } = options;
+		const cardsToRemoveFromDeck = [];
+		const res = {
+			topCard: game.topCard.id,
+			secondCard: null,
+			cardsToRemoveFromDeck,
+		};
 		if (options.index === 0) {
 			if (game.secondCard) {
 				game.topCard = game.secondCard.id;
@@ -278,17 +286,22 @@ module.exports = {
 				game.topCard = null;
 			}
 		}
+		// Re-assign top card if top card was played
+		if (index === 0 && game.secondCard) {
+			if (game.secondCard) {
+				res.topCard = game.secondCard.id;
+			}
+			else {
+				res.topCard = null;
+			}
+		}
 		// If there are more cards in the deck, assign secondCard
 		if (game.deck.length > 0) {
-			var min = 0;
-			var max = game.deck.length - 1;
-			var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-			game.secondCard = game.deck[random]	;
-			game.deck.remove(game.deck[random].id);
-		} else {
-			game.secondCard = null;
+			const newSecondCard = _.sample(game.deck).id;
+			res.secondCard = newSecondCard;
+			cardsToRemoveFromDeck.push(newSecondCard);
 		}
-		return game;		
+		return res;
 	},
 
 };

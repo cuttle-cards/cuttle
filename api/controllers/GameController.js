@@ -1419,11 +1419,20 @@ module.exports = {
 						];
 						break; //End resolve SIX
 					case 7:
-						game.resolving = game.oneOff;
+						gameUpdates = {
+							...gameUpdates,
+							resolving: game.oneOff.id,
+						}
 						if (game.secondCard) {
-							game.log.push("The " + game.oneOff.name + " resolves; they will play one card from the top two in the deck. Top two cards: " + game.topCard.name + " and " + game.secondCard.name);
+							gameUpdates.log = [
+								...game.log,
+								`The ${game.oneOff.name} one-off resolves; they will play one card from the top two in the deck. Top two cards: ${game.topCard.name} and ${game.secondCard.name}.`,
+							];
 						} else {
-							game.log.push("The " + game.oneOff.name + " resolves. They will play the " + game.topCard.name + " as it is the last card in the deck");
+							gameUpdates.log = [
+								...game.log,
+								`The ${game.oneOff.name} one-off resolves. They will play the ${game.topCard.name} as it is the last card in the deck.`,
+							];
 						}
 						break; //End resolve SEVEN
 					case 9:
@@ -1701,28 +1710,44 @@ module.exports = {
 	***Seven-Resolution Plays
 	*/
 	sevenPoints: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseCard = cardService.findCard({cardId: req.body.cardId});
 		Promise.all([promiseGame, promisePlayer, promiseCard])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], card = values[2];
+			const [ game, player, card ] = values;
 			if (game.turn % 2 === player.pNum) {
 				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
 					if (card.rank < 11) {
-						player.points.add(card.id);
-						player.frozenId = null;
-						game = gameService.sevenCleanUp({game: game, index: req.body.index});
-						game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " off the top of the deck as points");
-						game.passes = 0;
-						game.turn++;
-						game.resolving = null;
-						game.lastEvent = {
-							change: 'sevenPoints',
+						const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
+						const playerUpdates = {
+							frozenId: null,
 						};
-						var saveGame = gameService.saveGame({game: game})					;
-						var savePlayer = userService.saveUser({user: player});
-						return Promise.all([saveGame, savePlayer]);
+						const gameUpdates = {
+							topCard,
+							secondCard,
+							passes: 0,
+							turn: game.turn + 1,
+							resolving: null,
+							lastEvent: {
+								change: 'sevenPoints',
+							},
+							log: [
+								...game.log,
+								`${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck for points.`,
+							],
+						};
+						const updatePromises = [
+							Game.updateOne(game.id)
+								.set(gameUpdates),
+							Game.removeFromCollection(game.id, 'deck')
+								.members(cardsToRemoveFromDeck),
+							User.updateOne(player.id)
+								.set(playerUpdates),
+							User.addToCollection(player.id, 'points')
+								.members([card.id]),
+						];
+						return Promise.all([game, ...updatePromises]);
 					} else {
 						return Promise.reject({message: "You can only play Ace - Ten cards as points"});
 					}
@@ -1734,7 +1759,8 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
+			const [ game ] = values;
+			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
 		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
