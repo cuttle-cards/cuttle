@@ -1787,28 +1787,53 @@ module.exports = {
 	}, //End sevenPoints
 
 	sevenRunes: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseCard = cardService.findCard({cardId: req.body.cardId});
 		Promise.all([promiseGame, promisePlayer, promiseCard])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], card = values[2];
+			const [ game, player, card ] = values;
+			// var game = values[0], player = values[1], card = values[2];
 			if (game.turn % 2 === player.pNum) {
 				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
 					if (card.rank === 12 || card.rank === 13 || card.rank === 8) {
-						player.runes.add(card.id);
-						player.frozenId = null;
-						game = gameService.sevenCleanUp({game: game, index: req.body.index});
-						game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " off the top of the deck, as a rune");
-						game.passes = 0;
-						game.turn++;
-						game.resolving = null;
-						game.lastEvent = {
-							change: 'sevenRunes',
+						// Valid move -- make changes
+						const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
+						const playerUpdates = {
+							frozenId: null,
 						};
-						var saveGame = gameService.saveGame({game: game});
-						var savePlayer = userService.saveUser({user: player});
-						return Promise.all([saveGame, savePlayer]);
+						let logEntry = `${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck`;
+						if (card.rank === 8) {
+							logEntry += ' as a glasses eight.'
+						}
+						else {
+							logEntry += '.';
+						}
+						const gameUpdates = {
+							topCard,
+							secondCard,
+							passes: 0,
+							turn: game.turn + 1,
+							resolving: null,
+							lastEvent: {
+								change: 'sevenRunes',
+							},
+							log: [
+								...game.log,
+								logEntry,
+							],
+						};
+						const updatePromises = [
+							Game.updateOne(game.id)
+								.set(gameUpdates),
+							Game.removeFromCollection(game.id, 'deck')
+								.members(cardsToRemoveFromDeck),
+							User.updateOne(player.id)
+								.set(playerUpdates),
+							User.addToCollection(player.id, 'runes')
+								.members([card.id]),
+						];
+						return Promise.all([game, ...updatePromises]);
 					} else {
 						return Promise.reject({message: "You can only play Kings, Queens, and Eights as runes, without a TARGET"});
 					}
@@ -1820,7 +1845,8 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
+			const [ game ] = values;
+			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
 		})
 		.then(async function publishAndRespond (values) {
 			const fullGame = values[0];
