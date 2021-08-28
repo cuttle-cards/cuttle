@@ -1138,7 +1138,6 @@ module.exports = {
 		const promiseOpponent = userService.findUser({userId: req.session.usr});
 		const promisePlayerPoints = cardService.findPoints({userId: req.body.opId});
 		const promiseOpPoints = cardService.findPoints({userId: req.session.usr});
-		console.log('Resolving one-off');
 		Promise.all([promiseGame, promisePlayer, promiseOpponent, promisePlayerPoints, promiseOpPoints])
 		.then(function changeAndSave (values) {
 			const [ game, player, opponent, playerPoints, opPoints ] = values;
@@ -1161,7 +1160,6 @@ module.exports = {
 				// One Off will resolve; perform effect based on card rank
 				switch (game.oneOff.rank) {
 					case 1:
-						console.log('resolving ace');
 						let playerPointIds = [];
 						let opponentPointIds = [];
 						let jackIds = [];
@@ -1257,7 +1255,6 @@ module.exports = {
 						};
 						break;
 					case 4:
-						console.log('resolve action for four');
 						gameUpdates = {
 							...gameUpdates,
 							resolving: game.oneOff.id,
@@ -1538,12 +1535,10 @@ module.exports = {
 			return Promise.all(dataToReturn);
 		}) //End changeAndSave
 		.then(function populateGame (values) {
-			console.log('Finished updating records');
 			const [ game, oneOff, pNum, happened ] = values;
 			return Promise.all([gameService.populateGame({gameId: game.id}), oneOff, pNum, happened, game]);
 		})
 		.then(async function publishAndRespond (values) {
-			console.log('populated game; publishing');
 			const [ fullGame, oneOff, pNum, happened, gameModel ] = values;
 			const victory = await gameService.checkWinGame({
 				game: fullGame,
