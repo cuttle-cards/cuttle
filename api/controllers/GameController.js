@@ -413,7 +413,7 @@ module.exports = {
 	pass: function (req, res) {
 		const promiseGame = gameService.findGame({gameId: req.session.game});
 		const promisePlayer = userService.findUser({userId: req.session.usr});
-		Promise.all([promiseGame, promisePlayer])
+		return Promise.all([promiseGame, promisePlayer])
 		.then(function changeAndSave (values) {
 			const [ game, player ] = values;
 			const playerUpdates = {};
@@ -450,22 +450,23 @@ module.exports = {
 			}
 		})
 		.then(function populateGame (values) {
-			return gameService.populateGame({gameId: values[0].id});
+			const [ game ] = values;
+			return gameService.populateGame({gameId: game.id});
 		})
-		.then(function publishAndRespond (game) {
-			var victory = {
+		.then(async function publishAndRespond (game) {
+			const victory = {
 				gameOver: false,
 				winner: null
 			};
 			// Game ends in stalemate if 3 passes are made consecutively
 			if (game.passes > 2) {
 				victory.gameOver = true;
-				gameUpdates = {
+				const gameUpdates = {
 					p0: game.players[0].id,
 					p1: game.players[1].id,
 					result: gameService.GameResult.STALEMATE,
 				}
-				Game.updateOne({id: game.id})
+				await Game.updateOne({id: game.id})
 					.set(gameUpdates);
 			}
 			Game.publish([game.id], {
