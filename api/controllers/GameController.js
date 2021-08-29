@@ -439,7 +439,7 @@ module.exports = {
 					return Promise.reject({message: "You can only pass when there are no cards in the deck"});
 				}
 				updatePromises.push(
-					Game.UpdateOne({id: game.id})
+					Game.updateOne({id: game.id})
 						.set(gameUpdates),
 					User.updateOne({id: player.id})
 						.set(playerUpdates)
