@@ -2412,7 +2412,7 @@ module.exports = {
 
 	//Places card of choice on top of deck
 	stackDeck: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game})
+		return gameService.findGame({gameId: req.session.game})
 		.then(function changeAndSave (game) {
 			game.deck.add(game.topCard);
 			game.topCard = req.body.cardId;
@@ -2440,7 +2440,7 @@ module.exports = {
 	}, //End stackDeck
 
 	deleteDeck: function (req, res) {
-		gameService.findGame({gameId: req.session.game})
+		return gameService.findGame({gameId: req.session.game})
 		.then(function changeAndSave (game) {
 			const updatePromises = [
 				Game.replaceCollection(game.id, 'deck')
@@ -2448,13 +2448,14 @@ module.exports = {
 				Game.addToCollection(game.id, 'scrap')
 					.members(game.scrap),
 			];
-			return Promise.all(updatePromises);
+			return Promise.all([game, ...updatePromises]);
 		})
-		.then(function populateGame (game) {
+		.then(function populateGame (values) {
+			const [ game ] = values;
 			return gameService.populateGame({gameId: game.id});
 		})
 		.then(function publishUpdate (game) {
-			Game.publish([fullGame.id], {
+			Game.publish([game.id], {
 				verb: 'updated',
 				data: {
 					change: 'deleteDeck',
