@@ -2440,13 +2440,15 @@ module.exports = {
 	}, //End stackDeck
 
 	deleteDeck: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game})
+		gameService.findGame({gameId: req.session.game})
 		.then(function changeAndSave (game) {
-			game.deck.forEach(function (card) {
-				game.deck.remove(card.id);
-				game.scrap.add(card.id);
-			});
-			return gameService.saveGame({game: game});
+			const updatePromises = [
+				Game.replaceCollection(game.id, 'deck')
+					.members([]),
+				Game.addToCollection(game.id, 'scrap')
+					.members(game.scrap),
+			];
+			return Promise.all(updatePromises);
 		})
 		.then(function populateGame (game) {
 			return gameService.populateGame({gameId: game.id});
