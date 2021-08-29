@@ -2318,7 +2318,7 @@ module.exports = {
 	},
 
 	gameOver: function (req, res) {
-		const promisePlayer = userService.findUser({userId: req.session.usr})
+		userService.findUser({userId: req.session.usr})
 		.then(function deleteSessionData (player) {
 			Game.unsubscribe(req, [req.session.game]);
 			delete(req.session.game);
