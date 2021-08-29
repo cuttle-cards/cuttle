@@ -1060,36 +1060,42 @@ module.exports = {
 	}, //End targetedOneOff
 
 	counter: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseOpponent = userService.findUser({userId: req.body.opId});
-		var promiseCard = cardService.findCard({cardId: req.body.cardId});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseOpponent = userService.findUser({userId: req.body.opId});
+		const promiseCard = cardService.findCard({cardId: req.body.cardId});
 		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], opponent = values[2], card = values[3];
+			const [ game, player, opponent, card ] = values;
 
-			var opHasQueen = false;
-			opponent.runes.forEach(function (rune) {
-				if (rune.rank === 12) opHasQueen = true;
-			});
+			const queenCount = userService.queenCount({user: opponent});
+			const opHasQueen = queenCount > 0;
+			let logEntry;
 			if (card.hand === player.id) {
 				if (game.oneOff) {
 					if (card.rank === 2) {
 						if (!opHasQueen) {
 							if (game.twos.length > 0) {
-								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to counter " + userService.truncateEmail(opponent.email) + "'s " + game.twos[game.twos.length - 1].name + ".");
+								logEntry = `${userService.truncateEmail(player.email)} played the ${card.name} to counter ${userService.truncateEmail(opponent.email)}'s ${game.twos[game.twos.length -1].name}.`;
 							} else {
-								game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " to counter " + userService.truncateEmail(opponent.email) + "'s " +  game.oneOff.name + ".");
+								logEntry = `${userService.truncateEmail(player.email)} played the ${card.name} to counter ${userService.truncateEmail(opponent.email)}'s ${game.oneOff.name}.`;
 							}
-							game.twos.add(card.id);
-							player.hand.remove(card.id);
-							game.lastEvent = {
-								change: 'counter',
-								pNum: req.session.pNum,
+							const gameUpdates = {
+								lastEvent: {
+									change: 'counter',
+									pNum: req.session.pNum,									
+								},
 							};
-							var saveGame = gameService.saveGame({game: game});
-							var savePlayer = userService.saveUser({user: player});
-							return Promise.all([saveGame, savePlayer]);
+							const updatePromises = [
+								Game.updateOne(game.id)
+									.set(gameUpdates),
+								Game.addToCollection(game.id, 'twos')
+									.members([card.id]),
+								User.removeFromCollection(player.id, 'hand')
+									.members([card.id]),
+							];
+
+							return Promise.all([game, ...updatePromises]);
 						} else {
 							return Promise.reject({message: "You cannot counter your opponent's one-off while they have a Queen."});
 						}
