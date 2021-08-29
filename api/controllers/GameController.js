@@ -1868,43 +1868,63 @@ module.exports = {
 	}, //End sevenRunes
 
 	sevenScuttle: function (req, res) {
-		var promiseGame = gameService.findGame({gameId: req.session.game});
-		var promisePlayer = userService.findUser({userId: req.session.usr});
-		var promiseOpponent = userService.findUser({userId: req.body.opId});
-		var promiseCard = cardService.findCard({cardId: req.body.cardId});
-		var promiseTarget = cardService.findCard({cardId: req.body.targetId});
+		const promiseGame = gameService.findGame({gameId: req.session.game});
+		const promisePlayer = userService.findUser({userId: req.session.usr});
+		const promiseOpponent = userService.findUser({userId: req.body.opId});
+		const promiseCard = cardService.findCard({cardId: req.body.cardId});
+		const promiseTarget = cardService.findCard({cardId: req.body.targetId});
 		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget])
 		.then(function changeAndSave (values) {
-			var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
+			const [ game, player, opponent, card, target ] = values;
+			// var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4];
 			if (game.turn % 2 === player.pNum) {
 				if (card.id === game.topCard.id || card.id === game.secondCard.id) {
 					if (card.rank < 11) {
 						if (target.points === opponent.id) {
 							if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
 								// Move is legal; make changes
-									// Remove attachments from target
-								target.attachments.forEach(function (jack) {
-									target.attachments.remove(jack.id);
-									game.scrap.add(jack.id);
-								});
-								opponent.points.remove(target.id);
-								player.hand.remove(card.id);
-								player.frozenId = null;
-								game.scrap.add(target.id);
-								game.scrap.add(card.id);
-								game = gameService.sevenCleanUp({game: game, index: req.body.index});
-								game.log.push(userService.truncateEmail(player.email) + " scuttled " + userService.truncateEmail(opponent.email) + "'s " + target.name + " with the " + card.name + " from the top of the deck");
-								game.passes = 0;
-								game.turn++;
-								game.resolving = null;
-								game.lastEvent = {
-									change: 'sevenScuttle',
+								const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
+								const cardsToScrap = [
+									card.id,
+									target.id,
+									...target.attachments.map(jack => jack.id)
+								];
+								const playerUpdates = {
+									frozenId: null,
 								};
-								var saveGame = gameService.saveGame({game: game});
-								var savePlayer = userService.saveUser({user: player});
-								var saveOpponent = userService.saveUser({user: opponent});
-								var saveTarget = cardService.saveCard({card: target});
-								return Promise.all([saveGame, savePlayer, saveOpponent, saveTarget]);
+								const gameUpdates = {
+									topCard,
+									secondCard,
+									passes: 0,
+									turn: game.turn + 1,
+									resolving: null,
+									log: [
+										...game.log,
+										`${userService.truncateEmail(player.email)} scuttled ${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name} from the top of the deck.`,
+									],
+									lastEvent: {
+										change: 'sevenScuttle',
+									},
+								};
+								const updatePromises = [
+									Game.updateOne(game.id)
+										.set(gameUpdates),
+									// Remove new secondCard from deck
+									Game.removeFromCollection(game.id, 'deck')
+										.members(cardsToRemoveFromDeck),
+									// Remove target from opponent points
+									User.removeFromCollection(opponent.id, 'points')
+										.members([target.id]),
+									// Remove attachments from target
+									Card.replaceCollection(target.id, 'attachments')
+										.members([]),
+									// Scrap relevant cards
+									Game.addToCollection(game.id, 'scrap')
+										.members(cardsToScrap),
+									User.updateOne(player.id)
+										.set(playerUpdates),
+								];
+								return Promise.all([game, ...updatePromises]);
 							} else {
 								return Promise.reject({message: "You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)"});
 							}
