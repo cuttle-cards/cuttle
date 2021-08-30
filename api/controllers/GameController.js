@@ -203,6 +203,9 @@ module.exports = {
 						// Take next 2 cards for topcard & secondCard
 						gameUpdates.topCard = shuffledDeck.shift();;
 						gameUpdates.secondCard = shuffledDeck.shift();
+						gameUpdates.lastEvent = {
+							change: 'Initialize',
+						};
 
 						// Update records
 						const updatePromises = [
