@@ -1305,7 +1305,7 @@ module.exports = {
 
 									// Replace second card, if possible
 									if (game.deck.length >= 2) {
-										const newSecondCard = _.sample(game.deck).id;
+										let newSecondCard = _.sample(game.deck).id;
 										// Ensure new second card is distinct from new topcard and cards drawn
 										while (cardsToRemoveFromDeck.includes(newSecondCard)) {
 											newSecondCard = _.sample(game.deck).id;
