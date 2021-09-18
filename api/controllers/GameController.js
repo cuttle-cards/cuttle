@@ -18,7 +18,7 @@ module.exports = {
 	// (creating, connecting, etc.)  //
 	///////////////////////////////////
 	reconnect: function (req, res) {
-		Game.subscribe(req, req.session.game);
+		Game.subscribe(req, [req.session.game]);
 		sails.sockets.join(req, 'GameList');
 		return res.ok();
 	},
@@ -2337,7 +2337,7 @@ module.exports = {
 	gameData: function (req, res) {
 		var popGame = gameService.populateGame({gameId: req.session.game})
 		.then(function gotPop(fullGame) {
-			Game.subscribe(req, req.session.game);
+			Game.subscribe(req, [req.session.game]);
 			res.ok({'game': fullGame, 'pNum': req.session.pNum});
 		})
 		.catch(function failed (err) {

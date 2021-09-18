@@ -85,10 +85,10 @@ module.exports = {
 			req.session.usr = user.id;
 			req.session.game = game.id;
 			req.session.pNum = user.pNum;
-			Game.subscribe(req, game.id);
+			Game.subscribe(req, [game.id]);
 			sails.sockets.join(req, 'GameList');
 			
-			Game.publish(game.id, {
+			Game.publish([game.id], {
 				verb: 'updated',
 				data: {
 					...game.lastEvent,
