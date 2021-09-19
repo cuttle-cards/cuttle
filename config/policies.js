@@ -64,7 +64,6 @@ module.exports.policies = {
     getList: 'isLoggedIn',
     subscribe: 'isLoggedIn',
     reconnect: ['isLoggedIn', 'isInGame'],
-    lobbyView: 'isLoggedIn',
     ready:     'isLoggedIn',
     leaveLobby: ['isSocket', 'isLoggedIn', 'isInGame'],
     draw: ['isLoggedIn', 'isInGame'],
