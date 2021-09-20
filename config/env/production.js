@@ -9,16 +9,7 @@
  * any private information to this file!
  *
  */
-let sessionUrl;
-if (process.env.REDIS_URL) {
-	sessionUrl = require('url').parse(process.env.REDIS_URL);
-} else {
-	sessionUrl = {
-		host: '',
-		path: '',
-		auth: ''
-	}
-}
+
 
 module.exports = {
 
@@ -29,12 +20,6 @@ module.exports = {
         schema: true,
         url: process.env.DATABASE_URL,
     },
-    redisHeroku: {
-        adapter: 'connect-redis',
-        ssl: true,
-        schema: true,
-        url: process.env.REDIS_TLS_URL
-    },
   }, // end datastores
 
   /***************************************************************************
@@ -43,7 +28,6 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    datastore: 'sqlHeroku',
     migrate: 'safe',
   },
 
@@ -55,11 +39,12 @@ module.exports = {
 
   session: {
 			adapter: 'connect-redis',
-        ttl: 3600 * 24,
-		    host: sessionUrl.host.split(':')[0],
-		    pass: sessionUrl.auth.split(':')[1],
-		    port: sessionUrl.port,
-  }
+      url: process.env.REDIS_URL
+  },
+
+  sockets: {
+    onlyAllowOrigins: ["http://cuttle-v3.herokuapp.com", "https://www.cuttle.cards"],
+  },
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
    ***************************************************************************/
