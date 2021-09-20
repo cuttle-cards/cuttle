@@ -43,7 +43,7 @@ module.exports = {
   },
 
   sockets: {
-    onlyAllowOrigins: ["http://cuttle-v3.herokuapp.com", "https://www.cuttle.cards"],
+    onlyAllowOrigins: ["https://cuttle-v3.herokuapp.com", "https://www.cuttle.cards", "http://localhost"],
   },
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
