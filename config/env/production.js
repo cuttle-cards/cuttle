@@ -48,9 +48,6 @@ module.exports = {
       tls: {
         rejectUnauthorized: false,
       },
-      cookie: {
-        secure: true,
-      },
   },
 
   sockets: {
