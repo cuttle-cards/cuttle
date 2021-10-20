@@ -24,8 +24,9 @@ module.exports = {
 	 * @value 0 or 1 if player 0 or player 1, respectively
 	 */
     pNum: {
-		type: 'ref',
-		defaultsTo: null,
+			type: 'number',
+			allowNull: true,
+			isIn: [0, 1],
     },
     hand: {
     	collection: 'card',
@@ -44,8 +45,8 @@ module.exports = {
 	 * @value null iff no card is frozen
 	 */
     frozenId: {
-      type: 'ref',
-      defaultsTo: null,
+      type: 'number',
+      allowNull: true,
 	},
 	rank: {
 		type: 'number',
