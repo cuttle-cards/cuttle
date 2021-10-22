@@ -73,11 +73,13 @@ module.exports = {
     },
     log: {
       type: 'ref',
+      columnType: 'text[]',
       defaultsTo: []
     },
 
     chat: {
       type: 'ref',
+      columnType: 'text[]',
       defaultsTo: []
     },
     isRanked: {
