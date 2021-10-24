@@ -71,7 +71,7 @@ module.exports = {
 			.populate("secondCard")
 			.populate("oneOff")
 			.populate("resolving")
-			.populate("twos")
+			.populate("twos", {sort: 'updatedAt'})
 			.populate("oneOffTarget")
 			.populate("attachedToTarget")
 			.exec(function (error, game) {
