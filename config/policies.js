@@ -91,15 +91,15 @@ module.exports.policies = {
     lobbyData: ['isLoggedIn', 'isInGame'],
 
 
-    //////////////////////
-    // DEVELOPMENT ONLY //
-    //////////////////////
-    stackDeck: 'developmentOnly',
-    deleteDeck: 'developmentOnly',
-    clearGame: 'developmentOnly',
-    loadFixture: 'developmentOnly',
+    /////////////////////////////////
+    // DEVELOPMENT Or Staging ONLY //
+    /////////////////////////////////
+    stackDeck: 'developmentOrStagingOnly',
+    deleteDeck: 'developmentOrStagingOnly',
+    clearGame: 'developmentOrStagingOnly',
+    loadFixture: 'developmentOrStagingOnly',
   },
   TestController: {
-    '*': 'developmentOnly',
+    '*': 'developmentOrStagingOnly',
   }
 };
