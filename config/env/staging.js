@@ -10,6 +10,8 @@
         adapter: 'sails-postgresql',
         schema: true,
         url: process.env.DATABASE_URL,
+        // Use SSL to connect to remote db e.g. heroku
+        // ssl: true,
     },
   }, // end datastores
 
