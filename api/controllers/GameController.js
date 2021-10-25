@@ -1570,7 +1570,6 @@ module.exports = {
 			return res.ok();
 		})
 		.catch(function failed (err) {
-			console.log('error resolving one-off', err);
 			return res.badRequest(err);
 		});
 	}, //End resolve()
@@ -2341,7 +2340,6 @@ module.exports = {
 			res.ok({'game': fullGame, 'pNum': req.session.pNum});
 		})
 		.catch(function failed (err) {
-			console.log(err);
 			res.badRequest(err);
 		});
 	},
@@ -2397,7 +2395,6 @@ module.exports = {
 			 return res.ok();
 		})
 		.catch(function failed (err) {
-			console.log(err);
 			res.badRequest(err);
 		});
 
@@ -2438,7 +2435,6 @@ module.exports = {
 			return res.ok();
 		})
 		.catch(function failed (err) {
-			console.log(err);
 			return res.badRequest(err);
 		});
 	}, //End stackDeck
@@ -2469,7 +2465,6 @@ module.exports = {
 			return res.ok();
 		})
 		.catch(function failed (err) {
-			console.log(err);
 			return res.badRequest(err);
 		});
 	}, //End deleteDeck

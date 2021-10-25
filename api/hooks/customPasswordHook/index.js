@@ -22,8 +22,6 @@ module.exports = function (sails) {
 					encryptedPassword: encryptedPass
 				}).exec({
 					error: function(err) {
-						console.log("Error checking pass");
-						console.log(err);
 						return reject(err);
 					},
 					incorrect: function() {
