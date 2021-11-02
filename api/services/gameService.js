@@ -208,17 +208,10 @@ module.exports = {
 		.then(function clearUserData (player) {
 			const updatePromises = [
 				// Delete User data
-				User.replaceCollection(player.id, 'hand')
-					.members([]),
-				User.replaceCollection(player.id, 'points')
-					.members([]),
-				User.replaceCollection(player.id, 'runes')
-					.members([]),
 				User.updateOne({id: player.id})
 					.set({
-						'frozenId': 0,
 						'pNum': null,
-					})
+					}),
 			];
 			let promiseGame = null;
 			if (player.game) {
@@ -226,38 +219,58 @@ module.exports = {
 			}
 			return Promise.all([promiseGame, player, ...updatePromises])
 			.then(function clearGameData (values) {
-				const game = values[0];
-				const player = values[1];
+				const [ game, player ] = values;
 				const updatePromises = [];
 				if (game) {
+					// Create (inclusive or) criteria for cards to delete
+					let deleteCardsCriteria = [
+						// Cards attached directly to game
+						{ deck: game.id },
+						{ scrap: game.id },
+						{ topCard: game.id },
+						{ oneOff: game.id },
+						{ resolving: game.id },
+						{ twos: game.id },
+						{ targeted: game.id },
+						// Cards attached to requesting player
+						{ hand: player.id },
+						{ points: player.id },
+						{ runes: player.id },
+					];
 					const opponent = game.players[(player.pNum + 1) % 2];
 					updatePromises.push(
 						// Update game
 						Game.replaceCollection(game.id, 'players')
-							.members([])
+							.members([]),
+						// Destroy all cards in game
 					)
 					if (opponent) {
+						// Que opponent's cards for deletion
+						deleteCardsCriteria = [
+							...deleteCardsCriteria,
+							// Cards attached to opponent
+							{ hand: opponent.id },
+							{ points: opponent.id },
+							{ runes: opponent.id },
+						];
 						updatePromises.push(
 							// Update Opponent
-							User.replaceCollection(opponent.id, 'hand')
-								.members([]),
-							User.replaceCollection(opponent.id, 'points')
-								.members([]),
-							User.replaceCollection(opponent.id, 'runes')
-								.members([]),
 							User.updateOne({id: opponent.id})
 								.set({
-									'frozenId': 0,
 									'pNum': null,
 								}),
 						);
 					}
-				}
+					// Destroy all cards from the game
+					updatePromises.push(
+						Card.destroy({
+							or: deleteCardsCriteria
+						})
+					);
+				} // end if (game) {}
 				return Promise.all(updatePromises);
 			}) // End clearGameData()
 			.catch(function failed (err) {
-				console.log('\nError clearing game');
-				console.log(err);
 				return Promise.reject(err);
 			});
 		});
