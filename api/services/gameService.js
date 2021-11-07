@@ -213,13 +213,14 @@ module.exports = {
 						'pNum': null,
 					}),
 			];
+			const playerPointIds = player.points.map(pointCard => pointCard.id);
 			let promiseGame = null;
 			if (player.game) {
 				promiseGame = gameService.findGame({gameId: player.game.id});
 			}
-			return Promise.all([promiseGame, player, ...updatePromises])
+			return Promise.all([promiseGame, player, playerPointIds, ...updatePromises])
 			.then(function clearGameData (values) {
-				const [ game, player ] = values;
+				const [ game, player, playerPointIds ] = values;
 				const updatePromises = [];
 				if (game) {
 					// Create (inclusive or) criteria for cards to delete
@@ -228,6 +229,7 @@ module.exports = {
 						{ deck: game.id },
 						{ scrap: game.id },
 						{ topCard: game.id },
+						{ secondCard: game.id },
 						{ oneOff: game.id },
 						{ resolving: game.id },
 						{ twos: game.id },
@@ -236,6 +238,7 @@ module.exports = {
 						{ hand: player.id },
 						{ points: player.id },
 						{ runes: player.id },
+						{ attachedTo: playerPointIds }, // jacks attached to player's points
 					];
 					const opponent = game.players[(player.pNum + 1) % 2];
 					updatePromises.push(
@@ -245,6 +248,7 @@ module.exports = {
 						// Destroy all cards in game
 					)
 					if (opponent) {
+						const opponentPointIds = opponent.points.map(pointCard => pointCard.id);
 						// Que opponent's cards for deletion
 						deleteCardsCriteria = [
 							...deleteCardsCriteria,
@@ -252,6 +256,7 @@ module.exports = {
 							{ hand: opponent.id },
 							{ points: opponent.id },
 							{ runes: opponent.id },
+							{ attachedTo: opponentPointIds }, // jacks attached to opponent's points
 						];
 						updatePromises.push(
 							// Update Opponent
