@@ -213,23 +213,21 @@ module.exports = {
 						'pNum': null,
 					}),
 			];
-			const playerPointIds = player.points.map(pointCard => pointCard.id);
 			let promiseGame = null;
 			if (player.game) {
 				promiseGame = gameService.findGame({gameId: player.game.id});
 			}
-			return Promise.all([promiseGame, player, playerPointIds, ...updatePromises])
+			return Promise.all([promiseGame, player, ...updatePromises])
 			.then(function clearGameData (values) {
-				const [ game, player, playerPointIds ] = values;
+				const [ game, player ] = values;
 				const updatePromises = [];
 				if (game) {
 					// Create (inclusive or) criteria for cards to delete
 					let deleteCardsCriteria = [
 						// Cards attached directly to game
+						{ id: [ game.topCard.id, game.secondCard.id ] }, // top & secondd cards
 						{ deck: game.id },
 						{ scrap: game.id },
-						{ topCard: game.id },
-						{ secondCard: game.id },
 						{ oneOff: game.id },
 						{ resolving: game.id },
 						{ twos: game.id },
@@ -238,17 +236,15 @@ module.exports = {
 						{ hand: player.id },
 						{ points: player.id },
 						{ runes: player.id },
-						{ attachedTo: playerPointIds }, // jacks attached to player's points
+						// NOTE: jacks in play should be destroyed using CASCADE on foreign key constraint on attachedTo
 					];
 					const opponent = game.players[(player.pNum + 1) % 2];
 					updatePromises.push(
 						// Update game
 						Game.replaceCollection(game.id, 'players')
 							.members([]),
-						// Destroy all cards in game
 					)
 					if (opponent) {
-						const opponentPointIds = opponent.points.map(pointCard => pointCard.id);
 						// Que opponent's cards for deletion
 						deleteCardsCriteria = [
 							...deleteCardsCriteria,
@@ -256,7 +252,6 @@ module.exports = {
 							{ hand: opponent.id },
 							{ points: opponent.id },
 							{ runes: opponent.id },
-							{ attachedTo: opponentPointIds }, // jacks attached to opponent's points
 						];
 						updatePromises.push(
 							// Update Opponent
