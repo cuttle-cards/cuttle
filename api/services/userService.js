@@ -54,11 +54,8 @@ module.exports = {
 	****options = {user: UserModel}
 	*/
 	queenCount: function (options) {
-		var res = 0, player = options.user;
-		player.runes.forEach(function (rune) {
-			if (rune.rank === 12) res++;
-		});
-		return res;
+		const player = options.user;
+		return player.runes.filter(card => card.rank === 12).length;
 	},
 
 	/*
