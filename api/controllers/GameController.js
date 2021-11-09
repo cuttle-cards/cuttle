@@ -471,6 +471,8 @@ module.exports = {
 				}
 				await Game.updateOne({id: game.id})
 					.set(gameUpdates);
+				
+				await gameService.clearGame({userId: req.session.usr})
 			}
 			Game.publish([game.id], {
 				verb: 'updated',

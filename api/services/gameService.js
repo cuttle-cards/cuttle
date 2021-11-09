@@ -222,10 +222,17 @@ module.exports = {
 				const [ game, player ] = values;
 				const updatePromises = [];
 				if (game) {
+					const topAndSecondCardIds = [];
+					if (game.topCard) {
+						topAndSecondCardIds.push(game.topCard.id);
+						if (game.secondCard) {
+							topAndSecondCardIds.push(game.secondCard.id);
+						}
+					}
 					// Create (inclusive or) criteria for cards to delete
 					let deleteCardsCriteria = [
 						// Cards attached directly to game
-						{ id: [ game.topCard.id, game.secondCard.id ] }, // top & secondd cards
+						{ id: topAndSecondCardIds }, // top & second cards
 						{ deck: game.id },
 						{ scrap: game.id },
 						{ oneOff: game.id },
