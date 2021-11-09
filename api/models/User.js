@@ -40,18 +40,17 @@ module.exports = {
   		collection: 'card',
   		via: 'runes',
 	  },
-	/**
-	 * Id of a card in player's hand that cannot be played this turn
-	 * @value null iff no card is frozen
-	 */
-    frozenId: {
-      type: 'number',
-      allowNull: true,
-	},
-	rank: {
-		type: 'number',
-		defaultsTo: 1000,
-	},
+		/**
+		 * Id of a card in player's hand that cannot be played this turn
+		 * @value null iff no card is frozen
+		 */
+			frozenId: {
+				model: 'card',
+		},
+		rank: {
+			type: 'number',
+			defaultsTo: 1000,
+		},
   } // end attributes
 }; // end exports
 
