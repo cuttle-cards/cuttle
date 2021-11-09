@@ -2,7 +2,6 @@ module.exports = function userHook(sails) {
 ///////////////
 // User API  //
 ///////////////
-var Promise = require('bluebird');
 	return {
 		findUserByEmail: function(email) {
 			return new Promise(function (resolve, reject) {

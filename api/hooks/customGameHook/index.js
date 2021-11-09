@@ -2,7 +2,6 @@ module.exports = function gameHook(sails) {
 //////////////
 // Game API //
 //////////////
-var Promise = require('bluebird');
 	return {
 		createGame: function (gameName) {
 			return new Promise(function (resolve, reject) {

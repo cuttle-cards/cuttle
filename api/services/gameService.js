@@ -1,5 +1,4 @@
-var Promise = require('bluebird');
-var userService = require("../../api/services/userService.js");
+const userService = require("../../api/services/userService.js");
 
 /**
  * Game result states

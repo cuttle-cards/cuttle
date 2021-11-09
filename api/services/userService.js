@@ -1,5 +1,5 @@
-var Promise = require('bluebird');
-var email = require('machinepack-emailaddresses');
+const email = require('machinepack-emailaddresses');
+
 module.exports = {
 	/*
 	**Find User by Id

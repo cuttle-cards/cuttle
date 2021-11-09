@@ -1,6 +1,5 @@
 module.exports = function (sails) {
-	var Promise = require('bluebird');
-	var passwords = require('machinepack-passwords');
+	const passwords = require('machinepack-passwords');
 	return {
 		encryptPass:  function(pass) {
 			return new Promise(function (resolve, reject) {
