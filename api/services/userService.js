@@ -63,35 +63,27 @@ module.exports = {
 	***options = {user: UserModel}
 	*/
 	checkWin: function (options) {
-		var res = false;
-		var player = options.user;
-		var points = 0;
-		var kings = 0;
-		player.points.forEach(function (point) {
-			points += point.rank;
-		});
-		player.runes.forEach(function (rune) {
-			if (rune.rank === 13) kings++;
-		});
+		const player = options.user;
+		const points = player.points.reduce((sum, {rank}) => sum + rank, 0);
+		const kings = player.runes.filter(faceCard => faceCard.rank === 13).length;
 		switch (kings) {
 			case 0:
-				if (points >= 21) res = true;
+				if (points >= 21) return true;
 				break;
 			case 1:
-				if (points >= 14) res = true;
+				if (points >= 14) return true;
 				break;
 			case 2:
-				if (points >= 10) res = true
+				if (points >= 10) return true;
 				break;
 			case 3:
-				if (points >= 7) res = true;
+				if (points >= 7) return true;
 				break;
 			case 4:
-				if (points >= 5) res = true;
+				if (points >= 5) return true;
 				break;
 		}
-		// return Promise.resolve(res);
-		return res;
+		return false;
 	},
 
 	validateEmail: function (options) {
