@@ -40,23 +40,7 @@ module.exports = {
   		model: 'game',
   	},
 
-    oneOff: {
-      model: 'game'
-    },
-
-    resolving: {
-      model: 'game'
-    },
-
     twos: {
-      model: 'game'
-    },
-    
-    topCard: {
-      model: 'game'
-    },
-
-    secondCard: {
       model: 'game'
     },
 
