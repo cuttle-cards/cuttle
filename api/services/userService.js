@@ -12,7 +12,7 @@ module.exports = {
 					return User.findOne({id: options.userId})
 					.populate('hand')
 					.populate('points')
-					.populate('runes')
+					.populate('faceCards')
 					.exec(function (err, usr) {
 						if (err) {
 							return reject(err);
@@ -55,7 +55,7 @@ module.exports = {
 	*/
 	queenCount: function (options) {
 		const player = options.user;
-		return player.runes.filter(card => card.rank === 12).length;
+		return player.faceCards.filter(card => card.rank === 12).length;
 	},
 
 	/*
@@ -65,7 +65,7 @@ module.exports = {
 	checkWin: function (options) {
 		const player = options.user;
 		const points = player.points.reduce((sum, {rank}) => sum + rank, 0);
-		const kings = player.runes.filter(faceCard => faceCard.rank === 13).length;
+		const kings = player.faceCards.filter(faceCard => faceCard.rank === 13).length;
 		switch (kings) {
 			case 0:
 				if (points >= 21) return true;

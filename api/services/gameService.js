@@ -27,14 +27,14 @@ function tempUser (usr, points) {
 	this.pNum = usr.pNum;
 	this.hand = usr.hand;
 	this.points = points;
-	this.runes = usr.runes;
+	this.faceCards = usr.faceCards;
 	this.frozenId = usr.frozenId;
 	this.id = usr.id;
 	this.userName = userService.truncateEmail(usr.email);
 
 	this.hand.sort(comapreByRankThenSuit);
 	this.points.sort(comapreByRankThenSuit);
-	this.runes.sort(comapreByRankThenSuit);
+	this.faceCards.sort(comapreByRankThenSuit);
 };
 function tempGame (game, p0, p1) {
 	this.id = game.id;
@@ -241,7 +241,7 @@ module.exports = {
 						// Cards attached to requesting player
 						{ hand: player.id },
 						{ points: player.id },
-						{ runes: player.id },
+						{ faceCards: player.id },
 						// NOTE: jacks in play should be destroyed using CASCADE on foreign key constraint on attachedTo
 					];
 					const opponent = game.players[(player.pNum + 1) % 2];
@@ -257,7 +257,7 @@ module.exports = {
 							// Cards attached to opponent
 							{ hand: opponent.id },
 							{ points: opponent.id },
-							{ runes: opponent.id },
+							{ faceCards: opponent.id },
 						];
 						updatePromises.push(
 							// Update Opponent

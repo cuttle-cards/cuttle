@@ -568,7 +568,7 @@ module.exports = {
 		});
 	}, //End points()
 
-	runes: function (req, res) {
+	faceCard: function (req, res) {
 		const promiseGame = gameService.findGame({gameId: req.session.game});
 		const promisePlayer = userService.findUser({userId: req.session.usr});
 		const promiseCard = cardService.findCard({cardId: req.body.cardId});
@@ -584,12 +584,13 @@ module.exports = {
 							let logEntry = userService.truncateEmail(player.email) + " played the " + card.name;
 							if (card.rank === 8) {
 								logEntry += ' as a Glasses Eight';
-							}							const gameUpdates = {
+							}
+							const gameUpdates = {
 								turn: game.turn + 1,
 								log: [...game.log, logEntry],
 								passes: 0,
 								lastEvent: {
-									change: 'runes',
+									change: 'faceCard',
 								},
 							}
 
@@ -604,7 +605,7 @@ module.exports = {
 									.set(playerUpdates),
 								User.removeFromCollection(player.id, 'hand')
 									.members(card.id),
-								User.addToCollection(player.id, 'runes')
+								User.addToCollection(player.id, 'faceCards')
 									.members(card.id),
 							];
 
@@ -613,7 +614,7 @@ module.exports = {
 							return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
 						}
 					} else {
-						return Promise.reject({message: "Only Kings, Queens, and Eights may be played as Runes without a target"});
+						return Promise.reject({message: "Only Kings, Queens, and Eights may be played as Face Cards without a target"});
 					}
 				} else {
 					return Promise.reject({message: "You can only play a card that is in your hand."});
@@ -636,7 +637,7 @@ module.exports = {
 			Game.publish([fullGame.id], {
 				verb: 'updated',
 				data: {
-					change: 'runes',
+					change: 'faceCard',
 					game: fullGame,
 					victory,
 				},
@@ -648,7 +649,7 @@ module.exports = {
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		});
-	}, //End runes()
+	}, //End faceCard()
 
 	scuttle: function (req, res) {
 		const promiseGame = gameService.findGame({gameId: req.session.game});
@@ -974,7 +975,7 @@ module.exports = {
 								case 0:
 									break;
 								case 1:
-									if (target.runes === opponent.id && target.rank === 12) {
+									if (target.faceCards === opponent.id && target.rank === 12) {
 									} else {
 										return Promise.reject({message: "Your opponent's queen prevents you from targeting their other cards"});
 									}
@@ -1237,9 +1238,9 @@ module.exports = {
 						// Scrap the one-off target
 						cardsToScrap.push(game.oneOffTarget.id);
 						switch (game.oneOffTargetType) {
-							case 'rune':
+							case 'faceCard':
 								updatePromises.push(
-									User.removeFromCollection(opponent.id, 'runes')
+									User.removeFromCollection(opponent.id, 'faceCards')
 										.members([game.oneOffTarget.id]),
 								);
 								break;
@@ -1360,8 +1361,8 @@ module.exports = {
 						];
 						break; //End resolve FIVE
 					case 6:
-						const playerFaceCardIds = player.runes.map(faceCard => faceCard.id);
-						const opponentFaceCardIds = opponent.runes.map(faceCard => faceCard.id);
+						const playerFaceCardIds = player.faceCards.map(faceCard => faceCard.id);
+						const opponentFaceCardIds = opponent.faceCards.map(faceCard => faceCard.id);
 						cardsToScrap = [
 							...cardsToScrap,
 							...playerFaceCardIds,
@@ -1369,9 +1370,9 @@ module.exports = {
 						];
 						updatePromises = [
 							...updatePromises,
-							User.removeFromCollection(player.id, 'runes')
+							User.removeFromCollection(player.id, 'faceCards')
 								.members(playerFaceCardIds),
-							User.removeFromCollection(opponent.id, 'runes')
+							User.removeFromCollection(opponent.id, 'faceCards')
 								.members(opponentFaceCardIds),
 						];
 						// All points will need their attachments emptied
@@ -1461,9 +1462,9 @@ module.exports = {
 							],
 						};
 						switch(game.oneOffTargetType) {
-							case 'rune':
+							case 'faceCard':
 								updatePromises.push(
-									User.removeFromCollection(opponent.id, 'runes')
+									User.removeFromCollection(opponent.id, 'faceCards')
 										.members(game.oneOffTarget.id),
 								);
 								break;
@@ -1791,7 +1792,7 @@ module.exports = {
 		});
 	}, //End sevenPoints
 
-	sevenRunes: function (req, res) {
+	sevenFaceCard: function (req, res) {
 		const promiseGame = gameService.findGame({gameId: req.session.game});
 		const promisePlayer = userService.findUser({userId: req.session.usr});
 		const promiseCard = cardService.findCard({cardId: req.body.cardId});
@@ -1821,7 +1822,7 @@ module.exports = {
 							turn: game.turn + 1,
 							resolving: null,
 							lastEvent: {
-								change: 'sevenRunes',
+								change: 'sevenFaceCard',
 							},
 							log: [
 								...game.log,
@@ -1835,12 +1836,12 @@ module.exports = {
 								.members(cardsToRemoveFromDeck),
 							User.updateOne(player.id)
 								.set(playerUpdates),
-							User.addToCollection(player.id, 'runes')
+							User.addToCollection(player.id, 'faceCards')
 								.members([card.id]),
 						];
 						return Promise.all([game, ...updatePromises]);
 					} else {
-						return Promise.reject({message: "You can only play Kings, Queens, and Eights as runes, without a TARGET"});
+						return Promise.reject({message: "You can only play Kings, Queens, and Eights as Face Cards, without a TARGET"});
 					}
 				} else {
 					return Promise.reject({message: "You must pick a card from the deck to play when resolving a seven"});
@@ -1863,7 +1864,7 @@ module.exports = {
 			Game.publish([fullGame.id], {
 				verb: 'updated',
 				data: {
-					change: 'sevenRunes',
+					change: 'sevenFaceCard',
 					game: fullGame,
 					victory,
 				},
@@ -1875,7 +1876,7 @@ module.exports = {
 		.catch(function failed (err) {
 			return res.badRequest(err);
 		});
-	}, //End sevenRunes
+	}, //End sevenFaceCard
 
 	sevenScuttle: function (req, res) {
 		const promiseGame = gameService.findGame({gameId: req.session.game});
@@ -2029,7 +2030,7 @@ module.exports = {
 							case 0:
 								break;
 							case 1:
-								if (target.runes === opponent.id && target.rank === 12) {
+								if (target.faceCards === opponent.id && target.rank === 12) {
 								} else {
 									return Promise.reject({message: "Your opponent's queen prevents you from targeting their other cards"});
 								}
@@ -2223,7 +2224,7 @@ module.exports = {
 							case 0:
 								break;
 							case 1:
-								if (target.runes === opponent.id && target.rank === 12) {
+								if (target.faceCards === opponent.id && target.rank === 12) {
 								} else {
 									return Promise.reject({message: "Your opponent's queen prevents you from targeting their other cards"});
 								}
@@ -2511,10 +2512,10 @@ module.exports = {
 
 				const oldP0Hand = p0.hand.map((card) => card.id);
 				const oldP0Points = p0.points.map((card) => card.id);
-				const oldP0FaceCards = p0.runes.map((card) => card.id);
+				const oldP0FaceCards = p0.faceCards.map((card) => card.id);
 				const oldP1Hand = p1.hand.map((card) => card.id);
 				const oldP1Points = p1.points.map((card) => card.id);
-				const oldP1FaceCards = p1.runes.map((card) => card.id);
+				const oldP1FaceCards = p1.faceCards.map((card) => card.id);
 				const addToDeck = [
 					game.topCard,
 					game.secondCard,
@@ -2532,13 +2533,13 @@ module.exports = {
 						.members([]),
 					User.replaceCollection(p0.id, 'points')
 						.members([]),
-					User.replaceCollection(p0.id, 'runes')
+					User.replaceCollection(p0.id, 'faceCards')
 						.members([]),
 					User.replaceCollection(p1.id, 'hand')
 						.members([]),
 					User.replaceCollection(p1.id, 'points')
 						.members([]),
-					User.replaceCollection(p1.id, 'runes')
+					User.replaceCollection(p1.id, 'faceCards')
 						.members([]),
 				];
 
@@ -2585,13 +2586,13 @@ module.exports = {
 						.members(p0HandCardIds),
 					User.replaceCollection(p0.id, 'points')
 						.members(p0PointCardIds),
-					User.replaceCollection(p0.id, 'runes')
+					User.replaceCollection(p0.id, 'faceCards')
 						.members(p0FaceCardIds),
 					User.replaceCollection(p1.id, 'hand')
 						.members(p1HandCardIds),
 					User.replaceCollection(p1.id, 'points')
 						.members(p1PointCardIds),
-					User.replaceCollection(p1.id, 'runes')
+					User.replaceCollection(p1.id, 'faceCards')
 						.members(p1FaceCardIds),
 					Game.replaceCollection(game.id, 'scrap')
 						.members(scrapCardIds),

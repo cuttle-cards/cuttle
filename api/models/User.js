@@ -36,9 +36,9 @@ module.exports = {
   		collection: 'card',
   		via: 'points',
   	},
-  	runes: {
+  	faceCards: {
   		collection: 'card',
-  		via: 'runes',
+  		via: 'faceCards',
 	  },
 		/**
 		 * Id of a card in player's hand that cannot be played this turn

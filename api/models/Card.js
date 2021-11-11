@@ -52,7 +52,7 @@ module.exports = {
       model: 'user'
     },
 
-    runes: {
+    faceCards: {
       model: 'user'
     },
     //Used to order attachments
