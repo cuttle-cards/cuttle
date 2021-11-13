@@ -221,21 +221,25 @@ module.exports = {
 				const [ game, player ] = values;
 				const updatePromises = [];
 				if (game) {
-					const topAndSecondCardIds = [];
+					const cardsOnGame = [];
 					if (game.topCard) {
-						topAndSecondCardIds.push(game.topCard.id);
+						cardsOnGame.push(game.topCard.id);
 						if (game.secondCard) {
-							topAndSecondCardIds.push(game.secondCard.id);
+							cardsOnGame.push(game.secondCard.id);
 						}
+					}
+					if (game.OneOff) {
+						cardsOnGame.push(game.oneOff.id);
+					}
+					if (game.resolving) {
+						cardsOnGame.push(game.resolving.id);
 					}
 					// Create (inclusive or) criteria for cards to delete
 					let deleteCardsCriteria = [
 						// Cards attached directly to game
-						{ id: topAndSecondCardIds }, // top & second cards
+						{ id: cardsOnGame }, // top & second cards
 						{ deck: game.id },
 						{ scrap: game.id },
-						{ oneOff: game.id },
-						{ resolving: game.id },
 						{ twos: game.id },
 						{ targeted: game.id },
 						// Cards attached to requesting player
