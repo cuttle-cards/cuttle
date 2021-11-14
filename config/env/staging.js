@@ -36,7 +36,7 @@
   // },
 
   sockets: {
-    onlyAllowOrigins: ["https://cuttle-v3.herokuapp.com", "https://www.cuttle.cards", "http://localhost", "http://localhost:8080"],
+    onlyAllowOrigins: ["https://cuttle-v3.herokuapp.com", "https://www.cuttle.cards", "http://localhost", "http://localhost:8080", "http://localhost:1337"],
   },
 
 
