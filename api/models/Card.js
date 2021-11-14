@@ -24,14 +24,6 @@ module.exports = {
       type: 'string'
     },
 
-    img: {
-      type: 'string'
-    },
-
-    runeImg: {
-      type: 'string'
-    },
-
   	deck: {
   		model: 'game'
   	},
