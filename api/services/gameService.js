@@ -61,8 +61,7 @@ module.exports = {
 	**** options = {gameId: integer}
 	*/	
 	findGame: function (options) {
-		return new Promise(function (resolve, reject) {
-			Game.findOne(options.gameId)
+		return Game.findOne(options.gameId)
 			.populate("players", {sort: 'pNum'})
 			.populate("deck")
 			.populate("scrap")
@@ -72,21 +71,7 @@ module.exports = {
 			.populate("resolving")
 			.populate("twos", {sort: 'updatedAt'})
 			.populate("oneOffTarget")
-			.populate("attachedToTarget")
-			.exec(function (error, game) {
-				if (error || !game) {
-					var res;
-					if (error) {
-						err = error;
-					} else {
-						err = {message: "Cannot find game: " + options.gameId};
-					}
-					return reject(err);
-				} else {
-					return resolve(game);
-				}
-			});
-		});
+			.populate("attachedToTarget");
 	},
 
 	/*
@@ -204,21 +189,23 @@ module.exports = {
 	clearGame: async function (options) {
 		return User.findOne(options.userId)
 		.populateAll()
-		.then(function clearUserData (player) {
-			const updatePromises = [
-				// Delete User data
-				User.updateOne({id: player.id})
-					.set({
-						'pNum': null,
-					}),
-			];
-			let promiseGame = null;
-			if (player.game) {
-				promiseGame = gameService.findGame({gameId: player.game.id});
+		.then(function findUserGame (player) {
+			// If no session game id, ensure player's collections are emptied
+			if (!player.game) {
+				return Promise.all([
+					User.updateOne({id: player.id})
+						.set({pNum: null}),
+					User.replaceCollection(player.id, 'hand')
+						.members([]),
+					User.replaceCollection(player.id, 'points')
+						.members([]),
+					User.replaceCollection(player.id, 'faceCards')
+						.members([]),
+				]);
 			}
-			return Promise.all([promiseGame, player, ...updatePromises])
-			.then(function clearGameData (values) {
-				const [ game, player ] = values;
+			// Otherwise find the game
+			return gameService.findGame({gameId: player.game.id})
+			.then(function clearGameData (game) {	
 				const updatePromises = [];
 				if (game) {
 					const cardsOnGame = [];
@@ -234,6 +221,7 @@ module.exports = {
 					if (game.resolving) {
 						cardsOnGame.push(game.resolving.id);
 					}
+					const playerIds = game.players.map(player => player.id);
 					// Create (inclusive or) criteria for cards to delete
 					let deleteCardsCriteria = [
 						// Cards attached directly to game
@@ -242,37 +230,22 @@ module.exports = {
 						{ scrap: game.id },
 						{ twos: game.id },
 						{ targeted: game.id },
-						// Cards attached to requesting player
-						{ hand: player.id },
-						{ points: player.id },
-						{ faceCards: player.id },
+						// Cards attached to players
+						{ hand: playerIds },
+						{ points: playerIds },
+						{ faceCards: playerIds },
 						// NOTE: jacks in play should be destroyed using CASCADE on foreign key constraint on attachedTo
 					];
-					const opponent = game.players[(player.pNum + 1) % 2];
 					updatePromises.push(
-						// Update game
+						// Remove players from game
 						Game.replaceCollection(game.id, 'players')
 							.members([]),
-					)
-					if (opponent) {
-						// Que opponent's cards for deletion
-						deleteCardsCriteria = [
-							...deleteCardsCriteria,
-							// Cards attached to opponent
-							{ hand: opponent.id },
-							{ points: opponent.id },
-							{ faceCards: opponent.id },
-						];
-						updatePromises.push(
-							// Update Opponent
-							User.updateOne({id: opponent.id})
-								.set({
-									'pNum': null,
-								}),
-						);
-					}
-					// Destroy all cards from the game
-					updatePromises.push(
+						// Set pNum's to null
+						User.update({id: playerIds})
+							.set({
+								'pNum': null,
+							}),
+						// Delete all cards in the game
 						Card.destroy({
 							or: deleteCardsCriteria
 						})
