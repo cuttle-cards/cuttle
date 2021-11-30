@@ -1391,7 +1391,7 @@ module.exports = {
 								];
 								// If odd number of jacks were attached, switch control
 								if (jackCount % 2 === 1) {
-									pointsGoingToPlayer.push(point.id);
+									pointsGoingToOpponent.push(point.id);
 								}
 							});
 						}
@@ -1406,8 +1406,8 @@ module.exports = {
 									...jacks,
 								];
 								// If odd number of jacks were attached, switch control
-								if (jackCount % 2 === 2) {
-									pointsGoingToOpponent.push(point.id);
+								if (jackCount % 2 === 1) {
+									pointsGoingToPlayer.push(point.id);
 								}
 							});
 						}
