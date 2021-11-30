@@ -1499,7 +1499,8 @@ module.exports = {
 						}
 						break; //End resolve NINE
 				} //End switch on oneOff rank
-			}
+			} //End if(happened)
+
 			// Add twos to the cards to scrap
 			cardsToScrap = [
 				...cardsToScrap,
@@ -1510,8 +1511,11 @@ module.exports = {
 				gameUpdates.oneOff = null;
 				cardsToScrap.push(game.oneOff.id);
 			}
-			// Increment turn for anything except three, four, and seven (which require follow up)
-			if (![3, 4, 7].includes(oneOff.rank)) {
+			// Increment turn for anything except resolved three, four, and seven (which require follow up)
+			if (
+				!happened ||
+				(happened && ![3, 4, 7].includes(oneOff.rank))
+				) {
 				gameUpdates = {
 					...gameUpdates,
 					turn: game.turn + 1,
@@ -1532,6 +1536,9 @@ module.exports = {
 					// Scrap the specified cards
 				Game.addToCollection(game.id, 'scrap')
 					.members(cardsToScrap),
+				// Clear twos
+				Game.replaceCollection(game.id, 'twos')
+					.members([]),
 				// Update opponent, as specified
 				User.updateOne(opponent.id)
 					.set(opponentUpdates),
