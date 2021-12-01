@@ -1157,9 +1157,12 @@ module.exports = {
 			let happened = true;
 			const playerUpdates = {};
 			const opponentUpdates = {};
-			let gameUpdates = {};
 			let cardsToScrap = [];
 			let updatePromises = [];
+			let gameUpdates = {
+				oneOffTarget: null,
+				oneOffTargetType: '',
+			};
 			if (game.twos.length % 2 === 1) {
 				// One-off is countered
 				opponentUpdates.frozenId = null;
@@ -1228,8 +1231,6 @@ module.exports = {
 					case 2:
 						gameUpdates= {
 							...gameUpdates,
-							oneOffTarget: null,
-							oneOffTargetType: '',
 							log: [
 								...game.log,
 								`The ${game.oneOff.name} resolves; the ${game.oneOffTarget.name} is scrapped`,
@@ -1452,10 +1453,8 @@ module.exports = {
 								.members(game.oneOffTarget.id),
 						);
 						opponentUpdates.frozenId = game.oneOffTarget.id;
-						// opponent.hand.add(game.oneOffTarget.id);
 						gameUpdates = {
 							...gameUpdates,
-							oneOffTarget: null,
 							log: [
 								...game.log,
 								`The ${game.oneOff.name} one-off resolves, returning the ${game.oneOffTarget.name} to ${userService.truncateEmail(opponent.email)}'s hand. It cannot be played next turn.`,
