@@ -1007,21 +1007,7 @@ module.exports = {
 									// Remove one-off from player's hand
 									User.removeFromCollection(player.id, 'hand')
 										.members([card.id]),
-								]
-								// game.oneOff = card;
-								// player.hand.remove(card.id);
-								// game.oneOffTarget = target;
-								// game.oneOffTargetType = targetType;
-								// game.attachedToTarget = null;
-								
-								// game.log.push(userService.truncateEmail(player.email) + " played the " + card.name + " as a " + card.ruleText + ", targeting the " + target.name);
-								// game.lastEvent = {
-								// 	change: 'targetedOneOff',
-								// 	pNum: req.session.pNum,
-								// };
-								// var saveGame = gameService.saveGame({game: game});
-								// var savePlayer = userService.saveUser({user: player});
-								// return Promise.all([saveGame, savePlayer]);
+								];
 								return Promise.all([game, ...updatePromises]);
 							} else {
 								return Promise.reject({message: "That card is frozen! You must wait a turn to play it"});
