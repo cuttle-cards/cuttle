@@ -1235,7 +1235,7 @@ module.exports = {
 								updatePromises = [
 									...updatePromises,
 									// Remove targeted jack from attachments of the point card it was on
-									Card.removeFromCollection(game.oneOffTarget.id, 'attachments')
+									Card.removeFromCollection(game.attachedToTarget.id, 'attachments')
 										.members([game.oneOffTarget.id]),
 									// Place oneOff 
 									User.addToCollection(player.id, 'points')
