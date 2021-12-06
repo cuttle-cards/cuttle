@@ -1270,8 +1270,6 @@ module.exports = {
 						const cardsToDraw = [ game.topCard.id ];
 						gameUpdates.topCard = null;
 						let cardsToRemoveFromDeck = [];
-						// player.hand.add(game.topCard.id);
-						// game.topCard = null;
 						if (handLen < 7) {
 							//Draw second card, if it exists
 							if (game.secondCard) {
