@@ -10,7 +10,6 @@ describe('The meta test', function () {
 	// 	passwordAPI.encryptedPassword({password: "sexbutt"}).then(function createUser (pw) {
 
 	// 		User.create({email: "fudgeHead@boo.com", encryptedPassword: pw}, function (err, user) {
-	// 			console.log(user);
 	// 		});
 	// 	});
 	// });
@@ -33,10 +32,8 @@ describe('The meta test', function () {
 			},
 			function (res, jwres) {
 				jwres.statusCode.should.equal(200);
-				console.log(jwres);
 				io.socket.get('game/getList', function (res, jwres) {
 					jwres.statusCode.should.equal(200);
-					console.log(jwres);
 					// done();
 				});
 			}

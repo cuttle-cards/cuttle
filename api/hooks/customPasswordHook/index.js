@@ -1,6 +1,5 @@
 module.exports = function (sails) {
-	var Promise = require('bluebird');
-	var passwords = require('machinepack-passwords');
+	const passwords = require('machinepack-passwords');
 	return {
 		encryptPass:  function(pass) {
 			return new Promise(function (resolve, reject) {
@@ -22,12 +21,10 @@ module.exports = function (sails) {
 					encryptedPassword: encryptedPass
 				}).exec({
 					error: function(err) {
-						console.log("Error checking pass");
-						console.log(err);
 						return reject(err);
 					},
 					incorrect: function() {
-						return reject(new Error("Username and password do not match"));
+						return reject({message: "Username and password do not match"});
 					}, 
 					success: function() {
 						return resolve(true);

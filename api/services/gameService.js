@@ -1,5 +1,4 @@
-var Promise = require('bluebird');
-var userService = require("../../api/services/userService.js");
+const userService = require("../../api/services/userService.js");
 
 /**
  * Game result states
@@ -28,14 +27,14 @@ function tempUser (usr, points) {
 	this.pNum = usr.pNum;
 	this.hand = usr.hand;
 	this.points = points;
-	this.runes = usr.runes;
+	this.faceCards = usr.faceCards;
 	this.frozenId = usr.frozenId;
 	this.id = usr.id;
 	this.userName = userService.truncateEmail(usr.email);
 
 	this.hand.sort(comapreByRankThenSuit);
 	this.points.sort(comapreByRankThenSuit);
-	this.runes.sort(comapreByRankThenSuit);
+	this.faceCards.sort(comapreByRankThenSuit);
 };
 function tempGame (game, p0, p1) {
 	this.id = game.id;
@@ -62,8 +61,7 @@ module.exports = {
 	**** options = {gameId: integer}
 	*/	
 	findGame: function (options) {
-		return new Promise(function (resolve, reject) {
-			Game.findOne(options.gameId)
+		return Game.findOne(options.gameId)
 			.populate("players", {sort: 'pNum'})
 			.populate("deck")
 			.populate("scrap")
@@ -71,23 +69,9 @@ module.exports = {
 			.populate("secondCard")
 			.populate("oneOff")
 			.populate("resolving")
-			.populate("twos")
+			.populate("twos", {sort: 'updatedAt'})
 			.populate("oneOffTarget")
-			.populate("attachedToTarget")
-			.exec(function (error, game) {
-				if (error || !game) {
-					var res;
-					if (error) {
-						err = error;
-					} else {
-						err = new Error("Cannot find game: " + options.gameId);
-					}
-					return reject(err);
-				} else {
-					return resolve(game);
-				}
-			});
-		});
+			.populate("attachedToTarget");
 	},
 
 	/*
@@ -95,15 +79,9 @@ module.exports = {
 	****options = {game: GameModel}
 	*/
 	saveGame: function (options) {
-		return new Promise(function (resolve, reject) {
-			options.game.save(function (err) {
-				if (err) {
-					return reject(err);
-				} else {
-					return resolve(options.game);
-				}
-			});
-		});
+		const { game } = options;
+		return Game.updateOne({id: game.id})
+			.set(game);
 	},
 
 	/*
@@ -125,10 +103,10 @@ module.exports = {
 									var p1 = userService.findUser({userId: game.players[1].id});
 									return Promise.all([Promise.resolve(game), p0, p1]);
 								} else {
-									return Promise.reject(new Error("Can't populate game without two players")); 
+									return Promise.reject({message: "Can't populate game without two players"}); 
 								} 
 							} else {
-								return Promise.reject (new Error("Can't populate game, because it does not have players collection")); 
+								return Promise.reject({message: "Can't populate game, because it does not have players collection"}); 
 							}
 						})
 						// then find points
@@ -138,8 +116,6 @@ module.exports = {
 							var p1 = values[2];
 							var p0Points = cardService.findPoints({userId: p0.id});
 							var p1Points = cardService.findPoints({userId: p1.id});
-							// console.log("\n\nFound game for populate:");
-							// console.log(game);
 							return Promise.all(
 								[
 									Promise.resolve(game), 
@@ -159,23 +135,19 @@ module.exports = {
 							var p1 = new tempUser(values[2], p1Points);
 							var result = new tempGame(game, p0, p1);
 
-							// console.log("\n game inside finish:");
-							// console.log(game);
-							// console.log("\nResult:");
-							// console.log(result);
 							return resolve(result);
 						})
 						.catch(function failed (err) {
 							return reject(err);
 						});
 					} else {
-						reject(new Error("Invalid gameId: Not a number"));
+						reject({message: "Invalid gameId: Not a number"});
 					}
 				} else {
-					return reject(new Error("Cannot populate Game without GameId (options had no gameId)"));
+					return reject({message: "Cannot populate Game without GameId (options had no gameId)"});
 				}
 			} else {
-				return reject(new Error("Cannot populate Game without gameId"));
+				return reject({message: "Cannot populate Game without gameId"});
 			}
 		});
 	}, //End populateGame()
@@ -183,27 +155,30 @@ module.exports = {
 	** Checks a game to determine if either player has won
 	* @param options = {game: tmpGame, gameModel: GameModel}
 	*/
-	checkWinGame: function (options) {
-		var res = {
+	checkWinGame: async function (options) {
+		const res = {
 			gameOver: false,
 			winner: null,
 			conceded: false
 		};
 		const { game, gameModel } = options;
-		var p0Wins = userService.checkWin({user: game.players[0]});
-		var p1Wins = userService.checkWin({user: game.players[1]});
+		const p0Wins = userService.checkWin({user: game.players[0]});
+		const p1Wins = userService.checkWin({user: game.players[1]});
 			if (p0Wins || p1Wins) {
 				res.gameOver = true;
-				gameModel.p0 = game.players[0];
-				gameModel.p1 = game.players[1];
+				const gameUpdates = {
+					p0: game.players[0].id,
+					p1: game.players[1].id
+				};
 				if (p0Wins) {
 					res.winner = 0;
-					gameModel.result = GameResult.P0_WINS;
+					gameUpdates.result = GameResult.P0_WINS;
 				} else if (p1Wins) {
 					res.winner = 1;
-					gameModel.result = GameResult.P1_WINS;
+					gameUpdates.result = GameResult.P1_WINS;
 				}
-				gameService.saveGame({game: gameModel});
+				await Game.updateOne({id: game.id})
+				.set(gameUpdates);
 			}
 			return res;
 	},
@@ -211,74 +186,95 @@ module.exports = {
 	/* Takes a user id and clears all game data 
 	* from the associated user
 	*/
-	clearGame: function (options) {
+	clearGame: async function (options) {
 		return User.findOne(options.userId)
 		.populateAll()
-		.then(function clearUserData (player) {
-			// Delete User data
-			player.hand.forEach(function (card) {
-				player.hand.remove(card.id);
-			});
-			player.points.forEach(function (card) {
-				player.points.remove(card.id);
-			});
-			player.runes.forEach(function (card) {
-				player.runes.remove(card.id);
-			});
-			player.frozenId = null;
-			saveUser = userService.saveUser({user: player});
-			if (player.game) {
-				var promiseGame = gameService.findGame({gameId: player.game.id});
-			}else {
-				var promiseGame = Promise.resolve(null);
+		.then(function findUserGame (player) {
+			// If no session game id, ensure player's collections are emptied
+			if (!player.game) {
+				return Promise.all([
+					User.updateOne({id: player.id})
+						.set({pNum: null}),
+					User.replaceCollection(player.id, 'hand')
+						.members([]),
+					User.replaceCollection(player.id, 'points')
+						.members([]),
+					User.replaceCollection(player.id, 'faceCards')
+						.members([]),
+				]);
 			}
-			return Promise.all([promiseGame, saveUser])
-			.then(function clearGameData (values) {
-				var game = values[0], player = values[1];
+			// Otherwise find the game
+			return gameService.findGame({gameId: player.game.id})
+			.then(function clearGameData (game) {	
+				const updatePromises = [];
 				if (game) {
-					var opponent = game.players[(player.pNum + 1) % 2];
-					if (opponent) {
-						opponent.hand.forEach(function (card) {
-							opponent.hand.remove(card.id);
-						});
-						opponent.points.forEach(function (card) {
-							opponent.points.remove(card.id);
-						});
-						opponent.runes.forEach(function (card) {
-							opponent.runes.remove(card.id);
-						});
-						opponent.frozenId = null;
-						opponent.pNum = null;
-						game.players.remove(opponent.id);
-						var saveOpponent = userService.saveUser({user: opponent});
-					} else {
-						var saveOpponent = Promise.resolve(null);
+					const cardsOnGame = [];
+					if (game.topCard) {
+						cardsOnGame.push(game.topCard.id);
+						if (game.secondCard) {
+							cardsOnGame.push(game.secondCard.id);
+						}
 					}
-					game.players.remove(player.id);
-					var saveGame = gameService.saveGame({game: game});
-				} else {
-					var saveGame = Promise.resolve(null);
-					var saveOpponent = Promise.resolve(null);
-				}
-				player.pNum = null;
-				var savePlayer = userService.saveUser({user: player});
-				return Promise.all([saveGame, savePlayer, saveOpponent]);
-			})
+					if (game.OneOff) {
+						cardsOnGame.push(game.oneOff.id);
+					}
+					if (game.resolving) {
+						cardsOnGame.push(game.resolving.id);
+					}
+					const playerIds = game.players.map(player => player.id);
+					// Create (inclusive or) criteria for cards to delete
+					let deleteCardsCriteria = [
+						// Cards attached directly to game
+						{ id: cardsOnGame }, // top & second cards
+						{ deck: game.id },
+						{ scrap: game.id },
+						{ twos: game.id },
+						{ targeted: game.id },
+						// Cards attached to players
+						{ hand: playerIds },
+						{ points: playerIds },
+						{ faceCards: playerIds },
+						// NOTE: jacks in play should be destroyed using CASCADE on foreign key constraint on attachedTo
+					];
+					updatePromises.push(
+						// Remove players from game
+						Game.replaceCollection(game.id, 'players')
+							.members([]),
+						// Set pNum's to null
+						User.update({id: playerIds})
+							.set({
+								'pNum': null,
+							}),
+						// Delete all cards in the game
+						Card.destroy({
+							or: deleteCardsCriteria
+						})
+					);
+				} // end if (game) {}
+				return Promise.all(updatePromises);
+			}) // End clearGameData()
 			.catch(function failed (err) {
-				console.log(err);
 				return Promise.reject(err);
 			});
 		});
 	},
 
-
-	/*Replaces card played during a seven from the deck
-	***options = {game: GameModel, index: integer}
-	**index = 0 if played from top card, index = 1 if played from second card
-	**SYNCRONOUS
-	*/
+/**
+ * Used to replace card played via a seven from the deck
+ * @param {*} options: {game: GameModel, index: integer}
+ * index = 0 iff topcard was played, 1 iff secondCard was played
+ * @returns {topCard: int, secondCard: int, cardsToRemove: int[]}
+ * Does not change records -- only returns obj for game updates
+ * SYNCHRONOUS
+ */
 	sevenCleanUp: function (options) {
-		var game = options.game, index = options.index;
+		const { game, index } = options;
+		const cardsToRemoveFromDeck = [];
+		const res = {
+			topCard: game.topCard.id,
+			secondCard: null,
+			cardsToRemoveFromDeck,
+		};
 		if (options.index === 0) {
 			if (game.secondCard) {
 				game.topCard = game.secondCard.id;
@@ -286,17 +282,22 @@ module.exports = {
 				game.topCard = null;
 			}
 		}
+		// Re-assign top card if top card was played
+		if (index === 0 && game.secondCard) {
+			if (game.secondCard) {
+				res.topCard = game.secondCard.id;
+			}
+			else {
+				res.topCard = null;
+			}
+		}
 		// If there are more cards in the deck, assign secondCard
 		if (game.deck.length > 0) {
-			var min = 0;
-			var max = game.deck.length - 1;
-			var random = Math.floor((Math.random() * ((max + 1) - min)) + min);
-			game.secondCard = game.deck[random]	;
-			game.deck.remove(game.deck[random].id);
-		} else {
-			game.secondCard = null;
+			const newSecondCard = _.sample(game.deck).id;
+			res.secondCard = newSecondCard;
+			cardsToRemoveFromDeck.push(newSecondCard);
 		}
-		return game;		
+		return res;
 	},
 
 };
