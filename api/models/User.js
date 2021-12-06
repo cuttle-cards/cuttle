@@ -44,8 +44,8 @@ module.exports = {
 		 * Id of a card in player's hand that cannot be played this turn
 		 * @value null iff no card is frozen
 		 */
-			frozenId: {
-				model: 'card',
+		frozenId: {
+			model: 'card',
 		},
 		rank: {
 			type: 'number',
