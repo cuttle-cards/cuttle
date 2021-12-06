@@ -9,11 +9,11 @@ module.exports = {
 
   attributes: {
   	suit: {
-  		type: 'integer'
+  		type: 'number'
   	},
 
   	rank: {
-  		type: 'integer'
+  		type: 'number'
   	},
 
     name: {
@@ -21,14 +21,6 @@ module.exports = {
     },
 
     ruleText: {
-      type: 'string'
-    },
-
-    img: {
-      type: 'string'
-    },
-
-    runeImg: {
       type: 'string'
     },
 
@@ -40,23 +32,7 @@ module.exports = {
   		model: 'game',
   	},
 
-    oneOff: {
-      model: 'game'
-    },
-
-    resolving: {
-      model: 'game'
-    },
-
     twos: {
-      model: 'game'
-    },
-    
-    topCard: {
-      model: 'game'
-    },
-
-    secondCard: {
       model: 'game'
     },
 
@@ -68,12 +44,12 @@ module.exports = {
       model: 'user'
     },
 
-    runes: {
+    faceCards: {
       model: 'user'
     },
     //Used to order attachments
     index: {
-      type: 'integer',
+      type: 'number',
     },
 
     attachments: {
@@ -88,13 +64,6 @@ module.exports = {
     // Used to track if this card is targeted
     //by a one-off
     targeted: {
-      model: 'game'
-    },
-
-    //Used to track if this card is the point card
-    //to which a jack that is targed by a one-off
-    //is attached
-    attachedToTarget: {
       model: 'game'
     },
 

@@ -18,13 +18,13 @@
 				return next();
 			},
 			invalid: function () {
-				return res.badRequest(new Error("Please provide a valid email address"));
+				return res.badRequest({message: "Please provide a valid email address"});
 			},
 			error: function () {
-				return res.forbidden(new Error("Please provide a valid email address"));
+				return res.forbidden({message: "Please provide a valid email address"});
 			}
 		});
 	} else {
-		return res.forbidden(new Error("Error: You must provide a valid email address"));
+		return res.forbidden({message: "Error: You must provide a valid email address"});
 	}
  };

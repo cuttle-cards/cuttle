@@ -28,7 +28,7 @@ describe("gameService.checkWinGame", function () {
 					suit: 3
 				}
 			],
-			runes: [] 	
+			faceCards: [] 	
 		}
 
 		var p1 = {
@@ -40,7 +40,7 @@ describe("gameService.checkWinGame", function () {
 						suit: 1
 					}
 				],
-				runes: []		
+				faceCards: []		
 		}
 
 		var game = {
@@ -64,7 +64,7 @@ describe("gameService.checkWinGame", function () {
 				}
 
 			],
-			runes: [] 	
+			faceCards: [] 	
 		}
 
 		var p1 = {
@@ -86,7 +86,7 @@ describe("gameService.checkWinGame", function () {
 						suit: 2
 					}
 				],
-				runes: [
+				faceCards: [
 					// King of Hearts
 					{
 						rank: 13,

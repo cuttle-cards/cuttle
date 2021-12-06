@@ -64,13 +64,12 @@ module.exports.policies = {
     getList: 'isLoggedIn',
     subscribe: 'isLoggedIn',
     reconnect: ['isLoggedIn', 'isInGame'],
-    lobbyView: 'isLoggedIn',
     ready:     'isLoggedIn',
     leaveLobby: ['isSocket', 'isLoggedIn', 'isInGame'],
     draw: ['isLoggedIn', 'isInGame'],
     pass: ['isLoggedIn', 'isInGame'],
     points: ['isLoggedIn', 'isInGame', 'hasCardId'],
-    runes: ['isLoggedIn', 'isInGame', 'hasCardId'],
+    faceCard: ['isLoggedIn', 'isInGame', 'hasCardId'],
     scuttle: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
     jack: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
     untargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
@@ -80,7 +79,7 @@ module.exports.policies = {
     resolveFour: ['isLoggedIn', 'isInGame', 'hasCardIdOne'],
     resolveThree: ['isLoggedIn', 'isInGame', 'hasCardId'],
     sevenPoints: ['isLoggedIn', 'isInGame', 'hasCardId'],
-    sevenRunes: ['isLoggedIn', 'isInGame', 'hasCardId'],
+    sevenFaceCard: ['isLoggedIn', 'isInGame', 'hasCardId'],
     sevenScuttle: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
     sevenJack: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
     sevenUntargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId'],
@@ -92,15 +91,15 @@ module.exports.policies = {
     lobbyData: ['isLoggedIn', 'isInGame'],
 
 
-    //////////////////////
-    // DEVELOPMENT ONLY //
-    //////////////////////
-    stackDeck: 'developmentOnly',
-    deleteDeck: 'developmentOnly',
-    clearGame: 'developmentOnly',
-    loadFixture: 'developmentOnly',
+    /////////////////////////////////
+    // DEVELOPMENT Or Staging ONLY //
+    /////////////////////////////////
+    stackDeck: 'developmentOrStagingOnly',
+    deleteDeck: 'developmentOrStagingOnly',
+    clearGame: 'developmentOrStagingOnly',
+    loadFixture: 'developmentOrStagingOnly',
   },
   TestController: {
-    '*': 'developmentOnly',
+    '*': 'developmentOrStagingOnly',
   }
 };

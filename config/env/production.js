@@ -9,18 +9,19 @@
  * any private information to this file!
  *
  */
-let sessionUrl;
-if (process.env.REDIS_URL) {
-	sessionUrl = require('url').parse(process.env.REDIS_URL);
-} else {
-	sessionUrl = {
-		host: '',
-		path: '',
-		auth: ''
-	}
-}
 
+// Capture session url so it can be parsed (rediss protocol unsupported by connect-redis)
+//  let sessionUrl = new URL(process.env.REDIS_TLS_URL); 
 module.exports = {
+
+  datastores: {
+    default: {
+        adapter: 'sails-postgresql',
+        ssl: true,
+        schema: true,
+        url: process.env.DATABASE_URL,
+    },
+  }, // end datastores
 
   /***************************************************************************
    * Set the default database connection for models in the production        *
@@ -28,7 +29,6 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    connection: 'sqlHeroku',
     migrate: 'safe',
   },
 
@@ -40,11 +40,19 @@ module.exports = {
 
   session: {
 			adapter: 'connect-redis',
-        ttl: 3600 * 24,
-		    host: sessionUrl.host.split(':')[0],
-		    pass: sessionUrl.auth.split(':')[1],
-		    port: sessionUrl.port,
-  }
+      url: process.env.REDIS_URL,
+      // host: sessionUrl.hostname,
+      // port: sessionUrl.port,
+      // pass: sessionUrl.password,
+      // Required by heroku to use tls
+      // tls: {
+      //   rejectUnauthorized: false,
+      // },
+  },
+
+  sockets: {
+    onlyAllowOrigins: ["https://cuttle-v3.herokuapp.com", "https://www.cuttle.cards", "https://beta.cuttle.cards"],
+  },
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
    ***************************************************************************/
