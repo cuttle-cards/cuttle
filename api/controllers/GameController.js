@@ -1289,8 +1289,6 @@ module.exports = {
 									gameUpdates.topCard = newTopCard;
 									cardsToRemoveFromDeck.push(newTopCard);
 
-									// game.deck.remove(game.deck[random].id);
-
 									// Replace second card, if possible
 									if (game.deck.length >= 2) {
 										let newSecondCard = _.sample(game.deck).id;
