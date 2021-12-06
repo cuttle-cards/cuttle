@@ -33,7 +33,7 @@
     "machinepack-passwords": "^2.3.0",
     "rc": "^1.2.8",
     "sails": "^1.4.3",
-    "sails-disk": "^2.1.0",
+    "sails-disk": "^2.1.1",
     "sails-hook-grunt": "^1.0.8",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^1.5.5",
