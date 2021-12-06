@@ -1076,7 +1076,7 @@ module.exports = {
 							const gameUpdates = {
 								lastEvent: {
 									change: 'counter',
-									pNum: req.session.pNum,									
+									pNum: req.session.pNum,
 								},
 							};
 							const updatePromises = [
