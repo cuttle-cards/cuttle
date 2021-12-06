@@ -30,11 +30,6 @@
 
   port: process.env.PORT || 1337,
 
-  // session: {
-	// 		adapter: 'connect-redis',
-  //     url: process.env.REDIS_URL,
-  // },
-
   sockets: {
     onlyAllowOrigins: ["https://cuttle-v3.herokuapp.com", "https://www.cuttle.cards", "http://localhost", "http://localhost:8080", "http://localhost:1337"],
   },
