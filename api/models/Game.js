@@ -14,12 +14,10 @@ module.exports = {
   	status: {
   		type: 'boolean',
   		defaultsTo: true,
-  		required: true,
   	},
     players: {
       collection: 'user',
       via: 'game',
-      defaultsTo: [],
     },
     p0Ready: {
       type: 'boolean',
@@ -30,7 +28,7 @@ module.exports = {
       defaultsTo: false
     },
     passes: {
-      type: 'integer',
+      type: 'number',
       defaultsTo: 0
     },
     deck: {
@@ -39,11 +37,9 @@ module.exports = {
     },
     topCard: {
       model: 'card',
-      via: 'topCard'
     },
     secondCard: {
       model: 'card',
-      via: 'secondCard'
     },
     scrap: {
       collection: 'card',
@@ -51,37 +47,39 @@ module.exports = {
     },
     oneOff: {
       model: 'card',
-      via: 'oneOff'
     },
     resolving: {
       model: 'card',
-      via: 'resolving'
     },
     oneOffTarget: {
       model: 'card',
-      via: 'targeted'
     },
     oneOffTargetType: {
       type: 'string'
     },
+    //Used to track if which point card
+    // the current oneOffTarget is attached to
+    // when oneOffTargeet is a jack
     attachedToTarget: {
       model: 'card',
-      via: 'attachedToTarget'
     },
     twos: {
       collection: 'card',
       via: 'twos'
     },
     turn: {
-      type: 'integer',
+      type: 'number',
       defaultsTo: 0
     },
     log: {
-      type: "array",
+      type: 'ref',
+      columnType: 'text[]',
       defaultsTo: []
     },
+
     chat: {
-      type: "array",
+      type: 'ref',
+      columnType: 'text[]',
       defaultsTo: []
     },
     isRanked: {
@@ -94,6 +92,10 @@ module.exports = {
     p1: {
       model: 'user',
     },
+    lastEvent: {
+      type: 'json',
+      defaultsTo: {},
+    },
     /**
      *  Enum for game result:
      * -1: incomplete
@@ -102,7 +104,7 @@ module.exports = {
      * 2: stalemate
      */
     result: {
-      type: 'integer',
+      type: 'number',
       defaultsTo: -1,
     },
   } // end attributes

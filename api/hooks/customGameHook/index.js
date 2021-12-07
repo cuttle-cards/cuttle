@@ -2,7 +2,6 @@ module.exports = function gameHook(sails) {
 //////////////
 // Game API //
 //////////////
-var Promise = require('bluebird');
 	return {
 		createGame: function (gameName) {
 			return new Promise(function (resolve, reject) {
@@ -11,19 +10,20 @@ var Promise = require('bluebird');
 					name: gameName,
 					status: true,
 				}
-				).exec(function (error, game) {
-					if (error || !game) {
-						var res;
-						if (error) {
-							res = error;
+				)
+					.fetch()
+					.then((game) => {
+						return resolve(game);
+					})
+					.catch((err) => {
+						let res;
+						if (err) {
+							res = err;
 						} else {
-							res = new Error("Can't create game");
+							res = {message: `Unknown error creating game ${gameName}`};
 						}
 						return reject(res);
-					} else {
-						return resolve(game);
-					}
-				})
+					});
 			});
 		},
 		findOpenGames: function () {
@@ -34,7 +34,7 @@ var Promise = require('bluebird');
 						if (error) {
 							res = error;
 						} else {
-							res = new Error("Can't find games");
+							res = {message: "Can't find games"};
 						}
 						return reject(res);
 					} else {
@@ -56,7 +56,7 @@ var Promise = require('bluebird');
 						if (error) {
 							res = error;
 						} else {
-							res = new Error("Can't find game");
+							res = {message: "Can't find game"};
 						}
 						return reject(res);
 					} else {

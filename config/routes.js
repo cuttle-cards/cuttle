@@ -46,6 +46,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  // '/'                             :   'userController.homepage',
   '/user/signup'                  :   'userController.signup',
   '/user/login'                   :   'userController.login',
   '/user/reLogin'                 :   'userController.reLogin',
@@ -60,18 +61,18 @@ module.exports.routes = {
   '/game/draw'                    :   'gameController.draw',
   '/game/pass'                    :   'gameController.pass',
   '/game/points'                  :   'gameController.points',
-  '/game/runes'                   :   'gameController.runes',
+  '/game/faceCard'                :   'gameController.faceCard',
   '/game/scuttle'                 :   'gameController.scuttle',
   '/game/jack'                    :   'gameController.jack',
   '/game/untargetedOneOff'        :   'gameController.untargetedOneOff',
   '/game/targetedOneOff'          :   'gameController.targetedOneOff',
   '/game/counter'                 :   'gameController.counter',
   '/game/resolve'                 :   'gameController.resolve',
-  'game/resolveFour'              :   'gameController.resolveFour', 
+  '/game/resolveFour'             :   'gameController.resolveFour', 
   '/game/resolveThree'            :   'gameController.resolveThree',
   // Resolving Sevens
   '/game/seven/points'            :   'gameController.sevenPoints',
-  '/game/seven/runes'             :   'gameController.sevenRunes',
+  '/game/seven/faceCard'          :   'gameController.sevenFaceCard',
   '/game/seven/scuttle'           :   'gameController.sevenScuttle',
   '/game/seven/jack'              :   'gameController.sevenJack',
   '/game/seven/untargetedOneOff'  :   'gameController.sevenUntargetedOneOff',

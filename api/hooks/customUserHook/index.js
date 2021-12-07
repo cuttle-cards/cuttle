@@ -2,7 +2,6 @@ module.exports = function userHook(sails) {
 ///////////////
 // User API  //
 ///////////////
-var Promise = require('bluebird');
 	return {
 		findUserByEmail: function(email) {
 			return new Promise(function (resolve, reject) {
@@ -14,7 +13,7 @@ var Promise = require('bluebird');
 						if (error) {
 							res = error;
 						} else {
-							res = new Error("User does not exist");
+							res = {message: "User does not exist"};
 						} 
 						return reject(res);
 					} else {
@@ -32,7 +31,7 @@ var Promise = require('bluebird');
 						if (error) {
 							res = error;
 						} else {
-							res = new Error("User does not exist");
+							res = {message: "User does not exist"};
 						} 
 						return reject(res);
 					} else {
@@ -47,17 +46,20 @@ var Promise = require('bluebird');
 				User.create({
 					email: email,
 					encryptedPassword: encryptedPassword
-				}, 
-				function (err, user) {
-					if (err || !user) { //Failed user creation
-						var res;
-						if (err) {res = err}
-						else {res = new Error("Could not create user")}
-						return reject(res);
-					} else { //Made new user
+				})
+					.fetch()
+					.then((user) => {
 						return resolve(user);
-					}
-				}); //End of User.create
+					})
+					.catch((err) => {
+						let res;
+						if (err) {
+							res = err
+						} else {
+							res = {message: "Could not create user"};
+						}
+						return reject(res);						
+					});
 			}); //End of returned promise
 		},
 
@@ -71,7 +73,7 @@ var Promise = require('bluebird');
 						if (error) {
 							res = error;
 						} else {
-							res = new Error("User does not exist");
+							res = {message: "User does not exist"};
 						}
 						return reject(res);
 					} else {

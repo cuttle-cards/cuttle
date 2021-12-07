@@ -13,5 +13,5 @@ module.exports = function (req, res, next) {
 		}
 	}
 	// User not allowed
-  return res.forbidden(new Error('You are not permitted to perform this action.'));
+  return res.badRequest({message: 'Error: Request missing required param password'});
 }

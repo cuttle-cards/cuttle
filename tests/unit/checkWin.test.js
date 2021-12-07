@@ -26,7 +26,7 @@ describe("Userservice.checkWin()", function () {
 					suit: 3
 				},
 			],
-			runes: []
+			faceCards: []
 		}
 		userService.checkWin({user: player}).should.deep.equal(true);
 	});
@@ -45,7 +45,7 @@ describe("Userservice.checkWin()", function () {
 				suit: 3
 			},
 		],
-		runes: [
+		faceCards: [
 			//King of Spades
 			{
 				rank: 13,
@@ -75,7 +75,7 @@ describe("Userservice.checkWin()", function () {
 				suit: 3
 			}
 		],
-		runes: [
+		faceCards: [
 			//King of Spades
 			{
 				rank: 13,
@@ -110,7 +110,7 @@ describe("Userservice.checkWin()", function () {
 				suit: 3
 			}
 		],
-		runes: [
+		faceCards: [
 			//King of Spades
 			{
 				rank: 13,
@@ -140,7 +140,7 @@ describe("Userservice.checkWin()", function () {
 				suit: 0
 			}, 
 		],
-		runes: [
+		faceCards: [
 			//King of Spades
 			{
 				rank: 13,
@@ -180,7 +180,7 @@ describe("Userservice.checkWin()", function () {
 					suit: 1
 				}	
 			],
-			runes: [
+			faceCards: [
 				// Queen of Spades
 				{
 					rank: 12,
@@ -205,7 +205,7 @@ describe("Userservice.checkWin()", function () {
 				suit: 3
 			},
 		],
-		runes: [
+		faceCards: [
 			//King of Spades
 			{
 				rank: 13,
@@ -245,7 +245,7 @@ describe("Userservice.checkWin()", function () {
 				suit: 3
 			}
 		],
-		runes: [
+		faceCards: [
 			//King of Spades
 			{
 				rank: 13,
@@ -280,7 +280,7 @@ describe("Userservice.checkWin()", function () {
 				suit: 1
 			},
 		],
-		runes: [
+		faceCards: [
 			//King of Spades
 			{
 				rank: 13,
@@ -330,7 +330,7 @@ describe("Userservice.checkWin()", function () {
 				suit: 0
 			}, 
 		],
-		runes: [
+		faceCards: [
 			//King of Spades
 			{
 				rank: 13,

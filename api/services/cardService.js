@@ -1,4 +1,3 @@
-var Promise = require('bluebird');
 module.exports = {
 
 	/*
@@ -14,13 +13,13 @@ module.exports = {
 					if (err) {
 						return reject(err);
 					} else if (!card) {
-						return reject(new Error("Can't find card " + options.cardId));
+						return reject({message: "Can't find card " + options.cardId});
 					} else {
 						return resolve(card);
 					}
 				});
 			} else {
-				return Promise.reject(new Error("Invalid arguments for findCard"));
+				return Promise.reject({message: "Invalid arguments for findCard"});
 			}
 		});
 	},
@@ -77,12 +76,6 @@ module.exports = {
 						break;
 				}
 				str_name = str_rank + " of " + str_suit; //Assign str name
-				img = "images/cards/card_" + suit + "_" + rank + ".png"; //Assign img
-				if(options.rank === 8){
-					runeImg = "images/cards/Glasses_" + str_suit + ".jpg";
-				} else {
-					runeImg = img;
-				}
 
 				// Assign Rule Text
 				switch (rank) {
@@ -128,28 +121,28 @@ module.exports = {
 				}
 
 				// Create card record
-				Card.create({
+				return Card.create({
 					suit: suit,
 					rank: rank,
-					img: img,
-					runeImg : runeImg,
 					name: str_name,
 					ruleText: ruleText,
 					deck: gameId
-				}).exec(function (err, newCard) {
-					if (err) {
-						return reject(err);
-					} else if (!newCard) {
-						return reject(new Error("Could not create new card"));
-					//Everything ok -> resolve promise
-					} else {
-						return resolve(newCard);
-					}
-				});
+				})
+					.fetch()
+					.then((card) => {
+						return resolve(card);
+					})
+					.catch((err) => {
+						if (err) {
+							return reject(err)
+						} else {
+							return reject({message: `Error creating card: ${suit} of ${rank}`});
+						}
+					})
 			} else {
-				return reject(new Error("Invalid Arguments for createCard service"));
+				return reject({message: "Invalid Arguments for createCard service"});
 			}
-		})
+		});
 	},
 
 	/*
@@ -163,13 +156,13 @@ module.exports = {
 					if (err) {
 						return reject(err);
 					} else if (!cards) {
-						return reject(new Error("Can't find cards in points"));
+						return reject({message: "Can't find cards in points"});
 					} else {
 						return resolve(cards);
 					}
 				}); //End find()
 			} else {
-				return reject(new Error("Don't have userId to find cards in user's points"));
+				return reject({message: "Don't have userId to find cards in user's points"});
 			}
 
 		}); //End returned Promise
@@ -190,7 +183,7 @@ module.exports = {
 					}
 				});
 			} else {
-				return reject(new Error("Can't save card without card record"))
+				return reject({message: "Can't save card without card record"});
 			}
 		});
 	}

@@ -1,5 +1,5 @@
-var Promise = require('bluebird');
-var email = require('machinepack-emailaddresses');
+const email = require('machinepack-emailaddresses');
+
 module.exports = {
 	/*
 	**Find User by Id
@@ -9,22 +9,26 @@ module.exports = {
 		return new Promise(function (resolve, reject) {
 			if (options) {
 				if (options.hasOwnProperty("userId") ) {
-					User.findOne(options.userId).populateAll().exec(function (err, usr) {
+					return User.findOne({id: options.userId})
+					.populate('hand')
+					.populate('points')
+					.populate('faceCards')
+					.exec(function (err, usr) {
 						if (err) {
 							return reject(err);
 						} else if(!usr) {
-							return reject(new Error("Could not find user: " + options.userId));
+							return reject({message: "Could not find user: " + options.userId});
 						} else {
 							return resolve(usr);
 						}
 					});
 				// end if options has userId
 				} else {
-					return reject(new Error("No id given when finding user"));
+					return reject({message: "No id given when finding user"});
 				}
 			//end if(options)
 			} else {
-				return reject(new Error("No id given when finding user"));
+				return reject({message: "No id given when finding user"});
 			}  
 		});
 	},
@@ -50,11 +54,8 @@ module.exports = {
 	****options = {user: UserModel}
 	*/
 	queenCount: function (options) {
-		var res = 0, player = options.user;
-		player.runes.forEach(function (rune) {
-			if (rune.rank === 12) res++;
-		});
-		return res;
+		const player = options.user;
+		return player.faceCards.filter(card => card.rank === 12).length;
 	},
 
 	/*
@@ -62,35 +63,27 @@ module.exports = {
 	***options = {user: UserModel}
 	*/
 	checkWin: function (options) {
-		var res = false;
-		var player = options.user;
-		var points = 0;
-		var kings = 0;
-		player.points.forEach(function (point) {
-			points += point.rank;
-		});
-		player.runes.forEach(function (rune) {
-			if (rune.rank === 13) kings++;
-		});
+		const player = options.user;
+		const points = player.points.reduce((sum, {rank}) => sum + rank, 0);
+		const kings = player.faceCards.filter(faceCard => faceCard.rank === 13).length;
 		switch (kings) {
 			case 0:
-				if (points >= 21) res = true;
+				if (points >= 21) return true;
 				break;
 			case 1:
-				if (points >= 14) res = true;
+				if (points >= 14) return true;
 				break;
 			case 2:
-				if (points >= 10) res = true
+				if (points >= 10) return true;
 				break;
 			case 3:
-				if (points >= 7) res = true;
+				if (points >= 7) return true;
 				break;
 			case 4:
-				if (points >= 5) res = true;
+				if (points >= 5) return true;
 				break;
 		}
-		// return Promise.resolve(res);
-		return res;
+		return false;
 	},
 
 	validateEmail: function (options) {
@@ -101,7 +94,7 @@ module.exports = {
 					return reject(error)
 				},
 				invalid: function () {
-					return reject(new Error("That's not a valid email address"));
+					return reject({message: "That's not a valid email address"});
 				},
 				success: function () {
 					return resolve(true);

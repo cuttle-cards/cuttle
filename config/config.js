@@ -1,6 +1,12 @@
-// Default settings (overriden in config/production.js)
+
+
+
+
 module.exports = {
-	port: process.env.PORT || 1337,
+
+   orm: {
+   		_hookTimeout: 50000
+   },
 
    pubsub: {
    		_hookTimeout: 60000
