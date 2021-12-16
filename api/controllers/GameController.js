@@ -580,10 +580,9 @@ module.exports = {
 					if ((card.rank >= 12 && card.rank <= 13) || card.rank === 8) {
 						if (player.frozenId != card.id) {
 							// Everything okay; make changes
-
 							let logEntry = userService.truncateEmail(player.email) + " played the " + card.name;
 							if (card.rank === 8) {
-								logEntry += ' as a Glasses Eight';
+								logEntry += ' as a Glasses eight';
 							}
 							const gameUpdates = {
 								turn: game.turn + 1,
@@ -893,7 +892,7 @@ module.exports = {
 										oneOff: card.id,
 										log: [
 											...game.log,
-											`${userService.truncateEmail(player.email)} played the ${card.name} as a one-off to ${card.ruleText}`,
+											`${userService.truncateEmail(player.email)} played the ${card.name} as a one-off to ${card.ruleText}.`,
 										],
 										lastEvent: {
 											change: 'oneOff',
@@ -965,7 +964,6 @@ module.exports = {
 		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, targetType, promisePoint])
 		.then(function changeAndSave (values) {
 			const [ game, player, opponent, card, target, targetType, point ] = values;
-			// var game = values[0], player = values[1], opponent = values[2], card = values[3], target = values[4], targetType = values[5], point = values[6];
 			if (player.pNum === game.turn % 2) {
 				if (!game.oneOff) {
 					if (card.hand === player.id) {
@@ -992,7 +990,7 @@ module.exports = {
 									attachedToTarget: null,
 									log: [
 										...game.log,
-										`${userService.truncateEmail(player.email)} played the ${card.name} as a ${card.ruleText}, targeting the ${target.name}`,
+										`${userService.truncateEmail(player.email)} played the ${card.name} as a one-off to: ${card.ruleText}, targeting the ${target.name}.`,
 									],
 									lastEvent: {
 										change: 'targetedOneOff',
@@ -1195,7 +1193,7 @@ module.exports = {
 						// Update log
 						gameUpdates.log = [
 							...game.log,
-							`The ${game.oneOff.name} one-off resolves; all point cards are scrapped`,
+							`The ${game.oneOff.name} one-off resolves; all point cards are scrapped.`,
 						];
 						updatePromises = [
 							User.updateOne(player.id)
@@ -1219,7 +1217,7 @@ module.exports = {
 							...gameUpdates,
 							log: [
 								...game.log,
-								`The ${game.oneOff.name} resolves; the ${game.oneOffTarget.name} is scrapped`,
+								`The ${game.oneOff.name} resolves; the ${game.oneOffTarget.name} is scrapped.`,
 							],
 						};
 						// Scrap the one-off target
@@ -1250,7 +1248,7 @@ module.exports = {
 							resolving: game.oneOff.id,
 							log: [
 								...game.log,
-								`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} will draw one card of their choice from the Scrap pile`,
+								`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} will draw one card of their choice from the Scrap pile.`,
 							]
 						};
 						break;
@@ -1260,7 +1258,7 @@ module.exports = {
 							resolving: game.oneOff.id,
 							log: [
 								...game.log,
-								`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(opponent.email)} must discard two cards`,
+								`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(opponent.email)} must discard two cards.`,
 							],
 						};
 						break;
@@ -1275,7 +1273,7 @@ module.exports = {
 							if (game.secondCard) {
 								gameUpdates.log = [
 									...game.log,
-									`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws two cards`,
+									`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws two cards.`,
 								];
 								cardsToDraw.push(game.secondCard.id);
 								gameUpdates.secondCard = null;
@@ -1330,7 +1328,7 @@ module.exports = {
 								} else {
 									gameUpdates.log = [
 										...game.log,
-										`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws one card (last in deck) to reach the hand limit.`,
+										`The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws one card (last in deck) to reach the hand limit (8).`,
 									];
 								}
 							}
@@ -1396,7 +1394,7 @@ module.exports = {
 						}
 						gameUpdates.log = [
 							...game.log,
-							`The ${game.oneOff.name} one-off resolves; all face cards are scrapped`,
+							`The ${game.oneOff.name} one-off resolves; all Royals and Glasses are scrapped.`,
 						];
 						updatePromises = [
 							...updatePromises,
@@ -1419,7 +1417,7 @@ module.exports = {
 						if (game.secondCard) {
 							gameUpdates.log = [
 								...game.log,
-								`The ${game.oneOff.name} one-off resolves; they will play one card from the top two in the deck. Top two cards: ${game.topCard.name} and ${game.secondCard.name}.`,
+								`The ${game.oneOff.name} one-off resolves; they will play one card from the top two in the deck. Top two cards are the ${game.topCard.name} and ${game.secondCard.name}.`,
 							];
 						} else {
 							gameUpdates.log = [
@@ -1589,12 +1587,12 @@ module.exports = {
 				cardsToScrap.push(card2.id);
 				gameUpdates.log = [
 					...game.log,
-					`${userService.truncateEmail(player.email)} discarded the ${card1.name} and the ${card2.name}`,
+					`${userService.truncateEmail(player.email)} discarded the ${card1.name} and the ${card2.name}.`,
 				];
 			} else {
 				gameUpdates.log = [
 					...game.log,
-					`${userService.truncateEmail(player.email)} discarded the ${card1.name}`,
+					`${userService.truncateEmail(player.email)} discarded the ${card1.name}.`,
 				];
 			}
 			const updatePromises = [
@@ -1798,7 +1796,7 @@ module.exports = {
 						};
 						let logEntry = `${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck`;
 						if (card.rank === 8) {
-							logEntry += ' as a glasses eight.'
+							logEntry += ' as a Glasses eight.'
 						}
 						else {
 							logEntry += '.';
@@ -1994,7 +1992,7 @@ module.exports = {
 							secondCard,
 							log: [
 								...game.log,
-								`${userService.truncateEmail(player.email)} scrapped ${card.name}, since there are no point cards to steal on ${userService.truncateEmail(opponent.email)}'s fiels.`,
+								`${userService.truncateEmail(player.email)} scrapped ${card.name}, since there are no point cards to steal on ${userService.truncateEmail(opponent.email)}'s field.`,
 							],
 							lastEvent: {
 								change: 'sevenJack',
@@ -2139,7 +2137,7 @@ module.exports = {
 								oneOff: card.id,
 								log: [
 									...game.log,
-									`${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck as a ${card.ruleText}`,
+									`${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck as a one-off to ${card.ruleText}.`,
 								],
 								lastEvent: {
 									change: 'sevenOneOff',
@@ -2231,7 +2229,7 @@ module.exports = {
 							attachedToTarget: null,
 							log: [
 								...game.log,
-								`${userService.truncateEmail(player.email)} played the ${card.name} as a ${card.ruleText}, targeting the ${target.name}.`,
+								`${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck as a one-off to ${card.ruleText}, targeting the ${target.name}.`,
 							],
 							lastEvent: {
 								change: 'sevenTargetedOneOff',
