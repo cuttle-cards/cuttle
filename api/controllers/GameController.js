@@ -5,7 +5,14 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
- ///////////////////
+const sevenFaceCard = require('./inGameActions/seven/sevenFaceCard');
+const sevenPoints = require('./inGameActions/seven/sevenPoints');
+const sevenTargetedOneOff = require('./inGameActions/seven/sevenTargetedOneOff');
+const sevenScuttle = require('./inGameActions/seven/sevenScuttle');
+const sevenUntargetedOneOff = require('./inGameActions/seven/sevenUntargetedOneOff');
+const sevenJack = require('./inGameActions/seven/sevenJack');
+
+///////////////////
  // Dependencies //
  //////////////////
 var Promise = require('bluebird');
@@ -42,7 +49,7 @@ module.exports = {
 	getList: function (req, res) {
 		// HANDLE REQ.SESSION.GAME = GAME ID CASE
 		sails.sockets.join(req, 'GameList');
-		if (req.session.game != null) {
+		if (req.session.game !== null) {
 			var promiseGame = gameService.populateGame({gameId: req.session.game})
 			var promiseList = gameAPI.findOpenGames();
 			Promise.all([promiseGame, promiseList])
@@ -56,7 +63,6 @@ module.exports = {
 							change: 'Initialize',
 							pNum: req.session.pNum,
 							game: game,
-							pNum: req.session.pNum
 						}
 					});
 				return res.ok({
@@ -174,12 +180,12 @@ module.exports = {
 						const findP0 = userService.findUser({userId: game.players[0].id});
 						const findP1 = userService.findUser({userId: game.players[1].id});
 						const data = [
-							Promise.resolve(game), 
-							findP0, 
+							Promise.resolve(game),
+							findP0,
 							findP1
 						];
-						for (suit = 0; suit < 4; suit++) {
-							for (rank = 1; rank < 14; rank++) {
+						for (let suit = 0; suit < 4; suit++) {
+							for (let rank = 1; rank < 14; rank++) {
 								const promiseCard = cardService.createCard({
 									gameId: game.id,
 									suit,
@@ -187,7 +193,7 @@ module.exports = {
 								});
 								data.push(promiseCard);
 							}
-						};
+						}
 						return resolveMakeDeck(Promise.all(data));
 					})
 					.then(function deal (values) {
@@ -471,7 +477,7 @@ module.exports = {
 				}
 				await Game.updateOne({id: game.id})
 					.set(gameUpdates);
-				
+
 				await gameService.clearGame({userId: req.session.usr})
 			}
 			Game.publish([game.id], {
@@ -500,7 +506,7 @@ module.exports = {
 			if (game.turn % 2 === player.pNum) {
 				if (card.hand === player.id) {
 					if (card.rank <= 10) {
-						if (player.frozenId != card.id) {
+						if (player.frozenId !== card.id) {
 							// Move is legal; make changes
 							const gameUpdates = {
 								passes: 0,
@@ -578,7 +584,7 @@ module.exports = {
 			if (game.turn % 2 === player.pNum) {
 				if (card.hand === player.id) {
 					if ((card.rank >= 12 && card.rank <= 13) || card.rank === 8) {
-						if (player.frozenId != card.id) {
+						if (player.frozenId !== card.id) {
 							// Everything okay; make changes
 							let logEntry = userService.truncateEmail(player.email) + " played the " + card.name;
 							if (card.rank === 8) {
@@ -663,10 +669,10 @@ module.exports = {
 				if (card.hand === player.id) {
 					if (target.points === opponent.id) {
 						if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
-							if (player.frozenId != card.id) {
+							if (player.frozenId !== card.id) {
 								// Move is legal; make changes
 								const attachmentIds =  target.attachments.map(card => card.id);
-								const logMessage = `${userService.truncateEmail(player.email)} scuttled 
+								const logMessage = `${userService.truncateEmail(player.email)} scuttled
 									${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name}`;
 								// Define update dictionaries
 								const gameUpdates = {
@@ -769,7 +775,7 @@ module.exports = {
 						if (target.points === opponent.id) {
 							const queenCount = userService.queenCount({user: opponent});
 							if (queenCount === 0) {
-								if (player.frozenId != card.id) {
+								if (player.frozenId !== card.id) {
 									// Valid move; change and save
 									const gameUpdates = {
 										log: [
@@ -886,7 +892,7 @@ module.exports = {
 									default:
 										break;
 								}
-								if (player.frozenId != card.id) {
+								if (player.frozenId !== card.id) {
 									// Move was valid; update records
 									const gameUpdates = {
 										oneOff: card.id,
@@ -981,7 +987,7 @@ module.exports = {
 								default:
 									return Promise.reject({message: "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen"});
 							}
-							if (player.frozenId != card.id) {
+							if (player.frozenId !== card.id) {
 								// Move is valid -- make changes
 								const gameUpdates = {
 									oneOff: card.id,
@@ -1235,7 +1241,7 @@ module.exports = {
 									// Remove targeted jack from attachments of the point card it was on
 									Card.removeFromCollection(game.attachedToTarget.id, 'attachments')
 										.members([game.oneOffTarget.id]),
-									// Place oneOff 
+									// Place oneOff
 									User.addToCollection(player.id, 'points')
 										.members([game.attachedToTarget.id]),
 								];
@@ -1311,10 +1317,10 @@ module.exports = {
 							if (game.secondCard) {
 								gameUpdates.topCard = game.secondCard.id;
 								gameUpdates.secondCard = null;
-								
+
 								// If more cards are left in deck, replace second card with card from deck
 								if (game.deck.length >= 1) {
-									const newSecondCard = _.sample(game.deck).id;
+									let newSecondCard = _.sample(game.deck).id;
 									// Ensure new second card is distinct from cards drawn and new top card
 									while (cardsToRemoveFromDeck.includes(newSecondCard)) {
 										newSecondCard = _.sample(game.deck).id;
@@ -1448,7 +1454,7 @@ module.exports = {
 								);
 								break;
 							case 'point':
-								targetCard = opPoints.find(point => point.id === game.oneOffTarget.id);
+								const targetCard = opPoints.find(point => point.id === game.oneOffTarget.id);
 								if (!targetCard) return Promise.reject({message: `Could not find target point card ${game.oneOffTarget.id} to return to opponent's hand`});
 								// Scrap all jacks attached to target
 								cardsToScrap = [
@@ -1486,7 +1492,7 @@ module.exports = {
 				...game.twos.map(two => two.id),
 			];
 			const oneOff = game.oneOff;
-			if (oneOff.rank != 3 || !happened) {
+			if (oneOff.rank !== 3 || !happened) {
 				gameUpdates.oneOff = null;
 				cardsToScrap.push(game.oneOff.id);
 			}
@@ -1506,7 +1512,7 @@ module.exports = {
 				playedBy: player.pNum,
 				happened,
 				oneOff,
-			},
+			};
 			updatePromises = [
 				...updatePromises,
 				// Update game with turn, log, passes, oneOff, and lastEvent
@@ -1583,7 +1589,7 @@ module.exports = {
 					change: 'resolveFour',
 				},
 			};
-			if (card2 != null) {
+			if (card2 !== null) {
 				cardsToScrap.push(card2.id);
 				gameUpdates.log = [
 					...game.log,
@@ -1702,585 +1708,29 @@ module.exports = {
 	***Seven-Resolution Plays
 	*/
 	sevenPoints: function (req, res) {
-		const promiseGame = gameService.findGame({gameId: req.session.game});
-		const promisePlayer = userService.findUser({userId: req.session.usr});
-		const promiseCard = cardService.findCard({cardId: req.body.cardId});
-		Promise.all([promiseGame, promisePlayer, promiseCard])
-		.then(function changeAndSave (values) {
-			const [ game, player, card ] = values;
-			if (game.turn % 2 === player.pNum) {
-				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
-					if (card.rank < 11) {
-						const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
-						const playerUpdates = {
-							frozenId: null,
-						};
-						const gameUpdates = {
-							topCard,
-							secondCard,
-							passes: 0,
-							turn: game.turn + 1,
-							resolving: null,
-							lastEvent: {
-								change: 'sevenPoints',
-							},
-							log: [
-								...game.log,
-								`${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck for points.`,
-							],
-						};
-						const updatePromises = [
-							Game.updateOne(game.id)
-								.set(gameUpdates),
-							Game.removeFromCollection(game.id, 'deck')
-								.members(cardsToRemoveFromDeck),
-							User.updateOne(player.id)
-								.set(playerUpdates),
-							User.addToCollection(player.id, 'points')
-								.members([card.id]),
-						];
-						return Promise.all([game, ...updatePromises]);
-					} else {
-						return Promise.reject({message: "You can only play Ace - Ten cards as points"});
-					}
-				} else {
-					return Promise.reject({message: "You must pick a card from the deck to play when resolving a seven"});
-				}
-			} else {
-				return Promise.reject({message: "It's not your turn"});
-			}
-		})
-		.then(function populateGame (values) {
-			const [ game ] = values;
-			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
-		})
-		.then(async function publishAndRespond (values) {
-			const fullGame = values[0];
-			const gameModel = values[1];
-			const victory = await gameService.checkWinGame({
-				game: fullGame,
-				gameModel,
-			});
-			Game.publish([fullGame.id], {
-				verb: 'updated',
-				data: {
-					change: 'sevenPoints',
-					game: fullGame,
-					victory,
-				},
-			});
-			// If the game is over, clean it up
-			if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
-			return res.ok();
-		})
-		.catch(function failed (err) {
-			return res.badRequest(err);
-		});
-	}, //End sevenPoints
+    return sevenPoints(req, res)
+  },
 
 	sevenFaceCard: function (req, res) {
-		const promiseGame = gameService.findGame({gameId: req.session.game});
-		const promisePlayer = userService.findUser({userId: req.session.usr});
-		const promiseCard = cardService.findCard({cardId: req.body.cardId});
-		Promise.all([promiseGame, promisePlayer, promiseCard])
-		.then(function changeAndSave (values) {
-			const [ game, player, card ] = values;
-			// var game = values[0], player = values[1], card = values[2];
-			if (game.turn % 2 === player.pNum) {
-				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
-					if (card.rank === 12 || card.rank === 13 || card.rank === 8) {
-						// Valid move -- make changes
-						const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
-						const playerUpdates = {
-							frozenId: null,
-						};
-						let logEntry = `${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck`;
-						if (card.rank === 8) {
-							logEntry += ' as a Glasses eight.'
-						}
-						else {
-							logEntry += '.';
-						}
-						const gameUpdates = {
-							topCard,
-							secondCard,
-							passes: 0,
-							turn: game.turn + 1,
-							resolving: null,
-							lastEvent: {
-								change: 'sevenFaceCard',
-							},
-							log: [
-								...game.log,
-								logEntry,
-							],
-						};
-						const updatePromises = [
-							Game.updateOne(game.id)
-								.set(gameUpdates),
-							Game.removeFromCollection(game.id, 'deck')
-								.members(cardsToRemoveFromDeck),
-							User.updateOne(player.id)
-								.set(playerUpdates),
-							User.addToCollection(player.id, 'faceCards')
-								.members([card.id]),
-						];
-						return Promise.all([game, ...updatePromises]);
-					} else {
-						return Promise.reject({message: "You can only play Kings, Queens, and Eights as Face Cards, without a TARGET"});
-					}
-				} else {
-					return Promise.reject({message: "You must pick a card from the deck to play when resolving a seven"});
-				}
-			} else {
-				return Promise.reject({message: "It's not your turn"});
-			}
-		})
-		.then(function populateGame (values) {
-			const [ game ] = values;
-			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
-		})
-		.then(async function publishAndRespond (values) {
-			const fullGame = values[0];
-			const gameModel = values[1];
-			const victory = await gameService.checkWinGame({
-				game: fullGame,
-				gameModel,
-			});
-			Game.publish([fullGame.id], {
-				verb: 'updated',
-				data: {
-					change: 'sevenFaceCard',
-					game: fullGame,
-					victory,
-				},
-			});
-			// If the game is over, clean it up
-			if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
-			return res.ok();
-		})
-		.catch(function failed (err) {
-			return res.badRequest(err);
-		});
-	}, //End sevenFaceCard
+    return sevenFaceCard(req, res)
+	},
 
 	sevenScuttle: function (req, res) {
-		const promiseGame = gameService.findGame({gameId: req.session.game});
-		const promisePlayer = userService.findUser({userId: req.session.usr});
-		const promiseOpponent = userService.findUser({userId: req.body.opId});
-		const promiseCard = cardService.findCard({cardId: req.body.cardId});
-		const promiseTarget = cardService.findCard({cardId: req.body.targetId});
-		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget])
-		.then(function changeAndSave (values) {
-			const [ game, player, opponent, card, target ] = values;
-			if (game.turn % 2 === player.pNum) {
-				if (card.id === game.topCard.id || card.id === game.secondCard.id) {
-					if (card.rank < 11) {
-						if (target.points === opponent.id) {
-							if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
-								// Move is legal; make changes
-								const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
-								const cardsToScrap = [
-									card.id,
-									target.id,
-									...target.attachments.map(jack => jack.id)
-								];
-								const playerUpdates = {
-									frozenId: null,
-								};
-								const gameUpdates = {
-									topCard,
-									secondCard,
-									passes: 0,
-									turn: game.turn + 1,
-									resolving: null,
-									log: [
-										...game.log,
-										`${userService.truncateEmail(player.email)} scuttled ${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name} from the top of the deck.`,
-									],
-									lastEvent: {
-										change: 'sevenScuttle',
-									},
-								};
-								const updatePromises = [
-									Game.updateOne(game.id)
-										.set(gameUpdates),
-									// Remove new secondCard from deck
-									Game.removeFromCollection(game.id, 'deck')
-										.members(cardsToRemoveFromDeck),
-									// Remove target from opponent points
-									User.removeFromCollection(opponent.id, 'points')
-										.members([target.id]),
-									// Remove attachments from target
-									Card.replaceCollection(target.id, 'attachments')
-										.members([]),
-									// Scrap relevant cards
-									Game.addToCollection(game.id, 'scrap')
-										.members(cardsToScrap),
-									User.updateOne(player.id)
-										.set(playerUpdates),
-								];
-								return Promise.all([game, ...updatePromises]);
-							} else {
-								return Promise.reject({message: "You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)"});
-							}
-						} else {
-							return Promise.reject({message: "You can only scuttle a card in your oppponent's points"});
-						}
-					} else {
-						return Promise.reject({message: "You can only scuttle with an ace through ten"});
-					}
-				} else {
-					return Promise.reject({message: "You can only one of the top two cards from the deck while resolving a seven"});
-				}
-			} else {
-				return Promise.reject({message: "It's not your turn"});
-			}
-		}) //End changeAndSave()
-		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
-		})
-		.then(async function publishAndRespond (values) {
-			const fullGame = values[0];
-			const gameModel = values[1];
-			const victory = await gameService.checkWinGame({
-				game: fullGame,
-				gameModel,
-			});
-			Game.publish([fullGame.id], {
-				verb: 'updated',
-				data: {
-					change: 'sevenScuttle',
-					game: fullGame,
-					victory,
-				},
-			});
-			return res.ok();
-		})
-		.catch(function failed (err) {
-			return res.badRequest(err);
-		});
+    return sevenScuttle(req, res)
+
 	}, //End sevenScuttle()
 
 	sevenJack: function (req, res) {
-		const promiseGame = gameService.findGame({gameId: req.session.game});
-		const promisePlayer = userService.findUser({userId: req.session.usr});
-		const promiseOpponent = userService.findUser({userId: req.body.opId});
-		const promiseCard = cardService.findCard({cardId: req.body.cardId});
-		const promiseTarget = req.body.targetId !== -1 ? cardService.findCard({cardId: req.body.targetId}) : -1; // -1 for double jacks with no points to steal special case
-    let promises = [promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget];
-		Promise.all(promises)
-		.then(function changeAndSave (values) {
-			const [ game, player, opponent, card, target ] = values;
-			let gameUpdates = {
-				passes: 0,
-				turn: game.turn + 1,
-				resolving: null,
-			};
-			let playerUpdates = {
-				frozenId: null,
-			};
-			let updatePromises = [];
-			if (game.turn % 2 === player.pNum) {
-				if (card.id === game.topCard.id || card.id === game.secondCard.id) {
-					// special case - seven double jacks with no points to steal
-					if (target === -1){
-						const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
-						gameUpdates = {
-							...gameUpdates,
-							topCard,
-							secondCard,
-							log: [
-								...game.log,
-								`${userService.truncateEmail(player.email)} scrapped ${card.name}, since there are no point cards to steal on ${userService.truncateEmail(opponent.email)}'s field.`,
-							],
-							lastEvent: {
-								change: 'sevenJack',
-							},
-						};
-
-						updatePromises = [
-							Game.updateOne(game.id)
-								.set(gameUpdates),
-							User.updateOne(player.id)
-								.set(playerUpdates),
-							Game.addToCollection(game.id, 'scrap')
-								.members([card.id]),
-							Game.removeFromCollection(game.id, 'deck')
-								.members(cardsToRemoveFromDeck),
-						];
-            return Promise.all([game, ...updatePromises]);
-          } else {
-            const queenCount = userService.queenCount({user: opponent});
-						switch (queenCount) {
-							case 0:
-								break;
-							case 1:
-								if (target.faceCards === opponent.id && target.rank === 12) {
-								} else {
-									return Promise.reject({message: "Your opponent's queen prevents you from targeting their other cards"});
-								}
-								break;
-							default:
-								return Promise.reject({message: "You cannot play a targeted one-off when your opponent has more than one Queen"});
-						} //End queenCount validation
-            // Normal sevens
-            if (target.points === opponent.id) {
-              if (card.rank === 11) {
-								const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
-								const cardUpdates = {
-									index: target.attachments.length,
-								};
-								gameUpdates = {
-									...gameUpdates,
-									topCard,
-									secondCard,
-									log: [
-										...game.log,
-										`${userService.truncateEmail(player.email)} stole ${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name} from the top of the deck.`,
-									],
-								}
-								updatePromises = [
-									Game.updateOne(game.id)
-										.set(gameUpdates),
-									User.updateOne(player.id)
-										.set(playerUpdates),
-									// Set card's index within attachments
-									Card.updateOne(card.id)
-										.set(cardUpdates),
-									// Remove new second card fromd eck
-									Game.removeFromCollection(game.id, 'deck')
-										.members(cardsToRemoveFromDeck),
-									// Add jack to target's attachments
-									Card.addToCollection(target.id, 'attachments')
-										.members([card.id]),
-									// Steal point card
-									User.addToCollection(player.id, 'points')
-										.members([target.id]),
-								];
-                return Promise.all([game, ...updatePromises]);
-              } else {
-                return Promise.reject({message: "You can only steal your opponent's points with a jack"});
-              }
-            } else {
-              return Promise.reject({message: "You can only jack your opponent's point cards"});
-            }
-          }
-				} else {
-					return Promise.reject({message: "You can only one of the top two cards from the deck while resolving a seven"});
-				}
-			} else {
-				return Promise.reject({message: "It's not your turn"});
-			}
-		})
-		.then(function populateGame (values) {
-			return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
-		})
-		.then(async function publishAndRespond (values) {
-			const fullGame = values[0];
-			const gameModel = values[1];
-			const victory = await gameService.checkWinGame({
-				game: fullGame,
-				gameModel,
-			});
-			Game.publish([fullGame.id], {
-				verb: 'updated',
-				data: {
-					change: 'sevenJack',
-					game: fullGame,
-					victory,
-				},
-			});
-			// If the game is over, clean it up
-			if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
-			return res.ok();
-		})
-		.catch(function failed (err) {
-			return res.badRequest(err);
-		});
-	}, //End sevenJack()
+    return sevenJack(req, res)
+	},
 
 	sevenUntargetedOneOff: function (req, res) {
-		const promiseGame = gameService.findGame({gameId: req.session.game});
-		const promisePlayer = userService.findUser({userId: req.session.usr});
-		const promiseCard = cardService.findCard({cardId: req.body.cardId});
-		const promiseOpponent = userService.findUser({userId: req.body.opId});
-		Promise.all([promiseGame, promisePlayer, promiseCard, promiseOpponent])
-		.then(function changeAndSave (values) {
-			const [ game, player, card, opponent ] = values;
-			if (game.turn % 2 === player.pNum) {
-				if (game.topCard.id === card.id || game.secondCard.id === card.id) {
-					switch (card.rank) {
-						case 1:
-						case 3:
-						case 4:
-						case 5:
-						case 6:
-						case 7:
-							switch (card.rank) {
-								case 3:
-									if (game.scrap.length === 0) return Promise.reject({message: "You can only play a 3 ONE-OFF if there are cards in the scrap pile"});
-									break;
-								case 4:
-									if (opponent.hand.length === 0) return Promise.reject({message: "You cannot play a 4 as a one-off while your opponent has no cards in hand"});
-									break;
-								case 5:
-								case 7:
-									if (!game.topCard) return Promise.reject({message: "You can only play a " + card.rank + " as a ONE-OFF if there are cards in the deck"});
-									break;
-							}
-							const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
-							const gameUpdates = {
-								topCard,
-								secondCard,
-								resolving: null,
-								oneOff: card.id,
-								log: [
-									...game.log,
-									`${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck as a one-off to ${card.ruleText}.`,
-								],
-								lastEvent: {
-									change: 'sevenOneOff',
-									pNum:req.session.pNum,
-								},
-							};
-							const updatePromises = [
-								Game.updateOne(game.id)
-									.set(gameUpdates),
-								Game.removeFromCollection(game.id, 'deck')
-									.members(cardsToRemoveFromDeck),
-							];
-							return Promise.all([game, ...updatePromises]);
-						default:
-							return Promise.reject({message: "You cannot play that card as a ONE-OFF without a target"});
-					}
-				} else {
-					return Promise.reject({message: "You can only play cards from the top of the deck while resolving a seven"});
-				}
-			} else {
-				return Promise.reject({message: "It's not your turn"});
-			}
-		})
-		.then(function populateGame (values) {
-			const [ game ] = values;
-			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
-		})
-		.then(async function publishAndRespond (values) {
-			const fullGame = values[0];
-			const gameModel = values[1];
-			const victory = await gameService.checkWinGame({
-				game: fullGame,
-				gameModel,
-			});
-			Game.publish([fullGame.id], {
-				verb: 'updated',
-				data: {
-					change: 'sevenOneOff',
-					game: fullGame,
-					pNum: req.session.pNum,
-					victory,
-				},
-			});
-			return res.ok();
-		})
-		.catch(function failed (err) {
-			return res.badRequest(err);
-		});
-	}, //End sevenUntargetedOneOff()
+    return sevenUntargetedOneOff(req, res)
+	},
 
 	sevenTargetedOneOff: function (req, res) {
-		const promiseGame = gameService.findGame({gameId: req.session.game});
-		const promisePlayer = userService.findUser({userId: req.session.usr});
-		const promiseOpponent = userService.findUser({userId: req.body.opId});
-		const promiseCard = cardService.findCard({cardId: req.body.cardId});
-		const promiseTarget = cardService.findCard({cardId: req.body.targetId});
-		let promisePoint = null;
-		const targetType = req.body.targetType;
-		if (targetType === 'jack') {
-			promisePoint = cardService.findCard({cardId: req.body.pointId});
-		}
-		Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, Promise.resolve(targetType), promisePoint])
-		.then(function changeAndSave (values) {
-			const [ game, player, opponent, card, target, targetType, point ] = values;
-			if (game.turn % 2 === player.pNum) {
-				if (card.id === game.topCard.id || card.id === game.secondCard.id) {
-					if (card.rank === 2 || card.rank === 9) {
-						const queenCount = userService.queenCount({user: opponent});
-						switch (queenCount) {
-							case 0:
-								break;
-							case 1:
-								if (target.faceCards === opponent.id && target.rank === 12) {
-								} else {
-									return Promise.reject({message: "Your opponent's queen prevents you from targeting their other cards"});
-								}
-								break;
-							default:
-								return Promise.reject({message: "You cannot play a targeted one-off when your opponent has more than one Queen"});
-						} //End queenCount validation
-						const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
-						const gameUpdates = {
-							topCard,
-							secondCard,
-							resolving: null,
-							oneOff: card.id,
-							oneOffTarget: target.id,
-							oneOffTargetType: targetType,
-							attachedToTarget: null,
-							log: [
-								...game.log,
-								`${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck as a one-off to ${card.ruleText}, targeting the ${target.name}.`,
-							],
-							lastEvent: {
-								change: 'sevenTargetedOneOff',
-								pNum:req.session.pNum,
-							},
-						}
-
-						if (point) gameUpdates.attachedToTarget = point.id;
-
-						const updatePromises = [
-							Game.updateOne(game.id)
-								.set(gameUpdates),
-							Game.removeFromCollection(game.id, 'deck')
-								.members(cardsToRemoveFromDeck),
-						];
-
-						return Promise.all([game, ...updatePromises]);
-					}
-				} else {
-					return Promise.reject({message: "You can only play cards from the top of the deck while resolving a seven"});
-				}
-			} else {
-				return Promise.reject({message: "It's not your turn"});
-			}
-		})
-		.then(function populateGame (values) {
-			const [ game ] = values;
-			return Promise.all([gameService.populateGame({gameId: game.id}), game]);
-		})
-		.then(async function publishAndRespond (values) {
-			const fullGame = values[0];
-			const gameModel = values[1];
-			const victory = await gameService.checkWinGame({
-				game: fullGame,
-				gameModel,
-			});
-			Game.publish([fullGame.id], {
-				verb: 'updated',
-				data: {
-					change: 'sevenTargetedOneOff',
-					game: fullGame,
-					victory,
-					pNum: req.session.pNum,
-				},
-			});
-			return res.ok();
-		})
-		.catch(function failed (err) {
-			return res.badRequest(err);
-		});
-	}, //End sevenTargetedOneOff
+    return sevenTargetedOneOff(req,res)
+	},
 
 	// Player requests to concede game
 	concede: function (req, res) {
@@ -2289,7 +1739,7 @@ module.exports = {
 			return  Promise.all([Promise.resolve(game), gameService.clearGame({userId: req.session.usr})]);
 		})
 		.then(function publishAndRespond (values) {
-			game = values[0];
+			const game = values[0];
 			var victory = {
 				gameOver: true,
 				winner: (req.session.pNum + 1) % 2,
