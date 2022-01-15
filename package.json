@@ -1,8 +1,8 @@
 {
   "name": "cuttlev2",
   "private": true,
-  "version": "2.2.0",
-  "description": "The Greatest Two Player Card Game",
+  "version": "2.2.3",
+  "description": "The deepest and most strategic standard-deck card game",
   "keywords": [],
   "engines": {
     "node": "12.18.3"
