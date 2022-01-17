@@ -7,8 +7,8 @@ module.exports = function (req, res) {
   const promisePlayerPoints = cardService.findPoints({userId: req.body.opId});
   const promiseOpPoints = cardService.findPoints({userId: req.session.usr});
   Promise.all([promiseGame, promisePlayer, promiseOpponent, promisePlayerPoints, promiseOpPoints])
-    .then(function changeAndSave (values) {
-      const [ game, player, opponent, playerPoints, opPoints ] = values;
+    .then(function changeAndSave(values) {
+      const [game, player, opponent, playerPoints, opPoints] = values;
       let happened = true;
       const playerUpdates = {};
       const opponentUpdates = {};
@@ -84,7 +84,7 @@ module.exports = function (req, res) {
             ];
             break; //End resolve ACE
           case 2:
-            gameUpdates= {
+            gameUpdates = {
               ...gameUpdates,
               log: [
                 ...game.log,
@@ -136,7 +136,7 @@ module.exports = function (req, res) {
           case 5:
             //Draw top card
             const handLen = player.hand.length;
-            const cardsToDraw = [ game.topCard.id ];
+            const cardsToDraw = [game.topCard.id];
             gameUpdates.topCard = null;
             let cardsToRemoveFromDeck = [];
             if (handLen < 7) {
@@ -311,7 +311,7 @@ module.exports = function (req, res) {
                 `The ${game.oneOff.name} one-off resolves, returning the ${game.oneOffTarget.name} to ${userService.truncateEmail(opponent.email)}'s hand. It cannot be played next turn.`,
               ],
             };
-            switch(game.oneOffTargetType) {
+            switch (game.oneOffTargetType) {
               case 'faceCard':
                 updatePromises.push(
                   User.removeFromCollection(opponent.id, 'faceCards')
@@ -403,12 +403,12 @@ module.exports = function (req, res) {
 
       return Promise.all(dataToReturn);
     }) //End changeAndSave
-    .then(function populateGame (values) {
-      const [ game, oneOff, pNum, happened ] = values;
+    .then(function populateGame(values) {
+      const [game, oneOff, pNum, happened] = values;
       return Promise.all([gameService.populateGame({gameId: game.id}), oneOff, pNum, happened, game]);
     })
-    .then(async function publishAndRespond (values) {
-      const [ fullGame, oneOff, pNum, happened, gameModel ] = values;
+    .then(async function publishAndRespond(values) {
+      const [fullGame, oneOff, pNum, happened, gameModel] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
@@ -429,7 +429,7 @@ module.exports = function (req, res) {
       if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
       return res.ok();
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     });
 }

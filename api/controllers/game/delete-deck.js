@@ -1,6 +1,6 @@
 module.exports = function (req, res) {
   return gameService.findGame({gameId: req.session.game})
-    .then(function changeAndSave (game) {
+    .then(function changeAndSave(game) {
       const updatePromises = [
         Game.replaceCollection(game.id, 'deck')
           .members([]),
@@ -9,11 +9,11 @@ module.exports = function (req, res) {
       ];
       return Promise.all([game, ...updatePromises]);
     })
-    .then(function populateGame (values) {
-      const [ game ] = values;
+    .then(function populateGame(values) {
+      const [game] = values;
       return gameService.populateGame({gameId: game.id});
     })
-    .then(function publishUpdate (game) {
+    .then(function publishUpdate(game) {
       Game.publish([game.id], {
         verb: 'updated',
         data: {
@@ -23,7 +23,7 @@ module.exports = function (req, res) {
       });
       return res.ok();
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     });
 }

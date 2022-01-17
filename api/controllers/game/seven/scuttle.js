@@ -1,4 +1,3 @@
-
 module.exports = function (req, res) {
   const Promise = require("bluebird");
   const promiseGame = gameService.findGame({gameId: req.session.game});

@@ -3,8 +3,8 @@ module.exports = function (req, res) {
   const promiseGame = gameService.findGame({gameId: req.session.game});
   const promisePlayer = userService.findUser({userId: req.session.usr});
   return Promise.all([promiseGame, promisePlayer])
-    .then(function changeAndSave (values) {
-      const [ game, player ] = values;
+    .then(function changeAndSave(values) {
+      const [game, player] = values;
       const playerUpdates = {};
       let gameUpdates = {
         turn: game.turn + 1,
@@ -12,7 +12,7 @@ module.exports = function (req, res) {
         log: [...game.log, `${userService.truncateEmail(player.email)} passess`],
       };
       const updatePromises = [];
-      if ( (game.turn % 2) === player.pNum) {
+      if ((game.turn % 2) === player.pNum) {
         // Passing is only allowed if the deck is empty
         if (!game.topCard) {
           playerUpdates.frozenId = null;
@@ -38,11 +38,11 @@ module.exports = function (req, res) {
         return Promise.reject({message: "It's not your turn."});
       }
     })
-    .then(function populateGame (values) {
-      const [ game ] = values;
+    .then(function populateGame(values) {
+      const [game] = values;
       return gameService.populateGame({gameId: game.id});
     })
-    .then(async function publishAndRespond (game) {
+    .then(async function publishAndRespond(game) {
       const victory = {
         gameOver: false,
         winner: null
@@ -70,7 +70,7 @@ module.exports = function (req, res) {
       });
       return res.ok();
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     });
 }

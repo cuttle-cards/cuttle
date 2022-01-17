@@ -12,8 +12,8 @@ module.exports = function (req, res) {
     promisePoint = Promise.resolve(null);
   }
   Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, targetType, promisePoint])
-    .then(function changeAndSave (values) {
-      const [ game, player, opponent, card, target, targetType, point ] = values;
+    .then(function changeAndSave(values) {
+      const [game, player, opponent, card, target, targetType, point] = values;
       if (player.pNum === game.turn % 2) {
         if (!game.oneOff) {
           if (card.hand === player.id) {
@@ -74,10 +74,10 @@ module.exports = function (req, res) {
         return Promise.reject({message: "It's not your turn."});
       }
     }) //End changeAndSave()
-    .then(function populateGame (values) {
+    .then(function populateGame(values) {
       return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
     })
-    .then(async function publishAndRespond (values) {
+    .then(async function publishAndRespond(values) {
       const fullGame = values[0];
       const gameModel = values[1];
       const victory = await gameService.checkWinGame({
@@ -95,7 +95,7 @@ module.exports = function (req, res) {
       });
       return res.ok();
     }) //End publishAndRespond
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     });
 }

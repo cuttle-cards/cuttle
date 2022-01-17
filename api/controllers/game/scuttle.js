@@ -5,15 +5,15 @@ module.exports = function (req, res) {
   const promiseCard = cardService.findCard({cardId: req.body.cardId});
   const promiseTarget = cardService.findCard({cardId: req.body.targetId});
   Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget])
-    .then(function changeAndSave (values) {
-      const [ game, player, opponent, card, target ] = values;
-      if (game.turn  % 2 === player.pNum) {
+    .then(function changeAndSave(values) {
+      const [game, player, opponent, card, target] = values;
+      if (game.turn % 2 === player.pNum) {
         if (card.hand === player.id) {
           if (target.points === opponent.id) {
             if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
               if (player.frozenId !== card.id) {
                 // Move is legal; make changes
-                const attachmentIds =  target.attachments.map(card => card.id);
+                const attachmentIds = target.attachments.map(card => card.id);
                 const logMessage = `${userService.truncateEmail(player.email)} scuttled
 									${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name}`;
                 // Define update dictionaries
@@ -76,11 +76,11 @@ module.exports = function (req, res) {
         return Promise.reject({message: "It's not your turn."});
       }
     })
-    .then(function populateGame (values) {
-      const [ game ] = values;
+    .then(function populateGame(values) {
+      const [game] = values;
       return Promise.all([gameService.populateGame({gameId: game.id}), game]);
     })
-    .then(async function publishAndRespond (values) {
+    .then(async function publishAndRespond(values) {
       const fullGame = values[0];
       const gameModel = values[1];
       const victory = await gameService.checkWinGame({
@@ -97,7 +97,7 @@ module.exports = function (req, res) {
       });
       return res.ok();
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     });
 }

@@ -4,8 +4,8 @@ module.exports = function (req, res) {
   const promiseCard = cardService.findCard({cardId: req.body.cardId});
   const promiseOpponent = userService.findUser({userId: req.body.opId});
   Promise.all([promiseGame, promisePlayer, promiseCard, promiseOpponent])
-    .then(function changeAndSave (values) {
-      const [ game, player, card, opponent ] = values;
+    .then(function changeAndSave(values) {
+      const [game, player, card, opponent] = values;
       if (game.turn % 2 === player.pNum) { //Check Turn
         if (!game.oneOff) { //Check that no other one-off is in play
           if (card.hand === player.id) { //Check that card was in hand
@@ -72,10 +72,10 @@ module.exports = function (req, res) {
         return Promise.reject({message: "It's not your turn"});
       }
     })
-    .then(function populateGame (values) {
+    .then(function populateGame(values) {
       return Promise.all([gameService.populateGame({gameId: values[0].id}), values[0]]);
     })
-    .then(async function publishAndRespond (values) {
+    .then(async function publishAndRespond(values) {
       const fullGame = values[0];
       const gameModel = values[1];
       const victory = await gameService.checkWinGame({
@@ -93,7 +93,7 @@ module.exports = function (req, res) {
       });
       return res.ok();
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     });
 }

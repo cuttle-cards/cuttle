@@ -5,11 +5,11 @@ module.exports = function (req, res) {
   const card = cardService.findCard({cardId: req.body.cardId});
   const target = cardService.findCard({cardId: req.body.targetId});
   Promise.all([game, player, opponent, card, target])
-    .then(function changeAndSave (values) {
-      const [ game, player, opponent, card, target ] = values;
+    .then(function changeAndSave(values) {
+      const [game, player, opponent, card, target] = values;
       if (game.turn % 2 === player.pNum) {
         if (card.hand === player.id) {
-          if (card.rank === 11)  {
+          if (card.rank === 11) {
             if (target.points === opponent.id) {
               const queenCount = userService.queenCount({user: opponent});
               if (queenCount === 0) {
@@ -67,12 +67,12 @@ module.exports = function (req, res) {
         return Promise.reject({message: "It's not your turn"});
       }
     }) //End changeAndSave()
-    .then(function populateGame (values) {
+    .then(function populateGame(values) {
       const game = values[0];
       return Promise.all([gameService.populateGame({gameId: game.id}), game]);
     })
-    .then(async function publishAndRespond (values) {
-      const [ fullGame, gameModel ] = values;
+    .then(async function publishAndRespond(values) {
+      const [fullGame, gameModel] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
@@ -90,7 +90,7 @@ module.exports = function (req, res) {
       if (victory.gameOver) await gameService.clearGame({userId: req.session.usr})
       return res.ok();
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     });
 

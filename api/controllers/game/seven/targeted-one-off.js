@@ -1,5 +1,4 @@
-
-module.exports = function (req, res){
+module.exports = function (req, res) {
   const Promise = require("bluebird");
   const promiseGame = gameService.findGame({gameId: req.session.game});
   const promisePlayer = userService.findUser({userId: req.session.usr});
@@ -12,8 +11,8 @@ module.exports = function (req, res){
     promisePoint = cardService.findCard({cardId: req.body.pointId});
   }
   Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget, Promise.resolve(targetType), promisePoint])
-    .then(function changeAndSave (values) {
-      const [ game, player, opponent, card, target, targetType, point ] = values;
+    .then(function changeAndSave(values) {
+      const [game, player, opponent, card, target, targetType, point] = values;
       if (game.turn % 2 === player.pNum) {
         if (card.id === game.topCard.id || card.id === game.secondCard.id) {
           if (card.rank === 2 || card.rank === 9) {
@@ -30,7 +29,10 @@ module.exports = function (req, res){
               default:
                 return Promise.reject({message: "You cannot play a targeted one-off when your opponent has more than one Queen"});
             } //End queenCount validation
-            const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
+            const {topCard, secondCard, cardsToRemoveFromDeck} = gameService.sevenCleanUp({
+              game: game,
+              index: req.body.index
+            });
             const gameUpdates = {
               topCard,
               secondCard,
@@ -45,7 +47,7 @@ module.exports = function (req, res){
               ],
               lastEvent: {
                 change: 'sevenTargetedOneOff',
-                pNum:req.session.pNum,
+                pNum: req.session.pNum,
               },
             }
 
@@ -67,11 +69,11 @@ module.exports = function (req, res){
         return Promise.reject({message: "It's not your turn"});
       }
     })
-    .then(function populateGame (values) {
-      const [ game ] = values;
+    .then(function populateGame(values) {
+      const [game] = values;
       return Promise.all([gameService.populateGame({gameId: game.id}), game]);
     })
-    .then(async function publishAndRespond (values) {
+    .then(async function publishAndRespond(values) {
       const fullGame = values[0];
       const gameModel = values[1];
       const victory = await gameService.checkWinGame({
@@ -89,7 +91,7 @@ module.exports = function (req, res){
       });
       return res.ok();
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     });
-  }
+}

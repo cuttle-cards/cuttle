@@ -8,13 +8,13 @@
 module.exports = {
 
   attributes: {
-  	suit: {
-  		type: 'number'
-  	},
+    suit: {
+      type: 'number'
+    },
 
-  	rank: {
-  		type: 'number'
-  	},
+    rank: {
+      type: 'number'
+    },
 
     name: {
       type: 'string'
@@ -24,13 +24,13 @@ module.exports = {
       type: 'string'
     },
 
-  	deck: {
-  		model: 'game'
-  	},
+    deck: {
+      model: 'game'
+    },
 
-  	scrap: {
-  		model: 'game',
-  	},
+    scrap: {
+      model: 'game',
+    },
 
     twos: {
       model: 'game'
@@ -58,7 +58,7 @@ module.exports = {
     },
 
     attachedTo: {
-    	model: 'card'
+      model: 'card'
     },
 
     // Used to track if this card is targeted

@@ -1,10 +1,10 @@
 const Promise = require("bluebird");
-module.exports = function (req, res){
+module.exports = function (req, res) {
   return gameService.populateGame({gameId: req.session.game})
-    .then(function clearGame (game) {
-      return  Promise.all([Promise.resolve(game), gameService.clearGame({userId: req.session.usr})]);
+    .then(function clearGame(game) {
+      return Promise.all([Promise.resolve(game), gameService.clearGame({userId: req.session.usr})]);
     })
-    .then(function publishAndRespond (values) {
+    .then(function publishAndRespond(values) {
       const game = values[0];
       var victory = {
         gameOver: true,
@@ -20,7 +20,7 @@ module.exports = function (req, res){
         },
       });
       return res.ok();
-    }).catch(function failed (err) {
+    }).catch(function failed(err) {
       return res.badRequest(err);
     });
 }

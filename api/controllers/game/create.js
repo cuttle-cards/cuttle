@@ -1,6 +1,6 @@
 var gameAPI = sails.hooks['customgamehook'];
 
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   if (req.body.gameName) {
     gameAPI.createGame(req.body.gameName)
       .then(function (game) {

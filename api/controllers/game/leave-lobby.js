@@ -2,7 +2,7 @@ module.exports = function (req, res) {
   const promiseGame = gameService.findGame({gameId: req.session.game});
   const promisePlayer = userService.findUser({userId: req.session.usr});
   Promise.all([promiseGame, promisePlayer])
-    .then(function changeAndSave (values) {
+    .then(function changeAndSave(values) {
       const [game, player] = values;
       const gameUpdates = {};
       const playerUpdates = {
@@ -32,15 +32,15 @@ module.exports = function (req, res) {
       ];
       return Promise.all(updatePromises);
     })
-    .then(function publishAndRespond (values) {
+    .then(function publishAndRespond(values) {
       // Remove session data for game
-      delete(req.session.game);
-      delete(req.session.pNum);
+      delete (req.session.game);
+      delete (req.session.pNum);
       // Publish update to all users, then respond w/ 200
       sails.sockets.blast("leftGame", {id: values[0].id}, req);
       return res.ok();
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       res.badRequest(err);
     });
 }

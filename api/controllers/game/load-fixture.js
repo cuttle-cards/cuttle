@@ -73,7 +73,7 @@ module.exports = function (req, res) {
     })
     .then(function placeCards(values) {
       // Load game according to fixture
-      const [ game, p0, p1 ] = values;
+      const [game, p0, p1] = values;
       let topCard = null;
       let secondCard = null;
       // Take top card from fixture if specified
@@ -129,8 +129,8 @@ module.exports = function (req, res) {
       return Promise.all([game, ...updatePromises]);
     })
     .then(function populateGame(values) {
-      const [ game ] = values;
-      return gameService.populateGame({ gameId: game.id});
+      const [game] = values;
+      return gameService.populateGame({gameId: game.id});
     })
     .then(function publishAndRespond(game) {
       // Announce update through socket

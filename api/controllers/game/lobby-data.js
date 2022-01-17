@@ -16,7 +16,7 @@ module.exports = function (req, res) {
       }
       return res.ok(lobbyData);
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     });
 }

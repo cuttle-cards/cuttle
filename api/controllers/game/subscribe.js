@@ -7,7 +7,7 @@ module.exports = function (req, res) {
     const promiseClearOldGame = gameService.clearGame({userId: req.session.usr});
     const promiseGame = gameAPI.findGame(req.body.id);
     const promiseUser = userAPI.findUser(req.session.usr);
-    Promise.all([promiseGame, promiseUser, promiseClearOldGame]).then(async function success (arr) {
+    Promise.all([promiseGame, promiseUser, promiseClearOldGame]).then(async function success(arr) {
       // Catch promise values
       const game = arr[0];
       const user = arr[1];
@@ -41,7 +41,7 @@ module.exports = function (req, res) {
       return Promise.all([game, updatePlayer, addPlayerToGame]);
 
     })
-      .then(function respond (values) {
+      .then(function respond(values) {
         const game = values [0];
         const user = values[1];
         // Socket announcement that player joined game
@@ -55,7 +55,7 @@ module.exports = function (req, res) {
         // Respond with 200
         return res.ok({game: game, playerEmail: user.email, pNum: user.pNum});
       })
-      .catch(function failure (error) {
+      .catch(function failure(error) {
         return res.badRequest(error);
       });
   } else {

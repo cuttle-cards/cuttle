@@ -3,13 +3,13 @@ module.exports = function (req, res) {
   const promisePlayer = userService.findUser({userId: req.session.usr});
   const promiseCard1 = cardService.findCard({cardId: req.body.cardId1});
   let promiseCard2 = null;
-  if ( req.body.hasOwnProperty("cardId2") ) {
+  if (req.body.hasOwnProperty("cardId2")) {
     promiseCard2 = cardService.findCard({cardId: req.body.cardId2});
   }
   Promise.all([promiseGame, promisePlayer, promiseCard1, promiseCard2])
-    .then(function changeAndSave (values) {
-      const [ game, player, card1, card2 ] = values;
-      const cardsToScrap = [ card1.id ];
+    .then(function changeAndSave(values) {
+      const [game, player, card1, card2] = values;
+      const cardsToScrap = [card1.id];
       const gameUpdates = {
         passes: 0,
         turn: game.turn + 1,
@@ -40,11 +40,11 @@ module.exports = function (req, res) {
       ];
       return Promise.all([game, ...updatePromises]);
     }) // End changeAndSave
-    .then(function populateGame (values) {
-      const [ game ] = values;
+    .then(function populateGame(values) {
+      const [game] = values;
       return Promise.all([gameService.populateGame({gameId: game.id}), game]);
     })
-    .then(async function publishAndRespond (values) {
+    .then(async function publishAndRespond(values) {
       const fullGame = values[0];
       const gameModel = values[1];
       const victory = await gameService.checkWinGame({
@@ -61,7 +61,7 @@ module.exports = function (req, res) {
       });
       return res.ok();
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     })
 }

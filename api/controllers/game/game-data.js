@@ -4,7 +4,7 @@ module.exports = function (req, res) {
       Game.subscribe(req, [req.session.game]);
       res.ok({'game': fullGame, 'pNum': req.session.pNum});
     })
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       res.badRequest(err);
     });
 }

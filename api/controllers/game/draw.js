@@ -1,6 +1,6 @@
 module.exports = function (req, res) {
   const pGame = gameService.findGame({gameId: req.session.game})
-    .then(function checkTurn (game) {
+    .then(function checkTurn(game) {
       if (req.session.pNum === game.turn % 2) {
         if (game.topCard) {
           return Promise.resolve(game);
@@ -13,7 +13,7 @@ module.exports = function (req, res) {
     });
 
   const pUser = userService.findUser({userId: req.session.usr})
-    .then(function handLimit (user) {
+    .then(function handLimit(user) {
       if (user.hand.length < 8) {
         return Promise.resolve(user);
       } else {
@@ -23,8 +23,8 @@ module.exports = function (req, res) {
 
   // Make changes after finding records
   Promise.all([pGame, pUser])
-    .then(function changeAndSave (values) {
-      const [ game, user ] = values;
+    .then(function changeAndSave(values) {
+      const [game, user] = values;
       const updatePromises = [
         game,
         User.addToCollection(user.id, 'hand')
@@ -66,11 +66,11 @@ module.exports = function (req, res) {
       return Promise.all(updatePromises);
 
     }) //End changeAndSave
-    .then(function getPopulatedGame (values) {
+    .then(function getPopulatedGame(values) {
       const game = values[0];
       return gameService.populateGame({gameId: game.id});
     }) //End getPopulatedGame
-    .then(function publishAndRespond (fullGame) {
+    .then(function publishAndRespond(fullGame) {
       Game.publish([fullGame.id], {
         verb: 'updated',
         data: {
@@ -80,7 +80,7 @@ module.exports = function (req, res) {
       });
       return res.ok();
     }) //End publishAndRespond
-    .catch(function failed (err) {
+    .catch(function failed(err) {
       return res.badRequest(err);
     });
 }
