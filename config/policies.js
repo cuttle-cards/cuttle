@@ -58,44 +58,29 @@ module.exports.policies = {
     logout: 'isLoggedIn',
   },
 
-  GameController: {
-    '*': false,
-    create : ['isLoggedIn', 'hasGameName'],
-    getList: 'isLoggedIn',
-    subscribe: 'isLoggedIn',
-    ready:     'isLoggedIn',
-    leaveLobby: ['isSocket', 'isLoggedIn', 'isInGame'],
-    draw: ['isLoggedIn', 'isInGame'],
-    pass: ['isLoggedIn', 'isInGame'],
-    points: ['isLoggedIn', 'isInGame', 'hasCardId'],
-    faceCard: ['isLoggedIn', 'isInGame', 'hasCardId'],
-    scuttle: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
-    jack: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
-    untargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
-    targetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
-    counter: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
-    resolve: ['isLoggedIn', 'isInGame', 'hasOpId'],
-    resolveFour: ['isLoggedIn', 'isInGame', 'hasCardIdOne'],
-    resolveThree: ['isLoggedIn', 'isInGame', 'hasCardId'],
-    concede: ['isLoggedIn', 'isInGame'],
-    gameOver: ['isLoggedIn', 'isInGame'],
-    chat: ['isLoggedIn', 'isInGame'],
-    gameData: ['isLoggedIn', 'isInGame'],
-    lobbyData: ['isLoggedIn', 'isInGame'],
-
-
-    /////////////////////////////////
-    // DEVELOPMENT Or Staging ONLY //
-    /////////////////////////////////
-    stackDeck: 'developmentOrStagingOnly',
-    deleteDeck: 'developmentOrStagingOnly',
-    clearGame: 'developmentOrStagingOnly',
-    loadFixture: 'developmentOrStagingOnly',
-  },
-  TestController: {
-    '*': 'developmentOrStagingOnly',
-  },
   'game/reconnect': ['isLoggedIn', 'isInGame'],
+  'game/create' : ['isLoggedIn', 'hasGameName'],
+  'game/get-list': 'isLoggedIn',
+  'game/subscribe': 'isLoggedIn',
+  'game/ready':     'isLoggedIn',
+  'game/leave-lobby': ['isSocket', 'isLoggedIn', 'isInGame'],
+  'game/draw': ['isLoggedIn', 'isInGame'],
+  'game/pass': ['isLoggedIn', 'isInGame'],
+  'game/points': ['isLoggedIn', 'isInGame', 'hasCardId'],
+  'game/face-card': ['isLoggedIn', 'isInGame', 'hasCardId'],
+  'game/scuttle': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+  'game/jack': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+  'game/untargeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
+  'game/targeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
+  'game/counter': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
+  'game/resolve': ['isLoggedIn', 'isInGame', 'hasOpId'],
+  'game/resolve-four': ['isLoggedIn', 'isInGame', 'hasCardIdOne'],
+  'game/resolve-three': ['isLoggedIn', 'isInGame', 'hasCardId'],
+  'game/concede': ['isLoggedIn', 'isInGame'],
+  'game/game-over': ['isLoggedIn', 'isInGame'],
+  'game/chat': ['isLoggedIn', 'isInGame'],
+  'game/game-data': ['isLoggedIn', 'isInGame'],
+  'game/lobby-data': ['isLoggedIn', 'isInGame'],
 
   'game/seven/face-card': ['isLoggedIn', 'isInGame', 'hasCardId'],
   'game/seven/jack': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
@@ -103,4 +88,17 @@ module.exports.policies = {
   'game/seven/scuttle': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
   'game/seven/targeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
   'game/seven/untargeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId'],
+
+    /////////////////////////////////
+    // DEVELOPMENT Or Staging ONLY //
+    /////////////////////////////////
+    'game/stack-deck': 'developmentOrStagingOnly',
+    'game/delete-deck': 'developmentOrStagingOnly',
+    'game/clear-game': 'developmentOrStagingOnly',
+    'game/load-fixture': 'developmentOrStagingOnly',
+
+  TestController: {
+    '*': 'developmentOrStagingOnly',
+  },
+
 };
