@@ -57,13 +57,12 @@ module.exports.policies = {
     reLogin: ['hasValidEmail', 'hasPassword'],
     logout: 'isLoggedIn',
   },
-  
+
   GameController: {
     '*': false,
     create : ['isLoggedIn', 'hasGameName'],
     getList: 'isLoggedIn',
     subscribe: 'isLoggedIn',
-    reconnect: ['isLoggedIn', 'isInGame'],
     ready:     'isLoggedIn',
     leaveLobby: ['isSocket', 'isLoggedIn', 'isInGame'],
     draw: ['isLoggedIn', 'isInGame'],
@@ -78,12 +77,6 @@ module.exports.policies = {
     resolve: ['isLoggedIn', 'isInGame', 'hasOpId'],
     resolveFour: ['isLoggedIn', 'isInGame', 'hasCardIdOne'],
     resolveThree: ['isLoggedIn', 'isInGame', 'hasCardId'],
-    sevenPoints: ['isLoggedIn', 'isInGame', 'hasCardId'],
-    sevenFaceCard: ['isLoggedIn', 'isInGame', 'hasCardId'],
-    sevenScuttle: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
-    sevenJack: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
-    sevenUntargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId'],
-    sevenTargetedOneOff: ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
     concede: ['isLoggedIn', 'isInGame'],
     gameOver: ['isLoggedIn', 'isInGame'],
     chat: ['isLoggedIn', 'isInGame'],
@@ -101,5 +94,13 @@ module.exports.policies = {
   },
   TestController: {
     '*': 'developmentOrStagingOnly',
-  }
+  },
+  'game/reconnect': ['isLoggedIn', 'isInGame'],
+
+  'game/seven/face-card': ['isLoggedIn', 'isInGame', 'hasCardId'],
+  'game/seven/jack': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+  'game/seven/points': ['isLoggedIn', 'isInGame', 'hasCardId'],
+  'game/seven/scuttle': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+  'game/seven/targeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
+  'game/seven/untargeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId'],
 };

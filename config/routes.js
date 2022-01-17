@@ -55,7 +55,7 @@ module.exports.routes = {
   '/game/create'                  :   'gameController.create',
   '/game/getList'                 :   'gameController.getList',
   '/game/subscribe'               :   'gameController.subscribe',
-  '/game/reconnect'               :   'gameController.reconnect',
+  '/game/reconnect'               :   'game/reconnect',
   '/game/ready'                   :   'gameController.ready',
   '/game/leaveLobby'              :   'gameController.leaveLobby',
   '/game/draw'                    :   'gameController.draw',
@@ -68,15 +68,15 @@ module.exports.routes = {
   '/game/targetedOneOff'          :   'gameController.targetedOneOff',
   '/game/counter'                 :   'gameController.counter',
   '/game/resolve'                 :   'gameController.resolve',
-  '/game/resolveFour'             :   'gameController.resolveFour', 
+  '/game/resolveFour'             :   'gameController.resolveFour',
   '/game/resolveThree'            :   'gameController.resolveThree',
   // Resolving Sevens
-  '/game/seven/points'            :   'gameController.sevenPoints',
-  '/game/seven/faceCard'          :   'gameController.sevenFaceCard',
-  '/game/seven/scuttle'           :   'gameController.sevenScuttle',
-  '/game/seven/jack'              :   'gameController.sevenJack',
-  '/game/seven/untargetedOneOff'  :   'gameController.sevenUntargetedOneOff',
-  '/game/seven/targetedOneOff'    :   'gameController.sevenTargetedOneOff',
+  '/game/seven/points'            :   'game/seven/points',
+  '/game/seven/faceCard'          :   'game/seven/face-card',
+  '/game/seven/scuttle'           :   'game/seven/scuttle',
+  '/game/seven/jack'              :   'game/seven/jack',
+  '/game/seven/untargetedOneOff'  :   'game/seven/untargeted-one-off',
+  '/game/seven/targetedOneOff'    :   'game/seven/targeted-one-off',
   '/game/over'                    :   'gameController.gameOver',
   '/game/concede'                 :   'gameController.concede',
   '/game/chat'                    :   'gameController.chat',
@@ -85,9 +85,9 @@ module.exports.routes = {
   // DEVELOPMENT ONLY
   '/game/stackDeck'               :   'gameController.stackDeck',
   '/game/deleteDeck'              :   'gameController.deleteDeck',
-  '/game/loadFixture'              :   'gameController.loadFixture',
+  '/game/loadFixture'             :   'gameController.loadFixture',
   '/game/clear'                   :   'gameController.clearGame',
-  
+
   // Testing helpers
   '/test/wipeDatabase'           :   'TestController.wipeDatabase'
 };

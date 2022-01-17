@@ -1,5 +1,5 @@
 
-module.exports = function sevenFaceCard (req, res){
+module.exports = function (req, res){
   const Promise = require("bluebird");
   const promiseGame = gameService.findGame({gameId: req.session.game});
   const promisePlayer = userService.findUser({userId: req.session.usr});
@@ -7,22 +7,13 @@ module.exports = function sevenFaceCard (req, res){
   Promise.all([promiseGame, promisePlayer, promiseCard])
   .then(function changeAndSave (values) {
     const [ game, player, card ] = values;
-    // var game = values[0], player = values[1], card = values[2];
     if (game.turn % 2 === player.pNum) {
       if (game.topCard.id === card.id || game.secondCard.id === card.id) {
-        if (card.rank === 12 || card.rank === 13 || card.rank === 8) {
-          // Valid move -- make changes
+        if (card.rank < 11) {
           const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({game: game, index: req.body.index});
           const playerUpdates = {
             frozenId: null,
           };
-          let logEntry = `${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck`;
-          if (card.rank === 8) {
-            logEntry += ' as a Glasses eight.'
-          }
-          else {
-            logEntry += '.';
-          }
           const gameUpdates = {
             topCard,
             secondCard,
@@ -30,11 +21,11 @@ module.exports = function sevenFaceCard (req, res){
             turn: game.turn + 1,
             resolving: null,
             lastEvent: {
-              change: 'sevenFaceCard',
+              change: 'sevenPoints',
             },
             log: [
               ...game.log,
-              logEntry,
+              `${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck for points.`,
             ],
           };
           const updatePromises = [
@@ -44,12 +35,12 @@ module.exports = function sevenFaceCard (req, res){
               .members(cardsToRemoveFromDeck),
             User.updateOne(player.id)
               .set(playerUpdates),
-            User.addToCollection(player.id, 'faceCards')
+            User.addToCollection(player.id, 'points')
               .members([card.id]),
           ];
           return Promise.all([game, ...updatePromises]);
         } else {
-          return Promise.reject({message: "You can only play Kings, Queens, and Eights as Face Cards, without a TARGET"});
+          return Promise.reject({message: "You can only play Ace - Ten cards as points"});
         }
       } else {
         return Promise.reject({message: "You must pick a card from the deck to play when resolving a seven"});
@@ -72,7 +63,7 @@ module.exports = function sevenFaceCard (req, res){
     Game.publish([fullGame.id], {
       verb: 'updated',
       data: {
-        change: 'sevenFaceCard',
+        change: 'sevenPoints',
         game: fullGame,
         victory,
       },
@@ -83,5 +74,4 @@ module.exports = function sevenFaceCard (req, res){
   })
   .catch(function failed (err) {
     return res.badRequest(err);
-  });
-};
+  });}

@@ -5,13 +5,6 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-const sevenFaceCard = require('./inGameActions/seven/sevenFaceCard');
-const sevenPoints = require('./inGameActions/seven/sevenPoints');
-const sevenTargetedOneOff = require('./inGameActions/seven/sevenTargetedOneOff');
-const sevenScuttle = require('./inGameActions/seven/sevenScuttle');
-const sevenUntargetedOneOff = require('./inGameActions/seven/sevenUntargetedOneOff');
-const sevenJack = require('./inGameActions/seven/sevenJack');
-
 ///////////////////
  // Dependencies //
  //////////////////
@@ -24,11 +17,6 @@ module.exports = {
 	// Outside of Game Actions       //
 	// (creating, connecting, etc.)  //
 	///////////////////////////////////
-	reconnect: function (req, res) {
-		Game.subscribe(req, [req.session.game]);
-		sails.sockets.join(req, 'GameList');
-		return res.ok();
-	},
 	create: function(req, res) {
 		if (req.body.gameName) {
 			gameAPI.createGame(req.body.gameName)
@@ -1708,34 +1696,6 @@ module.exports = {
 			return res.badRequest(err);
 		});
 	}, //End resolveThree()
-
-	/*
-	***Seven-Resolution Plays
-	*/
-	sevenPoints: function (req, res) {
-    return sevenPoints(req, res)
-  },
-
-	sevenFaceCard: function (req, res) {
-    return sevenFaceCard(req, res)
-	},
-
-	sevenScuttle: function (req, res) {
-    return sevenScuttle(req, res)
-
-	}, //End sevenScuttle()
-
-	sevenJack: function (req, res) {
-    return sevenJack(req, res)
-	},
-
-	sevenUntargetedOneOff: function (req, res) {
-    return sevenUntargetedOneOff(req, res)
-	},
-
-	sevenTargetedOneOff: function (req, res) {
-    return sevenTargetedOneOff(req,res)
-	},
 
 	// Player requests to concede game
 	concede: function (req, res) {
