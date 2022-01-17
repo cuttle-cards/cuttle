@@ -73,15 +73,9 @@ module.exports = {
   reLogin: function (req, res) {
     userAPI.findUserByEmail(req.body.email)
       .then(function gotUser(user) {
-        const checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword).catch((err) => {
-          return res.badRequest(err)
-        });
-        const promiseGame = gameService.populateGame({gameId: user.game.id}).catch((err) => {
-          return res.badRequest(err)
-        });
-        return Promise.all([promiseGame, Promise.resolve(user).catch((err) => {
-          return res.badRequest(err)
-        }), checkPass]);
+        const checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword);
+        const promiseGame = gameService.populateGame({gameId: user.game});
+        return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
       })
       .then((values) => {
         const game = values[0];
