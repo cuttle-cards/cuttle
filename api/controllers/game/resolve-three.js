@@ -30,12 +30,7 @@ module.exports = function (req, res) {
           .members([card.id]),
         // Remove selected card from scrap
         Game.removeFromCollection(game.id, 'scrap')
-          .members([card.id]),
-        // Clear player's frozenId
-        User.updateOne(player.id)
-          .set({
-            frozenId: null,
-          }),
+          .members([card.id])
       ];
       return Promise.all([game, ...updatePromises]);
     })

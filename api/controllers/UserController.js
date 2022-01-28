@@ -28,14 +28,14 @@ module.exports = {
           if (users.length > 0) {
             return Promise.reject({message: "That email is already registered to another user; try logging in!"});
           }
-          return passwordAPI.encryptPass(pass)
+          return passwordAPI.encryptPass(pass);
         })
         .then(function createUser(encryptedPassword) { //Use encrypted password to make new user
           return userAPI.createUser(email, encryptedPassword)
             .then(function setSessionData(user) { //Successfully created User
               req.session.loggedIn = true;
               req.session.usr = user.id;
-              res.ok();
+              return res.ok();
             })
             .catch((reason) => { //Failed to create User
               return res.badRequest(reason);
@@ -61,7 +61,7 @@ module.exports = {
             })
             .catch((reason) => {
               return res.badRequest(reason);
-            })
+            });
         })
         .catch(() => {
           return res.badRequest({message: 'Could not find that User with that Username. Try signing up!'});

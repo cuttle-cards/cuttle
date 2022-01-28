@@ -23,9 +23,6 @@ module.exports = function (req, res) {
                   target.id,
                   ...target.attachments.map(jack => jack.id)
                 ];
-                const playerUpdates = {
-                  frozenId: null,
-                };
                 const gameUpdates = {
                   topCard,
                   secondCard,
@@ -54,9 +51,7 @@ module.exports = function (req, res) {
                     .members([]),
                   // Scrap relevant cards
                   Game.addToCollection(game.id, 'scrap')
-                    .members(cardsToScrap),
-                  User.updateOne(player.id)
-                    .set(playerUpdates),
+                    .members(cardsToScrap)
                 ];
                 return Promise.all([game, ...updatePromises]);
               } else {

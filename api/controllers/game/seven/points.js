@@ -13,9 +13,6 @@ module.exports = function (req, res) {
               game: game,
               index: req.body.index
             });
-            const playerUpdates = {
-              frozenId: null,
-            };
             const gameUpdates = {
               topCard,
               secondCard,
@@ -35,8 +32,6 @@ module.exports = function (req, res) {
                 .set(gameUpdates),
               Game.removeFromCollection(game.id, 'deck')
                 .members(cardsToRemoveFromDeck),
-              User.updateOne(player.id)
-                .set(playerUpdates),
               User.addToCollection(player.id, 'points')
                 .members([card.id]),
             ];
