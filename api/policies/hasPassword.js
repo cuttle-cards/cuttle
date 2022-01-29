@@ -7,11 +7,11 @@
  *
  */
 module.exports = function (req, res, next) {
-	if ( req.body.hasOwnProperty('password') ) {
-		if (typeof(req.body.password) === 'string'){
-			return next();
-		}
-	}
-	// User not allowed
+  if (req.body.hasOwnProperty('password')) {
+    if (typeof (req.body.password) === 'string') {
+      return next();
+    }
+  }
+  // User not allowed
   return res.badRequest({message: 'Error: Request missing required param password'});
 }

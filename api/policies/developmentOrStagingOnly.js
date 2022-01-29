@@ -6,11 +6,11 @@
  * @docs        :: http://sailsjs.org/#!/documentation/concepts/Policies
  *
  */
-module.exports = function(req, res, next) {
-    // Only allow the request if running in development or staging environment
-    if (['development', 'staging'].includes(sails.config.environment)) {
-        return next();
-    } else {
-        return res.forbidden({message: "Error: This action is only permitted in development or staging"});
-    }
-  };
+module.exports = function (req, res, next) {
+  // Only allow the request if running in development or staging environment
+  if (['development', 'staging'].includes(sails.config.environment)) {
+    return next();
+  } else {
+    return res.forbidden({message: "Error: This action is only permitted in development or staging"});
+  }
+};

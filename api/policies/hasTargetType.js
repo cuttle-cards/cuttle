@@ -6,12 +6,12 @@
  * @docs        :: http://sailsjs.org/#!/documentation/concepts/Policies
  *
  */
-module.exports = function(req, res, next) {
-	
-  // User is allowed, proceed to the next policy, 
+module.exports = function (req, res, next) {
+
+  // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
   if (req.body.hasOwnProperty('targetType')) {
-  		if (typeof(req.body.targetType) === 'string') return next();
+    if (typeof (req.body.targetType) === 'string') return next();
   }
 
   // User is not allowed
