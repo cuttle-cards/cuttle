@@ -9,6 +9,19 @@ module.exports = function (req, res) {
   Promise.all([promiseGame, promisePlayer, promiseCard1, promiseCard2])
     .then(function changeAndSave(values) {
       const [game, player, card1, card2] = values;
+      // Validate discard
+      if (
+        // missing both cards
+        (!card1 && !card2)
+        // discarding fewer than 2
+        || (player.hand.length >= 2 && (!card1 || !card2))
+        // card1 was not in player's hand
+        || (card1 && card1.hand != player.id)
+        // card2 was not in player's hand
+        || (card2 && card2.hand != player.id)
+        ) {
+          return Promise.reject({message: 'You must select two cards to discard'});  
+      }
       const cardsToScrap = [card1.id];
       const gameUpdates = {
         passes: 0,
