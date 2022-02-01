@@ -38,7 +38,7 @@ module.exports = function (req, res) {
                 oneOff: card.id,
                 log: [
                   ...game.log,
-                  `${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck as a one-off to ${card.ruleText}.`,
+                  `${player.username} played the ${card.name} from the top of the deck as a one-off to ${card.ruleText}.`,
                 ],
                 lastEvent: {
                   change: 'sevenOneOff',

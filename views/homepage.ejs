@@ -34,8 +34,8 @@
                             <p class="col-xs-2 col-xs-offset-5">Sign Up</p>
                         </div>
                         <div class="row">
-                            <p class="col-xs-offset-2 col-xs-2">Email</p>
-                            <input ng-model="signup.email" type="text" class="col-xs-4" required>
+                            <p class="col-xs-offset-2 col-xs-2">Username</p>
+                            <input ng-model="signup.username" type="text" class="col-xs-4" required>
                         </div>
                         <div class="row">
                             <p class="col-xs-offset-2 col-xs-2">Password</p>
@@ -58,8 +58,8 @@
                             <p class="col-xs-2 col-xs-offset-5">Log In</p>
                         </div>
                         <div class="row">
-                            <p class="col-xs-2 col-xs-offset-2">Email</p>
-                            <input ng-model="login.email" class="col-xs-4" type="text">
+                            <p class="col-xs-2 col-xs-offset-2">Username</p>
+                            <input ng-model="login.username" class="col-xs-4" type="text">
                         </div>
                         <div class="row">
                             <p class="col-xs-2 col-xs-offset-2">Password</p>
@@ -197,18 +197,18 @@
 
             </div> <!-- End of formWrapper -->
             <div ng-controller="lobbyController as lobby" class="lobbyController" ng-show="menu.tab==='lobby'">
-                <div ng-class="{'ready': menu.playerReady}" class="readyClass">    
+                <div ng-class="{'ready': menu.playerReady}" class="readyClass">
                 <div class="rulesDiv">
 <!--                 </div>
                 <div ng-show="menu.tab==='lobby'">  -->
                         <p class="readyLine">
                             Welcome to the lobby of (Game name here possibly).  {{!menu.playerReady && "When you are ready, hit the Ready button." || "If you are no longer ready, hit the Unready button."}}
-                            To leave the game, click Leave Lobby. 
+                            To leave the game, click Leave Lobby.
                             <br> If you are having issues with the screen resolution, press CTRL (Windows) or CMD (Mac) +/- to adjust to a good size.
                         </p>
                         <div id="lobbyButtons">
                             <button ng-click="lobby.ready()" ng-class="{'btn btn-success': !menu.playerReady, 'btn btn-warning': menu.playerReady}">{{menu.playerReady && "Unready" || "Ready"}}</button>
-                             <button ng-click="lobby.leave()" class="btn btn-danger">Leave Lobby</button>  
+                             <button ng-click="lobby.leave()" class="btn btn-danger">Leave Lobby</button>
                         </div>
                         <p ng-if="menu.playerReady" class="readySign">Congratulations on being ready!</p>
                         <p ng-if="menu.opReady" class="opReadySign">Your Challenger Is Waiting</p>
@@ -265,7 +265,7 @@
                             </div>
                             </p>
                             <div id="oppCounter">
-                                <div id="oppName">{{gc.opponent.email}}</div>
+                                <div id="oppName">{{gc.opponent.username}}</div>
                                 <div id="oppKingSlot1" class="kingSlot" ng-class="{fullKing: gc.opKingCount == 1}">
                                     <p class="cap1">14</p>
                                 </div>
@@ -362,7 +362,7 @@
                                     <div ng-repeat="text in gc.game.log track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree || gc.logDisplay != 'gameLog'" class="logEntry">
                                         {{text}}
                                     </div>
-                                    <div ng-repeat="text in gc.game.chat track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree || gc.logDisplay != 'chat'" class="logEntry"> 
+                                    <div ng-repeat="text in gc.game.chat track by $index" ng-hide="gc.resolvingThree || gc.resolvingSeven || gc.opResolvingSeven || gc.opResolvingThree || gc.logDisplay != 'chat'" class="logEntry">
                                         {{text}}
                                     </div>
                                 </div>
@@ -438,7 +438,7 @@
                         <!-- Bottom Wrap -->
                         <div id="bottomWrap" class="row">
                             <div id="yourHand">
-                                <!-- Your Hand 
+                                <!-- Your Hand
                                             NEED TO FIX THE IMAGE AND MAKE NEW IMAGES!!!!!!!!!!!!!!!!!!!!!
                                 -->
                                 <div ng-repeat="card in gc.player.hand" class="handCard">
@@ -446,7 +446,7 @@
                                 </div>
                             </div>
                             <div id="yourCounter">
-                                <div id="oppName">{{gc.player.email}}</div>
+                                <div id="oppName">{{gc.player.username}}</div>
                                 <p id="yourPointTotal">Your Point Total: {{gc.yourPointCount}}</p>
                                 <div id="yourKingSlot1" class="kingSlot" ng-class="{fullKing: gc.yourKingCount == 1}">
                                     <p class="cap1">14</p>

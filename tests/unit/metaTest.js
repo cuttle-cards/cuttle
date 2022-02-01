@@ -1,19 +1,5 @@
 
 describe('The meta test', function () {
-	// var passwordAPI = sails.hooks['custompasswordhook'];
-	// var foo = 'bar';
-	// var bun = 'mediocre';
-	it('Should pass this check', function () {
-		foo.should.equal('bar');
-	});
-	// it("Should create a user", function () {
-	// 	passwordAPI.encryptedPassword({password: "sexbutt"}).then(function createUser (pw) {
-
-	// 		User.create({email: "fudgeHead@boo.com", encryptedPassword: pw}, function (err, user) {
-	// 		});
-	// 	});
-	// });
-
 	it("Should create a card with cardService", function (done) {
 		cardService.createCard({suit: 3, rank: 1, gameId: 4}).then(function createdCard (card) {
 			card.suit.should.equal(3);
@@ -25,9 +11,9 @@ describe('The meta test', function () {
 		});
 	});
 	it('Should make a socket request', function () {
-		io.socket.get('user/signup', 
+		io.socket.get('user/signup',
 			{
-				email: 'nicola@tesla.com',
+				username: 'nicola@tesla.com',
 				password: 'lightening'
 			},
 			function (res, jwres) {
@@ -51,9 +37,9 @@ describe('The meta test', function () {
 	});
 	it('Should use helper to make request', function() {
 
-		return request(socket1, '/user/signup', 
+		return request(socket1, '/user/signup',
 			{
-				email: 'n@tesla.com',
+				username: 'n@tesla.com',
 				password: 'lightening'
 			}
 		);

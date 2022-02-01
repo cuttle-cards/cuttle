@@ -3,10 +3,10 @@ module.exports = function userHook(sails) {
 // User API  //
 ///////////////
   return {
-    findUserByEmail: function (email) {
+    findUserByUsername: function (username) {
       return new Promise(function (resolve, reject) {
         User.findOne({
-          email: email
+          username: username
         }).exec(function (error, user) {
           if (error) {
             reject(error)
@@ -33,10 +33,10 @@ module.exports = function userHook(sails) {
       });
     },
 
-    createUser: function (email, encryptedPassword) {
+    createUser: function (username, encryptedPassword) {
       return new Promise(function (resolve, reject) {
         User.create({
-          email: email,
+          username: username,
           encryptedPassword: encryptedPassword
         })
           .fetch()

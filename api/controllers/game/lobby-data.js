@@ -3,9 +3,9 @@ module.exports = function (req, res) {
     .then(function sendResponse(game) {
       const players = [];
       if (game.players.length > 0) {
-        players.push({email: game.players[0].email, pNum: 0});
+        players.push({username: game.players[0].username, pNum: 0});
         if (game.players.length > 1) {
-          players.push({email: game.players[1].email, pNum: 1});
+          players.push({username: game.players[1].username, pNum: 1});
         }
       }
       const lobbyData = {

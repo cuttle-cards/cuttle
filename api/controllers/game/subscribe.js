@@ -48,12 +48,12 @@ module.exports = function (req, res) {
         sails.sockets.blast('join',
           {
             gameId: game.id,
-            newPlayer: {email: user.email, pNum: user.pNum},
+            newPlayer: {username: user.username, pNum: user.pNum},
             newStatus: game.status,
           },
           req);
         // Respond with 200
-        return res.ok({game: game, playerEmail: user.email, pNum: user.pNum});
+        return res.ok({game: game, username: user.username, pNum: user.pNum});
       })
       .catch(function failure(error) {
         return res.badRequest(error);

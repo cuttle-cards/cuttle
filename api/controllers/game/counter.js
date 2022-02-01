@@ -15,14 +15,15 @@ module.exports = function (req, res) {
           if (card.rank === 2) {
             if (!opHasQueen) {
               if (game.twos.length > 0) {
-                logEntry = `${userService.truncateEmail(player.email)} played the ${card.name} to counter ${userService.truncateEmail(opponent.email)}'s ${game.twos[game.twos.length - 1].name}.`;
+                logEntry = `${player.username} played the ${card.name} to counter ${opponent.username}'s ${game.twos[game.twos.length - 1].name}.`;
               } else {
-                logEntry = `${userService.truncateEmail(player.email)} played the ${card.name} to counter ${userService.truncateEmail(opponent.email)}'s ${game.oneOff.name}.`;
+                logEntry = `${player.username} played the ${card.name} to counter ${opponent.username}'s ${game.oneOff.name}.`;
               }
               const gameUpdates = {
                 lastEvent: {
                   change: 'counter',
                   pNum: req.session.pNum,
+                  log: [game.log, ...logEntry]
                 },
               };
               const updatePromises = [

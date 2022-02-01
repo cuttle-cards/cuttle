@@ -52,9 +52,9 @@ module.exports.policies = {
   UserController: {
     '*': false,
     homepage: true,
-    signup: ['hasValidEmail', 'hasValidPassword'],
-    login: ['hasValidEmail', 'hasPassword'],
-    reLogin: ['hasValidEmail', 'hasPassword'],
+    signup: ['hasValidUsername', 'hasValidPassword'],
+    login: ['hasValidUsername', 'hasPassword'],
+    reLogin: ['hasValidUsername', 'hasPassword'],
     logout: 'isLoggedIn',
   },
 

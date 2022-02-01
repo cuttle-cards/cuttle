@@ -4,7 +4,7 @@ module.exports = function (req, res) {
   return Promise.all([promiseGame, promisePlayer])
     .then(function changeAndSave(values) {
       var game = values [0], player = values[1];
-      game.chat.push(userService.truncateEmail(player.email) + ": " + req.body.msg);
+      game.chat.push(player.username + ": " + req.body.msg);
       return gameService.saveGame({game: game});
     })
     .then(function populateGame(game) {

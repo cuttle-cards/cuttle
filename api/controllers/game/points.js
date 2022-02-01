@@ -16,7 +16,7 @@ module.exports = function (req, res) {
                 turn: game.turn + 1,
                 log: [
                   ...game.log,
-                  `${userService.truncateEmail(player.email)} played the ${card.name} for points`
+                  `${player.username} played the ${card.name} for points`
                 ],
                 lastEvent: {
                   change: 'points',
