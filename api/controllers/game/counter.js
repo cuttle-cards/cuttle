@@ -23,7 +23,7 @@ module.exports = function (req, res) {
                 lastEvent: {
                   change: 'counter',
                   pNum: req.session.pNum,
-                  log: [game.log, ...logEntry]
+                  log: [...logEntry, game.log]
                 },
               };
               const updatePromises = [
