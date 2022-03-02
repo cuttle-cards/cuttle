@@ -20,8 +20,10 @@ git clone https://github.com/TeasingSisyphus/cuttleV2
 #### Install Back-End Dependencies
 cd into root folder of back-end and run
 ```
-npm install
+npm ci
 ```
+(note that `ci` as opposed to `install` is a 'clean install' which ensures versions exactly match package-lock.json).
+
 #### Boot Back-End server
 ```
 npm start
