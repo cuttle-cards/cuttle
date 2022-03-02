@@ -18,20 +18,20 @@ module.exports = {
   },
 
   signup: function (req, res) {
-    if (req.body.password && req.body.email) {
+    if (req.body.password && req.body.username) {
       // data from client
-      const email = req.body.email;
+      const username = req.body.username;
       const pass = req.body.password;
       // promises
-      User.find({email: req.body.email})
+      User.find({username: username})
         .then((users) => {
           if (users.length > 0) {
-            return Promise.reject({message: "That email is already registered to another user; try logging in!"});
+            return Promise.reject({message: "That username is already registered to another user; try logging in!"});
           }
           return passwordAPI.encryptPass(pass);
         })
         .then(function createUser(encryptedPassword) { //Use encrypted password to make new user
-          return userAPI.createUser(email, encryptedPassword)
+          return userAPI.createUser(username, encryptedPassword)
             .then(function setSessionData(user) { //Successfully created User
               req.session.loggedIn = true;
               req.session.usr = user.id;
@@ -45,13 +45,14 @@ module.exports = {
           return res.badRequest(reason);
         });
     } else { //Bad data sent from client
-      return res.badRequest("You did not submit an email, or password");
+      return res.badRequest("You did not submit a username or password");
     }
 
   },
   login: function (req, res) {
-    if (req.body.email) {
-      userAPI.findUserByEmail(req.body.email)
+    const username = req.body.username;
+    if (username) {
+      userAPI.findUserByUsername(username)
         .then((user) => {
           return passwordAPI.checkPass(req.body.password, user.encryptedPassword)
             .then(() => {
@@ -64,14 +65,14 @@ module.exports = {
             });
         })
         .catch(() => {
-          return res.badRequest({message: 'Could not find that User with that Username. Try signing up!'});
+          return res.badRequest({message: 'Could not find that user with that username. Try signing up!'});
         });
     } else {
-      return res.badRequest({message: 'An email must be provided'});
+      return res.badRequest({message: 'A username must be provided'});
     }
   },
   reLogin: function (req, res) {
-    userAPI.findUserByEmail(req.body.email)
+    userAPI.findUserByUsername(req.body.username)
       .then(function gotUser(user) {
         const checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword);
         const promiseGame = gameService.populateGame({gameId: user.game});

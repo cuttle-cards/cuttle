@@ -20,7 +20,7 @@ module.exports = function (req, res) {
         // card2 was not in player's hand
         || (card2 && card2.hand != player.id)
         ) {
-          return Promise.reject({message: 'You must select two cards to discard'});  
+          return Promise.reject({message: 'You must select two cards to discard'});
       }
       const cardsToScrap = [card1.id];
       const gameUpdates = {
@@ -35,12 +35,12 @@ module.exports = function (req, res) {
         cardsToScrap.push(card2.id);
         gameUpdates.log = [
           ...game.log,
-          `${userService.truncateEmail(player.email)} discarded the ${card1.name} and the ${card2.name}.`,
+          `${player.username} discarded the ${card1.name} and the ${card2.name}.`,
         ];
       } else {
         gameUpdates.log = [
           ...game.log,
-          `${userService.truncateEmail(player.email)} discarded the ${card1.name}.`,
+          `${player.username} discarded the ${card1.name}.`,
         ];
       }
       const updatePromises = [

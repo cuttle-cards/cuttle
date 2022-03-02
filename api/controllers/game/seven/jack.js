@@ -32,7 +32,7 @@ module.exports = function (req, res) {
               secondCard,
               log: [
                 ...game.log,
-                `${userService.truncateEmail(player.email)} scrapped ${card.name}, since there are no point cards to steal on ${userService.truncateEmail(opponent.email)}'s field.`,
+                `${player.username} scrapped ${card.name}, since there are no point cards to steal on ${opponent.username}'s field.`,
               ],
               lastEvent: {
                 change: 'sevenJack',
@@ -80,7 +80,7 @@ module.exports = function (req, res) {
                   secondCard,
                   log: [
                     ...game.log,
-                    `${userService.truncateEmail(player.email)} stole ${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name} from the top of the deck.`,
+                    `${player.username} stole ${opponent.username}'s ${target.name} with the ${card.name} from the top of the deck.`,
                   ],
                 }
                 updatePromises = [

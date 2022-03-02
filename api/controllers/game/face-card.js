@@ -10,7 +10,7 @@ module.exports = function (req, res) {
           if ((card.rank >= 12 && card.rank <= 13) || card.rank === 8) {
             if (player.frozenId !== card.id) {
               // Everything okay; make changes
-              let logEntry = userService.truncateEmail(player.email) + " played the " + card.name;
+              let logEntry = `${player.username} played the ${card.name}`;
               if (card.rank === 8) {
                 logEntry += ' as a Glasses eight';
               }

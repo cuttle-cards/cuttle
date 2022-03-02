@@ -12,7 +12,7 @@ module.exports = function (req, res) {
         turn: game.turn + 1,
         log: [
           ...game.log,
-          `${userService.truncateEmail(player.email)} took the ${card.name} from the Scrap pile to their hand.`,
+          `${player.username} took the ${card.name} from the Scrap pile to their hand.`,
         ],
         lastEvent: {
           change: 'resolveThree',

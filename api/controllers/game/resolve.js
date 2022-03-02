@@ -119,7 +119,7 @@ module.exports = function (req, res) {
               resolving: game.oneOff.id,
               log: [
                 ...game.log,
-                `The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} will draw one card of their choice from the Scrap pile.`,
+                `The ${game.oneOff.name} one-off resolves; ${player.username} will draw one card of their choice from the Scrap pile.`,
               ]
             };
             break;
@@ -129,7 +129,7 @@ module.exports = function (req, res) {
               resolving: game.oneOff.id,
               log: [
                 ...game.log,
-                `The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(opponent.email)} must discard two cards.`,
+                `The ${game.oneOff.name} one-off resolves; ${opponent.username} must discard two cards.`,
               ],
             };
             break;
@@ -144,7 +144,7 @@ module.exports = function (req, res) {
               if (game.secondCard) {
                 gameUpdates.log = [
                   ...game.log,
-                  `The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws two cards.`,
+                  `The ${game.oneOff.name} one-off resolves; ${player.username} draws two cards.`,
                 ];
                 cardsToDraw.push(game.secondCard.id);
                 gameUpdates.secondCard = null;
@@ -173,7 +173,7 @@ module.exports = function (req, res) {
               } else {
                 gameUpdates.log = [
                   ...game.log,
-                  `The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws the last card.`,
+                  `The ${game.oneOff.name} one-off resolves; ${player.username} draws the last card.`,
                 ];
               }
               //Player could only draw one card, due to hand limit
@@ -193,13 +193,13 @@ module.exports = function (req, res) {
                   gameUpdates.secondCard = newSecondCard;
                   gameUpdates.log = [
                     ...game.log,
-                    `The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws one card to reach the hand limit (8).`,
+                    `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card to reach the hand limit (8).`,
                   ];
                   // Player draws last card in deck, to reach hand limit (only draws 1)
                 } else {
                   gameUpdates.log = [
                     ...game.log,
-                    `The ${game.oneOff.name} one-off resolves; ${userService.truncateEmail(player.email)} draws one card (last in deck) to reach the hand limit (8).`,
+                    `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card (last in deck) to reach the hand limit (8).`,
                   ];
                 }
               }
@@ -308,7 +308,7 @@ module.exports = function (req, res) {
               ...gameUpdates,
               log: [
                 ...game.log,
-                `The ${game.oneOff.name} one-off resolves, returning the ${game.oneOffTarget.name} to ${userService.truncateEmail(opponent.email)}'s hand. It cannot be played next turn.`,
+                `The ${game.oneOff.name} one-off resolves, returning the ${game.oneOffTarget.name} to ${opponent.username}'s hand. It cannot be played next turn.`,
               ],
             };
             switch (game.oneOffTargetType) {

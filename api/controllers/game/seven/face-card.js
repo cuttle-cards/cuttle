@@ -18,7 +18,7 @@ module.exports = function (req, res) {
             const playerUpdates = {
               frozenId: null,
             };
-            let logEntry = `${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck`;
+            let logEntry = `${player.username} played the ${card.name} from the top of the deck`;
             if (card.rank === 8) {
               logEntry += ' as a Glasses eight.'
             } else {

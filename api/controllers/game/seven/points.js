@@ -24,7 +24,7 @@ module.exports = function (req, res) {
               },
               log: [
                 ...game.log,
-                `${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck for points.`,
+                `${player.username} played the ${card.name} from the top of the deck for points.`,
               ],
             };
             const updatePromises = [

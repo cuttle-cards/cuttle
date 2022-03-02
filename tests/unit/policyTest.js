@@ -124,16 +124,6 @@ describe('Policy Test', function () {
 
 	});
 
-	it("hasValidEmail", function (done) {
-		var hasValidEmail = require("../../api/policies/hasValidEmail.js");
-		req = newReq();
-		// Valid request
-		req.body.email = "joeBlow@gmail.com"
-		var x = hasValidEmail(req, res, next);
-		x.should.equal(true);
-		done();
-	});
-	
 	it("isLoggedIn", function () {
 		var isLoggedIn = require("../../api/policies/isLoggedIn.js");
 		// Test valid request (with user and logged in)

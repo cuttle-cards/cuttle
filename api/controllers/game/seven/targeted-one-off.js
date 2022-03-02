@@ -43,7 +43,7 @@ module.exports = function (req, res) {
               attachedToTarget: null,
               log: [
                 ...game.log,
-                `${userService.truncateEmail(player.email)} played the ${card.name} from the top of the deck as a one-off to ${card.ruleText}, targeting the ${target.name}.`,
+                `${player.username} played the ${card.name} from the top of the deck as a one-off to ${card.ruleText}, targeting the ${target.name}.`,
               ],
               lastEvent: {
                 change: 'sevenTargetedOneOff',
