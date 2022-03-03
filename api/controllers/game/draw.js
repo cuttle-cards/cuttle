@@ -32,7 +32,7 @@ module.exports = function (req, res) {
       ];
       const gameUpdates = {
         topCard: null,
-        log: [...game.log, userService.truncateEmail(user.email) + " drew a card"],
+        log: [...game.log, `${user.username} drew a card`],
         turn: game.turn + 1,
         lastEvent: {
           change: 'draw',

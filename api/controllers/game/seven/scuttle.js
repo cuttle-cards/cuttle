@@ -31,7 +31,7 @@ module.exports = function (req, res) {
                   resolving: null,
                   log: [
                     ...game.log,
-                    `${userService.truncateEmail(player.email)} scuttled ${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name} from the top of the deck.`,
+                    `${player.username} scuttled ${opponent.username}'s ${target.name} with the ${card.name} from the top of the deck.`,
                   ],
                   lastEvent: {
                     change: 'sevenScuttle',

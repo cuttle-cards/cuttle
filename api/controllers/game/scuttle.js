@@ -24,8 +24,7 @@ module.exports = function (req, res) {
       }
       // Move is legal; make changes
       const attachmentIds = target.attachments.map(card => card.id);
-      const logMessage = `${userService.truncateEmail(player.email)} scuttled
-        ${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name}`;
+      const logMessage = `${player.username} scuttled ${opponent.username}'s ${target.name} with the ${card.name}`;
       // Define update dictionaries
       const gameUpdates = {
         passes: 0,

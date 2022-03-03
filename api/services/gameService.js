@@ -31,7 +31,7 @@ function tempUser(usr, points) {
   this.faceCards = usr.faceCards;
   this.frozenId = usr.frozenId;
   this.id = usr.id;
-  this.userName = userService.truncateEmail(usr.email);
+  this.username = usr.username;
 
   this.hand.sort(comapreByRankThenSuit);
   this.points.sort(comapreByRankThenSuit);

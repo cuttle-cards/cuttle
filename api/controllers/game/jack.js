@@ -18,7 +18,7 @@ module.exports = function (req, res) {
                   const gameUpdates = {
                     log: [
                       ...game.log,
-                      `${userService.truncateEmail(player.email)} stole ${userService.truncateEmail(opponent.email)}'s ${target.name} with the ${card.name}`
+                      `${player.username} stole ${opponent.username}'s ${target.name} with the ${card.name}`
                     ],
                     turn: game.turn + 1,
                     passes: 0,

@@ -1,5 +1,3 @@
-const email = require('machinepack-emailaddresses');
-
 module.exports = {
   /*
   **Find User by Id
@@ -85,25 +83,4 @@ module.exports = {
     }
     return false;
   },
-
-  validateEmail: function (options) {
-    return new Promise(function (resolve, reject) {
-      email.validate({string: options.email},
-        {
-          error: function (err) {
-            return reject(error)
-          },
-          invalid: function () {
-            return reject({message: "That's not a valid email address"});
-          },
-          success: function () {
-            return resolve(true);
-          }
-        })
-    });
-  },
-  // returns email up until @
-  truncateEmail: function (email) {
-    return email.split("@")[0];
-  }
 };
