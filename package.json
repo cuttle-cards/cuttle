@@ -23,8 +23,8 @@
     "sails-hook-sockets": "^1.5.5",
     "sails-mongo": "^1.2.0",
     "sails-postgresql": "^1.0.2",
-    "sails.io.js": "^0.13.8",
-    "socket.io-client": "^1.4.8"
+    "sails.io.js": "^1.2.1",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
