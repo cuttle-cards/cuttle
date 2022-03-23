@@ -9,7 +9,7 @@ module.exports = {
 
   lintOnSave: false,
 
-  assetsDir: "assets",
+  outputDir: "assets",
   pages: {
     index: {
       entry: "client/js/main.js",
