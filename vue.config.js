@@ -9,10 +9,19 @@ module.exports = {
 
   lintOnSave: false,
 
+  assetsDir: "assets",
+  pages: {
+    index: {
+      entry: "client/js/main.js",
+      template: "client/public/index.html",
+      filename: "index.html",
+    },
+  },
+
   configureWebpack: {
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "assets/js"),
+        "@": path.resolve(__dirname, "client/js"),
       },
     },
   },

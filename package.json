@@ -67,7 +67,7 @@
     "vuetify-loader": "^1.3.0"
   },
   "scripts": {
-    "develop:client": "vue-cli-service serve assets/js/main.js",
+    "develop:client": "vue-cli-service serve",
     "debug": "node debug app.js",
     "start": "node app.js",
     "start:prod": "node app.js"
