@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import LoginSignup from '../views/LoginSignup.vue';
 import Lobby from '../views/Lobby.vue';
 import GameView from '../views/GameView.vue';
+import Rules from '../views/Rules.vue';
 import store from '../store/store.js';
 
 Vue.use(VueRouter);
@@ -25,11 +26,11 @@ const routes = [
 		path: '/login',
 		name: 'Login',
 		component: LoginSignup
-
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		// component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+	},
+	{
+		path: '/rules',
+		name: 'Rules',
+		component: Rules,
 	},
 	{
 		path: '/lobby/:gameId',
