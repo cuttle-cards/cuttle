@@ -1,161 +1,192 @@
 <template>
-  <div class="home">
-    <div class="container">
-      <div>
-        <v-btn
-          id="btn-logout"
-          text
-          color="primary"
-          data-cy="btn-logout"
-          @click="logout"
-        >
-          Logout
-        </v-btn>
-      </div>
+	<div class="home">
+		<div class="container">
+			<div>
+				<v-btn
+					id="btn-logout"
+					text
+					color="primary"
+					data-cy="btn-logout"
+					@click="logout"
+				>
+					Logout
+				</v-btn>
+			</div>
 
-      <div id="game-list-card">
-        <v-row>
-          <v-col cols="9">
-            <v-row id="card-content-header" class="mb-4">
-              <v-col cols="4">
-                <h1 id="home-card-title">Games</h1>
-              </v-col>
-              <v-col cols="8">
-                <v-row id="add-new-game">
-                  <v-col cols="8">
-                    <v-text-field
-                      v-model="newGameName"
-                      outlined
-                      label="Game Name"
-                      hide-details
-                      class="mr-4"
-                      :dense="$vuetify.breakpoint.mdAndDown ? true : false"
-                      data-cy="create-game-input"
-                      @keyup.enter="submitNewGame"
-                    />
-                  </v-col>
-                  <v-col cols="4">
-                    <v-btn
-                      color="primary"
-                      :small="$vuetify.breakpoint.mdAndDown ? true : false"
-                      data-cy="create-game-btn"
-                      @click="submitNewGame"
-                    >
-                      Create New Game
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-            <div id="game-list">
-              <p v-if="gameList.length === 0" data-cy="text-if-no-game">
-                No Active Games
-              </p>
-              <div v-for="game in gameList" :key="game.id">
-                <game-list-item
-                  :name="game.name"
-                  :p0ready="game.p0Ready ? 1 : 0"
-                  :p1ready="game.p1Ready ? 1 : 0"
-                  :game-id="game.id"
-                  :status="game.status"
-                  :num-players="game.numPlayers"
-                />
-              </div>
-            </div>
-          </v-col>
-          <v-col id="side-nav" cols="3">
-            <img id="logo" alt="Vue logo" src="../img/logo.png" />
-            <rules-dialog />
-            <v-btn
-              outlined
-              color="secondary"
-              class="mt-4"
-              :small="$vuetify.breakpoint.mdAndDown ? true : false"
-              href="https://human-ai-interaction.github.io/cuttle-bot/"
-              target="_blank"
-            >
-              Play with AI
-            </v-btn>
-            <v-btn
-              outlined
-              class="mt-4"
-              :small="$vuetify.breakpoint.mdAndDown"
-              href="https://discord.gg/9vrAZ8xGyh"
-              target="_blank"
-            >
-              Discord
-            </v-btn>
-          </v-col>
-        </v-row>
-      </div>
-    </div>
-    <v-snackbar
-      v-model="showSnackBar"
-      color="error"
-      content-class="d-flex justify-space-between align-center"
-      data-cy="newgame-snackbar"
-    >
-      {{ snackBarMessage }}
-      <v-icon data-cy="close-snackbar" @click="clearSnackBar">
-        mdi-close
-      </v-icon>
-    </v-snackbar>
-  </div>
+			<div id="game-list-card">
+				<v-row>
+					<v-col cols="9">
+						<v-row
+							id="card-content-header"
+							class="mb-4"
+						>
+							<v-col cols="4">
+								<h1 id="home-card-title">
+									Games
+								</h1>
+							</v-col>
+							<v-col cols="8">
+								<v-row id="add-new-game">
+									<v-col cols="8">
+										<v-text-field
+											v-model="newGameName"
+											outlined
+											label="Game Name"
+											hide-details
+											class="mr-4"
+											:dense="$vuetify.breakpoint.mdAndDown ? true : false"
+											data-cy="create-game-input"
+											@keyup.enter="submitNewGame"
+										/>
+									</v-col>
+									<v-col cols="4">
+										<v-btn
+											color="primary"
+											:small="$vuetify.breakpoint.mdAndDown ? true : false"
+											data-cy="create-game-btn"
+											@click="submitNewGame"
+										>
+											Create New Game
+										</v-btn>
+									</v-col>
+								</v-row>
+							</v-col>
+						</v-row>
+						<div id="game-list">
+							<p
+								v-if="gameList.length === 0"
+								data-cy="text-if-no-game"
+							>
+								No Active Games
+							</p>
+							<div
+								v-for="game in gameList"
+								:key="game.id"
+							>
+								<game-list-item
+									:name="game.name"
+									:p0ready="game.p0Ready ? 1 : 0"
+									:p1ready="game.p1Ready ? 1 : 0"
+									:game-id="game.id"
+									:status="game.status"
+									:num-players="game.numPlayers"
+								/>
+							</div>
+						</div>
+					</v-col>
+					<v-col
+						id="side-nav"
+						cols="3"
+					>
+						<img
+							id="logo"
+							alt="Vue logo"
+							src="../img/logo.png"
+						>
+						<v-btn
+							outlined
+							color="primary"
+							class="mt-4"
+							:small="$vuetify.breakpoint.mdAndDown ? true : false"
+							to="rules"
+							data-cy="rules-link"
+						>
+							Rules
+						</v-btn>
+						<v-btn
+							outlined
+							color="secondary"
+							class="mt-4"
+							:small="$vuetify.breakpoint.mdAndDown ? true : false"
+							href="https://human-ai-interaction.github.io/cuttle-bot/"
+							target="_blank"
+							data-cy="ai-link"
+						>
+							Play with AI
+						</v-btn>
+						<v-btn
+							outlined
+							class="mt-4"
+							:small="$vuetify.breakpoint.mdAndDown"
+							href="https://discord.gg/9vrAZ8xGyh"
+							target="_blank"
+						>
+							Discord
+						</v-btn>
+					</v-col>
+				</v-row>
+			</div>
+		</div>
+		<v-snackbar
+			v-model="showSnackBar"
+			color="error"
+			content-class="d-flex justify-space-between align-center"
+			data-cy="newgame-snackbar"
+		>
+			{{ snackBarMessage }}
+			<v-icon
+				data-cy="close-snackbar"
+				@click="clearSnackBar"
+			>
+				mdi-close
+			</v-icon>
+		</v-snackbar>
+	</div>
 </template>
 <script>
-import GameListItem from "@/components/GameListItem.vue";
-import RulesDialog from "@/components/RulesDialog.vue";
+import GameListItem from '@/components/GameListItem.vue';
+import RulesDialog from '@/components/RulesDialog.vue';
 
 export default {
-  name: "Home",
-  components: {
-    GameListItem,
-    RulesDialog,
-  },
-  data() {
-    return {
-      newGameName: "",
-      showSnackBar: false,
-      snackBarMessage: "",
-    };
-  },
-  computed: {
-    gameList() {
-      return this.$store.state.gameList.games;
-    },
-  },
-  mounted() {
-    this.$store.dispatch("requestGameList");
-  },
-  methods: {
-    submitNewGame() {
-      this.$store
-        .dispatch("requestCreateGame", this.newGameName)
-        .then(() => {
-          this.newGameName = "";
-        })
-        .catch(this.handleError);
-    },
-    clearSnackBar() {
-      this.snackMessage = "";
-      this.showSnackBar = false;
-    },
-    handleError(message) {
-      this.showSnackBar = true;
-      this.snackBarMessage = message;
-    },
-    logout() {
-      this.$store
-        .dispatch("requestLogout")
-        .then(() => {
-          this.$router.push("/login");
-        })
-        .catch((err) => {
-          if (err) console.error(err);
-          console.log("Error logging out");
-        });
-    },
-  },
+	name: 'Home',
+	components: {
+		GameListItem,
+		RulesDialog,
+	},
+	data() {
+		return {
+			newGameName: '',
+			showSnackBar: false,
+			snackBarMessage: '',
+		};
+	},
+	computed: {
+		gameList() {
+			return this.$store.state.gameList.games;
+		},
+	},
+	mounted() {
+		this.$store.dispatch('requestGameList');
+	},
+	methods: {
+		submitNewGame() {
+			this.$store
+				.dispatch('requestCreateGame', this.newGameName)
+				.then(() => {
+					this.newGameName = '';
+				})
+				.catch(this.handleError);
+		},
+		clearSnackBar() {
+			this.snackMessage = '';
+			this.showSnackBar = false;
+		},
+		handleError(message) {
+			this.showSnackBar = true;
+			this.snackBarMessage = message;
+		},
+		logout() {
+			this.$store
+				.dispatch('requestLogout')
+				.then(() => {
+					this.$router.push('/login');
+				})
+				.catch((err) => {
+					if (err) console.error(err);
+					console.log('Error logging out');
+				});
+		},
+	},
 };
 </script>
 <style scoped lang="scss">
