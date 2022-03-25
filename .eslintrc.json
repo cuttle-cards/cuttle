@@ -1,0 +1,54 @@
+{
+	"env": {
+		"browser": true,
+		"node": true,
+		"es6": true
+	},
+	"extends": ["plugin:vue/recommended"],
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"rules": {
+		"no-tabs": 0,
+		"indent": ["error", "tab"],
+		"max-len": [
+			"warn",
+			{
+				"code": 110,
+				"ignoreStrings": true,
+				"ignoreTemplateLiterals": true
+			}
+		],
+		"vue/html-indent": ["error", "tab"],
+		"prefer-destructuring": ["warn"],
+		"no-else-return": [
+			"warn",
+			{
+				"allowElseIf": true
+			}
+		],
+		"quotes": [
+			"error",
+			"single",
+			{
+				"avoidEscape": false
+			}
+		]
+	},
+	"overrides": [
+		{
+			"files": [
+				"**/__tests__/*.{j,t}s?(x)",
+				"**/tests/unit/**/*.spec.{j,t}s?(x)"
+			],
+			"env": {
+				"jest": true
+			},
+			"rules": {
+				"import/no-unresolved": ["off"]
+			}
+		}
+	]
+}
+
