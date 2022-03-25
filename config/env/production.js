@@ -11,15 +11,14 @@
  */
 
 // Capture session url so it can be parsed (rediss protocol unsupported by connect-redis)
-//  let sessionUrl = new URL(process.env.REDIS_TLS_URL); 
+//  let sessionUrl = new URL(process.env.REDIS_TLS_URL);
 module.exports = {
-
   datastores: {
     default: {
-        adapter: 'sails-postgresql',
-        ssl: true,
-        schema: true,
-        url: process.env.DATABASE_URL,
+      adapter: 'sails-postgresql',
+      ssl: true,
+      schema: true,
+      url: process.env.DATABASE_URL,
     },
   }, // end datastores
 
@@ -39,19 +38,23 @@ module.exports = {
   port: process.env.PORT || 80,
 
   session: {
-			adapter: 'connect-redis',
-      url: process.env.REDIS_URL,
-      // host: sessionUrl.hostname,
-      // port: sessionUrl.port,
-      // pass: sessionUrl.password,
-      // Required by heroku to use tls
-      // tls: {
-      //   rejectUnauthorized: false,
-      // },
+    adapter: 'connect-redis',
+    url: process.env.REDIS_URL,
+    // host: sessionUrl.hostname,
+    // port: sessionUrl.port,
+    // pass: sessionUrl.password,
+    // Required by heroku to use tls
+    // tls: {
+    //   rejectUnauthorized: false,
+    // },
   },
 
   sockets: {
-    onlyAllowOrigins: ["https://cuttle-v3.herokuapp.com", "https://www.cuttle.cards", "https://beta.cuttle.cards"],
+    onlyAllowOrigins: [
+      'https://cuttle-v3.herokuapp.com',
+      'https://www.cuttle.cards',
+      'https://beta.cuttle.cards',
+    ],
   },
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
@@ -62,5 +65,4 @@ module.exports = {
   // }
 
   // keepResponseErrors: true,
-
 };

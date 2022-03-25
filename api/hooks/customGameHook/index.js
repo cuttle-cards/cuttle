@@ -1,58 +1,58 @@
 module.exports = function gameHook(sails) {
-//////////////
-// Game API //
-//////////////
+  //////////////
+  // Game API //
+  //////////////
   return {
-    createGame: function (gameName) {
-      return new Promise(function (resolve, reject) {
-        Game.create(
-          {
-            name: gameName,
-            status: true,
-          }
-        )
+    createGame: function(gameName) {
+      return new Promise(function(resolve, reject) {
+        Game.create({
+          name: gameName,
+          status: true,
+        })
           .fetch()
-          .then((game) => {
+          .then(game => {
             return resolve(game);
           })
-          .catch((err) => {
+          .catch(err => {
             let res;
             if (err) {
               res = err;
             } else {
-              res = {message: `Unknown error creating game ${gameName}`};
+              res = { message: `Unknown error creating game ${gameName}` };
             }
             return reject(res);
           });
       });
     },
-    findOpenGames: function () {
-      return new Promise(function (resolve, reject) {
-        Game.find({status: true}).populate('players').exec(function (error, games) {
-          if (error) {
-            return reject(error)
-          } else if (!games) {
-            return reject({message: "Can't find games"});
-          } else {
-            return resolve(games);
-          }
-        });
+    findOpenGames: function() {
+      return new Promise(function(resolve, reject) {
+        Game.find({ status: true })
+          .populate('players')
+          .exec(function(error, games) {
+            if (error) {
+              return reject(error);
+            } else if (!games) {
+              return reject({ message: "Can't find games" });
+            } else {
+              return resolve(games);
+            }
+          });
       });
     },
-    findGame: function (id) {
-      return new Promise(function (resolve, reject) {
+    findGame: function(id) {
+      return new Promise(function(resolve, reject) {
         Game.findOne(id)
-          .populate('players', {sort: 'pNum'})
+          .populate('players', { sort: 'pNum' })
           .populate('deck')
           .populate('topCard')
           .populate('secondCard')
-          .exec(function (error, game) {
+          .exec(function(error, game) {
             if (error || !game) {
               var res;
               if (error) {
                 res = error;
               } else {
-                res = {message: "Can't find game"};
+                res = { message: "Can't find game" };
               }
               return reject(res);
             } else {
@@ -60,8 +60,6 @@ module.exports = function gameHook(sails) {
             }
           });
       });
-    }
-  }
-
-
-}
+    },
+  };
+};

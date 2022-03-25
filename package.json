@@ -67,11 +67,19 @@
     "vuetify-loader": "^1.3.0"
   },
   "scripts": {
-    "develop:client": "vue-cli-service serve",
+    "- client": "# ------------------------",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "- server": "# ------------------------",
     "debug": "node debug app.js",
     "start": "node app.js",
     "start:prod": "node app.js",
+    "- lint": "# --------------------------",
+    "lint": "vue-cli-service lint --no-fix",
+    "lint:fix": "vue-cli-service lint",
+    "- format": "# ------------------------",
+    "format:js": "./scripts/format-project-js",
+    "- e2e": "# ---------------------------",
     "e2e:client": "npx cypress run",
     "e2e:prod": "npx cypress run --config baseUrl=http://localhost:1337"
   },

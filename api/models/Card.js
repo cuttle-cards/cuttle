@@ -6,26 +6,25 @@
  */
 
 module.exports = {
-
   attributes: {
     suit: {
-      type: 'number'
+      type: 'number',
     },
 
     rank: {
-      type: 'number'
+      type: 'number',
     },
 
     name: {
-      type: 'string'
+      type: 'string',
     },
 
     ruleText: {
-      type: 'string'
+      type: 'string',
     },
 
     deck: {
-      model: 'game'
+      model: 'game',
     },
 
     scrap: {
@@ -33,19 +32,19 @@ module.exports = {
     },
 
     twos: {
-      model: 'game'
+      model: 'game',
     },
 
     hand: {
-      model: 'user'
+      model: 'user',
     },
 
     points: {
-      model: 'user'
+      model: 'user',
     },
 
     faceCards: {
-      model: 'user'
+      model: 'user',
     },
     //Used to order attachments
     index: {
@@ -54,19 +53,17 @@ module.exports = {
 
     attachments: {
       collection: 'card',
-      via: 'attachedTo'
+      via: 'attachedTo',
     },
 
     attachedTo: {
-      model: 'card'
+      model: 'card',
     },
 
     // Used to track if this card is targeted
     //by a one-off
     targeted: {
-      model: 'game'
+      model: 'game',
     },
-
-  }
+  },
 };
-

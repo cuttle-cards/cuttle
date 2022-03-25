@@ -1,14 +1,11 @@
-
 module.exports = {
+  orm: {
+    _hookTimeout: 50000,
+  },
 
-   orm: {
-   		_hookTimeout: 50000
-   },
+  pubsub: {
+    _hookTimeout: 60000,
+  },
 
-   pubsub: {
-   		_hookTimeout: 60000
-   },
-
-   keepResponseErrors: true,
-
+  keepResponseErrors: true,
 }; //End exports

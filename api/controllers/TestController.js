@@ -6,14 +6,13 @@
  */
 
 module.exports = {
-  wipeDatabase: function (req, res) {
+  wipeDatabase: function(req, res) {
     return Promise.all([Game.destroy({}), User.destroy({}), Card.destroy({})])
-      .then((values) => {
+      .then(values => {
         return res.ok();
       })
-      .catch((err) => {
+      .catch(err => {
         return res.badRequest(err);
       });
   },
 };
-

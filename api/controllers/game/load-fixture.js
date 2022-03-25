@@ -1,4 +1,4 @@
-module.exports = function (req, res) {
+module.exports = function(req, res) {
   // Capture request data
   const p0HandCardIds = req.body.p0HandCardIds || [];
   const p0PointCardIds = req.body.p0PointCardIds || [];
@@ -17,7 +17,7 @@ module.exports = function (req, res) {
     ...p1HandCardIds,
     ...p1PointCardIds,
     ...p1FaceCardIds,
-    ...scrapCardIds
+    ...scrapCardIds,
   ];
   if (topCardId) {
     allRequestedCards.push(topCardId);
@@ -27,21 +27,21 @@ module.exports = function (req, res) {
   }
 
   // Find records
-  const findGame = Game.findOne({id: req.session.game}).populate('deck');
-  const findP0 = User.findOne({id: req.body.p0Id}).populateAll();
-  const findP1 = User.findOne({id: req.body.p1Id}).populateAll();
+  const findGame = Game.findOne({ id: req.session.game }).populate('deck');
+  const findP0 = User.findOne({ id: req.body.p0Id }).populateAll();
+  const findP1 = User.findOne({ id: req.body.p1Id }).populateAll();
 
   return Promise.all([findGame, findP0, findP1])
     .then(function resetGame(values) {
       // Put all cards back in deck
       const [game, p0, p1] = values;
 
-      const oldP0Hand = p0.hand.map((card) => card.id);
-      const oldP0Points = p0.points.map((card) => card.id);
-      const oldP0FaceCards = p0.faceCards.map((card) => card.id);
-      const oldP1Hand = p1.hand.map((card) => card.id);
-      const oldP1Points = p1.points.map((card) => card.id);
-      const oldP1FaceCards = p1.faceCards.map((card) => card.id);
+      const oldP0Hand = p0.hand.map(card => card.id);
+      const oldP0Points = p0.points.map(card => card.id);
+      const oldP0FaceCards = p0.faceCards.map(card => card.id);
+      const oldP1Hand = p1.hand.map(card => card.id);
+      const oldP1Points = p1.points.map(card => card.id);
+      const oldP1FaceCards = p1.faceCards.map(card => card.id);
       const addToDeck = [
         game.topCard,
         game.secondCard,
@@ -53,20 +53,13 @@ module.exports = function (req, res) {
         ...oldP1FaceCards,
       ];
       const updatePromises = [
-        Game.addToCollection(game.id, 'deck')
-          .members(addToDeck),
-        User.replaceCollection(p0.id, 'hand')
-          .members([]),
-        User.replaceCollection(p0.id, 'points')
-          .members([]),
-        User.replaceCollection(p0.id, 'faceCards')
-          .members([]),
-        User.replaceCollection(p1.id, 'hand')
-          .members([]),
-        User.replaceCollection(p1.id, 'points')
-          .members([]),
-        User.replaceCollection(p1.id, 'faceCards')
-          .members([]),
+        Game.addToCollection(game.id, 'deck').members(addToDeck),
+        User.replaceCollection(p0.id, 'hand').members([]),
+        User.replaceCollection(p0.id, 'points').members([]),
+        User.replaceCollection(p0.id, 'faceCards').members([]),
+        User.replaceCollection(p1.id, 'hand').members([]),
+        User.replaceCollection(p1.id, 'points').members([]),
+        User.replaceCollection(p1.id, 'faceCards').members([]),
       ];
 
       return Promise.all([game, p0, p1, ...updatePromises]);
@@ -106,31 +99,22 @@ module.exports = function (req, res) {
         secondCard,
       };
       const updatePromises = [
-        Game.updateOne(game.id)
-          .set(gameUpdates),
-        User.replaceCollection(p0.id, 'hand')
-          .members(p0HandCardIds),
-        User.replaceCollection(p0.id, 'points')
-          .members(p0PointCardIds),
-        User.replaceCollection(p0.id, 'faceCards')
-          .members(p0FaceCardIds),
-        User.replaceCollection(p1.id, 'hand')
-          .members(p1HandCardIds),
-        User.replaceCollection(p1.id, 'points')
-          .members(p1PointCardIds),
-        User.replaceCollection(p1.id, 'faceCards')
-          .members(p1FaceCardIds),
-        Game.replaceCollection(game.id, 'scrap')
-          .members(scrapCardIds),
-        Game.removeFromCollection(game.id, 'deck')
-          .members(allRequestedCards)
+        Game.updateOne(game.id).set(gameUpdates),
+        User.replaceCollection(p0.id, 'hand').members(p0HandCardIds),
+        User.replaceCollection(p0.id, 'points').members(p0PointCardIds),
+        User.replaceCollection(p0.id, 'faceCards').members(p0FaceCardIds),
+        User.replaceCollection(p1.id, 'hand').members(p1HandCardIds),
+        User.replaceCollection(p1.id, 'points').members(p1PointCardIds),
+        User.replaceCollection(p1.id, 'faceCards').members(p1FaceCardIds),
+        Game.replaceCollection(game.id, 'scrap').members(scrapCardIds),
+        Game.removeFromCollection(game.id, 'deck').members(allRequestedCards),
       ];
 
       return Promise.all([game, ...updatePromises]);
     })
     .then(function populateGame(values) {
       const [game] = values;
-      return gameService.populateGame({gameId: game.id});
+      return gameService.populateGame({ gameId: game.id });
     })
     .then(function publishAndRespond(game) {
       // Announce update through socket
@@ -147,4 +131,4 @@ module.exports = function (req, res) {
     .catch(function handleError(err) {
       return res.badRequest(err);
     });
-}
+};

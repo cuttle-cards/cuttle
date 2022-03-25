@@ -1,7 +1,7 @@
-module.exports = function (req, res) {
-  const promiseGame = gameService.findGame({gameId: req.session.game});
-  const promisePlayer = userService.findUser({userId: req.session.usr});
-  const promiseCard = cardService.findCard({cardId: req.body.cardId});
+module.exports = function(req, res) {
+  const promiseGame = gameService.findGame({ gameId: req.session.game });
+  const promisePlayer = userService.findUser({ userId: req.session.usr });
+  const promiseCard = cardService.findCard({ cardId: req.body.cardId });
   Promise.all([promiseGame, promisePlayer, promiseCard])
     .then(function changeAndSave(values) {
       const [game, player, card] = values;
@@ -20,23 +20,19 @@ module.exports = function (req, res) {
       };
       const updatePromises = [
         // Update game
-        Game.updateOne(game.id)
-          .set(gameUpdates),
+        Game.updateOne(game.id).set(gameUpdates),
         // Scrap the three that just resolved
-        Game.addToCollection(game.id, 'scrap')
-          .members([game.oneOff.id]),
+        Game.addToCollection(game.id, 'scrap').members([game.oneOff.id]),
         // Return selected card to player's hand
-        User.addToCollection(player.id, 'hand')
-          .members([card.id]),
+        User.addToCollection(player.id, 'hand').members([card.id]),
         // Remove selected card from scrap
-        Game.removeFromCollection(game.id, 'scrap')
-          .members([card.id])
+        Game.removeFromCollection(game.id, 'scrap').members([card.id]),
       ];
       return Promise.all([game, ...updatePromises]);
     })
     .then(function populateGame(values) {
       const [game] = values;
-      return Promise.all([gameService.populateGame({gameId: game.id}), game]);
+      return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {
       const fullGame = values[0];
@@ -58,4 +54,4 @@ module.exports = function (req, res) {
     .catch(function failed(err) {
       return res.badRequest(err);
     });
-}
+};

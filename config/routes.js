@@ -21,73 +21,72 @@
  */
 
 module.exports.routes = {
-
   /***************************************************************************
-  *                                                                          *
-  * Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, *
-  * etc. depending on your default view engine) your home page.              *
-  *                                                                          *
-  * (Alternatively, remove this and add an `index.html` file in your         *
-  * `assets` directory)                                                      *
-  *                                                                          *
-  ***************************************************************************/
+   *                                                                          *
+   * Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, *
+   * etc. depending on your default view engine) your home page.              *
+   *                                                                          *
+   * (Alternatively, remove this and add an `index.html` file in your         *
+   * `assets` directory)                                                      *
+   *                                                                          *
+   ***************************************************************************/
 
   // '/': {
   //   view: 'homepage'
   // },
 
   /***************************************************************************
-  *                                                                          *
-  * Custom routes here...                                                    *
-  *                                                                          *
-  * If a request to a URL doesn't match any of the custom routes above, it   *
-  * is matched against Sails route blueprints. See `config/blueprints.js`    *
-  * for configuration options and examples.                                  *
-  *                                                                          *
-  ***************************************************************************/
+   *                                                                          *
+   * Custom routes here...                                                    *
+   *                                                                          *
+   * If a request to a URL doesn't match any of the custom routes above, it   *
+   * is matched against Sails route blueprints. See `config/blueprints.js`    *
+   * for configuration options and examples.                                  *
+   *                                                                          *
+   ***************************************************************************/
 
   // '/'                             :   'userController.homepage',
-  '/user/signup'                  :   'userController.signup',
-  '/user/login'                   :   'userController.login',
-  '/user/reLogin'                 :   'userController.reLogin',
-  '/user/logout'                  :   'userController.logout',
+  '/user/signup': 'userController.signup',
+  '/user/login': 'userController.login',
+  '/user/reLogin': 'userController.reLogin',
+  '/user/logout': 'userController.logout',
 
-  '/game/create'                  :   'game/create',
-  '/game/getList'                 :   'game/get-list',
-  '/game/subscribe'               :   'game/subscribe',
-  '/game/reconnect'               :   'game/reconnect',
-  '/game/ready'                   :   'game/ready',
-  '/game/leaveLobby'              :   'game/leave-lobby',
-  '/game/draw'                    :   'game/draw',
-  '/game/pass'                    :   'game/pass',
-  '/game/points'                  :   'game/points',
-  '/game/faceCard'                :   'game/face-card',
-  '/game/scuttle'                 :   'game/scuttle',
-  '/game/jack'                    :   'game/jack',
-  '/game/untargetedOneOff'        :   'game/untargeted-one-off',
-  '/game/targetedOneOff'          :   'game/targeted-one-off',
-  '/game/counter'                 :   'game/counter',
-  '/game/resolve'                 :   'game/resolve',
-  '/game/resolveFour'             :   'game/resolve-four',
-  '/game/resolveThree'            :   'game/resolve-three',
+  '/game/create': 'game/create',
+  '/game/getList': 'game/get-list',
+  '/game/subscribe': 'game/subscribe',
+  '/game/reconnect': 'game/reconnect',
+  '/game/ready': 'game/ready',
+  '/game/leaveLobby': 'game/leave-lobby',
+  '/game/draw': 'game/draw',
+  '/game/pass': 'game/pass',
+  '/game/points': 'game/points',
+  '/game/faceCard': 'game/face-card',
+  '/game/scuttle': 'game/scuttle',
+  '/game/jack': 'game/jack',
+  '/game/untargetedOneOff': 'game/untargeted-one-off',
+  '/game/targetedOneOff': 'game/targeted-one-off',
+  '/game/counter': 'game/counter',
+  '/game/resolve': 'game/resolve',
+  '/game/resolveFour': 'game/resolve-four',
+  '/game/resolveThree': 'game/resolve-three',
   // Resolving Sevens
-  '/game/seven/points'            :   'game/seven/points',
-  '/game/seven/faceCard'          :   'game/seven/face-card',
-  '/game/seven/scuttle'           :   'game/seven/scuttle',
-  '/game/seven/jack'              :   'game/seven/jack',
-  '/game/seven/untargetedOneOff'  :   'game/seven/untargeted-one-off',
-  '/game/seven/targetedOneOff'    :   'game/seven/targeted-one-off',
-  '/game/over'                    :   'game/game-over',
-  '/game/concede'                 :   'game/concede',
-  '/game/chat'                    :   'game/chat',
-  '/game/gameData'                :   'game/game-data',
-  '/game/lobbyData'               :   'game/lobby-data',
+  '/game/seven/points': 'game/seven/points',
+  '/game/seven/faceCard': 'game/seven/face-card',
+  '/game/seven/scuttle': 'game/seven/scuttle',
+  '/game/seven/jack': 'game/seven/jack',
+  '/game/seven/untargetedOneOff': 'game/seven/untargeted-one-off',
+  '/game/seven/targetedOneOff': 'game/seven/targeted-one-off',
+  '/game/over': 'game/game-over',
+  '/game/concede': 'game/concede',
+  '/game/chat': 'game/chat',
+  '/game/gameData': 'game/game-data',
+  '/game/lobbyData': 'game/lobby-data',
   // DEVELOPMENT ONLY
-  '/game/stackDeck'               :   'game/stack-deck',
-  '/game/deleteDeck'              :   'game/delete-deck',
-  '/game/loadFixture'             :   'game/load-fixture',
-  '/game/clear'                   :   'game/clear-game',
+  '/game/stackDeck': 'game/stack-deck',
+  '/game/deleteDeck': 'game/delete-deck',
+  '/game/loadFixture': 'game/load-fixture',
+  '/game/clear': 'game/clear-game',
 
   // Testing helpers
-  '/test/wipeDatabase'           :   'TestController.wipeDatabase'
+  '/test/wipeDatabase': 'TestController.wipeDatabase',
 };

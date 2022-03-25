@@ -1,483 +1,470 @@
 import {
-	setupGameAsP0,
-	setupGameAsP1,
-	assertGameState,
-	playOutOfTurn,
-	Card
+  setupGameAsP0,
+  setupGameAsP1,
+  assertGameState,
+  playOutOfTurn,
+  Card,
 } from '../../support/helpers';
 
 const { _ } = Cypress;
 
 describe('Game View Layout', () => {
-	beforeEach(() => {
-		setupGameAsP0();
-	});
+  beforeEach(() => {
+    setupGameAsP0();
+  });
 
-	it('Many cards on field', () => {
-		// Set Up
-		cy.loadGameFixture({
-			p0Hand: [Card.EIGHT_OF_SPADES, Card.QUEEN_OF_DIAMONDS],
-			p0Points: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.ACE_OF_HEARTS],
-			p0FaceCards: [Card.KING_OF_HEARTS, Card.KING_OF_DIAMONDS, Card.KING_OF_CLUBS, Card.EIGHT_OF_HEARTS],
-			p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS],
-			p1Points: [],
-			p1FaceCards: [],
-		})
-		cy.get('[data-player-hand-card]').should('have.length', 2);
-	});
+  it('Many cards on field', () => {
+    // Set Up
+    cy.loadGameFixture({
+      p0Hand: [Card.EIGHT_OF_SPADES, Card.QUEEN_OF_DIAMONDS],
+      p0Points: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.ACE_OF_HEARTS],
+      p0FaceCards: [
+        Card.KING_OF_HEARTS,
+        Card.KING_OF_DIAMONDS,
+        Card.KING_OF_CLUBS,
+        Card.EIGHT_OF_HEARTS,
+      ],
+      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 2);
+  });
 
-	it('Quadruple jacks with a few cards', () => {
-		// Set Up
-		cy.loadGameFixture({
-			p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-			p0Points: [Card.TEN_OF_SPADES],
-			p0FaceCards: [],
-			p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-			p1Points: [Card.TEN_OF_HEARTS],
-			p1FaceCards: [Card.KING_OF_HEARTS],
-		});
-		cy.get('[data-player-hand-card]').should('have.length', 4);
-		cy.log('Loaded fixture');
+  it('Quadruple jacks with a few cards', () => {
+    // Set Up
+    cy.loadGameFixture({
+      p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
+      p0Points: [Card.TEN_OF_SPADES],
+      p0FaceCards: [],
+      p1Hand: [
+        Card.ACE_OF_HEARTS,
+        Card.ACE_OF_DIAMONDS,
+        Card.JACK_OF_DIAMONDS,
+        Card.JACK_OF_SPADES,
+      ],
+      p1Points: [Card.TEN_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 4);
+    cy.log('Loaded fixture');
 
-		// Play jack of clubs on ten of hearts
-		cy.get('[data-player-hand-card=11-0]').click();
-		cy.get('[data-move-choice=jack]').click();
-		cy.get('[data-opponent-point-card=10-2]').click();
+    // Play jack of clubs on ten of hearts
+    cy.get('[data-player-hand-card=11-0]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=10-2]').click();
 
-		assertGameState(0,
-			{
-				p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-				p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
-				p0FaceCards: [],
-				p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-				p1Points: [],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-				scrap: []
-			});
-		
-		cy.get('[data-player-hand-card]').should('have.length', 3);
-		cy.get('#turn-indicator')
-			.contains('OPPONENT\'S TURN');
-		
-		// opponent plays 2nd Jack
-		cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_HEARTS)
+    assertGameState(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
+      p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [
+        Card.ACE_OF_HEARTS,
+        Card.ACE_OF_DIAMONDS,
+        Card.JACK_OF_DIAMONDS,
+        Card.JACK_OF_SPADES,
+      ],
+      p1Points: [],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [],
+    });
 
-		assertGameState(0,
-			{
-				p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-				p0Points: [Card.TEN_OF_SPADES],
-				p0FaceCards: [],
-				p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
-				p1Points: [Card.TEN_OF_HEARTS],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-				scrap: []
-			});
+    cy.get('[data-player-hand-card]').should('have.length', 3);
+    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
 
-		// Player plays 3rd jack 
-		cy.get('[data-player-hand-card=11-2]').click();
-		cy.get('[data-move-choice=jack]').click();
-		cy.get('[data-opponent-point-card=10-2]').click();
+    // opponent plays 2nd Jack
+    cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_HEARTS);
 
-		assertGameState(0,
-			{
-				p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-				p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
-				p0FaceCards: [],
-				p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
-				p1Points: [],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-				scrap: []
-			});
+    assertGameState(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
+      p0Points: [Card.TEN_OF_SPADES],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Points: [Card.TEN_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [],
+    });
 
-		cy.get('#turn-indicator')
-			.contains('OPPONENT\'S TURN');
+    // Player plays 3rd jack
+    cy.get('[data-player-hand-card=11-2]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=10-2]').click();
 
-		// Opponent plays 4th jack
-		cy.playJackOpponent(Card.JACK_OF_SPADES, Card.TEN_OF_HEARTS)
+    assertGameState(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
+      p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Points: [],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [],
+    });
 
-		assertGameState(0,
-			{
-				p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-				p0Points: [Card.TEN_OF_SPADES],
-				p0FaceCards: [],
-				p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-				p1Points: [Card.TEN_OF_HEARTS],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-				scrap: []
-			});
-	});
+    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
 
-	it('Triple jacks on a card with multiple other cards', () => {
-		// Set Up
-		cy.loadGameFixture({
-			p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-			p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TWO_OF_CLUBS],
-			p0FaceCards: [],
-			p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-			p1Points: [Card.TEN_OF_HEARTS],
-			p1FaceCards: [Card.KING_OF_HEARTS],
-		});
-		cy.get('[data-player-hand-card]').should('have.length', 4);
-		cy.log('Loaded fixture');
+    // Opponent plays 4th jack
+    cy.playJackOpponent(Card.JACK_OF_SPADES, Card.TEN_OF_HEARTS);
 
-		// Play jack of clubs on ten of hearts
-		cy.get('[data-player-hand-card=11-0]').click();
-		cy.get('[data-move-choice=jack]').click();
-		cy.get('[data-opponent-point-card=10-2]').click();
+    assertGameState(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
+      p0Points: [Card.TEN_OF_SPADES],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.TEN_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [],
+    });
+  });
 
-		assertGameState(0,
-			{
-				p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-				p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TEN_OF_HEARTS, Card.TWO_OF_CLUBS],
-				p0FaceCards: [],
-				p1Hand: [
-					Card.ACE_OF_HEARTS,
-					Card.ACE_OF_DIAMONDS,
-					Card.JACK_OF_DIAMONDS,
-					Card.JACK_OF_SPADES
-				],
-				p1Points: [],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-				scrap: []
-			});
+  it('Triple jacks on a card with multiple other cards', () => {
+    // Set Up
+    cy.loadGameFixture({
+      p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
+      p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TWO_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [
+        Card.ACE_OF_HEARTS,
+        Card.ACE_OF_DIAMONDS,
+        Card.JACK_OF_DIAMONDS,
+        Card.JACK_OF_SPADES,
+      ],
+      p1Points: [Card.TEN_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 4);
+    cy.log('Loaded fixture');
 
-		cy.get('[data-player-hand-card]').should('have.length', 3);
-		cy.get('#turn-indicator')
-			.contains('OPPONENT\'S TURN');
+    // Play jack of clubs on ten of hearts
+    cy.get('[data-player-hand-card=11-0]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=10-2]').click();
 
-		// Opponent plays 2nd jack
-		cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_HEARTS)
+    assertGameState(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
+      p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TEN_OF_HEARTS, Card.TWO_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [
+        Card.ACE_OF_HEARTS,
+        Card.ACE_OF_DIAMONDS,
+        Card.JACK_OF_DIAMONDS,
+        Card.JACK_OF_SPADES,
+      ],
+      p1Points: [],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [],
+    });
 
-		assertGameState(0,
-			{
-				p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-				p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TWO_OF_CLUBS],
-				p0FaceCards: [],
-				p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
-				p1Points: [Card.TEN_OF_HEARTS],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-				scrap: []
-			});
+    cy.get('[data-player-hand-card]').should('have.length', 3);
+    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
 
-		// Player plays 3rd jack 
-		cy.get('[data-player-hand-card=11-2]').click();
-		cy.get('[data-move-choice=jack]').click();
-		cy.get('[data-opponent-point-card=10-2]').click();
+    // Opponent plays 2nd jack
+    cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_HEARTS);
 
-		assertGameState(0,
-			{
-				p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-				p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TEN_OF_HEARTS, Card.TWO_OF_CLUBS],
-				p0FaceCards: [],
-				p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
-				p1Points: [],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-				scrap: []
-			});
-	});
+    assertGameState(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
+      p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TWO_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Points: [Card.TEN_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [],
+    });
 
-	it('Four cards, each with a jack', () => {
-		// Set Up
-		cy.loadGameFixture({
-			p0Hand: [Card.JACK_OF_CLUBS, Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-			p0Points: [],
-			p0FaceCards: [],
-			p1Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
-			p1Points: [Card.ACE_OF_HEARTS],
-			p1FaceCards: [Card.KING_OF_HEARTS],
-		});
-		cy.get('[data-player-hand-card]').should('have.length', 4);
-		cy.log('Loaded fixture');
+    // Player plays 3rd jack
+    cy.get('[data-player-hand-card=11-2]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=10-2]').click();
 
-		// Play jack of clubs on ace of hearts
-		cy.get('[data-player-hand-card=11-0]').click();
-		cy.get('[data-move-choice=jack]').click();
-		cy.get('[data-opponent-point-card=1-2]').click();
+    assertGameState(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
+      p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TEN_OF_HEARTS, Card.TWO_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Points: [],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [],
+    });
+  });
 
-		cy.playPointsOpponent(Card.ACE_OF_SPADES)
+  it('Four cards, each with a jack', () => {
+    // Set Up
+    cy.loadGameFixture({
+      p0Hand: [Card.JACK_OF_CLUBS, Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
+      p1Points: [Card.ACE_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 4);
+    cy.log('Loaded fixture');
 
-		assertGameState(
-			0,
-			{
-				p0Hand: [Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-				p0Points: [Card.ACE_OF_HEARTS],
-				p0FaceCards: [],
-				p1Hand: [Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
-				p1Points: [Card.ACE_OF_SPADES],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-			}
-		);
+    // Play jack of clubs on ace of hearts
+    cy.get('[data-player-hand-card=11-0]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=1-2]').click();
 
-		// Play jack 
-		cy.get('[data-player-hand-card=11-1]').click();
-		cy.get('[data-move-choice=jack]').click();
-		cy.get('[data-opponent-point-card=1-3]').click();
+    cy.playPointsOpponent(Card.ACE_OF_SPADES);
 
-		cy.playPointsOpponent(Card.ACE_OF_DIAMONDS)
+    assertGameState(0, {
+      p0Hand: [Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p0Points: [Card.ACE_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
+      p1Points: [Card.ACE_OF_SPADES],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
 
-		assertGameState(
-			0,
-			{
-				p0Hand: [Card.JACK_OF_HEARTS, Card.JACK_OF_SPADES],
-				p0Points: [Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES],
-				p0FaceCards: [],
-				p1Hand: [Card.ACE_OF_CLUBS],
-				p1Points: [Card.ACE_OF_DIAMONDS],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-			}
-		);
+    // Play jack
+    cy.get('[data-player-hand-card=11-1]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=1-3]').click();
 
-		// Play jack 
-		cy.get('[data-player-hand-card=11-2]').click();
-		cy.get('[data-move-choice=jack]').click();
-		cy.get('[data-opponent-point-card=1-1]').click();
+    cy.playPointsOpponent(Card.ACE_OF_DIAMONDS);
 
-		cy.playPointsOpponent(Card.ACE_OF_CLUBS)
+    assertGameState(0, {
+      p0Hand: [Card.JACK_OF_HEARTS, Card.JACK_OF_SPADES],
+      p0Points: [Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_CLUBS],
+      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
 
-		assertGameState(
-			0,
-			{
-				p0Hand: [Card.JACK_OF_SPADES],
-				p0Points: [Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS],
-				p0FaceCards: [],
-				p1Hand: [],
-				p1Points: [Card.ACE_OF_CLUBS],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-			}
-		);
+    // Play jack
+    cy.get('[data-player-hand-card=11-2]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=1-1]').click();
 
-		// Play jack of spades on ace of clubs
-		cy.get('[data-player-hand-card=11-3]').click();
-		cy.get('[data-move-choice=jack]').click();
-		cy.get('[data-opponent-point-card=1-0]').click();
+    cy.playPointsOpponent(Card.ACE_OF_CLUBS);
 
-		assertGameState(
-			0,
-			{
-				p0Hand: [],
-				p0Points: [Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
-				p0FaceCards: [],
-				p1Hand: [],
-				p1Points: [],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-			}
-		);
-	})
+    assertGameState(0, {
+      p0Hand: [Card.JACK_OF_SPADES],
+      p0Points: [Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [Card.ACE_OF_CLUBS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
 
-	it('Three dialogs', ()=>{
-		// Set Up
-		cy.loadGameFixture({
-			p0Hand: [Card.THREE_OF_CLUBS],
-			p0Points: [],
-			p0FaceCards: [],
-			p1Hand: [Card.TEN_OF_DIAMONDS],
-			p1Points: [Card.ACE_OF_HEARTS],
-			p1FaceCards: [Card.KING_OF_HEARTS],
-			scrap: [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES]
-		});
-		cy.get('[data-player-hand-card]').should('have.length', 1);
-		cy.log('Loaded fixture');
+    // Play jack of spades on ace of clubs
+    cy.get('[data-player-hand-card=11-3]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=1-0]').click();
 
-		// Player plays three
-		cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
-		cy.get('[data-move-choice=oneOff]').click();
+    assertGameState(0, {
+      p0Hand: [],
+      p0Points: [Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
+  });
 
-		cy.get('#waiting-for-opponent-counter-scrim')
-			.should('be.visible');
-		
-		cy.resolveOpponent();
+  it('Three dialogs', () => {
+    // Set Up
+    cy.loadGameFixture({
+      p0Hand: [Card.THREE_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TEN_OF_DIAMONDS],
+      p1Points: [Card.ACE_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Loaded fixture');
 
-		cy.get('#waiting-for-opponent-counter-scrim')
-			.should('not.be.visible');
+    // Player plays three
+    cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
+    cy.get('[data-move-choice=oneOff]').click();
 
-		cy.get('#three-dialog').should('be.visible');
-		// resolve button should be disabled
-		cy.get('[data-cy=three-resolve').should('be.disabled');
-		
-		// Player selects a card from scrap
-		cy.get('[data-three-dialog-card=10-2]').click();
-		cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
-		assertGameState(
-			0,
-			{
-				p0Hand: [Card.TEN_OF_HEARTS],
-				p0Points: [],
-				p0FaceCards: [],
-				p1Hand: [Card.TEN_OF_DIAMONDS],
-				p1Points: [Card.ACE_OF_HEARTS],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-				scrap: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES],
-			}
-		);
+    cy.resolveOpponent();
 
-		// Player attempts to play out of turn
-		cy.get('[data-player-hand-card=10-2]').click(); // ten of hearts
-		playOutOfTurn('points');
+    cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
 
-		cy.playPointsOpponent(Card.TEN_OF_DIAMONDS);
+    cy.get('#three-dialog').should('be.visible');
+    // resolve button should be disabled
+    cy.get('[data-cy=three-resolve').should('be.disabled');
 
-		assertGameState(
-			0,
-			{
-				p0Hand: [Card.TEN_OF_HEARTS],
-				p0Points: [],
-				p0FaceCards: [],
-				p1Hand: [],
-				p1Points: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS],
-				p1FaceCards: [Card.KING_OF_HEARTS],
-				scrap: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES],
-			}
-		);
-	});
+    // Player selects a card from scrap
+    cy.get('[data-three-dialog-card=10-2]').click();
+    cy.get('[data-cy=three-resolve')
+      .should('not.be.disabled')
+      .click();
 
-	it('Click the scrap to view contents', ()=>{
-		// Given-- the initial game state with 3 cards in the scrap
-		const scrap = [
-			Card.ACE_OF_SPADES,
-			Card.TEN_OF_HEARTS,
-			Card.TEN_OF_SPADES,
-			Card.FOUR_OF_CLUBS,
-			Card.TWO_OF_HEARTS,
-			Card.EIGHT_OF_SPADES,
-			Card.TWO_OF_CLUBS,
-			Card.ACE_OF_CLUBS,
-			Card.TWO_OF_DIAMONDS,
-		];
-		cy.loadGameFixture({
-			p0Hand: [Card.THREE_OF_CLUBS],
-			p0Points: [],
-			p0FaceCards: [],
-			p1Hand: [Card.TEN_OF_DIAMONDS],
-			p1Points: [Card.ACE_OF_HEARTS],
-			p1FaceCards: [Card.KING_OF_HEARTS],
-			scrap,
-		});
-		cy.get('[data-player-hand-card]').should('have.length', 1);
-		cy.log('Loaded fixture');
+    assertGameState(0, {
+      p0Hand: [Card.TEN_OF_HEARTS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TEN_OF_DIAMONDS],
+      p1Points: [Card.ACE_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES],
+    });
 
-		// When-- Click the scrap
-		cy.log('Clicking scrap');
-		cy.get('#scrap').click();
+    // Player attempts to play out of turn
+    cy.get('[data-player-hand-card=10-2]').click(); // ten of hearts
+    playOutOfTurn('points');
 
-		// Then-- Assert that the overlay that should show up does
-		cy.get('#scrap-dialog').should('be.visible');
+    cy.playPointsOpponent(Card.TEN_OF_DIAMONDS);
 
-		// Make sure that the three cards in the scrap are shown
-		cy.get('[data-scrap-dialog-card]').should('have.length', 9);
-		cy.get('[data-scrap-dialog-card=1-3]').should('be.visible');
-		cy.get('[data-scrap-dialog-card=10-2]').should('be.visible');
-		cy.get('[data-scrap-dialog-card=10-3]').should('be.visible');
+    assertGameState(0, {
+      p0Hand: [Card.TEN_OF_HEARTS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES],
+    });
+  });
 
-		// Given-- the scrap is currently open
-		// When-- Close it with X
-		cy.log('Closing scrap with X');
-		cy.get('[data-cy=close-scrap-dialog-x]').click();
-		// Then-- Scrap should be closed
-		cy.get('#scrap-dialog').should('not.be.visible');
+  it('Click the scrap to view contents', () => {
+    // Given-- the initial game state with 3 cards in the scrap
+    const scrap = [
+      Card.ACE_OF_SPADES,
+      Card.TEN_OF_HEARTS,
+      Card.TEN_OF_SPADES,
+      Card.FOUR_OF_CLUBS,
+      Card.TWO_OF_HEARTS,
+      Card.EIGHT_OF_SPADES,
+      Card.TWO_OF_CLUBS,
+      Card.ACE_OF_CLUBS,
+      Card.TWO_OF_DIAMONDS,
+    ];
+    cy.loadGameFixture({
+      p0Hand: [Card.THREE_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TEN_OF_DIAMONDS],
+      p1Points: [Card.ACE_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap,
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Loaded fixture');
 
-		// Given-- the scrap is currently open
-		cy.get('#scrap').click();
-		cy.get('#scrap-dialog').should('be.visible');
-		// When-- Close it with the close button
-		cy.log('Closing scrap with button');
-		cy.get('[data-cy=close-scrap-dialog-button]').click();
-		// Then-- Scrap should be closed
-		cy.get('#scrap-dialog').should('not.be.visible');
+    // When-- Click the scrap
+    cy.log('Clicking scrap');
+    cy.get('#scrap').click();
 
-		// Given -- the scrap is currently open
-		cy.get('#scrap').click();
-		cy.get('#scrap-dialog').should('be.visible');
-		// When -- Click sort by rank
-		cy.get('[data-cy=scrap-dialog-sort-dropdown]').click({force: true});
-		cy.contains('By Rank').click();
-		// Then-- All cards should be in ascending rank order
-		const mapElementsToRank = (elements => {
-			return _.map(elements, (element) => {
-				return Number(element.attributes['data-scrap-dialog-card'].value.split('-')[0]);
-			});
-		});
-		cy.get('[data-scrap-dialog-card]')
-			.then(mapElementsToRank)
-			.then((elementRanks) => {
-				const sortedScrapRanksFromFixture = _.sortBy(scrap, 'rank').map((card => card.rank));
-				expect(elementRanks).to.deep.equal(sortedScrapRanksFromFixture);
-			});
-	});
+    // Then-- Assert that the overlay that should show up does
+    cy.get('#scrap-dialog').should('be.visible');
 
-	it('Clicking the scrap while empty shows that it is empty', ()=> {
-		// Given-- the initial game state with 3 cards in the scrap
-		cy.loadGameFixture({
-			p0Hand: [Card.THREE_OF_CLUBS],
-			p0Points: [],
-			p0FaceCards: [],
-			p1Hand: [Card.TEN_OF_DIAMONDS],
-			p1Points: [Card.ACE_OF_HEARTS],
-			p1FaceCards: [Card.KING_OF_HEARTS],
-			scrap: []
-		});
-		cy.get('[data-player-hand-card]').should('have.length', 1);
-		cy.log('Loaded fixture');
+    // Make sure that the three cards in the scrap are shown
+    cy.get('[data-scrap-dialog-card]').should('have.length', 9);
+    cy.get('[data-scrap-dialog-card=1-3]').should('be.visible');
+    cy.get('[data-scrap-dialog-card=10-2]').should('be.visible');
+    cy.get('[data-scrap-dialog-card=10-3]').should('be.visible');
 
-		// When-- Click the scrap
-		cy.log('Clicking scrap');
-		cy.get('#scrap').click();
+    // Given-- the scrap is currently open
+    // When-- Close it with X
+    cy.log('Closing scrap with X');
+    cy.get('[data-cy=close-scrap-dialog-x]').click();
+    // Then-- Scrap should be closed
+    cy.get('#scrap-dialog').should('not.be.visible');
 
-		// Then-- Assert that the overlay that should show up does and that there are no cards in it
-		cy.get('#scrap-dialog')
-			.should('be.visible')
-			.should('contain', 'There are no cards in the scrap pile.');
+    // Given-- the scrap is currently open
+    cy.get('#scrap').click();
+    cy.get('#scrap-dialog').should('be.visible');
+    // When-- Close it with the close button
+    cy.log('Closing scrap with button');
+    cy.get('[data-cy=close-scrap-dialog-button]').click();
+    // Then-- Scrap should be closed
+    cy.get('#scrap-dialog').should('not.be.visible');
 
-	});
+    // Given -- the scrap is currently open
+    cy.get('#scrap').click();
+    cy.get('#scrap-dialog').should('be.visible');
+    // When -- Click sort by rank
+    cy.get('[data-cy=scrap-dialog-sort-dropdown]').click({ force: true });
+    cy.contains('By Rank').click();
+    // Then-- All cards should be in ascending rank order
+    const mapElementsToRank = elements => {
+      return _.map(elements, element => {
+        return Number(element.attributes['data-scrap-dialog-card'].value.split('-')[0]);
+      });
+    };
+    cy.get('[data-scrap-dialog-card]')
+      .then(mapElementsToRank)
+      .then(elementRanks => {
+        const sortedScrapRanksFromFixture = _.sortBy(scrap, 'rank').map(card => card.rank);
+        expect(elementRanks).to.deep.equal(sortedScrapRanksFromFixture);
+      });
+  });
+
+  it('Clicking the scrap while empty shows that it is empty', () => {
+    // Given-- the initial game state with 3 cards in the scrap
+    cy.loadGameFixture({
+      p0Hand: [Card.THREE_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TEN_OF_DIAMONDS],
+      p1Points: [Card.ACE_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+      scrap: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Loaded fixture');
+
+    // When-- Click the scrap
+    cy.log('Clicking scrap');
+    cy.get('#scrap').click();
+
+    // Then-- Assert that the overlay that should show up does and that there are no cards in it
+    cy.get('#scrap-dialog')
+      .should('be.visible')
+      .should('contain', 'There are no cards in the scrap pile.');
+  });
 });
 
 describe('Four dialogs layout', () => {
-	beforeEach(() => {
-		setupGameAsP1();
-	});
+  beforeEach(() => {
+    setupGameAsP1();
+  });
 
-	it('Four dialogs', () => {
-    
-		cy.loadGameFixture({
-			p0Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS],
-			p0Points: [],
-			p0FaceCards: [],
-			p1Hand: [Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
-			p1Points: [],
-			p1FaceCards: [],
-		});
-		cy.get('[data-player-hand-card]').should('have.length', 3);
-		cy.log('Loaded fixture');
+  it('Four dialogs', () => {
+    cy.loadGameFixture({
+      p0Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 3);
+    cy.log('Loaded fixture');
 
-		// Opponent plays four
-		cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
-		// Player cannot counter
-		cy.get('#cannot-counter-dialog')
-			.should('be.visible')
-			.get('[data-cy=cannot-counter-resolve]')
-			.click();
+    // Opponent plays four
+    cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
+    // Player cannot counter
+    cy.get('#cannot-counter-dialog')
+      .should('be.visible')
+      .get('[data-cy=cannot-counter-resolve]')
+      .click();
 
-		// Four Dialog appears (you must discard)
-		cy.get('#four-discard-dialog')
-			.should('be.visible');
-		// Choosing cards to discard
-		cy.log('Choosing two cards to discard');
-		cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-		cy.get('[data-discard-card=1-1]').click(); // ace of diamonds
-		cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
-		cy.get('[data-discard-card=4-3]').click(); // four of spades
-		cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
+    // Four Dialog appears (you must discard)
+    cy.get('#four-discard-dialog').should('be.visible');
+    // Choosing cards to discard
+    cy.log('Choosing two cards to discard');
+    cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
+    cy.get('[data-discard-card=1-1]').click(); // ace of diamonds
+    cy.get('[data-cy=submit-four-dialog]').should('be.disabled'); // can't prematurely submit
+    cy.get('[data-discard-card=4-3]').click(); // four of spades
+    cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
 
-		assertGameState(1,
-			{
-				p0Hand: [Card.ACE_OF_HEARTS],
-				p0Points: [],
-				p0FaceCards: [],
-				p1Hand: [Card.TEN_OF_HEARTS],
-				p1Points: [],
-				p1FaceCards: [],
-				scrap: [Card.FOUR_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS],
-			}
-		)
-	});
-})
+    assertGameState(1, {
+      p0Hand: [Card.ACE_OF_HEARTS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TEN_OF_HEARTS],
+      p1Points: [],
+      p1FaceCards: [],
+      scrap: [Card.FOUR_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS],
+    });
+  });
+});

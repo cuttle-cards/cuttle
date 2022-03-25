@@ -6,13 +6,13 @@ import router from './router';
 Vue.config.productionTip = false;
 
 const app = new Vue({
-	vuetify,
-	store,
-	router,
-	render: h => h(App)
+  vuetify,
+  store,
+  router,
+  render: h => h(App),
 }).$mount('#app');
 
 // Expose app for testing
 if (window.Cypress) {
-	window.app = app;
+  window.app = app;
 }

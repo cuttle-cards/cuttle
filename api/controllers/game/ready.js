@@ -1,7 +1,7 @@
 var gameAPI = sails.hooks['customgamehook'];
 var userAPI = sails.hooks['customuserhook'];
 
-module.exports = function (req, res) {
+module.exports = function(req, res) {
   if (req.session.game && req.session.usr) {
     const promiseGame = gameAPI.findGame(req.session.game);
     const promiseUser = userAPI.findUser(req.session.usr);
@@ -29,17 +29,13 @@ module.exports = function (req, res) {
         }
         if (bothReady) {
           // Inform all clients this game is starting
-          sails.sockets.blast('gameStarting', {gameId: game.id});
+          sails.sockets.blast('gameStarting', { gameId: game.id });
 
           // Create Cards
           return new Promise(function makeDeck(resolveMakeDeck, rejectmakeDeck) {
-            const findP0 = userService.findUser({userId: game.players[0].id});
-            const findP1 = userService.findUser({userId: game.players[1].id});
-            const data = [
-              Promise.resolve(game),
-              findP0,
-              findP1
-            ];
+            const findP0 = userService.findUser({ userId: game.players[0].id });
+            const findP1 = userService.findUser({ userId: game.players[1].id });
+            const data = [Promise.resolve(game), findP0, findP1];
             for (let suit = 0; suit < 4; suit++) {
               for (let rank = 1; rank < 14; rank++) {
                 const promiseCard = cardService.createCard({
@@ -56,15 +52,13 @@ module.exports = function (req, res) {
               const [game, p0, p1, ...deck] = values;
 
               // Shuffle deck & map cards => thier ids
-              const shuffledDeck = _.shuffle(deck)
-                .map((card) => card.id);
+              const shuffledDeck = _.shuffle(deck).map(card => card.id);
               // Take 1st 5 cards for p0
               const dealToP0 = shuffledDeck.splice(0, 5);
               // Take next 6 cards for p1
               const dealToP1 = shuffledDeck.splice(0, 6);
               // Take next 2 cards for topcard & secondCard
               gameUpdates.topCard = shuffledDeck.shift();
-              ;
               gameUpdates.secondCard = shuffledDeck.shift();
               gameUpdates.lastEvent = {
                 change: 'Initialize',
@@ -73,28 +67,19 @@ module.exports = function (req, res) {
               // Update records
               const updatePromises = [
                 // Deal to p0
-                User.replaceCollection(p0.id, 'hand')
-                  .members(dealToP0),
+                User.replaceCollection(p0.id, 'hand').members(dealToP0),
                 // Deal to p1
-                User.replaceCollection(p1.id, 'hand')
-                  .members(dealToP1),
+                User.replaceCollection(p1.id, 'hand').members(dealToP1),
                 // Replace Deck
-                Game.replaceCollection(game.id, 'deck')
-                  .members(shuffledDeck),
+                Game.replaceCollection(game.id, 'deck').members(shuffledDeck),
                 // Other game updates
-                Game.updateOne({id: game.id})
-                  .set(gameUpdates)
+                Game.updateOne({ id: game.id }).set(gameUpdates),
               ];
 
-              return Promise.all([
-                game,
-                p0,
-                p1,
-                ...updatePromises
-              ]);
+              return Promise.all([game, p0, p1, ...updatePromises]);
             })
             .then(function getPopulatedGame(values) {
-              return gameService.populateGame({gameId: values[0].id});
+              return gameService.populateGame({ gameId: values[0].id });
             })
             .then(function publish(fullGame) {
               Game.publish([fullGame.id], {
@@ -102,7 +87,7 @@ module.exports = function (req, res) {
                 data: {
                   change: 'Initialize',
                   game: fullGame,
-                }
+                },
               });
               return Promise.resolve(fullGame);
             })
@@ -119,8 +104,7 @@ module.exports = function (req, res) {
               pNum: user.pNum,
             },
           });
-          return Game.updateOne({id: game.id})
-            .set(gameUpdates);
+          return Game.updateOne({ id: game.id }).set(gameUpdates);
         }
       }) //End foundRecords
       .then(function respond(values) {
@@ -130,7 +114,7 @@ module.exports = function (req, res) {
         return res.badRequest(err);
       });
   } else {
-    const err = {message: "Missing game or player id"};
+    const err = { message: 'Missing game or player id' };
     return res.badRequest(err);
   }
-}
+};

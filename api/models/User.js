@@ -51,6 +51,5 @@ module.exports = {
       type: 'number',
       defaultsTo: 1000,
     },
-  } // end attributes
+  }, // end attributes
 }; // end exports
-

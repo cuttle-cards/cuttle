@@ -16,38 +16,36 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.policies.html
  */
 
-
 module.exports.policies = {
-
   /***************************************************************************
-  *                                                                          *
-  * Default policy for all controllers and actions (`true` allows public     *
-  * access)                                                                  *
-  *                                                                          *
-  ***************************************************************************/
+   *                                                                          *
+   * Default policy for all controllers and actions (`true` allows public     *
+   * access)                                                                  *
+   *                                                                          *
+   ***************************************************************************/
 
   // '*': true,
 
   /***************************************************************************
-  *                                                                          *
-  * Here's an example of mapping some policies to run before a controller    *
-  * and its actions                                                          *
-  *                                                                          *
-  ***************************************************************************/
-	// RabbitController: {
+   *                                                                          *
+   * Here's an example of mapping some policies to run before a controller    *
+   * and its actions                                                          *
+   *                                                                          *
+   ***************************************************************************/
+  // RabbitController: {
 
-		// Apply the `false` policy as the default for all of RabbitController's actions
-		// (`false` prevents all access, which ensures that nothing bad happens to our rabbits)
-		// '*': false,
+  // Apply the `false` policy as the default for all of RabbitController's actions
+  // (`false` prevents all access, which ensures that nothing bad happens to our rabbits)
+  // '*': false,
 
-		// For the action `nurture`, apply the 'isRabbitMother' policy
-		// (this overrides `false` above)
-		// nurture	: 'isRabbitMother',
+  // For the action `nurture`, apply the 'isRabbitMother' policy
+  // (this overrides `false` above)
+  // nurture	: 'isRabbitMother',
 
-		// Apply the `isNiceToAnimals` AND `hasRabbitFood` policies
-		// before letting any users feed our rabbits
-		// feed : ['isNiceToAnimals', 'hasRabbitFood']
-	// }
+  // Apply the `isNiceToAnimals` AND `hasRabbitFood` policies
+  // before letting any users feed our rabbits
+  // feed : ['isNiceToAnimals', 'hasRabbitFood']
+  // }
 
   UserController: {
     '*': false,
@@ -59,10 +57,10 @@ module.exports.policies = {
   },
 
   'game/reconnect': ['isLoggedIn', 'isInGame'],
-  'game/create' : ['isLoggedIn', 'hasGameName'],
+  'game/create': ['isLoggedIn', 'hasGameName'],
   'game/get-list': 'isLoggedIn',
   'game/subscribe': 'isLoggedIn',
-  'game/ready':     'isLoggedIn',
+  'game/ready': 'isLoggedIn',
   'game/leave-lobby': ['isSocket', 'isLoggedIn', 'isInGame'],
   'game/draw': ['isLoggedIn', 'isInGame'],
   'game/pass': ['isLoggedIn', 'isInGame'],
@@ -71,7 +69,14 @@ module.exports.policies = {
   'game/scuttle': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
   'game/jack': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
   'game/untargeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
-  'game/targeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
+  'game/targeted-one-off': [
+    'isLoggedIn',
+    'isInGame',
+    'hasCardId',
+    'hasOpId',
+    'hasTargetId',
+    'hasTargetType',
+  ],
   'game/counter': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
   'game/resolve': ['isLoggedIn', 'isInGame', 'hasOpId'],
   'game/resolve-four': ['isLoggedIn', 'isInGame', 'hasCardIdOne'],
@@ -86,19 +91,25 @@ module.exports.policies = {
   'game/seven/jack': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
   'game/seven/points': ['isLoggedIn', 'isInGame', 'hasCardId'],
   'game/seven/scuttle': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
-  'game/seven/targeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
+  'game/seven/targeted-one-off': [
+    'isLoggedIn',
+    'isInGame',
+    'hasCardId',
+    'hasOpId',
+    'hasTargetId',
+    'hasTargetType',
+  ],
   'game/seven/untargeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId'],
 
-    /////////////////////////////////
-    // DEVELOPMENT Or Staging ONLY //
-    /////////////////////////////////
-    'game/stack-deck': 'developmentOrStagingOnly',
-    'game/delete-deck': 'developmentOrStagingOnly',
-    'game/clear-game': 'developmentOrStagingOnly',
-    'game/load-fixture': 'developmentOrStagingOnly',
+  /////////////////////////////////
+  // DEVELOPMENT Or Staging ONLY //
+  /////////////////////////////////
+  'game/stack-deck': 'developmentOrStagingOnly',
+  'game/delete-deck': 'developmentOrStagingOnly',
+  'game/clear-game': 'developmentOrStagingOnly',
+  'game/load-fixture': 'developmentOrStagingOnly',
 
   TestController: {
     '*': 'developmentOrStagingOnly',
   },
-
 };
