@@ -71,7 +71,9 @@
     "build:client": "vue-cli-service build",
     "debug": "node debug app.js",
     "start": "node app.js",
-    "start:prod": "node app.js"
+    "start:prod": "node app.js",
+    "e2e:client": "npx cypress run",
+    "e2e:prod": "npx cypress run --config baseUrl=http://localhost:1337"
   },
   "main": "app.js",
   "repository": {
