@@ -68,7 +68,7 @@
   },
   "scripts": {
     "develop:client": "vue-cli-service serve",
-    "build:client": "vue-cli-service build",
+    "build": "vue-cli-service build",
     "debug": "node debug app.js",
     "start": "node app.js",
     "start:prod": "node app.js",
