@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+PRETTIER_BIN="./node_modules/.bin/prettier"
+
+git ls-files \
+  | grep -E '.*\.(js|json)$' \
+  | tr '\n' ' ' \
+  | xargs $PRETTIER_BIN --write
