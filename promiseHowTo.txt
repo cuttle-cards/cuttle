@@ -1,0 +1,67 @@
+/////////////////////
+// Using Promises //
+////////////////////
+
+//Find
+var thing1 = findThing1(id); //Promise returning function
+var thing2 = findThing2(id); //Promise returning function
+// ...
+
+Promise.all([thing1, thing2, ...])
+
+// Do
+.then(function gotValues (values) {
+	// Catch values
+	var foundThing1 = values[0];
+	var foundThing2 = values[1];
+	// ...
+
+	// Do things
+	foundThing1.attributeA = value;
+	foundThing2.attributeB.add(thing1);
+	// ...
+
+	return Promise.resolve([foundThing1, foundThing1, ...]);
+
+}) //End of gotvalues
+// Save
+.then(function readyToSave (values) {
+	// Catch values
+	var foundThing1 = values[0];
+	var foundThing2 = values[1];
+
+	// Save things
+	var savedThing1 = saveThing1(foundThing1); //Promise returning function
+	var savedThing2 = saveThing2(foundThing2); //Promise returning function
+	// ...
+
+	return Promise.all([savedThing1, savedThing2])
+	// Saves successful
+	.then(function successfullySaved (values) {
+		return Promise.resolve(values);
+	})
+	// Saves failed
+	.catch(function failedToSave (error) {
+		return Promise.reject(error);
+	});
+
+}) //End of readyToSave
+// Publish
+.then(function readyToPublish (values) {
+	// Catch values
+	var savedThing1 = values[0];
+	var savedThing2 = values[1];	
+
+	// Publish update
+	Model.publishUpdate({
+		thing1: savedThing1,
+		thing2: savedThing2,
+		// ...
+	});
+	return Promise.resolve(values); //May be unneccessary: no further promises in chain
+}) //End of readyToPublish()
+.catch(function failure (error) {
+	// Handle errors
+	res.badRequest(error);
+	return Promise.reject(error); //May be unneccessary: no further promises in chain
+}); //End of failure()
