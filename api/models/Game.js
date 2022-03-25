@@ -21,19 +21,19 @@ module.exports = {
     },
     p0Ready: {
       type: 'boolean',
-      defaultsTo: false
+      defaultsTo: false,
     },
     p1Ready: {
       type: 'boolean',
-      defaultsTo: false
+      defaultsTo: false,
     },
     passes: {
       type: 'number',
-      defaultsTo: 0
+      defaultsTo: 0,
     },
     deck: {
       collection: 'card',
-      via: 'deck'
+      via: 'deck',
     },
     topCard: {
       model: 'card',
@@ -43,7 +43,7 @@ module.exports = {
     },
     scrap: {
       collection: 'card',
-      via: 'scrap'
+      via: 'scrap',
     },
     oneOff: {
       model: 'card',
@@ -55,7 +55,7 @@ module.exports = {
       model: 'card',
     },
     oneOffTargetType: {
-      type: 'string'
+      type: 'string',
     },
     //Used to track if which point card
     // the current oneOffTarget is attached to
@@ -65,22 +65,22 @@ module.exports = {
     },
     twos: {
       collection: 'card',
-      via: 'twos'
+      via: 'twos',
     },
     turn: {
       type: 'number',
-      defaultsTo: 0
+      defaultsTo: 0,
     },
     log: {
       type: 'ref',
       columnType: 'text[]',
-      defaultsTo: []
+      defaultsTo: [],
     },
 
     chat: {
       type: 'ref',
       columnType: 'text[]',
-      defaultsTo: []
+      defaultsTo: [],
     },
     isRanked: {
       type: 'boolean',
@@ -107,6 +107,5 @@ module.exports = {
       type: 'number',
       defaultsTo: -1,
     },
-  } // end attributes
+  }, // end attributes
 }; // end exports
-

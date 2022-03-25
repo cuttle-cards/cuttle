@@ -7,9 +7,9 @@ import game from './modules/game';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-	modules: {
-		auth,
-		gameList,
-		game
-	}
+  modules: {
+    auth,
+    gameList,
+    game,
+  },
 });

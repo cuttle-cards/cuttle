@@ -3,14 +3,12 @@
  * The original file was backed up as `config/globals-old.js.txt`
  */
 
- module.exports.globals = {
+module.exports.globals = {
+  _: require('lodash'),
 
-   _: require('lodash'),
+  async: require('async'),
 
-   async: require('async'),
+  models: true,
 
-   models: true,
-
-   sails: true
-
- };
+  sails: true,
+};

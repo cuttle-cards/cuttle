@@ -1,27 +1,27 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-  transpileDependencies: ["vuetify"],
+  transpileDependencies: ['vuetify'],
   configureWebpack: {
-    devtool: "source-map",
+    devtool: 'source-map',
   },
-  outputDir: process.env.VUE_APP_BUILD_OUTPUT || "dist",
+  outputDir: process.env.VUE_APP_BUILD_OUTPUT || 'dist',
 
   lintOnSave: false,
 
-  outputDir: "assets",
+  outputDir: 'assets',
   pages: {
     index: {
-      entry: "client/js/main.js",
-      template: "client/public/index.html",
-      filename: "index.html",
+      entry: 'client/js/main.js',
+      template: 'client/public/index.html',
+      filename: 'index.html',
     },
   },
 
   configureWebpack: {
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "client/js"),
+        '@': path.resolve(__dirname, 'client/js'),
       },
     },
   },

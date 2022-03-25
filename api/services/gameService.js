@@ -1,4 +1,4 @@
-const userService = require("../../api/services/userService.js");
+const userService = require('../../api/services/userService.js');
 
 /**
  * Game result states
@@ -36,7 +36,7 @@ function tempUser(usr, points) {
   this.hand.sort(comapreByRankThenSuit);
   this.points.sort(comapreByRankThenSuit);
   this.faceCards.sort(comapreByRankThenSuit);
-};
+}
 
 function tempGame(game, p0, p1) {
   this.id = game.id;
@@ -55,118 +55,120 @@ function tempGame(game, p0, p1) {
   this.passes = game.passes;
   this.resolving = game.resolving;
   this.lastEvent = game.lastEvent;
-};
+}
 module.exports = {
   GameResult,
   /**
    * Find game by id and return it as a Promise
    **** options = {gameId: integer}
    */
-  findGame: function (options) {
+  findGame: function(options) {
     return Game.findOne(options.gameId)
-      .populate("players", {sort: 'pNum'})
-      .populate("deck")
-      .populate("scrap")
-      .populate("topCard")
-      .populate("secondCard")
-      .populate("oneOff")
-      .populate("resolving")
-      .populate("twos", {sort: 'updatedAt'})
-      .populate("oneOffTarget")
-      .populate("attachedToTarget");
+      .populate('players', { sort: 'pNum' })
+      .populate('deck')
+      .populate('scrap')
+      .populate('topCard')
+      .populate('secondCard')
+      .populate('oneOff')
+      .populate('resolving')
+      .populate('twos', { sort: 'updatedAt' })
+      .populate('oneOffTarget')
+      .populate('attachedToTarget');
   },
 
   /*
-  ** Save game and return it as a Promise
-  ****options = {game: GameModel}
-  */
-  saveGame: function (options) {
-    const {game} = options;
-    return Game.updateOne({id: game.id})
-      .set(game);
+   ** Save game and return it as a Promise
+   ****options = {game: GameModel}
+   */
+  saveGame: function(options) {
+    const { game } = options;
+    return Game.updateOne({ id: game.id }).set(game);
   },
 
   /*
-  ** Return a fully populated Game as a Promise
-  ****options = {gameId: gameId}
-  */
-  populateGame: function (options, done) {
-    return new Promise(function (resolve, reject) {
+   ** Return a fully populated Game as a Promise
+   ****options = {gameId: gameId}
+   */
+  populateGame: function(options, done) {
+    return new Promise(function(resolve, reject) {
       if (options) {
-        if (options.hasOwnProperty('gameId') && typeof (options.gameId) === 'number') {
+        if (options.hasOwnProperty('gameId') && typeof options.gameId === 'number') {
           // find game
-          return gameService.findGame({gameId: options.gameId})
-            // then find users
-            .then(function findUsers(game) {
-              if (game.players) {
-                if (game.players.length > 1) {
-                  var p0 = userService.findUser({userId: game.players[0].id});
-                  var p1 = userService.findUser({userId: game.players[1].id});
-                  return Promise.all([Promise.resolve(game), p0, p1]);
+          return (
+            gameService
+              .findGame({ gameId: options.gameId })
+              // then find users
+              .then(function findUsers(game) {
+                if (game.players) {
+                  if (game.players.length > 1) {
+                    var p0 = userService.findUser({ userId: game.players[0].id });
+                    var p1 = userService.findUser({ userId: game.players[1].id });
+                    return Promise.all([Promise.resolve(game), p0, p1]);
+                  } else {
+                    return Promise.reject({ message: "Can't populate game without two players" });
+                  }
                 } else {
-                  return Promise.reject({message: "Can't populate game without two players"});
+                  return Promise.reject({
+                    message: "Can't populate game, because it does not have players collection",
+                  });
                 }
-              } else {
-                return Promise.reject({message: "Can't populate game, because it does not have players collection"});
-              }
-            })
-            // then find points
-            .then(function findPoints(values) {
-              var game = values[0];
-              var p0 = values[1];
-              var p1 = values[2];
-              var p0Points = cardService.findPoints({userId: p0.id});
-              var p1Points = cardService.findPoints({userId: p1.id});
-              return Promise.all(
-                [
+              })
+              // then find points
+              .then(function findPoints(values) {
+                var game = values[0];
+                var p0 = values[1];
+                var p1 = values[2];
+                var p0Points = cardService.findPoints({ userId: p0.id });
+                var p1Points = cardService.findPoints({ userId: p1.id });
+                return Promise.all([
                   Promise.resolve(game),
                   Promise.resolve(p0),
                   Promise.resolve(p1),
                   p0Points,
-                  p1Points
-                ]
-              );
-            })
-            // then format results & resolve
-            .then(function finish(values) {
-              var game = values[0];
-              var p0Points = values[3];
-              var p1Points = values[4];
-              var p0 = new tempUser(values[1], p0Points);
-              var p1 = new tempUser(values[2], p1Points);
-              var result = new tempGame(game, p0, p1);
+                  p1Points,
+                ]);
+              })
+              // then format results & resolve
+              .then(function finish(values) {
+                var game = values[0];
+                var p0Points = values[3];
+                var p1Points = values[4];
+                var p0 = new tempUser(values[1], p0Points);
+                var p1 = new tempUser(values[2], p1Points);
+                var result = new tempGame(game, p0, p1);
 
-              return resolve(result);
-            })
-            .catch(function failed(err) {
-              reject(err);
-            });
+                return resolve(result);
+              })
+              .catch(function failed(err) {
+                reject(err);
+              })
+          );
         } else {
-          reject({message: "gameId is required and must be a number"});
+          reject({ message: 'gameId is required and must be a number' });
         }
       } else {
-        reject({message: "Cannot populate Game without GameId (options had no gameId)"});
+        reject({ message: 'Cannot populate Game without GameId (options had no gameId)' });
       }
     });
   }, //End populateGame()
   /*
-  ** Checks a game to determine if either player has won
-  * @param options = {game: tmpGame, gameModel: GameModel}
-  */
-  checkWinGame: async function (options) {
+   ** Checks a game to determine if either player has won
+   * @param options = {game: tmpGame, gameModel: GameModel}
+   */
+  checkWinGame: async function(options) {
     const res = {
       gameOver: false,
       winner: null,
-      conceded: false
+      conceded: false,
     };
-    const {game, gameModel} = options;
-    const p0Wins = userService.checkWin({user: game.players[0]});
-    const p1Wins = userService.checkWin({user: game.players[1]});
+    const { game, gameModel } = options;
+    const p0Wins = userService.checkWin({ user: game.players[0] });
+    const p1Wins = userService.checkWin({ user: game.players[1] });
     if (p0Wins || p1Wins) {
       res.gameOver = true;
       const gameUpdates = {
         p0: game.players[0].id,
-        p1: game.players[1].id
+        p1: game.players[1].id,
       };
       if (p0Wins) {
         res.winner = 0;
@@ -175,34 +177,30 @@ module.exports = {
         res.winner = 1;
         gameUpdates.result = GameResult.P1_WINS;
       }
-      await Game.updateOne({id: game.id})
-        .set(gameUpdates);
+      await Game.updateOne({ id: game.id }).set(gameUpdates);
     }
     return res;
   },
 
   /* Takes a user id and clears all game data
-  * from the associated user
-  */
-  clearGame: async function (options) {
+   * from the associated user
+   */
+  clearGame: async function(options) {
     return User.findOne(options.userId)
       .populateAll()
       .then(function findUserGame(player) {
         // If no session game id, ensure player's collections are emptied
         if (!player.game) {
           return Promise.all([
-            User.updateOne({id: player.id})
-              .set({pNum: null}),
-            User.replaceCollection(player.id, 'hand')
-              .members([]),
-            User.replaceCollection(player.id, 'points')
-              .members([]),
-            User.replaceCollection(player.id, 'faceCards')
-              .members([]),
+            User.updateOne({ id: player.id }).set({ pNum: null }),
+            User.replaceCollection(player.id, 'hand').members([]),
+            User.replaceCollection(player.id, 'points').members([]),
+            User.replaceCollection(player.id, 'faceCards').members([]),
           ]);
         }
         // Otherwise find the game
-        return gameService.findGame({gameId: player.game.id})
+        return gameService
+          .findGame({ gameId: player.game.id })
           .then(function clearGameData(game) {
             const updatePromises = [];
             if (game) {
@@ -223,29 +221,27 @@ module.exports = {
               // Create (inclusive or) criteria for cards to delete
               let deleteCardsCriteria = [
                 // Cards attached directly to game
-                {id: cardsOnGame}, // top & second cards
-                {deck: game.id},
-                {scrap: game.id},
-                {twos: game.id},
-                {targeted: game.id},
+                { id: cardsOnGame }, // top & second cards
+                { deck: game.id },
+                { scrap: game.id },
+                { twos: game.id },
+                { targeted: game.id },
                 // Cards attached to players
-                {hand: playerIds},
-                {points: playerIds},
-                {faceCards: playerIds},
+                { hand: playerIds },
+                { points: playerIds },
+                { faceCards: playerIds },
                 // NOTE: jacks in play should be destroyed using CASCADE on foreign key constraint on attachedTo
               ];
               updatePromises.push(
                 // Remove players from game
-                Game.replaceCollection(game.id, 'players')
-                  .members([]),
+                Game.replaceCollection(game.id, 'players').members([]),
                 // Set pNum's to null
-                User.update({id: playerIds})
-                  .set({
-                    'pNum': null,
-                  }),
+                User.update({ id: playerIds }).set({
+                  pNum: null,
+                }),
                 // Delete all cards in the game
                 Card.destroy({
-                  or: deleteCardsCriteria
+                  or: deleteCardsCriteria,
                 })
               );
             } // end if (game) {}
@@ -265,8 +261,8 @@ module.exports = {
    * Does not change records -- only returns obj for game updates
    * SYNCHRONOUS
    */
-  sevenCleanUp: function (options) {
-    const {game, index} = options;
+  sevenCleanUp: function(options) {
+    const { game, index } = options;
     const cardsToRemoveFromDeck = [];
     const res = {
       topCard: game.topCard.id,
@@ -296,5 +292,4 @@ module.exports = {
     }
     return res;
   },
-
 };
