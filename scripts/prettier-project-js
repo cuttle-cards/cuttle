@@ -6,5 +6,6 @@ PRETTIER_BIN="./node_modules/.bin/prettier"
 
 git ls-files \
   | grep -E '.*\.(js|json)$' \
+  | grep -E -v 'package.json|package.lock.json' \      # ignore auto-generated files
   | tr '\n' ' ' \
   | xargs $PRETTIER_BIN --write

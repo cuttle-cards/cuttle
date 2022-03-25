@@ -74,9 +74,11 @@
     "debug": "node debug app.js",
     "start": "node app.js",
     "start:prod": "node app.js",
-    "- ci": "# ----------------------------",
+    "- lint": "# --------------------------",
     "lint": "vue-cli-service lint --no-fix",
     "lint:fix": "vue-cli-service lint",
+    "- format": "# ------------------------",
+    "format:js": "./scripts/format-project-js",
     "- e2e": "# ---------------------------",
     "e2e:client": "npx cypress run",
     "e2e:prod": "npx cypress run --config baseUrl=http://localhost:1337"
