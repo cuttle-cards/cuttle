@@ -333,7 +333,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('.player-card.selected').should('have.length', 1);
     cy.get('[data-cy=cancel-target]').click();
-    cy.get('#player-hand-targeting').should('not.be.visible');
+    cy.get('#player-hand-targeting').should('not.exist');
     cy.get('.player-card.selected').should('have.length', 0);
     cy.log('Successfully canceled scuttle');
 
@@ -343,7 +343,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('.player-card.selected').should('have.length', 1);
     cy.get('[data-cy=cancel-target]').click();
-    cy.get('#player-hand-targeting').should('not.be.visible');
+    cy.get('#player-hand-targeting').should('not.exist');
     cy.get('.player-card.selected').should('have.length', 0);
     cy.log('Successfully canceled targeted one-off');
 
@@ -353,7 +353,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('.player-card.selected').should('have.length', 1);
     cy.get('[data-cy=cancel-target]').click();
-    cy.get('#player-hand-targeting').should('not.be.visible');
+    cy.get('#player-hand-targeting').should('not.exist');
     cy.get('.player-card.selected').should('have.length', 0);
     cy.log('Successfully canceled jack');
   });

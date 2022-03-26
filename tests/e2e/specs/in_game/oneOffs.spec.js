@@ -886,7 +886,7 @@ describe('Playing NINES', () => {
 
       // Cancels
       cy.get('[data-cy=cancel-target]').click();
-      cy.get('#player-hand-targeting').should('not.be.visible');
+      cy.get('#player-hand-targeting').should('not.exist');
 
       assertGameState(0, {
         p0Hand: [Card.NINE_OF_HEARTS, Card.NINE_OF_SPADES],

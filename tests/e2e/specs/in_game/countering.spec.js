@@ -68,7 +68,7 @@ describe('Countering One-Offs', () => {
 
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
-    cy.get('#cannot-counter-dialog').should('not.be.visible');
+    cy.get('#cannot-counter-dialog').should('not.exist');
     // Player counters
     cy.get('#counter-dialog')
       .should('be.visible')
@@ -110,7 +110,7 @@ describe('Countering One-Offs', () => {
     cy.log('Fixture loaded');
 
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
-    cy.get('#cannot-counter-dialog').should('not.be.visible');
+    cy.get('#cannot-counter-dialog').should('not.exist');
     cy.get('#counter-dialog')
       .should('be.visible')
       .get('[data-cy=decline-counter-resolve]')
@@ -150,7 +150,7 @@ describe('Countering One-Offs', () => {
 
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
-    cy.get('#cannot-counter-dialog').should('not.be.visible');
+    cy.get('#cannot-counter-dialog').should('not.exist');
 
     // Player initially chooses to counter
     cy.get('#counter-dialog')
@@ -199,7 +199,7 @@ describe('Countering One-Offs', () => {
 
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
-    cy.get('#cannot-counter-dialog').should('not.be.visible');
+    cy.get('#cannot-counter-dialog').should('not.exist');
 
     // Player counters
     cy.get('#counter-dialog')
@@ -257,7 +257,7 @@ describe('Countering One-Offs', () => {
 
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
-    cy.get('#cannot-counter-dialog').should('not.be.visible');
+    cy.get('#cannot-counter-dialog').should('not.exist');
 
     // Player counters (1st counter)
     cy.log('Player counters (1st counter)');
@@ -316,7 +316,7 @@ describe('Countering One-Offs', () => {
     cy.log('Loaded fixture');
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
-    cy.get('#cannot-counter-dialog').should('not.be.visible');
+    cy.get('#cannot-counter-dialog').should('not.exist');
 
     // Player counters (1st counter)
     cy.get('#counter-dialog')
