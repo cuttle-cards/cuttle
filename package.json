@@ -8,7 +8,6 @@
     "node": "12.18.3"
   },
   "dependencies": {
-    "@sailshq/upgrade": "^1.0.9",
     "async": "2.1.4",
     "bluebird": "^3.4.6",
     "connect-redis": "3.0.2",
@@ -19,10 +18,8 @@
     "machinepack-passwords": "^2.3.0",
     "sails": "^1.4.3",
     "sails-disk": "^2.1.1",
-    "sails-hook-grunt": "^1.0.8",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^1.5.5",
-    "sails-mongo": "^1.2.0",
     "sails-postgresql": "^1.0.2",
     "sails.io.js": "^1.2.1",
     "socket.io-client": "^2.3.0",
