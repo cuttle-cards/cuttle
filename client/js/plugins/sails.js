@@ -25,7 +25,11 @@ io.socket.on('game', function(evData) {
           break;
         case 'Initialize':
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
-          router.push(`/game/${store.state.game.id}`);
+          const gameRoute = `/game/${store.state.game.id}`;
+          const currentRoute = router.currentRoute.fullPath;
+          if (gameRoute !== currentRoute) {
+            router.push(gameRoute);
+          }
           break;
         case 'draw':
         case 'pass':
