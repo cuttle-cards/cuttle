@@ -68,11 +68,5 @@
     "e2e:client": "npx cypress run",
     "e2e:prod": "npx cypress run --config baseUrl=http://localhost:1337"
   },
-  "main": "app.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/anonymous node/sails user/cuttleV2.git"
-  },
-  "author": "Well Shuffled Games",
-  "license": ""
+  "main": "app.js"
 }
