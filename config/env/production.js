@@ -52,6 +52,7 @@ module.exports = {
   sockets: {
     onlyAllowOrigins: [
       'https://cuttle-v3.herokuapp.com',
+      'https://cuttle-beta.herokuapp.com',
       'https://www.cuttle.cards',
       'https://beta.cuttle.cards',
     ],
