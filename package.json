@@ -4,7 +4,7 @@
   "version": "2.2.7",
   "description": "The deepest card game under the sea",
   "engines": {
-    "node": "16.13.2"
+    "node": "12.18.3"
   },
   "dependencies": {
     "async": "2.1.4",
