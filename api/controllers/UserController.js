@@ -17,47 +17,32 @@ module.exports = {
     return res.view('homepage', { loggedIn: req.session.loggedIn, game: req.session.game });
   },
 
-  signup: function(req, res) {
-    if (req.body.password && req.body.username) {
-      // data from client
-      const username = req.body.username;
-      const pass = req.body.password;
-      // promises
-      User.find({ username: username })
-        .then(users => {
-          if (users.length > 0) {
-            return Promise.reject({
-              message: 'That username is already registered to another user; try logging in!',
-            });
-          }
-          return passwordAPI.encryptPass(pass);
-        })
-        .then(function createUser(encryptedPassword) {
-          //Use encrypted password to make new user
-          return userAPI
-            .createUser(username, encryptedPassword)
-            .then(function setSessionData(user) {
-              //Successfully created User
-              req.session.loggedIn = true;
-              req.session.usr = user.id;
-              return res.ok();
-            })
-            .catch(reason => {
-              //Failed to create User
-              return res.badRequest(reason);
-            });
-        }) //End promiseEpass success
-        .catch(reason => {
-          //Password could not be encrypted
-          return res.badRequest(reason);
-        });
-    } else {
-      //Bad data sent from client
+  signup: async function(req, res) {
+    // Request was missing data
+    if (!req.body.password && !req.body.username) {
       return res.badRequest('You did not submit a username or password');
+    }
+    try {
+      const { username, password } = req.body;
+      const users = await User.find({ username: username });
+      if (users.length > 0) {
+        return res.badRequest({
+          message: 'That username is already registered to another user; try logging in!',
+        });
+      }
+      // Encrypt pw and create new user
+      const encryptedPassword = await passwordAPI.encryptPass(password);
+      const user = await userAPI.createUser(username, encryptedPassword);
+      // Successfully created User - Set session data
+      req.session.loggedIn = true;
+      req.session.usr = user.id;
+      return res.ok();
+    } catch (err) {
+      return res.badRequest(err);
     }
   },
   login: function(req, res) {
-    const username = req.body.username;
+    const { username } = req.body;
     if (username) {
       userAPI
         .findUserByUsername(username)
