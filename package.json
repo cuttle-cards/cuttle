@@ -4,7 +4,7 @@
   "version": "2.2.7",
   "description": "The deepest card game under the sea",
   "engines": {
-    "node": "12.18.3"
+    "node": "16.13.2"
   },
   "dependencies": {
     "async": "2.1.4",
@@ -19,7 +19,7 @@
     "sails-disk": "^2.1.1",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^1.5.5",
-    "sails-postgresql": "^1.0.2",
+    "sails-postgresql": "^4.0.0",
     "sails.io.js": "^1.2.1",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.11",

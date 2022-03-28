@@ -16,7 +16,10 @@ module.exports = {
   datastores: {
     default: {
       adapter: 'sails-postgresql',
-      ssl: true,
+      ssl: {
+        sslmode: 'require',
+        rejectUnauthorized: false,
+      },
       schema: true,
       url: process.env.DATABASE_URL,
     },
