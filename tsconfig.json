@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "jsx": "preserve",
+    "lib": ["es2018", "DOM", "ESNext"],
+    "sourceMap": true,
+    "baseUrl": "./",
+    "outDir": "./build",
+    "rootDir": "./"
+  },
+  "exclude": ["node_modules"],
+  "include": ["./**/*.ts", "./**/*.tsx"]
+}
