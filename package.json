@@ -7,6 +7,8 @@
     "node": "16.13.2"
   },
   "dependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.23",
     "async": "2.1.4",
     "bluebird": "^3.4.6",
     "connect-redis": "3.0.2",
