@@ -40,62 +40,53 @@ export async function signup(req, res) {
     return res.badRequest(err);
   }
 }
-export function login(req, res) {
+export async function login(req, res) {
   const { username } = req.body;
-  if (username) {
-    userAPI
-      .findUserByUsername(username)
-      .then((user) => {
-        return passwordAPI
-          .checkPass(req.body.password, user.encryptedPassword)
-          .then(() => {
-            req.session.loggedIn = true;
-            req.session.usr = user.id;
-            return res.ok();
-          })
-          .catch((reason) => {
-            return res.badRequest(reason);
-          });
-      })
-      .catch(() => {
-        return res.badRequest({
-          message: 'Could not find that user with that username. Try signing up!',
-        });
-      });
-  } else {
+  if (!username) {
     return res.badRequest({ message: 'A username must be provided' });
   }
-}
-export function reLogin(req, res) {
-  userAPI
-    .findUserByUsername(req.body.username)
-    .then(function gotUser(user) {
-      const checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword);
-      const promiseGame = gameService.populateGame({ gameId: user.game });
-      return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
-    })
-    .then((values) => {
-      const game = values[0];
-      const user = values[1];
-      req.session.loggedIn = true;
-      req.session.usr = user.id;
-      req.session.game = game.id;
-      req.session.pNum = user.pNum;
-      Game.subscribe(req, [game.id]);
-      sails.sockets.join(req, 'GameList');
-      Game.publish([game.id], {
-        verb: 'updated',
-        data: {
-          ...game.lastEvent,
-          game,
-        },
-      });
-
-      return res.ok();
-    })
-    .catch((err) => {
-      return res.badRequest(err);
+  let user;
+  try {
+    user = await userAPI.findUserByUsername(username);
+  } catch (err) {
+    return res.badRequest({
+      message: 'Could not find that user with that username. Try signing up!',
     });
+  }
+  try {
+    await passwordAPI.checkPass(req.body.password, user.encryptedPassword);
+    req.session.loggedIn = true;
+    req.session.usr = user.id;
+    return res.ok();
+  } catch (reason) {
+    return res.badRequest(reason);
+  }
+}
+export async function reLogin(req, res) {
+  try {
+    const user = await userAPI.findUserByUsername(req.body.username);
+    const [game] = await Promise.all([
+      gameService.populateGame({ gameId: user.game }),
+      passwordAPI.checkPass(req.body.password, user.encryptedPassword),
+    ]);
+    req.session.loggedIn = true;
+    req.session.usr = user.id;
+    req.session.game = game.id;
+    req.session.pNum = user.pNum;
+    Game.subscribe(req, [game.id]);
+    sails.sockets.join(req, 'GameList');
+    Game.publish([game.id], {
+      verb: 'updated',
+      data: {
+        ...game.lastEvent,
+        game,
+      },
+    });
+
+    return res.ok();
+  } catch (err) {
+    return res.badRequest(err);
+  }
 }
 
 export function logout(req, res) {
