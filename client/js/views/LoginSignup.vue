@@ -6,7 +6,6 @@
       <v-col id="username-login-form" sm="9" lg="5">
         <h1 class="gradient-text">
           {{ buttonText }}
-          FAILING TEST - TEST
         </h1>
         <form @submit.prevent="submitLogin">
           <v-text-field
