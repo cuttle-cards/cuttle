@@ -1,7 +1,7 @@
 name: Lint, Build, Test
 
 on: 
-  push:
+  pull_request:
     branches: [ main ]
 
 jobs:
@@ -21,3 +21,4 @@ jobs:
           build: npm run build
           start: npm start
           config: baseUrl=http://localhost:1337
+      -run: npm run lint
