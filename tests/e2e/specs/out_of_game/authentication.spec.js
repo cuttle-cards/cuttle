@@ -34,10 +34,11 @@ describe('Auth - Page Content', () => {
     cy.signupOpponent(validUsername, validPassword);
   });
 
-  it('Displays logo and navigates to rules page', () => {
+  it.only('Displays logo and navigates to rules page', () => {
     cy.get('#logo');
     cy.get('[data-cy=rules-link]').click();
     cy.hash().should('eq', '#/rules');
+    expect(true).to.eq(false);
   });
 });
 
