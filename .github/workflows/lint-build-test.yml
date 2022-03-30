@@ -13,11 +13,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - run: npm run lint
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          lint: npm run lint
           build: npm run build
           start: npm start
+          config: baseUrl=http://localhost:1337
