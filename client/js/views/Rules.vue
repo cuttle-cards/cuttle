@@ -195,7 +195,7 @@ export default {
           {
             title: 'Draw',
             icon: 'cards-playing-spade-multiple',
-            description: 'Take one card from the Deck',
+            description: 'Take one card from the Deck. You may not draw past the 8-card hand limit',
             staticImg: 'cuttle_board.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/draw.gif?raw=true',
@@ -335,7 +335,7 @@ export default {
           {
             title: 'Five',
             icon: 'delete',
-            description: 'Draw two cards from the deck',
+            description: 'Draw two cards from the deck (Up to the 8 card hand limit)',
             staticImg: 'cuttle_one_off_five.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/five.gif?raw=true',
