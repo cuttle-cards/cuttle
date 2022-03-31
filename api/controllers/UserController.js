@@ -17,10 +17,6 @@ export function homepage(req, res) {
 }
 
 export async function signup(req, res) {
-  // Request was missing data
-  if (!req.body.password && !req.body.username) {
-    return res.badRequest('You did not submit a username or password');
-  }
   try {
     const { username, password } = req.body;
     const users = await User.find({ username: username });
