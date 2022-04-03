@@ -1,7 +1,7 @@
 {
   "name": "Cuttle",
   "private": true,
-  "version": "2.2.7",
+  "version": "3.0.0",
   "description": "The deepest card game under the sea",
   "engines": {
     "node": "16.13.2"
@@ -10,7 +10,7 @@
     "async": "2.1.4",
     "bluebird": "^3.4.6",
     "connect-redis": "3.0.2",
-    "core-js": "^3.6.5",
+    "core-js": "^3.21.1",
     "ejs": "2.5.5",
     "include-all": "~0.1.6",
     "lodash": "^4.17.21",
