@@ -1,7 +1,7 @@
 {
   "name": "Cuttle",
   "private": true,
-  "version": "2.2.7",
+  "version": "3.0.0",
   "description": "The deepest card game under the sea",
   "engines": {
     "node": "16.13.2"
