@@ -1,7 +1,7 @@
 {
   "name": "Cuttle",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "The deepest card game under the sea",
   "engines": {
     "node": "16.13.2"
@@ -53,12 +53,12 @@
   },
   "scripts": {
     "- client": "# ------------------------",
-    "serve": "vue-cli-service serve",
+    "start:client": "vue-cli-service serve",
     "build": "vue-cli-service build;cp ./client/public/favicon.ico ./assets",
     "- server": "# ------------------------",
     "debug": "node debug app.js",
     "start": "node app.js",
-    "start:prod": "node app.js",
+    "start:server": "node app.js",
     "- lint": "# --------------------------",
     "lint": "vue-cli-service lint --no-fix",
     "lint:fix": "vue-cli-service lint",
@@ -66,7 +66,8 @@
     "format:js": "./scripts/format-project-js",
     "- e2e": "# ---------------------------",
     "e2e:client": "npx cypress run",
-    "e2e:prod": "npx cypress run --config baseUrl=http://localhost:1337"
+    "e2e:server": "npx cypress run --config baseUrl=http://localhost:1337",
+    "e2e:gui": "npx cypress open"
   },
   "main": "app.js"
 }
