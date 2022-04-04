@@ -89,7 +89,7 @@ to check the formatting without autofixing problems. (This is what's run in CI w
 
 ## Game Rules
 ### Players and Cards
-Cuttle is a 2-player card game, played with a standard 52 card deck, without jokers. You can read the rules with interactive gif-previews the  [rules page](https://wwww.cuttle.cards/#/rules)
+Cuttle is a 2-player card game, played with a standard 52 card deck, without jokers. You can read the rules with interactive gif-previews the  [rules page](https://www.cuttle.cards/#/rules)
 
 ### Goal
 The goal is to be the first player to have 21 **or more** points. When a player has 21 or more points, they win immediately and the game is over.
