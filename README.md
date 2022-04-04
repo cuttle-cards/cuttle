@@ -1,62 +1,95 @@
-# Cuttle
-This repository is the **back end** web server for [Cuttle](https://www.pagat.com/combat/cuttle.html), the pvp card game, built with SailsJs. It must be run in tandem with the [front end web server](https://github.com/itsalaidbacklife/cuttle-front-vue), built with Vue and Vuetify.
+# cuttle.cards
+This repository is the full-stack web app for [Cuttle](https://www.cuttle.cards), the pvp card game. The client (front-end) is a Single Page Application (SPA) built in [VueJs](https://vuejs.org/v2/guide/) using [Vuetify](https://vuetifyjs.com/en/getting-started/installation/). The server (back-end) that maintains the API is a [Node.js](https://nodejs.org/en/) application build with [Sails.Js](https://sailsjs.com/get-started). The application is tested end-to-end using [Cypress](https://docs.cypress.io/).
 
 To play the game you will need to boot both the front & back end servers, then navigate to `localhost:8080` in your browser of choice.
-## Project setup
+## Project setup and development
 ### Download nodeJs
-[nodeJs](https://nodejs.org/en/) lets you create & run web servers in javascript (along with other fancy system-level stuff not needed for this project). Both this repository & the [front end](https://github.com/itsalaidbacklife/cuttle-front-vue) depend on node as the main system-wide dependency. The download comes with npm (node package manageer) which you'll use to install the project-specific dependencies.
+[nodeJs](https://nodejs.org/en/) lets you create & run web servers in javascript (along with other fancy system-level stuff not needed for this project). Both the client and server depend on node as the main system-wide dependency. The download comes with npm (node package manageer) which you'll use to install the project-specific dependencies.
 
-**You should install version 14.xx.xx** (Left-side download) as this is the latest **stable** version.
+**You should install version 16.xx.xx** (Left-side download) as this is the latest **stable** version.
 
 **NOTE** When running on your local computer, signup/login only stores credentials on your computer and in memory. Shutting down the server wipes the in-memory database along with all game & account data.
 
-### Back End Setup
-#### Download Back-End Code
+### Setup
+#### Download the Code
 ##### Using git
 ```
-git clone https://github.com/TeasingSisyphus/cuttleV2
+git clone https://github.com/cuttle-cards/cuttle
 ```
-##### Or [Download](https://github.com/TeasingSisyphus/cuttleV2/archive/refs/heads/main.zip) as .zip
-#### Install Back-End Dependencies
-cd into root folder of back-end and run
+##### Or [Download](https://github.com/cuttle-cards/cuttle/archive/refs/heads/main.zip) as .zip
+#### Install Dependencies
+Open your shell/terminal of choice, `cd` into the root folder of this repo and run
 ```
 npm ci
 ```
-(note that `ci` as opposed to `install` is a 'clean install' which ensures versions exactly match package-lock.json).
+**NOTE** `ci` (as opposed to `install`) is a 'clean install' which ensures versions exactly match package-lock.json).
 
-#### Boot Back-End server
+#### Boot the Server (sails backend)
 ```
 npm start
 ```
-
-### Front End Setup
-#### Download Front-End Code
-##### Using git
+OR
 ```
-git clone https://github.com/itsalaidbacklife/cuttle-front-vue
-```
-##### Or [Download](https://github.com/itsalaidbacklife/cuttle-front-vue/archive/refs/heads/main.zip) as .zip
-
-#### Install Front-End Dependencies
-Open a terminal in the root directory of the front end project and run
-```
-npm install
+npm run start:server
 ```
 
-#### Boot Front-End server
+#### Boot the Client (Vue SPA)
+Open another shell/terminal in the root folder of this repo and run
 ```
-npm run serve
+npm run start:client
 ```
+to start the client on localhost:8080
 
 #### Open in broswer
 Navigate to [localhost:8080](http:localhost:8080) in your browser of choice.
 
-### Shutting down
+#### Shutting down
 You can shut down the servers by hitting `ctrl + c` several times from the terminal windows they are running in. Shut down both servers to completely delete all game & account data.
+
+### Development
+#### Build for production
+From the root directory of the repo, you can run
+```
+npm run build
+```
+to compile the Vue SPA into the `assets` directory, which will be statically served by the server (sails backend) at the same port on which it is running to support the API. You can now shut down the client and view the applicaion as its built for production at localhost:1337 (default port for sails).
+
+#### Run the tests
+While the application is running, (server + client) you can run
+```
+npm run e2e:client
+```
+to run the entire suite of end-to-end cypress tests against the client running at localhost:8080. This will execute the tests headlessly and output the results in your terminal.
+
+You can also use
+```
+npm run e2e:gui
+```
+to open the cypress UI, which is useful for executing a single test file if you are for example developing a new feature or a fix and want to focus on that aspect of the application (and see how it performs). This is very helpful for localhost development.
+
+Lastly, you can run
+```
+npm run e2e:server
+```
+to execute the entire test suite headlessly against localhost:1337, which you can use to test the last-built version of the application. This is effectively what is done in CI when a pull request is submitted agains the `main` branch of this repository.
+
+**NOTE** you should run `npm run build` (see above) before this command so that the server (backend) serves the most up-to-date version of the client.
+
+#### Linting (Formatting)
+Format the project with
+```
+npm run lint:fix
+```
+
+and use
+```
+npm run lint
+```
+to check the formatting without autofixing problems. (This is what's run in CI when a PR is opened against the `main` branch).
 
 ## Game Rules
 ### Players and Cards
-Cuttle is a 2-player card game, played with a standard 52 card deck, without jokers.
+Cuttle is a 2-player card game, played with a standard 52 card deck, without jokers. You can read the rules with interactive gif-previews the  [rules page](https://wwww.cuttle.cards/#/rules)
 
 ### Goal
 The goal is to be the first player to have 21 **or more** points. When a player has 21 or more points, they win immediately and the game is over.
@@ -69,7 +102,7 @@ On your turn you must make exactly one of the following moves below.
 
 ### Moves
 1. **Draw:**
-You may draw one card from the deck and put it in your hand. If the deck is empty, you may pass. If three consecutive turns end with a pass, the game is a draw.
+You may draw one card from the deck and put it in your hand. You may not draw past the 8-card hand-limit. If the deck is empty, you may pass. If three consecutive turns end with a pass, the game is a draw.
 	* Click the deck to draw a card
 
 2. **Points:**
@@ -132,4 +165,4 @@ Yes. If you meet the required number of points, you win immediately. This means 
 Yes. Aces and Sixes destroy all **Point Cards** and all **Face Cards and Glasses Eights**, respectively. That includes any that you have out. Try to avoid destroying many of your own cards!
 
 #### Where can I play Cuttle?
-You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, there is only one place: [Play Cuttle!](https://cuttle-v2.herokuapp.com/)
+You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, there is only one place: [www.cuttle.cards](https://www.cuttle.cards)
