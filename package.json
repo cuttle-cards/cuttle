@@ -9,6 +9,7 @@
   "dependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.23",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
     "async": "2.1.4",
     "bluebird": "^3.4.6",
     "connect-redis": "3.0.2",
@@ -32,6 +33,7 @@
     "vuex": "^3.5.1"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^5.18.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "^4.5.4",
     "@vue/cli-plugin-router": "^4.5.4",
