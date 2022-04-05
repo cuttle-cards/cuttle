@@ -20,6 +20,7 @@
           color="primary"
           rounded
           :disabled="!status"
+          :loading="joiningGame"
           :small="!$vuetify.breakpoint.lg"
           @click="subscribeToGame"
         >
@@ -60,6 +61,11 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      joiningGame: false,
+    };
+  },
   computed: {
     numPlayersReady() {
       return this.p0ready + this.p1ready;
@@ -70,12 +76,15 @@ export default {
   },
   methods: {
     subscribeToGame() {
+      this.joiningGame = true;
       this.$store
         .dispatch('requestSubscribe', this.gameId)
         .then(() => {
+          this.joiningGame = false;
           this.$router.push(`/lobby/${this.gameId}`);
         })
         .catch(() => {
+          this.joiningGame = false;
           console.log('error subscribing');
         });
     },

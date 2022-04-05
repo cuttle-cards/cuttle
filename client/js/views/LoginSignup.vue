@@ -24,7 +24,7 @@
             data-cy="password"
           />
           <div id="login-button-container">
-            <v-btn color="primary" block type="submit" data-cy="submit">
+            <v-btn :loading="loading" color="primary" block type="submit" data-cy="submit">
               {{ buttonText }}
             </v-btn>
           </div>
@@ -97,6 +97,7 @@ export default {
       isLoggingIn: true,
       showSnackBar: false,
       snackBarMessage: '',
+      loading: false,
     };
   },
   computed: {
@@ -118,17 +119,14 @@ export default {
   },
   methods: {
     submitLogin() {
+      this.loading = true;
       if (this.isLoggingIn) {
         this.$store
           .dispatch('requestLogin', {
             username: this.username,
             password: this.pw,
           })
-          .then(() => {
-            this.username = '';
-            this.pw = '';
-            this.$router.push('/');
-          })
+          .then(this.handleLogin)
           .catch(this.handleError);
       } else {
         this.$store
@@ -136,11 +134,7 @@ export default {
             username: this.username,
             password: this.pw,
           })
-          .then(() => {
-            this.username = '';
-            this.pw = '';
-            this.$router.push('/');
-          })
+          .then(this.handleLogin)
           .catch(this.handleError);
       }
     },
@@ -148,9 +142,16 @@ export default {
       this.isLoggingIn = !this.isLoggingIn;
       this.pw = '';
     },
+    handleLogin() {
+      this.username = '';
+      this.pw = '';
+      this.loading = false;
+      this.$router.push('/');
+    },
     handleError(message) {
       this.showSnackBar = true;
       this.snackBarMessage = message;
+      this.loading = false;
     },
     clearSnackBar() {
       this.showSnackBar = false;

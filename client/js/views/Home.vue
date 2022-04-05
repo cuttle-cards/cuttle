@@ -21,6 +21,7 @@
                   <v-col cols="8">
                     <v-text-field
                       v-model="newGameName"
+                      :loading="creatingGame"
                       outlined
                       label="Game Name"
                       hide-details
@@ -32,6 +33,7 @@
                   </v-col>
                   <v-col cols="4">
                     <v-btn
+                      :loading="creatingGame"
                       color="primary"
                       :small="$vuetify.breakpoint.mdAndDown ? true : false"
                       data-cy="create-game-btn"
@@ -123,6 +125,7 @@ export default {
       newGameName: '',
       showSnackBar: false,
       snackBarMessage: '',
+      creatingGame: false,
     };
   },
   computed: {
@@ -135,10 +138,12 @@ export default {
   },
   methods: {
     submitNewGame() {
+      this.creatingGame = true;
       this.$store
         .dispatch('requestCreateGame', this.newGameName)
         .then(() => {
           this.newGameName = '';
+          this.creatingGame = false;
         })
         .catch(this.handleError);
     },
@@ -147,6 +152,7 @@ export default {
       this.showSnackBar = false;
     },
     handleError(message) {
+      this.creatingGame = false;
       this.showSnackBar = true;
       this.snackBarMessage = message;
     },
