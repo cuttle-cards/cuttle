@@ -112,13 +112,11 @@
 </template>
 <script>
 import GameListItem from '@/components/GameListItem.vue';
-import RulesDialog from '@/components/RulesDialog.vue';
 
 export default {
   name: 'Home',
   components: {
     GameListItem,
-    RulesDialog,
   },
   data() {
     return {
