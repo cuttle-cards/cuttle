@@ -10,8 +10,6 @@
 //////////////////
 
 const gameService = require('../services/gameService');
-const userAPI = sails.hooks['customuserhook'];
-const passwordAPI = sails.hooks['custompasswordhook'];
 
 /*
  * Note: This usage merely proves that we CAN use types here. It should be
@@ -31,6 +29,10 @@ module.exports = {
   },
 
   signup: async function(req, res) {
+    const { sails } = req;
+    const passwordAPI = sails.hooks['custompasswordhook'];
+    const { user: User } = sails.models;
+
     // Request was missing data
     if (!req.body.password && !req.body.username) {
       return res.badRequest('You did not submit a username or password');
@@ -45,6 +47,8 @@ module.exports = {
       }
       // Encrypt pw and create new user
       const encryptedPassword = await passwordAPI.encryptPass(password);
+      const { sails } = req;
+      const userAPI = sails.hooks['customuserhook'];
       const user = await userAPI.createUser(username, encryptedPassword);
       // Successfully created User - Set session data
       req.session.loggedIn = true;
@@ -56,6 +60,10 @@ module.exports = {
   },
   login: function(req, res) {
     const { username } = req.body;
+    const { sails } = req;
+    const userAPI = sails.hooks['customuserhook'];
+    const passwordAPI = sails.hooks['custompasswordhook'];
+
     if (username) {
       userAPI
         .findUserByUsername(username)
@@ -81,6 +89,11 @@ module.exports = {
     }
   },
   reLogin: function(req, res) {
+    const { sails } = req;
+    const userAPI = sails.hooks['customuserhook'];
+    const passwordAPI = sails.hooks['custompasswordhook'];
+    const { game: Game } = sails.models;
+
     userAPI
       .findUserByUsername(req.body.username)
       .then(function gotUser(user) {
