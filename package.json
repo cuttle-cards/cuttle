@@ -3,6 +3,7 @@
   "private": true,
   "version": "2.2.7",
   "description": "The deepest card game under the sea",
+  "type": "module",
   "engines": {
     "node": "16.13.2"
   },
