@@ -9,11 +9,24 @@
 // DEPENDENCIES //
 //////////////////
 
+const gameService = require('../services/gameService');
 const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
 
+/*
+ * Note: This usage merely proves that we CAN use types here. It should be
+ * replaced with types to reflect Request/Handlers used by the Sails flavor
+ * of Expressjs.
+ */
+type HomepageRequest = {
+  session: {
+    loggedIn: boolean;
+    game: Record<string, any>;
+  };
+};
+
 module.exports = {
-  homepage: function(req, res) {
+  homepage: function(req: HomepageRequest, res) {
     return res.view('homepage', { loggedIn: req.session.loggedIn, game: req.session.game });
   },
 
@@ -24,7 +37,7 @@ module.exports = {
     }
     try {
       const { username, password } = req.body;
-      const users = await User.find({ username: username });
+      const users = await User.find({ username });
       if (users.length > 0) {
         return res.badRequest({
           message: 'That username is already registered to another user; try logging in!',
