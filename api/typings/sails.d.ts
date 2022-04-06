@@ -7,34 +7,48 @@
  */
 
 declare namespace Sails {
+  type BaseModelAttrs = {
+    [key: string]: any;
+  };
+
   enum SortOption {
     ASC,
     DESC,
   }
   type SortOptions = keyof typeof SortOption;
 
-  interface Criteria {
-    or?: Criteria[];
-    [key: string]: CriteriaModifierItem | string | number | boolean | Date | Criteria[] | undefined;
-  }
+  type Criteria<ModelAttrs extends BaseModelAttrs> = {
+    or?: Criteria<ModelAttrs>[];
+  } & {
+    [ModelAttrName in keyof ModelAttrs]?:
+      | ModelAttrs[ModelAttrName]
+      | CriteriaModifierItem<ModelAttrs[ModelAttrName]>
+      | Criteria<Pick<ModelAttrs, ModelAttrName>>[]
+      | undefined;
+  };
 
-  interface CriteriaWithQueryOptions {
-    where: Criteria;
+  interface CriteriaWithQueryOptions<ModelAttrs extends BaseModelAttrs> {
+    where: Criteria<ModelAttrs>;
     limit?: number;
     skip?: number;
     sort?: string | { [key: string]: SortOptions }[];
   }
 
-  interface CriteriaModifierItem {
-    '<'?: any;
-    '<='?: any;
-    '>'?: any;
-    '>='?: any;
-    '!='?: any;
-    nin?: any[];
-    in?: any[];
+  type CriteriaModifierItem<ModelAttrType> = (ModelAttrType extends number | Date
+    ? {
+        '<'?: ModelAttrType;
+        '<='?: ModelAttrType;
+        '>'?: ModelAttrType;
+        '>='?: ModelAttrType;
+        '!='?: ModelAttrType;
+      }
+    : {}) & {
+    nin?: ModelAttrType[];
+    in?: ModelAttrType[];
+    // TODO: It's not quite clear why this was initially implemented as string,
+    // so it's been left. We should confirm.
     contains?: string;
-  }
+  };
 
   interface QueryPromise<T> extends Promise<QueryPromise<T> | any> {
     /**
@@ -198,16 +212,15 @@ declare namespace Sails {
     members(childIds: number[] | string[]): this;
   }
 
-  type DatabaseRecord = {
+  type DatabaseRecord<ModelAttrs extends BaseModelAttrs> = {
     id?: number | string;
-    [key: string]: any;
-  };
+  } & ModelAttrs;
 
-  type DatabaseRecordToCreate = {
+  type DatabaseRecordToCreate<ModelAttrs extends BaseModelAttrs> = {
     id?: number | string;
-    [key: string]: any;
-  };
-  interface Model {
+  } & ModelAttrs;
+
+  interface Model<ModelAttrs extends BaseModelAttrs> {
     /**
      * Add one or more existing child records to the specified collection (e.g. the comments of BlogPost #4).
      * @url https://sailsjs.com/documentation/reference/waterline-orm/models/add-to-collection
@@ -225,13 +238,15 @@ declare namespace Sails {
      * @url https://sailsjs.com/documentation/reference/waterline-orm/models/archive
      * @param criteria
      */
-    archive(criteria: Criteria): ModelFetchPromise<DatabaseRecord | DatabaseRecord[]>;
+    archive(
+      criteria: Criteria
+    ): ModelFetchPromise<DatabaseRecord<ModelAttrs> | DatabaseRecord<ModelAttrs>[]>;
 
     /**
      * Archive ("soft-delete") the record that matches the specified criteria, saving it (if it exists) as a new record in the built-in Archive model, then destroying the original.
      * @param criteria
      */
-    archiveOne(criteria: Criteria): Promise<DatabaseRecord>;
+    archiveOne(criteria: Criteria<ModelAttrs>): Promise<DatabaseRecord<ModelAttrs>>;
 
     /**
      * Get the aggregate mean of the specified attribute across all matching records.
@@ -239,7 +254,7 @@ declare namespace Sails {
      * @param numericAttrName
      * @param criteria
      */
-    avg(numericAttrName: string, criteria: Criteria): number;
+    avg(numericAttrName: string, criteria: Criteria<ModelAttrs>): number;
 
     /**
      * Get the total number of records matching the specified criteria.
@@ -254,7 +269,7 @@ declare namespace Sails {
      * @url https://sailsjs.com/documentation/reference/waterline-orm/models/create
      * @param initialValues
      */
-    create(initialValues: {}): ModelFetchOnePromise<DatabaseRecord>;
+    create(initialValues: {}): ModelFetchOnePromise<DatabaseRecord<ModelAttrs>>;
 
     /**
      * Create a set of records in the database.
@@ -262,7 +277,9 @@ declare namespace Sails {
      * @url https://sailsjs.com/documentation/reference/waterline-orm/models/create-each
      * @param initialValues
      */
-    createEach(initialValues: {}[]): ModelFetchPromise<DatabaseRecord[] | [] | undefined>;
+    createEach(
+      initialValues: {}[]
+    ): ModelFetchPromise<DatabaseRecord<ModelAttrs>[] | [] | undefined>;
 
     /**
      * Destroy records in your database that match the given criteria.
@@ -270,14 +287,14 @@ declare namespace Sails {
      * @url https://sailsjs.com/documentation/reference/waterline-orm/models/destroy
      * @param criteria
      */
-    destroy(criteria: Criteria): ModelFetchPromise<DatabaseRecord[] | [] | undefined>;
+    destroy(criteria: Criteria): ModelFetchPromise<DatabaseRecord<ModelAttrs>[] | [] | undefined>;
 
     /**
      * Destroy the record in your database that matches the given criteria, if it exists.
      * @url https://sailsjs.com/documentation/reference/waterline-orm/models/destroy-one
      * @param criteria
      */
-    destroyOne(criteria: Criteria): Promise<DatabaseRecord>;
+    destroyOne(criteria: Criteria): Promise<DatabaseRecord<ModelAttrs>>;
 
     /**
      * Find records in your database that match the given criteria.
@@ -285,12 +302,12 @@ declare namespace Sails {
      * @param criteria
      */
     find(
-      criteria?: Criteria | CriteriaWithQueryOptions,
+      criteria?: Criteria<ModelAttrs> | CriteriaWithQueryOptions<ModelAttrs>,
       populate?: any
-    ): QueryPromise<DatabaseRecord[] | undefined>;
+    ): QueryPromise<DatabaseRecord<ModelAttrs>[] | undefined>;
     find(
-      criteria?: Criteria | CriteriaWithQueryOptions
-    ): QueryPromise<DatabaseRecord[] | undefined>;
+      criteria?: Criteria<ModelAttrs> | CriteriaWithQueryOptions<ModelAttrs>
+    ): QueryPromise<DatabaseRecord<ModelAttrs>[] | undefined>;
 
     /**
      * Attempt to find a particular record in your database that matches the given criteria.
@@ -298,7 +315,7 @@ declare namespace Sails {
      * @example var record = await Something.findOne(criteria);
      * @param criteria
      */
-    findOne(criteria: Criteria): QueryPromise<DatabaseRecord>;
+    findOne(criteria: Criteria<ModelAttrs>): QueryPromise<DatabaseRecord<ModelAttrs>>;
 
     /**
      * Find the record matching the specified criteria. If no such record exists, create one using the provided initial values.
@@ -311,12 +328,15 @@ declare namespace Sails {
      *  Something.findOrCreate(criteria, initialValues)
      *    .exec(function(err, newOrExistingRecord, wasCreated) {
      *    // code
-     *    }}
+     *    }
      *
      * @param criteria
      * @param initialValues
      */
-    findOrCreate(criteria: Criteria, initialValues: {}): QueryPromise<DatabaseRecord[] | undefined>;
+    findOrCreate(
+      criteria: Criteria<ModelAttrs> | CriteriaWithQueryOptions<ModelAttrs>,
+      initialValues: Partial<ModelAttrs>
+    ): QueryPromise<DatabaseRecord<ModelAttrs>[] | undefined>;
 
     /**
      * Access the datastore for a particular model.
@@ -357,21 +377,21 @@ declare namespace Sails {
      * @param numericAttrName
      * @param criteria
      */
-    sum(numericAttrName: string, criteria?: Criteria): number;
+    sum(numericAttrName: string, criteria?: Criteria<ModelAttrs>): number;
 
     /**
      * Update all records matching criteria.
      * @url https://sailsjs.com/documentation/reference/waterline-orm/models/update
      * @param criteria
      */
-    update(criteria: Criteria): ModelSetPromise<DatabaseRecord[]>;
+    update(criteria: Criteria<ModelAttrs>): ModelSetPromise<DatabaseRecord<ModelAttrs>[]>;
 
     /**
      * Update the record that matches the given criteria, if such a record exists.
      * @url https://sailsjs.com/documentation/reference/waterline-orm/models/update-one
      * @param criteria
      */
-    updateOne(criteria: Criteria): ModelSetPromise<DatabaseRecord>;
+    updateOne(criteria: Criteria<ModelAttrs>): ModelSetPromise<DatabaseRecord<ModelAttrs>>;
 
     /**
      * Verify that a value would be valid for a given attribute, then return it, loosely coerced.
@@ -384,6 +404,50 @@ declare namespace Sails {
     // enable other private methods.
     [key: string]: any;
   }
+
+  type ModelTypeName<ModelType> = ModelType extends string
+    ? 'string'
+    : ModelType extends number
+    ? 'number'
+    : ModelType extends boolean
+    ? 'boolean'
+    : never;
+
+  type ModelDefinition<ModelAttrs extends Sails.BaseModelAttrs> = {
+    attributes: {
+      [ModelAttrName in keyof ModelAttrs]:
+        | {
+            type?: ModelTypeName<ModelAttrs[ModelAttrName]>;
+            required?: boolean;
+            allowNull?: true;
+            defaultsTo?: ModelAttrs[ModelAttrName];
+            isIn?: Array<ModelAttrs[ModelAttrName]>;
+            model?: never;
+            collection?: never;
+            via?: never;
+          }
+        | {
+            type?: never;
+            required?: never;
+            allowNull?: never;
+            defaultsTo?: never;
+            isIn?: never;
+            model?: string;
+            collection?: never;
+            via?: never;
+          }
+        | {
+            type?: never;
+            required?: never;
+            allowNull?: never;
+            defaultsTo?: never;
+            isIn?: never;
+            model?: never;
+            collection?: string;
+            via?: string;
+          };
+    };
+  };
 
   interface DataStore {
     /**
