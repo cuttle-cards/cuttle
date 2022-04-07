@@ -8,9 +8,9 @@
  */
 module.exports = function(req, res, next) {
   if (req.body.hasOwnProperty('username')) {
-    const username = req.body.username;
+    const { username } = req.body;
 
-    if (username.length === 0) {
+    if (!username) {
       return res.badRequest({ message: 'Please provide a non-empty username' });
     }
     // https://stackoverflow.com/a/389075/6705125

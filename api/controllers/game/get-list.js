@@ -9,8 +9,8 @@ module.exports = function(req, res) {
     });
     const promiseList = gameAPI.findOpenGames();
     Promise.all([promiseGame, promiseList]).then(function publishAndRespond(values) {
+      const [game, list] = values;
       if (game) {
-        const [game, list] = values;
         Game.subscribe(req, [game.id]);
         Game.publish(
           [req.session.game],

@@ -14,7 +14,7 @@ module.exports = function(req, res, next) {
       if (req.body.password.length >= 8) {
         return next();
       } else {
-        if (req.body.password.length === 0) {
+        if (!req.body.password) {
           return res.badRequest({ message: 'Password is required' });
         }
         return res.badRequest({ message: 'Your password must contain at least eight characters' });
