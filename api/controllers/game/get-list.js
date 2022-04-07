@@ -9,23 +9,30 @@ module.exports = function(req, res) {
     });
     const promiseList = gameAPI.findOpenGames();
     Promise.all([promiseGame, promiseList]).then(function publishAndRespond(values) {
-      const [game, list] = values;
-      Game.subscribe(req, [game.id]);
-      Game.publish(
-        [req.session.game],
-        {
-          verb: 'updated',
-          data: {
-            change: 'Initialize',
-            pNum: req.session.pNum,
-            game: game,
+      if (game) {
+        const [game, list] = values;
+        Game.subscribe(req, [game.id]);
+        Game.publish(
+          [req.session.game],
+          {
+            verb: 'updated',
+            data: {
+              change: 'Initialize',
+              pNum: req.session.pNum,
+              game: game,
+            },
           },
-        },
-        req
-      );
+          req
+        );
+        return res.ok({
+          inGame: true,
+          game: game,
+          userId: req.session.usr,
+          games: list,
+        });
+      }
       return res.ok({
-        inGame: true,
-        game: game,
+        inGame: false,
         userId: req.session.usr,
         games: list,
       });
