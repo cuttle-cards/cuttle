@@ -11,11 +11,9 @@ module.exports = async function(req, res) {
       games,
     };
     if (req.session.game) {
-      console.log('User is already in game');
       try {
         // User is currently in game -- find it and subscribe their socket
         const game = await gameService.populateGame({ gameId: req.session.game });
-        console.log('Found game', game);
         // Add active game to response data
         response = {
           ...response,
