@@ -1,16 +1,27 @@
-var gameAPI = sails.hooks['customgamehook'];
+const gameAPI = sails.hooks['customgamehook'];
 
-module.exports = function(req, res) {
+module.exports = async function(req, res) {
   // HANDLE REQ.SESSION.GAME = GAME ID CASE
   sails.sockets.join(req, 'GameList');
-  if (req.session.game !== null && req.session.game !== undefined) {
-    const promiseGame = gameService.populateGame({ gameId: req.session.game.id }).catch(err => {
-      return res.badRequest(err);
-    });
-    const promiseList = gameAPI.findOpenGames();
-    Promise.all([promiseGame, promiseList]).then(function publishAndRespond(values) {
-      const [game, list] = values;
-      if (game) {
+  try {
+    const games = await gameAPI.findOpenGames();
+    let response = {
+      inGame: false,
+      userId: req.session.usr,
+      games,
+    };
+    if (req.session.game) {
+      console.log('User is already in game');
+      try {
+        // User is currently in game -- find it and subscribe their socket
+        const game = await gameService.populateGame({ gameId: req.session.game });
+        console.log('Found game', game);
+        // Add active game to response data
+        response = {
+          ...response,
+          inGame: true,
+          game,
+        };
         Game.subscribe(req, [game.id]);
         Game.publish(
           [req.session.game],
@@ -24,30 +35,15 @@ module.exports = function(req, res) {
           },
           req
         );
-        return res.ok({
-          inGame: true,
-          game: game,
-          userId: req.session.usr,
-          games: list,
-        });
+      } catch (e) {
+        // Unable to find user's game -- remove it from their session
+        delete req.session.game;
+        delete req.session.pNum;
       }
-      return res.ok({
-        inGame: false,
-        userId: req.session.usr,
-        games: list,
-      });
-    });
-  } else {
-    gameAPI
-      .findOpenGames()
-      .then(function success(games) {
-        return res.send({
-          inGame: false,
-          games: games,
-        });
-      })
-      .catch(function failure(error) {
-        return res.badRequest(error);
-      });
+    }
+    return res.ok(response);
+  } catch (e) {
+    // Failed to find list of games
+    return res.badRequest(e);
   }
 };
