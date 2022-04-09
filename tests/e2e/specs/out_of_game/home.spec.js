@@ -41,6 +41,12 @@ describe('Home - Page Content', () => {
     cy.get('[data-cy=btn-logout]').click();
     cy.contains('h1', 'Log In');
   });
+  it('Sends list of games when session data includes invalid game id', () => {
+    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.setBadSession();
+    cy.requestGameList();
+    cy.requestGameList();
+  });
 });
 
 describe('Home - Game List', () => {
