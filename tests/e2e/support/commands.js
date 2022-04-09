@@ -9,6 +9,20 @@ io.sails.useCORSRouteToGetCookie = false;
 Cypress.Commands.add('wipeDatabase', () => {
   cy.request('localhost:1337/test/wipeDatabase');
 });
+Cypress.Commands.add('setBadSession', () => {
+  return new Promise((resolve, reject) => {
+    io.socket.get('/test/badSession', function(res) {
+      return resolve();
+    });
+  });
+});
+Cypress.Commands.add('requestGameList', () => {
+  return new Promise((resolve, reject) => {
+    io.socket.get('/game/getList', function(res) {
+      return resolve();
+    });
+  });
+});
 Cypress.Commands.add('signupOpponent', (username, password) => {
   return new Promise((resolve, reject) => {
     io.socket.get(
