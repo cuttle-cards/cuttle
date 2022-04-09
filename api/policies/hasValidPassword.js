@@ -7,20 +7,12 @@
  *
  */
 module.exports = function(req, res, next) {
-  if (req.body.hasOwnProperty('password')) {
-    if (typeof req.body.password === 'string') {
-      // PLACE PASSWORD RESTRICTIONS HERE
-      // e.g. at least 8 characters, etc.
-      if (req.body.password.length >= 8) {
-        return next();
-      } else {
-        if (!req.body.password) {
-          return res.badRequest({ message: 'Password is required' });
-        }
-        return res.badRequest({ message: 'Your password must contain at least eight characters' });
-      }
-    }
+  // Password must be at least 8 characters
+  if (!req.body.password) {
+    return res.badRequest({ message: 'Password is required' });
   }
-  // User not allowed
-  return res.forbidden({ message: 'You are not permitted to perform this action.' });
+  if (typeof req.body.password !== 'string' || req.body.password.length < 8) {
+    return res.badRequest({ message: 'Your password must contain at least eight characters' });
+  }
+  return next();
 };

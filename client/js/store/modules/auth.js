@@ -94,7 +94,6 @@ export default {
               let myPNum = context.rootState.game.players.findIndex(
                 player => player.username === context.state.username
               );
-              console.log('a', myPNum);
               if (myPNum === -1) {
                 myPNum = null;
               }

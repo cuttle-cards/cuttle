@@ -85,7 +85,6 @@ export default {
         })
         .catch(() => {
           this.joiningGame = false;
-          console.log('error subscribing');
         });
     },
   },

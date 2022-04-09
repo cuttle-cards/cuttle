@@ -15,4 +15,8 @@ module.exports = {
         return res.badRequest(err);
       });
   },
+  setBadSession: function(req, res) {
+    req.session.game = -3;
+    return res.ok();
+  },
 };
