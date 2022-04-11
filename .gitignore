@@ -110,7 +110,13 @@ lib-cov
 npm-debug.log
 
 
-
+################################################
+# Cypress
+#
+# Files created as side-effects of the cypress
+# e2e-runner.
+################################################
+tests/e2e/screenshots
 
 
 ################################################
