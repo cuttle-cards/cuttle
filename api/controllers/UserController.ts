@@ -31,10 +31,12 @@ type BaseRequest = {
   };
 };
 
-type HomepageRequest = BaseRequest;
-type SignupRequest = BaseRequest & {
-  body: { username: string; password: string };
+type Request<Body extends Record<string, unknown> = {}> = BaseRequest & {
+  body: Body;
 };
+
+type HomepageRequest = Request;
+type SignupRequest = Request<{ username: string; password: string }>;
 
 module.exports = {
   homepage: function(req: HomepageRequest, res) {
