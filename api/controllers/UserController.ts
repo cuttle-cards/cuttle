@@ -29,7 +29,7 @@ module.exports = {
   },
 
   signup: async function(req, res) {
-    const { sails } = req;
+    const { _sails: sails } = req;
     const passwordAPI = sails.hooks['custompasswordhook'];
     const { user: User } = sails.models;
 
@@ -47,7 +47,7 @@ module.exports = {
       }
       // Encrypt pw and create new user
       const encryptedPassword = await passwordAPI.encryptPass(password);
-      const { sails } = req;
+      const { _sails: sails } = req;
       const userAPI = sails.hooks['customuserhook'];
       const user = await userAPI.createUser(username, encryptedPassword);
       // Successfully created User - Set session data
@@ -60,7 +60,7 @@ module.exports = {
   },
   login: function(req, res) {
     const { username } = req.body;
-    const { sails } = req;
+    const { _sails: sails } = req;
     const userAPI = sails.hooks['customuserhook'];
     const passwordAPI = sails.hooks['custompasswordhook'];
 
@@ -89,7 +89,7 @@ module.exports = {
     }
   },
   reLogin: function(req, res) {
-    const { sails } = req;
+    const { _sails: sails } = req;
     const userAPI = sails.hooks['customuserhook'];
     const passwordAPI = sails.hooks['custompasswordhook'];
     const { game: Game } = sails.models;
