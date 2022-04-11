@@ -16,7 +16,8 @@
     "sourceMap": true,
     "baseUrl": "./",
     "outDir": "./build",
-    "rootDir": "./"
+    "rootDir": "./",
+    "typeRoots": ["./node_modules", "./api/typings"]
   },
   "exclude": ["node_modules"],
   "include": ["./**/*.ts", "./**/*.tsx"]

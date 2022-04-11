@@ -16,11 +16,23 @@ const gameService = require('../services/gameService');
  * replaced with types to reflect Request/Handlers used by the Sails flavor
  * of Expressjs.
  */
-type HomepageRequest = {
+type BaseRequest = {
   session: {
     loggedIn: boolean;
-    game: Record<string, any>;
+    game: number;
+    usr: number;
   };
+  _sails: {
+    models: AppModels;
+    hooks: {
+      custompasswordhook: Record<string, any>;
+    };
+  };
+};
+
+type HomepageRequest = BaseRequest;
+type SignupRequest = BaseRequest & {
+  body: { username: string; password: string };
 };
 
 module.exports = {
@@ -28,7 +40,7 @@ module.exports = {
     return res.view('homepage', { loggedIn: req.session.loggedIn, game: req.session.game });
   },
 
-  signup: async function(req, res) {
+  signup: async function(req: SignupRequest, res) {
     const { _sails: sails } = req;
     const passwordAPI = sails.hooks['custompasswordhook'];
     const { user: User } = sails.models;
@@ -39,7 +51,7 @@ module.exports = {
     }
     try {
       const { username, password } = req.body;
-      const users = await User.find({ username });
+      const users = await User.find({ hi: 'bye' });
       if (users.length > 0) {
         return res.badRequest({
           message: 'That username is already registered to another user; try logging in!',

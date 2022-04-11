@@ -14,11 +14,16 @@ declare type UserModelAttrs = {
   rank?: number;
 };
 
-declare var User: Sails.Model<UserModelAttrs>;
+type User = Sails.Model<UserModelAttrs>;
 
 declare type GameModelAttrs = {
   name: string;
   status: boolean;
 };
 
-declare var Game: Sails.Model<GameModelAttrs>;
+type Game = Sails.Model<GameModelAttrs>;
+
+declare type AppModels = {
+  game: Game;
+  user: User;
+};
