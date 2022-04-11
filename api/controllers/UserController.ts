@@ -9,6 +9,7 @@
 // DEPENDENCIES //
 //////////////////
 
+import { Game, User } from '../interfaces';
 const gameService = require('../services/gameService');
 
 /*
@@ -23,7 +24,7 @@ type BaseRequest = {
     usr: number;
   };
   _sails: {
-    models: AppModels;
+    models: { game: Game; user: User };
     hooks: {
       custompasswordhook: Record<string, any>;
     };
@@ -51,7 +52,7 @@ module.exports = {
     }
     try {
       const { username, password } = req.body;
-      const users = await User.find({ hi: 'bye' });
+      const users = await User.find({ username });
       if (users.length > 0) {
         return res.badRequest({
           message: 'That username is already registered to another user; try logging in!',
