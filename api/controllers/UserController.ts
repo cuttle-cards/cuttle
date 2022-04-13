@@ -8,7 +8,7 @@
 //////////////////
 // DEPENDENCIES //
 //////////////////
-
+import { Request as ExpressRequest } from 'express';
 import { Game, User } from '../interfaces';
 const gameService = require('../services/gameService');
 
@@ -17,7 +17,7 @@ const gameService = require('../services/gameService');
  * replaced with types to reflect Request/Handlers used by the Sails flavor
  * of Expressjs.
  */
-type BaseRequest = {
+interface SailsRequest extends ExpressRequest {
   session: {
     loggedIn: boolean;
     game: number;
@@ -31,11 +31,11 @@ type BaseRequest = {
   };
 };
 
-type Request<Body extends Record<string, unknown> = {}> = BaseRequest & {
+type Request<Body extends Record<string, unknown> = {}> = SailsRequest & {
   body: Body;
 };
 
-type HomepageRequest = Request;
+type HomepageRequest = SailsRequest;
 type SignupRequest = Request<{ username: string; password: string }>;
 
 module.exports = {
