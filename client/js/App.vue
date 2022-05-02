@@ -1,8 +1,42 @@
 <template>
   <v-app id="app">
-    <router-view />
+    <v-navigation-drawer v-model="showNav" class="primary" dark app>
+      <v-list>
+        <v-list-item
+          v-for="({ text, icon, page }, i) in pageLinks"
+          :key="i"
+          link
+          :to="page"
+        >
+          <v-icon class="mr-4">mdi-{{ icon }}</v-icon>
+          {{ text }}
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-main>
+      <router-view />
+    </v-main>
   </v-app>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      showNav: true,
+    };
+  },
+  computed: {
+    authenticated() {
+      return this.$store.state.auth.authenticated;
+    },
+    pageLinks() {
+      const res = [{ text: 'Rules', icon: 'script-text', page: 'Rules' }];
+      return res;
+    },
+  },
+}
+</script>
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap');
