@@ -21,11 +21,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      showNav: true,
-    };
-  },
   computed: {
     authenticated() {
       return this.$store.state.auth.authenticated;
@@ -33,6 +28,10 @@ export default {
     pageLinks() {
       const res = [{ text: 'Rules', icon: 'script-text', page: 'Rules' }];
       return res;
+    },
+    showNav() {
+      const pagesToHideNav = ['Lobby', 'Game'];
+      return !pagesToHideNav.includes(this.$route.name);
     },
   },
 }
