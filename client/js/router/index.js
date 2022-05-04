@@ -33,10 +33,12 @@ const routes = [
     component: Rules,
   },
   {
+    name: 'Lobby',
     path: '/lobby/:gameId',
     component: Lobby,
   },
   {
+    name: 'Game',
     path: '/game/:gameId',
     component: GameView,
   },
