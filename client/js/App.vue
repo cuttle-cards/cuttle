@@ -27,6 +27,9 @@ export default {
     },
     pageLinks() {
       const res = [{ text: 'Rules', icon: 'script-text', page: 'Rules' }];
+      if (!this.authenticated) {
+        res.push({ text: 'Login', icon: 'login', page: 'Login' });
+      }
       return res;
     },
     showNav() {
