@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-navigation-drawer v-model="showNav" class="primary" dark app>
+    <v-navigation-drawer :value="showNav" class="primary" dark app>
       <v-list>
         <v-list-item
           v-for="({ text, icon, page }, i) in pageLinks"
@@ -26,9 +26,9 @@ export default {
       return this.$store.state.auth.authenticated;
     },
     pageLinks() {
-      const res = [{ text: 'Rules', icon: 'script-text', page: 'Rules' }];
+      const res = [{ text: 'Rules', icon: 'script-text', page: { name: 'Rules' } }];
       if (!this.authenticated) {
-        res.push({ text: 'Login', icon: 'login', page: 'Login' });
+        res.push({ text: 'Login', icon: 'login', page: { name: 'Login' } });
       }
       return res;
     },
