@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-navigation-drawer :value="showNav" class="primary" dark app>
+    <v-navigation-drawer :value="showNav" class="primary" dark app permanent>
       <v-list>
         <v-list-item
           v-for="({ text, icon, page }, i) in pageLinks"
