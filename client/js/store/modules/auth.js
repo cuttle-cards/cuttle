@@ -72,6 +72,7 @@ export default {
       return new Promise((resolve, reject) => {
         io.socket.get('/user/logout', {}, function handleResponse(resData, jwres) {
           if (jwres.statusCode === 200) {
+            context.commit('authFailure');
             return resolve();
           }
           return reject(new Error('Error logging out :('));
