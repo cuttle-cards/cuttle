@@ -6,6 +6,7 @@
           v-for="({ text, icon, page }, i) in pageLinks"
           :key="i"
           link
+          exact
           :to="page"
         >
           <v-icon class="mr-4">mdi-{{ icon }}</v-icon>
@@ -29,6 +30,10 @@ export default {
       const res = [{ text: 'Rules', icon: 'script-text', page: { name: 'Rules' } }];
       if (!this.authenticated) {
         res.push({ text: 'Login', icon: 'login', page: { name: 'Login' } });
+      }
+      // Authenticated
+      else {
+        res.push({ text: 'Play', icon: 'play', page: { name: 'Home' } });
       }
       return res;
     },
