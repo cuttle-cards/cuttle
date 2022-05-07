@@ -117,6 +117,9 @@ export default {
       return 'Already have an account?';
     },
   },
+  mounted() {
+    this.$store.dispatch('requestLogout');
+  },
   methods: {
     submitLogin() {
       this.loading = true;
