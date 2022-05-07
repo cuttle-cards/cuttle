@@ -17,7 +17,9 @@
           :to="page"
           :data-nav="page.name"
         >
-          <v-icon class="mr-4"> mdi-{{ icon }} </v-icon>
+          <v-icon class="mr-4">
+mdi-{{ icon }}
+</v-icon>
           {{ text }}
         </v-list-item>
       </v-list>
@@ -35,14 +37,20 @@ export default {
       return this.$store.state.auth.authenticated;
     },
     pageLinks() {
-      const res = [{ text: 'Rules', icon: 'script-text', page: { name: 'Rules' } }];
+      let res = [];
+      const rules = { text: 'Rules', icon: 'script-text', page: { name: 'Rules' } };
+
       if (!this.authenticated) {
-        res.push({ text: 'Login', icon: 'login', page: { name: 'Login' } });
+        res = [{ text: 'Login', icon: 'login', page: { name: 'Login' } }, rules];
       }
       // Authenticated
       else {
-        res.push({ text: 'Play', icon: 'play', page: { name: 'Home' } });
-        res.push({ text: 'Stats', icon: 'chart-bar', page: { name: 'Stats' } });
+        res = [
+          { text: 'Logout', icon: 'logout', page: { name: 'Login' }},
+          rules,
+          { text: 'Play', icon: 'play', page: { name: 'Home' } },
+          { text: 'Stats', icon: 'chart-bar', page: { name: 'Stats' } }
+        ];
       }
       return res;
     },
