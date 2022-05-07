@@ -1,6 +1,13 @@
 <template>
   <v-app id="app">
-    <v-navigation-drawer :value="showNav" class="primary" dark app permanent>
+    <v-navigation-drawer
+      :value="showNav"
+      class="primary"
+      dark
+      app
+      permanent
+      :mini-variant="isSmallDevice"
+    >
       <v-list>
         <v-list-item
           v-for="({ text, icon, page }, i) in pageLinks"
@@ -10,7 +17,7 @@
           :to="page"
           :data-nav="page.name"
         >
-          <v-icon class="mr-4">mdi-{{ icon }}</v-icon>
+          <v-icon class="mr-4"> mdi-{{ icon }} </v-icon>
           {{ text }}
         </v-list-item>
       </v-list>
@@ -42,8 +49,11 @@ export default {
       const pagesToHideNav = ['Lobby', 'Game'];
       return !pagesToHideNav.includes(this.$route.name);
     },
+    isSmallDevice() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
   },
-}
+};
 </script>
 
 <style lang="scss">
