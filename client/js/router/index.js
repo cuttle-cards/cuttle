@@ -5,6 +5,7 @@ import LoginSignup from '../views/LoginSignup.vue';
 import Lobby from '../views/Lobby.vue';
 import GameView from '../views/GameView.vue';
 import Rules from '../views/Rules.vue';
+import Stats from '../views/Stats.vue';
 import store from '../store/store.js';
 
 Vue.use(VueRouter);
@@ -41,6 +42,11 @@ const routes = [
     name: 'Game',
     path: '/game/:gameId',
     component: GameView,
+  },
+  {
+    path: '/stats',
+    name: 'Stats',
+    component: Stats,
   },
 ];
 

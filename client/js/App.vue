@@ -42,6 +42,7 @@ export default {
       // Authenticated
       else {
         res.push({ text: 'Play', icon: 'play', page: { name: 'Home' } });
+        res.push({ text: 'Stats', icon: 'chart-bar', page: { name: 'Stats' } });
       }
       return res;
     },
