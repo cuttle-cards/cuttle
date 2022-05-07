@@ -8,6 +8,7 @@
           link
           exact
           :to="page"
+          :data-nav="page.name"
         >
           <v-icon class="mr-4">mdi-{{ icon }}</v-icon>
           {{ text }}

@@ -40,6 +40,8 @@ describe('Home - Page Content', () => {
   it('Logs user out', () => {
     cy.get('[data-cy=btn-logout]').click();
     cy.contains('h1', 'Log In');
+    cy.get('[data-nav=Login]').should('be.visible');
+    cy.get('[data-nav=Home]').should('not.exist');
   });
   it('Sends list of games when session data includes invalid game id', () => {
     cy.signupOpponent(opponentUsername, opponentPassword);
