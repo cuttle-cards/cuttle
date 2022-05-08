@@ -5,7 +5,7 @@
       class="primary"
       dark
       app
-      permanent
+      :permanent="showNav"
       :mini-variant="isSmallDevice"
     >
       <v-list>
