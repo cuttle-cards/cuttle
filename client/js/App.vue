@@ -15,11 +15,9 @@
           link
           exact
           :to="page"
-          :data-nav="page.name"
+          :data-nav="text"
         >
-          <v-icon class="mr-4">
-mdi-{{ icon }}
-</v-icon>
+          <v-icon class="mr-4">mdi-{{ icon }}</v-icon>
           {{ text }}
         </v-list-item>
       </v-list>
