@@ -1,12 +1,6 @@
 <template>
   <div class="home">
     <div class="container">
-      <div>
-        <v-btn id="btn-logout" text color="primary" data-cy="btn-logout" @click="logout">
-          Logout
-        </v-btn>
-      </div>
-
       <div id="game-list-card">
         <v-row>
           <v-col cols="9">
@@ -192,12 +186,6 @@ h1 {
   height: auto;
   width: 80%;
   margin: 20px auto;
-}
-
-#btn-logout {
-  position: absolute;
-  top: 8px;
-  right: 16px;
 }
 
 .page-title {
