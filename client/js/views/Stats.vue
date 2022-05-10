@@ -17,11 +17,190 @@
 
 <script>
 import AwardCard from '@/components/AwardCard.vue';
+const Result = {
+  WON: 1,
+  LOST: 2,
+  INCOMPLETE: -1,
+};
 
 export default {
   name: 'Stats',
   components: {
     AwardCard,
+  },
+  data() {
+    return {
+      Result,
+      seasons: [
+        {
+          name: 'Clubs 2022',
+          startTime: 1642642200,
+          endTime: 1643247000,
+          fistPlace: 1,
+          secondPlace: 2,
+          thirdPlace: 3,
+          fourthPlace: 4,
+          rankings: {
+            // Player 1
+            1: {
+              // Player 1 Week 1
+              1: [
+                {
+                  player: 'Player 1',
+                  opponent: 'Player 2',
+                  result: Result.WON,
+                },
+                {
+                  player: 'Player 1',
+                  opponent: 'Player 3',
+                  result: Result.WON,
+                },
+                {
+                  player: 'Player 1',
+                  opponent: 'Player 4',
+                  result: Result.WON,
+                },
+              ],
+              // Player 1 Week 2
+              2: [
+                {
+                  player: 'Player 1',
+                  opponent: 'Player 2',
+                  result: Result.LOST,
+                },
+                {
+                  player: 'Player 1',
+                  opponent: 'Player 3',
+                  result: Result.WON,
+                },
+                {
+                  player: 'Player 1',
+                  opponent: 'Player 4',
+                  result: Result.WON,
+                },
+              ],
+            },
+            // Player 2
+            2: {
+              // Player 2 Week 1
+              1: [
+                {
+                  player: 'Player 2',
+                  opponent: 'Player 1',
+                  result: Result.LOST,
+                },
+                {
+                  player: 'Player 2',
+                  opponent: 'Player 3',
+                  result: Result.WON,
+                },
+                {
+                  player: 'Player 2',
+                  opponent: 'Player 4',
+                  result: Result.WON,
+                },
+              ],
+              // Player 2 Week 2
+              2: [
+                {
+                  player: 'Player 2',
+                  opponent: 'Player 1',
+                  result: Result.WON,
+                },
+                {
+                  player: 'Player 2',
+                  opponent: 'Player 3',
+                  result: Result.WON,
+                },
+                {
+                  player: 'Player 2',
+                  opponent: 'Player 4',
+                  result: Result.WON,
+                },
+              ],
+            },
+            // Player 3
+            3: {
+              // Player 3 Week 1
+              1: [
+                {
+                  player: 'Player 3',
+                  opponent: 'Player 1',
+                  result: Result.LOST,
+                },
+                {
+                  player: 'Player 3',
+                  opponent: 'Player 2',
+                  result: Result.LOST,
+                },
+                {
+                  player: 'Player 3',
+                  opponent: 'Player 4',
+                  result: Result.WON,
+                },
+              ],
+              // Player 3 Week 2
+              2: [
+                {
+                  player: 'Player 3',
+                  opponent: 'Player 1',
+                  result: Result.LOST,
+                },
+                {
+                  player: 'Player 3',
+                  opponent: 'Player 2',
+                  result: Result.LOST,
+                },
+                {
+                  player: 'Player 3',
+                  opponent: 'Player 4',
+                  result: Result.LOST,
+                },
+              ],
+            },
+            // Player 4
+            4: {
+              // Player 4 Week 1
+              1: [
+                {
+                  player: 'Player 4',
+                  opponent: 'Player 1',
+                  result: Result.LOST,
+                },
+                {
+                  player: 'Player 4',
+                  opponent: 'Player 2',
+                  result: Result.LOST,
+                },
+                {
+                  player: 'Player 4',
+                  opponent: 'Player 3',
+                  result: Result.LOST,
+                },
+              ],
+              // Player 4 Week 2
+              2: [
+                {
+                  player: 'Player 4',
+                  opponent: 'Player 1',
+                  result: Result.LOST,
+                },
+                {
+                  player: 'Player 4',
+                  opponent: 'Player 2',
+                  result: Result.LOST,
+                },
+                {
+                  player: 'Player 4',
+                  opponent: 'Player 3',
+                  result: Result.WON,
+                },
+              ],
+            },
+          },
+        },
+      ],
+    };
   },
 };
 </script>
