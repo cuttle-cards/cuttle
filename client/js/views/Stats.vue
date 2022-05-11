@@ -19,6 +19,9 @@
         <award-card username="booey" :place="2" class="mb-4"/>
         <award-card username="gluey" :place="3" class="mb-4"/>
       </div>
+      <h2 class="text-h3 my-4">
+        Weekly Rankings
+      </h2>
       <v-data-table :items="tableRows" :headers="tableColumns" />
     </section>
   </div>
@@ -216,11 +219,52 @@ export default {
         for (const weekNum in player.rankings) {
           const week = player.rankings[weekNum];
           const wins = week.filter(match => match.result === Result.WON);
-          res[`${weekNum}_wins`] = wins.map(match => match.opponent).join(', ');
+          // res[`${weekNum}_wins`] = wins.map(match => match.opponent).join(', ');
           res[weekNum] = wins.length;
         }
         return res;
       });
+    },
+    weeklyMaxes() {
+      const res = {};
+      for (const playerStats of this.tableRows) {
+        for (const weekNum in playerStats) {
+          // First time seeing a score for this week
+          if (!(weekNum in res)) {
+            const newWeek = {
+              first: playerStats[weekNum],
+              second: null,
+              third: null,
+            };
+            res[weekNum] = newWeek;
+          } else {
+            // Tie for first
+            if (playerStats[weekNum] === res[weekNum].first) {
+              res[weekNum].third = res[weekNum].second;
+              res[weekNum].second = res[weekNum].first;
+            }
+            // Current score is higher than max for this week
+            if (playerStats[weekNum] > res[weekNum].first) {
+              res[weekNum].third = res[weekNum].second;
+              res[weekNum].second = res[weekNum].first;
+              res[weekNum].first = playerStats[weekNum];
+            } else if (playerStats[weekNum] < res[weekNum].first) {
+              // New Score ties for 2nd
+              if (playerStats[weekNum] === res[weekNum].second) {
+                res[weekNum].third = res[weekNum].second;
+              } else if (playerStats[weekNum] > res[weekNum].second) {
+                // New score beats 2nd
+                res[weekNum].third = res[weekNum].second;
+                res[weekNum].second = playerStats[weekNum];
+              } else if (playerStats[weekNum] > res[weekNum].third) {
+                // New score beats 3rd
+                res[weekNum].third = playerStats[weekNum];
+              }
+            }
+          }
+        }
+      }
+      return res;
     },
   },
 };
