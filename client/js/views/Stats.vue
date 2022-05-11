@@ -2,15 +2,24 @@
   <div>
     <!-- Upper Servicd -->
     <section id="upper-surface" class="pa-8 mb-6">
-      <h1 class="text-h2">Clubs 2022</h1>
+      <h1 class="text-h2">
+        Clubs 2022
+      </h1>
     </section>
     <section class="px-8">
-      <h2 class="text-h3 mb-4">Season Champions</h2>
+      <h2 class="text-h3 mb-4">
+        Season Champions
+      </h2>
       <div class="d-flex justify-space-between flex-wrap">
-        <award-card username="fooey" :place="1" class="mb-4"/>
+        <award-card
+          username="fooey"
+          :place="1"
+          class="mb-4"
+        />
         <award-card username="booey" :place="2" class="mb-4"/>
         <award-card username="gluey" :place="3" class="mb-4"/>
       </div>
+      <v-data-table :items="tableRows" :headers="tableColumns" />
     </section>
   </div>
 </template>
@@ -40,167 +49,179 @@ export default {
           secondPlace: 2,
           thirdPlace: 3,
           fourthPlace: 4,
-          rankings: {
+          rankings: [
             // Player 1
-            1: {
-              // Player 1 Week 1
-              1: [
-                {
-                  player: 'Player 1',
-                  opponent: 'Player 2',
-                  result: Result.WON,
-                },
-                {
-                  player: 'Player 1',
-                  opponent: 'Player 3',
-                  result: Result.WON,
-                },
-                {
-                  player: 'Player 1',
-                  opponent: 'Player 4',
-                  result: Result.WON,
-                },
-              ],
-              // Player 1 Week 2
-              2: [
-                {
-                  player: 'Player 1',
-                  opponent: 'Player 2',
-                  result: Result.LOST,
-                },
-                {
-                  player: 'Player 1',
-                  opponent: 'Player 3',
-                  result: Result.WON,
-                },
-                {
-                  player: 'Player 1',
-                  opponent: 'Player 4',
-                  result: Result.WON,
-                },
-              ],
+            {
+              username: 'Player 1',
+              rankings: {
+                // Player 1 Week 1
+                1: [
+                  {
+                    opponent: 'Player 2',
+                    result: Result.WON,
+                  },
+                  {
+                    opponent: 'Player 3',
+                    result: Result.WON,
+                  },
+                  {
+                    opponent: 'Player 4',
+                    result: Result.WON,
+                  },
+                ],
+                // Player 1 Week 2
+                2: [
+                  {
+                    opponent: 'Player 2',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 3',
+                    result: Result.WON,
+                  },
+                  {
+                    opponent: 'Player 4',
+                    result: Result.WON,
+                  },
+                ],
+              },
             },
             // Player 2
-            2: {
-              // Player 2 Week 1
-              1: [
-                {
-                  player: 'Player 2',
-                  opponent: 'Player 1',
-                  result: Result.LOST,
-                },
-                {
-                  player: 'Player 2',
-                  opponent: 'Player 3',
-                  result: Result.WON,
-                },
-                {
-                  player: 'Player 2',
-                  opponent: 'Player 4',
-                  result: Result.WON,
-                },
-              ],
-              // Player 2 Week 2
-              2: [
-                {
-                  player: 'Player 2',
-                  opponent: 'Player 1',
-                  result: Result.WON,
-                },
-                {
-                  player: 'Player 2',
-                  opponent: 'Player 3',
-                  result: Result.WON,
-                },
-                {
-                  player: 'Player 2',
-                  opponent: 'Player 4',
-                  result: Result.WON,
-                },
-              ],
+            {
+              username: 'Player 2',
+              rankings: {
+                // Player 2 Week 1
+                1: [
+                  {
+                    opponent: 'Player 1',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 3',
+                    result: Result.WON,
+                  },
+                  {
+                    opponent: 'Player 4',
+                    result: Result.WON,
+                  },
+                ],
+                // Player 2 Week 2
+                2: [
+                  {
+                    opponent: 'Player 1',
+                    result: Result.WON,
+                  },
+                  {
+                    opponent: 'Player 3',
+                    result: Result.WON,
+                  },
+                  {
+                    opponent: 'Player 4',
+                    result: Result.WON,
+                  },
+                ],
+              },
             },
             // Player 3
-            3: {
-              // Player 3 Week 1
-              1: [
-                {
-                  player: 'Player 3',
-                  opponent: 'Player 1',
-                  result: Result.LOST,
-                },
-                {
-                  player: 'Player 3',
-                  opponent: 'Player 2',
-                  result: Result.LOST,
-                },
-                {
-                  player: 'Player 3',
-                  opponent: 'Player 4',
-                  result: Result.WON,
-                },
-              ],
-              // Player 3 Week 2
-              2: [
-                {
-                  player: 'Player 3',
-                  opponent: 'Player 1',
-                  result: Result.LOST,
-                },
-                {
-                  player: 'Player 3',
-                  opponent: 'Player 2',
-                  result: Result.LOST,
-                },
-                {
-                  player: 'Player 3',
-                  opponent: 'Player 4',
-                  result: Result.LOST,
-                },
-              ],
+            {
+              username: 'Player 3',
+              rankings: {
+                // Player 3 Week 1
+                1: [
+                  {
+                    opponent: 'Player 1',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 2',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 4',
+                    result: Result.WON,
+                  },
+                ],
+                // Player 3 Week 2
+                2: [
+                  {
+                    opponent: 'Player 1',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 2',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 4',
+                    result: Result.LOST,
+                  },
+                ],
+              },
             },
             // Player 4
-            4: {
-              // Player 4 Week 1
-              1: [
-                {
-                  player: 'Player 4',
-                  opponent: 'Player 1',
-                  result: Result.LOST,
-                },
-                {
-                  player: 'Player 4',
-                  opponent: 'Player 2',
-                  result: Result.LOST,
-                },
-                {
-                  player: 'Player 4',
-                  opponent: 'Player 3',
-                  result: Result.LOST,
-                },
-              ],
-              // Player 4 Week 2
-              2: [
-                {
-                  player: 'Player 4',
-                  opponent: 'Player 1',
-                  result: Result.LOST,
-                },
-                {
-                  player: 'Player 4',
-                  opponent: 'Player 2',
-                  result: Result.LOST,
-                },
-                {
-                  player: 'Player 4',
-                  opponent: 'Player 3',
-                  result: Result.WON,
-                },
-              ],
+            {
+              username: 'Player 4',
+              rankings: {
+                // Player 4 Week 1
+                1: [
+                  {
+                    opponent: 'Player 1',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 2',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 3',
+                    result: Result.LOST,
+                  },
+                ],
+                // Player 4 Week 2
+                2: [
+                  {
+                    opponent: 'Player 1',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 2',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 3',
+                    result: Result.WON,
+                  },
+                ],
+              },
             },
-          },
+          ],
         },
       ],
     };
+  },
+  computed: {
+    tableColumns() {
+      const res = [{ text: 'User', value: 'username' }];
+      for (const weekNum in this.seasons[0].rankings[0].rankings) {
+        res.push({
+          text: `Week ${weekNum}`,
+          value: weekNum,
+        });
+      }
+      return res;
+    },
+    tableRows() {
+      return this.seasons[0].rankings.map(player => {
+        const res = { username: player.username };
+        for (const weekNum in player.rankings) {
+          const week = player.rankings[weekNum];
+          const wins = week.filter(match => match.result === Result.WON);
+          res[`${weekNum}_wins`] = wins.map(match => match.opponent).join(', ');
+          res[weekNum] = wins.length;
+        }
+        return res;
+      });
+    },
   },
 };
 </script>
@@ -217,6 +238,6 @@ h1 {
   -webkit-text-fill-color: transparent;
 }
 #upper-surface {
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
 }
 </style>
