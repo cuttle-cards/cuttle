@@ -245,11 +245,11 @@ export default {
       return this.playerWins.map(playerWins => {
         const res = {};
         for (const weekNum in playerWins) {
-          if (playerWins[weekNum] === this.weeklyMaxes[weekNum].first) {
+          if (playerWins[weekNum] === this.topScoresPerWeek[weekNum].first) {
             res[weekNum] = 5;
-          } else if (playerWins[weekNum] === this.weeklyMaxes[weekNum].second) {
+          } else if (playerWins[weekNum] === this.topScoresPerWeek[weekNum].second) {
             res[weekNum] = 4;
-          } else if (playerWins[weekNum] === this.weeklyMaxes[weekNum].third) {
+          } else if (playerWins[weekNum] === this.topScoresPerWeek[weekNum].third) {
             res[weekNum] = 3;
           } else if (playerWins[weekNum] > 0) {
             res[weekNum] = 1;
@@ -260,7 +260,7 @@ export default {
         return res;
       });
     },
-    weeklyMaxes() {
+    topScoresPerWeek() {
       const res = {};
       for (const playerStats of this.playerWins) {
         for (const weekNum in playerStats) {
