@@ -43,6 +43,7 @@ export default {
   data() {
     return {
       Result,
+      seasonIndex: 0,
       seasons: [
         {
           name: 'Clubs 2022',
@@ -203,9 +204,12 @@ export default {
     };
   },
   computed: {
+    selectedSeason() {
+      return this.seasons[this.seasonIndex];
+    },
     tableColumns() {
       const res = [{ text: 'User', value: 'username' }];
-      for (const weekNum in this.seasons[0].rankings[0].matches) {
+      for (const weekNum in this.selectedSeason.rankings[0].matches) {
         res.push({
           text: `Week ${weekNum} Wins`,
           value: `${weekNum}_wins`,
@@ -218,7 +222,7 @@ export default {
       return res;
     },
     tableRows() {
-      return this.seasons[0].rankings.map((playerStats, index) => {
+      return this.selectedSeason.rankings.map((playerStats, index) => {
         const res = { username: playerStats.username };
         const playerWins = this.playerWins[index];
         const playerScores = this.playerScores[index];
@@ -230,7 +234,7 @@ export default {
       });
     },
     playerWins() {
-      return this.seasons[0].rankings.map(playerStats => {
+      return this.selectedSeason.rankings.map(playerStats => {
         const res = {};
         for (const weekNum in playerStats.matches) {
           const week = playerStats.matches[weekNum];
