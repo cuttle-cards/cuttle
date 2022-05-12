@@ -207,17 +207,33 @@ export default {
       const res = [{ text: 'User', value: 'username' }];
       for (const weekNum in this.seasons[0].rankings[0].rankings) {
         res.push({
-          text: `Week ${weekNum}`,
-          value: weekNum,
+          text: `Week ${weekNum} Wins`,
+          value: `${weekNum}_wins`,
+        });
+        res.push({
+          text: `Week ${weekNum} Points`,
+          value: `${weekNum}_points`,
         });
       }
       return res;
     },
     tableRows() {
-      return this.seasons[0].rankings.map(player => {
-        const res = { username: player.username };
-        for (const weekNum in player.rankings) {
-          const week = player.rankings[weekNum];
+      return this.seasons[0].rankings.map((playerStats, index) => {
+        const res = { username: playerStats.username };
+        const playerWins = this.playerWins[index];
+        const playerScores = this.playerScores[index];
+        for (const weekNum in playerStats.rankings) {
+          res[`${weekNum}_wins`] = playerWins[weekNum];
+          res[`${weekNum}_points`] = playerScores[weekNum];
+        }
+        return res;
+      });
+    },
+    playerWins() {
+      return this.seasons[0].rankings.map(playerStats => {
+        const res = {};
+        for (const weekNum in playerStats.rankings) {
+          const week = playerStats.rankings[weekNum];
           const wins = week.filter(match => match.result === Result.WON);
           // res[`${weekNum}_wins`] = wins.map(match => match.opponent).join(', ');
           res[weekNum] = wins.length;
@@ -225,9 +241,28 @@ export default {
         return res;
       });
     },
+    playerScores() {
+      return this.playerWins.map(playerWins => {
+        const res = {};
+        for (const weekNum in playerWins) {
+          if (playerWins[weekNum] === this.weeklyMaxes[weekNum].first) {
+            res[weekNum] = 5;
+          } else if (playerWins[weekNum] === this.weeklyMaxes[weekNum].second) {
+            res[weekNum] = 4;
+          } else if (playerWins[weekNum] === this.weeklyMaxes[weekNum].third) {
+            res[weekNum] = 3;
+          } else if (playerWins[weekNum] > 0) {
+            res[weekNum] = 1;
+          } else {
+            res[weekNum] = 0;
+          }
+        }
+        return res;
+      });
+    },
     weeklyMaxes() {
       const res = {};
-      for (const playerStats of this.tableRows) {
+      for (const playerStats of this.playerWins) {
         for (const weekNum in playerStats) {
           // First time seeing a score for this week
           if (!(weekNum in res)) {
