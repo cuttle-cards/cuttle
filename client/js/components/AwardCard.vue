@@ -1,5 +1,5 @@
 <template>
-  <v-card class="d-flex align-center">
+  <v-card class="d-flex align-center" color="#eee">
     <div class="medal-icon pa-8 d-flex align-center">
       <v-icon size="48" :color="medalColor">
         mdi-medal
@@ -52,7 +52,7 @@ export default {
 
 <style scoped>
 .medal-icon {
-  background-color: #EEE;
+  background-color: #fff;
 }
 .text {
   height: 100%;
