@@ -22,7 +22,18 @@
       <h2 class="text-h3 my-4">
         Weekly Rankings
       </h2>
-      <v-data-table :items="tableRows" :headers="tableColumns" />
+      <v-data-table :items="tableRows" :headers="tableColumns">
+        <!-- Customize win count -->
+        <template v-for="week in weekNums" #[`item.${week}_wins`]="{item, value}">
+          <v-chip
+            :color="colorForScore(item[`${week}_points`])"
+            :key="`${item.username}_week_${week}_wins`"
+            dark
+          >
+            {{ value }}
+          </v-chip>
+        </template>
+      </v-data-table>
     </section>
   </div>
 </template>
@@ -207,6 +218,9 @@ export default {
     selectedSeason() {
       return this.seasons[this.seasonIndex];
     },
+    weekNums() {
+      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    },
     tableColumns() {
       const res = [{ text: 'User', value: 'username' }];
       for (const weekNum in this.selectedSeason.rankings[0].matches) {
@@ -304,6 +318,22 @@ export default {
         }
       }
       return res;
+    },
+  },
+  methods: {
+    colorForScore(score) {
+      switch (score) {
+        case 5:
+          return '#AF9500'; // gold
+        case 4:
+          return '#B4B4B4'; // silver
+        case 3:
+          return '#6A3805'; // bronze
+        case 1:
+          return '#333';
+        default:
+          return '#000';
+      }
     },
   },
 };
