@@ -56,7 +56,7 @@ export default {
             // Player 1
             {
               username: 'Player 1',
-              rankings: {
+              matches: {
                 // Player 1 Week 1
                 1: [
                   {
@@ -92,7 +92,7 @@ export default {
             // Player 2
             {
               username: 'Player 2',
-              rankings: {
+              matches: {
                 // Player 2 Week 1
                 1: [
                   {
@@ -128,7 +128,7 @@ export default {
             // Player 3
             {
               username: 'Player 3',
-              rankings: {
+              matches: {
                 // Player 3 Week 1
                 1: [
                   {
@@ -164,7 +164,7 @@ export default {
             // Player 4
             {
               username: 'Player 4',
-              rankings: {
+              matches: {
                 // Player 4 Week 1
                 1: [
                   {
@@ -205,7 +205,7 @@ export default {
   computed: {
     tableColumns() {
       const res = [{ text: 'User', value: 'username' }];
-      for (const weekNum in this.seasons[0].rankings[0].rankings) {
+      for (const weekNum in this.seasons[0].rankings[0].matches) {
         res.push({
           text: `Week ${weekNum} Wins`,
           value: `${weekNum}_wins`,
@@ -222,7 +222,7 @@ export default {
         const res = { username: playerStats.username };
         const playerWins = this.playerWins[index];
         const playerScores = this.playerScores[index];
-        for (const weekNum in playerStats.rankings) {
+        for (const weekNum in playerStats.matches) {
           res[`${weekNum}_wins`] = playerWins[weekNum];
           res[`${weekNum}_points`] = playerScores[weekNum];
         }
@@ -232,8 +232,8 @@ export default {
     playerWins() {
       return this.seasons[0].rankings.map(playerStats => {
         const res = {};
-        for (const weekNum in playerStats.rankings) {
-          const week = playerStats.rankings[weekNum];
+        for (const weekNum in playerStats.matches) {
+          const week = playerStats.matches[weekNum];
           const wins = week.filter(match => match.result === Result.WON);
           // res[`${weekNum}_wins`] = wins.map(match => match.opponent).join(', ');
           res[weekNum] = wins.length;
