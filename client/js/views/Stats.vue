@@ -29,6 +29,7 @@
             :color="colorForScore(item[`${week}_points`])"
             :key="`${item.username}_week_${week}_wins`"
             dark
+            :outlined="['primary', 'secondary'].includes(colorForScore(item[`${week}_points`]))"
           >
             {{ value }}
           </v-chip>
@@ -98,6 +99,14 @@ export default {
                     opponent: 'Player 4',
                     result: Result.WON,
                   },
+                  {
+                    opponent: 'Player 5',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 6',
+                    result: Result.LOST,
+                  },
                 ],
               },
             },
@@ -155,6 +164,10 @@ export default {
                     opponent: 'Player 4',
                     result: Result.WON,
                   },
+                  {
+                    opponent: 'Player 5',
+                    result: Result.LOST,
+                  },
                 ],
                 // Player 3 Week 2
                 2: [
@@ -168,6 +181,10 @@ export default {
                   },
                   {
                     opponent: 'Player 4',
+                    result: Result.LOST,
+                  },
+                  {
+                    opponent: 'Player 5',
                     result: Result.LOST,
                   },
                 ],
@@ -191,6 +208,10 @@ export default {
                     opponent: 'Player 3',
                     result: Result.LOST,
                   },
+                  {
+                    opponent: 'Player 5',
+                    result: Result.LOST,
+                  },
                 ],
                 // Player 4 Week 2
                 2: [
@@ -206,7 +227,49 @@ export default {
                     opponent: 'Player 3',
                     result: Result.WON,
                   },
+                  {
+                    opponent: 'Player 5',
+                    result: Result.LOST,
+                  },
                 ],
+              },
+            },
+            // Player 5
+            {
+              username: 'Player 5',
+              matches: {
+                1: [
+                  {
+                    opponent: 'Player 3',
+                    result: Result.WON,
+                  },
+                  {
+                    opponent: 'Player 4',
+                    result: Result.WON,
+                  },
+                ],
+                2: [
+                  {
+                    opponent: 'Player 1',
+                    result: Result.WON,
+                  },
+                  {
+                    opponent: 'Player 3',
+                    result: Result.WON,
+                  },
+                  {
+                    opponent: 'Player 4',
+                    result: Result.WON,
+                  },
+                ],
+              },
+            },
+            // Player 6
+            {
+              username: 'Player 6',
+              matches: {
+                1: [],
+                2: [{ opponent: 'Player 1', result: Result.WON }],
               },
             },
           ],
@@ -330,9 +393,9 @@ export default {
         case 3:
           return '#6A3805'; // bronze
         case 1:
-          return '#333';
+          return 'primary';
         default:
-          return '#000';
+          return 'secondary';
       }
     },
   },
