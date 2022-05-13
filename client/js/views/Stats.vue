@@ -29,7 +29,7 @@
             :color="colorForScore(item[`${week}_points`])"
             :key="`${item.username}_week_${week}_wins`"
             dark
-            :outlined="['primary', 'secondary'].includes(colorForScore(item[`${week}_points`]))"
+            :outlined="['primary', '#000'].includes(colorForScore(item[`${week}_points`]))"
           >
             {{ value }}
           </v-chip>
@@ -395,7 +395,7 @@ export default {
         case 1:
           return 'primary';
         default:
-          return 'secondary';
+          return '#000';
       }
     },
   },
