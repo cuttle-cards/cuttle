@@ -26,10 +26,9 @@
         <div id="stats-table-upper-surface">
           <v-select
             class="filter-select"
-            v-model="selectedTableFilters"
-            :items="tableFilterChoices"
-            multiple
-            label="Filters"
+            v-model="selectedMetric"
+            :items="metricChoices"
+            label="Metric"
           />
         </div>
         <v-data-table :items="tableRows" :headers="tableColumns">
@@ -67,8 +66,8 @@ export default {
     return {
       Result,
       seasonIndex: 0,
-      tableFilterChoices: ['Wins', 'Points'],
-      selectedTableFilters: ['Wins', 'Points'],
+      metricChoices: ['Points and Wins', 'Points Only', 'Wins Only'],
+      selectedMetric: 'Points and Wins',
       seasons: [
         {
           name: 'Clubs 2022',
@@ -304,13 +303,13 @@ export default {
         { text: 'Total Wins', value: 'total_wins' },
       ];
       for (const weekNum in this.selectedSeason.rankings[0].matches) {
-        if (this.selectedTableFilters.includes('Wins')) {
+        if (['Points and Wins', 'Wins Only'].includes(this.selectedMetric)) {
           res.push({
             text: `Week ${weekNum} Wins`,
             value: `${weekNum}_wins`,
           });
         }
-        if (this.selectedTableFilters.includes('Points')) {
+        if (['Points and Wins', 'Points Only'].includes(this.selectedMetric)) {
           res.push({
             text: `Week ${weekNum} Points`,
             value: `${weekNum}_points`,
