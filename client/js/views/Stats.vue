@@ -2,9 +2,13 @@
   <div id="stats-wrapper">
     <!-- Upper Service -->
     <section id="upper-surface" class="pa-8 mb-6">
-      <h1 class="text-h2">
-        Clubs 2022
-      </h1>
+      <v-select v-model="selectedSeason" :items="seasons" return-object item-text="name">
+        <template #selection="{ item }">
+          <h1 class="text-h2">
+            {{ item.name }}
+          </h1>
+        </template>
+      </v-select>
     </section>
     <section class="px-8">
       <!-- Season Champions -->
@@ -66,6 +70,7 @@ export default {
     return {
       Result,
       seasonIndex: 0,
+      selectedSeason: null,
       metricChoices: ['Points and Wins', 'Points Only', 'Wins Only'],
       selectedMetric: 'Points and Wins',
       seasons: [
@@ -290,9 +295,6 @@ export default {
     };
   },
   computed: {
-    selectedSeason() {
-      return this.seasons[this.seasonIndex];
-    },
     weekNums() {
       return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     },
@@ -425,6 +427,9 @@ export default {
       }
     },
   },
+  mounted() {
+    this.selectedSeason = this.seasons[0];
+  }
 };
 </script>
 
