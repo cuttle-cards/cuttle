@@ -25,6 +25,7 @@
       <div id="stat-table-wrapper">
         <div id="stats-table-upper-surface">
           <v-select
+            class="filter-select"
             v-model="selectedTableFilters"
             :items="tableFilterChoices"
             multiple
@@ -297,7 +298,11 @@ export default {
       return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     },
     tableColumns() {
-      const res = [{ text: 'User', value: 'username' }];
+      const res = [
+        { text: 'User', value: 'username' },
+        { text: 'Total Points', value: 'total_points' },
+        { text: 'Total Wins', value: 'total_wins' },
+      ];
       for (const weekNum in this.selectedSeason.rankings[0].matches) {
         if (this.selectedTableFilters.includes('Wins')) {
           res.push({
@@ -316,9 +321,13 @@ export default {
     },
     tableRows() {
       return this.selectedSeason.rankings.map((playerStats, index) => {
-        const res = { username: playerStats.username };
         const playerWins = this.playerWins[index];
         const playerScores = this.playerScores[index];
+        const res = {
+          username: playerStats.username,
+          total_points: playerWins.total,
+          total_wins: playerScores.total,
+        };
         for (const weekNum in playerStats.matches) {
           res[`${weekNum}_wins`] = playerWins[weekNum];
           res[`${weekNum}_points`] = playerScores[weekNum];
@@ -328,10 +337,11 @@ export default {
     },
     playerWins() {
       return this.selectedSeason.rankings.map(playerStats => {
-        const res = {};
+        const res = { total: 0 };
         for (const weekNum in playerStats.matches) {
           const week = playerStats.matches[weekNum];
           const wins = week.filter(match => match.result === Result.WON);
+          res.total += wins.length;
           // res[`${weekNum}_wins`] = wins.map(match => match.opponent).join(', ');
           res[weekNum] = wins.length;
         }
@@ -340,19 +350,20 @@ export default {
     },
     playerScores() {
       return this.playerWins.map(playerWins => {
-        const res = {};
+        const res = { total: 0 };
         for (const weekNum in playerWins) {
+          let pointsThisWeek = 0;
           if (playerWins[weekNum] === this.topScoresPerWeek[weekNum].first) {
-            res[weekNum] = 5;
+            pointsThisWeek = 5;
           } else if (playerWins[weekNum] === this.topScoresPerWeek[weekNum].second) {
-            res[weekNum] = 4;
+            pointsThisWeek = 4;
           } else if (playerWins[weekNum] === this.topScoresPerWeek[weekNum].third) {
-            res[weekNum] = 3;
+            pointsThisWeek = 3;
           } else if (playerWins[weekNum] > 0) {
-            res[weekNum] = 1;
-          } else {
-            res[weekNum] = 0;
+            pointsThisWeek = 1;
           }
+          res[weekNum] = pointsThisWeek;
+          res.total += pointsThisWeek;
         }
         return res;
       });
@@ -434,5 +445,8 @@ export default {
 }
 #upper-surface {
   background-color: #f3f3f3;
+}
+.filter-select {
+  width: 50%;
 }
 </style>
