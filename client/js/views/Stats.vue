@@ -22,19 +22,29 @@
       <h2 class="text-h3 my-4">
         Weekly Rankings
       </h2>
-      <v-data-table :items="tableRows" :headers="tableColumns">
-        <!-- Customize win count -->
-        <template v-for="week in weekNums" #[`item.${week}_wins`]="{item, value}">
-          <v-chip
-            :color="colorForScore(item[`${week}_points`])"
-            :key="`${item.username}_week_${week}_wins`"
-            dark
-            :outlined="['primary', '#000'].includes(colorForScore(item[`${week}_points`]))"
-          >
-            {{ value }}
-          </v-chip>
-        </template>
-      </v-data-table>
+      <div id="stat-table-wrapper">
+        <div id="stats-table-upper-surface">
+          <v-select
+            v-model="selectedTableFilters"
+            :items="tableFilterChoices"
+            multiple
+            label="Filters"
+          />
+        </div>
+        <v-data-table :items="tableRows" :headers="tableColumns">
+          <!-- Customize win count -->
+          <template v-for="week in weekNums" #[`item.${week}_wins`]="{item, value}">
+            <v-chip
+              :color="colorForScore(item[`${week}_points`])"
+              :key="`${item.username}_week_${week}_wins`"
+              dark
+              :outlined="['primary', '#000'].includes(colorForScore(item[`${week}_points`]))"
+            >
+              {{ value }}
+            </v-chip>
+          </template>
+        </v-data-table>
+      </div>
     </section>
   </div>
 </template>
@@ -56,6 +66,8 @@ export default {
     return {
       Result,
       seasonIndex: 0,
+      tableFilterChoices: ['Wins', 'Points'],
+      selectedTableFilters: ['Wins', 'Points'],
       seasons: [
         {
           name: 'Clubs 2022',
@@ -287,14 +299,18 @@ export default {
     tableColumns() {
       const res = [{ text: 'User', value: 'username' }];
       for (const weekNum in this.selectedSeason.rankings[0].matches) {
-        res.push({
-          text: `Week ${weekNum} Wins`,
-          value: `${weekNum}_wins`,
-        });
-        res.push({
-          text: `Week ${weekNum} Points`,
-          value: `${weekNum}_points`,
-        });
+        if (this.selectedTableFilters.includes('Wins')) {
+          res.push({
+            text: `Week ${weekNum} Wins`,
+            value: `${weekNum}_wins`,
+          });
+        }
+        if (this.selectedTableFilters.includes('Points')) {
+          res.push({
+            text: `Week ${weekNum} Points`,
+            value: `${weekNum}_points`,
+          });
+        }
       }
       return res;
     },
