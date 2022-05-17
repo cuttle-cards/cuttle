@@ -37,10 +37,10 @@
         </div>
         <v-data-table :items="tableRows" :headers="tableColumns">
           <!-- Customize win count -->
-          <template v-for="week in weekNums" #[`item.${week}_wins`]="{item, value}">
+          <template v-for="week in ['total', ...weekNums]" #[`item.${week}_points`]="{item, value}">
             <v-chip
               :color="colorForScore(item[`${week}_points`])"
-              :key="`${item.username}_week_${week}_wins`"
+              :key="`${item.username}_week_${week}_points`"
               dark
               :outlined="['primary', '#000'].includes(colorForScore(item[`${week}_points`]))"
             >
