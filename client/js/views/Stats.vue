@@ -4,7 +4,7 @@
     <section id="upper-surface" class="pa-8 mb-6">
       <v-select v-model="selectedSeason" :items="seasons" return-object item-text="name">
         <template #selection="{ item }">
-          <h1 class="text-h2">
+          <h1 class="text-h2" data-cy="selected-season-header">
             {{ item.name }}
           </h1>
         </template>

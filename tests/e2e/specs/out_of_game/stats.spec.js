@@ -10,6 +10,6 @@ describe('Stats Page', () => {
   beforeEach(setup);
 
   it('Displays Headers, Cards, and Table', () => {
-    cy.contains('Clubs 2022');
+    cy.get('[data-cy=selected-season-header]');
   });
 });
