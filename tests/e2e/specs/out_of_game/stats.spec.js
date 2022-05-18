@@ -11,5 +11,6 @@ describe('Stats Page', () => {
 
   it('Displays Headers, Cards, and Table', () => {
     cy.get('[data-cy=selected-season-header]');
+    cy.get("[points-1='Player 1']").contains('5');
   });
 });

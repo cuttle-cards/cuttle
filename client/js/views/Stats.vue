@@ -43,6 +43,7 @@
               :key="`${item.username}_week_${week}_points`"
               dark
               :outlined="['primary', '#000'].includes(colorForScore(item[`${week}_points`]))"
+              v-bind="dataAttribute(item.username, week, 'points')"
             >
               {{ value }}
             </v-chip>
@@ -428,10 +429,23 @@ export default {
           return '#000';
       }
     },
+    /**
+     * Returns an object for v-bind for testing attributes to identify table cell
+     * @example {'points-2': 'someUserName'} identifies someUserNames' week-2 points
+     * @param {String} username
+     * @param {int} weekNum Which week
+     * @param {'points' | 'wins'} metricName 'points'
+     */
+    dataAttribute(username, weekNum, metricName) {
+      const res = {};
+      const attributeName = `${metricName}-${weekNum}`;
+      res[attributeName] = username;
+      return res;
+    },
   },
   mounted() {
     this.selectedSeason = this.seasons[0];
-  }
+  },
 };
 </script>
 
