@@ -13,4 +13,20 @@ describe('Stats Page', () => {
     cy.get('[data-cy=selected-season-header]');
     cy.get("[points-1='Player 1']").contains('5');
   });
+
+  it.skip('Filters table to display wins, points, or both', () => {
+    expect(true).to.eq(false);
+  });
+
+  it.skip('Filters table to show selected weeks', () => {
+    expect(true).to.eq(false);
+  });
+
+  it.skip('Selects different seasons to show their results', () => {
+    expect(true).to.eq(false);
+  });
+
+  it.skip('Correctly displays table data for a given season', () => {
+    expect(true).to.eq(false);
+  });
 });
