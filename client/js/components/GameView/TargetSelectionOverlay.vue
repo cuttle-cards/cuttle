@@ -15,7 +15,16 @@
       <v-btn outlined color="primary" class="mt-2" data-cy="cancel-target" @click="$emit('cancel')">
         Cancel
       </v-btn>
+      
     </div>
+    <v-btn
+        color="primary"
+        text
+        data-cy="cancel-target-mobile"
+        @click="$emit('cancel')"
+      >
+        X
+    </v-btn>
   </div>
 </template>
 
