@@ -17,13 +17,10 @@
       </v-btn>
       
     </div>
-    <v-btn
-        color="primary"
-        text
-        data-cy="cancel-target-mobile"
-        @click="$emit('cancel')"
-      >
-        X
+    <v-btn icon data-cy="cancel-target-mobile" @click="$emit('cancel')">
+      <v-icon x-large>
+        mdi-close
+      </v-icon>
     </v-btn>
   </div>
 </template>

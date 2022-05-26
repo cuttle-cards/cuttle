@@ -318,15 +318,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.get('[data-player-hand-card]').should('have.length', 5);
     cy.log('Loaded fixture');
 
-    // Cancel selected card (close move-choice-overlay)
-    cy.get('[data-player-hand-card=2-3]').click(); // Two of spades
-    cy.get('#move-choice-overlay').should('be.visible');
-    // Should have 3 move options
-    cy.get('[data-move-choice]').should('have.length', 3);
-    cy.get('[data-cy=cancel-move]').click();
-    cy.get('#move-choice-overlay').should('not.be.visible');
-    cy.log('Successfully canceled card selection');
-
     // Cancel decision to scuttle
     cy.get('[data-player-hand-card=2-3]').click(); // Two of spades
     cy.get('[data-move-choice=scuttle]').click();
