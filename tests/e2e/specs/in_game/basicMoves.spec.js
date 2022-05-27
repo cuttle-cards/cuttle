@@ -300,6 +300,55 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.log('Cannot play jack now that opponent has queen');
   });
 
+  it('Cancels selection and cancels decision to scuttle/targeted one-off/jack on mobile', () => {
+    cy.loadGameFixture({
+      p0Hand: [
+        Card.TWO_OF_SPADES,
+        Card.FOUR_OF_CLUBS,
+        Card.NINE_OF_SPADES,
+        Card.KING_OF_CLUBS,
+        Card.JACK_OF_SPADES,
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.SIX_OF_CLUBS],
+      p1Points: [Card.ACE_OF_SPADES],
+      p1FaceCards: [Card.KING_OF_DIAMONDS],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 5);
+    cy.log('Loaded fixture');
+
+    // Cancel decision to scuttle
+    cy.get('[data-player-hand-card=2-3]').click(); // Two of spades
+    cy.get('[data-move-choice=scuttle]').click();
+    cy.get('#player-hand-targeting').should('be.visible');
+    cy.get('.player-card.selected').should('have.length', 1);
+    cy.get('[data-cy=cancel-target-mobile]').click();
+    cy.get('#player-hand-targeting').should('not.exist');
+    cy.get('.player-card.selected').should('have.length', 0);
+    cy.log('Successfully canceled scuttle - mobile');
+
+    // Cancel targeted one-off
+    cy.get('[data-player-hand-card=9-3]').click(); // Nine of spades
+    cy.get('[data-move-choice=targetedOneOff]').click();
+    cy.get('#player-hand-targeting').should('be.visible');
+    cy.get('.player-card.selected').should('have.length', 1);
+    cy.get('[data-cy=cancel-target-mobile]').click();
+    cy.get('#player-hand-targeting').should('not.exist');
+    cy.get('.player-card.selected').should('have.length', 0);
+    cy.log('Successfully canceled targeted one-off - mobile');
+
+    // Cancel Jack
+    cy.get('[data-player-hand-card=11-3]').click(); // Nine of spades
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('#player-hand-targeting').should('be.visible');
+    cy.get('.player-card.selected').should('have.length', 1);
+    cy.get('[data-cy=cancel-target-mobile]').click();
+    cy.get('#player-hand-targeting').should('not.exist');
+    cy.get('.player-card.selected').should('have.length', 0);
+    cy.log('Successfully canceled jack - mobile');
+  });
+
   it('Cancels selection and cancels decision to scuttle/targeted one-off/jack', () => {
     cy.loadGameFixture({
       p0Hand: [
