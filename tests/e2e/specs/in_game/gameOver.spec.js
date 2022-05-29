@@ -1,4 +1,11 @@
-import { setupGameAsP0, setupGameAsP1, assertGameState, Card } from '../../support/helpers';
+import {
+  setupGameAsP0,
+  setupGameAsP1,
+  assertGameState,
+  Card,
+  username,
+  opponentUsername,
+} from '../../support/helpers';
 
 function assertVictory() {
   cy.log('Asserting player victory');
@@ -206,8 +213,11 @@ describe('Stalemates', () => {
       .should('contain', '(0)')
       .should('contain', 'PASS')
       .click();
+    cy.log('Should log the passing');
+    cy.get('#history').contains(`${username} passes`);
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
+    cy.get('#history').contains(`${opponentUsername} passes`);
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck')
       .should('contain', '(0)')
