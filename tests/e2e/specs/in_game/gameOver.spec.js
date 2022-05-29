@@ -213,7 +213,7 @@ describe('Stalemates', () => {
       .should('contain', '(0)')
       .should('contain', 'PASS')
       .click();
-    cy.log('Should log the passing')
+    cy.log('Should log the passing');
     cy.get('#history').contains(`${username} passes`);
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
