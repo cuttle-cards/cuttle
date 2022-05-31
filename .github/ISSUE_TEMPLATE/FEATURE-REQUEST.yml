@@ -7,11 +7,11 @@ body:
   id: feature_summary
   attributes:
     label: Feature Summary
-    validations:
-      required: true
-- type: markdown
+  validations:
+    required: true
+- type: textarea
   id: detailed_description
   attributes:
     label: Detailed Description
-    validations:
-      required: true
+  validations:
+    required: true

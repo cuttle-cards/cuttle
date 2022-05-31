@@ -7,27 +7,27 @@ body:
   id: bug_summary
   attributes:
     label: Bug Summary
-    validations:
-      required: true
-- type: markdown
+  validations:
+    required: true
+- type: textarea
   id: detailed_description
   attributes:
     label: Detailed Description
-    validations:
-      required: true
-- type: markdown
+  validations:
+    required: true
+- type: textarea
   id: current_behavior
   attributes:
     label: Current Behavior
-    validations:
-      required: false
-- type: markdown
+  validations:
+    required: false
+- type: textarea
   id: expected_behavior
   attributes:
     label: Expected Behavior
-    validations:
-      required: false
-- type: markdown
+  validations:
+    required: false
+- type: textarea
   id: reproduction_steps
   attributes:
     label: Steps to Reproduce
@@ -35,5 +35,5 @@ body:
       1.
       2.
       3.
-    validations:
-      required: false
+  validations:
+    required: false
