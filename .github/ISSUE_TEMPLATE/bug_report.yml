@@ -1,0 +1,39 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug"]
+assignees:
+body:
+  - type: input
+    attributes:
+      label: Issue Summary
+      value:
+      validations:
+        required: true
+  - type: markdown
+    attributes:
+      label: Detailed Description
+      value:
+      validations:
+        required: true
+  - type: markdown
+    attributes:
+      label: Current Behavior
+      value:
+      validations:
+        required: false
+  - type: markdown
+    attributes:
+      label: Expected Behavior
+      value:
+      validations:
+        required: false
+  - type: markdown
+    attributes:
+      label: Steps to Reproduce
+      value: |
+        1.
+        2.
+        3.
+      validations:
+        required: false
