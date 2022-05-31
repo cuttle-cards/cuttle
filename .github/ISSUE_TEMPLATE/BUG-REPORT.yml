@@ -5,30 +5,35 @@ labels: ["bug"]
 assignees:
 body:
   - type: input
+    id: bug_summary
     attributes:
-      label: Issue Summary
-      value:
+      label: Bug Summary
+      value: ""
       validations:
         required: true
   - type: markdown
+    id: detailed_description
     attributes:
       label: Detailed Description
       value:
       validations:
         required: true
   - type: markdown
+    id: current_behavior
     attributes:
       label: Current Behavior
       value:
       validations:
         required: false
   - type: markdown
+    id: expected_behavior
     attributes:
       label: Expected Behavior
       value:
       validations:
         required: false
   - type: markdown
+    id: reproduction_steps
     attributes:
       label: Steps to Reproduce
       value: |

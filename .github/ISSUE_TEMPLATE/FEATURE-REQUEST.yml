@@ -1,16 +1,18 @@
-name: Bug Report
-description: File a bug report
+name: Feature Request
+description: File a feature request
 title: "[Feature]: "
 labels: ["enhancement"]
 assignees:
 body:
   - type: input
+    id: feature_summary
     attributes:
       label: Feature Summary
-      value:
+      value: ""
       validations:
         required: true
   - type: markdown
+    id: detailed_description
     attributes:
       label: Detailed Description
       value:
