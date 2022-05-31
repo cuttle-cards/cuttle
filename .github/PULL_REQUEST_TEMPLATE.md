@@ -1,7 +1,4 @@
-<!--
-Thanks for contributing to Cuttle! 🎉
--->
-
+<!-- Thanks for contributing to Cuttle! 🎉 -->
 ## Please check the following
 
 - [ ] Do the tests still pass? (see [Run the Tests](https://github.com/cuttle-cards/cuttle#run-the-tests))
