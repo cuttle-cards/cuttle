@@ -36,7 +36,7 @@ module.exports = {
       // Successfully created User - Set session data
       req.session.loggedIn = true;
       req.session.usr = user.id;
-      return res.ok();
+      return res.ok(user.id);
     } catch (err) {
       return res.badRequest(err);
     }
