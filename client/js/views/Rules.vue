@@ -290,8 +290,7 @@ export default {
           {
             title: 'Ace',
             icon: 'delete',
-            description:
-              'Play on an opponent’s point card to steal it. Point card returns to opponent if the jack is scrapped or if another jack is used to steal it back.',
+            description: 'Scrap all point cards on the field',
             staticImg: 'cuttle_one_off_ace.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/ace.gif?raw=true',
