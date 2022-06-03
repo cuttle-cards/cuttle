@@ -16,6 +16,13 @@ Cypress.Commands.add('setBadSession', () => {
     });
   });
 });
+Cypress.Commands.add('loadSeasonFixcture', season => {
+  return new Promise((resolve, reject) => {
+    io.socket.post('/test/loadSeasonFixture', season, function(res) {
+      return resolve();
+    });
+  });
+});
 Cypress.Commands.add('requestGameList', () => {
   return new Promise((resolve, reject) => {
     io.socket.get('/game/getList', function(res) {
