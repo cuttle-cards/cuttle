@@ -16,7 +16,8 @@
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
-    "parser": "@babel/eslint-parser"
+    "parser": "@babel/eslint-parser",
+    "requireConfigFile": false
   },
   "rules": {
     "prettier/prettier": "error",
@@ -50,6 +51,15 @@
         "import/no-unresolved": [
           "off"
         ]
+      }
+    },
+    {
+      "files": [
+        "**/__tests__/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.spec.{j,t}s?(x)"
+      ],
+      "env": {
+        "jest": true
       }
     }
   ],
