@@ -9,12 +9,10 @@
     "plugin:vue/essential",
     "eslint:recommended",
     "plugin:prettier/recommended",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "plugin:cypress/recommended"
   ],
-  "plugins": [
-    "prettier",
-    "jest"
-  ],
+  "plugins": [],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
@@ -46,12 +44,8 @@
   "overrides": [
     {
       "files": [
-        "**/__tests__/*.{j,t}s?(x)",
-        "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        "**/tests/*.{j,t}s?(x)"
       ],
-      "env": {
-        "jest": true
-      },
       "rules": {
         "import/no-unresolved": [
           "off"
