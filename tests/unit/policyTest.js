@@ -5,11 +5,11 @@ var req = {
   body: {},
 };
 var res = {
-  forbidden: function() {
+  forbidden: function () {
     return false;
   },
 };
-var next = function() {
+var next = function () {
   return true;
 };
 function newReq() {
@@ -18,10 +18,10 @@ function newReq() {
     body: {},
   };
 }
-describe('Policy Test', function() {
+describe('Policy Test', function () {
   req = newReq();
 
-  it('hasCardId', function() {
+  it('hasCardId', function () {
     var hasCardId = require('../../api/policies/hasCardId.js');
     req = newReq();
     req.body.cardId = 1337;
@@ -38,7 +38,7 @@ describe('Policy Test', function() {
     hasCardId(req, res, next).should.equal(false, 'Passed hasCardId while cardId was not a number');
   });
 
-  it('hasCardIdOneAndTwo', function() {
+  it('hasCardIdOneAndTwo', function () {
     var hasCardIdOneAndTwo = require('../../api/policies/hasCardIdOneAndTwo.js');
     req = newReq();
     // Valid request
@@ -75,7 +75,7 @@ describe('Policy Test', function() {
     );
   });
 
-  it('hasGameName', function() {
+  it('hasGameName', function () {
     var hasGameName = require('../../api/policies/hasGameName.js');
     req = newReq();
     // Valid request
@@ -95,7 +95,7 @@ describe('Policy Test', function() {
     );
   });
 
-  it('hasOpId', function() {
+  it('hasOpId', function () {
     var hasOpId = require('../../api/policies/hasOpId.js');
     req = newReq();
     // Valid request
@@ -112,7 +112,7 @@ describe('Policy Test', function() {
     hasOpId(req, res, next).should.equal(false, 'Passed hasOpId while missing req.body.opId');
   });
 
-  it('hasPassword', function() {
+  it('hasPassword', function () {
     var hasPassword = require('../../api/policies/hasPassword.js');
     req = newReq();
     // Valid request
@@ -132,7 +132,7 @@ describe('Policy Test', function() {
     );
   });
 
-  it('hasTargetId', function() {
+  it('hasTargetId', function () {
     var hasTargetId = require('../../api/policies/hasTargetId');
     req = newReq();
     // Valid request
@@ -152,7 +152,7 @@ describe('Policy Test', function() {
     );
   });
 
-  it('hasTargetType', function() {
+  it('hasTargetType', function () {
     var hasTargetType = require('../../api/policies/hasTargetType');
     req = newReq();
     // Valid request
@@ -172,7 +172,7 @@ describe('Policy Test', function() {
     );
   });
 
-  it('isLoggedIn', function() {
+  it('isLoggedIn', function () {
     var isLoggedIn = require('../../api/policies/isLoggedIn.js');
     // Test valid request (with user and logged in)
     req.session.usr = 4;
@@ -208,7 +208,7 @@ describe('Policy Test', function() {
     );
   });
 
-  it('isInGame', function() {
+  it('isInGame', function () {
     var isInGame = require('../../api/policies/isInGame.js');
     req = newReq();
     req.session.game = 5;

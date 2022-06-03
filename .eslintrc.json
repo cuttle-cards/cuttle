@@ -8,11 +8,12 @@
     "plugin:vue/recommended",
     "plugin:vue/essential",
     "eslint:recommended",
-    "plugin:prettier/recommended",
-    "plugin:jest/recommended",
-    "plugin:cypress/recommended"
+    "plugin:prettier/recommended"
   ],
-  "plugins": [],
+  "plugins": [
+    "jest",
+    "cypress"
+  ],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
@@ -45,8 +46,22 @@
   "overrides": [
     {
       "files": [
-        "**/tests/*.{j,t}s?(x)"
+        "**/tests/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.{j,t}s?(x)"
       ],
+      "env": {
+        "jest": true
+      },
+      "globals": {
+        "badRequest": true,
+        "cardService": true,
+        "io": true,
+        "ready1": true,
+        "request": true,
+        "socket1": true,
+        "socket2": true,
+        "socket3": true
+      },
       "rules": {
         "import/no-unresolved": [
           "off"
@@ -55,11 +70,15 @@
     },
     {
       "files": [
-        "**/__tests__/*.{j,t}s?(x)",
-        "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        "**/tests/e2e/**/*.{j,t}s?(x)"
       ],
       "env": {
-        "jest": true
+        "cypress/globals": true
+      },
+      "rules": {
+        "import/no-unresolved": [
+          "off"
+        ]
       }
     }
   ],

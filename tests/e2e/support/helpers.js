@@ -13,10 +13,8 @@ export function setupGameAsP0(alreadyAuthenticated = false) {
     cy.visit('/');
     cy.signupPlayer(username, validPassword);
   }
-  cy.createGamePlayer('Test Game').then(gameSummary => {
-    cy.window()
-      .its('app.$store')
-      .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+  cy.createGamePlayer('Test Game').then((gameSummary) => {
+    cy.window().its('app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
@@ -35,13 +33,11 @@ export function setupGameAsP1() {
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(username, validPassword);
-  cy.createGamePlayer('Test Game').then(gameSummary => {
+  cy.createGamePlayer('Test Game').then((gameSummary) => {
     cy.signupOpponent(opponentUsername, opponentPassword);
     cy.subscribeOpponent(gameSummary.gameId);
     cy.readyOpponent();
-    cy.window()
-      .its('app.$store')
-      .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.window().its('app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
@@ -128,20 +124,20 @@ export function cardsMatch(card1, card2) {
  * @returns lit of ids of specified cards
  */
 export function getCardIds(game, suitAndRankList) {
-  return suitAndRankList.map(card => {
+  return suitAndRankList.map((card) => {
     if (cardsMatch(card, game.topCard)) return game.topCard.id;
     if (cardsMatch(card, game.secondCard)) return game.secondCard.id;
 
-    const foundInScrap = game.scrap.find(scrapCard => cardsMatch(card, scrapCard));
+    const foundInScrap = game.scrap.find((scrapCard) => cardsMatch(card, scrapCard));
     if (foundInScrap) return foundInScrap.id;
 
-    const foundInP0Hand = game.players[0].hand.find(handCard => cardsMatch(card, handCard));
+    const foundInP0Hand = game.players[0].hand.find((handCard) => cardsMatch(card, handCard));
     if (foundInP0Hand) return foundInP0Hand.id;
 
-    const foundInP1Hand = game.players[1].hand.find(handCard => cardsMatch(card, handCard));
+    const foundInP1Hand = game.players[1].hand.find((handCard) => cardsMatch(card, handCard));
     if (foundInP1Hand) return foundInP1Hand.id;
 
-    const foundInDeck = game.deck.find(deckCard => cardsMatch(card, deckCard));
+    const foundInDeck = game.deck.find((deckCard) => cardsMatch(card, deckCard));
     if (foundInDeck) return foundInDeck.id;
 
     throw new Error(
@@ -258,14 +254,14 @@ function assertDomMatchesFixture(pNum, fixture) {
   let playerHasGlasses = false;
 
   // Test Point Cards
-  fixture.p0Points.forEach(card => {
+  fixture.p0Points.forEach((card) => {
     cy.get(`[data-${p0Role}-point-card=${card.rank}-${card.suit}]`);
   });
-  fixture.p1Points.forEach(card => {
+  fixture.p1Points.forEach((card) => {
     cy.get(`[data-${p1Role}-point-card=${card.rank}-${card.suit}]`);
   });
   // Test Face Cards
-  fixture.p0FaceCards.forEach(card => {
+  fixture.p0FaceCards.forEach((card) => {
     cy.get(`[data-${p0Role}-face-card=${card.rank}-${card.suit}]`).as('card');
     if (card.rank === 8) {
       cy.get('@card').should('have.class', 'glasses');
@@ -274,7 +270,7 @@ function assertDomMatchesFixture(pNum, fixture) {
       }
     }
   });
-  fixture.p1FaceCards.forEach(card => {
+  fixture.p1FaceCards.forEach((card) => {
     cy.get(`[data-${p1Role}-face-card=${card.rank}-${card.suit}]`).as('card');
     if (card.rank === 8) {
       cy.get('@card').should('have.class', 'glasses');
@@ -286,7 +282,7 @@ function assertDomMatchesFixture(pNum, fixture) {
   // Test Hands
   if (pNum === 0) {
     // Player Hand
-    fixture.p0Hand.forEach(card => {
+    fixture.p0Hand.forEach((card) => {
       cy.get(`[data-player-hand-card=${card.rank}-${card.suit}]`);
     });
     // Opponent Hand
@@ -296,13 +292,13 @@ function assertDomMatchesFixture(pNum, fixture) {
       cy.get('[data-opponent-hand-card]').should('not.exist');
     }
     if (playerHasGlasses) {
-      fixture.p1Hand.forEach(card => {
+      fixture.p1Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
     }
   } else if (pNum === 1) {
     // Player hand
-    fixture.p1Hand.forEach(card => {
+    fixture.p1Hand.forEach((card) => {
       cy.get(`[data-player-hand-card=${card.rank}-${card.suit}]`);
     });
     // Opponent Hand
@@ -312,7 +308,7 @@ function assertDomMatchesFixture(pNum, fixture) {
       cy.get('[data-opponent-hand-card]').should('not.exist');
     }
     if (playerHasGlasses) {
-      fixture.p0Hand.forEach(card => {
+      fixture.p0Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
     }
@@ -337,7 +333,7 @@ function assertDomMatchesFixture(pNum, fixture) {
 function assertStoreMatchesFixture(fixture) {
   cy.window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       // Player 0
       expect(cardListsMatch(game.players[0].hand, fixture.p0Hand)).to.eq(
         true,
