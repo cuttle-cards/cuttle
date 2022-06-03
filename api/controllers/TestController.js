@@ -19,4 +19,12 @@ module.exports = {
     req.session.game = -3;
     return res.ok();
   },
+  loadSeasonFixture: async function(req, res) {
+    try {
+      await Season.create(req.body);
+    } catch (e) {
+      return res.badRequest(e);
+    }
+    return res.ok();
+  },
 };

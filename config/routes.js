@@ -90,4 +90,5 @@ module.exports.routes = {
   // Testing helpers
   '/test/wipeDatabase': 'TestController.wipeDatabase',
   '/test/badSession': 'TestController.setBadSession',
+  '/test/loadSeasonFixture': 'TestController.loadSeasonFixture',
 };

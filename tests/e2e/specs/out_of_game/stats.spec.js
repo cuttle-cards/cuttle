@@ -19,6 +19,7 @@ function setup() {
         thirdPlace: this.playerThreeId,
         fourthPlace: this.playerFourId,
       };
+      cy.loadSeasonFixcture(season);
     });
   cy.vueRoute('/stats');
 }
