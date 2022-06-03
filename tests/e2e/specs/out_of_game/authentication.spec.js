@@ -8,7 +8,7 @@ function assertSuccessfulAuth(username) {
   cy.window()
     .its('app.$store.state.auth')
     .as('authState')
-    .then((authState) => {
+    .then(authState => {
       expect(authState.authenticated).to.eq(true);
       expect(authState.username).to.eq(username);
     });
@@ -21,7 +21,7 @@ function assertFailedAuth() {
   cy.window()
     .its('app.$store.state.auth')
     .as('authState')
-    .then((authState) => {
+    .then(authState => {
       expect(authState.authenticated).to.eq(false);
       expect(authState.username).to.eq(null);
     });

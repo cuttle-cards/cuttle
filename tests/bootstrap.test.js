@@ -2,9 +2,9 @@ var Sails = require('sails'),
   sails,
   should = require('chai').should();
 
-before(function (done) {
+before(function(done) {
   this.timeout(50000);
-  Sails.lift({}, function (err, server) {
+  Sails.lift({}, function(err, server) {
     sails = server;
     global.foo = 'bar';
     global.bun = 'mediocre';
@@ -19,9 +19,9 @@ before(function (done) {
     global.socket3 = io.sails.connect('http://localhost:1337');
 
     // Socket Request making helper
-    global.request = function (socket, url, data) {
-      return new Promise(function (resolve, reject) {
-        socket.put(url, data, function (res, jwres) {
+    global.request = function(socket, url, data) {
+      return new Promise(function(resolve, reject) {
+        socket.put(url, data, function(res, jwres) {
           if (jwres.statusCode === 200) {
             return resolve(jwres);
           }
@@ -31,9 +31,9 @@ before(function (done) {
       });
     };
     //Socket request making helper (expects bad request)
-    global.badRequest = function (socket, url, data) {
-      return new Promise(function (resolve, reject) {
-        socket.put(url, data, function (res, jwres) {
+    global.badRequest = function(socket, url, data) {
+      return new Promise(function(resolve, reject) {
+        socket.put(url, data, function(res, jwres) {
           if (jwres.statusCode != 200) {
             return resolve(jwres);
           }
@@ -47,7 +47,7 @@ before(function (done) {
   });
 });
 
-after(function (done) {
+after(function(done) {
   // io.socket.disconnect();
   sails.lower(done);
 });

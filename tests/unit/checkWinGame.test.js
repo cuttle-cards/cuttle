@@ -7,8 +7,8 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 chai.should();
 
-describe('gameService.checkWinGame', function () {
-  it('should calculate that p0 wins with 21 points and no kings', function () {
+describe('gameService.checkWinGame', function() {
+  it('should calculate that p0 wins with 21 points and no kings', function() {
     var p0 = {
       hand: [],
       points: [
@@ -53,7 +53,7 @@ describe('gameService.checkWinGame', function () {
     gameService.checkWinGame({ game: game }).should.deep.equal({ gameOver: true, winner: 0 });
   });
 
-  it('should calculate that p1 should win with 14 points and 1 king', function () {
+  it('should calculate that p1 should win with 14 points and 1 king', function() {
     var p0 = {
       hand: [],
       points: [

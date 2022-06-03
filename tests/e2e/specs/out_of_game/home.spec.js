@@ -74,15 +74,17 @@ describe('Home - Game List', () => {
   it('Joins an open game', () => {
     cy.window()
       .its('app.$store.state.game')
-      .then((gameState) => {
+      .then(gameState => {
         expect(gameState.id).to.eq(null);
       });
     cy.createGamePlayer('Test Game');
-    cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'JOIN').click();
+    cy.get('[data-cy=game-list-item]')
+      .contains('button.v-btn', 'JOIN')
+      .click();
     cy.hash().should('contain', '#/lobby');
     cy.window()
       .its('app.$store.state.game')
-      .then((gameState) => {
+      .then(gameState => {
         assertSuccessfulJoin(gameState);
       });
   });
@@ -91,17 +93,19 @@ describe('Home - Game List', () => {
      * Set up:
      * Create game, sign up one other user and subscribe them to the game
      */
-    cy.createGamePlayer('Test Game').then((gameData) => {
+    cy.createGamePlayer('Test Game').then(gameData => {
       // Sign up new user and subscribe them to game
       cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);
       // Our user then joins through UI
-      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'JOIN').click();
+      cy.get('[data-cy=game-list-item]')
+        .contains('button.v-btn', 'JOIN')
+        .click();
       // Should have redirected to lobby page and updated store
       cy.hash().should('contain', '#/lobby');
       cy.window()
         .its('app.$store.state.game')
-        .then((gameState) => {
+        .then(gameState => {
           // expect(gameState.gameId).to.not.eq(null);
           assertSuccessfulJoin(gameState);
         });
@@ -112,7 +116,7 @@ describe('Home - Game List', () => {
      * Set up:
      * Create game, sign up two other users, subscribe them to the game
      */
-    cy.createGamePlayer('Test Game').then((gameData) => {
+    cy.createGamePlayer('Test Game').then(gameData => {
       // Test that JOIN button starts enabled
       cy.contains('button.v-btn', 'JOIN').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
@@ -131,7 +135,7 @@ describe('Home - Game List', () => {
      * Set up:
      * Create game, sign up two other users, subscribe them to the game, leave one user
      */
-    cy.createGamePlayer('Test Game').then((gameData) => {
+    cy.createGamePlayer('Test Game').then(gameData => {
       // Test that JOIN button starts enabled
       cy.contains('button.v-btn', 'JOIN').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
@@ -160,7 +164,7 @@ describe('Home - Create Game', () => {
     // Test store
     cy.window()
       .its('app.$store.state.gameList.games')
-      .then((games) => {
+      .then(games => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect 0 players in game in store');
         expect(games[0].status).to.eq(true, 'Expect game to have status true');
@@ -178,7 +182,7 @@ describe('Home - Create Game', () => {
     // Test store
     cy.window()
       .its('app.$store.state.gameList.games')
-      .then((games) => {
+      .then(games => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(
           0,
@@ -194,7 +198,7 @@ describe('Home - Create Game', () => {
     // Test Store
     cy.window()
       .its('app.$store.state')
-      .then((state) => {
+      .then(state => {
         expect(state.game.gameId).to.eq(undefined, 'Store game should not have id');
         expect(state.gameList.games.length).to.eq(
           0,
@@ -204,7 +208,7 @@ describe('Home - Create Game', () => {
     assertSnackbarError('Game name cannot be blank', 'newgame');
   });
   it('Removes a game when both players are ready', () => {
-    cy.createGamePlayer('Test Game').then((gameData) => {
+    cy.createGamePlayer('Test Game').then(gameData => {
       // Sign up 2 users and subscribe them to game
       cy.signupOpponent('remotePlayer1@cuttle.cards', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);

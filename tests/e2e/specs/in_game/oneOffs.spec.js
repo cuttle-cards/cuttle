@@ -1039,7 +1039,10 @@ describe('Playing NINES', () => {
       // STEP 3
       cy.log('STEP 3- P0 counters');
 
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
 
       cy.get('#choose-two-dialog')
         .should('be.visible')
@@ -1235,21 +1238,23 @@ describe('Playing THREEs', () => {
     // Confirm able to sort scrap by rank
     cy.get('[data-cy=three-dialog-sort-dropdown]').click({ force: true });
     cy.contains('By Rank').click();
-    const mapElementsToRank = (elements) => {
-      return _.map(elements, (element) => {
+    const mapElementsToRank = elements => {
+      return _.map(elements, element => {
         return Number(element.attributes['data-three-dialog-card'].value.split('-')[0]);
       });
     };
     cy.get('[data-three-dialog-card]')
       .then(mapElementsToRank)
-      .then((elementRanks) => {
-        const sortedScrapRanksFromFixture = _.sortBy(scrap, 'rank').map((card) => card.rank);
+      .then(elementRanks => {
+        const sortedScrapRanksFromFixture = _.sortBy(scrap, 'rank').map(card => card.rank);
         expect(elementRanks).to.deep.equal(sortedScrapRanksFromFixture);
       });
 
     // Player selects a card from scrap
     cy.get('[data-three-dialog-card=10-2]').click();
-    cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
+    cy.get('[data-cy=three-resolve')
+      .should('not.be.disabled')
+      .click();
 
     assertGameState(0, {
       p0Hand: [Card.TEN_OF_HEARTS],
@@ -1312,7 +1317,9 @@ describe('Playing THREEs', () => {
     cy.playOneOffOpponent(Card.THREE_OF_CLUBS);
 
     // player resolves
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]')
+      .should('be.visible')
+      .click();
 
     cy.get('#waiting-for-opponent-resolve-three-scrim').should('be.visible');
     // waiting for opponent to choose from scrap scrim
@@ -1520,9 +1527,15 @@ describe('ONE-OFF Target should be removed after one-off resolves', () => {
     cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.ACE_OF_DIAMONDS, 'point');
 
     // Player counters
-    cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
+    cy.get('#counter-dialog')
+      .should('be.visible')
+      .get('[data-cy=counter]')
+      .click();
 
-    cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-0]').click();
+    cy.get('#choose-two-dialog')
+      .should('be.visible')
+      .get('[data-counter-dialog-card=2-0]')
+      .click();
 
     cy.resolveOpponent();
     assertGameState(1, {

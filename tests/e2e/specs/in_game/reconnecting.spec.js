@@ -321,7 +321,10 @@ describe('Reconnecting to a game', () => {
       cy.reload();
       reconnect();
 
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
 
       cy.get('#choose-two-dialog')
         .should('be.visible')
@@ -361,7 +364,10 @@ describe('Reconnecting to a game', () => {
       cy.reload();
       reconnect();
 
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
       cy.get('#choose-two-dialog')
         .should('be.visible')
         .get('[data-counter-dialog-card=2-0]')
@@ -518,7 +524,10 @@ describe('Reconnecting to a game', () => {
       cy.reload();
       reconnect();
       // Player counters
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
       cy.get('#choose-two-dialog')
         .should('be.visible')
         .get('[data-counter-dialog-card=2-1]')
@@ -565,7 +574,9 @@ describe('Reconnecting to a game', () => {
 
         // Player two of clubs from scrap
         cy.get('[data-three-dialog-card=2-0]').click();
-        cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
+        cy.get('[data-cy=three-resolve')
+          .should('not.be.disabled')
+          .click();
 
         assertGameState(0, {
           p0Hand: [Card.TWO_OF_CLUBS],
@@ -676,13 +687,20 @@ describe('Reconnecting to a game', () => {
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
-      cy.get('[data-top-card=10-3]').should('exist').and('be.visible');
+      cy.get('[data-top-card=10-3]')
+        .should('exist')
+        .and('be.visible');
       // Disconnect & Reconnect
       cy.reload();
       reconnect();
       // Play off top of deck as normal
-      cy.get('[data-second-card=9-0]').should('exist').and('be.visible');
-      cy.get('[data-top-card=10-3]').should('exist').and('be.visible').click();
+      cy.get('[data-second-card=9-0]')
+        .should('exist')
+        .and('be.visible');
+      cy.get('[data-top-card=10-3]')
+        .should('exist')
+        .and('be.visible')
+        .click();
       cy.get('[data-move-choice=points]').click();
 
       assertGameState(0, {

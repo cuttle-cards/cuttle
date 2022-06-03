@@ -7,8 +7,8 @@ chai.should();
 /*
  **Test userService.checkWin
  */
-describe('Userservice.checkWin()', function () {
-  it('Should win with 21pts and no Kings', function () {
+describe('Userservice.checkWin()', function() {
+  it('Should win with 21pts and no Kings', function() {
     var player = {
       hand: [],
       points: [
@@ -32,7 +32,7 @@ describe('Userservice.checkWin()', function () {
     };
     userService.checkWin({ user: player }).should.deep.equal(true);
   });
-  it('Should win with 14pts and 1 King', function () {
+  it('Should win with 14pts and 1 King', function() {
     var player = {
       hand: [],
       points: [
@@ -57,7 +57,7 @@ describe('Userservice.checkWin()', function () {
     };
     userService.checkWin({ user: player }).should.deep.equal(true);
   });
-  it('Should win with 10pts and 2 Kings', function () {
+  it('Should win with 10pts and 2 Kings', function() {
     var player = {
       hand: [],
       points: [
@@ -92,7 +92,7 @@ describe('Userservice.checkWin()', function () {
     };
     userService.checkWin({ user: player }).should.deep.equal(true);
   });
-  it('Should win with 7pts and 3 Kingss', function () {
+  it('Should win with 7pts and 3 Kingss', function() {
     var player = {
       hand: [],
       points: [
@@ -132,7 +132,7 @@ describe('Userservice.checkWin()', function () {
     };
     userService.checkWin({ user: player }).should.deep.equal(true);
   });
-  it('Should win with 5pts and 4 Kings', function () {
+  it('Should win with 5pts and 4 Kings', function() {
     var player = {
       hand: [],
       points: [
@@ -167,7 +167,7 @@ describe('Userservice.checkWin()', function () {
     };
     userService.checkWin({ user: player }).should.deep.equal(true);
   });
-  it('Should lose with 20pts and no Kings', function () {
+  it('Should lose with 20pts and no Kings', function() {
     var player = {
       hand: [],
       points: [
@@ -192,7 +192,7 @@ describe('Userservice.checkWin()', function () {
     };
     userService.checkWin({ user: player }).should.deep.equal(false);
   });
-  it('Should lose with 13pts and 1 King', function () {
+  it('Should lose with 13pts and 1 King', function() {
     var player = {
       hand: [],
       points: [
@@ -227,7 +227,7 @@ describe('Userservice.checkWin()', function () {
     };
     userService.checkWin({ user: player }).should.deep.equal(false);
   });
-  it('Should lose with 9pts and 2 Kings', function () {
+  it('Should lose with 9pts and 2 Kings', function() {
     var player = {
       hand: [],
       points: [
@@ -267,7 +267,7 @@ describe('Userservice.checkWin()', function () {
     };
     userService.checkWin({ user: player }).should.deep.equal(false);
   });
-  it('Should lose with 6pts and 3 Kings', function () {
+  it('Should lose with 6pts and 3 Kings', function() {
     var player = {
       hand: [],
       points: [
@@ -322,7 +322,7 @@ describe('Userservice.checkWin()', function () {
     };
     userService.checkWin({ user: player }).should.deep.equal(false);
   });
-  it('Should lose with 4pts and 4 Kings', function () {
+  it('Should lose with 4pts and 4 Kings', function() {
     var player = {
       hand: [],
       points: [
