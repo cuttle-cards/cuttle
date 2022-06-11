@@ -17,5 +17,9 @@ const playerFour = {
   username: 'Player4',
   password: 'player4DaBest',
 };
+const playerFive = {
+  username: 'Player5',
+  password: 'player5DaBest',
+};
 
-export { playerOne, playerTwo, playerThree, playerFour };
+export { playerOne, playerTwo, playerThree, playerFour, playerFive };

@@ -91,4 +91,5 @@ module.exports.routes = {
   '/test/wipeDatabase': 'TestController.wipeDatabase',
   '/test/badSession': 'TestController.setBadSession',
   '/test/loadSeasonFixture': 'TestController.loadSeasonFixture',
+  '/test/loadMatchFixtures': 'TestController.loadMatchFixtures',
 };

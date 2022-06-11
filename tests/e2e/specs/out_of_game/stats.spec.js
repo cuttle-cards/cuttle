@@ -1,16 +1,25 @@
 import { username, validPassword } from '../../support/helpers';
-import { playerOne, playerTwo, playerThree, playerFour } from '../../fixtures/userFixtures';
-import { seasonFixture } from '../../fixtures/statsFixtures';
+import {
+  playerOne,
+  playerTwo,
+  playerThree,
+  playerFour,
+  playerFive,
+} from '../../fixtures/userFixtures';
+import { seasonFixture, matchesFixture } from '../../fixtures/statsFixtures';
 
 function setup() {
+  cy.viewport(1980, 1080);
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(username, validPassword);
-  cy.signupOpponent(playerOne.username, playerOne.password).as('playerOneId');
-  cy.signupOpponent(playerTwo.username, playerTwo.password).as('playerTwoId');
-  cy.signupOpponent(playerThree.username, playerThree.password).as('playerThreeId');
-  cy.signupOpponent(playerFour.username, playerFour.password)
-    .as('playerFourId')
+  // Signup opponents and store their newly created ids
+  cy.signupOpponent(playerOne.username, playerOne.password).as('player1');
+  cy.signupOpponent(playerTwo.username, playerTwo.password).as('player2');
+  cy.signupOpponent(playerThree.username, playerThree.password).as('player3');
+  cy.signupOpponent(playerFour.username, playerFour.password).as('player4');
+  cy.signupOpponent(playerFive.username, playerFive.password)
+    .as('player5')
     .then(function() {
       const season = {
         ...seasonFixture,
@@ -19,7 +28,31 @@ function setup() {
         thirdPlace: this.playerThreeId,
         fourthPlace: this.playerFourId,
       };
-      cy.loadSeasonFixcture(season);
+
+      // Convert usernames to ids
+      const transformMatchFixture = match => {
+        // Grab player ids
+        const player1 = this[match.player1];
+        const player2 = this[match.player2];
+        let winner = null;
+        switch (match.winner) {
+          case 'player1':
+            winner = player1;
+            break;
+          case 'player2':
+            winner = player2;
+            break;
+        }
+        return {
+          ...match,
+          player1,
+          player2,
+          winner,
+        };
+      };
+      const matches = matchesFixture.map(transformMatchFixture);
+      cy.loadMatchFixtures(matches);
+      cy.loadSeasonFixture(season);
     });
   cy.vueRoute('/stats');
 }
