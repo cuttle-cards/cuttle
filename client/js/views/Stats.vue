@@ -37,6 +37,15 @@
         </div>
         <v-data-table :items="tableRows" :headers="tableColumns">
           <!-- Customize win count -->
+          <template v-for="week in ['total', ...weekNums]" #[`item.${week}_wins`]="{item, value}">
+            <span
+              :key="`${item.username}_week_${week}_wins`"
+              v-bind="dataAttribute(item.username, week, 'wins')"
+            >
+              {{ value }}
+            </span>
+          </template>
+          <!-- Customize point count -->
           <template v-for="week in ['total', ...weekNums]" #[`item.${week}_points`]="{item, value}">
             <v-chip
               :color="colorForScore(item[`${week}_points`])"

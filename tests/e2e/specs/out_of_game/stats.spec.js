@@ -60,9 +60,11 @@ function setup() {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it('Displays Headers, Cards, and Table', () => {
+  it.only('Displays Headers, Cards, and Table', () => {
     cy.get('[data-cy=selected-season-header]');
     cy.get("[points-1='Player 1']").contains('5');
+    cy.get("[wins-1='Player 1']").contains('3');
+    cy.get("[wins-1='Player 5']").contains('1');
   });
 
   it.skip('Filters table to display wins, points, or both', () => {
