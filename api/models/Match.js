@@ -8,18 +8,15 @@
 
 module.exports = {
   attributes: {
-    playerOne: {
+    player1: {
       model: 'user',
       required: true,
     },
-    playerTwo: {
+    player2: {
       model: 'user',
       required: true,
     },
     winner: {
-      model: 'user',
-    },
-    loser: {
       model: 'user',
     },
     startTime: {
@@ -29,15 +26,6 @@ module.exports = {
     endTime: {
       type: 'number',
       required: true,
-    },
-    firstPlace: {
-      model: 'user',
-    },
-    secondPlace: {
-      model: 'user',
-    },
-    thirdPlace: {
-      model: 'user',
     },
   }, // end attributes
 }; // end exports
