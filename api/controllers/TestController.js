@@ -7,7 +7,13 @@
 
 module.exports = {
   wipeDatabase: function(req, res) {
-    return Promise.all([Game.destroy({}), User.destroy({}), Card.destroy({})])
+    return Promise.all([
+      Game.destroy({}),
+      User.destroy({}),
+      Card.destroy({}),
+      Season.destroy({}),
+      Match.destroy({}),
+    ])
       .then(values => {
         return res.ok();
       })
