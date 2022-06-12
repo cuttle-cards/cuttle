@@ -64,7 +64,9 @@
 </template>
 
 <script>
+import { io } from '@/plugins/sails.js';
 import AwardCard from '@/components/AwardCard.vue';
+
 const Result = {
   WON: 1,
   LOST: 2,
@@ -83,6 +85,7 @@ export default {
       selectedSeason: null,
       metricChoices: ['Points and Wins', 'Points Only', 'Wins Only'],
       selectedMetric: 'Points and Wins',
+      // seasons: [],
       seasons: [
         {
           name: 'Clubs 2022',
@@ -452,8 +455,12 @@ export default {
       return res;
     },
   },
-  mounted() {
-    this.selectedSeason = this.seasons[0];
+  created() {
+    io.socket.get('/stats', function(res, jwres) {
+      debugger;
+      // this.seasons = res;
+      this.selectedSeason = this.seasons[0];
+    });
   },
 };
 </script>

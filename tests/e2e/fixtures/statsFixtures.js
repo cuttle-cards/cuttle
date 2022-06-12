@@ -5,7 +5,7 @@ const seasonFixture = {
   // startTime: 1642642200,
   startTime: dayjs('2022-01-19', 'yyyy-mm-dd').valueOf(),
   // endTime: 1674178200,
-  startTime: dayjs('2023-01-18', 'yyyy-mm-dd').valueOf(),
+  endTime: dayjs('2023-01-18', 'yyyy-mm-dd').valueOf(),
 };
 
 const matchesFixture = [
