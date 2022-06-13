@@ -29,8 +29,8 @@
       <div id="stat-table-wrapper">
         <div id="stats-table-upper-surface">
           <v-select
-            class="filter-select"
             v-model="selectedMetric"
+            class="filter-select"
             :items="metricChoices"
             label="Metric"
           />
@@ -48,8 +48,8 @@
           <!-- Customize point count -->
           <template v-for="week in ['total', ...weekNums]" #[`item.${week}_points`]="{item, value}">
             <v-chip
-              :color="colorForScore(item[`${week}_points`])"
               :key="`${item.username}_week_${week}_points`"
+              :color="colorForScore(item[`${week}_points`])"
               dark
               :outlined="['primary', '#000'].includes(colorForScore(item[`${week}_points`]))"
               v-bind="dataAttribute(item.username, week, 'points')"
@@ -81,7 +81,6 @@ export default {
   data() {
     return {
       Result,
-      seasonIndex: 0,
       selectedSeason: null,
       metricChoices: ['Points and Wins', 'Points Only', 'Wins Only'],
       selectedMetric: 'Points and Wins',
@@ -312,6 +311,13 @@ export default {
       return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     },
     tableColumns() {
+      if (
+        !this.selectedSeason ||
+        !this.selectedSeason.rankings ||
+        this.selectedSeason.rankings.length === 0
+      ) {
+        return [];
+      }
       const res = [
         { text: 'User', value: 'username' },
         { text: 'Total Points', value: 'total_points' },
@@ -334,6 +340,13 @@ export default {
       return res;
     },
     tableRows() {
+      if (
+        !this.selectedSeason ||
+        !this.selectedSeason.rankings ||
+        this.selectedSeason.rankings.length === 0
+      ) {
+        return [];
+      }
       return this.selectedSeason.rankings.map((playerStats, index) => {
         const playerWins = this.playerWins[index];
         const playerScores = this.playerScores[index];
@@ -350,6 +363,13 @@ export default {
       });
     },
     playerWins() {
+      if (
+        !this.selectedSeason ||
+        !this.selectedSeason.rankings ||
+        this.selectedSeason.rankings.length === 0
+      ) {
+        return [];
+      }
       return this.selectedSeason.rankings.map(playerStats => {
         const res = { total: 0 };
         for (const weekNum in playerStats.matches) {
@@ -363,6 +383,13 @@ export default {
       });
     },
     playerScores() {
+      if (
+        !this.selectedSeason ||
+        !this.selectedSeason.rankings ||
+        this.selectedSeason.rankings.length === 0
+      ) {
+        return [];
+      }
       return this.playerWins.map(playerWins => {
         const res = { total: 0 };
         for (const weekNum in playerWins) {
@@ -426,6 +453,12 @@ export default {
       return res;
     },
   },
+  created() {
+    io.socket.get('/stats', (res, jwres) => {
+      this.seasons = res;
+      this.selectedSeason = this.seasons[0];
+    });
+  },
   methods: {
     colorForScore(score) {
       switch (score) {
@@ -454,13 +487,6 @@ export default {
       res[attributeName] = username;
       return res;
     },
-  },
-  created() {
-    io.socket.get('/stats', function(res, jwres) {
-      debugger;
-      // this.seasons = res;
-      this.selectedSeason = this.seasons[0];
-    });
   },
 };
 </script>

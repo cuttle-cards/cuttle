@@ -35,13 +35,10 @@ function setup() {
         const player1 = this[match.player1];
         const player2 = this[match.player2];
         let winner = null;
-        switch (match.winner) {
-          case 'player1':
-            winner = player1;
-            break;
-          case 'player2':
-            winner = player2;
-            break;
+        if (match.winner === match.player1) {
+          winner = player1;
+        } else if (match.winner === match.player2) {
+          winner = player2;
         }
         return {
           ...match,
@@ -62,9 +59,9 @@ describe('Stats Page', () => {
 
   it.only('Displays Headers, Cards, and Table', () => {
     cy.get('[data-cy=selected-season-header]');
-    cy.get("[points-1='Player 1']").contains('5');
-    cy.get("[wins-1='Player 1']").contains('3');
-    cy.get("[wins-1='Player 5']").contains('1');
+    cy.get("[points-1='Player1']").contains('5');
+    cy.get("[wins-1='Player1']").contains('3');
+    cy.get("[wins-1='Player5']").contains('1');
   });
 
   it.skip('Filters table to display wins, points, or both', () => {
