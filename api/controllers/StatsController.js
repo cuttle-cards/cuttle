@@ -53,6 +53,7 @@ function addMatchToRankings(season, match, player, opponent) {
     result: match.winner === player.id ? Result.WON : Result.LOST,
   });
 }
+
 /**
  * Converts season to DTO for client consumption
  * @param {
