@@ -38,12 +38,20 @@
         <v-data-table :items="tableRows" :headers="tableColumns" :loading="seasons.length === 0">
           <!-- Customize win count -->
           <template v-for="week in ['total', ...weekNums]" #[`item.${week}_wins`]="{item, value}">
-            <span
-              :key="`${item.username}_week_${week}_wins`"
-              v-bind="dataAttribute(item.username, week, 'wins')"
-            >
-              {{ value }}
-            </span>
+            <v-tooltip :key="`${item.username}_week_${week}_wins`" top>
+              <template #activator="{on, attrs}">
+                <span
+                  v-bind="{
+                    ...attrs,
+                    ...dataAttribute(item.username, week, 'wins')
+                  }"
+                  v-on="on"
+                >
+                  {{ value }}
+                </span>
+              </template>
+              {{ playersBeaten(item.username, week) }}
+            </v-tooltip>
           </template>
           <!-- Customize point count -->
           <template v-for="week in ['total', ...weekNums]" #[`item.${week}_points`]="{item, value}">
@@ -267,6 +275,20 @@ export default {
       const attributeName = `${metricName}-${weekNum}`;
       res[attributeName] = username;
       return res;
+    },
+    playersBeaten(username, weekNum) {
+      const playerStats = this.selectedSeason.rankings.find(player => player.username === username);
+      if (!playerStats) {
+        return '';
+      }
+      const playerMatchesThisWeek = playerStats.matches[weekNum];
+      if (!playerMatchesThisWeek) {
+        return [];
+      }
+      return playerMatchesThisWeek
+        .filter(match => match.result === Result.WON)
+        .map(match => match.opponent)
+        .join(', ');
     },
   },
 };
