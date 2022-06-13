@@ -35,7 +35,27 @@ function addMatchToRankings(season, match, player, opponent) {
     result: match.winner === player.id ? Result.WON : Result.LOST,
   });
 }
-
+/**
+ * Converts season to DTO for client consumption
+ * @param {
+ *  name: string
+ *  startTime: int
+ *  endTime: int
+ *  rankings: Map<int: playerId, {
+ *    username: string
+ *    matches: Map<int: weekNum, Array<{opponent: string, result: Result}>>
+ *  }>
+ * } season
+ * @returns {
+ *  name: string
+ *  startTime: int
+ *  endTime: int
+ *  rankings: Array<{
+ *    username: string
+ *    matches: {weekNum: int, matches: Array<{opponent: string, result: Result}>}
+ *  }>
+ * }
+ */
 function transformSeasonToDTO(season) {
   const { rankings, ...rest } = season;
   // Convert rankings from Map to Array
