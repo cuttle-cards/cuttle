@@ -41,6 +41,10 @@ function addMatchToRankings(season, match, player, opponent) {
  *  name: string
  *  startTime: int
  *  endTime: int
+ *  firstPlace: int (playerId)
+ *  secondPlace: int (playerId)
+ *  thirdPlace: int (playerId)
+ *  fourthPlace: int (playerId)
  *  rankings: Map<int: playerId, {
  *    username: string
  *    matches: Map<int: weekNum, Array<{opponent: string, result: Result}>>
@@ -50,6 +54,10 @@ function addMatchToRankings(season, match, player, opponent) {
  *  name: string
  *  startTime: int
  *  endTime: int
+ *  firstPlace: int (playerId)
+ *  secondPlace: int (playerId)
+ *  thirdPlace: int (playerId)
+ *  fourthPlace: int (playerId)
  *  rankings: Array<{
  *    username: string
  *    matches: {weekNum: int, matches: Array<{opponent: string, result: Result}>}
