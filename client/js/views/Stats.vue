@@ -35,7 +35,7 @@
             label="Metric"
           />
         </div>
-        <v-data-table :items="tableRows" :headers="tableColumns">
+        <v-data-table :items="tableRows" :headers="tableColumns" :loading="seasons.length === 0">
           <!-- Customize win count -->
           <template v-for="week in ['total', ...weekNums]" #[`item.${week}_wins`]="{item, value}">
             <span
