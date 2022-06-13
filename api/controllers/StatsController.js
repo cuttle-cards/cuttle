@@ -8,6 +8,20 @@ const Result = {
   INCOMPLETE: -1,
 };
 
+function transformSeasonToDTO(season) {
+  const { rankings, ...rest } = season;
+  const rankingsAsArray = Array.from(rankings.values()).map(player => {
+    return {
+      ...player,
+      matches: Object.fromEntries(player.matches),
+    };
+  });
+  return {
+    ...rest,
+    rankings: rankingsAsArray,
+  };
+}
+
 module.exports = {
   getStats: function(req, res) {
     // Find records
@@ -60,7 +74,6 @@ module.exports = {
                 opponent: player2.username,
                 result: match.winner === player1.id ? Result.WON : Result.LOST,
               });
-
               // Player 2
               const player2Season = relevantSeason.rankings.get(player2.id);
               // Initialize player2 matches if they don't already have them
@@ -74,7 +87,7 @@ module.exports = {
               let player2MatchesThisWeek = player2Matches.get(weekNum);
               if (!player2MatchesThisWeek) {
                 player2Matches.set(weekNum, []);
-                player2MatchesThisWeek = player1Matches.get(weekNum);
+                player2MatchesThisWeek = player2Matches.get(weekNum);
               }
               player2MatchesThisWeek.push({
                 opponent: player1.username,
@@ -85,7 +98,7 @@ module.exports = {
         }
       }
       // Format seasons (convert dict to array)
-      return res.ok(seasons);
+      return res.ok(seasons.map(transformSeasonToDTO));
     });
   },
 };
