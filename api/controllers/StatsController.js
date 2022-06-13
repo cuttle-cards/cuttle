@@ -11,7 +11,25 @@ const Result = {
 /////////////
 // Helpers //
 /////////////
-// Updates season data with one match for a specified player
+/**
+ * Adds a match to a player's season rankings in the appropriate week
+ * @param {
+ *  name: string
+ *  startTime: int
+ *  endTime: int
+ *  firstPlace: int (playerId)
+ *  secondPlace: int (playerId)
+ *  thirdPlace: int (playerId)
+ *  fourthPlace: int (playerId)
+ *  rankings: Map<int: playerId, {
+ *    username: string
+ *    matches: Map<int: weekNum, Array<{opponent: string, result: Result}>>
+ *  }>
+ * } season The season in which the match took place
+ * @param { player1: int, player2: int, winner: int | null, startTime: int, endTime: int } match the match to add
+ * @param {User} player which player's record to update
+ * @param {User} opponent // The opponent in the match
+ */
 function addMatchToRankings(season, match, player, opponent) {
   // Calculate which week match counts towards
   const weekNum = dayjs(match.startTime).diff(dayjs(season.startTime), 'week') + 1;
