@@ -43,7 +43,7 @@
                 <span
                   v-bind="{
                     ...attrs,
-                    ...dataAttribute(item.username, week, 'wins')
+                    ...dataAttribute(item.username, week, 'wins'),
                   }"
                   v-on="on"
                 >
@@ -69,9 +69,9 @@
           <template v-for="week in weekNums" #[`item.${week}_points`]="{item, value}">
             <v-chip
               :key="`${item.username}_week_${week}_points`"
-              :color="colorForScore(item[`${week}_points`])"
+              :color="colorForScore(value)"
               dark
-              :outlined="['primary', '#000'].includes(colorForScore(item[`${week}_points`]))"
+              :outlined="['primary', '#000'].includes(colorForScore(value))"
               v-bind="dataAttribute(item.username, week, 'points')"
             >
               {{ value }}
