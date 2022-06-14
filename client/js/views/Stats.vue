@@ -35,7 +35,12 @@
             label="Metric"
           />
         </div>
-        <v-data-table :items="tableRows" :headers="tableColumns" :loading="seasons.length === 0">
+        <v-data-table
+          :items="tableRows"
+          :headers="tableColumns"
+          :loading="seasons.length === 0"
+          :item-class="tableRowClass"
+        >
           <!-- Customize win count -->
           <template v-for="week in ['total', ...weekNums]" #[`item.${week}_wins`]="{item, value}">
             <v-tooltip :key="`${item.username}_week_${week}_wins`" top>
@@ -354,6 +359,12 @@ export default {
         .map(match => match.opponent)
         .join(', ');
     },
+    isCurrentPlayer(username) {
+      return username === this.$store.state.auth.username;
+    },
+    tableRowClass(item) {
+      return this.isCurrentPlayer(item.username) ? 'active-user-stats' : '';
+    },
   },
 };
 </script>
@@ -377,5 +388,8 @@ export default {
 }
 .filter-select {
   width: 50%;
+}
+::v-deep .active-user-stats {
+  background-color: var(--v-accent-lighten3);
 }
 </style>
