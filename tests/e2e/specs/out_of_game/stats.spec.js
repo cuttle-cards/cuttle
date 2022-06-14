@@ -12,9 +12,9 @@ function setup() {
   cy.viewport(1980, 1080);
   cy.wipeDatabase();
   cy.visit('/');
-  cy.signupPlayer(username, validPassword);
   // Signup opponents and store their newly created ids
   cy.signupOpponent(playerOne.username, playerOne.password).as('player1');
+  cy.loginPlayer(playerOne.username, playerOne.password);
   cy.signupOpponent(playerTwo.username, playerTwo.password).as('player2');
   cy.signupOpponent(playerThree.username, playerThree.password).as('player3');
   cy.signupOpponent(playerFour.username, playerFour.password).as('player4');
@@ -62,6 +62,7 @@ describe('Stats Page', () => {
     cy.get("[points-1='Player1']").contains('5');
     cy.get("[wins-1='Player1']").contains('3');
     cy.get("[wins-1='Player5']").contains('1');
+    cy.get('tr.active-user-stats').contains(playerOne.username);
   });
 
   it.skip('Filters table to display wins, points, or both', () => {
