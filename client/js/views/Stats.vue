@@ -281,11 +281,20 @@ export default {
       if (!playerStats) {
         return '';
       }
-      const playerMatchesThisWeek = playerStats.matches[weekNum];
-      if (!playerMatchesThisWeek) {
+      let playerMatches;
+      // Aggregate all matches if looking at total
+      if (weekNum === 'total') {
+        playerMatches = Object.entries(playerStats.matches).reduce((wins, [week, matches]) => {
+          return [...wins, ...matches];
+        }, []);
+        // Otherwise just show this week's matches
+      } else {
+        playerMatches = playerStats.matches[weekNum];
+      }
+      if (!playerMatches) {
         return [];
       }
-      return playerMatchesThisWeek
+      return playerMatches
         .filter(match => match.result === Result.WON)
         .map(match => match.opponent)
         .join(', ');
