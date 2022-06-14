@@ -276,6 +276,12 @@ export default {
       res[attributeName] = username;
       return res;
     },
+    /**
+     * Returns concatenated usernames of all opponent's the specified player
+     * defeated in the specified week
+     * @param {string} username which player's defeated opponents to return
+     * @param {string} weekNum which week to analyze (use 'total' for the total)
+     */
     playersBeaten(username, weekNum) {
       const playerStats = this.selectedSeason.rankings.find(player => player.username === username);
       if (!playerStats) {
