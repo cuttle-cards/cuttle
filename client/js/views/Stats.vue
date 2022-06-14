@@ -53,8 +53,20 @@
               {{ playersBeaten(item.username, week) }}
             </v-tooltip>
           </template>
-          <!-- Customize point count -->
-          <template v-for="week in ['total', ...weekNums]" #[`item.${week}_points`]="{item, value}">
+          <!-- Total Point counts -->
+          <template #[`item.total_points`]="{item, value}">
+            <v-chip
+              :key="`${item.username}_week_total_points`"
+              :color="colorForTotalScore(value)"
+              dark
+              :outlined="['primary', '#000'].includes(colorForTotalScore(value))"
+              v-bind="dataAttribute(item.username, 'total', 'points')"
+            >
+              {{ value }}
+            </v-chip>
+          </template>
+          <!-- Point counts per week -->
+          <template v-for="week in weekNums" #[`item.${week}_points`]="{item, value}">
             <v-chip
               :key="`${item.username}_week_${week}_points`"
               :color="colorForScore(item[`${week}_points`])"
@@ -184,11 +196,11 @@ export default {
         for (const weekNum in playerWins) {
           if (weekNum != 'total') {
             let pointsThisWeek = 0;
-            if (playerWins[weekNum] === this.topScoresPerWeek[weekNum].first) {
+            if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].first) {
               pointsThisWeek = 5;
-            } else if (playerWins[weekNum] === this.topScoresPerWeek[weekNum].second) {
+            } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].second) {
               pointsThisWeek = 4;
-            } else if (playerWins[weekNum] === this.topScoresPerWeek[weekNum].third) {
+            } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].third) {
               pointsThisWeek = 3;
             } else if (playerWins[weekNum] > 0) {
               pointsThisWeek = 1;
@@ -200,7 +212,7 @@ export default {
         return res;
       });
     },
-    topScoresPerWeek() {
+    topWinCountsPerWeek() {
       const res = {};
       for (const playerStats of this.playerWins) {
         for (const weekNum in playerStats) {
@@ -241,6 +253,28 @@ export default {
       }
       return res;
     },
+    topTotalScores() {
+      const res = {
+        first: 0,
+        second: 0,
+        third: 0,
+      };
+      for (const playerScore of this.playerScores) {
+        // Top score
+        if (playerScore.total >= res.first) {
+          res.third = res.second;
+          res.second = res.first;
+          res.first = playerScore.total;
+          // Second place score
+        } else if (playerScore.total >= res.second) {
+          res.third = res.second;
+          res.second = playerScore.total;
+        } else if (playerScore.total > res.third) {
+          res.third = playerScore.total;
+        }
+      }
+      return res;
+    },
   },
   created() {
     io.socket.get('/stats', (res, jwres) => {
@@ -262,6 +296,21 @@ export default {
         default:
           return '#000';
       }
+    },
+    colorForTotalScore(score) {
+      if (score === this.topTotalScores.first) {
+        return '#AF9500'; // gold
+      }
+      if (score === this.topTotalScores.second) {
+        return '#B4B4B4'; // silver
+      }
+      if (score === this.topTotalScores.third) {
+        return '#6A3805'; // bronze
+      }
+      if (score > 0) {
+        return 'primary';
+      }
+      return '#000';
     },
     /**
      * Returns an object for v-bind for testing attributes to identify table cell
