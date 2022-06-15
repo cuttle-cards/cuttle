@@ -33,6 +33,7 @@
     "@vue/cli-plugin-router": "^4.5.4",
     "@vue/cli-plugin-unit-jest": "^4.5.6",
     "@vue/cli-service": "~4.5.0",
+    "@vue/devtools": "^6.1.4",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
@@ -55,6 +56,7 @@
   "scripts": {
     "build": "vue-cli-service build;cp ./client/public/favicon.ico ./assets",
     "debug": "node debug app.js",
+    "dev:devtools": "vue-devtools",
     "e2e:client": "npx cypress run",
     "e2e:gui": "npx cypress open",
     "e2e:server": "npx cypress run --config baseUrl=http://localhost:1337",
