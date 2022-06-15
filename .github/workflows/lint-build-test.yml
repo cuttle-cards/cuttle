@@ -28,5 +28,5 @@ jobs:
           # Already installed dependencies above
           install: false
           build: npm run build
-          start: npm start:server
+          start: npm run start:server
           config: baseUrl=http://localhost:1337
