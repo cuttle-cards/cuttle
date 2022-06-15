@@ -19,17 +19,17 @@ function assertSuccessfulJoin(gameState) {
 }
 
 describe('Vue Devtools', () => {
-    beforeEach(setup);
+  beforeEach(setup);
 
-    if (Cypress.env('NODE_ENV') === 'production') {
-      it('Should not include Vue Devtools script on prod builds', () => {
-        cy.get('[data-vue-devtools]').should('have.length', 0);
-      });
-    } else {
-      it('Should include Vue Devtools script on dev builds', () => {
-        cy.get('[data-vue-devtools]').should('have.length', 1);
-      });
-    }
+  if (Cypress.env('NODE_ENV') === 'production') {
+    it('Should not include Vue Devtools script on prod builds', () => {
+      cy.get('[data-vue-devtools]').should('have.length', 0);
+    });
+  } else {
+    it('Should include Vue Devtools script on dev builds', () => {
+      cy.get('[data-vue-devtools]').should('have.length', 1);
+    });
+  }
 });
 
 describe('Home - Page Content', () => {
