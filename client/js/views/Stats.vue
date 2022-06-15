@@ -93,6 +93,7 @@
           <!-- Point counts per week -->
           <template v-for="week in selectedWeeks" #[`item.${week}_points`]="{item, value}">
             <v-chip
+              v-if="value"
               :key="`${item.username}_week_${week}_points`"
               :color="colorForScore(value)"
               dark
