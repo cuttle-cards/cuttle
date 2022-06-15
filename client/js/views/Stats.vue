@@ -33,6 +33,7 @@
             class="filter-select"
             :items="metricChoices"
             label="Metric"
+            data-cy="metric-select"
           />
         </div>
         <v-data-table
@@ -124,11 +125,16 @@ export default {
       ) {
         return [];
       }
-      const res = [
-        { text: 'User', value: 'username' },
-        { text: 'Total Points', value: 'total_points' },
-        { text: 'Total Wins', value: 'total_wins' },
-      ];
+      const res = [{ text: 'User', value: 'username' }];
+      // Add points total if looking at points
+      if (['Points and Wins', 'Points Only'].includes(this.selectedMetric)) {
+        res.push({ text: 'Total Points', value: 'total_points' });
+      }
+      // Add wins total if looking at wins
+      if (['Points and Wins', 'Wins Only'].includes(this.selectedMetric)) {
+        res.push({ text: 'Total Wins', value: 'total_wins' });
+      }
+      // Add headers for each week
       for (const weekNum in this.selectedSeason.rankings[0].matches) {
         if (['Points and Wins', 'Wins Only'].includes(this.selectedMetric)) {
           res.push({
