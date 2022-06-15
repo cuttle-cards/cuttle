@@ -14,6 +14,7 @@
             :dense="$vuetify.breakpoint.mdAndDown ? true : false"
             hint="Username"
             data-cy="username"
+            autocomplete="username"
           />
           <v-text-field
             v-model="pw"
@@ -22,6 +23,7 @@
             :dense="$vuetify.breakpoint.mdAndDown ? true : false"
             type="password"
             data-cy="password"
+            :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
           />
           <div id="login-button-container">
             <v-btn :loading="loading" color="primary" block type="submit" data-cy="submit">
