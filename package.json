@@ -67,7 +67,8 @@
     "start:client": "vue-cli-service serve",
     "start:server": "node app.js",
     "start:dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
-    "prod": "npm run build && npm run start:server"
+    "prod": "npm run build && npm run start:server",
+    "prod:start": "npm run build && npm run start:server"
   },
   "main": "app.js"
 }

@@ -18,6 +18,18 @@ function assertSuccessfulJoin(gameState) {
   cy.contains('h1', `Lobby for ${gameState.name}`);
 }
 
+describe('Vue Devtools', () => {
+    beforeEach(setup);
+
+    // it('Should include Vue Devtools script on dev builds', () => {
+    //   cy.get('[data-vue-devtools]').should('have.length', 1);
+    // });
+
+    it('Should not include Vue Devtools script on prod builds', () => {
+      cy.get('[data-vue-devtools]').should('have.length', 0);
+    });
+});
+
 describe('Home - Page Content', () => {
   beforeEach(setup);
 

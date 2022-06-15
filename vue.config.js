@@ -16,7 +16,7 @@ module.exports = {
       // https://devtools.vuejs.org/guide/installation.html#standalone
       ...(process.env.NODE_ENV != 'production'
         ? {
-            vueDevToolsScript: '<script src="http://localhost:8098"></script>',
+            vueDevToolsScript: '<script src="http://localhost:8098" data-vue-devtools></script>',
           }
         : {}),
     },
