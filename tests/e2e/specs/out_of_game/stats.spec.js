@@ -57,7 +57,7 @@ function setup() {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it.only('Displays Headers, Cards, and Table', () => {
+  it('Displays Headers, Cards, and Table', () => {
     cy.get('[data-cy=selected-season-header]');
     cy.get("[points-1='Player1']").contains('5');
     cy.get("[wins-1='Player1']").contains('3');
@@ -65,8 +65,22 @@ describe('Stats Page', () => {
     cy.get('tr.active-user-stats').contains(playerOne.username);
   });
 
-  it.skip('Filters table to display wins, points, or both', () => {
-    expect(true).to.eq(false);
+  it.only('Filters table to display wins, points, or both', () => {
+    // 7 columns: username, total_points, total_wins, 2 weeks + wins & points
+    cy.get('th').should('have.length', 7);
+    // Switch to points only
+    cy.get('[data-cy=metric-select]').click({ force: true });
+    cy.contains('Points Only').click();
+    // 4 columns: username, total_points, 1_points, 2_points
+    cy.get("[points-1='Player1']").contains('5');
+    cy.get("[wins-1='Player1']").should('not.exist');
+    cy.get('th').should('have.length', 4);
+    // Switch to wins only
+    cy.get('[data-cy=metric-select]').click({ force: true });
+    cy.contains('Wins Only').click();
+    cy.get('th').should('have.length', 4);
+    cy.get("[wins-1='Player1']").contains('3');
+    cy.get("[points-1='Player1']").should('not.exist');
   });
 
   it.skip('Filters table to show selected weeks', () => {
