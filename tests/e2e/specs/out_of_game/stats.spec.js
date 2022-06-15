@@ -1,4 +1,3 @@
-import { username, validPassword } from '../../support/helpers';
 import {
   playerOne,
   playerTwo,
@@ -65,7 +64,7 @@ describe('Stats Page', () => {
     cy.get('tr.active-user-stats').contains(playerOne.username);
   });
 
-  it.only('Filters table to display wins, points, or both', () => {
+  it('Filters table to display wins, points, or both', () => {
     // 7 columns: username, total_points, total_wins, 2 weeks + wins & points
     cy.get('th').should('have.length', 7);
     // Switch to points only
@@ -83,15 +82,61 @@ describe('Stats Page', () => {
     cy.get("[points-1='Player1']").should('not.exist');
   });
 
-  it.skip('Filters table to show selected weeks', () => {
-    expect(true).to.eq(false);
+  it.only('Filters table to show selected weeks', () => {
+    // 29 columns: username, total_points, total_wins, 13 weeks + wins & points
+    cy.get('th').should('have.length', 29);
+    // Total counts across all weeks
+    cy.get('[points-total=Player1]').should('contain', 10);
+    cy.get('[wins-total=Player1]').should('contain', 6);
+    // Deselect every week except week 1
+    cy.get('[data-cy=week-select]').click({ force: true });
+    cy.get('[role=option]')
+      .contains('Week 2')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 3')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 4')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 5')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 6')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 7')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 8')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 9')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 10')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 11')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 12')
+      .click();
+    cy.get('[role=option]')
+      .contains('Week 13')
+      .click();
+    cy.get('body').type('{esc}');
+
+    // Expect 5 columns: username, total_points, total_wins, week_1_points, week_1_wins
+    cy.get('th').should('have.length', 5);
+    // Total counts should only consider the selected weeks
+    cy.get('[points-1=Player1]').should('contain', 5);
+    cy.get('[points-total=Player1]').should('contain', 5);
+    cy.get('[wins-total=Player1]').should('contain', 3);
   });
 
   it.skip('Selects different seasons to show their results', () => {
-    expect(true).to.eq(false);
-  });
-
-  it.skip('Correctly displays table data for a given season', () => {
     expect(true).to.eq(false);
   });
 });

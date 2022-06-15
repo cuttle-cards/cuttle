@@ -216,12 +216,13 @@ export default {
       }
       return this.selectedSeason.rankings.map(playerStats => {
         const res = { total: 0 };
-        for (const weekNum in playerStats.matches) {
-          const week = playerStats.matches[weekNum];
-          const wins = week.filter(match => match.result === Result.WON);
-          res.total += wins.length;
-          // res[`${weekNum}_wins`] = wins.map(match => match.opponent).join(', ');
-          res[weekNum] = wins.length;
+        for (const [weekNum, matches] of Object.entries(playerStats.matches)) {
+          if (this.selectedWeeks.includes(Number(weekNum))) {
+            const wins = matches.filter(match => match.result === Result.WON);
+            res.total += wins.length;
+            // res[`${weekNum}_wins`] = wins.map(match => match.opponent).join(', ');
+            res[weekNum] = wins.length;
+          }
         }
         return res;
       });
