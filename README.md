@@ -51,13 +51,25 @@ Navigate to [localhost:8080](http:localhost:8080) in your browser of choice.
 You can shut down the servers by hitting `ctrl + c` several times from the terminal windows they are running in. Shut down both servers to completely delete all game & account data.
 
 ### Development
+#### Vue Devtools
+
+To utilize [Vue Devtools](https://devtools.vuejs.org/), you can run
+```
+npm run dev:devtools
+```
+
+Dev builds will automatically include the devtools script.
 #### Build for production
 From the root directory of the repo, you can run
 ```
-npm run build
+npm run prod
 ```
 to compile the Vue SPA into the `assets` directory, which will be statically served by the server (sails backend) at the same port on which it is running to support the API. You can now shut down the client and view the applicaion as its built for production at localhost:1337 (default port for sails).
 
+If you just want to generate the production build, you can run
+```
+npm run build
+```
 #### Run the tests
 While the application is running, (server + client) you can run
 ```
