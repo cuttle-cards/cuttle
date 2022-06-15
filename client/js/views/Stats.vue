@@ -2,7 +2,13 @@
   <div id="stats-wrapper">
     <!-- Upper Service -->
     <section id="upper-surface" class="pa-8 mb-6">
-      <v-select v-model="selectedSeason" :items="seasons" return-object item-text="name">
+      <v-select
+        v-model="selectedSeason"
+        :items="seasons"
+        label="Select Season"
+        return-object
+        item-text="name"
+      >
         <template #selection="{ item }">
           <h1 class="text-h2" data-cy="selected-season-header">
             {{ item.name }}
@@ -30,10 +36,20 @@
         <div id="stats-table-upper-surface">
           <v-select
             v-model="selectedMetric"
-            class="filter-select"
             :items="metricChoices"
-            label="Metric"
+            label="Select Metric"
+            class="filter-select"
             data-cy="metric-select"
+          />
+          <v-select
+            v-model="selectedWeeks"
+            :items="weeks"
+            label="Select Weeks"
+            data-cy="week-select"
+            menu-props="data-week-select-menu"
+            multiple
+            chips
+            deletable-chips
           />
         </div>
         <v-data-table
@@ -43,7 +59,10 @@
           :item-class="tableRowClass"
         >
           <!-- Customize win count -->
-          <template v-for="week in ['total', ...weekNums]" #[`item.${week}_wins`]="{item, value}">
+          <template
+            v-for="week in ['total', ...selectedWeeks]"
+            #[`item.${week}_wins`]="{item, value}"
+          >
             <v-tooltip :key="`${item.username}_week_${week}_wins`" top>
               <template #activator="{on, attrs}">
                 <span
@@ -72,7 +91,7 @@
             </v-chip>
           </template>
           <!-- Point counts per week -->
-          <template v-for="week in weekNums" #[`item.${week}_points`]="{item, value}">
+          <template v-for="week in selectedWeeks" #[`item.${week}_points`]="{item, value}">
             <v-chip
               :key="`${item.username}_week_${week}_points`"
               :color="colorForScore(value)"
@@ -111,12 +130,25 @@ export default {
       metricChoices: ['Points and Wins', 'Points Only', 'Wins Only'],
       selectedMetric: 'Points and Wins',
       seasons: [],
+      weeks: [
+        { text: 'Week 1', value: 1 },
+        { text: 'Week 2', value: 2 },
+        { text: 'Week 3', value: 3 },
+        { text: 'Week 4', value: 4 },
+        { text: 'Week 5', value: 5 },
+        { text: 'Week 6', value: 6 },
+        { text: 'Week 7', value: 7 },
+        { text: 'Week 8', value: 8 },
+        { text: 'Week 9', value: 9 },
+        { text: 'Week 10', value: 10 },
+        { text: 'Week 11', value: 11 },
+        { text: 'Week 12', value: 12 },
+        { text: 'Week 13', value: 13 },
+      ],
+      selectedWeeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
     };
   },
   computed: {
-    weekNums() {
-      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    },
     tableColumns() {
       if (
         !this.selectedSeason ||
@@ -135,7 +167,7 @@ export default {
         res.push({ text: 'Total Wins', value: 'total_wins' });
       }
       // Add headers for each week
-      for (const weekNum in this.selectedSeason.rankings[0].matches) {
+      for (const weekNum of this.selectedWeeks) {
         if (['Points and Wins', 'Wins Only'].includes(this.selectedMetric)) {
           res.push({
             text: `Week ${weekNum} Wins`,
