@@ -60,6 +60,14 @@ function setup() {
     .click();
 }
 
+describe('Stats Page Error States', () => {
+  it('Redirects to login when attempting to navigate to stats while unauthenticated', () => {
+    cy.wipeDatabase();
+    cy.visit('/#/stats');
+    cy.hash().should('eq', '#/login');
+  });
+});
+
 describe('Stats Page', () => {
   beforeEach(setup);
 
@@ -163,13 +171,5 @@ describe('Stats Page', () => {
     // Stats data table
     cy.get('[wins-1=Player1]').should('contain', 1);
     cy.get('[points-1=Player1').should('contain', 3);
-  });
-});
-
-describe('Stats Page Error States', () => {
-  it('Redirects to login when attempting to navigate to stats while unauthenticated', () => {
-    cy.wipeDatabase();
-    cy.visit('/#/stats');
-    cy.hash().should('eq', '#/login');
   });
 });
