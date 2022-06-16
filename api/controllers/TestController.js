@@ -27,7 +27,7 @@ module.exports = {
   },
   loadSeasonFixture: async function(req, res) {
     try {
-      await Season.create(req.body);
+      await Season.createEach(req.body);
     } catch (e) {
       return res.badRequest(e);
     }

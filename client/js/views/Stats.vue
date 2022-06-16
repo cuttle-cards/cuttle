@@ -6,6 +6,7 @@
         v-model="selectedSeason"
         :items="seasons"
         label="Select Season"
+        data-cy="season-select"
         return-object
         item-text="name"
       >
