@@ -20,6 +20,14 @@ module.exports = {
       type: 'number',
       required: true,
     },
+    bracketLink: {
+      type: 'string',
+      required: false,
+    },
+    footageLink: {
+      type: 'string',
+      required: false,
+    },
     firstPlace: {
       model: 'user',
     },

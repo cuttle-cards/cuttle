@@ -11,6 +11,7 @@ const seasonFixtures = [
     secondPlace: 'player2',
     thirdPlace: 'player3',
     fourthPlace: 'player4',
+    bracketLink: 'https://github.com/cuttle-cards/cuttle',
   },
   {
     name: 'Diamonds 2022',
