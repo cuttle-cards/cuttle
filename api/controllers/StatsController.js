@@ -101,7 +101,7 @@ function transformSeasonToDTO(season) {
 module.exports = {
   getStats: function(req, res) {
     // Find records
-    const seasons = Season.find({});
+    const seasons = Season.find({}).populateAll();
     const matches = Match.find({});
     const users = User.find({});
     return Promise.all([seasons, matches, users]).then(([seasons, matches, users]) => {
@@ -112,8 +112,12 @@ module.exports = {
       // Add empty rankings dict to each season
       seasons = seasons.map(season => {
         return {
-          rankings: new Map(), // playerId => PlayerMatches
           ...season,
+          rankings: new Map(), // playerId => PlayerMatches
+          firstPlace: season.firstPlace?.username || null,
+          secondPlace: season.secondPlace?.username || null,
+          thirdPlace: season.thirdPlace?.username || null,
+          fourthPlace: season.fourthPlace?.username || null,
         };
       });
       for (const match of matches) {

@@ -23,9 +23,9 @@
           Season Champions
         </h2>
         <div class="d-flex justify-space-between flex-wrap">
-          <award-card username="fooey" :place="1" class="mb-4" />
-          <award-card username="booey" :place="2" class="mb-4" />
-          <award-card username="gluey" :place="3" class="mb-4" />
+          <award-card :username="selectedSeason.firstPlace" :place="1" class="mb-4" />
+          <award-card :username="selectedSeason.secondPlace" :place="2" class="mb-4" />
+          <award-card :username="selectedSeason.thirdPlace" :place="3" class="mb-4" />
         </div>
       </div>
       <!-- Rankings Table -->
