@@ -53,6 +53,11 @@ function setup() {
       cy.loadSeasonFixture(seasons);
     });
   cy.vueRoute('/stats');
+  // Select Clubs 2022 season
+  cy.get('[data-cy=season-select]').click({ force: true });
+  cy.get('[role=option]')
+    .contains('Clubs 2022')
+    .click();
 }
 
 describe('Stats Page', () => {

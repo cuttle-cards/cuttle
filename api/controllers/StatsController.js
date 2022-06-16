@@ -101,7 +101,7 @@ function transformSeasonToDTO(season) {
 module.exports = {
   getStats: function(req, res) {
     // Find records
-    const seasons = Season.find({}).populateAll();
+    const seasons = Season.find({sort: 'startTime DESC'}).populateAll();
     const matches = Match.find({});
     const users = User.find({});
     return Promise.all([seasons, matches, users]).then(([seasons, matches, users]) => {
