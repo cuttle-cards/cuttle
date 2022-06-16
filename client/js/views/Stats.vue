@@ -22,7 +22,7 @@
         <h2 class="text-h3 mb-4">
           Season Champions
         </h2>
-        <div class="d-flex justify-space-between flex-wrap">
+        <div class="d-flex justify-space-around flex-wrap">
           <award-card :username="selectedSeason.firstPlace" :place="1" class="mb-4" />
           <award-card :username="selectedSeason.secondPlace" :place="2" class="mb-4" />
           <award-card :username="selectedSeason.thirdPlace" :place="3" class="mb-4" />
