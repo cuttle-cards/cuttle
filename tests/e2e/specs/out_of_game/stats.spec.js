@@ -5,7 +5,7 @@ import {
   playerFour,
   playerFive,
 } from '../../fixtures/userFixtures';
-import { seasonFixture, matchesFixture } from '../../fixtures/statsFixtures';
+import { seasonFixtures, matchesFixture } from '../../fixtures/statsFixtures';
 
 function setup() {
   cy.viewport(1980, 1080);
@@ -20,13 +20,15 @@ function setup() {
   cy.signupOpponent(playerFive.username, playerFive.password)
     .as('player5')
     .then(function() {
-      const season = {
-        ...seasonFixture,
-        firstPlace: this.player1,
-        secondPlace: this.player2,
-        thirdPlace: this.player3,
-        fourthPlace: this.player4,
-      };
+      const seasons = seasonFixtures.map(season => {
+        return {
+          ...season,
+          firstPlace: season.firstPlace ? this[season.firstPlace] : null,
+          secondPlace: season.secondPlace ? this[season.secondPlace] : null,
+          thirdPlace: season.thirdPlace ? this[season.thirdPlace] : null,
+          fourthPlace: season.fourthPlace ? this[season.fourthPlace] : null,
+        };
+      });
 
       // Convert usernames to ids
       const transformMatchFixture = match => {
@@ -48,7 +50,7 @@ function setup() {
       };
       const matches = matchesFixture.map(transformMatchFixture);
       cy.loadMatchFixtures(matches);
-      cy.loadSeasonFixture(season);
+      cy.loadSeasonFixture(seasons);
     });
   cy.vueRoute('/stats');
 }
@@ -141,7 +143,20 @@ describe('Stats Page', () => {
     cy.get('[wins-total=Player1]').should('contain', 3);
   });
 
-  it.skip('Selects different seasons to show their results', () => {
-    expect(true).to.eq(false);
+  it('Selects different seasons to show their results', () => {
+    // Three award cards for Clubs 2022
+    cy.get('[data-tournament]').should('have.length', 3);
+    // Switch season to diamonds 2022
+    cy.get('[data-cy=season-select]').click({ force: true });
+    cy.get('[role=option]')
+      .contains('Diamonds 2022')
+      .click();
+
+    // Award cards should not display (no winners)
+    cy.get('[data-tournament]').should('not.exist');
+
+    // Stats data table
+    cy.get('[wins-1=Player1]').should('contain', 1);
+    cy.get('[points-1=Player1').should('contain', 3);
   });
 });
