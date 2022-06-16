@@ -33,12 +33,12 @@
         Weekly Rankings
       </h2>
       <div id="stat-table-wrapper">
-        <div id="stats-table-upper-surface">
+        <div id="stats-table-upper-surface" class="d-flex align-end">
           <v-select
             v-model="selectedMetric"
             :items="metricChoices"
             label="Select Metric"
-            class="filter-select"
+            class="filter-select mr-4 fit"
             data-cy="metric-select"
           />
           <v-select
@@ -46,6 +46,7 @@
             :items="weeks"
             label="Select Weeks"
             data-cy="week-select"
+            class="flex-grow-1"
             menu-props="data-week-select-menu"
             multiple
             chips
@@ -431,5 +432,11 @@ export default {
 }
 ::v-deep .active-user-stats {
   background-color: var(--v-accent-lighten3);
+}
+::v-deep .v-select.fit {
+  width: min-content;
+}
+::v-deep .v-select.fit .v-select__selection--comma {
+  text-overflow: unset;
 }
 </style>
