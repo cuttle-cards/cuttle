@@ -10,18 +10,20 @@ import store from '../store/store.js';
 
 Vue.use(VueRouter);
 
+const mustBeAuthenticated = (to, from, next) => {
+  if (store.state.auth.authenticated) {
+    next();
+  } else {
+    next('/login');
+  }
+};
+
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    beforeEnter: (to, from, next) => {
-      if (store.state.auth.authenticated) {
-        next();
-      } else {
-        next('/login');
-      }
-    },
+    beforeEnter: mustBeAuthenticated,
   },
   {
     path: '/login',
@@ -47,6 +49,7 @@ const routes = [
     path: '/stats',
     name: 'Stats',
     component: Stats,
+    beforeEnter: mustBeAuthenticated,
   },
 ];
 

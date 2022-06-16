@@ -22,7 +22,8 @@
       <div class="mb-10">
         <h2
           v-if="
-            selectedSeason.firstPlace || selectedSeason.secondPlace || selectedSeason.thirdPlace
+            selectedSeason &&
+              (selectedSeason.firstPlace || selectedSeason.secondPlace || selectedSeason.thirdPlace)
           "
           class="text-h3 mb-4"
         >
@@ -30,19 +31,19 @@
         </h2>
         <div class="d-flex justify-space-around flex-wrap">
           <award-card
-            v-if="selectedSeason.firstPlace"
+            v-if="selectedSeason && selectedSeason.firstPlace"
             :username="selectedSeason.firstPlace"
             :place="1"
             class="mb-4"
           />
           <award-card
-            v-if="selectedSeason.secondPlace"
+            v-if="selectedSeason && selectedSeason.secondPlace"
             :username="selectedSeason.secondPlace"
             :place="2"
             class="mb-4"
           />
           <award-card
-            v-if="selectedSeason.thirdPlace"
+            v-if="selectedSeason && selectedSeason.thirdPlace"
             :username="selectedSeason.thirdPlace"
             :place="3"
             class="mb-4"
@@ -77,7 +78,7 @@
         <v-data-table
           :items="tableRows"
           :headers="tableColumns"
-          :loading="seasons.length === 0"
+          :loading="loadingData"
           :item-class="tableRowClass"
         >
           <!-- Customize win count -->
@@ -149,6 +150,7 @@ export default {
   data() {
     return {
       Result,
+      loadingData: false,
       selectedSeason: null,
       metricChoices: ['Points and Wins', 'Points Only', 'Wins Only'],
       selectedMetric: 'Points and Wins',
@@ -344,9 +346,11 @@ export default {
     },
   },
   created() {
+    this.loadingData = true;
     io.socket.get('/stats', (res, jwres) => {
       this.seasons = res;
       this.selectedSeason = this.seasons[0];
+      this.loadingData = false;
     });
   },
   methods: {

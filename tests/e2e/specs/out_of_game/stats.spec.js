@@ -165,3 +165,11 @@ describe('Stats Page', () => {
     cy.get('[points-1=Player1').should('contain', 3);
   });
 });
+
+describe('Stats Page Error States', () => {
+  it('Redirects to login when attempting to navigate to stats while unauthenticated', () => {
+    cy.wipeDatabase();
+    cy.visit('/#/stats');
+    cy.hash().should('eq', '#/login');
+  });
+});
