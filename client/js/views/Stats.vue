@@ -19,13 +19,33 @@
     <section class="px-8">
       <!-- Season Champions -->
       <div class="mb-10">
-        <h2 class="text-h3 mb-4">
+        <h2
+          v-if="
+            selectedSeason.firstPlace || selectedSeason.secondPlace || selectedSeason.thirdPlace
+          "
+          class="text-h3 mb-4"
+        >
           Season Champions
         </h2>
         <div class="d-flex justify-space-around flex-wrap">
-          <award-card :username="selectedSeason.firstPlace" :place="1" class="mb-4" />
-          <award-card :username="selectedSeason.secondPlace" :place="2" class="mb-4" />
-          <award-card :username="selectedSeason.thirdPlace" :place="3" class="mb-4" />
+          <award-card
+            v-if="selectedSeason.firstPlace"
+            :username="selectedSeason.firstPlace"
+            :place="1"
+            class="mb-4"
+          />
+          <award-card
+            v-if="selectedSeason.secondPlace"
+            :username="selectedSeason.secondPlace"
+            :place="2"
+            class="mb-4"
+          />
+          <award-card
+            v-if="selectedSeason.thirdPlace"
+            :username="selectedSeason.thirdPlace"
+            :place="3"
+            class="mb-4"
+          />
         </div>
       </div>
       <!-- Rankings Table -->
