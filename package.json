@@ -34,6 +34,7 @@
     "@vue/cli-plugin-unit-jest": "^4.5.6",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/runtime-dom": "^3.2.37",
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
     "chai": "^3.5.0",

@@ -1,6 +1,7 @@
 {
   "editor.tabSize": 2,
-  "vetur.format.options.useTabs": true,
-  "prettier.enable": false,
-  "prettier.useTabs": true
+  "prettier.enable": true,
+  "prettier.useTabs": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true
 }
