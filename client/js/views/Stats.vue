@@ -23,7 +23,10 @@
         <h2
           v-if="
             selectedSeason &&
-              (selectedSeason.firstPlace || selectedSeason.secondPlace || selectedSeason.thirdPlace)
+              (selectedSeason.bracketLink ||
+                selectedSeason.firstPlace ||
+                selectedSeason.secondPlace ||
+                selectedSeason.thirdPlace)
           "
           class="text-h3 mb-4"
         >
@@ -49,6 +52,12 @@
             class="mb-4"
           />
         </div>
+        <p v-if="selectedSeason && (selectedSeason.bracketLink || selectedSeason.footageLink)">
+          Click
+          <a :href="selectedSeason.bracketLink" data-cy="tournament-bracket-link">
+            here to see the official tournament bracket
+          </a>
+        </p>
       </div>
       <!-- Rankings Table -->
       <h2 class="text-h3 my-4">

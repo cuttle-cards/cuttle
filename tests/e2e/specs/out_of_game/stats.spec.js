@@ -71,9 +71,14 @@ describe('Stats Page Error States', () => {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it('Displays Headers, Cards, and Table', () => {
+  it.only('Displays Headers, Cards, and Table', () => {
     cy.get('[data-cy=selected-season-header]');
-    // Tournament Cards
+    // Tournament Data
+    cy.get('[data-cy=tournament-bracket-link]').should(
+      'have.attr',
+      'href',
+      seasonFixtures[0].bracketLink
+    );
     cy.get('[data-tournament=1st]').should('contain', playerOne.username);
     cy.get('[data-tournament=2nd]').should('contain', playerTwo.username);
     cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
