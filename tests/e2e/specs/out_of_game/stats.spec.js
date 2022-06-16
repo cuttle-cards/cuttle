@@ -65,24 +65,24 @@ describe('Stats Page', () => {
   });
 
   it('Filters table to display wins, points, or both', () => {
-    // 7 columns: username, total_points, total_wins, 2 weeks + wins & points
-    cy.get('th').should('have.length', 7);
+    // 29 columns: username, total_points, total_wins, (points & wins) x 13 weeks
+    cy.get('th').should('have.length', 29);
     // Switch to points only
     cy.get('[data-cy=metric-select]').click({ force: true });
     cy.contains('Points Only').click();
-    // 4 columns: username, total_points, 1_points, 2_points
+    // 15 columns: username, total_points, 1_points, 2_points
     cy.get("[points-1='Player1']").contains('5');
     cy.get("[wins-1='Player1']").should('not.exist');
-    cy.get('th').should('have.length', 4);
+    cy.get('th').should('have.length', 15);
     // Switch to wins only
     cy.get('[data-cy=metric-select]').click({ force: true });
     cy.contains('Wins Only').click();
-    cy.get('th').should('have.length', 4);
+    cy.get('th').should('have.length', 15);
     cy.get("[wins-1='Player1']").contains('3');
     cy.get("[points-1='Player1']").should('not.exist');
   });
 
-  it.only('Filters table to show selected weeks', () => {
+  it('Filters table to show selected weeks', () => {
     // 29 columns: username, total_points, total_wins, 13 weeks + wins & points
     cy.get('th').should('have.length', 29);
     // Total counts across all weeks
