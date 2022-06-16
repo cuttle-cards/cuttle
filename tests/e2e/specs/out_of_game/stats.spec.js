@@ -22,10 +22,10 @@ function setup() {
     .then(function() {
       const season = {
         ...seasonFixture,
-        firstPlace: this.playerOneId,
-        secondPlace: this.playerTwoId,
-        thirdPlace: this.playerThreeId,
-        fourthPlace: this.playerFourId,
+        firstPlace: this.player1,
+        secondPlace: this.player2,
+        thirdPlace: this.player3,
+        fourthPlace: this.player4,
       };
 
       // Convert usernames to ids
@@ -58,6 +58,11 @@ describe('Stats Page', () => {
 
   it('Displays Headers, Cards, and Table', () => {
     cy.get('[data-cy=selected-season-header]');
+    // Tournament Cards
+    cy.get('[data-tournament=1st]').should('contain', playerOne.username);
+    cy.get('[data-tournament=2nd]').should('contain', playerTwo.username);
+    cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
+    // Data Table
     cy.get("[points-1='Player1']").contains('5');
     cy.get("[wins-1='Player1']").contains('3');
     cy.get("[wins-1='Player5']").contains('1');
