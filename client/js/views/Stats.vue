@@ -52,11 +52,18 @@
             class="mb-4"
           />
         </div>
-        <p v-if="selectedSeason && (selectedSeason.bracketLink || selectedSeason.footageLink)">
+        <p v-if="selectedSeason && selectedSeason.bracketLink">
           Click
           <a :href="selectedSeason.bracketLink" data-cy="tournament-bracket-link">
             here to see the official tournament bracket
           </a>
+        </p>
+        <p v-if="selectedSeason && selectedSeason.footageLink">
+          Click
+          <a :href="selectedSeason.footageLink" data-cy="tournament-footage-link">
+            here to watch the official tournament footage
+          </a>
+          with play-by-play commentary.
         </p>
       </div>
       <!-- Rankings Table -->

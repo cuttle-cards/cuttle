@@ -12,6 +12,7 @@ const seasonFixtures = [
     thirdPlace: 'player3',
     fourthPlace: 'player4',
     bracketLink: 'https://github.com/cuttle-cards/cuttle',
+    footageLink: 'https://github.com/cuttle-cards/cuttle-assets',
   },
   {
     name: 'Diamonds 2022',
