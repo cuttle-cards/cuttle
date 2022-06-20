@@ -60,9 +60,9 @@
         <v-chip
           v-if="value"
           :key="`${item.username}_week_${week}`"
-          :color="colorForScore(value)"
+          :color="colorForScoreByWeek(week, value)"
           dark
-          :outlined="['primary', '#000'].includes(colorForScore(value))"
+          :outlined="['primary', '#000'].includes(colorForScoreByWeek(week, value))"
           v-bind="dataAttribute(item.username, week)"
         >
           {{ tableCell(item, week) }}
@@ -118,28 +118,12 @@ export default {
         { text: 'User', value: 'username' },
         { text: 'Total', value: 'week_total' },
       ];
-      // // Add points total if looking at points
-      // if (['Points and Wins', 'Points Only'].includes(this.selectedMetric)) {
-      //   res.push({ text: 'Total Points', value: 'total_points' });
-      // }
-      // // Add wins total if looking at wins
-      // if (['Points and Wins', 'Wins Only'].includes(this.selectedMetric)) {
-      //   res.push({ text: 'Total Wins', value: 'total_wins' });
-      // }
       // Add headers for each week
       for (const weekNum of this.selectedWeeks) {
         res.push({
           text: `Week ${weekNum}`,
           value: `week_${weekNum}`,
         });
-        // if (['Points and Wins', 'Wins Only'].includes(this.selectedMetric)) {
-        // }
-        // if (['Points and Wins', 'Points Only'].includes(this.selectedMetric)) {
-        //   res.push({
-        //     text: `Week ${weekNum} Points`,
-        //     value: `${weekNum}_points`,
-        //   });
-        // }
       }
       return res;
     },
@@ -312,6 +296,9 @@ export default {
         return 'primary';
       }
       return '#000';
+    },
+    colorForScoreByWeek(week, score) {
+      return week === 'total' ? this.colorForTotalScore(score) : this.colorForScore(score);
     },
     /**
      * Returns an object for v-bind for testing attributes to identify table cell
