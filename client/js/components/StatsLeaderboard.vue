@@ -43,8 +43,8 @@
           {{ playersBeaten(item.username, week) }}
         </v-tooltip>
       </template>
-      <!-- Total Point counts -->
-      <template #[`item.total_points`]="{item, value}">
+      <!-- Total Column -->
+      <!-- <template #[`item.total`]="{item, value}">
         <v-chip
           :key="`${item.username}_week_total_points`"
           :color="colorForTotalScore(value)"
@@ -54,18 +54,18 @@
         >
           {{ value }}
         </v-chip>
-      </template>
+      </template> -->
       <!-- Point counts per week -->
-      <template v-for="week in selectedWeeks" #[`item.${week}_points`]="{item, value}">
+      <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{item, value}">
         <v-chip
           v-if="value"
-          :key="`${item.username}_week_${week}_points`"
+          :key="`${item.username}_week_${week}`"
           :color="colorForScore(value)"
           dark
           :outlined="['primary', '#000'].includes(colorForScore(value))"
-          v-bind="dataAttribute(item.username, week, 'points')"
+          v-bind="dataAttribute(item.username, week)"
         >
-          {{ value }}
+          {{ tableCell(item, week) }}
         </v-chip>
       </template>
     </v-data-table>
@@ -114,29 +114,32 @@ export default {
       if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
         return [];
       }
-      const res = [{ text: 'User', value: 'username' }];
-      // Add points total if looking at points
-      if (['Points and Wins', 'Points Only'].includes(this.selectedMetric)) {
-        res.push({ text: 'Total Points', value: 'total_points' });
-      }
-      // Add wins total if looking at wins
-      if (['Points and Wins', 'Wins Only'].includes(this.selectedMetric)) {
-        res.push({ text: 'Total Wins', value: 'total_wins' });
-      }
+      const res = [
+        { text: 'User', value: 'username' },
+        { text: 'Total', value: 'week_total' },
+      ];
+      // // Add points total if looking at points
+      // if (['Points and Wins', 'Points Only'].includes(this.selectedMetric)) {
+      //   res.push({ text: 'Total Points', value: 'total_points' });
+      // }
+      // // Add wins total if looking at wins
+      // if (['Points and Wins', 'Wins Only'].includes(this.selectedMetric)) {
+      //   res.push({ text: 'Total Wins', value: 'total_wins' });
+      // }
       // Add headers for each week
       for (const weekNum of this.selectedWeeks) {
-        if (['Points and Wins', 'Wins Only'].includes(this.selectedMetric)) {
-          res.push({
-            text: `Week ${weekNum} Wins`,
-            value: `${weekNum}_wins`,
-          });
-        }
-        if (['Points and Wins', 'Points Only'].includes(this.selectedMetric)) {
-          res.push({
-            text: `Week ${weekNum} Points`,
-            value: `${weekNum}_points`,
-          });
-        }
+        res.push({
+          text: `Week ${weekNum}`,
+          value: `week_${weekNum}`,
+        });
+        // if (['Points and Wins', 'Wins Only'].includes(this.selectedMetric)) {
+        // }
+        // if (['Points and Wins', 'Points Only'].includes(this.selectedMetric)) {
+        //   res.push({
+        //     text: `Week ${weekNum} Points`,
+        //     value: `${weekNum}_points`,
+        //   });
+        // }
       }
       return res;
     },
@@ -149,12 +152,14 @@ export default {
         const playerScores = this.playerScores[index];
         const res = {
           username: playerStats.username,
-          total_wins: playerWins.total,
-          total_points: playerScores.total,
+          week_total_wins: playerWins.total,
+          week_total_points: playerScores.total,
+          week_total: playerScores.total,
         };
         for (const weekNum in playerStats.matches) {
-          res[`${weekNum}_wins`] = playerWins[weekNum];
-          res[`${weekNum}_points`] = playerScores[weekNum];
+          res[`week_${weekNum}`] = playerScores[weekNum];
+          res[`week_${weekNum}_wins`] = playerWins[weekNum];
+          res[`week_${weekNum}_points`] = playerScores[weekNum];
         }
         return res;
       });
@@ -265,6 +270,20 @@ export default {
     },
   },
   methods: {
+    tableCell(item, week) {
+      const wins = item[`week_${week}_wins`];
+      const points = item[`week_${week}_points`];
+      switch (this.selectedMetric) {
+        case 'Points and Wins':
+          return `Wins: ${wins}, Points: ${points}`;
+        case 'Points Only':
+          return `Points: ${points}`;
+        case 'Wins Only':
+          return `Wins: ${wins}`;
+        default:
+          return `Wins: ${wins}, Points: ${points}`;
+      }
+    },
     colorForScore(score) {
       switch (score) {
         case 5:
@@ -299,11 +318,10 @@ export default {
      * @example {'points-2': 'someUserName'} identifies someUserNames' week-2 points
      * @param {String} username
      * @param {int} weekNum Which week
-     * @param {'points' | 'wins'} metricName 'points'
      */
-    dataAttribute(username, weekNum, metricName) {
+    dataAttribute(username, weekNum) {
       const res = {};
-      const attributeName = `${metricName}-${weekNum}`;
+      const attributeName = `week-${weekNum}`;
       res[attributeName] = username;
       return res;
     },
