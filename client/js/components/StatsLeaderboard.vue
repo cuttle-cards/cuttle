@@ -26,34 +26,26 @@
       :loading="loading"
       :item-class="tableRowClass"
     >
-      <!-- Customize win count -->
-      <template v-for="week in ['total', ...selectedWeeks]" #[`item.${week}_wins`]="{item, value}">
+      <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{item, value}">
         <v-tooltip :key="`${item.username}_week_${week}_wins`" top>
           <template #activator="{on, attrs}">
-            <span
+            <v-chip
+              v-if="value"
+              :key="`${item.username}_week_${week}`"
+              :color="colorForScoreByWeek(week, value)"
+              dark
+              :outlined="['primary', '#000'].includes(colorForScoreByWeek(week, value))"
               v-bind="{
                 ...attrs,
-                ...dataAttribute(item.username, week, 'wins'),
+                ...dataAttribute(item.username, week),
               }"
               v-on="on"
             >
-              {{ value }}
-            </span>
+              {{ tableCell(item, week) }}
+            </v-chip>
           </template>
           {{ playersBeaten(item.username, week) }}
         </v-tooltip>
-      </template>
-      <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{item, value}">
-        <v-chip
-          v-if="value"
-          :key="`${item.username}_week_${week}`"
-          :color="colorForScoreByWeek(week, value)"
-          dark
-          :outlined="['primary', '#000'].includes(colorForScoreByWeek(week, value))"
-          v-bind="dataAttribute(item.username, week)"
-        >
-          {{ tableCell(item, week) }}
-        </v-chip>
       </template>
     </v-data-table>
   </div>
@@ -103,6 +95,7 @@ export default {
       }
       const res = [
         { text: 'User', value: 'username' },
+        { text: 'Rank', value: 'rank' },
         { text: 'Total', value: 'week_total' },
       ];
       // Add headers for each week
@@ -239,6 +232,9 @@ export default {
       }
       return res;
     },
+    totalScoresSorted() {
+      return this.playerScores.map(playerStats => playerStats.total).sort((a, b) => a - b);
+    },
   },
   methods: {
     // Value displayed in each cell
@@ -334,6 +330,10 @@ export default {
     },
     tableRowClass(item) {
       return this.isCurrentPlayer(item.username) ? 'active-user-stats' : '';
+    },
+    // Compute rank from total score
+    rank(totalScore) {
+      return this.totalScoresSorted.indexOf(totalScore) + 1;
     },
   },
 };
