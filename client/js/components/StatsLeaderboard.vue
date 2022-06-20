@@ -30,10 +30,9 @@
         <span :data-rank="item.username">{{ value }} </span>
       </template>
       <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{item, value}">
-        <v-tooltip :key="`${item.username}_week_${week}_wins`" top>
+        <v-tooltip :key="`${item.username}_week_${week}_wins`" top v-if="value">
           <template #activator="{on, attrs}">
             <v-chip
-              v-if="value"
               :key="`${item.username}_week_${week}`"
               :color="colorForScoreByWeek(week, value)"
               dark
@@ -99,7 +98,7 @@ export default {
       const res = [
         { text: 'User', value: 'username' },
         { text: 'Rank', value: 'rank' },
-        { text: 'Total', value: 'week_total' },
+        { text: 'Season Total', value: 'week_total' },
       ];
       // Add headers for each week
       for (const weekNum of this.selectedWeeks) {
@@ -138,12 +137,12 @@ export default {
       }
       return this.season.rankings.map(playerStats => {
         const res = { total: 0 };
-        for (const [weekNum, matches] of Object.entries(playerStats.matches)) {
-          if (this.selectedWeeks.includes(Number(weekNum))) {
-            const wins = matches.filter(match => match.result === Result.WON);
-            res.total += wins.length;
-            res[weekNum] = wins.length;
-          }
+        const playerMatches = playerStats.matches;
+        for (const weekNum of this.weeks.map(week => week.value)) {
+          const matchesThisWeek = playerMatches[weekNum] || [];
+          const wins = matchesThisWeek.filter(match => match.result === Result.WON);
+          res.total += wins.length;
+          res[`${weekNum}`] = wins.length;
         }
         return res;
       });
@@ -157,7 +156,9 @@ export default {
         for (const weekNum in playerWins) {
           if (weekNum != 'total') {
             let pointsThisWeek = 0;
-            if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].first) {
+            if (this.topWinCountsPerWeek[weekNum].first === 0) {
+              pointsThisWeek = 0;
+            } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].first) {
               pointsThisWeek = 5;
             } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].second) {
               pointsThisWeek = 4;

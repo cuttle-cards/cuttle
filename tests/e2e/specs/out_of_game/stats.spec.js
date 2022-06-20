@@ -71,7 +71,7 @@ describe('Stats Page Error States', () => {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it.only('Displays Headers, Cards, and Table', () => {
+  it('Displays Headers, Cards, and Table', () => {
     cy.get('[data-cy=selected-season-header]');
     // Tournament Data
     cy.get('[data-cy=tournament-bracket-link]').should(
@@ -97,8 +97,8 @@ describe('Stats Page', () => {
   });
 
   it('Filters table to display wins, points, or both', () => {
-    // 15 columns: username, total, + 13 weeks
-    cy.get('th').should('have.length', 15);
+    // 16 columns: username, rank, total, + 13 weeks
+    cy.get('th').should('have.length', 16);
     // Switch to points only
     cy.get('[data-cy=metric-select]').click({ force: true });
     cy.contains('Points Only').click();
@@ -106,11 +106,11 @@ describe('Stats Page', () => {
     cy.get("[week-1='Player1']")
       .contains('5')
       .should('not.contain', 'Wins');
-    cy.get('th').should('have.length', 15);
+    cy.get('th').should('have.length', 16);
     // Switch to wins only
     cy.get('[data-cy=metric-select]').click({ force: true });
     cy.contains('Wins Only').click();
-    cy.get('th').should('have.length', 15);
+    cy.get('th').should('have.length', 16);
     // Only wins are displayed
     cy.get("[week-1='Player1']")
       .contains('3')
@@ -119,8 +119,8 @@ describe('Stats Page', () => {
   });
 
   it('Filters table to show selected weeks', () => {
-    // 29 columns: username, total_points, total_wins, 13 weeks + wins & points
-    cy.get('th').should('have.length', 15);
+    // 16 columns: username, rank, total, 13 weeks
+    cy.get('th').should('have.length', 16);
     // Total counts across all weeks
     cy.get('[week-total=Player1]').should('contain', 'W: 6, P: 10');
     // Deselect every week except week 1
@@ -163,11 +163,11 @@ describe('Stats Page', () => {
       .click();
     cy.get('body').type('{esc}');
 
-    // Expect 5 columns: username, total, week_1
-    cy.get('th').should('have.length', 3);
+    // Expect 5 columns: username, rank, total, week_1
+    cy.get('th').should('have.length', 4);
     // Total counts should only consider the selected weeks
     cy.get('[week-1=Player1]').should('contain', 'W: 3, P: 5');
-    cy.get('[week-total=Player1]').should('contain', 'W: 3, P: 5');
+    cy.get('[week-total=Player1]').should('contain', 'W: 6, P: 10');
   });
 
   it('Selects different seasons to show their results', () => {
@@ -184,5 +184,14 @@ describe('Stats Page', () => {
 
     // Stats data table
     cy.get('[week-1=Player1]').should('contain', 'W: 1, P: 3');
+
+    // Switch back to Clubs 2022
+    cy.get('[data-cy=season-select]').click({ force: true });
+    cy.get('[role=option]')
+      .contains('Clubs 2022')
+      .click();
+    // Stats data table
+    cy.get('[week-total=Player1]').should('contain', 'W: 6, P: 10');
+    cy.get('[week-2=Player1]').should('contain', 'W: 3, P: 5');
   });
 });
