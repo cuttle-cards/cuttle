@@ -36,22 +36,22 @@ describe('Lobby - Page Content', () => {
   beforeEach(() => {
     setup();
   });
-  it('Displays headers', () => {
+
+  it.only('Displays static content', () => {
     cy.contains('h1', 'Lobby for Test Game');
-  });
-  it('Displays logo', () => {
     cy.get('#logo');
-  });
-  it('Displays buttons', () => {
     cy.contains('button.v-btn', 'EXIT');
     cy.contains('button.v-btn', 'READY');
+    cy.get('[data-cy=nav-drawer]').should('not.be.visible');
   });
+
   it('Shows both players indicators', () => {
     cy.get('[data-cy=my-indicator]')
       .contains(validUsername.split('@')[0])
       .should('not.contain', '@');
     cy.get('[data-cy=opponent-indicator]').contains('Invite');
   });
+
   it('Defaults to not-ready', () => {
     cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');

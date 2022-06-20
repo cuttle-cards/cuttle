@@ -65,8 +65,4 @@ describe('Navigation Drawer', () => {
     cy.get('[data-nav=Logout]').click();
     cy.hash().should('equal', '#/login');
   });
-
-  it('Hides nav drawer on Lobby Page', () => {
-    expect(true).to.eq(false);
-  });
 });
