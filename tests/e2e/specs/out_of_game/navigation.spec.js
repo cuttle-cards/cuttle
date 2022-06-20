@@ -2,7 +2,7 @@ describe('Navigation Drawer', () => {
   beforeEach(() => {
     cy.visit('/');
   });
-  it.only('Expands and collapses navbar on desktop and always collapses on mobile', () => {
+  it('Expands and collapses navbar on desktop and always collapses on mobile', () => {
     // Desktop display
     cy.viewport(1920, 1080);
     cy.get('[data-cy=nav-drawer]')
@@ -37,7 +37,13 @@ describe('Navigation Drawer', () => {
     cy.get('[data-cy=collapse-nav]').should('not.exist');
   });
 
-  it('Navigates to Login and Rules pages when unauthenticated', () => {});
+  it('Navigates to Login and Rules pages when unauthenticated', () => {
+    cy.get('[data-nav]').should('have.length', 2);
+    cy.get('[data-nav=Rules]').click();
+    cy.hash().should('equal', '#/rules');
+    cy.get('[data-nav=Login]').click();
+    cy.hash().should('equal', '#/login');
+  });
 
   it('Navigates to Rules, Home, and Stats pages when authenticated', () => {});
 
