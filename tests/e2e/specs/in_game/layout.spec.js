@@ -13,6 +13,10 @@ describe('Game View Layout', () => {
     setupGameAsP0();
   });
 
+  it('Hides navbar on gameview page', () => {
+    cy.get('[data-cy=nav-drawer]').should('not.be.visible');
+  });
+
   it('Many cards on field', () => {
     // Set Up
     cy.loadGameFixture({
