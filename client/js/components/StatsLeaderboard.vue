@@ -23,6 +23,7 @@
     <v-data-table
       :items="tableRows"
       :headers="tableColumns"
+      :sort-by.sync="sortBy"
       :loading="loading"
       :item-class="tableRowClass"
     >
@@ -70,6 +71,7 @@ export default {
   },
   data() {
     return {
+      sortBy: 'rank',
       metricChoices: ['Points and Wins', 'Points Only', 'Wins Only'],
       selectedMetric: 'Points and Wins',
       weeks: [
