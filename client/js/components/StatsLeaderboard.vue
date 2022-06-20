@@ -26,6 +26,9 @@
       :loading="loading"
       :item-class="tableRowClass"
     >
+      <template #[`item.rank`]="{item, value}">
+        <span :data-rank="item.username">{{ value }} </span>
+      </template>
       <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{item, value}">
         <v-tooltip :key="`${item.username}_week_${week}_wins`" top>
           <template #activator="{on, attrs}">
@@ -119,6 +122,7 @@ export default {
           week_total_wins: playerWins.total,
           week_total_points: playerScores.total,
           week_total: playerScores.total,
+          rank: this.rank(playerScores.total),
         };
         for (const weekNum in playerStats.matches) {
           res[`week_${weekNum}`] = playerScores[weekNum];
@@ -233,7 +237,7 @@ export default {
       return res;
     },
     totalScoresSorted() {
-      return this.playerScores.map(playerStats => playerStats.total).sort((a, b) => a - b);
+      return this.playerScores.map(playerStats => playerStats.total).sort((a, b) => b - a);
     },
   },
   methods: {
