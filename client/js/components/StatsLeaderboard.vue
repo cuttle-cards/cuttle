@@ -43,19 +43,6 @@
           {{ playersBeaten(item.username, week) }}
         </v-tooltip>
       </template>
-      <!-- Total Column -->
-      <!-- <template #[`item.total`]="{item, value}">
-        <v-chip
-          :key="`${item.username}_week_total_points`"
-          :color="colorForTotalScore(value)"
-          dark
-          :outlined="['primary', '#000'].includes(colorForTotalScore(value))"
-          v-bind="dataAttribute(item.username, 'total', 'points')"
-        >
-          {{ value }}
-        </v-chip>
-      </template> -->
-      <!-- Point counts per week -->
       <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{item, value}">
         <v-chip
           v-if="value"
@@ -254,18 +241,19 @@ export default {
     },
   },
   methods: {
+    // Value displayed in each cell
     tableCell(item, week) {
       const wins = item[`week_${week}_wins`];
       const points = item[`week_${week}_points`];
       switch (this.selectedMetric) {
         case 'Points and Wins':
-          return `Wins: ${wins}, Points: ${points}`;
+          return `W: ${wins}, P: ${points}`;
         case 'Points Only':
-          return `Points: ${points}`;
+          return `${points}`;
         case 'Wins Only':
-          return `Wins: ${wins}`;
+          return `${wins}`;
         default:
-          return `Wins: ${wins}, Points: ${points}`;
+          return `W: ${wins}, P: ${points}`;
       }
     },
     colorForScore(score) {

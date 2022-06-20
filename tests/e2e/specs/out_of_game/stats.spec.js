@@ -89,9 +89,9 @@ describe('Stats Page', () => {
     cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
     // Data Table
     cy.get('th').should('have.length', 15);
-    cy.get("[week-1='Player1']").contains('Wins: 3, Points: 5');
-    cy.get("[week-total='Player1']").contains('Wins: 6, Points: 10');
-    cy.get("[week-1='Player5']").contains('Wins: 1, Points: 3');
+    cy.get("[week-1='Player1']").contains('W: 3, P: 5');
+    cy.get("[week-total='Player1']").contains('W: 6, P: 10');
+    cy.get("[week-1='Player5']").contains('W: 1, P: 3');
     cy.get('tr.active-user-stats').contains(playerOne.username);
   });
 
@@ -103,7 +103,7 @@ describe('Stats Page', () => {
     cy.contains('Points Only').click();
     // Only points are displayed
     cy.get("[week-1='Player1']")
-      .contains('Points: 5')
+      .contains('5')
       .should('not.contain', 'Wins');
     cy.get('th').should('have.length', 15);
     // Switch to wins only
@@ -112,7 +112,7 @@ describe('Stats Page', () => {
     cy.get('th').should('have.length', 15);
     // Only wins are displayed
     cy.get("[week-1='Player1']")
-      .contains('Wins: 3')
+      .contains('3')
       .should('not.contain', 'Points');
     cy.get("[points-1='Player1']").should('not.exist');
   });
@@ -121,7 +121,7 @@ describe('Stats Page', () => {
     // 29 columns: username, total_points, total_wins, 13 weeks + wins & points
     cy.get('th').should('have.length', 15);
     // Total counts across all weeks
-    cy.get('[week-total=Player1]').should('contain', 'Wins: 6, Points: 10');
+    cy.get('[week-total=Player1]').should('contain', 'W: 6, P: 10');
     // Deselect every week except week 1
     cy.get('[data-cy=week-select]').click({ force: true });
     cy.get('[role=option]')
@@ -165,8 +165,8 @@ describe('Stats Page', () => {
     // Expect 5 columns: username, total, week_1
     cy.get('th').should('have.length', 3);
     // Total counts should only consider the selected weeks
-    cy.get('[week-1=Player1]').should('contain', 'Wins: 3, Points: 5');
-    cy.get('[week-total=Player1]').should('contain', 'Wins: 3, Points: 5');
+    cy.get('[week-1=Player1]').should('contain', 'W: 3, P: 5');
+    cy.get('[week-total=Player1]').should('contain', 'W: 3, P: 5');
   });
 
   it('Selects different seasons to show their results', () => {
@@ -182,6 +182,6 @@ describe('Stats Page', () => {
     cy.get('[data-tournament]').should('not.exist');
 
     // Stats data table
-    cy.get('[week-1=Player1]').should('contain', 'Wins: 1, Points: 3');
+    cy.get('[week-1=Player1]').should('contain', 'W: 1, P: 3');
   });
 });
