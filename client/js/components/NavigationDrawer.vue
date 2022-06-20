@@ -4,9 +4,11 @@
     class="primary"
     dark
     app
+    data-cy="nav-drawer"
     :permanent="showNav"
-    :mini-variant="isSmallDevice"
+    :mini-variant="isCollapsed"
   >
+    <!-- Page Links -->
     <v-list>
       <v-list-item
         v-for="({ text, icon, page }, i) in pageLinks"
@@ -20,12 +22,26 @@
         {{ text }}
       </v-list-item>
     </v-list>
+    <!-- Expand/Collapse -->
+    <template #append>
+      <v-list v-if="!isSmallDevice">
+        <v-list-item :data-cy="collapseMenuAttribute" @click="userHasCollapsed = !userHasCollapsed">
+          <v-icon class="mr-2">{{ collapseMenuIcon }}</v-icon>
+          <template v-if="!isCollapsed">Collapse Menu</template>
+        </v-list-item>
+      </v-list>
+    </template>
   </v-navigation-drawer>
 </template>
 
 <script>
 export default {
   name: 'NavigationDrawer',
+  data() {
+    return {
+      userHasCollapsed: false,
+    };
+  },
   computed: {
     authenticated() {
       return this.$store.state.auth.authenticated;
@@ -54,6 +70,16 @@ export default {
     },
     isSmallDevice() {
       return this.$vuetify.breakpoint.smAndDown;
+    },
+    isCollapsed() {
+      return this.userHasCollapsed || this.isSmallDevice;
+    },
+    // Expand/Collapse button
+    collapseMenuAttribute() {
+      return this.userHasCollapsed ? 'expand-nav' : 'collapse-nav';
+    },
+    collapseMenuIcon() {
+      return this.userHasCollapsed ? 'mdi-arrow-right' : 'mdi-arrow-left';
     },
   },
 };
