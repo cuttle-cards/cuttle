@@ -2,10 +2,11 @@ const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   pluginsFile: 'tests/e2e/plugins/index.js',
-  baseUrl: 'http://localhost:8080',
+  baseUrl: process.env.VUE_APP_API_URL || 'http://localhost:8080',
   testFiles: ['out_of_game/**/*.js', 'in_game/**/*.js'],
   video: false,
+  // TODO: Properly configure environments for Cypress
   env: {
-    NODE_ENV: process.env.NODE_ENV,
+    ENABLE_VUE_DEVTOOLS: process.env.ENABLE_VUE_DEVTOOLS,
   },
 });

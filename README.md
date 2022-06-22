@@ -58,7 +58,7 @@ To utilize [Vue Devtools](https://devtools.vuejs.org/), you can run
 npm run dev:devtools
 ```
 
-Dev builds will automatically include the devtools script.
+Only dev builds will include the Vue Devtools via `ENABLE_VUE_DEVTOOLS=true`. The two scripts that currently support Vue Devtool usage are `npm run start:dev` and `npm run e2e:gui`.
 #### Build for production
 From the root directory of the repo, you can run
 ```
