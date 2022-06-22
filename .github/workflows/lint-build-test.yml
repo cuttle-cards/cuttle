@@ -1,6 +1,6 @@
 name: Lint, Build, Test
 
-on: 
+on:
   pull_request:
     branches: [ main ]
 
@@ -28,5 +28,5 @@ jobs:
           # Already installed dependencies above
           install: false
           build: npm run build
-          start: npm start
+          start: npm run start:server
           config: baseUrl=http://localhost:1337

@@ -24,16 +24,20 @@ npm ci
 ```
 **NOTE** `ci` (as opposed to `install`) is a 'clean install' which ensures versions exactly match package-lock.json).
 
-#### Boot the Server (sails backend)
+#### Start the App
+You can simultaneously run the server on `localhost:1337` and the client on `localhost:8080` with one command:
 ```
-npm start
+npm run start:dev
 ```
-OR
+
+Alternatively, you can run them independantly with separate commands.
+
+##### Start the Server (sails backend)
 ```
 npm run start:server
 ```
 
-#### Boot the Client (Vue SPA)
+##### Start the Client (Vue SPA)
 Open another shell/terminal in the root folder of this repo and run
 ```
 npm run start:client
