@@ -63,8 +63,8 @@
     "lint": "vue-cli-service lint --no-fix",
     "start": "node app.js",
     "start:client": "vue-cli-service serve",
-    "start:dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
-    "start:server": "node app.js"
+    "start:server": "node app.js",
+    "start:dev": "concurrently \"npm run start:server\" \"npm run start:client\""
   },
   "main": "app.js"
 }
