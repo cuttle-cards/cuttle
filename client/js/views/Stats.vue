@@ -16,6 +16,11 @@
           </h1>
         </template>
       </v-select>
+      <p v-if="selectedSeason">
+        <span data-cy="season-start-date">{{ seasonStartString }}</span>
+        -
+        <span data-cy="season-end-date"> {{ seasonEndString }} </span>
+      </p>
     </section>
     <section class="px-8">
       <!-- Season Champions -->
@@ -79,6 +84,7 @@
 import { io } from '@/plugins/sails.js';
 import AwardCard from '@/components/AwardCard.vue';
 import StatsLeaderboard from '@/components/StatsLeaderboard.vue';
+const dayjs = require('dayjs');
 
 export default {
   name: 'Stats',
@@ -92,6 +98,20 @@ export default {
       selectedSeason: null,
       seasons: [],
     };
+  },
+  computed: {
+    seasonStartString() {
+      if (this.selectedSeason) {
+        return dayjs(this.selectedSeason.startTime).format('YYYY/MM/DD');
+      }
+      return '';
+    },
+    seasonEndString() {
+      if (this.selectedSeason) {
+        return dayjs(this.selectedSeason.endTime).format('YYYY/MM/DD');
+      }
+      return '';
+    },
   },
   created() {
     this.loadingData = true;
