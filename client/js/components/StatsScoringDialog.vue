@@ -18,14 +18,19 @@
       <v-card-text>
         <p>
           Competitive Cuttle is divided into 4 seasons per year, one per suit: Clubs, Diamonds,
-          Hearts, and Spades. At the end of each season, the top 4 players play a double
-          elimination championship tournament and the
+          Hearts, and Spades. At the end of each season, the top 4 players play a double elimination
+          championship tournament and the
           <strong>champions are permenantly accoladed on the site.</strong>
         </p>
+        <div class="d-flex justify-space-around flex-wrap">
+          <award-card username="Champion player" :place="1" class="mb-4" />
+          <award-card username="Second Place Player" :place="2" class="mb-4" />
+          <award-card username="Third Place Player" :place="3" class="mb-4" />
+        </div>
         <p>
           Each Season is divided into 13 weeks. For each week, we count the number of best 2/3
-          ranked matches each player wins against unique opponents and assign players points 
-          based on their weekly standing.
+          ranked matches each player wins against unique opponents (ignoring stalemates) and assign
+          players points based on their weekly standing.
         </p>
         <v-list>
           <v-list-item>
@@ -43,18 +48,32 @@
           <v-list-item>
             Each other player who won at least one match gets 1 point for the week
           </v-list-item>
-          <v-card-actions class="d-flex justify-end">
-            <v-btn outlined color="primary" @click="show = false"> Got It! </v-btn>
-          </v-card-actions>
         </v-list>
+        <p>
+          You can view the statistics and rankings for each season on this page. At the end of each
+          season, the top 4 players compete in a double elimination championship tournament. Do you
+          have what it takes to become
+          <strong>
+            Lord of the Deep?
+          </strong>
+        </p>
+        <!-- Actions -->
+        <v-card-actions class="d-flex justify-end">
+          <v-btn outlined color="primary" @click="show = false"> Got It! </v-btn>
+        </v-card-actions>
       </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import AwardCard from '@/components/AwardCard.vue';
+
 export default {
   name: 'RulesDialog',
+  components: {
+    AwardCard,
+  },
   data() {
     return {
       show: false,
