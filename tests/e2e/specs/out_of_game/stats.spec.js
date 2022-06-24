@@ -6,6 +6,7 @@ import {
   playerFive,
 } from '../../fixtures/userFixtures';
 import { seasonFixtures, matchesFixture } from '../../fixtures/statsFixtures';
+const dayjs = require('dayjs');
 
 function setup() {
   cy.viewport(1980, 1080);
@@ -72,18 +73,19 @@ describe('Stats Page', () => {
   beforeEach(setup);
 
   it('Displays Headers, Cards, and Table', () => {
+    const [seasonOne] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
+    cy.get('[data-cy=season-start-date').should(
+      'contain',
+      dayjs(seasonOne.startTime).format('YYYY/MM/DD')
+    );
+    cy.get('[data-cy=season-end-date').should(
+      'contain',
+      dayjs(seasonOne.endTime).format('YYYY/MM/DD')
+    );
     // Tournament Data
-    cy.get('[data-cy=tournament-bracket-link]').should(
-      'have.attr',
-      'href',
-      seasonFixtures[0].bracketLink
-    );
-    cy.get('[data-cy=tournament-footage-link]').should(
-      'have.attr',
-      'href',
-      seasonFixtures[0].footageLink
-    );
+    cy.get('[data-cy=tournament-bracket-link]').should('have.attr', 'href', seasonOne.bracketLink);
+    cy.get('[data-cy=tournament-footage-link]').should('have.attr', 'href', seasonOne.footageLink);
     cy.get('[data-tournament=1st]').should('contain', playerOne.username);
     cy.get('[data-tournament=2nd]').should('contain', playerTwo.username);
     cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
