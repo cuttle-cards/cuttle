@@ -105,10 +105,9 @@ export default {
   },
   computed: {
     seasonStartString() {
-      if (this.selectedSeason) {
-        return dayjs(this.selectedSeason.startTime).format('YYYY/MM/DD');
-      }
-      return '';
+      return !this.selectedSeason
+        ? ''
+        : dayjs(this.selectedSeason.startTime).format('YYYY/MM/DD');
     },
     seasonEndString() {
       if (this.selectedSeason) {
