@@ -2,6 +2,7 @@ import { playerOne } from '../../fixtures/userFixtures';
 
 describe('Navigation Drawer', () => {
   beforeEach(() => {
+    cy.wipeDatabase();
     cy.visit('/');
   });
   it('Expands and collapses navbar on desktop and always collapses on mobile', () => {
@@ -48,7 +49,7 @@ describe('Navigation Drawer', () => {
   });
 
   it('Navigates to Rules, Home, Stats, and Login pages when authenticated', () => {
-    cy.loginPlayer(playerOne.username, playerOne.password);
+    cy.signupPlayer(playerOne.username, playerOne.password);
     cy.vueRoute('/');
     cy.get('[data-nav]').should('have.length', 4);
     cy.hash().should('equal', '#/');
