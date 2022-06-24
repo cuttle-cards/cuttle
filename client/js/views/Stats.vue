@@ -72,10 +72,10 @@
         </p>
       </div>
       <!-- Rankings Table -->
-      <h2 class="text-h2 my-4">
+      <h2 class="text-h2 ml-4">
         Weekly Rankings
+        <stats-scoring-dialog />
       </h2>
-      <stats-scoring-dialog />
       <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
     </section>
   </div>
