@@ -33,9 +33,6 @@ module.exports = {
     }
     return res.ok();
   },
-  /**
-   * Create multiple match records based on array of fixtures
-   */
   loadMatchFixtures: async function(req, res) {
     try {
       await Match.createEach(req.body);
