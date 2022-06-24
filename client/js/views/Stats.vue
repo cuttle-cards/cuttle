@@ -75,6 +75,7 @@
       <h2 class="text-h2 my-4">
         Weekly Rankings
       </h2>
+      <stats-scoring-dialog />
       <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
     </section>
   </div>
@@ -84,6 +85,8 @@
 import { io } from '@/plugins/sails.js';
 import AwardCard from '@/components/AwardCard.vue';
 import StatsLeaderboard from '@/components/StatsLeaderboard.vue';
+import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
+
 const dayjs = require('dayjs');
 
 export default {
@@ -91,6 +94,7 @@ export default {
   components: {
     AwardCard,
     StatsLeaderboard,
+    StatsScoringDialog,
   },
   data() {
     return {
