@@ -49,7 +49,11 @@ describe('Navigation Drawer', () => {
   });
 
   it('Navigates to Rules, Home, Stats, and Login pages when authenticated', () => {
+<<<<<<< HEAD
     cy.signupPlayer(playerOne.username, playerOne.password);
+=======
+    cy.loginPlayer(playerOne.username, playerOne.password);
+>>>>>>> 205cd2101ec29828e022943aa65df32b8d92a22f
     cy.vueRoute('/');
     cy.get('[data-nav]').should('have.length', 4);
     cy.hash().should('equal', '#/');
