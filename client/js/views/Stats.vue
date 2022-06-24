@@ -16,11 +16,11 @@
           </h1>
         </template>
       </v-select>
-      <p v-if="selectedSeason">
+      <h4 v-if="selectedSeason" class="text-h4">
         <span data-cy="season-start-date">{{ seasonStartString }}</span>
         -
         <span data-cy="season-end-date"> {{ seasonEndString }} </span>
-      </p>
+      </h4>
     </section>
     <section class="px-8">
       <!-- Season Champions -->
@@ -33,7 +33,7 @@
                 selectedSeason.secondPlace ||
                 selectedSeason.thirdPlace)
           "
-          class="text-h3 mb-4"
+          class="text-h2 mb-4"
         >
           Season Champions
         </h2>
@@ -57,13 +57,13 @@
             class="mb-4"
           />
         </div>
-        <p v-if="selectedSeason && selectedSeason.bracketLink">
+        <p v-if="selectedSeason && selectedSeason.bracketLink" class="text-body-1">
           Click
           <a :href="selectedSeason.bracketLink" data-cy="tournament-bracket-link">
             here to see the official tournament bracket
           </a>
         </p>
-        <p v-if="selectedSeason && selectedSeason.footageLink">
+        <p v-if="selectedSeason && selectedSeason.footageLink" class="text-body-1">
           Click
           <a :href="selectedSeason.footageLink" data-cy="tournament-footage-link">
             here to watch the official tournament footage
@@ -72,7 +72,7 @@
         </p>
       </div>
       <!-- Rankings Table -->
-      <h2 class="text-h3 my-4">
+      <h2 class="text-h2 my-4">
         Weekly Rankings
       </h2>
       <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
