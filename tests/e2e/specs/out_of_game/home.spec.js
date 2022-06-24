@@ -18,26 +18,6 @@ function assertSuccessfulJoin(gameState) {
   cy.contains('h1', `Lobby for ${gameState.name}`);
 }
 
-/*
- * vueDevToolsScript is set in vue.config.js, so it's not feasible to test both the enabled
- * and the disabled state without substantial refactoring in to how tests/env work. To that end
- * it's easier to instead have 2 separate tests based on the ENABLE_VUE_DEVTOOLS value being
- * passed to the cypress.config.js file on instantiation.
- */
-describe.only('Vue Devtools', () => {
-  beforeEach(setup);
-
-  if (Cypress.env('ENABLE_VUE_DEVTOOLS') === 'true') {
-    it('Should include Vue Devtools when ENABLE_VUE_DEVTOOLS is true', () => {
-      cy.get('[data-vue-devtools]').should('have.length', 1);
-    });
-  } else {
-    it('Should not include Vue Devtools when ENABLE_VUE_DEVTOOLS is not true', () => {
-      cy.get('[data-vue-devtools]').should('have.length', 0);
-    });
-  }
-});
-
 describe('Home - Page Content', () => {
   beforeEach(setup);
 
