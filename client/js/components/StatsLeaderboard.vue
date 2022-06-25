@@ -83,19 +83,17 @@ export default {
       if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
         return [];
       }
-      const res = [
+      return [
         { text: 'User', value: 'username' },
         { text: 'Rank', value: 'rank' },
         { text: 'Season Total', value: 'week_total' },
+        ...this.selectedWeeks.map(weekNum => {
+          return {
+            text: `Week ${weekNum}`,
+            value: `week_${weekNum}`,
+          };
+        }),
       ];
-      // Add headers for each week
-      for (const weekNum of this.selectedWeeks) {
-        res.push({
-          text: `Week ${weekNum}`,
-          value: `week_${weekNum}`,
-        });
-      }
-      return res;
     },
     tableRows() {
       if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
