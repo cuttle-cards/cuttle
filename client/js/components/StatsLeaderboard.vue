@@ -74,23 +74,7 @@ export default {
   data() {
     return {
       sortBy: 'rank',
-      metricChoices: ['Points and Wins', 'Points Only', 'Wins Only'],
       selectedMetric: 'Points and Wins',
-      weeks: [
-        { text: 'Week 1', value: 1 },
-        { text: 'Week 2', value: 2 },
-        { text: 'Week 3', value: 3 },
-        { text: 'Week 4', value: 4 },
-        { text: 'Week 5', value: 5 },
-        { text: 'Week 6', value: 6 },
-        { text: 'Week 7', value: 7 },
-        { text: 'Week 8', value: 8 },
-        { text: 'Week 9', value: 9 },
-        { text: 'Week 10', value: 10 },
-        { text: 'Week 11', value: 11 },
-        { text: 'Week 12', value: 12 },
-        { text: 'Week 13', value: 13 },
-      ],
       selectedWeeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
     };
   },
@@ -347,6 +331,25 @@ export default {
     rank(totalScore) {
       return this.totalScoresSorted.indexOf(totalScore) + 1;
     },
+  },
+  created() {
+    // Define non-reactive attributes for selection options
+    this.metricChoices = ['Points and Wins', 'Points Only', 'Wins Only'];
+    this.weeks = [
+      { text: 'Week 1', value: 1 },
+      { text: 'Week 2', value: 2 },
+      { text: 'Week 3', value: 3 },
+      { text: 'Week 4', value: 4 },
+      { text: 'Week 5', value: 5 },
+      { text: 'Week 6', value: 6 },
+      { text: 'Week 7', value: 7 },
+      { text: 'Week 8', value: 8 },
+      { text: 'Week 9', value: 9 },
+      { text: 'Week 10', value: 10 },
+      { text: 'Week 11', value: 11 },
+      { text: 'Week 12', value: 12 },
+      { text: 'Week 13', value: 13 },
+    ];
   },
 };
 </script>
