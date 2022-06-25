@@ -39,6 +39,7 @@ export default {
   name: 'NavigationDrawer',
   data() {
     return {
+      // User controlls for collapsing only available on desktop
       userHasCollapsed: false,
     };
   },
