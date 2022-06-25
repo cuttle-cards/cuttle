@@ -242,6 +242,9 @@ export default {
     totalScoresSorted() {
       return this.playerScores.map(playerStats => playerStats.total).sort((a, b) => b - a);
     },
+    theme() {
+      return this.$vuetify.theme.themes.light;
+    },
   },
   methods: {
     // Value displayed in each cell
@@ -262,11 +265,11 @@ export default {
     colorForScore(score) {
       switch (score) {
         case 5:
-          return '#AF9500'; // gold
+          return this.theme.firstPlace;
         case 4:
-          return '#B4B4B4'; // silver
+          return this.theme.secondPlace;
         case 3:
-          return '#6A3805'; // bronze
+          return this.theme.thirdPlace;
         case 1:
           return 'primary';
         default:
@@ -275,13 +278,13 @@ export default {
     },
     colorForTotalScore(score) {
       if (score === this.topTotalScores.first) {
-        return '#AF9500'; // gold
+        return this.theme.firstPlace;
       }
       if (score === this.topTotalScores.second) {
-        return '#B4B4B4'; // silver
+        return this.theme.secondPlace;
       }
       if (score === this.topTotalScores.third) {
-        return '#6A3805'; // bronze
+        return this.theme.thirdPlace;
       }
       if (score > 0) {
         return 'primary';

@@ -34,15 +34,15 @@
         </p>
         <v-list>
           <v-list-item>
-            <v-icon color="#AF9500" class="mr-2">mdi-medal</v-icon>
+            <v-icon :color="theme.firstPlace" class="mr-2">mdi-medal</v-icon>
             The player with the most wins gets 5 points for the week
           </v-list-item>
           <v-list-item>
-            <v-icon color="#B4B4B4" class="mr-2">mdi-medal</v-icon>
+            <v-icon :color="theme.secondPlace" class="mr-2">mdi-medal</v-icon>
             The player with the 2nd most wins gets 4 points for the week
           </v-list-item>
           <v-list-item>
-            <v-icon color="#6A3805" class="mr-2">mdi-medal</v-icon>
+            <v-icon :color="theme.thirdPlace" class="mr-2">mdi-medal</v-icon>
             The player with the 3rd most wins gets 3 points for the week
           </v-list-item>
           <v-list-item>
@@ -78,6 +78,11 @@ export default {
     return {
       show: false,
     };
+  },
+  computed: {
+    theme() {
+      return this.$vuetify.theme.themes.light;
+    },
   },
 };
 </script>

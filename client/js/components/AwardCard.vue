@@ -22,14 +22,17 @@ export default {
     place: Number,
   },
   computed: {
+    theme() {
+      return this.$vuetify.theme.themes.light;
+    },
     medalColor() {
       switch (this.place) {
         case 1:
-          return '#AF9500';
+          return this.theme.firstPlace;
         case 2:
-          return '#B4B4B4';
+          return this.theme.secondPlace;
         case 3:
-          return '#6A3805';
+          return this.theme.thirdPlace;
         default:
           return '#000';
       }
