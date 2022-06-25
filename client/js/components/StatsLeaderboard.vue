@@ -31,6 +31,7 @@
       <template #[`item.rank`]="{item, value}">
         <span :data-rank="item.username">{{ value }} </span>
       </template>
+      <!-- Customize the appearance of total column and column for each week -->
       <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{item, value}">
         <v-tooltip :key="`${item.username}_week_${week}_wins`" top v-if="value">
           <template #activator="{on, attrs}">
