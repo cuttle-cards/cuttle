@@ -1,5 +1,7 @@
 const path = require('path');
 
+const { isProd } = require('./utils/config-utils');
+
 module.exports = {
   transpileDependencies: ['vuetify'],
 
@@ -16,9 +18,9 @@ module.exports = {
       filename: 'index.html',
       // We never want devtools for production, and want to opt in for dev builds
       // https://devtools.vuejs.org/guide/installation.html#standalone
-      ...(process.env.NODE_ENV !== 'production' && process.env.ENABLE_VUE_DEVTOOLS === 'true'
+      ...(!isProd && process.env.ENABLE_VUE_DEVTOOLS === 'true'
         ? {
-            vueDevToolsScript: '<script src="http://localhost:8098" data-vue-devtools></script>',
+            vueDevToolsScript: '<script src="http://localhost:8098" data-cy-vue-devtools></script>',
           }
         : {}),
     },
@@ -26,7 +28,7 @@ module.exports = {
 
   configureWebpack: {
     // https://blog.scottlogic.com/2017/11/01/webpack-source-map-options-quick-guide.html
-    ...(process.env.NODE_ENV !== 'production'
+    ...(!isProd
       ? {
           devtool: 'eval-cheap-module-source-map',
         }

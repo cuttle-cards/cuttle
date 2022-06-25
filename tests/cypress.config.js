@@ -1,6 +1,6 @@
 const { defineConfig } = require('cypress');
 
-const isProd = process.env.NODE_ENV === 'production';
+const { isProd } = require('../utils/config-utils');
 
 module.exports = defineConfig({
   pluginsFile: 'tests/e2e/plugins/index.js',
@@ -11,6 +11,6 @@ module.exports = defineConfig({
   // TODO: Properly configure environments for Cypress
   env: {
     ENABLE_VUE_DEVTOOLS: process.env.ENABLE_VUE_DEVTOOLS,
-    NODE_ENV: process.env.NODE_ENV,
+    NODE_ENV: isProd ? 'production' : 'dev',
   },
 });
