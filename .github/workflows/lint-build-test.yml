@@ -32,6 +32,8 @@ jobs:
           config-file: tests/cypress.config.js
         env:
           # Never add vue devtools when running in GitHub
-          NODE_ENV: mockproduction
-          ENABLE_VUE_DEVTOOLS: false
+          # Mock a production config without setting NODE_ENV
+          # so that Cypress runs the proper test suites
+          # and Vue Devtools are not included
+          CUTTLE_ENV: production
           VUE_APP_API_URL: http://localhost:1337
