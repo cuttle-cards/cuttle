@@ -102,6 +102,7 @@ describe('Stats Page', () => {
     // 16 columns: username, rank, total, + 13 weeks
     cy.get('th').should('have.length', 16);
     // Switch to points only
+    // Need 'force' because vuetify injects the data-cy attribute on unclickable <input>
     cy.get('[data-cy=metric-select]').click({ force: true });
     cy.contains('Points Only').click();
     // Only points are displayed
