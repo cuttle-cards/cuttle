@@ -20,6 +20,7 @@
         deletable-chips
       />
     </div>
+    <!-- https://vuetifyjs.com/en/api/v-data-table/ -->
     <v-data-table
       :items="tableRows"
       :headers="tableColumns"
