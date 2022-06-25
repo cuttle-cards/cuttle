@@ -298,13 +298,13 @@ export default {
     },
     /**
      * Returns an object for v-bind for testing attributes to identify table cell
-     * @example {'points-2': 'someUserName'} identifies someUserNames' week-2 points
+     * @example {'data-points-2': 'someUserName'} identifies someUserNames' data-week-2 points
      * @param {String} username
      * @param {int} weekNum Which week
      */
     dataAttribute(username, weekNum) {
       const res = {};
-      const attributeName = `week-${weekNum}`;
+      const attributeName = `data-week-${weekNum}`;
       res[attributeName] = username;
       return res;
     },
