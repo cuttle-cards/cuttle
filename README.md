@@ -30,7 +30,7 @@ You can run back the server and client with one command to start the client on l
 npm run start:dev
 ```
 
-Alternatively, you can run them independantly with separate commands.
+This will also automatically open up [Vue Devtools]. Alternatively, you can run them independantly with separate commands.
 
 ##### Boot the Server (sails backend)
 ```
@@ -55,10 +55,10 @@ You can shut down the servers by hitting `ctrl + c` several times from the termi
 
 To utilize [Vue Devtools](https://devtools.vuejs.org/), you can run
 ```
-npm run dev:devtools
+npm run start:devtools
 ```
 
-Only dev builds will include the Vue Devtools via `ENABLE_VUE_DEVTOOLS=true`. The two scripts that currently support Vue Devtool usage are `npm run start:dev` and `npm run e2e:gui`.
+Only dev builds include the Vue Devtools via `ENABLE_VUE_DEVTOOLS=true`. The two scripts that currently support Vue Devtool usage are `npm run start:dev` and `npm run e2e:gui`.
 #### Build for production
 From the root directory of the repo, you can run
 ```

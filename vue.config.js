@@ -14,8 +14,9 @@ module.exports = {
       entry: 'client/js/main.js',
       template: 'client/public/index.html',
       filename: 'index.html',
+      // We never want devtools for production, and want to opt in for dev builds
       // https://devtools.vuejs.org/guide/installation.html#standalone
-      ...(process.env.ENABLE_VUE_DEVTOOLS === 'true'
+      ...(process.env.NODE_ENV !== 'production' && process.env.ENABLE_VUE_DEVTOOLS === 'true'
         ? {
             vueDevToolsScript: '<script src="http://localhost:8098" data-vue-devtools></script>',
           }
