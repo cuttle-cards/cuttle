@@ -13,7 +13,7 @@
       <h3 class="mx-4">
         {{ username }}
       </h3>
-      {{ place }}{{ suffix }}
+      {{ placeWithSuffix }}
     </div>
   </v-card>
 </template>
@@ -53,6 +53,9 @@ export default {
           return 'th';
       }
     },
+    placeWithSuffix() {
+      return `${this.place}${this.suffix}`;
+    }
   },
 };
 </script>
