@@ -25,16 +25,7 @@
     <section class="px-8">
       <!-- Season Champions -->
       <div class="mb-10">
-        <h2
-          v-if="
-            selectedSeason &&
-              (selectedSeason.bracketLink ||
-                selectedSeason.firstPlace ||
-                selectedSeason.secondPlace ||
-                selectedSeason.thirdPlace)
-          "
-          class="text-h2 mb-4"
-        >
+        <h2 v-if="showSeasonChampions" class="text-h2 mb-4">
           Season Champions
         </h2>
         <div class="d-flex justify-space-around flex-wrap">
@@ -115,6 +106,15 @@ export default {
         return dayjs(this.selectedSeason.endTime).format('YYYY/MM/DD');
       }
       return '';
+    },
+    showSeasonChampions() {
+      return (
+        this.selectedSeason &&
+        (this.selectedSeason.bracketLink ||
+          this.selectedSeason.firstPlace ||
+          this.selectedSeason.secondPlace ||
+          this.selectedSeason.thirdPlace)
+      );
     },
   },
   created() {
