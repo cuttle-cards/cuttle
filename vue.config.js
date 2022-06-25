@@ -1,5 +1,4 @@
 const path = require('path');
-const htmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   transpileDependencies: ['vuetify'],
@@ -26,9 +25,9 @@ module.exports = {
 
   configureWebpack: {
     // https://blog.scottlogic.com/2017/11/01/webpack-source-map-options-quick-guide.html
-    ...(process.env.ENABLE_VUE_DEVTOOLS !== 'true'
+    ...(process.env.NODE_ENV !== 'production'
       ? {
-          devtool: 'cheap-module-eval-source-map',
+          devtool: 'eval-cheap-module-source-map',
         }
       : {}),
     resolve: {

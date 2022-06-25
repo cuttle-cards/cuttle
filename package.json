@@ -56,7 +56,7 @@
   "scripts": {
     "build": "vue-cli-service build;cp ./client/public/favicon.ico ./assets",
     "debug": "node debug app.js",
-    "e2e:client": "ENABLE_VUE_DEVTOOLS=true npx cypress run --config-file tests/cypress.config.js",
+    "e2e:client": "npx cypress run --config-file tests/cypress.config.js",
     "e2e:gui": "ENABLE_VUE_DEVTOOLS=true npx cypress open --config-file tests/cypress.config.js",
     "e2e:server": "VUE_APP_API_URL=http://localhost:1337 npx cypress run --config-file tests/cypress.config.js",
     "format:js": "./scripts/format-project-js",
