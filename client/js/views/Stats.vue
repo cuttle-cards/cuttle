@@ -96,16 +96,10 @@ export default {
   },
   computed: {
     seasonStartFormatted() {
-      if (this.selectedSeason) {
-        return dayjs(this.selectedSeason.startTime).format('YYYY/MM/DD');
-      }
-      return '';
+      return !this.selectedSeason ? '' : dayjs(this.selectedSeason.startTime).format('YYYY/MM/DD');
     },
     seasonEndFormatted() {
-      if (this.selectedSeason) {
-        return dayjs(this.selectedSeason.endTime).format('YYYY/MM/DD');
-      }
-      return '';
+      return !this.selectedSeason ? '' : dayjs(this.selectedSeason.endTime).format('YYYY/MM/DD');
     },
     showSeasonChampions() {
       return (
