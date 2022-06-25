@@ -17,9 +17,9 @@
         </template>
       </v-select>
       <h4 v-if="selectedSeason" class="text-h4">
-        <span data-cy="season-start-date">{{ seasonStartString }}</span>
+        <span data-cy="season-start-date">{{ seasonStartFormatted }}</span>
         -
-        <span data-cy="season-end-date"> {{ seasonEndString }} </span>
+        <span data-cy="season-end-date"> {{ seasonEndFormatted }} </span>
       </h4>
     </section>
     <section class="px-8">
@@ -95,13 +95,13 @@ export default {
     };
   },
   computed: {
-    seasonStartString() {
+    seasonStartFormatted() {
       if (this.selectedSeason) {
         return dayjs(this.selectedSeason.startTime).format('YYYY/MM/DD');
       }
       return '';
     },
-    seasonEndString() {
+    seasonEndFormatted() {
       if (this.selectedSeason) {
         return dayjs(this.selectedSeason.endTime).format('YYYY/MM/DD');
       }
