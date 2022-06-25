@@ -48,22 +48,28 @@ export default {
       return this.$store.state.auth.authenticated;
     },
     pageLinks() {
-      let res = [];
-      const rules = { text: 'Rules', icon: 'script-text', page: { name: 'Rules' } };
-
-      if (!this.authenticated) {
-        res = [{ text: 'Login', icon: 'login', page: { name: 'Login' } }, rules];
-      }
-      // Authenticated
-      else {
-        res = [
-          { text: 'Logout', icon: 'logout', page: { name: 'Login' } },
-          rules,
-          { text: 'Play', icon: 'play', page: { name: 'Home' } },
-          { text: 'Stats', icon: 'chart-bar', page: { name: 'Stats' } },
-        ];
-      }
-      return res;
+      const rules = [
+        {
+          text: 'Rules',
+          icon: 'script-text',
+          page: { name: 'Rules' },
+        },
+      ];
+      return !this.authenticated
+        ? [
+            {
+              text: 'Login',
+              icon: 'login',
+              page: { name: 'Login' },
+            },
+            ...rules,
+          ]
+        : [
+            { text: 'Logout', icon: 'logout', page: { name: 'Login' } },
+            ...rules,
+            { text: 'Play', icon: 'play', page: { name: 'Home' } },
+            { text: 'Stats', icon: 'chart-bar', page: { name: 'Stats' } },
+          ];
     },
     showNav() {
       const pagesToHideNav = ['Lobby', 'Game'];
