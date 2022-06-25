@@ -139,23 +139,22 @@ export default {
       }
       return this.playerWins.map(playerWins => {
         const res = { total: 0 };
-        for (const weekNum in playerWins) {
-          if (weekNum != 'total') {
-            let pointsThisWeek = 0;
-            if (this.topWinCountsPerWeek[weekNum].first === 0) {
-              pointsThisWeek = 0;
-            } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].first) {
-              pointsThisWeek = 5;
-            } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].second) {
-              pointsThisWeek = 4;
-            } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].third) {
-              pointsThisWeek = 3;
-            } else if (playerWins[weekNum] > 0) {
-              pointsThisWeek = 1;
-            }
-            res[weekNum] = pointsThisWeek;
-            res.total += pointsThisWeek;
+        const { total, ...weeks } = playerWins;
+        for (const weekNum in { ...weeks }) {
+          let pointsThisWeek = 0;
+          if (this.topWinCountsPerWeek[weekNum].first === 0) {
+            pointsThisWeek = 0;
+          } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].first) {
+            pointsThisWeek = 5;
+          } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].second) {
+            pointsThisWeek = 4;
+          } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].third) {
+            pointsThisWeek = 3;
+          } else if (playerWins[weekNum] > 0) {
+            pointsThisWeek = 1;
           }
+          res[weekNum] = pointsThisWeek;
+          res.total += pointsThisWeek;
         }
         return res;
       });
