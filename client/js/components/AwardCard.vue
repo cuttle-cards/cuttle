@@ -1,5 +1,9 @@
 <template>
-  <v-card class="d-flex align-center" :color="theme.neutral.lighten2" :data-tournament="`${place}${suffix}`">
+  <v-card
+    class="d-flex align-center"
+    :color="theme.neutral.lighten2"
+    :data-tournament="`${place}${suffix}`"
+  >
     <div class="medal-icon pa-8 d-flex align-center">
       <v-icon size="48" :color="medalColor">
         mdi-medal
