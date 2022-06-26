@@ -108,7 +108,7 @@ describe('Stats Page', () => {
     // Only points are displayed
     cy.get("[data-week-1='Player1']")
       .contains('5')
-      .should('not.contain', 'Wins');
+      .should('not.contain', 'W:');
     cy.get('th').should('have.length', 16);
     // Switch to wins only
     cy.get('[data-cy=metric-select]').click({ force: true });
@@ -117,7 +117,7 @@ describe('Stats Page', () => {
     // Only wins are displayed
     cy.get("[data-week-1='Player1']")
       .contains('3')
-      .should('not.contain', 'Points');
+      .should('not.contain', 'P:');
     cy.get("[points-1='Player1']").should('not.exist');
   });
 
