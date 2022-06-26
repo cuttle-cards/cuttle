@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Select Metric and Weeks -->
     <div id="stats-table-upper-surface" class="d-flex align-end">
       <v-select
         v-model="selectedMetric"
