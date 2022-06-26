@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { Metrics } from '@/components/StatsLeaderboard.vue';
+
 export default {
   name: 'StatsLeaderboardCell',
   props: {
@@ -56,11 +58,11 @@ export default {
     },
     chipText() {
       switch (this.selectedMetric) {
-        case 'Points and Wins':
+        case Metrics.POINTS_AND_WINS:
           return `W: ${this.wins}, P: ${this.points}`;
-        case 'Points Only':
+        case Metrics.POINTS_ONLY:
           return `${this.points}`;
-        case 'Wins Only':
+        case Metrics.WINS_ONLY:
           return `${this.wins}`;
         default:
           return `W: ${this.wins}, P: ${this.points}`;

@@ -54,6 +54,12 @@ const Result = {
   INCOMPLETE: -1,
 };
 
+export const Metrics = {
+  POINTS_AND_WINS: 1,
+  POINTS_ONLY: 2,
+  WINS_ONLY: 3,
+};
+
 export default {
   name: 'StatsLeaderboard',
   components: {
@@ -69,7 +75,7 @@ export default {
   data() {
     return {
       sortBy: 'rank',
-      selectedMetric: 'Points and Wins',
+      selectedMetric: Metrics.POINTS_AND_WINS,
       selectedWeeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
     };
   },
@@ -267,7 +273,11 @@ export default {
   },
   created() {
     // Define non-reactive attributes for selection options
-    this.metricChoices = ['Points and Wins', 'Points Only', 'Wins Only'];
+    this.metricChoices = [
+      { text: 'Points and Wins', value: Metrics.POINTS_AND_WINS },
+      { text: 'Points Only', value: Metrics.POINTS_ONLY },
+      { text: 'Wins Only', value: Metrics.WINS_ONLY },
+    ];
     this.weeks = [
       { text: 'Week 1', value: 1 },
       { text: 'Week 2', value: 2 },
