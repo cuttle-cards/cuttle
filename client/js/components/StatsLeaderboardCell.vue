@@ -3,7 +3,7 @@
     <template #activator="{on, attrs}">
       <v-chip
         :color="colorForScore"
-        :outlined="['primary', '#000'].includes(colorForScore)"
+        :outlined="outlined"
         v-bind="{
           ...attrs,
           ...dataAttribute,
@@ -98,7 +98,9 @@ export default {
           return '#000';
       }
     },
-
+    outlined() {
+      return ['primary', '#000'].includes(this.colorForScore)
+    },
     /**
      * Returns an object for v-bind for testing attributes to identify table cell
      * @example {'data-points-2': 'someUserName'} identifies someUserNames' data-week-2 points
