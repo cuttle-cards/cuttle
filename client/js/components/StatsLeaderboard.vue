@@ -17,8 +17,6 @@
         class="flex-grow-1"
         menu-props="data-week-select-menu"
         multiple
-        chips
-        deletable-chips
       />
     </div>
     <!-- https://vuetifyjs.com/en/api/v-data-table/ -->
