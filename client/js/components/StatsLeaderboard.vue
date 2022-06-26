@@ -32,30 +32,22 @@
         <span :data-rank="item.username">{{ value }} </span>
       </template>
       <!-- Customize the appearance of total column and column for each week -->
-      <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{item, value}">
-        <v-tooltip :key="`${item.username}_week_${week}_wins`" top v-if="value">
-          <template #activator="{on, attrs}">
-            <v-chip
-              :key="`${item.username}_week_${week}`"
-              :color="colorForScoreByWeek(week, value)"
-              dark
-              :outlined="['primary', '#000'].includes(colorForScoreByWeek(week, value))"
-              v-bind="{
-                ...attrs,
-                ...dataAttribute(item.username, week),
-              }"
-              v-on="on"
-            >
-              {{ tableCell(item, week) }}
-            </v-chip>
-          </template>
-          {{ playersBeaten(item.username, week) }}
-        </v-tooltip>
+      <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{item}">
+        <stats-leaderboard-cell
+          :key="`${item.username}_week_${week}_wins`"
+          :player-row="item"
+          :week="week"
+          :selected-metric="selectedMetric"
+          :players-beaten="playersBeaten(item.username, week)"
+          :top-total-scores="topTotalScores"
+        />
       </template>
     </v-data-table>
   </div>
 </template>
 <script>
+import StatsLeaderboardCell from '@/components/StatsLeaderboardCell.vue';
+
 const Result = {
   WON: 1,
   LOST: 2,
@@ -64,6 +56,9 @@ const Result = {
 
 export default {
   name: 'StatsLeaderboard',
+  components: {
+    StatsLeaderboardCell,
+  },
   props: {
     loading: Boolean,
     season: {
@@ -230,65 +225,6 @@ export default {
     },
   },
   methods: {
-    // Value displayed in each cell
-    tableCell(item, week) {
-      const wins = item[`week_${week}_wins`];
-      const points = item[`week_${week}_points`];
-      switch (this.selectedMetric) {
-        case 'Points and Wins':
-          return `W: ${wins}, P: ${points}`;
-        case 'Points Only':
-          return `${points}`;
-        case 'Wins Only':
-          return `${wins}`;
-        default:
-          return `W: ${wins}, P: ${points}`;
-      }
-    },
-    colorForScore(score) {
-      switch (score) {
-        case 5:
-          return this.theme.firstPlace;
-        case 4:
-          return this.theme.secondPlace;
-        case 3:
-          return this.theme.thirdPlace;
-        case 1:
-          return 'primary';
-        default:
-          return '#000';
-      }
-    },
-    colorForTotalScore(score) {
-      if (score === this.topTotalScores.first) {
-        return this.theme.firstPlace;
-      }
-      if (score === this.topTotalScores.second) {
-        return this.theme.secondPlace;
-      }
-      if (score === this.topTotalScores.third) {
-        return this.theme.thirdPlace;
-      }
-      if (score > 0) {
-        return 'primary';
-      }
-      return '#000';
-    },
-    colorForScoreByWeek(week, score) {
-      return week === 'total' ? this.colorForTotalScore(score) : this.colorForScore(score);
-    },
-    /**
-     * Returns an object for v-bind for testing attributes to identify table cell
-     * @example {'data-points-2': 'someUserName'} identifies someUserNames' data-week-2 points
-     * @param {String} username
-     * @param {int} weekNum Which week
-     */
-    dataAttribute(username, weekNum) {
-      const res = {};
-      const attributeName = `data-week-${weekNum}`;
-      res[attributeName] = username;
-      return res;
-    },
     /**
      * Returns concatenated usernames of all opponent's the specified player
      * defeated in the specified week
@@ -311,7 +247,7 @@ export default {
         playerMatches = playerStats.matches[weekNum];
       }
       if (!playerMatches) {
-        return [];
+        return '';
       }
       return playerMatches
         .filter(match => match.result === Result.WON)
