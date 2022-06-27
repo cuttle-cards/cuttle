@@ -40,7 +40,7 @@ jobs:
   # Check Linting status
   Lint:
     runs-on: ubuntu-latest
-    uses: cuttle-cards/cuttle/.github/workflows/run-npm-script.yml@main
+    uses: cuttle-cards/cuttle/.github/workflows/run-npm-script.yml
     needs: Draft
     with:
       label: "Lint"
@@ -49,7 +49,7 @@ jobs:
   # Run Jest Unit Tests
   TestUnit:
     runs-on: ubuntu-latest
-    uses: cuttle-cards/cuttle/.github/workflows/run-npm-script.yml@main
+    uses: cuttle-cards/cuttle/.github/workflows/run-npm-script.yml
     needs: Lint
     with:
       label: "Test: Unit"
