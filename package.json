@@ -24,7 +24,6 @@
   "main": "app.js",
   "dependencies": {
     "connect-redis": "3.0.2",
-    "core-js": "^3.21.1",
     "dayjs": "^1.11.3",
     "lodash": "^4.17.21",
     "machinepack-passwords": "^2.3.0",
