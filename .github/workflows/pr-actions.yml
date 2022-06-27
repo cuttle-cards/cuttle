@@ -1,0 +1,76 @@
+name: Lint, Build, Test
+
+on:
+  pull_request:
+    branches: [ main ]
+    # Defaults + ready_for_review to trigger a re-run when a Draft PR is converted to a normal PR
+    # See: https://github.community/t/dont-run-actions-on-draft-pull-requests/16817/17
+    types: [opened, synchronize, reopened, ready_for_review]
+
+
+# See: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+permissions:
+  contents: read
+  pull-requests: read
+
+# Only allow one build per PR source branch to run at once, cancelling in-progress
+# builds when new builds arrive
+# See: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idconcurrency
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Checks if the PR is in draft status and fails if so, which does 2 things:
+  #  - Prevents the PR from being merged in that state
+  #  - Prevents all downstream jobs from running
+  # Additionally, require each test to pass before running the next to prevent
+  # running unecesrry jobs if any upstream jobs already failed
+  Draft:
+    name: "Check Draft Status"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Fail draft PRs"
+        if: github.event.pull_request.draft == true
+        run: |
+          echo "Skipping execution for draft PR"
+          exit 1
+      - run: echo "PR is not Draft"
+
+  # Check Linting status
+  Lint:
+    runs-on: ubuntu-latest
+    uses: cuttle-cards/cuttle/.github/workflows/run-npm-script.yml@main
+    needs: Draft
+    with:
+      label: "Lint"
+      script: "npm run lint"
+
+  # Run Jest Unit Tests
+  TestUnit:
+    runs-on: ubuntu-latest
+    uses: cuttle-cards/cuttle/.github/workflows/run-npm-script.yml@main
+    needs: Lint
+    with:
+      label: "Test: Unit"
+      script: "npm run test:unit"
+
+  # Run Cypress End to End Tests
+  TestEndToEnd:
+    name: "Test: End to End"
+    runs-on: ubuntu-latest
+    needs: TestUnit
+    uses: cypress-io/github-action@v4
+    with:
+      # Already installed dependencies above
+      install: false
+      build: npm run build
+      start: npm start
+      config-file: tests/cypress.config.js
+    env:
+      # Never add vue devtools when running in GitHub
+      # Mock a production config without setting NODE_ENV
+      # so that Cypress runs the proper test suites
+      # and Vue Devtools are not included
+      CUTTLE_ENV: production
+      VUE_APP_API_URL: http://localhost:1337
