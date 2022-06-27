@@ -60,17 +60,18 @@ jobs:
     name: "Test: End to End"
     runs-on: ubuntu-latest
     needs: TestUnit
-    uses: cypress-io/github-action@v4
-    with:
-      # Already installed dependencies above
-      install: false
-      build: npm run build
-      start: npm start
-      config-file: tests/cypress.config.js
-    env:
-      # Never add vue devtools when running in GitHub
-      # Mock a production config without setting NODE_ENV
-      # so that Cypress runs the proper test suites
-      # and Vue Devtools are not included
-      CUTTLE_ENV: production
-      VUE_APP_API_URL: http://localhost:1337
+    steps:
+      uses: cypress-io/github-action@v4
+      with:
+        # Already installed dependencies above
+        install: false
+        build: npm run build
+        start: npm start
+        config-file: tests/cypress.config.js
+      env:
+        # Never add vue devtools when running in GitHub
+        # Mock a production config without setting NODE_ENV
+        # so that Cypress runs the proper test suites
+        # and Vue Devtools are not included
+        CUTTLE_ENV: production
+        VUE_APP_API_URL: http://localhost:1337
