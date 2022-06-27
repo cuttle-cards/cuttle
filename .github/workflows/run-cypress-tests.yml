@@ -1,0 +1,21 @@
+name: Run Cypress Tests
+
+jobs:
+  run-cypress-tests:
+    name: "Run Cypress Tests"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cypress-io/github-action@v4
+        with:
+          # we have already installed all dependencies above
+          install: false
+          build: npm run build
+          start: npm start
+          config-file: tests/cypress.config.js
+        env:
+          # Never add vue devtools when running in GitHub
+          # Mock a production config without setting NODE_ENV
+          # so that Cypress runs the proper test suites
+          # and Vue Devtools are not included
+          CUTTLE_ENV: production
+          VUE_APP_API_URL: http://localhost:1337
