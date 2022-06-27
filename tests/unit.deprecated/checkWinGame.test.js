@@ -1,5 +1,4 @@
 //GameService.checkWinGame Test
-var Promise = require('bluebird');
 var gameService = require('../../api/services/gameService.js');
 
 var chai = require('chai');

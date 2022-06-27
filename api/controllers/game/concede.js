@@ -1,4 +1,3 @@
-const Promise = require('bluebird');
 module.exports = function(req, res) {
   return gameService
     .populateGame({ gameId: req.session.game })

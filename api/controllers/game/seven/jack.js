@@ -1,5 +1,4 @@
 module.exports = function(req, res) {
-  const Promise = require('bluebird');
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseOpponent = userService.findUser({ userId: req.body.opId });

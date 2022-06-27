@@ -1,5 +1,4 @@
 require('chai').should();
-var Promise = require('bluebird');
 var req = {
   session: {},
   body: {},

@@ -8,7 +8,6 @@ before(function(done) {
     sails = server;
     global.foo = 'bar';
     global.bun = 'mediocre';
-    global.Promise = require('bluebird');
     // var Passwords = require("machinepack-passwords");
     var socketIOClient = require('socket.io-client');
     var sailsIOClient = require('sails.io.js');

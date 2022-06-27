@@ -1,4 +1,3 @@
-var Promise = require('bluebird');
 var userService = require('../../api/services/userService.js');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
