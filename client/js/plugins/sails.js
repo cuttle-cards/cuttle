@@ -2,9 +2,11 @@ import store from '../store/store.js';
 import router from '../router/index.js';
 let _ = require('lodash');
 
+const { isProd } = require('../../../utils/config-utils');
+
 export const io = require('sails.io.js')(require('socket.io-client'));
 
-if (process.env.NODE_ENV != 'production') {
+if (!isProd) {
   io.sails.url = process.env.VUE_APP_API_URL || 'localhost:1337';
 }
 io.sails.useCORSRouteToGetCookie = false;
