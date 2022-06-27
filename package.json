@@ -15,7 +15,7 @@
     "format:js": "./scripts/format-project-js",
     "lint:fix": "vue-cli-service lint",
     "start": "node app.js",
-    "start:client": "concurrently \"ENABLE_VUE_DEVTOOLS=true npm run start:client\" \"npm run start:devtools\"",
+    "start:client": "concurrently \"ENABLE_VUE_DEVTOOLS=true vue-cli-service serve\" \"npm run start:devtools\"",
     "start:dev": "concurrently \"npm run start:server\" \"ENABLE_VUE_DEVTOOLS=true npm run start:client\" \"npm run start:devtools\"",
     "start:devtools": "vue-devtools",
     "start:mockprod": "npm run build && CUTTLE_ENV=production npm run start:server",
