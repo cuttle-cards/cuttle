@@ -21,6 +21,8 @@ jobs:
           runTests: false
       # Lint before testing
       - run: npm run lint
+      # Run unit tests
+      - run: npm run test:unit
       # Run e2e
       - name: Cypress run
         uses: cypress-io/github-action@v4
