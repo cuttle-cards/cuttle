@@ -26,7 +26,7 @@ jobs:
   #  - Prevents all downstream jobs from running
   # Additionally, require each test to pass before running the next to prevent
   # running unnecessary jobs if any upstream jobs already failed
-  Draft:
+  draft:
     name: "Check Draft Status"
     runs-on: ubuntu-latest
     steps:
@@ -38,28 +38,28 @@ jobs:
       - run: echo "PR is not Draft"
 
   # Check Linting status
-  Lint:
+  lint:
     uses: ./.github/workflows/run-npm-script.yml
-    needs: Draft
+    needs: draft
     with:
       label: "Lint"
       script: "npm run lint"
 
   # Run Jest Unit Tests
-  TestUnit:
+  test-unit:
     uses: ./.github/workflows/run-npm-script.yml
-    needs: Lint
+    needs: lint
     with:
       label: "Test: Unit"
       script: "npm run test:unit"
 
   # Run Cypress End to End Tests
-  TestEndToEnd:
+  test-e2e:
     name: "Test: End to End"
     runs-on: ubuntu-latest
-    needs: TestUnit
+    needs: test-unit
     steps:
-      # Calling npm-run-script here to get the npm install
+      # Calling npm-run-script here to get the npm/cypress install
       # and cache from previous steps, then just outputting
       # the cypress version since we don't need anything else
       - uses: ./.github/workflows/run-npm-script.yml
@@ -68,6 +68,8 @@ jobs:
           script: "./node_modules/.bin/cypress version"
       - uses: cypress-io/github-action@v4
         with:
+          # we have already installed all dependencies above
+          install: false
           build: npm run build
           start: npm start
           config-file: tests/cypress.config.js
