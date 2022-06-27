@@ -15,18 +15,27 @@ jobs:
         uses: actions/checkout@v2
       # Install NPM dependencies, cache them correctly
       - name: Install dependencies
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           # Just perform install
           runTests: false
       # Lint before testing
       - run: npm run lint
+      # Run unit tests
+      - run: npm run test:unit
       # Run e2e
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           # Already installed dependencies above
           install: false
           build: npm run build
-          start: npm run start:server
-          config: baseUrl=http://localhost:1337
+          start: npm start
+          config-file: tests/cypress.config.js
+        env:
+          # Never add vue devtools when running in GitHub
+          # Mock a production config without setting NODE_ENV
+          # so that Cypress runs the proper test suites
+          # and Vue Devtools are not included
+          CUTTLE_ENV: production
+          VUE_APP_API_URL: http://localhost:1337
