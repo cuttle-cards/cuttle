@@ -39,7 +39,6 @@ jobs:
 
   # Check Linting status
   Lint:
-    runs-on: ubuntu-latest
     uses: ./.github/workflows/run-npm-script.yml
     needs: Draft
     with:
@@ -48,7 +47,6 @@ jobs:
 
   # Run Jest Unit Tests
   TestUnit:
-    runs-on: ubuntu-latest
     uses: ./.github/workflows/run-npm-script.yml
     needs: Lint
     with:
