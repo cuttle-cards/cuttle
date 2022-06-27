@@ -24,5 +24,7 @@ jobs:
         with:
           node-version: "16.13.2"
           cache: 'npm'
+      - name: install node modules
+        run: npm ci
       - name: ${{ inputs.label }}
         run: ${{ inputs.script }}
