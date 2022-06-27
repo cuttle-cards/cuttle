@@ -59,11 +59,22 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-unit
     steps:
-      # Calling npm-run-script here to get the npm/cypress install
-      # and cache from previous steps, then just outputting
-      # the cypress version since we don't need anything else
-      - uses: ./.github/workflows/run-npm-script.yml
+      # Checkout and node setup are shared in both `pr-actions.yml` and `run-npm-script.yml`
+      # If you change one, please change the other
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
         with:
-          label: "Cypress Setup"
-          script: "./node_modules/.bin/cypress version"
-      - uses: ./.github/workflows/run-cypress-tests.yml
+          node-version: "16.13.2"
+          cache: 'npm'
+      - uses: cypress-io/github-action@v4
+        with:
+          build: npm run build
+          start: npm start
+          config-file: tests/cypress.config.js
+        env:
+          # Never add vue devtools when running in GitHub
+          # Mock a production config without setting NODE_ENV
+          # so that Cypress runs the proper test suites
+          # and Vue Devtools are not included
+          CUTTLE_ENV: production
+          VUE_APP_API_URL: http://localhost:1337

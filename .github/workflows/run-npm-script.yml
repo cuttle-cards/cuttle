@@ -15,32 +15,14 @@ jobs:
     name: "Run NPM Script"
     runs-on: ubuntu-latest
     steps:
+      # Checkout and node setup are shared in both `pr-actions.yml` and `run-npm-script.yml`
+      # If you change one, please change the other
       - name: git checkout
         uses: actions/checkout@v2
-
       - name: set node version
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "16.13.2"
-
-      - name: cache node_modules
-        id: cache-node-modules
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-          key: "node_modules-${{ hashFiles('package-lock.json') }}"
-
-      - name: npm ci
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci
-
-      - name: cypress install
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        uses: cypress-io/github-action@v4
-        with:
-          # just perform install
-          runTests: false
-
+          cache: 'npm'
       - name: ${{ inputs.label }}
         run: ${{ inputs.script }}
