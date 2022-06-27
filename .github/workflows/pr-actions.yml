@@ -1,12 +1,12 @@
-name: Lint, Build, Test
+name: PR Checks
 
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
     # Defaults + ready_for_review to trigger a re-run when a Draft PR is converted to a normal PR
     # See: https://github.community/t/dont-run-actions-on-draft-pull-requests/16817/17
     types: [opened, synchronize, reopened, ready_for_review]
-
 
 # See: https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
 permissions:
@@ -25,7 +25,7 @@ jobs:
   #  - Prevents the PR from being merged in that state
   #  - Prevents all downstream jobs from running
   # Additionally, require each test to pass before running the next to prevent
-  # running unecesrry jobs if any upstream jobs already failed
+  # running unnecessary jobs if any upstream jobs already failed
   Draft:
     name: "Check Draft Status"
     runs-on: ubuntu-latest
@@ -61,17 +61,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: TestUnit
     steps:
-      uses: cypress-io/github-action@v4
-      with:
-        # Already installed dependencies above
-        install: false
-        build: npm run build
-        start: npm start
-        config-file: tests/cypress.config.js
-      env:
-        # Never add vue devtools when running in GitHub
-        # Mock a production config without setting NODE_ENV
-        # so that Cypress runs the proper test suites
-        # and Vue Devtools are not included
-        CUTTLE_ENV: production
-        VUE_APP_API_URL: http://localhost:1337
+      - uses: cypress-io/github-action@v4
+        with:
+          # Already installed dependencies above
+          install: false
+          build: npm run build
+          start: npm start
+          config-file: tests/cypress.config.js
+        env:
+          # Never add vue devtools when running in GitHub
+          # Mock a production config without setting NODE_ENV
+          # so that Cypress runs the proper test suites
+          # and Vue Devtools are not included
+          CUTTLE_ENV: production
+          VUE_APP_API_URL: http://localhost:1337
