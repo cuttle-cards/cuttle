@@ -1,12 +1,8 @@
 const dayjs = require('dayjs');
 const isBetween = require('dayjs/plugin/isBetween');
+const Result = require('../../types/Result');
 dayjs.extend(isBetween);
 
-const Result = {
-  WON: 1,
-  LOST: 2,
-  INCOMPLETE: -1,
-};
 
 /////////////
 // Helpers //

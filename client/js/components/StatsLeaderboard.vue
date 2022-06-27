@@ -47,11 +47,7 @@
 <script>
 import StatsLeaderboardCell from '@/components/StatsLeaderboardCell.vue';
 
-const Result = {
-  WON: 1,
-  LOST: 2,
-  INCOMPLETE: -1,
-};
+const Result = require('../../../types/Result');
 
 export const Metrics = {
   POINTS_AND_WINS: 1,
