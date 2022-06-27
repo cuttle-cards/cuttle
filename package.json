@@ -28,7 +28,6 @@
     "core-js": "^3.21.1",
     "dayjs": "^1.11.3",
     "ejs": "2.5.5",
-    "include-all": "~0.1.6",
     "lodash": "^4.17.21",
     "machinepack-passwords": "^2.3.0",
     "sails": "^1.4.3",
