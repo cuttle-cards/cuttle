@@ -1,12 +1,12 @@
 /**
  * THIS FILE WAS ADDED AUTOMATICALLY by the Sails 1.0 app migration tool.
- * The original file was backed up as `config/globals-old.js.txt`
+ * See: https://sailsjs.com/documentation/reference/configuration/sails-config-globals
  */
 
 module.exports.globals = {
   _: require('lodash'),
 
-  async: require('async'),
+  async: false,
 
   models: true,
 

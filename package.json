@@ -23,7 +23,6 @@
   },
   "main": "app.js",
   "dependencies": {
-    "async": "2.1.4",
     "bluebird": "^3.4.6",
     "connect-redis": "3.0.2",
     "core-js": "^3.21.1",
