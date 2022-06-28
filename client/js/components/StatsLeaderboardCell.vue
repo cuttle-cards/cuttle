@@ -34,7 +34,7 @@ export default {
       validator: val => ['total', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].includes(val),
     },
     selectedMetric: {
-      type: String,
+      type: Number,
       required: true,
     },
     playersBeaten: {
