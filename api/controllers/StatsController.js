@@ -102,9 +102,9 @@ module.exports = {
     const users = User.find({});
     return Promise.all([seasons, matches, users]).then(([seasons, matches, users]) => {
       const idToUserMap = new Map();
-      for (const user of users) {
+      users.forEach((user) => {
         idToUserMap.set(user.id, user);
-      }
+      });
       // Add empty rankings dict to each season
       seasons = seasons.map(season => {
         return {
