@@ -43,7 +43,7 @@ export default {
     },
     topTotalScores: {
       type: Object,
-      require: true,
+      required: true,
     },
   },
   computed: {
