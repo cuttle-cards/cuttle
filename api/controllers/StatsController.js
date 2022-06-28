@@ -105,14 +105,8 @@ module.exports = {
       users.forEach(user => {
         idToUserMap.set(user.id, user);
       });
-      // Add empty rankings dict to each season
-      seasons = seasons.map(season => {
-        return {
-          ...season,
-          rankings: new Map(), // playerId => PlayerMatches
-        };
-      });
-      for (const match of matches) {
+      // Add each match to the appropriate rankings
+      matches.forEach(match => {
         // Only count finished matches
         if (match.endTime && match.winner) {
           const relevantSeason = seasons.find(season => {
@@ -130,7 +124,7 @@ module.exports = {
             }
           }
         }
-      }
+      });
       // Format seasons (convert maps to arrays and objects)
       return res.ok(seasons.map(transformSeasonToDTO));
     });
