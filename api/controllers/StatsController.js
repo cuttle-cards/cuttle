@@ -97,12 +97,12 @@ function transformSeasonToDTO(season) {
 module.exports = {
   getStats: function(req, res) {
     // Find records
-    const seasons = Season.find({sort: 'startTime DESC'}).populateAll();
+    const seasons = sails.helpers.getSeasonsWithoutRankings();
     const matches = Match.find({});
     const users = User.find({});
     return Promise.all([seasons, matches, users]).then(([seasons, matches, users]) => {
       const idToUserMap = new Map();
-      users.forEach((user) => {
+      users.forEach(user => {
         idToUserMap.set(user.id, user);
       });
       // Add empty rankings dict to each season
@@ -110,10 +110,6 @@ module.exports = {
         return {
           ...season,
           rankings: new Map(), // playerId => PlayerMatches
-          firstPlace: season.firstPlace?.username || null,
-          secondPlace: season.secondPlace?.username || null,
-          thirdPlace: season.thirdPlace?.username || null,
-          fourthPlace: season.fourthPlace?.username || null,
         };
       });
       for (const match of matches) {
@@ -124,9 +120,6 @@ module.exports = {
             return dayjs(match.startTime).isBetween(dayjs(season.startTime), dayjs(season.endTime));
           });
           if (relevantSeason) {
-            // Calculate which week match counts towards
-            const weekNum =
-              dayjs(match.startTime).diff(dayjs(relevantSeason.startTime), 'week') + 1;
             const player1 = idToUserMap.get(match.player1);
             const player2 = idToUserMap.get(match.player2);
             if (player1 && player2) {
