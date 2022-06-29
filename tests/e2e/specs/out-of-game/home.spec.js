@@ -38,8 +38,10 @@ describe('Home - Page Content', () => {
     cy.hash().should('eq', '#/rules');
   });
   it('Logs user out', () => {
-    cy.get('[data-cy=btn-logout]').click();
+    cy.get('[data-nav=Logout]').click();
     cy.contains('h1', 'Log In');
+    cy.get('[data-nav=Login]').should('be.visible');
+    cy.get('[data-nav=Home]').should('not.exist');
   });
   it('Sends list of games when session data includes invalid game id', () => {
     cy.signupOpponent(opponentUsername, opponentPassword);

@@ -128,3 +128,5 @@ npm-debug.log
 nbproject
 .idea
 .node_history
+tests/e2e/screenshots
+tests/e2e/videos

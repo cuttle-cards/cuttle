@@ -51,6 +51,8 @@ module.exports.routes = {
   '/user/reLogin': 'userController.reLogin',
   '/user/logout': 'userController.logout',
 
+  'GET /stats': 'StatsController.getStats',
+
   '/game/create': 'game/create',
   '/game/getList': 'game/get-list',
   '/game/subscribe': 'game/subscribe',
@@ -90,4 +92,6 @@ module.exports.routes = {
   // Testing helpers
   '/test/wipeDatabase': 'TestController.wipeDatabase',
   '/test/badSession': 'TestController.setBadSession',
+  '/test/loadSeasonFixture': 'TestController.loadSeasonFixture',
+  '/test/loadMatchFixtures': 'TestController.loadMatchFixtures',
 };

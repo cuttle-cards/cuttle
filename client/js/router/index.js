@@ -5,22 +5,24 @@ import LoginSignup from '../views/LoginSignup.vue';
 import Lobby from '../views/Lobby.vue';
 import GameView from '../views/GameView.vue';
 import Rules from '../views/Rules.vue';
+import Stats from '../views/Stats.vue';
 import store from '../store/store.js';
 
 Vue.use(VueRouter);
+
+const mustBeAuthenticated = (to, from, next) => {
+  if (store.state.auth.authenticated) {
+    return next();
+  }
+  return next('/login');
+};
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    beforeEnter: (to, from, next) => {
-      if (store.state.auth.authenticated) {
-        next();
-      } else {
-        next('/login');
-      }
-    },
+    beforeEnter: mustBeAuthenticated,
   },
   {
     path: '/login',
@@ -33,12 +35,20 @@ const routes = [
     component: Rules,
   },
   {
+    name: 'Lobby',
     path: '/lobby/:gameId',
     component: Lobby,
   },
   {
+    name: 'Game',
     path: '/game/:gameId',
     component: GameView,
+  },
+  {
+    path: '/stats',
+    name: 'Stats',
+    component: Stats,
+    beforeEnter: mustBeAuthenticated,
   },
 ];
 

@@ -119,6 +119,9 @@ export default {
       return 'Already have an account?';
     },
   },
+  mounted() {
+    this.$store.dispatch('requestLogout');
+  },
   methods: {
     submitLogin() {
       this.loading = true;
@@ -198,7 +201,7 @@ export default {
   justify-content: center;
   margin-top: 16px;
 }
-@media (orientation: landscape) and (max-width: 979px) {
+@media (orientation: landscape) and (max-width: 960px) {
   #logo {
     width: 64px;
     height: 64px;
