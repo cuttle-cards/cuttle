@@ -21,8 +21,26 @@
           </v-btn>
         </div>
       </div>
+      <!-- Tutorial -->
+      <v-row class="flex-column align-start mt-5">
+        <h1 class="gradient-text">Tutorial Video</h1>
+        <p>
+          Watch the official cuttle.cards tutorial to learn the rules and get a feel for the flow of
+          the game.
+        </p>
+        <iframe
+          :width="videoWidth"
+          :height="videoHeight"
+          class="align-self-center my-4"
+          src="https://www.youtube.com/embed/qOqkNbhMdsI"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        />
+      </v-row>
       <!-- Goal -->
-      <v-row class="flex-column align-start mt-10">
+      <v-row class="flex-column align-start mt-5">
         <h1 class="gradient-text">
           Goal
         </h1>
@@ -379,6 +397,24 @@ export default {
         return 'Find a Game';
       }
       return 'Sign Up to Play Online';
+    },
+    videoWidth() {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs':
+        case 'sm':
+          return 300;
+        case 'md':
+          return 560;
+        case 'lg':
+          return 800;
+        case 'xl':
+          return 1000;
+        default:
+          return 560;
+      }
+    },
+    videoHeight() {
+      return (this.videoWidth * 315) / 560;
     },
   },
   methods: {
