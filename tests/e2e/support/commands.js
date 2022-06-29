@@ -10,15 +10,15 @@ Cypress.Commands.add('wipeDatabase', () => {
   cy.request('localhost:1337/test/wipeDatabase');
 });
 Cypress.Commands.add('setBadSession', () => {
-  return new Promise((resolve, reject) => {
-    io.socket.get('/test/badSession', function (res) {
+  return new Promise((resolve) => {
+    io.socket.get('/test/badSession', function () {
       return resolve();
     });
   });
 });
 Cypress.Commands.add('loadSeasonFixture', (season) => {
-  return new Promise((resolve, reject) => {
-    io.socket.post('/test/loadSeasonFixture', season, function (res) {
+  return new Promise((resolve) => {
+    io.socket.post('/test/loadSeasonFixture', season, function () {
       return resolve();
     });
   });
@@ -34,8 +34,8 @@ Cypress.Commands.add('loadMatchFixtures', (matches) => {
   });
 });
 Cypress.Commands.add('requestGameList', () => {
-  return new Promise((resolve, reject) => {
-    io.socket.get('/game/getList', function (res) {
+  return new Promise((resolve) => {
+    io.socket.get('/game/getList', function () {
       return resolve();
     });
   });
@@ -388,7 +388,6 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
           'Error playing targeted one-off as opponent: could not find point card in player field'
         );
       }
-      const pointId = foundPointCard ? foundPointCard.id : undefined;
       io.socket.get(
         '/game/targetedOneOff',
         {
@@ -508,10 +507,10 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       let cardId1 = undefined;
       let cardId2 = undefined;
       if (card1) {
-        cardId1 = getCardIds(game, [card1])[0];
+        [cardId1] = getCardIds(game, [card1]);
       }
       if (card2) {
-        cardId2 = getCardIds(game, [card2])[0];
+        [cardId2] = getCardIds(game, [card2]);
       }
       io.socket.get(
         '/game/resolveFour',
@@ -709,7 +708,6 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
     .its('app.$store.state.game')
     .then((game) => {
       const player = game.players[game.myPNum];
-      const opponent = game.players[(game.myPNum + 1) % 2];
       let foundCard;
       const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
 
@@ -1029,11 +1027,11 @@ Cypress.Commands.add('loadGameFixture', (fixture) => {
       };
       // Get top card & second cards if specified
       if (fixture.topCard) {
-        const topCardId = getCardIds(game, [fixture.topCard])[0];
+        const [topCardId] = getCardIds(game, [fixture.topCard]);
         reqBody.topCardId = topCardId;
       }
       if (fixture.secondCard) {
-        const secondCardId = getCardIds(game, [fixture.secondCard])[0];
+        const [secondCardId] = getCardIds(game, [fixture.secondCard]);
         reqBody.secondCardId = secondCardId;
       }
       // Get scrap if specified
