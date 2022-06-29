@@ -24,6 +24,7 @@
       :items="tableRows"
       :headers="tableColumns"
       :sort-by.sync="sortBy"
+      :items-per-page="-1"
       :loading="loading"
       :item-class="tableRowClass"
     >
