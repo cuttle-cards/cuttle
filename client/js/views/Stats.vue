@@ -63,7 +63,7 @@
         </p>
       </div>
       <!-- Rankings Table -->
-      <h2 class="text-h2 ml-4">
+      <h2 class="text-h2 mb-4">
         Weekly Rankings
         <stats-scoring-dialog />
       </h2>
