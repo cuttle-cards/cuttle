@@ -45,6 +45,7 @@
   </div>
 </template>
 <script>
+import { uniq } from 'lodash';
 import StatsLeaderboardCell from '@/components/StatsLeaderboardCell.vue';
 
 const Result = require('../../../types/Result');
@@ -250,10 +251,9 @@ export default {
       if (!playerMatches) {
         return '';
       }
-      return playerMatches
-        .filter(match => match.result === Result.WON)
-        .map(match => match.opponent)
-        .join(', ');
+      return uniq(
+        playerMatches.filter(match => match.result === Result.WON).map(match => match.opponent)
+      ).join(', ');
     },
     isCurrentPlayer(username) {
       return username === this.$store.state.auth.username;
