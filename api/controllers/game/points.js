@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
@@ -29,20 +29,16 @@ module.exports = function(req, res) {
                 User.addToCollection(player.id, 'points').members(card.id),
               ];
               return Promise.all([game, ...updatePromises]);
-            } else {
-              return Promise.reject({
-                message: 'That card is frozen! You must wait a turn to play it',
-              });
             }
-          } else {
-            return Promise.reject({ message: 'You can only play a number card as points.' });
+            return Promise.reject({
+              message: 'That card is frozen! You must wait a turn to play it',
+            });
           }
-        } else {
-          return Promise.reject({ message: 'You can only play a card that is in your hand.' });
+          return Promise.reject({ message: 'You can only play a number card as points.' });
         }
-      } else {
-        return Promise.reject({ message: "It's not your turn." });
+        return Promise.reject({ message: 'You can only play a card that is in your hand.' });
       }
+      return Promise.reject({ message: "It's not your turn." });
     })
     .then(function populateGame(values) {
       const game = values[0];

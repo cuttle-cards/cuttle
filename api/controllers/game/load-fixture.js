@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   // Capture request data
   const p0HandCardIds = req.body.p0HandCardIds || [];
   const p0PointCardIds = req.body.p0PointCardIds || [];
@@ -36,12 +36,12 @@ module.exports = function(req, res) {
       // Put all cards back in deck
       const [game, p0, p1] = values;
 
-      const oldP0Hand = p0.hand.map(card => card.id);
-      const oldP0Points = p0.points.map(card => card.id);
-      const oldP0FaceCards = p0.faceCards.map(card => card.id);
-      const oldP1Hand = p1.hand.map(card => card.id);
-      const oldP1Points = p1.points.map(card => card.id);
-      const oldP1FaceCards = p1.faceCards.map(card => card.id);
+      const oldP0Hand = p0.hand.map((card) => card.id);
+      const oldP0Points = p0.points.map((card) => card.id);
+      const oldP0FaceCards = p0.faceCards.map((card) => card.id);
+      const oldP1Hand = p1.hand.map((card) => card.id);
+      const oldP1Points = p1.points.map((card) => card.id);
+      const oldP1FaceCards = p1.faceCards.map((card) => card.id);
       const addToDeck = [
         game.topCard,
         game.secondCard,

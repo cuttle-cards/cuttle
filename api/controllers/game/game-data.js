@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   const popGame = gameService
     .populateGame({ gameId: req.session.game })
     .then(function gotPop(fullGame) {

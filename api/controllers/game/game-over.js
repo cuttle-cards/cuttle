@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   userService
     .findUser({ userId: req.session.usr })
     .then(function deleteSessionData(player) {

@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
@@ -35,22 +35,18 @@ module.exports = function(req, res) {
               ];
 
               return Promise.all([game, ...updatePromises]);
-            } else {
-              return Promise.reject({
-                message: "You cannot counter your opponent's one-off while they have a Queen.",
-              });
             }
-          } else {
-            return Promise.reject({ message: 'You can only play a Two to counter a one-off' });
+            return Promise.reject({
+              message: "You cannot counter your opponent's one-off while they have a Queen.",
+            });
           }
-        } else {
-          return Promise.reject({
-            message: 'You can only counter a one-off that is already in play',
-          });
+          return Promise.reject({ message: 'You can only play a Two to counter a one-off' });
         }
-      } else {
-        return Promise.reject({ message: 'You can only play a card that is in your hand' });
+        return Promise.reject({
+          message: 'You can only counter a one-off that is already in play',
+        });
       }
+      return Promise.reject({ message: 'You can only play a card that is in your hand' });
     }) //End changeAndSave
     .then(function populateGame(values) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);

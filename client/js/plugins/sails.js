@@ -12,7 +12,7 @@ if (!isProd) {
 io.sails.useCORSRouteToGetCookie = false;
 io.sails.reconnection = true;
 // Handles socket updates of game data
-io.socket.on('game', function(evData) {
+io.socket.on('game', function (evData) {
   switch (evData.verb) {
     case 'updated':
       // Handle GameOver
@@ -121,16 +121,16 @@ io.socket.on('game', function(evData) {
   }
 });
 
-io.socket.on('gameCreated', function(evData) {
+io.socket.on('gameCreated', function (evData) {
   const newGame = _.cloneDeep(evData);
   store.commit('addGameToList', newGame);
 });
 
-io.socket.on('gameStarting', function(evData) {
+io.socket.on('gameStarting', function (evData) {
   store.commit('removeGame', evData);
 });
 
-io.socket.on('join', function(evData) {
+io.socket.on('join', function (evData) {
   store.commit('joinGame', {
     gameId: evData.gameId,
     newPlayer: evData.newPlayer,
@@ -142,7 +142,7 @@ io.socket.on('join', function(evData) {
   }
 });
 
-io.socket.on('leftGame', function(evData) {
+io.socket.on('leftGame', function (evData) {
   if (evData.id === store.state.game.id) {
     store.commit('opponentLeft');
   } else {

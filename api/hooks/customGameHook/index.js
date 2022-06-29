@@ -3,17 +3,17 @@ module.exports = function gameHook(sails) {
   // Game API //
   //////////////
   return {
-    createGame: function(gameName) {
-      return new Promise(function(resolve, reject) {
+    createGame: function (gameName) {
+      return new Promise(function (resolve, reject) {
         Game.create({
           name: gameName,
           status: true,
         })
           .fetch()
-          .then(game => {
+          .then((game) => {
             return resolve(game);
           })
-          .catch(err => {
+          .catch((err) => {
             let res;
             if (err) {
               res = err;
@@ -24,29 +24,28 @@ module.exports = function gameHook(sails) {
           });
       });
     },
-    findOpenGames: function() {
-      return new Promise(function(resolve, reject) {
+    findOpenGames: function () {
+      return new Promise(function (resolve, reject) {
         Game.find({ status: true })
           .populate('players')
-          .exec(function(error, games) {
+          .exec(function (error, games) {
             if (error) {
               return reject(error);
             } else if (!games) {
               return reject({ message: "Can't find games" });
-            } else {
-              return resolve(games);
             }
+            return resolve(games);
           });
       });
     },
-    findGame: function(id) {
-      return new Promise(function(resolve, reject) {
+    findGame: function (id) {
+      return new Promise(function (resolve, reject) {
         Game.findOne(id)
           .populate('players', { sort: 'pNum' })
           .populate('deck')
           .populate('topCard')
           .populate('secondCard')
-          .exec(function(error, game) {
+          .exec(function (error, game) {
             if (error || !game) {
               var res;
               if (error) {
@@ -55,9 +54,8 @@ module.exports = function gameHook(sails) {
                 res = { message: "Can't find game" };
               }
               return reject(res);
-            } else {
-              resolve(game);
             }
+            resolve(game);
           });
       });
     },

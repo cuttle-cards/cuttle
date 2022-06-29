@@ -6,7 +6,7 @@
  * @docs        :: http://sailsjs.org/#!/documentation/concepts/Policies
  *
  */
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
   const { username } = req.body;
 
   if (!username) {

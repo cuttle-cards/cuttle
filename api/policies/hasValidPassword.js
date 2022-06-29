@@ -6,7 +6,7 @@
  * @docs        :: http://sailsjs.org/#!/documentation/concepts/Policies
  *
  */
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
   // Password must be at least 8 characters
   if (!req.body.password) {
     return res.badRequest({ message: 'Password is required' });

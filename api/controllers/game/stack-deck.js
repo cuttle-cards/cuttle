@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   return gameService
     .findGame({ gameId: req.session.game })
     .then(function changeAndSave(game) {

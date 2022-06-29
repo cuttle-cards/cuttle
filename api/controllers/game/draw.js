@@ -1,22 +1,19 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   const pGame = gameService.findGame({ gameId: req.session.game }).then(function checkTurn(game) {
     if (req.session.pNum === game.turn % 2) {
       if (game.topCard) {
         return Promise.resolve(game);
-      } else {
-        return Promise.reject({ message: 'The deck is empty; you cannot draw' });
       }
-    } else {
-      return Promise.reject({ message: "It's not your turn." });
+      return Promise.reject({ message: 'The deck is empty; you cannot draw' });
     }
+    return Promise.reject({ message: "It's not your turn." });
   });
 
   const pUser = userService.findUser({ userId: req.session.usr }).then(function handLimit(user) {
     if (user.hand.length < 8) {
       return Promise.resolve(user);
-    } else {
-      return Promise.reject({ message: 'You are at the hand limit; you cannot draw.' });
     }
+    return Promise.reject({ message: 'You are at the hand limit; you cannot draw.' });
   });
 
   // Make changes after finding records

@@ -1,3 +1,7 @@
+const sharedTestRules = {
+  'import/no-unresolved': ['off'],
+};
+
 module.exports = {
   env: {
     browser: true,
@@ -20,6 +24,8 @@ module.exports = {
     parser: '@babel/eslint-parser',
     requireConfigFile: false,
   },
+
+  ignorePatterns: ['/node_modules/*', '/assets/*'],
 
   rules: {
     'prettier/prettier': 'error',
@@ -49,9 +55,7 @@ module.exports = {
       env: {
         jest: true,
       },
-      rules: {
-        'import/no-unresolved': ['off'],
-      },
+      rules: sharedTestRules,
     },
     {
       files: ['**/tests/e2e/**/*.{j,t}s?(x)'],
@@ -68,9 +72,7 @@ module.exports = {
         socket2: true,
         socket3: true,
       },
-      rules: {
-        'import/no-unresolved': ['off'],
-      },
+      rules: sharedTestRules,
     },
   ],
 

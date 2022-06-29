@@ -3,19 +3,18 @@ module.exports = {
    **Find Card by id
    *****options = {cardId: integer}
    */
-  findCard: function(options) {
-    return new Promise(function(resolve, reject) {
+  findCard: function (options) {
+    return new Promise(function (resolve, reject) {
       if (options.hasOwnProperty('cardId') && typeof options.cardId === 'number') {
         Card.findOne(options.cardId)
           .populate('attachments')
-          .exec(function(err, card) {
+          .exec(function (err, card) {
             if (err) {
               return reject(err);
             } else if (!card) {
               return reject({ message: "Can't find card " + options.cardId });
-            } else {
-              return resolve(card);
             }
+            return resolve(card);
           });
       } else {
         return Promise.reject({ message: 'Invalid arguments for findCard' });
@@ -27,8 +26,8 @@ module.exports = {
    **Create Card from suit, rank, and gameId
    *****options = {suit: integer, rank: integer, gameId: integer}
    */
-  createCard: function(options, done) {
-    return new Promise(function(resolve, reject) {
+  createCard: function (options, done) {
+    return new Promise(function (resolve, reject) {
       var validArgs =
         options.suit > -1 &&
         options.suit < 4 &&
@@ -36,9 +35,9 @@ module.exports = {
         options.suit < 14 &&
         options.gameId;
       if (validArgs) {
-        var gameId = options.gameId;
-        var suit = options.suit;
-        var rank = options.rank;
+        var { gameId } = options;
+        var { suit } = options;
+        var { rank } = options;
         var str_rank = '';
         var str_suit = '';
         var str_name = '';
@@ -135,19 +134,17 @@ module.exports = {
           deck: gameId,
         })
           .fetch()
-          .then(card => {
+          .then((card) => {
             return resolve(card);
           })
-          .catch(err => {
+          .catch((err) => {
             if (err) {
               return reject(err);
-            } else {
-              return reject({ message: `Error creating card: ${suit} of ${rank}` });
             }
+            return reject({ message: `Error creating card: ${suit} of ${rank}` });
           });
-      } else {
-        return reject({ message: 'Invalid Arguments for createCard service' });
       }
+      return reject({ message: 'Invalid Arguments for createCard service' });
     });
   },
 
@@ -155,19 +152,18 @@ module.exports = {
    **Find all points in player's hand from player id
    *****options = {userId: integer}
    */
-  findPoints: function(options) {
-    return new Promise(function(resolve, reject) {
+  findPoints: function (options) {
+    return new Promise(function (resolve, reject) {
       if (options.userId) {
         Card.find({ points: options.userId })
           .populate('attachments', { sort: 'index' })
-          .exec(function(err, cards) {
+          .exec(function (err, cards) {
             if (err) {
               return reject(err);
             } else if (!cards) {
               return reject({ message: "Can't find cards in points" });
-            } else {
-              return resolve(cards);
             }
+            return resolve(cards);
           }); //End find()
       } else {
         return reject({ message: "Don't have userId to find cards in user's points" });
@@ -179,15 +175,14 @@ module.exports = {
    **Saves a card and returns it as a Promise
    ****options = {card: CardRecord}
    */
-  saveCard: function(options) {
-    return new Promise(function(resolve, reject) {
+  saveCard: function (options) {
+    return new Promise(function (resolve, reject) {
       if (options.card) {
-        options.card.save(function(err) {
+        options.card.save(function (err) {
           if (err) {
             return reject(err);
-          } else {
-            return resolve(options.card);
           }
+          return resolve(options.card);
         });
       } else {
         return reject({ message: "Can't save card without card record" });

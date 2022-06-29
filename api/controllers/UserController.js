@@ -13,11 +13,11 @@ const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
-  homepage: function(req, res) {
+  homepage: function (req, res) {
     return res.view('homepage', { loggedIn: req.session.loggedIn, game: req.session.game });
   },
 
-  signup: async function(req, res) {
+  signup: async function (req, res) {
     // Request was missing data
     if (!req.body.password && !req.body.username) {
       return res.badRequest('You did not submit a username or password');
@@ -41,12 +41,12 @@ module.exports = {
       return res.badRequest(err);
     }
   },
-  login: function(req, res) {
+  login: function (req, res) {
     const { username } = req.body;
     if (username) {
       userAPI
         .findUserByUsername(username)
-        .then(user => {
+        .then((user) => {
           return passwordAPI
             .checkPass(req.body.password, user.encryptedPassword)
             .then(() => {
@@ -54,7 +54,7 @@ module.exports = {
               req.session.usr = user.id;
               return res.ok();
             })
-            .catch(reason => {
+            .catch((reason) => {
               return res.badRequest(reason);
             });
         })
@@ -67,7 +67,7 @@ module.exports = {
       return res.badRequest({ message: 'A username must be provided' });
     }
   },
-  reLogin: function(req, res) {
+  reLogin: function (req, res) {
     userAPI
       .findUserByUsername(req.body.username)
       .then(function gotUser(user) {
@@ -75,7 +75,7 @@ module.exports = {
         const promiseGame = gameService.populateGame({ gameId: user.game });
         return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
       })
-      .then(values => {
+      .then((values) => {
         const game = values[0];
         const user = values[1];
         req.session.loggedIn = true;
@@ -94,12 +94,12 @@ module.exports = {
 
         return res.ok();
       })
-      .catch(err => {
+      .catch((err) => {
         return res.badRequest(err);
       });
   },
 
-  logout: function(req, res) {
+  logout: function (req, res) {
     delete req.session.usr;
     req.session.loggedIn = false;
     return res.ok();

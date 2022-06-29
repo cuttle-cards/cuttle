@@ -25,9 +25,7 @@
     <section class="px-8">
       <!-- Season Champions -->
       <div class="mb-10">
-        <h2 v-if="showSeasonChampions" class="text-h2 mb-4">
-          Season Champions
-        </h2>
+        <h2 v-if="showSeasonChampions" class="text-h2 mb-4">Season Champions</h2>
         <div class="d-flex justify-space-around flex-wrap">
           <award-card
             v-if="selectedSeason && selectedSeason.firstPlace"

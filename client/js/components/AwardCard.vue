@@ -5,9 +5,7 @@
     :data-tournament="`${place}${suffix}`"
   >
     <div class="medal-icon pa-8 d-flex align-center">
-      <v-icon size="48" :color="medalColor">
-        mdi-medal
-      </v-icon>
+      <v-icon size="48" :color="medalColor"> mdi-medal </v-icon>
     </div>
     <div class="text d-flex flex-column align-center px-16 justify-center">
       <h3 class="mx-4">
@@ -55,7 +53,7 @@ export default {
     },
     placeWithSuffix() {
       return `${this.place}${this.suffix}`;
-    }
+    },
   },
 };
 </script>

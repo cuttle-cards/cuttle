@@ -3,7 +3,6 @@ const isBetween = require('dayjs/plugin/isBetween');
 const Result = require('../../types/Result');
 dayjs.extend(isBetween);
 
-
 /////////////
 // Helpers //
 /////////////
@@ -82,7 +81,7 @@ function addMatchToRankings(season, match, player, opponent) {
 function transformSeasonToDTO(season) {
   const { rankings, ...rest } = season;
   // Convert rankings from Map to Array
-  const rankingsAsArray = Array.from(rankings.values()).map(player => {
+  const rankingsAsArray = Array.from(rankings.values()).map((player) => {
     return {
       ...player,
       matches: Object.fromEntries(player.matches), // Convert matches from Map to Object
@@ -95,21 +94,21 @@ function transformSeasonToDTO(season) {
 }
 
 module.exports = {
-  getStats: function(req, res) {
+  getStats: function (req, res) {
     // Find records
     const seasons = sails.helpers.getSeasonsWithoutRankings();
     const matches = Match.find({});
     const users = User.find({});
     return Promise.all([seasons, matches, users]).then(([seasons, matches, users]) => {
       const idToUserMap = new Map();
-      users.forEach(user => {
+      users.forEach((user) => {
         idToUserMap.set(user.id, user);
       });
       // Add each match to the appropriate rankings
-      matches.forEach(match => {
+      matches.forEach((match) => {
         // Only count finished matches
         if (match.endTime && match.winner) {
-          const relevantSeason = seasons.find(season => {
+          const relevantSeason = seasons.find((season) => {
             // Find season this match took place during
             return dayjs(match.startTime).isBetween(dayjs(season.startTime), dayjs(season.endTime));
           });

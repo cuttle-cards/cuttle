@@ -1,6 +1,6 @@
 <template>
   <v-tooltip v-if="points" top>
-    <template #activator="{on, attrs}">
+    <template #activator="{ on, attrs }">
       <v-chip
         :color="colorForScore"
         :outlined="outlined"
@@ -31,7 +31,7 @@ export default {
     week: {
       type: [Number, String],
       required: true,
-      validator: val => ['total', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].includes(val),
+      validator: (val) => ['total', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].includes(val),
     },
     selectedMetric: {
       type: Number,
@@ -101,7 +101,7 @@ export default {
       }
     },
     outlined() {
-      return ['primary', '#000'].includes(this.colorForScore)
+      return ['primary', '#000'].includes(this.colorForScore);
     },
     /**
      * Returns an object for v-bind for testing attributes to identify table cell

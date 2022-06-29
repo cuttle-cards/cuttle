@@ -1,11 +1,11 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
   const promiseTarget = cardService.findCard({ cardId: req.body.targetId });
   let promisePoint = null;
-  const targetType = req.body.targetType;
+  const { targetType } = req.body;
   if (targetType === 'jack') {
     promisePoint = cardService.findCard({ cardId: req.body.pointId });
   }

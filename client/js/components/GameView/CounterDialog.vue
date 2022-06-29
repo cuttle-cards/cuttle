@@ -39,9 +39,7 @@
     <v-card v-if="oneOff && choseToCounter" id="choose-two-dialog">
       <v-card-title>Choose Two</v-card-title>
       <v-card-text>
-        <p>
-          Which Two would you like to counter with? (Click the card)
-        </p>
+        <p>Which Two would you like to counter with? (Click the card)</p>
         <div id="twos-in-hand" class="d-flex justify-center">
           <card
             v-for="two in twosInHand"
@@ -54,9 +52,7 @@
         </div>
       </v-card-text>
       <v-card-actions>
-        <v-btn text color="primary" data-cy="cancel-counter" @click="resolve">
-          Cancel
-        </v-btn>
+        <v-btn text color="primary" data-cy="cancel-counter" @click="resolve"> Cancel </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

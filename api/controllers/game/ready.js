@@ -1,7 +1,7 @@
 var gameAPI = sails.hooks['customgamehook'];
 var userAPI = sails.hooks['customuserhook'];
 
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   if (req.session.game && req.session.usr) {
     const promiseGame = gameAPI.findGame(req.session.game);
     const promiseUser = userAPI.findUser(req.session.usr);
@@ -10,7 +10,7 @@ module.exports = function(req, res) {
       .then(function foundRecords(values) {
         const game = values[0];
         const user = values[1];
-        let pNum = user.pNum;
+        let { pNum } = user;
         let bothReady = false;
         const gameUpdates = {};
         switch (pNum) {
@@ -52,7 +52,7 @@ module.exports = function(req, res) {
               const [game, p0, p1, ...deck] = values;
 
               // Shuffle deck & map cards => thier ids
-              const shuffledDeck = _.shuffle(deck).map(card => card.id);
+              const shuffledDeck = _.shuffle(deck).map((card) => card.id);
               // Take 1st 5 cards for p0
               const dealToP0 = shuffledDeck.splice(0, 5);
               // Take next 6 cards for p1
@@ -95,17 +95,16 @@ module.exports = function(req, res) {
               return Promise.reject(err);
             });
           // If this player is first to be ready, save and respond
-        } else {
-          Game.publish([game.id], {
-            verb: 'updated',
-            data: {
-              change: 'ready',
-              userId: user.id,
-              pNum: user.pNum,
-            },
-          });
-          return Game.updateOne({ id: game.id }).set(gameUpdates);
         }
+        Game.publish([game.id], {
+          verb: 'updated',
+          data: {
+            change: 'ready',
+            userId: user.id,
+            pNum: user.pNum,
+          },
+        });
+        return Game.updateOne({ id: game.id }).set(gameUpdates);
       }) //End foundRecords
       .then(function respond(values) {
         return res.ok();

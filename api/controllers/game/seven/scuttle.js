@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
@@ -23,7 +23,7 @@ module.exports = function(req, res) {
                 const cardsToScrap = [
                   card.id,
                   target.id,
-                  ...target.attachments.map(jack => jack.id),
+                  ...target.attachments.map((jack) => jack.id),
                 ];
                 const gameUpdates = {
                   topCard,
@@ -51,28 +51,23 @@ module.exports = function(req, res) {
                   Game.addToCollection(game.id, 'scrap').members(cardsToScrap),
                 ];
                 return Promise.all([game, ...updatePromises]);
-              } else {
-                return Promise.reject({
-                  message:
-                    "You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)",
-                });
               }
-            } else {
               return Promise.reject({
-                message: "You can only scuttle a card in your oppponent's points",
+                message:
+                  "You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)",
               });
             }
-          } else {
-            return Promise.reject({ message: 'You can only scuttle with an ace through ten' });
+            return Promise.reject({
+              message: "You can only scuttle a card in your oppponent's points",
+            });
           }
-        } else {
-          return Promise.reject({
-            message: 'You can only one of the top two cards from the deck while resolving a seven',
-          });
+          return Promise.reject({ message: 'You can only scuttle with an ace through ten' });
         }
-      } else {
-        return Promise.reject({ message: "It's not your turn" });
+        return Promise.reject({
+          message: 'You can only one of the top two cards from the deck while resolving a seven',
+        });
       }
+      return Promise.reject({ message: "It's not your turn" });
     }) //End changeAndSave()
     .then(function populateGame(values) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);

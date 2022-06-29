@@ -3,11 +3,11 @@ module.exports = function userHook(sails) {
   // User API  //
   ///////////////
   return {
-    findUserByUsername: function(username) {
-      return new Promise(function(resolve, reject) {
+    findUserByUsername: function (username) {
+      return new Promise(function (resolve, reject) {
         User.findOne({
           username: username,
-        }).exec(function(error, user) {
+        }).exec(function (error, user) {
           if (error) {
             reject(error);
           } else if (!user) {
@@ -19,9 +19,9 @@ module.exports = function userHook(sails) {
       });
     },
 
-    findUser: function(id) {
-      return new Promise(function(resolve, reject) {
-        User.findOne(id).exec(function(error, user) {
+    findUser: function (id) {
+      return new Promise(function (resolve, reject) {
+        User.findOne(id).exec(function (error, user) {
           if (error) {
             reject(error);
           } else if (!user) {
@@ -33,28 +33,28 @@ module.exports = function userHook(sails) {
       });
     },
 
-    createUser: function(username, encryptedPassword) {
-      return new Promise(function(resolve, reject) {
+    createUser: function (username, encryptedPassword) {
+      return new Promise(function (resolve, reject) {
         User.create({
           username: username,
           encryptedPassword: encryptedPassword,
         })
           .fetch()
-          .then(user => {
+          .then((user) => {
             return resolve(user);
           })
-          .catch(err => {
+          .catch((err) => {
             const res = err ? err : { message: 'Could not create user' };
             return reject(res);
           });
       }); //End of returned promise
     },
 
-    findUserById: function(id) {
-      return new Promise(function(resolve, reject) {
+    findUserById: function (id) {
+      return new Promise(function (resolve, reject) {
         User.findOne({
           id: id,
-        }).exec(function(error, user) {
+        }).exec(function (error, user) {
           if (error) {
             reject(error);
           } else if (!user) {

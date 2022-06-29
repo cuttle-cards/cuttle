@@ -1,10 +1,10 @@
 var gameAPI = sails.hooks['customgamehook'];
 
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   if (req.body.gameName) {
     gameAPI
       .createGame(req.body.gameName)
-      .then(function(game) {
+      .then(function (game) {
         sails.sockets.broadcast('GameList', 'gameCreated', {
           id: game.id,
           name: game.name,
@@ -13,7 +13,7 @@ module.exports = function(req, res) {
         });
         return res.ok({ gameId: game.id });
       })
-      .catch(function(reason) {
+      .catch(function (reason) {
         res.badRequest(reason);
       });
   }
