@@ -28,16 +28,18 @@
           Watch the official cuttle.cards tutorial to learn the rules and get a feel for the flow of
           the game.
         </p>
-        <iframe
-          :width="videoWidth"
-          :height="videoHeight"
-          class="align-self-center my-4"
-          src="https://www.youtube.com/embed/qOqkNbhMdsI"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        />
+        <div class="video-container__wrapper align-self-center my-4">
+          <div class="video-container">
+            <iframe
+              class="video-container__video"
+              src="https://www.youtube.com/embed/qOqkNbhMdsI"
+              title="Cuttle Game Tutorial -- Youtube Player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            />
+          </div>
+        </div>
       </v-row>
       <!-- Goal -->
       <v-row class="flex-column align-start mt-5">
@@ -398,24 +400,6 @@ export default {
       }
       return 'Sign Up to Play Online';
     },
-    videoWidth() {
-      switch (this.$vuetify.breakpoint.name) {
-        case 'xs':
-        case 'sm':
-          return 300;
-        case 'md':
-          return 560;
-        case 'lg':
-          return 800;
-        case 'xl':
-          return 1000;
-        default:
-          return 560;
-      }
-    },
-    videoHeight() {
-      return (this.videoWidth * 315) / 560;
-    },
   },
   methods: {
     selectRule(rowIndex, colIndex) {
@@ -467,5 +451,26 @@ export default {
 #logo {
   height: 20vh;
   margin: 0 auto;
+}
+
+.video-container__wrapper {
+  width: 65%;
+}
+
+/* https://css-tricks.com/fluid-width-video/ */
+.video-container {
+  position: relative;
+  padding: 0 0 56.25%;
+  height: 0;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.video-container__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
