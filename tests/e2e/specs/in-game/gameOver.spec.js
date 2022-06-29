@@ -160,26 +160,14 @@ describe('Losing the game', () => {
     cy.log('Fixture loaded');
 
     cy.get('#game-menu-activator').click();
-    cy.get('#game-menu')
-      .should('be.visible')
-      .get('[data-cy=concede-initiate]')
-      .click();
+    cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
     // Cancel Concede
-    cy.get('#concede-menu')
-      .should('be.visible')
-      .get('[data-cy=concede-cancel]')
-      .click();
+    cy.get('#concede-menu').should('be.visible').get('[data-cy=concede-cancel]').click();
     cy.get('#concede-menu').should('not.be.visible');
     // Re-open concede menu and confirm concession
     cy.get('#game-menu-activator').click();
-    cy.get('#game-menu')
-      .should('be.visible')
-      .get('[data-cy=concede-initiate]')
-      .click();
-    cy.get('#concede-menu')
-      .should('be.visible')
-      .get('[data-cy=concede-confirm]')
-      .click();
+    cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
+    cy.get('#concede-menu').should('be.visible').get('[data-cy=concede-confirm]').click();
     assertLoss();
     goHomeJoinNewGame();
   });
@@ -201,28 +189,20 @@ describe('Stalemates', () => {
 
     cy.deleteDeck();
     cy.log('Drawing last two cards');
-    cy.get('#deck')
-      .should('contain', '(2)')
-      .click();
+    cy.get('#deck').should('contain', '(2)').click();
     cy.drawCardOpponent();
     cy.log('Deck empty');
 
     //Pass three times for stalemate
     cy.get('#turn-indicator').contains('YOUR TURN');
-    cy.get('#deck')
-      .should('contain', '(0)')
-      .should('contain', 'PASS')
-      .click();
+    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
     cy.log('Should log the passing');
     cy.get('#history').contains(`${username} passes`);
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
     cy.get('#history').contains(`${opponentUsername} passes`);
     cy.get('#turn-indicator').contains('YOUR TURN');
-    cy.get('#deck')
-      .should('contain', '(0)')
-      .should('contain', 'PASS')
-      .click();
+    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
 
     assertStalemate();
     goHomeJoinNewGame();
@@ -245,18 +225,13 @@ describe('Stalemates', () => {
     cy.get('#deck').should('contain', '(2)');
     cy.log('Drawing last two cards');
     cy.drawCardOpponent();
-    cy.get('#deck')
-      .should('contain', '(1)')
-      .click();
+    cy.get('#deck').should('contain', '(1)').click();
     cy.log('Deck empty');
 
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
-    cy.get('#deck')
-      .should('contain', '(0)')
-      .should('contain', 'PASS')
-      .click();
+    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
 

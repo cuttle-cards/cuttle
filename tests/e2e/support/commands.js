@@ -11,21 +11,21 @@ Cypress.Commands.add('wipeDatabase', () => {
 });
 Cypress.Commands.add('setBadSession', () => {
   return new Promise((resolve, reject) => {
-    io.socket.get('/test/badSession', function(res) {
+    io.socket.get('/test/badSession', function (res) {
       return resolve();
     });
   });
 });
-Cypress.Commands.add('loadSeasonFixture', season => {
+Cypress.Commands.add('loadSeasonFixture', (season) => {
   return new Promise((resolve, reject) => {
-    io.socket.post('/test/loadSeasonFixture', season, function(res) {
+    io.socket.post('/test/loadSeasonFixture', season, function (res) {
       return resolve();
     });
   });
 });
-Cypress.Commands.add('loadMatchFixtures', matches => {
+Cypress.Commands.add('loadMatchFixtures', (matches) => {
   return new Promise((resolve, reject) => {
-    io.socket.post('/test/loadMatchFixtures', matches, function(res, jwres) {
+    io.socket.post('/test/loadMatchFixtures', matches, function (res, jwres) {
       if (jwres.statusCode !== 200) {
         return reject(new Error('Error loading match fixtures'));
       }
@@ -35,7 +35,7 @@ Cypress.Commands.add('loadMatchFixtures', matches => {
 });
 Cypress.Commands.add('requestGameList', () => {
   return new Promise((resolve, reject) => {
-    io.socket.get('/game/getList', function(res) {
+    io.socket.get('/game/getList', function (res) {
       return resolve();
     });
   });
@@ -48,7 +48,7 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
         username,
         password,
       },
-      function(res, jwres) {
+      function (res, jwres) {
         if (jwres.statusCode !== 200) {
           return reject(new Error('Failed to sign up via command'));
         }
@@ -58,16 +58,12 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
   });
 });
 Cypress.Commands.add('signupPlayer', (username, password) => {
-  cy.window()
-    .its('app.$store')
-    .invoke('dispatch', 'requestSignup', { username, password });
+  cy.window().its('app.$store').invoke('dispatch', 'requestSignup', { username, password });
 });
 Cypress.Commands.add('loginPlayer', (username, password) => {
-  cy.window()
-    .its('app.$store')
-    .invoke('dispatch', 'requestLogin', { username, password });
+  cy.window().its('app.$store').invoke('dispatch', 'requestLogin', { username, password });
 });
-Cypress.Commands.add('createGameOpponent', name => {
+Cypress.Commands.add('createGameOpponent', (name) => {
   return new Promise((resolve, reject) => {
     io.socket.post(
       '/game/create',
@@ -83,13 +79,10 @@ Cypress.Commands.add('createGameOpponent', name => {
     );
   });
 });
-Cypress.Commands.add('createGamePlayer', name => {
-  return cy
-    .window()
-    .its('app.$store')
-    .invoke('dispatch', 'requestCreateGame', name);
+Cypress.Commands.add('createGamePlayer', (name) => {
+  return cy.window().its('app.$store').invoke('dispatch', 'requestCreateGame', name);
 });
-Cypress.Commands.add('subscribeOpponent', id => {
+Cypress.Commands.add('subscribeOpponent', (id) => {
   return new Promise((resolve, reject) => {
     io.socket.get(
       '/game/subscribe',
@@ -105,7 +98,7 @@ Cypress.Commands.add('subscribeOpponent', id => {
     );
   });
 });
-Cypress.Commands.add('readyOpponent', id => {
+Cypress.Commands.add('readyOpponent', (id) => {
   return new Promise((resolve, reject) => {
     io.socket.get(
       '/game/ready',
@@ -121,7 +114,7 @@ Cypress.Commands.add('readyOpponent', id => {
     );
   });
 });
-Cypress.Commands.add('leaveLobbyOpponent', id => {
+Cypress.Commands.add('leaveLobbyOpponent', (id) => {
   return new Promise((resolve, reject) => {
     io.socket.get('/game/leaveLobby', { id }, function handleResponse(_, jwres) {
       if (jwres.statusCode === 200) {
@@ -144,15 +137,15 @@ Cypress.Commands.add('drawCardOpponent', () => {
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('playPointsOpponent', card => {
+Cypress.Commands.add('playPointsOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent points: Invalid card input');
   }
   return cy
     .window()
     .its('app.$store.getters.opponent')
-    .then(opponent => {
-      const foundCard = opponent.hand.find(handCard => cardsMatch(card, handCard));
+    .then((opponent) => {
+      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
           `Error playing opponents points: could not find ${card.rank} of ${card.suit} in opponent hand`
@@ -177,15 +170,15 @@ Cypress.Commands.add('playPointsOpponent', card => {
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('playFaceCardOpponent', card => {
+Cypress.Commands.add('playFaceCardOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent Face Card: Invalid card input');
   }
   return cy
     .window()
     .its('app.$store.getters.opponent')
-    .then(opponent => {
-      const foundCard = opponent.hand.find(handCard => cardsMatch(card, handCard));
+    .then((opponent) => {
+      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
           `Error playing opponents Face Card: could not find ${card.rank} of ${card.suit} in opponent hand`
@@ -217,11 +210,11 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const player = game.players[game.myPNum];
       const opponent = game.players[(game.myPNum + 1) % 2];
-      const foundCard = opponent.hand.find(handCard => cardsMatch(card, handCard));
-      const foundTarget = player.points.find(pointCard => cardsMatch(target, pointCard));
+      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
+      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
       if (!foundCard) {
         throw new Error(
           `Error playing opponents jack: could not find ${card.rank} of ${card.suit} in opponent hand`
@@ -261,11 +254,11 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const player = game.players[game.myPNum];
       const opponent = game.players[(game.myPNum + 1) % 2];
-      const foundCard = opponent.hand.find(handCard => cardsMatch(card, handCard));
-      const foundTarget = player.points.find(pointCard => cardsMatch(target, pointCard));
+      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
+      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
       if (!foundCard) {
         throw new Error(
           `Error scuttling as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`
@@ -292,17 +285,17 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
       );
     });
 });
-Cypress.Commands.add('playOneOffOpponent', card => {
+Cypress.Commands.add('playOneOffOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot scuttle as opponent: Invalid card input');
   }
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const playerId = game.players[game.myPNum].id;
       const opponent = game.players[(game.myPNum + 1) % 2];
-      const foundCard = opponent.hand.find(handCard => cardsMatch(card, handCard));
+      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
           `Error playing untargetted one-off as opponent: could not find ${printCard(
@@ -345,23 +338,23 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const player = game.players[game.myPNum];
       const playerId = player.id;
       const opponent = game.players[(game.myPNum + 1) % 2];
-      const foundCard = opponent.hand.find(handCard => cardsMatch(card, handCard));
+      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       let foundTarget;
       let foundPointCard;
       switch (targetType) {
         case 'point':
-          foundTarget = player.points.find(pointCard => cardsMatch(pointCard, target));
+          foundTarget = player.points.find((pointCard) => cardsMatch(pointCard, target));
           break;
         case 'faceCard':
-          foundTarget = player.faceCards.find(faceCard => cardsMatch(faceCard, target));
+          foundTarget = player.faceCards.find((faceCard) => cardsMatch(faceCard, target));
           break;
         case 'jack':
-          player.points.forEach(pointCard => {
-            pointCard.attachments.forEach(jack => {
+          player.points.forEach((pointCard) => {
+            pointCard.attachments.forEach((jack) => {
               if (cardsMatch(jack, target)) {
                 foundTarget = jack;
                 foundPointCard = pointCard;
@@ -417,17 +410,17 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('counterOpponent', card => {
+Cypress.Commands.add('counterOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play counter as opponent: Invalid card input');
   }
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const opponent = game.players[(game.myPNum + 1) % 2];
       const playerId = game.players[game.myPNum].id;
-      const foundCard = opponent.hand.find(handCard => cardsMatch(card, handCard));
+      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
           `Error countering as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`
@@ -450,16 +443,16 @@ Cypress.Commands.add('counterOpponent', card => {
     });
 });
 
-Cypress.Commands.add('resolveThreeOpponent', card => {
+Cypress.Commands.add('resolveThreeOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot resolve three as opponent: Invalid card input');
   }
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const opId = game.players[game.myPNum].id;
-      const foundCard = game.scrap.find(scrapCard => cardsMatch(card, scrapCard));
+      const foundCard = game.scrap.find((scrapCard) => cardsMatch(card, scrapCard));
       if (!foundCard) {
         throw new Error(
           `Error resolving three as opponent: could not find ${card.rank} of ${card.suit} in scrap`
@@ -485,7 +478,7 @@ Cypress.Commands.add('resolveOpponent', () => {
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const opId = game.players[game.myPNum].id;
       io.socket.get(
         '/game/resolve',
@@ -511,7 +504,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       let cardId1 = undefined;
       let cardId2 = undefined;
       if (card1) {
@@ -539,7 +532,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('playPointsFromSevenOpponent', card => {
+Cypress.Commands.add('playPointsFromSevenOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent points: Invalid card input');
   }
@@ -551,7 +544,7 @@ Cypress.Commands.add('playPointsFromSevenOpponent', card => {
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       let foundCard;
       let index;
       if (cardsMatch(card, game.topCard)) {
@@ -588,7 +581,7 @@ Cypress.Commands.add('playPointsFromSevenOpponent', card => {
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('playFaceCardFromSevenOpponent', card => {
+Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent face card: Invalid card input');
   }
@@ -600,7 +593,7 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', card => {
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       let foundCard;
       let index;
       if (cardsMatch(card, game.topCard)) {
@@ -650,11 +643,11 @@ Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const player = game.players[game.myPNum];
       const opponent = game.players[(game.myPNum + 1) % 2];
-      let foundCard = opponent.hand.find(handCard => cardsMatch(card, handCard));
-      const foundTarget = player.points.find(pointCard => cardsMatch(target, pointCard));
+      let foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
+      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
 
       let index;
       if (cardsMatch(card, game.topCard)) {
@@ -714,11 +707,11 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const player = game.players[game.myPNum];
       const opponent = game.players[(game.myPNum + 1) % 2];
       let foundCard;
-      const foundTarget = player.points.find(pointCard => cardsMatch(target, pointCard));
+      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
 
       let index;
       if (cardsMatch(card, game.topCard)) {
@@ -763,7 +756,7 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('playOneOffFromSevenOpponent', card => {
+Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent one-ff from seven: Invalid card input');
   }
@@ -775,7 +768,7 @@ Cypress.Commands.add('playOneOffFromSevenOpponent', card => {
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       let foundCard;
       let index;
       if (cardsMatch(card, game.topCard)) {
@@ -837,7 +830,7 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const player = game.players[game.myPNum];
       if (cardsMatch(card, game.topCard)) {
         foundCard = game.topCard;
@@ -855,14 +848,14 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
       // Find target by suit & rank
       switch (targetType) {
         case 'point':
-          foundTarget = player.points.find(pointCard => cardsMatch(pointCard, target));
+          foundTarget = player.points.find((pointCard) => cardsMatch(pointCard, target));
           break;
         case 'faceCard':
-          foundTarget = player.faceCards.find(faceCard => cardsMatch(faceCard, target));
+          foundTarget = player.faceCards.find((faceCard) => cardsMatch(faceCard, target));
           break;
         case 'jack':
-          player.points.forEach(pointCard => {
-            pointCard.attachments.forEach(jack => {
+          player.points.forEach((pointCard) => {
+            pointCard.attachments.forEach((jack) => {
               if (cardsMatch(jack, target)) {
                 foundTarget = jack;
                 foundPointCard = pointCard;
@@ -954,7 +947,7 @@ Cypress.Commands.add('reconnectOpponent', (username, password) => {
 /**
  * @param card: {suit: number, rank: number}
  */
-Cypress.Commands.add('playOneOffAndResolveAsPlayer', card => {
+Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error(`Cannot one-off & resolve: Invalid card to play: ${JSON.stringify(card)}`);
   }
@@ -965,8 +958,10 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', card => {
   });
   cy.window()
     .its('app.$store.state.game')
-    .then(game => {
-      const foundCard = game.players[game.myPNum].hand.find(handCard => cardsMatch(card, handCard));
+    .then((game) => {
+      const foundCard = game.players[game.myPNum].hand.find((handCard) =>
+        cardsMatch(card, handCard)
+      );
       if (!foundCard) {
         throw new Error(
           `Cannot one-off & resolve: cannot find ${printCard(card)} in player's hand`
@@ -974,9 +969,7 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', card => {
       }
       // Play chosen card as one-off
       cy.get(`[data-player-hand-card=${card.rank}-${card.suit}]`).click();
-      cy.get('[data-move-choice=oneOff]')
-        .should('not.have.class', 'v-card--disabled')
-        .click();
+      cy.get('[data-move-choice=oneOff]').should('not.have.class', 'v-card--disabled').click();
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
@@ -994,10 +987,8 @@ Cypress.Commands.add('deleteDeck', () => {
   });
 });
 
-Cypress.Commands.add('vueRoute', route => {
-  cy.window()
-    .its('app.$router')
-    .invoke('push', route);
+Cypress.Commands.add('vueRoute', (route) => {
+  cy.window().its('app.$router').invoke('push', route);
 });
 
 /**
@@ -1013,11 +1004,11 @@ Cypress.Commands.add('vueRoute', route => {
  *   secondCard?: {suit: number, rank: number} (optional)
  * }
  */
-Cypress.Commands.add('loadGameFixture', fixture => {
+Cypress.Commands.add('loadGameFixture', (fixture) => {
   return cy
     .window()
     .its('app.$store.state.game')
-    .then(game => {
+    .then((game) => {
       const p0HandCardIds = getCardIds(game, fixture.p0Hand);
       const p0PointCardIds = getCardIds(game, fixture.p0Points);
       const p0FaceCardIds = getCardIds(game, fixture.p0FaceCards);
