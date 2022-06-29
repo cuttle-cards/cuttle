@@ -4,19 +4,23 @@ module.exports = {
     node: true,
     es6: true,
   },
+
   extends: [
     'plugin:vue/recommended',
     'plugin:vue/essential',
     'eslint:recommended',
     'plugin:prettier/recommended',
   ],
+
   plugins: ['jest', 'cypress'],
+
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
     parser: '@babel/eslint-parser',
     requireConfigFile: false,
   },
+
   rules: {
     'prettier/prettier': 'error',
     'max-len': [
@@ -35,12 +39,24 @@ module.exports = {
         allowElseIf: true,
       },
     ],
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },
+
   overrides: [
     {
-      files: ['**/tests/*.{j,t}s?(x)', '**/tests/unit/**/*.{j,t}s?(x)'],
+      files: ['**/tests/unit/**/*.{j,t}s?(x)'],
       env: {
         jest: true,
+      },
+      rules: {
+        'import/no-unresolved': ['off'],
+      },
+    },
+    {
+      files: ['**/tests/e2e/**/*.{j,t}s?(x)'],
+      env: {
+        'cypress/globals': true,
       },
       globals: {
         badRequest: true,
@@ -56,15 +72,7 @@ module.exports = {
         'import/no-unresolved': ['off'],
       },
     },
-    {
-      files: ['**/tests/e2e/**/*.{j,t}s?(x)'],
-      env: {
-        'cypress/globals': true,
-      },
-      rules: {
-        'import/no-unresolved': ['off'],
-      },
-    },
   ],
+
   root: true,
 };
