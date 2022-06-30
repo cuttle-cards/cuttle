@@ -32,7 +32,7 @@ module.exports = function (req, res) {
           sails.sockets.blast('gameStarting', { gameId: game.id });
 
           // Create Cards
-          return new Promise(function makeDeck(resolveMakeDeck, rejectmakeDeck) {
+          return new Promise(function makeDeck(resolveMakeDeck) {
             const findP0 = userService.findUser({ userId: game.players[0].id });
             const findP1 = userService.findUser({ userId: game.players[1].id });
             const data = [Promise.resolve(game), findP0, findP1];
@@ -106,7 +106,7 @@ module.exports = function (req, res) {
         });
         return Game.updateOne({ id: game.id }).set(gameUpdates);
       }) //End foundRecords
-      .then(function respond(values) {
+      .then(function respond() {
         return res.ok();
       })
       .catch(function failed(err) {

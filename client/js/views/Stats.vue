@@ -111,7 +111,7 @@ export default {
   },
   created() {
     this.loadingData = true;
-    io.socket.get('/stats', (res, jwres) => {
+    io.socket.get('/stats', (res) => {
       this.seasons = res;
       this.selectedSeason = this.seasons[0];
       this.loadingData = false;

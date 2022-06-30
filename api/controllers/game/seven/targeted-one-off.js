@@ -29,12 +29,12 @@ module.exports = function (req, res) {
                 break;
               case 1:
                 if (target.faceCards === opponent.id && target.rank === 12) {
-                } else {
-                  return Promise.reject({
-                    message: "Your opponent's queen prevents you from targeting their other cards",
-                  });
+                  // break early
+                  break;
                 }
-                break;
+                return Promise.reject({
+                  message: "Your opponent's queen prevents you from targeting their other cards",
+                });
               default:
                 return Promise.reject({
                   message:

@@ -16,7 +16,7 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
 
-  plugins: ['jest', 'cypress'],
+  plugins: ['cypress', 'jest', 'prettier'],
 
   parserOptions: {
     ecmaVersion: 2018,
@@ -26,6 +26,7 @@ module.exports = {
   },
 
   globals: {
+    _: 'readonly',
     sails: 'readonly',
   },
 
@@ -34,19 +35,23 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'max-len': [
-      'warn', {
+      'warn',
+      {
         code: 110,
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
       },
     ],
     'vue/html-indent': ['error'],
+    'vue/multi-word-component-names': ['warn'],
     'prefer-destructuring': ['warn'],
     'no-else-return': [
-      'warn', {
+      'warn',
+      {
         allowElseIf: true,
       },
     ],
+    'no-case-declarations': 'warn',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },

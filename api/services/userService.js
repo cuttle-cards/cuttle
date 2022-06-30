@@ -3,7 +3,7 @@ module.exports = {
    **Find User by Id
    ****options = {userId: integer}
    */
-  findUser: function (options, done) {
+  findUser: function (options) {
     return new Promise(function (resolve, reject) {
       if (options) {
         if (options.hasOwnProperty('userId')) {
@@ -33,7 +33,7 @@ module.exports = {
    **Save User and Return it as a Promise
    ****options = {user: UserModel}
    */
-  saveUser: function (options, done) {
+  saveUser: function (options) {
     return new Promise(function (resolve, reject) {
       options.user.save(function (err) {
         if (err) {

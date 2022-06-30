@@ -1,4 +1,4 @@
-module.exports = function gameHook(sails) {
+module.exports = function gameHook() {
   //////////////
   // Game API //
   //////////////

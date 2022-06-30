@@ -1,4 +1,4 @@
-module.exports = function (sails) {
+module.exports = function () {
   const passwords = require('machinepack-passwords');
   return {
     encryptPass: function (pass) {

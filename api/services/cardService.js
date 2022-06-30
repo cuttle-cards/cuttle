@@ -26,7 +26,7 @@ module.exports = {
    **Create Card from suit, rank, and gameId
    *****options = {suit: integer, rank: integer, gameId: integer}
    */
-  createCard: function (options, done) {
+  createCard: function (options) {
     return new Promise(function (resolve, reject) {
       var validArgs =
         options.suit > -1 &&
@@ -42,7 +42,6 @@ module.exports = {
         var str_suit = '';
         var str_name = '';
         var ruleText = '';
-        var img = '';
         // Stringify Rank
         switch (rank) {
           case 1:
@@ -57,8 +56,6 @@ module.exports = {
           case 13:
             str_rank = 'King';
             break;
-          case 1:
-            str_rank = 'Ace';
           default:
             str_rank = rank;
             break;

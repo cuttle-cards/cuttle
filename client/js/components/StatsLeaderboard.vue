@@ -137,7 +137,8 @@ export default {
       }
       return this.playerWins.map((playerWins) => {
         const res = { total: 0 };
-        const { total, ...weeks } = playerWins;
+        const { ...weeks } = playerWins;
+        debugger;
         for (const weekNum in { ...weeks }) {
           let pointsThisWeek = 0;
           if (this.topWinCountsPerWeek[weekNum].first === 0) {
@@ -265,7 +266,7 @@ export default {
       let playerMatches;
       // Aggregate all matches if looking at total
       if (weekNum === 'total') {
-        playerMatches = Object.entries(playerStats.matches).reduce((wins, [week, matches]) => {
+        playerMatches = Object.entries(playerStats.matches).reduce((wins, [, matches]) => {
           return [...wins, ...matches];
         }, []);
         // Otherwise just show this week's matches

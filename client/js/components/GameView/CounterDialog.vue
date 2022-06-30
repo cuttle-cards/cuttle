@@ -3,8 +3,8 @@
     <v-card v-if="oneOff && !choseToCounter" id="counter-dialog">
       <v-card-title>Chance to Counter</v-card-title>
       <v-card-text>
-        <span v-if="!opponentLastTwo"
-          >Your opponent has played the {{ oneOff.name }} as a one-off
+        <span v-if="!opponentLastTwo">
+          Your opponent has played the {{ oneOff.name }} as a one-off
           <span v-if="target"> targeting your {{ target.name }}</span>
         </span>
         <span v-else>

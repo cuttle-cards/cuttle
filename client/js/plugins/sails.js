@@ -116,8 +116,6 @@ io.socket.on('game', function (evData) {
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
           break;
       }
-    default:
-      break;
   }
 });
 

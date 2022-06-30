@@ -1,4 +1,4 @@
-module.exports = function userHook(sails) {
+module.exports = function userHook() {
   ///////////////
   // User API  //
   ///////////////

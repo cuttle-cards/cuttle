@@ -14,7 +14,7 @@ module.exports = {
       Season.destroy({}),
       Match.destroy({}),
     ])
-      .then((values) => {
+      .then(() => {
         return res.ok();
       })
       .catch((err) => {

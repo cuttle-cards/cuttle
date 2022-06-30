@@ -1066,7 +1066,6 @@ export default {
           return;
         case 9:
           this.playTargetedOneOff(targetIndex, targetType);
-        default:
           return;
       }
     },

@@ -89,7 +89,7 @@ module.exports = {
    ** Return a fully populated Game as a Promise
    ****options = {gameId: gameId}
    */
-  populateGame: function (options, done) {
+  populateGame: function (options) {
     return new Promise(function (resolve, reject) {
       if (options) {
         if (options.hasOwnProperty('gameId') && typeof options.gameId === 'number') {
@@ -158,7 +158,7 @@ module.exports = {
       winner: null,
       conceded: false,
     };
-    const { game, gameModel } = options;
+    const { game } = options;
     const p0Wins = userService.checkWin({ user: game.players[0] });
     const p1Wins = userService.checkWin({ user: game.players[1] });
     if (p0Wins || p1Wins) {
