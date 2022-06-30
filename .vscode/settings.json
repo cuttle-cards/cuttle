@@ -1,6 +1,6 @@
 {
   "editor.tabSize": 2,
-  "vetur.format.options.useTabs": true,
+  "vetur.format.options.useTabs": false,
   "prettier.enable": false,
-  "prettier.useTabs": true
+  "prettier.useTabs": false
 }

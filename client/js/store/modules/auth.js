@@ -11,7 +11,7 @@ export default {
       state.authenticated = true;
       state.username = username;
     },
-    authFailure(state) {
+    clearAuth(state) {
       state.authenticated = false;
       state.username = null;
     },
@@ -33,7 +33,7 @@ export default {
               context.commit('authSuccess', data.username);
               return resolve();
             }
-            context.commit('authFailure');
+            context.commit('clearAuth');
             return reject(jwres.body.message);
           }
         );
@@ -61,7 +61,7 @@ export default {
             } else {
               message = new Error('Unknown error signing up');
             }
-            context.commit('authFailure');
+            context.commit('clearAuth');
             return reject(message);
           }
         );
@@ -72,6 +72,7 @@ export default {
       return new Promise((resolve, reject) => {
         io.socket.get('/user/logout', {}, function handleResponse(resData, jwres) {
           if (jwres.statusCode === 200) {
+            context.commit('clearAuth');
             return resolve();
           }
           return reject(new Error('Error logging out :('));
@@ -100,7 +101,7 @@ export default {
               context.commit('setMyPNum', myPNum);
               return resolve();
             }
-            context.commit('authFailure');
+            context.commit('clearAuth');
             return reject(res.message);
           }
         );

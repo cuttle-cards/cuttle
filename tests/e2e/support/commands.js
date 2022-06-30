@@ -16,6 +16,23 @@ Cypress.Commands.add('setBadSession', () => {
     });
   });
 });
+Cypress.Commands.add('loadSeasonFixture', season => {
+  return new Promise((resolve, reject) => {
+    io.socket.post('/test/loadSeasonFixture', season, function(res) {
+      return resolve();
+    });
+  });
+});
+Cypress.Commands.add('loadMatchFixtures', matches => {
+  return new Promise((resolve, reject) => {
+    io.socket.post('/test/loadMatchFixtures', matches, function(res, jwres) {
+      if (jwres.statusCode !== 200) {
+        return reject(new Error('Error loading match fixtures'));
+      }
+      return resolve();
+    });
+  });
+});
 Cypress.Commands.add('requestGameList', () => {
   return new Promise((resolve, reject) => {
     io.socket.get('/game/getList', function(res) {

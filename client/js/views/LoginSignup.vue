@@ -56,6 +56,11 @@
     </v-row>
     <v-row class="mt-0">
       <v-col md="6" sm="12" class="d-flex justify-start flex-column mt-4">
+        <blockquote class="quote">
+          "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of
+          game - had I known about it in college - I would have worn decks ragged through play"
+          <cite>Richard Garfield - Creator of Magic: The Gathering</cite>
+        </blockquote>
         <p>
           Cuttle is a 2 player battle card game played with a standard 52-card deck of cards. It has
           the strategic nuance of trading card games like Magic, with the elegant balance of a
@@ -71,7 +76,7 @@
           text
           color="primary"
           to="rules"
-          class="mt-2 align-self-center"
+          class="mt-4 align-self-center"
           max-width="500"
           data-cy="rules-link"
         >
@@ -118,6 +123,9 @@ export default {
       }
       return 'Already have an account?';
     },
+  },
+  mounted() {
+    this.$store.dispatch('requestLogout');
   },
   methods: {
     submitLogin() {
@@ -198,7 +206,15 @@ export default {
   justify-content: center;
   margin-top: 16px;
 }
-@media (orientation: landscape) and (max-width: 979px) {
+blockquote.quote {
+  padding: 0px 16px;
+  border-left: 2px solid var(--v-neutral-base);
+  margin: 16px 0;
+  & cite {
+    display: block;
+  }
+}
+@media (orientation: landscape) and (max-width: 960px) {
   #logo {
     width: 64px;
     height: 64px;

@@ -10,7 +10,10 @@ module.exports = {
       schema: true,
       url: process.env.DATABASE_URL,
       // Use SSL to connect to remote db e.g. heroku
-      // ssl: true,
+      // ssl: {
+      //   sslmode: 'require',
+      //   rejectUnauthorized: false,
+      // },
     },
   }, // end datastores
 
@@ -20,7 +23,7 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    migrate: 'alter',
+    migrate: 'safe',
   },
 
   /***************************************************************************
