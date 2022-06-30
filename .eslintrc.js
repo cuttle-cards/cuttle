@@ -25,13 +25,16 @@ module.exports = {
     requireConfigFile: false,
   },
 
+  globals: {
+    sails: 'readonly',
+  },
+
   ignorePatterns: ['/node_modules/*', '/assets/*'],
 
   rules: {
     'prettier/prettier': 'error',
     'max-len': [
-      'warn',
-      {
+      'warn', {
         code: 110,
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
@@ -40,8 +43,7 @@ module.exports = {
     'vue/html-indent': ['error'],
     'prefer-destructuring': ['warn'],
     'no-else-return': [
-      'warn',
-      {
+      'warn', {
         allowElseIf: true,
       },
     ],
@@ -50,6 +52,15 @@ module.exports = {
   },
 
   overrides: [
+    // Sails specific rules
+    {
+      files: ['**/api/**/*.{j,t}s?(x)'],
+      rules: {
+        'no-undef': 'warn',
+        'no-prototype-builtins': 'warn',
+      },
+    },
+    // Jest specific rules
     {
       files: ['**/tests/unit/**/*.{j,t}s?(x)'],
       env: {
@@ -57,6 +68,7 @@ module.exports = {
       },
       rules: sharedTestRules,
     },
+    // Cypress specific rules
     {
       files: ['**/tests/e2e/**/*.{j,t}s?(x)'],
       env: {
