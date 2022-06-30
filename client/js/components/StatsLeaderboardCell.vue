@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip v-if="points" top>
+  <v-menu v-if="points" top v-model="showMenu">
     <template #activator="{on, attrs}">
       <v-chip
         :color="colorForScore"
@@ -14,8 +14,18 @@
         {{ chipText }}
       </v-chip>
     </template>
-    {{ playersBeaten }}
-  </v-tooltip>
+    <v-card>
+      <v-card-title>Players Beaten</v-card-title>
+      <v-card-text>
+        <v-list>
+          {{ playersBeaten }}
+        </v-list>
+      </v-card-text>
+      <v-card-actions class="d-flex justify-end">
+        <v-btn outlined color="primary" @click="showMenu = false">Close</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-menu>
 </template>
 
 <script>
@@ -45,6 +55,11 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      showMenu: false,
+    };
   },
   computed: {
     theme() {
