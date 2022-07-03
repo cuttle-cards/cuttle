@@ -1,8 +1,8 @@
 {
   "editor.tabSize": 2,
-  "vetur.format.options.useTabs": false,
+  "eslint.lintTask.enable": true,
+  "html.format.wrapLineLength": 110,
   "prettier.enable": false,
   "prettier.useTabs": false,
-  "eslint.lintTask.enable": true,
-  "html.format.wrapLineLength": 110
+  "editor.rulers": [110]
 }

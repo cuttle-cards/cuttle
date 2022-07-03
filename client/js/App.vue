@@ -1,21 +1,15 @@
+<script setup>
+import NavigationDrawer from './components/NavigationDrawer.vue';
+</script>
+
 <template>
   <v-app id="app">
-    <navigation-drawer />
+    <NavigationDrawer />
     <v-main>
       <router-view />
     </v-main>
   </v-app>
 </template>
-
-<script>
-import NavigationDrawer from './components/NavigationDrawer.vue';
-
-export default {
-  components: {
-    NavigationDrawer,
-  },
-};
-</script>
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap');

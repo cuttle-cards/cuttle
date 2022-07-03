@@ -13,7 +13,7 @@ module.exports = {
 
   pages: {
     index: {
-      entry: 'client/js/main.js',
+      entry: 'client/js/main.ts',
       template: 'client/public/index.html',
       filename: 'index.html',
       // We never want devtools for production, and want to opt in for dev builds
@@ -34,6 +34,7 @@ module.exports = {
         }
       : {}),
     resolve: {
+      // Must match alias definitions in tsconfig.js
       alias: {
         '@': path.resolve(__dirname, 'client/js'),
       },

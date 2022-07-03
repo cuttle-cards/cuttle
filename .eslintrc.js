@@ -10,10 +10,11 @@ module.exports = {
   },
 
   extends: [
-    'plugin:vue/recommended',
-    'plugin:vue/essential',
     'eslint:recommended',
+    '@vue/typescript/recommended',
     'plugin:prettier/recommended',
+    'plugin:vue/recommended',
+    '@vue/standard',
   ],
 
   plugins: ['cypress', 'jest', 'prettier'],
@@ -21,7 +22,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
-    parser: '@babel/eslint-parser',
+    parser: '@typescript-eslint/parser',
     requireConfigFile: false,
   },
 
@@ -42,9 +43,10 @@ module.exports = {
         ignoreTemplateLiterals: true,
       },
     ],
-    'vue/html-indent': ['error'],
-    'vue/multi-word-component-names': ['warn'],
-    'prefer-destructuring': ['warn'],
+    'vue/html-indent': 'error',
+    'vue/multi-word-component-names': 'warn',
+    'vue/script-setup-uses-vars': 'error',
+    'prefer-destructuring': 'warn',
     'no-else-return': [
       'warn',
       {
@@ -92,6 +94,4 @@ module.exports = {
       rules: sharedTestRules,
     },
   ],
-
-  root: true,
 };

@@ -49,7 +49,7 @@
 import { uniq } from 'lodash';
 import StatsLeaderboardCell from '@/components/StatsLeaderboardCell.vue';
 
-const Result = require('../../../types/Result');
+import Result from '../../../types/Result';
 
 export const Metrics = {
   POINTS_AND_WINS: 1,
