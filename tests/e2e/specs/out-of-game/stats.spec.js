@@ -70,7 +70,7 @@ describe('Stats Page Error States', () => {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it('Displays Headers, Cards, and Table', () => {
+  it.only('Displays Headers, Cards, and Table', () => {
     const [seasonOne] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
     cy.get('[data-cy=season-start-date').should(
@@ -92,6 +92,7 @@ describe('Stats Page', () => {
     cy.get('[data-rank=Player1]').contains(1);
     cy.get("[data-week-1='Player1']").contains('W: 3, P: 5');
     cy.get("[data-week-total='Player1']").contains('W: 6, P: 10');
+    cy.get('[data-week-total=Player2]').contains('W: 5, P: 9');
     cy.get("[data-week-1='Player5']").contains('W: 1, P: 3');
     cy.get('tr.active-user-stats').contains(playerOne.username);
   });

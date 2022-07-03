@@ -137,9 +137,12 @@ export default {
       }
       return this.playerWins.map((playerWins) => {
         const res = { total: 0 };
-        const { ...weeks } = playerWins;
-        debugger;
-        for (const weekNum in { ...weeks }) {
+
+        // We need the entire playerWeeks object EXCEPT the total count
+        const playerWinsByWeek = { ...playerWins };
+        delete playerWinsByWeek['total'];
+
+        for (const weekNum in { ...playerWinsByWeek }) {
           let pointsThisWeek = 0;
           if (this.topWinCountsPerWeek[weekNum].first === 0) {
             pointsThisWeek = 0;
