@@ -16,7 +16,7 @@
     "e2e:server": "VUE_APP_API_URL=http://localhost:1337 npx cypress run --config-file tests/cypress.config.js",
     "start": "node app.js",
     "start:client": "concurrently \"ENABLE_VUE_DEVTOOLS=true vue-cli-service serve\" \"npm run start:devtools\"",
-    "start:dev": "concurrently \"npm run start:server\" \"ENABLE_VUE_DEVTOOLS=true npm run start:client\" \"npm run start:devtools\"",
+    "start:dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:devtools": "vue-devtools",
     "start:mockprod": "npm run build && CUTTLE_ENV=production npm run start:server",
     "start:server": "node app.js"
