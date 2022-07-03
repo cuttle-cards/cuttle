@@ -134,7 +134,7 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .pointer {
+.pointer {
   cursor: pointer;
 }
 </style>
