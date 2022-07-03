@@ -1,0 +1,30 @@
+name: Run NPM Script
+
+on:
+  workflow_call:
+    inputs:
+      label:
+        required: true
+        type: string
+      script:
+        required: true
+        type: string
+
+jobs:
+  run_npm_script:
+    name: "Run NPM Script"
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout and node setup are shared in both `pr-actions.yml` and `run-npm-script.yml`
+      # If you change one, please change the other
+      - name: git checkout
+        uses: actions/checkout@v2
+      - name: set node version
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.13.2"
+          cache: 'npm'
+      - name: install node modules
+        run: npm ci
+      - name: ${{ inputs.label }}
+        run: ${{ inputs.script }}
