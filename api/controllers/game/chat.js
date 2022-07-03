@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   var promiseGame = gameService.findGame({ gameId: req.session.game });
   var promisePlayer = userService.findUser({ userId: req.session.usr });
   return Promise.all([promiseGame, promisePlayer])

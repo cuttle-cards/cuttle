@@ -6,7 +6,7 @@
  * @docs        :: http://sailsjs.org/#!/documentation/concepts/Policies
  *
  */
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
   if (req.body.hasOwnProperty('password')) {
     if (typeof req.body.password === 'string') {
       return next();

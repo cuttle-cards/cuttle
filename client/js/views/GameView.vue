@@ -72,15 +72,11 @@
             <template v-if="!resolvingSeven">
               <v-img :src="require('../img/logo_head.svg')" :width="deckLogoWidth" contain />
               <v-card-actions>({{ deckLength }})</v-card-actions>
-              <h1 v-if="deckLength === 0" id="empty-deck-text">
-                PASS
-              </h1>
+              <h1 v-if="deckLength === 0" id="empty-deck-text">PASS</h1>
             </template>
 
             <template v-if="resolvingSeven">
-              <p class="mt-2">
-                Play from Deck
-              </p>
+              <p class="mt-2">Play from Deck</p>
               <div class="d-flex">
                 <card
                   v-if="topCard"
@@ -108,9 +104,7 @@
               <div id="scrap" class="d-flex flex-column align-center">
                 <h3>Scrap</h3>
                 <span>({{ scrap.length }})</span>
-                <v-btn outlined color="primary" class="mt-4">
-                  View
-                </v-btn>
+                <v-btn outlined color="primary" class="mt-4"> View </v-btn>
               </div>
             </template>
           </scrap-dialog>
@@ -269,9 +263,7 @@
       >
         {{ snackMessage }}
         <v-btn icon>
-          <v-icon data-cy="close-snackbar" @click="clearSnackBar">
-            mdi-close
-          </v-icon>
+          <v-icon data-cy="close-snackbar" @click="clearSnackBar"> mdi-close </v-icon>
         </v-btn>
       </v-snackbar>
       <v-overlay
@@ -279,9 +271,7 @@
         v-model="waitingForOpponentToCounter"
         opacity=".6"
       >
-        <h1>
-          Opponent May Counter
-        </h1>
+        <h1>Opponent May Counter</h1>
       </v-overlay>
       <v-overlay
         id="waiting-for-opponent-discard-scrim"
@@ -295,18 +285,14 @@
         v-model="waitingForOpponentToPickFromScrap"
         opacity=".6"
       >
-        <h1>
-          Opponent Choosing Card from Scrap
-        </h1>
+        <h1>Opponent Choosing Card from Scrap</h1>
       </v-overlay>
       <v-overlay
         id="waiting-for-opponent-play-from-deck-scrim"
         v-model="waitingForOpponentToPlayFromDeck"
         opacity=".6"
       >
-        <h1>
-          Opponent Playing from Deck
-        </h1>
+        <h1>Opponent Playing from Deck</h1>
       </v-overlay>
       <counter-dialog
         v-model="showCounterDialog"
@@ -638,7 +624,7 @@ export default {
       return this.game.myTurnToCounter;
     },
     twosInHand() {
-      return this.player.hand.filter(card => card.rank === 2);
+      return this.player.hand.filter((card) => card.rank === 2);
     },
     twosPlayed() {
       return this.game.twos;
@@ -647,7 +633,7 @@ export default {
       return this.twosInHand.length > 0;
     },
     hasGlassesEight() {
-      return this.player.faceCards.filter(card => card.rank === 8).length > 0;
+      return this.player.faceCards.filter((card) => card.rank === 8).length > 0;
     },
     showCannotCounterDialog() {
       return (
@@ -676,27 +662,27 @@ export default {
       const selectedCard = this.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
       if (!selectedCard) return [];
       return this.opponent.points
-        .filter(potentialTarget => {
+        .filter((potentialTarget) => {
           return (
             selectedCard.rank > potentialTarget.rank ||
             (selectedCard.rank === potentialTarget.rank && selectedCard.suit > potentialTarget.suit)
           );
         })
-        .map(validTarget => validTarget.id);
+        .map((validTarget) => validTarget.id);
     },
     validFaceCardTargetIds() {
       switch (this.opponentQueenCount) {
         case 0:
-          const opponentFaceCardIds = this.opponent.faceCards.map(card => card.id);
+          const opponentFaceCardIds = this.opponent.faceCards.map((card) => card.id);
           const opponentJackIds = [];
-          this.opponent.points.forEach(card => {
+          this.opponent.points.forEach((card) => {
             if (card.attachments.length > 0) {
               opponentJackIds.push(card.attachments[card.attachments.length - 1].id);
             }
           });
           return [...opponentFaceCardIds, ...opponentJackIds];
         case 1:
-          return [this.opponent.faceCards.find(card => card.rank === 12).id];
+          return [this.opponent.faceCards.find((card) => card.rank === 12).id];
         default:
           return [];
       }
@@ -709,13 +695,13 @@ export default {
         case 'scuttle':
           return this.validScuttleIds;
         case 'jack':
-          return this.opponent.points.map(validTarget => validTarget.id);
+          return this.opponent.points.map((validTarget) => validTarget.id);
         case 'targetedOneOff':
           // Twos and nines can target face cards
           let res = [...this.validFaceCardTargetIds];
           // Nines can additionally target points if opponent has no queens
           if (selectedCard.rank === 9 && this.opponentQueenCount === 0) {
-            res = [...res, ...this.opponent.points.map(validTarget => validTarget.id)];
+            res = [...res, ...this.opponent.points.map((validTarget) => validTarget.id)];
           }
           return res;
         default:
@@ -754,8 +740,8 @@ export default {
     },
   },
   watch: {
-    logs: function() {
-      this.$nextTick(function() {
+    logs: function () {
+      this.$nextTick(function () {
         const container = this.$refs.logsContainer;
         if (container) {
           container.scrollTop = container.scrollHeight + 120;
@@ -886,7 +872,7 @@ export default {
           this.$store
             .dispatch('requestDrawCard')
             .then(this.clearSelection)
-            .catch(err => {
+            .catch((err) => {
               this.snackMessage = err;
               this.snackColor = 'error';
               this.showSnack = true;
@@ -896,7 +882,7 @@ export default {
           this.$store
             .dispatch('requestPass')
             .then(this.clearSelection)
-            .catch(err => {
+            .catch((err) => {
               this.snackMessage = err;
               this.snackColor = 'error';
               this.showSnack = true;
@@ -1080,7 +1066,6 @@ export default {
           return;
         case 9:
           this.playTargetedOneOff(targetIndex, targetType);
-        default:
           return;
       }
     },
@@ -1105,10 +1090,7 @@ export default {
         .catch(this.handleError);
     },
     resolve() {
-      this.$store
-        .dispatch('requestResolve')
-        .then(this.clearSelection)
-        .catch(this.handleError);
+      this.$store.dispatch('requestResolve').then(this.clearSelection).catch(this.handleError);
     },
     resolveThree(cardId) {
       this.$store

@@ -3,9 +3,7 @@
     <v-card id="reauthenticate-dialog">
       <v-card-title>Reconnect to Game</v-card-title>
       <v-card-text>
-        <p>
-          You have disconnected due to inactivity. Log in again to resume your session
-        </p>
+        <p>You have disconnected due to inactivity. Log in again to resume your session</p>
         <!-- Login Form -->
         <v-text-field
           v-model="username"
@@ -26,12 +24,8 @@
         />
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn text color="primary" @click="leaveGame">
-          Leave Game
-        </v-btn>
-        <v-btn color="primary" depressed data-cy="login" @click="login">
-          Log In
-        </v-btn>
+        <v-btn text color="primary" @click="leaveGame"> Leave Game </v-btn>
+        <v-btn color="primary" depressed data-cy="login" @click="login"> Log In </v-btn>
       </v-card-actions>
     </v-card>
     <v-snackbar

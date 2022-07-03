@@ -62,7 +62,7 @@ module.exports = {
    * Find game by id and return it as a Promise
    **** options = {gameId: integer}
    */
-  findGame: function(options) {
+  findGame: function (options) {
     return Game.findOne(options.gameId)
       .populate('players', { sort: 'pNum' })
       .populate('deck')
@@ -80,7 +80,7 @@ module.exports = {
    ** Save game and return it as a Promise
    ****options = {game: GameModel}
    */
-  saveGame: function(options) {
+  saveGame: function (options) {
     const { game } = options;
     return Game.updateOne({ id: game.id }).set(game);
   },
@@ -89,8 +89,8 @@ module.exports = {
    ** Return a fully populated Game as a Promise
    ****options = {gameId: gameId}
    */
-  populateGame: function(options, done) {
-    return new Promise(function(resolve, reject) {
+  populateGame: function (options) {
+    return new Promise(function (resolve, reject) {
       if (options) {
         if (options.hasOwnProperty('gameId') && typeof options.gameId === 'number') {
           // find game
@@ -104,14 +104,12 @@ module.exports = {
                     var p0 = userService.findUser({ userId: game.players[0].id });
                     var p1 = userService.findUser({ userId: game.players[1].id });
                     return Promise.all([Promise.resolve(game), p0, p1]);
-                  } else {
-                    return Promise.reject({ message: "Can't populate game without two players" });
                   }
-                } else {
-                  return Promise.reject({
-                    message: "Can't populate game, because it does not have players collection",
-                  });
+                  return Promise.reject({ message: "Can't populate game without two players" });
                 }
+                return Promise.reject({
+                  message: "Can't populate game, because it does not have players collection",
+                });
               })
               // then find points
               .then(function findPoints(values) {
@@ -143,9 +141,8 @@ module.exports = {
                 reject(err);
               })
           );
-        } else {
-          reject({ message: 'gameId is required and must be a number' });
         }
+        reject({ message: 'gameId is required and must be a number' });
       } else {
         reject({ message: 'Cannot populate Game without GameId (options had no gameId)' });
       }
@@ -155,13 +152,13 @@ module.exports = {
    ** Checks a game to determine if either player has won
    * @param options = {game: tmpGame, gameModel: GameModel}
    */
-  checkWinGame: async function(options) {
+  checkWinGame: async function (options) {
     const res = {
       gameOver: false,
       winner: null,
       conceded: false,
     };
-    const { game, gameModel } = options;
+    const { game } = options;
     const p0Wins = userService.checkWin({ user: game.players[0] });
     const p1Wins = userService.checkWin({ user: game.players[1] });
     if (p0Wins || p1Wins) {
@@ -185,7 +182,7 @@ module.exports = {
   /* Takes a user id and clears all game data
    * from the associated user
    */
-  clearGame: async function(options) {
+  clearGame: async function (options) {
     return User.findOne(options.userId)
       .populateAll()
       .then(function findUserGame(player) {
@@ -217,7 +214,7 @@ module.exports = {
               if (game.resolving) {
                 cardsOnGame.push(game.resolving.id);
               }
-              const playerIds = game.players.map(player => player.id);
+              const playerIds = game.players.map((player) => player.id);
               // Create (inclusive or) criteria for cards to delete
               let deleteCardsCriteria = [
                 // Cards attached directly to game
@@ -261,7 +258,7 @@ module.exports = {
    * Does not change records -- only returns obj for game updates
    * SYNCHRONOUS
    */
-  sevenCleanUp: function(options) {
+  sevenCleanUp: function (options) {
     const { game, index } = options;
     const cardsToRemoveFromDeck = [];
     const res = {

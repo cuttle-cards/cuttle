@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
@@ -68,11 +68,11 @@ module.exports = function(req, res) {
                     User.updateOne(player.id).set(playerUpdates),
                   ];
                   return Promise.all([game, ...updatePromises]);
-                } else {
-                  return Promise.reject({
-                    message: 'That card is frozen! You must wait a turn to play it',
-                  });
                 }
+                return Promise.reject({
+                  message: 'That card is frozen! You must wait a turn to play it',
+                });
+
               default:
                 return Promise.reject({
                   message: 'You cannot play that card as a one-off without a target.',

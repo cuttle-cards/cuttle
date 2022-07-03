@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
@@ -28,7 +28,7 @@ module.exports = function(req, res) {
         return Promise.reject({ message: 'That card is frozen! You must wait a turn to play it.' });
       }
       // Move is legal; make changes
-      const attachmentIds = target.attachments.map(card => card.id);
+      const attachmentIds = target.attachments.map((card) => card.id);
       const logMessage = `${player.username} scuttled ${opponent.username}'s ${target.name} with the ${card.name}`;
       // Define update dictionaries
       const gameUpdates = {

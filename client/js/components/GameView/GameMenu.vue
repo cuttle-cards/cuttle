@@ -3,18 +3,14 @@
     <!-- Activator -->
     <template #activator="{ on, attrs }">
       <v-btn id="game-menu-activator" v-bind="attrs" class="ma-2" icon v-on="on">
-        <v-icon large color="neutral lighten-1">
-          mdi-cog
-        </v-icon>
+        <v-icon large color="neutral lighten-1"> mdi-cog </v-icon>
       </v-btn>
     </template>
     <!-- Menu -->
     <v-list id="game-menu">
       <v-list-item>
         <rules-dialog>
-          <template #activator>
-            Rules
-          </template>
+          <template #activator> Rules </template>
         </rules-dialog>
       </v-list-item>
       <!-- Concede Dialog (Initiate + Confirm) -->
@@ -25,9 +21,7 @@
     <v-dialog v-model="showConcedeDialog">
       <v-card id="concede-menu">
         <v-card-title>Concede?</v-card-title>
-        <v-card-text>
-          The game will end and your opponent will win.
-        </v-card-text>
+        <v-card-text> The game will end and your opponent will win. </v-card-text>
         <v-card-actions class="d-flex justify-end">
           <v-btn
             text

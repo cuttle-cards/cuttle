@@ -1,4 +1,4 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   //Note: the player calling resolve is the opponent of the one playing the one-off, if it resolves
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.body.opId });
@@ -35,17 +35,17 @@ module.exports = function(req, res) {
             let jackIds = [];
             // Player's points
             if (playerPoints) {
-              playerPoints.forEach(function(point) {
+              playerPoints.forEach(function (point) {
                 playerPointIds.push(point.id);
-                jackIds = [...jackIds, ...point.attachments.map(jack => jack.id)];
+                jackIds = [...jackIds, ...point.attachments.map((jack) => jack.id)];
               });
             }
 
             // Opponent's points
             if (opPoints) {
-              opPoints.forEach(function(point) {
+              opPoints.forEach(function (point) {
                 opponentPointIds.push(point.id);
-                jackIds = [...jackIds, ...point.attachments.map(jack => jack.id)];
+                jackIds = [...jackIds, ...point.attachments.map((jack) => jack.id)];
               });
             }
             cardsToScrap = [...playerPointIds, ...opponentPointIds, ...jackIds];
@@ -196,8 +196,8 @@ module.exports = function(req, res) {
             ];
             break; //End resolve FIVE
           case 6:
-            const playerFaceCardIds = player.faceCards.map(faceCard => faceCard.id);
-            const opponentFaceCardIds = opponent.faceCards.map(faceCard => faceCard.id);
+            const playerFaceCardIds = player.faceCards.map((faceCard) => faceCard.id);
+            const opponentFaceCardIds = opponent.faceCards.map((faceCard) => faceCard.id);
             cardsToScrap = [...cardsToScrap, ...playerFaceCardIds, ...opponentFaceCardIds];
             updatePromises = [
               ...updatePromises,
@@ -209,11 +209,11 @@ module.exports = function(req, res) {
             const pointsGoingToPlayer = [];
             const pointsGoingToOpponent = [];
             if (playerPoints) {
-              playerPoints.forEach(function(point) {
+              playerPoints.forEach(function (point) {
                 allPoints.push(point.id);
                 // Collect all jacks for scrap
                 const jackCount = point.attachments.length;
-                const jacks = point.attachments.map(jack => jack.id);
+                const jacks = point.attachments.map((jack) => jack.id);
                 cardsToScrap = [...cardsToScrap, ...jacks];
                 // If odd number of jacks were attached, switch control
                 if (jackCount % 2 === 1) {
@@ -222,11 +222,11 @@ module.exports = function(req, res) {
               });
             }
             if (opPoints) {
-              opPoints.forEach(function(point) {
+              opPoints.forEach(function (point) {
                 allPoints.push(point.id);
                 // Collect all jacks for scrap
                 const jackCount = point.attachments.length;
-                const jacks = point.attachments.map(jack => jack.id);
+                const jacks = point.attachments.map((jack) => jack.id);
                 cardsToScrap = [...cardsToScrap, ...jacks];
                 // If odd number of jacks were attached, switch control
                 if (jackCount % 2 === 1) {
@@ -285,13 +285,13 @@ module.exports = function(req, res) {
                 );
                 break;
               case 'point':
-                const targetCard = opPoints.find(point => point.id === game.oneOffTarget.id);
+                const targetCard = opPoints.find((point) => point.id === game.oneOffTarget.id);
                 if (!targetCard)
                   return Promise.reject({
                     message: `Could not find target point card ${game.oneOffTarget.id} to return to opponent's hand`,
                   });
                 // Scrap all jacks attached to target
-                cardsToScrap = [...cardsToScrap, ...targetCard.attachments.map(jack => jack.id)];
+                cardsToScrap = [...cardsToScrap, ...targetCard.attachments.map((jack) => jack.id)];
                 updatePromises.push(
                   // Remove card from opponent's points
                   User.removeFromCollection(opponent.id, 'points').members([targetCard.id]),
@@ -316,8 +316,8 @@ module.exports = function(req, res) {
       } //End if(happened)
 
       // Add twos to the cards to scrap
-      cardsToScrap = [...cardsToScrap, ...game.twos.map(two => two.id)];
-      const oneOff = game.oneOff;
+      cardsToScrap = [...cardsToScrap, ...game.twos.map((two) => two.id)];
+      const { oneOff } = game;
       if (oneOff.rank !== 3 || !happened) {
         gameUpdates.oneOff = null;
         cardsToScrap.push(game.oneOff.id);

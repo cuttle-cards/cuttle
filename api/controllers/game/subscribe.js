@@ -1,7 +1,7 @@
 var gameAPI = sails.hooks['customgamehook'];
 var userAPI = sails.hooks['customuserhook'];
 
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   if (req.body.id) {
     Game.subscribe(req, [req.body.id]);
     const promiseClearOldGame = gameService.clearGame({ userId: req.session.usr });

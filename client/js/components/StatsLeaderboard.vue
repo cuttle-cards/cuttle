@@ -28,11 +28,11 @@
       :loading="loading"
       :item-class="tableRowClass"
     >
-      <template #[`item.rank`]="{item, value}">
+      <template #[`item.rank`]="{ item, value }">
         <span :data-rank="item.username">{{ value }} </span>
       </template>
       <!-- Customize the appearance of total column and column for each week -->
-      <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{item}">
+      <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{ item }">
         <stats-leaderboard-cell
           :key="`${item.username}_week_${week}_wins`"
           :player-row="item"
@@ -85,7 +85,7 @@ export default {
         { text: 'User', value: 'username' },
         { text: 'Rank', value: 'rank' },
         { text: 'Season Total', value: 'week_total' },
-        ...this.selectedWeeks.map(weekNum => {
+        ...this.selectedWeeks.map((weekNum) => {
           return {
             text: `Week ${weekNum}`,
             value: `week_${weekNum}`,
@@ -119,12 +119,12 @@ export default {
       if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
         return [];
       }
-      return this.season.rankings.map(playerStats => {
+      return this.season.rankings.map((playerStats) => {
         const res = { total: 0 };
         const playerMatches = playerStats.matches;
-        for (const weekNum of this.weeks.map(week => week.value)) {
+        for (const weekNum of this.weeks.map((week) => week.value)) {
           const matchesThisWeek = playerMatches[weekNum] || [];
-          const wins = matchesThisWeek.filter(match => match.result === Result.WON);
+          const wins = matchesThisWeek.filter((match) => match.result === Result.WON);
           res.total += wins.length;
           res[`${weekNum}`] = wins.length;
         }
@@ -135,10 +135,14 @@ export default {
       if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
         return [];
       }
-      return this.playerWins.map(playerWins => {
+      return this.playerWins.map((playerWins) => {
         const res = { total: 0 };
-        const { total, ...weeks } = playerWins;
-        for (const weekNum in { ...weeks }) {
+
+        // We need the entire playerWeeks object EXCEPT the total count
+        const playerWinsByWeek = { ...playerWins };
+        delete playerWinsByWeek['total'];
+
+        for (const weekNum in { ...playerWinsByWeek }) {
           let pointsThisWeek = 0;
           if (this.topWinCountsPerWeek[weekNum].first === 0) {
             pointsThisWeek = 0;
@@ -221,50 +225,10 @@ export default {
       return res;
     },
     totalScoresSorted() {
-      return this.playerScores.map(playerStats => playerStats.total).sort((a, b) => b - a);
+      return this.playerScores.map((playerStats) => playerStats.total).sort((a, b) => b - a);
     },
     theme() {
       return this.$vuetify.theme.themes.light;
-    },
-  },
-  methods: {
-    /**
-     * Returns concatenated usernames of all opponent's the specified player
-     * defeated in the specified week
-     * @param {string} username which player's defeated opponents to return
-     * @param {string} weekNum which week to analyze (use 'total' for the total)
-     */
-    playersBeaten(username, weekNum) {
-      const playerStats = this.season.rankings.find(player => player.username === username);
-      if (!playerStats) {
-        return '';
-      }
-      let playerMatches;
-      // Aggregate all matches if looking at total
-      if (weekNum === 'total') {
-        playerMatches = Object.entries(playerStats.matches).reduce((wins, [week, matches]) => {
-          return [...wins, ...matches];
-        }, []);
-        // Otherwise just show this week's matches
-      } else {
-        playerMatches = playerStats.matches[weekNum];
-      }
-      if (!playerMatches) {
-        return '';
-      }
-      return uniq(
-        playerMatches.filter(match => match.result === Result.WON).map(match => match.opponent)
-      ).join(', ');
-    },
-    isCurrentPlayer(username) {
-      return username === this.$store.state.auth.username;
-    },
-    tableRowClass(item) {
-      return this.isCurrentPlayer(item.username) ? 'active-user-stats' : '';
-    },
-    // Compute rank from total score
-    rank(totalScore) {
-      return this.totalScoresSorted.indexOf(totalScore) + 1;
     },
   },
   created() {
@@ -289,6 +253,46 @@ export default {
       { text: 'Week 12', value: 12 },
       { text: 'Week 13', value: 13 },
     ];
+  },
+  methods: {
+    /**
+     * Returns concatenated usernames of all opponent's the specified player
+     * defeated in the specified week
+     * @param {string} username which player's defeated opponents to return
+     * @param {string} weekNum which week to analyze (use 'total' for the total)
+     */
+    playersBeaten(username, weekNum) {
+      const playerStats = this.season.rankings.find((player) => player.username === username);
+      if (!playerStats) {
+        return '';
+      }
+      let playerMatches;
+      // Aggregate all matches if looking at total
+      if (weekNum === 'total') {
+        playerMatches = Object.entries(playerStats.matches).reduce((wins, [, matches]) => {
+          return [...wins, ...matches];
+        }, []);
+        // Otherwise just show this week's matches
+      } else {
+        playerMatches = playerStats.matches[weekNum];
+      }
+      if (!playerMatches) {
+        return '';
+      }
+      return uniq(
+        playerMatches.filter((match) => match.result === Result.WON).map((match) => match.opponent)
+      ).join(', ');
+    },
+    isCurrentPlayer(username) {
+      return username === this.$store.state.auth.username;
+    },
+    tableRowClass(item) {
+      return this.isCurrentPlayer(item.username) ? 'active-user-stats' : '';
+    },
+    // Compute rank from total score
+    rank(totalScore) {
+      return this.totalScoresSorted.indexOf(totalScore) + 1;
+    },
   },
 };
 </script>

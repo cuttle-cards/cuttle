@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="show">
     <!-- Activator -->
-    <template #activator="{on, attrs}">
+    <template #activator="{ on, attrs }">
       <v-btn color="primary" text class="mb-2" v-bind="attrs" v-on="on">
         How are ranks determined?
         <v-icon class="ml-1">mdi-information-outline</v-icon>
@@ -53,9 +53,7 @@
           You can view the statistics and rankings for each season on this page. At the end of each
           season, the top 4 players compete in a double elimination championship tournament. Do you
           have what it takes to become
-          <strong>
-            Lord of the Deep?
-          </strong>
+          <strong> Lord of the Deep? </strong>
         </p>
         <!-- Actions -->
         <v-card-actions class="d-flex justify-end">

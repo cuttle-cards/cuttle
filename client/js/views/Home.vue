@@ -6,9 +6,7 @@
           <v-col cols="9">
             <v-row id="card-content-header" class="mb-4">
               <v-col cols="4">
-                <h1 id="home-card-title">
-                  Games
-                </h1>
+                <h1 id="home-card-title">Games</h1>
               </v-col>
               <v-col cols="8">
                 <v-row id="add-new-game">
@@ -40,9 +38,7 @@
               </v-col>
             </v-row>
             <div id="game-list">
-              <p v-if="gameList.length === 0" data-cy="text-if-no-game">
-                No Active Games
-              </p>
+              <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
               <div v-for="game in gameList" :key="game.id">
                 <game-list-item
                   :name="game.name"
@@ -98,9 +94,7 @@
       data-cy="newgame-snackbar"
     >
       {{ snackBarMessage }}
-      <v-icon data-cy="close-snackbar" @click="clearSnackBar">
-        mdi-close
-      </v-icon>
+      <v-icon data-cy="close-snackbar" @click="clearSnackBar"> mdi-close </v-icon>
     </v-snackbar>
   </div>
 </template>
@@ -154,7 +148,7 @@ export default {
         .then(() => {
           this.$router.push('/login');
         })
-        .catch(err => {
+        .catch((err) => {
           if (err) console.error(err);
           console.log('Error logging out');
         });

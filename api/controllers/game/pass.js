@@ -1,5 +1,5 @@
 // Pass turn to other player (when deck has run out)
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   return Promise.all([promiseGame, promisePlayer])
@@ -34,9 +34,8 @@ module.exports = function(req, res) {
           User.updateOne({ id: player.id }).set(playerUpdates)
         );
         return Promise.all([game, ...updatePromises]);
-      } else {
-        return Promise.reject({ message: "It's not your turn." });
       }
+      return Promise.reject({ message: "It's not your turn." });
     })
     .then(function populateGame(values) {
       const [game] = values;

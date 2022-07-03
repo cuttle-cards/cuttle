@@ -1,6 +1,6 @@
 <template>
   <v-container id="login-container" class="container">
-    <img id="logo" alt="Cuttle logo" src="../img/logo.png">
+    <img id="logo" alt="Cuttle logo" src="../img/logo.png" />
     <v-row>
       <!-- Left side form -->
       <v-col id="username-login-form" sm="9" lg="5">
@@ -43,16 +43,12 @@
           data-cy="auth-snackbar"
         >
           {{ snackBarMessage }}
-          <v-icon data-cy="close-snackbar" @click="clearSnackBar">
-            mdi-close
-          </v-icon>
+          <v-icon data-cy="close-snackbar" @click="clearSnackBar"> mdi-close </v-icon>
         </v-snackbar>
       </v-col>
     </v-row>
     <v-row class="mt-8">
-      <h1 class="gradient-text">
-        What is Cuttle?
-      </h1>
+      <h1 class="gradient-text">What is Cuttle?</h1>
     </v-row>
     <v-row class="mt-0">
       <v-col md="6" sm="12" class="d-flex justify-start flex-column mt-4">
