@@ -4,6 +4,7 @@
       <v-chip
         :color="colorForScore"
         :outlined="outlined"
+        class="pointer"
         v-bind="{
           ...attrs,
           ...dataAttribute,
@@ -131,3 +132,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+::v-deep .pointer {
+  cursor: pointer;
+}
+</style>
