@@ -1354,7 +1354,7 @@ export default {
   min-width: 50%;
   height: 30vh;
   & #player-hand-cards,
-  #player-hand-targeting::v-deep {
+  :deep(#player-hand-targeting) {
     width: 100%;
     height: 80%;
     background: rgba(0, 0, 0, 0.46);
