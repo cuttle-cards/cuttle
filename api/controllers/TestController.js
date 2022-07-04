@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-  wipeDatabase: function(req, res) {
+  wipeDatabase: function (req, res) {
     return Promise.all([
       Game.destroy({}),
       User.destroy({}),
@@ -14,18 +14,18 @@ module.exports = {
       Season.destroy({}),
       Match.destroy({}),
     ])
-      .then(values => {
+      .then(() => {
         return res.ok();
       })
-      .catch(err => {
+      .catch((err) => {
         return res.badRequest(err);
       });
   },
-  setBadSession: function(req, res) {
+  setBadSession: function (req, res) {
     req.session.game = -3;
     return res.ok();
   },
-  loadSeasonFixture: async function(req, res) {
+  loadSeasonFixture: async function (req, res) {
     try {
       await Season.createEach(req.body);
     } catch (e) {
@@ -33,7 +33,7 @@ module.exports = {
     }
     return res.ok();
   },
-  loadMatchFixtures: async function(req, res) {
+  loadMatchFixtures: async function (req, res) {
     try {
       await Match.createEach(req.body);
     } catch (e) {

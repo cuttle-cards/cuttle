@@ -6,9 +6,7 @@
       </v-row>
       <!-- Rules -->
       <div>
-        <h1 class="gradient-text">
-          Rules of Cuttle
-        </h1>
+        <h1 class="gradient-text">Rules of Cuttle</h1>
         <p class="d-block">
           Cuttle is a 2 player battle card game played with a standard 52-card deck of cards. It has
           the strategic nuance of trading card games like Magic, with the elegant balance of a
@@ -43,9 +41,7 @@
       </v-row>
       <!-- Goal -->
       <v-row class="flex-column align-start mt-5">
-        <h1 class="gradient-text">
-          Goal
-        </h1>
+        <h1 class="gradient-text">Goal</h1>
         <p class="d-block">
           The goal is to be the first player to have 21 or more points worth of point cards on your
           field. The first player to reach the goal wins immediately. One player (traditionally the
@@ -55,12 +51,8 @@
       </v-row>
       <!-- Play -->
       <v-row class="flex-column">
-        <h1 class="d-block gradient-text">
-          Play
-        </h1>
-        <p class="d-block">
-          On your turn you must perform exactly one of the following actions:
-        </p>
+        <h1 class="d-block gradient-text">Play</h1>
+        <p class="d-block">On your turn you must perform exactly one of the following actions:</p>
       </v-row>
       <v-row
         v-for="(ruleRow, rowIndex) in rules"
@@ -79,12 +71,8 @@
       <!-- Royals -->
       <v-row class="flex-column">
         <div class="d-flex">
-          <v-icon x-large color="black" class="mr-4">
-            mdi-crown
-          </v-icon>
-          <h1 class="gradient-text">
-            Royals
-          </h1>
+          <v-icon x-large color="black" class="mr-4"> mdi-crown </v-icon>
+          <h1 class="gradient-text">Royals</h1>
         </div>
         <p class="d-block">
           Royals (Kings, Queens, and Jacks) may be played to the field for a persistent benefit that
@@ -108,12 +96,8 @@
       <!-- One-Offs -->
       <v-row>
         <div class="d-flex">
-          <v-icon x-large color="black" class="mr-4">
-            mdi-delete
-          </v-icon>
-          <h1 class="gradient-text">
-            One-Offs
-          </h1>
+          <v-icon x-large color="black" class="mr-4"> mdi-delete </v-icon>
+          <h1 class="gradient-text">One-Offs</h1>
         </div>
         <p>
           Number cards (except 8’s and 10’s) can be played for a One-Off effect, which scraps the
@@ -137,9 +121,7 @@
       </v-row>
       <!-- FAQ -->
       <v-row class="d-flex flex-column mb-4">
-        <h1 class="gradient-text">
-          FAQ
-        </h1>
+        <h1 class="gradient-text">FAQ</h1>
         <h3>Can I play a two to counter a point card? What about a scuttle?</h3>
         <p class="mb-4">
           Nope! Twos can only counter One-Offs. You can play a two to destroy a Royal or Glasses
@@ -173,15 +155,11 @@
           respectively. That includes any that you have out. Try to avoid destroying too many of
           your own cards!
         </p>
-        <h3>
-          Where can I play Cuttle?
-        </h3>
+        <h3>Where can I play Cuttle?</h3>
         <p class="mb-4">
           You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play
           online, there is only one place:
-          <a href="https://www.cuttle.cards">
-            www.cuttle.cards
-          </a>
+          <a href="https://www.cuttle.cards"> www.cuttle.cards </a>
         </p>
         <v-btn
           to="/"

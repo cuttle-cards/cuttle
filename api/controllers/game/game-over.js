@@ -1,7 +1,7 @@
-module.exports = function(req, res) {
+module.exports = function (req, res) {
   userService
     .findUser({ userId: req.session.usr })
-    .then(function deleteSessionData(player) {
+    .then(function deleteSessionData() {
       Game.unsubscribe(req, [req.session.game]);
       delete req.session.game;
       delete req.session.pNum;

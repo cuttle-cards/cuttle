@@ -296,9 +296,7 @@ describe('Game View Layout', () => {
 
     // Player selects a card from scrap
     cy.get('[data-three-dialog-card=10-2]').click();
-    cy.get('[data-cy=three-resolve')
-      .should('not.be.disabled')
-      .click();
+    cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
 
     assertGameState(0, {
       p0Hand: [Card.TEN_OF_HEARTS],
@@ -388,15 +386,15 @@ describe('Game View Layout', () => {
     cy.get('[data-cy=scrap-dialog-sort-dropdown]').click({ force: true });
     cy.contains('By Rank').click();
     // Then-- All cards should be in ascending rank order
-    const mapElementsToRank = elements => {
-      return _.map(elements, element => {
+    const mapElementsToRank = (elements) => {
+      return _.map(elements, (element) => {
         return Number(element.attributes['data-scrap-dialog-card'].value.split('-')[0]);
       });
     };
     cy.get('[data-scrap-dialog-card]')
       .then(mapElementsToRank)
-      .then(elementRanks => {
-        const sortedScrapRanksFromFixture = _.sortBy(scrap, 'rank').map(card => card.rank);
+      .then((elementRanks) => {
+        const sortedScrapRanksFromFixture = _.sortBy(scrap, 'rank').map((card) => card.rank);
         expect(elementRanks).to.deep.equal(sortedScrapRanksFromFixture);
       });
   });

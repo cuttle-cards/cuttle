@@ -1,5 +1,5 @@
-module.exports = function(req, res) {
-  const popGame = gameService
+module.exports = function (req, res) {
+  gameService
     .populateGame({ gameId: req.session.game })
     .then(function gotPop(fullGame) {
       Game.subscribe(req, [req.session.game]);

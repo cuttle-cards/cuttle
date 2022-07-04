@@ -148,7 +148,7 @@ export default {
       }
     },
     opponentLeft(state) {
-      state.players = state.players.filter(player => player.pNum === state.myPNum);
+      state.players = state.players.filter((player) => player.pNum === state.myPNum);
     },
     setMyTurnToCounter(state, val) {
       state.myTurnToCounter = val;
@@ -194,7 +194,7 @@ export default {
       // Set my pNum if it is null
       if (context.state.myPNum === null) {
         let myPNum = context.state.players.findIndex(
-          player => player.username === context.rootState.auth.username
+          (player) => player.username === context.rootState.auth.username
         );
         if (myPNum === -1) {
           myPNum = null;
@@ -379,7 +379,7 @@ export default {
         };
       }
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/resolveFour', reqData, function(res, jwres) {
+        io.socket.get('/game/resolveFour', reqData, function (res, jwres) {
           return handleGameResponse(context, jwres, resolve, reject);
         });
       });

@@ -1,5 +1,4 @@
-module.exports = function(req, res) {
-  const Promise = require('bluebird');
+module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
@@ -47,74 +46,69 @@ module.exports = function(req, res) {
               Game.removeFromCollection(game.id, 'deck').members(cardsToRemoveFromDeck),
             ];
             return Promise.all([game, ...updatePromises]);
-          } else {
-            const queenCount = userService.queenCount({ user: opponent });
-            switch (queenCount) {
-              case 0:
-                break;
-              case 1:
-                if (target.faceCards === opponent.id && target.rank === 12) {
-                } else {
-                  return Promise.reject({
-                    message: "Your opponent's queen prevents you from targeting their other cards",
-                  });
-                }
-                break;
-              default:
-                return Promise.reject({
-                  message:
-                    'You cannot play a targeted one-off when your opponent has more than one Queen',
-                });
-            } //End queenCount validation
-            // Normal sevens
-            if (target.points === opponent.id) {
-              if (card.rank === 11) {
-                const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({
-                  game: game,
-                  index: req.body.index,
-                });
-                const cardUpdates = {
-                  index: target.attachments.length,
-                };
-                gameUpdates = {
-                  ...gameUpdates,
-                  topCard,
-                  secondCard,
-                  log: [
-                    ...game.log,
-                    `${player.username} stole ${opponent.username}'s ${target.name} with the ${card.name} from the top of the deck.`,
-                  ],
-                };
-                updatePromises = [
-                  Game.updateOne(game.id).set(gameUpdates),
-                  User.updateOne(player.id).set(playerUpdates),
-                  // Set card's index within attachments
-                  Card.updateOne(card.id).set(cardUpdates),
-                  // Remove new second card fromd eck
-                  Game.removeFromCollection(game.id, 'deck').members(cardsToRemoveFromDeck),
-                  // Add jack to target's attachments
-                  Card.addToCollection(target.id, 'attachments').members([card.id]),
-                  // Steal point card
-                  User.addToCollection(player.id, 'points').members([target.id]),
-                ];
-                return Promise.all([game, ...updatePromises]);
-              } else {
-                return Promise.reject({
-                  message: "You can only steal your opponent's points with a jack",
-                });
-              }
-            } else {
-              return Promise.reject({ message: "You can only jack your opponent's point cards" });
-            }
           }
-        } else {
-          return Promise.reject({
-            message: 'You can only one of the top two cards from the deck while resolving a seven',
-          });
+          const queenCount = userService.queenCount({ user: opponent });
+          switch (queenCount) {
+            case 0:
+              break;
+            case 1:
+              if (target.faceCards === opponent.id && target.rank === 12) {
+                // break early
+                break;
+              }
+              return Promise.reject({
+                message: "Your opponent's queen prevents you from targeting their other cards",
+              });
+            default:
+              return Promise.reject({
+                message:
+                  'You cannot play a targeted one-off when your opponent has more than one Queen',
+              });
+          } //End queenCount validation
+          // Normal sevens
+          if (target.points === opponent.id) {
+            if (card.rank === 11) {
+              const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({
+                game: game,
+                index: req.body.index,
+              });
+              const cardUpdates = {
+                index: target.attachments.length,
+              };
+              gameUpdates = {
+                ...gameUpdates,
+                topCard,
+                secondCard,
+                log: [
+                  ...game.log,
+                  `${player.username} stole ${opponent.username}'s ${target.name} with the ${card.name} from the top of the deck.`,
+                ],
+              };
+              updatePromises = [
+                Game.updateOne(game.id).set(gameUpdates),
+                User.updateOne(player.id).set(playerUpdates),
+                // Set card's index within attachments
+                Card.updateOne(card.id).set(cardUpdates),
+                // Remove new second card fromd eck
+                Game.removeFromCollection(game.id, 'deck').members(cardsToRemoveFromDeck),
+                // Add jack to target's attachments
+                Card.addToCollection(target.id, 'attachments').members([card.id]),
+                // Steal point card
+                User.addToCollection(player.id, 'points').members([target.id]),
+              ];
+              return Promise.all([game, ...updatePromises]);
+            }
+            return Promise.reject({
+              message: "You can only steal your opponent's points with a jack",
+            });
+          }
+          return Promise.reject({ message: "You can only jack your opponent's point cards" });
         }
-      } else {
-        return Promise.reject({ message: "It's not your turn" });
+        return Promise.reject({
+          message: 'You can only one of the top two cards from the deck while resolving a seven',
+        });
       }
+      return Promise.reject({ message: "It's not your turn" });
     })
     .then(function populateGame(values) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);

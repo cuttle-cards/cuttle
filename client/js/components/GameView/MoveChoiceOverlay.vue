@@ -8,9 +8,7 @@
     <!-- Cancel button -->
     <div id="close-wrapper" class="d-flex justify-end my-4">
       <v-btn icon data-cy="cancel-move" @click="$emit('cancel')">
-        <v-icon x-large>
-          mdi-close
-        </v-icon>
+        <v-icon x-large> mdi-close </v-icon>
       </v-btn>
     </div>
     <div v-if="selectedCard" class="d-flex justify-center">
@@ -229,7 +227,7 @@ export default {
       // Can't scuttle with a royal
       if (this.selectedCard.rank >= 11) return false;
       // Return true iff at least one opponent point card is scuttleable w/ selected card
-      return this.$store.getters.opponent.points.some(opponentPointCard => {
+      return this.$store.getters.opponent.points.some((opponentPointCard) => {
         return (
           this.selectedCard.rank > opponentPointCard.rank ||
           (this.selectedCard.rank === opponentPointCard.rank &&

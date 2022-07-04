@@ -15,29 +15,29 @@ export default {
   },
   mutations: {
     refreshGames(state, newList) {
-      state.games = newList.map(game => new GameSummary(game));
+      state.games = newList.map((game) => new GameSummary(game));
     },
     addGameToList(state, newGame) {
       state.games.push(new GameSummary(newGame));
     },
     removeGame(state, data) {
-      state.games = state.games.filter(game => game.id !== data.gameId);
+      state.games = state.games.filter((game) => game.id !== data.gameId);
     },
     updateGameStatus(state, data) {
-      const updatedGame = state.games.find(game => game.id === data.id);
+      const updatedGame = state.games.find((game) => game.id === data.id);
       if (updatedGame) {
         updatedGame.status = data.newStatus;
       }
     },
     joinGame(state, data) {
-      const updatedGame = state.games.find(game => game.id === data.gameId);
+      const updatedGame = state.games.find((game) => game.id === data.gameId);
       if (updatedGame) {
         updatedGame.numPlayers++;
         updatedGame.status = data.newStatus;
       }
     },
     otherLeftGame(state, gameId) {
-      const updatedGame = state.games.find(game => game.id === gameId);
+      const updatedGame = state.games.find((game) => game.id === gameId);
       if (updatedGame) {
         updatedGame.numPlayers--;
         updatedGame.status = true;

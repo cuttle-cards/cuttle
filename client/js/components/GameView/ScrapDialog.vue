@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="show" max-width="750" scrollable>
-    <template #activator="{on, attrs}">
+    <template #activator="{ on, attrs }">
       <span v-bind="attrs" v-on="on">
         <slot name="activator" />
       </span>
@@ -9,9 +9,7 @@
       <v-card-title class="d-flex justify-space-between">
         <h1>Scrap Pile</h1>
         <v-btn icon data-cy="close-scrap-dialog-x" @click="show = false">
-          <v-icon large>
-            mdi-close
-          </v-icon>
+          <v-icon large> mdi-close </v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>

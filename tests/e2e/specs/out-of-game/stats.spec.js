@@ -20,8 +20,8 @@ function setup() {
   cy.signupOpponent(playerFour.username, playerFour.password).as('player4');
   cy.signupOpponent(playerFive.username, playerFive.password)
     .as('player5')
-    .then(function() {
-      const seasons = seasonFixtures.map(season => {
+    .then(function () {
+      const seasons = seasonFixtures.map((season) => {
         return {
           ...season,
           firstPlace: season.firstPlace ? this[season.firstPlace] : null,
@@ -32,7 +32,7 @@ function setup() {
       });
 
       // Convert usernames to ids
-      const transformMatchFixture = match => {
+      const transformMatchFixture = (match) => {
         // Grab player ids
         const player1 = this[match.player1];
         const player2 = this[match.player2];
@@ -56,9 +56,7 @@ function setup() {
   cy.vueRoute('/stats');
   // Select Clubs 2022 season
   cy.get('[data-cy=season-select]').click({ force: true });
-  cy.get('[role=option]')
-    .contains('Clubs 2022')
-    .click();
+  cy.get('[role=option]').contains('Clubs 2022').click();
 }
 
 describe('Stats Page Error States', () => {
@@ -94,6 +92,7 @@ describe('Stats Page', () => {
     cy.get('[data-rank=Player1]').contains(1);
     cy.get("[data-week-1='Player1']").contains('W: 3, P: 5');
     cy.get("[data-week-total='Player1']").contains('W: 6, P: 10');
+    cy.get('[data-week-total=Player2]').contains('W: 5, P: 9');
     cy.get("[data-week-1='Player5']").contains('W: 1, P: 3');
     cy.get('tr.active-user-stats').contains(playerOne.username);
     // Players Beaten menus
@@ -113,18 +112,14 @@ describe('Stats Page', () => {
     cy.get('[data-cy=metric-select]').click({ force: true });
     cy.contains('Points Only').click();
     // Only points are displayed
-    cy.get("[data-week-1='Player1']")
-      .contains('5')
-      .should('not.contain', 'W:');
+    cy.get("[data-week-1='Player1']").contains('5').should('not.contain', 'W:');
     cy.get('th').should('have.length', 16);
     // Switch to wins only
     cy.get('[data-cy=metric-select]').click({ force: true });
     cy.contains('Wins Only').click();
     cy.get('th').should('have.length', 16);
     // Only wins are displayed
-    cy.get("[data-week-1='Player1']")
-      .contains('3')
-      .should('not.contain', 'P:');
+    cy.get("[data-week-1='Player1']").contains('3').should('not.contain', 'P:');
     cy.get("[points-1='Player1']").should('not.exist');
   });
 
@@ -135,42 +130,18 @@ describe('Stats Page', () => {
     cy.get('[data-week-total=Player1]').should('contain', 'W: 6, P: 10');
     // Deselect every week except week 1
     cy.get('[data-cy=week-select]').click({ force: true });
-    cy.get('[role=option]')
-      .contains('Week 2')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 3')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 4')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 5')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 6')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 7')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 8')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 9')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 10')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 11')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 12')
-      .click();
-    cy.get('[role=option]')
-      .contains('Week 13')
-      .click();
+    cy.get('[role=option]').contains('Week 2').click();
+    cy.get('[role=option]').contains('Week 3').click();
+    cy.get('[role=option]').contains('Week 4').click();
+    cy.get('[role=option]').contains('Week 5').click();
+    cy.get('[role=option]').contains('Week 6').click();
+    cy.get('[role=option]').contains('Week 7').click();
+    cy.get('[role=option]').contains('Week 8').click();
+    cy.get('[role=option]').contains('Week 9').click();
+    cy.get('[role=option]').contains('Week 10').click();
+    cy.get('[role=option]').contains('Week 11').click();
+    cy.get('[role=option]').contains('Week 12').click();
+    cy.get('[role=option]').contains('Week 13').click();
     cy.get('body').type('{esc}');
 
     // Expect 5 columns: username, rank, total, week_1
@@ -185,9 +156,7 @@ describe('Stats Page', () => {
     cy.get('[data-tournament]').should('have.length', 3);
     // Switch season to diamonds 2022
     cy.get('[data-cy=season-select]').click({ force: true });
-    cy.get('[role=option]')
-      .contains('Diamonds 2022')
-      .click();
+    cy.get('[role=option]').contains('Diamonds 2022').click();
 
     // Award cards should not display (no winners)
     cy.get('[data-tournament]').should('not.exist');
@@ -197,9 +166,7 @@ describe('Stats Page', () => {
 
     // Switch back to Clubs 2022
     cy.get('[data-cy=season-select]').click({ force: true });
-    cy.get('[role=option]')
-      .contains('Clubs 2022')
-      .click();
+    cy.get('[role=option]').contains('Clubs 2022').click();
     // Stats data table
     cy.get('[data-week-total=Player1]').should('contain', 'W: 6, P: 10');
     cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 5');
