@@ -1,5 +1,5 @@
 const sharedTestRules = {
-  'import/no-unresolved': ['off'],
+  'import/no-unresolved': 'off',
 };
 
 module.exports = {
@@ -10,10 +10,10 @@ module.exports = {
   },
 
   extends: [
-    "plugin:vue/essential",
-    "eslint:recommended",
-    "@vue/typescript/recommended",
-    "plugin:prettier/recommended",
+    'plugin:vue/essential',
+    'eslint:recommended',
+    '@vue/typescript/recommended',
+    'plugin:prettier/recommended',
   ],
 
   plugins: ['cypress', 'jest', 'prettier'],
@@ -42,6 +42,7 @@ module.exports = {
         ignoreTemplateLiterals: true,
       },
     ],
+    '@typescript-eslint/no-var-requires': 'warn',
     'vue/html-indent': 'error',
     'vue/multi-word-component-names': 'warn',
     'vue/script-setup-uses-vars': 'error',

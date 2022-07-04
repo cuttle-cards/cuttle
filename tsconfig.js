@@ -27,12 +27,11 @@ module.exports = {
     target: 2.7,
   },
   include: [
-    'src/**/*.ts',
-    'src/**/*.tsx',
-    'src/**/*.vue',
+    'client/**/*.ts',
+    'client/**/*.tsx',
+    'client/**/*.vue',
     'tests/**/*.ts',
     'tests/**/*.tsx',
-    'client/js/shims-tsx.d.ts',
   ],
   exclude: ['node_modules'],
 };

@@ -16,8 +16,8 @@ const app = new Vue({
 // Expose app for testing
 // TODO: Think through this, move to relevant location (post Vue 3 since it changes the TS implementation)
 interface CuttleWindow extends Window {
-  Cypress: Object;
-  app: Object;
+  Cypress: any;
+  app: any;
 }
 declare let window: CuttleWindow;
 
