@@ -60,6 +60,11 @@ module.exports = {
       'https://beta.cuttle.cards',
     ],
   },
+
+  blueprints: {
+    rest: false,
+    shortcuts: false,
+  },
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
    ***************************************************************************/
