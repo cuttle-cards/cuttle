@@ -10,11 +10,10 @@ module.exports = {
   },
 
   extends: [
-    'eslint:recommended',
-    '@vue/typescript/recommended',
-    'plugin:prettier/recommended',
-    'plugin:vue/recommended',
-    '@vue/standard',
+    "plugin:vue/essential",
+    "eslint:recommended",
+    "@vue/typescript/recommended",
+    "plugin:prettier/recommended",
   ],
 
   plugins: ['cypress', 'jest', 'prettier'],

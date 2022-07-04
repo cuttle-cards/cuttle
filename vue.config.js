@@ -1,6 +1,6 @@
 const path = require('path');
 
-const { isProd } = require('./utils/config-utils');
+const { isProd } = require('./utils/es5/config-utils');
 
 module.exports = {
   transpileDependencies: ['vuetify'],
