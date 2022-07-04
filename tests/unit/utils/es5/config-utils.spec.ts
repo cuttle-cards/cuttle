@@ -20,21 +20,21 @@ describe('isProd', () => {
     it('should return false when CUTTLE_ENV and NODE_ENV are not set', () => {
       process.env.CUTTLE_ENV = undefined;
       process.env.NODE_ENV = undefined;
-      const { isProd } = require('../../../utils/config-utils');
+      const { isProd } = require('../../../../utils/es5/config-utils');
       expect(isProd).toBe(false);
     });
 
     it('should return false when CUTTLE_ENV is not set and NODE_ENV=dev', () => {
       process.env.CUTTLE_ENV = undefined;
       process.env.NODE_ENV = 'dev';
-      const { isProd } = require('../../../utils/config-utils');
+      const { isProd } = require('../../../../utils/es5/config-utils');
       expect(isProd).toBe(false);
     });
 
     it('should return false when CUTTLE_ENV=dev', () => {
       process.env.CUTTLE_ENV = 'production';
       process.env.NODE_ENV = 'dev';
-      const { isProd } = require('../../../utils/config-utils');
+      const { isProd } = require('../../../../utils/es5/config-utils');
       expect(isProd).toBe(true);
     });
   });
@@ -43,14 +43,14 @@ describe('isProd', () => {
     it('should return true when CUTTLE_ENV is not set and NODE_ENV=production', () => {
       process.env.CUTTLE_ENV = undefined;
       process.env.NODE_ENV = 'production';
-      const { isProd } = require('../../../utils/config-utils');
+      const { isProd } = require('../../../../utils/es5/config-utils');
       expect(isProd).toBe(true);
     });
 
     it('should return true when CUTTLE_ENV=production', () => {
       process.env.CUTTLE_ENV = 'production';
       process.env.NODE_ENV = 'dev';
-      const { isProd } = require('../../../utils/config-utils');
+      const { isProd } = require('../../../../utils/es5/config-utils');
       expect(isProd).toBe(true);
     });
   });

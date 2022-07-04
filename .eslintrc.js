@@ -1,4 +1,5 @@
 const sharedTestRules = {
+  '@typescript-eslint/no-var-requires': 'off',
   'import/no-unresolved': 'off',
 };
 
