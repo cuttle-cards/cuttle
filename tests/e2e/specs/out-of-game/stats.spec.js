@@ -95,6 +95,13 @@ describe('Stats Page', () => {
     cy.get('[data-week-total=Player2]').contains('W: 5, P: 9');
     cy.get("[data-week-1='Player5']").contains('W: 1, P: 3');
     cy.get('tr.active-user-stats').contains(playerOne.username);
+    // Players Beaten menus
+    cy.get("[data-week-1='Player1']").click();
+    cy.get('[data-players-beaten=Player1-week-1]')
+      .should('contain', 'Player2, Player3, Player4')
+      .find('[data-cy=close-players-beaten]')
+      .click();
+    cy.get('[data-players-beaten=Player1-week-1').should('not.be.visible');
   });
 
   it('Filters table to display wins, points, or both', () => {
