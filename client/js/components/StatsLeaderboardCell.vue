@@ -15,7 +15,7 @@
         {{ chipText }}
       </v-chip>
     </template>
-    <v-card>
+    <v-card :data-players-beaten="`${username}-week-${week}`">
       <v-card-title>Players Beaten</v-card-title>
       <v-card-text>
         <v-list>
@@ -23,7 +23,9 @@
         </v-list>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn outlined color="primary" @click="showMenu = false">Close</v-btn>
+        <v-btn data-cy="close-players-beaten" outlined color="primary" @click="showMenu = false">
+          Close
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-menu>
@@ -65,6 +67,9 @@ export default {
   computed: {
     theme() {
       return this.$vuetify.theme.themes.light;
+    },
+    username() {
+      return this.playerRow.username;
     },
     wins() {
       return this.playerRow[`week_${this.week}_wins`];
@@ -126,7 +131,7 @@ export default {
     dataAttribute() {
       const res = {};
       const attributeName = `data-week-${this.week}`;
-      res[attributeName] = this.playerRow.username;
+      res[attributeName] = this.username;
       return res;
     },
   },
