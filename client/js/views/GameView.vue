@@ -9,6 +9,9 @@
       <div id="game-menu-wrapper">
         <game-menu />
       </div>
+
+      <username-tool-tip id="opponent-username-container" :username="opponentUsername" />
+
       <!-- Opponent Hand -->
       <div
         id="opponent-hand"
@@ -60,7 +63,6 @@
             :is-player="false"
           />
         </h3>
-        <h4 data-cy="opponent-username">{{ opponentUsername }}</h4>
       </div>
       <!-- Field -->
       <div id="field" class="d-flex justify-center align-center p-2 mx-auto">
@@ -210,7 +212,6 @@
       </div>
       <!-- Player Hand -->
       <div id="player-hand" class="d-flex flex-column justify-end align-center px-2 pt-2 mx-auto">
-        <h4 data-cy="player-username">{{ playerUsername }}</h4>
         <h3 id="player-score">
           <span>POINTS: {{ playerPointTotal }}</span>
           <score-goal-tool-tip
@@ -255,6 +256,11 @@
           :is-players-turn="isPlayersTurn"
           :move-display-name="targetingMoveDisplayName"
           @cancel="clearSelection"
+        />
+        <username-tool-tip
+          id="player-username-container"
+          :username="playerUsername"
+          :is-player="true"
         />
       </div>
       <v-snackbar
@@ -360,6 +366,7 @@ import SevenDoubleJacksDialog from '@/components/GameView/SevenDoubleJacksDialog
 import MoveChoiceOverlay from '@/components/GameView/MoveChoiceOverlay.vue';
 import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay.vue';
 import ScrapDialog from '@/components/GameView/ScrapDialog';
+import UsernameToolTip from '@/components/GameView/UsernameToolTip';
 
 export default {
   name: 'GameView',
@@ -377,6 +384,7 @@ export default {
     MoveChoiceOverlay,
     TargetSelectionOverlay,
     ScrapDialog,
+    UsernameToolTip,
   },
   data() {
     return {
@@ -1379,5 +1387,17 @@ export default {
       border: 4px solid transparent;
     }
   }
+}
+
+#opponent-username-container {
+  position: absolute;
+  margin: 8px;
+  right: 0px;
+}
+
+#player-username-container {
+  position: absolute;
+  margin: 10px 18px;
+  left: 0px;
 }
 </style>
