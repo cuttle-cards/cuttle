@@ -60,6 +60,7 @@
             :is-player="false"
           />
         </h3>
+        <h4 data-cy="opponent-username">{{ opponentUsername }}</h4>
       </div>
       <!-- Field -->
       <div id="field" class="d-flex justify-center align-center p-2 mx-auto">
@@ -209,6 +210,7 @@
       </div>
       <!-- Player Hand -->
       <div id="player-hand" class="d-flex flex-column justify-end align-center px-2 pt-2 mx-auto">
+        <h4 data-cy="player-username">{{ playerUsername }}</h4>
         <h3 id="player-score">
           <span>POINTS: {{ playerPointTotal }}</span>
           <score-goal-tool-tip
@@ -449,6 +451,12 @@ export default {
     },
     opponent() {
       return this.$store.getters.opponent;
+    },
+    opponentUsername() {
+      return this.opponent.username;
+    },
+    playerUsername() {
+      return this.player.username;
     },
     //////////////////
     // Point Totals //
