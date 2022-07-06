@@ -17,6 +17,11 @@ describe('Game View Layout', () => {
     cy.get('[data-cy=nav-drawer]').should('not.be.visible');
   });
 
+  it.only('Should display usernames of player and opponent', () => {
+    cy.get('[data-cy=opponent-username]').should('be.visible');
+    cy.get('[data-cy=username]').should('be.visible');
+  });
+
   it('Many cards on field', () => {
     // Set Up
     cy.loadGameFixture({
