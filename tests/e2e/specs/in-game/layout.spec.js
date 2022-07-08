@@ -22,10 +22,6 @@ describe('Game View Layout', () => {
     cy.get('[data-cy=player-username]').should('be.visible');
   });
 
-  it('Should truncate usernames > 12 characters', () => {
-    cy.get('[data-cy=opponent-username]').should('have.text', 'definitelyNo...');
-  });
-
   it('Many cards on field', () => {
     // Set Up
     cy.loadGameFixture({

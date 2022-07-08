@@ -1,11 +1,10 @@
 <template>
   <div>
-    <v-tooltip :top="isPlayer" :bottom="!isPlayer">
-      <template #activator="{ on, attrs }">
-        <h4 :data-cy="dataCyProp" v-bind="attrs" v-on="on">{{ formattedUsername }}</h4>
-      </template>
-      <span>{{ username }}</span>
-    </v-tooltip>
+    <div class="username-container__outer" :class="{ 'username-container__outer--rtl': !isPlayer }">
+      <div class="username-container">
+        <h4 class="truncate" :data-cy="dataCyProp">{{ username }}</h4>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -26,11 +25,42 @@ export default {
     dataCyProp() {
       return this.isPlayer ? 'player-username' : 'opponent-username';
     },
-    formattedUsername() {
-      return this.username.length < 13 ? this.username : `${this.username.slice(0, 12)}...`;
-    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.username-container {
+  /* Change this to see truncation */
+  background-color: transparent;
+  padding: 1em;
+  transition: 0.25s all ease-in-out;
+  white-space: nowrap;
+
+  &__outer {
+    width: auto;
+  }
+
+  &__outer--rtl {
+    direction: rtl;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.75);
+    width: fit-content;
+  }
+}
+.truncate {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  transition: 0.25s all ease-in-out;
+
+  .username-container:hover & {
+    width: fit-content;
+  }
+}
+</style>
