@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="username__outer" :class="{ 'username__outer--rtl': !isPlayer }">
+    <div class="username__outer">
       <div class="username">
         <h4 class="username__text" :data-cy="dataCyProp">{{ username }}</h4>
       </div>

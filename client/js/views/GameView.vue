@@ -16,6 +16,7 @@
         class="d-flex flex-column justify-start align-center px-2 pb-2 mx-auto"
       >
         <div class="user-cards-grid-container">
+          <username-tool-tip id="opponent-username-container" :username="opponentUsername" />
           <div class="opponent-cards-container">
             <div id="opponent-hand-cards" class="d-flex justify-center align-start">
               <transition name="slide-below" mode="out-in">
@@ -56,7 +57,6 @@
               </transition>
             </div>
           </div>
-          <username-tool-tip id="opponent-username-container" :username="opponentUsername" />
         </div>
         <h3 id="opponent-score">
           <span>POINTS: {{ opponentPointTotal }}</span>
@@ -1215,6 +1215,8 @@ export default {
 #game-menu-wrapper {
   position: absolute;
   display: inline-block;
+  right: 0;
+  margin: 10px;
 }
 
 .valid-move {
