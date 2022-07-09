@@ -59,10 +59,10 @@ function handleGameResponse(context, jwres, resolve, reject) {
  * @param player is the player object
  */
 function queenCount(player) {
-  return player?.faceCards?.reduce(
-    (queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0),
-    0
-  );
+  if (!player) {
+    return null;
+  }
+  return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
 }
 
 const initialState = resetState();
@@ -75,7 +75,10 @@ export default {
       return state.players[state.myPNum];
     },
     playerPointTotal(state, getters) {
-      return getters.player?.points?.reduce((total, card) => total + card.rank, 0) || 0;
+      if (!getters.player) {
+        return 0;
+      }
+      return getters.player.points.reduce((total, card) => total + card.rank, 0) || 0;
     },
     playerQueenCount(state, getters) {
       return queenCount(getters.player);
@@ -90,7 +93,7 @@ export default {
       if (state.players.length < 2) {
         return null;
       }
-      return state.players?.[(state.myPNum + 1) % 2];
+      return state.players[(state.myPNum + 1) % 2];
     },
     opponentIsReady(state, getters) {
       if (!getters.opponent) {
@@ -102,10 +105,13 @@ export default {
       if (!getters.opponent) {
         return null;
       }
-      return getters.opponent?.username;
+      return getters.opponent.username;
     },
     opponentPointTotal(state, getters) {
-      return getters.opponent?.points?.reduce((total, card) => total + card.rank, 0) || 0;
+      if (!getters.opponent) {
+        return 0;
+      }
+      return getters.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
     },
     opponentQueenCount(state, getters) {
       return queenCount(getters.opponent);
