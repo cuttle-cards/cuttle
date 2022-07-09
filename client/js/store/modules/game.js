@@ -41,6 +41,7 @@ function resetState() {
     conceded: false,
   };
 }
+
 function handleGameResponse(context, jwres, resolve, reject) {
   switch (jwres.statusCode) {
     case 200:
@@ -52,27 +53,62 @@ function handleGameResponse(context, jwres, resolve, reject) {
       return reject(jwres.body.message);
   }
 }
+
+/**
+ * @returns number of queens a given player has
+ * @param player is the player object
+ */
+function queenCount(player) {
+  return player?.faceCards?.reduce(
+    (queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0),
+    0
+  );
+}
+
 const initialState = resetState();
 export default {
+  // TODO: Look in to namespacing -- currently this will not work due to a collision
+  // with the game socket also being named `game`. Potentially rename one or the other?
   state: initialState,
   getters: {
+    player(state) {
+      return state.players[state.myPNum];
+    },
+    playerPointTotal(state, getters) {
+      return getters.player?.points?.reduce((total, card) => total + card.rank, 0) || 0;
+    },
+    playerQueenCount(state, getters) {
+      return queenCount(getters.player);
+    },
+    playerUsername(state, getters) {
+      if (!getters.player) {
+        return null;
+      }
+      return getters.player.username;
+    },
     opponent(state) {
       if (state.players.length < 2) {
         return null;
       }
-      return state.players[(state.myPNum + 1) % 2];
-    },
-    opponentName(state, getters) {
-      if (!getters.opponent) {
-        return null;
-      }
-      return getters.opponent.username;
+      return state.players?.[(state.myPNum + 1) % 2];
     },
     opponentIsReady(state, getters) {
       if (!getters.opponent) {
         return null;
       }
       return state.myPNum === 0 ? state.p1Ready : state.p0Ready;
+    },
+    opponentUsername(state, getters) {
+      if (!getters.opponent) {
+        return null;
+      }
+      return getters.opponent?.username;
+    },
+    opponentPointTotal(state, getters) {
+      return getters.opponent?.points?.reduce((total, card) => total + card.rank, 0) || 0;
+    },
+    opponentQueenCount(state, getters) {
+      return queenCount(getters.opponent);
     },
   },
   mutations: {

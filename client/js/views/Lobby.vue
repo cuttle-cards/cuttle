@@ -19,7 +19,7 @@
       </v-col>
       <v-col offset="1">
         <lobby-player-indicator
-          :player-username="opponentName"
+          :player-username="opponentUsername"
           :player-ready="opponentIsReady"
           data-cy="opponent-indicator"
         />
@@ -57,7 +57,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['opponentName', 'opponentIsReady']),
+    ...mapGetters(['opponentIsReady', 'opponentUsername']),
     gameId() {
       return this.$store.state.game.id;
     },

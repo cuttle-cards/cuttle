@@ -314,39 +314,6 @@
       >
         <h1>Opponent Playing from Deck</h1>
       </v-overlay>
-      <counter-dialog
-        v-model="showCounterDialog"
-        :one-off="game.oneOff"
-        :target="game.oneOffTarget"
-        :twos-in-hand="twosInHand"
-        :twos-played="twosPlayed"
-        @resolve="resolve"
-        @counter="counter($event)"
-      />
-      <cannot-counter-dialog
-        v-model="showCannotCounterDialog"
-        :one-off="game.oneOff"
-        :opponent-queen-count="opponentQueenCount"
-        :player-two-count="playerTwoCount"
-        :twos-played="twosPlayed"
-        :target="game.oneOffTarget"
-        @resolve="resolve"
-      />
-      <four-dialog v-model="discarding" @discard="discard" />
-      <three-dialog
-        v-model="pickingFromScrap"
-        :one-off="game.oneOff"
-        :scrap="scrap"
-        @resolveThree="resolveThree($event)"
-      />
-      <seven-double-jacks-dialog
-        v-model="showSevenDoubleJacksDialog"
-        :top-card="topCard"
-        :second-card="secondCard"
-        @resolveSevenDoubleJacks="resolveSevenDoubleJacks($event)"
-      />
-      <game-over-dialog v-model="gameIsOver" :player-wins="playerWins" :stalemate="stalemate" />
-      <reauthenticate-dialog v-model="mustReauthenticate" />
       <move-choice-overlay
         :value="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
         :selected-card="selectedCard || cardSelectedFromDeck"
@@ -360,21 +327,24 @@
         @targetedOneOff="beginTargeting($event)"
         @cancel="clearSelection"
       />
+      <game-dialogs
+        :clear-selection="clearSelection"
+        :game="game"
+        :handle-error="handleError"
+        :resolving-seven="resolvingSeven"
+      />
     </template>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import Card from '@/components/GameView/Card.vue';
-import CannotCounterDialog from '@/components/GameView/CannotCounterDialog.vue';
-import CounterDialog from '@/components/GameView/CounterDialog.vue';
-import FourDialog from '@/components/GameView/FourDialog.vue';
-import ThreeDialog from '@/components/GameView/ThreeDialog.vue';
-import GameOverDialog from '@/components/GameView/GameOverDialog.vue';
+import GameDialogs from '@/components/GameView/GameDialogs.vue';
 import GameMenu from '@/components/GameView/GameMenu.vue';
 import ScoreGoalToolTip from '@/components/GameView/ScoreGoalToolTip.vue';
 import ReauthenticateDialog from '@/components/GameView/ReauthenticateDialog.vue';
-import SevenDoubleJacksDialog from '@/components/GameView/SevenDoubleJacksDialog.vue';
 import MoveChoiceOverlay from '@/components/GameView/MoveChoiceOverlay.vue';
 import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay.vue';
 import ScrapDialog from '@/components/GameView/ScrapDialog';
@@ -384,15 +354,10 @@ export default {
   name: 'GameView',
   components: {
     Card,
-    CannotCounterDialog,
-    CounterDialog,
-    FourDialog,
-    ThreeDialog,
-    GameOverDialog,
+    GameDialogs,
     GameMenu,
     ScoreGoalToolTip,
     ReauthenticateDialog,
-    SevenDoubleJacksDialog,
     MoveChoiceOverlay,
     TargetSelectionOverlay,
     ScrapDialog,
@@ -415,6 +380,16 @@ export default {
     };
   },
   computed: {
+    ...mapGetters([
+      'player',
+      'playerPointTotal',
+      'playerQueenCount',
+      'playerUsername',
+      'opponent',
+      'opponentPointTotal',
+      'opponentQueenCount',
+      'opponentUsername',
+    ]),
     //////////
     // Auth //
     //////////
@@ -463,30 +438,6 @@ export default {
       if (this.game.secondCard) res++;
       return res;
     },
-    ////////////////////
-    // Player Objects //
-    ////////////////////
-    player() {
-      return this.game.players[this.$store.state.game.myPNum];
-    },
-    opponent() {
-      return this.$store.getters.opponent;
-    },
-    opponentUsername() {
-      return this.opponent.username;
-    },
-    playerUsername() {
-      return this.player.username;
-    },
-    //////////////////
-    // Point Totals //
-    //////////////////
-    playerPointTotal() {
-      return this.player.points.reduce((total, card) => total + card.rank, 0) || 0;
-    },
-    opponentPointTotal() {
-      return this.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
-    },
     /////////////////
     // King Counts //
     /////////////////
@@ -508,33 +459,13 @@ export default {
     ///////////////
     // Game Over //
     ///////////////
-    gameIsOver() {
-      return this.$store.state.game.gameIsOver;
-    },
-    playerWins() {
-      return (
-        this.$store.state.game.gameIsOver &&
-        this.$store.state.game.winnerPNum === this.$store.state.game.myPNum
-      );
-    },
-    stalemate() {
-      return this.$store.state.game.gameIsOver && this.$store.state.game.winnerPNum === null;
-    },
-    ////////////
-    // Queens //
-    ////////////
-    playerQueenCount() {
-      return this.queenCount(this.player);
-    },
-    opponentQueenCount() {
-      return this.queenCount(this.opponent);
-    },
+    // Handled in GameDialogs.vue
+    //
     //////////
     // Twos //
     //////////
-    playerTwoCount() {
-      return this.twoCount(this.player);
-    },
+    // Handled in GameDialogs.vue
+    //
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
@@ -648,43 +579,8 @@ export default {
     waitingForOpponentToPlayFromDeck() {
       return this.$store.state.game.waitingForOpponentToPlayFromDeck;
     },
-    myTurnToCounter() {
-      return this.game.myTurnToCounter;
-    },
-    twosInHand() {
-      return this.player.hand.filter((card) => card.rank === 2);
-    },
-    twosPlayed() {
-      return this.game.twos;
-    },
-    hasTwoInHand() {
-      return this.twosInHand.length > 0;
-    },
     hasGlassesEight() {
       return this.player.faceCards.filter((card) => card.rank === 8).length > 0;
-    },
-    showCannotCounterDialog() {
-      return (
-        (this.myTurnToCounter && !this.hasTwoInHand) ||
-        (this.myTurnToCounter && this.hasTwoInHand && this.opponentQueenCount > 0)
-      );
-    },
-    showCounterDialog() {
-      return this.myTurnToCounter && this.hasTwoInHand && this.opponentQueenCount === 0;
-    },
-    showSevenDoubleJacksDialog() {
-      return (
-        this.resolvingSeven &&
-        this.topCard.rank === 11 &&
-        this.secondCard.rank === 11 &&
-        (this.opponentPointTotal === 0 || this.opponentQueenCount > 0)
-      );
-    },
-    discarding() {
-      return this.$store.state.game.discarding;
-    },
-    pickingFromScrap() {
-      return this.$store.state.game.pickingFromScrap;
     },
     validScuttleIds() {
       const selectedCard = this.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
@@ -842,17 +738,6 @@ export default {
       // Change targeting display name for Jack (instead of 'Royal')
       this.targetingMoveDisplayName = move.eventName === 'jack' ? 'Jack' : move.displayName;
     },
-
-    /**
-     * @returns number of queens a given player has
-     * @param player is the player object
-     */
-    queenCount(player) {
-      return player.faceCards.reduce(
-        (queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0),
-        0
-      );
-    },
     /**
      * @returns number of kings a given player has
      * @param player is the player object
@@ -862,13 +747,6 @@ export default {
         (kingCount, card) => kingCount + (card.rank === 13 ? 1 : 0),
         0
       );
-    },
-    /**
-     * @returns number of queens a given player has
-     * @param player is the player object
-     */
-    twoCount(player) {
-      return player.faceCards.reduce((twoCOunt, card) => twoCOunt + (card.rank === 2 ? 1 : 0), 0);
     },
     /**
      * Returns the number of points to win
@@ -1116,35 +994,6 @@ export default {
         .dispatch('requestPlayOneOff', this.selectedCard.id)
         .then(this.clearSelection)
         .catch(this.handleError);
-    },
-    resolve() {
-      this.$store.dispatch('requestResolve').then(this.clearSelection).catch(this.handleError);
-    },
-    resolveThree(cardId) {
-      this.$store
-        .dispatch('requestResolveThree', cardId)
-        .then(this.clearSelection)
-        .catch(this.handleError);
-    },
-    resolveSevenDoubleJacks({ cardId, index }) {
-      this.$store
-        .dispatch('requestResolveSevenDoubleJacks', { cardId, index })
-        .then(this.clearSelection)
-        .catch(this.handleError);
-    },
-    counter(twoId) {
-      this.$store
-        .dispatch('requestCounter', twoId)
-        .then(this.clearSelection)
-        .catch(this.handleError);
-    },
-    discard(cardIds) {
-      const [cardId1] = cardIds;
-      const cardId2 = cardIds.length > 1 ? cardIds[1] : null;
-      this.$store.dispatch('requestDiscard', {
-        cardId1,
-        cardId2,
-      });
     },
   },
 };
