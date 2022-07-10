@@ -67,8 +67,6 @@ function queenCount(player) {
 
 const initialState = resetState();
 export default {
-  // TODO: Look in to namespacing -- currently this will not work due to a collision
-  // with the game socket also being named `game`. Potentially rename one or the other?
   state: initialState,
   getters: {
     discarding(state) {
