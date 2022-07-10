@@ -40,9 +40,6 @@ export default {
   &__outer {
     width: auto;
 
-    &--rtl {
-      direction: rtl;
-    }
   }
 
   &__text {
