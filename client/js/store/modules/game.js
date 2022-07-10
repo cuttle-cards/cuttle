@@ -71,6 +71,9 @@ export default {
   // with the game socket also being named `game`. Potentially rename one or the other?
   state: initialState,
   getters: {
+    discarding(state) {
+      return state.discarding;
+    },
     player(state) {
       return state.players[state.myPNum];
     },
@@ -115,6 +118,9 @@ export default {
     },
     opponentQueenCount(state, getters) {
       return queenCount(getters.opponent);
+    },
+    resolvingSeven(state) {
+      return state.playingFromDeck || state.waitingForOpponentToPlayFromDeck;
     },
   },
   mutations: {

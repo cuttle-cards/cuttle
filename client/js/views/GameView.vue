@@ -328,7 +328,6 @@
         @cancel="clearSelection"
       />
       <game-dialogs
-        :game="game"
         :resolving-seven="resolvingSeven"
         @clear-selection="clearSelection"
         @handle-error="handleError"
@@ -389,6 +388,7 @@ export default {
       'opponentPointTotal',
       'opponentQueenCount',
       'opponentUsername',
+      'resolvingSeven',
     ]),
     //////////
     // Auth //
@@ -647,9 +647,6 @@ export default {
     // Sevens
     playingFromDeck() {
       return this.$store.state.game.playingFromDeck;
-    },
-    resolvingSeven() {
-      return this.playingFromDeck || this.waitingForOpponentToPlayFromDeck;
     },
     topCard() {
       return this.$store.state.game.topCard;

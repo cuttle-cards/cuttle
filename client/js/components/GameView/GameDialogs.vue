@@ -59,19 +59,25 @@ export default {
     ThreeDialog,
   },
   props: {
-    game: {
-      type: Object,
-      required: true,
-    },
     resolvingSeven: {
       type: Boolean,
       required: true,
     },
   },
   computed: {
-    ...mapGetters(['player', 'opponent', 'opponentPointTotal', 'opponentQueenCount']),
-    discarding() {
-      return this.$store.state.game.discarding;
+    ...mapGetters([
+      'discarding',
+      'player',
+      'opponent',
+      'opponentPointTotal',
+      'opponentQueenCount',
+      'resolvingSeven',
+    ]),
+    game() {
+      // TODO: Figure out a better way to do this, mapping the whole module is a
+      // bit unusual-- the usages can probably be changed to only need a subset,
+      // or moved to some sort of store method or getter
+      return this.$store.state.game;
     },
     gameIsOver() {
       return this.$store.state.game.gameIsOver;
