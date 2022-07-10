@@ -39,7 +39,6 @@ export default {
 
   &__outer {
     width: auto;
-
   }
 
   &__text {
