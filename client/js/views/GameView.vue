@@ -328,10 +328,10 @@
         @cancel="clearSelection"
       />
       <game-dialogs
-        :clear-selection="clearSelection"
         :game="game"
-        :handle-error="handleError"
         :resolving-seven="resolvingSeven"
+        @clear-selection="clearSelection"
+        @handle-error="handleError"
       />
     </template>
   </div>

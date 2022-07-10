@@ -59,16 +59,8 @@ export default {
     ThreeDialog,
   },
   props: {
-    clearSelection: {
-      type: Function,
-      required: true,
-    },
     game: {
       type: Object,
-      required: true,
-    },
-    handleError: {
-      type: Function,
       required: true,
     },
     resolvingSeven: {
@@ -148,6 +140,9 @@ export default {
     },
   },
   methods: {
+    clearSelection() {
+      this.$emit('clear-selection');
+    },
     counter(twoId) {
       this.$store
         .dispatch('requestCounter', twoId)
@@ -161,6 +156,9 @@ export default {
         cardId1,
         cardId2,
       });
+    },
+    handleError() {
+      this.$emit('handle-error');
     },
     resolve() {
       this.$store.dispatch('requestResolve').then(this.clearSelection).catch(this.handleError);
