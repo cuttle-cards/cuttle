@@ -41,6 +41,7 @@ function resetState() {
     conceded: false,
   };
 }
+
 function handleGameResponse(context, jwres, resolve, reject) {
   switch (jwres.statusCode) {
     case 200:
@@ -52,27 +53,75 @@ function handleGameResponse(context, jwres, resolve, reject) {
       return reject(jwres.body.message);
   }
 }
+
+/**
+ * @returns number of queens a given player has
+ * @param player is the player object
+ */
+function queenCount(player) {
+  if (!player) {
+    return null;
+  }
+  return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
+}
+
 const initialState = resetState();
 export default {
   state: initialState,
   getters: {
+    discarding(state) {
+      return state.discarding;
+    },
+    player(state) {
+      return state.players[state.myPNum];
+    },
+    playerPointTotal(state, getters) {
+      if (!getters.player) {
+        return 0;
+      }
+      return getters.player.points.reduce((total, card) => total + card.rank, 0) || 0;
+    },
+    playerQueenCount(state, getters) {
+      return queenCount(getters.player);
+    },
+    playerUsername(state, getters) {
+      if (!getters.player) {
+        return null;
+      }
+      return getters.player.username;
+    },
     opponent(state) {
       if (state.players.length < 2) {
         return null;
       }
       return state.players[(state.myPNum + 1) % 2];
     },
-    opponentName(state, getters) {
-      if (!getters.opponent) {
-        return null;
-      }
-      return getters.opponent.username;
-    },
     opponentIsReady(state, getters) {
       if (!getters.opponent) {
         return null;
       }
       return state.myPNum === 0 ? state.p1Ready : state.p0Ready;
+    },
+    opponentUsername(state, getters) {
+      if (!getters.opponent) {
+        return null;
+      }
+      return getters.opponent.username;
+    },
+    opponentPointTotal(state, getters) {
+      if (!getters.opponent) {
+        return 0;
+      }
+      return getters.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
+    },
+    opponentQueenCount(state, getters) {
+      return queenCount(getters.opponent);
+    },
+    playerWins(state) {
+      return state.gameIsOver && state.winnerPNum === state.myPNum;
+    },
+    resolvingSeven(state) {
+      return state.playingFromDeck || state.waitingForOpponentToPlayFromDeck;
     },
   },
   mutations: {
