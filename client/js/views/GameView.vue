@@ -327,10 +327,7 @@
         @targetedOneOff="beginTargeting($event)"
         @cancel="clearSelection"
       />
-      <game-dialogs
-        @clear-selection="clearSelection"
-        @handle-error="handleError"
-      />
+      <game-dialogs @clear-selection="clearSelection" @handle-error="handleError" />
     </template>
   </div>
 </template>
