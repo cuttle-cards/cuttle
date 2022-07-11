@@ -417,7 +417,7 @@ export default {
     // Game, Deck, Log and Scrap //
     ///////////////////////////////
     game() {
-      return this.game;
+      return this.$store.state.game;
     },
     deck() {
       return this.game.deck;
