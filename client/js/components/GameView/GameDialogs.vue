@@ -58,12 +58,6 @@ export default {
     SevenDoubleJacksDialog,
     ThreeDialog,
   },
-  props: {
-    resolvingSeven: {
-      type: Boolean,
-      required: true,
-    },
-  },
   computed: {
     ...mapGetters([
       'discarding',

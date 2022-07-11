@@ -328,7 +328,6 @@
         @cancel="clearSelection"
       />
       <game-dialogs
-        :resolving-seven="resolvingSeven"
         @clear-selection="clearSelection"
         @handle-error="handleError"
       />
@@ -421,7 +420,7 @@ export default {
     // Game, Deck, Log and Scrap //
     ///////////////////////////////
     game() {
-      return this.$store.state.game;
+      return this.game;
     },
     deck() {
       return this.game.deck;
@@ -577,7 +576,7 @@ export default {
       return this.game.waitingForOpponentToPickFromScrap;
     },
     waitingForOpponentToPlayFromDeck() {
-      return this.$store.state.game.waitingForOpponentToPlayFromDeck;
+      return this.game.waitingForOpponentToPlayFromDeck;
     },
     hasGlassesEight() {
       return this.player.faceCards.filter((card) => card.rank === 8).length > 0;
@@ -646,13 +645,13 @@ export default {
     },
     // Sevens
     playingFromDeck() {
-      return this.$store.state.game.playingFromDeck;
+      return this.game.playingFromDeck;
     },
     topCard() {
-      return this.$store.state.game.topCard;
+      return this.game.topCard;
     },
     secondCard() {
-      return this.$store.state.game.secondCard;
+      return this.game.secondCard;
     },
     cardSelectedFromDeck() {
       if (this.topCardIsSelected) return this.topCard;
