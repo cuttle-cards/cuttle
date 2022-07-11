@@ -65,6 +65,7 @@ export default {
       'opponent',
       'opponentPointTotal',
       'opponentQueenCount',
+      'playerWins',
       'resolvingSeven',
     ]),
     game() {
@@ -74,7 +75,7 @@ export default {
       return this.$store.state.game;
     },
     gameIsOver() {
-      return this.$store.state.game.gameIsOver;
+      return this.game.gameIsOver;
     },
     hasTwoInHand() {
       return this.twosInHand.length > 0;
@@ -92,16 +93,10 @@ export default {
       },
     },
     pickingFromScrap() {
-      return this.$store.state.game.pickingFromScrap;
+      return this.game.pickingFromScrap;
     },
     playerTwoCount() {
       return this.twoCount(this.player);
-    },
-    playerWins() {
-      return (
-        this.$store.state.game.gameIsOver &&
-        this.$store.state.game.winnerPNum === this.$store.state.game.myPNum
-      );
     },
     scrap() {
       return this.game.scrap;

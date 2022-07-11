@@ -117,6 +117,9 @@ export default {
     opponentQueenCount(state, getters) {
       return queenCount(getters.opponent);
     },
+    playerWins(state) {
+      return state.gameIsOver && state.winnerPNum === state.myPNum;
+    },
     resolvingSeven(state) {
       return state.playingFromDeck || state.waitingForOpponentToPlayFromDeck;
     },
