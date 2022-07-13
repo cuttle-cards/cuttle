@@ -119,6 +119,83 @@
           />
         </v-col>
       </v-row>
+      <!-- Multiplayer Variants -->
+      <v-row class="d-flex flex-column mb-4">
+        <h1 class="gradient-text">Multiplayer Variants</h1>
+        <p class="mb-4">
+          Presently only 2-player cuttle is available at <a href="https://www.cuttle.cards"> www.cuttle.cards</a>, 
+          however Cuttle can be played with 2-4 players. 
+          3 and 4-player Cuttle each have slight variations on the rules 
+          to optimize the game balance while changing the pace and the feel. 
+          Give them a try next time you're playing Cuttle in a group!
+        </p>
+        <h3>3 Player Cuttle: Cutthroat</h3>
+        <p class="mb-4">
+          Cutthroat is a brutally fast-paced 1v1v1 version of Cuttle, full of betrayal and pivotal moments!   
+        </p>
+        <p>
+          The rules are the same as above with the following changes:
+        <ul>
+        <li>
+          The win condition is reduced. Players need 14 points to win by default, 9 points with one king in play, 
+          5 points with two kings in play, and having 3 kings in play immediately wins (goal becomes zero).
+        </li> 
+        <li>
+           To start play, deal each player 5 cards and the player to the left of the dealer goes first. 
+          Which player is the delete rotates clockwise each game.
+        </li>  
+        <li> Shuffle two jokers into the deck. Joker's count as Royals with the effect "Steal target Royal".
+        </li> 
+         <li>
+           The hand limit is reduced to 7 (from 8).
+         </li>
+        </ul>
+        </p>
+
+
+
+        <h3>4 Player Cuttle: 2v2</h3>
+        <p class="mb-4">
+          4 player Cuttle is a 2v2 team game. Each player sits across from their partner. 
+          Your team wins if either you or your teammate reach your respective goals, 
+          but players do not share cards on their hand or field 
+          (points are counted separately and your royals do not directly affect your partner).
+        </p>
+        <p>
+        The rules are otherwise the same as 1v1 Cuttle, 
+        with play proceeding clockwise from the left of the dealer, with the following other changes:
+        <ul>
+        <li>
+        Each player is dealt 5 cards, play starts left of the dealer and proceeds clockwise from there
+        </li> 
+        <li>
+        Shuffle two jokers into the deck. Joker's count as Royals with the effect "Steal target Royal". 
+        Similar to jacks, they may transfer control of a royal from any player to any other player.
+        </li>  
+        <li> 
+        The hand limit is reduced to 7 (from 8).
+        </li> 
+        <li>
+         Jacks may be played to transfer control of any point card to any other player. 
+         You may therefore "steal" points from yourself (or anyone else) in order to give them to your partner, 
+         potentially winning on your turn with their points 
+         (their goal is still determined by the count of their own kings on the field).
+        </li>
+        <li>
+        Nine's can be played for an alternative, similar effect. Whenever an opponent plays a royal, 
+        you may immediately play a nine in response to return that card to its owner's hand immediately, 
+        preventing its effect from taking place. Doing so may be done out of turn, does not take your turn, 
+        but does not prevent the target's owner from playing the card again on their next turn. 
+        Alternatively, you may still play a nine for it's original one-off effect on your turn 
+        (taking your turn to do so) to return a card permanently to it's controller's hand and prevent them 
+        from playing that card on their next turn.
+        </li>
+        
+        </ul>
+        </p>
+    
+       
+      </v-row>
       <!-- FAQ -->
       <v-row class="d-flex flex-column mb-4">
         <h1 class="gradient-text">FAQ</h1>
