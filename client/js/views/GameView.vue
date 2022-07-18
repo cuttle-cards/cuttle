@@ -232,6 +232,7 @@
           </span>
         </h3>
         <div
+          v-if="!targeting"
           id="player-hand-cards"
           class="user-cards-grid-container"
           :class="{ 'my-turn': isPlayersTurn }"
@@ -244,7 +245,6 @@
           />
           <div class="player-cards-container">
             <transition-group
-              v-if="!targeting"
               tag="div"
               name="slide-above"
               class="d-flex justify-center align-start"
