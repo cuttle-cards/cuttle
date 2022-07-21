@@ -15,6 +15,7 @@
             hint="Username"
             data-cy="username"
             autocomplete="username"
+            placeholder="Username"
           />
           <v-text-field
             v-model="pw"
@@ -24,6 +25,7 @@
             type="password"
             data-cy="password"
             :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
+            placeholder="Password"
           />
           <div id="login-button-container">
             <v-btn :loading="loading" color="primary" block type="submit" data-cy="submit">
