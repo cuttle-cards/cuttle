@@ -48,13 +48,13 @@
         </div>
         <p v-if="selectedSeason && selectedSeason.bracketLink" class="text-body-1">
           Click
-          <a :href="selectedSeason.bracketLink" data-cy="tournament-bracket-link">
+          <a :href="selectedSeason.bracketLink" target="_blank" data-cy="tournament-bracket-link">
             here to see the official tournament bracket
           </a>
         </p>
         <p v-if="selectedSeason && selectedSeason.footageLink" class="text-body-1">
           Click
-          <a :href="selectedSeason.footageLink" data-cy="tournament-footage-link">
+          <a :href="selectedSeason.footageLink" target="_blank" data-cy="tournament-footage-link">
             here to watch the official tournament footage
           </a>
           with play-by-play commentary.
