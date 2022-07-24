@@ -291,7 +291,7 @@
         v-model="waitingForOpponentToCounter"
         opacity=".6"
       >
-        <h1>Opponent May Counter</h1>
+        <h1>{{ waitingForOpponentToCounterMessage }}</h1>
       </v-overlay>
       <v-overlay
         id="waiting-for-opponent-discard-scrim"
@@ -568,6 +568,18 @@ export default {
     },
     waitingForOpponentToCounter() {
       return this.game.waitingForOpponentToCounter;
+    },
+    waitingForOpponentToCounterMessage() {
+      const mayCounter = 'Opponent May Counter';
+      const mustResolve = 'Opponent Must Resolve';
+      if (this.playerQueenCount) {
+        return mustResolve;
+      }
+      const opponentHasTwo = this.opponent.hand.some((card) => card.rank === 2);
+      if (this.hasGlassesEight && !opponentHasTwo) {
+        return mustResolve;
+      }
+      return mayCounter;
     },
     waitingForOpponentToPickFromScrap() {
       return this.game.waitingForOpponentToPickFromScrap;
