@@ -515,3 +515,117 @@ describe('Countering One-Offs P0 Perspective', () => {
       .click();
   });
 });
+
+describe('Opponent may counter vs Opponent must resolve', () => {
+  beforeEach(() => {
+    setupGameAsP0();
+  });
+
+  describe('Opponent may counter overlay', () => {
+    it('Displays Opponent may counter when player had neither glasses nor a queen', () => {
+      cy.loadGameFixture({
+        // Player is P0
+        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.log('Loaded fixture');
+
+      cy.get('[data-player-hand-card=1-0]').click();
+      cy.get('[data-move-choice=oneOff]').click();
+      cy.get('#waiting-for-opponent-counter-scrim')
+        .should('be.visible')
+        .should('contain', 'Opponent May Counter');
+    });
+
+    it('Displays Opponent may counter when player has glasses but opponent has a two in hand', () => {
+      cy.loadGameFixture({
+        // Player is P0
+        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [Card.EIGHT_OF_HEARTS],
+        // Opponent is P1
+        p1Hand: [Card.TWO_OF_HEARTS],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.log('Loaded fixture');
+
+      cy.get('[data-player-hand-card=1-0]').click();
+      cy.get('[data-move-choice=oneOff]').click();
+      cy.get('#waiting-for-opponent-counter-scrim')
+        .should('be.visible')
+        .should('contain', 'Opponent May Counter');
+    });
+  });
+
+  describe('Opponent must resolve', () => {
+    it('Displays Opponent must resolve when player has a queen', () => {
+      cy.loadGameFixture({
+        // Player is P0
+        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [Card.QUEEN_OF_DIAMONDS],
+        // Opponent is P1
+        p1Hand: [Card.TWO_OF_HEARTS],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.log('Loaded fixture');
+
+      cy.get('[data-player-hand-card=1-0]').click();
+      cy.get('[data-move-choice=oneOff]').click();
+      cy.get('#waiting-for-opponent-counter-scrim')
+        .should('be.visible')
+        .should('contain', 'Opponent Must Resolve');
+    });
+
+    it('Displays Opponent must resolve when player has glasses while opponent does not have a two in hand', () => {
+      cy.loadGameFixture({
+        // Player is P0
+        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [Card.EIGHT_OF_DIAMONDS],
+        // Opponent is P1
+        p1Hand: [Card.ACE_OF_HEARTS],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.log('Loaded fixture');
+
+      cy.get('[data-player-hand-card=1-0]').click();
+      cy.get('[data-move-choice=oneOff]').click();
+      cy.get('#waiting-for-opponent-counter-scrim')
+        .should('be.visible')
+        .should('contain', 'Opponent Must Resolve');
+    });
+    it('Display Opponent must resolve when player has a queen + glasses and their opponent has a two in hand', () => {
+      cy.loadGameFixture({
+        // Player is P0
+        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [Card.QUEEN_OF_DIAMONDS, Card.EIGHT_OF_CLUBS],
+        // Opponent is P1
+        p1Hand: [Card.TWO_OF_HEARTS],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.log('Loaded fixture');
+
+      cy.get('[data-player-hand-card=1-0]').click();
+      cy.get('[data-move-choice=oneOff]').click();
+      cy.get('#waiting-for-opponent-counter-scrim')
+        .should('be.visible')
+        .should('contain', 'Opponent Must Resolve');
+    });
+  });
+});
