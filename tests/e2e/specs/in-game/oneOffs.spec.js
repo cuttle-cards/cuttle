@@ -1232,9 +1232,8 @@ describe('Playing THREEs', () => {
     // resolve button should be disabled
     cy.get('[data-cy=three-resolve').should('be.disabled');
 
-    // Confirm able to sort scrap by rank
-    cy.get('[data-cy=three-dialog-sort-dropdown]').click({ force: true });
-    cy.contains('By Rank').click();
+    // Confirm able to sort scrap by rank, as it's default
+
     const mapElementsToRank = (elements) => {
       return _.map(elements, (element) => {
         return Number(element.attributes['data-three-dialog-card'].value.split('-')[0]);
