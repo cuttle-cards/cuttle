@@ -74,7 +74,7 @@ export default {
   },
   data() {
     return {
-      sortByRank: false,
+      sortByRank: true,
       sortOptions: [
         { text: 'Chronologically', value: false },
         { text: 'By Rank', value: true },
