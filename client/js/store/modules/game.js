@@ -123,6 +123,9 @@ export default {
     resolvingSeven(state) {
       return state.playingFromDeck || state.waitingForOpponentToPlayFromDeck;
     },
+    isPlayersTurn(state) {
+      return state.turn % 2 === state.myPNum;
+    },
   },
   mutations: {
     setGameId(state, val) {
