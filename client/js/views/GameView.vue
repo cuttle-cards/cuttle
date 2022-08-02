@@ -286,46 +286,15 @@
           <v-icon data-cy="close-snackbar" @click="clearSnackBar"> mdi-close </v-icon>
         </v-btn>
       </v-snackbar>
-      <v-overlay
-        id="waiting-for-opponent-counter-scrim"
-        v-model="waitingForOpponentToCounter"
-        opacity=".6"
-      >
-        <h1>Opponent May Counter</h1>
-      </v-overlay>
-      <v-overlay
-        id="waiting-for-opponent-discard-scrim"
-        v-model="waitingForOpponentToDiscard"
-        opacity=".6"
-      >
-        <h1>Opponent Is Discarding</h1>
-      </v-overlay>
-      <v-overlay
-        id="waiting-for-opponent-resolve-three-scrim"
-        v-model="waitingForOpponentToPickFromScrap"
-        opacity=".6"
-      >
-        <h1>Opponent Choosing Card from Scrap</h1>
-      </v-overlay>
-      <v-overlay
-        id="waiting-for-opponent-play-from-deck-scrim"
-        v-model="waitingForOpponentToPlayFromDeck"
-        opacity=".6"
-      >
-        <h1>Opponent Playing from Deck</h1>
-      </v-overlay>
-      <move-choice-overlay
-        :value="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
-        :selected-card="selectedCard || cardSelectedFromDeck"
-        :is-players-turn="isPlayersTurn"
-        :opponent-queen-count="opponentQueenCount"
+      <game-overlays
+        :targeting="targeting"
+        :selected-card="selectedCard"
+        :card-selected-from-deck="cardSelectedFromDeck"
+        @clear-selection="clearSelection"
+        @face-card="playFaceCard"
+        @one-off="playOneOff"
         @points="playPoints"
-        @faceCard="playFaceCard"
-        @oneOff="playOneOff"
-        @scuttle="beginTargeting($event)"
-        @jack="beginTargeting($event)"
-        @targetedOneOff="beginTargeting($event)"
-        @cancel="clearSelection"
+        @target="beginTargeting"
       />
       <game-dialogs @clear-selection="clearSelection" @handle-error="handleError" />
     </template>
@@ -333,14 +302,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 import Card from '@/components/GameView/Card.vue';
 import GameDialogs from '@/components/GameView/GameDialogs.vue';
 import GameMenu from '@/components/GameView/GameMenu.vue';
+import GameOverlays from '@/components/GameView/GameOverlays.vue';
 import ScoreGoalToolTip from '@/components/GameView/ScoreGoalToolTip.vue';
 import ReauthenticateDialog from '@/components/GameView/ReauthenticateDialog.vue';
-import MoveChoiceOverlay from '@/components/GameView/MoveChoiceOverlay.vue';
 import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay.vue';
 import ScrapDialog from '@/components/GameView/ScrapDialog';
 import UsernameToolTip from '@/components/GameView/UsernameToolTip';
@@ -351,9 +320,9 @@ export default {
     Card,
     GameDialogs,
     GameMenu,
+    GameOverlays,
     ScoreGoalToolTip,
     ReauthenticateDialog,
-    MoveChoiceOverlay,
     TargetSelectionOverlay,
     ScrapDialog,
     UsernameToolTip,
@@ -375,7 +344,11 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
+    }),
     ...mapGetters([
+      'isPlayersTurn',
       'player',
       'playerPointTotal',
       'playerQueenCount',
@@ -557,23 +530,8 @@ export default {
     selectedCard() {
       return this.selectionIndex !== null ? this.player.hand[this.selectionIndex] : null;
     },
-    isPlayersTurn() {
-      return this.game.turn % 2 === this.game.myPNum;
-    },
     turnText() {
       return this.isPlayersTurn ? 'YOUR TURN' : "OPPONENT'S TURN";
-    },
-    waitingForOpponentToDiscard() {
-      return this.game.waitingForOpponentToDiscard;
-    },
-    waitingForOpponentToCounter() {
-      return this.game.waitingForOpponentToCounter;
-    },
-    waitingForOpponentToPickFromScrap() {
-      return this.game.waitingForOpponentToPickFromScrap;
-    },
-    waitingForOpponentToPlayFromDeck() {
-      return this.game.waitingForOpponentToPlayFromDeck;
     },
     hasGlassesEight() {
       return this.player.faceCards.filter((card) => card.rank === 8).length > 0;
