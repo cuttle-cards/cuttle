@@ -126,6 +126,9 @@ export default {
     isPlayersTurn(state) {
       return state.turn % 2 === state.myPNum;
     },
+    hasGlassesEight(state, getters) {
+      return getters.player.faceCards.filter((card) => card.rank === 8).length > 0;
+    },
   },
   mutations: {
     setGameId(state, val) {

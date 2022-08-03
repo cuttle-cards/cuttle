@@ -358,6 +358,7 @@ export default {
       'opponentQueenCount',
       'opponentUsername',
       'resolvingSeven',
+      'hasGlassesEight',
     ]),
     //////////
     // Auth //
@@ -532,9 +533,6 @@ export default {
     },
     turnText() {
       return this.isPlayersTurn ? 'YOUR TURN' : "OPPONENT'S TURN";
-    },
-    hasGlassesEight() {
-      return this.player.faceCards.filter((card) => card.rank === 8).length > 0;
     },
     validScuttleIds() {
       const selectedCard = this.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;

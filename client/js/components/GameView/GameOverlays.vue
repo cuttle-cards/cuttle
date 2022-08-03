@@ -5,7 +5,7 @@
       v-model="waitingForOpponentToCounter"
       opacity=".6"
     >
-      <h1>Opponent May Counter</h1>
+      <h1>{{ waitingForOpponetToCounterMessage }}</h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-discard-scrim"
@@ -83,7 +83,22 @@ export default {
       waitingForOpponentToPickFromScrap: ({ game }) => game.waitingForOpponentToPickFromScrap,
       waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
     }),
-    ...mapGetters(['isPlayersTurn', 'opponentQueenCount']),
+    ...mapGetters([
+      'isPlayersTurn',
+      'playerQueenCount',
+      'opponentQueenCount',
+      'opponent',
+      'hasGlassesEight',
+    ]),
+    waitingForOpponetToCounterMessage() {
+      const mayCounter = 'Opponent May Counter';
+      const mustResolve = 'Opponent Must Resolve';
+      const opponentHasTwo = this.opponent.hand.some((card) => card.rank === 2);
+      if (this.playerQueenCount || (this.hasGlassesEight && !opponentHasTwo)) {
+        return mustResolve;
+      }
+      return mayCounter;
+    },
   },
   methods: {
     handleTargeting(event) {
