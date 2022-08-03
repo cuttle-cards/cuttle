@@ -522,7 +522,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
   });
 
   describe('Opponent May Counter', () => {
-    it('"Displays Opponent May Counter" when player had neither glasses nor a queen', () => {
+    it('Displays "Opponent May Counter" when player had neither glasses nor a queen', () => {
       cy.loadGameFixture({
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
@@ -544,7 +544,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         .should('contain', 'Opponent May Counter');
     });
 
-    it('"Displays Opponent May Counter" when player has glasses but opponent has a two in hand', () => {
+    it('Displays "Opponent May Counter" when player has glasses but opponent has a two in hand', () => {
       cy.loadGameFixture({
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
@@ -568,7 +568,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
   });
 
   describe('Opponent Must Resolve', () => {
-    it('"Displays Opponent Must Resolve" when player has a queen', () => {
+    it('Displays "Opponent Must Resolve" when player has a queen', () => {
       cy.loadGameFixture({
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
@@ -590,7 +590,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         .should('contain', 'Opponent Must Resolve');
     });
 
-    it('"Displays Opponent Must Resolve" when player has glasses while opponent does not have a two in hand', () => {
+    it('Displays "Opponent Must Resolve" when player has glasses while opponent does not have a two in hand', () => {
       cy.loadGameFixture({
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
@@ -612,7 +612,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         .should('contain', 'Opponent Must Resolve');
     });
 
-    it('"Display Opponent Must Resolve" when player has a queen + glasses and their opponent does not have a 2 in hand', () => {
+    it('Display "Opponent Must Resolve" when player has a queen + glasses and their opponent does not have a 2 in hand', () => {
       cy.loadGameFixture({
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
