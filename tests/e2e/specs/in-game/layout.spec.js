@@ -387,9 +387,7 @@ describe('Game View Layout', () => {
     // Given -- the scrap is currently open
     cy.get('#scrap').click();
     cy.get('#scrap-dialog').should('be.visible');
-    // When -- Click sort by rank
-    cy.get('[data-cy=scrap-dialog-sort-dropdown]').click({ force: true });
-    cy.contains('By Rank').click();
+
     // Then-- All cards should be in ascending rank order
     const mapElementsToRank = (elements) => {
       return _.map(elements, (element) => {
