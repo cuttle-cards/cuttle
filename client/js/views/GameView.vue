@@ -1204,6 +1204,7 @@ export default {
 .user-cards-grid-container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  width: 100%;
 }
 #player-username-container {
   grid-column-end: span 2;

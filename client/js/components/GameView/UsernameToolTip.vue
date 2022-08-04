@@ -34,7 +34,6 @@ export default {
   /* Change this to see truncation */
   background-color: transparent;
   padding: 1em;
-  transition: 0.25s all ease-in-out;
   white-space: nowrap;
 
   &__outer {
@@ -48,11 +47,6 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     width: 100%;
-    transition: 0.25s all ease-in-out;
-
-    .username:hover & {
-      width: fit-content;
-    }
   }
 
   &:hover {
