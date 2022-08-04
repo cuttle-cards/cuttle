@@ -47,7 +47,6 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     width: 100%;
-    transition: 0.25s all ease-in-out;
   }
 
   &:hover {
