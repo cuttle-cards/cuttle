@@ -1403,7 +1403,7 @@ describe('Playing sevens at the end of the deck', () => {
     });
   });
 
-  it.only('Plays the 2nd card in the deck when there are two cards left', () => {
+  it('Plays the 2nd card in the deck when there are two cards left', () => {
     setupGameAsP0();
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
