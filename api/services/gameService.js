@@ -266,15 +266,8 @@ module.exports = {
       secondCard: null,
       cardsToRemoveFromDeck,
     };
-    if (options.index === 0) {
-      if (game.secondCard) {
-        game.topCard = game.secondCard.id;
-      } else {
-        game.topCard = null;
-      }
-    }
-    // Re-assign top card if top card was played
-    if (index === 0 && game.secondCard) {
+    // Re-assign top card if top card was played (and second card exists)
+    if (index === 0) {
       if (game.secondCard) {
         res.topCard = game.secondCard.id;
       } else {
