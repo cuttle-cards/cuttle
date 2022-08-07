@@ -1337,3 +1337,31 @@ describe('Opponent playing SEVENS', () => {
     });
   }); // End Opponent seven one-off describe
 }); // End opponent plays seven describe
+
+describe('Playing sevens at the end of the deck', () => {
+  it.only('Plays the last card for points from a seven', () => {
+    setupGameAsP1();
+    cy.loadGameFixture({
+      p0Hand: [],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.SEVEN_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.FOUR_OF_CLUBS,
+      secondCard: Card.SIX_OF_DIAMONDS,
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Loaded fixture');
+
+    cy.deleteDeck();
+    cy.get('#deck').should('contain', 2);
+
+    cy.drawCardOpponent();
+    cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+    cy.get('[data-top-card=6-1]').click();
+    cy.get('[data-move-choice=points]').click();
+
+    cy.get('#deck').find('#empty-deck-text').should('contain', 'PASS');
+  });
+});
