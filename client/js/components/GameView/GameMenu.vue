@@ -115,7 +115,13 @@ export default {
     },
     async requestStalemate() {
       this.loading = true;
-      await this.$store.dispatch('requestStalemate');
+      try {
+        await this.$store.dispatch('requestStalemate');
+        this.$store.commit('setWaitingForOpponentToStalemate', true);
+      } catch (e) {
+        debugger;
+        this.$store.commit('setWaitingForOpponentToStalemate', false);
+      }
       this.showStalemateDialog = false;
     },
   },

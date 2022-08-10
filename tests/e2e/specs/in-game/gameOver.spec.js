@@ -263,7 +263,7 @@ describe('Stalemates', () => {
         .get('[data-cy=request-gameover-confirm]')
         .click();
 
-      cy.get('#waiting-opponent-stalemate-overlay').should('be.visible');
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
     });
   });
 });
