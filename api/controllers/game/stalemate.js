@@ -16,7 +16,7 @@ module.exports = async function (req, res) {
     // End in stalemate if both players requested stalemate this turn
     if (
       game.turnStalemateWasRequestedByP0 === game.turnStalemateWasRequestedByP1 &&
-      game.TurnStalemateWasRequestedByP0 === game.turn
+      game.turnStalemateWasRequestedByP0 === game.turn
     ) {
       victory.gameOver = true;
       const gameUpdates = {
