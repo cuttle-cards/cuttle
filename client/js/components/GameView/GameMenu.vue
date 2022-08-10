@@ -119,7 +119,6 @@ export default {
         await this.$store.dispatch('requestStalemate');
         this.$store.commit('setWaitingForOpponentToStalemate', true);
       } catch (e) {
-        debugger;
         this.$store.commit('setWaitingForOpponentToStalemate', false);
       }
       this.showStalemateDialog = false;
