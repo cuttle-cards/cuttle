@@ -17,18 +17,21 @@
       <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">
         Concede
       </v-list-item>
+      <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
+        Request Stalemate
+      </v-list-item>
     </v-list>
-    <v-dialog v-model="showConcedeDialog">
-      <v-card id="concede-menu">
-        <v-card-title>Concede?</v-card-title>
-        <v-card-text> The game will end and your opponent will win. </v-card-text>
+    <v-dialog v-model="showDialog">
+      <v-card id="request-gameover-dialog">
+        <v-card-title>{{ dialogTitle }}?</v-card-title>
+        <v-card-text> {{ dialogText }} </v-card-text>
         <v-card-actions class="d-flex justify-end">
           <v-btn
             text
             color="primary"
-            data-cy="concede-cancel"
-            :disabled="conceding"
-            @click="showConcedeDialog = false"
+            data-cy="request-gameover-cancel"
+            :disabled="loading"
+            @click="closeDialog"
           >
             Cancel
           </v-btn>
@@ -36,11 +39,11 @@
             color="error"
             depressed
             outlined
-            data-cy="concede-confirm"
-            :loading="conceding"
-            @click="concede"
+            data-cy="request-gameover-confirm"
+            :loading="loading"
+            @click="requestGameEnd"
           >
-            Concede
+            {{ dialogTitle }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -57,18 +60,63 @@ export default {
     return {
       showGameMenu: false,
       showConcedeDialog: false,
-      conceding: false,
+      showStalemateDialog: false,
+      loading: false,
     };
+  },
+  computed: {
+    showDialog: {
+      get() {
+        return this.showConcedeDialog || this.showStalemateDialog;
+      },
+      set(newVal) {
+        if (!newVal) {
+          this.showConcedeDialog = false;
+          this.showStalemateDialog = false;
+        }
+        this.showGameMenu = false;
+      },
+    },
+    dialogTitle() {
+      return this.showConcedeDialog ? 'Concede' : 'Request Stalemate';
+    },
+    dialogText() {
+      return this.showConcedeDialog
+        ? 'The game will end and your opponent will win.'
+        : 'If your opponent agrees, the game will end in a stalemate. The request will cancel if the opponent declines or either player makes a move';
+    },
   },
   methods: {
     openConcedeDialog() {
       this.showConcedeDialog = true;
+      this.showStalemateDialog = false;
       this.showGameMenu = false;
     },
+    openStalemateDialog() {
+      this.showStalemateDialog = true;
+      this.showConcedeDialog = false;
+      this.showGameMenu = false;
+    },
+    closeDialog() {
+      this.showConcedeDialog = false;
+      this.showStalemateDialog = false;
+    },
+    requestGameEnd() {
+      if (this.showConcedeDialog) {
+        this.concede();
+      } else {
+        this.requestStalemate();
+      }
+    },
     async concede() {
-      this.conceding = true;
+      this.loading = true;
       await this.$store.dispatch('requestConcede');
       this.showConcedeDialog = false;
+    },
+    async requestStalemate() {
+      this.loading = true;
+      await this.$store.dispatch('requestStalemate');
+      this.showStalemateDialog = false;
     },
   },
 };

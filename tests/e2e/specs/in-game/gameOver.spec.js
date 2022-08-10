@@ -238,4 +238,32 @@ describe('Stalemates', () => {
     assertStalemate();
     goHomeJoinNewGame();
   });
+
+  describe('Requesting a stalemate', () => {
+    it.only('Ends in stalemate when player requests stalemate and opponent agrees', () => {
+      setupGameAsP0();
+      cy.get('[data-player-hand-card]').should('have.length', 5);
+      cy.log('Game loaded');
+
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      // Cancel Stalemate
+      cy.get('#request-gameover-dialog')
+        .should('be.visible')
+        .get('[data-cy=request-gameover-cancel]')
+        .click();
+
+      cy.get('#request-gameover-dialog').should('not.be.visible');
+
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      // Request Stalemate
+      cy.get('#request-gameover-dialog')
+        .should('be.visible')
+        .get('[data-cy=request-gameover-confirm]')
+        .click();
+
+      cy.get('#waiting-opponent-stalemate-overlay').should('be.visible');
+    });
+  });
 });

@@ -50,6 +50,7 @@ function handleGameResponse(context, jwres, resolve, reject) {
       context.commit('setMustReauthenticate', true, { root: true });
       return reject(jwres.body.message);
     default:
+      debugger;
       return reject(jwres.body.message);
   }
 }
@@ -619,6 +620,13 @@ export default {
     async requestConcede(context) {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/concede', function handleResponse(res, jwres) {
+          return handleGameResponse(context, jwres, resolve, reject);
+        });
+      });
+    },
+    async requestStalemate(context) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/stalemate', function handleResponse(res, jwres) {
           return handleGameResponse(context, jwres, resolve, reject);
         });
       });
