@@ -17,6 +17,7 @@ io.socket.on('game', function (evData) {
     case 'updated':
       // Handle GameOver
       if (evData.data.victory && evData.data.victory.gameOver) {
+        debugger;
         setTimeout(() => {
           store.commit('setGameOver', evData.data.victory);
         }, 1000);

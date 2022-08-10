@@ -926,6 +926,17 @@ Cypress.Commands.add('concedeOpponent', () => {
   });
 });
 
+Cypress.Commands.add('stalemateOpponent', () => {
+  cy.log('Opponent requests/accepts stalemate');
+  io.socket.get('/game/stalemate', function handleResponse(res, jwres) {
+    debugger;
+    if (jwres.statusCode !== 200) {
+      throw new Error(jwres.body.message);
+    }
+    return jwres;
+  });
+});
+
 Cypress.Commands.add('reconnectOpponent', (username, password) => {
   cy.log('Opponent Reconnects');
   io.socket.get(

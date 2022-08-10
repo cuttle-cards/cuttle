@@ -264,6 +264,9 @@ describe('Stalemates', () => {
         .click();
 
       cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+
+      cy.stalemateOpponent();
+      assertStalemate();
     });
   });
 });
