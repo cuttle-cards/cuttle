@@ -40,6 +40,7 @@ function resetState() {
     winnerPNum: null,
     conceded: false,
     waitingForOpponentToStalemate: false,
+    consideringOpponentStalemateRequest: false,
   };
 }
 
@@ -243,6 +244,9 @@ export default {
     },
     setWaitingForOpponentToStalemate(state, value) {
       state.waitingForOpponentToStalemate = value;
+    },
+    setConsideringOpponentStalemateRequest(state, value) {
+      state.consideringOpponentStalemateRequest = value;
     },
   },
   actions: {

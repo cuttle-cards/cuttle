@@ -240,7 +240,7 @@ describe('Stalemates', () => {
   });
 
   describe('Requesting a stalemate', () => {
-    it.only('Ends in stalemate when player requests stalemate and opponent agrees', () => {
+    it('Ends in stalemate when player requests stalemate and opponent agrees', () => {
       setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
@@ -267,6 +267,18 @@ describe('Stalemates', () => {
 
       cy.stalemateOpponent();
       assertStalemate();
+    });
+
+    it.only('Ends in a stalemate when opponent requests a stalemate and player agrees', () => {
+      setupGameAsP1();
+      cy.get('[data-player-hand-card]').should('have.length', 6);
+      cy.log('Game loaded');
+
+      // Opponent requests stalemate
+      cy.stalemateOpponent();
+
+      // Player accepts stalemate
+      cy.get('#opponent-requested-stalemate-dialog').should('be.visible');
     });
   });
 });

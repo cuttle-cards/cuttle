@@ -46,6 +46,7 @@ module.exports = async function (req, res) {
         change: 'requestStalemate',
         game,
         victory,
+        requestedByPNum: req.session.pNum,
       },
     });
     return res.ok();
