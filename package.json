@@ -19,6 +19,7 @@
     "start:dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:devtools": "vue-devtools",
     "start:mockprod": "npm run build && CUTTLE_ENV=production npm run start:server",
+    "start:mockprod:tools": "concurrently \"NODE_ENV=dev ENABLE_VUE_DEVTOOLS=true npm run build && npm run start:server\" \"npm run start:devtools\"",
     "start:server": "node app.js"
   },
   "main": "app.js",

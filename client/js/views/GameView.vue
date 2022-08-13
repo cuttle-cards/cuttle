@@ -348,6 +348,7 @@ export default {
       waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
     }),
     ...mapGetters([
+      'authenticated',
       'isPlayersTurn',
       'player',
       'playerPointTotal',
@@ -623,7 +624,8 @@ export default {
     },
   },
   mounted() {
-    if (!this.$store.state.auth.authenticated) {
+    // TODO remove auth, move to router middleware
+    if (!this.authenticated) {
       this.$store.commit('setMustReauthenticate', true);
     }
   },

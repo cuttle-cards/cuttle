@@ -45,11 +45,11 @@ module.exports.routes = {
    *                                                                          *
    ***************************************************************************/
 
-  // '/'                             :   'userController.homepage',
   '/user/signup': 'userController.signup',
   '/user/login': 'userController.login',
   '/user/reLogin': 'userController.reLogin',
   '/user/logout': 'userController.logout',
+  '/user/status': 'userController.status',
 
   'GET /stats': 'StatsController.getStats',
 

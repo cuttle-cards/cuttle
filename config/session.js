@@ -20,6 +20,8 @@ module.exports.session = {
    * of your users, forcing them to log in again.                             *
    *                                                                          *
    ***************************************************************************/
+
+  // TODO this should be hidden from the public repo and moved to an ENV we set at build time
   secret: '47d7c84c91420ad6a46f22a27b9931fd',
 
   /***************************************************************************
@@ -29,6 +31,7 @@ module.exports.session = {
    *                                                                          *
    ***************************************************************************/
 
+  name: 'cuttle.sid',
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
   },

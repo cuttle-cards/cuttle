@@ -67,12 +67,11 @@ export default {
         );
       });
     },
-
     requestLogout(context) {
       return new Promise((resolve, reject) => {
-        io.socket.get('/user/logout', {}, function handleResponse(resData, jwres) {
+        io.socket.get('/user/logout', {}, async function handleResponse(resData, jwres) {
           if (jwres.statusCode === 200) {
-            context.commit('clearAuth');
+            await context.commit('clearAuth');
             return resolve();
           }
           return reject(new Error('Error logging out :('));
@@ -106,6 +105,26 @@ export default {
           }
         );
       });
+    },
+    requestStatus(context) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/user/status', {}, function handleResponse(resData, jwres) {
+          if (jwres.statusCode !== 200) {
+            context.commit('clearAuth');
+            return reject(new Error('Error getting user status'));
+          }
+          const { authenticated, id, username } = resData;
+          if (authenticated && username) {
+            context.commit('authSuccess', username);
+          }
+          return resolve(id);
+        });
+      });
+    },
+  },
+  getters: {
+    authenticated(state) {
+      return state.authenticated;
     },
   },
 };

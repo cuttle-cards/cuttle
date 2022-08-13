@@ -13,10 +13,6 @@ const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
-  homepage: function (req, res) {
-    return res.view('homepage', { loggedIn: req.session.loggedIn, game: req.session.game });
-  },
-
   signup: async function (req, res) {
     // Request was missing data
     if (!req.body.password && !req.body.username) {
@@ -100,8 +96,27 @@ module.exports = {
   },
 
   logout: function (req, res) {
-    delete req.session.usr;
-    req.session.loggedIn = false;
-    return res.ok();
+    req.session.destroy(function afterDestroy() {
+      return res.ok();
+    });
+  },
+
+  status: async function (req, res) {
+    const { usr: id, loggedIn: authenticated } = req.session;
+    if (!authenticated || !id) {
+      return res.ok({
+        authenticated,
+      });
+    }
+    try {
+      const { username } = await userAPI.findUser(id);
+      return res.ok({
+        id,
+        username,
+        authenticated,
+      });
+    } catch {
+      return res.badRequest('Unable to get user status');
+    }
   },
 };

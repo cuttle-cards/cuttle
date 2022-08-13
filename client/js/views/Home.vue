@@ -143,15 +143,7 @@ export default {
       this.snackBarMessage = message;
     },
     logout() {
-      this.$store
-        .dispatch('requestLogout')
-        .then(() => {
-          this.$router.push('/login');
-        })
-        .catch((err) => {
-          if (err) console.error(err);
-          console.log('Error logging out');
-        });
+      this.$router.push('/logout');
     },
   },
 };
