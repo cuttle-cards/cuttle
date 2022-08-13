@@ -11,7 +11,9 @@
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
         <v-btn outlined color="primary" class="mr-4">Reject Request</v-btn>
-        <v-btn color="error" depressed>Accept Stalemate</v-btn>
+        <v-btn color="error" depressed data-cy="accept-stalemate" @click="acceptStalemate">
+          Accept Stalemate
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -31,6 +33,11 @@ export default {
       set(value) {
         this.$emit('input', value);
       },
+    },
+  },
+  methods: {
+    async acceptStalemate() {
+      await this.$store.dispatch('requestStalemate');
     },
   },
 };

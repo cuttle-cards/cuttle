@@ -278,7 +278,12 @@ describe('Stalemates', () => {
       cy.stalemateOpponent();
 
       // Player accepts stalemate
-      cy.get('#opponent-requested-stalemate-dialog').should('be.visible');
+      cy.get('#opponent-requested-stalemate-dialog')
+        .should('be.visible')
+        .find('[data-cy=accept-stalemate]')
+        .click();
+
+      assertStalemate();
     });
   });
 });
