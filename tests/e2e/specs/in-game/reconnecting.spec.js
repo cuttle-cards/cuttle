@@ -31,7 +31,7 @@ function reloadAndLogout() {
 }
 
 describe('Reconnecting to a game', () => {
-  it.only('Reconnects after refreshing the page', () => {
+  it('Reconnects after refreshing the page', () => {
     setupGameAsP0();
 
     cy.loadGameFixture({
