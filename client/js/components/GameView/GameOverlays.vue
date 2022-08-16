@@ -62,16 +62,10 @@ export default {
     selectedCard: {
       type: Object,
       default: null,
-      validator: (value) => {
-        return typeof value === Object || value === null;
-      },
     },
     cardSelectedFromDeck: {
       type: Object,
       default: null,
-      validator: (value) => {
-        return typeof value === Object || value === null;
-      },
     },
   },
   computed: {

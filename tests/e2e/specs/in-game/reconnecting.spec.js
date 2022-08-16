@@ -19,16 +19,18 @@ function reconnect() {
 }
 
 function reloadAndLogout() {
-  const currentPath = cy.location('pathname');
   // Logout the user
-  cy.visit('#/logout');
-  cy.visit(currentPath);
+  cy.window()
+    .its('app.$store')
+    .then(async (store) => {
+      store.dispatch('requestLogout');
+    });
   cy.reload();
   reconnect();
 }
 
 describe('Reconnecting to a game', () => {
-  it('Reconnects after refreshing the page', () => {
+  it.only('Reconnects after refreshing the page', () => {
     setupGameAsP0();
 
     cy.loadGameFixture({
