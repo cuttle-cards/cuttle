@@ -79,15 +79,19 @@ module.exports = {
       env: {
         'cypress/globals': true,
       },
+      // Possibly import some of these for clarity in the future
       globals: {
         badRequest: true,
         cardService: true,
+        Game: true,
+        gameService: true,
         io: true,
         ready1: true,
         request: true,
         socket1: true,
         socket2: true,
         socket3: true,
+        User: true,
       },
       rules: sharedTestRules,
     },

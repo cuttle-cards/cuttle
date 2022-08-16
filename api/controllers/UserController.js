@@ -12,6 +12,20 @@
 const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
 
+const getAndInitGameDataById = async (id, req) => {
+  const game = await gameService.populateGame({ gameId: id });
+  Game.subscribe(req, [game.id]);
+  sails.sockets.join(req, 'GameList');
+  Game.publish([game.id], {
+    verb: 'updated',
+    data: {
+      ...game.lastEvent,
+      game,
+    },
+  });
+  return game;
+};
+
 module.exports = {
   signup: async function (req, res) {
     // Request was missing data
@@ -63,36 +77,20 @@ module.exports = {
       return res.badRequest({ message: 'A username must be provided' });
     }
   },
-  reLogin: function (req, res) {
-    userAPI
-      .findUserByUsername(req.body.username)
-      .then(function gotUser(user) {
-        const checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword);
-        const promiseGame = gameService.populateGame({ gameId: user.game });
-        return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
-      })
-      .then((values) => {
-        const game = values[0];
-        const user = values[1];
-        req.session.loggedIn = true;
-        req.session.usr = user.id;
-        req.session.game = game.id;
-        req.session.pNum = user.pNum;
-        Game.subscribe(req, [game.id]);
-        sails.sockets.join(req, 'GameList');
-        Game.publish([game.id], {
-          verb: 'updated',
-          data: {
-            ...game.lastEvent,
-            game,
-          },
-        });
-
-        return res.ok();
-      })
-      .catch((err) => {
-        return res.badRequest(err);
-      });
+  reLogin: async function (req, res) {
+    try {
+      const user = await userAPI.findUserByUsername(req.body.username);
+      await passwordAPI.checkPass(req.body.password, user.encryptedPassword);
+      const game = await getAndInitGameDataById(user.game, req);
+      // Set session values manually to log in user and initialize the game
+      req.session.loggedIn = true;
+      req.session.usr = user.id;
+      req.session.game = game.id;
+      req.session.pNum = user.pNum;
+      return res.ok();
+    } catch (err) {
+      return res.badRequest(err);
+    }
   },
 
   logout: function (req, res) {
@@ -109,11 +107,13 @@ module.exports = {
       });
     }
     try {
-      const { username } = await userAPI.findUser(id);
+      const { username, game: gameId } = await userAPI.findUser(id);
+      const game = gameId ? await getAndInitGameDataById(gameId, req) : null;
       return res.ok({
         id,
         username,
         authenticated,
+        game,
       });
     } catch {
       return res.badRequest('Unable to get user status');

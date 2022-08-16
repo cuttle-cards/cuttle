@@ -113,10 +113,21 @@ export default {
             context.commit('clearAuth');
             return reject(new Error('Error getting user status'));
           }
-          const { authenticated, id, username } = resData;
-          if (authenticated && username) {
+          const { authenticated, id, username, pNum } = resData;
+
+          // If the user is not authenticated, we're done here
+          if (!authenticated) {
+            return resolve('User not authenticated');
+          }
+
+          if (username) {
             context.commit('authSuccess', username);
           }
+
+          if (pNum) {
+            context.commit('setMyPNum', pNum);
+          }
+
           return resolve(id);
         });
       });
