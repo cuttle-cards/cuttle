@@ -25,6 +25,7 @@ function reloadAndLogout() {
     .then(async (store) => {
       store.dispatch('requestLogout');
     });
+  cy.log('Logged Out');
   cy.reload();
   reconnect();
 }
