@@ -69,9 +69,9 @@ export default {
     },
     requestLogout(context) {
       return new Promise((resolve, reject) => {
-        io.socket.get('/user/logout', {}, async function handleResponse(resData, jwres) {
+        io.socket.get('/user/logout', {}, function handleResponse(resData, jwres) {
           if (jwres.statusCode === 200) {
-            await context.commit('clearAuth');
+            context.commit('clearAuth');
             return resolve();
           }
           return reject(new Error('Error logging out :('));
