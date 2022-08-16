@@ -31,6 +31,37 @@ function reloadAndLogout() {
 }
 
 describe('Reconnecting to a game', () => {
+  it.only('Persists session after refreshing the page', () => {
+    setupGameAsP0();
+
+    cy.loadGameFixture({
+      p0Hand: [Card.ACE_OF_CLUBS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Fixture loaded');
+
+    // Reload page, relogin
+    cy.reload();
+
+    // Play Ace of Clubs for points
+    cy.get('[data-player-hand-card=1-0]').click();
+    cy.get('[data-move-choice=points]').click();
+
+    assertGameState(0, {
+      p0Hand: [],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.ACE_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+  });
+
   it('Reconnects after refreshing the page', () => {
     setupGameAsP0();
 

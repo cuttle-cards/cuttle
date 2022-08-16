@@ -113,7 +113,7 @@ export default {
             context.commit('clearAuth');
             return reject(new Error('Error getting user status'));
           }
-          const { authenticated, id, username, pNum } = resData;
+          const { authenticated, id, username, game } = resData;
 
           // If the user is not authenticated, we're done here
           if (!authenticated) {
@@ -124,8 +124,8 @@ export default {
             context.commit('authSuccess', username);
           }
 
-          if (pNum) {
-            context.commit('setMyPNum', pNum);
+          if (game) {
+            context.dispatch('updateGameThenResetPNumIfNull', game);
           }
 
           return resolve(id);
