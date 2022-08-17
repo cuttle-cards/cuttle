@@ -44,13 +44,13 @@ module.exports.security = {
      * "*" to allow all domains CORS access.                                    *
      *                                                                          *
      ***************************************************************************/
-    // origin: '*',
+    // allowOrigins: '*',
     /***************************************************************************
      *                                                                          *
      * Allow cookies to be shared for CORS requests?                            *
      *                                                                          *
      ***************************************************************************/
-    // credentials: true,
+    // allowCredentials: true,
     /***************************************************************************
      *                                                                          *
      * Which methods should be allowed for CORS requests? This is only used in  *

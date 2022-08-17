@@ -128,6 +128,8 @@ module.exports = {
     }
   },
 
+  // TODO: See if this can be combined with the status call, possibly converting the socket
+  // to a REST request to have the cookie set as part of the operation
   ping: function (req, res) {
     return res.send('pong');
   },
