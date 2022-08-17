@@ -115,8 +115,6 @@ export default {
           }
           const { authenticated, id, username, game, lobby } = resData;
 
-          console.log('!!! resData', resData);
-
           // If the user is not authenticated, we're done here
           if (!authenticated) {
             return resolve('User not authenticated');
