@@ -108,6 +108,13 @@ export default {
     },
     requestStatus(context) {
       return new Promise((resolve, reject) => {
+        // In a development scenarios, we need to ping the server to get the cookie on
+        // the vue frontend
+        if (process.env.NODE_ENV === 'development') {
+          fetch('/user/ping', {
+            credentials: 'include',
+          });
+        }
         io.socket.get('/user/status', {}, async function handleResponse(resData, jwres) {
           if (jwres.statusCode !== 200) {
             context.commit('clearAuth');

@@ -18,4 +18,13 @@ module.exports = {
   // models: {
   //   connection: 'someMongodbServer'
   // }
+
+  // config/security.js
+  security: {
+    cors: {
+      allRoutes: true,
+      allowOrigins: ['http://localhost:1337', 'http://localhost:8080'],
+      allowCredentials: true,
+    },
+  },
 };

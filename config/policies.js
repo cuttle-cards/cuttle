@@ -28,6 +28,7 @@ module.exports.policies = {
     reLogin: ['hasValidUsername', 'hasPassword'],
     logout: true,
     status: true,
+    ping: true,
   },
 
   'game/reconnect': ['isLoggedIn', 'isInGame'],

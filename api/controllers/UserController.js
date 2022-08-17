@@ -127,4 +127,8 @@ module.exports = {
       return res.badRequest(err);
     }
   },
+
+  ping: function (req, res) {
+    return res.send('pong');
+  },
 };

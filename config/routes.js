@@ -50,6 +50,7 @@ module.exports.routes = {
   '/user/reLogin': 'userController.reLogin',
   '/user/logout': 'userController.logout',
   '/user/status': 'userController.status',
+  '/user/ping': 'userController.ping',
 
   'GET /stats': 'StatsController.getStats',
 
