@@ -31,7 +31,7 @@ function reloadAndLogout() {
 }
 
 describe('Reconnecting to a game', () => {
-  it.only('Persists session after refreshing the page', () => {
+  it('Persists session after refreshing the page', () => {
     setupGameAsP0();
 
     cy.loadGameFixture({
@@ -628,7 +628,7 @@ describe('Reconnecting to a game', () => {
           .get('[data-cy=cannot-counter-resolve]')
           .click();
         cy.get('#waiting-for-opponent-resolve-three-scrim').should('be.visible');
-        // Reload page, relogin
+        // Disconnect & Reconnect & relogin
         reloadAndLogout();
         cy.get('#waiting-for-opponent-resolve-three-scrim').should('be.visible');
         // waiting for opponent to choose from scrap scrim

@@ -8,7 +8,7 @@ module.exports = function returnLobbyData(req, res) {
       if (!lobbyData) {
         throw new Error('Unable to get lobby data');
       }
-      return res.ok(getLobbyDataByGame(game));
+      return lobbyData;
     })
     .catch(function failed(err) {
       return res.badRequest(err);

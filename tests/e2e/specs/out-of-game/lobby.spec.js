@@ -157,6 +157,11 @@ describe('Lobby - P0 Perspective', () => {
     cy.contains('button.v-btn', 'EXIT');
     cy.contains('button.v-btn', 'READY');
     cy.get('[data-cy=nav-drawer]').should('not.be.visible');
+    // Sign up new user and subscribe them to game
+    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.subscribeOpponent(gameData.id);
+    // Test that opponent's username appears in indicator
+    cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
   });
 });
 
@@ -256,5 +261,10 @@ describe('Lobby - P1 Perspective', () => {
     cy.contains('button.v-btn', 'EXIT');
     cy.contains('button.v-btn', 'READY');
     cy.get('[data-cy=nav-drawer]').should('not.be.visible');
+    // Sign up new user and subscribe them to game
+    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.subscribeOpponent(gameData.id);
+    // Test that opponent's username appears in indicator
+    cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
   });
 });

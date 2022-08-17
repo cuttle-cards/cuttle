@@ -115,7 +115,7 @@ export default {
             credentials: 'include',
           });
         }
-        io.socket.get('/user/status', {}, async function handleResponse(resData, jwres) {
+        io.socket.get('/user/status', {}, function handleResponse(resData, jwres) {
           if (jwres.statusCode !== 200) {
             context.commit('clearAuth');
             return reject(new Error(jwres.body.message));
@@ -132,7 +132,7 @@ export default {
           }
 
           if (game) {
-            await context.dispatch('updateGameThenResetPNumIfNull', game);
+           context.dispatch('updateGameThenResetPNumIfNull', game);
           }
 
           if (lobby) {

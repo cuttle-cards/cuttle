@@ -61,7 +61,6 @@ const routes = [
     path: '/stats',
     name: 'Stats',
     component: Stats,
-    // TODO update auth, make universal authentication middleware
     beforeEnter: mustBeAuthenticated,
   },
 ];
