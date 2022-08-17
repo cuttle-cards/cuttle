@@ -152,16 +152,20 @@ describe('Lobby - P0 Perspective', () => {
   it('Loads lobby after page refresh', () => {
     // Reload the page to ensure session remains
     cy.reload();
-    cy.contains('h1', 'Lobby for Test Game');
-    cy.get('#logo');
-    cy.contains('button.v-btn', 'EXIT');
-    cy.contains('button.v-btn', 'READY');
-    cy.get('[data-cy=nav-drawer]').should('not.be.visible');
-    // Sign up new user and subscribe them to game
-    cy.signupOpponent(opponentUsername, opponentPassword);
-    cy.subscribeOpponent(gameData.id);
-    // Test that opponent's username appears in indicator
-    cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
+    cy.window()
+      .its('app.$store.state.game')
+      .then((gameData) => {
+        cy.contains('h1', 'Lobby for Test Game');
+        cy.get('#logo');
+        cy.contains('button.v-btn', 'EXIT');
+        cy.contains('button.v-btn', 'READY');
+        cy.get('[data-cy=nav-drawer]').should('not.be.visible');
+        // Sign up new user and subscribe them to game
+        cy.signupOpponent(opponentUsername, opponentPassword);
+        cy.subscribeOpponent(gameData.id);
+        // Test that opponent's username appears in indicator
+        cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
+      });
   });
 });
 
@@ -256,15 +260,19 @@ describe('Lobby - P1 Perspective', () => {
   it('Loads lobby after page refresh', () => {
     // Reload the page to ensure session remains
     cy.reload();
-    cy.contains('h1', 'Lobby for Test Game');
-    cy.get('#logo');
-    cy.contains('button.v-btn', 'EXIT');
-    cy.contains('button.v-btn', 'READY');
-    cy.get('[data-cy=nav-drawer]').should('not.be.visible');
-    // Sign up new user and subscribe them to game
-    cy.signupOpponent(opponentUsername, opponentPassword);
-    cy.subscribeOpponent(gameData.id);
-    // Test that opponent's username appears in indicator
-    cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
+    cy.window()
+      .its('app.$store.state.game')
+      .then((gameData) => {
+        cy.contains('h1', 'Lobby for Test Game');
+        cy.get('#logo');
+        cy.contains('button.v-btn', 'EXIT');
+        cy.contains('button.v-btn', 'READY');
+        cy.get('[data-cy=nav-drawer]').should('not.be.visible');
+        // Sign up new user and subscribe them to game
+        cy.signupOpponent(opponentUsername, opponentPassword);
+        cy.subscribeOpponent(gameData.id);
+        // Test that opponent's username appears in indicator
+        cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
+      });
   });
 });

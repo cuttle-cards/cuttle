@@ -132,7 +132,7 @@ export default {
           }
 
           if (game) {
-           context.dispatch('updateGameThenResetPNumIfNull', game);
+            context.dispatch('updateGameThenResetPNumIfNull', game);
           }
 
           if (lobby) {
