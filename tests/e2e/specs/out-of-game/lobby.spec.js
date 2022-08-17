@@ -149,7 +149,7 @@ describe('Lobby - P0 Perspective', () => {
       assertGameStarted();
     });
   });
-  it.skip('[Missing Feature] Loads lobby after page refresh', () => {
+  it('Loads lobby after page refresh', () => {
     // Reload the page to ensure session remains
     cy.reload();
     cy.contains('h1', 'Lobby for Test Game');

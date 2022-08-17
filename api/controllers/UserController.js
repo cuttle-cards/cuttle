@@ -5,6 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+const { multiply } = require('lodash');
 const { getLobbyDataByGame } = require('../../utils/game-utils');
 
 //////////////////
@@ -15,17 +16,22 @@ const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
 
 const getAndInitGameDataById = async (id, req) => {
-  const game = await gameService.populateGame({ gameId: id });
-  Game.subscribe(req, [game.id]);
+  const game = await gameService.findGame({ gameId: id });
+  // Edge case for when a lobby only has one player and reloads the browser
+  if (!game || !game.players || game.players.length <= 1) {
+    return null;
+  }
+  const populatedGame = await gameService.populateGame({ gameId: id });
+  Game.subscribe(req, [populatedGame.id]);
   sails.sockets.join(req, 'GameList');
-  Game.publish([game.id], {
+  Game.publish([populatedGame.id], {
     verb: 'updated',
     data: {
-      ...game.lastEvent,
-      game,
+      ...populatedGame.lastEvent,
+      game: populatedGame,
     },
   });
-  return game;
+  return populatedGame;
 };
 
 module.exports = {
@@ -118,8 +124,8 @@ module.exports = {
         game,
         lobby: getLobbyDataByGame(game),
       });
-    } catch {
-      return res.badRequest('Unable to get user status');
+    } catch (err) {
+      return res.badRequest(err);
     }
   },
 };

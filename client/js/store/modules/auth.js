@@ -111,7 +111,7 @@ export default {
         io.socket.get('/user/status', {}, async function handleResponse(resData, jwres) {
           if (jwres.statusCode !== 200) {
             context.commit('clearAuth');
-            return reject(new Error('Error getting user status'));
+            return reject(new Error(jwres.body.message));
           }
           const { authenticated, id, username, game, lobby } = resData;
 
