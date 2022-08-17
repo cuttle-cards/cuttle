@@ -5,6 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+ const { getLobbyDataByGame } = require('../../utils/game-utils');
+
 //////////////////
 // DEPENDENCIES //
 //////////////////
@@ -114,6 +116,7 @@ module.exports = {
         username,
         authenticated,
         game,
+        lobby: getLobbyDataByGame(game),
       });
     } catch {
       return res.badRequest('Unable to get user status');

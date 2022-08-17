@@ -150,8 +150,13 @@ describe('Lobby - P0 Perspective', () => {
     });
   });
   it.skip('[Missing Feature] Loads lobby after page refresh', () => {
+    // Reload the page to ensure session remains
     cy.reload();
-    expect(true).to.eq(false, 'Empty Test');
+    cy.contains('h1', 'Lobby for Test Game');
+    cy.get('#logo');
+    cy.contains('button.v-btn', 'EXIT');
+    cy.contains('button.v-btn', 'READY');
+    cy.get('[data-cy=nav-drawer]').should('not.be.visible');
   });
 });
 
@@ -243,7 +248,13 @@ describe('Lobby - P1 Perspective', () => {
     cy.readyOpponent();
     assertGameStarted();
   });
-  it.skip('[Feature Missing] Loads lobby after page refresh', () => {
-    expect(true).to.eq(false, 'Empty Test');
+  it('Loads lobby after page refresh', () => {
+    // Reload the page to ensure session remains
+    cy.reload();
+    cy.contains('h1', 'Lobby for Test Game');
+    cy.get('#logo');
+    cy.contains('button.v-btn', 'EXIT');
+    cy.contains('button.v-btn', 'READY');
+    cy.get('[data-cy=nav-drawer]').should('not.be.visible');
   });
 });

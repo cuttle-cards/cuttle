@@ -59,7 +59,7 @@ function handleGameResponse(context, jwres, resolve, reject) {
  * @param player is the player object
  */
 function queenCount(player) {
-  if (!player) {
+  if (!player || !player.faceCards) {
     return null;
   }
   return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
@@ -76,7 +76,7 @@ export default {
       return state.players[state.myPNum];
     },
     playerPointTotal(state, getters) {
-      if (!getters.player) {
+      if (!getters.player || !getters.player.points) {
         return 0;
       }
       return getters.player.points.reduce((total, card) => total + card.rank, 0) || 0;
@@ -109,7 +109,7 @@ export default {
       return getters.opponent.username;
     },
     opponentPointTotal(state, getters) {
-      if (!getters.opponent) {
+      if (!getters.opponent || !getters.opponent.points) {
         return 0;
       }
       return getters.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
@@ -127,6 +127,9 @@ export default {
       return state.turn % 2 === state.myPNum;
     },
     hasGlassesEight(state, getters) {
+      if (!getters.player || !getters.player.faceCards) {
+        return false;
+      }
       return getters.player.faceCards.filter((card) => card.rank === 8).length > 0;
     },
   },

@@ -108,12 +108,14 @@ export default {
     },
     requestStatus(context) {
       return new Promise((resolve, reject) => {
-        io.socket.get('/user/status', {}, function handleResponse(resData, jwres) {
+        io.socket.get('/user/status', {}, async function handleResponse(resData, jwres) {
           if (jwres.statusCode !== 200) {
             context.commit('clearAuth');
             return reject(new Error('Error getting user status'));
           }
-          const { authenticated, id, username, game } = resData;
+          const { authenticated, id, username, game, lobby } = resData;
+
+          console.log('!!! resData', resData);
 
           // If the user is not authenticated, we're done here
           if (!authenticated) {
@@ -125,7 +127,11 @@ export default {
           }
 
           if (game) {
-            context.dispatch('updateGameThenResetPNumIfNull', game);
+            await context.dispatch('updateGameThenResetPNumIfNull', game);
+          }
+
+          if (lobby) {
+            context.commit('updateGame', lobby);
           }
 
           return resolve(id);

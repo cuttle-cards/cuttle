@@ -50,6 +50,7 @@ const routes = [
     name: 'Lobby',
     path: '/lobby/:gameId',
     component: Lobby,
+    beforeEnter: mustBeAuthenticated,
   },
   {
     name: 'Game',
