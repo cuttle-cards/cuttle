@@ -5,7 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
- const { getLobbyDataByGame } = require('../../utils/game-utils');
+const { getLobbyDataByGame } = require('../../utils/game-utils');
 
 //////////////////
 // DEPENDENCIES //
