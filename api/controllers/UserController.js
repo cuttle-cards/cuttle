@@ -5,7 +5,6 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-const { multiply } = require('lodash');
 const { getLobbyDataByGame } = require('../../utils/game-utils');
 
 //////////////////
