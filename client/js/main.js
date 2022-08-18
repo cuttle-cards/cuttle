@@ -8,7 +8,12 @@ Vue.config.productionTip = false;
 async function initApp() {
   // Make sure we try and reestablish a user's session if one exists
   // We do this before the app mounts to preempt the reauth/logout logic
-  await store.dispatch('requestStatus');
+  try {
+    await store.dispatch('requestStatus');
+  } catch {
+    // Swallow error-- unable to get user status so we won't be able to sync up the client
+    // with the server session
+  }
 
   const app = new Vue({
     vuetify,
@@ -18,8 +23,10 @@ async function initApp() {
   }).$mount('#app');
 
   // Expose app for testing
-  if (window.Cypress) {
-    window.app = app;
+  if (process.env.NODE_ENV === 'development' || window.Cypress) {
+    window.cuttle = {
+      app,
+    };
   }
 }
 

@@ -14,7 +14,7 @@ export function setupGameAsP0(alreadyAuthenticated = false) {
     cy.signupPlayer(username, validPassword);
   }
   cy.createGamePlayer('Test Game').then((gameSummary) => {
-    cy.window().its('app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
@@ -37,7 +37,7 @@ export function setupGameAsP1() {
     cy.signupOpponent(opponentUsername, opponentPassword);
     cy.subscribeOpponent(gameSummary.gameId);
     cy.readyOpponent();
-    cy.window().its('app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
@@ -332,7 +332,7 @@ function assertDomMatchesFixture(pNum, fixture) {
  */
 function assertStoreMatchesFixture(fixture) {
   cy.window()
-    .its('app.$store.state.game')
+    .its('cuttle.app.$store.state.game')
     .then((game) => {
       // Player 0
       expect(cardListsMatch(game.players[0].hand, fixture.p0Hand)).to.eq(

@@ -21,7 +21,7 @@ function reconnect() {
 function reloadAndLogout() {
   // Logout the user
   cy.window()
-    .its('app.$store')
+    .its('cuttle.app.$store')
     .then(async (store) => {
       store.dispatch('requestLogout');
     });

@@ -99,6 +99,8 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
+
 import GameListItem from '@/components/GameListItem.vue';
 
 export default {
@@ -115,9 +117,9 @@ export default {
     };
   },
   computed: {
-    gameList() {
-      return this.$store.state.gameList.games;
-    },
+    ...mapState({
+      gameList: ({ gameList }) => gameList.games,
+    }),
   },
   mounted() {
     this.$store.dispatch('requestGameList');
@@ -141,9 +143,6 @@ export default {
       this.creatingGame = false;
       this.showSnackBar = true;
       this.snackBarMessage = message;
-    },
-    logout() {
-      this.$router.push('/logout');
     },
   },
 };
