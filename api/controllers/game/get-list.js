@@ -1,6 +1,9 @@
 const gameAPI = sails.hooks['customgamehook'];
 
 module.exports = async function (req, res) {
+  // TODO: Potentially remove user from any lobbies they are currently in. If they are getting
+  // the game list they definitely are not in a lobby
+  //
   // HANDLE REQ.SESSION.GAME = GAME ID CASE
   sails.sockets.join(req, 'GameList');
   try {
