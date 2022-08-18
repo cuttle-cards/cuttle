@@ -127,8 +127,13 @@ export default {
     stalemate() {
       return this.$store.state.game.gameIsOver && this.$store.state.game.winnerPNum === null;
     },
-    consideringOpponentStalemateRequest() {
-      return this.$store.state.game.consideringOpponentStalemateRequest;
+    consideringOpponentStalemateRequest: {
+      get() {
+        return this.$store.state.game.consideringOpponentStalemateRequest;
+      },
+      set(val) {
+        this.$store.commit('setConsideringOpponentStalemateRequest', val);
+      },
     },
     topCard() {
       return this.$store.state.game.topCard;

@@ -10,8 +10,14 @@
         </div>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn outlined color="primary" class="mr-4">Reject Request</v-btn>
-        <v-btn color="error" depressed data-cy="accept-stalemate" @click="acceptStalemate">
+        <v-btn outlined color="primary" class="mr-4" :diabled="loading">Reject Request</v-btn>
+        <v-btn
+          color="error"
+          depressed
+          data-cy="accept-stalemate"
+          :loading="loading"
+          @click="acceptStalemate"
+        >
           Accept Stalemate
         </v-btn>
       </v-card-actions>
@@ -25,6 +31,11 @@ export default {
   props: {
     value: Boolean,
   },
+  data() {
+    return {
+      loading: false,
+    };
+  },
   computed: {
     show: {
       get() {
@@ -37,7 +48,13 @@ export default {
   },
   methods: {
     async acceptStalemate() {
-      await this.$store.dispatch('requestStalemate');
+      this.loading = true;
+      try {
+        await this.$store.dispatch('requestStalemate');
+      } finally {
+        this.loading = false;
+        this.show = false;
+      }
     },
   },
 };
