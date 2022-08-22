@@ -121,6 +121,7 @@ export default {
       } catch (e) {
         this.$store.commit('setWaitingForOpponentToStalemate', false);
       }
+      this.loading = false;
       this.showStalemateDialog = false;
     },
   },
