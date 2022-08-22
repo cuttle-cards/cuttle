@@ -147,7 +147,7 @@ describe('Losing the game', () => {
     goHomeJoinNewGame();
   });
 
-  it.only('Loses by conceding', () => {
+  it('Loses by conceding', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
