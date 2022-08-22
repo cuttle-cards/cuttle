@@ -639,6 +639,13 @@ export default {
         });
       });
     },
+    async rejectStalemate(context) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/reject-stalemate', function handleResponse(res, jwres) {
+          return handleGameResponse(context, jwres, resolve, reject);
+        });
+      });
+    },
     async requestUnsubscribeFromGame(context) {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/over', function handleResponse(res, jwres) {

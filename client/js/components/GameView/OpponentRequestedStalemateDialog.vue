@@ -10,7 +10,16 @@
         </div>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn outlined color="primary" class="mr-4" :diabled="loading">Reject Request</v-btn>
+        <v-btn
+          outlined
+          color="primary"
+          class="mr-4"
+          :diabled="loading"
+          data-cy="reject-stalemate"
+          @click="rejectStalemate"
+        >
+          Reject Request
+        </v-btn>
         <v-btn
           color="error"
           depressed
@@ -51,6 +60,15 @@ export default {
       this.loading = true;
       try {
         await this.$store.dispatch('requestStalemate');
+      } finally {
+        this.loading = false;
+        this.show = false;
+      }
+    },
+    async rejectStalemate() {
+      this.loading = true;
+      try {
+        await this.$store.dispatch('rejectStalemate');
       } finally {
         this.loading = false;
         this.show = false;
