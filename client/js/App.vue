@@ -8,11 +8,21 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import NavigationDrawer from './components/NavigationDrawer.vue';
 
 export default {
   components: {
     NavigationDrawer,
+  },
+  computed: {
+    ...mapGetters(['authenticated', 'gameId']),
+  },
+  async created() {
+
+  },
+  methods: {
+    ...mapActions(['requestStatus', 'requestSubscribe']),
   },
 };
 </script>

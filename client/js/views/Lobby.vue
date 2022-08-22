@@ -78,6 +78,7 @@ export default {
       // Need to await to push the error state in to the catch
       await this.$store.dispatch('requestLobbyData');
     } catch (err) {
+      debugger;
       // If we're unable to get the lobby data, we should not load the lobby for the player
       this.$router.push('/');
     }

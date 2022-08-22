@@ -121,17 +121,6 @@ export default {
       gameList: ({ gameList }) => gameList.games,
     }),
   },
-  async mounted() {
-    // These need to be done in order, first leave any existing lobbies
-    // then get the updated game list
-    try {
-      await this.$store.dispatch('requestLeaveLobby');
-      console.log('Leaving any lobbies before requesting the game list');
-    } catch {
-      // Swallow error, not currently in a lobby
-    }
-    await this.$store.dispatch('requestGameList');
-  },
   methods: {
     submitNewGame() {
       this.creatingGame = true;

@@ -77,11 +77,10 @@ export default {
   methods: {
     subscribeToGame() {
       this.joiningGame = true;
-      this.$store
-        .dispatch('requestSubscribe', this.gameId)
+      this.$router
+        .push(`/lobby/${this.gameId}`)
         .then(() => {
           this.joiningGame = false;
-          this.$router.push(`/lobby/${this.gameId}`);
         })
         .catch(() => {
           this.joiningGame = false;

@@ -69,6 +69,9 @@ const initialState = resetState();
 export default {
   state: initialState,
   getters: {
+    gameId(state) {
+      return state.id;
+    },
     discarding(state) {
       return state.discarding;
     },
@@ -269,14 +272,21 @@ export default {
           },
           function handleResponse(res, jwres) {
             if (jwres.statusCode === 200) {
-              context.commit('updateGame', res.game);
-              context.commit('setMyPNum', res.pNum);
-              context.commit('successfullyJoined', {
-                username: res.playerUsername,
-                pNum: res.pNum,
-              });
+              const { game, pNum, username } = res;
+              context.commit('updateGame', game);
+              context.commit('setMyPNum', pNum);
+              // TODO: Colocate this to a getter to be used in multiple actions
+              const playerIsInGame =
+                game.players.find((player) => player.username === username) !== null;
+              if (!playerIsInGame) {
+                context.commit('successfullyJoined', {
+                  username,
+                  pNum,
+                });
+              }
               return resolve();
             }
+            debugger;
             return reject(new Error('error subscribing'));
           }
         );
@@ -310,6 +320,7 @@ export default {
             context.commit('updateGame', res);
             return resolve(res);
           }
+          debugger;
           return reject(new Error('Error loading lobby data'));
         });
       });

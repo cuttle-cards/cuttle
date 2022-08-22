@@ -11,8 +11,7 @@ async function initApp() {
   try {
     await store.dispatch('requestStatus');
   } catch {
-    // Swallow error-- unable to get user status so we won't be able to sync up the client
-    // with the server session
+    // Unable to get user
   }
 
   const app = new Vue({

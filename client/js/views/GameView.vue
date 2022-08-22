@@ -624,7 +624,8 @@ export default {
     },
   },
   mounted() {
-    // TODO remove auth, move to router middleware
+    // Auth check must happen here to give the player a chance to reauth instead of redirecting
+    // then to the login page
     if (!this.authenticated) {
       this.$store.commit('setMustReauthenticate', true);
     }

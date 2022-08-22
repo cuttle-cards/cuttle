@@ -22,12 +22,31 @@ const logoutAndRedirect = async (to, from, next) => {
   return next('/login');
 };
 
+const subscribeToGame = async (to, from, next) => {
+  const gameId = await store.state.game.id;
+  if (gameId) {
+    await store.dispatch('requestSubscribe', gameId);
+  }
+  return next();
+};
+
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    beforeEnter: mustBeAuthenticated,
+    beforeEnter: async (to, from, next) => {
+      mustBeAuthenticated(to, from, next);
+      // These need to be done in order, first leave any existing lobbies
+      // then get the updated game list
+      try {
+        await store.dispatch('requestLeaveLobby');
+        console.log('Leaving any lobbies before requesting the game list');
+      } catch {
+        // Swallow error, not currently in a lobby
+      }
+      await store.dispatch('requestGameList');
+    },
   },
   {
     path: '/login',
@@ -50,14 +69,21 @@ const routes = [
     name: 'Lobby',
     path: '/lobby/:gameId',
     component: Lobby,
-    beforeEnter: mustBeAuthenticated,
+    beforeEnter: async (to, from, next) => {
+      mustBeAuthenticated(to, from, next);
+      return subscribeToGame(to, from, next);
+    },
   },
   {
     name: 'Game',
     path: '/game/:gameId',
     component: GameView,
-    // Requires authentication but the GameView component will allow a user to authenticate
-    // via the reconnect dialog so they don't lose their place in the game
+    beforeEnter: async (to, from, next) => {
+      // Requires authentication but the GameView component will allow a user to authenticate
+      // via the reconnect dialog so they don't lose their place in the game
+      // mustBeAuthenticated(to, from, next);
+      return subscribeToGame(to, from, next);
+    },
   },
   {
     path: '/stats',

@@ -108,8 +108,8 @@ export default {
     },
     requestStatus(context) {
       return new Promise((resolve, reject) => {
-        // In a development scenarios, we need to ping the server to get the cookie on
-        // the vue frontend
+        // In a development scenarios, we need to ping the server to get the session cookie on
+        // the vue frontend to make sure the session persists between reloads
         if (process.env.NODE_ENV === 'development') {
           fetch('/user/ping', {
             credentials: 'include',
@@ -140,10 +140,9 @@ export default {
           //     - Reconnect to the specific game
           if (game) {
             await context.dispatch('updateGameThenResetPNumIfNull', game);
-            await context.dispatch('requestLeaveLobby');
-            await context.dispatch('requestSubscribe', game.id);
+            // Subscribe can't happen here due to how early it happens in the bootstrapping process
+            // Resubscribing the user to a game instead happens within the router/index.js methods
           }
-
           return resolve(id);
         });
       });
