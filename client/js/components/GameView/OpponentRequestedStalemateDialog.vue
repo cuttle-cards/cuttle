@@ -14,7 +14,8 @@
           outlined
           color="primary"
           class="mr-4"
-          :diabled="loading"
+          :diabled="loadingAccept"
+          :loading="loadingReject"
           data-cy="reject-stalemate"
           @click="rejectStalemate"
         >
@@ -24,7 +25,8 @@
           color="error"
           depressed
           data-cy="accept-stalemate"
-          :loading="loading"
+          :loading="loadingAccept"
+          :disabled="loadingReject"
           @click="acceptStalemate"
         >
           Accept Stalemate
@@ -42,7 +44,8 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      loadingAccept: false,
+      loadingReject: false,
     };
   },
   computed: {
@@ -57,20 +60,20 @@ export default {
   },
   methods: {
     async acceptStalemate() {
-      this.loading = true;
+      this.loadingAccept = true;
       try {
         await this.$store.dispatch('requestStalemate');
       } finally {
-        this.loading = false;
+        this.loadingAccept = false;
         this.show = false;
       }
     },
     async rejectStalemate() {
-      this.loading = true;
+      this.loadingReject = true;
       try {
         await this.$store.dispatch('rejectStalemate');
       } finally {
-        this.loading = false;
+        this.loadingReject = false;
         this.show = false;
       }
     },
