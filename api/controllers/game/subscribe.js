@@ -12,6 +12,7 @@ module.exports = function (req, res) {
         // Catch promise values
         const game = arr[0];
         const user = arr[1];
+
         let pNum;
         if (game.players) {
           // Determine pNum of new player

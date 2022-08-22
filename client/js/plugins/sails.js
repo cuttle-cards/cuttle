@@ -11,6 +11,7 @@ if (!isProd) {
 }
 io.sails.useCORSRouteToGetCookie = false;
 io.sails.reconnection = true;
+
 // Handles socket updates of game data
 io.socket.on('game', function (evData) {
   switch (evData.verb) {
@@ -129,14 +130,14 @@ io.socket.on('gameStarting', function (evData) {
 });
 
 io.socket.on('join', function (evData) {
-  store.commit('joinGame', {
+  store.dispatch('joinGame', {
     gameId: evData.gameId,
     newPlayer: evData.newPlayer,
     newStatus: evData.newStatus,
   });
   // If we are in game: update our game with new player
   if (evData.gameId === store.state.game.id) {
-    store.commit('opponentJoined', evData.newPlayer);
+    store.dispatch('opponentJoined', evData.newPlayer);
   }
 });
 

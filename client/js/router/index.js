@@ -56,6 +56,8 @@ const routes = [
     name: 'Game',
     path: '/game/:gameId',
     component: GameView,
+    // Requires authentication but the GameView component will allow a user to authenticate
+    // via the reconnect dialog so they don't lose their place in the game
   },
   {
     path: '/stats',

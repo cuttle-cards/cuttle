@@ -15,11 +15,20 @@ const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
 
 const getAndInitGameDataById = async (id, req) => {
-  const game = await gameService.findGame({ gameId: id });
-  // Edge case for when a lobby only has one player and reloads the browser
-  if (!game || !game.players || game.players.length <= 1) {
+  // We have to be defensive here when querying for a game, if it's null sails will throw
+  // an error and break the Vue frontend
+  if (!id) {
     return null;
   }
+
+  // A game can't be subscribed to unless there are two players
+  const game = await gameService.findGame({ gameId: id });
+  if (!game || game.players.length < 2) {
+    return game;
+  }
+
+  // Otherwise if we have two players we can actually populate the game
+  // This is used for the reconnect logic
   const populatedGame = await gameService.populateGame({ gameId: id });
   Game.subscribe(req, [populatedGame.id]);
   sails.sockets.join(req, 'GameList');
@@ -85,19 +94,35 @@ module.exports = {
     }
   },
   reLogin: async function (req, res) {
-    try {
-      const user = await userAPI.findUserByUsername(req.body.username);
-      await passwordAPI.checkPass(req.body.password, user.encryptedPassword);
-      const game = await getAndInitGameDataById(user.game, req);
-      // Set session values manually to log in user and initialize the game
-      req.session.loggedIn = true;
-      req.session.usr = user.id;
-      req.session.game = game.id;
-      req.session.pNum = user.pNum;
-      return res.ok();
-    } catch (err) {
-      return res.badRequest(err);
-    }
+    userAPI
+      .findUserByUsername(req.body.username)
+      .then(function gotUser(user) {
+        const checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword);
+        const promiseGame = gameService.populateGame({ gameId: user.game });
+        return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
+      })
+      .then((values) => {
+        const game = values[0];
+        const user = values[1];
+        req.session.loggedIn = true;
+        req.session.usr = user.id;
+        req.session.game = game.id;
+        req.session.pNum = user.pNum;
+        Game.subscribe(req, [game.id]);
+        sails.sockets.join(req, 'GameList');
+        Game.publish([game.id], {
+          verb: 'updated',
+          data: {
+            ...game.lastEvent,
+            game,
+          },
+        });
+
+        return res.ok();
+      })
+      .catch((err) => {
+        return res.badRequest(err);
+      });
   },
 
   logout: function (req, res) {
@@ -115,13 +140,16 @@ module.exports = {
     }
     try {
       const { username, game: gameId } = await userAPI.findUser(id);
-      const game = gameId ? await getAndInitGameDataById(gameId, req) : null;
+      // Can't lookup a game without a valid id or sails will throw an error
+      const game = gameId ? await gameService.findGame({ gameId }) : null;
+      // If no game exists this is defensive and will return null
+      const lobby = getLobbyDataByGame(game);
       return res.ok({
         id,
         username,
         authenticated,
         game,
-        lobby: getLobbyDataByGame(game),
+        lobby,
       });
     } catch (err) {
       return res.badRequest(err);

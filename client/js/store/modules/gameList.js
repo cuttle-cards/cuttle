@@ -29,18 +29,18 @@ export default {
         updatedGame.status = data.newStatus;
       }
     },
-    joinGame(state, data) {
-      const updatedGame = state.games.find((game) => game.id === data.gameId);
-      if (updatedGame) {
-        updatedGame.numPlayers++;
-        updatedGame.status = data.newStatus;
-      }
-    },
     otherLeftGame(state, gameId) {
       const updatedGame = state.games.find((game) => game.id === gameId);
       if (updatedGame) {
         updatedGame.numPlayers--;
         updatedGame.status = true;
+      }
+    },
+    addPlayerToGame(state, data) {
+      const updatedGame = state.games.find((game) => game.id === data.gameId);
+      if (updatedGame) {
+        updatedGame.numPlayers++;
+        updatedGame.status = data.newStatus;
       }
     },
   },
@@ -81,6 +81,15 @@ export default {
           }
         );
       });
+    },
+    // This needs to be an action so we're able to verify whether a user is already in the
+    // game or not (this includes the lobby)
+    joinGame({ commit, rootState }, newPlayer) {
+      const { auth, game } = rootState;
+      const playerIsInGame = game.players.find((player) => player.username === auth.username);
+      if (!playerIsInGame) {
+        commit('addPlayerToGame', newPlayer);
+      }
     },
   },
 };

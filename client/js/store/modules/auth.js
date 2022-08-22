@@ -115,12 +115,12 @@ export default {
             credentials: 'include',
           });
         }
-        io.socket.get('/user/status', {}, function handleResponse(resData, jwres) {
+        io.socket.get('/user/status', {}, async function handleResponse(resData, jwres) {
           if (jwres.statusCode !== 200) {
             context.commit('clearAuth');
             return reject(new Error(jwres.body.message));
           }
-          const { authenticated, id, username, game, lobby } = resData;
+          const { authenticated, id, username, game } = resData;
 
           // If the user is not authenticated, we're done here
           if (!authenticated) {
@@ -131,12 +131,17 @@ export default {
             context.commit('authSuccess', username);
           }
 
+          // These commands MUST happen in order-- for a given player to reconnect to a lobby/game on refresh
+          // we need to:
+          //     - Update the game they are in to make sure all the latest data is present in the store
+          //     - leave the lobby (this is required to make sure the user is only in this game once)
+          //       This may be able to be switched to some sort of reconnect instead of leave/join
+          //       This does prevent a user from being both players in a given lobby, however
+          //     - Reconnect to the specific game
           if (game) {
-            context.dispatch('updateGameThenResetPNumIfNull', game);
-          }
-
-          if (lobby) {
-            context.commit('updateGame', lobby);
+            await context.dispatch('updateGameThenResetPNumIfNull', game);
+            await context.dispatch('requestLeaveLobby');
+            await context.dispatch('requestSubscribe', game.id);
           }
 
           return resolve(id);

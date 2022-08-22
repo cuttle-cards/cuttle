@@ -187,10 +187,6 @@ export default {
     setMyPNum(state, val) {
       state.myPNum = val;
     },
-    opponentJoined(state, newPlayer) {
-      state.players.push(_.cloneDeep(newPlayer));
-      state.players.sort((player, opponent) => player.pNum - opponent.pNum);
-    },
     successfullyJoined(state, player) {
       state.players.push(_.cloneDeep(player));
     },
@@ -241,6 +237,10 @@ export default {
       state.gameIsOver = gameOver;
       state.conceded = conceded;
       state.winnerPNum = winner;
+    },
+    addOpponentToGame(state, newPlayer) {
+      state.players.push(_.cloneDeep(newPlayer));
+      state.players.sort((player, opponent) => player.pNum - opponent.pNum);
     },
   },
   actions: {
@@ -308,11 +308,18 @@ export default {
         io.socket.get('/game/lobbyData', function handleResponse(res, jwres) {
           if (jwres.statusCode === 200) {
             context.commit('updateGame', res);
-            return Promise.resolve(res);
+            return resolve(res);
           }
           return reject(new Error('Error loading lobby data'));
         });
       });
+    },
+    opponentJoined({ commit, rootState }, newPlayer) {
+      const { auth, game } = rootState;
+      const playerIsInGame = game.players.find((player) => player.username === auth.username);
+      if (!playerIsInGame) {
+        commit('addOpponentToGame', newPlayer);
+      }
     },
     ///////////////////
     // In-Game Moves //

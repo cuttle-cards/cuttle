@@ -180,7 +180,9 @@ describe('Lobby - P1 Perspective', () => {
       cy.signupOpponent(opponentUsername, opponentPassword);
       cy.subscribeOpponent(gameSummary.gameId);
       // Join game as this user and navigate to lobby
-      cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+      cy.window()
+        .its('cuttle.app.$store')
+        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
       cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     });
   });
@@ -241,7 +243,9 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=exit-button]').click(); // leave game so opponent can ready before player joins
     cy.readyOpponent();
     // Join game again
-    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', this.gameSummary.gameId);
+    cy.window()
+      .its('cuttle.app.$store')
+      .invoke('dispatch', 'requestSubscribe', this.gameSummary.gameId);
     cy.vueRoute(`/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy=ready-button]').click();
     // Test that game started
@@ -257,7 +261,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.readyOpponent();
     assertGameStarted();
   });
-  it.only('Loads lobby after page refresh', () => {
+  it('Loads lobby after page refresh', () => {
     // Reload the page to ensure session remains
     cy.reload();
     cy.window()
@@ -268,8 +272,7 @@ describe('Lobby - P1 Perspective', () => {
         cy.contains('button.v-btn', 'EXIT');
         cy.contains('button.v-btn', 'READY');
         cy.get('[data-cy=nav-drawer]').should('not.be.visible');
-        // Sign up new user and subscribe them to game
-        cy.signupOpponent(opponentUsername, opponentPassword);
+        // Subscribe opponent to the game
         cy.subscribeOpponent(gameData.id);
         // Test that opponent's username appears in indicator
         cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
