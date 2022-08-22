@@ -147,7 +147,7 @@ describe('Losing the game', () => {
     goHomeJoinNewGame();
   });
 
-  it('Loses by conceding', () => {
+  it.only('Loses by conceding', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -161,13 +161,20 @@ describe('Losing the game', () => {
 
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
+
     // Cancel Concede
-    cy.get('#concede-menu').should('be.visible').get('[data-cy=concede-cancel]').click();
-    cy.get('#concede-menu').should('not.be.visible');
+    cy.get('#request-gameover-dialog')
+      .should('be.visible')
+      .get('[data-cy=request-gameover-cancel]')
+      .click();
+    cy.get('#request-gameover-dialog').should('not.be.visible');
     // Re-open concede menu and confirm concession
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
-    cy.get('#concede-menu').should('be.visible').get('[data-cy=concede-confirm]').click();
+    cy.get('#request-gameover-dialog')
+      .should('be.visible')
+      .get('[data-cy=request-gameover-confirm]')
+      .click();
     assertLoss();
     goHomeJoinNewGame();
   });
@@ -239,7 +246,7 @@ describe('Stalemates', () => {
     goHomeJoinNewGame();
   });
 
-  describe.only('Requesting a stalemate', () => {
+  describe('Requesting a stalemate', () => {
     it('Ends in stalemate when player requests stalemate and opponent agrees', () => {
       setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
@@ -354,7 +361,7 @@ describe('Stalemates', () => {
         .click();
     });
 
-    it.only('Cancels stalemate after an additional turn passes', () => {
+    it('Cancels stalemate after an additional turn passes', () => {
       setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
