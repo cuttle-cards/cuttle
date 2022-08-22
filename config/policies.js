@@ -57,6 +57,7 @@ module.exports.policies = {
   'game/resolve-three': ['isLoggedIn', 'isInGame', 'hasCardId'],
   'game/concede': ['isLoggedIn', 'isInGame'],
   'game/stalemate': ['isLoggedIn', 'isInGame'],
+  'game/reject-stalemate': ['isLoggedIn', 'isInGame'],
   'game/game-over': ['isLoggedIn', 'isInGame'],
   'game/chat': ['isLoggedIn', 'isInGame'],
   'game/game-data': ['isLoggedIn', 'isInGame'],

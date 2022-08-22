@@ -120,6 +120,10 @@ io.socket.on('game', function (evData) {
             store.commit('setConsideringOpponentStalemateRequest', true);
           }
           break;
+        case 'rejectStalemate':
+          store.commit('setConsideringOpponentStalemateRequest', false);
+          store.commit('setWaitingForOpponentToStalemate', false);
+          break;
       }
   }
 });

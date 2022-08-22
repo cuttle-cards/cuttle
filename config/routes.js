@@ -81,6 +81,7 @@ module.exports.routes = {
   '/game/over': 'game/game-over',
   '/game/concede': 'game/concede',
   '/game/stalemate': 'game/stalemate',
+  '/game/reject-stalemate': 'game/stalemate-reject',
   '/game/chat': 'game/chat',
   '/game/gameData': 'game/game-data',
   '/game/lobbyData': 'game/lobby-data',

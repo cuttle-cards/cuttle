@@ -269,7 +269,7 @@ describe('Stalemates', () => {
       assertStalemate();
     });
 
-    it.only('Ends in a stalemate when opponent requests a stalemate and player agrees', () => {
+    it('Ends in a stalemate when opponent requests a stalemate and player agrees', () => {
       setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
@@ -285,5 +285,39 @@ describe('Stalemates', () => {
 
       assertStalemate();
     });
+
+    it.only('Cancels the stalemate when player requests a stalemate and opponent rejects', () => {
+      setupGameAsP0();
+      cy.get('[data-player-hand-card]').should('have.length', 5);
+      cy.log('Game loaded');
+
+      // Request Stalemate
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      cy.get('#request-gameover-dialog')
+        .should('be.visible')
+        .get('[data-cy=request-gameover-confirm]')
+        .click();
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+
+      // Opponent rejects stalemate
+      cy.rejectStalemateOpponent();
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.be.visible');
+
+      // Player requests stalemate again -- process starts over
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      cy.get('#request-gameover-dialog')
+        .should('be.visible')
+        .get('[data-cy=request-gameover-confirm]')
+        .click();
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+
+      // Opponent rejects stalemate
+      cy.rejectStalemateOpponent();
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.be.visible');
+    });
+
+    it('Cancels the stalemate when opponent requests and player rejects', () => {});
   });
 });
