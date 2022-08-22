@@ -353,5 +353,31 @@ describe('Stalemates', () => {
         .find('[data-cy=reject-stalemate]')
         .click();
     });
+
+    it.only('Cancels stalemate after an additional turn passes', () => {
+      setupGameAsP1();
+      cy.get('[data-player-hand-card]').should('have.length', 6);
+      cy.log('Game loaded');
+
+      // Request Stalemate
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      cy.get('#request-gameover-dialog')
+        .should('be.visible')
+        .get('[data-cy=request-gameover-confirm]')
+        .click();
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+
+      cy.drawCardOpponent();
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.be.visible');
+
+      // Opponent requests stalemate
+      cy.stalemateOpponent();
+      // Player rejects stalemate
+      cy.get('#opponent-requested-stalemate-dialog')
+        .should('be.visible')
+        .find('[data-cy=reject-stalemate]')
+        .click();
+    });
   });
 });
