@@ -100,8 +100,27 @@ module.exports = {
   },
 
   logout: function (req, res) {
-    delete req.session.usr;
-    req.session.loggedIn = false;
-    return res.ok();
+    req.session.destroy(function afterDestroy() {
+      return res.ok();
+    });
+  },
+
+  status: async function (req, res) {
+    const { usr: id, loggedIn: authenticated } = req.session;
+    if (!authenticated || !id) {
+      return res.ok({
+        authenticated: false,
+      });
+    }
+    try {
+      const { username } = await userAPI.findUser(id);
+      return res.ok({
+        id,
+        username,
+        authenticated,
+      });
+    } catch (err) {
+      return res.badRequest(err);
+    }
   },
 };

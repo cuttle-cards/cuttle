@@ -107,5 +107,28 @@ export default {
         );
       });
     },
+    async requestStatus(context) {
+      try {
+        const response = await fetch('/user/status', {
+          credentials: 'include',
+        });
+        const status = await response.json();
+        const { authenticated, username } = status;
+
+        // If the user is not authenticated, we're done here
+        if (!authenticated) {
+          throw new Error('User not authenticated');
+        }
+
+        if (username) {
+          context.commit('authSuccess', username);
+        }
+
+        return response;
+      } catch (err) {
+        context.commit('clearAuth');
+        throw new Error(err);
+      }
+    },
   },
 };

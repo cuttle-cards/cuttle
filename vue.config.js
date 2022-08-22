@@ -39,4 +39,21 @@ module.exports = {
       },
     },
   },
+
+  devServer: {
+    proxy: {
+      '/game': {
+        target: 'http://localhost:1337',
+        changeOrigin: true,
+      },
+      '/user': {
+        target: 'http://localhost:1337',
+        changeOrigin: true,
+      },
+      '/test': {
+        target: 'http://localhost:1337',
+        changeOrigin: true,
+      },
+    },
+  },
 };
