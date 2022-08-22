@@ -239,7 +239,7 @@ describe('Stalemates', () => {
     goHomeJoinNewGame();
   });
 
-  describe('Requesting a stalemate', () => {
+  describe.only('Requesting a stalemate', () => {
     it('Ends in stalemate when player requests stalemate and opponent agrees', () => {
       setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
@@ -316,9 +316,19 @@ describe('Stalemates', () => {
       // Opponent rejects stalemate
       cy.rejectStalemateOpponent();
       cy.get('#waiting-for-opponent-stalemate-scrim').should('not.be.visible');
+
+      // Opponent requests stalemate - Does not immediately stalemate
+      cy.stalemateOpponent();
+      // Player accepts stalemate
+      cy.get('#opponent-requested-stalemate-dialog')
+        .should('be.visible')
+        .find('[data-cy=accept-stalemate]')
+        .click();
+
+      assertStalemate();
     });
 
-    it.only('Cancels the stalemate when opponent requests and player rejects', () => {
+    it('Cancels the stalemate when opponent requests and player rejects', () => {
       setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
@@ -326,13 +336,22 @@ describe('Stalemates', () => {
       // Opponent requests stalemate
       cy.stalemateOpponent();
 
-      // Player accepts stalemate
+      // Player rejects stalemate
       cy.get('#opponent-requested-stalemate-dialog')
         .should('be.visible')
         .find('[data-cy=reject-stalemate]')
         .click();
 
       cy.get('#opponent-requested-stalemate-dialog').should('not.be.visible');
+
+      // Opponent requests stalemate again
+      cy.stalemateOpponent();
+
+      // Player rejects stalemate
+      cy.get('#opponent-requested-stalemate-dialog')
+        .should('be.visible')
+        .find('[data-cy=reject-stalemate]')
+        .click();
     });
   });
 });
