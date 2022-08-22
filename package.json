@@ -29,7 +29,7 @@
     "dayjs": "^1.11.5",
     "lodash": "^4.17.21",
     "machinepack-passwords": "^2.3.0",
-    "sails": "^1.4.0",
+    "sails": "^1.5.3",
     "sails-disk": "^2.1.1",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^1.5.5",
