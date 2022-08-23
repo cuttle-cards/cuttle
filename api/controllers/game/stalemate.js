@@ -1,10 +1,11 @@
 module.exports = async function (req, res) {
   try {
-    const game = await Game.findOne({ id: req.session.game }).populate('players');
+    const { game: gameId, pNum, usr: userId } = req.session;
+    const game = await Game.findOne({ id: gameId }).populate('players');
     let gameUpdates = {};
     const updatePromises = [];
 
-    switch (req.session.pNum) {
+    switch (pNum) {
       case 0: {
         const newVal = game.turnStalemateWasRequestedByP0 ? game.turn : null;
         gameUpdates.turnStalemateWasRequestedByP0 = newVal;
@@ -36,9 +37,9 @@ module.exports = async function (req, res) {
         p1: game.players[1].id,
         result: gameService.GameResult.STALEMATE,
       };
-      updatePromises.push(gameService.clearGame({ userId: req.session.usr }));
+      updatePromises.push(gameService.clearGame({ userId }));
     }
-    updatePromises.push(Game.updateOne({ id: game.id }).set(gameUpdates));
+    updatePromises.push(Game.updateOne({ id: gameId }).set(gameUpdates));
     await Promise.all(updatePromises);
     Game.publish([game.id], {
       verb: 'updated',
@@ -46,7 +47,7 @@ module.exports = async function (req, res) {
         change: 'requestStalemate',
         game,
         victory,
-        requestedByPNum: req.session.pNum,
+        requestedByPNum: pNum,
       },
     });
     return res.ok();
