@@ -11,64 +11,69 @@
       </div>
 
       <!-- Opponent Hand -->
-      <div
-        id="opponent-hand"
-        class="d-flex flex-column justify-start align-center px-2 pb-2 mx-auto"
-      >
-        <div class="user-cards-grid-container">
-          <username-tool-tip id="opponent-username-container" :username="opponentUsername" />
-          <div class="opponent-cards-container">
-            <div id="opponent-hand-cards" class="d-flex justify-center align-start">
-              <transition name="slide-below" mode="out-in">
-                <transition-group
-                  v-if="hasGlassesEight"
-                  id="opponent-hand-glasses"
-                  key="opponent-hand-glasses"
-                  class="opponent-hand-wrapper transition-all"
-                  tag="div"
-                  name="slide-below"
-                >
-                  <card
-                    v-for="card in opponent.hand"
-                    :key="card.id"
-                    :suit="card.suit"
-                    :rank="card.rank"
-                    :data-opponent-hand-card="`${card.rank}-${card.suit}`"
-                    class="transition-all opponent-hand-card-revealed"
-                  />
-                </transition-group>
-                <transition-group
-                  v-else
-                  key="opponent-hand"
-                  tag="div"
-                  name="slide-below"
-                  class="opponent-hand-wrapper transition-all"
-                >
-                  <div
-                    v-for="(card, index) in opponent.hand"
-                    :key="index + 0"
-                    class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
+      <div class="opponent-hand-container">
+        <div
+          id="opponent-hand"
+          class="d-flex flex-column justify-start align-center px-2 pb-2 mx-auto"
+        >
+          <div class="user-cards-grid-container">
+            <username-tool-tip id="opponent-username-container" :username="opponentUsername" />
+            <div class="opponent-cards-container">
+              <div id="opponent-hand-cards" class="d-flex justify-center align-start">
+                <transition name="slide-below" mode="out-in">
+                  <transition-group
+                    v-if="hasGlassesEight"
+                    id="opponent-hand-glasses"
+                    key="opponent-hand-glasses"
+                    class="opponent-hand-wrapper transition-all"
+                    tag="div"
+                    name="slide-below"
                   >
-                    <v-card class="opponent-card-back" data-opponent-hand-card>
-                      <v-img :src="require('../img/logo_head.svg')" contain />
-                    </v-card>
-                  </div>
-                </transition-group>
-              </transition>
+                    <card
+                      v-for="card in opponent.hand"
+                      :key="card.id"
+                      :suit="card.suit"
+                      :rank="card.rank"
+                      :data-opponent-hand-card="`${card.rank}-${card.suit}`"
+                      class="transition-all opponent-hand-card-revealed"
+                    />
+                  </transition-group>
+                  <transition-group
+                    v-else
+                    key="opponent-hand"
+                    tag="div"
+                    name="slide-below"
+                    class="opponent-hand-wrapper transition-all"
+                  >
+                    <div
+                      v-for="(card, index) in opponent.hand"
+                      :key="index + 0"
+                      class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
+                    >
+                      <v-card class="opponent-card-back" data-opponent-hand-card>
+                        <v-img :src="require('../img/logo_head.svg')" contain />
+                      </v-card>
+                    </div>
+                  </transition-group>
+                </transition>
+              </div>
             </div>
           </div>
         </div>
-        <h3 id="opponent-score">
-          <span>POINTS: {{ opponentPointTotal }}</span>
-          <score-goal-tool-tip
-            :king-count="opponentKingCount"
-            :points-to-win="opponentPointsToWin"
-            :is-player="false"
-          />
-        </h3>
       </div>
-      <!-- Field -->
-      <div id="field" class="d-flex justify-center align-center p-2 mx-auto">
+
+      <!-- Opponent Score -->
+      <h3 id="opponent-score" class="mb-3">
+        <span>POINTS: {{ opponentPointTotal }}</span>
+        <score-goal-tool-tip
+          :king-count="opponentKingCount"
+          :points-to-win="opponentPointsToWin"
+          :is-player="false"
+        />
+      </h3>
+
+      <!-- Draw / Scrap Piles -->
+      <div class="deck-container">
         <div id="field-left">
           <v-card
             id="deck"
@@ -115,88 +120,98 @@
             </template>
           </scrap-dialog>
         </div>
-        <div id="field-center">
-          <div id="opponent-field">
-            <transition-group :name="opponentPointsTransition" tag="div" class="field-points">
-              <div
-                v-for="(card, index) in opponent.points"
-                :key="card.id"
-                class="field-point-container transition-all"
-              >
+      </div>
+
+      <!-- Field -->
+      <div class="field-container">
+        <div id="field" class="d-flex justify-center align-center p-2 mx-auto">
+          <div id="field-center">
+            <div id="opponent-field">
+              <transition-group :name="opponentPointsTransition" tag="div" class="field-points">
+                <div
+                  v-for="(card, index) in opponent.points"
+                  :key="card.id"
+                  class="field-point-container transition-all"
+                >
+                  <card
+                    :suit="card.suit"
+                    :rank="card.rank"
+                    :is-valid-target="validMoves.includes(card.id)"
+                    :data-opponent-point-card="`${card.rank}-${card.suit}`"
+                    @click="targetOpponentPointCard(index)"
+                  />
+                  <div class="jacks-container">
+                    <card
+                      v-for="jack in card.attachments"
+                      :key="jack.id"
+                      :suit="jack.suit"
+                      :rank="jack.rank"
+                      :is-jack="true"
+                      :is-valid-target="validMoves.includes(jack.id)"
+                      :data-opponent-face-card="`${jack.rank}-${jack.suit}`"
+                      @click="targetOpponentFaceCard(-index - 1)"
+                    />
+                  </div>
+                </div>
+              </transition-group>
+              <transition-group :name="opponentFaceCardsTransition" tag="div" class="field-effects">
                 <card
+                  v-for="(card, index) in opponent.faceCards"
+                  :key="card.id"
                   :suit="card.suit"
                   :rank="card.rank"
+                  :is-glasses="card.rank === 8"
                   :is-valid-target="validMoves.includes(card.id)"
-                  :data-opponent-point-card="`${card.rank}-${card.suit}`"
-                  @click="targetOpponentPointCard(index)"
+                  :data-opponent-face-card="`${card.rank}-${card.suit}`"
+                  class="transition-all"
+                  @click="targetOpponentFaceCard(index)"
                 />
-                <div class="jacks-container">
+              </transition-group>
+            </div>
+            <v-divider light />
+            <div id="player-field" class="mb-4">
+              <transition-group :name="playerPointsTransition" tag="div" class="field-points">
+                <div
+                  v-for="card in player.points"
+                  :key="card.id"
+                  class="field-point-container transition-all"
+                >
                   <card
-                    v-for="jack in card.attachments"
-                    :key="jack.id"
-                    :suit="jack.suit"
-                    :rank="jack.rank"
-                    :is-jack="true"
-                    :is-valid-target="validMoves.includes(jack.id)"
-                    :data-opponent-face-card="`${jack.rank}-${jack.suit}`"
-                    @click="targetOpponentFaceCard(-index - 1)"
+                    :suit="card.suit"
+                    :rank="card.rank"
+                    :jacks="card.attachments"
+                    :data-player-point-card="`${card.rank}-${card.suit}`"
                   />
+                  <div class="jacks-container">
+                    <card
+                      v-for="jack in card.attachments"
+                      :key="jack.id"
+                      :suit="jack.suit"
+                      :rank="jack.rank"
+                      :is-jack="true"
+                      :data-player-face-card="`${jack.rank}-${jack.suit}`"
+                    />
+                  </div>
                 </div>
-              </div>
-            </transition-group>
-            <transition-group :name="opponentFaceCardsTransition" tag="div" class="field-effects">
-              <card
-                v-for="(card, index) in opponent.faceCards"
-                :key="card.id"
-                :suit="card.suit"
-                :rank="card.rank"
-                :is-glasses="card.rank === 8"
-                :is-valid-target="validMoves.includes(card.id)"
-                :data-opponent-face-card="`${card.rank}-${card.suit}`"
-                class="transition-all"
-                @click="targetOpponentFaceCard(index)"
-              />
-            </transition-group>
-          </div>
-          <v-divider light />
-          <div id="player-field" class="mb-4">
-            <transition-group :name="playerPointsTransition" tag="div" class="field-points">
-              <div
-                v-for="card in player.points"
-                :key="card.id"
-                class="field-point-container transition-all"
-              >
+              </transition-group>
+              <transition-group :name="playerFaceCardsTransition" tag="div" class="field-effects">
                 <card
+                  v-for="card in player.faceCards"
+                  :key="card.id"
                   :suit="card.suit"
                   :rank="card.rank"
-                  :jacks="card.attachments"
-                  :data-player-point-card="`${card.rank}-${card.suit}`"
+                  :is-glasses="card.rank === 8"
+                  :data-player-face-card="`${card.rank}-${card.suit}`"
+                  class="transition-all"
                 />
-                <div class="jacks-container">
-                  <card
-                    v-for="jack in card.attachments"
-                    :key="jack.id"
-                    :suit="jack.suit"
-                    :rank="jack.rank"
-                    :is-jack="true"
-                    :data-player-face-card="`${jack.rank}-${jack.suit}`"
-                  />
-                </div>
-              </div>
-            </transition-group>
-            <transition-group :name="playerFaceCardsTransition" tag="div" class="field-effects">
-              <card
-                v-for="card in player.faceCards"
-                :key="card.id"
-                :suit="card.suit"
-                :rank="card.rank"
-                :is-glasses="card.rank === 8"
-                :data-player-face-card="`${card.rank}-${card.suit}`"
-                class="transition-all"
-              />
-            </transition-group>
+              </transition-group>
+            </div>
           </div>
         </div>
+      </div>
+
+      <!-- History -->
+      <div class="history-container">
         <div id="field-right">
           <div id="history" class="rounded d-flex flex-column justify-start">
             <h3>History</h3>
@@ -214,65 +229,68 @@
         </div>
       </div>
 
-      <!-- Player Hand -->
-      <div id="player-hand" class="d-flex flex-column justify-end align-center px-2 pt-2 mx-auto">
-        <h3 id="player-score">
-          <span>POINTS: {{ playerPointTotal }}</span>
-          <score-goal-tool-tip
-            :king-count="playerKingCount"
-            :points-to-win="playerPointsToWin"
-            :is-player="true"
-          />
-          <span
-            id="turn-indicator"
-            class="text--darken-1 ml-2"
-            :class="{ 'black--text': isPlayersTurn, 'white--text': !isPlayersTurn }"
-          >
-            {{ turnText }}
-          </span>
-        </h3>
-        <div
-          v-if="!targeting"
-          id="player-hand-cards"
-          class="user-cards-grid-container"
-          :class="{ 'my-turn': isPlayersTurn }"
-        >
-          <username-tool-tip
-            id="player-username-container"
-            key="player-username"
-            :username="playerUsername"
-            :is-player="true"
-          />
-          <div class="player-cards-container">
-            <transition-group
-              tag="div"
-              name="slide-above"
-              class="d-flex justify-center align-start"
-              :class="{ 'my-turn': isPlayersTurn }"
-            >
-              <card
-                v-for="(card, index) in player.hand"
-                :key="card.id"
-                :suit="card.suit"
-                :rank="card.rank"
-                :is-selected="selectedCard && card.id === selectedCard.id"
-                class="mt-8 transition-all"
-                :data-player-hand-card="`${card.rank}-${card.suit}`"
-                @click="selectCard(index)"
-              />
-            </transition-group>
-          </div>
-        </div>
-        <target-selection-overlay
-          v-if="targeting && (selectedCard || cardSelectedFromDeck)"
-          id="player-hand-targeting"
-          key="target-selection-overlay"
-          :value="targeting"
-          :selected-card="selectedCard || cardSelectedFromDeck"
-          :is-players-turn="isPlayersTurn"
-          :move-display-name="targetingMoveDisplayName"
-          @cancel="clearSelection"
+      <h3 id="player-score">
+        <span>POINTS: {{ playerPointTotal }}</span>
+        <score-goal-tool-tip
+          :king-count="playerKingCount"
+          :points-to-win="playerPointsToWin"
+          :is-player="true"
         />
+        <span
+          id="turn-indicator"
+          class="text--darken-1 ml-2"
+          :class="{ 'black--text': isPlayersTurn, 'white--text': !isPlayersTurn }"
+        >
+          {{ turnText }}
+        </span>
+      </h3>
+
+      <!-- Player Hand -->
+      <div class="player-hand-container">
+        <div id="player-hand" class="d-flex flex-column justify-end align-center px-2 pt-2 mx-auto">
+          <div
+            v-if="!targeting"
+            id="player-hand-cards"
+            class="user-cards-grid-container"
+            :class="{ 'my-turn': isPlayersTurn }"
+          >
+            <username-tool-tip
+              id="player-username-container"
+              key="player-username"
+              :username="playerUsername"
+              :is-player="true"
+            />
+            <div class="player-cards-container">
+              <transition-group
+                tag="div"
+                name="slide-above"
+                class="d-flex justify-center align-start"
+                :class="{ 'my-turn': isPlayersTurn }"
+              >
+                <card
+                  v-for="(card, index) in player.hand"
+                  :key="card.id"
+                  :suit="card.suit"
+                  :rank="card.rank"
+                  :is-selected="selectedCard && card.id === selectedCard.id"
+                  class="mt-2 transition-all"
+                  :data-player-hand-card="`${card.rank}-${card.suit}`"
+                  @click="selectCard(index)"
+                />
+              </transition-group>
+            </div>
+          </div>
+          <target-selection-overlay
+            v-if="targeting && (selectedCard || cardSelectedFromDeck)"
+            id="player-hand-targeting"
+            key="target-selection-overlay"
+            :value="targeting"
+            :selected-card="selectedCard || cardSelectedFromDeck"
+            :is-players-turn="isPlayersTurn"
+            :move-display-name="targetingMoveDisplayName"
+            @cancel="clearSelection"
+          />
+        </div>
       </div>
 
       <v-snackbar
@@ -1005,9 +1023,18 @@ export default {
 ////////////
 #game-view-wrapper {
   color: #fff;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background: linear-gradient(180deg, #6202ee 14.61%, #fd6222 100%), #c4c4c4;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 15% 5% 55% 5% 20%;
+  grid-template-areas:
+    'opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand'
+    'decks decks opp-score opp-score opp-score opp-score history history'
+    'decks decks field field field field history history'
+    'player-score player-score player-score player-score player-score player-score player-score player-score'
+    'player-hand player-hand player-hand player-hand player-hand player-hand player-hand player-hand';
 }
 
 #game-menu-wrapper {
@@ -1021,12 +1048,12 @@ export default {
   cursor: pointer;
 }
 
+.opponent-hand-container {
+  grid-area: opp-hand;
+}
+
 #opponent-hand {
   min-width: 50%;
-  height: 20vh;
-  & #opponent-score {
-    z-index: 1;
-  }
   & #opponent-hand-cards {
     height: 80%;
     background: rgba(0, 0, 0, 0.46);
@@ -1056,14 +1083,29 @@ export default {
     }
   }
 }
+
+#opponent-score {
+  grid-area: opp-score;
+  text-align: center;
+  z-index: 1;
+}
+
+.field-container {
+  grid-area: field;
+}
+
 #field {
   display: flex;
   flex-direction: row;
   width: 100%;
   height: 50vh;
 }
+
+.deck-container {
+  grid-area: decks;
+}
+
 #field-left {
-  width: 20%;
   & #deck {
     cursor: pointer;
     &.reveal-top-two {
@@ -1098,11 +1140,13 @@ export default {
   }
 }
 #field-center {
-  width: 60%;
+}
+
+.history-container {
+  grid-area: history;
 }
 #field-right {
   height: 100%;
-  width: 20%;
 
   #history,
   #card-preview {
@@ -1154,7 +1198,7 @@ export default {
     display: flex;
     flex-direction: row;
     max-height: 20vh;
-    width: calc(20vh / 1.45);
+    width: calc(20vh / 1.75);
     margin: 3px;
     position: relative;
 
@@ -1178,9 +1222,17 @@ export default {
   width: 50%;
 }
 
+#player-score {
+  grid-area: player-score;
+  text-align: center;
+}
+
+.player-hand-container {
+  grid-area: player-hand;
+}
+
 #player-hand {
   min-width: 50%;
-  height: 30vh;
   & #player-hand-cards,
   #player-hand-targeting::v-deep {
     width: 100%;
