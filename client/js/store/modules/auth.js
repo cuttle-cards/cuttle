@@ -113,6 +113,16 @@ export default {
         return;
       }
 
+      const { location } = window;
+      const isLobby = location.hash.startsWith('#/lobby');
+      const isGame = location.hash.startsWith('#/game');
+      // We first need to check if this is a game route, if it is we can not auth the user or
+      // it will break the game until we add reconnect/subscribe logic
+      // By stopping here, Vue will allow the user to reconnect via the relogin dialog instead
+      if (isGame) {
+        return;
+      }
+
       try {
         const response = await fetch('/user/status', {
           credentials: 'include',
@@ -130,18 +140,9 @@ export default {
           context.commit('authSuccess', username);
         }
 
-        // TODO: Re-enable lobby and game auth on reload
-        // These require game to be passed back from sails and a socket subscribe to take place
-        const isDisabledPath = () => {
-          const { location } = window;
-          const disabledPaths = ['/lobby', '/game'];
-          return (
-            location.hash && disabledPaths.some((path) => location.hash.startsWith(`#${path}`))
-          );
-        };
-        // If this is a disabled path, redirect the user to the game list so they don't have to
+        // If this is a lobby, redirect the user to the game list so they don't have to
         // log back in again
-        if (isDisabledPath()) {
+        if (isLobby) {
           location.href = '/#/';
           return;
         }
