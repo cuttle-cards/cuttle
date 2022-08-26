@@ -130,5 +130,5 @@ module.exports = {
     } catch (err) {
       return res.badRequest(err);
     }
-  }
+  },
 };

@@ -135,7 +135,9 @@ export default {
         const isDisabledPath = () => {
           const { location } = window;
           const disabledPaths = ['/lobby', '/game'];
-          return location.hash && disabledPaths.some((path) => location.hash.startsWith(`#${path}`));
+          return (
+            location.hash && disabledPaths.some((path) => location.hash.startsWith(`#${path}`))
+          );
         };
         // If this is a disabled path, redirect the user to the game list so they don't have to
         // log back in again
