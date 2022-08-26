@@ -104,6 +104,7 @@ module.exports = {
     if (!req.session.loggedIn) {
       return res.ok();
     }
+    // https://github.com/expressjs/session#sessiondestroycallback
     req.session.destroy(function afterDestroy() {
       return res.ok();
     });
