@@ -108,4 +108,27 @@ module.exports = {
       return res.ok();
     });
   },
+
+  status: async function (req, res) {
+    const { usr: id, loggedIn: authenticated } = req.session;
+
+    // User is not logged in, get out of here
+    if (!authenticated || !id) {
+      return res.ok({
+        authenticated: false,
+      });
+    }
+
+    try {
+      // If the user is logged in, see if we can find them first to verify they exist
+      const { username } = await userAPI.findUser(id);
+      return res.ok({
+        id,
+        username,
+        authenticated,
+      });
+    } catch (err) {
+      return res.badRequest(err);
+    }
+  }
 };

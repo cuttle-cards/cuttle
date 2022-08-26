@@ -107,5 +107,45 @@ export default {
         );
       });
     },
+    async requestStatus(context) {
+      if (!window) {
+        // Swallow error, this call is only supported client side
+        return;
+      }
+
+      // TODO: Re-enable lobby and game auth on reload
+      // These require game to be passed back from sails and a socket subscribe to take place
+      const isDisabledPath = () => {
+        const { location } = window;
+        const disabledPaths = ['/lobby', '/game'];
+        return location.hash && disabledPaths.some(path => location.hash.startsWith(`#${path}`));
+      };
+      if (isDisabledPath()) {
+        return;
+      }
+
+      try {
+        const response = await fetch('/user/status', {
+          credentials: 'include',
+        });
+        const status = await response.json();
+        const { authenticated, username } = status;
+
+        // If the user is not authenticated, we're done here
+        if (!authenticated) {
+          return response;
+        }
+
+        // If the user is authenticated and has a username, add it to the store
+        if (username) {
+          context.commit('authSuccess', username);
+        }
+
+        return response;
+      } catch (err) {
+        context.commit('clearAuth');
+        throw new Error(err);
+      }
+    },
   },
 };
