@@ -100,8 +100,12 @@ module.exports = {
   },
 
   logout: function (req, res) {
-    delete req.session.usr;
-    req.session.loggedIn = false;
-    return res.ok();
+    // If the user isn't logged in, just get them out of here
+    if (!req.session.loggedIn) {
+      return res.ok();
+    }
+    req.session.destroy(function afterDestroy() {
+      return res.ok();
+    });
   },
 };

@@ -17,6 +17,11 @@ const mustBeAuthenticated = (to, from, next) => {
   return next('/login');
 };
 
+const logoutAndRedirect = async (to, from, next) => {
+  await store.dispatch('requestLogout');
+  return next('/login');
+};
+
 const routes = [
   {
     path: '/',
@@ -28,6 +33,13 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginSignup,
+  },
+  // This route is just a passthrough to make sure the user is fully logged out before putting
+  // them on the login screen
+  {
+    path: '/logout',
+    name: 'Logout',
+    beforeEnter: logoutAndRedirect,
   },
   {
     path: '/rules',
