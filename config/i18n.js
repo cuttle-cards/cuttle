@@ -5,14 +5,11 @@
  * If your app will touch people from all over the world, i18n (or internationalization)
  * may be an important part of your international strategy.
  *
+ * For a complete list of options for Sails' built-in i18n support, see:
+ * https://sailsjs.com/config/i-18-n
  *
- * For more informationom i18n in Sails, check out:
- * http://sailsjs.org/#!/documentation/concepts/Internationalization
- *
- * For a complete list of i18n options, see:
- * https://github.com/mashpie/i18n-node#list-of-configuration-options
- *
- *
+ * For more info on i18n in Sails in general, check out:
+ * https://sailsjs.com/docs/concepts/internationalization
  */
 
 module.exports.i18n = {
@@ -33,16 +30,9 @@ module.exports.i18n = {
   // defaultLocale: 'en',
   /****************************************************************************
    *                                                                           *
-   * Automatically add new keys to locale (translation) files when they are    *
-   * encountered during a request?                                             *
-   *                                                                           *
-   ****************************************************************************/
-  // updateFiles: false,
-  /****************************************************************************
-   *                                                                           *
    * Path (relative to app root) of directory to store locale (translation)    *
    * files in.                                                                 *
    *                                                                           *
    ****************************************************************************/
-  // localesDirectory: '/config/locales'
+  // localesDirectory: 'config/locales'
 };
