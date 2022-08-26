@@ -18,7 +18,4 @@ module.exports = {
   // models: {
   //   connection: 'someMongodbServer'
   // }
-
-  // config/sockets.js
-  onlyAllowOrigins: undefined,
 };
