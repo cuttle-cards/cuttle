@@ -149,9 +149,10 @@ describe('Lobby - P0 Perspective', () => {
       assertGameStarted();
     });
   });
-  it.skip('[Missing Feature] Loads lobby after page refresh', () => {
+  // TODO: Rewrite this test when auth is supported in the lobby
+  it.skip('Redirects to game list after page refresh', () => {
     cy.reload();
-    expect(true).to.eq(false, 'Empty Test');
+    cy.hash().should('equal', '#/');
   });
 });
 
@@ -166,7 +167,9 @@ describe('Lobby - P1 Perspective', () => {
       cy.signupOpponent(opponentUsername, opponentPassword);
       cy.subscribeOpponent(gameSummary.gameId);
       // Join game as this user and navigate to lobby
-      cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+      cy.window()
+        .its('cuttle.app.$store')
+        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
       cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     });
   });
@@ -227,7 +230,9 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=exit-button]').click(); // leave game so opponent can ready before player joins
     cy.readyOpponent();
     // Join game again
-    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', this.gameSummary.gameId);
+    cy.window()
+      .its('cuttle.app.$store')
+      .invoke('dispatch', 'requestSubscribe', this.gameSummary.gameId);
     cy.vueRoute(`/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy=ready-button]').click();
     // Test that game started
@@ -243,7 +248,9 @@ describe('Lobby - P1 Perspective', () => {
     cy.readyOpponent();
     assertGameStarted();
   });
-  it.skip('[Feature Missing] Loads lobby after page refresh', () => {
-    expect(true).to.eq(false, 'Empty Test');
+  // TODO: Rewrite this test when auth is supported in the lobby
+  it.skip('Redirects to game list after page refresh', () => {
+    cy.reload();
+    cy.hash().should('equal', '#/');
   });
 });

@@ -113,17 +113,6 @@ export default {
         return;
       }
 
-      // TODO: Re-enable lobby and game auth on reload
-      // These require game to be passed back from sails and a socket subscribe to take place
-      const isDisabledPath = () => {
-        const { location } = window;
-        const disabledPaths = ['/lobby', '/game'];
-        return location.hash && disabledPaths.some(path => location.hash.startsWith(`#${path}`));
-      };
-      if (isDisabledPath()) {
-        return;
-      }
-
       try {
         const response = await fetch('/user/status', {
           credentials: 'include',
@@ -139,6 +128,20 @@ export default {
         // If the user is authenticated and has a username, add it to the store
         if (username) {
           context.commit('authSuccess', username);
+        }
+
+        // TODO: Re-enable lobby and game auth on reload
+        // These require game to be passed back from sails and a socket subscribe to take place
+        const isDisabledPath = () => {
+          const { location } = window;
+          const disabledPaths = ['/lobby', '/game'];
+          return location.hash && disabledPaths.some((path) => location.hash.startsWith(`#${path}`));
+        };
+        // If this is a disabled path, redirect the user to the game list so they don't have to
+        // log back in again
+        if (isDisabledPath()) {
+          location.href = '/#/';
+          return;
         }
 
         return response;

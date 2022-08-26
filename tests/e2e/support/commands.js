@@ -986,7 +986,7 @@ Cypress.Commands.add('deleteDeck', () => {
 });
 
 Cypress.Commands.add('vueRoute', (route) => {
-  cy.window().its('app.$router').invoke('push', route);
+  cy.window().its('cuttle.app.$router').invoke('push', route);
 });
 
 /**
