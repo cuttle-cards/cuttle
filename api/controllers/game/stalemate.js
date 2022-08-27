@@ -12,7 +12,6 @@ module.exports = async function (req, res) {
     const opponentStalemateKey = `${keyPrefix}${(pNum + 1) % 2}`;
     const opponentStalemateVal = game[opponentStalemateKey];
 
-
     const victory = {
       gameOver: false,
       winner: null,
