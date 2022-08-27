@@ -25,7 +25,7 @@ function assertLoss() {
 }
 
 function assertStalemate() {
-  cy.log('Asserting player loss');
+  cy.log('Asserting stalemate');
   cy.get('#game-over-dialog')
     .should('be.visible')
     .get('[data-cy=stalemate-heading]')

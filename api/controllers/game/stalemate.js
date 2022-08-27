@@ -1,24 +1,18 @@
 module.exports = async function (req, res) {
   try {
     const { game: gameId, pNum, usr: userId } = req.session;
+
     const game = await Game.findOne({ id: gameId }).populate('players');
     let gameUpdates = {};
     const updatePromises = [];
+    const keyPrefix = 'turnStalemateWasRequestedByP';
+    const playerStalemateKey = `${keyPrefix}${pNum}`;
+    const playerStalemateVal = game.turn;
+    gameUpdates[playerStalemateKey] = playerStalemateVal;
+    const opponentStalemateKey = `${keyPrefix}${(pNum + 1) % 2}`;
+    const opponentStalemateVal = game[opponentStalemateKey];
 
-    switch (pNum) {
-      case 0: {
-        const newVal = game.turnStalemateWasRequestedByP0 ? game.turn : null;
-        gameUpdates.turnStalemateWasRequestedByP0 = newVal;
-        game.turnStalemateWasRequestedByP0 = newVal;
-        break;
-      }
-      case 1: {
-        const newVal = game.turnStalemateWasRequestedByP1 ? game.turn : null;
-        gameUpdates.turnStalemateWasRequestedByP1 = newVal;
-        game.turnStalemateWasRequestedByP1 = newVal;
-        break;
-      }
-    }
+
     const victory = {
       gameOver: false,
       winner: null,
@@ -26,10 +20,7 @@ module.exports = async function (req, res) {
     };
 
     // End in stalemate if both players requested stalemate this turn
-    if (
-      game.turnStalemateWasRequestedByP0 === game.turnStalemateWasRequestedByP1 &&
-      game.turnStalemateWasRequestedByP0 === game.turn
-    ) {
+    if (playerStalemateVal === opponentStalemateVal && opponentStalemateVal === game.turn) {
       victory.gameOver = true;
       gameUpdates = {
         ...gameUpdates,
