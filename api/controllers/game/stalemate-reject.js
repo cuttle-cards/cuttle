@@ -1,7 +1,7 @@
 module.exports = async function (req, res) {
   try {
     const game = await Game.findOne({ id: req.session.game }).populate('players');
-    let gameUpdates = {
+    const gameUpdates = {
       turnStalemateWasRequestedByP0: -1,
       turnStalemateWasRequestedByP1: -1,
     };
