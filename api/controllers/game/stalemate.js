@@ -1,7 +1,11 @@
+/**
+ * Handle player requesting a stalemate from opponent
+ * or opponent accepting stalemate request
+ */
 module.exports = async function (req, res) {
   try {
     const { game: gameId, pNum, usr: userId } = req.session;
-
+    // Track which turn each player most recently requested stalemate
     const game = await Game.findOne({ id: gameId }).populate('players');
     let gameUpdates = {};
     const updatePromises = [];
@@ -29,8 +33,10 @@ module.exports = async function (req, res) {
       };
       updatePromises.push(gameService.clearGame({ userId }));
     }
+
     updatePromises.push(Game.updateOne({ id: gameId }).set(gameUpdates));
     await Promise.all(updatePromises);
+
     Game.publish([game.id], {
       verb: 'updated',
       data: {
@@ -40,6 +46,7 @@ module.exports = async function (req, res) {
         requestedByPNum: pNum,
       },
     });
+
     return res.ok();
   } catch (err) {
     return res.badRequest(err);
