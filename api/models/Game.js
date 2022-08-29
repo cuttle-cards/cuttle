@@ -76,7 +76,14 @@ module.exports = {
       columnType: 'text[]',
       defaultsTo: [],
     },
-
+    turnStalemateWasRequestedByP0: {
+      type: 'number',
+      defaultsTo: -1,
+    },
+    turnStalemateWasRequestedByP1: {
+      type: 'number',
+      defaultsTo: -1,
+    },
     chat: {
       type: 'ref',
       columnType: 'text[]',

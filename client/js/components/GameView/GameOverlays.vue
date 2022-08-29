@@ -28,6 +28,13 @@
     >
       <h1>Opponent Playing from Deck</h1>
     </v-overlay>
+    <v-overlay
+      id="waiting-for-opponent-stalemate-scrim"
+      v-model="waitingForOpponentToStalemate"
+      opacity=".6"
+    >
+      <h1>Opponent Considering Stalemate Request</h1>
+    </v-overlay>
     <move-choice-overlay
       :value="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
       :selected-card="selectedCard || cardSelectedFromDeck"
@@ -82,6 +89,7 @@ export default {
       waitingForOpponentToDiscard: ({ game }) => game.waitingForOpponentToDiscard,
       waitingForOpponentToPickFromScrap: ({ game }) => game.waitingForOpponentToPickFromScrap,
       waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
+      waitingForOpponentToStalemate: ({ game }) => game.waitingForOpponentToStalemate,
     }),
     ...mapGetters([
       'isPlayersTurn',
