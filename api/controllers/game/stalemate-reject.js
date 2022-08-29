@@ -1,6 +1,10 @@
+/**
+ * Reject an opponent's request for stalemate
+ */
 module.exports = async function (req, res) {
   try {
     const game = await Game.findOne({ id: req.session.game }).populate('players');
+
     const gameUpdates = {
       turnStalemateWasRequestedByP0: -1,
       turnStalemateWasRequestedByP1: -1,
@@ -23,6 +27,7 @@ module.exports = async function (req, res) {
         requestedByPNum: req.session.pNum,
       },
     });
+
     return res.ok();
   } catch (err) {
     return res.badRequest(err);
