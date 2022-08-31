@@ -104,8 +104,18 @@
                 <h2>Create Game</h2>
               </v-card-title>
               <v-card-text>
-                <v-text-field label="Game Name" outlined data-cy="game-name-input" />
+                <v-text-field
+                  v-model="newGameName"
+                  label="Game Name"
+                  outlined
+                  data-cy="game-name-input"
+                />
               </v-card-text>
+              <v-card-actions class="d-flex justify-end">
+                <v-btn color="primary" data-cy="submit-create-game" @click="submitNewGame">
+                  Create Game
+                </v-btn>
+              </v-card-actions>
             </v-card>
           </v-dialog>
         </v-row>
