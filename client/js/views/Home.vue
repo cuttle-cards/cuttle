@@ -106,13 +106,19 @@
               <v-card-text>
                 <v-text-field
                   v-model="newGameName"
+                  :disabled="creatingGame"
                   label="Game Name"
                   outlined
                   data-cy="game-name-input"
                 />
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
-                <v-btn color="primary" data-cy="submit-create-game" @click="submitNewGame">
+                <v-btn
+                  color="primary"
+                  data-cy="submit-create-game"
+                  :loading="creatingGame"
+                  @click="submitNewGame"
+                >
                   Create Game
                 </v-btn>
               </v-card-actions>
