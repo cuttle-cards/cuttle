@@ -114,9 +114,17 @@
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn
-                  color="primary"
+                  text
+                  data-cy="cancel-create-game"
+                  :disabled="creatingNewGame"
+                  @click="cancelCreateGame"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
                   data-cy="submit-create-game"
                   :loading="creatingGame"
+                  color="primary"
                   @click="submitNewGame"
                 >
                   Create Game
@@ -174,6 +182,11 @@ export default {
           this.showCreateGameDialog = false;
         })
         .catch(this.handleError);
+    },
+    cancelCreateGame() {
+      this.newGameName = '';
+      this.creatingGame = false;
+      this.showCreateGameDialog = false;
     },
     clearSnackBar() {
       this.snackMessage = '';

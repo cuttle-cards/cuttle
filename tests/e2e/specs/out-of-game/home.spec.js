@@ -169,7 +169,7 @@ describe('Home - Create Game', () => {
       });
   });
 
-  it.only('Creates a new game by hitting the submit button', () => {
+  it('Creates a new unranked game by hitting the submit button', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
       .should('be.visible')
@@ -184,7 +184,7 @@ describe('Home - Create Game', () => {
       .should('have.length', 1)
       .should('include.text', 'test game')
       .should('include.text', '0 / 2 players');
-    // // Test store
+    // Test store
     cy.window()
       .its('app.$store.state.gameList.games')
       .then((games) => {
@@ -195,6 +195,22 @@ describe('Home - Create Game', () => {
         );
         expect(games[0].status).to.eq(true, 'Expect game to have status true');
       });
+  });
+
+  it.only('Cancels create game dialog', () => {
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('test game');
+    cy.get('[data-cy=cancel-create-game]').should('be.visible').click();
+    // Game name should be empty
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('not.contain', 'test game');
   });
   it('Does not create game without game name', () => {
     cy.get('[data-cy=create-game-btn]').click();
