@@ -8,8 +8,8 @@
               <v-col cols="4">
                 <h1 id="home-card-title">Games</h1>
               </v-col>
-              <v-col cols="8">
-                <v-row id="add-new-game">
+              <!-- <v-col cols="8"> -->
+              <!-- <v-row id="add-new-game">
                   <v-col cols="8">
                     <v-text-field
                       v-model="newGameName"
@@ -34,8 +34,8 @@
                       Create New Game
                     </v-btn>
                   </v-col>
-                </v-row>
-              </v-col>
+                </v-row> -->
+              <!-- </v-col> -->
             </v-row>
             <div id="game-list">
               <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
@@ -84,6 +84,27 @@
               Discord
             </v-btn>
           </v-col>
+        </v-row>
+        <v-row>
+          <v-dialog>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                color="primary"
+                data-cy="create-game-btn"
+                rounded
+                v-bind="attrs"
+                elevation="8"
+                v-on="on"
+              >
+                + Create Game
+              </v-btn>
+            </template>
+            <v-card data-cy="create-game-dialog">
+              <v-card-title>
+                <h2>Create Game</h2>
+              </v-card-title>
+            </v-card>
+          </v-dialog>
         </v-row>
       </div>
     </div>
