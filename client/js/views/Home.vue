@@ -114,9 +114,10 @@
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn
-                  text
                   data-cy="cancel-create-game"
                   :disabled="creatingNewGame"
+                  text
+                  color="primary"
                   @click="cancelCreateGame"
                 >
                   Cancel
@@ -125,6 +126,7 @@
                   data-cy="submit-create-game"
                   :loading="creatingGame"
                   color="primary"
+                  depressed
                   @click="submitNewGame"
                 >
                   Create Game
