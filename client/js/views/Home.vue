@@ -104,7 +104,7 @@
                 <h2>Create Game</h2>
               </v-card-title>
               <v-card-text>
-                <v-text-field label="Game Name" data-cy="game-name-input" />
+                <v-text-field label="Game Name" outlined data-cy="game-name-input" />
               </v-card-text>
             </v-card>
           </v-dialog>
