@@ -86,7 +86,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-dialog>
+          <v-dialog v-model="showCreateGameDialog">
             <template #activator="{ on, attrs }">
               <v-btn
                 color="primary"
@@ -146,6 +146,7 @@ export default {
       showSnackBar: false,
       snackBarMessage: '',
       creatingGame: false,
+      showCreateGameDialog: false,
     };
   },
   computed: {
@@ -164,6 +165,7 @@ export default {
         .then(() => {
           this.newGameName = '';
           this.creatingGame = false;
+          this.showCreateGameDialog = false;
         })
         .catch(this.handleError);
     },
@@ -175,6 +177,7 @@ export default {
       this.creatingGame = false;
       this.showSnackBar = true;
       this.snackBarMessage = message;
+      this.showCreateGameDialog = false;
     },
     logout() {
       this.$store

@@ -178,6 +178,7 @@ describe('Home - Create Game', () => {
       .type('test game');
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
 
+    cy.get('[data-cy=create-game-dialog]').should('not.be.visible');
     //Test DOM
     // cy.get('[data-cy=game-list-item]')
     //   .should('have.length', 1)
