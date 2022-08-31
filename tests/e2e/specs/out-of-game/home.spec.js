@@ -180,21 +180,21 @@ describe('Home - Create Game', () => {
 
     cy.get('[data-cy=create-game-dialog]').should('not.be.visible');
     //Test DOM
-    // cy.get('[data-cy=game-list-item]')
-    //   .should('have.length', 1)
-    //   .should('include.text', 'test game')
-    //   .should('include.text', '0 / 2 players');
+    cy.get('[data-cy=game-list-item]')
+      .should('have.length', 1)
+      .should('include.text', 'test game')
+      .should('include.text', '0 / 2 players');
     // // Test store
-    // cy.window()
-    //   .its('app.$store.state.gameList.games')
-    //   .then((games) => {
-    //     expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
-    //     expect(games[0].numPlayers).to.eq(
-    //       0,
-    //       'Expect no players in gameLists game in store, but found some'
-    //     );
-    //     expect(games[0].status).to.eq(true, 'Expect game to have status true');
-    //   });
+    cy.window()
+      .its('app.$store.state.gameList.games')
+      .then((games) => {
+        expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
+        expect(games[0].numPlayers).to.eq(
+          0,
+          'Expect no players in gameLists game in store, but found some'
+        );
+        expect(games[0].status).to.eq(true, 'Expect game to have status true');
+      });
   });
   it('Does not create game without game name', () => {
     cy.get('[data-cy=create-game-btn]').click();
