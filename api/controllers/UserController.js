@@ -99,15 +99,9 @@ module.exports = {
       });
   },
 
-  logout: function (req, res) {
-    // If the user isn't logged in, just get them out of here
-    if (!req.session.loggedIn) {
-      return res.ok();
-    }
-    // https://github.com/expressjs/session#sessiondestroycallback
-    req.session.destroy(function afterDestroy() {
-      return res.ok();
-    });
+  logout: async function (req, res) {
+    await sails.helpers.logout(req);
+    return res.ok();
   },
 
   status: async function (req, res) {
@@ -129,6 +123,8 @@ module.exports = {
         authenticated,
       });
     } catch (err) {
+      // Something happened and we couldn't verify the user, log them out
+      await sails.helpers.logout(req);
       return res.badRequest(err);
     }
   },

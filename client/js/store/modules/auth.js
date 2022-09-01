@@ -108,10 +108,10 @@ export default {
       });
     },
     async requestStatus(context) {
-
       const { location } = window;
       const isLobby = location.hash.startsWith('#/lobby');
       const isGame = location.hash.startsWith('#/game');
+
       // We first need to check if this is a game route, if it is we can not auth the user or
       // it will break the game until we add reconnect/subscribe logic
       // By stopping here, Vue will allow the user to reconnect via the relogin dialog instead
