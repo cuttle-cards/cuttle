@@ -146,7 +146,6 @@ export default {
         return response;
       } catch (err) {
         context.commit('clearAuth');
-        throw new Error(err);
       }
     },
   },

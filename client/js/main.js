@@ -8,12 +8,7 @@ Vue.config.productionTip = false;
 async function initApp() {
   // Make sure we try and reestablish a player's session if one exists
   // We do this before the app mounts to preempt the reauth/logout logic
-  try {
-    await store.dispatch('requestStatus');
-  } catch {
-    // Unable to validate player status or player not authenticated
-    // Swallow the error to let the player continue
-  }
+  await store.dispatch('requestStatus');
 
   const app = new Vue({
     vuetify,
