@@ -108,10 +108,6 @@ export default {
       });
     },
     async requestStatus(context) {
-      if (!window) {
-        // Swallow error, this call is only supported client side
-        return;
-      }
 
       const { location } = window;
       const isLobby = location.hash.startsWith('#/lobby');
