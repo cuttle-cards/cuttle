@@ -150,7 +150,7 @@ describe('Lobby - P0 Perspective', () => {
     });
   });
   // TODO: Rewrite this test when auth is supported in the lobby
-  it.skip('Redirects to game list after page refresh', () => {
+  it('Redirects to game list after page refresh', () => {
     cy.reload();
     cy.hash().should('equal', '#/');
   });
@@ -249,7 +249,7 @@ describe('Lobby - P1 Perspective', () => {
     assertGameStarted();
   });
   // TODO: Rewrite this test when auth is supported in the lobby
-  it.skip('Redirects to game list after page refresh', () => {
+  it('Redirects to game list after page refresh', () => {
     cy.reload();
     cy.hash().should('equal', '#/');
   });
