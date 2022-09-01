@@ -33,6 +33,7 @@
     />
     <game-over-dialog v-model="gameIsOver" :player-wins="playerWins" :stalemate="stalemate" />
     <reauthenticate-dialog v-model="mustReauthenticate" />
+    <opponent-requested-stalemate-dialog v-model="consideringOpponentStalemateRequest" />
   </div>
 </template>
 
@@ -46,6 +47,7 @@ import GameOverDialog from '@/components/GameView/GameOverDialog.vue';
 import ReauthenticateDialog from '@/components/GameView/ReauthenticateDialog.vue';
 import SevenDoubleJacksDialog from '@/components/GameView/SevenDoubleJacksDialog.vue';
 import ThreeDialog from '@/components/GameView/ThreeDialog.vue';
+import OpponentRequestedStalemateDialog from './OpponentRequestedStalemateDialog.vue';
 
 export default {
   name: 'GameDialogs',
@@ -57,6 +59,7 @@ export default {
     ReauthenticateDialog,
     SevenDoubleJacksDialog,
     ThreeDialog,
+    OpponentRequestedStalemateDialog,
   },
   computed: {
     ...mapGetters([
@@ -123,6 +126,14 @@ export default {
     },
     stalemate() {
       return this.$store.state.game.gameIsOver && this.$store.state.game.winnerPNum === null;
+    },
+    consideringOpponentStalemateRequest: {
+      get() {
+        return this.$store.state.game.consideringOpponentStalemateRequest;
+      },
+      set(val) {
+        this.$store.commit('setConsideringOpponentStalemateRequest', val);
+      },
     },
     topCard() {
       return this.$store.state.game.topCard;
