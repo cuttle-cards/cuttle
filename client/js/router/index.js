@@ -17,6 +17,11 @@ const mustBeAuthenticated = (to, from, next) => {
   return next('/login');
 };
 
+const logoutAndRedirect = async (to, from, next) => {
+  await store.dispatch('requestLogout');
+  return next('/login');
+};
+
 const routes = [
   {
     path: '/',
@@ -29,6 +34,13 @@ const routes = [
     name: 'Login',
     component: LoginSignup,
   },
+  // This route is just a passthrough to make sure the user is fully logged out before putting
+  // them on the login screen
+  {
+    path: '/logout',
+    name: 'Logout',
+    beforeEnter: logoutAndRedirect,
+  },
   {
     path: '/rules',
     name: 'Rules',
@@ -38,11 +50,16 @@ const routes = [
     name: 'Lobby',
     path: '/lobby/:gameId',
     component: Lobby,
+    // TODO: Add logic to redirect if a given game does not exist
+    beforeEnter: mustBeAuthenticated,
   },
   {
     name: 'Game',
     path: '/game/:gameId',
     component: GameView,
+    // TODO: Add logic to redirect if a given game does not exist
+    // mustBeAuthenticated intentionally left off here
+    // If a user refreshes the relogin modal will fire and allow them to continue playing
   },
   {
     path: '/stats',

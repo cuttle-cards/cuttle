@@ -5,14 +5,24 @@ import store from './store/store';
 import router from './router';
 Vue.config.productionTip = false;
 
-const app = new Vue({
-  vuetify,
-  store,
-  router,
-  render: (h) => h(App),
-}).$mount('#app');
+async function initApp() {
+  // Make sure we try and reestablish a player's session if one exists
+  // We do this before the app mounts to preempt the reauth/logout logic
+  await store.dispatch('requestStatus');
 
-// Expose app for testing
-if (window.Cypress) {
-  window.app = app;
+  const app = new Vue({
+    vuetify,
+    store,
+    router,
+    render: (h) => h(App),
+  }).$mount('#app');
+
+  // Expose app for testing
+  if (process.env.NODE_ENV === 'development' || window.Cypress) {
+    window.cuttle = {
+      app,
+    };
+  }
 }
+
+initApp();

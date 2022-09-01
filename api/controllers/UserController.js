@@ -99,9 +99,33 @@ module.exports = {
       });
   },
 
-  logout: function (req, res) {
-    delete req.session.usr;
-    req.session.loggedIn = false;
+  logout: async function (req, res) {
+    await sails.helpers.logout(req);
     return res.ok();
+  },
+
+  status: async function (req, res) {
+    const { usr: id, loggedIn: authenticated } = req.session;
+
+    // User is not logged in, get out of here
+    if (!authenticated || !id) {
+      return res.ok({
+        authenticated: false,
+      });
+    }
+
+    try {
+      // If the user is logged in, see if we can find them first to verify they exist
+      const { username } = await userAPI.findUser(id);
+      return res.ok({
+        id,
+        username,
+        authenticated,
+      });
+    } catch (err) {
+      // Something happened and we couldn't verify the user, log them out
+      await sails.helpers.logout(req);
+      return res.badRequest(err);
+    }
   },
 };

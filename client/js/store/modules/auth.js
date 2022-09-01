@@ -107,5 +107,46 @@ export default {
         );
       });
     },
+    async requestStatus(context) {
+      const { location } = window;
+      const isLobby = location.hash.startsWith('#/lobby');
+      const isGame = location.hash.startsWith('#/game');
+
+      // We first need to check if this is a game route, if it is we can not auth the user or
+      // it will break the game until we add reconnect/subscribe logic
+      // By stopping here, Vue will allow the user to reconnect via the relogin dialog instead
+      if (isGame) {
+        return;
+      }
+
+      try {
+        const response = await fetch('/user/status', {
+          credentials: 'include',
+        });
+        const status = await response.json();
+        const { authenticated, username } = status;
+
+        // If the user is not authenticated, we're done here
+        if (!authenticated) {
+          return response;
+        }
+
+        // If the user is authenticated and has a username, add it to the store
+        if (username) {
+          context.commit('authSuccess', username);
+        }
+
+        // If this is a lobby, redirect the user to the game list so they don't have to
+        // log back in again
+        if (isLobby) {
+          location.href = '/#/';
+          return;
+        }
+
+        return response;
+      } catch (err) {
+        context.commit('clearAuth');
+      }
+    },
   },
 };
