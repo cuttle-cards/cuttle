@@ -247,7 +247,7 @@
 
       <!-- Player Hand -->
       <div class="player-hand-container">
-        <div id="player-hand" class="d-flex flex-column justify-end align-center px-2 pt-2 mx-auto">
+        <div id="player-hand">
           <div
             v-if="!targeting"
             id="player-hand-cards"
@@ -1140,6 +1140,7 @@ export default {
   }
 }
 #field-center {
+  width: 100%;
 }
 
 .history-container {
@@ -1233,10 +1234,11 @@ export default {
 
 #player-hand {
   min-width: 50%;
+  height: 100%;
   & #player-hand-cards,
   #player-hand-targeting::v-deep {
     width: 100%;
-    height: 80%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.46);
     overflow-y: hidden;
     border-radius: 4px;
@@ -1256,6 +1258,7 @@ export default {
 .user-cards-grid-container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  position: relative;
   width: 100%;
 }
 #player-username-container {
@@ -1283,5 +1286,8 @@ export default {
 .opponent-cards-container {
   grid-column-start: 3;
   grid-column-end: span 8;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 </style>
