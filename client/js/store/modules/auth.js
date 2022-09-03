@@ -1,8 +1,10 @@
 import { io } from '../../plugins/sails.js';
+import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
 
 export default {
   state: {
-    authenticated: false,
+    // This value will ONLY be null on the initial load
+    authenticated: null,
     username: null,
     mustReauthenticate: false,
   },
@@ -107,10 +109,16 @@ export default {
         );
       });
     },
-    async requestStatus(context) {
-      const { location } = window;
-      const isLobby = location.hash.startsWith('#/lobby');
-      const isGame = location.hash.startsWith('#/game');
+    async requestStatus(context, { router, route }) {
+      const { state } = context;
+
+      if (!router || !route || state.authenticated !== null) {
+        return;
+      }
+
+      const { name } = route;
+      const isLobby = name === ROUTE_NAME_LOBBY;
+      const isGame = name === ROUTE_NAME_GAME;
 
       // We first need to check if this is a game route, if it is we can not auth the user or
       // it will break the game until we add reconnect/subscribe logic
@@ -128,7 +136,8 @@ export default {
 
         // If the user is not authenticated, we're done here
         if (!authenticated) {
-          return response;
+          context.commit('clearAuth');
+          return;
         }
 
         // If the user is authenticated and has a username, add it to the store
@@ -139,11 +148,10 @@ export default {
         // If this is a lobby, redirect the user to the game list so they don't have to
         // log back in again
         if (isLobby) {
-          location.href = '/#/';
-          return;
+          return router.push('/');
         }
 
-        return response;
+        return;
       } catch (err) {
         context.commit('clearAuth');
       }
