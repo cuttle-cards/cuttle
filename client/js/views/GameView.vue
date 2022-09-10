@@ -256,6 +256,7 @@
                 :suit="card.suit"
                 :rank="card.rank"
                 :is-selected="selectedCard && card.id === selectedCard.id"
+                :is-frozen="player.frozenId === card.id"
                 class="mt-8 transition-all"
                 :data-player-hand-card="`${card.rank}-${card.suit}`"
                 @click="selectCard(index)"

@@ -1137,6 +1137,9 @@ describe('Playing NINES', () => {
         scrap: [Card.NINE_OF_CLUBS],
       });
 
+      // Card should have the frozen state shown visually
+      cy.get('[data-player-hand-card=11-0]').should('have.class', 'frozen');
+
       // Player attempts plays the returned jack immediately
       cy.get('[data-player-hand-card=11-0]').click();
       cy.get('[data-move-choice=jack]').click();
