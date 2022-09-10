@@ -918,8 +918,6 @@ export default {
       const targetType = targetIndex < 0 ? 'jack' : 'faceCard';
       switch (cardToPlay.rank) {
         case 2:
-          this.playTargetedOneOff(targetIndex, targetType);
-          return;
         case 9:
           this.playTargetedOneOff(targetIndex, targetType);
           return;
