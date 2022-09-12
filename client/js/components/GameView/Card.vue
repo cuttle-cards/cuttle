@@ -1,7 +1,11 @@
 <template>
   <v-card
     class="mx-1 player-card"
-    :class="{ selected: isSelected, glasses: isGlasses, jack: isJack }"
+    :class="{
+      selected: isSelected,
+      glasses: isGlasses,
+      jack: isJack,
+    }"
     :elevation="elevation"
     @click="$emit('click')"
   >
@@ -155,5 +159,16 @@ export default {
 }
 .target-overlay {
   cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .player-card {
+    max-height: 10vh;
+    max-width: calc(10vh / 1.45);
+    &.glasses {
+      max-width: 10vh;
+      height: calc(10vh / 1.45);
+    }
+  }
 }
 </style>

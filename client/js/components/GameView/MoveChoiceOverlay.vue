@@ -236,6 +236,9 @@ export default {
       });
     },
     cardWidth() {
+      if (this.$vuetify.breakpoint.name === 'xs') {
+        return '100%';
+      }
       switch (this.moveChoices.length) {
         case 1:
           return '100%';
@@ -254,6 +257,12 @@ export default {
 #move-choice-overlay {
   & #close-wrapper {
     width: 85%;
+  }
+}
+@media (max-width: 600px) {
+  #options-wrapper {
+    flex-direction: column;
+    align-items: center;
   }
 }
 </style>

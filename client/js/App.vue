@@ -34,4 +34,10 @@ export default {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+@media (max-width: 600px) {
+  div > .v-application--wrap {
+    min-height: 100%;
+  }
+}
 </style>

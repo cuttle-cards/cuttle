@@ -11,7 +11,7 @@
       @click="$emit('cancel')"
     />
     <div id="target-selection-header-wrapper" class="d-flex flex-column align-center">
-      <h1>Choose {{ moveDisplayName }} Target</h1>
+      <h2>Choose {{ moveDisplayName }} Target</h2>
       <v-btn outlined color="primary" class="mt-2" data-cy="cancel-target" @click="$emit('cancel')">
         Cancel
       </v-btn>
@@ -53,7 +53,7 @@ export default {
 
 <style scoped lang="scss">
 #player-hand-targeting {
-  padding: 32px;
+  padding: 12px;
 }
 #target-selection-header-wrapper {
   width: 100%;

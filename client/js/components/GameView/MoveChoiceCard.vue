@@ -91,4 +91,10 @@ export default {
 p {
   text-align: center;
 }
+
+@media (max-width: 600px) {
+  .move-choice-card {
+    margin-bottom: 16px;
+  }
+}
 </style>

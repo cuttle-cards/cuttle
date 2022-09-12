@@ -6,9 +6,50 @@
     </template>
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper">
+      <div id="game-menu-wrapper" class="d-flex flex-column">
         <game-menu />
+        <v-icon
+          v-if="$vuetify.breakpoint.name === 'xs'"
+          color="neutral lighten-1"
+          large
+          @click.stop="showHistoryDrawer = !showHistoryDrawer"
+        >
+          mdi-account-clock
+        </v-icon>
       </div>
+
+      <!-- Mobile History Drawer -->
+      <v-navigation-drawer
+        v-if="$vuetify.breakpoint.name === 'xs'"
+        v-model="showHistoryDrawer"
+        class="c-history-drawer"
+        :absolute="true"
+        :right="true"
+        :temporary="true"
+      >
+        <template #prepend>
+          <v-list-item two-line>
+            <v-list-item-content>
+              <h3>History</h3>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon color="neutral" large @click.stop="showHistoryDrawer = !showHistoryDrawer">
+                mdi-window-close
+              </v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </template>
+
+        <v-divider />
+
+        <v-list dense>
+          <v-list-item v-for="(log, index) in logs" :key="index">
+            <p>
+              {{ log }}
+            </p>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
 
       <!-- Opponent Hand -->
       <div class="opponent-hand-container">
@@ -29,8 +70,25 @@
                     tag="div"
                     name="slide-below"
                   >
+                    <v-slide-group
+                      v-if="$vuetify.breakpoint.name === 'xs'"
+                      key="opponent-slide-group"
+                      active-class="success"
+                      :show-arrows="true"
+                    >
+                      <v-slide-item v-for="card in opponent.hand" :key="card.id">
+                        <card
+                          :key="card.id"
+                          :suit="card.suit"
+                          :rank="card.rank"
+                          :data-opponent-hand-card="`${card.rank}-${card.suit}`"
+                          class="transition-all opponent-hand-card-revealed"
+                        />
+                      </v-slide-item>
+                    </v-slide-group>
                     <card
                       v-for="card in opponent.hand"
+                      v-else
                       :key="card.id"
                       :suit="card.suit"
                       :rank="card.rank"
@@ -211,7 +269,7 @@
       </div>
 
       <!-- History -->
-      <div class="history-container">
+      <div v-if="$vuetify.breakpoint.name !== 'xs'" class="history-container">
         <div id="field-right">
           <div id="history" class="rounded d-flex flex-column justify-start">
             <h3>History</h3>
@@ -255,6 +313,7 @@
             :class="{ 'my-turn': isPlayersTurn }"
           >
             <username-tool-tip
+              v-if="$vuetify.breakpoint.name !== 'xs'"
               id="player-username-container"
               key="player-username"
               :username="playerUsername"
@@ -264,16 +323,37 @@
               <transition-group
                 tag="div"
                 name="slide-above"
-                class="d-flex justify-center align-start"
+                class="d-flex justify-center align-start player-cards-mobile-overrides"
                 :class="{ 'my-turn': isPlayersTurn }"
               >
+                <v-slide-group
+                  v-if="$vuetify.breakpoint.name === 'xs'"
+                  key="slide-group"
+                  :show-arrows="true"
+                >
+                  <v-slide-item v-for="(card, index) in player.hand" :key="card.id">
+                    <card
+                      :key="card.id"
+                      :suit="card.suit"
+                      :rank="card.rank"
+                      :is-selected="selectedCard && card.id === selectedCard.id"
+                      class="mt-2 transition-all"
+                      :is-hand-card="true"
+                      :data-player-hand-card="`${card.rank}-${card.suit}`"
+                      @click="selectCard(index)"
+                    />
+                  </v-slide-item>
+                </v-slide-group>
+
                 <card
                   v-for="(card, index) in player.hand"
+                  v-else
                   :key="card.id"
                   :suit="card.suit"
                   :rank="card.rank"
                   :is-selected="selectedCard && card.id === selectedCard.id"
                   class="mt-2 transition-all"
+                  :is-hand-card="true"
                   :data-player-hand-card="`${card.rank}-${card.suit}`"
                   @click="selectCard(index)"
                 />
@@ -359,6 +439,7 @@ export default {
       showFourDialog: false,
       topCardIsSelected: false,
       secondCardIsSelected: false,
+      showHistoryDrawer: false,
     };
   },
   computed: {
@@ -644,6 +725,12 @@ export default {
     if (!this.$store.state.auth.authenticated) {
       this.$store.commit('setMustReauthenticate', true);
     }
+    document.documentElement.style.setProperty('--browserHeight', `${window.innerHeight / 100}px`);
+    window.addEventListener('resize', () => {
+      // We execute the same script as before
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--browserHeight', `${vh}px`);
+    });
   },
   methods: {
     clearSnackBar() {
@@ -1024,7 +1111,7 @@ export default {
 #game-view-wrapper {
   color: #fff;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   background: linear-gradient(180deg, #6202ee 14.61%, #fd6222 100%), #c4c4c4;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
@@ -1042,6 +1129,7 @@ export default {
   display: inline-block;
   right: 0;
   margin: 10px;
+  z-index: 3;
 }
 
 .valid-move {
@@ -1059,7 +1147,7 @@ export default {
     background: rgba(0, 0, 0, 0.46);
 
     & #opponent-hand-glasses {
-      margin-top: -48px;
+      margin-top: -1.75em;
       .opponent-hand-card-revealed {
         transform: scale(0.8);
       }
@@ -1289,5 +1377,51 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+/* This function is used to make sure the game's height stays within the viewport */
+/* between the url/status bars on mobile devices */
+@function bh($quantity) {
+  @return calc(var(--browserHeight, 1vh) * #{$quantity});
+}
+
+/* Mobile styling overrides */
+@media (max-width: 600px) {
+  #game-view-wrapper {
+    grid-template-rows: bh(7) bh(5) bh(50) bh(20) bh(5) bh(13);
+    grid-template-areas:
+      'opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand'
+      'opp-score opp-score opp-score opp-score opp-score opp-score opp-score opp-score'
+      'field field field field field field field field'
+      'decks decks decks decks decks decks decks decks'
+      'player-score player-score player-score player-score player-score player-score player-score player-score'
+      'player-hand player-hand player-hand player-hand player-hand player-hand player-hand player-hand';
+  }
+
+  .field-points {
+    .field-point-container {
+      width: auto;
+    }
+  }
+
+  #field-left {
+    flex-direction: row;
+    & #deck,
+    & #scrap {
+      height: 13vh;
+      width: calc(13vh / 1.3);
+    }
+  }
+  #opponent-hand {
+    & #opponent-hand-cards {
+      & #opponent-hand-glasses {
+        margin-top: 0;
+      }
+    }
+  }
+  .player-cards-container {
+    grid-column-start: 1;
+    grid-column-end: span 12;
+  }
 }
 </style>
