@@ -23,10 +23,11 @@ module.exports.policies = {
 
   UserController: {
     '*': false,
-    homepage: true,
     signup: ['hasValidUsername', 'hasValidPassword'],
     login: ['hasValidUsername', 'hasPassword'],
-    reLogin: ['hasValidUsername', 'hasPassword'],
+    // reLogin does not require password intentionally-- if you are already logged in it will
+    // not require a password to validate the session
+    reLogin: ['hasValidUsername'],
     logout: true,
     status: true,
   },

@@ -13,10 +13,6 @@ const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
-  homepage: function (req, res) {
-    return res.view('homepage', { loggedIn: req.session.loggedIn, game: req.session.game });
-  },
-
   signup: async function (req, res) {
     // Request was missing data
     if (!req.body.password && !req.body.username) {
@@ -71,7 +67,11 @@ module.exports = {
     userAPI
       .findUserByUsername(req.body.username)
       .then(function gotUser(user) {
-        const checkPass = passwordAPI.checkPass(req.body.password, user.encryptedPassword);
+        console.log();
+        const checkPass =
+          req.session.loggedIn !== true && req.body.password
+            ? passwordAPI.checkPass(req.body.password, user.encryptedPassword)
+            : null;
         const promiseGame = gameService.populateGame({ gameId: user.game });
         return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
       })
@@ -105,7 +105,7 @@ module.exports = {
   },
 
   status: async function (req, res) {
-    const { usr: id, loggedIn: authenticated } = req.session;
+    const { usr: id, loggedIn: authenticated, game } = req.session;
 
     // User is not logged in, get out of here
     if (!authenticated || !id) {
@@ -117,10 +117,17 @@ module.exports = {
     try {
       // If the user is logged in, see if we can find them first to verify they exist
       const { username } = await userAPI.findUser(id);
+
+      // If the user is currently in a game, we need to populate the game
+      if (game) {
+        gameService.populateGame({ gameId: game });
+      }
+
       return res.ok({
         id,
         username,
         authenticated,
+        game,
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out
