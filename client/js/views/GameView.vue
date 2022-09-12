@@ -1115,7 +1115,7 @@ export default {
   background: linear-gradient(180deg, #6202ee 14.61%, #fd6222 100%), #c4c4c4;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: 15% 5% 55% 5% 20%;
+  grid-template-rows: 15vh 5vh 55vh 5vh 20vh;
   grid-template-areas:
     'opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand'
     'decks decks opp-score opp-score opp-score opp-score history history'
