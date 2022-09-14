@@ -105,7 +105,7 @@ module.exports = {
   },
 
   status: async function (req, res) {
-    const { usr: id, loggedIn: authenticated, game } = req.session;
+    const { usr: id, loggedIn: authenticated, game: gameId } = req.session;
 
     // User is not logged in, get out of here
     if (!authenticated || !id) {
@@ -121,15 +121,15 @@ module.exports = {
       // If the user is currently in a game, we need to populate the game
       // TODO: Adjust populate game to allow populating a game with less than 2 players
       // as a prerequisite for the lobby session management
-      if (game && game.players.length === 2) {
-        gameService.populateGame({ gameId: game });
+      if (gameId && game.players.length === 2) {
+        gameService.populateGame({ gameId });
       }
 
       return res.ok({
         id,
         username,
         authenticated,
-        game,
+        gameId,
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out

@@ -126,7 +126,7 @@ export default {
           credentials: 'include',
         });
         const status = await response.json();
-        const { authenticated, username, game } = status;
+        const { authenticated, username, gameId } = status;
 
         // If the user is not authenticated, we're done here
         if (!authenticated) {
@@ -139,18 +139,14 @@ export default {
           context.commit('authSuccess', username);
         }
 
-        console.log('before lobby', isLobby, isGame);
-
         // If this is a lobby, redirect the user to the game list so they don't have to
         // log back in again
         if (isLobby) {
           return router.push('/');
         }
 
-        console.log('after lobby');
-
         // If the user is currently authenticated and part of a game, we need to resubscribe them
-        if (isGame && game) {
+        if (isGame && gameId) {
           await context.dispatch('requestReauthenticate', { username });
         }
 
