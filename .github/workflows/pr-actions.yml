@@ -58,6 +58,9 @@ jobs:
     name: "Test: End to End"
     runs-on: ubuntu-latest
     needs: test-unit
+    strategy:
+      matrix:
+        containers: [1, 2]
     steps:
       # Checkout and node setup are shared in both `pr-actions.yml` and `run-npm-script.yml`
       # If you change one, please change the other
@@ -71,6 +74,8 @@ jobs:
           build: npm run build
           start: npm start
           config-file: tests/cypress.config.js
+          record: true
+          parallel: true
         env:
           # Never add vue devtools when running in GitHub
           # Mock a production config without setting NODE_ENV
@@ -78,3 +83,7 @@ jobs:
           # and Vue Devtools are not included
           CUTTLE_ENV: production
           VUE_APP_API_URL: http://localhost:1337
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          # Passing the GitHub token lets this action correctly
+          # determine the unique run id necessary to re-run the checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
