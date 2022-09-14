@@ -1136,12 +1136,13 @@ describe('Playing NINES', () => {
         p1FaceCards: [],
         scrap: [Card.NINE_OF_CLUBS],
       });
-
       // Card should have the frozen state shown visually
       cy.get('[data-player-hand-card=11-0]').should('have.class', 'frozen');
 
       // Player attempts plays the returned jack immediately
       cy.get('[data-player-hand-card=11-0]').click();
+      // Card overlay should have the frozen state shown visually
+      cy.get('[data-player-overlay-card=11-0]').should('have.class', 'frozen');
       cy.get('[data-move-choice=jack]').click();
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=1-3]').click();

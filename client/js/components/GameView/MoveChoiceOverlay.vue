@@ -12,7 +12,12 @@
       </v-btn>
     </div>
     <div v-if="selectedCard" class="d-flex justify-center">
-      <card :suit="selectedCard.suit" :rank="selectedCard.rank" />
+      <card
+        :suit="selectedCard.suit"
+        :rank="selectedCard.rank"
+        :data-player-overlay-card="`${selectedCard.rank}-${selectedCard.suit}`"
+        :is-frozen="frozenId === selectedCard.id"
+      />
     </div>
     <!-- Move choices -->
     <div id="options-wrapper" class="d-flex justify-space-between my-4">
@@ -56,6 +61,10 @@ export default {
       required: true,
     },
     opponentQueenCount: {
+      type: Number,
+      required: true,
+    },
+    frozenId: {
       type: Number,
       required: true,
     },

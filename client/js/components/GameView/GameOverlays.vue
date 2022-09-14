@@ -40,6 +40,7 @@
       :selected-card="selectedCard || cardSelectedFromDeck"
       :is-players-turn="isPlayersTurn"
       :opponent-queen-count="opponentQueenCount"
+      :frozen-id="player.frozenId"
       @points="$emit('points')"
       @faceCard="$emit('face-card')"
       @oneOff="$emit('one-off')"
@@ -91,6 +92,7 @@ export default {
       'opponentQueenCount',
       'opponent',
       'hasGlassesEight',
+      'player',
     ]),
     waitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';
