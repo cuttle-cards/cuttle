@@ -23,9 +23,9 @@
         v-if="$vuetify.breakpoint.name === 'xs'"
         v-model="showHistoryDrawer"
         class="c-history-drawer"
-        :absolute="true"
-        :right="true"
-        :temporary="true"
+        fixed
+        right
+        app
       >
         <template #prepend>
           <v-list-item two-line>
@@ -1143,11 +1143,11 @@ export default {
 #opponent-hand {
   min-width: 50%;
   & #opponent-hand-cards {
-    height: 80%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.46);
 
     & #opponent-hand-glasses {
-      margin-top: -1.75em;
+      margin-top: -10vh;
       .opponent-hand-card-revealed {
         transform: scale(0.8);
       }
