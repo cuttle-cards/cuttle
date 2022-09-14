@@ -116,19 +116,14 @@ module.exports = {
     try {
       // If the user is logged in, see if we can find them first to verify they exist
       const { username } = await userAPI.findUser(id);
-
-      // If the user is currently in a game, we need to populate the game
-      // TODO: Adjust populate game to allow populating a game with less than 2 players
-      // as a prerequisite for the lobby session management
-      if (gameId && game.players.length === 2) {
-        gameService.populateGame({ gameId });
-      }
-
+      const game = gameId ? await gameService.findGame({ gameId }) : null;
       return res.ok({
         id,
         username,
         authenticated,
-        gameId,
+        // We only want to set the gameId if this is a valid game with 2 players
+        // TODO: Refactor this when we add session handling for the lobby
+        gameId: game && game.players.length === 2 ? gameId : null,
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out
