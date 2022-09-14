@@ -5,10 +5,14 @@
       selected: isSelected,
       glasses: isGlasses,
       jack: isJack,
+      frozen: isFrozen,
     }"
     :elevation="elevation"
     @click="$emit('click')"
   >
+    <v-icon v-if="isFrozen" class="player-card-icon mr-1 mt-1" color="#00a5ff">
+      mdi-snowflake
+    </v-icon>
     <v-overlay
       v-ripple
       :value="isValidTarget"
@@ -57,6 +61,10 @@ export default {
     jacks: {
       type: Array,
       default: null,
+    },
+    isFrozen: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -134,6 +142,13 @@ export default {
     height: calc(20vh / 1.45);
   }
 }
+.player-card-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
 .selected {
   // transform: scale(1.23);
   img {
@@ -159,6 +174,25 @@ export default {
 }
 .target-overlay {
   cursor: pointer;
+}
+
+.frozen {
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(#00a5ff, 0.25);
+    opacity: 1;
+    transition: all 0.3s linear;
+  }
+
+  &:hover:after {
+    opacity: 0;
+  }
 }
 
 @media (max-width: 600px) {

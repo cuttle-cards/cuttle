@@ -337,6 +337,7 @@
                       :suit="card.suit"
                       :rank="card.rank"
                       :is-selected="selectedCard && card.id === selectedCard.id"
+                      :is-frozen="player.frozenId === card.id"
                       class="mt-2 transition-all"
                       :is-hand-card="true"
                       :data-player-hand-card="`${card.rank}-${card.suit}`"
@@ -352,6 +353,7 @@
                   :suit="card.suit"
                   :rank="card.rank"
                   :is-selected="selectedCard && card.id === selectedCard.id"
+                  :is-frozen="player.frozenId === card.id"
                   class="mt-2 transition-all"
                   :is-hand-card="true"
                   :data-player-hand-card="`${card.rank}-${card.suit}`"
@@ -1022,8 +1024,6 @@ export default {
       const targetType = targetIndex < 0 ? 'jack' : 'faceCard';
       switch (cardToPlay.rank) {
         case 2:
-          this.playTargetedOneOff(targetIndex, targetType);
-          return;
         case 9:
           this.playTargetedOneOff(targetIndex, targetType);
           return;

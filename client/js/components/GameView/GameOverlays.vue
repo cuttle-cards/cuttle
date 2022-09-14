@@ -28,11 +28,19 @@
     >
       <h1>Opponent Playing from Deck</h1>
     </v-overlay>
+    <v-overlay
+      id="waiting-for-opponent-stalemate-scrim"
+      v-model="waitingForOpponentToStalemate"
+      opacity=".6"
+    >
+      <h1>Opponent Considering Stalemate Request</h1>
+    </v-overlay>
     <move-choice-overlay
       :value="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
       :selected-card="selectedCard || cardSelectedFromDeck"
       :is-players-turn="isPlayersTurn"
       :opponent-queen-count="opponentQueenCount"
+      :frozen-id="player.frozenId"
       @points="$emit('points')"
       @faceCard="$emit('face-card')"
       @oneOff="$emit('one-off')"
@@ -62,16 +70,10 @@ export default {
     selectedCard: {
       type: Object,
       default: null,
-      validator: (value) => {
-        return typeof value === Object || value === null;
-      },
     },
     cardSelectedFromDeck: {
       type: Object,
       default: null,
-      validator: (value) => {
-        return typeof value === Object || value === null;
-      },
     },
   },
   computed: {
@@ -82,6 +84,7 @@ export default {
       waitingForOpponentToDiscard: ({ game }) => game.waitingForOpponentToDiscard,
       waitingForOpponentToPickFromScrap: ({ game }) => game.waitingForOpponentToPickFromScrap,
       waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
+      waitingForOpponentToStalemate: ({ game }) => game.waitingForOpponentToStalemate,
     }),
     ...mapGetters([
       'isPlayersTurn',
@@ -89,6 +92,7 @@ export default {
       'opponentQueenCount',
       'opponent',
       'hasGlassesEight',
+      'player',
     ]),
     waitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';

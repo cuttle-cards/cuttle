@@ -39,6 +39,8 @@ function resetState() {
     gameIsOver: false,
     winnerPNum: null,
     conceded: false,
+    waitingForOpponentToStalemate: false,
+    consideringOpponentStalemateRequest: false,
   };
 }
 
@@ -152,6 +154,7 @@ export default {
           state.lastEventTargetType = null;
         }
       }
+      state.waitingForOpponentToStalemate = false;
       if (Object.hasOwnProperty.call(newGame, 'id')) state.id = newGame.id;
       if (Object.hasOwnProperty.call(newGame, 'turn')) state.turn = newGame.turn;
       if (Object.hasOwnProperty.call(newGame, 'chat')) state.chat = _.cloneDeep(newGame.chat);
@@ -238,6 +241,12 @@ export default {
       state.gameIsOver = gameOver;
       state.conceded = conceded;
       state.winnerPNum = winner;
+    },
+    setWaitingForOpponentToStalemate(state, value) {
+      state.waitingForOpponentToStalemate = value;
+    },
+    setConsideringOpponentStalemateRequest(state, value) {
+      state.consideringOpponentStalemateRequest = value;
     },
   },
   actions: {
@@ -619,6 +628,20 @@ export default {
     async requestConcede(context) {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/concede', function handleResponse(res, jwres) {
+          return handleGameResponse(context, jwres, resolve, reject);
+        });
+      });
+    },
+    async requestStalemate(context) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/stalemate', function handleResponse(res, jwres) {
+          return handleGameResponse(context, jwres, resolve, reject);
+        });
+      });
+    },
+    async rejectStalemate(context) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/reject-stalemate', function handleResponse(res, jwres) {
           return handleGameResponse(context, jwres, resolve, reject);
         });
       });
