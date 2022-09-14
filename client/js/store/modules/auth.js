@@ -139,11 +139,15 @@ export default {
           context.commit('authSuccess', username);
         }
 
+        console.log('before lobby', isLobby, isGame);
+
         // If this is a lobby, redirect the user to the game list so they don't have to
         // log back in again
         if (isLobby) {
           return router.push('/');
         }
+
+        console.log('after lobby');
 
         // If the user is currently authenticated and part of a game, we need to resubscribe them
         if (isGame && game) {

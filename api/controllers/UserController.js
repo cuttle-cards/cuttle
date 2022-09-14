@@ -119,7 +119,9 @@ module.exports = {
       const { username } = await userAPI.findUser(id);
 
       // If the user is currently in a game, we need to populate the game
-      if (game) {
+      // TODO: Adjust populate game to allow populating a game with less than 2 players
+      // as a prerequisite for the lobby session management
+      if (game && game.players.length === 2) {
         gameService.populateGame({ gameId: game });
       }
 
