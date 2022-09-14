@@ -68,7 +68,7 @@ module.exports = {
       .findUserByUsername(req.body.username)
       .then(function gotUser(user) {
         const checkPass =
-          req.session.loggedIn !== true && req.body.password
+          !req.session.loggedIn && req.body.password
             ? passwordAPI.checkPass(req.body.password, user.encryptedPassword)
             : null;
         const promiseGame = gameService.populateGame({ gameId: user.game });
