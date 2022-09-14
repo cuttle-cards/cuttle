@@ -67,7 +67,6 @@ module.exports = {
     userAPI
       .findUserByUsername(req.body.username)
       .then(function gotUser(user) {
-        console.log();
         const checkPass =
           req.session.loggedIn !== true && req.body.password
             ? passwordAPI.checkPass(req.body.password, user.encryptedPassword)
