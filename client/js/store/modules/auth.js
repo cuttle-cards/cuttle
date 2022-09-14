@@ -1,8 +1,12 @@
 import { io } from '../../plugins/sails.js';
+import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
+
+import { getPlayerPnumByUsername } from '_/utils/game-utils.js';
 
 export default {
   state: {
-    authenticated: false,
+    // This value will ONLY be null on the initial load
+    authenticated: null,
     username: null,
     mustReauthenticate: false,
   },
@@ -92,13 +96,11 @@ export default {
           function handleResponse(res, jwres) {
             if (jwres.statusCode === 200) {
               context.commit('setMustReauthenticate', false);
-              let myPNum = context.rootState.game.players.findIndex(
-                (player) => player.username === context.state.username
+              const pNum = getPlayerPnumByUsername(
+                context.rootState.game.players,
+                context.state.username
               );
-              if (myPNum === -1) {
-                myPNum = null;
-              }
-              context.commit('setMyPNum', myPNum);
+              context.commit('setMyPNum', pNum);
               return resolve();
             }
             context.commit('clearAuth');
@@ -107,28 +109,29 @@ export default {
         );
       });
     },
-    async requestStatus(context) {
-      const { location } = window;
-      const isLobby = location.hash.startsWith('#/lobby');
-      const isGame = location.hash.startsWith('#/game');
+    async requestStatus(context, { router, route }) {
+      const { state } = context;
 
-      // We first need to check if this is a game route, if it is we can not auth the user or
-      // it will break the game until we add reconnect/subscribe logic
-      // By stopping here, Vue will allow the user to reconnect via the relogin dialog instead
-      if (isGame) {
+      // If we've authenticated before, fast fail
+      if (state.authenticated !== null) {
         return;
       }
+
+      const { name } = route;
+      const isLobby = name === ROUTE_NAME_LOBBY;
+      const isGame = name === ROUTE_NAME_GAME;
 
       try {
         const response = await fetch('/user/status', {
           credentials: 'include',
         });
         const status = await response.json();
-        const { authenticated, username } = status;
+        const { authenticated, username, gameId } = status;
 
         // If the user is not authenticated, we're done here
         if (!authenticated) {
-          return response;
+          context.commit('clearAuth');
+          return;
         }
 
         // If the user is authenticated and has a username, add it to the store
@@ -139,11 +142,24 @@ export default {
         // If this is a lobby, redirect the user to the game list so they don't have to
         // log back in again
         if (isLobby) {
-          location.href = '/#/';
-          return;
+          return router.push('/');
         }
 
-        return response;
+        // If the user is currently authenticated and part of a game, we need to resubscribe them
+        // The sequencing here is a little interesting, but this is what happens to get a user back
+        // in to a game in progress:
+        //     - `requestStatus` is dispatched when the browser hits the site
+        //     - `UserController.status` is called by the action
+        //     - `requestReauthenticate` is dispatched
+        //     - `UserController.reLogin` is called
+        //     - `gameService.populateGame` is called
+        //     - `Game.subscribe` is called
+        //     - `Game.publish` is called
+        if (isGame && gameId) {
+          await context.dispatch('requestReauthenticate', { username });
+        }
+
+        return;
       } catch (err) {
         context.commit('clearAuth');
       }

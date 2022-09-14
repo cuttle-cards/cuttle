@@ -18,8 +18,20 @@ function reconnect() {
   cy.log('Reauthenticated');
 }
 
+function reloadAndLogout() {
+  // Logout the user
+  cy.window()
+    .its('cuttle.app.$store')
+    .then(async (store) => {
+      store.dispatch('requestLogout');
+    });
+  cy.log('Logged Out');
+  cy.reload();
+  reconnect();
+}
+
 describe('Reconnecting to a game', () => {
-  it('Reconnects after refreshing the page', () => {
+  it('Persists session after refreshing the page', () => {
     setupGameAsP0();
 
     cy.loadGameFixture({
@@ -35,7 +47,37 @@ describe('Reconnecting to a game', () => {
 
     // Reload page, relogin
     cy.reload();
-    reconnect();
+
+    // Play Ace of Clubs for points
+    cy.get('[data-player-hand-card=1-0]').click();
+    cy.get('[data-move-choice=points]').click();
+
+    assertGameState(0, {
+      p0Hand: [],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.ACE_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+  });
+
+  it('Reconnects after refreshing the page', () => {
+    setupGameAsP0();
+
+    cy.loadGameFixture({
+      p0Hand: [Card.ACE_OF_CLUBS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Fixture loaded');
+
+    // Reload page, relogin
+    reloadAndLogout();
 
     // Play Ace of Clubs for points
     cy.get('[data-player-hand-card=1-0]').click();
@@ -70,10 +112,8 @@ describe('Reconnecting to a game', () => {
 
       cy.get('#cannot-counter-dialog').should('be.visible');
 
-      // Reload page
-      cy.reload();
-      // Reauthenticate
-      reconnect();
+      // Reload page, relogin
+      reloadAndLogout();
 
       // Cannot counter dialog appears again
       cy.get('#cannot-counter-dialog')
@@ -110,10 +150,8 @@ describe('Reconnecting to a game', () => {
 
       cy.get('#cannot-counter-dialog').should('be.visible');
 
-      // Reload page
-      cy.reload();
-      // Reauthenticate
-      reconnect();
+      // Reload page, relogin
+      reloadAndLogout();
 
       // Cannot counter dialog appears again
       cy.get('#cannot-counter-dialog')
@@ -150,9 +188,8 @@ describe('Reconnecting to a game', () => {
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent counters
       cy.counterOpponent(Card.TWO_OF_CLUBS);
-      // Reconnect & proceed
-      cy.reload();
-      reconnect();
+      // Reload page, relogin
+      reloadAndLogout();
 
       // Cannot counter - resolve
       cy.get('#cannot-counter-dialog')
@@ -199,8 +236,7 @@ describe('Reconnecting to a game', () => {
       // Can't counter, again
       cy.get('#cannot-counter-dialog').should('be.visible');
       // Player reconnects and cannot counter
-      cy.reload();
-      reconnect();
+      reloadAndLogout();
       cy.get('#cannot-counter-dialog')
         .should('be.visible')
         .get('[data-cy=cannot-counter-resolve]')
@@ -244,8 +280,7 @@ describe('Reconnecting to a game', () => {
       // Opponent plays two of clubs
       cy.playTargetedOneOffFromSevenOpponent(Card.TWO_OF_CLUBS, Card.KING_OF_CLUBS, 'faceCard');
       // Player reconnects and cannot counter
-      cy.reload();
-      reconnect();
+      reloadAndLogout();
       cy.get('#cannot-counter-dialog')
         .should('be.visible')
         .get('[data-cy=cannot-counter-resolve]')
@@ -318,8 +353,8 @@ describe('Reconnecting to a game', () => {
 
       cy.get('#counter-dialog').should('be.visible');
 
-      cy.reload();
-      reconnect();
+      // Reload page, relogin
+      reloadAndLogout();
 
       cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
 
@@ -357,9 +392,8 @@ describe('Reconnecting to a game', () => {
       cy.playTargetedOneOffOpponent(Card.TWO_OF_SPADES, Card.KING_OF_CLUBS, 'faceCard');
 
       cy.get('#counter-dialog').should('be.visible');
-      // Reload & counter
-      cy.reload();
-      reconnect();
+      // Reload page, relogin & counter
+      reloadAndLogout();
 
       cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
       cy.get('#choose-two-dialog')
@@ -410,9 +444,8 @@ describe('Reconnecting to a game', () => {
         .should('contain', 'Your opponent has played 2 of Clubs to Counter.')
         .get('[data-cy=counter]')
         .click();
-      // Reconnect & proceed
-      cy.reload();
-      reconnect();
+      // Reconnect & relogin & proceed
+      reloadAndLogout();
 
       // Counter dialog should become visible again
       cy.get('#counter-dialog')
@@ -469,9 +502,8 @@ describe('Reconnecting to a game', () => {
       // Opponent plays the ace of clubs off top of deck
       cy.playOneOffFromSevenOpponent(Card.ACE_OF_CLUBS);
       cy.get('#counter-dialog').should('be.visible');
-      // Reconnect & proceed
-      cy.reload();
-      reconnect();
+      // Reconnect & relogin & proceed
+      reloadAndLogout();
       // Player can counter but declines
       cy.get('#counter-dialog')
         .should('be.visible')
@@ -514,9 +546,8 @@ describe('Reconnecting to a game', () => {
         .get('[data-cy=decline-counter-resolve]')
         .click();
       cy.playTargetedOneOffFromSevenOpponent(Card.TWO_OF_CLUBS, Card.KING_OF_CLUBS, 'faceCard');
-      // Reconnect & proceed
-      cy.reload();
-      reconnect();
+      // Reconnect & relogin & proceed
+      reloadAndLogout();
       // Player counters
       cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
       cy.get('#choose-two-dialog')
@@ -555,9 +586,8 @@ describe('Reconnecting to a game', () => {
         cy.log('Fixture loaded');
 
         cy.playOneOffAndResolveAsPlayer(Card.THREE_OF_CLUBS);
-        // Disconnect & Reconnect
-        cy.reload();
-        reconnect();
+        // Disconnect & Reconnect & relogin
+        reloadAndLogout();
         // Three dialog appears & functions correctly
         cy.get('#three-dialog').should('be.visible');
         // resolve button should be disabled
@@ -598,8 +628,8 @@ describe('Reconnecting to a game', () => {
           .get('[data-cy=cannot-counter-resolve]')
           .click();
         cy.get('#waiting-for-opponent-resolve-three-scrim').should('be.visible');
-        cy.reload();
-        reconnect();
+        // Disconnect & Reconnect & relogin
+        reloadAndLogout();
         cy.get('#waiting-for-opponent-resolve-three-scrim').should('be.visible');
         // waiting for opponent to choose from scrap scrim
         cy.resolveThreeOpponent(Card.TWO_OF_CLUBS);
@@ -636,9 +666,8 @@ describe('Reconnecting to a game', () => {
         .should('be.visible')
         .get('[data-cy=cannot-counter-resolve]')
         .click();
-      // Disconnect & Reconnect
-      cy.reload();
-      reconnect();
+      // Disconnect & Reconnect & relogin
+      reloadAndLogout();
       // Four dialog appears, player discards as normal
       // Choosing cards to discard
       cy.log('Choosing two cards to discard');
@@ -677,9 +706,8 @@ describe('Reconnecting to a game', () => {
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
       cy.get('[data-top-card=10-3]').should('exist').and('be.visible');
-      // Disconnect & Reconnect
-      cy.reload();
-      reconnect();
+      // Disconnect & Reconnect & relogin
+      reloadAndLogout();
       // Play off top of deck as normal
       cy.get('[data-second-card=9-0]').should('exist').and('be.visible');
       cy.get('[data-top-card=10-3]').should('exist').and('be.visible').click();
