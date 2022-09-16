@@ -169,7 +169,7 @@ describe('Home - Create Game', () => {
       });
   });
 
-  it('Creates a new unranked game by hitting the submit button', () => {
+  it.only('Creates a new unranked game by hitting the submit button', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
       .should('be.visible')
@@ -194,11 +194,11 @@ describe('Home - Create Game', () => {
           'Expect no players in gameLists game in store, but found some'
         );
         expect(games[0].status).to.eq(true, 'Expect game to have status true');
-        // TODO: Check ranked status is false
+        expect(games[0].ranked).to.eq(false, 'Expect game to be ranked');
       });
   });
 
-  it.only('Creates a new ranked game', () => {
+  it('Creates a new ranked game', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
       .should('be.visible')
