@@ -104,6 +104,11 @@
                 <h2>Create Game</h2>
               </v-card-title>
               <v-card-text>
+                <v-switch
+                  v-model="newGameIsRanked"
+                  label="Ranked"
+                  data-cy="create-game-ranked-switch"
+                />
                 <v-text-field
                   v-model="newGameName"
                   :disabled="creatingGame"
@@ -159,6 +164,7 @@ export default {
   data() {
     return {
       newGameName: '',
+      newGameIsRanked: false,
       showSnackBar: false,
       snackBarMessage: '',
       creatingGame: false,

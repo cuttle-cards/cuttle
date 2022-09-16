@@ -197,7 +197,23 @@ describe('Home - Create Game', () => {
       });
   });
 
-  it.only('Cancels create game dialog', () => {
+  it.only('Creates a new ranked game', () => {
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('test game');
+
+    cy.get('[data-cy=create-game-ranked-switch]')
+      .should('not.be.checked')
+      .click({ force: true }) // Force to click hidden input inside switch
+      .should('be.checked');
+
+    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+  });
+
+  it('Cancels create game dialog', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
       .should('be.visible')
