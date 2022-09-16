@@ -7,6 +7,7 @@ class GameSummary {
     this.name = obj.name ? obj.name : null;
     this.numPlayers = Object.prototype.hasOwnProperty.call(obj, 'players') ? obj.players.length : 0;
     this.status = Object.prototype.hasOwnProperty.call(obj, 'status') ? obj.status : false;
+    this.ranked = Object.prototype.hasOwnProperty.call(obj, 'ranked') ? obj.ranked : false;
   }
 }
 export default {
@@ -57,12 +58,13 @@ export default {
         });
       });
     },
-    requestCreateGame(context, newGameName) {
+    requestCreateGame(context, { gameName, ranked }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/create',
           {
-            gameName: newGameName,
+            gameName,
+            ranked,
           },
           function handleResponse(resData, jwres) {
             if (jwres.statusCode === 200) {

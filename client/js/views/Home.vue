@@ -183,7 +183,10 @@ export default {
     submitNewGame() {
       this.creatingGame = true;
       this.$store
-        .dispatch('requestCreateGame', this.newGameName)
+        .dispatch('requestCreateGame', {
+          gameName: this.newGameName,
+          ranked: this.newGameIsRanked,
+        })
         .then(() => {
           this.newGameName = '';
           this.creatingGame = false;

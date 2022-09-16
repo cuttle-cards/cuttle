@@ -194,6 +194,7 @@ describe('Home - Create Game', () => {
           'Expect no players in gameLists game in store, but found some'
         );
         expect(games[0].status).to.eq(true, 'Expect game to have status true');
+        // TODO: Check ranked status is false
       });
   });
 
@@ -211,6 +212,18 @@ describe('Home - Create Game', () => {
       .should('be.checked');
 
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+    // Test store
+    cy.window()
+      .its('app.$store.state.gameList.games')
+      .then((games) => {
+        expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
+        expect(games[0].numPlayers).to.eq(
+          0,
+          'Expect no players in gameLists game in store, but found some'
+        );
+        expect(games[0].status).to.eq(true, 'Expect game to have status true');
+        expect(games[0].ranked).to.eq(true, 'Expect game to be ranked');
+      });
   });
 
   it('Cancels create game dialog', () => {
