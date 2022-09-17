@@ -349,6 +349,7 @@ export default {
       waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
     }),
     ...mapGetters([
+      'cards',
       'isPlayersTurn',
       'player',
       'playerPointTotal',

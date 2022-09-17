@@ -1,3 +1,4 @@
+const { compareByRankThenSuit } = require('../../utils/game-utils.js');
 const userService = require('../../api/services/userService.js');
 
 /**
@@ -10,19 +11,6 @@ const GameResult = Object.freeze({
   STALEMATE: 2,
 });
 
-/**
- * @returns int <= 0 if card1 is lower rank or same rank & lower suit
- * @param {rank: number, suit: number} card1
- * @param {rank: number, suit: number} card2
- */
-function comapreByRankThenSuit(card1, card2) {
-  let res = card1.rank - card2.rank;
-  if (res === 0) {
-    res = card1.suit - card2.suit;
-  }
-  return res;
-}
-
 // Used to create fully populated game
 function tempUser(usr, points) {
   this.pNum = usr.pNum;
@@ -33,9 +21,9 @@ function tempUser(usr, points) {
   this.id = usr.id;
   this.username = usr.username;
 
-  this.hand.sort(comapreByRankThenSuit);
-  this.points.sort(comapreByRankThenSuit);
-  this.faceCards.sort(comapreByRankThenSuit);
+  this.hand.sort(compareByRankThenSuit);
+  this.points.sort(compareByRankThenSuit);
+  this.faceCards.sort(compareByRankThenSuit);
 }
 
 function tempGame(game, p0, p1) {
