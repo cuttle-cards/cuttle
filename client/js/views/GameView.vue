@@ -35,6 +35,7 @@
                     :rank="card.rank"
                     :data-opponent-hand-card="`${card.rank}-${card.suit}`"
                     class="transition-all opponent-hand-card-revealed"
+                    @click="selectCard(card)"
                   />
                 </transition-group>
                 <transition-group
@@ -171,6 +172,7 @@
                   :rank="card.rank"
                   :jacks="card.attachments"
                   :data-player-point-card="`${card.rank}-${card.suit}`"
+                  @click="selectCard(card)"
                 />
                 <div class="jacks-container">
                   <card
@@ -180,6 +182,7 @@
                     :rank="jack.rank"
                     :is-jack="true"
                     :data-player-face-card="`${jack.rank}-${jack.suit}`"
+                    @click="selectCard(card)"
                   />
                 </div>
               </div>
@@ -259,7 +262,7 @@
                 :is-frozen="player.frozenId === card.id"
                 class="mt-8 transition-all"
                 :data-player-hand-card="`${card.rank}-${card.suit}`"
-                @click="selectCard(index)"
+                @click="selectCard(card)"
               />
             </transition-group>
           </div>
@@ -330,10 +333,11 @@ export default {
   },
   data() {
     return {
+      observedCard: null,
       showSnack: false,
       snackMessage: '',
       snackColor: 'error',
-      selectionIndex: null, // when select a card set this value
+      selectedCard: null,
       targeting: false,
       targetingMoveName: null,
       targetingMoveDisplayName: null,
@@ -530,9 +534,6 @@ export default {
     //////////////////
     // Interactions //
     //////////////////
-    selectedCard() {
-      return this.selectionIndex !== null ? this.player.hand[this.selectionIndex] : null;
-    },
     turnText() {
       return this.isPlayersTurn ? 'YOUR TURN' : "OPPONENT'S TURN";
     },
@@ -646,19 +647,16 @@ export default {
       this.targeting = false;
     },
     clearSelection() {
-      this.selectionIndex = null;
+      this.selectedCard = null;
       this.secondCardIsSelected = false;
       this.topCardIsSelected = false;
       this.targetingMoveName = null;
       this.targetingMoveDisplayName = null;
       this.clearOverlays();
     },
-    selectCard(index) {
-      if (index === this.selectionIndex) {
-        this.clearSelection();
-      } else {
-        this.selectionIndex = index;
-      }
+    selectCard(card) {
+      const shouldSetCard = card && this.selectedCard && this.selectedCard.id !== card.id;
+      this.selectedCard = shouldSetCard ? card : null;
     },
     selectTopCard() {
       if (!this.waitingForOpponentToPlayFromDeck) {

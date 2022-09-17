@@ -72,33 +72,6 @@ const initialState = resetState();
 export default {
   state: initialState,
   getters: {
-    // TODO: Replace this with an actual deck array :)
-    cards(state, getters) {
-      if (!getters.player || !getters.opponent) {
-        return [];
-      }
-      return [
-        // Global cards
-        ...state.deck,
-        ...state.scrap,
-        // Player cards
-        ...getters.player.hand,
-        ...getters.player.points,
-        ...getters.player.faceCards,
-        // Opponent cards
-        ...getters.opponent.hand,
-        ...getters.opponent.points,
-        ...getters.opponent.faceCards,
-      ]
-        .map(({ id, rank, suit, name, ruleText }) => ({
-          id,
-          rank,
-          suit,
-          name,
-          ruleText,
-        }))
-        .sort(compareByRankThenSuit);
-    },
     discarding(state) {
       return state.discarding;
     },
