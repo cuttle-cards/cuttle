@@ -333,7 +333,6 @@ export default {
   },
   data() {
     return {
-      observedCard: null,
       showSnack: false,
       snackMessage: '',
       snackColor: 'error',
