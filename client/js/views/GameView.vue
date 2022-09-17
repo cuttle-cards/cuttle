@@ -274,6 +274,7 @@
           :value="targeting"
           :selected-card="selectedCard || cardSelectedFromDeck"
           :is-players-turn="isPlayersTurn"
+          :is-players-hand-card="selectedCard"
           :move-display-name="targetingMoveDisplayName"
           @cancel="clearSelection"
         />
@@ -306,7 +307,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapMutations, mapState } from 'vuex';
 
 import Card from '@/components/GameView/Card.vue';
 import GameDialogs from '@/components/GameView/GameDialogs.vue';
@@ -336,7 +337,6 @@ export default {
       showSnack: false,
       snackMessage: '',
       snackColor: 'error',
-      selectedCard: null,
       targeting: false,
       targetingMoveName: null,
       targetingMoveDisplayName: null,
@@ -350,6 +350,7 @@ export default {
   computed: {
     ...mapState({
       waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
+      selectedCard: ({ game }) => game.selectedCard,
     }),
     ...mapGetters([
       'cards',
@@ -630,6 +631,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['selectCard']),
     clearSnackBar() {
       this.snackMessage = '';
       this.showSnack = false;
@@ -646,16 +648,12 @@ export default {
       this.targeting = false;
     },
     clearSelection() {
-      this.selectedCard = null;
+      this.selectCard(null);
       this.secondCardIsSelected = false;
       this.topCardIsSelected = false;
       this.targetingMoveName = null;
       this.targetingMoveDisplayName = null;
       this.clearOverlays();
-    },
-    selectCard(card) {
-      const shouldSetCard = card && this.selectedCard && this.selectedCard.id !== card.id;
-      this.selectedCard = shouldSetCard ? card : null;
     },
     selectTopCard() {
       if (!this.waitingForOpponentToPlayFromDeck) {

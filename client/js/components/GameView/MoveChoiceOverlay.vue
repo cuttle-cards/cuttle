@@ -2,6 +2,7 @@
   <v-overlay
     id="move-choice-overlay"
     class="d-flex flex-column justify-center align-center"
+    :class="{ 'is-observing': !selectedCardIsInPlayersHand }"
     :value="value"
     @click.native="$emit('cancel')"
   >
@@ -27,8 +28,8 @@
         :move-name="move.displayName"
         :move-description="move.moveDescription"
         :event-name="move.eventName"
-        :disabled="move.disabled"
-        :disabled-explanation="move.disabledExplanation"
+        :disabled="move.disabled || !selectedCardIsInPlayersHand"
+        :disabled-explanation="selectedCardIsInPlayersHand ? move.disabledExplanation : 'OBSERVING'"
         :card-width="cardWidth"
         class="mx-4"
         @click="$emit(move.eventName, move)"
@@ -38,6 +39,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import MoveChoiceCard from '@/components/GameView/MoveChoiceCard.vue';
 import Card from '@/components/GameView/Card.vue';
 
@@ -68,8 +71,13 @@ export default {
       type: Number,
       required: true,
     },
+    observing: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
+    ...mapGetters(['selectedCardIsInPlayersHand']),
     /**
      * Returns list of objects representing the available moves,
      * based on the selected card
@@ -233,6 +241,9 @@ export default {
      * @return boolean whether there is a legal scuttle using selected card
      */
     hasValidScuttleTarget() {
+      if (!this.selectedCard) {
+        return false;
+      }
       // Can't scuttle with a royal
       if (this.selectedCard.rank >= 11) return false;
       // Return true iff at least one opponent point card is scuttleable w/ selected card

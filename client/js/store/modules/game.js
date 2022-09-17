@@ -23,6 +23,7 @@ function resetState() {
     oneOffTarget: null,
     waitingForOpponentToCounter: false,
     myTurnToCounter: false,
+    selectedCard: null,
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
@@ -78,16 +79,16 @@ export default {
     player(state) {
       return state.players[state.myPNum];
     },
-    playerPointTotal(state, getters) {
+    playerPointTotal(_state, getters) {
       if (!getters.player) {
         return 0;
       }
       return getters.player.points.reduce((total, card) => total + card.rank, 0) || 0;
     },
-    playerQueenCount(state, getters) {
+    playerQueenCount(_state, getters) {
       return queenCount(getters.player);
     },
-    playerUsername(state, getters) {
+    playerUsername(_state, getters) {
       if (!getters.player) {
         return null;
       }
@@ -105,19 +106,19 @@ export default {
       }
       return state.myPNum === 0 ? state.p1Ready : state.p0Ready;
     },
-    opponentUsername(state, getters) {
+    opponentUsername(_state, getters) {
       if (!getters.opponent) {
         return null;
       }
       return getters.opponent.username;
     },
-    opponentPointTotal(state, getters) {
+    opponentPointTotal(_state, getters) {
       if (!getters.opponent) {
         return 0;
       }
       return getters.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
     },
-    opponentQueenCount(state, getters) {
+    opponentQueenCount(_state, getters) {
       return queenCount(getters.opponent);
     },
     playerWins(state) {
@@ -129,8 +130,14 @@ export default {
     isPlayersTurn(state) {
       return state.turn % 2 === state.myPNum;
     },
-    hasGlassesEight(state, getters) {
+    hasGlassesEight(_state, getters) {
       return getters.player.faceCards.filter((card) => card.rank === 8).length > 0;
+    },
+    selectedCardIsInPlayersHand(state, getters) {
+      if (!state.selectedCard) {
+        return false;
+      }
+      return getters.player.hand.findIndex((card) => card.id === state.selectedCard.id) !== -1;
     },
   },
   mutations: {
@@ -248,6 +255,12 @@ export default {
     },
     setConsideringOpponentStalemateRequest(state, value) {
       state.consideringOpponentStalemateRequest = value;
+    },
+    selectCard(state, card) {
+      const shouldSetCard =
+        (card && !state.selectedCard) ||
+        (card && state.selectedCard && state.selectedCard.id !== card.id);
+      state.selectedCard = shouldSetCard ? card : null;
     },
   },
   actions: {
