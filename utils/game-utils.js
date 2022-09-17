@@ -6,7 +6,7 @@
 function compareByRankThenSuit(card1, card2) {
   // Compare by suit (clubs->diamonds->hearts->spades)
   // Then compare by rank (1,2...12,13)
-  return card1.suit - card2.suit || card1.rank - card2.rank;
+  return card1.rank - card2.rank || card1.suit - card2.suit;
 }
 
 const getPlayerPnumByUsername = (players, username) => {

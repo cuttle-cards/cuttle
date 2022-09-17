@@ -3,37 +3,33 @@ const {
   getPlayerPnumByUsername,
   pNumIsValid,
 } = require('../../../utils/game-utils');
+const Card = require('../../e2e/fixtures/cardFixtures.js');
 
 describe('compareByRankThenSuit', () => {
-  const aceOfClubs = {
-    rank: 1,
-    suit: 0,
-  };
-  const twoOfClubs = {
-    rank: 1,
-    suit: 0,
-  };
-  const aceOfHearts = {
-    rank: 1,
-    suit: 2,
-  };
-  const jackOfHearts = {
-    rank: 11,
-    suit: 2,
-  };
-  it('should sort by suit', () => {
-    const sortedCards = [jackOfHearts, twoOfClubs].sort(compareByRankThenSuit);
-    expect(sortedCards).toEqual([twoOfClubs, jackOfHearts]);
-  });
+  const { ACE_OF_CLUBS, TWO_OF_CLUBS, TEN_OF_CLUBS, ACE_OF_HEARTS, JACK_OF_HEARTS } = Card;
   it('should sort by rank', () => {
-    const sortedCards = [twoOfClubs, aceOfClubs].sort(compareByRankThenSuit);
-    expect(sortedCards).toEqual([aceOfClubs, twoOfClubs]);
+    const sortedCards = [TWO_OF_CLUBS, ACE_OF_CLUBS].sort(compareByRankThenSuit);
+    expect(sortedCards).toEqual([ACE_OF_CLUBS, TWO_OF_CLUBS]);
   });
-  it('should sort by suit and rank', () => {
-    const sortedCards = [jackOfHearts, aceOfHearts, twoOfClubs, aceOfClubs].sort(
-      compareByRankThenSuit
-    );
-    expect(sortedCards).toEqual([aceOfClubs, twoOfClubs, aceOfHearts, jackOfHearts]);
+  it('should sort by suit', () => {
+    const sortedCards = [JACK_OF_HEARTS, TWO_OF_CLUBS].sort(compareByRankThenSuit);
+    expect(sortedCards).toEqual([TWO_OF_CLUBS, JACK_OF_HEARTS]);
+  });
+  it('should sort by rank and suit', () => {
+    const sortedCards = [
+      JACK_OF_HEARTS,
+      TEN_OF_CLUBS,
+      ACE_OF_HEARTS,
+      TWO_OF_CLUBS,
+      ACE_OF_CLUBS,
+    ].sort(compareByRankThenSuit);
+    expect(sortedCards).toEqual([
+      ACE_OF_CLUBS,
+      ACE_OF_HEARTS,
+      TWO_OF_CLUBS,
+      TEN_OF_CLUBS,
+      JACK_OF_HEARTS,
+    ]);
   });
 });
 
