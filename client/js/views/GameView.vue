@@ -9,7 +9,7 @@
       <div id="game-menu-wrapper" class="d-flex flex-column">
         <game-menu />
         <v-icon
-          v-if="$vuetify.breakpoint.name === 'xs'"
+          v-if="$vuetify.breakpoint.xs"
           color="neutral lighten-1"
           large
           @click.stop="showHistoryDrawer = !showHistoryDrawer"
@@ -20,7 +20,7 @@
 
       <!-- Mobile History Drawer -->
       <v-navigation-drawer
-        v-if="$vuetify.breakpoint.name === 'xs'"
+        v-if="$vuetify.breakpoint.xs"
         v-model="showHistoryDrawer"
         class="c-history-drawer"
         fixed
@@ -71,7 +71,7 @@
                     name="slide-below"
                   >
                     <v-slide-group
-                      v-if="$vuetify.breakpoint.name === 'xs'"
+                      v-if="$vuetify.breakpoint.xs"
                       key="opponent-slide-group"
                       active-class="success"
                       :show-arrows="true"
@@ -269,7 +269,7 @@
       </div>
 
       <!-- History -->
-      <div v-if="$vuetify.breakpoint.name !== 'xs'" class="history-container">
+      <div v-if="$vuetify.breakpoint.smAndUp" class="history-container">
         <div id="field-right">
           <div id="history" class="rounded d-flex flex-column justify-start">
             <h3>History</h3>
@@ -313,7 +313,7 @@
             :class="{ 'my-turn': isPlayersTurn }"
           >
             <username-tool-tip
-              v-if="$vuetify.breakpoint.name !== 'xs'"
+              v-if="$vuetify.breakpoint.smAndUp"
               id="player-username-container"
               key="player-username"
               :username="playerUsername"
@@ -326,11 +326,7 @@
                 class="d-flex justify-center align-start player-cards-mobile-overrides"
                 :class="{ 'my-turn': isPlayersTurn }"
               >
-                <v-slide-group
-                  v-if="$vuetify.breakpoint.name === 'xs'"
-                  key="slide-group"
-                  :show-arrows="true"
-                >
+                <v-slide-group v-if="$vuetify.breakpoint.xs" key="slide-group" :show-arrows="true">
                   <v-slide-item v-for="(card, index) in player.hand" :key="card.id">
                     <card
                       :key="card.id"
