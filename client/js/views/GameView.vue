@@ -1186,7 +1186,7 @@ export default {
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 50vh;
+  height: 100%;
 }
 
 .deck-container {
@@ -1229,6 +1229,7 @@ export default {
 }
 #field-center {
   width: 100%;
+  height: 100%;
 }
 
 .history-container {
@@ -1414,6 +1415,7 @@ export default {
   }
   #opponent-hand {
     & #opponent-hand-cards {
+      height: 80%;
       & #opponent-hand-glasses {
         margin-top: 0;
       }
