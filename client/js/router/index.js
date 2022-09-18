@@ -8,6 +8,9 @@ import Rules from '../views/Rules.vue';
 import Stats from '../views/Stats.vue';
 import store from '../store/store.js';
 
+export const ROUTE_NAME_LOBBY = 'Lobby';
+export const ROUTE_NAME_GAME = 'Game';
+
 Vue.use(VueRouter);
 
 const mustBeAuthenticated = (to, from, next) => {
@@ -47,14 +50,14 @@ const routes = [
     component: Rules,
   },
   {
-    name: 'Lobby',
+    name: ROUTE_NAME_LOBBY,
     path: '/lobby/:gameId',
     component: Lobby,
     // TODO: Add logic to redirect if a given game does not exist
     beforeEnter: mustBeAuthenticated,
   },
   {
-    name: 'Game',
+    name: ROUTE_NAME_GAME,
     path: '/game/:gameId',
     component: GameView,
     // TODO: Add logic to redirect if a given game does not exist
@@ -71,6 +74,16 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+});
+
+router.beforeEach(async (to, _from, next) => {
+  // Make sure we try and reestablish a player's session if one exists
+  // We do this before the route resolves to preempt the reauth/logout logic
+  await store.dispatch('requestStatus', {
+    router,
+    route: to,
+  });
+  next();
 });
 
 export default router;
