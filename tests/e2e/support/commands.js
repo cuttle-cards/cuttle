@@ -79,8 +79,11 @@ Cypress.Commands.add('createGameOpponent', (name) => {
     );
   });
 });
-Cypress.Commands.add('createGamePlayer', (name) => {
-  return cy.window().its('app.$store').invoke('dispatch', 'requestCreateGame', name);
+Cypress.Commands.add('createGamePlayer', ({ gameName, ranked }) => {
+  return cy
+    .window()
+    .its('app.$store')
+    .invoke('dispatch', 'requestCreateGame', { gameName, ranked });
 });
 Cypress.Commands.add('subscribeOpponent', (id) => {
   return new Promise((resolve, reject) => {
