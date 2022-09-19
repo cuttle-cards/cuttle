@@ -55,6 +55,7 @@ function tempGame(game, p0, p1) {
   this.passes = game.passes;
   this.resolving = game.resolving;
   this.lastEvent = game.lastEvent;
+  this.result = game.result;
 }
 module.exports = {
   GameResult,
@@ -175,6 +176,10 @@ module.exports = {
         gameUpdates.result = GameResult.P1_WINS;
       }
       await Game.updateOne({ id: game.id }).set(gameUpdates);
+      if (game.ranked) {
+        console.log('Ranked game is over');
+        await sails.helpers.addGameToMatch({ game });
+      }
     }
     return res;
   },

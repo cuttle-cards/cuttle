@@ -1,9 +1,17 @@
+const dayjs = require('dayjs');
 import { setupGameAsP0 } from '../../support/helpers';
+import { seasonFixtures } from '../../fixtures/statsFixtures';
 
 describe('Creating And Updating Ranked Matches', () => {
+  beforeEach(() => {
+    setupGameAsP0(false, true);
+    const [clubsSeason, diamondsSeason] = seasonFixtures;
+    diamondsSeason.startTime = dayjs().subtract(2, 'week').subtract(1, 'day').valueOf();
+    diamondsSeason.endTime = dayjs().add(11, 'weeks').valueOf();
+    cy.loadSeasonFixture([diamondsSeason]);
+  });
   it.only('Creates a match when two players play a ranked game for the first time this week', () => {
     // Signs up and creates new ranked game
-    setupGameAsP0(false, true);
     // There should be no matches initially
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(0);
