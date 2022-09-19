@@ -57,6 +57,15 @@ module.exports = {
   },
 
   overrides: [
+    // Storybook specific rules
+    {
+      files: ['**/(.storybook|stories)/**/*.{j,t}s?(x)'],
+      extends: ['plugin:storybook/recommended'],
+      rules: {
+        'no-undef': 'warn',
+        'no-prototype-builtins': 'warn',
+      },
+    },
     // Sails specific rules
     {
       files: ['**/api/**/*.{j,t}s?(x)'],
