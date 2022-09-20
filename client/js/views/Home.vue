@@ -120,7 +120,7 @@
               <v-card-actions class="d-flex justify-end">
                 <v-btn
                   data-cy="cancel-create-game"
-                  :disabled="creatingNewGame"
+                  :disabled="creatingGame"
                   text
                   color="primary"
                   @click="cancelCreateGame"
