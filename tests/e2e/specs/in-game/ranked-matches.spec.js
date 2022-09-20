@@ -40,6 +40,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(match.endTime).to.eq(0);
       expect(match.games.length).to.eq(1);
       expect(match.games[0].result).to.eq(0); // P0 should have won the first game
+      cy.log('Match data is correct after first game', res.body);
     });
     // 2nd game: Player is now p1 and loses by points
     setupGameAsP1(true, true);
@@ -70,6 +71,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(match.endTime).to.eq(0);
       expect(match.games.length).to.eq(2);
       expect(match.games[0].result).to.eq(0); // P0 should have won the first game
+      cy.log('Match data is correct after second game', res);
     });
   });
 
