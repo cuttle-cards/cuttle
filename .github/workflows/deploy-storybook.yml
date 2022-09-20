@@ -1,5 +1,12 @@
 on:
   push:
+    # We should only push on known files that could adjust storybook
+    # If there is an outlier, the workflow_dispatch key will let us deploy manually
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-including-paths
+    paths:
+      - '.storybook/**'
+      - 'client/**'
+      - 'stories/**'
     branches: [$default-branch]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
