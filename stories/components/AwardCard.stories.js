@@ -14,10 +14,8 @@ const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
   template: `
   <div class="d-flex justify-space-around flex-wrap">
-        <award-card v-bind="$props" class="mb-4" />
-        <award-card username="Second Place Player" :place="2" class="mb-4" />
-        <award-card username="Third Place Player" :place="3" class="mb-4" />
-      </div>
+    <award-card v-bind="$props" class="mb-4" />
+  </div>
   `,
   computed: {
     // TODO: Make this more global in the app (and in storybook)
@@ -27,8 +25,8 @@ const Template = (args, { argTypes }) => ({
   },
 });
 
-export const AwardCardStory = Template.bind({});
-AwardCardStory.args = {
-  username: 'Champion player',
+export const Default = Template.bind({});
+Default.args = {
+  username: 'username',
   place: 1,
 };

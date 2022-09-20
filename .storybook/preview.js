@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-import { options } from '@/plugins/vuetify'
-import 'vuetify/dist/vuetify.min.css'
+import { options } from '@/plugins/vuetify';
+import 'vuetify/dist/vuetify.min.css';
+import './storybook.css';
 
 Vue.use(Vuetify);
 
@@ -27,7 +28,7 @@ export const decorators = [
       // props: {},
       // watch: {},
       template: `
-      <v-app>
+      <v-app class="sb-app">
           <wrapped/>
       </v-app>
       `,

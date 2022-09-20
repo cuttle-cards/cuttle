@@ -3,13 +3,14 @@ const path = require('path');
 
 // https://storybook.js.org/docs/vue/configure/overview#configure-your-storybook-project
 module.exports = {
-  stories: ['../stories/**/*.stories.mdx', '../stories/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../stories/**/*.stories.@(js|jsx|mdx|ts|tsx)'],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
   ],
   framework: '@storybook/vue',
+  staticDirs: ['../client/js/img'],
   webpackFinal: async (config, { configType }) => {
     // Use Sass loader for vuetify components
     config.module.rules.push({

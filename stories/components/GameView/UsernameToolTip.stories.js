@@ -15,8 +15,8 @@ const Template = (args, { argTypes }) => ({
   template: `<UsernameToolTip v-bind="$props" />`,
 });
 
-export const UsernameToolTipStory = Template.bind({});
-UsernameToolTipStory.args = {
+export const Default = Template.bind({});
+Default.args = {
   username: 'username',
   isPlayer: false,
 };
