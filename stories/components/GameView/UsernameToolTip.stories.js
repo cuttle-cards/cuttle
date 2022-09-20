@@ -1,4 +1,4 @@
-import UsernameToolTip from '@/components/GameView/UsernameToolTip.vue';
+import UsernameToolTip from '@/components/GameView/UsernameToolTip';
 
 export default {
   /* 👇 The title prop is optional.
@@ -17,6 +17,6 @@ const Template = (args, { argTypes }) => ({
 
 export const UsernameToolTipStory = Template.bind({});
 UsernameToolTipStory.args = {
-  playerUsername: 'username',
+  username: 'username',
   isPlayer: false,
 };

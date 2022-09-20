@@ -11,26 +11,43 @@ module.exports = {
   ],
   framework: '@storybook/vue',
   webpackFinal: async (config, { configType }) => {
-    // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
-    // You can change the configuration based on that.
-    // 'PRODUCTION' is used when building the static version of storybook.
-
-    // Add our client alias, this should match what's in vue.config.js
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': path.resolve(__dirname, '../client/js'),
-    };
-
-    // Add sass loader
+    // Use Sass loader for vuetify components
+    config.module.rules.push({
+      test: /\.sass$/,
+      use: [
+        'style-loader',
+        'vue-style-loader',
+        'css-loader',
+        {
+          loader: 'sass-loader',
+        },
+      ],
+      include: path.resolve(__dirname, '../'),
+    });
     config.module.rules.push({
       test: /\.scss$/,
       use: [
-        require.resolve('vue-style-loader'),
-        require.resolve('css-loader'),
-        require.resolve('sass-loader'),
+        'style-loader',
+        'vue-style-loader',
+        'css-loader',
+        {
+          loader: 'sass-loader',
+        },
       ],
+      include: path.resolve(__dirname, '../'),
     });
 
+    config.module.rules.push({
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, '../client/js'),
+          vue: 'vue/dist/vue.js',
+          vue$: 'vue/dist/vue.esm.js',
+        },
+      },
+    });
+
+    // Return the altered config
     return config;
   },
 };
