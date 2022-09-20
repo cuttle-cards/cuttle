@@ -19,7 +19,7 @@ describe('Creating And Updating Ranked Matches', () => {
     diamondsSeason.endTime = dayjs().add(11, 'weeks').valueOf();
     cy.loadSeasonFixture([diamondsSeason]);
   });
-  it.only('Creates a match when two players play a ranked game for the first time this week', () => {
+  it.only('Creates a match when two players play a ranked game for the first time this week', function () {
     // Signs up and creates new ranked game
     // There should be no matches initially
     cy.request('http://localhost:1337/match').then((res) => {
@@ -33,6 +33,11 @@ describe('Creating And Updating Ranked Matches', () => {
     // There should now be one match for the two players
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(1);
+      const [match] = res.body;
+      expect(match.player1.id).to.eq(this.playerOneId);
+      expect(match.player2.id).to.eq(this.playerTwoId);
+      expect(match.startTime).to.be.greaterThan(0);
+      expect(match.endTime).to.eq(0);
     });
   });
 
