@@ -1,10 +1,19 @@
 const dayjs = require('dayjs');
 import { setupGameAsP0 } from '../../support/helpers';
 import { seasonFixtures } from '../../fixtures/statsFixtures';
+import { playerOne, playerTwo } from '../../fixtures/userFixtures';
 
 describe('Creating And Updating Ranked Matches', () => {
-  beforeEach(() => {
-    setupGameAsP0(false, true);
+  beforeEach(function () {
+    cy.wipeDatabase();
+    cy.visit('/');
+    // Sign up to players and store their id's for comparison to match data
+    cy.signupOpponent(playerOne.username, playerOne.password).as('playerOneId');
+    cy.signupOpponent(playerTwo.username, playerTwo.password).as('playerTwoId');
+    // Log in as playerOne
+    cy.loginPlayer(playerOne.username, playerOne.password);
+    setupGameAsP0(true, true);
+    // Set up season
     const [clubsSeason, diamondsSeason] = seasonFixtures;
     diamondsSeason.startTime = dayjs().subtract(2, 'week').subtract(1, 'day').valueOf();
     diamondsSeason.endTime = dayjs().add(11, 'weeks').valueOf();
