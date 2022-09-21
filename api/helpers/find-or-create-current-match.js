@@ -22,7 +22,6 @@ module.exports = {
   },
 
   fn: async ({ player1, player2 }, exits) => {
-    console.log('\n\nFinding relevant match');
     const currentTime = dayjs();
     try {
       const currentSeason = await Season.findOne({
@@ -31,7 +30,6 @@ module.exports = {
       });
       // FIXME: Handle missing season gracefully
       if (!currentSeason) {
-        console.log('Could not find relevant season');
         return exits.success(null);
       }
       // Find relevant match between specified players for current week
@@ -63,7 +61,6 @@ module.exports = {
           player2,
         }).fetch();
       }
-      console.log(currentMatch);
       return exits.success(currentMatch);
     } catch (err) {
       console.log(err);
