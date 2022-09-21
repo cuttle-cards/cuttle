@@ -44,7 +44,6 @@ describe('Creating And Updating Ranked Matches', () => {
     });
     // 2nd game: Player is now p0 and loses by points
     setupGameAsP1(true, true);
-    // Set Up
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
@@ -77,7 +76,7 @@ describe('Creating And Updating Ranked Matches', () => {
       cy.log('Match data is correct after second game', res);
     });
 
-    // 3rd game: Player is now p1 and game ends in stalemate
+    // 3rd game: Ends via requested stalemate
     setupGameAsP0(true, true);
     // Request stalemate
     cy.get('#game-menu-activator').click();
@@ -133,6 +132,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
 
+    // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(1);
       const [match] = res.body;
@@ -144,7 +144,41 @@ describe('Creating And Updating Ranked Matches', () => {
       // Match is incomplete
       expect(match.endTime).to.eq(0);
       expect(match.winner).to.eq(null);
-      cy.log('Match data is correct after third game', res);
+      cy.log('Match data is correct after fourth game', res);
+    });
+
+    // 5th Game: player wins via points and wins match
+    setupGameAsP0(true, true);
+    cy.loadGameFixture({
+      p0Hand: [Card.ACE_OF_SPADES],
+      p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Loaded fixture');
+
+    // Player wins with points
+    cy.get('[data-player-hand-card=1-3]').click();
+    cy.get('[data-move-choice=points').click();
+    cy.get('[data-cy=gameover-go-home]').click();
+    cy.url().should('not.include', '/game');
+
+    // Validate match data
+    cy.request('http://localhost:1337/match').then((res) => {
+      expect(res.body.length).to.eq(1);
+      const [match] = res.body;
+      expect(match.player1.id).to.eq(this.playerOneId);
+      expect(match.player2.id).to.eq(this.playerTwoId);
+      expect(match.startTime).to.be.greaterThan(0);
+      expect(match.games.length).to.eq(5);
+      expect(match.games[3].result).to.eq(2);
+      // Match is incomplete
+      expect(match.winner).to.eq(this.playerOneId);
+      expect(match.endTime).to.be.greaterThan(0);
+      cy.log('Match data is correct after fifth game', res);
     });
   });
 
