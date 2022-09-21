@@ -92,15 +92,55 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
 
-    // The match for these two players should now have two games
+    // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(1);
       const [match] = res.body;
       expect(match.player1.id).to.eq(this.playerOneId);
       expect(match.player2.id).to.eq(this.playerTwoId);
       expect(match.startTime).to.be.greaterThan(0);
-      expect(match.endTime).to.eq(0);
       expect(match.games.length).to.eq(3);
+      // Match is incomplete
+      expect(match.endTime).to.eq(0);
+      expect(match.winner).to.eq(null);
+      expect(match.games[2].result).to.eq(2);
+      cy.log('Match data is correct after third game', res);
+    });
+
+    // 4th game: stalemate due to passing
+    setupGameAsP0(true, true);
+    cy.loadGameFixture({
+      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Fixture loaded');
+
+    cy.deleteDeck();
+    cy.log('Drawing last two cards');
+    cy.get('#deck').should('contain', '(2)').click();
+    cy.drawCardOpponent();
+    cy.log('Deck empty');
+    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.passOpponent();
+    cy.get('#turn-indicator').contains('YOUR TURN');
+    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('[data-cy=gameover-go-home]').click();
+    cy.url().should('not.include', '/game');
+
+    cy.request('http://localhost:1337/match').then((res) => {
+      expect(res.body.length).to.eq(1);
+      const [match] = res.body;
+      expect(match.player1.id).to.eq(this.playerOneId);
+      expect(match.player2.id).to.eq(this.playerTwoId);
+      expect(match.startTime).to.be.greaterThan(0);
+      expect(match.games.length).to.eq(4);
+      expect(match.games[3].result).to.eq(2);
       // Match is incomplete
       expect(match.endTime).to.eq(0);
       expect(match.winner).to.eq(null);

@@ -55,7 +55,7 @@ module.exports = function (req, res) {
           result: gameService.GameResult.STALEMATE,
         };
         await Game.updateOne({ id: game.id }).set(gameUpdates);
-
+        await sails.helpers.addGameToMatch(game);
         await gameService.clearGame({ userId: req.session.usr });
       }
       Game.publish([game.id], {
