@@ -130,3 +130,4 @@ nbproject
 .node_history
 tests/e2e/screenshots
 tests/e2e/videos
+storybook-static
