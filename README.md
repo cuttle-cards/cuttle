@@ -3,6 +3,7 @@ This repository is the full-stack web app for [Cuttle](https://www.cuttle.cards)
 
 To play the game you will need to boot both the front & back end servers, then navigate to `localhost:8080` in your browser of choice.
 ## Project setup and development
+
 ### Download nodeJs
 [nodeJs](https://nodejs.org/en/) lets you create & run web servers in javascript (along with other fancy system-level stuff not needed for this project). Both the client and server depend on node as the main system-wide dependency. The download comes with npm (node package manageer) which you'll use to install the project-specific dependencies.
 
@@ -11,7 +12,9 @@ To play the game you will need to boot both the front & back end servers, then n
 **NOTE** When running on your local computer, signup/login only stores credentials on your computer and in memory. Shutting down the server wipes the in-memory database along with all game & account data.
 
 ### Setup
+
 #### Download the Code
+
 ##### Using git
 ```
 git clone https://github.com/cuttle-cards/cuttle
@@ -44,13 +47,14 @@ npm run start:client
 ```
 to start the client on localhost:8080
 
-#### Open in broswer
+#### Open in browser
 Navigate to [localhost:8080](http:localhost:8080) in your browser of choice.
 
 #### Shutting down
 You can shut down the servers by hitting `ctrl + c` several times from the terminal windows they are running in. Shut down both servers to completely delete all game & account data.
 
 ### Development
+
 #### Vue Devtools
 
 To utilize [Vue Devtools](https://devtools.vuejs.org/), you can run
@@ -59,6 +63,7 @@ npm run start:devtools
 ```
 
 Only dev builds include the Vue Devtools via `ENABLE_VUE_DEVTOOLS=true`. The two scripts that currently support Vue Devtool usage are `npm run start:dev` and `npm run e2e:gui`.
+
 #### Build for production
 From the root directory of the repo, you can run
 ```
@@ -70,6 +75,7 @@ If you just want to generate the production build, you can run
 ```
 npm run build
 ```
+
 #### Run the tests
 While the application is running, (server + client) you can run
 ```
@@ -102,6 +108,13 @@ and use
 npm run lint
 ```
 to check the formatting without autofixing problems. (This is what's run in CI when a PR is opened against the `main` branch).
+
+#### Storybook (UX Documentation)
+Run Storybook locally with
+```
+npm run storybook
+```
+ It will start automatically on localhost:6006 and open a new tab in your browser.
 
 ## Game Rules
 ### Players and Cards
