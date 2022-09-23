@@ -13,6 +13,7 @@ module.exports = {
     },
   },
   fn: async ({ game }, exits) => {
+    console.log('\nAdding game to match');
     try {
       const [player1, player2] = game.players;
       let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1.id, player2.id);
@@ -27,19 +28,33 @@ module.exports = {
       }
       let numPlayer1Wins = 0;
       let numPlayer2Wins = 0;
+
+      console.log(`Got ${relevantMatch.games.length} games for match`);
+      console.log(relevantMatch);
+
       for (const priorGame of relevantMatch.games) {
         if (priorGame.result === 0) {
-          numPlayer1Wins++;
+          if (priorGame.p0 === relevantMatch.player1) {
+            numPlayer1Wins++;
+          } else {
+            numPlayer2Wins++;
+          }
         } else if (priorGame.result === 1) {
-          numPlayer2Wins++;
+          if (priorGame.p1 === relevantMatch.player1) {
+            numPlayer1Wins++;
+          } else {
+            numPlayer2Wins++;
+          }
         }
       }
+      console.log(`Got ${numPlayer1Wins} p1 wins and ${numPlayer2Wins} p2 wins`);
       // Add game to match
       await Match.addToCollection(relevantMatch.id, 'games').members([game.id]);
       // End match if this game clinches it
       switch (game.result) {
         case 0:
           if (numPlayer1Wins === 1) {
+            console.log('Ending match (player1 wins)');
             relevantMatch = await Match.updateOne(relevantMatch.id)
               .set({
                 endTime: dayjs().valueOf(),
@@ -49,7 +64,8 @@ module.exports = {
           }
           break;
         case 1:
-          if (numPlayer2Wins === 2) {
+          if (numPlayer2Wins === 1) {
+            console.log('Ending match (player2 wins)');
             relevantMatch = await Match.updateOne(relevantMatch)
               .set({
                 endTime: dayjs().valueOf(),

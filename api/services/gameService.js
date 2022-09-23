@@ -57,6 +57,8 @@ function tempGame(game, p0, p1) {
   this.lastEvent = game.lastEvent;
   this.result = game.result;
   this.ranked = game.ranked;
+  this.p0 = game.p0;
+  this.p1 = game.p1;
 }
 module.exports = {
   GameResult,
