@@ -85,7 +85,7 @@
             </v-btn>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="d-flex justify-end mt-8">
           <v-dialog v-model="showCreateGameDialog">
             <template #activator="{ on, attrs }">
               <v-btn
