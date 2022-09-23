@@ -23,7 +23,6 @@ describe('Home - Page Content', () => {
 
   it('Displays headers', () => {
     cy.contains('h1', 'Games');
-    cy.contains('label', 'Game Name');
   });
   it('Displays logo', () => {
     cy.get('#logo');
@@ -243,6 +242,7 @@ describe('Home - Create Game', () => {
   });
   it('Does not create game without game name', () => {
     cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
     // Test DOM
     cy.get('[data-cy=game-list-item]').should('have.length', 0); // No games appear
     // Test Store
