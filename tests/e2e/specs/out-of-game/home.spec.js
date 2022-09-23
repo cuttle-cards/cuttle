@@ -21,10 +21,8 @@ function assertSuccessfulJoin(gameState) {
 describe('Home - Page Content', () => {
   beforeEach(setup);
 
-  it('Displays headers', () => {
+  it('Displays headers and logo', () => {
     cy.contains('h1', 'Games');
-  });
-  it('Displays logo', () => {
     cy.get('#logo');
   });
   it('Play AI and Rules page links work', () => {
