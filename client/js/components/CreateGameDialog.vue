@@ -24,6 +24,7 @@
           label="Game Name"
           outlined
           data-cy="game-name-input"
+          @keydown.enter="submitNewGame"
         />
       </v-card-text>
       <v-card-actions class="d-flex justify-end">

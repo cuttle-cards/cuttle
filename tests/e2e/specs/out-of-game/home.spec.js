@@ -150,8 +150,13 @@ describe('Home - Game List', () => {
 
 describe('Home - Create Game', () => {
   beforeEach(setup);
-  it.skip('Creates a new game by hitting enter in text field', () => {
-    cy.get('[data-cy=create-game-input]').type('test game' + '{enter}');
+  it('Creates a new game by hitting enter in text field', () => {
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('test game{enter}');
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')
