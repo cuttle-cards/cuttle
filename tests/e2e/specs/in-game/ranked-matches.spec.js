@@ -176,7 +176,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(match.games.length).to.eq(5);
       expect(match.games[3].result).to.eq(2);
       // Match is incomplete
-      expect(match.winner).to.eq(this.playerOneId);
+      expect(match.winner.id).to.eq(this.playerOneId);
       expect(match.endTime).to.be.greaterThan(0);
       cy.log('Match data is correct after fifth game', res);
     });
