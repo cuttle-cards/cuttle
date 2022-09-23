@@ -167,10 +167,7 @@ module.exports = {
     const p1Wins = userService.checkWin({ user: game.players[1] });
     if (p0Wins || p1Wins) {
       res.gameOver = true;
-      const gameUpdates = {
-        p0: game.players[0].id,
-        p1: game.players[1].id,
-      };
+      const gameUpdates = {};
       if (p0Wins) {
         res.winner = 0;
         gameUpdates.result = GameResult.P0_WINS;
