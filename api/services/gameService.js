@@ -162,7 +162,7 @@ module.exports = {
       winner: null,
       conceded: false,
     };
-    const { game } = options;
+    let { game } = options;
     const p0Wins = userService.checkWin({ user: game.players[0] });
     const p1Wins = userService.checkWin({ user: game.players[1] });
     if (p0Wins || p1Wins) {
@@ -176,6 +176,10 @@ module.exports = {
         gameUpdates.result = GameResult.P1_WINS;
       }
       await Game.updateOne({ id: game.id }).set(gameUpdates);
+      game = {
+        ...game,
+        ...gameUpdates,
+      };
       if (game.ranked) {
         await sails.helpers.addGameToMatch(game);
       }
