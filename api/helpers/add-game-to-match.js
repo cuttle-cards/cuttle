@@ -15,7 +15,6 @@ module.exports = {
     },
   },
   fn: async ({ game }, exits) => {
-    console.log('\nAdding game to match');
     try {
       const [player1, player2] = game.players;
       let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1.id, player2.id);
@@ -31,8 +30,6 @@ module.exports = {
       let numPlayer1Wins = 0;
       let numPlayer2Wins = 0;
 
-      console.log(`Got ${relevantMatch.games.length} games for match`);
-      console.log(relevantMatch);
 
       for (const priorGame of [game, ...relevantMatch.games]) {
         if (priorGame.result === 0) {
@@ -49,7 +46,6 @@ module.exports = {
           }
         }
       }
-      console.log(`Got ${numPlayer1Wins} p1 wins and ${numPlayer2Wins} p2 wins`);
       // Add game to match
       await Match.addToCollection(relevantMatch.id, 'games').members([game.id]);
 
@@ -67,7 +63,6 @@ module.exports = {
       }
       return exits.success(relevantMatch);
     } catch (err) {
-      console.log(err);
       return exits.error(err);
     }
   },

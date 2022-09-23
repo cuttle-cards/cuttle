@@ -63,7 +63,6 @@ module.exports = {
       }
       return exits.success(currentMatch);
     } catch (err) {
-      console.log(err);
       return exits.error(err);
     }
   },
