@@ -1,9 +1,12 @@
+name: Deploy Storybook to Pages
+
 on:
   push:
     # We should only push on known files that could adjust storybook
     # If there is an outlier, the workflow_dispatch key will let us deploy manually
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-including-paths
     paths:
+      - '.github/workflows/deploy-storybook.yml'
       - '.storybook/**'
       - 'client/**'
       - 'stories/**'
@@ -34,6 +37,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16.17.0"
+          cache: 'npm'
+      - name: install node modules
+        run: npm ci
+      - name: Build Storybook
+        run: npm run build-storybook
       - name: Setup Pages
         uses: actions/configure-pages@v2
       # https://github.com/actions/upload-artifact
@@ -41,7 +52,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload storybook build folder contents
-          path: './storybook-static/*'
+          path: './storybook-static'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
