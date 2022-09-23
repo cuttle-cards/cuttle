@@ -86,14 +86,24 @@ export default {
         cardRank = this.selectedCard.rank;
       }
       // Re-usable move-objects
+      const allMovesAreDisabled = !this.isPlayersTurn || this.frozenId === this.selectedCard.id;
+      const allMovesDisabledExplanation = !this.isPlayersTurn
+        ? "It's not your turn"
+        : 'This card is frozen';
+
+      let disabledText;
+      if (allMovesAreDisabled) {
+        disabledText = allMovesDisabledExplanation;
+      }
+
       // Points
       const pointsDescription = `Gain ${cardRank} point` + (cardRank === 1 ? '' : 's');
       const pointsMove = {
         displayName: 'Points',
         eventName: 'points',
         moveDescription: pointsDescription,
-        disabled: !this.isPlayersTurn,
-        disabledExplanation: "It's not your turn",
+        disabled: allMovesAreDisabled,
+        disabledExplanation: disabledText,
       };
       // Scuttling
       const scuttleDisabled = !this.isPlayersTurn || !this.hasValidScuttleTarget;
@@ -101,16 +111,17 @@ export default {
       if (this.$store.getters.opponent.points.length === 0) {
         scuttleDisabledExplanation = 'Your opponent has no point cards to scuttle';
       }
-      if (!this.isPlayersTurn) {
-        scuttleDisabledExplanation = "It's not your turn";
+      if (allMovesAreDisabled) {
+        scuttleDisabledExplanation = allMovesDisabledExplanation;
       }
       const scuttleMove = {
         displayName: 'Scuttle',
         eventName: 'scuttle',
         moveDescription: 'Scrap a lower point card',
-        disabled: scuttleDisabled,
+        disabled: scuttleDisabled || allMovesAreDisabled,
         disabledExplanation: scuttleDisabledExplanation,
       };
+
       switch (cardRank) {
         case 1:
         case 3:
@@ -126,8 +137,8 @@ export default {
               displayName: 'One-Off',
               eventName: 'oneOff',
               moveDescription: this.selectedCard.ruleText,
-              disabled: !this.isPlayersTurn,
-              disabledExplanation: "It's not your turn",
+              disabled: allMovesAreDisabled,
+              disabledExplanation: disabledText,
             },
           ];
           break;
@@ -152,7 +163,9 @@ export default {
                 );
                 const numTotalTargets = numOpFaceCards + numOpJacks;
                 validTargetExists = numTotalTargets >= 1;
-                if (!validTargetExists) {
+                if (allMovesAreDisabled) {
+                  oneOffDisabledExplanation = allMovesDisabledExplanation;
+                } else if (!validTargetExists) {
                   oneOffDisabled = true;
                   oneOffDisabledExplanation = 'There are no Royals to target';
                 }
@@ -161,7 +174,9 @@ export default {
                 const numValidTargets =
                   this.$store.getters.opponent.points.length +
                   this.$store.getters.opponent.faceCards.length;
-                if (numValidTargets === 0) {
+                if (allMovesAreDisabled) {
+                  oneOffDisabledExplanation = allMovesDisabledExplanation;
+                } else if (numValidTargets === 0) {
                   oneOffDisabled = true;
                   oneOffDisabledExplanation = 'There are no point cards or Royals to target';
                 }
@@ -175,7 +190,7 @@ export default {
               displayName: 'One-Off',
               eventName: 'targetedOneOff',
               moveDescription: this.selectedCard.ruleText,
-              disabled: oneOffDisabled,
+              disabled: oneOffDisabled || allMovesAreDisabled,
               disabledExplanation: oneOffDisabledExplanation,
             },
           ];
@@ -189,8 +204,8 @@ export default {
               displayName: 'Glasses',
               eventName: 'faceCard',
               moveDescription: 'Your opponent plays open handed',
-              disabled: !this.isPlayersTurn,
-              disabledExplanation: "It's not your turn",
+              disabled: allMovesAreDisabled,
+              disabledExplanation: disabledText,
             },
           ];
           break;
@@ -199,17 +214,19 @@ export default {
           break;
         case 11:
           let ableToJack = false;
-          let disabledExplanation = "It's not your turn";
-          if (this.isPlayersTurn) {
+          let disabledExplanation = '';
+          if (this.isPlayersTurn && !allMovesAreDisabled) {
             ableToJack = this.opponentQueenCount === 0;
             disabledExplanation = "You cannot jack your opponent's points while they have a queen";
+          } else {
+            disabledExplanation = disabledText;
           }
           res = [
             {
               displayName: 'Royal',
               eventName: 'jack',
               moveDescription: "Steal an opponent's point card",
-              disabled: !ableToJack,
+              disabled: !ableToJack || allMovesAreDisabled,
               disabledExplanation,
             },
           ];
@@ -221,8 +238,8 @@ export default {
               displayName: 'Royal',
               eventName: 'faceCard',
               moveDescription: this.selectedCard.ruleText,
-              disabled: !this.isPlayersTurn,
-              disabledExplanation: "It's not your turn",
+              disabled: allMovesAreDisabled,
+              disabledExplanation: disabledText,
             },
           ];
           break;
