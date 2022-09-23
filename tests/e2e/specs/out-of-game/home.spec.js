@@ -169,7 +169,7 @@ describe('Home - Create Game', () => {
       });
   });
 
-  it.only('Creates a new unranked game by hitting the submit button', () => {
+  it('Creates a new unranked game by hitting the submit button', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
       .should('be.visible')
