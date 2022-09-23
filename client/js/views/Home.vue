@@ -113,12 +113,8 @@ export default {
   },
   data() {
     return {
-      newGameName: '',
-      newGameIsRanked: false,
       showSnackBar: false,
       snackBarMessage: '',
-      creatingGame: false,
-      showCreateGameDialog: false,
     };
   },
   computed: {
