@@ -86,59 +86,7 @@
           </v-col>
         </v-row>
         <v-row class="d-flex justify-end mt-8">
-          <v-dialog v-model="showCreateGameDialog">
-            <template #activator="{ on, attrs }">
-              <v-btn
-                color="primary"
-                data-cy="create-game-btn"
-                rounded
-                v-bind="attrs"
-                elevation="8"
-                v-on="on"
-              >
-                + Create Game
-              </v-btn>
-            </template>
-            <v-card data-cy="create-game-dialog">
-              <v-card-title>
-                <h2>Create Game</h2>
-              </v-card-title>
-              <v-card-text>
-                <v-switch
-                  v-model="newGameIsRanked"
-                  label="Ranked"
-                  data-cy="create-game-ranked-switch"
-                />
-                <v-text-field
-                  v-model="newGameName"
-                  :disabled="creatingGame"
-                  label="Game Name"
-                  outlined
-                  data-cy="game-name-input"
-                />
-              </v-card-text>
-              <v-card-actions class="d-flex justify-end">
-                <v-btn
-                  data-cy="cancel-create-game"
-                  :disabled="creatingGame"
-                  text
-                  color="primary"
-                  @click="cancelCreateGame"
-                >
-                  Cancel
-                </v-btn>
-                <v-btn
-                  data-cy="submit-create-game"
-                  :loading="creatingGame"
-                  color="primary"
-                  depressed
-                  @click="submitNewGame"
-                >
-                  Create Game
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <create-game-dialog @error="handleError" />
         </v-row>
       </div>
     </div>
@@ -155,11 +103,13 @@
 </template>
 <script>
 import GameListItem from '@/components/GameListItem.vue';
+import CreateGameDialog from '../components/CreateGameDialog.vue';
 
 export default {
   name: 'Home',
   components: {
     GameListItem,
+    CreateGameDialog,
   },
   data() {
     return {
