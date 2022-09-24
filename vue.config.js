@@ -35,7 +35,28 @@ module.exports = {
       : {}),
     resolve: {
       alias: {
+        _: path.resolve(__dirname),
         '@': path.resolve(__dirname, 'client/js'),
+      },
+    },
+  },
+
+  // In order for the sails cookie to be set on the client when browsing in dev mode, we need
+  // to proxy requests to the server
+  // https://webpack.js.org/configuration/dev-server/
+  devServer: {
+    proxy: {
+      '/game': {
+        target: 'http://localhost:1337',
+        changeOrigin: true,
+      },
+      '/user': {
+        target: 'http://localhost:1337',
+        changeOrigin: true,
+      },
+      '/test': {
+        target: 'http://localhost:1337',
+        changeOrigin: true,
       },
     },
   },

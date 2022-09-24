@@ -40,6 +40,7 @@
       :selected-card="selectedCard || cardSelectedFromDeck"
       :is-players-turn="isPlayersTurn"
       :opponent-queen-count="opponentQueenCount"
+      :frozen-id="player.frozenId"
       @points="$emit('points')"
       @faceCard="$emit('face-card')"
       @oneOff="$emit('one-off')"
@@ -69,16 +70,10 @@ export default {
     selectedCard: {
       type: Object,
       default: null,
-      validator: (value) => {
-        return typeof value === Object || value === null;
-      },
     },
     cardSelectedFromDeck: {
       type: Object,
       default: null,
-      validator: (value) => {
-        return typeof value === Object || value === null;
-      },
     },
   },
   computed: {
@@ -97,6 +92,7 @@ export default {
       'opponentQueenCount',
       'opponent',
       'hasGlassesEight',
+      'player',
     ]),
     waitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';

@@ -901,11 +901,11 @@ describe('Playing NINES', () => {
 
     it('Plays a nine as a ONE-OFF, make sure that the bounced card is playable later', () => {
       /*
-			1). P0 plays a 9, targeting an in-play Queen
-			2). P1 plays a 6's one-off, removing some cards
-			3). P0 plays a Jack, targeting an in-play 10
-			4). P1 can replay their bounced Queen
-			 */
+      1). P0 plays a 9, targeting an in-play Queen
+      2). P1 plays a 6's one-off, removing some cards
+      3). P0 plays a Jack, targeting an in-play 10
+      4). P1 can replay their bounced Queen
+       */
 
       // Initial state
       cy.loadGameFixture({
@@ -992,12 +992,12 @@ describe('Playing NINES', () => {
 
     it('Plays a nine as a ONE-OFF, make sure that the bounced card is playable even if there is countering', () => {
       /*
-			1). P0 plays 9 one-off, targeting P1's Queen
-			2). P1 plays 6's one-off
-			3). P0 counters and it resolves
-			4). P0 plays their Jack, targeting P1's 10
-			5). P1 plays their Queen again (it should no longer be frozen)
-			 */
+      1). P0 plays 9 one-off, targeting P1's Queen
+      2). P1 plays 6's one-off
+      3). P0 counters and it resolves
+      4). P0 plays their Jack, targeting P1's 10
+      5). P1 plays their Queen again (it should no longer be frozen)
+       */
 
       // Initial state
       cy.loadGameFixture({
@@ -1088,6 +1088,66 @@ describe('Playing NINES', () => {
       setupGameAsP1();
     });
 
+    it('Disables playing a frozen number card until the following turn', () => {
+      cy.loadGameFixture({
+        p0Hand: [Card.NINE_OF_CLUBS],
+        p0Points: [Card.THREE_OF_CLUBS],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [],
+        topCard: Card.TEN_OF_CLUBS,
+      });
+
+      cy.get('[data-player-hand-card]').should('have.length', 0);
+      cy.log('Loaded fixture');
+
+      // opponent plays nine to return seven to player's hand
+      cy.playTargetedOneOffOpponent(Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS, 'point');
+
+      // Player resolves
+      cy.get('#cannot-counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
+
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [Card.THREE_OF_CLUBS],
+        p0FaceCards: [],
+        p1Hand: [Card.SEVEN_OF_CLUBS],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      // Card should have the frozen state shown visually
+      cy.get('[data-player-hand-card=7-0]').should('have.class', 'frozen');
+      // Player attempts to play the returned seven immediately for points
+      cy.get('[data-player-hand-card=7-0]').click();
+      // Card overlay should have the frozen state shown visually
+      cy.get('[data-player-overlay-card=7-0]').should('have.class', 'frozen');
+      // Frozen move choice cards should be disabled and display frozen text.
+      cy.get('[data-move-choice=points]')
+        .should('have.class', 'v-card--disabled')
+        .contains('This card is frozen')
+        .click({ force: true }); //Break out into separate test case
+      assertSnackbarError(SnackBarError.FROZEN_CARD);
+      cy.log('Correctly prevented player from re-playing frozen jack next turn');
+      // Player attempts to play the returned seven immediately for scuttle
+      cy.get('[data-player-hand-card=7-0]').click();
+      // Card overlay should have the frozen state shown visually
+      cy.get('[data-player-overlay-card=7-0]').should('have.class', 'frozen');
+      // Frozen move choice cards should be disabled and display frozen text.
+      cy.get('[data-move-choice=scuttle]')
+        .should('have.class', 'v-card--disabled')
+        .contains('This card is frozen')
+        .click({ force: true }); //Break out into separate test case
+      // Player attempts to scuttle lower point card
+      cy.get('#player-hand-targeting').should('be.visible');
+      cy.get('[data-opponent-point-card=3-0]').click();
+      assertSnackbarError(SnackBarError.FROZEN_CARD);
+    });
+
     it('Opponent plays a NINE on a jack to steal back point card', () => {
       cy.loadGameFixture({
         p0Hand: [Card.ACE_OF_SPADES, Card.NINE_OF_CLUBS, Card.ACE_OF_DIAMONDS],
@@ -1136,10 +1196,21 @@ describe('Playing NINES', () => {
         p1FaceCards: [],
         scrap: [Card.NINE_OF_CLUBS],
       });
+      // Card should have the frozen state shown visually
+      cy.get('[data-player-hand-card=11-0]').should('have.class', 'frozen');
 
       // Player attempts plays the returned jack immediately
       cy.get('[data-player-hand-card=11-0]').click();
-      cy.get('[data-move-choice=jack]').click();
+
+      // Card overlay should have the frozen state shown visually
+      cy.get('[data-player-overlay-card=11-0]').should('have.class', 'frozen');
+
+      // Frozen move choice cards should be disabled and display frozen text.
+      cy.get('[data-move-choice=jack]')
+        .should('have.class', 'v-card--disabled')
+        .contains('This card is frozen')
+        .click({ force: true }); //Break out into separate test case
+
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=1-3]').click();
       assertSnackbarError(SnackBarError.FROZEN_CARD);

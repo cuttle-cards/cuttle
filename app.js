@@ -18,6 +18,8 @@
  * `node app.js --silent --port=80 --prod`
  */
 
+const { isProd } = require('./utils/config-utils.js');
+
 // Ensure we're in the project directory, so relative paths work as expected
 // no matter where we actually lift from.
 process.chdir(__dirname);
@@ -59,6 +61,15 @@ process.chdir(__dirname);
         return {};
       };
     }
+  }
+
+  // In dev mode, ensure unhandles promises log to the console with the full stack
+  // See https://stackoverflow.com/a/46661020
+  if (!isProd) {
+    process.on('unhandledRejection', (err) => {
+      console.error(err);
+      throw err;
+    });
   }
 
   // Start server
