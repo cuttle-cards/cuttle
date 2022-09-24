@@ -25,6 +25,8 @@ module.exports = {
         return exits.error(new Error('Could not add game to match'));
       }
       if (relevantMatch.endTime || relevantMatch.winner) {
+        // Set game back to unranked if the player match already finished
+        await Game.updateOne(game.id).set({ ranked: false });
         return exits.success(null);
       }
       if (!relevantMatch.games) {
