@@ -399,7 +399,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.visit('/');
 
     // Set up season
-    const [_clubsSeason, diamondsSeason] = seasonFixtures;
+    const [, diamondsSeason] = seasonFixtures;
     diamondsSeason.startTime = dayjs().subtract(2, 'week').subtract(1, 'day').valueOf();
     diamondsSeason.endTime = dayjs().add(11, 'weeks').valueOf();
     cy.loadSeasonFixture([diamondsSeason]);
@@ -437,7 +437,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // There should now be one match for the two players
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
-      const [_oldMatch, currentMatch] = res.body;
+      const [, currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
@@ -467,7 +467,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // The match for these two players should now have two games
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
-      const [_oldMatch, currentMatch] = res.body;
+      const [, currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.games.length).to.eq(2);
@@ -498,7 +498,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
-      const [_oldMatch, currentMatch] = res.body;
+      const [, currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
@@ -539,7 +539,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
-      const [_oldMatch, currentMatch] = res.body;
+      const [, currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
@@ -573,7 +573,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
-      const [_oldMatch, currentMatch] = res.body;
+      const [, currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
