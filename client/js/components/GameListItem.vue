@@ -19,11 +19,14 @@
         <v-btn
           color="primary"
           rounded
+          outlined
+          min-width="200"
           :disabled="!status"
           :loading="joiningGame"
           :small="!$vuetify.breakpoint.lg"
           @click="subscribeToGame"
         >
+          <v-icon v-if="isRanked" class="mr-4" medium>mdi-trophy</v-icon>
           {{ buttonText }}
         </v-btn>
       </v-col>
