@@ -576,6 +576,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
 
+    // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(1);
       const [match] = res.body;
@@ -588,6 +589,17 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(match.winner.id).to.eq(this.playerOneId);
       expect(match.endTime).to.be.greaterThan(0);
       cy.log('Match data is correctly unaffected after sixth game', res);
+
+      // Confirm game was set to unranked
+      cy.request('http://localhost:1337/game').then((res) => {
+        // Sort games by updatedAt asc
+        const games = res.body.sort((game1, game2) => game1.updatedAt - game2.updatedAt);
+        expect(games.length).to.eq(6, 'Expected 6 games');
+        expect(games[5].ranked).to.eq(
+          false,
+          'Expected last game to be set to unranked after completion'
+        );
+      });
     });
   });
 
