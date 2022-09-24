@@ -20,6 +20,7 @@
         <v-switch v-model="isRanked" label="Ranked" data-cy="create-game-ranked-switch" />
         <v-text-field
           v-model="gameName"
+          autofocus
           :disabled="loading"
           label="Game Name"
           outlined
