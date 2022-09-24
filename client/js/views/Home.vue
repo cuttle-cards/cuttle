@@ -19,6 +19,7 @@
                   :game-id="game.id"
                   :status="game.status"
                   :num-players="game.numPlayers"
+                  :is-ranked="game.ranked"
                 />
               </div>
             </div>

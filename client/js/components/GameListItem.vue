@@ -24,7 +24,7 @@
           :small="!$vuetify.breakpoint.lg"
           @click="subscribeToGame"
         >
-          JOIN
+          {{ buttonText }}
         </v-btn>
       </v-col>
     </v-row>
@@ -60,6 +60,10 @@ export default {
       type: Number,
       required: true,
     },
+    isRanked: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -72,6 +76,9 @@ export default {
     },
     readyText() {
       return `${this.numPlayers} / 2`;
+    },
+    buttonText() {
+      return this.isRanked ? 'Play Ranked' : 'Play';
     },
   },
   methods: {
