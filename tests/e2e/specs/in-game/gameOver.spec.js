@@ -409,7 +409,7 @@ describe('Creating And Updating Ranked Matches', () => {
     diamondsSeason.endTime = dayjs().add(11, 'weeks').valueOf();
     cy.loadSeasonFixture([diamondsSeason]);
   });
-  it('Creates a match when two players play a ranked game for the first time this week', function () {
+  it.only('Creates a match when two players play a ranked game for the first time this week', function () {
     // There should be no matches initially
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(0);
@@ -569,6 +569,25 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(match.winner.id).to.eq(this.playerOneId);
       expect(match.endTime).to.be.greaterThan(0);
       cy.log('Match data is correct after fifth game', res);
+    });
+    // 6th game - should set back to unranked and not add to match
+    setupGameAsP0(true, true);
+    cy.concedeOpponent();
+    cy.get('[data-cy=gameover-go-home]').click();
+    cy.url().should('not.include', '/game');
+
+    cy.request('http://localhost:1337/match').then((res) => {
+      expect(res.body.length).to.eq(1);
+      const [match] = res.body;
+      expect(match.player1.id).to.eq(this.playerOneId);
+      expect(match.player2.id).to.eq(this.playerTwoId);
+      expect(match.startTime).to.be.greaterThan(0);
+      expect(match.games.length).to.eq(5);
+      expect(match.games[3].result).to.eq(2);
+      // Match is incomplete
+      expect(match.winner.id).to.eq(this.playerOneId);
+      expect(match.endTime).to.be.greaterThan(0);
+      cy.log('Match data is correctly unaffected after sixth game', res);
     });
   });
 
