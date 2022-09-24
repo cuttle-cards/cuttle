@@ -16,10 +16,13 @@ module.exports = {
   },
   fn: async ({ game }, exits) => {
     try {
+      if (!game.ranked) {
+        return exits.success();
+      }
       const [player1, player2] = game.players;
       let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1.id, player2.id);
       if (!relevantMatch) {
-        return exits.error('Could not add game to match');
+        return exits.error(new Error('Could not add game to match'));
       }
       if (relevantMatch.endTime || relevantMatch.winner) {
         return exits.success(null);
@@ -29,7 +32,6 @@ module.exports = {
       }
       let numPlayer1Wins = 0;
       let numPlayer2Wins = 0;
-
 
       for (const priorGame of [game, ...relevantMatch.games]) {
         if (priorGame.result === 0) {

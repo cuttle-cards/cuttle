@@ -30,7 +30,7 @@ module.exports = {
       });
       // FIXME: Handle missing season gracefully
       if (!currentSeason) {
-        return exits.success(null);
+        return exits.success();
       }
       // Find relevant match between specified players for current week
       const seasonStartTime = dayjs(currentSeason.startTime);
