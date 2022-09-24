@@ -27,7 +27,7 @@ module.exports = {
       if (relevantMatch.endTime || relevantMatch.winner) {
         // Set game back to unranked if the player match already finished
         await Game.updateOne(game.id).set({ ranked: false });
-        return exits.success(null);
+        return exits.success();
       }
       if (!relevantMatch.games) {
         relevantMatch.games = [];
