@@ -109,25 +109,6 @@ export default {
     await this.$store.dispatch('requestGameList');
   },
   methods: {
-    submitNewGame() {
-      this.creatingGame = true;
-      this.$store
-        .dispatch('requestCreateGame', {
-          gameName: this.newGameName,
-          ranked: this.newGameIsRanked,
-        })
-        .then(() => {
-          this.newGameName = '';
-          this.creatingGame = false;
-          this.showCreateGameDialog = false;
-        })
-        .catch(this.handleError);
-    },
-    cancelCreateGame() {
-      this.newGameName = '';
-      this.creatingGame = false;
-      this.showCreateGameDialog = false;
-    },
     clearSnackBar() {
       this.snackMessage = '';
       this.showSnackBar = false;
