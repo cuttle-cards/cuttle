@@ -1,7 +1,7 @@
 var gameAPI = sails.hooks['customgamehook'];
 
 module.exports = function (req, res) {
-  const { gameName, ranked } = req.body;
+  const { gameName, ranked = false } = req.body;
   if (req.body.gameName) {
     gameAPI
       .createGame(gameName, ranked)
