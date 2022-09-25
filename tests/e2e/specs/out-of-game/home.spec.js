@@ -77,7 +77,7 @@ describe('Home - Game List', () => {
         expect(gameState.id).to.eq(null);
       });
     cy.createGamePlayer({ gameName: 'Test Game', ranked: false });
-    cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'JOIN').click();
+    cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
     cy.hash().should('contain', '#/lobby');
     cy.window()
       .its('cuttle.app.$store.state.game')
@@ -95,7 +95,7 @@ describe('Home - Game List', () => {
       cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);
       // Our user then joins through UI
-      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'JOIN').click();
+      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
       // Should have redirected to lobby page and updated store
       cy.hash().should('contain', '#/lobby');
       cy.window()
@@ -113,7 +113,7 @@ describe('Home - Game List', () => {
      */
     cy.createGamePlayer({ gameName: 'Test Game', ranked: false }).then((gameData) => {
       // Test that JOIN button starts enabled
-      cy.contains('button.v-btn', 'JOIN').should('not.be.disabled');
+      cy.contains('button.v-btn', 'Play').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
       cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);
@@ -121,7 +121,7 @@ describe('Home - Game List', () => {
       cy.subscribeOpponent(gameData.gameId);
 
       // Test that join button is now disabled
-      cy.contains('button.v-btn', 'JOIN').should('be.disabled');
+      cy.contains('button.v-btn', 'Play').should('be.disabled');
     });
   });
 
@@ -132,7 +132,7 @@ describe('Home - Game List', () => {
      */
     cy.createGamePlayer({ gameName: 'Test Game', ranked: false }).then((gameData) => {
       // Test that JOIN button starts enabled
-      cy.contains('button.v-btn', 'JOIN').should('not.be.disabled');
+      cy.contains('button.v-btn', 'Play').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
       cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);
@@ -140,10 +140,10 @@ describe('Home - Game List', () => {
       cy.subscribeOpponent(gameData.gameId);
 
       // Test that join button is now disabled
-      cy.contains('button.v-btn', 'JOIN').should('be.disabled');
+      cy.contains('button.v-btn', 'Play').should('be.disabled');
 
       cy.leaveLobbyOpponent(gameData.gameId);
-      cy.contains('button.v-btn', 'JOIN').should('not.be.disabled');
+      cy.contains('button.v-btn', 'Play').should('not.be.disabled');
     });
   });
 });
