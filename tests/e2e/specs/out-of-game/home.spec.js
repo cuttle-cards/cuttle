@@ -216,7 +216,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
     // Test store
     cy.window()
-      .its('app.$store.state.gameList.games')
+      .its('cuttle.app.$store.state.gameList.games')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(
