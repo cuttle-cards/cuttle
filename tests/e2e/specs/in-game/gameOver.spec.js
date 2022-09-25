@@ -551,7 +551,48 @@ describe('Creating And Updating Ranked Matches', () => {
       cy.log('Match data is correct after fourth game', res);
     });
 
-    // 5th Game: player wins via points and wins match
+    // 5th Game: UNRANKED - does not affect match
+    setupGameAsP0(true, false);
+    cy.loadGameFixture({
+      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Fixture loaded');
+
+    cy.deleteDeck();
+    cy.log('Drawing last two cards');
+    cy.get('#deck').should('contain', '(2)').click();
+    cy.drawCardOpponent();
+    cy.log('Deck empty');
+    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.passOpponent();
+    cy.get('#turn-indicator').contains('YOUR TURN');
+    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('[data-cy=gameover-go-home]').click();
+    cy.url().should('not.include', '/game');
+
+    // Validate match data
+    cy.request('http://localhost:1337/match').then((res) => {
+      expect(res.body.length).to.eq(2);
+      const [, currentMatch] = res.body;
+      expect(currentMatch.player1.id).to.eq(this.playerOneId);
+      expect(currentMatch.player2.id).to.eq(this.playerTwoId);
+      expect(currentMatch.startTime).to.be.greaterThan(0);
+      expect(currentMatch.games.length).to.eq(4);
+      expect(currentMatch.games[3].result).to.eq(2);
+      // Match is incomplete
+      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.winner).to.eq(null);
+      cy.log('Match data is correct after fourth game', res);
+    });
+
+    // 6th Game: player wins via points and wins match
     setupGameAsP0(true, true);
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES],
@@ -584,7 +625,8 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.endTime).to.be.greaterThan(0);
       cy.log('Match data is correct after fifth game', res);
     });
-    // 6th game - should set back to unranked and not add to match
+
+    // 7th game - should set back to unranked and not add to match
     setupGameAsP0(true, true);
     cy.concedeOpponent();
     cy.get('[data-cy=gameover-go-home]').click();
@@ -611,14 +653,12 @@ describe('Creating And Updating Ranked Matches', () => {
       cy.request('http://localhost:1337/game').then((res) => {
         // Sort games by updatedAt asc
         const games = res.body.sort((game1, game2) => game1.updatedAt - game2.updatedAt);
-        expect(games.length).to.eq(6, 'Expected 6 games');
-        expect(games[5].ranked).to.eq(
+        expect(games.length).to.eq(7, 'Expected 6 games');
+        expect(games[6].ranked).to.eq(
           false,
           'Expected last game to be set to unranked after completion'
         );
       });
     });
   });
-
-  it('Does not create or update matches for unranked games', () => {});
 });
