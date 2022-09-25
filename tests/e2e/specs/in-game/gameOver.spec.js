@@ -7,7 +7,7 @@ import {
   opponentUsername,
 } from '../../support/helpers';
 import { seasonFixtures } from '../../fixtures/statsFixtures';
-import { playerOne, playerTwo } from '../../fixtures/userFixtures';
+import { playerOne, playerTwo, playerThree } from '../../fixtures/userFixtures';
 
 const dayjs = require('dayjs');
 
@@ -405,11 +405,13 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.loadSeasonFixture([diamondsSeason]);
     // Sign up to players and store their id's for comparison to match data
     cy.signupOpponent(playerOne.username, playerOne.password).as('playerOneId');
+    cy.signupOpponent(playerThree.username, playerThree.password).as('playerThreeId');
+    // Opponent will be player 2 (the last one we log in as)
     cy.signupOpponent(playerTwo.username, playerTwo.password)
       .as('playerTwoId')
       .then(function () {
         // Create match from last week, which current games don't count towards
-        const matchFixture = {
+        const oldMatchBetweenPlayers = {
           player1: this.playerOneId,
           player2: this.playerTwoId,
           winner: this.playerOneId,
@@ -417,16 +419,24 @@ describe('Creating And Updating Ranked Matches', () => {
           endTime: dayjs().subtract(1, 'week').subtract(1, 'day').valueOf(),
         };
 
-        cy.loadMatchFixtures([matchFixture]);
+        const currentMatchWithDifferentOpponent = {
+          player1: this.playerOneId,
+          player2: this.playerThreeId,
+          winner: null,
+          startTime: dayjs().subtract(1, 'hour').valueOf(),
+          endTime: dayjs().subtract(1, 'hour').valueOf(),
+        };
+
+        cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);
       });
     // Log in as playerOne
     cy.loginPlayer(playerOne.username, playerOne.password);
     setupGameAsP0(true, true);
   });
   it.only('Creates a match when two players play a ranked game for the first time this week', function () {
-    // There should be one match initially (from last week)
+    // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(1);
+      expect(res.body.length).to.eq(2);
     });
 
     // 1st game: Opponent concedes
@@ -436,8 +446,8 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // There should now be one match for the two players
     cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(2);
-      const [, currentMatch] = res.body;
+      expect(res.body.length).to.eq(3);
+      const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
@@ -446,6 +456,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.games[0].result).to.eq(0); // P0 should have won the first game
       cy.log('Match data is correct after first game', res.body);
     });
+
     // 2nd game: Player is now p0 and loses by points
     setupGameAsP1(true, true);
     cy.loadGameFixture({
@@ -466,8 +477,8 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // The match for these two players should now have two games
     cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(2);
-      const [, currentMatch] = res.body;
+      expect(res.body.length).to.eq(3);
+      const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.games.length).to.eq(2);
@@ -497,8 +508,8 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(2);
-      const [, currentMatch] = res.body;
+      expect(res.body.length).to.eq(3);
+      const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
@@ -538,8 +549,8 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(2);
-      const [, currentMatch] = res.body;
+      expect(res.body.length).to.eq(3);
+      const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
@@ -579,8 +590,8 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(2);
-      const [, currentMatch] = res.body;
+      expect(res.body.length).to.eq(3);
+      const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
@@ -613,8 +624,8 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(2);
-      const [, currentMatch] = res.body;
+      expect(res.body.length).to.eq(3);
+      const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
@@ -634,8 +645,8 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // Validate match data
     cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(2);
-      const [oldMatch, currentMatch] = res.body;
+      expect(res.body.length).to.eq(3);
+      const [oldMatch, , currentMatch] = res.body;
 
       // Expect old match to have no games associated with it
       expect(oldMatch.games.length).to.eq(0);
