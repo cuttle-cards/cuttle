@@ -58,7 +58,7 @@ export default {
         });
       });
     },
-    requestCreateGame(context, { gameName, ranked }) {
+    requestCreateGame(context, { gameName, ranked = false }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/create',
