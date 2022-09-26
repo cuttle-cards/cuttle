@@ -44,7 +44,7 @@ jobs:
       - name: install node modules
         run: npm ci
       - name: Build Storybook
-        run: npm run build-storybook
+        run: npm run storybook:build
       - name: Setup Pages
         uses: actions/configure-pages@v2
       # https://github.com/actions/upload-artifact
