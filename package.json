@@ -38,7 +38,7 @@
     "sails-postgresql": "4.0.0",
     "sails.io.js": "1.2.1",
     "socket.io-client": "2.3.0",
-    "vue": "2.6.11",
+    "vue": "2.7.10",
     "vue-router": "3.2.0",
     "vuetify": "2.4.3",
     "vuex": "3.5.1"
@@ -82,7 +82,7 @@
     "sass": "1.32",
     "sass-loader": "8.0.0",
     "vue-cli-plugin-vuetify": "2.0.7",
-    "vue-template-compiler": "2.6.11",
+    "vue-template-compiler": "2.7.10",
     "vuetify-loader": "1.7.3"
   },
   "engines": {
