@@ -53,17 +53,17 @@ module.exports = {
       // Add game to match
       await Match.addToCollection(relevantMatch.id, 'games').members([game.id]);
 
-    let winner;
-    if (numPlayer1Wins >= 2) {
-      winner = game.players[0].id;
-    } else if (numPlayer2Wins >= 2) {
-      winner = game.players[1].id;
-    }
+      let winner;
+      if (numPlayer1Wins >= 2) {
+        winner = game.players[0].id;
+      } else if (numPlayer2Wins >= 2) {
+        winner = game.players[1].id;
+      }
 
-    relevantMatch = await Match.updateOne(relevantMatch).set({
-      endTime: dayjs().valueOf(),
-      winner,
-    });
+      relevantMatch = await Match.updateOne(relevantMatch).set({
+        endTime: dayjs().valueOf(),
+        winner,
+      });
       return exits.success(relevantMatch);
     } catch (err) {
       return exits.error(err);
