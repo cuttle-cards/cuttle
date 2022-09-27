@@ -3,6 +3,8 @@ const sharedTestRules = {
 };
 
 module.exports = {
+  root: true,
+
   env: {
     browser: true,
     node: true,
@@ -10,8 +12,6 @@ module.exports = {
   },
 
   extends: [
-    'plugin:vue/recommended',
-    'plugin:vue/essential',
     'eslint:recommended',
     'plugin:prettier/recommended',
   ],
@@ -21,7 +21,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
-    parser: '@babel/eslint-parser',
+    parser: '@typescript-eslint/parser',
     requireConfigFile: false,
   },
 
@@ -57,6 +57,21 @@ module.exports = {
   },
 
   overrides: [
+    // Vue specific rules
+    {
+      files: ['**/client/**/*.{j,t}s?(x)'],
+      extends: [
+        'plugin:vue/recommended',
+        'plugin:vue/essential',
+        'eslint:recommended',
+        'plugin:prettier/recommended',
+        '@vue/typescript'
+      ],
+      rules: {
+        'no-undef': 'warn',
+        'no-prototype-builtins': 'warn',
+      },
+    },
     // Storybook specific rules
     {
       files: ['**/(.storybook|stories)/**/*.{j,t}s?(x)'],
@@ -101,6 +116,4 @@ module.exports = {
       rules: sharedTestRules,
     },
   ],
-
-  root: true,
 };
