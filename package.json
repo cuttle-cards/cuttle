@@ -26,20 +26,21 @@
     "@storybook/manager-webpack4": "6.5.12",
     "@storybook/testing-library": "0.0.13",
     "@storybook/vue": "6.5.12",
-    "@vitejs/plugin-vue": "3.1.0",
     "@vue/devtools": "6.1.4",
     "concurrently": "7.2.2",
     "cypress": "9.7.0",
     "eslint": "8.24.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-jest": "27.0.4",
-    "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-storybook": "0.6.4",
     "eslint-plugin-vue": "9.5.1",
     "jest": "27.1.0",
     "prettier": "2.7.1",
     "vite": "3.1.3",
-    "vite-plugin-vue2": "2.0.2"
+    "vite-plugin-vue2": "2.0.2",
+    "vue-loader": "^17.0.0",
+    "vue-template-compiler": "^2.7.10"
   },
   "engines": {
     "node": "16.17.0"
@@ -52,6 +53,8 @@
     "e2e:mockprod": "CUTTLE_ENV=production npm run e2e:server",
     "e2e:server": "VUE_APP_API_URL=http://localhost:1337 npx cypress run --config-file tests/cypress.config.js",
     "e2e:server:gui": "VUE_APP_API_URL=http://localhost:1337 npx cypress open --config-file tests/cypress.config.js",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix .",
+    "lint:fix": "prettier . --write",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook"
   }

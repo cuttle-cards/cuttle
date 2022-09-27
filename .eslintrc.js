@@ -3,35 +3,15 @@ const sharedTestRules = {
 };
 
 module.exports = {
-  root: true,
-
   env: {
-    browser: true,
     node: true,
-    es6: true,
   },
-
   extends: [
     'eslint:recommended',
-    'plugin:prettier/recommended',
+    'prettier',
   ],
-
   plugins: ['cypress', 'jest', 'prettier'],
-
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
-    parser: '@typescript-eslint/parser',
-    requireConfigFile: false,
-  },
-
-  globals: {
-    _: 'readonly',
-    sails: 'readonly',
-  },
-
   ignorePatterns: ['/node_modules/*', '/assets/*'],
-
   rules: {
     'prettier/prettier': 'error',
     'max-len': [
@@ -55,17 +35,12 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },
-
   overrides: [
     // Vue specific rules
     {
       files: ['**/client/**/*.{j,t}s?(x)'],
       extends: [
         'plugin:vue/recommended',
-        'plugin:vue/essential',
-        'eslint:recommended',
-        'plugin:prettier/recommended',
-        '@vue/typescript'
       ],
       rules: {
         'no-undef': 'warn',
@@ -84,6 +59,10 @@ module.exports = {
     // Sails specific rules
     {
       files: ['**/api/**/*.{j,t}s?(x)'],
+        globals: {
+          _: true,
+          sails: true,
+        },
       rules: {
         'no-undef': 'warn',
         'no-prototype-builtins': 'warn',
@@ -116,4 +95,4 @@ module.exports = {
       rules: sharedTestRules,
     },
   ],
-};
+}
