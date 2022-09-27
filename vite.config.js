@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 
 // vite.config.js
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue2';
+import vue from '@vitejs/plugin-vue';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,7 +14,7 @@ export default defineConfig({
   resolve: {
     alias: {
       _: resolve(__dirname),
-      '@': resolve(__dirname, 'client/js'),
+      '@': resolve(__dirname, './src'),
     },
   },
   server: {

@@ -401,8 +401,8 @@ import GameOverlays from '@/components/GameView/GameOverlays.vue';
 import ScoreGoalToolTip from '@/components/GameView/ScoreGoalToolTip.vue';
 import ReauthenticateDialog from '@/components/GameView/ReauthenticateDialog.vue';
 import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay.vue';
-import ScrapDialog from '@/components/GameView/ScrapDialog';
-import UsernameToolTip from '@/components/GameView/UsernameToolTip';
+import ScrapDialog from '@/components/GameView/ScrapDialog.vue';
+import UsernameToolTip from '@/components/GameView/UsernameToolTip.vue';
 
 export default {
   name: 'GameView',

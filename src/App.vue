@@ -1,18 +1,19 @@
 <template>
   <v-app id="app">
-    <navigation-drawer />
+    <h1>Hi Vite :)</h1>
+    <!-- <navigation-drawer /> -->
     <v-main>
-      <router-view />
+      <!-- <router-view /> -->
     </v-main>
   </v-app>
 </template>
 
 <script>
-import NavigationDrawer from './components/NavigationDrawer.vue';
+// import NavigationDrawer from '@/components/NavigationDrawer.vue';
 
 export default {
   components: {
-    NavigationDrawer,
+    // NavigationDrawer,
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <div align="center">
 	<p>
 		<a href="https://cuttle.cards" title="Cuttle Website">
-			<img src="./client/js/img/logo.png" width="300" style="max-width:300px;height:auto;" />
+			<img src="./src/img/logo.png" width="300" style="max-width:300px;height:auto;" />
 		</a>
 	</p>
 	<p>

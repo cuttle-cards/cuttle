@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import RulesDialog from '../RulesDialog.vue';
+import RulesDialog from '@/components/RulesDialog.vue';
 export default {
   name: 'GameMenu',
   components: { RulesDialog },

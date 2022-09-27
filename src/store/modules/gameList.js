@@ -1,4 +1,4 @@
-import { io } from '../../plugins/sails.js';
+import { io } from '@/plugins/sails.js';
 let _ = require('lodash');
 
 class GameSummary {

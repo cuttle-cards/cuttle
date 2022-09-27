@@ -1,4 +1,4 @@
-import { io } from '../../plugins/sails.js';
+import { io } from '@/plugins/sails.js';
 
 var _ = require('lodash');
 function resetState() {

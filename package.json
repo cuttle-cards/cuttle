@@ -28,7 +28,7 @@
     "@storybook/manager-webpack4": "6.5.12",
     "@storybook/testing-library": "0.0.13",
     "@storybook/vue": "6.5.12",
-    "@vitejs/plugin-vue2": "^2.0.0",
+    "@vitejs/plugin-vue": "^3.1.0",
     "cross-env": "^7.0.3",
     "cypress": "9.7.0",
     "cypress-fail-fast": "^5.0.1",
