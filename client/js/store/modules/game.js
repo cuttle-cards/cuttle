@@ -166,12 +166,10 @@ export default {
       if (Object.hasOwnProperty.call(newGame, 'p0Ready')) state.p0Ready = newGame.p0Ready;
       if (Object.hasOwnProperty.call(newGame, 'p1Ready')) state.p1Ready = newGame.p1Ready;
       if (Object.hasOwnProperty.call(newGame, 'passes')) state.passes = newGame.passes;
-      if (Object.hasOwnProperty.call(newGame, 'players'))
-        state.players = _.cloneDeep(newGame.players);
+      if (Object.hasOwnProperty.call(newGame, 'players')) state.players = _.cloneDeep(newGame.players);
       if (Object.hasOwnProperty.call(newGame, 'twos')) state.twos = _.cloneDeep(newGame.twos);
 
-      if (Object.hasOwnProperty.call(newGame, 'topCard'))
-        state.topCard = _.cloneDeep(newGame.topCard);
+      if (Object.hasOwnProperty.call(newGame, 'topCard')) state.topCard = _.cloneDeep(newGame.topCard);
       else state.topCard = null;
 
       if (Object.hasOwnProperty.call(newGame, 'secondCard'))
@@ -261,7 +259,7 @@ export default {
       // Set my pNum if it is null
       if (context.state.myPNum === null) {
         let myPNum = context.state.players.findIndex(
-          (player) => player.username === context.rootState.auth.username
+          (player) => player.username === context.rootState.auth.username,
         );
         if (myPNum === -1) {
           myPNum = null;
@@ -322,7 +320,7 @@ export default {
               return resolve();
             }
             return reject(new Error('error subscribing'));
-          }
+          },
         );
       });
     },
@@ -377,7 +375,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -390,7 +388,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -410,7 +408,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -424,7 +422,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       }).then(() => {
         context.commit('setWaitingForOpponentToCounter', true);
@@ -444,7 +442,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       }).then(() => {
         context.commit('setWaitingForOpponentToCounter', true);
@@ -461,7 +459,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -497,7 +495,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -512,7 +510,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       }).then(() => {
         context.commit('setWaitingForOpponentToCounter', false);
@@ -531,7 +529,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -547,7 +545,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       }).then(() => {
         context.commit('setWaitingForOpponentToCounter', true);
@@ -566,7 +564,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -582,7 +580,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -598,7 +596,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -612,7 +610,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -627,16 +625,13 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       }).then(() => {
         context.commit('setWaitingForOpponentToCounter', true);
       });
     },
-    async requestPlayTargetedOneOffSeven(
-      context,
-      { cardId, index, targetId, pointId, targetType }
-    ) {
+    async requestPlayTargetedOneOffSeven(context, { cardId, index, targetId, pointId, targetType }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/seven/targetedOneOff',
@@ -650,7 +645,7 @@ export default {
           },
           function handleResponse(res, jwres) {
             return handleGameResponse(context, jwres, resolve, reject);
-          }
+          },
         );
       }).then(() => {
         context.commit('setWaitingForOpponentToCounter', true);

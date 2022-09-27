@@ -14,9 +14,7 @@
         </rules-dialog>
       </v-list-item>
       <!-- Concede Dialog (Initiate + Confirm) -->
-      <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">
-        Concede
-      </v-list-item>
+      <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog"> Concede </v-list-item>
       <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
         Request Stalemate
       </v-list-item>

@@ -53,10 +53,7 @@
 
       <!-- Opponent Hand -->
       <div class="opponent-hand-container">
-        <div
-          id="opponent-hand"
-          class="d-flex flex-column justify-start align-center px-2 pb-2 mx-auto"
-        >
+        <div id="opponent-hand" class="d-flex flex-column justify-start align-center px-2 pb-2 mx-auto">
           <div class="user-cards-grid-container">
             <username-tool-tip id="opponent-username-container" :username="opponentUsername" />
             <div class="opponent-cards-container">
@@ -683,9 +680,7 @@ export default {
         case 'point':
           return this.nineTargetIndex !== null ? this.opponent.points[this.nineTargetIndex] : null;
         case 'faceCard':
-          return this.nineTargetIndex !== null
-            ? this.opponent.faceCards[this.nineTargetIndex]
-            : null;
+          return this.nineTargetIndex !== null ? this.opponent.faceCards[this.nineTargetIndex] : null;
         default:
           return null;
       }
@@ -790,10 +785,7 @@ export default {
      * @param player is the player object
      */
     kingCount(player) {
-      return player.faceCards.reduce(
-        (kingCount, card) => kingCount + (card.rank === 13 ? 1 : 0),
-        0
-      );
+      return player.faceCards.reduce((kingCount, card) => kingCount + (card.rank === 13 ? 1 : 0), 0);
     },
     /**
      * Returns the number of points to win

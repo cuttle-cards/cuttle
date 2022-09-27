@@ -9,8 +9,7 @@ module.exports = {
   inputs: {
     game: {
       type: 'ref',
-      description:
-        'Game record to be added to the appropriate match. Should include an array of players',
+      description: 'Game record to be added to the appropriate match. Should include an array of players',
       required: true,
     },
   },

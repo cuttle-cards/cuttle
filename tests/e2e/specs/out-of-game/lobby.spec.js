@@ -44,9 +44,7 @@ describe('Lobby - Page Content', () => {
   });
 
   it('Shows both players indicators', () => {
-    cy.get('[data-cy=my-indicator]')
-      .contains(validUsername.split('@')[0])
-      .should('not.contain', '@');
+    cy.get('[data-cy=my-indicator]').contains(validUsername.split('@')[0]).should('not.contain', '@');
     cy.get('[data-cy=opponent-indicator]').contains('Invite');
   });
 
@@ -181,9 +179,7 @@ describe('Lobby - P1 Perspective', () => {
       cy.signupOpponent(opponentUsername, opponentPassword);
       cy.subscribeOpponent(gameSummary.gameId);
       // Join game as this user and navigate to lobby
-      cy.window()
-        .its('cuttle.app.$store')
-        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+      cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
       cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     });
   });
@@ -244,9 +240,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=exit-button]').click(); // leave game so opponent can ready before player joins
     cy.readyOpponent();
     // Join game again
-    cy.window()
-      .its('cuttle.app.$store')
-      .invoke('dispatch', 'requestSubscribe', this.gameSummary.gameId);
+    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', this.gameSummary.gameId);
     cy.vueRoute(`/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy=ready-button]').click();
     // Test that game started

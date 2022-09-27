@@ -269,9 +269,7 @@ describe('FOURS', () => {
       cy.get('[data-player-hand-card=4-0]').click(); // four of clubs
       cy.get('[data-move-choice=oneOff]').click();
 
-      assertSnackbarError(
-        'You cannot play a 4 as a one-off while your opponent has no cards in hand'
-      );
+      assertSnackbarError('You cannot play a 4 as a one-off while your opponent has no cards in hand');
 
       assertGameState(0, {
         p0Hand: [Card.FOUR_OF_CLUBS],
@@ -380,10 +378,7 @@ describe('FOURS', () => {
       // Opponent plays four
       cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
       // Player cannot counter
-      cy.get('#cannot-counter-dialog')
-        .should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
+      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
       cy.log("Player resolves opponent's Four");
 
       // Four Dialog appears (you must discard)
@@ -413,10 +408,7 @@ describe('FOURS', () => {
       // Opponent plays 2nd four
       cy.playOneOffOpponent(Card.FOUR_OF_DIAMONDS);
       // Player cannot counter
-      cy.get('#cannot-counter-dialog')
-        .should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
+      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
       // Choosing cards to discard
       cy.log('Choosing two cards to discard');
@@ -431,12 +423,7 @@ describe('FOURS', () => {
         p1Hand: [Card.TEN_OF_HEARTS, Card.SIX_OF_DIAMONDS],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [
-          Card.FOUR_OF_CLUBS,
-          Card.ACE_OF_DIAMONDS,
-          Card.FOUR_OF_SPADES,
-          Card.FOUR_OF_DIAMONDS,
-        ],
+        scrap: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.FOUR_OF_SPADES, Card.FOUR_OF_DIAMONDS],
       });
       // Properly discard as expected
       cy.log('Choosing two cards to discard - second time');
@@ -478,10 +465,7 @@ describe('FOURS', () => {
       // Opponent plays four
       cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
       // Player cannot counter
-      cy.get('#cannot-counter-dialog')
-        .should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
+      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
       // Four Dialog appears (you must discard)
       cy.get('#four-discard-dialog').should('be.visible');
@@ -643,10 +627,7 @@ describe('Play TWOS', () => {
       cy.playTargetedOneOffOpponent(Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS, 'jack');
 
       // player resolves
-      cy.get('#cannot-counter-dialog')
-        .should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
+      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -943,10 +924,7 @@ describe('Playing NINES', () => {
       cy.log('STEP 2- P1 plays a six, removing face cards');
       cy.playOneOffOpponent(Card.SIX_OF_HEARTS);
 
-      cy.get('#cannot-counter-dialog')
-        .should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
+      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
       assertGameState(0, {
         p0Hand: [Card.JACK_OF_SPADES],
@@ -1040,10 +1018,7 @@ describe('Playing NINES', () => {
 
       cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
 
-      cy.get('#choose-two-dialog')
-        .should('be.visible')
-        .get('[data-counter-dialog-card=2-3]')
-        .click();
+      cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-3]').click();
 
       // Wait for opponent to resolve
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
@@ -1105,10 +1080,7 @@ describe('Playing NINES', () => {
       cy.playTargetedOneOffOpponent(Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS, 'point');
 
       // Player resolves
-      cy.get('#cannot-counter-dialog')
-        .should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
+      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -1181,10 +1153,7 @@ describe('Playing NINES', () => {
       cy.playTargetedOneOffOpponent(Card.NINE_OF_CLUBS, Card.JACK_OF_CLUBS, 'jack');
 
       // Player resolves
-      cy.get('#cannot-counter-dialog')
-        .should('be.visible')
-        .get('[data-cy=cannot-counter-resolve]')
-        .click();
+      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
       assertGameState(1, {
         p0Hand: [Card.ACE_OF_DIAMONDS],
@@ -1424,10 +1393,7 @@ describe('ONE-OFF Target should be removed after one-off resolves', () => {
     cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.ACE_OF_DIAMONDS, 'point');
 
     // Player resolves
-    cy.get('#cannot-counter-dialog')
-      .should('be.visible')
-      .get('[data-cy=cannot-counter-resolve]')
-      .click();
+    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
     assertGameState(1, {
       p0Hand: [Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],

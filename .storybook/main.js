@@ -4,11 +4,7 @@ const path = require('path');
 // https://storybook.js.org/docs/vue/configure/overview#configure-your-storybook-project
 module.exports = {
   stories: ['../stories/**/*.stories.@(js|jsx|mdx|ts|tsx)'],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-  ],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],
   framework: '@storybook/vue',
   staticDirs: ['../client/js/img'],
   webpackFinal: async (config, { configType }) => {

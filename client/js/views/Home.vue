@@ -34,12 +34,7 @@
             </div>
           </v-col>
           <v-col id="side-nav" :cols="$vuetify.breakpoint.mdAndDown ? 12 : 3">
-            <img
-              v-if="$vuetify.breakpoint.lgAndUp"
-              id="logo"
-              alt="Vue logo"
-              src="../img/logo.png"
-            />
+            <img v-if="$vuetify.breakpoint.lgAndUp" id="logo" alt="Vue logo" src="../img/logo.png" />
             <v-btn
               outlined
               color="primary"
@@ -147,11 +142,7 @@ export default {
 </script>
 <style scoped lang="scss">
 h1 {
-  background: linear-gradient(
-    268.89deg,
-    rgba(98, 2, 238, 0.87) 73.76%,
-    rgba(253, 98, 34, 0.87) 99.59%
-  );
+  background: linear-gradient(268.89deg, rgba(98, 2, 238, 0.87) 73.76%, rgba(253, 98, 34, 0.87) 99.59%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

@@ -107,9 +107,9 @@ export default {
         const playerMatchesCount = Object.values(playerStats.matches).reduce(
           (totalCount, weekMatches) =>
             (totalCount += weekMatches.filter((match) =>
-              [Result.WON, Result.LOST].includes(match.result)
+              [Result.WON, Result.LOST].includes(match.result),
             ).length),
-          0
+          0,
         );
         const res = {
           username: playerStats.username,
@@ -306,9 +306,7 @@ export default {
       if (!playerMatches) {
         return '';
       }
-      let opponents = playerMatches
-        .filter((match) => match.result === result)
-        .map((match) => match.opponent);
+      let opponents = playerMatches.filter((match) => match.result === result).map((match) => match.opponent);
 
       // If looking at total, show number of times each opponent appeared in the wins or losses
       if (weekNum === 'total') {
@@ -353,8 +351,7 @@ export default {
     rank(player) {
       return (
         this.playerRankingsSorted.findIndex(
-          ({ totalScore, totalWins }) =>
-            totalScore === player.totalScore && totalWins === player.totalWins
+          ({ totalScore, totalWins }) => totalScore === player.totalScore && totalWins === player.totalWins,
         ) + 1
       );
     },

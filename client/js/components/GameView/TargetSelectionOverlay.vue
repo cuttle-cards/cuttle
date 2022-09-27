@@ -1,15 +1,6 @@
 <template>
-  <div
-    id="player-hand-targeting"
-    class="d-flex justify-start"
-    :class="{ 'my-turn': isPlayersTurn }"
-  >
-    <card
-      :suit="selectedCard.suit"
-      :rank="selectedCard.rank"
-      :is-selected="true"
-      @click="$emit('cancel')"
-    />
+  <div id="player-hand-targeting" class="d-flex justify-start" :class="{ 'my-turn': isPlayersTurn }">
+    <card :suit="selectedCard.suit" :rank="selectedCard.rank" :is-selected="true" @click="$emit('cancel')" />
     <div id="target-selection-header-wrapper" class="d-flex flex-column align-center">
       <h2>Choose {{ moveDisplayName }} Target</h2>
       <v-btn outlined color="primary" class="mt-2" data-cy="cancel-target" @click="$emit('cancel')">

@@ -57,10 +57,7 @@ module.exports = function (req, res) {
             updatePromises = [
               User.updateOne(player.id).set(playerUpdates),
               // Remove all jacks from point cards
-              Card.replaceCollection(
-                [...playerPointIds, ...opponentPointIds],
-                'attachments'
-              ).members([]),
+              Card.replaceCollection([...playerPointIds, ...opponentPointIds], 'attachments').members([]),
               // Scrap all point cards and jacks
               Game.addToCollection(game.id, 'scrap').members(cardsToScrap),
               // Remove player's points
@@ -82,9 +79,7 @@ module.exports = function (req, res) {
             switch (game.oneOffTargetType) {
               case 'faceCard':
                 updatePromises.push(
-                  User.removeFromCollection(opponent.id, 'faceCards').members([
-                    game.oneOffTarget.id,
-                  ])
+                  User.removeFromCollection(opponent.id, 'faceCards').members([game.oneOffTarget.id]),
                 );
                 break;
               case 'jack':
@@ -268,7 +263,7 @@ module.exports = function (req, res) {
           case 9:
             updatePromises.push(
               // Place target back in opponent's hand
-              User.addToCollection(opponent.id, 'hand').members(game.oneOffTarget.id)
+              User.addToCollection(opponent.id, 'hand').members(game.oneOffTarget.id),
             );
             opponentUpdates.frozenId = game.oneOffTarget.id;
             gameUpdates = {
@@ -281,7 +276,7 @@ module.exports = function (req, res) {
             switch (game.oneOffTargetType) {
               case 'faceCard':
                 updatePromises.push(
-                  User.removeFromCollection(opponent.id, 'faceCards').members(game.oneOffTarget.id)
+                  User.removeFromCollection(opponent.id, 'faceCards').members(game.oneOffTarget.id),
                 );
                 break;
               case 'point':
@@ -296,7 +291,7 @@ module.exports = function (req, res) {
                   // Remove card from opponent's points
                   User.removeFromCollection(opponent.id, 'points').members([targetCard.id]),
                   // Clear jacks from target
-                  Card.replaceCollection(targetCard.id, 'attachments').members([])
+                  Card.replaceCollection(targetCard.id, 'attachments').members([]),
                 );
                 break;
               case 'jack':
@@ -306,7 +301,7 @@ module.exports = function (req, res) {
                     game.oneOffTarget.id,
                   ]),
                   // Return the stolen point card back to the player
-                  User.addToCollection(player.id, 'points').members([game.attachedToTarget.id])
+                  User.addToCollection(player.id, 'points').members([game.attachedToTarget.id]),
                 );
                 gameUpdates.attachedToTarget = null;
                 break;
@@ -353,13 +348,7 @@ module.exports = function (req, res) {
     }) //End changeAndSave
     .then(function populateGame(values) {
       const [game, oneOff, pNum, happened] = values;
-      return Promise.all([
-        gameService.populateGame({ gameId: game.id }),
-        oneOff,
-        pNum,
-        happened,
-        game,
-      ]);
+      return Promise.all([gameService.populateGame({ gameId: game.id }), oneOff, pNum, happened, game]);
     })
     .then(async function publishAndRespond(values) {
       const [fullGame, oneOff, pNum, happened, gameModel] = values;

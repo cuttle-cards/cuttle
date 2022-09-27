@@ -142,9 +142,6 @@ describe('Signing Up', () => {
     cy.get('[data-cy=password]').type(validPassword);
     cy.get('[data-cy=submit]').click();
     assertFailedAuth();
-    assertSnackbarError(
-      'That username is already registered to another user; try logging in!',
-      'auth'
-    );
+    assertSnackbarError('That username is already registered to another user; try logging in!', 'auth');
   });
 });

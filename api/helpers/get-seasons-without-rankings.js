@@ -20,7 +20,7 @@ module.exports = {
           thirdPlace: season.thirdPlace?.username || null,
           fourthPlace: season.fourthPlace?.username || null,
         };
-      })
+      }),
     );
   },
 };

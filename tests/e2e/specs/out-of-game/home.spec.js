@@ -29,7 +29,7 @@ describe('Home - Page Content', () => {
     cy.get('[data-cy=ai-link]').should(
       'have.attr',
       'href',
-      'https://human-ai-interaction.github.io/cuttle-bot/'
+      'https://human-ai-interaction.github.io/cuttle-bot/',
     );
     cy.get('[data-cy=rules-link]').click();
     cy.hash().should('eq', '#/rules');
@@ -66,9 +66,7 @@ describe('Home - Game List', () => {
     cy.get('[data-cy=game-list-item]').should('have.length', 2);
     cy.signupOpponent(opponentUsername, opponentPassword);
     cy.createGameOpponent('Game made by other player');
-    cy.get('[data-cy=game-list-item]')
-      .should('have.length', 3)
-      .contains('Game made by other player');
+    cy.get('[data-cy=game-list-item]').should('have.length', 3).contains('Game made by other player');
   });
   it('Joins an open game', () => {
     cy.window()
@@ -224,10 +222,7 @@ describe('Home - Create Game', () => {
       .its('cuttle.app.$store.state.gameList.games')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
-        expect(games[0].numPlayers).to.eq(
-          0,
-          'Expect no players in gameLists game in store, but found some'
-        );
+        expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
         expect(games[0].status).to.eq(true, 'Expect game to have status true');
         expect(games[0].isRanked).to.eq(false, 'Expect game to be ranked');
       });
@@ -252,10 +247,7 @@ describe('Home - Create Game', () => {
       .its('cuttle.app.$store.state.gameList.games')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
-        expect(games[0].numPlayers).to.eq(
-          0,
-          'Expect no players in gameLists game in store, but found some'
-        );
+        expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
         expect(games[0].status).to.eq(true, 'Expect game to have status true');
         expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
       });
@@ -286,10 +278,7 @@ describe('Home - Create Game', () => {
       .its('cuttle.app.$store.state')
       .then((state) => {
         expect(state.game.gameId).to.eq(undefined, 'Store game should not have id');
-        expect(state.gameList.games.length).to.eq(
-          0,
-          'Game list should be empty in store, but is not'
-        );
+        expect(state.gameList.games.length).to.eq(0, 'Game list should be empty in store, but is not');
       });
     assertSnackbarError('Game name cannot be blank', 'newgame');
   });

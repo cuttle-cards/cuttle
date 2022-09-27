@@ -31,7 +31,7 @@ module.exports = async function (req, res) {
               game: game,
             },
           },
-          req
+          req,
         );
       } catch (e) {
         // Unable to find user's game -- remove it from their session

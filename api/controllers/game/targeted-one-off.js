@@ -80,8 +80,7 @@ module.exports = function (req, res) {
           return Promise.reject({ message: 'You cannot play a card that is not in your hand' });
         }
         return Promise.reject({
-          message:
-            'There is already a one-off in play; you cannot play any card, except a two to counter.',
+          message: 'There is already a one-off in play; you cannot play any card, except a two to counter.',
         });
       }
       return Promise.reject({ message: "It's not your turn." });

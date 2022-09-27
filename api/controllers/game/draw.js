@@ -46,7 +46,7 @@ module.exports = function (req, res) {
       }
       updatePromises.push(
         Game.updateOne({ id: game.id }).set(gameUpdates),
-        User.updateOne({ id: user.id }).set(userUpdates)
+        User.updateOne({ id: user.id }).set(userUpdates),
       );
 
       return Promise.all(updatePromises);

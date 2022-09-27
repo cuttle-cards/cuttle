@@ -12,10 +12,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
-  extends: [
-    'eslint:recommended',
-    'prettier',
-  ],
+  extends: ['eslint:recommended', 'prettier'],
   plugins: ['cypress', 'jest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
   rules: {
@@ -40,17 +37,13 @@ module.exports = {
     'no-case-declarations': 'warn',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'quotes': ['error', 'single'],
+    quotes: ['error', 'single'],
   },
   overrides: [
     // Vue specific rules
     {
       files: ['**/client/**/*.{j,t}s?(x)'],
-      extends: [
-        'eslint:recommended',
-        'plugin:prettier/recommended',
-        'plugin:vue/recommended',
-      ],
+      extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:vue/recommended'],
       rules: {
         'no-undef': 'warn',
         'no-prototype-builtins': 'warn',
@@ -60,11 +53,7 @@ module.exports = {
     // Storybook specific rules
     {
       files: ['**/(.storybook|stories)/**/*.{j,t}s?(x)'],
-      extends: [
-        'eslint:recommended',
-        'plugin:prettier/recommended',
-        'plugin:storybook/recommended',
-      ],
+      extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:storybook/recommended'],
       rules: {
         'no-undef': 'warn',
         'no-prototype-builtins': 'warn',
@@ -73,10 +62,10 @@ module.exports = {
     // Sails specific rules
     {
       files: ['**/api/**/*.{j,t}s?(x)'],
-        globals: {
-          _: true,
-          sails: true,
-        },
+      globals: {
+        _: true,
+        sails: true,
+      },
       rules: {
         'no-undef': 'warn',
         'no-prototype-builtins': 'warn',
@@ -117,4 +106,4 @@ module.exports = {
       rules: sharedTestRules,
     },
   ],
-}
+};

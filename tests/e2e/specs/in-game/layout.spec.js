@@ -1,10 +1,4 @@
-import {
-  setupGameAsP0,
-  setupGameAsP1,
-  assertGameState,
-  playOutOfTurn,
-  Card,
-} from '../../support/helpers';
+import { setupGameAsP0, setupGameAsP1, assertGameState, playOutOfTurn, Card } from '../../support/helpers';
 
 const { _ } = Cypress;
 
@@ -172,9 +166,7 @@ describe('Game View Layout', () => {
     cy.get('#scrap').click();
 
     // Then-- Assert that the overlay that should show up does and that there are no cards in it
-    cy.get('#scrap-dialog')
-      .should('be.visible')
-      .should('contain', 'There are no cards in the scrap pile.');
+    cy.get('#scrap-dialog').should('be.visible').should('contain', 'There are no cards in the scrap pile.');
   });
 });
 
@@ -198,10 +190,7 @@ describe('Four dialogs layout', () => {
     // Opponent plays four
     cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
     // Player cannot counter
-    cy.get('#cannot-counter-dialog')
-      .should('be.visible')
-      .get('[data-cy=cannot-counter-resolve]')
-      .click();
+    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
     // Four Dialog appears (you must discard)
     cy.get('#four-discard-dialog').should('be.visible');
@@ -231,12 +220,7 @@ describe.skip('Aesthetic tests', () => {
     cy.loadGameFixture({
       p0Hand: [Card.EIGHT_OF_SPADES, Card.QUEEN_OF_DIAMONDS],
       p0Points: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.ACE_OF_HEARTS],
-      p0FaceCards: [
-        Card.KING_OF_HEARTS,
-        Card.KING_OF_DIAMONDS,
-        Card.KING_OF_CLUBS,
-        Card.EIGHT_OF_HEARTS,
-      ],
+      p0FaceCards: [Card.KING_OF_HEARTS, Card.KING_OF_DIAMONDS, Card.KING_OF_CLUBS, Card.EIGHT_OF_HEARTS],
       p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS],
       p1Points: [],
       p1FaceCards: [],
@@ -250,12 +234,7 @@ describe.skip('Aesthetic tests', () => {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [],
-      p1Hand: [
-        Card.ACE_OF_HEARTS,
-        Card.ACE_OF_DIAMONDS,
-        Card.JACK_OF_DIAMONDS,
-        Card.JACK_OF_SPADES,
-      ],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
@@ -271,12 +250,7 @@ describe.skip('Aesthetic tests', () => {
       p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
       p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
       p0FaceCards: [],
-      p1Hand: [
-        Card.ACE_OF_HEARTS,
-        Card.ACE_OF_DIAMONDS,
-        Card.JACK_OF_DIAMONDS,
-        Card.JACK_OF_SPADES,
-      ],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
       p1Points: [],
       p1FaceCards: [Card.KING_OF_HEARTS],
       scrap: [],
@@ -335,12 +309,7 @@ describe.skip('Aesthetic tests', () => {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
       p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TWO_OF_CLUBS],
       p0FaceCards: [],
-      p1Hand: [
-        Card.ACE_OF_HEARTS,
-        Card.ACE_OF_DIAMONDS,
-        Card.JACK_OF_DIAMONDS,
-        Card.JACK_OF_SPADES,
-      ],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
@@ -356,12 +325,7 @@ describe.skip('Aesthetic tests', () => {
       p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
       p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TEN_OF_HEARTS, Card.TWO_OF_CLUBS],
       p0FaceCards: [],
-      p1Hand: [
-        Card.ACE_OF_HEARTS,
-        Card.ACE_OF_DIAMONDS,
-        Card.JACK_OF_DIAMONDS,
-        Card.JACK_OF_SPADES,
-      ],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
       p1Points: [],
       p1FaceCards: [Card.KING_OF_HEARTS],
       scrap: [],

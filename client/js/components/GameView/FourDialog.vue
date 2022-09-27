@@ -4,8 +4,8 @@
       <v-card-title>Discard Two Cards</v-card-title>
       <v-card-text>
         <p>
-          Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select
-          cards to discard.
+          Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to
+          discard.
         </p>
         <!-- Cards in hand -->
         <div class="d-flex flex-wrap card-container">
@@ -21,12 +21,7 @@
         </div>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn
-          color="primary"
-          data-cy="submit-four-dialog"
-          :disabled="!readyToDiscard"
-          @click="discard"
-        >
+        <v-btn color="primary" data-cy="submit-four-dialog" :disabled="!readyToDiscard" @click="discard">
           Discard
         </v-btn>
       </v-card-actions>
@@ -66,9 +61,7 @@ export default {
       return this.$store.state.game.players[this.$store.state.game.myPNum].hand;
     },
     readyToDiscard() {
-      return (
-        this.selectedIds.length === 2 || (this.selectedIds.length === 1 && this.hand.length === 1)
-      );
+      return this.selectedIds.length === 2 || (this.selectedIds.length === 1 && this.hand.length === 1);
     },
   },
   methods: {

@@ -131,12 +131,9 @@ export default {
           // Twos
           if (this.selectedCard.rank === 2) {
             const numOpFaceCards = this.$store.getters.opponent.faceCards.length;
-            const numOpJacks = this.$store.getters.opponent.points.reduce(
-              (jackCount, pointCard) => {
-                return jackCount + pointCard.attachments.length;
-              },
-              0
-            );
+            const numOpJacks = this.$store.getters.opponent.points.reduce((jackCount, pointCard) => {
+              return jackCount + pointCard.attachments.length;
+            }, 0);
             const numTotalTargets = numOpFaceCards + numOpJacks;
             validTargetExists = numTotalTargets >= 1;
             if (!validTargetExists) {
@@ -146,8 +143,7 @@ export default {
             // Nines
           } else {
             const numValidTargets =
-              this.$store.getters.opponent.points.length +
-              this.$store.getters.opponent.faceCards.length;
+              this.$store.getters.opponent.points.length + this.$store.getters.opponent.faceCards.length;
             if (numValidTargets === 0) {
               oneOffDisabled = true;
               oneOffDisabledExplanation = 'There are no point cards or Royals to target';

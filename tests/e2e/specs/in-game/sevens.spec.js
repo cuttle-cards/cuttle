@@ -504,12 +504,7 @@ describe('Playing SEVENS', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [
-          Card.SEVEN_OF_CLUBS,
-          Card.SEVEN_OF_SPADES,
-          Card.TEN_OF_SPADES,
-          Card.ACE_OF_DIAMONDS,
-        ],
+        scrap: [Card.SEVEN_OF_CLUBS, Card.SEVEN_OF_SPADES, Card.TEN_OF_SPADES, Card.ACE_OF_DIAMONDS],
         topCard: Card.JACK_OF_CLUBS,
       });
     });
@@ -538,9 +533,7 @@ describe('Playing SEVENS', () => {
       // Should not allow playing 4 as one-off
       cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
       cy.get('#waiting-for-opponent-discard-scrim').should('not.be.visible');
-      assertSnackbarError(
-        'You cannot play a 4 as a one-off while your opponent has no cards in hand'
-      );
+      assertSnackbarError('You cannot play a 4 as a one-off while your opponent has no cards in hand');
     });
   }); // End player seven one-off describe
 
@@ -810,10 +803,7 @@ describe('Opponent playing SEVENS', () => {
       .and('be.visible')
       .click({ force: true })
       .should('not.have.class', 'selected');
-    cy.get('#scrap')
-      .should('be.visible')
-      .and('not.have.class', 'valid-move')
-      .click({ force: true }); // can't play to scrap
+    cy.get('#scrap').should('be.visible').and('not.have.class', 'valid-move').click({ force: true }); // can't play to scrap
     cy.get('#player-field').should('not.have.class', 'valid-move').click({ force: true }); // can't play to field
 
     // Opponent plays four of clubs for points
@@ -868,10 +858,7 @@ describe('Opponent playing SEVENS', () => {
       .and('be.visible')
       .click({ force: true })
       .should('not.have.class', 'selected');
-    cy.get('#scrap')
-      .should('be.visible')
-      .and('not.have.class', 'valid-move')
-      .click({ force: true }); // can't play to scrap
+    cy.get('#scrap').should('be.visible').and('not.have.class', 'valid-move').click({ force: true }); // can't play to scrap
     cy.get('#player-field').should('not.have.class', 'valid-move').click({ force: true }); // can't play to field
 
     cy.playJackFromSevenOpponent(Card.JACK_OF_CLUBS, Card.TEN_OF_HEARTS);
@@ -1190,12 +1177,7 @@ describe('Opponent playing SEVENS', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [
-          Card.SIX_OF_DIAMONDS,
-          Card.QUEEN_OF_CLUBS,
-          Card.KING_OF_HEARTS,
-          Card.SEVEN_OF_CLUBS,
-        ],
+        scrap: [Card.SIX_OF_DIAMONDS, Card.QUEEN_OF_CLUBS, Card.KING_OF_HEARTS, Card.SEVEN_OF_CLUBS],
         topCard: Card.JACK_OF_CLUBS,
       });
     });
@@ -1318,11 +1300,7 @@ describe('Opponent playing SEVENS', () => {
       // Waiting for opponent
       cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
 
-      cy.playTargetedOneOffFromSevenOpponent(
-        Card.NINE_OF_DIAMONDS,
-        Card.QUEEN_OF_CLUBS,
-        'faceCard'
-      );
+      cy.playTargetedOneOffFromSevenOpponent(Card.NINE_OF_DIAMONDS, Card.QUEEN_OF_CLUBS, 'faceCard');
       cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
 
       assertGameState(1, {

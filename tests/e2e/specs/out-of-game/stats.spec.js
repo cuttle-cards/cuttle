@@ -1,10 +1,4 @@
-import {
-  playerOne,
-  playerTwo,
-  playerThree,
-  playerFour,
-  playerFive,
-} from '../../fixtures/userFixtures';
+import { playerOne, playerTwo, playerThree, playerFour, playerFive } from '../../fixtures/userFixtures';
 import { seasonFixtures, matchesFixture } from '../../fixtures/statsFixtures';
 const dayjs = require('dayjs');
 
@@ -73,14 +67,8 @@ describe('Stats Page', () => {
   it('Displays Headers, Cards, and Table', () => {
     const [seasonOne] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
-    cy.get('[data-cy=season-start-date').should(
-      'contain',
-      dayjs(seasonOne.startTime).format('YYYY/MM/DD')
-    );
-    cy.get('[data-cy=season-end-date').should(
-      'contain',
-      dayjs(seasonOne.endTime).format('YYYY/MM/DD')
-    );
+    cy.get('[data-cy=season-start-date').should('contain', dayjs(seasonOne.startTime).format('YYYY/MM/DD'));
+    cy.get('[data-cy=season-end-date').should('contain', dayjs(seasonOne.endTime).format('YYYY/MM/DD'));
     // Tournament Data
     cy.get('[data-cy=tournament-bracket-link]').should('have.attr', 'href', seasonOne.bracketLink);
     cy.get('[data-cy=tournament-footage-link]').should('have.attr', 'href', seasonOne.footageLink);
@@ -122,18 +110,13 @@ describe('Stats Page', () => {
     cy.get('[data-win-rate=Player2-week-1]').should('contain', '3 Total');
     // Player result menus (Total)
     cy.get("[data-week-total='Player3']").click();
-    cy.get('[data-players-beaten=Player3-week-total]').should(
-      'contain',
-      'Player5 (2), Player4 (1)'
-    );
+    cy.get('[data-players-beaten=Player3-week-total]').should('contain', 'Player5 (2), Player4 (1)');
     cy.get('[data-players-lost-to=Player3-week-total]').should(
       'contain',
-      'Player1 (3), Player2 (2), Player4 (1)'
+      'Player1 (3), Player2 (2), Player4 (1)',
     );
     cy.get('[data-player-results=Player3-week-total]').should('contain', 'Player3 Clubs 2022');
-    cy.get('[data-player-results=Player3-week-total]')
-      .find('[data-cy=close-player-results]')
-      .click();
+    cy.get('[data-player-results=Player3-week-total]').find('[data-cy=close-player-results]').click();
     cy.get('[data-players-beaten=Player3-week-total').should('not.be.visible');
     cy.get('[data-players-lost-to=Player3-week-total').should('not.be.visible');
     cy.get('[data-win-rate=Player3-week-total]').should('contain', '33%');
