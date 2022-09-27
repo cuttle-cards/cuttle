@@ -23,6 +23,7 @@ git clone https://github.com/cuttle-cards/cuttle
 Or [Download](https://github.com/cuttle-cards/cuttle/archive/refs/heads/main.zip) as .zip
 
 ### Install Dependencies
+
 Open your shell/terminal of choice, `cd` into the root folder of this repo and run
 
 ```
@@ -138,6 +139,7 @@ npm run lint
 to check the formatting without autofixing problems. (This is what's run in CI when a PR is opened against the `main` branch).
 
 ### Storybook (UX Documentation)
+
 Run Storybook locally with
 
 ```

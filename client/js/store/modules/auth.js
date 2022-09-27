@@ -39,7 +39,7 @@ export default {
             }
             context.commit('clearAuth');
             return reject(jwres.body.message);
-          }
+          },
         );
       });
     },
@@ -67,7 +67,7 @@ export default {
             }
             context.commit('clearAuth');
             return reject(message);
-          }
+          },
         );
       });
     },
@@ -96,16 +96,13 @@ export default {
           function handleResponse(res, jwres) {
             if (jwres.statusCode === 200) {
               context.commit('setMustReauthenticate', false);
-              const pNum = getPlayerPnumByUsername(
-                context.rootState.game.players,
-                context.state.username
-              );
+              const pNum = getPlayerPnumByUsername(context.rootState.game.players, context.state.username);
               context.commit('setMyPNum', pNum);
               return resolve();
             }
             context.commit('clearAuth');
             return reject(res.message);
-          }
+          },
         );
       });
     },

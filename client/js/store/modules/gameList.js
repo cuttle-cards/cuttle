@@ -78,7 +78,7 @@ export default {
               message = new Error('Unknown error creating game');
             }
             return reject(message);
-          }
+          },
         );
       });
     },

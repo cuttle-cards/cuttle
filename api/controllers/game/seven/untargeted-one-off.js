@@ -25,8 +25,7 @@ module.exports = function (req, res) {
                 case 4:
                   if (opponent.hand.length === 0)
                     return Promise.reject({
-                      message:
-                        'You cannot play a 4 as a one-off while your opponent has no cards in hand',
+                      message: 'You cannot play a 4 as a one-off while your opponent has no cards in hand',
                     });
                   break;
                 case 5:

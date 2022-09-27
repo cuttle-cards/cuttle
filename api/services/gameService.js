@@ -239,7 +239,7 @@ module.exports = {
                 // Delete all cards in the game
                 Card.destroy({
                   or: deleteCardsCriteria,
-                })
+                }),
               );
             } // end if (game) {}
             return Promise.all(updatePromises);

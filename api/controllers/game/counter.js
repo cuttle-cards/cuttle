@@ -15,9 +15,9 @@ module.exports = function (req, res) {
           if (card.rank === 2) {
             if (!opHasQueen) {
               if (game.twos.length > 0) {
-                logEntry = `${player.username} played the ${card.name} to counter ${
-                  opponent.username
-                }'s ${game.twos[game.twos.length - 1].name}.`;
+                logEntry = `${player.username} played the ${card.name} to counter ${opponent.username}'s ${
+                  game.twos[game.twos.length - 1].name
+                }.`;
               } else {
                 logEntry = `${player.username} played the ${card.name} to counter ${opponent.username}'s ${game.oneOff.name}.`;
               }

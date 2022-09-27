@@ -87,9 +87,7 @@ export default {
       }
       // Re-usable move-objects
       const allMovesAreDisabled = !this.isPlayersTurn || this.frozenId === this.selectedCard.id;
-      const allMovesDisabledExplanation = !this.isPlayersTurn
-        ? "It's not your turn"
-        : 'This card is frozen';
+      const allMovesDisabledExplanation = !this.isPlayersTurn ? "It's not your turn" : 'This card is frozen';
 
       let disabledText;
       if (allMovesAreDisabled) {
@@ -155,12 +153,9 @@ export default {
               // Twos
               if (cardRank === 2) {
                 const numOpFaceCards = this.$store.getters.opponent.faceCards.length;
-                const numOpJacks = this.$store.getters.opponent.points.reduce(
-                  (jackCount, pointCard) => {
-                    return jackCount + pointCard.attachments.length;
-                  },
-                  0
-                );
+                const numOpJacks = this.$store.getters.opponent.points.reduce((jackCount, pointCard) => {
+                  return jackCount + pointCard.attachments.length;
+                }, 0);
                 const numTotalTargets = numOpFaceCards + numOpJacks;
                 validTargetExists = numTotalTargets >= 1;
                 if (allMovesAreDisabled) {
@@ -172,8 +167,7 @@ export default {
                 // Nines
               } else {
                 const numValidTargets =
-                  this.$store.getters.opponent.points.length +
-                  this.$store.getters.opponent.faceCards.length;
+                  this.$store.getters.opponent.points.length + this.$store.getters.opponent.faceCards.length;
                 if (allMovesAreDisabled) {
                   oneOffDisabledExplanation = allMovesDisabledExplanation;
                 } else if (numValidTargets === 0) {

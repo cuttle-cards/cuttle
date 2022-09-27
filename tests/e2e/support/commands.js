@@ -53,7 +53,7 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
           return reject(new Error('Failed to sign up via command'));
         }
         return resolve(res);
-      }
+      },
     );
   });
 });
@@ -75,7 +75,7 @@ Cypress.Commands.add('createGameOpponent', (name) => {
           return resolve(resData);
         }
         return reject(new Error('Error creating game'));
-      }
+      },
     );
   });
 });
@@ -94,7 +94,7 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
           return resolve();
         }
         return reject(new Error('error subscribing'));
-      }
+      },
     );
   });
 });
@@ -110,7 +110,7 @@ Cypress.Commands.add('readyOpponent', (id) => {
           return resolve();
         }
         return reject(new Error('error readying up opponent'));
-      }
+      },
     );
   });
 });
@@ -148,7 +148,7 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
       const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
-          `Error playing opponents points: could not find ${card.rank} of ${card.suit} in opponent hand`
+          `Error playing opponents points: could not find ${card.rank} of ${card.suit} in opponent hand`,
         );
       }
       const cardId = foundCard.id;
@@ -162,7 +162,7 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -181,7 +181,7 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
       const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
-          `Error playing opponents Face Card: could not find ${card.rank} of ${card.suit} in opponent hand`
+          `Error playing opponents Face Card: could not find ${card.rank} of ${card.suit} in opponent hand`,
         );
       }
       const cardId = foundCard.id;
@@ -195,7 +195,7 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -217,12 +217,12 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
       const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
       if (!foundCard) {
         throw new Error(
-          `Error playing opponents jack: could not find ${card.rank} of ${card.suit} in opponent hand`
+          `Error playing opponents jack: could not find ${card.rank} of ${card.suit} in opponent hand`,
         );
       }
       if (!foundTarget) {
         throw new Error(
-          `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`
+          `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`,
         );
       }
       const cardId = foundCard.id;
@@ -239,7 +239,7 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -261,12 +261,12 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
       const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
       if (!foundCard) {
         throw new Error(
-          `Error scuttling as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`
+          `Error scuttling as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`,
         );
       }
       if (!foundTarget) {
         throw new Error(
-          `Error scuttling as opponent: could not find ${target.rank} of ${target.suit} in player's points`
+          `Error scuttling as opponent: could not find ${target.rank} of ${target.suit} in player's points`,
         );
       }
       io.socket.get(
@@ -281,7 +281,7 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -298,14 +298,12 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
       const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
-          `Error playing untargetted one-off as opponent: could not find ${printCard(
-            card
-          )} in opponent hand`
+          `Error playing untargetted one-off as opponent: could not find ${printCard(card)} in opponent hand`,
         );
       }
       if (foundCard.rank >= 8) {
         throw new Error(
-          `Error playing untargetted one-off as opponent: ${printCard(card)} is not a valid oneOff`
+          `Error playing untargetted one-off as opponent: ${printCard(card)} is not a valid oneOff`,
         );
       }
       io.socket.get(
@@ -319,7 +317,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -365,27 +363,23 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
         default:
           throw new Error(
             `Error playing ${printCard(
-              card
-            )} as one-off from seven as opponent: invalid target type, ${targetType}`
+              card,
+            )} as one-off from seven as opponent: invalid target type, ${targetType}`,
           );
       }
       if (!foundCard) {
         throw new Error(
-          `Error playing targeted one-off as opponent: could not find ${printCard(
-            card
-          )} in opponent hand`
+          `Error playing targeted one-off as opponent: could not find ${printCard(card)} in opponent hand`,
         );
       }
       if (!foundTarget) {
         throw new Error(
-          `Error playing targeted one-off as opponent: could not find ${printCard(
-            target
-          )} in player field`
+          `Error playing targeted one-off as opponent: could not find ${printCard(target)} in player field`,
         );
       }
       if (targetType === 'jack' && !foundPointCard) {
         throw new Error(
-          'Error playing targeted one-off as opponent: could not find point card in player field'
+          'Error playing targeted one-off as opponent: could not find point card in player field',
         );
       }
       io.socket.get(
@@ -402,7 +396,7 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -422,7 +416,7 @@ Cypress.Commands.add('counterOpponent', (card) => {
       const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
-          `Error countering as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`
+          `Error countering as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`,
         );
       }
       const cardId = foundCard.id;
@@ -437,7 +431,7 @@ Cypress.Commands.add('counterOpponent', (card) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -454,7 +448,7 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
       const foundCard = game.scrap.find((scrapCard) => cardsMatch(card, scrapCard));
       if (!foundCard) {
         throw new Error(
-          `Error resolving three as opponent: could not find ${card.rank} of ${card.suit} in scrap`
+          `Error resolving three as opponent: could not find ${card.rank} of ${card.suit} in scrap`,
         );
       }
       const cardId = foundCard.id;
@@ -469,7 +463,7 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -489,7 +483,7 @@ Cypress.Commands.add('resolveOpponent', () => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -523,7 +517,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -555,8 +549,8 @@ Cypress.Commands.add('playPointsFromSevenOpponent', (card) => {
       } else {
         throw new Error(
           `Error playing ${printCard(
-            card
-          )} for points from seven as opponent: Could not find it in top two cards`
+            card,
+          )} for points from seven as opponent: Could not find it in top two cards`,
         );
       }
 
@@ -572,7 +566,7 @@ Cypress.Commands.add('playPointsFromSevenOpponent', (card) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -604,8 +598,8 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
       } else {
         throw new Error(
           `Error playing face card: ${printCard(
-            card
-          )} from seven as opponent: Could not find it in top two cards`
+            card,
+          )} from seven as opponent: Could not find it in top two cards`,
         );
       }
 
@@ -621,7 +615,7 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -658,13 +652,13 @@ Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
       } else {
         throw new Error(
           `Error playing ${printCard(
-            card
-          )} for jack from seven as opponent: Could not find it in top two cards`
+            card,
+          )} for jack from seven as opponent: Could not find it in top two cards`,
         );
       }
       if (!foundTarget) {
         throw new Error(
-          `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`
+          `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`,
         );
       }
 
@@ -683,7 +677,7 @@ Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -721,13 +715,13 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
       } else {
         throw new Error(
           `Error playing ${printCard(
-            card
-          )} for jack from seven as opponent: Could not find it in top two cards`
+            card,
+          )} for jack from seven as opponent: Could not find it in top two cards`,
         );
       }
       if (!foundTarget) {
         throw new Error(
-          `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`
+          `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`,
         );
       }
 
@@ -746,7 +740,7 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -778,8 +772,8 @@ Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
       } else {
         throw new Error(
           `Error playing ${printCard(
-            card
-          )} as one-off from seven as opponent: Could not find it in top two cards`
+            card,
+          )} as one-off from seven as opponent: Could not find it in top two cards`,
         );
       }
       const playerId = game.players[game.myPNum].id;
@@ -796,7 +790,7 @@ Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -804,16 +798,12 @@ Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
 Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targetType) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error(
-      `Cannot play targeted one-off from seven for opponent: Invalid card to play: ${JSON.stringify(
-        card
-      )}`
+      `Cannot play targeted one-off from seven for opponent: Invalid card to play: ${JSON.stringify(card)}`,
     );
   }
   if (!hasValidSuitAndRank(target)) {
     throw new Error(
-      `Cannot play targeted one-off from seven for opponent: Invalid target: ${JSON.stringify(
-        target
-      )}`
+      `Cannot play targeted one-off from seven for opponent: Invalid target: ${JSON.stringify(target)}`,
     );
   }
   Cypress.log({
@@ -839,8 +829,8 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
       } else {
         throw new Error(
           `Error playing ${printCard(
-            card
-          )} as one-off from seven as opponent: Could not find it in top two cards`
+            card,
+          )} as one-off from seven as opponent: Could not find it in top two cards`,
         );
       }
       // Find target by suit & rank
@@ -864,22 +854,22 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
         default:
           throw new Error(
             `Error playing ${printCard(
-              card
-            )} as one-off from seven as opponent: invalid target type, ${targetType}`
+              card,
+            )} as one-off from seven as opponent: invalid target type, ${targetType}`,
           );
       }
       if (!foundTarget) {
         throw new Error(
           `Error: Could not find target ${printCard(target)} when playing ${printCard(
-            card
-          )} as one-off from seven for opponent`
+            card,
+          )} as one-off from seven for opponent`,
         );
       }
       if (targetType === 'jack' && !foundPointCard) {
         throw new Error(
           `Error: Could not find point card when playing ${printCard(
-            card
-          )} as one-off from seven for opponent`
+            card,
+          )} as one-off from seven for opponent`,
         );
       }
       const playerId = player.id;
@@ -901,7 +891,7 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
             throw new Error(jwres.body.message);
           }
           return jwres;
-        }
+        },
       );
     });
 });
@@ -958,7 +948,7 @@ Cypress.Commands.add('reconnectOpponent', (username, password) => {
       if (jwres.statusCode !== 200) {
         throw new Error(`Error reconnecting opponent: ${jwres.body.message}`);
       }
-    }
+    },
   );
 });
 
@@ -977,13 +967,9 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
   cy.window()
     .its('cuttle.app.$store.state.game')
     .then((game) => {
-      const foundCard = game.players[game.myPNum].hand.find((handCard) =>
-        cardsMatch(card, handCard)
-      );
+      const foundCard = game.players[game.myPNum].hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
-        throw new Error(
-          `Cannot one-off & resolve: cannot find ${printCard(card)} in player's hand`
-        );
+        throw new Error(`Cannot one-off & resolve: cannot find ${printCard(card)} in player's hand`);
       }
       // Play chosen card as one-off
       cy.get(`[data-player-hand-card=${card.rank}-${card.suit}]`).click();

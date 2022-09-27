@@ -150,10 +150,7 @@ export default {
       this.$emit('clear-selection');
     },
     counter(twoId) {
-      this.$store
-        .dispatch('requestCounter', twoId)
-        .then(this.clearSelection)
-        .catch(this.handleError);
+      this.$store.dispatch('requestCounter', twoId).then(this.clearSelection).catch(this.handleError);
     },
     discard(cardIds) {
       const [cardId1] = cardIds;
@@ -170,10 +167,7 @@ export default {
       this.$store.dispatch('requestResolve').then(this.clearSelection).catch(this.handleError);
     },
     resolveThree(cardId) {
-      this.$store
-        .dispatch('requestResolveThree', cardId)
-        .then(this.clearSelection)
-        .catch(this.handleError);
+      this.$store.dispatch('requestResolveThree', cardId).then(this.clearSelection).catch(this.handleError);
     },
     resolveSevenDoubleJacks({ cardId, index }) {
       this.$store

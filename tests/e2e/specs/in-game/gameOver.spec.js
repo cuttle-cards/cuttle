@@ -9,27 +9,18 @@ import {
 
 function assertVictory() {
   cy.log('Asserting player victory');
-  cy.get('#game-over-dialog')
-    .should('be.visible')
-    .get('[data-cy=victory-heading]')
-    .should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
 }
 
 function assertLoss() {
   cy.log('Asserting player loss');
-  cy.get('#game-over-dialog')
-    .should('be.visible')
-    .get('[data-cy=loss-heading]')
-    .should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
   cy.get('[data-cy=loss-img]').should('be.visible');
 }
 
 function assertStalemate() {
   cy.log('Asserting stalemate');
-  cy.get('#game-over-dialog')
-    .should('be.visible')
-    .get('[data-cy=stalemate-heading]')
-    .should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=stalemate-heading]').should('be.visible');
   cy.get('[data-cy=stalemate-img]').should('be.visible');
 }
 
@@ -163,18 +154,12 @@ describe('Losing the game', () => {
     cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
 
     // Cancel Concede
-    cy.get('#request-gameover-dialog')
-      .should('be.visible')
-      .get('[data-cy=request-gameover-cancel]')
-      .click();
+    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-cancel]').click();
     cy.get('#request-gameover-dialog').should('not.be.visible');
     // Re-open concede menu and confirm concession
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
-    cy.get('#request-gameover-dialog')
-      .should('be.visible')
-      .get('[data-cy=request-gameover-confirm]')
-      .click();
+    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
     assertLoss();
     goHomeJoinNewGame();
   });

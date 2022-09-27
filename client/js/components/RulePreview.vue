@@ -6,12 +6,7 @@
       :alt="`How to play ${title} in Cuttle`"
       aspect-ratio="1.7778"
     />
-    <v-img
-      v-else
-      :src="animatedImg"
-      :alt="`Animated preview of ${title} in Cuttle`"
-      aspect-ratio="1.7778"
-    />
+    <v-img v-else :src="animatedImg" :alt="`Animated preview of ${title} in Cuttle`" aspect-ratio="1.7778" />
     <p class="mt-2">
       <v-icon v-if="icon" color="black" class="mr-2"> mdi-{{ icon }} </v-icon>
       <strong>{{ title }}:</strong>

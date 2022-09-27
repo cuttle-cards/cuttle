@@ -29,11 +29,7 @@ module.exports = {
   createCard: function (options) {
     return new Promise(function (resolve, reject) {
       var validArgs =
-        options.suit > -1 &&
-        options.suit < 4 &&
-        options.suit > -1 &&
-        options.suit < 14 &&
-        options.gameId;
+        options.suit > -1 && options.suit < 4 && options.suit > -1 && options.suit < 14 && options.gameId;
       if (validArgs) {
         var { gameId } = options;
         var { suit } = options;
@@ -98,8 +94,7 @@ module.exports = {
             ruleText = 'Scrap all Royals and Glasses eights';
             break;
           case 7:
-            ruleText =
-              'Play one of the top two cards of the deck and put the other back (both are revealed)';
+            ruleText = 'Play one of the top two cards of the deck and put the other back (both are revealed)';
             break;
           case 8:
             ruleText = 'Your opponent plays with an open hand (their cards are revealed to you)';
@@ -117,8 +112,7 @@ module.exports = {
             ruleText = 'Your other cards may only be targeted by scuttles';
             break;
           case 13:
-            ruleText =
-              'Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 7pts, 4K: 5pts)';
+            ruleText = 'Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 7pts, 4K: 5pts)';
             break;
         }
 

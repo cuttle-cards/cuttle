@@ -2,10 +2,7 @@ module.exports = function (req, res) {
   return gameService
     .populateGame({ gameId: req.session.game })
     .then(function clearGame(game) {
-      return Promise.all([
-        Promise.resolve(game),
-        gameService.clearGame({ userId: req.session.usr }),
-      ]);
+      return Promise.all([Promise.resolve(game), gameService.clearGame({ userId: req.session.usr })]);
     })
     .then(function publishAndRespond(values) {
       const game = values[0];

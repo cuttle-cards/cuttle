@@ -280,7 +280,7 @@ export default {
         return '';
       }
       return uniq(
-        playerMatches.filter((match) => match.result === Result.WON).map((match) => match.opponent)
+        playerMatches.filter((match) => match.result === Result.WON).map((match) => match.opponent),
       ).join(', ');
     },
     isCurrentPlayer(username) {

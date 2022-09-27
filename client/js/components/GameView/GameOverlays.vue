@@ -1,17 +1,9 @@
 <template>
   <div class="game-overlays">
-    <v-overlay
-      id="waiting-for-opponent-counter-scrim"
-      v-model="waitingForOpponentToCounter"
-      opacity=".6"
-    >
+    <v-overlay id="waiting-for-opponent-counter-scrim" v-model="waitingForOpponentToCounter" opacity=".6">
       <h1>{{ waitingForOpponetToCounterMessage }}</h1>
     </v-overlay>
-    <v-overlay
-      id="waiting-for-opponent-discard-scrim"
-      v-model="waitingForOpponentToDiscard"
-      opacity=".6"
-    >
+    <v-overlay id="waiting-for-opponent-discard-scrim" v-model="waitingForOpponentToDiscard" opacity=".6">
       <h1>Opponent Is Discarding</h1>
     </v-overlay>
     <v-overlay
@@ -28,11 +20,7 @@
     >
       <h1>Opponent Playing from Deck</h1>
     </v-overlay>
-    <v-overlay
-      id="waiting-for-opponent-stalemate-scrim"
-      v-model="waitingForOpponentToStalemate"
-      opacity=".6"
-    >
+    <v-overlay id="waiting-for-opponent-stalemate-scrim" v-model="waitingForOpponentToStalemate" opacity=".6">
       <h1>Opponent Considering Stalemate Request</h1>
     </v-overlay>
     <move-choice-overlay

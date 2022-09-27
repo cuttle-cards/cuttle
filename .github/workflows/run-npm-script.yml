@@ -12,7 +12,7 @@ on:
 
 jobs:
   run_npm_script:
-    name: "Run NPM Script"
+    name: 'Run NPM Script'
     runs-on: ubuntu-latest
     steps:
       # Checkout and node setup are shared in both `pr-actions.yml` and `run-npm-script.yml`
@@ -22,7 +22,7 @@ jobs:
       - name: set node version
         uses: actions/setup-node@v3
         with:
-          node-version: "16.17.0"
+          node-version: '16.17.0'
           cache: 'npm'
       - name: install node modules
         run: npm ci
