@@ -3,8 +3,14 @@ const sharedTestRules = {
 };
 
 module.exports = {
+  root: true,
   env: {
+    browser: true,
     node: true,
+    es6: true,
+  },
+  parserOptions: {
+    ecmaVersion: 'latest',
   },
   extends: [
     'eslint:recommended',
@@ -34,23 +40,31 @@ module.exports = {
     'no-case-declarations': 'warn',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'quotes': ['error', 'single'],
   },
   overrides: [
     // Vue specific rules
     {
       files: ['**/client/**/*.{j,t}s?(x)'],
       extends: [
+        'eslint:recommended',
+        'plugin:prettier/recommended',
         'plugin:vue/recommended',
       ],
       rules: {
         'no-undef': 'warn',
         'no-prototype-builtins': 'warn',
+        'no-case-declarations': 'warn',
       },
     },
     // Storybook specific rules
     {
       files: ['**/(.storybook|stories)/**/*.{j,t}s?(x)'],
-      extends: ['plugin:storybook/recommended'],
+      extends: [
+        'eslint:recommended',
+        'plugin:prettier/recommended',
+        'plugin:storybook/recommended',
+      ],
       rules: {
         'no-undef': 'warn',
         'no-prototype-builtins': 'warn',
@@ -91,6 +105,7 @@ module.exports = {
         socket1: true,
         socket2: true,
         socket3: true,
+        Promise: true,
       },
       rules: sharedTestRules,
     },

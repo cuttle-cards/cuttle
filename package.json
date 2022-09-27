@@ -54,8 +54,8 @@
     "e2e:mockprod": "CUTTLE_ENV=production npm run e2e:server",
     "e2e:server": "VUE_APP_API_URL=http://localhost:1337 npx cypress run --config-file tests/cypress.config.js",
     "e2e:server:gui": "VUE_APP_API_URL=http://localhost:1337 npx cypress open --config-file tests/cypress.config.js",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix .",
-    "lint:fix": "prettier . --write",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint:fix": "prettier --config .prettierrc . --write",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook"
   }
