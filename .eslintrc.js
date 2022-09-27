@@ -5,12 +5,11 @@ const sharedTestRules = {
 module.exports = {
   root: true,
   env: {
-    browser: true,
-    node: true,
-    es6: true,
+    es2021: true,
   },
   parserOptions: {
     ecmaVersion: 'latest',
+    sourceType: 'module',
   },
   extends: ['eslint:recommended', 'prettier'],
   plugins: ['cypress', 'jest', 'prettier'],

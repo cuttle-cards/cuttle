@@ -13,7 +13,7 @@ const app = new Vue({
 }).$mount('#app');
 
 // Expose app for testing
-if (process.env.NODE_ENV === 'development' || window.Cypress) {
+if (import.meta.env.NODE_ENV === 'development' || window.Cypress) {
   window.cuttle = {
     app,
   };
