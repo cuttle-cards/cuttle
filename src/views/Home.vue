@@ -11,7 +11,7 @@
       </v-row>
       <div id="game-list-card">
         <v-row>
-          <v-col :cols="$vuetify.breakpoint.mdAndDown ? 12 : 9">
+          <v-col :cols="$vuetify.display.mdAndDown ? 12 : 9">
             <div id="card-content-header" class="mb-4">
               <h1 id="home-card-title">Games</h1>
               <v-row class="create-game-btn">
@@ -39,7 +39,7 @@
               outlined
               color="primary"
               class="mt-4"
-              :small="$vuetify.breakpoint.mdAndDown ? true : false"
+              :small="$vuetify.display.mdAndDown ? true : false"
               to="rules"
               data-cy="rules-link"
             >
@@ -49,7 +49,7 @@
               outlined
               color="secondary"
               class="mt-4"
-              :small="$vuetify.breakpoint.mdAndDown ? true : false"
+              :small="$vuetify.display.mdAndDown ? true : false"
               href="https://human-ai-interaction.github.io/cuttle-bot/"
               target="_blank"
               data-cy="ai-link"
@@ -59,7 +59,7 @@
             <v-btn
               outlined
               class="mt-4"
-              :small="$vuetify.breakpoint.mdAndDown"
+              :small="$vuetify.display.mdAndDown"
               href="https://discord.gg/9vrAZ8xGyh"
               target="_blank"
             >

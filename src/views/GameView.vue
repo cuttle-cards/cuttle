@@ -9,7 +9,7 @@
       <div id="game-menu-wrapper" class="d-flex flex-column">
         <game-menu />
         <v-icon
-          v-if="$vuetify.breakpoint.xs"
+          v-if="$vuetify.display.xs"
           color="neutral lighten-1"
           large
           @click.stop="showHistoryDrawer = !showHistoryDrawer"
@@ -20,7 +20,7 @@
 
       <!-- Mobile History Drawer -->
       <v-navigation-drawer
-        v-if="$vuetify.breakpoint.xs"
+        v-if="$vuetify.display.xs"
         v-model="showHistoryDrawer"
         class="c-history-drawer"
         fixed
@@ -68,7 +68,7 @@
                     name="slide-above"
                   >
                     <v-slide-group
-                      v-if="$vuetify.breakpoint.xs"
+                      v-if="$vuetify.display.xs"
                       key="opponent-slide-group"
                       active-class="success"
                       :show-arrows="true"
@@ -267,7 +267,7 @@
       </div>
 
       <!-- History -->
-      <div v-if="$vuetify.breakpoint.smAndUp" class="history-container">
+      <div v-if="$vuetify.display.smAndUp" class="history-container">
         <div id="field-right">
           <div id="history" class="d-flex flex-column justify-start align-center elevation-10">
             <h3 class="history-title">History</h3>
@@ -307,7 +307,7 @@
             :class="{ 'my-turn': isPlayersTurn }"
           >
             <username-tool-tip
-              v-if="$vuetify.breakpoint.smAndUp"
+              v-if="$vuetify.display.smAndUp"
               id="player-username-container"
               key="player-username"
               :username="playerUsername"
@@ -320,7 +320,7 @@
                 class="d-flex justify-center align-start player-cards-mobile-overrides"
                 :class="{ 'my-turn': isPlayersTurn }"
               >
-                <v-slide-group v-if="$vuetify.breakpoint.xs" key="slide-group" :show-arrows="true">
+                <v-slide-group v-if="$vuetify.display.xs" key="slide-group" :show-arrows="true">
                   <v-slide-item v-for="(card, index) in player.hand" :key="card.id">
                     <card
                       :key="card.id"
@@ -466,7 +466,7 @@ export default {
     // Responsiveness //
     ////////////////////
     deckLogoWidth() {
-      switch (this.$vuetify.breakpoint.name) {
+      switch (this.$vuetify.display.name) {
         case 'xs':
           return 50;
         case 'sm':

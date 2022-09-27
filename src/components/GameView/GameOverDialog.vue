@@ -59,7 +59,7 @@ export default {
       },
     },
     logoWidth() {
-      switch (this.$vuetify.breakpoint.name) {
+      switch (this.$vuetify.display.name) {
         case 'xs':
         case 'sm':
           return '180';

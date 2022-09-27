@@ -3,7 +3,7 @@
     <template #activator="{ on, attrs }">
       <span v-bind="attrs" v-on="on">
         <slot name="activator">
-          <v-btn id="rules-button" color="primary" outlined :small="$vuetify.breakpoint.mdAndDown">
+          <v-btn id="rules-button" color="primary" outlined :small="$vuetify.display.mdAndDown">
             Rules
           </v-btn>
         </slot>

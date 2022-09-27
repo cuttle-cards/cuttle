@@ -1,5 +1,5 @@
+import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
-let _ = require('lodash');
 
 class GameSummary {
   constructor(obj) {
@@ -50,7 +50,7 @@ export default {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/getList', function handleResponse(resData, jwres) {
           if (jwres.statusCode === 200) {
-            const games = _.cloneDeep(resData.games);
+            const games = cloneDeep(resData.games);
             context.commit('refreshGames', games);
             return resolve(resData.games);
           }

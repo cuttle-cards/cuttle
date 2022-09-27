@@ -38,13 +38,13 @@ export default {
       return this.playerUsername || 'Invite';
     },
     playerPadding() {
-      return this.$vuetify.breakpoint.mdAndUp ? '72px' : '32px';
+      return this.$vuetify.display.mdAndUp ? '72px' : '32px';
     },
     readyFontSize() {
-      return this.$vuetify.breakpoint.mdAndUp ? '1.5em' : '1.15em';
+      return this.$vuetify.display.mdAndUp ? '1.5em' : '1.15em';
     },
     readyPadding() {
-      return this.$vuetify.breakpoint.mdAndUp ? '8px' : '4px';
+      return this.$vuetify.display.mdAndUp ? '8px' : '4px';
     },
   },
 };

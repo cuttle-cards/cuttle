@@ -11,7 +11,7 @@
           <v-text-field
             v-model="username"
             outlined
-            :dense="$vuetify.breakpoint.mdAndDown ? true : false"
+            :dense="$vuetify.display.mdAndDown ? true : false"
             hint="Username"
             data-cy="username"
             autocomplete="username"
@@ -21,7 +21,7 @@
             v-model="pw"
             outlined
             hint="Password"
-            :dense="$vuetify.breakpoint.mdAndDown ? true : false"
+            :dense="$vuetify.display.mdAndDown ? true : false"
             type="password"
             data-cy="password"
             :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"

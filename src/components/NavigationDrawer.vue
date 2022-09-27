@@ -76,7 +76,7 @@ export default {
       return !pagesToHideNav.includes(this.$route.name);
     },
     isSmallDevice() {
-      return this.$vuetify.breakpoint.smAndDown;
+      return this.$vuetify.display.smAndDown;
     },
     isCollapsed() {
       return this.userHasCollapsed || this.isSmallDevice;

@@ -6,7 +6,7 @@
           :src="require('../img/logo_head.svg')"
           class="my-1"
           contain
-          :height="$vuetify.breakpoint.smAndUp ? 62 : 32"
+          :height="$vuetify.display.smAndUp ? 62 : 32"
         />
       </v-col>
       <v-col sm="7" lg="6" class="list-item__inner-text">
@@ -23,7 +23,7 @@
           min-width="200"
           :disabled="!status"
           :loading="joiningGame"
-          :small="!$vuetify.breakpoint.lg"
+          :small="!$vuetify.display.lg"
           @click="subscribeToGame"
         >
           <v-icon v-if="isRanked" class="mr-4" medium>mdi-trophy</v-icon>

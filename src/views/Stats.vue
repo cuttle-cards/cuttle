@@ -71,12 +71,11 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
 import { io } from '@/plugins/sails.js';
 import AwardCard from '@/components/AwardCard.vue';
 import StatsLeaderboard from '@/components/StatsLeaderboard.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
-
-const dayjs = require('dayjs');
 
 export default {
   name: 'Stats',

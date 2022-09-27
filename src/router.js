@@ -1,17 +1,15 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-import LoginSignup from '../views/LoginSignup.vue';
-import Lobby from '../views/Lobby.vue';
-import GameView from '../views/GameView.vue';
-import Rules from '../views/Rules.vue';
-import Stats from '../views/Stats.vue';
-import store from '../store/store.js';
+import { createRouter, createWebHashHistory } from 'vue-router';
+
+import Home from '@/views/Home.vue';
+import LoginSignup from '@/views/LoginSignup.vue';
+import Lobby from '@/views/Lobby.vue';
+import GameView from '@/views/GameView.vue';
+import Rules from '@/views/Rules.vue';
+import Stats from '@/views/Stats.vue';
+import store from '@/store/store.js';
 
 export const ROUTE_NAME_LOBBY = 'Lobby';
 export const ROUTE_NAME_GAME = 'Game';
-
-Vue.use(VueRouter);
 
 const mustBeAuthenticated = (to, from, next) => {
   if (store.state.auth.authenticated) {
@@ -72,7 +70,8 @@ const routes = [
   },
 ];
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHashHistory(),
   routes,
 });
 

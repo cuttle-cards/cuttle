@@ -1,6 +1,6 @@
+import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 
-var _ = require('lodash');
 function resetState() {
   return {
     id: null,
@@ -158,29 +158,28 @@ export default {
       state.waitingForOpponentToStalemate = false;
       if (Object.hasOwnProperty.call(newGame, 'id')) state.id = newGame.id;
       if (Object.hasOwnProperty.call(newGame, 'turn')) state.turn = newGame.turn;
-      if (Object.hasOwnProperty.call(newGame, 'chat')) state.chat = _.cloneDeep(newGame.chat);
-      if (Object.hasOwnProperty.call(newGame, 'deck')) state.deck = _.cloneDeep(newGame.deck);
-      if (Object.hasOwnProperty.call(newGame, 'scrap')) state.scrap = _.cloneDeep(newGame.scrap);
-      if (Object.hasOwnProperty.call(newGame, 'log')) state.log = _.cloneDeep(newGame.log);
+      if (Object.hasOwnProperty.call(newGame, 'chat')) state.chat = cloneDeep(newGame.chat);
+      if (Object.hasOwnProperty.call(newGame, 'deck')) state.deck = cloneDeep(newGame.deck);
+      if (Object.hasOwnProperty.call(newGame, 'scrap')) state.scrap = cloneDeep(newGame.scrap);
+      if (Object.hasOwnProperty.call(newGame, 'log')) state.log = cloneDeep(newGame.log);
       if (Object.hasOwnProperty.call(newGame, 'name')) state.name = newGame.name;
       if (Object.hasOwnProperty.call(newGame, 'p0Ready')) state.p0Ready = newGame.p0Ready;
       if (Object.hasOwnProperty.call(newGame, 'p1Ready')) state.p1Ready = newGame.p1Ready;
       if (Object.hasOwnProperty.call(newGame, 'passes')) state.passes = newGame.passes;
-      if (Object.hasOwnProperty.call(newGame, 'players')) state.players = _.cloneDeep(newGame.players);
-      if (Object.hasOwnProperty.call(newGame, 'twos')) state.twos = _.cloneDeep(newGame.twos);
+      if (Object.hasOwnProperty.call(newGame, 'players')) state.players = cloneDeep(newGame.players);
+      if (Object.hasOwnProperty.call(newGame, 'twos')) state.twos = cloneDeep(newGame.twos);
 
-      if (Object.hasOwnProperty.call(newGame, 'topCard')) state.topCard = _.cloneDeep(newGame.topCard);
+      if (Object.hasOwnProperty.call(newGame, 'topCard')) state.topCard = cloneDeep(newGame.topCard);
       else state.topCard = null;
 
-      if (Object.hasOwnProperty.call(newGame, 'secondCard'))
-        state.secondCard = _.cloneDeep(newGame.secondCard);
+      if (Object.hasOwnProperty.call(newGame, 'secondCard')) state.secondCard = cloneDeep(newGame.secondCard);
       else state.secondCard = null;
 
-      if (Object.hasOwnProperty.call(newGame, 'oneOff')) state.oneOff = _.cloneDeep(newGame.oneOff);
+      if (Object.hasOwnProperty.call(newGame, 'oneOff')) state.oneOff = cloneDeep(newGame.oneOff);
       else state.oneOff = null;
 
       if (Object.hasOwnProperty.call(newGame, 'oneOffTarget'))
-        state.oneOffTarget = _.cloneDeep(newGame.oneOffTarget);
+        state.oneOffTarget = cloneDeep(newGame.oneOffTarget);
       else state.oneOffTarget = null;
 
       if (Object.hasOwnProperty.call(newGame, 'isRanked')) state.isRanked = newGame.isRanked;
@@ -189,11 +188,11 @@ export default {
       state.myPNum = val;
     },
     opponentJoined(state, newPlayer) {
-      state.players.push(_.cloneDeep(newPlayer));
+      state.players.push(cloneDeep(newPlayer));
       state.players.sort((player, opponent) => player.pNum - opponent.pNum);
     },
     successfullyJoined(state, player) {
-      state.players.push(_.cloneDeep(player));
+      state.players.push(cloneDeep(player));
     },
     successfullyLeft(state) {
       // Must use Object.assign to preserve reactivity
