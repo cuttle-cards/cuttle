@@ -1,7 +1,4 @@
 {
   "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "octref.vetur",
-    "rvest.vs-code-prettier-eslint"
   ]
 }
