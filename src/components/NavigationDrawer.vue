@@ -20,10 +20,10 @@
 
     <!-- Expand/Collapse -->
     <template #append>
-      <v-list v-if="!isSmallDevice && !isCollapsed">
+      <v-list v-if="!isSmallDevice">
         <v-list-item
           :prepend-icon="collapseMenuIcon"
-          title="Collapse Menu"
+          :title="`${!isCollapsed ? 'Collapse Menu' : ''}`"
           :data-cy="collapseMenuAttribute"
           @click="userHasCollapsed = !userHasCollapsed"
         />
