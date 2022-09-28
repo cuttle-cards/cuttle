@@ -15,9 +15,7 @@
         <h2>{{ moveName }}</h2>
       </v-card-title>
       <v-card-text class="d-flex flex-column justify-center align-center">
-        <v-icon v-if="iconName" x-large>
-          {{ iconName }}
-        </v-icon>
+        <v-icon v-if="iconName" x-large :icon="iconName" />
         <p>{{ moveDescription }}</p>
         <p v-if="disabled && !!disabledExplanation" class="red--text">
           {{ disabledExplanation }}

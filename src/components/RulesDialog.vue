@@ -13,7 +13,7 @@
       <v-card-title class="d-flex justify-space-between">
         <h1>Rules of Cuttle</h1>
         <v-btn icon @click="show = false">
-          <v-icon large> mdi-close </v-icon>
+          <v-icon icon="mdi-close" large />
         </v-btn>
       </v-card-title>
       <v-card-text>

@@ -5,8 +5,8 @@
       <v-card-text>
         <p>Your opponent has requested a stalemate. If you accept, the game will end in a tie.</p>
         <div class="d-flex justify-center">
-          <v-icon class="mr-8" size="80px">mdi-offer</v-icon>
-          <v-icon size="80px">mdi-help-circle</v-icon>
+          <v-icon class="mr-8" size="80px" icon="mdi-offer" />
+          <v-icon size="80px" icon="mdi-help-circle" />
         </div>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">

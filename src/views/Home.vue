@@ -76,7 +76,7 @@
       data-cy="newgame-snackbar"
     >
       {{ snackBarMessage }}
-      <v-icon data-cy="close-snackbar" @click="clearSnackBar"> mdi-close </v-icon>
+      <v-icon data-cy="close-snackbar" @click="clearSnackBar" icon="mdi-close" />
     </v-snackbar>
   </div>
 </template>

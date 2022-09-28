@@ -10,7 +10,7 @@
     :elevation="elevation"
     @click="$emit('click')"
   >
-    <v-icon v-if="isFrozen" class="player-card-icon mr-1 mt-1" color="#00a5ff"> mdi-snowflake </v-icon>
+    <v-icon v-if="isFrozen" class="player-card-icon mr-1 mt-1" color="#00a5ff" icon="mdi-snowflake" />
     <v-overlay
       v-ripple
       :value="isValidTarget"

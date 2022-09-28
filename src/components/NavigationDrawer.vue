@@ -18,7 +18,7 @@
         :to="page"
         :data-nav="text"
       >
-        <v-icon class="mr-4"> mdi-{{ icon }} </v-icon>
+        <v-icon class="mr-4" :icon="`mdi-${icon}`" />
         {{ text }}
       </v-list-item>
     </v-list>
@@ -26,7 +26,7 @@
     <template #append>
       <v-list v-if="!isSmallDevice">
         <v-list-item :data-cy="collapseMenuAttribute" @click="userHasCollapsed = !userHasCollapsed">
-          <v-icon class="mr-2">{{ collapseMenuIcon }}</v-icon>
+          <v-icon class="mr-2" :icon="collapseMenuIcon" />
           <template v-if="!isCollapsed">Collapse Menu</template>
         </v-list-item>
       </v-list>

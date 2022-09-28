@@ -62,7 +62,7 @@
       <!-- Royals -->
       <v-row class="flex-column">
         <div class="d-flex">
-          <v-icon x-large color="black" class="mr-4"> mdi-crown </v-icon>
+          <v-icon x-large color="black" class="mr-4" icon="mid-crown" />
           <h1 class="gradient-text">Royals</h1>
         </div>
         <p class="d-block">
@@ -82,7 +82,7 @@
       <!-- One-Offs -->
       <v-row>
         <div class="d-flex">
-          <v-icon x-large color="black" class="mr-4"> mdi-delete </v-icon>
+          <v-icon x-large color="black" class="mr-4" icon="mdi-delete" />
           <h1 class="gradient-text">One-Offs</h1>
         </div>
         <p>

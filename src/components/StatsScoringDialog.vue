@@ -4,7 +4,7 @@
     <template #activator="{ on, attrs }">
       <v-btn color="primary" text class="mb-2" v-bind="attrs" v-on="on">
         <span v-if="showButtonText"> How are ranks determined? </span>
-        <v-icon class="ml-1">mdi-information-outline</v-icon>
+        <v-icon class="ml-1" icon="mdi-information-outline" />
       </v-btn>
     </template>
     <!-- Dialog -->
@@ -12,7 +12,7 @@
       <v-card-title class="d-flex justify-space-between">
         <h1>Ranked Scoring</h1>
         <v-btn icon @click="show = false">
-          <v-icon large>mdi-close</v-icon>
+          <v-icon icon="mdi-close" large />
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -34,15 +34,15 @@
         </p>
         <v-list>
           <v-list-item>
-            <v-icon :color="theme.firstPlace" class="mr-2">mdi-medal</v-icon>
+            <v-icon :color="theme.firstPlace" class="mr-2" icon="mdi-medal" />
             The player with the most wins gets 5 points for the week
           </v-list-item>
           <v-list-item>
-            <v-icon :color="theme.secondPlace" class="mr-2">mdi-medal</v-icon>
+            <v-icon :color="theme.secondPlace" class="mr-2" icon="mdi-medal" />
             The player with the 2nd most wins gets 4 points for the week
           </v-list-item>
           <v-list-item>
-            <v-icon :color="theme.thirdPlace" class="mr-2">mdi-medal</v-icon>
+            <v-icon :color="theme.thirdPlace" class="mr-2" icon="mdi-medal" />
             The player with the 3rd most wins gets 3 points for the week
           </v-list-item>
           <v-list-item> Each other player who won at least one match gets 1 point for the week </v-list-item>

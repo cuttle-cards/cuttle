@@ -3,7 +3,7 @@
     <!-- Activator -->
     <template #activator="{ on, attrs }">
       <v-btn id="game-menu-activator" v-bind="attrs" class="ma-2" icon v-on="on">
-        <v-icon large color="neutral lighten-1"> mdi-cog </v-icon>
+        <v-icon large color="neutral lighten-1" icon="mdi-cog" />
       </v-btn>
     </template>
     <!-- Menu -->

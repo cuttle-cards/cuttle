@@ -45,7 +45,7 @@
           data-cy="auth-snackbar"
         >
           {{ snackBarMessage }}
-          <v-icon data-cy="close-snackbar" @click="clearSnackBar"> mdi-close </v-icon>
+          <v-icon icon="mdi-close" data-cy="close-snackbar" @click="clearSnackBar" />
         </v-snackbar>
       </v-col>
     </v-row>

@@ -35,7 +35,7 @@
     >
       {{ snackBarMessage }}
       <v-btn icon @click="clearSnackBar">
-        <v-icon>mdi-close</v-icon>
+        <v-icon icon="mdi-close" />
       </v-btn>
     </v-snackbar>
   </v-dialog>

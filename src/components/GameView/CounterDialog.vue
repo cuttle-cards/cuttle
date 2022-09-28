@@ -19,7 +19,7 @@
           </p>
           <div v-if="target" id="target-wrapper">
             <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-              <v-icon x-large color="red">mdi-target</v-icon>
+              <v-icon x-large color="red" icon="mdi-target" />
             </span>
             <card :suit="target.suit" :rank="target.rank" />
           </div>

@@ -11,11 +11,10 @@
         <v-icon
           v-if="$vuetify.display.xs"
           color="neutral lighten-1"
+          icon="mdi-account-clock"
           large
           @click.stop="showHistoryDrawer = !showHistoryDrawer"
-        >
-          mdi-account-clock
-        </v-icon>
+        />
       </div>
 
       <!-- Mobile History Drawer -->
@@ -33,9 +32,12 @@
               <h3>History</h3>
             </v-list-item-content>
             <v-list-item-icon>
-              <v-icon color="neutral" large @click.stop="showHistoryDrawer = !showHistoryDrawer">
-                mdi-window-close
-              </v-icon>
+              <v-icon
+                color="neutral"
+                icon="mdi-window-close"
+                large
+                @click.stop="showHistoryDrawer = !showHistoryDrawer"
+              />
             </v-list-item-icon>
           </v-list-item>
         </template>
@@ -373,7 +375,7 @@
       >
         {{ snackMessage }}
         <v-btn icon>
-          <v-icon data-cy="close-snackbar" @click="clearSnackBar"> mdi-close </v-icon>
+          <v-icon icon="mdi-close" data-cy="close-snackbar" @click="clearSnackBar" />
         </v-btn>
       </v-snackbar>
       <game-overlays
