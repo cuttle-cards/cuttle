@@ -407,10 +407,10 @@ export default {
   methods: {
     handleAnimate(cmp) {
       const { animate } = cmp;
-      // reset other previews if we're currently animating
       if (!animate) {
         return;
       }
+      // reset other previews if we're currently animating
       this.$refs.preview.filter(c => c !== cmp).forEach(c => c.animate = false);
     },
   },
