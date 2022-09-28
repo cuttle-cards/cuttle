@@ -81,11 +81,7 @@
         </v-btn>
       </v-col>
       <v-col md="6" sm="12" class="mt-2 mb-4">
-        <v-img
-          src="/img/game/cuttle-one-off-ace.png"
-          alt="Cuttle Game Ace One-Off"
-          max-width="600px"
-        />
+        <v-img src="/img/game/cuttle-one-off-ace.png" alt="Cuttle Game Ace One-Off" max-width="600px" />
       </v-col>
     </v-row>
   </v-container>

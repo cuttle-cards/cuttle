@@ -2,12 +2,7 @@
   <div>
     <v-row class="list-item" data-cy="game-list-item">
       <v-col v-if="$vuetify.breakpoint.lgAndUp" sm="2" lg="3">
-        <v-img
-          src="/img/logo-head.svg"
-          class="my-1"
-          contain
-          :height="$vuetify.display.smAndUp ? 62 : 32"
-        />
+        <v-img src="/img/logo-head.svg" class="my-1" contain :height="$vuetify.display.smAndUp ? 62 : 32" />
       </v-col>
       <v-col sm="7" lg="6" class="list-item__inner-text">
         <p class="game-name" data-cy="game-list-item-name">

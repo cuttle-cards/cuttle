@@ -1,11 +1,6 @@
 <template>
   <div class="rule-preview">
-    <v-img
-      v-if="!animate"
-      :src="staticImg"
-      :alt="`How to play ${title} in Cuttle`"
-      aspect-ratio="1.7778"
-    />
+    <v-img v-if="!animate" :src="staticImg" :alt="`How to play ${title} in Cuttle`" aspect-ratio="1.7778" />
     <v-img v-else :src="animatedImg" :alt="`Animated preview of ${title} in Cuttle`" aspect-ratio="1.7778" />
     <p class="mt-2">
       <v-icon v-if="icon" color="black" class="mr-2" :icon="`mdi-${icon}`" />
@@ -13,7 +8,7 @@
       {{ description }}
     </p>
     <div class="d-flex justify-center">
-      <v-btn :color="buttonColor" outlined @click="$emit('click', !animate)">
+      <v-btn :color="buttonColor" outlined @click="toggleAnimate">
         <v-icon :icon="buttonIcon" />
         {{ buttonText }}
       </v-btn>
@@ -41,14 +36,15 @@ export default {
       type: String,
       required: true,
     },
-    animate: {
-      type: Boolean,
-      default: false,
-    },
     icon: {
       type: String,
       default: '',
     },
+  },
+  data() {
+    return {
+      animate: false,
+    };
   },
   computed: {
     buttonText() {
@@ -59,6 +55,11 @@ export default {
     },
     buttonColor() {
       return this.animate ? 'secondary' : 'primary';
+    },
+  },
+  methods: {
+    toggleAnimate() {
+      this.animate = !this.animate;
     },
   },
 };
