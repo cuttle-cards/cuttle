@@ -361,7 +361,7 @@ export default {
 
 <style scoped>
 :deep .active-user-stats {
-  background-color: var(--v-theme-accent-lighten3);
+  background-color: rgba(var(--v-theme-accent-lighten3));
 }
 :deep .v-select.fit {
   width: min-content;

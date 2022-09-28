@@ -56,11 +56,11 @@ export default {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--v-theme-neutral-lighten3);
+  background-color: rgba(var(--v-theme-neutral-lighten3));
   border-radius: 8px;
 }
 .player-in {
-  background-image: linear-gradient(45deg, var(--v-theme-secondary), var(--v-theme-primary));
+  background-image: linear-gradient(45deg, rgba(var(--v-theme-secondary)), rgba(var(--v-theme-primary)));
 }
 .avatar {
   display: inline-block;
@@ -71,12 +71,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 4px dashed var(--v-theme-accent-darken1);
-  background-color: var(--v-theme-neutral);
+  border: 4px dashed rgba(var(--v-theme-accent-darken1));
+  background-color: rgba(var(--v-theme-neutral));
   z-index: 1;
 }
 .ready .avatar {
-  border: 4px solid var(--v-theme-accent-base);
+  border: 4px solid rgba(var(--v-theme-accent-base));
 }
 .ready-overlay {
   display: flex;
