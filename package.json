@@ -54,6 +54,7 @@
     "start:dev": "vite",
     "start:build": "vite build",
     "start:serve": "vite preview",
+    "start:server": "node app.js",
     "e2e:client": "cypress run --config-file tests/cypress.config.js",
     "e2e:client:gui": "cypress open --config-file tests/cypress.config.js",
     "e2e:server": "cross-env VUE_APP_API_URL=http://localhost:1337 npx cypress run --config-file tests/cypress.config.js",

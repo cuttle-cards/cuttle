@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 const isBetween = require('dayjs/plugin/isBetween');
-const Result = require('../../types/Result');
+const Result = require('../../types/Result.es5');
 dayjs.extend(isBetween);
 
 /////////////
