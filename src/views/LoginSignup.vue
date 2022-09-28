@@ -199,7 +199,7 @@ export default {
 }
 blockquote.quote {
   padding: 0px 16px;
-  border-left: 2px solid var(--v-neutral-base);
+  border-left: 2px solid var(--v-theme-neutral);
   margin: 16px 0;
   & cite {
     display: block;

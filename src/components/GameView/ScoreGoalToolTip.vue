@@ -45,6 +45,6 @@ export default {
 
 <style lang="scss" scoped>
 .score-goal-explanation .current-goal {
-  background-color: var(--v-accent-lighten1);
+  background-color: var(--v-theme-accent-lighten1);
 }
 </style>

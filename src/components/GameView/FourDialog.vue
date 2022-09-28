@@ -90,7 +90,7 @@ export default {
 
 <style lang="scss" scoped>
 .is-selected {
-  border: 3px solid var(--v-error-base);
+  border: 3px solid var(--v-theme-error);
 }
 
 .card-container {

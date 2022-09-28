@@ -16,20 +16,17 @@ const cuttleTheme = {
     secondPlace: '#B4B4B4',
     thirdPlace: '#6A3805',
     neutral: '#A3ADB5',
+    'neutral-lighten5': '#FAFBFC',
+    'neutral-lighten4': '#FAFAFA',
+    'neutral-lighten3': '#F2F4F5',
+    'neutral-lighten2': '#E6E9EB',
+    'neutral-lighten1': '#CDD1D4',
+    'neutral-darken1': '#7D8C97',
+    'neutral-darken2': '#607280',
+    'neutral-darken3': '#3D505E',
+    'neutral-darken4': '#2A3740',
   },
 };
-
-// TODO Figure out how to specify hex values in the theme
-// neutralLighten5: '#FAFBFC',
-// neutralLighten4: '#FAFAFA',
-// neutralLighten3: '#F2F4F5',
-// neutralLighten2: '#E6E9EB',
-// neutralLighten1: '#CDD1D4',
-// neutralBase: '#A3ADB5',
-// neutralDarken1: '#7D8C97',
-// neutralDarken2: '#607280',
-// neutralDarken3: '#3D505E',
-// neutralDarken4: '#2A3740',
 
 export default createVuetify({
   components,

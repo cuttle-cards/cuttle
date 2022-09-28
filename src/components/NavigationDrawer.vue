@@ -70,7 +70,6 @@ export default {
           ];
     },
     showNav() {
-      return false;
       const pagesToHideNav = ['Lobby', 'Game'];
       return !pagesToHideNav.includes(this.$route.name);
     },
