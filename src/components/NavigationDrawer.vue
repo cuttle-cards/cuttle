@@ -1,34 +1,32 @@
 <template>
   <v-navigation-drawer
-    :value="showNav"
-    class="primary"
-    dark
-    app
+    color="primary"
     data-cy="nav-drawer"
     :permanent="showNav"
-    :mini-variant="isCollapsed"
+    :rail="isCollapsed"
+    class="text-body-1"
   >
     <!-- Page Links -->
     <v-list>
       <v-list-item
         v-for="({ text, icon, page }, i) in pageLinks"
         :key="i"
-        link
-        exact
+        :prepend-icon="`mdi-${icon}`"
+        :title="text"
         :to="page"
         :data-nav="text"
-      >
-        <v-icon class="mr-4" :icon="`mdi-${icon}`" />
-        {{ text }}
-      </v-list-item>
+      />
     </v-list>
+
     <!-- Expand/Collapse -->
     <template #append>
-      <v-list v-if="!isSmallDevice">
-        <v-list-item :data-cy="collapseMenuAttribute" @click="userHasCollapsed = !userHasCollapsed">
-          <v-icon class="mr-2" :icon="collapseMenuIcon" />
-          <template v-if="!isCollapsed">Collapse Menu</template>
-        </v-list-item>
+      <v-list v-if="!isSmallDevice && !isCollapsed">
+        <v-list-item
+          :prepend-icon="collapseMenuIcon"
+          title="Collapse Menu"
+          :data-cy="collapseMenuAttribute"
+          @click="userHasCollapsed = !userHasCollapsed"
+        />
       </v-list>
     </template>
   </v-navigation-drawer>
@@ -72,6 +70,7 @@ export default {
           ];
     },
     showNav() {
+      return false;
       const pagesToHideNav = ['Lobby', 'Game'];
       return !pagesToHideNav.includes(this.$route.name);
     },
