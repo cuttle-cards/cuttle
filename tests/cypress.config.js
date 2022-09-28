@@ -1,6 +1,7 @@
 const { defineConfig } = require('cypress');
 
-const { isProd } = require('../utils/config-utils');
+// TODO: Re-add isProd check
+const isProd = false;
 
 module.exports = defineConfig({
   // https://docs.cypress.io/guides/references/legacy-configuration#Folders-Files

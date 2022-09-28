@@ -59,7 +59,10 @@
     },
     // Sails specific rules
     {
-      "files": ["**/api/**/*.{j,t}s?(x)"],
+      "files": [
+        "**/app.js",
+        "**/api/**/*.{j,t}s?(x)"
+      ],
       "env": {
         "node": true
       },
