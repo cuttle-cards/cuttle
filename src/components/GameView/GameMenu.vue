@@ -25,7 +25,6 @@
         <v-card-text> {{ dialogText }} </v-card-text>
         <v-card-actions class="d-flex justify-end">
           <v-btn
-            text
             color="primary"
             data-cy="request-gameover-cancel"
             :disabled="loading"

@@ -8,6 +8,7 @@
         <h1 class="gradient-text">
           {{ buttonText }}
         </h1>
+
         <form @submit.prevent="submitLogin">
           <v-text-field
             v-model="username"
@@ -34,11 +35,13 @@
             </v-btn>
           </div>
         </form>
+
         <div id="switch-button-container">
-          <v-btn text color="primary" data-cy="switch-mode" @click="switchMode">
+          <v-btn color="primary" data-cy="switch-mode" @click="switchMode">
             {{ switchLabelText }}
           </v-btn>
         </div>
+
         <v-snackbar
           v-model="showSnackBar"
           color="error"
@@ -50,9 +53,11 @@
         </v-snackbar>
       </v-col>
     </v-row>
+
     <v-row class="mt-8">
       <h1 class="gradient-text">What is Cuttle?</h1>
     </v-row>
+
     <v-row class="mt-0">
       <v-col md="6" sm="12" class="d-flex justify-start flex-column mt-4">
         <blockquote class="quote">
@@ -71,9 +76,8 @@
           Deep?
         </p>
         <v-btn
-          text
           color="primary"
-          to="rules"
+          to="/rules"
           class="mt-4 align-self-center"
           max-width="500"
           data-cy="rules-link"

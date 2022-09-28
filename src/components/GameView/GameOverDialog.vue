@@ -26,7 +26,7 @@
         <v-img v-else :src="require('../../img/logo_dead.svg')" :max-width="logoWidth" data-cy="loss-img" />
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn color="primary" depressed data-cy="gameover-go-home" @click="goHome"> Go Home </v-btn>
+        <v-btn color="primary" depressed data-cy="gameover-go-home" @click="goHome">Go Home</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

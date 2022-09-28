@@ -40,7 +40,7 @@
               color="primary"
               class="mt-4"
               :small="$vuetify.display.mdAndDown ? true : false"
-              to="rules"
+              to="/rules"
               data-cy="rules-link"
             >
               Rules
