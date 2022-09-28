@@ -3,7 +3,7 @@
     <v-row class="list-item" data-cy="game-list-item">
       <v-col v-if="$vuetify.breakpoint.lgAndUp" sm="2" lg="3">
         <v-img
-          :src="require('../img/logo_head.svg')"
+          src="/img/logo-head.svg"
           class="my-1"
           contain
           :height="$vuetify.display.smAndUp ? 62 : 32"

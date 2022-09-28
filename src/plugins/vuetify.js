@@ -6,34 +6,30 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi';
 import '@mdi/font/css/materialdesignicons.css';
 import 'vuetify/styles';
 
-// TODO figure out where to put theme stuff
-// const options = {
-//   theme: {
-//     options: { customProperties: true },
-//     themes: {
-//       light: {
-//         primary: '#6202EE',
-//         secondary: '#FD6222',
-//         accent: '#219653',
-//         firstPlace: '#AF9500',
-//         secondPlace: '#B4B4B4',
-//         thirdPlace: '#6A3805',
-//         neutral: {
-//           lighten5: '#FAFBFC',
-//           lighten4: '#FAFAFA',
-//           lighten3: '#F2F4F5',
-//           lighten2: '#E6E9EB',
-//           lighten1: '#CDD1D4',
-//           base: '#A3ADB5',
-//           darken1: '#7D8C97',
-//           darken2: '#607280',
-//           darken3: '#3D505E',
-//           darken4: '#2A3740',
-//         },
-//       },
-//     },
-//   },
-// };
+const cuttleTheme = {
+  dark: false,
+  colors: {
+    primary: '#6202EE',
+    secondary: '#FD6222',
+    accent: '#219653',
+    firstPlace: '#AF9500',
+    secondPlace: '#B4B4B4',
+    thirdPlace: '#6A3805',
+    neutral: '#A3ADB5',
+  },
+};
+
+// TODO Figure out how to specify hex values in the theme
+// neutralLighten5: '#FAFBFC',
+// neutralLighten4: '#FAFAFA',
+// neutralLighten3: '#F2F4F5',
+// neutralLighten2: '#E6E9EB',
+// neutralLighten1: '#CDD1D4',
+// neutralBase: '#A3ADB5',
+// neutralDarken1: '#7D8C97',
+// neutralDarken2: '#607280',
+// neutralDarken3: '#3D505E',
+// neutralDarken4: '#2A3740',
 
 export default createVuetify({
   components,
@@ -43,6 +39,18 @@ export default createVuetify({
     aliases,
     sets: {
       mdi,
+    },
+  },
+  theme: {
+    defaultTheme: 'cuttleTheme',
+    // https://next.vuetifyjs.com/en/features/theme/#color-variations
+    // variations: {
+    //   colors: ['neutral'],
+    //   lighten: 5,
+    //   darken: 5,
+    // },
+    themes: {
+      cuttleTheme,
     },
   },
 });
