@@ -13,17 +13,17 @@
       <v-card-text class="d-flex justify-center">
         <v-img
           v-if="stalemate"
-          :src="require('../../img/logo_stalemate.svg')"
+          src="/img/-stalemate.svg"
           max-width="250"
           data-cy="stalemate-img"
         />
         <v-img
           v-else-if="playerWins"
-          :src="require('../../img/logo_body_no_text.svg')"
+          src="/img/logo-body-no-text.svg"
           :max-width="logoWidth"
           data-cy="victory-img"
         />
-        <v-img v-else :src="require('../../img/logo_dead.svg')" :max-width="logoWidth" data-cy="loss-img" />
+        <v-img v-else src="/img/logo-dead.svg" :max-width="logoWidth" data-cy="loss-img" />
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
         <v-btn color="primary" depressed data-cy="gameover-go-home" @click="goHome">Go Home</v-btn>

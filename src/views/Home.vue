@@ -2,11 +2,11 @@
   <div
     class="home pa-4"
     :class="{
-      home: $vuetify.breakpoint.lgAndUp,
+      home: $vuetify.display.lgAndUp,
     }"
   >
     <v-container>
-      <v-row v-if="$vuetify.breakpoint.mdAndDown">
+      <v-row v-if="$vuetify.display.mdAndDown">
         <img id="logo" alt="Cuttle logo" src="../img/logo.png" height="20vh" class="mb-4" />
       </v-row>
       <div id="game-list-card">
@@ -33,8 +33,8 @@
               </div>
             </div>
           </v-col>
-          <v-col id="side-nav" :cols="$vuetify.breakpoint.mdAndDown ? 12 : 3">
-            <img v-if="$vuetify.breakpoint.lgAndUp" id="logo" alt="Vue logo" src="../img/logo.png" />
+          <v-col id="side-nav" :cols="$vuetify.display.mdAndDown ? 12 : 3">
+            <img v-if="$vuetify.display.lgAndUp" id="logo" alt="Vue logo" src="../img/logo.png" />
             <v-btn
               variant="outlined"
               color="primary"

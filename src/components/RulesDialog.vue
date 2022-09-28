@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="show">
-    <template #activator="{ on, attrs }">
-      <span v-bind="attrs" v-on="on">
+    <template #activator="{ props }">
+      <span v-bind="props">
         <slot name="activator">
           <v-btn id="rules-button" color="primary" outlined :small="$vuetify.display.mdAndDown">
             Rules

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="show">
-    <template #activator="{ on, attrs }">
-      <v-btn color="primary" data-cy="create-game-btn" rounded v-bind="attrs" elevation="8" v-on="on">
+    <template #activator="{ props }">
+      <v-btn v-bind="props" color="primary" data-cy="create-game-btn" rounded elevation="8">
         Create Game
       </v-btn>
     </template>

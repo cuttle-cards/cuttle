@@ -131,7 +131,7 @@
         <div id="field-left">
           <v-card
             id="deck"
-            :img="require('@/img/cards/Bg_Deck.png')"
+            img="/img/cards/bg-deck.png"
             :class="{ 'reveal-top-two': resolvingSeven }"
             @click="drawCard"
           >
@@ -1102,7 +1102,7 @@ export default {
   color: #fff;
   width: 100vw;
   height: 100%;
-  background-image: url('~@/img/game_images/board_background.svg');
+  background-image: url('/img/game/board-background.svg');
   background-size: cover;
   background-position: center;
   display: grid;
@@ -1217,7 +1217,7 @@ export default {
   }
   & #deck,
   & #scrap {
-    background-image: url('~@/img/game_images/Bg_Scrap.png');
+    background-image: url('/img/game/bg-scrap.png');
     background-size: cover;
     position: relative;
     margin: 10px;

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="show" max-width="650" scrollable>
-    <template #activator="{ on, attrs }">
-      <span v-bind="attrs" v-on="on">
+    <template #activator="{ props }">
+      <span v-bind="props">
         <slot name="activator" />
       </span>
     </template>
