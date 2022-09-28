@@ -41,7 +41,7 @@
       "env": {
         "browser": true
       },
-      "extends": ["eslint:recommended", "plugin:prettier/recommended", "plugin:vue/recommended"],
+      "extends": ["eslint:recommended", "plugin:prettier/recommended", "plugin:vue/vue3-recommended"],
       "rules": {
         "no-undef": "warn",
         "no-prototype-builtins": "warn",
