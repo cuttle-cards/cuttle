@@ -360,13 +360,13 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .active-user-stats {
+:deep .active-user-stats {
   background-color: var(--v-accent-lighten3);
 }
-::v-deep .v-select.fit {
+:deep .v-select.fit {
   width: min-content;
 }
-::v-deep .v-select.fit .v-select__selection--comma {
+:deep .v-select.fit .v-select__selection--comma {
   text-overflow: unset;
 }
 </style>
