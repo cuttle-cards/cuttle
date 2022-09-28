@@ -37,7 +37,7 @@
   "overrides": [
     // Vue specific rules
     {
-      "files": ["**/client/**/*.{j,t}s?(x)"],
+      "files": ["**/src/**/*.{j,t}s?(x)"],
       "env": {
         "browser": true
       },

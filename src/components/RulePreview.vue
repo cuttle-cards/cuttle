@@ -2,7 +2,7 @@
   <div class="rule-preview">
     <v-img
       v-if="!animate"
-      :src="require(`../img/game_images/${staticImg}`)"
+      :src="staticImg"
       :alt="`How to play ${title} in Cuttle`"
       aspect-ratio="1.7778"
     />
@@ -20,6 +20,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: 'RulePreview',
