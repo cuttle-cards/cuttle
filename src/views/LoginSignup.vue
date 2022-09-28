@@ -37,7 +37,7 @@
         </form>
 
         <div id="switch-button-container">
-          <v-btn color="primary" data-cy="switch-mode" @click="switchMode">
+          <v-btn color="primary" variant="text" data-cy="switch-mode" @click="switchMode">
             {{ switchLabelText }}
           </v-btn>
         </div>
