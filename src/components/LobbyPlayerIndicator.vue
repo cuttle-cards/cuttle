@@ -76,7 +76,7 @@ export default {
   z-index: 1;
 }
 .ready .avatar {
-  border: 4px solid rgba(var(--v-theme-accent-base));
+  border: 4px solid rgba(var(--v-theme-accent));
 }
 .ready-overlay {
   display: flex;
