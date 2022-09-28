@@ -11,7 +11,7 @@
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
         <v-btn
-          outlined
+          variant="outlined"
           color="primary"
           class="mr-4"
           :diabled="loadingAccept"

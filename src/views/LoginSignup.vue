@@ -12,7 +12,7 @@
         <form @submit.prevent="submitLogin">
           <v-text-field
             v-model="username"
-            outlined
+            variant="outlined"
             :dense="$vuetify.display.mdAndDown ? true : false"
             hint="Username"
             data-cy="username"
@@ -21,7 +21,7 @@
           />
           <v-text-field
             v-model="pw"
-            outlined
+            variant="outlined"
             hint="Password"
             :dense="$vuetify.display.mdAndDown ? true : false"
             type="password"

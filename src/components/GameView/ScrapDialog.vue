@@ -22,7 +22,7 @@
         </div>
       </v-card-text>
       <v-card-actions class="d-flex justify-end my-2">
-        <v-btn color="primary" outlined data-cy="close-scrap-dialog-button" @click="show = false">
+        <v-btn color="primary" variant="outlined" data-cy="close-scrap-dialog-button" @click="show = false">
           Close
         </v-btn>
       </v-card-actions>

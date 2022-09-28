@@ -32,7 +32,7 @@
           data-cy="seven-double-jacks-resolve"
           color="primary"
           :disabled="selectedJack === null"
-          outlined
+          variant="outlined"
           @click="moveToScrap"
         >
           Resolve

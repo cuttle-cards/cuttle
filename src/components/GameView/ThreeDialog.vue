@@ -17,7 +17,7 @@
           data-cy="three-resolve"
           color="primary"
           :disabled="selectedCard === null"
-          outlined
+          variant="outlined"
           @click="moveToHand"
         >
           Resolve

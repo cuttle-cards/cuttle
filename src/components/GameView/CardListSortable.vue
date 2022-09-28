@@ -8,7 +8,7 @@
         :items="sortOptions"
         :menu-props="{ contentClass: `${dataSelectorPrefix}-sort-menu` }"
         label="Sort"
-        outlined
+        variant="outlined"
         hide-details
       />
     </div>

@@ -27,7 +27,7 @@
         Would you like to play a two to counter?
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn data-cy="decline-counter-resolve" color="primary" outlined @click="resolve"> Resolve </v-btn>
+        <v-btn data-cy="decline-counter-resolve" color="primary" variant="outlined" @click="resolve"> Resolve </v-btn>
         <v-btn data-cy="counter" color="primary" depressed @click="choseToCounter = true"> Counter </v-btn>
       </v-card-actions>
     </v-card>

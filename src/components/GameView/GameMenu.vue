@@ -35,7 +35,7 @@
           <v-btn
             color="error"
             depressed
-            outlined
+            variant="outlined"
             data-cy="request-gameover-confirm"
             :loading="loading"
             @click="requestGameEnd"

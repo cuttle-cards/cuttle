@@ -8,7 +8,7 @@
       {{ description }}
     </p>
     <div class="d-flex justify-center">
-      <v-btn :color="buttonColor" outlined @click="toggleAnimate">
+      <v-btn :color="buttonColor" variant="outlined" @click="toggleAnimate">
         <v-icon :icon="buttonIcon" />
         {{ buttonText }}
       </v-btn>

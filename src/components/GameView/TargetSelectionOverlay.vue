@@ -3,7 +3,7 @@
     <card :suit="selectedCard.suit" :rank="selectedCard.rank" :is-selected="true" @click="$emit('cancel')" />
     <div id="target-selection-header-wrapper" class="d-flex flex-column align-center">
       <h2>Choose {{ moveDisplayName }} Target</h2>
-      <v-btn outlined color="primary" class="mt-2" data-cy="cancel-target" @click="$emit('cancel')">
+      <v-btn variant="outlined" color="primary" class="mt-2" data-cy="cancel-target" @click="$emit('cancel')">
         Cancel
       </v-btn>
     </div>

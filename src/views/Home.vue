@@ -36,7 +36,7 @@
           <v-col id="side-nav" :cols="$vuetify.breakpoint.mdAndDown ? 12 : 3">
             <img v-if="$vuetify.breakpoint.lgAndUp" id="logo" alt="Vue logo" src="../img/logo.png" />
             <v-btn
-              outlined
+              variant="outlined"
               color="primary"
               class="mt-4"
               :small="$vuetify.display.mdAndDown ? true : false"
@@ -46,7 +46,7 @@
               Rules
             </v-btn>
             <v-btn
-              outlined
+              variant="outlined"
               color="secondary"
               class="mt-4"
               :small="$vuetify.display.mdAndDown ? true : false"
@@ -57,7 +57,7 @@
               Play with AI
             </v-btn>
             <v-btn
-              outlined
+              variant="outlined"
               class="mt-4"
               :small="$vuetify.display.mdAndDown"
               href="https://discord.gg/9vrAZ8xGyh"

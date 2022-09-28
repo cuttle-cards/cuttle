@@ -169,7 +169,7 @@
               <div id="scrap" class="d-flex flex-column align-center">
                 <h3>Scrap</h3>
                 <span>({{ scrap.length }})</span>
-                <v-btn outlined color="primary" class="mt-4"> View </v-btn>
+                <v-btn variant="outlined" color="primary" class="mt-4"> View </v-btn>
               </div>
             </template>
           </scrap-dialog>

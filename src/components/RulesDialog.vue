@@ -192,7 +192,7 @@
         </section>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn outlined color="primary" @click="show = false"> Got It! </v-btn>
+        <v-btn variant="outlined" color="primary" @click="show = false"> Got It! </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

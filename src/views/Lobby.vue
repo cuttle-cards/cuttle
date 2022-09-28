@@ -34,7 +34,7 @@
     <v-row class="mt-4">
       <v-spacer />
       <v-col cols="3" offset="1">
-        <v-btn :disabled="readying" outlined color="primary" data-cy="exit-button" @click="leave">
+        <v-btn :disabled="readying" variant="outlined" color="primary" data-cy="exit-button" @click="leave">
           EXIT
         </v-btn>
       </v-col>
