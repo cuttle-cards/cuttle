@@ -8,7 +8,7 @@
     "sourceType": "module"
   },
   "extends": ["eslint:recommended", "prettier"],
-  "plugins": ["cypress", "jest", "prettier"],
+  "plugins": ["cypress", "prettier"],
   "ignorePatterns": ["/node_modules/*", "/assets/*"],
   "rules": {
     "prettier/prettier": "error",
@@ -72,21 +72,25 @@
         "no-prototype-builtins": "warn"
       }
     },
-    // Jest specific rules
+    // Vitest specific rules
     {
       "files": ["**/tests/unit/**/*.{j,t}s?(x)"],
       "env": {
-        "jest": true
+        "node": true
       },
-      "rules": {
-        "import/no-unresolved": ["off"]
+      "globals": {
+        "vi": true
       }
     },
     // Cypress specific rules
     {
-      "files": ["**/tests/e2e/**/*.{j,t}s?(x)"],
+      "files": [
+        "**/tests/cypress.config.js",
+        "**/tests/e2e/**/*.{j,t}s?(x)"
+      ],
       "env": {
-        "cypress/globals": true
+        "cypress/globals": true,
+        "node": true
       },
       "globals": {
         "badRequest": true,

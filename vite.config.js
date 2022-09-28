@@ -41,4 +41,7 @@ export default defineConfig({
       },
     },
   },
+  test: {
+    include: ['**/tests/unit/**/*.{j,t}s?(x)'],
+  },
 });
