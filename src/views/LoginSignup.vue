@@ -1,6 +1,7 @@
 <template>
   <v-container id="login-container" class="container">
-    <img id="logo" alt="Cuttle logo" src="../img/logo.png" />
+    <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
+
     <v-row>
       <!-- Left side form -->
       <v-col id="username-login-form" sm="9" lg="5">

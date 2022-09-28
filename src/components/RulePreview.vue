@@ -60,6 +60,7 @@ export default {
   methods: {
     toggleAnimate() {
       this.animate = !this.animate;
+      this.$emit('animate', this);
     },
   },
 };
