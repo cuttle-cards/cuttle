@@ -20,6 +20,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@mdi/font": "^7.0.96",
     "@storybook/addon-actions": "6.5.12",
     "@storybook/addon-essentials": "6.5.12",
     "@storybook/addon-interactions": "6.5.12",
