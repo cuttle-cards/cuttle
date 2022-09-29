@@ -24,12 +24,7 @@
         <v-card-title>{{ dialogTitle }}?</v-card-title>
         <v-card-text> {{ dialogText }} </v-card-text>
         <v-card-actions class="d-flex justify-end">
-          <v-btn
-            color="primary"
-            data-cy="request-gameover-cancel"
-            :disabled="loading"
-            @click="closeDialog"
-          >
+          <v-btn color="primary" data-cy="request-gameover-cancel" :disabled="loading" @click="closeDialog">
             Cancel
           </v-btn>
           <v-btn

@@ -11,12 +11,7 @@
         <h1>You Lose</h1>
       </v-card-title>
       <v-card-text class="d-flex justify-center">
-        <v-img
-          v-if="stalemate"
-          src="/img/-stalemate.svg"
-          max-width="250"
-          data-cy="stalemate-img"
-        />
+        <v-img v-if="stalemate" src="/img/-stalemate.svg" max-width="250" data-cy="stalemate-img" />
         <v-img
           v-else-if="playerWins"
           src="/img/logo-body-no-text.svg"

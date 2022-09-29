@@ -59,10 +59,7 @@
     },
     // Sails specific rules
     {
-      "files": [
-        "**/app.js",
-        "**/api/**/*.{j,t}s?(x)"
-      ],
+      "files": ["**/app.js", "**/api/**/*.{j,t}s?(x)"],
       "env": {
         "node": true
       },
@@ -87,10 +84,7 @@
     },
     // Cypress specific rules
     {
-      "files": [
-        "**/tests/cypress.config.js",
-        "**/tests/e2e/**/*.{j,t}s?(x)"
-      ],
+      "files": ["**/tests/cypress.config.js", "**/tests/e2e/**/*.{j,t}s?(x)"],
       "env": {
         "cypress/globals": true,
         "node": true

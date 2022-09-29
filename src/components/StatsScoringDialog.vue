@@ -3,7 +3,7 @@
     <!-- Activator -->
     <template #activator="{ props }">
       <v-btn color="primary" text class="mb-2" v-bind="props">
-        <span v-if="showButtonText"> How are ranks determined? </span>
+        <span v-if="showButtonText">How are ranks determined?</span>
         <v-icon class="ml-1" icon="mdi-information-outline" />
       </v-btn>
     </template>

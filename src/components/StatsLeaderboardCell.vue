@@ -10,7 +10,6 @@
           ...dataAttribute,
         }"
         dark
-        v-on="on"
       >
         {{ chipText }}
       </v-chip>

@@ -411,7 +411,7 @@ export default {
         return;
       }
       // reset other previews if we're currently animating
-      this.$refs.preview.filter(c => c !== cmp).forEach(c => c.animate = false);
+      this.$refs.preview.filter((c) => c !== cmp).forEach((c) => (c.animate = false));
     },
   },
 };
