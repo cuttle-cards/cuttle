@@ -103,15 +103,13 @@
                     name="slide-below"
                     class="opponent-hand-wrapper transition-all"
                   >
-                    <div
+                    <card
                       v-for="(card, index) in opponent.hand"
-                      :key="index + 0"
+                      :key="index"
+                      suit="back"
+                      rank="back"
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
-                    >
-                      <v-card class="opponent-card-back" data-opponent-hand-card>
-                        <v-img :src="require('../img/logo_head.svg')" contain />
-                      </v-card>
-                    </div>
+                    />
                   </transition-group>
                 </transition>
               </div>
@@ -135,12 +133,12 @@
         <div id="field-left">
           <v-card
             id="deck"
+            :img="require('../img/cards/card_back_back.svg')"
             :class="{ 'reveal-top-two': resolvingSeven, 'my-turn': isPlayersTurn }"
             @click="drawCard"
           >
             <template v-if="!resolvingSeven">
-              <v-img :src="require('../img/logo_head.svg')" :width="deckLogoWidth" contain />
-              <v-card-actions>({{ deckLength }})</v-card-actions>
+              <v-card-actions class="c-deck-count">({{ deckLength }})</v-card-actions>
               <h1 v-if="deckLength === 0" id="empty-deck-text">PASS</h1>
             </template>
 
@@ -1155,13 +1153,13 @@ export default {
 
       & .opponent-card-back-wrapper {
         height: 90%;
-        width: 10vw;
+        width: 7vw;
         display: inline-block;
         position: relative;
+        transform: rotate(180deg);
         & .opponent-card-back {
           height: 100%;
           width: 100%;
-          transform: rotate(180deg);
         }
       }
     }
@@ -1192,6 +1190,7 @@ export default {
 #field-left {
   & #deck {
     cursor: pointer;
+    position: relative;
     &.reveal-top-two {
       height: auto;
       align-self: start;
@@ -1201,6 +1200,12 @@ export default {
     }
     &.my-turn {
       border: 4px solid var(--v-accent-base);
+    }
+    .c-deck-count {
+      position: absolute;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
     }
   }
   & #deck,

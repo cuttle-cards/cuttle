@@ -22,18 +22,13 @@ describe('Game View Layout', () => {
     cy.get('[data-cy=player-username]').should('be.visible');
   });
 
-  it('Many cards on field', () => {
+  it.only('Many cards on field', () => {
     // Set Up
     cy.loadGameFixture({
-      p0Hand: [Card.EIGHT_OF_SPADES, Card.QUEEN_OF_DIAMONDS],
-      p0Points: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.ACE_OF_HEARTS],
-      p0FaceCards: [
-        Card.KING_OF_HEARTS,
-        Card.KING_OF_DIAMONDS,
-        Card.KING_OF_CLUBS,
-        Card.EIGHT_OF_HEARTS,
-      ],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS],
+      p0Hand: [Card.TEN_OF_SPADES],
+      p0Points: [Card.ACE_OF_SPADES],
+      p0FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [Card.TWO_OF_HEARTS],
       p1Points: [],
       p1FaceCards: [],
     });

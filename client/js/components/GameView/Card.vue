@@ -26,7 +26,7 @@
       :src="require(`../../img/cards/Glasses_${suitName}.jpg`)"
       :alt="`Glasses - $${cardName}`"
     />
-    <img v-else :src="require(`../../img/cards/card_${suit}_${rank}.png`)" :alt="cardName" />
+    <img v-else :src="require(`../../img/cards/card_${suit}_${rank}.svg`)" :alt="cardName" />
   </v-card>
 </template>
 
@@ -35,11 +35,11 @@ export default {
   name: 'Card',
   props: {
     suit: {
-      type: Number,
+      type: [Number, String],
       required: true,
     },
     rank: {
-      type: Number,
+      type: [Number, String],
       required: true,
     },
     isSelected: {
