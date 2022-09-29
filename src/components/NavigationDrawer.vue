@@ -1,8 +1,9 @@
 <template>
   <v-navigation-drawer
+    v-if="showNav"
     color="primary"
     data-cy="nav-drawer"
-    :permanent="showNav"
+    permanent
     :rail="isCollapsed"
     class="text-body-1"
   >
@@ -70,8 +71,7 @@ export default {
           ];
     },
     showNav() {
-      const pagesToHideNav = ['Lobby', 'Game'];
-      return !pagesToHideNav.includes(this.$route.name);
+      return this.$route.meta?.hideNavigation !== true;
     },
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;

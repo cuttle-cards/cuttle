@@ -53,6 +53,9 @@ const routes = [
     component: Lobby,
     // TODO: Add logic to redirect if a given game does not exist
     beforeEnter: mustBeAuthenticated,
+    meta: {
+      hideNavigation: true,
+    },
   },
   {
     name: ROUTE_NAME_GAME,
@@ -61,6 +64,9 @@ const routes = [
     // TODO: Add logic to redirect if a given game does not exist
     // mustBeAuthenticated intentionally left off here
     // If a user refreshes the relogin modal will fire and allow them to continue playing
+    meta: {
+      hideNavigation: true,
+    },
   },
   {
     path: '/stats',
