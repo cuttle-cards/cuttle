@@ -292,8 +292,8 @@
         />
         <span
           id="turn-indicator"
-          class="text--darken-1 ml-2"
-          :class="{ 'black--text': isPlayersTurn, 'white--text': !isPlayersTurn }"
+          class="ml-2"
+          :class="{ 'text-black': isPlayersTurn, 'text-white': !isPlayersTurn }"
         >
           {{ turnText }}
         </span>
