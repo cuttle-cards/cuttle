@@ -16,6 +16,11 @@ module.exports = defineConfig({
       'tests/e2e/specs/**/*.spec.js',
     ],
     supportFile: 'tests/e2e/support/index.js',
+    // https://github.com/javierbrea/cypress-fail-fast
+    setupNodeEvents(on, config) {
+      require('cypress-fail-fast/plugin')(on, config);
+      return config;
+    },
   },
   // https://docs.cypress.io/guides/references/configuration#Videos
   video: false,
