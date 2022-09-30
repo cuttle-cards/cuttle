@@ -73,6 +73,13 @@ module.exports = {
         'no-undef': 'warn',
         'no-prototype-builtins': 'warn',
       },
+      globals: {
+        Card: true,
+        Season: true,
+        Match: true,
+        User: true,
+        Game: true,
+      },
     },
     // Jest specific rules
     {
