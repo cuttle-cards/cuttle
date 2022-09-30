@@ -15,6 +15,8 @@ module.exports = defineConfig({
       ...(isProd ? ['tests/e2e/specs/**/*.spec.prod.js'] : ['tests/e2e/specs/**/*.spec.dev.js']),
       'tests/e2e/specs/**/*.spec.js',
     ],
+    // Ignore the playground spec file as it's only used for manual testing
+    excludeSpecPattern: ['tests/e2e/specs/playground.spec.js'],
     supportFile: 'tests/e2e/support/index.js',
     // https://github.com/javierbrea/cypress-fail-fast
     setupNodeEvents(on, config) {
