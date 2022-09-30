@@ -73,7 +73,7 @@ jobs:
         with:
           build: npm run build
           start: npm start
-          config-file: tests/cypress.config.js
+          config-file: cypress.config.js
           wait-on: 'http://localhost:1337'
           # wait for 2 minutes for the server to respond
           wait-on-timeout: 120
