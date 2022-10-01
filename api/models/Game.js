@@ -103,6 +103,9 @@ module.exports = {
       type: 'json',
       defaultsTo: {},
     },
+    match: {
+      model: 'match',
+    },
     /**
      *  Enum for game result:
      * -1: incomplete

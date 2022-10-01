@@ -25,7 +25,11 @@ module.exports = {
     },
     endTime: {
       type: 'number',
-      required: true,
+      required: false,
+    },
+    games: {
+      collection: 'Game',
+      via: 'match',
     },
   }, // end attributes
 }; // end exports

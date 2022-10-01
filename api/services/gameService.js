@@ -55,6 +55,10 @@ function tempGame(game, p0, p1) {
   this.passes = game.passes;
   this.resolving = game.resolving;
   this.lastEvent = game.lastEvent;
+  this.result = game.result;
+  this.ranked = game.ranked;
+  this.p0 = game.p0;
+  this.p1 = game.p1;
 }
 module.exports = {
   GameResult,
@@ -158,15 +162,12 @@ module.exports = {
       winner: null,
       conceded: false,
     };
-    const { game } = options;
+    let { game } = options;
     const p0Wins = userService.checkWin({ user: game.players[0] });
     const p1Wins = userService.checkWin({ user: game.players[1] });
     if (p0Wins || p1Wins) {
       res.gameOver = true;
-      const gameUpdates = {
-        p0: game.players[0].id,
-        p1: game.players[1].id,
-      };
+      const gameUpdates = {};
       if (p0Wins) {
         res.winner = 0;
         gameUpdates.result = GameResult.P0_WINS;
@@ -175,6 +176,13 @@ module.exports = {
         gameUpdates.result = GameResult.P1_WINS;
       }
       await Game.updateOne({ id: game.id }).set(gameUpdates);
+      game = {
+        ...game,
+        ...gameUpdates,
+      };
+      if (game.ranked) {
+        await sails.helpers.addGameToMatch(game);
+      }
     }
     return res;
   },

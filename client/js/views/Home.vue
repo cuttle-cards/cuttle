@@ -8,34 +8,6 @@
               <v-col cols="4">
                 <h1 id="home-card-title">Games</h1>
               </v-col>
-              <v-col cols="8">
-                <v-row id="add-new-game">
-                  <v-col cols="8">
-                    <v-text-field
-                      v-model="newGameName"
-                      :loading="creatingGame"
-                      outlined
-                      label="Game Name"
-                      hide-details
-                      class="mr-4"
-                      :dense="$vuetify.breakpoint.mdAndDown ? true : false"
-                      data-cy="create-game-input"
-                      @keyup.enter="submitNewGame"
-                    />
-                  </v-col>
-                  <v-col cols="4">
-                    <v-btn
-                      :loading="creatingGame"
-                      color="primary"
-                      :small="$vuetify.breakpoint.mdAndDown ? true : false"
-                      data-cy="create-game-btn"
-                      @click="submitNewGame"
-                    >
-                      Create New Game
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
             </v-row>
             <div id="game-list">
               <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
@@ -47,6 +19,7 @@
                   :game-id="game.id"
                   :status="game.status"
                   :num-players="game.numPlayers"
+                  :is-ranked="game.ranked"
                 />
               </div>
             </div>
@@ -85,6 +58,9 @@
             </v-btn>
           </v-col>
         </v-row>
+        <v-row class="d-flex justify-end mt-8">
+          <create-game-dialog @error="handleError" />
+        </v-row>
       </div>
     </div>
     <v-snackbar
@@ -100,18 +76,18 @@
 </template>
 <script>
 import GameListItem from '@/components/GameListItem.vue';
+import CreateGameDialog from '../components/CreateGameDialog.vue';
 
 export default {
   name: 'Home',
   components: {
     GameListItem,
+    CreateGameDialog,
   },
   data() {
     return {
-      newGameName: '',
       showSnackBar: false,
       snackBarMessage: '',
-      creatingGame: false,
     };
   },
   computed: {
@@ -133,16 +109,6 @@ export default {
     await this.$store.dispatch('requestGameList');
   },
   methods: {
-    submitNewGame() {
-      this.creatingGame = true;
-      this.$store
-        .dispatch('requestCreateGame', this.newGameName)
-        .then(() => {
-          this.newGameName = '';
-          this.creatingGame = false;
-        })
-        .catch(this.handleError);
-    },
     clearSnackBar() {
       this.snackMessage = '';
       this.showSnackBar = false;
@@ -151,6 +117,7 @@ export default {
       this.creatingGame = false;
       this.showSnackBar = true;
       this.snackBarMessage = message;
+      this.showCreateGameDialog = false;
     },
     logout() {
       this.$store
