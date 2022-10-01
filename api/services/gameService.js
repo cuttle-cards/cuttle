@@ -56,7 +56,7 @@ function tempGame(game, p0, p1) {
   this.resolving = game.resolving;
   this.lastEvent = game.lastEvent;
   this.result = game.result;
-  this.ranked = game.ranked;
+  this.isRanked = game.isRanked;
   this.p0 = game.p0;
   this.p1 = game.p1;
 }
@@ -180,7 +180,7 @@ module.exports = {
         ...game,
         ...gameUpdates,
       };
-      if (game.ranked) {
+      if (game.isRanked) {
         await sails.helpers.addGameToMatch(game);
       }
     }

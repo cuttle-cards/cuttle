@@ -16,7 +16,7 @@ module.exports = {
   },
   fn: async ({ game }, exits) => {
     try {
-      if (!game.ranked) {
+      if (!game.isRanked) {
         return exits.success();
       }
       const [player1, player2] = game.players;
@@ -26,7 +26,7 @@ module.exports = {
       }
       if (relevantMatch.endTime || relevantMatch.winner) {
         // Set game back to unranked if the player match already finished
-        await Game.updateOne(game.id).set({ ranked: false });
+        await Game.updateOne(game.id).set({ isRanked: false });
         return exits.success();
       }
       if (!relevantMatch.games) {

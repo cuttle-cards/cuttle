@@ -7,13 +7,13 @@ export const opponentPassword = 'deviousTrickery';
  * Signs up two players, navigates home, creates game, subscribes, ready's up
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
  */
-export function setupGameAsP0(alreadyAuthenticated = false, ranked = false) {
+export function setupGameAsP0(alreadyAuthenticated = false, isRanked = false) {
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(username, validPassword);
   }
-  cy.createGamePlayer({ gameName: 'Test Game', ranked }).then((gameSummary) => {
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
@@ -29,13 +29,13 @@ export function setupGameAsP0(alreadyAuthenticated = false, ranked = false) {
   });
 }
 
-export function setupGameAsP1(alreadyAuthenticated = false, ranked = false) {
+export function setupGameAsP1(alreadyAuthenticated = false, isRanked = false) {
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(username, validPassword);
   }
-  cy.createGamePlayer({ gameName: 'Test Game', ranked }).then((gameSummary) => {
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentUsername, opponentPassword);
     }

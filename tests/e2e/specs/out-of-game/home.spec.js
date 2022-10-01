@@ -52,8 +52,8 @@ describe('Home - Game List', () => {
   beforeEach(setup);
 
   it('Displays a game for every open game on the server', () => {
-    cy.createGamePlayer({ gameName: '111', ranked: false });
-    cy.createGamePlayer({ gameName: '33', ranked: false });
+    cy.createGamePlayer({ gameName: '111', isRanked: false });
+    cy.createGamePlayer({ gameName: '33', isRanked: false });
     cy.get('[data-cy=game-list-item]').should('have.length', 2);
   });
   it('Displays placeholder text when no games are available', () => {
@@ -61,8 +61,8 @@ describe('Home - Game List', () => {
     cy.contains('p', 'No Active Games');
   });
   it('Adds a new game to the list when one comes in through the socket', () => {
-    cy.createGamePlayer({ gameName: '111', ranked: false });
-    cy.createGamePlayer({ gameName: '33', ranked: false });
+    cy.createGamePlayer({ gameName: '111', isRanked: false });
+    cy.createGamePlayer({ gameName: '33', isRanked: false });
     cy.get('[data-cy=game-list-item]').should('have.length', 2);
     cy.signupOpponent(opponentUsername, opponentPassword);
     cy.createGameOpponent('Game made by other player');
@@ -76,7 +76,7 @@ describe('Home - Game List', () => {
       .then((gameState) => {
         expect(gameState.id).to.eq(null);
       });
-    cy.createGamePlayer({ gameName: 'Test Game', ranked: false });
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false });
     cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
     cy.hash().should('contain', '#/lobby');
     cy.window()
@@ -90,7 +90,7 @@ describe('Home - Game List', () => {
      * Set up:
      * Create game, sign up one other user and subscribe them to the game
      */
-    cy.createGamePlayer({ gameName: 'Test Game', ranked: false }).then((gameData) => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Sign up new user and subscribe them to game
       cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);
@@ -111,7 +111,7 @@ describe('Home - Game List', () => {
      * Set up:
      * Create game, sign up two other users, subscribe them to the game
      */
-    cy.createGamePlayer({ gameName: 'Test Game', ranked: false }).then((gameData) => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Test that JOIN button starts enabled
       cy.contains('button.v-btn', 'Play').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
@@ -130,7 +130,7 @@ describe('Home - Game List', () => {
      * Set up:
      * Create game, sign up two other users, subscribe them to the game, leave one user
      */
-    cy.createGamePlayer({ gameName: 'Test Game', ranked: false }).then((gameData) => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Test that JOIN button starts enabled
       cy.contains('button.v-btn', 'Play').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
@@ -196,7 +196,7 @@ describe('Home - Create Game', () => {
           'Expect no players in gameLists game in store, but found some'
         );
         expect(games[0].status).to.eq(true, 'Expect game to have status true');
-        expect(games[0].ranked).to.eq(false, 'Expect game to be ranked');
+        expect(games[0].isRanked).to.eq(false, 'Expect game to be ranked');
       });
   });
 
@@ -224,7 +224,7 @@ describe('Home - Create Game', () => {
           'Expect no players in gameLists game in store, but found some'
         );
         expect(games[0].status).to.eq(true, 'Expect game to have status true');
-        expect(games[0].ranked).to.eq(true, 'Expect game to be ranked');
+        expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
       });
   });
 
@@ -261,7 +261,7 @@ describe('Home - Create Game', () => {
     assertSnackbarError('Game name cannot be blank', 'newgame');
   });
   it('Removes a game when both players are ready', () => {
-    cy.createGamePlayer({ gameName: 'Test Game', ranked: false }).then((gameData) => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Sign up 2 users and subscribe them to game
       cy.signupOpponent('remotePlayer1@cuttle.cards', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);
