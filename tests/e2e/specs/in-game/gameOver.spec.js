@@ -665,7 +665,7 @@ describe('Creating And Updating Ranked Matches', () => {
         // Sort games by updatedAt asc
         const games = res.body.sort((game1, game2) => game1.updatedAt - game2.updatedAt);
         expect(games.length).to.eq(7, 'Expected 6 games');
-        expect(games[6].ranked).to.eq(
+        expect(games[6].isRanked).to.eq(
           false,
           'Expected last game to be set to unranked after completion'
         );

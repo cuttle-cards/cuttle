@@ -1,16 +1,16 @@
 var gameAPI = sails.hooks['customgamehook'];
 
 module.exports = function (req, res) {
-  const { gameName, ranked = false } = req.body;
+  const { gameName, isRanked = false } = req.body;
   if (req.body.gameName) {
     gameAPI
-      .createGame(gameName, ranked)
+      .createGame(gameName, isRanked)
       .then(function (game) {
         sails.sockets.broadcast('GameList', 'gameCreated', {
           id: game.id,
           name: game.name,
           status: game.status,
-          ranked: game.ranked,
+          isRanked: game.isRanked,
           players: [],
         });
         return res.ok({ gameId: game.id });

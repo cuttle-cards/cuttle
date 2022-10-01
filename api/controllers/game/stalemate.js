@@ -32,7 +32,7 @@ module.exports = async function (req, res) {
         result: gameService.GameResult.STALEMATE,
       };
       updatePromises.push(gameService.clearGame({ userId }));
-      if (game.ranked) {
+      if (game.isRanked) {
         updatePromises.push(sails.helpers.addGameToMatch(game));
       }
     }

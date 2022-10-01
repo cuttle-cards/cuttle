@@ -69,7 +69,7 @@ export default {
       this.$store
         .dispatch('requestCreateGame', {
           gameName: this.gameName,
-          ranked: this.isRanked,
+          isRanked: this.isRanked,
         })
         .then(() => {
           this.gameName = '';
