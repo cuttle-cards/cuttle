@@ -15,12 +15,20 @@ module.exports = defineConfig({
       ...(isProd ? ['tests/e2e/specs/**/*.spec.prod.js'] : ['tests/e2e/specs/**/*.spec.dev.js']),
       'tests/e2e/specs/**/*.spec.js',
     ],
-    // Ignore the playground spec file as it's only used for manual testing
-    excludeSpecPattern: ['tests/e2e/specs/playground.spec.js'],
+    // excludeSpecPattern: [],
     supportFile: 'tests/e2e/support/index.js',
     // https://github.com/javierbrea/cypress-fail-fast
     setupNodeEvents(on, config) {
       require('cypress-fail-fast/plugin')(on, config);
+      // Log errors to the terminal console
+      // Also requires the log to be overridden in commands.js
+      // See https://github.com/cypress-io/cypress/issues/3199#issuecomment-1019270203
+      on('task', {
+        log(message) {
+          console.log(message);
+          return null;
+        },
+      });
       return config;
     },
   },
