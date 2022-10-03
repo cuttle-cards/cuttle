@@ -226,21 +226,6 @@ p {
     padding: 5px;
   }
 
-  #game-list {
-    box-sizing: border-box;
-    border-radius: 10px;
-    min-height: 55vh;
-    max-height: 60vh;
-    overflow: auto;
-    display: flex;
-    flex-direction: row;
-    padding: 16px;
-
-    p {
-      text-align: center;
-    }
-  }
-
   #card-content-header {
     padding: 0;
     display: flex;
