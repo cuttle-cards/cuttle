@@ -20,6 +20,7 @@
                   :status="game.status"
                   :num-players="game.numPlayers"
                   :is-ranked="game.isRanked"
+                  class="ma-4"
                 />
               </div>
             </div>
@@ -185,14 +186,14 @@ h1 {
   background: #efefef;
   border: 1px solid #fd6222;
   box-sizing: border-box;
+  padding: 20px 10px;
   border-radius: 15px;
   min-height: 55vh;
   max-height: 80vh;
   overflow: auto;
   display: flex;
-  flex-direction: column;
-  padding: 20px 10px;
-
+  flex-direction: row;
+  flex-wrap: wrap;
   p {
     text-align: center;
   }
@@ -239,8 +240,8 @@ p {
     max-height: 60vh;
     overflow: auto;
     display: flex;
-    flex-direction: column;
-    padding: 5px;
+    flex-direction: row;
+    padding: 16px;
 
     p {
       text-align: center;
