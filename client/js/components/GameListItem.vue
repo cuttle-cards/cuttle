@@ -95,31 +95,4 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
-// .list-item {
-//   margin-left: 0;
-//   margin-right: 0;
-//   text-align: left;
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-between;
-//   align-items: center;
-//   & .game-name {
-//     font-weight: 600;
-//   }
-// }
-// .list-item-button {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// }
-// @media (max-width: 979px) and (orientation: landscape) {
-//   .list-item {
-//     margin: 0;
-//     & p {
-//       line-height: 1rem;
-//       margin: 3px auto;
-//     }
-//   }
-// }
-</style>
+<style scoped lang="scss"></style>
