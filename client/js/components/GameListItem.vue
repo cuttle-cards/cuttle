@@ -23,6 +23,7 @@
         :loading="joiningGame"
         @click="subscribeToGame"
       >
+        <v-icon v-if="isRanked" class="mr-4" medium>mdi-trophy</v-icon>
         {{ buttonText }}
       </v-btn>
     </v-card-actions>
