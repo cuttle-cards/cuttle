@@ -27,40 +27,6 @@
       </v-btn>
     </v-card-actions>
   </v-card>
-  <!-- <div>
-    <v-row class="list-item" data-cy="game-list-item">
-      <v-col sm="2" lg="3">
-        <v-img
-          :src="require('../img/logo_head.svg')"
-          class="my-1"
-          contain
-          :height="$vuetify.breakpoint.smAndUp ? 64 : 32"
-        />
-      </v-col>
-      <v-col sm="7" lg="6">
-        <p class="game-name" data-cy="game-list-item-name">
-          {{ name }}
-        </p>
-        <p>{{ readyText }} players</p>
-      </v-col>
-      <v-col cols="3" class="list-item-button">
-        <v-btn
-          color="primary"
-          rounded
-          outlined
-          min-width="200"
-          :disabled="!status"
-          :loading="joiningGame"
-          :small="!$vuetify.breakpoint.lg"
-          @click="subscribeToGame"
-        >
-          <v-icon v-if="isRanked" class="mr-4" medium>mdi-trophy</v-icon>
-          {{ buttonText }}
-        </v-btn>
-      </v-col>
-    </v-row>
-    <v-divider class="mb-4" />
-  </div> -->
 </template>
 
 <script>

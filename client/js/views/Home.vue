@@ -175,13 +175,6 @@ h1 {
   align-items: center;
 }
 
-#add-new-game {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
 #game-list {
   background: #efefef;
   border: 1px solid #fd6222;
