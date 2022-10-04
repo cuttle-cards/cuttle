@@ -1,5 +1,4 @@
-// Run via a command like the f./support/helpers
-// VUE_APP_API_URL=http://localhost:1337 ./node_modules/.bin/cypress run --spec tests/e2e/specs/playground.js
+// Run via a command like `npm run e2e:server:playground`
 
 import { setupGameAsP0 } from '../../support/helpers';
 
