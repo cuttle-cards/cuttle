@@ -160,7 +160,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')
-      .should('include.text', '0 / 2 players');
+      .should('include.text', '0 / 2');
     // Test store
     cy.window()
       .its('cuttle.app.$store.state.gameList.games')
@@ -185,7 +185,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')
-      .should('include.text', '0 / 2 players');
+      .should('include.text', '0 / 2');
     // Test store
     cy.window()
       .its('cuttle.app.$store.state.gameList.games')
