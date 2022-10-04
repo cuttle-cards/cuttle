@@ -85,16 +85,11 @@ Cypress.Commands.add('createGameOpponent', (name) => {
     );
   });
 });
-<<<<<<< HEAD
 Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
-  return cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestCreateGame', { gameName, isRanked });
-=======
-Cypress.Commands.add('createGamePlayer', ({ gameName, ranked }) => {
   return cy
     .window()
     .its('cuttle.app.$store')
-    .invoke('dispatch', 'requestCreateGame', { gameName, ranked });
->>>>>>> 300a607 (Fix merge conflicts)
+    .invoke('dispatch', 'requestCreateGame', { gameName, isRanked });
 });
 Cypress.Commands.add('subscribeOpponent', (id) => {
   return new Promise((resolve, reject) => {
