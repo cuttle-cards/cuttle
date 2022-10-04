@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="350">
+  <v-card max-width="350" data-cy="game-list-item">
     <v-card-title class="d-flex justify-start align-center">
       <img
         :src="require('../img/logo_head.svg')"
