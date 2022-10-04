@@ -8,8 +8,8 @@
         :height="$vuetify.breakpoint.smAndUp ? 64 : 32"
       />
       <span>
-        <h4>{{ name }}</h4>
-        <p class="mb-0">{{ readyText }}</p>
+        <h5 class="text-h5">{{ name }}</h5>
+        <p class="mb-0 text-subtitle-1">{{ readyText }}</p>
       </span>
     </v-card-title>
     <v-card-actions>
