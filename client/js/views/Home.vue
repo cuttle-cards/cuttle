@@ -4,7 +4,7 @@
       <div id="game-list-card">
         <v-row>
           <v-col cols="9">
-            <h1 id="home-card-title">Games</h1>
+            <h1 class="gradient-text">Games</h1>
             <div id="game-list">
               <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
               <div v-for="game in gameList" :key="game.id">
@@ -137,17 +137,6 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: column;
-}
-
-h1 {
-  background: linear-gradient(
-    268.89deg,
-    rgba(98, 2, 238, 0.87) 73.76%,
-    rgba(253, 98, 34, 0.87) 99.59%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 #logo {
