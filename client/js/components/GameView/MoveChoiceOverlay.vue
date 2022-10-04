@@ -54,7 +54,7 @@ export default {
     },
     selectedCard: {
       type: Object,
-      default: null,
+      required: true,
     },
     isPlayersTurn: {
       type: Boolean,
@@ -70,181 +70,163 @@ export default {
     },
   },
   computed: {
+    // Determines if any moves are available
+    allMovesAreDisabled() {
+      return !this.isPlayersTurn || this.frozenId === this.selectedCard.id;
+    },
+    // Determines which disabled text to display
+    disabledText() {
+      if (this.allMovesAreDisabled) {
+        return !this.isPlayersTurn ? "It's not your turn" : 'This card is frozen';
+      }
+      return '';
+    },
+    pointsMove() {
+      const pointsDescription =
+        `Gain ${this.selectedCard.rank} point` + (this.selectedCard.rank === 1 ? '' : 's');
+      return {
+        displayName: 'Points',
+        eventName: 'points',
+        moveDescription: pointsDescription,
+        disabled: this.allMovesAreDisabled,
+        disabledExplanation: this.disabledText,
+      };
+    },
+    scuttleMove() {
+      const scuttleDisabled = this.allMovesAreDisabled || !this.hasValidScuttleTarget;
+      let scuttleDisabledExplanation = 'You can only scuttle smaller point cards';
+      if (this.$store.getters.opponent.points.length === 0) {
+        scuttleDisabledExplanation = 'Your opponent has no point cards to scuttle';
+      }
+      if (this.allMovesAreDisabled) {
+        scuttleDisabledExplanation = this.disabledText;
+      }
+      return {
+        displayName: 'Scuttle',
+        eventName: 'scuttle',
+        moveDescription: 'Scrap a lower point card',
+        disabled: scuttleDisabled,
+        disabledExplanation: scuttleDisabledExplanation,
+      };
+    },
+    oneOffMove() {
+      return {
+        displayName: 'One-Off',
+        eventName: 'oneOff',
+        moveDescription: this.selectedCard.ruleText,
+        disabled: this.allMovesAreDisabled,
+        disabledExplanation: this.disabledText,
+      };
+    },
+
+    targetedOneOffMove() {
+      let oneOffDisabled = this.allMovesAreDisabled;
+      let oneOffDisabledExplanation = this.disabledText;
+      if (!this.allMovesAreDisabled) {
+        if (this.opponentQueenCount >= 2) {
+          oneOffDisabled = true;
+          oneOffDisabledExplanation = `You can't play a ${this.selectedCard.rank} while your opponent has two or more queens`;
+        } else {
+          let validTargetExists;
+          // Twos
+          if (this.selectedCard.rank === 2) {
+            const numOpFaceCards = this.$store.getters.opponent.faceCards.length;
+            const numOpJacks = this.$store.getters.opponent.points.reduce(
+              (jackCount, pointCard) => {
+                return jackCount + pointCard.attachments.length;
+              },
+              0
+            );
+            const numTotalTargets = numOpFaceCards + numOpJacks;
+            validTargetExists = numTotalTargets >= 1;
+            if (!validTargetExists) {
+              oneOffDisabled = true;
+              oneOffDisabledExplanation = 'There are no Royals to target';
+            }
+            // Nines
+          } else {
+            const numValidTargets =
+              this.$store.getters.opponent.points.length +
+              this.$store.getters.opponent.faceCards.length;
+            if (numValidTargets === 0) {
+              oneOffDisabled = true;
+              oneOffDisabledExplanation = 'There are no point cards or Royals to target';
+            }
+          }
+        }
+      }
+      return {
+        displayName: 'One-Off',
+        eventName: 'targetedOneOff',
+        moveDescription: this.selectedCard.ruleText,
+        disabled: oneOffDisabled || this.allMovesAreDisabled,
+        disabledExplanation: oneOffDisabledExplanation,
+      };
+    },
+    jackMove() {
+      let ableToJack = false;
+      let disabledExplanation = '';
+      if (!this.allMovesAreDisabled) {
+        ableToJack = this.opponentQueenCount === 0;
+        disabledExplanation = "You cannot jack your opponent's points while they have a queen";
+      } else {
+        disabledExplanation = this.disabledText;
+      }
+      return {
+        displayName: 'Royal',
+        eventName: 'jack',
+        moveDescription: "Steal an opponent's point card",
+        disabled: !ableToJack || this.allMovesAreDisabled,
+        disabledExplanation,
+      };
+    },
+
     /**
      * Returns list of objects representing the available moves,
      * based on the selected card
      */
     moveChoices() {
-      if (!this.selectedCard) return [];
-      let res = [];
-      let cardRank;
-      if (this.resolvingSeven) {
-        if (!this.cardSelectedFromDeck) return [];
-        cardRank = this.cardSelectedFromDeck.rank;
-      } else {
-        if (!this.selectedCard) return [];
-        cardRank = this.selectedCard.rank;
-      }
-      // Re-usable move-objects
-      const allMovesAreDisabled = !this.isPlayersTurn || this.frozenId === this.selectedCard.id;
-      const allMovesDisabledExplanation = !this.isPlayersTurn
-        ? "It's not your turn"
-        : 'This card is frozen';
-
-      let disabledText;
-      if (allMovesAreDisabled) {
-        disabledText = allMovesDisabledExplanation;
-      }
-
-      // Points
-      const pointsDescription = `Gain ${cardRank} point` + (cardRank === 1 ? '' : 's');
-      const pointsMove = {
-        displayName: 'Points',
-        eventName: 'points',
-        moveDescription: pointsDescription,
-        disabled: allMovesAreDisabled,
-        disabledExplanation: disabledText,
-      };
-      // Scuttling
-      const scuttleDisabled = !this.isPlayersTurn || !this.hasValidScuttleTarget;
-      let scuttleDisabledExplanation = 'You can only scuttle smaller point cards';
-      if (this.$store.getters.opponent.points.length === 0) {
-        scuttleDisabledExplanation = 'Your opponent has no point cards to scuttle';
-      }
-      if (allMovesAreDisabled) {
-        scuttleDisabledExplanation = allMovesDisabledExplanation;
-      }
-      const scuttleMove = {
-        displayName: 'Scuttle',
-        eventName: 'scuttle',
-        moveDescription: 'Scrap a lower point card',
-        disabled: scuttleDisabled || allMovesAreDisabled,
-        disabledExplanation: scuttleDisabledExplanation,
-      };
-
-      switch (cardRank) {
+      switch (this.selectedCard.rank) {
         case 1:
         case 3:
         case 4:
         case 5:
         case 6:
         case 7:
-          res = [
-            pointsMove,
-            scuttleMove,
-            // One-Off
-            {
-              displayName: 'One-Off',
-              eventName: 'oneOff',
-              moveDescription: this.selectedCard.ruleText,
-              disabled: allMovesAreDisabled,
-              disabledExplanation: disabledText,
-            },
-          ];
-          break;
+          return [this.pointsMove, this.scuttleMove, this.oneOffMove];
         case 2:
         case 9:
-          let oneOffDisabled = !this.isPlayersTurn;
-          let oneOffDisabledExplanation = "It's not your turn";
-          if (this.isPlayersTurn) {
-            if (this.opponentQueenCount >= 2) {
-              oneOffDisabled = true;
-              oneOffDisabledExplanation = `You can't play a ${cardRank} while your opponent has two or more queens`;
-            } else {
-              let validTargetExists;
-              // Twos
-              if (cardRank === 2) {
-                const numOpFaceCards = this.$store.getters.opponent.faceCards.length;
-                const numOpJacks = this.$store.getters.opponent.points.reduce(
-                  (jackCount, pointCard) => {
-                    return jackCount + pointCard.attachments.length;
-                  },
-                  0
-                );
-                const numTotalTargets = numOpFaceCards + numOpJacks;
-                validTargetExists = numTotalTargets >= 1;
-                if (allMovesAreDisabled) {
-                  oneOffDisabledExplanation = allMovesDisabledExplanation;
-                } else if (!validTargetExists) {
-                  oneOffDisabled = true;
-                  oneOffDisabledExplanation = 'There are no Royals to target';
-                }
-                // Nines
-              } else {
-                const numValidTargets =
-                  this.$store.getters.opponent.points.length +
-                  this.$store.getters.opponent.faceCards.length;
-                if (allMovesAreDisabled) {
-                  oneOffDisabledExplanation = allMovesDisabledExplanation;
-                } else if (numValidTargets === 0) {
-                  oneOffDisabled = true;
-                  oneOffDisabledExplanation = 'There are no point cards or Royals to target';
-                }
-              }
-            }
-          }
-          res = [
-            pointsMove,
-            scuttleMove,
-            {
-              displayName: 'One-Off',
-              eventName: 'targetedOneOff',
-              moveDescription: this.selectedCard.ruleText,
-              disabled: oneOffDisabled || allMovesAreDisabled,
-              disabledExplanation: oneOffDisabledExplanation,
-            },
-          ];
-          break;
+          return [this.pointsMove, this.scuttleMove, this.targetedOneOffMove];
         case 8:
-          res = [
-            pointsMove,
-            scuttleMove,
+          return [
+            this.pointsMove,
+            this.scuttleMove,
             // Glasses
             {
               displayName: 'Glasses',
               eventName: 'faceCard',
               moveDescription: 'Your opponent plays open handed',
-              disabled: allMovesAreDisabled,
-              disabledExplanation: disabledText,
+              disabled: this.allMovesAreDisabled,
+              disabledExplanation: this.disabledText,
             },
           ];
-          break;
         case 10:
-          res = [pointsMove, scuttleMove];
-          break;
+          return [this.pointsMove, this.scuttleMove];
         case 11:
-          let ableToJack = false;
-          let disabledExplanation = '';
-          if (this.isPlayersTurn && !allMovesAreDisabled) {
-            ableToJack = this.opponentQueenCount === 0;
-            disabledExplanation = "You cannot jack your opponent's points while they have a queen";
-          } else {
-            disabledExplanation = disabledText;
-          }
-          res = [
-            {
-              displayName: 'Royal',
-              eventName: 'jack',
-              moveDescription: "Steal an opponent's point card",
-              disabled: !ableToJack || allMovesAreDisabled,
-              disabledExplanation,
-            },
-          ];
-          break;
+          return [this.jackMove];
         case 12:
         case 13:
-          res = [
+          return [
             {
               displayName: 'Royal',
               eventName: 'faceCard',
               moveDescription: this.selectedCard.ruleText,
-              disabled: allMovesAreDisabled,
-              disabledExplanation: disabledText,
+              disabled: this.allMovesAreDisabled,
+              disabledExplanation: this.disabledText,
             },
           ];
-          break;
       }
-      return res;
+      return [];
     },
     /**
      * @return boolean whether there is a legal scuttle using selected card

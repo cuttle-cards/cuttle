@@ -58,8 +58,8 @@ jobs:
     name: "Test: End to End"
     runs-on: ubuntu-latest
     needs: test-unit
-    # stop the job if it runs over 20 minutes to prevent a hanging process from eating minutes
-    timeout-minutes: 20
+    # stop the job if it runs over 60 minutes to prevent a hanging process from eating minutes
+    timeout-minutes: 60
     steps:
       # Checkout and node setup are shared in both `pr-actions.yml` and `run-npm-script.yml`
       # If you change one, please change the other
