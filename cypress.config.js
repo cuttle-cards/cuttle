@@ -32,6 +32,7 @@ module.exports = defineConfig({
       return config;
     },
   },
+  numTestsKeptInMemory: isProd ? 0 : 25,
   // https://docs.cypress.io/guides/references/configuration#Videos
   video: false,
   // https://docs.cypress.io/guides/references/configuration#Folders-Files
