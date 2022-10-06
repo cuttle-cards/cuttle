@@ -131,6 +131,10 @@ export default {
     hasGlassesEight(state, getters) {
       return getters.player.faceCards.filter((card) => card.rank === 8).length > 0;
     },
+    isRanked(state, getters, rootState) {
+      const game = rootState['gameList'].games.find(({ id }) => id === state.id);
+      return game ? game.isRanked : false;
+    },
   },
   mutations: {
     setGameId(state, val) {

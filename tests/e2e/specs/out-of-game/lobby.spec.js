@@ -5,11 +5,14 @@ import {
   opponentPassword,
 } from '../../support/helpers';
 
-function setup() {
+function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(validUsername, validPassword);
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
+  // This is required to show the game list (which will ensure the `addGameToList` action dispatches)
+  // Otherwise, tanked game creation does not register properly
+  cy.visit('/');
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
@@ -53,6 +56,21 @@ describe('Lobby - Page Content', () => {
   it('Defaults to not-ready', () => {
     cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
+  });
+});
+
+describe.only('Lobby - Page Content (Ranked)', () => {
+  beforeEach(() => {
+    setup(true);
+  });
+
+  it('Displays ranked header', () => {
+    cy.contains('h1 small', 'Ranked');
+    cy.log(cy.window().its('cuttle.app.$store.state.gameList.games'));
+  });
+
+  it('Displays ranked button', () => {
+    cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
   });
 });
 
