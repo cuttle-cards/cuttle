@@ -147,7 +147,9 @@ export default {
       this.username = '';
       this.pw = '';
       this.loading = false;
-      this.$router.push('/');
+      // TODO: Convert to Vue Router, this will involve refreshing the sockets as far as I can tell
+      // due to the way that the session cookie is set and refreshed
+      window.location = '/';
     },
     handleError(message) {
       this.showSnackBar = true;
