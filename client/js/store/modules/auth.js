@@ -1,4 +1,4 @@
-import { io } from '../../plugins/sails.js';
+import { io, reconnectSockets } from '../../plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
 
 import { getPlayerPnumByUsername } from '_/utils/game-utils.js';
@@ -23,6 +23,7 @@ async function handleLogin(context, username, password, signup = false) {
     }
     // If the response was successful, the user is logged in
     context.commit('authSuccess', username);
+    reconnectSockets();
     return;
   } catch (err) {
     context.commit('clearAuth');
