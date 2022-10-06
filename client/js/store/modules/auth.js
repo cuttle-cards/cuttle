@@ -3,6 +3,33 @@ import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
 
 import { getPlayerPnumByUsername } from '_/utils/game-utils.js';
 
+async function handleLogin(context, username, password, signup = false) {
+  const type = signup ? 'signup' : 'login';
+  try {
+    const response = await fetch(`/user/${type}`, {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+      credentials: 'include',
+    });
+    const data = await response.json();
+    if (response.status !== 200) {
+      throw data.message;
+    }
+    // If the response was successful, the user is logged in
+    context.commit('authSuccess', username);
+    return;
+  } catch (err) {
+    context.commit('clearAuth');
+    throw new Error(err);
+  }
+}
+
 export default {
   state: {
     // This value will ONLY be null on the initial load
@@ -24,64 +51,22 @@ export default {
     },
   },
   actions: {
-    requestLogin(context, data) {
-      return new Promise((resolve, reject) => {
-        io.socket.post(
-          '/user/login',
-          {
-            username: data.username,
-            password: data.password,
-          },
-          function handleResponse(resData, jwres) {
-            if (jwres.statusCode === 200) {
-              context.commit('authSuccess', data.username);
-              return resolve();
-            }
-            context.commit('clearAuth');
-            return reject(jwres.body.message);
-          }
-        );
-      });
+    async requestLogin(context, { username, password }) {
+      await handleLogin(context, username, password);
     },
 
-    requestSignup(context, data) {
-      return new Promise((resolve, reject) => {
-        io.socket.put(
-          '/user/signup',
-          {
-            username: data.username,
-            password: data.password,
-          },
-          function handleResponse(resData, jwres) {
-            if (jwres.statusCode === 200) {
-              context.commit('authSuccess', data.username);
-              return resolve();
-            }
-            let message;
-            if (Object.prototype.hasOwnProperty.call(resData, 'message')) {
-              message = resData.message;
-            } else if (typeof resData === 'string') {
-              message = resData;
-            } else {
-              message = new Error('Unknown error signing up');
-            }
-            context.commit('clearAuth');
-            return reject(message);
-          }
-        );
-      });
+    async requestSignup(context, { username, password }) {
+      await handleLogin(context, username, password, true);
     },
 
-    requestLogout(context) {
-      return new Promise((resolve, reject) => {
-        io.socket.get('/user/logout', {}, function handleResponse(resData, jwres) {
-          if (jwres.statusCode === 200) {
-            context.commit('clearAuth');
-            return resolve();
-          }
-          return reject(new Error('Error logging out :('));
+    async requestLogout(context) {
+      try {
+        await fetch('/user/logout', {
+          credentials: 'include',
         });
-      });
+      } catch (err) {
+        context.commit('clearAuth');
+      }
     },
     requestReauthenticate(context, { username, password }) {
       return new Promise((resolve, reject) => {

@@ -18,6 +18,7 @@ module.exports = {
     }
     // https://github.com/expressjs/session#sessiondestroycallback
     req.session.destroy(function afterDestroy() {
+      // TODO move this to a constant to be shared in `session.js` also
       return exits.success(true);
     });
   },

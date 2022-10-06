@@ -14,17 +14,14 @@ const passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
   signup: async function (req, res) {
-    // Request was missing data
-    if (!req.body.password && !req.body.username) {
-      return res.badRequest('You did not submit a username or password');
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.badRequest({ message: 'Username and password are required' });
     }
     try {
-      const { username, password } = req.body;
-      const users = await User.find({ username: username });
-      if (users.length > 0) {
-        return res.badRequest({
-          message: 'That username is already registered to another user; try logging in!',
-        });
+      const foundUser = await User.find({ username: username });
+      if (foundUser.length > 0) {
+        throw 'That username is already registered';
       }
       // Encrypt pw and create new user
       const encryptedPassword = await passwordAPI.encryptPass(password);
@@ -34,33 +31,26 @@ module.exports = {
       req.session.usr = user.id;
       return res.ok(user.id);
     } catch (err) {
-      return res.badRequest(err);
+      return res.badRequest({
+        message: 'Unable to register user',
+      });
     }
   },
-  login: function (req, res) {
-    const { username } = req.body;
-    if (username) {
-      userAPI
-        .findUserByUsername(username)
-        .then((user) => {
-          return passwordAPI
-            .checkPass(req.body.password, user.encryptedPassword)
-            .then(() => {
-              req.session.loggedIn = true;
-              req.session.usr = user.id;
-              return res.ok();
-            })
-            .catch((reason) => {
-              return res.badRequest(reason);
-            });
-        })
-        .catch(() => {
-          return res.badRequest({
-            message: 'Could not find that user with that username. Try signing up!',
-          });
-        });
-    } else {
-      return res.badRequest({ message: 'A username must be provided' });
+  login: async function (req, res) {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.badRequest({ message: 'Username and password are required' });
+    }
+    try {
+      const user = await userAPI.findUserByUsername(username);
+      await passwordAPI.checkPass(password, user.encryptedPassword);
+      req.session.loggedIn = true;
+      req.session.usr = user.id;
+      return res.ok(user.id);
+    } catch (err) {
+      return res.badRequest({
+        message: 'Unable to login',
+      });
     }
   },
   reLogin: function (req, res) {
