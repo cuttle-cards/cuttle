@@ -53,6 +53,8 @@
 </template>
 
 <script>
+const LS_PREFERS_RANKED_NAME = 'prefersRanked';
+
 export default {
   name: 'CreateGameDialog',
   data() {
@@ -62,6 +64,14 @@ export default {
       loading: false,
       isRanked: false,
     };
+  },
+  watch: {
+    isRanked(isRanked) {
+      this.setRankedPreference(isRanked);
+    },
+  },
+  mounted() {
+    this.isRanked = this.getRankedPreference();
   },
   methods: {
     submitNewGame() {
@@ -86,6 +96,17 @@ export default {
     handleError(err) {
       this.$emit('error', err);
       this.cancelCreateGame();
+    },
+    setRankedPreference(prefersRanked) {
+      try {
+        localStorage.setItem(LS_PREFERS_RANKED_NAME, prefersRanked === true);
+      } catch (err) {
+        // Local storage is full or something else happened so don't set the value
+      }
+      this.isRanked = prefersRanked;
+    },
+    getRankedPreference() {
+      return localStorage.getItem(LS_PREFERS_RANKED_NAME) === 'true';
     },
   },
 };

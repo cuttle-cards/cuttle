@@ -150,6 +150,37 @@ describe('Home - Game List', () => {
 
 describe('Home - Create Game', () => {
   beforeEach(setup);
+
+  it.only('Saves ranked setting between sessions', () => {
+    cy.clearLocalStorage();
+
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]').should('be.visible');
+    cy.get('[data-cy=create-game-ranked-switch]')
+      .should('not.be.checked')
+      .click({ force: true }) // Force to click hidden input inside switch
+      .should('be.checked');
+
+    // Reload to get a fresh session so we use localStorage
+    cy.reload();
+
+    // Should stay checked
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]').should('be.visible');
+    cy.get('[data-cy=create-game-ranked-switch]')
+      .should('be.checked')
+      .click({ force: true }) // Force to click hidden input inside switch
+      .should('not.be.checked');
+
+    // Reload to get a fresh session so we use localStorage
+    cy.reload();
+
+    // Should stay unchecked
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]').should('be.visible');
+    cy.get('[data-cy=create-game-ranked-switch]').should('not.be.checked');
+  });
+
   it('Creates a new game by hitting enter in text field', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
