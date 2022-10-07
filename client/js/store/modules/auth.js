@@ -4,9 +4,9 @@ import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
 import { getPlayerPnumByUsername } from '_/utils/game-utils.js';
 
 async function handleLogin(context, username, password, signup = false) {
-  const type = signup ? 'signup' : 'login';
+  const authType = signup ? 'signup' : 'login';
   try {
-    const response = await fetch(`/user/${type}`, {
+    const response = await fetch(`/user/${authType}`, {
       method: 'POST',
       headers: new Headers({
         'Content-Type': 'application/json',
