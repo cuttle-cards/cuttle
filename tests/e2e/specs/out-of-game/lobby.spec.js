@@ -9,9 +9,6 @@ function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(validUsername, validPassword);
-  // This is required to show the game list (which will ensure the `addGameToList` action dispatches)
-  // Otherwise, tanked game creation does not register properly
-  cy.visit('/');
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);

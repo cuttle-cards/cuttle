@@ -22,6 +22,7 @@ function resetState() {
     oneOffTarget: null,
     waitingForOpponentToCounter: false,
     myTurnToCounter: false,
+    isRanked: false,
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
@@ -131,9 +132,8 @@ export default {
     hasGlassesEight(state, getters) {
       return getters.player.faceCards.filter((card) => card.rank === 8).length > 0;
     },
-    isRanked(state, getters, rootState) {
-      const game = rootState['gameList'].games.find(({ id }) => id === state.id);
-      return game ? game.isRanked : false;
+    isRanked(state) {
+      return state.isRanked;
     },
   },
   mutations: {
@@ -187,6 +187,8 @@ export default {
       if (Object.hasOwnProperty.call(newGame, 'oneOffTarget'))
         state.oneOffTarget = _.cloneDeep(newGame.oneOffTarget);
       else state.oneOffTarget = null;
+
+      if (Object.hasOwnProperty.call(newGame, 'isRanked')) state.isRanked = newGame.isRanked;
     },
     setMyPNum(state, val) {
       state.myPNum = val;

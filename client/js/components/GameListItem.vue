@@ -9,21 +9,21 @@
           :height="$vuetify.breakpoint.smAndUp ? 64 : 32"
         />
       </v-col>
-      <v-col sm="7" lg="6">
+      <v-col sm="6" lg="5">
         <p class="game-name" data-cy="game-list-item-name">
           {{ name }}
         </p>
         <p>{{ readyText }} players</p>
       </v-col>
-      <v-col cols="3" class="list-item-button">
+      <v-col cols="4" class="list-item-button">
         <v-btn
           color="primary"
           rounded
           outlined
-          min-width="200"
           :disabled="!status"
           :loading="joiningGame"
           :small="!$vuetify.breakpoint.lg"
+          class="mr-2"
           @click="subscribeToGame"
         >
           <v-icon v-if="isRanked" class="mr-4" medium>mdi-trophy</v-icon>
