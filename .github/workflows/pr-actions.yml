@@ -77,7 +77,6 @@ jobs:
           wait-on: 'http://localhost:1337'
           # wait for 2 minutes for the server to respond
           wait-on-timeout: 120
-          browser: firefox
         env:
           # Never add vue devtools when running in GitHub
           # Mock a production config without setting NODE_ENV
