@@ -6,6 +6,11 @@ const { isProd } = require('../../../utils/config-utils');
 
 export const io = require('sails.io.js')(require('socket.io-client'));
 
+export const reconnectSockets = () => {
+  io.socket.disconnect();
+  io.socket.reconnect();
+};
+
 if (!isProd) {
   io.sails.url = process.env.VUE_APP_API_URL || 'localhost:1337';
 }

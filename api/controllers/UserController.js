@@ -14,17 +14,13 @@ const passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
   signup: async function (req, res) {
-    // Request was missing data
-    if (!req.body.password && !req.body.username) {
-      return res.badRequest('You did not submit a username or password');
-    }
     try {
       const { username, password } = req.body;
-      const users = await User.find({ username: username });
-      if (users.length > 0) {
-        return res.badRequest({
+      const foundUser = await User.findOne({ username: username });
+      if (foundUser) {
+        throw {
           message: 'That username is already registered to another user; try logging in!',
-        });
+        };
       }
       // Encrypt pw and create new user
       const encryptedPassword = await passwordAPI.encryptPass(password);
@@ -37,30 +33,21 @@ module.exports = {
       return res.badRequest(err);
     }
   },
-  login: function (req, res) {
-    const { username } = req.body;
-    if (username) {
-      userAPI
-        .findUserByUsername(username)
-        .then((user) => {
-          return passwordAPI
-            .checkPass(req.body.password, user.encryptedPassword)
-            .then(() => {
-              req.session.loggedIn = true;
-              req.session.usr = user.id;
-              return res.ok();
-            })
-            .catch((reason) => {
-              return res.badRequest(reason);
-            });
-        })
-        .catch(() => {
-          return res.badRequest({
-            message: 'Could not find that user with that username. Try signing up!',
-          });
-        });
-    } else {
-      return res.badRequest({ message: 'A username must be provided' });
+  login: async function (req, res) {
+    try {
+      const { username, password } = req.body;
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        throw {
+          message: 'Could not find that user with that username. Try signing up!',
+        };
+      }
+      await passwordAPI.checkPass(password, user.encryptedPassword);
+      req.session.loggedIn = true;
+      req.session.usr = user.id;
+      return res.ok(user.id);
+    } catch (err) {
+      return res.badRequest(err);
     }
   },
   reLogin: function (req, res) {
