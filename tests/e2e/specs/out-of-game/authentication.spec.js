@@ -71,7 +71,7 @@ describe('Logging In', () => {
   /**
    * Rejected logins
    */
-  it('Rejects login before signup', () => {
+  it.only('Rejects login before signup', () => {
     cy.get('[data-cy=username]').type('unRegisteredUsername');
     cy.get('[data-cy=password]').type(validPassword);
     cy.get('[data-cy=submit]').click();

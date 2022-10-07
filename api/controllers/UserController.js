@@ -16,8 +16,8 @@ module.exports = {
   signup: async function (req, res) {
     try {
       const { username, password } = req.body;
-      const foundUser = await User.find({ username: username });
-      if (foundUser.length > 0) {
+      const foundUser = await User.findOne({ username: username });
+      if (foundUser) {
         throw {
           message: 'That username is already registered to another user; try logging in!',
         };
@@ -36,7 +36,7 @@ module.exports = {
   login: async function (req, res) {
     try {
       const { username, password } = req.body;
-      const user = await userAPI.findUserByUsername(username);
+      const user = await User.findOne({ username: username });
       if (!user) {
         throw {
           message: 'Could not find that user with that username. Try signing up!',
