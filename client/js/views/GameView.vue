@@ -1250,7 +1250,7 @@ export default {
     height: 100%;
   }
   #history {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.46);
     & #history-logs {
       height: 80%;
       overflow: auto;
