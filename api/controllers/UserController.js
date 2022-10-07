@@ -14,14 +14,13 @@ const passwordAPI = sails.hooks['custompasswordhook'];
 
 module.exports = {
   signup: async function (req, res) {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res.badRequest({ message: 'Username and password are required' });
-    }
     try {
+      const { username, password } = req.body;
       const foundUser = await User.find({ username: username });
       if (foundUser.length > 0) {
-        throw 'That username is already registered';
+        throw {
+          message: 'That username is already registered to another user; try logging in!',
+        };
       }
       // Encrypt pw and create new user
       const encryptedPassword = await passwordAPI.encryptPass(password);
@@ -31,26 +30,24 @@ module.exports = {
       req.session.usr = user.id;
       return res.ok(user.id);
     } catch (err) {
-      return res.badRequest({
-        message: 'Unable to register user',
-      });
+      return res.badRequest(err);
     }
   },
   login: async function (req, res) {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res.badRequest({ message: 'Username and password are required' });
-    }
     try {
+      const { username, password } = req.body;
       const user = await userAPI.findUserByUsername(username);
+      if (!user) {
+        throw {
+          message: 'Could not find that user with that username. Try signing up!',
+        };
+      }
       await passwordAPI.checkPass(password, user.encryptedPassword);
       req.session.loggedIn = true;
       req.session.usr = user.id;
       return res.ok(user.id);
     } catch (err) {
-      return res.badRequest({
-        message: 'Unable to login',
-      });
+      return res.badRequest(err);
     }
   },
   reLogin: function (req, res) {
