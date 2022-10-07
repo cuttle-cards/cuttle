@@ -159,7 +159,7 @@ export default {
         displayName: 'One-Off',
         eventName: 'targetedOneOff',
         moveDescription: this.selectedCard.ruleText,
-        disabled: oneOffDisabled || this.allMovesAreDisabled,
+        disabled: oneOffDisabled,
         disabledExplanation: oneOffDisabledExplanation,
       };
     },
