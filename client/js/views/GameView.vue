@@ -1141,9 +1141,9 @@ export default {
     background: rgba(0, 0, 0, 0.46);
 
     & #opponent-hand-glasses {
-      margin-top: -10vh;
       .opponent-hand-card-revealed {
         transform: scale(0.8);
+        transform: rotate(180deg);
       }
     }
     & .opponent-hand-wrapper {
