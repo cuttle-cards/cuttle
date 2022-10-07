@@ -34,7 +34,7 @@ describe('Home - Page Content', () => {
     cy.get('[data-cy=rules-link]').click();
     cy.hash().should('eq', '#/rules');
   });
-  it.only('Logs user out', () => {
+  it('Logs user out', () => {
     cy.get('[data-nav=Logout]').click();
     cy.contains('h1', 'Log In');
     cy.get('[data-nav=Login]').should('be.visible');
