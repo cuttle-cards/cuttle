@@ -51,7 +51,7 @@
   </v-container>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 import LobbyPlayerIndicator from '../components/LobbyPlayerIndicator';
 
@@ -66,7 +66,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['opponentIsReady', 'opponentUsername', 'isRanked']),
+    ...mapState({
+      isRanked: ({ game }) => game.isRanked,
+    }),
+    ...mapGetters(['opponentIsReady', 'opponentUsername']),
     gameId() {
       return this.$store.state.game.id;
     },
