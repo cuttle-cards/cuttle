@@ -60,15 +60,18 @@ export default {
       return handleLogin(context, username, password, true);
     },
 
-    requestLogout(context) {
+    async requestLogout(context) {
       try {
-        return fetch('/user/logout', {
+        await fetch('/user/logout', {
           credentials: 'include',
         });
       } catch (err) {
-        context.commit('clearAuth');
-        throw new Error(err);
+        // We never want to stop a logout request from resolving
+        // so we just capture the error and allow it to clearAuth anyway
+        console.error(err);
       }
+      context.commit('clearAuth');
+      return;
     },
     requestReauthenticate(context, { username, password }) {
       return new Promise((resolve, reject) => {
