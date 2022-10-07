@@ -5,7 +5,12 @@
         <img id="logo" alt="Cuttle logo" src="../img/logo.png" />
       </v-col>
       <v-col md="8" class="my-auto">
-        <h1>Lobby for {{ gameName }}</h1>
+        <h1>
+          Lobby for {{ gameName }}
+          <small v-if="isRanked" class="lobby-ranked-text">
+            (Ranked <v-icon v-if="isRanked" medium>mdi-trophy</v-icon>)
+          </small>
+        </h1>
       </v-col>
     </v-row>
     <!-- Usernames -->
@@ -36,6 +41,9 @@
       <v-col cols="3">
         <v-btn :loading="readying" contained color="primary" data-cy="ready-button" @click="ready">
           {{ readyButtonText }}
+          <v-icon v-if="isRanked" class="ml-1" small data-cy="ready-button-ranked-icon">
+            mdi-trophy
+          </v-icon>
         </v-btn>
       </v-col>
       <v-spacer />
@@ -43,8 +51,9 @@
   </v-container>
 </template>
 <script>
+import { mapGetters, mapState } from 'vuex';
+
 import LobbyPlayerIndicator from '../components/LobbyPlayerIndicator';
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'Lobby',
@@ -57,6 +66,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isRanked: ({ game }) => game.isRanked,
+    }),
     ...mapGetters(['opponentIsReady', 'opponentUsername']),
     gameId() {
       return this.$store.state.game.id;
@@ -101,5 +113,8 @@ export default {
   height: 10vh;
   min-height: 64px;
   margin: 0 auto;
+}
+.lobby-ranked-text {
+  color: var(--v-neutral-darken2);
 }
 </style>
