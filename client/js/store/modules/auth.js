@@ -52,21 +52,22 @@ export default {
     },
   },
   actions: {
-    async requestLogin(context, { username, password }) {
-      await handleLogin(context, username, password);
+    requestLogin(context, { username, password }) {
+      return handleLogin(context, username, password);
     },
 
-    async requestSignup(context, { username, password }) {
-      await handleLogin(context, username, password, true);
+    requestSignup(context, { username, password }) {
+      return handleLogin(context, username, password, true);
     },
 
-    async requestLogout(context) {
+    requestLogout(context) {
       try {
-        await fetch('/user/logout', {
+        return fetch('/user/logout', {
           credentials: 'include',
         });
       } catch (err) {
         context.commit('clearAuth');
+        throw new Error(err);
       }
     },
     requestReauthenticate(context, { username, password }) {
