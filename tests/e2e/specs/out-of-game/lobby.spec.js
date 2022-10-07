@@ -56,14 +56,13 @@ describe('Lobby - Page Content', () => {
   });
 });
 
-describe.only('Lobby - Page Content (Ranked)', () => {
+describe('Lobby - Page Content (Ranked)', () => {
   beforeEach(() => {
     setup(true);
   });
 
   it('Displays ranked header', () => {
     cy.contains('h1 small', 'Ranked');
-    cy.log(cy.window().its('cuttle.app.$store.state.gameList.games'));
   });
 
   it('Displays ranked button', () => {
