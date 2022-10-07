@@ -5,11 +5,11 @@ import {
   opponentPassword,
 } from '../../support/helpers';
 
-function setup() {
+function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(validUsername, validPassword);
-  cy.createGamePlayer('Test Game').then((gameSummary) => {
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
@@ -53,6 +53,20 @@ describe('Lobby - Page Content', () => {
   it('Defaults to not-ready', () => {
     cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
+  });
+});
+
+describe('Lobby - Page Content (Ranked)', () => {
+  beforeEach(() => {
+    setup(true);
+  });
+
+  it('Displays ranked header', () => {
+    cy.contains('h1 small', 'Ranked');
+  });
+
+  it('Displays ranked button', () => {
+    cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
   });
 });
 
@@ -161,7 +175,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(validUsername, validPassword);
-    cy.createGamePlayer('Test Game').then((gameSummary) => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
       cy.signupOpponent(opponentUsername, opponentPassword);

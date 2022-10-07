@@ -21,11 +21,8 @@ function assertSuccessfulJoin(gameState) {
 describe('Home - Page Content', () => {
   beforeEach(setup);
 
-  it('Displays headers', () => {
+  it('Displays headers and logo', () => {
     cy.contains('h1', 'Games');
-    cy.contains('label', 'Game Name');
-  });
-  it('Displays logo', () => {
     cy.get('#logo');
   });
   it('Play AI and Rules page links work', () => {
@@ -55,8 +52,8 @@ describe('Home - Game List', () => {
   beforeEach(setup);
 
   it('Displays a game for every open game on the server', () => {
-    cy.createGamePlayer('111');
-    cy.createGamePlayer('33');
+    cy.createGamePlayer({ gameName: '111', isRanked: false });
+    cy.createGamePlayer({ gameName: '33', isRanked: false });
     cy.get('[data-cy=game-list-item]').should('have.length', 2);
   });
   it('Displays placeholder text when no games are available', () => {
@@ -64,8 +61,8 @@ describe('Home - Game List', () => {
     cy.contains('p', 'No Active Games');
   });
   it('Adds a new game to the list when one comes in through the socket', () => {
-    cy.createGamePlayer('111');
-    cy.createGamePlayer('33');
+    cy.createGamePlayer({ gameName: '111', isRanked: false });
+    cy.createGamePlayer({ gameName: '33', isRanked: false });
     cy.get('[data-cy=game-list-item]').should('have.length', 2);
     cy.signupOpponent(opponentUsername, opponentPassword);
     cy.createGameOpponent('Game made by other player');
@@ -79,8 +76,8 @@ describe('Home - Game List', () => {
       .then((gameState) => {
         expect(gameState.id).to.eq(null);
       });
-    cy.createGamePlayer('Test Game');
-    cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'JOIN').click();
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false });
+    cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
     cy.hash().should('contain', '#/lobby');
     cy.window()
       .its('cuttle.app.$store.state.game')
@@ -93,12 +90,12 @@ describe('Home - Game List', () => {
      * Set up:
      * Create game, sign up one other user and subscribe them to the game
      */
-    cy.createGamePlayer('Test Game').then((gameData) => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Sign up new user and subscribe them to game
       cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);
       // Our user then joins through UI
-      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'JOIN').click();
+      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
       // Should have redirected to lobby page and updated store
       cy.hash().should('contain', '#/lobby');
       cy.window()
@@ -114,9 +111,9 @@ describe('Home - Game List', () => {
      * Set up:
      * Create game, sign up two other users, subscribe them to the game
      */
-    cy.createGamePlayer('Test Game').then((gameData) => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Test that JOIN button starts enabled
-      cy.contains('button.v-btn', 'JOIN').should('not.be.disabled');
+      cy.contains('button.v-btn', 'Play').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
       cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);
@@ -124,7 +121,7 @@ describe('Home - Game List', () => {
       cy.subscribeOpponent(gameData.gameId);
 
       // Test that join button is now disabled
-      cy.contains('button.v-btn', 'JOIN').should('be.disabled');
+      cy.contains('button.v-btn', 'Play').should('be.disabled');
     });
   });
 
@@ -133,9 +130,9 @@ describe('Home - Game List', () => {
      * Set up:
      * Create game, sign up two other users, subscribe them to the game, leave one user
      */
-    cy.createGamePlayer('Test Game').then((gameData) => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Test that JOIN button starts enabled
-      cy.contains('button.v-btn', 'JOIN').should('not.be.disabled');
+      cy.contains('button.v-btn', 'Play').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
       cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);
@@ -143,18 +140,54 @@ describe('Home - Game List', () => {
       cy.subscribeOpponent(gameData.gameId);
 
       // Test that join button is now disabled
-      cy.contains('button.v-btn', 'JOIN').should('be.disabled');
+      cy.contains('button.v-btn', 'Play').should('be.disabled');
 
       cy.leaveLobbyOpponent(gameData.gameId);
-      cy.contains('button.v-btn', 'JOIN').should('not.be.disabled');
+      cy.contains('button.v-btn', 'Play').should('not.be.disabled');
     });
   });
 });
 
 describe('Home - Create Game', () => {
   beforeEach(setup);
+
+  it('Saves ranked setting between sessions', () => {
+    cy.clearLocalStorage();
+
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]').should('be.visible');
+    cy.get('[data-cy=create-game-ranked-switch]')
+      .should('not.be.checked')
+      .click({ force: true }) // Force to click hidden input inside switch
+      .should('be.checked');
+
+    // Reload to get a fresh session so we use localStorage
+    cy.reload();
+
+    // Should stay checked
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]').should('be.visible');
+    cy.get('[data-cy=create-game-ranked-switch]')
+      .should('be.checked')
+      .click({ force: true }) // Force to click hidden input inside switch
+      .should('not.be.checked');
+
+    // Reload to get a fresh session so we use localStorage
+    cy.reload();
+
+    // Should stay unchecked
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]').should('be.visible');
+    cy.get('[data-cy=create-game-ranked-switch]').should('not.be.checked');
+  });
+
   it('Creates a new game by hitting enter in text field', () => {
-    cy.get('[data-cy=create-game-input]').type('test game' + '{enter}');
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('test game{enter}');
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')
@@ -169,9 +202,16 @@ describe('Home - Create Game', () => {
       });
   });
 
-  it('Creates a new game by hitting the submit button', () => {
-    cy.get('[data-cy=create-game-input]').type('test game');
+  it('Creates a new unranked game by hitting the submit button', () => {
     cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('test game');
+    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+
+    cy.get('[data-cy=create-game-dialog]').should('not.be.visible');
     //Test DOM
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
@@ -187,10 +227,56 @@ describe('Home - Create Game', () => {
           'Expect no players in gameLists game in store, but found some'
         );
         expect(games[0].status).to.eq(true, 'Expect game to have status true');
+        expect(games[0].isRanked).to.eq(false, 'Expect game to be ranked');
       });
+  });
+
+  it('Creates a new ranked game', () => {
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('test game');
+
+    cy.get('[data-cy=create-game-ranked-switch]')
+      .should('not.be.checked')
+      .click({ force: true }) // Force to click hidden input inside switch
+      .should('be.checked');
+
+    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+    // Test store
+    cy.window()
+      .its('cuttle.app.$store.state.gameList.games')
+      .then((games) => {
+        expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
+        expect(games[0].numPlayers).to.eq(
+          0,
+          'Expect no players in gameLists game in store, but found some'
+        );
+        expect(games[0].status).to.eq(true, 'Expect game to have status true');
+        expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
+      });
+  });
+
+  it('Cancels create game dialog', () => {
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('test game');
+    cy.get('[data-cy=cancel-create-game]').should('be.visible').click();
+    // Game name should be empty
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('not.contain', 'test game');
   });
   it('Does not create game without game name', () => {
     cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
     // Test DOM
     cy.get('[data-cy=game-list-item]').should('have.length', 0); // No games appear
     // Test Store
@@ -206,7 +292,7 @@ describe('Home - Create Game', () => {
     assertSnackbarError('Game name cannot be blank', 'newgame');
   });
   it('Removes a game when both players are ready', () => {
-    cy.createGamePlayer('Test Game').then((gameData) => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Sign up 2 users and subscribe them to game
       cy.signupOpponent('remotePlayer1@cuttle.cards', 'myNewPassword');
       cy.subscribeOpponent(gameData.gameId);
