@@ -1108,7 +1108,7 @@ export default {
   color: #fff;
   width: 100vw;
   height: 100%;
-  background-image: url('../img/game_images/board_background.svg');
+  background-image: url('~@/img/game_images/board_background.svg');
   background-size: cover;
   background-position: center;
   display: grid;
@@ -1250,6 +1250,7 @@ export default {
     height: 100%;
   }
   #history {
+    background-color: rgba(0, 0, 0, 0.7);
     & #history-logs {
       height: 80%;
       overflow: auto;
