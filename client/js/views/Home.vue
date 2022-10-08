@@ -75,6 +75,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '../components/CreateGameDialog.vue';
 
@@ -91,9 +92,9 @@ export default {
     };
   },
   computed: {
-    gameList() {
-      return this.$store.state.gameList.games;
-    },
+    ...mapState({
+      gameList: state => state.gameList.games,
+    }),
   },
   async mounted() {
     // Leave any existing lobbies before getting the game list
