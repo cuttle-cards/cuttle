@@ -93,7 +93,7 @@ export default {
   },
   computed: {
     ...mapState({
-      gameList: state => state.gameList.games,
+      gameList: ({ gameList }) => gameList.games,
     }),
   },
   async mounted() {
