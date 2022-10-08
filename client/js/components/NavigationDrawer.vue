@@ -25,12 +25,7 @@
     <!-- Bottom section (logout, expand/collapse) -->
     <template #append>
       <v-list v-if="isSmallDevice">
-        <v-list-item
-          link
-          exact
-          :to="{ name: 'Logout' }"
-          data-nav="Logout"
-        >
+        <v-list-item link exact :to="{ name: 'Logout' }" data-nav="Logout">
           <v-icon class="mr-2">mdi-logout</v-icon>
           <template v-if="!isCollapsed">Logout</template>
         </v-list-item>
@@ -69,13 +64,13 @@ export default {
 
       if (!this.authenticated) {
         return [
-            {
-              text: 'Login',
-              icon: 'login',
-              page: { name: 'Login' },
-            },
-            ...rules,
-          ];
+          {
+            text: 'Login',
+            icon: 'login',
+            page: { name: 'Login' },
+          },
+          ...rules,
+        ];
       }
 
       return this.isSmallDevice
