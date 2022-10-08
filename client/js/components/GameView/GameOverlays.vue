@@ -36,6 +36,7 @@
       <h1>Opponent Considering Stalemate Request</h1>
     </v-overlay>
     <move-choice-overlay
+      v-if="selectedCard || cardSelectedFromDeck"
       :value="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
       :selected-card="selectedCard || cardSelectedFromDeck"
       :is-players-turn="isPlayersTurn"

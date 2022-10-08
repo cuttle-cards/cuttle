@@ -30,7 +30,7 @@ function reloadAndLogout() {
   reconnect();
 }
 
-describe('Reconnecting to a game', () => {
+describe.skip('Reconnecting to a game', () => {
   it('Persists session after refreshing the page', () => {
     setupGameAsP0();
 
