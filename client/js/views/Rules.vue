@@ -379,7 +379,7 @@ export default {
           {
             title: 'Two - Effect 2',
             icon: 'delete',
-            description: 'Twos have two alternative one-off effects: Scrap target Royal',
+            description: 'Twos have two alternative one-off effects: Scrap target Royal or Glasses Eight',
             staticImg: 'cuttle_one_off_two.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/two.gif?raw=true',
