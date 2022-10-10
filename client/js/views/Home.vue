@@ -4,11 +4,9 @@
       <div id="game-list-card">
         <v-row>
           <v-col cols="9">
-            <v-row id="card-content-header" class="mb-4">
-              <v-col cols="4">
-                <h1 id="home-card-title">Games</h1>
-              </v-col>
-            </v-row>
+            <div id="card-content-header" class="mb-4">
+              <h1 id="home-card-title">Games</h1>
+            </div>
             <div id="game-list">
               <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
               <div v-for="game in gameList" :key="game.id">
