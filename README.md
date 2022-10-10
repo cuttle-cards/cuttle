@@ -7,7 +7,6 @@
 	<p>
 		<a href="https://cuttle.cards" title="Cuttle Website">Website</a> | <a href="https://cuttle-cards.github.io/cuttle/" title="Cuttle Design Guide">Design Guide</a>
 	</p>
-</div>
 
 [![Discord Community](https://discord.com/api/guilds/833694928684187669/widget.png?style=banner2)](https://discord.gg/9vrAZ8xGyh) 
 
