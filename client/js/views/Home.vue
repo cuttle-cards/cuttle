@@ -1,9 +1,14 @@
 <template>
-  <div class="home">
-    <div class="container">
+  <div class="home pa-4" :class="{
+    'home--large': !$vuetify.breakpoint.mdAndDown,
+  }">
+    <v-container>
+      <v-row v-if="$vuetify.breakpoint.mdAndDown">
+        <img id="logo" alt="Cuttle logo" src="../img/logo.png" height="20vh" class="mb-4" />
+      </v-row>
       <div id="game-list-card">
         <v-row>
-          <v-col cols="9">
+          <v-col :cols="$vuetify.breakpoint.mdAndDown ? 12 : 9">
             <div id="card-content-header" class="mb-4">
               <h1 id="home-card-title">Games</h1>
             </div>
@@ -22,8 +27,8 @@
               </div>
             </div>
           </v-col>
-          <v-col id="side-nav" cols="3">
-            <img id="logo" alt="Vue logo" src="../img/logo.png" />
+          <v-col id="side-nav" :cols="$vuetify.breakpoint.mdAndDown ? 12 : 3">
+            <img v-if="!$vuetify.breakpoint.mdAndDown" id="logo" alt="Vue logo" src="../img/logo.png" />
             <v-btn
               outlined
               color="primary"
@@ -60,7 +65,7 @@
           <create-game-dialog @error="handleError" />
         </v-row>
       </div>
-    </div>
+    </v-container>
     <v-snackbar
       v-model="showSnackBar"
       color="error"
@@ -134,11 +139,13 @@ export default {
 </script>
 <style scoped lang="scss">
 .container {
-  width: 90%;
-  margin: 10vh auto;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+  .home--large & {
+    width: 90%;
+    margin: 10vh auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
 }
 
 h1 {
@@ -153,9 +160,13 @@ h1 {
 }
 
 #logo {
-  height: auto;
-  width: 80%;
-  margin: 20px auto;
+  height: 20vh;
+  margin: 0 auto;
+  .home--large & {
+    height: auto;
+    width: 80%;
+    margin: 20px auto;
+  }
 }
 
 .page-title {
