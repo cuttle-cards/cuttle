@@ -5,11 +5,8 @@
 		</a>
 	</p>
 	<p>
-		<a href="https://cuttle.cards" title="Cuttle Website">Website</a> | <a href="https://cuttle-cards.github.io/cuttle/" title="Cuttle Design Guide">Design Guide</a>
+		<a href="https://cuttle.cards" title="Cuttle Website">Website</a> | <a href="https://cuttle-cards.github.io/cuttle/" title="Cuttle Design Guide">Design Guide</a> | <a href="#community" title="Cuttle Community">Community</a>
 	</p>
-
-[![Discord Community](https://discord.com/api/guilds/833694928684187669/widget.png?style=banner2)](https://discord.gg/9vrAZ8xGyh) 
-
 </div>
 
 # Cuttle
@@ -219,3 +216,12 @@ You can play Cuttle anywhere you have a deck of cards and a friend! If you want 
 </a>
 
 <!-- Made with [contrib.rocks](https://contrib.rocks). -->
+
+## Community
+
+We have a very active Discord community and currently run 2 events per week.
+
+- Wednesday Night Cuttle at 8:30pm EST
+- Thursday Lunch Cuttle at 12:00pm EST
+
+[![Discord Community](https://discord.com/api/guilds/833694928684187669/widget.png?style=banner2)](https://discord.gg/9vrAZ8xGyh)
