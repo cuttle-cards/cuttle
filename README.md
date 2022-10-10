@@ -211,3 +211,11 @@ Yes. Aces and Sixes destroy all **Point Cards** and all **Face Cards and Glasses
 
 #### Where can I play Cuttle?
 You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, there is only one place: [www.cuttle.cards](https://www.cuttle.cards)
+
+#### Our contributors :star_struck:
+
+<a href="https://github.com/cuttle-cards/cuttle/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=cuttle-cards/cuttle" />
+</a>
+
+<!-- Made with [contrib.rocks](https://contrib.rocks). -->
