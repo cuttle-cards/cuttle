@@ -66,7 +66,7 @@ module.exports = {
        */
 
       // Stringify Suit
-      const str_suit = ['♣', '♦', '♥', '♠'][suit];
+      const str_suit = ['♣️', '♦️', '♥️', '♠️'][suit];
 
       const str_name = str_rank + str_suit;
 
