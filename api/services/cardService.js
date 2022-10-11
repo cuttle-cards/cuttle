@@ -6,7 +6,7 @@ module.exports = {
   findCard: function (options) {
     return new Promise(function (resolve, reject) {
       if (options.hasOwnProperty('cardId') && typeof options.cardId === 'number') {
-        Card.findOne(options.cardId)
+        return Card.findOne(options.cardId)
           .populate('attachments')
           .exec(function (err, card) {
             if (err) {
@@ -42,28 +42,11 @@ module.exports = {
       // Stringify Rank
       const str_rank =
         {
-          1: 'Ace',
-          11: 'Jack',
-          12: 'Queen',
-          13: 'King',
+          1: 'A',
+          11: 'J',
+          12: 'Q',
+          13: 'K',
         }[rank] ?? rank;
-      /*
-      So, a slight aside: || would work above instead of the nullish coalescing
-      operator (??) since the options that the first operation (the {...}[rank]
-      bit) could return are not falsey (i.e. not an empty string).  But, in
-      principle, we're coalescing nulls instead of falsey things.
-
-      If you're not familiar, ?? is like ||, but it picks the second
-      argument iff the first argument is null or undefined
-
-      1    || 'a' -> 1
-      null || 'a' -> 'a'
-      0    || 'a' -> 'a'
-
-      1    ?? 'a' -> 1
-      null ?? 'a' -> 'a'
-      0    ?? 'a' -> 0
-       */
 
       // Stringify Suit
       const str_suit = ['♣️', '♦️', '♥️', '♠️'][suit];
@@ -71,7 +54,6 @@ module.exports = {
       const str_name = str_rank + str_suit;
 
       const ruleText = [
-        null,
         'Scrap all points',
         'Scrap target Royal or Glasses eight',
         'Choose 1 card in the Scrap and put it to your hand',
@@ -85,7 +67,7 @@ module.exports = {
         'Play on top of target point card to steal it',
         'Your other cards may only be targeted by scuttles',
         'Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 7pts, 4K: 5pts)',
-      ][rank];
+      ][rank - 1]; // ranks start at 1
 
       // Create card record
       return Card.create({
@@ -129,23 +111,5 @@ module.exports = {
           return reject(err);
         }); //End find()
     }); //End returned Promise
-  },
-
-  /*
-   **Saves a card and returns it as a Promise
-   ****options = {card: CardRecord}
-   */
-  saveCard: function (options) {
-    return new Promise(function (resolve, reject) {
-      if (!options.card) {
-        return reject({ message: "Can't save card without card record" });
-      }
-      options.card.save(function (err) {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(options.card);
-      });
-    });
   },
 };
