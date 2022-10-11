@@ -64,10 +64,9 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
 
-    let consoleErrorCount;
     cy.wait(500)
       .then(() => {
-        consoleErrorCount = consoleError.callCount;
+        const consoleErrorCount = consoleError.callCount;
 
         // Right now, we're getting a couple of:
         // [Vue warn]: Property or method "nodeType" is not defined on the instance
