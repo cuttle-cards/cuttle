@@ -8,12 +8,6 @@ import {
   Card,
 } from '../../support/helpers';
 
-// For catching console errors later
-let consoleError;
-Cypress.on('window:before:load', (win) => {
-  consoleError = cy.spy(win.console, 'error');
-});
-
 describe('Game Basic Moves - P0 Perspective', () => {
   beforeEach(() => {
     setupGameAsP0();
@@ -62,17 +56,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1Hand: [Card.ACE_OF_HEARTS],
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_HEARTS],
-    });
-
-    cy.wait(500).then(() => {
-      const consoleErrorCount = consoleError.callCount;
-
-      // Right now, we're getting a couple of:
-      // [Vue warn]: Property or method "nodeType" is not defined on the instance
-      // but referenced during render. Make sure that this property is reactive,
-      // either in the data option, or for class-based components, by initializing
-      // the property
-      cy.wrap(consoleErrorCount).should('be.lte', 8);
     });
   });
 

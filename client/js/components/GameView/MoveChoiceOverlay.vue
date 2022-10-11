@@ -66,6 +66,7 @@ export default {
     },
     frozenId: {
       type: Number,
+      default: null,
     },
   },
   computed: {
