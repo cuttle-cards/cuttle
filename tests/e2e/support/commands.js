@@ -8,9 +8,7 @@ io.sails.useCORSRouteToGetCookie = false;
 
 // Pass error logs to the terminal console
 // See https://github.com/cypress-io/cypress/issues/3199#issuecomment-1019270203
-if (process.env.CUTTLE_ENV !== 'production') {
-  Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
-}
+// Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
 
 Cypress.Commands.add('wipeDatabase', () => {
   cy.request('localhost:1337/test/wipeDatabase');
