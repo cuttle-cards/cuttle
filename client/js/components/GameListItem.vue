@@ -19,12 +19,15 @@
         <v-btn
           color="primary"
           rounded
+          outlined
+          min-width="200"
           :disabled="!status"
           :loading="joiningGame"
           :small="!$vuetify.breakpoint.lg"
           @click="subscribeToGame"
         >
-          JOIN
+          <v-icon v-if="isRanked" class="mr-4" medium>mdi-trophy</v-icon>
+          {{ buttonText }}
         </v-btn>
       </v-col>
     </v-row>
@@ -60,6 +63,10 @@ export default {
       type: Number,
       required: true,
     },
+    isRanked: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -72,6 +79,9 @@ export default {
     },
     readyText() {
       return `${this.numPlayers} / 2`;
+    },
+    buttonText() {
+      return this.isRanked ? 'Play Ranked' : 'Play';
     },
   },
   methods: {

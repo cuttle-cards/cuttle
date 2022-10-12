@@ -63,6 +63,8 @@ module.exports = function (req, res) {
               gameUpdates.lastEvent = {
                 change: 'Initialize',
               };
+              gameUpdates.p0 = p0.id;
+              gameUpdates.p1 = p1.id;
 
               // Update records
               const updatePromises = [

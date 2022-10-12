@@ -22,6 +22,7 @@ function resetState() {
     oneOffTarget: null,
     waitingForOpponentToCounter: false,
     myTurnToCounter: false,
+    isRanked: false,
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
@@ -183,6 +184,8 @@ export default {
       if (Object.hasOwnProperty.call(newGame, 'oneOffTarget'))
         state.oneOffTarget = _.cloneDeep(newGame.oneOffTarget);
       else state.oneOffTarget = null;
+
+      if (Object.hasOwnProperty.call(newGame, 'isRanked')) state.isRanked = newGame.isRanked;
     },
     setMyPNum(state, val) {
       state.myPNum = val;

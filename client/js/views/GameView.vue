@@ -1106,7 +1106,9 @@ export default {
   color: #fff;
   width: 100vw;
   height: 100%;
-  background: linear-gradient(180deg, #6202ee 14.61%, #fd6222 100%), #c4c4c4;
+  background-image: url('~@/img/game_images/board_background.svg');
+  background-size: cover;
+  background-position: center;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: 15vh 5vh 55vh 5vh 20vh;
@@ -1253,6 +1255,7 @@ export default {
     height: 100%;
   }
   #history {
+    background-color: rgba(0, 0, 0, 0.46);
     & #history-logs {
       height: 80%;
       overflow: auto;

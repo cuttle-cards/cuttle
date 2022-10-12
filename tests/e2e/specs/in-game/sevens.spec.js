@@ -1299,7 +1299,11 @@ describe('Opponent playing SEVENS', () => {
 
       // player plays the returned jack immediately
       cy.get('[data-player-hand-card=11-0]').click();
-      cy.get('[data-move-choice=jack]').click();
+      // Frozen move choice cards should be disabled and display frozen text.
+      cy.get('[data-move-choice=jack]')
+        .should('have.class', 'v-card--disabled')
+        .contains('This card is frozen')
+        .click({ force: true }); //Break out into separate test case
       cy.get('[data-opponent-point-card=1-0]').click();
       assertSnackbarError(SnackBarError.FROZEN_CARD);
       cy.log('Successfully prevented player from playing the jack while it is frozen');
