@@ -25,7 +25,7 @@ module.exports = defineConfig({
       // See https://github.com/cypress-io/cypress/issues/3199#issuecomment-1019270203
       on('task', {
         log(message) {
-          console.log(message);
+          console.log(`[log]: ${message}`);
           return null;
         },
       });
