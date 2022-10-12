@@ -23,12 +23,14 @@ module.exports = defineConfig({
       // Log errors to the terminal console
       // Also requires the log to be overridden in commands.js
       // See https://github.com/cypress-io/cypress/issues/3199#issuecomment-1019270203
-      on('task', {
-        log(message) {
-          console.log(`[log]: ${message}`);
-          return null;
-        },
-      });
+      if (process.env.CUTTLE_ENV !== 'production') {
+        on('task', {
+          log(message) {
+            console.log(`[log]: ${message}`);
+            return null;
+          },
+        });
+      }
       return config;
     },
   },
