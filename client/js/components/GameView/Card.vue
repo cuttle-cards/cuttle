@@ -23,7 +23,7 @@
     />
     <img
       v-if="isGlasses"
-      :src="require(`../../img/cards/Glasses_${suitName}.jpg`)"
+      :src="require(`../../img/cards/Glasses_${suitName}.png`)"
       :alt="`Glasses - $${cardName}`"
     />
     <img v-else :src="require(`../../img/cards/card_${suit}_${rank}.svg`)" :alt="cardName" />
