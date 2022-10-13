@@ -22,7 +22,7 @@
             <v-switch v-model="isRanked" label="Ranked" data-cy="create-game-ranked-switch" />
           </div>
           <div>
-            <stats-scoring-dialog :show-text="false" />
+            <stats-scoring-dialog :show-text="false" data-cy="ranked-info-button" />
           </div>
         </div>
         <v-text-field
