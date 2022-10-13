@@ -17,7 +17,14 @@
         <h2>Create Game</h2>
       </v-card-title>
       <v-card-text>
-        <v-switch v-model="isRanked" label="Ranked" data-cy="create-game-ranked-switch" />
+        <div class="d-flex align-center">
+          <div>
+            <v-switch v-model="isRanked" label="Ranked" data-cy="create-game-ranked-switch" />
+          </div>
+          <div>
+            <stats-scoring-dialog :show-text="false" />
+          </div>
+        </div>
         <v-text-field
           v-model="gameName"
           autofocus
@@ -55,8 +62,11 @@
 <script>
 const LS_PREFERS_RANKED_NAME = 'prefersRanked';
 
+import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
+
 export default {
   name: 'CreateGameDialog',
+  components: { StatsScoringDialog },
   data() {
     return {
       show: false,

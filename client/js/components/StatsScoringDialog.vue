@@ -3,7 +3,7 @@
     <!-- Activator -->
     <template #activator="{ on, attrs }">
       <v-btn color="primary" text class="mb-2" v-bind="attrs" v-on="on">
-        How are ranks determined?
+        <span v-if="showText"> How are ranks determined? </span>
         <v-icon class="ml-1">mdi-information-outline</v-icon>
       </v-btn>
     </template>
@@ -17,10 +17,10 @@
       </v-card-title>
       <v-card-text>
         <p>
-          Competitive Cuttle is divided into 4 seasons per year, one per suit: Clubs, Diamonds,
-          Hearts, and Spades. At the end of each season, the top 4 players play a double elimination
-          championship tournament and the
-          <strong>champions are permenantly accoladed on the site.</strong>
+          Competitive Cuttle is divided into 4 seasons per year, one per suit: ♣️, ♦️, ♥️, and ♠️.
+          At the end of each season, the top 4 players play a double elimination championship
+          tournament and the
+          <strong>champions are permanently accoladed on the site.</strong>
         </p>
         <div class="d-flex justify-space-around flex-wrap">
           <award-card username="Champion player" :place="1" class="mb-4" />
@@ -28,9 +28,9 @@
           <award-card username="Third Place Player" :place="3" class="mb-4" />
         </div>
         <p>
-          Each Season is divided into 13 weeks. For each week, we count the number of best 2/3
-          ranked matches each player wins against unique opponents (ignoring stalemates) and assign
-          players points based on their weekly standing.
+          Each Season is divided into 13 weeks. For each week, we count the number of best two out
+          of three ranked matches each player wins against unique opponents (ignoring stalemates)
+          and assign players points based on their weekly standing.
         </p>
         <v-list>
           <v-list-item>
@@ -50,9 +50,10 @@
           </v-list-item>
         </v-list>
         <p>
-          You can view the statistics and rankings for each season on this page. At the end of each
-          season, the top 4 players compete in a double elimination championship tournament. Do you
-          have what it takes to become
+          You can view the statistics and rankings for each season on
+          <a href="#/stats" target="_self"> the Stats page </a> . At the end of each season, the top
+          4 players compete in a double elimination championship tournament. Do you have what it
+          takes to become
           <strong> Lord of the Deep? </strong>
         </p>
         <!-- Actions -->
@@ -71,6 +72,12 @@ export default {
   name: 'RulesDialog',
   components: {
     AwardCard,
+  },
+  props: {
+    showText: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
