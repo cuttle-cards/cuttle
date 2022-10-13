@@ -78,6 +78,8 @@ export default {
           return 'Hearts';
         case 3:
           return 'Spades';
+        case 'back':
+          return 'back';
         default:
           return 'Invalid Suit Error';
       }
@@ -110,6 +112,8 @@ export default {
           return 'Queen';
         case 13:
           return 'King';
+        case 'back':
+          return 'back';
         default:
           return 'Invalid Rank Error';
       }

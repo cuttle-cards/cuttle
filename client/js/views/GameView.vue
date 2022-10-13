@@ -108,6 +108,7 @@
                       :key="index"
                       suit="back"
                       rank="back"
+                      data-opponent-hand-card
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
                     />
                   </transition-group>
