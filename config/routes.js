@@ -51,7 +51,8 @@ module.exports.routes = {
   '/user/reLogin': 'userController.reLogin',
   '/user/logout': 'userController.logout',
   '/user/status': 'userController.status',
-
+  
+  'GET /api/status': 'StatusController.getStatus',
   'GET /stats': 'StatsController.getStats',
 
   '/game/create': 'game/create',
