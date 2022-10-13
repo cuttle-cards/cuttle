@@ -8,9 +8,9 @@
       <div>
         <h1 class="gradient-text">Rules of Cuttle</h1>
         <p class="d-block">
-          Cuttle is a 2 player battle card game played with a standard 52-card deck of cards. It has
-          the strategic nuance of trading card games like Magic, with the elegant balance of a
-          standard deck--and you can play it for free! Test your mettle in the deepest cardgame
+          Cuttle is a two player battle card game played with a standard 52-card deck of cards. It
+          has the strategic nuance of trading card games like Magic, with the elegant balance of a
+          standard deck--and you can play it for free! Test your mettle in the deepest card game
           under the sea!
         </p>
         <div class="d-flex justify-center">
@@ -32,7 +32,6 @@
               class="video-container__video"
               src="https://www.youtube.com/embed/qOqkNbhMdsI"
               title="Cuttle Game Tutorial -- Youtube Player"
-              frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
             />
@@ -45,7 +44,7 @@
         <p class="d-block">
           The goal is to be the first player to have 21 or more points worth of point cards on your
           field. The first player to reach the goal wins immediately. One player (traditionally the
-          dealer) is dealt 6 cards, and their opponent is dealt 5. The player with 5 cards goes
+          dealer) is dealt 6 cards and their opponent is dealt 5. The player with 5 cards goes
           first.
         </p>
       </v-row>
@@ -138,15 +137,15 @@
         <ul>
           <li>
             The win condition is reduced. Players need 14 points to win by default, 9 points with
-            one king in play, 5 points with two kings in play, and having 3 kings in play
+            one King in play, 5 points with two Kings in play, and having 3 Kings in play
             immediately wins (goal becomes zero).
           </li>
           <li>
             To start play, deal each player 5 cards and the player to the left of the dealer goes
-            first. Which player is the delete rotates clockwise each game.
+            first. Which player is the dealer rotates clockwise each game.
           </li>
           <li>
-            Shuffle two jokers into the deck. Joker's count as Royals with the effect "Steal target
+            Shuffle two Jokers into the deck. Jokers count as Royals with the effect "Steal target
             Royal".
           </li>
           <li>The hand limit is reduced to 7 (from 8).</li>
@@ -156,7 +155,7 @@
         <p class="mb-4">
           4 player Cuttle is a 2v2 team game. Each player sits across from their partner. Your team
           wins if either you or your teammate reach your respective goals, but players do not share
-          cards on their hand or field (points are counted separately and your royals do not
+          cards on their hand or field (points are counted separately and your Royals do not
           directly affect your partner).
         </p>
         <p>
@@ -166,11 +165,11 @@
         <ul>
           <li>
             Each player is dealt 5 cards, play starts left of the dealer and proceeds clockwise from
-            there
+            there.
           </li>
           <li>
-            Shuffle two jokers into the deck. Joker's count as Royals with the effect "Steal target
-            Royal". Similar to jacks, they may transfer control of a royal from any player to any
+            Shuffle two Jokers into the deck. Jokers count as Royals with the effect "Steal target
+            Royal". Similar to Jacks, they may transfer control of a Royal from any player to any
             other player.
           </li>
           <li>The hand limit is reduced to 7 (from 8).</li>
@@ -178,17 +177,16 @@
             Jacks may be played to transfer control of any point card to any other player. You may
             therefore "steal" points from yourself (or anyone else) in order to give them to your
             partner, potentially winning on your turn with their points (their goal is still
-            determined by the count of their own kings on the field).
+            determined by the count of their own Kings on the field).
           </li>
           <li>
-            Nine's can be played for an alternative, similar effect. Whenever an opponent plays a
-            royal, you may immediately play a nine in response to return that card to its owner's
+            Nines can be played for an alternative, similar effect. Whenever an opponent plays a
+            Royal, you may immediately play a Nine in response to return that card to its owner's
             hand immediately, preventing its effect from taking place. Doing so may be done out of
-            turn, does not take your turn, but does not prevent the target's owner from playing the
-            card again on their next turn. Alternatively, you may still play a nine for it's
-            original one-off effect on your turn (taking your turn to do so) to return a card
-            permanently to it's controller's hand and prevent them from playing that card on their
-            next turn.
+            turn and does not take your turn, but does not prevent the target's owner from playing
+            the card again on their next turn. Alternatively, you may still play a Nine for its
+            original one-off effect on your turn (taking your turn to do so) to return a card to its
+            controller's hand and prevent them from playing that card on their next turn.
           </li>
         </ul>
       </v-row>
@@ -228,6 +226,18 @@
           respectively. That includes any that you have out. Try to avoid destroying too many of
           your own cards!
         </p>
+        <h3>My Seven revealed two Jacks and my opponent has no points. What happens?</h3>
+        <p class="mb-4">
+          If playing both cards revealed by a Seven is impossible (namely revealing two Jacks and
+          your opponent has no point cards in play), choose one card to discard and place the other
+          back on top of the deck.
+        </p>
+        <h3>What if I play a Seven and there is only one card left in the deck?</h3>
+        <p class="mb-4">
+          Reveal just the one card and continue play like normal. Similar to the above situation, if
+          you reveal a Jack and your opponent does not have any point cards in play, that Jack is
+          scrapped.
+        </p>
         <h3>Where can I play Cuttle?</h3>
         <p class="mb-4">
           You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play
@@ -266,7 +276,8 @@ export default {
           {
             title: 'Draw',
             icon: 'cards-playing-spade-multiple',
-            description: 'Take one card from the Deck. You may not draw past the 8-card hand limit',
+            description:
+              'Take one card from the deck. You may not draw past the 8-card hand limit.  If there are no cards left in the deck, you may pass.  Three consecutive passes ends the game in a stalemate',
             staticImg: 'cuttle_board.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/draw.gif?raw=true',
@@ -275,7 +286,7 @@ export default {
             title: 'Points',
             icon: 'numeric',
             description:
-              'Play a number card from your hand. Worth its rank in points, lasts until scrapped',
+              'Play a number card from your hand.  Worth its rank in points and lasts until scrapped or scuttled.',
             staticImg: 'cuttle_points.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/points.gif?raw=true',
@@ -286,7 +297,8 @@ export default {
           {
             title: 'Scuttle',
             icon: 'skull-crossbones',
-            description: 'Scrap an opponent’s point card with a bigger one from your hand',
+            description:
+              'Scrap an opponent’s point card with a bigger one from your hand.  Ties are broken by the suit: ♣️ (weakest) < ♦️ < ♥️ < ♠️ (strongest).',
             staticImg: 'cuttle_scuttle.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/scuttling.gif?raw=true',
@@ -295,7 +307,7 @@ export default {
             title: 'Royal',
             icon: 'crown',
             description:
-              'Play a face card for a persistent benefit based on rank (lasts until scrapped)',
+              'Play a face card for a persistent benefit based on rank (lasts until scrapped).',
             staticImg: 'cuttle_king.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
@@ -314,7 +326,7 @@ export default {
           {
             title: 'Glasses',
             icon: 'sunglasses',
-            description: 'Play an Eight to reveal your opponent’s hand (lasts until scrapped)',
+            description: 'Play an Eight to reveal your opponent’s hand (lasts until scrapped).',
             staticImg: 'cuttle_glasses.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/glasses.gif?raw=true',
@@ -328,7 +340,7 @@ export default {
             title: 'King',
             icon: 'crown',
             description:
-              'Reduce the number of points you need to win (21, 14, 10, 7, 5 points with 0, 1, 2, 3, 4 kings)',
+              'Reduce the number of points you need to win (21, 14, 10, 7, 5 points with 0, 1, 2, 3, 4 Kings).',
             staticImg: 'cuttle_king.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
@@ -348,7 +360,7 @@ export default {
             title: 'Jack',
             icon: 'crown',
             description:
-              'Play on an opponent’s point card to steal it. Point card returns to opponent if the jack is scrapped or if another jack is used to steal it back.',
+              'Play on an opponent’s point card to steal it. Point card returns to opponent if the Jack is scrapped or if another Jack is used to steal it back.',
             staticImg: 'cuttle_jack.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
@@ -361,7 +373,7 @@ export default {
           {
             title: 'Ace',
             icon: 'delete',
-            description: 'Scrap all point cards on the field',
+            description: 'Scrap all point cards on the field.',
             staticImg: 'cuttle_one_off_ace.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/ace.gif?raw=true',
@@ -369,7 +381,8 @@ export default {
           {
             title: 'Two - Effect 1',
             icon: 'delete',
-            description: 'Twos have two alternative one-off effects: Counter target One-Off Effect',
+            description:
+              "Two's have two alternative one-off effects: Counter target One-Off Effect.  This happens during your opponent's turn.",
             staticImg: 'cuttle_counter.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/counter.gif?raw=true',
@@ -380,7 +393,7 @@ export default {
             title: 'Two - Effect 2',
             icon: 'delete',
             description:
-              'Twos have two alternative one-off effects: Scrap target Royal or Glasses Eight',
+              'Twos have two alternative one-off effects: Scrap target Royal or Glasses Eight.',
             staticImg: 'cuttle_one_off_two.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/two.gif?raw=true',
@@ -388,7 +401,7 @@ export default {
           {
             title: 'Three',
             icon: 'delete',
-            description: 'Choose a card in the scrap pile and put it in your hand',
+            description: 'Choose a card from the scrap pile and put it in your hand.',
             staticImg: 'cuttle_one_off_three.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/three.gif?raw=true',
@@ -398,7 +411,7 @@ export default {
           {
             title: 'Four',
             icon: 'delete',
-            description: 'Your opponent discards two cards of their choice',
+            description: 'Your opponent discards two cards of their choice.',
             staticImg: 'cuttle_one_off_four.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/four.gif?raw=true',
@@ -406,7 +419,7 @@ export default {
           {
             title: 'Five',
             icon: 'delete',
-            description: 'Draw two cards from the deck (Up to the 8 card hand limit)',
+            description: 'Draw two cards from the deck up to the 8 card hand limit.',
             staticImg: 'cuttle_one_off_five.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/five.gif?raw=true',
@@ -416,7 +429,7 @@ export default {
           {
             title: 'Six',
             icon: 'delete',
-            description: 'Scrap all Royals and Glasses Eights on the field',
+            description: 'Scrap all Royals and Glasses Eights on the field.',
             staticImg: 'cuttle_one_off_six.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/six.gif?raw=true',
@@ -425,7 +438,7 @@ export default {
             title: 'Seven',
             icon: 'delete',
             description:
-              'Choose one of the top two cards from the deck and play it however you choose.',
+              'Reveal the top two cards from the deck and choose one to play however you choose.',
             staticImg: 'cuttle_one_off_seven.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/seven.gif?raw=true',
@@ -486,7 +499,7 @@ export default {
       return (
         this.activeOneOffIndices.length === 2 &&
         rowIndex === this.activeOneOffIndices[0] &&
-        colIndex == this.activeOneOffIndices[1]
+        colIndex === this.activeOneOffIndices[1]
       );
     },
     selectOneOff(rowIndex, colIndex) {
