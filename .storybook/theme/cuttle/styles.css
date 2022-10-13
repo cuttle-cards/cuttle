@@ -1,0 +1,6 @@
+/* https://storybook.js.org/docs/vue/configure/theming */
+
+/* Match logo size with the button control */
+.sidebar-header a img {
+  max-width: 28px;
+}

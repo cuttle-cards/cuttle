@@ -373,7 +373,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
     // Should have 3 move options
     cy.get('[data-move-choice]').should('have.length', 3);
     cy.get('[data-cy=cancel-move]').click();
-    cy.get('#move-choice-overlay').should('not.be.visible');
+    cy.get('#move-choice-overlay').should('not.exist');
     cy.log('Successfully canceled card selection');
 
     // Cancel decision to scuttle

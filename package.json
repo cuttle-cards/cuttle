@@ -1,6 +1,6 @@
 {
   "name": "cuttle",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "private": true,
   "description": "The deepest card game under the sea",
   "scripts": {
@@ -16,12 +16,14 @@
     "e2e:server": "VUE_APP_API_URL=http://localhost:1337 npx cypress run --config-file tests/cypress.config.js",
     "e2e:server:gui": "VUE_APP_API_URL=http://localhost:1337 npx cypress open --config-file tests/cypress.config.js",
     "start": "node app.js",
-    "start:client": "concurrently \"ENABLE_VUE_DEVTOOLS=true vue-cli-service serve\" \"npm run start:devtools\"",
+    "start:client": "ENABLE_VUE_DEVTOOLS=true vue-cli-service serve",
     "start:dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:devtools": "vue-devtools",
     "start:mockprod": "CUTTLE_ENV=production npm run build && CUTTLE_ENV=production npm run start:server",
     "start:mockprod:tools": "concurrently \"NODE_ENV=dev ENABLE_VUE_DEVTOOLS=true npm run build && npm run start:server\" \"npm run start:devtools\"",
-    "start:server": "node app.js"
+    "start:server": "node app.js",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "main": "app.js",
   "dependencies": {
@@ -44,6 +46,14 @@
   "devDependencies": {
     "@babel/core": "7.12.16",
     "@babel/eslint-parser": "7.12.16",
+    "@storybook/addon-actions": "^6.5.12",
+    "@storybook/addon-essentials": "^6.5.12",
+    "@storybook/addon-interactions": "^6.5.12",
+    "@storybook/addon-links": "^6.5.12",
+    "@storybook/builder-webpack4": "^6.5.12",
+    "@storybook/manager-webpack4": "^6.5.12",
+    "@storybook/testing-library": "0.0.13",
+    "@storybook/vue": "^6.5.12",
     "@vue/cli-plugin-babel": "4.5.0",
     "@vue/cli-plugin-eslint": "5.0.6",
     "@vue/cli-plugin-router": "4.5.4",
@@ -55,6 +65,7 @@
     "@vue/vue2-jest": "27.0.0-alpha.4",
     "babel-eslint": "10.1.0",
     "babel-jest": "27.0.6",
+    "babel-loader": "^8.2.5",
     "concurrently": "7.2.2",
     "cypress": "9.7.0",
     "eslint": "8.18.0",
@@ -62,6 +73,7 @@
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-jest": "26.5.3",
     "eslint-plugin-prettier": "4.1.0",
+    "eslint-plugin-storybook": "^0.6.4",
     "eslint-plugin-vue": "9.1.1",
     "jest": "27.0.5",
     "prettier": "2.7.1",

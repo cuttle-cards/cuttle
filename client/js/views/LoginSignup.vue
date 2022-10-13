@@ -126,24 +126,17 @@ export default {
     this.$store.dispatch('requestLogout');
   },
   methods: {
-    submitLogin() {
+    async submitLogin() {
       this.loading = true;
-      if (this.isLoggingIn) {
-        this.$store
-          .dispatch('requestLogin', {
-            username: this.username,
-            password: this.pw,
-          })
-          .then(this.handleLogin)
-          .catch(this.handleError);
-      } else {
-        this.$store
-          .dispatch('requestSignup', {
-            username: this.username,
-            password: this.pw,
-          })
-          .then(this.handleLogin)
-          .catch(this.handleError);
+      const action = this.isLoggingIn ? 'requestLogin' : 'requestSignup';
+      try {
+        await this.$store.dispatch(action, {
+          username: this.username,
+          password: this.pw,
+        });
+        this.handleLogin();
+      } catch (err) {
+        this.handleError(err);
       }
     },
     switchMode() {
