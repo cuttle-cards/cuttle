@@ -67,7 +67,6 @@ describe('Lobby - Page Content (Ranked)', () => {
 
   it('Displays ranked button', () => {
     cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
-    cy.get('[data-cy=ranked-info-button]').should('exist');
   });
 });
 
