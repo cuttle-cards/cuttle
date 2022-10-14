@@ -286,7 +286,7 @@ export default {
             title: 'Points',
             icon: 'numeric',
             description:
-              'Play a number card from your hand.  Worth its rank in points and lasts until scrapped or scuttled.',
+              'Play a number card from your hand. Worth its rank in points and lasts until scrapped.',
             staticImg: 'cuttle_points.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/points.gif?raw=true',
