@@ -56,7 +56,6 @@
 </template>
 
 <script>
-
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 
 const LS_PREFERS_RANKED_NAME = 'prefersRanked';
