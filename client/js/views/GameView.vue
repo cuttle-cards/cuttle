@@ -106,9 +106,6 @@
                     <card
                       v-for="(card, index) in opponent.hand"
                       :key="index"
-                      :suit="card.suit"
-                      :rank="card.rank"
-                      :is-back="true"
                       data-opponent-hand-card
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
                     />

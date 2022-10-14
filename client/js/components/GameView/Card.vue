@@ -37,11 +37,9 @@ export default {
   props: {
     suit: {
       type: Number,
-      required: true,
     },
     rank: {
       type: Number,
-      required: true,
     },
     isSelected: {
       type: Boolean,
@@ -64,10 +62,6 @@ export default {
       default: null,
     },
     isFrozen: {
-      type: Boolean,
-      default: false,
-    },
-    isBack: {
       type: Boolean,
       default: false,
     },
@@ -124,6 +118,9 @@ export default {
     },
     elevation() {
       return this.isGlasses ? '0' : '1';
+    },
+    isBack() {
+      return !this.suit && !this.rank;
     },
   },
 };
