@@ -1,9 +1,7 @@
 const { version: pkgVersion } = require('../../package.json');
 
-const healthAPI = sails.hooks['apihealthhook'];
-
-const isDatabaseAvailable = () => {
-  return healthAPI.getHealth();
+const isDatabaseAvailable = async () => {
+  return await sails.helpers.getApiHealth();
 };
 
 const getPackageVersion = () => {
