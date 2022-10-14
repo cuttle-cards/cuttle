@@ -52,7 +52,7 @@ module.exports.routes = {
   '/user/logout': 'userController.logout',
   '/user/status': 'userController.status',
 
-  'GET /api/status': 'StatusController.getStatus',
+  'GET /health': 'HealthController.getHealth',
   'GET /stats': 'StatsController.getStats',
 
   '/game/create': 'game/create',

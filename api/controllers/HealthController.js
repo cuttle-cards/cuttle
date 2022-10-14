@@ -1,21 +1,23 @@
-const statusAPI = sails.hooks['apistatushook'];
+const { version: pkgVersion } = require('../../package.json');
+
+const healthAPI = sails.hooks['apihealthhook'];
 
 const isDatabaseAvailable = () => {
-  return statusAPI.getStatus();
+  return healthAPI.getHealth();
 };
 
 const getPackageVersion = () => {
   // 'npm_package_version' is only available when the server is started via an npm script
-  return process.env.npm_package_version || 'unknown';
+  return pkgVersion || process.env.npm_package_version || 'unknown';
 };
 
 module.exports = {
-  getStatus: async function (req, res) {
+  getHealth: async function (req, res) {
     const dbAvailable = await isDatabaseAvailable();
     const packageVersion = getPackageVersion();
 
     return res.json({
-      available: dbAvailable,
+      alive: dbAvailable,
       version: packageVersion,
     });
   },

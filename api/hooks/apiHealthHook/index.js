@@ -1,9 +1,9 @@
-module.exports = function apiStatusHook() {
+module.exports = function apiHealthHook() {
   ////////////////
-  // API Status //
+  // API Health //
   ////////////////
   return {
-    getStatus: function () {
+    getHealth: function () {
       return new Promise(function (resolve, reject) {
         Game.count().exec(function (error, game) {
           if (error || game <= 0) {

@@ -1,8 +1,7 @@
-const packageVersion = require('../../../../package.json').version;
-
 import { setupGameAsP0 } from '../../support/helpers';
+const { version: pkgVersion } = require('../../../../package.json');
 
-describe.only('API Status Page', () => {
+describe.only('API Health Page', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
@@ -10,23 +9,23 @@ describe.only('API Status Page', () => {
 
   it('is available if game exists', () => {
     setupGameAsP0();
-    cy.request('/api/status').then((res) => {
+    cy.request('/health').then((res) => {
       expect(res).property('status').to.equal(200);
-      expect(res.body).property('available').to.eq(true);
+      expect(res.body).property('alive').to.eq(true);
     });
   });
 
   it('is not available if no game exists', () => {
-    cy.request('/api/status').then((res) => {
+    cy.request('/health').then((res) => {
       expect(res).property('status').to.equal(200);
-      expect(res.body).property('available').to.eq(false);
+      expect(res.body).property('alive').to.eq(false);
     });
   });
 
   it('returns the current package version', () => {
-    cy.request('/api/status').then((res) => {
+    cy.request('/health').then((res) => {
       expect(res).property('status').to.equal(200);
-      expect(res.body).property('version').to.eq(packageVersion);
+      expect(res.body).property('version').to.eq(pkgVersion);
     });
   });
 });
