@@ -3,7 +3,7 @@
     <!-- Activator -->
     <template #activator="{ on, attrs }">
       <v-btn color="primary" text class="mb-2" v-bind="attrs" v-on="on">
-        <span v-if="showText"> How are ranks determined? </span>
+        <span v-if="showButtonText"> How are ranks determined? </span>
         <v-icon class="ml-1">mdi-information-outline</v-icon>
       </v-btn>
     </template>
@@ -74,7 +74,7 @@ export default {
     AwardCard,
   },
   props: {
-    showText: {
+    showButtonText: {
       type: Boolean,
       default: true,
     },
