@@ -106,8 +106,9 @@
                     <card
                       v-for="(card, index) in opponent.hand"
                       :key="index"
-                      suit="back"
-                      rank="back"
+                      :suit="card.suit"
+                      :rank="card.rank"
+                      :is-back="true"
                       data-opponent-hand-card
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
                     />
@@ -134,7 +135,7 @@
         <div id="field-left">
           <v-card
             id="deck"
-            :img="require('../img/cards/card_back_back.svg')"
+            :img="require('@/img/cards/Bg_Deck.png')"
             :class="{ 'reveal-top-two': resolvingSeven, 'my-turn': isPlayersTurn }"
             @click="drawCard"
           >
@@ -1199,12 +1200,19 @@ export default {
       align-self: start;
     }
     & #empty-deck-text {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding-top: 50%;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      color: white;
       position: absolute;
     }
     &.my-turn {
       border: 4px solid var(--v-accent-base);
     }
     .c-deck-count {
+      padding: 4px;
       position: absolute;
       bottom: 0;
       background-color: rgba(0, 0, 0, 0.8);
@@ -1213,11 +1221,12 @@ export default {
   }
   & #deck,
   & #scrap {
+    background-image: url('~@/img/game_images/Bg_Scrap.png');
+    background-size: cover;
     position: relative;
     margin: 10px;
     height: 29vh;
     width: calc(29vh / 1.3);
-    border: 1px solid #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;

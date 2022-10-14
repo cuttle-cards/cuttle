@@ -26,6 +26,7 @@
       :src="require(`../../img/cards/Glasses_${suitName}.png`)"
       :alt="`Glasses - $${cardName}`"
     />
+    <img v-else-if="isBack" :src="require('../../img/cards/card_back.png')" alt="back" />
     <img v-else :src="require(`../../img/cards/card_${suit}_${rank}.svg`)" :alt="cardName" />
   </v-card>
 </template>
@@ -35,11 +36,11 @@ export default {
   name: 'Card',
   props: {
     suit: {
-      type: [Number, String],
+      type: Number,
       required: true,
     },
     rank: {
-      type: [Number, String],
+      type: Number,
       required: true,
     },
     isSelected: {
@@ -66,6 +67,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isBack: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     suitName() {
@@ -78,8 +83,6 @@ export default {
           return 'Hearts';
         case 3:
           return 'Spades';
-        case 'back':
-          return 'back';
         default:
           return 'Invalid Suit Error';
       }
@@ -112,8 +115,6 @@ export default {
           return 'Queen';
         case 13:
           return 'King';
-        case 'back':
-          return 'back';
         default:
           return 'Invalid Rank Error';
       }
