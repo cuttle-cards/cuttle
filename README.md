@@ -5,7 +5,7 @@
 		</a>
 	</p>
 	<p>
-		<a href="https://cuttle.cards" title="Cuttle Website">Website</a> | <a href="https://cuttle-cards.github.io/cuttle/" title="Cuttle Design Guide">Design Guide</a>
+		<a href="https://cuttle.cards" title="Cuttle Website">Website</a> | <a href="https://cuttle-cards.github.io/cuttle/" title="Cuttle Design Guide">Design Guide</a> | <a href="#community" title="Cuttle Community">Community</a>
 	</p>
 </div>
 
@@ -208,3 +208,20 @@ Yes. Aces and Sixes destroy all **Point Cards** and all **Face Cards and Glasses
 
 #### Where can I play Cuttle?
 You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, there is only one place: [www.cuttle.cards](https://www.cuttle.cards)
+
+#### Our contributors :star_struck:
+
+<a href="https://github.com/cuttle-cards/cuttle/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=cuttle-cards/cuttle" />
+</a>
+
+<!-- Made with [contrib.rocks](https://contrib.rocks). -->
+
+## Community
+
+We have a very active Discord community and currently run 2 events per week.
+
+- Wednesday Night Cuttle at 8:30pm EST
+- Thursday Lunch Cuttle at 12:00pm EST
+
+[![Discord Community](https://discord.com/api/guilds/833694928684187669/widget.png?style=banner2)](https://discord.gg/9vrAZ8xGyh)
