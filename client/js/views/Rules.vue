@@ -382,7 +382,7 @@ export default {
             title: 'Two - Effect 1',
             icon: 'delete',
             description:
-              "Two's have two alternative one-off effects: Counter target One-Off Effect.  This happens during your opponent's turn.",
+              "Two's have two alternative one-off effects: Counter target One-Off Effect. May be played during your opponent's turn.",
             staticImg: 'cuttle_counter.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/counter.gif?raw=true',
