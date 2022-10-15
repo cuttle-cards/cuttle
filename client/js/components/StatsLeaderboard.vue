@@ -29,7 +29,7 @@
       :item-class="tableRowClass"
     >
       <template #[`item.rank`]="{ item, value }">
-        <span :data-rank="item.username">{{ value }} </span>
+        <span :data-rank="item.username">{{ value }}</span>
       </template>
       <!-- Customize the appearance of total column and column for each week -->
       <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{ item }">
@@ -105,7 +105,7 @@ export default {
           week_total_wins: playerWins.total,
           week_total_points: playerScores.total,
           week_total: playerScores.total,
-          rank: this.rank(playerScores.total),
+          rank: this.rank({ totalScore: playerScores.total, totalWins: playerWins.total }),
         };
         for (const weekNum in playerStats.matches) {
           res[`week_${weekNum}`] = playerScores[weekNum];
@@ -224,6 +224,9 @@ export default {
       }
       return res;
     },
+    totalWinsSorted() {
+      return this.playerWins.map((wins) => wins.total).sort((a, b) => b - a);
+    },
     totalScoresSorted() {
       return this.playerScores.map((playerStats) => playerStats.total).sort((a, b) => b - a);
     },
@@ -289,9 +292,25 @@ export default {
     tableRowClass(item) {
       return this.isCurrentPlayer(item.username) ? 'active-user-stats' : '';
     },
-    // Compute rank from total score
-    rank(totalScore) {
-      return this.totalScoresSorted.indexOf(totalScore) + 1;
+    /**
+     * @description Compute rank from total score and wins
+     * @returns the largest index (ranking) from players score and wins
+     *
+     * example:
+     * player1 - { score: 5, wins: 2 }
+     * player2 - { score: 5, wins: 4 }
+     * player3 - { score: 4, wins: 5 }
+     *
+     * all scores sorted - [5, 5, 4]
+     * all wins sorted - [5, 4, 2]
+     *
+     * player 2 will be ranked 1st, player 1 will be ranked 2nd, player 3 will be ranked 3rd
+     */
+    rank({ totalScore, totalWins }) {
+      const scoreIndex = this.totalScoresSorted.indexOf(totalScore);
+      const winsIndex = this.totalWinsSorted.indexOf(totalWins);
+      const ranking = Math.max(scoreIndex, winsIndex) + 1;
+      return ranking;
     },
   },
 };

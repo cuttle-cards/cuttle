@@ -9,7 +9,7 @@ import { seasonFixtures, matchesFixture } from '../../fixtures/statsFixtures';
 const dayjs = require('dayjs');
 
 function setup() {
-  cy.viewport(1980, 1080);
+  cy.viewport(1920, 1080);
   cy.wipeDatabase();
   cy.visit('/');
   // Signup opponents and store their newly created ids
@@ -89,10 +89,10 @@ describe('Stats Page', () => {
     cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
     // Data Table
     cy.get('th').should('have.length', 16);
-    cy.get('[data-rank=Player1]').contains(1);
+    cy.get('[data-rank=Player2]').contains(1);
     cy.get("[data-week-1='Player1']").contains('W: 3, P: 5');
-    cy.get("[data-week-total='Player1']").contains('W: 6, P: 10');
-    cy.get('[data-week-total=Player2]').contains('W: 5, P: 9');
+    cy.get("[data-week-total='Player1']").contains('W: 6, P: 9');
+    cy.get('[data-week-total=Player2]').contains('W: 7, P: 9');
     cy.get("[data-week-1='Player5']").contains('W: 1, P: 3');
     cy.get('tr.active-user-stats').contains(playerOne.username);
     // Players Beaten menus
