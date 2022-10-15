@@ -1,7 +1,7 @@
 import { setupGameAsP0 } from '../../support/helpers';
 const { version: pkgVersion } = require('../../../../package.json');
 
-describe('API Health Page', () => {
+describe('Health Page', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
