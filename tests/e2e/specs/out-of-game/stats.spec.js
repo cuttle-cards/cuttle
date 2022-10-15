@@ -127,7 +127,7 @@ describe('Stats Page', () => {
     // 16 columns: username, rank, total, 13 weeks
     cy.get('th').should('have.length', 16);
     // Total counts across all weeks
-    cy.get('[data-week-total=Player1]').should('contain', 'W: 6, P: 10');
+    cy.get('[data-week-total=Player1]').should('contain', 'W: 6, P: 9');
     // Deselect every week except week 1
     cy.get('[data-cy=week-select]').click({ force: true });
     cy.get('[role=option]').contains('Week 2').click();
@@ -148,7 +148,7 @@ describe('Stats Page', () => {
     cy.get('th').should('have.length', 4);
     // Total counts should only consider the selected weeks
     cy.get('[data-week-1=Player1]').should('contain', 'W: 3, P: 5');
-    cy.get('[data-week-total=Player1]').should('contain', 'W: 6, P: 10');
+    cy.get('[data-week-total=Player1]').should('contain', 'W: 6, P: 9');
   });
 
   it('Selects different seasons to show their results', () => {
@@ -168,7 +168,7 @@ describe('Stats Page', () => {
     cy.get('[data-cy=season-select]').click({ force: true });
     cy.get('[role=option]').contains('Clubs 2022').click();
     // Stats data table
-    cy.get('[data-week-total=Player1]').should('contain', 'W: 6, P: 10');
-    cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 5');
+    cy.get('[data-week-total=Player1]').should('contain', 'W: 6, P: 9');
+    cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 4');
   });
 });
