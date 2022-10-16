@@ -1205,9 +1205,6 @@ export default {
       color: white;
       position: absolute;
     }
-    &.my-turn {
-      border: 4px solid var(--v-accent-base);
-    }
     .c-deck-count {
       padding: 4px;
       position: absolute;
