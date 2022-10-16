@@ -51,8 +51,8 @@
         </v-list>
         <p>
           You can view the statistics and rankings for each season on
-          <a href="#/stats" target="_self"> the Stats page </a> . At the end of each season, the top
-          4 players compete in a double elimination championship tournament. Do you have what it
+          <router-link to="stats"> the Stats page </router-link> . At the end of each season, the
+          top 4 players compete in a double elimination championship tournament. Do you have what it
           takes to become
           <strong> Lord of the Deep? </strong>
         </p>
