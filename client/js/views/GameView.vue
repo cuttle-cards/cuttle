@@ -133,7 +133,7 @@
           <v-card
             id="deck"
             :img="require('@/img/cards/Bg_Deck.png')"
-            :class="{ 'reveal-top-two': resolvingSeven, 'my-turn': isPlayersTurn }"
+            :class="{ 'reveal-top-two': resolvingSeven }"
             @click="drawCard"
           >
             <template v-if="!resolvingSeven">
