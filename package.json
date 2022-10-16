@@ -29,6 +29,7 @@
   "dependencies": {
     "connect-redis": "3.0.2",
     "dayjs": "1.11.3",
+    "express-rate-limit": "^6.6.0",
     "lodash": "4.17.21",
     "machinepack-passwords": "2.3.0",
     "sails": "1.4.3",

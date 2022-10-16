@@ -20,6 +20,25 @@ module.exports.http = {
    ****************************************************************************/
 
   middleware: {
+    order: [
+      'cookieParser',
+      'session',
+      'bodyParser',
+      'compress',
+      'poweredBy',
+      'rateLimit',
+      'router',
+      'www',
+      'favicon',
+    ],
+    rateLimit: (function () {
+      const { isProd } = require('../utils/config-utils');
+      const erl = require('express-rate-limit');
+      return erl({
+        windowMs: 1 * 60 * 1000, // 1 minute
+        max: isProd ? 30 : 1000, // limit each IP to 30 requests per windowMs
+      });
+    })(),
     /***************************************************************************
      *                                                                          *
      * The order in which middleware should be run for HTTP requests.           *
