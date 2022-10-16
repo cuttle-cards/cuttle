@@ -1,15 +1,15 @@
 <template>
   <div>
     <v-row class="list-item" data-cy="game-list-item">
-      <v-col sm="2" lg="3">
+      <v-col sm="2" lg="3" v-if="!$vuetify.breakpoint.mdAndDown">
         <v-img
           :src="require('../img/logo_head.svg')"
           class="my-1"
           contain
-          :height="$vuetify.breakpoint.smAndUp ? 64 : 32"
+          :height="$vuetify.breakpoint.smAndUp ? 62 : 32"
         />
       </v-col>
-      <v-col sm="7" lg="6">
+      <v-col sm="7" lg="6" class="list-item--inner-text">
         <p class="game-name" data-cy="game-list-item-name">
           {{ name }}
         </p>
@@ -102,29 +102,50 @@ export default {
 </script>
 <style scoped lang="scss">
 .list-item {
-  margin-left: 0;
-  margin-right: 0;
-  text-align: left;
+  margin: 0;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  padding-top: .5rem;
   & .game-name {
     font-weight: 600;
+    font-size: 1.10em;
+    text-align: left;
+  }
+  & p {
+      line-height: 1;
+      margin: 3px auto;
+      
   }
 }
+
+.list-item--inner-text {
+  display: flex;
+  padding-bottom: 1rem;
+  padding-top: .25rem;
+}
+
 .list-item-button {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 0;
+  padding-top: .5rem;
 }
-@media (max-width: 979px) and (orientation: landscape) {
+
+@media (min-width: 980px) {
   .list-item {
-    margin: 0;
-    & p {
-      line-height: 1rem;
-      margin: 3px auto;
-    }
+  max-width: 95%;
+  flex-direction: row;
+  padding: 0;
+  & .game-name {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+  .list-item--inner-text {
+    display: block;
+    padding: 0;
   }
 }
 </style>

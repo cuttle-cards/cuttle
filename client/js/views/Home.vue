@@ -11,6 +11,9 @@
           <v-col :cols="$vuetify.breakpoint.mdAndDown ? 12 : 9">
             <div id="card-content-header" class="mb-4">
               <h1 id="home-card-title">Games</h1>
+              <v-row  class="create-game--btn"> 
+               <create-game-dialog @error="handleError" />
+              </v-row>
             </div>
             <div id="game-list">
               <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
@@ -60,9 +63,6 @@
               Discord
             </v-btn>
           </v-col>
-        </v-row>
-        <v-row class="d-flex justify-end mt-8">
-          <create-game-dialog @error="handleError" />
         </v-row>
       </div>
     </v-container>
@@ -138,16 +138,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.container {
-  .home--large & {
-    width: 90%;
-    margin: 10vh auto;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-  }
-}
-
 h1 {
   background: linear-gradient(
     268.89deg,
@@ -157,6 +147,25 @@ h1 {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+h2 {
+	font-size: 1.25rem;
+}
+
+p {
+	margin-top: 1rem;
+}
+
+.container {
+	width: 95%;
+	margin: 0 auto;
+	max-height: 95vh;
+}
+
+.page-title {
+  margin: 0 auto;
+  text-align: center;
 }
 
 #logo {
@@ -169,19 +178,37 @@ h1 {
   }
 }
 
-.page-title {
-  margin: 0 auto;
-  text-align: center;
+.create-game--btn {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+#side-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #game-list-card {
-  border-radius: 15px;
-  margin-top: 8px;
+	border-radius: 15px;
+	margin-top: .5rem;
+	padding: .25rem;
 }
 
-#card-content-header {
-  display: flex;
-  align-items: center;
+#game-list {
+	box-sizing: border-box;
+	border: 1px solid #fd6222;
+	background: #efefef;
+	border-radius: 10px;
+	min-height: 55vh;
+	display: flex;
+	min-width: 100%;
+	flex-direction: column;
+	padding: .25rem;
+	
+	p {
+	  text-align: center;
+	}
 }
 
 #add-new-game {
@@ -191,76 +218,42 @@ h1 {
   align-items: center;
 }
 
-#game-list {
-  background: #efefef;
-  border: 1px solid #fd6222;
-  box-sizing: border-box;
-  border-radius: 15px;
-  min-height: 55vh;
-  max-height: 80vh;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  padding: 20px 10px;
-
-  p {
-    text-align: center;
-  }
-}
-
-#side-nav {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+#card-content-header {
+	padding: 0;
+	display: flex;
+	align-items: center;
 }
 
 #home-card-title {
   font-size: 2em;
 }
 
-p {
-  margin-top: 16px;
-}
-
-@media (max-width: 979px) and (orientation: landscape) {
-  h2 {
-    font-size: 1.25rem;
-  }
-
-  #logo {
-    width: 64px;
-    height: 64px;
-  }
-
+@media (min-width: 980px) {
   .container {
-    width: 95%;
-    margin: 0 auto;
-    max-height: 95vh;
-  }
-
-  #game-list-card {
-    padding: 5px;
-  }
-
-  #game-list {
-    box-sizing: border-box;
-    border-radius: 10px;
-    min-height: 55vh;
-    max-height: 60vh;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
-
-    p {
-      text-align: center;
+    .home--large & {
+      margin: 10vh auto;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
     }
   }
 
-  #card-content-header {
+  #game-list-card {
     padding: 0;
-    display: flex;
-    align-items: center;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  #game-list {
+    max-height: 80vh;
+    border-radius: 15px;
+    max-height: 70vh;
+    overflow: auto;
+    padding: 1.25rem .5rem;
+  }
+  
+  .create-game--btn {
+    margin-right: .5rem;
   }
 }
 </style>

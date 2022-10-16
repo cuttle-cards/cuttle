@@ -9,7 +9,7 @@
         elevation="8"
         v-on="on"
       >
-        + Create Game
+        Create Game
       </v-btn>
     </template>
     <v-card data-cy="create-game-dialog">
