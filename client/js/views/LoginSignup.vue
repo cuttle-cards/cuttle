@@ -28,7 +28,13 @@
             placeholder="Password"
           />
           <div id="login-button-container">
-            <v-btn :loading="loading" color="primary" block type="submit" data-cy="submit">
+            <v-btn
+              :loading="loading"
+              color="primary"
+              block
+              type="submit"
+              data-cy="submit"
+            >
               {{ buttonText }}
             </v-btn>
           </div>
@@ -45,7 +51,9 @@
           data-cy="auth-snackbar"
         >
           {{ snackBarMessage }}
-          <v-icon data-cy="close-snackbar" @click="clearSnackBar"> mdi-close </v-icon>
+          <v-icon data-cy="close-snackbar" @click="clearSnackBar">
+            mdi-close
+          </v-icon>
         </v-snackbar>
       </v-col>
     </v-row>
@@ -55,20 +63,24 @@
     <v-row class="mt-0">
       <v-col md="6" sm="12" class="d-flex justify-start flex-column mt-4">
         <blockquote class="quote">
-          "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of
-          game - had I known about it in college - I would have worn decks ragged through play"
+          "Cuttle is a sharp, fast game built entirely on excellent mechanics.
+          It is the sort of game - had I known about it in college - I would
+          have worn decks ragged through play"
           <cite>Richard Garfield - Creator of Magic: The Gathering</cite>
         </blockquote>
         <p>
-          Cuttle is a 2 player battle card game played with a standard 52-card deck of cards. It has
-          the strategic nuance of trading card games like Magic, with the elegant balance of a
-          standard deck--and you can play it for free! Test your mettle in the deepest cardgame
-          under the sea!
+          Cuttle is a two-player battle card game played with a standard 52-card
+          deck. It has the strategic nuance of trading card games like Magic,
+          with the elegant balance of a standard deck--and you can play it for
+          free! Test your mettle in the deepest card game under the sea! Be the
+          first to score 21 points in this explosive battle of wits. Mount a
+          valiant offense while disrupting your opponent with dastardly tricks.
+          Do you have what it takes to become the Lord of the Deep?
         </p>
         <p>
-          Be the first to score 21 points in this explosive battle of wits. Mount a valient offense
-          while disupting your opponent with dastardly tricks. Do you have what it takes to become
-          the Lord of the Deep?
+          Be the first to score 21 points in this explosive battle of wits.
+          Mount a valiant offense while disrupting your opponent with dastardly
+          tricks. Do you have what it takes to become the Lord of the Deep?
         </p>
         <v-btn
           text
