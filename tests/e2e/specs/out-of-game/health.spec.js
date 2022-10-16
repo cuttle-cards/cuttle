@@ -1,24 +1,14 @@
-import { setupGameAsP0 } from '../../support/helpers';
 const { version: pkgVersion } = require('../../../../package.json');
 
 describe('Health Page', () => {
   beforeEach(() => {
-    cy.wipeDatabase();
     cy.visit('/');
   });
 
-  it('is available if game exists', () => {
-    setupGameAsP0();
+  it('is available if db responds', () => {
     cy.request('/health').then((res) => {
       expect(res).property('status').to.equal(200);
       expect(res.body).property('alive').to.eq(true);
-    });
-  });
-
-  it('is not available if no game exists', () => {
-    cy.request('/health').then((res) => {
-      expect(res).property('status').to.equal(200);
-      expect(res.body).property('alive').to.eq(false);
     });
   });
 

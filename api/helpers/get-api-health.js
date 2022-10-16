@@ -6,13 +6,10 @@ module.exports = {
 
   fn: async (_, exits) => {
     try {
-      const games = await Game.count();
-      if (games > 0) {
-        return exits.success(true);
-      }
+      await Game.count();
     } catch (err) {
-      // ignored
+      return exits.success(false);
     }
-    return exits.success(false);
+    return exits.success(true);
   },
 };
