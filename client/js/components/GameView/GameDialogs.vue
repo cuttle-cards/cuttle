@@ -120,7 +120,7 @@ export default {
       return (
         this.resolvingSeven &&
         this.topCard.rank === 11 &&
-        this.secondCard.rank === 11 &&
+        (!this.secondCard || this.secondCard.rank === 11) &&
         (this.opponentPointTotal === 0 || this.opponentQueenCount > 0)
       );
     },
