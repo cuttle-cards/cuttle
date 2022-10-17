@@ -111,7 +111,7 @@ export function printCard(card) {
       break;
   }
   res += ' of ';
-  const suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
+  const suits = ['♣️', '♦️', '♥️', '♠️'];
   res += suits[card.suit];
   return res;
 }

@@ -103,15 +103,12 @@
                     name="slide-below"
                     class="opponent-hand-wrapper transition-all"
                   >
-                    <div
+                    <card
                       v-for="(card, index) in opponent.hand"
-                      :key="index + 0"
+                      :key="index"
+                      data-opponent-hand-card
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
-                    >
-                      <v-card class="opponent-card-back" data-opponent-hand-card>
-                        <v-img :src="require('../img/logo_head.svg')" contain />
-                      </v-card>
-                    </div>
+                    />
                   </transition-group>
                 </transition>
               </div>
@@ -135,12 +132,12 @@
         <div id="field-left">
           <v-card
             id="deck"
-            :class="{ 'reveal-top-two': resolvingSeven, 'my-turn': isPlayersTurn }"
+            :img="require('@/img/cards/Bg_Deck.png')"
+            :class="{ 'reveal-top-two': resolvingSeven }"
             @click="drawCard"
           >
             <template v-if="!resolvingSeven">
-              <v-img :src="require('../img/logo_head.svg')" :width="deckLogoWidth" contain />
-              <v-card-actions>({{ deckLength }})</v-card-actions>
+              <v-card-actions class="c-deck-count">({{ deckLength }})</v-card-actions>
               <h1 v-if="deckLength === 0" id="empty-deck-text">PASS</h1>
             </template>
 
@@ -1145,9 +1142,9 @@ export default {
     background: rgba(0, 0, 0, 0.46);
 
     & #opponent-hand-glasses {
-      margin-top: -10vh;
       .opponent-hand-card-revealed {
         transform: scale(0.8);
+        transform: rotate(180deg);
       }
     }
     & .opponent-hand-wrapper {
@@ -1157,13 +1154,13 @@ export default {
 
       & .opponent-card-back-wrapper {
         height: 90%;
-        width: 10vw;
+        width: 7vw;
         display: inline-block;
         position: relative;
+        transform: rotate(180deg);
         & .opponent-card-back {
           height: 100%;
           width: 100%;
-          transform: rotate(180deg);
         }
       }
     }
@@ -1194,24 +1191,36 @@ export default {
 #field-left {
   & #deck {
     cursor: pointer;
+    position: relative;
     &.reveal-top-two {
       height: auto;
       align-self: start;
     }
     & #empty-deck-text {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding-top: 50%;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      color: white;
       position: absolute;
     }
-    &.my-turn {
-      border: 4px solid var(--v-accent-base);
+    .c-deck-count {
+      padding: 4px;
+      position: absolute;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
     }
   }
   & #deck,
   & #scrap {
+    background-image: url('~@/img/game_images/Bg_Scrap.png');
+    background-size: cover;
     position: relative;
     margin: 10px;
     height: 29vh;
     width: calc(29vh / 1.3);
-    border: 1px solid #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
