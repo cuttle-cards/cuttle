@@ -245,9 +245,7 @@ p {
   }
 
   #game-list {
-    max-height: 80vh;
     border-radius: 15px;
-    max-height: 70vh;
     overflow: auto;
     padding: 1.25rem .5rem;
   }
