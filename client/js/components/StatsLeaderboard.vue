@@ -97,6 +97,7 @@ export default {
       if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
         return [];
       }
+
       return this.season.rankings.map((playerStats, index) => {
         const playerWins = this.playerWins[index];
         const playerScores = this.playerScores[index];
@@ -227,8 +228,27 @@ export default {
     totalWinsSorted() {
       return this.playerWins.map((wins) => wins.total).sort((a, b) => b - a);
     },
-    totalScoresSorted() {
-      return this.playerScores.map((playerStats) => playerStats.total).sort((a, b) => b - a);
+    playerRankingsSorted() {
+      let scoreboard = [];
+      if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
+        return scoreboard;
+      }
+
+      for (let i = 0; i < this.season.rankings.length; i++) {
+        scoreboard.push({
+          totalScore: this.playerScores[i].total,
+          totalWins: this.playerWins[i].total,
+        });
+      }
+
+      // sort and prioritize total scores before taking into account total wins
+      return scoreboard.sort((a, b) => {
+        if (b.totalScore > a.totalScore) return 1;
+        if (b.totalScore < a.totalScore) return -1;
+        if (b.totalWins > a.totalWins) return 1;
+        if (b.totalWins < a.totalWins) return -1;
+        return 0;
+      });
     },
     theme() {
       return this.$vuetify.theme.themes.light;
@@ -294,23 +314,14 @@ export default {
     },
     /**
      * @description Compute rank from total score and wins
-     * @returns the largest index (ranking) from players score and wins
-     *
-     * example:
-     * player1 - { score: 5, wins: 2 }
-     * player2 - { score: 5, wins: 4 }
-     * player3 - { score: 4, wins: 5 }
-     *
-     * all scores sorted - [5, 5, 4]
-     * all wins sorted - [5, 4, 2]
-     *
-     * player 2 will be ranked 1st, player 1 will be ranked 2nd, player 3 will be ranked 3rd
      */
-    rank({ totalScore, totalWins }) {
-      const scoreIndex = this.totalScoresSorted.indexOf(totalScore);
-      const winsIndex = this.totalWinsSorted.indexOf(totalWins);
-      const ranking = Math.max(scoreIndex, winsIndex) + 1;
-      return ranking;
+    rank(player) {
+      return (
+        this.playerRankingsSorted.findIndex(
+          ({ totalScore, totalWins }) =>
+            totalScore === player.totalScore && totalWins === player.totalWins
+        ) + 1
+      );
     },
   },
 };
