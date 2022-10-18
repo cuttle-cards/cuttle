@@ -23,10 +23,11 @@
     />
     <img
       v-if="isGlasses"
-      :src="require(`../../img/cards/Glasses_${suitName}.jpg`)"
+      :src="require(`../../img/cards/Glasses_${suitName}.png`)"
       :alt="`Glasses - $${cardName}`"
     />
-    <img v-else :src="require(`../../img/cards/card_${suit}_${rank}.png`)" :alt="cardName" />
+    <img v-else-if="isBack" :src="require('../../img/cards/card_back.png')" alt="back" />
+    <img v-else :src="require(`../../img/cards/card_${suit}_${rank}.svg`)" :alt="cardName" />
   </v-card>
 </template>
 
@@ -36,11 +37,9 @@ export default {
   props: {
     suit: {
       type: Number,
-      required: true,
     },
     rank: {
       type: Number,
-      required: true,
     },
     isSelected: {
       type: Boolean,
@@ -119,6 +118,9 @@ export default {
     },
     elevation() {
       return this.isGlasses ? '0' : '1';
+    },
+    isBack() {
+      return !this.suit && !this.rank;
     },
   },
 };
