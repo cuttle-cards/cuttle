@@ -193,7 +193,7 @@ On your turn you must make exactly one of the following moves below.
 2.  **Points:**
     You may play any number card, Ace-Ten for the number of points shown on the card (Ace is one point). The first player to have 21 **or more** points wins.
 
-        * To play a card for points, click a card in your hand to select it, then click your field.
+        * To play a card for points, click a card in your hand to select it, then choose 'Points' from the available moves.
 
 3.  **Scuttling:**
     You may play a number card from your hand onto a lower-valued number card that your opponent has played for points; this destroys both cards. You may also scuttle a card of the same rank; if your card has the higher suit. The suit order is Clubs (weakest) < Diamonds < Hearts < Spades (strongest).
