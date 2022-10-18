@@ -161,6 +161,8 @@ describe('Home - Create Game', () => {
       .click({ force: true }) // Force to click hidden input inside switch
       .should('be.checked');
 
+    cy.get('[data-cy=ranked-info-button]').should('exist');
+
     // Reload to get a fresh session so we use localStorage
     cy.reload();
 

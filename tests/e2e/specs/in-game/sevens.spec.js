@@ -251,6 +251,54 @@ describe('Playing SEVENS', () => {
         scrap: [Card.SEVEN_OF_CLUBS, Card.JACK_OF_CLUBS],
       });
     });
+
+    it('Plays jack from a seven - special case - final card in deck is a jack with with no points on the board', () => {
+      setupGameAsP1();
+      cy.loadGameFixture({
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [Card.SEVEN_OF_CLUBS],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.FOUR_OF_HEARTS,
+        secondCard: Card.JACK_OF_CLUBS,
+      });
+
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.log('Loaded fixture');
+
+      cy.deleteDeck();
+      cy.get('#deck').should('contain', 2);
+
+      cy.drawCardOpponent();
+
+      cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+
+      cy.get('#seven-double-jacks-dialog')
+        .should('be.visible')
+        .should('contain', 'Oops')
+        .find('[data-seven-double-jacks-dialog-card]')
+        .should('have.length', 1)
+        .get('[data-seven-double-jacks-dialog-card=11-0]')
+        .click();
+
+      cy.get('[data-cy=seven-double-jacks-resolve]').click();
+
+      assertGameState(1, {
+        p0Hand: [Card.FOUR_OF_HEARTS],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [Card.SEVEN_OF_CLUBS, Card.JACK_OF_CLUBS],
+      });
+
+      cy.get('#deck').find('#empty-deck-text').should('contain', 'PASS');
+
+      cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    });
   });
 
   describe('Plays face cards from a seven', () => {
