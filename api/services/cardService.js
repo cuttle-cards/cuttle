@@ -16,9 +16,8 @@ module.exports = {
             }
             return resolve(card);
           });
-      } else {
-        return Promise.reject({ message: 'Invalid arguments for findCard' });
       }
+      return Promise.reject({ message: 'Invalid arguments for findCard' });
     });
   },
 

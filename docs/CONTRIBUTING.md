@@ -55,11 +55,54 @@ Click the **PENCIL** icon top right of any docs page to make small changes such 
 
 5. For seeding the database, here's a quick guide:
 
+   **Recommended Way** - Please see [Behavioral-Driven Test Development](#behavioral-driven-test-development)
+
    While booted in development mode (the default), you can make requests to `/test/loadSeasonFixture` and `/test/loadMatchFixtures` to seed records into those tables.
 
-   The easiest way to do it is using test code. If you look at `tests/e2e/specs/out-of-game/stats.spec.js` you'll find the tests for the stats page, which are written using [cypress](https://docs.cypress.io). These tests already import fixture data from `tests/e2e/fixtures/statsFixtures.js` and use a custom cypress command to request those endpoints and seed that data into the database `beforeEach` test.
+   To delete data from the database, you can make a request `/test/wipeDatabase` to your local server which will wipe all records.
 
 6. Create a working branch by `git checkout -b feature/[your feature or issue number]` or `git checkout -b bug/[your fix or issue number]` and start with your changes!
+
+### Behavioral-Driven Test Development
+
+The easiest way to seed data is using test code. The existing in-game end-to-end tests (found in the `/tests/e2e/specs/in-game/*.spec.js` files) generally call the `setupGameAsP0()` or `setupGameAsP1()` are imported from `tests/e2e/support/helpers.js`. These test helpers will run inside the `beforeEach()` hooks that run before each test. This will automatically:
+
+1.  Sign up and authenticate two accounts
+2.  Create and join a game as both players
+3.  Ready up to start that game
+4.  Log success and continue to the next test commands once the game has loaded
+
+This is much faster than setting up a game by hand, and it pairs very well with the custom cypress command `cy.loadGameFixture()` which allows you to programmatically load the game into a specific state by specifying where you would like specific cards to be place e.g.
+
+```javascript
+cy.loadGameFixture({
+  p0Hand: [Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES, Card.SEVEN_OF_CLUBS],
+  p0Points: [Card.TWO_OF_CLUBS, Card.TEN_OF_HEARTS],
+  p0FaceCards: [Card.KING_OF_SPADES],
+  p1Hand: [Card.TEN_OF_CLUBS, Card.TEN_OF_SPADES],
+  p1Points: [Card.SIX_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+  p1FaceCards: [Card.QUEEN_OF_HEARTS],
+  topCard: Card.FIVE_OF_DIAMONDS,
+  secondCard: Card.EIGHT_OF_SPADES,
+  scrap: [Card.TWO_OF_HEARTS, Card.FOUR_OF_CLUBS],
+});
+```
+
+You can then make moves on behalf of the player by clicking on various elements using `cy.get('<some-selector>').click()`. Various elements (like cards in different places) have data-\* selectors applied to them in the template. Check the templates of the component(s) you're testing to see the exact selectors, but as a general rule, cards are given attributes of the form: `data-<which-player>-<which-localtion>-card=<rank>_<suit>` (ranks start at 1 and suits start at 0) and move choices are given attributes of the form `data-move-choice=<move-name>`.
+
+So in the above example you could scuttle p1's six of hearts using p0's seven of clubs (if you are p0) with:
+
+```javascript
+cy.get('[data-player-hand-card=7_0').click(); // Click the 7 of clubs in the player's hand
+cy.get('[data-move-choice=scuttle]').click(); // Choose to scuttle
+cy.get('[data-opponent-point-card=6_2]').click(); // Click opponent's 6 of hearts to select it for scuttling
+```
+
+You can then make moves on behalf of the opponent using custom cypress commands that will request any particular move e.g. `cy.drawCardOpponent();` or `cy.playPointsOpponent(Card.TEN_OF_CLUBS);`
+
+Lastly, you can use the `assertGameState(playerNumber, fixtureObject)` helper to verify that the resulting game state matches the specified fixture same shape as the input to `loadGameFixture()`, after specifying the player number (0 for p0, 1 for p1) of the which player's perspective we are testing from.
+
+For other tests, it may be valuable to seed the database directly with records from fixture data. If you look at `tests/e2e/specs/out-of-game/stats.spec.js` you'll find the tests for the stats page. These tests already import fixture data from `tests/e2e/fixtures/statsFixtures.js` and use a custom cypress command to request those endpoints and seed that data into the database `beforeEach` test.
 
 ### Commit your update
 
@@ -85,6 +128,6 @@ When you're finished with the changes, create a pull request, also known as a PR
 
 Congratulations :tada::tada: The Cuttle Cards team thanks you :sparkles:.
 
-Once your PR is merged, your contributions will be publicly visible on the [Cuttle Cards repository](https://github.com/cuttle-cards/cuttle).
+Once your PR is merged, your contributions will be publicly visible on the [Cuttle Cards repository](https://github.com/cuttle-cards/cuttle) and automatically deployed to [www.cuttle.cards](https://www.cuttle.cards).
 
-You are now part of the Cuttle Cards community!
+You are now a Cuttle Cards Contributor!

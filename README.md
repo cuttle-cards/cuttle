@@ -196,19 +196,19 @@ On your turn you must make exactly one of the following moves below.
         * To play a card for points, click a card in your hand to select it, then click your field.
 
 3.  **Scuttling:**
-    You may player a number card from your hand onto a lower valued number card that your opponent has played for points; this destroys both cards. You may also scuttle a card of the same rank, if your card has the higher suit. The suit order is Clubs (weakest) < Diamonds < Hearts < Spades (strongest).
+    You may play a number card from your hand onto a lower-valued number card that your opponent has played for points; this destroys both cards. You may also scuttle a card of the same rank; if your card has the higher suit. The suit order is Clubs (weakest) < Diamonds < Hearts < Spades (strongest).
 
-        * To scuttle an opponent's point card, click a higher number card (Ace - Ten) in your hand to select it, then click the card you'd like to scuttle.
+        * To scuttle an opponent's point card, click a higher number card (Ace - Ten) in your hand to select it, then choose 'Scuttle', and click the card you'd like to scuttle.
 
 4.  **Face Cards and Glasses Eights:**
     Face cards and eights can be played as **Face Cards and Glasses Eights**. While on your board, Face Cards and Glasses Eights provide you advantages. An explanation of the different Face Cards and Glasses Eights can be found below.
 
-        * To play a Face Card or Glasses Eight, click the card in your hand to select it, then click your field (in green) to play it.
+        * To play a Face Card or Glasses Eight, click the card in your hand to select it, then choose 'Royal' or 'Glasses' accordingly.
 
 5.  **One-Offs:**
     Ace-Sevens and also Nines can be played as **One-Offs**. Playing a card for a One-Off effect discards (to the scrap pile) in exchange for an effect, based on the rank of the card. A list of all the effects can be found below.
 
-        * To play a card as a **One-Off**, click a card in your hand to select it, then click the **Scrap Pile** or an opponent's card to target.
+        * To play a card as a **One-Off**, click a card in your hand to select it, then choose 'One-Off' from the available move choices.
 
 ### One-Offs
 
