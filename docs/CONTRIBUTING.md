@@ -30,6 +30,17 @@ Scan through our [existing issues](https://github.com/cuttle-cards/cuttle/issues
 
 ### Make Changes
 
+### Test-Driven Development
+
+We encourage contributors to practice Test Driven Development (TDD) when working on cuttle.cards, because it can save an enormous amount of time while increasing everyone's confidence that the application does what it's supposed to. By utilizing the existing testing infrastructure, you can quickly and automatically do things like:
+
+1.  Sign-up two accounts and drop them into a game
+2.  Load the game into a specific state i.e. putting the cards wherever you want
+3.  Make arbitrary chains of moves on behalf of both players
+4.  Assert the full state of the game (where the relevant cards are) and more.
+
+The general idea behind Test Driven Development is to write/modify the tests before making changes to the application. This lets you clearly define what the application is supposed to do before changing things, so that you'll know with confidence when things work correctly. TDD takes practice, and it's not required to contribute, but we are happy to help you practice it and once you get going with testing, you'll see what an enormous Quality of Life improvement it can make to your developer experience.
+
 #### Make changes directly on Github
 
 Click the **PENCIL** icon top right of any docs page to make small changes such as a typo, sentence fix, or a broken link. This takes you a file editor where you can make your changes and [create a pull request](#pull-request) for a review.
@@ -55,7 +66,7 @@ Click the **PENCIL** icon top right of any docs page to make small changes such 
 
 5. For seeding the database, here's a quick guide:
 
-   **Recommended Way** - Please see [Behavioral-Driven Test Development](#behavioral-driven-test-development)
+   **Recommended Way** - Please see [Test-Driven Development](#how-to-tdd-using-cypress)
 
    While booted in development mode (the default), you can make requests to `/test/loadSeasonFixture` and `/test/loadMatchFixtures` to seed records into those tables.
 
@@ -63,7 +74,7 @@ Click the **PENCIL** icon top right of any docs page to make small changes such 
 
 6. Create a working branch by `git checkout -b feature/[your feature or issue number]` or `git checkout -b bug/[your fix or issue number]` and start with your changes!
 
-### Behavioral-Driven Test Development
+#### How To TDD Using Cypress
 
 The easiest way to seed data is using test code. The existing in-game end-to-end tests (found in the `/tests/e2e/specs/in-game/*.spec.js` files) generally call the `setupGameAsP0()` or `setupGameAsP1()` are imported from `tests/e2e/support/helpers.js`. These test helpers will run inside the `beforeEach()` hooks that run before each test. This will automatically:
 
