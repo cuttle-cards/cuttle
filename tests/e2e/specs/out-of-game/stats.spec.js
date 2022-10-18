@@ -9,7 +9,7 @@ import { seasonFixtures, matchesFixture } from '../../fixtures/statsFixtures';
 const dayjs = require('dayjs');
 
 function setup() {
-  cy.viewport(1024, 600);
+  cy.viewport(1980, 1080);
   cy.wipeDatabase();
   cy.visit('/');
   // Signup opponents and store their newly created ids
@@ -70,7 +70,7 @@ describe('Stats Page Error States', () => {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it.only('Displays Headers, Cards, and Table', () => {
+  it('Displays Headers, Cards, and Table', () => {
     const [seasonOne] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
     cy.get('[data-cy=season-start-date').should(
