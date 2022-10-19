@@ -225,9 +225,6 @@ export default {
       }
       return res;
     },
-    totalWinsSorted() {
-      return this.playerWins.map((wins) => wins.total).sort((a, b) => b - a);
-    },
     playerRankingsSorted() {
       let scoreboard = [];
       if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
@@ -245,9 +242,7 @@ export default {
       return scoreboard.sort((a, b) => {
         if (b.totalScore > a.totalScore) return 1;
         if (b.totalScore < a.totalScore) return -1;
-        if (b.totalWins > a.totalWins) return 1;
-        if (b.totalWins < a.totalWins) return -1;
-        return 0;
+        return b.totalWins - a.totalWins;
       });
     },
     theme() {
