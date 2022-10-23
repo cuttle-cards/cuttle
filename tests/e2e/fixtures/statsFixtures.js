@@ -23,7 +23,7 @@ const seasonFixtures = [
   },
 ];
 
-const seaonOneMatches = [
+const seasonOneMatches = [
   ////////////
   // Week 1 //
   ////////////
@@ -157,6 +157,20 @@ const seaonOneMatches = [
     startTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
     endTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
   },
+  {
+    player1: 'player1',
+    player2: 'player2',
+    winner: 'player2',
+    startTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
+  },
+  {
+    player1: 'player1',
+    player2: 'player2',
+    winner: 'player2',
+    startTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
+  },
 ];
 
 const seasonTwoMatches = [
@@ -217,6 +231,6 @@ const seasonTwoMatches = [
   },
 ];
 
-const matchesFixture = [...seaonOneMatches, ...seasonTwoMatches];
+const matchesFixture = [...seasonOneMatches, ...seasonTwoMatches];
 
 export { seasonFixtures, matchesFixture };
