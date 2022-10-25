@@ -22,9 +22,15 @@
         {{ text }}
       </v-list-item>
     </v-list>
-    <!-- Expand/Collapse -->
+    <!-- Bottom section (logout, expand/collapse) -->
     <template #append>
-      <v-list v-if="!isSmallDevice">
+      <v-list v-if="isSmallDevice">
+        <v-list-item link exact :to="{ name: 'Logout' }" data-nav="Logout">
+          <v-icon class="mr-2">mdi-logout</v-icon>
+          <template v-if="!isCollapsed">Logout</template>
+        </v-list-item>
+      </v-list>
+      <v-list v-else>
         <v-list-item :data-cy="collapseMenuAttribute" @click="userHasCollapsed = !userHasCollapsed">
           <v-icon class="mr-2">{{ collapseMenuIcon }}</v-icon>
           <template v-if="!isCollapsed">Collapse Menu</template>
@@ -55,14 +61,23 @@ export default {
           page: { name: 'Rules' },
         },
       ];
-      return !this.authenticated
+
+      if (!this.authenticated) {
+        return [
+          {
+            text: 'Login',
+            icon: 'login',
+            page: { name: 'Login' },
+          },
+          ...rules,
+        ];
+      }
+
+      return this.isSmallDevice
         ? [
-            {
-              text: 'Login',
-              icon: 'login',
-              page: { name: 'Login' },
-            },
             ...rules,
+            { text: 'Play', icon: 'play', page: { name: 'Home' } },
+            { text: 'Stats', icon: 'chart-bar', page: { name: 'Stats' } },
           ]
         : [
             { text: 'Logout', icon: 'logout', page: { name: 'Logout' } },
