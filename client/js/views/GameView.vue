@@ -709,9 +709,7 @@ export default {
   watch: {
     logs: function () {
       this.$nextTick(function () {
-        if (this.$refs.logsContainer) {
-          this.scrollToLastLog();
-        }
+        this.scrollToLastLog();
       });
     },
   },
@@ -1043,7 +1041,9 @@ export default {
         .catch(this.handleError);
     },
     scrollToLastLog() {
-      this.$refs.logsContainer.scrollTop = this.$refs.logsContainer.scrollHeight;
+      if (this.$refs.logsContainer) {
+        this.$refs.logsContainer.scrollTop = this.$refs.logsContainer.scrollHeight;
+      }
     },
   },
 };
