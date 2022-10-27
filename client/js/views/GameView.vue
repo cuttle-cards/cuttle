@@ -709,9 +709,8 @@ export default {
   watch: {
     logs: function () {
       this.$nextTick(function () {
-        const container = this.$refs.logsContainer;
-        if (container) {
-          container.scrollTop = container.scrollHeight;
+        if (this.$refs.logsContainer) {
+          this.scrollToFinalElement();
         }
       });
     },
@@ -726,8 +725,7 @@ export default {
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--browserHeight', `${vh}px`);
     });
-    const container = this.$refs.logsContainer;
-    container.scrollTop = container.scrollHeight;
+    this.scrollToFinalElement();
   },
   methods: {
     clearSnackBar() {
@@ -1043,6 +1041,9 @@ export default {
         .dispatch('requestPlayOneOff', this.selectedCard.id)
         .then(this.clearSelection)
         .catch(this.handleError);
+    },
+    scrollToFinalElement() {
+      this.$refs.logsContainer.scrollTop = this.$refs.logsContainer.scrollHeight;
     },
   },
 };
