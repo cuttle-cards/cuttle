@@ -711,7 +711,7 @@ export default {
       this.$nextTick(function () {
         const container = this.$refs.logsContainer;
         if (container) {
-          container.scrollTop = container.scrollHeight + 120;
+          container.scrollTop = container.scrollHeight;
         }
       });
     },
@@ -726,6 +726,8 @@ export default {
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--browserHeight', `${vh}px`);
     });
+    const container = this.$refs.logsContainer;
+    container.scrollTop = container.scrollHeight;
   },
   methods: {
     clearSnackBar() {
