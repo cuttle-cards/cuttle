@@ -710,7 +710,7 @@ export default {
     logs: function () {
       this.$nextTick(function () {
         if (this.$refs.logsContainer) {
-          this.scrollToFinalElement();
+          this.scrollToLastLog();
         }
       });
     },
@@ -725,7 +725,7 @@ export default {
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--browserHeight', `${vh}px`);
     });
-    this.scrollToFinalElement();
+    this.scrollToLastLog();
   },
   methods: {
     clearSnackBar() {
@@ -1042,7 +1042,7 @@ export default {
         .then(this.clearSelection)
         .catch(this.handleError);
     },
-    scrollToFinalElement() {
+    scrollToLastLog() {
       this.$refs.logsContainer.scrollTop = this.$refs.logsContainer.scrollHeight;
     },
   },
