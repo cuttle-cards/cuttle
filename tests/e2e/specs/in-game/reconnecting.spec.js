@@ -30,7 +30,7 @@ function reloadAndLogout() {
   reconnect();
 }
 
-describe.skip('Reconnecting to a game', () => {
+describe('Reconnecting to a game', () => {
   it('Persists session after refreshing the page', () => {
     setupGameAsP0();
 
@@ -400,6 +400,51 @@ describe.skip('Reconnecting to a game', () => {
         .should('be.visible')
         .get('[data-counter-dialog-card=2-0]')
         .click();
+
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
+      cy.resolveOpponent();
+
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
+
+      assertGameState(1, {
+        p0Hand: [],
+        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [Card.ACE_OF_DIAMONDS],
+        p1FaceCards: [Card.KING_OF_CLUBS],
+        scrap: [Card.TWO_OF_CLUBS, Card.TWO_OF_SPADES],
+      });
+    });
+
+    it('targetedOneOff -- reconnect into waiting for opponent to counter dialog', () => {
+      setupGameAsP1();
+      cy.loadGameFixture({
+        p0Hand: [Card.TWO_OF_SPADES],
+        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0FaceCards: [],
+        p1Hand: [Card.TWO_OF_CLUBS],
+        p1Points: [Card.ACE_OF_DIAMONDS],
+        p1FaceCards: [Card.KING_OF_CLUBS],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.log('Fixture loaded');
+
+      cy.playTargetedOneOffOpponent(Card.TWO_OF_SPADES, Card.KING_OF_CLUBS, 'faceCard');
+
+      cy.get('#counter-dialog').should('be.visible');
+
+      cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
+      cy.get('#choose-two-dialog')
+        .should('be.visible')
+        .get('[data-counter-dialog-card=2-0]')
+        .click();
+
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
+      // Reload page, relogin & counter
+      reloadAndLogout();
 
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
