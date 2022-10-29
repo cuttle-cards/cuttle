@@ -418,7 +418,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it('targetedOneOff -- reconnect into waiting for opponent to counter dialog', () => {
+    it('targetedOneOff -- reconnect into waiting for opponent to counter overlay', () => {
       setupGameAsP1();
       cy.loadGameFixture({
         p0Hand: [Card.TWO_OF_SPADES],
