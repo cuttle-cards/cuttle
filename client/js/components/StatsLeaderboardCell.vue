@@ -16,10 +16,15 @@
       </v-chip>
     </template>
     <v-card :data-players-beaten="`${username}-week-${week}`">
-      <v-card-title>Players Beaten</v-card-title>
+      <v-card-title>Results</v-card-title>
       <v-card-text>
+        <h3>Wins</h3>
         <v-list>
           {{ playersBeaten }}
+        </v-list>
+        <h3>Losses</h3>
+        <v-list>
+          {{ playersLostTo }}
         </v-list>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
@@ -51,6 +56,10 @@ export default {
       required: true,
     },
     playersBeaten: {
+      type: String,
+      default: '',
+    },
+    playersLostTo: {
       type: String,
       default: '',
     },

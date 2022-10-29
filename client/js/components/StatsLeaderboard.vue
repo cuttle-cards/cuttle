@@ -39,6 +39,7 @@
           :week="week"
           :selected-metric="selectedMetric"
           :players-beaten="playersBeaten(item.username, week)"
+          :players-lost-to="playersLostTo(item.username, week)"
           :top-total-scores="topTotalScores"
         />
       </template>
@@ -46,7 +47,7 @@
   </div>
 </template>
 <script>
-import { uniq } from 'lodash';
+import { uniq, countBy } from 'lodash';
 import StatsLeaderboardCell from '@/components/StatsLeaderboardCell.vue';
 
 const Result = require('../../../types/Result');
@@ -273,13 +274,7 @@ export default {
     ];
   },
   methods: {
-    /**
-     * Returns concatenated usernames of all opponent's the specified player
-     * defeated in the specified week
-     * @param {string} username which player's defeated opponents to return
-     * @param {string} weekNum which week to analyze (use 'total' for the total)
-     */
-    playersBeaten(username, weekNum) {
+    playersByResult(username, result, weekNum) {
       const playerStats = this.season.rankings.find((player) => player.username === username);
       if (!playerStats) {
         return '';
@@ -297,9 +292,38 @@ export default {
       if (!playerMatches) {
         return '';
       }
-      return uniq(
-        playerMatches.filter((match) => match.result === Result.WON).map((match) => match.opponent)
-      ).join(', ');
+      let opponents = playerMatches
+        .filter((match) => match.result === result)
+        .map((match) => match.opponent);
+
+      // If looking at total, show number of times each opponent appeared in the wins or losses
+      if (weekNum === 'total') {
+        opponents = Object.entries(countBy(opponents)).map(
+          ([opponent, matches]) => `${opponent} (${matches})`
+        );
+        // Otherwise just show each opponent's name
+      } else {
+        opponents = uniq(opponents);
+      }
+      return opponents.join(', ');
+    },
+    /**
+     * Returns concatenated usernames of all opponent's the specified player
+     * defeated in the specified week
+     * @param {string} username which player's defeated opponents to return
+     * @param {string} weekNum which week to analyze (use 'total' for the total)
+     */
+    playersBeaten(username, weekNum) {
+      return this.playersByResult(username, Result.WON, weekNum);
+    },
+    /**
+     * Returns concatenated usernames of all opponent's the specified player
+     * was defeated by in the specified week
+     * @param {string} username which player's defeated opponents to return
+     * @param {string} weekNum which week to analyze (use 'total' for the total)
+     */
+    playersLostTo(username, weekNum) {
+      return this.playersByResult(username, Result.LOST, weekNum);
     },
     isCurrentPlayer(username) {
       return username === this.$store.state.auth.username;
