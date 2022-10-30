@@ -15,20 +15,20 @@
         {{ chipText }}
       </v-chip>
     </template>
-    <v-card :data-players-beaten="`${username}-week-${week}`">
+    <v-card :data-player-results="`${username}-week-${week}`">
       <v-card-title>Results</v-card-title>
       <v-card-text>
         <h3>Wins</h3>
-        <v-list>
+        <v-list :data-players-beaten="`${username}-week-${week}`">
           {{ playersBeaten }}
         </v-list>
         <h3>Losses</h3>
-        <v-list>
+        <v-list :data-players-lost-to="`${username}-week-${week}`">
           {{ playersLostTo }}
         </v-list>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn data-cy="close-players-beaten" outlined color="primary" @click="showMenu = false">
+        <v-btn data-cy="close-player-results" outlined color="primary" @click="showMenu = false">
           Close
         </v-btn>
       </v-card-actions>
