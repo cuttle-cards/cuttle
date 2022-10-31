@@ -102,6 +102,7 @@ describe('Stats Page', () => {
     cy.get('[data-player-results=Player1-week-1]').find('[data-cy=close-player-results]').click();
     cy.get('[data-players-beaten=Player1-week-1').should('not.be.visible');
     cy.get('[data-players-lost-to=Player1-week-1').should('not.be.visible');
+    cy.get('[data-win-rate=Player1-week-1]').should('contain', '100%');
     // Player result menus (Week with losses)
     cy.get("[data-week-1='Player2']").click();
     cy.get('[data-players-beaten=Player2-week-1]').should('contain', 'Player3, Player4');
@@ -109,6 +110,7 @@ describe('Stats Page', () => {
     cy.get('[data-player-results=Player2-week-1]').find('[data-cy=close-player-results]').click();
     cy.get('[data-players-beaten=Player2-week-1').should('not.be.visible');
     cy.get('[data-players-lost-to=Player2-week-1').should('not.be.visible');
+    cy.get('[data-win-rate=Player2-week-1]').should('contain', '66%');
     // Player result menus (Total)
     cy.get("[data-week-total='Player3']").click();
     cy.get('[data-players-beaten=Player3-week-total]').should('contain', 'Player5 (1)');
@@ -121,6 +123,7 @@ describe('Stats Page', () => {
       .click();
     cy.get('[data-players-beaten=Player3-week-total').should('not.be.visible');
     cy.get('[data-players-lost-to=Player3-week-total').should('not.be.visible');
+    cy.get('[data-win-rate=Player3-week-total]').should('contain', '12%');
   });
 
   it('Filters table to display wins, points, or both', () => {
