@@ -16,7 +16,7 @@
       </v-chip>
     </template>
     <v-card :data-player-results="`${username}-week-${week}`">
-      <v-card-title>{{ username }} Week {{ week}} Results</v-card-title>
+      <v-card-title>{{ username }} Week {{ week }} Results</v-card-title>
       <v-card-text>
         <h3>Wins</h3>
         <v-list :data-players-beaten="`${username}-week-${week}`">
@@ -151,7 +151,7 @@ export default {
       return res;
     },
     winRatePercentage() {
-      const winRate = Math.floor((this.wins / this.weekCount) * 100)
+      const winRate = Math.floor((this.wins / this.weekCount) * 100);
       return `${winRate}%`;
     },
   },
