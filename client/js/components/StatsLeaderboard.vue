@@ -102,8 +102,14 @@ export default {
       return this.season.rankings.map((playerStats, index) => {
         const playerWins = this.playerWins[index];
         const playerScores = this.playerScores[index];
-        const playerMatchesCount = Object.values(playerStats.matches)
-          .reduce((totalCount, weekMatches) => totalCount += weekMatches.length, 0)
+        // Count matches completed per week and in total
+        const playerMatchesCount = Object.values(playerStats.matches).reduce(
+          (totalCount, weekMatches) =>
+            (totalCount += weekMatches.filter((match) =>
+              [Result.WON, Result.LOST].includes(match.result)
+            ).length),
+          0
+        );
         const res = {
           username: playerStats.username,
           week_total_count: playerMatchesCount,
