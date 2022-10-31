@@ -709,10 +709,7 @@ export default {
   watch: {
     logs: function () {
       this.$nextTick(function () {
-        const container = this.$refs.logsContainer;
-        if (container) {
-          container.scrollTop = container.scrollHeight + 120;
-        }
+        this.scrollToLastLog();
       });
     },
   },
@@ -726,6 +723,7 @@ export default {
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--browserHeight', `${vh}px`);
     });
+    this.scrollToLastLog();
   },
   methods: {
     clearSnackBar() {
@@ -1041,6 +1039,11 @@ export default {
         .dispatch('requestPlayOneOff', this.selectedCard.id)
         .then(this.clearSelection)
         .catch(this.handleError);
+    },
+    scrollToLastLog() {
+      if (this.$refs.logsContainer) {
+        this.$refs.logsContainer.scrollTop = this.$refs.logsContainer.scrollHeight;
+      }
     },
   },
 };

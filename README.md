@@ -27,9 +27,9 @@ Please see our [Contribution Guide](./docs/CONTRIBUTING.md) on how you can get s
 
 ### Download nodeJs
 
-[nodeJs](https://nodejs.org/en/) lets you create & run web servers in javascript (along with other fancy system-level stuff not needed for this project). Both the client and server depend on node as the main system-wide dependency. The download comes with npm (node package manageer) which you'll use to install the project-specific dependencies.
+[nodeJs](https://nodejs.org/en/) lets you create & run web servers in javascript (along with other fancy system-level stuff not needed for this project). Both the client and server depend on node as the main system-wide dependency. The download comes with npm (node package manager) which you'll use to install the project-specific dependencies.
 
-**You should install version 16.xx.xx** (Left-side download) as this is the latest **stable** version.
+**Currently version 16.xx.xx of node is required** as this is the latest version compatible with this project. You can [download node 16 here](https://nodejs.org/en/blog/release/v16.16.0/) or use [nvm](https://github.com/nvm-sh/nvm) or [nvm-windows](https://github.com/coreybutler/nvm-windows) to manage multiple node versions (recommended for longer term nodejs development).
 
 **NOTE** When running on your local computer, signup/login only stores credentials on your computer and in memory. Shutting down the server wipes the in-memory database along with all game & account data.
 

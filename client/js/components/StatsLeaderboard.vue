@@ -29,7 +29,7 @@
       :item-class="tableRowClass"
     >
       <template #[`item.rank`]="{ item, value }">
-        <span :data-rank="item.username">{{ value }} </span>
+        <span :data-rank="item.username">{{ value }}</span>
       </template>
       <!-- Customize the appearance of total column and column for each week -->
       <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{ item }">
@@ -39,6 +39,7 @@
           :week="week"
           :selected-metric="selectedMetric"
           :players-beaten="playersBeaten(item.username, week)"
+          :players-lost-to="playersLostTo(item.username, week)"
           :top-total-scores="topTotalScores"
         />
       </template>
@@ -46,7 +47,7 @@
   </div>
 </template>
 <script>
-import { uniq } from 'lodash';
+import { uniq, countBy } from 'lodash';
 import StatsLeaderboardCell from '@/components/StatsLeaderboardCell.vue';
 
 const Result = require('../../../types/Result');
@@ -97,6 +98,7 @@ export default {
       if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
         return [];
       }
+
       return this.season.rankings.map((playerStats, index) => {
         const playerWins = this.playerWins[index];
         const playerScores = this.playerScores[index];
@@ -105,7 +107,7 @@ export default {
           week_total_wins: playerWins.total,
           week_total_points: playerScores.total,
           week_total: playerScores.total,
-          rank: this.rank(playerScores.total),
+          rank: this.rank({ totalScore: playerScores.total, totalWins: playerWins.total }),
         };
         for (const weekNum in playerStats.matches) {
           res[`week_${weekNum}`] = playerScores[weekNum];
@@ -224,8 +226,25 @@ export default {
       }
       return res;
     },
-    totalScoresSorted() {
-      return this.playerScores.map((playerStats) => playerStats.total).sort((a, b) => b - a);
+    playerRankingsSorted() {
+      let scoreboard = [];
+      if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
+        return scoreboard;
+      }
+
+      for (let i = 0; i < this.season.rankings.length; i++) {
+        scoreboard.push({
+          totalScore: this.playerScores[i].total,
+          totalWins: this.playerWins[i].total,
+        });
+      }
+
+      // sort and prioritize total scores before taking into account total wins
+      return scoreboard.sort((a, b) => {
+        if (b.totalScore > a.totalScore) return 1;
+        if (b.totalScore < a.totalScore) return -1;
+        return b.totalWins - a.totalWins;
+      });
     },
     theme() {
       return this.$vuetify.theme.themes.light;
@@ -255,13 +274,7 @@ export default {
     ];
   },
   methods: {
-    /**
-     * Returns concatenated usernames of all opponent's the specified player
-     * defeated in the specified week
-     * @param {string} username which player's defeated opponents to return
-     * @param {string} weekNum which week to analyze (use 'total' for the total)
-     */
-    playersBeaten(username, weekNum) {
+    playersByResult(username, result, weekNum) {
       const playerStats = this.season.rankings.find((player) => player.username === username);
       if (!playerStats) {
         return '';
@@ -279,9 +292,38 @@ export default {
       if (!playerMatches) {
         return '';
       }
-      return uniq(
-        playerMatches.filter((match) => match.result === Result.WON).map((match) => match.opponent)
-      ).join(', ');
+      let opponents = playerMatches
+        .filter((match) => match.result === result)
+        .map((match) => match.opponent);
+
+      // If looking at total, show number of times each opponent appeared in the wins or losses
+      if (weekNum === 'total') {
+        opponents = Object.entries(countBy(opponents)).map(
+          ([opponent, matches]) => `${opponent} (${matches})`
+        );
+        // Otherwise just show each opponent's name
+      } else {
+        opponents = uniq(opponents);
+      }
+      return opponents.join(', ');
+    },
+    /**
+     * Returns concatenated usernames of all opponent's the specified player
+     * defeated in the specified week
+     * @param {string} username which player's defeated opponents to return
+     * @param {string} weekNum which week to analyze (use 'total' for the total)
+     */
+    playersBeaten(username, weekNum) {
+      return this.playersByResult(username, Result.WON, weekNum);
+    },
+    /**
+     * Returns concatenated usernames of all opponent's the specified player
+     * was defeated by in the specified week
+     * @param {string} username which player's defeated opponents to return
+     * @param {string} weekNum which week to analyze (use 'total' for the total)
+     */
+    playersLostTo(username, weekNum) {
+      return this.playersByResult(username, Result.LOST, weekNum);
     },
     isCurrentPlayer(username) {
       return username === this.$store.state.auth.username;
@@ -289,9 +331,16 @@ export default {
     tableRowClass(item) {
       return this.isCurrentPlayer(item.username) ? 'active-user-stats' : '';
     },
-    // Compute rank from total score
-    rank(totalScore) {
-      return this.totalScoresSorted.indexOf(totalScore) + 1;
+    /**
+     * @description Compute rank from total score and wins
+     */
+    rank(player) {
+      return (
+        this.playerRankingsSorted.findIndex(
+          ({ totalScore, totalWins }) =>
+            totalScore === player.totalScore && totalWins === player.totalWins
+        ) + 1
+      );
     },
   },
 };
