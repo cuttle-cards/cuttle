@@ -169,7 +169,7 @@ p {
 }
 
 #logo {
-  // height: 20vh;
+  height: 20vh;
   margin: 0 auto;
   .home & {
     height: auto;
