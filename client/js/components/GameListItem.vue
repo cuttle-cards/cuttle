@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="list-item" data-cy="game-list-item">
-      <v-col sm="2" lg="3" v-if="!$vuetify.breakpoint.mdAndDown">
+      <v-col sm="2" lg="3" v-if="$vuetify.breakpoint.lgAndUp">
         <v-img
           :src="require('../img/logo_head.svg')"
           class="my-1"
@@ -9,13 +9,13 @@
           :height="$vuetify.breakpoint.smAndUp ? 62 : 32"
         />
       </v-col>
-      <v-col sm="7" lg="6" class="list-item--inner-text">
+      <v-col sm="7" lg="6" class="list-item__inner-text">
         <p class="game-name" data-cy="game-list-item-name">
           {{ name }}
         </p>
         <p>{{ readyText }} players</p>
       </v-col>
-      <v-col cols="3" class="list-item-button">
+      <v-col cols="3" class="list-item__button">
         <v-btn
           color="primary"
           rounded
@@ -115,25 +115,22 @@ export default {
   & p {
       line-height: 1;
       margin: 3px auto;
-      
+  }
+  &__inner-text {
+    display: flex;
+    padding-bottom: 1rem;
+    padding-top: .25rem;
+  }
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    padding-top: .5rem;
   }
 }
 
-.list-item--inner-text {
-  display: flex;
-  padding-bottom: 1rem;
-  padding-top: .25rem;
-}
-
-.list-item-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0;
-  padding-top: .5rem;
-}
-
-@media (min-width: 980px) {
+@media (min-width: 1264px) {
   .list-item {
   max-width: 95%;
   flex-direction: row;
@@ -142,10 +139,10 @@ export default {
     font-size: 1rem;
     margin-bottom: 1rem;
   }
-}
-  .list-item--inner-text {
+  &__inner-text {
     display: block;
     padding: 0;
+  }
   }
 }
 </style>

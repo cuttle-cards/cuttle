@@ -1,6 +1,6 @@
 <template>
   <div class="home pa-4" :class="{
-    'home--large': !$vuetify.breakpoint.mdAndDown,
+    'home': $vuetify.breakpoint.lgAndUp,
   }">
     <v-container>
       <v-row v-if="$vuetify.breakpoint.mdAndDown">
@@ -11,7 +11,7 @@
           <v-col :cols="$vuetify.breakpoint.mdAndDown ? 12 : 9">
             <div id="card-content-header" class="mb-4">
               <h1 id="home-card-title">Games</h1>
-              <v-row  class="create-game--btn"> 
+              <v-row  class="create-game-btn"> 
                <create-game-dialog @error="handleError" />
               </v-row>
             </div>
@@ -30,8 +30,8 @@
               </div>
             </div>
           </v-col>
-          <v-col id="side-nav" :cols="$vuetify.breakpoint.mdAndDown ? 12 : 3">
-            <img v-if="!$vuetify.breakpoint.mdAndDown" id="logo" alt="Vue logo" src="../img/logo.png" />
+          <v-col id="side-nav" :cols="$vuetify.breakpoint.mdAndDown? 12 : 3">
+            <img v-if="$vuetify.breakpoint.lgAndUp" id="logo" alt="Vue logo" src="../img/logo.png" />
             <v-btn
               outlined
               color="primary"
@@ -169,16 +169,16 @@ p {
 }
 
 #logo {
-  height: 20vh;
+  // height: 20vh;
   margin: 0 auto;
-  .home--large & {
+  .home & {
     height: auto;
     width: 80%;
     margin: 20px auto;
   }
 }
 
-.create-game--btn {
+.create-game-btn {
     display: flex;
     justify-content: flex-end;
   }
@@ -230,7 +230,7 @@ p {
 
 @media (min-width: 980px) {
   .container {
-    .home--large & {
+    .home & {
       margin: 10vh auto;
       display: flex;
       justify-content: center;
@@ -250,7 +250,7 @@ p {
     padding: 1.25rem .5rem;
   }
   
-  .create-game--btn {
+  .create-game-btn {
     margin-right: .5rem;
   }
 }
