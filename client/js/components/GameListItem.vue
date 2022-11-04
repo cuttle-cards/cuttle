@@ -107,10 +107,12 @@ export default {
   flex-direction: column;
   align-items: center;
   padding-top: 0.5rem;
+  word-break: break-all;
   & .game-name {
     font-weight: 600;
     font-size: 1.1em;
     text-align: left;
+    width: 60%;
   }
   & p {
     line-height: 1;
@@ -138,6 +140,7 @@ export default {
     & .game-name {
       font-size: 1rem;
       margin-bottom: 1rem;
+      width: 100%;
     }
     &__inner-text {
       display: block;
