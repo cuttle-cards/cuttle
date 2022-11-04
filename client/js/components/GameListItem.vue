@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="list-item" data-cy="game-list-item">
-      <v-col sm="2" lg="3" v-if="$vuetify.breakpoint.lgAndUp">
+      <v-col v-if="$vuetify.breakpoint.lgAndUp" sm="2" lg="3">
         <v-img
           :src="require('../img/logo_head.svg')"
           class="my-1"
@@ -106,43 +106,43 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: .5rem;
+  padding-top: 0.5rem;
   & .game-name {
     font-weight: 600;
-    font-size: 1.10em;
+    font-size: 1.1em;
     text-align: left;
   }
   & p {
-      line-height: 1;
-      margin: 3px auto;
+    line-height: 1;
+    margin: 3px auto;
   }
   &__inner-text {
     display: flex;
     padding-bottom: 1rem;
-    padding-top: .25rem;
+    padding-top: 0.25rem;
   }
   &__button {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 0;
-    padding-top: .5rem;
+    padding-top: 0.5rem;
   }
 }
 
 @media (min-width: 1264px) {
   .list-item {
-  max-width: 95%;
-  flex-direction: row;
-  padding: 0;
-  & .game-name {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-  }
-  &__inner-text {
-    display: block;
+    max-width: 95%;
+    flex-direction: row;
     padding: 0;
-  }
+    & .game-name {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    &__inner-text {
+      display: block;
+      padding: 0;
+    }
   }
 }
 </style>
