@@ -179,11 +179,6 @@ p {
 #logo {
   height: 20vh;
   margin: 0 auto;
-  .home & {
-    height: auto;
-    width: 80%;
-    margin: 20px auto;
-  }
 }
 
 .create-game-btn {
@@ -239,6 +234,8 @@ p {
 @media (min-width: 980px) {
   .container {
     .home & {
+      height: auto;
+      width: 80%;
       margin: 10vh auto;
       display: flex;
       justify-content: center;

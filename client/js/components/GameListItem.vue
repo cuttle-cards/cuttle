@@ -113,6 +113,7 @@ export default {
     font-size: 1.1em;
     text-align: left;
     width: 60%;
+    padding-right: 1rem;
   }
   & p {
     line-height: 1;
@@ -120,6 +121,7 @@ export default {
   }
   &__inner-text {
     display: flex;
+    align-items: center;
     padding-bottom: 1rem;
     padding-top: 0.25rem;
   }
