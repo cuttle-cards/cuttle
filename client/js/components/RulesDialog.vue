@@ -138,7 +138,7 @@
           <p>
             <strong>King:</strong> While you have a King, the minimum points needed to win is
             reduced. Each additional King further reduces the limit. If you manage to get all 4
-            kings on the field, you are a hero and deserve to win immediately.
+            kings on the field, you are a hero and win immediately.
           </p>
           <div>
             <ol>

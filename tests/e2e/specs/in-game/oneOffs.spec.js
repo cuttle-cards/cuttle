@@ -88,7 +88,7 @@ describe('Untargeted One-Offs', () => {
     playOutOfTurn('oneOff');
   }); // End five one-off
 
-  it.only('Plays a six to destroy all face cards', () => {
+  it('Plays a six to destroy all face cards', () => {
     // Setup
     cy.loadGameFixture({
       //Player is P0
