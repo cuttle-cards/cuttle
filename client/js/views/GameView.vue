@@ -809,9 +809,9 @@ export default {
         case 2:
           return 10;
         case 3:
-          return 7;
-        case 4:
           return 5;
+        case 4:
+          return 0;
         default:
           return 21;
       }

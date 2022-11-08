@@ -111,6 +111,41 @@ describe('Winning the game', () => {
     goHomeJoinNewGame();
   });
 
+  it('Shows when player wins game with 0 points and four kings', () => {
+    cy.loadGameFixture({
+      p0Hand: [Card.KING_OF_HEARTS],
+      p0Points: [],
+      p0FaceCards: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+      scrap: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Fixture loaded');
+
+    // Play King of Hearts
+    cy.get('[data-player-hand-card=13-2]').click();
+    cy.get('[data-move-choice=faceCard]').click();
+
+    assertGameState(0, {
+      p0Hand: [],
+      p0Points: [],
+      p0FaceCards: [
+        Card.KING_OF_SPADES,
+        Card.KING_OF_CLUBS,
+        Card.KING_OF_DIAMONDS,
+        Card.KING_OF_HEARTS,
+      ],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+      scrap: [],
+    });
+    assertVictory();
+    goHomeJoinNewGame();
+  });
+
   it('Wins the game when opponent concedes', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],

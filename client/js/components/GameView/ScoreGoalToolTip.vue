@@ -11,8 +11,8 @@
         <v-list-item :class="{ 'current-goal': kingCount === 0 }"> 0 Kings: 21pts </v-list-item>
         <v-list-item :class="{ 'current-goal': kingCount === 1 }"> 1 King: 14pts </v-list-item>
         <v-list-item :class="{ 'current-goal': kingCount === 2 }"> 2 Kings: 10pts </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 3 }"> 3 Kings: 7pts </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 4 }"> 4 Kings: 5pts </v-list-item>
+        <v-list-item :class="{ 'current-goal': kingCount === 3 }"> 3 Kings: 5pts </v-list-item>
+        <v-list-item :class="{ 'current-goal': kingCount === 4 }"> 4 Kings: 0pts </v-list-item>
       </v-list>
     </v-menu>
   </span>

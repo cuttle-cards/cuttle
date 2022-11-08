@@ -72,10 +72,10 @@ module.exports = {
         if (points >= 10) return true;
         break;
       case 3:
-        if (points >= 7) return true;
+        if (points >= 5) return true;
         break;
       case 4:
-        if (points >= 5) return true;
+        if (points >= 0) return true;
         break;
     }
     return false;

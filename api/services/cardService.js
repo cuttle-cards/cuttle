@@ -65,7 +65,7 @@ module.exports = {
         'No effect',
         'Play on top of target point card to steal it',
         'Your other cards may only be targeted by scuttles',
-        'Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 7pts, 4K: 5pts)',
+        'Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)',
       ][rank - 1]; // ranks start at 1
 
       // Create card record
