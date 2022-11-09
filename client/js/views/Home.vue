@@ -1,14 +1,23 @@
 <template>
-  <div class="home">
-    <div class="container">
+  <div
+    class="home pa-4"
+    :class="{
+      home: $vuetify.breakpoint.lgAndUp,
+    }"
+  >
+    <v-container>
+      <v-row v-if="$vuetify.breakpoint.mdAndDown">
+        <img id="logo" alt="Cuttle logo" src="../img/logo.png" height="20vh" class="mb-4" />
+      </v-row>
       <div id="game-list-card">
         <v-row>
-          <v-col cols="9">
-            <v-row id="card-content-header" class="mb-4">
-              <v-col cols="4">
-                <h1 id="home-card-title">Games</h1>
-              </v-col>
-            </v-row>
+          <v-col :cols="$vuetify.breakpoint.mdAndDown ? 12 : 9">
+            <div id="card-content-header" class="mb-4">
+              <h1 id="home-card-title">Games</h1>
+              <v-row class="create-game-btn">
+                <create-game-dialog @error="handleError" />
+              </v-row>
+            </div>
             <div id="game-list">
               <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
               <div v-for="game in gameList" :key="game.id">
@@ -24,8 +33,13 @@
               </div>
             </div>
           </v-col>
-          <v-col id="side-nav" cols="3">
-            <img id="logo" alt="Vue logo" src="../img/logo.png" />
+          <v-col id="side-nav" :cols="$vuetify.breakpoint.mdAndDown ? 12 : 3">
+            <img
+              v-if="$vuetify.breakpoint.lgAndUp"
+              id="logo"
+              alt="Vue logo"
+              src="../img/logo.png"
+            />
             <v-btn
               outlined
               color="primary"
@@ -58,11 +72,8 @@
             </v-btn>
           </v-col>
         </v-row>
-        <v-row class="d-flex justify-end mt-8">
-          <create-game-dialog @error="handleError" />
-        </v-row>
       </div>
-    </div>
+    </v-container>
     <v-snackbar
       v-model="showSnackBar"
       color="error"
@@ -135,14 +146,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.container {
-  width: 90%;
-  margin: 10vh auto;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-
 h1 {
   background: linear-gradient(
     268.89deg,
@@ -154,10 +157,18 @@ h1 {
   -webkit-text-fill-color: transparent;
 }
 
-#logo {
-  height: auto;
-  width: 80%;
-  margin: 20px auto;
+h2 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin-top: 1rem;
+}
+
+.container {
+  width: 95%;
+  margin: 0 auto;
+  max-height: 95vh;
 }
 
 .page-title {
@@ -165,14 +176,42 @@ h1 {
   text-align: center;
 }
 
-#game-list-card {
-  border-radius: 15px;
-  margin-top: 8px;
+#logo {
+  height: 20vh;
+  margin: 0 auto;
 }
 
-#card-content-header {
+.create-game-btn {
   display: flex;
-  align-items: center;
+  justify-content: flex-end;
+}
+
+#side-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#game-list-card {
+  border-radius: 15px;
+  margin-top: 0.5rem;
+  padding: 0.25rem;
+}
+
+#game-list {
+  box-sizing: border-box;
+  border: 1px solid #fd6222;
+  background: #efefef;
+  border-radius: 10px;
+  min-height: 55vh;
+  display: flex;
+  min-width: 100%;
+  flex-direction: column;
+  padding: 0.25rem;
+
+  p {
+    text-align: center;
+  }
 }
 
 #add-new-game {
@@ -182,76 +221,42 @@ h1 {
   align-items: center;
 }
 
-#game-list {
-  background: #efefef;
-  border: 1px solid #fd6222;
-  box-sizing: border-box;
-  border-radius: 15px;
-  min-height: 55vh;
-  max-height: 80vh;
-  overflow: auto;
+#card-content-header {
+  padding: 0;
   display: flex;
-  flex-direction: column;
-  padding: 20px 10px;
-
-  p {
-    text-align: center;
-  }
-}
-
-#side-nav {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
 }
 
 #home-card-title {
   font-size: 2em;
 }
 
-p {
-  margin-top: 16px;
-}
-
-@media (max-width: 979px) and (orientation: landscape) {
-  h2 {
-    font-size: 1.25rem;
-  }
-
-  #logo {
-    width: 64px;
-    height: 64px;
-  }
-
+@media (min-width: 980px) {
   .container {
-    width: 95%;
-    margin: 0 auto;
-    max-height: 95vh;
-  }
-
-  #game-list-card {
-    padding: 5px;
-  }
-
-  #game-list {
-    box-sizing: border-box;
-    border-radius: 10px;
-    min-height: 55vh;
-    max-height: 60vh;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
-
-    p {
-      text-align: center;
+    .home & {
+      height: auto;
+      width: 80%;
+      margin: 10vh auto;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
     }
   }
 
-  #card-content-header {
+  #game-list-card {
     padding: 0;
-    display: flex;
-    align-items: center;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  #game-list {
+    border-radius: 15px;
+    overflow: auto;
+    padding: 1.25rem 0.5rem;
+  }
+
+  .create-game-btn {
+    margin-right: 0.5rem;
   }
 }
 </style>
