@@ -137,15 +137,16 @@
           </p>
           <p>
             <strong>King:</strong> While you have a King, the minimum points needed to win is
-            reduced. Each additional King further reduces the limit.
+            reduced. Each additional King further reduces the limit. If you manage to get all 4
+            kings on the field, you are a hero and win immediately.
           </p>
           <div>
             <ol>
               <li>No Kings: 21 points to win (default)</li>
               <li>1 King: 14 points to win</li>
               <li>2 Kings: 10 points to win</li>
-              <li>3 Kings: 7 points to win</li>
-              <li>4 Kings: 5 points to win</li>
+              <li>3 Kings: 5 points to win</li>
+              <li>4 Kings: 0 points to win</li>
             </ol>
           </div>
         </section>

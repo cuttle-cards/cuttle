@@ -340,7 +340,7 @@ export default {
             title: 'King',
             icon: 'crown',
             description:
-              'Reduce the number of points you need to win (21, 14, 10, 7, 5 points with 0, 1, 2, 3, 4 Kings).',
+              'Reduce the number of points you need to win (21, 14, 10, 5, 0 points with 0, 1, 2, 3, 4 Kings).',
             staticImg: 'cuttle_king.png',
             animatedImg:
               'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',

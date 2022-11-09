@@ -62,8 +62,8 @@ On your turn you must make exactly one of the following moves below.
 - **King**: While you have a King, the minimum points needed to win is reduced. Each additional King further reduces the limit.
   - 1 King: 14 points to win
   - 2 Kings: 10 points to win
-  - 3 Kings: 7 points to win
-  - 4 Kings: 5 points to win
+  - 3 Kings: 5 points to win
+  - 4 Kings: 0 points to win
 
 ## Ranked Games
 
