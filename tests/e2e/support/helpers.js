@@ -111,7 +111,7 @@ export function printCard(card) {
       break;
   }
   res += ' of ';
-  const suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
+  const suits = ['♣️', '♦️', '♥️', '♠️'];
   res += suits[card.suit];
   return res;
 }
@@ -198,9 +198,9 @@ function pointsToWin(kingCount) {
     case 2:
       return 10;
     case 3:
-      return 7;
-    case 4:
       return 5;
+    case 4:
+      return 0;
     default:
       throw new Error(`Cannot count points to win for invalid kingcount: ${kingCount}`);
   }

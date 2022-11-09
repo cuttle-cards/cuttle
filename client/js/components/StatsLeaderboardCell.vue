@@ -15,15 +15,24 @@
         {{ chipText }}
       </v-chip>
     </template>
-    <v-card :data-players-beaten="`${username}-week-${week}`">
-      <v-card-title>Players Beaten</v-card-title>
+    <v-card :data-player-results="`${username}-week-${week}`">
+      <v-card-title>{{ username }} Week {{ week }} Results</v-card-title>
       <v-card-text>
-        <v-list>
+        <h3>Wins</h3>
+        <v-list :data-players-beaten="`${username}-week-${week}`">
           {{ playersBeaten }}
+        </v-list>
+        <h3>Losses</h3>
+        <v-list :data-players-lost-to="`${username}-week-${week}`">
+          {{ playersLostTo }}
+        </v-list>
+        <h3>Win Rate</h3>
+        <v-list :data-win-rate="`${username}-week-${week}`">
+          {{ winRatePercentage }}
         </v-list>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn data-cy="close-players-beaten" outlined color="primary" @click="showMenu = false">
+        <v-btn data-cy="close-player-results" outlined color="primary" @click="showMenu = false">
           Close
         </v-btn>
       </v-card-actions>
@@ -54,6 +63,10 @@ export default {
       type: String,
       default: '',
     },
+    playersLostTo: {
+      type: String,
+      default: '',
+    },
     topTotalScores: {
       type: Object,
       required: true,
@@ -76,6 +89,9 @@ export default {
     },
     points() {
       return this.playerRow[`week_${this.week}_points`];
+    },
+    weekCount() {
+      return this.playerRow[`week_${this.week}_count`];
     },
     chipText() {
       switch (this.selectedMetric) {
@@ -133,6 +149,10 @@ export default {
       const attributeName = `data-week-${this.week}`;
       res[attributeName] = this.username;
       return res;
+    },
+    winRatePercentage() {
+      const winRate = Math.floor((this.wins / this.weekCount) * 100);
+      return `${winRate}%`;
     },
   },
 };

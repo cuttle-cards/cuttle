@@ -96,6 +96,9 @@ io.socket.on('game', function (evData) {
           if (evData.data.pNum !== store.state.game.myPNum) {
             store.commit('setWaitingForOpponentToCounter', false);
             store.commit('setMyTurnToCounter', true);
+          } else {
+            store.commit('setWaitingForOpponentToCounter', true);
+            store.commit('setMyTurnToCounter', false);
           }
           break;
         // Sevens

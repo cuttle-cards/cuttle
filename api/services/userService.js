@@ -63,20 +63,15 @@ module.exports = {
     const kings = player.faceCards.filter((faceCard) => faceCard.rank === 13).length;
     switch (kings) {
       case 0:
-        if (points >= 21) return true;
-        break;
+        return points >= 21;
       case 1:
-        if (points >= 14) return true;
-        break;
+        return points >= 14;
       case 2:
-        if (points >= 10) return true;
-        break;
+        return points >= 10;
       case 3:
-        if (points >= 7) return true;
-        break;
+        return points >= 5;
       case 4:
-        if (points >= 5) return true;
-        break;
+        return points >= 0;
     }
     return false;
   },
