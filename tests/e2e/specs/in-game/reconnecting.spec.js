@@ -1,34 +1,11 @@
 import {
   setupGameAsP0,
   setupGameAsP1,
-  username,
-  validPassword,
   opponentUsername,
   opponentPassword,
   assertGameState,
   Card,
 } from '../../support/helpers';
-
-function reconnect() {
-  cy.get('#reauthenticate-dialog').should('be.visible');
-  cy.get('[data-cy=username]').type(username);
-  cy.get('[data-cy=password]').type(validPassword);
-  cy.get('[data-cy=login]').click();
-  cy.get('#reauthenticate-dialog').should('not.be.visible');
-  cy.log('Reauthenticated');
-}
-
-function reloadAndLogout() {
-  // Logout the user
-  cy.window()
-    .its('cuttle.app.$store')
-    .then(async (store) => {
-      store.dispatch('requestLogout');
-    });
-  cy.log('Logged Out');
-  cy.reload();
-  reconnect();
-}
 
 describe('Reconnecting to a game', () => {
   it('Persists session after refreshing the page', () => {
