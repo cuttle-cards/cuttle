@@ -1,4 +1,4 @@
-const dayjs = require('dayjs')
+const dayjs = require('dayjs');
 
 module.exports = {
   friendlyName: 'Get Seasons Without Matches',
@@ -7,9 +7,9 @@ module.exports = {
 
   fn: async (_, exits) => {
     const seasons = await Season.find({
-      where: {startTime: {'<': dayjs().valueOf()}},
+      where: { startTime: { '<': dayjs().valueOf() } },
       sort: 'startTime DESC',
-     }).populateAll();
+    }).populateAll();
     return exits.success(
       seasons.map((season) => {
         return {
