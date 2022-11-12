@@ -7,7 +7,7 @@ module.exports = {
 
   fn: async (_, exits) => {
     const seasons = await Season.find({
-      where: { startTime: { '<': dayjs().valueOf() } },
+      where: { startTime: { '<=': dayjs().valueOf() } },
       sort: 'startTime DESC',
     }).populateAll();
     return exits.success(
