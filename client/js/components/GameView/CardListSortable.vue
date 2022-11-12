@@ -24,7 +24,7 @@
       <card
         v-for="card in sortedCards"
         :key="card.id"
-        class="mx-1 my-1 card-width"
+        class="mx-1 my-1 sortable-list-card"
         :suit="card.suit"
         :rank="card.rank"
         v-bind="dataSelectorObject(card)"
@@ -106,7 +106,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-width {
+.sortable-list-card {
   width: 9.5rem;
 }
 
