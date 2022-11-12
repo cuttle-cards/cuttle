@@ -193,4 +193,9 @@ describe('Stats Page', () => {
     cy.get('[data-week-total=Player1]').should('contain', 'W: 6, P: 9');
     cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 4');
   });
+
+  it('Selects season that should not be available', () => {
+    cy.get('[data-cy=season-select]').click({ force: true });
+    cy.get('[role=option]').contains('Future Spades Season').should('not.exist');
+  });
 });

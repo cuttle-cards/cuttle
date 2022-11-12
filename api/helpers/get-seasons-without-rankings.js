@@ -1,10 +1,15 @@
+const dayjs = require('dayjs');
+
 module.exports = {
   friendlyName: 'Get Seasons Without Matches',
 
   description: 'Get all Season records and initialize them with an empty map of rankings',
 
   fn: async (_, exits) => {
-    const seasons = await Season.find({ sort: 'startTime DESC' }).populateAll();
+    const seasons = await Season.find({
+      where: { startTime: { '<=': dayjs().valueOf() } },
+      sort: 'startTime DESC',
+    }).populateAll();
     return exits.success(
       seasons.map((season) => {
         return {
