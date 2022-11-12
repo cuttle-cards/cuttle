@@ -196,6 +196,6 @@ describe('Stats Page', () => {
 
   it('Selects season that should not be available', () => {
     cy.get('[data-cy=season-select]').click({ force: true });
-    cy.get('[role=option]').contains('Spades 2022').should('not.exist');
+    cy.get('[role=option]').contains('Future Spades Season').should('not.exist');
   });
 });

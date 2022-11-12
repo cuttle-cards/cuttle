@@ -22,7 +22,7 @@ const seasonFixtures = [
     endTime: dayjs('2022-03-18', 'yyyy-mm-dd').valueOf(),
   },
   {
-    name: 'Spades 2022',
+    name: 'Future Spades Season',
     // startTime: 1642642200,
     startTime: dayjs().add(1, 'year').valueOf(),
     // endTime: 1674178200,
