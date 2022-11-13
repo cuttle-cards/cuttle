@@ -150,7 +150,7 @@
                   :rank="topCard.rank"
                   :data-top-card="`${topCard.rank}-${topCard.suit}`"
                   :is-selected="topCardIsSelected"
-                  class="mb-4"
+                  class="mb-4 resolving-seven-size"
                   @click="selectTopCard"
                 />
                 <card
@@ -159,7 +159,7 @@
                   :rank="secondCard.rank"
                   :data-second-card="`${secondCard.rank}-${secondCard.suit}`"
                   :is-selected="secondCardIsSelected"
-                  class="mb-4"
+                  class="mb-4 resolving-seven-size"
                   @click="selectSecondCard"
                 />
               </div>
@@ -1189,6 +1189,10 @@ export default {
 
 .deck-container {
   grid-area: decks;
+}
+
+.resolving-seven-size {
+    width: 9.5rem;
 }
 
 #field-left {
