@@ -1198,9 +1198,9 @@ export default {
     &.reveal-top-two {
       height: auto;
       align-self: start;
-        & .resolving-seven-card {
-            width: 9.5rem;
-        }
+      & .resolving-seven-card {
+        width: 9.5rem;
+      }
     }
     & #empty-deck-text {
       background-color: rgba(0, 0, 0, 0.8);
