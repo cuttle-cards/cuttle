@@ -150,7 +150,7 @@
                   :rank="topCard.rank"
                   :data-top-card="`${topCard.rank}-${topCard.suit}`"
                   :is-selected="topCardIsSelected"
-                  class="mb-4"
+                  class="mb-4 resolving-seven-card"
                   @click="selectTopCard"
                 />
                 <card
@@ -159,7 +159,7 @@
                   :rank="secondCard.rank"
                   :data-second-card="`${secondCard.rank}-${secondCard.suit}`"
                   :is-selected="secondCardIsSelected"
-                  class="mb-4"
+                  class="mb-4 resolving-seven-card"
                   @click="selectSecondCard"
                 />
               </div>
@@ -1200,6 +1200,9 @@ export default {
     &.reveal-top-two {
       height: auto;
       align-self: start;
+      & .resolving-seven-card {
+        width: 9.5rem;
+      }
     }
     & #empty-deck-text {
       background-color: rgba(0, 0, 0, 0.8);
