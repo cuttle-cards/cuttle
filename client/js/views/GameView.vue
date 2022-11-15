@@ -1152,8 +1152,10 @@ export default {
     }
     & .opponent-hand-wrapper {
       display: flex;
+      justify-content: center;
       position: relative;
       height: 100%;
+      width: 100%;
 
       & .opponent-card-back-wrapper {
         height: 90%;
