@@ -130,6 +130,7 @@ export default {
   position: relative;
   max-height: 20vh;
   max-width: calc(20vh / 1.45);
+  width: 100%;
   background: transparent;
   flex-grow: 1;
 
