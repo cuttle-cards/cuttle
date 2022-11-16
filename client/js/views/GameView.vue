@@ -1310,9 +1310,9 @@ export default {
 
     .jacks-container {
       position: absolute;
-      right: -20%;
+      right: -5%;
       top: 0;
-      width: auto;
+      width: 100%;
       height: auto;
       display: flex;
       flex-direction: column;
