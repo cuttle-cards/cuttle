@@ -2,31 +2,33 @@
   <v-dialog v-model="show" persistent max-width="650">
     <v-card id="reauthenticate-dialog">
       <v-card-title>Reconnect to Game</v-card-title>
-      <v-card-text>
-        <p>You have disconnected due to inactivity. Log in again to resume your session</p>
-        <!-- Login Form -->
-        <v-text-field
-          v-model="username"
-          outlined
-          :dense="$vuetify.breakpoint.mdAndDown"
-          label="Username"
-          data-cy="username"
-          @keyup.enter="login"
-        />
-        <v-text-field
-          v-model="password"
-          outlined
-          label="Password"
-          :dense="$vuetify.breakpoint.mdAndDown"
-          type="password"
-          data-cy="password"
-          @keyup.enter="login"
-        />
-      </v-card-text>
-      <v-card-actions class="d-flex justify-end">
-        <v-btn text color="primary" @click="leaveGame"> Leave Game </v-btn>
-        <v-btn color="primary" depressed data-cy="login" @click="login"> Log In </v-btn>
-      </v-card-actions>
+      <form @submit.prevent="login">
+        <v-card-text>
+          <p>You have disconnected due to inactivity. Log in again to resume your session</p>
+          <!-- Login Form -->
+          <v-text-field
+            v-model="username"
+            outlined
+            :dense="$vuetify.breakpoint.mdAndDown"
+            label="Username"
+            data-cy="username"
+          />
+          <v-text-field
+            v-model="password"
+            outlined
+            label="Password"
+            :dense="$vuetify.breakpoint.mdAndDown"
+            type="password"
+            data-cy="password"
+          />
+        </v-card-text>
+        <v-card-actions class="d-flex justify-end">
+          <v-btn text color="primary" @click="leaveGame"> Leave Game </v-btn>
+          <v-btn color="primary" depressed data-cy="login" type="submit" @click="login">
+            Log In
+          </v-btn>
+        </v-card-actions>
+      </form>
     </v-card>
     <v-snackbar
       v-model="showSnackBar"
