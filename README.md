@@ -145,6 +145,26 @@ to execute the entire test suite headlessly against localhost:1337, which you ca
 
 **NOTE** you should run `npm run build` (see above) before this command so that the server (backend) serves the most up-to-date version of the client.
 
+#### Debugging Backend Server
+
+You can utilize the node debugger in VSCode to debug the backend server.
+
+To do so, start the backend server with:
+
+```
+npm run start:dev
+```
+
+or
+
+```
+npm run start:server
+```
+
+Then, hit cmd+shift+p or ctrl+shift+p, and then enter `Debug: Attach to node process` in the top window opened, to select the process you want to watch.
+
+You will be able to utilize many standard debugging features, such as setting breakpoints by clicking line numbers, stepping in and over function, and watching variables. For details, please refer to the [documentation](https://code.visualstudio.com/docs/editor/debugging).
+
 #### Linting (Formatting)
 
 Format the project with
