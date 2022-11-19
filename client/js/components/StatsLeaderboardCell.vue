@@ -16,7 +16,7 @@
       </v-chip>
     </template>
     <v-card :data-player-results="`${username}-week-${week}`">
-      <v-card-title>{{ username }} Week {{ week }} Results</v-card-title>
+      <v-card-title>{{ username }} {{ menuHeader }} Results</v-card-title>
       <v-card-text>
         <h3>Wins</h3>
         <v-list :data-players-beaten="`${username}-week-${week}`">
@@ -70,6 +70,10 @@ export default {
     topTotalScores: {
       type: Object,
       required: true,
+    },
+    seasonName: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -159,6 +163,9 @@ export default {
     },
     winRateText() {
       return `${this.winRatePercentage} (${this.wins} Won, ${this.losses} Lost, ${this.weekCount} Total)`;
+    },
+    menuHeader() {
+      return this.week === 'total' ? this.seasonName : `Week ${this.week}`;
     },
   },
 };
