@@ -28,7 +28,7 @@
         </v-list>
         <h3>Win Rate</h3>
         <v-list :data-win-rate="`${username}-week-${week}`">
-          {{ winRatePercentage }}
+          {{ winRateText }}
         </v-list>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
@@ -153,6 +153,12 @@ export default {
     winRatePercentage() {
       const winRate = Math.floor((this.wins / this.weekCount) * 100);
       return `${winRate}%`;
+    },
+    losses() {
+      return this.weekCount - this.wins;
+    },
+    winRateText() {
+      return `${this.winRatePercentage} (${this.wins} Won, ${this.losses} Lost, ${this.weekCount} Total)`;
     },
   },
 };
