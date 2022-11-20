@@ -21,7 +21,7 @@
     "start:devtools": "vue-devtools",
     "start:mockprod": "cross-env CUTTLE_ENV=production npm run build && CUTTLE_ENV=production npm run start:server",
     "start:mockprod:tools": "concurrently \"cross-env NODE_ENV=dev ENABLE_VUE_DEVTOOLS=true npm run build && npm run start:server\" \"npm run start:devtools\"",
-    "start:server": "node app.js",
+    "start:server": "node app.js --inspect",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
