@@ -94,6 +94,13 @@ const seasonOneMatches = [
     startTime: dayjs('2022-01-20', 'yyyy-mm-dd').valueOf(),
     endTime: dayjs('2022-01-20', 'yyyy-mm-dd').valueOf(),
   },
+  {
+    player1: 'player1',
+    player2: 'player3',
+    winner: 'player1',
+    startTime: dayjs('2022-01-20', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2022-01-20', 'yyyy-mm-dd').valueOf(),
+  },
   ////////////
   // Week 2 //
   ////////////
@@ -145,14 +152,14 @@ const seasonOneMatches = [
   {
     player1: 'player4',
     player2: 'player3',
-    winner: 'player4',
+    winner: 'player3',
     startTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
     endTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
   },
   {
     player1: 'player3',
     player2: 'player5',
-    winner: 'player5',
+    winner: 'player3',
     startTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
     endTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
   },
