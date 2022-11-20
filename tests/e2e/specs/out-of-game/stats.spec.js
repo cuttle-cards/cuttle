@@ -99,6 +99,7 @@ describe('Stats Page', () => {
     cy.get("[data-week-1='Player1']").click();
     cy.get('[data-players-beaten=Player1-week-1]').should('contain', 'Player2, Player3, Player4');
     cy.get('[data-players-lost-to=Player1-week-1]').should('not.contain', 'Player');
+    cy.get('[data-player-results=Player1-week-1]').should('contain', 'Player1 Week 1');
     cy.get('[data-player-results=Player1-week-1]').find('[data-cy=close-player-results]').click();
     cy.get('[data-players-beaten=Player1-week-1').should('not.be.visible');
     cy.get('[data-players-lost-to=Player1-week-1').should('not.be.visible');
@@ -110,6 +111,7 @@ describe('Stats Page', () => {
     cy.get("[data-week-1='Player2']").click();
     cy.get('[data-players-beaten=Player2-week-1]').should('contain', 'Player3, Player4');
     cy.get('[data-players-lost-to=Player2-week-1]').should('contain', 'Player1');
+    cy.get('[data-player-results=Player2-week-1]').should('contain', 'Player2 Week 1');
     cy.get('[data-player-results=Player2-week-1]').find('[data-cy=close-player-results]').click();
     cy.get('[data-players-beaten=Player2-week-1').should('not.be.visible');
     cy.get('[data-players-lost-to=Player2-week-1').should('not.be.visible');
@@ -127,6 +129,7 @@ describe('Stats Page', () => {
       'contain',
       'Player1 (3), Player2 (2), Player4 (1)'
     );
+    cy.get('[data-player-results=Player3-week-total]').should('contain', 'Player3 Clubs 2022');
     cy.get('[data-player-results=Player3-week-total]')
       .find('[data-cy=close-player-results]')
       .click();

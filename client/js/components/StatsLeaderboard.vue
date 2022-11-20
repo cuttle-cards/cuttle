@@ -41,6 +41,7 @@
           :players-beaten="playersBeaten(item.username, week)"
           :players-lost-to="playersLostTo(item.username, week)"
           :top-total-scores="topTotalScores"
+          :season-name="seasonName"
         />
       </template>
     </v-data-table>
@@ -258,6 +259,9 @@ export default {
     },
     theme() {
       return this.$vuetify.theme.themes.light;
+    },
+    seasonName() {
+      return this.season.name;
     },
   },
   created() {
