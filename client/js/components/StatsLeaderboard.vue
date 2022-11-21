@@ -41,6 +41,7 @@
           :players-beaten="playersBeaten(item.username, week)"
           :players-lost-to="playersLostTo(item.username, week)"
           :top-total-scores="topTotalScores"
+          :season-name="seasonName"
         />
       </template>
     </v-data-table>
@@ -259,6 +260,9 @@ export default {
     theme() {
       return this.$vuetify.theme.themes.light;
     },
+    seasonName() {
+      return this.season.name;
+    },
   },
   created() {
     // Define non-reactive attributes for selection options
@@ -308,9 +312,11 @@ export default {
 
       // If looking at total, show number of times each opponent appeared in the wins or losses
       if (weekNum === 'total') {
-        opponents = Object.entries(countBy(opponents)).map(
-          ([opponent, matches]) => `${opponent} (${matches})`
-        );
+        opponents = Object.entries(countBy(opponents))
+          .sort((x, y) => {
+            return y[1] - x[1];
+          })
+          .map(([opponent, matches]) => `${opponent} (${matches})`);
         // Otherwise just show each opponent's name
       } else {
         opponents = uniq(opponents);
