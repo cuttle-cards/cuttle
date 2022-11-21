@@ -1,4 +1,4 @@
-// Run via a command like `npm run e2e:server:playground`
+// Run via command `npm run e2e:server:playground`
 
 import { setupGameAsP0 } from '../../support/helpers';
 
