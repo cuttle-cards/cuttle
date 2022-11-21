@@ -312,9 +312,11 @@ export default {
 
       // If looking at total, show number of times each opponent appeared in the wins or losses
       if (weekNum === 'total') {
-        opponents = Object.entries(countBy(opponents)).map(
-          ([opponent, matches]) => `${opponent} (${matches})`
-        );
+        opponents = Object.entries(countBy(opponents))
+          .sort((x, y) => {
+            return y[1] - x[1];
+          })
+          .map(([opponent, matches]) => `${opponent} (${matches})`);
         // Otherwise just show each opponent's name
       } else {
         opponents = uniq(opponents);
