@@ -1147,7 +1147,6 @@ export default {
     & #opponent-hand-glasses {
       .opponent-hand-card-revealed {
         transform: scale(0.8);
-        transform: rotate(180deg);
       }
     }
     & .opponent-hand-wrapper {
@@ -1156,13 +1155,13 @@ export default {
       position: relative;
       height: 100%;
       width: 100%;
+      transform: rotate(180deg);
 
       & .opponent-card-back-wrapper {
         height: 90%;
         width: 7vw;
         display: inline-block;
         position: relative;
-        transform: rotate(180deg);
         & .opponent-card-back {
           height: 100%;
           width: 100%;
