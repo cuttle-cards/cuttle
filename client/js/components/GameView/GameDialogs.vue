@@ -63,6 +63,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'isPlayersTurn',
       'discarding',
       'player',
       'opponent',
@@ -121,7 +122,8 @@ export default {
         this.resolvingSeven &&
         this.topCard.rank === 11 &&
         (!this.secondCard || this.secondCard.rank === 11) &&
-        (this.opponentPointTotal === 0 || this.opponentQueenCount > 0)
+        (this.opponentPointTotal === 0 || this.opponentQueenCount > 0) &&
+        this.isPlayersTurn === true
       );
     },
     stalemate() {

@@ -712,7 +712,11 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
     .then((game) => {
       const player = game.players[game.myPNum];
       let foundCard;
-      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
+
+      const discarding = target === -1;
+      const foundTarget = discarding
+        ? -1
+        : player.points.find((pointCard) => cardsMatch(target, pointCard));
 
       let index;
       if (cardsMatch(card, game.topCard)) {
@@ -735,7 +739,14 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
       }
 
       const cardId = foundCard.id;
-      const targetId = foundTarget.id;
+      let targetId;
+
+      if (target !== -1) {
+        targetId = foundTarget.id;
+      } else {
+        targetId = -1;
+      }
+
       io.socket.get(
         '/game/seven/jack',
         {

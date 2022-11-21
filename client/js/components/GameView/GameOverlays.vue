@@ -23,10 +23,17 @@
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-play-from-deck-scrim"
-      v-model="waitingForOpponentToPlayFromDeck"
+      v-model="showWaitingForOpponentToPlayFromDeck"
       opacity=".6"
     >
       <h1>Opponent Playing from Deck</h1>
+    </v-overlay>
+    <v-overlay
+      id="waiting-for-opponent-to-discard-jack-from-deck"
+      v-model="showWaitingForOpponentToDiscardJackFromDeck"
+      opacity=".6"
+    >
+      <h1>Opponent Must Discard Jack</h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-stalemate-scrim"
@@ -91,9 +98,11 @@ export default {
       'isPlayersTurn',
       'playerQueenCount',
       'opponentQueenCount',
+      'opponentPointTotal',
       'opponent',
       'hasGlassesEight',
       'player',
+      'resolvingSeven',
     ]),
     waitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';
@@ -103,6 +112,26 @@ export default {
         return mustResolve;
       }
       return mayCounter;
+    },
+    showWaitingForOpponentToDiscardJackFromDeck() {
+      return (
+        this.resolvingSeven &&
+        this.topTwoCardsCantBePlayed &&
+        (this.opponentPointTotal === 0 || this.opponentQueenCount > 0) &&
+        this.isPlayersTurn === false
+      );
+    },
+    showWaitingForOpponentToPlayFromDeck() {
+      return this.waitingForOpponentToPlayFromDeck && !this.topTwoCardsCantBePlayed;
+    },
+    topTwoCardsCantBePlayed() {
+      return this.topCard.rank === 11 && (!this.secondCard || this.secondCard.rank === 11);
+    },
+    topCard() {
+      return this.$store.state.game.topCard;
+    },
+    secondCard() {
+      return this.$store.state.game.secondCard;
     },
   },
   methods: {
