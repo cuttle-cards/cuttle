@@ -71,6 +71,7 @@ jobs:
       # https://github.com/cypress-io/github-action
       - uses: cypress-io/github-action@v4
         with:
+          browser: chrome
           build: npm run build
           start: npm start
           config-file: cypress.config.js

@@ -14,12 +14,12 @@ export const reconnectSockets = () => {
     const INTERVAL = 500; // 10 * 500 = 5000 (5 seconds)
     let tries = 1;
     const interval = setInterval(() => {
-      // If is connect to the socket, resolve
+      // If we are connected to the socket, resolve
       if (io.socket.isConnected()) {
         resolve();
       }
 
-      // If we passed our threshold, reject the promise to prevent infinite loop
+      // If no connection after threshold, reject the promise to prevent an infinite loop
       if (tries >= MAX_TRIES) {
         clearInterval(interval);
         reject();
