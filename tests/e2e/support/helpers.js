@@ -8,7 +8,10 @@ export const opponentPassword = 'deviousTrickery';
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
  */
 export function setupGameAsP0(alreadyAuthenticated = false, isRanked = false) {
-  cy.then(() => {
+  // This is absolutely wild but we need to wrap these calls in a cy.then to force
+  // the logic to fire in the proper order under the hood
+  // https://docs.cypress.io/api/commands/should
+  cy.should(() => {
     if (!alreadyAuthenticated) {
       cy.wipeDatabase();
       cy.visit('/');
@@ -32,7 +35,10 @@ export function setupGameAsP0(alreadyAuthenticated = false, isRanked = false) {
 }
 
 export function setupGameAsP1(alreadyAuthenticated = false, isRanked = false) {
-  cy.then(() => {
+  // This is absolutely wild but we need to wrap these calls in a cy.then to force
+  // the logic to fire in the proper order under the hood
+  // https://docs.cypress.io/api/commands/should
+  cy.should(() => {
     if (!alreadyAuthenticated) {
       cy.wipeDatabase();
       cy.visit('/');
