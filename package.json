@@ -1,10 +1,6 @@
 {
   "name": "cuttle",
-<<<<<<< HEAD
   "version": "3.2.9",
-=======
-  "version": "3.2.8",
->>>>>>> 46c70da5ee4626c4814acf51dc526e9741d6ec4e
   "private": true,
   "description": "The deepest card game under the sea",
   "scripts": {
