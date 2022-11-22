@@ -5,7 +5,7 @@
       v-model="waitingForOpponentToCounter"
       opacity=".6"
     >
-      <h1>{{ waitingForOpponetToCounterMessage }}</h1>
+      <h1>{{ showWaitingForOpponetToCounterMessage }}</h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-discard-scrim"
@@ -23,10 +23,17 @@
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-play-from-deck-scrim"
-      v-model="waitingForOpponentToPlayFromDeck"
+      v-model="showWaitingForOpponentToPlayFromDeck"
       opacity=".6"
     >
       <h1>Opponent Playing from Deck</h1>
+    </v-overlay>
+    <v-overlay
+      id="waiting-for-opponent-to-discard-jack-from-deck"
+      v-model="showWaitingForOpponentToDiscardJackFromDeck"
+      opacity=".6"
+    >
+      <h1>Opponent Must Discard Jack</h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-stalemate-scrim"
@@ -86,16 +93,20 @@ export default {
       waitingForOpponentToPickFromScrap: ({ game }) => game.waitingForOpponentToPickFromScrap,
       waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
       waitingForOpponentToStalemate: ({ game }) => game.waitingForOpponentToStalemate,
+      topCard: ({ game }) => game.topCard,
+      secondCard: ({ game }) => game.secondCard,
     }),
     ...mapGetters([
       'isPlayersTurn',
       'playerQueenCount',
       'opponentQueenCount',
+      'opponentPointTotal',
       'opponent',
       'hasGlassesEight',
       'player',
+      'resolvingSeven',
     ]),
-    waitingForOpponetToCounterMessage() {
+    showWaitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';
       const mustResolve = 'Opponent Must Resolve';
       const opponentHasTwo = this.opponent.hand.some((card) => card.rank === 2);
@@ -103,6 +114,19 @@ export default {
         return mustResolve;
       }
       return mayCounter;
+    },
+    showWaitingForOpponentToDiscardJackFromDeck() {
+      return (
+        this.waitingForOpponentToPlayFromDeck &&
+        this.topCard.rank === 11 &&
+        (!this.secondCard || this.secondCard.rank === 11) &&
+        (this.opponentPointTotal === 0 || this.opponentQueenCount > 0)
+      );
+    },
+    showWaitingForOpponentToPlayFromDeck() {
+      return (
+        this.waitingForOpponentToPlayFromDeck && !this.showWaitingForOpponentToDiscardJackFromDeck
+      );
     },
   },
   methods: {
