@@ -52,11 +52,11 @@ export default {
     },
   },
   actions: {
-    requestLogin(context, { username, password }) {
+    async requestLogin(context, { username, password }) {
       return handleLogin(context, username, password);
     },
 
-    requestSignup(context, { username, password }) {
+    async requestSignup(context, { username, password }) {
       return handleLogin(context, username, password, true);
     },
 
