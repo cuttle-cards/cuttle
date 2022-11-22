@@ -713,11 +713,6 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
       const player = game.players[game.myPNum];
       let foundCard;
 
-      const discarding = target === -1;
-      const foundTarget = discarding
-        ? -1
-        : player.points.find((pointCard) => cardsMatch(target, pointCard));
-
       let index;
       if (cardsMatch(card, game.topCard)) {
         foundCard = game.topCard;
@@ -732,6 +727,13 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
           )} for jack from seven as opponent: Could not find it in top two cards`
         );
       }
+
+      // -1 is the target naming convention for discarding a card
+      const discarding = target === -1;
+      const foundTarget = discarding
+        ? -1
+        : player.points.find((pointCard) => cardsMatch(target, pointCard));
+
       if (!foundTarget) {
         throw new Error(
           `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`

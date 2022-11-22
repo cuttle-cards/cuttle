@@ -797,7 +797,7 @@ describe('Opponent playing SEVENS', () => {
     cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
     cy.log('Player resolves (could not counter');
 
-    // // Waiting for opponent
+    // Waiting for opponent
     cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
     // Deck cards appear but are not selectable
     cy.get('[data-top-card=4-0]')
@@ -816,10 +816,10 @@ describe('Opponent playing SEVENS', () => {
       .click({ force: true }); // can't play to scrap
     cy.get('#player-field').should('not.have.class', 'valid-move').click({ force: true }); // can't play to field
 
-    // // Opponent plays four of clubs for points
+    // Opponent plays four of clubs for points
     cy.playPointsFromSevenOpponent(Card.FOUR_OF_CLUBS);
 
-    // // No longer waiting for opponent
+    // No longer waiting for opponent
     cy.get('#waiting-for-opponent-play-from-deck-scrim').should('not.be.visible');
     cy.log('Done waiting for opponent');
 

@@ -5,7 +5,7 @@
       v-model="waitingForOpponentToCounter"
       opacity=".6"
     >
-      <h1>{{ waitingForOpponetToCounterMessage }}</h1>
+      <h1>{{ showWaitingForOpponetToCounterMessage }}</h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-discard-scrim"
@@ -93,6 +93,8 @@ export default {
       waitingForOpponentToPickFromScrap: ({ game }) => game.waitingForOpponentToPickFromScrap,
       waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
       waitingForOpponentToStalemate: ({ game }) => game.waitingForOpponentToStalemate,
+      topCard: ({ game }) => game.topCard,
+      secondCard: ({ game }) => game.secondCard,
     }),
     ...mapGetters([
       'isPlayersTurn',
@@ -104,7 +106,7 @@ export default {
       'player',
       'resolvingSeven',
     ]),
-    waitingForOpponetToCounterMessage() {
+    showWaitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';
       const mustResolve = 'Opponent Must Resolve';
       const opponentHasTwo = this.opponent.hand.some((card) => card.rank === 2);
@@ -115,23 +117,16 @@ export default {
     },
     showWaitingForOpponentToDiscardJackFromDeck() {
       return (
-        this.resolvingSeven &&
-        this.topTwoCardsCantBePlayed &&
-        (this.opponentPointTotal === 0 || this.opponentQueenCount > 0) &&
-        this.isPlayersTurn === false
+        this.waitingForOpponentToPlayFromDeck &&
+        this.topCard.rank === 11 &&
+        (!this.secondCard || this.secondCard.rank === 11) &&
+        (this.opponentPointTotal === 0 || this.opponentQueenCount > 0)
       );
     },
     showWaitingForOpponentToPlayFromDeck() {
-      return this.waitingForOpponentToPlayFromDeck && !this.topTwoCardsCantBePlayed;
-    },
-    topTwoCardsCantBePlayed() {
-      return this.topCard.rank === 11 && (!this.secondCard || this.secondCard.rank === 11);
-    },
-    topCard() {
-      return this.$store.state.game.topCard;
-    },
-    secondCard() {
-      return this.$store.state.game.secondCard;
+      return (
+        this.waitingForOpponentToPlayFromDeck && !this.showWaitingForOpponentToDiscardJackFromDeck
+      );
     },
   },
   methods: {
