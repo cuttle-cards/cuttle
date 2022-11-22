@@ -78,7 +78,7 @@ Cypress.Commands.add('createGameOpponent', (name) => {
         if (jwres.statusCode === 200) {
           return resolve(resData);
         }
-        return reject(new Error('Error creating game'));
+        return reject(new Error('Error creating game', resData));
       }
     );
   });

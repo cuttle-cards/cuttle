@@ -9,19 +9,13 @@
  *
  */
 module.exports = function (req, res, next) {
+  const { session, path } = req;
+  const userIsValid = session.usr && typeof session.usr === 'number';
   // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
-  const userIsValid = req.session.usr && typeof req.session.usr === 'number';
-  if (req.session.loggedIn && userIsValid) {
+  if (session.loggedIn && userIsValid) {
     return next();
   }
-
-  // In the event a user is forbidden from logging in, we need to know why
-  const { session, path } = req;
-  console.error('Access forbidden', {
-    session,
-    path,
-  });
 
   // User is not allowed
   // (default res.forbidden() behavior can be overridden in `config/403.js`)

@@ -8,11 +8,13 @@ export const opponentPassword = 'deviousTrickery';
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
  */
 export function setupGameAsP0(alreadyAuthenticated = false, isRanked = false) {
-  if (!alreadyAuthenticated) {
-    cy.wipeDatabase();
-    cy.visit('/');
-    cy.signupPlayer(username, validPassword);
-  }
+  cy.then(() => {
+    if (!alreadyAuthenticated) {
+      cy.wipeDatabase();
+      cy.visit('/');
+      cy.signupPlayer(username, validPassword);
+    }
+  });
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
@@ -30,11 +32,13 @@ export function setupGameAsP0(alreadyAuthenticated = false, isRanked = false) {
 }
 
 export function setupGameAsP1(alreadyAuthenticated = false, isRanked = false) {
-  if (!alreadyAuthenticated) {
-    cy.wipeDatabase();
-    cy.visit('/');
-    cy.signupPlayer(username, validPassword);
-  }
+  cy.then(() => {
+    if (!alreadyAuthenticated) {
+      cy.wipeDatabase();
+      cy.visit('/');
+      cy.signupPlayer(username, validPassword);
+    }
+  });
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentUsername, opponentPassword);
