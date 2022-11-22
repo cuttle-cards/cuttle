@@ -10,8 +10,8 @@ export const opponentPassword = 'deviousTrickery';
 export function setupGameAsP0(alreadyAuthenticated = false, isRanked = false) {
   // This is absolutely wild but we need to wrap these calls in a cy.then to force
   // the logic to fire in the proper order under the hood
-  // https://docs.cypress.io/api/commands/should
-  cy.should(() => {
+  // https://docs.cypress.io/api/commands/then
+  cy.then(() => {
     if (!alreadyAuthenticated) {
       cy.wipeDatabase();
       cy.visit('/');
@@ -37,8 +37,8 @@ export function setupGameAsP0(alreadyAuthenticated = false, isRanked = false) {
 export function setupGameAsP1(alreadyAuthenticated = false, isRanked = false) {
   // This is absolutely wild but we need to wrap these calls in a cy.then to force
   // the logic to fire in the proper order under the hood
-  // https://docs.cypress.io/api/commands/should
-  cy.should(() => {
+  // https://docs.cypress.io/api/commands/then
+  cy.then(() => {
     if (!alreadyAuthenticated) {
       cy.wipeDatabase();
       cy.visit('/');
