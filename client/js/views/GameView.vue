@@ -68,7 +68,7 @@
                     key="opponent-hand-glasses"
                     class="opponent-hand-wrapper transition-all"
                     tag="div"
-                    name="slide-below"
+                    name="slide-above"
                   >
                     <v-slide-group
                       v-if="$vuetify.breakpoint.xs"
