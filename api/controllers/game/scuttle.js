@@ -78,6 +78,8 @@ module.exports = function (req, res) {
           change: 'scuttle',
           game: fullGame,
           victory,
+          playedCardId: req.body.cardId,
+          targetCardId: req.body.targetId,
         },
       });
       return res.ok();
