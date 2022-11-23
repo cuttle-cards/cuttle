@@ -269,6 +269,24 @@ export default {
         context.commit('setMyPNum', myPNum);
       }
     },
+    processScuttle(context, { game, playedCardId, targetCardId }) {
+      // Remove played card from opponent hand and temporarily add to its targets attachments
+      const playedCardIndex = context.getters.opponent.hand.findIndex(
+        (card) => card.id === playedCardId
+      );
+      const [playedCard] = context.getters.opponent.hand.splice(playedCardIndex, 1);
+
+      const targetCardIndex = context.getters.player.points.findIndex(
+        (card) => card.id === targetCardId
+      );
+      const targetCard = context.getters.player.points[targetCardIndex];
+      targetCard.scuttledBy = playedCard;
+
+      setTimeout(() => {
+        context.commit(context.commit('updateGame', game));
+        context.dispatch('resetPNumIfNull');
+      }, 1000);
+    },
     async requestSubscribe(context, id) {
       return new Promise((resolve, reject) => {
         io.socket.get(
