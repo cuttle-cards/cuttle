@@ -283,7 +283,7 @@ export default {
       targetCard.scuttledBy = playedCard;
 
       setTimeout(() => {
-        context.commit(context.commit('updateGame', game));
+        context.commit('updateGame', game);
         context.dispatch('resetPNumIfNull');
       }, 1000);
     },
