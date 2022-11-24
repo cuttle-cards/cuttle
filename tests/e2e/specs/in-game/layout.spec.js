@@ -474,4 +474,4 @@ describe.skip('Aesthetic tests', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
   });
-})
+});
