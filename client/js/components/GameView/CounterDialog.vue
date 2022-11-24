@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="750">
+  <v-dialog v-model="show" persistent max-width="650">
     <v-card v-if="oneOff && !choseToCounter" id="counter-dialog">
       <v-card-title>Chance to Counter</v-card-title>
       <v-card-text>

@@ -1,9 +1,9 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="750" scrollable>
+  <v-dialog v-model="show" persistent max-width="650" scrollable>
     <v-card v-if="oneOff" id="three-dialog">
       <v-card-title>Select a Card from Scrap</v-card-title>
       <v-card-text>
-        <div class="d-flex flex-wrap justify-center align-center my-8">
+        <div class="d-flex flex-wrap justify-space-between align-center my-8">
           <card-list-sortable
             :cards="scrap"
             data-selector-prefix="three-dialog"

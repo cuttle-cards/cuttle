@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent>
+  <v-dialog v-model="show" persistent max-width="650">
     <v-card id="game-over-dialog">
       <v-card-title v-if="stalemate" data-cy="stalemate-heading">
         <h1>Stalemate</h1>
