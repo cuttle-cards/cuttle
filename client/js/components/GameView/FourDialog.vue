@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent>
+  <v-dialog v-model="show" persistent max-width="650">
     <v-card id="four-discard-dialog">
       <v-card-title>Discard Two Cards</v-card-title>
       <v-card-text>
@@ -8,7 +8,7 @@
           cards to discard.
         </p>
         <!-- Cards in hand -->
-        <div class="d-flex flex-wrap">
+        <div class="d-flex flex-wrap card-container">
           <card
             v-for="(card, index) in hand"
             :key="card.id"
@@ -98,5 +98,9 @@ export default {
 <style lang="scss" scoped>
 .is-selected {
   border: 3px solid var(--v-error-base);
+}
+
+.card-container {
+  row-gap: 0.5rem;
 }
 </style>

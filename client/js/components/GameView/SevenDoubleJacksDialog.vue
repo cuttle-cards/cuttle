@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="750">
+  <v-dialog v-model="show" persistent max-width="650">
     <v-card id="seven-double-jacks-dialog">
       <v-card-title>Select a Card</v-card-title>
       <v-card-text>
