@@ -39,6 +39,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 import CannotCounterDialog from '@/components/GameView/CannotCounterDialog.vue';
 import CounterDialog from '@/components/GameView/CounterDialog.vue';
@@ -62,6 +63,10 @@ export default {
     OpponentRequestedStalemateDialog,
   },
   computed: {
+    ...mapState({
+      playingFromDeck: ({ game }) => game.playingFromDeck,
+    }),
+
     ...mapGetters([
       'discarding',
       'player',
@@ -69,7 +74,6 @@ export default {
       'opponentPointTotal',
       'opponentQueenCount',
       'playerWins',
-      'resolvingSeven',
     ]),
     game() {
       // TODO: Figure out a better way to do this, mapping the whole module is a
@@ -118,7 +122,7 @@ export default {
     },
     showSevenDoubleJacksDialog() {
       return (
-        this.resolvingSeven &&
+        this.playingFromDeck &&
         this.topCard.rank === 11 &&
         (!this.secondCard || this.secondCard.rank === 11) &&
         (this.opponentPointTotal === 0 || this.opponentQueenCount > 0)
