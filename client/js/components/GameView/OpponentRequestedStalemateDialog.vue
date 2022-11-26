@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent>
+  <v-dialog v-model="show" persistent max-width="650">
     <v-card id="opponent-requested-stalemate-dialog">
       <v-card-title>Accept Stalemate?</v-card-title>
       <v-card-text>

@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="750">
+  <v-dialog v-model="show" persistent max-width="650">
     <v-card v-if="oneOff" id="cannot-counter-dialog">
       <v-card-title>Cannot Counter</v-card-title>
       <v-card-text>

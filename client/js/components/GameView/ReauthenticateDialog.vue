@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent>
+  <v-dialog v-model="show" persistent max-width="650">
     <v-card id="reauthenticate-dialog">
       <v-card-title>Reconnect to Game</v-card-title>
       <v-card-text>
