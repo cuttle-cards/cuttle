@@ -42,11 +42,13 @@ io.socket.on('game', function (evData) {
         case 'pass':
         case 'points':
         case 'faceCard':
-        case 'scuttle':
         case 'loadFixture':
         case 'jack':
         case 'deleteDeck':
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
+          break;
+        case 'scuttle':
+          store.dispatch('processScuttle', evData.data);
           break;
         case 'resolveThree':
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
