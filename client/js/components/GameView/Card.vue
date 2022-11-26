@@ -73,13 +73,6 @@ export default {
     scuttledBy: {
       type: Object,
       default: null,
-      validator: (card) => {
-        return (
-          Object.hasOwnProperty.call(card, 'suit') &&
-          Object.hasOwnProperty.call(card, 'rank') &&
-          Object.hasOwnProperty.call(card, 'id')
-        );
-      },
     },
   },
   computed: {
