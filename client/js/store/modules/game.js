@@ -289,7 +289,7 @@ export default {
         (card) => card.id === targetCardId
       );
 
-      // Update game in one-step if mvoed cards are not found
+      // Update game in one-step if moved cards are not found
       if (playedCardIndex === undefined || targetCardIndex === undefined) {
         context.dispatch('updateGameThenResetPNumIfNull', game);
         return;
