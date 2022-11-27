@@ -42,7 +42,7 @@ function goHomeJoinNewGame() {
   cy.get('[data-cy=gameover-go-home]').click();
   cy.url().should('not.include', '/game');
   // Re-join game and confirm it loads normally
-  setupGameAsP0(true);
+  cy.setupGameAsP0(true);
   cy.get('#game-over-dialog').should('not.exist');
   cy.get('[data-player-hand-card]').should('have.length', 5);
   cy.log('Joined new game successfully');
@@ -50,7 +50,7 @@ function goHomeJoinNewGame() {
 
 describe('Winning the game', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   it('Shows when player wins game with 21 points', () => {
@@ -166,7 +166,7 @@ describe('Winning the game', () => {
 
 describe('Losing the game', () => {
   beforeEach(() => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
   });
 
   it('Shows when opponent wins with 21 points', () => {
@@ -221,7 +221,7 @@ describe('Losing the game', () => {
 
 describe('Stalemates', () => {
   it('Passes three times for a stalemate', () => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -255,7 +255,7 @@ describe('Stalemates', () => {
   });
 
   it('Registers stalemate when opponent passes first/last', () => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -287,7 +287,7 @@ describe('Stalemates', () => {
 
   describe('Requesting a stalemate', () => {
     it('Ends in stalemate when player requests stalemate and opponent agrees', () => {
-      setupGameAsP0();
+      cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
 
@@ -316,7 +316,7 @@ describe('Stalemates', () => {
     });
 
     it('Ends in a stalemate when opponent requests a stalemate and player agrees', () => {
-      setupGameAsP1();
+      cy.setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
 
@@ -333,7 +333,7 @@ describe('Stalemates', () => {
     });
 
     it('Cancels the stalemate when player requests a stalemate and opponent rejects', () => {
-      setupGameAsP0();
+      cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
 
@@ -375,7 +375,7 @@ describe('Stalemates', () => {
     });
 
     it('Cancels the stalemate when opponent requests and player rejects', () => {
-      setupGameAsP1();
+      cy.setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
 
@@ -401,7 +401,7 @@ describe('Stalemates', () => {
     });
 
     it('Cancels stalemate after an additional turn passes', () => {
-      setupGameAsP1();
+      cy.setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
 
@@ -466,7 +466,7 @@ describe('Creating And Updating Ranked Matches', () => {
       });
     // Log in as playerOne
     cy.loginPlayer(playerOne.username, playerOne.password);
-    setupGameAsP0(true, true);
+    cy.setupGameAsP0(true, true);
   });
   it('Creates a match when two players play a ranked game for the first time this week', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
@@ -493,7 +493,7 @@ describe('Creating And Updating Ranked Matches', () => {
     });
 
     // 2nd game: Player is now p0 and loses by points
-    setupGameAsP1(true, true);
+    cy.setupGameAsP1(true, true);
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
@@ -527,7 +527,7 @@ describe('Creating And Updating Ranked Matches', () => {
     });
 
     // 3rd game: Ends via requested stalemate
-    setupGameAsP0(true, true);
+    cy.setupGameAsP0(true, true);
     // Request stalemate
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
@@ -557,7 +557,7 @@ describe('Creating And Updating Ranked Matches', () => {
     });
 
     // 4th game: stalemate due to passing
-    setupGameAsP0(true, true);
+    cy.setupGameAsP0(true, true);
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -598,7 +598,7 @@ describe('Creating And Updating Ranked Matches', () => {
     });
 
     // 5th Game: UNRANKED - does not affect match
-    setupGameAsP0(true, false);
+    cy.setupGameAsP0(true, false);
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -639,7 +639,7 @@ describe('Creating And Updating Ranked Matches', () => {
     });
 
     // 6th Game: player wins via points and wins match
-    setupGameAsP0(true, true);
+    cy.setupGameAsP0(true, true);
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
@@ -673,7 +673,7 @@ describe('Creating And Updating Ranked Matches', () => {
     });
 
     // 7th game - should set back to unranked and not add to match
-    setupGameAsP0(true, true);
+    cy.setupGameAsP0(true, true);
     cy.concedeOpponent();
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');

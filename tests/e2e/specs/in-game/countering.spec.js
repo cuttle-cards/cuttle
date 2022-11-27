@@ -8,7 +8,7 @@ import {
 
 describe('Countering One-Offs', () => {
   beforeEach(() => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
   });
 
   it('Displays the cannot counter modal and resolves stack when opponent plays a one-off if player has no twos', () => {
@@ -354,7 +354,7 @@ describe('Countering One-Offs', () => {
 
 describe('Countering One-Offs P0 Perspective', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   it('Can counter a three', () => {
@@ -518,7 +518,7 @@ describe('Countering One-Offs P0 Perspective', () => {
 
 describe('Opponent May Counter vs Opponent Must Resolve', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   describe('Opponent May Counter', () => {

@@ -12,7 +12,7 @@ const { _ } = Cypress;
 
 describe('Untargeted One-Offs', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   it('Plays an Ace to destroy all point cards', () => {
@@ -155,7 +155,7 @@ describe('Untargeted One-Offs', () => {
 describe('FOURS', () => {
   describe('Playing FOURS', () => {
     beforeEach(() => {
-      setupGameAsP0();
+      cy.setupGameAsP0();
     });
 
     it('Plays a 4 to make opponent discard two cards of their choice', () => {
@@ -361,7 +361,7 @@ describe('FOURS', () => {
 
   describe('Opponent playing FOURS', () => {
     beforeEach(() => {
-      setupGameAsP1();
+      cy.setupGameAsP1();
     });
 
     it('Discards two cards when opponent plays a four, repeated fours', () => {
@@ -507,7 +507,7 @@ describe('FOURS', () => {
 describe('Play TWOS', () => {
   describe('Player Playing TWOS', () => {
     beforeEach(() => {
-      setupGameAsP0();
+      cy.setupGameAsP0();
     });
 
     it('Plays Two to Destroy Face Card', () => {
@@ -610,7 +610,7 @@ describe('Play TWOS', () => {
 
   describe('Opponent Playing TWOS', () => {
     beforeEach(() => {
-      setupGameAsP1();
+      cy.setupGameAsP1();
     });
 
     it('Opponent Plays TWO to Destroy Jacks', () => {
@@ -664,7 +664,7 @@ describe('Play TWOS', () => {
 describe('Playing NINES', () => {
   describe('Player Playing NINES', () => {
     beforeEach(() => {
-      setupGameAsP0();
+      cy.setupGameAsP0();
     });
 
     it('Plays a nine to SCUTTLE a lower point card', () => {
@@ -1084,7 +1084,7 @@ describe('Playing NINES', () => {
 
   describe('Opponent Playing NINES', () => {
     beforeEach(() => {
-      setupGameAsP1();
+      cy.setupGameAsP1();
     });
 
     it('Disables playing a frozen number card until the following turn', () => {
@@ -1252,7 +1252,7 @@ describe('Playing NINES', () => {
 
 describe('Playing THREEs', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   it('Plays 3s with no cards in scrap', () => {
@@ -1403,7 +1403,7 @@ describe('Playing THREEs', () => {
 
 describe('ONE-OFF Target should be removed after one-off resolves', () => {
   beforeEach(() => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
   });
 
   it('ONE-OFF Target should be removed after one-off resolves - target is POINTS', () => {

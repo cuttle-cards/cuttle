@@ -1,4 +1,13 @@
-import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
+import {
+  getCardIds,
+  hasValidSuitAndRank,
+  cardsMatch,
+  printCard,
+  username,
+  validPassword,
+  opponentUsername,
+  opponentPassword,
+} from './helpers';
 /**
  * Require & configure socket connection to server
  */
@@ -42,6 +51,62 @@ Cypress.Commands.add('requestGameList', () => {
     io.socket.get('/game/getList', function () {
       return resolve();
     });
+  });
+});
+/**
+ * Signs up two players, navigates home, creates game, subscribes, ready's up
+ * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
+ */
+Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = false) => {
+  // This is absolutely wild but we need to wrap these calls in a cy.then to force
+  // the logic to fire in the proper order under the hood
+  // https://docs.cypress.io/api/commands/then
+  cy.then(() => {
+    if (!alreadyAuthenticated) {
+      cy.wipeDatabase();
+      cy.visit('/');
+      cy.signupPlayer(username, validPassword);
+    }
+  });
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+    cy.wrap(gameSummary).as('gameSummary');
+    cy.get('[data-cy=ready-button]').click();
+    if (!alreadyAuthenticated) {
+      cy.signupOpponent(opponentUsername, opponentPassword);
+    }
+    cy.subscribeOpponent(gameSummary.gameId);
+    cy.readyOpponent();
+    // Asserting 5 cards in players hand confirms game has loaded
+    cy.get('#player-hand-cards .player-card').should('have.length', 5);
+    cy.log('Finished setting up game as p0');
+  });
+});
+Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
+  // This is absolutely wild but we need to wrap these calls in a cy.then to force
+  // the logic to fire in the proper order under the hood
+  // https://docs.cypress.io/api/commands/then
+  cy.then(() => {
+    if (!alreadyAuthenticated) {
+      cy.wipeDatabase();
+      cy.visit('/');
+      cy.signupPlayer(username, validPassword);
+    }
+  });
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+    if (!alreadyAuthenticated) {
+      cy.signupOpponent(opponentUsername, opponentPassword);
+    }
+    cy.subscribeOpponent(gameSummary.gameId);
+    cy.readyOpponent();
+    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+    cy.wrap(gameSummary).as('gameSummary');
+    cy.get('[data-cy=ready-button]').click();
+    // Asserting 6 cards in players hand confirms game has loaded
+    cy.get('#player-hand-cards .player-card').should('have.length', 6);
+    cy.log('Finished setting up game as p1');
   });
 });
 Cypress.Commands.add('signupOpponent', (username, password) => {

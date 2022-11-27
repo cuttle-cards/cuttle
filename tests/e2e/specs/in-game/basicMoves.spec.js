@@ -10,7 +10,7 @@ import {
 
 describe('Game Basic Moves - P0 Perspective', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   it('Plays Points', () => {
@@ -410,7 +410,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
 describe('Game Basic Moves - P1 Perspective', () => {
   beforeEach(() => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
   });
 
   it('Draws from deck', () => {
@@ -451,7 +451,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
 
 describe('Playing 8s', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   it('Plays eights for points', () => {
@@ -540,7 +540,7 @@ describe('Playing 8s', () => {
 
 describe('Play Jacks', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   it('Player and Opponent plays Jacks on different cards', () => {
