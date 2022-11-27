@@ -21,6 +21,11 @@
       class="valid-move target-overlay"
       opacity=".8"
     />
+    <transition name="slide-above">
+      <v-overlay v-if="scuttledBy" absolute :value="true" class="scuttled-by-overlay">
+        <card :suit="scuttledBy.suit" :rank="scuttledBy.rank"></card>
+      </v-overlay>
+    </transition>
     <img
       v-if="isGlasses"
       :src="require(`../../img/cards/Glasses_${suitName}.png`)"
@@ -64,6 +69,10 @@ export default {
     isFrozen: {
       type: Boolean,
       default: false,
+    },
+    scuttledBy: {
+      type: Object,
+      default: null,
     },
   },
   computed: {
@@ -196,6 +205,29 @@ export default {
   &:hover:after {
     opacity: 0;
   }
+}
+
+.scuttled-by-overlay {
+  height: 80%;
+  top: -32px;
+  transition: all 1s ease;
+}
+.slide-below-leave-active,
+.slide-above-leave-active,
+.in-below-out-left-leave-active {
+  position: absolute;
+}
+// slide-below (enter and leave below)
+.slide-below-enter,
+.slide-below-leave-to {
+  opacity: 0;
+  transform: translateY(32px);
+}
+// slide-above (enter and leave above)
+.slide-above-enter,
+.slide-above-leave-to {
+  opacity: 0;
+  transform: translateY(-32px);
 }
 
 @media (max-width: 600px) {

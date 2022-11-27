@@ -68,7 +68,7 @@
                     key="opponent-hand-glasses"
                     class="opponent-hand-wrapper transition-all"
                     tag="div"
-                    name="slide-below"
+                    name="slide-above"
                   >
                     <v-slide-group
                       v-if="$vuetify.breakpoint.xs"
@@ -100,7 +100,7 @@
                     v-else
                     key="opponent-hand"
                     tag="div"
-                    name="slide-below"
+                    name="slide-above"
                     class="opponent-hand-wrapper transition-all"
                   >
                     <card
@@ -236,6 +236,7 @@
                     :rank="card.rank"
                     :jacks="card.attachments"
                     :data-player-point-card="`${card.rank}-${card.suit}`"
+                    :scuttled-by="card.scuttledBy"
                   />
                   <div class="jacks-container">
                     <card

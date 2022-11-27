@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" max-width="750" scrollable>
+  <v-dialog v-model="show" max-width="650" scrollable>
     <template #activator="{ on, attrs }">
       <span v-bind="attrs" v-on="on">
         <slot name="activator" />

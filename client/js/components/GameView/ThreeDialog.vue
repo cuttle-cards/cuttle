@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="750" scrollable>
+  <v-dialog v-model="show" persistent max-width="650" scrollable>
     <v-card v-if="oneOff" id="three-dialog">
       <v-card-title>Select a Card from Scrap</v-card-title>
       <v-card-text>
