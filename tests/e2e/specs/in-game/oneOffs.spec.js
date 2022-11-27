@@ -1,6 +1,4 @@
 import {
-  setupGameAsP0,
-  setupGameAsP1,
   assertGameState,
   assertSnackbarError,
   playOutOfTurn,

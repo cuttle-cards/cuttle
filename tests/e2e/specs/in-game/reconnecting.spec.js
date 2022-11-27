@@ -1,11 +1,4 @@
-import {
-  setupGameAsP0,
-  setupGameAsP1,
-  opponentUsername,
-  opponentPassword,
-  assertGameState,
-  Card,
-} from '../../support/helpers';
+import { opponentUsername, opponentPassword, assertGameState, Card } from '../../support/helpers';
 
 describe('Reconnecting to a game', () => {
   it('Persists session after refreshing the page', () => {

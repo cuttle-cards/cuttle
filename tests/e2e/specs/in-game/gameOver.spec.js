@@ -1,11 +1,4 @@
-import {
-  setupGameAsP0,
-  setupGameAsP1,
-  assertGameState,
-  Card,
-  username,
-  opponentUsername,
-} from '../../support/helpers';
+import { assertGameState, Card, username, opponentUsername } from '../../support/helpers';
 import { seasonFixtures } from '../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../fixtures/userFixtures';
 

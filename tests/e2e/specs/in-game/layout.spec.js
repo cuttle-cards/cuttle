@@ -1,10 +1,4 @@
-import {
-  setupGameAsP0,
-  setupGameAsP1,
-  assertGameState,
-  playOutOfTurn,
-  Card,
-} from '../../support/helpers';
+import { assertGameState, playOutOfTurn, Card } from '../../support/helpers';
 
 const { _ } = Cypress;
 
