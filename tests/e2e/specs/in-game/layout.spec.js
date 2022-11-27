@@ -174,7 +174,7 @@ describe('Game View Layout', () => {
 
 describe('Four dialogs layout', () => {
   beforeEach(() => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
   });
 
   it('Four dialogs', () => {
