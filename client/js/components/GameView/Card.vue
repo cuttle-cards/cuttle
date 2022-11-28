@@ -22,9 +22,12 @@
       opacity=".8"
     />
     <transition name="slide-above">
-      <v-overlay v-if="scuttledBy" absolute :value="true" class="scuttled-by-overlay">
-        <card :suit="scuttledBy.suit" :rank="scuttledBy.rank"></card>
-      </v-overlay>
+      <template v-if="scuttledBy">
+        <img
+          class="scuttled-by-card"
+          :src="require(`../../img/cards/card_${scuttledBy.suit}_${scuttledBy.rank}.svg`)"
+        />
+      </template>
     </transition>
     <img
       v-if="isGlasses"
@@ -153,6 +156,15 @@ export default {
     max-width: 20vh;
     height: calc(20vh / 1.45);
   }
+
+  & .scuttled-by-card {
+    height: 100%;
+    top: -42px;
+    left: 16px;
+    transition: all 1s ease;
+    position: absolute;
+    z-index: 1;
+  }
 }
 .player-card-icon {
   position: absolute;
@@ -207,11 +219,6 @@ export default {
   }
 }
 
-.scuttled-by-overlay {
-  height: 80%;
-  top: -32px;
-  transition: all 1s ease;
-}
 .slide-below-leave-active,
 .slide-above-leave-active,
 .in-below-out-left-leave-active {
