@@ -20,24 +20,24 @@ io.sails.useCORSRouteToGetCookie = false;
 // Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
 
 Cypress.Commands.add('wipeDatabase', () => {
-  cy.request('localhost:1337/test/wipeDatabase');
+  return cy.request('localhost:1337/test/wipeDatabase');
 });
 Cypress.Commands.add('setBadSession', () => {
-  return new Promise((resolve) => {
+  return new Cypress.Promise((resolve) => {
     io.socket.get('/test/badSession', function () {
       return resolve();
     });
   });
 });
 Cypress.Commands.add('loadSeasonFixture', (season) => {
-  return new Promise((resolve) => {
+  return new Cypress.Promise((resolve) => {
     io.socket.post('/test/loadSeasonFixture', season, function () {
       return resolve();
     });
   });
 });
 Cypress.Commands.add('loadMatchFixtures', (matches) => {
-  return new Promise((resolve, reject) => {
+  return new Cypress.Promise((resolve, reject) => {
     io.socket.post('/test/loadMatchFixtures', matches, function (res, jwres) {
       if (jwres.statusCode !== 200) {
         return reject(new Error('Error loading match fixtures'));
@@ -47,7 +47,7 @@ Cypress.Commands.add('loadMatchFixtures', (matches) => {
   });
 });
 Cypress.Commands.add('requestGameList', () => {
-  return new Promise((resolve) => {
+  return new Cypress.Promise((resolve) => {
     io.socket.get('/game/getList', function () {
       return resolve();
     });
@@ -58,18 +58,15 @@ Cypress.Commands.add('requestGameList', () => {
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
  */
 Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = false) => {
-  // This is absolutely wild but we need to wrap these calls in a cy.then to force
-  // the logic to fire in the proper order under the hood
-  // https://docs.cypress.io/api/commands/then
-  cy.then(() => {
-    if (!alreadyAuthenticated) {
-      cy.wipeDatabase();
-      cy.visit('/');
-      cy.signupPlayer(username, validPassword);
-    }
-  });
+  if (!alreadyAuthenticated) {
+    cy.wipeDatabase();
+    cy.visit('/');
+    cy.signupPlayer(username, validPassword);
+  }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
-    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.window().then((window) => {
+      window.cuttle.app.$store.dispatch.requestSubscribe(gameSummary.gameId);
+    });
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
@@ -84,23 +81,20 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
   });
 });
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
-  // This is absolutely wild but we need to wrap these calls in a cy.then to force
-  // the logic to fire in the proper order under the hood
-  // https://docs.cypress.io/api/commands/then
-  cy.then(() => {
-    if (!alreadyAuthenticated) {
-      cy.wipeDatabase();
-      cy.visit('/');
-      cy.signupPlayer(username, validPassword);
-    }
-  });
+  if (!alreadyAuthenticated) {
+    cy.wipeDatabase();
+    cy.visit('/');
+    cy.signupPlayer(username, validPassword);
+  }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentUsername, opponentPassword);
     }
     cy.subscribeOpponent(gameSummary.gameId);
     cy.readyOpponent();
-    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.window().then((window) => {
+      window.cuttle.app.$store.dispatch.requestSubscribe(gameSummary.gameId);
+    });
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
@@ -127,10 +121,20 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
   });
 });
 Cypress.Commands.add('signupPlayer', (username, password) => {
-  cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSignup', { username, password });
+  return new Cypress.Promise((resolve) => {
+    cy.window().then(async (window) => {
+      await window.cuttle.app.$store.dispatch.requestSignup({ username, password });
+      return resolve();
+    });
+  });
 });
 Cypress.Commands.add('loginPlayer', (username, password) => {
-  cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestLogin', { username, password });
+  return new Cypress.Promise((resolve) => {
+    cy.window().then(async (window) => {
+      await window.cuttle.app.$store.dispatch.requestLogin({ username, password });
+      return resolve();
+    });
+  });
 });
 Cypress.Commands.add('createGameOpponent', (name) => {
   return new Promise((resolve, reject) => {
