@@ -101,7 +101,9 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
       }
       cy.subscribeOpponent(gameSummary.gameId);
       cy.readyOpponent();
-      cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+      cy.window()
+        .its('cuttle.app.$store')
+        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
       cy.vueRoute(`/lobby/${gameSummary.gameId}`);
       cy.wrap(gameSummary).as('gameSummary');
       cy.get('[data-cy=ready-button]').click();
