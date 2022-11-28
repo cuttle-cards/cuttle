@@ -20,7 +20,7 @@ io.sails.useCORSRouteToGetCookie = false;
 // Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
 
 Cypress.Commands.add('wipeDatabase', () => {
-  return cy.request('localhost:1337/test/wipeDatabase');
+  cy.request('localhost:1337/test/wipeDatabase');
 });
 Cypress.Commands.add('setBadSession', () => {
   return new Cypress.Promise((resolve) => {
@@ -58,53 +58,61 @@ Cypress.Commands.add('requestGameList', () => {
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
  */
 Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = false) => {
-  if (!alreadyAuthenticated) {
-    cy.wipeDatabase();
-    cy.visit('/');
-    cy.signupPlayer(username, validPassword);
-  }
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
-    cy.window().then((window) => {
-      window.cuttle.app.$store.dispatch.requestSubscribe(gameSummary.gameId);
-    });
-    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
-    cy.wrap(gameSummary).as('gameSummary');
-    cy.get('[data-cy=ready-button]').click();
-    if (!alreadyAuthenticated) {
-      cy.signupOpponent(opponentUsername, opponentPassword);
+  cy.then(() => {
+    if (alreadyAuthenticated) {
+      return;
     }
-    cy.subscribeOpponent(gameSummary.gameId);
-    cy.readyOpponent();
-    // Asserting 5 cards in players hand confirms game has loaded
-    cy.get('#player-hand-cards .player-card').should('have.length', 5);
-    cy.log('Finished setting up game as p0');
+    cy.wipeDatabase().then(() => {
+      cy.visit('/');
+      cy.signupPlayer(username, validPassword);
+    });
+  }).then(() => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+      cy.window()
+        .its('cuttle.app.$store')
+        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+      cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+      cy.wrap(gameSummary).as('gameSummary');
+      cy.get('[data-cy=ready-button]').click();
+      if (!alreadyAuthenticated) {
+        cy.signupOpponent(opponentUsername, opponentPassword);
+      }
+      cy.subscribeOpponent(gameSummary.gameId);
+      cy.readyOpponent();
+      // Asserting 5 cards in players hand confirms game has loaded
+      cy.get('#player-hand-cards .player-card').should('have.length', 5);
+      cy.log('Finished setting up game as p0');
+    });
   });
 });
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
-  if (!alreadyAuthenticated) {
-    cy.wipeDatabase();
-    cy.visit('/');
-    cy.signupPlayer(username, validPassword);
-  }
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
-    if (!alreadyAuthenticated) {
-      cy.signupOpponent(opponentUsername, opponentPassword);
+  cy.then(() => {
+    if (alreadyAuthenticated) {
+      return;
     }
-    cy.subscribeOpponent(gameSummary.gameId);
-    cy.readyOpponent();
-    cy.window().then((window) => {
-      window.cuttle.app.$store.dispatch.requestSubscribe(gameSummary.gameId);
+    cy.wipeDatabase().then(() => {
+      cy.visit('/');
+      cy.signupPlayer(username, validPassword);
     });
-    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
-    cy.wrap(gameSummary).as('gameSummary');
-    cy.get('[data-cy=ready-button]').click();
-    // Asserting 6 cards in players hand confirms game has loaded
-    cy.get('#player-hand-cards .player-card').should('have.length', 6);
-    cy.log('Finished setting up game as p1');
+  }).then(() => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+      if (!alreadyAuthenticated) {
+        cy.signupOpponent(opponentUsername, opponentPassword);
+      }
+      cy.subscribeOpponent(gameSummary.gameId);
+      cy.readyOpponent();
+      cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+      cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+      cy.wrap(gameSummary).as('gameSummary');
+      cy.get('[data-cy=ready-button]').click();
+      // Asserting 6 cards in players hand confirms game has loaded
+      cy.get('#player-hand-cards .player-card').should('have.length', 6);
+      cy.log('Finished setting up game as p1');
+    });
   });
 });
 Cypress.Commands.add('signupOpponent', (username, password) => {
-  return new Promise((resolve, reject) => {
+  return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
       'localhost:1337/user/signup',
       {
@@ -121,23 +129,13 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
   });
 });
 Cypress.Commands.add('signupPlayer', (username, password) => {
-  return new Cypress.Promise((resolve) => {
-    cy.window().then(async (window) => {
-      await window.cuttle.app.$store.dispatch.requestSignup({ username, password });
-      return resolve();
-    });
-  });
+  cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSignup', { username, password });
 });
 Cypress.Commands.add('loginPlayer', (username, password) => {
-  return new Cypress.Promise((resolve) => {
-    cy.window().then(async (window) => {
-      await window.cuttle.app.$store.dispatch.requestLogin({ username, password });
-      return resolve();
-    });
-  });
+  cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestLogin', { username, password });
 });
 Cypress.Commands.add('createGameOpponent', (name) => {
-  return new Promise((resolve, reject) => {
+  return new Cypress.Promise((resolve, reject) => {
     io.socket.post(
       '/game/create',
       {
@@ -159,7 +157,7 @@ Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
     .invoke('dispatch', 'requestCreateGame', { gameName, isRanked });
 });
 Cypress.Commands.add('subscribeOpponent', (id) => {
-  return new Promise((resolve, reject) => {
+  return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
       '/game/subscribe',
       {
@@ -175,7 +173,7 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
   });
 });
 Cypress.Commands.add('readyOpponent', (id) => {
-  return new Promise((resolve, reject) => {
+  return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
       '/game/ready',
       {
@@ -191,7 +189,7 @@ Cypress.Commands.add('readyOpponent', (id) => {
   });
 });
 Cypress.Commands.add('leaveLobbyOpponent', (id) => {
-  return new Promise((resolve, reject) => {
+  return new Cypress.Promise((resolve, reject) => {
     io.socket.get('/game/leaveLobby', { id }, function handleResponse(_, jwres) {
       if (jwres.statusCode === 200) {
         return resolve();
@@ -201,7 +199,7 @@ Cypress.Commands.add('leaveLobbyOpponent', (id) => {
   });
 });
 Cypress.Commands.add('drawCardOpponent', () => {
-  return new Promise((resolve, reject) => {
+  return new Cypress.Promise((resolve, reject) => {
     io.socket.get('/game/draw', function handleResponse(res, jwres) {
       if (jwres.statusCode === 200) {
         return resolve();
