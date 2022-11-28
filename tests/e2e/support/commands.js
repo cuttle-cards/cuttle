@@ -20,7 +20,7 @@ io.sails.useCORSRouteToGetCookie = false;
 // Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
 
 Cypress.Commands.add('wipeDatabase', () => {
-  cy.request('localhost:1337/test/wipeDatabase');
+  cy.request('localhost:1337/test/wipeDatabase').then(cy.log('wipe database'));
 });
 Cypress.Commands.add('setBadSession', () => {
   return new Cypress.Promise((resolve) => {
@@ -58,60 +58,54 @@ Cypress.Commands.add('requestGameList', () => {
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
  */
 Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = false) => {
-  cy.then(() => {
-    if (alreadyAuthenticated) {
-      return;
-    }
-    cy.wipeDatabase().then(() => {
-      cy.visit('/');
-      cy.signupPlayer(username, validPassword);
-    });
-  }).then(() => {
-    cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+  if (!alreadyAuthenticated) {
+    cy.wipeDatabase();
+    cy.visit('/').then(cy.log('visit /'));
+    cy.signupPlayer(username, validPassword).then(cy.log('signup player'));
+  }
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked })
+    .then((gameSummary) => {
       cy.window()
         .its('cuttle.app.$store')
-        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
-      cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId)
+        .then(cy.log('request subscribe'));
+      cy.vueRoute(`/lobby/${gameSummary.gameId}`).then(cy.log('vue route /lobby'));
       cy.wrap(gameSummary).as('gameSummary');
       cy.get('[data-cy=ready-button]').click();
       if (!alreadyAuthenticated) {
-        cy.signupOpponent(opponentUsername, opponentPassword);
+        cy.signupOpponent(opponentUsername, opponentPassword).then(cy.log('signup opponent'));
       }
-      cy.subscribeOpponent(gameSummary.gameId);
-      cy.readyOpponent();
+      cy.subscribeOpponent(gameSummary.gameId).then(cy.log('subscribe opponent'));
+      cy.readyOpponent().then(cy.log('ready opponent'));
       // Asserting 5 cards in players hand confirms game has loaded
       cy.get('#player-hand-cards .player-card').should('have.length', 5);
-      cy.log('Finished setting up game as p0');
-    });
-  });
+    })
+    .then(cy.log('Finished setting up game as p0'));
 });
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
-  cy.then(() => {
-    if (alreadyAuthenticated) {
-      return;
-    }
-    cy.wipeDatabase().then(() => {
-      cy.visit('/');
-      cy.signupPlayer(username, validPassword);
-    });
-  }).then(() => {
-    cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+  if (!alreadyAuthenticated) {
+    cy.wipeDatabase();
+    cy.visit('/').then(cy.log('visit /'));
+    cy.signupPlayer(username, validPassword).then(cy.log('signup player'));
+  }
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked })
+    .then((gameSummary) => {
       if (!alreadyAuthenticated) {
-        cy.signupOpponent(opponentUsername, opponentPassword);
+        cy.signupOpponent(opponentUsername, opponentPassword).then(cy.log('signup opponent'));
       }
-      cy.subscribeOpponent(gameSummary.gameId);
-      cy.readyOpponent();
+      cy.subscribeOpponent(gameSummary.gameId).then(cy.log('subscribe opponent'));
+      cy.readyOpponent().then(cy.log('ready opponent'));
       cy.window()
         .its('cuttle.app.$store')
-        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
-      cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId)
+        .then(cy.log('request subscribe'));
+      cy.vueRoute(`/lobby/${gameSummary.gameId}`).then(cy.log('vue route /lobby'));
       cy.wrap(gameSummary).as('gameSummary');
       cy.get('[data-cy=ready-button]').click();
       // Asserting 6 cards in players hand confirms game has loaded
       cy.get('#player-hand-cards .player-card').should('have.length', 6);
-      cy.log('Finished setting up game as p1');
-    });
-  });
+    })
+    .then(cy.log('Finished setting up game as p1'));
 });
 Cypress.Commands.add('signupOpponent', (username, password) => {
   return new Cypress.Promise((resolve, reject) => {
