@@ -21,9 +21,9 @@ async function handleLogin(context, username, password, signup = false) {
     if (response.status !== 200) {
       throw data.message;
     }
+    await reconnectSockets();
     // If the response was successful, the user is logged in
     context.commit('authSuccess', username);
-    reconnectSockets();
     return;
   } catch (err) {
     context.commit('clearAuth');
@@ -52,11 +52,11 @@ export default {
     },
   },
   actions: {
-    requestLogin(context, { username, password }) {
+    async requestLogin(context, { username, password }) {
       return handleLogin(context, username, password);
     },
 
-    requestSignup(context, { username, password }) {
+    async requestSignup(context, { username, password }) {
       return handleLogin(context, username, password, true);
     },
 
