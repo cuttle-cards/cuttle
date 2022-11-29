@@ -7,13 +7,33 @@ const { isProd } = require('../../../utils/config-utils');
 export const io = require('sails.io.js')(require('socket.io-client'));
 
 export const reconnectSockets = () => {
-  io.socket.disconnect();
-  io.socket.reconnect();
+  return new Promise((resolve, reject) => {
+    io.socket.disconnect();
+    io.socket.reconnect();
+    const MAX_TRIES = 10; // 10 seconds
+    const INTERVAL = 500; // 10 * 500 = 5000 (5 seconds)
+    let tries = 1;
+    const interval = setInterval(() => {
+      // If we are connected to the socket, resolve
+      if (io.socket.isConnected()) {
+        resolve();
+      }
+
+      // If no connection after threshold, reject the promise to prevent an infinite loop
+      if (tries >= MAX_TRIES) {
+        clearInterval(interval);
+        reject();
+      }
+
+      tries += 1;
+    }, INTERVAL);
+  });
 };
 
 if (!isProd) {
   io.sails.url = process.env.VUE_APP_API_URL || 'localhost:1337';
 }
+
 io.sails.useCORSRouteToGetCookie = false;
 io.sails.reconnection = true;
 // Handles socket updates of game data
