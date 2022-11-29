@@ -194,7 +194,7 @@ export default {
       top: -42px;
     }
     &.scuttled-by-player {
-      bottom: -42px;
+      bottom: -32px;
     }
   }
 }
