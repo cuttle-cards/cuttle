@@ -21,10 +21,10 @@
       class="valid-move target-overlay"
       opacity=".8"
     />
-    <transition name="slide-above">
+    <transition :name="scuttledByTransition">
       <template v-if="scuttledBy">
         <img
-          class="scuttled-by-card"
+          :class="scuttledByClass"
           :src="require(`../../img/cards/card_${scuttledBy.suit}_${scuttledBy.rank}.svg`)"
         />
       </template>
@@ -45,9 +45,11 @@ export default {
   props: {
     suit: {
       type: Number,
+      default: undefined,
     },
     rank: {
       type: Number,
+      default: undefined,
     },
     isSelected: {
       type: Boolean,
@@ -76,6 +78,11 @@ export default {
     scuttledBy: {
       type: Object,
       default: null,
+    },
+    controlledBy: {
+      type: String,
+      default: '',
+      validator: (val) => ['', 'player', 'opponent'].includes(val),
     },
   },
   computed: {
@@ -134,6 +141,26 @@ export default {
     isBack() {
       return !this.suit && !this.rank;
     },
+    scuttledByTransition() {
+      switch (this.controlledBy) {
+        case 'player':
+          return 'slide-above';
+        case 'opponent':
+          return 'slide-below';
+        default:
+          return '';
+      }
+    },
+    scuttledByClass() {
+      switch (this.controlledBy) {
+        case 'player':
+          return 'scuttled-by-card scuttled-by-opponent';
+        case 'opponent':
+          return 'scuttled-by-card scuttled-by-player';
+        default:
+          return '';
+      }
+    },
   },
 };
 </script>
@@ -159,11 +186,16 @@ export default {
 
   & .scuttled-by-card {
     height: 100%;
-    top: -42px;
     left: 16px;
     transition: all 1s ease;
     position: absolute;
     z-index: 1;
+    &.scuttled-by-opponent {
+      top: -42px;
+    }
+    &.scuttled-by-player {
+      bottom: -32px;
+    }
   }
 }
 .player-card-icon {
