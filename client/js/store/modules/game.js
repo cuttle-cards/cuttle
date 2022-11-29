@@ -285,7 +285,7 @@ export default {
       const scuttlingPlayer = context.state.players[playedBy];
       const scuttledPlayer = context.state.players[(playedBy + 1) % 2];
 
-      // Remove played card from opponent hand and temporarily add to its targets attachments
+      // Remove played card from scuttling player's hand and temporarily add to target's attachments
       const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCardId);
       const targetCardIndex = scuttledPlayer.points.findIndex((card) => card.id === targetCardId);
 
