@@ -45,9 +45,11 @@ export default {
   props: {
     suit: {
       type: Number,
+      required: true,
     },
     rank: {
       type: Number,
+      required: true,
     },
     isSelected: {
       type: Boolean,
