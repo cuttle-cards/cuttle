@@ -77,6 +77,11 @@ export default {
       type: Object,
       default: null,
     },
+    controlledBy: {
+      type: String,
+      default: '',
+      validator: (val) => ['', 'player', 'opponent'].includes(val),
+    },
   },
   computed: {
     suitName() {
