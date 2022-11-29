@@ -277,17 +277,17 @@ export default {
      */
     processScuttle(context, { game, playedCardId, targetCardId, playedBy }) {
       // Update in one step if this player scuttled or if pNum is not set
-      if (!context.getters.player || playedBy === context.state.myPNum) {
+      if (!context.getters.player) {
         context.dispatch('updateGameThenResetPNumIfNull', game);
         return;
       }
+
+      const scuttlingPlayer = context.state.players[playedBy];
+      const scuttledPlayer = context.state.players[(playedBy + 1) % 2];
+
       // Remove played card from opponent hand and temporarily add to its targets attachments
-      const playedCardIndex = context.getters.opponent.hand.findIndex(
-        (card) => card.id === playedCardId
-      );
-      const targetCardIndex = context.getters.player.points.findIndex(
-        (card) => card.id === targetCardId
-      );
+      const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCardId);
+      const targetCardIndex = scuttledPlayer.points.findIndex((card) => card.id === targetCardId);
 
       // Update game in one-step if moved cards are not found
       if (playedCardIndex === undefined || targetCardIndex === undefined) {
@@ -295,8 +295,8 @@ export default {
         return;
       }
 
-      const [playedCard] = context.getters.opponent.hand.splice(playedCardIndex, 1);
-      const targetCard = context.getters.player.points[targetCardIndex];
+      const [playedCard] = scuttlingPlayer.hand.splice(playedCardIndex, 1);
+      const targetCard = scuttledPlayer.points[targetCardIndex];
       targetCard.scuttledBy = playedCard;
 
       // Finish complete update of the game state after 1s
