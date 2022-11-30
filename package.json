@@ -86,6 +86,6 @@
     "vuetify-loader": "1.7.3"
   },
   "engines": {
-    "node": "16.17.0"
+    "node": "18.12.1"
   }
 }
