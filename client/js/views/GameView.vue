@@ -268,13 +268,13 @@
       <!-- History -->
       <div v-if="$vuetify.breakpoint.smAndUp" class="history-container">
         <div id="field-right">
-          <div id="history" class="rounded d-flex flex-column justify-start">
-            <h3>History</h3>
+          <div id="history" class="d-flex flex-column justify-start align-center">
+            <h3 class="history-title">History</h3>
             <v-divider />
             <div
               id="history-logs"
               ref="logsContainer"
-              class="d-flex flex-column justify-start mt-2 text-caption"
+              class="d-flex flex-column"
             >
               <p v-for="(log, index) in logs" :key="index">
                 {{ log }}
@@ -1249,30 +1249,88 @@ export default {
 .history-container {
   grid-area: history;
 }
+
 #field-right {
   height: 100%;
+  padding-top: 0.5rem;
 
   #history,
   #card-preview {
     margin: 0 auto;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #fff;
+    padding: 0.5rem;
     width: 80%;
     max-width: 80%;
     height: 100%;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px #111111;
+    ::-webkit-scrollbar {
+      width: 2px;
+    }
+
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px #ffffff;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #111111;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #696969;
+    }
   }
   #history {
-    background-color: rgba(0, 0, 0, 0.46);
+    background-color: rgba(241, 200, 160, 0.65);
+    color: #111111;
     & #history-logs {
-      height: 80%;
       overflow: auto;
+      height: 85%;
+      font-size: 0.75em;
+      letter-spacing: 0.25px;
+      font-family: 'Libre Baskerville', serif;
     }
   }
 }
+
+.history-title {
+  font-size: 1.25em;
+  font-weight: 700;
+  font-family: 'Cormorant Infant', serif;
+}
+
+@media screen and (min-width: 1024px) {
+  #field-right {
+    height: 100%;
+
+    #history,
+    #card-preview {
+      height: 90%;
+      width: 350px;
+      margin-right: 3rem;
+      margin-top: 2rem;
+      padding: 1rem;
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+    }
+    #history {
+      & #history-logs {
+        height: 85%;
+        width: 90%;
+        margin: 0 auto;
+        overflow: auto;
+        font-size: 1.15em;
+        padding-right: 1.25rem;
+      }
+    }
+  }
+  .history-title {
+    font-size: 48px;
+  }
+}
+
 #field-left,
 #field-center {
   display: flex;
