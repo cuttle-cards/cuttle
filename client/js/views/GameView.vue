@@ -1263,23 +1263,6 @@ export default {
     height: 100%;
     border-radius: 20px;
     box-shadow: 0px 0px 10px #111111;
-    ::-webkit-scrollbar {
-      width: 2px;
-    }
-
-    ::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 5px #ffffff;
-      border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #111111;
-      border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #696969;
-    }
   }
   #history {
     background-color: rgba(241, 200, 160, 0.65);
@@ -1307,7 +1290,7 @@ export default {
     #history,
     #card-preview {
       height: 90%;
-      width: 350px;
+      width: 75%;
       margin-right: 3rem;
       margin-top: 2rem;
       padding: 1rem;
