@@ -21,10 +21,13 @@
       class="valid-move target-overlay"
       opacity=".8"
     />
-    <transition name="slide-above">
-      <v-overlay v-if="scuttledBy" absolute :value="true" class="scuttled-by-overlay">
-        <card :suit="scuttledBy.suit" :rank="scuttledBy.rank"></card>
-      </v-overlay>
+    <transition :name="scuttledByTransition">
+      <template v-if="scuttledBy">
+        <img
+          :class="scuttledByClass"
+          :src="require(`../../img/cards/card_${scuttledBy.suit}_${scuttledBy.rank}.svg`)"
+        />
+      </template>
     </transition>
     <img
       v-if="isGlasses"
@@ -42,9 +45,11 @@ export default {
   props: {
     suit: {
       type: Number,
+      default: undefined,
     },
     rank: {
       type: Number,
+      default: undefined,
     },
     isSelected: {
       type: Boolean,
@@ -73,6 +78,11 @@ export default {
     scuttledBy: {
       type: Object,
       default: null,
+    },
+    controlledBy: {
+      type: String,
+      default: '',
+      validator: (val) => ['', 'player', 'opponent'].includes(val),
     },
   },
   computed: {
@@ -131,6 +141,26 @@ export default {
     isBack() {
       return !this.suit && !this.rank;
     },
+    scuttledByTransition() {
+      switch (this.controlledBy) {
+        case 'player':
+          return 'slide-above';
+        case 'opponent':
+          return 'slide-below';
+        default:
+          return '';
+      }
+    },
+    scuttledByClass() {
+      switch (this.controlledBy) {
+        case 'player':
+          return 'scuttled-by-card scuttled-by-opponent';
+        case 'opponent':
+          return 'scuttled-by-card scuttled-by-player';
+        default:
+          return '';
+      }
+    },
   },
 };
 </script>
@@ -152,6 +182,20 @@ export default {
   &.glasses {
     max-width: 20vh;
     height: calc(20vh / 1.45);
+  }
+
+  & .scuttled-by-card {
+    height: 100%;
+    left: 16px;
+    transition: all 1s ease;
+    position: absolute;
+    z-index: 1;
+    &.scuttled-by-opponent {
+      top: -42px;
+    }
+    &.scuttled-by-player {
+      bottom: -32px;
+    }
   }
 }
 .player-card-icon {
@@ -207,11 +251,6 @@ export default {
   }
 }
 
-.scuttled-by-overlay {
-  height: 80%;
-  top: -32px;
-  transition: all 1s ease;
-}
 .slide-below-leave-active,
 .slide-above-leave-active,
 .in-below-out-left-leave-active {
