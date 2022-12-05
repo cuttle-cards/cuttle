@@ -50,6 +50,10 @@ module.exports = {
         target: 'http://localhost:1337',
         changeOrigin: true,
       },
+      // Required for the health response to work on the client
+      '/health': {
+        target: 'http://localhost:1337',
+      },
       '/user': {
         target: 'http://localhost:1337',
         changeOrigin: true,

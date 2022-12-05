@@ -21,7 +21,13 @@ dayjs.extend(isBetween);
  *    matches: Map<int: weekNum, Array<{opponent: string, result: Result}>>
  *  }>
  * } season The season in which the match took place
- * @param { player1: int, player2: int, winner: int | null, startTime: int, endTime: int } match the match to add
+ * @param {
+ *  player1: int,
+ *  player2: int,
+ *  winner: int | null,
+ *  startTime: int,
+ *  endTime: int
+ * } match the match to add
  * @param {User} player which player's record to update
  * @param {User} opponent // The opponent in the match
  */
