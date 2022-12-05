@@ -1294,18 +1294,15 @@ export default {
       margin-right: 3rem;
       margin-top: 2rem;
       padding: 1rem;
-      ::-webkit-scrollbar {
-        width: 4px;
-      }
     }
     #history {
       & #history-logs {
         height: 85%;
-        width: 90%;
+        width: 100%;
         margin: 0 auto;
         overflow: auto;
         font-size: 1.15em;
-        padding-right: 1.25rem;
+        padding: 0 1.25rem;
       }
     }
   }
