@@ -99,6 +99,7 @@ describe('Stats Page', () => {
     cy.get("[data-week-1='Player1']").click();
     cy.get('[data-players-beaten=Player1-week-1]').should('contain', 'Player2, Player3, Player4');
     cy.get('[data-players-lost-to=Player1-week-1]').should('not.contain', 'Player');
+    cy.get('[data-players-lost-to=Player1-week-1]').should('contain', 'None');
     cy.get('[data-player-results=Player1-week-1]').should('contain', 'Player1 Week 1');
     cy.get('[data-player-results=Player1-week-1]').find('[data-cy=close-player-results]').click();
     cy.get('[data-players-beaten=Player1-week-1').should('not.be.visible');
