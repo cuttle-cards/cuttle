@@ -269,6 +269,41 @@ export default {
         context.commit('setMyPNum', myPNum);
       }
     },
+    /**
+     * Updates gamestate to animate scuttle. First removes card from op hand
+     * and places it on top of player's point card, then waits 1s
+     * and updates complete game which will put both cards in the scrap
+     * @returns void
+     */
+    processScuttle(context, { game, playedCardId, targetCardId, playedBy }) {
+      // Update in one step if this player scuttled or if pNum is not set
+      if (!context.getters.player) {
+        context.dispatch('updateGameThenResetPNumIfNull', game);
+        return;
+      }
+
+      const scuttlingPlayer = context.state.players[playedBy];
+      const scuttledPlayer = context.state.players[(playedBy + 1) % 2];
+
+      // Remove played card from scuttling player's hand and temporarily add to target's attachments
+      const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCardId);
+      const targetCardIndex = scuttledPlayer.points.findIndex((card) => card.id === targetCardId);
+
+      // Update game in one-step if moved cards are not found
+      if (playedCardIndex === undefined || targetCardIndex === undefined) {
+        context.dispatch('updateGameThenResetPNumIfNull', game);
+        return;
+      }
+
+      const [playedCard] = scuttlingPlayer.hand.splice(playedCardIndex, 1);
+      const targetCard = scuttledPlayer.points[targetCardIndex];
+      targetCard.scuttledBy = playedCard;
+
+      // Finish complete update of the game state after 1s
+      setTimeout(() => {
+        context.dispatch('updateGameThenResetPNumIfNull', game);
+      }, 1000);
+    },
     async requestSubscribe(context, id) {
       return new Promise((resolve, reject) => {
         io.socket.get(

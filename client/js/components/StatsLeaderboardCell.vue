@@ -20,11 +20,11 @@
       <v-card-text>
         <h3>Wins</h3>
         <v-list :data-players-beaten="`${username}-week-${week}`">
-          {{ playersBeaten }}
+          {{ playersBeatenText }}
         </v-list>
         <h3>Losses</h3>
         <v-list :data-players-lost-to="`${username}-week-${week}`">
-          {{ playersLostTo }}
+          {{ playersLostToText }}
         </v-list>
         <h3>Win Rate</h3>
         <v-list :data-win-rate="`${username}-week-${week}`">
@@ -166,6 +166,12 @@ export default {
     },
     menuHeader() {
       return this.week === 'total' ? this.seasonName : `Week ${this.week}`;
+    },
+    playersBeatenText() {
+      return this.playersBeaten !== '' ? this.playersBeaten : 'None';
+    },
+    playersLostToText() {
+      return this.playersLostTo !== '' ? this.playersLostTo : 'None';
     },
   },
 };

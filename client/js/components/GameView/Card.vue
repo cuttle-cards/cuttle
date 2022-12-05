@@ -21,6 +21,14 @@
       class="valid-move target-overlay"
       opacity=".8"
     />
+    <transition :name="scuttledByTransition">
+      <template v-if="scuttledBy">
+        <img
+          :class="scuttledByClass"
+          :src="require(`../../img/cards/card_${scuttledBy.suit}_${scuttledBy.rank}.svg`)"
+        />
+      </template>
+    </transition>
     <img
       v-if="isGlasses"
       :src="require(`../../img/cards/Glasses_${suitName}.png`)"
@@ -37,9 +45,11 @@ export default {
   props: {
     suit: {
       type: Number,
+      default: undefined,
     },
     rank: {
       type: Number,
+      default: undefined,
     },
     isSelected: {
       type: Boolean,
@@ -64,6 +74,15 @@ export default {
     isFrozen: {
       type: Boolean,
       default: false,
+    },
+    scuttledBy: {
+      type: Object,
+      default: null,
+    },
+    controlledBy: {
+      type: String,
+      default: '',
+      validator: (val) => ['', 'player', 'opponent'].includes(val),
     },
   },
   computed: {
@@ -122,6 +141,26 @@ export default {
     isBack() {
       return !this.suit && !this.rank;
     },
+    scuttledByTransition() {
+      switch (this.controlledBy) {
+        case 'player':
+          return 'slide-above';
+        case 'opponent':
+          return 'slide-below';
+        default:
+          return '';
+      }
+    },
+    scuttledByClass() {
+      switch (this.controlledBy) {
+        case 'player':
+          return 'scuttled-by-card scuttled-by-opponent';
+        case 'opponent':
+          return 'scuttled-by-card scuttled-by-player';
+        default:
+          return '';
+      }
+    },
   },
 };
 </script>
@@ -143,6 +182,20 @@ export default {
   &.glasses {
     max-width: 20vh;
     height: calc(20vh / 1.45);
+  }
+
+  & .scuttled-by-card {
+    height: 100%;
+    left: 16px;
+    transition: all 1s ease;
+    position: absolute;
+    z-index: 1;
+    &.scuttled-by-opponent {
+      top: -42px;
+    }
+    &.scuttled-by-player {
+      bottom: -32px;
+    }
   }
 }
 .player-card-icon {
@@ -196,6 +249,24 @@ export default {
   &:hover:after {
     opacity: 0;
   }
+}
+
+.slide-below-leave-active,
+.slide-above-leave-active,
+.in-below-out-left-leave-active {
+  position: absolute;
+}
+// slide-below (enter and leave below)
+.slide-below-enter,
+.slide-below-leave-to {
+  opacity: 0;
+  transform: translateY(32px);
+}
+// slide-above (enter and leave above)
+.slide-above-enter,
+.slide-above-leave-to {
+  opacity: 0;
+  transform: translateY(-32px);
 }
 
 @media (max-width: 600px) {
