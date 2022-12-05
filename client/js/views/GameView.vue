@@ -275,11 +275,7 @@
           <div id="history" class="d-flex flex-column justify-start align-center">
             <h3 class="history-title">History</h3>
             <v-divider />
-            <div
-              id="history-logs"
-              ref="logsContainer"
-              class="d-flex flex-column"
-            >
+            <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
               <p v-for="(log, index) in logs" :key="index">
                 {{ log }}
               </p>
