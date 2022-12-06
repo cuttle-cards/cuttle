@@ -69,7 +69,7 @@ export default {
             ...rules,
             { text: 'Play', icon: 'play', page: { name: 'Home' } },
             { text: 'Stats', icon: 'chart-bar', page: { name: 'Stats' } },
-            { text: 'Profile', icon: 'account', page: { name: 'Profile' } },
+            { text: 'My Profile', icon: 'account', page: { name: 'MyProfile' } },
           ];
     },
     showNav() {

@@ -15,6 +15,9 @@ module.exports = {
       type: 'string',
       required: true,
     },
+    email: {
+      type: 'string',
+    },
     game: {
       model: 'game',
     },

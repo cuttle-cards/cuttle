@@ -6,7 +6,7 @@ import Lobby from '../views/Lobby.vue';
 import GameView from '../views/GameView.vue';
 import Rules from '../views/Rules.vue';
 import Stats from '../views/Stats.vue';
-import Profile from '../views/Profile.vue';
+import MyProfile from '../views/MyProfile.vue';
 import store from '../store/store.js';
 
 export const ROUTE_NAME_LOBBY = 'Lobby';
@@ -72,9 +72,9 @@ const routes = [
     beforeEnter: mustBeAuthenticated,
   },
   {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile,
+    path: '/myprofile',
+    name: 'MyProfile',
+    component: MyProfile,
     beforeEnter: mustBeAuthenticated,
   },
 ];
