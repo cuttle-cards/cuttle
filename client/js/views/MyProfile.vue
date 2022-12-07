@@ -42,7 +42,7 @@ export default {
     async submitEmail() {
       try {
         //Email Testing Regex
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+        if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
           //ToDo: Figure how to save email to Database
           this.handleSuccess(this.email);
         } else {
