@@ -49,7 +49,7 @@ describe('Navigation Drawer', () => {
   });
   describe('Navigates to Rules, Home, Stats, and Login pages', () => {
     function verifyAuthenticatedLinks() {
-      cy.get('[data-nav]').should('have.length', 4);
+      cy.get('[data-nav]').should('have.length', 5);
       cy.hash().should('equal', '#/');
       // Navigate to Rules
       cy.get('[data-nav=Rules]').click();
@@ -60,6 +60,9 @@ describe('Navigation Drawer', () => {
       // Navigate to Stats
       cy.get('[data-nav=Stats]').click();
       cy.hash().should('equal', '#/stats');
+      // Navigate to Profile
+      cy.get('[data-nav=MyProfile]').click();
+      cy.hash().should('equal', '#/myprofile');
       // Log out
       cy.get('[data-nav=Logout]').click();
       cy.hash().should('equal', '#/login');
