@@ -61,7 +61,7 @@ describe('Navigation Drawer', () => {
       cy.get('[data-nav=Stats]').click();
       cy.hash().should('equal', '#/stats');
       // Navigate to My Profile
-      cy.get('[data-nav=My Profile]').click();
+      cy.get('[data-nav="My Profile"]').click();
       cy.hash().should('equal', '#/myprofile');
       // Log out
       cy.get('[data-nav=Logout]').click();
