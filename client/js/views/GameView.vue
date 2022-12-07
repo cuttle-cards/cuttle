@@ -1269,6 +1269,7 @@ export default {
     color: #111111;
     & #history-logs {
       overflow: auto;
+      overflow-wrap: anywhere;
       height: 85%;
       font-size: 0.75em;
       letter-spacing: 0.25px;
