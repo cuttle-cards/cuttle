@@ -1301,7 +1301,7 @@ export default {
         width: 100%;
         margin: 0 auto;
         overflow: auto;
-        font-size: 1.15em;
+        font-size: 1em;
         padding: 0 1.25rem;
       }
     }
