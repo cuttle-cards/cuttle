@@ -1217,6 +1217,7 @@ export default {
       position: absolute;
     }
     .c-deck-count {
+      margin: 6px;
       padding: 4px;
       position: absolute;
       bottom: 0;
