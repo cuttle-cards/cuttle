@@ -72,7 +72,7 @@ const routes = [
     beforeEnter: mustBeAuthenticated,
   },
   {
-    path: '/myprofile',
+    path: '/profile',
     name: 'MyProfile',
     component: MyProfile,
     beforeEnter: mustBeAuthenticated,
