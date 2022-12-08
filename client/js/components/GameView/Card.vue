@@ -34,7 +34,12 @@
       :src="require(`../../img/cards/Glasses_${suitName}.png`)"
       :alt="`Glasses - $${cardName}`"
     />
-    <img v-else-if="isBack" :src="require('../../img/cards/card_back.png')" alt="back" />
+    <img
+      v-else-if="isBack"
+      :src="require('../../img/cards/card_back.png')"
+      class="opponent-card-back"
+      alt="back"
+    />
     <img v-else :src="require(`../../img/cards/card_${suit}_${rank}.svg`)" :alt="cardName" />
   </v-card>
 </template>
@@ -203,6 +208,9 @@ export default {
   top: 0;
   right: 0;
   z-index: 1;
+}
+.opponent-card-back {
+  border-radius: 5px;
 }
 
 .selected {
