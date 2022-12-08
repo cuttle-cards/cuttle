@@ -37,7 +37,7 @@
     <img
       v-else-if="isBack"
       :src="require('../../img/cards/card_back.png')"
-      class="opponent-cardBack"
+      class="opponent-card-back"
       alt="back"
     />
     <img v-else :src="require(`../../img/cards/card_${suit}_${rank}.svg`)" :alt="cardName" />
@@ -209,7 +209,7 @@ export default {
   right: 0;
   z-index: 1;
 }
-.opponent-cardBack {
+.opponent-card-back {
   border-radius: 5px;
 }
 
