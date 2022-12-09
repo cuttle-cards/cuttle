@@ -272,7 +272,7 @@
       <!-- History -->
       <div v-if="$vuetify.breakpoint.smAndUp" class="history-container">
         <div id="field-right">
-          <div id="history" class="d-flex flex-column justify-start align-center">
+          <div id="history" class="d-flex flex-column justify-start align-center elevation-10">
             <h3 class="history-title">History</h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
@@ -1262,7 +1262,6 @@ export default {
     max-width: 80%;
     height: 100%;
     border-radius: 20px;
-    box-shadow: 0px 0px 10px #111111;
   }
   #history {
     background-color: rgba(241, 200, 160, 0.65);
@@ -1273,7 +1272,7 @@ export default {
       height: 85%;
       font-size: 0.75em;
       letter-spacing: 0.25px;
-      font-family: 'Libre Baskerville', serif;
+      font-family: 'Libre Baskerville', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
     }
   }
 }
@@ -1281,7 +1280,7 @@ export default {
 .history-title {
   font-size: 1.25em;
   font-weight: 700;
-  font-family: 'Cormorant Infant', serif;
+  font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
 }
 
 @media screen and (min-width: 1024px) {
