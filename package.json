@@ -1,6 +1,6 @@
 {
   "name": "cuttle",
-  "version": "3.3.1",
+  "version": "3.3.4",
   "private": true,
   "description": "The deepest card game under the sea",
   "scripts": {
@@ -17,12 +17,12 @@
     "e2e:server:gui": "cross-env VUE_APP_API_URL=http://localhost:1337 cypress open",
     "e2e:server:playground": "cross-env VUE_APP_API_URL=http://localhost:1337 cypress run --config-file tests/e2e/playground/playground.config.js",
     "start": "node app.js",
-    "start:client": "cross-env ENABLE_VUE_DEVTOOLS=true vue-cli-service serve",
+    "start:client": "cross-env ENABLE_VUE_DEVTOOLS=true NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
     "start:dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:devtools": "vue-devtools",
     "start:mockprod": "cross-env NODE_OPTIONS=--openssl-legacy-provider CUTTLE_ENV=production npm run build && CUTTLE_ENV=production npm run start:server",
     "start:mockprod:tools": "concurrently \"cross-env NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=dev ENABLE_VUE_DEVTOOLS=true npm run build && npm run start:server\" \"npm run start:devtools\"",
-    "start:server": "node app.js --inspect",
+    "start:server": "NODE_OPTIONS=--openssl-legacy-provider node app.js --inspect",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
