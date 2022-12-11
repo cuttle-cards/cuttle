@@ -34,14 +34,16 @@ export default {
       showSnackBar: false,
       snackBarMessage: '',
       colorValue: '',
+      emailRegex: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
     };
   },
   computed: {},
   async beforeCreate() {
-    if (this.email != null) {
+    //Checks if Email is Loaded
+    if (typeof this.email === 'undefined') {
       try {
         await this.$store.dispatch('findEmail', {
-          username: this.username,
+          username: this.$store.state.auth.username,
         });
         this.email = this.$store.state.auth.email;
       } catch (err) {
@@ -49,17 +51,16 @@ export default {
       }
     }
   },
-  mounted() {},
   methods: {
     async submitEmail() {
       try {
         //Email Testing Regex
-        if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+        if (this.emailRegex.test(this.email)) {
           await this.$store.dispatch('submitEmail', {
             username: this.username,
             email: this.email,
           });
-          this.handleSuccess(this.email);
+          this.handleSuccess('Email Saved: ' + this.email);
         } else {
           throw 'Not a valid Email';
         }
