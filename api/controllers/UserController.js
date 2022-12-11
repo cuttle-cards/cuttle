@@ -90,6 +90,32 @@ module.exports = {
     return res.ok();
   },
 
+  submitEmail: async function (req, res) {
+    try {
+      const { username, email } = req.body;
+      const updatedUser = await User.updateOne({ username: username }).set({ email: email });
+      if (updatedUser) {
+        return res.ok(updatedUser.id);
+      }
+      throw 'Unable to Save Email to User';
+    } catch (err) {
+      return res.badRequest(err);
+    }
+  },
+
+  findEmail: async function (req, res) {
+    try {
+      const { username } = req.body;
+      const foundUser = await User.findOne({ username: username });
+      if (foundUser) {
+        return res.ok(foundUser.email);
+      }
+      throw 'Unable to Find User Email';
+    } catch (err) {
+      return res.badRequest(err);
+    }
+  },
+
   status: async function (req, res) {
     const { usr: id, loggedIn: authenticated, game: gameId } = req.session;
 

@@ -37,6 +37,7 @@ export default {
     authenticated: null,
     username: null,
     mustReauthenticate: false,
+    email: null,
   },
   mutations: {
     authSuccess(state, username) {
@@ -50,6 +51,9 @@ export default {
     setMustReauthenticate(state, val) {
       state.mustReauthenticate = val;
     },
+    setEmail(state, email) {
+      state.email = email;
+    },
   },
   actions: {
     async requestLogin(context, { username, password }) {
@@ -59,7 +63,49 @@ export default {
     async requestSignup(context, { username, password }) {
       return handleLogin(context, username, password, true);
     },
-
+    async submitEmail(context, { username, email }) {
+      try {
+        const response = await fetch(`/user/submitEmail`, {
+          method: 'POST',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+          }),
+          body: JSON.stringify({
+            username,
+            email,
+          }),
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.message;
+        }
+        context.commit('setEmail', email);
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+    async findEmail(context, { username }) {
+      try {
+        const response = await fetch(`/user/findEmail`, {
+          method: 'POST',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+          }),
+          body: JSON.stringify({
+            username,
+          }),
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.message;
+        }
+        context.commit('setEmail', data);
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
     async requestLogout(context) {
       try {
         await fetch('/user/logout', {

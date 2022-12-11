@@ -1,6 +1,6 @@
 <template>
   <v-container class="profile">
-    <h1>{{ user }} Profile Settings</h1>
+    <h1>{{ username }} Profile Settings</h1>
     <br />
     <v-text-field
       v-model="email"
@@ -29,21 +29,36 @@ export default {
   name: 'MyProfile',
   data() {
     return {
-      user: this.$store.state.auth.username,
-      email: '',
+      username: this.$store.state.auth.username,
+      email: this.$store.state.auth.email,
       showSnackBar: false,
       snackBarMessage: '',
       colorValue: '',
     };
   },
   computed: {},
+  async beforeCreate() {
+    if (this.email != null) {
+      try {
+        await this.$store.dispatch('findEmail', {
+          username: this.username,
+        });
+        this.email = this.$store.state.auth.email;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  },
   mounted() {},
   methods: {
     async submitEmail() {
       try {
         //Email Testing Regex
         if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
-          //ToDo: Figure how to save email to Database
+          await this.$store.dispatch('submitEmail', {
+            username: this.username,
+            email: this.email,
+          });
           this.handleSuccess(this.email);
         } else {
           throw 'Not a valid Email';
