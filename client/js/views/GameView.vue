@@ -272,14 +272,10 @@
       <!-- History -->
       <div v-if="$vuetify.breakpoint.smAndUp" class="history-container">
         <div id="field-right">
-          <div id="history" class="rounded d-flex flex-column justify-start">
-            <h3>History</h3>
+          <div id="history" class="d-flex flex-column justify-start align-center elevation-10">
+            <h3 class="history-title">History</h3>
             <v-divider />
-            <div
-              id="history-logs"
-              ref="logsContainer"
-              class="d-flex flex-column justify-start mt-2 text-caption"
-            >
+            <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
               <p v-for="(log, index) in logs" :key="index">
                 {{ log }}
               </p>
@@ -1254,30 +1250,68 @@ export default {
 .history-container {
   grid-area: history;
 }
+
 #field-right {
   height: 100%;
+  padding-top: 0.5rem;
 
   #history,
   #card-preview {
     margin: 0 auto;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #fff;
+    padding: 0.5rem;
     width: 80%;
     max-width: 80%;
     height: 100%;
+    border-radius: 20px;
   }
   #history {
-    background-color: rgba(0, 0, 0, 0.46);
+    background-color: rgba(241, 200, 160, 0.65);
+    color: #111111;
     & #history-logs {
-      height: 80%;
       overflow: auto;
+      overflow-wrap: anywhere;
+      height: 85%;
+      font-size: 0.75em;
+      letter-spacing: 0.25px;
+      font-family: 'Libre Baskerville', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
     }
   }
 }
+
+.history-title {
+  font-size: 1.25em;
+  font-weight: 700;
+  font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+}
+
+@media screen and (min-width: 1024px) {
+  #field-right {
+    height: 100%;
+
+    #history,
+    #card-preview {
+      height: 90%;
+      width: 75%;
+      margin-right: 3rem;
+      margin-top: 2rem;
+      padding: 1rem;
+    }
+    #history {
+      & #history-logs {
+        height: 85%;
+        width: 100%;
+        margin: 0 auto;
+        overflow: auto;
+        font-size: 1em;
+        padding: 0 1.25rem;
+      }
+    }
+  }
+  .history-title {
+    font-size: 48px;
+  }
+}
+
 #field-left,
 #field-center {
   display: flex;
