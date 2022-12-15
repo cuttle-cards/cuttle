@@ -30,7 +30,7 @@ module.exports.policies = {
     reLogin: ['hasValidUsername'],
     logout: true,
     status: true,
-    submitEmail: ['hasValidUsername'],
+    submitEmail: ['isLoggedIn', 'hasValidEmail'],
     findEmail: ['hasValidUsername'],
   },
 
