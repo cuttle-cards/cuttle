@@ -165,6 +165,11 @@
               </div>
             </template>
           </v-card>
+          <point-counter
+            :king-count="opponentKingCount"
+            :points-to-win="opponentPointsToWin"
+            :is-player="false"
+          />
           <scrap-dialog :scrap="scrap">
             <template #activator>
               <div id="scrap" class="d-flex flex-column align-center">
@@ -174,6 +179,11 @@
               </div>
             </template>
           </scrap-dialog>
+          <point-counter
+            :king-count="playerKingCount"
+            :points-to-win="playerPointsToWin"
+            :is-player="true"
+          />
         </div>
       </div>
 
@@ -401,6 +411,7 @@ import Card from '@/components/GameView/Card.vue';
 import GameDialogs from '@/components/GameView/GameDialogs.vue';
 import GameMenu from '@/components/GameView/GameMenu.vue';
 import GameOverlays from '@/components/GameView/GameOverlays.vue';
+import PointCounter from '@/components/GameView/PointCounter.vue';
 import ScoreGoalToolTip from '@/components/GameView/ScoreGoalToolTip.vue';
 import ReauthenticateDialog from '@/components/GameView/ReauthenticateDialog.vue';
 import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay.vue';
@@ -414,6 +425,7 @@ export default {
     GameDialogs,
     GameMenu,
     GameOverlays,
+    PointCounter,
     ScoreGoalToolTip,
     ReauthenticateDialog,
     TargetSelectionOverlay,
