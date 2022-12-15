@@ -65,7 +65,7 @@ export default {
     },
     async submitEmail(context, { username, email }) {
       try {
-        const response = await fetch(`/user/submitEmail`, {
+        const response = await fetch('/user/submitEmail', {
           method: 'POST',
           headers: new Headers({
             'Content-Type': 'application/json',
