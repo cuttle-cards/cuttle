@@ -177,6 +177,9 @@ export default {
           await context.dispatch('requestReauthenticate', { username });
         }
 
+        if (typeof email !== 'undefined') {
+          context.commit('setEmail', email);
+        }
         return;
       } catch (err) {
         context.commit('clearAuth');
