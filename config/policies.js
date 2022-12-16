@@ -31,7 +31,6 @@ module.exports.policies = {
     logout: true,
     status: true,
     submitEmail: ['isLoggedIn', 'hasValidEmail'],
-    findEmail: ['hasValidUsername'],
   },
 
   'game/reconnect': ['isLoggedIn', 'isInGame'],

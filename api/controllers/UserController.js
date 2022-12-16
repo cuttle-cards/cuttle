@@ -45,7 +45,11 @@ module.exports = {
       await passwordAPI.checkPass(password, user.encryptedPassword);
       req.session.loggedIn = true;
       req.session.usr = user.id;
-      return res.ok(user.id);
+      let response = {
+        id: user.id,
+        email: user.email,
+      };
+      return res.ok(response);
     } catch (err) {
       return res.badRequest(err);
     }
@@ -93,6 +97,10 @@ module.exports = {
   submitEmail: async function (req, res) {
     try {
       const { username, email } = req.body;
+      const requestingUser = await User.findOne({ id: req.session.usr });
+      if (requestingUser.username !== username) {
+        return res.forbidden({ message: 'You can only change your own email address' });
+      }
       const updatedUser = await User.updateOne({ username: username }).set({ email: email });
       if (updatedUser) {
         return res.ok(updatedUser.id);
@@ -103,21 +111,8 @@ module.exports = {
     }
   },
 
-  findEmail: async function (req, res) {
-    try {
-      const { username } = req.body;
-      const foundUser = await User.findOne({ username: username });
-      if (foundUser) {
-        return res.ok(foundUser.email);
-      }
-      throw 'Unable to Find User Email';
-    } catch (err) {
-      return res.badRequest(err);
-    }
-  },
-
   status: async function (req, res) {
-    const { usr: id, loggedIn: authenticated, game: gameId } = req.session;
+    const { usr: id, loggedIn: authenticated, game: gameId, email: email } = req.session;
 
     // User is not logged in, get out of here
     if (!authenticated || !id) {
@@ -137,6 +132,7 @@ module.exports = {
         // We only want to set the gameId if this is a valid game with 2 players
         // TODO: Refactor this when we add session handling for the lobby
         gameId: game && game.players.length === 2 ? gameId : null,
+        email,
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out

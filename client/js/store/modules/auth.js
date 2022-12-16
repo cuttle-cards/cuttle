@@ -24,6 +24,9 @@ async function handleLogin(context, username, password, signup = false) {
     await reconnectSockets();
     // If the response was successful, the user is logged in
     context.commit('authSuccess', username);
+    if (typeof data.email !== 'undefined') {
+      context.commit('setEmail', data.email);
+    }
     return;
   } catch (err) {
     context.commit('clearAuth');
@@ -85,27 +88,6 @@ export default {
         throw new Error(err);
       }
     },
-    async findEmail(context, { username }) {
-      try {
-        const response = await fetch(`/user/findEmail`, {
-          method: 'POST',
-          headers: new Headers({
-            'Content-Type': 'application/json',
-          }),
-          body: JSON.stringify({
-            username,
-          }),
-          credentials: 'include',
-        });
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.message;
-        }
-        context.commit('setEmail', data);
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
     async requestLogout(context) {
       try {
         await fetch('/user/logout', {
@@ -162,7 +144,7 @@ export default {
           credentials: 'include',
         });
         const status = await response.json();
-        const { authenticated, username, gameId } = status;
+        const { authenticated, username, gameId, email } = status;
 
         // If the user is not authenticated, we're done here
         if (!authenticated) {

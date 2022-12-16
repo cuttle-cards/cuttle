@@ -38,19 +38,6 @@ export default {
     };
   },
   computed: {},
-  async beforeCreate() {
-    //Checks if Email is Loaded
-    if (typeof this.email === 'undefined') {
-      try {
-        await this.$store.dispatch('findEmail', {
-          username: this.$store.state.auth.username,
-        });
-        this.email = this.$store.state.auth.email;
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  },
   methods: {
     async submitEmail() {
       try {
