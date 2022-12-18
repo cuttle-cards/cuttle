@@ -1,5 +1,7 @@
 <template>
-  <div class="point-counter">
+  <div
+    class="d-flex flex-column justify-start align-center elevation-10 rounded point-counter"
+  >
     <div class="point-counter__current-points">{{ currentPoints }}</div>
     <div class="point-counter__total-points">{{ pointsToWin }}</div>
     <v-menu :top="isPlayer" :bottom="!isPlayer" offset-y>
@@ -52,6 +54,25 @@ export default {
 
 <style scoped>
 .point-counter {
-  border: 1px solid black;
+  font-weight: bold;
+  background-color: rgba(241, 200, 160, 0.15);
+  border: 1px solid #f3f3f3;
+  color: #f3f3f3;
+  font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+  padding: 0 0.25rem;
+  text-shadow: 1px 1px #111111;
+}
+
+.point-counter__current-points {
+  border-bottom: 2px solid #f3f3f3;
+  font-size: 1.5em;
+}
+
+.point-counter__total-points {
+  font-size: 1.15em;
+}
+
+@media screen and (min-width: 1024px) {
+
 }
 </style>
