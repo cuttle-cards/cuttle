@@ -68,7 +68,6 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.log(`Subscribed to game ${gameSummary.gameId}`);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
-    // cy.log(`Navigated to Game lobby for game ${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
     if (!alreadyAuthenticated) {
@@ -113,7 +112,6 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
         if (jwres.statusCode !== 200) {
           return reject(new Error('Failed to sign up via command'));
         }
-        // cy.log(`Signed up opponent ${username}`);
         return resolve(res);
       }
     );
@@ -158,7 +156,6 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
       },
       function handleResponse(res, jwres) {
         if (jwres.statusCode === 200) {
-          // cy.log(`Subscribed opponent to game ${id}`);
           return resolve();
         }
         return reject(new Error('error subscribing'));
@@ -175,7 +172,6 @@ Cypress.Commands.add('readyOpponent', (id) => {
       },
       function handleResponse(res, jwres) {
         if (jwres.statusCode === 200) {
-          // cy.log(`Finished readying up as opponent for game ${id}`);
           return resolve();
         }
         return reject(new Error('error readying up opponent'));
