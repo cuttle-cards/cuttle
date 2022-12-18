@@ -20,7 +20,8 @@ io.sails.useCORSRouteToGetCookie = false;
 // Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
 
 Cypress.Commands.add('wipeDatabase', () => {
-  cy.request('localhost:1337/test/wipeDatabase').then(cy.log('wipe database'));
+  cy.request('localhost:1337/test/wipeDatabase');
+  cy.log('Wiped database');
 });
 Cypress.Commands.add('setBadSession', () => {
   return new Cypress.Promise((resolve) => {
@@ -60,52 +61,45 @@ Cypress.Commands.add('requestGameList', () => {
 Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = false) => {
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
-    cy.visit('/').then(cy.log('visit /'));
-    cy.signupPlayer(username, validPassword).then(cy.log('signup player'));
+    cy.visit('/');
+    cy.signupPlayer(username, validPassword);
   }
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked })
-    .then((gameSummary) => {
-      cy.window()
-        .its('cuttle.app.$store')
-        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId)
-        .then(cy.log('request subscribe'));
-      cy.vueRoute(`/lobby/${gameSummary.gameId}`).then(cy.log('vue route /lobby'));
-      cy.wrap(gameSummary).as('gameSummary');
-      cy.get('[data-cy=ready-button]').click();
-      if (!alreadyAuthenticated) {
-        cy.signupOpponent(opponentUsername, opponentPassword).then(cy.log('signup opponent'));
-      }
-      cy.subscribeOpponent(gameSummary.gameId).then(cy.log('subscribe opponent'));
-      cy.readyOpponent().then(cy.log('ready opponent'));
-      // Asserting 5 cards in players hand confirms game has loaded
-      cy.get('#player-hand-cards .player-card').should('have.length', 5);
-    })
-    .then(cy.log('Finished setting up game as p0'));
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.log(`Subscribed to game ${gameSummary.gameId}`);
+    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+    // cy.log(`Navigated to Game lobby for game ${gameSummary.gameId}`);
+    cy.wrap(gameSummary).as('gameSummary');
+    cy.get('[data-cy=ready-button]').click();
+    if (!alreadyAuthenticated) {
+      cy.signupOpponent(opponentUsername, opponentPassword);
+    }
+    cy.subscribeOpponent(gameSummary.gameId);
+    cy.readyOpponent();
+    // Asserting 5 cards in players hand confirms game has loaded
+    cy.get('#player-hand-cards .player-card').should('have.length', 5);
+  });
 });
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
-    cy.visit('/').then(cy.log('visit /'));
-    cy.signupPlayer(username, validPassword).then(cy.log('signup player'));
+    cy.visit('/');
+    cy.signupPlayer(username, validPassword);
   }
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked })
-    .then((gameSummary) => {
-      if (!alreadyAuthenticated) {
-        cy.signupOpponent(opponentUsername, opponentPassword).then(cy.log('signup opponent'));
-      }
-      cy.subscribeOpponent(gameSummary.gameId).then(cy.log('subscribe opponent'));
-      cy.readyOpponent().then(cy.log('ready opponent'));
-      cy.window()
-        .its('cuttle.app.$store')
-        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId)
-        .then(cy.log('request subscribe'));
-      cy.vueRoute(`/lobby/${gameSummary.gameId}`).then(cy.log('vue route /lobby'));
-      cy.wrap(gameSummary).as('gameSummary');
-      cy.get('[data-cy=ready-button]').click();
-      // Asserting 6 cards in players hand confirms game has loaded
-      cy.get('#player-hand-cards .player-card').should('have.length', 6);
-    })
-    .then(cy.log('Finished setting up game as p1'));
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+    if (!alreadyAuthenticated) {
+      cy.signupOpponent(opponentUsername, opponentPassword);
+    }
+    cy.subscribeOpponent(gameSummary.gameId);
+    cy.readyOpponent();
+    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+    cy.wrap(gameSummary).as('gameSummary');
+    cy.get('[data-cy=ready-button]').click();
+    // Asserting 6 cards in players hand confirms game has loaded
+    cy.get('#player-hand-cards .player-card').should('have.length', 6);
+  });
+  cy.log('Finished setting up game as p1');
 });
 Cypress.Commands.add('signupOpponent', (username, password) => {
   return new Cypress.Promise((resolve, reject) => {
@@ -119,6 +113,7 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
         if (jwres.statusCode !== 200) {
           return reject(new Error('Failed to sign up via command'));
         }
+        // cy.log(`Signed up opponent ${username}`);
         return resolve(res);
       }
     );
@@ -126,9 +121,11 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
 });
 Cypress.Commands.add('signupPlayer', (username, password) => {
   cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSignup', { username, password });
+  cy.log(`Signed up player ${username}`);
 });
 Cypress.Commands.add('loginPlayer', (username, password) => {
   cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestLogin', { username, password });
+  cy.log(`Logged in as player ${username}`);
 });
 Cypress.Commands.add('createGameOpponent', (name) => {
   return new Cypress.Promise((resolve, reject) => {
@@ -161,6 +158,7 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
       },
       function handleResponse(res, jwres) {
         if (jwres.statusCode === 200) {
+          // cy.log(`Subscribed opponent to game ${id}`);
           return resolve();
         }
         return reject(new Error('error subscribing'));
@@ -177,6 +175,7 @@ Cypress.Commands.add('readyOpponent', (id) => {
       },
       function handleResponse(res, jwres) {
         if (jwres.statusCode === 200) {
+          // cy.log(`Finished readying up as opponent for game ${id}`);
           return resolve();
         }
         return reject(new Error('error readying up opponent'));
