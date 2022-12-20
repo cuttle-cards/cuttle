@@ -6,7 +6,7 @@ module.exports = {
   stories: ['../stories/**/*.stories.@(js|jsx|mdx|ts|tsx)'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],
   framework: '@storybook/vue',
-  staticDirs: ['../src/img'],
+  staticDirs: ['../public/img'],
   webpackFinal: async (config, { configType }) => {
     // Use Sass loader for vuetify components
     config.module.rules.push({

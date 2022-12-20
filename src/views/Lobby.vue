@@ -2,7 +2,7 @@
   <v-container id="lobby-wrapper">
     <v-row>
       <v-col sm="3" md="1" class="my-auto">
-        <img id="logo" alt="Cuttle logo" src="../img/logo.png" />
+        <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
       </v-col>
       <v-col md="8" class="my-auto">
         <h1>
