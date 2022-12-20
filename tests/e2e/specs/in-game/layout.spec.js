@@ -1,16 +1,10 @@
-import {
-  setupGameAsP0,
-  setupGameAsP1,
-  assertGameState,
-  playOutOfTurn,
-  Card,
-} from '../../support/helpers';
+import { assertGameState, playOutOfTurn, Card } from '../../support/helpers';
 
 const { _ } = Cypress;
 
 describe('Game View Layout', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   it('Hides navbar on gameview page', () => {
@@ -180,7 +174,7 @@ describe('Game View Layout', () => {
 
 describe('Four dialogs layout', () => {
   beforeEach(() => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
   });
 
   it('Four dialogs', () => {
