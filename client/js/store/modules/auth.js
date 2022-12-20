@@ -24,7 +24,7 @@ async function handleLogin(context, username, password, signup = false) {
     await reconnectSockets();
     // If the response was successful, the user is logged in
     context.commit('authSuccess', username);
-    if (typeof data.email !== 'undefined') {
+    if (data.email !== 'undefined') {
       context.commit('setEmail', data.email);
     }
     return;
@@ -144,7 +144,7 @@ export default {
           credentials: 'include',
         });
         const status = await response.json();
-        const { authenticated, username, gameId, email } = status;
+        const { authenticated, username, gameId } = status;
 
         // If the user is not authenticated, we're done here
         if (!authenticated) {
@@ -175,10 +175,6 @@ export default {
         //     - `Game.publish` is called
         if (isGame && gameId) {
           await context.dispatch('requestReauthenticate', { username });
-        }
-
-        if (typeof email !== 'undefined') {
-          context.commit('setEmail', email);
         }
         return;
       } catch (err) {

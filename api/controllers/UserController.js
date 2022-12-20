@@ -96,12 +96,8 @@ module.exports = {
 
   submitEmail: async function (req, res) {
     try {
-      const { username, email } = req.body;
-      const requestingUser = await User.findOne({ id: req.session.usr });
-      if (requestingUser.username !== username) {
-        return res.forbidden({ message: 'You can only change your own email address' });
-      }
-      const updatedUser = await User.updateOne({ username: username }).set({ email: email });
+      const { email } = req.body;
+      const updatedUser = await User.updateOne({ id: req.session.usr }).set({ email });
       if (updatedUser) {
         return res.ok(updatedUser.id);
       }
@@ -112,7 +108,7 @@ module.exports = {
   },
 
   status: async function (req, res) {
-    const { usr: id, loggedIn: authenticated, game: gameId, email: email } = req.session;
+    const { usr: id, loggedIn: authenticated, game: gameId } = req.session;
 
     // User is not logged in, get out of here
     if (!authenticated || !id) {
@@ -132,7 +128,6 @@ module.exports = {
         // We only want to set the gameId if this is a valid game with 2 players
         // TODO: Refactor this when we add session handling for the lobby
         gameId: game && game.players.length === 2 ? gameId : null,
-        email,
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out

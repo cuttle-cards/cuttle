@@ -2,16 +2,18 @@
   <v-container class="profile">
     <h1>{{ username }} Profile Settings</h1>
     <br />
-    <v-text-field
-      v-model="email"
-      outlined
-      :dense="$vuetify.breakpoint.mdAndDown ? true : false"
-      hint="email"
-      data-cy="email"
-      autocomplete="email"
-      placeholder="email"
-      @keydown.enter.prevent="submitEmail"
-    />
+    <v-form>
+      <v-text-field
+        v-model="email"
+        outlined
+        :dense="$vuetify.breakpoint.mdAndDown ? true : false"
+        hint="email"
+        data-cy="email"
+        autocomplete="email"
+        placeholder="email"
+        @keydown.enter.prevent="submitEmail"
+      />
+    </v-form>
     <v-snackbar
       v-model="showSnackBar"
       :color="colorValue"
