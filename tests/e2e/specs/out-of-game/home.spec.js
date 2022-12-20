@@ -293,6 +293,35 @@ describe('Home - Create Game', () => {
       });
     assertSnackbarError('Game name cannot be blank', 'newgame');
   });
+  it.only('Limits the length of game name', () => {
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+    // 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nunc velit, lobortis vel ultrices et, consequat quis nibh. Etiam ornare commodo faucibus.'
+
+    cy.get('[data-cy=create-game-ranked-switch]')
+      .should('not.be.checked')
+      .click({ force: true }) // Force to click hidden input inside switch
+      .should('be.checked');
+
+    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+    cy.get('[data-cy=game-list-item-name]').first().should('have.text', ' Lorem ipsum dolor sit ');
+    // Test store
+    // cy.window()
+    //   .its('cuttle.app.$store.state.gameList.games')
+    //   .then((games) => {
+    //     expect(games.gameName).to('have.text', 'Lorem ipsum dolor sit');
+    // expect(games[0].numPlayers).to.eq(
+    //   0,
+    //   'Expect no players in gameLists game in store, but found some'
+    // );
+    // expect(games[0].status).to.eq(true, 'Expect game to have status true');
+    // expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
+    // });
+  });
   it('Removes a game when both players are ready', () => {
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Sign up 2 users and subscribe them to game

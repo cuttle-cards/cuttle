@@ -10,10 +10,13 @@ module.exports = function (req, res, next) {
   if (req.body.hasOwnProperty('gameName')) {
     if (typeof req.body.gameName === 'string') {
       // Could add restrictions on allowable game names
-      if (req.body.gameName.length > 0) {
+      if (req.body.gameName.length > 20) {
+        return res.badRequest({ message: 'Game name cannot be longer than 20 characters' });
+      } else if (res.body.gameName.length < 0) {
+        return res.badRequest({ message: 'Game name cannot be blank' });
+      } else if (req.body.gameName.length > 0 && req.body.gameName.length <= 20) {
         return next();
       }
-      return res.badRequest({ message: 'Game name cannot be blank' });
     }
   }
   // User not allowed
