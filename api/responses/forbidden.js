@@ -28,7 +28,7 @@
 
 module.exports = function forbidden(optionalData) {
   // Get access to `req` and `res`
-  const { req: _req, res } = this;
+  const { res } = this;
 
   // Define the status code to send in the response.
   const statusCodeToSet = 403;
