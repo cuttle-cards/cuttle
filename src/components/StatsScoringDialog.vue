@@ -2,7 +2,7 @@
   <v-dialog v-model="show">
     <!-- Activator -->
     <template #activator="{ props }">
-      <v-btn color="primary" text class="mb-2" v-bind="props">
+      <v-btn color="primary" class="mb-2" v-bind="props" variant="plain">
         <span v-if="showButtonText">How are ranks determined?</span>
         <v-icon class="ml-1" icon="mdi-information-outline" />
       </v-btn>
