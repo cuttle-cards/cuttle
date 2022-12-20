@@ -3,54 +3,6 @@ export const validPassword = 'passwordLongerThanEight';
 export const opponentUsername = 'definitelyNotTheGovernment6969';
 export const opponentPassword = 'deviousTrickery';
 
-/**
- * Signs up two players, navigates home, creates game, subscribes, ready's up
- * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
- */
-export function setupGameAsP0(alreadyAuthenticated = false, isRanked = false) {
-  if (!alreadyAuthenticated) {
-    cy.wipeDatabase();
-    cy.visit('/');
-    cy.signupPlayer(username, validPassword);
-  }
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
-    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
-    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
-    cy.wrap(gameSummary).as('gameSummary');
-    cy.get('[data-cy=ready-button]').click();
-    if (!alreadyAuthenticated) {
-      cy.signupOpponent(opponentUsername, opponentPassword);
-    }
-    cy.subscribeOpponent(gameSummary.gameId);
-    cy.readyOpponent();
-    // Asserting 5 cards in players hand confirms game has loaded
-    cy.get('#player-hand-cards .player-card').should('have.length', 5);
-    cy.log('Finished setting up game as p0');
-  });
-}
-
-export function setupGameAsP1(alreadyAuthenticated = false, isRanked = false) {
-  if (!alreadyAuthenticated) {
-    cy.wipeDatabase();
-    cy.visit('/');
-    cy.signupPlayer(username, validPassword);
-  }
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
-    if (!alreadyAuthenticated) {
-      cy.signupOpponent(opponentUsername, opponentPassword);
-    }
-    cy.subscribeOpponent(gameSummary.gameId);
-    cy.readyOpponent();
-    cy.window().its('cuttle.app.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
-    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
-    cy.wrap(gameSummary).as('gameSummary');
-    cy.get('[data-cy=ready-button]').click();
-    // Asserting 6 cards in players hand confirms game has loaded
-    cy.get('#player-hand-cards .player-card').should('have.length', 6);
-    cy.log('Finished setting up game as p1');
-  });
-}
-
 export function hasValidSuitAndRank(card) {
   if (!Object.prototype.hasOwnProperty.call(card, 'rank')) return false;
   if (!Object.prototype.hasOwnProperty.call(card, 'suit')) return false;
