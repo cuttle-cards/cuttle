@@ -1,15 +1,8 @@
-import {
-  setupGameAsP0,
-  setupGameAsP1,
-  assertGameState,
-  assertSnackbarError,
-  Card,
-  SnackBarError,
-} from '../../support/helpers';
+import { assertGameState, assertSnackbarError, Card, SnackBarError } from '../../support/helpers';
 
 describe('Playing SEVENS', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   it('Plays points from a seven', () => {
@@ -253,7 +246,7 @@ describe('Playing SEVENS', () => {
     });
 
     it('Plays jack from a seven - special case - final card in deck is a jack with with no points on the board', () => {
-      setupGameAsP1();
+      cy.setupGameAsP1();
       cy.loadGameFixture({
         p0Hand: [],
         p0Points: [],
@@ -775,7 +768,7 @@ describe('Playing SEVENS', () => {
 }); // End playing sevens describe()
 describe('Opponent playing SEVENS', () => {
   beforeEach(() => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
   });
   it('Opponent plays points from seven', () => {
     cy.loadGameFixture({
@@ -892,7 +885,7 @@ describe('Opponent playing SEVENS', () => {
     });
   });
   it('Plays jack from a seven - special case - opponent plays seven into double jacks with no points to steal', () => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -1440,7 +1433,7 @@ describe('Opponent playing SEVENS', () => {
 
 describe('Playing sevens at the end of the deck', () => {
   it('Plays the last card for points from a seven', () => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
     cy.loadGameFixture({
       p0Hand: [],
       p0Points: [],
@@ -1466,7 +1459,7 @@ describe('Playing sevens at the end of the deck', () => {
   });
 
   it('Plays the top card of the deck when there are two cards left', () => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -1504,7 +1497,7 @@ describe('Playing sevens at the end of the deck', () => {
   });
 
   it('Plays the 2nd card in the deck when there are two cards left', () => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
