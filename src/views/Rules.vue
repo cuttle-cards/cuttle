@@ -2,7 +2,7 @@
   <div class="pa-4">
     <v-container>
       <v-row>
-        <img id="logo" alt="Cuttle logo" src="../img/logo.png" height="20vh" class="mb-8" />
+        <img id="logo" alt="Cuttle logo" src="/img/logo.png" height="20vh" class="mb-8" />
       </v-row>
 
       <!-- Rules -->
