@@ -764,7 +764,7 @@ describe('Playing SEVENS', () => {
         topCard: Card.TWO_OF_SPADES,
       });
     }); //End playing NINE on jacks from a seven
-    it.only('Plays seven oneOff and selects card in hand', () => {
+    it('Plays seven oneOff and selects card in hand', () => {
       cy.setupGameAsP0();
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.TWO_OF_CLUBS],
