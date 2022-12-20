@@ -764,7 +764,7 @@ describe('Playing SEVENS', () => {
         topCard: Card.TWO_OF_SPADES,
       });
     }); //End playing NINE on jacks from a seven
-    it('Plays seven oneOff and selects card in hand', () => {
+    it('Disables move choices when selecting card in hand while resolving seven', () => {
       cy.setupGameAsP0();
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.TWO_OF_CLUBS],
@@ -795,7 +795,7 @@ describe('Playing SEVENS', () => {
       cy.get('[data-move-choice=targetedOneOff]')
         .should('have.class', 'v-card--disabled')
         .contains('You must play one of the top two cards from the deck');
-    }); // End clear seven targeted one off
+    }); // End disables moves choices
   }); // End player seven targeted one-off describe
 }); // End playing sevens describe()
 describe('Opponent playing SEVENS', () => {
