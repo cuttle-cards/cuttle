@@ -32,6 +32,7 @@ module.exports = defineConfig({
       return config;
     },
   },
+  projectId: 'i8bxr8',
   numTestsKeptInMemory: 25,
   // https://docs.cypress.io/guides/references/configuration#Videos
   video: false,
