@@ -8,13 +8,12 @@
     </template>
     <!-- Menu -->
     <v-list id="game-menu">
-      <v-list-item>
-        <rules-dialog>
-          <template #activator> Rules </template>
-        </rules-dialog>
+      <v-list-item data-cy="rules-open" @click.stop="showRulesDialog = true">
+          Rules
+          <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
       </v-list-item>
       <!-- Concede Dialog (Initiate + Confirm) -->
-      <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog"> Concede </v-list-item>
+      <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">Concede</v-list-item>
       <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
         Request Stalemate
       </v-list-item>
@@ -52,6 +51,7 @@ export default {
     return {
       showGameMenu: false,
       showConcedeDialog: false,
+      showRulesDialog: false,
       showStalemateDialog: false,
       loading: false,
     };

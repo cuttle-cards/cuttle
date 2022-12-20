@@ -1,9 +1,9 @@
 <template>
-  <v-dialog v-model="show">
-    <template #activator="{ props }">
+  <v-dialog v-model="adaptedShow">
+    <template v-if="!hideActivator" #activator="{ props }">
       <span v-bind="props">
         <slot name="activator">
-          <v-btn id="rules-button" color="primary" outlined :small="$vuetify.display.mdAndDown">
+          <v-btn class="rules-button" color="primary" variant="outlined" :small="$vuetify.display.mdAndDown">
             Rules
           </v-btn>
         </slot>
@@ -12,7 +12,7 @@
     <v-card>
       <v-card-title class="d-flex justify-space-between">
         <h1>Rules of Cuttle</h1>
-        <v-btn icon @click="show = false">
+        <v-btn icon @click="close">
           <v-icon icon="mdi-close" large />
         </v-btn>
       </v-card-title>
@@ -192,7 +192,7 @@
         </section>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn variant="outlined" color="primary" @click="show = false"> Got It! </v-btn>
+        <v-btn variant="outlined" color="primary" @click="close">Got It!</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -201,15 +201,38 @@
 <script>
 export default {
   name: 'RulesDialog',
+  props: {
+    show: {
+      type: Boolean,
+      default: false,
+    },
+    hideActivator: {
+      type: Boolean,
+      default: false,
+    }
+  },
   data() {
     return {
-      show: false,
+      internalShow: false,
     };
+  },
+  computed: {
+    adaptedShow() {
+      return this.hideActivator ?
+        this.show :
+        this.internalShow;
+    },
+  },
+  methods: {
+    close() {
+      this.internalShow = false;
+      this.$emit('close');
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
-#rules-button {
+.rules-button {
   width: 100%;
 }
 </style>
