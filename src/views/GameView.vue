@@ -131,7 +131,6 @@
         <div id="field-left">
           <v-card
             id="deck"
-            img="/img/cards/bg-deck.png"
             :class="{ 'reveal-top-two': resolvingSeven }"
             @click="drawCard"
           >
@@ -1217,7 +1216,6 @@ export default {
   }
   & #deck,
   & #scrap {
-    background-image: url('/img/game/bg-scrap.png');
     background-size: cover;
     position: relative;
     margin: 10px;
@@ -1234,6 +1232,12 @@ export default {
       max-width: 300px;
       z-index: 1;
     }
+  }
+  & #deck {
+    background-image: url('/img/game/bg-deck.png');
+  }
+  & #scrap {
+    background-image: url('/img/game/bg-scrap.png');
   }
 }
 #field-center {
