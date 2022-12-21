@@ -52,7 +52,7 @@
   "main": "app.js",
   "private": true,
   "scripts": {
-    "start:dev": "vite",
+    "start:dev": "vite --host",
     "start:build": "vite build",
     "start:serve": "vite preview",
     "start:server": "node app.js",
