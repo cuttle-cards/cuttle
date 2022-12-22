@@ -2,8 +2,8 @@
   <v-overlay
     id="move-choice-overlay"
     class="d-flex flex-column justify-center align-center"
-    :value="value"
-    @click.native="$emit('cancel')"
+    :modelValue="modelValue"
+    @click="$emit('cancel')"
   >
     <!-- Cancel button -->
     <div id="close-wrapper" class="d-flex justify-end my-4">
