@@ -285,7 +285,7 @@ function assertDomMatchesFixture(pNum, fixture) {
  */
 function assertStoreMatchesFixture(fixture) {
   cy.window()
-    .its('cuttle.app.$store.state.game')
+    .its('cuttle.app.config.globalProperties.$store.state.game')
     .then((game) => {
       // Player 0
       expect(cardListsMatch(game.players[0].hand, fixture.p0Hand)).to.eq(

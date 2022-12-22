@@ -70,7 +70,7 @@ describe('Home - Game List', () => {
   });
   it('Joins an open game', () => {
     cy.window()
-      .its('cuttle.app.$store.state.game')
+      .its('cuttle.app.config.globalProperties.$store.state.game')
       .then((gameState) => {
         expect(gameState.id).to.eq(null);
       });
@@ -78,7 +78,7 @@ describe('Home - Game List', () => {
     cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
     cy.hash().should('contain', '#/lobby');
     cy.window()
-      .its('cuttle.app.$store.state.game')
+      .its('cuttle.app.config.globalProperties.$store.state.game')
       .then((gameState) => {
         assertSuccessfulJoin(gameState);
       });
@@ -97,7 +97,7 @@ describe('Home - Game List', () => {
       // Should have redirected to lobby page and updated store
       cy.hash().should('contain', '#/lobby');
       cy.window()
-        .its('cuttle.app.$store.state.game')
+        .its('cuttle.app.config.globalProperties.$store.state.game')
         .then((gameState) => {
           // expect(gameState.gameId).to.not.eq(null);
           assertSuccessfulJoin(gameState);
@@ -194,7 +194,7 @@ describe('Home - Create Game', () => {
       .should('include.text', '0 / 2 players');
     // Test store
     cy.window()
-      .its('cuttle.app.$store.state.gameList.games')
+      .its('cuttle.app.config.globalProperties.$store.state.gameList.games')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect 0 players in game in store');
@@ -219,7 +219,7 @@ describe('Home - Create Game', () => {
       .should('include.text', '0 / 2 players');
     // Test store
     cy.window()
-      .its('cuttle.app.$store.state.gameList.games')
+      .its('cuttle.app.config.globalProperties.$store.state.gameList.games')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
@@ -244,7 +244,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
     // Test store
     cy.window()
-      .its('cuttle.app.$store.state.gameList.games')
+      .its('cuttle.app.config.globalProperties.$store.state.gameList.games')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
@@ -275,7 +275,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=game-list-item]').should('have.length', 0); // No games appear
     // Test Store
     cy.window()
-      .its('cuttle.app.$store.state')
+      .its('cuttle.app.config.globalProperties.$store.state')
       .then((state) => {
         expect(state.game.gameId).to.eq(undefined, 'Store game should not have id');
         expect(state.gameList.games.length).to.eq(0, 'Game list should be empty in store, but is not');
