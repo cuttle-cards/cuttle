@@ -48,7 +48,7 @@ export default {
     Card,
   },
   props: {
-    value: {
+    modelValue: {
       type: Boolean,
       required: true,
     },

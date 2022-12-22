@@ -32,7 +32,7 @@
     </v-overlay>
     <move-choice-overlay
       v-if="selectedCard || cardSelectedFromDeck"
-      :value="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
+      :modelValue="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
       :selected-card="selectedCard || cardSelectedFromDeck"
       :is-players-turn="isPlayersTurn"
       :opponent-queen-count="opponentQueenCount"
