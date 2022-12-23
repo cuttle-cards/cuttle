@@ -252,6 +252,23 @@ describe('Home - Create Game', () => {
         expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
       });
   });
+  it('Limits the length of the game name for new ranked game', () => {
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('This game name needs to be more than 50 characters in length');
+
+    cy.get('[data-cy=create-game-ranked-switch]')
+      .should('not.be.checked')
+      .find('.v-selection-control__input input')
+      .click({ force: true }) // Force to click hidden input inside switch
+      .should('be.checked');
+
+    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+    assertSnackbarError('Game name must contain fewer than 50 characters', 'newgame');
+  });
 
   it('Cancels create game dialog', () => {
     cy.get('[data-cy=create-game-btn]').click();
