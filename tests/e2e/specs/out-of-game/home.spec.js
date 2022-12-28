@@ -267,7 +267,7 @@ describe('Home - Create Game', () => {
       .should('be.checked');
 
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
-    assertSnackbarError('Game name must cannot exceed 50 characters', 'newgame');
+    assertSnackbarError('Game name cannot exceed 50 characters', 'newgame');
   });
 
   it('Cancels create game dialog', () => {
