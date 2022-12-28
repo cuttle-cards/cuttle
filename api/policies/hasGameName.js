@@ -13,7 +13,7 @@ module.exports = function (req, res, next) {
       if (!req.body.gameName.length) {
         return res.badRequest({ message: 'Game name cannot be blank' });
       } else if (req.body.gameName.length > 50) {
-        return res.badRequest({ message: 'Game name must contain fewer than 50 characters' })
+        return res.badRequest({ message: 'Game name must cannot exceed 50 characters' })
       }
       return next();
     }
