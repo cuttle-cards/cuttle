@@ -156,9 +156,10 @@ function pointsToWin(kingCount) {
 }
 
 export function assertSnackbarError(message, snackName = 'game') {
-  cy.get(`[data-cy=${snackName}-snackbar] .v-snack__wrapper`)
+  cy.get(`[data-cy=${snackName}-snackbar] .v-snackbar__wrapper`)
     .should('be.visible')
-    .should('have.class', 'error')
+    .should('have.class', 'bg-error')
+    .find(`.v-snackbar__content`)
     .should('contain', message)
     .get('[data-cy=close-snackbar]')
     .click();
