@@ -6,12 +6,18 @@ module.exports = {
   root: true,
   env: {
     es2021: true,
+    node: true,
   },
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  extends: ['eslint:recommended', 'prettier'],
+  extends: [
+    'eslint:recommended',
+    'prettier',
+    'plugin:vue/base',
+    'plugin:vuetify/base', // TODO: remove after migration
+  ],
   plugins: ['cypress', 'jest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
   rules: {
@@ -64,17 +70,15 @@ module.exports = {
       globals: {
         _: true,
         sails: true,
-      },
-      rules: {
-        'no-undef': 'warn',
-        'no-prototype-builtins': 'warn',
-      },
-      globals: {
         Card: true,
         Season: true,
         Match: true,
         User: true,
         Game: true,
+      },
+      rules: {
+        'no-undef': 'warn',
+        'no-prototype-builtins': 'warn',
       },
     },
     // Jest specific rules
