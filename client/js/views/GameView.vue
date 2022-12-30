@@ -1224,6 +1224,11 @@ export default {
     margin-top: 1rem;
     margin-left: 1.5rem;
   }
+
+  #player-point-counter {
+    min-width: 50px;
+  }
+
   .point-counter {
     //width: 25%;
     height: 275px;

@@ -1,7 +1,10 @@
 <template>
-  <div class="point-counter__wrapper elevation-10">
+  <div class="point-counter__wrapper"
+       :style="{'clip-path': clipPath}"
+  >
     <div
       class="d-flex flex-column justify-space-around align-center point-counter"
+
     >
       <div class="point-counter__current-points">{{ currentPoints }}</div>
       <div class="point-counter__total-points">{{ pointsToWin }}</div>
@@ -50,6 +53,11 @@ export default {
     currentPoints() {
       return this.isPlayer ? this.playerPointTotal : this.opponentPointTotal;
     },
+    clipPath() {
+      return this.isPlayer ?
+        'polygon(0 0, 100% 0, 100% 90%, 50% 95%, 0 90%)'
+        : 'polygon(0% 100%, 100% 100%, 100% 5%, 50% 0, 0 5%)';
+    },
   },
 };
 </script>
@@ -73,7 +81,6 @@ div {
   font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
   padding: 0 0.25rem;
   text-shadow: 1px 1px 5px #111111;
-  clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%);
 }
 
 .point-counter__current-points {
