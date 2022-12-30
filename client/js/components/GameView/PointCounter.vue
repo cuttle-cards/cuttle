@@ -1,7 +1,7 @@
 <template>
-  <div class="point-counter__wrapper">
+  <div class="point-counter__wrapper elevation-10">
     <div
-      class="d-flex flex-column justify-start align-center rounded point-counter"
+      class="d-flex flex-column justify-space-around align-center point-counter"
     >
       <div class="point-counter__current-points">{{ currentPoints }}</div>
       <div class="point-counter__total-points">{{ pointsToWin }}</div>
@@ -55,11 +55,16 @@ export default {
 </script>
 
 <style scoped>
+
+div {
+  margin: 0;
+  padding: 0;
+}
+
 .point-counter__wrapper {
-  filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
-  background-color: rgba(241, 200, 160, .75);
+  background-color: rgba(241, 200, 160, 0.65);
   border: 2px solid rgb(241, 200, 160);
-  clip-path: polygon(0 0, 100% 0, 100% 93%, 50% 100%, 0 93%);
+  width: 32px;
 }
 
 .point-counter {
@@ -68,13 +73,14 @@ export default {
   font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
   padding: 0 0.25rem;
   text-shadow: 1px 1px 5px #111111;
-  /*clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%);*/
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%);
 }
 
 .point-counter__current-points {
   padding-bottom: 0;
   border-bottom: 2px solid #f3f3f3;
   font-size: 1.5em;
+  box-shadow: 0 4px 4px -4px black;
 }
 
 .point-counter__total-points {
@@ -82,7 +88,6 @@ export default {
 }
 .point-counter__icon {
   text-shadow: 1px 1px 5px #111111;
-  margin-top: 1.5rem;
 }
 
 @media screen and (min-width: 1024px) {
@@ -91,9 +96,14 @@ export default {
   }
   .point-counter__current-points {
     font-size: 3.5em;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
   .point-counter__total-points {
-    font-size: 2em;
+    font-size: 2.5em;
+    margin-top: .5rem;
+    margin-bottom: 1rem;
+
   }
 }
 </style>

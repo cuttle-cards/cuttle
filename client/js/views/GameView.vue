@@ -117,16 +117,6 @@
         </div>
       </div>
 
-      <!-- Opponent Score -->
-      <h3 id="opponent-score" class="mb-3">
-        <span>POINTS: {{ opponentPointTotal }}</span>
-        <score-goal-tool-tip
-          :king-count="opponentKingCount"
-          :points-to-win="opponentPointsToWin"
-          :is-player="false"
-        />
-      </h3>
-
       <!-- Draw / Scrap Piles -->
       <div class="deck-container">
         <div id="field-left">
@@ -305,12 +295,6 @@
       </div>
 
       <h3 id="player-score">
-        <span>POINTS: {{ playerPointTotal }}</span>
-        <score-goal-tool-tip
-          :king-count="playerKingCount"
-          :points-to-win="playerPointsToWin"
-          :is-player="true"
-        />
         <span
           id="turn-indicator"
           class="text--darken-1 ml-2"
@@ -1241,7 +1225,7 @@ export default {
     margin-left: 1.5rem;
   }
   .point-counter {
-    width: 25%;
+    //width: 25%;
     height: 275px;
   }
 }
