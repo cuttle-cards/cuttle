@@ -1,13 +1,13 @@
 <template>
   <div
-    class="d-flex flex-column justify-start align-center elevation-10 rounded point-counter"
+    class="d-flex flex-column justify-start align-center elevation-10 rounded point-counter elevation-10"
   >
     <div class="point-counter__current-points">{{ currentPoints }}</div>
     <div class="point-counter__total-points">{{ pointsToWin }}</div>
     <v-menu :top="isPlayer" :bottom="!isPlayer" offset-y>
       <template #activator="{ on, attrs }">
         <v-btn class="mb-2" x-small icon v-bind="attrs" v-on="on">
-          <v-icon color="white" small> mdi-information </v-icon>
+          <v-icon color="white" medium> mdi-information </v-icon>
         </v-btn>
       </template>
       <v-list class="score-goal-explanation">
@@ -55,12 +55,13 @@ export default {
 <style scoped>
 .point-counter {
   font-weight: bold;
-  background-color: rgba(241, 200, 160, 0.15);
-  border: 1px solid #f3f3f3;
-  color: #f3f3f3;
+  background-color: rgba(241, 200, 160, 0.5);
+  border: 1px solid rgba(241, 200, 160);
+  color: #111111;
   font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
   padding: 0 0.25rem;
-  text-shadow: 1px 1px #111111;
+  text-shadow: 1px 1px rgba(241, 200, 160);
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
 }
 
 .point-counter__current-points {
@@ -73,6 +74,14 @@ export default {
 }
 
 @media screen and (min-width: 1024px) {
-
+  .point-counter {
+    padding: 0 0.5rem;
+  }
+  .point-counter__current-points {
+    font-size: 3.5em;
+  }
+  .point-counter__total-points {
+    font-size: 2em;
+  }
 }
 </style>

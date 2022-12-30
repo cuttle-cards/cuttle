@@ -178,21 +178,24 @@
         </div>
       </div>
 
+      <!--    Point Counters     -->
       <div class="point-container">
-        <point-counter
-          id="opponent-point-counter"
-          class="point-container point-counter"
-          :king-count="opponentKingCount"
-          :points-to-win="opponentPointsToWin"
-          :is-player="false"
-        />
-        <point-counter
-          id="player-point-counter"
-          class="point-container point-counter"
-          :king-count="playerKingCount"
-          :points-to-win="playerPointsToWin"
-          :is-player="true"
-        />
+        <div id="point-counter-field">
+          <point-counter
+            id="opponent-point-counter"
+            class="point-container point-counter"
+            :king-count="opponentKingCount"
+            :points-to-win="opponentPointsToWin"
+            :is-player="false"
+          />
+          <point-counter
+            id="player-point-counter"
+            class="point-container point-counter"
+            :king-count="playerKingCount"
+            :points-to-win="playerPointsToWin"
+            :is-player="true"
+          />
+        </div>
       </div>
       <!-- Field -->
       <div class="field-container">
@@ -1213,18 +1216,34 @@ export default {
 
 .point-container {
   grid-area: point-counter;
+}
+
+#point-counter-field {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  margin-top: .5rem;
-  margin-left: .25rem;
+  margin-top: 1.25rem;
+  margin-left: 0.5rem;
 }
 
 #player-point-counter {
   margin-top: 2rem;
 }
+
 .point-counter {
-  width: 25%;
+  width: 30%;
+}
+
+@media screen and (min-width: 1024px) {
+  #point-counter-field {
+    height: 100%;
+    margin-top: 0;
+    margin-left: 1.5rem;
+  }
+  .point-counter {
+    width: 25%;
+    height: 30%;
+  }
 }
 
 #field-left {
