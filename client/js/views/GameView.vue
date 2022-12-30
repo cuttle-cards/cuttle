@@ -1237,12 +1237,12 @@ export default {
 @media screen and (min-width: 1024px) {
   #point-counter-field {
     height: 100%;
-    margin-top: 0;
+    margin-top: 1rem;
     margin-left: 1.5rem;
   }
   .point-counter {
     width: 25%;
-    height: 30%;
+    height: 275px;
   }
 }
 
