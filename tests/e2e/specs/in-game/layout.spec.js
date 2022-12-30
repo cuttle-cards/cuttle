@@ -7,7 +7,7 @@ describe('Game View Layout', () => {
     cy.setupGameAsP0();
   });
 
-  it('Hides navbar on gameview page', () => {
+  it.skip('Hides navbar on gameview page', () => {
     cy.get('[data-cy=nav-drawer]').should('not.be.visible');
   });
 
@@ -16,7 +16,7 @@ describe('Game View Layout', () => {
     cy.get('[data-cy=player-username]').should('be.visible');
   });
 
-  it('Three dialogs', () => {
+  it.skip('Three dialogs', () => {
     // Set Up
     cy.loadGameFixture({
       p0Hand: [Card.THREE_OF_CLUBS],

@@ -64,7 +64,7 @@ describe('Stats Page Error States', () => {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it('Displays Headers, Cards, and Table', () => {
+  it.skip('Displays Headers, Cards, and Table', () => {
     const [seasonOne] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
     cy.get('[data-cy=season-start-date').should('contain', dayjs(seasonOne.startTime).format('YYYY/MM/DD'));
@@ -125,7 +125,7 @@ describe('Stats Page', () => {
     cy.get('[data-win-rate=Player3-week-total]').should('contain', '9 Total');
   });
 
-  it('Filters table to display wins, points, or both', () => {
+  it.skip('Filters table to display wins, points, or both', () => {
     // 16 columns: username, rank, total, + 13 weeks
     cy.get('th').should('have.length', 16);
     // Switch to points only
@@ -144,7 +144,7 @@ describe('Stats Page', () => {
     cy.get("[points-1='Player1']").should('not.exist');
   });
 
-  it('Filters table to show selected weeks', () => {
+  it.skip('Filters table to show selected weeks', () => {
     // 16 columns: username, rank, total, 13 weeks
     cy.get('th').should('have.length', 16);
     // Total counts across all weeks
@@ -172,7 +172,7 @@ describe('Stats Page', () => {
     cy.get('[data-week-total=Player1]').should('contain', 'W: 7, P: 9');
   });
 
-  it('Selects different seasons to show their results', () => {
+  it.skip('Selects different seasons to show their results', () => {
     // Three award cards for Clubs 2022
     cy.get('[data-tournament]').should('have.length', 3);
     // Switch season to diamonds 2022
@@ -193,7 +193,7 @@ describe('Stats Page', () => {
     cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 4');
   });
 
-  it('Selects season that should not be available', () => {
+  it.skip('Selects season that should not be available', () => {
     cy.get('[data-cy=season-select]').click({ force: true });
     cy.get('[role=option]').contains('Future Spades Season').should('not.exist');
   });

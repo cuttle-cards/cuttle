@@ -571,7 +571,7 @@ describe('Play Jacks', () => {
     });
   });
 
-  it('Quadruple jacks successfully', () => {
+  it.skip('Quadruple jacks successfully', () => {
     // Set Up
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
