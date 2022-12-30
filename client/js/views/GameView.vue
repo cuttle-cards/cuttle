@@ -165,11 +165,7 @@
               </div>
             </template>
           </v-card>
-          <point-counter
-            :king-count="opponentKingCount"
-            :points-to-win="opponentPointsToWin"
-            :is-player="false"
-          />
+
           <scrap-dialog :scrap="scrap">
             <template #activator>
               <div id="scrap" class="d-flex flex-column align-center">
@@ -179,14 +175,25 @@
               </div>
             </template>
           </scrap-dialog>
-          <point-counter
-            :king-count="playerKingCount"
-            :points-to-win="playerPointsToWin"
-            :is-player="true"
-          />
         </div>
       </div>
 
+      <div class="point-container">
+        <point-counter
+          id="opponent-point-counter"
+          class="point-container point-counter"
+          :king-count="opponentKingCount"
+          :points-to-win="opponentPointsToWin"
+          :is-player="false"
+        />
+        <point-counter
+          id="player-point-counter"
+          class="point-container point-counter"
+          :king-count="playerKingCount"
+          :points-to-win="playerPointsToWin"
+          :is-player="true"
+        />
+      </div>
       <!-- Field -->
       <div class="field-container">
         <div id="field" class="d-flex justify-center align-center p-2 mx-auto">
@@ -1128,8 +1135,8 @@ export default {
   grid-template-rows: 15vh 5vh 55vh 5vh 20vh;
   grid-template-areas:
     'opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand'
-    'decks decks opp-score opp-score opp-score opp-score history history'
-    'decks decks field field field field history history'
+    'decks point-counter opp-score opp-score opp-score opp-score history history'
+    'decks point-counter field field field field history history'
     'player-score player-score player-score player-score player-score player-score player-score player-score'
     'player-hand player-hand player-hand player-hand player-hand player-hand player-hand player-hand';
 }
@@ -1202,6 +1209,22 @@ export default {
 
 .deck-container {
   grid-area: decks;
+}
+
+.point-container {
+  grid-area: point-counter;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-top: .5rem;
+  margin-left: .25rem;
+}
+
+#player-point-counter {
+  margin-top: 2rem;
+}
+.point-counter {
+  width: 25%;
 }
 
 #field-left {
