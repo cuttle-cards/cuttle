@@ -1230,7 +1230,6 @@ export default {
   }
 
   .point-counter {
-    //width: 25%;
     height: 275px;
   }
 }

@@ -1,11 +1,6 @@
 <template>
-  <div class="point-counter__wrapper"
-       :style="{'clip-path': clipPath}"
-  >
-    <div
-      class="d-flex flex-column justify-space-around align-center point-counter"
-
-    >
+  <div class="point-counter__wrapper" :style="{ 'clip-path': clipPath }">
+    <div class="d-flex flex-column justify-space-around align-center point-counter">
       <div class="point-counter__current-points">{{ currentPoints }}</div>
       <div class="point-counter__total-points">{{ pointsToWin }}</div>
       <v-menu :top="isPlayer" :bottom="!isPlayer" offset-y>
@@ -64,11 +59,6 @@ export default {
 
 <style scoped>
 
-div {
-  margin: 0;
-  padding: 0;
-}
-
 .point-counter__wrapper {
   background-color: rgba(241, 200, 160, 0.65);
   border: 2px solid rgb(241, 200, 160);
@@ -84,7 +74,6 @@ div {
 }
 
 .point-counter__current-points {
-  padding-bottom: 0;
   border-bottom: 2px solid #f3f3f3;
   font-size: 1.5em;
   box-shadow: 0 4px 4px -4px black;
@@ -103,14 +92,12 @@ div {
   }
   .point-counter__current-points {
     font-size: 3.5em;
-    margin-bottom: 0;
-    padding-bottom: 0;
   }
+
   .point-counter__total-points {
     font-size: 2.5em;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     margin-bottom: 1rem;
-
   }
 }
 </style>
