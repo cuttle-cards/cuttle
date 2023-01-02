@@ -571,7 +571,7 @@ describe('Play Jacks', () => {
     });
   });
 
-  it.skip('Quadruple jacks successfully', () => {
+  it('Quadruple jacks successfully', () => {
     // Set Up
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
@@ -619,7 +619,7 @@ describe('Play Jacks', () => {
     // Player plays 3rd jack
     cy.get('[data-player-hand-card=11-2]').click();
     cy.get('[data-move-choice=jack]').click();
-    cy.get('[data-opponent-point-card=10-2]').click();
+    cy.get('[data-opponent-point-card=10-2]').click({ force: true });
 
     assertGameState(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
