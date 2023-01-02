@@ -209,7 +209,7 @@ export default {
     hideActivator: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   data() {
     return {
@@ -218,9 +218,7 @@ export default {
   },
   computed: {
     adaptedShow() {
-      return this.hideActivator ?
-        this.show :
-        this.internalShow;
+      return this.hideActivator ? this.show : this.internalShow;
     },
   },
   methods: {
