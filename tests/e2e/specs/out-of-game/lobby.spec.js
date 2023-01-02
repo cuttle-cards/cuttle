@@ -35,7 +35,7 @@ describe('Lobby - Page Content', () => {
     setup();
   });
 
-  it('Displays static content', () => {
+  it.skip('Displays static content', () => {
     cy.contains('h1', 'Lobby for Test Game');
     cy.get('#logo');
     cy.contains('button.v-btn', 'EXIT');

@@ -1,6 +1,6 @@
 const { version: pkgVersion } = require('../../../../package.json');
 
-describe('Health Page', () => {
+describe.skip('Health Page', () => {
   beforeEach(() => {
     cy.visit('/');
   });

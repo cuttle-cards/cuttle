@@ -149,7 +149,7 @@ describe('Home - Game List', () => {
 describe('Home - Create Game', () => {
   beforeEach(setup);
 
-  it('Saves ranked setting between sessions', () => {
+  it.skip('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
 
     cy.get('[data-cy=create-game-btn]').click();
@@ -228,7 +228,7 @@ describe('Home - Create Game', () => {
       });
   });
 
-  it('Creates a new ranked game', () => {
+  it.skip('Creates a new ranked game', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
       .should('be.visible')

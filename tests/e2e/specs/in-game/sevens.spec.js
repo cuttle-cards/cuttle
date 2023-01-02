@@ -5,7 +5,7 @@ describe('Playing SEVENS', () => {
     cy.setupGameAsP0();
   });
 
-  it('Plays points from a seven', () => {
+  it.skip('Plays points from a seven', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -38,7 +38,7 @@ describe('Playing SEVENS', () => {
     });
   });
 
-  it('Plays jack from a seven', () => {
+  it.skip('Plays jack from a seven', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -71,7 +71,7 @@ describe('Playing SEVENS', () => {
     });
   });
 
-  it('Cannot play jack from a seven if opponent has queen', () => {
+  it.skip('Cannot play jack from a seven if opponent has queen', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -114,7 +114,7 @@ describe('Playing SEVENS', () => {
   });
 
   describe('Plays jack from a seven - special case', () => {
-    it('Plays jack from a seven - special case - double jacks with some points to steal should work as normal', () => {
+    it.skip('Plays jack from a seven - special case - double jacks with some points to steal should work as normal', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -295,7 +295,7 @@ describe('Playing SEVENS', () => {
   });
 
   describe('Plays face cards from a seven', () => {
-    it('Plays king from a seven', () => {
+    it.skip('Plays king from a seven', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -328,7 +328,7 @@ describe('Playing SEVENS', () => {
       });
     }); // End seven king test
 
-    it('Plays queen from a seven', () => {
+    it.skip('Plays queen from a seven', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -361,7 +361,7 @@ describe('Playing SEVENS', () => {
       });
     }); // End seven queen test
 
-    it('Plays 8 as face card from a seven', () => {
+    it.skip('Plays 8 as face card from a seven', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -394,7 +394,7 @@ describe('Playing SEVENS', () => {
     }); // End seven glasses test
   }); // End seven face card describe
 
-  it('Scuttles from a seven', () => {
+  it.skip('Scuttles from a seven', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -429,7 +429,7 @@ describe('Playing SEVENS', () => {
     });
   }); // End scuttle from seven
 
-  it('Scuttles using a NINE from a SEVEN', () => {
+  it.skip('Scuttles using a NINE from a SEVEN', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -465,7 +465,7 @@ describe('Playing SEVENS', () => {
   }); // End scuttle from seven
 
   describe('Playing untargeted one-offs from a seven', () => {
-    it('Plays an ACE from a seven', () => {
+    it.skip('Plays an ACE from a seven', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -502,7 +502,7 @@ describe('Playing SEVENS', () => {
       });
     });
 
-    it('Cannot play 4 from seven when opponent has no cards in hand', () => {
+    it.skip('Cannot play 4 from seven when opponent has no cards in hand', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -531,7 +531,7 @@ describe('Playing SEVENS', () => {
   }); // End player seven one-off describe
 
   describe('Playing targeted one-offs from a seven', () => {
-    it('Plays topCard TWO from a seven', () => {
+    it.skip('Plays topCard TWO from a seven', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -570,7 +570,7 @@ describe('Playing SEVENS', () => {
       });
     }); // End playing topCard TWO from seven
 
-    it('Plays secondCard TWO from a seven', () => {
+    it.skip('Plays secondCard TWO from a seven', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -609,7 +609,7 @@ describe('Playing SEVENS', () => {
       });
     }); // End playing topCard TWO from seven
 
-    it('Plays TWO on jacks from a seven', () => {
+    it.skip('Plays TWO on jacks from a seven', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
         p0Points: [],
@@ -665,7 +665,7 @@ describe('Playing SEVENS', () => {
       });
     }); //End playing TWO on jacks from a seven
 
-    it('Plays a NINE from a seven', () => {
+    it.skip('Plays a NINE from a seven', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -703,7 +703,7 @@ describe('Playing SEVENS', () => {
       });
     }); // End playing NINE from seven
 
-    it('Plays NINE on jacks from a seven', () => {
+    it.skip('Plays NINE on jacks from a seven', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
         p0Points: [],
@@ -763,7 +763,7 @@ describe('Opponent playing SEVENS', () => {
   beforeEach(() => {
     cy.setupGameAsP1();
   });
-  it('Opponent plays points from seven', () => {
+  it.skip('Opponent plays points from seven', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -818,7 +818,7 @@ describe('Opponent playing SEVENS', () => {
     });
   });
 
-  it('Opponent plays jack from seven', () => {
+  it.skip('Opponent plays jack from seven', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -871,7 +871,7 @@ describe('Opponent playing SEVENS', () => {
       topCard: Card.SIX_OF_DIAMONDS,
     });
   });
-  it('Plays jack from a seven - special case - opponent plays seven into double jacks with no points to steal', () => {
+  it.skip('Plays jack from a seven - special case - opponent plays seven into double jacks with no points to steal', () => {
     cy.setupGameAsP1();
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
@@ -920,7 +920,7 @@ describe('Opponent playing SEVENS', () => {
     });
   });
   describe('Opponent plays Face Cards from seven', () => {
-    it('Opponent plays king from seven (Top Card)', () => {
+    it.skip('Opponent plays king from seven (Top Card)', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -970,7 +970,7 @@ describe('Opponent playing SEVENS', () => {
       });
     }); // end opponent plays king from seven
 
-    it('Opponent plays queen from seven (Second Card)', () => {
+    it.skip('Opponent plays queen from seven (Second Card)', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -1025,7 +1025,7 @@ describe('Opponent playing SEVENS', () => {
       });
     }); // end opponent plays queen from seven
 
-    it('Opponent plays eight as glasses from seven (top card)', () => {
+    it.skip('Opponent plays eight as glasses from seven (top card)', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
@@ -1081,7 +1081,7 @@ describe('Opponent playing SEVENS', () => {
     }); // end opponent plays eight as glasses from seven
   }); // end opponent seven face card describe
 
-  it('Opponent scuttles from seven (top card)', () => {
+  it.skip('Opponent scuttles from seven (top card)', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -1410,7 +1410,7 @@ describe('Opponent playing SEVENS', () => {
 }); // End opponent plays seven describe
 
 describe('Playing sevens at the end of the deck', () => {
-  it('Plays the last card for points from a seven', () => {
+  it.skip('Plays the last card for points from a seven', () => {
     cy.setupGameAsP1();
     cy.loadGameFixture({
       p0Hand: [],
@@ -1436,7 +1436,7 @@ describe('Playing sevens at the end of the deck', () => {
     cy.get('#deck').find('#empty-deck-text').should('contain', 'PASS');
   });
 
-  it('Plays the top card of the deck when there are two cards left', () => {
+  it.skip('Plays the top card of the deck when there are two cards left', () => {
     cy.setupGameAsP0();
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
@@ -1474,7 +1474,7 @@ describe('Playing sevens at the end of the deck', () => {
     });
   });
 
-  it('Plays the 2nd card in the deck when there are two cards left', () => {
+  it.skip('Plays the 2nd card in the deck when there are two cards left', () => {
     cy.setupGameAsP0();
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],

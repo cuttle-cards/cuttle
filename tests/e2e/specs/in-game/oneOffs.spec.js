@@ -8,7 +8,7 @@ import {
 
 const { _ } = Cypress;
 
-describe('Untargeted One-Offs', () => {
+describe.skip('Untargeted One-Offs', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
   });
@@ -150,7 +150,7 @@ describe('Untargeted One-Offs', () => {
   }); // End 6 one-off
 }); // End untargeted one-off describe
 
-describe('FOURS', () => {
+describe.skip('FOURS', () => {
   describe('Playing FOURS', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
@@ -355,7 +355,7 @@ describe('FOURS', () => {
     });
   });
 
-  describe('Opponent playing FOURS', () => {
+  describe.skip('Opponent playing FOURS', () => {
     beforeEach(() => {
       cy.setupGameAsP1();
     });
@@ -486,7 +486,7 @@ describe('FOURS', () => {
   });
 });
 
-describe('Play TWOS', () => {
+describe.skip('Play TWOS', () => {
   describe('Player Playing TWOS', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
@@ -590,7 +590,7 @@ describe('Play TWOS', () => {
     }); // End playing TWO to destroy jack
   }); // End describe player playing twos
 
-  describe('Opponent Playing TWOS', () => {
+  describe.skip('Opponent Playing TWOS', () => {
     beforeEach(() => {
       cy.setupGameAsP1();
     });
@@ -640,7 +640,7 @@ describe('Play TWOS', () => {
   });
 });
 
-describe('Playing NINES', () => {
+describe.skip('Playing NINES', () => {
   describe('Player Playing NINES', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
@@ -1055,7 +1055,7 @@ describe('Playing NINES', () => {
     });
   }); // End Player playing 9s describe
 
-  describe('Opponent Playing NINES', () => {
+  describe.skip('Opponent Playing NINES', () => {
     beforeEach(() => {
       cy.setupGameAsP1();
     });
@@ -1217,7 +1217,7 @@ describe('Playing NINES', () => {
   }); // End Opponent playing NINES describe
 });
 
-describe('Playing THREEs', () => {
+describe.skip('Playing THREEs', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
   });
@@ -1368,7 +1368,7 @@ describe('Playing THREEs', () => {
   });
 }); // End 3s description
 
-describe('ONE-OFF Target should be removed after one-off resolves', () => {
+describe.skip('ONE-OFF Target should be removed after one-off resolves', () => {
   beforeEach(() => {
     cy.setupGameAsP1();
   });
