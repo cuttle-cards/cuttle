@@ -42,7 +42,7 @@ module.exports = {
     'no-case-declarations': 'warn',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    quotes: ['error', 'single'],
+    quotes: ['error', 'single', {avoidEscape: true, allowTemplateLiterals: true}],
   },
   overrides: [
     // Vue specific rules
