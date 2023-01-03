@@ -54,10 +54,10 @@
   "main": "app.js",
   "private": true,
   "scripts": {
-    "start:dev": "vite --host",
-    "start:build": "vite build",
     "start:serve": "vite preview",
+    "start:client": "vite --host",
     "start:server": "node app.js",
+    "build": "vite build",
     "e2e:client": "cypress run",
     "e2e:gui": "cypress open",
     "e2e:server": "cross-env VUE_APP_API_URL=http://localhost:1337 cypress run",
