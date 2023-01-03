@@ -14,14 +14,12 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'prettier',
     'plugin:vue/base',
     // 'plugin:vuetify/base', // TODO: remove after migration
   ],
   plugins: ['cypress', 'jest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
   rules: {
-    'prettier/prettier': 'error',
     'max-len': [
       'warn',
       {
