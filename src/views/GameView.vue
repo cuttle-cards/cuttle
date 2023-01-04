@@ -12,7 +12,7 @@
           v-if="$vuetify.display.xs"
           color="neutral lighten-1"
           icon="mdi-account-clock"
-          large
+          size="large"
           @click.stop="showHistoryDrawer = !showHistoryDrawer"
         />
       </div>
@@ -23,11 +23,11 @@
         v-model="showHistoryDrawer"
         class="c-history-drawer"
         fixed
-        right
+        location="right"
         app
       >
         <template #prepend>
-          <v-list-item two-line>
+          <v-list-item lines="two">
             <v-list-item-content>
               <h3>History</h3>
             </v-list-item-content>
@@ -35,7 +35,7 @@
               <v-icon
                 color="neutral"
                 icon="mdi-window-close"
-                large
+                size="large"
                 @click.stop="showHistoryDrawer = !showHistoryDrawer"
               />
             </v-list-item-icon>
@@ -72,7 +72,7 @@
                     <v-slide-group
                       v-if="$vuetify.display.xs"
                       key="opponent-slide-group"
-                      active-class="success"
+                      selected-class="success"
                       :show-arrows="true"
                     >
                       <v-slide-item v-for="card in opponent.hand" :key="card.id">

@@ -19,7 +19,7 @@
           </p>
           <div v-if="target" id="target-wrapper">
             <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-              <v-icon x-large color="red" icon="mdi-target" />
+              <v-icon size="x-large" color="red" icon="mdi-target" />
             </span>
             <card :suit="target.suit" :rank="target.rank" />
           </div>
@@ -30,7 +30,9 @@
         <v-btn data-cy="decline-counter-resolve" color="primary" variant="outlined" @click="resolve">
           Resolve
         </v-btn>
-        <v-btn data-cy="counter" color="primary" depressed @click="choseToCounter = true"> Counter </v-btn>
+        <v-btn data-cy="counter" color="primary" variant="flat" @click="choseToCounter = true">
+          Counter
+        </v-btn>
       </v-card-actions>
     </v-card>
     <!-- Choose which two to use to counter -->
@@ -50,7 +52,9 @@
         </div>
       </v-card-text>
       <v-card-actions>
-        <v-btn text color="primary" data-cy="cancel-counter" @click="resolve"> Cancel </v-btn>
+        <v-btn variant="text" color="primary" data-cy="cancel-counter" @click="resolve">
+          Cancel
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

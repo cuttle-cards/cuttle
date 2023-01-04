@@ -8,7 +8,7 @@
         label="Select Season"
         data-cy="season-select"
         return-object
-        item-text="name"
+        item-title="name"
       >
         <template #selection="{ item }">
           <h1 class="text-h2" data-cy="selected-season-header">

@@ -12,9 +12,9 @@
     <v-icon v-if="isFrozen" class="player-card-icon mr-1 mt-1" color="#00a5ff" icon="mdi-snowflake" />
     <v-overlay
       v-ripple
-      :value="isValidTarget"
+      :model-value="isValidTarget"
       absolute
-      color="accent"
+      scrim="accent"
       class="valid-move target-overlay"
       opacity=".8"
     />

@@ -8,7 +8,7 @@
     <!-- Cancel button -->
     <div id="close-wrapper" class="d-flex justify-end my-4">
       <v-btn icon data-cy="cancel-move" @click="$emit('cancel')">
-        <v-icon icon="mdi-close" x-large />
+        <v-icon icon="mdi-close" size="x-large" />
       </v-btn>
     </div>
     <div v-if="selectedCard" class="d-flex justify-center">

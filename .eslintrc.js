@@ -68,8 +68,9 @@ module.exports = {
       globals: {
         _: true,
         sails: true,
-        gameService: true,
         cardService: true,
+        gameService: true,
+        userService: true,
         //
         Card: true,
         Season: true,

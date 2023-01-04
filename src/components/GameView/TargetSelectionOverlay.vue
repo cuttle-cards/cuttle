@@ -8,7 +8,7 @@
       </v-btn>
     </div>
     <v-btn icon data-cy="cancel-target-mobile" @click="$emit('cancel')">
-      <v-icon icon="mdi-close" x-large />
+      <v-icon icon="mdi-close" size="x-large" />
     </v-btn>
   </div>
 </template>

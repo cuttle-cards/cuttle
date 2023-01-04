@@ -2,7 +2,7 @@
   <div>
     <v-row class="list-item" data-cy="game-list-item">
       <v-col v-if="$vuetify.display.lgAndUp" sm="2" lg="3">
-        <v-img src="/img/logo-head.svg" class="my-1" contain :height="$vuetify.display.smAndUp ? 62 : 32" />
+        <v-img src="/img/logo-head.svg" class="my-1" cover :height="$vuetify.display.smAndUp ? 62 : 32" />
       </v-col>
       <v-col sm="7" lg="6" class="list-item__inner-text">
         <p class="game-name" data-cy="game-list-item-name">
@@ -14,14 +14,14 @@
         <v-btn
           color="primary"
           rounded
-          outlined
+          variant="outlined"
           min-width="200"
           :disabled="!status"
           :loading="joiningGame"
           :small="!$vuetify.display.lg"
           @click="subscribeToGame"
         >
-          <v-icon v-if="isRanked" class="mr-4" medium>mdi-trophy</v-icon>
+          <v-icon v-if="isRanked" class="mr-4" size="medium">mdi-trophy</v-icon>
           {{ buttonText }}
         </v-btn>
       </v-col>

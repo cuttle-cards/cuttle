@@ -19,7 +19,7 @@
           </p>
           <div v-if="target" id="target-wrapper">
             <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-              <v-icon id="target-icon" x-large color="red" icon="mdi-target" />
+              <v-icon id="target-icon" size="x-large" color="red" icon="mdi-target" />
             </span>
             <card :suit="target.suit" :rank="target.rank" />
           </div>
@@ -27,7 +27,7 @@
         You cannot Counter, because {{ reason }}.
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn data-cy="cannot-counter-resolve" color="primary" depressed @click="$emit('resolve')">
+        <v-btn data-cy="cannot-counter-resolve" color="primary" variant="flat" @click="$emit('resolve')">
           Resolve
         </v-btn>
       </v-card-actions>
