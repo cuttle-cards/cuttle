@@ -112,7 +112,8 @@ export default {
     this.loadingData = true;
     io.socket.get('/stats', (res) => {
       this.seasons = res;
-      this.selectedSeason = this.seasons[0];
+      const [selectedSeason] = this.seasons
+      this.selectedSeason = selectedSeason;
       this.loadingData = false;
     });
   },

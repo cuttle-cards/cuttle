@@ -23,9 +23,10 @@ module.exports = {
     'max-len': [
       'warn',
       {
-        code: 110,
+        code: 120,
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
+        ignoreUrls: true,
       },
     ],
     'vue/html-indent': ['error'],

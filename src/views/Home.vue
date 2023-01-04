@@ -39,9 +39,13 @@
               variant="outlined"
               color="primary"
               class="mt-4"
-              :small="$vuetify.display.mdAndDown ? true : false"
               to="/rules"
               data-cy="rules-link"
+              v-bind="{
+                ...($vuetify.display.mdAndDown ? {
+                  size: 'small',
+                } : {})
+              }"
             >
               Rules
             </v-btn>
@@ -49,19 +53,27 @@
               variant="outlined"
               color="secondary"
               class="mt-4"
-              :small="$vuetify.display.mdAndDown ? true : false"
               href="https://human-ai-interaction.github.io/cuttle-bot/"
               target="_blank"
               data-cy="ai-link"
+              v-bind="{
+                ...($vuetify.display.mdAndDown ? {
+                  size: 'small',
+                } : {})
+              }"
             >
               Play with AI
             </v-btn>
             <v-btn
               variant="outlined"
               class="mt-4"
-              :small="$vuetify.display.mdAndDown"
               href="https://discord.gg/9vrAZ8xGyh"
               target="_blank"
+              v-bind="{
+                ...($vuetify.display.mdAndDown ? {
+                  size: 'small',
+                } : {})
+              }"
             >
               Discord
             </v-btn>

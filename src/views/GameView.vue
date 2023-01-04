@@ -1359,12 +1359,12 @@ export default {
 }
 
 #player-score {
-  grid-area: player-score;
+  grid-area: score;
   text-align: center;
 }
 
 .player-hand-container {
-  grid-area: player-hand;
+  grid-area: hand;
 }
 
 #player-hand {
@@ -1441,8 +1441,8 @@ export default {
       'opp-score opp-score opp-score opp-score opp-score opp-score opp-score opp-score'
       'field field field field field field field field'
       'decks decks decks decks decks decks decks decks'
-      'player-score player-score player-score player-score player-score player-score player-score player-score'
-      'player-hand player-hand player-hand player-hand player-hand player-hand player-hand player-hand';
+      'score score score score score score score score'
+      'hand hand hand hand hand hand hand hand';
   }
 
   .field-points {
