@@ -14,7 +14,7 @@
       v-ripple
       :model-value="isValidTarget"
       absolute
-      scrim="accent"
+      :scrim="false"
       class="valid-move target-overlay"
     />
     <transition :name="scuttledByTransition">
