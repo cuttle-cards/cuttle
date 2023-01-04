@@ -41,11 +41,7 @@
               class="mt-4"
               to="/rules"
               data-cy="rules-link"
-              v-bind="{
-                ...($vuetify.display.mdAndDown ? {
-                  size: 'small',
-                } : {})
-              }"
+              :size="buttonSize"
             >
               Rules
             </v-btn>
@@ -56,11 +52,7 @@
               href="https://human-ai-interaction.github.io/cuttle-bot/"
               target="_blank"
               data-cy="ai-link"
-              v-bind="{
-                ...($vuetify.display.mdAndDown ? {
-                  size: 'small',
-                } : {})
-              }"
+              :size="buttonSize"
             >
               Play with AI
             </v-btn>
@@ -69,11 +61,7 @@
               class="mt-4"
               href="https://discord.gg/9vrAZ8xGyh"
               target="_blank"
-              v-bind="{
-                ...($vuetify.display.mdAndDown ? {
-                  size: 'small',
-                } : {})
-              }"
+              :size="buttonSize"
             >
               Discord
             </v-btn>
@@ -113,6 +101,9 @@ export default {
     ...mapState({
       gameList: ({ gameList }) => gameList.games,
     }),
+    buttonSize() {
+      return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
+    },
   },
   async mounted() {
     // Leave any existing lobbies before getting the game list

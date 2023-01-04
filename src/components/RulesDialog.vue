@@ -7,11 +7,7 @@
             class="rules-button"
             color="primary"
             variant="outlined"
-            v-bind="{
-              ...($vuetify.display.mdAndDown ? {
-                small: true,
-              } : {})
-            }"
+            :size="buttonSize"
           >
             Rules
           </v-btn>
@@ -228,6 +224,9 @@ export default {
   computed: {
     adaptedShow() {
       return this.hideActivator ? this.show : this.internalShow;
+    },
+    buttonSize() {
+      return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
   },
   methods: {
