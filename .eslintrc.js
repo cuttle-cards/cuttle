@@ -15,7 +15,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:vue/base',
-    // 'plugin:vuetify/base', // TODO: remove after migration
+    'plugin:vuetify/base',
   ],
   plugins: ['cypress', 'jest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
@@ -68,6 +68,9 @@ module.exports = {
       globals: {
         _: true,
         sails: true,
+        gameService: true,
+        cardService: true,
+        //
         Card: true,
         Season: true,
         Match: true,
