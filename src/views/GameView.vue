@@ -1105,8 +1105,8 @@ export default {
     'opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand'
     'decks decks opp-score opp-score opp-score opp-score history history'
     'decks decks field field field field history history'
-    'player-score player-score player-score player-score player-score player-score player-score player-score'
-    'player-hand player-hand player-hand player-hand player-hand player-hand player-hand player-hand';
+    'score score score score score score score score'
+    'hand hand hand hand hand hand hand hand';
 }
 
 #game-menu-wrapper {
