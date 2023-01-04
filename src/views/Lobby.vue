@@ -41,7 +41,13 @@
       <v-col cols="3">
         <v-btn :loading="readying" contained color="primary" data-cy="ready-button" @click="ready">
           {{ readyButtonText }}
-          <v-icon v-if="isRanked" class="ml-1" small data-cy="ready-button-ranked-icon"> mdi-trophy </v-icon>
+          <v-icon
+            v-if="isRanked"
+            class="ml-1"
+            size="small"
+            icon="mdi-trophy"
+            data-cy="ready-button-ranked-icon"
+          />
         </v-btn>
       </v-col>
       <v-spacer />

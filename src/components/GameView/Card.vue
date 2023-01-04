@@ -16,7 +16,6 @@
       absolute
       scrim="accent"
       class="valid-move target-overlay"
-      opacity=".8"
     />
     <transition :name="scuttledByTransition">
       <template v-if="scuttledBy">

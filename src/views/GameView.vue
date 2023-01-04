@@ -22,9 +22,7 @@
         v-if="$vuetify.display.xs"
         v-model="showHistoryDrawer"
         class="c-history-drawer"
-        fixed
         location="right"
-        app
       >
         <template #prepend>
           <v-list-item lines="two">

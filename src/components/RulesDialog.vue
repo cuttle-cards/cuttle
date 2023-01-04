@@ -3,7 +3,16 @@
     <template v-if="!hideActivator" #activator="{ props }">
       <span v-bind="props">
         <slot name="activator">
-          <v-btn class="rules-button" color="primary" variant="outlined" :small="$vuetify.display.mdAndDown">
+          <v-btn
+            class="rules-button"
+            color="primary"
+            variant="outlined"
+            v-bind="{
+              ...($vuetify.display.mdAndDown ? {
+                small: true,
+              } : {})
+            }"
+          >
             Rules
           </v-btn>
         </slot>
