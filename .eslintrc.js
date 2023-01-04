@@ -15,7 +15,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:vue/base',
-    // 'plugin:vuetify/base', // TODO: remove after migration
+    'plugin:vuetify/base',
   ],
   plugins: ['cypress', 'jest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
@@ -23,9 +23,10 @@ module.exports = {
     'max-len': [
       'warn',
       {
-        code: 110,
+        code: 120,
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
+        ignoreUrls: true,
       },
     ],
     'vue/html-indent': ['error'],
@@ -68,6 +69,10 @@ module.exports = {
       globals: {
         _: true,
         sails: true,
+        cardService: true,
+        gameService: true,
+        userService: true,
+        //
         Card: true,
         Season: true,
         Match: true,

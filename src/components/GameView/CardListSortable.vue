@@ -17,11 +17,11 @@
       <template v-if="cards.length === 0">
         <div class="d-flex flex-column">
           <p>{{ emptyText }}</p>
-          <v-icon icon="mdi-cancel" x-large />
+          <v-icon icon="mdi-cancel" size="x-large" />
         </div>
       </template>
       <!-- Cards in the scrap -->
-      <card
+      <game-card
         v-for="card in sortedCards"
         :key="card.id"
         class="mx-1 my-1 sortable-list-card"
@@ -36,13 +36,13 @@
 </template>
 
 <script>
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 import { sortBy } from 'lodash';
 
 export default {
   name: 'CardListSortable',
   components: {
-    Card,
+    GameCard,
   },
   props: {
     cards: {

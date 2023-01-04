@@ -3,7 +3,12 @@
     <template v-if="!hideActivator" #activator="{ props }">
       <span v-bind="props">
         <slot name="activator">
-          <v-btn class="rules-button" color="primary" variant="outlined" :small="$vuetify.display.mdAndDown">
+          <v-btn
+            class="rules-button"
+            color="primary"
+            variant="outlined"
+            :size="buttonSize"
+          >
             Rules
           </v-btn>
         </slot>
@@ -13,7 +18,7 @@
       <v-card-title class="d-flex justify-space-between">
         <h1>Rules of Cuttle</h1>
         <v-btn icon @click="close">
-          <v-icon icon="mdi-close" large />
+          <v-icon icon="mdi-close" size="large" />
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -219,6 +224,9 @@ export default {
   computed: {
     adaptedShow() {
       return this.hideActivator ? this.show : this.internalShow;
+    },
+    buttonSize() {
+      return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
   },
   methods: {

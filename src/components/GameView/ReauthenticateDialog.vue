@@ -8,14 +8,14 @@
           <!-- Login Form -->
           <v-text-field
             v-model="username"
-            outlined
+            variant="outlined"
             :dense="$vuetify.display.mdAndDown"
             label="Username"
             data-cy="username"
           />
           <v-text-field
             v-model="password"
-            outlined
+            variant="outlined"
             label="Password"
             :dense="$vuetify.display.mdAndDown"
             type="password"
@@ -23,8 +23,12 @@
           />
         </v-card-text>
         <v-card-actions class="d-flex justify-end">
-          <v-btn text color="primary" @click="leaveGame"> Leave Game </v-btn>
-          <v-btn color="primary" depressed data-cy="login" type="submit"> Log In </v-btn>
+          <v-btn variant="text" color="primary" @click="leaveGame">
+            Leave Game
+          </v-btn>
+          <v-btn color="primary" variant="flat" data-cy="login" type="submit">
+            Log In
+          </v-btn>
         </v-card-actions>
       </form>
     </v-card>

@@ -8,11 +8,11 @@
     <!-- Cancel button -->
     <div id="close-wrapper" class="d-flex justify-end my-4">
       <v-btn icon data-cy="cancel-move" @click="$emit('cancel')">
-        <v-icon icon="mdi-close" x-large />
+        <v-icon icon="mdi-close" size="x-large" />
       </v-btn>
     </div>
     <div v-if="selectedCard" class="d-flex justify-center">
-      <card
+      <game-card
         :suit="selectedCard.suit"
         :rank="selectedCard.rank"
         :data-player-overlay-card="`${selectedCard.rank}-${selectedCard.suit}`"
@@ -39,13 +39,13 @@
 
 <script>
 import MoveChoiceCard from '@/components/GameView/MoveChoiceCard.vue';
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'MoveChoiceOverlay',
   components: {
     MoveChoiceCard,
-    Card,
+    GameCard,
   },
   props: {
     modelValue: {

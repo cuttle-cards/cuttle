@@ -8,7 +8,7 @@
         label="Select Season"
         data-cy="season-select"
         return-object
-        item-text="name"
+        item-title="name"
       >
         <template #selection="{ item }">
           <h1 class="text-h2" data-cy="selected-season-header">
@@ -78,7 +78,7 @@ import StatsLeaderboard from '@/components/StatsLeaderboard.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 
 export default {
-  name: 'Stats',
+  name: 'StatsView',
   components: {
     AwardCard,
     StatsLeaderboard,
@@ -112,7 +112,8 @@ export default {
     this.loadingData = true;
     io.socket.get('/stats', (res) => {
       this.seasons = res;
-      this.selectedSeason = this.seasons[0];
+      const [selectedSeason] = this.seasons
+      this.selectedSeason = selectedSeason;
       this.loadingData = false;
     });
   },

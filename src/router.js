@@ -1,15 +1,20 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
-import Home from '@/views/Home.vue';
-import LoginSignup from '@/views/LoginSignup.vue';
-import Lobby from '@/views/Lobby.vue';
+import HomeView from '@/views/HomeView.vue';
+import LoginView from '@/views/LoginView.vue';
+import LobbyView from '@/views/LobbyView.vue';
 import GameView from '@/views/GameView.vue';
-import Rules from '@/views/Rules.vue';
-import Stats from '@/views/Stats.vue';
+import RulesView from '@/views/RulesView.vue';
+import StatsView from '@/views/StatsView.vue';
 import store from '@/store/store.js';
 
-export const ROUTE_NAME_LOBBY = 'Lobby';
 export const ROUTE_NAME_GAME = 'Game';
+export const ROUTE_NAME_HOME = 'Home';
+export const ROUTE_NAME_LOBBY = 'Lobby';
+export const ROUTE_NAME_LOGIN = 'Login';
+export const ROUTE_NAME_LOGOUT = 'Logout';
+export const ROUTE_NAME_RULES = 'Rules';
+export const ROUTE_NAME_STATS = 'Stats';
 
 const mustBeAuthenticated = (to, from, next) => {
   if (store.state.auth.authenticated) {
@@ -27,30 +32,30 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: HomeView,
     beforeEnter: mustBeAuthenticated,
   },
   {
     path: '/login',
-    name: 'Login',
-    component: LoginSignup,
+    name: ROUTE_NAME_LOGIN,
+    component: LoginView,
   },
   // This route is just a passthrough to make sure the user is fully logged out before putting
   // them on the login screen
   {
     path: '/logout',
-    name: 'Logout',
+    name: ROUTE_NAME_LOGOUT,
     beforeEnter: logoutAndRedirect,
   },
   {
     path: '/rules',
-    name: 'Rules',
-    component: Rules,
+    name: ROUTE_NAME_RULES,
+    component: RulesView,
   },
   {
     name: ROUTE_NAME_LOBBY,
     path: '/lobby/:gameId',
-    component: Lobby,
+    component: LobbyView,
     // TODO: Add logic to redirect if a given game does not exist
     beforeEnter: mustBeAuthenticated,
     meta: {
@@ -70,8 +75,8 @@ const routes = [
   },
   {
     path: '/stats',
-    name: 'Stats',
-    component: Stats,
+    name: ROUTE_NAME_STATS,
+    component: StatsView,
     beforeEnter: mustBeAuthenticated,
   },
 ];

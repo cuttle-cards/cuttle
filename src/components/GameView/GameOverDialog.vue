@@ -11,17 +11,18 @@
         <h1>You Lose</h1>
       </v-card-title>
       <v-card-text class="d-flex justify-center">
-        <v-img v-if="stalemate" src="/img/-stalemate.svg" max-width="250" data-cy="stalemate-img" />
+        <v-img v-if="stalemate" src="/img/-stalemate.svg" data-cy="stalemate-img" />
         <v-img
           v-else-if="playerWins"
           src="/img/logo-body-no-text.svg"
-          :max-width="logoWidth"
           data-cy="victory-img"
         />
-        <v-img v-else src="/img/logo-dead.svg" :max-width="logoWidth" data-cy="loss-img" />
+        <v-img v-else src="/img/logo-dead.svg" data-cy="loss-img" />
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn color="primary" depressed data-cy="gameover-go-home" @click="goHome">Go Home</v-btn>
+        <v-btn color="primary" variant="flat" data-cy="gameover-go-home" @click="goHome">
+          Go Home
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -52,15 +53,6 @@ export default {
       set(newValue) {
         this.$emit('input', newValue);
       },
-    },
-    logoWidth() {
-      switch (this.$vuetify.display.name) {
-        case 'xs':
-        case 'sm':
-          return '180';
-        default:
-          return '300';
-      }
     },
   },
   methods: {

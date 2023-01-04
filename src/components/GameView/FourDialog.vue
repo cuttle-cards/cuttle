@@ -9,7 +9,7 @@
         </p>
         <!-- Cards in hand -->
         <div class="d-flex flex-wrap card-container">
-          <card
+          <game-card
             v-for="(card, index) in hand"
             :key="card.id"
             :suit="card.suit"
@@ -30,12 +30,12 @@
 </template>
 
 <script>
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'FourDialog',
   components: {
-    Card,
+    GameCard,
   },
   props: {
     value: {

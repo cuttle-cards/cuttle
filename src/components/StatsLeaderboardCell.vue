@@ -1,9 +1,9 @@
 <template>
-  <v-menu v-if="points" v-model="showMenu" top>
+  <v-menu v-if="points" v-model="showMenu" location="top">
     <template #activator="{ props }">
       <v-chip
         :color="colorForScore"
-        :outlined="outlined"
+        variant="outlined"
         class="pointer"
         v-bind="{
           ...props,

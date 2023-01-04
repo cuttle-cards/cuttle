@@ -9,7 +9,7 @@
       <v-card-title class="d-flex justify-space-between">
         <h1>Scrap Pile</h1>
         <v-btn icon data-cy="close-scrap-dialog-x" @click="show = false">
-          <v-icon icon="mdi-close" large />
+          <v-icon icon="mdi-close" size="large" />
         </v-btn>
       </v-card-title>
       <v-card-text>

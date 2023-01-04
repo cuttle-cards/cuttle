@@ -12,11 +12,10 @@
     <v-icon v-if="isFrozen" class="player-card-icon mr-1 mt-1" color="#00a5ff" icon="mdi-snowflake" />
     <v-overlay
       v-ripple
-      :value="isValidTarget"
+      :model-value="isValidTarget"
       absolute
-      color="accent"
+      :scrim="false"
       class="valid-move target-overlay"
-      opacity=".8"
     />
     <transition :name="scuttledByTransition">
       <template v-if="scuttledBy">
@@ -35,7 +34,7 @@
 
 <script>
 export default {
-  name: 'Card',
+  name: 'GameCard',
   props: {
     suit: {
       type: Number,

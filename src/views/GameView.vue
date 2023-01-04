@@ -12,7 +12,7 @@
           v-if="$vuetify.display.xs"
           color="neutral lighten-1"
           icon="mdi-account-clock"
-          large
+          size="large"
           @click.stop="showHistoryDrawer = !showHistoryDrawer"
         />
       </div>
@@ -22,12 +22,10 @@
         v-if="$vuetify.display.xs"
         v-model="showHistoryDrawer"
         class="c-history-drawer"
-        fixed
-        right
-        app
+        location="right"
       >
         <template #prepend>
-          <v-list-item two-line>
+          <v-list-item lines="two">
             <v-list-item-content>
               <h3>History</h3>
             </v-list-item-content>
@@ -35,7 +33,7 @@
               <v-icon
                 color="neutral"
                 icon="mdi-window-close"
-                large
+                size="large"
                 @click.stop="showHistoryDrawer = !showHistoryDrawer"
               />
             </v-list-item-icon>
@@ -72,11 +70,11 @@
                     <v-slide-group
                       v-if="$vuetify.display.xs"
                       key="opponent-slide-group"
-                      active-class="success"
+                      selected-class="success"
                       :show-arrows="true"
                     >
                       <v-slide-item v-for="card in opponent.hand" :key="card.id">
-                        <card
+                        <game-card
                           :key="card.id"
                           :suit="card.suit"
                           :rank="card.rank"
@@ -85,7 +83,7 @@
                         />
                       </v-slide-item>
                     </v-slide-group>
-                    <card
+                    <game-card
                       v-for="card in opponent.hand"
                       v-else
                       :key="card.id"
@@ -102,7 +100,7 @@
                     name="slide-above"
                     class="opponent-hand-wrapper transition-all"
                   >
-                    <card
+                    <game-card
                       v-for="(card, index) in opponent.hand"
                       :key="index"
                       data-opponent-hand-card
@@ -138,7 +136,7 @@
             <template v-if="resolvingSeven">
               <p class="mt-2">Play from Deck</p>
               <div class="d-flex">
-                <card
+                <game-card
                   v-if="topCard"
                   :suit="topCard.suit"
                   :rank="topCard.rank"
@@ -147,7 +145,7 @@
                   class="mb-4 resolving-seven-card"
                   @click="selectTopCard"
                 />
-                <card
+                <game-card
                   v-if="secondCard"
                   :suit="secondCard.suit"
                   :rank="secondCard.rank"
@@ -182,7 +180,7 @@
                   :key="card.id"
                   class="field-point-container transition-all"
                 >
-                  <card
+                  <game-card
                     :suit="card.suit"
                     :rank="card.rank"
                     :is-valid-target="validMoves.includes(card.id)"
@@ -192,7 +190,7 @@
                     @click="targetOpponentPointCard(index)"
                   />
                   <div class="jacks-container">
-                    <card
+                    <game-card
                       v-for="jack in card.attachments"
                       :key="jack.id"
                       :suit="jack.suit"
@@ -206,7 +204,7 @@
                 </div>
               </transition-group>
               <transition-group :name="opponentFaceCardsTransition" tag="div" class="field-effects">
-                <card
+                <game-card
                   v-for="(card, index) in opponent.faceCards"
                   :key="card.id"
                   :suit="card.suit"
@@ -227,7 +225,7 @@
                   :key="card.id"
                   class="field-point-container transition-all"
                 >
-                  <card
+                  <game-card
                     :suit="card.suit"
                     :rank="card.rank"
                     :jacks="card.attachments"
@@ -236,7 +234,7 @@
                     controlled-by="player"
                   />
                   <div class="jacks-container">
-                    <card
+                    <game-card
                       v-for="jack in card.attachments"
                       :key="jack.id"
                       :suit="jack.suit"
@@ -248,7 +246,7 @@
                 </div>
               </transition-group>
               <transition-group :name="playerFaceCardsTransition" tag="div" class="field-effects">
-                <card
+                <game-card
                   v-for="card in player.faceCards"
                   :key="card.id"
                   :suit="card.suit"
@@ -319,7 +317,7 @@
               >
                 <v-slide-group v-if="$vuetify.display.xs" key="slide-group" :show-arrows="true">
                   <v-slide-item v-for="(card, index) in player.hand" :key="card.id">
-                    <card
+                    <game-card
                       :key="card.id"
                       :suit="card.suit"
                       :rank="card.rank"
@@ -333,7 +331,7 @@
                   </v-slide-item>
                 </v-slide-group>
 
-                <card
+                <game-card
                   v-for="(card, index) in player.hand"
                   v-else
                   :key="card.id"
@@ -391,7 +389,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 import GameDialogs from '@/components/GameView/GameDialogs.vue';
 import GameMenu from '@/components/GameView/GameMenu.vue';
 import GameOverlays from '@/components/GameView/GameOverlays.vue';
@@ -404,7 +402,7 @@ import UsernameToolTip from '@/components/GameView/UsernameToolTip.vue';
 export default {
   name: 'GameView',
   components: {
-    Card,
+    GameCard,
     GameDialogs,
     GameMenu,
     GameOverlays,
@@ -1107,8 +1105,8 @@ export default {
     'opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand'
     'decks decks opp-score opp-score opp-score opp-score history history'
     'decks decks field field field field history history'
-    'player-score player-score player-score player-score player-score player-score player-score player-score'
-    'player-hand player-hand player-hand player-hand player-hand player-hand player-hand player-hand';
+    'score score score score score score score score'
+    'hand hand hand hand hand hand hand hand';
 }
 
 #game-menu-wrapper {
@@ -1361,12 +1359,12 @@ export default {
 }
 
 #player-score {
-  grid-area: player-score;
+  grid-area: score;
   text-align: center;
 }
 
 .player-hand-container {
-  grid-area: player-hand;
+  grid-area: hand;
 }
 
 #player-hand {
@@ -1443,8 +1441,8 @@ export default {
       'opp-score opp-score opp-score opp-score opp-score opp-score opp-score opp-score'
       'field field field field field field field field'
       'decks decks decks decks decks decks decks decks'
-      'player-score player-score player-score player-score player-score player-score player-score player-score'
-      'player-hand player-hand player-hand player-hand player-hand player-hand player-hand player-hand';
+      'score score score score score score score score'
+      'hand hand hand hand hand hand hand hand';
   }
 
   .field-points {

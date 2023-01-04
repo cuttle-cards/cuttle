@@ -13,21 +13,21 @@
           >.
         </span>
         <div class="d-flex justify-center align-center my-8">
-          <card :suit="oneOff.suit" :rank="oneOff.rank" />
+          <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
           <p class="ml-8">
             {{ oneOff.ruleText }}
           </p>
           <div v-if="target" id="target-wrapper">
             <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-              <v-icon id="target-icon" x-large color="red" icon="mdi-target" />
+              <v-icon id="target-icon" size="x-large" color="red" icon="mdi-target" />
             </span>
-            <card :suit="target.suit" :rank="target.rank" />
+            <game-card :suit="target.suit" :rank="target.rank" />
           </div>
         </div>
         You cannot Counter, because {{ reason }}.
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn data-cy="cannot-counter-resolve" color="primary" depressed @click="$emit('resolve')">
+        <v-btn data-cy="cannot-counter-resolve" color="primary" variant="flat" @click="$emit('resolve')">
           Resolve
         </v-btn>
       </v-card-actions>
@@ -36,12 +36,12 @@
 </template>
 
 <script>
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'CannotCounterDialog',
   components: {
-    Card,
+    GameCard,
   },
   props: {
     value: {

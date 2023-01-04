@@ -23,7 +23,7 @@
         </v-btn>
         <v-btn
           color="error"
-          depressed
+          variant="flat"
           data-cy="accept-stalemate"
           :loading="loadingAccept"
           :disabled="loadingReject"

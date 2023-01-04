@@ -4,7 +4,7 @@
 
     <v-row>
       <!-- Left side form -->
-      <v-col id="username-login-form" sm="9" lg="5">
+      <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 6 : 12">
         <h1 class="gradient-text">
           {{ buttonText }}
         </h1>
@@ -59,7 +59,7 @@
     </v-row>
 
     <v-row class="mt-0">
-      <v-col md="6" sm="12" class="d-flex justify-start flex-column mt-4">
+      <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="d-flex justify-start flex-column mt-4">
         <blockquote class="quote">
           "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I
           known about it in college - I would have worn decks ragged through play"
@@ -85,8 +85,11 @@
           Learn the Rules
         </v-btn>
       </v-col>
-      <v-col md="6" sm="12" class="mt-2 mb-4">
-        <v-img src="/img/game/cuttle-one-off-ace.png" alt="Cuttle Game Ace One-Off" max-width="600px" />
+      <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="mt-2 mb-4">
+        <v-img
+          src="/img/game/cuttle-one-off-ace.png"
+          alt="Cuttle Game Ace One-Off"
+          cover />
       </v-col>
     </v-row>
   </v-container>
@@ -94,7 +97,7 @@
 
 <script>
 export default {
-  name: 'LoginSignup',
+  name: 'LoginView',
   data() {
     return {
       username: '',
@@ -202,6 +205,7 @@ blockquote.quote {
     display: block;
   }
 }
+
 @media (orientation: landscape) and (max-width: 960px) {
   #logo {
     width: 64px;

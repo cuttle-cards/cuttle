@@ -3,7 +3,7 @@
     <!-- Activator -->
     <template #activator="{ props }">
       <v-btn id="game-menu-activator" v-bind="props" class="ma-2" icon>
-        <v-icon large color="neutral lighten-1" icon="mdi-cog" />
+        <v-icon size="large" color="neutral lighten-1" icon="mdi-cog" />
       </v-btn>
     </template>
     <!-- Menu -->
@@ -28,8 +28,7 @@
           </v-btn>
           <v-btn
             color="error"
-            depressed
-            variant="outlined"
+            variant="flat"
             data-cy="request-gameover-confirm"
             :loading="loading"
             @click="requestGameEnd"
