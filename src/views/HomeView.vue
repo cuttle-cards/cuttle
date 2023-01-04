@@ -98,7 +98,7 @@ import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '../components/CreateGameDialog.vue';
 
 export default {
-  name: 'Home',
+  name: 'HomeView',
   components: {
     GameListItem,
     CreateGameDialog,

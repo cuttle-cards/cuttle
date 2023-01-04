@@ -34,6 +34,14 @@
 </template>
 
 <script>
+import {
+  ROUTE_NAME_HOME,
+  ROUTE_NAME_LOGIN,
+  ROUTE_NAME_LOGOUT,
+  ROUTE_NAME_RULES,
+  ROUTE_NAME_STATS,
+} from '@/router.js';
+
 export default {
   name: 'NavigationDrawer',
   data() {
@@ -51,7 +59,7 @@ export default {
         {
           text: 'Rules',
           icon: 'script-text',
-          page: { name: 'Rules' },
+          page: { name: ROUTE_NAME_RULES },
         },
       ];
       return !this.authenticated
@@ -59,15 +67,15 @@ export default {
             {
               text: 'Login',
               icon: 'login',
-              page: { name: 'Login' },
+              page: { name: ROUTE_NAME_LOGIN },
             },
             ...rules,
           ]
         : [
-            { text: 'Logout', icon: 'logout', page: { name: 'Logout' } },
+            { text: 'Logout', icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } },
             ...rules,
-            { text: 'Play', icon: 'play', page: { name: 'Home' } },
-            { text: 'Stats', icon: 'chart-bar', page: { name: 'Stats' } },
+            { text: 'Play', icon: 'play', page: { name: ROUTE_NAME_HOME } },
+            { text: 'Stats', icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
           ];
     },
     showNav() {

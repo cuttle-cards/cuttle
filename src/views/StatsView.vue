@@ -78,7 +78,7 @@ import StatsLeaderboard from '@/components/StatsLeaderboard.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 
 export default {
-  name: 'Stats',
+  name: 'StatsView',
   components: {
     AwardCard,
     StatsLeaderboard,

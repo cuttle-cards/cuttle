@@ -231,7 +231,7 @@
 import RulePreview from '@/components/RulePreview.vue';
 
 export default {
-  name: 'Rules',
+  name: 'RulesView',
   components: {
     RulePreview,
   },

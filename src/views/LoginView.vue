@@ -97,7 +97,7 @@
 
 <script>
 export default {
-  name: 'LoginSignup',
+  name: 'LoginView',
   data() {
     return {
       username: '',

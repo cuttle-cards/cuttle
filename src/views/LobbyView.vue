@@ -61,7 +61,7 @@ import { mapGetters, mapState } from 'vuex';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
 
 export default {
-  name: 'Lobby',
+  name: 'LobbyView',
   components: {
     LobbyPlayerIndicator,
   },
