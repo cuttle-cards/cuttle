@@ -13,7 +13,7 @@
           >.
         </span>
         <div class="d-flex justify-center align-center my-8">
-          <card :suit="oneOff.suit" :rank="oneOff.rank" />
+          <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
           <p class="ml-8">
             {{ oneOff.ruleText }}
           </p>
@@ -21,7 +21,7 @@
             <span id="target-icon-wrapper" class="d-flex justify-center align-center">
               <v-icon size="x-large" color="red" icon="mdi-target" />
             </span>
-            <card :suit="target.suit" :rank="target.rank" />
+            <game-card :suit="target.suit" :rank="target.rank" />
           </div>
         </div>
         Would you like to play a two to counter?
@@ -41,7 +41,7 @@
       <v-card-text>
         <p>Which Two would you like to counter with? (Click the card)</p>
         <div id="twos-in-hand" class="d-flex justify-center">
-          <card
+          <game-card
             v-for="two in twosInHand"
             :key="two.id"
             :suit="two.suit"
@@ -61,12 +61,12 @@
 </template>
 
 <script>
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'CounterDialog',
   components: {
-    Card,
+    GameCard,
   },
   props: {
     value: {

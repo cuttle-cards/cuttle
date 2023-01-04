@@ -1,6 +1,6 @@
 <template>
   <div id="player-hand-targeting" class="d-flex justify-start" :class="{ 'my-turn': isPlayersTurn }">
-    <card :suit="selectedCard.suit" :rank="selectedCard.rank" :is-selected="true" @click="$emit('cancel')" />
+    <game-card :suit="selectedCard.suit" :rank="selectedCard.rank" :is-selected="true" @click="$emit('cancel')" />
     <div id="target-selection-header-wrapper" class="d-flex flex-column align-center">
       <h2>Choose {{ moveDisplayName }} Target</h2>
       <v-btn variant="outlined" color="primary" class="mt-2" data-cy="cancel-target" @click="$emit('cancel')">
@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'TargetSelectionOverlay',
   components: {
-    Card,
+    GameCard,
   },
   props: {
     value: {

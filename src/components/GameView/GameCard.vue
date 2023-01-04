@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: 'Card',
+  name: 'GameCard',
   props: {
     suit: {
       type: Number,

@@ -12,7 +12,7 @@
       </v-btn>
     </div>
     <div v-if="selectedCard" class="d-flex justify-center">
-      <card
+      <game-card
         :suit="selectedCard.suit"
         :rank="selectedCard.rank"
         :data-player-overlay-card="`${selectedCard.rank}-${selectedCard.suit}`"
@@ -39,13 +39,13 @@
 
 <script>
 import MoveChoiceCard from '@/components/GameView/MoveChoiceCard.vue';
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'MoveChoiceOverlay',
   components: {
     MoveChoiceCard,
-    Card,
+    GameCard,
   },
   props: {
     modelValue: {
