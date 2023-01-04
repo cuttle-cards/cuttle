@@ -14,14 +14,12 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'prettier',
     'plugin:vue/base',
-    'plugin:vuetify/base', // TODO: remove after migration
+    // 'plugin:vuetify/base', // TODO: remove after migration
   ],
   plugins: ['cypress', 'jest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
   rules: {
-    'prettier/prettier': 'error',
     'max-len': [
       'warn',
       {
@@ -42,7 +40,7 @@ module.exports = {
     'no-case-declarations': 'warn',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    quotes: ['error', 'single'],
+    quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
   },
   overrides: [
     // Vue specific rules

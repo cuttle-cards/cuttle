@@ -10,7 +10,9 @@ function setup(isRanked = false) {
   cy.visit('/');
   cy.signupPlayer(validUsername, validPassword);
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
-    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.window()
+      .its('cuttle.app.config.globalProperties.$store')
+      .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
   });
@@ -179,7 +181,9 @@ describe('Lobby - P1 Perspective', () => {
       cy.signupOpponent(opponentUsername, opponentPassword);
       cy.subscribeOpponent(gameSummary.gameId);
       // Join game as this user and navigate to lobby
-      cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+      cy.window()
+        .its('cuttle.app.config.globalProperties.$store')
+        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
       cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     });
   });
@@ -240,7 +244,9 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=exit-button]').click(); // leave game so opponent can ready before player joins
     cy.readyOpponent();
     // Join game again
-    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'requestSubscribe', this.gameSummary.gameId);
+    cy.window()
+      .its('cuttle.app.config.globalProperties.$store')
+      .invoke('dispatch', 'requestSubscribe', this.gameSummary.gameId);
     cy.vueRoute(`/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy=ready-button]').click();
     // Test that game started

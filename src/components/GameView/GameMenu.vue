@@ -9,8 +9,8 @@
     <!-- Menu -->
     <v-list id="game-menu">
       <v-list-item data-cy="rules-open" @click.stop="showRulesDialog = true">
-          Rules
-          <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
+        Rules
+        <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
       </v-list-item>
       <!-- Concede Dialog (Initiate + Confirm) -->
       <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">Concede</v-list-item>
