@@ -46,9 +46,11 @@
       v-if="selectedCard || cardSelectedFromDeck"
       :value="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
       :selected-card="selectedCard || cardSelectedFromDeck"
+      :card-selected-from-deck="cardSelectedFromDeck"
       :is-players-turn="isPlayersTurn"
       :opponent-queen-count="opponentQueenCount"
       :frozen-id="player.frozenId"
+      :playing-from-deck="playingFromDeck"
       @points="$emit('points')"
       @faceCard="$emit('face-card')"
       @oneOff="$emit('one-off')"
@@ -95,6 +97,7 @@ export default {
       waitingForOpponentToStalemate: ({ game }) => game.waitingForOpponentToStalemate,
       topCard: ({ game }) => game.topCard,
       secondCard: ({ game }) => game.secondCard,
+      playingFromDeck: ({ game }) => game.playingFromDeck,
     }),
     ...mapGetters([
       'isPlayersTurn',
