@@ -1,6 +1,6 @@
 {
   "name": "cuttle",
-  "version": "3.4.0",
+  "version": "3.4.2",
   "private": true,
   "description": "The deepest card game under the sea",
   "scripts": {
@@ -12,6 +12,7 @@
     "debug": "node debug app.js",
     "e2e:client": "cypress run",
     "e2e:gui": "cross-env ENABLE_VUE_DEVTOOLS=true cypress open",
+    "e2e:mockprod": "cross-env CUTTLE_ENV=production npm run e2e:server",
     "e2e:mockprod": "cross-env CUTTLE_ENV=production npm run e2e:server",
     "e2e:server": "cross-env VUE_APP_API_URL=http://localhost:1337 cypress run",
     "e2e:server:gui": "cross-env VUE_APP_API_URL=http://localhost:1337 cypress open",
