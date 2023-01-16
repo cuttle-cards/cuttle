@@ -1,12 +1,13 @@
 <template>
-  <v-hover v-slot="{ hover }">
+  <v-hover v-slot="{ isHovering, props }">
     <v-card
+      v-bind="props"  
       ripple
       :disabled="disabled"
       :class="{ pointer: !disabled }"
       class="move-choice-card"
       hover
-      :light="hover"
+      :theme="isHovering ? 'light': 'dark'"
       :width="cardWidth"
       :data-move-choice="eventName"
       @click.stop="$emit('click')"

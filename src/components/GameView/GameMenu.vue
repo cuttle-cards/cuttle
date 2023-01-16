@@ -2,8 +2,8 @@
   <v-menu v-model="showGameMenu">
     <!-- Activator -->
     <template #activator="{ props }">
-      <v-btn id="game-menu-activator" v-bind="props" class="ma-2" icon>
-        <v-icon size="large" color="neutral lighten-1" icon="mdi-cog" />
+      <v-btn id="game-menu-activator" v-bind="props" class="ma-2" icon variant="text">
+        <v-icon size="large" color="neutral-lighten-2" icon="mdi-cog" />
       </v-btn>
     </template>
     <!-- Menu -->
