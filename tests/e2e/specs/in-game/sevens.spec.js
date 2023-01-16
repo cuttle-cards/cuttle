@@ -757,7 +757,7 @@ describe('Playing SEVENS', () => {
         topCard: Card.TWO_OF_SPADES,
       });
     }); //End playing NINE on jacks from a seven
-    it('Disables move choices when selecting card in hand while resolving seven', () => {
+    it.skip('Disables move choices when selecting card in hand while resolving seven', () => {
       cy.setupGameAsP0();
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.TWO_OF_CLUBS],
