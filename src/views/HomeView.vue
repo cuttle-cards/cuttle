@@ -65,6 +65,17 @@
             >
               Discord
             </v-btn>
+            <h6 class="text-h6 mt-4">Looking to Play?</h6>
+            <p class="mt-0">Our weekly play sessions are open to everyone!</p>
+            <ul>
+              <li>Wednesday Nights at 8:30pm EST</li>
+              <li>Thursdays at 12pm EST</li>
+            </ul>
+            <p>
+              Can't find a match?
+              <v-btn text href="https://discord.gg/9vrAZ8xGyh">Join our discord</v-btn>
+              to see who's around to play!
+            </p>
           </v-col>
         </v-row>
       </div>

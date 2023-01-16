@@ -61,11 +61,15 @@
         </p>
       </div>
       <!-- Rankings Table -->
-      <h2 class="text-h2 mb-4">
-        Weekly Rankings
-        <stats-scoring-dialog />
-      </h2>
-      <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
+      <template
+        v-if="selectedSeason && selectedSeason.rankings && selectedSeason.rankings.length > 0"
+      >
+        <h2 class="text-h2 mb-4">
+          Weekly Rankings
+          <stats-scoring-dialog />
+        </h2>
+        <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
+      </template>
     </section>
   </div>
 </template>

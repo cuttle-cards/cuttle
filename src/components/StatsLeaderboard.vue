@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-cy="stats-leaderboard">
     <!-- Select Metric and Weeks -->
     <div id="stats-table-upper-surface" class="d-flex align-end">
       <v-select
