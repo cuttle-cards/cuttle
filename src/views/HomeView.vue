@@ -73,7 +73,7 @@
             </ul>
             <p>
               Can't find a match?
-              <v-btn text href="https://discord.gg/9vrAZ8xGyh">Join our discord</v-btn>
+              <v-btn variant="text" href="https://discord.gg/9vrAZ8xGyh">Join our discord</v-btn>
               to see who's around to play!
             </p>
           </v-col>
