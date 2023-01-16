@@ -355,7 +355,7 @@ describe('FOURS', () => {
     });
   });
 
-  describe.skip('Opponent playing FOURS', () => {
+  describe('Opponent playing FOURS', () => {
     beforeEach(() => {
       cy.setupGameAsP1();
     });
