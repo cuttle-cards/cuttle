@@ -1055,7 +1055,7 @@ describe('Playing NINES', () => {
     });
   }); // End Player playing 9s describe
 
-  describe.only('Opponent Playing NINES', () => {
+  describe('Opponent Playing NINES', () => {
     beforeEach(() => {
       cy.setupGameAsP1();
     });
@@ -1217,7 +1217,7 @@ describe('Playing NINES', () => {
   }); // End Opponent playing NINES describe
 });
 
-describe.skip('Playing THREEs', () => {
+describe('Playing THREEs', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
   });
@@ -1240,7 +1240,7 @@ describe.skip('Playing THREEs', () => {
     assertSnackbarError('You can only play a 3 as a one-off, if there are cards in the scrap pile');
   });
 
-  it('Plays 3s successfully', () => {
+  it.skip('Plays 3s successfully', () => {
     const scrap = [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS];
 
     // Set Up
