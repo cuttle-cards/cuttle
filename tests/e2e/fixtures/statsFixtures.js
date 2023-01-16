@@ -28,6 +28,17 @@ const seasonFixtures = [
     // endTime: 1674178200,
     endTime: dayjs().add(1, 'year').valueOf(),
   },
+  {
+    name: 'World Championship Season',
+    startTime: dayjs().subtract(1, 'second').valueOf(),
+    endTime: dayjs().add(13, 'week').valueOf(),
+    firstPlace: 'player1',
+    secondPlace: 'player2',
+    thirdPlace: 'player3',
+    fourthPlace: 'player4',
+    bracketLink: 'https://github.com/cuttle-cards/cuttle',
+    footageLink: 'https://github.com/cuttle-cards/cuttle-assets',
+  },
 ];
 
 const seasonOneMatches = [

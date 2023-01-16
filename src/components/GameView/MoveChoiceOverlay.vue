@@ -74,15 +74,29 @@ export default {
       type: Number,
       default: null,
     },
+    playingFromDeck: {
+      type: Boolean,
+      required: true,
+    },
+    cardSelectedFromDeck: {
+      type: Boolean,
+      default: null,
+    },
   },
   computed: {
     // Determines if any moves are available
     allMovesAreDisabled() {
-      return !this.isPlayersTurn || this.frozenId === this.selectedCard.id;
+      return (
+        !this.isPlayersTurn ||
+        this.frozenId === this.selectedCard.id ||
+        (this.playingFromDeck && !this.cardSelectedFromDeck)
+      );
     },
     // Determines which disabled text to display
     disabledText() {
-      if (this.allMovesAreDisabled) {
+      if (this.playingFromDeck && !this.cardSelectedFromDeck) {
+        return 'You must play one of the top two cards from the deck';
+      } else if (this.allMovesAreDisabled) {
         return !this.isPlayersTurn ? "It's not your turn" : 'This card is frozen';
       }
       return '';
