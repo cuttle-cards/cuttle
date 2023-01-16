@@ -640,7 +640,7 @@ describe('Play TWOS', () => {
   });
 });
 
-describe.only('Playing NINES', () => {
+describe('Playing NINES', () => {
   describe('Player Playing NINES', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
@@ -1055,7 +1055,7 @@ describe.only('Playing NINES', () => {
     });
   }); // End Player playing 9s describe
 
-  describe.skip('Opponent Playing NINES', () => {
+  describe.only('Opponent Playing NINES', () => {
     beforeEach(() => {
       cy.setupGameAsP1();
     });
