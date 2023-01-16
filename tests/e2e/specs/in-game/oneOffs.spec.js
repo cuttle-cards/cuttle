@@ -8,7 +8,7 @@ import {
 
 const { _ } = Cypress;
 
-describe.skip('Untargeted One-Offs', () => {
+describe('Untargeted One-Offs', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
   });
@@ -150,7 +150,7 @@ describe.skip('Untargeted One-Offs', () => {
   }); // End 6 one-off
 }); // End untargeted one-off describe
 
-describe.skip('FOURS', () => {
+describe('FOURS', () => {
   describe('Playing FOURS', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
@@ -172,7 +172,7 @@ describe.skip('FOURS', () => {
       cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_SPADES);
       // Opponent chooses two cards to discard
       cy.discardOpponent(Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
 
       assertGameState(0, {
         p0Hand: [Card.FOUR_OF_CLUBS],
@@ -185,7 +185,7 @@ describe.skip('FOURS', () => {
       });
     });
 
-    it('Plays a 4 to make opponent discard their only two cards', () => {
+    it.only('Plays a 4 to make opponent discard their only two cards', () => {
       // Set Up
       cy.loadGameFixture({
         p0Hand: [Card.FOUR_OF_CLUBS],
@@ -204,7 +204,7 @@ describe.skip('FOURS', () => {
       // Opponent chooses two cards to discard
       cy.log('Opponent discards both their remaining cards');
       cy.discardOpponent(Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
 
       assertGameState(0, {
         p0Hand: [],
