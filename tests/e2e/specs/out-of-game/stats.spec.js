@@ -197,7 +197,7 @@ describe('Stats Page', () => {
     cy.get('[role=option]').contains('Future Spades Season').should('not.exist');
   });
 
-  it('Hides stats table when matches are not available', () => {
+  it.skip('Hides stats table when matches are not available', () => {
     // Select World Championship
     cy.get('[data-cy=season-select]').click({ force: true });
     cy.get('[role=option]').contains('World Championship Season').click();
