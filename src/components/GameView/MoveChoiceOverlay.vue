@@ -8,11 +8,11 @@
     <!-- Cancel button -->
     <div id="close-wrapper" class="d-flex justify-end my-4">
       <v-btn
-            icon
-            variant="text"
-            color="white"
-            size="x-large"
-            @click="$emit('cancel')">
+        icon
+        variant="text"
+        color="white"
+        size="x-large"
+        @click="$emit('cancel')">
         <v-icon icon="mdi-close" size="x-large" />
       </v-btn>
     </div>
