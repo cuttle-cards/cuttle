@@ -185,7 +185,7 @@ describe('FOURS', () => {
       });
     });
 
-    it.only('Plays a 4 to make opponent discard their only two cards', () => {
+    it('Plays a 4 to make opponent discard their only two cards', () => {
       // Set Up
       cy.loadGameFixture({
         p0Hand: [Card.FOUR_OF_CLUBS],
@@ -236,7 +236,7 @@ describe('FOURS', () => {
       // Opponent chooses two cards to discard
       cy.log('Opponent discards both their remaining cards');
       cy.discardOpponent(Card.ACE_OF_HEARTS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
 
       assertGameState(0, {
         p0Hand: [],
@@ -342,7 +342,7 @@ describe('FOURS', () => {
 
       // Legal Discard
       cy.discardOpponent(Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS);
-      cy.get('#waiting-for-opponent-discard-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-discard-scrim').should('not.be.exist');
       assertGameState(0, {
         p0Hand: [Card.FOUR_OF_CLUBS],
         p0Points: [],
