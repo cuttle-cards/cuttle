@@ -590,7 +590,7 @@ describe('Play TWOS', () => {
     }); // End playing TWO to destroy jack
   }); // End describe player playing twos
 
-  describe.skip('Opponent Playing TWOS', () => {
+  describe('Opponent Playing TWOS', () => {
     beforeEach(() => {
       cy.setupGameAsP1();
     });
@@ -640,7 +640,7 @@ describe('Play TWOS', () => {
   });
 });
 
-describe.skip('Playing NINES', () => {
+describe.only('Playing NINES', () => {
   describe('Player Playing NINES', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
@@ -1368,7 +1368,7 @@ describe.skip('Playing THREEs', () => {
   });
 }); // End 3s description
 
-describe.skip('ONE-OFF Target should be removed after one-off resolves', () => {
+describe('ONE-OFF Target should be removed after one-off resolves', () => {
   beforeEach(() => {
     cy.setupGameAsP1();
   });
