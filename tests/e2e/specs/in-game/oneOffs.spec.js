@@ -486,7 +486,7 @@ describe('FOURS', () => {
   });
 });
 
-describe.skip('Play TWOS', () => {
+describe('Play TWOS', () => {
   describe('Player Playing TWOS', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
@@ -514,7 +514,7 @@ describe.skip('Play TWOS', () => {
       // Opponent resolves
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       cy.resolveOpponent();
-      cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
       assertGameState(0, {
         p0Hand: [Card.ACE_OF_SPADES],
@@ -1263,7 +1263,7 @@ describe.skip('Playing THREEs', () => {
 
     cy.resolveOpponent();
 
-    cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
+    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
     cy.get('#three-dialog').should('be.visible');
     // resolve button should be disabled
@@ -1354,7 +1354,7 @@ describe.skip('Playing THREEs', () => {
     // waiting for opponent to choose from scrap scrim
     cy.resolveThreeOpponent(Card.ACE_OF_SPADES);
 
-    cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.be.visible');
+    cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.exist');
 
     assertGameState(0, {
       p0Hand: [],
