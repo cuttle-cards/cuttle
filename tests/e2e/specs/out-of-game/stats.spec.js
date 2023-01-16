@@ -30,7 +30,6 @@ function setup() {
           fourthPlace: season.fourthPlace ? this[season.fourthPlace] : null,
         };
       });
-
       // Convert usernames to ids
       const transformMatchFixture = (match) => {
         // Grab player ids
@@ -210,8 +209,32 @@ describe('Stats Page', () => {
     cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 4');
   });
 
-  it('Selects season that should not be available', () => {
+  it('Hides season that should not be available', () => {
     cy.get('[data-cy=season-select]').click({ force: true });
     cy.get('[role=option]').contains('Future Spades Season').should('not.exist');
+  });
+
+  it('Hides stats table when matches are not available', () => {
+    // Select World Championship
+    cy.get('[data-cy=season-select]').click({ force: true });
+    cy.get('[role=option]').contains('World Championship Season').click();
+    cy.get('[data-cy=stats-leaderboard]').should('not.exist');
+
+    const worldChampionshipSeason = seasonFixtures[seasonFixtures.length - 1];
+    // Tournament Data
+    cy.get('[data-cy=tournament-bracket-link]').should(
+      'have.attr',
+      'href',
+      worldChampionshipSeason.bracketLink
+    );
+    cy.get('[data-cy=tournament-footage-link]').should(
+      'have.attr',
+      'href',
+      worldChampionshipSeason.footageLink
+    );
+    // Award Cards
+    cy.get('[data-tournament=1st]').should('contain', playerOne.username);
+    cy.get('[data-tournament=2nd]').should('contain', playerTwo.username);
+    cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
   });
 });
