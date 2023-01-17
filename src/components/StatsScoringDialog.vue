@@ -1,8 +1,17 @@
 <template>
   <v-dialog v-model="show">
     <!-- Activator -->
-    <template #activator="{ props }">
-      <v-btn color="primary" class="mb-2" v-bind="props" variant="plain">
+    <template #activator="{ attrs, props }">
+      <v-btn
+        color="primary"
+        class="mb-2"
+        v-bind="{
+          ...$props,
+          ...props,
+          ...$attrs,
+          ...attrs,
+        }"
+        variant="plain">
         <span v-if="showButtonText">How are ranks determined?</span>
         <v-icon class="ml-1" icon="mdi-information-outline" />
       </v-btn>
@@ -66,7 +75,7 @@
 import AwardCard from '@/components/AwardCard.vue';
 
 export default {
-  name: 'RulesDialog',
+  name: 'StatsScoringDialog',
   components: {
     AwardCard,
   },
