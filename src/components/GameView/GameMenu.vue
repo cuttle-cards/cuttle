@@ -1,23 +1,25 @@
 <template>
-  <v-menu v-model="showGameMenu">
-    <!-- Activator -->
-    <template #activator="{ props }">
-      <v-btn id="game-menu-activator" v-bind="props" class="ma-2" icon>
-        <v-icon large color="neutral lighten-1" icon="mdi-cog" />
-      </v-btn>
-    </template>
-    <!-- Menu -->
-    <v-list id="game-menu">
-      <v-list-item data-cy="rules-open" @click.stop="showRulesDialog = true">
-          Rules
-          <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
-      </v-list-item>
-      <!-- Concede Dialog (Initiate + Confirm) -->
-      <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">Concede</v-list-item>
-      <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
-        Request Stalemate
-      </v-list-item>
-    </v-list>
+  <div>
+    <v-menu v-model="showGameMenu">
+      <!-- Activator -->
+      <template #activator="{ props }">
+        <v-btn id="game-menu-activator" v-bind="props" class="ma-2" icon>
+          <v-icon large color="neutral lighten-1" icon="mdi-cog" />
+        </v-btn>
+      </template>
+      <!-- Menu -->
+      <v-list id="game-menu">
+        <v-list-item data-cy="rules-open" @click.stop="showRulesDialog = true">
+            Rules
+            <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
+        </v-list-item>
+        <!-- Concede Dialog (Initiate + Confirm) -->
+        <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">Concede</v-list-item>
+        <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
+          Request Stalemate
+        </v-list-item>
+      </v-list>
+    </v-menu>
     <v-dialog v-model="showDialog">
       <v-card id="request-gameover-dialog">
         <v-card-title>{{ dialogTitle }}?</v-card-title>
@@ -39,7 +41,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-menu>
+  </div>
 </template>
 
 <script>
