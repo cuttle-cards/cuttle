@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-cy="stats-leaderboard">
     <!-- Select Metric and Weeks -->
     <div id="stats-table-upper-surface" class="d-flex align-end">
       <v-select
@@ -20,10 +20,9 @@
       />
     </div>
     <!-- https://vuetifyjs.com/en/api/v-data-table/ -->
-    <v-data-table
+    <v-table
       :items="tableRows"
       :headers="tableColumns"
-      :sort-by.sync="sortBy"
       :items-per-page="-1"
       :loading="loading"
       :item-class="tableRowClass"
@@ -32,9 +31,11 @@
         <span :data-rank="item.username">{{ value }}</span>
       </template>
       <!-- Customize the appearance of total column and column for each week -->
-      <template v-for="week in ['total', ...selectedWeeks]" #[`item.week_${week}`]="{ item }">
+      <template
+        v-for="week in ['total', ...selectedWeeks]"
+        #[`item.week_${week}`]="{ item }"
+        :key="`${item.username}_week_${week}_wins`">
         <stats-leaderboard-cell
-          :key="`${item.username}_week_${week}_wins`"
           :player-row="item"
           :week="week"
           :selected-metric="selectedMetric"
@@ -44,7 +45,7 @@
           :season-name="seasonName"
         />
       </template>
-    </v-data-table>
+    </v-table>
   </div>
 </template>
 <script>

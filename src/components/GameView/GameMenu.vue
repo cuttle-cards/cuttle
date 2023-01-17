@@ -3,15 +3,15 @@
     <v-menu v-model="showGameMenu">
       <!-- Activator -->
       <template #activator="{ props }">
-        <v-btn id="game-menu-activator" v-bind="props" class="ma-2" icon>
-          <v-icon large color="neutral lighten-1" icon="mdi-cog" />
+        <v-btn id="game-menu-activator" v-bind="props" class="ma-2" icon variant="text">
+          <v-icon size="large" color="neutral-lighten-2" icon="mdi-cog" />
         </v-btn>
       </template>
       <!-- Menu -->
       <v-list id="game-menu">
         <v-list-item data-cy="rules-open" @click.stop="showRulesDialog = true">
-            Rules
-            <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
+          Rules
+          <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">Concede</v-list-item>
@@ -30,8 +30,7 @@
           </v-btn>
           <v-btn
             color="error"
-            depressed
-            variant="outlined"
+            variant="flat"
             data-cy="request-gameover-confirm"
             :loading="loading"
             @click="requestGameEnd"

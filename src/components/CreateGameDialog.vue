@@ -19,7 +19,7 @@
           autofocus
           :disabled="loading"
           label="Game Name"
-          outlined
+          variant="outlined"
           data-cy="game-name-input"
           @keydown.enter="submitNewGame"
         />
@@ -28,7 +28,7 @@
         <v-btn
           data-cy="cancel-create-game"
           :disabled="loading"
-          text
+          variant="text"
           color="primary"
           @click="cancelCreateGame"
         >
@@ -38,7 +38,7 @@
           data-cy="submit-create-game"
           :loading="loading"
           color="primary"
-          depressed
+          variant="flat"
           @click="submitNewGame"
         >
           Create Game

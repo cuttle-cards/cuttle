@@ -39,9 +39,9 @@
               variant="outlined"
               color="primary"
               class="mt-4"
-              :small="$vuetify.display.mdAndDown ? true : false"
               to="/rules"
               data-cy="rules-link"
+              :size="buttonSize"
             >
               Rules
             </v-btn>
@@ -49,22 +49,33 @@
               variant="outlined"
               color="secondary"
               class="mt-4"
-              :small="$vuetify.display.mdAndDown ? true : false"
               href="https://human-ai-interaction.github.io/cuttle-bot/"
               target="_blank"
               data-cy="ai-link"
+              :size="buttonSize"
             >
               Play with AI
             </v-btn>
             <v-btn
               variant="outlined"
               class="mt-4"
-              :small="$vuetify.display.mdAndDown"
               href="https://discord.gg/9vrAZ8xGyh"
               target="_blank"
+              :size="buttonSize"
             >
               Discord
             </v-btn>
+            <h6 class="text-h6 mt-4">Looking to Play?</h6>
+            <p class="mt-0">Our weekly play sessions are open to everyone!</p>
+            <ul>
+              <li>Wednesday Nights at 8:30pm EST</li>
+              <li>Thursdays at 12pm EST</li>
+            </ul>
+            <p>
+              Can't find a match?
+              <v-btn variant="text" href="https://discord.gg/9vrAZ8xGyh">Join our discord</v-btn>
+              to see who's around to play!
+            </p>
           </v-col>
         </v-row>
       </div>
@@ -86,7 +97,7 @@ import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '../components/CreateGameDialog.vue';
 
 export default {
-  name: 'Home',
+  name: 'HomeView',
   components: {
     GameListItem,
     CreateGameDialog,
@@ -101,6 +112,9 @@ export default {
     ...mapState({
       gameList: ({ gameList }) => gameList.games,
     }),
+    buttonSize() {
+      return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
+    },
   },
   async mounted() {
     // Leave any existing lobbies before getting the game list

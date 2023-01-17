@@ -13,15 +13,15 @@
           >.
         </span>
         <div class="d-flex justify-center align-center my-8">
-          <card :suit="oneOff.suit" :rank="oneOff.rank" />
+          <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
           <p class="ml-8">
             {{ oneOff.ruleText }}
           </p>
           <div v-if="target" id="target-wrapper">
             <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-              <v-icon x-large color="red" icon="mdi-target" />
+              <v-icon size="x-large" color="red" icon="mdi-target" />
             </span>
-            <card :suit="target.suit" :rank="target.rank" />
+            <game-card :suit="target.suit" :rank="target.rank" />
           </div>
         </div>
         Would you like to play a two to counter?
@@ -30,7 +30,9 @@
         <v-btn data-cy="decline-counter-resolve" color="primary" variant="outlined" @click="resolve">
           Resolve
         </v-btn>
-        <v-btn data-cy="counter" color="primary" depressed @click="choseToCounter = true"> Counter </v-btn>
+        <v-btn data-cy="counter" color="primary" variant="flat" @click="choseToCounter = true">
+          Counter
+        </v-btn>
       </v-card-actions>
     </v-card>
     <!-- Choose which two to use to counter -->
@@ -39,7 +41,7 @@
       <v-card-text>
         <p>Which Two would you like to counter with? (Click the card)</p>
         <div id="twos-in-hand" class="d-flex justify-center">
-          <card
+          <game-card
             v-for="two in twosInHand"
             :key="two.id"
             :suit="two.suit"
@@ -50,19 +52,21 @@
         </div>
       </v-card-text>
       <v-card-actions>
-        <v-btn text color="primary" data-cy="cancel-counter" @click="resolve"> Cancel </v-btn>
+        <v-btn variant="text" color="primary" data-cy="cancel-counter" @click="resolve">
+          Cancel
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'CounterDialog',
   components: {
-    Card,
+    GameCard,
   },
   props: {
     value: {

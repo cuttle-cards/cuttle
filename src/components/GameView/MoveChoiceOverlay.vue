@@ -7,12 +7,18 @@
   >
     <!-- Cancel button -->
     <div id="close-wrapper" class="d-flex justify-end my-4">
-      <v-btn icon data-cy="cancel-move" @click="$emit('cancel')">
-        <v-icon icon="mdi-close" x-large />
+      <v-btn
+        icon
+        variant="text"
+        color="white"
+        size="x-large"
+        data-cy="cancel-move"
+        @click="$emit('cancel')">
+        <v-icon icon="mdi-close" size="x-large" />
       </v-btn>
     </div>
     <div v-if="selectedCard" class="d-flex justify-center">
-      <card
+      <game-card
         :suit="selectedCard.suit"
         :rank="selectedCard.rank"
         :data-player-overlay-card="`${selectedCard.rank}-${selectedCard.suit}`"
@@ -39,13 +45,13 @@
 
 <script>
 import MoveChoiceCard from '@/components/GameView/MoveChoiceCard.vue';
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'MoveChoiceOverlay',
   components: {
     MoveChoiceCard,
-    Card,
+    GameCard,
   },
   props: {
     modelValue: {
@@ -68,15 +74,29 @@ export default {
       type: Number,
       default: null,
     },
+    playingFromDeck: {
+      type: Boolean,
+      required: true,
+    },
+    cardSelectedFromDeck: {
+      type: Boolean,
+      default: null,
+    },
   },
   computed: {
     // Determines if any moves are available
     allMovesAreDisabled() {
-      return !this.isPlayersTurn || this.frozenId === this.selectedCard.id;
+      return (
+        !this.isPlayersTurn ||
+        this.frozenId === this.selectedCard.id ||
+        (this.playingFromDeck && !this.cardSelectedFromDeck)
+      );
     },
     // Determines which disabled text to display
     disabledText() {
-      if (this.allMovesAreDisabled) {
+      if (this.playingFromDeck && !this.cardSelectedFromDeck) {
+        return 'You must play one of the top two cards from the deck';
+      } else if (this.allMovesAreDisabled) {
         return !this.isPlayersTurn ? "It's not your turn" : 'This card is frozen';
       }
       return '';

@@ -57,7 +57,7 @@
         <p class="d-block">On your turn you must perform exactly one of the following actions:</p>
       </v-row>
       <v-row v-for="(ruleRow, rowIndex) in rules" :key="`rule-row-${rowIndex}`" align="start" class="my-6">
-        <v-col v-for="(rule, colIndex) in ruleRow" :key="rule.title" md="6" sm="12" class="my-4">
+        <v-col v-for="(rule) in ruleRow" :key="rule.title" md="6" sm="12" class="my-4">
           <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
@@ -65,7 +65,7 @@
       <!-- Royals -->
       <v-row class="flex-column">
         <div class="d-flex">
-          <v-icon x-large color="black" class="mr-4" icon="mid-crown" />
+          <v-icon size="x-large" color="black" class="mr-4" icon="mid-crown" />
           <h1 class="gradient-text">Royals</h1>
         </div>
         <p class="d-block">
@@ -74,7 +74,7 @@
         </p>
       </v-row>
       <v-row v-for="(ruleRow, rowIndex) in royals" :key="`royal-row-${rowIndex}`" align="start" class="my-6">
-        <v-col v-for="(rule, colIndex) in ruleRow" :key="rule.title" md="6" sm="12" class="my-4">
+        <v-col v-for="(rule) in ruleRow" :key="rule.title" md="6" sm="12" class="my-4">
           <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
@@ -82,7 +82,7 @@
       <!-- One-Offs -->
       <v-row>
         <div class="d-flex">
-          <v-icon x-large color="black" class="mr-4" icon="mdi-delete" />
+          <v-icon size="x-large" color="black" class="mr-4" icon="mdi-delete" />
           <h1 class="gradient-text">One-Offs</h1>
         </div>
         <p>
@@ -97,7 +97,7 @@
         align="start"
         class="my-6"
       >
-        <v-col v-for="(rule, colIndex) in ruleRow" :key="rule.title" md="6" sm="12" class="my-4">
+        <v-col v-for="(rule) in ruleRow" :key="rule.title" md="6" sm="12" class="my-4">
           <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
@@ -231,7 +231,7 @@
 import RulePreview from '@/components/RulePreview.vue';
 
 export default {
-  name: 'Rules',
+  name: 'RulesView',
   components: {
     RulePreview,
   },

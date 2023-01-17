@@ -8,7 +8,7 @@
         <h1>
           Lobby for {{ gameName }}
           <small v-if="isRanked" class="lobby-ranked-text">
-            (Ranked <v-icon v-if="isRanked" medium>mdi-trophy</v-icon>)
+            (Ranked <v-icon v-if="isRanked" size="medium">mdi-trophy</v-icon>)
           </small>
         </h1>
       </v-col>
@@ -41,7 +41,13 @@
       <v-col cols="3">
         <v-btn :loading="readying" contained color="primary" data-cy="ready-button" @click="ready">
           {{ readyButtonText }}
-          <v-icon v-if="isRanked" class="ml-1" small data-cy="ready-button-ranked-icon"> mdi-trophy </v-icon>
+          <v-icon
+            v-if="isRanked"
+            class="ml-1"
+            size="small"
+            icon="mdi-trophy"
+            data-cy="ready-button-ranked-icon"
+          />
         </v-btn>
       </v-col>
       <v-spacer />
@@ -55,7 +61,7 @@ import { mapGetters, mapState } from 'vuex';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
 
 export default {
-  name: 'Lobby',
+  name: 'LobbyView',
   components: {
     LobbyPlayerIndicator,
   },

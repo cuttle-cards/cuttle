@@ -6,7 +6,7 @@
         <span>Oops, seems you cannot make a move. Select one of the jacks to scrap.</span>
         <div class="d-flex flex-wrap justify-center align-center my-8">
           <template v-if="topCard">
-            <card
+            <game-card
               class="mx-4 my-1"
               :suit="topCard.suit"
               :rank="topCard.rank"
@@ -16,7 +16,7 @@
             />
           </template>
           <template v-if="secondCard">
-            <card
+            <game-card
               class="mx-4 my-1"
               :suit="secondCard.suit"
               :rank="secondCard.rank"
@@ -43,12 +43,12 @@
 </template>
 
 <script>
-import Card from '@/components/GameView/Card.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'SevenDoubleJacksDialog',
   components: {
-    Card,
+    GameCard,
   },
   props: {
     value: {

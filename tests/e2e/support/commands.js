@@ -65,7 +65,9 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     cy.signupPlayer(username, validPassword);
   }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
-    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.window()
+      .its('cuttle.app.config.globalProperties.$store')
+      .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.log(`Subscribed to game ${gameSummary.gameId}`);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
@@ -91,7 +93,9 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
     }
     cy.subscribeOpponent(gameSummary.gameId);
     cy.readyOpponent();
-    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+    cy.window()
+      .its('cuttle.app.config.globalProperties.$store')
+      .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
@@ -118,11 +122,15 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
   });
 });
 Cypress.Commands.add('signupPlayer', (username, password) => {
-  cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'requestSignup', { username, password });
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store')
+    .invoke('dispatch', 'requestSignup', { username, password });
   cy.log(`Signed up player ${username}`);
 });
 Cypress.Commands.add('loginPlayer', (username, password) => {
-  cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'requestLogin', { username, password });
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store')
+    .invoke('dispatch', 'requestLogin', { username, password });
   cy.log(`Logged in as player ${username}`);
 });
 Cypress.Commands.add('createGameOpponent', (name) => {
@@ -142,7 +150,10 @@ Cypress.Commands.add('createGameOpponent', (name) => {
   });
 });
 Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
-  return cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'requestCreateGame', { gameName, isRanked });
+  return cy
+    .window()
+    .its('cuttle.app.config.globalProperties.$store')
+    .invoke('dispatch', 'requestCreateGame', { gameName, isRanked });
 });
 Cypress.Commands.add('subscribeOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
@@ -1050,7 +1061,7 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
-      cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
     });
 });
 
