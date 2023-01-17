@@ -1,20 +1,13 @@
 <template>
   <v-dialog v-model="show">
     <!-- Activator -->
-    <template #activator="{ attrs, props }">
-      <v-btn
-        color="primary"
-        class="mb-2"
-        v-bind="{
-          ...$props,
-          ...props,
-          ...$attrs,
-          ...attrs,
-        }"
-        variant="plain">
-        <span v-if="showButtonText">How are ranks determined?</span>
-        <v-icon class="ml-1" icon="mdi-information-outline" />
-      </v-btn>
+    <template #activator="{ props }">
+      <slot name="button">
+        <v-btn color="primary" class="mb-2" v-bind="props" variant="plain">
+          <span v-if="showButtonText">How are ranks determined?</span>
+          <v-icon class="ml-1" icon="mdi-information-outline" />
+        </v-btn>
+      </slot>
     </template>
     <!-- Dialog -->
     <v-card>
