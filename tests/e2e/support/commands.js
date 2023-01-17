@@ -1061,7 +1061,7 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
-      cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
     });
 });
 
