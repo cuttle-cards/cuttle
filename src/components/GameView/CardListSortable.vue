@@ -29,7 +29,7 @@
         :rank="card.rank"
         v-bind="dataSelectorObject(card)"
         :is-selected="selectedIds.includes(card.id)"
-        @click="$emit('click', card)"
+        @click="$emit('select-card', card)"
       />
     </div>
   </div>
@@ -44,6 +44,7 @@ export default {
   components: {
     GameCard,
   },
+  emits: ['select-card'],
   props: {
     cards: {
       type: Array,

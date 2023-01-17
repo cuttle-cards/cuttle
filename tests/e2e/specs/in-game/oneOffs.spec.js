@@ -1240,7 +1240,7 @@ describe('Playing THREEs', () => {
     assertSnackbarError('You can only play a 3 as a one-off, if there are cards in the scrap pile');
   });
 
-  it.skip('Plays 3s successfully', () => {
+  it('Plays 3s successfully', () => {
     const scrap = [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS];
 
     // Set Up
