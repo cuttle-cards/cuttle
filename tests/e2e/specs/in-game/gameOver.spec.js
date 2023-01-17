@@ -165,7 +165,7 @@ describe('Losing the game', () => {
     goHomeJoinNewGame();
   });
 
-  it.skip('Loses by conceding', () => {
+  it('Loses by conceding', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -259,7 +259,7 @@ describe('Stalemates', () => {
   });
 
   describe('Requesting a stalemate', () => {
-    it.skip('Ends in stalemate when player requests stalemate and opponent agrees', () => {
+    it('Ends in stalemate when player requests stalemate and opponent agrees', () => {
       cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
@@ -305,7 +305,7 @@ describe('Stalemates', () => {
       assertStalemate();
     });
 
-    it.skip('Cancels the stalemate when player requests a stalemate and opponent rejects', () => {
+    it('Cancels the stalemate when player requests a stalemate and opponent rejects', () => {
       cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
@@ -321,7 +321,7 @@ describe('Stalemates', () => {
 
       // Opponent rejects stalemate
       cy.rejectStalemateOpponent();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
 
       // Player requests stalemate again -- process starts over
       cy.get('#game-menu-activator').click();
@@ -334,7 +334,7 @@ describe('Stalemates', () => {
 
       // Opponent rejects stalemate
       cy.rejectStalemateOpponent();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
 
       // Opponent requests stalemate - Does not immediately stalemate
       cy.stalemateOpponent();
@@ -373,7 +373,7 @@ describe('Stalemates', () => {
         .click();
     });
 
-    it.skip('Cancels stalemate after an additional turn passes', () => {
+    it('Cancels stalemate after an additional turn passes', () => {
       cy.setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
@@ -388,7 +388,7 @@ describe('Stalemates', () => {
       cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
 
       cy.drawCardOpponent();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
 
       // Opponent requests stalemate
       cy.stalemateOpponent();
@@ -441,7 +441,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.loginPlayer(playerOne.username, playerOne.password);
     cy.setupGameAsP0(true, true);
   });
-  it.skip('Creates a match when two players play a ranked game for the first time this week', function () {
+  it('Creates a match when two players play a ranked game for the first time this week', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
