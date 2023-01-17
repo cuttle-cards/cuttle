@@ -8,7 +8,7 @@
             :cards="scrap"
             data-selector-prefix="three-dialog"
             :selected-ids="selectedIds"
-            @click="selectCard($event)"
+            @select-card="selectCard"
           />
         </div>
       </v-card-text>
