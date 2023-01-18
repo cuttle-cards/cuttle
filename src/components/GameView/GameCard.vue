@@ -13,8 +13,7 @@
     <v-overlay
       v-ripple
       :model-value="isValidTarget"
-      absolute
-      :scrim="false"
+      contained
       class="valid-move target-overlay"
     />
     <transition :name="scuttledByTransition">
@@ -226,6 +225,8 @@ export default {
 }
 .target-overlay {
   cursor: pointer;
+  background-color: rgb(var(--v-theme-accent-lighten1));
+  opacity: .6;
 }
 
 .frozen {
