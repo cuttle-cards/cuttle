@@ -12,13 +12,7 @@
       <v-card-text>
         <div class="d-flex align-center">
           <v-switch v-model="isRanked" label="Ranked" data-cy="create-game-ranked-switch" />
-          <stats-scoring-dialog :show-button-text="false" data-cy="ranked-info-button">
-            <template v-slot:button>
-              <v-btn color="primary" class="mb-2" variant="plain" data-cy="ranked-info-button">
-                <v-icon class="ml-1" icon="mdi-information-outline" />
-              </v-btn>
-            </template>
-          </stats-scoring-dialog>
+          <stats-scoring-dialog :show-button-text="false" />
         </div>
         <v-text-field
           v-model="gameName"
