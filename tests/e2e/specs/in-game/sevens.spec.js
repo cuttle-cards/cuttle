@@ -705,7 +705,7 @@ describe('Playing SEVENS', () => {
       });
     }); // End playing NINE from seven
 
-    it.only('Plays NINE on jacks from a seven', () => {
+    it('Plays NINE on jacks from a seven', () => {
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
         p0Points: [],
