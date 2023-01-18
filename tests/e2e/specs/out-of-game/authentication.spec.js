@@ -14,9 +14,9 @@ function assertSuccessfulAuth(username) {
     });
 }
 
-function assertFailedAuth() {
+function assertFailedAuth(path) {
   // Confirm we have not navigated away from login/signup
-  cy.hash().should('eq', '#/login');
+  cy.hash().should('eq', path);
   // Check store auth data
   cy.window()
     .its('cuttle.app.config.globalProperties.$store.state.auth')
@@ -76,22 +76,21 @@ describe('Logging In', () => {
     cy.get('[data-cy=password]').type(validPassword);
     cy.get('[data-cy=submit]').click();
     assertSnackbarError('Could not find that user with that username. Try signing up!', 'auth');
-    assertFailedAuth();
+    assertFailedAuth('#/login');
   });
   it('Rejects incorrect password', () => {
     cy.get('[data-cy=username]').type(validUsername);
     cy.get('[data-cy=password]').type('incorrectPw');
     cy.get('[data-cy=submit]').click();
     assertSnackbarError('Username and password do not match', 'auth');
-    assertFailedAuth();
+    assertFailedAuth('#/login');
   });
 });
 
 describe('Signing Up', () => {
   beforeEach(() => {
     cy.wipeDatabase();
-    cy.visit('#/login');
-    cy.get('[data-cy=switch-mode]').click(); // Switch to signup
+    cy.visit('#/signup');
   });
 
   /**
@@ -121,19 +120,19 @@ describe('Signing Up', () => {
     cy.get('[data-cy=username]').type(validUsername);
     cy.get('[data-cy=password]').type('sh0rt');
     cy.get('[data-cy=submit]').click();
-    assertFailedAuth();
+    assertFailedAuth('#/signup');
     assertSnackbarError('Your password must contain at least eight characters', 'auth');
   });
   it('Password is required', () => {
     cy.get('[data-cy=username]').type(validUsername);
     cy.get('[data-cy=submit]').click();
-    assertFailedAuth();
+    assertFailedAuth('#/signup');
     assertSnackbarError('Password is required', 'auth');
   });
   it('Username is required', () => {
     cy.get('[data-cy=password]').type(validPassword);
     cy.get('[data-cy=submit]').click();
-    assertFailedAuth();
+    assertFailedAuth('#/signup');
     assertSnackbarError('Please provide a non-empty username', 'auth');
   });
   it('Rejects signup if username already exists', () => {
@@ -141,7 +140,10 @@ describe('Signing Up', () => {
     cy.get('[data-cy=username]').type(validUsername);
     cy.get('[data-cy=password]').type(validPassword);
     cy.get('[data-cy=submit]').click();
-    assertFailedAuth();
-    assertSnackbarError('That username is already registered to another user; try logging in!', 'auth');
+    assertFailedAuth('#/signup');
+    assertSnackbarError(
+      'That username is already registered to another user; try logging in!',
+      'auth'
+    );
   });
 });
