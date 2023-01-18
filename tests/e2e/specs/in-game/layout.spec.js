@@ -7,8 +7,8 @@ describe('Game View Layout', () => {
     cy.setupGameAsP0();
   });
 
-  it.skip('Hides navbar on gameview page', () => {
-    cy.get('[data-cy=nav-drawer]').should('not.be.visible');
+  it('Hides navbar on gameview page', () => {
+    cy.get('[data-cy=nav-drawer]').should('not.exist');
   });
 
   it('Should display usernames of player and opponent', () => {
@@ -16,7 +16,7 @@ describe('Game View Layout', () => {
     cy.get('[data-cy=player-username]').should('be.visible');
   });
 
-  it.skip('Three dialogs', () => {
+  it('Three dialogs', () => {
     // Set Up
     cy.loadGameFixture({
       p0Hand: [Card.THREE_OF_CLUBS],
@@ -214,7 +214,11 @@ describe('Four dialogs layout', () => {
   });
 });
 
-describe.skip('Aesthetic tests', () => {
+describe('Aesthetic tests', () => {
+  beforeEach(() => {
+    cy.setupGameAsP0();
+  });
+
   it('Many cards on field', () => {
     // Set Up
     cy.loadGameFixture({
@@ -275,7 +279,7 @@ describe.skip('Aesthetic tests', () => {
     // Player plays 3rd jack
     cy.get('[data-player-hand-card=11-2]').click();
     cy.get('[data-move-choice=jack]').click();
-    cy.get('[data-opponent-point-card=10-2]').click();
+    cy.get('[data-opponent-point-card=10-2]').click({ force: true });
 
     assertGameState(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
@@ -350,7 +354,7 @@ describe.skip('Aesthetic tests', () => {
     // Player plays 3rd jack
     cy.get('[data-player-hand-card=11-2]').click();
     cy.get('[data-move-choice=jack]').click();
-    cy.get('[data-opponent-point-card=10-2]').click();
+    cy.get('[data-opponent-point-card=10-2]').click({ force: true });
 
     assertGameState(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
