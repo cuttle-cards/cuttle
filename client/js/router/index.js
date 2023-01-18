@@ -37,6 +37,11 @@ const routes = [
     name: 'Login',
     component: LoginSignup,
   },
+  {
+    path: '/signup',
+    name: 'Signup ',
+    component: LoginSignup,
+  },
   // This route is just a passthrough to make sure the user is fully logged out before putting
   // them on the login screen
   {
