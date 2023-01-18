@@ -394,7 +394,7 @@ describe('Playing SEVENS', () => {
     }); // End seven glasses test
   }); // End seven face card describe
 
-  it.skip('Scuttles from a seven', () => {
+  it.only('Scuttles from a seven', () => {
     cy.loadGameFixture({
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -410,7 +410,7 @@ describe('Playing SEVENS', () => {
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
-    cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
+    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
     cy.get('[data-second-card=6-1]').should('exist').and('be.visible');
     cy.get('[data-top-card=10-0]').click();
     cy.get('[data-move-choice=scuttle]').click();
