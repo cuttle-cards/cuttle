@@ -37,12 +37,12 @@ describe('Lobby - Page Content', () => {
     setup();
   });
 
-  it.skip('Displays static content', () => {
+  it('Displays static content', () => {
     cy.contains('h1', 'Lobby for Test Game');
     cy.get('#logo');
     cy.contains('button.v-btn', 'EXIT');
     cy.contains('button.v-btn', 'READY');
-    cy.get('[data-cy=nav-drawer]').should('not.be.visible');
+    cy.get('[data-cy=nav-drawer]').should('not.exist');
   });
 
   it('Shows both players indicators', () => {
