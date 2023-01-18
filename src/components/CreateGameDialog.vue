@@ -12,7 +12,7 @@
       <v-card-text>
         <div class="d-flex align-center">
           <v-switch v-model="isRanked" label="Ranked" data-cy="create-game-ranked-switch" />
-          <stats-scoring-dialog :show-button-text="false" data-cy="ranked-info-button" />
+          <stats-scoring-dialog :show-button-text="false" />
         </div>
         <v-text-field
           v-model="gameName"

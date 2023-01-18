@@ -12,10 +12,20 @@ function setup() {
   cy.signupPlayer(playerUsername, playerPassword);
   cy.vueRoute('/');
 }
+
 function assertSuccessfulJoin(gameState) {
   expect(gameState.id).to.not.eq(null);
   cy.url().should('include', '/lobby/');
   cy.contains('h1', `Lobby for ${gameState.name}`);
+}
+
+function toggleInput(selector, checked = false) {
+  const before = checked ? 'be.checked' : 'not.be.checked';
+  const after = checked ? 'not.be.checked' : 'be.checked';
+  cy.get(`${selector} input`)
+    .should(before)
+    .click({ force: true }) // Force to click hidden input inside switch
+    .should(after);
 }
 
 describe('Home - Page Content', () => {
@@ -149,15 +159,13 @@ describe('Home - Game List', () => {
 describe('Home - Create Game', () => {
   beforeEach(setup);
 
-  it.skip('Saves ranked setting between sessions', () => {
+  it('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
 
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
-    cy.get('[data-cy=create-game-ranked-switch]')
-      .should('not.be.checked')
-      .click({ force: true }) // Force to click hidden input inside switch
-      .should('be.checked');
+
+    toggleInput('[data-cy=create-game-ranked-switch]');
 
     cy.get('[data-cy=ranked-info-button]').should('exist');
 
@@ -167,10 +175,8 @@ describe('Home - Create Game', () => {
     // Should stay checked
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
-    cy.get('[data-cy=create-game-ranked-switch]')
-      .should('be.checked')
-      .click({ force: true }) // Force to click hidden input inside switch
-      .should('not.be.checked');
+
+    toggleInput('[data-cy=create-game-ranked-switch]', true);
 
     // Reload to get a fresh session so we use localStorage
     cy.reload();
@@ -228,7 +234,7 @@ describe('Home - Create Game', () => {
       });
   });
 
-  it.skip('Creates a new ranked game', () => {
+  it('Creates a new ranked game', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
       .should('be.visible')
@@ -236,12 +242,10 @@ describe('Home - Create Game', () => {
       .should('be.visible')
       .type('test game');
 
-    cy.get('[data-cy=create-game-ranked-switch]')
-      .should('not.be.checked')
-      .click({ force: true }) // Force to click hidden input inside switch
-      .should('be.checked');
+    toggleInput('[data-cy=create-game-ranked-switch]');
 
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+
     // Test store
     cy.window()
       .its('cuttle.app.config.globalProperties.$store.state.gameList.games')
@@ -252,6 +256,7 @@ describe('Home - Create Game', () => {
         expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
       });
   });
+
   it('Limits the length of the game name for new ranked game', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
