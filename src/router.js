@@ -14,6 +14,7 @@ export const ROUTE_NAME_LOBBY = 'Lobby';
 export const ROUTE_NAME_LOGIN = 'Login';
 export const ROUTE_NAME_LOGOUT = 'Logout';
 export const ROUTE_NAME_RULES = 'Rules';
+export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
 
 const mustBeAuthenticated = (to, from, next) => {
@@ -42,13 +43,8 @@ const routes = [
   },
   {
     path: '/signup',
-    name: 'Signup ',
+    name: ROUTE_NAME_SIGNUP,
     component: LoginView,
-  },
-  {
-    path: '/signup',
-    name: 'Signup ',
-    component: LoginSignup,
   },
   // This route is just a passthrough to make sure the user is fully logged out before putting
   // them on the login screen

@@ -793,7 +793,6 @@ describe('Playing SEVENS', () => {
         .should('have.class', 'v-card--disabled')
         .contains('You must play one of the top two cards from the deck');
     }); // End disables moves choices
-  }); // End player seven targeted one-off describe
 
     it('Disables move choices when selecting card in hand while resolving seven', () => {
       cy.setupGameAsP0();
@@ -828,7 +827,7 @@ describe('Playing SEVENS', () => {
         .contains('You must play one of the top two cards from the deck');
     }); // End disables moves choices
   }); // End player seven targeted one-off describe
-}); // End playing sevens describe()
+});
 
 describe('Opponent playing SEVENS', () => {
   beforeEach(() => {

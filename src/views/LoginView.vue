@@ -96,6 +96,8 @@
 </template>
 
 <script>
+import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
+
 export default {
   name: 'LoginView',
   data() {
@@ -109,7 +111,7 @@ export default {
   },
   computed: {
     isLoggingIn() {
-      return this.$route.name === 'Login';
+      return this.$route.name === ROUTE_NAME_LOGIN;
     },
     buttonText() {
       if (this.isLoggingIn) {
@@ -141,9 +143,9 @@ export default {
     switchMode() {
       this.pw = '';
       if (this.isLoggingIn) {
-        this.$router.push('/signup');
+        this.$router.push({ name: ROUTE_NAME_SIGNUP });
       } else {
-        this.$router.push('/login');
+        this.$router.push({ name: ROUTE_NAME_LOGIN });
       }
     },
     handleLogin() {
