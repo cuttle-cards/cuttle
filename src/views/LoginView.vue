@@ -102,15 +102,14 @@ export default {
     return {
       username: '',
       pw: '',
-      isLoggingIn: true,
       showSnackBar: false,
       snackBarMessage: '',
       loading: false,
     };
   },
   computed: {
-    isSigningUp() {
-      return !this.isLoggingIn;
+    isLoggingIn() {
+      return this.$route.name === 'Login';
     },
     buttonText() {
       if (this.isLoggingIn) {
@@ -140,8 +139,12 @@ export default {
       }
     },
     switchMode() {
-      this.isLoggingIn = !this.isLoggingIn;
       this.pw = '';
+      if (this.isLoggingIn) {
+        this.$router.push('/signup');
+      } else {
+        this.$router.push('/login');
+      }
     },
     handleLogin() {
       this.username = '';
