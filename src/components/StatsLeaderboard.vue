@@ -29,11 +29,11 @@
       <tbody>
         <tr v-for="row in tableRows" :key="row.username">
           <!-- Username -->
-          <td>
+          <td :data-username="row.username">
             {{ row.username }}
           </td>
           <!-- Rank -->
-          <td>
+          <td :data-rank="row.username">
             {{ row.rank }}
           </td>
           <td v-for="(week) in ['total', ...selectedWeeks]" :key="`${row.username}-${week}`">
