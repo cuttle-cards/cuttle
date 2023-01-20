@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     theme() {
-      return this.$vuetify.theme.themes.light;
+      return this.$vuetify.theme.themes.cuttleTheme.colors;
     },
     medalColor() {
       switch (this.place) {
