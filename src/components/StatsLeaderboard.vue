@@ -392,6 +392,9 @@ export default {
 </script>
 
 <style scoped>
+th {
+  text-align: left;
+}
 :deep .active-user-stats {
   background-color: rgba(var(--v-theme-accent-lighten3));
 }
