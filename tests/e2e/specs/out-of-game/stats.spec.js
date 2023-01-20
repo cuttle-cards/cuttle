@@ -48,8 +48,8 @@ function setup() {
     });
   cy.vueRoute('/stats');
   // Select Clubs 2022 season
-  cy.get('[data-cy=season-select]').click({ force: true });
-  cy.get('[role=option]').contains('Clubs 2022').click();
+  cy.get('[data-cy=season-select]').click();
+  cy.get('[role=listbox]').contains('Clubs 2022').click();
 }
 
 describe('Stats Page Error States', () => {
@@ -63,7 +63,7 @@ describe('Stats Page Error States', () => {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it.skip('Displays Headers, Cards, and Table', () => {
+  it.only('Displays Headers, Cards, and Table', () => {
     const [seasonOne] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
     cy.get('[data-cy=season-start-date').should('contain', dayjs(seasonOne.startTime).format('YYYY/MM/DD'));
