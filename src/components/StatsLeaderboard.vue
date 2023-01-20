@@ -27,7 +27,7 @@
       </tr>
       <!-- Body -->
       <tbody>
-        <tr v-for="row in tableRows" :key="row.username">
+        <tr v-for="row in tableRows" :key="row.username" :class="tableRowClass(row)">
           <!-- Username -->
           <td :data-username="row.username">
             {{ row.username }}
