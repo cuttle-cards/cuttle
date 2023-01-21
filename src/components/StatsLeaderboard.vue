@@ -37,7 +37,6 @@
             {{ row.rank }}
           </td>
           <td v-for="(week) in ['total', ...selectedWeeks]" :key="`${row.username}-${week}`">
-            <!-- {{ row[column.value] ?? '' }} -->
             <stats-leaderboard-cell
               :player-row="row"
               :week="week"
@@ -51,32 +50,6 @@
         </tr>
       </tbody>
     </v-table>
-    <!-- https://vuetifyjs.com/en/api/v-data-table/ -->
-    <!-- <v-data-table
-      :items="tableRows"
-      :headers="tableColumns"
-      :items-per-page="-1"
-      :loading="loading"
-      :item-class="tableRowClass"
-    >
-      <template #[`item.rank`]="{ item, value }">
-        <span :data-rank="item.username">{{ value }}</span>
-      </template>
-      <template
-        v-for="week in ['total', ...selectedWeeks]"
-        #[`item.week_${week}`]="{ item }"
-        :key="`${item.username}_week_${week}_wins`">
-        <stats-leaderboard-cell
-          :player-row="item"
-          :week="week"
-          :selected-metric="selectedMetric"
-          :players-beaten="playersBeaten(item.username, week)"
-          :players-lost-to="playersLostTo(item.username, week)"
-          :top-total-scores="topTotalScores"
-          :season-name="seasonName"
-        />
-      </template>
-    </v-data-table> -->
   </div>
 </template>
 <script>
@@ -398,12 +371,6 @@ th {
 :deep .active-user-stats {
   background-color: rgba(var(--v-theme-accent-lighten3));
 }
-/* :deep .v-select.fit {
-  width: min-content;
-}
-:deep .v-select.fit .v-select__selection--comma {
-  text-overflow: unset;
-} */
 .week-select {
   width: 60%;
 }
