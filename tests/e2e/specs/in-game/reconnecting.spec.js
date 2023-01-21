@@ -320,7 +320,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it.skip('targetedOneOff -- reconnect into counter dialog', () => {
+    it('targetedOneOff -- reconnect into counter dialog', () => {
       cy.setupGameAsP1();
       cy.loadGameFixture({
         p0Hand: [Card.TWO_OF_SPADES],
@@ -347,7 +347,7 @@ describe('Reconnecting to a game', () => {
 
       cy.resolveOpponent();
 
-      cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
       assertGameState(1, {
         p0Hand: [],
@@ -360,7 +360,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it.skip('targetedOneOff -- reconnect into waiting for opponent to counter overlay', () => {
+    it('targetedOneOff -- reconnect into waiting for opponent to counter overlay', () => {
       cy.setupGameAsP1();
       cy.loadGameFixture({
         p0Hand: [Card.TWO_OF_SPADES],
@@ -389,7 +389,7 @@ describe('Reconnecting to a game', () => {
 
       cy.resolveOpponent();
 
-      cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
       assertGameState(1, {
         p0Hand: [],
@@ -540,7 +540,7 @@ describe('Reconnecting to a game', () => {
 
   describe('Reconnecting into One-Off resolutions', () => {
     describe('Reconnecting into 3s', () => {
-      it.skip('Resolve 3 after reconnect -- Player fetches card', () => {
+      it('Resolve 3 after reconnect -- Player fetches card', () => {
         cy.setupGameAsP0();
         cy.loadGameFixture({
           p0Hand: [Card.THREE_OF_CLUBS],
@@ -579,7 +579,7 @@ describe('Reconnecting to a game', () => {
         });
       });
 
-      it.skip('Resolve opponents three after reconnect', () => {
+      it('Resolve opponents three after reconnect', () => {
         cy.setupGameAsP1();
         cy.loadGameFixture({
           p0Hand: [Card.THREE_OF_CLUBS],
@@ -604,7 +604,7 @@ describe('Reconnecting to a game', () => {
         // waiting for opponent to choose from scrap scrim
         cy.resolveThreeOpponent(Card.TWO_OF_CLUBS);
 
-        cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.be.visible');
+        cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.exist');
         assertGameState(1, {
           p0Hand: [Card.TWO_OF_CLUBS],
           p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -656,7 +656,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it.skip('Resolve 7 after reconnect - Player', () => {
+    it('Resolve 7 after reconnect - Player', () => {
       cy.setupGameAsP0();
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
