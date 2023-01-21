@@ -320,7 +320,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it.only('targetedOneOff -- reconnect into counter dialog', () => {
+    it('targetedOneOff -- reconnect into counter dialog', () => {
       cy.setupGameAsP1();
       cy.loadGameFixture({
         p0Hand: [Card.TWO_OF_SPADES],
@@ -360,7 +360,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it.skip('targetedOneOff -- reconnect into waiting for opponent to counter overlay', () => {
+    it.only('targetedOneOff -- reconnect into waiting for opponent to counter overlay', () => {
       cy.setupGameAsP1();
       cy.loadGameFixture({
         p0Hand: [Card.TWO_OF_SPADES],
@@ -389,7 +389,7 @@ describe('Reconnecting to a game', () => {
 
       cy.resolveOpponent();
 
-      cy.get('#waiting-for-opponent-counter-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
       assertGameState(1, {
         p0Hand: [],
