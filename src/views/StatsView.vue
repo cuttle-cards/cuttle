@@ -5,14 +5,14 @@
       <v-select
         v-model="selectedSeason"
         :items="seasons"
+        item-title="name"
+        return-object
         label="Select Season"
         data-cy="season-select"
-        return-object
-        item-title="name"
       >
         <template #selection="{ item }">
           <h1 class="text-h2" data-cy="selected-season-header">
-            {{ item.name }}
+            {{ item.title }}
           </h1>
         </template>
       </v-select>
@@ -111,6 +111,14 @@ export default {
           this.selectedSeason.thirdPlace)
       );
     },
+    seasonDropdownOptions() {
+      return this.seasons.map((season) => {
+        return {
+          title: season.name,
+          value: season
+        }
+      });
+    }
   },
   created() {
     this.loadingData = true;

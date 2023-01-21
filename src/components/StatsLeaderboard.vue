@@ -13,38 +13,42 @@
         v-model="selectedWeeks"
         :items="weeks"
         label="Select Weeks"
+        class="week-select"
         data-cy="week-select"
-        class="flex-grow-1"
-        menu-props="data-week-select-menu"
         multiple
       />
     </div>
-    <!-- https://vuetifyjs.com/en/api/v-data-table/ -->
-    <v-table
-      :items="tableRows"
-      :headers="tableColumns"
-      :items-per-page="-1"
-      :loading="loading"
-      :item-class="tableRowClass"
-    >
-      <template #[`item.rank`]="{ item, value }">
-        <span :data-rank="item.username">{{ value }}</span>
-      </template>
-      <!-- Customize the appearance of total column and column for each week -->
-      <template
-        v-for="week in ['total', ...selectedWeeks]"
-        #[`item.week_${week}`]="{ item }"
-        :key="`${item.username}_week_${week}_wins`">
-        <stats-leaderboard-cell
-          :player-row="item"
-          :week="week"
-          :selected-metric="selectedMetric"
-          :players-beaten="playersBeaten(item.username, week)"
-          :players-lost-to="playersLostTo(item.username, week)"
-          :top-total-scores="topTotalScores"
-          :season-name="seasonName"
-        />
-      </template>
+    <v-table>
+      <!-- Headers -->
+      <tr>
+        <th v-for="header in tableColumns" :key="header.value">
+          {{ header.text }}
+        </th>
+      </tr>
+      <!-- Body -->
+      <tbody>
+        <tr v-for="row in tableRows" :key="row.username" :class="tableRowClass(row)">
+          <!-- Username -->
+          <td :data-username="row.username">
+            {{ row.username }}
+          </td>
+          <!-- Rank -->
+          <td :data-rank="row.username">
+            {{ row.rank }}
+          </td>
+          <td v-for="(week) in ['total', ...selectedWeeks]" :key="`${row.username}-${week}`">
+            <stats-leaderboard-cell
+              :player-row="row"
+              :week="week"
+              :selected-metric="selectedMetric"
+              :players-beaten="playersBeaten(row.username, week)"
+              :players-lost-to="playersLostTo(row.username, week)"
+              :top-total-scores="topTotalScores"
+              :season-name="seasonName"
+            />
+          </td>
+        </tr>
+      </tbody>
     </v-table>
   </div>
 </template>
@@ -268,24 +272,24 @@ export default {
   created() {
     // Define non-reactive attributes for selection options
     this.metricChoices = [
-      { text: 'Points and Wins', value: Metrics.POINTS_AND_WINS },
-      { text: 'Points Only', value: Metrics.POINTS_ONLY },
-      { text: 'Wins Only', value: Metrics.WINS_ONLY },
+      { title: 'Points and Wins', value: Metrics.POINTS_AND_WINS },
+      { title: 'Points Only', value: Metrics.POINTS_ONLY },
+      { title: 'Wins Only', value: Metrics.WINS_ONLY },
     ];
     this.weeks = [
-      { text: 'Week 1', value: 1 },
-      { text: 'Week 2', value: 2 },
-      { text: 'Week 3', value: 3 },
-      { text: 'Week 4', value: 4 },
-      { text: 'Week 5', value: 5 },
-      { text: 'Week 6', value: 6 },
-      { text: 'Week 7', value: 7 },
-      { text: 'Week 8', value: 8 },
-      { text: 'Week 9', value: 9 },
-      { text: 'Week 10', value: 10 },
-      { text: 'Week 11', value: 11 },
-      { text: 'Week 12', value: 12 },
-      { text: 'Week 13', value: 13 },
+      { title: 'Week 1', value: 1 },
+      { title: 'Week 2', value: 2 },
+      { title: 'Week 3', value: 3 },
+      { title: 'Week 4', value: 4 },
+      { title: 'Week 5', value: 5 },
+      { title: 'Week 6', value: 6 },
+      { title: 'Week 7', value: 7 },
+      { title: 'Week 8', value: 8 },
+      { title: 'Week 9', value: 9 },
+      { title: 'Week 10', value: 10 },
+      { title: 'Week 11', value: 11 },
+      { title: 'Week 12', value: 12 },
+      { title: 'Week 13', value: 13 },
     ];
   },
   methods: {
@@ -361,13 +365,13 @@ export default {
 </script>
 
 <style scoped>
+th {
+  text-align: left;
+}
 :deep .active-user-stats {
   background-color: rgba(var(--v-theme-accent-lighten3));
 }
-:deep .v-select.fit {
-  width: min-content;
-}
-:deep .v-select.fit .v-select__selection--comma {
-  text-overflow: unset;
+.week-select {
+  width: 60%;
 }
 </style>
