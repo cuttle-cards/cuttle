@@ -142,7 +142,7 @@ describe('Stats Page', () => {
     cy.get("[points-1='Player1']").should('not.exist');
   });
 
-  it.only('Filters table to show selected weeks', () => {
+  it('Filters table to show selected weeks', () => {
     // 16 columns: username, rank, total, 13 weeks
     cy.get('th').should('have.length', 16);
     // Total counts across all weeks
@@ -170,12 +170,12 @@ describe('Stats Page', () => {
     cy.get('[data-week-total=Player1]').should('contain', 'W: 7, P: 9');
   });
 
-  it.skip('Selects different seasons to show their results', () => {
+  it('Selects different seasons to show their results', () => {
     // Three award cards for Clubs 2022
     cy.get('[data-tournament]').should('have.length', 3);
     // Switch season to diamonds 2022
-    cy.get('[data-cy=season-select]').click({ force: true });
-    cy.get('[role=option]').contains('Diamonds 2022').click();
+    cy.get('[data-cy=season-select]').click();
+    cy.get('[role=listbox]').contains('Diamonds 2022').click();
 
     // Award cards should not display (no winners)
     cy.get('[data-tournament]').should('not.exist');
@@ -184,22 +184,22 @@ describe('Stats Page', () => {
     cy.get('[data-week-1=Player1]').should('contain', 'W: 1, P: 3');
 
     // Switch back to Clubs 2022
-    cy.get('[data-cy=season-select]').click({ force: true });
-    cy.get('[role=option]').contains('Clubs 2022').click();
+    cy.get('[data-cy=season-select]').click();
+    cy.get('[role=listbox]').contains('Clubs 2022').click();
     // Stats data table
     cy.get('[data-week-total=Player1]').should('contain', 'W: 7, P: 9');
     cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 4');
   });
 
-  it.skip('Hides season that should not be available', () => {
-    cy.get('[data-cy=season-select]').click({ force: true });
-    cy.get('[role=option]').contains('Future Spades Season').should('not.exist');
+  it('Hides season that should not be available', () => {
+    cy.get('[data-cy=season-select]').click();
+    cy.get('[role=listbox]').contains('Future Spades Season').should('not.exist');
   });
 
-  it.skip('Hides stats table when matches are not available', () => {
+  it('Hides stats table when matches are not available', () => {
     // Select World Championship
-    cy.get('[data-cy=season-select]').click({ force: true });
-    cy.get('[role=option]').contains('World Championship Season').click();
+    cy.get('[data-cy=season-select]').click();
+    cy.get('[role=listbox]').contains('World Championship Season').click();
     cy.get('[data-cy=stats-leaderboard]').should('not.exist');
 
     const worldChampionshipSeason = seasonFixtures[seasonFixtures.length - 1];
