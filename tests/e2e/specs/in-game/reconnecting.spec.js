@@ -360,7 +360,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it.only('targetedOneOff -- reconnect into waiting for opponent to counter overlay', () => {
+    it('targetedOneOff -- reconnect into waiting for opponent to counter overlay', () => {
       cy.setupGameAsP1();
       cy.loadGameFixture({
         p0Hand: [Card.TWO_OF_SPADES],
@@ -540,7 +540,7 @@ describe('Reconnecting to a game', () => {
 
   describe('Reconnecting into One-Off resolutions', () => {
     describe('Reconnecting into 3s', () => {
-      it.skip('Resolve 3 after reconnect -- Player fetches card', () => {
+      it.only('Resolve 3 after reconnect -- Player fetches card', () => {
         cy.setupGameAsP0();
         cy.loadGameFixture({
           p0Hand: [Card.THREE_OF_CLUBS],
