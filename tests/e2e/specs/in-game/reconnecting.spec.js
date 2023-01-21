@@ -579,7 +579,7 @@ describe('Reconnecting to a game', () => {
         });
       });
 
-      it.only('Resolve opponents three after reconnect', () => {
+      it('Resolve opponents three after reconnect', () => {
         cy.setupGameAsP1();
         cy.loadGameFixture({
           p0Hand: [Card.THREE_OF_CLUBS],
@@ -656,7 +656,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it.skip('Resolve 7 after reconnect - Player', () => {
+    it.only('Resolve 7 after reconnect - Player', () => {
       cy.setupGameAsP0();
       cy.loadGameFixture({
         p0Hand: [Card.SEVEN_OF_CLUBS],
