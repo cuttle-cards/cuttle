@@ -63,7 +63,7 @@ describe('Stats Page Error States', () => {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it.only('Displays Headers, Cards, and Table', () => {
+  it('Displays Headers, Cards, and Table', () => {
     const [seasonOne] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
     cy.get('[data-cy=season-start-date').should('contain', dayjs(seasonOne.startTime).format('YYYY/MM/DD'));
@@ -124,18 +124,17 @@ describe('Stats Page', () => {
     cy.get('[data-players-lost-to=Player3-week-total').should('not.exist');
   });
 
-  it.skip('Filters table to display wins, points, or both', () => {
+  it('Filters table to display wins, points, or both', () => {
     // 16 columns: username, rank, total, + 13 weeks
     cy.get('th').should('have.length', 16);
     // Switch to points only
-    // Need 'force' because vuetify injects the data-cy attribute on unclickable <input>
-    cy.get('[data-cy=metric-select]').click({ force: true });
+    cy.get('[data-cy=metric-select]').click();
     cy.contains('Points Only').click();
     // Only points are displayed
     cy.get("[data-week-1='Player1']").contains('5').should('not.contain', 'W:');
     cy.get('th').should('have.length', 16);
     // Switch to wins only
-    cy.get('[data-cy=metric-select]').click({ force: true });
+    cy.get('[data-cy=metric-select]').click();
     cy.contains('Wins Only').click();
     cy.get('th').should('have.length', 16);
     // Only wins are displayed
