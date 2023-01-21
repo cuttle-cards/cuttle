@@ -13,8 +13,8 @@
         v-model="selectedWeeks"
         :items="weeks"
         label="Select Weeks"
+        class="week-select"
         data-cy="week-select"
-        class="flex-grow-1"
         multiple
       />
     </div>
@@ -398,10 +398,13 @@ th {
 :deep .active-user-stats {
   background-color: rgba(var(--v-theme-accent-lighten3));
 }
-:deep .v-select.fit {
+/* :deep .v-select.fit {
   width: min-content;
 }
 :deep .v-select.fit .v-select__selection--comma {
   text-overflow: unset;
+} */
+.week-select {
+  width: 60%;
 }
 </style>

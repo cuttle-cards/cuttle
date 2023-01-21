@@ -142,25 +142,25 @@ describe('Stats Page', () => {
     cy.get("[points-1='Player1']").should('not.exist');
   });
 
-  it.skip('Filters table to show selected weeks', () => {
+  it.only('Filters table to show selected weeks', () => {
     // 16 columns: username, rank, total, 13 weeks
     cy.get('th').should('have.length', 16);
     // Total counts across all weeks
     cy.get('[data-week-total=Player1]').should('contain', 'W: 7, P: 9');
     // Deselect every week except week 1
-    cy.get('[data-cy=week-select]').click({ force: true });
-    cy.get('[role=option]').contains('Week 2').click();
-    cy.get('[role=option]').contains('Week 3').click();
-    cy.get('[role=option]').contains('Week 4').click();
-    cy.get('[role=option]').contains('Week 5').click();
-    cy.get('[role=option]').contains('Week 6').click();
-    cy.get('[role=option]').contains('Week 7').click();
-    cy.get('[role=option]').contains('Week 8').click();
-    cy.get('[role=option]').contains('Week 9').click();
-    cy.get('[role=option]').contains('Week 10').click();
-    cy.get('[role=option]').contains('Week 11').click();
-    cy.get('[role=option]').contains('Week 12').click();
-    cy.get('[role=option]').contains('Week 13').click();
+    cy.get('[data-cy=week-select]').click();
+    cy.get('[role=listbox]').contains('Week 2').click();
+    cy.get('[role=listbox]').contains('Week 3').click();
+    cy.get('[role=listbox]').contains('Week 4').click();
+    cy.get('[role=listbox]').contains('Week 5').click();
+    cy.get('[role=listbox]').contains('Week 6').click();
+    cy.get('[role=listbox]').contains('Week 7').click();
+    cy.get('[role=listbox]').contains('Week 8').click();
+    cy.get('[role=listbox]').contains('Week 9').click();
+    cy.get('[role=listbox]').contains('Week 10').click();
+    cy.get('[role=listbox]').contains('Week 11').click();
+    cy.get('[role=listbox]').contains('Week 12').click();
+    cy.get('[role=listbox]').contains('Week 13').click();
     cy.get('body').type('{esc}');
 
     // Expect 5 columns: username, rank, total, week_1
