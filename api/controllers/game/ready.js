@@ -8,8 +8,7 @@ module.exports = function (req, res) {
     Promise.all([promiseGame, promiseUser])
       // Assign player readiness
       .then(function foundRecords(values) {
-        const game = values[0];
-        const user = values[1];
+        const [ game, user ] = values;
         let { pNum } = user;
         let bothReady = false;
         const gameUpdates = {};

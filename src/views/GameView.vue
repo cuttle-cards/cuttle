@@ -634,7 +634,7 @@ export default {
     },
     validFaceCardTargetIds() {
       switch (this.opponentQueenCount) {
-        case 0:
+        case 0: {
           const opponentFaceCardIds = this.opponent.faceCards.map((card) => card.id);
           const opponentJackIds = [];
           this.opponent.points.forEach((card) => {
@@ -643,6 +643,7 @@ export default {
             }
           });
           return [...opponentFaceCardIds, ...opponentJackIds];
+        }
         case 1:
           return [this.opponent.faceCards.find((card) => card.rank === 12).id];
         default:
@@ -658,7 +659,7 @@ export default {
           return this.validScuttleIds;
         case 'jack':
           return this.opponent.points.map((validTarget) => validTarget.id);
-        case 'targetedOneOff':
+        case 'targetedOneOff': {
           // Twos and nines can target face cards
           let res = [...this.validFaceCardTargetIds];
           // Nines can additionally target points if opponent has no queens
@@ -666,6 +667,7 @@ export default {
             res = [...res, ...this.opponent.points.map((validTarget) => validTarget.id)];
           }
           return res;
+        }
         default:
           return [];
       }

@@ -52,7 +52,7 @@ module.exports = function (req, res) {
       return Promise.all(updatePromises);
     }) //End changeAndSave
     .then(function getPopulatedGame(values) {
-      const game = values[0];
+      const [ game ] = values;
       return gameService.populateGame({ gameId: game.id });
     }) //End getPopulatedGame
     .then(function publishAndRespond(fullGame) {

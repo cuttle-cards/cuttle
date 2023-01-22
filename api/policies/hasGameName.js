@@ -7,7 +7,7 @@
  *
  */
 module.exports = function (req, res, next) {
-  if (req.body.hasOwnProperty('gameName')) {
+  if (Object.hasOwnProperty.call(req.body, 'gameName')) {
     if (typeof req.body.gameName === 'string') {
       // Could add restrictions on allowable game names
       if (!req.body.gameName.length) {

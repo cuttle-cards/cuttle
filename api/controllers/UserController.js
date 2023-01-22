@@ -62,8 +62,7 @@ module.exports = {
         return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
       })
       .then((values) => {
-        const game = values[0];
-        const user = values[1];
+        const [ user, game ] = values;
         req.session.loggedIn = true;
         req.session.usr = user.id;
         req.session.game = game.id;
