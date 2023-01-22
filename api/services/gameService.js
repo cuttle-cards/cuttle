@@ -130,10 +130,10 @@ module.exports = {
               })
               // then format results & resolve
               .then(function finish(values) {
-                const [ game, p0Points, p1Points ] = values;
-                const p0 = new tempUser(values[1], p0Points);
-                const p1 = new tempUser(values[2], p1Points);
-                const result = new tempGame(game, p0, p1);
+                const [ game, p0, p1, p0Points, p1Points ] = values;
+                const populatedP0 = new tempUser(p0, p0Points);
+                const populatedP1 = new tempUser(p1, p1Points);
+                const result = new tempGame(game, populatedP0, populatedP1);
 
                 return resolve(result);
               })
