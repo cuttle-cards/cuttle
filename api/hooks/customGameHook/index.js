@@ -48,7 +48,7 @@ module.exports = function gameHook() {
           .populate('secondCard')
           .exec(function (error, game) {
             if (error || !game) {
-              var res;
+              let res;
               if (error) {
                 res = error;
               } else {

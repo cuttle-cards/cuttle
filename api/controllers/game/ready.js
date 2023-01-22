@@ -1,5 +1,5 @@
-var gameAPI = sails.hooks['customgamehook'];
-var userAPI = sails.hooks['customuserhook'];
+const gameAPI = sails.hooks['customgamehook'];
+const userAPI = sails.hooks['customuserhook'];
 
 module.exports = function (req, res) {
   if (req.session.game && req.session.usr) {

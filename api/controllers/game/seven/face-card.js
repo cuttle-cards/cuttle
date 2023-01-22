@@ -5,7 +5,6 @@ module.exports = function (req, res) {
   Promise.all([promiseGame, promisePlayer, promiseCard])
     .then(function changeAndSave(values) {
       const [game, player, card] = values;
-      // var game = values[0], player = values[1], card = values[2];
       if (game.turn % 2 === player.pNum) {
         if (game.topCard.id === card.id || game.secondCard.id === card.id) {
           if (card.rank === 12 || card.rank === 13 || card.rank === 8) {

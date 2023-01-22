@@ -1,6 +1,6 @@
 module.exports = function (req, res) {
-  var promiseGame = gameService.findGame({ gameId: req.session.game });
-  var promisePlayer = userService.findUser({ userId: req.session.usr });
+  const promiseGame = gameService.findGame({ gameId: req.session.game });
+  const promisePlayer = userService.findUser({ userId: req.session.usr });
   return Promise.all([promiseGame, promisePlayer])
     .then(function changeAndSave(values) {
       const [ game, player ] = values;
@@ -11,7 +11,7 @@ module.exports = function (req, res) {
       return gameService.populateGame({ gameId: game.id });
     })
     .then(function publishAndRespond(game) {
-      var victory = {
+      const victory = {
         gameOver: false,
         winner: null,
       };
