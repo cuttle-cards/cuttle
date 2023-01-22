@@ -73,7 +73,7 @@ export default {
 
             let message;
             if (Object.prototype.hasOwnProperty.call(resData, 'message')) {
-              message = resData.message;
+              ({ message } = resData);
             } else if (typeof resData === 'string') {
               message = resData;
             } else {

@@ -30,15 +30,15 @@ module.exports = {
       },
     ],
     'vue/html-indent': ['error'],
-    'vue/multi-word-component-names': ['warn'],
-    'prefer-destructuring': ['warn'],
+    'vue/multi-word-component-names': ['error'],
+    'prefer-destructuring': ['error'],
     'no-else-return': [
-      'warn',
+      'error',
       {
         allowElseIf: true,
       },
     ],
-    'no-case-declarations': 'warn',
+    'no-case-declarations': 'error',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
@@ -49,9 +49,9 @@ module.exports = {
       files: ['**/client/**/*.{j,t}s?(x)'],
       extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:vue/recommended'],
       rules: {
-        'no-undef': 'warn',
-        'no-prototype-builtins': 'warn',
-        'no-case-declarations': 'warn',
+        'no-undef': 'error',
+        'no-prototype-builtins': 'error',
+        'no-case-declarations': 'error',
       },
     },
     // Storybook specific rules
@@ -59,8 +59,8 @@ module.exports = {
       files: ['**/(.storybook|stories)/**/*.{j,t}s?(x)'],
       extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:storybook/recommended'],
       rules: {
-        'no-undef': 'warn',
-        'no-prototype-builtins': 'warn',
+        'no-undef': 'error',
+        'no-prototype-builtins': 'error',
       },
     },
     // Sails specific rules
@@ -80,8 +80,8 @@ module.exports = {
         Game: true,
       },
       rules: {
-        'no-undef': 'warn',
-        'no-prototype-builtins': 'warn',
+        'no-undef': 'error',
+        'no-prototype-builtins': 'error',
       },
     },
     // Jest specific rules

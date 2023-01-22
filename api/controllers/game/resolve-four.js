@@ -3,7 +3,7 @@ module.exports = function (req, res) {
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseCard1 = cardService.findCard({ cardId: req.body.cardId1 });
   let promiseCard2 = null;
-  if (req.body.hasOwnProperty('cardId2')) {
+  if (Object.hasOwnProperty.call(req.body, 'cardId2')) {
     promiseCard2 = cardService.findCard({ cardId: req.body.cardId2 });
   }
   Promise.all([promiseGame, promisePlayer, promiseCard1, promiseCard2])
@@ -52,8 +52,7 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {
-      const fullGame = values[0];
-      const gameModel = values[1];
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,

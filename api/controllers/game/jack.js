@@ -63,7 +63,7 @@ module.exports = function (req, res) {
       return Promise.reject({ message: "It's not your turn" });
     }) //End changeAndSave()
     .then(function populateGame(values) {
-      const game = values[0];
+      const [ game ] = values;
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {

@@ -1,5 +1,5 @@
-var gameAPI = sails.hooks['customgamehook'];
-var userAPI = sails.hooks['customuserhook'];
+const gameAPI = sails.hooks['customgamehook'];
+const userAPI = sails.hooks['customuserhook'];
 
 module.exports = function (req, res) {
   if (req.session.game && req.session.usr) {
@@ -8,8 +8,7 @@ module.exports = function (req, res) {
     Promise.all([promiseGame, promiseUser])
       // Assign player readiness
       .then(function foundRecords(values) {
-        const game = values[0];
-        const user = values[1];
+        const [ game, user ] = values;
         let { pNum } = user;
         let bothReady = false;
         const gameUpdates = {};

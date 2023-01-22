@@ -5,7 +5,7 @@ module.exports = {
    */
   findCard: function (options) {
     return new Promise(function (resolve, reject) {
-      if (options.hasOwnProperty('cardId') && typeof options.cardId === 'number') {
+      if (Object.hasOwnProperty.call(options, 'cardId') && typeof options.cardId === 'number') {
         return Card.findOne(options.cardId)
           .populate('attachments')
           .exec(function (err, card) {

@@ -3,7 +3,9 @@ module.exports = function (req, res) {
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
-  const promiseTarget = req.body.targetId !== -1 ? cardService.findCard({ cardId: req.body.targetId }) : -1; // -1 for double jacks with no points to steal special case
+  const promiseTarget = req.body.targetId !== -1 ? 
+    cardService.findCard({ cardId: req.body.targetId }) 
+    : -1; // -1 for double jacks with no points to steal special case
   let promises = [promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget];
   Promise.all(promises)
     .then(function changeAndSave(values) {
@@ -112,8 +114,7 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);
     })
     .then(async function publishAndRespond(values) {
-      const fullGame = values[0];
-      const gameModel = values[1];
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,

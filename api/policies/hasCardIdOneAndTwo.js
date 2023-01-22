@@ -9,7 +9,7 @@
 module.exports = function (req, res, next) {
   // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
-  if (req.body.hasOwnProperty('cardId1') && req.body.hasOwnProperty('cardId2')) {
+  if (Object.hasOwnProperty.call(req.body, 'cardId1') && Object.hasOwnProperty.call(req.body, 'cardId2')) {
     if (typeof req.body.cardId1 === 'number' && typeof req.body.cardId2 === 'number') return next();
   }
 

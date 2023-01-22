@@ -1,10 +1,9 @@
 module.exports = function (req, res) {
-  var promiseGame = gameService.findGame({ gameId: req.session.game });
-  var promisePlayer = userService.findUser({ userId: req.session.usr });
+  const promiseGame = gameService.findGame({ gameId: req.session.game });
+  const promisePlayer = userService.findUser({ userId: req.session.usr });
   return Promise.all([promiseGame, promisePlayer])
     .then(function changeAndSave(values) {
-      var game = values[0],
-        player = values[1];
+      const [ game, player ] = values;
       game.chat.push(`${player.username}: ${req.body.msg}`);
       return gameService.saveGame({ game: game });
     })
@@ -12,7 +11,7 @@ module.exports = function (req, res) {
       return gameService.populateGame({ gameId: game.id });
     })
     .then(function publishAndRespond(game) {
-      var victory = {
+      const victory = {
         gameOver: false,
         winner: null,
       };

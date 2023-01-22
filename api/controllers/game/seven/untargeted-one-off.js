@@ -14,7 +14,7 @@ module.exports = function (req, res) {
             case 4:
             case 5:
             case 6:
-            case 7:
+            case 7: {
               switch (card.rank) {
                 case 3:
                   if (game.scrap.length === 0)
@@ -59,6 +59,7 @@ module.exports = function (req, res) {
                 Game.removeFromCollection(game.id, 'deck').members(cardsToRemoveFromDeck),
               ];
               return Promise.all([game, ...updatePromises]);
+            }
             default:
               return Promise.reject({
                 message: 'You cannot play that card as a ONE-OFF without a target',
@@ -78,8 +79,7 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {
-      const fullGame = values[0];
-      const gameModel = values[1];
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
