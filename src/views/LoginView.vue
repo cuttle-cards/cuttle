@@ -45,11 +45,14 @@
         <v-snackbar
           v-model="showSnackBar"
           color="error"
-          content-class="d-flex justify-space-between align-center"
           data-cy="auth-snackbar"
         >
           {{ snackBarMessage }}
-          <v-icon icon="mdi-close" data-cy="close-snackbar" @click="clearSnackBar" />
+          <template #actions>
+            <v-btn data-cy="close-snackbar" icon variant="text" @click="clearSnackBar">
+              <v-icon icon="mdi-close" />
+            </v-btn>
+          </template>
         </v-snackbar>
       </v-col>
     </v-row>

@@ -83,11 +83,14 @@
     <v-snackbar
       v-model="showSnackBar"
       color="error"
-      content-class="d-flex justify-space-between align-center"
       data-cy="newgame-snackbar"
     >
       {{ snackBarMessage }}
-      <v-icon data-cy="close-snackbar" @click="clearSnackBar" icon="mdi-close" />
+      <template #actions>
+        <v-btn data-cy="close-snackbar" icon variant="text" @click="clearSnackBar">
+          <v-icon icon="mdi-close" />
+        </v-btn>
+      </template>
     </v-snackbar>
   </div>
 </template>
