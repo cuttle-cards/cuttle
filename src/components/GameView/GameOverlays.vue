@@ -12,7 +12,7 @@
       v-model="waitingForOpponentToDiscard"
       class="game-overlay"
     >
-      <h1>Opponent Is Discarding</h1>
+      <h1 class="text-h3">Opponent Is Discarding</h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-resolve-three-scrim"
