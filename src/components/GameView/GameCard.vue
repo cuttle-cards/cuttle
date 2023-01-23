@@ -18,7 +18,7 @@
     />
     <transition :name="scuttledByTransition">
       <template v-if="scuttledBy">
-        <img :class="scuttledByClass" :src="`/img/cards/card_${scuttledBy.suit}_${scuttledBy.rank}.svg`" />
+        <img :class="scuttledByClass" :src="`/img/cards/card-${scuttledBy.suit}-${scuttledBy.rank}.svg`" />
       </template>
     </transition>
     <img
@@ -164,6 +164,7 @@ export default {
   width: 100%;
   background: transparent;
   flex-grow: 1;
+  overflow: visible;
 
   & img {
     width: 100%;
@@ -177,7 +178,7 @@ export default {
   }
 
   & .scuttled-by-card {
-    height: 100%;
+    height: 95%;
     left: 16px;
     transition: all 1s ease;
     position: absolute;
@@ -201,7 +202,6 @@ export default {
 }
 
 .selected {
-  // transform: scale(1.23);
   img {
     border: 3px solid rgba(var(--v-theme-accent-lighten1));
     border-radius: 5px;
@@ -254,13 +254,13 @@ export default {
   position: absolute;
 }
 // slide-below (enter and leave below)
-.slide-below-enter,
+.slide-below-enter-from,
 .slide-below-leave-to {
   opacity: 0;
   transform: translateY(32px);
 }
 // slide-above (enter and leave above)
-.slide-above-enter,
+.slide-above-enter-from,
 .slide-above-leave-to {
   opacity: 0;
   transform: translateY(-32px);

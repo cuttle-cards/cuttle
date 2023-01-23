@@ -1053,19 +1053,19 @@ export default {
   position: absolute;
 }
 // slide-below (enter and leave below)
-.slide-below-enter,
+.slide-below-enter-from,
 .slide-below-leave-to {
   opacity: 0;
   transform: translateY(32px);
 }
 // slide-above (enter and leave above)
-.slide-above-enter,
+.slide-above-enter-from,
 .slide-above-leave-to {
   opacity: 0;
   transform: translateY(-32px);
 }
 // in-below-out-left (enter from below, exit to left)
-.in-below-out-left-enter {
+.in-below-out-left-enter-from {
   opacity: 0;
   transform: translateY(32px);
 }
@@ -1074,7 +1074,7 @@ export default {
   transform: translateX(-32px);
 }
 // in-above-out-below (enter from above, exit below)
-.in-above-out-below-enter {
+.in-above-out-below-enter-from {
   opacity: 0;
   transform: translateY(-32px);
 }
@@ -1083,7 +1083,7 @@ export default {
   transform: translateY(32px);
 }
 // in-below-out-above (enter from below, exit above)
-.in-below-out-above-enter {
+.in-below-out-above-enter-from {
   opacity: 0;
   transform: translateY(32px);
 }
