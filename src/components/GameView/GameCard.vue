@@ -18,7 +18,7 @@
     />
     <transition :name="scuttledByTransition">
       <template v-if="scuttledBy">
-        <img :class="scuttledByClass" :src="`/img/cards/card_${scuttledBy.suit}_${scuttledBy.rank}.svg`" />
+        <img :class="scuttledByClass" :src="`/img/cards/card-${scuttledBy.suit}-${scuttledBy.rank}.svg`" />
       </template>
     </transition>
     <img
