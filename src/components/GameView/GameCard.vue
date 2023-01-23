@@ -164,6 +164,7 @@ export default {
   width: 100%;
   background: transparent;
   flex-grow: 1;
+  overflow: visible;
 
   & img {
     width: 100%;
@@ -177,7 +178,7 @@ export default {
   }
 
   & .scuttled-by-card {
-    height: 100%;
+    height: 95%;
     left: 16px;
     transition: all 1s ease;
     position: absolute;
