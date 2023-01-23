@@ -127,7 +127,7 @@
       <!-- Draw / Scrap Piles -->
       <div class="deck-container">
         <div id="field-left">
-          <v-card id="deck" :class="{ 'reveal-top-two': resolvingSeven }" @click="drawCard">
+          <v-card id="deck" :class="{ 'reveal-top-two': resolvingSeven }" @click="drawCard" elevation="0">
             <template v-if="!resolvingSeven">
               <v-card-actions class="c-deck-count">({{ deckLength }})</v-card-actions>
               <h1 v-if="deckLength === 0" id="empty-deck-text">PASS</h1>
@@ -1185,6 +1185,7 @@ export default {
   & #deck {
     cursor: pointer;
     position: relative;
+    background-color: rgba(255, 255, 255, 0);
     &.reveal-top-two {
       height: auto;
       align-self: start;
