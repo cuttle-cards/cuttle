@@ -1,30 +1,45 @@
 <template>
   <div class="game-overlays">
-    <v-overlay id="waiting-for-opponent-counter-scrim" v-model="waitingForOpponentToCounter">
+    <v-overlay
+      id="waiting-for-opponent-counter-scrim"
+      v-model="waitingForOpponentToCounter"
+      class="game-overlay"
+    >
       <h1>{{ showWaitingForOpponetToCounterMessage }}</h1>
     </v-overlay>
-    <v-overlay id="waiting-for-opponent-discard-scrim" v-model="waitingForOpponentToDiscard">
+    <v-overlay
+      id="waiting-for-opponent-discard-scrim"
+      v-model="waitingForOpponentToDiscard"
+      class="game-overlay"
+    >
       <h1>Opponent Is Discarding</h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-resolve-three-scrim"
       v-model="waitingForOpponentToPickFromScrap"
+      class="game-overlay"
     >
       <h1>Opponent Choosing Card from Scrap</h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-play-from-deck-scrim"
       v-model="showWaitingForOpponentToPlayFromDeck"
+      class="game-overlay"
     >
       <h1>Opponent Playing from Deck</h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-to-discard-jack-from-deck"
       v-model="showWaitingForOpponentToDiscardJackFromDeck"
+      class="game-overlay"
     >
       <h1>Opponent Must Discard Jack</h1>
     </v-overlay>
-    <v-overlay id="waiting-for-opponent-stalemate-scrim" v-model="waitingForOpponentToStalemate">
+    <v-overlay
+      id="waiting-for-opponent-stalemate-scrim"
+      v-model="waitingForOpponentToStalemate"
+      class="game-overlay"
+    >
       <h1>Opponent Considering Stalemate Request</h1>
     </v-overlay>
     <move-choice-overlay
@@ -122,3 +137,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.game-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
