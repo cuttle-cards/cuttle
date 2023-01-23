@@ -201,7 +201,6 @@ export default {
 }
 
 .selected {
-  // transform: scale(1.23);
   img {
     border: 3px solid rgba(var(--v-theme-accent-lighten1));
     border-radius: 5px;
