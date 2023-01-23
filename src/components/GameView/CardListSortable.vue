@@ -77,8 +77,8 @@ export default {
     return {
       sortByRank: true,
       sortOptions: [
-        { text: 'Chronologically', value: false },
-        { text: 'By Rank', value: true },
+        { title: 'Chronologically', value: false },
+        { title: 'By Rank', value: true },
       ],
     };
   },
