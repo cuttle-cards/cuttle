@@ -363,13 +363,14 @@
       <v-snackbar
         v-model="showSnack"
         :color="snackColor"
-        content-class="d-flex justify-space-between align-center"
         data-cy="game-snackbar"
       >
         {{ snackMessage }}
-        <v-btn icon>
-          <v-icon icon="mdi-close" data-cy="close-snackbar" @click="clearSnackBar" />
-        </v-btn>
+        <template #actions>
+          <v-btn icon variant="text">
+            <v-icon icon="mdi-close" data-cy="close-snackbar" @click="clearSnackBar" />
+          </v-btn>
+        </template>
       </v-snackbar>
       <game-overlays
         :targeting="targeting"

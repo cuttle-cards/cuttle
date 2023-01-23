@@ -35,12 +35,13 @@
     <v-snackbar
       v-model="showSnackBar"
       color="error"
-      content-class="d-flex justify-space-between align-center"
     >
       {{ snackBarMessage }}
-      <v-btn icon @click="clearSnackBar">
-        <v-icon icon="mdi-close" />
-      </v-btn>
+      <template #actions>
+        <v-btn icon variant="text" @click="clearSnackBar">
+          <v-icon icon="mdi-close" />
+        </v-btn>
+      </template>
     </v-snackbar>
   </v-dialog>
 </template>
