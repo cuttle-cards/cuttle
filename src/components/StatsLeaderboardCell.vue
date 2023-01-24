@@ -140,10 +140,10 @@ export default {
       }
     },
     variant() {
-      switch (this.points) {
-        case 5:
-        case 4:
-        case 3:
+      switch (this.colorForScore) {
+        case this.theme.firstPlace:
+        case this.theme.secondPlace:
+        case this.theme.thirdPlace:
           return 'elevated';
         default:
           return 'outlined';
