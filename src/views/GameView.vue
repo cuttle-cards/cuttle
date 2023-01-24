@@ -72,7 +72,7 @@
                       selected-class="success"
                       :show-arrows="true"
                     >
-                      <v-slide-item v-for="card in opponent.hand" :key="card.id">
+                      <v-slide-group-item v-for="card in opponent.hand" :key="card.id">
                         <game-card
                           :key="card.id"
                           :suit="card.suit"
@@ -80,7 +80,7 @@
                           :data-opponent-hand-card="`${card.rank}-${card.suit}`"
                           class="transition-all opponent-hand-card-revealed"
                         />
-                      </v-slide-item>
+                      </v-slide-group-item>
                     </v-slide-group>
                     <game-card
                       v-for="card in opponent.hand"
@@ -315,7 +315,7 @@
                 :class="{ 'my-turn': isPlayersTurn }"
               >
                 <v-slide-group v-if="$vuetify.display.xs" key="slide-group" :show-arrows="true">
-                  <v-slide-item v-for="(card, index) in player.hand" :key="card.id">
+                  <v-slide-group-item v-for="(card, index) in player.hand" :key="card.id">
                     <game-card
                       :key="card.id"
                       :suit="card.suit"
@@ -327,7 +327,7 @@
                       :data-player-hand-card="`${card.rank}-${card.suit}`"
                       @click="selectCard(index)"
                     />
-                  </v-slide-item>
+                  </v-slide-group-item>
                 </v-slide-group>
 
                 <game-card
