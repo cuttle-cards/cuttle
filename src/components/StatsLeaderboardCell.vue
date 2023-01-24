@@ -3,13 +3,12 @@
     <template #activator="{ props }">
       <v-chip
         :color="colorForScore"
-        variant="outlined"
+        :variant="variant"
         class="pointer"
         v-bind="{
           ...props,
           ...dataAttribute,
         }"
-        dark
       >
         {{ chipText }}
       </v-chip>
@@ -140,8 +139,15 @@ export default {
           return '#000';
       }
     },
-    outlined() {
-      return ['primary', '#000'].includes(this.colorForScore);
+    variant() {
+      switch (this.points) {
+        case 5:
+        case 4:
+        case 3:
+          return 'elevated';
+        default:
+          return 'outlined';
+      }
     },
     /**
      * Returns an object for v-bind for testing attributes to identify table cell
