@@ -25,18 +25,17 @@
         location="right"
       >
         <template #prepend>
-          <v-list-item lines="two">
-            <v-list-item-content>
-              <h3>History</h3>
-            </v-list-item-content>
-            <v-list-item-icon>
-              <v-icon
-                color="neutral"
-                icon="mdi-window-close"
-                size="large"
-                @click.stop="showHistoryDrawer = !showHistoryDrawer"
-              />
-            </v-list-item-icon>
+          <v-list-item>
+            <h3>History</h3>
+            <template #append>
+              <v-btn icon variant="text" @click.stop="showHistoryDrawer = !showHistoryDrawer">
+                <v-icon
+                  color="neutral"
+                  icon="mdi-window-close"
+                  size="large"
+                />
+              </v-btn>
+            </template>
           </v-list-item>
         </template>
 
