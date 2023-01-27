@@ -38,11 +38,12 @@ export default {
     GameCard,
   },
   props: {
-    value: {
+    modelValue: {
       required: true,
       type: Boolean,
     },
   },
+  emits: ['discard'],
   data() {
     return {
       selectedIds: [],
@@ -51,10 +52,10 @@ export default {
   computed: {
     show: {
       get() {
-        return this.value;
+        return this.modelValue;
       },
-      set(val) {
-        this.$emit('input', val);
+      set() {
+        // do nothing - parent controls whether dialog is open
       },
     },
     hand() {
