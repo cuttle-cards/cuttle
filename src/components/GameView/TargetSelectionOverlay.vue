@@ -21,6 +21,7 @@ export default {
   components: {
     GameCard,
   },
+  emits: ['cancel'],
   props: {
     value: {
       type: Boolean,
@@ -39,7 +40,6 @@ export default {
       required: true,
     },
   },
-  emits: ['cancel'],
 };
 </script>
 

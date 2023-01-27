@@ -35,6 +35,7 @@ export default {
   components: {
     CardListSortable,
   },
+  emits: ['resolveThree'],
   props: {
     modelValue: {
       type: Boolean,
@@ -50,7 +51,6 @@ export default {
       required: true,
     },
   },
-  emits: ['resolveThree'],
   data() {
     return {
       choseToCounter: false,

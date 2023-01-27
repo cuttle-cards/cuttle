@@ -50,6 +50,7 @@ export default {
   components: {
     GameCard,
   },
+  emits: ['resolveSevenDoubleJacks'],
   props: {
     modelValue: {
       type: Boolean,
@@ -64,7 +65,6 @@ export default {
       default: null,
     },
   },
-  emits: ['resolveSevenDoubleJacks'],
   data() {
     return {
       selectedCardId: null,

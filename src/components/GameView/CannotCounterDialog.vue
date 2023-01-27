@@ -43,6 +43,7 @@ export default {
   components: {
     GameCard,
   },
+  emits: ['resolve'],
   props: {
     modelValue: {
       type: Boolean,
@@ -69,7 +70,6 @@ export default {
       default: null,
     },
   },
-  emits: ['resolve'],
   data() {
     return {
       loading: false,

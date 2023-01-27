@@ -53,6 +53,7 @@ export default {
     MoveChoiceCard,
     GameCard,
   },
+  emits:['points', 'face-card', 'scuttle', 'jack', 'one-off', 'targetedOneOff', 'cancel'],
   props: {
     modelValue: {
       type: Boolean,
@@ -83,7 +84,6 @@ export default {
       default: null,
     },
   },
-  emits:['points', 'face-card', 'scuttle', 'jack', 'one-off', 'targetedOneOff', 'cancel'],
   computed: {
     // Determines if any moves are available
     allMovesAreDisabled() {

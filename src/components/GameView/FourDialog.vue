@@ -37,13 +37,13 @@ export default {
   components: {
     GameCard,
   },
+  emits: ['discard'],
   props: {
     modelValue: {
       required: true,
       type: Boolean,
     },
   },
-  emits: ['discard'],
   data() {
     return {
       selectedIds: [],

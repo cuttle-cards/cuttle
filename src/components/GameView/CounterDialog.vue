@@ -68,6 +68,7 @@ export default {
   components: {
     GameCard,
   },
+  emits: ['counter', 'resolve'],
   props: {
     modelValue: {
       type: Boolean,
@@ -91,7 +92,6 @@ export default {
       required: true,
     },
   },
-  emits: ['counter', 'resolve'],
   data() {
     return {
       choseToCounter: false,

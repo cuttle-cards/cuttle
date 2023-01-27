@@ -28,6 +28,7 @@
 <script>
 export default {
   name: 'MoveChoiceCard',
+  emits: ['choose-move'],
   props: {
     moveName: {
       type: String,
@@ -55,7 +56,6 @@ export default {
       default: '30%',
     },
   },
-  emits: ['choose-move'],
   computed: {
     /**
      * Returns string name of which icon to display
