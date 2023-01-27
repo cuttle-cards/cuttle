@@ -216,6 +216,7 @@ export default {
       default: false,
     },
   },
+  emits: ['close'],
   data() {
     return {
       internalShow: false,

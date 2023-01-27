@@ -10,7 +10,7 @@
       :theme="isHovering ? 'light': 'dark'"
       :width="cardWidth"
       :data-move-choice="eventName"
-      @click.stop="$emit('click')"
+      @click="$emit('choose-move')"
     >
       <v-card-title class="d-flex justify-center">
         <h2>{{ moveName }}</h2>
@@ -55,6 +55,7 @@ export default {
       default: '30%',
     },
   },
+  emits: ['choose-move'],
   computed: {
     /**
      * Returns string name of which icon to display

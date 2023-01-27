@@ -86,6 +86,7 @@ export default {
       default: null,
     },
   },
+  emits:['points', 'face-card', 'one-off', 'clear-selection', 'target'],
   computed: {
     // Since we're not using namespacing, we need to destructure the game module
     // off of the global state to directly access the state values

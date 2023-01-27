@@ -62,6 +62,7 @@ export default {
     ThreeDialog,
     OpponentRequestedStalemateDialog,
   },
+  emits: ['clear-selection', 'handle-error'],
   computed: {
     ...mapState({
       playingFromDeck: ({ game }) => game.playingFromDeck,

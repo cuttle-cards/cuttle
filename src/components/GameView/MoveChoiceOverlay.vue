@@ -37,7 +37,7 @@
         :disabled-explanation="move.disabledExplanation"
         :card-width="cardWidth"
         class="mx-4"
-        @click="$emit(move.eventName, move)"
+        @choose-move="$emit(move.eventName, move)"
       />
     </div>
   </v-overlay>
@@ -83,6 +83,7 @@ export default {
       default: null,
     },
   },
+  emits:['points', 'face-card', 'scuttle', 'jack', 'one-off', 'targetedOneOff', 'cancel'],
   computed: {
     // Determines if any moves are available
     allMovesAreDisabled() {

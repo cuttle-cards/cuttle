@@ -41,6 +41,7 @@ export default {
       default: '',
     },
   },
+  emits: ['animate'],
   data() {
     return {
       animate: false,
