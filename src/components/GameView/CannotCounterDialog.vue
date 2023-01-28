@@ -43,8 +43,9 @@ export default {
   components: {
     GameCard,
   },
+  emits: ['resolve'],
   props: {
-    value: {
+    modelValue: {
       type: Boolean,
       required: true,
     },
@@ -72,10 +73,10 @@ export default {
   computed: {
     show: {
       get() {
-        return this.value;
+        return this.modelValue;
       },
-      set(val) {
-        this.$emit('input', val);
+      set() {
+        // do nothing - parent controls whether dialog is open
       },
     },
     reason() {

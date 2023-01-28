@@ -5,12 +5,12 @@
       ripple
       :disabled="disabled"
       :class="{ pointer: !disabled }"
-      class="move-choice-card"
+      class="move-choice-card mx-4"
       hover
       :theme="isHovering ? 'light': 'dark'"
       :width="cardWidth"
       :data-move-choice="eventName"
-      @click.stop="$emit('click')"
+      @click.stop="$emit('choose-move')"
     >
       <v-card-title class="d-flex justify-center">
         <h2>{{ moveName }}</h2>
@@ -28,6 +28,7 @@
 <script>
 export default {
   name: 'MoveChoiceCard',
+  emits: ['choose-move'],
   props: {
     moveName: {
       type: String,

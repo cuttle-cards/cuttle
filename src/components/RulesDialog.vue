@@ -206,6 +206,7 @@
 <script>
 export default {
   name: 'RulesDialog',
+  emits: ['close'],
   props: {
     show: {
       type: Boolean,

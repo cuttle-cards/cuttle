@@ -36,8 +36,7 @@
         :disabled="move.disabled"
         :disabled-explanation="move.disabledExplanation"
         :card-width="cardWidth"
-        class="mx-4"
-        @click="$emit(move.eventName, move)"
+        @choose-move="$emit(move.eventName, move)"
       />
     </div>
   </v-overlay>
@@ -53,6 +52,7 @@ export default {
     MoveChoiceCard,
     GameCard,
   },
+  emits:['points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel'],
   props: {
     modelValue: {
       type: Boolean,

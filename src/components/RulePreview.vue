@@ -19,6 +19,7 @@
 <script>
 export default {
   name: 'RulePreview',
+  emits: ['animate'],
   props: {
     title: {
       type: String,

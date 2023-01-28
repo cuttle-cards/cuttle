@@ -40,7 +40,7 @@
 export default {
   name: 'OpponentRequestedStalemateDialog',
   props: {
-    value: Boolean,
+    modelValue: Boolean,
   },
   data() {
     return {
@@ -51,11 +51,11 @@ export default {
   computed: {
     show: {
       get() {
-        return this.value;
+        return this.modelValue;
       },
-      set(value) {
-        this.$emit('input', value);
-      },
+      set() {
+        // do nothing - parent controls whether dialog is open
+      },  
     },
   },
   methods: {

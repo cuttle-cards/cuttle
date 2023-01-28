@@ -11,7 +11,6 @@
   >
     <v-icon v-if="isFrozen" class="player-card-icon mr-1 mt-1" color="#00a5ff" icon="mdi-snowflake" />
     <v-overlay
-      v-ripple
       :model-value="isValidTarget"
       contained
       class="valid-move target-overlay"

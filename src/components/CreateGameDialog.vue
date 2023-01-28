@@ -56,6 +56,7 @@ const LS_PREFERS_RANKED_NAME = 'prefersRanked';
 export default {
   name: 'CreateGameDialog',
   components: { StatsScoringDialog },
+  emits: ['error'],
   data() {
     return {
       show: false,

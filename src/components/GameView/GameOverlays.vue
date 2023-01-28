@@ -53,9 +53,9 @@
       :playing-from-deck="playingFromDeck"
       @points="$emit('points')"
       @faceCard="$emit('face-card')"
-      @oneOff="$emit('one-off')"
       @scuttle="handleTargeting"
       @jack="handleTargeting"
+      @oneOff="$emit('one-off')"
       @targetedOneOff="handleTargeting"
       @cancel="$emit('clear-selection')"
     />
@@ -72,6 +72,7 @@ export default {
   components: {
     MoveChoiceOverlay,
   },
+  emits:['points', 'face-card', 'one-off', 'clear-selection', 'target'],
   props: {
     targeting: {
       type: Boolean,
