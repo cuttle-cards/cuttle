@@ -350,7 +350,6 @@
             v-if="targeting && (selectedCard || cardSelectedFromDeck)"
             id="player-hand-targeting"
             key="target-selection-overlay"
-            :value="targeting"
             :selected-card="selectedCard || cardSelectedFromDeck"
             :is-players-turn="isPlayersTurn"
             :move-display-name="targetingMoveDisplayName"

@@ -23,10 +23,6 @@ export default {
   },
   emits: ['cancel'],
   props: {
-    value: {
-      type: Boolean,
-      required: true,
-    },
     selectedCard: {
       type: Object,
       required: true,
