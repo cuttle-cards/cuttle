@@ -36,7 +36,6 @@
         :disabled="move.disabled"
         :disabled-explanation="move.disabledExplanation"
         :card-width="cardWidth"
-        class="mx-4"
         @choose-move="$emit(move.eventName, move)"
       />
     </div>

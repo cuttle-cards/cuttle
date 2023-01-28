@@ -5,7 +5,7 @@
       ripple
       :disabled="disabled"
       :class="{ pointer: !disabled }"
-      class="move-choice-card"
+      class="move-choice-card mx-4"
       hover
       :theme="isHovering ? 'light': 'dark'"
       :width="cardWidth"
