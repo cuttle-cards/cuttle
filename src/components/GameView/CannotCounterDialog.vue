@@ -70,11 +70,6 @@ export default {
       default: null,
     },
   },
-  data() {
-    return {
-      loading: false,
-    }
-  },
   computed: {
     show: {
       get() {
