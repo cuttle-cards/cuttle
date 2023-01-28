@@ -52,7 +52,7 @@ export default {
     MoveChoiceCard,
     GameCard,
   },
-  emits:['points', 'face-card', 'scuttle', 'jack', 'one-off', 'targetedOneOff', 'cancel'],
+  emits:['points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel'],
   props: {
     modelValue: {
       type: Boolean,
