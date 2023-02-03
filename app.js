@@ -63,7 +63,6 @@ process.chdir(__dirname);
 
   // In dev mode, ensure unhandles promises log to the console with the full stack
   // See https://stackoverflow.com/a/46661020
-  // TODO: Re-add isProd check
   process.on('unhandledRejection', (err) => {
     console.error(err);
     throw err;
