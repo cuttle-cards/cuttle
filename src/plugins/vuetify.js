@@ -49,12 +49,6 @@ export default createVuetify({
   },
   theme: {
     defaultTheme: 'cuttleTheme',
-    // https://next.vuetifyjs.com/en/features/theme/#color-variations
-    // variations: {
-    //   colors: ['neutral'],
-    //   lighten: 5,
-    //   darken: 5,
-    // },
     themes: {
       cuttleTheme,
     },

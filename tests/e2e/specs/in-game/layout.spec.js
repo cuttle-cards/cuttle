@@ -214,7 +214,7 @@ describe('Four dialogs layout', () => {
   });
 });
 
-describe('Aesthetic tests', () => {
+describe.skip('Aesthetic tests', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
   });

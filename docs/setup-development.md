@@ -4,7 +4,7 @@
 
 [nodeJs](https://nodejs.org/en/) lets you create & run web servers in javascript (along with other fancy system-level stuff not needed for this project). Both the client and server depend on node as the main system-wide dependency. The download comes with npm (node package manager) which you'll use to install the project-specific dependencies.
 
-**Currently version 16.xx.xx of node is required** as this is the latest version compatible with this project. You can [download node 16 here](https://nodejs.org/en/blog/release/v16.16.0/) or use [nvm](https://github.com/nvm-sh/nvm) or [nvm-windows](https://github.com/coreybutler/nvm-windows) to manage multiple node versions (recommended for longer term nodejs development).
+**Currently version 18.xx.xx of node is required** as this is the latest stable version of node. You can [download node here](https://nodejs.org/en/) or use [nvm](https://github.com/nvm-sh/nvm) or [nvm-windows](https://github.com/coreybutler/nvm-windows) to manage multiple node versions (recommended for longer term nodejs development).
 
 **NOTE** When running on your local computer, signup/login only stores credentials on your computer and in memory. Shutting down the server wipes the in-memory database along with all game & account data.
 
@@ -32,14 +32,6 @@ npm ci
 
 #### Start the App
 
-You can simultaneously run the server on `localhost:1337` and the client on `localhost:8080` with one command:
-
-```
-npm run start:dev
-```
-
-This will also automatically open up [Vue Devtools]. Alternatively, you can run them independantly with separate commands.
-
 ##### Start the Server (sails backend)
 
 ```
@@ -62,35 +54,20 @@ Navigate to [localhost:8080](http:localhost:8080) in your browser of choice.
 
 #### Shutting down
 
-You can shut down the servers by hitting `ctrl + c` several times from the terminal windows they are running in. Shut down both servers to completely delete all game & account data.
+You can shut down the servers by hitting `ctrl + c` several times from the terminal windows they are running in. Shut down both servers to completely deletes all game & account data.
 
 ### Development
-
-#### Vue Devtools
-
-To utilize [Vue Devtools](https://devtools.vuejs.org/), you can run
-
-```
-npm run start:devtools
-```
-
-Only dev builds include the Vue Devtools via `ENABLE_VUE_DEVTOOLS=true`. The two scripts that currently support Vue Devtool usage are `npm run start:dev` and `npm run e2e:gui`.
 
 #### Build for production
 
 From the root directory of the repo, you can run
 
 ```
-npm run prod
+npm run build
 ```
 
 to compile the Vue SPA into the `assets` directory, which will be statically served by the server (sails backend) at the same port on which it is running to support the API. You can now shut down the client and view the applicaion as its built for production at localhost:1337 (default port for sails).
 
-If you just want to generate the production build, you can run
-
-```
-npm run build
-```
 
 #### Run the tests
 
@@ -116,7 +93,7 @@ Lastly, you can run
 npm run e2e:server
 ```
 
-to execute the entire test suite headlessly against localhost:1337, which you can use to test the last-built version of the application. This is effectively what is done in CI when a pull request is submitted agains the `main` branch of this repository.
+to execute the entire test suite headlessly against localhost:1337, which you can use to test the last-built version of the application. This is effectively what is done in CI when a pull request is submitted against the `main` branch of this repository.
 
 **NOTE** you should run `npm run build` (see above) before this command so that the server (backend) serves the most up-to-date version of the client.
 
@@ -126,11 +103,6 @@ You can utilize the node debugger in VSCode to debug the backend server.
 
 To do so, start the backend server with:
 
-```
-npm run start:dev
-```
-
-or
 
 ```
 npm run start:server
@@ -138,7 +110,7 @@ npm run start:server
 
 Then, hit cmd+shift+p or ctrl+shift+p, and then enter `Debug: Attach to node process` in the top window opened, to select the process you want to watch.
 
-You will be able to utilize many standard debugging features, such as setting breakpoints by clicking line numbers, stepping in and over function, and watching variables. For details, please refer to the [documentation](https://code.visualstudio.com/docs/editor/debugging).
+You will be able to utilize many standard debugging features, such as setting breakpoints by clicking line numbers, stepping in and over functions, and watching variables. For details, please refer to the [documentation](https://code.visualstudio.com/docs/editor/debugging).
 
 #### Linting (Formatting)
 
