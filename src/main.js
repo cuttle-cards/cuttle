@@ -23,7 +23,7 @@ app.use(store);
 app.mount('#app');
 
 // Expose app for debugging/testing
-if (window.Cypress && !import.meta.env.PROD) {
+if (window.Cypress) {
   window.cuttle = {
     app,
   };
