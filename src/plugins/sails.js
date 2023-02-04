@@ -30,10 +30,14 @@ export const reconnectSockets = () => {
   });
 };
 
-io.sails.url = import.meta.env.VITE_API_URL || 'localhost:1337';
+// Configure socket connection url for dev environments
+if (!import.meta.env.PROD) {
+  io.sails.url = import.meta.env.VITE_API_URL || 'localhost:1337';
+}
 
 io.sails.useCORSRouteToGetCookie = false;
 io.sails.reconnection = true;
+
 // Handles socket updates of game data
 io.socket.on('game', function (evData) {
   switch (evData.verb) {
