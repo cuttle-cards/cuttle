@@ -30,7 +30,7 @@ export const reconnectSockets = () => {
   });
 };
 
-io.sails.url = import.meta.env.VUE_APP_API_URL || 'localhost:1337';
+io.sails.url = import.meta.env.VITE_API_URL || 'localhost:1337';
 
 io.sails.useCORSRouteToGetCookie = false;
 io.sails.reconnection = true;

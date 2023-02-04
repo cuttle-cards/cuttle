@@ -84,6 +84,6 @@ jobs:
           # so that Cypress runs the proper test suites
           # and Vue Devtools are not included
           CUTTLE_ENV: production
-          VUE_APP_API_URL: http://localhost:1337
+          VITE_API_URL: http://localhost:1337
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
