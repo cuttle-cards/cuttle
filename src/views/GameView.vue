@@ -359,12 +359,12 @@
       </div>
 
       <BaseSnackbar
-        v-model="showSnack"
+        v-model:show="showSnackbar"
+        v-model:message="snackBarMessage"
         :color="snackColor"
         data-cy="game-snackbar"
-        @clear="clearSnackBar">
-        {{ snackMessage }}
-      </BaseSnackbar>
+        @clear="clearSnackBar"
+      />
       <game-overlays
         :targeting="targeting"
         :selected-card="selectedCard"
@@ -410,8 +410,8 @@ export default {
   },
   data() {
     return {
-      showSnack: false,
-      snackMessage: '',
+      showSnackbar: false,
+      snackBarMessage: '',
       snackColor: 'error',
       selectionIndex: null, // when select a card set this value
       targeting: false,
@@ -715,13 +715,13 @@ export default {
   },
   methods: {
     clearSnackBar() {
-      this.snackMessage = '';
-      this.showSnack = false;
+      this.snackBarMessage = '';
+      this.showSnackbar = false;
     },
     handleError(err) {
-      this.snackMessage = err;
+      this.snackBarMessage = err;
       this.snackColor = 'error';
-      this.showSnack = true;
+      this.showSnackbar = true;
       this.clearSelection();
     },
     clearOverlays() {
@@ -811,9 +811,9 @@ export default {
             .dispatch('requestDrawCard')
             .then(this.clearSelection)
             .catch((err) => {
-              this.snackMessage = err;
+              this.snackBarMessage = err;
               this.snackColor = 'error';
-              this.showSnack = true;
+              this.showSnackbar = true;
               this.clearSelection();
             });
         } else {
@@ -821,9 +821,9 @@ export default {
             .dispatch('requestPass')
             .then(this.clearSelection)
             .catch((err) => {
-              this.snackMessage = err;
+              this.snackBarMessage = err;
               this.snackColor = 'error';
-              this.showSnack = true;
+              this.showSnackbar = true;
               this.clearSelection();
             });
         }

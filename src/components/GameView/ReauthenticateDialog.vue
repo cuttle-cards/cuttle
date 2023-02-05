@@ -33,11 +33,11 @@
       </form>
     </v-card>
     <BaseSnackbar
-      v-model="showSnackBar"
+      v-model:show="showSnackBar"
+      v-model:message="snackBarMessage"
       color="error"
-      @clear="clearSnackBar">
-      {{ snackBarMessage }}
-    </BaseSnackbar>
+      @clear="clearSnackBar"
+    />
   </v-dialog>
 </template>
 

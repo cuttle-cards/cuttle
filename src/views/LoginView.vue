@@ -43,12 +43,13 @@
         </div>
 
         <BaseSnackbar
-          v-model="showSnackBar"
+          v-model:show="showSnackBar"
+          v-model:message="snackBarMessage"
           color="error"
           data-cy="auth-snackbar"
-          @clear="clearSnackBar">
-          {{ snackBarMessage }}
-        </BaseSnackbar>
+          @clear="clearSnackBar"
+        />
+
       </v-col>
     </v-row>
 
