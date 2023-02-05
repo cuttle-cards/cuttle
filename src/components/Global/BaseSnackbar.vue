@@ -1,6 +1,6 @@
 <template>
   <v-snackbar
-    v-model="show"
+    v-model="modelValue"
     :color="color"
     class="base-snackbar"
     position="absolute"
