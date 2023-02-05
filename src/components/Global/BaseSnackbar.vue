@@ -5,7 +5,6 @@
     class="base-snackbar"
     position="absolute"
     location="bottom"
-    data-cy="auth-snackbar"
     v-bind="$attrs"
   >
     <slot />
