@@ -80,30 +80,27 @@
         </v-row>
       </div>
     </v-container>
-    <v-snackbar
+    <BaseSnackbar
       v-model="showSnackBar"
       color="error"
       data-cy="newgame-snackbar"
-    >
+      @clear="clearSnackBar">
       {{ snackBarMessage }}
-      <template #actions>
-        <v-btn data-cy="close-snackbar" icon variant="text" @click="clearSnackBar">
-          <v-icon icon="mdi-close" />
-        </v-btn>
-      </template>
-    </v-snackbar>
+    </BaseSnackbar>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex';
 import GameListItem from '@/components/GameListItem.vue';
-import CreateGameDialog from '../components/CreateGameDialog.vue';
+import CreateGameDialog from '@/components/CreateGameDialog.vue';
+import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 
 export default {
   name: 'HomeView',
   components: {
     GameListItem,
     CreateGameDialog,
+    BaseSnackbar,
   },
   data() {
     return {

@@ -358,18 +358,13 @@
         </div>
       </div>
 
-      <v-snackbar
+      <BaseSnackbar
         v-model="showSnack"
         :color="snackColor"
         data-cy="game-snackbar"
-      >
+        @clear="clearSnackBar">
         {{ snackMessage }}
-        <template #actions>
-          <v-btn icon variant="text">
-            <v-icon icon="mdi-close" data-cy="close-snackbar" @click="clearSnackBar" />
-          </v-btn>
-        </template>
-      </v-snackbar>
+      </BaseSnackbar>
       <game-overlays
         :targeting="targeting"
         :selected-card="selectedCard"
@@ -397,6 +392,7 @@ import ReauthenticateDialog from '@/components/GameView/ReauthenticateDialog.vue
 import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay.vue';
 import ScrapDialog from '@/components/GameView/ScrapDialog.vue';
 import UsernameToolTip from '@/components/GameView/UsernameToolTip.vue';
+import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 
 export default {
   name: 'GameView',
@@ -410,6 +406,7 @@ export default {
     TargetSelectionOverlay,
     ScrapDialog,
     UsernameToolTip,
+    BaseSnackbar,
   },
   data() {
     return {
