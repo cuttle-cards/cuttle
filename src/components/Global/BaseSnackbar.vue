@@ -19,7 +19,7 @@
 <script>
 export default {
   name: 'BaseSnackbar',
-  emits: ['clear', 'update:show', 'update:message'],
+  emits: ['clear', 'update:modelValue'],
   props: ['modelValue', 'message', 'color', 'data-cy'],
   methods: {
     clear() {
