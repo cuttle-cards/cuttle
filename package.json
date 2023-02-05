@@ -57,6 +57,7 @@
     "start:serve": "vite preview",
     "start:client": "vite --host",
     "start:server": "node app.js",
+    "start:preview": "npm run build;npm run start:server",
     "start": "node app.js",
     "build": "vite build",
     "e2e:client": "cypress run",
