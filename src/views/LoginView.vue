@@ -42,18 +42,13 @@
           </v-btn>
         </div>
 
-        <v-snackbar
+        <BaseSnackbar
           v-model="showSnackBar"
           color="error"
           data-cy="auth-snackbar"
-        >
+          @clear="clearSnackBar">
           {{ snackBarMessage }}
-          <template #actions>
-            <v-btn data-cy="close-snackbar" icon variant="text" @click="clearSnackBar">
-              <v-icon icon="mdi-close" />
-            </v-btn>
-          </template>
-        </v-snackbar>
+        </BaseSnackbar>
       </v-col>
     </v-row>
 
@@ -101,8 +96,13 @@
 <script>
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 
+import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
+
 export default {
   name: 'LoginView',
+  components: {
+    BaseSnackbar,
+  },
   data() {
     return {
       username: '',
