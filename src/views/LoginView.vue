@@ -44,11 +44,12 @@
 
         <BaseSnackbar
           v-model="showSnackBar"
+          :message="snackBarMessage"
           color="error"
           data-cy="auth-snackbar"
-          @clear="clearSnackBar">
-          {{ snackBarMessage }}
-        </BaseSnackbar>
+          @clear="clearSnackBar"
+        />
+
       </v-col>
     </v-row>
 

@@ -82,11 +82,11 @@
     </v-container>
     <BaseSnackbar
       v-model="showSnackBar"
+      :message="snackBarMessage"
       color="error"
       data-cy="newgame-snackbar"
-      @clear="clearSnackBar">
-      {{ snackBarMessage }}
-    </BaseSnackbar>
+      @clear="clearSnackBar"
+    />
   </div>
 </template>
 <script>

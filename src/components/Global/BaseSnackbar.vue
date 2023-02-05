@@ -1,13 +1,13 @@
 <template>
   <v-snackbar
-    v-model="showSnackBar"
+    v-model="modelValue"
     :color="color"
     class="base-snackbar"
     position="absolute"
     location="bottom"
-    v-bind="$attrs"
+    :data-cy="dataCy"
   >
-    <slot />
+    {{ message }}
     <template #actions>
       <v-btn data-cy="close-snackbar" icon variant="text" @click="clear">
         <v-icon icon="mdi-close" />
@@ -19,8 +19,8 @@
 <script>
 export default {
   name: 'BaseSnackbar',
-  emits: ['clear'],
-  props: ['showSnackBar', 'color'],
+  emits: ['clear', 'update:modelValue'],
+  props: ['modelValue', 'message', 'color', 'data-cy'],
   methods: {
     clear() {
       this.$emit('clear');

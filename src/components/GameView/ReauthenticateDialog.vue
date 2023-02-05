@@ -34,10 +34,10 @@
     </v-card>
     <BaseSnackbar
       v-model="showSnackBar"
+      :message="snackBarMessage"
       color="error"
-      @clear="clearSnackBar">
-      {{ snackBarMessage }}
-    </BaseSnackbar>
+      @clear="clearSnackBar"
+    />
   </v-dialog>
 </template>
 
