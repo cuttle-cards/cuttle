@@ -5,6 +5,7 @@
     class="base-snackbar"
     position="absolute"
     location="bottom"
+    :data-cy="dataCy"
   >
     {{ message }}
     <template #actions>
@@ -19,7 +20,7 @@
 export default {
   name: 'BaseSnackbar',
   emits: ['clear', 'update:show', 'update:message'],
-  props: ['show', 'message', 'color'],
+  props: ['modelValue', 'message', 'color', 'data-cy'],
   methods: {
     clear() {
       this.$emit('clear');

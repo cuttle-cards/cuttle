@@ -359,8 +359,8 @@
       </div>
 
       <BaseSnackbar
-        v-model:show="showSnackbar"
-        v-model:message="snackBarMessage"
+        v-model="showSnackbar"
+        :message="snackBarMessage"
         :color="snackColor"
         data-cy="game-snackbar"
         @clear="clearSnackBar"

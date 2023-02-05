@@ -81,8 +81,8 @@
       </div>
     </v-container>
     <BaseSnackbar
-      v-model:show="showSnackBar"
-      v-model:message="snackBarMessage"
+      v-model="showSnackBar"
+      :message="snackBarMessage"
       color="error"
       data-cy="newgame-snackbar"
       @clear="clearSnackBar"

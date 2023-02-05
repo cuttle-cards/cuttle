@@ -43,8 +43,8 @@
         </div>
 
         <BaseSnackbar
-          v-model:show="showSnackBar"
-          v-model:message="snackBarMessage"
+          v-model="showSnackBar"
+          :message="snackBarMessage"
           color="error"
           data-cy="auth-snackbar"
           @clear="clearSnackBar"
