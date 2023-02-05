@@ -241,12 +241,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   it('Plays Queens', () => {
     // Setup
     cy.loadGameFixture({
-      p0Hand: [
-        Card.QUEEN_OF_DIAMONDS,
-        Card.QUEEN_OF_SPADES,
-        Card.KING_OF_CLUBS,
-        Card.JACK_OF_DIAMONDS,
-      ],
+      p0Hand: [Card.QUEEN_OF_DIAMONDS, Card.QUEEN_OF_SPADES, Card.KING_OF_CLUBS, Card.JACK_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
       p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS],
@@ -455,12 +450,7 @@ describe('Playing 8s', () => {
   it('Plays eights for points', () => {
     // Setup
     cy.loadGameFixture({
-      p0Hand: [
-        Card.EIGHT_OF_SPADES,
-        Card.EIGHT_OF_HEARTS,
-        Card.KING_OF_CLUBS,
-        Card.QUEEN_OF_DIAMONDS,
-      ],
+      p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
       p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS],
@@ -491,12 +481,7 @@ describe('Playing 8s', () => {
   it('Plays eights for glasses', () => {
     // Setup
     cy.loadGameFixture({
-      p0Hand: [
-        Card.EIGHT_OF_SPADES,
-        Card.EIGHT_OF_HEARTS,
-        Card.KING_OF_CLUBS,
-        Card.QUEEN_OF_DIAMONDS,
-      ],
+      p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
       p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS],
@@ -592,12 +577,7 @@ describe('Play Jacks', () => {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [],
-      p1Hand: [
-        Card.ACE_OF_HEARTS,
-        Card.ACE_OF_DIAMONDS,
-        Card.JACK_OF_DIAMONDS,
-        Card.JACK_OF_SPADES,
-      ],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
@@ -613,12 +593,7 @@ describe('Play Jacks', () => {
       p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
       p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
       p0FaceCards: [],
-      p1Hand: [
-        Card.ACE_OF_HEARTS,
-        Card.ACE_OF_DIAMONDS,
-        Card.JACK_OF_DIAMONDS,
-        Card.JACK_OF_SPADES,
-      ],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
       p1Points: [],
       p1FaceCards: [Card.KING_OF_HEARTS],
       scrap: [],
@@ -644,7 +619,7 @@ describe('Play Jacks', () => {
     // Player plays 3rd jack
     cy.get('[data-player-hand-card=11-2]').click();
     cy.get('[data-move-choice=jack]').click();
-    cy.get('[data-opponent-point-card=10-2]').click();
+    cy.get('[data-opponent-point-card=10-2]').click({ force: true });
 
     assertGameState(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],

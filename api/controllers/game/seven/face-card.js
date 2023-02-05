@@ -5,7 +5,6 @@ module.exports = function (req, res) {
   Promise.all([promiseGame, promisePlayer, promiseCard])
     .then(function changeAndSave(values) {
       const [game, player, card] = values;
-      // var game = values[0], player = values[1], card = values[2];
       if (game.turn % 2 === player.pNum) {
         if (game.topCard.id === card.id || game.secondCard.id === card.id) {
           if (card.rank === 12 || card.rank === 13 || card.rank === 8) {
@@ -57,8 +56,7 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {
-      const fullGame = values[0];
-      const gameModel = values[1];
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,

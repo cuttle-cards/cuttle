@@ -12,13 +12,13 @@ describe('Navigation Drawer', () => {
       .should('be.visible')
       .should('contain', 'Login')
       .should('contain', 'Rules')
-      .should('not.have.class', 'v-navigation-drawer--mini-variant')
+      .should('not.have.class', 'v-navigation-drawer--rail')
       // Collapse nav
       .find('[data-cy=collapse-nav]')
       .click();
     // Nav drawer should be collapsed
     cy.get('[data-cy=nav-drawer]')
-      .should('have.class', 'v-navigation-drawer--mini-variant')
+      .should('have.class', 'v-navigation-drawer--rail')
       // Expand nav
       .find('[data-cy=expand-nav]')
       .click();
@@ -27,13 +27,13 @@ describe('Navigation Drawer', () => {
       .should('be.visible')
       .should('contain', 'Login')
       .should('contain', 'Rules')
-      .should('not.have.class', 'v-navigation-drawer--mini-variant');
+      .should('not.have.class', 'v-navigation-drawer--rail');
 
     // Mobile display
     cy.viewport('iphone-8');
     cy.get('[data-cy=nav-drawer]')
       .should('be.visible')
-      .should('have.class', 'v-navigation-drawer--mini-variant')
+      .should('have.class', 'v-navigation-drawer--rail')
       // Collapse and expand buttons not displayed on mobile
       .find('[data-cy=expand-nav]')
       .should('not.exist');

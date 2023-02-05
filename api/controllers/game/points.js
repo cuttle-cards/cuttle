@@ -41,12 +41,11 @@ module.exports = function (req, res) {
       return Promise.reject({ message: "It's not your turn." });
     })
     .then(function populateGame(values) {
-      const game = values[0];
+      const [ game ] = values;
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {
-      const fullGame = values[0];
-      const gameModel = values[1];
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,

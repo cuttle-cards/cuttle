@@ -3,82 +3,85 @@ const sharedTestRules = {
 };
 
 module.exports = {
+  root: true,
   env: {
-    browser: true,
+    es2021: true,
     node: true,
-    es6: true,
   },
-
-  extends: [
-    'plugin:vue/recommended',
-    'plugin:vue/essential',
-    'eslint:recommended',
-    'plugin:prettier/recommended',
-  ],
-
-  plugins: ['cypress', 'jest', 'prettier'],
-
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 'latest',
     sourceType: 'module',
-    parser: '@babel/eslint-parser',
-    requireConfigFile: false,
   },
-
-  globals: {
-    _: 'readonly',
-    sails: 'readonly',
-  },
-
+  extends: [
+    'eslint:recommended',
+    'plugin:vue/base',
+    'plugin:vuetify/base',
+  ],
+  plugins: ['cypress', 'jest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
-
   rules: {
-    'prettier/prettier': 'error',
     'max-len': [
       'warn',
       {
-        code: 110,
+        code: 120,
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
+        ignoreUrls: true,
       },
     ],
     'vue/html-indent': ['error'],
-    'vue/multi-word-component-names': ['warn'],
-    'prefer-destructuring': ['warn'],
+    'vue/multi-word-component-names': ['error'],
+    'prefer-destructuring': ['error'],
     'no-else-return': [
-      'warn',
+      'error',
       {
         allowElseIf: true,
       },
     ],
-    'no-case-declarations': 'warn',
+    'no-case-declarations': 'error',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
   },
-
   overrides: [
+    // Vue specific rules
+    {
+      files: ['**/client/**/*.{j,t}s?(x)'],
+      extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:vue/recommended'],
+      rules: {
+        'no-undef': 'error',
+        'no-prototype-builtins': 'error',
+        'no-case-declarations': 'error',
+      },
+    },
     // Storybook specific rules
     {
       files: ['**/(.storybook|stories)/**/*.{j,t}s?(x)'],
-      extends: ['plugin:storybook/recommended'],
+      extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:storybook/recommended'],
       rules: {
-        'no-undef': 'warn',
-        'no-prototype-builtins': 'warn',
+        'no-undef': 'error',
+        'no-prototype-builtins': 'error',
       },
     },
     // Sails specific rules
     {
       files: ['**/api/**/*.{j,t}s?(x)'],
-      rules: {
-        'no-undef': 'warn',
-        'no-prototype-builtins': 'warn',
-      },
       globals: {
+        _: true,
+        sails: true,
+        cardService: true,
+        gameService: true,
+        userService: true,
+        //
         Card: true,
         Season: true,
         Match: true,
         User: true,
         Game: true,
+      },
+      rules: {
+        'no-undef': 'error',
+        'no-prototype-builtins': 'error',
       },
     },
     // Jest specific rules
@@ -104,10 +107,9 @@ module.exports = {
         socket1: true,
         socket2: true,
         socket3: true,
+        Promise: true,
       },
       rules: sharedTestRules,
     },
   ],
-
-  root: true,
 };

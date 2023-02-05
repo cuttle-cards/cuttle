@@ -6,7 +6,7 @@ module.exports = {
   findUser: function (options) {
     return new Promise(function (resolve, reject) {
       if (options) {
-        if (options.hasOwnProperty('userId')) {
+        if (Object.hasOwnProperty.call(options, 'userId')) {
           return User.findOne({ id: options.userId })
             .populate('hand')
             .populate('points')

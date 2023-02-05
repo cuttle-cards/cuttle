@@ -6,27 +6,18 @@ const dayjs = require('dayjs');
 
 function assertVictory() {
   cy.log('Asserting player victory');
-  cy.get('#game-over-dialog')
-    .should('be.visible')
-    .get('[data-cy=victory-heading]')
-    .should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
 }
 
 function assertLoss() {
   cy.log('Asserting player loss');
-  cy.get('#game-over-dialog')
-    .should('be.visible')
-    .get('[data-cy=loss-heading]')
-    .should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
   cy.get('[data-cy=loss-img]').should('be.visible');
 }
 
 function assertStalemate() {
   cy.log('Asserting stalemate');
-  cy.get('#game-over-dialog')
-    .should('be.visible')
-    .get('[data-cy=stalemate-heading]')
-    .should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=stalemate-heading]').should('be.visible');
   cy.get('[data-cy=stalemate-img]').should('be.visible');
 }
 
@@ -124,12 +115,7 @@ describe('Winning the game', () => {
     assertGameState(0, {
       p0Hand: [],
       p0Points: [],
-      p0FaceCards: [
-        Card.KING_OF_SPADES,
-        Card.KING_OF_CLUBS,
-        Card.KING_OF_DIAMONDS,
-        Card.KING_OF_HEARTS,
-      ],
+      p0FaceCards: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.KING_OF_HEARTS],
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
@@ -195,18 +181,12 @@ describe('Losing the game', () => {
     cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
 
     // Cancel Concede
-    cy.get('#request-gameover-dialog')
-      .should('be.visible')
-      .get('[data-cy=request-gameover-cancel]')
-      .click();
+    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-cancel]').click();
     cy.get('#request-gameover-dialog').should('not.be.visible');
     // Re-open concede menu and confirm concession
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
-    cy.get('#request-gameover-dialog')
-      .should('be.visible')
-      .get('[data-cy=request-gameover-confirm]')
-      .click();
+    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
     assertLoss();
     goHomeJoinNewGame();
   });
@@ -341,7 +321,7 @@ describe('Stalemates', () => {
 
       // Opponent rejects stalemate
       cy.rejectStalemateOpponent();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
 
       // Player requests stalemate again -- process starts over
       cy.get('#game-menu-activator').click();
@@ -354,7 +334,7 @@ describe('Stalemates', () => {
 
       // Opponent rejects stalemate
       cy.rejectStalemateOpponent();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
 
       // Opponent requests stalemate - Does not immediately stalemate
       cy.stalemateOpponent();
@@ -408,7 +388,7 @@ describe('Stalemates', () => {
       cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
 
       cy.drawCardOpponent();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.be.visible');
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
 
       // Opponent requests stalemate
       cy.stalemateOpponent();
@@ -524,10 +504,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // Request stalemate
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
-    cy.get('#request-gameover-dialog')
-      .should('be.visible')
-      .get('[data-cy=request-gameover-confirm]')
-      .click();
+    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
     cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
     // Opponent confirms
     cy.stalemateOpponent();
@@ -693,10 +670,7 @@ describe('Creating And Updating Ranked Matches', () => {
         // Sort games by updatedAt asc
         const games = res.body.sort((game1, game2) => game1.updatedAt - game2.updatedAt);
         expect(games.length).to.eq(7, 'Expected 6 games');
-        expect(games[6].isRanked).to.eq(
-          false,
-          'Expected last game to be set to unranked after completion'
-        );
+        expect(games[6].isRanked).to.eq(false, 'Expected last game to be set to unranked after completion');
       });
     });
   });

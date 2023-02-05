@@ -15,9 +15,9 @@ module.exports = function (req, res) {
           if (card.rank === 2) {
             if (!opHasQueen) {
               if (game.twos.length > 0) {
-                logEntry = `${player.username} played the ${card.name} to counter ${
-                  opponent.username
-                }'s ${game.twos[game.twos.length - 1].name}.`;
+                logEntry = `${player.username} played the ${card.name} to counter ${opponent.username}'s ${
+                  game.twos[game.twos.length - 1].name
+                }.`;
               } else {
                 logEntry = `${player.username} played the ${card.name} to counter ${opponent.username}'s ${game.oneOff.name}.`;
               }
@@ -52,8 +52,7 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);
     })
     .then(async function publishAndRespond(values) {
-      const fullGame = values[0];
-      const gameModel = values[1];
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,

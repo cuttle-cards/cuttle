@@ -96,7 +96,7 @@ module.exports = {
   populateGame: function (options) {
     return new Promise(function (resolve, reject) {
       if (options) {
-        if (options.hasOwnProperty('gameId') && typeof options.gameId === 'number') {
+        if (Object.hasOwnProperty.call(options, 'gameId') && typeof options.gameId === 'number') {
           // find game
           return (
             gameService
@@ -105,8 +105,8 @@ module.exports = {
               .then(function findUsers(game) {
                 if (game.players) {
                   if (game.players.length > 1) {
-                    var p0 = userService.findUser({ userId: game.players[0].id });
-                    var p1 = userService.findUser({ userId: game.players[1].id });
+                    const p0 = userService.findUser({ userId: game.players[0].id });
+                    const p1 = userService.findUser({ userId: game.players[1].id });
                     return Promise.all([Promise.resolve(game), p0, p1]);
                   }
                   return Promise.reject({ message: "Can't populate game without two players" });
@@ -117,11 +117,9 @@ module.exports = {
               })
               // then find points
               .then(function findPoints(values) {
-                var game = values[0];
-                var p0 = values[1];
-                var p1 = values[2];
-                var p0Points = cardService.findPoints({ userId: p0.id });
-                var p1Points = cardService.findPoints({ userId: p1.id });
+                const [ game, p0, p1 ] = values;
+                const p0Points = cardService.findPoints({ userId: p0.id });
+                const p1Points = cardService.findPoints({ userId: p1.id });
                 return Promise.all([
                   Promise.resolve(game),
                   Promise.resolve(p0),
@@ -132,12 +130,10 @@ module.exports = {
               })
               // then format results & resolve
               .then(function finish(values) {
-                var game = values[0];
-                var p0Points = values[3];
-                var p1Points = values[4];
-                var p0 = new tempUser(values[1], p0Points);
-                var p1 = new tempUser(values[2], p1Points);
-                var result = new tempGame(game, p0, p1);
+                const [ game, p0, p1, p0Points, p1Points ] = values;
+                const populatedP0 = new tempUser(p0, p0Points);
+                const populatedP1 = new tempUser(p1, p1Points);
+                const result = new tempGame(game, populatedP0, populatedP1);
 
                 return resolve(result);
               })
@@ -247,7 +243,7 @@ module.exports = {
                 // Delete all cards in the game
                 Card.destroy({
                   or: deleteCardsCriteria,
-                })
+                }),
               );
             } // end if (game) {}
             return Promise.all(updatePromises);

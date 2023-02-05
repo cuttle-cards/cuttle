@@ -18,8 +18,6 @@
  * `node app.js --silent --port=80 --prod`
  */
 
-const { isProd } = require('./utils/config-utils.js');
-
 // Ensure we're in the project directory, so relative paths work as expected
 // no matter where we actually lift from.
 process.chdir(__dirname);
@@ -31,15 +29,15 @@ process.chdir(__dirname);
     sails = require('sails');
   } catch (e) {
     console.error(
-      'To run an app using `node app.js`, you usually need to have a version of `sails` installed in the same directory as your app.'
+      'To run an app using `node app.js`, you usually need to have a version of `sails` installed in the same directory as your app.',
     );
     console.error('To do that, run `npm install sails`');
     console.error('');
     console.error(
-      'Alternatively, if you have sails installed globally (i.e. you did `npm install -g sails`), you can use `sails lift`.'
+      'Alternatively, if you have sails installed globally (i.e. you did `npm install -g sails`), you can use `sails lift`.',
     );
     console.error(
-      'When you run `sails lift`, your app will still use a local `./node_modules/sails` dependency if it exists,'
+      'When you run `sails lift`, your app will still use a local `./node_modules/sails` dependency if it exists,',
     );
     console.error("but if it doesn't, the app will run with the global sails instead!");
     return;
@@ -65,12 +63,10 @@ process.chdir(__dirname);
 
   // In dev mode, ensure unhandles promises log to the console with the full stack
   // See https://stackoverflow.com/a/46661020
-  if (!isProd) {
-    process.on('unhandledRejection', (err) => {
-      console.error(err);
-      throw err;
-    });
-  }
+  process.on('unhandledRejection', (err) => {
+    console.error(err);
+    throw err;
+  });
 
   // Start server
   sails.lift(rc('sails'));

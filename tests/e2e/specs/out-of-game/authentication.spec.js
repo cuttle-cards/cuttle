@@ -6,7 +6,7 @@ function assertSuccessfulAuth(username) {
   cy.hash().should('eq', '#/');
   // Check store auth data
   cy.window()
-    .its('cuttle.app.$store.state.auth')
+    .its('cuttle.app.config.globalProperties.$store.state.auth')
     .as('authState')
     .then((authState) => {
       expect(authState.authenticated).to.eq(true);
@@ -19,7 +19,7 @@ function assertFailedAuth(path) {
   cy.hash().should('eq', path);
   // Check store auth data
   cy.window()
-    .its('cuttle.app.$store.state.auth')
+    .its('cuttle.app.config.globalProperties.$store.state.auth')
     .as('authState')
     .then((authState) => {
       expect(authState.authenticated).to.eq(false);

@@ -1,8 +1,7 @@
 module.exports = {
   friendlyName: 'Get API health',
 
-  description:
-    'Get the health of the API service. This includes database status and service version.',
+  description: 'Get the health of the API service. This includes database status and service version.',
 
   fn: async (_, exits) => {
     try {

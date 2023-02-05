@@ -5,7 +5,7 @@ module.exports = {
    */
   findCard: function (options) {
     return new Promise(function (resolve, reject) {
-      if (options.hasOwnProperty('cardId') && typeof options.cardId === 'number') {
+      if (Object.hasOwnProperty.call(options, 'cardId') && typeof options.cardId === 'number') {
         return Card.findOne(options.cardId)
           .populate('attachments')
           .exec(function (err, card) {
@@ -28,11 +28,7 @@ module.exports = {
   createCard: function (options) {
     return new Promise(function (resolve, reject) {
       const validArgs =
-        options.suit >= 0 &&
-        options.suit <= 3 &&
-        options.rank >= 1 &&
-        options.rank <= 13 &&
-        options.gameId;
+        options.suit >= 0 && options.suit <= 3 && options.rank >= 1 && options.rank <= 13 && options.gameId;
       if (!validArgs) {
         return reject({ message: 'Invalid Arguments for createCard service' });
       }

@@ -1,17 +1,17 @@
 name: Developer Experience
 description: File a developer experience request
-title: "[DevEx]: "
-labels: ["dev experience"]
+title: '[DevEx]: '
+labels: ['dev experience']
 body:
-- type: input
-  id: feature_summary
-  attributes:
-    label: Improvement Summary
-  validations:
-    required: true
-- type: textarea
-  id: detailed_description
-  attributes:
-    label: Detailed Description
-  validations:
-    required: true
+  - type: input
+    id: feature_summary
+    attributes:
+      label: Improvement Summary
+    validations:
+      required: true
+  - type: textarea
+    id: detailed_description
+    attributes:
+      label: Detailed Description
+    validations:
+      required: true

@@ -10,10 +10,7 @@ module.exports = function (req, res) {
         resolving: null,
         passes: 0,
         turn: game.turn + 1,
-        log: [
-          ...game.log,
-          `${player.username} took the ${card.name} from the Scrap pile to their hand.`,
-        ],
+        log: [...game.log, `${player.username} took the ${card.name} from the Scrap pile to their hand.`],
         lastEvent: {
           change: 'resolveThree',
         },
@@ -35,8 +32,7 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {
-      const fullGame = values[0];
-      const gameModel = values[1];
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
