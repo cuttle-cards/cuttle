@@ -6,11 +6,11 @@
     </template>
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column">
+      <div id="game-menu-wrapper" class="d-flex flex-column align-center">
         <game-menu />
         <v-icon
           v-if="$vuetify.display.xs"
-          color="neutral lighten-1"
+          color="white"
           icon="mdi-account-clock"
           size="large"
           @click.stop="showHistoryDrawer = !showHistoryDrawer"
@@ -42,7 +42,7 @@
         <v-divider />
 
         <v-list dense>
-          <v-list-item v-for="(log, index) in logs" :key="index">
+          <v-list-item v-for="(log, index) in logs" :key="index" class="my-2">
             <p>
               {{ log }}
             </p>
@@ -267,7 +267,7 @@
             <h3 class="history-title">History</h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
-              <p v-for="(log, index) in logs" :key="index">
+              <p v-for="(log, index) in logs" :key="index" class="my-2">
                 {{ log }}
               </p>
             </div>
