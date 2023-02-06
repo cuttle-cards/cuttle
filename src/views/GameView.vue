@@ -42,7 +42,7 @@
         <v-divider />
 
         <v-list dense>
-          <v-list-item v-for="(log, index) in logs" :key="index">
+          <v-list-item v-for="(log, index) in logs" :key="index" class="my-2">
             <p>
               {{ log }}
             </p>
@@ -267,7 +267,7 @@
             <h3 class="history-title">History</h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
-              <p v-for="(log, index) in logs" :key="index">
+              <p v-for="(log, index) in logs" :key="index" class="my-2">
                 {{ log }}
               </p>
             </div>
