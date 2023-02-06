@@ -6,11 +6,11 @@
     </template>
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column">
+      <div id="game-menu-wrapper" class="d-flex flex-column align-center">
         <game-menu />
         <v-icon
           v-if="$vuetify.display.xs"
-          color="neutral lighten-1"
+          color="white"
           icon="mdi-account-clock"
           size="large"
           @click.stop="showHistoryDrawer = !showHistoryDrawer"
