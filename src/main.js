@@ -31,6 +31,9 @@ if (!import.meta.env.PROD || window.Cypress) {
   window.cuttle = {
     app,
   };
+}
+
+if (!import.meta.env.PROD) {
   // Connect the devtools -- non-prod only
   devtools.connect(null, 8098);
 }
