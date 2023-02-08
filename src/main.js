@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-
+import devtools from '@vue/devtools'
 import { createApp } from 'vue';
 
 import store from '@/store/store';
@@ -22,9 +22,15 @@ app.use(store);
 
 app.mount('#app');
 
-// Expose app for debugging/testing
-if (window.Cypress) {
-  window.cuttle = {
-    app,
-  };
+// Non-Production config
+if (!import.meta.env.PROD) {
+  // Expose app for debugging/testing
+  if (window.Cypress) {
+    window.cuttle = {
+      app,
+    };
+  }
+  // Connect the devtools
+  devtools.connect(null, 8098);
 }
+
