@@ -17,7 +17,7 @@ module.exports = defineConfig({
     baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
     specPattern: [
       ...(isProd ? ['tests/e2e/specs/**/*.spec.prod.js'] : ['tests/e2e/specs/**/*.spec.dev.js']),
-      // 'tests/e2e/specs/**/*.spec.js',
+      'tests/e2e/specs/**/*.spec.js',
     ],
     excludeSpecPattern: ['tests/e2e/specs/playground.spec.js'],
     supportFile: 'tests/e2e/support/index.js',
