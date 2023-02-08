@@ -1,10 +1,9 @@
-/* eslint-disable no-undef */
-import devtools from '@vue/devtools'
 import { createApp } from 'vue';
 
-import store from '@/store/store';
-import router from '@/router';
 import vuetify from '@/plugins/vuetify';
+import router from '@/router';
+import store from '@/store/store';
+import { initCuttleGlobals } from '_/utils/config-utils';
 
 import App from '@/App.vue';
 
@@ -22,15 +21,5 @@ app.use(store);
 
 app.mount('#app');
 
-////////////////////////
-// Development Config //
-////////////////////////
-
-if (!import.meta.env.PROD || window.Cypress) {
-  // Expose app for debugging/testing
-  window.cuttle = {
-    app,
-  };
-  // Connect the devtools -- non-prod only
-  devtools.connect(null, 8098);
-}
+// Add Cuttle window object
+initCuttleGlobals(app);

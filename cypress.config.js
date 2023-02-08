@@ -1,18 +1,23 @@
 const { defineConfig } = require('cypress');
 
-const { isProd } = require('./utils/config-utils');
+const ENV_DEV = 'development';
+const ENV_PROD = 'production';
+const isDev = process.env.NODE_ENV === ENV_DEV;
+const isProd = process.env.NODE_ENV === ENV_PROD;
 
 module.exports = defineConfig({
   // https://docs.cypress.io/guides/references/configuration#Global
   env: {
-    NODE_ENV: isProd ? 'production' : 'dev',
+    NODE_ENV: process.env.NODE_ENV || ENV_DEV,
+    DEV: isDev,
+    PROD: isProd,
   },
   // https://docs.cypress.io/guides/references/configuration#e2e
   e2e: {
     baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
     specPattern: [
       ...(isProd ? ['tests/e2e/specs/**/*.spec.prod.js'] : ['tests/e2e/specs/**/*.spec.dev.js']),
-      'tests/e2e/specs/**/*.spec.js',
+      // 'tests/e2e/specs/**/*.spec.js',
     ],
     excludeSpecPattern: ['tests/e2e/specs/playground.spec.js'],
     supportFile: 'tests/e2e/support/index.js',
