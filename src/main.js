@@ -22,15 +22,15 @@ app.use(store);
 
 app.mount('#app');
 
-// Expose app for debugging/testing
-if (window.Cypress) {
+////////////////////////
+// Development Config //
+////////////////////////
+
+if (!import.meta.env.PROD || window.Cypress) {
+  // Expose app for debugging/testing
   window.cuttle = {
     app,
   };
-}
-
-// Connect the devtools -- non-prod only
-if (!import.meta.env.PROD) {
+  // Connect the devtools -- non-prod only
   devtools.connect(null, 8098);
 }
-
