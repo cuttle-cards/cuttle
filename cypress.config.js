@@ -1,17 +1,9 @@
 const { defineConfig } = require('cypress');
 
-const ENV_DEV = 'development';
 const ENV_PROD = 'production';
-const isDev = process.env.NODE_ENV === ENV_DEV;
-const isProd = process.env.NODE_ENV === ENV_PROD;
+const isProd = process.env.VITE_CUTTLE_ENV === ENV_PROD;
 
 module.exports = defineConfig({
-  // https://docs.cypress.io/guides/references/configuration#Global
-  env: {
-    NODE_ENV: process.env.NODE_ENV || ENV_DEV,
-    DEV: isDev,
-    PROD: isProd,
-  },
   // https://docs.cypress.io/guides/references/configuration#e2e
   e2e: {
     baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
