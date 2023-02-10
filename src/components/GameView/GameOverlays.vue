@@ -108,7 +108,6 @@ export default {
       'opponent',
       'hasGlassesEight',
       'player',
-      'resolvingSeven',
     ]),
     showWaitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';

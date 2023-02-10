@@ -401,6 +401,74 @@ describe('Stalemates', () => {
   });
 });
 
+describe('Conceding while a oneOff is being resolved - prevents resolving oneOff state from persisting to new game', () => {
+  beforeEach(() => {
+    cy.setupGameAsP0();
+  });
+
+  it('Opponent concedes while seven oneOff is being resolved', () => {
+    cy.loadGameFixture({
+      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.FOUR_OF_CLUBS,
+      secondCard: Card.SIX_OF_DIAMONDS,
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Fixture loaded');
+
+    cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+
+    cy.get('[data-top-card=4-0]').should('exist').and('be.visible');
+    cy.get('[data-second-card=6-1]').should('exist').and('be.visible');
+
+    cy.concedeOpponent();
+    assertVictory();
+    goHomeJoinNewGame();
+
+    cy.loadGameFixture({
+      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.FOUR_OF_CLUBS,
+      secondCard: Card.SIX_OF_DIAMONDS,
+    });
+
+    cy.get('[data-top-card=4-0]').should('not.exist');
+    cy.get('[data-second-card=6-1]').should('not.exist');
+  });
+
+  it('Concede game while resolving a four', () => {
+    cy.loadGameFixture({
+      p0Hand: [Card.FOUR_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+    cy.log('Fixture loaded');
+
+    cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
+
+    cy.get('#game-menu-activator').click({force: true});
+    cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
+    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
+    assertLoss();
+    goHomeJoinNewGame();
+
+    cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+  })
+});
+
 describe('Creating And Updating Ranked Matches', () => {
   beforeEach(function () {
     cy.wipeDatabase();

@@ -53,6 +53,7 @@ io.socket.on('game', function (evData) {
           store.commit('updateReady', evData.data.pNum);
           break;
         case 'Initialize': {
+          store.commit('resetState');
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
           const gameRoute = `/game/${store.state.game.id}`;
           const currentRoute = router.currentRoute.fullPath;
