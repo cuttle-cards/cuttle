@@ -122,6 +122,13 @@ describe('Stats Page', () => {
     cy.get('[data-player-results=Player3-week-total]').find('[data-cy=close-player-results]').click();
     cy.get('[data-players-beaten=Player3-week-total').should('not.exist');
     cy.get('[data-players-lost-to=Player3-week-total').should('not.exist');
+
+    // Players should be sorted in rank order
+    cy.get('[data-rank]').eq(0).should('contain', '1');
+    cy.get('[data-rank]').eq(1).should('contain', '1');
+    cy.get('[data-rank]').eq(2).should('contain', '3');
+    cy.get('[data-rank]').eq(3).should('contain', '4');
+    cy.get('[data-rank]').eq(4).should('contain', '5');
   });
 
   it('Filters table to display wins, points, or both', () => {

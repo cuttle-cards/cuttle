@@ -6,11 +6,11 @@
     </template>
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column">
+      <div id="game-menu-wrapper" class="d-flex flex-column align-center">
         <game-menu />
         <v-icon
           v-if="$vuetify.display.xs"
-          color="neutral lighten-1"
+          color="white"
           icon="mdi-account-clock"
           size="large"
           @click.stop="showHistoryDrawer = !showHistoryDrawer"
@@ -42,7 +42,7 @@
         <v-divider />
 
         <v-list dense>
-          <v-list-item v-for="(log, index) in logs" :key="index">
+          <v-list-item v-for="(log, index) in logs" :key="index" class="my-2">
             <p>
               {{ log }}
             </p>
@@ -267,7 +267,7 @@
             <h3 class="history-title">History</h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
-              <p v-for="(log, index) in logs" :key="index">
+              <p v-for="(log, index) in logs" :key="index" class="my-2">
                 {{ log }}
               </p>
             </div>
@@ -358,18 +358,13 @@
         </div>
       </div>
 
-      <v-snackbar
-        v-model="showSnack"
+      <BaseSnackbar
+        v-model="showSnackbar"
+        :message="snackBarMessage"
         :color="snackColor"
         data-cy="game-snackbar"
-      >
-        {{ snackMessage }}
-        <template #actions>
-          <v-btn icon variant="text">
-            <v-icon icon="mdi-close" data-cy="close-snackbar" @click="clearSnackBar" />
-          </v-btn>
-        </template>
-      </v-snackbar>
+        @clear="clearSnackBar"
+      />
       <game-overlays
         :targeting="targeting"
         :selected-card="selectedCard"
@@ -397,6 +392,7 @@ import ReauthenticateDialog from '@/components/GameView/ReauthenticateDialog.vue
 import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay.vue';
 import ScrapDialog from '@/components/GameView/ScrapDialog.vue';
 import UsernameToolTip from '@/components/GameView/UsernameToolTip.vue';
+import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 
 export default {
   name: 'GameView',
@@ -410,11 +406,12 @@ export default {
     TargetSelectionOverlay,
     ScrapDialog,
     UsernameToolTip,
+    BaseSnackbar,
   },
   data() {
     return {
-      showSnack: false,
-      snackMessage: '',
+      showSnackbar: false,
+      snackBarMessage: '',
       snackColor: 'error',
       selectionIndex: null, // when select a card set this value
       targeting: false,
@@ -718,13 +715,13 @@ export default {
   },
   methods: {
     clearSnackBar() {
-      this.snackMessage = '';
-      this.showSnack = false;
+      this.snackBarMessage = '';
+      this.showSnackbar = false;
     },
     handleError(err) {
-      this.snackMessage = err;
+      this.snackBarMessage = err;
       this.snackColor = 'error';
-      this.showSnack = true;
+      this.showSnackbar = true;
       this.clearSelection();
     },
     clearOverlays() {
@@ -814,9 +811,9 @@ export default {
             .dispatch('requestDrawCard')
             .then(this.clearSelection)
             .catch((err) => {
-              this.snackMessage = err;
+              this.snackBarMessage = err;
               this.snackColor = 'error';
-              this.showSnack = true;
+              this.showSnackbar = true;
               this.clearSelection();
             });
         } else {
@@ -824,9 +821,9 @@ export default {
             .dispatch('requestPass')
             .then(this.clearSelection)
             .catch((err) => {
-              this.snackMessage = err;
+              this.snackBarMessage = err;
               this.snackColor = 'error';
-              this.showSnack = true;
+              this.showSnackbar = true;
               this.clearSelection();
             });
         }

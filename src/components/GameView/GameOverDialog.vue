@@ -1,23 +1,15 @@
 <template>
   <v-dialog v-model="show" persistent max-width="650">
     <v-card id="game-over-dialog">
-      <v-card-title v-if="stalemate" data-cy="stalemate-heading">
-        <h1>Stalemate</h1>
-      </v-card-title>
-      <v-card-title v-else-if="playerWins" data-cy="victory-heading">
-        <h1>You Win</h1>
-      </v-card-title>
-      <v-card-title v-else data-cy="loss-heading">
-        <h1>You Lose</h1>
+      <v-card-title :data-cy="headingDataAttr">
+        <h1>{{ heading }}</h1>
       </v-card-title>
       <v-card-text class="d-flex justify-center">
-        <v-img v-if="stalemate" src="/img/-stalemate.svg" data-cy="stalemate-img" />
         <v-img
-          v-else-if="playerWins"
-          src="/img/logo-body-no-text.svg"
-          data-cy="victory-img"
+          :src="logoSrc"
+          :data-cy="logoDataAttr"
+          class="logo-image"
         />
-        <v-img v-else src="/img/logo-dead.svg" data-cy="loss-img" />
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
         <v-btn color="primary" variant="flat" data-cy="gameover-go-home" @click="goHome">
@@ -54,6 +46,50 @@ export default {
         // do nothing - parent controls whether dialog is open
       },
     },
+    heading() {
+      if (this.stalemate) {
+        return 'Stalemate';
+      }
+
+      if (this.playerWins) {
+        return 'You Win';
+      }
+
+      return 'You Lose';
+    },
+    headingDataAttr() {
+      if (this.stalemate) {
+        return 'stalemate-heading';
+      }
+
+      if (this.playerWins) {
+        return 'victory-heading';
+      }
+
+      return 'loss-heading';
+    },
+    logoSrc() {
+      if (this.stalemate) {
+        return '/img/logo-stalemate.svg';
+      }
+
+      if (this.playerWins) {
+        return '/img/logo-body-no-text.svg';
+      }
+
+      return '/img/logo-dead.svg';
+    },
+    logoDataAttr() {
+      if (this.stalemate) {
+        return 'stalemate-img';
+      }
+
+      if (this.playerWins) {
+        return 'victory-img';
+      }
+
+      return 'loss-img';
+    },
   },
   methods: {
     goHome() {
@@ -69,3 +105,17 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.logo-image {
+  height: auto;
+  max-width: 180px;
+
+  // TODO: replace with an actual css variable for breakpoint width
+  // https://github.com/vuetifyjs/vuetify/blob/v3.1.3/packages/vuetify/src/styles/settings/_variables.scss#L95
+  @media(min-width: 601px) {
+    max-width: 300px;
+  }
+
+}
+</style>

@@ -131,7 +131,7 @@ export default {
           res[`week_${weekNum}_points`] = playerScores[weekNum];
         }
         return res;
-      });
+      }).sort((player1, player2) => player1.rank - player2.rank);
     },
     playerWins() {
       if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {

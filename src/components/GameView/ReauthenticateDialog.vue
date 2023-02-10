@@ -32,23 +32,23 @@
         </v-card-actions>
       </form>
     </v-card>
-    <v-snackbar
+    <BaseSnackbar
       v-model="showSnackBar"
+      :message="snackBarMessage"
       color="error"
-    >
-      {{ snackBarMessage }}
-      <template #actions>
-        <v-btn icon variant="text" @click="clearSnackBar">
-          <v-icon icon="mdi-close" />
-        </v-btn>
-      </template>
-    </v-snackbar>
+      @clear="clearSnackBar"
+    />
   </v-dialog>
 </template>
 
 <script>
+import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
+
 export default {
   name: 'ReauthenticateDialog',
+  components: {
+    BaseSnackbar,
+  },
   props: {
     modelValue: {
       type: Boolean,

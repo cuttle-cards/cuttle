@@ -68,6 +68,14 @@ npm run build
 
 to compile the Vue SPA into the `assets` directory, which will be statically served by the server (sails backend) at the same port on which it is running to support the API. You can now shut down the client and view the applicaion as its built for production at localhost:1337 (default port for sails).
 
+#### Preview build (on other devices)
+You can build the frontend and boot the backend to serve the latest frontend preview from the sails server at port 1337 with
+
+```
+npm run start:preview
+```
+
+This will let you see what the production build will look like when served from the backend. This also lets you view the app on other devices connected to the same wifi network opening your browser to your-local-ip-address:1337.
 
 #### Run the tests
 
