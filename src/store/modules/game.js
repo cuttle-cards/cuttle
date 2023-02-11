@@ -194,7 +194,7 @@ export default {
     successfullyJoined(state, player) {
       state.players.push(cloneDeep(player));
     },
-    successfullyLeft(state) {
+    resetState(state) {
       // Must use Object.assign to preserve reactivity
       Object.assign(state, resetState());
     },
@@ -327,7 +327,7 @@ export default {
       return new Promise((resolve, reject) => {
         io.socket.post('/game/leaveLobby', function handleResponse(res, jwres) {
           if (jwres.statusCode === 200) {
-            context.commit('successfullyLeft');
+            context.commit('resetState');
             return resolve();
           }
           return reject(new Error('Error leaving lobby'));
