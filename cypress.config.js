@@ -1,14 +1,13 @@
 const { defineConfig } = require('cypress');
 
 const ENV_PROD = 'production';
-const isProd = process.env.VITE_CUTTLE_ENV === ENV_PROD;
 
 module.exports = defineConfig({
   // https://docs.cypress.io/guides/references/configuration#e2e
   e2e: {
     baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
     specPattern: [
-      ...(isProd ? ['tests/e2e/specs/**/*.spec.prod.js'] : ['tests/e2e/specs/**/*.spec.dev.js']),
+      ...(process.env.VITE_CUTTLE_ENV === ENV_PROD ? ['tests/e2e/specs/**/*.spec.prod.js'] : ['tests/e2e/specs/**/*.spec.dev.js']),
       'tests/e2e/specs/**/*.spec.js',
     ],
     excludeSpecPattern: ['tests/e2e/specs/playground.spec.js'],
