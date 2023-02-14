@@ -1,15 +1,10 @@
 const { defineConfig } = require('cypress');
 
-const ENV_PROD = 'production';
-
 module.exports = defineConfig({
   // https://docs.cypress.io/guides/references/configuration#e2e
   e2e: {
     baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
-    specPattern: [
-      ...(process.env.VITE_CUTTLE_ENV === ENV_PROD ? ['tests/e2e/specs/**/*.spec.prod.js'] : ['tests/e2e/specs/**/*.spec.dev.js']),
-      'tests/e2e/specs/**/*.spec.js',
-    ],
+    specPattern: ['tests/e2e/specs/**/*.spec.js'],
     excludeSpecPattern: ['tests/e2e/specs/playground.spec.js'],
     supportFile: 'tests/e2e/support/index.js',
     // https://github.com/javierbrea/cypress-fail-fast
