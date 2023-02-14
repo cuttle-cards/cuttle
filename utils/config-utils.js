@@ -17,9 +17,14 @@ export function initCuttleGlobals(app) {
 
   window.cuttle = cuttle;
 
+  // Connect the devtools -- non-prod only
   if (!import.meta.env.PROD) {
-    // Connect the devtools -- non-prod only
-    console.log('Connecting devtools');
-    devtools.connect(null, 8098);
+    try {
+      devtools.connect(null, 8098);
+    } catch(err) {
+      console.warn('Failed to connect vue devtools. Try running npm run start:devtools');
+      return;
+    }
+    console.log('Vue devtools connected');
   }
 }
