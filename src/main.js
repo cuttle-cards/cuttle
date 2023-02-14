@@ -1,10 +1,9 @@
-/* eslint-disable no-undef */
-
 import { createApp } from 'vue';
 
-import store from '@/store/store';
-import router from '@/router';
 import vuetify from '@/plugins/vuetify';
+import router from '@/router';
+import store from '@/store/store';
+import { initCuttleGlobals } from '_/utils/config-utils';
 
 import App from '@/App.vue';
 
@@ -22,9 +21,5 @@ app.use(store);
 
 app.mount('#app');
 
-// Expose app for debugging/testing
-if (window.Cypress) {
-  window.cuttle = {
-    app,
-  };
-}
+// Add Cuttle window object
+initCuttleGlobals(app);

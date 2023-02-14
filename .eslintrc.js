@@ -17,7 +17,7 @@ module.exports = {
     'plugin:vue/base',
     'plugin:vuetify/base',
   ],
-  plugins: ['cypress', 'jest', 'prettier'],
+  plugins: ['cypress', 'vitest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
   rules: {
     'max-len': [
@@ -84,12 +84,9 @@ module.exports = {
         'no-prototype-builtins': 'error',
       },
     },
-    // Jest specific rules
+    // Vittest specific rules
     {
       files: ['**/tests/unit/**/*.{j,t}s?(x)'],
-      env: {
-        jest: true,
-      },
       rules: sharedTestRules,
     },
     // Cypress specific rules

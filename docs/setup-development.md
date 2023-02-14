@@ -30,6 +30,8 @@ npm ci
 
 **NOTE** `ci` (as opposed to `install`) is a 'clean install' which ensures versions exactly match package-lock.json).
 
+### Development
+
 #### Start the App
 
 ##### Start the Server (sails backend)
@@ -48,6 +50,15 @@ npm run start:client
 
 to start the client on localhost:8080
 
+##### Vue Devtools
+To utilize [Vue Devtools](https://devtools.vuejs.org/), you can run
+
+```
+npm run start:devtools
+```
+
+This will open the vue devtools in a standalone application window that you can use to insepct the state of the application. This can be used both when the app is open normally in the browser, or when testing with cypress.
+
 #### Open in browser
 
 Navigate to [localhost:8080](http:localhost:8080) in your browser of choice.
@@ -55,8 +66,6 @@ Navigate to [localhost:8080](http:localhost:8080) in your browser of choice.
 #### Shutting down
 
 You can shut down the servers by hitting `ctrl + c` several times from the terminal windows they are running in. Shut down both servers to completely deletes all game & account data.
-
-### Development
 
 #### Build for production
 

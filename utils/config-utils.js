@@ -1,10 +1,28 @@
-// `CUTTLE_ENV` is needed to test prod specific files without actually putting the app in to
-// a production state, which requires an actual database connection
-const isProd =
-  process.env.CUTTLE_ENV !== undefined
-    ? process.env.CUTTLE_ENV === 'production'
-    : process.env.NODE_ENV === 'production';
+import devtools from '@vue/devtools';
 
-module.exports = {
-  isProd,
-};
+import { version } from '_/package.json';
+
+export function initCuttleGlobals(app) {
+  // We work under the assumption that this function will only be called in a context
+  // where the window object exists. If we plan to ever call this on the server we'll
+  // need to revisit the implementation
+  const test = window.Cypress != null;
+  const cuttle = {
+    version,
+    // Expose app for debugging/testing in lower envs
+    app: test ? app : null,
+    test,
+  };
+
+  window.cuttle = cuttle;
+
+  // Connect the devtools -- non-prod only
+  if (import.meta.env.DEV) {
+    try {
+      devtools.connect(null, 8098);
+      console.log('Vue devtools connected');
+    } catch(err) {
+      console.warn('Failed to connect vue devtools - try running npm run start:devtools');
+    }
+  }
+}

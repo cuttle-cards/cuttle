@@ -79,11 +79,6 @@ jobs:
           # wait for 2 minutes for the server to respond
           wait-on-timeout: 120
         env:
-          # Never add vue devtools when running in GitHub
-          # Mock a production config without setting NODE_ENV
-          # so that Cypress runs the proper test suites
-          # and Vue Devtools are not included
-          CUTTLE_ENV: production
           VITE_API_URL: http://localhost:1337
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
