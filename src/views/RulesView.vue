@@ -269,7 +269,7 @@ export default {
         {
           title: 'Royal',
           icon: 'crown',
-          description: `Scrap an opponent's point card with a bigger one from your hand.  Ties are broken by the suit: ♣️ (weakest) < ♦️ < ♥️ < ♠️ (strongest).`,
+          description: `Play a royal to the field for a persistent benefit -- as long as it stays in play`,
           staticImg: '/img/game/cuttle-king.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
         },
