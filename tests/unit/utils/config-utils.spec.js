@@ -71,7 +71,7 @@ describe('initCuttleGlobals', () => {
     vi.spyOn(devtools, 'connect').mockRejectedValue(new Error('Async error'));
     const spyWarn = vi.spyOn(console, 'warn');
     initCuttleGlobals();
-    // expect(spyWarn).toHaveBeenCalled();
+    expect(spyWarn).toHaveBeenCalled();
   });
 
 });
