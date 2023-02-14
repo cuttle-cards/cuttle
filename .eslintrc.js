@@ -17,7 +17,7 @@ module.exports = {
     'plugin:vue/base',
     'plugin:vuetify/base',
   ],
-  plugins: ['cypress', 'jest', 'prettier'],
+  plugins: ['cypress', 'vitest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
   rules: {
     'max-len': [
@@ -87,7 +87,6 @@ module.exports = {
     // Vittest specific rules
     {
       files: ['**/tests/unit/**/*.{j,t}s?(x)'],
-      plugins: ['vitest'],
       rules: sharedTestRules,
     },
     // Cypress specific rules
