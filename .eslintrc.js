@@ -84,12 +84,10 @@ module.exports = {
         'no-prototype-builtins': 'error',
       },
     },
-    // Jest specific rules
+    // Vittest specific rules
     {
       files: ['**/tests/unit/**/*.{j,t}s?(x)'],
-      env: {
-        jest: true,
-      },
+      plugins: ['vitest'],
       rules: sharedTestRules,
     },
     // Cypress specific rules
