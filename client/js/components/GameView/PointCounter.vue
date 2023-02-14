@@ -6,7 +6,9 @@
       <v-menu :top="isPlayer" :bottom="!isPlayer" offset-y>
         <template #activator="{ on, attrs }">
           <v-btn class="mb-2" x-small icon v-bind="attrs" v-on="on">
-            <v-icon class="point-counter__icon" color="white" small> mdi-information </v-icon>
+            <v-icon class="point-counter__icon" color="white" v-bind="iconSize">
+              mdi-information
+            </v-icon>
           </v-btn>
         </template>
         <v-list class="score-goal-explanation">
@@ -49,9 +51,20 @@ export default {
       return this.isPlayer ? this.playerPointTotal : this.opponentPointTotal;
     },
     clipPath() {
-      return this.isPlayer ?
-        'polygon(0 0, 100% 0, 100% 90%, 50% 95%, 0 90%)'
-        : 'polygon(0% 100%, 100% 100%, 100% 5%, 50% 0, 0 5%)';
+      return this.isPlayer
+        ? 'polygon(0 0, 100% 0, 100% 90%, 50% 95%, 0 90%)'
+        : 'polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%)';
+    },
+    clipPathTransform() {
+      return this.isPlayer
+        ? 'rotate(90deg)'
+        : 'rotate(270deg)'
+    },
+    iconSize() {
+      return {
+        small: this.$vuetify.breakpoint.mdAndDown,
+        large: this.$vuetify.breakpoint.lgAndUp,
+      };
     },
   },
 };
@@ -62,7 +75,9 @@ export default {
 .point-counter__wrapper {
   background-color: rgba(241, 200, 160, 0.65);
   border: 2px solid rgb(241, 200, 160);
-  width: 32px;
+  box-shadow: 0 4px 4px -4px black;
+  min-width: 32px;
+  max-width: 64px;
 }
 
 .point-counter {
@@ -76,7 +91,6 @@ export default {
 .point-counter__current-points {
   border-bottom: 2px solid #f3f3f3;
   font-size: 1.5em;
-  box-shadow: 0 4px 4px -4px black;
 }
 
 .point-counter__total-points {
@@ -92,6 +106,7 @@ export default {
   }
   .point-counter__current-points {
     font-size: 3.5em;
+    padding-top: 1rem;
   }
 
   .point-counter__total-points {

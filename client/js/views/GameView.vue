@@ -1210,18 +1210,36 @@ export default {
   margin-left: 0.5rem;
 }
 
+#opponent-point-counter {
+  padding-top: 0.5em;
+}
 #player-point-counter {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
+  padding-bottom: 0.5em;
 }
 
 .point-counter {
   width: 30%;
 }
+@media only screen
+and (max-device-width : 600px)
+and (orientation : portrait) {
+  #point-counter-field {
+    margin-top: 6rem;
+  }
 
+  #opponent-point-counter {
+    margin-bottom: 3.5rem;
+  }
+
+  #player-point-counter {
+    margin-top: 3.5rem;
+  }
+}
 @media screen and (min-width: 1024px) {
   #point-counter-field {
     height: 100%;
-    margin-top: 1rem;
+    //margin-top: 1rem;
     margin-left: 1.5rem;
   }
 
@@ -1488,8 +1506,8 @@ export default {
     grid-template-rows: bh(7) bh(5) bh(50) bh(20) bh(5) bh(13);
     grid-template-areas:
       'opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand opp-hand'
-      'opp-score opp-score opp-score opp-score opp-score opp-score opp-score opp-score'
-      'field field field field field field field field'
+      'point-counter opp-score opp-score opp-score opp-score opp-score opp-score opp-score'
+      'point-counter field field field field field field field'
       'decks decks decks decks decks decks decks decks'
       'player-score player-score player-score player-score player-score player-score player-score player-score'
       'player-hand player-hand player-hand player-hand player-hand player-hand player-hand player-hand';
