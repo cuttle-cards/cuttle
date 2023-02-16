@@ -1,4 +1,4 @@
-import { Card } from '../../support/helpers';
+import { Card, assertGameState } from '../../support/helpers';
 
 describe('Websockets', () => {
   beforeEach(() => {
