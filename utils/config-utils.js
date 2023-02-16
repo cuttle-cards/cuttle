@@ -1,6 +1,6 @@
 import devtools from '@vue/devtools';
-
 import { version } from '_/package.json';
+import { io } from '@/plugins/sails';
 
 export function initCuttleGlobals(app) {
   // We work under the assumption that this function will only be called in a context
@@ -11,6 +11,7 @@ export function initCuttleGlobals(app) {
     version,
     // Expose app for debugging/testing in lower envs
     app: test ? app : null,
+    io: test ? io : null,
     test,
   };
 
