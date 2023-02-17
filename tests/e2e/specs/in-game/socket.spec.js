@@ -5,7 +5,7 @@ describe('Websockets', () => {
     cy.setupGameAsP1();
   });
 
-  it.only('Recovers latest event data when socket reconnects', () => {
+  it('Recovers latest event data when socket reconnects', () => {
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES],
