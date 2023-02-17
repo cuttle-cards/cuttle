@@ -196,6 +196,7 @@ io.socket.on('leftGame', function (evData) {
 // Connectivity //
 //////////////////
 io.socket.on('connect', () => {
+  // Request latest game state if socket reconnects during game
   const { username } = store.state.auth;
   const inGame = router.currentRoute.value.name === ROUTE_NAME_GAME;
   if (inGame) {
