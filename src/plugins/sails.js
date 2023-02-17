@@ -3,6 +3,7 @@ import socketIoClient from 'socket.io-client';
 import { cloneDeep } from 'lodash';
 import store from '@/store/store.js';
 import router from '@/router.js';
+import { ROUTE_NAME_GAME } from '@/router';
 
 export const io = sails(socketIoClient);
 
@@ -188,5 +189,16 @@ io.socket.on('leftGame', function (evData) {
     store.commit('opponentLeft');
   } else {
     store.commit('otherLeftGame', evData.id);
+  }
+});
+
+//////////////////
+// Connectivity //
+//////////////////
+io.socket.on('connect', () => {
+  const { username } = store.state.auth;
+  const inGame = router.currentRoute.value.name === ROUTE_NAME_GAME;
+  if (inGame) {
+    return store.dispatch('requestReauthenticate', { username });
   }
 });
