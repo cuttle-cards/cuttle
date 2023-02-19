@@ -155,5 +155,11 @@ export default {
         context.commit('clearAuth');
       }
     },
+    disconnectSocket() {
+      io.socket.disconnect();
+    },
+    reconnectSocket() {
+      io.socket.reconnect();
+    },
   },
 };

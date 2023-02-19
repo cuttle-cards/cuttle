@@ -18,11 +18,11 @@ describe('Websockets', () => {
     cy.log('Loaded fixture');
 
     // Disconnect player's socket
-    cy.window().its('cuttle.io.socket').invoke('disconnect');
+    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');
     // Opponent plays points
     cy.playPointsOpponent(Card.ACE_OF_SPADES);
     // Reconnect the socket
-    cy.window().its('cuttle.io.socket').invoke('reconnect');
+    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'reconnectSocket');
     // Should see resulting update after socket reconnects
     assertGameState(1, {
       // ace of spades moved from p0Hand to p0Points
