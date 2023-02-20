@@ -20,6 +20,7 @@ module.exports = async function (req, res) {
       gameOver: false,
       winner: null,
       conceded: false,
+      currentMatch: null,
     };
 
     // End in stalemate if both players requested stalemate this turn
@@ -32,13 +33,15 @@ module.exports = async function (req, res) {
         result: gameService.GameResult.STALEMATE,
       };
       updatePromises.push(gameService.clearGame({ userId }));
-      if (game.isRanked) {
-        updatePromises.push(sails.helpers.addGameToMatch(game));
-      }
     }
 
     updatePromises.push(Game.updateOne({ id: gameId }).set(gameUpdates));
     await Promise.all(updatePromises);
+
+    if (victory.gameOver && gameUpdates.result === gameService.GameResult.STALEMATE && game.isRanked) {
+      const currentMatch = await sails.helpers.addGameToMatch(game);
+      victory.currentMatch = currentMatch;
+    }
 
     Game.publish([game.id], {
       verb: 'updated',
