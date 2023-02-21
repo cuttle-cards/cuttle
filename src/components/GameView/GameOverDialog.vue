@@ -11,6 +11,27 @@
           class="logo-image"
         />
       </v-card-text>
+      <v-card-text v-if="currentMatch" data-cy="match-result-section">
+        Match against {{ opponent.username }}
+      </v-card-text>
+      <v-card-text v-if="currentMatchWinner" data-cy="match-winner-message">
+        You {{ playerWinsMatch ? "won" :"lost" }} your game against {{opponent.username}}
+      </v-card-text>
+      <v-card-text data-cy="match-result-games">
+        current match games: {{matchGameStats.length}}
+        <div class="d-flex">
+          <div
+            class="d-flex flex-column align-center"
+            v-for="(gameStatus, i) in matchGameStats"
+            :key="i"
+          >
+            <v-icon size="x-large" color="black" :icon="iconFromGameStatus(gameStatus)" />
+            <span>
+              {{ gameStatus }}
+            </span>
+          </div> 
+        </div>
+      </v-card-text>
       <v-card-actions class="d-flex justify-end">
         <v-btn color="primary" variant="flat" data-cy="gameover-go-home" @click="goHome">
           Go Home
@@ -21,6 +42,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
+
 export default {
   name: 'GameOverDialog',
   props: {
@@ -46,6 +70,14 @@ export default {
         // do nothing - parent controls whether dialog is open
       },
     },
+    ...mapState({
+      playingFromDeck: ({ game }) => game.playingFromDeck,
+      game: ({ game }) => game,
+    }),
+    ...mapGetters([
+      'player',
+      'opponent',
+    ]),
     heading() {
       if (this.stalemate) {
         return 'Stalemate';
@@ -90,6 +122,27 @@ export default {
 
       return 'loss-img';
     },
+    currentMatch(){
+      return this.game.currentMatch
+    },
+    matchGameStats(){
+      if(!this.game.currentMatch?.games) return []
+      const result= this.game.currentMatch.games.map(game=>{
+        if (game.result === -1) return 'I'
+        if(game.result === 0 || game.result === 1){
+          if(game.p0 === this.player.id) return 'W'
+          return 'L'
+        }
+        return 'D'
+      })
+      return result
+    },
+    currentMatchWinner() {
+      return this.game.currentMatch?.winner
+    },
+    playerWinsMatch(){
+      return this.game.currentMatch?.winner === this.player.id
+    }
   },
   methods: {
     goHome() {
@@ -102,6 +155,18 @@ export default {
         });
       });
     },
+    iconFromGameStatus(gameStatus){
+      switch (gameStatus){
+        case 'W':
+          return 'mdi-trophy'
+        case 'L':
+          return 'mdi-close-thick'
+        case 'I':
+          return 'mdi-account-clock'
+        case 'D':
+          return 'mdi-handshake-outline'
+      }
+    }
   },
 };
 </script>
