@@ -1,24 +1,26 @@
 <template>
   <v-dialog v-model="show" persistent max-width="650">
     <v-card id="game-over-dialog">
-      <v-card-title :data-cy="headingDataAttr">
-        <h1>{{ heading }}</h1>
-      </v-card-title>
-      <v-card-text class="d-flex justify-center">
-        <v-img
-          :src="logoSrc"
-          :data-cy="logoDataAttr"
-          class="logo-image"
-        />
-      </v-card-text>
+      <div class="d-flex">
+        <v-card-title :data-cy="headingDataAttr" class="mt-8">
+          <h1>{{ heading }}</h1>
+        </v-card-title>
+        <v-card-text class="d-flex justify-end mr-4 mt-4">
+          <v-img
+            :src="logoSrc"
+            :data-cy="logoDataAttr"
+            class="logo-image"
+          />
+        </v-card-text>
+      </div>
       <v-card-text v-if="currentMatch" data-cy="match-result-section">
         Match against {{ opponent.username }}
+        <span>: {{currentMatchWinner ? "Finished" : "In Progress"}}</span>
       </v-card-text>
       <v-card-text v-if="currentMatchWinner" data-cy="match-winner-message">
         You {{ playerWinsMatch ? "won" :"lost" }} your game against {{opponent.username}}
       </v-card-text>
       <v-card-text data-cy="match-result-games">
-        current match games: {{matchGameStats.length}}
         <div class="d-flex">
           <div
             class="d-flex flex-column align-center"
@@ -175,12 +177,9 @@ export default {
 .logo-image {
   height: auto;
   max-width: 180px;
+}
 
-  // TODO: replace with an actual css variable for breakpoint width
-  // https://github.com/vuetifyjs/vuetify/blob/v3.1.3/packages/vuetify/src/styles/settings/_variables.scss#L95
-  @media(min-width: 601px) {
-    max-width: 300px;
-  }
-
+h1 {
+  font-family: 'PT Serif', serif !important;
 }
 </style>
