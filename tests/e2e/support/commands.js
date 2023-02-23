@@ -23,6 +23,7 @@ Cypress.Commands.add('wipeDatabase', () => {
   cy.request('localhost:1337/test/wipeDatabase');
   cy.log('Wiped database');
 });
+
 Cypress.Commands.add('setBadSession', () => {
   return new Cypress.Promise((resolve) => {
     io.socket.get('/test/badSession', function () {
@@ -30,6 +31,7 @@ Cypress.Commands.add('setBadSession', () => {
     });
   });
 });
+
 Cypress.Commands.add('loadSeasonFixture', (season) => {
   return new Cypress.Promise((resolve) => {
     io.socket.post('/test/loadSeasonFixture', season, function () {
@@ -37,6 +39,7 @@ Cypress.Commands.add('loadSeasonFixture', (season) => {
     });
   });
 });
+
 Cypress.Commands.add('loadMatchFixtures', (matches) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.post('/test/loadMatchFixtures', matches, function (res, jwres) {
@@ -47,6 +50,7 @@ Cypress.Commands.add('loadMatchFixtures', (matches) => {
     });
   });
 });
+
 Cypress.Commands.add('requestGameList', () => {
   return new Cypress.Promise((resolve) => {
     io.socket.get('/game/getList', function () {
@@ -54,6 +58,7 @@ Cypress.Commands.add('requestGameList', () => {
     });
   });
 });
+
 /**
  * Signs up two players, navigates home, creates game, subscribes, ready's up
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
