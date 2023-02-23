@@ -21,6 +21,7 @@
           rounded
           variant="outlined"
           min-width="200"
+          :data-cy-join-game="gameId"
           :disabled="!status"
           :loading="joiningGame"
           @click="subscribeToGame"

@@ -14,6 +14,7 @@ import {
 const io = require('sails.io.js')(require('socket.io-client'));
 io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
+const opponentSocket2 = io.sails.connect();
 
 // Pass error logs to the terminal console
 // See https://github.com/cypress-io/cypress/issues/3199#issuecomment-1019270203
@@ -111,9 +112,10 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   cy.log('Finished setting up game as p1');
 });
 
-Cypress.Commands.add('signupOpponent', (username, password) => {
+Cypress.Commands.add('signupOpponent', (username, password, socketNum = 0) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.get(
+    const socket = socketNum = 0 ? io.socket : opponentSocket2;
+    socket.get(
       'localhost:1337/user/signup',
       {
         username,
@@ -167,9 +169,10 @@ Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
     .invoke('dispatch', 'requestCreateGame', { gameName, isRanked });
 });
 
-Cypress.Commands.add('subscribeOpponent', (id) => {
+Cypress.Commands.add('subscribeOpponent', (id, socketNum = 0) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.get(
+    const socket = socketNum === 0 ? io.socket : opponentSocket2;
+    socket.get(
       '/game/subscribe',
       {
         id,

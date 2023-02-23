@@ -155,19 +155,33 @@ describe('Home - Game List', () => {
         cy.subscribeOpponent(gameData.gameId);
   
         // Test that join button is now disabled
-        cy.contains('button.v-btn', 'Play').should('be.disabled');
+        cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
   
         cy.leaveLobbyOpponent(gameData.gameId);
-        cy.contains('button.v-btn', 'Play').should('not.be.disabled');
+        cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
       });
     });
   });
 
   describe('Spectating games', () => {
     it.only('Spectates a game', () => {
-      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
+        // Test that JOIN button starts enabled
+        cy.contains('button.v-btn', 'Play').should('not.be.disabled');
+        // Sign up 2 users and subscribe them to game
+        cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
+        cy.subscribeOpponent(gameData.gameId);
+        cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw', 1);
+        cy.subscribeOpponent(gameData.gameId, 1);
+  
+        // Test that join button is now disabled
+        cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
+      });
+      // cy.get('[data-cy-game-list-selector=spectate]').click();
     });
+
     it('Does not show open games in spectate tab', () => {});
+
     it('Shows games that just started in the sepectate tab as soon as they initialize', () => {});
   });
 });
