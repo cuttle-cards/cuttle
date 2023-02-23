@@ -19,18 +19,26 @@
               </v-row>
             </div>
             <div id="game-list">
-              <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
-              <div v-for="game in gameList" :key="game.id">
-                <game-list-item
-                  :name="game.name"
-                  :p0ready="game.p0Ready ? 1 : 0"
-                  :p1ready="game.p1Ready ? 1 : 0"
-                  :game-id="game.id"
-                  :status="game.status"
-                  :num-players="game.numPlayers"
-                  :is-ranked="game.isRanked"
-                />
-              </div>
+              <v-tabs v-model="tab" bg-color="primary" fixed-tabs>
+                <v-tab value="play" data-cy-game-list-selector="play">Play</v-tab>
+                <v-tab value="spectate" data-cy-game-list-selector="spectate">Spectate</v-tab>
+              </v-tabs>
+              <v-window v-model="tab" class="pa-4">
+                <v-window-item value="play">
+                  <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
+                  <div v-for="game in gameList" :key="game.id">
+                    <game-list-item
+                      :name="game.name"
+                      :p0ready="game.p0Ready ? 1 : 0"
+                      :p1ready="game.p1Ready ? 1 : 0"
+                      :game-id="game.id"
+                      :status="game.status"
+                      :num-players="game.numPlayers"
+                      :is-ranked="game.isRanked"
+                    />
+                  </div>
+                </v-window-item>
+              </v-window>
             </div>
           </v-col>
           <v-col id="side-nav" :cols="$vuetify.display.mdAndDown ? 12 : 3">
@@ -104,6 +112,7 @@ export default {
   },
   data() {
     return {
+      tab: 'play',
       showSnackBar: false,
       snackBarMessage: '',
     };
@@ -205,14 +214,13 @@ p {
 
 #game-list {
   box-sizing: border-box;
-  border: 1px solid #fd6222;
-  background: #efefef;
-  border-radius: 10px;
+  // border: 1px solid #fd6222;
+  background: #CDD1D4;
+  border-radius: 8px;
   min-height: 55vh;
   display: flex;
   min-width: 100%;
   flex-direction: column;
-  padding: 0.25rem;
 
   p {
     text-align: center;
@@ -255,9 +263,9 @@ p {
   }
 
   #game-list {
-    border-radius: 15px;
+    // border-radius: 15px;
     overflow: auto;
-    padding: 1.25rem 0.5rem;
+    // padding: 1.25rem 0.5rem;
   }
 
   .create-game-btn {
