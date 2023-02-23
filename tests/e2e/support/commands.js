@@ -81,6 +81,7 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     cy.get('#player-hand-cards .player-card').should('have.length', 5);
   });
 });
+
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
@@ -104,6 +105,7 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   });
   cy.log('Finished setting up game as p1');
 });
+
 Cypress.Commands.add('signupOpponent', (username, password) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
@@ -121,18 +123,21 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
     );
   });
 });
+
 Cypress.Commands.add('signupPlayer', (username, password) => {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store')
     .invoke('dispatch', 'requestSignup', { username, password });
   cy.log(`Signed up player ${username}`);
 });
+
 Cypress.Commands.add('loginPlayer', (username, password) => {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store')
     .invoke('dispatch', 'requestLogin', { username, password });
   cy.log(`Logged in as player ${username}`);
 });
+
 Cypress.Commands.add('createGameOpponent', (name) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.post(
@@ -149,12 +154,14 @@ Cypress.Commands.add('createGameOpponent', (name) => {
     );
   });
 });
+
 Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
   return cy
     .window()
     .its('cuttle.app.config.globalProperties.$store')
     .invoke('dispatch', 'requestCreateGame', { gameName, isRanked });
 });
+
 Cypress.Commands.add('subscribeOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
@@ -171,6 +178,7 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
     );
   });
 });
+
 Cypress.Commands.add('readyOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
@@ -187,6 +195,7 @@ Cypress.Commands.add('readyOpponent', (id) => {
     );
   });
 });
+
 Cypress.Commands.add('leaveLobbyOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get('/game/leaveLobby', { id }, function handleResponse(_, jwres) {
@@ -197,6 +206,7 @@ Cypress.Commands.add('leaveLobbyOpponent', (id) => {
     });
   });
 });
+
 Cypress.Commands.add('drawCardOpponent', () => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get('/game/draw', function handleResponse(res, jwres) {
@@ -207,6 +217,7 @@ Cypress.Commands.add('drawCardOpponent', () => {
     });
   });
 });
+
 /**
  * @param card {suit: number, rank: number}
  */
@@ -272,6 +283,7 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
       );
     });
 });
+
 /**
  * @param card {suit: number, rank: number}
  * @param target {suit: number, rank: number}
@@ -316,6 +328,7 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
       );
     });
 });
+
 /**
  * @param card {suit: number, rank: number}
  * @param target {suit: number, rank: number}
@@ -358,6 +371,7 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
       );
     });
 });
+
 Cypress.Commands.add('playOneOffOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot scuttle as opponent: Invalid card input');
@@ -394,6 +408,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
       );
     });
 });
+
 /**
  * @param card {suit: number, rank: number}
  * @param target {suit: number, rank: number}
@@ -473,6 +488,7 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
       );
     });
 });
+
 /**
  * @param card {suit: number, rank: number}
  */
@@ -540,6 +556,7 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
       );
     });
 });
+
 Cypress.Commands.add('resolveOpponent', () => {
   return cy
     .window()
