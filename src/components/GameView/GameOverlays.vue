@@ -148,4 +148,11 @@ export default {
     font-family: 'PT Serif', serif !important;
   }
 }
+
+@media (max-width: 600px) {
+  .text-h3 {
+      text-align: center;
+      font-size: 30px !important;
+    }
+}
 </style>
