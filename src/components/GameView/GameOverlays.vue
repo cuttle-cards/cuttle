@@ -5,42 +5,54 @@
       v-model="waitingForOpponentToCounter"
       class="game-overlay"
     >
-      <h1 class="text-h3">{{ showWaitingForOpponetToCounterMessage }}</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        {{ showWaitingForOpponetToCounterMessage }}
+      </h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-discard-scrim"
       v-model="waitingForOpponentToDiscard"
       class="game-overlay"
     >
-      <h1 class="text-h3">Opponent Is Discarding</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Opponent Is Discarding
+      </h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-resolve-three-scrim"
       v-model="waitingForOpponentToPickFromScrap"
       class="game-overlay"
     >
-      <h1 class="text-h3">Opponent Choosing Card from Scrap</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Opponent Choosing Card from Scrap
+      </h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-play-from-deck-scrim"
       v-model="showWaitingForOpponentToPlayFromDeck"
       class="game-overlay"
     >
-      <h1 class="text-h3">Opponent Playing from Deck</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Opponent Playing from Deck
+      </h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-to-discard-jack-from-deck"
       v-model="showWaitingForOpponentToDiscardJackFromDeck"
       class="game-overlay"
     >
-      <h1 class="text-h3">Opponent Must Discard Jack</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Opponent Must Discard Jack
+      </h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-stalemate-scrim"
       v-model="waitingForOpponentToStalemate"
       class="game-overlay"
     >
-      <h1 class="text-h3">Opponent Considering Stalemate Request</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        <div>Opponent Considering Stalemate Request</div>
+      </h1>
     </v-overlay>
     <move-choice-overlay
       v-if="selectedCard || cardSelectedFromDeck"
@@ -139,20 +151,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@use '../../sass/variables.scss';
 .game-overlay {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  font-family: 'PT Serif', 'serif';
   & .text-h3 {
     font-weight: bold;
-    font-family: 'PT Serif', serif !important;
   }
 }
-
-@media (max-width: 600px) {
-  .text-h3 {
-      text-align: center;
-      font-size: 30px !important;
-    }
-}
+.text-h5 {
+    font-weight: bold;
+  }
 </style>
