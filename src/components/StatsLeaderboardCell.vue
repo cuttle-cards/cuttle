@@ -134,8 +134,10 @@ export default {
           return this.theme.secondPlace;
         case 3:
           return this.theme.thirdPlace;
-        case 1:
+        case 2:
           return 'primary';
+        case 1:
+          return 'black';
         default:
           return '#000';
       }

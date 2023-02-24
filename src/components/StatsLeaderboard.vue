@@ -84,8 +84,11 @@ export default {
     };
   },
   computed: {
+    noSeasonRankingsExist() {
+      return !this.season || !this.season.rankings || this.season.rankings.length === 0
+    },
     tableColumns() {
-      if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
+      if (this.noSeasonRankingsExist) {
         return [];
       }
       return [
@@ -101,7 +104,7 @@ export default {
       ];
     },
     tableRows() {
-      if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
+      if (this.noSeasonRankingsExist) {
         return [];
       }
 
@@ -127,14 +130,14 @@ export default {
         for (const weekNum in playerStats.matches) {
           res[`week_${weekNum}`] = playerScores[weekNum];
           res[`week_${weekNum}_count`] = playerStats.matches[weekNum].length;
-          res[`week_${weekNum}_wins`] = playerWins[weekNum];
+          res[`week_${weekNum}_wins`] = playerWins[weekNum].wins;
           res[`week_${weekNum}_points`] = playerScores[weekNum];
         }
         return res;
       }).sort((player1, player2) => player1.rank - player2.rank);
     },
     playerWins() {
-      if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
+      if (this.noSeasonRankingsExist) {
         return [];
       }
       return this.season.rankings.map((playerStats) => {
@@ -144,13 +147,16 @@ export default {
           const matchesThisWeek = playerMatches[weekNum] || [];
           const wins = matchesThisWeek.filter((match) => match.result === Result.WON);
           res.total += wins.length;
-          res[`${weekNum}`] = wins.length;
+          res[`${weekNum}`] = {
+            wins: wins.length,
+            matchesPlayed: matchesThisWeek.length,
+          }
         }
         return res;
       });
     },
     playerScores() {
-      if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
+      if (this.noSeasonRankingsExist) {
         return [];
       }
       return this.playerWins.map((playerWins) => {
@@ -164,13 +170,15 @@ export default {
           let pointsThisWeek = 0;
           if (this.topWinCountsPerWeek[weekNum].first === 0) {
             pointsThisWeek = 0;
-          } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].first) {
+          } else if (playerWins[weekNum].wins === this.topWinCountsPerWeek[weekNum].first) {
             pointsThisWeek = 5;
-          } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].second) {
+          } else if (playerWins[weekNum].wins === this.topWinCountsPerWeek[weekNum].second) {
             pointsThisWeek = 4;
-          } else if (playerWins[weekNum] === this.topWinCountsPerWeek[weekNum].third) {
+          } else if (playerWins[weekNum].wins === this.topWinCountsPerWeek[weekNum].third) {
             pointsThisWeek = 3;
-          } else if (playerWins[weekNum] > 0) {
+          } else if (playerWins[weekNum].wins > 0) {
+            pointsThisWeek = 2;
+          } else if (playerWins[weekNum].matchesPlayed > 0) {
             pointsThisWeek = 1;
           }
           res[weekNum] = pointsThisWeek;
@@ -186,33 +194,33 @@ export default {
           // First time seeing a score for this week
           if (!(weekNum in res)) {
             const newWeek = {
-              first: playerStats[weekNum],
+              first: playerStats[weekNum].wins,
               second: null,
               third: null,
             };
             res[weekNum] = newWeek;
           } else {
             // Tie for first
-            if (playerStats[weekNum] === res[weekNum].first) {
+            if (playerStats[weekNum].wins === res[weekNum].first) {
               res[weekNum].third = res[weekNum].second;
               res[weekNum].second = res[weekNum].first;
             }
             // Current score is higher than max for this week
-            if (playerStats[weekNum] > res[weekNum].first) {
+            if (playerStats[weekNum].wins > res[weekNum].first) {
               res[weekNum].third = res[weekNum].second;
               res[weekNum].second = res[weekNum].first;
-              res[weekNum].first = playerStats[weekNum];
-            } else if (playerStats[weekNum] < res[weekNum].first) {
+              res[weekNum].first = playerStats[weekNum].wins;
+            } else if (playerStats[weekNum].wins < res[weekNum].first) {
               // New Score ties for 2nd
-              if (playerStats[weekNum] === res[weekNum].second) {
+              if (playerStats[weekNum].wins === res[weekNum].second) {
                 res[weekNum].third = res[weekNum].second;
-              } else if (playerStats[weekNum] > res[weekNum].second) {
+              } else if (playerStats[weekNum].wins > res[weekNum].second) {
                 // New score beats 2nd
                 res[weekNum].third = res[weekNum].second;
-                res[weekNum].second = playerStats[weekNum];
-              } else if (playerStats[weekNum] > res[weekNum].third) {
+                res[weekNum].second = playerStats[weekNum].wins;
+              } else if (playerStats[weekNum].wins > res[weekNum].third) {
                 // New score beats 3rd
-                res[weekNum].third = playerStats[weekNum];
+                res[weekNum].third = playerStats[weekNum].wins;
               }
             }
           }
@@ -244,7 +252,7 @@ export default {
     },
     playerRankingsSorted() {
       let scoreboard = [];
-      if (!this.season || !this.season.rankings || this.season.rankings.length === 0) {
+      if (this.noSeasonRankingsExist) {
         return scoreboard;
       }
 
