@@ -173,11 +173,16 @@ describe('Home - Game List', () => {
         cy.subscribeOpponent(gameData.gameId);
         cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw', 1);
         cy.subscribeOpponent(gameData.gameId, 1);
-  
-        // Test that join button is now disabled
         cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
+
+        // Switch to spectate tab
+        cy.get('[data-cy-game-list-selector=spectate]').click();
+        cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
+
+        // Opponents start game, it appears as spectatable
+        cy.readyOpponent(gameData.gameId, 0);
+        cy.readyOpponent(gameData.gameId, 1);
       });
-      // cy.get('[data-cy-game-list-selector=spectate]').click();
     });
 
     it('Does not show open games in spectate tab', () => {});

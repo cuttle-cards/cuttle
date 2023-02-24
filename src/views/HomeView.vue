@@ -38,6 +38,9 @@
                     />
                   </div>
                 </v-window-item>
+                <v-window-item value="spectate">
+                  <p data-cy="no-spectate-game-text">No Games Available to Spectate</p>
+                </v-window-item>
               </v-window>
             </div>
           </v-col>

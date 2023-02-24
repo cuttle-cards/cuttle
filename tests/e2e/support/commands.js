@@ -187,9 +187,10 @@ Cypress.Commands.add('subscribeOpponent', (id, socketNum = 0) => {
   });
 });
 
-Cypress.Commands.add('readyOpponent', (id) => {
+Cypress.Commands.add('readyOpponent', (id, socketNum = 0) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.get(
+    const socket = socketNum === 0 ? io.socket : opponentSocket2;
+    socket.get(
       '/game/ready',
       {
         id,
