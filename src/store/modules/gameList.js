@@ -13,16 +13,23 @@ class GameSummary {
 export default {
   state: {
     games: [],
+    spectateGames: [],
   },
   mutations: {
+    // Open/Playable Games
     refreshGames(state, newList) {
       state.games = newList.map((game) => new GameSummary(game));
     },
     addGameToList(state, newGame) {
       state.games.push(new GameSummary(newGame));
     },
-    removeGame(state, data) {
-      state.games = state.games.filter((game) => game.id !== data.gameId);
+    gameStarted(state, { gameId }) {
+      const gameIndex = state.games.findIndex((game) => game.id === gameId)
+      if (gameIndex < 0 || gameIndex > state.games.length) {
+        return;
+      }
+      const startedGame = state.games.splice(gameIndex, 1)[0];
+      state.spectateGames.push(startedGame);
     },
     updateGameStatus(state, data) {
       const updatedGame = state.games.find((game) => game.id === data.id);
@@ -43,6 +50,13 @@ export default {
         updatedGame.numPlayers--;
         updatedGame.status = true;
       }
+    },
+    // Spectatable Games
+    refreshSpectateGames(state, newList) {
+      state.spectateGames = newList.map((game) => new GameSummary(game));
+    },
+    addSpectateGameToList(state, newGame) {
+      state.spectateGames.push(new GameSummary(newGame));
     },
   },
   actions: {

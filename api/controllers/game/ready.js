@@ -83,6 +83,7 @@ module.exports = function (req, res) {
               return gameService.populateGame({ gameId: values[0].id });
             })
             .then(function publish(fullGame) {
+              // Socket event for the players
               Game.publish([fullGame.id], {
                 verb: 'updated',
                 data: {

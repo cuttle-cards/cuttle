@@ -169,7 +169,7 @@ io.socket.on('gameCreated', function (evData) {
 });
 
 io.socket.on('gameStarting', function (evData) {
-  store.commit('removeGame', evData);
+  store.commit('gameStarted', evData);
 });
 
 io.socket.on('join', function (evData) {
