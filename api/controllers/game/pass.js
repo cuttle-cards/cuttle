@@ -57,8 +57,7 @@ module.exports = function (req, res) {
         };
         await Game.updateOne({ id: game.id }).set(gameUpdates);
         if (game.isRanked) {
-          const currentMatch = await sails.helpers.addGameToMatch(game);
-          victory.currentMatch = currentMatch;
+          victory.currentMatch = await sails.helpers.addGameToMatch(game);
         }
         await gameService.clearGame({ userId: req.session.usr });
       }

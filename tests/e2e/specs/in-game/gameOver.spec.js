@@ -15,7 +15,9 @@ function assertVictory() {
           .should('be.visible')
           .get('[data-cy=match-result-section]')
           .should('be.visible');
-      } else cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
     });
 }
 
@@ -31,7 +33,9 @@ function assertLoss() {
           .should('be.visible')
           .get('[data-cy=match-result-section]')
           .should('be.visible');
-      else cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
     });
 }
 
@@ -47,7 +51,9 @@ function assertStalemate() {
           .should('be.visible')
           .get('[data-cy=match-result-section]')
           .should('be.visible');
-      } else cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
     });
 }
 
@@ -539,7 +545,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.loginPlayer(playerOne.username, playerOne.password);
     cy.setupGameAsP0(true, true);
   });
-  it.only('Creates a match when two players play a ranked game for the first time this week', function () {
+  it('Creates a match when two players play a ranked game for the first time this week', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);

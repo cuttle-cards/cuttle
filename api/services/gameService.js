@@ -178,8 +178,7 @@ module.exports = {
         ...gameUpdates,
       };
       if (game.isRanked) {
-        const currentMatch = await sails.helpers.addGameToMatch(game);
-        res.currentMatch = currentMatch;
+        res.currentMatch = await sails.helpers.addGameToMatch(game);
       }
     }
     return res;

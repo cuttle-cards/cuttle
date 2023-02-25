@@ -5,16 +5,13 @@ module.exports = async function (req, res) {
     await Game.updateOne(req.session.game).set({ result: winner });
     const game = await gameService.populateGame({ gameId: req.session.game });
     await gameService.clearGame({ userId: req.session.usr });
-    let currentMatch;
-    if (game.isRanked) {
-      currentMatch = await sails.helpers.addGameToMatch(game);
-    }
+    const currentMatch = game.isRanked ? await sails.helpers.addGameToMatch(game) : null;
     // Send socket message
     const victory = {
       gameOver: true,
       winner,
       conceded: true,
-      currentMatch: currentMatch,
+      currentMatch,
     };
     Game.publish([game.id], {
       verb: 'updated',

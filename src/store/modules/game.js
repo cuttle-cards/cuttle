@@ -42,6 +42,7 @@ function resetState() {
     conceded: false,
     waitingForOpponentToStalemate: false,
     consideringOpponentStalemateRequest: false,
+    currentMatch: null,
   };
 }
 

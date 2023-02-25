@@ -39,8 +39,7 @@ module.exports = async function (req, res) {
     await Promise.all(updatePromises);
 
     if (victory.gameOver && gameUpdates.result === gameService.GameResult.STALEMATE && game.isRanked) {
-      const currentMatch = await sails.helpers.addGameToMatch(game);
-      victory.currentMatch = currentMatch;
+      victory.currentMatch = await sails.helpers.addGameToMatch(game);
     }
 
     Game.publish([game.id], {

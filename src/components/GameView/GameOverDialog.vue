@@ -3,49 +3,40 @@
     <v-card id="game-over-dialog">
       <div class="d-flex">
         <v-card-title :data-cy="headingDataAttr" class="mt-8">
-          <h1>{{ heading }}</h1>
+          <h1 class="dialog-header">{{ heading }}</h1>
         </v-card-title>
         <v-card-text class="d-flex justify-end mr-4 mt-4">
-          <v-img
-            :src="logoSrc"
-            :data-cy="logoDataAttr"
-            class="logo-image"
-          />
+          <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
         </v-card-text>
       </div>
-      <v-card-text v-if="currentMatch" data-cy="match-result-section">
+      <v-card-text class="dialog-text" v-if="currentMatch" data-cy="match-result-section">
         Match against {{ opponent.username }}
-        <span>: {{currentMatchWinner ? "Finished" : "In Progress"}}</span>
+        <span>: {{ currentMatchWinner ? 'Finished' : 'In Progress' }}</span>
       </v-card-text>
-      <v-card-text v-if="currentMatchWinner" data-cy="match-winner-message">
-        You {{ playerWinsMatch ? "won" :"lost" }} your game against {{opponent.username}}
+      <v-card-text class="dialog-text" v-if="currentMatchWinner" data-cy="match-winner-message">
+        You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ opponent.username }}
       </v-card-text>
-      <v-card-text data-cy="match-result-games">
+      <v-card-text data-cy="match-result-games" class="dialog-text">
         <div class="d-flex">
           <div
-            class="d-flex flex-column align-center"
+            class="d-flex flex-column mr-4 align-center"
             v-for="(gameStatus, i) in matchGameStats"
-            :key="i"
+            :key="`${gameStatus}-${i}`"
           >
             <v-icon size="x-large" color="black" :icon="iconFromGameStatus(gameStatus)" />
-            <span>
-              {{ gameStatus }}
-            </span>
-          </div> 
+            {{ gameStatus }}
+          </div>
         </div>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn color="primary" variant="flat" data-cy="gameover-go-home" @click="goHome">
-          Go Home
-        </v-btn>
+        <v-btn color="primary" variant="flat" data-cy="gameover-go-home" @click="goHome"> Go Home </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
   name: 'GameOverDialog',
@@ -76,10 +67,7 @@ export default {
       playingFromDeck: ({ game }) => game.playingFromDeck,
       game: ({ game }) => game,
     }),
-    ...mapGetters([
-      'player',
-      'opponent',
-    ]),
+    ...mapGetters(['player', 'opponent']),
     heading() {
       if (this.stalemate) {
         return 'Stalemate';
@@ -124,27 +112,30 @@ export default {
 
       return 'loss-img';
     },
-    currentMatch(){
-      return this.game.currentMatch
+    currentMatch() {
+      return this.game.currentMatch;
     },
-    matchGameStats(){
-      if(!this.game.currentMatch?.games) return []
-      const result= this.game.currentMatch.games.map(game=>{
-        if (game.result === -1) return 'I'
-        if(game.result === 0 || game.result === 1){
-          if(game.p0 === this.player.id) return 'W'
-          return 'L'
+    matchGameStats() {
+      const currentMatchGames = this.game.currentMatch?.games ?? []
+      return currentMatchGames.map((game) => {
+        switch(game.result) {
+          case 0: // p0 won game
+            return game.p0 === this.player.id ? 'W' : 'L';
+          case 1: // p1 won game
+            return game.p1 === this.player.id ? 'W' : 'L';
+          case 2: // draw
+            return 'D';
+          default: // incomplete
+            return 'I';
         }
-        return 'D'
-      })
-      return result
+      });
     },
     currentMatchWinner() {
-      return this.game.currentMatch?.winner
+      return this.game.currentMatch?.winner;
     },
-    playerWinsMatch(){
-      return this.game.currentMatch?.winner === this.player.id
-    }
+    playerWinsMatch() {
+      return this.game.currentMatch?.winner === this.player.id;
+    },
   },
   methods: {
     goHome() {
@@ -157,18 +148,18 @@ export default {
         });
       });
     },
-    iconFromGameStatus(gameStatus){
-      switch (gameStatus){
+    iconFromGameStatus(gameStatus) {
+      switch (gameStatus) {
         case 'W':
-          return 'mdi-trophy'
+          return 'mdi-thumb-up-outline';
         case 'L':
-          return 'mdi-close-thick'
+          return 'mdi-thumb-down-outline';
         case 'I':
-          return 'mdi-account-clock'
+          return 'mdi-account-clock-outline';
         case 'D':
-          return 'mdi-handshake-outline'
+          return 'mdi-handshake-outline';
       }
-    }
+    },
   },
 };
 </script>
@@ -176,10 +167,10 @@ export default {
 <style scoped lang="scss">
 .logo-image {
   height: auto;
-  max-width: 180px;
+  max-width: 90px;
 }
 
-h1 {
-  font-family: 'PT Serif', serif !important;
+.dialog-header, .dialog-text {
+  font-family: 'PT Serif', serif;
 }
 </style>
