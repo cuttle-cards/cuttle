@@ -42,12 +42,12 @@ function assertStalemate() {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store.state.game')
     .then((game) => {
-      if (game.isRanked)
+      if (game.isRanked) {
         cy.get('#game-over-dialog')
           .should('be.visible')
           .get('[data-cy=match-result-section]')
           .should('be.visible');
-      else cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      } else cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
     });
 }
 
