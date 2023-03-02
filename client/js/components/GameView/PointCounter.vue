@@ -1,24 +1,26 @@
 <template>
-  <div class="point-counter__wrapper" :style="{ 'clip-path': clipPath }">
-    <div class="d-flex flex-column justify-space-around align-center point-counter">
-      <div class="point-counter__current-points">{{ currentPoints }}</div>
-      <div class="point-counter__total-points">{{ pointsToWin }}</div>
-      <v-menu :top="isPlayer" :bottom="!isPlayer" offset-y>
-        <template #activator="{ on, attrs }">
-          <v-btn class="mb-2" x-small icon v-bind="attrs" v-on="on">
-            <v-icon class="point-counter__icon" color="white" v-bind="iconSize">
-              mdi-information
-            </v-icon>
-          </v-btn>
-        </template>
-        <v-list class="score-goal-explanation">
-          <v-list-item :class="{ 'current-goal': kingCount === 0 }"> 0 Kings: 21pts </v-list-item>
-          <v-list-item :class="{ 'current-goal': kingCount === 1 }"> 1 King: 14pts </v-list-item>
-          <v-list-item :class="{ 'current-goal': kingCount === 2 }"> 2 Kings: 10pts </v-list-item>
-          <v-list-item :class="{ 'current-goal': kingCount === 3 }"> 3 Kings: 5pts </v-list-item>
-          <v-list-item :class="{ 'current-goal': kingCount === 4 }"> 4 Kings: 0pts </v-list-item>
-        </v-list>
-      </v-menu>
+  <div class="point-counter" >
+    <div class="point-counter__wrapper">
+      <div class="d-flex flex-column justify-center align-center point-counter__inner-container">
+        <div class="point-counter__current-points">{{ currentPoints }}</div>
+        <div class="point-counter__total-points">{{ pointsToWin }}</div>
+        <v-menu :top="isPlayer" :bottom="!isPlayer" offset-y>
+          <template #activator="{ on, attrs }">
+            <v-btn x-small icon v-bind="attrs" v-on="on">
+              <v-icon class="point-counter__icon" color="white" v-bind="iconSize">
+                mdi-information
+              </v-icon>
+            </v-btn>
+          </template>
+          <v-list class="score-goal-explanation">
+            <v-list-item :class="{ 'current-goal': kingCount === 0 }"> 0 Kings: 21pts </v-list-item>
+            <v-list-item :class="{ 'current-goal': kingCount === 1 }"> 1 King: 14pts </v-list-item>
+            <v-list-item :class="{ 'current-goal': kingCount === 2 }"> 2 Kings: 10pts </v-list-item>
+            <v-list-item :class="{ 'current-goal': kingCount === 3 }"> 3 Kings: 5pts </v-list-item>
+            <v-list-item :class="{ 'current-goal': kingCount === 4 }"> 4 Kings: 0pts </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
     </div>
   </div>
 </template>
@@ -43,10 +45,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([
-      'playerPointTotal',
-      'opponentPointTotal',
-    ]),
+    ...mapGetters(['playerPointTotal', 'opponentPointTotal']),
     currentPoints() {
       return this.isPlayer ? this.playerPointTotal : this.opponentPointTotal;
     },
@@ -56,9 +55,7 @@ export default {
         : 'polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%)';
     },
     clipPathTransform() {
-      return this.isPlayer
-        ? 'rotate(90deg)'
-        : 'rotate(270deg)'
+      return this.isPlayer ? 'rotate(90deg)' : 'rotate(270deg)';
     },
     iconSize() {
       return {
@@ -71,48 +68,69 @@ export default {
 </script>
 
 <style scoped>
-
-.point-counter__wrapper {
-  background-color: rgba(241, 200, 160, 0.65);
-  border: 2px solid rgb(241, 200, 160);
-  box-shadow: 0 4px 4px -4px black;
-  min-width: 32px;
-  max-width: 64px;
+.point-counter {
+  filter: drop-shadow(2px 6px 3px rgba(50, 50, 0, 0.5));
+  line-height: 1.2;
 }
 
-.point-counter {
+.point-counter__wrapper {
+  position: relative;
+  background: rgb(255, 255, 255);
+  width: 25px;
+  height: 100px;
+  box-sizing: border-box;
+  clip-path: polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%);
+}
+
+.point-counter__inner-container {
+  position: absolute;
   font-weight: bold;
+  font-size: 1.25rem;
+  background-color: rgba(241, 200, 160, 0.85);
+  top: 1px;
+  left: 1px;
+  width: 23px;
+  height: 98px;
   color: #f3f3f3;
   font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
-  padding: 0 0.25rem;
-  text-shadow: 1px 1px 5px #111111;
+  text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.5);
+  clip-path: polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%);
+}
+
+.point-counter__icon {
+  margin-top: 1rem;
+  text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.5);
 }
 
 .point-counter__current-points {
-  border-bottom: 2px solid #f3f3f3;
-  font-size: 1.5em;
-}
-
-.point-counter__total-points {
-  font-size: 1.15em;
-}
-.point-counter__icon {
-  text-shadow: 1px 1px 5px #111111;
+  border-bottom: 2px solid white;
 }
 
 @media screen and (min-width: 1024px) {
-  .point-counter {
-    padding: 0 0.5rem;
+  .point-counter__wrapper {
+    width: 50px;
+    height: 200px;
   }
+
+  .point-counter__inner-container {
+    top: 2px;
+    left: 2px;
+    width: 46px;
+    height: 196px;
+    font-size: 0.75rem;
+  }
+
   .point-counter__current-points {
-    font-size: 3.5em;
-    padding-top: 1rem;
+    font-size: 4.5em;
+    margin-top: -2.75rem;
   }
 
   .point-counter__total-points {
     font-size: 2.5em;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
+  }
+
+  .point-counter__icon {
+    margin-top: 3rem;
   }
 }
 </style>
