@@ -115,7 +115,12 @@ export default {
   clip-path: polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%);
 }
 
+.point-counter__current-opponent {
+  margin-top: 0.5em;
+}
+
 .point-counter__current-player {
+  margin-top: 0.25em;
 }
 
 @media screen and (min-width: 1024px) {
