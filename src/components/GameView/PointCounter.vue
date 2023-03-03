@@ -61,8 +61,8 @@ export default {
     },
     iconSize() {
       return {
-        small: this.$vuetify.breakpoint.mdAndDown,
-        large: this.$vuetify.breakpoint.lgAndUp,
+        small: this.$vuetify.display.mdAndDown,
+        large: this.$vuetify.display.lgAndUp,
       };
     },
   },
