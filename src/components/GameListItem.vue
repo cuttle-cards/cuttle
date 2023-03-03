@@ -21,7 +21,7 @@
           rounded
           variant="outlined"
           min-width="200"
-          :data-cy-join-game="gameId"
+          v-bind="dataCy"
           :disabled="!status"
           :loading="joiningGame"
           @click="subscribeToGame"
@@ -67,6 +67,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isSpectatable: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -82,6 +86,9 @@ export default {
     },
     buttonText() {
       return this.isRanked ? 'Play Ranked' : 'Play';
+    },
+    dataCy() {
+      return this.isSpectatable ? {'data-cy-spectate-game': this.gameId} : {'data-cy-join-game': this.gameId};
     },
   },
   methods: {

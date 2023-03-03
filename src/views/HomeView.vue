@@ -25,8 +25,8 @@
               </v-tabs>
               <v-window v-model="tab" class="pa-4">
                 <v-window-item value="play">
-                  <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
-                  <div v-for="game in gameList" :key="game.id">
+                  <p v-if="playableGameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
+                  <div v-for="game in playableGameList" :key="game.id">
                     <game-list-item
                       :name="game.name"
                       :p0ready="game.p0Ready ? 1 : 0"
@@ -39,7 +39,19 @@
                   </div>
                 </v-window-item>
                 <v-window-item value="spectate">
-                  <p data-cy="no-spectate-game-text">No Games Available to Spectate</p>
+                  <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text">No Games Available to Spectate</p>
+                  <div v-for="game in specateGameList" :key="game.id">
+                    <game-list-item
+                      :name="game.name"
+                      :p0ready="game.p0Ready ? 1 : 0"
+                      :p1ready="game.p1Ready ? 1 : 0"
+                      :game-id="game.id"
+                      :status="game.status"
+                      :num-players="game.numPlayers"
+                      :is-ranked="game.isRanked"
+                      :isSpectatable="true"
+                    />
+                  </div>
                 </v-window-item>
               </v-window>
             </div>
@@ -122,7 +134,8 @@ export default {
   },
   computed: {
     ...mapState({
-      gameList: ({ gameList }) => gameList.games,
+      playableGameList: ({ gameList }) => gameList.games,
+      specateGameList: ({ gameList }) => gameList.spectateGames,
     }),
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';

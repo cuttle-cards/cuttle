@@ -182,13 +182,15 @@ describe('Home - Game List', () => {
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
 
+        // The other game starts -- should now appear in spectate list
         cy.readyOpponent(gameData.gameId);
-        // cy.get('[data-cy-spectate-game]').should('be.visible');
+        cy.get('[data-cy-spectate-game]').should('be.visible');
 
-        cy.recoverSessionOpponent(playerOne.username);
-        cy.drawCardOpponent();
-        cy.recoverSessionOpponent(playerTwo.username);
-        cy.drawCardOpponent();
+
+        // cy.recoverSessionOpponent(playerOne.username);
+        // cy.drawCardOpponent();
+        // cy.recoverSessionOpponent(playerTwo.username);
+        // cy.drawCardOpponent();
       });
     });
 
