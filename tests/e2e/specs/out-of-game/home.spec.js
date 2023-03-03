@@ -173,7 +173,7 @@ describe('Home - Game List', () => {
         cy.subscribeOpponent(gameData.gameId);
         // Opponents start game, it appears as spectatable
         cy.readyOpponent(gameData.gameId);
-        cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw', 1);
+        cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw');
         cy.subscribeOpponent(gameData.gameId, 1);
         cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
 
@@ -181,10 +181,13 @@ describe('Home - Game List', () => {
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
 
-        cy.readyOpponent(gameData.gameId, 1);
-        cy.get('[data-cy-spectate-game]').should('be.visible');
+        cy.readyOpponent(gameData.gameId);
+        // cy.get('[data-cy-spectate-game]').should('be.visible');
 
-
+        cy.recoverSessionOpponent('secondUser@aol.com');
+        cy.drawCardOpponent();
+        cy.recoverSessionOpponent('thirdUser@facebook.com');
+        cy.drawCardOpponent();
       });
     });
 

@@ -14,7 +14,6 @@ import {
 const io = require('sails.io.js')(require('socket.io-client'));
 io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
-const opponentSocket2 = io.sails.connect();
 
 // Pass error logs to the terminal console
 // See https://github.com/cypress-io/cypress/issues/3199#issuecomment-1019270203
@@ -112,11 +111,28 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   cy.log('Finished setting up game as p1');
 });
 
-Cypress.Commands.add('signupOpponent', (username, password, socketNum = 0) => {
+Cypress.Commands.add('signupOpponent', (username, password) => {
   return new Cypress.Promise((resolve, reject) => {
-    const socket = socketNum = 0 ? io.socket : opponentSocket2;
-    socket.get(
+    io.socket.get(
       'localhost:1337/user/signup',
+      {
+        username,
+        password,
+      },
+      function (res, jwres) {
+        if (jwres.statusCode !== 200) {
+          return reject(new Error('Failed to sign up via command'));
+        }
+        return resolve(res);
+      },
+    );
+  });
+});
+
+Cypress.Commands.add('loginOpponent', (username, password) => {
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.get(
+      'localhost:1337/user/login',
       {
         username,
         password,
@@ -171,8 +187,7 @@ Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
 
 Cypress.Commands.add('subscribeOpponent', (id, socketNum = 0) => {
   return new Cypress.Promise((resolve, reject) => {
-    const socket = socketNum === 0 ? io.socket : opponentSocket2;
-    socket.get(
+    io.socket.get(
       '/game/subscribe',
       {
         id,
@@ -189,8 +204,7 @@ Cypress.Commands.add('subscribeOpponent', (id, socketNum = 0) => {
 
 Cypress.Commands.add('readyOpponent', (id, socketNum = 0) => {
   return new Cypress.Promise((resolve, reject) => {
-    const socket = socketNum === 0 ? io.socket : opponentSocket2;
-    socket.get(
+    io.socket.get(
       '/game/ready',
       {
         id,
@@ -212,6 +226,17 @@ Cypress.Commands.add('leaveLobbyOpponent', (id) => {
         return resolve();
       }
       return reject(new Error('error on opponent leaving lobby'));
+    });
+  });
+});
+
+Cypress.Commands.add('recoverSessionOpponent', (username) => {
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.get('/test/recoverSession', { username }, function handleResponse(res, jwres) {
+      if (jwres.statusCode !== 200 || res === false) {
+        return reject(new Error('error recovering session'));
+      }
+      return resolve();
     });
   });
 });
