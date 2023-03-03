@@ -129,24 +129,6 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
   });
 });
 
-Cypress.Commands.add('loginOpponent', (username, password) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.get(
-      'localhost:1337/user/login',
-      {
-        username,
-        password,
-      },
-      function (res, jwres) {
-        if (jwres.statusCode !== 200) {
-          return reject(new Error('Failed to sign up via command'));
-        }
-        return resolve(res);
-      },
-    );
-  });
-});
-
 Cypress.Commands.add('signupPlayer', (username, password) => {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store')
