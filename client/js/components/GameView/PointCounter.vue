@@ -1,8 +1,19 @@
 <template>
-  <div class="point-counter" >
-    <div class="point-counter__wrapper">
-      <div class="d-flex flex-column justify-center align-center point-counter__inner-container">
-        <div class="point-counter__current-points">{{ currentPoints }}</div>
+  <div class="point-counter">
+    <div
+      class="point-counter__wrapper"
+      :class="[isPlayer ? 'point-counter__player' : 'point-counter__opponent']"
+    >
+      <div
+        class="d-flex flex-column align-center point-counter__inner-container"
+        :class="[isPlayer ? 'point-counter__player' : 'point-counter__opponent']"
+      >
+        <div
+          class="point-counter__current-points"
+          :class="[ isPlayer ? 'point-counter__current-player' : 'point-counter__current-opponent' ]"
+        >
+          {{ currentPoints }}
+        </div>
         <div class="point-counter__total-points">{{ pointsToWin }}</div>
         <v-menu :top="isPlayer" :bottom="!isPlayer" offset-y>
           <template #activator="{ on, attrs }">
@@ -49,14 +60,6 @@ export default {
     currentPoints() {
       return this.isPlayer ? this.playerPointTotal : this.opponentPointTotal;
     },
-    clipPath() {
-      return this.isPlayer
-        ? 'polygon(0 0, 100% 0, 100% 90%, 50% 95%, 0 90%)'
-        : 'polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%)';
-    },
-    clipPathTransform() {
-      return this.isPlayer ? 'rotate(90deg)' : 'rotate(270deg)';
-    },
     iconSize() {
       return {
         small: this.$vuetify.breakpoint.mdAndDown,
@@ -69,17 +72,16 @@ export default {
 
 <style scoped>
 .point-counter {
-  filter: drop-shadow(2px 6px 3px rgba(50, 50, 0, 0.5));
+  filter: drop-shadow(2px 6px 3px rgba(50, 50, 0, 0.75));
   line-height: 1.2;
 }
 
 .point-counter__wrapper {
   position: relative;
-  background: rgb(255, 255, 255);
+  background: #ffffff;
   width: 25px;
   height: 100px;
   box-sizing: border-box;
-  clip-path: polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%);
 }
 
 .point-counter__inner-container {
@@ -93,17 +95,27 @@ export default {
   height: 98px;
   color: #f3f3f3;
   font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
-  text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.5);
-  clip-path: polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%);
+  text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.75);
 }
 
 .point-counter__icon {
-  margin-top: 1rem;
-  text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.5);
+  text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.75);
 }
 
 .point-counter__current-points {
-  border-bottom: 2px solid white;
+  font-size: 1.3em;
+  border-bottom: 1px solid #ffffff;
+}
+
+.point-counter__player {
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 95%, 0 90%);
+}
+
+.point-counter__opponent {
+  clip-path: polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%);
+}
+
+.point-counter__current-player {
 }
 
 @media screen and (min-width: 1024px) {
@@ -121,8 +133,7 @@ export default {
   }
 
   .point-counter__current-points {
-    font-size: 4.5em;
-    margin-top: -2.75rem;
+    font-size: 3.5em;
   }
 
   .point-counter__total-points {
@@ -131,6 +142,14 @@ export default {
 
   .point-counter__icon {
     margin-top: 3rem;
+  }
+
+  .point-counter__current-opponent {
+    margin-top: 0.8em;
+  }
+
+  .point-counter__current-player {
+    margin-top: 0.5em;
   }
 }
 </style>

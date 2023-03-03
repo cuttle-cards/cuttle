@@ -1209,46 +1209,34 @@ export default {
 }
 
 #opponent-point-counter {
-
+  margin-top: 1rem;
+  margin-left: 0.5rem;
 }
 #player-point-counter {
-  //margin-top: 7.5rem;
-  //padding-bottom: 0.5em;
+  margin-top: 1.5rem;
+  margin-left: 0.5rem;
 }
 
-//.point-counter {
-//  width: 30%;
-//}
-//@media only screen
-//and (max-device-width : 600px)
-//and (orientation : portrait) {
-//  #point-counter-field {
-//    margin-top: 6rem;
-//  }
-//
-//  #opponent-point-counter {
-//    margin-bottom: 3.5rem;
-//  }
-//
-//  #player-point-counter {
-//    margin-top: 3.5rem;
-//  }
-//}
-//@media screen and (min-width: 1024px) {
-//  #point-counter-field {
-//    height: 100%;
-//    //margin-top: 1rem;
-//    margin-left: 1.5rem;
-//  }
-//
-//  #player-point-counter {
-//    min-width: 50px;
-//  }
-//
-//  //.point-counter {
-//  //  height: 275px;
-//  //}
-//}
+@media only screen and (max-device-width: 600px) and (orientation: portrait) {
+  #opponent-point-counter {
+    margin-top: 3em;
+    margin-bottom: 6em;
+  }
+
+  #player-point-counter {
+    margin-top: 6em;
+  }
+}
+@media screen and (min-width: 1024px) {
+  #point-counter-field {
+    margin-left: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  #player-point-counter {
+    margin-top: 2em;
+  }
+}
 
 #field-left {
   & #deck {
