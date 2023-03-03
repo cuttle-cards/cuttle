@@ -15,12 +15,10 @@
           {{ currentPoints }}
         </div>
         <div class="point-counter__total-points">{{ pointsToWin }}</div>
-        <v-menu :top="isPlayer" :bottom="!isPlayer" offset-y>
-          <template #activator="{ on, attrs }">
-            <v-btn x-small icon v-bind="attrs" v-on="on">
-              <v-icon class="point-counter__icon" color="white" v-bind="iconSize">
-                mdi-information
-              </v-icon>
+        <v-menu :location="isPlayer ? 'top' : 'bottom'">
+          <template #activator="{ props }">
+            <v-btn class="point-counter__btn" icon size="small" v-bind="props" variant="plain">
+              <v-icon color="white" icon="mdi-information" size="small" />
             </v-btn>
           </template>
           <v-list class="score-goal-explanation">
@@ -94,7 +92,7 @@ export default {
   font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
   text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.75);
 }
-.point-counter__icon {
+.point-counter__btn {
   text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.75);
 }
 .point-counter__current-points {
@@ -131,8 +129,8 @@ export default {
   .point-counter__total-points {
     font-size: 2.5em;
   }
-  .point-counter__icon {
-    margin-top: 3rem;
+  .point-counter__btn {
+    margin-top: 1em;
   }
   .point-counter__current-opponent {
     margin-top: 0.8em;
