@@ -5,6 +5,7 @@ import {
   opponentUsername,
   opponentPassword,
 } from '../../support/helpers';
+import { playerOne, playerTwo } from '../../fixtures/userFixtures';
 
 function setup() {
   cy.wipeDatabase();
@@ -169,11 +170,11 @@ describe('Home - Game List', () => {
         // Test that JOIN button starts enabled
         cy.contains('button.v-btn', 'Play').should('not.be.disabled');
         // Sign up 2 users and subscribe them to game
-        cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
+        cy.signupOpponent(playerOne.username, playerOne.password);
         cy.subscribeOpponent(gameData.gameId);
         // Opponents start game, it appears as spectatable
         cy.readyOpponent(gameData.gameId);
-        cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw');
+        cy.signupOpponent(playerTwo.username, playerTwo.password);
         cy.subscribeOpponent(gameData.gameId, 1);
         cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
 
@@ -184,9 +185,9 @@ describe('Home - Game List', () => {
         cy.readyOpponent(gameData.gameId);
         // cy.get('[data-cy-spectate-game]').should('be.visible');
 
-        cy.recoverSessionOpponent('secondUser@aol.com');
+        cy.recoverSessionOpponent(playerOne.username);
         cy.drawCardOpponent();
-        cy.recoverSessionOpponent('thirdUser@facebook.com');
+        cy.recoverSessionOpponent(playerTwo.username);
         cy.drawCardOpponent();
       });
     });
