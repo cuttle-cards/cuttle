@@ -80,8 +80,7 @@ module.exports = function (req, res) {
           return Promise.reject({ message: 'You cannot play a card that is not in your hand' });
         }
         return Promise.reject({
-          message:
-            'There is already a one-off in play; you cannot play any card, except a two to counter.',
+          message: 'There is already a one-off in play; you cannot play any card, except a two to counter.',
         });
       }
       return Promise.reject({ message: "It's not your turn." });
@@ -90,8 +89,7 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);
     })
     .then(async function publishAndRespond(values) {
-      const fullGame = values[0];
-      const gameModel = values[1];
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,

@@ -1,14 +1,8 @@
-import {
-  setupGameAsP1,
-  setupGameAsP0,
-  assertGameState,
-  Card,
-  playOutOfTurn,
-} from '../../support/helpers';
+import { assertGameState, Card, playOutOfTurn } from '../../support/helpers';
 
 describe('Countering One-Offs', () => {
   beforeEach(() => {
-    setupGameAsP1();
+    cy.setupGameAsP1();
   });
 
   it('Displays the cannot counter modal and resolves stack when opponent plays a one-off if player has no twos', () => {
@@ -194,10 +188,7 @@ describe('Countering One-Offs', () => {
     cy.counterOpponent(Card.TWO_OF_CLUBS);
 
     // Player cannot counter back
-    cy.get('#cannot-counter-dialog')
-      .should('be.visible')
-      .get('[data-cy=cannot-counter-resolve]')
-      .click();
+    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
     assertGameState(1, {
       // Opponent is P0
@@ -301,10 +292,7 @@ describe('Countering One-Offs', () => {
     // Opponent plays 4th and final counter
     cy.counterOpponent(Card.TWO_OF_DIAMONDS);
     // Player cannot counter back
-    cy.get('#cannot-counter-dialog')
-      .should('be.visible')
-      .get('[data-cy=cannot-counter-resolve]')
-      .click();
+    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
     assertGameState(1, {
       // Opponent is P0
       p0Hand: [],
@@ -354,7 +342,7 @@ describe('Countering One-Offs', () => {
 
 describe('Countering One-Offs P0 Perspective', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   it('Can counter a three', () => {
@@ -378,10 +366,7 @@ describe('Countering One-Offs P0 Perspective', () => {
 
     // Opponent counters and player resolves
     cy.counterOpponent(Card.TWO_OF_SPADES);
-    cy.get('#cannot-counter-dialog')
-      .should('be.visible')
-      .get('[data-cy=cannot-counter-resolve]')
-      .click();
+    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
     // No longer player turn
     cy.get('[data-player-hand-card=4-3]').click(); // king of clubs
@@ -389,10 +374,7 @@ describe('Countering One-Offs P0 Perspective', () => {
 
     // Opponent plays a Six
     cy.playOneOffOpponent(Card.SIX_OF_CLUBS);
-    cy.get('#cannot-counter-dialog')
-      .should('be.visible')
-      .get('[data-cy=cannot-counter-resolve]')
-      .click();
+    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
     assertGameState(0, {
       // Player is P0
@@ -518,7 +500,7 @@ describe('Countering One-Offs P0 Perspective', () => {
 
 describe('Opponent May Counter vs Opponent Must Resolve', () => {
   beforeEach(() => {
-    setupGameAsP0();
+    cy.setupGameAsP0();
   });
 
   describe('Opponent May Counter', () => {

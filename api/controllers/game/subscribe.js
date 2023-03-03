@@ -52,7 +52,7 @@ module.exports = function (req, res) {
           newPlayer: { username: user.username, pNum: user.pNum },
           newStatus: game.status,
         },
-        req
+        req,
       );
       // Respond with 200
       return res.ok({ game: game, username: user.username, pNum: user.pNum });

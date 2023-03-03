@@ -37,8 +37,7 @@ module.exports = function (req, res) {
                 });
               default:
                 return Promise.reject({
-                  message:
-                    'You cannot play a targeted one-off when your opponent has more than one Queen',
+                  message: 'You cannot play a targeted one-off when your opponent has more than one Queen',
                 });
             } //End queenCount validation
             const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({
@@ -86,8 +85,7 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {
-      const fullGame = values[0];
-      const gameModel = values[1];
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,

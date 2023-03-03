@@ -76,7 +76,7 @@ Click the **PENCIL** icon top right of any docs page to make small changes such 
 
 #### How To TDD Using Cypress
 
-The easiest way to seed data is using test code. The existing in-game end-to-end tests (found in the `/tests/e2e/specs/in-game/*.spec.js` files) generally call the `setupGameAsP0()` or `setupGameAsP1()` are imported from `tests/e2e/support/helpers.js`. These test helpers will run inside the `beforeEach()` hooks that run before each test. This will automatically:
+The easiest way to seed data is using test code. The existing in-game end-to-end tests (found in the `/tests/e2e/specs/in-game/*.spec.js` files) generally call the `cy.setupGameAsP0()` or `cy.setupGameAsP1()` are imported from `tests/e2e/support/helpers.js`. These test helpers will run inside the `beforeEach()` hooks that run before each test. This will automatically:
 
 1.  Sign up and authenticate two accounts
 2.  Create and join a game as both players

@@ -1,4 +1,5 @@
 <!-- Thanks for contributing to Cuttle! 🎉 -->
+
 ## Please check the following
 
 - [ ] Do the tests still pass? (see [Run the Tests](https://github.com/cuttle-cards/cuttle#run-the-tests))
@@ -8,4 +9,3 @@
   - [ ] Has the documentation been updated accordingly?
 
 ## Please describe additional details for testing this change
-

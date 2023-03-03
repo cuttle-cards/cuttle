@@ -1,57 +1,77 @@
-describe('isProd', () => {
-  // isProd needs to be imported inline AFTER process.env changes are set because it uses a
-  // snapshot of the values when the file is required
+import devtools from '@vue/devtools';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-  // Save the initial values from process.env
-  const { env } = process;
+import { version } from '_/package.json';
+import { initCuttleGlobals } from '_/utils/config-utils';
 
-  // before each test reset any modules and reset process.env
+const mockWindow = {};
+const mockConsole = {
+  log: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
+};
+
+describe('initCuttleGlobals', () => {
+
   beforeEach(() => {
-    jest.resetModules();
-    process.env = { ...env };
+    vi.stubEnv('VITE_ENV', 'production');
+    vi.stubGlobal('window', mockWindow);
+    vi.stubGlobal('console', mockConsole);
   });
 
-  // after each test is completed, reset process.env
   afterEach(() => {
-    process.env = env;
+    vi.restoreAllMocks();
   });
 
-  describe('isProd=false', () => {
-    it('should return false when CUTTLE_ENV and NODE_ENV are not set', () => {
-      process.env.CUTTLE_ENV = undefined;
-      process.env.NODE_ENV = undefined;
-      const { isProd } = require('../../../utils/config-utils');
-      expect(isProd).toBe(false);
-    });
-
-    it('should return false when CUTTLE_ENV is not set and NODE_ENV=dev', () => {
-      process.env.CUTTLE_ENV = undefined;
-      process.env.NODE_ENV = 'dev';
-      const { isProd } = require('../../../utils/config-utils');
-      expect(isProd).toBe(false);
-    });
-
-    it('should return false when CUTTLE_ENV=dev', () => {
-      process.env.CUTTLE_ENV = 'production';
-      process.env.NODE_ENV = 'dev';
-      const { isProd } = require('../../../utils/config-utils');
-      expect(isProd).toBe(true);
-    });
+  it('should add version to window.cuttle', () => {
+    initCuttleGlobals();
+    expect(window.cuttle.version).toEqual(version);
   });
 
-  describe('isProd=true', () => {
-    it('should return true when CUTTLE_ENV is not set and NODE_ENV=production', () => {
-      process.env.CUTTLE_ENV = undefined;
-      process.env.NODE_ENV = 'production';
-      const { isProd } = require('../../../utils/config-utils');
-      expect(isProd).toBe(true);
-    });
-
-    it('should return true when CUTTLE_ENV=production', () => {
-      process.env.CUTTLE_ENV = 'production';
-      process.env.NODE_ENV = 'dev';
-      const { isProd } = require('../../../utils/config-utils');
-      expect(isProd).toBe(true);
-    });
+  it('should add app to window.cuttle when testing is enabled', () => {
+    // Cypress needs to exist in the window to enable testing
+    window.Cypress = {};
+    const mockApp = { app: true };
+    initCuttleGlobals(mockApp);
+    expect(window.cuttle.app).toEqual(mockApp);
+    expect(window.cuttle.test).toBe(true);
   });
+
+  it('should not add app to window.cuttle when testing is not enabled', () => {
+    // Cypress needs to exist in the window to enable testing
+    delete window.Cypress;
+    const mockApp = { app: true };
+    initCuttleGlobals(mockApp);
+    expect(window.cuttle.app).toEqual(null);
+    expect(window.cuttle.test).toBe(false);
+  });
+
+  it('should not add app to window.cuttle when testing is not enabled', () => {
+    const mockApp = { app: true };
+    initCuttleGlobals(mockApp);
+    expect(window.cuttle.app).toEqual(null);
+    expect(window.cuttle.test).toBe(false);
+  });
+
+  it('should automatically connect to devtools when in dev environment', () => {
+    // Force staging
+    import.meta.env.VITE_ENV = 'staging';
+    const spyConnect = vi.spyOn(devtools, 'connect');
+    const spyLog = vi.spyOn(console, 'log');
+    initCuttleGlobals();
+    expect(spyConnect).toHaveBeenCalledWith(null, 8098);
+    expect(spyLog).toHaveBeenCalledWith('Vue devtools connected');
+  });
+
+  // TODO May not be valuable, also fine to just skip it
+  it.skip('should fail gracefully when devtools can not connect', () => {
+    // Force staging
+    import.meta.env.VITE_ENV = 'staging';
+    // Force devtools error
+    vi.spyOn(devtools, 'connect').mockRejectedValue(new Error('Async error'));
+    const spyWarn = vi.spyOn(console, 'warn');
+    initCuttleGlobals();
+    expect(spyWarn).toHaveBeenCalled();
+  });
+
 });

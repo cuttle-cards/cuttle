@@ -27,10 +27,10 @@ jobs:
   # Additionally, require each test to pass before running the next to prevent
   # running unnecessary jobs if any upstream jobs already failed
   draft:
-    name: "Check Draft Status"
+    name: 'Check Draft Status'
     runs-on: ubuntu-latest
     steps:
-      - name: "Fail draft PRs"
+      - name: 'Fail draft PRs'
         if: github.event.pull_request.draft == true
         run: |
           echo "Skipping execution for draft PR"
@@ -42,20 +42,20 @@ jobs:
     uses: ./.github/workflows/run-npm-script.yml
     needs: draft
     with:
-      label: "Lint"
-      script: "npm run lint"
+      label: 'Lint'
+      script: 'npm run lint'
 
   # Run Jest Unit Tests
   test-unit:
     uses: ./.github/workflows/run-npm-script.yml
     needs: lint
     with:
-      label: "Test: Unit"
-      script: "npm run test:unit"
+      label: 'Test: Unit'
+      script: 'npm run test:unit'
 
   # Run Cypress End to End Tests
   test-e2e:
-    name: "Test: End to End"
+    name: 'Test: End to End'
     runs-on: ubuntu-latest
     needs: test-unit
     # stop the job if it runs over 20 minutes to prevent a hanging process from eating minutes
@@ -66,23 +66,19 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: "18.12.1"
+          node-version: '18.12.1'
           cache: 'npm'
       # https://github.com/cypress-io/github-action
       - uses: cypress-io/github-action@v4
         with:
+          browser: chrome
           build: npm run build
           start: npm start
-          config-file: tests/cypress.config.js
+          config-file: cypress.config.js
           wait-on: 'http://localhost:1337'
           # wait for 2 minutes for the server to respond
           wait-on-timeout: 120
         env:
-          # Never add vue devtools when running in GitHub
-          # Mock a production config without setting NODE_ENV
-          # so that Cypress runs the proper test suites
-          # and Vue Devtools are not included
-          CUTTLE_ENV: production
-          VUE_APP_API_URL: http://localhost:1337
+          VITE_API_URL: http://localhost:1337
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

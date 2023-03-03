@@ -16,7 +16,6 @@ module.exports = function (req, res) {
         data: {
           change: 'stackDeck',
           game,
-          victory,
         },
       });
       return res.ok();

@@ -11,20 +11,13 @@ module.exports = function (req, res) {
         if (card.id === game.topCard.id || card.id === game.secondCard.id) {
           if (card.rank < 11) {
             if (target.points === opponent.id) {
-              if (
-                card.rank > target.rank ||
-                (card.rank === target.rank && card.suit > target.suit)
-              ) {
+              if (card.rank > target.rank || (card.rank === target.rank && card.suit > target.suit)) {
                 // Move is legal; make changes
                 const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({
                   game: game,
                   index: req.body.index,
                 });
-                const cardsToScrap = [
-                  card.id,
-                  target.id,
-                  ...target.attachments.map((jack) => jack.id),
-                ];
+                const cardsToScrap = [card.id, target.id, ...target.attachments.map((jack) => jack.id)];
                 const gameUpdates = {
                   topCard,
                   secondCard,
@@ -73,8 +66,7 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);
     })
     .then(async function publishAndRespond(values) {
-      const fullGame = values[0];
-      const gameModel = values[1];
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,

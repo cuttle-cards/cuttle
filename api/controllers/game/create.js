@@ -1,4 +1,4 @@
-var gameAPI = sails.hooks['customgamehook'];
+const gameAPI = sails.hooks['customgamehook'];
 
 module.exports = function (req, res) {
   const { gameName, isRanked = false } = req.body;

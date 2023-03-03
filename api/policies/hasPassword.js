@@ -7,7 +7,7 @@
  *
  */
 module.exports = function (req, res, next) {
-  if (req.body.hasOwnProperty('password')) {
+  if (Object.hasOwnProperty.call(req.body, 'password')) {
     if (typeof req.body.password === 'string') {
       return next();
     }
