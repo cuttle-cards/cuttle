@@ -122,7 +122,7 @@ export default {
     spectateGame() {
       this.joiningGame = true;
       this.$store
-        .dispatch('requestSubscribe', this.gameId)
+        .dispatch('requestSpectate', this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/spectate/${this.gameId}`);

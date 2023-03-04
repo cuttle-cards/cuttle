@@ -334,7 +334,7 @@ export default {
         },
         function handleResponse(res, jwres) {
           if (jwres.statusCode === 200) {
-            context.commit('updateGame', res.game);
+            context.commit('updateGame', res);
             context.commit('setMyPNum', 0);
             return resolve();
           }
