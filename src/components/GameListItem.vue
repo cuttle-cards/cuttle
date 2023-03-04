@@ -25,7 +25,7 @@
           @click="subscribeToGame"
         >
           <v-icon v-if="isRanked" class="mr-4" size="medium" icon="mdi-trophy" />
-          {{ buttonText }}
+          {{ joinButtonText }}
         </v-btn>
         <!-- Spectate Button -->
         <v-btn
@@ -93,7 +93,7 @@ export default {
     readyText() {
       return `${this.numPlayers} / 2`;
     },
-    buttonText() {
+    joinButtonText() {
       return this.isRanked ? 'Play Ranked' : 'Play';
     },
     buttonAttrs() {
