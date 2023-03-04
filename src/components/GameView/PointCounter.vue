@@ -17,7 +17,7 @@
         <div class="point-counter__total-points">{{ pointsToWin }}</div>
         <v-menu :location="isPlayer ? 'top' : 'bottom'">
           <template #activator="{ props }">
-            <v-btn class="point-counter__btn" icon size="small" v-bind="props" variant="plain">
+            <v-btn class="point-counter__btn" icon v-bind="props" variant="plain">
               <v-icon color="white" icon="mdi-information" size="small" />
             </v-btn>
           </template>
@@ -59,84 +59,136 @@ export default {
     },
     iconSize() {
       return {
-        small: this.$vuetify.display.mdAndDown,
-        large: this.$vuetify.display.lgAndUp,
+        large: this.$vuetify.display.mdAndDown,
+        small: this.$vuetify.display.lgAndUp,
       };
     },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .point-counter {
   filter: drop-shadow(2px 6px 3px rgba(50, 50, 0, 0.75));
-  line-height: 1.2;
-}
-.point-counter__wrapper {
-  position: relative;
-  background: #ffffff;
-  width: 25px;
-  height: 100px;
-  box-sizing: border-box;
-}
-.point-counter__inner-container {
-  position: absolute;
-  font-weight: bold;
-  font-size: 1.25rem;
-  background-color: rgba(241, 200, 160, 0.85);
-  top: 1px;
-  left: 1px;
-  width: 23px;
-  height: 98px;
-  color: #f3f3f3;
-  font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
-  text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.75);
-}
-.point-counter__btn {
-  text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.75);
-}
-.point-counter__current-points {
-  font-size: 1.3em;
-  border-bottom: 1px solid #ffffff;
-}
-.point-counter__player {
-  clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 95%, 0 90%);
-}
-.point-counter__opponent {
-  clip-path: polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%);
-}
-.point-counter__current-opponent {
-  margin-top: 0.5em;
-}
-.point-counter__current-player {
-  margin-top: 0.25em;
-}
-@media screen and (min-width: 1024px) {
-  .point-counter__wrapper {
-    width: 50px;
-    height: 200px;
+  line-height: 1.1;
+
+  &__wrapper {
+    position: relative;
+    background: #ffffff;
+    width: 25px;
+    height: 100px;
+    box-sizing: border-box;
   }
-  .point-counter__inner-container {
-    top: 2px;
-    left: 2px;
-    width: 46px;
-    height: 196px;
-    font-size: 0.75rem;
+
+  &__inner-container {
+    position: absolute;
+    font-weight: bold;
+    font-size: 1.25rem;
+    background-color: rgba(241, 200, 160, 0.85);
+    top: 1px;
+    left: 1px;
+    width: 23px;
+    height: 98px;
+    color: #f3f3f3;
+    font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+    text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.75);
   }
-  .point-counter__current-points {
-    font-size: 3.5em;
+
+  &__btn {
+    text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.75);
+    margin-top: -0.25em;
   }
-  .point-counter__total-points {
-    font-size: 2.5em;
+
+  &__current-points {
+    font-size: 1.3em;
+    border-bottom: 1px solid #ffffff;
   }
-  .point-counter__btn {
-    margin-top: 1em;
+
+  &__player {
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 95%, 0 90%);
   }
-  .point-counter__current-opponent {
-    margin-top: 0.8em;
+
+  &__opponent {
+    clip-path: polygon(0% 100%, 100% 100%, 100% 10%, 50% 5%, 0 10%);
   }
-  .point-counter__current-player {
+
+  &__current-opponent {
     margin-top: 0.5em;
   }
+
+  &__current-player {
+    margin-top: 0.25em;
+  }
+}
+
+@media screen and (min-width: 720px) {
+.point-counter {
+  line-height: 1.1;
+
+  &__wrapper {
+    width: 38px;
+    height: 150px;
+  }
+
+  &__inner-container {
+    top: 2px;
+    left: 2px;
+    width: 34px;
+    height: 146px;
+    font-size: 0.75rem;
+  }
+
+  &__current-points {
+    font-size: 3em;
+  }
+
+  &__total-points {
+    font-size: 2.5em;
+  }
+
+  &__current-opponent {
+    margin-top: 0.8em;
+  }
+
+  &__current-player {
+    margin-top: 0.5em;
+  }
+}
+}
+
+@media screen and (min-width: 1024px) {
+  .point-counter {
+    line-height: 1.3;
+
+    &__wrapper {
+      width: 50px;
+      height: 200px;
+    }
+
+    &__inner-container {
+      top: 2px;
+      left: 2px;
+      width: 46px;
+      height: 196px;
+      font-size: 0.75rem;
+    }
+
+    &__current-points {
+      font-size: 4em;
+    }
+
+    &__total-points {
+      font-size: 2.5em;
+    }
+
+    &__current-opponent {
+      margin-top: 0.8em;
+    }
+
+    &__current-player {
+      margin-top: 0.5em;
+    }
+  }
+
 }
 </style>
