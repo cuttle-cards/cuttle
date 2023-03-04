@@ -213,8 +213,17 @@ describe('Home - Game List', () => {
           p1FaceCards: [Card.KING_OF_HEARTS],
         });
 
-        // cy.recoverSessionOpponent(playerOne.username);
-        // cy.drawCardOpponent();
+        cy.recoverSessionOpponent(playerOne.username);
+        cy.playPointsSpectator(Card.ACE_OF_SPADES, 0);
+
+        assertGameState(0, {
+          p0Hand: [Card.ACE_OF_CLUBS],
+          p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+          p0FaceCards: [Card.KING_OF_SPADES],
+          p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+          p1Points: [Card.TEN_OF_HEARTS],
+          p1FaceCards: [Card.KING_OF_HEARTS],
+        });
         // cy.recoverSessionOpponent(playerTwo.username);
         // cy.drawCardOpponent();
       });
