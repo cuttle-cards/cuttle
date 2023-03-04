@@ -16,18 +16,27 @@
         <p>{{ readyText }} players</p>
       </v-col>
       <v-col cols="3" class="list-item__button">
+        <!-- Join Button -->
         <v-btn
-          color="primary"
-          rounded
-          variant="outlined"
-          min-width="200"
-          v-bind="dataCy"
+          v-if="!isSpectatable"
+          v-bind="buttonAttrs"
           :disabled="!status"
-          :loading="joiningGame"
+          :data-cy-join-game="gameId"
           @click="subscribeToGame"
         >
           <v-icon v-if="isRanked" class="mr-4" size="medium" icon="mdi-trophy" />
           {{ buttonText }}
+        </v-btn>
+        <!-- Spectate Button -->
+        <v-btn
+          v-else
+          v-bind="buttonAttrs"
+          :data-cy-spectate-game="gameId"
+          :data-cy-join-game="gameId"
+          @click="subscribeToGame"
+        >
+          <v-icon class="mr-4" size="medium" icon="mdi-eye" />
+          Spectate
         </v-btn>
       </v-col>
     </v-row>
@@ -87,8 +96,14 @@ export default {
     buttonText() {
       return this.isRanked ? 'Play Ranked' : 'Play';
     },
-    dataCy() {
-      return this.isSpectatable ? {'data-cy-spectate-game': this.gameId} : {'data-cy-join-game': this.gameId};
+    buttonAttrs() {
+      return {
+        color: 'primary',
+        rounded: true,
+        variant: 'outlined',
+        minWidth: '200',
+        loading: this.joiningGame,
+      }
     },
   },
   methods: {
