@@ -301,6 +301,7 @@ export default {
         context.dispatch('updateGameThenResetPNumIfNull', game);
       }, 1000);
     },
+
     async requestSubscribe(context, id) {
       return new Promise((resolve, reject) => {
         io.socket.get(
@@ -323,6 +324,26 @@ export default {
         );
       });
     },
+
+   async requestSpectate(context, gameId) {
+    return new Promise((resolve, reject) => {
+      io.socket.get(
+        '/game/spectate',
+        {
+          gameId,
+        },
+        function handleResponse(res, jwres) {
+          if (jwres.statusCode === 200) {
+            context.commit('updateGame', res.game);
+            context.commit('setMyPNum', 0);
+            return resolve();
+          }
+          return reject(new Error('Unable to spectate game'));
+        },
+      );
+    });
+   },
+
     async requestLeaveLobby(context) {
       return new Promise((resolve, reject) => {
         io.socket.post('/game/leaveLobby', function handleResponse(res, jwres) {

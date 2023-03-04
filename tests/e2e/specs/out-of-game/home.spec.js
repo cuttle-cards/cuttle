@@ -184,8 +184,14 @@ describe('Home - Game List', () => {
 
         // The other game starts -- should now appear in spectate list
         cy.readyOpponent(gameData.gameId);
-        cy.get('[data-cy-spectate-game]').should('be.visible');
+        cy.get('[data-cy-spectate-game]').click();
 
+        cy.url().should('include', '/spectate/');
+        cy.window()
+          .its('cuttle.app.config.globalProperties.$store.state.game')
+          .then((gameState) => {
+            expect(gameState.id).to.not.eq(null);
+          });
 
         // cy.recoverSessionOpponent(playerOne.username);
         // cy.drawCardOpponent();

@@ -33,7 +33,7 @@
           v-bind="buttonAttrs"
           :data-cy-spectate-game="gameId"
           :data-cy-join-game="gameId"
-          @click="subscribeToGame"
+          @click="spectateGame"
         >
           <v-icon class="mr-4" size="medium" icon="mdi-eye" />
           Spectate
@@ -114,6 +114,18 @@ export default {
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/lobby/${this.gameId}`);
+        })
+        .catch(() => {
+          this.joiningGame = false;
+        });
+    },
+    spectateGame() {
+      this.joiningGame = true;
+      this.$store
+        .dispatch('requestSubscribe', this.gameId)
+        .then(() => {
+          this.joiningGame = false;
+          this.$router.push(`/spectate/${this.gameId}`);
         })
         .catch(() => {
           this.joiningGame = false;

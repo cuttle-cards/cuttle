@@ -1,0 +1,19 @@
+module.exports = async function (req, res) {
+  try {
+    const { gameId } = req.body;
+    const game = await gameService.populateGame({ gameId });
+
+    if (game.status || game.players.length !== 2) {
+      return res.badRequest({message: 'You can only spectate an ongoing game with two players'});
+    }
+
+    // TODO: Can't spectate a game you're in
+
+    // Subscribe socket to game
+    Game.subscribe(req, [ gameId ]);
+
+    return res.ok(game);
+  } catch (err) {
+    return res.badRequest(err);
+  }
+};
