@@ -231,7 +231,7 @@ describe('Home - Game List', () => {
 
     it('Does not show open games in spectate tab', () => {});
 
-    it('Shows games that just started in the sepectate tab as soon as they initialize', () => {});
+    it('Shows ongoing games as available to spectate when user navigates to home page', () => {});
   });
 });
 
