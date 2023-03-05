@@ -232,6 +232,13 @@ describe('Home - Game List', () => {
     it('Does not show open games in spectate tab', () => {});
 
     it('Shows ongoing games as available to spectate when user navigates to home page', () => {});
+
+    it('Continues spectating after page', () => {});
+
+    it('Continues spectating after socket disconnect', () => {});
+
+    it('Prevents spectator from making moves', () => {});
+
   });
 });
 
