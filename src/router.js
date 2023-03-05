@@ -84,9 +84,6 @@ const routes = [
     name: ROUTE_NAME_SPECTATE,
     path: '/spectate/:gameId',
     component: GameView,
-    // TODO: Add logic to redirect if a given game does not exist
-    // mustBeAuthenticated intentionally left off here
-    // If a user refreshes the relogin modal will fire and allow them to continue playing
     meta: {
       hideNavigation: true,
     },
