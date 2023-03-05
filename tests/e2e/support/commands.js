@@ -167,7 +167,7 @@ Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
     .invoke('dispatch', 'requestCreateGame', { gameName, isRanked });
 });
 
-Cypress.Commands.add('subscribeOpponent', (id, socketNum = 0) => {
+Cypress.Commands.add('subscribeOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
       '/game/subscribe',
@@ -184,7 +184,7 @@ Cypress.Commands.add('subscribeOpponent', (id, socketNum = 0) => {
   });
 });
 
-Cypress.Commands.add('readyOpponent', (id, socketNum = 0) => {
+Cypress.Commands.add('readyOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
       '/game/ready',
