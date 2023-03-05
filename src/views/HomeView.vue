@@ -230,7 +230,6 @@ p {
 
 #game-list {
   box-sizing: border-box;
-  // border: 1px solid #fd6222;
   background: #CDD1D4;
   border-radius: 8px;
   min-height: 55vh;
@@ -279,9 +278,7 @@ p {
   }
 
   #game-list {
-    // border-radius: 15px;
     overflow: auto;
-    // padding: 1.25rem 0.5rem;
   }
 
   .create-game-btn {
