@@ -508,16 +508,6 @@ export default {
     opponentPointsToWin() {
       return this.pointsToWin(this.opponentKingCount);
     },
-    ///////////////
-    // Game Over //
-    ///////////////
-    // Handled in GameDialogs.vue
-    //
-    //////////
-    // Twos //
-    //////////
-    // Handled in GameDialogs.vue
-    //
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
