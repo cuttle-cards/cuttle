@@ -18,7 +18,7 @@
         <v-menu :location="isPlayer ? 'top' : 'bottom'">
           <template #activator="{ props }">
             <v-btn class="point-counter__btn" icon v-bind="props" variant="plain">
-              <v-icon color="white" icon="mdi-information" size="small" />
+              <v-icon color="black" icon="mdi-information" v-bind="iconSize"/>
             </v-btn>
           </template>
           <v-list class="score-goal-explanation">
@@ -68,13 +68,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+* {
+  --main-border__color: #FFFFFF;
+  --main-text__color: rgba(27, 27, 27);
+  font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+}
+
 .point-counter {
-  filter: drop-shadow(2px 6px 3px rgba(50, 50, 0, 0.75));
+  filter: drop-shadow(2px 6px 3px rgba(50, 50, 0, 0.5));
   line-height: 1.1;
 
   &__wrapper {
     position: relative;
-    background: #ffffff;
+    background-color: rgba(255, 255, 255, 0.15);
     width: 25px;
     height: 100px;
     box-sizing: border-box;
@@ -83,25 +90,21 @@ export default {
   &__inner-container {
     position: absolute;
     font-weight: bold;
-    font-size: 1.25rem;
-    background-color: rgba(241, 200, 160, 0.85);
+    background-color: rgba(241, 200, 160, 0.65);
     top: 1px;
     left: 1px;
     width: 23px;
     height: 98px;
-    color: #f3f3f3;
-    font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
-    text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.75);
+    color: var(--main-text__color);
   }
 
   &__btn {
-    text-shadow: 1px 1px 5px rgba(50, 50, 0, 0.75);
     margin-top: -0.25em;
   }
 
   &__current-points {
-    font-size: 1.3em;
-    border-bottom: 1px solid #ffffff;
+    font-size: 1.2em;
+    border-bottom: 1px solid var(--main-border__color);
   }
 
   &__player {
@@ -113,47 +116,69 @@ export default {
   }
 
   &__current-opponent {
-    margin-top: 0.5em;
-  }
-
-  &__current-player {
-    margin-top: 0.25em;
-  }
-}
-
-@media screen and (min-width: 720px) {
-.point-counter {
-  line-height: 1.1;
-
-  &__wrapper {
-    width: 38px;
-    height: 150px;
-  }
-
-  &__inner-container {
-    top: 2px;
-    left: 2px;
-    width: 34px;
-    height: 146px;
-    font-size: 0.75rem;
-  }
-
-  &__current-points {
-    font-size: 3em;
-  }
-
-  &__total-points {
-    font-size: 2.5em;
-  }
-
-  &__current-opponent {
     margin-top: 0.8em;
   }
 
   &__current-player {
-    margin-top: 0.5em;
+    margin-top: 0.55em;
   }
 }
+
+@media only screen and (max-device-width: 400px) and (orientation: portrait) {
+  .point-counter {
+    line-height: 1.1;
+
+    &__wrapper {
+      width: 30px;
+      height: 125px;
+    }
+
+    &__inner-container {
+      top: 2px;
+      left: 2px;
+      width: 26px;
+      height: 121px;
+    }
+
+    &__current-points {
+      font-size: 1.8em;
+    }
+
+    &__total-points {
+      font-size: 1.7em;
+    }
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .point-counter {
+    line-height: 1.1;
+
+    &__wrapper {
+      width: 38px;
+      height: 150px;
+    }
+
+    &__inner-container {
+      top: 2px;
+      left: 2px;
+      width: 34px;
+      height: 146px;
+      font-size: 0.75rem;
+    }
+
+    &__current-points {
+      font-size: 3em;
+    }
+
+    &__total-points {
+      font-size: 2.5em;
+    }
+
+    &__current-player {
+      margin-top: 0.5em;
+    }
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -170,11 +195,11 @@ export default {
       left: 2px;
       width: 46px;
       height: 196px;
-      font-size: 0.75rem;
     }
 
     &__current-points {
       font-size: 4em;
+      border-bottom: 2px solid black;
     }
 
     &__total-points {

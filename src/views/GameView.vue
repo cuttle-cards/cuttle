@@ -1201,7 +1201,7 @@ export default {
   margin-left: 0.5rem;
 }
 
-@media only screen and (max-device-width: 600px) and (orientation: portrait) {
+@media only screen and (max-device-width: 400px) and (orientation: portrait) {
   #opponent-point-counter {
     margin-top: 3em;
     margin-bottom: 6em;
@@ -1213,12 +1213,16 @@ export default {
 }
 @media screen and (min-width: 1024px) {
   #point-counter-field {
-    margin-left: 0.75rem;
+    margin-left: 0.5rem;
     margin-top: 1rem;
   }
 
+  #opponent-point-counter {
+    margin-top: 1.75em;
+  }
+
   #player-point-counter {
-    margin-top: 2em;
+    margin-top: 3em;
   }
 }
 
