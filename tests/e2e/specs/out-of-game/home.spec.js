@@ -167,7 +167,7 @@ describe('Home - Game List', () => {
   });
 
   describe('Spectating games', () => {
-    it.only('Spectates a game', () => {
+    it('Spectates a game', () => {
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
         // Test that JOIN button starts enabled
         cy.contains('button.v-btn', 'Play').should('not.be.disabled');
@@ -231,7 +231,24 @@ describe('Home - Game List', () => {
 
     it('Does not show open games in spectate tab', () => {});
 
-    it('Shows ongoing games as available to spectate when user navigates to home page', () => {});
+    it.only('Shows ongoing games as available to spectate when user navigates to home page', () => {
+      cy.signupOpponent(playerOne.username, playerOne.password);
+      cy.createGameOpponent('Spectatable game').then(({ gameId }) => {
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+
+        cy.signupOpponent(playerTwo.username, playerTwo.password);
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+        cy.signupPlayer('pooo', 'booooooooooooooo');
+        cy.visit('/');
+
+        // Switch to spectate tab
+        cy.get('[data-cy-game-list-selector=spectate]').click();
+        cy.get('[data-cy-spectate-game]').click();
+      });
+
+    });
 
     it('Continues spectating after page', () => {});
 
