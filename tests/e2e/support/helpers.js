@@ -181,7 +181,7 @@ export function playOutOfTurn(moveName) {
   cy.log(`Correctly prevented attempt to play ${moveName} out of turn`);
 }
 
-function assertDomMatchesFixture(pNum, fixture) {
+function assertDomMatchesFixture(pNum, fixture, spectating) {
   const expectedP0Points = sumRanks(fixture.p0Points);
   const expectedP0PointsToWin = pointsToWin(countKings(fixture.p0FaceCards));
   const expectedP1Points = sumRanks(fixture.p1Points);
@@ -245,7 +245,7 @@ function assertDomMatchesFixture(pNum, fixture) {
     } else {
       cy.get('[data-opponent-hand-card]').should('not.exist');
     }
-    if (playerHasGlasses) {
+    if (playerHasGlasses || spectating) {
       fixture.p1Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
@@ -366,9 +366,9 @@ function assertStoreMatchesFixture(fixture) {
  * }
  * @param pNum: int [0, 1]
  */
-export function assertGameState(pNum, fixture) {
+export function assertGameState(pNum, fixture, spectating = false) {
   cy.log('Asserting game state:', fixture);
-  assertDomMatchesFixture(pNum, fixture);
+  assertDomMatchesFixture(pNum, fixture, spectating);
   assertStoreMatchesFixture(fixture);
 }
 
