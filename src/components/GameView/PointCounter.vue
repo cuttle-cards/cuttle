@@ -18,7 +18,7 @@
         <v-menu :location="isPlayer ? 'top' : 'bottom'">
           <template #activator="{ props }">
             <v-btn class="point-counter__btn" icon v-bind="props" variant="plain">
-              <v-icon color="black" icon="mdi-information" v-bind="iconSize"/>
+              <v-icon color="black" icon="mdi-information" :size="iconSize"/>
             </v-btn>
           </template>
           <v-list class="score-goal-explanation">
@@ -59,8 +59,8 @@ export default {
     },
     iconSize() {
       return {
-        large: this.$vuetify.display.mdAndDown,
-        small: this.$vuetify.display.lgAndUp,
+        'x-small': this.$vuetify.display.mdAndDown,
+        large: this.$vuetify.display.lgAndUp,
       };
     },
   },
@@ -81,7 +81,7 @@ export default {
 
   &__wrapper {
     position: relative;
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.25);
     width: 25px;
     height: 100px;
     box-sizing: border-box;
@@ -95,16 +95,20 @@ export default {
     left: 1px;
     width: 23px;
     height: 98px;
-    color: var(--main-text__color);
+    color: rgba(27, 27, 27);
   }
 
   &__btn {
-    margin-top: -0.25em;
+    margin-top: -0.6em;
   }
 
   &__current-points {
-    font-size: 1.2em;
-    border-bottom: 1px solid var(--main-border__color);
+    font-size: 1.6em;
+    border-bottom: 1px solid rgba(27, 27, 27);
+  }
+
+  &__total-points {
+    font-size: 1.1em;
   }
 
   &__player {
@@ -199,7 +203,7 @@ export default {
 
     &__current-points {
       font-size: 4em;
-      border-bottom: 2px solid black;
+      border-bottom: 2px solid rgba(27, 27, 27);
     }
 
     &__total-points {

@@ -1214,15 +1214,12 @@ export default {
 @media screen and (min-width: 1024px) {
   #point-counter-field {
     margin-left: 0.5rem;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
   }
 
-  #opponent-point-counter {
-    margin-top: 1.75em;
-  }
 
   #player-point-counter {
-    margin-top: 3em;
+    margin-top: 2.5em;
   }
 }
 
