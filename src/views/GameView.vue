@@ -59,7 +59,7 @@
               <div id="opponent-hand-cards" class="d-flex justify-center align-start">
                 <transition name="slide-below" mode="out-in">
                   <transition-group
-                    v-if="hasGlassesEight"
+                    v-if="revealOpponentHand"
                     id="opponent-hand-glasses"
                     key="opponent-hand-glasses"
                     class="opponent-hand-wrapper transition-all"
@@ -383,6 +383,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 
+import { ROUTE_NAME_SPECTATE } from '@/router';
 import GameCard from '@/components/GameView/GameCard.vue';
 import GameDialogs from '@/components/GameView/GameDialogs.vue';
 import GameMenu from '@/components/GameView/GameMenu.vue';
@@ -428,6 +429,7 @@ export default {
   computed: {
     ...mapState({
       waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
+      isSpectating: ({ game }) => game.isSpectating,
     }),
     ...mapGetters([
       'isPlayersTurn',
@@ -442,6 +444,9 @@ export default {
       'resolvingSeven',
       'hasGlassesEight',
     ]),
+    revealOpponentHand() {
+      return this.hasGlassesEight || this.isSpectating;
+    },
     //////////
     // Auth //
     //////////
@@ -692,6 +697,10 @@ export default {
     },
   },
   mounted() {
+    if (this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE) {
+      this.$store.commit('setIsSpectating', true);
+    }
+
     if (!this.$store.state.auth.authenticated) {
       this.$store.commit('setMustReauthenticate', true);
     }
