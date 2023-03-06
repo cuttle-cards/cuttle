@@ -18,7 +18,7 @@
         <v-menu :location="isPlayer ? 'top' : 'bottom'">
           <template #activator="{ props }">
             <v-btn class="point-counter__btn" icon v-bind="props" variant="plain">
-              <v-icon color="black" icon="mdi-information" :size="iconSize"/>
+              <v-icon color="black" icon="mdi-information" :size="[$vuetify.display.smAndDown ? 'small' : 'large  ']" />
             </v-btn>
           </template>
           <v-list class="score-goal-explanation">
@@ -57,12 +57,6 @@ export default {
     currentPoints() {
       return this.isPlayer ? this.playerPointTotal : this.opponentPointTotal;
     },
-    iconSize() {
-      return {
-        'x-small': this.$vuetify.display.mdAndDown,
-        large: this.$vuetify.display.lgAndUp,
-      };
-    },
   },
 };
 </script>
@@ -99,7 +93,7 @@ export default {
   }
 
   &__btn {
-    margin-top: -0.6em;
+    margin-top: -0.8em;
   }
 
   &__current-points {
@@ -187,7 +181,7 @@ export default {
 
 @media screen and (min-width: 1024px) {
   .point-counter {
-    line-height: 1.3;
+    line-height: 1.2;
 
     &__wrapper {
       width: 50px;
@@ -202,12 +196,16 @@ export default {
     }
 
     &__current-points {
-      font-size: 4em;
+      font-size: 3.5em;
       border-bottom: 2px solid rgba(27, 27, 27);
     }
 
     &__total-points {
-      font-size: 2.5em;
+      font-size: 2.75em;
+    }
+
+    &__btn {
+      margin-top: 0.1em;
     }
 
     &__current-opponent {
