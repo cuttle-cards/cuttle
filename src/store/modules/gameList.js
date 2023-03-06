@@ -64,8 +64,10 @@ export default {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/getList', function handleResponse(resData, jwres) {
           if (jwres.statusCode === 200) {
-            const games = cloneDeep(resData.games);
+            const games = cloneDeep(resData.openGames);
+            const spectatableGames = cloneDeep(resData.spectatableGames);
             context.commit('refreshGames', games);
+            context.commit('refreshSpectateGames', spectatableGames);
             return resolve(resData.games);
           }
           return reject(new Error('Could not retrieve list of games'));
