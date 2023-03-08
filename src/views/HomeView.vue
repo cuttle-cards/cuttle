@@ -39,7 +39,12 @@
                   </div>
                 </v-window-item>
                 <v-window-item value="spectate">
-                  <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text">No Games Available to Spectate</p>
+                  <p 
+                    v-if="specateGameList.length === 0"
+                    data-cy="no-spectate-game-text"
+                  >
+                    No Games Available to Spectate
+                  </p>
                   <div v-for="game in specateGameList" :key="game.id">
                     <game-list-item
                       :name="game.name"
