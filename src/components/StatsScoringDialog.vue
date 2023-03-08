@@ -54,7 +54,7 @@
           </v-list-item>
           <v-list-item> Each other player who won at least one match gets 2 points for the week </v-list-item>
           <v-list-item>
-            Each other player who completed a match without winning gets 1 points for the week
+            Each other player who completed a match without winning gets 1 point for the week
           </v-list-item>
         </v-list>
         <p>
