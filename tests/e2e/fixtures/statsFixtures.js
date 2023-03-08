@@ -196,7 +196,20 @@ const seasonOneMatches = [
     startTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
     endTime: dayjs('2022-01-27', 'yyyy-mm-dd').valueOf(),
   },
+
+  ////////////
+  // Week 3 //
+  ////////////
+  // Player 1
+  // Incomplete Match
+  {
+    player1: 'player1',
+    player2: 'player2',
+    winner: null,
+    startTime: dayjs('2022-02-02', 'yyyy-mm-dd').valueOf(),
+  },
 ];
+
 
 const seasonTwoMatches = [
   ////////////
