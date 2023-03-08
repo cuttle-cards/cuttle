@@ -4,8 +4,6 @@ import {
   validPassword as playerPassword,
   opponentUsername,
   opponentPassword,
-  assertGameState,
-  Card,
 } from '../../support/helpers';
 import { playerOne, playerTwo } from '../../fixtures/userFixtures';
 
@@ -167,26 +165,26 @@ describe('Home - Game List', () => {
   });
 
   describe('Spectating games', () => {
-    it.only('Spectates a game', () => {
-      cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
+    it('Spectates a game', () => {
+      cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then(({ gameId }) => {
         // Test that JOIN button starts enabled
-        cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
+        cy.contains(`[data-cy-join-game=${gameId}]`, 'Play').should('not.be.disabled');
         // Sign up 2 users and subscribe them to game
         cy.signupOpponent(playerOne.username, playerOne.password);
-        cy.subscribeOpponent(gameData.gameId);
+        cy.subscribeOpponent(gameId);
         // Opponents start game, it appears as spectatable
-        cy.readyOpponent(gameData.gameId);
+        cy.readyOpponent(gameId);
         cy.signupOpponent(playerTwo.username, playerTwo.password);
-        cy.subscribeOpponent(gameData.gameId, 1);
-        cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
+        cy.subscribeOpponent(gameId, 1);
+        cy.contains(`[data-cy-join-game=${gameId}]`, 'Play').should('be.disabled');
 
         // Switch to spectate tab
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
 
         // The other game starts -- should now appear in spectate list
-        cy.readyOpponent(gameData.gameId);
-        cy.get('[data-cy-spectate-game]').click();
+        cy.readyOpponent(gameId);
+        cy.get(`[data-cy-spectate-game=${gameId}]`).click();
 
         cy.url().should('include', '/spectate/');
         cy.window()
@@ -199,7 +197,7 @@ describe('Home - Game List', () => {
 
     it('Does not show open games in spectate tab', () => {});
 
-    it('Shows ongoing games as available to spectate when user navigates to home page', () => {
+    it.only('Shows ongoing games as available to spectate when user navigates to home page', () => {
       cy.signupOpponent(playerOne.username, playerOne.password);
       cy.createGameOpponent('Spectatable game').then(({ gameId }) => {
         cy.subscribeOpponent(gameId);
@@ -208,12 +206,15 @@ describe('Home - Game List', () => {
         cy.signupOpponent(playerTwo.username, playerTwo.password);
         cy.subscribeOpponent(gameId);
         cy.readyOpponent(gameId);
-        cy.signupPlayer(playerUsername, playerPassword);
+
+        // Navigate to homepage
         cy.visit('/');
 
-        // Switch to spectate tab
+        // No open games appear
+        cy.contains('[data-cy-join-game]', 'Play').should('not.exist');
+        // Existing game is available to spectate
         cy.get('[data-cy-game-list-selector=spectate]').click();
-        cy.get('[data-cy-spectate-game]').click();
+        cy.get(`[data-cy-spectate-game=${gameId}]`).click();
       });
     });
   });
