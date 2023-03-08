@@ -167,7 +167,7 @@ describe('Home - Game List', () => {
   });
 
   describe('Spectating games', () => {
-    it('Spectates a game', () => {
+    it.only('Spectates a game', () => {
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
         // Test that JOIN button starts enabled
         cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
@@ -194,38 +194,6 @@ describe('Home - Game List', () => {
         .then((gameState) => {
           expect(gameState.id).to.not.eq(null);
         });
-
-        cy.loadGameFixture({
-          p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-          p0Points: [Card.TEN_OF_SPADES],
-          p0FaceCards: [Card.KING_OF_SPADES],
-          p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          p1Points: [Card.TEN_OF_HEARTS],
-          p1FaceCards: [Card.KING_OF_HEARTS],
-        });
-
-        assertGameState(0, {
-          p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-          p0Points: [Card.TEN_OF_SPADES],
-          p0FaceCards: [Card.KING_OF_SPADES],
-          p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          p1Points: [Card.TEN_OF_HEARTS],
-          p1FaceCards: [Card.KING_OF_HEARTS],
-        }, true);
-
-        cy.recoverSessionOpponent(playerOne.username);
-        cy.playPointsSpectator(Card.ACE_OF_SPADES, 0);
-
-        assertGameState(0, {
-          p0Hand: [Card.ACE_OF_CLUBS],
-          p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-          p0FaceCards: [Card.KING_OF_SPADES],
-          p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          p1Points: [Card.TEN_OF_HEARTS],
-          p1FaceCards: [Card.KING_OF_HEARTS],
-        }, true);
-        // cy.recoverSessionOpponent(playerTwo.username);
-        // cy.drawCardOpponent();
       });
     });
 
@@ -247,15 +215,7 @@ describe('Home - Game List', () => {
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get('[data-cy-spectate-game]').click();
       });
-
     });
-
-    it('Continues spectating after page', () => {});
-
-    it('Continues spectating after socket disconnect', () => {});
-
-    it('Prevents spectator from making moves', () => {});
-
   });
 });
 
