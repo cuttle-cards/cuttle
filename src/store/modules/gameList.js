@@ -12,40 +12,40 @@ class GameSummary {
 }
 export default {
   state: {
-    games: [],
+    openGames: [],
     spectateGames: [],
   },
   mutations: {
     // Open/Playable Games
     refreshGames(state, newList) {
-      state.games = newList.map((game) => new GameSummary(game));
+      state.openGames = newList.map((game) => new GameSummary(game));
     },
     addGameToList(state, newGame) {
-      state.games.push(new GameSummary(newGame));
+      state.openGames.push(new GameSummary(newGame));
     },
     gameStarted(state, { gameId }) {
-      const gameIndex = state.games.findIndex((game) => game.id === gameId)
-      if (gameIndex < 0 || gameIndex > state.games.length) {
+      const gameIndex = state.openGames.findIndex((game) => game.id === gameId)
+      if (gameIndex < 0 || gameIndex > state.openGames.length) {
         return;
       }
-      const [ startedGame ] = state.games.splice(gameIndex, 1);
+      const [ startedGame ] = state.openGames.splice(gameIndex, 1);
       state.spectateGames.push(startedGame);
     },
     updateGameStatus(state, data) {
-      const updatedGame = state.games.find((game) => game.id === data.id);
+      const updatedGame = state.openGames.find((game) => game.id === data.id);
       if (updatedGame) {
         updatedGame.status = data.newStatus;
       }
     },
     joinGame(state, data) {
-      const updatedGame = state.games.find((game) => game.id === data.gameId);
+      const updatedGame = state.openGames.find((game) => game.id === data.gameId);
       if (updatedGame) {
         updatedGame.numPlayers++;
         updatedGame.status = data.newStatus;
       }
     },
     otherLeftGame(state, gameId) {
-      const updatedGame = state.games.find((game) => game.id === gameId);
+      const updatedGame = state.openGames.find((game) => game.id === gameId);
       if (updatedGame) {
         updatedGame.numPlayers--;
         updatedGame.status = true;
@@ -64,11 +64,11 @@ export default {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/getList', function handleResponse(resData, jwres) {
           if (jwres.statusCode === 200) {
-            const games = cloneDeep(resData.openGames);
+            const openGames = cloneDeep(resData.openGames);
             const spectatableGames = cloneDeep(resData.spectatableGames);
-            context.commit('refreshGames', games);
+            context.commit('refreshGames', openGames);
             context.commit('refreshSpectateGames', spectatableGames);
-            return resolve(resData.games);
+            return resolve(openGames);
           }
           return reject(new Error('Could not retrieve list of games'));
         });

@@ -139,7 +139,7 @@ export default {
   },
   computed: {
     ...mapState({
-      playableGameList: ({ gameList }) => gameList.games,
+      playableGameList: ({ gameList }) => gameList.openGames,
       specateGameList: ({ gameList }) => gameList.spectateGames,
     }),
     buttonSize() {
