@@ -208,7 +208,7 @@ describe('Home - Game List', () => {
         cy.signupOpponent(playerTwo.username, playerTwo.password);
         cy.subscribeOpponent(gameId);
         cy.readyOpponent(gameId);
-        cy.signupPlayer('pooo', 'booooooooooooooo');
+        cy.signupPlayer(playerUsername, playerPassword);
         cy.visit('/');
 
         // Switch to spectate tab
