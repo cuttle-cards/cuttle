@@ -195,7 +195,19 @@ describe('Home - Game List', () => {
       });
     });
 
-    it('Does not show open games in spectate tab', () => {});
+    it('Does not show open games in spectate tab', () => {
+      cy.signupOpponent(playerOne.username, playerOne.password);
+      cy.createGameOpponent('Game Created before page visit');
+      cy.visit('/');
+      cy.get('[data-cy-join-game]').should('have.length', 1);
+      cy.createGameOpponent('Game Created after page visit');
+      cy.get('[data-cy-join-game]').should('have.length', 2);
+
+      // Switch to spectate tab -- no games available to spectate
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
+      cy.get('[data-cy-spectate-game]').should('have.length', 0);
+    });
 
     it('Shows ongoing games as available to spectate when user navigates to home page', () => {
       cy.signupOpponent(playerOne.username, playerOne.password);
