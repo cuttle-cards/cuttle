@@ -93,7 +93,7 @@ describe('Home - Game List', () => {
           expect(gameState.id).to.eq(null);
         });
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false });
-      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
+      cy.get('[data-cy=game-list-item]').contains('[data-cy-join-game]', 'Play').click();
       cy.hash().should('contain', '#/lobby');
       cy.window()
         .its('cuttle.app.config.globalProperties.$store.state.game')
@@ -112,7 +112,7 @@ describe('Home - Game List', () => {
         cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
         cy.subscribeOpponent(gameData.gameId);
         // Our user then joins through UI
-        cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
+        cy.get('[data-cy=game-list-item]').contains('[data-cy-join-game]', 'Play').click();
         // Should have redirected to lobby page and updated store
         cy.hash().should('contain', '#/lobby');
         cy.window()
@@ -131,7 +131,7 @@ describe('Home - Game List', () => {
        */
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
         // Test that JOIN button starts enabled
-        cy.contains('button.v-btn', 'Play').should('not.be.disabled');
+        cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
         // Sign up 2 users and subscribe them to game
         cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
         cy.subscribeOpponent(gameData.gameId);
@@ -139,7 +139,7 @@ describe('Home - Game List', () => {
         cy.subscribeOpponent(gameData.gameId);
   
         // Test that join button is now disabled
-        cy.contains('button.v-btn', 'Play').should('be.disabled');
+        cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
       });
     });
   
@@ -150,7 +150,7 @@ describe('Home - Game List', () => {
        */
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
         // Test that JOIN button starts enabled
-        cy.contains('button.v-btn', 'Play').should('not.be.disabled');
+        cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
         // Sign up 2 users and subscribe them to game
         cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
         cy.subscribeOpponent(gameData.gameId);
@@ -170,7 +170,7 @@ describe('Home - Game List', () => {
     it('Spectates a game', () => {
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
         // Test that JOIN button starts enabled
-        cy.contains('button.v-btn', 'Play').should('not.be.disabled');
+        cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
         // Sign up 2 users and subscribe them to game
         cy.signupOpponent(playerOne.username, playerOne.password);
         cy.subscribeOpponent(gameData.gameId);
@@ -231,7 +231,7 @@ describe('Home - Game List', () => {
 
     it('Does not show open games in spectate tab', () => {});
 
-    it.only('Shows ongoing games as available to spectate when user navigates to home page', () => {
+    it('Shows ongoing games as available to spectate when user navigates to home page', () => {
       cy.signupOpponent(playerOne.username, playerOne.password);
       cy.createGameOpponent('Spectatable game').then(({ gameId }) => {
         cy.subscribeOpponent(gameId);
