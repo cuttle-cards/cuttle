@@ -28,7 +28,7 @@ export default {
       if (gameIndex < 0 || gameIndex > state.games.length) {
         return;
       }
-      const startedGame = state.games.splice(gameIndex, 1)[0];
+      const [ startedGame ] = state.games.splice(gameIndex, 1);
       state.spectateGames.push(startedGame);
     },
     updateGameStatus(state, data) {
