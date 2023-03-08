@@ -8,6 +8,8 @@ import {
   opponentUsername,
   opponentPassword,
 } from './helpers';
+import { playerOne, playerTwo } from '../fixtures/userFixtures';
+
 /**
  * Require & configure socket connection to server
  */
@@ -109,6 +111,40 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
     cy.get('#player-hand-cards .player-card').should('have.length', 6);
   });
   cy.log('Finished setting up game as p1');
+});
+
+Cypress.Commands.add('setupGameAsSpectator', () => {
+  cy.wipeDatabase();
+  cy.visit('/');
+  cy.signupPlayer(username, validPassword);
+  cy.vueRoute('/');
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
+    // Test that JOIN button starts enabled
+    cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
+    // Sign up 2 users and subscribe them to game
+    cy.signupOpponent(playerOne.username, playerOne.password);
+    cy.subscribeOpponent(gameData.gameId);
+    // Opponents start game, it appears as spectatable
+    cy.readyOpponent(gameData.gameId);
+    cy.signupOpponent(playerTwo.username, playerTwo.password);
+    cy.subscribeOpponent(gameData.gameId);
+    cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
+
+    // Switch to spectate tab
+    cy.get('[data-cy-game-list-selector=spectate]').click();
+    cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
+
+    // The other game starts -- should now appear in spectate list
+    cy.readyOpponent(gameData.gameId);
+    cy.get('[data-cy-spectate-game]').click();
+
+    cy.url().should('include', '/spectate/');
+    cy.window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((gameState) => {
+      expect(gameState.id).to.not.eq(null);
+    });
+  });
 });
 
 Cypress.Commands.add('signupOpponent', (username, password) => {
