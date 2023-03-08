@@ -81,6 +81,7 @@ describe('Stats Page', () => {
     cy.get("[data-week-total='Player1']").contains('W: 7, P: 9');
     cy.get('[data-week-total=Player2]').contains('W: 7, P: 9');
     cy.get("[data-week-1='Player5']").contains('W: 1, P: 3');
+    cy.get("[data-week-2='Player4']").contains('W: 0, P: 1');
     cy.get('tr.active-user-stats').contains(playerOne.username);
     // Player result menus (Week without losses)
     cy.get("[data-week-1='Player1']").click();
@@ -129,6 +130,10 @@ describe('Stats Page', () => {
     cy.get('[data-rank]').eq(2).should('contain', '3');
     cy.get('[data-rank]').eq(3).should('contain', '4');
     cy.get('[data-rank]').eq(4).should('contain', '5');
+
+    // Incomplete match should not contribute to points
+    cy.get("[data-week-3='Player1']").should('not.exist');
+    cy.get("[data-week-3='Player2']").should('not.exist');
   });
 
   it('Filters table to display wins, points, or both', () => {

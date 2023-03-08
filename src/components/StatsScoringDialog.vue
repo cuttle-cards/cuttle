@@ -52,7 +52,10 @@
             <v-icon :color="theme.thirdPlace" class="mr-2" icon="mdi-medal" />
             The player with the 3rd most wins gets 3 points for the week
           </v-list-item>
-          <v-list-item> Each other player who won at least one match gets 1 point for the week </v-list-item>
+          <v-list-item> Each other player who won at least one match gets 2 points for the week </v-list-item>
+          <v-list-item>
+            Each other player who completed a match without winning gets 1 points for the week
+          </v-list-item>
         </v-list>
         <p>
           You can view the statistics and rankings for each season on this page. At the end of each season,

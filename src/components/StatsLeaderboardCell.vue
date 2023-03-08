@@ -137,7 +137,7 @@ export default {
         case 2:
           return 'primary';
         case 1:
-          return 'black';
+          return 'neutral-darken-3';
         default:
           return '#000';
       }
