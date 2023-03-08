@@ -197,7 +197,7 @@ describe('Home - Game List', () => {
 
     it('Does not show open games in spectate tab', () => {});
 
-    it.only('Shows ongoing games as available to spectate when user navigates to home page', () => {
+    it('Shows ongoing games as available to spectate when user navigates to home page', () => {
       cy.signupOpponent(playerOne.username, playerOne.password);
       cy.createGameOpponent('Spectatable game').then(({ gameId }) => {
         cy.subscribeOpponent(gameId);
