@@ -48,8 +48,9 @@ describe('Spectating Games', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
 
+    // Refresh the page
     cy.reload();
-
+    // Game state appears unchanged
     assertGameState(0, {
       p0Hand: [Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -59,6 +60,7 @@ describe('Spectating Games', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
 
+    // Make another move -- UI updates accordingly
     cy.recoverSessionOpponent(playerTwo.username);
     cy.playPointsSpectator(Card.ACE_OF_HEARTS, 1);
 
@@ -71,9 +73,6 @@ describe('Spectating Games', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
   });
-
-
-  it('Continues spectating after page refresh', () => {});
 
   it('Continues spectating after socket disconnect', () => {});
 
