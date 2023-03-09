@@ -16,7 +16,7 @@ function setup() {
 describe('Spectating Games', () => {
   beforeEach(setup);
 
-  it('Spectates a game', () => {
+  it.only('Spectates a game', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
@@ -45,6 +45,29 @@ describe('Spectating Games', () => {
       p0FaceCards: [Card.KING_OF_SPADES],
       p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1Points: [Card.TEN_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    }, true);
+
+    cy.reload();
+
+    assertGameState(0, {
+      p0Hand: [Card.ACE_OF_CLUBS],
+      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+      p0FaceCards: [Card.KING_OF_SPADES],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.TEN_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    }, true);
+
+    cy.recoverSessionOpponent(playerTwo.username);
+    cy.playPointsSpectator(Card.ACE_OF_HEARTS, 1);
+
+    assertGameState(0, {
+      p0Hand: [Card.ACE_OF_CLUBS],
+      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+      p0FaceCards: [Card.KING_OF_SPADES],
+      p1Hand: [Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
   });
