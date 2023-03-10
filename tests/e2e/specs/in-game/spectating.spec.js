@@ -4,6 +4,8 @@ import {
   validPassword as playerPassword,
   Card,
   assertGameState,
+  assertSnackbarError,
+  SnackBarError,
 } from '../../support/helpers';
 
 function setup() {
@@ -16,7 +18,7 @@ function setup() {
 describe('Spectating Games', () => {
   beforeEach(setup);
 
-  it.only('Spectates a game', () => {
+  it('Spectates a game', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
@@ -95,5 +97,53 @@ describe('Spectating Games', () => {
     }, true);
   });
 
-  it('Prevents spectator from making moves', () => {});
+  it.only('Prevents spectator from making moves', () => {
+    cy.setupGameAsSpectator();
+    cy.loadGameFixture({
+      p0Hand: [
+        Card.ACE_OF_SPADES,
+        Card.ACE_OF_HEARTS,
+        Card.TWO_OF_DIAMONDS,
+        Card.KING_OF_CLUBS,
+        Card.JACK_OF_DIAMONDS,
+        Card.THREE_OF_CLUBS
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.ACE_OF_CLUBS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
+
+    assertGameState(0, {
+      p0Hand: [
+        Card.ACE_OF_SPADES,
+        Card.ACE_OF_HEARTS,
+        Card.TWO_OF_DIAMONDS,
+        Card.KING_OF_CLUBS,
+        Card.JACK_OF_DIAMONDS,
+        Card.THREE_OF_CLUBS
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.ACE_OF_CLUBS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    }, true);
+
+    // Can't play points
+    cy.get('[data-player-hand-card=1-3]').click();
+    cy.get('[data-move-choice=points]').click();
+    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    // Can't play oneOff
+    // Can't play royal
+    // Can't play jack
+    // Can't scuttle
+    // Can't play targeted oneOff
+    // Can't resolve three
+    // Can't resolve four
+    // Can't play seven
+    // Can't counter
+    // Can't resolve
+  });
 });
