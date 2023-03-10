@@ -36,6 +36,7 @@ describe('Home - Page Content', () => {
     cy.contains('h1', 'Games');
     cy.get('#logo');
   });
+
   it('Play AI and Rules page links work', () => {
     cy.get('[data-cy=ai-link]').should(
       'have.attr',
@@ -45,12 +46,14 @@ describe('Home - Page Content', () => {
     cy.get('[data-cy=rules-link]').click();
     cy.hash().should('eq', '#/rules');
   });
+
   it('Logs user out', () => {
     cy.get('[data-nav=Logout]').click();
     cy.contains('h1', 'Log In');
     cy.get('[data-nav=Login]').should('be.visible');
     cy.get('[data-nav=Home]').should('not.exist');
   });
+
   it('Sends list of games when session data includes invalid game id', () => {
     cy.signupOpponent(opponentUsername, opponentPassword);
     cy.setBadSession();
@@ -410,6 +413,7 @@ describe('Home - Create Game', () => {
       .find('[data-cy=game-name-input]')
       .should('not.contain', 'test game');
   });
+
   it('Does not create game without game name', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
@@ -424,6 +428,7 @@ describe('Home - Create Game', () => {
       });
     assertSnackbarError('Game name cannot be blank', 'newgame');
   });
+
   it('Removes a game when both players are ready', () => {
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Sign up 2 users and subscribe them to game
