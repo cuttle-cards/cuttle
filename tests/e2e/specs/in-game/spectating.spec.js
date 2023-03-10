@@ -120,9 +120,9 @@ describe('Spectating Games', () => {
         Card.ACE_OF_SPADES,
         Card.ACE_OF_HEARTS,
         Card.TWO_OF_DIAMONDS,
-        Card.KING_OF_CLUBS,
+        Card.THREE_OF_CLUBS,
         Card.JACK_OF_DIAMONDS,
-        Card.THREE_OF_CLUBS
+        Card.KING_OF_CLUBS,
       ],
       p0Points: [],
       p0FaceCards: [],
@@ -131,18 +131,58 @@ describe('Spectating Games', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
 
+    
+    // Can't concede
+    
+    // Can't request stalemate
+    
+    // Can't draw
+    cy.get('#deck').click()
+    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    cy.log('Correctly prevented from drawing from deck');
+
     // Can't play points
     cy.get('[data-player-hand-card=1-3]').click();
     cy.get('[data-move-choice=points]').click();
     assertSnackbarError(SnackBarError.NOT_IN_GAME);
-    // Can't play oneOff
-    // Can't play royal
-    // Can't play jack
+    cy.log('Correctly prevented from playing points');
+
     // Can't scuttle
+    cy.get('[data-player-hand-card=1-3]').click();
+    cy.get('[data-move-choice=scuttle]').click();
+    cy.get('[data-opponent-point-card=1-0]').click();
+    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    cy.log('Correctly prevented from scuttling');
+
+    // Can't play royal
+    cy.get('[data-player-hand-card=13-0]').click();
+    cy.get('[data-move-choice=faceCard]').click();
+    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    cy.log('Correctly prevented from playing royal');
+
+    // Can't play jack
+    cy.get('[data-player-hand-card=11-1]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=1-0]').click();
+    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    cy.log('Correctly prevented from playing jack');
+
+    // Can't play oneOff
+    cy.get('[data-player-hand-card=1-3]').click();
+    cy.get('[data-move-choice=oneOff]').click();
+    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    cy.log('Correctly prevented from untargeted one-off');
+
     // Can't play targeted oneOff
+    cy.get('[data-player-hand-card=2-1]').click();
+    cy.get('[data-move-choice=targetedOneOff]').click();
+    cy.get('[data-opponent-face-card=13-2]').click();
+    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    cy.log('Correctly prevented from targeted one-off');
+
     // Can't resolve three
     // Can't resolve four
-    // Can't play seven
+    // Can't resolve seven
     // Can't counter
     // Can't resolve
   });
