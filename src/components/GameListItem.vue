@@ -48,6 +48,7 @@
 <script>
 export default {
   name: 'GameListItem',
+  emits: ['error'],
   props: {
     name: {
       type: String,
@@ -120,8 +121,9 @@ export default {
           this.joiningGame = false;
           this.$router.push(`/lobby/${this.gameId}`);
         })
-        .catch(() => {
+        .catch((error) => {
           this.joiningGame = false;
+          this.$emit('error', error);
         });
     },
     spectateGame() {
@@ -132,8 +134,10 @@ export default {
           this.joiningGame = false;
           this.$router.push(`/spectate/${this.gameId}`);
         })
-        .catch(() => {
+        .catch((error) => {
           this.joiningGame = false;
+          this.$emit('error', error);
+          this.$store.commit('gameFinished', this.gameId);
         });
     },
   },

@@ -35,6 +35,7 @@
                       :status="game.status"
                       :num-players="game.numPlayers"
                       :is-ranked="game.isRanked"
+                      @error="handleError"
                     />
                   </div>
                 </v-window-item>
@@ -56,6 +57,7 @@
                       :is-ranked="game.isRanked"
                       :isSpectatable="true"
                       :disableSpectate="game.isOver"
+                      @error="handleError"
                     />
                   </div>
                 </v-window-item>

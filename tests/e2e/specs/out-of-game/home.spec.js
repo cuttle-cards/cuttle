@@ -224,6 +224,33 @@ describe('Home - Game List', () => {
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
       });
 
+      // Create another game
+      // New game is created, started, and finished
+      cy.createGameOpponent('2nd Game completed without being spectated').then(({ gameId }) => {
+        cy.recoverSessionOpponent(playerOne.username);
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+        
+        cy.recoverSessionOpponent(playerTwo.username);
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+
+        // Game appears as spectatable
+        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible').and('not.be.disabled');
+        // Disconnect the socket then finish the game -- UI misses the update
+        cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');
+        cy.concedeOpponent();
+        cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'reconnectSocket');
+        cy.get(`[data-cy-spectate-game=${gameId}]`).click();
+        assertSnackbarError('Unable to spectate game', 'newgame');
+        // Spectate button should now be disabled
+        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+
+      });
+      // Refresh page -- no games available to spectate
+      cy.visit('/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
     });
 
     it('Shows ongoing games as available to spectate when user navigates to home page', () => {
