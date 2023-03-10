@@ -7,8 +7,6 @@ module.exports = async function (req, res) {
       return res.badRequest({message: 'You can only spectate an ongoing game with two players'});
     }
 
-    // TODO: Can't spectate a game you're in
-
     // Subscribe socket to game
     Game.subscribe(req, [ gameId ]);
 
