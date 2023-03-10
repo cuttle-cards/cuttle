@@ -195,7 +195,7 @@ describe('Home - Game List', () => {
       });
     });
 
-    it.only('Does not show open or completed games in spectate tab', () => {
+    it('Does not show open or completed games in spectate tab', () => {
       cy.signupOpponent(playerOne.username, playerOne.password);
       cy.createGameOpponent('Game Created before page visit');
       cy.visit('/');
