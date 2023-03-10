@@ -36,6 +36,7 @@ describe('Spectating Games', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
 
+    // P0 plays ace of spades
     cy.recoverSessionOpponent(playerOne.username);
     cy.playPointsSpectator(Card.ACE_OF_SPADES, 0);
 
@@ -60,7 +61,7 @@ describe('Spectating Games', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
 
-    // Make another move -- UI updates accordingly
+    // P1 plays Ace of hearts -- UI updates accordingly
     cy.recoverSessionOpponent(playerTwo.username);
     cy.playPointsSpectator(Card.ACE_OF_HEARTS, 1);
 
@@ -72,9 +73,31 @@ describe('Spectating Games', () => {
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
+
+    // Disconnect spectator's socket
+    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');
+  
+    // P0 plays ace of clubs
+    cy.recoverSessionOpponent(playerOne.username);
+    cy.playPointsSpectator(Card.ACE_OF_CLUBS, 0);
+
+    // Reconnect the socket
+    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'reconnectSocket');
+
+    // Spectator receives the update
+    assertGameState(0, {
+      p0Hand: [],
+      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
+      p0FaceCards: [Card.KING_OF_SPADES],
+      p1Hand: [Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    }, true);
   });
 
-  it('Continues spectating after socket disconnect', () => {});
+  it('Continues spectating after socket disconnect', () => {
+
+  });
 
   it('Prevents spectator from making moves', () => {});
 });
