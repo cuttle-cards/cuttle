@@ -24,7 +24,7 @@ export default {
     addGameToList(state, newGame) {
       state.openGames.push(new GameSummary(newGame));
     },
-    gameStarted(state, { gameId }) {
+    gameStarted(state, gameId) {
       const gameIndex = state.openGames.findIndex((game) => game.id === gameId);
       if (gameIndex < 0 || gameIndex > state.openGames.length) {
         return;

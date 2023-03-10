@@ -168,8 +168,8 @@ io.socket.on('gameCreated', function (evData) {
   store.commit('addGameToList', newGame);
 });
 
-io.socket.on('gameStarting', function (evData) {
-  store.commit('gameStarted', evData);
+io.socket.on('gameStarting', function ({ gameId }) {
+  store.commit('gameStarted', gameId);
 });
 
 io.socket.on('gameFinished', function ({ gameId }) {
