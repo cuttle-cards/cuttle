@@ -33,6 +33,7 @@
           v-bind="buttonAttrs"
           :data-cy-spectate-game="gameId"
           :data-cy-join-game="gameId"
+          :disabled="disableSpectate"
           @click="spectateGame"
         >
           <v-icon class="mr-4" size="medium" icon="mdi-eye" />
@@ -77,6 +78,10 @@ export default {
       default: false,
     },
     isSpectatable: {
+      type: Boolean,
+      default: false,
+    },
+    disableSpectate: {
       type: Boolean,
       default: false,
     },

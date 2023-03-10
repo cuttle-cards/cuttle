@@ -8,6 +8,7 @@ class GameSummary {
     this.numPlayers = Object.prototype.hasOwnProperty.call(obj, 'players') ? obj.players.length : 0;
     this.status = Object.prototype.hasOwnProperty.call(obj, 'status') ? obj.status : false;
     this.isRanked = Object.prototype.hasOwnProperty.call(obj, 'isRanked') ? obj.isRanked : false;
+    this.isOver = false;
   }
 }
 export default {
@@ -24,12 +25,19 @@ export default {
       state.openGames.push(new GameSummary(newGame));
     },
     gameStarted(state, { gameId }) {
-      const gameIndex = state.openGames.findIndex((game) => game.id === gameId)
+      const gameIndex = state.openGames.findIndex((game) => game.id === gameId);
       if (gameIndex < 0 || gameIndex > state.openGames.length) {
         return;
       }
       const [ startedGame ] = state.openGames.splice(gameIndex, 1);
       state.spectateGames.push(startedGame);
+    },
+    gameFinished(state, gameId) {
+      const game = state.spectateGames.find((game) => game.id === gameId)
+      if (!game) {
+        return;
+      }
+      game.isOver = true;
     },
     updateGameStatus(state, data) {
       const updatedGame = state.openGames.find((game) => game.id === data.id);

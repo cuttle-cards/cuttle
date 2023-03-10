@@ -172,6 +172,10 @@ io.socket.on('gameStarting', function (evData) {
   store.commit('gameStarted', evData);
 });
 
+io.socket.on('gameFinished', function ({ gameId }) {
+  store.commit('gameFinished', gameId);
+});
+
 io.socket.on('join', function (evData) {
   store.commit('joinGame', {
     gameId: evData.gameId,
@@ -208,5 +212,4 @@ io.socket.on('connect', () => {
     default:
       return;
   }
-  
 });

@@ -195,7 +195,7 @@ describe('Home - Game List', () => {
       });
     });
 
-    it('Does not show open games in spectate tab', () => {
+    it.only('Does not show open or completed games in spectate tab', () => {
       cy.signupOpponent(playerOne.username, playerOne.password);
       cy.createGameOpponent('Game Created before page visit');
       cy.visit('/');
@@ -207,6 +207,23 @@ describe('Home - Game List', () => {
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
       cy.get('[data-cy-spectate-game]').should('have.length', 0);
+
+      // New game is created, started, and finished
+      cy.createGameOpponent('Game completed without being spectated').then(({ gameId }) => {
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+        // Second player signs up, joins, readies
+        cy.signupOpponent(playerTwo.username, playerTwo.password);
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+
+        // Game appears as spectatable
+        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible').and('not.be.disabled');
+        // Game finishes -- Can no longer spectate
+        cy.concedeOpponent();
+        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+      });
+
     });
 
     it('Shows ongoing games as available to spectate when user navigates to home page', () => {

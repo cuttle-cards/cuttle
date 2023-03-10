@@ -55,6 +55,7 @@
                       :num-players="game.numPlayers"
                       :is-ranked="game.isRanked"
                       :isSpectatable="true"
+                      :disableSpectate="game.isOver"
                     />
                   </div>
                 </v-window-item>

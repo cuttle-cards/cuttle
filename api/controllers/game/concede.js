@@ -22,6 +22,10 @@ module.exports = async function (req, res) {
         victory,
       },
     });
+
+    // Inform all clients this game is over
+    sails.sockets.blast('gameFinished', { gameId: game.id });
+
     return res.ok();
   } catch (err) {
     return res.badRequest(err);
