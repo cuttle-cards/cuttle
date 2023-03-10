@@ -95,9 +95,5 @@ describe('Spectating Games', () => {
     }, true);
   });
 
-  it('Continues spectating after socket disconnect', () => {
-
-  });
-
   it('Prevents spectator from making moves', () => {});
 });
