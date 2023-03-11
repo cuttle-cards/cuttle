@@ -429,7 +429,6 @@ export default {
   computed: {
     ...mapState({
       waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
-      isSpectating: ({ game }) => game.isSpectating,
     }),
     ...mapGetters([
       'isPlayersTurn',
@@ -444,6 +443,9 @@ export default {
       'resolvingSeven',
       'hasGlassesEight',
     ]),
+    isSpectating() {
+      return this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE;
+    },
     revealOpponentHand() {
       return this.hasGlassesEight || this.isSpectating;
     },
@@ -697,12 +699,9 @@ export default {
     },
   },
   mounted() {
-    if (this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE) {
-      this.$store.commit('setIsSpectating', true);
-      if (!this.$store.state.game.id) {
-        const { gameId } = this.$router.currentRoute.value.params;
-        this.$store.dispatch('requestSpectate', Number(gameId));
-      }
+    if (this.isSpectating && !this.$store.state.game.id) {
+      const { gameId } = this.$router.currentRoute.value.params;
+      this.$store.dispatch('requestSpectate', Number(gameId));
     }
 
     if (!this.$store.state.auth.authenticated) {

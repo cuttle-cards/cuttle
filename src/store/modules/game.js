@@ -23,7 +23,6 @@ function resetState() {
     waitingForOpponentToCounter: false,
     myTurnToCounter: false,
     isRanked: false,
-    isSpectating: false,
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
@@ -211,9 +210,6 @@ export default {
     },
     setMyTurnToCounter(state, val) {
       state.myTurnToCounter = val;
-    },
-    setIsSpectating(state, val) {
-      state.isSpectating = val;
     },
     // Countering
     setWaitingForOpponentToCounter(state, val) {
