@@ -1094,11 +1094,13 @@ Cypress.Commands.add('passOpponent', () => {
 
 Cypress.Commands.add('concedeOpponent', () => {
   cy.log('Opponent Concedes');
-  io.socket.get('/game/concede', function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-    return jwres;
+  return new Cypress.Promise((resolve) => {
+    io.socket.get('/game/concede', function handleResponse(res, jwres) {
+      if (jwres.statusCode !== 200) {
+        throw new Error(jwres.body.message);
+      }
+      return resolve(jwres);
+    });
   });
 });
 
