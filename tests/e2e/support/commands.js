@@ -1093,7 +1093,6 @@ Cypress.Commands.add('passOpponent', () => {
 });
 
 Cypress.Commands.add('concedeOpponent', () => {
-  cy.log('Opponent Concedes');
   return new Cypress.Promise((resolve) => {
     io.socket.get('/game/concede', function handleResponse(res, jwres) {
       if (jwres.statusCode !== 200) {
