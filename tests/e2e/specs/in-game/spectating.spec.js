@@ -97,7 +97,7 @@ describe('Spectating Games', () => {
     }, true);
   });
 
-  it.only('Prevents spectator from making moves', () => {
+  it('Prevents spectator from making moves', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [
@@ -130,11 +130,6 @@ describe('Spectating Games', () => {
       p1Points: [Card.ACE_OF_CLUBS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
-
-    
-    // Can't concede
-    
-    // Can't request stalemate
     
     // Can't draw
     cy.get('#deck').click()
