@@ -11,8 +11,11 @@ function assertVictory() {
     .its('cuttle.app.config.globalProperties.$store.state.game')
     .then((game) => {
       if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        const matchWinner = game.currentMatch.winner;
         cy.get('#game-over-dialog')
           .should('be.visible')
+          .should('contain', matchWinner ? 'You Win the Match' : `Game ${gameNumber}: You Win`)
           .get('[data-cy=match-result-section]')
           .should('be.visible');
       } else {
@@ -28,12 +31,15 @@ function assertLoss() {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store.state.game')
     .then((game) => {
-      if (game.isRanked)
+      if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        const matchWinner = game.currentMatch.winner;
         cy.get('#game-over-dialog')
+          .should('contain', matchWinner ? 'You Lose the Match' : `Game ${gameNumber}: You Lose`)
           .should('be.visible')
           .get('[data-cy=match-result-section]')
           .should('be.visible');
-      else {
+      } else {
         cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
       }
     });
@@ -47,8 +53,12 @@ function assertStalemate() {
     .its('cuttle.app.config.globalProperties.$store.state.game')
     .then((game) => {
       if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
         cy.get('#game-over-dialog')
           .should('be.visible')
+          // Don't need to check match winner as we do in assertVictory or assertLoss
+          // since a stalemate won't decide a match winner
+          .should('contain', `Game ${gameNumber}: Draw`)
           .get('[data-cy=match-result-section]')
           .should('be.visible');
       } else {

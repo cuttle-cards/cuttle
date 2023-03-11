@@ -1,13 +1,23 @@
 <template>
   <v-dialog v-model="show" persistent max-width="650">
     <v-card id="game-over-dialog">
-      <div class="d-flex">
-        <v-card-title :data-cy="headingDataAttr" class="mt-8">
-          <h1 class="dialog-header">{{ heading }}</h1>
-        </v-card-title>
-        <v-card-text class="d-flex justify-end mr-4 mt-4">
-          <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
-        </v-card-text>
+      <div id="dialog-header">
+        <div v-if="currentMatch" class="d-flex">
+          <v-card-title :data-cy="headingDataAttr" class="mt-8">
+            <h1 class="dialog-header">{{ heading }}</h1>
+          </v-card-title>
+          <v-card-text class="d-flex justify-end mr-4 mt-4">
+            <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
+          </v-card-text>
+        </div>
+        <div v-else>
+          <v-card-title :data-cy="headingDataAttr">
+            <h1 class="dialog-header">{{ heading }}</h1>
+          </v-card-title>
+          <v-card-text class="d-flex justify-center">
+            <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
+          </v-card-text>
+        </div>
       </div>
       <v-card-text class="dialog-text" v-if="currentMatch" data-cy="match-result-section">
         Match against {{ opponent.username }}
@@ -18,11 +28,8 @@
       </v-card-text>
       <v-card-text data-cy="match-result-games" class="dialog-text">
         <div class="d-flex">
-          <div
-            class="d-flex flex-column mr-4 align-center"
-            v-for="(gameStatus, i) in matchGameStats"
-            :key="`${gameStatus}-${i}`"
-          >
+          <div class="d-flex flex-column mr-4 align-center" v-for="(gameStatus, i) in matchGameStats"
+               :key="`${gameStatus}-${i}`">
             <v-icon size="x-large" color="black" :icon="iconFromGameStatus(gameStatus)" />
             {{ gameStatus }}
           </div>
@@ -69,15 +76,14 @@ export default {
     }),
     ...mapGetters(['player', 'opponent']),
     heading() {
-      if (this.stalemate) {
-        return 'Stalemate';
+      if (this.currentMatchWinner) {
+        return this.playerWinsMatch ? 'You Win the Match' : 'You Lose the Match';
       }
+      const currentMatchGames = this.game.currentMatch?.games ?? [];
+      const gameNumberPrefix = currentMatchGames.length > 0 ? `Game ${currentMatchGames.length}: ` : '';
+      const winnerMessage = this.stalemate ? 'Draw' : this.playerWins ? 'You Win' : 'You Lose';
 
-      if (this.playerWins) {
-        return 'You Win';
-      }
-
-      return 'You Lose';
+      return `${gameNumberPrefix}${winnerMessage}`;
     },
     headingDataAttr() {
       if (this.stalemate) {
@@ -116,9 +122,9 @@ export default {
       return this.game.currentMatch;
     },
     matchGameStats() {
-      const currentMatchGames = this.game.currentMatch?.games ?? []
+      const currentMatchGames = this.game.currentMatch?.games ?? [];
       return currentMatchGames.map((game) => {
-        switch(game.result) {
+        switch (game.result) {
           case 0: // p0 won game
             return game.p0 === this.player.id ? 'W' : 'L';
           case 1: // p1 won game
@@ -167,10 +173,17 @@ export default {
 <style scoped lang="scss">
 .logo-image {
   height: auto;
-  max-width: 90px;
+  max-width: 180px;
 }
 
-.dialog-header, .dialog-text {
+.logo-image-match {
+  height: auto;
+  max-width: 90px;
+  max-height: 90px;
+}
+
+.dialog-header,
+.dialog-text {
   font-family: 'PT Serif', serif;
 }
 </style>
