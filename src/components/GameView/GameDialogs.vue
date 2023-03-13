@@ -31,7 +31,12 @@
       :second-card="secondCard"
       @resolveSevenDoubleJacks="resolveSevenDoubleJacks($event)"
     />
-    <game-over-dialog :modelValue="gameIsOver" :player-wins="playerWins" :stalemate="stalemate" />
+    <game-over-dialog
+      v-if="gameIsOver"
+      :modelValue="gameIsOver"
+      :player-wins="playerWins"
+      :stalemate="stalemate"
+    />
     <reauthenticate-dialog :modelValue="mustReauthenticate" />
     <opponent-requested-stalemate-dialog v-model="consideringOpponentStalemateRequest" />
   </div>
