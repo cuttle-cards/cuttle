@@ -18,7 +18,7 @@
         <v-menu :location="isPlayer ? 'top' : 'bottom'">
           <template #activator="{ props }">
             <v-btn class="point-counter__btn" icon v-bind="props" variant="plain">
-              <v-icon color="black" icon="mdi-information" :size="[$vuetify.display.smAndDown ? 'small' : 'large  ']" />
+              <v-icon color="black" icon="mdi-information" :size="[$vuetify.display.smAndDown ? 'small' : 'large']" />
             </v-btn>
           </template>
           <v-list class="score-goal-explanation">
@@ -97,12 +97,12 @@ export default {
   }
 
   &__current-points {
-    font-size: 1.6em;
+    font-size: 1.4em;
     border-bottom: 1px solid rgba(27, 27, 27);
   }
 
   &__total-points {
-    font-size: 1.1em;
+    font-size: 1em;
   }
 
   &__player {
