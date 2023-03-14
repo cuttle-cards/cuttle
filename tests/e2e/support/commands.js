@@ -248,6 +248,12 @@ Cypress.Commands.add('leaveLobbyOpponent', (id) => {
   });
 });
 
+/**
+ * Switches the test-controlled io instance to a specified user's session
+ * Used to switch between test-controlled players while spectating
+ * @param userFixture: {username: string, password: string}
+ *   userFixture should be imported from the userFixtures.js file
+ */
 Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get('/user/reLogin', userFixture, function handleResponse(res, jwres) {
