@@ -56,14 +56,20 @@ io.socket.on('game', function (evData) {
         case 'Initialize': {
           const currentRoute = router.currentRoute.value;
           const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
-          if (!isSpectating) {
-            store.commit('resetState');
-            const gameRoute = `/game/${store.state.game.id}`;
-            if (gameRoute !== currentRoute.fullPath) {
-              router.push(gameRoute);
-            }
-          }
+
+          // Update state
+          store.commit('resetState');
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
+          if (isSpectating) {
+            store.commit('setMyPNum', 0); // always spectate as p0
+          }
+
+          // Validate current route & navigate if incorrect
+          const expectedRoutePrefix = isSpectating ? 'spectate' : 'game';
+          const expectedRoute = `/${expectedRoutePrefix}/${store.state.game.id}`;
+          if (currentRoute.fullPath !== expectedRoute) {
+            router.push(expectedRoute);
+          }
           break;
         }
         case 'draw':
