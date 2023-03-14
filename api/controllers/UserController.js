@@ -33,6 +33,7 @@ module.exports = {
       return res.badRequest(err);
     }
   },
+
   login: async function (req, res) {
     try {
       const { username, password } = req.body;
@@ -50,33 +51,37 @@ module.exports = {
       return res.badRequest(err);
     }
   },
+
   reLogin: function (req, res) {
     userAPI
       .findUserByUsername(req.body.username)
       .then(function gotUser(user) {
+        const { game: gameId, loggedIn } = req.session;
         const checkPass =
-          !req.session.loggedIn && req.body.password
+          !loggedIn && req.body.password
             ? passwordAPI.checkPass(req.body.password, user.encryptedPassword)
             : null;
-        const promiseGame = gameService.populateGame({ gameId: user.game });
+        const promiseGame = gameId ? gameService.findGame({ gameId }) : null;
         return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
       })
       .then((values) => {
         const [ game, user ] = values;
         req.session.loggedIn = true;
         req.session.usr = user.id;
-        req.session.game = game.id;
         req.session.pNum = user.pNum;
-        Game.subscribe(req, [game.id]);
         sails.sockets.join(req, 'GameList');
-        Game.publish([game.id], {
-          verb: 'updated',
-          data: {
-            ...game.lastEvent,
-            game,
-          },
-        });
-
+        // Set session data & send socket msg if in game
+        if (game) {
+          req.session.game = game.id;
+          Game.subscribe(req, [game.id]);
+          Game.publish([game.id], {
+            verb: 'updated',
+            data: {
+              ...game.lastEvent,
+              game,
+            },
+          });
+        }
         return res.ok();
       })
       .catch((err) => {

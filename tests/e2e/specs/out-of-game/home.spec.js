@@ -230,11 +230,11 @@ describe('Home - Game List', () => {
       // Create another game
       // New game is created, started, and finished
       cy.createGameOpponent('2nd Game completed without being spectated').then(({ gameId }) => {
-        cy.recoverSessionOpponent(playerOne.username);
+        cy.recoverSessionOpponent(playerOne);
         cy.subscribeOpponent(gameId);
         cy.readyOpponent(gameId);
         
-        cy.recoverSessionOpponent(playerTwo.username);
+        cy.recoverSessionOpponent(playerTwo);
         cy.subscribeOpponent(gameId);
         cy.readyOpponent(gameId);
 

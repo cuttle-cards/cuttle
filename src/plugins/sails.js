@@ -54,13 +54,16 @@ io.socket.on('game', function (evData) {
           store.commit('updateReady', evData.data.pNum);
           break;
         case 'Initialize': {
-          store.commit('resetState');
-          store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
-          const gameRoute = `/game/${store.state.game.id}`;
-          const currentRoute = router.currentRoute.fullPath;
-          if (gameRoute !== currentRoute) {
-            router.push(gameRoute);
+          const currentRoute = router.currentRoute.value;
+          const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
+          if (!isSpectating) {
+            store.commit('resetState');
+            const gameRoute = `/game/${store.state.game.id}`;
+            if (gameRoute !== currentRoute.fullPath) {
+              router.push(gameRoute);
+            }
           }
+          store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
           break;
         }
         case 'draw':

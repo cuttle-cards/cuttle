@@ -248,9 +248,9 @@ Cypress.Commands.add('leaveLobbyOpponent', (id) => {
   });
 });
 
-Cypress.Commands.add('recoverSessionOpponent', (username) => {
+Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.get('/test/recoverSession', { username }, function handleResponse(res, jwres) {
+    io.socket.get('/user/reLogin', userFixture, function handleResponse(res, jwres) {
       if (jwres.statusCode !== 200 || res === false) {
         return reject(new Error('error recovering session'));
       }

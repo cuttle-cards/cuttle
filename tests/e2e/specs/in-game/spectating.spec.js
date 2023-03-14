@@ -39,7 +39,7 @@ describe('Spectating Games', () => {
     }, true);
 
     // P0 plays ace of spades
-    cy.recoverSessionOpponent(playerOne.username);
+    cy.recoverSessionOpponent(playerOne);
     cy.playPointsSpectator(Card.ACE_OF_SPADES, 0);
 
     assertGameState(0, {
@@ -64,7 +64,7 @@ describe('Spectating Games', () => {
     }, true);
 
     // P1 plays Ace of hearts -- UI updates accordingly
-    cy.recoverSessionOpponent(playerTwo.username);
+    cy.recoverSessionOpponent(playerTwo);
     cy.playPointsSpectator(Card.ACE_OF_HEARTS, 1);
 
     assertGameState(0, {
@@ -80,7 +80,7 @@ describe('Spectating Games', () => {
     cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');
   
     // P0 plays ace of clubs
-    cy.recoverSessionOpponent(playerOne.username);
+    cy.recoverSessionOpponent(playerOne);
     cy.playPointsSpectator(Card.ACE_OF_CLUBS, 0);
 
     // Reconnect the socket
