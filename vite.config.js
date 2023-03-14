@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
-import VuetifyPlugin from 'vite-plugin-vuetify';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,9 +15,6 @@ export default defineConfig({
     vue(),
     vuetify({
       autoImport: false,
-      styles: 'sass'
-    }),
-    new VuetifyPlugin({
       styles: { configFile: 'src/sass/variables.scss'}
     }),
   ],

@@ -151,13 +151,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@use '../../sass/variables.scss';
 .game-overlay {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-family: 'PT Serif', 'serif';
   & .text-h3 {
     font-weight: bold;
   }
