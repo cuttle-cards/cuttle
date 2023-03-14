@@ -22,11 +22,7 @@
             </v-btn>
           </template>
           <v-list class="score-goal-explanation">
-            <v-list-item :class="{ 'current-goal': kingCount === 0 }"> 0 Kings: 21pts </v-list-item>
-            <v-list-item :class="{ 'current-goal': kingCount === 1 }"> 1 King: 14pts </v-list-item>
-            <v-list-item :class="{ 'current-goal': kingCount === 2 }"> 2 Kings: 10pts </v-list-item>
-            <v-list-item :class="{ 'current-goal': kingCount === 3 }"> 3 Kings: 5pts </v-list-item>
-            <v-list-item :class="{ 'current-goal': kingCount === 4 }"> 4 Kings: 0pts </v-list-item>
+            <v-list-item v-for="(points, idx) in kingPointsToWin" :class="{ 'current-goal': kingCount === idx }"> {{ idx }} Kings: {{ points }}pts </v-list-item>
           </v-list>
         </v-menu>
       </div>
@@ -56,6 +52,9 @@ export default {
     ...mapGetters(['playerPointTotal', 'opponentPointTotal']),
     currentPoints() {
       return this.isPlayer ? this.playerPointTotal : this.opponentPointTotal;
+    },
+    kingPointsToWin() {
+      return [0, 5, 10, 14, 21];
     },
   },
 };
