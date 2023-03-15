@@ -52,41 +52,50 @@ module.exports = {
     }
   },
 
-  reLogin: function (req, res) {
-    userAPI
-      .findUserByUsername(req.body.username)
-      .then(function gotUser(user) {
-        const { game: gameId, loggedIn } = req.session;
-        const checkPass =
-          !loggedIn && req.body.password
-            ? passwordAPI.checkPass(req.body.password, user.encryptedPassword)
-            : null;
-        const promiseGame = gameId ? gameService.populateGame({ gameId }) : null;
-        return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
-      })
-      .then((values) => {
-        const [ game, user ] = values;
-        req.session.loggedIn = true;
-        req.session.usr = user.id;
-        req.session.pNum = user.pNum;
-        sails.sockets.join(req, 'GameList');
-        // Set session data & send socket msg if in game
-        if (game) {
-          req.session.game = game.id;
-          Game.subscribe(req, [game.id]);
-          Game.publish([game.id], {
-            verb: 'updated',
-            data: {
-              ...game.lastEvent,
-              game,
-            },
-          });
-        }
-        return res.ok();
-      })
-      .catch((err) => {
-        return res.badRequest(err);
-      });
+  reLogin: async function(req, res) {
+    try {
+      const { username, password } = req.body;
+      const { loggedIn } = req.session;
+      const user = await userAPI.findUserByUsername(username);
+      // Validate password if not logged in -- will error if incorrect
+      if (!loggedIn) {
+        await passwordAPI.checkPass(password, user.encryptedPassword);
+      }
+
+      // Query for game if user is in one
+      const gameId = user.game;
+      const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
+      // Get populated game if game has started
+      const populatedGame = unpopulatedGame && 
+        unpopulatedGame.p0Ready &&
+        unpopulatedGame.p1Ready ?
+        await gameService.populateGame({ gameId }) : 
+        null;
+
+      req.session.loggedIn = true;
+      req.session.usr = user.id;
+        
+      if (unpopulatedGame) {
+        req.session.game = unpopulatedGame.id;
+        req.session.pNum = user.pNum ?? undefined;
+      }
+
+      if (populatedGame) {
+        Game.subscribe(req, [populatedGame.id]);
+        Game.publish([populatedGame.id], {
+          verb: 'updated',
+          data: {
+            ...populatedGame.lastEvent,
+            game: populatedGame,
+          },
+        });
+      }
+
+    return res.ok();
+
+    } catch (err) {
+      return res.badRequest(err);
+    }
   },
 
   logout: async function (req, res) {
