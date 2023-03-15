@@ -61,7 +61,7 @@ module.exports = {
           !loggedIn && req.body.password
             ? passwordAPI.checkPass(req.body.password, user.encryptedPassword)
             : null;
-        const promiseGame = gameId ? gameService.findGame({ gameId }) : null;
+        const promiseGame = gameId ? gameService.populateGame({ gameId }) : null;
         return Promise.all([promiseGame, Promise.resolve(user), checkPass]);
       })
       .then((values) => {
