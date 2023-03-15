@@ -18,8 +18,9 @@ export default {
   },
   mutations: {
     // Open/Playable Games
-    refreshGames(state, newList) {
-      state.openGames = newList.map((game) => new GameSummary(game));
+    refreshGames(state, { openGames, spectateGames }) {
+      state.openGames = openGames.map((game) => new GameSummary(game));
+      state.spectateGames = spectateGames.map((game) => new GameSummary(game));
     },
     addGameToList(state, newGame) {
       state.openGames.push(new GameSummary(newGame));
@@ -59,10 +60,6 @@ export default {
         updatedGame.status = true;
       }
     },
-    // Spectatable Games
-    refreshSpectateGames(state, newList) {
-      state.spectateGames = newList.map((game) => new GameSummary(game));
-    },
     addSpectateGameToList(state, newGame) {
       state.spectateGames.push(new GameSummary(newGame));
     },
@@ -73,9 +70,8 @@ export default {
         io.socket.get('/game/getList', function handleResponse(resData, jwres) {
           if (jwres.statusCode === 200) {
             const openGames = cloneDeep(resData.openGames);
-            const spectatableGames = cloneDeep(resData.spectatableGames);
-            context.commit('refreshGames', openGames);
-            context.commit('refreshSpectateGames', spectatableGames);
+            const spectateGames = cloneDeep(resData.spectatableGames);
+            context.commit('refreshGames', {openGames, spectateGames});
             return resolve(openGames);
           }
           return reject(new Error('Could not retrieve list of games'));
