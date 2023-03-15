@@ -7,7 +7,7 @@ module.exports = {
 
   fn: async (_, exits) => {
 
-    const recentUpdateThreshhold = dayjs().subtract(10, 'minute').valueOf();
+    const recentUpdateThreshhold = dayjs().subtract(5, 'minute').valueOf();
 
     try {
       const games = await Game.find({
