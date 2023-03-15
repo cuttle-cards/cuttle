@@ -3,7 +3,7 @@ module.exports = async function (req, res) {
     const { gameId } = req.body;
     const game = await gameService.populateGame({ gameId });
 
-    if (game.status || game.players.length !== 2) {
+    if (game.status || game.players.length < 2) {
       return res.badRequest({message: 'You can only spectate an ongoing game with two players'});
     }
 
