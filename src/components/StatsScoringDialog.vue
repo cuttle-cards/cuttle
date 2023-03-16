@@ -3,12 +3,7 @@
     <!-- Activator -->
     <template #activator="{ props }">
       <slot name="button">
-        <v-btn
-          v-bind="props"
-          color="primary"
-          class="mb-2"
-          variant="plain"
-          data-cy="ranked-info-button">
+        <v-btn v-bind="props" color="primary" class="mb-2" variant="text" data-cy="ranked-info-button">
           <span v-if="showButtonText">How are ranks determined?</span>
           <v-icon class="ml-1" icon="mdi-information-outline" />
         </v-btn>
@@ -25,11 +20,11 @@
       <v-card-text>
         <p>
           Competitive Cuttle is divided into 4 seasons per year, one per suit: Clubs, Diamonds, Hearts, and
-          Spades. At the end of each season, the top 4 players play a double elimination championship
+          Spades. At the end of each season, the top 8 players play a double elimination championship
           tournament and the
-          <strong>champions are permenantly accoladed on the site.</strong>
+          <strong>champions are permanantly accoladed on the site.</strong>
         </p>
-        <div class="d-flex justify-space-around flex-wrap">
+        <div class="d-flex justify-space-around flex-wrap mt-4">
           <award-card username="Champion player" :place="1" class="mb-4" />
           <award-card username="Second Place Player" :place="2" class="mb-4" />
           <award-card username="Third Place Player" :place="3" class="mb-4" />
@@ -59,8 +54,9 @@
         </v-list>
         <p>
           You can view the statistics and rankings for each season on this page. At the end of each season,
-          the top 4 players compete in a double elimination championship tournament. Do you have what it takes
-          to become
+          the top 8 players compete in a double elimination championship tournament. At the end of the year,
+          the top 8 players from the Season Championships compete in the Cuttle World Championship! Do you
+          have what it takes to become
           <strong> Lord of the Deep? </strong>
         </p>
         <!-- Actions -->
