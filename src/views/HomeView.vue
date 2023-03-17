@@ -1,7 +1,10 @@
 <template>
-  <div class="home pa-4" :class="{
-    home: $vuetify.display.lgAndUp,
-  }">
+  <div
+    class="home pa-4"
+    :class="{
+      home: $vuetify.display.lgAndUp,
+    }"
+  >
     <v-container>
       <v-row v-if="$vuetify.display.mdAndDown">
         <img id="logo" alt="Cuttle logo" src="/img/logo.png" height="20vh" class="mb-4" />
@@ -18,23 +21,48 @@
             <div id="game-list">
               <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
               <div v-for="game in gameList" :key="game.id">
-                <game-list-item :name="game.name" :p0ready="game.p0Ready ? 1 : 0" :p1ready="game.p1Ready ? 1 : 0"
-                  :game-id="game.id" :status="game.status" :num-players="game.numPlayers" :is-ranked="game.isRanked" />
+                <game-list-item
+                  :name="game.name"
+                  :p0ready="game.p0Ready ? 1 : 0"
+                  :p1ready="game.p1Ready ? 1 : 0"
+                  :game-id="game.id"
+                  :status="game.status"
+                  :num-players="game.numPlayers"
+                  :is-ranked="game.isRanked"
+                />
               </div>
             </div>
           </v-col>
           <v-col id="side-nav" :cols="$vuetify.display.mdAndDown ? 12 : 3">
             <img v-if="$vuetify.display.lgAndUp" id="logo" alt="Vue logo" src="/img/logo.png" />
-            <v-btn variant="outlined" color="primary" class="mt-4" to="/rules" data-cy="rules-link" :size="buttonSize">
+            <v-btn
+              variant="outlined"
+              color="primary"
+              class="mt-4"
+              to="/rules"
+              data-cy="rules-link"
+              :size="buttonSize"
+            >
               Rules
             </v-btn>
-            <v-btn variant="outlined" color="secondary" class="mt-4"
-              href="https://human-ai-interaction.github.io/cuttle-bot/" target="_blank" data-cy="ai-link"
-              :size="buttonSize">
+            <v-btn
+              variant="outlined"
+              color="secondary"
+              class="mt-4"
+              href="https://human-ai-interaction.github.io/cuttle-bot/"
+              target="_blank"
+              data-cy="ai-link"
+              :size="buttonSize"
+            >
               Play with AI
             </v-btn>
-            <v-btn variant="outlined" class="mt-4" href="https://discord.gg/9vrAZ8xGyh" target="_blank"
-              :size="buttonSize">
+            <v-btn
+              variant="outlined"
+              class="mt-4"
+              href="https://discord.gg/9vrAZ8xGyh"
+              target="_blank"
+              :size="buttonSize"
+            >
               Discord
             </v-btn>
             <h6 class="text-h6 mt-4">Looking to Play?</h6>
@@ -52,8 +80,13 @@
         </v-row>
       </div>
     </v-container>
-    <BaseSnackbar v-model="showSnackBar" :message="snackBarMessage" color="error" data-cy="newgame-snackbar"
-      @clear="clearSnackBar" />
+    <BaseSnackbar
+      v-model="showSnackBar"
+      :message="snackBarMessage"
+      color="error"
+      data-cy="newgame-snackbar"
+      @clear="clearSnackBar"
+    />
   </div>
 </template>
 <script>
@@ -133,12 +166,12 @@ h2 {
   font-size: 1.25rem;
 }
 
-p {
-  margin-top: 1rem;
-}
-
 ul {
   padding-inline-start: 40px;
+}
+
+p {
+  margin-top: 1rem;
 }
 
 .container {
