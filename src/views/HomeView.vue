@@ -166,6 +166,10 @@ h2 {
   font-size: 1.25rem;
 }
 
+ul {
+  padding-inline-start: 40px;
+}
+
 p {
   margin-top: 1rem;
 }
