@@ -164,7 +164,7 @@ If you are running windows 11 your best option may be to use Windows Subsystem f
 
 First you will need to make sure virtualization is enabled in your BIOS
 
-[Enable virtulization](https://support.microsoft.com/en-us/windows/enable-virtualization-on-windows-11-pcs-c5578302-6e43-4b4b-a449-8ced115f58e1)
+[Enable Virtualization](https://support.microsoft.com/en-us/windows/enable-virtualization-on-windows-11-pcs-c5578302-6e43-4b4b-a449-8ced115f58e1)
 
 Install WSL
 
