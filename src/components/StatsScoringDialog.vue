@@ -13,7 +13,7 @@
     <v-card>
       <v-card-title class="d-flex justify-space-between">
         <h1>Ranked Scoring</h1>
-        <v-btn icon @click="show = false">
+        <v-btn icon @click="show = false" variant="text">
           <v-icon icon="mdi-close" size="large" />
         </v-btn>
       </v-card-title>
@@ -36,19 +36,47 @@
         </p>
         <v-list>
           <v-list-item>
-            <v-icon :color="theme.firstPlace" class="mr-2" icon="mdi-medal" />
+            <v-chip
+              variant="elevated"
+              class="mr-2 mb-1"
+              :color="this.$vuetify.theme.themes.cuttleTheme.colors.firstPlace"
+            >
+              5 Points
+            </v-chip>
             The player with the most wins gets 5 points for the week
           </v-list-item>
           <v-list-item>
-            <v-icon :color="theme.secondPlace" class="mr-2" icon="mdi-medal" />
+            <v-chip
+              variant="elevated"
+              class="mr-2 mb-1"
+              :color="this.$vuetify.theme.themes.cuttleTheme.colors.secondPlace"
+            >
+              4 Points
+            </v-chip>
             The player with the 2nd most wins gets 4 points for the week
           </v-list-item>
           <v-list-item>
-            <v-icon :color="theme.thirdPlace" class="mr-2" icon="mdi-medal" />
+            <v-chip
+              variant="elevated"
+              class="mr-2 mb-1"
+              :color="this.$vuetify.theme.themes.cuttleTheme.colors.thirdPlace"
+            >
+              3 Points
+            </v-chip>
             The player with the 3rd most wins gets 3 points for the week
           </v-list-item>
-          <v-list-item> Each other player who won at least one match gets 2 points for the week </v-list-item>
           <v-list-item>
+            <v-chip
+              variant="outlined"
+              class="mr-2 mb-1"
+              :color="this.$vuetify.theme.themes.cuttleTheme.colors.primary"
+            >
+              2 Points
+            </v-chip>
+            Each other player who won at least one match gets 2 points for the week
+          </v-list-item>
+          <v-list-item>
+            <v-chip variant="outlined" class="mr-2 mb-1" color="#000"> 1 Point </v-chip>
             Each other player who completed a match without winning gets 1 point for the week
           </v-list-item>
         </v-list>
