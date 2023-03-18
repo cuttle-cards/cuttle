@@ -180,7 +180,7 @@ You will need to set your gitconfig email/username, and make a new folder to kee
 
 #### Finish setup
 
-You should now be able to setup a repo as described in the [Setup](./CONTRIBUTING.md#setup) section at the top of this page.
+You should now be able to setup a repo as described in the [Setup](./setup-development.md#setup) section at the top of this page.
 
 #### Update Cypress Dependencies
 
