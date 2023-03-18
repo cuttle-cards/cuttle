@@ -158,7 +158,7 @@ It will start automatically on localhost:6006 and open a new tab in your browser
 
 ### Windows 11
 
-If you are running windows 11 your best option may be to use Windows Subsystem for Linux(WSL)
+If you are running windows 11 your best option may be to use Windows Subsystem for Linux (WSL)
 
 #### Install WSL
 
@@ -180,10 +180,10 @@ You will need to set your gitconfig email/username, and make a new folder to kee
 
 #### Finish setup
 
-You should now be able to setup a repo as described in the Setup section at the top of this page.
+You should now be able to setup a repo as described in the [Setup](./CONTRIBUTING.md#setup) section at the top of this page.
 
 #### Update Cypress Dependencies
 
-\*\*Cypress should be installed in the above setup, scroll down to "Linux Prerequisites" and install current required dependencies
+\*\*If you have difficulty running Cypress on Linux systems, check the Linux Prerequisites section of the cypress docs
 
 [Install Cypress dependencies](https://docs.cypress.io/guides/getting-started/installing-cypress#Linux-Prerequisites)
