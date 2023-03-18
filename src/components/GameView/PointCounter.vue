@@ -18,7 +18,7 @@
         <div
           class="point-counter__total-points"
           data-cy="point-counter__total"
-          >
+        >
           {{ pointsToWin }}
         </div>
         <v-menu :location="isPlayer ? 'top' : 'bottom'">
