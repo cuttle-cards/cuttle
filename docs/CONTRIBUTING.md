@@ -14,7 +14,7 @@ To get an overview of the project, read the [README](../README.md). Here are som
 - [Set up Git](https://docs.github.com/en/get-started/quickstart/set-up-git)
 - [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow)
 - [Collaborating with pull requests](https://docs.github.com/en/github/collaborating-with-pull-requests)
-- [How to Write GitHub Markdown](contributing/content-markup-reference.md).
+- [How to Write GitHub Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
 ## Getting started
 

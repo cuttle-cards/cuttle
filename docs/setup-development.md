@@ -51,6 +51,7 @@ npm run start:client
 to start the client on localhost:8080
 
 ##### Vue Devtools
+
 To utilize [Vue Devtools](https://devtools.vuejs.org/), you can run
 
 ```
@@ -78,6 +79,7 @@ npm run build
 to compile the Vue SPA into the `assets` directory, which will be statically served by the server (sails backend) at the same port on which it is running to support the API. You can now shut down the client and view the applicaion as its built for production at localhost:1337 (default port for sails).
 
 #### Preview build (on other devices)
+
 You can build the frontend and boot the backend to serve the latest frontend preview from the sails server at port 1337 with
 
 ```
@@ -120,7 +122,6 @@ You can utilize the node debugger in VSCode to debug the backend server.
 
 To do so, start the backend server with:
 
-
 ```
 npm run start:server
 ```
@@ -154,3 +155,35 @@ npm run storybook
 ```
 
 It will start automatically on localhost:6006 and open a new tab in your browser.
+
+### Windows 11
+
+If you are running windows 11 your best option may be to use Windows Subsystem for Linux (WSL)
+
+#### Install WSL
+
+First you will need to make sure virtualization is enabled in your BIOS
+
+[Enable Virtualization](https://support.microsoft.com/en-us/windows/enable-virtualization-on-windows-11-pcs-c5578302-6e43-4b4b-a449-8ced115f58e1)
+
+Install WSL
+
+[WSL install](https://learn.microsoft.com/en-us/windows/wsl/install)
+
+You should now have an icon for "Ubuntu" your app drawer, alternatively you can open up the windows terminal, hit the down arrow and select Ubuntu.
+
+You will need to set your gitconfig email/username, and make a new folder to keep your projects in
+
+#### Install node
+
+[Install Node.js on WSL](https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl)
+
+#### Finish setup
+
+You should now be able to setup a repo as described in the [Setup](./setup-development.md#setup) section at the top of this page.
+
+#### Update Cypress Dependencies
+
+\*\*If you have difficulty running Cypress on Linux systems, check the Linux Prerequisites section of the cypress docs
+
+[Install Cypress dependencies](https://docs.cypress.io/guides/getting-started/installing-cypress#Linux-Prerequisites)

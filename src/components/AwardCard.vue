@@ -1,9 +1,13 @@
 <template>
-  <v-card class="d-flex align-center" :color="theme['neutral-lighten2']" :data-tournament="`${place}${suffix}`">
+  <v-card
+    class="d-flex align-center"
+    :color="theme['neutral-lighten2']"
+    :data-tournament="`${place}${suffix}`"
+  >
     <div class="medal-icon pa-8 d-flex align-center">
       <v-icon size="48" :color="medalColor" icon="mdi-medal" />
     </div>
-    <div class="text d-flex flex-column align-center px-16 justify-center">
+    <div class="text d-flex flex-column align-center px-10 text-center justify-center">
       <h3 class="mx-4">
         {{ username }}
       </h3>
