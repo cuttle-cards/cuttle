@@ -11,10 +11,16 @@
         <div
           class="point-counter__current-points"
           :class="[ isPlayer ? 'point-counter__current-player' : 'point-counter__current-opponent' ]"
+          data-cy="point-counter__current"
         >
           {{ currentPoints }}
         </div>
-        <div class="point-counter__total-points">{{ pointsToWin }}</div>
+        <div
+          class="point-counter__total-points"
+          data-cy="point-counter__total"
+          >
+          {{ pointsToWin }}
+        </div>
         <v-menu :location="isPlayer ? 'top' : 'bottom'">
           <template #activator="{ props }">
             <v-btn class="point-counter__btn" icon v-bind="props" variant="plain">

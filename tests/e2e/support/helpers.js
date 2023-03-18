@@ -198,12 +198,14 @@ function assertDomMatchesFixture(pNum, fixture) {
     throw new Error(`Cannot check whether DOM matches fixture for invalid pNum ${pNum}`);
   }
   // Test scores
-  cy.get(`#${p0Role}-score`)
-    .should('contain', `POINTS: ${expectedP0Points}`)
-    .should('contain', `GOAL: ${expectedP0PointsToWin}`);
-  cy.get(`#${p1Role}-score`)
-    .should('contain', `POINTS: ${expectedP1Points}`)
-    .should('contain', `GOAL: ${expectedP1PointsToWin}`);
+  cy.get(`#${p0Role}-point-counter  [data-cy=point-counter__current]`)
+    .should('contain', `${expectedP0Points}`)
+  cy.get(`#${p0Role}-point-counter [data-cy=point-counter__total]`)
+    .should('contain', `${expectedP0PointsToWin}`)
+  cy.get(`#${p1Role}-point-counter [data-cy=point-counter__current]`)
+    .should('contain', `${expectedP1Points}`)
+  cy.get(`#${p1Role}-point-counter [data-cy=point-counter__total]`)
+    .should('contain', `${expectedP1PointsToWin}`);
 
   let playerHasGlasses = false;
 
