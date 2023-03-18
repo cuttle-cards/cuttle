@@ -34,7 +34,7 @@
     <game-over-dialog
       v-if="gameIsOver"
       :modelValue="gameIsOver"
-      :player-wins="playerWins"
+      :player-wins-game="playerWins"
       :stalemate="stalemate"
     />
     <reauthenticate-dialog :modelValue="mustReauthenticate" />
