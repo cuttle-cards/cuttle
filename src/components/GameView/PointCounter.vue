@@ -28,7 +28,12 @@
             </v-btn>
           </template>
           <v-list class="score-goal-explanation">
-            <v-list-item v-for="(points, idx) in kingPointsToWin" :class="{ 'current-goal': kingCount === idx }"> {{ idx }} Kings: {{ points }}pts </v-list-item>
+            <v-list-item
+              v-for="(points, idx) in kingPointsToWin"
+              :class="{ 'current-goal': kingCount === idx }"
+            >
+              {{ idx }} Kings: {{ points }}pts
+            </v-list-item>
           </v-list>
         </v-menu>
       </div>
