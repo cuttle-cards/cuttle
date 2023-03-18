@@ -1,0 +1,30 @@
+#python
+string_with_spaces = "  Hello,    World!   "
+# Remove leading and trailing spaces
+string_with_spaces = string_with_spaces.strip()
+# Remove all spaces
+string_with_spaces = string_with_spaces.replace(" ", "")
+print(string_with_spaces)
+
+#css
+<p style="white-space: normal;">This is a     sentence with    multiple spaces.</p>
+ 
+ #php
+ 
+ <template>
+  <div>
+    <input v-model.trim="message" />
+  </div>
+</template>
+
+#js
+let string_with_spaces = "  Hello,    World!   ";
+// Remove leading and trailing spaces
+string_with_spaces = string_with_spaces.trim();
+// Remove all spaces
+string_with_spaces = string_with_spaces.replace(/\s+/g, '');
+console.log(string_with_spaces);
+
+#rust
+sed 's/\s+//g' file.txt > newfile.txt
+
