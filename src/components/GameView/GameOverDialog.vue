@@ -21,9 +21,9 @@
       </div>
       <v-card-text class="dialog-text" v-if="currentMatch" data-cy="match-result-section">
         Match against {{ opponent.username }}
-        <span>: {{ currentMatchWinner ? 'Finished' : 'In Progress' }}</span>
+        <span>: {{ matchIsOver ? 'Finished' : 'In Progress' }}</span>
       </v-card-text>
-      <v-card-text class="dialog-text" v-if="currentMatchWinner" data-cy="match-winner-message">
+      <v-card-text class="dialog-text" v-if="matchIsOver" data-cy="match-winner-message">
         You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ opponent.username }}
       </v-card-text>
       <v-card-text data-cy="match-result-games" class="dialog-text">
@@ -52,7 +52,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    playerWins: {
+    playerWinsGame: {
       type: Boolean,
       required: true,
     },
@@ -76,12 +76,12 @@ export default {
     }),
     ...mapGetters(['player', 'opponent']),
     heading() {
-      if (this.currentMatchWinner) {
+      if (this.matchIsOver) {
         return this.playerWinsMatch ? 'You Win the Match' : 'You Lose the Match';
       }
       const currentMatchGames = this.game.currentMatch?.games ?? [];
       const gameNumberPrefix = currentMatchGames.length > 0 ? `Game ${currentMatchGames.length}: ` : '';
-      const winnerMessage = this.stalemate ? 'Draw' : this.playerWins ? 'You Win' : 'You Lose';
+      const winnerMessage = this.stalemate ? 'Draw' : this.playerWinsGame ? 'You Win' : 'You Lose';
 
       return `${gameNumberPrefix}${winnerMessage}`;
     },
@@ -90,7 +90,7 @@ export default {
         return 'stalemate-heading';
       }
 
-      if (this.playerWins) {
+      if (this.playerWinsGame) {
         return 'victory-heading';
       }
 
@@ -101,7 +101,7 @@ export default {
         return '/img/logo-stalemate.svg';
       }
 
-      if (this.playerWins) {
+      if (this.playerWinsGame) {
         return '/img/logo-body-no-text.svg';
       }
 
@@ -112,7 +112,7 @@ export default {
         return 'stalemate-img';
       }
 
-      if (this.playerWins) {
+      if (this.playerWinsGame) {
         return 'victory-img';
       }
 
@@ -136,7 +136,7 @@ export default {
         }
       });
     },
-    currentMatchWinner() {
+    matchIsOver() {
       return this.game.currentMatch?.winner;
     },
     playerWinsMatch() {
