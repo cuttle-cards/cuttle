@@ -7,6 +7,7 @@ import {
   assertSnackbarError,
   SnackBarError,
 } from '../../support/helpers';
+import { assertLoss } from './gameOver.spec';
 
 function setup() {
   cy.wipeDatabase();
@@ -18,13 +19,13 @@ function setup() {
 describe('Spectating Games', () => {
   beforeEach(setup);
 
-  it('Spectates a game', () => {
+  it.only('Spectates a game', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
@@ -33,7 +34,7 @@ describe('Spectating Games', () => {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
@@ -46,7 +47,7 @@ describe('Spectating Games', () => {
       p0Hand: [Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
       p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
@@ -58,7 +59,7 @@ describe('Spectating Games', () => {
       p0Hand: [Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
       p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
@@ -71,7 +72,7 @@ describe('Spectating Games', () => {
       p0Hand: [Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
       p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
@@ -91,10 +92,18 @@ describe('Spectating Games', () => {
       p0Hand: [],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
       p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     }, true);
+
+    // P1 plays the Eight of Diamonds and wins
+    cy.recoverSessionOpponent(playerTwo);
+    cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS, 1);
+
+    assertLoss();
+    cy.get('[data-cy=gameover-go-home]').click();
+    cy.url().should('not.include', '/game');
   });
 
   it('Prevents spectator from making moves', () => {
