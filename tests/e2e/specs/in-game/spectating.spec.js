@@ -19,7 +19,7 @@ function setup() {
 describe('Spectating Games', () => {
   beforeEach(setup);
 
-  it.only('Spectates a game', () => {
+  it('Spectates a game', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
