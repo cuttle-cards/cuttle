@@ -180,6 +180,9 @@ module.exports = {
       if (game.isRanked) {
         res.currentMatch = await sails.helpers.addGameToMatch(game);
       }
+
+      // Inform all clients this game is over
+      sails.sockets.blast('gameFinished', { gameId: game.id });
     }
     return res;
   },
