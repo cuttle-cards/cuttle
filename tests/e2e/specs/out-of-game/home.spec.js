@@ -66,18 +66,17 @@ describe('Home - Game List', () => {
   beforeEach(setup);
 
   describe('Open Games', () => {
-
     it('Displays a game for every open game on the server', () => {
       cy.createGamePlayer({ gameName: '111', isRanked: false });
       cy.createGamePlayer({ gameName: '33', isRanked: false });
       cy.get('[data-cy=game-list-item]').should('have.length', 2);
     });
-  
+
     it('Displays placeholder text when no games are available', () => {
       cy.get('[data-cy=text-if-no-game]').should('have.text', 'No Active Games');
       cy.contains('p', 'No Active Games');
     });
-  
+
     it('Adds a new game to the list when one comes in through the socket', () => {
       cy.createGamePlayer({ gameName: '111', isRanked: false });
       cy.createGamePlayer({ gameName: '33', isRanked: false });
@@ -86,7 +85,7 @@ describe('Home - Game List', () => {
       cy.createGameOpponent('Game made by other player');
       cy.get('[data-cy=game-list-item]').should('have.length', 3).contains('Game made by other player');
     });
-  
+
     it('Joins an open game', () => {
       cy.window()
         .its('cuttle.app.config.globalProperties.$store.state.game')
@@ -102,7 +101,7 @@ describe('Home - Game List', () => {
           assertSuccessfulJoin(gameState);
         });
     });
-  
+
     it('Joins a game that already has one player', () => {
       /**
        * Set up:
@@ -124,7 +123,7 @@ describe('Home - Game List', () => {
           });
       });
     });
-  
+
     it('Disables join when a game becomes full', () => {
       /**
        * Set up:
@@ -138,12 +137,12 @@ describe('Home - Game List', () => {
         cy.subscribeOpponent(gameData.gameId);
         cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw');
         cy.subscribeOpponent(gameData.gameId);
-  
+
         // Test that join button is now disabled
         cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
       });
     });
-  
+
     it('Re-enable join when a user leaves a full lobby', () => {
       /**
        * Set up:
@@ -157,10 +156,10 @@ describe('Home - Game List', () => {
         cy.subscribeOpponent(gameData.gameId);
         cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw');
         cy.subscribeOpponent(gameData.gameId);
-  
+
         // Test that join button is now disabled
         cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
-  
+
         cy.leaveLobbyOpponent(gameData.gameId);
         cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
       });
@@ -191,10 +190,10 @@ describe('Home - Game List', () => {
 
         cy.url().should('include', '/spectate/');
         cy.window()
-        .its('cuttle.app.config.globalProperties.$store.state.game')
-        .then((gameState) => {
-          expect(gameState.id).to.not.eq(null);
-        });
+          .its('cuttle.app.config.globalProperties.$store.state.game')
+          .then((gameState) => {
+            expect(gameState.id).to.not.eq(null);
+          });
       });
     });
 
@@ -233,7 +232,7 @@ describe('Home - Game List', () => {
         cy.recoverSessionOpponent(playerOne);
         cy.subscribeOpponent(gameId);
         cy.readyOpponent(gameId);
-        
+
         cy.recoverSessionOpponent(playerTwo);
         cy.subscribeOpponent(gameId);
         cy.readyOpponent(gameId);
@@ -248,7 +247,6 @@ describe('Home - Game List', () => {
         assertSnackbarError('Unable to spectate game', 'newgame');
         // Spectate button should now be disabled
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
-
       });
       // Refresh page -- no games available to spectate
       cy.visit('/');
@@ -274,6 +272,68 @@ describe('Home - Game List', () => {
         // Existing game is available to spectate
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
+      });
+    });
+
+    it.only('Disables spectate button if on home view before game finishes', () => {
+      cy.signupOpponent(playerOne.username, playerOne.password);
+
+      //Navigate to homepage and select spectate tab
+      cy.visit('/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+
+      //Stalemate game
+      cy.createGameOpponent('Stalemate game').then(({ gameId }) => {
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+
+        cy.signupOpponent(playerTwo.username, playerTwo.password);
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+
+        cy.stalemateOpponent();
+
+        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+
+        //Conceded game
+        cy.createGameOpponent('Conceded game').then(({ gameId }) => {
+          cy.recoverSessionOpponent(playerOne);
+          cy.subscribeOpponent(gameId);
+          cy.readyOpponent(gameId);
+
+          cy.recoverSessionOpponent(playerTwo);
+          cy.subscribeOpponent(gameId);
+          cy.readyOpponent(gameId);
+
+          cy.concedeOpponent();
+
+          cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+        });
+
+        //Passed game
+        cy.createGameOpponent('Passed game').then(({ gameId }) => {
+          cy.recoverSessionOpponent(playerOne);
+          cy.subscribeOpponent(gameId);
+          cy.readyOpponent(gameId);
+
+          cy.recoverSessionOpponent(playerTwo);
+          cy.subscribeOpponent(gameId);
+          cy.readyOpponent(gameId);
+
+          //delete deck, both players draw, back and forth pass until stalemate
+          cy.deleteDeck();
+          cy.recoverSessionOpponent(playerOne);
+          cy.drawCardOpponent();
+          cy.recoverSessionOpponent(playerTwo);
+          cy.drawCardOpponent();
+          cy.recoverSessionOpponent(playerOne);
+          cy.passOpponent();
+          cy.recoverSessionOpponent(playerTwo);
+          cy.passOpponent();
+          cy.recoverSessionOpponent(playerOne);
+          cy.passOpponent();
+          cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+        });
       });
     });
   });
