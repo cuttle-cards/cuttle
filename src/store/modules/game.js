@@ -42,6 +42,7 @@ function resetState() {
     conceded: false,
     waitingForOpponentToStalemate: false,
     consideringOpponentStalemateRequest: false,
+    currentMatch: null,
   };
 }
 
@@ -183,6 +184,7 @@ export default {
       else state.oneOffTarget = null;
 
       if (Object.hasOwnProperty.call(newGame, 'isRanked')) state.isRanked = newGame.isRanked;
+      if (Object.hasOwnProperty.call(newGame, 'currentMatch')) state.currentMatch = newGame.currentMatch;
     },
     setMyPNum(state, val) {
       state.myPNum = val;
@@ -237,10 +239,11 @@ export default {
       state.waitingForOpponentToPlayFromDeck = val;
     },
     // Game Over
-    setGameOver(state, { gameOver, conceded, winner }) {
+    setGameOver(state, { gameOver, conceded, winner, currentMatch }) {
       state.gameIsOver = gameOver;
       state.conceded = conceded;
       state.winnerPNum = winner;
+      state.currentMatch = currentMatch;
     },
     setWaitingForOpponentToStalemate(state, value) {
       state.waitingForOpponentToStalemate = value;

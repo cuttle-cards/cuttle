@@ -7,18 +7,64 @@ const dayjs = require('dayjs');
 function assertVictory() {
   cy.log('Asserting player victory');
   cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        const matchWinner = game.currentMatch.winner;
+        cy.get('#game-over-dialog')
+          .should('be.visible')
+          .should('contain', matchWinner ? 'You Win the Match' : `Game ${gameNumber}: You Win`)
+          .get('[data-cy=match-result-section]')
+          .should('be.visible');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
+    });
 }
 
 function assertLoss() {
   cy.log('Asserting player loss');
   cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
   cy.get('[data-cy=loss-img]').should('be.visible');
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        const matchWinner = game.currentMatch.winner;
+        cy.get('#game-over-dialog')
+          .should('contain', matchWinner ? 'You Lose the Match' : `Game ${gameNumber}: You Lose`)
+          .should('be.visible')
+          .get('[data-cy=match-result-section]')
+          .should('be.visible');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
+    });
 }
 
 function assertStalemate() {
   cy.log('Asserting stalemate');
   cy.get('#game-over-dialog').should('be.visible').get('[data-cy=stalemate-heading]').should('be.visible');
   cy.get('[data-cy=stalemate-img]').should('be.visible');
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        cy.get('#game-over-dialog')
+          .should('be.visible')
+          // Don't need to check match winner as we do in assertVictory or assertLoss
+          // since a stalemate won't decide a match winner
+          .should('contain', `Game ${gameNumber}: Draw`)
+          .get('[data-cy=match-result-section]')
+          .should('be.visible');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
+    });
 }
 
 function goHomeJoinNewGame() {
@@ -459,14 +505,14 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
 
     cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
 
-    cy.get('#game-menu-activator').click({force: true});
+    cy.get('#game-menu-activator').click({ force: true });
     cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
     cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
     assertLoss();
     goHomeJoinNewGame();
 
     cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
-  })
+  });
 });
 
 describe('Creating And Updating Ranked Matches', () => {
@@ -517,6 +563,13 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // 1st game: Opponent concedes
     cy.concedeOpponent();
+    assertVictory();
+    cy.window()
+      .its('cuttle.app.config.globalProperties.$store.state.game')
+      .then((game) => {
+        const results = game.currentMatch.games.map((g) => g.result);
+        cy.expect(results[0]).to.eq(0);
+      });
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
 
@@ -548,6 +601,14 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // Opponent wins with points
     cy.playPointsOpponent(Card.ACE_OF_SPADES);
+    assertLoss();
+    cy.window()
+      .its('cuttle.app.config.globalProperties.$store.state.game')
+      .then((game) => {
+        const results = game.currentMatch.games.map((g) => g.result);
+        cy.expect(results[0]).to.eq(0);
+        cy.expect(results[1]).to.eq(0);
+      });
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
 
@@ -576,6 +637,15 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
     // Opponent confirms
     cy.stalemateOpponent();
+    assertStalemate();
+    cy.window()
+      .its('cuttle.app.config.globalProperties.$store.state.game')
+      .then((game) => {
+        const results = game.currentMatch.games.map((g) => g.result);
+        cy.expect(results[0]).to.eq(0);
+        cy.expect(results[1]).to.eq(0);
+        cy.expect(results[2]).to.eq(2);
+      });
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
 
@@ -617,6 +687,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    assertStalemate();
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
 
@@ -658,6 +729,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    assertStalemate();
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
 
@@ -692,6 +764,8 @@ describe('Creating And Updating Ranked Matches', () => {
     // Player wins with points
     cy.get('[data-player-hand-card=1-3]').click();
     cy.get('[data-move-choice=points').click();
+    assertVictory();
+    cy.get('[data-cy=match-winner-message]').contains('You won');
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
 
@@ -737,7 +811,7 @@ describe('Creating And Updating Ranked Matches', () => {
       cy.request('http://localhost:1337/game').then((res) => {
         // Sort games by updatedAt asc
         const games = res.body.sort((game1, game2) => game1.updatedAt - game2.updatedAt);
-        expect(games.length).to.eq(7, 'Expected 6 games');
+        expect(games.length).to.eq(7, 'Expected 7 games');
         expect(games[6].isRanked).to.eq(false, 'Expected last game to be set to unranked after completion');
       });
     });

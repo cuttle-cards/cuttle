@@ -64,6 +64,7 @@ module.exports = {
           winner: relevantMatch.player2,
         });
       }
+      relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1.id, player2.id);
 
       return exits.success(relevantMatch);
     } catch (err) {

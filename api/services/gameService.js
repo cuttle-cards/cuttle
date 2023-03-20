@@ -117,7 +117,7 @@ module.exports = {
               })
               // then find points
               .then(function findPoints(values) {
-                const [ game, p0, p1 ] = values;
+                const [game, p0, p1] = values;
                 const p0Points = cardService.findPoints({ userId: p0.id });
                 const p1Points = cardService.findPoints({ userId: p1.id });
                 return Promise.all([
@@ -130,7 +130,7 @@ module.exports = {
               })
               // then format results & resolve
               .then(function finish(values) {
-                const [ game, p0, p1, p0Points, p1Points ] = values;
+                const [game, p0, p1, p0Points, p1Points] = values;
                 const populatedP0 = new tempUser(p0, p0Points);
                 const populatedP1 = new tempUser(p1, p1Points);
                 const result = new tempGame(game, populatedP0, populatedP1);
@@ -157,6 +157,7 @@ module.exports = {
       gameOver: false,
       winner: null,
       conceded: false,
+      currentMatch: null,
     };
     let { game } = options;
     const p0Wins = userService.checkWin({ user: game.players[0] });
@@ -177,7 +178,7 @@ module.exports = {
         ...gameUpdates,
       };
       if (game.isRanked) {
-        await sails.helpers.addGameToMatch(game);
+        res.currentMatch = await sails.helpers.addGameToMatch(game);
       }
     }
     return res;
