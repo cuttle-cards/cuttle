@@ -23,10 +23,12 @@ module.exports = {
     bracketLink: {
       type: 'string',
       required: false,
+      allowNull: true,
     },
     footageLink: {
       type: 'string',
       required: false,
+      allowNull: true,
     },
     firstPlace: {
       model: 'user',

@@ -26,6 +26,7 @@ module.exports = {
     endTime: {
       type: 'number',
       required: false,
+      allowNull: true,
     },
     games: {
       collection: 'Game',
