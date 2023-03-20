@@ -60,6 +60,8 @@ module.exports = function (req, res) {
           victory.currentMatch = await sails.helpers.addGameToMatch(game);
         }
         await gameService.clearGame({ userId: req.session.usr });
+        // Inform all clients this game is over
+        sails.sockets.blast('gameFinished', { gameId: game.id });
       }
       Game.publish([game.id], {
         verb: 'updated',
@@ -69,6 +71,7 @@ module.exports = function (req, res) {
           victory,
         },
       });
+
       return res.ok();
     })
     .catch(function failed(err) {
