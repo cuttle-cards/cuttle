@@ -130,6 +130,10 @@ export default {
   &__current-player {
     margin-top: 9px;
   }
+
+  &__current-opponent {
+    margin-top: 16px;
+  }
 }
 
 @media only screen and (max-device-width: 400px) and (orientation: portrait) {
@@ -149,11 +153,15 @@ export default {
     }
 
     &__current-points {
-      font-size: 30px;
+      font-size: 28px;
     }
 
     &__total-points {
-      font-size: 26px;
+      font-size: 24px;
+    }
+
+    &__current-opponent {
+      margin-top: 16px;
     }
   }
 }
@@ -177,7 +185,6 @@ export default {
     &__current-points {
       font-size: 48px;
       border-bottom: 2px solid rgba(27, 27, 27);
-      padding-top: 18px;
     }
 
     &__total-points {
@@ -189,11 +196,11 @@ export default {
     }
 
     &__current-opponent {
-      margin-top: 12px;
+      margin-top: 28px;
     }
 
     &__current-player {
-      margin-top: 8px;
+      margin-top: 16px;
     }
   }
 
