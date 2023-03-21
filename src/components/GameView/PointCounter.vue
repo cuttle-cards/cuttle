@@ -107,12 +107,12 @@ export default {
   }
 
   &__current-points {
-    font-size: 1.4em;
+    font-size: 22px;
     border-bottom: 1px solid rgba(27, 27, 27);
   }
 
   &__total-points {
-    font-size: 1em;
+    font-size: 16px;
   }
 
   &__player {
@@ -124,11 +124,11 @@ export default {
   }
 
   &__current-opponent {
-    margin-top: 0.8em;
+    margin-top: 12px;
   }
 
   &__current-player {
-    margin-top: 0.55em;
+    margin-top: 9px;
   }
 }
 
@@ -149,42 +149,11 @@ export default {
     }
 
     &__current-points {
-      font-size: 1.8em;
+      font-size: 30px;
     }
 
     &__total-points {
-      font-size: 1.7em;
-    }
-  }
-}
-
-@media screen and (min-width: 900px) {
-  .point-counter {
-    line-height: 1.1;
-
-    &__wrapper {
-      width: 38px;
-      height: 150px;
-    }
-
-    &__inner-container {
-      top: 2px;
-      left: 2px;
-      width: 34px;
-      height: 146px;
-      font-size: 0.75rem;
-    }
-
-    &__current-points {
-      font-size: 3em;
-    }
-
-    &__total-points {
-      font-size: 2.5em;
-    }
-
-    &__current-player {
-      margin-top: 0.5em;
+      font-size: 26px;
     }
   }
 }
@@ -206,24 +175,25 @@ export default {
     }
 
     &__current-points {
-      font-size: 3.5em;
+      font-size: 48px;
       border-bottom: 2px solid rgba(27, 27, 27);
+      padding-top: 18px;
     }
 
     &__total-points {
-      font-size: 2.75em;
+      font-size: 36px;
     }
 
     &__btn {
-      margin-top: 0.1em;
+      margin-top: 2px;
     }
 
     &__current-opponent {
-      margin-top: 0.8em;
+      margin-top: 12px;
     }
 
     &__current-player {
-      margin-top: 0.5em;
+      margin-top: 8px;
     }
   }
 
