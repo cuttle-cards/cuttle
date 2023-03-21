@@ -24,7 +24,10 @@
         <v-menu :location="isPlayer ? 'top' : 'bottom'">
           <template #activator="{ props }">
             <v-btn class="point-counter__btn" icon v-bind="props" variant="plain">
-              <v-icon color="black" icon="mdi-information" :size="[$vuetify.display.smAndDown ? 'small' : 'large']" />
+              <v-icon
+                color="black"
+                icon="mdi-information"
+                :size="[$vuetify.display.smAndDown ? 'small' : 'large']" />
             </v-btn>
           </template>
           <v-list class="score-goal-explanation">
@@ -136,6 +139,9 @@ export default {
   }
 }
 
+.current-goal {
+  background-color: rgb(115, 160, 110);
+}
 @media only screen and (max-device-width: 400px) and (orientation: portrait) {
   .point-counter {
     line-height: 1.1;
