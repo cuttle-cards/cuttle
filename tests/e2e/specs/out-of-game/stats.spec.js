@@ -1,6 +1,12 @@
 import { playerOne, playerTwo, playerThree, playerFour, playerFive } from '../../fixtures/userFixtures';
 import { seasonFixtures, matchesFixture } from '../../fixtures/statsFixtures';
 const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('America/New_York');
 
 function setup() {
   cy.viewport(1980, 1080);

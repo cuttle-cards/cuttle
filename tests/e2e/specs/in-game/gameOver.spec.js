@@ -3,6 +3,12 @@ import { seasonFixtures } from '../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../fixtures/userFixtures';
 
 const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('America/New_York');
 
 function assertVictory() {
   cy.log('Asserting player victory');

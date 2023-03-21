@@ -1,8 +1,13 @@
 const dayjs = require('dayjs');
 const isBetween = require('dayjs/plugin/isBetween');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
 const Result = require('../../types/Result.es5');
-dayjs.extend(isBetween);
 
+dayjs.extend(isBetween);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('America/New_York');
 /////////////
 // Helpers //
 /////////////
