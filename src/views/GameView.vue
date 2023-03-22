@@ -375,7 +375,7 @@
         @points="playPoints"
         @target="beginTargeting"
       />
-      <game-dialogs @clear-selection="clearSelection" @handle-error="handleError" />
+      <game-dialogs :is-spectating="isSpectating" @clear-selection="clearSelection" @handle-error="handleError" />
     </template>
   </div>
 </template>
