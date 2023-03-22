@@ -65,10 +65,15 @@ io.socket.on('game', function (evData) {
           }
 
           // Validate current route & navigate if incorrect
-          const expectedRoutePrefix = isSpectating ? 'spectate' : 'game';
-          const expectedRoute = `/${expectedRoutePrefix}/${store.state.game.id}`;
-          if (currentRoute.fullPath !== expectedRoute) {
-            router.push(expectedRoute);
+          const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
+          const shouldNavigate = currentRoute.name !== targetRouteName;
+          if (shouldNavigate) {
+            router.push({
+              name: targetRouteName,
+              params: {
+                gameId: store.state.game.id,
+              },
+            });
           }
           break;
         }
