@@ -13,7 +13,7 @@
         <p class="game-name" data-cy="game-list-item-name">
           {{ name }}
         </p>
-        <p>{{ readyText }} players</p>
+        <p v-if="!isSpectatable">{{ readyText }} players</p>
       </v-col>
       <v-col cols="3" class="list-item__button">
         <!-- Join Button -->
