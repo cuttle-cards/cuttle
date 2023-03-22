@@ -59,7 +59,7 @@
               <div id="opponent-hand-cards" class="d-flex justify-center align-start">
                 <transition name="slide-below" mode="out-in">
                   <transition-group
-                    v-if="revealOpponentHand"
+                    v-if="showOpponentHand"
                     id="opponent-hand-glasses"
                     key="opponent-hand-glasses"
                     class="opponent-hand-wrapper transition-all"
@@ -446,7 +446,7 @@ export default {
     isSpectating() {
       return this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE;
     },
-    revealOpponentHand() {
+    showOpponentHand() {
       return this.hasGlassesEight || this.isSpectating;
     },
     //////////
