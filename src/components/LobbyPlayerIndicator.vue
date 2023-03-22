@@ -33,20 +33,6 @@ export default {
       default: false,
     },
   },
-  watch: {
-    playerUsername: function(newVal, oldVal) {
-      // Play audio when player join lobby
-      if (oldVal === null && newVal !== null) {
-        const audio = new Audio('/public/sounds/lobby/enter-lobby.mp3');
-        audio.play();
-      }
-      // Play audio when player leave lobby
-      else if (oldVal !== null && newVal === null) {
-        const audio = new Audio('/public/sounds/lobby/leave-lobby.mp3');
-        audio.play();
-      }
-    }
-  },
   computed: {
     message() {
       return this.playerUsername || 'Invite';
