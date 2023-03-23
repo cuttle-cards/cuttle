@@ -383,7 +383,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 
-import { ROUTE_NAME_SPECTATE } from '@/router';
+import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
 import GameCard from '@/components/GameView/GameCard.vue';
 import GameDialogs from '@/components/GameView/GameDialogs.vue';
 import GameMenu from '@/components/GameView/GameMenu.vue';
@@ -698,9 +698,15 @@ export default {
       });
     },
   },
-  mounted() {
+  async mounted() {
     if (this.isSpectating && !this.$store.state.game.id) {
-      const { gameId } = this.$router.currentRoute.value.params;
+      let { gameId } = this.$router.currentRoute.value.params;
+      gameId = Number(gameId);
+      if (!Number.isInteger(gameId)) {
+        await this.$store.dispatch('requestUnsubscribeFromGame');
+        this.$router.push(ROUTE_NAME_HOME);
+        return;
+      }
       this.$store.dispatch('requestSpectate', Number(gameId));
     }
 
