@@ -282,8 +282,8 @@ describe('Home - Game List', () => {
       cy.visit('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
 
-      //Stalemate game
-      cy.createGameOpponent('Stalemate game').then(({ gameId }) => {
+      //Conceded game
+      cy.createGameOpponent('Conceded').then(({ gameId }) => {
         cy.subscribeOpponent(gameId);
         cy.readyOpponent(gameId);
 
@@ -291,12 +291,15 @@ describe('Home - Game List', () => {
         cy.subscribeOpponent(gameId);
         cy.readyOpponent(gameId);
 
-        cy.stalemateOpponent();
+        cy.concedeOpponent();
 
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
 
-        //Conceded game
-        cy.createGameOpponent('Conceded game').then(({ gameId }) => {
+        //Navigate to homepage and select spectate tab
+        cy.reload();
+        cy.get('[data-cy-game-list-selector=spectate]').click();
+        //Stalemate game
+        cy.createGameOpponent('Stalemate').then(({ gameId }) => {
           cy.recoverSessionOpponent(playerOne);
           cy.subscribeOpponent(gameId);
           cy.readyOpponent(gameId);
@@ -305,13 +308,15 @@ describe('Home - Game List', () => {
           cy.subscribeOpponent(gameId);
           cy.readyOpponent(gameId);
 
-          cy.concedeOpponent();
+          cy.stalemateOpponent();
 
           cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
         });
 
+        cy.reload();
+        cy.get('[data-cy-game-list-selector=spectate]').click();
         //Passed game
-        cy.createGameOpponent('Passed game').then(({ gameId }) => {
+        cy.createGameOpponent('Passed').then(({ gameId }) => {
           cy.recoverSessionOpponent(playerOne);
           cy.subscribeOpponent(gameId);
           cy.readyOpponent(gameId);
