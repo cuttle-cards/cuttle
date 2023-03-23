@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     async goHome() {
-      if (this.isSpecating)  {
+      if (!this.isSpecating)  {
         await this.$store.dispatch('requestUnsubscribeFromGame');
       }
       this.$router.push('/');
