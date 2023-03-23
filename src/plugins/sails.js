@@ -3,7 +3,7 @@ import socketIoClient from 'socket.io-client';
 import { cloneDeep } from 'lodash';
 import store from '@/store/store.js';
 import router from '@/router.js';
-import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE } from '@/router';
+import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_HOME } from '@/router';
 
 export const io = sails(socketIoClient);
 
@@ -221,6 +221,10 @@ io.socket.on('connect', () => {
       return store.dispatch('requestReauthenticate', { username });
     case ROUTE_NAME_SPECTATE: {
       const gameId = Number(router.currentRoute.value.params.gameId);
+      if (!Number.isInteger(gameId)) {
+        router.push(ROUTE_NAME_HOME);
+        return;
+      }
       return store.dispatch('requestSpectate', gameId);
     }
     default:
