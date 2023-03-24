@@ -269,9 +269,10 @@ describe('Home - Game List', () => {
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
 
-        cy.get('#waiting-for-game-to-start-overlay').should('be.visible');
+        cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
         cy.readyOpponent(gameId);
-        cy.get('#waiting-for-game-to-start-overlay').should('not.exist');
+        cy.get('#waiting-for-game-to-start-scrim').should('not.exist');
+        cy.get('[data-player-hand-card]').should('have.length', 5);
       });
     });
 

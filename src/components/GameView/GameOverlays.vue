@@ -1,6 +1,15 @@
 <template>
   <div class="game-overlays">
     <v-overlay
+      id="waiting-for-game-to-start-scrim"
+      v-model="waitingForGameToStart"
+      class="game-overlay"
+    >
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Waiting for Game to Start
+      </h1>
+    </v-overlay>
+    <v-overlay
       id="waiting-for-opponent-counter-scrim"
       v-model="waitingForOpponentToCounter"
       class="game-overlay"
@@ -121,6 +130,9 @@ export default {
       'hasGlassesEight',
       'player',
     ]),
+    waitingForGameToStart() {
+      return !(this.$store.state.game.p0Ready && this.$store.state.game.p1Ready);
+    },
     showWaitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';
       const mustResolve = 'Opponent Must Resolve';
