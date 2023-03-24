@@ -12,6 +12,7 @@
         color="secondary"
         class="mt-4"
         data-cy="leave-unstarted-game-button"
+        :loading="leavingGame"
         @click="goHome"
       >
         Leave Game
@@ -116,6 +117,11 @@ export default {
       default: null,
     },
   },
+  data() {
+    return {
+      leavingGame: false,
+    };
+  },
   computed: {
     // Since we're not using namespacing, we need to destructure the game module
     // off of the global state to directly access the state values
@@ -167,9 +173,11 @@ export default {
       this.$emit('target', event);
     },
     async goHome() {
+      this.leavingGame = true;
       try {
         await this.$store.dispatch('requestUnsubscribeFromGame');
       } finally {
+        this.leavingGame = false;
         this.$router.push('/');
         this.$store.commit('setGameOver', {
           gameOver: false,
