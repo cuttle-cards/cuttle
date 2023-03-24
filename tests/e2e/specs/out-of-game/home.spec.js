@@ -256,7 +256,7 @@ describe('Home - Game List', () => {
       cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
     });
 
-    it.only('Allows spectating game that has not started yet and displays overlay until game starts', () => {
+    it('Allows spectating game that has not started yet and displays overlay until game starts', () => {
       cy.signupOpponent(playerOne.username, playerOne.password);
       cy.createGameOpponent('Game where spectator joins before it starts').then(({ gameId }) => {
         cy.subscribeOpponent(gameId);
