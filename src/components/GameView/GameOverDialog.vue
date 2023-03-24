@@ -60,10 +60,6 @@ export default {
       type: Boolean,
       required: true,
     },
-    isSpecating: {
-      type: Boolean,
-      default: false,
-    },
   },
   computed: {
     show: {
@@ -149,15 +145,16 @@ export default {
   },
   methods: {
     async goHome() {
-      if (!this.isSpecating)  {
+      try {
         await this.$store.dispatch('requestUnsubscribeFromGame');
+      } finally {
+        this.$router.push('/');
+        this.$store.commit('setGameOver', {
+          gameOver: false,
+          conceded: false,
+          winner: null,
+        });
       }
-      this.$router.push('/');
-      this.$store.commit('setGameOver', {
-        gameOver: false,
-        conceded: false,
-        winner: null,
-      });
     },
     iconFromGameStatus(gameStatus) {
       switch (gameStatus) {

@@ -36,7 +36,6 @@
       :modelValue="gameIsOver"
       :player-wins-game="playerWins"
       :stalemate="stalemate"
-      :isSpectating="isSpectating"
     />
     <reauthenticate-dialog :modelValue="mustReauthenticate" />
     <opponent-requested-stalemate-dialog v-model="consideringOpponentStalemateRequest" />
@@ -69,12 +68,6 @@ export default {
     OpponentRequestedStalemateDialog,
   },
   emits: ['clear-selection', 'handle-error'],
-  props: {
-    isSpectating: {
-      type: Boolean,
-      default: false,
-    },
-  },
   computed: {
     ...mapState({
       playingFromDeck: ({ game }) => game.playingFromDeck,
