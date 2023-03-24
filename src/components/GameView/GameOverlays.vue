@@ -8,6 +8,14 @@
       <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
         Waiting for Game to Start
       </h1>
+      <v-btn
+        color="secondary"
+        class="mt-4"
+        data-cy="leave-unstarted-game-button"
+        @click="goHome"
+      >
+        Leave Game
+      </v-btn>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-counter-scrim"
@@ -157,6 +165,18 @@ export default {
   methods: {
     handleTargeting(event) {
       this.$emit('target', event);
+    },
+    async goHome() {
+      try {
+        await this.$store.dispatch('requestUnsubscribeFromGame');
+      } finally {
+        this.$router.push('/');
+        this.$store.commit('setGameOver', {
+          gameOver: false,
+          conceded: false,
+          winner: null,
+        });
+      }
     },
   },
 };
