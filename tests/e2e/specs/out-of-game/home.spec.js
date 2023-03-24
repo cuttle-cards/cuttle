@@ -256,6 +256,25 @@ describe('Home - Game List', () => {
       cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
     });
 
+    it.only('Allows spectating game that has not started yet and displays overlay until game starts', () => {
+      cy.signupOpponent(playerOne.username, playerOne.password);
+      cy.createGameOpponent('Game where spectator joins before it starts').then(({ gameId }) => {
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+        // Second player signs up, joins but does not ready up yet
+        cy.signupOpponent(playerTwo.username, playerTwo.password);
+        cy.subscribeOpponent(gameId);
+
+        cy.visit('/');
+        cy.get('[data-cy-game-list-selector=spectate]').click();
+        cy.get(`[data-cy-spectate-game=${gameId}]`).click();
+
+        cy.get('#waiting-for-game-to-start-overlay').should('be.visible');
+        cy.readyOpponent(gameId);
+        cy.get('#waiting-for-game-to-start-overlay').should('not.exist');
+      });
+    });
+
     it('Shows ongoing games as available to spectate when user navigates to home page', () => {
       cy.signupOpponent(playerOne.username, playerOne.password);
       cy.createGameOpponent('Spectatable game').then(({ gameId }) => {
