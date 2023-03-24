@@ -265,16 +265,21 @@ describe('Home - Game List', () => {
         cy.signupOpponent(playerTwo.username, playerTwo.password);
         cy.subscribeOpponent(gameId);
 
+        // User spectates game that hasn't started yet
         cy.visit('/');
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
 
+        // User leaves and goes home
         cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
-
         cy.get('[data-cy=leave-unstarted-game-button]').click();
+
+        // User re-joins same game as spectator
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
         cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
+
+        // P1 readies up and game starts
         cy.readyOpponent(gameId);
         cy.get('#waiting-for-game-to-start-scrim').should('not.exist');
         cy.get('[data-player-hand-card]').should('have.length', 5);
