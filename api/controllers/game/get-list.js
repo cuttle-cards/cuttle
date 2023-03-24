@@ -41,6 +41,7 @@ module.exports = async function (req, res) {
         // Unable to find user's game -- remove it from their session
         delete req.session.game;
         delete req.session.pNum;
+        delete req.session.spectating;
       }
     }
     return res.ok(response);
