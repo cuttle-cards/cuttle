@@ -30,6 +30,15 @@ function toggleInput(selector, checked = false) {
     .should(after);
 }
 
+function recoverOpponentsInNewGame(gameId) {
+  cy.recoverSessionOpponent(playerOne);
+  cy.subscribeOpponent(gameId);
+  cy.readyOpponent(gameId);
+  cy.recoverSessionOpponent(playerTwo);
+  cy.subscribeOpponent(gameId);
+  cy.readyOpponent(gameId);
+}
+
 describe('Home - Page Content', () => {
   beforeEach(setup);
 
@@ -308,82 +317,98 @@ describe('Home - Game List', () => {
 
     it.only('Disables spectate button if on home view before game finishes', () => {
       cy.signupOpponent(playerOne.username, playerOne.password);
+      cy.signupOpponent(playerTwo.username, playerTwo.password);
 
       //Navigate to homepage and select spectate tab
       cy.visit('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
 
-      //Conceded game
+      //Finished by conceded
       cy.createGameOpponent('Conceded').then(({ gameId }) => {
-        cy.subscribeOpponent(gameId);
-        cy.readyOpponent(gameId);
-
-        cy.signupOpponent(playerTwo.username, playerTwo.password);
-        cy.subscribeOpponent(gameId);
-        cy.readyOpponent(gameId);
-
+        recoverOpponentsInNewGame(gameId);
         cy.concedeOpponent();
+        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+      });
+
+      //Navigate to homepage and select spectate tab
+      cy.reload();
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+
+      //Finished by stalemate
+      cy.createGameOpponent('Stalemate').then(({ gameId }) => {
+        recoverOpponentsInNewGame(gameId);
+        cy.stalemateOpponent();
+        cy.recoverSessionOpponent(playerOne);
+
+        //make sure button is still enabled after 1 person stalemates
+        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.not.disabled');
+        cy.stalemateOpponent();
 
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
-
-        //Navigate to homepage and select spectate tab
-        cy.reload();
-        cy.get('[data-cy-game-list-selector=spectate]').click();
-
-        //Stalemate game
-        cy.createGameOpponent('Stalemate').then(({ gameId }) => {
-          cy.recoverSessionOpponent(playerOne);
-          cy.subscribeOpponent(gameId);
-          cy.readyOpponent(gameId);
-
-          cy.recoverSessionOpponent(playerTwo);
-          cy.subscribeOpponent(gameId);
-          cy.readyOpponent(gameId);
-
-          cy.stalemateOpponent();
-          cy.recoverSessionOpponent(playerOne);
-
-          //make sure button is still enabled after 1 person stalemates
-          cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.not.disabled');
-          cy.stalemateOpponent();
-
-          cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
-        });
-
-        cy.reload();
-        cy.get('[data-cy-game-list-selector=spectate]').click();
-        //Passed game
-        cy.createGameOpponent('Passed').then(({ gameId }) => {
-          cy.recoverSessionOpponent(playerOne);
-          cy.subscribeOpponent(gameId);
-          cy.readyOpponent(gameId);
-
-          cy.recoverSessionOpponent(playerTwo);
-          cy.subscribeOpponent(gameId);
-          cy.readyOpponent(gameId);
-
-          //delete deck, both players draw, back and forth pass until stalemate
-          cy.deleteDeck();
-          cy.recoverSessionOpponent(playerOne);
-          cy.drawCardOpponent();
-          cy.recoverSessionOpponent(playerTwo);
-          cy.drawCardOpponent();
-          cy.recoverSessionOpponent(playerOne);
-          cy.passOpponent();
-          cy.recoverSessionOpponent(playerTwo);
-          cy.passOpponent();
-          cy.recoverSessionOpponent(playerOne);
-          cy.passOpponent();
-          cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
-        });
-
-        cy.reload();
-        cy.get('[data-cy-game-list-selector=spectate]').click();
-
-        cy.createGameOpponent('win').then(({ gameId }) => {
-          cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
-        });
       });
+
+      cy.reload();
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+
+      //Finished by pass
+      cy.createGameOpponent('Passed').then(({ gameId }) => {
+        recoverOpponentsInNewGame(gameId);
+
+        //delete deck, both players draw, back and forth pass until stalemate
+        cy.deleteDeck();
+        cy.recoverSessionOpponent(playerOne);
+        cy.drawCardOpponent();
+        cy.recoverSessionOpponent(playerTwo);
+        cy.drawCardOpponent();
+        cy.recoverSessionOpponent(playerOne);
+        cy.passOpponent();
+        cy.recoverSessionOpponent(playerTwo);
+        cy.passOpponent();
+        cy.recoverSessionOpponent(playerOne);
+        cy.passOpponent();
+        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+      });
+
+      cy.reload();
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+
+      //Finished by P0 Victory
+      cy.setupGameAsSpectator();
+      cy.loadGameFixture({
+        p0Hand: [Card.EIGHT_OF_SPADES],
+        p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
+        p0FaceCards: [],
+        p1Hand: [Card.EIGHT_OF_HEARTS],
+        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.recoverSessionOpponent(playerOne);
+      cy.vueRoute('/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
+      cy.playPointsSpectator(Card.EIGHT_OF_SPADES, 0);
+      cy.get(`[data-cy-spectate-game]`).should('be.disabled');
+
+      //Finished by P1 Victory
+      cy.setupGameAsSpectator();
+      cy.loadGameFixture({
+        p0Hand: [Card.EIGHT_OF_SPADES],
+        p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
+        p0FaceCards: [],
+        p1Hand: [Card.EIGHT_OF_HEARTS],
+        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.recoverSessionOpponent(playerOne);
+      cy.drawCardOpponent();
+      cy.recoverSessionOpponent(playerTwo);
+      cy.vueRoute('/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
+      cy.playPointsSpectator(Card.EIGHT_OF_HEARTS, 1);
+      cy.get(`[data-cy-spectate-game]`).should('be.disabled');
     });
   });
 });
