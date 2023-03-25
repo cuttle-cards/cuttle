@@ -1,5 +1,6 @@
 import { assertSnackbarError } from '../../support/helpers';
 import {
+  Card,
   username as playerUsername,
   validPassword as playerPassword,
   opponentUsername,
@@ -298,6 +299,7 @@ describe('Home - Game List', () => {
         //Navigate to homepage and select spectate tab
         cy.reload();
         cy.get('[data-cy-game-list-selector=spectate]').click();
+
         //Stalemate game
         cy.createGameOpponent('Stalemate').then(({ gameId }) => {
           cy.recoverSessionOpponent(playerOne);
@@ -308,6 +310,11 @@ describe('Home - Game List', () => {
           cy.subscribeOpponent(gameId);
           cy.readyOpponent(gameId);
 
+          cy.stalemateOpponent();
+          cy.recoverSessionOpponent(playerOne);
+
+          //make sure button is still enabled after 1 person stalemates
+          cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.not.disabled');
           cy.stalemateOpponent();
 
           cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
@@ -342,6 +349,10 @@ describe('Home - Game List', () => {
 
         cy.reload();
         cy.get('[data-cy-game-list-selector=spectate]').click();
+
+        cy.createGameOpponent('win').then(({ gameId }) => {
+          cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+        });
       });
     });
   });

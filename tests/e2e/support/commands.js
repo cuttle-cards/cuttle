@@ -140,10 +140,10 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
 
     cy.url().should('include', '/spectate/');
     cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
-    .then((gameState) => {
-      expect(gameState.id).to.not.eq(null);
-    });
+      .its('cuttle.app.config.globalProperties.$store.state.game')
+      .then((gameState) => {
+        expect(gameState.id).to.not.eq(null);
+      });
   });
 });
 
