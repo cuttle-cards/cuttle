@@ -351,26 +351,41 @@ describe('Home - Game List', () => {
       cy.get('[data-cy-game-list-selector=spectate]').click();
 
       //Finished by pass
-      cy.createGameOpponent('Passed').then(({ gameId }) => {
-        recoverOpponentsInNewGame(gameId);
-
-        //delete deck, both players draw, back and forth pass until stalemate
-        cy.deleteDeck();
-        cy.recoverSessionOpponent(playerOne);
-        cy.drawCardOpponent();
-        cy.recoverSessionOpponent(playerTwo);
-        cy.drawCardOpponent();
-        cy.recoverSessionOpponent(playerOne);
-        cy.passOpponent();
-        cy.recoverSessionOpponent(playerTwo);
-        cy.passOpponent();
-        cy.recoverSessionOpponent(playerOne);
-        cy.passOpponent();
-        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+      cy.setupGameAsSpectator();
+      cy.loadGameFixture({
+        p0Hand: [Card.SEVEN_OF_CLUBS],
+        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
       });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.log('Fixture loaded');
 
-      cy.reload();
+      cy.deleteDeck();
+      cy.log('Drawing last two cards');
+      cy.get('#deck').should('contain', '(2)');
+      cy.recoverSessionOpponent(playerOne);
+      cy.drawCardOpponent();
+      cy.get('#deck').should('contain', '(1)');
+      cy.recoverSessionOpponent(playerTwo);
+      cy.drawCardOpponent();
+      cy.get('#deck').should('contain', '(0)');
+      cy.log('Deck empty');
+      cy.recoverSessionOpponent(playerOne);
+      cy.passOpponent();
+      cy.get('#history').should('contain', `${playerOne.username} passes`);
+      cy.recoverSessionOpponent(playerTwo);
+      cy.passOpponent();
+      cy.get('#history').should('contain', `${playerTwo.username} passes`);
+      cy.recoverSessionOpponent({ username: playerUsername, password: playerPassword });
+      cy.vueRoute('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
+      cy.recoverSessionOpponent(playerOne);
+      cy.passOpponent();
+      cy.get(`[data-cy-spectate-game]`).should('be.disabled');
 
       //Finished by P0 Victory
       cy.setupGameAsSpectator();
