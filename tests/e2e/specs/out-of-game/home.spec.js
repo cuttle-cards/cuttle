@@ -388,6 +388,7 @@ describe('Home - Game List', () => {
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
       cy.playPointsSpectator(Card.EIGHT_OF_SPADES, 0);
+      cy.log('playedPoints');
       cy.get(`[data-cy-spectate-game]`).should('be.disabled');
 
       //Finished by P1 Victory
@@ -408,6 +409,7 @@ describe('Home - Game List', () => {
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
       cy.playPointsSpectator(Card.EIGHT_OF_HEARTS, 1);
+      cy.log('playedPoints');
       cy.get(`[data-cy-spectate-game]`).should('be.disabled');
     });
   });
