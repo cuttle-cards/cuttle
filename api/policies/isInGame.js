@@ -14,7 +14,7 @@ module.exports = function (req, res, next) {
     if (typeof req.session.game === 'number') {
       return next();
     }
-    return res.badRequest({ message: "Error with user's session: 'game' must be an integer" });
+    return res.badRequest({ message: `Error with user's session: 'game' must be an integer` });
   }
-  return res.badRequest({ message: "You can't do that because you're not a player in this game" });
+  return res.badRequest({ message: `You can't do that because you're not a player in this game` });
 };

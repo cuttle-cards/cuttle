@@ -36,7 +36,15 @@
         </div>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn color="primary" variant="flat" data-cy="gameover-go-home" @click="goHome"> Go Home </v-btn>
+        <v-btn
+          color="primary"
+          variant="flat"
+          data-cy="gameover-go-home"
+          :loading="leavingGame"
+          @click="goHome"
+        >
+          Go Home
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -60,10 +68,11 @@ export default {
       type: Boolean,
       required: true,
     },
-    isSpecating: {
-      type: Boolean,
-      default: false,
-    },
+  },
+  data() {
+    return {
+      leavingGame: false,
+    };
   },
   computed: {
     show: {
@@ -149,15 +158,18 @@ export default {
   },
   methods: {
     async goHome() {
-      if (this.isSpecating)  {
+      this.leavingGame = true;
+      try {
         await this.$store.dispatch('requestUnsubscribeFromGame');
+      } finally {
+        this.leavingGame = false;
+        this.$router.push('/');
+        this.$store.commit('setGameOver', {
+          gameOver: false,
+          conceded: false,
+          winner: null,
+        });
       }
-      this.$router.push('/');
-      this.$store.commit('setGameOver', {
-        gameOver: false,
-        conceded: false,
-        winner: null,
-      });
     },
     iconFromGameStatus(gameStatus) {
       switch (gameStatus) {

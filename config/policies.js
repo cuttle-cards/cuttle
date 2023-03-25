@@ -54,7 +54,7 @@ module.exports.policies = {
   'game/concede': ['isLoggedIn', 'isInGame'],
   'game/stalemate': ['isLoggedIn', 'isInGame'],
   'game/stalemate-reject': ['isLoggedIn', 'isInGame'],
-  'game/game-over': ['isLoggedIn', 'isInGame'],
+  'game/game-over': ['isLoggedIn'],
   'game/chat': ['isLoggedIn', 'isInGame'],
   'game/game-data': ['isLoggedIn', 'isInGame'],
   'game/lobby-data': ['isLoggedIn', 'isInGame'],

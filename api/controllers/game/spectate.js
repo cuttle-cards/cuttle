@@ -9,6 +9,7 @@ module.exports = async function (req, res) {
 
     // Subscribe socket to game
     Game.subscribe(req, [ gameId ]);
+    req.session.spectating = gameId;
 
     return res.ok(game);
   } catch (err) {

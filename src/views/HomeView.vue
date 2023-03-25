@@ -20,11 +20,11 @@
             </div>
             <div id="game-list">
               <v-tabs v-model="tab" bg-color="primary" fixed-tabs>
-                <v-tab value="play" data-cy-game-list-selector="play">Play</v-tab>
-                <v-tab value="spectate" data-cy-game-list-selector="spectate">Spectate</v-tab>
+                <v-tab :value="TABS.PLAY" data-cy-game-list-selector="play">Play</v-tab>
+                <v-tab :value="TABS.SPECTATE" data-cy-game-list-selector="spectate">Spectate</v-tab>
               </v-tabs>
               <v-window v-model="tab" class="pa-4">
-                <v-window-item value="play">
+                <v-window-item :value="TABS.PLAY">
                   <p v-if="playableGameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
                   <div v-for="game in playableGameList" :key="game.id">
                     <game-list-item
@@ -39,7 +39,7 @@
                     />
                   </div>
                 </v-window-item>
-                <v-window-item value="spectate">
+                <v-window-item :value="TABS.SPECTATE">
                   <p 
                     v-if="specateGameList.length === 0"
                     data-cy="no-spectate-game-text"
@@ -126,6 +126,11 @@ import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '@/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 
+const TABS = {
+  PLAY: 'play',
+  SPECTATE: 'spectate',
+};
+
 export default {
   name: 'HomeView',
   components: {
@@ -135,7 +140,8 @@ export default {
   },
   data() {
     return {
-      tab: 'play',
+      TABS,
+      tab: TABS.PLAY,
       showSnackBar: false,
       snackBarMessage: '',
     };
