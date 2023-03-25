@@ -315,7 +315,7 @@ describe('Home - Game List', () => {
       });
     });
 
-    it.only('Disables spectate button if on home view before game finishes', () => {
+    it('Disables spectate button if on home view before game finishes', () => {
       cy.signupOpponent(playerOne.username, playerOne.password);
       cy.signupOpponent(playerTwo.username, playerTwo.password);
 
