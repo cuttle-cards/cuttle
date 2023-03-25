@@ -339,6 +339,9 @@ describe('Home - Game List', () => {
           cy.passOpponent();
           cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
         });
+
+        cy.reload();
+        cy.get('[data-cy-game-list-selector=spectate]').click();
       });
     });
   });
