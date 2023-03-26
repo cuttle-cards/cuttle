@@ -33,8 +33,6 @@ module.exports = async function (req, res) {
         result: gameService.GameResult.STALEMATE,
       };
       updatePromises.push(gameService.clearGame({ userId }));
-      // Inform all clients this game is over
-      sails.sockets.blast('gameFinished', { gameId: game.id });
     }
 
     updatePromises.push(Game.updateOne({ id: gameId }).set(gameUpdates));
