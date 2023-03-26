@@ -362,7 +362,7 @@ describe('Home - Game List', () => {
       });
       cy.get('[data-player-hand-card]').should('have.length', 1);
       cy.log('Fixture loaded');
-
+      //Delete deck, draw last two card, both players pass until stalemate
       cy.deleteDeck();
       cy.log('Drawing last two cards');
       cy.get('#deck').should('contain', '(2)');
