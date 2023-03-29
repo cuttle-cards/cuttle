@@ -21,10 +21,12 @@ module.exports = {
         return res.badRequest(err);
       });
   },
+
   setBadSession: function (req, res) {
     req.session.game = -3;
     return res.ok();
   },
+
   loadSeasonFixture: async function (req, res) {
     try {
       await Season.createEach(req.body);
@@ -33,6 +35,7 @@ module.exports = {
     }
     return res.ok();
   },
+
   loadMatchFixtures: async function (req, res) {
     try {
       await Match.createEach(req.body);

@@ -1,6 +1,24 @@
 <template>
   <div class="game-overlays">
     <v-overlay
+      id="waiting-for-game-to-start-scrim"
+      v-model="waitingForGameToStart"
+      class="game-overlay"
+    >
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Waiting for Game to Start
+      </h1>
+      <v-btn
+        color="secondary"
+        class="mt-4"
+        data-cy="leave-unstarted-game-button"
+        :loading="leavingGame"
+        @click="goHome"
+      >
+        Leave Game
+      </v-btn>
+    </v-overlay>
+    <v-overlay
       id="waiting-for-opponent-counter-scrim"
       v-model="waitingForOpponentToCounter"
       class="game-overlay"
@@ -99,6 +117,11 @@ export default {
       default: null,
     },
   },
+  data() {
+    return {
+      leavingGame: false,
+    };
+  },
   computed: {
     // Since we're not using namespacing, we need to destructure the game module
     // off of the global state to directly access the state values
@@ -121,6 +144,9 @@ export default {
       'hasGlassesEight',
       'player',
     ]),
+    waitingForGameToStart() {
+      return !(this.$store.state.game.p0Ready && this.$store.state.game.p1Ready);
+    },
     showWaitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';
       const mustResolve = 'Opponent Must Resolve';
@@ -145,6 +171,20 @@ export default {
   methods: {
     handleTargeting(event) {
       this.$emit('target', event);
+    },
+    async goHome() {
+      this.leavingGame = true;
+      try {
+        await this.$store.dispatch('requestUnsubscribeFromGame');
+      } finally {
+        this.leavingGame = false;
+        this.$router.push('/');
+        this.$store.commit('setGameOver', {
+          gameOver: false,
+          conceded: false,
+          winner: null,
+        });
+      }
     },
   },
 };

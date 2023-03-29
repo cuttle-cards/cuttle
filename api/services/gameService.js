@@ -59,6 +59,8 @@ function tempGame(game, p0, p1) {
   this.isRanked = game.isRanked;
   this.p0 = game.p0;
   this.p1 = game.p1;
+  this.p0Ready = game.p0Ready;
+  this.p1Ready = game.p1Ready;
 }
 module.exports = {
   GameResult,

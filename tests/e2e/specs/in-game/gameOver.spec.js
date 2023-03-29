@@ -24,7 +24,7 @@ function assertVictory() {
     });
 }
 
-function assertLoss() {
+export function assertLoss() {
   cy.log('Asserting player loss');
   cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
   cy.get('[data-cy=loss-img]').should('be.visible');
