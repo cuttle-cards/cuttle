@@ -1,5 +1,6 @@
 import { assertSnackbarError } from '../../support/helpers';
 import {
+  Card,
   username as playerUsername,
   validPassword as playerPassword,
   opponentUsername,
@@ -27,6 +28,18 @@ function toggleInput(selector, checked = false) {
     .should(before)
     .click({ force: true }) // Force to click hidden input inside switch
     .should(after);
+}
+
+function setupGameBetweenTwoUnseenPlayers(gameName) {
+  cy.createGameOpponent(gameName).then(({ gameId }) => {
+    cy.wrap(gameId).as(`${gameName}GameId`);
+    cy.recoverSessionOpponent(playerOne);
+    cy.subscribeOpponent(gameId);
+    cy.readyOpponent(gameId);
+    cy.recoverSessionOpponent(playerTwo);
+    cy.subscribeOpponent(gameId);
+    cy.readyOpponent(gameId);
+  });
 }
 
 describe('Home - Page Content', () => {
@@ -66,18 +79,17 @@ describe('Home - Game List', () => {
   beforeEach(setup);
 
   describe('Open Games', () => {
-
     it('Displays a game for every open game on the server', () => {
       cy.createGamePlayer({ gameName: '111', isRanked: false });
       cy.createGamePlayer({ gameName: '33', isRanked: false });
       cy.get('[data-cy=game-list-item]').should('have.length', 2);
     });
-  
+
     it('Displays placeholder text when no games are available', () => {
       cy.get('[data-cy=text-if-no-game]').should('have.text', 'No Active Games');
       cy.contains('p', 'No Active Games');
     });
-  
+
     it('Adds a new game to the list when one comes in through the socket', () => {
       cy.createGamePlayer({ gameName: '111', isRanked: false });
       cy.createGamePlayer({ gameName: '33', isRanked: false });
@@ -86,7 +98,7 @@ describe('Home - Game List', () => {
       cy.createGameOpponent('Game made by other player');
       cy.get('[data-cy=game-list-item]').should('have.length', 3).contains('Game made by other player');
     });
-  
+
     it('Joins an open game', () => {
       cy.window()
         .its('cuttle.app.config.globalProperties.$store.state.game')
@@ -102,7 +114,7 @@ describe('Home - Game List', () => {
           assertSuccessfulJoin(gameState);
         });
     });
-  
+
     it('Joins a game that already has one player', () => {
       /**
        * Set up:
@@ -124,7 +136,7 @@ describe('Home - Game List', () => {
           });
       });
     });
-  
+
     it('Disables join when a game becomes full', () => {
       /**
        * Set up:
@@ -138,12 +150,12 @@ describe('Home - Game List', () => {
         cy.subscribeOpponent(gameData.gameId);
         cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw');
         cy.subscribeOpponent(gameData.gameId);
-  
+
         // Test that join button is now disabled
         cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
       });
     });
-  
+
     it('Re-enable join when a user leaves a full lobby', () => {
       /**
        * Set up:
@@ -157,10 +169,10 @@ describe('Home - Game List', () => {
         cy.subscribeOpponent(gameData.gameId);
         cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw');
         cy.subscribeOpponent(gameData.gameId);
-  
+
         // Test that join button is now disabled
         cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
-  
+
         cy.leaveLobbyOpponent(gameData.gameId);
         cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
       });
@@ -191,10 +203,10 @@ describe('Home - Game List', () => {
 
         cy.url().should('include', '/spectate/');
         cy.window()
-        .its('cuttle.app.config.globalProperties.$store.state.game')
-        .then((gameState) => {
-          expect(gameState.id).to.not.eq(null);
-        });
+          .its('cuttle.app.config.globalProperties.$store.state.game')
+          .then((gameState) => {
+            expect(gameState.id).to.not.eq(null);
+          });
       });
     });
 
@@ -233,7 +245,7 @@ describe('Home - Game List', () => {
         cy.recoverSessionOpponent(playerOne);
         cy.subscribeOpponent(gameId);
         cy.readyOpponent(gameId);
-        
+
         cy.recoverSessionOpponent(playerTwo);
         cy.subscribeOpponent(gameId);
         cy.readyOpponent(gameId);
@@ -248,7 +260,6 @@ describe('Home - Game List', () => {
         assertSnackbarError('Unable to spectate game', 'newgame');
         // Spectate button should now be disabled
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
-
       });
       // Refresh page -- no games available to spectate
       cy.visit('/');
@@ -305,6 +316,124 @@ describe('Home - Game List', () => {
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
       });
+    });
+
+    it.only('Disables spectate button if on home view before game finishes', () => {
+      cy.signupOpponent(playerOne.username, playerOne.password);
+      cy.signupOpponent(playerTwo.username, playerTwo.password);
+
+      // Navigate to homepage and select spectate tab
+      cy.visit('/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+
+      // Finished by conceded
+      cy.log('Setup game end by conceding');
+      setupGameBetweenTwoUnseenPlayers('conceded');
+      cy.concedeOpponent();
+      cy.get('@concededGameId').then(function () {
+        cy.get(`[data-cy-spectate-game=${this.concededGameId}]`).should('be.disabled');
+      });
+      cy.log('Game ended by conceding - successfully disabled spectate button');
+
+      // Navigate to homepage and select spectate tab
+      cy.reload();
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+
+      // Finished by stalemate
+      cy.log('Setup game end by stalemate');
+      setupGameBetweenTwoUnseenPlayers('stalemate');
+
+      cy.stalemateOpponent();
+      cy.recoverSessionOpponent(playerOne);
+
+      // make sure button is still enabled after 1 person stalemates
+      cy.get('@stalemateGameId').then(function () {
+        cy.get(`[data-cy-spectate-game=${this.stalemateGameId}]`).should('be.not.disabled');
+        cy.stalemateOpponent();
+        cy.get(`[data-cy-spectate-game=${this.stalemateGameId}]`).should('be.disabled');
+        cy.log('Game ended by stalemate - successfully disabled spectate button');
+      });
+
+      cy.reload();
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+
+      // Finished by pass
+      cy.log('Setup game end by passing');
+      cy.setupGameAsSpectator();
+      cy.loadGameFixture({
+        p0Hand: [Card.SEVEN_OF_CLUBS],
+        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      // Delete deck, draw last two card, both players pass until stalemate
+      cy.deleteDeck();
+      cy.get('#deck').should('contain', '(2)');
+      cy.recoverSessionOpponent(playerOne);
+      cy.drawCardOpponent();
+      cy.get('#deck').should('contain', '(1)');
+      cy.recoverSessionOpponent(playerTwo);
+      cy.drawCardOpponent();
+      cy.get('#deck').should('contain', '(0)');
+      cy.recoverSessionOpponent(playerOne);
+      cy.passOpponent();
+      cy.get('#history').should('contain', `${playerOne.username} passes`);
+      cy.recoverSessionOpponent(playerTwo);
+      cy.passOpponent();
+      cy.get('#history').should('contain', `${playerTwo.username} passes`);
+      cy.recoverSessionOpponent({ username: playerUsername, password: playerPassword });
+      cy.vueRoute('/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
+      cy.recoverSessionOpponent(playerOne);
+      cy.passOpponent();
+      cy.get(`[data-cy-spectate-game]`).should('be.disabled');
+      cy.log('Game ended by passing - successfully disabled spectate button');
+
+      // Finished by P0 Victory
+      cy.log('Setup game end by P0 victory');
+      cy.setupGameAsSpectator();
+      cy.loadGameFixture({
+        p0Hand: [Card.EIGHT_OF_SPADES],
+        p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
+        p0FaceCards: [],
+        p1Hand: [Card.EIGHT_OF_HEARTS],
+        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.recoverSessionOpponent(playerOne);
+      cy.vueRoute('/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
+      cy.playPointsSpectator(Card.EIGHT_OF_SPADES, 0);
+      cy.get(`[data-cy-spectate-game]`).should('be.disabled');
+      cy.log('Game ended by P0 Victory - successfully disabled spectate button');
+
+      // Finished by P1 Victory
+      cy.log('Setup game end by P1 victory');
+      cy.setupGameAsSpectator();
+      cy.loadGameFixture({
+        p0Hand: [Card.EIGHT_OF_SPADES],
+        p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
+        p0FaceCards: [],
+        p1Hand: [Card.EIGHT_OF_HEARTS],
+        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [],
+      });
+      cy.get('[data-player-hand-card]').should('have.length', 1);
+      cy.recoverSessionOpponent(playerOne);
+      cy.drawCardOpponent();
+      cy.recoverSessionOpponent(playerTwo);
+      cy.vueRoute('/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
+      cy.playPointsSpectator(Card.EIGHT_OF_HEARTS, 1);
+      cy.get(`[data-cy-spectate-game]`).should('be.disabled');
+      cy.log('Game ended by P1 Victory - successfully disabled spectate button');
     });
   });
 });
