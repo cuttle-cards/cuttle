@@ -106,6 +106,32 @@ describe('Spectating Games', () => {
     cy.url().should('not.include', '/game');
   });
 
+  it.only('Correctly shows and hides dialogs and overlays', () => {
+    cy.setupGameAsSpectator();
+    cy.loadGameFixture({
+      p0Hand: [
+        Card.ACE_OF_SPADES,
+        Card.THREE_OF_CLUBS
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.ACE_OF_CLUBS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 2);
+
+    cy.recoverSessionOpponent(playerOne);
+    cy.playOneOffSpectator(Card.ACE_OF_SPADES, 0);
+
+    cy.recoverSessionOpponent(playerTwo);
+    cy.resolveOpponent();
+
+    cy.playOneOffSpectator(Card.ACE_OF_DIAMONDS, 1);
+    cy.recoverSessionOpponent(playerOne);
+    cy.resolveOpponent();
+  });
+
   it('Prevents spectator from making moves', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
