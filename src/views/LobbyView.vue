@@ -73,16 +73,13 @@ export default {
     };
   },
   watch: {
-    opponentUsername: function(newVal, oldVal) {
-      // Play audio when player join lobby
-      if (oldVal === null && newVal !== null) {
-        this.$refs.enterLobbySound.play()
+    opponentUsername(newVal) {
+      if (newVal) {
+        this.$refs.enterLobbySound.play();
+      } else {
+        this.$refs.leaveLobbySound.play();
       }
-      // Play audio when player leave lobby
-      else if (oldVal !== null && newVal === null) {
-        this.$refs.leaveLobbySound.play()
-      }
-    }
+    },
   },
   computed: {
     ...mapState({
