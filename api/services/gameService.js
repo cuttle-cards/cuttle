@@ -247,6 +247,8 @@ module.exports = {
                 Card.destroy({
                   or: deleteCardsCriteria,
                 }),
+                // Inform all clients this game is over
+                sails.sockets.blast('gameFinished', { gameId: game.id }),
               );
             } // end if (game) {}
             return Promise.all(updatePromises);
