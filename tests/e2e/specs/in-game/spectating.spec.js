@@ -130,6 +130,8 @@ describe('Spectating Games', () => {
     cy.playOneOffSpectator(Card.ACE_OF_DIAMONDS, 1);
     cy.recoverSessionOpponent(playerOne);
     cy.resolveOpponent();
+
+    cy.get('.v-overlay').should('not.exist');
   });
 
   it('Prevents spectator from making moves', () => {
