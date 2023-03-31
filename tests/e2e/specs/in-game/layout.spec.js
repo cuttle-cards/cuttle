@@ -443,3 +443,28 @@ describe.skip('Aesthetic tests', () => {
     });
   });
 });
+
+describe('Spectators Layout', () => {
+  beforeEach(() => {
+    cy.setupGameAsSpectator();
+  });
+
+  it.only('Should display number of users', () => {
+    cy.loadGameFixture({
+      p0Hand: [
+        Card.JACK_OF_CLUBS,
+        Card.JACK_OF_HEARTS,
+        Card.JACK_OF_DIAMONDS,
+        Card.JACK_OF_SPADES,
+        Card.KING_OF_HEARTS,
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
+      p1Points: [Card.ACE_OF_HEARTS],
+      p1FaceCards: [],
+    });
+
+    cy.get('[data-spectate-list]').should('exist');
+  });
+});
