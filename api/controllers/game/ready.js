@@ -27,8 +27,8 @@ module.exports = function (req, res) {
             break;
         }
         if (bothReady) {
-          // Inform all clients this game is starting
-          sails.sockets.blast('gameStarting', { gameId: game.id });
+          // Inform all clients this game has started
+          sails.sockets.blast('gameStarted', { gameId: game.id });
 
           // Create Cards
           return new Promise(function makeDeck(resolveMakeDeck) {

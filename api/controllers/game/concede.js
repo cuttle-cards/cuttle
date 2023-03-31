@@ -21,6 +21,7 @@ module.exports = async function (req, res) {
         victory,
       },
     });
+
     return res.ok();
   } catch (err) {
     return res.badRequest(err);

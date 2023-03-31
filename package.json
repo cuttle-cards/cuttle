@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "4.2.2",
+  "version": "4.3.2",
   "dependencies": {
     "connect-redis": "3.0.2",
     "dayjs": "1.11.3",
