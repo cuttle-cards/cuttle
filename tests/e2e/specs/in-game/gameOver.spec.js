@@ -1,4 +1,12 @@
-import { assertGameState, Card, username, opponentUsername, assertLoss, assertVictory, assertStalemate } from '../../support/helpers';
+import {
+  assertGameState,
+  Card,
+  username,
+  opponentUsername,
+  assertLoss,
+  assertVictory,
+  assertStalemate
+} from '../../support/helpers';
 import { seasonFixtures } from '../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../fixtures/userFixtures';
 
