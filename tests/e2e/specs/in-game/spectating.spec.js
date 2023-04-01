@@ -106,7 +106,7 @@ describe('Spectating Games', () => {
     cy.url().should('not.include', '/game');
   });
 
-  it.only('Correctly shows and hides dialogs and overlays', () => {
+  it('Correctly shows and hides dialogs and overlays', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [
