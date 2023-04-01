@@ -465,6 +465,8 @@ describe('Spectators Layout', () => {
       p1FaceCards: [],
     });
 
-    cy.get('[data-spectate-list]').should('exist');
+    cy.get('[data-cy="spectate-list-button"]').should('exist');
+    cy.get('[data-cy="spectate-list-button"]').click();
+    cy.get('[data-cy="spectate-list-overlay"').should('be.visible');
   });
 });
