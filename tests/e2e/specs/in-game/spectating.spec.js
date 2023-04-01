@@ -106,7 +106,7 @@ describe('Spectating Games', () => {
     cy.url().should('not.include', '/game');
   });
 
-  it('Correctly shows and hides dialogs and overlays', () => {
+  it.only('Correctly shows and hides dialogs and overlays', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [
@@ -123,11 +123,14 @@ describe('Spectating Games', () => {
 
     cy.recoverSessionOpponent(playerOne);
     cy.playOneOffSpectator(Card.ACE_OF_SPADES, 0);
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
     cy.recoverSessionOpponent(playerTwo);
     cy.resolveOpponent();
+    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
     cy.playOneOffSpectator(Card.ACE_OF_DIAMONDS, 1);
+    cy.get('#cannot-counter-dialog').should('be.visible');
     cy.recoverSessionOpponent(playerOne);
     cy.resolveOpponent();
 
