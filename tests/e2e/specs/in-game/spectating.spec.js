@@ -6,8 +6,8 @@ import {
   assertGameState,
   assertSnackbarError,
   SnackBarError,
+  assertLoss
 } from '../../support/helpers';
-import { assertLoss } from './gameOver.spec';
 
 function setup() {
   cy.wipeDatabase();

@@ -354,6 +354,70 @@ function assertStoreMatchesFixture(fixture) {
       }
     });
 }
+
+export function assertVictory() {
+  cy.log('Asserting player victory');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        const matchWinner = game.currentMatch.winner;
+        cy.get('#game-over-dialog')
+          .should('be.visible')
+          .should('contain', matchWinner ? 'You Win the Match' : `Game ${gameNumber}: You Win`)
+          .get('[data-cy=match-result-section]')
+          .should('be.visible');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
+    });
+}
+
+export function assertLoss() {
+  cy.log('Asserting player loss');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
+  cy.get('[data-cy=loss-img]').should('be.visible');
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        const matchWinner = game.currentMatch.winner;
+        cy.get('#game-over-dialog')
+          .should('contain', matchWinner ? 'You Lose the Match' : `Game ${gameNumber}: You Lose`)
+          .should('be.visible')
+          .get('[data-cy=match-result-section]')
+          .should('be.visible');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
+    });
+}
+
+export function assertStalemate() {
+  cy.log('Asserting stalemate');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=stalemate-heading]').should('be.visible');
+  cy.get('[data-cy=stalemate-img]').should('be.visible');
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        cy.get('#game-over-dialog')
+          .should('be.visible')
+          // Don't need to check match winner as we do in assertVictory or assertLoss
+          // since a stalemate won't decide a match winner
+          .should('contain', `Game ${gameNumber}: Draw`)
+          .get('[data-cy=match-result-section]')
+          .should('be.visible');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
+    });
+}
+
 /**
  * @param fixture:
  * {
