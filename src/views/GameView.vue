@@ -7,7 +7,10 @@
     <!-- Authenticated View -->
     <template v-else>
       <div id="game-menu-wrapper" class="d-flex flex-column align-center">
-        <game-menu />
+        <div class="d-flex align-center">
+          <SpectatorListOverlay />
+          <game-menu />
+        </div>
         <v-icon
           v-if="$vuetify.display.xs"
           color="white"
@@ -341,7 +344,6 @@
                 />
               </transition-group>
             </div>
-            <SpectatorListOverlay />
           </div>
           <target-selection-overlay
             v-if="targeting && (selectedCard || cardSelectedFromDeck)"

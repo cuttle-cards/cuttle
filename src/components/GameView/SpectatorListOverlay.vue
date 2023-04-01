@@ -1,51 +1,48 @@
 <template>
-  <div class="mainDiv">
-    <v-btn data-cy="spectate-list-button" color="accent" size="small" @click="overlay = !overlay">
-      Spectators(155)
-    </v-btn>
+  <v-btn
+    data-cy="spectate-list-button"
+    class="pr-0"
+    variant="flat"
+    color="transparent"
+    @click="overlay = !overlay"
+  >
+    <v-icon class="mr-1" icon="mdi-eye-outline" size="x-large" /><span class="pb-1">(100)</span>
+  </v-btn>
 
-    <v-overlay
-      v-model="overlay"
-      data-cy="spectate-list-overlay"
-      scrim=""
-      class="d-flex flex-column justify-center align-center overlay"
-    >
-      <div class="text-white d-flex flex-column justify-center align-center">
-        <h3>Spectators</h3>
-        <ul class="spectatorList">
-          <li>User1</li>
-          <li>User1</li>
-          <li>User1</li>
-          <li>User1</li>
-          <li>User1User1</li>
-          <li>User1</li>
-          <li>User1</li>
-          <li>User1</li>
-          <li>User1</li>
-          <li>User1User1User1</li>
-          <li>User1</li>
-          <li>User1</li>
-          <li>User1</li>
-          <li>User1</li>
-          <li>User1User1User1</li>
-          <li>User1</li>
-        </ul>
-      </div>
+  <v-overlay
+    v-model="overlay"
+    data-cy="spectate-list-overlay"
+    scrim=""
+    class="d-flex flex-column justify-center align-center overlay"
+  >
+    <div class="text-white d-flex flex-column justify-center align-center">
+      <h3>Spectators</h3>
+      <ul class="spectatorList">
+        <li>User1</li>
+        <li>User1</li>
+        <li>User1</li>
+        <li>User1</li>
+        <li>User1User1</li>
+        <li>User1</li>
+        <li>User1</li>
+        <li>User1</li>
+        <li>User1</li>
+        <li>User1User1User1</li>
+        <li>User1</li>
+        <li>User1</li>
+        <li>User1</li>
+        <li>User1</li>
+        <li>User1User1User1</li>
+        <li>User1</li>
+      </ul>
+    </div>
 
-      <div id="close-wrapper" class="d-flex justify-center">
-        <v-btn
-          icon
-          variant="text"
-          color="white"
-          size="x-large"
-          data-cy="cancel-move"
-          @click="overlay = false"
-        >
-          <v-icon icon="mdi-close" size="large" />
-        </v-btn>
-      </div>
-    </v-overlay>
-  </div>
+    <div id="close-wrapper" class="d-flex justify-center">
+      <v-btn icon variant="text" color="white" size="x-large" data-cy="cancel-move" @click="overlay = false">
+        <v-icon icon="mdi-close" size="large" />
+      </v-btn>
+    </div>
+  </v-overlay>
 </template>
 
 <script>
@@ -57,16 +54,6 @@ export default {
 </script>
 
 <style scoped>
-.mainDiv {
-  grid-column-start: 11;
-  grid-column-end: span 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-right: 20px;
-}
-
 .overlay {
   background-color: rgba(0, 0, 0, 0.575);
   padding: 40px;
