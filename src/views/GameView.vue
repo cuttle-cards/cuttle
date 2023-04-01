@@ -29,11 +29,7 @@
             <h3>History</h3>
             <template #append>
               <v-btn icon variant="text" @click.stop="showHistoryDrawer = !showHistoryDrawer">
-                <v-icon
-                  color="neutral"
-                  icon="mdi-window-close"
-                  size="large"
-                />
+                <v-icon color="neutral" icon="mdi-window-close" size="large" />
               </v-btn>
             </template>
           </v-list-item>
@@ -345,6 +341,7 @@
                 />
               </transition-group>
             </div>
+            <SpectatorListOverlay />
           </div>
           <target-selection-overlay
             v-if="targeting && (selectedCard || cardSelectedFromDeck)"
@@ -394,6 +391,7 @@ import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay
 import ScrapDialog from '@/components/GameView/ScrapDialog.vue';
 import UsernameToolTip from '@/components/GameView/UsernameToolTip.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
+import SpectatorListOverlay from '../components/GameView/SpectatorListOverlay.vue';
 
 export default {
   name: 'GameView',
@@ -408,6 +406,7 @@ export default {
     ScrapDialog,
     UsernameToolTip,
     BaseSnackbar,
+    SpectatorListOverlay,
   },
   data() {
     return {
