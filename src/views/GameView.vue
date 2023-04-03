@@ -1185,6 +1185,8 @@ export default {
     &.reveal-top-two {
       height: auto;
       align-self: start;
+      color: white;
+      background-image: none;
       & .resolving-seven-card {
         width: 9.5rem;
       }
