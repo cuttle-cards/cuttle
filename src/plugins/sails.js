@@ -43,8 +43,9 @@ io.sails.reconnection = true;
 io.socket.on('game', function (evData) {
   switch (evData.verb) {
     case 'updated': {
+      const currentRoute = router.currentRoute.value;
       // No-op if the event's gameId doesn't match the url
-      const { gameId: urlGameId } = router.currentRoute.value.params;
+      const { gameId: urlGameId } = currentRoute.params;
       const eventGameId = evData.data?.game?.id ?? evData.data.gameId;
       if (urlGameId && Number(urlGameId) !== eventGameId) {
         return;
@@ -60,7 +61,6 @@ io.socket.on('game', function (evData) {
           store.commit('updateReady', evData.data.pNum);
           break;
         case 'Initialize': {
-          const currentRoute = router.currentRoute.value;
           const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
 
           // Update state
