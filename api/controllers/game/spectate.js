@@ -16,21 +16,28 @@ module.exports = async function (req, res) {
       })
       .then(async function updateDataBase(values) {
         const [game, player] = values;
+        if (game.spectators.includes(player.username)) {
+          return Promise.all([game]);
+        }
         const updatePromises = [
           Game.updateOne({ id: game.id }).set({ spectators: [...game.spectators, player.username] }),
         ];
         return Promise.all([game, ...updatePromises]);
       })
-      .then(function publishAndRespond(values) {
+      .then(function populateGame(values) {
         const [game] = values;
-        Game.publish([game.id], {
+        return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
+      })
+      .then(function publishAndRespond(values) {
+        const [fullGame] = values;
+        Game.publish([fullGame.id], {
           verb: 'updated',
           data: {
             change: 'spectators',
-            game: game,
+            game: fullGame,
           },
         });
-        return res.ok(game);
+        return res.ok(fullGame);
       });
   } catch (err) {
     return res.badRequest(err);
