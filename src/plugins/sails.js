@@ -42,7 +42,13 @@ io.sails.reconnection = true;
 // Handles socket updates of game data
 io.socket.on('game', function (evData) {
   switch (evData.verb) {
-    case 'updated':
+    case 'updated': {
+      // No-op if the event's gameId doesn't match the url
+      const { gameId: urlGameId } = router.currentRoute.value.params;
+      const eventGameId = evData.data?.game?.id ?? evData.data.gameId;
+      if (urlGameId && Number(urlGameId) !== eventGameId) {
+        return;
+      }
       // Handle GameOver
       if (evData.data.victory && evData.data.victory.gameOver) {
         setTimeout(() => {
@@ -173,7 +179,7 @@ io.socket.on('game', function (evData) {
           store.commit('setConsideringOpponentStalemateRequest', false);
           store.commit('setWaitingForOpponentToStalemate', false);
           break;
-      }
+      }}
   }
 });
 
