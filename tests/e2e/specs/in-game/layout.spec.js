@@ -449,7 +449,7 @@ describe('Spectators Layout', () => {
     cy.setupGameAsSpectator();
   });
 
-  it.only('Should display number of spectators', () => {
+  it.only('Should display list of spectators', () => {
     cy.loadGameFixture({
       p0Hand: [
         Card.JACK_OF_CLUBS,
