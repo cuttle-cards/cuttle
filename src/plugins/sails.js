@@ -164,6 +164,9 @@ io.socket.on('game', function (evData) {
         case 'reLogin':
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
           break;
+        case 'spectators':
+          store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
+          break;
         case 'requestStalemate':
           if (evData.data.requestedByPNum !== store.state.game.myPNum && !evData.data.victory.gameOver) {
             store.commit('setConsideringOpponentStalemateRequest', true);
