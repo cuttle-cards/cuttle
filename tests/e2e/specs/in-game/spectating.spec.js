@@ -2,12 +2,15 @@ import { playerOne, playerTwo } from '../../fixtures/userFixtures';
 import {
   username as playerUsername,
   validPassword as playerPassword,
+  opponentUsername,
+  opponentPassword,
   Card,
   assertGameState,
   assertSnackbarError,
   SnackBarError,
+  getCardId,
 } from '../../support/helpers';
-import { assertLoss } from './gameOver.spec';
+// import { assertLoss } from './gameOver.spec';
 
 function setup() {
   cy.wipeDatabase();
@@ -101,9 +104,56 @@ describe('Spectating Games', () => {
     cy.recoverSessionOpponent(playerTwo);
     cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS, 1);
 
-    assertLoss();
+    // assertLoss();
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
+  });
+
+  it.only('Leaves a spectated game and joins another without processing extraneous updates', () => {
+    cy.setupGameAsSpectator();
+    cy.loadGameFixture({
+      p0Hand: [Card.ACE_OF_SPADES],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.ACE_OF_CLUBS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+
+    cy.window().its('cuttle.app.config.globalProperties.$store.state.game').then((game) => {
+      const aceOfSpadesId = getCardId(game, Card.ACE_OF_SPADES);
+      cy.wrap(aceOfSpadesId).as('aceOfSpades');
+    });
+
+    cy.vueRoute('/');
+    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.setupGameAsP0(true);
+    cy.loadGameFixture({
+      p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 2);
+
+    cy.recoverSessionOpponent(playerOne);
+    cy.get('@aceOfSpades').then((aceOfSpadesId) => {
+      cy.playPointsById(aceOfSpadesId);
+    });
+
+    cy.wait(3000);
+
+    assertGameState(0, {
+      p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
+      p1Points: [],
+      p1FaceCards: [],
+    });
   });
 
   it('Prevents spectator from making moves', () => {

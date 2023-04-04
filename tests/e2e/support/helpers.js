@@ -76,31 +76,42 @@ export function cardsMatch(card1, card2) {
 
 /**
  * @param game: game obj from $store
+ * @param card: {suit: number, rank: number}[]
+ * @returns ids of specified cards
+ * @throws error if card not found in game
+ */
+export function getCardId(game, card) {
+  if (cardsMatch(card, game.topCard)) return game.topCard.id;
+  if (cardsMatch(card, game.secondCard)) return game.secondCard.id;
+
+  const foundInScrap = game.scrap.find((scrapCard) => cardsMatch(card, scrapCard));
+  if (foundInScrap) return foundInScrap.id;
+
+  const foundInP0Hand = game.players[0].hand.find((handCard) => cardsMatch(card, handCard));
+  if (foundInP0Hand) return foundInP0Hand.id;
+
+  const foundInP1Hand = game.players[1].hand.find((handCard) => cardsMatch(card, handCard));
+  if (foundInP1Hand) return foundInP1Hand.id;
+
+  const foundInDeck = game.deck.find((deckCard) => cardsMatch(card, deckCard));
+  if (foundInDeck) return foundInDeck.id;
+
+  throw new Error(
+    `Could not find desired card ${card.rank} of ${card.suit} in deck, scrap, or either player's hand`,
+  );
+}
+
+/**
+ * @param game: game obj from $store
  * @param suitAndRankList: {suit: number, rank: number}[]
  * @returns lit of ids of specified cards
+ * * @throws error if any card missing in game
  */
 export function getCardIds(game, suitAndRankList) {
-  return suitAndRankList.map((card) => {
-    if (cardsMatch(card, game.topCard)) return game.topCard.id;
-    if (cardsMatch(card, game.secondCard)) return game.secondCard.id;
-
-    const foundInScrap = game.scrap.find((scrapCard) => cardsMatch(card, scrapCard));
-    if (foundInScrap) return foundInScrap.id;
-
-    const foundInP0Hand = game.players[0].hand.find((handCard) => cardsMatch(card, handCard));
-    if (foundInP0Hand) return foundInP0Hand.id;
-
-    const foundInP1Hand = game.players[1].hand.find((handCard) => cardsMatch(card, handCard));
-    if (foundInP1Hand) return foundInP1Hand.id;
-
-    const foundInDeck = game.deck.find((deckCard) => cardsMatch(card, deckCard));
-    if (foundInDeck) return foundInDeck.id;
-
-    throw new Error(
-      `Could not find desired card ${card.rank} of ${card.suit} in deck, scrap, or either player's hand`,
-    );
-  });
+  return suitAndRankList.map((card) => getCardId(game, card));
 }
+
+
 
 function cardSortComparator(card1, card2) {
   let res = card1.rank - card2.rank;
