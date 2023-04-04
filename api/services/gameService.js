@@ -41,6 +41,7 @@ function tempUser(usr, points) {
 function tempGame(game, p0, p1) {
   this.id = game.id;
   this.players = [p0, p1];
+  this.spectators = game.spectators;
   this.deck = game.deck;
   this.scrap = game.scrap;
   this.topCard = game.topCard;
@@ -116,6 +117,12 @@ module.exports = {
                 return Promise.reject({
                   message: "Can't populate game, because it does not have players collection",
                 });
+              })
+              // find spectators
+              .then(function findSpectators(values) {
+                const [game, p0, p1] = values;
+                const { spectators } = game;
+                return [game, p0, p1, spectators];
               })
               // then find points
               .then(function findPoints(values) {
