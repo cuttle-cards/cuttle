@@ -360,6 +360,41 @@ Cypress.Commands.add('playPointsById', (cardId) => {
 /**
  * @param card {suit: number, rank: number}
  */
+Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
+  if (!hasValidSuitAndRank(card)) {
+    throw new Error('Cannot play opponent one-off as spectator: Invalid card input');
+  }
+  return cy
+    .window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      const foundCard = game.players[pNum].hand.find((handCard) => cardsMatch(card, handCard));
+      if (!foundCard) {
+        throw new Error(
+          `Error playing one-off while spectating: could not find ${card.rank} of ${card.suit} in specified player's hand`,
+        );
+      }
+      const cardId = foundCard.id;
+      const opponentId = game.players[(pNum + 1) % 2].id;
+      io.socket.get(
+        '/game/untargetedOneOff',
+        {
+          cardId,
+          opId: opponentId,
+        },
+        function handleResponse(res, jwres) {
+          if (jwres.statusCode !== 200) {
+            throw new Error(jwres.body.message);
+          }
+          return jwres;
+        },
+      );
+    });
+});
+
+/**
+ * @param card {suit: number, rank: number}
+ */
 Cypress.Commands.add('playFaceCardOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent Face Card: Invalid card input');
