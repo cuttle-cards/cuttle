@@ -75,9 +75,13 @@ export default {
   watch: {
     opponentUsername(newVal) {
       if (newVal) {
-        this.$refs.enterLobbySound.play();
+        if (this.$refs.enterLobbySound.readyState === 4) {
+          this.$refs.enterLobbySound.play();
+        }
       } else {
-        this.$refs.leaveLobbySound.play();
+        if (this.$refs.leaveLobbySound.readyState === 4) {
+          this.$refs.leaveLobbySound.play();
+        }
       }
     },
   },
