@@ -76,8 +76,8 @@ export function cardsMatch(card1, card2) {
 
 /**
  * @param game: game obj from $store
- * @param card: {suit: number, rank: number}[]
- * @returns ids of specified cards
+ * @param card: {suit: number, rank: number}
+ * @returns id of specified cards
  * @throws error if card not found in game
  */
 export function getCardId(game, card) {
