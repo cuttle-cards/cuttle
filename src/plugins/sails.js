@@ -102,6 +102,7 @@ io.socket.on('game', function (evData) {
         case 'resolve':
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
           store.commit('setWaitingForOpponentToCounter', false);
+          store.commit('setMyTurnToCounter', false);
           if (evData.data.happened) {
             switch (evData.data.oneOff.rank) {
               case 3:
