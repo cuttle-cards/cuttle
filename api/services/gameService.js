@@ -126,7 +126,7 @@ module.exports = {
               })
               // then find points
               .then(function findPoints(values) {
-                const [game, p0, p1] = values;
+                const [game, p0, p1, spectators] = values;
                 const p0Points = cardService.findPoints({ userId: p0.id });
                 const p1Points = cardService.findPoints({ userId: p1.id });
                 return Promise.all([
@@ -135,14 +135,15 @@ module.exports = {
                   Promise.resolve(p1),
                   p0Points,
                   p1Points,
+                  spectators,
                 ]);
               })
               // then format results & resolve
               .then(function finish(values) {
-                const [game, p0, p1, p0Points, p1Points] = values;
+                const [game, p0, p1, p0Points, p1Points, spectators] = values;
                 const populatedP0 = new tempUser(p0, p0Points);
                 const populatedP1 = new tempUser(p1, p1Points);
-                const result = new tempGame(game, populatedP0, populatedP1);
+                const result = new tempGame(game, populatedP0, populatedP1, spectators);
 
                 return resolve(result);
               })
