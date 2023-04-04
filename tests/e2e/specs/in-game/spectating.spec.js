@@ -10,7 +10,7 @@ import {
   SnackBarError,
   getCardId,
 } from '../../support/helpers';
-// import { assertLoss } from './gameOver.spec';
+import { assertLoss } from './gameOver.spec';
 
 function setup() {
   cy.wipeDatabase();
@@ -104,12 +104,12 @@ describe('Spectating Games', () => {
     cy.recoverSessionOpponent(playerTwo);
     cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS, 1);
 
-    // assertLoss();
+    assertLoss();
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
   });
 
-  it.only('Leaves a spectated game and joins another without processing extraneous updates', () => {
+  it('Leaves a spectated game and joins another without processing extraneous updates', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [Card.ACE_OF_SPADES],
