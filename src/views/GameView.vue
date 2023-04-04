@@ -8,7 +8,7 @@
     <template v-else>
       <div id="game-menu-wrapper" class="d-flex flex-column align-center">
         <div class="d-flex align-center">
-          <SpectatorListOverlay />
+          <SpectatorListOverlay :spectators="spectators" />
           <game-menu />
         </div>
         <v-icon
@@ -438,6 +438,7 @@ export default {
       'playerQueenCount',
       'playerUsername',
       'opponent',
+      'spectators',
       'opponentPointTotal',
       'opponentQueenCount',
       'opponentUsername',

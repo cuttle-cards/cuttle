@@ -6,7 +6,8 @@
     color="transparent"
     @click="overlay = !overlay"
   >
-    <v-icon class="mr-1" icon="mdi-eye-outline" size="x-large" /><span class="pb-1">(100)</span>
+    <v-icon class="mr-1" icon="mdi-eye-outline" size="x-large" />
+    <span class="pr-2">{{ spectators.length }}</span>
   </v-btn>
 
   <v-overlay
@@ -18,22 +19,7 @@
     <div class="text-white d-flex flex-column justify-center align-center">
       <h3>Spectators</h3>
       <ul class="spectatorList">
-        <li>User1</li>
-        <li>User1</li>
-        <li>User1</li>
-        <li>User1</li>
-        <li>User1User1</li>
-        <li>User1</li>
-        <li>User1</li>
-        <li>User1</li>
-        <li>User1</li>
-        <li>User1User1User1</li>
-        <li>User1</li>
-        <li>User1</li>
-        <li>User1</li>
-        <li>User1</li>
-        <li>User1User1User1</li>
-        <li>User1</li>
+        <li v-for="spectator in spectators">{{ spectator }}</li>
       </ul>
     </div>
 
@@ -47,9 +33,15 @@
 
 <script>
 export default {
-  data: () => ({
-    overlay: false,
-  }),
+  data() {
+    return { overlay: false };
+  },
+  props: {
+    spectators: {
+      type: Array,
+      required: true,
+    },
+  },
 };
 </script>
 
