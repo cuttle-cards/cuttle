@@ -262,6 +262,7 @@ export default {
     position: relative;
     display: inline-block;
     margin-right: -48px !important;
+    min-width: 90px;
   }
   .overlay-two-0 {
     transform: rotate(-5deg);
