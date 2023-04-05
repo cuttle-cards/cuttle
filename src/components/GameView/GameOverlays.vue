@@ -6,7 +6,7 @@
       v-model="waitingForGameToStart"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Waiting for Game to Start
       </h1>
       <v-btn
@@ -25,7 +25,7 @@
       v-model="waitingForOpponentToCounter"
       class="d-flex flex-column justify-center align-center"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         {{ showWaitingForOpponetToCounterMessage }}
       </h1>
       <div class="mt-4 d-flex justify-center">
@@ -67,7 +67,7 @@
       v-model="waitingForOpponentToDiscard"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Is Discarding
       </h1>
     </v-overlay>
@@ -77,7 +77,7 @@
       v-model="waitingForOpponentToPickFromScrap"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Choosing Card from Scrap
       </h1>
     </v-overlay>
@@ -87,7 +87,7 @@
       v-model="showWaitingForOpponentToPlayFromDeck"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Playing from Deck
       </h1>
     </v-overlay>
@@ -97,7 +97,7 @@
       v-model="showWaitingForOpponentToDiscardJackFromDeck"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Must Discard Jack
       </h1>
     </v-overlay>
@@ -107,7 +107,7 @@
       v-model="waitingForOpponentToStalemate"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         <div>Opponent Considering Stalemate Request</div>
       </h1>
     </v-overlay>
@@ -241,8 +241,13 @@ export default {
   align-items: center;
   text-align: center;
 }
-.text-h3, .text-h5 {
+.overlay-header {
     font-weight: bold;
+    background-color: #FFF4D7;
+    padding: 24px;
+    margin-top: 80px;
+    text-align: center;
+    width: 100vw;
   }
 
 .jacks-container {
