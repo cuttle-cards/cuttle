@@ -1,10 +1,19 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { playerFour, playerThree } from '../../fixtures/userFixtures';
 import { assertGameState, playOutOfTurn, Card } from '../../support/helpers';
 =======
 import { assertGameState, playOutOfTurn } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 >>>>>>> 809fd1f (Update load game fixture (#394))
+=======
+import { assertGameState, playOutOfTurn } from '../../support/helpers';
+import { Card } from '../../fixtures/cards';
+=======
+import { playerFour, playerThree } from '../../fixtures/userFixtures';
+import { assertGameState, playOutOfTurn, Card } from '../../support/helpers';
+>>>>>>> 71794ac (Test: developed test to sign up and spectate with multiple users)
+>>>>>>> 73c41bf (Test: developed test to sign up and spectate with multiple users)
 
 const { _ } = Cypress;
 
@@ -436,7 +445,11 @@ describe.skip('Aesthetic tests', () => {
 });
 
 describe('Spectators Layout', () => {
+<<<<<<< HEAD
   beforeEach(() => {
+=======
+  it.only('Should display list of spectators', () => {
+>>>>>>> 73c41bf (Test: developed test to sign up and spectate with multiple users)
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [
@@ -457,6 +470,7 @@ describe('Spectators Layout', () => {
   it('Should display list of spectators that join', () => {
     cy.get('[data-cy="spectate-list-button"]').should('contain', '1');
     cy.get('[data-cy="spectate-list-button"]').click();
+<<<<<<< HEAD
     cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
 
     cy.signupOpponent(playerThree.username, playerThree.password);
@@ -490,5 +504,15 @@ describe('Spectator Layout from playerView', () => {
   it('Should display no spectators', () => {
     cy.setupGameAsP0();
     cy.get('[data-cy="spectate-list-button"]').should('contain', '0');
+=======
+    cy.get('[data-cy="spectate-list-overlay"').should('contain', 'myUsername');
+
+    cy.signupOpponent(playerThree.username, playerThree.password);
+    cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
+    cy.get('[data-cy="spectate-list-overlay"').should('contain', playerThree.username);
+    cy.signupOpponent(playerFour.username, playerFour.password);
+    cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
+    cy.get('[data-cy="spectate-list-overlay"').should('contain', playerFour.username);
+>>>>>>> 73c41bf (Test: developed test to sign up and spectate with multiple users)
   });
 });
