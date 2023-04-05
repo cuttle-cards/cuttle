@@ -28,7 +28,7 @@
       <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         {{ showWaitingForOpponetToCounterMessage }}
       </h1>
-      <div class="mt-4 d-flex justify-center">
+      <div id="counter-scrim-cards">
         <game-card
           v-if="oneOff"
           :rank="oneOff.rank"
@@ -48,17 +48,6 @@
             :high-elevation="true"
           />
         </div>
-        <!-- <div class="jacks-container">
-        </div> -->
-        <!-- <span v-for="two in twos" :key="`overlay-two-${two.id}`" class="d-flex align-center">
-          <v-icon icon="mdi-chevron-right" size="x-large" color="black" />
-          <game-card
-            :rank="two.rank"
-            :suit="two.suit"
-            :data-overlay-counter="`${two.rank}-${two.suit}`"
-            class="overlay-card"
-          />
-        </span> -->
       </div>
     </v-overlay>
 
@@ -235,6 +224,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+:deep(.v-overlay__content) {
+  left: 0;
+}
 .game-overlay {
   display: flex;
   justify-content: center;
@@ -245,7 +237,6 @@ export default {
     font-weight: bold;
     background-color: #FFF4D7;
     padding: 24px;
-    margin-top: 80px;
     text-align: center;
     width: 100vw;
   }
@@ -260,13 +251,19 @@ export default {
     flex-direction: column;
     align-items: flex-end;
   }
+  #counter-scrim-cards {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 16px;
+  }
   .overlay-card {
     position: relative;
     display: inline-block;
     margin-right: -48px !important;
   }
   .overlay-two-0 {
-    // height: 90%;
     transform: rotate(-5deg);
   }
   .overlay-two-1 {
@@ -274,5 +271,8 @@ export default {
   }
   .overlay-two-2 {
     transform: rotate(-10deg);
+  }
+  .overlay-two-3 {
+    transform: rotate(-4deg);
   }
 </style>
