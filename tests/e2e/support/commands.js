@@ -118,7 +118,7 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
   cy.visit('/');
   cy.signupPlayer(username, validPassword);
   cy.vueRoute('/');
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
+  cy.createGamePlayer({ gameName: 'Spectator Game', isRanked: false }).then((gameData) => {
     // Test that JOIN button starts enabled
     cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
     // Sign up 2 users and subscribe them to game
@@ -340,6 +340,21 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
         },
       );
     });
+});
+
+Cypress.Commands.add('playPointsById', (cardId) => {
+  return io.socket.get(
+    '/game/points',
+    {
+      cardId,
+    },
+    function handleResponse(_, jwres) {
+      if (jwres.statusCode !== 200) {
+        throw new Error(jwres.body.message);
+      }
+      return jwres;
+    },
+  );
 });
 
 /**
