@@ -1,3 +1,4 @@
+import { playerFour, playerThree } from '../../fixtures/userFixtures';
 import { assertGameState, playOutOfTurn, Card } from '../../support/helpers';
 
 const { _ } = Cypress;
@@ -445,11 +446,8 @@ describe.skip('Aesthetic tests', () => {
 });
 
 describe('Spectators Layout', () => {
-  beforeEach(() => {
-    cy.setupGameAsSpectator();
-  });
-
   it.only('Should display list of spectators', () => {
+    cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [
         Card.JACK_OF_CLUBS,
@@ -468,5 +466,12 @@ describe('Spectators Layout', () => {
     cy.get('[data-cy="spectate-list-button"]').should('exist');
     cy.get('[data-cy="spectate-list-button"]').click();
     cy.get('[data-cy="spectate-list-overlay"').should('contain', 'myUsername');
+
+    cy.signupOpponent(playerThree.username, playerThree.password);
+    cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
+    cy.get('[data-cy="spectate-list-overlay"').should('contain', playerThree.username);
+    cy.signupOpponent(playerFour.username, playerFour.password);
+    cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
+    cy.get('[data-cy="spectate-list-overlay"').should('contain', playerFour.username);
   });
 });
