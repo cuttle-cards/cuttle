@@ -240,17 +240,6 @@ export default {
     text-align: center;
     width: 100vw;
   }
-
-.jacks-container {
-    position: absolute;
-    right: -5%;
-    top: 0;
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-  }
   #counter-scrim-cards {
     position: absolute;
     display: flex;
