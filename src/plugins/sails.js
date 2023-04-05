@@ -3,7 +3,7 @@ import socketIoClient from 'socket.io-client';
 import { cloneDeep } from 'lodash';
 import store from '@/store/store.js';
 import router from '@/router.js';
-import { ROUTE_NAME_GAME } from '@/router';
+import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_HOME } from '@/router';
 
 export const io = sails(socketIoClient);
 
@@ -54,12 +54,26 @@ io.socket.on('game', function (evData) {
           store.commit('updateReady', evData.data.pNum);
           break;
         case 'Initialize': {
+          const currentRoute = router.currentRoute.value;
+          const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
+
+          // Update state
           store.commit('resetState');
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
-          const gameRoute = `/game/${store.state.game.id}`;
-          const currentRoute = router.currentRoute.fullPath;
-          if (gameRoute !== currentRoute) {
-            router.push(gameRoute);
+          if (isSpectating) {
+            store.commit('setMyPNum', 0); // always spectate as p0
+          }
+
+          // Validate current route & navigate if incorrect
+          const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
+          const shouldNavigate = currentRoute.name !== targetRouteName;
+          if (shouldNavigate) {
+            router.push({
+              name: targetRouteName,
+              params: {
+                gameId: store.state.game.id,
+              },
+            });
           }
           break;
         }
@@ -88,6 +102,7 @@ io.socket.on('game', function (evData) {
         case 'resolve':
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
           store.commit('setWaitingForOpponentToCounter', false);
+          store.commit('setMyTurnToCounter', false);
           if (evData.data.happened) {
             switch (evData.data.oneOff.rank) {
               case 3:
@@ -168,8 +183,12 @@ io.socket.on('gameCreated', function (evData) {
   store.commit('addGameToList', newGame);
 });
 
-io.socket.on('gameStarting', function (evData) {
-  store.commit('removeGame', evData);
+io.socket.on('gameStarted', function ({ gameId }) {
+  store.commit('gameStarted', gameId);
+});
+
+io.socket.on('gameFinished', function ({ gameId }) {
+  store.commit('gameFinished', gameId);
 });
 
 io.socket.on('join', function (evData) {
@@ -198,9 +217,18 @@ io.socket.on('leftGame', function (evData) {
 io.socket.on('connect', () => {
   // Request latest game state if socket reconnects during game
   const { username } = store.state.auth;
-  const inGame = router.currentRoute.value.name === ROUTE_NAME_GAME;
-  if (!inGame) {
-    return;
+  switch (router.currentRoute.value.name) {
+    case ROUTE_NAME_GAME:
+      return store.dispatch('requestReauthenticate', { username });
+    case ROUTE_NAME_SPECTATE: {
+      const gameId = Number(router.currentRoute.value.params.gameId);
+      if (!Number.isInteger(gameId)) {
+        router.push(ROUTE_NAME_HOME);
+        return;
+      }
+      return store.dispatch('requestSpectate', gameId);
+    }
+    default:
+      return;
   }
-  return store.dispatch('requestReauthenticate', { username });
 });

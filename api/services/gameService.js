@@ -59,6 +59,8 @@ function tempGame(game, p0, p1) {
   this.isRanked = game.isRanked;
   this.p0 = game.p0;
   this.p1 = game.p1;
+  this.p0Ready = game.p0Ready;
+  this.p1Ready = game.p1Ready;
 }
 module.exports = {
   GameResult,
@@ -245,6 +247,8 @@ module.exports = {
                 Card.destroy({
                   or: deleteCardsCriteria,
                 }),
+                // Inform all clients this game is over
+                sails.sockets.blast('gameFinished', { gameId: game.id }),
               );
             } // end if (game) {}
             return Promise.all(updatePromises);

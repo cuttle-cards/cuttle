@@ -8,41 +8,60 @@ class GameSummary {
     this.numPlayers = Object.prototype.hasOwnProperty.call(obj, 'players') ? obj.players.length : 0;
     this.status = Object.prototype.hasOwnProperty.call(obj, 'status') ? obj.status : false;
     this.isRanked = Object.prototype.hasOwnProperty.call(obj, 'isRanked') ? obj.isRanked : false;
+    this.isOver = false;
   }
 }
 export default {
   state: {
-    games: [],
+    openGames: [],
+    spectateGames: [],
   },
   mutations: {
-    refreshGames(state, newList) {
-      state.games = newList.map((game) => new GameSummary(game));
+    // Open/Playable Games
+    refreshGames(state, { openGames, spectateGames }) {
+      state.openGames = openGames.map((game) => new GameSummary(game));
+      state.spectateGames = spectateGames.map((game) => new GameSummary(game));
     },
     addGameToList(state, newGame) {
-      state.games.push(new GameSummary(newGame));
+      state.openGames.push(new GameSummary(newGame));
     },
-    removeGame(state, data) {
-      state.games = state.games.filter((game) => game.id !== data.gameId);
+    gameStarted(state, gameId) {
+      const gameIndex = state.openGames.findIndex((game) => game.id === gameId);
+      if (gameIndex < 0 || gameIndex > state.openGames.length) {
+        return;
+      }
+      const [ startedGame ] = state.openGames.splice(gameIndex, 1);
+      state.spectateGames.push(startedGame);
+    },
+    gameFinished(state, gameId) {
+      const game = state.spectateGames.find((game) => game.id === gameId)
+      if (!game) {
+        return;
+      }
+      game.isOver = true;
     },
     updateGameStatus(state, data) {
-      const updatedGame = state.games.find((game) => game.id === data.id);
+      const updatedGame = state.openGames.find((game) => game.id === data.id);
       if (updatedGame) {
         updatedGame.status = data.newStatus;
       }
     },
     joinGame(state, data) {
-      const updatedGame = state.games.find((game) => game.id === data.gameId);
+      const updatedGame = state.openGames.find((game) => game.id === data.gameId);
       if (updatedGame) {
         updatedGame.numPlayers++;
         updatedGame.status = data.newStatus;
       }
     },
     otherLeftGame(state, gameId) {
-      const updatedGame = state.games.find((game) => game.id === gameId);
+      const updatedGame = state.openGames.find((game) => game.id === gameId);
       if (updatedGame) {
         updatedGame.numPlayers--;
         updatedGame.status = true;
       }
+    },
+    addSpectateGameToList(state, newGame) {
+      state.spectateGames.push(new GameSummary(newGame));
     },
   },
   actions: {
@@ -50,9 +69,10 @@ export default {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/getList', function handleResponse(resData, jwres) {
           if (jwres.statusCode === 200) {
-            const games = cloneDeep(resData.games);
-            context.commit('refreshGames', games);
-            return resolve(resData.games);
+            const openGames = cloneDeep(resData.openGames);
+            const spectateGames = cloneDeep(resData.spectatableGames);
+            context.commit('refreshGames', {openGames, spectateGames});
+            return resolve(openGames);
           }
           return reject(new Error('Could not retrieve list of games'));
         });

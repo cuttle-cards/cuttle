@@ -19,18 +19,49 @@
               </v-row>
             </div>
             <div id="game-list">
-              <p v-if="gameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
-              <div v-for="game in gameList" :key="game.id">
-                <game-list-item
-                  :name="game.name"
-                  :p0ready="game.p0Ready ? 1 : 0"
-                  :p1ready="game.p1Ready ? 1 : 0"
-                  :game-id="game.id"
-                  :status="game.status"
-                  :num-players="game.numPlayers"
-                  :is-ranked="game.isRanked"
-                />
-              </div>
+              <v-tabs v-model="tab" bg-color="primary" fixed-tabs>
+                <v-tab :value="TABS.PLAY" data-cy-game-list-selector="play">Play</v-tab>
+                <v-tab :value="TABS.SPECTATE" data-cy-game-list-selector="spectate">Spectate</v-tab>
+              </v-tabs>
+              <v-window v-model="tab" class="pa-4">
+                <v-window-item :value="TABS.PLAY">
+                  <p v-if="playableGameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
+                  <div v-for="game in playableGameList" :key="game.id">
+                    <game-list-item
+                      :name="game.name"
+                      :p0ready="game.p0Ready ? 1 : 0"
+                      :p1ready="game.p1Ready ? 1 : 0"
+                      :game-id="game.id"
+                      :status="game.status"
+                      :num-players="game.numPlayers"
+                      :is-ranked="game.isRanked"
+                      @error="handleError"
+                    />
+                  </div>
+                </v-window-item>
+                <v-window-item :value="TABS.SPECTATE">
+                  <p 
+                    v-if="specateGameList.length === 0"
+                    data-cy="no-spectate-game-text"
+                  >
+                    No Games Available to Spectate
+                  </p>
+                  <div v-for="game in specateGameList" :key="game.id">
+                    <game-list-item
+                      :name="game.name"
+                      :p0ready="game.p0Ready ? 1 : 0"
+                      :p1ready="game.p1Ready ? 1 : 0"
+                      :game-id="game.id"
+                      :status="game.status"
+                      :num-players="game.numPlayers"
+                      :is-ranked="game.isRanked"
+                      :isSpectatable="true"
+                      :disableSpectate="game.isOver"
+                      @error="handleError"
+                    />
+                  </div>
+                </v-window-item>
+              </v-window>
             </div>
           </v-col>
           <v-col id="side-nav" :cols="$vuetify.display.mdAndDown ? 12 : 3">
@@ -95,6 +126,11 @@ import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '@/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 
+const TABS = {
+  PLAY: 'play',
+  SPECTATE: 'spectate',
+};
+
 export default {
   name: 'HomeView',
   components: {
@@ -104,13 +140,16 @@ export default {
   },
   data() {
     return {
+      TABS,
+      tab: TABS.PLAY,
       showSnackBar: false,
       snackBarMessage: '',
     };
   },
   computed: {
     ...mapState({
-      gameList: ({ gameList }) => gameList.games,
+      playableGameList: ({ gameList }) => gameList.openGames,
+      specateGameList: ({ gameList }) => gameList.spectateGames,
     }),
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
@@ -209,14 +248,12 @@ p {
 
 #game-list {
   box-sizing: border-box;
-  border: 1px solid #fd6222;
-  background: #efefef;
-  border-radius: 10px;
+  background: #CDD1D4;
+  border-radius: 8px;
   min-height: 55vh;
   display: flex;
   min-width: 100%;
   flex-direction: column;
-  padding: 0.25rem;
 
   p {
     text-align: center;
@@ -259,9 +296,7 @@ p {
   }
 
   #game-list {
-    border-radius: 15px;
     overflow: auto;
-    padding: 1.25rem 0.5rem;
   }
 
   .create-game-btn {
