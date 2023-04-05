@@ -45,6 +45,7 @@
             :suit="two.suit"
             :data-overlay-counter="`${two.rank}-${two.suit}`"
             :class="`overlay-card overlay-two overlay-two-${index}`"
+            :high-elevation="true"
           />
         </div>
         <!-- <div class="jacks-container">
