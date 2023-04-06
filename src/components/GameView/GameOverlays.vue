@@ -1,46 +1,76 @@
 <template>
   <div class="game-overlays">
     <v-overlay
+      id="waiting-for-game-to-start-scrim"
+      v-model="waitingForGameToStart"
+      class="game-overlay"
+    >
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Waiting for Game to Start
+      </h1>
+      <v-btn
+        color="secondary"
+        class="mt-4"
+        data-cy="leave-unstarted-game-button"
+        :loading="leavingGame"
+        @click="goHome"
+      >
+        Leave Game
+      </v-btn>
+    </v-overlay>
+    <v-overlay
       id="waiting-for-opponent-counter-scrim"
       v-model="waitingForOpponentToCounter"
       class="game-overlay"
     >
-      <h1 class="text-h3">{{ showWaitingForOpponetToCounterMessage }}</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        {{ showWaitingForOpponetToCounterMessage }}
+      </h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-discard-scrim"
       v-model="waitingForOpponentToDiscard"
       class="game-overlay"
     >
-      <h1 class="text-h3">Opponent Is Discarding</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Opponent Is Discarding
+      </h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-resolve-three-scrim"
       v-model="waitingForOpponentToPickFromScrap"
       class="game-overlay"
     >
-      <h1 class="text-h3">Opponent Choosing Card from Scrap</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Opponent Choosing Card from Scrap
+      </h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-play-from-deck-scrim"
       v-model="showWaitingForOpponentToPlayFromDeck"
       class="game-overlay"
     >
-      <h1 class="text-h3">Opponent Playing from Deck</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Opponent Playing from Deck
+      </h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-to-discard-jack-from-deck"
       v-model="showWaitingForOpponentToDiscardJackFromDeck"
       class="game-overlay"
     >
-      <h1 class="text-h3">Opponent Must Discard Jack</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        Opponent Must Discard Jack
+      </h1>
     </v-overlay>
     <v-overlay
       id="waiting-for-opponent-stalemate-scrim"
       v-model="waitingForOpponentToStalemate"
       class="game-overlay"
     >
-      <h1 class="text-h3">Opponent Considering Stalemate Request</h1>
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+        <div>Opponent Considering Stalemate Request</div>
+      </h1>
     </v-overlay>
     <move-choice-overlay
       v-if="selectedCard || cardSelectedFromDeck"
@@ -87,6 +117,11 @@ export default {
       default: null,
     },
   },
+  data() {
+    return {
+      leavingGame: false,
+    };
+  },
   computed: {
     // Since we're not using namespacing, we need to destructure the game module
     // off of the global state to directly access the state values
@@ -109,6 +144,9 @@ export default {
       'hasGlassesEight',
       'player',
     ]),
+    waitingForGameToStart() {
+      return !(this.$store.state.game.p0Ready && this.$store.state.game.p1Ready);
+    },
     showWaitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';
       const mustResolve = 'Opponent Must Resolve';
@@ -134,6 +172,20 @@ export default {
     handleTargeting(event) {
       this.$emit('target', event);
     },
+    async goHome() {
+      this.leavingGame = true;
+      try {
+        await this.$store.dispatch('requestUnsubscribeFromGame');
+      } finally {
+        this.leavingGame = false;
+        this.$router.push('/');
+        this.$store.commit('setGameOver', {
+          gameOver: false,
+          conceded: false,
+          winner: null,
+        });
+      }
+    },
   },
 };
 </script>
@@ -143,9 +195,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
   & .text-h3 {
     font-weight: bold;
-    font-family: 'PT Serif', serif !important;
   }
 }
+.text-h5 {
+    font-weight: bold;
+  }
 </style>
