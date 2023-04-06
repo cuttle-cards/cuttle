@@ -103,6 +103,7 @@ module.exports = function (req, res) {
             change: 'ready',
             userId: user.id,
             pNum: user.pNum,
+            gameId: game.id,
           },
         });
         return Game.updateOne({ id: game.id }).set(gameUpdates);

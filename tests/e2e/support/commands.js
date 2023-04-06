@@ -118,7 +118,7 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
   cy.visit('/');
   cy.signupPlayer(username, validPassword);
   cy.vueRoute('/');
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
+  cy.createGamePlayer({ gameName: 'Spectator Game', isRanked: false }).then((gameData) => {
     // Test that JOIN button starts enabled
     cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
     // Sign up 2 users and subscribe them to game
@@ -348,6 +348,56 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
         '/game/points',
         {
           cardId,
+        },
+        function handleResponse(res, jwres) {
+          if (jwres.statusCode !== 200) {
+            throw new Error(jwres.body.message);
+          }
+          return jwres;
+        },
+      );
+    });
+});
+
+Cypress.Commands.add('playPointsById', (cardId) => {
+  return io.socket.get(
+    '/game/points',
+    {
+      cardId,
+    },
+    function handleResponse(_, jwres) {
+      if (jwres.statusCode !== 200) {
+        throw new Error(jwres.body.message);
+      }
+      return jwres;
+    },
+  );
+});
+
+/**
+ * @param card {suit: number, rank: number}
+ */
+Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
+  if (!hasValidSuitAndRank(card)) {
+    throw new Error('Cannot play opponent one-off as spectator: Invalid card input');
+  }
+  return cy
+    .window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      const foundCard = game.players[pNum].hand.find((handCard) => cardsMatch(card, handCard));
+      if (!foundCard) {
+        throw new Error(
+          `Error playing one-off while spectating: could not find ${card.rank} of ${card.suit} in specified player's hand`,
+        );
+      }
+      const cardId = foundCard.id;
+      const opponentId = game.players[(pNum + 1) % 2].id;
+      io.socket.get(
+        '/game/untargetedOneOff',
+        {
+          cardId,
+          opId: opponentId,
         },
         function handleResponse(res, jwres) {
           if (jwres.statusCode !== 200) {

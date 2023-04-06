@@ -2,12 +2,15 @@ import { playerOne, playerTwo } from '../../fixtures/userFixtures';
 import {
   username as playerUsername,
   validPassword as playerPassword,
+  opponentUsername,
+  opponentPassword,
   Card,
   assertGameState,
   assertSnackbarError,
   SnackBarError,
+  getCardId,
+  assertLoss,
 } from '../../support/helpers';
-import { assertLoss } from './gameOver.spec';
 
 function setup() {
   cy.wipeDatabase();
@@ -104,6 +107,84 @@ describe('Spectating Games', () => {
     assertLoss();
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
+  });
+
+  it('Correctly shows and hides dialogs and overlays', () => {
+    cy.setupGameAsSpectator();
+    cy.loadGameFixture({
+      p0Hand: [
+        Card.ACE_OF_SPADES,
+        Card.THREE_OF_CLUBS
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.ACE_OF_CLUBS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 2);
+
+    cy.recoverSessionOpponent(playerOne);
+    cy.playOneOffSpectator(Card.ACE_OF_SPADES, 0);
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
+    cy.recoverSessionOpponent(playerTwo);
+    cy.resolveOpponent();
+    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+
+    cy.playOneOffSpectator(Card.ACE_OF_DIAMONDS, 1);
+    cy.get('#cannot-counter-dialog').should('be.visible');
+    cy.recoverSessionOpponent(playerOne);
+    cy.resolveOpponent();
+
+    cy.get('.v-overlay').should('not.exist');
+  });
+
+  it('Leaves a spectated game and joins another without processing extraneous updates', () => {
+    cy.setupGameAsSpectator();
+    cy.loadGameFixture({
+      p0Hand: [Card.ACE_OF_SPADES],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.ACE_OF_CLUBS],
+      p1FaceCards: [Card.KING_OF_HEARTS],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 1);
+
+    cy.window().its('cuttle.app.config.globalProperties.$store.state.game').then((game) => {
+      const aceOfSpadesId = getCardId(game, Card.ACE_OF_SPADES);
+      cy.wrap(aceOfSpadesId).as('aceOfSpades');
+    });
+
+    cy.vueRoute('/');
+    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.setupGameAsP0(true);
+    cy.loadGameFixture({
+      p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 2);
+
+    cy.recoverSessionOpponent(playerOne);
+    cy.get('@aceOfSpades').then((aceOfSpadesId) => {
+      cy.playPointsById(aceOfSpadesId);
+    });
+
+    cy.wait(3000);
+
+    assertGameState(0, {
+      p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
+      p1Points: [],
+      p1FaceCards: [],
+    });
   });
 
   it('Prevents spectator from making moves', () => {
