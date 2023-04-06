@@ -85,8 +85,15 @@ export default {
   cursor: pointer;
 }
 .move-choice-card {
-  border: 2px solid #fff;
+  color: #FFF4D7;
+  border: 2px solid #FFF4D7;
   transition: all 0.5s ease;
+  opacity: .95;
+}
+.move-choice-card:hover {
+  color: #4A2416;
+  background-color: #FFF4D7 !important;
+  // border: 2px solid  #4A2416;
 }
 p {
   text-align: center;
