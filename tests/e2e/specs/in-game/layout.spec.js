@@ -446,7 +446,7 @@ describe.skip('Aesthetic tests', () => {
 });
 
 describe('Spectators Layout', () => {
-  it.only('Should display list of spectators', () => {
+  it('Should display list of spectators', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
       p0Hand: [
