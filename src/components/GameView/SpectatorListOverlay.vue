@@ -16,7 +16,7 @@
     scrim=""
     class="d-flex flex-column justify-space-around align-center overlay"
   >
-    <div class="text-white d-flex flex-column justify-between align-center wrapper">
+    <div class="text-white d-flex flex-column justify-center align-center">
       <div id="close-wrapper" class="d-flex justify-space-between align-center w-100 mb-10">
         <h3 class="text-decoration-underline">Spectators</h3>
         <v-btn icon variant="text" color="white" data-cy="cancel-move" @click="overlay = false">
@@ -47,9 +47,7 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
-  min-height: 200px;
-}
+/* Overide vuetify overlay color */
 .overlay {
   background-color: rgba(0, 0, 0, 0.575);
 }
@@ -58,8 +56,7 @@ export default {
   margin-top: 5%;
   list-style-type: none;
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  column-count: 4;
   overflow-y: auto;
   max-height: 800px;
 }
