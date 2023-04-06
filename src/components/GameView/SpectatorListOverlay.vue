@@ -14,19 +14,20 @@
     v-model="overlay"
     data-cy="spectate-list-overlay"
     scrim=""
-    class="d-flex flex-column justify-center align-center overlay"
+    class="d-flex flex-column justify-space-around align-center overlay"
   >
-    <div class="text-white d-flex flex-column justify-center align-center">
-      <h3>Spectators</h3>
-      <ul class="spectatorList">
-        <li v-for="spectator in spectators">{{ spectator }}</li>
-      </ul>
-    </div>
-
-    <div id="close-wrapper" class="d-flex justify-center">
-      <v-btn icon variant="text" color="white" size="x-large" data-cy="cancel-move" @click="overlay = false">
-        <v-icon icon="mdi-close" size="large" />
-      </v-btn>
+    <div class="text-white d-flex flex-column justify-between align-center wrapper">
+      <div id="close-wrapper" class="d-flex justify-space-between align-center w-100 mb-10">
+        <h3 class="text-decoration-underline">Spectators</h3>
+        <v-btn icon variant="text" color="white" data-cy="cancel-move" @click="overlay = false">
+          <v-icon icon="mdi-close" size="large" />
+        </v-btn>
+      </div>
+      <div>
+        <ul class="spectatorList">
+          <li v-for="spectator in spectators">{{ spectator }}</li>
+        </ul>
+      </div>
     </div>
   </v-overlay>
 </template>
@@ -46,22 +47,34 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  min-height: 200px;
+}
 .overlay {
   background-color: rgba(0, 0, 0, 0.575);
-  padding: 40px;
-  border-radius: 15px;
 }
 
 .spectatorList {
   margin-top: 5%;
   list-style-type: none;
-  column-count: 4;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  overflow-y: auto;
+  max-height: 800px;
 }
 
 .spectatorList li {
-  max-width: 100px;
+  max-width: 120px;
+  padding: 5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media (max-width: 600px) {
+  .spectatorList {
+    max-height: 30rem;
+  }
 }
 </style>

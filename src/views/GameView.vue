@@ -7,7 +7,7 @@
     <!-- Authenticated View -->
     <template v-else>
       <div id="game-menu-wrapper" class="d-flex flex-column align-center">
-        <div class="d-flex align-center">
+        <div class="d-flex align-center btnWrapper">
           <SpectatorListOverlay :spectators="spectators" />
           <game-menu />
         </div>
@@ -1479,6 +1479,10 @@ export default {
   .player-cards-container {
     grid-column-start: 1;
     grid-column-end: span 12;
+  }
+
+  .btnWrapper {
+    flex-direction: column !important;
   }
 }
 </style>
