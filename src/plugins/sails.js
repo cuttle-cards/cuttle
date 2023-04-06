@@ -42,7 +42,14 @@ io.sails.reconnection = true;
 // Handles socket updates of game data
 io.socket.on('game', function (evData) {
   switch (evData.verb) {
-    case 'updated':
+    case 'updated': {
+      const currentRoute = router.currentRoute.value;
+      // No-op if the event's gameId doesn't match the url
+      const { gameId: urlGameId } = currentRoute.params;
+      const eventGameId = evData.data?.game?.id ?? evData.data.gameId;
+      if (urlGameId && Number(urlGameId) !== eventGameId) {
+        return;
+      }
       // Handle GameOver
       if (evData.data.victory && evData.data.victory.gameOver) {
         setTimeout(() => {
@@ -54,7 +61,6 @@ io.socket.on('game', function (evData) {
           store.commit('updateReady', evData.data.pNum);
           break;
         case 'Initialize': {
-          const currentRoute = router.currentRoute.value;
           const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
 
           // Update state
@@ -102,6 +108,7 @@ io.socket.on('game', function (evData) {
         case 'resolve':
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
           store.commit('setWaitingForOpponentToCounter', false);
+          store.commit('setMyTurnToCounter', false);
           if (evData.data.happened) {
             switch (evData.data.oneOff.rank) {
               case 3:
@@ -173,7 +180,7 @@ io.socket.on('game', function (evData) {
           store.commit('setConsideringOpponentStalemateRequest', false);
           store.commit('setWaitingForOpponentToStalemate', false);
           break;
-      }
+      }}
   }
 });
 
