@@ -465,7 +465,7 @@ describe('Spectators Layout', () => {
   });
 
   it('Should display list of spectators that join', () => {
-    cy.get('[data-cy="spectate-list-button"]').should('exist');
+    cy.get('[data-cy="spectate-list-button"]').should('contain', '1');
     cy.get('[data-cy="spectate-list-button"]').click();
     cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
 
