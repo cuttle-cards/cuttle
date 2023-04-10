@@ -493,3 +493,10 @@ describe('Spectators Layout', () => {
       .should('contain', playerFour.username);
   });
 });
+
+describe('Spectator Layout from playerView', () => {
+  it.only('should display no spectators', () => {
+    cy.setupGameAsP0();
+    cy.get('[data-cy="spectate-list-button"]').should('contain', '0');
+  });
+});
