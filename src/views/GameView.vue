@@ -6,9 +6,9 @@
     </template>
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column align-center">
-        <div class="d-flex align-center btnWrapper">
-          <SpectatorListOverlay :spectators="spectators" />
+      <div id="game-menu-wrapper" class="d-flex flex-column justify-center align-center">
+        <div class="d-flex align-center justify-center btnWrapper">
+          <SpectatorListOverlay :spectatingUsers="spectatingUsers" />
           <game-menu />
         </div>
         <v-icon
@@ -438,7 +438,7 @@ export default {
       'playerQueenCount',
       'playerUsername',
       'opponent',
-      'spectators',
+      'spectatingUsers',
       'opponentPointTotal',
       'opponentQueenCount',
       'opponentUsername',
