@@ -12,7 +12,7 @@ function resetState() {
     p1Ready: false,
     passes: 0,
     players: [],
-    spectators: [],
+    spectatingUsers: [],
     scrap: [],
     turn: 0,
     twos: [],
@@ -101,8 +101,8 @@ export default {
       }
       return state.players[(state.myPNum + 1) % 2];
     },
-    spectators(state) {
-      return state.spectators;
+    spectatingUsers(state) {
+      return state.spectatingUsers;
     },
     opponentIsReady(state, getters) {
       if (!getters.opponent) {
@@ -172,7 +172,8 @@ export default {
       if (Object.hasOwnProperty.call(newGame, 'p1Ready')) state.p1Ready = newGame.p1Ready;
       if (Object.hasOwnProperty.call(newGame, 'passes')) state.passes = newGame.passes;
       if (Object.hasOwnProperty.call(newGame, 'players')) state.players = cloneDeep(newGame.players);
-      if (Object.hasOwnProperty.call(newGame, 'spectators')) state.spectators = newGame.spectators;
+      if (Object.hasOwnProperty.call(newGame, 'spectatingUsers'))
+        state.spectatingUsers = newGame.spectatingUsers;
       if (Object.hasOwnProperty.call(newGame, 'twos')) state.twos = cloneDeep(newGame.twos);
 
       if (Object.hasOwnProperty.call(newGame, 'topCard')) state.topCard = cloneDeep(newGame.topCard);
