@@ -38,10 +38,10 @@ function tempUser(usr, points) {
   this.faceCards.sort(comapreByRankThenSuit);
 }
 
-function tempGame(game, p0, p1) {
+function tempGame(game, p0, p1, spectatingUsers) {
   this.id = game.id;
   this.players = [p0, p1];
-  this.spectators = game.spectators;
+  this.spectatingUsers = spectatingUsers;
   this.deck = game.deck;
   this.scrap = game.scrap;
   this.topCard = game.topCard;
@@ -80,7 +80,8 @@ module.exports = {
       .populate('resolving')
       .populate('twos', { sort: 'updatedAt' })
       .populate('oneOffTarget')
-      .populate('attachedToTarget');
+      .populate('attachedToTarget')
+      .populate('spectatingUsers');
   },
 
   /*
@@ -110,7 +111,8 @@ module.exports = {
                   if (game.players.length > 1) {
                     const p0 = userService.findUser({ userId: game.players[0].id });
                     const p1 = userService.findUser({ userId: game.players[1].id });
-                    return Promise.all([Promise.resolve(game), p0, p1]);
+                    const spectatingUsers = game.spectatingUsers.map((user) => user.username);
+                    return Promise.all([Promise.resolve(game), p0, p1, spectatingUsers]);
                   }
                   return Promise.reject({ message: "Can't populate game without two players" });
                 }
@@ -118,15 +120,9 @@ module.exports = {
                   message: "Can't populate game, because it does not have players collection",
                 });
               })
-              // find spectators
-              .then(function findSpectators(values) {
-                const [game, p0, p1] = values;
-                const { spectators } = game;
-                return [game, p0, p1, spectators];
-              })
               // then find points
               .then(function findPoints(values) {
-                const [game, p0, p1, spectators] = values;
+                const [game, p0, p1, spectatingUsers] = values;
                 const p0Points = cardService.findPoints({ userId: p0.id });
                 const p1Points = cardService.findPoints({ userId: p1.id });
                 return Promise.all([
@@ -135,16 +131,15 @@ module.exports = {
                   Promise.resolve(p1),
                   p0Points,
                   p1Points,
-                  spectators,
+                  spectatingUsers,
                 ]);
               })
               // then format results & resolve
               .then(function finish(values) {
-                const [game, p0, p1, p0Points, p1Points, spectators] = values;
+                const [game, p0, p1, p0Points, p1Points, spectatingUsers] = values;
                 const populatedP0 = new tempUser(p0, p0Points);
                 const populatedP1 = new tempUser(p1, p1Points);
-                const result = new tempGame(game, populatedP0, populatedP1, spectators);
-
+                const result = new tempGame(game, populatedP0, populatedP1, spectatingUsers);
                 return resolve(result);
               })
               .catch(function failed(err) {

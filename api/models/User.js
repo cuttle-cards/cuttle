@@ -51,5 +51,9 @@ module.exports = {
       type: 'number',
       defaultsTo: 1000,
     },
+    spectatedGames: {
+      collection: 'game',
+      via: 'spectatingUsers',
+    },
   }, // end attributes
 }; // end exports

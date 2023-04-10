@@ -19,11 +19,6 @@ module.exports = {
       collection: 'user',
       via: 'game',
     },
-    spectators: {
-      type: 'ref',
-      columnType: 'text[]',
-      defaultsTo: [],
-    },
     p0Ready: {
       type: 'boolean',
       defaultsTo: false,
@@ -110,6 +105,10 @@ module.exports = {
     },
     match: {
       model: 'match',
+    },
+    spectatingUsers: {
+      collection: 'user',
+      via: 'spectatedGames',
     },
     /**
      *  Enum for game result:
