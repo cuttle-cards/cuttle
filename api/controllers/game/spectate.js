@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
   req.session.spectating = gameId;
 
   try {
-    // Add spectating users to game table
+    // Add spectating users to table
     await Game.addToCollection(game.id, 'spectatingUsers', spectator.id);
     const fullGame = await gameService.populateGame({ gameId: game.id });
 
