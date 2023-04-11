@@ -80,7 +80,6 @@ jobs:
           wait-on-timeout: 120
           record: true
           parallel: true
-          video: true
         env:
           VITE_API_URL: http://localhost:1337
           # pass GitHub token to allow accurately detecting a build vs a re-run build

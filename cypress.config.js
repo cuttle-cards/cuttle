@@ -25,7 +25,7 @@ module.exports = defineConfig({
   },
   numTestsKeptInMemory: 25,
   // https://docs.cypress.io/guides/references/configuration#Videos
-  video: true,
+  video: false,
   // https://docs.cypress.io/guides/references/configuration#Folders-Files
   downloadsFolder: 'tests/e2e/downloads',
   fixturesFolder: 'tests/e2e/fixtures',
