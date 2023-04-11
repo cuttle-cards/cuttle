@@ -1,11 +1,12 @@
 <template>
   <div class="game-overlays">
+
     <v-overlay
       id="waiting-for-game-to-start-scrim"
       v-model="waitingForGameToStart"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Waiting for Game to Start
       </h1>
       <v-btn
@@ -18,60 +19,88 @@
         Leave Game
       </v-btn>
     </v-overlay>
+
     <v-overlay
       id="waiting-for-opponent-counter-scrim"
       v-model="waitingForOpponentToCounter"
-      class="game-overlay"
+      class="d-flex flex-column justify-center align-center"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         {{ showWaitingForOpponetToCounterMessage }}
       </h1>
+      <div id="counter-scrim-cards">
+        <game-card
+          v-if="oneOff"
+          :rank="oneOff.rank"
+          :suit="oneOff.suit"
+          :data-overlay-one-off="`${oneOff.rank}-${oneOff.suit}`"
+          :jacks="twos"
+          class="overlay-card"
+        />
+        <div>
+          <game-card
+            v-for="(two, index) in twos"
+            :key="`overlay-two-${two.id}`"
+            :rank="two.rank"
+            :suit="two.suit"
+            :data-overlay-counter="`${two.rank}-${two.suit}`"
+            :class="`overlay-card overlay-two overlay-two-${index}`"
+            :high-elevation="true"
+          />
+        </div>
+      </div>
     </v-overlay>
+
     <v-overlay
       id="waiting-for-opponent-discard-scrim"
       v-model="waitingForOpponentToDiscard"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Is Discarding
       </h1>
     </v-overlay>
+
     <v-overlay
       id="waiting-for-opponent-resolve-three-scrim"
       v-model="waitingForOpponentToPickFromScrap"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Choosing Card from Scrap
       </h1>
     </v-overlay>
+
     <v-overlay
       id="waiting-for-opponent-play-from-deck-scrim"
       v-model="showWaitingForOpponentToPlayFromDeck"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Playing from Deck
       </h1>
     </v-overlay>
+
     <v-overlay
       id="waiting-for-opponent-to-discard-jack-from-deck"
       v-model="showWaitingForOpponentToDiscardJackFromDeck"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Must Discard Jack
       </h1>
     </v-overlay>
+
     <v-overlay
       id="waiting-for-opponent-stalemate-scrim"
       v-model="waitingForOpponentToStalemate"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3']">
+      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         <div>Opponent Considering Stalemate Request</div>
       </h1>
     </v-overlay>
+
     <move-choice-overlay
       v-if="selectedCard || cardSelectedFromDeck"
       :modelValue="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
@@ -96,11 +125,13 @@
 import { mapGetters, mapState } from 'vuex';
 
 import MoveChoiceOverlay from '@/components/GameView/MoveChoiceOverlay.vue';
+import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'GameOverlays',
   components: {
     MoveChoiceOverlay,
+    GameCard,
   },
   emits:['points', 'face-card', 'one-off', 'clear-selection', 'target'],
   props: {
@@ -133,6 +164,8 @@ export default {
       waitingForOpponentToStalemate: ({ game }) => game.waitingForOpponentToStalemate,
       topCard: ({ game }) => game.topCard,
       secondCard: ({ game }) => game.secondCard,
+      oneOff: ({ game }) => game.oneOff,
+      twos: ({ game }) => game.twos,
       playingFromDeck: ({ game }) => game.playingFromDeck,
     }),
     ...mapGetters([
@@ -191,16 +224,45 @@ export default {
 </script>
 
 <style scoped lang="scss">
+:deep(.v-overlay__content) {
+  left: 0;
+}
 .game-overlay {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  & .text-h3 {
-    font-weight: bold;
-  }
 }
-.text-h5 {
+.overlay-header {
     font-weight: bold;
+    background-color: #FFF4D7;
+    padding: 24px;
+    text-align: center;
+    width: 100vw;
+  }
+  #counter-scrim-cards {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 16px;
+  }
+  .overlay-card {
+    position: relative;
+    display: inline-block;
+    margin-right: -48px !important;
+    min-width: 90px;
+  }
+  .overlay-two-0 {
+    transform: rotate(-5deg);
+  }
+  .overlay-two-1 {
+    transform: rotate(3deg);
+  }
+  .overlay-two-2 {
+    transform: rotate(-10deg);
+  }
+  .overlay-two-3 {
+    transform: rotate(-4deg);
   }
 </style>
