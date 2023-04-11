@@ -76,31 +76,42 @@ export function cardsMatch(card1, card2) {
 
 /**
  * @param game: game obj from $store
+ * @param card: {suit: number, rank: number}
+ * @returns id of specified cards
+ * @throws error if card not found in game
+ */
+export function getCardId(game, card) {
+  if (cardsMatch(card, game.topCard)) return game.topCard.id;
+  if (cardsMatch(card, game.secondCard)) return game.secondCard.id;
+
+  const foundInScrap = game.scrap.find((scrapCard) => cardsMatch(card, scrapCard));
+  if (foundInScrap) return foundInScrap.id;
+
+  const foundInP0Hand = game.players[0].hand.find((handCard) => cardsMatch(card, handCard));
+  if (foundInP0Hand) return foundInP0Hand.id;
+
+  const foundInP1Hand = game.players[1].hand.find((handCard) => cardsMatch(card, handCard));
+  if (foundInP1Hand) return foundInP1Hand.id;
+
+  const foundInDeck = game.deck.find((deckCard) => cardsMatch(card, deckCard));
+  if (foundInDeck) return foundInDeck.id;
+
+  throw new Error(
+    `Could not find desired card ${card.rank} of ${card.suit} in deck, scrap, or either player's hand`,
+  );
+}
+
+/**
+ * @param game: game obj from $store
  * @param suitAndRankList: {suit: number, rank: number}[]
  * @returns lit of ids of specified cards
+ * * @throws error if any card missing in game
  */
 export function getCardIds(game, suitAndRankList) {
-  return suitAndRankList.map((card) => {
-    if (cardsMatch(card, game.topCard)) return game.topCard.id;
-    if (cardsMatch(card, game.secondCard)) return game.secondCard.id;
-
-    const foundInScrap = game.scrap.find((scrapCard) => cardsMatch(card, scrapCard));
-    if (foundInScrap) return foundInScrap.id;
-
-    const foundInP0Hand = game.players[0].hand.find((handCard) => cardsMatch(card, handCard));
-    if (foundInP0Hand) return foundInP0Hand.id;
-
-    const foundInP1Hand = game.players[1].hand.find((handCard) => cardsMatch(card, handCard));
-    if (foundInP1Hand) return foundInP1Hand.id;
-
-    const foundInDeck = game.deck.find((deckCard) => cardsMatch(card, deckCard));
-    if (foundInDeck) return foundInDeck.id;
-
-    throw new Error(
-      `Could not find desired card ${card.rank} of ${card.suit} in deck, scrap, or either player's hand`,
-    );
-  });
+  return suitAndRankList.map((card) => getCardId(game, card));
 }
+
+
 
 function cardSortComparator(card1, card2) {
   let res = card1.rank - card2.rank;
@@ -181,7 +192,7 @@ export function playOutOfTurn(moveName) {
   cy.log(`Correctly prevented attempt to play ${moveName} out of turn`);
 }
 
-function assertDomMatchesFixture(pNum, fixture) {
+function assertDomMatchesFixture(pNum, fixture, spectating) {
   const expectedP0Points = sumRanks(fixture.p0Points);
   const expectedP0PointsToWin = pointsToWin(countKings(fixture.p0FaceCards));
   const expectedP1Points = sumRanks(fixture.p1Points);
@@ -245,7 +256,7 @@ function assertDomMatchesFixture(pNum, fixture) {
     } else {
       cy.get('[data-opponent-hand-card]').should('not.exist');
     }
-    if (playerHasGlasses) {
+    if (playerHasGlasses || spectating) {
       fixture.p1Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
@@ -354,6 +365,70 @@ function assertStoreMatchesFixture(fixture) {
       }
     });
 }
+
+export function assertVictory() {
+  cy.log('Asserting player victory');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        const matchWinner = game.currentMatch.winner;
+        cy.get('#game-over-dialog')
+          .should('be.visible')
+          .should('contain', matchWinner ? 'You Win the Match' : `Game ${gameNumber}: You Win`)
+          .get('[data-cy=match-result-section]')
+          .should('be.visible');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
+    });
+}
+
+export function assertLoss() {
+  cy.log('Asserting player loss');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
+  cy.get('[data-cy=loss-img]').should('be.visible');
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        const matchWinner = game.currentMatch.winner;
+        cy.get('#game-over-dialog')
+          .should('contain', matchWinner ? 'You Lose the Match' : `Game ${gameNumber}: You Lose`)
+          .should('be.visible')
+          .get('[data-cy=match-result-section]')
+          .should('be.visible');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
+    });
+}
+
+export function assertStalemate() {
+  cy.log('Asserting stalemate');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=stalemate-heading]').should('be.visible');
+  cy.get('[data-cy=stalemate-img]').should('be.visible');
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      if (game.isRanked) {
+        const gameNumber = game.currentMatch.games.length;
+        cy.get('#game-over-dialog')
+          .should('be.visible')
+          // Don't need to check match winner as we do in assertVictory or assertLoss
+          // since a stalemate won't decide a match winner
+          .should('contain', `Game ${gameNumber}: Draw`)
+          .get('[data-cy=match-result-section]')
+          .should('be.visible');
+      } else {
+        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
+      }
+    });
+}
+
 /**
  * @param fixture:
  * {
@@ -366,9 +441,9 @@ function assertStoreMatchesFixture(fixture) {
  * }
  * @param pNum: int [0, 1]
  */
-export function assertGameState(pNum, fixture) {
+export function assertGameState(pNum, fixture, spectating = false) {
   cy.log('Asserting game state:', fixture);
-  assertDomMatchesFixture(pNum, fixture);
+  assertDomMatchesFixture(pNum, fixture, spectating);
   assertStoreMatchesFixture(fixture);
 }
 
@@ -377,6 +452,7 @@ export const SnackBarError = {
   ILLEGAL_SCUTTLE:
     "You can only scuttle an opponent's point card with a higher rank point card, or the same rank with a higher suit. Suit order (low to high) is: Clubs < Diamonds < Hearts < Spades",
   FROZEN_CARD: 'That card is frozen! You must wait a turn to play it',
+  NOT_IN_GAME: "You can't do that because you're not a player in this game",
 };
 
 export const Card = {

@@ -283,12 +283,17 @@ describe('Countering One-Offs', () => {
     cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
     cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-2]').click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    cy.get('#waiting-for-opponent-counter-scrim [data-overlay-one-off=1-0]').should('exist');
+    cy.get('#waiting-for-opponent-counter-scrim [data-overlay-counter=2-2]').should('exist');
     // Opponent counters back (2nd counter)
     cy.counterOpponent(Card.TWO_OF_CLUBS);
     // Player counters again (3rd counter)
     cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
     cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-3]').click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    cy.get('#waiting-for-opponent-counter-scrim [data-overlay-one-off=1-0]').should('exist');
+    cy.get('#waiting-for-opponent-counter-scrim [data-overlay-counter=2-2]').should('exist');
+    cy.get('#waiting-for-opponent-counter-scrim [data-overlay-counter=2-0]').should('exist');
     // Opponent plays 4th and final counter
     cy.counterOpponent(Card.TWO_OF_DIAMONDS);
     // Player cannot counter back

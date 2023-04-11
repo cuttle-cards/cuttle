@@ -1,0 +1,9 @@
+/**
+  * Vuetify Overrides
+ */
+ @use 'vuetify/settings' with (
+  $body-font-family: (
+    'PT Serif',
+    serif,
+  ),
+ );
