@@ -169,8 +169,6 @@ io.socket.on('game', function (evData) {
           }
           break;
         case 'reLogin':
-          store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
-          break;
         case 'spectatingUsers':
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
           break;
