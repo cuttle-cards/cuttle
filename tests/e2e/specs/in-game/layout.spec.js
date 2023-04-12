@@ -480,9 +480,11 @@ describe('Spectators Layout', () => {
   it('Display already spectating names on join spectate', () => {
     cy.vueRoute('/');
     cy.signupOpponent(playerThree.username, playerThree.password);
-    cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
-    cy.signupOpponent(playerFour.username, playerFour.password);
-    cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
+    cy.get('@gameData').then((gameData) => {
+      cy.setOpponentToSpectate(gameData.gameId);
+      cy.signupOpponent(playerFour.username, playerFour.password);
+      cy.setOpponentToSpectate(gameData.gameId);
+    });
     cy.get('[data-cy-game-list-selector=spectate]').click();
     cy.get(`[data-cy-spectate-game]`).click();
     cy.get('[data-cy="spectate-list-button"]').should('contain', '3');
