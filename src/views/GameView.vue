@@ -6,7 +6,7 @@
     </template>
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column flex-md-row align-center">
+      <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center">
         <spectator-list-menu :spectatingUsers="spectatingUsers" :vuetifyDisplay="$vuetify" />
         <game-menu />
         <v-icon
