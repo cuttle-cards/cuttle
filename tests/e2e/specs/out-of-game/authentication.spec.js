@@ -1,5 +1,6 @@
 import { assertSnackbarError } from '../../support/helpers';
 import { username as validUsername, validPassword } from '../../support/helpers';
+import { playerSelf } from '../../fixtures/userFixtures';
 
 function assertSuccessfulAuth(username) {
   // Confirm we have navigated to home
@@ -31,7 +32,7 @@ describe('Auth - Page Content', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('#/login');
-    cy.signupOpponent(validUsername, validPassword);
+    cy.signupOpponent(playerSelf);
   });
 
   it('Displays logo and navigates to rules page', () => {
@@ -45,7 +46,7 @@ describe('Logging In', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('#/login');
-    cy.signupOpponent(validUsername, validPassword);
+    cy.signupOpponent(playerSelf);
   });
 
   /**
@@ -136,14 +137,11 @@ describe('Signing Up', () => {
     assertSnackbarError('Please provide a non-empty username', 'auth');
   });
   it('Rejects signup if username already exists', () => {
-    cy.signupOpponent(validUsername, validPassword);
+    cy.signupOpponent(playerSelf);
     cy.get('[data-cy=username]').type(validUsername);
     cy.get('[data-cy=password]').type(validPassword);
     cy.get('[data-cy=submit]').click();
     assertFailedAuth('#/signup');
-    assertSnackbarError(
-      'That username is already registered to another user; try logging in!',
-      'auth'
-    );
+    assertSnackbarError('That username is already registered to another user; try logging in!', 'auth');
   });
 });

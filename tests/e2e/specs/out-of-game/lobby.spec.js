@@ -1,14 +1,9 @@
-import {
-  username as validUsername,
-  validPassword,
-  opponentUsername,
-  opponentPassword,
-} from '../../support/helpers';
+import { playerSelf, opponentOne } from '../../fixtures/userFixtures';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
-  cy.signupPlayer(validUsername, validPassword);
+  cy.signupPlayer(playerSelf);
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
@@ -46,7 +41,7 @@ describe('Lobby - Page Content', () => {
   });
 
   it('Shows both players indicators', () => {
-    cy.get('[data-cy=my-indicator]').contains(validUsername.split('@')[0]).should('not.contain', '@');
+    cy.get('[data-cy=my-indicator]').contains(playerSelf.username).should('not.contain', '@');
     cy.get('[data-cy=opponent-indicator]').contains('Invite');
   });
 
@@ -75,7 +70,7 @@ describe('Lobby - P0 Perspective', () => {
     setup();
   });
   it('Exits the Lobby', () => {
-    cy.get('[data-cy=my-indicator]').contains(validUsername);
+    cy.get('[data-cy=my-indicator]').contains(playerSelf.username);
     cy.get('[data-cy=exit-button]').click();
     // Confirm navigation back to home
     cy.hash().should('eq', '#/');
@@ -97,7 +92,7 @@ describe('Lobby - P0 Perspective', () => {
       .click()
       .contains('UNREADY');
     // Test: player indicator classes
-    cy.get('[data-cy=my-indicator]').should('have.class', 'ready').contains(validUsername);
+    cy.get('[data-cy=my-indicator]').should('have.class', 'ready').contains(playerSelf.username);
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
@@ -123,21 +118,21 @@ describe('Lobby - P0 Perspective', () => {
       .then((gameData) => {
         cy.contains('[data-cy=opponent-indicator]', 'Invite');
         // Sign up new user and subscribe them to game
-        cy.signupOpponent(opponentUsername, opponentPassword);
+        cy.signupOpponent(opponentOne);
         cy.subscribeOpponent(gameData.id);
         // Test that opponent's username appears in indicator
-        cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
+        cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
         // Opponent leaves
         cy.leaveLobbyOpponent();
         cy.contains('[data-cy=opponent-indicator]', 'Invite');
         // Opponent joins again
         cy.subscribeOpponent(gameData.id);
-        cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
+        cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
       });
   });
   it('Shows when oppenent Readies/Unreadies', function () {
     // Opponent subscribes & readies up
-    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
     cy.readyOpponent();
@@ -147,7 +142,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
   });
   it('Game starts when both players are ready - opponent first', function () {
-    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.readyOpponent().then(() => {
       cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
@@ -157,7 +152,7 @@ describe('Lobby - P0 Perspective', () => {
   });
   it('Game starts when both players are ready - player first', function () {
     cy.get('[data-cy=ready-button]').click();
-    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.readyOpponent().then(() => {
       assertGameStarted();
@@ -174,11 +169,11 @@ describe('Lobby - P1 Perspective', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
-    cy.signupPlayer(validUsername, validPassword);
+    cy.signupPlayer(playerSelf);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
-      cy.signupOpponent(opponentUsername, opponentPassword);
+      cy.signupOpponent(opponentOne);
       cy.subscribeOpponent(gameSummary.gameId);
       // Join game as this user and navigate to lobby
       cy.window()
@@ -188,10 +183,10 @@ describe('Lobby - P1 Perspective', () => {
     });
   });
   it('Shows opponent already in lobby for player joining second', () => {
-    cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
+    cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
   });
   it('Shows when oppenent Readies/Unreadies', () => {
-    cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
+    cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]', { timeOut: 10000 }).should('have.class', 'ready');
@@ -202,12 +197,12 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
   });
   it('Shows when opponent leaves and rejoins', function () {
-    cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
+    cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
     cy.leaveLobbyOpponent(); // Opponent leaves
     cy.contains('[data-cy=opponent-indicator]', 'Invite');
     // Opponent joins again
     cy.subscribeOpponent(this.gameSummary.gameId);
-    cy.contains('[data-cy=opponent-indicator]', opponentUsername.split('@')[0]);
+    cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
   });
   it('Ready & UnReady buttons work', () => {
     cy.get('[data-cy=ready-button]')
@@ -217,7 +212,7 @@ describe('Lobby - P1 Perspective', () => {
       .click()
       .contains('UNREADY');
     // Test: player indicator classes
-    cy.get('[data-cy=my-indicator]').should('have.class', 'ready').contains(validUsername);
+    cy.get('[data-cy=my-indicator]').should('have.class', 'ready').contains(playerSelf.username);
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')

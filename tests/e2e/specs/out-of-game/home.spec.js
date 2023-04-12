@@ -1,15 +1,10 @@
 import { assertSnackbarError } from '../../support/helpers';
-import {
-  username as playerUsername,
-  validPassword as playerPassword,
-  opponentUsername,
-  opponentPassword,
-} from '../../support/helpers';
+import { playerSelf, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
 
 function setup() {
   cy.wipeDatabase();
   cy.visit('/');
-  cy.signupPlayer(playerUsername, playerPassword);
+  cy.signupPlayer(playerSelf);
   cy.vueRoute('/');
 }
 
@@ -51,7 +46,7 @@ describe('Home - Page Content', () => {
     cy.get('[data-nav=Home]').should('not.exist');
   });
   it('Sends list of games when session data includes invalid game id', () => {
-    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.signupOpponent(opponentOne);
     cy.setBadSession();
     cy.requestGameList();
     cy.requestGameList();
@@ -74,7 +69,7 @@ describe('Home - Game List', () => {
     cy.createGamePlayer({ gameName: '111', isRanked: false });
     cy.createGamePlayer({ gameName: '33', isRanked: false });
     cy.get('[data-cy=game-list-item]').should('have.length', 2);
-    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.signupOpponent(opponentOne);
     cy.createGameOpponent('Game made by other player');
     cy.get('[data-cy=game-list-item]').should('have.length', 3).contains('Game made by other player');
   });
@@ -100,7 +95,7 @@ describe('Home - Game List', () => {
      */
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Sign up new user and subscribe them to game
-      cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
+      cy.signupOpponent(opponentOne);
       cy.subscribeOpponent(gameData.gameId);
       // Our user then joins through UI
       cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
@@ -123,9 +118,9 @@ describe('Home - Game List', () => {
       // Test that JOIN button starts enabled
       cy.contains('button.v-btn', 'Play').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
-      cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
+      cy.signupOpponent(opponentOne);
       cy.subscribeOpponent(gameData.gameId);
-      cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw');
+      cy.signupOpponent(opponentTwo);
       cy.subscribeOpponent(gameData.gameId);
 
       // Test that join button is now disabled
@@ -142,9 +137,9 @@ describe('Home - Game List', () => {
       // Test that JOIN button starts enabled
       cy.contains('button.v-btn', 'Play').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
-      cy.signupOpponent('secondUser@aol.com', 'myNewPassword');
+      cy.signupOpponent(opponentOne);
       cy.subscribeOpponent(gameData.gameId);
-      cy.signupOpponent('thirdUser@facebook.com', 'anotherUserPw');
+      cy.signupOpponent(opponentTwo);
       cy.subscribeOpponent(gameData.gameId);
 
       // Test that join button is now disabled
@@ -307,14 +302,14 @@ describe('Home - Create Game', () => {
   it('Removes a game when both players are ready', () => {
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Sign up 2 users and subscribe them to game
-      cy.signupOpponent('remotePlayer1@cuttle.cards', 'myNewPassword');
+      cy.signupOpponent(opponentOne);
       cy.subscribeOpponent(gameData.gameId);
       cy.readyOpponent(gameData.gameId);
 
       // The game should exist
       cy.get('[data-cy=game-list-item]').should('have.length', 1);
 
-      cy.signupOpponent('remotePlayer2@cuttle.cards', 'anotherUserPw');
+      cy.signupOpponent(opponentTwo);
       cy.subscribeOpponent(gameData.gameId);
 
       // The game should still be there after the second player joins
