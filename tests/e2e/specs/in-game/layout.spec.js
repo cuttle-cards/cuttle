@@ -497,7 +497,7 @@ describe('Spectators Layout', () => {
 });
 
 describe('Spectator Layout from playerView', () => {
-  it('should display no spectators', () => {
+  it('Should display no spectators', () => {
     cy.setupGameAsP0();
     cy.get('[data-cy="spectate-list-button"]').should('contain', '0');
   });
