@@ -1,8 +1,3 @@
-export const username = 'myUsername';
-export const validPassword = 'passwordLongerThanEight';
-export const opponentUsername = 'definitelyNotTheGovernment6969';
-export const opponentPassword = 'deviousTrickery';
-
 export function hasValidSuitAndRank(card) {
   if (!Object.prototype.hasOwnProperty.call(card, 'rank')) return false;
   if (!Object.prototype.hasOwnProperty.call(card, 'suit')) return false;
