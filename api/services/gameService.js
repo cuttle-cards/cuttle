@@ -38,10 +38,10 @@ function tempUser(usr, points) {
   this.faceCards.sort(comapreByRankThenSuit);
 }
 
-function tempGame(game, p0, p1, spectatingUsers) {
+function tempGame(game, p0, p1) {
   this.id = game.id;
   this.players = [p0, p1];
-  this.spectatingUsers = spectatingUsers;
+  this.spectatingUsers = game.spectatingUsers.map((user) => user.username);
   this.deck = game.deck;
   this.scrap = game.scrap;
   this.topCard = game.topCard;
@@ -111,8 +111,7 @@ module.exports = {
                   if (game.players.length > 1) {
                     const p0 = userService.findUser({ userId: game.players[0].id });
                     const p1 = userService.findUser({ userId: game.players[1].id });
-                    const spectatingUsers = game.spectatingUsers.map((user) => user.username);
-                    return Promise.all([Promise.resolve(game), p0, p1, spectatingUsers]);
+                    return Promise.all([Promise.resolve(game), p0, p1]);
                   }
                   return Promise.reject({ message: "Can't populate game without two players" });
                 }
@@ -122,7 +121,7 @@ module.exports = {
               })
               // then find points
               .then(function findPoints(values) {
-                const [game, p0, p1, spectatingUsers] = values;
+                const [game, p0, p1] = values;
                 const p0Points = cardService.findPoints({ userId: p0.id });
                 const p1Points = cardService.findPoints({ userId: p1.id });
                 return Promise.all([
@@ -131,15 +130,14 @@ module.exports = {
                   Promise.resolve(p1),
                   p0Points,
                   p1Points,
-                  spectatingUsers,
                 ]);
               })
               // then format results & resolve
               .then(function finish(values) {
-                const [game, p0, p1, p0Points, p1Points, spectatingUsers] = values;
+                const [game, p0, p1, p0Points, p1Points] = values;
                 const populatedP0 = new tempUser(p0, p0Points);
                 const populatedP1 = new tempUser(p1, p1Points);
-                const result = new tempGame(game, populatedP0, populatedP1, spectatingUsers);
+                const result = new tempGame(game, populatedP0, populatedP1);
                 return resolve(result);
               })
               .catch(function failed(err) {
