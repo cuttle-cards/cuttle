@@ -11,7 +11,7 @@
         variant="text"
       >
         <v-icon class="mr-1" icon="mdi-eye-outline" size="large" />
-        <span class="pr-2">{{ spectatingUsers.length }}</span>
+        <span class="pr-2" v-if="!$vuetify.display.xs">{{ spectatingUsers.length }}</span>
       </v-btn>
     </template>
     <!-- Menu -->

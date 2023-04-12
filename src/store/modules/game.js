@@ -101,9 +101,6 @@ export default {
       }
       return state.players[(state.myPNum + 1) % 2];
     },
-    spectatingUsers(state) {
-      return state.spectatingUsers;
-    },
     opponentIsReady(state, getters) {
       if (!getters.opponent) {
         return null;

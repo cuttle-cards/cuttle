@@ -6,11 +6,9 @@
     </template>
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column justify-center align-center">
-        <div class="d-flex align-center justify-center btnWrapper">
-          <SpectatorListOverlay :spectatingUsers="spectatingUsers" />
-          <game-menu />
-        </div>
+      <div id="game-menu-wrapper" class="d-flex flex-column flex-md-row align-center">
+        <spectator-list-menu :spectatingUsers="spectatingUsers" :vuetifyDisplay="$vuetify" />
+        <game-menu />
         <v-icon
           v-if="$vuetify.display.xs"
           color="white"
@@ -393,7 +391,7 @@ import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay
 import ScrapDialog from '@/components/GameView/ScrapDialog.vue';
 import UsernameToolTip from '@/components/GameView/UsernameToolTip.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
-import SpectatorListOverlay from '../components/GameView/SpectatorListOverlay.vue';
+import SpectatorListMenu from '../components/GameView/SpectatorListMenu.vue';
 
 export default {
   name: 'GameView',
@@ -408,7 +406,7 @@ export default {
     ScrapDialog,
     UsernameToolTip,
     BaseSnackbar,
-    SpectatorListOverlay,
+    SpectatorListMenu,
   },
   data() {
     return {
@@ -438,7 +436,6 @@ export default {
       'playerQueenCount',
       'playerUsername',
       'opponent',
-      'spectatingUsers',
       'opponentPointTotal',
       'opponentQueenCount',
       'opponentUsername',
@@ -478,9 +475,9 @@ export default {
           return 140;
       }
     },
-    ///////////////////////////////
-    // Game, Deck, Log and Scrap //
-    ///////////////////////////////
+    /////////////////////////////////////////////
+    // Game, Deck, Log, Scrap, and Spectators //
+    ///////////////////////////////////////////
     game() {
       return this.$store.state.game;
     },
@@ -498,6 +495,9 @@ export default {
       if (this.game.topCard) res++;
       if (this.game.secondCard) res++;
       return res;
+    },
+    spectatingUsers() {
+      return this.game.spectatingUsers;
     },
     /////////////////
     // King Counts //
@@ -1481,10 +1481,6 @@ export default {
   .player-cards-container {
     grid-column-start: 1;
     grid-column-end: span 12;
-  }
-
-  .btnWrapper {
-    flex-direction: column !important;
   }
 }
 </style>
