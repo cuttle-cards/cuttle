@@ -23,8 +23,8 @@
         />
       </v-col>
       <v-col offset="1">
-        <audio ref="enterLobbySound" src="/public/sounds/lobby/enter-lobby.mp3"></audio>
-        <audio ref="leaveLobbySound" src="/public/sounds/lobby/leave-lobby.mp3"></audio>
+        <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3"></audio>
+        <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3"></audio>
         <lobby-player-indicator
           :player-username="opponentUsername"
           :player-ready="opponentIsReady"
