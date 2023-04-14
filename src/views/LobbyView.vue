@@ -23,6 +23,8 @@
         />
       </v-col>
       <v-col offset="1">
+        <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3"></audio>
+        <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3"></audio>
         <lobby-player-indicator
           :player-username="opponentUsername"
           :player-ready="opponentIsReady"
@@ -69,6 +71,19 @@ export default {
     return {
       readying: false,
     };
+  },
+  watch: {
+    opponentUsername(newVal) {
+      if (newVal) {
+        if (this.$refs.enterLobbySound.readyState === 4) {
+          this.$refs.enterLobbySound.play();
+        }
+      } else {
+        if (this.$refs.leaveLobbySound.readyState === 4) {
+          this.$refs.leaveLobbySound.play();
+        }
+      }
+    },
   },
   computed: {
     ...mapState({

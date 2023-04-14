@@ -525,7 +525,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
-      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.games.length).to.eq(1);
       expect(currentMatch.games[0].result).to.eq(0); // P0 should have won the first game
       cy.log('Match data is correct after first game', res.body);
@@ -566,7 +566,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.games.length).to.eq(2);
       expect(currentMatch.startTime).to.be.greaterThan(0);
       // Match is incomplete
-      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
       expect(currentMatch.games[0].result).to.eq(0); // P0 should have won the first game
       expect(currentMatch.games[1].result).to.eq(0); // P1 should have won the first game
@@ -603,7 +603,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.startTime).to.be.greaterThan(0);
       expect(currentMatch.games.length).to.eq(3);
       // Match is incomplete
-      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
       expect(currentMatch.games[2].result).to.eq(2);
       cy.log('Match data is correct after third game', res);
@@ -646,7 +646,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.games.length).to.eq(4);
       expect(currentMatch.games[3].result).to.eq(2);
       // Match is incomplete
-      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
       cy.log('Match data is correct after fourth game', res);
     });
@@ -688,7 +688,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.games.length).to.eq(4);
       expect(currentMatch.games[3].result).to.eq(2);
       // Match is incomplete
-      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
       cy.log('Match data is correct after fourth game', res);
     });
