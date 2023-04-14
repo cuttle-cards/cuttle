@@ -1,9 +1,9 @@
-import { playerSelf, opponentOne } from '../../fixtures/userFixtures';
+import { myUser, opponentOne } from '../../fixtures/userFixtures';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
-  cy.signupPlayer(playerSelf);
+  cy.signupPlayer(myUser);
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
@@ -41,7 +41,7 @@ describe('Lobby - Page Content', () => {
   });
 
   it('Shows both players indicators', () => {
-    cy.get('[data-cy=my-indicator]').contains(playerSelf.username).should('not.contain', '@');
+    cy.get('[data-cy=my-indicator]').contains(myUser.username).should('not.contain', '@');
     cy.get('[data-cy=opponent-indicator]').contains('Invite');
   });
 
@@ -70,7 +70,7 @@ describe('Lobby - P0 Perspective', () => {
     setup();
   });
   it('Exits the Lobby', () => {
-    cy.get('[data-cy=my-indicator]').contains(playerSelf.username);
+    cy.get('[data-cy=my-indicator]').contains(myUser.username);
     cy.get('[data-cy=exit-button]').click();
     // Confirm navigation back to home
     cy.hash().should('eq', '#/');
@@ -92,7 +92,7 @@ describe('Lobby - P0 Perspective', () => {
       .click()
       .contains('UNREADY');
     // Test: player indicator classes
-    cy.get('[data-cy=my-indicator]').should('have.class', 'ready').contains(playerSelf.username);
+    cy.get('[data-cy=my-indicator]').should('have.class', 'ready').contains(myUser.username);
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
@@ -169,7 +169,7 @@ describe('Lobby - P1 Perspective', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
-    cy.signupPlayer(playerSelf);
+    cy.signupPlayer(myUser);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
@@ -212,7 +212,7 @@ describe('Lobby - P1 Perspective', () => {
       .click()
       .contains('UNREADY');
     // Test: player indicator classes
-    cy.get('[data-cy=my-indicator]').should('have.class', 'ready').contains(playerSelf.username);
+    cy.get('[data-cy=my-indicator]').should('have.class', 'ready').contains(myUser.username);
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')

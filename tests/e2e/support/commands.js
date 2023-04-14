@@ -1,5 +1,5 @@
 import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
-import { playerSelf, opponentOne } from '../fixtures/userFixtures';
+import { myUser, opponentOne } from '../fixtures/userFixtures';
 /**
  * Require & configure socket connection to server
  */
@@ -59,7 +59,7 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
-    cy.signupPlayer(playerSelf);
+    cy.signupPlayer(myUser);
   }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
@@ -83,7 +83,7 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
-    cy.signupPlayer(playerSelf);
+    cy.signupPlayer(myUser);
   }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     if (!alreadyAuthenticated) {

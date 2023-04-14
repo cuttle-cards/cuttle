@@ -22,7 +22,7 @@ const playerFive = {
   password: 'player5DaBest',
 };
 
-const playerSelf = {
+const myUser = {
   username: 'myUsername',
   password: 'passwordLongerThanEight',
 };
@@ -37,4 +37,4 @@ const opponentTwo = {
   password: 'myNewPassword',
 };
 
-export { playerOne, playerTwo, playerThree, playerFour, playerFive, playerSelf, opponentOne, opponentTwo };
+export { playerOne, playerTwo, playerThree, playerFour, playerFive, myUser, opponentOne, opponentTwo };

@@ -1,6 +1,6 @@
 import { assertGameState, Card, assertLoss, assertVictory, assertStalemate } from '../../support/helpers';
 import { seasonFixtures } from '../../fixtures/statsFixtures';
-import { playerOne, playerTwo, playerThree, playerSelf, opponentOne } from '../../fixtures/userFixtures';
+import { playerOne, playerTwo, playerThree, myUser, opponentOne } from '../../fixtures/userFixtures';
 
 const dayjs = require('dayjs');
 
@@ -199,7 +199,7 @@ describe('Stalemates', () => {
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
     cy.log('Should log the passing');
-    cy.get('#history').contains(`${playerSelf.username} passes`);
+    cy.get('#history').contains(`${myUser.username} passes`);
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
     cy.get('#history').contains(`${opponentOne.username} passes`);

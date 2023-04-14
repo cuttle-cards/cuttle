@@ -1,10 +1,10 @@
 import { assertSnackbarError, Card } from '../../support/helpers';
-import { playerSelf, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
+import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 
 function setup() {
   cy.wipeDatabase();
   cy.visit('/');
-  cy.signupPlayer(playerSelf);
+  cy.signupPlayer(myUser);
   cy.vueRoute('/');
 }
 
@@ -371,7 +371,7 @@ describe('Spectating games', () => {
     cy.recoverSessionOpponent(playerTwo);
     cy.passOpponent();
     cy.get('#history').should('contain', `${playerTwo.username} passes`);
-    cy.recoverSessionOpponent({ username: playerUsername, password: playerPassword });
+    cy.recoverSessionOpponent({ username: myUser.username, password: myUser.password });
     cy.vueRoute('/');
     cy.get('[data-cy-game-list-selector=spectate]').click();
     cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
