@@ -5,13 +5,21 @@
         <v-card-title>Cannot Counter</v-card-title>
         <v-card-text>
           <span v-if="!opponentLastTwo">
-            Your opponent has played the {{ oneOff.name }} as a one-off
-            <span v-if="target"> targeting your {{ target.name }}</span>
+            Your opponent has played the 
+            <game-card-name :card-name="oneOff.name" />
+            as a one-off
+            <span v-if="target"> targeting your 
+              <game-card-name :card-name="target.name" />
+            </span>
           </span>
           <span v-else>
-            Your opponent has played <strong class="card-name">{{ opponentLastTwo.name }}</strong> to Counter<span v-if="playerLastTwo">
-              your {{ playerLastTwo.name }}</span
-            >.
+            Your opponent has played 
+            <game-card-name :card-name="opponentLastTwo.name" />
+            to Counter
+            <span v-if="playerLastTwo">
+              your 
+              <game-card-name :card-name="playerLastTwo.name" />.
+            </span>
           </span>
           <div class="d-flex justify-center align-center my-8">
             <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
@@ -39,11 +47,13 @@
 
 <script>
 import GameCard from '@/components/GameView/GameCard.vue';
+import GameCardName from '@/components/GameView/GameCardName.vue';
 
 export default {
   name: 'CannotCounterDialog',
   components: {
     GameCard,
+    GameCardName,
   },
   emits: ['resolve'],
   props: {
@@ -128,17 +138,5 @@ export default {
     height: 100%;
     z-index: 1;
   }
-}
-
-.card-name {
-  background: #FFF4D7;
-  color: #4A2416;
-  padding-right: 8px;
-  padding-left: 8px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  border-radius: 8px;
-  margin-right: 4px;
-  margin-left: 4px;
 }
 </style>
