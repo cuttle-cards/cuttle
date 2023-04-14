@@ -1,71 +1,8 @@
-import { assertGameState, Card } from '../../support/helpers';
+import { assertGameState, Card, assertLoss, assertVictory, assertStalemate } from '../../support/helpers';
 import { seasonFixtures } from '../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree, playerSelf, opponentOne } from '../../fixtures/userFixtures';
 
 const dayjs = require('dayjs');
-
-function assertVictory() {
-  cy.log('Asserting player victory');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
-  cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
-    .then((game) => {
-      if (game.isRanked) {
-        const gameNumber = game.currentMatch.games.length;
-        const matchWinner = game.currentMatch.winner;
-        cy.get('#game-over-dialog')
-          .should('be.visible')
-          .should('contain', matchWinner ? 'You Win the Match' : `Game ${gameNumber}: You Win`)
-          .get('[data-cy=match-result-section]')
-          .should('be.visible');
-      } else {
-        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
-      }
-    });
-}
-
-function assertLoss() {
-  cy.log('Asserting player loss');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
-  cy.get('[data-cy=loss-img]').should('be.visible');
-  cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
-    .then((game) => {
-      if (game.isRanked) {
-        const gameNumber = game.currentMatch.games.length;
-        const matchWinner = game.currentMatch.winner;
-        cy.get('#game-over-dialog')
-          .should('contain', matchWinner ? 'You Lose the Match' : `Game ${gameNumber}: You Lose`)
-          .should('be.visible')
-          .get('[data-cy=match-result-section]')
-          .should('be.visible');
-      } else {
-        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
-      }
-    });
-}
-
-function assertStalemate() {
-  cy.log('Asserting stalemate');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=stalemate-heading]').should('be.visible');
-  cy.get('[data-cy=stalemate-img]').should('be.visible');
-  cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
-    .then((game) => {
-      if (game.isRanked) {
-        const gameNumber = game.currentMatch.games.length;
-        cy.get('#game-over-dialog')
-          .should('be.visible')
-          // Don't need to check match winner as we do in assertVictory or assertLoss
-          // since a stalemate won't decide a match winner
-          .should('contain', `Game ${gameNumber}: Draw`)
-          .get('[data-cy=match-result-section]')
-          .should('be.visible');
-      } else {
-        cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
-      }
-    });
-}
 
 function goHomeJoinNewGame() {
   cy.log('Going home');
@@ -580,7 +517,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
-      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.games.length).to.eq(1);
       expect(currentMatch.games[0].result).to.eq(0); // P0 should have won the first game
       cy.log('Match data is correct after first game', res.body);
@@ -621,7 +558,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.games.length).to.eq(2);
       expect(currentMatch.startTime).to.be.greaterThan(0);
       // Match is incomplete
-      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
       expect(currentMatch.games[0].result).to.eq(0); // P0 should have won the first game
       expect(currentMatch.games[1].result).to.eq(0); // P1 should have won the first game
@@ -658,7 +595,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.startTime).to.be.greaterThan(0);
       expect(currentMatch.games.length).to.eq(3);
       // Match is incomplete
-      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
       expect(currentMatch.games[2].result).to.eq(2);
       cy.log('Match data is correct after third game', res);
@@ -701,7 +638,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.games.length).to.eq(4);
       expect(currentMatch.games[3].result).to.eq(2);
       // Match is incomplete
-      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
       cy.log('Match data is correct after fourth game', res);
     });
@@ -743,7 +680,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.games.length).to.eq(4);
       expect(currentMatch.games[3].result).to.eq(2);
       // Match is incomplete
-      expect(currentMatch.endTime).to.eq(0);
+      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
       cy.log('Match data is correct after fourth game', res);
     });

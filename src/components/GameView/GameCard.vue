@@ -75,6 +75,10 @@ export default {
       default: '',
       validator: (val) => ['', 'player', 'opponent'].includes(val),
     },
+    highElevation: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     suitName() {
@@ -127,7 +131,13 @@ export default {
       return `${this.rankName} of ${this.suitName}`;
     },
     elevation() {
-      return this.isGlasses ? '0' : '1';
+      if (this.isGlasses) {
+        return '0';
+      }
+      if (this.highElevation) {
+        return '7';
+      }
+      return '1';
     },
     isBack() {
       return !this.suit && !this.rank;

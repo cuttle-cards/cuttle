@@ -15,6 +15,7 @@ export default defineConfig({
     vue(),
     vuetify({
       autoImport: false,
+      styles: { configFile: 'src/sass/variables.scss'}
     }),
   ],
   resolve: {

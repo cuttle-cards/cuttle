@@ -59,7 +59,7 @@
               <div id="opponent-hand-cards" class="d-flex justify-center align-start">
                 <transition name="slide-below" mode="out-in">
                   <transition-group
-                    v-if="hasGlassesEight"
+                    v-if="showOpponentHand"
                     id="opponent-hand-glasses"
                     key="opponent-hand-glasses"
                     class="opponent-hand-wrapper transition-all"
@@ -383,6 +383,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 
+import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
 import GameCard from '@/components/GameView/GameCard.vue';
 import GameDialogs from '@/components/GameView/GameDialogs.vue';
 import GameMenu from '@/components/GameView/GameMenu.vue';
@@ -442,6 +443,12 @@ export default {
       'resolvingSeven',
       'hasGlassesEight',
     ]),
+    isSpectating() {
+      return this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE;
+    },
+    showOpponentHand() {
+      return this.hasGlassesEight || this.isSpectating;
+    },
     //////////
     // Auth //
     //////////
@@ -508,16 +515,6 @@ export default {
     opponentPointsToWin() {
       return this.pointsToWin(this.opponentKingCount);
     },
-    ///////////////
-    // Game Over //
-    ///////////////
-    // Handled in GameDialogs.vue
-    //
-    //////////
-    // Twos //
-    //////////
-    // Handled in GameDialogs.vue
-    //
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
@@ -701,7 +698,18 @@ export default {
       });
     },
   },
-  mounted() {
+  async mounted() {
+    if (this.isSpectating && !this.$store.state.game.id) {
+      let { gameId } = this.$router.currentRoute.value.params;
+      gameId = Number(gameId);
+      if (!Number.isInteger(gameId)) {
+        await this.$store.dispatch('requestUnsubscribeFromGame');
+        this.$router.push(ROUTE_NAME_HOME);
+        return;
+      }
+      this.$store.dispatch('requestSpectate', Number(gameId));
+    }
+
     if (!this.$store.state.auth.authenticated) {
       this.$store.commit('setMustReauthenticate', true);
     }
@@ -1185,6 +1193,8 @@ export default {
     &.reveal-top-two {
       height: auto;
       align-self: start;
+      color: white;
+      background-image: none;
       & .resolving-seven-card {
         width: 9.5rem;
       }

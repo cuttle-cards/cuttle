@@ -15,6 +15,7 @@ Cypress.Commands.add('wipeDatabase', () => {
   cy.request('localhost:1337/test/wipeDatabase');
   cy.log('Wiped database');
 });
+
 Cypress.Commands.add('setBadSession', () => {
   return new Cypress.Promise((resolve) => {
     io.socket.get('/test/badSession', function () {
@@ -22,6 +23,7 @@ Cypress.Commands.add('setBadSession', () => {
     });
   });
 });
+
 Cypress.Commands.add('loadSeasonFixture', (season) => {
   return new Cypress.Promise((resolve) => {
     io.socket.post('/test/loadSeasonFixture', season, function () {
@@ -29,6 +31,7 @@ Cypress.Commands.add('loadSeasonFixture', (season) => {
     });
   });
 });
+
 Cypress.Commands.add('loadMatchFixtures', (matches) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.post('/test/loadMatchFixtures', matches, function (res, jwres) {
@@ -39,6 +42,7 @@ Cypress.Commands.add('loadMatchFixtures', (matches) => {
     });
   });
 });
+
 Cypress.Commands.add('requestGameList', () => {
   return new Cypress.Promise((resolve) => {
     io.socket.get('/game/getList', function () {
@@ -46,6 +50,7 @@ Cypress.Commands.add('requestGameList', () => {
     });
   });
 });
+
 /**
  * Signs up two players, navigates home, creates game, subscribes, ready's up
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
@@ -73,6 +78,7 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     cy.get('#player-hand-cards .player-card').should('have.length', 5);
   });
 });
+
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
@@ -125,6 +131,7 @@ Cypress.Commands.add('loginPlayer', (player) => {
     .invoke('dispatch', 'requestLogin', { username: player.username, password: player.password });
   cy.log(`Logged in as player ${player.username}`);
 });
+
 Cypress.Commands.add('createGameOpponent', (name) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.post(
@@ -141,12 +148,14 @@ Cypress.Commands.add('createGameOpponent', (name) => {
     );
   });
 });
+
 Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
   return cy
     .window()
     .its('cuttle.app.config.globalProperties.$store')
     .invoke('dispatch', 'requestCreateGame', { gameName, isRanked });
 });
+
 Cypress.Commands.add('subscribeOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
@@ -163,6 +172,7 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
     );
   });
 });
+
 Cypress.Commands.add('readyOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
@@ -179,6 +189,7 @@ Cypress.Commands.add('readyOpponent', (id) => {
     );
   });
 });
+
 Cypress.Commands.add('leaveLobbyOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get('/game/leaveLobby', { id }, function handleResponse(_, jwres) {
@@ -189,6 +200,24 @@ Cypress.Commands.add('leaveLobbyOpponent', (id) => {
     });
   });
 });
+
+/**
+ * Switches the test-controlled io instance to a specified user's session
+ * Used to switch between test-controlled players while spectating
+ * @param userFixture: {username: string, password: string}
+ *   userFixture should be imported from the userFixtures.js file
+ */
+Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.get('/user/reLogin', userFixture, function handleResponse(res, jwres) {
+      if (jwres.statusCode !== 200 || res === false) {
+        return reject(new Error('error recovering session'));
+      }
+      return resolve();
+    });
+  });
+});
+
 Cypress.Commands.add('drawCardOpponent', () => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get('/game/draw', function handleResponse(res, jwres) {
@@ -199,6 +228,7 @@ Cypress.Commands.add('drawCardOpponent', () => {
     });
   });
 });
+
 /**
  * @param card {suit: number, rank: number}
  */
@@ -221,6 +251,89 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
         '/game/points',
         {
           cardId,
+        },
+        function handleResponse(res, jwres) {
+          if (jwres.statusCode !== 200) {
+            throw new Error(jwres.body.message);
+          }
+          return jwres;
+        },
+      );
+    });
+});
+
+/**
+ * @param card {suit: number, rank: number}
+ */
+Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
+  if (!hasValidSuitAndRank(card)) {
+    throw new Error('Cannot play opponent points: Invalid card input');
+  }
+  return cy
+    .window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      const foundCard = game.players[pNum].hand.find((handCard) => cardsMatch(card, handCard));
+      if (!foundCard) {
+        throw new Error(
+          `Error playing points while spectating: could not find ${card.rank} of ${card.suit} in specified player's hand`,
+        );
+      }
+      const cardId = foundCard.id;
+      io.socket.get(
+        '/game/points',
+        {
+          cardId,
+        },
+        function handleResponse(res, jwres) {
+          if (jwres.statusCode !== 200) {
+            throw new Error(jwres.body.message);
+          }
+          return jwres;
+        },
+      );
+    });
+});
+
+Cypress.Commands.add('playPointsById', (cardId) => {
+  return io.socket.get(
+    '/game/points',
+    {
+      cardId,
+    },
+    function handleResponse(_, jwres) {
+      if (jwres.statusCode !== 200) {
+        throw new Error(jwres.body.message);
+      }
+      return jwres;
+    },
+  );
+});
+
+/**
+ * @param card {suit: number, rank: number}
+ */
+Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
+  if (!hasValidSuitAndRank(card)) {
+    throw new Error('Cannot play opponent one-off as spectator: Invalid card input');
+  }
+  return cy
+    .window()
+    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .then((game) => {
+      const foundCard = game.players[pNum].hand.find((handCard) => cardsMatch(card, handCard));
+      if (!foundCard) {
+        throw new Error(
+          `Error playing one-off while spectating: could not find ${card.rank} of ${card.suit} in specified player's hand`,
+        );
+      }
+      const cardId = foundCard.id;
+      const opponentId = game.players[(pNum + 1) % 2].id;
+      io.socket.get(
+        '/game/untargetedOneOff',
+        {
+          cardId,
+          opId: opponentId,
         },
         function handleResponse(res, jwres) {
           if (jwres.statusCode !== 200) {
@@ -264,6 +377,7 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
       );
     });
 });
+
 /**
  * @param card {suit: number, rank: number}
  * @param target {suit: number, rank: number}
@@ -308,6 +422,7 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
       );
     });
 });
+
 /**
  * @param card {suit: number, rank: number}
  * @param target {suit: number, rank: number}
@@ -350,6 +465,7 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
       );
     });
 });
+
 Cypress.Commands.add('playOneOffOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot scuttle as opponent: Invalid card input');
@@ -386,6 +502,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
       );
     });
 });
+
 /**
  * @param card {suit: number, rank: number}
  * @param target {suit: number, rank: number}
@@ -465,6 +582,7 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
       );
     });
 });
+
 /**
  * @param card {suit: number, rank: number}
  */
@@ -532,6 +650,7 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
       );
     });
 });
+
 Cypress.Commands.add('resolveOpponent', () => {
   return cy
     .window()
@@ -983,12 +1102,13 @@ Cypress.Commands.add('passOpponent', () => {
 });
 
 Cypress.Commands.add('concedeOpponent', () => {
-  cy.log('Opponent Concedes');
-  io.socket.get('/game/concede', function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-    return jwres;
+  return new Cypress.Promise((resolve) => {
+    io.socket.get('/game/concede', function handleResponse(res, jwres) {
+      if (jwres.statusCode !== 200) {
+        throw new Error(jwres.body.message);
+      }
+      return resolve(jwres);
+    });
   });
 });
 
