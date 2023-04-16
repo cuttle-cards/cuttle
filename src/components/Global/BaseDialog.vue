@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show">
+  <v-dialog v-model="show" persistent max-width="650">
     <v-card class="dialog-card">
       <div class="dialog-content-wrapper">
         <slot />
