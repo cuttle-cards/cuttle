@@ -1,57 +1,57 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="650">
-    <v-card v-if="oneOff" id="cannot-counter-dialog">
-      <div id="cannot-counter-wrapper">
-        <v-card-title>Cannot Counter</v-card-title>
-        <v-card-text>
-          <span v-if="!opponentLastTwo">
-            Your opponent has played the 
-            <game-card-name :card-name="oneOff.name" />
-            as a one-off
-            <span v-if="target"> targeting your 
-              <game-card-name :card-name="target.name" />
-            </span>
+  <base-dialog v-model="show">
+    <div v-if="oneOff" id="cannot-counter-dialog">
+      <v-card-title>Cannot Counter</v-card-title>
+      <v-card-text>
+        <span v-if="!opponentLastTwo">
+          Your opponent has played the 
+          <game-card-name :card-name="oneOff.name" />
+          as a one-off
+          <span v-if="target"> targeting your 
+            <game-card-name :card-name="target.name" />
           </span>
-          <span v-else>
-            Your opponent has played 
-            <game-card-name :card-name="opponentLastTwo.name" />
-            to Counter
-            <span v-if="playerLastTwo">
-              your 
-              <game-card-name :card-name="playerLastTwo.name" />.
-            </span>
+        </span>
+        <span v-else>
+          Your opponent has played 
+          <game-card-name :card-name="opponentLastTwo.name" />
+          to Counter
+          <span v-if="playerLastTwo">
+            your 
+            <game-card-name :card-name="playerLastTwo.name" />.
           </span>
-          <div class="d-flex justify-center align-center my-8">
-            <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
-            <p class="ml-8">
-              {{ oneOff.ruleText }}
-            </p>
-            <div v-if="target" id="target-wrapper">
-              <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-                <v-icon id="target-icon" size="x-large" color="red" icon="mdi-target" />
-              </span>
-              <game-card :suit="target.suit" :rank="target.rank" />
-            </div>
+        </span>
+        <div class="d-flex justify-center align-center my-8">
+          <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
+          <p class="ml-8">
+            {{ oneOff.ruleText }}
+          </p>
+          <div v-if="target" id="target-wrapper">
+            <span id="target-icon-wrapper" class="d-flex justify-center align-center">
+              <v-icon id="target-icon" size="x-large" color="red" icon="mdi-target" />
+            </span>
+            <game-card :suit="target.suit" :rank="target.rank" />
           </div>
-          You cannot Counter, because {{ reason }}.
-        </v-card-text>
-        <v-card-actions class="d-flex justify-end">
-          <v-btn data-cy="cannot-counter-resolve" color="primary" variant="flat" @click="$emit('resolve')">
-            Resolve
-          </v-btn>
-        </v-card-actions>
-      </div>
-    </v-card>
-  </v-dialog>
+        </div>
+        You cannot Counter, because {{ reason }}.
+      </v-card-text>
+      <v-card-actions class="d-flex justify-end">
+        <v-btn data-cy="cannot-counter-resolve" color="primary" variant="flat" @click="$emit('resolve')">
+          Resolve
+        </v-btn>
+      </v-card-actions>
+    </div>
+  </base-dialog>
 </template>
 
 <script>
+import BaseDialog from '@/components/Global/BaseDialog.vue';
 import GameCard from '@/components/GameView/GameCard.vue';
 import GameCardName from '@/components/GameView/GameCardName.vue';
 
 export default {
   name: 'CannotCounterDialog',
   components: {
+    BaseDialog,
     GameCard,
     GameCardName,
   },
@@ -118,15 +118,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#cannot-counter-dialog {
-  padding: 8px;
-  opacity: .95;
-  color: #FFF4D7;
-}
-#cannot-counter-wrapper {
-  border: 4px solid #FFF4D7;
-  border-radius: 8px;
-}
 #target-wrapper {
   display: inline-block;
   position: relative;
