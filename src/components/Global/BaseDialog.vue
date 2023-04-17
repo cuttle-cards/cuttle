@@ -6,10 +6,12 @@
         <v-card-text>
           <slot name="body" />
         </v-card-text>
-        <v-card-actions class="d-flex justify-end">
-          <slot name="actions" />
-        </v-card-actions>
       </div>
+      <v-card-actions class="dialog-actions">
+        <div class="dialog-actions-wrapper d-flex justify-end">
+          <slot name="actions" />
+        </div>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -51,13 +53,34 @@ export default {
 
 <style scoped>
 .dialog-card {
-  padding: 8px;
+  /* padding: 8px; */
   opacity: .95;
   color: rgba(var(--v-theme-surface-2));
 }
 
 .dialog-content-wrapper {
-  border: 4px solid rgba(var(--v-theme-surface-2));
-  border-radius: 8px;
+  margin-top: 8px;
+  margin-right: 8px;
+  margin-left: 8px;
+  border-top: 4px solid rgba(var(--v-theme-surface-2));
+  border-right: 4px solid rgba(var(--v-theme-surface-2));
+  border-left: 4px solid rgba(var(--v-theme-surface-2));
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.dialog-actions {
+  background-color: rgba(var(--v-theme-surface-2));
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 8px;
+  padding-top: 0;
+}
+.dialog-actions-wrapper {
+  width: 100%;
+  padding: 4px;
+  border-left: 4px solid rgba(var(--v-theme-surface-1));
+  border-right: 4px solid rgba(var(--v-theme-surface-1));
+  border-bottom: 4px solid rgba(var(--v-theme-surface-1));
 }
 </style>
