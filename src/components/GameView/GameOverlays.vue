@@ -235,7 +235,8 @@ export default {
 }
 .overlay-header {
     font-weight: bold;
-    background-color: #FFF4D7;
+    background-color: rgba(var(--v-theme-surface-2));
+    color: rgba(var(--v-theme-surface-1));
     padding: 24px;
     text-align: center;
     width: 100vw;
