@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="650">
+  <v-dialog v-model="show" persistent max-width="650" :scrollable="scrollable">
     <v-card :id="id" class="dialog-card">
       <div class="dialog-content-wrapper">
         <v-card-title>{{ title }}</v-card-title>
@@ -30,7 +30,11 @@ export default {
     id: {
       type: String,
       required: true,
-    }
+    },
+    scrollable: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     show: {
