@@ -36,7 +36,7 @@
     <template #actions>
       <v-btn
         data-cy="cannot-counter-resolve"
-        color="primary"
+        color="surface-2"
         variant="flat" 
         @click="$emit('resolve')"
       >

@@ -20,7 +20,7 @@
     </template>
     <template #actions>
       <v-btn 
-        color="primary"
+        color="surface-2"
         variant="flat"
         data-cy="submit-four-dialog"
         :disabled="!readyToDiscard"
