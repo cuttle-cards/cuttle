@@ -1,5 +1,5 @@
 <template>
-  <base-dialog v-model="show" title="Cannot Counter" id="cannot-counter-dialog">
+  <base-dialog v-if="oneOff" v-model="show" title="Cannot Counter" id="cannot-counter-dialog">
     <template #body>
       <span v-if="!opponentLastTwo">
         Your opponent has played the 
@@ -88,7 +88,7 @@ export default {
   computed: {
     show: {
       get() {
-        return this.oneOff && this.modelValue;
+        return this.modelValue;
       },
       set() {
         // do nothing - parent controls whether dialog is open
