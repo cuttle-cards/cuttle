@@ -1,9 +1,14 @@
 <template>
   <v-dialog v-model="show" persistent max-width="650">
-    <v-card class="dialog-card">
+    <v-card :id="id" class="dialog-card">
       <div class="dialog-content-wrapper">
         <v-card-title>{{ title }}</v-card-title>
-        <slot />
+        <v-card-text>
+          <slot name="body" />
+        </v-card-text>
+        <v-card-actions class="d-flex justify-end">
+          <slot name="actions" />
+        </v-card-actions>
       </div>
     </v-card>
   </v-dialog>
@@ -19,6 +24,10 @@ export default {
       required: true,
     },
     title: {
+      type: String,
+      required: true,
+    },
+    id: {
       type: String,
       required: true,
     }
