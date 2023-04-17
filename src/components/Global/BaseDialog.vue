@@ -49,11 +49,11 @@ export default {
 .dialog-card {
   padding: 8px;
   opacity: .95;
-  color: #FFF4D7;
+  color: rgba(var(--v-theme-surface-2));
 }
 
 .dialog-content-wrapper {
-  border: 4px solid #FFF4D7;
+  border: 4px solid rgba(var(--v-theme-surface-2));
   border-radius: 8px;
 }
 </style>
