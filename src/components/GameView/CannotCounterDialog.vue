@@ -1,7 +1,6 @@
 <template>
-  <base-dialog v-model="show">
+  <base-dialog v-model="show" title="Cannot Counter">
     <div v-if="oneOff" id="cannot-counter-dialog">
-      <v-card-title>Cannot Counter</v-card-title>
       <v-card-text>
         <span v-if="!opponentLastTwo">
           Your opponent has played the 

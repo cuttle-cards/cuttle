@@ -2,6 +2,7 @@
   <v-dialog v-model="show" persistent max-width="650">
     <v-card class="dialog-card">
       <div class="dialog-content-wrapper">
+        <v-card-title>{{ title }}</v-card-title>
         <slot />
       </div>
     </v-card>
@@ -17,6 +18,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    title: {
+      type: String,
+      required: true,
+    }
   },
   computed: {
     show: {
