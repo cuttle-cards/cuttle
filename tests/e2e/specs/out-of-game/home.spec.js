@@ -1,5 +1,12 @@
 import { assertSnackbarError, Card } from '../../support/helpers';
-import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
+import {
+  myUser,
+  opponentOne,
+  opponentTwo,
+  playerOne,
+  playerTwo,
+  playerThree,
+} from '../../fixtures/userFixtures';
 
 function setup() {
   cy.wipeDatabase();
@@ -172,11 +179,11 @@ describe('Spectating games', () => {
       // Test that JOIN button starts enabled
       cy.contains(`[data-cy-join-game=${gameId}]`, 'Play').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
-      cy.signupOpponent(playerOne.username, playerOne.password);
+      cy.signupOpponent(playerOne);
       cy.subscribeOpponent(gameId);
       // Opponents start game, it appears as spectatable
       cy.readyOpponent(gameId);
-      cy.signupOpponent(playerTwo.username, playerTwo.password);
+      cy.signupOpponent(playerTwo);
       cy.subscribeOpponent(gameId, 1);
       cy.contains(`[data-cy-join-game=${gameId}]`, 'Play').should('be.disabled');
 
@@ -198,7 +205,7 @@ describe('Spectating games', () => {
   });
 
   it('Does not show open or completed games in spectate tab', () => {
-    cy.signupOpponent(playerOne.username, playerOne.password);
+    cy.signupOpponent(playerOne);
     cy.createGameOpponent('Game Created before page visit');
     cy.visit('/');
     cy.get('[data-cy-join-game]').should('have.length', 1);
@@ -215,7 +222,7 @@ describe('Spectating games', () => {
       cy.subscribeOpponent(gameId);
       cy.readyOpponent(gameId);
       // Second player signs up, joins, readies
-      cy.signupOpponent(playerTwo.username, playerTwo.password);
+      cy.signupOpponent(playerTwo);
       cy.subscribeOpponent(gameId);
       cy.readyOpponent(gameId);
 
@@ -255,12 +262,12 @@ describe('Spectating games', () => {
   });
 
   it('Allows spectating game that has not started yet and displays overlay until game starts', () => {
-    cy.signupOpponent(playerOne.username, playerOne.password);
+    cy.signupOpponent(playerOne);
     cy.createGameOpponent('Game where spectator joins before it starts').then(({ gameId }) => {
       cy.subscribeOpponent(gameId);
       cy.readyOpponent(gameId);
       // Second player signs up, joins but does not ready up yet
-      cy.signupOpponent(playerTwo.username, playerTwo.password);
+      cy.signupOpponent(playerTwo);
       cy.subscribeOpponent(gameId);
 
       // User spectates game that hasn't started yet
@@ -285,12 +292,12 @@ describe('Spectating games', () => {
   });
 
   it('Shows ongoing games as available to spectate when user navigates to home page', () => {
-    cy.signupOpponent(playerOne.username, playerOne.password);
+    cy.signupOpponent(playerOne);
     cy.createGameOpponent('Spectatable game').then(({ gameId }) => {
       cy.subscribeOpponent(gameId);
       cy.readyOpponent(gameId);
 
-      cy.signupOpponent(playerTwo.username, playerTwo.password);
+      cy.signupOpponent(playerTwo);
       cy.subscribeOpponent(gameId);
       cy.readyOpponent(gameId);
 
@@ -306,8 +313,8 @@ describe('Spectating games', () => {
   });
 
   it('Disables spectate button if on home view before game finishes', () => {
-    cy.signupOpponent(playerOne.username, playerOne.password);
-    cy.signupOpponent(playerTwo.username, playerTwo.password);
+    cy.signupOpponent(playerOne);
+    cy.signupOpponent(playerTwo);
 
     // Navigate to homepage and select spectate tab
     cy.visit('/');
