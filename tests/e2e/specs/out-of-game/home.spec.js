@@ -78,38 +78,44 @@ describe('Home - Page Content', () => {
 describe('Home - Game List', () => {
   beforeEach(setup);
 
-  it('Displays a game for every open game on the server', () => {
-    cy.createGamePlayer({ gameName: '111', isRanked: false });
-    cy.createGamePlayer({ gameName: '33', isRanked: false });
-    cy.get('[data-cy=game-list-item]').should('have.length', 2);
+  describe('Open Games', () => {
+    it('Displays a game for every open game on the server', () => {
+      cy.createGamePlayer({ gameName: '111', isRanked: false });
+      cy.createGamePlayer({ gameName: '33', isRanked: false });
+      cy.get('[data-cy=game-list-item]').should('have.length', 2);
+    });
+
+    it('Displays placeholder text when no games are available', () => {
+      cy.get('[data-cy=text-if-no-game]').should('have.text', 'No Active Games');
+      cy.contains('p', 'No Active Games');
+    });
+
+    it('Adds a new game to the list when one comes in through the socket', () => {
+      cy.createGamePlayer({ gameName: '111', isRanked: false });
+      cy.createGamePlayer({ gameName: '33', isRanked: false });
+      cy.get('[data-cy=game-list-item]').should('have.length', 2);
+      cy.signupOpponent(opponentOne);
+      cy.createGameOpponent('Game made by other player');
+      cy.get('[data-cy=game-list-item]').should('have.length', 3).contains('Game made by other player');
+    });
+
+    it('Joins an open game', () => {
+      cy.window()
+        .its('cuttle.app.config.globalProperties.$store.state.game')
+        .then((gameState) => {
+          expect(gameState.id).to.eq(null);
+        });
+      cy.createGamePlayer({ gameName: 'Test Game', isRanked: false });
+      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
+      cy.hash().should('contain', '#/lobby');
+      cy.window()
+        .its('cuttle.app.config.globalProperties.$store.state.game')
+        .then((gameState) => {
+          assertSuccessfulJoin(gameState);
+        });
+    });
   });
-  it('Displays placeholder text when no games are available', () => {
-    cy.get('[data-cy=text-if-no-game]').should('have.text', 'No Active Games');
-    cy.contains('p', 'No Active Games');
-  });
-  it('Adds a new game to the list when one comes in through the socket', () => {
-    cy.createGamePlayer({ gameName: '111', isRanked: false });
-    cy.createGamePlayer({ gameName: '33', isRanked: false });
-    cy.get('[data-cy=game-list-item]').should('have.length', 2);
-    cy.signupOpponent(opponentOne);
-    cy.createGameOpponent('Game made by other player');
-    cy.get('[data-cy=game-list-item]').should('have.length', 3).contains('Game made by other player');
-  });
-  it('Joins an open game', () => {
-    cy.window()
-      .its('cuttle.app.config.globalProperties.$store.state.game')
-      .then((gameState) => {
-        expect(gameState.id).to.eq(null);
-      });
-    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false });
-    cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
-    cy.hash().should('contain', '#/lobby');
-    cy.window()
-      .its('cuttle.app.config.globalProperties.$store.state.game')
-      .then((gameState) => {
-        assertSuccessfulJoin(gameState);
-      });
-  });
+
   it('Joins a game that already has one player', () => {
     /**
      * Set up:
@@ -131,6 +137,7 @@ describe('Home - Game List', () => {
         });
     });
   });
+
   it('Disables join when a game becomes full', () => {
     /**
      * Set up:
