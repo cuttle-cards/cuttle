@@ -2,7 +2,7 @@
   <v-dialog v-model="show" persistent max-width="650" :scrollable="scrollable">
     <v-card :id="id" class="dialog-card">
       <div class="dialog-content-wrapper">
-        <v-card-title>{{ title }}</v-card-title>
+        <v-card-title class="mb-4"><h1>{{ title }}</h1></v-card-title>
         <v-card-text>
           <slot name="body" />
         </v-card-text>
