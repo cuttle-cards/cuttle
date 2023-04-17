@@ -19,8 +19,8 @@
       </div>
     </template>
     <template #actions>
-      <v-btn 
-        color="surface-2"
+      <v-btn
+        color="surface-1"
         variant="flat"
         data-cy="submit-four-dialog"
         :disabled="!readyToDiscard"
