@@ -1,7 +1,7 @@
 <template>
   <base-dialog v-model="show" id="four-discard-dialog" title="Discard Two Cards">
     <template #body>
-      <p>
+      <p class="mb-4">
         Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to
         discard.
       </p>
