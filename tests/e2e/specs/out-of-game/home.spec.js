@@ -1,4 +1,5 @@
-import { assertSnackbarError, Card } from '../../support/helpers';
+import { assertSnackbarError } from '../../support/helpers';
+import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 
 function setup() {

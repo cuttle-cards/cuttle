@@ -1,5 +1,6 @@
-import { assertGameState, Card } from '../../support/helpers';
+import { assertGameState } from '../../support/helpers';
 import { opponentOne } from '../../fixtures/userFixtures';
+import { Card } from '../../fixtures/cards';
 
 describe('Reconnecting to a game', () => {
   it('Persists session after refreshing the page', () => {

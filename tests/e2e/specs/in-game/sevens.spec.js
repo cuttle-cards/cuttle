@@ -1,4 +1,5 @@
-import { assertGameState, assertSnackbarError, Card, SnackBarError } from '../../support/helpers';
+import { assertGameState, assertSnackbarError, SnackBarError } from '../../support/helpers';
+import { Card } from '../../fixtures/cards';
 
 describe('Playing SEVENS', () => {
   beforeEach(() => {
@@ -685,9 +686,7 @@ describe('Playing SEVENS', () => {
       cy.get('[data-top-card=9-1]').should('exist').and('be.visible').click();
       cy.get('[data-move-choice=targetedOneOff]').click();
       // target queen of clubs
-      cy.get('[data-opponent-face-card=12-0]')
-        .find('.valid-move')
-        .click({force: true}); // force because overlay itself is not techincally clickable
+      cy.get('[data-opponent-face-card=12-0]').find('.valid-move').click({ force: true }); // force because overlay itself is not techincally clickable
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
@@ -742,9 +741,7 @@ describe('Playing SEVENS', () => {
       cy.get('[data-top-card=9-1]').should('exist').and('be.visible').click();
       cy.get('[data-move-choice=targetedOneOff]').click();
       // target jack of clubs
-      cy.get('[data-opponent-face-card=11-0]')
-        .find('.valid-move')
-        .click({force: true}); // force b/c overlay itself is not technically clickable
+      cy.get('[data-opponent-face-card=11-0]').find('.valid-move').click({ force: true }); // force b/c overlay itself is not technically clickable
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
@@ -856,10 +853,7 @@ describe('Opponent playing SEVENS', () => {
     // Waiting for opponent
     cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
     // Deck cards appear but are not selectable
-    cy.get('[data-top-card=4-0]')
-      .should('exist')
-      .click({ force: true })
-      .should('not.have.class', 'selected');
+    cy.get('[data-top-card=4-0]').should('exist').click({ force: true }).should('not.have.class', 'selected');
     cy.get('[data-second-card=6-1]')
       .should('exist')
       .click({ force: true })

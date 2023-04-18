@@ -1,4 +1,5 @@
-import { assertGameState, playOutOfTurn, Card } from '../../support/helpers';
+import { assertGameState, playOutOfTurn } from '../../support/helpers';
+import { Card } from '../../fixtures/cards';
 
 const { _ } = Cypress;
 

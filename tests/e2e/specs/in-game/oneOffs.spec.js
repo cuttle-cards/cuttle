@@ -1,10 +1,5 @@
-import {
-  assertGameState,
-  assertSnackbarError,
-  playOutOfTurn,
-  SnackBarError,
-  Card,
-} from '../../support/helpers';
+import { assertGameState, assertSnackbarError, playOutOfTurn, SnackBarError } from '../../support/helpers';
+import { Card } from '../../fixtures/cards';
 
 const { _ } = Cypress;
 
