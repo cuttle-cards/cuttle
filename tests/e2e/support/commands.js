@@ -1,15 +1,5 @@
-import {
-  getCardIds,
-  hasValidSuitAndRank,
-  cardsMatch,
-  printCard,
-  username,
-  validPassword,
-  opponentUsername,
-  opponentPassword,
-} from './helpers';
-import { playerOne, playerTwo } from '../fixtures/userFixtures';
-
+import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
+import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
 /**
  * Require & configure socket connection to server
  */
@@ -69,7 +59,7 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
-    cy.signupPlayer(username, validPassword);
+    cy.signupPlayer(myUser);
   }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
@@ -80,7 +70,7 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
     if (!alreadyAuthenticated) {
-      cy.signupOpponent(opponentUsername, opponentPassword);
+      cy.signupOpponent(opponentOne);
     }
     cy.subscribeOpponent(gameSummary.gameId);
     cy.readyOpponent();
@@ -93,11 +83,11 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
-    cy.signupPlayer(username, validPassword);
+    cy.signupPlayer(myUser);
   }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     if (!alreadyAuthenticated) {
-      cy.signupOpponent(opponentUsername, opponentPassword);
+      cy.signupOpponent(opponentOne);
     }
     cy.subscribeOpponent(gameSummary.gameId);
     cy.readyOpponent();
@@ -112,21 +102,20 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   });
   cy.log('Finished setting up game as p1');
 });
-
 Cypress.Commands.add('setupGameAsSpectator', () => {
   cy.wipeDatabase();
   cy.visit('/');
-  cy.signupPlayer(username, validPassword);
+  cy.signupPlayer(myUser);
   cy.vueRoute('/');
   cy.createGamePlayer({ gameName: 'Spectator Game', isRanked: false }).then((gameData) => {
     // Test that JOIN button starts enabled
     cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
     // Sign up 2 users and subscribe them to game
-    cy.signupOpponent(playerOne.username, playerOne.password);
+    cy.signupOpponent(playerOne);
     cy.subscribeOpponent(gameData.gameId);
     // Opponents start game, it appears as spectatable
     cy.readyOpponent(gameData.gameId);
-    cy.signupOpponent(playerTwo.username, playerTwo.password);
+    cy.signupOpponent(playerTwo);
     cy.subscribeOpponent(gameData.gameId);
     cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
 
@@ -147,13 +136,13 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
   });
 });
 
-Cypress.Commands.add('signupOpponent', (username, password) => {
+Cypress.Commands.add('signupOpponent', (opponent) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
       'localhost:1337/user/signup',
       {
-        username,
-        password,
+        username: opponent.username,
+        password: opponent.password,
       },
       function (res, jwres) {
         if (jwres.statusCode !== 200) {
@@ -164,19 +153,17 @@ Cypress.Commands.add('signupOpponent', (username, password) => {
     );
   });
 });
-
-Cypress.Commands.add('signupPlayer', (username, password) => {
+Cypress.Commands.add('signupPlayer', (player) => {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store')
-    .invoke('dispatch', 'requestSignup', { username, password });
-  cy.log(`Signed up player ${username}`);
+    .invoke('dispatch', 'requestSignup', { username: player.username, password: player.password });
+  cy.log(`Signed up player ${player.username}`);
 });
-
-Cypress.Commands.add('loginPlayer', (username, password) => {
+Cypress.Commands.add('loginPlayer', (player) => {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store')
-    .invoke('dispatch', 'requestLogin', { username, password });
-  cy.log(`Logged in as player ${username}`);
+    .invoke('dispatch', 'requestLogin', { username: player.username, password: player.password });
+  cy.log(`Logged in as player ${player.username}`);
 });
 
 Cypress.Commands.add('createGameOpponent', (name) => {
@@ -1196,13 +1183,13 @@ Cypress.Commands.add('rejectStalemateOpponent', () => {
   });
 });
 
-Cypress.Commands.add('reconnectOpponent', (username, password) => {
+Cypress.Commands.add('reconnectOpponent', (opponent) => {
   cy.log('Opponent Reconnects');
   io.socket.get(
     '/user/reLogin',
     {
-      username,
-      password,
+      username: opponent.username,
+      password: opponent.password,
     },
     function handleResponse(res, jwres) {
       if (jwres.statusCode !== 200) {
