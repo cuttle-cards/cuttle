@@ -1,9 +1,5 @@
-import { playerOne, playerTwo } from '../../fixtures/userFixtures';
+import { playerOne, playerTwo, myUser, opponentOne } from '../../fixtures/userFixtures';
 import {
-  username as playerUsername,
-  validPassword as playerPassword,
-  opponentUsername,
-  opponentPassword,
   Card,
   assertGameState,
   assertSnackbarError,
@@ -15,7 +11,7 @@ import {
 function setup() {
   cy.wipeDatabase();
   cy.visit('/');
-  cy.signupPlayer(playerUsername, playerPassword);
+  cy.signupPlayer(myUser);
   cy.vueRoute('/');
 }
 
@@ -33,56 +29,72 @@ describe('Spectating Games', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
 
-    assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-    }, true);
+    assertGameState(
+      0,
+      {
+        p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
+        p0Points: [Card.TEN_OF_SPADES],
+        p0FaceCards: [Card.KING_OF_SPADES],
+        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
+        p1Points: [Card.TEN_OF_HEARTS],
+        p1FaceCards: [Card.KING_OF_HEARTS],
+      },
+      true,
+    );
 
     // P0 plays ace of spades
     cy.recoverSessionOpponent(playerOne);
     cy.playPointsSpectator(Card.ACE_OF_SPADES, 0);
 
-    assertGameState(0, {
-      p0Hand: [Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-    }, true);
+    assertGameState(
+      0,
+      {
+        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+        p0FaceCards: [Card.KING_OF_SPADES],
+        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
+        p1Points: [Card.TEN_OF_HEARTS],
+        p1FaceCards: [Card.KING_OF_HEARTS],
+      },
+      true,
+    );
 
     // Refresh the page
     cy.reload();
     // Game state appears unchanged
-    assertGameState(0, {
-      p0Hand: [Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-    }, true);
+    assertGameState(
+      0,
+      {
+        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+        p0FaceCards: [Card.KING_OF_SPADES],
+        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
+        p1Points: [Card.TEN_OF_HEARTS],
+        p1FaceCards: [Card.KING_OF_HEARTS],
+      },
+      true,
+    );
 
     // P1 plays Ace of hearts -- UI updates accordingly
     cy.recoverSessionOpponent(playerTwo);
     cy.playPointsSpectator(Card.ACE_OF_HEARTS, 1);
 
-    assertGameState(0, {
-      p0Hand: [Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-    }, true);
+    assertGameState(
+      0,
+      {
+        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+        p0FaceCards: [Card.KING_OF_SPADES],
+        p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
+        p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
+        p1FaceCards: [Card.KING_OF_HEARTS],
+      },
+      true,
+    );
 
     // Disconnect spectator's socket
     cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');
-  
+
     // P0 plays ace of clubs
     cy.recoverSessionOpponent(playerOne);
     cy.playPointsSpectator(Card.ACE_OF_CLUBS, 0);
@@ -91,14 +103,18 @@ describe('Spectating Games', () => {
     cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'reconnectSocket');
 
     // Spectator receives the update
-    assertGameState(0, {
-      p0Hand: [],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-    }, true);
+    assertGameState(
+      0,
+      {
+        p0Hand: [],
+        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
+        p0FaceCards: [Card.KING_OF_SPADES],
+        p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
+        p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
+        p1FaceCards: [Card.KING_OF_HEARTS],
+      },
+      true,
+    );
 
     // P1 plays the Eight of Diamonds and wins
     cy.recoverSessionOpponent(playerTwo);
@@ -112,10 +128,7 @@ describe('Spectating Games', () => {
   it('Correctly shows and hides dialogs and overlays', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture({
-      p0Hand: [
-        Card.ACE_OF_SPADES,
-        Card.THREE_OF_CLUBS
-      ],
+      p0Hand: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
@@ -152,13 +165,15 @@ describe('Spectating Games', () => {
     });
     cy.get('[data-player-hand-card]').should('have.length', 1);
 
-    cy.window().its('cuttle.app.config.globalProperties.$store.state.game').then((game) => {
-      const aceOfSpadesId = getCardId(game, Card.ACE_OF_SPADES);
-      cy.wrap(aceOfSpadesId).as('aceOfSpades');
-    });
+    cy.window()
+      .its('cuttle.app.config.globalProperties.$store.state.game')
+      .then((game) => {
+        const aceOfSpadesId = getCardId(game, Card.ACE_OF_SPADES);
+        cy.wrap(aceOfSpadesId).as('aceOfSpades');
+      });
 
     cy.vueRoute('/');
-    cy.signupOpponent(opponentUsername, opponentPassword);
+    cy.signupOpponent(opponentOne);
     cy.setupGameAsP0(true);
     cy.loadGameFixture({
       p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
@@ -196,7 +211,7 @@ describe('Spectating Games', () => {
         Card.TWO_OF_DIAMONDS,
         Card.KING_OF_CLUBS,
         Card.JACK_OF_DIAMONDS,
-        Card.THREE_OF_CLUBS
+        Card.THREE_OF_CLUBS,
       ],
       p0Points: [],
       p0FaceCards: [],
@@ -205,24 +220,28 @@ describe('Spectating Games', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
 
-    assertGameState(0, {
-      p0Hand: [
-        Card.ACE_OF_SPADES,
-        Card.ACE_OF_HEARTS,
-        Card.TWO_OF_DIAMONDS,
-        Card.THREE_OF_CLUBS,
-        Card.JACK_OF_DIAMONDS,
-        Card.KING_OF_CLUBS,
-      ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_CLUBS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-    }, true);
-    
+    assertGameState(
+      0,
+      {
+        p0Hand: [
+          Card.ACE_OF_SPADES,
+          Card.ACE_OF_HEARTS,
+          Card.TWO_OF_DIAMONDS,
+          Card.THREE_OF_CLUBS,
+          Card.JACK_OF_DIAMONDS,
+          Card.KING_OF_CLUBS,
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
+        p1Points: [Card.ACE_OF_CLUBS],
+        p1FaceCards: [Card.KING_OF_HEARTS],
+      },
+      true,
+    );
+
     // Can't draw
-    cy.get('#deck').click()
+    cy.get('#deck').click();
     assertSnackbarError(SnackBarError.NOT_IN_GAME);
     cy.log('Correctly prevented from drawing from deck');
 

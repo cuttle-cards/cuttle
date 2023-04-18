@@ -1,4 +1,4 @@
-import { username, validPassword } from '../../support/helpers';
+import { myUser } from '../../fixtures/userFixtures';
 
 describe('Rules Page', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('Rules Page', () => {
     cy.get('[data-cy=top-home-button]').click();
     cy.hash().should('eq', '#/login');
     // Log in and try button again
-    cy.signupPlayer(username, validPassword);
+    cy.signupPlayer(myUser);
     cy.vueRoute('/rules');
     cy.get('[data-cy=top-home-button]').click();
     cy.hash().should('eq', '#/');
@@ -21,7 +21,7 @@ describe('Rules Page', () => {
     cy.get('[data-cy=bottom-home-button]').click();
     cy.hash().should('eq', '#/login');
     // Log in and try button again
-    cy.signupPlayer(username, validPassword);
+    cy.signupPlayer(myUser);
     cy.vueRoute('/rules');
     cy.get('[data-cy=bottom-home-button]').click();
     cy.hash().should('eq', '#/');
