@@ -1,6 +1,6 @@
-import { assertGameState, assertSnackbarError, playOutOfTurn, SnackBarError } from '../../support/helpers';
+import { assertGameState, assertSnackbarError, playOutOfTurn } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
-
+import { SnackBarError } from '../../fixtures/snackbarError';
 const { _ } = Cypress;
 
 describe('Untargeted One-Offs', () => {

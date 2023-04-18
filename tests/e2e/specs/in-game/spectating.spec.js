@@ -1,12 +1,7 @@
 import { playerOne, playerTwo, myUser, opponentOne } from '../../fixtures/userFixtures';
-import {
-  assertGameState,
-  assertSnackbarError,
-  SnackBarError,
-  getCardId,
-  assertLoss,
-} from '../../support/helpers';
+import { assertGameState, assertSnackbarError, getCardId, assertLoss } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
+import { SnackBarError } from '../../fixtures/snackbarError';
 
 function setup() {
   cy.wipeDatabase();

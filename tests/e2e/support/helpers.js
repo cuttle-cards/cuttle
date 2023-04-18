@@ -1,3 +1,5 @@
+import { SnackBarError } from '../fixtures/snackbarError';
+
 export function hasValidSuitAndRank(card) {
   if (!Object.prototype.hasOwnProperty.call(card, 'rank')) return false;
   if (!Object.prototype.hasOwnProperty.call(card, 'suit')) return false;
@@ -439,11 +441,3 @@ export function assertGameState(pNum, fixture, spectating = false) {
   assertDomMatchesFixture(pNum, fixture, spectating);
   assertStoreMatchesFixture(fixture);
 }
-
-export const SnackBarError = {
-  NOT_YOUR_TURN: "It's not your turn",
-  ILLEGAL_SCUTTLE:
-    "You can only scuttle an opponent's point card with a higher rank point card, or the same rank with a higher suit. Suit order (low to high) is: Clubs < Diamonds < Hearts < Spades",
-  FROZEN_CARD: 'That card is frozen! You must wait a turn to play it',
-  NOT_IN_GAME: "You can't do that because you're not a player in this game",
-};
