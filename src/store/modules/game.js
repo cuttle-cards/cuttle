@@ -307,6 +307,17 @@ export default {
 
     async requestSubscribe(context, id) {
       return new Promise((resolve, reject) => {
+        // checks if game is valid for subscribing to
+        io.socket.get('/game/subscribe', {
+          id,
+        }, 
+        function handleResponse(res) {
+          if (res.gameIsOver == true) {
+            return reject(new Error('error subscribing'));
+          } else if (res.players.length > 1) {
+            return reject(new Error('Oops, that game is already full'));
+          }
+        });
         io.socket.get(
           '/game/subscribe',
           {
