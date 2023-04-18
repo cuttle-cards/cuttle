@@ -1,61 +1,64 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="650">
-    <v-card id="game-over-dialog">
-      <div id="dialog-header">
-        <div v-if="currentMatch" class="d-flex">
-          <v-card-title :data-cy="headingDataAttr" class="mt-8">
-            <h1 class="dialog-header">{{ heading }}</h1>
-          </v-card-title>
-          <v-card-text class="d-flex justify-end mr-4 mt-4">
-            <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
-          </v-card-text>
-        </div>
-        <div v-else>
+  <base-dialog v-model="show" id="game-over-dialog" :title="heading">
+    <div v-if="currentMatch" class="d-flex">
+      <v-card-title :data-cy="headingDataAttr" class="mt-8">
+        <h1 class="dialog-header">{{ heading }}</h1>
+      </v-card-title>
+      <v-card-text class="d-flex justify-end mr-4 mt-4">
+        <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
+      </v-card-text>
+    </div>
+    <template v-if="!currentMatch" #body>
+      <div class="d-flex justify-center">
+        <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
+      </div>
+    </template>
+    <!-- <div v-else>
           <v-card-title :data-cy="headingDataAttr">
             <h1 class="dialog-header">{{ heading }}</h1>
           </v-card-title>
-          <v-card-text class="d-flex justify-center">
-            <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
-          </v-card-text>
+        </div> -->
+    <v-card-text class="dialog-text" v-if="currentMatch" data-cy="match-result-section">
+      Match against {{ opponent.username }}
+      <span>: {{ matchIsOver ? 'Finished' : 'In Progress' }}</span>
+    </v-card-text>
+    <v-card-text class="dialog-text" v-if="matchIsOver" data-cy="match-winner-message">
+      You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ opponent.username }}
+    </v-card-text>
+    <v-card-text data-cy="match-result-games" class="dialog-text">
+      <div class="d-flex">
+        <div class="d-flex flex-column mr-4 align-center" v-for="(gameStatus, i) in matchGameStats"
+             :key="`${gameStatus}-${i}`">
+          <v-icon size="x-large" color="black" :icon="iconFromGameStatus(gameStatus)" />
+          {{ gameStatus }}
         </div>
       </div>
-      <v-card-text class="dialog-text" v-if="currentMatch" data-cy="match-result-section">
-        Match against {{ opponent.username }}
-        <span>: {{ matchIsOver ? 'Finished' : 'In Progress' }}</span>
-      </v-card-text>
-      <v-card-text class="dialog-text" v-if="matchIsOver" data-cy="match-winner-message">
-        You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ opponent.username }}
-      </v-card-text>
-      <v-card-text data-cy="match-result-games" class="dialog-text">
-        <div class="d-flex">
-          <div class="d-flex flex-column mr-4 align-center" v-for="(gameStatus, i) in matchGameStats"
-               :key="`${gameStatus}-${i}`">
-            <v-icon size="x-large" color="black" :icon="iconFromGameStatus(gameStatus)" />
-            {{ gameStatus }}
-          </div>
-        </div>
-      </v-card-text>
-      <v-card-actions class="d-flex justify-end">
-        <v-btn
-          color="primary"
-          variant="flat"
-          data-cy="gameover-go-home"
-          :loading="leavingGame"
-          @click="goHome"
-        >
-          Go Home
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    </v-card-text>
+    <template #actions>
+      <v-btn
+        color="primary"
+        variant="flat"
+        data-cy="gameover-go-home"
+        :loading="leavingGame"
+        @click="goHome"
+      >
+        Go Home
+      </v-btn>
+    </template>
+  </base-dialog>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import BaseDialog from '@/components/Global/BaseDialog.vue';
 
 export default {
   name: 'GameOverDialog',
+  components: {
+    BaseDialog,
+  },
   props: {
+ 
     modelValue: {
       type: Boolean,
       required: true,
@@ -191,6 +194,7 @@ export default {
 .logo-image {
   height: auto;
   max-width: 180px;
+  margin-bottom: 16px;
 }
 
 .logo-image-match {
