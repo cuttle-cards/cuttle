@@ -115,24 +115,19 @@ export default {
         });
     },
     allowDelete() {
-      console.log("printing delete stuff")
-      console.log(this.numPlayers)
-      console.log(this.gameId)
-      if(this.numPlayers>0 ){
-        console.log("here")
 
+      if(this.numPlayers>0 || this.status == true){
         return false
 
       }
       else{
-        console.log("here2")
         return true
       }
      
     },
     deleteGame() {
       if(!this.allowDelete()){
-        console.log("yeah")
+  
         this.joiningGame = false;
         this.$store
         .dispatch('requestDeleteGame', {
@@ -143,11 +138,8 @@ export default {
         })
         .catch(this.handleError);
 
-        
       }
-      else{
-        console.log("no")
-      }
+  
 
     },
   },

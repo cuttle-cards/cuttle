@@ -4,7 +4,6 @@ module.exports = async function (req, res) {
   const { gameName, isRanked = false } = req.body;
   this.status = false
 
-  gameAPI.
 
   /*if (req.body.gameName) {
     gameAPI
