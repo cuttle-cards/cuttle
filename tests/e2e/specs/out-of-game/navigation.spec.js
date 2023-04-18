@@ -65,7 +65,7 @@ describe('Navigation Drawer', () => {
       cy.hash().should('equal', '#/login');
     }
     beforeEach(() => {
-      cy.signupPlayer(playerOne.username, playerOne.password);
+      cy.signupPlayer(playerOne);
       cy.vueRoute('/');
     });
     it('When authenticated', () => {
