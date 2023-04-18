@@ -57,6 +57,7 @@ module.exports.routes = {
 
   '/game/create': 'game/create',
   '/game/getList': 'game/get-list',
+  '/game/delete': 'game/delete',
   '/game/subscribe': 'game/subscribe',
   '/game/reconnect': 'game/reconnect',
   '/game/ready': 'game/ready',

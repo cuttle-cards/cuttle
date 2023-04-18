@@ -167,6 +167,9 @@ io.socket.on('gameCreated', function (evData) {
   const newGame = cloneDeep(evData);
   store.commit('addGameToList', newGame);
 });
+io.socket.on('gameDeleted', function (evData) {
+  store.commit('removeGame', evData);
+});
 
 io.socket.on('gameStarting', function (evData) {
   store.commit('removeGame', evData);

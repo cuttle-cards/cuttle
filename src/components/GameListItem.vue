@@ -27,7 +27,22 @@
         >
           <v-icon v-if="isRanked" class="mr-4" size="medium" icon="mdi-trophy" />
           {{ buttonText }}
+  
         </v-btn>
+        <v-btn
+          color="primary"
+          rounded
+          variant="outlined"
+          min-width="200"
+          :disabled="!allowDelete()"
+          @click="deleteGame()"
+          
+        >
+          <v-icon v-if="isRanked" class="mr-4" size="medium" icon="mdi-trash-can" />
+          {{ deleteButton }}
+  
+        </v-btn>
+        
       </v-col>
     </v-row>
     <v-divider class="mb-4" />
@@ -82,6 +97,9 @@ export default {
     buttonText() {
       return this.isRanked ? 'Play Ranked' : 'Play';
     },
+    deleteButton() {
+      return 'Delete';
+    },
   },
   methods: {
     subscribeToGame() {
@@ -95,6 +113,42 @@ export default {
         .catch(() => {
           this.joiningGame = false;
         });
+    },
+    allowDelete() {
+      console.log("printing delete stuff")
+      console.log(this.numPlayers)
+      console.log(this.gameId)
+      if(this.numPlayers>0 ){
+        console.log("here")
+
+        return false
+
+      }
+      else{
+        console.log("here2")
+        return true
+      }
+     
+    },
+    deleteGame() {
+      if(!this.allowDelete()){
+        console.log("yeah")
+        this.joiningGame = false;
+        this.$store
+        .dispatch('requestDeleteGame', {
+          gameId: this.gameId
+        })
+        .then(() => {
+          this.status = false;
+        })
+        .catch(this.handleError);
+
+        
+      }
+      else{
+        console.log("no")
+      }
+
     },
   },
 };

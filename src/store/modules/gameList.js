@@ -84,5 +84,31 @@ export default {
         );
       });
     },
+    requestDeleteGame(context, { gameID }) {
+      return new Promise((resolve, reject) => {
+        io.socket.get(
+          '/game/delete',
+          {
+            gameID,
+          
+          },
+          function handleResponse(resData, jwres) {
+            if (jwres.statusCode === 200) {
+              return resolve(resData);
+            }
+
+            let message;
+            if (Object.prototype.hasOwnProperty.call(resData, 'message')) {
+              ({ message } = resData);
+            } else if (typeof resData === 'string') {
+              message = resData;
+            } else {
+              message = new Error('Unknown error creating game');
+            }
+            return reject(message);
+          },
+        );
+      });
+    },
   },
 };
