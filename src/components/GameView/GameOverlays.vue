@@ -24,6 +24,7 @@
       id="waiting-for-opponent-counter-scrim"
       v-model="waitingForOpponentToCounter"
       class="d-flex flex-column justify-center align-center"
+      scrim="surface-1"
     >
       <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         {{ showWaitingForOpponetToCounterMessage }}
