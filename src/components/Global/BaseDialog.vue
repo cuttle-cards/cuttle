@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="show" persistent max-width="650" :scrollable="scrollable" elevation scrim="surface-1">
     <v-card :id="id" class="dialog-card">
-      <v-card-title class="mb-4"><h1>{{ title }}</h1></v-card-title>
+      <v-card-title class="d-flex justify-space-between">
+        <h1 v-if="title">{{ title }}</h1>
+        <slot name="title" />
+      </v-card-title>
       <v-card-text>
         <slot name="body" />
       </v-card-text>
@@ -23,7 +26,7 @@ export default {
     },
     title: {
       type: String,
-      required: true,
+      default: '',
     },
     id: {
       type: String,

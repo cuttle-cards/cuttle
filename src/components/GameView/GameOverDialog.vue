@@ -1,39 +1,37 @@
 <template>
-  <base-dialog v-model="show" id="game-over-dialog" :title="heading">
-    <div v-if="currentMatch" class="d-flex">
-      <v-card-title :data-cy="headingDataAttr" class="mt-8">
-        <h1 class="dialog-header">{{ heading }}</h1>
-      </v-card-title>
-      <v-card-text class="d-flex justify-end mr-4 mt-4">
-        <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
-      </v-card-text>
-    </div>
-    <template v-if="!currentMatch" #body>
-      <div class="d-flex justify-center">
-        <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
-      </div>
+  <base-dialog v-model="show" id="game-over-dialog">
+    <template #title>
+      <h1 :data-cy="headingDataAttr" class="dialog-header">{{ heading }}</h1>
+      <v-img v-if="currentMatch" :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
     </template>
-    <!-- <div v-else>
-          <v-card-title :data-cy="headingDataAttr">
-            <h1 class="dialog-header">{{ heading }}</h1>
-          </v-card-title>
-        </div> -->
-    <v-card-text class="dialog-text" v-if="currentMatch" data-cy="match-result-section">
-      Match against {{ opponent.username }}
-      <span>: {{ matchIsOver ? 'Finished' : 'In Progress' }}</span>
-    </v-card-text>
-    <v-card-text class="dialog-text" v-if="matchIsOver" data-cy="match-winner-message">
-      You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ opponent.username }}
-    </v-card-text>
-    <v-card-text data-cy="match-result-games" class="dialog-text">
-      <div class="d-flex">
-        <div class="d-flex flex-column mr-4 align-center" v-for="(gameStatus, i) in matchGameStats"
-             :key="`${gameStatus}-${i}`">
-          <v-icon size="x-large" color="black" :icon="iconFromGameStatus(gameStatus)" />
-          {{ gameStatus }}
+
+    <template #body>
+      <template v-if="currentMatch">
+        <p class="dialog-text" v-if="currentMatch" data-cy="match-result-section">
+          Match against {{ opponent.username }}
+          <span>: {{ matchIsOver ? 'Finished' : 'In Progress' }}</span>
+        </p>
+        <p class="dialog-text" v-if="matchIsOver" data-cy="match-winner-message">
+          You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ opponent.username }}
+        </p>
+        <div data-cy="match-result-games" class="dialog-text">
+          <div class="d-flex">
+            <div class="d-flex flex-column mr-4 align-center" v-for="(gameStatus, i) in matchGameStats"
+                 :key="`${gameStatus}-${i}`">
+              <v-icon size="x-large" color="surface-2" :icon="iconFromGameStatus(gameStatus)" />
+              {{ gameStatus }}
+            </div>
+          </div>
         </div>
-      </div>
-    </v-card-text>
+      </template>
+
+      <template v-else>
+        <div class="d-flex justify-center">
+          <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
+        </div>
+      </template>
+    </template>
+
     <template #actions>
       <v-btn
         color="primary"
@@ -198,7 +196,11 @@ export default {
 }
 
 .logo-image-match {
+  position: absolute;
+  right: 12px;
+  top: 12px;
   height: auto;
+  min-width: 90px;
   max-width: 90px;
   max-height: 90px;
 }
