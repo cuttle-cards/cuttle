@@ -22,4 +22,19 @@ const playerFive = {
   password: 'player5DaBest',
 };
 
-export { playerOne, playerTwo, playerThree, playerFour, playerFive };
+const myUser = {
+  username: 'myUsername',
+  password: 'passwordLongerThanEight',
+};
+
+const opponentOne = {
+  username: 'definitelyNotTheGovernment6969',
+  password: 'deviousTrickery',
+};
+
+const opponentTwo = {
+  username: 'secondUser',
+  password: 'myNewPassword',
+};
+
+export { playerOne, playerTwo, playerThree, playerFour, playerFive, myUser, opponentOne, opponentTwo };
