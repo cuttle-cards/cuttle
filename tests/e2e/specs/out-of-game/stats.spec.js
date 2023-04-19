@@ -7,12 +7,12 @@ function setup() {
   cy.wipeDatabase();
   cy.visit('/');
   // Signup opponents and store their newly created ids
-  cy.signupOpponent(playerOne.username, playerOne.password).as('player1');
-  cy.loginPlayer(playerOne.username, playerOne.password);
-  cy.signupOpponent(playerTwo.username, playerTwo.password).as('player2');
-  cy.signupOpponent(playerThree.username, playerThree.password).as('player3');
-  cy.signupOpponent(playerFour.username, playerFour.password).as('player4');
-  cy.signupOpponent(playerFive.username, playerFive.password)
+  cy.signupOpponent(playerOne).as('player1');
+  cy.loginPlayer(playerOne);
+  cy.signupOpponent(playerTwo).as('player2');
+  cy.signupOpponent(playerThree).as('player3');
+  cy.signupOpponent(playerFour).as('player4');
+  cy.signupOpponent(playerFive)
     .as('player5')
     .then(function () {
       const seasons = seasonFixtures.map((season) => {
@@ -219,12 +219,12 @@ describe('Stats Page', () => {
     cy.get('[data-cy=tournament-bracket-link]').should(
       'have.attr',
       'href',
-      worldChampionshipSeason.bracketLink
+      worldChampionshipSeason.bracketLink,
     );
     cy.get('[data-cy=tournament-footage-link]').should(
       'have.attr',
       'href',
-      worldChampionshipSeason.footageLink
+      worldChampionshipSeason.footageLink,
     );
     // Award Cards
     cy.get('[data-tournament=1st]').should('contain', playerOne.username);

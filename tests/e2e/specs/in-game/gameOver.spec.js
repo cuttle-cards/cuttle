@@ -1,14 +1,6 @@
-import {
-  assertGameState,
-  Card,
-  username,
-  opponentUsername,
-  assertLoss,
-  assertVictory,
-  assertStalemate
-} from '../../support/helpers';
+import { assertGameState, Card, assertLoss, assertVictory, assertStalemate } from '../../support/helpers';
 import { seasonFixtures } from '../../fixtures/statsFixtures';
-import { playerOne, playerTwo, playerThree } from '../../fixtures/userFixtures';
+import { playerOne, playerTwo, playerThree, myUser, opponentOne } from '../../fixtures/userFixtures';
 
 const dayjs = require('dayjs');
 
@@ -207,10 +199,10 @@ describe('Stalemates', () => {
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
     cy.log('Should log the passing');
-    cy.get('#history').contains(`${username} passes`);
+    cy.get('#history').contains(`${myUser.username} passes`);
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
-    cy.get('#history').contains(`${opponentUsername} passes`);
+    cy.get('#history').contains(`${opponentOne.username} passes`);
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
 
@@ -471,10 +463,10 @@ describe('Creating And Updating Ranked Matches', () => {
     diamondsSeason.endTime = dayjs().add(11, 'weeks').valueOf();
     cy.loadSeasonFixture([diamondsSeason]);
     // Sign up to players and store their id's for comparison to match data
-    cy.signupOpponent(playerOne.username, playerOne.password).as('playerOneId');
-    cy.signupOpponent(playerThree.username, playerThree.password).as('playerThreeId');
+    cy.signupOpponent(playerOne).as('playerOneId');
+    cy.signupOpponent(playerThree).as('playerThreeId');
     // Opponent will be player 2 (the last one we log in as)
-    cy.signupOpponent(playerTwo.username, playerTwo.password)
+    cy.signupOpponent(playerTwo)
       .as('playerTwoId')
       .then(function () {
         // Create match from last week, which current games don't count towards
@@ -497,7 +489,7 @@ describe('Creating And Updating Ranked Matches', () => {
         cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);
       });
     // Log in as playerOne
-    cy.loginPlayer(playerOne.username, playerOne.password);
+    cy.loginPlayer(playerOne);
     cy.setupGameAsP0(true, true);
   });
   it('Creates a match when two players play a ranked game for the first time this week', function () {
