@@ -7,7 +7,7 @@ describe('Websockets', () => {
   });
 
   it('Recovers latest event data when socket reconnects', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [Card.KING_OF_SPADES],
@@ -15,8 +15,6 @@ describe('Websockets', () => {
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 2);
-    cy.log('Loaded fixture');
 
     // Disconnect player's socket
     cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');

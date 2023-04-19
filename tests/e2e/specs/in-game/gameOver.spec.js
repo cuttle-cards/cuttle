@@ -22,7 +22,7 @@ describe('Winning the game', () => {
   });
 
   it('Shows when player wins game with 21 points', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -30,8 +30,6 @@ describe('Winning the game', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     // Play Seven of Clubs
     cy.get('[data-player-hand-card=7-0]').click();
@@ -49,7 +47,7 @@ describe('Winning the game', () => {
   });
 
   it('Shows when player wins game with 14 points and one king', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.JACK_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS],
       p0FaceCards: [Card.KING_OF_SPADES],
@@ -58,8 +56,6 @@ describe('Winning the game', () => {
       p1FaceCards: [],
       scrap: [Card.TEN_OF_SPADES],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     // Play Jack of Clubs
     cy.get('[data-player-hand-card=11-0]').click();
@@ -80,7 +76,7 @@ describe('Winning the game', () => {
   });
 
   it('Shows when player wins game with 0 points and four kings', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.KING_OF_HEARTS],
       p0Points: [],
       p0FaceCards: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS],
@@ -89,8 +85,6 @@ describe('Winning the game', () => {
       p1FaceCards: [],
       scrap: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     // Play King of Hearts
     cy.get('[data-player-hand-card=13-2]').click();
@@ -110,7 +104,7 @@ describe('Winning the game', () => {
   });
 
   it('Wins the game when opponent concedes', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -118,8 +112,6 @@ describe('Winning the game', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     cy.concedeOpponent();
     assertVictory();
@@ -133,7 +125,7 @@ describe('Losing the game', () => {
   });
 
   it('Shows when opponent wins with 21 points', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -141,8 +133,6 @@ describe('Losing the game', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 0);
-    cy.log('Fixture loaded');
 
     cy.playPointsOpponent(Card.SEVEN_OF_CLUBS);
     assertLoss();
@@ -150,7 +140,7 @@ describe('Losing the game', () => {
   });
 
   it('Loses by conceding', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -158,8 +148,6 @@ describe('Losing the game', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 0);
-    cy.log('Fixture loaded');
 
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
@@ -179,7 +167,7 @@ describe('Losing the game', () => {
 describe('Stalemates', () => {
   it('Passes three times for a stalemate', () => {
     cy.setupGameAsP0();
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -187,8 +175,6 @@ describe('Stalemates', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     cy.deleteDeck();
     cy.log('Drawing last two cards');
@@ -213,7 +199,7 @@ describe('Stalemates', () => {
 
   it('Registers stalemate when opponent passes first/last', () => {
     cy.setupGameAsP1();
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -221,8 +207,6 @@ describe('Stalemates', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 0);
-    cy.log('Fixture loaded');
 
     cy.deleteDeck();
     cy.get('#deck').should('contain', '(2)');
@@ -391,7 +375,7 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
   });
 
   it('Opponent concedes while seven oneOff is being resolved', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -401,8 +385,6 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -413,7 +395,7 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
     assertVictory();
     goHomeJoinNewGame();
 
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -429,7 +411,7 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
   });
 
   it('Concede game while resolving a four', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.FOUR_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -437,9 +419,6 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
       p1Points: [],
       p1FaceCards: [],
     });
-
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
 
@@ -526,7 +505,7 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // 2nd game: Player is now p0 and loses by points
     cy.setupGameAsP1(true, true);
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [Card.ACE_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
       p0FaceCards: [],
@@ -534,9 +513,6 @@ describe('Creating And Updating Ranked Matches', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
-
     // Opponent wins with points
     cy.playPointsOpponent(Card.ACE_OF_SPADES);
     assertLoss();
@@ -604,7 +580,7 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // 4th game: stalemate due to passing
     cy.setupGameAsP0(true, true);
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -612,8 +588,6 @@ describe('Creating And Updating Ranked Matches', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     cy.deleteDeck();
     cy.log('Drawing last two cards');
@@ -646,7 +620,7 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // 5th Game: UNRANKED - does not affect match
     cy.setupGameAsP0(true, false);
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -654,8 +628,6 @@ describe('Creating And Updating Ranked Matches', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     cy.deleteDeck();
     cy.log('Drawing last two cards');
@@ -688,7 +660,7 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // 6th Game: player wins via points and wins match
     cy.setupGameAsP0(true, true);
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
       p0FaceCards: [],
@@ -696,8 +668,6 @@ describe('Creating And Updating Ranked Matches', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     // Player wins with points
     cy.get('[data-player-hand-card=1-3]').click();

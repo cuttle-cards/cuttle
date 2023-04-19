@@ -15,7 +15,7 @@ describe('Spectating Games', () => {
 
   it('Spectates a game', () => {
     cy.setupGameAsSpectator();
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [Card.KING_OF_SPADES],
@@ -122,7 +122,7 @@ describe('Spectating Games', () => {
 
   it('Correctly shows and hides dialogs and overlays', () => {
     cy.setupGameAsSpectator();
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -130,7 +130,6 @@ describe('Spectating Games', () => {
       p1Points: [Card.ACE_OF_CLUBS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 2);
 
     cy.recoverSessionOpponent(playerOne);
     cy.playOneOffSpectator(Card.ACE_OF_SPADES, 0);
@@ -150,7 +149,7 @@ describe('Spectating Games', () => {
 
   it('Leaves a spectated game and joins another without processing extraneous updates', () => {
     cy.setupGameAsSpectator();
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES],
       p0Points: [],
       p0FaceCards: [],
@@ -158,7 +157,6 @@ describe('Spectating Games', () => {
       p1Points: [Card.ACE_OF_CLUBS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
 
     cy.window()
       .its('cuttle.app.config.globalProperties.$store.state.game')
@@ -170,7 +168,7 @@ describe('Spectating Games', () => {
     cy.vueRoute('/');
     cy.signupOpponent(opponentOne);
     cy.setupGameAsP0(true);
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
       p0Points: [],
       p0FaceCards: [],
@@ -178,7 +176,6 @@ describe('Spectating Games', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 2);
 
     cy.recoverSessionOpponent(playerOne);
     cy.get('@aceOfSpades').then((aceOfSpadesId) => {
@@ -199,7 +196,7 @@ describe('Spectating Games', () => {
 
   it('Prevents spectator from making moves', () => {
     cy.setupGameAsSpectator();
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [
         Card.ACE_OF_SPADES,
         Card.ACE_OF_HEARTS,

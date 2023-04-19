@@ -9,7 +9,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
   it('Plays Points', () => {
     // Set Up
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [Card.KING_OF_SPADES],
@@ -55,7 +55,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
   it('Scuttles as P0', () => {
     // Set Up
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES, Card.SEVEN_OF_CLUBS],
       p0Points: [Card.TWO_OF_CLUBS, Card.TEN_OF_HEARTS],
       p0FaceCards: [Card.KING_OF_SPADES],
@@ -176,7 +176,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
   it('Plays Kings', () => {
     // Setup
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
@@ -236,7 +236,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
   it('Plays Queens', () => {
     // Setup
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.QUEEN_OF_DIAMONDS, Card.QUEEN_OF_SPADES, Card.KING_OF_CLUBS, Card.JACK_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
@@ -290,7 +290,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Cancels selection and cancels decision to scuttle/targeted one-off/jack on mobile', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [
         Card.TWO_OF_SPADES,
         Card.FOUR_OF_CLUBS,
@@ -339,7 +339,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Cancels selection and cancels decision to scuttle/targeted one-off/jack', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [
         Card.TWO_OF_SPADES,
         Card.FOUR_OF_CLUBS,
@@ -445,7 +445,7 @@ describe('Playing 8s', () => {
 
   it('Plays eights for points', () => {
     // Setup
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
@@ -476,7 +476,7 @@ describe('Playing 8s', () => {
 
   it('Plays eights for glasses', () => {
     // Setup
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
@@ -524,7 +524,7 @@ describe('Play Jacks', () => {
 
   it('Player and Opponent plays Jacks on different cards', () => {
     // Set Up
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [],
@@ -569,7 +569,7 @@ describe('Play Jacks', () => {
 
   it('Quadruple jacks successfully', () => {
     // Set Up
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [],

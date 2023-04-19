@@ -6,7 +6,7 @@ describe('Reconnecting to a game', () => {
   it('Persists session after refreshing the page', () => {
     cy.setupGameAsP0();
 
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -14,8 +14,6 @@ describe('Reconnecting to a game', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     // Reload page, relogin
     cy.reload();
@@ -37,7 +35,7 @@ describe('Reconnecting to a game', () => {
   it('Reconnects after refreshing the page', () => {
     cy.setupGameAsP0();
 
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
       p0FaceCards: [],
@@ -45,8 +43,6 @@ describe('Reconnecting to a game', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     // Reload page
     cy.reload();
@@ -69,7 +65,7 @@ describe('Reconnecting to a game', () => {
     it('oneOff - Reconnect into cannot counter dialog', () => {
       cy.setupGameAsP1();
 
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.ACE_OF_CLUBS],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -77,8 +73,6 @@ describe('Reconnecting to a game', () => {
         p1Points: [Card.SIX_OF_CLUBS],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Fixture loaded');
 
       cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
 
@@ -104,7 +98,7 @@ describe('Reconnecting to a game', () => {
     it('targetedOneOff -- reconnect into cannot counter dialog', () => {
       cy.setupGameAsP1();
 
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.TWO_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -112,8 +106,6 @@ describe('Reconnecting to a game', () => {
         p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p1FaceCards: [Card.KING_OF_CLUBS],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Fixture loaded');
 
       cy.playTargetedOneOffOpponent(Card.TWO_OF_CLUBS, Card.KING_OF_CLUBS, 'faceCard');
 
@@ -138,7 +130,7 @@ describe('Reconnecting to a game', () => {
 
     it('counter -- Reconnect into cannot counter dialog', () => {
       cy.setupGameAsP0();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.ACE_OF_CLUBS],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -146,8 +138,6 @@ describe('Reconnecting to a game', () => {
         p1Points: [],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Fixture loaded');
 
       // Play ace of clubs
       cy.get('[data-player-hand-card=1-0]').click();
@@ -175,7 +165,7 @@ describe('Reconnecting to a game', () => {
 
     it('sevenOneOff -- Reconnect into cannot counter dialog', () => {
       cy.setupGameAsP1();
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -184,8 +174,6 @@ describe('Reconnecting to a game', () => {
         p1FaceCards: [],
         topCard: Card.ACE_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 0);
-      cy.log('Fixture loaded');
 
       // Opponent plays seven of clubs and player resolves
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -216,7 +204,7 @@ describe('Reconnecting to a game', () => {
 
     it('sevenTargetedOneOff -- Reconnect into cannot counter dialog', () => {
       cy.setupGameAsP1();
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -225,8 +213,6 @@ describe('Reconnecting to a game', () => {
         p1FaceCards: [Card.KING_OF_CLUBS],
         topCard: Card.TWO_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 0);
-      cy.log('Fixture loaded');
 
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
@@ -252,7 +238,7 @@ describe('Reconnecting to a game', () => {
     it('Opponent reconnects while player is in cannot-counter dialog', () => {
       cy.setupGameAsP1();
 
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.ACE_OF_CLUBS],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -260,8 +246,6 @@ describe('Reconnecting to a game', () => {
         p1Points: [Card.SIX_OF_CLUBS],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Fixture loaded');
 
       cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
 
@@ -287,7 +271,7 @@ describe('Reconnecting to a game', () => {
   describe('Reconnecting into Counter Dialog', () => {
     it('oneOff -- Reconnect into Counter Dialog', () => {
       cy.setupGameAsP1();
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.ACE_OF_CLUBS],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -295,8 +279,6 @@ describe('Reconnecting to a game', () => {
         p1Points: [Card.ACE_OF_DIAMONDS],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Fixture loaded');
 
       cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
 
@@ -324,7 +306,7 @@ describe('Reconnecting to a game', () => {
 
     it('targetedOneOff -- reconnect into counter dialog', () => {
       cy.setupGameAsP1();
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.TWO_OF_SPADES],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -332,8 +314,6 @@ describe('Reconnecting to a game', () => {
         p1Points: [Card.ACE_OF_DIAMONDS],
         p1FaceCards: [Card.KING_OF_CLUBS],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Fixture loaded');
 
       cy.playTargetedOneOffOpponent(Card.TWO_OF_SPADES, Card.KING_OF_CLUBS, 'faceCard');
 
@@ -364,7 +344,7 @@ describe('Reconnecting to a game', () => {
 
     it('targetedOneOff -- reconnect into waiting for opponent to counter overlay', () => {
       cy.setupGameAsP1();
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.TWO_OF_SPADES],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -372,8 +352,6 @@ describe('Reconnecting to a game', () => {
         p1Points: [Card.ACE_OF_DIAMONDS],
         p1FaceCards: [Card.KING_OF_CLUBS],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Fixture loaded');
 
       cy.playTargetedOneOffOpponent(Card.TWO_OF_SPADES, Card.KING_OF_CLUBS, 'faceCard');
 
@@ -406,7 +384,7 @@ describe('Reconnecting to a game', () => {
 
     it('counter -- Reconnect into counter dialog', () => {
       cy.setupGameAsP0();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES],
         p0Points: [Card.SEVEN_OF_DIAMONDS],
         p0FaceCards: [],
@@ -414,8 +392,6 @@ describe('Reconnecting to a game', () => {
         p1Points: [Card.SEVEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 2);
-      cy.log('Fixture loaded');
 
       // Play ace of clubs
       cy.get('[data-player-hand-card=1-0]').click();
@@ -463,7 +439,7 @@ describe('Reconnecting to a game', () => {
 
     it('sevenOneOff -- Reconnect into counter dialog', () => {
       cy.setupGameAsP1();
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -472,8 +448,6 @@ describe('Reconnecting to a game', () => {
         p1FaceCards: [],
         topCard: Card.ACE_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Fixture loaded');
 
       // Opponent plays seven of clubs and player resolves
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -503,7 +477,7 @@ describe('Reconnecting to a game', () => {
 
     it('sevenTargetedOneOff -- Reconnect into counter dialog', () => {
       cy.setupGameAsP1();
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -512,8 +486,7 @@ describe('Reconnecting to a game', () => {
         p1FaceCards: [Card.KING_OF_CLUBS],
         topCard: Card.TWO_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Fixture loaded');
+
       // Opponent plays seven of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       cy.get('#counter-dialog').should('be.visible').get('[data-cy=decline-counter-resolve]').click();
@@ -544,7 +517,7 @@ describe('Reconnecting to a game', () => {
     describe('Reconnecting into 3s', () => {
       it('Resolve 3 after reconnect -- Player fetches card', () => {
         cy.setupGameAsP0();
-        cy.loadGameFixture({
+        cy.loadGameFixture(0, {
           p0Hand: [Card.THREE_OF_CLUBS],
           p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
           p0FaceCards: [],
@@ -553,8 +526,6 @@ describe('Reconnecting to a game', () => {
           p1FaceCards: [Card.KING_OF_CLUBS],
           scrap: [Card.TWO_OF_CLUBS],
         });
-        cy.get('[data-player-hand-card]').should('have.length', 1);
-        cy.log('Fixture loaded');
 
         cy.playOneOffAndResolveAsPlayer(Card.THREE_OF_CLUBS);
 
@@ -583,7 +554,7 @@ describe('Reconnecting to a game', () => {
 
       it('Resolve opponents three after reconnect', () => {
         cy.setupGameAsP1();
-        cy.loadGameFixture({
+        cy.loadGameFixture(1, {
           p0Hand: [Card.THREE_OF_CLUBS],
           p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
           p0FaceCards: [],
@@ -592,8 +563,7 @@ describe('Reconnecting to a game', () => {
           p1FaceCards: [],
           scrap: [Card.TWO_OF_CLUBS],
         });
-        cy.get('[data-player-hand-card]').should('have.length', 1);
-        cy.log('Fixture loaded');
+
         // Opponent plays 3 of clubs & it resolves
         cy.playOneOffOpponent(Card.THREE_OF_CLUBS);
         cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
@@ -621,7 +591,7 @@ describe('Reconnecting to a game', () => {
 
     it('Resolve 4 after reconnect - Player discards', () => {
       cy.setupGameAsP1();
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.FOUR_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -629,8 +599,6 @@ describe('Reconnecting to a game', () => {
         p1Points: [],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 2);
-      cy.log('Fixture loaded');
 
       // Opponent plays four of clubs, player resolves
       cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
@@ -660,7 +628,7 @@ describe('Reconnecting to a game', () => {
 
     it('Resolve 7 after reconnect - Player', () => {
       cy.setupGameAsP0();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -670,8 +638,6 @@ describe('Reconnecting to a game', () => {
         topCard: Card.TEN_OF_SPADES,
         secondCard: Card.NINE_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Fixture loaded');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 

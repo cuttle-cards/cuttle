@@ -19,7 +19,7 @@ describe('Game View Layout', () => {
 
   it('Three dialogs', () => {
     // Set Up
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.THREE_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -28,8 +28,6 @@ describe('Game View Layout', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
       scrap: [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     // Player plays three
     cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
@@ -89,7 +87,7 @@ describe('Game View Layout', () => {
       Card.ACE_OF_CLUBS,
       Card.TWO_OF_DIAMONDS,
     ];
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.THREE_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -98,8 +96,6 @@ describe('Game View Layout', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
       scrap,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     // When-- Click the scrap
     cy.log('Clicking scrap');
@@ -150,7 +146,7 @@ describe('Game View Layout', () => {
 
   it('Clicking the scrap while empty shows that it is empty', () => {
     // Given-- the initial game state with 3 cards in the scrap
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.THREE_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -159,8 +155,6 @@ describe('Game View Layout', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
       scrap: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     // When-- Click the scrap
     cy.log('Clicking scrap');
@@ -177,7 +171,7 @@ describe('Four dialogs layout', () => {
   });
 
   it('Four dialogs', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS],
       p0Points: [],
       p0FaceCards: [],
@@ -185,8 +179,6 @@ describe('Four dialogs layout', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 3);
-    cy.log('Loaded fixture');
 
     // Opponent plays four
     cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
@@ -222,7 +214,7 @@ describe.skip('Aesthetic tests', () => {
 
   it('Many cards on field', () => {
     // Set Up
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.EIGHT_OF_SPADES, Card.QUEEN_OF_DIAMONDS],
       p0Points: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.ACE_OF_HEARTS],
       p0FaceCards: [Card.KING_OF_HEARTS, Card.KING_OF_DIAMONDS, Card.KING_OF_CLUBS, Card.EIGHT_OF_HEARTS],
@@ -230,12 +222,11 @@ describe.skip('Aesthetic tests', () => {
       p1Points: [],
       p1FaceCards: [],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 2);
   });
 
   it('Quadruple jacks with a few cards', () => {
     // Set Up
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [],
@@ -243,8 +234,6 @@ describe.skip('Aesthetic tests', () => {
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 4);
-    cy.log('Loaded fixture');
 
     // Play jack of clubs on ten of hearts
     cy.get('[data-player-hand-card=11-0]').click();
@@ -310,7 +299,7 @@ describe.skip('Aesthetic tests', () => {
 
   it('Triple jacks on a card with multiple other cards', () => {
     // Set Up
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
       p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TWO_OF_CLUBS],
       p0FaceCards: [],
@@ -318,8 +307,6 @@ describe.skip('Aesthetic tests', () => {
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 4);
-    cy.log('Loaded fixture');
 
     // Play jack of clubs on ten of hearts
     cy.get('[data-player-hand-card=11-0]').click();
@@ -370,7 +357,7 @@ describe.skip('Aesthetic tests', () => {
 
   it('Four cards, each with a jack', () => {
     // Set Up
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.JACK_OF_CLUBS, Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
       p0Points: [],
       p0FaceCards: [],
@@ -378,8 +365,6 @@ describe.skip('Aesthetic tests', () => {
       p1Points: [Card.ACE_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 4);
-    cy.log('Loaded fixture');
 
     // Play jack of clubs on ace of hearts
     cy.get('[data-player-hand-card=11-0]').click();

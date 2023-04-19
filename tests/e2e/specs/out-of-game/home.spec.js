@@ -354,7 +354,7 @@ describe('Home - Game List', () => {
       // Finished by pass
       cy.log('Setup game end by passing');
       cy.setupGameAsSpectator();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -390,7 +390,7 @@ describe('Home - Game List', () => {
       // Finished by P0 Victory
       cy.log('Setup game end by P0 victory');
       cy.setupGameAsSpectator();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.EIGHT_OF_SPADES],
         p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -410,7 +410,7 @@ describe('Home - Game List', () => {
       // Finished by P1 Victory
       cy.log('Setup game end by P1 victory');
       cy.setupGameAsSpectator();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.EIGHT_OF_SPADES],
         p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],

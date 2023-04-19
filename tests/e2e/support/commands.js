@@ -1238,7 +1238,7 @@ Cypress.Commands.add('vueRoute', (route) => {
  *   secondCard?: {suit: number, rank: number} (optional)
  * }
  */
-Cypress.Commands.add('loadGameFixture', (fixture) => {
+Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
   return cy
     .window()
     .its('cuttle.app.config.globalProperties.$store.state.game')
@@ -1282,5 +1282,7 @@ Cypress.Commands.add('loadGameFixture', (fixture) => {
         }
         return Promise.resolve(jwres);
       });
+      const playerHandLength = pNum === 0 ? p0HandCardIds.length : p1HandCardIds.length;
+      cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
     });
 });
