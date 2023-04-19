@@ -34,7 +34,7 @@
 
     <template #actions>
       <v-btn
-        color="primary"
+        color="surface-1"
         variant="flat"
         data-cy="gameover-go-home"
         :loading="leavingGame"
