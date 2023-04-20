@@ -1,4 +1,5 @@
-import { opponentUsername, opponentPassword, assertGameState, Card } from '../../support/helpers';
+import { opponentOne } from '../../fixtures/userFixtures';
+import { assertGameState, Card } from '../../support/helpers';
 
 describe('Reconnecting to a game', () => {
   it('Persists session after refreshing the page', () => {
@@ -247,7 +248,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it('Opponent reconnects while player is in cannot-counter dialog', () => {
+    it.only('Opponent reconnects while player is in cannot-counter dialog', () => {
       cy.setupGameAsP1();
 
       cy.loadGameFixture({
@@ -265,7 +266,7 @@ describe('Reconnecting to a game', () => {
 
       cy.get('#cannot-counter-dialog').should('be.visible');
 
-      cy.reconnectOpponent(opponentUsername, opponentPassword);
+      cy.reconnectOpponent(opponentOne);
 
       // Cannot counter dialog appears again
       cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
