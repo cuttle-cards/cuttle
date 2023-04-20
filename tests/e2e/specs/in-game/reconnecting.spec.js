@@ -248,7 +248,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it.only('Opponent reconnects while player is in cannot-counter dialog', () => {
+    it('Opponent reconnects while player is in cannot-counter dialog', () => {
       cy.setupGameAsP1();
 
       cy.loadGameFixture({
