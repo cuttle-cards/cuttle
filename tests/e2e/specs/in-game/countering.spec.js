@@ -241,8 +241,8 @@ describe('Countering One-Offs', () => {
     cy.log('Player counters again (3rd counter');
     cy.get('#counter-dialog')
       .should('be.visible')
-      .should('contain', 'Your opponent has played 2♣️ to Counter your 2♥️.')
-      .get('[data-cy=counter]')
+      .contains('Your opponent has played 2♣️ to Counter your 2♥️', {includeShadowDom: true});
+    cy.get('[data-cy=counter]')
       .click();
     cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-3]').click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
@@ -426,8 +426,8 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.log('Player counters back (2nd counter)');
     cy.get('#counter-dialog')
       .should('be.visible')
-      .should('contain', 'Your opponent has played 2♥️ to Counter.')
-      .get('[data-cy=counter]')
+      .contains('Your opponent has played 2♥️ to Counter', {includeShadowDom: true});
+    cy.get('[data-cy=counter]')
       .click();
 
     cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-0]').click();
@@ -440,8 +440,8 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.log('Player counters (4th counter)');
     cy.get('#counter-dialog')
       .should('be.visible')
-      .should('contain', 'Your opponent has played 2♠️ to Counter your 2♣️.')
-      .get('[data-cy=counter]')
+      .contains('Your opponent has played 2♠️ to Counter your 2♣️', {includeShadowDom: true});
+    cy.get('[data-cy=counter]')
       .click();
     cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-1]').click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
@@ -496,9 +496,9 @@ describe('Countering One-Offs P0 Perspective', () => {
     // Player cannot counter because of queen
     cy.get('#cannot-counter-dialog')
       .should('be.visible')
-      .should('contain', 'Your opponent has played 2♥️ to Counter.')
       .should('contain', 'You cannot Counter, because your opponent has a queen.')
-      .get('[data-cy=cannot-counter-resolve]')
+      .contains('Your opponent has played 2♥️ to Counter', {includeShadowDom: true});
+    cy.get('[data-cy=cannot-counter-resolve]')
       .click();
   });
 });
