@@ -1,52 +1,56 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="650">
-    <v-card id="reauthenticate-dialog">
-      <v-card-title>Reconnect to Game</v-card-title>
-      <form @submit.prevent="login">
-        <v-card-text>
-          <p>You have disconnected due to inactivity. Log in again to resume your session</p>
-          <!-- Login Form -->
-          <v-text-field
-            v-model="username"
-            variant="outlined"
-            :dense="$vuetify.display.mdAndDown"
-            label="Username"
-            data-cy="username"
-          />
-          <v-text-field
-            v-model="password"
-            variant="outlined"
-            label="Password"
-            :dense="$vuetify.display.mdAndDown"
-            type="password"
-            data-cy="password"
-          />
-        </v-card-text>
-        <v-card-actions class="d-flex justify-end">
-          <v-btn variant="text" color="primary" @click="leaveGame">
-            Leave Game
-          </v-btn>
-          <v-btn color="primary" variant="flat" data-cy="login" type="submit">
-            Log In
-          </v-btn>
-        </v-card-actions>
-      </form>
-    </v-card>
+  <div>
+    <base-dialog v-model="show" id="reauthenticate-dialog" title="Reconnect to Game">
+
+      <template #body>
+        <p>You have disconnected due to inactivity. Log in again to resume your session</p>
+        <!-- Login Form -->
+        <v-text-field
+          v-model="username"
+          variant="outlined"
+          :dense="$vuetify.display.mdAndDown"
+          label="Username"
+          data-cy="username"
+          @keydown.enter="login"
+        />
+        <v-text-field
+          v-model="password"
+          variant="outlined"
+          label="Password"
+          :dense="$vuetify.display.mdAndDown"
+          type="password"
+          data-cy="password"
+          @keydown.enter="login"
+        />
+      </template>
+
+      <template #actions>
+        <v-btn variant="text" color="primary" @click="leaveGame">
+          Leave Game
+        </v-btn>
+        <v-btn color="primary" variant="flat" data-cy="login" @click="login">
+          Log In
+        </v-btn>
+      </template>
+    </base-dialog>
+
     <BaseSnackbar
       v-model="showSnackBar"
       :message="snackBarMessage"
       color="error"
       @clear="clearSnackBar"
     />
-  </v-dialog>
+  </div>
 </template>
 
 <script>
+import BaseDialog from '@/components/Global/BaseDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 
 export default {
   name: 'ReauthenticateDialog',
   components: {
+    BaseDialog,
     BaseSnackbar,
   },
   props: {
