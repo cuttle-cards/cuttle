@@ -8,7 +8,7 @@
  *
  */
 module.exports = function (req, res, next) {
-  const { username } = req.body;
+  const username = req.body.username.trim();
 
   if (!username) {
     return res.badRequest({ message: 'Please provide a non-empty username' });
@@ -20,5 +20,6 @@ module.exports = function (req, res, next) {
   if (typeof username !== 'string' || !username.match(/^[\w.@-]+$/)) {
     return res.badRequest({ message: 'Your username must contain only letters or numbers' });
   }
+  req.body.username = username;
   return next();
 };
