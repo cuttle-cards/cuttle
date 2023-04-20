@@ -1,5 +1,4 @@
-import { assertGameState, Card } from '../../support/helpers';
-import { opponentOne } from '../../fixtures/userFixtures';
+import { opponentUsername, opponentPassword, assertGameState, Card } from '../../support/helpers';
 
 describe('Reconnecting to a game', () => {
   it('Persists session after refreshing the page', () => {
@@ -266,7 +265,7 @@ describe('Reconnecting to a game', () => {
 
       cy.get('#cannot-counter-dialog').should('be.visible');
 
-      cy.reconnectOpponent(opponentOne);
+      cy.reconnectOpponent(opponentUsername, opponentPassword);
 
       // Cannot counter dialog appears again
       cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
@@ -426,8 +425,8 @@ describe('Reconnecting to a game', () => {
       // Counter dialog should be visible
       cy.get('#counter-dialog')
         .should('be.visible')
-        .should('contain', 'Your opponent has played 2♣️ to Counter.')
-        .get('[data-cy=counter]')
+        .contains('Your opponent has played 2♣️ to Counter.', {includeShadowDom: true});
+      cy.get('[data-cy=counter]')
         .click();
 
       // Reconnect & proceed
@@ -436,8 +435,8 @@ describe('Reconnecting to a game', () => {
       // Counter dialog should become visible again
       cy.get('#counter-dialog')
         .should('be.visible')
-        .should('contain', 'Your opponent has played 2♣️ to Counter.')
-        .get('[data-cy=counter]')
+        .contains('Your opponent has played 2♣️ to Counter.', {includeShadowDom: true});
+      cy.get('[data-cy=counter]')
         .click();
       cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-3]').click();
 
