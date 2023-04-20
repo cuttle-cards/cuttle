@@ -2,10 +2,15 @@
   <base-dialog v-model="show" id="game-over-dialog">
     <template #title>
       <h1 :data-cy="headingDataAttr" class="dialog-header">{{ heading }}</h1>
-      <v-img v-if="currentMatch" :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
+      <v-img v-if="currentMatch && !isMobilePortrait" :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
     </template>
 
     <template #body>
+      <template v-if="isMobilePortrait || !currentMatch">
+        <div class="d-flex justify-center">
+          <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
+        </div>
+      </template>
       <template v-if="currentMatch">
         <p class="dialog-text" v-if="currentMatch" data-cy="match-result-section">
           Match against {{ opponent.username }}
@@ -22,12 +27,6 @@
               {{ gameStatus }}
             </div>
           </div>
-        </div>
-      </template>
-
-      <template v-else>
-        <div class="d-flex justify-center">
-          <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
         </div>
       </template>
     </template>
@@ -109,6 +108,9 @@ export default {
       }
 
       return 'loss-heading';
+    },
+    isMobilePortrait() {
+      return this.$vuetify.display.xs;
     },
     logoSrc() {
       if (this.stalemate) {
