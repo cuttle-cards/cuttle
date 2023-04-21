@@ -1,14 +1,18 @@
 <template>
   <base-dialog v-model="show" id="game-over-dialog">
     <template #title>
-      <h1 :data-cy="headingDataAttr" class="dialog-header">{{ heading }}</h1>
+      <h1 :data-cy="headingDataAttr" class="dialog-header" :class="isMobilePortrait ? 'text-h4' : ''">{{ heading }}</h1>
       <v-img v-if="currentMatch && !isMobilePortrait" :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
     </template>
 
     <template #body>
       <template v-if="isMobilePortrait || !currentMatch">
         <div class="d-flex justify-center">
-          <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
+          <v-img
+            :src="logoSrc"
+            :data-cy="logoDataAttr"
+            :class="isMobilePortrait ? 'small-logo-image' : 'logo-image'"
+          />
         </div>
       </template>
       <template v-if="currentMatch">
@@ -194,6 +198,12 @@ export default {
 .logo-image {
   height: auto;
   max-width: 180px;
+  margin-bottom: 16px;
+}
+
+.small-logo-image {
+  height: auto;
+  max-width: 120px;
   margin-bottom: 16px;
 }
 
