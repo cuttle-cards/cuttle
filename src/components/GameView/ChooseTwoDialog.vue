@@ -51,11 +51,6 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      choseToCounter: false,
-    };
-  },
   computed: {
     show: {
       get() {
@@ -79,11 +74,9 @@ export default {
   methods: {
     counter(two) {
       this.$emit('counter', two.id);
-      this.choseToCounter = false;
     },
     resolve() {
       this.$emit('resolve');
-      this.choseToCounter = false;
     },
   },
 };
