@@ -1,4 +1,5 @@
-import { assertGameState, Card, playOutOfTurn } from '../../support/helpers';
+import { assertGameState, playOutOfTurn } from '../../support/helpers';
+import { Card } from '../../fixtures/cards';
 
 describe('Countering One-Offs', () => {
   beforeEach(() => {
@@ -6,7 +7,7 @@ describe('Countering One-Offs', () => {
   });
 
   it('Displays the cannot counter modal and resolves stack when opponent plays a one-off if player has no twos', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -16,9 +17,6 @@ describe('Countering One-Offs', () => {
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    // Confirm fixture has loaded
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Fixture loaded');
 
     // Opponent plays ace of clubs
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
@@ -46,7 +44,7 @@ describe('Countering One-Offs', () => {
   });
 
   it('Counters one-off with a two', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -56,9 +54,6 @@ describe('Countering One-Offs', () => {
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    // Confirm fixture has loaded
-    cy.get('[data-player-hand-card]').should('have.length', 2);
-    cy.log('Fixture loaded');
 
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
@@ -83,7 +78,7 @@ describe('Countering One-Offs', () => {
   });
 
   it('Declining option to counter resolves stack', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -93,9 +88,6 @@ describe('Countering One-Offs', () => {
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    // Confirm fixture has loaded
-    cy.get('[data-player-hand-card]').should('have.length', 2);
-    cy.log('Fixture loaded');
 
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
     cy.get('#cannot-counter-dialog').should('not.exist');
@@ -120,7 +112,7 @@ describe('Countering One-Offs', () => {
 
   it('Cancels decision to counter with Cancel button after choosing to counter', () => {
     // Setup
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -130,8 +122,6 @@ describe('Countering One-Offs', () => {
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 2);
-    cy.log('Fixture loaded');
 
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
@@ -163,7 +153,7 @@ describe('Countering One-Offs', () => {
 
   it('Double counters successfully', () => {
     // Setup
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -173,8 +163,6 @@ describe('Countering One-Offs', () => {
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
@@ -212,7 +200,7 @@ describe('Countering One-Offs', () => {
   });
 
   it('Triple counters successfully', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -222,8 +210,6 @@ describe('Countering One-Offs', () => {
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 2);
-    cy.log('Loaded fixture');
 
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
@@ -263,7 +249,7 @@ describe('Countering One-Offs', () => {
   });
 
   it('Quadruple counters successfully', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -273,8 +259,7 @@ describe('Countering One-Offs', () => {
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 2);
-    cy.log('Loaded fixture');
+
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
     cy.get('#cannot-counter-dialog').should('not.exist');
@@ -322,7 +307,7 @@ describe('Countering One-Offs', () => {
   });
 
   it('Cannot Counter When Opponent Has Queen', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -333,8 +318,6 @@ describe('Countering One-Offs', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
 
-    cy.get('[data-player-hand-card]').should('have.length', 2);
-    cy.log('Loaded fixture');
     // Opponent plays ace of clubs as one-off
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
     cy.get('#cannot-counter-dialog')
@@ -351,7 +334,7 @@ describe('Countering One-Offs P0 Perspective', () => {
   });
 
   it('Can counter a three', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       // Player is P0
       p0Hand: [Card.FIVE_OF_CLUBS, Card.FOUR_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -362,8 +345,6 @@ describe('Countering One-Offs P0 Perspective', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
       scrap: [Card.QUEEN_OF_CLUBS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 2);
-    cy.log('Loaded fixture');
 
     // Player plays three of clubs as one-off
     cy.get('[data-player-hand-card=5-0]').click();
@@ -402,7 +383,7 @@ describe('Countering One-Offs P0 Perspective', () => {
   });
 
   it('Quadruple counters successfully - P0 Perspective', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       // Player is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -412,8 +393,7 @@ describe('Countering One-Offs P0 Perspective', () => {
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-    cy.get('[data-player-hand-card]').should('have.length', 3);
-    cy.log('Loaded fixture');
+
     // Player plays ace of clubs as one-off
     cy.get('[data-player-hand-card=1-0]').click();
     cy.get('[data-move-choice=oneOff]').click();
@@ -471,7 +451,7 @@ describe('Countering One-Offs P0 Perspective', () => {
   });
 
   it('Cannot Counter When Opponent Has Queen, dialog message', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       // Player is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -482,8 +462,6 @@ describe('Countering One-Offs P0 Perspective', () => {
       p1FaceCards: [Card.KING_OF_HEARTS, Card.QUEEN_OF_CLUBS],
     });
 
-    cy.get('[data-player-hand-card]').should('have.length', 3);
-    cy.log('Loaded fixture');
     // Player plays ace of clubs as one-off
     cy.log('Player plays ace of clubs as one-off');
     cy.get('[data-player-hand-card=1-0]').click();
@@ -510,7 +488,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
 
   describe('Opponent May Counter', () => {
     it('Displays "Opponent May Counter" when player had neither glasses nor a queen', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
         p0Points: [],
@@ -520,8 +498,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         p1Points: [],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded game fixture');
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=oneOff]').click();
@@ -532,7 +508,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
     });
 
     it('Displays "Opponent May Counter" when player has glasses but opponent has a two in hand', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
         p0Points: [],
@@ -542,8 +518,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         p1Points: [],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded game fixture');
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=oneOff]').click();
@@ -556,7 +530,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
 
   describe('Opponent Must Resolve', () => {
     it('Displays "Opponent Must Resolve" when player has a queen', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
         p0Points: [],
@@ -566,8 +540,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         p1Points: [],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded game fixture');
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=oneOff]').click();
@@ -578,7 +550,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
     });
 
     it('Displays "Opponent Must Resolve" when player has glasses while opponent does not have a two in hand', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
         p0Points: [],
@@ -588,8 +560,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         p1Points: [],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded game fixture');
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=oneOff]').click();
@@ -600,7 +570,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
     });
 
     it('Display "Opponent Must Resolve" when player has a queen + glasses and their opponent does not have a 2 in hand', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
         p0Points: [],
@@ -610,8 +580,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         p1Points: [],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded game fixture');
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=oneOff]').click();

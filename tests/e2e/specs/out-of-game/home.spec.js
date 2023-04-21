@@ -1,4 +1,5 @@
-import { assertSnackbarError, Card } from '../../support/helpers';
+import { assertSnackbarError } from '../../support/helpers';
+import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 
 function setup() {
@@ -353,7 +354,7 @@ describe('Home - Game List', () => {
       // Finished by pass
       cy.log('Setup game end by passing');
       cy.setupGameAsSpectator();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -361,7 +362,6 @@ describe('Home - Game List', () => {
         p1Points: [],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
       // Delete deck, draw last two card, both players pass until stalemate
       cy.deleteDeck();
       cy.get('#deck').should('contain', '(2)');
@@ -389,7 +389,7 @@ describe('Home - Game List', () => {
       // Finished by P0 Victory
       cy.log('Setup game end by P0 victory');
       cy.setupGameAsSpectator();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.EIGHT_OF_SPADES],
         p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -397,7 +397,6 @@ describe('Home - Game List', () => {
         p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
       cy.recoverSessionOpponent(playerOne);
       cy.vueRoute('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
@@ -409,7 +408,7 @@ describe('Home - Game List', () => {
       // Finished by P1 Victory
       cy.log('Setup game end by P1 victory');
       cy.setupGameAsSpectator();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.EIGHT_OF_SPADES],
         p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
         p0FaceCards: [],
@@ -417,7 +416,6 @@ describe('Home - Game List', () => {
         p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
         p1FaceCards: [],
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
       cy.recoverSessionOpponent(playerOne);
       cy.drawCardOpponent();
       cy.recoverSessionOpponent(playerTwo);
