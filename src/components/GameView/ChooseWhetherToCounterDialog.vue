@@ -1,5 +1,5 @@
 <template>
-  <base-dialog v-if="oneOff" v-model="show" id="counter-dialog" title="Chance to Counter">
+  <base-dialog v-model="show" id="counter-dialog" title="Chance to Counter">
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
         Your opponent has played the 
@@ -66,7 +66,7 @@ export default {
     },
     oneOff: {
       type: Object,
-      default: null,
+      required: true,
     },
     target: {
       type: Object,
