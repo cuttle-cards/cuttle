@@ -77,11 +77,6 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      choseToCounter: false,
-    };
-  },
   computed: {
     show: {
       get() {
