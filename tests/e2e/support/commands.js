@@ -1226,6 +1226,9 @@ Cypress.Commands.add('vueRoute', (route) => {
 });
 
 /**
+ * Set the current game into a state specified by a fixture object :
+ *
+ * @param pNum{ 0 | 1 -- whether viewing game from perspective of player 0 or player 1 }
  * @param fixture
  * {
  * 	 p0Hand: {suit: number, rank: number}[],
