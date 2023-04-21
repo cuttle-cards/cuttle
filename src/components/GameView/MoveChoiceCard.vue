@@ -85,15 +85,15 @@ export default {
   cursor: pointer;
 }
 .move-choice-card {
-  color: #FFF4D7;
-  border: 2px solid #FFF4D7;
+  background-color: rgba(var(--v-theme-surface-1));
+  color: rgba(var(--v-theme-surface-2)) !important;
+  border: 2px solid rgba(var(--v-theme-surface-2));;
   transition: all 0.5s ease;
   opacity: .95;
 }
 .move-choice-card:hover {
-  color: #4A2416;
-  background-color: #FFF4D7 !important;
-  // border: 2px solid  #4A2416;
+  background-color: rgba(var(--v-theme-surface-2)) !important;
+  color: rgba(var(--v-theme-surface-1)) !important;
 }
 p {
   text-align: center;
