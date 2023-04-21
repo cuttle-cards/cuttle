@@ -1,15 +1,15 @@
 <template>
   <base-dialog v-if="oneOff" v-model="show" title="Cannot Counter" id="cannot-counter-dialog">
     <template #body>
-      <span v-if="!opponentLastTwo">
+      <div v-if="!opponentLastTwo" class="my-2">
         Your opponent has played the 
         <game-card-name :card-name="oneOff.name" />
         as a one-off
         <span v-if="target"> targeting your 
           <game-card-name :card-name="target.name" />
         </span>
-      </span>
-      <span v-else>
+      </div>
+      <div v-else class="my-2">
         Your opponent has played 
         <game-card-name :card-name="opponentLastTwo.name" />
         to Counter
@@ -17,7 +17,7 @@
           your 
           <game-card-name :card-name="playerLastTwo.name" />.
         </span>
-      </span>
+      </div>
       <div class="d-flex justify-center align-center my-8">
         <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
         <p class="ml-8">
