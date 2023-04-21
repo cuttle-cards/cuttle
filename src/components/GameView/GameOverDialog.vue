@@ -1,7 +1,7 @@
 <template>
   <base-dialog v-model="show" id="game-over-dialog">
     <template #title>
-      <h1 :data-cy="headingDataAttr" class="dialog-header" :class="isMobilePortrait ? 'text-h4' : ''">{{ heading }}</h1>
+      <h1 :data-cy="headingDataAttr" :class="isMobilePortrait ? 'text-h4' : ''">{{ heading }}</h1>
       <v-img v-if="currentMatch && !isMobilePortrait" :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
     </template>
 
@@ -23,7 +23,7 @@
         <p class="dialog-text" v-if="matchIsOver" data-cy="match-winner-message">
           You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ opponent.username }}
         </p>
-        <div data-cy="match-result-games" class="dialog-text">
+        <div data-cy="match-result-games" class="mb-4">
           <div class="d-flex">
             <div class="d-flex flex-column mr-4 align-center" v-for="(gameStatus, i) in matchGameStats"
                  :key="`${gameStatus}-${i}`">
@@ -217,8 +217,4 @@ export default {
   max-height: 90px;
 }
 
-.dialog-header,
-.dialog-text {
-  font-family: 'PT Serif', serif;
-}
 </style>
