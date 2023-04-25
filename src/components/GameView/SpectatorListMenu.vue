@@ -16,7 +16,7 @@
     </template>
     <!-- Menu -->
     <v-list class="pl-2 pr-2" id="spectatorList" data-cy="spectate-list-menu">
-      <v-list-title>Spectators</v-list-title>
+      <v-list-item-title>Spectators</v-list-item-title>
       <v-list-item v-for="spectator in spectatingUsers">{{ spectator }}</v-list-item>
     </v-list>
   </v-menu>
