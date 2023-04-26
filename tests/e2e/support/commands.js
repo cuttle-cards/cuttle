@@ -1226,6 +1226,9 @@ Cypress.Commands.add('vueRoute', (route) => {
 });
 
 /**
+ * Set the current game into a state specified by a fixture object :
+ *
+ * @param pNum{ 0 | 1 -- whether viewing game from perspective of player 0 or player 1 }
  * @param fixture
  * {
  * 	 p0Hand: {suit: number, rank: number}[],
@@ -1238,7 +1241,7 @@ Cypress.Commands.add('vueRoute', (route) => {
  *   secondCard?: {suit: number, rank: number} (optional)
  * }
  */
-Cypress.Commands.add('loadGameFixture', (fixture) => {
+Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
   return cy
     .window()
     .its('cuttle.app.config.globalProperties.$store.state.game')
@@ -1282,5 +1285,7 @@ Cypress.Commands.add('loadGameFixture', (fixture) => {
         }
         return Promise.resolve(jwres);
       });
+      const playerHandLength = pNum === 0 ? p0HandCardIds.length : p1HandCardIds.length;
+      cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
     });
 });

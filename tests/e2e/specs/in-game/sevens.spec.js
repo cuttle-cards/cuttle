@@ -1,4 +1,6 @@
-import { assertGameState, assertSnackbarError, Card, SnackBarError } from '../../support/helpers';
+import { assertGameState, assertSnackbarError } from '../../support/helpers';
+import { Card } from '../../fixtures/cards';
+import { SnackBarError } from '../../fixtures/snackbarError';
 
 describe('Playing SEVENS', () => {
   beforeEach(() => {
@@ -6,7 +8,7 @@ describe('Playing SEVENS', () => {
   });
 
   it('Plays points from a seven', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -16,8 +18,6 @@ describe('Playing SEVENS', () => {
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -39,7 +39,7 @@ describe('Playing SEVENS', () => {
   });
 
   it('Plays jack from a seven', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -49,8 +49,6 @@ describe('Playing SEVENS', () => {
       topCard: Card.JACK_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -72,7 +70,7 @@ describe('Playing SEVENS', () => {
   });
 
   it('Cannot play jack from a seven if opponent has queen', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -82,8 +80,6 @@ describe('Playing SEVENS', () => {
       topCard: Card.JACK_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -115,7 +111,7 @@ describe('Playing SEVENS', () => {
 
   describe('Plays jack from a seven - special case', () => {
     it('Plays jack from a seven - special case - double jacks with some points to steal should work as normal', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -125,8 +121,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.JACK_OF_CLUBS,
         secondCard: Card.JACK_OF_DIAMONDS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -148,7 +142,7 @@ describe('Playing SEVENS', () => {
     });
 
     it('Plays jack from a seven - special case - double jacks with some points to steal but opponent has queen', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -158,8 +152,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.JACK_OF_CLUBS,
         secondCard: Card.JACK_OF_DIAMONDS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -197,7 +189,7 @@ describe('Playing SEVENS', () => {
     });
 
     it('Plays jack from a seven - special case - double jacks with no points to steal', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -207,8 +199,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.JACK_OF_CLUBS,
         secondCard: Card.JACK_OF_DIAMONDS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -247,7 +237,7 @@ describe('Playing SEVENS', () => {
 
     it('Plays jack from a seven - special case - final card in deck is a jack with with no points on the board', () => {
       cy.setupGameAsP1();
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
@@ -257,9 +247,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.FOUR_OF_HEARTS,
         secondCard: Card.JACK_OF_CLUBS,
       });
-
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.deleteDeck();
       cy.get('#deck').should('contain', 2);
@@ -296,7 +283,7 @@ describe('Playing SEVENS', () => {
 
   describe('Plays face cards from a seven', () => {
     it('Plays king from a seven', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -306,8 +293,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.SIX_OF_CLUBS,
         secondCard: Card.KING_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -329,7 +314,7 @@ describe('Playing SEVENS', () => {
     }); // End seven king test
 
     it('Plays queen from a seven', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -339,8 +324,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.SIX_OF_CLUBS,
         secondCard: Card.QUEEN_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -362,7 +345,7 @@ describe('Playing SEVENS', () => {
     }); // End seven queen test
 
     it('Plays 8 as face card from a seven', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -372,8 +355,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.SIX_OF_CLUBS,
         secondCard: Card.EIGHT_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -395,7 +376,7 @@ describe('Playing SEVENS', () => {
   }); // End seven face card describe
 
   it('Scuttles from a seven', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -405,8 +386,6 @@ describe('Playing SEVENS', () => {
       topCard: Card.TEN_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -430,7 +409,7 @@ describe('Playing SEVENS', () => {
   }); // End scuttle from seven
 
   it('Scuttles using a NINE from a SEVEN', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -440,8 +419,6 @@ describe('Playing SEVENS', () => {
       topCard: Card.NINE_OF_DIAMONDS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -466,7 +443,7 @@ describe('Playing SEVENS', () => {
 
   describe('Playing untargeted one-offs from a seven', () => {
     it('Plays an ACE from a seven', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -476,8 +453,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.JACK_OF_CLUBS,
         secondCard: Card.ACE_OF_DIAMONDS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -503,7 +478,7 @@ describe('Playing SEVENS', () => {
     });
 
     it('Cannot play 4 from seven when opponent has no cards in hand', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -513,8 +488,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.FOUR_OF_HEARTS,
         secondCard: Card.ACE_OF_DIAMONDS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       // Play seven of clubs
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
@@ -532,7 +505,7 @@ describe('Playing SEVENS', () => {
 
   describe('Playing targeted one-offs from a seven', () => {
     it('Plays topCard TWO from a seven', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -542,8 +515,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.TWO_OF_SPADES,
         secondCard: Card.JACK_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -571,7 +542,7 @@ describe('Playing SEVENS', () => {
     }); // End playing topCard TWO from seven
 
     it('Plays secondCard TWO from a seven', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -581,8 +552,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.JACK_OF_CLUBS,
         secondCard: Card.TWO_OF_SPADES,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -610,7 +579,7 @@ describe('Playing SEVENS', () => {
     }); // End playing topCard TWO from seven
 
     it('Plays TWO on jacks from a seven', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -620,9 +589,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.FOUR_OF_CLUBS,
         secondCard: Card.TWO_OF_SPADES,
       });
-
-      cy.get('[data-player-hand-card]').should('have.length', 2);
-      cy.log('Loaded fixture');
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=points]').click();
@@ -666,7 +632,7 @@ describe('Playing SEVENS', () => {
     }); //End playing TWO on jacks from a seven
 
     it('Plays a NINE from a seven', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -676,8 +642,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.NINE_OF_DIAMONDS,
         secondCard: Card.TWO_OF_SPADES,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
@@ -685,9 +649,7 @@ describe('Playing SEVENS', () => {
       cy.get('[data-top-card=9-1]').should('exist').and('be.visible').click();
       cy.get('[data-move-choice=targetedOneOff]').click();
       // target queen of clubs
-      cy.get('[data-opponent-face-card=12-0]')
-        .find('.valid-move')
-        .click({force: true}); // force because overlay itself is not techincally clickable
+      cy.get('[data-opponent-face-card=12-0]').find('.valid-move').click({ force: true }); // force because overlay itself is not techincally clickable
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
@@ -706,7 +668,7 @@ describe('Playing SEVENS', () => {
     }); // End playing NINE from seven
 
     it('Plays NINE on jacks from a seven', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -716,8 +678,6 @@ describe('Playing SEVENS', () => {
         topCard: Card.NINE_OF_DIAMONDS,
         secondCard: Card.TWO_OF_SPADES,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 2);
-      cy.log('Loaded fixture');
 
       cy.get('[data-player-hand-card=1-0]').click();
       cy.get('[data-move-choice=points]').click();
@@ -742,9 +702,7 @@ describe('Playing SEVENS', () => {
       cy.get('[data-top-card=9-1]').should('exist').and('be.visible').click();
       cy.get('[data-move-choice=targetedOneOff]').click();
       // target jack of clubs
-      cy.get('[data-opponent-face-card=11-0]')
-        .find('.valid-move')
-        .click({force: true}); // force b/c overlay itself is not technically clickable
+      cy.get('[data-opponent-face-card=11-0]').find('.valid-move').click({ force: true }); // force b/c overlay itself is not technically clickable
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
@@ -763,7 +721,7 @@ describe('Playing SEVENS', () => {
     }); //End playing NINE on jacks from a seven
     it('Disables move choices when selecting card in hand while resolving seven', () => {
       cy.setupGameAsP0();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.TWO_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -773,7 +731,7 @@ describe('Playing SEVENS', () => {
         topCard: Card.FOUR_OF_DIAMONDS,
         secondCard: Card.NINE_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 2);
+
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
       cy.get('[data-second-card=9-0]').should('exist').and('be.visible');
@@ -796,7 +754,7 @@ describe('Playing SEVENS', () => {
 
     it('Disables move choices when selecting card in hand while resolving seven', () => {
       cy.setupGameAsP0();
-      cy.loadGameFixture({
+      cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.TWO_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -806,7 +764,7 @@ describe('Playing SEVENS', () => {
         topCard: Card.FOUR_OF_DIAMONDS,
         secondCard: Card.NINE_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 2);
+
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
       cy.get('[data-second-card=9-0]').should('exist').and('be.visible');
@@ -834,7 +792,7 @@ describe('Opponent playing SEVENS', () => {
     cy.setupGameAsP1();
   });
   it('Opponent plays points from seven', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -844,8 +802,6 @@ describe('Opponent playing SEVENS', () => {
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 0);
-    cy.log('Loaded fixture');
 
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -856,10 +812,7 @@ describe('Opponent playing SEVENS', () => {
     // Waiting for opponent
     cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
     // Deck cards appear but are not selectable
-    cy.get('[data-top-card=4-0]')
-      .should('exist')
-      .click({ force: true })
-      .should('not.have.class', 'selected');
+    cy.get('[data-top-card=4-0]').should('exist').click({ force: true }).should('not.have.class', 'selected');
     cy.get('[data-second-card=6-1]')
       .should('exist')
       .click({ force: true })
@@ -885,7 +838,7 @@ describe('Opponent playing SEVENS', () => {
   });
 
   it('Opponent plays jack from seven', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -895,8 +848,6 @@ describe('Opponent playing SEVENS', () => {
       topCard: Card.JACK_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 0);
-    cy.log('Loaded fixture');
 
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -936,7 +887,7 @@ describe('Opponent playing SEVENS', () => {
 
   it('Plays jack from a seven - special case - opponent plays seven into double jacks with no points to steal', () => {
     cy.setupGameAsP1();
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -946,8 +897,6 @@ describe('Opponent playing SEVENS', () => {
       topCard: Card.JACK_OF_CLUBS,
       secondCard: Card.JACK_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 0);
-    cy.log('Loaded fixture');
 
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -983,7 +932,7 @@ describe('Opponent playing SEVENS', () => {
 
   describe('Opponent plays Face Cards from seven', () => {
     it('Opponent plays king from seven (Top Card)', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -993,8 +942,6 @@ describe('Opponent playing SEVENS', () => {
         topCard: Card.KING_OF_CLUBS,
         secondCard: Card.SIX_OF_DIAMONDS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 0);
-      cy.log('Loaded fixture');
 
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -1031,7 +978,7 @@ describe('Opponent playing SEVENS', () => {
     }); // end opponent plays king from seven
 
     it('Opponent plays queen from seven (Second Card)', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -1041,9 +988,6 @@ describe('Opponent playing SEVENS', () => {
         topCard: Card.SIX_OF_DIAMONDS,
         secondCard: Card.QUEEN_OF_CLUBS,
       });
-
-      cy.get('[data-player-hand-card]').should('have.length', 0);
-      cy.log('Loaded fixture');
 
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -1084,7 +1028,7 @@ describe('Opponent playing SEVENS', () => {
     }); // end opponent plays queen from seven
 
     it('Opponent plays eight as glasses from seven (top card)', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -1094,9 +1038,6 @@ describe('Opponent playing SEVENS', () => {
         topCard: Card.EIGHT_OF_CLUBS,
         secondCard: Card.SIX_OF_DIAMONDS,
       });
-
-      cy.get('[data-player-hand-card]').should('have.length', 0);
-      cy.log('Loaded fixture');
 
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -1138,7 +1079,7 @@ describe('Opponent playing SEVENS', () => {
   }); // end opponent seven face card describe
 
   it('Opponent scuttles from seven (top card)', () => {
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -1148,8 +1089,6 @@ describe('Opponent playing SEVENS', () => {
       topCard: Card.TEN_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 0);
-    cy.log('Loaded fixture');
 
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -1191,7 +1130,7 @@ describe('Opponent playing SEVENS', () => {
 
   describe('Opponent plays one-off from seven', () => {
     it('Opponent plays SIX from seven (top card)', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -1201,8 +1140,6 @@ describe('Opponent playing SEVENS', () => {
         topCard: Card.SIX_OF_DIAMONDS,
         secondCard: Card.JACK_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 0);
-      cy.log('Loaded fixture');
 
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -1230,7 +1167,7 @@ describe('Opponent playing SEVENS', () => {
     });
 
     it('Opponent plays TWO from seven (second card)', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -1240,8 +1177,6 @@ describe('Opponent playing SEVENS', () => {
         topCard: Card.JACK_OF_CLUBS,
         secondCard: Card.TWO_OF_SPADES,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 0);
-      cy.log('Loaded fixture');
 
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -1269,7 +1204,7 @@ describe('Opponent playing SEVENS', () => {
     }); // End Opponent TWO from seven
 
     it('Opponent plays TWO on jacks from seven (top card)', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -1279,8 +1214,6 @@ describe('Opponent playing SEVENS', () => {
         topCard: Card.TWO_OF_CLUBS,
         secondCard: Card.FOUR_OF_CLUBS,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playPointsOpponent(Card.ACE_OF_CLUBS);
 
@@ -1325,7 +1258,7 @@ describe('Opponent playing SEVENS', () => {
     });
 
     it('Opponent plays NINE from seven (top card)', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS],
         p0Points: [],
         p0FaceCards: [],
@@ -1335,8 +1268,6 @@ describe('Opponent playing SEVENS', () => {
         topCard: Card.NINE_OF_DIAMONDS,
         secondCard: Card.TWO_OF_SPADES,
       });
-      cy.get('[data-player-hand-card]').should('have.length', 0);
-      cy.log('Loaded fixture');
 
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
@@ -1363,7 +1294,7 @@ describe('Opponent playing SEVENS', () => {
     }); // End Opponent NINE from seven
 
     it('Opponent plays NINE on jacks from seven (second card)', () => {
-      cy.loadGameFixture({
+      cy.loadGameFixture(1, {
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS, Card.TEN_OF_DIAMONDS],
         p0Points: [],
         p0FaceCards: [],
@@ -1373,9 +1304,6 @@ describe('Opponent playing SEVENS', () => {
         topCard: Card.FOUR_OF_CLUBS,
         secondCard: Card.NINE_OF_CLUBS,
       });
-
-      cy.get('[data-player-hand-card]').should('have.length', 1);
-      cy.log('Loaded fixture');
 
       cy.playPointsOpponent(Card.ACE_OF_CLUBS);
 
@@ -1466,7 +1394,7 @@ describe('Opponent playing SEVENS', () => {
 describe('Playing sevens at the end of the deck', () => {
   it('Plays the last card for points from a seven', () => {
     cy.setupGameAsP1();
-    cy.loadGameFixture({
+    cy.loadGameFixture(1, {
       p0Hand: [],
       p0Points: [],
       p0FaceCards: [],
@@ -1476,8 +1404,6 @@ describe('Playing sevens at the end of the deck', () => {
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     cy.deleteDeck();
     cy.get('#deck').should('contain', 2);
@@ -1492,7 +1418,7 @@ describe('Playing sevens at the end of the deck', () => {
 
   it('Plays the top card of the deck when there are two cards left', () => {
     cy.setupGameAsP0();
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -1502,8 +1428,6 @@ describe('Playing sevens at the end of the deck', () => {
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     cy.deleteDeck();
     cy.get('#deck').should('contain', 2);
@@ -1530,7 +1454,7 @@ describe('Playing sevens at the end of the deck', () => {
 
   it('Plays the 2nd card in the deck when there are two cards left', () => {
     cy.setupGameAsP0();
-    cy.loadGameFixture({
+    cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -1540,8 +1464,6 @@ describe('Playing sevens at the end of the deck', () => {
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
     });
-    cy.get('[data-player-hand-card]').should('have.length', 1);
-    cy.log('Loaded fixture');
 
     cy.deleteDeck();
     cy.get('#deck').should('contain', 2);
