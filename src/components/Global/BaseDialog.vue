@@ -52,10 +52,11 @@ export default {
 
 <style scoped>
 .dialog-card {
+  /* Stuck using important because vuetify applies it to these styles for cards */
   color: rgba(var(--v-theme-surface-2)) !important;
+  border-radius: 12px !important;
   opacity: .92;
   border: 4px solid rgba(var(--v-theme-surface-2));
-  border-radius: 12px !important;
 }
 
 .dialog-actions {
