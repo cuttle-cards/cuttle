@@ -58,8 +58,8 @@ export default {
       get() {
         return this.modelValue;
       },
-      set(val) {
-        this.$emit('update:modelValue', val);
+      set() {
+        // do nothing - parent controls whether dialog is open
       },
     },
   },
