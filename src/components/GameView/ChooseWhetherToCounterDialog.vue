@@ -86,13 +86,16 @@ export default {
         // do nothing - parent controls whether dialog is open
       },
     },
+    thereAreTwos() {
+      return this.twosPlayed && this.twosPlayed.length > 0;
+    },
     opponentLastTwo() {
-      return this.twosPlayed && this.twosPlayed.length > 0
+      return this.thereAreTwos
         ? this.twosPlayed[this.twosPlayed.length - 1]
         : null;
     },
     playerLastTwo() {
-      return this.twosPlayed && this.twosPlayed.length > 1
+      return this.thereAreTwos
         ? this.twosPlayed[this.twosPlayed.length - 2]
         : null;
     },
