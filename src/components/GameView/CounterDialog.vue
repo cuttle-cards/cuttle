@@ -69,16 +69,6 @@ export default {
         // do nothing - parent controls whether dialog is open
       },
     },
-    opponentLastTwo() {
-      return this.twosPlayed && this.twosPlayed.length > 0
-        ? this.twosPlayed[this.twosPlayed.length - 1]
-        : null;
-    },
-    playerLastTwo() {
-      return this.twosPlayed && this.twosPlayed.length > 1
-        ? this.twosPlayed[this.twosPlayed.length - 2]
-        : null;
-    },
   },
   methods: {
     counter(twoId) {
