@@ -3,7 +3,7 @@
     <v-card :id="id" class="dialog-card" color="surface-1">
       <v-card-title class="d-flex justify-space-between pt-4">
         <h1 v-if="title">{{ title }}</h1>
-        <slot name="title" />
+        <slot v-else name="title" />
       </v-card-title>
       <v-card-text>
         <slot name="body" />
