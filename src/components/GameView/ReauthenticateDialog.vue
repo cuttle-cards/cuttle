@@ -3,7 +3,7 @@
     <base-dialog v-model="show" id="reauthenticate-dialog" title="Reconnect to Game">
 
       <template #body>
-        <p>You have disconnected due to inactivity. Log in again to resume your session</p>
+        <p class="mb-4">You have disconnected due to inactivity. Log in again to resume your session</p>
         <form ref="form" @submit.prevent="login">
           <v-text-field
             v-model="username"
