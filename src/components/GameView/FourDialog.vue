@@ -1,40 +1,45 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="650">
-    <v-card id="four-discard-dialog">
-      <v-card-title>Discard Two Cards</v-card-title>
-      <v-card-text>
-        <p>
-          Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to
-          discard.
-        </p>
-        <!-- Cards in hand -->
-        <div class="d-flex flex-wrap card-container">
-          <game-card
-            v-for="(card, index) in hand"
-            :key="card.id"
-            :suit="card.suit"
-            :rank="card.rank"
-            :data-discard-card="`${card.rank}-${card.suit}`"
-            :class="{ 'is-selected': selectedIds.includes(card.id) }"
-            @click="selectCard(index)"
-          />
-        </div>
-      </v-card-text>
-      <v-card-actions class="d-flex justify-end">
-        <v-btn color="primary" data-cy="submit-four-dialog" :disabled="!readyToDiscard" @click="discard">
-          Discard
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <base-dialog v-model="show" id="four-discard-dialog" title="Discard Two Cards">
+    <template #body>
+      <p class="mb-4">
+        Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to
+        discard.
+      </p>
+      <!-- Cards in hand -->
+      <div class="d-flex flex-wrap card-container">
+        <game-card
+          v-for="(card, index) in hand"
+          :key="card.id"
+          :suit="card.suit"
+          :rank="card.rank"
+          :data-discard-card="`${card.rank}-${card.suit}`"
+          :class="{ 'is-selected': selectedIds.includes(card.id) }"
+          @click="selectCard(index)"
+        />
+      </div>
+    </template>
+    <template #actions>
+      <v-btn
+        color="surface-1"
+        variant="flat"
+        data-cy="submit-four-dialog"
+        :disabled="!readyToDiscard"
+        @click="discard"
+      >
+        Discard
+      </v-btn>
+    </template>
+  </base-dialog>
 </template>
 
 <script>
+import BaseDialog from '@/components/Global/BaseDialog.vue';
 import GameCard from '@/components/GameView/GameCard.vue';
 
 export default {
   name: 'FourDialog',
   components: {
+    BaseDialog,
     GameCard,
   },
   emits: ['discard'],

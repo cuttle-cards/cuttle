@@ -34,6 +34,8 @@ const cuttleTheme = {
     'neutral-lighten3': '#F2F4F5',
     'neutral-lighten4': '#FAFAFA',
     'neutral-lighten5': '#FAFBFC',
+    'surface-1': '#4A2416',
+    'surface-2': '#FFF4D7',
   },
 };
 
