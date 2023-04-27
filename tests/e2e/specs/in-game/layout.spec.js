@@ -1,19 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { playerFour, playerThree } from '../../fixtures/userFixtures';
 import { assertGameState, playOutOfTurn, Card } from '../../support/helpers';
-=======
-import { assertGameState, playOutOfTurn } from '../../support/helpers';
-import { Card } from '../../fixtures/cards';
->>>>>>> 809fd1f (Update load game fixture (#394))
-=======
-import { assertGameState, playOutOfTurn } from '../../support/helpers';
-import { Card } from '../../fixtures/cards';
-=======
-import { playerFour, playerThree } from '../../fixtures/userFixtures';
-import { assertGameState, playOutOfTurn, Card } from '../../support/helpers';
->>>>>>> 71794ac (Test: developed test to sign up and spectate with multiple users)
->>>>>>> 73c41bf (Test: developed test to sign up and spectate with multiple users)
 
 const { _ } = Cypress;
 
@@ -445,74 +431,69 @@ describe.skip('Aesthetic tests', () => {
 });
 
 describe('Spectators Layout', () => {
-<<<<<<< HEAD
   beforeEach(() => {
-=======
-  it.only('Should display list of spectators', () => {
->>>>>>> 73c41bf (Test: developed test to sign up and spectate with multiple users)
-    cy.setupGameAsSpectator();
-    cy.loadGameFixture({
-      p0Hand: [
-        Card.JACK_OF_CLUBS,
-        Card.JACK_OF_HEARTS,
-        Card.JACK_OF_DIAMONDS,
-        Card.JACK_OF_SPADES,
-        Card.KING_OF_HEARTS,
-      ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
-      p1Points: [Card.ACE_OF_HEARTS],
-      p1FaceCards: [],
+    it('Should display list of spectators', () => {
+      cy.setupGameAsSpectator();
+      cy.loadGameFixture({
+        p0Hand: [
+          Card.JACK_OF_CLUBS,
+          Card.JACK_OF_HEARTS,
+          Card.JACK_OF_DIAMONDS,
+          Card.JACK_OF_SPADES,
+          Card.KING_OF_HEARTS,
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
+        p1Points: [Card.ACE_OF_HEARTS],
+        p1FaceCards: [],
+      });
     });
-  });
 
-  it('Should display list of spectators that join', () => {
-    cy.get('[data-cy="spectate-list-button"]').should('contain', '1');
-    cy.get('[data-cy="spectate-list-button"]').click();
-<<<<<<< HEAD
-    cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
-
-    cy.signupOpponent(playerThree.username, playerThree.password);
-    cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
-    cy.get('[data-cy="spectate-list-menu"').should('contain', playerThree.username);
-    cy.signupOpponent(playerFour.username, playerFour.password);
-    cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
-    cy.get('[data-cy="spectate-list-menu"').should('contain', playerFour.username);
-  });
-
-  it('Display already spectating names on join spectate', () => {
-    cy.vueRoute('/');
-    cy.signupOpponent(playerThree.username, playerThree.password);
-    cy.get('@gameData').then((gameData) => {
-      cy.setOpponentToSpectate(gameData.gameId);
+    it('Should display list of spectators that join', () => {
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '1');
+      cy.get('[data-cy="spectate-list-button"]').click();
+      cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
+      cy.signupOpponent(playerThree.username, playerThree.password);
+      cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
+      cy.get('[data-cy="spectate-list-menu"').should('contain', playerThree.username);
       cy.signupOpponent(playerFour.username, playerFour.password);
-      cy.setOpponentToSpectate(gameData.gameId);
+      cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
+      cy.get('[data-cy="spectate-list-menu"').should('contain', playerFour.username);
     });
-    cy.get('[data-cy-game-list-selector=spectate]').click();
-    cy.get(`[data-cy-spectate-game]`).click();
-    cy.get('[data-cy="spectate-list-button"]').should('contain', '3');
-    cy.get('[data-cy="spectate-list-button"]').click();
-    cy.get('[data-cy="spectate-list-menu"')
-      .should('contain', 'myUsername')
-      .should('contain', playerThree.username)
-      .should('contain', playerFour.username);
+
+    it('Display already spectating names on join spectate', () => {
+      cy.vueRoute('/');
+      cy.signupOpponent(playerThree.username, playerThree.password);
+      cy.get('@gameData').then((gameData) => {
+        cy.setOpponentToSpectate(gameData.gameId);
+        cy.signupOpponent(playerFour.username, playerFour.password);
+        cy.setOpponentToSpectate(gameData.gameId);
+      });
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get(`[data-cy-spectate-game]`).click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '3');
+      cy.get('[data-cy="spectate-list-button"]').click();
+      cy.get('[data-cy="spectate-list-menu"')
+        .should('contain', 'myUsername')
+        .should('contain', playerThree.username)
+        .should('contain', playerFour.username);
+    });
   });
-});
 
-describe('Spectator Layout from playerView', () => {
-  it('Should display no spectators', () => {
-    cy.setupGameAsP0();
-    cy.get('[data-cy="spectate-list-button"]').should('contain', '0');
-=======
-    cy.get('[data-cy="spectate-list-overlay"').should('contain', 'myUsername');
+  describe('Spectator Layout from playerView', () => {
+    it('Should display no spectators', () => {
+      cy.setupGameAsP0();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '0');
 
-    cy.signupOpponent(playerThree.username, playerThree.password);
-    cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
-    cy.get('[data-cy="spectate-list-overlay"').should('contain', playerThree.username);
-    cy.signupOpponent(playerFour.username, playerFour.password);
-    cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
-    cy.get('[data-cy="spectate-list-overlay"').should('contain', playerFour.username);
->>>>>>> 73c41bf (Test: developed test to sign up and spectate with multiple users)
+      cy.get('[data-cy="spectate-list-overlay"').should('contain', 'myUsername');
+
+      cy.signupOpponent(playerThree.username, playerThree.password);
+      cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
+      cy.get('[data-cy="spectate-list-overlay"').should('contain', playerThree.username);
+      cy.signupOpponent(playerFour.username, playerFour.password);
+      cy.get('@gameData').then((gameData) => cy.setOpponentToSpectate(gameData.gameId));
+      cy.get('[data-cy="spectate-list-overlay"').should('contain', playerFour.username);
+    });
   });
 });
