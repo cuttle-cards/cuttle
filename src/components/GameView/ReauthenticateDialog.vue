@@ -12,7 +12,6 @@
             label="Username"
             :loading="isLoggingIn"
             data-cy="username"
-            @keydown.enter="submit"
           />
           <v-text-field
             v-model="password"
@@ -22,8 +21,8 @@
             type="password"
             :loading="isLoggingIn"
             data-cy="password"
-            @keydown.enter="submit"
           />
+          <button type="submit" title="Submit Login Form"></button>
         </form>
       </template>
 
