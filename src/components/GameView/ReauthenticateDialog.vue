@@ -4,31 +4,40 @@
 
       <template #body>
         <p>You have disconnected due to inactivity. Log in again to resume your session</p>
-        <!-- Login Form -->
-        <v-text-field
-          v-model="username"
-          variant="outlined"
-          :dense="$vuetify.display.mdAndDown"
-          label="Username"
-          data-cy="username"
-          @keydown.enter="login"
-        />
-        <v-text-field
-          v-model="password"
-          variant="outlined"
-          label="Password"
-          :dense="$vuetify.display.mdAndDown"
-          type="password"
-          data-cy="password"
-          @keydown.enter="login"
-        />
+        <form ref="form" @submit.prevent="login">
+          <v-text-field
+            v-model="username"
+            variant="outlined"
+            :dense="$vuetify.display.mdAndDown"
+            label="Username"
+            :loading="isLoggingIn"
+            data-cy="username"
+            @keydown.enter="submit"
+          />
+          <v-text-field
+            v-model="password"
+            variant="outlined"
+            label="Password"
+            :dense="$vuetify.display.mdAndDown"
+            type="password"
+            :loading="isLoggingIn"
+            data-cy="password"
+            @keydown.enter="submit"
+          />
+        </form>
       </template>
 
       <template #actions>
         <v-btn variant="text" color="primary" @click="leaveGame">
           Leave Game
         </v-btn>
-        <v-btn color="primary" variant="flat" data-cy="login" @click="login">
+        <v-btn
+          color="primary"
+          variant="flat"
+          data-cy="login"
+          :loading="isLoggingIn"
+          @click="submit"
+        >
           Log In
         </v-btn>
       </template>
@@ -63,7 +72,7 @@ export default {
     return {
       username: this.$store.state.auth.username,
       password: '',
-      isLoggingIn: true,
+      isLoggingIn: false,
       showSnackBar: false,
       snackBarMessage: '',
     };
@@ -79,6 +88,9 @@ export default {
     },
   },
   methods: {
+    submit() {
+      this.$refs.form.requestSubmit();
+    },
     login() {
       this.isLoggingIn = true;
       this.$store
