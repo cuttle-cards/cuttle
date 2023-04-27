@@ -1,61 +1,65 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="650">
-    <v-card id="game-over-dialog">
-      <div id="dialog-header">
-        <div v-if="currentMatch" class="d-flex">
-          <v-card-title :data-cy="headingDataAttr" class="mt-8">
-            <h1 class="dialog-header">{{ heading }}</h1>
-          </v-card-title>
-          <v-card-text class="d-flex justify-end mr-4 mt-4">
-            <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
-          </v-card-text>
+  <base-dialog v-model="show" id="game-over-dialog">
+    <template #title>
+      <h1 :data-cy="headingDataAttr" :class="isMobilePortrait ? 'text-h4' : ''">{{ heading }}</h1>
+      <v-img v-if="currentMatch && !isMobilePortrait" :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
+    </template>
+
+    <template #body>
+      <template v-if="isMobilePortrait || !currentMatch">
+        <div class="d-flex justify-center">
+          <v-img
+            :src="logoSrc"
+            :data-cy="logoDataAttr"
+            :class="isMobilePortrait ? 'small-logo-image' : 'logo-image'"
+          />
         </div>
-        <div v-else>
-          <v-card-title :data-cy="headingDataAttr">
-            <h1 class="dialog-header">{{ heading }}</h1>
-          </v-card-title>
-          <v-card-text class="d-flex justify-center">
-            <v-img :src="logoSrc" :data-cy="logoDataAttr" class="logo-image" />
-          </v-card-text>
-        </div>
-      </div>
-      <v-card-text class="dialog-text" v-if="currentMatch" data-cy="match-result-section">
-        Match against {{ opponent.username }}
-        <span>: {{ matchIsOver ? 'Finished' : 'In Progress' }}</span>
-      </v-card-text>
-      <v-card-text class="dialog-text" v-if="matchIsOver" data-cy="match-winner-message">
-        You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ opponent.username }}
-      </v-card-text>
-      <v-card-text data-cy="match-result-games" class="dialog-text">
-        <div class="d-flex">
-          <div class="d-flex flex-column mr-4 align-center" v-for="(gameStatus, i) in matchGameStats"
-               :key="`${gameStatus}-${i}`">
-            <v-icon size="x-large" color="black" :icon="iconFromGameStatus(gameStatus)" />
-            {{ gameStatus }}
+      </template>
+      <template v-if="currentMatch">
+        <p class="dialog-text" v-if="currentMatch" data-cy="match-result-section">
+          Match against {{ opponent.username }}
+          <span>: {{ matchIsOver ? 'Finished' : 'In Progress' }}</span>
+        </p>
+        <p class="dialog-text" v-if="matchIsOver" data-cy="match-winner-message">
+          You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ opponent.username }}
+        </p>
+        <div data-cy="match-result-games" class="mb-4">
+          <div class="d-flex">
+            <div class="d-flex flex-column mr-4 align-center" v-for="(gameStatus, i) in matchGameStats"
+                 :key="`${gameStatus}-${i}`">
+              <v-icon size="x-large" color="surface-2" :icon="iconFromGameStatus(gameStatus)" />
+              {{ gameStatus }}
+            </div>
           </div>
         </div>
-      </v-card-text>
-      <v-card-actions class="d-flex justify-end">
-        <v-btn
-          color="primary"
-          variant="flat"
-          data-cy="gameover-go-home"
-          :loading="leavingGame"
-          @click="goHome"
-        >
-          Go Home
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      </template>
+    </template>
+
+    <template #actions>
+      <v-btn
+        color="surface-1"
+        variant="flat"
+        data-cy="gameover-go-home"
+        :loading="leavingGame"
+        @click="goHome"
+      >
+        Go Home
+      </v-btn>
+    </template>
+  </base-dialog>
 </template>
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import BaseDialog from '@/components/Global/BaseDialog.vue';
 
 export default {
   name: 'GameOverDialog',
+  components: {
+    BaseDialog,
+  },
   props: {
+ 
     modelValue: {
       type: Boolean,
       required: true,
@@ -108,6 +112,9 @@ export default {
       }
 
       return 'loss-heading';
+    },
+    isMobilePortrait() {
+      return this.$vuetify.display.xs;
     },
     logoSrc() {
       if (this.stalemate) {
@@ -191,16 +198,23 @@ export default {
 .logo-image {
   height: auto;
   max-width: 180px;
+  margin-bottom: 16px;
+}
+
+.small-logo-image {
+  height: auto;
+  max-width: 120px;
+  margin-bottom: 16px;
 }
 
 .logo-image-match {
+  position: absolute;
+  right: 12px;
+  top: 12px;
   height: auto;
+  min-width: 90px;
   max-width: 90px;
   max-height: 90px;
 }
 
-.dialog-header,
-.dialog-text {
-  font-family: 'PT Serif', serif;
-}
 </style>

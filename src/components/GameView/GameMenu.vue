@@ -20,34 +20,49 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <v-dialog v-model="showDialog">
-      <v-card id="request-gameover-dialog">
-        <v-card-title>{{ dialogTitle }}?</v-card-title>
-        <v-card-text> {{ dialogText }} </v-card-text>
-        <v-card-actions class="d-flex justify-end">
-          <v-btn color="primary" data-cy="request-gameover-cancel" :disabled="loading" @click="closeDialog">
-            Cancel
-          </v-btn>
-          <v-btn
-            color="error"
-            variant="flat"
-            data-cy="request-gameover-confirm"
-            :loading="loading"
-            @click="requestGameEnd"
-          >
-            {{ dialogTitle }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+
+    <base-dialog v-model="showDialog" id="request-gameover-dialog" :title="dialogTitle">
+      <template #body>
+        <p class="pt-4 pb-8">
+          {{ dialogText }}
+        </p>
+      </template>
+
+      <template #actions>
+        <v-btn
+          data-cy="request-gameover-cancel"
+          :disabled="loading"
+          variant="outlined"
+          color="surface-1"
+          class="mr-4"
+          @click="closeDialog"
+        >
+          Cancel
+        </v-btn>
+        <v-btn
+          variant="flat"
+          data-cy="request-gameover-confirm"
+          color="error"
+          :loading="loading"
+          @click="requestGameEnd"
+        >
+          {{ dialogTitle }}
+        </v-btn>
+      </template>
+    </base-dialog>
   </div>
 </template>
 
 <script>
+import BaseDialog from '@/components/Global/BaseDialog.vue';
 import RulesDialog from '@/components/RulesDialog.vue';
+
 export default {
   name: 'GameMenu',
-  components: { RulesDialog },
+  components: {
+    BaseDialog,
+    RulesDialog,
+  },
   data() {
     return {
       showGameMenu: false,
