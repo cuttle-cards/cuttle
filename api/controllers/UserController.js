@@ -52,7 +52,7 @@ module.exports = {
     }
   },
 
-  reLogin: async function(req, res) {
+  reLogin: async function (req, res) {
     try {
       const { username, password } = req.body;
       const { loggedIn } = req.session;
@@ -66,15 +66,14 @@ module.exports = {
       const gameId = user.game;
       const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
       // Get populated game if game has started
-      const populatedGame = unpopulatedGame && 
-        unpopulatedGame.p0Ready &&
-        unpopulatedGame.p1Ready ?
-        await gameService.populateGame({ gameId }) : 
-        null;
+      const populatedGame =
+        unpopulatedGame && unpopulatedGame.p0Ready && unpopulatedGame.p1Ready
+          ? await gameService.populateGame({ gameId })
+          : null;
 
       req.session.loggedIn = true;
       req.session.usr = user.id;
-        
+
       if (unpopulatedGame) {
         req.session.game = unpopulatedGame.id;
         req.session.pNum = user.pNum ?? undefined;
@@ -83,16 +82,12 @@ module.exports = {
       if (populatedGame) {
         Game.subscribe(req, [populatedGame.id]);
         Game.publish([populatedGame.id], {
-          verb: 'updated',
-          data: {
-            ...populatedGame.lastEvent,
-            game: populatedGame,
-          },
+          ...populatedGame.lastEvent,
+          game: populatedGame,
         });
       }
 
-    return res.ok();
-
+      return res.ok();
     } catch (err) {
       return res.badRequest(err);
     }

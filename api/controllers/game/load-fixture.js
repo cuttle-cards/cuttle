@@ -119,11 +119,8 @@ module.exports = function (req, res) {
     .then(function publishAndRespond(game) {
       // Announce update through socket
       Game.publish([game.id], {
-        verb: 'updated',
-        data: {
-          change: 'loadFixture',
-          game,
-        },
+        change: 'loadFixture',
+        game,
       });
       // Respond 200 OK
       return res.ok(game);

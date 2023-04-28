@@ -62,12 +62,9 @@ module.exports = function (req, res) {
         await gameService.clearGame({ userId: req.session.usr });
       }
       Game.publish([game.id], {
-        verb: 'updated',
-        data: {
-          change: 'pass',
-          game,
-          victory,
-        },
+        change: 'pass',
+        game,
+        victory,
       });
       return res.ok();
     })

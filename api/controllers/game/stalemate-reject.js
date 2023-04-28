@@ -19,13 +19,10 @@ module.exports = async function (req, res) {
     await Game.updateOne({ id: game.id }).set(gameUpdates);
 
     Game.publish([game.id], {
-      verb: 'updated',
-      data: {
-        change: 'rejectStalemate',
-        game,
-        victory,
-        requestedByPNum: req.session.pNum,
-      },
+      change: 'rejectStalemate',
+      game,
+      victory,
+      requestedByPNum: req.session.pNum,
     });
 
     return res.ok();

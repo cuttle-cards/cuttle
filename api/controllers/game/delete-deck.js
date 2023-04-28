@@ -14,11 +14,8 @@ module.exports = function (req, res) {
     })
     .then(function publishUpdate(game) {
       Game.publish([game.id], {
-        verb: 'updated',
-        data: {
-          change: 'deleteDeck',
-          game,
-        },
+        change: 'deleteDeck',
+        game,
       });
       return res.ok();
     })

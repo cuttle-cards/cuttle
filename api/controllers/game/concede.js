@@ -14,12 +14,9 @@ module.exports = async function (req, res) {
       currentMatch,
     };
     Game.publish([game.id], {
-      verb: 'updated',
-      data: {
-        change: 'concede',
-        game,
-        victory,
-      },
+      change: 'concede',
+      game,
+      victory,
     });
 
     return res.ok();

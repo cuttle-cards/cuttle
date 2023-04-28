@@ -63,7 +63,7 @@ module.exports = function (req, res) {
       return Promise.reject({ message: "It's not your turn" });
     }) //End changeAndSave()
     .then(function populateGame(values) {
-      const [ game ] = values;
+      const [game] = values;
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {
@@ -74,12 +74,9 @@ module.exports = function (req, res) {
       });
 
       Game.publish([fullGame.id], {
-        verb: 'updated',
-        data: {
-          change: 'jack',
-          game: fullGame,
-          victory,
-        },
+        change: 'jack',
+        game: fullGame,
+        victory,
       });
       // If the game is over, clean it up
       if (victory.gameOver) await gameService.clearGame({ userId: req.session.usr });

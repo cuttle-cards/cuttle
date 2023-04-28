@@ -46,18 +46,15 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {
-      const [ fullGame, gameModel ] = values;
+      const [fullGame, gameModel] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
       Game.publish([fullGame.id], {
-        verb: 'updated',
-        data: {
-          change: 'sevenPoints',
-          game: fullGame,
-          victory,
-        },
+        change: 'sevenPoints',
+        game: fullGame,
+        victory,
       });
       // If the game is over, clean it up
       if (victory.gameOver) await gameService.clearGame({ userId: req.session.usr });

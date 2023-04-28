@@ -52,16 +52,13 @@ module.exports = function (req, res) {
       return Promise.all(updatePromises);
     }) //End changeAndSave
     .then(function getPopulatedGame(values) {
-      const [ game ] = values;
+      const [game] = values;
       return gameService.populateGame({ gameId: game.id });
     }) //End getPopulatedGame
     .then(function publishAndRespond(fullGame) {
       Game.publish([fullGame.id], {
-        verb: 'updated',
-        data: {
-          change: 'draw',
-          game: fullGame,
-        },
+        change: 'draw',
+        game: fullGame,
       });
       return res.ok();
     }) //End publishAndRespond
