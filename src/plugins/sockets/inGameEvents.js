@@ -1,10 +1,10 @@
 import store from '@/store/store.js';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE } from '@/router';
-const SocketEvent = require('../../../types/SocketEvent');
+import SocketEvent from '../../../types/SocketEvent';
 
 // Handles socket updates of game data
-function handleInGameEvents(evData) {
+export function handleInGameEvents(evData) {
   switch (evData.verb) {
     case SocketEvent.UPDATED: {
       const currentRoute = router.currentRoute.value;
@@ -148,7 +148,3 @@ function handleInGameEvents(evData) {
     }
   }
 }
-
-module.exports = {
-  handleInGameEvents,
-};

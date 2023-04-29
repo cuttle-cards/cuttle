@@ -1,38 +1,44 @@
 <template>
-  <v-dialog v-model="show" persistent max-width="650" scrollable>
-    <v-card v-if="oneOff" id="three-dialog">
-      <v-card-title>Select a Card from Scrap</v-card-title>
-      <v-card-text>
-        <div class="d-flex flex-wrap justify-center align-center my-8">
-          <card-list-sortable
-            :cards="scrap"
-            data-selector-prefix="three-dialog"
-            :selected-ids="selectedIds"
-            @select-card="selectCard"
-          />
-        </div>
-      </v-card-text>
-      <v-card-actions class="d-flex justify-end">
-        <v-btn
-          data-cy="three-resolve"
-          color="primary"
-          :disabled="selectedCard === null"
-          variant="outlined"
-          @click="moveToHand"
-        >
-          Resolve
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <base-dialog
+    v-if="oneOff"
+    v-model="show"
+    id="three-dialog"
+    title="Select a Card from Scrap"
+    scrollable
+  >
+    <template #body>
+      <div class="d-flex flex-wrap justify-center align-center my-8">
+        <card-list-sortable
+          :cards="scrap"
+          data-selector-prefix="three-dialog"
+          :selected-ids="selectedIds"
+          @select-card="selectCard"
+        />
+      </div>
+    </template>
+
+    <template #actions>
+      <v-btn
+        data-cy="three-resolve"
+        color="surface-2"
+        :disabled="selectedCard === null"
+        variant="flat"
+        @click="moveToHand"
+      >
+        Resolve
+      </v-btn>
+    </template>
+  </base-dialog>
 </template>
 
 <script>
+import BaseDialog from '@/components/Global/BaseDialog.vue';
 import CardListSortable from '@/components/GameView/CardListSortable.vue';
 
 export default {
   name: 'ThreeDialog',
   components: {
+    BaseDialog,
     CardListSortable,
   },
   emits: ['resolveThree'],

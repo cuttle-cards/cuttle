@@ -403,8 +403,8 @@ describe('Reconnecting to a game', () => {
       // Counter dialog should be visible
       cy.get('#counter-dialog')
         .should('be.visible')
-        .should('contain', 'Your opponent has played 2♣️ to Counter.')
-        .get('[data-cy=counter]')
+        .contains('Your opponent has played 2♣️ to Counter', {includeShadowDom: true});
+      cy.get('[data-cy=counter]')
         .click();
 
       // Reconnect & proceed
@@ -413,8 +413,8 @@ describe('Reconnecting to a game', () => {
       // Counter dialog should become visible again
       cy.get('#counter-dialog')
         .should('be.visible')
-        .should('contain', 'Your opponent has played 2♣️ to Counter.')
-        .get('[data-cy=counter]')
+        .contains('Your opponent has played 2♣️ to Counter', {includeShadowDom: true});
+      cy.get('[data-cy=counter]')
         .click();
       cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-3]').click();
 

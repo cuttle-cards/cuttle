@@ -85,8 +85,15 @@ export default {
   cursor: pointer;
 }
 .move-choice-card {
-  border: 2px solid #fff;
+  background-color: rgba(var(--v-theme-surface-1));
+  color: rgba(var(--v-theme-surface-2)) !important;
+  border: 2px solid rgba(var(--v-theme-surface-2));;
   transition: all 0.5s ease;
+  opacity: .95;
+}
+.move-choice-card:hover {
+  background-color: rgba(var(--v-theme-surface-2)) !important;
+  color: rgba(var(--v-theme-surface-1)) !important;
 }
 p {
   text-align: center;

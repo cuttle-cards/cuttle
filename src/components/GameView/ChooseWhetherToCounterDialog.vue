@@ -1,21 +1,23 @@
 <template>
-  <base-dialog v-if="oneOff" v-model="show" title="Cannot Counter" id="cannot-counter-dialog">
+  <base-dialog v-model="show" id="counter-dialog" title="Chance to Counter">
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
         Your opponent has played the 
         <game-card-name :card-name="oneOff.name" />
         as a one-off
-        <span v-if="target"> targeting your 
+        <span v-if="target"> 
+          targeting your 
           <game-card-name :card-name="target.name" />
         </span>
       </div>
       <div v-else class="my-2">
         Your opponent has played 
         <game-card-name :card-name="opponentLastTwo.name" />
+
         to Counter
         <span v-if="playerLastTwo">
           your 
-          <game-card-name :card-name="playerLastTwo.name" />.
+          <game-card-name :card-name="playerLastTwo.name" />
         </span>
       </div>
       <div class="d-flex justify-center align-center my-8">
@@ -25,22 +27,20 @@
         </p>
         <div v-if="target" id="target-wrapper">
           <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-            <v-icon id="target-icon" size="x-large" color="red" icon="mdi-target" />
+            <v-icon size="x-large" color="red" icon="mdi-target" />
           </span>
           <game-card :suit="target.suit" :rank="target.rank" />
         </div>
       </div>
-      You cannot Counter, because {{ reason }}.
+      Would you like to play a two to counter?
     </template>
 
     <template #actions>
-      <v-btn
-        data-cy="cannot-counter-resolve"
-        color="surface-1"
-        variant="flat" 
-        @click="$emit('resolve')"
-      >
+      <v-btn data-cy="decline-counter-resolve" color="surface-1" variant="outlined" @click="resolve" class="mr-4">
         Resolve
+      </v-btn>
+      <v-btn data-cy="counter" color="surface-1" variant="flat" @click="$emit('choose-to-counter')">
+        Counter
       </v-btn>
     </template>
   </base-dialog>
@@ -52,13 +52,13 @@ import GameCard from '@/components/GameView/GameCard.vue';
 import GameCardName from '@/components/GameView/GameCardName.vue';
 
 export default {
-  name: 'CannotCounterDialog',
+  name: 'ChooseWhetherToCounterDialog',
   components: {
     BaseDialog,
     GameCard,
     GameCardName,
   },
-  emits: ['resolve'],
+  emits: ['choose-to-counter', 'resolve'],
   props: {
     modelValue: {
       type: Boolean,
@@ -66,23 +66,15 @@ export default {
     },
     oneOff: {
       type: Object,
-      default: null,
+      required: true,
     },
     target: {
       type: Object,
       default: null,
     },
-    opponentQueenCount: {
-      type: Number,
-      default: 0,
-    },
-    playerTwoCount: {
-      type: Number,
-      default: 0,
-    },
     twosPlayed: {
       type: Array,
-      default: null,
+      required: true,
     },
   },
   computed: {
@@ -94,27 +86,23 @@ export default {
         // do nothing - parent controls whether dialog is open
       },
     },
-    reason() {
-      let reason = '';
-      const OPPONENT_HAS_QUEEN = 'your opponent has a queen';
-      const PLAYER_HAS_NO_TWOS = 'you do not have a two';
-      if (this.opponentQueenCount > 0) {
-        reason += OPPONENT_HAS_QUEEN;
-      }
-      if (this.playerTwoCount > 0) {
-        reason += (reason ? 'and ' : '') + PLAYER_HAS_NO_TWOS;
-      }
-      return reason || PLAYER_HAS_NO_TWOS;
+    thereAreTwos() {
+      return this.twosPlayed && this.twosPlayed.length > 0;
     },
     opponentLastTwo() {
-      return this.twosPlayed && this.twosPlayed.length > 0
+      return this.thereAreTwos
         ? this.twosPlayed[this.twosPlayed.length - 1]
         : null;
     },
     playerLastTwo() {
-      return this.twosPlayed && this.twosPlayed.length > 1
+      return this.thereAreTwos
         ? this.twosPlayed[this.twosPlayed.length - 2]
         : null;
+    },
+  },
+  methods: {
+    resolve() {
+      this.$emit('resolve');
     },
   },
 };
@@ -122,11 +110,8 @@ export default {
 
 <style lang="scss" scoped>
 #target-wrapper {
-  display: inline-block;
   position: relative;
-
   & #target-icon-wrapper {
-    display: block;
     position: absolute;
     width: 100%;
     height: 100%;

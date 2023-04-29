@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   COUNTER: 'counter',
   DELETE_DECK: 'deleteDeck',
   DRAW: 'draw',
