@@ -60,7 +60,7 @@ module.exports = function (req, res) {
               gameUpdates.topCard = shuffledDeck.shift();
               gameUpdates.secondCard = shuffledDeck.shift();
               gameUpdates.lastEvent = {
-                change: 'Initialize',
+                change: 'initialize',
               };
               gameUpdates.p0 = p0.id;
               gameUpdates.p1 = p1.id;
@@ -84,7 +84,7 @@ module.exports = function (req, res) {
             })
             .then(function publish(fullGame) {
               Game.publish([fullGame.id], {
-                change: 'Initialize',
+                change: 'initialize',
                 game: fullGame,
               });
               return Promise.resolve(fullGame);
