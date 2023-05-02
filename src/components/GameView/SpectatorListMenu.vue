@@ -17,7 +17,10 @@
     <!-- Menu -->
     <v-list class="pl-2 pr-2" id="spectatorList" data-cy="spectate-list-menu">
       <v-list-item-title>Spectators</v-list-item-title>
-      <v-list-item v-for="spectator in spectatingUsers">{{ spectator }}</v-list-item>
+      <v-list-item v-if="spectatingUsers.length > 0" v-for="spectator in spectatingUsers">{{
+        spectator
+      }}</v-list-item>
+      <v-list-item v-else>Currently no spectators</v-list-item>
     </v-list>
   </v-menu>
 </template>
