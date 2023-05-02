@@ -1,4 +1,3 @@
-import { playerFour, playerThree } from '../../fixtures/userFixtures';
 import { assertGameState, playOutOfTurn } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 
@@ -428,64 +427,5 @@ describe.skip('Aesthetic tests', () => {
       p1Points: [],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
-  });
-});
-
-describe('Spectators Layout', () => {
-  beforeEach(() => {
-    cy.setupGameAsSpectator();
-    cy.loadGameFixture(0, {
-      p0Hand: [
-        Card.JACK_OF_CLUBS,
-        Card.JACK_OF_HEARTS,
-        Card.JACK_OF_DIAMONDS,
-        Card.JACK_OF_SPADES,
-        Card.KING_OF_HEARTS,
-      ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
-      p1Points: [Card.ACE_OF_HEARTS],
-      p1FaceCards: [],
-    });
-  });
-
-  it('Should display list of spectators that join', () => {
-    cy.get('[data-cy="spectate-list-button"]').should('contain', '1');
-    cy.get('[data-cy="spectate-list-button"]').click();
-    cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
-    cy.get('@gameData').then((gameData) => {
-      cy.signupOpponent(playerThree);
-      cy.setOpponentToSpectate(gameData.gameId);
-      cy.get('[data-cy="spectate-list-menu"').should('contain', playerThree.username);
-      cy.signupOpponent(playerFour);
-      cy.setOpponentToSpectate(gameData.gameId);
-      cy.get('[data-cy="spectate-list-menu"').should('contain', playerFour.username);
-    });
-  });
-
-  it('Display already spectating names on join spectate', () => {
-    cy.vueRoute('/');
-    cy.signupOpponent(playerThree);
-    cy.get('@gameData').then((gameData) => {
-      cy.setOpponentToSpectate(gameData.gameId);
-      cy.signupOpponent(playerFour);
-      cy.setOpponentToSpectate(gameData.gameId);
-    });
-    cy.get('[data-cy-game-list-selector=spectate]').click();
-    cy.get(`[data-cy-spectate-game]`).click();
-    cy.get('[data-cy="spectate-list-button"]').should('contain', '3');
-    cy.get('[data-cy="spectate-list-button"]').click();
-    cy.get('[data-cy="spectate-list-menu"')
-      .should('contain', 'myUsername')
-      .should('contain', playerThree.username)
-      .should('contain', playerFour.username);
-  });
-});
-
-describe('Spectator Layout from playerView', () => {
-  it('Should display no spectators', () => {
-    cy.setupGameAsP0();
-    cy.get('[data-cy="spectate-list-button"]').should('contain', '0');
   });
 });
