@@ -169,6 +169,7 @@ io.socket.on('game', function (evData) {
           }
           break;
         case 'reLogin':
+        case 'spectatorJoined':
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
           break;
         case 'requestStalemate': {
@@ -181,7 +182,8 @@ io.socket.on('game', function (evData) {
           store.commit('setConsideringOpponentStalemateRequest', false);
           store.commit('setWaitingForOpponentToStalemate', false);
           break;
-      }}
+      }
+    }
   }
 });
 

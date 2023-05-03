@@ -6,7 +6,8 @@
     </template>
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column align-center">
+      <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center">
+        <spectator-list-menu :spectatingUsers="spectatingUsers" :vuetifyDisplay="$vuetify" />
         <game-menu />
         <v-icon
           v-if="$vuetify.display.xs"
@@ -29,11 +30,7 @@
             <h3>History</h3>
             <template #append>
               <v-btn icon variant="text" @click.stop="showHistoryDrawer = !showHistoryDrawer">
-                <v-icon
-                  color="neutral"
-                  icon="mdi-window-close"
-                  size="large"
-                />
+                <v-icon color="neutral" icon="mdi-window-close" size="large" />
               </v-btn>
             </template>
           </v-list-item>
@@ -394,6 +391,7 @@ import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay
 import ScrapDialog from '@/components/GameView/ScrapDialog.vue';
 import UsernameToolTip from '@/components/GameView/UsernameToolTip.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
+import SpectatorListMenu from '../components/GameView/SpectatorListMenu.vue';
 
 export default {
   name: 'GameView',
@@ -408,6 +406,7 @@ export default {
     ScrapDialog,
     UsernameToolTip,
     BaseSnackbar,
+    SpectatorListMenu,
   },
   data() {
     return {
@@ -476,9 +475,9 @@ export default {
           return 140;
       }
     },
-    ///////////////////////////////
-    // Game, Deck, Log and Scrap //
-    ///////////////////////////////
+    /////////////////////////////////////////////
+    // Game, Deck, Log, Scrap, and Spectators //
+    ///////////////////////////////////////////
     game() {
       return this.$store.state.game;
     },
@@ -496,6 +495,9 @@ export default {
       if (this.game.topCard) res++;
       if (this.game.secondCard) res++;
       return res;
+    },
+    spectatingUsers() {
+      return this.game.spectatingUsers;
     },
     /////////////////
     // King Counts //

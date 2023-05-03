@@ -106,6 +106,10 @@ module.exports = {
     match: {
       model: 'match',
     },
+    spectatingUsers: {
+      collection: 'user',
+      via: 'spectatedGames',
+    },
     /**
      *  Enum for game result:
      * -1: incomplete

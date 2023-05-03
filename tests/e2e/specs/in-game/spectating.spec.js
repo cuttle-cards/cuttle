@@ -1,4 +1,11 @@
-import { playerOne, playerTwo, myUser, opponentOne } from '../../fixtures/userFixtures';
+import {
+  playerOne,
+  playerTwo,
+  playerThree,
+  playerFour,
+  myUser,
+  opponentOne,
+} from '../../fixtures/userFixtures';
 import { assertGameState, assertSnackbarError, getCardId, assertLoss } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
@@ -281,5 +288,41 @@ describe('Spectating Games', () => {
     // Can't resolve seven
     // Can't counter
     // Can't resolve
+  });
+
+  describe('Spectators Layout', () => {
+    it('Display list of spectators and adds to list when new spectator joins', () => {
+      cy.setupGameAsSpectator();
+      cy.vueRoute('/');
+      // Player 3 spectates player1 vs player2
+      cy.signupOpponent(playerThree);
+      cy.get('@gameData').then((gameData) => {
+        cy.setOpponentToSpectate(gameData.gameId);
+      });
+      // My user begins spectating, sees player3 in spectator list
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get(`[data-cy-spectate-game]`).click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+      cy.get('[data-cy="spectate-list-menu"')
+        .should('contain', 'myUsername')
+        .should('contain', playerThree.username);
+      // Player 4 begins spectating
+      cy.get('@gameData').then((gameData) => {
+        cy.signupOpponent(playerFour);
+        cy.setOpponentToSpectate(gameData.gameId);
+      });
+      // Player 4 now appears in spectator list
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '3').click();
+      cy.get('[data-cy="spectate-list-menu"')
+        .should('contain', 'myUsername')
+        .should('contain', playerThree.username)
+        .should('contain', playerFour.username);
+    });
+
+    it('Should display no spectators', () => {
+      cy.setupGameAsP0();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '0').click();
+      cy.get('[data-cy="spectate-list-menu"]').should('contain', 'Currently no spectators');
+    });
   });
 });
