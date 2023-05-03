@@ -19,7 +19,7 @@ module.exports = async function (req, res) {
     Game.publish([fullGame.id], {
       verb: 'updated',
       data: {
-        change: 'spectatingUsers',
+        change: 'spectatorJoined',
         game: fullGame,
       },
     });

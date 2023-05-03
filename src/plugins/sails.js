@@ -169,7 +169,7 @@ io.socket.on('game', function (evData) {
           }
           break;
         case 'reLogin':
-        case 'spectatingUsers':
+        case 'spectatorJoined':
           store.dispatch('updateGameThenResetPNumIfNull', evData.data.game);
           break;
         case 'requestStalemate': {
