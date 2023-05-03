@@ -12,6 +12,7 @@ function resetState() {
     p1Ready: false,
     passes: 0,
     players: [],
+    spectatingUsers: [],
     scrap: [],
     turn: 0,
     twos: [],
@@ -168,6 +169,9 @@ export default {
       if (Object.hasOwnProperty.call(newGame, 'p1Ready')) state.p1Ready = newGame.p1Ready;
       if (Object.hasOwnProperty.call(newGame, 'passes')) state.passes = newGame.passes;
       if (Object.hasOwnProperty.call(newGame, 'players')) state.players = cloneDeep(newGame.players);
+      if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
+        state.spectatingUsers = newGame.spectatingUsers;
+      }
       if (Object.hasOwnProperty.call(newGame, 'twos')) state.twos = cloneDeep(newGame.twos);
 
       if (Object.hasOwnProperty.call(newGame, 'topCard')) state.topCard = cloneDeep(newGame.topCard);
@@ -328,24 +332,24 @@ export default {
       });
     },
 
-   async requestSpectate(context, gameId) {
-    return new Promise((resolve, reject) => {
-      io.socket.get(
-        '/game/spectate',
-        {
-          gameId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode === 200) {
-            context.commit('updateGame', res);
-            context.commit('setMyPNum', 0);
-            return resolve();
-          }
-          return reject(new Error('Unable to spectate game'));
-        },
-      );
-    });
-   },
+    async requestSpectate(context, gameId) {
+      return new Promise((resolve, reject) => {
+        io.socket.get(
+          '/game/spectate',
+          {
+            gameId,
+          },
+          function handleResponse(res, jwres) {
+            if (jwres.statusCode === 200) {
+              context.commit('updateGame', res);
+              context.commit('setMyPNum', 0);
+              return resolve();
+            }
+            return reject(new Error('Unable to spectate game'));
+          },
+        );
+      });
+    },
 
     async requestLeaveLobby(context) {
       return new Promise((resolve, reject) => {
