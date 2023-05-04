@@ -4,15 +4,15 @@ module.exports = async function (req, res) {
   // HANDLE REQ.SESSION.GAME = GAME ID CASE
   sails.sockets.join(req, 'GameList');
   try {
-    const [ openGames, spectatableGames ] = await Promise.all([
+    const [openGames, spectatableGames] = await Promise.all([
       gameAPI.findOpenGames(),
-      sails.helpers.findSpectatableGames()
+      sails.helpers.findSpectatableGames(),
     ]);
     let response = {
       inGame: false,
       userId: req.session.usr,
       openGames,
-      spectatableGames
+      spectatableGames,
     };
     if (req.session.game) {
       try {
@@ -28,12 +28,9 @@ module.exports = async function (req, res) {
         Game.publish(
           [req.session.game],
           {
-            verb: 'updated',
-            data: {
-              change: 'Initialize',
-              pNum: req.session.pNum,
-              game: game,
-            },
+            change: 'initialize',
+            pNum: req.session.pNum,
+            game: game,
           },
           req,
         );

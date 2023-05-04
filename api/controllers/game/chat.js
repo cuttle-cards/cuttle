@@ -3,7 +3,7 @@ module.exports = function (req, res) {
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   return Promise.all([promiseGame, promisePlayer])
     .then(function changeAndSave(values) {
-      const [ game, player ] = values;
+      const [game, player] = values;
       game.chat.push(`${player.username}: ${req.body.msg}`);
       return gameService.saveGame({ game: game });
     })
@@ -16,12 +16,9 @@ module.exports = function (req, res) {
         winner: null,
       };
       Game.publish([game.id], {
-        verb: 'updated',
-        data: {
-          change: 'chat',
-          game,
-          victory,
-        },
+        change: 'chat',
+        game,
+        victory,
       });
       return res.ok();
     })

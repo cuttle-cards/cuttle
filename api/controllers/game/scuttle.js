@@ -66,21 +66,18 @@ module.exports = function (req, res) {
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
     })
     .then(async function publishAndRespond(values) {
-      const [ fullGame, gameModel ] = values;
+      const [fullGame, gameModel] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
       Game.publish([fullGame.id], {
-        verb: 'updated',
-        data: {
-          change: 'scuttle',
-          game: fullGame,
-          victory,
-          playedCardId: req.body.cardId,
-          targetCardId: req.body.targetId,
-          playedBy: req.session.pNum,
-        },
+        change: 'scuttle',
+        game: fullGame,
+        victory,
+        playedCardId: req.body.cardId,
+        targetCardId: req.body.targetId,
+        playedBy: req.session.pNum,
       });
       return res.ok();
     })

@@ -17,11 +17,8 @@ module.exports = async function (req, res) {
     const fullGame = await gameService.populateGame({ gameId: game.id });
 
     Game.publish([fullGame.id], {
-      verb: 'updated',
-      data: {
-        change: 'spectatorJoined',
-        game: fullGame,
-      },
+      change: 'spectatorJoined',
+      game: fullGame,
     });
     return res.ok(fullGame);
   } catch (err) {
