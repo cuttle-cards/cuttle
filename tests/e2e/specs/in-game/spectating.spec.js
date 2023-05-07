@@ -324,5 +324,19 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-button"]').should('contain', '0').click();
       cy.get('[data-cy="spectate-list-menu"]').should('contain', 'Currently no spectators');
     });
+
+    it.only('Should remove spectators from list after leaving', () => {
+      cy.setupGameAsSpectator();
+      cy.signupOpponent(playerThree);
+      cy.get('@gameData').then((gameData) => {
+        cy.setOpponentToSpectate(gameData.gameId);
+      });
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+      cy.get('[data-cy="spectate-list-menu"')
+        .should('contain', 'myUsername')
+        .should('contain', playerThree.username);
+      cy.setOpponentToLeaveSpectate();
+      cy.get('[data-cy="spectate-list-menu"').should('not.contain', 'playerThree.username');
+    });
   });
 });
