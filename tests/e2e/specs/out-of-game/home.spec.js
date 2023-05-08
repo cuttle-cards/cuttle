@@ -1,6 +1,7 @@
 import { assertSnackbarError } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
+import { SnackBarError } from '../../fixtures/snackbarError';
 
 function setup() {
   cy.wipeDatabase();
@@ -148,6 +149,15 @@ describe('Home - Game List', () => {
 
       // Test that join button is now disabled
       cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
+
+      // Manually re-enable join button to confirm backend rejects request
+      cy.window().its('cuttle.app.config.globalProperties.$store')
+        .invoke('commit', 'updateGameStatus', {id: gameData.gameId, newStatus: true});
+      cy.contains('[data-cy-join-game]', 'Play')
+        .should('not.be.disabled')
+        .click();
+
+      assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
     });
   });
 
