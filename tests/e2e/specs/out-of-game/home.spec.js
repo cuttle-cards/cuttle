@@ -155,9 +155,12 @@ describe('Home - Game List', () => {
         .invoke('commit', 'updateGameStatus', {id: gameData.gameId, newStatus: true});
       cy.contains('[data-cy-join-game]', 'Play')
         .should('not.be.disabled')
-        .click();
+        .click()
+        .should('be.disabled');
 
       assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
+
+
     });
   });
 
