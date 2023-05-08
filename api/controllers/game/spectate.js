@@ -13,15 +13,19 @@ module.exports = async function (req, res) {
 
   try {
     // Add spectating users to table
-    await Game.addToCollection(game.id, 'spectatingUsers', spectator.id);
-    const fullGame = await gameService.populateGame({ gameId: game.id });
+    await UserSpectatingGame.findOrCreate(
+      { gameSpectated: game.id, spectator: spectator.id },
+      { gameSpectated: game.id, spectator: spectator.id },
+    );
 
+    const fullGame = await gameService.populateGame({ gameId: game.id });
     Game.publish([fullGame.id], {
       change: 'spectatorJoined',
       game: fullGame,
     });
     return res.ok(fullGame);
   } catch (err) {
+    console.log(err);
     return res.badRequest(err);
   }
 };
