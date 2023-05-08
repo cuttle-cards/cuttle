@@ -9,15 +9,17 @@ module.exports = function (req, res) {
   }
   Game.subscribe(req, [req.body.id]);
   const promiseClearOldGame = gameService.clearGame({ userId: req.session.usr });
-  const promiseGame = gameAPI.findGame(req.body.id);
+  const promiseGame = gameAPI.findGame(req.body.id).populate('players');
   const promiseUser = userAPI.findUser(req.session.usr);
   Promise.all([promiseGame, promiseUser, promiseClearOldGame])
     .then(async function success(arr) {
       // Catch promise values
       const [game, user] = arr;
 
-      if (!game.status) {
-        throw {message: `Cannot join that game because it's already full`};
+      // Fast fail if game is full
+      const gameIsFull = !game.status || game.players.length >= 2 || game.log.length > 0;
+      if (gameIsFull) {
+        throw { message: `Cannot join that game because it's already full` };
       }
       // Does the user already have a pnum for this game?
       let pNum = getPlayerPnumByUsername(game.players, user.username);
