@@ -15,6 +15,10 @@ module.exports = function (req, res) {
     .then(async function success(arr) {
       // Catch promise values
       const [game, user] = arr;
+
+      if (!game.status) {
+        throw {message: `Cannot join that game because it's already full`};
+      }
       // Does the user already have a pnum for this game?
       let pNum = getPlayerPnumByUsername(game.players, user.username);
       if (!pNumIsValid(pNum) && game.players) {
