@@ -9,7 +9,7 @@ module.exports = function (req, res) {
   }
   Game.subscribe(req, [req.body.id]);
   const promiseClearOldGame = gameService.clearGame({ userId: req.session.usr });
-  const promiseGame = gameAPI.findGame(req.body.id).populate('players');
+  const promiseGame = gameAPI.findGame(req.body.id);
   const promiseUser = userAPI.findUser(req.session.usr);
   Promise.all([promiseGame, promiseUser, promiseClearOldGame])
     .then(async function success(arr) {
