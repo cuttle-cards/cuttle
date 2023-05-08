@@ -12,11 +12,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:vue/base',
-    'plugin:vuetify/base',
-  ],
+  extends: ['eslint:recommended', 'plugin:vue/base', 'plugin:vuetify/base'],
   plugins: ['cypress', 'vitest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
   rules: {
@@ -78,6 +74,7 @@ module.exports = {
         Match: true,
         User: true,
         Game: true,
+        UserSpectatingGame: true,
       },
       rules: {
         'no-undef': 'error',
