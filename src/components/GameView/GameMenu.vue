@@ -18,6 +18,10 @@
         <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
           Request Stalemate
         </v-list-item>
+        <!-- Stop Spectating -->
+        <v-list-item data-cy="stop-spectating-initiate" @click.stop="stopSpectate">
+          Stop Spectating</v-list-item
+        >
       </v-list>
     </v-menu>
 
@@ -131,6 +135,11 @@ export default {
       }
       this.loading = false;
       this.showStalemateDialog = false;
+    },
+    async stopSpectate() {
+      this.loading = true;
+      await this.$store.dispatch('requestSpectateLeave');
+      this.$router.push('/');
     },
   },
 };
