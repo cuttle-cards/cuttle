@@ -17,7 +17,7 @@ module.exports = function (req, res) {
       const [game, user] = arr;
 
       // Fast fail if game is full
-      const gameIsFull = !game.status || game.players.length >= 2 || game.log.length > 0;
+      const gameIsFull = sails.helpers.isGameFull(game);
       if (gameIsFull) {
         throw { message: `Cannot join that game because it's already full` };
       }
