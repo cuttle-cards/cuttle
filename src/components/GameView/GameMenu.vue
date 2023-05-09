@@ -14,14 +14,15 @@
           <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
-        <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">Concede</v-list-item>
-        <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
-          Request Stalemate
-        </v-list-item>
+        <v-item-group v-if="!isSpectating">
+          <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog"> Concede</v-list-item>
+          <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
+            Request Stalemate
+          </v-list-item>
+        </v-item-group>
+
         <!-- Stop Spectating -->
-        <v-list-item data-cy="stop-spectating-initiate" @click.stop="stopSpectate">
-          Stop Spectating</v-list-item
-        >
+        <v-list-item v-else data-cy="stop-spectating" @click.stop="stopSpectate"> Go Home</v-list-item>
       </v-list>
     </v-menu>
 
@@ -75,6 +76,12 @@ export default {
       showStalemateDialog: false,
       loading: false,
     };
+  },
+  props: {
+    isSpectating: {
+      type: Boolean,
+      required: true,
+    },
   },
   computed: {
     showDialog: {

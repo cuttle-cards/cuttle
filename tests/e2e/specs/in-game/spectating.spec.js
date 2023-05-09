@@ -325,7 +325,7 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-menu"]').should('contain', 'Currently no spectators');
     });
 
-    it.only('Should remove spectators from list after leaving', () => {
+    it('Should remove spectators from list after leaving', () => {
       cy.setupGameAsSpectator();
       cy.signupOpponent(playerThree);
       cy.get('@gameData').then((gameData) => {
@@ -337,6 +337,18 @@ describe('Spectating Games', () => {
         .should('contain', playerThree.username);
       cy.setOpponentToLeaveSpectate();
       cy.get('[data-cy="spectate-list-menu"').should('not.contain', playerThree.username);
+    });
+
+    it('Should only show `Rules` and `Go Home` in menu and should leave game', () => {
+      cy.setupGameAsSpectator();
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu')
+        .should('contain', 'Go Home')
+        .should('contain', 'Rules')
+        .should('not.contain', 'Request Stalemate')
+        .should('not.contain', 'Concede');
+      cy.get('[data-cy="stop-spectating"]').click();
+      cy.hash().should('eq', '#/');
     });
   });
 });
