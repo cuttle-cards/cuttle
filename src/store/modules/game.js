@@ -350,7 +350,17 @@ export default {
         );
       });
     },
-
+    async requestSpectateLeave(context) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/spectateLeave', function handleResponse(res, jwres) {
+          if (jwres.statusCode === 200) {
+            context.commit('resetState');
+            return resolve();
+          }
+          return reject(new Error('Error leaving spectator'));
+        });
+      });
+    },
     async requestLeaveLobby(context) {
       return new Promise((resolve, reject) => {
         io.socket.post('/game/leaveLobby', function handleResponse(res, jwres) {
