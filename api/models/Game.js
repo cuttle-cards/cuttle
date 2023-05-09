@@ -107,8 +107,8 @@ module.exports = {
       model: 'match',
     },
     spectatingUsers: {
-      collection: 'user',
-      via: 'spectatedGames',
+      collection: 'userspectatinggame',
+      via: 'gameSpectated',
     },
     /**
      *  Enum for game result:
