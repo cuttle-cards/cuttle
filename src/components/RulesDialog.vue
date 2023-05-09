@@ -1,16 +1,9 @@
 <template>
-  <v-dialog v-model="adaptedShow">
-    <template v-if="!hideActivator" #activator="{ props }">
+  <v-dialog v-model="internalShow">
+    <template #activator="{ props }">
       <span v-bind="props">
         <slot name="activator">
-          <v-btn
-            class="rules-button"
-            color="primary"
-            variant="outlined"
-            :size="buttonSize"
-          >
-            Rules
-          </v-btn>
+          <v-btn class="rules-button" color="primary" variant="outlined" :size="buttonSize"> Rules </v-btn>
         </slot>
       </span>
     </template>
@@ -133,7 +126,7 @@
           <p>
             <strong>Queen:</strong> While you control a Queen, your other cards cannot be targeted by your
             opponent's cards. This effectively protects your other cards from the effects of 2's (<strong
-            >including countering</strong
+              >including countering</strong
             >), 9's and Jacks. Note that Queens do not protect against Scuttling.
           </p>
           <p>
@@ -212,10 +205,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    hideActivator: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
@@ -223,9 +212,6 @@ export default {
     };
   },
   computed: {
-    adaptedShow() {
-      return this.hideActivator ? this.show : this.internalShow;
-    },
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },

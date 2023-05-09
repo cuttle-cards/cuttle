@@ -1,8 +1,14 @@
 <template>
   <v-dialog v-model="show" persistent max-width="650" :scrollable="scrollable" elevation scrim="surface-1">
+    <template #activator="{ props }">
+      <span v-bind="props">
+        <slot name="activator" />
+      </span>
+    </template>
     <v-card :id="id" class="dialog-card" color="surface-1">
       <v-card-title class="d-flex justify-space-between pt-4">
         <h1 v-if="title">{{ title }}</h1>
+
         <slot v-else name="title" />
       </v-card-title>
       <v-card-text>
@@ -28,11 +34,19 @@ export default {
       type: String,
       default: '',
     },
+    active: {
+      type: String,
+      default: '',
+    },
     id: {
       type: String,
       required: true,
     },
     scrollable: {
+      type: Boolean,
+      default: false,
+    },
+    showi: {
       type: Boolean,
       default: false,
     },
@@ -42,12 +56,12 @@ export default {
       get() {
         return this.modelValue;
       },
-      set() {
-        // do nothing - parent controls whether dialog is open
+      set(val) {
+        this.$emit('update:modelValue', val);
       },
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -55,7 +69,7 @@ export default {
   /* Stuck using important because vuetify applies it to these styles for cards */
   color: rgba(var(--v-theme-surface-2)) !important;
   border-radius: 12px !important;
-  opacity: .92;
+  opacity: 0.92;
   border: 4px solid rgba(var(--v-theme-surface-2));
 }
 

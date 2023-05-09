@@ -3,15 +3,14 @@
     <v-menu v-model="showGameMenu">
       <!-- Activator -->
       <template #activator="{ props }">
-        <v-btn id="game-menu-activator" v-bind="props" class="ma-2" icon variant="text">
-          <v-icon size="large" color="neutral-lighten-2" icon="mdi-cog" />
+        <v-btn class="ml-0" id="game-menu-activator" v-bind="props" icon variant="text">
+          <v-icon color="neutral-lighten-2" icon="mdi-cog" />
         </v-btn>
       </template>
       <!-- Menu -->
       <v-list id="game-menu">
         <v-list-item data-cy="rules-open" @click.stop="showRulesDialog = true">
-          Rules
-          <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
+          <rules-dialog :show="showRulesDialog" @close="showRulesDialog = false" />
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">Concede</v-list-item>
@@ -56,7 +55,6 @@
 <script>
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import RulesDialog from '@/components/RulesDialog.vue';
-
 export default {
   name: 'GameMenu',
   components: {
