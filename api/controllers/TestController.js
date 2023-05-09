@@ -13,6 +13,7 @@ module.exports = {
       Card.destroy({}),
       Season.destroy({}),
       Match.destroy({}),
+      UserSpectatingGame.destroy({}),
     ])
       .then(() => {
         return res.ok();
