@@ -47,7 +47,7 @@ function tempUser(usr, points) {
   this.faceCards.sort(comapreByRankThenSuit);
 }
 
-function tempGame(game, p0, p1, spectators) {
+function tempGame(game, spectators, p0, p1) {
   this.id = game.id;
   this.players = [p0, p1];
   this.spectatingUsers = spectators;
@@ -145,10 +145,10 @@ module.exports = {
               })
               // then format results & resolve
               .then(function finish(values) {
-                const [game, p0, p1, p0Points, p1Points, spectators] = values;
+                const [game, p0, p1, spectators, p0Points, p1Points] = values;
                 const populatedP0 = new tempUser(p0, p0Points);
                 const populatedP1 = new tempUser(p1, p1Points);
-                const result = new tempGame(game, populatedP0, populatedP1, spectators);
+                const result = new tempGame(game, spectators, populatedP0, populatedP1);
                 return resolve(result);
               })
               .catch(function failed(err) {
