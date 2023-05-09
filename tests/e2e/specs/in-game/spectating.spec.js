@@ -336,7 +336,7 @@ describe('Spectating Games', () => {
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
       cy.setOpponentToLeaveSpectate();
-      cy.get('[data-cy="spectate-list-menu"').should('not.contain', 'playerThree.username');
+      cy.get('[data-cy="spectate-list-menu"').should('not.contain', playerThree.username);
     });
   });
 });

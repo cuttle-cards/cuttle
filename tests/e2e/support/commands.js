@@ -230,7 +230,7 @@ Cypress.Commands.add('setOpponentToLeaveSpectate', () => {
       if (jwres.statusCode === 200) {
         return resolve();
       }
-      return reject(new Error('error spectating'));
+      return reject(new Error('error leaving spectated game'));
     });
   });
 });
