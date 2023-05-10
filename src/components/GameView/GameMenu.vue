@@ -8,17 +8,27 @@
         </v-btn>
       </template>
       <!-- Menu -->
-      <v-list id="game-menu">
-        <v-list-item data-cy="rules-open" @click.stop="showRulesDialog = true">
-          <rules-dialog :show="showRulesDialog" @close="showRulesDialog = false" />
+      <v-list id="game-menu" class="bg-surface-2">
+        <v-list-item data-cy="rules-open">
+          <v-btn class="menu-button" color="surface-2" :size="buttonSize" @click.stop="openRulesDialog"
+            >Rules</v-btn
+          >
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
-        <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">Concede</v-list-item>
-        <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
-          Request Stalemate
+        <v-list-item data-cy="concede-initiate"
+          ><v-btn class="menu-button" color="surface-2" :size="buttonSize" @click.stop="openConcedeDialog"
+            >Concede</v-btn
+          ></v-list-item
+        >
+        <v-list-item data-cy="stalemate-initiate">
+          <v-btn class="menu-button" color="surface-2" :size="buttonSize" @click.stop="openStalemateDialog"
+            >Request Stalemate</v-btn
+          >
         </v-list-item>
       </v-list>
     </v-menu>
+
+    <rules-dialog v-model="showRulesDialog" @open="closeMenu" @close="closeDialog" />
 
     <base-dialog v-model="showDialog" id="request-gameover-dialog" :title="dialogTitle">
       <template #body>
@@ -65,8 +75,8 @@ export default {
     return {
       showGameMenu: false,
       showConcedeDialog: false,
-      showRulesDialog: false,
       showStalemateDialog: false,
+      showRulesDialog: false,
       loading: false,
     };
   },
@@ -79,6 +89,7 @@ export default {
         if (!newVal) {
           this.showConcedeDialog = false;
           this.showStalemateDialog = false;
+          this.showRulesDialog = false;
         }
         this.showGameMenu = false;
       },
@@ -91,8 +102,20 @@ export default {
         ? 'The game will end and your opponent will win.'
         : 'If your opponent agrees, the game will end in a stalemate. The request will cancel if the opponent declines or either player makes a move';
     },
+    buttonSize() {
+      return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
+    },
   },
   methods: {
+    closeMenu() {
+      this.showGameMenu = false;
+    },
+    openRulesDialog() {
+      this.showRulesDialog = true;
+      this.showConcedeDialog = false;
+      this.showStalemateDialog = false;
+      this.showGameMenu = false;
+    },
     openConcedeDialog() {
       this.showConcedeDialog = true;
       this.showStalemateDialog = false;
@@ -104,6 +127,7 @@ export default {
       this.showGameMenu = false;
     },
     closeDialog() {
+      this.showRulesDialog = false;
       this.showConcedeDialog = false;
       this.showStalemateDialog = false;
     },
@@ -133,3 +157,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.menu-button {
+  width: 100%;
+}
+</style>
