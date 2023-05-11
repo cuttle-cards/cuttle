@@ -357,7 +357,7 @@ export default {
             context.commit('resetState');
             return resolve();
           }
-          return reject(new Error('Error leaving spectator'));
+          return reject(new Error('Error leaving game as spectator'));
         });
       });
     },
