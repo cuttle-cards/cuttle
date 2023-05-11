@@ -7,14 +7,13 @@ module.exports = async function (req, res) {
       activelySpectating: false,
     });
 
-    const fullGame = await gameService.populateGame({ gameId: gameId });
-    Game.publish([fullGame.id], {
+    const game = await gameService.populateGame({ gameId: gameId });
+    Game.publish([game.id], {
       change: 'spectatorLeft',
-      game: fullGame,
+      game,
     });
-    return res.ok(fullGame);
+    return res.ok(game);
   } catch (err) {
-    console.log(err);
     return res.badRequest(err);
   }
 };

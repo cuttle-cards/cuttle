@@ -25,7 +25,6 @@ module.exports = async function (req, res) {
     });
     return res.ok(fullGame);
   } catch (err) {
-    console.log(err);
     return res.badRequest(err);
   }
 };
