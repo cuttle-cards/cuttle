@@ -61,15 +61,14 @@
         </p>
       </div>
       <!-- Rankings Table -->
-      <template
-        v-if="selectedSeason && selectedSeason.rankings && selectedSeason.rankings.length > 0"
-      >
+      <template v-if="selectedSeason && selectedSeason.rankings && selectedSeason.rankings.length > 0">
         <h2 class="text-h2 mb-4">
           Weekly Rankings
           <stats-scoring-dialog />
         </h2>
         <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
       </template>
+      <h1 class="d-flex justify-center" v-if="!selectedSeason">Oops this season doesn't exist!</h1>
     </section>
   </div>
 </template>
@@ -93,7 +92,15 @@ export default {
       loadingData: false,
       selectedSeason: null,
       seasons: [],
+      seasonIndex: this.$route.query.seasonIndex,
     };
+  },
+  watch: {
+    selectedSeason() {
+      if (this.selectedSeason !== this.seasonIndex) {
+        this.$router.push({ path: '/stats', query: { seasonIndex: `${this.selectedSeason.id}` } });
+      }
+    },
   },
   computed: {
     seasonStartFormatted() {
@@ -115,17 +122,21 @@ export default {
       return this.seasons.map((season) => {
         return {
           title: season.name,
-          value: season
-        }
+          value: season,
+        };
       });
-    }
+    },
   },
   created() {
     this.loadingData = true;
     io.socket.get('/stats', (res) => {
       this.seasons = res;
-      const [selectedSeason] = this.seasons
-      this.selectedSeason = selectedSeason;
+      if (this.seasonIndex) {
+        this.selectedSeason = this.seasons.filter(({ id }) => id === parseInt(this.seasonIndex));
+      } else {
+        const [selectedSeason] = this.seasons;
+        this.selectedSeason = selectedSeason;
+      }
       this.loadingData = false;
     });
   },
