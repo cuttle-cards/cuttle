@@ -35,7 +35,7 @@
                       :status="game.status"
                       :num-players="game.numPlayers"
                       :is-ranked="game.isRanked"
-                      @error="handleError"
+                      @error="handleSubscribeError(game.id, $event)"
                     />
                   </div>
                 </v-window-item>
@@ -172,6 +172,10 @@ export default {
     clearSnackBar() {
       this.snackMessage = '';
       this.showSnackBar = false;
+    },
+    handleSubscribeError(gameId, message) {
+      this.$store.commit('updateGameStatus', {id: gameId, newStatus: false});
+      this.handleError(message);
     },
     handleError(message) {
       this.creatingGame = false;

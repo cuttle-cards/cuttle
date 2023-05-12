@@ -326,7 +326,8 @@ export default {
               });
               return resolve();
             }
-            return reject(new Error('error subscribing'));
+            const message = res.message ?? 'error subscribing';
+            return reject(new Error(message));
           },
         );
       });
