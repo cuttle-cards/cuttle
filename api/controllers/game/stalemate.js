@@ -43,13 +43,10 @@ module.exports = async function (req, res) {
     }
 
     Game.publish([game.id], {
-      verb: 'updated',
-      data: {
-        change: 'requestStalemate',
-        game,
-        victory,
-        requestedByPNum: pNum,
-      },
+      change: 'requestStalemate',
+      game,
+      victory,
+      requestedByPNum: pNum,
     });
 
     return res.ok();

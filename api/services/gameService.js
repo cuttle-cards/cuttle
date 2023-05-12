@@ -41,6 +41,7 @@ function tempUser(usr, points) {
 function tempGame(game, p0, p1) {
   this.id = game.id;
   this.players = [p0, p1];
+  this.spectatingUsers = game.spectatingUsers.map((user) => user.username);
   this.deck = game.deck;
   this.scrap = game.scrap;
   this.topCard = game.topCard;
@@ -79,7 +80,8 @@ module.exports = {
       .populate('resolving')
       .populate('twos', { sort: 'updatedAt' })
       .populate('oneOffTarget')
-      .populate('attachedToTarget');
+      .populate('attachedToTarget')
+      .populate('spectatingUsers');
   },
 
   /*
@@ -136,7 +138,6 @@ module.exports = {
                 const populatedP0 = new tempUser(p0, p0Points);
                 const populatedP1 = new tempUser(p1, p1Points);
                 const result = new tempGame(game, populatedP0, populatedP1);
-
                 return resolve(result);
               })
               .catch(function failed(err) {

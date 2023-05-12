@@ -125,8 +125,8 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
 
     // The other game starts -- should now appear in spectate list
     cy.readyOpponent(gameData.gameId);
+    cy.wrap(gameData).as('gameData');
     cy.get('[data-cy-spectate-game]').click();
-
     cy.url().should('include', '/spectate/');
     cy.window()
       .its('cuttle.app.config.globalProperties.$store.state.game')
@@ -202,6 +202,23 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
           return resolve();
         }
         return reject(new Error('error subscribing'));
+      },
+    );
+  });
+});
+
+Cypress.Commands.add('setOpponentToSpectate', (id) => {
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.get(
+      '/game/spectate',
+      {
+        gameId: id,
+      },
+      function handleResponse(res, jwres) {
+        if (jwres.statusCode === 200) {
+          return resolve();
+        }
+        return reject(new Error('error spectating'));
       },
     );
   });

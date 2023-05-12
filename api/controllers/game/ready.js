@@ -8,7 +8,7 @@ module.exports = function (req, res) {
     Promise.all([promiseGame, promiseUser])
       // Assign player readiness
       .then(function foundRecords(values) {
-        const [ game, user ] = values;
+        const [game, user] = values;
         let { pNum } = user;
         let bothReady = false;
         const gameUpdates = {};
@@ -29,7 +29,8 @@ module.exports = function (req, res) {
         if (bothReady) {
           // Inform all clients this game has started
           sails.sockets.blast('gameStarted', { gameId: game.id });
-
+          // Ensure game is no longer available for new players to join
+          gameUpdates.status = false;
           // Create Cards
           return new Promise(function makeDeck(resolveMakeDeck) {
             const findP0 = userService.findUser({ userId: game.players[0].id });
@@ -60,7 +61,7 @@ module.exports = function (req, res) {
               gameUpdates.topCard = shuffledDeck.shift();
               gameUpdates.secondCard = shuffledDeck.shift();
               gameUpdates.lastEvent = {
-                change: 'Initialize',
+                change: 'initialize',
               };
               gameUpdates.p0 = p0.id;
               gameUpdates.p1 = p1.id;
@@ -84,11 +85,8 @@ module.exports = function (req, res) {
             })
             .then(function publish(fullGame) {
               Game.publish([fullGame.id], {
-                verb: 'updated',
-                data: {
-                  change: 'Initialize',
-                  game: fullGame,
-                },
+                change: 'initialize',
+                game: fullGame,
               });
               return Promise.resolve(fullGame);
             })
@@ -98,13 +96,10 @@ module.exports = function (req, res) {
           // If this player is first to be ready, save and respond
         }
         Game.publish([game.id], {
-          verb: 'updated',
-          data: {
-            change: 'ready',
-            userId: user.id,
-            pNum: user.pNum,
-            gameId: game.id,
-          },
+          change: 'ready',
+          userId: user.id,
+          pNum: user.pNum,
+          gameId: game.id,
         });
         return Game.updateOne({ id: game.id }).set(gameUpdates);
       }) //End foundRecords

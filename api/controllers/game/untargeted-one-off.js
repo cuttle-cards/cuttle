@@ -97,13 +97,12 @@ module.exports = function (req, res) {
         gameModel,
       });
       Game.publish([fullGame.id], {
-        verb: 'updated',
-        data: {
+        
           change: 'oneOff',
           game: fullGame,
           pNum: req.session.pNum,
           victory,
-        },
+       
       });
       return res.ok();
     })

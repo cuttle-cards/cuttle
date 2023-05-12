@@ -362,15 +362,12 @@ module.exports = function (req, res) {
       });
 
       Game.publish([fullGame.id], {
-        verb: 'updated',
-        data: {
-          change: 'resolve',
-          oneOff,
-          game: fullGame,
-          victory,
-          playedBy: pNum,
-          happened,
-        },
+        change: 'resolve',
+        oneOff,
+        game: fullGame,
+        victory,
+        playedBy: pNum,
+        happened,
       });
       // If the game is over, clean it up
       if (victory.gameOver) await gameService.clearGame({ userId: req.session.usr });
