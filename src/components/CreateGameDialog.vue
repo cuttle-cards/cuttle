@@ -2,7 +2,7 @@
   <base-dialog v-model="show" id="create-game" title="Create Game">
     <template #activator>
       <v-btn class="text-surface-2" color="surface-1" data-cy="create-game-btn" rounded elevation="8"
-        >Create Game</v-btn
+      >Create Game</v-btn
       >
     </template>
     <template #body>

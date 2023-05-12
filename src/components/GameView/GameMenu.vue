@@ -10,20 +10,20 @@
       <!-- Menu -->
       <v-list id="game-menu" class="bg-surface-2">
         <v-list-item data-cy="rules-open">
-          <v-btn class="menu-button" color="surface-2" :size="buttonSize" @click.stop="openRulesDialog"
-            >Rules</v-btn
-          >
+          <v-btn class="menu-button" color="surface-2" :size="buttonSize" @click.stop="openRulesDialog">
+            Rules
+          </v-btn>
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
-        <v-list-item data-cy="concede-initiate"
-          ><v-btn class="menu-button" color="surface-2" :size="buttonSize" @click.stop="openConcedeDialog"
-            >Concede</v-btn
-          ></v-list-item
-        >
+        <v-list-item data-cy="concede-initiate">
+          <v-btn class="menu-button" color="surface-2" :size="buttonSize" @click.stop="openConcedeDialog">
+            Concede
+          </v-btn>
+        </v-list-item>
         <v-list-item data-cy="stalemate-initiate">
-          <v-btn class="menu-button" color="surface-2" :size="buttonSize" @click.stop="openStalemateDialog"
-            >Request Stalemate</v-btn
-          >
+          <v-btn class="menu-button" color="surface-2" :size="buttonSize" @click.stop="openStalemateDialog">
+            Request Stalemate
+          </v-btn>
         </v-list-item>
       </v-list>
     </v-menu>
