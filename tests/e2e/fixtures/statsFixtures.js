@@ -3,6 +3,7 @@ const dayjs = require('dayjs');
 const seasonFixtures = [
   {
     name: 'Clubs 2022',
+    id: 1,
     // startTime: 1642642200,
     startTime: dayjs('2022-01-19', 'yyyy-mm-dd').valueOf(),
     // endTime: 1674178200,
@@ -16,6 +17,7 @@ const seasonFixtures = [
   },
   {
     name: 'Diamonds 2022',
+    id: 2,
     // startTime: 1642642200,
     startTime: dayjs('2022-02-19', 'yyyy-mm-dd').valueOf(),
     // endTime: 1674178200,
@@ -29,6 +31,7 @@ const seasonFixtures = [
     endTime: dayjs().add(1, 'year').valueOf(),
   },
   {
+    id: 3,
     name: 'World Championship Season',
     startTime: dayjs().subtract(1, 'second').valueOf(),
     endTime: dayjs().add(13, 'week').valueOf(),
@@ -209,7 +212,6 @@ const seasonOneMatches = [
     startTime: dayjs('2022-02-02', 'yyyy-mm-dd').valueOf(),
   },
 ];
-
 
 const seasonTwoMatches = [
   ////////////
