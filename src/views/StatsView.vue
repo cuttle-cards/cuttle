@@ -124,28 +124,31 @@ export default {
     },
   },
   methods: {
-    fetchSeasonInfo() {
-      this.loadingData = true;
-      io.socket.get('/stats', (res) => {
-        this.seasons = res;
-        const seasonId = parseInt(this.$route.params.seasonId);
-        //check if route params matches any season ID
-        if (this.seasons.some(({ id }) => id === seasonId)) {
-          const [selectedSeason] = this.seasons.filter(({ id }) => id === seasonId);
-          this.selectedSeason = selectedSeason;
-        } else {
-          const [selectedSeason] = this.seasons;
-          this.selectedSeason = selectedSeason;
-        }
-        this.loadingData = false;
-      });
+    checkAndSelectSeason(seasonId) {
+      if (this.seasons.some(({ id }) => id === seasonId)) {
+        const [selectedSeason] = this.seasons.filter(({ id }) => id === seasonId);
+        this.selectedSeason = selectedSeason;
+      } else {
+        const [selectedSeason] = this.seasons;
+        this.selectedSeason = selectedSeason;
+      }
     },
   },
-  beforeRouteUpdate() {
-    this.fetchSeasonInfo();
-  },
   created() {
-    this.fetchSeasonInfo();
+    this.loadingData = true;
+    io.socket.get('/stats', (res) => {
+      this.seasons = res;
+      const seasonId = parseInt(this.$route.params.seasonId);
+      this.checkAndSelectSeason(seasonId);
+    });
+    this.loadingData = false;
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.loadingData = true;
+    const seasonId = parseInt(to.params.seasonId);
+    this.checkAndSelectSeason(seasonId);
+    this.loadingData = false;
+    next();
   },
 };
 </script>
