@@ -1,5 +1,9 @@
 <!-- Thanks for contributing to Cuttle! 🎉 -->
 
+## Issue number
+
+Relevant issue number (e.g. #404): #
+
 ## Please check the following
 
 - [ ] Do the tests still pass? (see [Run the Tests](https://github.com/cuttle-cards/cuttle#run-the-tests))
