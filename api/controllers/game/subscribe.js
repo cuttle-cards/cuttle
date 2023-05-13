@@ -19,6 +19,11 @@ module.exports = function (req, res) {
       // Fast fail if game is full
       const gameIsFull = sails.helpers.isGameFull(game);
       if (gameIsFull) {
+        // Ensure game is closed for future
+        await Game.updateOne({ id: game.id })
+          .set({
+            status: false
+          });
         throw { message: `Cannot join that game because it's already full` };
       }
       // Does the user already have a pnum for this game?

@@ -23,6 +23,11 @@ module.exports = defineConfig({
       return config;
     },
   },
+  // Retry tests 2 times headlessly, no retries in UI
+  retries: {
+    runMode: 2,
+    openMode: 0,
+  },
   numTestsKeptInMemory: 25,
   // https://docs.cypress.io/guides/references/configuration#Videos
   video: false,
