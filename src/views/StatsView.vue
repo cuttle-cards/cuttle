@@ -68,7 +68,6 @@
         </h2>
         <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
       </template>
-      <h1 class="d-flex justify-center" v-if="!selectedSeason">Oops this season doesn't exist!</h1>
     </section>
   </div>
 </template>
@@ -92,14 +91,11 @@ export default {
       loadingData: false,
       selectedSeason: null,
       seasons: [],
-      seasonIndex: this.$route.query.seasonIndex,
     };
   },
   watch: {
     selectedSeason() {
-      if (this.selectedSeason !== this.seasonIndex) {
-        this.$router.push({ path: '/stats', query: { seasonIndex: `${this.selectedSeason.id}` } });
-      }
+      this.$router.push({ name: 'StatsBySeason', params: { seasonId: this.selectedSeason.id } });
     },
   },
   computed: {
@@ -131,8 +127,11 @@ export default {
     this.loadingData = true;
     io.socket.get('/stats', (res) => {
       this.seasons = res;
-      if (this.seasonIndex) {
-        this.selectedSeason = this.seasons.filter(({ id }) => id === parseInt(this.seasonIndex));
+      const seasonId = parseInt(this.$route.params.seasonId);
+      //check if route params matches any season ID
+      if (this.seasons.some(({ id }) => id === seasonId)) {
+        const [selectedSeason] = this.seasons.filter(({ id }) => id === seasonId);
+        this.selectedSeason = selectedSeason;
       } else {
         const [selectedSeason] = this.seasons;
         this.selectedSeason = selectedSeason;
