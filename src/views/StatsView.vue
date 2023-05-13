@@ -95,7 +95,7 @@ export default {
   },
   watch: {
     selectedSeason() {
-      this.$router.push({ name: 'StatsBySeason', params: { seasonId: this.selectedSeason.id } });
+      this.$router.replace({ name: 'StatsBySeason', params: { seasonId: this.selectedSeason.id } });
     },
   },
   computed: {
@@ -123,21 +123,29 @@ export default {
       });
     },
   },
+  methods: {
+    fetchSeasonInfo() {
+      this.loadingData = true;
+      io.socket.get('/stats', (res) => {
+        this.seasons = res;
+        const seasonId = parseInt(this.$route.params.seasonId);
+        //check if route params matches any season ID
+        if (this.seasons.some(({ id }) => id === seasonId)) {
+          const [selectedSeason] = this.seasons.filter(({ id }) => id === seasonId);
+          this.selectedSeason = selectedSeason;
+        } else {
+          const [selectedSeason] = this.seasons;
+          this.selectedSeason = selectedSeason;
+        }
+        this.loadingData = false;
+      });
+    },
+  },
+  beforeRouteUpdate() {
+    this.fetchSeasonInfo();
+  },
   created() {
-    this.loadingData = true;
-    io.socket.get('/stats', (res) => {
-      this.seasons = res;
-      const seasonId = parseInt(this.$route.params.seasonId);
-      //check if route params matches any season ID
-      if (this.seasons.some(({ id }) => id === seasonId)) {
-        const [selectedSeason] = this.seasons.filter(({ id }) => id === seasonId);
-        this.selectedSeason = selectedSeason;
-      } else {
-        const [selectedSeason] = this.seasons;
-        this.selectedSeason = selectedSeason;
-      }
-      this.loadingData = false;
-    });
+    this.fetchSeasonInfo();
   },
 };
 </script>
