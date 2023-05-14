@@ -31,8 +31,8 @@ const seasonFixtures = [
     endTime: dayjs().add(1, 'year').valueOf(),
   },
   {
-    id: 3,
     name: 'World Championship Season',
+    id: 3,
     startTime: dayjs().subtract(1, 'second').valueOf(),
     endTime: dayjs().add(13, 'week').valueOf(),
     firstPlace: 'player1',
