@@ -137,9 +137,11 @@ export default {
   created() {
     this.loadingData = true;
     io.socket.get('/stats', (res) => {
-      this.seasons = res;
-      const seasonId = parseInt(this.$route.params.seasonId);
-      this.checkAndSelectSeason(seasonId);
+      if (res.length > 0) {
+        this.seasons = res;
+        const seasonId = parseInt(this.$route.params.seasonId);
+        this.checkAndSelectSeason(seasonId);
+      }
     });
     this.loadingData = false;
   },
