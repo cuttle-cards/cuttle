@@ -232,7 +232,7 @@ describe('Stats Page', () => {
     cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
   });
 
-  it.only('Navigates to correct season by Url, and changes url when season changes', () => {
+  it('Navigates to correct season by Url, and changes url when season changes', () => {
     const [seasonOne, seasonTwo] = seasonFixtures;
     cy.vueRoute(`/stats/${seasonOne.id}`);
     cy.hash().should('contain', seasonOne.id);
