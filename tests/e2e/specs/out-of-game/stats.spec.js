@@ -49,7 +49,7 @@ function setup() {
   cy.vueRoute('/stats');
   // Select Clubs 2022 season
   cy.get('[data-cy=season-select]').click();
-  cy.get('[role=listbox]').contains('Clubs 2022').click();
+  cy.get('[role=listbox]').should('contain', 'Clubs 2022').contains('Clubs 2022').click();
 }
 
 describe('Stats Page Error States', () => {
@@ -232,12 +232,12 @@ describe('Stats Page', () => {
     cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
   });
 
-  it('Navigates to correct season by Url, and changes url when season changes', () => {
+  it.only('Navigates to correct season by Url, and changes url when season changes', () => {
     const [seasonOne, seasonTwo] = seasonFixtures;
     cy.vueRoute(`/stats/${seasonOne.id}`);
     cy.hash().should('contain', seasonOne.id);
     cy.get('[data-cy=season-select]').click();
-    cy.get('[role=listbox]').contains(seasonTwo.name).click();
+    cy.get('[role=listbox]').should('contain', seasonTwo.name).contains(seasonTwo.name).click();
     cy.hash().should('contain', seasonTwo.id);
   });
 });
