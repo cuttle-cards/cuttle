@@ -224,6 +224,17 @@ Cypress.Commands.add('setOpponentToSpectate', (id) => {
   });
 });
 
+Cypress.Commands.add('setOpponentToLeaveSpectate', () => {
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.get('/game/spectateLeave', function handleResponse(res, jwres) {
+      if (jwres.statusCode === 200) {
+        return resolve();
+      }
+      return reject(new Error('error leaving spectated game'));
+    });
+  });
+});
+
 Cypress.Commands.add('readyOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
