@@ -46,8 +46,8 @@ export default {
       type: Boolean,
       default: false,
     },
-    showi: {
-      type: Boolean,
+    dataCY: {
+      type: String,
       default: false,
     },
   },

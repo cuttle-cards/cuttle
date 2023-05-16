@@ -1,10 +1,11 @@
 <template>
-  <base-dialog v-model="show" id="create-game" title="Create Game">
+  <base-dialog v-model="show" id="create-game" title="Create Game" data-cy="create-game-dialog">
     <template #activator>
       <v-btn class="text-surface-2" color="surface-1" data-cy="create-game-btn" rounded elevation="8">
         Create Game
       </v-btn>
     </template>
+    <v-card :id="id" class="dialog-card" color="surface-1"></v-card>
     <template #body>
       <div class="d-flex align-center">
         <v-switch
@@ -112,3 +113,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.dialog-card {
+  /* Stuck using important because vuetify applies it to these styles for cards */
+  color: rgba(var(--v-theme-surface-2)) !important;
+  border-radius: 12px !important;
+  opacity: 0.92;
+  border: 4px solid rgba(var(--v-theme-surface-2));
+}
+</style>

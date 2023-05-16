@@ -151,16 +151,12 @@ describe('Home - Game List', () => {
       cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
 
       // Manually re-enable join button to confirm backend rejects request
-      cy.window().its('cuttle.app.config.globalProperties.$store')
-        .invoke('commit', 'updateGameStatus', {id: gameData.gameId, newStatus: true});
-      cy.contains('[data-cy-join-game]', 'Play')
-        .should('not.be.disabled')
-        .click()
-        .should('be.disabled');
+      cy.window()
+        .its('cuttle.app.config.globalProperties.$store')
+        .invoke('commit', 'updateGameStatus', { id: gameData.gameId, newStatus: true });
+      cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled').click().should('be.disabled');
 
       assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
-
-
     });
   });
 
@@ -502,7 +498,7 @@ describe('Home - Create Game', () => {
       .type('test game');
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
 
-    cy.get('[data-cy=create-game-dialog]').should('not.be.visible');
+    cy.get('[data-cy=create-game-dialog]').should('not.exist');
     //Test DOM
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
