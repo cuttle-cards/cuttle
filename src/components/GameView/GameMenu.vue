@@ -13,11 +13,19 @@
           Rules
           <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
         </v-list-item>
+
+        <!-- Stop Spectating -->
+        <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
+          Go Home</v-list-item
+        >
         <!-- Concede Dialog (Initiate + Confirm) -->
-        <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog">Concede</v-list-item>
-        <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
-          Request Stalemate
-        </v-list-item>
+        <template v-else>
+          <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog"> Concede</v-list-item>
+          <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
+            Request Stalemate
+          </v-list-item>
+        </template>
+        <v-progress-linear v-if="loading" color="primary" indeterminate />
       </v-list>
     </v-menu>
 
@@ -71,6 +79,12 @@ export default {
       showStalemateDialog: false,
       loading: false,
     };
+  },
+  props: {
+    isSpectating: {
+      type: Boolean,
+      required: true,
+    },
   },
   computed: {
     showDialog: {
@@ -131,6 +145,15 @@ export default {
       }
       this.loading = false;
       this.showStalemateDialog = false;
+    },
+    async stopSpectate() {
+      try {
+        this.loading = true;
+        await this.$store.dispatch('requestSpectateLeave');
+      } finally {
+        this.loading = false;
+        this.$router.push('/');
+      }
     },
   },
 };

@@ -133,6 +133,7 @@ export function handleInGameEvents(evData) {
       break;
     case SocketEvent.RE_LOGIN:
     case SocketEvent.SPECTATOR_JOINED:
+    case SocketEvent.SPECTATOR_LEFT:
       store.dispatch('updateGameThenResetPNumIfNull', evData.game);
       break;
     case SocketEvent.REQUEST_STALEMATE:

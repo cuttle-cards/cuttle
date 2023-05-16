@@ -24,6 +24,7 @@ export default {
   SEVEN_SCUTTLE: 'sevenScuttle',
   SEVEN_TARGETED_ONE_OFF: 'sevenTargetedOneOff',
   SPECTATOR_JOINED: 'spectatorJoined',
+  SPECTATOR_LEFT: 'spectatorLeft',
   TARGETED_ONE_OFF: 'targetedOneOff',
   UPDATED: 'updated',
 };
