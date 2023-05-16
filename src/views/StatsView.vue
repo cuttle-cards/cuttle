@@ -61,7 +61,7 @@
         </p>
       </div>
       <!-- Rankings Table -->
-      <template v-if="selectedSeason && selectedSeason.rankings && selectedSeason.rankings.length > 0">
+      <template v-if="weeklyRanking">
         <h2 class="text-h2 mb-4">
           Weekly Rankings
           <stats-scoring-dialog />
@@ -88,17 +88,22 @@ export default {
   },
   data() {
     return {
-      loadingData: false,
+      loadingData: true,
       selectedSeason: null,
       seasons: [],
     };
   },
   watch: {
     selectedSeason() {
-      this.$router.replace({ name: 'StatsBySeason', params: { seasonId: this.selectedSeason.id } });
+      this.selectedSeason
+        ? this.$router.replace({ name: 'StatsBySeason', params: { seasonId: this.selectedSeason.id } })
+        : null;
     },
   },
   computed: {
+    weeklyRanking() {
+      return this.selectedSeason && this.selectedSeason.rankings && this.selectedSeason.rankings.length > 0;
+    },
     seasonStartFormatted() {
       return !this.selectedSeason ? '' : dayjs(this.selectedSeason.startTime).format('YYYY/MM/DD');
     },
@@ -125,25 +130,32 @@ export default {
   },
   methods: {
     checkAndSelectSeason(seasonId) {
-      if (this.seasons.some(({ id }) => id === seasonId)) {
-        const [selectedSeason] = this.seasons.filter(({ id }) => id === seasonId);
+      const requestedSeason = this.seasons.filter(({ id }) => id === seasonId);
+      if (requestedSeason.length) {
+        const [selectedSeason] = requestedSeason;
         this.selectedSeason = selectedSeason;
-      } else {
-        const [selectedSeason] = this.seasons;
-        this.selectedSeason = selectedSeason;
+        return;
       }
+      const [selectedSeason] = this.seasons;
+      this.selectedSeason = selectedSeason;
     },
   },
   created() {
-    this.loadingData = true;
-    io.socket.get('/stats', (res) => {
-      if (res.length > 0) {
+    try {
+      io.socket.get('/stats', (res) => {
+        if (!res.length) {
+          return;
+        }
         this.seasons = res;
         const seasonId = parseInt(this.$route.params.seasonId);
         this.checkAndSelectSeason(seasonId);
-      }
-    });
-    this.loadingData = false;
+      });
+    } catch (err) {
+      if (err) console.error(err);
+      console.log('Error retrieving stats');
+    } finally {
+      this.loadingData = false;
+    }
   },
   beforeRouteUpdate(to, from, next) {
     this.loadingData = true;
