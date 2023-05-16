@@ -146,7 +146,6 @@ export default {
       });
     } catch (err) {
       if (err) console.error(err);
-      console.log('Error retrieving stats');
     } finally {
       this.loadingData = false;
     }
