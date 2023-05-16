@@ -130,14 +130,8 @@ export default {
   },
   methods: {
     checkAndSelectSeason(seasonId) {
-      const requestedSeason = this.seasons.filter(({ id }) => id === seasonId);
-      if (requestedSeason.length) {
-        const [selectedSeason] = requestedSeason;
-        this.selectedSeason = selectedSeason;
-        return;
-      }
-      const [selectedSeason] = this.seasons;
-      this.selectedSeason = selectedSeason;
+      const requestedSeason = this.seasons.find(({ id }) => id === seasonId);
+      this.selectedSeason = requestedSeason || this.seasons[0];
     },
   },
   created() {
