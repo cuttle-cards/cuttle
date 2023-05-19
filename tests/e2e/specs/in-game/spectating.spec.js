@@ -339,7 +339,7 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-menu"').should('not.contain', playerThree.username);
     });
 
-    it('Should only show `Rules` and `Go Home` in menu and should leave game', () => {
+    it('Should show correct menu options, leave game, then return to re-add name to list', () => {
       cy.setupGameAsSpectator();
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu')
@@ -349,6 +349,10 @@ describe('Spectating Games', () => {
         .should('not.contain', 'Concede');
       cy.get('[data-cy="stop-spectating"]').click();
       cy.hash().should('eq', '#/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get(`[data-cy-spectate-game]`).click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '1').click();
+      cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
     });
   });
 });
