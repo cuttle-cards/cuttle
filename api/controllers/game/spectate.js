@@ -16,7 +16,13 @@ module.exports = async function (req, res) {
     await UserSpectatingGame.findOrCreate(
       { gameSpectated: game.id, spectator: spectator.id },
       { gameSpectated: game.id, spectator: spectator.id },
-    );
+    ).exec(async (err, record, wasCreated) => {
+      if (!wasCreated) {
+        await UserSpectatingGame.update({ gameSpectated: game.id, spectator: spectator.id }).set({
+          activelySpectating: true,
+        });
+      }
+    });
 
     const fullGame = await gameService.populateGame({ gameId: game.id });
     Game.publish([fullGame.id], {
