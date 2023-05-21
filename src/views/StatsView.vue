@@ -116,7 +116,7 @@ export default {
         return {
           title: season.name,
           value: season
-        }
+        };
       });
     }
   },
@@ -124,7 +124,7 @@ export default {
     this.loadingData = true;
     io.socket.get('/stats', (res) => {
       this.seasons = res;
-      const [selectedSeason] = this.seasons
+      const [selectedSeason] = this.seasons;
       this.selectedSeason = selectedSeason;
       this.loadingData = false;
     });

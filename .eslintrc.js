@@ -38,6 +38,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
+    semi: ['error', 'always'],
   },
   overrides: [
     // Vue specific rules
