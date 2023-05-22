@@ -48,7 +48,6 @@ function setup() {
     });
   cy.vueRoute('/stats');
   // Select Clubs 2022 season
-  cy.wait(3000);
   cy.get('[data-cy=season-select]').click();
   cy.get('[role=listbox]').contains('Clubs 2022').click();
 }
@@ -231,5 +230,14 @@ describe('Stats Page', () => {
     cy.get('[data-tournament=1st]').should('contain', playerOne.username);
     cy.get('[data-tournament=2nd]').should('contain', playerTwo.username);
     cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
+  });
+
+  it('Navigates to correct season by Url, and changes url when season changes', () => {
+    const [seasonOne, seasonTwo] = seasonFixtures;
+    cy.vueRoute(`/stats/${seasonOne.id}`);
+    cy.hash().should('contain', seasonOne.id);
+    cy.get('[data-cy=season-select]').click();
+    cy.get('[role=listbox]').contains(seasonTwo.name).click();
+    cy.hash().should('contain', seasonTwo.id);
   });
 });
