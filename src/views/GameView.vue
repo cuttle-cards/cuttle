@@ -116,65 +116,63 @@
       <!-- Draw / Scrap Piles -->
       <div class="deck-container">
         <div id="field-left">
-          <v-card id="deck" :class="{ 'reveal-top-two': resolvingSeven }" @click="drawCard" elevation="0">
-            <template v-if="!resolvingSeven">
-              <v-card-actions class="c-deck-count">({{ deckLength }})</v-card-actions>
-              <h1 v-if="deckLength === 0" id="empty-deck-text">PASS</h1>
-            </template>
+          <div class="deck-outer">
+            <v-card id="deck" :class="{ 'reveal-top-two': resolvingSeven }" @click="drawCard" elevation="0">
+              <template v-if="!resolvingSeven">
+                <v-card-actions class="c-deck-count">({{ deckLength }})</v-card-actions>
+                <h1 v-if="deckLength === 0" id="empty-deck-text">PASS</h1>
+              </template>
 
-            <template v-if="resolvingSeven">
-              <p class="mt-2">Play from Deck</p>
-              <div class="d-flex">
-                <game-card
-                  v-if="topCard"
-                  :suit="topCard.suit"
-                  :rank="topCard.rank"
-                  :data-top-card="`${topCard.rank}-${topCard.suit}`"
-                  :is-selected="topCardIsSelected"
-                  class="mb-4 resolving-seven-card"
-                  @click="selectTopCard"
-                />
-                <game-card
-                  v-if="secondCard"
-                  :suit="secondCard.suit"
-                  :rank="secondCard.rank"
-                  :data-second-card="`${secondCard.rank}-${secondCard.suit}`"
-                  :is-selected="secondCardIsSelected"
-                  class="mb-4 resolving-seven-card"
-                  @click="selectSecondCard"
-                />
-              </div>
-            </template>
-          </v-card>
-          <scrap-dialog :scrap="scrap">
-            <template #activator>
-              <div id="scrap" class="d-flex flex-column align-center">
-                <h3>Scrap</h3>
-                <span>({{ scrap.length }})</span>
-                <v-btn variant="outlined" color="primary" class="mt-4"> View </v-btn>
-              </div>
-            </template>
-          </scrap-dialog>
-        </div>
-      </div>
-
-      <!--    Point Counters     -->
-      <div class="point-container">
-        <div id="point-counter-field">
-          <point-counter
-            id="opponent-point-counter"
-            class="point-container point-counter"
-            :king-count="opponentKingCount"
-            :points-to-win="opponentPointsToWin"
-            :is-player="false"
-          />
-          <point-counter
-            id="player-point-counter"
-            class="point-container point-counter"
-            :king-count="playerKingCount"
-            :points-to-win="playerPointsToWin"
-            :is-player="true"
-          />
+              <template v-if="resolvingSeven">
+                <p class="mt-2">Play from Deck</p>
+                <div class="d-flex">
+                  <game-card
+                    v-if="topCard"
+                    :suit="topCard.suit"
+                    :rank="topCard.rank"
+                    :data-top-card="`${topCard.rank}-${topCard.suit}`"
+                    :is-selected="topCardIsSelected"
+                    class="mb-4 resolving-seven-card"
+                    @click="selectTopCard"
+                  />
+                  <game-card
+                    v-if="secondCard"
+                    :suit="secondCard.suit"
+                    :rank="secondCard.rank"
+                    :data-second-card="`${secondCard.rank}-${secondCard.suit}`"
+                    :is-selected="secondCardIsSelected"
+                    class="mb-4 resolving-seven-card"
+                    @click="selectSecondCard"
+                  />
+                </div>
+              </template>
+            </v-card>
+            <point-counter
+              id="opponent-point-counter"
+              class="point-container point-counter"
+              :king-count="opponentKingCount"
+              :points-to-win="opponentPointsToWin"
+              :is-player="false"
+            />
+          </div>
+          <div class="deck-outer">
+            <scrap-dialog :scrap="scrap">
+              <template #activator>
+                <div id="scrap" class="d-flex flex-column align-center">
+                  <h3>Scrap</h3>
+                  <span>({{ scrap.length }})</span>
+                  <v-btn variant="outlined" color="primary" class="mt-4"> View </v-btn>
+                </div>
+              </template>
+            </scrap-dialog>
+            <point-counter
+              id="player-point-counter"
+              class="point-container point-counter"
+              :king-count="playerKingCount"
+              :points-to-win="playerPointsToWin"
+              :is-player="true"
+            />
+          </div>
         </div>
       </div>
       <!-- Field -->
@@ -1193,11 +1191,9 @@ export default {
 }
 
 #opponent-point-counter {
-  margin-top: 1rem;
   margin-left: 0.5rem;
 }
 #player-point-counter {
-  margin-top: 1.5rem;
   margin-left: 0.5rem;
 }
 
@@ -1277,6 +1273,10 @@ export default {
   }
   & #scrap {
     background-image: url('/img/game/bg-scrap.png');
+  }
+  .deck-outer {
+    display: flex;
+    align-items: center;
   }
 }
 #field-center {
