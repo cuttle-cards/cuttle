@@ -44,7 +44,7 @@ function setup() {
       };
       const matches = matchesFixture.map(transformMatchFixture);
       cy.loadMatchFixtures(matches);
-      cy.loadSeasonFixture(seasons);
+      cy.loadSeasonFixture(seasons).as('seasons');
     });
   cy.vueRoute('/stats');
   // Select Clubs 2022 season
@@ -230,5 +230,17 @@ describe('Stats Page', () => {
     cy.get('[data-tournament=1st]').should('contain', playerOne.username);
     cy.get('[data-tournament=2nd]').should('contain', playerTwo.username);
     cy.get('[data-tournament=3rd]').should('contain', playerThree.username);
+  });
+
+  it('Navigates to correct season by Url, and changes url when season changes', () => {
+    cy.get('@seasons').then((seasons) => {
+      const [seasonOne, seasonTwo] = seasons;
+      cy.vueRoute(`/stats/${seasonOne.id}`);
+      cy.hash().should('contain', seasonOne.id);
+      cy.get('[data-cy=season-select]').should('contain', seasonOne.name).click();
+      cy.get('[role=listbox]').contains(seasonTwo.name).click();
+      cy.hash().should('contain', seasonTwo.id);
+      cy.get('[data-cy=season-select]').should('contain', seasonTwo.name);
+    });
   });
 });
