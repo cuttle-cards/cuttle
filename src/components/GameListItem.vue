@@ -109,7 +109,7 @@ export default {
         variant: 'outlined',
         minWidth: '200',
         loading: this.joiningGame,
-      }
+      };
     },
   },
   methods: {

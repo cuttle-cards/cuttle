@@ -156,6 +156,7 @@ export default {
     this.checkAndSelectSeason(seasonId);
     this.loadingData = false;
     next();
+
   },
 };
 </script>

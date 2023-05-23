@@ -34,7 +34,7 @@ export default {
       state.spectateGames.push(startedGame);
     },
     gameFinished(state, gameId) {
-      const game = state.spectateGames.find((game) => game.id === gameId)
+      const game = state.spectateGames.find((game) => game.id === gameId);
       if (!game) {
         return;
       }

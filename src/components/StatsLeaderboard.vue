@@ -85,7 +85,7 @@ export default {
   },
   computed: {
     noSeasonRankingsExist() {
-      return !this.season || !this.season.rankings || this.season.rankings.length === 0
+      return !this.season || !this.season.rankings || this.season.rankings.length === 0;
     },
     tableColumns() {
       if (this.noSeasonRankingsExist) {
@@ -152,7 +152,7 @@ export default {
             winCount: wins.length,
             lossCount: losses.length,
             totalCount: matchesThisWeek.length,
-          }
+          };
         }
         return res;
       });
