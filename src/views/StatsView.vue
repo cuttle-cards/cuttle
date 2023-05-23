@@ -72,7 +72,7 @@
       <!-- Error display -->
       <div v-if="error" class="d-flex flex-column align-center text-center">
         <h2>Oops! There was a problem loading the leaderboard. Refresh the page to try again</h2>
-        <v-img alt="Dead Cuttle Logo" src="/img/logo-dead.svg" :width="200" class="mt-4" />
+        <v-img alt="Dead cuttle logo" src="/img/logo-dead.svg" :width="200" class="mt-4" />
       </div>
     </section>
   </div>
@@ -145,7 +145,7 @@ export default {
     try {
       io.socket.get('/stats', (res) => {
         if (!res.length) {
-          return (this.error = true);
+          throw new Error('No seasons found');
         }
         this.seasons = res;
         const seasonId = parseInt(this.$route.params.seasonId);
@@ -163,7 +163,6 @@ export default {
     this.checkAndSelectSeason(seasonId);
     this.loadingData = false;
     next();
-
   },
 };
 </script>
