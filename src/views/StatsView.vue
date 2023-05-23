@@ -71,7 +71,8 @@
       </template>
       <!-- Error display -->
       <div v-if="error" class="d-flex flex-column align-center text-center">
-        <h2>Oops! There was a problem loading the leaderboard. Refresh the page to try again</h2>
+        <h3 class="text-h3">Oops!</h3>
+        <p class="text-body-1">There was a problem loading the leaderboard. Refresh the page to try again.</p>
         <v-img alt="Dead cuttle logo" src="/img/logo-dead.svg" :width="200" class="mt-4" />
       </div>
     </section>
@@ -142,20 +143,16 @@ export default {
     },
   },
   created() {
-    try {
-      io.socket.get('/stats', (res) => {
-        if (!res.length) {
-          throw new Error('No seasons found');
-        }
-        this.seasons = res;
-        const seasonId = parseInt(this.$route.params.seasonId);
-        this.checkAndSelectSeason(seasonId);
-      });
-    } catch {
-      this.error = true;
-    } finally {
+    io.socket.get('/stats', (res) => {
       this.loadingData = false;
-    }
+      if (!res.length) {
+        this.error = true;
+        return;
+      }
+      this.seasons = res;
+      const seasonId = parseInt(this.$route.params.seasonId);
+      this.checkAndSelectSeason(seasonId);
+    });
   },
   beforeRouteUpdate(to, from, next) {
     this.loadingData = true;
