@@ -25,9 +25,12 @@ Cypress.Commands.add('setBadSession', () => {
 });
 
 Cypress.Commands.add('loadSeasonFixture', (season) => {
-  return new Cypress.Promise((resolve) => {
-    io.socket.post('/test/loadSeasonFixture', season, function () {
-      return resolve();
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.post('/test/loadSeasonFixture', season, function (res, jwres) {
+      if (jwres.statusCode !== 200) {
+        return reject(new Error('Failed to load season'));
+      }
+      return resolve(res);
     });
   });
 });
