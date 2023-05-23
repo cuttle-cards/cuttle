@@ -234,7 +234,6 @@ describe('Stats Page', () => {
 
   it('Navigates to correct season by Url, and changes url when season changes', () => {
     cy.get('@seasons').then((seasons) => {
-      console.log(seasons);
       const [seasonOne, seasonTwo] = seasons;
       cy.vueRoute(`/stats/${seasonOne.id}`);
       cy.hash().should('contain', seasonOne.id);
