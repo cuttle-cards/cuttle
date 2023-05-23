@@ -145,7 +145,7 @@ export default {
   created() {
     io.socket.get('/stats', (res) => {
       this.loadingData = false;
-      if (!res.length) {
+      if (!res?.length) {
         this.error = true;
         return;
       }
