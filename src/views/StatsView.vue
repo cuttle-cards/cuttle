@@ -60,6 +60,7 @@
           with play-by-play commentary.
         </p>
       </div>
+
       <!-- Rankings Table -->
       <template v-if="weeklyRanking">
         <h2 class="text-h2 mb-4">
@@ -68,6 +69,11 @@
         </h2>
         <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
       </template>
+      <!-- Error display -->
+      <div v-if="error" class="d-flex flex-column align-center text-center">
+        <h2>Oops! There was a problem loading the leaderboard. Refresh the page to try again</h2>
+        <v-img alt="Dead Cuttle Logo" src="/img/logo-dead.svg" :width="200" class="mt-4" />
+      </div>
     </section>
   </div>
 </template>
@@ -91,6 +97,7 @@ export default {
       loadingData: true,
       selectedSeason: null,
       seasons: [],
+      error: false,
     };
   },
   watch: {
@@ -138,14 +145,14 @@ export default {
     try {
       io.socket.get('/stats', (res) => {
         if (!res.length) {
-          return;
+          return (this.error = true);
         }
         this.seasons = res;
         const seasonId = parseInt(this.$route.params.seasonId);
         this.checkAndSelectSeason(seasonId);
       });
-    } catch (err) {
-      if (err) console.error(err);
+    } catch {
+      this.error = true;
     } finally {
       this.loadingData = false;
     }
