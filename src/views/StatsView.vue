@@ -77,7 +77,8 @@
           alt="Dead cuttle logo"
           src="/img/logo-dead.svg"
           :width="200"
-          class="mt-4" />
+          class="mt-4"
+        />
       </div>
     </section>
   </div>

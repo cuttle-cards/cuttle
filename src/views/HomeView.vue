@@ -12,7 +12,8 @@
           alt="Cuttle logo"
           src="/img/logo.png"
           height="20vh"
-          class="mb-4" />
+          class="mb-4"
+        />
       </v-row>
       <div id="game-list-card">
         <v-row>
@@ -74,7 +75,8 @@
               v-if="$vuetify.display.lgAndUp"
               id="logo"
               alt="Vue logo"
-              src="/img/logo.png" />
+              src="/img/logo.png"
+            />
             <v-btn
               variant="outlined"
               color="primary"

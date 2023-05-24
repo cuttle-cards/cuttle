@@ -13,7 +13,8 @@
         data-cy="close-snackbar"
         icon
         variant="text"
-        @click="clear">
+        @click="clear"
+      >
         <v-icon icon="mdi-close" />
       </v-btn>
     </template>

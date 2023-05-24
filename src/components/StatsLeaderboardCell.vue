@@ -35,7 +35,8 @@
           data-cy="close-player-results"
           variant="outlined"
           color="primary"
-          @click="showMenu = false">
+          @click="showMenu = false"
+        >
           Close
         </v-btn>
       </v-card-actions>

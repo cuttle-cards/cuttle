@@ -7,7 +7,8 @@
           alt="Cuttle logo"
           src="/img/logo.png"
           height="20vh"
-          class="mb-8" />
+          class="mb-8"
+        />
       </v-row>
 
       <!-- Rules -->
@@ -65,13 +66,15 @@
         v-for="(ruleRow, rowIndex) in rules"
         :key="`rule-row-${rowIndex}`"
         align="start"
-        class="my-6">
+        class="my-6"
+      >
         <v-col
           v-for="(rule) in ruleRow"
           :key="rule.title"
           md="6"
           sm="12"
-          class="my-4">
+          class="my-4"
+        >
           <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
@@ -83,7 +86,8 @@
             size="x-large"
             color="black"
             class="mr-4"
-            icon="mid-crown" />
+            icon="mid-crown"
+          />
           <h1 class="gradient-text">Royals</h1>
         </div>
         <p class="d-block">
@@ -95,13 +99,15 @@
         v-for="(ruleRow, rowIndex) in royals"
         :key="`royal-row-${rowIndex}`"
         align="start"
-        class="my-6">
+        class="my-6"
+      >
         <v-col
           v-for="(rule) in ruleRow"
           :key="rule.title"
           md="6"
           sm="12"
-          class="my-4">
+          class="my-4"
+        >
           <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
@@ -113,7 +119,8 @@
             size="x-large"
             color="black"
             class="mr-4"
-            icon="mdi-delete" />
+            icon="mdi-delete"
+          />
           <h1 class="gradient-text">One-Offs</h1>
         </div>
         <p>
@@ -133,7 +140,8 @@
           :key="rule.title"
           md="6"
           sm="12"
-          class="my-4">
+          class="my-4"
+        >
           <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
@@ -261,7 +269,8 @@
           width="300px"
           color="primary"
           class="align-self-center"
-          data-cy="bottom-home-button">
+          data-cy="bottom-home-button"
+        >
           {{ buttonText }}
         </v-btn>
       </v-row>

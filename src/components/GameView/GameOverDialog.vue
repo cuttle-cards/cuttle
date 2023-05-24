@@ -6,7 +6,8 @@
         v-if="currentMatch && !isMobilePortrait"
         :src="logoSrc"
         :data-cy="logoDataAttr"
-        class="logo-image-match" />
+        class="logo-image-match"
+      />
     </template>
 
     <template #body>
@@ -32,7 +33,8 @@
             <div
               class="d-flex flex-column mr-4 align-center"
               v-for="(gameStatus, i) in matchGameStats"
-              :key="`${gameStatus}-${i}`">
+              :key="`${gameStatus}-${i}`"
+            >
               <v-icon size="x-large" color="surface-2" :icon="iconFromGameStatus(gameStatus)" />
               {{ gameStatus }}
             </div>

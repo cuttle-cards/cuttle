@@ -28,7 +28,8 @@
             v-if="isRanked"
             class="mr-4"
             size="medium"
-            icon="mdi-trophy" />
+            icon="mdi-trophy"
+          />
           {{ joinButtonText }}
         </v-btn>
         <!-- Spectate Button -->

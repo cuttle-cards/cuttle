@@ -41,7 +41,8 @@
           variant="outlined"
           color="primary"
           data-cy="exit-button"
-          @click="leave">
+          @click="leave"
+        >
           EXIT
         </v-btn>
       </v-col>
@@ -51,7 +52,8 @@
           contained
           color="primary"
           data-cy="ready-button"
-          @click="ready">
+          @click="ready"
+        >
           {{ readyButtonText }}
           <v-icon
             v-if="isRanked"

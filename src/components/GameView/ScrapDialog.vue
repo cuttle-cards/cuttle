@@ -26,7 +26,8 @@
           color="primary"
           variant="outlined"
           data-cy="close-scrap-dialog-button"
-          @click="show = false">
+          @click="show = false"
+        >
           Close
         </v-btn>
       </v-card-actions>

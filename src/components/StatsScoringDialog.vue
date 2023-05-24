@@ -8,7 +8,8 @@
           color="primary"
           class="mb-2"
           variant="text"
-          data-cy="ranked-info-button">
+          data-cy="ranked-info-button"
+        >
           <span v-if="showButtonText">How are ranks determined?</span>
           <v-icon class="ml-1" icon="mdi-information-outline" />
         </v-btn>

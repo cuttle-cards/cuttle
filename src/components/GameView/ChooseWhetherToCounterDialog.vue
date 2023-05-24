@@ -41,14 +41,16 @@
         color="surface-1"
         variant="outlined"
         @click="resolve"
-        class="mr-4">
+        class="mr-4"
+      >
         Resolve
       </v-btn>
       <v-btn
         data-cy="counter"
         color="surface-1"
         variant="flat"
-        @click="$emit('choose-to-counter')">
+        @click="$emit('choose-to-counter')"
+      >
         Counter
       </v-btn>
     </template>

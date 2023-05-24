@@ -3,7 +3,8 @@
     v-if="oneOff"
     v-model="show"
     id="choose-two-dialog"
-    title="Choose Two">
+    title="Choose Two"
+  >
     <template #body>
       <p class="mb-4">Which Two would you like to counter with? (Click the card)</p>
       <div id="twos-in-hand" class="d-flex justify-center mb-4">
@@ -22,7 +23,8 @@
         variant="text"
         color="surface-1"
         data-cy="cancel-counter"
-        @click="resolve">
+        @click="resolve"
+      >
         Cancel
       </v-btn>
     </template>

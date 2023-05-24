@@ -35,7 +35,8 @@
               color="primary"
               block
               type="submit"
-              data-cy="submit">
+              data-cy="submit"
+            >
               {{ buttonText }}
             </v-btn>
           </div>
@@ -46,7 +47,8 @@
             color="primary"
             variant="text"
             data-cy="switch-mode"
-            @click="switchMode">
+            @click="switchMode"
+          >
             {{ switchLabelText }}
           </v-btn>
         </div>
@@ -97,7 +99,8 @@
         <v-img
           src="/img/game/cuttle-one-off-ace.png"
           alt="Cuttle Game Ace One-Off"
-          cover />
+          cover
+        />
       </v-col>
     </v-row>
   </v-container>

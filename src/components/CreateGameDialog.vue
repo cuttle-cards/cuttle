@@ -6,7 +6,8 @@
         color="primary"
         data-cy="create-game-btn"
         rounded
-        elevation="8">
+        elevation="8"
+      >
         Create Game
       </v-btn>
     </template>
@@ -20,7 +21,8 @@
             v-model="isRanked"
             label="Ranked"
             data-cy="create-game-ranked-switch"
-            color="primary" />
+            color="primary"
+          />
           <stats-scoring-dialog :show-button-text="false" />
         </div>
         <v-text-field

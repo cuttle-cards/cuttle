@@ -5,7 +5,8 @@
     max-width="650"
     :scrollable="scrollable"
     elevation
-    scrim="surface-1">
+    scrim="surface-1"
+  >
     <v-card :id="id" class="dialog-card" color="surface-1">
       <v-card-title class="d-flex justify-space-between pt-4">
         <h1 v-if="title">{{ title }}</h1>

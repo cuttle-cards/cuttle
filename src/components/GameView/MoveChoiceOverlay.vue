@@ -13,7 +13,8 @@
         color="white"
         size="x-large"
         data-cy="cancel-move"
-        @click="$emit('cancel')">
+        @click="$emit('cancel')"
+      >
         <v-icon icon="mdi-close" size="x-large" />
       </v-btn>
     </div>

@@ -8,7 +8,8 @@
           size="x-small"
           icon
           v-bind="props"
-          variant="plain">
+          variant="plain"
+        >
           <v-icon color="white" icon="mdi-information" size="small" />
         </v-btn>
       </template>
