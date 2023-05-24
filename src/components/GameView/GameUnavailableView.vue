@@ -1,33 +1,35 @@
 <template>
-  <!-- Reauthenticate-->
-  <template v-if="mustReauthenticate">
-    <reauthenticate-dialog v-model="mustReauthenticate" />
-  </template>
-  <!-- Game doesn't exist-->
-  <template v-else>
-    <v-overlay
-      data-cy="unavailable-game-overlay"
-      id="unavailable-game-scrim"
-      v-model="unavailableGame"
-      class="game-overlay text-center d-flex justify-center align-center"
-    >
-      <div class="overlay-header">
-        <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', ['font-weight-bold']]">
-          Oops!
-        </h1>
-        <p>Looks like this game isn't available</p>
-      </div>
-      <v-btn
-        color="secondary"
-        class="mt-4"
-        data-cy="leave-unavailable-game-button"
-        :loading="leavingGame"
-        @click="this.$router.push('/')"
+  <div>
+    <!-- Reauthenticate-->
+    <template v-if="mustReauthenticate">
+      <reauthenticate-dialog v-model="mustReauthenticate" />
+    </template>
+    <!-- Game doesn't exist-->
+    <template v-else>
+      <v-overlay
+        data-cy="unavailable-game-overlay"
+        id="unavailable-game-scrim"
+        v-model="unavailableGame"
+        class="game-overlay text-center d-flex justify-center align-center"
       >
-        Go Home
-      </v-btn>
-    </v-overlay>
-  </template>
+        <div class="overlay-header">
+          <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', ['font-weight-bold']]">
+            Oops!
+          </h1>
+          <p>Looks like this game isn't available</p>
+        </div>
+        <v-btn
+          color="secondary"
+          class="mt-4"
+          data-cy="leave-unavailable-game-button"
+          :loading="leavingGame"
+          @click="this.$router.push('/')"
+        >
+          Go Home
+        </v-btn>
+      </v-overlay>
+    </template>
+  </div>
 </template>
 
 <script>
