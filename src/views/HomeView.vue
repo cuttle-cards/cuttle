@@ -74,7 +74,7 @@
             <img
               v-if="$vuetify.display.lgAndUp"
               id="logo"
-              alt="Vue logo"
+              alt="Cuttle logo"
               src="/img/logo.png"
             />
             <v-btn

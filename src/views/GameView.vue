@@ -126,8 +126,8 @@
           <v-card
             id="deck"
             :class="{ 'reveal-top-two': resolvingSeven }"
-            @click="drawCard"
             elevation="0"
+            @click="drawCard"
           >
             <template v-if="!resolvingSeven">
               <v-card-actions class="c-deck-count">({{ deckLength }})</v-card-actions>

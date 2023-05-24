@@ -22,7 +22,8 @@
 
         <!-- Stop Spectating -->
         <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
-          Go Home</v-list-item>
+          Go Home
+        </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <template v-else>
           <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog"> Concede</v-list-item>

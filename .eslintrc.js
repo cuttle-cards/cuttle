@@ -57,7 +57,6 @@ module.exports = {
     }],
   },
   overrides: [
- // Vue specific rules
     {
       files: ['**/client/**/*.{j,t}s?(x)'],
       extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:vue/recommended'],
