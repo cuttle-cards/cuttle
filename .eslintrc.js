@@ -41,7 +41,24 @@ module.exports = {
     semi: ['error', 'always'],
   },
   overrides: [
-    // Vue specific rules
+//Vue Linting Rules Overrides
+    {
+      "vue/max-attributes-per-line": ["error", {
+        "singleline": {
+          "max": 3
+        },      
+        "multiline": {
+          "max": 1
+        }
+      }]
+    },
+    {
+      "vue/first-attribute-linebreak": ["error", {
+        "singleline": "beside",
+        "multiline": "below"
+      }]
+    },
+ // Vue specific rules
     {
       files: ['**/client/**/*.{j,t}s?(x)'],
       extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:vue/recommended'],
