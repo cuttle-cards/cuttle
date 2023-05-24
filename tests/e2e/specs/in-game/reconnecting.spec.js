@@ -1,5 +1,5 @@
-import { assertGameState } from '../../support/helpers';
-import { opponentOne } from '../../fixtures/userFixtures';
+import { assertGameState, assertVictory } from '../../support/helpers';
+import { opponentOne, myUser } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
 
 describe('Reconnecting to a game', () => {
@@ -403,9 +403,8 @@ describe('Reconnecting to a game', () => {
       // Counter dialog should be visible
       cy.get('#counter-dialog')
         .should('be.visible')
-        .contains('Your opponent has played 2♣️ to Counter', {includeShadowDom: true});
-      cy.get('[data-cy=counter]')
-        .click();
+        .contains('Your opponent has played 2♣️ to Counter', { includeShadowDom: true });
+      cy.get('[data-cy=counter]').click();
 
       // Reconnect & proceed
       cy.reload();
@@ -413,9 +412,8 @@ describe('Reconnecting to a game', () => {
       // Counter dialog should become visible again
       cy.get('#counter-dialog')
         .should('be.visible')
-        .contains('Your opponent has played 2♣️ to Counter', {includeShadowDom: true});
-      cy.get('[data-cy=counter]')
-        .click();
+        .contains('Your opponent has played 2♣️ to Counter', { includeShadowDom: true });
+      cy.get('[data-cy=counter]').click();
       cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-3]').click();
 
       cy.resolveOpponent();
@@ -661,6 +659,53 @@ describe('Reconnecting to a game', () => {
         topCard: Card.NINE_OF_CLUBS,
         scrap: [Card.SEVEN_OF_CLUBS],
       });
+    });
+  });
+});
+
+describe('Display correct dialog for unavailable game', () => {
+  beforeEach(() => {
+    cy.setupGameAsP0();
+  });
+
+  it('Shows unavailable game dialog, then return home', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+
+    cy.concedeOpponent();
+    assertVictory();
+    cy.reload();
+    cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
+    cy.get('[data-cy="leave-unavailable-game-button"]').click();
+    cy.hash().should('equal', '#/');
+  });
+
+  it('Shows reauthenticate game dialog, then logs in', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+
+    cy.get('@gameSummary').then(({ gameId }) => {
+      cy.clearCookies();
+      cy.clearLocalStorage().then(() => {
+        cy.vueRoute(`/game/${gameId}`);
+        cy.reload();
+      });
+      cy.get('[data-cy="username"]').type(myUser.username);
+      cy.get('[data-cy="password"]').type(myUser.password);
+      cy.get('[data-cy="login"]').click();
+      cy.get('[data-cy="player-username"]').should('contain', myUser.username);
     });
   });
 });
