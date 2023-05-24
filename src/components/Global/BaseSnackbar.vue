@@ -9,7 +9,12 @@
   >
     {{ message }}
     <template #actions>
-      <v-btn data-cy="close-snackbar" icon variant="text" @click="clear">
+      <v-btn
+        data-cy="close-snackbar"
+        icon
+        variant="text"
+        @click="clear"
+      >
         <v-icon icon="mdi-close" />
       </v-btn>
     </template>

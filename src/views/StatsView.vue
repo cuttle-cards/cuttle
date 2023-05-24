@@ -73,7 +73,12 @@
       <div v-if="error" class="d-flex flex-column align-center text-center">
         <h3 class="text-h3">Oops!</h3>
         <p class="text-body-1">There was a problem loading the leaderboard. Refresh the page to try again.</p>
-        <v-img alt="Dead cuttle logo" src="/img/logo-dead.svg" :width="200" class="mt-4" />
+        <v-img
+          alt="Dead cuttle logo"
+          src="/img/logo-dead.svg"
+          :width="200"
+          class="mt-4"
+        />
       </div>
     </section>
   </div>
