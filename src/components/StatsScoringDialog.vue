@@ -59,8 +59,8 @@
       <!-- Actions -->
     </template>
     <template #actions>
-      <v-btn variant="outlined" color="surface-1" @click="show = false"> Got It! </v-btn> </template
-    >>
+      <v-btn variant="outlined" color="surface-1" @click="show = false"> Got It! </v-btn>
+    </template>
   </base-dialog>
 </template>
 

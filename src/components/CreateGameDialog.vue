@@ -1,11 +1,10 @@
 <template>
-  <base-dialog v-model="show" id="create-game" title="Create Game" data-cy="create-game-dialog">
+  <base-dialog v-model="show" id="create-game-dialog" title="Create Game" data-cy="create-game-dialog">
     <template #activator>
       <v-btn class="text-surface-2" color="surface-1" data-cy="create-game-btn" rounded elevation="8">
         Create Game
       </v-btn>
     </template>
-    <v-card :id="id" class="dialog-card" color="surface-1"></v-card>
     <template #body>
       <div class="d-flex align-center">
         <v-switch
@@ -16,35 +15,41 @@
         />
         <stats-scoring-dialog :show-button-text="false" />
       </div>
-      <v-text-field
-        v-model="gameName"
-        autofocus
-        :disabled="loading"
-        label="Game Name"
-        variant="outlined"
-        data-cy="game-name-input"
-        @keydown.enter="submitNewGame"
-      />
+      <v-form @submit.prevent="submitNewGame">
+        <v-text-field
+          name="create-game"
+          v-model="gameName"
+          autofocus
+          :disabled="loading"
+          label="Game Name"
+          variant="outlined"
+          data-cy="game-name-input"
+        />
+      </v-form>
     </template>
     <template #actions>
-      <v-btn
-        data-cy="cancel-create-game"
-        :disabled="loading"
-        variant="text"
-        color="surface-1"
-        @click="cancelCreateGame"
-      >
-        Cancel
-      </v-btn>
-      <v-btn
-        data-cy="submit-create-game"
-        :loading="loading"
-        color="surface-1"
-        variant="flat"
-        @click="submitNewGame"
-      >
-        Create Game
-      </v-btn>
+      <v-form>
+        <v-btn
+          data-cy="cancel-create-game"
+          :disabled="loading"
+          variant="text"
+          color="surface-1"
+          @click="cancelCreateGame"
+        >
+          Cancel
+        </v-btn>
+        <v-btn
+          form="create-game"
+          type="submit"
+          data-cy="submit-create-game"
+          :loading="loading"
+          color="surface-1"
+          variant="flat"
+          @click="submitNewGame"
+        >
+          Create Game
+        </v-btn>
+      </v-form>
     </template>
   </base-dialog>
 </template>
