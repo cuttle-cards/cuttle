@@ -1,7 +1,12 @@
 <template>
   <v-dialog v-model="show">
     <template #activator="{ props }">
-      <v-btn v-bind="props" color="primary" data-cy="create-game-btn" rounded elevation="8">
+      <v-btn
+        v-bind="props"
+        color="primary"
+        data-cy="create-game-btn"
+        rounded
+        elevation="8">
         Create Game
       </v-btn>
     </template>
@@ -11,7 +16,11 @@
       </v-card-title>
       <v-card-text>
         <div class="d-flex align-center">
-          <v-switch v-model="isRanked" label="Ranked" data-cy="create-game-ranked-switch" color="primary" />
+          <v-switch
+            v-model="isRanked"
+            label="Ranked"
+            data-cy="create-game-ranked-switch"
+            color="primary" />
           <stats-scoring-dialog :show-button-text="false" />
         </div>
         <v-text-field

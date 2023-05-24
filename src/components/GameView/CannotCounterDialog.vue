@@ -1,5 +1,9 @@
 <template>
-  <base-dialog v-if="oneOff" v-model="show" title="Cannot Counter" id="cannot-counter-dialog">
+  <base-dialog
+    v-if="oneOff"
+    v-model="show"
+    title="Cannot Counter"
+    id="cannot-counter-dialog">
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
         Your opponent has played the 
@@ -25,7 +29,11 @@
         </p>
         <div v-if="target" id="target-wrapper">
           <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-            <v-icon id="target-icon" size="x-large" color="red" icon="mdi-target" />
+            <v-icon
+              id="target-icon"
+              size="x-large"
+              color="red"
+              icon="mdi-target" />
           </span>
           <game-card :suit="target.suit" :rank="target.rank" />
         </div>

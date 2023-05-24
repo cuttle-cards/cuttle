@@ -1,7 +1,6 @@
 const sharedTestRules = {
   'import/no-unresolved': ['off'],
 };
-
 module.exports = {
   root: true,
   env: {
@@ -39,25 +38,20 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
     semi: ['error', 'always'],
+    'vue/max-attributes-per-line': ['error', {
+      'singleline': {
+        'max': 3
+      },      
+      'multiline': {
+        'max': 1
+      }
+    }],
+    'vue/first-attribute-linebreak': ['error', {
+      'singleline': 'beside',
+      'multiline': 'below'
+    }],
   },
   overrides: [
-//Vue Linting Rules Overrides
-    {
-      "vue/max-attributes-per-line": ["error", {
-        "singleline": {
-          "max": 3
-        },      
-        "multiline": {
-          "max": 1
-        }
-      }]
-    },
-    {
-      "vue/first-attribute-linebreak": ["error", {
-        "singleline": "beside",
-        "multiline": "below"
-      }]
-    },
  // Vue specific rules
     {
       files: ['**/client/**/*.{j,t}s?(x)'],
