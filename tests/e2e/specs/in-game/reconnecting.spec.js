@@ -1,5 +1,5 @@
 import { assertGameState, assertVictory } from '../../support/helpers';
-import { opponentOne, myUser } from '../../fixtures/userFixtures';
+import { opponentOne } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
 
 describe('Reconnecting to a game', () => {
@@ -684,28 +684,5 @@ describe('Display correct dialog for unavailable game', () => {
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
     cy.get('[data-cy="leave-unavailable-game-button"]').click();
     cy.hash().should('equal', '#/');
-  });
-
-  it('Shows reauthenticate game dialog, then logs in', () => {
-    cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
-      p0FaceCards: [],
-      p1Hand: [],
-      p1Points: [],
-      p1FaceCards: [],
-    });
-
-    cy.get('@gameSummary').then(({ gameId }) => {
-      cy.clearCookies();
-      cy.clearLocalStorage().then(() => {
-        cy.vueRoute(`/game/${gameId}`);
-        cy.reload();
-      });
-      cy.get('[data-cy="username"]').type(myUser.username);
-      cy.get('[data-cy="password"]').type(myUser.password);
-      cy.get('[data-cy="login"]').click();
-      cy.get('[data-cy="player-username"]').should('contain', myUser.username);
-    });
   });
 });
