@@ -36,12 +36,24 @@
     <v-row class="mt-4">
       <v-spacer />
       <v-col cols="3" offset="1">
-        <v-btn :disabled="readying" variant="outlined" color="primary" data-cy="exit-button" @click="leave">
+        <v-btn
+          :disabled="readying"
+          variant="outlined"
+          color="primary"
+          data-cy="exit-button"
+          @click="leave"
+        >
           EXIT
         </v-btn>
       </v-col>
       <v-col cols="3">
-        <v-btn :loading="readying" contained color="primary" data-cy="ready-button" @click="ready">
+        <v-btn
+          :loading="readying"
+          contained
+          color="primary"
+          data-cy="ready-button"
+          @click="ready"
+        >
           {{ readyButtonText }}
           <v-icon
             v-if="isRanked"

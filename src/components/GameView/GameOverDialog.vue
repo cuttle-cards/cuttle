@@ -2,7 +2,12 @@
   <base-dialog v-model="show" id="game-over-dialog">
     <template #title>
       <h1 :data-cy="headingDataAttr" :class="isMobilePortrait ? 'text-h4' : ''">{{ heading }}</h1>
-      <v-img v-if="currentMatch && !isMobilePortrait" :src="logoSrc" :data-cy="logoDataAttr" class="logo-image-match" />
+      <v-img
+        v-if="currentMatch && !isMobilePortrait"
+        :src="logoSrc"
+        :data-cy="logoDataAttr"
+        class="logo-image-match"
+      />
     </template>
 
     <template #body>
@@ -25,8 +30,11 @@
         </p>
         <div data-cy="match-result-games" class="mb-4">
           <div class="d-flex">
-            <div class="d-flex flex-column mr-4 align-center" v-for="(gameStatus, i) in matchGameStats"
-                 :key="`${gameStatus}-${i}`">
+            <div
+              class="d-flex flex-column mr-4 align-center"
+              v-for="(gameStatus, i) in matchGameStats"
+              :key="`${gameStatus}-${i}`"
+            >
               <v-icon size="x-large" color="surface-2" :icon="iconFromGameStatus(gameStatus)" />
               {{ gameStatus }}
             </div>

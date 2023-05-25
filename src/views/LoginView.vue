@@ -30,14 +30,25 @@
             placeholder="Password"
           />
           <div id="login-button-container">
-            <v-btn :loading="loading" color="primary" block type="submit" data-cy="submit">
+            <v-btn
+              :loading="loading"
+              color="primary"
+              block
+              type="submit"
+              data-cy="submit"
+            >
               {{ buttonText }}
             </v-btn>
           </div>
         </form>
 
         <div id="switch-button-container">
-          <v-btn color="primary" variant="text" data-cy="switch-mode" @click="switchMode">
+          <v-btn
+            color="primary"
+            variant="text"
+            data-cy="switch-mode"
+            @click="switchMode"
+          >
             {{ switchLabelText }}
           </v-btn>
         </div>
@@ -88,7 +99,8 @@
         <v-img
           src="/img/game/cuttle-one-off-ace.png"
           alt="Cuttle Game Ace One-Off"
-          cover />
+          cover
+        />
       </v-col>
     </v-row>
   </v-container>
