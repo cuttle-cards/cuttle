@@ -42,40 +42,93 @@ describe('Untargeted One-Offs', () => {
     playOutOfTurn('points');
   }); // End ace one-off
 
-  it('Plays a five to draw two cards', () => {
-    // Setup
-    cy.loadGameFixture(0, {
-      // Player is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      // Opponent is P1
-      p1Hand: [Card.ACE_OF_HEARTS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      // Deck
-      topCard: Card.THREE_OF_CLUBS,
-      secondCard: Card.EIGHT_OF_HEARTS,
-    });
-    // Player plays five
-    cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+  describe('Playing FIVES', () => {
+    it('Plays a five to draw two cards', () => {
+      // Setup
+      cy.loadGameFixture(0, {
+        // Player is P0
+        p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS],
+        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+        p0FaceCards: [Card.KING_OF_SPADES],
+        // Opponent is P1
+        p1Hand: [Card.ACE_OF_HEARTS],
+        p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+        p1FaceCards: [Card.KING_OF_HEARTS],
+        // Deck
+        topCard: Card.THREE_OF_CLUBS,
+        secondCard: Card.EIGHT_OF_HEARTS,
+      });
+      // Player plays five
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+  
+      // Assert game state
+      assertGameState(0, {
+        // Player is P0
+        p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_HEARTS, Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS],
+        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+        p0FaceCards: [Card.KING_OF_SPADES],
+        // Opponent is P1
+        p1Hand: [Card.ACE_OF_HEARTS],
+        p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+        p1FaceCards: [Card.KING_OF_HEARTS],
+        scrap: [Card.FIVE_OF_SPADES],
+      });
+      // Attempt to plays five out of turn
+      cy.get('[data-player-hand-card=5-2]').click(); // five of hearts
+      playOutOfTurn('oneOff');
+    }); // End five one-off
 
-    // Assert game state
-    assertGameState(0, {
-      // Player is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_HEARTS, Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      // Opponent is P1
-      p1Hand: [Card.ACE_OF_HEARTS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.FIVE_OF_SPADES],
+    it('Plays a five to draw one card when at 8 cards in hand', () => {
+      // Setup
+      cy.loadGameFixture(0, {
+        // Player is P0
+        p0Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.FIVE_OF_SPADES,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_CLUBS,
+          Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_CLUBS,
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        // Deck
+        topCard: Card.KING_OF_CLUBS,
+        secondCard: Card.KING_OF_SPADES,
+      });
+      // Player plays five
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+  
+      // Assert game state
+      assertGameState(0, {
+        p0Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_CLUBS,
+          Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_CLUBS,
+          Card.KING_OF_CLUBS,
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [Card.FIVE_OF_SPADES],
+      });
+
+      cy.get('#deck').should('contain', '(43)');
     });
-    // Attempt to plays five out of turn
-    cy.get('[data-player-hand-card=5-2]').click(); // five of hearts
-    playOutOfTurn('oneOff');
-  }); // End five one-off
+  });
 
   it('Plays a six to destroy all face cards', () => {
     // Setup
