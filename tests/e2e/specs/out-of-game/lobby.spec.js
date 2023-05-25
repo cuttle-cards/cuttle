@@ -158,10 +158,25 @@ describe('Lobby - P0 Perspective', () => {
       assertGameStarted();
     });
   });
-  // TODO: Rewrite this test when auth is supported in the lobby
-  it('Redirects to game list after page refresh', () => {
+  it.only('Reloads lobby data after page refresh', function () {
     cy.reload();
-    cy.hash().should('equal', '#/');
+    cy.url().should('include', '/lobby');
+    cy.get('[data-cy=my-indicator]').contains(myUser.username);
+    
+    cy.signupOpponent(opponentOne);
+    cy.subscribeOpponent(this.gameSummary.gameId);
+    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+    cy.reload();
+
+    cy.url().should('include', '/lobby');
+    cy.get('[data-cy=my-indicator]').contains(myUser.username);
+    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+    cy.readyOpponent();
+    cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
+
+    // cy.reload();
+    // cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
+    // cy.get('[data-cy=player-indicator]').should('not.have.class', 'ready');
   });
 });
 
