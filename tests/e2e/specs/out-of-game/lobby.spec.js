@@ -174,9 +174,12 @@ describe('Lobby - P0 Perspective', () => {
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
 
-    // cy.reload();
-    // cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
-    // cy.get('[data-cy=player-indicator]').should('not.have.class', 'ready');
+    cy.reload();
+    cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
+    cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
+
+    cy.get('[data-cy=ready-button]').click();
+    assertGameStarted();
   });
 });
 
