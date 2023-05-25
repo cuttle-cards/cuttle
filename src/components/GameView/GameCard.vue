@@ -9,7 +9,12 @@
     }"
     :elevation="elevation"
   >
-    <v-icon v-if="isFrozen" class="player-card-icon mr-1 mt-1" color="#00a5ff" icon="mdi-snowflake" />
+    <v-icon
+      v-if="isFrozen"
+      class="player-card-icon mr-1 mt-1"
+      color="#00a5ff"
+      icon="mdi-snowflake"
+    />
     <v-overlay
       :model-value="isValidTarget"
       contained
@@ -25,7 +30,12 @@
       :src="`/img/cards/glasses-${suitName.toLowerCase()}.png`"
       :alt="`Glasses - $${cardName}`"
     />
-    <img v-else-if="isBack" src="/img/cards/card-back.png" class="opponent-card-back" alt="card back" />
+    <img
+      v-else-if="isBack"
+      src="/img/cards/card-back.png"
+      class="opponent-card-back"
+      alt="card back"
+    />
     <img v-else :src="`/img/cards/card-${suit}-${rank}.svg`" :alt="cardName" />
   </v-card>
 </template>
