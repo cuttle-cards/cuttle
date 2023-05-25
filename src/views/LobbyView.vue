@@ -117,9 +117,6 @@ export default {
       return this.iAmReady ? 'UNREADY' : 'READY';
     },
   },
-  mounted() {
-    this.$store.dispatch('requestLobbyData');
-  },
   methods: {
     async ready() {
       this.readying = true;
