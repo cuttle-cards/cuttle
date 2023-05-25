@@ -172,6 +172,7 @@ module.exports = function (req, res) {
                     newSecondCard = _.sample(game.deck).id;
                   }
                   gameUpdates.secondCard = newSecondCard;
+                  cardsToRemoveFromDeck.push(newSecondCard);
                   gameUpdates.log = [
                     ...game.log,
                     `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card to reach the hand limit (8).`,
