@@ -57,7 +57,6 @@ module.exports.policies = {
   'game/game-over': ['isLoggedIn'],
   'game/chat': ['isLoggedIn', 'isInGame'],
   'game/game-data': ['isLoggedIn', 'isInGame'],
-  'game/lobby-data': ['isLoggedIn', 'isInGame'],
 
   'game/seven/face-card': ['isLoggedIn', 'isInGame', 'hasCardId'],
   'game/seven/jack': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],

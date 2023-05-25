@@ -383,17 +383,6 @@ export default {
         });
       });
     },
-    async requestLobbyData(context) {
-      return new Promise((resolve, reject) => {
-        io.socket.get('/game/lobbyData', function handleResponse(res, jwres) {
-          if (jwres.statusCode === 200) {
-            context.commit('updateGame', res);
-            return Promise.resolve(res);
-          }
-          return reject(new Error('Error loading lobby data'));
-        });
-      });
-    },
     ///////////////////
     // In-Game Moves //
     ///////////////////
