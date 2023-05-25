@@ -63,12 +63,14 @@ describe('Lobby - Page Content (Ranked)', () => {
   it('Displays ranked button', () => {
     cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
   });
+
 });
 
 describe('Lobby - P0 Perspective', () => {
   beforeEach(() => {
     setup();
   });
+
   it('Exits the Lobby', () => {
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
     cy.get('[data-cy=exit-button]').click();
@@ -84,6 +86,7 @@ describe('Lobby - P0 Perspective', () => {
         expect(state.game.myPNum).to.eq(null);
       });
   });
+
   it('Ready & UnReady buttons work', () => {
     cy.get('[data-cy=ready-button]')
       // Test: Button text defaults to 'Ready'
@@ -111,6 +114,7 @@ describe('Lobby - P0 Perspective', () => {
         expect(updatedGameState.p0Ready).to.eq(false); // Player not ready
       });
   });
+
   it('Shows when opponent joins, leaves, and re-joins', () => {
     cy.contains('[data-cy=opponent-indicator]', 'Invite');
     cy.window()
@@ -130,6 +134,7 @@ describe('Lobby - P0 Perspective', () => {
         cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
       });
   });
+
   it('Shows when oppenent Readies/Unreadies', function () {
     // Opponent subscribes & readies up
     cy.signupOpponent(opponentOne);
@@ -141,6 +146,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
   });
+
   it('Game starts when both players are ready - opponent first', function () {
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
@@ -150,6 +156,7 @@ describe('Lobby - P0 Perspective', () => {
       assertGameStarted();
     });
   });
+
   it('Game starts when both players are ready - player first', function () {
     cy.get('[data-cy=ready-button]').click();
     cy.signupOpponent(opponentOne);
@@ -158,7 +165,8 @@ describe('Lobby - P0 Perspective', () => {
       assertGameStarted();
     });
   });
-  it.only('Reloads lobby data after page refresh', function () {
+
+  it.only('Reloads lobby data after page refresh - game has not started', function () {
     cy.reload();
     cy.url().should('include', '/lobby');
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
