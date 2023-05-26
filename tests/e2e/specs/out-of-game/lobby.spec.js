@@ -166,51 +166,30 @@ describe('Lobby - P0 Perspective', () => {
     });
   });
 
-  it('Reloads lobby data after page refresh - game has not started', function () {
-    cy.reload();
-    cy.url().should('include', '/lobby');
-    cy.get('[data-cy=my-indicator]').contains(myUser.username);
-    
-    cy.signupOpponent(opponentOne);
-    cy.subscribeOpponent(this.gameSummary.gameId);
-    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
-    cy.reload();
-
-    cy.url().should('include', '/lobby');
-    cy.get('[data-cy=my-indicator]').contains(myUser.username);
-    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
-    cy.readyOpponent();
-    cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
-
-    cy.reload();
-    cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
-    cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
-
-    cy.get('[data-cy=ready-button]').click();
-    assertGameStarted();
-  });
-
-  it.only('Reloads lobby after page refresh and loads user into the game when game has already started', function () {
-    cy.get('[data-cy=ready-button]').click();
-    cy.get('[data-cy=my-indicator]').should('have.class', 'ready');
-
-    cy.signupOpponent(opponentOne);
-    cy.subscribeOpponent(this.gameSummary.gameId);
-    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
-    cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
-
-    cy.reload();
-    cy.get('[data-cy=my-indicator]').should('have.class', 'ready');
-    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
-    cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
-
-    // Disconnect socket and then opponent hits ready to start game
-    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');
-    cy.readyOpponent();
-
-    // Reload the page -- should bring user into the game
-    cy.reload();
-    assertGameStarted();
+  describe('Reloading the lobby', () => {
+    it('Reloads lobby data after page refresh when the game has not started', function () {
+      cy.reload();
+      cy.url().should('include', '/lobby');
+      cy.get('[data-cy=my-indicator]').contains(myUser.username);
+      
+      cy.signupOpponent(opponentOne);
+      cy.subscribeOpponent(this.gameSummary.gameId);
+      cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+      cy.reload();
+  
+      cy.url().should('include', '/lobby');
+      cy.get('[data-cy=my-indicator]').contains(myUser.username);
+      cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+      cy.readyOpponent();
+      cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
+  
+      cy.reload();
+      cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
+      cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
+  
+      cy.get('[data-cy=ready-button]').click();
+      assertGameStarted();
+    });
   });
 });
 
@@ -306,9 +285,27 @@ describe('Lobby - P1 Perspective', () => {
     cy.readyOpponent();
     assertGameStarted();
   });
-  // TODO: Rewrite this test when auth is supported in the lobby
-  it('Redirects to game list after page refresh', () => {
+  it.only('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
+
+    cy.get('[data-cy=ready-button]').click();
+    cy.get('[data-cy=my-indicator]').should('have.class', 'ready');
+
+    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+    cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
+
     cy.reload();
-    cy.hash().should('equal', '#/');
+    cy.get('[data-cy=my-indicator]').should('have.class', 'ready');
+    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+    cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
+
+    // Disconnect socket and then opponent hits ready to start game
+    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');
+    cy.readyOpponent();
+
+    cy.drawCardOpponent();
+
+    // Reload the page -- should bring user into the game
+    cy.reload();
+    assertGameStarted();
   });
 });
