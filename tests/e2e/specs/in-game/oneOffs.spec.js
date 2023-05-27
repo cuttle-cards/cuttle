@@ -128,6 +128,41 @@ describe('Untargeted One-Offs', () => {
 
       cy.get('#deck').should('contain', '(43)');
     });
+
+    it.only('Plays a 5 to draw the last two cards in the deck', () => {
+      // Setup: player has one card in hand and only top & second card are in deck
+      cy.loadGameFixture(0, {
+        // Player is P0
+        p0Hand: [Card.FIVE_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        // Deck
+        topCard: Card.THREE_OF_CLUBS,
+        secondCard: Card.EIGHT_OF_HEARTS,
+      });
+      cy.deleteDeck();
+      cy.get('#deck').should('contain', '(2)');
+
+      // Player plays and resolves a 5
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_CLUBS);
+      assertGameState(0, {
+        // Player is P0
+        p0Hand: [Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [Card.FIVE_OF_CLUBS],
+      });
+      // Deck should now be empty
+      cy.get('#deck').should('contain', '(0)').should('contain', 'PASS')
+    });
   });
 
   it('Plays a six to destroy all face cards', () => {
