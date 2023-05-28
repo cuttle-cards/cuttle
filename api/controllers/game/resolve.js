@@ -174,12 +174,12 @@ module.exports = function (req, res) {
                   ];
 
                 // Player draws last card in deck, to reach hand limit (only draws 1)
-                } else {
-                  gameUpdates.log = [
-                    ...game.log,
-                    `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card (last in deck) to reach the hand limit (8).`,
-                  ];
                 }
+              } else {
+                gameUpdates.log = [
+                  ...game.log,
+                  `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card (last in deck) to reach the hand limit (8).`,
+                ];
               }
             }
             updatePromises = [
