@@ -1242,13 +1242,25 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
     });
 });
 
-Cypress.Commands.add('deleteDeck', () => {
+/**
+ * Deletes all the cards in the deck EXCEPT topCard and secondCard
+ * @param cardsToLeaveInDeck: {suit: number, rank: number}[] list of cards to leave in the deck
+ */
+Cypress.Commands.add('deleteDeck', (cardsToLeaveInDeck = []) => {
   cy.log('Deleting deck');
-  io.socket.get('/game/deleteDeck', function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-    return jwres;
+  return cy
+  .window()
+  .its('cuttle.app.config.globalProperties.$store.state.game')
+  .then((game) =>  {
+    const foundCardIds = getCardIds(game, cardsToLeaveInDeck);
+    io.socket.get('/game/deleteDeck',
+      { cardsToLeaveInDeck: foundCardIds },
+      function handleResponse(res, jwres) {
+        if (jwres.statusCode !== 200) {
+          throw new Error(jwres.body.message);
+        }
+        return jwres;
+    });
   });
 });
 

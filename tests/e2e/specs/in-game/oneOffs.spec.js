@@ -129,7 +129,7 @@ describe('Untargeted One-Offs', () => {
       cy.get('#deck').should('contain', '(43)');
     });
 
-    it.only('Plays a 5 to draw the last two cards in the deck', () => {
+    it('Plays a 5 to draw the last two cards in the deck', () => {
       // Setup: player has one card in hand and only top & second card are in deck
       cy.loadGameFixture(0, {
         // Player is P0
@@ -162,6 +162,36 @@ describe('Untargeted One-Offs', () => {
       });
       // Deck should now be empty
       cy.get('#deck').should('contain', '(0)').should('contain', 'PASS')
+    });
+
+    it.only('Plays a 5 to draw two cards when there are 3 cards in deck', () => {
+      // Setup: there are three cards in the deck and player has a 5
+      cy.loadGameFixture(0, {
+        p0Hand: [Card.FIVE_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [Card.TWO_OF_CLUBS],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.THREE_OF_CLUBS,
+        secondCard: Card.EIGHT_OF_HEARTS,
+      });
+      cy.deleteDeck([Card.ACE_OF_DIAMONDS]);
+      cy.get('#deck').should('contain', '(3)');
+
+      // Play 5 and resolve
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_CLUBS);
+      assertGameState(0, {
+        p0Hand: [Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [Card.TWO_OF_CLUBS],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [Card.FIVE_OF_CLUBS],
+        topCard: Card.ACE_OF_DIAMONDS,
+      });
+      cy.get('#deck').should('contain', '(1)');
     });
   });
 
