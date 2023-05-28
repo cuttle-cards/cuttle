@@ -112,8 +112,16 @@ module.exports = function (req, res) {
 
       return Promise.all([game, ...updatePromises]);
     })
-    .then(function populateGame(values) {
+    .then(async function removeCardsFromDeck(values) {
       const [game] = values;
+      // If deck was specified, delete all other cards from the deck
+      const {deck} = req.body;
+      if (deck) {
+        await Game.replaceCollection(game.id, 'deck').members(deck);
+      }
+      return game;
+    })
+    .then(function populateGame(game) {
       return gameService.populateGame({ gameId: game.id });
     })
     .then(function publishAndRespond(game) {

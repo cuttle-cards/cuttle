@@ -42,7 +42,7 @@ describe('Untargeted One-Offs', () => {
     playOutOfTurn('points');
   }); // End ace one-off
 
-  describe('Playing FIVES', () => {
+  describe.only('Playing FIVES', () => {
     it('Plays a five to draw two cards', () => {
       // Setup
       cy.loadGameFixture(0, {
@@ -143,8 +143,8 @@ describe('Untargeted One-Offs', () => {
         // Deck
         topCard: Card.THREE_OF_CLUBS,
         secondCard: Card.EIGHT_OF_HEARTS,
+        deck: [],
       });
-      cy.deleteDeck();
       cy.get('#deck').should('contain', '(2)');
 
       // Player plays and resolves a 5
@@ -175,8 +175,8 @@ describe('Untargeted One-Offs', () => {
         p1FaceCards: [],
         topCard: Card.THREE_OF_CLUBS,
         secondCard: Card.EIGHT_OF_HEARTS,
+        deck: [Card.ACE_OF_DIAMONDS]
       });
-      cy.deleteDeck([Card.ACE_OF_DIAMONDS]);
       cy.get('#deck').should('contain', '(3)');
 
       // Play 5 and resolve
@@ -194,7 +194,7 @@ describe('Untargeted One-Offs', () => {
       cy.get('#deck').should('contain', '(1)');
     });
 
-    it.only('Plays a 5 to draw two cards when there are 4 cards in deck', () => {
+    it('Plays a 5 to draw two cards when there are 4 cards in deck', () => {
       // Setup: there are three cards in the deck and player has a 5
       cy.loadGameFixture(0, {
         p0Hand: [Card.FIVE_OF_CLUBS],
@@ -205,8 +205,8 @@ describe('Untargeted One-Offs', () => {
         p1FaceCards: [],
         topCard: Card.THREE_OF_CLUBS,
         secondCard: Card.EIGHT_OF_HEARTS,
+        deck: [Card.FOUR_OF_DIAMONDS, Card.SIX_OF_SPADES]
       });
-      cy.deleteDeck([Card.FOUR_OF_DIAMONDS, Card.SIX_OF_SPADES]);
       cy.get('#deck').should('contain', '(4)');
 
       // Play 5 and resolve

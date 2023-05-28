@@ -1246,21 +1246,14 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
  * Deletes all the cards in the deck EXCEPT topCard and secondCard
  * @param cardsToLeaveInDeck: {suit: number, rank: number}[] list of cards to leave in the deck
  */
-Cypress.Commands.add('deleteDeck', (cardsToLeaveInDeck = []) => {
+Cypress.Commands.add('deleteDeck', () => {
   cy.log('Deleting deck');
-  return cy
-  .window()
-  .its('cuttle.app.config.globalProperties.$store.state.game')
-  .then((game) =>  {
-    const foundCardIds = getCardIds(game, cardsToLeaveInDeck);
-    io.socket.get('/game/deleteDeck',
-      { cardsToLeaveInDeck: foundCardIds },
-      function handleResponse(res, jwres) {
-        if (jwres.statusCode !== 200) {
-          throw new Error(jwres.body.message);
-        }
-        return jwres;
-    });
+  io.socket.get('/game/deleteDeck',
+    function handleResponse(res, jwres) {
+      if (jwres.statusCode !== 200) {
+        throw new Error(jwres.body.message);
+      }
+      return jwres;
   });
 });
 
@@ -1295,7 +1288,6 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
       const p1HandCardIds = getCardIds(game, fixture.p1Hand);
       const p1PointCardIds = getCardIds(game, fixture.p1Points);
       const p1FaceCardIds = getCardIds(game, fixture.p1FaceCards);
-
       // build request body
       let reqBody = {
         p0Id: game.players[0].id,
@@ -1320,6 +1312,11 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
       if (fixture.scrap) {
         const scrapCardIds = getCardIds(game, fixture.scrap);
         reqBody.scrapCardIds = scrapCardIds;
+      }
+
+      if (fixture.deck) {
+        const deck = getCardIds(game, fixture.deck);
+        reqBody.deck = deck;
       }
 
       io.socket.get('/game/loadFixture', reqBody, function handleResponse(res, jwres) {

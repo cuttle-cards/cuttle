@@ -2,9 +2,8 @@ module.exports = function (req, res) {
   return gameService
     .findGame({ gameId: req.session.game })
     .then(function changeAndSave(game) {
-      const cardsToLeaveInDeck = req.body.cardsToLeaveInDeck ?? [];
       const updatePromises = [
-        Game.replaceCollection(game.id, 'deck').members(cardsToLeaveInDeck),
+        Game.replaceCollection(game.id, 'deck').members([]),
         Game.addToCollection(game.id, 'scrap').members(game.scrap),
       ];
       return Promise.all([game, ...updatePromises]);
