@@ -224,7 +224,7 @@ describe('Untargeted One-Offs', () => {
         cy.get('#deck').should('contain', '(43)');
       });
 
-      it.only('Plays a five to draw draw the last card in the deck when at the hand limit', () => {
+      it('Plays a five to draw draw the last card in the deck when at the hand limit', () => {
         // Setup
         cy.loadGameFixture(0, {
           // Player is P0
