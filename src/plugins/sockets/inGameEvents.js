@@ -4,8 +4,10 @@ import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router
 import SocketEvent from '../../../types/SocketEvent';
 
 // Handles socket updates of game data
-export function handleInGameEvents(evData) {
+export async function handleInGameEvents(evData) {
+  await router.isReady();
   const currentRoute = router.currentRoute.value;
+
   const { gameId: urlGameId } = currentRoute.params;
   const eventGameId = evData.game?.id ?? evData.gameId;
   const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
