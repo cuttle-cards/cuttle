@@ -34,6 +34,14 @@ npm ci
 
 #### Start the App
 
+You can simultaneously run the server on `localhost:1337` and the client on `localhost:8080` with one command:
+
+```
+npm run start:dev
+```
+
+This will also automatically open up [Vue Devtools](https://devtools.vuejs.org/). Alternatively, you can run them independantly with separate commands.
+
 ##### Start the Server (sails backend)
 
 ```
