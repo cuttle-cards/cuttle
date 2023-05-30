@@ -75,19 +75,25 @@ module.exports = {
       req.session.usr = user.id;
 
       if (unpopulatedGame) {
+        Game.subscribe(req, [unpopulatedGame.id]);
         req.session.game = unpopulatedGame.id;
         req.session.pNum = user.pNum ?? undefined;
       }
 
       if (populatedGame) {
-        Game.subscribe(req, [populatedGame.id]);
         Game.publish([populatedGame.id], {
           ...populatedGame.lastEvent,
           game: populatedGame,
         });
       }
 
-      return res.ok();
+      const game = populatedGame ?? unpopulatedGame;
+      return res.ok({
+        game,
+        username: user.username,
+        pNum: user.pNum
+      });
+
     } catch (err) {
       return res.badRequest(err);
     }
@@ -116,9 +122,7 @@ module.exports = {
         id,
         username,
         authenticated,
-        // We only want to set the gameId if this is a valid game with 2 players
-        // TODO: Refactor this when we add session handling for the lobby
-        gameId: game && game.players.length === 2 ? gameId : null,
+        gameId: game?.id ?? null,
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out

@@ -88,7 +88,6 @@ module.exports.routes = {
   '/game/reject-stalemate': 'game/stalemate-reject',
   '/game/chat': 'game/chat',
   '/game/gameData': 'game/game-data',
-  '/game/lobbyData': 'game/lobby-data',
   // DEVELOPMENT ONLY
   '/game/stackDeck': 'game/stack-deck',
   '/game/deleteDeck': 'game/delete-deck',
