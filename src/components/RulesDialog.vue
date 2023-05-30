@@ -131,8 +131,11 @@
             You keep control of the point card as long as you control the top jack.
           </p>
           <p>
-            <strong>Queen:</strong> While you control a Queen, your other cards cannot be targeted by your
-            opponent's cards. This effectively protects your other cards from the effects of 2's (<strong>including countering</strong>), 9's and Jacks. Note that Queens do not protect against Scuttling.
+            <strong>Queen:</strong> 
+            While you control a Queen, your other cards cannot be targeted by your
+            opponent's cards. This effectively protects your other cards from the effects of 2's 
+            (<strong>including countering</strong>), 9's and Jacks. 
+            Note that Queens do not protect against Scuttling.
           </p>
           <p>
             <strong>King:</strong> While you have a King, the minimum points needed to win is reduced. Each
