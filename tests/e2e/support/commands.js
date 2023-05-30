@@ -1242,10 +1242,6 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
     });
 });
 
-/**
- * Deletes all the cards in the deck EXCEPT topCard and secondCard
- * @param cardsToLeaveInDeck: {suit: number, rank: number}[] list of cards to leave in the deck
- */
 Cypress.Commands.add('deleteDeck', () => {
   cy.log('Deleting deck');
   io.socket.get('/game/deleteDeck',
@@ -1273,8 +1269,9 @@ Cypress.Commands.add('vueRoute', (route) => {
  *   p1Hand: {suit: number, rank: number}[],
  *   p1Points: {suit: number, rank: number}[],
  *   p1FaceCards: {suit: number, rank: number}[],
- *   topCard?: {suit: number, rank: number} (optional)
- *   secondCard?: {suit: number, rank: number} (optional)
+ *   topCard?: {suit: number, rank: number}
+ *   secondCard?: {suit: number, rank: number}
+ *   deck?: {suit: number, rank: number}[] deletes all cards except these from the deck
  * }
  */
 Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
