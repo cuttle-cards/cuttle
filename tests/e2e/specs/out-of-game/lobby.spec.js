@@ -12,15 +12,17 @@ function setup(isRanked = false) {
     cy.wrap(gameSummary).as('gameSummary');
   });
 }
-function assertGameStarted() {
+function assertGameStarted(noMovesYet = true) {
   cy.url().should('include', '/game');
   cy.window()
     .its('cuttle.app.config.globalProperties.$store.state.game')
     .then((game) => {
-      expect(game.players.length).to.eq(2);
-      expect(game.players[0].hand.length).to.eq(5);
       expect(game.players[1].hand.length).to.eq(6);
-      expect(game.deck.length).to.eq(39);
+      if (noMovesYet) {
+        expect(game.players.length).to.eq(2);
+        expect(game.players[0].hand.length).to.eq(5);
+        expect(game.deck.length).to.eq(39);
+      }
       expect(game.topCard.rank).to.be.greaterThan(0);
       expect(game.secondCard.rank).to.be.greaterThan(0);
       expect(game.scrap.length).to.eq(0);
@@ -306,6 +308,8 @@ describe('Lobby - P1 Perspective', () => {
 
     // Reload the page -- should bring user into the game
     cy.reload();
-    assertGameStarted();
+    assertGameStarted(false); // skip hand size assertion
+    cy.get('[data-player-hand-card]').should('have.length', 6);
+    cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
 });
