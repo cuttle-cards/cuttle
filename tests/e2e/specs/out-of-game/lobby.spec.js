@@ -212,9 +212,11 @@ describe('Lobby - P1 Perspective', () => {
       cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     });
   });
+
   it('Shows opponent already in lobby for player joining second', () => {
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
   });
+
   it('Shows when oppenent Readies/Unreadies', () => {
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
@@ -226,6 +228,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
     cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
   });
+
   it('Shows when opponent leaves and rejoins', function () {
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
     cy.leaveLobbyOpponent(); // Opponent leaves
@@ -234,6 +237,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
   });
+
   it('Ready & UnReady buttons work', () => {
     cy.get('[data-cy=ready-button]')
       // Test: Button text defaults to 'Ready'
@@ -265,6 +269,7 @@ describe('Lobby - P1 Perspective', () => {
         expect(updatedGameState.p1Ready).to.eq(false); // Player not ready
       });
   });
+
   it('Game starts when both players are ready - opponent ready before joining', function () {
     cy.get('[data-cy=exit-button]').click(); // leave game so opponent can ready before player joins
     cy.readyOpponent();
@@ -277,16 +282,19 @@ describe('Lobby - P1 Perspective', () => {
     // Test that game started
     assertGameStarted();
   });
+
   it('Game starts when both players are ready - opponent readies first after player joins', () => {
     cy.readyOpponent();
     cy.get('[data-cy=ready-button]').click();
     assertGameStarted();
   });
+
   it('Game starts when both players are ready - player readies first', () => {
     cy.get('[data-cy=ready-button]').click();
     cy.readyOpponent();
     assertGameStarted();
   });
+
   it.only('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
 
     cy.get('[data-cy=ready-button]').click();
