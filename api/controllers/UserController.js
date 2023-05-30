@@ -122,9 +122,7 @@ module.exports = {
         id,
         username,
         authenticated,
-        // We only want to set the gameId if this is a valid game with 2 players
-        // TODO: Refactor this when we add session handling for the lobby
-        gameId: game && gameId ? gameId : null,
+        gameId: game ? gameId : null,
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out
