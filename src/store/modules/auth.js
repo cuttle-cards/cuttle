@@ -101,7 +101,7 @@ export default {
         );
       });
     },
-    async requestStatus(context, { router, route }) {
+    async requestStatus(context, { route }) {
       const { state } = context;
 
       // If we've authenticated before, fast fail
@@ -129,12 +129,6 @@ export default {
         // If the user is authenticated and has a username, add it to the store
         if (username) {
           context.commit('authSuccess', username);
-        }
-
-        // If this is a lobby, redirect the user to the game list so they don't have to
-        // log back in again
-        if (isLobby) {
-          // return router.push('/');
         }
 
         // If the user is currently authenticated and part of a game, we need to resubscribe them
