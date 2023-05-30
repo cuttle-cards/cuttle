@@ -295,7 +295,7 @@ describe('Lobby - P1 Perspective', () => {
     assertGameStarted();
   });
 
-  it.only('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
+  it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
 
     cy.get('[data-cy=ready-button]').click();
     cy.get('[data-cy=my-indicator]').should('have.class', 'ready');
