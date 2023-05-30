@@ -101,7 +101,7 @@ export default {
         );
       });
     },
-    async requestStatus(context, { route }) {
+    async requestStatus(context, route) {
       const { state } = context;
 
       // If we've authenticated before, fast fail

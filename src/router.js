@@ -111,9 +111,7 @@ const router = createRouter({
 router.beforeEach(async (to, _from, next) => {
   // Make sure we try and reestablish a player's session if one exists
   // We do this before the route resolves to preempt the reauth/logout logic
-  await store.dispatch('requestStatus', {
-    route: to,
-  });
+  await store.dispatch('requestStatus', to);
   next();
 });
 
