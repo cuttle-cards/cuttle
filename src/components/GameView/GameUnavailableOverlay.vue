@@ -2,7 +2,7 @@
   <v-overlay
     data-cy="unavailable-game-overlay"
     id="unavailable-game-scrim"
-    v-model="unavailableGame"
+    :model-value="show"
     class="game-overlay text-center d-flex justify-center align-center"
   >
     <div class="overlay-header">
@@ -27,7 +27,7 @@
 export default {
   name: 'GameUnavailable',
   props: {
-    unavailableGame: {
+    show: {
       type: Boolean,
       required: true,
     },

@@ -6,7 +6,7 @@
     </template>
     <!-- Game doesn't exist-->
     <template v-else>
-      <game-unavailable-overlay :unavailableGame="unavailableGame" />
+      <game-unavailable-overlay :show="unavailableGame" />
     </template>
   </div>
 </template>
