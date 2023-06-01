@@ -91,9 +91,8 @@ module.exports = {
       return res.ok({
         game,
         username: user.username,
-        pNum: user.pNum
+        pNum: user.pNum,
       });
-
     } catch (err) {
       return res.badRequest(err);
     }
@@ -122,7 +121,7 @@ module.exports = {
         id,
         username,
         authenticated,
-        gameId: game?.id ?? null,
+        gameId: game.status ? game.id : null,
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out
