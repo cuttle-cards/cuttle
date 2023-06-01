@@ -141,7 +141,6 @@ export async function handleInGameEvents(evData) {
     // Validate current route & navigate if incorrect
     const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
     const shouldNavigate = currentRoute.name === ROUTE_NAME_LOBBY;
-    debugger;
     if (shouldNavigate) {
       router.push({
         name: targetRouteName,
