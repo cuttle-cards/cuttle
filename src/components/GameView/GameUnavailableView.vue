@@ -5,7 +5,7 @@
       <reauthenticate-dialog v-model="mustReauthenticate" />
     </template>
     <!-- Game doesn't exist-->
-    <template v-else>
+    <template v-else-if="unavailableGame">
       <game-unavailable-overlay :show="unavailableGame" />
     </template>
   </div>
