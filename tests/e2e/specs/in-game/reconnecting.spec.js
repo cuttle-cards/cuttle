@@ -668,7 +668,7 @@ describe('Display correct dialog for unavailable game', () => {
     cy.setupGameAsP0();
   });
 
-  it('Shows unavailable game dialog, then return home', () => {
+  it.only('Shows unavailable game dialog, then return home', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -680,9 +680,16 @@ describe('Display correct dialog for unavailable game', () => {
 
     cy.concedeOpponent();
     assertVictory();
-    cy.reload();
+    //go home
+    cy.get('[data-cy=gameover-go-home]').click();
+    cy.url().should('not.include', '/game');
+    //go back to game URL
+    cy.get('@gameSummary').then(({ gameId }) => cy.vueRoute(`/game/${gameId}`));
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
     cy.get('[data-cy="leave-unavailable-game-button"]').click();
     cy.hash().should('equal', '#/');
+    //go to random url
+    cy.vueRoute('/game/12345');
+    cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
   });
 });
