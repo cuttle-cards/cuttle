@@ -121,7 +121,7 @@ module.exports = {
         id,
         username,
         authenticated,
-        gameId: game.status ? game.id : null,
+        gameId: game?.id ?? null,
       });
     } catch (err) {
       // Something happened and we couldn't verify the user, log them out
