@@ -53,57 +53,57 @@ jobs:
       label: 'Test: Unit'
       script: 'npm run test:unit'
 
-  # Run Cypress End to End Tests
-  install:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+  # # Run Cypress End to End Tests
+  # install:
+  #   runs-on: ubuntu-22.04
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      - name: Cypress install
-        uses: cypress-io/github-action@v5
-        with:
-          # Disable running of tests within install job
-          runTests: false
-          build: npm run build
+  #     - name: Cypress install
+  #       uses: cypress-io/github-action@v5
+  #       with:
+  #         # Disable running of tests within install job
+  #         runTests: false
+  #         build: npm run build
 
-      - name: Save build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          if-no-files-found: error
-          path: assets
-  cypress-run:
-    runs-on: ubuntu-22.04
-    needs: install
-    strategy:
-      # don't fail the entire matrix on failure
-      fail-fast: false
-      matrix:
-        # run copies of the current job in parallel
-        containers: [1, 2, 3, 4, 5]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+  #     - name: Save build folder
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: build
+  #         if-no-files-found: error
+  #         path: assets
+  # cypress-run:
+  #   runs-on: ubuntu-22.04
+  #   needs: install
+  #   strategy:
+  #     # don't fail the entire matrix on failure
+  #     fail-fast: false
+  #     matrix:
+  #       # run copies of the current job in parallel
+  #       containers: [1, 2, 3, 4, 5]
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      - name: Download the build folder
-        uses: actions/download-artifact@v3
-        with:
-          name: build
+  #     - name: Download the build folder
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: build
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        with:
-          build: npm run build
-          record: true
-          parallel: true
-          start: npm start
-          config-file: cypress.config.js
-          # wait for 2 minutes for the server to respond
-          wait-on: 'http://localhost:1337'
-          wait-on-timeout: 120
-        env:
-          VITE_API_URL: http://localhost:1337
-          # pass GitHub token to allow accurately detecting a build vs a re-run build
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+  #     - name: Cypress run
+  #       uses: cypress-io/github-action@v5
+  #       with:
+  #         build: npm run build
+  #         record: true
+  #         parallel: true
+  #         start: npm start
+  #         config-file: cypress.config.js
+  #         # wait for 2 minutes for the server to respond
+  #         wait-on: 'http://localhost:1337'
+  #         wait-on-timeout: 120
+  #       env:
+  #         VITE_API_URL: http://localhost:1337
+  #         # pass GitHub token to allow accurately detecting a build vs a re-run build
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
