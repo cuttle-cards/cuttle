@@ -55,6 +55,7 @@ jobs:
 
   # Run Cypress End to End Tests
   install:
+    needs: draft
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
