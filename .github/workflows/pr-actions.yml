@@ -48,7 +48,7 @@ jobs:
   # Run Jest Unit Tests
   test-unit:
     uses: ./.github/workflows/run-npm-script.yml
-    needs: lint
+    needs: draft
     with:
       label: 'Test: Unit'
       script: 'npm run test:unit'
