@@ -91,9 +91,8 @@ module.exports = {
       return res.ok({
         game,
         username: user.username,
-        pNum: user.pNum
+        pNum: user.pNum,
       });
-
     } catch (err) {
       return res.badRequest(err);
     }
