@@ -91,7 +91,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build
-          working-directory: assets
+          path: assets
 
       - name: Cypress run
         uses: cypress-io/github-action@v5
