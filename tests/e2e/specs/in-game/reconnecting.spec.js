@@ -669,14 +669,6 @@ describe('Display correct dialog for unavailable game', () => {
   });
 
   it('Shows unavailable game dialog, then return home', () => {
-    cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
-      p0FaceCards: [],
-      p1Hand: [],
-      p1Points: [],
-      p1FaceCards: [],
-    });
 
     cy.concedeOpponent();
     assertVictory();
