@@ -709,6 +709,9 @@ export default {
     async requestUnsubscribeFromGame(context) {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/over', function handleResponse(res, jwres) {
+          if (jwres.statusCode === 200) {
+            context.commit('resetState');
+          }
           return handleGameResponse(context, jwres, resolve, reject);
         });
       });
