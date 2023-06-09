@@ -2,13 +2,11 @@ name: 'Test: End-To-End'
 
 on:
   workflow_call:
-    inputs:
+    secrets:
       record-key:
         required: true
-        type: string
       github-token:
         required: true
-        type: string
 
 jobs:
   # Install & build frontend

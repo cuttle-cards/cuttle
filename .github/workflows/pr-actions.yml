@@ -57,6 +57,6 @@ jobs:
   test-e2e:
     uses: ./.github/workflows/test-e2e.yml
     needs: draft
-    with:
+    secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
       record-key: ${{ secrets.CYPRESS_RECORD_KEY }}
