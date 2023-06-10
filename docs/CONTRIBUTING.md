@@ -30,6 +30,15 @@ Scan through our [existing issues](https://github.com/cuttle-cards/cuttle/issues
 
 ### Make Changes
 
+
+We follow semantic versioning (semver) for Cuttle Cards, which uses version numbers like 4.3.22. The versioning scheme consists of major, minor, and patch versions. When submitting a PR, please update the version field in package.json based on the version label of the issue being addressed.
+
+If the issue is labeled patch-version, increment the patch number in the version field (e.g., from 4.3.22 to 4.3.23).
+If the issue is labeled minor-version, reset the patch number to zero and increment the minor version (e.g., from 4.3.22 to 4.4.0).
+If the issue is labeled major-version, set both the patch and minor versions to zero and increment the major version (e.g., from 4.3.22 to 5.0.0).
+Please note that you don't need to repeat this process for package-lock.json as it automatically inherits the version number from package.json whenever dependencies are updated.
+
+
 ### Test-Driven Development
 
 We encourage contributors to practice Test Driven Development (TDD) when working on cuttle.cards, because it can save an enormous amount of time while increasing everyone's confidence that the application does what it's supposed to. By utilizing the existing testing infrastructure, you can quickly and automatically do things like:
