@@ -1487,4 +1487,25 @@ describe('Playing sevens at the end of the deck', () => {
       scrap: [Card.SEVEN_OF_CLUBS],
     });
   });
+
+  it.only('Cannot play one-off on last card in deck after playing seven one off - special case', () => {
+    cy.setupGameAsP1();
+    cy.loadGameFixture(1, {
+      p0Hand: [],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.SEVEN_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.SIX_OF_HEARTS,
+      secondCard: Card.SEVEN_OF_HEARTS,
+      deck: [],
+    });
+    cy.drawCardOpponent();
+    cy.get('[data-player-hand-card=7-0]').click();
+    cy.get('[data-move-choice=oneOff').click();
+    cy.resolveOpponent();
+    cy.get('#deck').click();
+    cy.get('[data-move-choice=oneOff]').should('have.class', 'v-card--disabled');
+  });
 });
