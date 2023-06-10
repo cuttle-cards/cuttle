@@ -53,7 +53,7 @@ export default {
     MoveChoiceCard,
     GameCard,
   },
-  emits:['points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel'],
+  emits: ['points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel'],
   props: {
     modelValue: {
       type: Boolean,
@@ -131,12 +131,27 @@ export default {
       };
     },
     oneOffMove() {
+      let oneOffDisabled = this.allMovesAreDisabled;
+      let oneOffDisabledExplanation = this.disabledText;
+      //Check deck while playing 7s
+      if (this.selectedCard.rank === 7) {
+        if (!this.$store.state.game.topCard) {
+          oneOffDisabled = true;
+          oneOffDisabledExplanation = 'Cannot play one-off with an empty deck';
+        } else if (
+          this.selectedCard.id === this.$store.state.game.topCard.id &&
+          !this.store.state.game.secondCard
+        ) {
+          oneOffDisabled = true;
+          oneOffDisabledExplanation = 'Cannot play one-off on last card in deck';
+        }
+      }
       return {
         displayName: 'One-Off',
         eventName: 'oneOff',
         moveDescription: this.selectedCard.ruleText,
-        disabled: this.allMovesAreDisabled,
-        disabledExplanation: this.disabledText,
+        disabled: oneOffDisabled,
+        disabledExplanation: oneOffDisabledExplanation,
       };
     },
 
@@ -161,7 +176,6 @@ export default {
               oneOffDisabled = true;
               oneOffDisabledExplanation = 'There are no Royals to target';
             }
-            // Nines
           } else {
             const numValidTargets =
               this.$store.getters.opponent.points.length + this.$store.getters.opponent.faceCards.length;
