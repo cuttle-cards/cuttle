@@ -9,7 +9,6 @@ module.exports = function (req, res) {
     .then(function changeAndSave(values) {
       const [game, player, opponent, playerPoints, opPoints] = values;
       let happened = true;
-      const playerUpdates = {};
       const opponentUpdates = {};
       let cardsToScrap = [];
       let updatePromises = [];
@@ -26,7 +25,6 @@ module.exports = function (req, res) {
         ];
         happened = false;
       } else {
-        playerUpdates.frozenId = null;
         // One Off will resolve; perform effect based on card rank
         switch (game.oneOff.rank) {
           case 1: {
@@ -55,7 +53,6 @@ module.exports = function (req, res) {
               `The ${game.oneOff.name} one-off resolves; all point cards are scrapped.`,
             ];
             updatePromises = [
-              User.updateOne(player.id).set(playerUpdates),
               // Remove all jacks from point cards
               Card.replaceCollection([...playerPointIds, ...opponentPointIds], 'attachments').members([]),
               // Scrap all point cards and jacks
@@ -173,7 +170,7 @@ module.exports = function (req, res) {
                     `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card to reach the hand limit (8).`,
                   ];
 
-                // Player draws last card in deck, to reach hand limit (only draws 1)
+                  // Player draws last card in deck, to reach hand limit (only draws 1)
                 }
               } else {
                 gameUpdates.log = [

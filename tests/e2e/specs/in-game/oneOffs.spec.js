@@ -60,7 +60,7 @@ describe('Untargeted One-Offs', () => {
       });
       // Player plays five
       cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
-  
+
       // Assert game state
       assertGameState(0, {
         // Player is P0
@@ -124,7 +124,7 @@ describe('Untargeted One-Offs', () => {
         p1FaceCards: [],
         topCard: Card.THREE_OF_CLUBS,
         secondCard: Card.EIGHT_OF_HEARTS,
-        deck: [Card.ACE_OF_DIAMONDS]
+        deck: [Card.ACE_OF_DIAMONDS],
       });
       cy.get('#deck').should('contain', '(3)');
 
@@ -154,7 +154,7 @@ describe('Untargeted One-Offs', () => {
         p1FaceCards: [],
         topCard: Card.THREE_OF_CLUBS,
         secondCard: Card.EIGHT_OF_HEARTS,
-        deck: [Card.FOUR_OF_DIAMONDS, Card.SIX_OF_SPADES]
+        deck: [Card.FOUR_OF_DIAMONDS, Card.SIX_OF_SPADES],
       });
       cy.get('#deck').should('contain', '(4)');
 
@@ -199,7 +199,7 @@ describe('Untargeted One-Offs', () => {
         });
         // Player plays five
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
-    
+
         // Assert game state
         assertGameState(0, {
           p0Hand: [
@@ -220,7 +220,7 @@ describe('Untargeted One-Offs', () => {
           p1FaceCards: [],
           scrap: [Card.FIVE_OF_SPADES],
         });
-  
+
         cy.get('#deck').should('contain', '(43)');
       });
 
@@ -251,7 +251,7 @@ describe('Untargeted One-Offs', () => {
         });
         // Player draws
         cy.get('#deck').click();
-    
+
         // Assert game state
         assertGameState(0, {
           // Player is P0
@@ -1390,6 +1390,38 @@ describe('Playing NINES', () => {
         scrap: [Card.NINE_OF_CLUBS],
       });
     }); // End 9 on jack
+
+    it('Clears players frozen card after resolving one-off', () => {
+      cy.loadGameFixture(1, {
+        p0Hand: [Card.NINE_OF_SPADES, Card.EIGHT_OF_HEARTS],
+        p0Points: [],
+        p0FaceCards: [Card.KING_OF_HEARTS],
+        p1Hand: [Card.NINE_OF_HEARTS, Card.EIGHT_OF_DIAMONDS],
+        p1Points: [],
+        p1FaceCards: [Card.KING_OF_DIAMONDS],
+      });
+      cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.KING_OF_DIAMONDS, 'faceCard');
+      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+
+      cy.get('[data-player-hand-card=9-2]').click();
+      cy.get('[data-move-choice=targetedOneOff').click();
+      cy.get('[data-opponent-face-card=13-2]').click();
+      cy.resolveOpponent();
+      cy.playPointsOpponent(Card.EIGHT_OF_HEARTS);
+
+      cy.get('[data-player-hand-card=13-1]').click();
+      cy.get('[data-move-choice=faceCard]').click();
+
+      assertGameState(1, {
+        p0Hand: [Card.KING_OF_HEARTS],
+        p0Points: [Card.EIGHT_OF_HEARTS],
+        p0FaceCards: [],
+        p1Hand: [Card.EIGHT_OF_DIAMONDS],
+        p1Points: [],
+        p1FaceCards: [Card.KING_OF_DIAMONDS],
+        scrap: [Card.NINE_OF_HEARTS, Card.NINE_OF_SPADES],
+      });
+    });
   }); // End Opponent playing NINES describe
 });
 
