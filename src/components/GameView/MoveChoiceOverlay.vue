@@ -80,7 +80,7 @@ export default {
       required: true,
     },
     cardSelectedFromDeck: {
-      type: Boolean,
+      type: Object,
       default: null,
     },
   },
