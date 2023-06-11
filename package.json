@@ -1,11 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-<<<<<<< HEAD
-  "version": "4.3.29",
-=======
   "version": "4.3.30",
->>>>>>> f006cb9 (chore: update package number)
   "dependencies": {
     "connect-redis": "3.0.2",
     "dayjs": "1.11.3",
