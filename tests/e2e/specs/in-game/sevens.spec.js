@@ -1499,7 +1499,7 @@ describe('Playing sevens at the end of the deck', () => {
       p1FaceCards: [],
       topCard: Card.SIX_OF_HEARTS,
       secondCard: Card.SEVEN_OF_HEARTS,
-      deck: [Card.FIVE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS],
+      deck: [Card.FIVE_OF_DIAMONDS],
     });
     cy.drawCardOpponent();
     cy.get('#deck').click();
