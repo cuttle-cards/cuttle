@@ -2,7 +2,7 @@
 
 ## Issue number
 
-Relevant issue number (e.g. #404): #
+Relevant issue number (e.g. #404): Resolves #
 
 ## Please check the following
 
