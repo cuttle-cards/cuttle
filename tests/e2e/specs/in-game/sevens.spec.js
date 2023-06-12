@@ -1508,7 +1508,7 @@ describe('Playing sevens at the end of the deck', () => {
     cy.get('[data-move-choice=oneOff').should('have.class', 'v-card--disabled');
   });
 
-  it.only("Cannot play last card of deck as 7 one-off when chaining 7's", () => {
+  it("Cannot play last card of deck as 7 one-off when chaining 7's", () => {
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [],
