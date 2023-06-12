@@ -142,14 +142,14 @@ export default {
           oneOffDisabled = true;
           oneOffDisabledExplanation = "Can't be played with empty deck";
         }
-        return {
-          displayName: 'One-Off',
-          eventName: 'oneOff',
-          moveDescription: this.selectedCard.ruleText,
-          disabled: oneOffDisabled,
-          disabledExplanation: oneOffDisabledExplanation,
-        };
       }
+      return {
+        displayName: 'One-Off',
+        eventName: 'oneOff',
+        moveDescription: this.selectedCard.ruleText,
+        disabled: oneOffDisabled,
+        disabledExplanation: oneOffDisabledExplanation,
+      };
     },
 
     targetedOneOffMove() {
