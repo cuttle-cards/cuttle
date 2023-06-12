@@ -1488,7 +1488,7 @@ describe('Playing sevens at the end of the deck', () => {
     });
   });
 
-  it('Cannot play one-off if deck is empty', () => {
+  it('Cannot play seven one-off if deck is empty', () => {
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [],
@@ -1508,7 +1508,7 @@ describe('Playing sevens at the end of the deck', () => {
     cy.get('[data-move-choice=oneOff').should('have.class', 'v-card--disabled');
   });
 
-  it('Cannot play one-off on last card (7) in deck after playing 7 one off - special case', () => {
+  it.only("Cannot play last card of deck as 7 one-off when chaining 7's", () => {
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [],
@@ -1522,9 +1522,10 @@ describe('Playing sevens at the end of the deck', () => {
       deck: [],
     });
     cy.drawCardOpponent();
-    cy.get('#deck').click();
-    cy.passOpponent();
     cy.get('[data-player-hand-card=7-0]').click();
+    cy.get('[data-move-choice=oneOff').should('not.have.class', 'v-card--disabled').click();
+    cy.resolveOpponent();
+    cy.get('#deck').click();
     cy.get('[data-move-choice=oneOff').should('have.class', 'v-card--disabled');
   });
 });

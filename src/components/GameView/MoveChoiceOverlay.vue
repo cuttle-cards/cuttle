@@ -135,24 +135,21 @@ export default {
       let oneOffDisabledExplanation = this.disabledText;
       //Check deck while playing 7s
       if (this.selectedCard.rank === 7) {
-        if (!this.$store.state.game.topCard) {
+        const noTopCard = !this.$store.state.game.topCard;
+        const playingTopCard = this.selectedCard?.id === this.$store.state.game.topCard?.id;
+        const noSecondCard = !this.$store.state.game.secondCard;
+        if (noTopCard || (playingTopCard && noSecondCard)) {
           oneOffDisabled = true;
-          oneOffDisabledExplanation = 'Cannot play one-off with an empty deck';
-        } else if (
-          this.selectedCard.id === this.$store.state.game.topCard.id &&
-          !this.store.state.game.secondCard
-        ) {
-          oneOffDisabled = true;
-          oneOffDisabledExplanation = 'Cannot play one-off on last card in deck';
+          oneOffDisabledExplanation = "Can't be played with empty deck";
         }
+        return {
+          displayName: 'One-Off',
+          eventName: 'oneOff',
+          moveDescription: this.selectedCard.ruleText,
+          disabled: oneOffDisabled,
+          disabledExplanation: oneOffDisabledExplanation,
+        };
       }
-      return {
-        displayName: 'One-Off',
-        eventName: 'oneOff',
-        moveDescription: this.selectedCard.ruleText,
-        disabled: oneOffDisabled,
-        disabledExplanation: oneOffDisabledExplanation,
-      };
     },
 
     targetedOneOffMove() {
