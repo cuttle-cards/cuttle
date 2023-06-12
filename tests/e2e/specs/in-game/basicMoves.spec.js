@@ -8,7 +8,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Plays Points', () => {
-    expect(true).to.eq(false); // TODO: remove
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
