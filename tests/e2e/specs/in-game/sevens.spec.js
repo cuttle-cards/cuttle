@@ -1525,7 +1525,7 @@ describe('Playing sevens at the end of the deck', () => {
     cy.get('[data-player-hand-card=7-0]').click();
     cy.get('[data-move-choice=oneOff').should('not.have.class', 'v-card--disabled').click();
     cy.resolveOpponent();
-    cy.get('#deck').click();
+    cy.get('[data-top-card=7-2]').click();
     cy.get('[data-move-choice=oneOff').should('have.class', 'v-card--disabled');
   });
 });
