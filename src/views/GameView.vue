@@ -1479,4 +1479,10 @@ export default {
     grid-column-end: span 12;
   }
 }
+
+@media (max-width: 1000px) and (orientation: landscape) {
+ #player-score{
+  margin-top: -15px;
+ }
+}
 </style>
