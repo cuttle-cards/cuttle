@@ -246,9 +246,9 @@ describe('Playing SEVENS', () => {
         p1FaceCards: [],
         topCard: Card.FOUR_OF_HEARTS,
         secondCard: Card.JACK_OF_CLUBS,
+        deck: [],
       });
 
-      cy.deleteDeck();
       cy.get('#deck').should('contain', 2);
 
       cy.drawCardOpponent();
@@ -1403,9 +1403,9 @@ describe('Playing sevens at the end of the deck', () => {
       p1FaceCards: [],
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
+      deck: [],
     });
 
-    cy.deleteDeck();
     cy.get('#deck').should('contain', 2);
 
     cy.drawCardOpponent();
@@ -1427,9 +1427,9 @@ describe('Playing sevens at the end of the deck', () => {
       p1FaceCards: [],
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
+      deck: [],
     });
 
-    cy.deleteDeck();
     cy.get('#deck').should('contain', 2);
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
@@ -1463,9 +1463,9 @@ describe('Playing sevens at the end of the deck', () => {
       p1FaceCards: [],
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
+      deck: [],
     });
 
-    cy.deleteDeck();
     cy.get('#deck').should('contain', 2);
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
