@@ -1480,9 +1480,9 @@ export default {
   }
 }
 
-@media (max-width: 1000px) and (orientation: landscape) {
+@media (max-width: 960px) and (orientation: landscape) {
  #player-score{
-  margin-top: -15px;
+  margin-top: -16px;
  }
 }
 </style>
