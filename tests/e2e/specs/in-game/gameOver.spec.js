@@ -174,9 +174,9 @@ describe('Stalemates', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
+      deck: [],
     });
 
-    cy.deleteDeck();
     cy.log('Drawing last two cards');
     cy.get('#deck').should('contain', '(2)').click();
     cy.drawCardOpponent();
@@ -206,9 +206,9 @@ describe('Stalemates', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
+      deck: [],
     });
 
-    cy.deleteDeck();
     cy.get('#deck').should('contain', '(2)');
     cy.log('Drawing last two cards');
     cy.drawCardOpponent();
@@ -587,9 +587,9 @@ describe('Creating And Updating Ranked Matches', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
+      deck: [],
     });
 
-    cy.deleteDeck();
     cy.log('Drawing last two cards');
     cy.get('#deck').should('contain', '(2)').click();
     cy.drawCardOpponent();
@@ -627,9 +627,9 @@ describe('Creating And Updating Ranked Matches', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
+      deck: [],
     });
 
-    cy.deleteDeck();
     cy.log('Drawing last two cards');
     cy.get('#deck').should('contain', '(2)').click();
     cy.drawCardOpponent();
