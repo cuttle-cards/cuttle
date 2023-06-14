@@ -25,7 +25,7 @@ module.exports = function (req, res) {
                 case 4:
                   if (opponent.hand.length === 0)
                     return Promise.reject({
-                      message: 'You cannot play a 4 as a one-off while your opponent has no cards in hand',
+                      message: 'You cannot play a 4 as a ONE-OFF while your opponent has no cards in hand',
                     });
                   break;
                 case 5:
@@ -33,6 +33,10 @@ module.exports = function (req, res) {
                   if (!game.topCard)
                     return Promise.reject({
                       message: 'You can only play a 7 as a ONE-OFF if there are cards in the deck',
+                    });
+                  if (game.topCard.id === card.id && !game.secondCard)
+                    return Promise.reject({
+                      message: 'You can not play a 7 as a ONE-OFF if it the last card in the deck',
                     });
                   break;
               }
