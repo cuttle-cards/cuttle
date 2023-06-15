@@ -1,6 +1,6 @@
-import { assertGameState, assertSnackbarError } from '../../support/helpers';
-import { Card } from '../../fixtures/cards';
-import { SnackBarError } from '../../fixtures/snackbarError';
+import { assertGameState, assertSnackbarError } from '../../../support/helpers';
+import { Card } from '../../../fixtures/cards';
+import { SnackBarError } from '../../../fixtures/snackbarError';
 
 describe('Playing SEVENS', () => {
   beforeEach(() => {
