@@ -82,7 +82,7 @@
         </p>
         <p>
           Be the first to score 21 points in this explosive battle of wits. Mount a valient offense while
-          disupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the
+          disrupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the
           Deep?
         </p>
         <v-btn
