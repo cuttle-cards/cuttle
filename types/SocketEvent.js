@@ -1,6 +1,5 @@
 export default {
   COUNTER: 'counter',
-  DELETE_DECK: 'deleteDeck',
   DRAW: 'draw',
   FACE_CARD: 'faceCard',
   INITIALIZE: 'initialize',

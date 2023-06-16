@@ -1242,17 +1242,6 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
     });
 });
 
-Cypress.Commands.add('deleteDeck', () => {
-  cy.log('Deleting deck');
-  io.socket.get('/game/deleteDeck',
-    function handleResponse(res, jwres) {
-      if (jwres.statusCode !== 200) {
-        throw new Error(jwres.body.message);
-      }
-      return jwres;
-  });
-});
-
 Cypress.Commands.add('vueRoute', (route) => {
   cy.window().its('cuttle.app.config.globalProperties.$router').invoke('push', route);
 });

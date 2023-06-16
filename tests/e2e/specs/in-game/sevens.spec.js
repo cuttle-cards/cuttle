@@ -246,9 +246,9 @@ describe('Playing SEVENS', () => {
         p1FaceCards: [],
         topCard: Card.FOUR_OF_HEARTS,
         secondCard: Card.JACK_OF_CLUBS,
+        deck: [],
       });
 
-      cy.deleteDeck();
       cy.get('#deck').should('contain', 2);
 
       cy.drawCardOpponent();
@@ -499,7 +499,7 @@ describe('Playing SEVENS', () => {
       // Should not allow playing 4 as one-off
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
-      assertSnackbarError('You cannot play a 4 as a one-off while your opponent has no cards in hand');
+      assertSnackbarError('You cannot play a 4 as a ONE-OFF while your opponent has no cards in hand');
     });
   }); // End player seven one-off describe
 
@@ -1403,9 +1403,9 @@ describe('Playing sevens at the end of the deck', () => {
       p1FaceCards: [],
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
+      deck: [],
     });
 
-    cy.deleteDeck();
     cy.get('#deck').should('contain', 2);
 
     cy.drawCardOpponent();
@@ -1427,9 +1427,9 @@ describe('Playing sevens at the end of the deck', () => {
       p1FaceCards: [],
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
+      deck: [],
     });
 
-    cy.deleteDeck();
     cy.get('#deck').should('contain', 2);
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
@@ -1463,9 +1463,9 @@ describe('Playing sevens at the end of the deck', () => {
       p1FaceCards: [],
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
+      deck: [],
     });
 
-    cy.deleteDeck();
     cy.get('#deck').should('contain', 2);
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
@@ -1486,5 +1486,46 @@ describe('Playing sevens at the end of the deck', () => {
       p1FaceCards: [],
       scrap: [Card.SEVEN_OF_CLUBS],
     });
+  });
+
+  it('Cannot play seven one-off if deck is empty', () => {
+    cy.setupGameAsP1();
+    cy.loadGameFixture(1, {
+      p0Hand: [],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.SIX_OF_HEARTS,
+      secondCard: Card.SEVEN_OF_HEARTS,
+      deck: [Card.FIVE_OF_DIAMONDS],
+    });
+    cy.drawCardOpponent();
+    cy.get('#deck').click();
+    cy.drawCardOpponent();
+    cy.get('[data-player-hand-card=7-0]').click();
+    cy.get('[data-move-choice=oneOff').should('have.class', 'v-card--disabled');
+  });
+
+  it('Cannot play last card of deck as 7 one-off when chaining sevens', () => {
+    cy.setupGameAsP1();
+    cy.loadGameFixture(1, {
+      p0Hand: [],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.SIX_OF_HEARTS,
+      secondCard: Card.SEVEN_OF_HEARTS,
+      deck: [],
+    });
+    cy.drawCardOpponent();
+    cy.get('[data-player-hand-card=7-0]').click();
+    cy.get('[data-move-choice=oneOff').should('not.have.class', 'v-card--disabled').click();
+    cy.resolveOpponent();
+    cy.get('[data-top-card=7-2]').click();
+    cy.get('[data-move-choice=oneOff').should('have.class', 'v-card--disabled');
   });
 });

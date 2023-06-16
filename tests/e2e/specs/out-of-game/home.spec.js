@@ -374,9 +374,9 @@ describe('Home - Game List', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
+        deck: [],
       });
-      // Delete deck, draw last two card, both players pass until stalemate
-      cy.deleteDeck();
+      // Draw last two card, both players pass until stalemate
       cy.get('#deck').should('contain', '(2)');
       cy.recoverSessionOpponent(playerOne);
       cy.drawCardOpponent();
