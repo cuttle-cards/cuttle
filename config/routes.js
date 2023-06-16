@@ -90,7 +90,6 @@ module.exports.routes = {
   '/game/gameData': 'game/game-data',
   // DEVELOPMENT ONLY
   '/game/stackDeck': 'game/stack-deck',
-  '/game/deleteDeck': 'game/delete-deck',
   '/game/loadFixture': 'game/load-fixture',
   '/game/clear': 'game/clear-game',
 
