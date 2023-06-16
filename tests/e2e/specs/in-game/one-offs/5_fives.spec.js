@@ -1,7 +1,12 @@
 import { assertGameState, playOutOfTurn } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 
-describe('Playing FIVES', () => {
+describe('FIVES', () => {
+  describe('Playing FIVES', () => {
+    beforeEach(() => {
+      cy.setupGameAsP0();
+    });
+
     it('Plays a five to draw two cards', () => {
       // Setup
       cy.loadGameFixture(0, {
@@ -130,136 +135,141 @@ describe('Playing FIVES', () => {
       });
       cy.get('#deck').should('contain', '(2)');
     });
+  });
 
-    describe('Playing FIVES at the hand limit', () => {
-      it('Plays a five to draw one card when at 8 cards in hand', () => {
-        // Setup
-        cy.loadGameFixture(0, {
-          // Player is P0
-          p0Hand: [
-            Card.ACE_OF_CLUBS,
-            Card.FIVE_OF_SPADES,
-            Card.FIVE_OF_HEARTS,
-            Card.SIX_OF_CLUBS,
-            Card.EIGHT_OF_CLUBS,
-            Card.NINE_OF_CLUBS,
-            Card.JACK_OF_DIAMONDS,
-            Card.QUEEN_OF_CLUBS,
-          ],
-          p0Points: [],
-          p0FaceCards: [],
-          // Opponent is P1
-          p1Hand: [],
-          p1Points: [],
-          p1FaceCards: [],
-          // Deck
-          topCard: Card.KING_OF_CLUBS,
-          secondCard: Card.KING_OF_SPADES,
-        });
-        // Player plays five
-        cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+  describe('Playing FIVES at the hand limit', () => {
+    beforeEach(() => {
+      cy.setupGameAsP0();
+    });
 
-        // Assert game state
-        assertGameState(0, {
-          p0Hand: [
-            Card.ACE_OF_CLUBS,
-            Card.FIVE_OF_HEARTS,
-            Card.SIX_OF_CLUBS,
-            Card.EIGHT_OF_CLUBS,
-            Card.NINE_OF_CLUBS,
-            Card.JACK_OF_DIAMONDS,
-            Card.QUEEN_OF_CLUBS,
-            Card.KING_OF_CLUBS,
-          ],
-          p0Points: [],
-          p0FaceCards: [],
-          // Opponent is P1
-          p1Hand: [],
-          p1Points: [],
-          p1FaceCards: [],
-          scrap: [Card.FIVE_OF_SPADES],
-        });
+    it('Plays a five to draw one card when at 8 cards in hand', () => {
+      // Setup
+      cy.loadGameFixture(0, {
+        // Player is P0
+        p0Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.FIVE_OF_SPADES,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_CLUBS,
+          Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_CLUBS,
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        // Deck
+        topCard: Card.KING_OF_CLUBS,
+        secondCard: Card.KING_OF_SPADES,
+      });
+      // Player plays five
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
 
-        cy.get('#deck').should('contain', '(43)');
+      // Assert game state
+      assertGameState(0, {
+        p0Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_CLUBS,
+          Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_CLUBS,
+          Card.KING_OF_CLUBS,
+        ],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [Card.FIVE_OF_SPADES],
       });
 
-      it('Plays a five to draw draw the last card in the deck when at the hand limit', () => {
-        // Setup
-        cy.loadGameFixture(0, {
-          // Player is P0
-          p0Hand: [],
-          p0Points: [],
-          p0FaceCards: [],
-          // Opponent is P1
-          p1Hand: [
-            Card.ACE_OF_CLUBS,
-            Card.FIVE_OF_SPADES,
-            Card.FIVE_OF_HEARTS,
-            Card.SIX_OF_CLUBS,
-            Card.EIGHT_OF_CLUBS,
-            Card.NINE_OF_CLUBS,
-            Card.JACK_OF_DIAMONDS,
-            Card.QUEEN_OF_CLUBS,
-          ],
-          p1Points: [],
-          p1FaceCards: [],
-          // Deck
-          topCard: Card.KING_OF_CLUBS,
-          secondCard: Card.KING_OF_SPADES,
-          deck: [],
-        });
-        // Player draws
-        cy.get('#deck').click();
+      cy.get('#deck').should('contain', '(43)');
+    });
 
-        // Assert game state
-        assertGameState(0, {
-          // Player is P0
-          p0Hand: [Card.KING_OF_CLUBS],
-          p0Points: [],
-          p0FaceCards: [],
-          // Opponent is P1
-          p1Hand: [
-            Card.ACE_OF_CLUBS,
-            Card.FIVE_OF_SPADES,
-            Card.FIVE_OF_HEARTS,
-            Card.SIX_OF_CLUBS,
-            Card.EIGHT_OF_CLUBS,
-            Card.NINE_OF_CLUBS,
-            Card.JACK_OF_DIAMONDS,
-            Card.QUEEN_OF_CLUBS,
-          ],
-          p1Points: [],
-          p1FaceCards: [],
-          // Deck
-          topCard: Card.KING_OF_SPADES,
-        });
-        cy.get('#deck').should('contain', '(1)');
-
-        // Opponent plays 5 to draw last card
-        cy.playOneOffOpponent(Card.FIVE_OF_SPADES);
-        cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
-
-        assertGameState(0, {
-          // Player is P0
-          p0Hand: [Card.KING_OF_CLUBS],
-          p0Points: [],
-          p0FaceCards: [],
-          // Opponent is P1
-          p1Hand: [
-            Card.ACE_OF_CLUBS,
-            Card.KING_OF_SPADES,
-            Card.FIVE_OF_HEARTS,
-            Card.SIX_OF_CLUBS,
-            Card.EIGHT_OF_CLUBS,
-            Card.NINE_OF_CLUBS,
-            Card.JACK_OF_DIAMONDS,
-            Card.QUEEN_OF_CLUBS,
-          ],
-          p1Points: [],
-          p1FaceCards: [],
-        });
-
-        cy.get('#deck').should('contain', '(0)').should('contain', 'PASS');
+    it('Plays a five to draw draw the last card in the deck when at the hand limit', () => {
+      // Setup
+      cy.loadGameFixture(0, {
+        // Player is P0
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.FIVE_OF_SPADES,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_CLUBS,
+          Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_CLUBS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+        // Deck
+        topCard: Card.KING_OF_CLUBS,
+        secondCard: Card.KING_OF_SPADES,
+        deck: [],
       });
+      // Player draws
+      cy.get('#deck').click();
+
+      // Assert game state
+      assertGameState(0, {
+        // Player is P0
+        p0Hand: [Card.KING_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.FIVE_OF_SPADES,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_CLUBS,
+          Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_CLUBS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+        // Deck
+        topCard: Card.KING_OF_SPADES,
+      });
+      cy.get('#deck').should('contain', '(1)');
+
+      // Opponent plays 5 to draw last card
+      cy.playOneOffOpponent(Card.FIVE_OF_SPADES);
+      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+
+      assertGameState(0, {
+        // Player is P0
+        p0Hand: [Card.KING_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [
+          Card.ACE_OF_CLUBS,
+          Card.KING_OF_SPADES,
+          Card.FIVE_OF_HEARTS,
+          Card.SIX_OF_CLUBS,
+          Card.EIGHT_OF_CLUBS,
+          Card.NINE_OF_CLUBS,
+          Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_CLUBS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.get('#deck').should('contain', '(0)').should('contain', 'PASS');
     });
   });
+});
