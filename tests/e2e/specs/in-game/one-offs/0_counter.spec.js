@@ -5,7 +5,7 @@ describe('Countering One-Offs', () => {
   beforeEach(() => {
     cy.setupGameAsP1();
   });
-  
+
   it('Displays the cannot counter modal and resolves stack when opponent plays a one-off if player has no twos', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
