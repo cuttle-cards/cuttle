@@ -81,8 +81,8 @@
           you can play it for free! Test your mettle in the deepest cardgame under the sea!
         </p>
         <p>
-          Be the first to score 21 points in this explosive battle of wits. Mount a valient offense while
-          disupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the
+          Be the first to score 21 points in this explosive battle of wits. Mount a valiant offense while
+          disrupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the
           Deep?
         </p>
         <v-btn
