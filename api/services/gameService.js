@@ -15,7 +15,7 @@ const GameResult = Object.freeze({
  * @param {rank: number, suit: number} card1
  * @param {rank: number, suit: number} card2
  */
-function comapreByRankThenSuit(card1, card2) {
+function compareByRankThenSuit(card1, card2) {
   let res = card1.rank - card2.rank;
   if (res === 0) {
     res = card1.suit - card2.suit;
@@ -34,17 +34,19 @@ async function fetchSpectatorUsernames(gameId) {
 
 // Used to create fully populated game
 function tempUser(usr, points) {
-  this.pNum = usr.pNum;
-  this.hand = usr.hand;
-  this.points = points;
-  this.faceCards = usr.faceCards;
-  this.frozenId = usr.frozenId;
-  this.id = usr.id;
-  this.username = usr.username;
-
-  this.hand.sort(comapreByRankThenSuit);
-  this.points.sort(comapreByRankThenSuit);
-  this.faceCards.sort(comapreByRankThenSuit);
+  Object.entries(usr).forEach(([key,val]) => {
+    if(key === 'encryptedPassword'){
+      return;
+    }
+    if(key === 'points'){
+      this[key] = points;
+      return;
+    }
+    this[key] = val;
+  });
+  this.hand.sort(compareByRankThenSuit);
+  this.points.sort(compareByRankThenSuit);
+  this.faceCards.sort(compareByRankThenSuit);
 }
 
 function tempGame(game, spectatingUsers, p0, p1) {
@@ -97,27 +99,28 @@ module.exports = {
    populateGame: async function(options) {
     try{
       if (!options) {
+        if (!Object.hasOwnProperty.call(options, 'gameId') && !typeof options.gameId === 'number') {
+          throw new Error({message: 'Cannot populate Game without GameId (options had no gameId)'});
+        }
         throw new Error({ message: 'Cannot populate Game without GameId (options had no gameId)' }); 
-      }
-      if (!Object.hasOwnProperty.call(options, 'gameId') && !typeof options.gameId === 'number') {
-        throw new Error({message: 'Cannot populate Game without GameId (options had no gameId)'});
-      }
+      } 
       // find game
       const game = await gameService.findGame({ gameId: options.gameId });
       
       if (!game.players) {
+        if (game.players.length < 2) {
+          throw new Error({message: 'Cannot populate game without two players'});
+        }
         throw new Error({message: 'Cannot populate game, because it does not have players collection'});
       }
-      if (game.players.length < 1) {
-        throw new Error({message: 'Cannot populate game without two players'});
-      }
-      //find users
-      const p0 = await userService.findUser({ userId: game.players[0].id });
-      const p1 = await userService.findUser({ userId: game.players[1].id });
-      const spectatingUsers = await fetchSpectatorUsernames(game.id);
-      //find points
-      const p0Points = await cardService.findPoints({ userId: p0.id });
-      const p1Points = await cardService.findPoints({ userId: p1.id });
+      //find users and points
+      const [p0, p1, spectatingUsers, p0Points, p1Points] = await Promise.all([
+        userService.findUser({ userId: game.players[0].id }),
+        userService.findUser({ userId: game.players[1].id }),
+        fetchSpectatorUsernames(game.id),
+        cardService.findPoints({ userId: game.players[0].id }),
+        cardService.findPoints({ userId: game.players[1].id })
+      ]);
       // then format results
       const populatedP0 = new tempUser(p0, p0Points);
       const populatedP1 = new tempUser(p1, p1Points);
