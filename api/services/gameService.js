@@ -100,7 +100,7 @@ module.exports = {
     try{
       if (!options) {
         if (!Object.hasOwnProperty.call(options, 'gameId') && !typeof options.gameId === 'number') {
-          throw new Error({message: 'Cannot populate Game without GameId (options had no gameId)'});
+          throw new Error({message: 'gameId is required and must be a number'});
         }
         throw new Error({ message: 'Cannot populate Game without GameId (options had no gameId)' }); 
       } 
