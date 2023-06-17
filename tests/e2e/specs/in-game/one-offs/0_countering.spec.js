@@ -1,5 +1,5 @@
-import { assertGameState, playOutOfTurn } from '../../support/helpers';
-import { Card } from '../../fixtures/cards';
+import { assertGameState, playOutOfTurn } from '../../../support/helpers';
+import { Card } from '../../../fixtures/cards';
 
 describe('Countering One-Offs', () => {
   beforeEach(() => {
