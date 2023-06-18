@@ -71,6 +71,7 @@ module.exports = {
           ? await gameService.populateGame({ gameId })
           : null;
 
+      console.log('user relogin', username, password, user.id, 'game', gameId);
       req.session.loggedIn = true;
       req.session.usr = user.id;
 

@@ -11,7 +11,7 @@ module.exports = {
       type: 'string',
       required: true,
     },
-        /**
+    /**
      *  Enum for status:
      * 1 - NEW (game has been created but has not started)
      * 2 - STARTED (game has been started but has not yet finished)
@@ -32,6 +32,20 @@ module.exports = {
     p1Ready: {
       type: 'boolean',
       defaultsTo: false,
+    },
+    p0Rematch: {
+      type: 'boolean',
+      allowNull: true,
+    },
+    p1Rematch: {
+      type: 'boolean',
+      allowNull: true,
+    },
+    rematchGame: {
+      model: 'game',
+    },
+    rematchOldGame: {
+      model: 'game',
     },
     passes: {
       type: 'number',

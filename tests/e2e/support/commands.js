@@ -327,6 +327,7 @@ Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get('/user/reLogin', userFixture, function handleResponse(res, jwres) {
       if (jwres.statusCode !== 200 || res === false) {
+        console.error(jwres, res);
         return reject(new Error('error recovering session'));
       }
       return resolve();
@@ -409,6 +410,24 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
         },
       );
     });
+});
+
+Cypress.Commands.add('concedeSpectator', (pNum) => {
+  io.socket.get('/game/concede', { pNum }, function handleResponse(res, jwres) {
+    if (jwres.statusCode !== 200) {
+      throw new Error(jwres.body.message);
+    }
+    return jwres;
+  });
+});
+
+Cypress.Commands.add('rematchSpectator', (pNum) => {
+  io.socket.get('/game/rematch', { pNum }, function handleResponse(res, jwres) {
+    if (jwres.statusCode !== 200) {
+      throw new Error(jwres.body.message);
+    }
+    return jwres;
+  });
 });
 
 Cypress.Commands.add('playPointsById', (cardId) => {
@@ -1262,6 +1281,39 @@ Cypress.Commands.add('reconnectOpponent', (opponent) => {
       }
     },
   );
+});
+
+Cypress.Commands.add('rematchAndJoinRematchOpponent', () => {
+  io.socket.get('/game/rematch', { rematch: true }, function handleResponse(res, jwres) {
+    if (jwres.statusCode !== 200) {
+      throw new Error(jwres.body.message);
+    }
+
+    io.socket.get('/game/join-rematch', function handleResponse(res, jwres) {
+      if (jwres.statusCode !== 200) {
+        throw new Error(jwres.body.message);
+      }
+      return Promise.resolve(jwres);
+    });
+  });
+});
+
+Cypress.Commands.add('rematchOpponent', ({ rematch }) => {
+  io.socket.get('/game/rematch', { rematch }, function handleResponse(res, jwres) {
+    if (jwres.statusCode !== 200) {
+      console.log('error rematch', jwres);
+      throw new Error(jwres.body.message);
+    }
+  });
+});
+
+Cypress.Commands.add('joinRematchOpponent', () => {
+  io.socket.get('/game/join-rematch', function handleResponse(res, jwres) {
+    if (jwres.statusCode !== 200) {
+      throw new Error(jwres.body.message);
+    }
+    return Promise.resolve(jwres);
+  });
 });
 
 /**

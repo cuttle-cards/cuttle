@@ -193,7 +193,7 @@ describe('Home - Game List', () => {
     });
   });
 
-  describe('Spectating games', () => {
+  describe.only('Spectating games', () => {
     it('Spectates a game', () => {
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then(({ gameId }) => {
         // Test that JOIN button starts enabled

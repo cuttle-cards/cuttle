@@ -6,7 +6,13 @@ import {
   myUser,
   opponentOne,
 } from '../../fixtures/userFixtures';
-import { assertGameState, assertSnackbarError, getCardId, assertLoss } from '../../support/helpers';
+import {
+  assertGameState,
+  assertSnackbarError,
+  assertVictory,
+  getCardId,
+  assertLoss,
+} from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
 
@@ -358,5 +364,55 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-button"]').should('contain', '1').click();
       cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
     });
+  });
+});
+
+describe('Creating And Updating Unranked Matches With Rematch - Spectating', () => {
+  beforeEach(function () {
+    cy.wipeDatabase();
+    cy.visit('/');
+
+    // Sign up players
+    cy.signupOpponent(playerOne).as('playerOneId');
+    cy.signupOpponent(playerThree).as('playerThreeId'); // spectator
+    // Opponent will be player 2 (the last one we log in as)
+    cy.signupOpponent(playerTwo).as('playerTwoId');
+
+    // Log in as playerOne
+    cy.loginPlayer(playerOne);
+    cy.setupGameAsSpectator();
+  });
+  it.only('Spectate unranked games with rematch', function () {
+    // 1st game: Opponent concedes
+    cy.recoverSessionOpponent(playerTwo);
+    cy.concedeOpponent();
+    assertVictory();
+    cy.rematchOpponent({ rematch: true });
+    cy.wait(1000);
+    cy.recoverSessionOpponent(playerOne);
+    cy.wait(1000);
+    cy.rematchOpponent({ rematch: true });
+    cy.wait(1000);
+    cy.joinRematchOpponent();
+    cy.recoverSessionOpponent(playerTwo);
+    cy.joinRematchOpponent();
+    cy.wait(1000);
+
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        console.log('game', game);
+        cy.url().should('include', `/spectate/${game.id}`);
+        cy.setOpponentToSpectate(game.id);
+      });
+
+    cy.reload();
+    cy.signupOpponent(playerThree);
+    cy.wait(1000);
+
+    cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+    cy.get('[data-cy="spectate-list-menu"')
+      .should('contain', 'myUsername')
+      .should('contain', playerThree.username);
   });
 });

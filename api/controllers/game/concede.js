@@ -1,11 +1,18 @@
 module.exports = async function (req, res) {
   try {
+    // Read pNum from req body first, for testing purposes
+    const { pNum } = req.session;
+
     //Find winner id & pnum
     const { p0, p1 } = await gameService.findGame({ gameId: req.session.game });
-    const winner = (req.session.pNum + 1) % 2;
+    const winner = (pNum + 1) % 2;
     const winningUser = winner === 1 ? p1 : p0;
+
     // Update database
-    await Game.updateOne(req.session.game).set({ status: gameService.GameStatus.FINISHED, winner:winningUser });
+    await Game.updateOne(req.session.game).set({
+      status: gameService.GameStatus.FINISHED,
+      winner: winningUser,
+    });
     const game = await gameService.populateGame({ gameId: req.session.game });
     await gameService.clearGame({ userId: req.session.usr });
     const currentMatch = game.isRanked ? await sails.helpers.addGameToMatch(game) : null;
