@@ -121,7 +121,7 @@ module.exports = {
       const populatedP0 = new tempUser(p0, p0Points);
       const populatedP1 = new tempUser(p1, p1Points);
       return new tempGame(game, spectatingUsers, populatedP0, populatedP1);
-    }catch(err){ 
+    } catch(err){ 
       return err.message;
      }
 }, //End populateGame()
