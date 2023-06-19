@@ -34,16 +34,12 @@ async function fetchSpectatorUsernames(gameId) {
 
 // Used to create fully populated game
 function tempUser(usr, points) {
-  Object.entries(usr).forEach(([key,val]) => {
-    if(key === 'encryptedPassword'){
-      return;
-    }
-    if(key === 'points'){
-      this[key] = points;
-      return;
-    }
-    this[key] = val;
-  });
+const res = {
+  ...usr,
+  points,
+};
+delete res.encryptedPassword;
+
   this.hand.sort(compareByRankThenSuit);
   this.points.sort(compareByRankThenSuit);
   this.faceCards.sort(compareByRankThenSuit);
