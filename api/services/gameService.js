@@ -33,31 +33,18 @@ async function fetchSpectatorUsernames(gameId) {
 }
 
 // Used to create fully populated game
-function tempUser(usr, points) {
-const res = {
-  ...usr,
-  points,
-};
-delete res.encryptedPassword;
-
-  this.hand.sort(compareByRankThenSuit);
-  this.points.sort(compareByRankThenSuit);
-  this.faceCards.sort(compareByRankThenSuit);
+function formatPlayerData(user, points) {
+  const res = {
+    ...user,
+    points,
+  };
+  delete res.encryptedPassword;
+  res.hand.sort(compareByRankThenSuit);
+  res.points.sort(compareByRankThenSuit);
+  res.faceCards.sort(compareByRankThenSuit);
+  return res;
 }
 
-function tempGame(game, spectatingUsers, p0, p1) {
-  Object.entries(game).forEach(([key, val]) => {
-    if(key === 'players'){
-      this[key] = [p0, p1];
-      return;
-    }
-    if(key === 'spectatingUsers'){
-      this[key] = spectatingUsers;
-      return;
-    }
-    this[key] = val;
-  });
-}
 module.exports = {
   GameResult,
   /**
@@ -118,9 +105,9 @@ module.exports = {
         cardService.findPoints({ userId: game.players[1].id })
       ]);
       // then format results
-      const populatedP0 = new tempUser(p0, p0Points);
-      const populatedP1 = new tempUser(p1, p1Points);
-      return new tempGame(game, spectatingUsers, populatedP0, populatedP1);
+      const populatedP0 = formatPlayerData(p0, p0Points);
+      const populatedP1 = formatPlayerData(p1, p1Points);
+      return {...game, players: [populatedP0, populatedP1], spectatingUsers};
     } catch(err){ 
       return err.message;
      }
