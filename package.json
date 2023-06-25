@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "4.3.35",
+  "version": "4.3.36",
   "dependencies": {
     "connect-redis": "3.0.2",
     "dayjs": "1.11.3",
@@ -34,7 +34,6 @@
     "concurrently": "^8.0.1",
     "cross-env": "^7.0.3",
     "cypress": "^11.2.0",
-    "cypress-fail-fast": "^5.0.1",
     "eslint": "8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "2.12.1",
