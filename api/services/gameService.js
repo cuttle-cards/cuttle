@@ -79,39 +79,35 @@ module.exports = {
    ** Return a fully populated Game as a Promise
    ****options = {gameId: gameId}
    */
-   populateGame: async function(options) {
-    try{
-      if (!options) {
-        if (!Object.hasOwnProperty.call(options, 'gameId') && !typeof options.gameId === 'number') {
-          throw new Error({message: 'gameId is required and must be a number'});
-        }
-        throw new Error({ message: 'Cannot populate Game without GameId (options had no gameId)' }); 
-      } 
-      // find game
-      const game = await gameService.findGame({ gameId: options.gameId });
-      
-      if (!game.players) {
-        if (game.players.length < 2) {
-          throw new Error({message: 'Cannot populate game without two players'});
-        }
-        throw new Error({message: 'Cannot populate game, because it does not have players collection'});
+  populateGame: async function (options) {
+    if (!options) {
+      if (!Object.hasOwnProperty.call(options, 'gameId') && !typeof options.gameId === 'number') {
+        throw new Error({ message: 'gameId is required and must be a number' });
       }
-      //find users and points
-      const [p0, p1, spectatingUsers, p0Points, p1Points] = await Promise.all([
-        userService.findUser({ userId: game.players[0].id }),
-        userService.findUser({ userId: game.players[1].id }),
-        fetchSpectatorUsernames(game.id),
-        cardService.findPoints({ userId: game.players[0].id }),
-        cardService.findPoints({ userId: game.players[1].id })
-      ]);
-      // then format results
-      const populatedP0 = formatPlayerData(p0, p0Points);
-      const populatedP1 = formatPlayerData(p1, p1Points);
-      return {...game, players: [populatedP0, populatedP1], spectatingUsers};
-    } catch(err){ 
-      return err.message;
-     }
-}, //End populateGame()
+      throw new Error({ message: 'Cannot populate Game without GameId (options had no gameId)' });
+    }
+    // find game
+    const game = await gameService.findGame({ gameId: options.gameId });
+
+    if (!game.players) {
+      if (game.players.length < 2) {
+        throw new Error({ message: 'Cannot populate game without two players' });
+      }
+      throw new Error({ message: 'Cannot populate game, because it does not have players collection' });
+    }
+    //find users and points
+    const [p0, p1, spectatingUsers, p0Points, p1Points] = await Promise.all([
+      userService.findUser({ userId: game.players[0].id }),
+      userService.findUser({ userId: game.players[1].id }),
+      fetchSpectatorUsernames(game.id),
+      cardService.findPoints({ userId: game.players[0].id }),
+      cardService.findPoints({ userId: game.players[1].id }),
+    ]);
+    // then format results
+    const populatedP0 = formatPlayerData(p0, p0Points);
+    const populatedP1 = formatPlayerData(p1, p1Points);
+    return { ...game, players: [populatedP0, populatedP1], spectatingUsers };
+  }, //End populateGame()
   /*
    ** Checks a game to determine if either player has won
    * @param options = {game: tmpGame, gameModel: GameModel}
