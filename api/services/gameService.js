@@ -15,7 +15,7 @@ const GameResult = Object.freeze({
  * @param {rank: number, suit: number} card1
  * @param {rank: number, suit: number} card2
  */
-function comapreByRankThenSuit(card1, card2) {
+function compareByRankThenSuit(card1, card2) {
   let res = card1.rank - card2.rank;
   if (res === 0) {
     res = card1.suit - card2.suit;
@@ -33,45 +33,18 @@ async function fetchSpectatorUsernames(gameId) {
 }
 
 // Used to create fully populated game
-function tempUser(usr, points) {
-  this.pNum = usr.pNum;
-  this.hand = usr.hand;
-  this.points = points;
-  this.faceCards = usr.faceCards;
-  this.frozenId = usr.frozenId;
-  this.id = usr.id;
-  this.username = usr.username;
-
-  this.hand.sort(comapreByRankThenSuit);
-  this.points.sort(comapreByRankThenSuit);
-  this.faceCards.sort(comapreByRankThenSuit);
+function formatPlayerData(user, points) {
+  const res = {
+    ...user,
+    points,
+  };
+  delete res.encryptedPassword;
+  res.hand.sort(compareByRankThenSuit);
+  res.points.sort(compareByRankThenSuit);
+  res.faceCards.sort(compareByRankThenSuit);
+  return res;
 }
 
-function tempGame(game, spectators, p0, p1) {
-  this.id = game.id;
-  this.players = [p0, p1];
-  this.spectatingUsers = spectators;
-  this.deck = game.deck;
-  this.scrap = game.scrap;
-  this.topCard = game.topCard;
-  this.secondCard = game.secondCard;
-  this.oneOff = game.oneOff;
-  this.oneOffTarget = game.oneOffTarget;
-  this.twos = game.twos;
-  this.log = game.log;
-  this.chat = game.chat;
-  this.id = game.id;
-  this.turn = game.turn;
-  this.passes = game.passes;
-  this.resolving = game.resolving;
-  this.lastEvent = game.lastEvent;
-  this.result = game.result;
-  this.isRanked = game.isRanked;
-  this.p0 = game.p0;
-  this.p1 = game.p1;
-  this.p0Ready = game.p0Ready;
-  this.p1Ready = game.p1Ready;
-}
 module.exports = {
   GameResult,
   /**
@@ -106,61 +79,34 @@ module.exports = {
    ** Return a fully populated Game as a Promise
    ****options = {gameId: gameId}
    */
-  populateGame: function (options) {
-    return new Promise(function (resolve, reject) {
-      if (options) {
-        if (Object.hasOwnProperty.call(options, 'gameId') && typeof options.gameId === 'number') {
-          // find game
-          return (
-            gameService
-              .findGame({ gameId: options.gameId })
-              // then find users
-              .then(function findUsers(game) {
-                if (game.players) {
-                  if (game.players.length > 1) {
-                    const p0 = userService.findUser({ userId: game.players[0].id });
-                    const p1 = userService.findUser({ userId: game.players[1].id });
-                    const spectators = fetchSpectatorUsernames(game.id);
-                    return Promise.all([Promise.resolve(game), p0, p1, spectators]);
-                  }
-                  return Promise.reject({ message: "Can't populate game without two players" });
-                }
-                return Promise.reject({
-                  message: "Can't populate game, because it does not have players collection",
-                });
-              })
-              // then find points
-              .then(function findPoints(values) {
-                const [game, p0, p1, spectators] = values;
-                const p0Points = cardService.findPoints({ userId: p0.id });
-                const p1Points = cardService.findPoints({ userId: p1.id });
-                return Promise.all([
-                  Promise.resolve(game),
-                  Promise.resolve(p0),
-                  Promise.resolve(p1),
-                  Promise.resolve(spectators),
-                  p0Points,
-                  p1Points,
-                ]);
-              })
-              // then format results & resolve
-              .then(function finish(values) {
-                const [game, p0, p1, spectators, p0Points, p1Points] = values;
-                const populatedP0 = new tempUser(p0, p0Points);
-                const populatedP1 = new tempUser(p1, p1Points);
-                const result = new tempGame(game, spectators, populatedP0, populatedP1);
-                return resolve(result);
-              })
-              .catch(function failed(err) {
-                reject(err);
-              })
-          );
-        }
-        reject({ message: 'gameId is required and must be a number' });
-      } else {
-        reject({ message: 'Cannot populate Game without GameId (options had no gameId)' });
+  populateGame: async function (options) {
+    if (!options) {
+      if (!Object.hasOwnProperty.call(options, 'gameId') && !typeof options.gameId === 'number') {
+        throw new Error({ message: 'gameId is required and must be a number' });
       }
-    });
+      throw new Error({ message: 'Cannot populate Game without GameId (options had no gameId)' });
+    }
+    // find game
+    const game = await gameService.findGame({ gameId: options.gameId });
+
+    if (!game.players) {
+      if (game.players.length < 2) {
+        throw new Error({ message: 'Cannot populate game without two players' });
+      }
+      throw new Error({ message: 'Cannot populate game, because it does not have players collection' });
+    }
+    //find users and points
+    const [p0, p1, spectatingUsers, p0Points, p1Points] = await Promise.all([
+      userService.findUser({ userId: game.players[0].id }),
+      userService.findUser({ userId: game.players[1].id }),
+      fetchSpectatorUsernames(game.id),
+      cardService.findPoints({ userId: game.players[0].id }),
+      cardService.findPoints({ userId: game.players[1].id }),
+    ]);
+    // then format results
+    const populatedP0 = formatPlayerData(p0, p0Points);
+    const populatedP1 = formatPlayerData(p1, p1Points);
+    return { ...game, players: [populatedP0, populatedP1], spectatingUsers };
   }, //End populateGame()
   /*
    ** Checks a game to determine if either player has won
