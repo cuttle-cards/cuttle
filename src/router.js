@@ -24,7 +24,10 @@ const mustBeAuthenticated = (to, from, next) => {
   if (store.state.auth.authenticated) {
     return next();
   }
-  return next('/login');
+  if (localStorage.getItem('returningUser')) {
+    return next('/login');
+  }
+  return next('/signup');
 };
 
 const logoutAndRedirect = async (to, from, next) => {
