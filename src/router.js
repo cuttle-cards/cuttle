@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
+
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import LobbyView from '@/views/LobbyView.vue';
@@ -116,3 +117,7 @@ router.beforeEach(async (to, _from, next) => {
 });
 
 export default router;
+
+
+
+

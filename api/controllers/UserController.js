@@ -11,8 +11,6 @@
 
 const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
-const setCookie = (res) =>
-  res.setHeader('Set-Cookie', `isReturningUser=true; SameSite=Strict; Max-Age=999999`);
 
 module.exports = {
   signup: async function (req, res) {
@@ -30,7 +28,6 @@ module.exports = {
       // Successfully created User - Set session data
       req.session.loggedIn = true;
       req.session.usr = user.id;
-      setCookie(res);
       return res.ok(user.id);
     } catch (err) {
       return res.badRequest(err);
@@ -49,7 +46,6 @@ module.exports = {
       await passwordAPI.checkPass(password, user.encryptedPassword);
       req.session.loggedIn = true;
       req.session.usr = user.id;
-      setCookie(res);
       return res.ok(user.id);
     } catch (err) {
       return res.badRequest(err);
