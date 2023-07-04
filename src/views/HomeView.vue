@@ -167,7 +167,6 @@ export default {
     },
   },
   async created() {
-    localStorage.setItem('returningUser', true);
     // Leave any existing lobbies before getting the game list
     // Need to make sure we do these in order so the order of operations is:
     //     leave -> list

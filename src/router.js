@@ -20,11 +20,12 @@ export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
 export const ROUTE_NAME_STATS_SEASON = 'StatsBySeason';
 
-const mustBeAuthenticated = (to, from, next) => {
+const mustBeAuthenticated = async (to, from, next) => {
   if (store.state.auth.authenticated) {
     return next();
   }
-  if (localStorage.getItem('returningUser')) {
+  await store.dispatch('getReturningUser');
+  if (store.state.auth.isReturningUser) {
     return next('/login');
   }
   return next('/signup');
@@ -120,7 +121,3 @@ router.beforeEach(async (to, _from, next) => {
 });
 
 export default router;
-
-
-
-

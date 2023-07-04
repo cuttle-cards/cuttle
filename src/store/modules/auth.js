@@ -1,5 +1,6 @@
 import { io, reconnectSockets } from '@/plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
+import { getLocalStorage, setLocalStorage } from '../../../utils/local-storage-utils.js';
 
 // TODO Figure out how to reconsolidate this with backend
 const getPlayerPnumByUsername = (players, username) => {
@@ -27,6 +28,7 @@ async function handleLogin(context, username, password, signup = false) {
     }
     await reconnectSockets();
     // If the response was successful, the user is logged in
+    context.dispatch('setReturningUser');
     context.commit('authSuccess', username);
     return;
   } catch (err) {
@@ -41,6 +43,7 @@ export default {
     authenticated: null,
     username: null,
     mustReauthenticate: false,
+    isReturningUser: null,
   },
   mutations: {
     authSuccess(state, username) {
@@ -53,6 +56,9 @@ export default {
     },
     setMustReauthenticate(state, val) {
       state.mustReauthenticate = val;
+    },
+    setIsReturningUser(state, val) {
+      state.isReturningUser = val;
     },
   },
   actions: {
@@ -90,7 +96,8 @@ export default {
           function handleResponse(res, jwres) {
             if (jwres.statusCode === 200) {
               context.commit('setMustReauthenticate', false);
-              const pNum = res.pNum ?? getPlayerPnumByUsername(context.rootState.game.players, context.state.username);
+              const pNum =
+                res.pNum ?? getPlayerPnumByUsername(context.rootState.game.players, context.state.username);
 
               context.commit('setMyPNum', pNum);
               return resolve(res);
@@ -157,6 +164,21 @@ export default {
     },
     reconnectSocket() {
       io.socket.reconnect();
+    },
+    getReturningUser(context) {
+      const { isReturningUser } = context.state;
+      if (isReturningUser === null) {
+        const val = getLocalStorage('returningUser');
+        context.commit('setIsReturningUser', val);
+        return val;
+      }
+    },
+    setReturningUser(context) {
+      const { isReturningUser } = context.state;
+      if (!isReturningUser) {
+        setLocalStorage('returningUser', true);
+        context.commit('setIsReturningUser', true);
+      }
     },
   },
 };
