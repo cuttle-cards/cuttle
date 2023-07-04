@@ -1,3 +1,6 @@
+const LS_PREFERS_RANKED_NAME = 'prefersRanked';
+const LS_IS_RETURNING_USER_NAME = 'isReturningUser';
+
 const getLocalStorage = (key) => {
   try {
     return localStorage.getItem(key);
@@ -14,4 +17,4 @@ const setLocalStorage = (key, value) => {
   }
 };
 
-export { getLocalStorage, setLocalStorage };
+export { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME, LS_IS_RETURNING_USER_NAME };

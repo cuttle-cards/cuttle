@@ -1,6 +1,10 @@
 import { io, reconnectSockets } from '@/plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
-import { getLocalStorage, setLocalStorage } from '../../../utils/local-storage-utils.js';
+import {
+  getLocalStorage,
+  setLocalStorage,
+  LS_IS_RETURNING_USER_NAME,
+} from '../../../utils/local-storage-utils.js';
 
 // TODO Figure out how to reconsolidate this with backend
 const getPlayerPnumByUsername = (players, username) => {
@@ -168,7 +172,7 @@ export default {
     getReturningUser(context) {
       const { isReturningUser } = context.state;
       if (isReturningUser === null) {
-        const val = getLocalStorage('returningUser');
+        const val = getLocalStorage(LS_IS_RETURNING_USER_NAME);
         context.commit('setIsReturningUser', val);
         return val;
       }
@@ -176,7 +180,7 @@ export default {
     setReturningUser(context) {
       const { isReturningUser } = context.state;
       if (!isReturningUser) {
-        setLocalStorage('returningUser', true);
+        setLocalStorage(LS_IS_RETURNING_USER_NAME, true);
         context.commit('setIsReturningUser', true);
       }
     },

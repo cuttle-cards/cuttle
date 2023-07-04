@@ -61,9 +61,7 @@
 
 <script>
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
-import { getLocalStorage, setLocalStorage } from '../../utils/local-storage-utils.js';
-
-const LS_PREFERS_RANKED_NAME = 'prefersRanked';
+import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '../../utils/local-storage-utils.js';
 
 export default {
   name: 'CreateGameDialog',
