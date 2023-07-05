@@ -1,4 +1,45 @@
 <template>
+  <!--////////////////////////// 
+     /////Welcome Section ///// 
+    //////////////////////////-->
+  <section>
+    <v-container fluid id="welcome-container" class="welcomeContainer">
+      <nav class="d-flex justify-space-between align-center">
+        <img class="cardLogo" :src="cardsLogo">
+        <v-btn variant="text" class="text-h6">Sign In<img class="ml-2" :src="personIcon" /></v-btn>        
+      </nav>
+
+      <div class="d-flex h-75 flex-column justify-space-around align-center">
+        <h1>Welcome to Cuttle.cards</h1>
+        <p class="text-h4">The card game that will have you hooked from the first hand!</p>
+        
+        <div class="video-container__wrapper">
+          <div class="video-container">
+            <iframe
+              class="video-container__video"
+              src="https://www.youtube.com/embed/qOqkNbhMdsI"
+              title="Cuttle Game Tutorial -- Youtube Player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            />
+          </div>
+          <!-- Grouped for the ease of styling -->
+          <v-btn
+            class="w-100 mt-8"
+            size='x-large'
+            to="/rules"
+            color="primary"
+          >Read The Rules</v-btn>
+        </div>
+
+      </div>    
+    </v-container>
+  </section>
+
+  <!--////////////////////////// 
+     /////Login Section /////// 
+    //////////////////////////-->
+
   <section>
     <v-container id="login-container" class="container">
       <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
@@ -10,7 +51,7 @@
           </p>
 
           <form @submit.prevent="submitLogin" class="mx-auto" >
-            <label for="username" class="text-h5 font-weight-medium " >Username</label>
+            <label for="username" class="text-body-1 font-weight-bold " >Username</label>
             <v-text-field
               id="username"
               class="mt-4"
@@ -20,7 +61,8 @@
               data-cy="username"
               autocomplete="username"
             />
-            <label for="password" class="text-h5 font-weight-medium">Password</label>
+
+            <label for="password" class="text-body-1 font-weight-bold">Password</label>
             <v-text-field
               id="password"
               class="mt-4 "
@@ -55,15 +97,16 @@
                 {{ switchLabelText }}
               </v-btn>
             </div>
+
             <v-btn 
               class="w-100 my-10 text-h6 h-auto py-2 "
               size="large"
               color="secondary"  
             >
-            
               <img id="discord" :src="discord" />
               Join our discord<br>community
             </v-btn>
+
           </form>
         
           <BaseSnackbar
@@ -78,6 +121,9 @@
       </v-row>
     </v-container>
   </section>
+  <!--///////////////////////// 
+     ///BlockQuote Section////
+    /////////////////////////-->
   <section>
     <v-container fluid="true" class="quote text-h5 text-center d-flex flex-column align-center">
       <blockquote>
@@ -87,12 +133,16 @@
       <cite class="my-8">Richard Garfield - <br>Creator of Magic: The Gathering</cite>
     </v-container>
   </section>
+
 </template>
 
 <script>
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 import discord from '../../public/img/discord.svg';
+import cardsLogo from '../../public/img/cardsLogo.svg';
+import personIcon from '../../public/img/personIcon.svg';
+
 
 export default {
   name: 'LoginView',
@@ -101,7 +151,9 @@ export default {
   },
   data() {
     return {
-      discord: discord,
+      personIcon,
+      cardsLogo,
+      discord,
       username: '',
       pw: '',
       showSnackBar: false,
@@ -177,6 +229,52 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.welcomeContainer{
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  color: #FFF4D7;
+  background: center / cover no-repeat  url('../../public/img/game/board-background.svg');
+  box-shadow: inset 0 0 700px -1px #000000;
+}
+
+.cardLogo{
+  height: 9vh;
+}
+
+.welcomeContainer h1{
+  font-family: 'Luckiest Guy', serif !important;
+  font-size: 80px;
+  letter-spacing:.2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.video-container__wrapper {
+  width: 65%;
+  max-width: 885px;
+  margin: 0 auto;
+}
+
+/* https://css-tricks.com/fluid-width-video/ */
+.video-container {
+  position: relative;
+  padding: 0 0 56.25%;
+  height: 0;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.video-container__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
 .container {
   width: 75%;
   margin: 10px auto;
@@ -217,6 +315,25 @@ form{
   padding: 0;
   max-width: 640px;
   margin: 0 auto;
+}
+
+@media (max-width: 660px){
+  .cardLogo{
+    height: 7vh;
+  }
+
+  .welcomeContainer h1{
+    font-size: 50px;
+  }
+
+  .welcomeContainer p{
+    font-size: 24px !important;
+  }
+
+  .video-container__wrapper {
+  width: 85%;
+  
+}
 }
 
 @media (orientation: landscape) and (max-width: 960px) {
