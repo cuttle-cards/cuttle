@@ -1,178 +1,180 @@
 <template>
-  <!--////////////////////////// 
+  <div>
+    <!--////////////////////////// 
      /////Welcome Section ///// 
     //////////////////////////-->
-  <section v-if="!isLoggingIn">
-    <v-container fluid id="welcome-container" class="welcomeContainer">
-      <nav class="d-flex justify-space-between align-center">
-        <img class="cardLogo" :src="cardsLogo">
-        <v-btn  
-          variant="text"
-          class="text-h6"
-        >
-          Sign up 
-          <img class="ml-2" :src="personIcon" />
-        </v-btn>        
-      </nav>
+    <section v-if="!isLoggingIn">
+      <v-container fluid id="welcome-container" class="welcomeContainer">
+        <nav class="d-flex justify-space-between align-center">
+          <img class="cardLogo" :src="cardsLogo">
+          <v-btn  
+            variant="text"
+            class="text-h6"
+          >
+            Sign up 
+            <img class="ml-2" :src="personIcon" />
+          </v-btn>        
+        </nav>
 
-      <div class="d-flex h-75 flex-column justify-space-around align-center">
-        <h1>Welcome to Cuttle.Cards</h1>
-        <p class="text-h4">The card game that will have you hooked from the first hand!</p>
+        <div class="d-flex h-75 flex-column justify-space-around align-center">
+          <h1>Welcome to Cuttle.Cards</h1>
+          <p class="text-h4">The card game that will have you hooked from the first hand!</p>
         
-        <div class="video-container__wrapper">
-          <div class="video-container">
-            <iframe
-              class="video-container__video"
-              src="https://www.youtube.com/embed/qOqkNbhMdsI"
-              title="Cuttle Game Tutorial -- Youtube Player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            />
+          <div class="video-container__wrapper">
+            <div class="video-container">
+              <iframe
+                class="video-container__video"
+                src="https://www.youtube.com/embed/qOqkNbhMdsI"
+                title="Cuttle Game Tutorial -- Youtube Player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              />
+            </div>
+            <!-- Grouped for the ease of styling -->
+            <v-btn
+              class="w-100 mt-8"
+              size='x-large'
+              to="/rules"
+              color="primary"
+            >Read The Rules</v-btn>
           </div>
-          <!-- Grouped for the ease of styling -->
-          <v-btn
-            class="w-100 mt-8"
-            size='x-large'
-            to="/rules"
-            color="primary"
-          >Read The Rules</v-btn>
-        </div>
 
-      </div>    
-    </v-container>
-  </section>
+        </div>    
+      </v-container>
+    </section>
 
-  <!--////////////////////////// 
+    <!--////////////////////////// 
      /////Login Section /////// 
     //////////////////////////-->
 
-  <section>
-    <v-container id="login-container" class="container">
-      <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
-      <v-row>
-        <!-- Left side form -->
-        <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12" >
-          <p class="text-h4 text-center font-weight-medium mb-10 ">
-            {{ formHeaderText }}
-          </p>
+    <section>
+      <v-container id="login-container" class="container">
+        <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
+        <v-row>
+          <!-- Left side form -->
+          <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12" >
+            <p class="text-h4 text-center font-weight-medium mb-10 ">
+              {{ formHeaderText }}
+            </p>
 
-          <form id="login" @submit.prevent="submitLogin" class="mx-auto" >
-            <label for="username" class="text-body-1 font-weight-bold " >Username</label>
-            <v-text-field
-              id="username"
-              class="mt-4"
-              v-model="username"
-              variant="solo"
-              :dense="$vuetify.display.mdAndDown ? true : false"
-              data-cy="username"
-              autocomplete="username"
-            />
+            <form id="login" @submit.prevent="submitLogin" class="mx-auto" >
+              <label for="username" class="text-body-1 font-weight-bold " >Username</label>
+              <v-text-field
+                id="username"
+                class="mt-4"
+                v-model="username"
+                variant="solo"
+                :dense="$vuetify.display.mdAndDown ? true : false"
+                data-cy="username"
+                autocomplete="username"
+              />
 
-            <label for="password" class="text-body-1 font-weight-bold">Password</label>
-            <v-text-field
-              id="password"
-              class="mt-4 "
-              v-model="pw"
-              variant="solo"
-              :dense="$vuetify.display.mdAndDown ? true : false"
-              :type="showPass ? 'text' : 'password'"
-              data-cy="password"
-              :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
-              :append-inner-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
-              @click:append-inner="showPass = !showPass"
-            />
+              <label for="password" class="text-body-1 font-weight-bold">Password</label>
+              <v-text-field
+                id="password"
+                class="mt-4 "
+                v-model="pw"
+                variant="solo"
+                :dense="$vuetify.display.mdAndDown ? true : false"
+                :type="showPass ? 'text' : 'password'"
+                data-cy="password"
+                :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
+                :append-inner-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+                @click:append-inner="showPass = !showPass"
+              />
          
-            <div
-              id="login-button-container"
-              class="d-flex flex-column flex-md-row
+              <div
+                id="login-button-container"
+                class="d-flex flex-column flex-md-row
              justify-space-between align-center flex-wrap"
-            >
-              <v-btn
-                class="px-16"
-                :loading="loading"
-                :color=" disableLogin ? 'disabled' : 'primary'"
-                type="submit"
-                size="x-large"
-                :disabled="disableLogin"
-                text-color="white"
-                data-cy="submit"
               >
-                {{ buttonText }}
-              </v-btn>
-              <v-btn
-                class="px-0 text-h6"
-                color="black"
-                variant="text"
-                data-cy="switch-mode"
-                @click="switchMode"
+                <v-btn
+                  class="px-16"
+                  :loading="loading"
+                  :color=" disableLogin ? 'disabled' : 'primary'"
+                  type="submit"
+                  size="x-large"
+                  :disabled="disableLogin"
+                  text-color="white"
+                  data-cy="submit"
+                >
+                  {{ buttonText }}
+                </v-btn>
+                <v-btn
+                  class="px-0 text-h6"
+                  color="black"
+                  variant="text"
+                  data-cy="switch-mode"
+                  @click="switchMode"
+                >
+                  {{ switchLabelText }}
+                </v-btn>
+              </div>
+
+              <v-btn 
+                class="w-100 my-10 text-h6 h-auto py-2 "
+                size="large"
+                color="secondary"  
+                href="https://discord.com/invite/9vrAZ8xGyh"
+                target="_blank"
               >
-                {{ switchLabelText }}
+                <img id="discord" :src="discord" />
+                Join our discord<br>community
               </v-btn>
-            </div>
 
-            <v-btn 
-              class="w-100 my-10 text-h6 h-auto py-2 "
-              size="large"
-              color="secondary"  
-              href="https://discord.com/invite/9vrAZ8xGyh"
-              target="_blank"
-            >
-              <img id="discord" :src="discord" />
-              Join our discord<br>community
-            </v-btn>
-
-          </form>
+            </form>
         
-          <BaseSnackbar
-            v-model="showSnackBar"
-            :message="snackBarMessage"
-            color="error"
-            data-cy="auth-snackbar"
-            @clear="clearSnackBar"
-          />
+            <BaseSnackbar
+              v-model="showSnackBar"
+              :message="snackBarMessage"
+              color="error"
+              data-cy="auth-snackbar"
+              @clear="clearSnackBar"
+            />
 
-        </v-col>
-      </v-row>
-    </v-container>
-  </section>
-  <!--///////////////////////// 
+          </v-col>
+        </v-row>
+      </v-container>
+    </section>
+    
+    <!--///////////////////////// 
      ///BlockQuote Section////
     /////////////////////////-->
-  <section>
-    <v-container fluid="true" class="quote text-h5 text-center d-flex flex-column align-center">
-      <blockquote>
-        "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I
-        known about it in college - I would have worn decks ragged through play"
-      </blockquote>  
-      <cite class="my-8">Richard Garfield - <br>Creator of Magic: The Gathering</cite>
-    </v-container>
-  </section>
+    <section>
+      <v-container fluid="true" class="quote text-h5 text-center d-flex flex-column align-center">
+        <blockquote>
+          "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I
+          known about it in college - I would have worn decks ragged through play"
+        </blockquote>  
+        <cite class="my-8">Richard Garfield - <br>Creator of Magic: The Gathering</cite>
+      </v-container>
+    </section>
 
-  <section>
-    <v-container>
-      <div class="d-flex flex-md-row flex-column align-center text-h5">
-        <p class="px-6">Cuttle is a 2 player battle card game played with a 
-          standard 52-card deck of cards. It has the strategic 
-          nuance of trading card games like Magic, with the 
-          elegant balance of a standard deck--
-          and you can play it for free! Test your mettle in 
-          the deepest cardgame under the sea!
-        </p>
-        <img class="w-50 h-50 my-6" :src="testImg" >
-      </div>
-      <div class="d-flex flex-md-row flex-column align-center text-h5 my-10">
-        <img class="w-50 h-50 my-6" :src="testImg" >
-        <p class="px-6">Cuttle is a 2 player battle card game played with a 
-          standard 52-card deck of cards. It has the strategic 
-          nuance of trading card games like Magic, with the 
-          elegant balance of a standard deck--
-          and you can play it for free! Test your mettle in 
-          the deepest cardgame under the sea!
-        </p>
-      </div>
-    </v-container>
-  </section>
-
+    <section>
+      <v-container>
+        <div class="d-flex flex-md-row flex-column align-center text-h5">
+          <p class="px-6">Cuttle is a 2 player battle card game played with a 
+            standard 52-card deck of cards. It has the strategic 
+            nuance of trading card games like Magic, with the 
+            elegant balance of a standard deck--
+            and you can play it for free! Test your mettle in 
+            the deepest cardgame under the sea!
+          </p>
+          <img class="w-50 h-50 my-6" :src="testImg" >
+        </div>
+        <div class="d-flex flex-md-row flex-column align-center text-h5 my-10">
+          <img class="w-50 h-50 my-6" :src="testImg" >
+          <p class="px-6">Cuttle is a 2 player battle card game played with a 
+            standard 52-card deck of cards. It has the strategic 
+            nuance of trading card games like Magic, with the 
+            elegant balance of a standard deck--
+            and you can play it for free! Test your mettle in 
+            the deepest cardgame under the sea!
+          </p>
+        </div>
+      </v-container>
+    </section>
+  </div>
 </template>
 
 <script>
