@@ -152,26 +152,30 @@
 
     <section>
       <v-container>
-        <div class="d-flex flex-md-row flex-column align-center text-h5">
-          <p class="px-6">Cuttle is a 2 player battle card game played with a 
-            standard 52-card deck of cards. It has the strategic 
-            nuance of trading card games like Magic, with the 
-            elegant balance of a standard deck--
-            and you can play it for free! Test your mettle in 
-            the deepest cardgame under the sea!
-          </p>
-          <img class="w-50 h-50 my-6" :src="testImg" >
-        </div>
-        <div class="d-flex flex-md-row flex-column align-center text-h5 my-10">
-          <img class="w-50 h-50 my-6" :src="testImg" >
-          <p class="px-6">Cuttle is a 2 player battle card game played with a 
-            standard 52-card deck of cards. It has the strategic 
-            nuance of trading card games like Magic, with the 
-            elegant balance of a standard deck--
-            and you can play it for free! Test your mettle in 
-            the deepest cardgame under the sea!
-          </p>
-        </div>
+        <v-col :cols="$vuetify.display.mdAndUp ? 7 : 10" class="mx-auto">
+          <div class="d-flex flex-md-row flex-column align-center text-h5">
+            <p class="px-6">Cuttle is a 2 player battle card game played with a 
+              standard 52-card deck of cards. It has the strategic 
+              nuance of trading card games like Magic, with the 
+              elegant balance of a standard deck--
+              and you can play it for free! Test your mettle in 
+              the deepest cardgame under the sea!
+            </p>
+            <img class="w-50 h-50 my-6" :src="testImg" >
+          </div>
+        </v-col>
+        <v-col :cols="$vuetify.display.mdAndUp ? 7 : 10" class="mx-auto">
+          <div class="d-flex flex-md-row flex-column align-center text-h5 my-10">
+            <img class="w-50 h-50 my-6" :src="testImg" >
+            <p class="px-6">Cuttle is a 2 player battle card game played with a 
+              standard 52-card deck of cards. It has the strategic 
+              nuance of trading card games like Magic, with the 
+              elegant balance of a standard deck--
+              and you can play it for free! Test your mettle in 
+              the deepest cardgame under the sea!
+            </p>
+          </div>
+        </v-col>
       </v-container>
     </section>
   </div>
@@ -332,14 +336,14 @@ form{
 
 .quote{
   background-color: #425CE6;
-  color: white;
+  color:#FCFDFC;
   width: 100%;
   margin: 0;
   padding: 40px 0px;
 }
 
 .quote blockquote{
-  color:#FCFDFC ;
+  
   max-width: 667px;
   text-align: center;
 }
