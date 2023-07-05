@@ -82,7 +82,11 @@
               @click:append-inner="showPass = !showPass"
             />
          
-            <div id="login-button-container" class="d-flex justify-space-between align-center flex-wrap">
+            <div
+              id="login-button-container"
+              class="d-flex flex-column flex-md-row
+             justify-space-between align-center flex-wrap"
+            >
               <v-btn
                 class="px-16"
                 :loading="loading"
@@ -144,6 +148,31 @@
     </v-container>
   </section>
 
+  <section>
+    <v-container>
+      <div class="d-flex flex-md-row flex-column align-center text-h5">
+        <p class="px-6">Cuttle is a 2 player battle card game played with a 
+          standard 52-card deck of cards. It has the strategic 
+          nuance of trading card games like Magic, with the 
+          elegant balance of a standard deck--
+          and you can play it for free! Test your mettle in 
+          the deepest cardgame under the sea!
+        </p>
+        <img class="w-50 h-50 my-6" :src="testImg" >
+      </div>
+      <div class="d-flex flex-md-row flex-column align-center text-h5 my-10">
+        <img class="w-50 h-50 my-6" :src="testImg" >
+        <p class="px-6">Cuttle is a 2 player battle card game played with a 
+          standard 52-card deck of cards. It has the strategic 
+          nuance of trading card games like Magic, with the 
+          elegant balance of a standard deck--
+          and you can play it for free! Test your mettle in 
+          the deepest cardgame under the sea!
+        </p>
+      </div>
+    </v-container>
+  </section>
+
 </template>
 
 <script>
@@ -152,6 +181,7 @@ import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 import discord from '../../public/img/discord.svg';
 import cardsLogo from '../../public/img/cardsLogo.svg';
 import personIcon from '../../public/img/personIcon.svg';
+import testImg from '../../public/img/testImg.png';
 
 export default {
   name: 'LoginView',
@@ -163,6 +193,7 @@ export default {
       personIcon,
       cardsLogo,
       discord,
+      testImg,
       username: '',
       pw: '',
       showSnackBar: false,
