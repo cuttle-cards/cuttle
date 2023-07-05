@@ -2,15 +2,22 @@
   <!--////////////////////////// 
      /////Welcome Section ///// 
     //////////////////////////-->
-  <section>
+  <section v-if="!isLoggingIn">
     <v-container fluid id="welcome-container" class="welcomeContainer">
       <nav class="d-flex justify-space-between align-center">
         <img class="cardLogo" :src="cardsLogo">
-        <v-btn variant="text" class="text-h6">Sign In<img class="ml-2" :src="personIcon" /></v-btn>        
+        <v-btn  
+          variant="text"
+          class="text-h6"
+          href="#username"
+        >
+          Sign up 
+          <img class="ml-2" :src="personIcon" />
+        </v-btn>        
       </nav>
 
       <div class="d-flex h-75 flex-column justify-space-around align-center">
-        <h1>Welcome to Cuttle.cards</h1>
+        <h1>Welcome to Cuttle.Cards</h1>
         <p class="text-h4">The card game that will have you hooked from the first hand!</p>
         
         <div class="video-container__wrapper">
@@ -50,7 +57,7 @@
             {{ formHeaderText }}
           </p>
 
-          <form @submit.prevent="submitLogin" class="mx-auto" >
+          <form id="login" @submit.prevent="submitLogin" class="mx-auto" >
             <label for="username" class="text-body-1 font-weight-bold " >Username</label>
             <v-text-field
               id="username"
