@@ -9,8 +9,10 @@ import 'vuetify/styles';
 const cuttleTheme = {
   dark: false,
   colors: {
-    primary: '#6202EE',
-    secondary: '#FD6222',
+    background: '#fff4d7',
+    primary: '#E1306C',
+    secondary: '#5865F2',
+    disabled: '#ACACAC',
     accent: '#219653',
     'accent-darken1': '#007b3b',
     'accent-darken2': '#006224',

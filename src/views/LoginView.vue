@@ -1,115 +1,98 @@
 <template>
-  <v-container id="login-container" class="container">
-    <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
+  <section>
+    <v-container id="login-container" class="container">
+      <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
+      <v-row>
+        <!-- Left side form -->
+        <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12" >
+          <p class="text-h4 text-center font-weight-medium mb-10 ">
+            {{ formHeaderText }}
+          </p>
 
-    <v-row>
-      <!-- Left side form -->
-      <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 6 : 12">
-        <h1 class="gradient-text">
-          {{ buttonText }}
-        </h1>
-
-        <form @submit.prevent="submitLogin">
-          <v-text-field
-            v-model="username"
-            variant="outlined"
-            :dense="$vuetify.display.mdAndDown ? true : false"
-            hint="Username"
-            data-cy="username"
-            autocomplete="username"
-            placeholder="Username"
-          />
-          <v-text-field
-            v-model="pw"
-            variant="outlined"
-            hint="Password"
-            :dense="$vuetify.display.mdAndDown ? true : false"
-            type="password"
-            data-cy="password"
-            :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
-            placeholder="Password"
-          />
-          <div id="login-button-container">
-            <v-btn
-              :loading="loading"
-              color="primary"
-              block
-              type="submit"
-              data-cy="submit"
+          <form @submit.prevent="submitLogin" class="mx-auto" >
+            <label for="username" class="text-h5 font-weight-medium " >Username</label>
+            <v-text-field
+              id="username"
+              class="mt-4"
+              v-model="username"
+              variant="solo"
+              :dense="$vuetify.display.mdAndDown ? true : false"
+              data-cy="username"
+              autocomplete="username"
+            />
+            <label for="password" class="text-h5 font-weight-medium">Password</label>
+            <v-text-field
+              id="password"
+              class="mt-4 "
+              v-model="pw"
+              variant="solo"
+              :dense="$vuetify.display.mdAndDown ? true : false"
+              type="password"
+              data-cy="password"
+              :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
+            />
+         
+            <div id="login-button-container" class="d-flex justify-space-between align-center flex-wrap">
+              <v-btn
+                class="px-16"
+                :loading="loading"
+                :color=" disabledLogin ? 'disabled' : 'primary'"
+                type="submit"
+                size="x-large"
+                :disabled="disabledLogin"
+                text-color="white"
+                data-cy="submit"
+              >
+                {{ buttonText }}
+              </v-btn>
+              <v-btn
+                class="px-0 text-h6"
+                color="black"
+                variant="text"
+                data-cy="switch-mode"
+                @click="switchMode"
+              >
+                {{ switchLabelText }}
+              </v-btn>
+            </div>
+            <v-btn 
+              class="w-100 my-10 text-h6 h-auto py-2 "
+              size="large"
+              color="secondary"  
             >
-              {{ buttonText }}
+            
+              <img id="discord" :src="discord" />
+              Join our discord<br>community
             </v-btn>
-          </div>
-        </form>
+          </form>
+        
+          <BaseSnackbar
+            v-model="showSnackBar"
+            :message="snackBarMessage"
+            color="error"
+            data-cy="auth-snackbar"
+            @clear="clearSnackBar"
+          />
 
-        <div id="switch-button-container">
-          <v-btn
-            color="primary"
-            variant="text"
-            data-cy="switch-mode"
-            @click="switchMode"
-          >
-            {{ switchLabelText }}
-          </v-btn>
-        </div>
-
-        <BaseSnackbar
-          v-model="showSnackBar"
-          :message="snackBarMessage"
-          color="error"
-          data-cy="auth-snackbar"
-          @clear="clearSnackBar"
-        />
-
-      </v-col>
-    </v-row>
-
-    <v-row class="mt-8">
-      <h1 class="gradient-text">What is Cuttle?</h1>
-    </v-row>
-
-    <v-row class="mt-0">
-      <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="d-flex justify-start flex-column mt-4">
-        <blockquote class="quote">
-          "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I
-          known about it in college - I would have worn decks ragged through play"
-          <cite>Richard Garfield - Creator of Magic: The Gathering</cite>
-        </blockquote>
-        <p>
-          Cuttle is a 2 player battle card game played with a standard 52-card deck of cards. It has the
-          strategic nuance of trading card games like Magic, with the elegant balance of a standard deck--and
-          you can play it for free! Test your mettle in the deepest cardgame under the sea!
-        </p>
-        <p>
-          Be the first to score 21 points in this explosive battle of wits. Mount a valiant offense while
-          disrupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the
-          Deep?
-        </p>
-        <v-btn
-          color="primary"
-          to="/rules"
-          class="mt-4 align-self-center"
-          max-width="500"
-          data-cy="rules-link"
-        >
-          Learn the Rules
-        </v-btn>
-      </v-col>
-      <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="mt-2 mb-4">
-        <v-img
-          src="/img/game/cuttle-one-off-ace.png"
-          alt="Cuttle Game Ace One-Off"
-          cover
-        />
-      </v-col>
-    </v-row>
-  </v-container>
+        </v-col>
+      </v-row>
+    </v-container>
+  </section>
+  <section>
+    <v-container fluid="true" class="quote text-h5 text-center d-flex flex-column align-center">
+      <blockquote>
+        "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I
+        known about it in college - I would have worn decks ragged through play"
+      </blockquote>  
+      <cite class="my-8">Richard Garfield - <br>Creator of Magic: The Gathering</cite>
+    </v-container>
+  </section>
 </template>
 
 <script>
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
-
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
+import discord from '../../public/img/discord.svg';
 
 export default {
   name: 'LoginView',
@@ -118,6 +101,7 @@ export default {
   },
   data() {
     return {
+      discord: discord,
       username: '',
       pw: '',
       showSnackBar: false,
@@ -128,6 +112,12 @@ export default {
   computed: {
     isLoggingIn() {
       return this.$route.name === ROUTE_NAME_LOGIN;
+    },
+    formHeaderText() {
+      if (this.isLoggingIn) {
+        return 'Log In to get Started!';
+      }
+      return 'Sign up now to start playing and get ready to dive into the world of Cuttle.';
     },
     buttonText() {
       if (this.isLoggingIn) {
@@ -141,6 +131,9 @@ export default {
       }
       return 'Already have an account?';
     },
+    disabledLogin(){
+      return this.pw.length < 8 && this.username < 1;
+    }
   },
   methods: {
     async submitLogin() {
@@ -192,39 +185,38 @@ export default {
   flex-direction: column;
 }
 
+form{
+  max-width: 540px;
+}
+
+.quote{
+  background-color: #425CE6;
+  color: white;
+  width: 100%;
+  margin: 0;
+  padding: 40px 0px;
+}
+
+.quote blockquote{
+  color:#FCFDFC ;
+  max-width: 667px;
+  text-align: center;
+}
+
 #logo {
   height: 20vh;
-  margin: 0 auto;
+  margin: 60px auto 40px auto;
+}
+
+#discord{
+  max-height: 48px;
+  margin-right: 18px;
 }
 
 #username-login-form {
-  margin: 10px auto;
-}
-
-#login-container button.v-btn {
-  padding: 0 32px 0;
-}
-#login-button-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-#switch-button-container {
-  display: flex;
-  position: relative;
-  width: 100%;
-  justify-content: center;
-  margin-top: 16px;
-}
-blockquote.quote {
-  padding: 0px 16px;
-  border-left: 2px solid rgba(var(--v-theme-neutral));
-  margin: 16px 0;
-  & cite {
-    display: block;
-  }
+  padding: 0;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 @media (orientation: landscape) and (max-width: 960px) {
