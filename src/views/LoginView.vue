@@ -9,7 +9,6 @@
         <v-btn  
           variant="text"
           class="text-h6"
-          href="#username"
         >
           Sign up 
           <img class="ml-2" :src="personIcon" />
@@ -76,19 +75,21 @@
               v-model="pw"
               variant="solo"
               :dense="$vuetify.display.mdAndDown ? true : false"
-              type="password"
+              :type="showPass ? 'text' : 'password'"
               data-cy="password"
               :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
+              :append-inner-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+              @click:append-inner="showPass = !showPass"
             />
          
             <div id="login-button-container" class="d-flex justify-space-between align-center flex-wrap">
               <v-btn
                 class="px-16"
                 :loading="loading"
-                :color=" disabledLogin ? 'disabled' : 'primary'"
+                :color=" disableLogin ? 'disabled' : 'primary'"
                 type="submit"
                 size="x-large"
-                :disabled="disabledLogin"
+                :disabled="disableLogin"
                 text-color="white"
                 data-cy="submit"
               >
@@ -109,6 +110,8 @@
               class="w-100 my-10 text-h6 h-auto py-2 "
               size="large"
               color="secondary"  
+              href="https://discord.com/invite/9vrAZ8xGyh"
+              target="_blank"
             >
               <img id="discord" :src="discord" />
               Join our discord<br>community
@@ -150,7 +153,6 @@ import discord from '../../public/img/discord.svg';
 import cardsLogo from '../../public/img/cardsLogo.svg';
 import personIcon from '../../public/img/personIcon.svg';
 
-
 export default {
   name: 'LoginView',
   components: {
@@ -166,6 +168,7 @@ export default {
       showSnackBar: false,
       snackBarMessage: '',
       loading: false,
+      showPass: false,
     };
   },
   computed: {
@@ -190,8 +193,8 @@ export default {
       }
       return 'Already have an account?';
     },
-    disabledLogin(){
-      return this.pw.length < 8 && this.username < 1;
+    disableLogin(){
+      return this.pw.length < 8 || this.username < 1;
     }
   },
   methods: {
