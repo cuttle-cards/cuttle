@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    v-if="showNav"
+    v-if="authenticated"
     color="primary"
     data-cy="nav-drawer"
     permanent
@@ -77,9 +77,6 @@ export default {
             { text: 'Play', icon: 'play', page: { name: ROUTE_NAME_HOME } },
             { text: 'Stats', icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
           ];
-    },
-    showNav() {
-      return this.$route.meta?.hideNavigation !== true;
     },
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
