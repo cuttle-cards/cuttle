@@ -24,8 +24,8 @@ const mustBeAuthenticated = (to, from, next) => {
   if (store.state.auth.authenticated) {
     return next();
   }
-  store.dispatch('getReturningUser');
-  if (store.state.auth.isReturningUser) {
+  const isReturningUser = store.dispatch('getReturningUser');
+  if (isReturningUser === 'true') {
     return next('/login');
   }
   return next('/signup');
