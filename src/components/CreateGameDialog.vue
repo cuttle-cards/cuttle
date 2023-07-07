@@ -61,8 +61,7 @@
 
 <script>
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
-
-const LS_PREFERS_RANKED_NAME = 'prefersRanked';
+import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '../../utils/local-storage-utils.js';
 
 export default {
   name: 'CreateGameDialog',
@@ -109,15 +108,11 @@ export default {
       this.cancelCreateGame();
     },
     setRankedPreference(prefersRanked) {
-      try {
-        localStorage.setItem(LS_PREFERS_RANKED_NAME, prefersRanked === true);
-      } catch (err) {
-        // Local storage is full or something else happened so don't set the value
-      }
+      setLocalStorage(LS_PREFERS_RANKED_NAME, prefersRanked === true);
       this.isRanked = prefersRanked;
     },
     getRankedPreference() {
-      return localStorage.getItem(LS_PREFERS_RANKED_NAME) === 'true';
+      return getLocalStorage(LS_PREFERS_RANKED_NAME) === 'true';
     },
   },
 };

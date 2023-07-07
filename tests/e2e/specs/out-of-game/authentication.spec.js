@@ -39,6 +39,20 @@ describe('Auth - Page Content', () => {
     cy.get('[data-cy=rules-link]').click();
     cy.hash().should('eq', '#/rules');
   });
+
+    
+  it('Navigates to /login if returning visiter, /signup if first new visiter', () => {
+    cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=username]').type(myUser.username + '{enter}');
+    cy.get('[data-nav=Logout]').click();
+    cy.visit('/');
+    cy.hash().should('eq', '#/login');
+    cy.clearLocalStorage();
+    cy.visit('/');
+    cy.hash().should('eq', '#/signup');
+  });
+
+
 });
 
 describe('Logging In', () => {

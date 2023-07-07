@@ -56,7 +56,7 @@ describe('Stats Page Error States', () => {
   it('Redirects to login when attempting to navigate to stats while unauthenticated', () => {
     cy.wipeDatabase();
     cy.visit('/#/stats');
-    cy.hash().should('eq', '#/login');
+    cy.hash().should('eq', '#/signup');
   });
 });
 
