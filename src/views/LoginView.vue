@@ -5,18 +5,19 @@
     //////////////////////////-->
     <section v-if="!isLoggingIn">
       <v-container fluid id="welcome-container" class="welcomeContainer">
-        <nav class="d-flex justify-space-between align-center">
-          <img class="cardLogo" :src="cardsLogo">
+        <nav class="d-flex justify-space-between align-center mb-2">
+          <img class="cardLogo" src="img/loginView/logo-cards-behind.svg">
           <v-btn  
             variant="text"
             class="text-h6"
+            @click ="$refs.usernameInput.focus()"
           >
             Sign up 
-            <img class="ml-2" :src="personIcon" />
+            <img class="ml-2" src="img/loginView/icon-account.svg" />
           </v-btn>        
         </nav>
 
-        <div class="d-flex h-75 flex-column justify-space-around align-center">
+        <div class="d-flex h-75 flex-column justify-space-around align-center mt-2">
           <h1>Welcome to Cuttle.Cards</h1>
           <p class="text-h4 mb-4">The card game that will have you hooked from the first hand!</p>
         
@@ -35,7 +36,7 @@
               class="w-100 mt-8"
               size='x-large'
               to="/rules"
-              color="primary"
+              color="newPrimary"
             >Read The Rules</v-btn>
           </div>
 
@@ -60,6 +61,7 @@
             <form id="login" @submit.prevent="submitLogin" class="mx-auto" >
               <label for="username" class="text-body-1 font-weight-bold " >Username</label>
               <v-text-field
+                ref="usernameInput"
                 id="username"
                 class="mt-4"
                 v-model="username"
@@ -114,11 +116,11 @@
               <v-btn 
                 class="w-100 my-10 text-h6 h-auto py-2 "
                 size="large"
-                color="secondary"  
+                color="newSecondary"  
                 href="https://discord.com/invite/9vrAZ8xGyh"
                 target="_blank"
               >
-                <img id="discord" :src="discord" />
+                <img class="discord" src="img/loginView/logo-discord.svg" />
                 Join our discord<br>community
               </v-btn>
 
@@ -141,7 +143,7 @@
      ///BlockQuote Section////
     /////////////////////////-->
     <section>
-      <v-container fluid="true" class="quote text-h5 text-center d-flex flex-column align-center">
+      <v-container fluid class="quote text-h5 text-center d-flex flex-column align-center">
         <blockquote>
           "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I
           known about it in college - I would have worn decks ragged through play"
@@ -162,12 +164,12 @@
               and you can play it for free! Test your mettle in 
               the deepest cardgame under the sea!
             </p>
-            <img class="w-50 h-50 my-6" :src="testImg" >
+            <img class="w-50 h-50 my-6" src="img/loginView/game-screenshot-1.png" >
           </div>
         </v-col>
         <v-col :cols="$vuetify.display.mdAndUp ? 10 : 12" class="mx-auto">
           <div class="d-flex flex-md-row flex-column align-center text-h5 my-10">
-            <img class="w-50 h-50 my-6" :src="testImg" >
+            <img class="w-50 h-50 my-6" src="img/loginView/game-screenshot-2.png" >
             <p class="px-8">Be the first to score 21 points in this explosive battle of wits. 
               Mount a valient offense while disupting your opponent with dastardly tricks. 
               Do you have what it takes to become the Lord of the Deep?
@@ -182,10 +184,6 @@
 <script>
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
-import discord from '../../public/img/landingPage/discord.svg';
-import cardsLogo from '../../public/img/landingPage/cardsLogo.svg';
-import personIcon from '../../public/img/landingPage/personIcon.svg';
-import testImg from '../../public/img/landingPage/testImg.png';
 
 export default {
   name: 'LoginView',
@@ -194,10 +192,6 @@ export default {
   },
   data() {
     return {
-      personIcon,
-      cardsLogo,
-      discord,
-      testImg,
       username: '',
       pw: '',
       showSnackBar: false,
@@ -280,7 +274,7 @@ export default {
   height: 100vh;
   text-align: center;
   color: #FFF4D7;
-  background: center / cover no-repeat  url('../../public/img/game/board-background.svg');
+  background: center / cover no-repeat  url('img/game/board-background.svg');
   box-shadow: inset 0 0 700px -1px #000000;
 }
 
@@ -290,15 +284,15 @@ export default {
 
 .welcomeContainer h1{
   font-family: 'Luckiest Guy', serif !important;
-  font-size: 80px;
+  font-size: 5rem;
   letter-spacing:.2rem;
   max-width: 800px;
   margin: 0 auto;
 }
 
 .video-container__wrapper {
-  width: 65%;
-  max-width: 750px;
+  width: 50%;
+  max-width: 650px;
   margin: 0 auto;
 }
 
@@ -351,7 +345,7 @@ form{
   margin: 60px auto 40px auto;
 }
 
-#discord{
+.discord{
   max-height: 48px;
   margin-right: 18px;
 }
