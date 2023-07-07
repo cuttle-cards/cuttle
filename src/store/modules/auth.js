@@ -32,7 +32,7 @@ async function handleLogin(context, username, password, signup = false) {
     }
     await reconnectSockets();
     // If the response was successful, the user is logged in
-    context.dispatch('setReturningUser');
+    context.dispatch('setIsReturningUser');
     context.commit('authSuccess', username);
     return;
   } catch (err) {

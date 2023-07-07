@@ -20,11 +20,11 @@ export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
 export const ROUTE_NAME_STATS_SEASON = 'StatsBySeason';
 
-const mustBeAuthenticated = (to, from, next) => {
+const mustBeAuthenticated = async (to, from, next) => {
   if (store.state.auth.authenticated) {
     return next();
   }
-  const isReturningUser = store.dispatch('getReturningUser');
+  const isReturningUser = await store.dispatch('getIsReturningUser');
   if (isReturningUser === 'true') {
     return next('/login');
   }
