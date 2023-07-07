@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    v-if="authenticated"
+    v-if="showNav"
     color="primary"
     data-cy="nav-drawer"
     permanent
@@ -42,12 +42,14 @@ import {
   ROUTE_NAME_STATS,
 } from '@/router.js';
 
+
 export default {
   name: 'NavigationDrawer',
   data() {
     return {
       // User controlls for collapsing only available on desktop
       userHasCollapsed: false,
+      showNav: false,
     };
   },
   computed: {
@@ -92,5 +94,11 @@ export default {
       return this.userHasCollapsed ? 'mdi-arrow-right' : 'mdi-arrow-left';
     },
   },
+  watch:{
+  '$route.meta'(value){
+    const {hideNavigation} = value;
+    this.showNav = !hideNavigation;
+  }
+ }
 };
 </script>
