@@ -166,7 +166,7 @@ export default {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
   },
-  async mounted() {
+  async created() {
     // Leave any existing lobbies before getting the game list
     // Need to make sure we do these in order so the order of operations is:
     //     leave -> list

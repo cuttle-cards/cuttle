@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
+
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import LobbyView from '@/views/LobbyView.vue';
@@ -19,11 +20,15 @@ export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
 export const ROUTE_NAME_STATS_SEASON = 'StatsBySeason';
 
-const mustBeAuthenticated = (to, from, next) => {
+const mustBeAuthenticated = async (to, from, next) => {
   if (store.state.auth.authenticated) {
     return next();
   }
-  return next('/login');
+  const isReturningUser = await store.dispatch('getIsReturningUser');
+  if (isReturningUser === 'true') {
+    return next('/login');
+  }
+  return next('/signup');
 };
 
 const logoutAndRedirect = async (to, from, next) => {
