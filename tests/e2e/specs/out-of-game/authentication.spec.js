@@ -30,7 +30,7 @@ function assertFailedAuth(path) {
 describe('Auth - Page Content', () => {
   beforeEach(() => {
     cy.wipeDatabase();
-    cy.visit('#/login');
+    cy.visit('#/signup');
     cy.signupOpponent(myUser);
   });
 
@@ -40,8 +40,8 @@ describe('Auth - Page Content', () => {
     cy.hash().should('eq', '#/rules');
   });
 
-    
   it('Navigates to /login if returning visiter, /signup if first new visiter', () => {
+    cy.wipeDatabase();
     cy.get('[data-cy=password]').type(myUser.password);
     cy.get('[data-cy=username]').type(myUser.username + '{enter}');
     cy.get('[data-nav=Logout]').click();
