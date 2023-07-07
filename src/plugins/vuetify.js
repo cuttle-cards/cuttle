@@ -9,7 +9,6 @@ import 'vuetify/styles';
 const cuttleTheme = {
   dark: false,
   colors: {
-    background: '#fff4d7',
     primary: '#6202EE',
     secondary: '#FD6222',
     newPrimary: '#E1306C',

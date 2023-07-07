@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="loginViewContainer">
     <!--////////////////////////// 
      /////Welcome Section ///// 
     //////////////////////////-->
@@ -282,6 +282,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.loginViewContainer{
+  background-color: #fff4d7;
+}
 
 .welcomeContainer{
   width: 100vw;
