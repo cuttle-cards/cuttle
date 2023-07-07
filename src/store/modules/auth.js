@@ -169,7 +169,7 @@ export default {
     reconnectSocket() {
       io.socket.reconnect();
     },
-    getReturningUser(context) {
+    getIsReturningUser(context) {
       const { isReturningUser } = context.state;
       if (isReturningUser === null) {
         const val = getLocalStorage(LS_IS_RETURNING_USER_NAME);
@@ -177,7 +177,7 @@ export default {
         return val;
       }
     },
-    setReturningUser(context) {
+    setIsReturningUser(context) {
       const { isReturningUser } = context.state;
       if (!isReturningUser) {
         setLocalStorage(LS_IS_RETURNING_USER_NAME, true);
