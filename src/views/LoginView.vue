@@ -37,6 +37,7 @@
               size='x-large'
               to="/rules"
               color="newPrimary"
+              data-cy="rules-link"
             >Read The Rules</v-btn>
           </div>
 
@@ -58,7 +59,7 @@
               {{ formHeaderText }}
             </p>
 
-            <form id="login" @submit.prevent="submitLogin" class="mx-auto" >
+            <v-form id="login" @submit.prevent="submitLogin" class="mx-auto" >
               <label for="username" class="text-body-1 font-weight-bold " >Username</label>
               <v-text-field
                 ref="usernameInput"
@@ -66,6 +67,7 @@
                 class="mt-4"
                 v-model="username"
                 variant="solo"
+                :rules="usernameRules"
                 :dense="$vuetify.display.mdAndDown ? true : false"
                 data-cy="username"
                 autocomplete="username"
@@ -74,9 +76,10 @@
               <label for="password" class="text-body-1 font-weight-bold">Password</label>
               <v-text-field
                 id="password"
-                class="mt-4 "
+                class="my-4"
                 v-model="pw"
                 variant="solo"
+                :rules="passwordRules"
                 :dense="$vuetify.display.mdAndDown ? true : false"
                 :type="showPass ? 'text' : 'password'"
                 data-cy="password"
@@ -93,10 +96,10 @@
                 <v-btn
                   class="px-16"
                   :loading="loading"
-                  :color=" disableLogin ? 'disabled' : 'primary'"
+                  :disabled="disableLogin"
+                  :color=" disableLogin ? 'disabled' : 'newPrimary'"
                   type="submit"
                   size="x-large"
-                  :disabled="disableLogin"
                   text-color="white"
                   data-cy="submit"
                 >
@@ -124,7 +127,7 @@
                 Join our discord<br>community
               </v-btn>
 
-            </form>
+            </v-form>
         
             <BaseSnackbar
               v-model="showSnackBar"
@@ -198,6 +201,14 @@ export default {
       snackBarMessage: '',
       loading: false,
       showPass: false,
+      usernameRules:[value => {
+        if(value.match(/^[\w.@-]+$/)) return true;
+        return 'Username must contain only letters or numbers';
+      }],
+      passwordRules:[value => {
+        if(value.length >= 8) return true;
+        return 'Password must contain at least eight characters';
+      }],
     };
   },
   computed: {
@@ -223,7 +234,7 @@ export default {
       return 'Already have an account?';
     },
     disableLogin(){
-      return this.pw.length < 8 || this.username < 1;
+      return this.pw.length < 8 || !this.username.match(/^[\w.@-]+$/) ;
     }
   },
   methods: {
