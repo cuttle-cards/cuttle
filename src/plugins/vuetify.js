@@ -10,8 +10,10 @@ const cuttleTheme = {
   dark: false,
   colors: {
     background: '#fff4d7',
-    primary: '#E1306C',
-    secondary: '#5865F2',
+    primary: '#6202EE',
+    secondary: '#FD6222',
+    newPrimary: '#E1306C',
+    newSecondary: '#5865F2',
     disabled: '#ACACAC',
     accent: '#219653',
     'accent-darken1': '#007b3b',
