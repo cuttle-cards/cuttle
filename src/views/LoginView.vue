@@ -18,7 +18,7 @@
 
         <div class="d-flex h-75 flex-column justify-space-around align-center">
           <h1>Welcome to Cuttle.Cards</h1>
-          <p class="text-h4">The card game that will have you hooked from the first hand!</p>
+          <p class="text-h4 mb-4">The card game that will have you hooked from the first hand!</p>
         
           <div class="video-container__wrapper">
             <div class="video-container">
@@ -145,16 +145,17 @@
         <blockquote>
           "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I
           known about it in college - I would have worn decks ragged through play"
-        </blockquote>  
-        <cite class="my-8">Richard Garfield - <br>Creator of Magic: The Gathering</cite>
+        </blockquote> 
+        <br> 
+        <cite >Richard Garfield - <br>Creator of Magic: The Gathering</cite>
       </v-container>
     </section>
 
     <section>
       <v-container>
-        <v-col :cols="$vuetify.display.mdAndUp ? 7 : 10" class="mx-auto">
+        <v-col :cols="$vuetify.display.mdAndUp ? 10 : 12" class="mx-auto">
           <div class="d-flex flex-md-row flex-column align-center text-h5">
-            <p class="px-6">Cuttle is a 2 player battle card game played with a 
+            <p class="px-8">Cuttle is a 2 player battle card game played with a 
               standard 52-card deck of cards. It has the strategic 
               nuance of trading card games like Magic, with the 
               elegant balance of a standard deck--
@@ -164,15 +165,12 @@
             <img class="w-50 h-50 my-6" :src="testImg" >
           </div>
         </v-col>
-        <v-col :cols="$vuetify.display.mdAndUp ? 7 : 10" class="mx-auto">
+        <v-col :cols="$vuetify.display.mdAndUp ? 10 : 12" class="mx-auto">
           <div class="d-flex flex-md-row flex-column align-center text-h5 my-10">
             <img class="w-50 h-50 my-6" :src="testImg" >
-            <p class="px-6">Cuttle is a 2 player battle card game played with a 
-              standard 52-card deck of cards. It has the strategic 
-              nuance of trading card games like Magic, with the 
-              elegant balance of a standard deck--
-              and you can play it for free! Test your mettle in 
-              the deepest cardgame under the sea!
+            <p class="px-8">Be the first to score 21 points in this explosive battle of wits. 
+              Mount a valient offense while disupting your opponent with dastardly tricks. 
+              Do you have what it takes to become the Lord of the Deep?
             </p>
           </div>
         </v-col>
@@ -184,10 +182,10 @@
 <script>
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
-import discord from '../../public/img/discord.svg';
-import cardsLogo from '../../public/img/cardsLogo.svg';
-import personIcon from '../../public/img/personIcon.svg';
-import testImg from '../../public/img/testImg.png';
+import discord from '../../public/img/landingPage/discord.svg';
+import cardsLogo from '../../public/img/landingPage/cardsLogo.svg';
+import personIcon from '../../public/img/landingPage/personIcon.svg';
+import testImg from '../../public/img/landingPage/testImg.png';
 
 export default {
   name: 'LoginView',
@@ -300,7 +298,7 @@ export default {
 
 .video-container__wrapper {
   width: 65%;
-  max-width: 885px;
+  max-width: 750px;
   margin: 0 auto;
 }
 
@@ -319,6 +317,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+  border: none;
 }
 
 
@@ -343,8 +342,7 @@ form{
 }
 
 .quote blockquote{
-  
-  max-width: 667px;
+  max-width: 550px;
   text-align: center;
 }
 
