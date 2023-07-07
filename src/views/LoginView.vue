@@ -59,7 +59,12 @@
               {{ formHeaderText }}
             </p>
 
-            <v-form id="login" @submit.prevent="submitLogin" class="mx-auto" >
+            <v-form
+              v-model="isFormValid"
+              id="login"
+              @submit.prevent="submitLogin"
+              class="mx-auto"
+            >
               <label for="username" class="text-body-1 font-weight-bold " >Username</label>
               <v-text-field
                 ref="usernameInput"
@@ -96,8 +101,8 @@
                 <v-btn
                   class="px-16"
                   :loading="loading"
-                  :disabled="disableLogin"
-                  :color=" disableLogin ? 'disabled' : 'newPrimary'"
+                  :disabled="!isFormValid"
+                  :color=" isFormValid ? 'newPrimary' : 'disabled'"
                   type="submit"
                   size="x-large"
                   text-color="white"
@@ -201,6 +206,7 @@ export default {
       snackBarMessage: '',
       loading: false,
       showPass: false,
+      isFormValid:false,
       usernameRules:[value => {
         if(value.match(/^[\w.@-]+$/)) return true;
         return 'Username must contain only letters or numbers';
@@ -233,9 +239,6 @@ export default {
       }
       return 'Already have an account?';
     },
-    disableLogin(){
-      return this.pw.length < 8 || !this.username.match(/^[\w.@-]+$/) ;
-    }
   },
   methods: {
     async submitLogin() {
