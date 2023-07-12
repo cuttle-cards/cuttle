@@ -6,14 +6,14 @@
     <section v-if="!isLoggingIn">
       <v-container fluid id="welcome-container" class="welcomeContainer">
         <nav class="d-flex justify-space-between align-center mb-2">
-          <img class="cardLogo" src="img/loginView/logo-cards-behind.svg">
+          <img class="cardLogo" src="public/img/loginView/logo-cards-behind.svg">
           <v-btn  
             variant="text"
             class="text-h6"
             @click ="$refs.usernameInput.focus()"
           >
             Sign up 
-            <img class="ml-2" src="img/loginView/icon-account.svg" />
+            <img class="ml-2" src="public/img/loginView/icon-account.svg" />
           </v-btn>        
         </nav>
 
@@ -51,7 +51,7 @@
 
     <section>
       <v-container id="login-container" class="container">
-        <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
+        <img id="logo" alt="Cuttle logo" src="public/img/logo.png" />
         <v-row>
           <!-- Left side form -->
           <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12" >
@@ -128,7 +128,7 @@
                 href="https://discord.com/invite/9vrAZ8xGyh"
                 target="_blank"
               >
-                <img class="discord" src="img/loginView/logo-discord.svg" />
+                <img class="discord" src="public/img/loginView/logo-discord.svg" />
                 Join our discord<br>community
               </v-btn>
 
@@ -172,12 +172,12 @@
               and you can play it for free! Test your mettle in 
               the deepest cardgame under the sea!
             </p>
-            <img class="w-50 h-50 my-6" src="img/loginView/game-screenshot-1.png" >
+            <img class="w-50 h-50 my-6" src="public/img/loginView/game-screenshot-1.png" >
           </div>
         </v-col>
         <v-col :cols="$vuetify.display.mdAndUp ? 10 : 12" class="mx-auto">
           <div class="d-flex flex-md-row flex-column align-center text-h5 my-10">
-            <img class="w-50 h-50 my-6" src="img/loginView/game-screenshot-2.png" >
+            <img class="w-50 h-50 my-6" src="public/img/loginView/game-screenshot-2.png" >
             <p class="px-8">Be the first to score 21 points in this explosive battle of wits. 
               Mount a valient offense while disupting your opponent with dastardly tricks. 
               Do you have what it takes to become the Lord of the Deep?
