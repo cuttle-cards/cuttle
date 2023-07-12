@@ -288,8 +288,8 @@ export default {
 }
 
 .welcomeContainer{
-  width: 100vw;
-  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
   text-align: center;
   color: #FFF4D7;
   background: center / cover no-repeat  url('img/game/board-background.svg');
