@@ -297,6 +297,7 @@ export default {
 }
 
 .cardLogo{
+  min-height: 80px;
   height: 9vh;
 }
 
@@ -359,6 +360,7 @@ form{
 }
 
 #logo {
+  min-height: 150px;
   height: 20vh;
   margin: 60px auto 40px auto;
 }
