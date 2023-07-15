@@ -42,16 +42,25 @@ const routes = [
     name: 'Home',
     component: HomeView,
     beforeEnter: mustBeAuthenticated,
+    meta: {
+      showNavigation: true,
+    },
   },
   {
     path: '/login',
     name: ROUTE_NAME_LOGIN,
     component: LoginView,
+    meta: {
+      showNavigation: false,
+    },
   },
   {
     path: '/signup',
     name: ROUTE_NAME_SIGNUP,
     component: LoginView,
+    meta: {
+      showNavigation: false,
+    },
   },
   // This route is just a passthrough to make sure the user is fully logged out before putting
   // them on the login screen
@@ -59,11 +68,17 @@ const routes = [
     path: '/logout',
     name: ROUTE_NAME_LOGOUT,
     beforeEnter: logoutAndRedirect,
+    meta: {
+      showNavigation: true,
+    },
   },
   {
     path: '/rules',
     name: ROUTE_NAME_RULES,
     component: RulesView,
+    meta: {
+      showNavigation: true,
+    },
   },
   {
     name: ROUTE_NAME_LOBBY,
@@ -72,7 +87,7 @@ const routes = [
     // TODO: Add logic to redirect if a given game does not exist
     beforeEnter: mustBeAuthenticated,
     meta: {
-      hideNavigation: true,
+      showNavigation: false,
     },
   },
   {
@@ -83,7 +98,7 @@ const routes = [
     // mustBeAuthenticated intentionally left off here
     // If a user refreshes the relogin modal will fire and allow them to continue playing
     meta: {
-      hideNavigation: true,
+      showNavigation: false,
     },
   },
   {
@@ -91,7 +106,7 @@ const routes = [
     path: '/spectate/:gameId',
     component: GameView,
     meta: {
-      hideNavigation: true,
+      showNavigation: false,
     },
   },
   {
@@ -99,12 +114,18 @@ const routes = [
     name: ROUTE_NAME_STATS,
     component: StatsView,
     beforeEnter: mustBeAuthenticated,
+    meta: {
+      showNavigation: true,
+    },
   },
   {
     path: '/stats/:seasonId',
     name: ROUTE_NAME_STATS_SEASON,
     component: StatsView,
     beforeEnter: mustBeAuthenticated,
+    meta: {
+      showNavigation: true,
+    },
   },
 ];
 
@@ -118,7 +139,7 @@ router.beforeEach(async (to, _from, next) => {
   // We do this before the route resolves to preempt the reauth/logout logic
   await store.dispatch('requestStatus', to);
   if (!store.state.auth.authenticated) {
-    to.meta.hideNavigation = true;
+    to.meta.showNavigation = false;
   }
   next();
 });
