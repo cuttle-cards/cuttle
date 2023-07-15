@@ -115,7 +115,7 @@ const routes = [
     component: StatsView,
     beforeEnter: mustBeAuthenticated,
     meta: {
-      showNavigation: false,
+      showNavigation: true,
     },
   },
   {
