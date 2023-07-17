@@ -1,6 +1,5 @@
 <template>
   <v-navigation-drawer
-    v-if="showNav"
     color="primary"
     data-cy="nav-drawer"
     permanent
@@ -49,7 +48,6 @@ export default {
     return {
       // User controlls for collapsing only available on desktop
       userHasCollapsed: false,
-      showNav: false,
     };
   },
   computed: {
@@ -94,11 +92,6 @@ export default {
       return this.userHasCollapsed ? 'mdi-arrow-right' : 'mdi-arrow-left';
     },
   },
-  watch:{
-  '$route.meta'(value){
-    const {hideNavigation} = value;
-    this.showNav = !hideNavigation;
-  }
- }
+
 };
 </script>

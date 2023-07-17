@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <navigation-drawer/>
+    <navigation-drawer v-if="showNav" />
     <v-main>
       <router-view />
     </v-main>
@@ -11,9 +11,20 @@
 import NavigationDrawer from '@/components/NavigationDrawer.vue';
 
 export default {
+  data(){
+    return{
+      showNav: false,
+    };
+  },
   components: {
     NavigationDrawer,
   },
+  watch:{
+  '$route.meta'(value){
+    const {hideNavigation} = value;
+    this.showNav = !hideNavigation;
+  }
+ }
 };
 </script>
 
