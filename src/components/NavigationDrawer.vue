@@ -49,6 +49,7 @@ export default {
     return {
       // User controlls for collapsing only available on desktop
       userHasCollapsed: false,
+      showNav: false,
     };
   },
   computed: {
@@ -79,9 +80,6 @@ export default {
             { text: 'Stats', icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
           ];
     },
-    showNav() {
-      return this.$route.meta?.hideNavigation !== true;
-    },
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
@@ -96,5 +94,11 @@ export default {
       return this.userHasCollapsed ? 'mdi-arrow-right' : 'mdi-arrow-left';
     },
   },
+  watch:{
+  '$route.meta'(value){
+    const {hideNavigation} = value;
+    this.showNav = !hideNavigation;
+  }
+ }
 };
 </script>
