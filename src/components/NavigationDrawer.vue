@@ -80,7 +80,7 @@ export default {
           ];
     },
     showNav() {
-      return this.$route.meta?.showNavigation;
+      return this.$route.meta?.hideNavigation !== true;
     },
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
