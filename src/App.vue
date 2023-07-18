@@ -20,8 +20,7 @@ export default {
     NavigationDrawer,
   },
   watch:{
-  '$route.meta'(value){
-    const {hideNavigation} = value;
+  '$route.meta.hideNavigation'(hideNavigation){
     this.showNav = !hideNavigation;
   }
  }
