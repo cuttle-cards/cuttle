@@ -75,7 +75,12 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
     }
-    cy.subscribeOpponent(gameSummary.gameId);
+    try {
+      cy.subscribeOpponent(gameSummary.gameId);
+    } catch {
+      cy.recoverSessionOpponent(opponentOne);
+      cy.subscribeOpponent(gameSummary.gameId);
+    }
     cy.readyOpponent();
     // Asserting 5 cards in players hand confirms game has loaded
     cy.get('#player-hand-cards .player-card').should('have.length', 5);
