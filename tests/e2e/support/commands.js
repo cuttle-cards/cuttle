@@ -78,7 +78,9 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     try {
       cy.subscribeOpponent(gameSummary.gameId);
     } catch {
+      cy.log('Caught failed subsciption to game');
       cy.recoverSessionOpponent(opponentOne);
+      cy.log('Successfully recovered session');
       cy.subscribeOpponent(gameSummary.gameId);
     }
     cy.readyOpponent();
