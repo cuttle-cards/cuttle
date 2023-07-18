@@ -63,7 +63,7 @@
             <v-form
               id="login"  
               v-model="isFormValid"
-              class="mx-auto"
+              class="mx-auto loginForm"
               @submit.prevent="submitLogin"
             >
               <label for="username" class="text-body-1 font-weight-bold">Username</label>
@@ -344,7 +344,7 @@ export default {
   flex-direction: column;
 }
 
-form{
+.loginForm{
   max-width: 540px;
 }
 
