@@ -204,7 +204,7 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
         if (jwres.statusCode === 200) {
           return resolve();
         }
-        return reject(new Error('error subscribing'));
+        return reject(new Error(`error subscribing opponent to game ${id}`, {cause: jwres}));
       },
     );
   });
