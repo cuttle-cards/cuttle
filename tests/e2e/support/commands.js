@@ -210,11 +210,12 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
       {
         id,
       },
-      function handleResponse(res, jwres) {
+      function handleResponse(_res, jwres) {
         if (jwres.statusCode === 200) {
           return resolve();
         }
-        return reject(new Error(jwres));
+        const errMessage = jwres?.message ?? jwres?.error ?? 'Unknown error';
+        return reject(new Error(`Error subscribing opponent to game ${id}: ${errMessage}`));
       },
     );
   });
