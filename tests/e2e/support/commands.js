@@ -97,7 +97,12 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
     }
-    cy.subscribeOpponent(gameSummary.gameId);
+    try {
+      cy.subscribeOpponent(gameSummary.gameId);
+    } catch {
+      cy.recoverSessionOpponent(opponentOne);
+      cy.subscribeOpponent(gameSummary.gameId);
+    }
     cy.readyOpponent();
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
