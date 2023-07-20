@@ -34,7 +34,9 @@
         <p>
           Watch the official cuttle.cards tutorial to learn the rules and get a feel for the flow of the game.
         </p>
-        <base-video/>
+        <div class="w-50 my-4 mx-auto">
+          <base-video/>
+        </div>
       </v-row>
 
       <!-- Goal -->

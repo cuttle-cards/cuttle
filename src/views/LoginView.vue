@@ -20,17 +20,18 @@
         <div class="d-flex h-75 flex-column justify-space-around align-center mt-2">
           <h1>Welcome to Cuttle.Cards</h1>
           <p class="text-h4 mb-4">The card game that will have you hooked from the first hand!</p>
-          <base-video />
-          <v-btn
-            class="rulesBtn w-75 mt-8"
-            size='x-large'
-            to="/rules"
-            color="newPrimary"
-            data-cy="rules-link"
-          >
-            Read The Rules
-          </v-btn>
-
+          <div class="w-75 my-4 video">
+            <base-video />
+            <v-btn
+              class="rulesBtn w-100 mt-8"
+              size='x-large'
+              to="/rules"
+              color="newPrimary"
+              data-cy="rules-link"
+            >
+              Read The Rules
+            </v-btn>
+          </div>
         </div>    
       </v-container>
     </section>
@@ -201,14 +202,8 @@ export default {
       loading: false,
       showPass: false,
       isFormValid:false,
-      usernameRules:[value => {
-        if(value.match(/^[\w.@-]+$/)) return true;
-        return 'Username must contain only letters or numbers';
-      }],
-      passwordRules:[value => {
-        if(value.length >= 8) return true;
-        return 'Password must contain at least eight characters';
-      }],
+      usernameRules:[value => this.checkAlphaNumeric(value)], 
+      passwordRules:[value => this.checkGreaterThanEight(value)],
     };
   },
   computed: {
@@ -272,6 +267,12 @@ export default {
       this.showSnackBar = false;
       this.snackBarMessage = '';
     },
+   isAlphaNumeric(val){ 
+      return (/^[\w.@-]+$/).test(val) || 'Username must contain only letters or numbers';
+    },
+    has8OrMoreCharacters(val){
+      return val.length >= 8 || 'Password must contain at least eight characters';
+    },
   },
 };
 </script>
@@ -305,15 +306,6 @@ export default {
 }
 
 
-
-.video-container__wrapper {
-  //  Overiding base-video component
-  width: 50%;
-  max-width: 650px;
-  margin: 0 auto;
-}
-
-
 .container {
   width: 75%;
   display: flex;
@@ -321,8 +313,8 @@ export default {
   flex-direction: column;
 }
 
-.rulesBtn{
-  max-width: 650px;
+.video{
+  max-width:850px;
 }
 
 .loginForm{

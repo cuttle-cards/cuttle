@@ -1,5 +1,5 @@
 <template>
-  <div class="video-container__wrapper align-self-center my-4">
+  <div class="video-container__wrapper mx-auto">
     <div class="video-container">
       <iframe
         class="video-container__video"
@@ -14,7 +14,7 @@
 
 <style scoped >
 .video-container__wrapper {
-  width: 65%;
+  width: 100%;
 }
 
 /* https://css-tricks.com/fluid-width-video/ */
