@@ -27,7 +27,7 @@ function assertFailedAuth(path) {
     });
 }
 
-function forceEnableButton() {
+function forceFormSubmit() {
   cy.get('[data-cy=submit]').then((btn) => {
     btn[0].disabled = false;
     btn.click();
@@ -140,21 +140,21 @@ describe('Signing Up', () => {
     cy.get('[data-cy=password]').type('sh0rt');
     cy.get('#password-messages').should('contain', 'Password must contain at least eight characters');
     cy.get('[data-cy=submit]').should('not.be', 'enabled');
-    forceEnableButton();
+    forceFormSubmit();
     assertFailedAuth('#/signup');
     assertSnackbarError('Your password must contain at least eight characters', 'auth');
   });
   it('Password is required', () => {
     cy.get('[data-cy=username]').type(myUser.username);
     cy.get('[data-cy=submit]').should('not.be', 'enabled');
-    forceEnableButton();
+    forceFormSubmit();
     assertFailedAuth('#/signup');
     assertSnackbarError('Password is required', 'auth');
   });
   it('Username is required', () => {
     cy.get('[data-cy=password]').type(myUser.password);
     cy.get('[data-cy=submit]').should('not.be', 'enabled');
-    forceEnableButton();
+    forceFormSubmit();
     assertFailedAuth('#/signup');
     assertSnackbarError('Please provide a non-empty username', 'auth');
   });
