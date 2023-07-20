@@ -24,7 +24,7 @@
       <v-list v-if="!isSmallDevice">
         <v-list-item
           :prepend-icon="collapseMenuIcon"
-          :title="`${!isCollapsed ? $t('global.collapseMenu') : ''}`"
+          :title="`${!isCollapsed ? t('global.collapseMenu') : ''}`"
           :data-cy="collapseMenuAttribute"
           @click="userHasCollapsed = !userHasCollapsed"
         />
@@ -52,7 +52,7 @@ export default {
     // level and utilize it this way with a composable. There may be another more global way but
     // I haven't found anything just yet
     const { t } = useI18n();
-    return { $t: t };
+    return { t };
   },
   data() {
     return {
@@ -67,7 +67,7 @@ export default {
     pageLinks() {
       const rules = [
         {
-          text: this.$t('global.rules'),
+          text: this.t('global.rules'),
           icon: 'script-text',
           page: { name: ROUTE_NAME_RULES },
         },
@@ -75,17 +75,17 @@ export default {
       return !this.authenticated
         ? [
             {
-              text: this.$t('global.login'),
+              text: this.t('global.login'),
               icon: 'login',
               page: { name: ROUTE_NAME_LOGIN },
             },
             ...rules,
           ]
         : [
-            { text: this.$t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } },
+            { text: this.t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } },
             ...rules,
-            { text: this.$t('global.play'), icon: 'play', page: { name: ROUTE_NAME_HOME } },
-            { text: this.$t('global.stats'), icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
+            { text: this.t('global.play'), icon: 'play', page: { name: ROUTE_NAME_HOME } },
+            { text: this.t('global.stats'), icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
           ];
     },
     showNav() {

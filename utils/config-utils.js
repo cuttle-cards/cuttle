@@ -9,7 +9,8 @@ export function initCuttleGlobals(app) {
   const cuttle = {
     version,
     // Expose app for debugging/testing in lower envs
-    app: test ? app : null,
+    // app: test ? app : null,
+    app,
     test,
   };
 

@@ -17,7 +17,7 @@
             hint="Username"
             data-cy="username"
             autocomplete="username"
-            :placeholder="$t('global.username')"
+            :placeholder="t('global.username')"
           />
           <v-text-field
             v-model="pw"
@@ -27,7 +27,7 @@
             type="password"
             data-cy="password"
             :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
-            :placeholder="$t('global.password')"
+            :placeholder="t('global.password')"
           />
           <div id="login-button-container">
             <v-btn
@@ -65,17 +65,16 @@
     </v-row>
 
     <v-row class="mt-8">
-      <h1 class="gradient-text">{{ $t('login.title') }}</h1>
+      <h1 class="gradient-text">{{ t('login.title') }}</h1>
     </v-row>
 
     <v-row class="mt-0">
       <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="d-flex justify-start flex-column mt-4">
         <blockquote class="quote">
-          {{ $t('login.quote') }}
-          <cite>{{ $t('login.quoteCite') }}</cite>
+          {{ t('login.quote') }}
+          <cite>{{ t('login.quoteCite') }}</cite>
         </blockquote>
-        <p>{{ $t('login.paragraph1') }}</p>
-        <p>{{ $t('login.paragraph2') }}</p>
+        <MarkdownContent :markdown="t('login.content')" />
         <v-btn
           color="primary"
           to="/rules"
@@ -83,7 +82,7 @@
           max-width="500"
           data-cy="rules-link"
         >
-          {{ $t('login.learnRules') }}
+          {{ t('login.learnRules') }}
         </v-btn>
       </v-col>
       <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="mt-2 mb-4">
@@ -103,11 +102,13 @@ import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
+import MarkdownContent from '@/components/Global/MarkdownContent.vue';
 
 export default {
   name: 'LoginView',
   components: {
     BaseSnackbar,
+    MarkdownContent,
   },
   setup() {
     // Vuetify has its own translation layer that isn't very good
@@ -115,7 +116,7 @@ export default {
     // level and utilize it this way with a composable. There may be another more global way but
     // I haven't found anything just yet
     const { t } = useI18n();
-    return { $t: t };
+    return { t };
   },
   data() {
     return {
@@ -132,15 +133,15 @@ export default {
     },
     buttonText() {
       if (this.isLoggingIn) {
-        return this.$t('global.login');
+        return this.t('global.login');
       }
-      return this.$t('global.signup');
+      return this.t('global.signup');
     },
     switchLabelText() {
       if (this.isLoggingIn) {
-        return this.$t('login.noAccount');
+        return this.t('login.noAccount');
       }
-      return this.$t('login.haveAccount');
+      return this.t('login.haveAccount');
     },
   },
   methods: {
@@ -226,10 +227,6 @@ blockquote.quote {
   & cite {
     display: block;
   }
-}
-
-p {
-  padding-bottom: 16px;
 }
 
 @media (orientation: landscape) and (max-width: 960px) {

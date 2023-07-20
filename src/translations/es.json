@@ -1,0 +1,22 @@
+{
+  "global": {
+    "signup": "Registrarse",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "rules": "Reglas",
+    "play": "Jugar",
+    "stats": "Estadísticas",
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "collapseMenu": "Contraer Menú"
+  },
+  "login": {
+    "noAccount": "¿No tienes una cuenta?",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "title": "¿Qué es Cuttle?",
+    "quote": "\"Cuttle es un juego rápido y afilado construido completamente sobre excelentes mecánicas. Es el tipo de juego - si lo hubiera conocido en la universidad - que habría desgastado barajas a través del juego.\"",
+    "quoteCite": "Richard Garfield - Creador de Magic: The Gathering",
+    "content": "Cuttle es un juego de cartas de batalla para 2 jugadores que se juega con un mazo estándar de 52 cartas. Tiene la sutileza estratégica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu temple en el juego de cartas más profundo bajo el mar!\n\n¡Sé el primero en alcanzar 21 puntos en esta explosiva batalla de ingenio! Monta una valiente ofensiva mientras perturbas a tu oponente con trucos perversos. ¿Tienes lo necesario para convertirte en el Señor de las Profundidades?",
+    "learnRules": "Aprende las Reglas"
+  }
+}

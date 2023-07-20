@@ -1,0 +1,22 @@
+{
+  "global": {
+    "signup": "Sign Up",
+    "login": "Log In",
+    "logout": "Log Out",
+    "rules": "Rules",
+    "play": "Play",
+    "stats": "Stats",
+    "username": "Username",
+    "password": "Password",
+    "collapseMenu": "Collapse Menu"
+  },
+  "login": {
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "title": "What is Cuttle?",
+    "quote": "\"Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I known about it in college - I would have worn decks ragged through play.\"",
+    "quoteCite": "Richard Garfield - Creator of Magic: The Gathering",
+    "content": "Cuttle is a 2 player battle card game played with a standard 52-card deck of cards. It has the strategic nuance of trading card games like Magic, with the elegant balance of a standard deck--and you can play it for free! Test your mettle in the deepest cardgame under the sea!\n\nBe the first to score 21 points in this explosive battle of wits. Mount a valiant offense while disrupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the Deep?",
+    "learnRules": "Learn the Rules"
+  }
+}
