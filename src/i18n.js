@@ -1,6 +1,6 @@
 // https://vue-i18n.intlify.dev/
 
-import VueI18n from 'vue-i18n';
+import { createI18n } from 'vue-i18n';
 
 const messages = {
   en: {
@@ -13,9 +13,21 @@ const messages = {
       stats: 'Stats',
     },
   },
+  es: {
+    global: {
+      signup: 'Registrarse',
+      login: 'Iniciar sesión',
+      logout: 'Cerrar sesión',
+      rules: 'Reglas',
+      play: 'Jugar',
+      stats: 'Estadísticas'
+    },
+  },
 };
 
-const i18n = VueI18n.createI18n({
+const i18n = createI18n({
+  legacy: false,
+  globalInjection: true,
   locale: 'en',
   messages,
 });

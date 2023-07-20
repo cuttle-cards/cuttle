@@ -3,6 +3,15 @@
     <navigation-drawer />
     <v-main>
       <router-view />
+
+      <!-- temporary locale changer -->
+      <div class="locale-changer">
+        <select v-model="$i18n.locale">
+          <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">
+            {{ lang }}
+          </option>
+        </select>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -14,6 +23,11 @@ export default {
   components: {
     NavigationDrawer,
   },
+  computed: {
+    langs() {
+      return ['en', 'es'];
+    },
+  }
 };
 </script>
 
