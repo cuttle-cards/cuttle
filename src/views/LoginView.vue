@@ -264,6 +264,7 @@ export default {
       } else {
         this.$router.push({ name: ROUTE_NAME_LOGIN });
       }
+      this.$refs.usernameInput.focus();
     },
     handleLogin() {
       this.username = '';
