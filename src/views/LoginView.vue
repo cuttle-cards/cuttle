@@ -20,28 +20,17 @@
         <div class="d-flex h-75 flex-column justify-space-around align-center mt-2">
           <h1>Welcome to Cuttle.Cards</h1>
           <p class="text-h4 mb-4">The card game that will have you hooked from the first hand!</p>
-        
-          <div class="video-container__wrapper">
-            <div class="video-container">
-              <iframe
-                class="video-container__video"
-                src="https://www.youtube.com/embed/qOqkNbhMdsI"
-                title="Cuttle Game Tutorial -- Youtube Player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              />
-            </div>
-            <!-- Grouped for the ease of styling -->
-            <v-btn
-              class="w-100 mt-8"
-              size='x-large'
-              to="/rules"
-              color="newPrimary"
-              data-cy="rules-link"
-            >
-              Read The Rules
-            </v-btn>
-          </div>
+          <base-video />
+          <v-btn
+            class="rulesBtn w-75 mt-8"
+            size='x-large'
+            to="/rules"
+            color="newPrimary"
+            data-cy="rules-link"
+          >
+            Read The Rules
+          </v-btn>
+
         </div>    
       </v-container>
     </section>
@@ -195,11 +184,13 @@
 <script>
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
+import BaseVideo from '../components/Global/BaseVideo.vue';
 
 export default {
   name: 'LoginView',
   components: {
     BaseSnackbar,
+    BaseVideo
   },
   data() {
     return {
@@ -313,28 +304,13 @@ export default {
   margin: 0 auto;
 }
 
+
+
 .video-container__wrapper {
+  //  Overiding base-video component
   width: 50%;
   max-width: 650px;
   margin: 0 auto;
-}
-
-/* https://css-tricks.com/fluid-width-video/ */
-.video-container {
-  position: relative;
-  padding: 0 0 56.25%;
-  height: 0;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.video-container__video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
 }
 
 
@@ -343,6 +319,10 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+.rulesBtn{
+  max-width: 650px;
 }
 
 .loginForm{
