@@ -75,7 +75,12 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
     }
-    cy.subscribeOpponent(gameSummary.gameId);
+    try {
+      cy.subscribeOpponent(gameSummary.gameId);
+    } catch {
+      cy.recoverSessionOpponent(opponentOne);
+      cy.subscribeOpponent(gameSummary.gameId);
+    }
     cy.readyOpponent();
     // Asserting 5 cards in players hand confirms game has loaded
     cy.get('#player-hand-cards .player-card').should('have.length', 5);
@@ -92,7 +97,12 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
     }
-    cy.subscribeOpponent(gameSummary.gameId);
+    try {
+      cy.subscribeOpponent(gameSummary.gameId);
+    } catch {
+      cy.recoverSessionOpponent(opponentOne);
+      cy.subscribeOpponent(gameSummary.gameId);
+    }
     cy.readyOpponent();
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
@@ -200,11 +210,12 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
       {
         id,
       },
-      function handleResponse(res, jwres) {
+      function handleResponse(_res, jwres) {
         if (jwres.statusCode === 200) {
           return resolve();
         }
-        return reject(new Error('error subscribing'));
+        const errMessage = jwres?.message ?? jwres?.error ?? 'Unknown error';
+        return reject(new Error(`Error subscribing opponent to game ${id}: ${errMessage}`));
       },
     );
   });
