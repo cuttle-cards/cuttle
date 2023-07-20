@@ -17,7 +17,7 @@
             hint="Username"
             data-cy="username"
             autocomplete="username"
-            placeholder="Username"
+            :placeholder="$t('global.username')"
           />
           <v-text-field
             v-model="pw"
@@ -27,7 +27,7 @@
             type="password"
             data-cy="password"
             :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
-            placeholder="Password"
+            :placeholder="$t('global.password')"
           />
           <div id="login-button-container">
             <v-btn
@@ -65,26 +65,17 @@
     </v-row>
 
     <v-row class="mt-8">
-      <h1 class="gradient-text">What is Cuttle?</h1>
+      <h1 class="gradient-text">{{ $t('login.title') }}</h1>
     </v-row>
 
     <v-row class="mt-0">
       <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="d-flex justify-start flex-column mt-4">
         <blockquote class="quote">
-          "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I
-          known about it in college - I would have worn decks ragged through play"
-          <cite>Richard Garfield - Creator of Magic: The Gathering</cite>
+          {{ $t('login.quote') }}
+          <cite>{{ $t('login.quoteCite') }}</cite>
         </blockquote>
-        <p>
-          Cuttle is a 2 player battle card game played with a standard 52-card deck of cards. It has the
-          strategic nuance of trading card games like Magic, with the elegant balance of a standard deck--and
-          you can play it for free! Test your mettle in the deepest cardgame under the sea!
-        </p>
-        <p>
-          Be the first to score 21 points in this explosive battle of wits. Mount a valiant offense while
-          disrupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the
-          Deep?
-        </p>
+        <p>{{ $t('login.paragraph1') }}</p>
+        <p>{{ $t('login.paragraph2') }}</p>
         <v-btn
           color="primary"
           to="/rules"
@@ -92,7 +83,7 @@
           max-width="500"
           data-cy="rules-link"
         >
-          Learn the Rules
+          {{ $t('login.learnRules') }}
         </v-btn>
       </v-col>
       <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="mt-2 mb-4">
@@ -107,6 +98,8 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
+
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
@@ -115,6 +108,14 @@ export default {
   name: 'LoginView',
   components: {
     BaseSnackbar,
+  },
+  setup() {
+    // Vuetify has its own translation layer that isn't very good
+    // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
+    // level and utilize it this way with a composable. There may be another more global way but
+    // I haven't found anything just yet
+    const { t } = useI18n();
+    return { $t: t };
   },
   data() {
     return {
@@ -131,15 +132,15 @@ export default {
     },
     buttonText() {
       if (this.isLoggingIn) {
-        return 'Log In';
+        return this.$t('global.login');
       }
-      return 'Sign Up';
+      return this.$t('global.signup');
     },
     switchLabelText() {
       if (this.isLoggingIn) {
-        return "Don't have an account?";
+        return this.$t('login.noAccount');
       }
-      return 'Already have an account?';
+      return this.$t('login.haveAccount');
     },
   },
   methods: {
@@ -225,6 +226,10 @@ blockquote.quote {
   & cite {
     display: block;
   }
+}
+
+p {
+  padding-bottom: 16px;
 }
 
 @media (orientation: landscape) and (max-width: 960px) {

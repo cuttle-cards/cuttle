@@ -24,7 +24,7 @@
       <v-list v-if="!isSmallDevice">
         <v-list-item
           :prepend-icon="collapseMenuIcon"
-          :title="`${!isCollapsed ? 'Collapse Menu' : ''}`"
+          :title="`${!isCollapsed ? $t('global.collapseMenu') : ''}`"
           :data-cy="collapseMenuAttribute"
           @click="userHasCollapsed = !userHasCollapsed"
         />

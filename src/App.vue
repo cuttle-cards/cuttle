@@ -50,4 +50,13 @@ export default {
     min-height: 100%;
   }
 }
+
+.locale-changer {
+  position: fixed;
+  top: 1em;
+  right: 1em;
+  background: #CCC;
+  padding: 1em;
+  z-index: 10;
+}
 </style>
