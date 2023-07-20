@@ -3,7 +3,7 @@
     <div class="video-container">
       <iframe
         class="video-container__video"
-        src="https://www.youtube.com/embed/qOqkNbhMdsI"
+        :src="source"
         title="Cuttle Game Tutorial -- Youtube Player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
@@ -11,6 +11,19 @@
     </div>
   </div>
 </template>
+
+
+<script>
+export default {
+  name: 'BaseVideo',
+  props: {
+    source: {
+      type: String,
+      required: true,
+    },
+  },
+};
+</script>
 
 <style scoped >
 .video-container__wrapper {

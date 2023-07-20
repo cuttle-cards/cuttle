@@ -21,7 +21,7 @@
           <h1>Welcome to Cuttle.Cards</h1>
           <p class="text-h4 mb-4">The card game that will have you hooked from the first hand!</p>
           <div class="w-75 my-4 video">
-            <base-video />
+            <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI" />
             <v-btn
               class="rulesBtn w-100 mt-8"
               size='x-large'
