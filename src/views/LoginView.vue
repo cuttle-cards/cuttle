@@ -158,7 +158,7 @@
           known about it in college - I would have worn decks ragged through play"
         </blockquote> 
         <br> 
-        <cite >Richard Garfield - <br>Creator of Magic: The Gathering</cite>
+        <cite>Richard Garfield - <br>Creator of Magic: The Gathering</cite>
       </v-container>
     </section>
 
