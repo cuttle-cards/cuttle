@@ -202,8 +202,8 @@ export default {
       loading: false,
       showPass: false,
       isFormValid:false,
-      usernameRules:[value => this.checkAlphaNumeric(value)], 
-      passwordRules:[value => this.checkGreaterThanEight(value)],
+      usernameRules:[value => this.isAlphaNumeric(value)], 
+      passwordRules:[value => this.has8OrMoreCharacters(value)],
     };
   },
   computed: {
