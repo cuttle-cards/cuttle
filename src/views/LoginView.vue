@@ -353,14 +353,6 @@ export default {
   margin: 0 auto;
 }
 
-@media (orientation: landscape) and (max-width: 960px) {
-  #logo {
-    width: 64px;
-    height: 64px;
-    margin: -16px auto -32px;
-  }
-}
-
 @media (max-width: 660px){
   .cardLogo{
     height: 7vh;
@@ -375,7 +367,7 @@ export default {
   }
 
   .video-container__wrapper {
-  width: 85%;
+    width: 85%;
   }
 }
 </style>
