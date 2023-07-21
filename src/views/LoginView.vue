@@ -288,7 +288,9 @@ export default {
   min-height: 100vh;
   text-align: center;
   color: #FFF4D7;
-  background: center / cover no-repeat  url('img/game/board-background.svg');
+  background-image: url('/img/game/board-background.svg');
+  background-size: cover;
+  background-position: center;
   box-shadow: inset 0 0 700px -1px #000000;
 }
 
