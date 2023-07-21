@@ -168,7 +168,7 @@
           </div>
         </v-col>
         <v-col :cols="$vuetify.display.mdAndUp ? 10 : 12" class="mx-auto">
-          <div class="d-flex flex-md-row flex-column align-center text-h5 my-10">
+          <div class="d-flex flex-md-row flex-column-reverse align-center text-h5 my-10">
             <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-2.png" >
             <p class="px-8">
               Be the first to score 21 points in this explosive battle of wits. 
