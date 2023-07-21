@@ -359,7 +359,7 @@ export default {
   }
 
   .welcomeContainer h1{
-    font-size: 50px;
+    font-size: 42px;
   }
 
   .welcomeContainer p{
