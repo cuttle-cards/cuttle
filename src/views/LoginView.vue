@@ -87,7 +87,7 @@
               <div
                 id="login-button-container"
                 class="d-flex flex-column flex-md-row
-             justify-space-between align-center flex-wrap"
+                  justify-space-between align-center flex-wrap"
               >
                 <v-btn
                   class="px-16"
@@ -202,8 +202,8 @@ export default {
       loading: false,
       showPass: false,
       isFormValid:false,
-      usernameRules:[value => this.isAlphaNumeric(value)], 
-      passwordRules:[value => this.has8OrMoreCharacters(value)],
+      usernameRules:[this.isAlphaNumeric], 
+      passwordRules:[this.has8OrMoreCharacters],
     };
   },
   computed: {
