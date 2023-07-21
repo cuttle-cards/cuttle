@@ -288,7 +288,7 @@ export default {
   min-height: 100vh;
   text-align: center;
   color: #FFF4D7;
-  background: center / cover no-repeat  url('img/game/board-background.svg');
+  background: center / cover no-repeat  url('/img/game/board-background.svg');
   box-shadow: inset 0 0 700px -1px #000000;
 }
 
@@ -357,7 +357,7 @@ export default {
   }
 
   .welcomeContainer h1{
-    font-size: 50px;
+    font-size: 42px;
   }
 
   .welcomeContainer p{
@@ -365,16 +365,7 @@ export default {
   }
 
   .video-container__wrapper {
-  width: 85%;
-  
-}
-}
-
-@media (orientation: landscape) and (max-width: 960px) {
-  #logo {
-    width: 64px;
-    height: 64px;
-    margin: -16px auto -32px;
+    width: 85%;
   }
 }
 </style>
