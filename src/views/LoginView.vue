@@ -160,7 +160,7 @@
               Cuttle is a 2 player battle card game played with a 
               standard 52-card deck of cards. It has the strategic 
               nuance of trading card games like Magic, with the 
-              elegant balance of a standard deck--
+              elegant balance of a standard deck --
               and you can play it for free! Test your mettle in 
               the deepest cardgame under the sea!
             </p>
