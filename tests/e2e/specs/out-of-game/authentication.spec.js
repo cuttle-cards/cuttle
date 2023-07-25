@@ -27,10 +27,17 @@ function assertFailedAuth(path) {
     });
 }
 
+function forceFormSubmit() {
+  cy.get('[data-cy=submit]').then((btn) => {
+    btn[0].disabled = false;
+    btn.click();
+  });
+}
+
 describe('Auth - Page Content', () => {
   beforeEach(() => {
     cy.wipeDatabase();
-    cy.visit('#/login');
+    cy.visit('#/signup');
     cy.signupOpponent(myUser);
   });
 
@@ -40,8 +47,8 @@ describe('Auth - Page Content', () => {
     cy.hash().should('eq', '#/rules');
   });
 
-    
   it('Navigates to /login if returning visiter, /signup if first new visiter', () => {
+    cy.wipeDatabase();
     cy.get('[data-cy=password]').type(myUser.password);
     cy.get('[data-cy=username]').type(myUser.username + '{enter}');
     cy.get('[data-nav=Logout]').click();
@@ -51,8 +58,6 @@ describe('Auth - Page Content', () => {
     cy.visit('/');
     cy.hash().should('eq', '#/signup');
   });
-
-
 });
 
 describe('Logging In', () => {
@@ -133,19 +138,23 @@ describe('Signing Up', () => {
   it('Requires password to be at least eight characters', () => {
     cy.get('[data-cy=username]').type(myUser.username);
     cy.get('[data-cy=password]').type('sh0rt');
-    cy.get('[data-cy=submit]').click();
+    cy.get('#password-messages').should('contain', 'Password must contain at least eight characters');
+    cy.get('[data-cy=submit]').should('not.be', 'enabled');
+    forceFormSubmit();
     assertFailedAuth('#/signup');
     assertSnackbarError('Your password must contain at least eight characters', 'auth');
   });
   it('Password is required', () => {
     cy.get('[data-cy=username]').type(myUser.username);
-    cy.get('[data-cy=submit]').click();
+    cy.get('[data-cy=submit]').should('not.be', 'enabled');
+    forceFormSubmit();
     assertFailedAuth('#/signup');
     assertSnackbarError('Password is required', 'auth');
   });
   it('Username is required', () => {
     cy.get('[data-cy=password]').type(myUser.password);
-    cy.get('[data-cy=submit]').click();
+    cy.get('[data-cy=submit]').should('not.be', 'enabled');
+    forceFormSubmit();
     assertFailedAuth('#/signup');
     assertSnackbarError('Please provide a non-empty username', 'auth');
   });

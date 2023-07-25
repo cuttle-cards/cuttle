@@ -3,7 +3,7 @@
     v-model="modelValue"
     :color="color"
     class="base-snackbar"
-    position="absolute"
+    position="fixed"
     location="bottom"
     :data-cy="dataCy"
   >
