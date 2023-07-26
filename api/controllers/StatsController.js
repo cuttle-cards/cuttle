@@ -180,15 +180,16 @@ module.exports = {
             // Find season this match took place during
             return dayjs(match.startTime).isBetween(dayjs(season.startTime), dayjs(season.endTime));
           });
-          if (relevantSeason) {
-            const player1 = idToUserMap.get(match.player1);
-            const player2 = idToUserMap.get(match.player2);
-            if (player1 && player2) {
-              // Player 1
-              addMatchToRankings(relevantSeason, match, player1, player2);
-              // Player 2
-              addMatchToRankings(relevantSeason, match, player2, player1);
-            }
+          if (!relevantSeason) {
+            return;
+          }
+          const player1 = idToUserMap.get(match.player1);
+          const player2 = idToUserMap.get(match.player2);
+          if (player1 && player2) {
+            // Player 1
+            addMatchToRankings(relevantSeason, match, player1, player2);
+            // Player 2
+            addMatchToRankings(relevantSeason, match, player2, player1);
           }
         }
       });
