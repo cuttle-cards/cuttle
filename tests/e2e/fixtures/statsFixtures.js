@@ -352,6 +352,19 @@ const gameFixtures = [
     updatedAt: dayjs('2022-01-20').valueOf(),
     p0: 'player2',
     p1: 'player3',
+  },
+  {
+    name: 'Game 3',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-20').valueOf(),
+    p0: 'player2',
+    p1: 'player3',
   }
 ];
 
