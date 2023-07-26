@@ -46,11 +46,11 @@ Cypress.Commands.add('loadMatchFixtures', (matches) => {
   });
 });
 
-Cypress.Commands.add('loadDummyGameFixtures', (games) => {
+Cypress.Commands.add('loadFinishedGameFixtures', (games) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/test/loadDummyGameFixtures', games, function (res, jwres) {
+    io.socket.post('/test/loadFinishedGameFixtures', games, function (res, jwres) {
       if (jwres.statusCode !== 200) {
-        return reject(new Error('Error loading match fixtures'));
+        return reject(new Error('Error loading game fixtures'));
       }
       return resolve();
     });

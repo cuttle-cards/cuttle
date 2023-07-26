@@ -46,7 +46,7 @@ module.exports = {
     return res.ok();
   },
 
-  loadDummyGameFixtures: async function (req, res) {
+  loadFinishedGameFixtures: async function (req, res) {
     try {
       await Game.createEach(req.body);
     } catch (e) {

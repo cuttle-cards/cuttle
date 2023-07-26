@@ -53,7 +53,7 @@ function setup() {
       });
       cy.loadMatchFixtures(matches);
       cy.loadSeasonFixture(seasons).as('seasons');
-      cy.loadDummyGameFixtures(games);
+      cy.loadFinishedGameFixtures(games);
     });
   cy.vueRoute('/stats');
   // Select Clubs 2022 season
