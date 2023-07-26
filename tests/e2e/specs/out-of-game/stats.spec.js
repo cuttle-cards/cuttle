@@ -72,7 +72,7 @@ describe('Stats Page Error States', () => {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it.only('Displays Headers, Cards, and Table', () => {
+  it('Displays Headers, Cards, and Table', () => {
     const [seasonOne] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
     cy.get('[data-cy=season-start-date').should('contain', dayjs(seasonOne.startTime).format('YYYY/MM/DD'));
@@ -250,6 +250,15 @@ describe('Stats Page', () => {
       cy.get('[role=listbox]').contains(seasonTwo.name).click();
       cy.hash().should('contain', seasonTwo.id);
       cy.get('[data-cy=season-select]').should('contain', seasonTwo.name);
+    });
+  });
+
+  it.only('Sends the counts of games played and unique players for each week of each season', () => {
+    cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
+      const clubs2022 = seasons.find((season) => season.name === 'Clubs 2022');
+      expect(clubs2022).not.to.be.undefined;
+      expect(clubs2022.gameCounts[0]).to.eq(4);
+      expect(clubs2022.uniquePlayersPerWeek[0]).to.eq(3);
     });
   });
 });
