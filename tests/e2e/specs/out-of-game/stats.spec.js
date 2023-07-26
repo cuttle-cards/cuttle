@@ -1,5 +1,5 @@
 import { playerOne, playerTwo, playerThree, playerFour, playerFive } from '../../fixtures/userFixtures';
-import { seasonFixtures, matchesFixture } from '../../fixtures/statsFixtures';
+import { seasonFixtures, matchesFixture, gameFixtures } from '../../fixtures/statsFixtures';
 const dayjs = require('dayjs');
 
 function setup() {
@@ -43,8 +43,17 @@ function setup() {
         };
       };
       const matches = matchesFixture.map(transformMatchFixture);
+
+      const games = gameFixtures.map((game) => {
+        return {
+          ...game,
+          p0: this[game.p0] ?? null,
+          p1: this[game.p1] ?? null,
+        };
+      });
       cy.loadMatchFixtures(matches);
       cy.loadSeasonFixture(seasons).as('seasons');
+      cy.loadDummyGameFixtures(games);
     });
   cy.vueRoute('/stats');
   // Select Clubs 2022 season
@@ -63,7 +72,7 @@ describe('Stats Page Error States', () => {
 describe('Stats Page', () => {
   beforeEach(setup);
 
-  it('Displays Headers, Cards, and Table', () => {
+  it.only('Displays Headers, Cards, and Table', () => {
     const [seasonOne] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
     cy.get('[data-cy=season-start-date').should('contain', dayjs(seasonOne.startTime).format('YYYY/MM/DD'));

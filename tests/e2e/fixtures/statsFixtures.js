@@ -326,6 +326,35 @@ const seasonThreeMatches = [
   },
 ];
 
+const gameFixtures = [
+  {
+    name: 'Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-20').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  {
+    name: 'Game 2',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-20').valueOf(),
+    p0: 'player2',
+    p1: 'player3',
+  }
+];
+
 const matchesFixture = [...seasonOneMatches, ...seasonTwoMatches, ...seasonThreeMatches];
 
-export { seasonFixtures, matchesFixture };
+export { seasonFixtures, matchesFixture, gameFixtures };
