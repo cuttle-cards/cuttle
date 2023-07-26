@@ -106,8 +106,57 @@ function transformSeasonToDTO(season) {
   };
 }
 
+/**
+ * Returns copy of seasons with the initialized arrays for
+ * gameCounts and uniquePlayersPerWeek
+ * @param {
+*  name: string
+*  startTime: int
+*  endTime: int
+*  firstPlace: int (playerId)
+*  secondPlace: int (playerId)
+*  thirdPlace: int (playerId)
+*  fourthPlace: int (playerId)
+*  rankings: Map<int: playerId, {
+*    username: string
+*    matches: Map<int: weekNum, Array<{opponent: string, result: Result}>>
+*  }>
+* } seasons
+* 
+* @returns {
+*  name: string
+*  startTime: int
+*  endTime: int
+*  firstPlace: int (playerId)
+*  secondPlace: int (playerId)
+*  thirdPlace: int (playerId)
+*  fourthPlace: int (playerId)
+*  rankings: Map<int: playerId, {
+*    username: string
+*    matches: Map<int: weekNum, Array<{opponent: string, result: Result}>>
+*  }>
+*  gameCounts: Array<int>
+*  uniquePlayersPerWeek: Array<Set<int: playerIds>>
+* }
+*/
+function initializePlayerAndGameCounts(seasons) {
+  return seasons.map((season) => {
+    const res = {...season};
+    res.gameCounts = [];
+    res.uniquePlayersPerWeek = [];
+    const startTime = dayjs(season.startTime);
+    const endTime = dayjs(season.endTime);
+    const numWeeks = endTime.diff(startTime, 'week');
+    for (let i=0; i<numWeeks; i++) {
+      res.gameCounts.push(0);
+      res.uniquePlayersPerWeek.push(new Set());
+    }
+    return res;
+  });
+}
+
 module.exports = {
-  getStats: function (req, res) {
+  getStats: function (_req, res) {
     // Find records
     const seasons = sails.helpers.getSeasonsWithoutRankings();
     const matches = Match.find({});
@@ -116,22 +165,13 @@ module.exports = {
     return Promise.all([seasons, matches, users, games]).then(([seasons, matches, users, games]) => {
 
       // initialize seasons with gameCount & uniquePlayersPerWeek
-      seasons.forEach((season) => {
-        season.gameCounts = [];
-        season.uniquePlayersPerWeek = [];
-        const startTime = dayjs(season.startTime);
-        const endTime = dayjs(season.endTime);
-        const numWeeks = endTime.diff(startTime, 'week');
-        for (let i=0; i<numWeeks; i++) {
-          season.gameCounts.push(0);
-          season.uniquePlayersPerWeek.push(new Set());
-        }
-      });
+      seasons = initializePlayerAndGameCounts(seasons);
 
       const idToUserMap = new Map();
       users.forEach((user) => {
         idToUserMap.set(user.id, user);
       });
+
       // Add each match to the appropriate rankings
       matches.forEach((match) => {
         // Only count finished matches
