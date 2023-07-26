@@ -8,7 +8,7 @@
     <v-card id="scrap-dialog">
       <v-card-title class="d-flex justify-space-between">
         <h1>Scrap Pile</h1>
-        <v-btn icon data-cy="close-scrap-dialog-x" @click="show = false">
+        <v-btn icon data-cy="close-scrap-dialog-x" variant="text" @click="show = false">
           <v-icon icon="mdi-close" size="large" />
         </v-btn>
       </v-card-title>
@@ -24,7 +24,6 @@
       <v-card-actions class="d-flex justify-end my-2">
         <v-btn
           color="primary"
-          variant="outlined"
           data-cy="close-scrap-dialog-button"
           @click="show = false"
         >
