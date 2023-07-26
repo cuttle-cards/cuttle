@@ -20,6 +20,8 @@ dayjs.extend(isBetween);
  *    username: string
  *    matches: Map<int: weekNum, Array<{opponent: string, result: Result}>>
  *  }>
+ * gameCounts: Array<int>
+ * uniquePlayersPerWeek: Array<Set<int: playerIds>>
  * } season The season in which the match took place
  * @param {
  *  player1: int,
@@ -69,6 +71,8 @@ function addMatchToRankings(season, match, player, opponent) {
  *    username: string
  *    matches: Map<int: weekNum, Array<{opponent: string, result: Result}>>
  *  }>
+ * gameCounts: Array<int>
+ * uniquePlayersPerWeek: Array<Set<int: playerIds>>
  * } season
  * @returns {
  *  name: string
@@ -82,6 +86,8 @@ function addMatchToRankings(season, match, player, opponent) {
  *    username: string
  *    matches: {weekNum: int, matches: Array<{opponent: string, result: Result}>}
  *  }>
+ * gameCounts: Array<int>
+ * uniquePlayersPerWeek: Array<int>
  * }
  */
 function transformSeasonToDTO(season) {
@@ -96,6 +102,7 @@ function transformSeasonToDTO(season) {
   return {
     ...rest,
     rankings: rankingsAsArray,
+    uniquePlayersPerWeek: season.uniquePlayersPerWeek.map((playerSet) => playerSet.size),
   };
 }
 
@@ -105,7 +112,22 @@ module.exports = {
     const seasons = sails.helpers.getSeasonsWithoutRankings();
     const matches = Match.find({});
     const users = User.find({});
-    return Promise.all([seasons, matches, users]).then(([seasons, matches, users]) => {
+    const games = Game.find({ result: {'>=': -1} }); // Only find completed games
+    return Promise.all([seasons, matches, users, games]).then(([seasons, matches, users, games]) => {
+
+      // initialize seasons with gameCount & uniquePlayersPerWeek
+      seasons.forEach((season) => {
+        season.gameCounts = [];
+        season.uniquePlayersPerWeek = [];
+        const startTime = dayjs(season.startTime);
+        const endTime = dayjs(season.endTime);
+        const numWeeks = endTime.diff(startTime, 'week');
+        for (let i=0; i<numWeeks; i++) {
+          season.gameCounts.push(0);
+          season.uniquePlayersPerWeek.push(new Set());
+        }
+      });
+
       const idToUserMap = new Map();
       users.forEach((user) => {
         idToUserMap.set(user.id, user);
@@ -129,6 +151,21 @@ module.exports = {
             }
           }
         }
+      });
+
+      games.forEach((game) => {
+        const relevantSeason = seasons.find((season) => {
+          // Find season this match took place during
+          return dayjs(game.updatedAt).isBetween(dayjs(season.startTime), dayjs(season.endTime));
+        });
+        if (!relevantSeason) {
+          return;
+        }
+
+        const weekNum = dayjs(game.updatedAt).diff(relevantSeason.startTime, 'week');
+        relevantSeason.gameCounts[weekNum]++;
+        relevantSeason.uniquePlayersPerWeek[weekNum].add(game.p0);
+        relevantSeason.uniquePlayersPerWeek[weekNum].add(game.p1);
       });
       // Format seasons (convert maps to arrays and objects)
       return res.ok(seasons.map(transformSeasonToDTO));
