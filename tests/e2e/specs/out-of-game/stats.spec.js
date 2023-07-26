@@ -257,8 +257,12 @@ describe('Stats Page', () => {
     cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
       const clubs2022 = seasons.find((season) => season.name === 'Clubs 2022');
       expect(clubs2022).not.to.be.undefined;
+      // Week 1 stats
       expect(clubs2022.gameCounts[0]).to.eq(4);
       expect(clubs2022.uniquePlayersPerWeek[0]).to.eq(3);
+      // Week 2 stats
+      expect(clubs2022.gameCounts[1]).to.eq(2);
+      expect(clubs2022.uniquePlayersPerWeek[1]).to.eq(4);
     });
   });
 });
