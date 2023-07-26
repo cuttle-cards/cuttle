@@ -327,8 +327,9 @@ const seasonThreeMatches = [
 ];
 
 const gameFixtures = [
+  // Week 1
   {
-    name: 'Game 1',
+    name: 'Week 1, Game 1',
     status: false,
     p0Ready: true,
     p1Ready: true,
@@ -341,7 +342,7 @@ const gameFixtures = [
     p1: 'player2',
   },
   {
-    name: 'Game 2',
+    name: 'Week 1, Game 2',
     status: false,
     p0Ready: true,
     p1Ready: true,
@@ -354,7 +355,7 @@ const gameFixtures = [
     p1: 'player3',
   },
   {
-    name: 'Game 3',
+    name: 'Week 1, Game 3',
     status: false,
     p0Ready: true,
     p1Ready: true,
@@ -367,7 +368,7 @@ const gameFixtures = [
     p1: 'player3',
   },
   {
-    name: 'Game 4',
+    name: 'Week 1, Game 4',
     status: false,
     p0Ready: true,
     p1Ready: true,
@@ -378,6 +379,34 @@ const gameFixtures = [
     updatedAt: dayjs('2022-01-20').valueOf(),
     p0: 'player2',
     p1: 'player3',
+  },
+
+  // Week 2
+  {
+    name: 'Week 2, Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-27').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  {
+    name: 'Week 2, Game 2',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-27').valueOf(),
+    p0: 'player3',
+    p1: 'player4',
   },
 ];
 
