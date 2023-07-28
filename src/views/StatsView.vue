@@ -154,7 +154,8 @@ export default {
         this.error = true;
         return;
       }
-      this.seasons = res;
+      // Sort most recent season first
+      this.seasons = res.sort((seasonOne, seasonTwo) => seasonTwo.startTime - seasonOne.startTime);
       const seasonId = parseInt(this.$route.params.seasonId);
       this.checkAndSelectSeason(seasonId);
     });

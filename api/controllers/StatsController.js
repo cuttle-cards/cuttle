@@ -7,6 +7,40 @@ dayjs.extend(isBetween);
 // Helpers //
 /////////////
 /**
+ * Find the season in which a given timestamp occurred using binary search
+ * @param {*} sortedSeasons
+ * @param {*} timeStampInMillis
+ * @returns the season | null if none is found
+ */
+function getSeasonFromTimeStamp(sortedSeasons, timeStampInMillis) {
+  let currentIndex;
+  let minIndex = 0;
+  let maxIndex = sortedSeasons.length - 1;
+  // Sanity check in case list is unsorted or start & endTimes are out of whack
+  let numTries = 0;
+  while (numTries < sortedSeasons.length) {
+    currentIndex = Math.floor((minIndex + maxIndex) / 2);
+    const currentSeason = sortedSeasons[currentIndex];
+    if (timeStampInMillis >= currentSeason.startTime && timeStampInMillis <= currentSeason.endTime) {
+      return currentSeason;
+    }
+    // If min = max and we haven't found it, there is no matching season
+    if (minIndex === maxIndex) {
+      return null;
+    }
+    // Target time is before current season
+    if (timeStampInMillis < currentSeason.startTime) {
+      maxIndex = currentIndex - 1;
+    // Target time is after current season
+    } else if (timeStampInMillis > currentSeason.endTime) {
+      minIndex = currentIndex + 1;
+    }
+    numTries++;
+  }
+  return null;
+}
+
+/**
  * Adds a match to a player's season rankings in the appropriate week
  * @param {
  *  name: string
@@ -176,10 +210,7 @@ module.exports = {
       matches.forEach((match) => {
         // Only count finished matches
         if (match.endTime && match.winner) {
-          const relevantSeason = seasons.find((season) => {
-            // Find season this match took place during
-            return dayjs(match.startTime).isBetween(dayjs(season.startTime), dayjs(season.endTime));
-          });
+          const relevantSeason = getSeasonFromTimeStamp(seasons, match.startTime);
           if (!relevantSeason) {
             return;
           }
@@ -195,10 +226,7 @@ module.exports = {
       });
 
       games.forEach((game) => {
-        const relevantSeason = seasons.find((season) => {
-          // Find season this match took place during
-          return dayjs(game.updatedAt).isBetween(dayjs(season.startTime), dayjs(season.endTime));
-        });
+        const relevantSeason = getSeasonFromTimeStamp(seasons, game.updatedAt);
         if (!relevantSeason) {
           return;
         }
