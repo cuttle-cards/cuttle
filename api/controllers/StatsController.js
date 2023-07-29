@@ -9,10 +9,10 @@ dayjs.extend(isBetween);
 /**
  * Find the season in which a given timestamp occurred using binary search
  * @param {*} sortedSeasons - Seasons sorted (OLDEST FIRST)
- * @param {*} timeStampInMillis
+ * @param {*} timeStamp - Desired time in millis since epoch
  * @returns the season | null if none is found
  */
-function getSeasonFromTimeStamp(sortedSeasons, timeStampInMillis) {
+function getSeasonFromTimeStamp(sortedSeasons, timeStamp) {
   let currentIndex;
   let minIndex = 0;
   let maxIndex = sortedSeasons.length - 1;
@@ -21,7 +21,7 @@ function getSeasonFromTimeStamp(sortedSeasons, timeStampInMillis) {
   while (numTries < sortedSeasons.length) {
     currentIndex = Math.floor((minIndex + maxIndex) / 2);
     const currentSeason = sortedSeasons[currentIndex];
-    if (timeStampInMillis >= currentSeason.startTime && timeStampInMillis <= currentSeason.endTime) {
+    if (timeStamp >= currentSeason.startTime && timeStamp <= currentSeason.endTime) {
       return currentSeason;
     }
     // If min = max and we haven't found it, there is no matching season
@@ -29,10 +29,10 @@ function getSeasonFromTimeStamp(sortedSeasons, timeStampInMillis) {
       return null;
     }
     // Target time is before current season
-    if (timeStampInMillis < currentSeason.startTime) {
+    if (timeStamp < currentSeason.startTime) {
       minIndex = currentIndex + 1;
     // Target time is after current season
-    } else if (timeStampInMillis > currentSeason.endTime) {
+    } else if (timeStamp > currentSeason.endTime) {
       maxIndex = currentIndex - 1;
     }
     numTries++;
