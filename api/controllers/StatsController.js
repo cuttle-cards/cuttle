@@ -8,7 +8,7 @@ dayjs.extend(isBetween);
 /////////////
 /**
  * Find the season in which a given timestamp occurred using binary search
- * @param {*} sortedSeasons
+ * @param {*} sortedSeasons - Seasons sorted (OLDEST FIRST)
  * @param {*} timeStampInMillis
  * @returns the season | null if none is found
  */
@@ -30,10 +30,10 @@ function getSeasonFromTimeStamp(sortedSeasons, timeStampInMillis) {
     }
     // Target time is before current season
     if (timeStampInMillis < currentSeason.startTime) {
-      maxIndex = currentIndex - 1;
+      minIndex = currentIndex + 1;
     // Target time is after current season
     } else if (timeStampInMillis > currentSeason.endTime) {
-      minIndex = currentIndex + 1;
+      maxIndex = currentIndex - 1;
     }
     numTries++;
   }
