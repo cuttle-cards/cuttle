@@ -1,5 +1,10 @@
 import { io, reconnectSockets } from '@/plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
+import {
+  getLocalStorage,
+  setLocalStorage,
+  LS_IS_RETURNING_USER_NAME,
+} from '../../../utils/local-storage-utils.js';
 
 // TODO Figure out how to reconsolidate this with backend
 const getPlayerPnumByUsername = (players, username) => {
@@ -27,6 +32,7 @@ async function handleLogin(context, username, password, signup = false) {
     }
     await reconnectSockets();
     // If the response was successful, the user is logged in
+    context.dispatch('setIsReturningUser');
     context.commit('authSuccess', username);
     return;
   } catch (err) {
@@ -41,6 +47,7 @@ export default {
     authenticated: null,
     username: null,
     mustReauthenticate: false,
+    isReturningUser: null,
   },
   mutations: {
     authSuccess(state, username) {
@@ -53,6 +60,9 @@ export default {
     },
     setMustReauthenticate(state, val) {
       state.mustReauthenticate = val;
+    },
+    setIsReturningUser(state, val) {
+      state.isReturningUser = val;
     },
   },
   actions: {
@@ -90,9 +100,11 @@ export default {
           function handleResponse(res, jwres) {
             if (jwres.statusCode === 200) {
               context.commit('setMustReauthenticate', false);
-              const pNum = getPlayerPnumByUsername(context.rootState.game.players, context.state.username);
+              const pNum =
+                res.pNum ?? getPlayerPnumByUsername(context.rootState.game.players, context.state.username);
+
               context.commit('setMyPNum', pNum);
-              return resolve();
+              return resolve(res);
             }
             context.commit('clearAuth');
             return reject(res.message);
@@ -100,7 +112,7 @@ export default {
         );
       });
     },
-    async requestStatus(context, { router, route }) {
+    async requestStatus(context, route) {
       const { state } = context;
 
       // If we've authenticated before, fast fail
@@ -130,12 +142,6 @@ export default {
           context.commit('authSuccess', username);
         }
 
-        // If this is a lobby, redirect the user to the game list so they don't have to
-        // log back in again
-        if (isLobby) {
-          return router.push('/');
-        }
-
         // If the user is currently authenticated and part of a game, we need to resubscribe them
         // The sequencing here is a little interesting, but this is what happens to get a user back
         // in to a game in progress:
@@ -146,8 +152,10 @@ export default {
         //     - `gameService.populateGame` is called
         //     - `Game.subscribe` is called
         //     - `Game.publish` is called
-        if (isGame && gameId) {
-          await context.dispatch('requestReauthenticate', { username });
+        if (gameId && (isGame || isLobby)) {
+          await context.dispatch('requestReauthenticate', { username }).then(({ game }) => {
+            context.commit('updateGame', game);
+          });
         }
 
         return;
@@ -160,6 +168,21 @@ export default {
     },
     reconnectSocket() {
       io.socket.reconnect();
+    },
+    getIsReturningUser(context) {
+      const { isReturningUser } = context.state;
+      if (isReturningUser === null) {
+        const val = getLocalStorage(LS_IS_RETURNING_USER_NAME);
+        context.commit('setIsReturningUser', val);
+        return val;
+      }
+    },
+    setIsReturningUser(context) {
+      const { isReturningUser } = context.state;
+      if (!isReturningUser) {
+        setLocalStorage(LS_IS_RETURNING_USER_NAME, true);
+        context.commit('setIsReturningUser', true);
+      }
     },
   },
 };

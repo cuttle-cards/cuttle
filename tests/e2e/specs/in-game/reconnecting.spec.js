@@ -1,4 +1,4 @@
-import { assertGameState } from '../../support/helpers';
+import { assertGameState, assertVictory } from '../../support/helpers';
 import { opponentOne } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
 
@@ -660,5 +660,28 @@ describe('Reconnecting to a game', () => {
         scrap: [Card.SEVEN_OF_CLUBS],
       });
     });
+  });
+});
+
+describe('Display correct dialog for unavailable game', () => {
+  beforeEach(() => {
+    cy.setupGameAsP0();
+  });
+
+  it('Shows unavailable game dialog, then return home', () => {
+
+    cy.concedeOpponent();
+    assertVictory();
+    //go home
+    cy.get('[data-cy=gameover-go-home]').click();
+    cy.url().should('not.include', '/game');
+    //go back to game URL
+    cy.get('@gameSummary').then(({ gameId }) => cy.visit(`#/game/${gameId}`));
+    cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
+    cy.get('[data-cy="leave-unavailable-game-button"]').click();
+    cy.hash().should('equal', '#/');
+    //go to random url
+    cy.visit('#/game/12345');
+    cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
   });
 });

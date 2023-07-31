@@ -1,14 +1,15 @@
 <template>
   <div id="game-view-wrapper">
-    <!-- Unauthenticated/Must re-log in -->
+    <!-- Unauthenticated/Must re-log in/ Unavailable game -->
     <template v-if="$store.state.game.myPNum === null">
-      <reauthenticate-dialog v-model="mustReauthenticate" />
+      <game-unavailable-view />
     </template>
+
     <!-- Authenticated View -->
     <template v-else>
       <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center">
         <spectator-list-menu :spectatingUsers="spectatingUsers" :vuetifyDisplay="$vuetify" />
-        <game-menu />
+        <game-menu :isSpectating="isSpectating" />
         <v-icon
           v-if="$vuetify.display.xs"
           color="white"
@@ -123,7 +124,12 @@
       <!-- Draw / Scrap Piles -->
       <div class="deck-container">
         <div id="field-left">
-          <v-card id="deck" :class="{ 'reveal-top-two': resolvingSeven }" @click="drawCard" elevation="0">
+          <v-card
+            id="deck"
+            :class="{ 'reveal-top-two': resolvingSeven }"
+            elevation="0"
+            @click="drawCard"
+          >
             <template v-if="!resolvingSeven">
               <v-card-actions class="c-deck-count">({{ deckLength }})</v-card-actions>
               <h1 v-if="deckLength === 0" id="empty-deck-text">PASS</h1>
@@ -386,7 +392,7 @@ import GameDialogs from '@/components/GameView/GameDialogs.vue';
 import GameMenu from '@/components/GameView/GameMenu.vue';
 import GameOverlays from '@/components/GameView/GameOverlays.vue';
 import ScoreGoalToolTip from '@/components/GameView/ScoreGoalToolTip.vue';
-import ReauthenticateDialog from '@/components/GameView/ReauthenticateDialog.vue';
+import GameUnavailableView from '../components/GameView/GameUnavailableView.vue';
 import TargetSelectionOverlay from '@/components/GameView/TargetSelectionOverlay.vue';
 import ScrapDialog from '@/components/GameView/ScrapDialog.vue';
 import UsernameToolTip from '@/components/GameView/UsernameToolTip.vue';
@@ -401,7 +407,7 @@ export default {
     GameMenu,
     GameOverlays,
     ScoreGoalToolTip,
-    ReauthenticateDialog,
+    GameUnavailableView,
     TargetSelectionOverlay,
     ScrapDialog,
     UsernameToolTip,
@@ -448,17 +454,7 @@ export default {
     showOpponentHand() {
       return this.hasGlassesEight || this.isSpectating;
     },
-    //////////
-    // Auth //
-    //////////
-    mustReauthenticate: {
-      get() {
-        return this.$store.state.auth.mustReauthenticate;
-      },
-      set(val) {
-        this.$store.commit('setMustReauthenticate', val);
-      },
-    },
+
     ////////////////////
     // Responsiveness //
     ////////////////////
@@ -1482,5 +1478,11 @@ export default {
     grid-column-start: 1;
     grid-column-end: span 12;
   }
+}
+
+@media (max-width: 960px) and (orientation: landscape) {
+ #player-score{
+  margin-top: -16px;
+ }
 }
 </style>

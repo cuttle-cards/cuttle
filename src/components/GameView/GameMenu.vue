@@ -3,7 +3,13 @@
     <v-menu v-model="showGameMenu">
       <!-- Activator -->
       <template #activator="{ props }">
-        <v-btn class="ml-0" id="game-menu-activator" v-bind="props" icon variant="text">
+        <v-btn
+          class="ml-0"
+          id="game-menu-activator"
+          v-bind="props"
+          icon
+          variant="text"
+        >
           <v-icon color="neutral-lighten-2" icon="mdi-cog" />
         </v-btn>
       </template>
@@ -15,6 +21,14 @@
         <v-list-item data-cy="stalemate-initiate" @click="openStalemateDialog">
           Request Stalemate
         </v-list-item>
+        <!-- Concede Dialog (Initiate + Confirm) -->
+        <template v-else>
+          <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog"> Concede</v-list-item>
+          <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
+            Request Stalemate
+          </v-list-item>
+        </template>
+        <v-progress-linear v-if="loading" color="primary" indeterminate />
       </v-list>
     </v-menu>
 
@@ -69,6 +83,12 @@ export default {
       showRulesDialog: false,
       loading: false,
     };
+  },
+  props: {
+    isSpectating: {
+      type: Boolean,
+      required: true,
+    },
   },
   computed: {
     showDialog: {
@@ -143,6 +163,15 @@ export default {
       }
       this.loading = false;
       this.showStalemateDialog = false;
+    },
+    async stopSpectate() {
+      try {
+        this.loading = true;
+        await this.$store.dispatch('requestSpectateLeave');
+      } finally {
+        this.loading = false;
+        this.$router.push('/');
+      }
     },
   },
 };

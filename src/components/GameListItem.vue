@@ -24,7 +24,12 @@
           :data-cy-join-game="gameId"
           @click="subscribeToGame"
         >
-          <v-icon v-if="isRanked" class="mr-4" size="medium" icon="mdi-trophy" />
+          <v-icon
+            v-if="isRanked"
+            class="mr-4"
+            size="medium"
+            icon="mdi-trophy"
+          />
           {{ joinButtonText }}
         </v-btn>
         <!-- Spectate Button -->
@@ -109,7 +114,7 @@ export default {
         variant: 'outlined',
         minWidth: '200',
         loading: this.joiningGame,
-      }
+      };
     },
   },
   methods: {

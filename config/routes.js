@@ -59,6 +59,7 @@ module.exports.routes = {
   '/game/getList': 'game/get-list',
   '/game/subscribe': 'game/subscribe',
   '/game/spectate': 'game/spectate',
+  '/game/spectateLeave': 'game/spectate-leave',
   '/game/reconnect': 'game/reconnect',
   '/game/ready': 'game/ready',
   '/game/leaveLobby': 'game/leave-lobby',
@@ -87,10 +88,8 @@ module.exports.routes = {
   '/game/reject-stalemate': 'game/stalemate-reject',
   '/game/chat': 'game/chat',
   '/game/gameData': 'game/game-data',
-  '/game/lobbyData': 'game/lobby-data',
   // DEVELOPMENT ONLY
   '/game/stackDeck': 'game/stack-deck',
-  '/game/deleteDeck': 'game/delete-deck',
   '/game/loadFixture': 'game/load-fixture',
   '/game/clear': 'game/clear-game',
 

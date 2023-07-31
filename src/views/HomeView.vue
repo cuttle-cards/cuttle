@@ -7,7 +7,13 @@
   >
     <v-container>
       <v-row v-if="$vuetify.display.mdAndDown">
-        <img id="logo" alt="Cuttle logo" src="/img/logo.png" height="20vh" class="mb-4" />
+        <img
+          id="logo"
+          alt="Cuttle logo"
+          src="/img/logo.png"
+          height="20vh"
+          class="mb-4"
+        />
       </v-row>
       <div id="game-list-card">
         <v-row>
@@ -62,7 +68,12 @@
             </div>
           </v-col>
           <v-col id="side-nav" :cols="$vuetify.display.mdAndDown ? 12 : 3">
-            <img v-if="$vuetify.display.lgAndUp" id="logo" alt="Vue logo" src="/img/logo.png" />
+            <img
+              v-if="$vuetify.display.lgAndUp"
+              id="logo"
+              alt="Cuttle logo"
+              src="/img/logo.png"
+            />
             <v-btn
               variant="outlined"
               color="primary"
@@ -152,7 +163,7 @@ export default {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
   },
-  async mounted() {
+  async created() {
     // Leave any existing lobbies before getting the game list
     // Need to make sure we do these in order so the order of operations is:
     //     leave -> list

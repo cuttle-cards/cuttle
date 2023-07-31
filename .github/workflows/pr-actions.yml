@@ -48,39 +48,15 @@ jobs:
   # Run Jest Unit Tests
   test-unit:
     uses: ./.github/workflows/run-npm-script.yml
-    needs: lint
+    needs: draft
     with:
       label: 'Test: Unit'
       script: 'npm run test:unit'
 
   # Run Cypress End to End Tests
   test-e2e:
-    name: 'Test: End to End'
-    runs-on: ubuntu-latest
-    needs: test-unit
-    # stop the job if it runs over 20 minutes to prevent a hanging process from eating minutes
-    timeout-minutes: 45
-    steps:
-      # Checkout and node setup are shared in both `pr-actions.yml` and `run-npm-script.yml`
-      # If you change one, please change the other
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18.12.1'
-          cache: 'npm'
-      # https://github.com/cypress-io/github-action
-      - uses: cypress-io/github-action@v4
-        with:
-          browser: chrome
-          build: npm run build
-          start: npm start
-          config-file: cypress.config.js
-          wait-on: 'http://localhost:1337'
-          # wait for 2 minutes for the server to respond
-          wait-on-timeout: 120
-          record: true
-        env:
-          VITE_API_URL: http://localhost:1337
-          # pass GitHub token to allow accurately detecting a build vs a re-run build
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+    uses: ./.github/workflows/test-e2e.yml
+    needs: draft
+    secrets:
+      record-key: d1f04332-8bb9-4570-90e4-7c29b9510ee3
+      github-token: ${{ secrets.GITHUB_TOKEN }}

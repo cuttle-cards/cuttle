@@ -1,5 +1,10 @@
 <template>
-  <base-dialog v-if="oneOff" v-model="show" id="choose-two-dialog" title="Choose Two">
+  <base-dialog
+    v-if="oneOff"
+    v-model="show"
+    id="choose-two-dialog"
+    title="Choose Two"
+  >
     <template #body>
       <p class="mb-4">Which Two would you like to counter with? (Click the card)</p>
       <div id="twos-in-hand" class="d-flex justify-center mb-4">
@@ -14,7 +19,12 @@
       </div>
     </template>
     <template #actions>
-      <v-btn variant="text" color="surface-1" data-cy="cancel-counter" @click="resolve">
+      <v-btn
+        variant="text"
+        color="surface-1"
+        data-cy="cancel-counter"
+        @click="resolve"
+      >
         Cancel
       </v-btn>
     </template>

@@ -60,16 +60,26 @@
           with play-by-play commentary.
         </p>
       </div>
+
       <!-- Rankings Table -->
-      <template
-        v-if="selectedSeason && selectedSeason.rankings && selectedSeason.rankings.length > 0"
-      >
+      <template v-if="weeklyRanking">
         <h2 class="text-h2 mb-4">
           Weekly Rankings
           <stats-scoring-dialog />
         </h2>
         <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
       </template>
+      <!-- Error display -->
+      <div v-if="error" class="d-flex flex-column align-center text-center">
+        <h3 class="text-h3">Oops!</h3>
+        <p class="text-body-1">There was a problem loading the leaderboard. Refresh the page to try again.</p>
+        <v-img
+          alt="Dead cuttle logo"
+          src="/img/logo-dead.svg"
+          :width="200"
+          class="mt-4"
+        />
+      </div>
     </section>
   </div>
 </template>
@@ -90,12 +100,23 @@ export default {
   },
   data() {
     return {
-      loadingData: false,
+      loadingData: true,
       selectedSeason: null,
       seasons: [],
+      error: false,
     };
   },
+  watch: {
+    selectedSeason() {
+      this.selectedSeason
+        ? this.$router.replace({ name: 'StatsBySeason', params: { seasonId: this.selectedSeason.id } })
+        : null;
+    },
+  },
   computed: {
+    weeklyRanking() {
+      return this.selectedSeason && this.selectedSeason.rankings && this.selectedSeason.rankings.length > 0;
+    },
     seasonStartFormatted() {
       return !this.selectedSeason ? '' : dayjs(this.selectedSeason.startTime).format('YYYY/MM/DD');
     },
@@ -115,19 +136,35 @@ export default {
       return this.seasons.map((season) => {
         return {
           title: season.name,
-          value: season
-        }
+          value: season,
+        };
       });
-    }
+    },
+  },
+  methods: {
+    checkAndSelectSeason(seasonId) {
+      const requestedSeason = this.seasons.find(({ id }) => id === seasonId);
+      this.selectedSeason = requestedSeason || this.seasons[0];
+    },
   },
   created() {
-    this.loadingData = true;
     io.socket.get('/stats', (res) => {
-      this.seasons = res;
-      const [selectedSeason] = this.seasons
-      this.selectedSeason = selectedSeason;
       this.loadingData = false;
+      if (!res?.length) {
+        this.error = true;
+        return;
+      }
+      this.seasons = res;
+      const seasonId = parseInt(this.$route.params.seasonId);
+      this.checkAndSelectSeason(seasonId);
     });
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.loadingData = true;
+    const seasonId = parseInt(to.params.seasonId);
+    this.checkAndSelectSeason(seasonId);
+    this.loadingData = false;
+    next();
   },
 };
 </script>

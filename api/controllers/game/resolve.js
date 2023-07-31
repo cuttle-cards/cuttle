@@ -9,7 +9,6 @@ module.exports = function (req, res) {
     .then(function changeAndSave(values) {
       const [game, player, opponent, playerPoints, opPoints] = values;
       let happened = true;
-      const playerUpdates = {};
       const opponentUpdates = {};
       let cardsToScrap = [];
       let updatePromises = [];
@@ -26,7 +25,6 @@ module.exports = function (req, res) {
         ];
         happened = false;
       } else {
-        playerUpdates.frozenId = null;
         // One Off will resolve; perform effect based on card rank
         switch (game.oneOff.rank) {
           case 1: {
@@ -55,7 +53,6 @@ module.exports = function (req, res) {
               `The ${game.oneOff.name} one-off resolves; all point cards are scrapped.`,
             ];
             updatePromises = [
-              User.updateOne(player.id).set(playerUpdates),
               // Remove all jacks from point cards
               Card.replaceCollection([...playerPointIds, ...opponentPointIds], 'attachments').members([]),
               // Scrap all point cards and jacks
@@ -135,17 +132,15 @@ module.exports = function (req, res) {
 
                 //Replace top card, if there's a card in deck
                 if (game.deck.length >= 1) {
-                  const newTopCard = _.sample(game.deck).id;
+                  const newTopCardIndex = _.random(game.deck.length - 1);
+                  const newTopCard = game.deck.splice(newTopCardIndex, 1)[0].id;
                   gameUpdates.topCard = newTopCard;
                   cardsToRemoveFromDeck.push(newTopCard);
 
-                  // Replace second card, if possible
-                  if (game.deck.length >= 2) {
-                    let newSecondCard = _.sample(game.deck).id;
-                    // Ensure new second card is distinct from new topcard and cards drawn
-                    while (cardsToRemoveFromDeck.includes(newSecondCard)) {
-                      newSecondCard = _.sample(game.deck).id;
-                    }
+                  // Replace second card, if possible (after choosing new topcard)
+                  if (game.deck.length >= 1) {
+                    const newSecondCardIndex = _.random(game.deck.length - 1);
+                    const newSecondCard = game.deck.splice(newSecondCardIndex, 1)[0].id;
                     gameUpdates.secondCard = newSecondCard;
                     cardsToRemoveFromDeck.push(newSecondCard);
                   }
@@ -166,23 +161,22 @@ module.exports = function (req, res) {
 
                 // If more cards are left in deck, replace second card with card from deck
                 if (game.deck.length >= 1) {
-                  let newSecondCard = _.sample(game.deck).id;
-                  // Ensure new second card is distinct from cards drawn and new top card
-                  while (cardsToRemoveFromDeck.includes(newSecondCard)) {
-                    newSecondCard = _.sample(game.deck).id;
-                  }
+                  const newSecondCardIndex = _.random(game.deck.length - 1);
+                  const newSecondCard = game.deck.splice(newSecondCardIndex, 1)[0].id;
                   gameUpdates.secondCard = newSecondCard;
+                  cardsToRemoveFromDeck.push(newSecondCard);
                   gameUpdates.log = [
                     ...game.log,
                     `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card to reach the hand limit (8).`,
                   ];
+
                   // Player draws last card in deck, to reach hand limit (only draws 1)
-                } else {
-                  gameUpdates.log = [
-                    ...game.log,
-                    `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card (last in deck) to reach the hand limit (8).`,
-                  ];
                 }
+              } else {
+                gameUpdates.log = [
+                  ...game.log,
+                  `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card (last in deck) to reach the hand limit (8).`,
+                ];
               }
             }
             updatePromises = [

@@ -1,5 +1,3 @@
-import 'cypress-fail-fast';
-
 // ***********************************************************
 // This example support/index.js is processed and
 // loaded automatically before your test files.
@@ -17,6 +15,14 @@ import 'cypress-fail-fast';
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+
+const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/;
+Cypress.on('uncaught:exception', (err) => {
+  if (resizeObserverLoopErrRe.test(err.message)) {
+    return false;
+  }
+});
+
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

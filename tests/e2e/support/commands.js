@@ -25,9 +25,12 @@ Cypress.Commands.add('setBadSession', () => {
 });
 
 Cypress.Commands.add('loadSeasonFixture', (season) => {
-  return new Cypress.Promise((resolve) => {
-    io.socket.post('/test/loadSeasonFixture', season, function () {
-      return resolve();
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.post('/test/loadSeasonFixture', season, function (res, jwres) {
+      if (jwres.statusCode !== 200) {
+        return reject(new Error('Failed to load season'));
+      }
+      return resolve(res);
     });
   });
 });
@@ -72,7 +75,12 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
     }
-    cy.subscribeOpponent(gameSummary.gameId);
+    try {
+      cy.subscribeOpponent(gameSummary.gameId);
+    } catch {
+      cy.recoverSessionOpponent(opponentOne);
+      cy.subscribeOpponent(gameSummary.gameId);
+    }
     cy.readyOpponent();
     // Asserting 5 cards in players hand confirms game has loaded
     cy.get('#player-hand-cards .player-card').should('have.length', 5);
@@ -89,7 +97,12 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
     }
-    cy.subscribeOpponent(gameSummary.gameId);
+    try {
+      cy.subscribeOpponent(gameSummary.gameId);
+    } catch {
+      cy.recoverSessionOpponent(opponentOne);
+      cy.subscribeOpponent(gameSummary.gameId);
+    }
     cy.readyOpponent();
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
@@ -197,11 +210,12 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
       {
         id,
       },
-      function handleResponse(res, jwres) {
+      function handleResponse(_res, jwres) {
         if (jwres.statusCode === 200) {
           return resolve();
         }
-        return reject(new Error('error subscribing'));
+        const errMessage = jwres?.message ?? jwres?.error ?? 'Unknown error';
+        return reject(new Error(`Error subscribing opponent to game ${id}: ${errMessage}`));
       },
     );
   });
@@ -221,6 +235,17 @@ Cypress.Commands.add('setOpponentToSpectate', (id) => {
         return reject(new Error('error spectating'));
       },
     );
+  });
+});
+
+Cypress.Commands.add('setOpponentToLeaveSpectate', () => {
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.get('/game/spectateLeave', function handleResponse(res, jwres) {
+      if (jwres.statusCode === 200) {
+        return resolve();
+      }
+      return reject(new Error('error leaving spectated game'));
+    });
   });
 });
 
@@ -1228,16 +1253,6 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
     });
 });
 
-Cypress.Commands.add('deleteDeck', () => {
-  cy.log('Deleting deck');
-  io.socket.get('/game/deleteDeck', function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-    return jwres;
-  });
-});
-
 Cypress.Commands.add('vueRoute', (route) => {
   cy.window().its('cuttle.app.config.globalProperties.$router').invoke('push', route);
 });
@@ -1254,8 +1269,9 @@ Cypress.Commands.add('vueRoute', (route) => {
  *   p1Hand: {suit: number, rank: number}[],
  *   p1Points: {suit: number, rank: number}[],
  *   p1FaceCards: {suit: number, rank: number}[],
- *   topCard?: {suit: number, rank: number} (optional)
- *   secondCard?: {suit: number, rank: number} (optional)
+ *   topCard?: {suit: number, rank: number}
+ *   secondCard?: {suit: number, rank: number}
+ *   deck?: {suit: number, rank: number}[] deletes all cards except these from the deck
  * }
  */
 Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
@@ -1269,7 +1285,6 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
       const p1HandCardIds = getCardIds(game, fixture.p1Hand);
       const p1PointCardIds = getCardIds(game, fixture.p1Points);
       const p1FaceCardIds = getCardIds(game, fixture.p1FaceCards);
-
       // build request body
       let reqBody = {
         p0Id: game.players[0].id,
@@ -1294,6 +1309,11 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
       if (fixture.scrap) {
         const scrapCardIds = getCardIds(game, fixture.scrap);
         reqBody.scrapCardIds = scrapCardIds;
+      }
+
+      if (fixture.deck) {
+        const deck = getCardIds(game, fixture.deck);
+        reqBody.deck = deck;
       }
 
       io.socket.get('/game/loadFixture', reqBody, function handleResponse(res, jwres) {

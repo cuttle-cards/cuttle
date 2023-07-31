@@ -103,7 +103,6 @@
           next turn.
         </p>
       </section>
-
       <section>
         <h3>Face Cards & Glasses Eights</h3>
         <p>
@@ -136,7 +135,6 @@
           </ol>
         </div>
       </section>
-
       <section>
         <h2>FAQ</h2>
         <h4>

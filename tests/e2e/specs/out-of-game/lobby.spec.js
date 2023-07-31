@@ -12,15 +12,17 @@ function setup(isRanked = false) {
     cy.wrap(gameSummary).as('gameSummary');
   });
 }
-function assertGameStarted() {
+function assertGameStarted(noMovesYet = true) {
   cy.url().should('include', '/game');
   cy.window()
     .its('cuttle.app.config.globalProperties.$store.state.game')
     .then((game) => {
-      expect(game.players.length).to.eq(2);
-      expect(game.players[0].hand.length).to.eq(5);
       expect(game.players[1].hand.length).to.eq(6);
-      expect(game.deck.length).to.eq(39);
+      if (noMovesYet) {
+        expect(game.players.length).to.eq(2);
+        expect(game.players[0].hand.length).to.eq(5);
+        expect(game.deck.length).to.eq(39);
+      }
       expect(game.topCard.rank).to.be.greaterThan(0);
       expect(game.secondCard.rank).to.be.greaterThan(0);
       expect(game.scrap.length).to.eq(0);
@@ -63,12 +65,14 @@ describe('Lobby - Page Content (Ranked)', () => {
   it('Displays ranked button', () => {
     cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
   });
+
 });
 
 describe('Lobby - P0 Perspective', () => {
   beforeEach(() => {
     setup();
   });
+
   it('Exits the Lobby', () => {
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
     cy.get('[data-cy=exit-button]').click();
@@ -84,6 +88,7 @@ describe('Lobby - P0 Perspective', () => {
         expect(state.game.myPNum).to.eq(null);
       });
   });
+
   it('Ready & UnReady buttons work', () => {
     cy.get('[data-cy=ready-button]')
       // Test: Button text defaults to 'Ready'
@@ -111,6 +116,7 @@ describe('Lobby - P0 Perspective', () => {
         expect(updatedGameState.p0Ready).to.eq(false); // Player not ready
       });
   });
+
   it('Shows when opponent joins, leaves, and re-joins', () => {
     cy.contains('[data-cy=opponent-indicator]', 'Invite');
     cy.window()
@@ -130,6 +136,7 @@ describe('Lobby - P0 Perspective', () => {
         cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
       });
   });
+
   it('Shows when oppenent Readies/Unreadies', function () {
     // Opponent subscribes & readies up
     cy.signupOpponent(opponentOne);
@@ -141,6 +148,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
   });
+
   it('Game starts when both players are ready - opponent first', function () {
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
@@ -150,6 +158,7 @@ describe('Lobby - P0 Perspective', () => {
       assertGameStarted();
     });
   });
+
   it('Game starts when both players are ready - player first', function () {
     cy.get('[data-cy=ready-button]').click();
     cy.signupOpponent(opponentOne);
@@ -158,10 +167,31 @@ describe('Lobby - P0 Perspective', () => {
       assertGameStarted();
     });
   });
-  // TODO: Rewrite this test when auth is supported in the lobby
-  it('Redirects to game list after page refresh', () => {
-    cy.reload();
-    cy.hash().should('equal', '#/');
+
+  describe('Reloading the lobby', () => {
+    it('Reloads lobby data after page refresh when the game has not started', function () {
+      cy.reload();
+      cy.url().should('include', '/lobby');
+      cy.get('[data-cy=my-indicator]').contains(myUser.username);
+      
+      cy.signupOpponent(opponentOne);
+      cy.subscribeOpponent(this.gameSummary.gameId);
+      cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+      cy.reload();
+  
+      cy.url().should('include', '/lobby');
+      cy.get('[data-cy=my-indicator]').contains(myUser.username);
+      cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+      cy.readyOpponent();
+      cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
+  
+      cy.reload();
+      cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
+      cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
+  
+      cy.get('[data-cy=ready-button]').click();
+      assertGameStarted();
+    });
   });
 });
 
@@ -182,9 +212,11 @@ describe('Lobby - P1 Perspective', () => {
       cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     });
   });
+
   it('Shows opponent already in lobby for player joining second', () => {
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
   });
+
   it('Shows when oppenent Readies/Unreadies', () => {
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
@@ -196,6 +228,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
     cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
   });
+
   it('Shows when opponent leaves and rejoins', function () {
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
     cy.leaveLobbyOpponent(); // Opponent leaves
@@ -204,6 +237,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
   });
+
   it('Ready & UnReady buttons work', () => {
     cy.get('[data-cy=ready-button]')
       // Test: Button text defaults to 'Ready'
@@ -235,6 +269,7 @@ describe('Lobby - P1 Perspective', () => {
         expect(updatedGameState.p1Ready).to.eq(false); // Player not ready
       });
   });
+
   it('Game starts when both players are ready - opponent ready before joining', function () {
     cy.get('[data-cy=exit-button]').click(); // leave game so opponent can ready before player joins
     cy.readyOpponent();
@@ -247,19 +282,42 @@ describe('Lobby - P1 Perspective', () => {
     // Test that game started
     assertGameStarted();
   });
+
   it('Game starts when both players are ready - opponent readies first after player joins', () => {
     cy.readyOpponent();
     cy.get('[data-cy=ready-button]').click();
     assertGameStarted();
   });
+
   it('Game starts when both players are ready - player readies first', () => {
     cy.get('[data-cy=ready-button]').click();
     cy.readyOpponent();
     assertGameStarted();
   });
-  // TODO: Rewrite this test when auth is supported in the lobby
-  it('Redirects to game list after page refresh', () => {
+
+  it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
+
+    cy.get('[data-cy=ready-button]').click();
+    cy.get('[data-cy=my-indicator]').should('have.class', 'ready');
+
+    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+    cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
+
     cy.reload();
-    cy.hash().should('equal', '#/');
+    cy.get('[data-cy=my-indicator]').should('have.class', 'ready');
+    cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
+    cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
+
+    // Disconnect socket and then opponent hits ready to start game
+    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');
+    cy.readyOpponent();
+
+    cy.drawCardOpponent();
+
+    // Reload the page -- should bring user into the game
+    cy.reload();
+    assertGameStarted(false); // skip hand size assertion
+    cy.get('[data-player-hand-card]').should('have.length', 6);
+    cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
 });

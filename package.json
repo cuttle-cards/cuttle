@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "4.3.17",
+  "version": "4.4.4",
   "dependencies": {
     "connect-redis": "3.0.2",
     "dayjs": "1.11.3",
@@ -31,9 +31,9 @@
     "@storybook/vue": "6.5.12",
     "@vitejs/plugin-vue": "^3.1.0",
     "@vue/devtools": "^6.5.0",
+    "concurrently": "^8.0.1",
     "cross-env": "^7.0.3",
     "cypress": "^11.2.0",
-    "cypress-fail-fast": "^5.0.1",
     "eslint": "8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "2.12.1",
@@ -60,6 +60,7 @@
     "start:server": "node app.js",
     "start:preview": "npm run build;npm run start:server",
     "start:devtools": "npx vue-devtools",
+    "start:dev": "concurrently \"npm run start:client\" \"npm run start:server\" \"npm run start:devtools\"",
     "start": "node app.js",
     "build": "vite build",
     "e2e:client": "cypress run",

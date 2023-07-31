@@ -1,15 +1,19 @@
 import store from '@/store/store.js';
 import router from '@/router.js';
-import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE } from '@/router';
+import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router';
 import SocketEvent from '../../../types/SocketEvent';
 
 // Handles socket updates of game data
-export function handleInGameEvents(evData) {
+export async function handleInGameEvents(evData) {
+  await router.isReady();
   const currentRoute = router.currentRoute.value;
-  // No-op if the event's gameId doesn't match the url
+
   const { gameId: urlGameId } = currentRoute.params;
   const eventGameId = evData.game?.id ?? evData.gameId;
-  if (urlGameId && Number(urlGameId) !== eventGameId) {
+  const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
+  
+  // No-op if the event's gameId doesn't match the url
+  if (!urlGameId || Number(urlGameId) !== eventGameId) {
     return;
   }
   // Handle GameOver
@@ -21,28 +25,14 @@ export function handleInGameEvents(evData) {
   switch (evData.change) {
     case SocketEvent.READY: {
       store.commit('updateReady', evData.pNum);
-      break;
+      return;
     }
     case SocketEvent.INITIALIZE: {
-      const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
-
       // Update state
       store.commit('resetState');
       store.dispatch('updateGameThenResetPNumIfNull', evData.game);
       if (isSpectating) {
         store.commit('setMyPNum', 0); // always spectate as p0
-      }
-
-      // Validate current route & navigate if incorrect
-      const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
-      const shouldNavigate = currentRoute.name !== targetRouteName;
-      if (shouldNavigate) {
-        router.push({
-          name: targetRouteName,
-          params: {
-            gameId: store.state.game.id,
-          },
-        });
       }
       break;
     }
@@ -133,6 +123,7 @@ export function handleInGameEvents(evData) {
       break;
     case SocketEvent.RE_LOGIN:
     case SocketEvent.SPECTATOR_JOINED:
+    case SocketEvent.SPECTATOR_LEFT:
       store.dispatch('updateGameThenResetPNumIfNull', evData.game);
       break;
     case SocketEvent.REQUEST_STALEMATE:
@@ -145,4 +136,17 @@ export function handleInGameEvents(evData) {
       store.commit('setWaitingForOpponentToStalemate', false);
       break;
   }
+
+
+    // Validate current route & navigate if incorrect
+    const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
+    const shouldNavigate = currentRoute.name === ROUTE_NAME_LOBBY;
+    if (shouldNavigate) {
+      router.push({
+        name: targetRouteName,
+        params: {
+          gameId: store.state.game.id,
+        },
+      });
+    }
 }

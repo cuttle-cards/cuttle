@@ -2,7 +2,13 @@
   <div class="pa-4">
     <v-container>
       <v-row>
-        <img id="logo" alt="Cuttle logo" src="/img/logo.png" height="20vh" class="mb-8" />
+        <img
+          id="logo"
+          alt="Cuttle logo"
+          src="/img/logo.png"
+          height="20vh"
+          class="mb-8"
+        />
       </v-row>
 
       <!-- Rules -->
@@ -28,16 +34,8 @@
         <p>
           Watch the official cuttle.cards tutorial to learn the rules and get a feel for the flow of the game.
         </p>
-        <div class="video-container__wrapper align-self-center my-4">
-          <div class="video-container">
-            <iframe
-              class="video-container__video"
-              src="https://www.youtube.com/embed/qOqkNbhMdsI"
-              title="Cuttle Game Tutorial -- Youtube Player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            />
-          </div>
+        <div class="w-50 my-4 mx-auto">
+          <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI"/>
         </div>
       </v-row>
 
@@ -56,8 +54,19 @@
         <h1 class="d-block gradient-text">Play</h1>
         <p class="d-block">On your turn you must perform exactly one of the following actions:</p>
       </v-row>
-      <v-row v-for="(ruleRow, rowIndex) in rules" :key="`rule-row-${rowIndex}`" align="start" class="my-6">
-        <v-col v-for="(rule) in ruleRow" :key="rule.title" md="6" sm="12" class="my-4">
+      <v-row
+        v-for="(ruleRow, rowIndex) in rules"
+        :key="`rule-row-${rowIndex}`"
+        align="start"
+        class="my-6"
+      >
+        <v-col
+          v-for="(rule) in ruleRow"
+          :key="rule.title"
+          md="6"
+          sm="12"
+          class="my-4"
+        >
           <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
@@ -65,7 +74,12 @@
       <!-- Royals -->
       <v-row class="flex-column">
         <div class="d-flex">
-          <v-icon size="x-large" color="black" class="mr-4" icon="mid-crown" />
+          <v-icon
+            size="x-large"
+            color="black"
+            class="mr-4"
+            icon="mid-crown"
+          />
           <h1 class="gradient-text">Royals</h1>
         </div>
         <p class="d-block">
@@ -73,8 +87,19 @@
           in effect until the card is scrapped. Each Royal gives a different effect.
         </p>
       </v-row>
-      <v-row v-for="(ruleRow, rowIndex) in royals" :key="`royal-row-${rowIndex}`" align="start" class="my-6">
-        <v-col v-for="(rule) in ruleRow" :key="rule.title" md="6" sm="12" class="my-4">
+      <v-row
+        v-for="(ruleRow, rowIndex) in royals"
+        :key="`royal-row-${rowIndex}`"
+        align="start"
+        class="my-6"
+      >
+        <v-col
+          v-for="(rule) in ruleRow"
+          :key="rule.title"
+          md="6"
+          sm="12"
+          class="my-4"
+        >
           <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
@@ -82,7 +107,12 @@
       <!-- One-Offs -->
       <v-row>
         <div class="d-flex">
-          <v-icon size="x-large" color="black" class="mr-4" icon="mdi-delete" />
+          <v-icon
+            size="x-large"
+            color="black"
+            class="mr-4"
+            icon="mdi-delete"
+          />
           <h1 class="gradient-text">One-Offs</h1>
         </div>
         <p>
@@ -97,7 +127,13 @@
         align="start"
         class="my-6"
       >
-        <v-col v-for="(rule) in ruleRow" :key="rule.title" md="6" sm="12" class="my-4">
+        <v-col
+          v-for="(rule) in ruleRow"
+          :key="rule.title"
+          md="6"
+          sm="12"
+          class="my-4"
+        >
           <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
@@ -220,7 +256,13 @@
           there is only one place:
           <a href="https://www.cuttle.cards"> www.cuttle.cards </a>
         </p>
-        <v-btn to="/" width="300px" color="primary" class="align-self-center" data-cy="bottom-home-button">
+        <v-btn
+          to="/"
+          width="300px"
+          color="primary"
+          class="align-self-center"
+          data-cy="bottom-home-button"
+        >
           {{ buttonText }}
         </v-btn>
       </v-row>
@@ -229,12 +271,14 @@
 </template>
 <script>
 import RulePreview from '@/components/RulePreview.vue';
+import BaseVideo from '../components/Global/BaseVideo.vue';
 
 export default {
   name: 'RulesView',
   components: {
     RulePreview,
-  },
+    BaseVideo
+},
   created() {
     this.rules = [
       // First Row
@@ -422,24 +466,5 @@ export default {
   margin: 0 auto;
 }
 
-.video-container__wrapper {
-  width: 65%;
-}
 
-/* https://css-tricks.com/fluid-width-video/ */
-.video-container {
-  position: relative;
-  padding: 0 0 56.25%;
-  height: 0;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.video-container__video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
 </style>

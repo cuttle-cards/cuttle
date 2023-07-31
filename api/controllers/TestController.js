@@ -13,6 +13,7 @@ module.exports = {
       Card.destroy({}),
       Season.destroy({}),
       Match.destroy({}),
+      UserSpectatingGame.destroy({}),
     ])
       .then(() => {
         return res.ok();
@@ -29,11 +30,11 @@ module.exports = {
 
   loadSeasonFixture: async function (req, res) {
     try {
-      await Season.createEach(req.body);
+      const seasons = await Season.createEach(req.body).fetch();
+      return res.ok(seasons);
     } catch (e) {
       return res.badRequest(e);
     }
-    return res.ok();
   },
 
   loadMatchFixtures: async function (req, res) {

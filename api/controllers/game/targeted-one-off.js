@@ -62,10 +62,13 @@ module.exports = function (req, res) {
                 };
                 if (point) gameUpdates.attachedToTarget = point.id;
 
+                const playerUpdates = { frozenId: null };
+
                 const updatePromises = [
                   Game.updateOne(game.id).set(gameUpdates),
                   // Remove one-off from player's hand
                   User.removeFromCollection(player.id, 'hand').members([card.id]),
+                  User.updateOne(player.id).set(playerUpdates),
                 ];
                 return Promise.all([game, ...updatePromises]);
               }

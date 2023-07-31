@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
+
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import LobbyView from '@/views/LobbyView.vue';
@@ -17,12 +18,17 @@ export const ROUTE_NAME_LOGOUT = 'Logout';
 export const ROUTE_NAME_RULES = 'Rules';
 export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
+export const ROUTE_NAME_STATS_SEASON = 'StatsBySeason';
 
-const mustBeAuthenticated = (to, from, next) => {
+const mustBeAuthenticated = async (to, from, next) => {
   if (store.state.auth.authenticated) {
     return next();
   }
-  return next('/login');
+  const isReturningUser = await store.dispatch('getIsReturningUser');
+  if (isReturningUser === 'true') {
+    return next('/login');
+  }
+  return next('/signup');
 };
 
 const logoutAndRedirect = async (to, from, next) => {
@@ -94,6 +100,12 @@ const routes = [
     component: StatsView,
     beforeEnter: mustBeAuthenticated,
   },
+  {
+    path: '/stats/:seasonId',
+    name: ROUTE_NAME_STATS_SEASON,
+    component: StatsView,
+    beforeEnter: mustBeAuthenticated,
+  },
 ];
 
 const router = createRouter({
@@ -104,10 +116,10 @@ const router = createRouter({
 router.beforeEach(async (to, _from, next) => {
   // Make sure we try and reestablish a player's session if one exists
   // We do this before the route resolves to preempt the reauth/logout logic
-  await store.dispatch('requestStatus', {
-    router,
-    route: to,
-  });
+  await store.dispatch('requestStatus', to);
+  if (!store.state.auth.authenticated) {
+    to.meta.hideNavigation = true;
+  }
   next();
 });
 

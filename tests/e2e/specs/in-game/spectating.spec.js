@@ -324,5 +324,35 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-button"]').should('contain', '0').click();
       cy.get('[data-cy="spectate-list-menu"]').should('contain', 'Currently no spectators');
     });
+
+    it('Should remove spectators from list after leaving', () => {
+      cy.setupGameAsSpectator();
+      cy.signupOpponent(playerThree);
+      cy.get('@gameData').then((gameData) => {
+        cy.setOpponentToSpectate(gameData.gameId);
+      });
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+      cy.get('[data-cy="spectate-list-menu"')
+        .should('contain', 'myUsername')
+        .should('contain', playerThree.username);
+      cy.setOpponentToLeaveSpectate();
+      cy.get('[data-cy="spectate-list-menu"').should('not.contain', playerThree.username);
+    });
+
+    it('Should show correct menu options, leave game, then return to re-add name to list', () => {
+      cy.setupGameAsSpectator();
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu')
+        .should('contain', 'Go Home')
+        .should('contain', 'Rules')
+        .should('not.contain', 'Request Stalemate')
+        .should('not.contain', 'Concede');
+      cy.get('[data-cy="stop-spectating"]').click();
+      cy.hash().should('eq', '#/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get(`[data-cy-spectate-game]`).click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '1').click();
+      cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
+    });
   });
 });

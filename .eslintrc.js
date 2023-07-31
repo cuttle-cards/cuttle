@@ -1,7 +1,6 @@
 const sharedTestRules = {
   'import/no-unresolved': ['off'],
 };
-
 module.exports = {
   root: true,
   env: {
@@ -12,11 +11,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:vue/base',
-    'plugin:vuetify/base',
-  ],
+  extends: ['eslint:recommended', 'plugin:vue/base', 'plugin:vuetify/base'],
   plugins: ['cypress', 'vitest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
   rules: {
@@ -42,9 +37,25 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
+    semi: ['error', 'always'],
+    'vue/html-closing-bracket-newline': ['error', {
+      'singleline': 'never',
+      'multiline': 'always'
+    }],
+    'vue/max-attributes-per-line': ['error', {
+      'singleline': {
+        'max': 3
+      },      
+      'multiline': {
+        'max': 1
+      }
+    }],
+    'vue/first-attribute-linebreak': ['error', {
+      'singleline': 'beside',
+      'multiline': 'below'
+    }],
   },
   overrides: [
-    // Vue specific rules
     {
       files: ['**/client/**/*.{j,t}s?(x)'],
       extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:vue/recommended'],
@@ -78,6 +89,7 @@ module.exports = {
         Match: true,
         User: true,
         Game: true,
+        UserSpectatingGame: true,
       },
       rules: {
         'no-undef': 'error',

@@ -351,7 +351,17 @@ export default {
         );
       });
     },
-
+    async requestSpectateLeave(context) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/spectateLeave', function handleResponse(res, jwres) {
+          if (jwres.statusCode === 200) {
+            context.commit('resetState');
+            return resolve();
+          }
+          return reject(new Error('Error leaving game as spectator'));
+        });
+      });
+    },
     async requestLeaveLobby(context) {
       return new Promise((resolve, reject) => {
         io.socket.post('/game/leaveLobby', function handleResponse(res, jwres) {
@@ -370,17 +380,6 @@ export default {
             return resolve(res);
           }
           return reject(new Error('Error readying for game'));
-        });
-      });
-    },
-    async requestLobbyData(context) {
-      return new Promise((resolve, reject) => {
-        io.socket.get('/game/lobbyData', function handleResponse(res, jwres) {
-          if (jwres.statusCode === 200) {
-            context.commit('updateGame', res);
-            return Promise.resolve(res);
-          }
-          return reject(new Error('Error loading lobby data'));
         });
       });
     },
@@ -710,6 +709,9 @@ export default {
     async requestUnsubscribeFromGame(context) {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/over', function handleResponse(res, jwres) {
+          if (jwres.statusCode === 200) {
+            context.commit('resetState');
+          }
           return handleGameResponse(context, jwres, resolve, reject);
         });
       });

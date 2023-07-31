@@ -4,13 +4,15 @@ describe('Navigation Drawer', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
+    cy.signupPlayer(playerOne);
+    cy.vueRoute('/');
   });
   it('Expands and collapses navbar on desktop and always collapses on mobile', () => {
     // Desktop display
     cy.viewport(1920, 1080);
     cy.get('[data-cy=nav-drawer]')
       .should('be.visible')
-      .should('contain', 'Login')
+      .should('contain', 'Logout')
       .should('contain', 'Rules')
       .should('not.have.class', 'v-navigation-drawer--rail')
       // Collapse nav
@@ -25,7 +27,7 @@ describe('Navigation Drawer', () => {
     // Should be expanded again
     cy.get('[data-cy=nav-drawer]')
       .should('be.visible')
-      .should('contain', 'Login')
+      .should('contain', 'Logout')
       .should('contain', 'Rules')
       .should('not.have.class', 'v-navigation-drawer--rail');
 
@@ -40,13 +42,6 @@ describe('Navigation Drawer', () => {
     cy.get('[data-cy=collapse-nav]').should('not.exist');
   });
 
-  it('Navigates to Login and Rules pages when unauthenticated', () => {
-    cy.get('[data-nav]').should('have.length', 2);
-    cy.get('[data-nav=Rules]').click();
-    cy.hash().should('equal', '#/rules');
-    cy.get('[data-nav=Login]').click();
-    cy.hash().should('equal', '#/login');
-  });
   describe('Navigates to Rules, Home, Stats, and Login pages', () => {
     function verifyAuthenticatedLinks() {
       cy.get('[data-nav]').should('have.length', 4);
@@ -65,6 +60,8 @@ describe('Navigation Drawer', () => {
       cy.hash().should('equal', '#/login');
     }
     beforeEach(() => {
+      cy.wipeDatabase();
+      cy.visit('/');
       cy.signupPlayer(playerOne);
       cy.vueRoute('/');
     });

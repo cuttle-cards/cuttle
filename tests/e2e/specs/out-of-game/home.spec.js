@@ -57,8 +57,7 @@ describe('Home - Page Content', () => {
 
   it('Logs user out', () => {
     cy.get('[data-nav=Logout]').click();
-    cy.contains('h1', 'Log In');
-    cy.get('[data-nav=Login]').should('be.visible');
+    cy.contains('p', 'Log In to get Started!');
     cy.get('[data-nav=Home]').should('not.exist');
   });
 
@@ -370,9 +369,9 @@ describe('Home - Game List', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
+        deck: [],
       });
-      // Delete deck, draw last two card, both players pass until stalemate
-      cy.deleteDeck();
+      // Draw last two card, both players pass until stalemate
       cy.get('#deck').should('contain', '(2)');
       cy.recoverSessionOpponent(playerOne);
       cy.drawCardOpponent();

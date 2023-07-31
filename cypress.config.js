@@ -8,20 +8,6 @@ module.exports = defineConfig({
     specPattern: ['tests/e2e/specs/**/*.spec.js'],
     excludeSpecPattern: ['tests/e2e/specs/playground.spec.js'],
     supportFile: 'tests/e2e/support/index.js',
-    // https://github.com/javierbrea/cypress-fail-fast
-    setupNodeEvents(on, config) {
-      require('cypress-fail-fast/plugin')(on, config);
-      // Log errors to the terminal console
-      // Also requires the log to be overridden in commands.js
-      // See https://github.com/cypress-io/cypress/issues/3199#issuecomment-1019270203
-      // on('task', {
-      //   log(message) {
-      //     console.log(`[log]: ${message}`);
-      //     return null;
-      //   },
-      // });
-      return config;
-    },
   },
   // Retry tests 2 times headlessly, no retries in UI
   retries: {

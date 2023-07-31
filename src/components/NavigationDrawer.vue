@@ -1,6 +1,5 @@
 <template>
   <v-navigation-drawer
-    v-if="showNav"
     color="primary"
     data-cy="nav-drawer"
     permanent
@@ -42,6 +41,7 @@ import {
   ROUTE_NAME_STATS,
 } from '@/router.js';
 
+
 export default {
   name: 'NavigationDrawer',
   data() {
@@ -78,9 +78,6 @@ export default {
             { text: 'Stats', icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
           ];
     },
-    showNav() {
-      return this.$route.meta?.hideNavigation !== true;
-    },
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
@@ -95,5 +92,6 @@ export default {
       return this.userHasCollapsed ? 'mdi-arrow-right' : 'mdi-arrow-left';
     },
   },
+
 };
 </script>

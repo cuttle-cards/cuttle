@@ -31,7 +31,12 @@
         </v-list>
       </v-card-text>
       <v-card-actions class="d-flex justify-end">
-        <v-btn data-cy="close-player-results" variant="outlined" color="primary" @click="showMenu = false">
+        <v-btn
+          data-cy="close-player-results"
+          variant="outlined"
+          color="primary"
+          @click="showMenu = false"
+        >
           Close
         </v-btn>
       </v-card-actions>

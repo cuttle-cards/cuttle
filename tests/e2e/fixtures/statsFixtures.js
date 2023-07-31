@@ -210,7 +210,6 @@ const seasonOneMatches = [
   },
 ];
 
-
 const seasonTwoMatches = [
   ////////////
   // Week 1 //
