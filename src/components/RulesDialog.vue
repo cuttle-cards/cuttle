@@ -1,5 +1,5 @@
 <template>
-  <base-dialog max-width="1250">
+  <base-dialog max-width="1250" id="rulesDialog">
     <template #title>
       <h1>Rules of Cuttle</h1>
       <v-btn icon @click="close">
@@ -192,12 +192,6 @@ export default {
   emits: ['close'],
   components: {
     BaseDialog,
-  },
-  props: {
-    show: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {

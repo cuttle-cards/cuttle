@@ -15,15 +15,15 @@
       </template>
       <!-- Menu -->
       <v-list id="game-menu" class="bg-surface-2">
-        <v-list-item data-cy="rules-open" @click="openRulesDialog"> Rules </v-list-item>
+        <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'"> Rules </v-list-item>
         <!-- Stop Spectating -->
         <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
           Go Home
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <template v-else>
-          <v-list-item data-cy="concede-initiate" @click="openConcedeDialog"> Concede </v-list-item>
-          <v-list-item data-cy="stalemate-initiate" @click="openStalemateDialog">
+          <v-list-item data-cy="concede-initiate" @click="shownDialog = 'concede'"> Concede </v-list-item>
+          <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
             Request Stalemate
           </v-list-item>
         </template>
@@ -32,7 +32,7 @@
 
     <rules-dialog v-model="showRulesDialog" @open="closeMenu" @close="closeDialog" />
 
-    <base-dialog v-model="showDialog" id="request-gameover-dialog" :title="dialogTitle">
+    <base-dialog v-model="showEndGameDialog" id="request-gameover-dialog" :title="dialogTitle">
       <template #body>
         <p class="pt-4 pb-8">
           {{ dialogText }}
@@ -75,10 +75,8 @@ export default {
   },
   data() {
     return {
-      showGameMenu: false,
-      showConcedeDialog: false,
-      showStalemateDialog: false,
-      showRulesDialog: false,
+      shownDialog:'',
+      showGameMenu: false,      
       loading: false,
     };
   },
@@ -89,18 +87,8 @@ export default {
     },
   },
   computed: {
-    showDialog: {
-      get() {
+    showEndGameDialog(){
         return this.showConcedeDialog || this.showStalemateDialog;
-      },
-      set(newVal) {
-        if (!newVal) {
-          this.showConcedeDialog = false;
-          this.showStalemateDialog = false;
-          this.showRulesDialog = false;
-        }
-        this.showGameMenu = false;
-      },
     },
     dialogTitle() {
       return this.showConcedeDialog ? 'Concede' : 'Request Stalemate';
@@ -113,31 +101,22 @@ export default {
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
+    showConcedeDialog(){ 
+      return this.shownDialog === 'concede';
+    },
+    showRulesDialog(){
+      return this.shownDialog === 'rules';
+    },
+    showStalemateDialog(){
+      return this.shownDialog === 'stalemate';
+    }
   },
   methods: {
     closeMenu() {
       this.showGameMenu = false;
     },
-    openRulesDialog() {
-      this.showRulesDialog = true;
-      this.showConcedeDialog = false;
-      this.showStalemateDialog = false;
-      this.showGameMenu = false;
-    },
-    openConcedeDialog() {
-      this.showConcedeDialog = true;
-      this.showStalemateDialog = false;
-      this.showGameMenu = false;
-    },
-    openStalemateDialog() {
-      this.showStalemateDialog = true;
-      this.showConcedeDialog = false;
-      this.showGameMenu = false;
-    },
     closeDialog() {
-      this.showRulesDialog = false;
-      this.showConcedeDialog = false;
-      this.showStalemateDialog = false;
+      this.shownDialog = '';
     },
     requestGameEnd() {
       if (this.showConcedeDialog) {
@@ -149,7 +128,7 @@ export default {
     async concede() {
       this.loading = true;
       await this.$store.dispatch('requestConcede');
-      this.showConcedeDialog = false;
+      this.shownDialog = '';
     },
     async requestStalemate() {
       this.loading = true;
@@ -160,7 +139,7 @@ export default {
         this.$store.commit('setWaitingForOpponentToStalemate', false);
       }
       this.loading = false;
-      this.showStalemateDialog = false;
+      this.shownDialog = '';
     },
     async stopSpectate() {
       try {
