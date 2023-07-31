@@ -16,6 +16,7 @@
       <!-- Menu -->
       <v-list id="game-menu" class="bg-surface-2">
         <v-list-item data-cy="rules-open" @click="openRulesDialog"> Rules </v-list-item>
+        <!-- Stop Spectating -->
         <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
           Go Home
         </v-list-item>
