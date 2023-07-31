@@ -1,7 +1,18 @@
 <template>
-  <base-dialog v-model="show" id="create-game-dialog" title="Create Game" data-cy="create-game-dialog">
+  <base-dialog
+    v-model="show"
+    id="create-game-dialog"
+    title="Create Game"
+    data-cy="create-game-dialog"
+  >
     <template #activator>
-      <v-btn class="text-surface-2" color="surface-1" data-cy="create-game-btn" rounded elevation="8">
+      <v-btn
+        class="text-surface-2"
+        color="surface-1"
+        data-cy="create-game-btn"
+        rounded
+        elevation="8"
+      >
         Create Game
       </v-btn>
     </template>
@@ -55,6 +66,7 @@
 </template>
 
 <script>
+import BaseDialog from '@/components/Global/BaseDialog.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '../../utils/local-storage-utils.js';
 

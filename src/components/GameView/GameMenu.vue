@@ -21,14 +21,6 @@
         <v-list-item data-cy="stalemate-initiate" @click="openStalemateDialog">
           Request Stalemate
         </v-list-item>
-        <!-- Concede Dialog (Initiate + Confirm) -->
-        <template v-else>
-          <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog"> Concede</v-list-item>
-          <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
-            Request Stalemate
-          </v-list-item>
-        </template>
-        <v-progress-linear v-if="loading" color="primary" indeterminate />
       </v-list>
     </v-menu>
 
