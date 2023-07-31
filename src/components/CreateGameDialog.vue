@@ -111,7 +111,6 @@ export default {
       this.show = false;
     },
     handleError(err) {
-      console.log(err);
       this.$emit('error', err);
       this.cancelCreateGame();
     },
@@ -126,12 +125,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.dialog-card {
-  /* Stuck using important because vuetify applies it to these styles for cards */
-  color: rgba(var(--v-theme-surface-2)) !important;
-  border-radius: 12px !important;
-  opacity: 0.92;
-  border: 4px solid rgba(var(--v-theme-surface-2));
-}
-</style>
+
