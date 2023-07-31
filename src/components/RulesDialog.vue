@@ -193,11 +193,6 @@ export default {
   components: {
     BaseDialog,
   },
-  data() {
-    return {
-      internalShow: false,
-    };
-  },
   computed: {
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
