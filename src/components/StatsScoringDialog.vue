@@ -10,7 +10,7 @@
       <slot name="button">
         <v-btn
           v-bind="props"
-          color="surface-2"
+          color="primary"
           class="mb-2"
           variant="text"
           data-cy="ranked-info-button"
