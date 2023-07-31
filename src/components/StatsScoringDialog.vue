@@ -1,5 +1,10 @@
 <template>
-  <base-dialog v-model="show" title="Ranked Scoring" max-width="1250">
+  <base-dialog
+    v-model="show"
+    title="Ranked Scoring"
+    :id="`rankedScoring`"
+    max-width="1250"
+  >
     <!-- Activator -->
     <template #activator="{ props }">
       <slot name="button">
