@@ -13,29 +13,26 @@ dayjs.extend(isBetween);
  * @returns the season | null if none is found
  */
 function getSeasonFromTimeStamp(sortedSeasons, timeStamp) {
-  let currentIndex;
+  if (sortedSeasons.length <= 0) {
+    return null;
+  }
   let minIndex = 0;
   let maxIndex = sortedSeasons.length - 1;
-  // Sanity check in case list is unsorted or start & endTimes are out of whack
-  let numTries = 0;
-  while (numTries < sortedSeasons.length) {
-    currentIndex = Math.floor((minIndex + maxIndex) / 2);
+  let currentIndex = Math.floor((minIndex + maxIndex) / 2);
+  // let currentSeason = sortedSeasons[currentIndex];
+  while (minIndex <= maxIndex) {
     const currentSeason = sortedSeasons[currentIndex];
     if (timeStamp >= currentSeason.startTime && timeStamp <= currentSeason.endTime) {
       return currentSeason;
-    }
-    // If min = max and we haven't found it, there is no matching season
-    if (minIndex === maxIndex) {
-      return null;
     }
     // Target time is before current season
     if (timeStamp < currentSeason.startTime) {
       minIndex = currentIndex + 1;
     // Target time is after current season
-    } else if (timeStamp > currentSeason.endTime) {
+    } else {
       maxIndex = currentIndex - 1;
     }
-    numTries++;
+    currentIndex = currentIndex = Math.floor((minIndex + maxIndex) / 2);
   }
   return null;
 }
