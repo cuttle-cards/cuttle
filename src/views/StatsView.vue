@@ -154,7 +154,6 @@ export default {
         this.error = true;
         return;
       }
-      // Sort most recent season first
       this.seasons = res;
       const seasonId = parseInt(this.$route.params.seasonId);
       this.checkAndSelectSeason(seasonId);
