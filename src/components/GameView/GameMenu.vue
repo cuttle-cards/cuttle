@@ -16,11 +16,16 @@
       <!-- Menu -->
       <v-list id="game-menu" class="bg-surface-2">
         <v-list-item data-cy="rules-open" @click="openRulesDialog"> Rules </v-list-item>
-        <!-- Concede Dialog (Initiate + Confirm) -->
-        <v-list-item data-cy="concede-initiate" @click="openConcedeDialog"> Concede </v-list-item>
-        <v-list-item data-cy="stalemate-initiate" @click="openStalemateDialog">
-          Request Stalemate
+        <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
+          Go Home
         </v-list-item>
+        <!-- Concede Dialog (Initiate + Confirm) -->
+        <template v-else>
+          <v-list-item data-cy="concede-initiate" @click="openConcedeDialog"> Concede </v-list-item>
+          <v-list-item data-cy="stalemate-initiate" @click="openStalemateDialog">
+            Request Stalemate
+          </v-list-item>
+        </template>
       </v-list>
     </v-menu>
 
