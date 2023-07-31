@@ -1,7 +1,7 @@
 <template>
   <base-dialog
     v-model="show"
-    id="create-game-dialog"
+    :id="`create-game-dialog`"
     title="Create Game"
     data-cy="create-game-dialog"
   >
@@ -17,7 +17,7 @@
       </v-btn>
     </template>
     <template #body>
-      <div class="d-flex align-center">
+      <form name="create_game_form" class="d-flex align-center">
         <v-switch
           v-model="isRanked"
           :label="isRanked ? 'Ranked' : 'Normal'"
@@ -25,7 +25,7 @@
           color="surface-2"
         />
         <stats-scoring-dialog :show-button-text="false" />
-      </div>
+      </form>
       <v-form @submit.prevent="submitNewGame">
         <v-text-field
           name="create-game"
@@ -50,7 +50,7 @@
           Cancel
         </v-btn>
         <v-btn
-          form="create-game"
+          form="create_game_form"
           type="submit"
           data-cy="submit-create-game"
           :loading="loading"
@@ -111,6 +111,7 @@ export default {
       this.show = false;
     },
     handleError(err) {
+      console.log(err);
       this.$emit('error', err);
       this.cancelCreateGame();
     },
