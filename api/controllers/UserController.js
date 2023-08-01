@@ -28,6 +28,10 @@ module.exports = {
       // Successfully created User - Set session data
       req.session.loggedIn = true;
       req.session.usr = user.id;
+      console.log(`\nSuccessfully signed up user ${user.id}`);
+      console.log(req.session);
+      console.log(req.signedCookies);
+      console.log(user);
       return res.ok(user.id);
     } catch (err) {
       return res.badRequest(err);

@@ -17,6 +17,9 @@ module.exports = function (req, res, next) {
     return next();
   }
 
+  console.log(`\n\nUser is unauthenticated to access ${req.path}`);
+  console.log(req.session);
+  console.log(req.signedCookies);
   // User is not allowed
   // (default res.forbidden() behavior can be overridden in `config/403.js`)
   return res.forbidden({
