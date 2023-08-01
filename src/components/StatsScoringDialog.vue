@@ -4,6 +4,7 @@
     title="Ranked Scoring"
     :id="`rankedScoring`"
     max-width="1250"
+    opacity="1"
   >
     <!-- Activator -->
     <template #activator="{ props }">
