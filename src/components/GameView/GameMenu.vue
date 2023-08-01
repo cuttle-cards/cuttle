@@ -87,8 +87,17 @@ export default {
     },
   },
   computed: {
-    showEndGameDialog(){
+    showEndGameDialog:{
+      get() {
         return this.showConcedeDialog || this.showStalemateDialog;
+      },
+      set(newVal) {
+        if (!newVal) {
+          this.showConcedeDialog = false;
+          this.showStalemateDialog = false;
+        }
+        this.showGameMenu = false;
+      },
     },
     dialogTitle() {
       return this.showConcedeDialog ? 'Concede' : 'Request Stalemate';
@@ -101,11 +110,15 @@ export default {
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
+    showRulesDialog:{
+      get(){
+      return this.shownDialog === 'rules';},
+      set(val){
+      this.shownDialog = val ? 'rules' : '';
+      }
+    },
     showConcedeDialog(){ 
       return this.shownDialog === 'concede';
-    },
-    showRulesDialog(){
-      return this.shownDialog === 'rules';
     },
     showStalemateDialog(){
       return this.shownDialog === 'stalemate';
