@@ -8,15 +8,20 @@
     "stats": "Estadísticas",
     "username": "Nombre de usuario",
     "password": "Contraseña",
-    "collapseMenu": "Contraer Menú"
+    "collapseMenu": "Contraer menú"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
     "haveAccount": "¿Ya tienes una cuenta?",
-    "title": "¿Qué es Cuttle?",
-    "quote": "\"Cuttle es un juego rápido y afilado construido completamente sobre excelentes mecánicas. Es el tipo de juego - si lo hubiera conocido en la universidad - que habría desgastado barajas a través del juego.\"",
+    "title": "Bienvenido a Cuttle.Cards",
+    "subtitle": "¡El juego de cartas que te enganchará desde la primera mano!",
+    "formHeaderLogin": "¡Inicia sesión para empezar!",
+    "formHeaderSignup": "Regístrate ahora para empezar a jugar y prepárate para sumergirte en el mundo de Cuttle.",
+    "quote": "\"Cuttle es un juego rápido y agudo construido completamente sobre excelentes mecánicas. Es el tipo de juego, si lo hubiera conocido en la universidad, que habría desgastado las barajas jugando sin parar.\"",
     "quoteCite": "Richard Garfield - Creador de Magic: The Gathering",
-    "content": "Cuttle es un juego de cartas de batalla para 2 jugadores que se juega con un mazo estándar de 52 cartas. Tiene la sutileza estratégica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu temple en el juego de cartas más profundo bajo el mar!\n\n¡Sé el primero en alcanzar 21 puntos en esta explosiva batalla de ingenio! Monta una valiente ofensiva mientras perturbas a tu oponente con trucos perversos. ¿Tienes lo necesario para convertirte en el Señor de las Profundidades?",
-    "learnRules": "Aprende las Reglas"
+    "content": "Cuttle es un juego de cartas de batalla para 2 jugadores que se juega con un mazo estándar de 52 cartas. Tiene la sutileza estratégica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu temple en el juego de cartas más profundo bajo el mar!",
+    "content2": "Sé el primero en alcanzar 21 puntos en esta explosiva batalla de ingenio. Monta una ofensiva valiente mientras interrumpes a tu oponente con trucos malvados. ¿Tienes lo necesario para convertirte en el Señor de las Profundidades?",
+    "readRules": "Leer las reglas",
+    "joinDiscord": "Únete a nuestra comunidad en Discord"
   }
 }

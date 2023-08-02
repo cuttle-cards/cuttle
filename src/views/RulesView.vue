@@ -34,16 +34,8 @@
         <p>
           Watch the official cuttle.cards tutorial to learn the rules and get a feel for the flow of the game.
         </p>
-        <div class="video-container__wrapper align-self-center my-4">
-          <div class="video-container">
-            <iframe
-              class="video-container__video"
-              src="https://www.youtube.com/embed/qOqkNbhMdsI"
-              title="Cuttle Game Tutorial -- Youtube Player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            />
-          </div>
+        <div class="w-50 my-4 mx-auto">
+          <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI"/>
         </div>
       </v-row>
 
@@ -279,12 +271,14 @@
 </template>
 <script>
 import RulePreview from '@/components/RulePreview.vue';
+import BaseVideo from '../components/Global/BaseVideo.vue';
 
 export default {
   name: 'RulesView',
   components: {
     RulePreview,
-  },
+    BaseVideo
+},
   created() {
     this.rules = [
       // First Row
@@ -472,24 +466,5 @@ export default {
   margin: 0 auto;
 }
 
-.video-container__wrapper {
-  width: 65%;
-}
 
-/* https://css-tricks.com/fluid-width-video/ */
-.video-container {
-  position: relative;
-  padding: 0 0 56.25%;
-  height: 0;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.video-container__video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
 </style>
