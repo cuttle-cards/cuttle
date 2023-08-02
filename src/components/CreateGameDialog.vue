@@ -9,7 +9,7 @@
     <template #activator>
       <v-btn
         class="text-surface-2"
-        color="surface-1"
+        color="primary"
         data-cy="create-game-btn"
         rounded
         elevation="8"
@@ -25,11 +25,11 @@
           data-cy="create-game-ranked-switch"
           color="surface-2"
         />
-        <stats-scoring-dialog :show-button-text="false" />
+        <stats-scoring-dialog activator-color="surface-2" :show-button-text="false" />
       </form>
       <v-form @submit.prevent="submitNewGame">
         <v-text-field
-          name="create-game"
+          name="game-name"
           v-model="gameName"
           autofocus
           :disabled="loading"
@@ -125,5 +125,3 @@ export default {
   },
 };
 </script>
-
-
