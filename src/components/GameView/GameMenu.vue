@@ -110,10 +110,11 @@ export default {
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
-    showRulesDialog:{
-      get(){
-      return this.shownDialog === 'rules';},
-      set(val){
+    showRulesDialog: {
+      get() {
+        return this.shownDialog === 'rules';
+      },
+      set(val) {
       this.shownDialog = val ? 'rules' : '';
       }
     },

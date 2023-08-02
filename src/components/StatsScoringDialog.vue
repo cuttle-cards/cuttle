@@ -2,7 +2,7 @@
   <base-dialog
     v-model="show"
     title="Ranked Scoring"
-    :id="`rankedScoring`"
+    id="rankedScoring"
     max-width="1250"
     opacity="1"
   >
