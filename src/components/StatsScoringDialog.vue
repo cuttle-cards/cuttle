@@ -11,7 +11,7 @@
       <slot name="button">
         <v-btn
           v-bind="props"
-          color="primary"
+          :color="activatorColor"
           class="mb-2"
           variant="text"
           data-cy="ranked-info-button"
@@ -92,6 +92,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    activatorColor:{
+      type: String,
+      default: 'primary',
+  }
   },
   data() {
     return {
