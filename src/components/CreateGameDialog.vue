@@ -1,8 +1,14 @@
 <template>
-  <v-dialog v-model="show">
-    <template #activator="{ props }">
+  <base-dialog
+    v-model="show"
+    :id="`create-game-dialog`"
+    title="Create Game"
+    opacity="1"
+    data-cy="create-game-dialog"
+  >
+    <template #activator>
       <v-btn
-        v-bind="props"
+        class="text-surface-2"
         color="primary"
         data-cy="create-game-btn"
         rounded
@@ -11,61 +17,63 @@
         Create Game
       </v-btn>
     </template>
-    <v-card data-cy="create-game-dialog">
-      <v-card-title>
-        <h2>Create Game</h2>
-      </v-card-title>
-      <v-card-text>
-        <div class="d-flex align-center">
-          <v-switch
-            v-model="isRanked"
-            label="Ranked"
-            data-cy="create-game-ranked-switch"
-            color="primary"
-          />
-          <stats-scoring-dialog :show-button-text="false" />
-        </div>
+    <template #body>
+      <form name="create_game_form" class="d-flex align-center">
+        <v-switch
+          v-model="isRanked"
+          :label="isRanked ? 'Ranked' : 'Normal'"
+          data-cy="create-game-ranked-switch"
+          color="surface-2"
+        />
+        <stats-scoring-dialog activator-color="surface-2" :show-button-text="false" />
+      </form>
+      <v-form @submit.prevent="submitNewGame">
         <v-text-field
+          name="game-name"
           v-model="gameName"
           autofocus
           :disabled="loading"
           label="Game Name"
           variant="outlined"
           data-cy="game-name-input"
-          @keydown.enter="submitNewGame"
         />
-      </v-card-text>
-      <v-card-actions class="d-flex justify-end">
+      </v-form>
+    </template>
+    <template #actions>
+      <v-form>
         <v-btn
           data-cy="cancel-create-game"
           :disabled="loading"
           variant="text"
-          color="primary"
+          color="surface-1"
           @click="cancelCreateGame"
         >
           Cancel
         </v-btn>
         <v-btn
+          form="create_game_form"
+          type="submit"
           data-cy="submit-create-game"
           :loading="loading"
-          color="primary"
+          color="surface-1"
           variant="flat"
           @click="submitNewGame"
         >
           Create Game
         </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      </v-form>
+    </template>
+  </base-dialog>
 </template>
 
 <script>
+import BaseDialog from '@/components/Global/BaseDialog.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '../../utils/local-storage-utils.js';
 
 export default {
   name: 'CreateGameDialog',
-  components: { StatsScoringDialog },
+  components: { StatsScoringDialog, BaseDialog },
   emits: ['error'],
   data() {
     return {
