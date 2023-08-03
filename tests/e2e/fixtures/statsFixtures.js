@@ -453,7 +453,37 @@ const seasonTwoGames = [
     p1: 'player2',
   },
 ];
-const gameFixtures = [...seasonOneGames, ...seasonTwoGames];
+
+const gamesWithoutASeason = [
+  {
+    name: 'Game before first season',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2014-01-01').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  {
+    name: 'Game after last season',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs().add(3, 'year').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+];
+
+const gameFixtures = [...seasonOneGames, ...seasonTwoGames, ...gamesWithoutASeason];
 
 const matchesFixture = [...seasonOneMatches, ...seasonTwoMatches, ...seasonThreeMatches];
 
