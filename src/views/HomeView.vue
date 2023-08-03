@@ -164,16 +164,6 @@ export default {
     },
   },
   async created() {
-    // Leave any existing lobbies before getting the game list
-    // Need to make sure we do these in order so the order of operations is:
-    //     leave -> list
-    try {
-      await this.$store.dispatch('requestLeaveLobby');
-    } catch (err) {
-      // A user may not actually be in a lobby, so we need to
-      // swallow this error so the component doesn't error out
-      // TODO: Improve this logic with an isInLobby helper
-    }
     await this.$store.dispatch('requestGameList');
   },
   methods: {
