@@ -326,10 +326,10 @@ const seasonThreeMatches = [
   },
 ];
 
-const gameFixtures = [
+const seasonOneGames = [
   // Week 1
   {
-    name: 'Week 1, Game 1',
+    name: 'Clubs Week 1, Game 1',
     status: false,
     p0Ready: true,
     p1Ready: true,
@@ -342,7 +342,7 @@ const gameFixtures = [
     p1: 'player2',
   },
   {
-    name: 'Week 1, Game 2',
+    name: 'Clubs Week 1, Game 2',
     status: false,
     p0Ready: true,
     p1Ready: true,
@@ -355,7 +355,7 @@ const gameFixtures = [
     p1: 'player3',
   },
   {
-    name: 'Week 1, Game 3',
+    name: 'Clubs Week 1, Game 3',
     status: false,
     p0Ready: true,
     p1Ready: true,
@@ -368,7 +368,7 @@ const gameFixtures = [
     p1: 'player3',
   },
   {
-    name: 'Week 1, Game 4',
+    name: 'Clubs Week 1, Game 4',
     status: false,
     p0Ready: true,
     p1Ready: true,
@@ -383,7 +383,7 @@ const gameFixtures = [
 
   // Week 2
   {
-    name: 'Week 2, Game 1',
+    name: 'Clubs Week 2, Game 1',
     status: false,
     p0Ready: true,
     p1Ready: true,
@@ -396,7 +396,7 @@ const gameFixtures = [
     p1: 'player2',
   },
   {
-    name: 'Week 2, Game 2',
+    name: 'Clubs Week 2, Game 2',
     status: false,
     p0Ready: true,
     p1Ready: true,
@@ -409,6 +409,51 @@ const gameFixtures = [
     p1: 'player4',
   },
 ];
+
+const seasonTwoGames = [
+  // Week 1
+  {
+    name: 'Diamonds Week 1, Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-02-20').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  // Week 2
+  {
+    name: 'Diamonds Week 2, Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-02-27').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  {
+    name: 'Diamonds Week 2, Game 2',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-02-28').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+];
+const gameFixtures = [...seasonOneGames, ...seasonTwoGames];
 
 const matchesFixture = [...seasonOneMatches, ...seasonTwoMatches, ...seasonThreeMatches];
 

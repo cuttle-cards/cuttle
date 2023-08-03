@@ -263,6 +263,15 @@ describe('Stats Page', () => {
       // Week 2 stats
       expect(clubs2022.gameCounts[1]).to.eq(2);
       expect(clubs2022.uniquePlayersPerWeek[1]).to.eq(4);
+
+      const diamonds2022 = seasons.find((season) => season.name === 'Diamonds 2022');
+      expect(diamonds2022).not.to.be.undefined;
+      // Week 1 stats
+      expect(diamonds2022.gameCounts[0]).to.eq(1);
+      expect(diamonds2022.uniquePlayersPerWeek[0]).to.eq(2);
+      // Week 2 stats
+      expect(diamonds2022.gameCounts[1]).to.eq(2);
+      expect(diamonds2022.uniquePlayersPerWeek[1]).to.eq(2);
     });
   });
 });
