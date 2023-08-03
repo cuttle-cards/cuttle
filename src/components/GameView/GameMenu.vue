@@ -14,28 +14,25 @@
         </v-btn>
       </template>
       <!-- Menu -->
-      <v-list id="game-menu">
-        <v-list-item data-cy="rules-open" @click.stop="showRulesDialog = true">
-          Rules
-          <rules-dialog :hideActivator="true" :show="showRulesDialog" @close="showRulesDialog = false" />
-        </v-list-item>
-
+      <v-list id="game-menu" class="bg-surface-2">
+        <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'"> Rules </v-list-item>
         <!-- Stop Spectating -->
         <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
           Go Home
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <template v-else>
-          <v-list-item data-cy="concede-initiate" @click.stop="openConcedeDialog"> Concede</v-list-item>
-          <v-list-item data-cy="stalemate-initiate" @click.stop="openStalemateDialog">
+          <v-list-item data-cy="concede-initiate" @click="shownDialog = 'concede'"> Concede </v-list-item>
+          <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
             Request Stalemate
           </v-list-item>
         </template>
-        <v-progress-linear v-if="loading" color="primary" indeterminate />
       </v-list>
     </v-menu>
 
-    <base-dialog v-model="showDialog" id="request-gameover-dialog" :title="dialogTitle">
+    <rules-dialog v-model="showRulesDialog" @open="closeMenu" @close="closeDialog" />
+
+    <base-dialog v-model="showEndGameDialog" id="request-gameover-dialog" :title="dialogTitle">
       <template #body>
         <p class="pt-4 pb-8">
           {{ dialogText }}
@@ -70,7 +67,6 @@
 <script>
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import RulesDialog from '@/components/RulesDialog.vue';
-
 export default {
   name: 'GameMenu',
   components: {
@@ -79,10 +75,8 @@ export default {
   },
   data() {
     return {
-      showGameMenu: false,
-      showConcedeDialog: false,
-      showRulesDialog: false,
-      showStalemateDialog: false,
+      shownDialog:'',
+      showGameMenu: false,      
       loading: false,
     };
   },
@@ -93,7 +87,7 @@ export default {
     },
   },
   computed: {
-    showDialog: {
+    showEndGameDialog:{
       get() {
         return this.showConcedeDialog || this.showStalemateDialog;
       },
@@ -113,21 +107,30 @@ export default {
         ? 'The game will end and your opponent will win.'
         : 'If your opponent agrees, the game will end in a stalemate. The request will cancel if the opponent declines or either player makes a move';
     },
+    buttonSize() {
+      return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
+    },
+    showRulesDialog: {
+      get() {
+        return this.shownDialog === 'rules';
+      },
+      set(val) {
+      this.shownDialog = val ? 'rules' : '';
+      }
+    },
+    showConcedeDialog(){ 
+      return this.shownDialog === 'concede';
+    },
+    showStalemateDialog(){
+      return this.shownDialog === 'stalemate';
+    }
   },
   methods: {
-    openConcedeDialog() {
-      this.showConcedeDialog = true;
-      this.showStalemateDialog = false;
-      this.showGameMenu = false;
-    },
-    openStalemateDialog() {
-      this.showStalemateDialog = true;
-      this.showConcedeDialog = false;
+    closeMenu() {
       this.showGameMenu = false;
     },
     closeDialog() {
-      this.showConcedeDialog = false;
-      this.showStalemateDialog = false;
+      this.shownDialog = '';
     },
     requestGameEnd() {
       if (this.showConcedeDialog) {
@@ -139,7 +142,7 @@ export default {
     async concede() {
       this.loading = true;
       await this.$store.dispatch('requestConcede');
-      this.showConcedeDialog = false;
+      this.shownDialog = '';
     },
     async requestStalemate() {
       this.loading = true;
@@ -150,7 +153,7 @@ export default {
         this.$store.commit('setWaitingForOpponentToStalemate', false);
       }
       this.loading = false;
-      this.showStalemateDialog = false;
+      this.shownDialog = '';
     },
     async stopSpectate() {
       try {
@@ -164,3 +167,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.menu-button {
+  width: 100%;
+}
+</style>
