@@ -5,13 +5,13 @@ import { createI18n } from 'vue-i18n';
 // TODO we should lazyload non global translations on a per page basis
 // https://vue-i18n.intlify.dev/guide/advanced/lazy.html
 import en from '@/translations/en.json';
-import es from '@/translations/es.json';
-import fr from '@/translations/fr.json';
+// import es from '@/translations/es.json';
+// import fr from '@/translations/fr.json';
 
 const messages = {
  en,
- es,
- fr,
+//  es,
+//  fr,
 };
 
 const i18n = createI18n({
