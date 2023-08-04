@@ -98,4 +98,5 @@ module.exports.routes = {
   '/test/badSession': 'TestController.setBadSession',
   '/test/loadSeasonFixture': 'TestController.loadSeasonFixture',
   '/test/loadMatchFixtures': 'TestController.loadMatchFixtures',
+  '/test/loadFinishedGameFixtures': 'TestController.loadFinishedGameFixtures',
 };

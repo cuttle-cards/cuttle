@@ -12,14 +12,25 @@ module.exports = {
     }).populateAll();
     return exits.success(
       seasons.map((season) => {
-        return {
+        const res = {
           ...season,
           rankings: new Map(), // playerId => PlayerMatches
           firstPlace: season.firstPlace?.username || null,
           secondPlace: season.secondPlace?.username || null,
           thirdPlace: season.thirdPlace?.username || null,
           fourthPlace: season.fourthPlace?.username || null,
+          gameCounts: [],
+          uniquePlayersPerWeek: [],
         };
+        // initialize gameCounts and uniquePlayersPerWeek
+        const startTime = dayjs(season.startTime);
+        const endTime = dayjs(season.endTime);
+        const numWeeks = endTime.diff(startTime, 'week');
+        for (let i=0; i<numWeeks; i++) {
+          res.gameCounts.push(0);
+          res.uniquePlayersPerWeek.push(new Set());
+        }
+        return res;
       }),
     );
   },
