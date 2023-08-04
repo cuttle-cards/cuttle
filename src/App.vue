@@ -3,15 +3,6 @@
     <navigation-drawer v-if="showNav" />
     <v-main>
       <router-view />
-
-      <!-- temporary locale changer -->
-      <div class="locale-changer">
-        <select v-model="$i18n.locale">
-          <option v-for="(lang, i) in $i18n.availableLocales" :key="`${i}-${lang}`" :value="lang">
-            {{ lang }}
-          </option>
-        </select>
-      </div>
     </v-main>
   </v-app>
 </template>
