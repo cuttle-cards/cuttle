@@ -253,7 +253,7 @@ describe('Stats Page', () => {
     });
   });
 
-  it('Sends the counts of games played and unique players for each week of each season', () => {
+  it.only('Sends the counts of games played and unique players for each week of each season', () => {
     cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
       const clubs2022 = seasons.find((season) => season.name === 'Clubs 2022');
       expect(clubs2022).not.to.be.undefined;

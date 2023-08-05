@@ -408,6 +408,20 @@ const seasonOneGames = [
     p0: 'player3',
     p1: 'player4',
   },
+  // Week 4 games
+  {
+    name: 'Clubs Week 2, Game 2',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-02-15').valueOf(),
+    p0: 'player3',
+    p1: 'player4',
+  },
 ];
 
 const seasonTwoGames = [
