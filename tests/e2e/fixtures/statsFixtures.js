@@ -405,7 +405,7 @@ const seasonOneGames = [
   },
   // Week 4 games
   {
-    name: 'Clubs Week 2, Game 2',
+    name: 'Clubs Week 4, Game 2',
     status: false,
     p0Ready: true,
     p1Ready: true,
