@@ -28,7 +28,9 @@ module.exports = {
       // Successfully created User - Set session data
       req.session.loggedIn = true;
       req.session.usr = user.id;
-      return res.ok(user.id);
+      req.session.save(() => {
+        return res.ok(user.id);
+      });
     } catch (err) {
       return res.badRequest(err);
     }
@@ -46,7 +48,9 @@ module.exports = {
       await passwordAPI.checkPass(password, user.encryptedPassword);
       req.session.loggedIn = true;
       req.session.usr = user.id;
-      return res.ok(user.id);
+      req.session.save(() => {
+        return res.ok(user.id);
+      });
     } catch (err) {
       return res.badRequest(err);
     }
@@ -88,10 +92,12 @@ module.exports = {
       }
 
       const game = populatedGame ?? unpopulatedGame;
-      return res.ok({
-        game,
-        username: user.username,
-        pNum: user.pNum,
+      req.session.save(() => {
+        return res.ok({
+          game,
+          username: user.username,
+          pNum: user.pNum,
+        });
       });
     } catch (err) {
       return res.badRequest(err);
