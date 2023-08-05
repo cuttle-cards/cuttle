@@ -176,13 +176,8 @@ module.exports = {
         }
 
         const weekNum = dayjs(game.updatedAt).diff(relevantSeason.startTime, 'week');
-        if (!relevantSeason.gameCounts[weekNum]) {
-          relevantSeason.gameCounts[weekNum] = 0;
-        }
+
         relevantSeason.gameCounts[weekNum]++;
-        if (!relevantSeason.uniquePlayersPerWeek[weekNum]) {
-          relevantSeason.uniquePlayersPerWeek[weekNum] = new Set();
-        }
         relevantSeason.uniquePlayersPerWeek[weekNum].add(game.p0);
         relevantSeason.uniquePlayersPerWeek[weekNum].add(game.p1);
       });
