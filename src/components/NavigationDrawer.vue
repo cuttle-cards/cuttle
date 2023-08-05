@@ -23,7 +23,7 @@
       <v-list v-if="!isSmallDevice">
         <v-list-item
           :prepend-icon="collapseMenuIcon"
-          :title="`${!isCollapsed ? 'Collapse Menu' : ''}`"
+          :title="`${!isCollapsed ? t('global.collapseMenu') : ''}`"
           :data-cy="collapseMenuAttribute"
           @click="userHasCollapsed = !userHasCollapsed"
         />
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
+
 import {
   ROUTE_NAME_HOME,
   ROUTE_NAME_LOGIN,
@@ -44,6 +46,14 @@ import {
 
 export default {
   name: 'NavigationDrawer',
+  setup() {
+    // Vuetify has its own translation layer that isn't very good
+    // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
+    // level and utilize it this way with a composable. There may be another more global way but
+    // I haven't found anything just yet
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       // User controlls for collapsing only available on desktop
@@ -57,7 +67,7 @@ export default {
     pageLinks() {
       const rules = [
         {
-          text: 'Rules',
+          text: this.t('global.rules'),
           icon: 'script-text',
           page: { name: ROUTE_NAME_RULES },
         },
@@ -65,17 +75,17 @@ export default {
       return !this.authenticated
         ? [
             {
-              text: 'Login',
+              text: this.t('global.login'),
               icon: 'login',
               page: { name: ROUTE_NAME_LOGIN },
             },
             ...rules,
           ]
         : [
-            { text: 'Logout', icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } },
+            { text: this.t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } },
             ...rules,
-            { text: 'Play', icon: 'play', page: { name: ROUTE_NAME_HOME } },
-            { text: 'Stats', icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
+            { text: this.t('global.play'), icon: 'play', page: { name: ROUTE_NAME_HOME } },
+            { text: this.t('global.stats'), icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
           ];
     },
     isSmallDevice() {
