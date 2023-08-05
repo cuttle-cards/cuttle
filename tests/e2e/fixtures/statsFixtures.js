@@ -4,9 +4,9 @@ const seasonFixtures = [
   {
     name: 'Clubs 2022',
     // startTime: 1642642200,
-    startTime: dayjs('2022-01-19', 'yyyy-mm-dd').valueOf(),
+    startTime: dayjs('2022-01-19 20:30').valueOf(),
     // endTime: 1674178200,
-    endTime: dayjs('2022-02-18', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2022-02-16 18:00').valueOf(),
     firstPlace: 'player1',
     secondPlace: 'player2',
     thirdPlace: 'player3',
@@ -17,9 +17,9 @@ const seasonFixtures = [
   {
     name: 'Diamonds 2022',
     // startTime: 1642642200,
-    startTime: dayjs('2022-02-19', 'yyyy-mm-dd').valueOf(),
+    startTime: dayjs('2022-02-16 18:00').valueOf(),
     // endTime: 1674178200,
-    endTime: dayjs('2022-03-18', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2022-03-16 18:00').valueOf(),
   },
   {
     name: 'Future Spades Season',
