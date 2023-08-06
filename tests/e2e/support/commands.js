@@ -212,6 +212,7 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
       },
       function handleResponse(_res, jwres) {
         if (jwres.statusCode === 200) {
+          cy.wait(2000);
           return resolve();
         }
         const errMessage = jwres?.message ?? jwres?.error ?? 'Unknown error';
