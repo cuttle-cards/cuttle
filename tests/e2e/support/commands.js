@@ -7,10 +7,29 @@ const io = require('sails.io.js')(require('socket.io-client'));
 io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
 
-// Pass error logs to the terminal console
-// See https://github.com/cypress-io/cypress/issues/3199#issuecomment-1019270203
-// Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
+Cypress.Commands.add('reconnectSockets', () => {
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.disconnect();
+    io.socket.reconnect();
+    const MAX_TRIES = 10; // 10 seconds
+    const INTERVAL = 500; // 10 * 500 = 5000 (5 seconds)
+    let tries = 1;
+    const interval = setInterval(() => {
+      // If we are connected to the socket, resolve
+      if (io.socket.isConnected()) {
+        resolve();
+      }
 
+      // If no connection after threshold, reject the promise to prevent an infinite loop
+      if (tries >= MAX_TRIES) {
+        clearInterval(interval);
+        reject();
+      }
+
+      tries += 1;
+    }, INTERVAL);
+  });
+});
 Cypress.Commands.add('wipeDatabase', () => {
   cy.request('localhost:1337/test/wipeDatabase');
   cy.log('Wiped database');
@@ -59,6 +78,7 @@ Cypress.Commands.add('requestGameList', () => {
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
  */
 Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = false) => {
+  cy.reconnectSockets();
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
@@ -212,7 +232,6 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
       },
       function handleResponse(_res, jwres) {
         if (jwres.statusCode === 200) {
-          cy.wait(2000);
           return resolve();
         }
         const errMessage = jwres?.message ?? jwres?.error ?? 'Unknown error';
