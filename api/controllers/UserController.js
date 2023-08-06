@@ -32,7 +32,10 @@ module.exports = {
       console.log(req.session);
       console.log(req.signedCookies);
       console.log(user);
-      req.session.save(() => {
+      req.session.save((err) => {
+        if (err) {
+          console.log('Error saving session', err);
+        }
         return res.ok(user.id);
       });
     } catch (err) {
@@ -52,7 +55,10 @@ module.exports = {
       await passwordAPI.checkPass(password, user.encryptedPassword);
       req.session.loggedIn = true;
       req.session.usr = user.id;
-      req.session.save(() => {
+      req.session.save((err) => {
+        if (err) {
+          console.log('Error saving session', err);
+        }
         return res.ok(user.id);
       });
     } catch (err) {
@@ -96,7 +102,10 @@ module.exports = {
       }
 
       const game = populatedGame ?? unpopulatedGame;
-      req.session.save(() => {
+      req.session.save((err) => {
+        if (err) {
+          console.log('Error saving session', err);
+        }
         return res.ok({
           game,
           username: user.username,
