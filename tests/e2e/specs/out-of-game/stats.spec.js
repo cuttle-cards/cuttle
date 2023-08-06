@@ -255,6 +255,7 @@ describe('Stats Page', () => {
 
   it('Sends the counts of games played and unique players for each week of each season', () => {
     cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
+      // Clubs 2022 stats
       const clubs2022 = seasons.find((season) => season.name === 'Clubs 2022');
       expect(clubs2022).not.to.be.undefined;
       // Week 1 stats
@@ -270,6 +271,7 @@ describe('Stats Page', () => {
       expect(clubs2022.gameCounts[3]).to.eq(1);
       expect(clubs2022.uniquePlayersPerWeek[3]).to.eq(2);
 
+      // Diamonds 2022 stats
       const diamonds2022 = seasons.find((season) => season.name === 'Diamonds 2022');
       expect(diamonds2022).not.to.be.undefined;
       // Week 1 stats
