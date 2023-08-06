@@ -56,7 +56,7 @@ describe('Home - Page Content', () => {
   });
 
   it('Logs user out', () => {
-    cy.get('[data-nav=Logout]').click();
+    cy.get("[data-nav='Log Out']").click();
     cy.contains('p', 'Log In to get Started!');
     cy.get('[data-nav=Home]').should('not.exist');
   });

@@ -1,25 +1,25 @@
 <template>
   <div class="loginViewContainer">
-    <!--////////////////////////// 
-     /////Welcome Section ///// 
+    <!--//////////////////////////
+     /////Welcome Section /////
     //////////////////////////-->
     <section v-if="!isLoggingIn">
       <v-container fluid id="welcome-container" class="welcomeContainer">
         <nav class="d-flex justify-space-between align-center mb-2">
           <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
-          <v-btn  
+          <v-btn
             variant="text"
             class="text-h6"
             @click ="$refs.usernameInput.focus()"
           >
-            Sign up 
+            {{ t('global.signup') }}
             <v-icon icon="mdi-account-circle" color="white" class="ml-2"/>
-          </v-btn>        
+          </v-btn>
         </nav>
 
         <div class="d-flex h-75 flex-column justify-space-around align-center mt-2">
-          <h1>Welcome to Cuttle.Cards</h1>
-          <p class="text-h4 mb-4">The card game that will have you hooked from the first hand!</p>
+          <h1>{{ t('login.title') }}</h1>
+          <p class="text-h4 mb-4">{{ t('login.subtitle') }}</p>
           <div class="w-75 my-4 video">
             <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI" />
             <v-btn
@@ -29,15 +29,15 @@
               color="newPrimary"
               data-cy="rules-link"
             >
-              Read The Rules
+              {{ t('login.readRules') }}
             </v-btn>
           </div>
-        </div>    
+        </div>
       </v-container>
     </section>
 
-    <!--////////////////////////// 
-     /////Login Section /////// 
+    <!--//////////////////////////
+     /////Login Section ///////
     //////////////////////////-->
 
     <section>
@@ -51,12 +51,12 @@
             </p>
 
             <v-form
-              id="login"  
+              id="login"
               v-model="isFormValid"
               class="mx-auto loginForm"
               @submit.prevent="submitLogin"
             >
-              <label for="username" class="text-body-1 font-weight-bold">Username</label>
+              <label for="username" class="text-body-1 font-weight-bold">{{ t('global.username') }}</label>
               <v-text-field
                 id="username"
                 ref="usernameInput"
@@ -69,7 +69,7 @@
                 data-cy="username"
               />
 
-              <label for="password" class="text-body-1 font-weight-bold">Password</label>
+              <label for="password" class="text-body-1 font-weight-bold">{{ t('global.password') }}</label>
               <v-text-field
                 id="password"
                 v-model="pw"
@@ -83,7 +83,7 @@
                 data-cy="password"
                 @click:append-inner="showPass = !showPass"
               />
-         
+
               <div
                 id="login-button-container"
                 class="d-flex flex-column flex-md-row
@@ -112,19 +112,19 @@
                 </v-btn>
               </div>
 
-              <v-btn 
+              <v-btn
                 class="w-100 my-10 text-h6 h-auto py-2 "
                 size="large"
-                color="newSecondary"  
+                color="newSecondary"
                 href="https://discord.com/invite/9vrAZ8xGyh"
                 target="_blank"
               >
                 <img class="discord" src="/img/loginView/logo-discord.svg" />
-                Join our discord<br>community
+                {{  t('login.joinDiscord') }}
               </v-btn>
 
             </v-form>
-        
+
             <BaseSnackbar
               v-model="showSnackBar"
               :message="snackBarMessage"
@@ -137,18 +137,15 @@
         </v-row>
       </v-container>
     </section>
-    
-    <!--///////////////////////// 
+
+    <!--/////////////////////////
      ///BlockQuote Section////
     /////////////////////////-->
     <section>
       <v-container fluid class="quote text-h5 text-center d-flex flex-column align-center">
-        <blockquote>
-          "Cuttle is a sharp, fast game built entirely on excellent mechanics. It is the sort of game - had I
-          known about it in college - I would have worn decks ragged through play"
-        </blockquote> 
-        <br> 
-        <cite>Richard Garfield - <br>Creator of Magic: The Gathering</cite>
+        <blockquote>{{ t('login.quote') }}</blockquote>
+        <br>
+        <cite>{{ t('login.quoteCite') }}</cite>
       </v-container>
     </section>
 
@@ -156,25 +153,18 @@
       <v-container>
         <v-col :cols="$vuetify.display.mdAndUp ? 10 : 12" class="mx-auto">
           <div class="d-flex flex-md-row flex-column align-center text-h5">
-            <p class="px-8">
-              Cuttle is a 2 player battle card game played with a 
-              standard 52-card deck of cards. It has the strategic 
-              nuance of trading card games like Magic, with the 
-              elegant balance of a standard deck --
-              and you can play it for free! Test your mettle in 
-              the deepest cardgame under the sea!
-            </p>
+            <div class="px-8">
+              <MarkdownContent :markdown="t('login.content')" />
+            </div>
             <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-1.png" >
           </div>
         </v-col>
         <v-col :cols="$vuetify.display.mdAndUp ? 10 : 12" class="mx-auto">
           <div class="d-flex flex-md-row flex-column-reverse align-center text-h5 my-10">
             <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-2.png" >
-            <p class="px-8">
-              Be the first to score 21 points in this explosive battle of wits. 
-              Mount a valient offense while disupting your opponent with dastardly tricks. 
-              Do you have what it takes to become the Lord of the Deep?
-            </p>
+            <div class="px-8">
+              <MarkdownContent :markdown="t('login.content2')" />
+            </div>
           </div>
         </v-col>
       </v-container>
@@ -183,15 +173,27 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
+
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
+import MarkdownContent from '@/components/Global/MarkdownContent.vue';
 import BaseVideo from '../components/Global/BaseVideo.vue';
 
 export default {
   name: 'LoginView',
   components: {
     BaseSnackbar,
-    BaseVideo
+    BaseVideo,
+    MarkdownContent,
+  },
+  setup() {
+    // Vuetify has its own translation layer that isn't very good
+    // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
+    // level and utilize it this way with a composable. There may be another more global way but
+    // I haven't found anything just yet
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {
@@ -202,7 +204,7 @@ export default {
       loading: false,
       showPass: false,
       isFormValid:false,
-      usernameRules:[this.isAlphaNumeric], 
+      usernameRules:[this.isAlphaNumeric],
       passwordRules:[this.has8OrMoreCharacters],
     };
   },
@@ -211,22 +213,21 @@ export default {
       return this.$route.name === ROUTE_NAME_LOGIN;
     },
     formHeaderText() {
-      if (this.isLoggingIn) {
-        return 'Log In to get Started!';
-      }
-      return 'Sign up now to start playing and get ready to dive into the world of Cuttle.';
+      return this.isLoggingIn
+        ? this.t('login.formHeaderLogin')
+        : this.t('login.formHeaderSignup');
     },
     buttonText() {
       if (this.isLoggingIn) {
-        return 'Log In';
+        return this.t('global.login');
       }
-      return 'Sign Up';
+      return this.t('global.signup');
     },
     switchLabelText() {
       if (this.isLoggingIn) {
-        return "Don't have an account?";
+        return this.t('login.noAccount');
       }
-      return 'Already have an account?';
+      return this.t('login.haveAccount');
     },
   },
   methods: {
@@ -267,7 +268,7 @@ export default {
       this.showSnackBar = false;
       this.snackBarMessage = '';
     },
-   isAlphaNumeric(val){ 
+   isAlphaNumeric(val){
       return (/^[\w.@-]+$/).test(val) || 'Username must contain only letters or numbers';
     },
     has8OrMoreCharacters(val){
