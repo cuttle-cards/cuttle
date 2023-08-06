@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 import vuetify from '@/plugins/vuetify';
 import router from '@/router';
 import store from '@/store/store';
+import i18n from '@/i18n';
 import { initCuttleGlobals } from '_/utils/config-utils';
 
 import App from '@/App.vue';
@@ -18,6 +19,9 @@ app.use(vuetify);
 
 // Add vuex store to vue
 app.use(store);
+
+// Add localization to vue
+app.use(i18n);
 
 app.mount('#app');
 

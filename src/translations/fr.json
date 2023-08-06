@@ -1,0 +1,27 @@
+{
+  "global": {
+    "signup": "S'inscrire",
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
+    "rules": "Règles",
+    "play": "Jouer",
+    "stats": "Statistiques",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "collapseMenu": "Réduire le menu"
+  },
+  "login": {
+    "noAccount": "Vous n'avez pas de compte ?",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "title": "Bienvenue sur Cuttle.Cards",
+    "subtitle": "Le jeu de cartes qui vous accrochera dès la première main !",
+    "formHeaderLogin": "Connectez-vous pour commencer !",
+    "formHeaderSignup": "Inscrivez-vous maintenant pour commencer à jouer et préparez-vous à plonger dans le monde de Cuttle.",
+    "quote": "\"Cuttle est un jeu vif et rapide construit entièrement sur d'excellentes mécaniques. C'est le genre de jeu - si je l'avais connu à l'université - qui m'aurait fait user les decks à force de jouer.\"",
+    "quoteCite": "Richard Garfield - Créateur de Magic: The Gathering",
+    "content": "Cuttle est un jeu de cartes de bataille pour 2 joueurs joué avec un jeu de 52 cartes standard. Il possède la subtilité stratégique des jeux de cartes à collectionner comme Magic, avec l'équilibre élégant d'un jeu de cartes standard -- et vous pouvez y jouer gratuitement ! Testez votre bravoure dans le jeu de cartes le plus profond sous la mer !",
+    "content2": "Soyez le premier à marquer 21 points dans cette bataille explosive d'intelligence. Montez une offense vaillante tout en perturbant votre adversaire avec des astuces perfides. Avez-vous ce qu'il faut pour devenir le Seigneur des Profondeurs ?",
+    "readRules": "Lire les règles",
+    "joinDiscord": "Rejoignez notre communauté sur Discord"
+  }
+}
