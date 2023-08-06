@@ -46,10 +46,7 @@
                   </div>
                 </v-window-item>
                 <v-window-item :value="TABS.SPECTATE">
-                  <p 
-                    v-if="specateGameList.length === 0"
-                    data-cy="no-spectate-game-text"
-                  >
+                  <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text">
                     No Games Available to Spectate
                   </p>
                   <div v-for="game in specateGameList" :key="game.id">
@@ -167,16 +164,6 @@ export default {
     },
   },
   async created() {
-    // Leave any existing lobbies before getting the game list
-    // Need to make sure we do these in order so the order of operations is:
-    //     leave -> list
-    try {
-      await this.$store.dispatch('requestLeaveLobby');
-    } catch (err) {
-      // A user may not actually be in a lobby, so we need to
-      // swallow this error so the component doesn't error out
-      // TODO: Improve this logic with an isInLobby helper
-    }
     await this.$store.dispatch('requestGameList');
   },
   methods: {
@@ -263,7 +250,7 @@ p {
 
 #game-list {
   box-sizing: border-box;
-  background: #CDD1D4;
+  background: #cdd1d4;
   border-radius: 8px;
   min-height: 55vh;
   display: flex;
