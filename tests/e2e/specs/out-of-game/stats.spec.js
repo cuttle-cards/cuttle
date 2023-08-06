@@ -263,6 +263,12 @@ describe('Stats Page', () => {
       // Week 2 stats
       expect(clubs2022.gameCounts[1]).to.eq(2);
       expect(clubs2022.uniquePlayersPerWeek[1]).to.eq(4);
+      // Week 3 stats
+      expect(clubs2022.gameCounts[2]).to.eq(0);
+      expect(clubs2022.uniquePlayersPerWeek[2]).to.eq(0);
+      // Week 3 stats
+      expect(clubs2022.gameCounts[3]).to.eq(1);
+      expect(clubs2022.uniquePlayersPerWeek[3]).to.eq(2);
 
       const diamonds2022 = seasons.find((season) => season.name === 'Diamonds 2022');
       expect(diamonds2022).not.to.be.undefined;
