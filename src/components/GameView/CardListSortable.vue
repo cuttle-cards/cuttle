@@ -37,7 +37,7 @@
 
 <script>
 import GameCard from '@/components/GameView/GameCard.vue';
-import { orderBy } from 'lodash'; 
+import { orderBy } from 'lodash';
 
 export default {
   name: 'CardListSortable',
@@ -87,7 +87,7 @@ export default {
   },
   computed: {
     sortedCards() {
-      return this.sortByRank ? orderBy(this.cards, ['rank', 'suit']) : [...this.cards]; // Changed to use orderBy
+      return this.sortByRank ? orderBy(this.cards, ['rank', 'suit']) : [...this.cards];
     },
     dataSelectorName() {
       return `data-${this.dataSelectorPrefix}-card`;
