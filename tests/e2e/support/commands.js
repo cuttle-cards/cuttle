@@ -94,6 +94,7 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     cy.get('[data-cy=ready-button]').click();
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
+      cy.wait(2000);
     }
     try {
       cy.subscribeOpponent(gameSummary.gameId);
@@ -116,6 +117,7 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
+      cy.wait(2000);
     }
     try {
       cy.subscribeOpponent(gameSummary.gameId);
@@ -149,6 +151,7 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
     // Opponents start game, it appears as spectatable
     cy.readyOpponent(gameData.gameId);
     cy.signupOpponent(playerTwo);
+    cy.wait(2000);
     cy.subscribeOpponent(gameData.gameId);
     cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
 
