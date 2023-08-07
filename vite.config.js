@@ -9,6 +9,10 @@ import vuetify from 'vite-plugin-vuetify';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const PROXY_HOST = process.env.CUTTLE_DOCKERIZED === true
+  ? 'http://localhost:1337'
+  : 'http://cuttle-server:1337';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -25,24 +29,25 @@ export default defineConfig({
     },
   },
   server: {
+    host: '0.0.0.0',
     port: 8080,
     strictPort: true,
     proxy: {
       '/game': {
-        target: 'http://localhost:1337',
+        target: PROXY_HOST,
         changeOrigin: true,
       },
       // Required for the health response to work on the client
       '/health': {
-        target: 'http://localhost:1337',
+        target: PROXY_HOST,
         changeOrigin: true,
       },
       '/user': {
-        target: 'http://localhost:1337',
+        target: PROXY_HOST,
         changeOrigin: true,
       },
       '/test': {
-        target: 'http://localhost:1337',
+        target: PROXY_HOST,
         changeOrigin: true,
       },
     },
