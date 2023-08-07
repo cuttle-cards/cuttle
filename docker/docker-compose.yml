@@ -1,0 +1,25 @@
+version: "3.4"
+services:
+
+  server:
+    container_name: server
+    build:
+      context: ..
+      dockerfile: ./docker/.Dockerfile
+    command: npm run start:server
+    ports:
+      - "1337:1337"
+    volumes:
+      - ../src/:/cuttle/src/
+
+  client:
+    container_name: client
+    build:
+      context: ..
+      dockerfile: ./docker/.Dockerfile
+    command: npm run start:client
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../src/:/cuttle/src/
+

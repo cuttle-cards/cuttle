@@ -59,6 +59,8 @@
   "main": "app.js",
   "private": true,
   "scripts": {
+    "docker:start": "docker-compose -f ./docker/docker-compose.yml up",
+    "docker:stop": "docker-compose -f ./docker/docker-compose.yml down",
     "start:serve": "vite preview",
     "start:client": "vite --host",
     "start:server": "node app.js",
