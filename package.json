@@ -47,6 +47,7 @@
     "prettier": "2.7.1",
     "rimraf": "^3.0.2",
     "sass": "^1.55.0",
+    "session-file-store": "^1.5.0",
     "vite": "^3.2.5",
     "vite-plugin-vuetify": "^1.0.0-alpha.17",
     "vitest": "^0.28.5"
