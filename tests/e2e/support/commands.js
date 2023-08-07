@@ -31,8 +31,13 @@ Cypress.Commands.add('reconnectSockets', () => {
   });
 });
 Cypress.Commands.add('wipeDatabase', () => {
-  cy.request('localhost:1337/test/wipeDatabase');
-  cy.log('Wiped database');
+  return new Cypress.Promise((resolve) => {
+    io.socket.get('/test/wipeDatabase', function () {
+      return resolve();
+    });
+  });
+  // cy.request('localhost:1337/test/wipeDatabase');
+  // cy.log('Wiped database');
 });
 
 Cypress.Commands.add('setBadSession', () => {
@@ -78,9 +83,9 @@ Cypress.Commands.add('requestGameList', () => {
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
  */
 Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = false) => {
-  cy.reconnectSockets();
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
+    cy.reconnectSockets();
     cy.visit('/');
     cy.signupPlayer(myUser);
   }
@@ -172,13 +177,17 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
   });
 });
 
-Cypress.Commands.add('signupOpponent', (opponent) => {
+Cypress.Commands.add('signupOpponent', ({ username, password }) => {
+  // cy.request( 'POST', 'localhost:1337/user/signup', {
+  //   username,
+  //   password
+  // });
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
       'localhost:1337/user/signup',
       {
-        username: opponent.username,
-        password: opponent.password,
+        username,
+        password,
       },
       function (res, jwres) {
         if (jwres.statusCode !== 200) {

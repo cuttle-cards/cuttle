@@ -16,11 +16,19 @@ module.exports = {
       UserSpectatingGame.destroy({}),
     ])
       .then(() => {
-        return res.ok();
+        req.sessionStore.clear(() => {
+          return res.ok();
+        });
       })
       .catch((err) => {
         return res.badRequest(err);
       });
+  },
+
+  clearSessionStore: function (req, res) {
+    req.sessionStore.clear(() => {
+      return res.ok();
+    });
   },
 
   setBadSession: function (req, res) {
