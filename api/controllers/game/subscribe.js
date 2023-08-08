@@ -35,7 +35,7 @@ module.exports = function (req, res) {
         } else {
           pNum = (game.players[0].pNum + 1) % 2;
           await Game.updateOne({ id: game.id }).set({
-            status: gameService.GameStatus.CREATED,
+            status: gameService.GameStatus.STARTED,
           });
           // For respond() handler
           game.status = false;
