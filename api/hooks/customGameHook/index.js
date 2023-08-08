@@ -7,7 +7,7 @@ module.exports = function gameHook() {
       return new Promise(function (resolve, reject) {
         Game.create({
           name: gameName,
-          status: true,
+          status: 1,
           isRanked: isRanked === true,
         })
           .fetch()
