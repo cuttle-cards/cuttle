@@ -152,7 +152,7 @@ describe('Home - Game List', () => {
       // Manually re-enable join button to confirm backend rejects request
       cy.window()
         .its('cuttle.app.config.globalProperties.$store')
-        .invoke('commit', 'updateGameStatus', { id: gameData.gameId, newStatus: true });
+        .then((store) => store.commit('updateGameStatus', { id: gameData.gameId, newStatus: true }));
       cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled').click().should('be.disabled');
 
       assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
@@ -255,9 +255,11 @@ describe('Home - Game List', () => {
         // Game appears as spectatable
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible').and('not.be.disabled');
         // Disconnect the socket then finish the game -- UI misses the update
-        cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');
+        cy.window().its('cuttle.app.config.globalProperties.$store')
+          .then((store) => store.dispatch('disconnectSocket'));
         cy.concedeOpponent();
-        cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'reconnectSocket');
+        cy.window().its('cuttle.app.config.globalProperties.$store')
+          .then((store) => store.dispatch('reconnectSocket'));
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
         assertSnackbarError('Unable to spectate game', 'newgame');
         // Spectate button should now be disabled

@@ -53,4 +53,13 @@ module.exports = {
     }
     return res.ok();
   },
+
+  loadFinishedGameFixtures: async function (req, res) {
+    try {
+      await Game.createEach(req.body);
+    } catch (e) {
+      return res.badRequest(e);
+    }
+    return res.ok();
+  },
 };
