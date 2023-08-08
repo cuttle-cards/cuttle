@@ -4,7 +4,7 @@ module.exports = async function (req, res) {
     gameService.populateGame({ gameId }),
     userService.findUser({ userId: req.session.usr }),
   ]);
-  if (game.status || game.players.length < 2) {
+  if (game.status !== 2 || game.players.length < 2) {
     return res.badRequest({ message: 'You can only spectate an ongoing game with two players' });
   }
   // Subscribe socket to game
