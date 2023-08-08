@@ -46,6 +46,17 @@ Cypress.Commands.add('loadMatchFixtures', (matches) => {
   });
 });
 
+Cypress.Commands.add('loadFinishedGameFixtures', (games) => {
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.post('/test/loadFinishedGameFixtures', games, function (res, jwres) {
+      if (jwres.statusCode !== 200) {
+        return reject(new Error('Error loading game fixtures'));
+      }
+      return resolve();
+    });
+  });
+});
+
 Cypress.Commands.add('requestGameList', () => {
   return new Cypress.Promise((resolve) => {
     io.socket.get('/game/getList', function () {

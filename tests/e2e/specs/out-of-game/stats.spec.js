@@ -1,5 +1,5 @@
 import { playerOne, playerTwo, playerThree, playerFour, playerFive } from '../../fixtures/userFixtures';
-import { seasonFixtures, matchesFixture } from '../../fixtures/statsFixtures';
+import { seasonFixtures, matchesFixture, gameFixtures } from '../../fixtures/statsFixtures';
 const dayjs = require('dayjs');
 
 function setup() {
@@ -43,8 +43,17 @@ function setup() {
         };
       };
       const matches = matchesFixture.map(transformMatchFixture);
+
+      const games = gameFixtures.map((game) => {
+        return {
+          ...game,
+          p0: this[game.p0] ?? null,
+          p1: this[game.p1] ?? null,
+        };
+      });
       cy.loadMatchFixtures(matches);
       cy.loadSeasonFixture(seasons).as('seasons');
+      cy.loadFinishedGameFixtures(games);
     });
   cy.vueRoute('/stats');
   // Select Clubs 2022 season
@@ -241,6 +250,36 @@ describe('Stats Page', () => {
       cy.get('[role=listbox]').contains(seasonTwo.name).click();
       cy.hash().should('contain', seasonTwo.id);
       cy.get('[data-cy=season-select]').should('contain', seasonTwo.name);
+    });
+  });
+
+  it('Sends the counts of games played and unique players for each week of each season', () => {
+    cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
+      // Clubs 2022 stats
+      const clubs2022 = seasons.find(({name}) => name === 'Clubs 2022');
+      expect(clubs2022).not.to.be.undefined;
+      // Week 1 stats
+      expect(clubs2022.gameCounts[0]).to.eq(4);
+      expect(clubs2022.uniquePlayersPerWeek[0]).to.eq(3);
+      // Week 2 stats
+      expect(clubs2022.gameCounts[1]).to.eq(2);
+      expect(clubs2022.uniquePlayersPerWeek[1]).to.eq(4);
+      // Week 3 stats
+      expect(clubs2022.gameCounts[2]).to.eq(0);
+      expect(clubs2022.uniquePlayersPerWeek[2]).to.eq(0);
+      // Week 3 stats
+      expect(clubs2022.gameCounts[3]).to.eq(1);
+      expect(clubs2022.uniquePlayersPerWeek[3]).to.eq(2);
+
+      // Diamonds 2022 stats
+      const diamonds2022 = seasons.find(({name}) => name === 'Diamonds 2022');
+      expect(diamonds2022).not.to.be.undefined;
+      // Week 1 stats
+      expect(diamonds2022.gameCounts[0]).to.eq(1);
+      expect(diamonds2022.uniquePlayersPerWeek[0]).to.eq(2);
+      // Week 2 stats
+      expect(diamonds2022.gameCounts[1]).to.eq(2);
+      expect(diamonds2022.uniquePlayersPerWeek[1]).to.eq(2);
     });
   });
 });
