@@ -22,7 +22,7 @@ module.exports = function (req, res) {
         // Ensure game is closed for future
         await Game.updateOne({ id: game.id })
           .set({
-            status: false
+            status: gameService.GameStatus.STARTED
           });
         throw { message: `Cannot join that game because it's already full` };
       }
@@ -35,7 +35,7 @@ module.exports = function (req, res) {
         } else {
           pNum = (game.players[0].pNum + 1) % 2;
           await Game.updateOne({ id: game.id }).set({
-            status: false,
+            status: gameService.GameStatus.CREATED,
           });
           // For respond() handler
           game.status = false;
