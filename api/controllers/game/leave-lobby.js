@@ -14,7 +14,7 @@ module.exports = function (req, res) {
         gameUpdates.p1Ready = false;
       }
       // Update models
-      gameUpdates.status = true;
+      gameUpdates.status = gameService.gameStatus.CREATED;
 
       // Unsubscribe user from updates to this game
       Game.unsubscribe(req, [game.id]);
