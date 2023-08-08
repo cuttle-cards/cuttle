@@ -19,8 +19,8 @@ module.exports = {
      * 4 - ARCHIVED (game has been removed from the list without being started)
      */
     status: {
-      type: 'boolean',
-      defaultsTo: true,
+      type: 'number',
+      defaultsTo: 1,
     },
     players: {
       collection: 'user',
