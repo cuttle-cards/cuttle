@@ -20,7 +20,6 @@ module.exports = {
      */
     status: {
       type: 'number',
-      defaultsTo: 1,
     },
     players: {
       collection: 'user',
