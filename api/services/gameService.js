@@ -1,13 +1,13 @@
 const userService = require('../../api/services/userService.js');
 
 /**
- * Game result states
+ * Game status states
  */
-const GameResult = Object.freeze({
-  INCOMPLETE: -1,
-  P0_WINS: 0,
-  P1_WINS: 1,
-  STALEMATE: 2,
+const GameStatus = Object.freeze({
+  NEW: 1,
+  STARTED: 2,
+  FINISHED: 3,
+  ARCHIVED: 4,
 });
 
 /**
@@ -46,7 +46,7 @@ function formatPlayerData(user, points) {
 }
 
 module.exports = {
-  GameResult,
+  GameStatus,
   /**
    * Find game by id and return it as a Promise
    **** options = {gameId: integer}
@@ -120,17 +120,20 @@ module.exports = {
       currentMatch: null,
     };
     let { game } = options;
-    const p0Wins = userService.checkWin({ user: game.players[0] });
-    const p1Wins = userService.checkWin({ user: game.players[1] });
+    const [p0, p1] = game.players;
+    const p0Wins = userService.checkWin({ user: p0 });
+    const p1Wins = userService.checkWin({ user: p1 });
     if (p0Wins || p1Wins) {
       res.gameOver = true;
       const gameUpdates = {};
       if (p0Wins) {
         res.winner = 0;
-        gameUpdates.result = GameResult.P0_WINS;
+        gameUpdates.winner = p1.id;
+        gameUpdates.status = GameStatus.FINISHED;
       } else if (p1Wins) {
         res.winner = 1;
-        gameUpdates.result = GameResult.P1_WINS;
+        gameUpdates.winner = p1.id;
+        gameUpdates.status = GameStatus.FINISHED;
       }
       await Game.updateOne({ id: game.id }).set(gameUpdates);
       game = {

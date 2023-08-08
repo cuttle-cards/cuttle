@@ -30,7 +30,7 @@ module.exports = async function (req, res) {
         ...gameUpdates,
         p0: game.players[0].id,
         p1: game.players[1].id,
-        result: gameService.GameResult.STALEMATE,
+        status: gameService.GameResult.FINISHED,
       };
       updatePromises.push(gameService.clearGame({ userId }));
     }
@@ -38,7 +38,7 @@ module.exports = async function (req, res) {
     updatePromises.push(Game.updateOne({ id: gameId }).set(gameUpdates));
     await Promise.all(updatePromises);
 
-    if (victory.gameOver && gameUpdates.result === gameService.GameResult.STALEMATE && game.isRanked) {
+    if (victory.gameOver && gameUpdates.status === gameService.GameResult.FINISHED && game.isRanked) {
       victory.currentMatch = await sails.helpers.addGameToMatch(game);
     }
 

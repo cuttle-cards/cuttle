@@ -2,7 +2,7 @@ module.exports = async function (req, res) {
   try {
     const winner = (req.session.pNum + 1) % 2;
     // Update database
-    await Game.updateOne(req.session.game).set({ result: winner });
+    await Game.updateOne(req.session.game).set({ status: gameService.gameStatus.FINISHED, winner });
     const game = await gameService.populateGame({ gameId: req.session.game });
     await gameService.clearGame({ userId: req.session.usr });
     const currentMatch = game.isRanked ? await sails.helpers.addGameToMatch(game) : null;

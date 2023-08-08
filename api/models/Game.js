@@ -118,7 +118,8 @@ module.exports = {
       via: 'gameSpectated',
     },
     winner: {
-      model:'user'
+      model: 'user',
+      defaultsTo: null
     },
   }, // end attributes
 }; // end exports
