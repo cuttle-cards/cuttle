@@ -31,6 +31,7 @@ module.exports = async function (req, res) {
         p0: game.players[0].id,
         p1: game.players[1].id,
         status: gameService.GameStatus.FINISHED,
+        winner: null
       };
       updatePromises.push(gameService.clearGame({ userId }));
     }
