@@ -16,6 +16,10 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.policies.html
  */
 
+const conditionalIsLoggedIn = process.env.CUTTLE_ENV === 'test'
+  ? ''
+  : 'isLoggedIn';
+
 module.exports.policies = {
   statsController: {
     '*': 'isLoggedIn',
@@ -33,44 +37,44 @@ module.exports.policies = {
   },
 
   'game/reconnect': ['isLoggedIn', 'isInGame'],
-  'game/create': ['isLoggedIn', 'hasGameName'],
+  'game/create': [conditionalIsLoggedIn, 'hasGameName'],
   'game/get-list': 'isLoggedIn',
-  'game/subscribe': 'isLoggedIn',
+  'game/subscribe': conditionalIsLoggedIn,
   'game/spectate': ['isLoggedIn'],
-  'game/ready': 'isLoggedIn',
-  'game/leave-lobby': ['isSocket', 'isLoggedIn', 'isInGame'],
-  'game/draw': ['isLoggedIn', 'isInGame'],
-  'game/pass': ['isLoggedIn', 'isInGame'],
-  'game/points': ['isLoggedIn', 'isInGame', 'hasCardId'],
-  'game/face-card': ['isLoggedIn', 'isInGame', 'hasCardId'],
+  'game/ready': conditionalIsLoggedIn,
+  'game/leave-lobby': ['isSocket', conditionalIsLoggedIn, 'isInGame'],
+  'game/draw': [conditionalIsLoggedIn, 'isInGame'],
+  'game/pass': [conditionalIsLoggedIn, 'isInGame'],
+  'game/points': [conditionalIsLoggedIn, 'isInGame', 'hasCardId'],
+  'game/face-card': [conditionalIsLoggedIn, 'isInGame', 'hasCardId'],
   'game/scuttle': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
-  'game/jack': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
-  'game/untargeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
-  'game/targeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
-  'game/counter': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
-  'game/resolve': ['isLoggedIn', 'isInGame', 'hasOpId'],
-  'game/resolve-four': ['isLoggedIn', 'isInGame', 'hasCardIdOne'],
-  'game/resolve-three': ['isLoggedIn', 'isInGame', 'hasCardId'],
-  'game/concede': ['isLoggedIn', 'isInGame'],
-  'game/stalemate': ['isLoggedIn', 'isInGame'],
-  'game/stalemate-reject': ['isLoggedIn', 'isInGame'],
+  'game/jack': [conditionalIsLoggedIn, 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+  'game/untargeted-one-off': [conditionalIsLoggedIn, 'isInGame', 'hasCardId', 'hasOpId'],
+  'game/targeted-one-off': [conditionalIsLoggedIn, 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType'],
+  'game/counter': [conditionalIsLoggedIn, 'isInGame', 'hasCardId', 'hasOpId'],
+  'game/resolve': [conditionalIsLoggedIn, 'isInGame', 'hasOpId'],
+  'game/resolve-four': [conditionalIsLoggedIn, 'isInGame', 'hasCardIdOne'],
+  'game/resolve-three': [conditionalIsLoggedIn, 'isInGame', 'hasCardId'],
+  'game/concede': [conditionalIsLoggedIn, 'isInGame'],
+  'game/stalemate': [conditionalIsLoggedIn, 'isInGame'],
+  'game/stalemate-reject': [conditionalIsLoggedIn, 'isInGame'],
   'game/game-over': ['isLoggedIn'],
   'game/chat': ['isLoggedIn', 'isInGame'],
   'game/game-data': ['isLoggedIn', 'isInGame'],
 
-  'game/seven/face-card': ['isLoggedIn', 'isInGame', 'hasCardId'],
-  'game/seven/jack': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
-  'game/seven/points': ['isLoggedIn', 'isInGame', 'hasCardId'],
-  'game/seven/scuttle': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+  'game/seven/face-card': [conditionalIsLoggedIn, 'isInGame', 'hasCardId'],
+  'game/seven/jack': [conditionalIsLoggedIn, 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
+  'game/seven/points': [conditionalIsLoggedIn, 'isInGame', 'hasCardId'],
+  'game/seven/scuttle': [conditionalIsLoggedIn, 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId'],
   'game/seven/targeted-one-off': [
-    'isLoggedIn',
+    conditionalIsLoggedIn,
     'isInGame',
     'hasCardId',
     'hasOpId',
     'hasTargetId',
     'hasTargetType',
   ],
-  'game/seven/untargeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId'],
+  'game/seven/untargeted-one-off': [conditionalIsLoggedIn, 'isInGame', 'hasCardId'],
 
   /////////////////////////////////
   // DEVELOPMENT Or Staging ONLY //

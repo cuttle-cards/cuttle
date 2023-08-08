@@ -9,13 +9,6 @@
  *
  */
 module.exports = function (req, res, next) {
-  // We mock multiple users which mangles the session, so we just need to rely on the user ids
-  // we set on the client
-  // TODO can we mock the right user on the server to make sure they work properly?
-  if (process.env.CUTTLE_ENV === 'test') {
-    next();
-  }
-
   const { session, path } = req;
   const userIsValid = session.usr && typeof session.usr === 'number';
   // User is allowed, proceed to the next policy,
