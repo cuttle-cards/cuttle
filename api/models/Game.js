@@ -11,6 +11,13 @@ module.exports = {
       type: 'string',
       required: true,
     },
+        /**
+     *  Enum for status:
+     * 1 - NEW (game has been created but has not started)
+     * 2 - STARTED (game has been started but has not yet finished)
+     * 3 - FINISHED (game has been completed)
+     * 4 - ARCHIVED (game has been removed from the list without being started)
+     */
     status: {
       type: 'boolean',
       defaultsTo: true,
@@ -110,16 +117,8 @@ module.exports = {
       collection: 'userspectatinggame',
       via: 'gameSpectated',
     },
-    /**
-     *  Enum for game result:
-     * -1: incomplete
-     * 0: p0 won
-     * 1: p1 won
-     * 2: stalemate
-     */
-    result: {
-      type: 'number',
-      defaultsTo: -1,
+    winner: {
+      model:'user'
     },
   }, // end attributes
 }; // end exports
