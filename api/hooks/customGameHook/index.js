@@ -8,7 +8,7 @@ module.exports = function gameHook() {
       return new Promise(function (resolve, reject) {
         Game.create({
           name: gameName,
-          status: gameService.GameStatus.STARTED,
+          status: gameService.GameStatus.CREATED,
           isRanked: isRanked === true,
         })
           .fetch()
