@@ -18,6 +18,11 @@ module.exports = {
   // models: {
   //   connection: 'someMongodbServer'
   // }
+
+  session: {
+    adapter: 'session-file-store',
+  },
+
   blueprints: {
     rest: true,
   },
