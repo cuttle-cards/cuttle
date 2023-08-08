@@ -38,7 +38,7 @@ module.exports = function (req, res) {
             status: gameService.GameStatus.STARTED,
           });
           // For respond() handler
-          game.status = false;
+          game.status = gameService.GameStatus.STARTED;
           sails.sockets.blast('gameFull', { id: game.id });
         }
       } else if (!pNumIsValid(pNum)) {
