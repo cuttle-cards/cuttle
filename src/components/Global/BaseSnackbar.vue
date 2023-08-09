@@ -1,6 +1,12 @@
 <template>
+  <!--
+    Using v-model is not allowed, in a base component such as this we need to adhere
+    to the one-way data flow Vue prefers and take the value, then emit it back up manually
+    see https://vuejs.org/guide/components/props.html#one-way-data-flow
+  -->
   <v-snackbar
-    v-model="modelValue"
+    :modelValue="modelValue"
+    @update:modelValue="$emit('update:modelValue', $event)"
     :color="color"
     class="base-snackbar"
     position="fixed"
