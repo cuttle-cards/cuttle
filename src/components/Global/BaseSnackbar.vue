@@ -1,7 +1,8 @@
 <template>
   <!--
     Using v-model is not allowed, in a base component such as this we need to adhere
-    to the one-way binding Vue prefers and takwe the value, then emit it back up manually
+    to the one-way data flow Vue prefers and take the value, then emit it back up manually
+    see https://vuejs.org/guide/components/props.html#one-way-data-flow
   -->
   <v-snackbar
     :modelValue="modelValue"
