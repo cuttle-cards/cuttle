@@ -1,6 +1,11 @@
 <template>
+  <!--
+    Using v-model is not allowed, in a base component such as this we need to adhere
+    to the one-way binding Vue prefers and takwe the value, then emit it back up manually
+  -->
   <v-snackbar
-    v-model="modelValue"
+    :modelValue="modelValue"
+    @update:modelValue="modelValue"
     :color="color"
     class="base-snackbar"
     position="fixed"
