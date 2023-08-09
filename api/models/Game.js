@@ -118,7 +118,6 @@ module.exports = {
     },
     winner: {
       model: 'user',
-      defaultsTo: null
     },
   }, // end attributes
 }; // end exports
