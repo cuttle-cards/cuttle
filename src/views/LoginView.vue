@@ -7,8 +7,8 @@
       <v-container fluid id="welcome-container" class="welcomeContainer">
         <nav class="d-flex justify-space-between align-center mb-2">
           <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg" />
-          <v-btn variant="text" class="text-h6" @click="directToSignup">
-            {{ t('global.signup') }}
+          <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
+            {{ buttonText }}
             <v-icon icon="mdi-account-circle" color="white" class="ml-2" />
           </v-btn>
         </nav>
@@ -37,7 +37,7 @@
     //////////////////////////-->
 
     <section ref="loginContainer">
-      <v-container id="login-container" class="container"   >
+      <v-container id="login-container" class="container">
         <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
         <v-row>
           <!-- Left side form -->
@@ -270,10 +270,6 @@ export default {
       this.$refs.loginContainer.scrollIntoView();
       this.$refs.usernameInput.focus();
     },
-    directToSignup() {
-      this.$router.push({ name: ROUTE_NAME_SIGNUP });
-      this.scrollAndFocusLogin();
-    }
   },
  mounted() {
     if (this.isLoggingIn) {
