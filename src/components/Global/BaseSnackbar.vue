@@ -5,7 +5,7 @@
   -->
   <v-snackbar
     :modelValue="modelValue"
-    @update:modelValue="modelValue"
+    @update:modelValue="$emit('update:modelValue', $event)"
     :color="color"
     class="base-snackbar"
     position="fixed"
