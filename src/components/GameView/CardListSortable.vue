@@ -37,7 +37,7 @@
 
 <script>
 import GameCard from '@/components/GameView/GameCard.vue';
-import { sortBy } from 'lodash';
+import { orderBy } from 'lodash';
 
 export default {
   name: 'CardListSortable',
@@ -54,20 +54,23 @@ export default {
       type: String,
       default: 'No Cards Yet',
     },
-    /**
+ /**
      * Prefix used to identify where this card is in UI
      * Used to generate data-* selectors for e2e testing
      * @example 'scrap-dialog' for this prop
      * results in labeling cards like
      *     data-scrap-dialog-card="<suite>-<rank>"
      */
+
     dataSelectorPrefix: {
       type: String,
       default: '',
     },
-    /**
+
+   /**
      * List of ids of cards in list that are selected
      */
+
     selectedIds: {
       type: Array,
       default: () => [],
@@ -84,15 +87,14 @@ export default {
   },
   computed: {
     sortedCards() {
-      return this.sortByRank ? sortBy(this.cards, 'rank') : [...this.cards];
+      return this.sortByRank ? orderBy(this.cards, ['rank', 'suit']) : [...this.cards];
     },
-    // Used to dynamically generate data-cy selectors for each card
     dataSelectorName() {
       return `data-${this.dataSelectorPrefix}-card`;
     },
   },
   methods: {
-    /**
+      /**
      * Format data selector for a specific card into object for v-bind
      * @example result: {'data-scrap-dialog-card': '1-3'}
      * ^^^ the ace of spades in the scrap dialog

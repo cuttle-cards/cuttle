@@ -2,7 +2,8 @@
 
 ## Issue number
 
-Relevant issue number (e.g. #404): Resolves #
+Relevant [issue number](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue)
+- Resolves #
 
 ## Please check the following
 

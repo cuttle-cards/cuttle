@@ -3,10 +3,9 @@ const dayjs = require('dayjs');
 const seasonFixtures = [
   {
     name: 'Clubs 2022',
-    // startTime: 1642642200,
-    startTime: dayjs('2022-01-19', 'yyyy-mm-dd').valueOf(),
-    // endTime: 1674178200,
-    endTime: dayjs('2022-02-18', 'yyyy-mm-dd').valueOf(),
+    startTime: dayjs('2022-01-19 20:30').valueOf(),
+    // 4 weeks long, minus 2.5 hours
+    endTime: dayjs('2022-02-16 18:00').valueOf(),
     firstPlace: 'player1',
     secondPlace: 'player2',
     thirdPlace: 'player3',
@@ -16,16 +15,12 @@ const seasonFixtures = [
   },
   {
     name: 'Diamonds 2022',
-    // startTime: 1642642200,
-    startTime: dayjs('2022-02-19', 'yyyy-mm-dd').valueOf(),
-    // endTime: 1674178200,
-    endTime: dayjs('2022-03-18', 'yyyy-mm-dd').valueOf(),
+    startTime: dayjs('2022-02-16 18:00').valueOf(),
+    endTime: dayjs('2022-03-16 18:00').valueOf(),
   },
   {
     name: 'Future Spades Season',
-    // startTime: 1642642200,
     startTime: dayjs().add(1, 'year').valueOf(),
-    // endTime: 1674178200,
     endTime: dayjs().add(1, 'year').valueOf(),
   },
   {
@@ -326,6 +321,179 @@ const seasonThreeMatches = [
   },
 ];
 
+const seasonOneGames = [
+  // Week 1
+  {
+    name: 'Clubs Week 1, Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-20').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  {
+    name: 'Clubs Week 1, Game 2',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-20').valueOf(),
+    p0: 'player2',
+    p1: 'player3',
+  },
+  {
+    name: 'Clubs Week 1, Game 3',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-20').valueOf(),
+    p0: 'player1',
+    p1: 'player3',
+  },
+  {
+    name: 'Clubs Week 1, Game 4',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-20').valueOf(),
+    p0: 'player2',
+    p1: 'player3',
+  },
+
+  // Week 2
+  {
+    name: 'Clubs Week 2, Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-27').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  {
+    name: 'Clubs Week 2, Game 2',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-01-27').valueOf(),
+    p0: 'player3',
+    p1: 'player4',
+  },
+  // Week 4 games
+  {
+    name: 'Clubs Week 4, Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-02-15').valueOf(),
+    p0: 'player3',
+    p1: 'player4',
+  },
+];
+
+const seasonTwoGames = [
+  // Week 1
+  {
+    name: 'Diamonds Week 1, Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-02-20').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  // Week 2
+  {
+    name: 'Diamonds Week 2, Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-02-27').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  {
+    name: 'Diamonds Week 2, Game 2',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2022-02-28').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+];
+
+const gamesWithoutASeason = [
+  {
+    name: 'Game before first season',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2014-01-01').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  {
+    name: 'Game after last season',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs().add(3, 'year').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+];
+
+const gameFixtures = [...seasonOneGames, ...seasonTwoGames, ...gamesWithoutASeason];
+
 const matchesFixture = [...seasonOneMatches, ...seasonTwoMatches, ...seasonThreeMatches];
 
-export { seasonFixtures, matchesFixture };
+export { seasonFixtures, matchesFixture, gameFixtures };
