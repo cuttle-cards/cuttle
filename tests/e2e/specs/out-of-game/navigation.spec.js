@@ -12,7 +12,7 @@ describe('Navigation Drawer', () => {
     cy.viewport(1920, 1080);
     cy.get('[data-cy=nav-drawer]')
       .should('be.visible')
-      .should('contain', 'Logout')
+      .should('contain', 'Log Out')
       .should('contain', 'Rules')
       .should('not.have.class', 'v-navigation-drawer--rail')
       // Collapse nav
@@ -27,7 +27,7 @@ describe('Navigation Drawer', () => {
     // Should be expanded again
     cy.get('[data-cy=nav-drawer]')
       .should('be.visible')
-      .should('contain', 'Logout')
+      .should('contain', 'Log Out')
       .should('contain', 'Rules')
       .should('not.have.class', 'v-navigation-drawer--rail');
 
@@ -56,7 +56,7 @@ describe('Navigation Drawer', () => {
       cy.get('[data-nav=Stats]').click();
       cy.hash().should('equal', '#/stats');
       // Log out
-      cy.get('[data-nav=Logout]').click();
+      cy.get("[data-nav='Log Out']").click();
       cy.hash().should('equal', '#/login');
     }
     beforeEach(() => {

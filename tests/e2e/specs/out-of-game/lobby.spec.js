@@ -7,7 +7,7 @@ function setup(isRanked = false) {
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
-      .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+      .then((store) => store.dispatch('requestSubscribe', gameSummary.gameId));
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
   });
@@ -173,22 +173,22 @@ describe('Lobby - P0 Perspective', () => {
       cy.reload();
       cy.url().should('include', '/lobby');
       cy.get('[data-cy=my-indicator]').contains(myUser.username);
-      
+
       cy.signupOpponent(opponentOne);
       cy.subscribeOpponent(this.gameSummary.gameId);
       cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
       cy.reload();
-  
+
       cy.url().should('include', '/lobby');
       cy.get('[data-cy=my-indicator]').contains(myUser.username);
       cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
       cy.readyOpponent();
       cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
-  
+
       cy.reload();
       cy.get('[data-cy=opponent-indicator]').should('have.class', 'ready');
       cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
-  
+
       cy.get('[data-cy=ready-button]').click();
       assertGameStarted();
     });
@@ -208,7 +208,7 @@ describe('Lobby - P1 Perspective', () => {
       // Join game as this user and navigate to lobby
       cy.window()
         .its('cuttle.app.config.globalProperties.$store')
-        .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+        .then((store) => store.dispatch('requestSubscribe', gameSummary.gameId));
       cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     });
   });
@@ -276,7 +276,7 @@ describe('Lobby - P1 Perspective', () => {
     // Join game again
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
-      .invoke('dispatch', 'requestSubscribe', this.gameSummary.gameId);
+      .then((store) => store.dispatch('requestSubscribe', this.gameSummary.gameId));
     cy.vueRoute(`/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy=ready-button]').click();
     // Test that game started
@@ -309,7 +309,8 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
 
     // Disconnect socket and then opponent hits ready to start game
-    cy.window().its('cuttle.app.config.globalProperties.$store').invoke('dispatch', 'disconnectSocket');
+    cy.window().its('cuttle.app.config.globalProperties.$store')
+      .then((store) => store.dispatch('disconnectSocket'));
     cy.readyOpponent();
 
     cy.drawCardOpponent();

@@ -46,6 +46,17 @@ Cypress.Commands.add('loadMatchFixtures', (matches) => {
   });
 });
 
+Cypress.Commands.add('loadFinishedGameFixtures', (games) => {
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.post('/test/loadFinishedGameFixtures', games, function (res, jwres) {
+      if (jwres.statusCode !== 200) {
+        return reject(new Error('Error loading game fixtures'));
+      }
+      return resolve();
+    });
+  });
+});
+
 Cypress.Commands.add('requestGameList', () => {
   return new Cypress.Promise((resolve) => {
     io.socket.get('/game/getList', function () {
@@ -67,7 +78,7 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
-      .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+      .then((store) => store.dispatch('requestSubscribe', gameSummary.gameId));
     cy.log(`Subscribed to game ${gameSummary.gameId}`);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
@@ -106,7 +117,7 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
     cy.readyOpponent();
     cy.window()
       .its('cuttle.app.config.globalProperties.$store')
-      .invoke('dispatch', 'requestSubscribe', gameSummary.gameId);
+      .then((store) => store.dispatch('requestSubscribe', gameSummary.gameId));
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
@@ -169,13 +180,13 @@ Cypress.Commands.add('signupOpponent', (opponent) => {
 Cypress.Commands.add('signupPlayer', (player) => {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store')
-    .invoke('dispatch', 'requestSignup', { username: player.username, password: player.password });
+    .then((store) => store.dispatch('requestSignup', { username: player.username, password: player.password }));
   cy.log(`Signed up player ${player.username}`);
 });
 Cypress.Commands.add('loginPlayer', (player) => {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store')
-    .invoke('dispatch', 'requestLogin', { username: player.username, password: player.password });
+    .then((store) => store.dispatch('requestLogin', { username: player.username, password: player.password }));
   cy.log(`Logged in as player ${player.username}`);
 });
 
@@ -200,7 +211,7 @@ Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
   return cy
     .window()
     .its('cuttle.app.config.globalProperties.$store')
-    .invoke('dispatch', 'requestCreateGame', { gameName, isRanked });
+    .then((store) => store.dispatch('requestCreateGame', { gameName, isRanked }));
 });
 
 Cypress.Commands.add('subscribeOpponent', (id) => {
@@ -1254,7 +1265,7 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
 });
 
 Cypress.Commands.add('vueRoute', (route) => {
-  cy.window().its('cuttle.app.config.globalProperties.$router').invoke('push', route);
+  cy.window().its('cuttle.app.config.globalProperties.$router').then((router) => router.push(route));
 });
 
 /**
