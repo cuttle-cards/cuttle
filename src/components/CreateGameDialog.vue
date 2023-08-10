@@ -3,7 +3,7 @@
     v-model="show"
     :id="`create-game-dialog`"
     title="Create Game"
-    opacity="1"
+    :opacity=1
     data-cy="create-game-dialog"
   >
     <template #activator>
