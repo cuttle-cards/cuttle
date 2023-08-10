@@ -60,7 +60,7 @@
                 class="mt-4"
                 variant="solo"
                 :rules="usernameRules"
-                :density="$vuetify.display.mdAndDown ? true : false && 'compact'"
+                :density="$vuetify.display.mdAndDown ? 'compact' : false && 'default'"
                 autocomplete="username"
                 data-cy="username"
               />
@@ -72,7 +72,7 @@
                 class="my-4"
                 variant="solo"
                 :rules="passwordRules"
-                :density="$vuetify.display.mdAndDown ? true : false && 'compact'"
+                :density="$vuetify.display.mdAndDown ? 'compact' : false && 'default'"
                 :type="showPass ? 'text' : 'password'"
                 :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
                 :append-inner-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
