@@ -39,7 +39,7 @@
 
         <v-divider />
 
-        <v-list dense>
+        <v-list density="compact">
           <v-list-item v-for="(log, index) in logs" :key="index" class="my-2">
             <p>
               {{ log }}

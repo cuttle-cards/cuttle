@@ -1,87 +1,95 @@
 <template>
-  <div id="stats-wrapper">
-    <!-- Upper Service -->
-    <section id="upper-surface" class="pa-8 mb-6">
-      <v-select
-        v-model="selectedSeason"
-        :items="seasons"
-        item-title="name"
-        return-object
-        label="Select Season"
-        data-cy="season-select"
-      >
-        <template #selection="{ item }">
-          <h1 class="text-h2" data-cy="selected-season-header">
-            {{ item.title }}
-          </h1>
+  <template v-if="loadingData">
+    <v-skeleton-loader class="px-4 pa-2 mb-6 mx-auto border mb-2 mt-4" type="heading" />
+    <v-skeleton-loader
+      class="mx-auto border"
+      type="table-heading, table-row-divider, table-row, table-tbody,table-tfoot"
+    />
+  </template>
+  <template v-else>
+    <div id="stats-wrapper">
+      <!-- Upper Service -->
+      <section id="upper-surface" class="pa-8 mb-6">
+        <v-select
+          v-model="selectedSeason"
+          :items="seasons"
+          item-title="name"
+          return-object
+          label="Select Season"
+          data-cy="season-select"
+        >
+          <template #selection="{ item }">
+            <h1 class="text-h2" data-cy="selected-season-header">
+              {{ item.title }}
+            </h1>
+          </template>
+        </v-select>
+        <h4 v-if="selectedSeason" class="text-h4">
+          <span data-cy="season-start-date">{{ seasonStartFormatted }}</span>
+          -
+          <span data-cy="season-end-date"> {{ seasonEndFormatted }} </span>
+        </h4>
+      </section>
+      <section class="px-8">
+        <!-- Season Champions -->
+        <div class="mb-10">
+          <h2 v-if="showSeasonChampions" class="text-h2 mb-4">Season Champions</h2>
+          <div class="d-flex justify-space-around flex-wrap">
+            <award-card
+              v-if="selectedSeason && selectedSeason.firstPlace"
+              :username="selectedSeason.firstPlace"
+              :place="1"
+              class="mb-4"
+            />
+            <award-card
+              v-if="selectedSeason && selectedSeason.secondPlace"
+              :username="selectedSeason.secondPlace"
+              :place="2"
+              class="mb-4"
+            />
+            <award-card
+              v-if="selectedSeason && selectedSeason.thirdPlace"
+              :username="selectedSeason.thirdPlace"
+              :place="3"
+              class="mb-4"
+            />
+          </div>
+          <p v-if="selectedSeason && selectedSeason.bracketLink" class="text-body-1">
+            Click
+            <a :href="selectedSeason.bracketLink" target="_blank" data-cy="tournament-bracket-link">
+              here to see the official tournament bracket
+            </a>
+          </p>
+          <p v-if="selectedSeason && selectedSeason.footageLink" class="text-body-1">
+            Click
+            <a :href="selectedSeason.footageLink" target="_blank" data-cy="tournament-footage-link">
+              here to watch the official tournament footage
+            </a>
+            with play-by-play commentary.
+          </p>
+        </div>
+        <!-- Rankings Table -->
+        <template v-if="weeklyRanking">
+          <h2 class="text-h2 mb-4">
+            Weekly Rankings
+            <stats-scoring-dialog />
+          </h2>
+          <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
         </template>
-      </v-select>
-      <h4 v-if="selectedSeason" class="text-h4">
-        <span data-cy="season-start-date">{{ seasonStartFormatted }}</span>
-        -
-        <span data-cy="season-end-date"> {{ seasonEndFormatted }} </span>
-      </h4>
-    </section>
-    <section class="px-8">
-      <!-- Season Champions -->
-      <div class="mb-10">
-        <h2 v-if="showSeasonChampions" class="text-h2 mb-4">Season Champions</h2>
-        <div class="d-flex justify-space-around flex-wrap">
-          <award-card
-            v-if="selectedSeason && selectedSeason.firstPlace"
-            :username="selectedSeason.firstPlace"
-            :place="1"
-            class="mb-4"
-          />
-          <award-card
-            v-if="selectedSeason && selectedSeason.secondPlace"
-            :username="selectedSeason.secondPlace"
-            :place="2"
-            class="mb-4"
-          />
-          <award-card
-            v-if="selectedSeason && selectedSeason.thirdPlace"
-            :username="selectedSeason.thirdPlace"
-            :place="3"
-            class="mb-4"
+        <!-- Error display -->
+        <div v-if="error" class="d-flex flex-column align-center text-center">
+          <h3 class="text-h3">Oops!</h3>
+          <p class="text-body-1">There was a problem loading the leaderboard. Refresh the page to try again.</p>
+          <v-img
+            alt="Dead cuttle logo"
+            src="/img/logo-dead.svg"
+            :width="200"
+            class="mt-4"
           />
         </div>
-        <p v-if="selectedSeason && selectedSeason.bracketLink" class="text-body-1">
-          Click
-          <a :href="selectedSeason.bracketLink" target="_blank" data-cy="tournament-bracket-link">
-            here to see the official tournament bracket
-          </a>
-        </p>
-        <p v-if="selectedSeason && selectedSeason.footageLink" class="text-body-1">
-          Click
-          <a :href="selectedSeason.footageLink" target="_blank" data-cy="tournament-footage-link">
-            here to watch the official tournament footage
-          </a>
-          with play-by-play commentary.
-        </p>
-      </div>
-
-      <!-- Rankings Table -->
-      <template v-if="weeklyRanking">
-        <h2 class="text-h2 mb-4">
-          Weekly Rankings
-          <stats-scoring-dialog />
-        </h2>
-        <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
-      </template>
-      <!-- Error display -->
-      <div v-if="error" class="d-flex flex-column align-center text-center">
-        <h3 class="text-h3">Oops!</h3>
-        <p class="text-body-1">There was a problem loading the leaderboard. Refresh the page to try again.</p>
-        <v-img
-          alt="Dead cuttle logo"
-          src="/img/logo-dead.svg"
-          :width="200"
-          class="mt-4"
-        />
-      </div>
-    </section>
-  </div>
+      </section>
+    </div>
+  </template>
 </template>
 
 <script>
