@@ -3,17 +3,13 @@
     <!--//////////////////////////
      /////Welcome Section /////
     //////////////////////////-->
-    <section v-if="!isLoggingIn">
+    <section>
       <v-container fluid id="welcome-container" class="welcomeContainer">
         <nav class="d-flex justify-space-between align-center mb-2">
-          <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
-          <v-btn
-            variant="text"
-            class="text-h6"
-            @click ="$refs.usernameInput.focus()"
-          >
-            {{ t('global.signup') }}
-            <v-icon icon="mdi-account-circle" color="white" class="ml-2"/>
+          <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg" />
+          <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
+            {{ buttonText }}
+            <v-icon icon="mdi-account-circle" color="white" class="ml-2" />
           </v-btn>
         </nav>
 
@@ -24,7 +20,7 @@
             <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI" />
             <v-btn
               class="rulesBtn w-100 mt-8"
-              size='x-large'
+              size="x-large"
               to="/rules"
               color="newPrimary"
               data-cy="rules-link"
@@ -40,13 +36,13 @@
      /////Login Section ///////
     //////////////////////////-->
 
-    <section>
+    <section ref="loginContainer">
       <v-container id="login-container" class="container">
         <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
         <v-row>
           <!-- Left side form -->
-          <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12" >
-            <p class="text-h4 text-center font-weight-medium mb-10 ">
+          <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12">
+            <p class="text-h4 text-center font-weight-medium mb-10">
               {{ formHeaderText }}
             </p>
 
@@ -86,14 +82,13 @@
 
               <div
                 id="login-button-container"
-                class="d-flex flex-column flex-md-row
-                  justify-space-between align-center flex-wrap"
+                class="d-flex flex-column flex-md-row justify-space-between align-center flex-wrap"
               >
                 <v-btn
                   class="px-16"
                   :loading="loading"
                   :disabled="!isFormValid"
-                  :color=" isFormValid ? 'newPrimary' : 'disabled'"
+                  :color="isFormValid ? 'newPrimary' : 'disabled'"
                   type="submit"
                   size="x-large"
                   text-color="white"
@@ -113,16 +108,15 @@
               </div>
 
               <v-btn
-                class="w-100 my-10 text-h6 h-auto py-2 "
+                class="w-100 my-10 text-h6 h-auto py-2"
                 size="large"
                 color="newSecondary"
                 href="https://discord.com/invite/9vrAZ8xGyh"
                 target="_blank"
               >
                 <img class="discord" src="/img/loginView/logo-discord.svg" />
-                {{  t('login.joinDiscord') }}
+                {{ t('login.joinDiscord') }}
               </v-btn>
-
             </v-form>
 
             <BaseSnackbar
@@ -132,10 +126,10 @@
               data-cy="auth-snackbar"
               @clear="clearSnackBar"
             />
-
           </v-col>
         </v-row>
       </v-container>
+
     </section>
 
     <!--/////////////////////////
@@ -144,7 +138,7 @@
     <section>
       <v-container fluid class="quote text-h5 text-center d-flex flex-column align-center">
         <blockquote>{{ t('login.quote') }}</blockquote>
-        <br>
+        <br />
         <cite>{{ t('login.quoteCite') }}</cite>
       </v-container>
     </section>
@@ -156,12 +150,12 @@
             <div class="px-8">
               <MarkdownContent :markdown="t('login.content')" />
             </div>
-            <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-1.png" >
+            <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-1.png" />
           </div>
         </v-col>
         <v-col :cols="$vuetify.display.mdAndUp ? 10 : 12" class="mx-auto">
           <div class="d-flex flex-md-row flex-column-reverse align-center text-h5 my-10">
-            <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-2.png" >
+            <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-2.png" />
             <div class="px-8">
               <MarkdownContent :markdown="t('login.content2')" />
             </div>
@@ -203,9 +197,9 @@ export default {
       snackBarMessage: '',
       loading: false,
       showPass: false,
-      isFormValid:false,
-      usernameRules:[this.isAlphaNumeric],
-      passwordRules:[this.has8OrMoreCharacters],
+      isFormValid: false,
+      usernameRules: [this.isAlphaNumeric],
+      passwordRules: [this.has8OrMoreCharacters],
     };
   },
   computed: {
@@ -213,9 +207,7 @@ export default {
       return this.$route.name === ROUTE_NAME_LOGIN;
     },
     formHeaderText() {
-      return this.isLoggingIn
-        ? this.t('login.formHeaderLogin')
-        : this.t('login.formHeaderSignup');
+      return this.isLoggingIn ? this.t('login.formHeaderLogin') : this.t('login.formHeaderSignup');
     },
     buttonText() {
       if (this.isLoggingIn) {
@@ -251,7 +243,7 @@ export default {
       } else {
         this.$router.push({ name: ROUTE_NAME_LOGIN });
       }
-      this.$refs.usernameInput.focus();
+      this.scrollAndFocusLogin();
     },
     handleLogin() {
       this.username = '';
@@ -268,44 +260,51 @@ export default {
       this.showSnackBar = false;
       this.snackBarMessage = '';
     },
-   isAlphaNumeric(val){
-      return (/^[\w.@-]+$/).test(val) || 'Username must contain only letters or numbers';
+    isAlphaNumeric(val) {
+      return /^[\w.@-]+$/.test(val) || 'Username must contain only letters or numbers';
     },
-    has8OrMoreCharacters(val){
+    has8OrMoreCharacters(val) {
       return val.length >= 8 || 'Password must contain at least eight characters';
     },
+    scrollAndFocusLogin() {
+      this.$refs.loginContainer.scrollIntoView();
+      this.$refs.usernameInput.focus();
+    },
+  },
+ mounted() {
+    if (this.isLoggingIn) {
+      this.scrollAndFocusLogin();
+    }
   },
 };
 </script>
 
 <style scoped lang="scss">
-
-.loginViewContainer{
+.loginViewContainer {
   background-color: #fff4d7;
 }
 
-.welcomeContainer{
+.welcomeContainer {
   min-width: 100vw;
   min-height: 100vh;
   text-align: center;
-  color: #FFF4D7;
-  background: center / cover no-repeat  url('/img/game/board-background.svg');
+  color: #fff4d7;
+  background: center / cover no-repeat url('/img/game/board-background.svg');
   box-shadow: inset 0 0 700px -1px #000000;
 }
 
-.cardLogo{
+.cardLogo {
   min-height: 80px;
   height: 9vh;
 }
 
-.welcomeContainer h1{
+.welcomeContainer h1 {
   font-family: 'Luckiest Guy', serif !important;
   font-size: 5rem;
-  letter-spacing:.2rem;
+  letter-spacing: 0.2rem;
   max-width: 800px;
   margin: 0 auto;
 }
-
 
 .container {
   width: 75%;
@@ -314,23 +313,23 @@ export default {
   flex-direction: column;
 }
 
-.video{
-  max-width:850px;
+.video {
+  max-width: 850px;
 }
 
-.loginForm{
+.loginForm {
   max-width: 540px;
 }
 
-.quote{
-  background-color: #425CE6;
-  color:#FCFDFC;
+.quote {
+  background-color: #425ce6;
+  color: #fcfdfc;
   width: 100%;
   margin-top: 10px;
   padding: 40px 0px;
 }
 
-.quote blockquote{
+.quote blockquote {
   max-width: 550px;
   text-align: center;
 }
@@ -341,7 +340,7 @@ export default {
   margin: 60px auto 40px auto;
 }
 
-.discord{
+.discord {
   max-height: 48px;
   margin-right: 18px;
 }
@@ -352,16 +351,16 @@ export default {
   margin: 0 auto;
 }
 
-@media (max-width: 660px){
-  .cardLogo{
+@media (max-width: 660px) {
+  .cardLogo {
     height: 7vh;
   }
 
-  .welcomeContainer h1{
+  .welcomeContainer h1 {
     font-size: 42px;
   }
 
-  .welcomeContainer p{
+  .welcomeContainer p {
     font-size: 24px !important;
   }
 
