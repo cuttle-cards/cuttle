@@ -108,7 +108,8 @@
               </div>
 
               <v-btn
-                class="w-100 my-10 text-h6 h-auto py-2"
+                class="w-100 my-10  h-auto py-2"
+                :class="$vuetify.display.xs ? 'text-subtitle-2' : 'text-h6'"
                 size="large"
                 color="newSecondary"
                 href="https://discord.com/invite/9vrAZ8xGyh"
