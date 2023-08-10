@@ -128,7 +128,7 @@ module.exports = {
       const gameUpdates = {};
       if (p0Wins) {
         res.winner = 0;
-        gameUpdates.winner = p1.id;
+        gameUpdates.winner = p0.id;
         gameUpdates.status = GameStatus.FINISHED;
       } else if (p1Wins) {
         res.winner = 1;
