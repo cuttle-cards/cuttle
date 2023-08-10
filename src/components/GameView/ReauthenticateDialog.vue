@@ -8,7 +8,7 @@
           <v-text-field
             v-model="username"
             variant="outlined"
-            :dense="$vuetify.display.mdAndDown"
+            :density="$vuetify.display.mdAndDown && 'compact'"
             label="Username"
             :loading="isLoggingIn"
             data-cy="username"
@@ -17,7 +17,7 @@
             v-model="password"
             variant="outlined"
             label="Password"
-            :dense="$vuetify.display.mdAndDown"
+            :density="$vuetify.display.mdAndDown && 'compact'"
             type="password"
             :loading="isLoggingIn"
             data-cy="password"
