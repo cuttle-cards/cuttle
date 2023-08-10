@@ -20,7 +20,7 @@
         <v-btn
           v-if="!isSpectatable"
           v-bind="buttonAttrs"
-          :disabled="!status"
+          :disabled="!status === 1"
           :data-cy-join-game="gameId"
           @click="subscribeToGame"
         >
@@ -72,7 +72,7 @@ export default {
       required: true,
     },
     status: {
-      type: Boolean,
+      type: Number,
       required: true,
     },
     numPlayers: {
