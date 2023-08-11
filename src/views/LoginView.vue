@@ -60,7 +60,7 @@
                 class="mt-4"
                 variant="solo"
                 :rules="usernameRules"
-                :dense="$vuetify.display.mdAndDown ? true : false"
+                :density="$vuetify.display.mdAndDown ? 'compact' : 'default'"
                 autocomplete="username"
                 data-cy="username"
               />
@@ -72,7 +72,7 @@
                 class="my-4"
                 variant="solo"
                 :rules="passwordRules"
-                :dense="$vuetify.display.mdAndDown ? true : false"
+                :density="$vuetify.display.mdAndDown ? 'compact' : 'default'"
                 :type="showPass ? 'text' : 'password'"
                 :autocomplete="isLoggingIn ? 'current-password' : 'new-password'"
                 :append-inner-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
@@ -108,7 +108,7 @@
               </div>
 
               <v-btn
-                class="w-100 my-10 text-h6 h-auto py-2"
+                class="w-100 my-10 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
                 size="large"
                 color="newSecondary"
                 href="https://discord.com/invite/9vrAZ8xGyh"
