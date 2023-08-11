@@ -108,7 +108,7 @@
               </div>
 
               <v-btn
-                class="w-100 my-10 text-h6 h-auto py-2"
+                class="w-100 my-10 text-subtitle-2 text-sm-subtitle-1 text-md-h6 h-auto py-2"
                 size="large"
                 color="newSecondary"
                 href="https://discord.com/invite/9vrAZ8xGyh"
