@@ -472,7 +472,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.loginPlayer(playerOne);
     cy.setupGameAsP0(true, true);
   });
-  it.only('Creates a match when two players play a ranked game for the first time this week', function () {
+  it('Creates a match when two players play a ranked game for the first time this week', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
@@ -525,6 +525,7 @@ describe('Creating And Updating Ranked Matches', () => {
         cy.expect(results[0].status).to.eq(3);
         cy.expect(results[0].winner).to.eq(this.playerOneId);
         cy.expect(results[1].status).to.eq(3);
+        cy.expect(results[1].winner).to.eq(this.playerTwoId);
       });
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
