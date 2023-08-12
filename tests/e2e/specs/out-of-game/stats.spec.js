@@ -18,10 +18,10 @@ function setup() {
       const seasons = seasonFixtures.map((season) => {
         return {
           ...season,
-          firstPlace: season.firstPlace ? this[season.firstPlace] : null,
-          secondPlace: season.secondPlace ? this[season.secondPlace] : null,
-          thirdPlace: season.thirdPlace ? this[season.thirdPlace] : null,
-          fourthPlace: season.fourthPlace ? this[season.fourthPlace] : null,
+          firstPlace:  this[season.firstPlace] ?? null,
+          secondPlace: this[season.secondPlace] ?? null,
+          thirdPlace: this[season.thirdPlace] ?? null,
+          fourthPlace: this[season.fourthPlace] ?? null,
         };
       });
       // Convert usernames to ids
@@ -259,7 +259,6 @@ describe('Stats Page', () => {
     cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
       // Clubs 2022 stats
       const clubs2022 = seasons.find(({ name }) => name === 'Clubs 2022');
-      console.log(clubs2022);
       expect(clubs2022).not.to.be.undefined;
       // Week 1 stats
       expect(clubs2022.gameCounts[0]).to.eq(4);
