@@ -28,7 +28,7 @@ module.exports = function gameHook() {
     },
     findOpenGames: function () {
       return new Promise(function (resolve, reject) {
-        Game.find({ status: true })
+        Game.find({ status: gameService.GameStatus.CREATED })
           .populate('players')
           .exec(function (error, games) {
             if (error) {
