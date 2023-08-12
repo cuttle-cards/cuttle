@@ -35,13 +35,13 @@ module.exports = {
       let numPlayer2Wins = 0;
 
       for (const priorGame of [game, ...relevantMatch.games]) {
-        if (priorGame.result === 0) {
+        if (priorGame.winner === priorGame.p0) {
           if (priorGame.p0 === relevantMatch.player1) {
             numPlayer1Wins++;
           } else {
             numPlayer2Wins++;
           }
-        } else if (priorGame.result === 1) {
+        } else if (priorGame.winner === priorGame.p1) {
           if (priorGame.p1 === relevantMatch.player1) {
             numPlayer1Wins++;
           } else {
