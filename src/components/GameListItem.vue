@@ -11,7 +11,7 @@
       </v-col>
       <v-col sm="7" lg="6" class="list-item__inner-text">
         <p class="game-name" data-cy="game-list-item-name">
-          {{ name }}
+          {{ status }}
         </p>
         <p v-if="!isSpectatable">{{ readyText }} players</p>
       </v-col>

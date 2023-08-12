@@ -172,7 +172,7 @@ export default {
       this.showSnackBar = false;
     },
     handleSubscribeError(gameId, message) {
-      this.$store.commit('updateGameStatus', {id: gameId, newStatus: false});
+      this.$store.commit('updateGameStatus', {id: gameId, newStatus: 2});
       this.handleError(message);
     },
     handleError(message) {

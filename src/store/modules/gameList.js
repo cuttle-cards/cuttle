@@ -6,7 +6,7 @@ class GameSummary {
     this.id = obj.id ? obj.id : null;
     this.name = obj.name ? obj.name : null;
     this.numPlayers = Object.prototype.hasOwnProperty.call(obj, 'players') ? obj.players.length : 0;
-    this.status = Object.prototype.hasOwnProperty.call(obj, 'status') ? obj.status : false;
+    this.status = Object.prototype.hasOwnProperty.call(obj, 'status') ? obj.status : 2;
     this.isRanked = Object.prototype.hasOwnProperty.call(obj, 'isRanked') ? obj.isRanked : false;
     this.isOver = false;
   }
@@ -57,7 +57,7 @@ export default {
       const updatedGame = state.openGames.find((game) => game.id === gameId);
       if (updatedGame) {
         updatedGame.numPlayers--;
-        updatedGame.status = true;
+        updatedGame.status = 1;
       }
     },
     addSpectateGameToList(state, newGame) {
