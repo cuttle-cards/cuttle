@@ -152,7 +152,7 @@ describe('Home - Game List', () => {
       // Manually re-enable join button to confirm backend rejects request
       cy.window()
         .its('cuttle.app.config.globalProperties.$store')
-        .then((store) => store.commit('updateGameStatus', { id: gameData.gameId, newStatus: true }));
+        .then((store) => store.commit('updateGameStatus', { id: gameData.gameId, newStatus: 1 }));
       cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled').click().should('be.disabled');
 
       assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
@@ -534,7 +534,7 @@ describe('Home - Create Game', () => {
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
-        expect(games[0].status).to.eq(1, 'Expect game to have status CREATED');
+        expect(games[0].status).to.eq(1, 'Expect game to have status CREATED'); //status = created
         expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
       });
   });
