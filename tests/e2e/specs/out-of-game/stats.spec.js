@@ -45,10 +45,12 @@ function setup() {
       const matches = matchesFixture.map(transformMatchFixture);
 
       const games = gameFixtures.map((game) => {
+        const winner = game.winner === game.p0 ? this[game.p0] : this[game.p1];
         return {
           ...game,
           p0: this[game.p0] ?? null,
           p1: this[game.p1] ?? null,
+          winner
         };
       });
       cy.loadMatchFixtures(matches);
@@ -256,7 +258,8 @@ describe('Stats Page', () => {
   it('Sends the counts of games played and unique players for each week of each season', () => {
     cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
       // Clubs 2022 stats
-      const clubs2022 = seasons.find(({name}) => name === 'Clubs 2022');
+      const clubs2022 = seasons.find(({ name }) => name === 'Clubs 2022');
+      console.log(clubs2022);
       expect(clubs2022).not.to.be.undefined;
       // Week 1 stats
       expect(clubs2022.gameCounts[0]).to.eq(4);
