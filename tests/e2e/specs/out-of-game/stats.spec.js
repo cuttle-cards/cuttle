@@ -18,7 +18,7 @@ function setup() {
       const seasons = seasonFixtures.map((season) => {
         return {
           ...season,
-          firstPlace:  this[season.firstPlace] ?? null,
+          firstPlace: this[season.firstPlace] ?? null,
           secondPlace: this[season.secondPlace] ?? null,
           thirdPlace: this[season.thirdPlace] ?? null,
           fourthPlace: this[season.fourthPlace] ?? null,
