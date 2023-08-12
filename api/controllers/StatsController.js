@@ -142,7 +142,7 @@ module.exports = {
     const seasons = sails.helpers.getSeasonsWithoutRankings();
     const matches = Match.find({});
     const users = User.find({});
-    const games = Game.find({ result: {'>=': -1} }); // Only find completed games
+    const games = Game.find({ status: 3 }); // Only find completed games
     return Promise.all([seasons, matches, users, games]).then(([seasons, matches, users, games]) => {
 
       const idToUserMap = new Map();
