@@ -20,7 +20,7 @@
         <v-btn
           v-if="!isSpectatable"
           v-bind="buttonAttrs"
-          :disabled="status > 1"
+          :disabled="status > 2"
           :data-cy-join-game="gameId"
           @click="subscribeToGame"
         >
