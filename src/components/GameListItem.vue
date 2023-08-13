@@ -117,7 +117,7 @@ export default {
       };
     },
     gameIsFull() {
-      return this.status !== 1 && this.numPlayers >= 2;
+      return this.numPlayers >= 2 || this.status !== 1;
     },
   },
   methods: {
