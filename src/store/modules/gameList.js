@@ -1,12 +1,13 @@
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
+import { GameStatus } from '../../../utils/status-utils';
 
 class GameSummary {
   constructor(obj) {
     this.id = obj.id ? obj.id : null;
     this.name = obj.name ? obj.name : null;
     this.numPlayers = Object.prototype.hasOwnProperty.call(obj, 'players') ? obj.players.length : 0;
-    this.status = Object.prototype.hasOwnProperty.call(obj, 'status') ? obj.status : 2;
+    this.status = Object.prototype.hasOwnProperty.call(obj, 'status') ? obj.status : GameStatus.STARTED;
     this.isRanked = Object.prototype.hasOwnProperty.call(obj, 'isRanked') ? obj.isRanked : false;
     this.isOver = false;
   }

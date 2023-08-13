@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { GameStatus } from '../../utils/status-utils';
+
 export default {
   name: 'GameListItem',
   emits: ['error'],
@@ -117,7 +119,7 @@ export default {
       };
     },
     gameIsFull() {
-      return this.numPlayers >= 2 || this.status !== 1;
+      return this.numPlayers >= 2 || this.status !== GameStatus.CREATED;
     },
   },
   methods: {
