@@ -10,7 +10,7 @@ module.exports = {
 
     try {
       const games = await Game.find({
-        status: gameService.GameStatus.STARTED,
+        status: { '<=': gameService.GameStatus.STARTED },
         updatedAt: { '>=': recentUpdateThreshhold },
       });
       return exits.success(games);
