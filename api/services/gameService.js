@@ -4,7 +4,7 @@ const userService = require('../../api/services/userService.js');
  * Game status states
  */
 const GameStatus = Object.freeze({
-  NEW: 1,
+  CREATED: 1,
   STARTED: 2,
   FINISHED: 3,
   ARCHIVED: 4,
