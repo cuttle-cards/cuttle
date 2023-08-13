@@ -6,12 +6,11 @@ module.exports = {
   description: 'Finds all the games that are available to spectate',
 
   fn: async (_, exits) => {
-
     const recentUpdateThreshhold = dayjs().subtract(5, 'minute').valueOf();
 
     try {
       const games = await Game.find({
-        status: gameService.GameStatus.STARTED, // not open to join
+        status: gameService.GameStatus.STARTED,
         winner: null, // not finished yet
         updatedAt: { '>=': recentUpdateThreshhold },
       });
