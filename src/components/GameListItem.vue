@@ -20,7 +20,7 @@
         <v-btn
           v-if="!isSpectatable"
           v-bind="buttonAttrs"
-          :disabled="status >= 2"
+          :disabled="gameIsFull"
           :data-cy-join-game="gameId"
           @click="subscribeToGame"
         >
@@ -115,6 +115,9 @@ export default {
         minWidth: '200',
         loading: this.joiningGame,
       };
+    },
+    gameIsFull() {
+      return this.status !== 1 && this.numPlayers >= 2;
     },
   },
   methods: {

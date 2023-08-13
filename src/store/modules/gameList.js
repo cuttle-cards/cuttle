@@ -30,7 +30,7 @@ export default {
       if (gameIndex < 0 || gameIndex > state.openGames.length) {
         return;
       }
-      const [ startedGame ] = state.openGames.splice(gameIndex, 1);
+      const [startedGame] = state.openGames.splice(gameIndex, 1);
       state.spectateGames.push(startedGame);
     },
     gameFinished(state, gameId) {
@@ -57,7 +57,6 @@ export default {
       const updatedGame = state.openGames.find((game) => game.id === gameId);
       if (updatedGame) {
         updatedGame.numPlayers--;
-        updatedGame.status = 1;
       }
     },
     addSpectateGameToList(state, newGame) {
@@ -71,7 +70,7 @@ export default {
           if (jwres.statusCode === 200) {
             const openGames = cloneDeep(resData.openGames);
             const spectateGames = cloneDeep(resData.spectatableGames);
-            context.commit('refreshGames', {openGames, spectateGames});
+            context.commit('refreshGames', { openGames, spectateGames });
             return resolve(openGames);
           }
           return reject(new Error('Could not retrieve list of games'));

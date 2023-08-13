@@ -19,11 +19,6 @@ module.exports = function (req, res) {
       // Fast fail if game is full
       const gameIsFull = sails.helpers.isGameFull(game);
       if (gameIsFull) {
-        // Ensure game is closed for future
-        await Game.updateOne({ id: game.id })
-          .set({
-            status: gameService.GameStatus.STARTED
-          });
         throw { message: `Cannot join that game because it's already full` };
       }
       // Does the user already have a pnum for this game?
@@ -34,11 +29,7 @@ module.exports = function (req, res) {
           pNum = 0;
         } else {
           pNum = (game.players[0].pNum + 1) % 2;
-          await Game.updateOne({ id: game.id }).set({
-            status: gameService.GameStatus.STARTED,
-          });
           // For respond() handler
-          game.status = gameService.GameStatus.STARTED;
           sails.sockets.blast('gameFull', { id: game.id });
         }
       } else if (!pNumIsValid(pNum)) {
