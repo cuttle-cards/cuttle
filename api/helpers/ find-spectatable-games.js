@@ -11,7 +11,6 @@ module.exports = {
     try {
       const games = await Game.find({
         status: gameService.GameStatus.STARTED,
-        winner: null, // not finished yet
         updatedAt: { '>=': recentUpdateThreshhold },
       });
       return exits.success(games);
