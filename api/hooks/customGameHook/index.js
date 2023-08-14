@@ -28,15 +28,16 @@ module.exports = function gameHook() {
     },
     findOpenGames: function () {
       return new Promise(function (resolve, reject) {
-        Game.find({ status: gameService.GameStatus.CREATED })
+        Game.find({ status: gameService.GameStatus.CREATED})
           .populate('players')
           .exec(function (error, games) {
+           const openGames = games.filter(({ players }) => players.length < 2);
             if (error) {
               return reject(error);
             } else if (!games) {
               return reject({ message: "Can't find games" });
             }
-            return resolve(games);
+            return resolve(openGames);
           });
       });
     },
