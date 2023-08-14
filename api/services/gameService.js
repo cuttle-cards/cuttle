@@ -1,14 +1,6 @@
 const userService = require('../../api/services/userService.js');
+const GameStatus = require('../../utils/GameStatus.json');
 
-/**
- * Game status states
- */
-const GameStatus = Object.freeze({
-  CREATED: 1,
-  STARTED: 2,
-  FINISHED: 3,
-  ARCHIVED: 4,
-});
 
 /**
  * @returns int <= 0 if card1 is lower rank or same rank & lower suit

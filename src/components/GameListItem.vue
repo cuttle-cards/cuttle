@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { GameStatus } from '../../utils/status-utils';
+import GameStatus  from '../../utils/GameStatus.json';
 
 export default {
   name: 'GameListItem',

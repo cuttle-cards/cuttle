@@ -133,7 +133,7 @@ import { mapState } from 'vuex';
 import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '@/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
-import { GameStatus } from '../../utils/status-utils';
+import GameStatus from '../../utils/GameStatus.json';
 
 const TABS = {
   PLAY: 'play',
