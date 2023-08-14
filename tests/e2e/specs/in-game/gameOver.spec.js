@@ -16,6 +16,19 @@ function goHomeJoinNewGame() {
   cy.log('Joined new game successfully');
 }
 
+function validateMatch(match, length, p1, p2) {
+  expect(match.player1.id).to.eq(p1);
+  expect(match.player2.id).to.eq(p2);
+  expect(match.startTime).to.be.greaterThan(0);
+  expect(match.endTime).to.eq(null);
+  expect(match.games.length).to.eq(length);
+}
+
+function validateWin({status, winner}, gameWinner) {
+  cy.expect(status).to.eq(3);
+  cy.expect(winner).to.eq(gameWinner);
+}
+
 describe('Winning the game', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
@@ -472,7 +485,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.loginPlayer(playerOne);
     cy.setupGameAsP0(true, true);
   });
-  it('Creates a match when two players play a ranked game for the first time this week', function () {
+  it.only('Creates a match when two players play a ranked game for the first time this week', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
@@ -485,8 +498,7 @@ describe('Creating And Updating Ranked Matches', () => {
       .its('cuttle.app.config.globalProperties.$store.state.game')
       .then((game) => {
         const results = game.currentMatch.games.map(({ status, winner }) => ({ status, winner}));
-        cy.expect(results[0].status).to.eq(3);
-        cy.expect(results[0].winner).to.eq(this.playerOneId);
+        validateWin(results[0], this.playerOneId);
       });
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
@@ -495,16 +507,10 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
-      expect(currentMatch.player1.id).to.eq(this.playerOneId);
-      expect(currentMatch.player2.id).to.eq(this.playerTwoId);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
-      expect(currentMatch.endTime).to.eq(null);
-      expect(currentMatch.games.length).to.eq(1);
-      expect(currentMatch.games[0].status).to.eq(3); // P0 should have won the first game
-      expect(currentMatch.games[0].winner).to.eq(this.playerOneId); // P0 should have won the first game
+      validateMatch(currentMatch, 1, this.playerOneId, this.playerTwoId);
+      validateWin(currentMatch.games[0], this.playerOneId); // P0 should have won the first game
       cy.log('Match data is correct after first game', res.body);
     });
-
     // 2nd game: Player is now p0 and loses by points
     cy.setupGameAsP1(true, true);
     cy.loadGameFixture(1, {
@@ -522,10 +528,8 @@ describe('Creating And Updating Ranked Matches', () => {
       .its('cuttle.app.config.globalProperties.$store.state.game')
       .then((game) => {
         const results = game.currentMatch.games.map(({status, winner}) => ({status, winner}));
-        cy.expect(results[0].status).to.eq(3);
-        cy.expect(results[0].winner).to.eq(this.playerOneId);
-        cy.expect(results[1].status).to.eq(3);
-        cy.expect(results[1].winner).to.eq(this.playerTwoId);
+        validateWin(results[0], this.playerOneId);
+        validateWin(results[1], this.playerTwoId);
       });
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
@@ -534,15 +538,9 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
-      expect(currentMatch.player1.id).to.eq(this.playerOneId);
-      expect(currentMatch.player2.id).to.eq(this.playerTwoId);
-      expect(currentMatch.games.length).to.eq(2);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
-      // Match is incomplete
-      expect(currentMatch.endTime).to.eq(null);
-      expect(currentMatch.winner).to.eq(null);
-      expect(currentMatch.games[0].winner).to.eq(this.playerOneId); // P0 should have won the first game
-      expect(currentMatch.games[1].winner).to.eq(this.playerTwoId); // P1 should have won the first game
+      validateMatch(currentMatch, 2, this.playerOneId, this.playerTwoId);
+      validateWin(currentMatch.games[0], this.playerOneId); // P0 should have won the first game
+      validateWin(currentMatch.games[1], this.playerTwoId); // P1 should have won the first game
       cy.log('Match data is correct after second game', res);
     });
 
@@ -560,12 +558,9 @@ describe('Creating And Updating Ranked Matches', () => {
       .its('cuttle.app.config.globalProperties.$store.state.game')
       .then((game) => {
         const results = game.currentMatch.games.map(({status, winner}) => ({status, winner}));
-        cy.expect(results[0].status).to.eq(3);
-        cy.expect(results[0].winner).to.eq(this.playerOneId);
-        cy.expect(results[1].status).to.eq(3);
-        cy.expect(results[1].winner).to.eq(this.playerTwoId);
-        cy.expect(results[2].status).to.eq(3);
-        cy.expect(results[2].winner).to.eq(null);
+        validateWin(results[0], this.playerOneId);
+        validateWin(results[1], this.playerTwoId);
+        validateWin(results[2], null);
       });
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
@@ -574,15 +569,8 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
-      expect(currentMatch.player1.id).to.eq(this.playerOneId);
-      expect(currentMatch.player2.id).to.eq(this.playerTwoId);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
-      expect(currentMatch.games.length).to.eq(3);
-      // Match is incomplete
-      expect(currentMatch.endTime).to.eq(null);
-      expect(currentMatch.winner).to.eq(null);
-      expect(currentMatch.games[2].status).to.eq(3);
-      expect(currentMatch.games[2].winner).to.eq(null);
+      validateMatch(currentMatch, 3, this.playerOneId, this.playerTwoId);
+      validateWin(currentMatch.games[2], null);
       cy.log('Match data is correct after third game', res);
     });
 
@@ -615,15 +603,8 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
-      expect(currentMatch.player1.id).to.eq(this.playerOneId);
-      expect(currentMatch.player2.id).to.eq(this.playerTwoId);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
-      expect(currentMatch.games.length).to.eq(4);
-      expect(currentMatch.games[3].status).to.eq(3);
-      expect(currentMatch.games[3].winner).to.eq(null);
-      // Match is incomplete
-      expect(currentMatch.endTime).to.eq(null);
-      expect(currentMatch.winner).to.eq(null);
+      validateMatch(currentMatch, 4, this.playerOneId, this.playerTwoId);
+      validateWin(currentMatch.games[3], null);
       cy.log('Match data is correct after fourth game', res);
     });
 
@@ -656,14 +637,9 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
-      expect(currentMatch.player1.id).to.eq(this.playerOneId);
-      expect(currentMatch.player2.id).to.eq(this.playerTwoId);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
-      expect(currentMatch.games.length).to.eq(4);
-      expect(currentMatch.games[3].status).to.eq(3);
-      expect(currentMatch.games[3].winner).to.eq(null);
+      validateMatch(currentMatch, 4, this.playerOneId, this.playerTwoId);
+      validateWin(currentMatch.games[3], null);
       // Match is incomplete
-      expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
       cy.log('Match data is correct after fourth game', res);
     });
@@ -695,8 +671,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
       expect(currentMatch.games.length).to.eq(5);
-      expect(currentMatch.games[3].status).to.eq(3);
-      expect(currentMatch.games[3].winner).to.eq(null);
+      validateWin(currentMatch.games[3], null);
       // Match is complete
       expect(currentMatch.winner.id).to.eq(this.playerOneId);
       expect(currentMatch.endTime).to.be.greaterThan(0);
@@ -720,8 +695,7 @@ describe('Creating And Updating Ranked Matches', () => {
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.be.greaterThan(0);
       expect(currentMatch.games.length).to.eq(5);
-      expect(currentMatch.games[3].status).to.eq(3);
-      expect(currentMatch.games[3].winner).to.eq(null);
+      validateWin(currentMatch.games[3], null);
       // Match is complete
       expect(currentMatch.winner.id).to.eq(this.playerOneId);
       expect(currentMatch.endTime).to.be.greaterThan(0);
