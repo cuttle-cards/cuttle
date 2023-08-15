@@ -15,7 +15,12 @@
       </v-btn>
     </template>
     <!-- Menu -->
-    <v-list class="pl-2 pr-2" id="spectatorList" data-cy="spectate-list-menu">
+    <v-list
+      class="pl-2 pr-2 text-surface-1"
+      id="spectatorList"
+      bg-color="surface-2"
+      data-cy="spectate-list-menu"
+    >
       <v-list-item-title>Spectators</v-list-item-title>
       <v-list-item v-if="spectatingUsers.length > 0" v-for="spectator in spectatingUsers">{{
         spectator
