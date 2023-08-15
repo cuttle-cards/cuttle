@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="show"
-    persistent
+    :persistent="persistent"
     max-width="650"
     :scrollable="scrollable"
     elevation
@@ -58,6 +58,10 @@ export default {
     opacity:{
       type: Number,
       default: .92,
+    },
+    persistent: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
