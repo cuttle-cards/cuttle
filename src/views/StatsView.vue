@@ -156,9 +156,6 @@ export default {
         };
       });
     },
-    gameCounts() {
-      return this.selectedSeason.gameCounts;
-    },
   },
   methods: {
     checkAndSelectSeason(seasonId) {

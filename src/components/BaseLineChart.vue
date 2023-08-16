@@ -1,5 +1,4 @@
 <template>
-  <p>{{ data  }}</p>
   <Line
     id="my-chart-id"
     :options="chartOptions"
@@ -32,11 +31,10 @@ export default {
         labels: this.labels,
         datasets: [{
           label: 'My First Dataset',
-          // data: [65, 59, 80, 81, 56, 55, 40],
           data: this.data,
-          fill: false,
+          // fill: false,
           borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
+          // tension: 0.1
         }]
       },
       chartOptions: {
