@@ -9,7 +9,7 @@
   <template v-else>
     <div id="stats-wrapper">
       <!-- Upper Service -->
-      <section id="upper-surface" class="pa-8 mb-6">
+      <section id="upper-surface" class="px-8 pt-8 mb-6">
         <v-select
           v-model="selectedSeason"
           :items="seasons"
@@ -76,6 +76,12 @@
           </h2>
           <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
         </template>
+
+        <!-- Usage stats -->
+        <div id="usage-stats-section">
+          <h2 class="text-h2 mt-8 mb-4">Site Usage</h2>
+          <base-line-chart />
+        </div>
         <!-- Error display -->
         <div v-if="error" class="d-flex flex-column align-center text-center">
           <h3 class="text-h3">Oops!</h3>
@@ -98,6 +104,7 @@ import { io } from '@/plugins/sails.js';
 import AwardCard from '@/components/AwardCard.vue';
 import StatsLeaderboard from '@/components/StatsLeaderboard.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
+import BaseLineChart from '@/components/BaseLineChart.vue';
 
 export default {
   name: 'StatsView',
@@ -105,6 +112,7 @@ export default {
     AwardCard,
     StatsLeaderboard,
     StatsScoringDialog,
+    BaseLineChart,
   },
   data() {
     return {
