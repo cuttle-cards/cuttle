@@ -283,3 +283,11 @@ describe('Stats Page', () => {
     });
   });
 });
+
+describe('Usage stats', () => {
+  beforeEach(setup);
+
+  it('Displays the site usage stats in the stats usage page', () => {
+    cy.get('#usage-stats-section');
+  });
+});
