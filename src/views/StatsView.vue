@@ -80,7 +80,7 @@
         <!-- Usage stats -->
         <div id="usage-stats-section">
           <h2 class="text-h2 mt-8 mb-4">Site Usage</h2>
-          <base-line-chart />
+          <base-line-chart :data="gameCounts" :key="selectedSeason.id" />
         </div>
         <!-- Error display -->
         <div v-if="error" class="d-flex flex-column align-center text-center">
@@ -155,6 +155,9 @@ export default {
           value: season,
         };
       });
+    },
+    gameCounts() {
+      return this.selectedSeason.gameCounts;
     },
   },
   methods: {

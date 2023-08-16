@@ -1,4 +1,5 @@
 <template>
+  <p>{{ data  }}</p>
   <Line
     id="my-chart-id"
     :options="chartOptions"
@@ -15,13 +16,25 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScal
 export default {
   name: 'BarChart',
   components: { Line },
+  props: {
+    labels: {
+      type: Array,
+      required: true,
+    },
+    data: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       chartData: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
         datasets: [{
           label: 'My First Dataset',
-          data: [65, 59, 80, 81, 56, 55, 40],
+          // data: [65, 59, 80, 81, 56, 55, 40],
+          data: this.data,
           fill: false,
           borderColor: 'rgb(75, 192, 192)',
           tension: 0.1
