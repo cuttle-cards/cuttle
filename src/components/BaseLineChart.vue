@@ -33,7 +33,7 @@ export default {
           label: 'My First Dataset',
           data: this.data,
           borderColor: 'rgb(75, 192, 192)',
-        }]
+        }],
       },
       chartOptions: {
         responsive: true
