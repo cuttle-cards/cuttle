@@ -1,5 +1,5 @@
 <template>
-  <base-line-chart :data="gameCounts" :labels="labels" :key="season.id" />
+  <base-line-chart :data-sets="dataSets" :labels="labels" :key="season.id" />
 </template>
 
 <script>
@@ -17,11 +17,20 @@ export default {
     },
   },
   computed: {
+    labels() {
+      return this.season.gameCounts.map((_el, index) => `Week ${index + 1}`);
+    },
     gameCounts() {
       return this.season.gameCounts;
     },
-    labels() {
-      return this.season.gameCounts.map((_el, index) => `Week ${index + 1}`);
+    dataSets() {
+      return [
+        {
+          label: 'Games played',
+          data: this.gameCounts,
+          borderColor: 'rgb(75, 192, 192)',
+        },
+      ];
     }
   },
 };

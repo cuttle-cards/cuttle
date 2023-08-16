@@ -20,7 +20,7 @@ export default {
       type: Array,
       required: true,
     },
-    data: {
+    dataSets: {
       type: Array,
       required: true,
     },
@@ -29,11 +29,7 @@ export default {
     return {
       chartData: {
         labels: this.labels,
-        datasets: [{
-          label: 'My First Dataset',
-          data: this.data,
-          borderColor: 'rgb(75, 192, 192)',
-        }],
+        datasets: this.dataSets
       },
       chartOptions: {
         responsive: true
