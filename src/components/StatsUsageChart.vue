@@ -17,6 +17,9 @@ export default {
     },
   },
   computed: {
+    theme() {
+      return this.$vuetify.theme.themes.cuttleTheme.colors;
+    },
     labels() {
       return this.season.gameCounts.map((_el, index) => `Week ${index + 1}`);
     },
@@ -28,7 +31,7 @@ export default {
         {
           label: 'Games played',
           data: this.gameCounts,
-          borderColor: 'rgb(75, 192, 192)',
+          borderColor: this.theme.newPrimary,
         },
       ];
     }
