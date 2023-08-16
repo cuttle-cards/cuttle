@@ -19,7 +19,7 @@ export default {
   props: {
     labels: {
       type: Array,
-      // required: true,
+      required: true,
     },
     data: {
       type: Array,
@@ -29,8 +29,7 @@ export default {
   data() {
     return {
       chartData: {
-        // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        labels: this.labels,
         datasets: [{
           label: 'My First Dataset',
           // data: [65, 59, 80, 81, 56, 55, 40],
