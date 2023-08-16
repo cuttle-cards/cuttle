@@ -26,12 +26,20 @@ export default {
     gameCounts() {
       return this.season.gameCounts;
     },
+    uniquePlayers() {
+      return this.season.uniquePlayersPerWeek;
+    },
     dataSets() {
       return [
         {
           label: 'Games played',
           data: this.gameCounts,
           borderColor: this.theme.newPrimary,
+        },
+        {
+          label: 'Unique players',
+          data: this.uniquePlayers,
+          borderColor: this.theme.newSecondary,
         },
       ];
     }
