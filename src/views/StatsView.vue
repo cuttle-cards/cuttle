@@ -80,7 +80,7 @@
         <!-- Usage stats -->
         <div id="usage-stats-section">
           <h2 class="text-h2 mt-8 mb-4">Site Usage</h2>
-          <base-line-chart :data="gameCounts" :key="selectedSeason.id" />
+          <stats-usage-chart :season="selectedSeason" />
         </div>
         <!-- Error display -->
         <div v-if="error" class="d-flex flex-column align-center text-center">
@@ -104,7 +104,7 @@ import { io } from '@/plugins/sails.js';
 import AwardCard from '@/components/AwardCard.vue';
 import StatsLeaderboard from '@/components/StatsLeaderboard.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
-import BaseLineChart from '@/components/BaseLineChart.vue';
+import StatsUsageChart from '@/components/StatsUsageChart.vue';
 
 export default {
   name: 'StatsView',
@@ -112,7 +112,7 @@ export default {
     AwardCard,
     StatsLeaderboard,
     StatsScoringDialog,
-    BaseLineChart,
+    StatsUsageChart,
   },
   data() {
     return {
