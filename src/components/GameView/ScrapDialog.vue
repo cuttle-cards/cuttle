@@ -1,5 +1,10 @@
 <template>
-  <base-dialog v-model="show" id="scrap-dialog">
+  <base-dialog
+    v-model="show"
+    id="scrap-dialog"
+    scrollable="true"
+    :persistent="false"
+  >
     <template #activator="{ props }">
       <span v-bind="props">
         <slot name="activator" />
