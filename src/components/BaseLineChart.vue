@@ -32,9 +32,7 @@ export default {
         datasets: [{
           label: 'My First Dataset',
           data: this.data,
-          // fill: false,
           borderColor: 'rgb(75, 192, 192)',
-          // tension: 0.1
         }]
       },
       chartOptions: {
