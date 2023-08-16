@@ -29,10 +29,10 @@ export default {
     return {
       chartData: {
         labels: this.labels,
-        datasets: this.dataSets
+        datasets: this.dataSets,
       },
       chartOptions: {
-        responsive: true
+        responsive: true,
       },
     };
   },
