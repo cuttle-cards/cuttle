@@ -122,7 +122,6 @@
             <BaseSnackbar
               v-model="showSnackBar"
               :message="snackBarMessage"
-              color="error"
               data-cy="auth-snackbar"
               @clear="clearSnackBar"
             />
