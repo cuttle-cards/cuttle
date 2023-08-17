@@ -25,12 +25,16 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      chartData: {
+  computed: {
+    chartData() {
+      return {
         labels: this.labels,
         datasets: this.dataSets,
-      },
+      };
+    },
+  },
+  data() {
+    return {
       chartOptions: {
         responsive: true,
       },

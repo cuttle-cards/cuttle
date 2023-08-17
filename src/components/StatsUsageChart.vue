@@ -1,5 +1,5 @@
 <template>
-  <base-line-chart :data-sets="dataSets" :labels="labels" :key="season.id" />
+  <base-line-chart :data-sets="dataSets" :labels="labels" />
 </template>
 
 <script>
