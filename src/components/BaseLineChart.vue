@@ -16,6 +16,10 @@ export default {
   name: 'BarChart',
   components: { Line },
   props: {
+    title: {
+      type: String,
+      default: '',
+    },
     // Array of string labels for the X axis
     labels: {
       type: Array,
@@ -27,10 +31,6 @@ export default {
       type: Array,
       required: true,
     },
-    title: {
-      type: String,
-      default: '',
-    }
   },
   computed: {
     chartData() {
