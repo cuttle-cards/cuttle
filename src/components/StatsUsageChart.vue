@@ -1,5 +1,5 @@
 <template>
-  <base-line-chart :data-sets="dataSets" :labels="labels" />
+  <base-line-chart :title="title" :data-sets="dataSets" :labels="labels" />
 </template>
 
 <script>
@@ -22,6 +22,9 @@ export default {
     },
     labels() {
       return this.season.gameCounts.map((_el, index) => `Week ${index + 1}`);
+    },
+    title() {
+      return `Amount of Cuttle Played in ${this.season.name}`;
     },
     gameCounts() {
       return this.season.gameCounts;

@@ -24,6 +24,10 @@ export default {
       type: Array,
       required: true,
     },
+    title: {
+      type: String,
+      default: '',
+    }
   },
   computed: {
     chartData() {
@@ -37,6 +41,12 @@ export default {
     return {
       chartOptions: {
         responsive: true,
+        plugins: {
+          title: {
+            text: this.title,
+            display: !!this.title,
+          },
+        },
       },
     };
   },
