@@ -16,10 +16,13 @@ export default {
   name: 'BarChart',
   components: { Line },
   props: {
+    // Array of string labels for the X axis
     labels: {
       type: Array,
       required: true,
     },
+    // Array of dataset objects for chartjs
+    // https://www.chartjs.org/docs/latest/general/data-structures.html#primitive
     dataSets: {
       type: Array,
       required: true,
