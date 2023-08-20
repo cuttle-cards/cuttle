@@ -1,5 +1,10 @@
 <template>
-  <base-line-chart :title="title" :data-sets="dataSets" :labels="labels" />
+  <base-line-chart
+    id="usage-stats-chart"
+    :title="title"
+    :data-sets="dataSets"
+    :labels="labels"
+  />
 </template>
 
 <script>

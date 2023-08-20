@@ -1,6 +1,6 @@
 <template>
   <Line
-    id="my-chart-id"
+    :id="id"
     :options="chartOptions"
     :data="chartData"
   />
@@ -16,6 +16,10 @@ export default {
   name: 'BarChart',
   components: { Line },
   props: {
+    id: {
+      type: String,
+      default: 'Line Chart',
+    },
     title: {
       type: String,
       default: '',
