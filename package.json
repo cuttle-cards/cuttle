@@ -3,6 +3,8 @@
   "description": "The deepest card game under the sea",
   "version": "4.7.0",
   "dependencies": {
+    "lodash": "^4.17.21",
+    "dayjs": "^1.11.9",
     "sails": "1.5.3",
     "machinepack-passwords": "2.3.0",
     "sails-disk": "^2.1.2",
@@ -11,8 +13,6 @@
     "sails-postgresql": "4.0.0",
     "sails.io.js": "1.2.1",
     "connect-redis": "3.0.2",
-    "dayjs": "^1.11.9",
-    "lodash": "^4.17.21",
     "vue": "^3.3.4",
     "vuex": "^4.1.0",
     "vue-router": "^4.2.4",
