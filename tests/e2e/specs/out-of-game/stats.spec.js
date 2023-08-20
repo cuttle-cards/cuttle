@@ -253,6 +253,15 @@ describe('Stats Page', () => {
     });
   });
 
+});
+
+describe('Usage stats', () => {
+  beforeEach(setup);
+
+  it('Displays the site usage stats in the stats usage page', () => {
+    cy.get('#usage-stats-section').find('#usage-stats-chart');
+  });
+
   it('Sends the counts of games played and unique players for each week of each season', () => {
     cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
       // Clubs 2022 stats
@@ -281,13 +290,5 @@ describe('Stats Page', () => {
       expect(diamonds2022.gameCounts[1]).to.eq(2);
       expect(diamonds2022.uniquePlayersPerWeek[1]).to.eq(2);
     });
-  });
-});
-
-describe('Usage stats', () => {
-  beforeEach(setup);
-
-  it('Displays the site usage stats in the stats usage page', () => {
-    cy.get('#usage-stats-section');
   });
 });
