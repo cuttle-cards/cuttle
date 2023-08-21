@@ -1,12 +1,11 @@
 <template>
   <div class="game-overlays">
-
     <v-overlay
       id="waiting-for-game-to-start-scrim"
       v-model="waitingForGameToStart"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Waiting for Game to Start
       </h1>
       <v-btn
@@ -26,7 +25,7 @@
       class="d-flex flex-column justify-center align-center"
       scrim="surface-1"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         {{ showWaitingForOpponetToCounterMessage }}
       </h1>
       <div id="counter-scrim-cards">
@@ -57,7 +56,7 @@
       v-model="waitingForOpponentToDiscard"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Is Discarding
       </h1>
     </v-overlay>
@@ -67,7 +66,7 @@
       v-model="waitingForOpponentToPickFromScrap"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Choosing Card from Scrap
       </h1>
     </v-overlay>
@@ -77,7 +76,7 @@
       v-model="showWaitingForOpponentToPlayFromDeck"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Playing from Deck
       </h1>
     </v-overlay>
@@ -87,7 +86,7 @@
       v-model="showWaitingForOpponentToDiscardJackFromDeck"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         Opponent Must Discard Jack
       </h1>
     </v-overlay>
@@ -97,14 +96,14 @@
       v-model="waitingForOpponentToStalemate"
       class="game-overlay"
     >
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
+      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         <div>Opponent Considering Stalemate Request</div>
       </h1>
     </v-overlay>
 
     <move-choice-overlay
       v-if="selectedCard || cardSelectedFromDeck"
-      :modelValue="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
+      :model-value="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
       :selected-card="selectedCard || cardSelectedFromDeck"
       :card-selected-from-deck="cardSelectedFromDeck"
       :is-players-turn="isPlayersTurn"
@@ -134,7 +133,6 @@ export default {
     MoveChoiceOverlay,
     GameCard,
   },
-  emits:['points', 'face-card', 'one-off', 'clear-selection', 'target'],
   props: {
     targeting: {
       type: Boolean,
@@ -149,6 +147,7 @@ export default {
       default: null,
     },
   },
+  emits:['points', 'face-card', 'one-off', 'clear-selection', 'target'],
   data() {
     return {
       leavingGame: false,

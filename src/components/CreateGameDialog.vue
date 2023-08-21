@@ -1,9 +1,9 @@
 <template>
   <base-dialog
-    v-model="show"
     :id="`create-game-dialog`"
+    v-model="show"
     title="Create Game"
-    :opacity=1
+    :opacity="1"
     data-cy="create-game-dialog"
   >
     <template #activator>
@@ -29,8 +29,8 @@
       </form>
       <v-form @submit.prevent="submitNewGame">
         <v-text-field
-          name="game-name"
           v-model="gameName"
+          name="game-name"
           autofocus
           :disabled="loading"
           label="Game Name"

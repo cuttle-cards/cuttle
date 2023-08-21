@@ -1,10 +1,10 @@
 <template>
   <base-dialog
+    id="rankedScoring"
     v-model="show"
     title="Ranked Scoring"
-    id="rankedScoring"
     max-width="1250"
-    :opacity=1
+    :opacity="1"
   >
     <!-- Activator -->
     <template #activator="{ props }">
@@ -16,7 +16,6 @@
           variant="text"
           data-cy="ranked-info-button"
         >
-
           <span v-if="showButtonText">How are ranks determined?</span>
           <v-icon class="ml-1" icon="mdi-information-outline" />
         </v-btn>
@@ -42,23 +41,33 @@
       </p>
       <v-list class="mt-4">
         <v-list-item>
-          <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace"> 5 Points </v-chip>
+          <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace">
+            5 Points
+          </v-chip>
           The player with the most wins gets 5 points for the week
         </v-list-item>
         <v-list-item>
-          <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace"> 4 Points </v-chip>
+          <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace">
+            4 Points
+          </v-chip>
           The player with the 2nd most wins gets 4 points for the week
         </v-list-item>
         <v-list-item>
-          <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace"> 3 Points </v-chip>
+          <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace">
+            3 Points
+          </v-chip>
           The player with the 3rd most wins gets 3 points for the week
         </v-list-item>
         <v-list-item>
-          <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary"> 2 Points </v-chip>
+          <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary">
+            2 Points
+          </v-chip>
           Each other player who won at least one match gets 2 points for the week
         </v-list-item>
         <v-list-item>
-          <v-chip variant="outlined" class="mr-2 mb-1" color="#000"> 1 Point </v-chip>
+          <v-chip variant="outlined" class="mr-2 mb-1" color="#000">
+            1 Point
+          </v-chip>
           Each other player who completed a match without winning gets 1 point for the week
         </v-list-item>
       </v-list>
@@ -72,7 +81,9 @@
       <!-- Actions -->
     </template>
     <template #actions>
-      <v-btn variant="outlined" color="surface-1" @click="show = false"> Got It! </v-btn>
+      <v-btn variant="outlined" color="surface-1" @click="show = false">
+        Got It!
+      </v-btn>
     </template>
   </base-dialog>
 </template>

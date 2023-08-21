@@ -13,7 +13,7 @@ const text = computed(() => parse(props.markdown, {
 </script>
 
 <template>
-  <div class="markdown" v-html="text"></div>
+  <div class="markdown" v-html="text" />
 </template>
 
 <style lang="scss">

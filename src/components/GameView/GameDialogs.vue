@@ -1,7 +1,7 @@
 <template>
   <div class="game-dialogs">
     <counter-dialog
-      :modelValue="showCounterDialog"
+      :model-value="showCounterDialog"
       :one-off="game.oneOff"
       :target="game.oneOffTarget"
       :twos-in-hand="twosInHand"
@@ -10,7 +10,7 @@
       @counter="counter($event)"
     />
     <cannot-counter-dialog
-      :modelValue="showCannotCounterDialog"
+      :model-value="showCannotCounterDialog"
       :one-off="game.oneOff"
       :opponent-queen-count="opponentQueenCount"
       :player-two-count="playerTwoCount"
@@ -18,26 +18,26 @@
       :target="game.oneOffTarget"
       @resolve="resolve"
     />
-    <four-dialog :modelValue="discarding" @discard="discard" />
+    <four-dialog :model-value="discarding" @discard="discard" />
     <three-dialog
-      :modelValue="pickingFromScrap"
+      :model-value="pickingFromScrap"
       :one-off="game.oneOff"
       :scrap="scrap"
       @resolveThree="resolveThree($event)"
     />
     <seven-double-jacks-dialog
-      :modelValue="showSevenDoubleJacksDialog"
+      :model-value="showSevenDoubleJacksDialog"
       :top-card="topCard"
       :second-card="secondCard"
       @resolveSevenDoubleJacks="resolveSevenDoubleJacks($event)"
     />
     <game-over-dialog
       v-if="gameIsOver"
-      :modelValue="gameIsOver"
+      :model-value="gameIsOver"
       :player-wins-game="playerWins"
       :stalemate="stalemate"
     />
-    <reauthenticate-dialog :modelValue="mustReauthenticate" />
+    <reauthenticate-dialog :model-value="mustReauthenticate" />
     <opponent-requested-stalemate-dialog v-model="consideringOpponentStalemateRequest" />
   </div>
 </template>

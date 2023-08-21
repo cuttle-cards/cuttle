@@ -2,7 +2,7 @@
   <v-overlay
     id="move-choice-overlay"
     class="d-flex flex-column justify-center align-center"
-    :modelValue="modelValue"
+    :model-value="modelValue"
     @click="$emit('cancel')"
   >
     <!-- Cancel button -->
@@ -53,7 +53,6 @@ export default {
     MoveChoiceCard,
     GameCard,
   },
-  emits: ['points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel'],
   props: {
     modelValue: {
       type: Boolean,
@@ -84,6 +83,7 @@ export default {
       default: null,
     },
   },
+  emits: ['points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel'],
   computed: {
     // Determines if any moves are available
     allMovesAreDisabled() {

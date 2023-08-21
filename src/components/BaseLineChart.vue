@@ -36,14 +36,6 @@ export default {
       required: true,
     },
   },
-  computed: {
-    chartData() {
-      return {
-        labels: this.labels,
-        datasets: this.dataSets,
-      };
-    },
-  },
   data() {
     return {
       chartOptions: {
@@ -56,6 +48,14 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    chartData() {
+      return {
+        labels: this.labels,
+        datasets: this.dataSets,
+      };
+    },
   },
 };
 </script>

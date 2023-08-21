@@ -33,7 +33,9 @@
       <section class="px-8">
         <!-- Season Champions -->
         <div class="mb-10">
-          <h2 v-if="showSeasonChampions" class="text-h2 mb-4">Season Champions</h2>
+          <h2 v-if="showSeasonChampions" class="text-h2 mb-4">
+            Season Champions
+          </h2>
           <div class="d-flex justify-space-around flex-wrap">
             <award-card
               v-if="selectedSeason && selectedSeason.firstPlace"
@@ -79,13 +81,19 @@
 
         <!-- Usage stats -->
         <div id="usage-stats-section">
-          <h2 class="text-h2 mt-8 mb-4">Site Usage</h2>
+          <h2 class="text-h2 mt-8 mb-4">
+            Site Usage
+          </h2>
           <stats-usage-chart :season="selectedSeason" />
         </div>
         <!-- Error display -->
         <div v-if="error" class="d-flex flex-column align-center text-center">
-          <h3 class="text-h3">Oops!</h3>
-          <p class="text-body-1">There was a problem loading the leaderboard. Refresh the page to try again.</p>
+          <h3 class="text-h3">
+            Oops!
+          </h3>
+          <p class="text-body-1">
+            There was a problem loading the leaderboard. Refresh the page to try again.
+          </p>
           <v-img
             alt="Dead cuttle logo"
             src="/img/logo-dead.svg"
@@ -114,6 +122,13 @@ export default {
     StatsScoringDialog,
     StatsUsageChart,
   },
+  beforeRouteUpdate(to, from, next) {
+    this.loadingData = true;
+    const seasonId = parseInt(to.params.seasonId);
+    this.checkAndSelectSeason(seasonId);
+    this.loadingData = false;
+    next();
+  },
   data() {
     return {
       loadingData: true,
@@ -121,13 +136,6 @@ export default {
       seasons: [],
       error: false,
     };
-  },
-  watch: {
-    selectedSeason() {
-      this.selectedSeason
-        ? this.$router.replace({ name: 'StatsBySeason', params: { seasonId: this.selectedSeason.id } })
-        : null;
-    },
   },
   computed: {
     weeklyRanking() {
@@ -157,10 +165,11 @@ export default {
       });
     },
   },
-  methods: {
-    checkAndSelectSeason(seasonId) {
-      const requestedSeason = this.seasons.find(({ id }) => id === seasonId);
-      this.selectedSeason = requestedSeason || this.seasons[0];
+  watch: {
+    selectedSeason() {
+      this.selectedSeason
+        ? this.$router.replace({ name: 'StatsBySeason', params: { seasonId: this.selectedSeason.id } })
+        : null;
     },
   },
   created() {
@@ -175,12 +184,11 @@ export default {
       this.checkAndSelectSeason(seasonId);
     });
   },
-  beforeRouteUpdate(to, from, next) {
-    this.loadingData = true;
-    const seasonId = parseInt(to.params.seasonId);
-    this.checkAndSelectSeason(seasonId);
-    this.loadingData = false;
-    next();
+  methods: {
+    checkAndSelectSeason(seasonId) {
+      const requestedSeason = this.seasons.find(({ id }) => id === seasonId);
+      this.selectedSeason = requestedSeason || this.seasons[0];
+    },
   },
 };
 </script>
