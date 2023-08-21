@@ -11,7 +11,7 @@
     position="fixed"
     location="bottom"
     :data-cy="dataCy"
-    @update:modelValue="$emit('update:modelValue', $event)"
+    @update:model-value="$emit('update:modelValue', $event)"
   >
     {{ message }}
     <template #actions>

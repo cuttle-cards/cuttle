@@ -111,11 +111,11 @@
       :frozen-id="player.frozenId"
       :playing-from-deck="playingFromDeck"
       @points="$emit('points')"
-      @faceCard="$emit('face-card')"
+      @face-card="$emit('face-card')"
       @scuttle="handleTargeting"
       @jack="handleTargeting"
-      @oneOff="$emit('one-off')"
-      @targetedOneOff="handleTargeting"
+      @one-off="$emit('one-off')"
+      @targeted-one-off="handleTargeting"
       @cancel="$emit('clear-selection')"
     />
   </div>

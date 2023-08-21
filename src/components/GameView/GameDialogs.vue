@@ -23,13 +23,13 @@
       :model-value="pickingFromScrap"
       :one-off="game.oneOff"
       :scrap="scrap"
-      @resolveThree="resolveThree($event)"
+      @resolve-three="resolveThree($event)"
     />
     <seven-double-jacks-dialog
       :model-value="showSevenDoubleJacksDialog"
       :top-card="topCard"
       :second-card="secondCard"
-      @resolveSevenDoubleJacks="resolveSevenDoubleJacks($event)"
+      @resolve-seven-double-jacks="resolveSevenDoubleJacks($event)"
     />
     <game-over-dialog
       v-if="gameIsOver"
