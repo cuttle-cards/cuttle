@@ -20,8 +20,14 @@
 export default {
   name: 'AwardCard',
   props: {
-    username: String,
-    place: Number,
+    username: {
+      type: String,
+      default: '',
+    },
+    place: {
+      type: String,
+      default: '',
+    }, 
   },
   computed: {
     theme() {

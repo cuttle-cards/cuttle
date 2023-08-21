@@ -3,7 +3,10 @@ import { parse } from 'marked';
 import { computed, defineProps } from 'vue';
 
 const props = defineProps({
-  markdown: String,
+  markdown: {
+      type: String,
+      default: '',
+    },
 });
 
 const text = computed(() => parse(props.markdown, {
