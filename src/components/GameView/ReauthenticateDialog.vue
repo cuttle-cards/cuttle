@@ -45,7 +45,6 @@
     <BaseSnackbar
       v-model="showSnackBar"
       :message="snackBarMessage"
-      color="error"
       @clear="clearSnackBar"
     />
   </div>
