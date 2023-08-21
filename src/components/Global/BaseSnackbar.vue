@@ -7,7 +7,7 @@
   <v-snackbar
     :modelValue="modelValue"
     @update:modelValue="$emit('update:modelValue', $event)"
-    :color="color || 'error'"
+    :color="color"
     class="base-snackbar"
     position="fixed"
     location="bottom"
@@ -31,7 +31,24 @@
 export default {
   name: 'BaseSnackbar',
   emits: ['clear', 'update:modelValue'],
-  props: ['modelValue', 'message', 'color', 'data-cy'],
+  props: {
+    modelValue: {
+      type: Boolean,
+      required: true
+    },
+    message: {
+      type: String,
+      required: true
+    },
+    color: {
+      type: String,
+      default: 'error'
+    },
+    dataCy: {
+      type: String,
+      required: true
+    }
+  },
   methods: {
     clear() {
       this.$emit('clear');
