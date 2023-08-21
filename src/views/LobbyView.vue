@@ -84,19 +84,6 @@ export default {
       readying: false,
     };
   },
-  watch: {
-    opponentUsername(newVal) {
-      if (newVal) {
-        if (this.$refs.enterLobbySound.readyState === 4) {
-          this.$refs.enterLobbySound.play();
-        }
-      } else {
-        if (this.$refs.leaveLobbySound.readyState === 4) {
-          this.$refs.leaveLobbySound.play();
-        }
-      }
-    },
-  },
   computed: {
     ...mapState({
       isRanked: ({ game }) => game.isRanked,
@@ -115,6 +102,19 @@ export default {
     },
     readyButtonText() {
       return this.iAmReady ? 'UNREADY' : 'READY';
+    },
+  },
+  watch: {
+    opponentUsername(newVal) {
+      if (newVal) {
+        if (this.$refs.enterLobbySound.readyState === 4) {
+          this.$refs.enterLobbySound.play();
+        }
+      } else {
+        if (this.$refs.leaveLobbySound.readyState === 4) {
+          this.$refs.leaveLobbySound.play();
+        }
+      }
     },
   },
   methods: {
