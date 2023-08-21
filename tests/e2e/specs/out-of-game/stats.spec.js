@@ -255,6 +255,15 @@ describe('Stats Page', () => {
     });
   });
 
+});
+
+describe('Usage stats', () => {
+  beforeEach(setup);
+
+  it('Displays the site usage stats in the stats usage page', () => {
+    cy.get('#usage-stats-section').find('#usage-stats-chart');
+  });
+
   it('Sends the counts of games played and unique players for each week of each season', () => {
     cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
       // Clubs 2022 stats

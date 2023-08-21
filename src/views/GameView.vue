@@ -364,7 +364,6 @@
       <BaseSnackbar
         v-model="showSnackbar"
         :message="snackBarMessage"
-        :color="snackColor"
         data-cy="game-snackbar"
         @clear="clearSnackBar"
       />
@@ -418,7 +417,6 @@ export default {
     return {
       showSnackbar: false,
       snackBarMessage: '',
-      snackColor: 'error',
       selectionIndex: null, // when select a card set this value
       targeting: false,
       targetingMoveName: null,
@@ -726,7 +724,6 @@ export default {
     },
     handleError(err) {
       this.snackBarMessage = err;
-      this.snackColor = 'error';
       this.showSnackbar = true;
       this.clearSelection();
     },
@@ -818,7 +815,6 @@ export default {
             .then(this.clearSelection)
             .catch((err) => {
               this.snackBarMessage = err;
-              this.snackColor = 'error';
               this.showSnackbar = true;
               this.clearSelection();
             });
@@ -828,7 +824,6 @@ export default {
             .then(this.clearSelection)
             .catch((err) => {
               this.snackBarMessage = err;
-              this.snackColor = 'error';
               this.showSnackbar = true;
               this.clearSelection();
             });
