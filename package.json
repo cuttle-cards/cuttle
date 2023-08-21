@@ -59,6 +59,7 @@
   "main": "app.js",
   "private": true,
   "scripts": {
+    "docker:build": "npm run docker:start -- --build --force-recreate",
     "docker:start": "docker-compose -f ./docker/docker-compose.yml up",
     "docker:stop": "docker-compose -f ./docker/docker-compose.yml down",
     "start:serve": "vite preview",

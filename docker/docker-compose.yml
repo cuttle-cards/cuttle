@@ -1,10 +1,25 @@
 version: "3.4"
 services:
+  cuttle-database:
+    image: 'postgres:latest'
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=cuttle
+      - POSTGRES_USER=cuttlesworth
+      - POSTGRES_PASSWORD=p4ssw0rd!
+      # Allow all connections, no password required (not recommended)
+      # - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - ./data/pgdata:/var/lib/postgresql/data
+    restart: always
 
   cuttle-server:
     container_name: cuttle-server
     environment:
       - CUTTLE_DOCKERIZED=true
+      - DATABASE_URL=postgresql://cuttlesworth:p4ssw0rd!@cuttle-database:5432/cuttle
+      - NODE_ENV=staging
       - VITE_API_URL=0.0.0.0:1337
       - VITE_BUILD_OUTPUT=assets
     # No env file because docker is different :)
@@ -17,6 +32,8 @@ services:
       - "1337:1337"
     volumes:
       - ../src/:/cuttle/src/
+    depends_on:
+      - cuttle-database
 
   cuttle-client:
     container_name: cuttle-client
@@ -37,4 +54,3 @@ services:
       - ../src/:/cuttle/src/
     depends_on:
       - cuttle-server
-

@@ -10,8 +10,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const PROXY_HOST = process.env.CUTTLE_DOCKERIZED === true
-  ? 'http://localhost:1337'
-  : 'http://cuttle-server:1337';
+  ? 'http://cuttle-server:1337'
+  : 'http://localhost:1337';
 
 // https://vitejs.dev/config/
 export default defineConfig({
