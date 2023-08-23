@@ -219,7 +219,7 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
     io.socket.get(
       '/game/subscribe',
       {
-        id,
+        gameId: id,
       },
       function handleResponse(_res, jwres) {
         if (jwres.statusCode === 200) {
