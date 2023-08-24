@@ -1,6 +1,5 @@
 <template>
   <base-line-chart
-    :key="season.id"
     id="usage-stats-chart"
     :title="title"
     :data-sets="dataSets"

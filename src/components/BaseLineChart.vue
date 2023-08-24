@@ -1,6 +1,6 @@
 <template>
   <Line
-    :id="id"
+    :id="instanceID"
     :options="chartOptions"
     :data="chartData"
   />
@@ -18,7 +18,7 @@ export default {
   props: {
     id: {
       type: String,
-      default: 'Line Chart',
+      required: false,
     },
     title: {
       type: String,
@@ -36,6 +36,9 @@ export default {
       required: true,
     },
   },
+  created() {
+    this.instanceId = this.id || this._uid;
+  },
   computed: {
     chartData() {
       return {
@@ -43,10 +46,8 @@ export default {
         datasets: this.dataSets,
       };
     },
-  },
-  data() {
-    return {
-      chartOptions: {
+    chartOptions() {
+      return {
         responsive: true,
         plugins: {
           title: {
@@ -54,8 +55,8 @@ export default {
             display: !!this.title,
           },
         },
-      },
-    };
+      };
+    },
   },
 };
 </script>
