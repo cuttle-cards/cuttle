@@ -309,12 +309,12 @@ export default {
       }, 1000);
     },
 
-    async requestSubscribe(context, id) {
+    async requestSubscribe(context, gameId) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/subscribe',
           {
-            id,
+            gameId,
           },
           function handleResponse(res, jwres) {
             if (jwres.statusCode === 200) {
