@@ -1,3 +1,4 @@
+const dayjs = require('dayjs');
 
 module.exports = function gameHook() {
   //////////////
@@ -28,7 +29,11 @@ module.exports = function gameHook() {
     },
     findOpenGames: function () {
       return new Promise(function (resolve, reject) {
-        Game.find({ status: gameService.GameStatus.CREATED})
+        const recentUpdateThreshhold = dayjs().subtract(1, 'day').valueOf();
+        Game.find({
+          status: gameService.GameStatus.CREATED,
+          createdAt: { '<=': recentUpdateThreshhold }
+        })
           .populate('players')
           .exec(function (error, games) {
             if (error) {
