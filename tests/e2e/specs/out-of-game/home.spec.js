@@ -2,7 +2,8 @@ import { assertSnackbarError } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
-import  GameStatus from '../../../../utils/GameStatus.json';
+import GameStatus from '../../../../utils/GameStatus.json';
+import dayjs from 'dayjs';
 
 function setup() {
   cy.wipeDatabase();
@@ -108,6 +109,15 @@ describe('Home - Game List', () => {
         .then((gameState) => {
           assertSuccessfulJoin(gameState);
         });
+    });
+
+    it('Does not show games older than 24 hours', () => {
+      cy.loadFinishedGameFixtures([
+        { name: 'New Game', status: GameStatus.CREATED },
+        { name: 'Old Game', status: GameStatus.CREATED, createdAt: dayjs().subtract(1, 'day').valueOf() },
+      ]);
+      cy.visit('/');
+      cy.get('[data-cy=game-list-item]').should('have.length', 1);
     });
   });
 
@@ -256,10 +266,12 @@ describe('Home - Game List', () => {
         // Game appears as spectatable
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible').and('not.be.disabled');
         // Disconnect the socket then finish the game -- UI misses the update
-        cy.window().its('cuttle.app.config.globalProperties.$store')
+        cy.window()
+          .its('cuttle.app.config.globalProperties.$store')
           .then((store) => store.dispatch('disconnectSocket'));
         cy.concedeOpponent();
-        cy.window().its('cuttle.app.config.globalProperties.$store')
+        cy.window()
+          .its('cuttle.app.config.globalProperties.$store')
           .then((store) => store.dispatch('reconnectSocket'));
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
         assertSnackbarError('Unable to spectate game', 'newgame');
