@@ -1,6 +1,6 @@
 <template>
   <Line
-    :id="instanceID"
+    :id="id"
     :options="chartOptions"
     :data="chartData"
   />
@@ -18,7 +18,7 @@ export default {
   props: {
     id: {
       type: String,
-      required: false,
+      required: true,
     },
     title: {
       type: String,
@@ -35,9 +35,6 @@ export default {
       type: Array,
       required: true,
     },
-  },
-  created() {
-    this.instanceId = this.id || this._uid;
   },
   computed: {
     chartData() {
