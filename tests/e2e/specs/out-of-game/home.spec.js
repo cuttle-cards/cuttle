@@ -2,6 +2,7 @@ import { assertSnackbarError } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
+import { GameStatus } from '../../../../utils/GameStatus.json';
 
 function setup() {
   cy.wipeDatabase();
@@ -455,7 +456,7 @@ describe('Home - Create Game', () => {
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect 0 players in game in store');
-        expect(games[0].status).to.eq(1, 'Expect game to have status CREATED');
+        expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED');
       });
   });
 
@@ -480,7 +481,7 @@ describe('Home - Create Game', () => {
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
-        expect(games[0].status).to.eq(1, 'Expect game to have status CREATED');
+        expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED');
         expect(games[0].isRanked).to.eq(false, 'Expect game to be ranked');
       });
   });
@@ -503,7 +504,7 @@ describe('Home - Create Game', () => {
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
-        expect(games[0].status).to.eq(1, 'Expect game to have status CREATED'); //status = created
+        expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED'); //status = created
         expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
       });
   });
