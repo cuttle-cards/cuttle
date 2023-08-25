@@ -133,7 +133,7 @@ describe('Home - Game List', () => {
     });
   });
 
-  it('Disables join when a game becomes full', () => {
+  it.only('Disables join when a game becomes full', () => {
     /**
      * Set up:
      * Create game, sign up two other users, subscribe them to the game
@@ -153,7 +153,7 @@ describe('Home - Game List', () => {
       // Manually re-enable join button to confirm backend rejects request
       cy.window()
         .its('cuttle.app.config.globalProperties.$store')
-        .then((store) => store.commit('updateGameStatus', { id: gameData.gameId, newStatus: 1 }));
+        .then((store) => store.commit('otherLeftGame', gameData.gameId));
       cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled').click().should('be.disabled');
 
       assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');

@@ -46,7 +46,6 @@ export default {
       const updatedGame = state.openGames.find((game) => game.id === data.id);
       if (updatedGame) {
         updatedGame.status = data.newStatus;
-        updatedGame.numPlayers = data.numPlayers;
       }
     },
     joinGame(state, data) {
