@@ -2,7 +2,7 @@ import { assertSnackbarError } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
-import { GameStatus } from '../../../../utils/GameStatus.json';
+import  GameStatus from '../../../../utils/GameStatus.json';
 
 function setup() {
   cy.wipeDatabase();
