@@ -32,7 +32,7 @@ module.exports = function gameHook() {
         const recentUpdateThreshhold = dayjs().subtract(1, 'day').valueOf();
         Game.find({
           status: gameService.GameStatus.CREATED,
-          createdAt: { '<=': recentUpdateThreshhold }
+          createdAt: { '>=': recentUpdateThreshhold }
         })
           .populate('players')
           .exec(function (error, games) {
