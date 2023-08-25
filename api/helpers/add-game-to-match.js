@@ -36,11 +36,11 @@ module.exports = {
 
       for (const priorGame of [game, ...relevantMatch.games]) {
         if (!priorGame.winner) continue;
-          if (priorGame.winner === relevantMatch.player1) {
-            numPlayer1Wins++;
-          } else {
-            numPlayer2Wins++;
-          }
+        if (priorGame.winner === relevantMatch.player1) {
+          numPlayer1Wins++;
+        } else {
+          numPlayer2Wins++;
+        }
       }
       // Add game to match
       await Match.addToCollection(relevantMatch.id, 'games').members([game.id]);

@@ -7,7 +7,7 @@ class GameSummary {
     this.id = obj.id ? obj.id : null;
     this.name = obj.name ? obj.name : null;
     this.numPlayers = Object.prototype.hasOwnProperty.call(obj, 'players') ? obj.players.length : 0;
-    this.status = Object.prototype.hasOwnProperty.call(obj, 'status') ? obj.status : GameStatus.STARTED;
+    this.status = Object.prototype.hasOwnProperty.call(obj, 'status') ? obj.status : GameStatus.ARCHIVED;
     this.isRanked = Object.prototype.hasOwnProperty.call(obj, 'isRanked') ? obj.isRanked : false;
     this.isOver = false;
   }
@@ -32,6 +32,7 @@ export default {
         return;
       }
       const [startedGame] = state.openGames.splice(gameIndex, 1);
+      startedGame.status = GameStatus.STARTED;
       state.spectateGames.push(startedGame);
     },
     gameFinished(state, gameId) {

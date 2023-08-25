@@ -16,7 +16,7 @@ module.exports = {
   fn: ({ game }, exits) => {
 
     const gameIsFull =
-      game.status === gameService.GameStatus.STARTED ||
+      game.status !== gameService.GameStatus.CREATED ||
       game.players.length >= 2 || 
       game.log.length > 0 || 
       !_.isEqual(game.lastEvent, {});

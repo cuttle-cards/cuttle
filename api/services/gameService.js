@@ -118,14 +118,13 @@ module.exports = {
     if (p0Wins || p1Wins) {
       res.gameOver = true;
       const gameUpdates = {};
+      gameUpdates.status = GameStatus.FINISHED;
       if (p0Wins) {
         res.winner = 0;
         gameUpdates.winner = p0.id;
-        gameUpdates.status = GameStatus.FINISHED;
       } else if (p1Wins) {
         res.winner = 1;
         gameUpdates.winner = p1.id;
-        gameUpdates.status = GameStatus.FINISHED;
       }
       await Game.updateOne({ id: game.id }).set(gameUpdates);
       game = {
