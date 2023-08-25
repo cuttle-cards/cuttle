@@ -31,12 +31,12 @@ module.exports = function gameHook() {
         Game.find({ status: gameService.GameStatus.CREATED})
           .populate('players')
           .exec(function (error, games) {
-           const openGames = games.filter(({ players }) => players.length < 2);
             if (error) {
               return reject(error);
             } else if (!games) {
               return reject({ message: "Can't find games" });
             }
+            const openGames = games.filter(({ players }) => players.length < 2);
             return resolve(openGames);
           });
       });
