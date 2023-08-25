@@ -133,7 +133,7 @@ describe('Home - Game List', () => {
     });
   });
 
-  it.only('Disables join when a game becomes full', () => {
+  it('Disables join when a game becomes full', () => {
     /**
      * Set up:
      * Create game, sign up two other users, subscribe them to the game
