@@ -4,12 +4,10 @@ const gameAPI = sails.hooks['customgamehook'];
 const userAPI = sails.hooks['customuserhook'];
 
 module.exports = function (req, res) {
-  if (!req.body.id) {
-    return res.badRequest('No game id received for subscription');
-  }
-  Game.subscribe(req, [req.body.id]);
+  const { gameId } = req.body;
+  Game.subscribe(req, gameId);
   const promiseClearOldGame = gameService.clearGame({ userId: req.session.usr });
-  const promiseGame = gameAPI.findGame(req.body.id);
+  const promiseGame = gameAPI.findGame(req.body.gameId);
   const promiseUser = userAPI.findUser(req.session.usr);
   Promise.all([promiseGame, promiseUser, promiseClearOldGame])
     .then(async function success(arr) {
