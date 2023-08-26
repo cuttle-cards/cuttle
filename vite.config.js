@@ -2,60 +2,77 @@ import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 // vite.config.js
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const PROXY_HOST = process.env.CUTTLE_DOCKERIZED === true
-  ? 'http://cuttle-server:1337'
-  : 'http://localhost:1337';
-
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(),
-    vuetify({
-      autoImport: false,
-      styles: { configFile: 'src/sass/variables.scss'}
-    }),
-  ],
-  resolve: {
-    alias: {
-      _: resolve(__dirname),
-      '@': resolve(__dirname, './src'),
-    },
-  },
-  server: {
-    host: '0.0.0.0',
-    port: 8080,
-    strictPort: true,
-    proxy: {
-      '/game': {
-        target: PROXY_HOST,
-        changeOrigin: true,
-      },
-      // Required for the health response to work on the client
-      '/health': {
-        target: PROXY_HOST,
-        changeOrigin: true,
-      },
-      '/user': {
-        target: PROXY_HOST,
-        changeOrigin: true,
-      },
-      '/test': {
-        target: PROXY_HOST,
-        changeOrigin: true,
+export default defineConfig(({ mode }) => {
+  // Load env file based on `mode` in the current working directory.
+  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
+  // See https://vitejs.dev/config/#using-environment-variables-in-config
+  const env = loadEnv(mode, process.cwd(), '');
+  let HOST_SERVER_URL = 'http://localhost:1337';
+  if (env.CUTTLE_DOCKERIZED === 'true') {
+    HOST_SERVER_URL = 'http://server:1337';
+    console.log('');
+    console.log(`Running Cuttle in DOCKER, setting server url to "${HOST_SERVER_URL}"`);
+    console.log('');
+  }
+
+  return {
+    plugins: [
+      vue(),
+      vuetify({
+        autoImport: false,
+        styles: { configFile: 'src/sass/variables.scss'}
+      }),
+    ],
+    resolve: {
+      alias: {
+        _: resolve(__dirname),
+        '@': resolve(__dirname, './src'),
       },
     },
-  },
-  test: {
-    include: ['**/tests/unit/**/*.{j,t}s?(x)'],
-  },
-  build: {
-    outDir: 'assets',
-  },
+    server: {
+      host: '0.0.0.0',
+      port: 8080,
+      strictPort: true,
+      cors: false,
+      proxy: {
+        '/game': {
+          target: HOST_SERVER_URL,
+          changeOrigin: true,
+        },
+        // Required for the health response to work on the client
+        '/health': {
+          target: HOST_SERVER_URL,
+          changeOrigin: true,
+        },
+        '/user': {
+          target: HOST_SERVER_URL,
+          changeOrigin: true,
+        },
+        '/test': {
+          target: HOST_SERVER_URL,
+          changeOrigin: true,
+        },
+      },
+      // Watching doesn't work on windows, so we need to use polling -- this does lead to high CPU
+      // usage though, which is a bit of a bummer. Should probably make this conditional at some
+      // point, see https://v3.vitejs.dev/config/server-options.html#server-watch
+      watch: {
+        usePolling: true,
+      },
+    },
+    test: {
+      include: ['**/tests/unit/**/*.{j,t}s?(x)'],
+    },
+    build: {
+      outDir: 'assets',
+    },
+  };
 });
