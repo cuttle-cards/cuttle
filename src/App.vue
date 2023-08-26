@@ -1,14 +1,16 @@
 <template>
   <v-app id="app">
-    <navigation-drawer v-if="showNav" />
+    <the-top-navbar v-if="showNav" />
     <v-main>
       <router-view />
     </v-main>
+    <the-bottom-nav v-if="showNav"></the-bottom-nav>
   </v-app>
 </template>
 
 <script>
-import NavigationDrawer from '@/components/NavigationDrawer.vue';
+import TheTopNavbar from '@/components/TheTopNavbar.vue';
+import TheBottomNav from '@/components/TheBottomNav.vue';
 
 export default {
   data(){
@@ -17,7 +19,7 @@ export default {
     };
   },
   components: {
-    NavigationDrawer,
+    TheTopNavbar, TheBottomNav
   },
   watch:{
   '$route.meta'({hideNavigation}){
