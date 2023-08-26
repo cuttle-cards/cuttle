@@ -36,10 +36,10 @@ services:
     hostname: server
     environment:
       - CUTTLE_DOCKERIZED=true
-      - DATABASE_URL=postgresql://cuttlesworth:p4ssw0rd!@cuttle-database:5432/cuttle
+      - DATABASE_URL=postgresql://cuttlesworth:p4ssw0rd!@database:5432/cuttle
       # Can set this to staging for the postgres database to work in docker but may need to modify
       # the onlyAllowOrigins setting in `config/env/staging.js` file
-      - NODE_ENV=dev
+      - NODE_ENV=staging
       - VITE_API_URL=http://localhost:1337
       - VITE_BUILD_OUTPUT=assets
     # No env file because docker is different :)
