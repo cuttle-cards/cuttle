@@ -19,6 +19,11 @@ const seasonFixtures = [
     endTime: dayjs('2022-03-16 18:00').valueOf(),
   },
   {
+    name: 'Hearts 2023',
+    startTime: dayjs('2023-07-06 18:00').valueOf(),
+    endTime: dayjs('2023-10-05 18:00').valueOf(),
+  },
+  {
     name: 'Future Spades Season',
     startTime: dayjs().add(1, 'year').valueOf(),
     endTime: dayjs().add(1, 'year').valueOf(),
@@ -263,6 +268,64 @@ const seasonTwoMatches = [
   },
 ];
 
+const seasonFourMatches = [
+  ////////////
+  // Week 1 //
+  ////////////
+  // Player 1 week 1
+  {
+    player1: 'player1',
+    player2: 'player2',
+    winner: 'player2',
+    startTime: dayjs('2023-07-20', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2023-07-20', 'yyyy-mm-dd').valueOf(),
+  },
+  {
+    player1: 'player1',
+    player2: 'player3',
+    winner: 'player1',
+    startTime: dayjs('2023-08-20', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2023-08-20', 'yyyy-mm-dd').valueOf(),
+  },
+  {
+    player1: 'player1',
+    player2: 'player4',
+    winner: 'player4',
+    startTime: dayjs('2023-08-25', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2023-08-25', 'yyyy-mm-dd').valueOf(),
+  },
+  // Player 2 week 1
+  {
+    player1: 'player2',
+    player2: 'player3',
+    winner: 'player3',
+    startTime: dayjs('2023-09-15', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2023-09-15', 'yyyy-mm-dd').valueOf(),
+  },
+  {
+    player1: 'player2',
+    player2: 'player4',
+    winner: 'player2',
+    startTime: dayjs('2023-09-20', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2023-09-20', 'yyyy-mm-dd').valueOf(),
+  },
+  // Player 3 week 1
+  {
+    player1: 'player3',
+    player2: 'player4',
+    winner: 'player3',
+    startTime: dayjs('2023-10-09', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2023- 10-09', 'yyyy-mm-dd').valueOf(),
+  },
+  {
+    player1: 'player3',
+    player2: 'player5',
+    winner: 'player3',
+    startTime: dayjs('2023-10-15', 'yyyy-mm-dd').valueOf(),
+    endTime: dayjs('2023-10-15', 'yyyy-mm-dd').valueOf(),
+  },
+];
+
 const seasonThreeMatches = [
   ////////////
   // Week 1 //
@@ -462,6 +525,49 @@ const seasonTwoGames = [
     p1: 'player2',
   },
 ];
+const seasonFourGames = [
+  // Week 1
+  {
+    name: 'Hearts Week 1, Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2023-08-20').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  // Week 2
+  {
+    name: 'Hearts Week 2, Game 1',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2023-08-27').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  {
+    name: 'Hearts Week 2, Game 2',
+    status: false,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    result: 0,
+    updatedAt: dayjs('2023-08-28').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+];
 
 const gamesWithoutASeason = [
   {
@@ -492,8 +598,8 @@ const gamesWithoutASeason = [
   },
 ];
 
-const gameFixtures = [...seasonOneGames, ...seasonTwoGames, ...gamesWithoutASeason];
+const gameFixtures = [...seasonOneGames, ...seasonTwoGames, ...seasonFourGames ,...gamesWithoutASeason];
 
-const matchesFixture = [...seasonOneMatches, ...seasonTwoMatches, ...seasonThreeMatches];
+const matchesFixture = [...seasonOneMatches, ...seasonTwoMatches, ...seasonFourMatches ,...seasonThreeMatches];
 
 export { seasonFixtures, matchesFixture, gameFixtures };
