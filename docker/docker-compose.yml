@@ -46,7 +46,7 @@ services:
     # env_file:
     build:
       context: ..
-      dockerfile: ./docker/.Dockerfile
+      dockerfile: ./docker/Dockerfile
     command: npm run start:server
     ports:
       - "1337:1337"
@@ -64,7 +64,7 @@ services:
     # env_file:
     build:
       context: ..
-      dockerfile: ./docker/.Dockerfile
+      dockerfile: ./docker/Dockerfile
     command: npm run start:client
     ports:
       - "8080:8080"

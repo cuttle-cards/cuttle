@@ -4,8 +4,8 @@ WORKDIR /cuttle/
 
 ENV NPM_CONFIG_LOGLEVEL=notice
 
-RUN apt-get update
-RUN apt-get clean
+RUN apt-get update && \
+  apt-get clean
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -19,4 +19,5 @@ COPY . .
 # commands. Can probably use staged builds to share some logic and then only pull out the required
 # files before building the artifact.
 
-RUN echo "Running 'npm ci', this may take a while..." && npm ci
+RUN echo "Running 'npm ci', this may take a while..." && \
+  npm ci
