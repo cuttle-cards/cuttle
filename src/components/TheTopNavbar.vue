@@ -48,6 +48,7 @@
       <v-btn
         variant="text"
         v-for="({ text, icon, page }, i) in pageLinks"
+        :data-cy="text"
         :key="i"
         :title="text"
         :to="page"
