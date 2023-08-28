@@ -14,7 +14,7 @@ COPY package*.json .
 # files before building the artifact.
 
 RUN echo "Running 'npm ci', this may take a while..." && \
-  npm ci
+  npm ci --legacy-peer-deps
 
 # Bundle app source
 COPY . .
