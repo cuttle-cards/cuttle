@@ -17,6 +17,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   let HOST_SERVER_URL = 'http://localhost:1337';
   if (env.CUTTLE_DOCKERIZED === 'true') {
+    // This needs to be the hostname of the docker container, not localhost since it happens
+    // on the server side as a proxy from vite server to the sailsjs container
     HOST_SERVER_URL = 'http://server:1337';
     console.log('');
     console.log(`Running Cuttle in DOCKER, setting server url to "${HOST_SERVER_URL}"`);

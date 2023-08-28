@@ -12,12 +12,12 @@ RUN apt-get update && \
 # where available (npm@5+)
 COPY package*.json .
 
-# Bundle app source
-COPY . .
-
 # There is definitely a better way to do this -- both cuttle client and server need to use these
 # commands. Can probably use staged builds to share some logic and then only pull out the required
 # files before building the artifact.
 
 RUN echo "Running 'npm ci', this may take a while..." && \
   npm ci
+
+# Bundle app source
+COPY . .

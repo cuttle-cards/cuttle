@@ -1,4 +1,10 @@
-## Project setup and development
+# Project Setup and Development
+
+## Docker Development
+
+See [Docker](./docker/docker.md) Instructions.
+
+## Local Development
 
 ### Download nodeJs
 
