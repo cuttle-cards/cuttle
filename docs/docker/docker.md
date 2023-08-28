@@ -43,3 +43,5 @@ You can connect to the db via `postgresql://cuttlesworth:p4ssw0rd!@database:5432
 
 ![Architectural Diagram](./architecture-diagram.png)
 
+[Diagram](./architecture-diagram.drawio) can be edited on [draw.io](https://app.diagrams.net/).
+
