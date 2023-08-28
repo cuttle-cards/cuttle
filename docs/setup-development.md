@@ -2,7 +2,7 @@
 
 ## Docker Development
 
-See [Docker](./docker/docker.md) Instructions.
+Cuttle can optionally be run with docker for maximal consistency. See [Docker](./docker/docker.md) Instructions.
 
 ## Local Development
 
