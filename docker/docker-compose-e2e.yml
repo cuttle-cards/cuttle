@@ -1,0 +1,35 @@
+# This file is only meant to be run as an override to docker-compose.yml
+# see https://docs.docker.com/compose/extends/#multiple-compose-files
+services:
+  client:
+    environment:
+      - CUTTLE_DOCKERIZED=true
+      - VITE_API_URL=http://server:1337
+      - VITE_BUILD_OUTPUT=assets
+  e2e:
+    container_name: e2e
+    build:
+      context: ..
+      dockerfile: ./docker/Cypress.Dockerfile
+    environment:
+      - CUTTLE_DOCKERIZED=true
+      - VITE_API_URL=http://client:8080
+      - VITE_BUILD_OUTPUT=assets
+    command: npm run e2e:client
+    working_dir: /e2e
+    # mount the host directory e2e/cypress and the file e2e/cypress.config.js as
+    # volumes within the container
+    # this means that:
+    #  1. anything that Cypress writes to these folders (e.g., screenshots,
+    #     videos) appears also on the Docker host's filesystem
+    #  2. any change that the developer applies to Cypress files on the host
+    #     machine immediately takes effect within the e2e container (no docker
+    #     rebuild required).
+    volumes:
+      - type: bind
+        source: ../
+        target: /e2e
+    depends_on:
+      - database
+      - server
+      - client

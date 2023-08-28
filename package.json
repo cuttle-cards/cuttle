@@ -68,6 +68,7 @@
     "docker:nuke": "docker rmi $(docker images -f=\"reference=cuttle*\" -q --no-trunc) || true; npm run docker:clean",
     "docker:start": "docker compose -f ./docker/docker-compose.yml up",
     "docker:stop": "docker compose -f ./docker/docker-compose.yml down",
+    "docker:e2e": "docker compose -f ./docker/docker-compose.yml -f ./docker/docker-compose-e2e.yml up --exit-code-from e2e",
     "start:serve": "vite preview",
     "start:client": "vite --host",
     "start:server": "node app.js",

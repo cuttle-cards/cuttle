@@ -1,7 +1,5 @@
 FROM node:18.12.1
 
-WORKDIR /cuttle/
-
 ENV NPM_CONFIG_LOGLEVEL=notice
 
 # Install app dependencies

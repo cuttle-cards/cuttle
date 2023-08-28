@@ -50,12 +50,15 @@ services:
     command: npm run start:server
     ports:
       - "1337:1337"
+    working_dir: /cuttle
     volumes: *app-volume
     depends_on:
       - database
 
   client:
     container_name: client
+    # Required to be able to hit http://client:8080 from the Cypress docker container
+    hostname: client
     environment:
       - CUTTLE_DOCKERIZED=true
       - VITE_API_URL=http://localhost:1337
@@ -68,6 +71,7 @@ services:
     command: npm run start:client
     ports:
       - "8080:8080"
+    working_dir: /cuttle
     volumes: *app-volume
     depends_on:
       - server
