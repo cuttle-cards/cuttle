@@ -1,6 +1,6 @@
 <script setup>
 import { parse } from 'marked';
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
   markdown: String,
