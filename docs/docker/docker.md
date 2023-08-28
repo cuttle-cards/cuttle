@@ -13,10 +13,10 @@
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 1. Run `npm run docker:start`
 2. Run `npm run start:devtools` in another tab
-   - If you don't do this, you'll see port `8098` failures in the console
+   - If you don't do this, you'll see port `8098` failures in the browser console when the devtools fail to connect
 3. Go to http://localhost:8080 in your browser
 
-You can connect to the db via `postgresql://cuttlesworth:p4ssw0rd!@database:5432/cuttle` locally, and use something like [DBeaver](https://dbeaver.io/).
+You can connect to the db via `postgresql://cuttlesworth:p4ssw0rd!@database:5432/cuttle` locally, and query or manage migrations with a database administration tool like [DBeaver](https://dbeaver.io/).
 
 ## Architecture
 
@@ -37,7 +37,7 @@ You can connect to the db via `postgresql://cuttlesworth:p4ssw0rd!@database:5432
 ### Postgres Container
 
 - Runs Postgres
-  - Exposed via http://localhost:1337
+  - Exposed via http://localhost:5432
 
 ### Diagram
 
