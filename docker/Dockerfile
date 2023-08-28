@@ -4,9 +4,6 @@ WORKDIR /cuttle/
 
 ENV NPM_CONFIG_LOGLEVEL=notice
 
-RUN apt-get update && \
-  apt-get clean
-
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
