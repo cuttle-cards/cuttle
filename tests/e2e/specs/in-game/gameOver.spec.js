@@ -2,6 +2,7 @@ import { assertGameState, assertLoss, assertVictory, assertStalemate } from '../
 import { seasonFixtures } from '../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree, myUser, opponentOne } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
+import GameStatus from '../../../../utils/GameStatus.json';
 
 const dayjs = require('dayjs');
 
@@ -16,15 +17,19 @@ function goHomeJoinNewGame() {
   cy.log('Joined new game successfully');
 }
 
-function validateMatchResult(match, length, p1, p2) {
+function validateMatchResult(match, length, p1, p2, winnerId) {
   expect(match.player1.id).to.eq(p1);
   expect(match.player2.id).to.eq(p2);
   expect(match.startTime).to.be.greaterThan(0);
   expect(match.games.length).to.eq(length);
+  if (winnerId) {
+    expect(match.winner.id).to.eq(winnerId);
+    expect(match.endTime).to.be.greaterThan(0);
+  }
 }
 
-function validateGameResult({status, winner}, expectedWinner) {
-  cy.expect(status).to.eq(3);
+function validateGameResult({ status, winner }, expectedWinner) {
+  cy.expect(status).to.eq(GameStatus.FINISHED);
   cy.expect(winner).to.eq(expectedWinner);
 }
 
@@ -484,7 +489,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.loginPlayer(playerOne);
     cy.setupGameAsP0(true, true);
   });
-  it.only('Creates a match when two players play a ranked game for the first time this week', function () {
+  it('Creates a match when two players play a ranked game for the first time this week', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
@@ -496,7 +501,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.window()
       .its('cuttle.app.config.globalProperties.$store.state.game')
       .then((game) => {
-        const results = game.currentMatch.games.map(({ status, winner }) => ({ status, winner}));
+        const results = game.currentMatch.games.map(({ status, winner }) => ({ status, winner }));
         validateGameResult(results[0], this.playerOneId);
       });
     cy.get('[data-cy=gameover-go-home]').click();
@@ -527,7 +532,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.window()
       .its('cuttle.app.config.globalProperties.$store.state.game')
       .then((game) => {
-        const results = game.currentMatch.games.map(({status, winner}) => ({status, winner}));
+        const results = game.currentMatch.games.map(({ status, winner }) => ({ status, winner }));
         validateGameResult(results[0], this.playerOneId);
         validateGameResult(results[1], this.playerTwoId);
       });
@@ -557,7 +562,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.window()
       .its('cuttle.app.config.globalProperties.$store.state.game')
       .then((game) => {
-        const results = game.currentMatch.games.map(({status, winner}) => ({status, winner}));
+        const results = game.currentMatch.games.map(({ status, winner }) => ({ status, winner }));
         validateGameResult(results[0], this.playerOneId);
         validateGameResult(results[1], this.playerTwoId);
         validateGameResult(results[2], null);
@@ -667,11 +672,9 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
-      validateMatchResult(currentMatch, 5, this.playerOneId, this.playerTwoId);
+      validateMatchResult(currentMatch, 5, this.playerOneId, this.playerTwoId, this.playerOneId);
       validateGameResult(currentMatch.games[3], null);
       // Match is complete
-      expect(currentMatch.winner.id).to.eq(this.playerOneId);
-      expect(currentMatch.endTime).to.be.greaterThan(0);
       cy.log('Match data is correct after fifth game', res);
     });
 
@@ -688,11 +691,9 @@ describe('Creating And Updating Ranked Matches', () => {
 
       // Expect old match to have no games associated with it
       expect(oldMatch.games.length).to.eq(0);
-      validateMatchResult(currentMatch,5,this.playerOneId, this.playerTwoId);
+      validateMatchResult(currentMatch, 5, this.playerOneId, this.playerTwoId, this.playerOneId);
       validateGameResult(currentMatch.games[3], null);
       // Match is complete
-      expect(currentMatch.winner.id).to.eq(this.playerOneId);
-      expect(currentMatch.endTime).to.be.greaterThan(0);
       cy.log('Match data is correctly unaffected after sixth game', res);
 
       // Confirm game was set to unranked
