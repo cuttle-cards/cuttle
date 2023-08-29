@@ -352,7 +352,7 @@ const seasonOneGames = [
   },
   {
     name: 'Clubs Week 1, Game 3',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
