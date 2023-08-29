@@ -50,8 +50,7 @@ export default {
     },
     oneOff: {
       type: Object,
-      requried: true,
-      default: null,
+      required: true,
     },
     // list of card objects for available twos
     twosInHand: {
