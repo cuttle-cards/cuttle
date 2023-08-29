@@ -1,9 +1,9 @@
+import dayjs from 'dayjs';
 import { assertSnackbarError } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
 import GameStatus from '../../../../utils/GameStatus.json';
-import dayjs from 'dayjs';
 
 function setup() {
   cy.wipeDatabase();
@@ -118,6 +118,7 @@ describe('Home - Game List', () => {
       ]);
       cy.visit('/');
       cy.get('[data-cy=game-list-item]').should('have.length', 1);
+      cy.get('[data-cy=game-list-item]').should('contain', 'New Game');
     });
   });
 
@@ -516,7 +517,7 @@ describe('Home - Create Game', () => {
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
-        expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED'); //status = created
+        expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED');
         expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
       });
   });
