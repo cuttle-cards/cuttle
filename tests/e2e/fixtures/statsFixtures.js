@@ -1,4 +1,5 @@
 const dayjs = require('dayjs');
+const GameStatus = require('../../../utils/GameStatus.json');
 
 const seasonFixtures = [
   {
@@ -325,7 +326,7 @@ const seasonOneGames = [
   // Week 1
   {
     name: 'Clubs Week 1, Game 1',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
@@ -338,7 +339,7 @@ const seasonOneGames = [
   },
   {
     name: 'Clubs Week 1, Game 2',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
@@ -364,7 +365,7 @@ const seasonOneGames = [
   },
   {
     name: 'Clubs Week 1, Game 4',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
@@ -379,7 +380,7 @@ const seasonOneGames = [
   // Week 2
   {
     name: 'Clubs Week 2, Game 1',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
@@ -392,7 +393,7 @@ const seasonOneGames = [
   },
   {
     name: 'Clubs Week 2, Game 2',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
@@ -406,7 +407,7 @@ const seasonOneGames = [
   // Week 4 games
   {
     name: 'Clubs Week 4, Game 1',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
@@ -423,7 +424,7 @@ const seasonTwoGames = [
   // Week 1
   {
     name: 'Diamonds Week 1, Game 1',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
@@ -437,7 +438,7 @@ const seasonTwoGames = [
   // Week 2
   {
     name: 'Diamonds Week 2, Game 1',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
@@ -450,13 +451,13 @@ const seasonTwoGames = [
   },
   {
     name: 'Diamonds Week 2, Game 2',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
     turn: 12,
     isRanked: false,
-    winner:'player1',
+    winner: 'player1',
     updatedAt: dayjs('2022-02-28').valueOf(),
     p0: 'player1',
     p1: 'player2',
@@ -466,7 +467,7 @@ const seasonTwoGames = [
 const gamesWithoutASeason = [
   {
     name: 'Game before first season',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
@@ -479,7 +480,7 @@ const gamesWithoutASeason = [
   },
   {
     name: 'Game after last season',
-    status: 3,
+    status: GameStatus.FINISHED,
     p0Ready: true,
     p1Ready: true,
     passes: 0,
