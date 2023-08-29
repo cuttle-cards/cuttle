@@ -45,12 +45,15 @@ function setup() {
       const matches = matchesFixture.map(transformMatchFixture);
 
       const games = gameFixtures.map((game) => {
-        const winner = game.winner === game.p0 ? this[game.p0] : this[game.p1];
+        let winner = null;
+        if (game.winner) {
+          winner = game.winner === game.p0 ? this[game.p0] : this[game.p1];
+        }
         return {
           ...game,
           p0: this[game.p0] ?? null,
           p1: this[game.p1] ?? null,
-          winner
+          winner,
         };
       });
       cy.loadMatchFixtures(matches);
@@ -254,7 +257,6 @@ describe('Stats Page', () => {
       cy.get('[data-cy=season-select]').should('contain', seasonTwo.name);
     });
   });
-
 });
 
 describe('Usage stats', () => {
@@ -265,7 +267,7 @@ describe('Usage stats', () => {
   });
 
   it('Sends the counts of games played and unique players for each week of each season', () => {
-    cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
+    cy.request('http://localhost:1337/stats').then(({ body: seasons }) => {
       // Clubs 2022 stats
       const clubs2022 = seasons.find(({ name }) => name === 'Clubs 2022');
       expect(clubs2022).not.to.be.undefined;
@@ -283,7 +285,7 @@ describe('Usage stats', () => {
       expect(clubs2022.uniquePlayersPerWeek[3]).to.eq(2);
 
       // Diamonds 2022 stats
-      const diamonds2022 = seasons.find(({name}) => name === 'Diamonds 2022');
+      const diamonds2022 = seasons.find(({ name }) => name === 'Diamonds 2022');
       expect(diamonds2022).not.to.be.undefined;
       // Week 1 stats
       expect(diamonds2022.gameCounts[0]).to.eq(1);
