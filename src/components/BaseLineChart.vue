@@ -18,7 +18,7 @@ export default {
   props: {
     id: {
       type: String,
-      default: 'Line Chart',
+      required: true,
     },
     title: {
       type: String,
@@ -36,9 +36,15 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      chartOptions: {
+  computed: {
+    chartData() {
+      return {
+        labels: this.labels,
+        datasets: this.dataSets,
+      };
+    },
+    chartOptions() {
+      return {
         responsive: true,
         plugins: {
           title: {
@@ -46,14 +52,6 @@ export default {
             display: !!this.title,
           },
         },
-      },
-    };
-  },
-  computed: {
-    chartData() {
-      return {
-        labels: this.labels,
-        datasets: this.dataSets,
       };
     },
   },
