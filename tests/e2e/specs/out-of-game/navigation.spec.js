@@ -20,7 +20,7 @@ describe('Navigation Drawer', () => {
       cy.get('[data-cy=Stats]').click();
       cy.hash().should('equal', '#/stats');
       // Log out
-      cy.get('[data-cy="logout-button"]').click();
+      cy.get('[data-cy="user-menu"]').click();
       cy.get("[data-nav='Log Out']").click();
       cy.hash().should('equal', '#/login');
     }

@@ -1,10 +1,10 @@
 <template>
   <v-app id="app">
-    <the-top-navbar v-if="showNav" />
+    <the-top-navbar :isSmallDevice="isSmallDevice" v-if="showNav" />
     <v-main>
       <router-view />
     </v-main>
-    <the-bottom-nav v-if="showNav"></the-bottom-nav>
+    <the-bottom-nav v-if="showNav && isSmallDevice" />
   </v-app>
 </template>
 
@@ -19,12 +19,18 @@ export default {
     };
   },
   components: {
-    TheTopNavbar, TheBottomNav
+    TheTopNavbar, 
+    TheBottomNav
   },
   watch:{
   '$route.meta'({hideNavigation}){
     this.showNav = !hideNavigation;
   }
+ },
+ computed:{
+    isSmallDevice() {
+      return this.$vuetify.display.smAndDown;
+    },
  }
 };
 </script>
