@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "4.7.2",
+  "version": "4.8.0",
   "dependencies": {
     "lodash": "^4.17.21",
     "dayjs": "^1.11.9",
@@ -59,6 +59,15 @@
   "main": "app.js",
   "private": true,
   "scripts": {
+    "docker:build": "docker compose -f ./docker/docker-compose.yml build --no-cache",
+    "docker:clean:containers": "docker rm $(docker ps -qa --no-trunc --filter \"status=exited\") || true",
+    "docker:clean:images": "docker rmi $(docker images --filter \"dangling=true\" -q --no-trunc) || true",
+    "docker:clean:volumes": "docker volume rm $(docker volume ls -qf dangling=true) || true",
+    "docker:clean": "npm run docker:clean:containers;npm run docker:clean:images;npm run docker:clean:volumes",
+    "docker:down": "docker stop $(docker ps -q)",
+    "docker:nuke": "docker rmi $(docker images -f=\"reference=cuttle*\" -q --no-trunc) || true; npm run docker:clean",
+    "docker:start": "docker compose -f ./docker/docker-compose.yml up",
+    "docker:stop": "docker compose -f ./docker/docker-compose.yml down",
     "start:serve": "vite preview",
     "start:client": "vite --host",
     "start:server": "node app.js",
