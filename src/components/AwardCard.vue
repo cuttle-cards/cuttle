@@ -25,8 +25,8 @@ export default {
       default: '',
     },
     place: {
-      type: String,
-      default: '',
+      type: Number,
+      required: true,
     }, 
   },
   computed: {
