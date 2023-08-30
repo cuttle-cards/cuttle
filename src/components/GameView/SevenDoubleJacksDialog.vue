@@ -1,7 +1,7 @@
 <template>
   <base-dialog
-    v-model="show"
     id="seven-double-jacks-dialog"
+    v-model="show"
     title="Select a Card"
   >
     <template #body>
@@ -54,7 +54,6 @@ export default {
     BaseDialog,
     GameCard,
   },
-  emits: ['resolveSevenDoubleJacks'],
   props: {
     modelValue: {
       type: Boolean,
@@ -69,6 +68,7 @@ export default {
       default: null,
     },
   },
+  emits: ['resolveSevenDoubleJacks'],
   data() {
     return {
       selectedCardId: null,

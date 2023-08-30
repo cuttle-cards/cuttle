@@ -5,13 +5,13 @@
     see https://vuejs.org/guide/components/props.html#one-way-data-flow
   -->
   <v-snackbar
-    :modelValue="modelValue"
-    @update:modelValue="$emit('update:modelValue', $event)"
+    :model-value="modelValue"
     :color="color"
     class="base-snackbar"
     position="fixed"
     location="bottom"
     :data-cy="dataCy"
+    @update:model-value="$emit('update:modelValue', $event)"
   >
     {{ message }}
     <template #actions>
@@ -30,7 +30,6 @@
 <script>
 export default {
   name: 'BaseSnackbar',
-  emits: ['clear', 'update:modelValue'],
   props: {
     modelValue: {
       type: Boolean,
@@ -49,6 +48,7 @@ export default {
       required: true
     }
   },
+  emits: ['clear', 'update:modelValue'],
   methods: {
     clear() {
       this.$emit('clear');

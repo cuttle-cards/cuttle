@@ -1,5 +1,5 @@
 <template>
-  <base-dialog max-width="1250" id="rulesDialog">
+  <base-dialog id="rulesDialog" max-width="1250">
     <template #title>
       <h1>Rules of Cuttle</h1>
       <v-btn icon @click="close">
@@ -172,7 +172,9 @@
       </section>
     </template>
     <template #actions>
-      <v-btn variant="outlined" color="surface-1" @click="close">Got It!</v-btn>
+      <v-btn variant="outlined" color="surface-1" @click="close">
+        Got It!
+      </v-btn>
     </template>
   </base-dialog>
 </template>
@@ -182,10 +184,10 @@ import BaseDialog from '@/components/Global/BaseDialog.vue';
 
 export default {
   name: 'RulesDialog',
-  emits: ['close'],
   components: {
     BaseDialog,
   },
+  emits: ['close'],
   computed: {
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';

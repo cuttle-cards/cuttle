@@ -82,8 +82,7 @@ describe('Home - Game List', () => {
     });
 
     it('Displays placeholder text when no games are available', () => {
-      cy.get('[data-cy=text-if-no-game]').should('have.text', 'No Active Games');
-      cy.contains('p', 'No Active Games');
+      cy.get('[data-cy=text-if-no-game]').should($el => expect($el.text().trim()).to.equal('No Active Games'));
     });
 
     it('Adds a new game to the list when one comes in through the socket', () => {

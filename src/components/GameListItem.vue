@@ -13,7 +13,9 @@
         <p class="game-name" data-cy="game-list-item-name">
           {{ name }}
         </p>
-        <p v-if="!isSpectatable">{{ readyText }} players</p>
+        <p v-if="!isSpectatable">
+          {{ readyText }} players
+        </p>
       </v-col>
       <v-col cols="3" class="list-item__button">
         <!-- Join Button -->
@@ -55,7 +57,6 @@ import GameStatus  from '../../utils/GameStatus.json';
 
 export default {
   name: 'GameListItem',
-  emits: ['error'],
   props: {
     name: {
       type: String,
@@ -94,6 +95,7 @@ export default {
       default: false,
     },
   },
+  emits: ['error'],
   data() {
     return {
       joiningGame: false,

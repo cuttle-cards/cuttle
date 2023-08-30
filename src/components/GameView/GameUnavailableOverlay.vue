@@ -1,12 +1,12 @@
 <template>
   <v-overlay
-    data-cy="unavailable-game-overlay"
     id="unavailable-game-scrim"
+    data-cy="unavailable-game-overlay"
     :model-value="show"
     class="game-overlay text-center d-flex justify-center align-center"
   >
     <div class="overlay-header">
-      <h1 :class="[this.$vuetify.display.xs === true ? 'text-h5' : 'text-h3', ['font-weight-bold']]">
+      <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', ['font-weight-bold']]">
         Oops!
       </h1>
       <p>Looks like this game isn't available</p>
@@ -16,7 +16,7 @@
       class="mt-4"
       data-cy="leave-unavailable-game-button"
       :loading="leavingGame"
-      @click="this.$router.push('/')"
+      @click="$router.push('/')"
     >
       Go Home
     </v-btn>

@@ -1,5 +1,5 @@
 <template>
-  <base-dialog v-model="show" id="four-discard-dialog" title="Discard Two Cards">
+  <base-dialog id="four-discard-dialog" v-model="show" title="Discard Two Cards">
     <template #body>
       <p class="mb-4">
         Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to
@@ -42,13 +42,13 @@ export default {
     BaseDialog,
     GameCard,
   },
-  emits: ['discard'],
   props: {
     modelValue: {
       required: true,
       type: Boolean,
     },
   },
+  emits: ['discard'],
   data() {
     return {
       selectedIds: [],

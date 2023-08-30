@@ -8,8 +8,8 @@
     <!-- Authenticated View -->
     <template v-else>
       <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center">
-        <spectator-list-menu :spectatingUsers="spectatingUsers" :vuetifyDisplay="$vuetify" />
-        <game-menu :isSpectating="isSpectating" />
+        <spectator-list-menu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
+        <game-menu :is-spectating="isSpectating" />
         <v-icon
           v-if="$vuetify.display.xs"
           color="white"
@@ -131,12 +131,18 @@
             @click="drawCard"
           >
             <template v-if="!resolvingSeven">
-              <v-card-actions class="c-deck-count">({{ deckLength }})</v-card-actions>
-              <h1 v-if="deckLength === 0" id="empty-deck-text">PASS</h1>
+              <v-card-actions class="c-deck-count">
+                ({{ deckLength }})
+              </v-card-actions>
+              <h1 v-if="deckLength === 0" id="empty-deck-text">
+                PASS
+              </h1>
             </template>
 
             <template v-if="resolvingSeven">
-              <p class="mt-2">Play from Deck</p>
+              <p class="mt-2">
+                Play from Deck
+              </p>
               <div class="d-flex">
                 <game-card
                   v-if="topCard"
@@ -164,7 +170,9 @@
               <div id="scrap" class="d-flex flex-column align-center">
                 <h3>Scrap</h3>
                 <span>({{ scrap.length }})</span>
-                <v-btn variant="outlined" color="primary" class="mt-4"> View </v-btn>
+                <v-btn variant="outlined" color="primary" class="mt-4">
+                  View
+                </v-btn>
               </div>
             </template>
           </scrap-dialog>
@@ -267,7 +275,9 @@
       <div v-if="$vuetify.display.smAndUp" class="history-container">
         <div id="field-right">
           <div id="history" class="d-flex flex-column justify-start align-center elevation-10">
-            <h3 class="history-title">History</h3>
+            <h3 class="history-title">
+              History
+            </h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
               <p v-for="(log, index) in logs" :key="index" class="my-2">

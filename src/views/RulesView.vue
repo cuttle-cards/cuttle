@@ -8,13 +8,15 @@
           src="/img/logo.png"
           height="20vh"
           class="mb-8"
-        />
+        >
       </v-row>
 
       <!-- Rules -->
       <v-row class="flex-column align-start mt-5">
         <div>
-          <h1 class="gradient-text">Rules of Cuttle</h1>
+          <h1 class="gradient-text">
+            Rules of Cuttle
+          </h1>
           <p class="d-block">
             Cuttle is a two player battle card game played with a standard 52-card deck of cards. It has the
             strategic nuance of trading card games like Magic, with the elegant balance of a standard
@@ -30,18 +32,22 @@
 
       <!-- Tutorial -->
       <v-row class="flex-column align-start mt-5">
-        <h1 class="gradient-text">Tutorial Video</h1>
+        <h1 class="gradient-text">
+          Tutorial Video
+        </h1>
         <p>
           Watch the official cuttle.cards tutorial to learn the rules and get a feel for the flow of the game.
         </p>
         <div class="w-50 my-4 mx-auto">
-          <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI"/>
+          <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI" />
         </div>
       </v-row>
 
       <!-- Goal -->
       <v-row class="flex-column align-start mt-5">
-        <h1 class="gradient-text">Goal</h1>
+        <h1 class="gradient-text">
+          Goal
+        </h1>
         <p class="d-block">
           The goal is to be the first player to have 21 or more points worth of point cards on your field. The
           first player to reach the goal wins immediately. One player (traditionally the dealer) is dealt 6
@@ -51,8 +57,12 @@
 
       <!-- Play -->
       <v-row class="flex-column align-start mt-5">
-        <h1 class="d-block gradient-text">Play</h1>
-        <p class="d-block">On your turn you must perform exactly one of the following actions:</p>
+        <h1 class="d-block gradient-text">
+          Play
+        </h1>
+        <p class="d-block">
+          On your turn you must perform exactly one of the following actions:
+        </p>
       </v-row>
       <v-row
         v-for="(ruleRow, rowIndex) in rules"
@@ -80,7 +90,9 @@
             class="mr-4"
             icon="mid-crown"
           />
-          <h1 class="gradient-text">Royals</h1>
+          <h1 class="gradient-text">
+            Royals
+          </h1>
         </div>
         <p class="d-block">
           Royals (Kings, Queens, and Jacks) may be played to the field for a persistent benefit that remains
@@ -113,7 +125,9 @@
             class="mr-4"
             icon="mdi-delete"
           />
-          <h1 class="gradient-text">One-Offs</h1>
+          <h1 class="gradient-text">
+            One-Offs
+          </h1>
         </div>
         <p>
           Number cards (except 8's and 10's) can be played for a One-Off effect, which scraps the card for an
@@ -140,7 +154,9 @@
 
       <!-- Multiplayer Variants -->
       <v-row class="d-flex flex-column mb-4">
-        <h1 class="gradient-text">Multiplayer Variants</h1>
+        <h1 class="gradient-text">
+          Multiplayer Variants
+        </h1>
         <p class="mb-4">
           Presently only 2-player cuttle is available at
           <a href="https://www.cuttle.cards"> www.cuttle.cards</a>, however Cuttle can be played with 2-4
@@ -207,7 +223,9 @@
 
       <!-- FAQ -->
       <v-row class="d-flex flex-column mb-4">
-        <h1 class="gradient-text">FAQ</h1>
+        <h1 class="gradient-text">
+          FAQ
+        </h1>
         <h3>Can I play a two to counter a point card? What about a scuttle?</h3>
         <p class="mb-4">
           Nope! Twos can only counter One-Offs. You can play a two to destroy a Royal or Glasses Eight, but
@@ -279,6 +297,14 @@ export default {
     RulePreview,
     BaseVideo
 },
+  computed: {
+    buttonText() {
+      if (this.$store.state.auth.username) {
+        return 'Find a Game';
+      }
+      return 'Sign Up to Play Online';
+    },
+  },
   created() {
     this.rules = [
       // First Row
@@ -439,14 +465,6 @@ export default {
         },
       ],
     ];
-  },
-  computed: {
-    buttonText() {
-      if (this.$store.state.auth.username) {
-        return 'Find a Game';
-      }
-      return 'Sign Up to Play Online';
-    },
   },
   methods: {
     handleAnimate(cmp) {
