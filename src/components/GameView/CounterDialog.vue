@@ -31,7 +31,6 @@ export default {
     ChooseWhetherToCounterDialog,
     ChooseTwoDialog,
   },
-  emits: ['counter', 'resolve'],
   props: {
     modelValue: {
       type: Boolean,
@@ -55,6 +54,7 @@ export default {
       required: true,
     },
   },
+  emits: ['counter', 'resolve'],
   data() {
     return {
       choseToCounter: false,

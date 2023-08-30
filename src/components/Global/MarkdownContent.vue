@@ -3,7 +3,10 @@ import { parse } from 'marked';
 import { computed } from 'vue';
 
 const props = defineProps({
-  markdown: String,
+  markdown: {
+      type: String,
+      default: '',
+    },
 });
 
 const text = computed(() => parse(props.markdown, {
@@ -13,7 +16,7 @@ const text = computed(() => parse(props.markdown, {
 </script>
 
 <template>
-  <div class="markdown" v-html="text"></div>
+  <div class="markdown" v-html="text" />
 </template>
 
 <style lang="scss">

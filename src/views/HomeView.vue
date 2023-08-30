@@ -13,25 +13,33 @@
           src="/img/logo.png"
           height="20vh"
           class="mb-4"
-        />
+        >
       </v-row>
       <div id="game-list-card">
         <v-row>
           <v-col :cols="$vuetify.display.mdAndDown ? 12 : 9">
             <div id="card-content-header" class="mb-4">
-              <h1 id="home-card-title">Games</h1>
+              <h1 id="home-card-title">
+                Games
+              </h1>
               <v-row class="create-game-btn">
                 <create-game-dialog @error="handleError" />
               </v-row>
             </div>
             <div id="game-list">
               <v-tabs v-model="tab" bg-color="primary" fixed-tabs>
-                <v-tab :value="TABS.PLAY" data-cy-game-list-selector="play">Play</v-tab>
-                <v-tab :value="TABS.SPECTATE" data-cy-game-list-selector="spectate">Spectate</v-tab>
+                <v-tab :value="TABS.PLAY" data-cy-game-list-selector="play">
+                  Play
+                </v-tab>
+                <v-tab :value="TABS.SPECTATE" data-cy-game-list-selector="spectate">
+                  Spectate
+                </v-tab>
               </v-tabs>
               <v-window v-model="tab" class="pa-4">
                 <v-window-item :value="TABS.PLAY">
-                  <p v-if="playableGameList.length === 0" data-cy="text-if-no-game">No Active Games</p>
+                  <p v-if="playableGameList.length === 0" data-cy="text-if-no-game">
+                    No Active Games
+                  </p>
                   <div v-for="game in playableGameList" :key="game.id">
                     <game-list-item
                       :name="game.name"
@@ -58,8 +66,8 @@
                       :status="game.status"
                       :num-players="game.numPlayers"
                       :is-ranked="game.isRanked"
-                      :isSpectatable="true"
-                      :disableSpectate="game.isOver"
+                      :is-spectatable="true"
+                      :disable-spectate="game.isOver"
                       @error="handleError"
                     />
                   </div>
@@ -73,7 +81,7 @@
               id="logo"
               alt="Cuttle logo"
               src="/img/logo.png"
-            />
+            >
             <v-btn
               variant="outlined"
               color="primary"
@@ -104,15 +112,21 @@
             >
               Discord
             </v-btn>
-            <h6 class="text-h6 mt-4">Looking to Play?</h6>
-            <p class="mt-0">Our weekly play sessions are open to everyone!</p>
+            <h6 class="text-h6 mt-4">
+              Looking to Play?
+            </h6>
+            <p class="mt-0">
+              Our weekly play sessions are open to everyone!
+            </p>
             <ul>
               <li>Wednesday Nights at 8:30pm EST</li>
               <li>Thursdays at 12pm EST</li>
             </ul>
             <p>
               Can't find a match?
-              <v-btn variant="text" href="https://discord.gg/9vrAZ8xGyh">Join our discord</v-btn>
+              <v-btn variant="text" href="https://discord.gg/9vrAZ8xGyh">
+                Join our discord
+              </v-btn>
               to see who's around to play!
             </p>
           </v-col>

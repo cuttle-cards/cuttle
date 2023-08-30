@@ -32,7 +32,6 @@ export default {
   components: {
     GameCard,
   },
-  emits: ['cancel'],
   props: {
     selectedCard: {
       type: Object,
@@ -47,6 +46,7 @@ export default {
       required: true,
     },
   },
+  emits: ['cancel'],
 };
 </script>
 
