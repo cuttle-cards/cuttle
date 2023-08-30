@@ -5,7 +5,7 @@ const userAPI = sails.hooks['customuserhook'];
 
 module.exports = function (req, res) {
   const { gameId } = req.body;
-  Game.subscribe(req, gameId);
+  Game.subscribe(req, [gameId]);
   const promiseClearOldGame = gameService.clearGame({ userId: req.session.usr });
   const promiseGame = gameAPI.findGame(req.body.gameId);
   const promiseUser = userAPI.findUser(req.session.usr);
@@ -18,10 +18,9 @@ module.exports = function (req, res) {
       const gameIsFull = sails.helpers.isGameFull(game);
       if (gameIsFull) {
         // Ensure game is closed for future
-        await Game.updateOne({ id: game.id })
-          .set({
-            status: false
-          });
+        await Game.updateOne({ id: game.id }).set({
+          status: false,
+        });
         throw { message: `Cannot join that game because it's already full` };
       }
       // Does the user already have a pnum for this game?
