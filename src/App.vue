@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <the-top-navbar :isSmallDevice="isSmallDevice" v-if="showNav" />
+    <the-top-navbar v-if="showNav" :isSmallDevice="isSmallDevice" />
     <v-main>
       <router-view />
     </v-main>

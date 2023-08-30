@@ -28,8 +28,9 @@ export default function usePageLinks() {
       ];
     
   });
-
-  const menuItems = [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } },];
+  const menuItems = computed(() => {
+    return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } },]
+  });
 
   return { pageLinks, menuItems };
 }

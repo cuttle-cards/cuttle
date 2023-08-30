@@ -29,7 +29,7 @@
         <img
           id="logo"
           alt="Cuttle logo"
-          src="/public/img/cuttle_logo_text_white.svg"
+          src="/img/cuttle_logo_text_white.svg"
           width="60"
           height="60"
           class="ma-md-auto"
