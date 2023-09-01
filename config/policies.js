@@ -75,8 +75,7 @@ module.exports.policies = {
   /////////////////////////////////
   // DEVELOPMENT Or Staging ONLY //
   /////////////////////////////////
-  'game/stack-deck': 'developmentOrStagingOnly',
-  'game/clear-game': 'developmentOrStagingOnly',
+
   'game/load-fixture': 'developmentOrStagingOnly',
 
   TestController: {

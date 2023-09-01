@@ -89,9 +89,7 @@ module.exports.routes = {
   '/game/chat': 'game/chat',
   '/game/gameData': 'game/game-data',
   // DEVELOPMENT ONLY
-  '/game/stackDeck': 'game/stack-deck',
-  '/game/loadFixture': 'game/load-fixture',
-  '/game/clear': 'game/clear-game',
+
 
   // Testing helpers
   '/test/wipeDatabase': 'TestController.wipeDatabase',
