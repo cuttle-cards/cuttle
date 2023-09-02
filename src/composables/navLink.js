@@ -9,28 +9,30 @@ import {
   ROUTE_NAME_LOGOUT
 } from '@/router.js';
 
-export default function usePageLinks() {
+export function getPageLinks() {
   const store = useStore();
   const { t } = useI18n();
 
-  const pageLinks = computed(() => {
-    const {authenticated} = store.state.auth;
+  return computed(() => {
+    const { authenticated } = store.state.auth;
     if (!authenticated) {
       return [
         { text: t('global.login'), icon: 'login', page: { name: ROUTE_NAME_LOGIN } },
         { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES } },
       ];
     } 
-      return [
-        { text: t('global.play'), icon: 'play', page: { name: ROUTE_NAME_HOME } },
-        { text: t('global.stats'), icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
-        { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES } },
-      ];
-    
+    return [
+      { text: t('global.play'), icon: 'play', page: { name: ROUTE_NAME_HOME } },
+      { text: t('global.stats'), icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
+      { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES } },
+    ];
   });
-  const menuItems = computed(() => {
-    return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } },];
-  });
+}
 
-  return { pageLinks, menuItems };
+export function getMenuItems() {
+  const { t } = useI18n();
+
+  return computed(() => {
+    return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } }];
+  });
 }

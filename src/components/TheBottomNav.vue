@@ -18,13 +18,13 @@
 </template>
 
 <script>
-import usePageLinks from '../composables/navLink.js';
+import { getPageLinks } from '../composables/navLink.js';
 
 export default {
 name: 'TheBottomNav',
   setup() {
-    const { pageLinks } = usePageLinks();
-    return { pageLinks };
+    const pageLinks = getPageLinks();
+    return { pageLinks } ;
   },
 };
 </script>

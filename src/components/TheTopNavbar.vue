@@ -2,30 +2,7 @@
   <v-toolbar data-cy="nav-drawer" color="primary">
     <v-toolbar-title>
       <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between" style="cursor: pointer">
-        <v-menu  transition="slide-x-transition">
-          <template #activator="{ props }">
-            <v-btn
-              data-cy="user-menu"
-              class="hidden-xs-only d-flex text-body-1"
-              v-bind="props"
-              variant="text"
-            >
-              <v-icon icon="mdi-account-circle" />
-              {{$store.state.auth.username}}
-            </v-btn>
-          </template>
-          <v-list density="compact" class="bg-surface-2 text-surface-1">
-            <v-list-item
-              v-for="({ text, icon, page }, i) in menuItems"
-              :key="i"
-              :prepend-icon="`mdi-${icon}`"
-              :title="text"
-              :to="page"
-              exact
-              :data-nav="text"
-            />
-          </v-list>
-        </v-menu>
+        <TheUserMenu />
         <img
           id="logo"
           alt="Cuttle logo"
@@ -56,20 +33,23 @@
 </template>
 
 <script>
-
-import usePageLinks from '../composables/navLink.js';
+import { getPageLinks } from '../composables/navLink.js';
+import TheUserMenu from '../components/TheUserMenu.vue';
 
 export default {
 name: 'TheTopNavbar',
-props: {
+  components: {
+    TheUserMenu
+  },
+  props: {
     isSmallDevice: {
       type: Boolean,
       required: true,
     },
   },
   setup() {
-    const { pageLinks, menuItems } = usePageLinks();
-    return { pageLinks, menuItems };
+    const pageLinks = getPageLinks();
+    return { pageLinks };
   },
 };
 </script>
