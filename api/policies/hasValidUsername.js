@@ -8,7 +8,7 @@
  *
  */
 module.exports = function (req, res, next) {
-  const username = req.body.username.trim();
+  const username = req.body.username?.trim();
 
   if (!username) {
     return res.badRequest({ message: 'Please provide a non-empty username' });
