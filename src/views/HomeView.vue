@@ -146,6 +146,7 @@ import { mapState } from 'vuex';
 import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '@/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
+import GameStatus from '../../utils/GameStatus.json';
 
 const TABS = {
   PLAY: 'play',
@@ -185,7 +186,7 @@ export default {
       this.showSnackBar = false;
     },
     handleSubscribeError(gameId, message) {
-      this.$store.commit('updateGameStatus', {id: gameId, newStatus: false});
+      this.$store.commit('updateGameStatus', {id: gameId, newStatus: GameStatus.STARTED});
       this.handleError(message);
     },
     handleError(message) {
