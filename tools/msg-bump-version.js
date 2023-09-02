@@ -12,10 +12,10 @@ const msg = `
                 K.=,;.__ /^~/___..'''
                         /  /'
 
-  Don't forget to bump the version in package.json!
-    - patch: 0.0.X
-    - minor: 0.X.0
-    - major: X.0.0
+  Don't forget to bump the version in the package files!
+    - npm run version:patch (0.0.X)
+    - npm run version:minor (0.X.0)
+    - npm run version:major (X.0.0)
 
 `;
 
