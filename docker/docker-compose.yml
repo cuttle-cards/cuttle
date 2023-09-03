@@ -39,7 +39,7 @@ services:
       - DATABASE_URL=postgresql://cuttlesworth:p4ssw0rd!@database:5432/cuttle
       # Can set this to staging for the postgres database to work in docker but may need to modify
       # the onlyAllowOrigins setting in `config/env/staging.js` file
-      - NODE_ENV=staging
+      - NODE_ENV=development
       - VITE_API_URL=http://localhost:1337
       - VITE_BUILD_OUTPUT=assets
     # No env file because docker is different :)
@@ -47,7 +47,7 @@ services:
     build:
       context: ..
       dockerfile: ./docker/Dockerfile
-    command: npm run start:server
+    command: npm run build;npm run start:server
     ports:
       - "1337:1337"
     volumes: *app-volume
