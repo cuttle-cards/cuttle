@@ -15,20 +15,20 @@ x-app-volume:
       target: /cuttle/src
 
 services:
-  database:
-    container_name: database
-    image: 'postgres:latest'
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_DB=cuttle
-      - POSTGRES_USER=cuttlesworth
-      - POSTGRES_PASSWORD=p4ssw0rd!
-      # Allow all connections, no password required (not recommended)
-      # - POSTGRES_HOST_AUTH_METHOD=trust
-    volumes:
-      - ./data/pgdata:/var/lib/postgresql/data
-    restart: always
+  # database:
+  #   container_name: database
+  #   image: 'postgres:latest'
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     - POSTGRES_DB=cuttle
+  #     - POSTGRES_USER=cuttlesworth
+  #     - POSTGRES_PASSWORD=p4ssw0rd!
+  #     # Allow all connections, no password required (not recommended)
+  #     # - POSTGRES_HOST_AUTH_METHOD=trust
+  #   volumes:
+  #     - ./data/pgdata:/var/lib/postgresql/data
+  #   restart: always
 
   server:
     container_name: server
@@ -47,12 +47,12 @@ services:
     build:
       context: ..
       dockerfile: ./docker/Dockerfile
-    command: npm run build;npm run start:server
+    command: npm run start:server
     ports:
       - "1337:1337"
     volumes: *app-volume
-    depends_on:
-      - database
+    # depends_on:
+    #   - database
 
   client:
     container_name: client
