@@ -21,12 +21,10 @@
       bg-color="surface-2"
       data-cy="spectate-list-menu"
     >
-      <v-list v-if="spectatingUsers.length > 0">
+      <v-list v-if="spectatingUsers.length > 0" color="surface-1" bg-color="surface-2">
         <v-list-item-title>Spectators</v-list-item-title>
         <v-list-item v-for="spectator in spectatingUsers" :key="spectator">
-          {{
-            spectator
-          }}
+          {{ spectator }}
         </v-list-item>
       </v-list>
       <div v-else>
