@@ -57,7 +57,7 @@ jobs:
           start: npm run docker:start
           config-file: cypress.config.js
           # wait for 5 minutes for the server to respond
-          wait-on: 'http://localhost:1337'
+          wait-on: 'http://localhost:8080'
           wait-on-timeout: 300
         env:
           VITE_API_URL: http://localhost:1337
