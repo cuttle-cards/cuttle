@@ -1,20 +1,27 @@
 <template>
-  <v-bottom-navigation
-    bg-color="primary"
-    :elevation="0"
-    grow
-  >
-    <v-btn
-      variant="text"
-      v-for="({ text, icon, page }, i) in pageLinks"
-      :key="i"
-      :title="text"
-      :to="page"
+  <footer>
+    <v-bottom-navigation
+      bg-color="primary"
+      :elevation="0"
+      grow
     >
-      <v-icon>{{`mdi-${icon}`}}</v-icon>
-      {{ text }}
-    </v-btn>
-  </v-bottom-navigation>
+      <v-btn
+        variant="text"
+        v-for="({ text, icon, page }, i) in pageLinks"
+        :key="i"
+        :title="text"
+        :to="page"
+      >
+        <v-icon
+          :icon="`mdi-${icon}`"
+          :aria-label="text"
+          aria-hidden="false"
+          role="img"
+        />
+        {{ text }}
+      </v-btn>
+    </v-bottom-navigation>
+  </footer>
 </template>
 
 <script setup>

@@ -6,7 +6,6 @@ import {
   ROUTE_NAME_LOGIN,
   ROUTE_NAME_RULES,
   ROUTE_NAME_STATS,
-  ROUTE_NAME_LOGOUT
 } from '@/router.js';
 
 export function getPageLinks() {
@@ -29,10 +28,4 @@ export function getPageLinks() {
   });
 }
 
-export function getMenuItems() {
-  const { t } = useI18n();
 
-  return computed(() => {
-    return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } }];
-  });
-}
