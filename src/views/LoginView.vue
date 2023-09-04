@@ -4,9 +4,9 @@
      /////Welcome Section /////
     //////////////////////////-->
     <section>
-      <v-container fluid id="welcome-container" class="welcomeContainer">
+      <v-container id="welcome-container" fluid class="welcomeContainer">
         <nav class="d-flex justify-space-between align-center mb-2">
-          <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg" />
+          <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
           <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
             {{ buttonText }}
             <v-icon icon="mdi-account-circle" color="white" class="ml-2" />
@@ -15,7 +15,9 @@
 
         <div class="d-flex h-75 flex-column justify-space-around align-center mt-2">
           <h1>{{ t('login.title') }}</h1>
-          <p class="text-h4 mb-4">{{ t('login.subtitle') }}</p>
+          <p class="text-h4 mb-4">
+            {{ t('login.subtitle') }}
+          </p>
           <div class="w-75 my-4 video">
             <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI" />
             <v-btn
@@ -38,7 +40,7 @@
 
     <section ref="loginContainer">
       <v-container id="login-container" class="container">
-        <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
+        <img id="logo" alt="Cuttle logo" src="/img/logo.png">
         <v-row>
           <!-- Left side form -->
           <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12">
@@ -114,7 +116,7 @@
                 href="https://discord.com/invite/9vrAZ8xGyh"
                 target="_blank"
               >
-                <img class="discord" src="/img/loginView/logo-discord.svg" />
+                <img class="discord" src="/img/loginView/logo-discord.svg">
                 {{ t('login.joinDiscord') }}
               </v-btn>
             </v-form>
@@ -128,7 +130,6 @@
           </v-col>
         </v-row>
       </v-container>
-
     </section>
 
     <!--/////////////////////////
@@ -137,7 +138,7 @@
     <section>
       <v-container fluid class="quote text-h5 text-center d-flex flex-column align-center">
         <blockquote>{{ t('login.quote') }}</blockquote>
-        <br />
+        <br>
         <cite>{{ t('login.quoteCite') }}</cite>
       </v-container>
     </section>
@@ -149,12 +150,12 @@
             <div class="px-8">
               <MarkdownContent :markdown="t('login.content')" />
             </div>
-            <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-1.png" />
+            <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-1.png">
           </div>
         </v-col>
         <v-col :cols="$vuetify.display.mdAndUp ? 10 : 12" class="mx-auto">
           <div class="d-flex flex-md-row flex-column-reverse align-center text-h5 my-10">
-            <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-2.png" />
+            <img class="w-50 h-50 my-6" src="/img/loginView/game-screenshot-2.png">
             <div class="px-8">
               <MarkdownContent :markdown="t('login.content2')" />
             </div>
@@ -221,6 +222,11 @@ export default {
       return this.t('login.haveAccount');
     },
   },
+ mounted() {
+    if (this.isLoggingIn) {
+      this.scrollAndFocusLogin();
+    }
+  },
   methods: {
     async submitLogin() {
       this.loading = true;
@@ -269,11 +275,6 @@ export default {
       this.$refs.loginContainer.scrollIntoView();
       this.$refs.usernameInput.focus();
     },
-  },
- mounted() {
-    if (this.isLoggingIn) {
-      this.scrollAndFocusLogin();
-    }
   },
 };
 </script>

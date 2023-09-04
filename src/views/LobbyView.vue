@@ -2,7 +2,7 @@
   <v-container id="lobby-wrapper">
     <v-row>
       <v-col sm="3" md="1" class="my-auto">
-        <img id="logo" alt="Cuttle logo" src="/img/logo.png" />
+        <img id="logo" alt="Cuttle logo" src="/img/logo.png">
       </v-col>
       <v-col md="8" class="my-auto">
         <h1>
@@ -23,8 +23,8 @@
         />
       </v-col>
       <v-col offset="1">
-        <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3"></audio>
-        <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3"></audio>
+        <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
+        <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
         <lobby-player-indicator
           :player-username="opponentUsername"
           :player-ready="opponentIsReady"
@@ -84,19 +84,6 @@ export default {
       readying: false,
     };
   },
-  watch: {
-    opponentUsername(newVal) {
-      if (newVal) {
-        if (this.$refs.enterLobbySound.readyState === 4) {
-          this.$refs.enterLobbySound.play();
-        }
-      } else {
-        if (this.$refs.leaveLobbySound.readyState === 4) {
-          this.$refs.leaveLobbySound.play();
-        }
-      }
-    },
-  },
   computed: {
     ...mapState({
       isRanked: ({ game }) => game.isRanked,
@@ -115,6 +102,19 @@ export default {
     },
     readyButtonText() {
       return this.iAmReady ? 'UNREADY' : 'READY';
+    },
+  },
+  watch: {
+    opponentUsername(newVal) {
+      if (newVal) {
+        if (this.$refs.enterLobbySound.readyState === 4) {
+          this.$refs.enterLobbySound.play();
+        }
+      } else {
+        if (this.$refs.leaveLobbySound.readyState === 4) {
+          this.$refs.leaveLobbySound.play();
+        }
+      }
     },
   },
   methods: {

@@ -22,21 +22,21 @@
     />
     <transition :name="scuttledByTransition">
       <template v-if="scuttledBy">
-        <img :class="scuttledByClass" :src="`/img/cards/card-${scuttledBy.suit}-${scuttledBy.rank}.svg`" />
+        <img :class="scuttledByClass" :src="`/img/cards/card-${scuttledBy.suit}-${scuttledBy.rank}.svg`">
       </template>
     </transition>
     <img
       v-if="isGlasses"
       :src="`/img/cards/glasses-${suitName.toLowerCase()}.png`"
       :alt="`Glasses - $${cardName}`"
-    />
+    >
     <img
       v-else-if="isBack"
       src="/img/cards/card-back.png"
       class="opponent-card-back"
       alt="card back"
-    />
-    <img v-else :src="`/img/cards/card-${suit}-${rank}.svg`" :alt="cardName" />
+    >
+    <img v-else :src="`/img/cards/card-${suit}-${rank}.svg`" :alt="cardName">
   </v-card>
 </template>
 

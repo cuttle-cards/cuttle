@@ -1,7 +1,7 @@
 <template>
   <base-dialog
-    v-model="show"
     id="scrap-dialog"
+    v-model="show"
     scrollable="true"
     :persistent="false"
   >

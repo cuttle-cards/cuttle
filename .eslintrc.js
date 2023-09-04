@@ -11,7 +11,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  extends: ['eslint:recommended', 'plugin:vue/base', 'plugin:vuetify/base'],
+  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base'],
   plugins: ['cypress', 'vitest', 'prettier'],
   ignorePatterns: ['/node_modules/*', '/assets/*'],
   rules: {

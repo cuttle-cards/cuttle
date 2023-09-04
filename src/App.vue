@@ -11,13 +11,13 @@
 import NavigationDrawer from '@/components/NavigationDrawer.vue';
 
 export default {
+  components: {
+    NavigationDrawer,
+  },
   data(){
     return{
       showNav: false,
     };
-  },
-  components: {
-    NavigationDrawer,
   },
   watch:{
   '$route.meta'({hideNavigation}){

@@ -18,10 +18,10 @@ function setup() {
       const seasons = seasonFixtures.map((season) => {
         return {
           ...season,
-          firstPlace: season.firstPlace ? this[season.firstPlace] : null,
-          secondPlace: season.secondPlace ? this[season.secondPlace] : null,
-          thirdPlace: season.thirdPlace ? this[season.thirdPlace] : null,
-          fourthPlace: season.fourthPlace ? this[season.fourthPlace] : null,
+          firstPlace: this[season.firstPlace] ?? null,
+          secondPlace: this[season.secondPlace] ?? null,
+          thirdPlace: this[season.thirdPlace] ?? null,
+          fourthPlace: this[season.fourthPlace] ?? null,
         };
       });
       // Convert usernames to ids
@@ -45,10 +45,15 @@ function setup() {
       const matches = matchesFixture.map(transformMatchFixture);
 
       const games = gameFixtures.map((game) => {
+        let winner = null;
+        if (game.winner) {
+          winner = game.winner === game.p0 ? this[game.p0] : this[game.p1];
+        }
         return {
           ...game,
           p0: this[game.p0] ?? null,
           p1: this[game.p1] ?? null,
+          winner,
         };
       });
       cy.loadMatchFixtures(matches);
@@ -252,7 +257,6 @@ describe('Stats Page', () => {
       cy.get('[data-cy=season-select]').should('contain', seasonTwo.name);
     });
   });
-
 });
 
 describe('Usage stats', () => {
@@ -263,9 +267,9 @@ describe('Usage stats', () => {
   });
 
   it('Sends the counts of games played and unique players for each week of each season', () => {
-    cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
+    cy.request('http://localhost:1337/stats').then(({ body: seasons }) => {
       // Clubs 2022 stats
-      const clubs2022 = seasons.find(({name}) => name === 'Clubs 2022');
+      const clubs2022 = seasons.find(({ name }) => name === 'Clubs 2022');
       expect(clubs2022).not.to.be.undefined;
       // Week 1 stats
       expect(clubs2022.gameCounts[0]).to.eq(4);
@@ -281,7 +285,7 @@ describe('Usage stats', () => {
       expect(clubs2022.uniquePlayersPerWeek[3]).to.eq(2);
 
       // Diamonds 2022 stats
-      const diamonds2022 = seasons.find(({name}) => name === 'Diamonds 2022');
+      const diamonds2022 = seasons.find(({ name }) => name === 'Diamonds 2022');
       expect(diamonds2022).not.to.be.undefined;
       // Week 1 stats
       expect(diamonds2022.gameCounts[0]).to.eq(1);

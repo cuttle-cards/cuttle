@@ -1,3 +1,5 @@
+const dayjs = require('dayjs');
+
 module.exports = function gameHook() {
   //////////////
   // Game API //
@@ -7,7 +9,7 @@ module.exports = function gameHook() {
       return new Promise(function (resolve, reject) {
         Game.create({
           name: gameName,
-          status: true,
+          status: gameService.GameStatus.CREATED,
           isRanked: isRanked === true,
         })
           .fetch()
@@ -27,7 +29,11 @@ module.exports = function gameHook() {
     },
     findOpenGames: function () {
       return new Promise(function (resolve, reject) {
-        Game.find({ status: true })
+        const recentUpdateThreshhold = dayjs().subtract(1, 'day').valueOf();
+        Game.find({
+          status: gameService.GameStatus.CREATED,
+          createdAt: { '>=': recentUpdateThreshhold }
+        })
           .populate('players')
           .exec(function (error, games) {
             if (error) {
@@ -35,7 +41,8 @@ module.exports = function gameHook() {
             } else if (!games) {
               return reject({ message: "Can't find games" });
             }
-            return resolve(games);
+            const openGames = games.filter(({ players }) => players.length < 2);
+            return resolve(openGames);
           });
       });
     },

@@ -13,8 +13,6 @@ module.exports = function (req, res) {
       } else {
         gameUpdates.p1Ready = false;
       }
-      // Update models
-      gameUpdates.status = true;
 
       // Unsubscribe user from updates to this game
       Game.unsubscribe(req, [game.id]);

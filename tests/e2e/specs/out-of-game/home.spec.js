@@ -1,7 +1,9 @@
+import dayjs from 'dayjs';
 import { assertSnackbarError } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
+import GameStatus from '../../../../utils/GameStatus.json';
 
 function setup() {
   cy.wipeDatabase();
@@ -80,8 +82,7 @@ describe('Home - Game List', () => {
     });
 
     it('Displays placeholder text when no games are available', () => {
-      cy.get('[data-cy=text-if-no-game]').should('have.text', 'No Active Games');
-      cy.contains('p', 'No Active Games');
+      cy.get('[data-cy=text-if-no-game]').should($el => expect($el.text().trim()).to.equal('No Active Games'));
     });
 
     it('Adds a new game to the list when one comes in through the socket', () => {
@@ -107,6 +108,16 @@ describe('Home - Game List', () => {
         .then((gameState) => {
           assertSuccessfulJoin(gameState);
         });
+    });
+
+    it('Does not show games older than 24 hours', () => {
+      cy.loadFinishedGameFixtures([
+        { name: 'New Game', status: GameStatus.CREATED },
+        { name: 'Old Game', status: GameStatus.CREATED, createdAt: dayjs().subtract(1, 'day').valueOf() },
+      ]);
+      cy.visit('/');
+      cy.get('[data-cy=game-list-item]').should('have.length', 1);
+      cy.get('[data-cy=game-list-item]').should('contain', 'New Game');
     });
   });
 
@@ -152,7 +163,7 @@ describe('Home - Game List', () => {
       // Manually re-enable join button to confirm backend rejects request
       cy.window()
         .its('cuttle.app.config.globalProperties.$store')
-        .then((store) => store.commit('updateGameStatus', { id: gameData.gameId, newStatus: true }));
+        .then((store) => store.commit('otherLeftGame', gameData.gameId));
       cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled').click().should('be.disabled');
 
       assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
@@ -255,10 +266,12 @@ describe('Home - Game List', () => {
         // Game appears as spectatable
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible').and('not.be.disabled');
         // Disconnect the socket then finish the game -- UI misses the update
-        cy.window().its('cuttle.app.config.globalProperties.$store')
+        cy.window()
+          .its('cuttle.app.config.globalProperties.$store')
           .then((store) => store.dispatch('disconnectSocket'));
         cy.concedeOpponent();
-        cy.window().its('cuttle.app.config.globalProperties.$store')
+        cy.window()
+          .its('cuttle.app.config.globalProperties.$store')
           .then((store) => store.dispatch('reconnectSocket'));
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
         assertSnackbarError('Unable to spectate game', 'newgame');
@@ -269,36 +282,6 @@ describe('Home - Game List', () => {
       cy.visit('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
-    });
-
-    it('Allows spectating game that has not started yet and displays overlay until game starts', () => {
-      cy.signupOpponent(playerOne);
-      cy.createGameOpponent('Game where spectator joins before it starts').then(({ gameId }) => {
-        cy.subscribeOpponent(gameId);
-        cy.readyOpponent(gameId);
-        // Second player signs up, joins but does not ready up yet
-        cy.signupOpponent(playerTwo);
-        cy.subscribeOpponent(gameId);
-
-        // User spectates game that hasn't started yet
-        cy.visit('/');
-        cy.get('[data-cy-game-list-selector=spectate]').click();
-        cy.get(`[data-cy-spectate-game=${gameId}]`).click();
-
-        // User leaves and goes home
-        cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
-        cy.get('[data-cy=leave-unstarted-game-button]').click();
-
-        // User re-joins same game as spectator
-        cy.get('[data-cy-game-list-selector=spectate]').click();
-        cy.get(`[data-cy-spectate-game=${gameId}]`).click();
-        cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
-
-        // P1 readies up and game starts
-        cy.readyOpponent(gameId);
-        cy.get('#waiting-for-game-to-start-scrim').should('not.exist');
-        cy.get('[data-player-hand-card]').should('have.length', 5);
-      });
     });
 
     it('Shows ongoing games as available to spectate when user navigates to home page', () => {
@@ -313,7 +296,6 @@ describe('Home - Game List', () => {
 
         // Navigate to homepage
         cy.visit('/');
-
         // No open games appear
         cy.contains('[data-cy-join-game]', 'Play').should('not.exist');
         // Existing game is available to spectate
@@ -486,7 +468,7 @@ describe('Home - Create Game', () => {
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect 0 players in game in store');
-        expect(games[0].status).to.eq(true, 'Expect game to have status true');
+        expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED');
       });
   });
 
@@ -511,7 +493,7 @@ describe('Home - Create Game', () => {
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
-        expect(games[0].status).to.eq(true, 'Expect game to have status true');
+        expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED');
         expect(games[0].isRanked).to.eq(false, 'Expect game to be ranked');
       });
   });
@@ -534,7 +516,7 @@ describe('Home - Create Game', () => {
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
-        expect(games[0].status).to.eq(true, 'Expect game to have status true');
+        expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED');
         expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
       });
   });

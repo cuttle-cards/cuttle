@@ -1,9 +1,9 @@
 <template>
   <base-dialog
     v-if="oneOff"
+    id="cannot-counter-dialog"
     v-model="show"
     title="Cannot Counter"
-    id="cannot-counter-dialog"
   >
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
@@ -68,7 +68,6 @@ export default {
     GameCard,
     GameCardName,
   },
-  emits: ['resolve'],
   props: {
     modelValue: {
       type: Boolean,
@@ -95,6 +94,7 @@ export default {
       default: null,
     },
   },
+  emits: ['resolve'],
   computed: {
     show: {
       get() {

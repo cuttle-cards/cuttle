@@ -1,8 +1,8 @@
 <template>
   <base-dialog
     v-if="oneOff"
-    v-model="show"
     id="three-dialog"
+    v-model="show"
     title="Select a Card from Scrap"
     scrollable
   >
@@ -41,7 +41,6 @@ export default {
     BaseDialog,
     CardListSortable,
   },
-  emits: ['resolveThree'],
   props: {
     modelValue: {
       type: Boolean,
@@ -57,6 +56,7 @@ export default {
       required: true,
     },
   },
+  emits: ['resolveThree'],
   data() {
     return {
       choseToCounter: false,

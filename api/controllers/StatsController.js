@@ -26,7 +26,7 @@ function getSeasonFromTimeStamp(sortedSeasons, timeStamp) {
     // Target time is before current season
     if (timeStamp < currentSeason.startTime) {
       minIndex = currentIndex + 1;
-    // Target time is after current season
+      // Target time is after current season
     } else {
       maxIndex = currentIndex - 1;
     }
@@ -135,16 +135,14 @@ function transformSeasonToDTO(season) {
   };
 }
 
-
 module.exports = {
   getStats: function (_req, res) {
     // Find records
     const seasons = sails.helpers.getSeasonsWithoutRankings();
     const matches = Match.find({});
     const users = User.find({});
-    const games = Game.find({ result: {'>=': -1} }); // Only find completed games
+    const games = Game.find({ status: gameService.GameStatus.FINISHED }); // Only find completed games
     return Promise.all([seasons, matches, users, games]).then(([seasons, matches, users, games]) => {
-
       const idToUserMap = new Map();
       users.forEach((user) => {
         idToUserMap.set(user.id, user);

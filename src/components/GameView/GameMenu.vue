@@ -4,8 +4,8 @@
       <!-- Activator -->
       <template #activator="{ props }">
         <v-btn
-          class="ml-0"
           id="game-menu-activator"
+          class="ml-0"
           v-bind="props"
           icon
           variant="text"
@@ -15,14 +15,18 @@
       </template>
       <!-- Menu -->
       <v-list id="game-menu" class="text-surface-1" bg-color="surface-2">
-        <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'"> Rules </v-list-item>
+        <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'">
+          Rules
+        </v-list-item>
         <!-- Stop Spectating -->
         <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
           Go Home
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <template v-else>
-          <v-list-item data-cy="concede-initiate" @click="shownDialog = 'concede'"> Concede </v-list-item>
+          <v-list-item data-cy="concede-initiate" @click="shownDialog = 'concede'">
+            Concede
+          </v-list-item>
           <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
             Request Stalemate
           </v-list-item>
@@ -32,7 +36,7 @@
 
     <rules-dialog v-model="showRulesDialog" @open="closeMenu" @close="closeDialog" />
 
-    <base-dialog v-model="showEndGameDialog" id="request-gameover-dialog" :title="dialogTitle">
+    <base-dialog id="request-gameover-dialog" v-model="showEndGameDialog" :title="dialogTitle">
       <template #body>
         <p class="pt-4 pb-8">
           {{ dialogText }}
@@ -73,18 +77,18 @@ export default {
     BaseDialog,
     RulesDialog,
   },
+  props: {
+    isSpectating: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data() {
     return {
       shownDialog:'',
       showGameMenu: false,      
       loading: false,
     };
-  },
-  props: {
-    isSpectating: {
-      type: Boolean,
-      required: true,
-    },
   },
   computed: {
     showEndGameDialog:{
