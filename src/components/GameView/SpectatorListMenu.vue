@@ -17,21 +17,20 @@
     <!-- Menu -->
     <v-list
       id="spectatorList"
-      class="pl-2 pr-2 text-surface-1"
+      class="pl-2 pr-2"
       bg-color="surface-2"
+      color="surface-1"
       data-cy="spectate-list-menu"
     >
-      <v-list v-if="spectatingUsers.length > 0">
-        <v-list-item-title>Spectators</v-list-item-title>
-        <v-list-item v-for="spectator in spectatingUsers" :key="spectator">
-          {{
-            spectator
-          }}
-        </v-list-item>
-      </v-list>
-      <div v-else>
+      <v-list-item-title v-if="spectatingUsers.length > 0">
+        Spectators
+      </v-list-item-title>
+      <v-list-item-title v-else>
         Currently no spectators
-      </div>
+      </v-list-item-title>
+      <v-list-item v-for="spectator in spectatingUsers" :key="spectator">
+        {{ spectator }}
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
