@@ -17,14 +17,8 @@
   </v-bottom-navigation>
 </template>
 
-<script>
-import { getPageLinks } from '../composables/navLink.js';
+<script setup>
+import { getPageLinks } from '@/composables/navLink.js';
 
-export default {
-name: 'TheBottomNav',
-  setup() {
-    const pageLinks = getPageLinks();
-    return { pageLinks } ;
-  },
-};
+const pageLinks = getPageLinks();
 </script>

@@ -13,7 +13,7 @@
         />
       </div>
     </v-toolbar-title>
-    <v-toolbar-items v-if="!isSmallDevice" class="hidden-xs-only">
+    <v-toolbar-items v-if="!mobile" class="hidden-xs-only">
       <v-tabs class="pa-2">
         <v-tab
           variant="text"
@@ -23,7 +23,12 @@
           :title="text"
           :to="page"
         >
-          <v-icon :icon="`mdi-${icon}`" />
+          <v-icon
+            :icon="`mdi-${icon}`"
+            :aria-label="text"
+            aria-hidden="false"
+            role="img"
+          />
           {{ text }}
         </v-tab>
       </v-tabs>
@@ -32,24 +37,11 @@
 
 </template>
 
-<script>
-import { getPageLinks } from '../composables/navLink.js';
-import TheUserMenu from '../components/TheUserMenu.vue';
+<script setup>
+import { getPageLinks } from '@/composables/navLink.js';
+import TheUserMenu from './TheUserMenu.vue';
+import { useDisplay } from 'vuetify';
 
-export default {
-name: 'TheTopNavbar',
-  components: {
-    TheUserMenu
-  },
-  props: {
-    isSmallDevice: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  setup() {
-    const pageLinks = getPageLinks();
-    return { pageLinks };
-  },
-};
+const { mobile } = useDisplay();
+const pageLinks = getPageLinks();
 </script>

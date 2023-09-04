@@ -1,16 +1,16 @@
 <template>
   <v-app id="app">
-    <the-top-navbar v-if="showNav" :isSmallDevice="isSmallDevice" />
+    <the-header v-if="showNav" />
     <v-main>
       <router-view />
     </v-main>
-    <the-bottom-nav v-if="showNav && isSmallDevice" />
+    <the-footer v-if="showNav && isSmallDevice" />
   </v-app>
 </template>
 
 <script>
-import TheTopNavbar from '@/components/TheTopNavbar.vue';
-import TheBottomNav from '@/components/TheBottomNav.vue';
+import TheHeader from '@/components/TheHeader.vue';
+import TheFooter from '@/components/TheFooter.vue';
 
 export default {
   data(){
@@ -19,19 +19,19 @@ export default {
     };
   },
   components: {
-    TheTopNavbar, 
-    TheBottomNav
+    TheHeader, 
+    TheFooter
   },
   watch:{
   '$route.meta'({hideNavigation}){
     this.showNav = !hideNavigation;
   }
  },
- computed:{
+  computed:{
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
- }
+  }
 };
 </script>
 
