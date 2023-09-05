@@ -11,16 +11,16 @@
             width="60"
             height="60"
             class="ma-md-auto"
-          />
+          >
         </div>
       </v-toolbar-title>
       <v-toolbar-items v-if="!mobile" class="hidden-xs-only">
         <v-tabs class="pa-2">
           <v-tab
-            variant="text"
             v-for="({ text, icon, page }, i) in pageLinks"
-            :data-cy="text"
             :key="i"
+            variant="text"
+            :data-cy="text"
             :title="text"
             :to="page"
           >

@@ -22,16 +22,16 @@ export default {
       showNav: false,
     };
   },
-  watch:{
-  '$route.meta'({hideNavigation}){
-    this.showNav = !hideNavigation;
-  }
- },
   computed:{
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
+  },
+  watch:{
+  '$route.meta'({hideNavigation}){
+    this.showNav = !hideNavigation;
   }
+ }
 };
 </script>
 

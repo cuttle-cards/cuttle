@@ -1,5 +1,5 @@
 <template>
-  <v-menu  transition="slide-x-transition">
+  <v-menu transition="slide-x-transition">
     <template #activator="{ props }">
       <v-btn
         data-cy="user-menu"
@@ -13,7 +13,7 @@
           aria-hidden="false"
           role="img"
         />
-        {{$store.state.auth.username}}
+        {{ $store.state.auth.username }}
       </v-btn>
     </template>
     <v-list density="compact" class="bg-surface-2 text-surface-1">
