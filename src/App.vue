@@ -14,7 +14,8 @@ import TheFooter from '@/components/TheFooter.vue';
 
 export default {
   components: {
-    NavigationDrawer,
+    TheHeader,
+    TheFooter
   },
   data(){
     return{
