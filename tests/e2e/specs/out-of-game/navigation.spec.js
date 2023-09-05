@@ -11,6 +11,7 @@ describe('Navigation Drawer', () => {
   describe('Navigates to Rules, Home, Stats, and Login pages', () => {
     function verifyAuthenticatedLinks() {
       // Navigate to Rules
+      cy.viewport(1920, 1080);
       cy.get('[data-cy=About]').click();
       cy.hash().should('equal', '#/rules');
       // Navigate to Home (Play)
@@ -24,12 +25,6 @@ describe('Navigation Drawer', () => {
       cy.get("[data-nav='Log Out']").click();
       cy.hash().should('equal', '#/login');
     }
-    beforeEach(() => {
-      cy.wipeDatabase();
-      cy.visit('/');
-      cy.signupPlayer(playerOne);
-      cy.vueRoute('/');
-    });
     it('When authenticated', () => {
       verifyAuthenticatedLinks();
     });
