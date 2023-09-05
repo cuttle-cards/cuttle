@@ -22,7 +22,7 @@
         <v-btn
           v-if="!isSpectatable"
           v-bind="buttonAttrs"
-          :disabled="!status"
+          :disabled="gameIsFull"
           :data-cy-join-game="gameId"
           @click="subscribeToGame"
         >
@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import GameStatus  from '../../utils/GameStatus.json';
+
 export default {
   name: 'GameListItem',
   props: {
@@ -73,7 +75,7 @@ export default {
       required: true,
     },
     status: {
-      type: Boolean,
+      type: Number,
       required: true,
     },
     numPlayers: {
@@ -117,6 +119,9 @@ export default {
         minWidth: '200',
         loading: this.joiningGame,
       };
+    },
+    gameIsFull() {
+      return this.numPlayers >= 2 || this.status !== GameStatus.CREATED;
     },
   },
   methods: {

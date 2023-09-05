@@ -53,7 +53,8 @@ module.exports = function (req, res) {
         const gameUpdates = {
           p0: game.players[0].id,
           p1: game.players[1].id,
-          result: gameService.GameResult.STALEMATE,
+          status: gameService.GameStatus.FINISHED,
+          winner: null
         };
         await Game.updateOne({ id: game.id }).set(gameUpdates);
         if (game.isRanked) {
