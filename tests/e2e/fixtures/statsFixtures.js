@@ -30,9 +30,15 @@ const seasonFixtures = [
     endTime: dayjs().add(1, 'year').valueOf(),
   },
   {
-    name: 'World Championship',
+    name: 'World Championship Season',
     startTime: dayjs().subtract(2, 'week').subtract(10, 'second').valueOf(),
     endTime: dayjs().subtract(2, 'week').subtract(9, 'second').valueOf(), 
+    firstPlace: 'player1',
+    secondPlace: 'player2',
+    thirdPlace: 'player3',
+    fourthPlace: 'player4',
+    bracketLink: 'https://github.com/cuttle-cards/cuttle',
+    footageLink: 'https://github.com/cuttle-cards/cuttle-assets',
   }
 ];
 
