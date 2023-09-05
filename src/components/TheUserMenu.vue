@@ -3,7 +3,7 @@
     <template #activator="{ props }">
       <v-btn
         data-cy="user-menu"
-        class="hidden-xs-only d-flex text-body-1"
+        class="d-flex text-body-1"
         v-bind="props"
         variant="text"
       >
