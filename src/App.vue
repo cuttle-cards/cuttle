@@ -13,14 +13,13 @@ import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
 
 export default {
+  components: {
+    NavigationDrawer,
+  },
   data(){
     return{
       showNav: false,
     };
-  },
-  components: {
-    TheHeader, 
-    TheFooter
   },
   watch:{
   '$route.meta'({hideNavigation}){

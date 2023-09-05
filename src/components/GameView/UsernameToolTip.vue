@@ -2,7 +2,9 @@
   <div>
     <div class="username__outer">
       <div class="username">
-        <h4 class="username__text" :data-cy="dataCyProp">{{ username }}</h4>
+        <h4 class="username__text" :data-cy="dataCyProp">
+          {{ username }}
+        </h4>
       </div>
     </div>
   </div>

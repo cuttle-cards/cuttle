@@ -13,14 +13,16 @@
         <p class="game-name" data-cy="game-list-item-name">
           {{ name }}
         </p>
-        <p v-if="!isSpectatable">{{ readyText }} players</p>
+        <p v-if="!isSpectatable">
+          {{ readyText }} players
+        </p>
       </v-col>
       <v-col cols="3" class="list-item__button">
         <!-- Join Button -->
         <v-btn
           v-if="!isSpectatable"
           v-bind="buttonAttrs"
-          :disabled="!status"
+          :disabled="gameIsFull"
           :data-cy-join-game="gameId"
           @click="subscribeToGame"
         >
@@ -51,9 +53,10 @@
 </template>
 
 <script>
+import GameStatus  from '../../utils/GameStatus.json';
+
 export default {
   name: 'GameListItem',
-  emits: ['error'],
   props: {
     name: {
       type: String,
@@ -72,7 +75,7 @@ export default {
       required: true,
     },
     status: {
-      type: Boolean,
+      type: Number,
       required: true,
     },
     numPlayers: {
@@ -92,6 +95,7 @@ export default {
       default: false,
     },
   },
+  emits: ['error'],
   data() {
     return {
       joiningGame: false,
@@ -115,6 +119,9 @@ export default {
         minWidth: '200',
         loading: this.joiningGame,
       };
+    },
+    gameIsFull() {
+      return this.numPlayers >= 2 || this.status !== GameStatus.CREATED;
     },
   },
   methods: {

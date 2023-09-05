@@ -20,7 +20,9 @@
       :style="`opacity:${opacity}`"
     >
       <v-card-title class="d-flex justify-space-between pt-4">
-        <h1 v-if="title">{{ title }}</h1>
+        <h1 v-if="title">
+          {{ title }}
+        </h1>
 
         <slot v-else name="title" />
       </v-card-title>
@@ -37,7 +39,6 @@
 <script>
 export default {
   name: 'BaseDialog',
-  emits: ['update:modelValue'],
   props: {
     modelValue: {
       type: Boolean,
@@ -64,6 +65,7 @@ export default {
       default: true
     }
   },
+  emits: ['update:modelValue'],
   computed: {
     show: {
       get() {

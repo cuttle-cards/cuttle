@@ -44,7 +44,6 @@ export default {
   components: {
     GameCard,
   },
-  emits: ['select-card'],
   props: {
     cards: {
       type: Array,
@@ -76,6 +75,7 @@ export default {
       default: () => [],
     },
   },
+  emits: ['select-card'],
   data() {
     return {
       sortByRank: true,

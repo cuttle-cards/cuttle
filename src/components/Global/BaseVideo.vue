@@ -25,7 +25,7 @@ export default {
 };
 </script>
 
-<style scoped >
+<style scoped>
 .video-container__wrapper {
   width: 100%;
 }

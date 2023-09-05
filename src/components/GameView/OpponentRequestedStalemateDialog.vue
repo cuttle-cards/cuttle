@@ -1,6 +1,5 @@
 <template>
-  <base-dialog v-model="show" id="opponent-requested-stalemate-dialog" title="Accept Stalemate?">
-
+  <base-dialog id="opponent-requested-stalemate-dialog" v-model="show" title="Accept Stalemate?">
     <template #body>
       <p>Your opponent has requested a stalemate. If you accept, the game will end in a tie.</p>
       <div class="d-flex justify-center">
@@ -32,7 +31,6 @@
         Accept Stalemate
       </v-btn>
     </template>
-
   </base-dialog>
 </template>
 

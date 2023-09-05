@@ -30,7 +30,7 @@ module.exports = function (req, res) {
           // Inform all clients this game has started
           sails.sockets.blast('gameStarted', { gameId: game.id });
           // Ensure game is no longer available for new players to join
-          gameUpdates.status = false;
+          gameUpdates.status = gameService.GameStatus.STARTED;
           // Create Cards
           return new Promise(function makeDeck(resolveMakeDeck) {
             const findP0 = userService.findUser({ userId: game.players[0].id });

@@ -1,5 +1,5 @@
 <template>
-  <base-dialog v-model="show" id="counter-dialog" title="Chance to Counter">
+  <base-dialog id="counter-dialog" v-model="show" title="Chance to Counter">
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
         Your opponent has played the 
@@ -40,8 +40,8 @@
         data-cy="decline-counter-resolve"
         color="surface-1"
         variant="outlined"
-        @click="resolve"
         class="mr-4"
+        @click="resolve"
       >
         Resolve
       </v-btn>
@@ -69,7 +69,6 @@ export default {
     GameCard,
     GameCardName,
   },
-  emits: ['choose-to-counter', 'resolve'],
   props: {
     modelValue: {
       type: Boolean,
@@ -88,6 +87,7 @@ export default {
       required: true,
     },
   },
+  emits: ['choose-to-counter', 'resolve'],
   computed: {
     show: {
       get() {

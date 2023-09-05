@@ -1,12 +1,14 @@
 <template>
   <base-dialog
     v-if="oneOff"
-    v-model="show"
     id="choose-two-dialog"
+    v-model="show"
     title="Choose Two"
   >
     <template #body>
-      <p class="mb-4">Which Two would you like to counter with? (Click the card)</p>
+      <p class="mb-4">
+        Which Two would you like to counter with? (Click the card)
+      </p>
       <div id="twos-in-hand" class="d-flex justify-center mb-4">
         <game-card
           v-for="two in twosInHand"
@@ -41,7 +43,6 @@ export default {
     BaseDialog,
     GameCard,
   },
-  emits: ['counter', 'resolve'],
   props: {
     modelValue: {
       type: Boolean,
@@ -49,7 +50,7 @@ export default {
     },
     oneOff: {
       type: Object,
-      requried: true,
+      required: true,
     },
     // list of card objects for available twos
     twosInHand: {
@@ -61,6 +62,7 @@ export default {
       required: true,
     },
   },
+  emits: ['counter', 'resolve'],
   computed: {
     show: {
       get() {
