@@ -76,8 +76,6 @@ module.exports.policies = {
   // DEVELOPMENT Or Staging ONLY //
   /////////////////////////////////
 
-  'game/load-fixture': 'developmentOrStagingOnly',
-
   TestController: {
     '*': 'developmentOrStagingOnly',
   },

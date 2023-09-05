@@ -90,11 +90,13 @@ module.exports.routes = {
   '/game/gameData': 'game/game-data',
   // DEVELOPMENT ONLY
 
-
   // Testing helpers
   '/test/wipeDatabase': 'TestController.wipeDatabase',
   '/test/badSession': 'TestController.setBadSession',
   '/test/loadSeasonFixture': 'TestController.loadSeasonFixture',
   '/test/loadMatchFixtures': 'TestController.loadMatchFixtures',
   '/test/loadFinishedGameFixtures': 'TestController.loadFinishedGameFixtures',
+  '/test/stackDeck': 'TestController.stackDeck',
+  '/test/loadGameFixture': 'TestController.loadGameFixture',
+  '/test/clearGame': 'TestController.clear',
 };
