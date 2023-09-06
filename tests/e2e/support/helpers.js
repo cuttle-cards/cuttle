@@ -374,6 +374,10 @@ export function assertVictory() {
           .should('be.visible')
           .should('contain', matchWinner ? 'You Win the Match' : `Game ${gameNumber}: You Win`)
           .get('[data-cy=match-result-section]')
+          .should('be.visible')
+          .get(`[data-cy=match-result-game-${gameNumber}]`)
+          .should('contain', 'W')
+          .get('[data-cy=icon-W]')
           .should('be.visible');
       } else {
         cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
@@ -395,6 +399,10 @@ export function assertLoss() {
           .should('contain', matchWinner ? 'You Lose the Match' : `Game ${gameNumber}: You Lose`)
           .should('be.visible')
           .get('[data-cy=match-result-section]')
+          .should('be.visible')
+          .get(`[data-cy=match-result-game-${gameNumber}]`)
+          .should('contain', 'L')
+          .get('[data-cy=icon-L]')
           .should('be.visible');
       } else {
         cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
@@ -417,6 +425,10 @@ export function assertStalemate() {
           // since a stalemate won't decide a match winner
           .should('contain', `Game ${gameNumber}: Draw`)
           .get('[data-cy=match-result-section]')
+          .should('be.visible')
+          .get(`[data-cy=match-result-game-${gameNumber}]`)
+          .should('contain', 'D')
+          .get('[data-cy=icon-D]')
           .should('be.visible');
       } else {
         cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
