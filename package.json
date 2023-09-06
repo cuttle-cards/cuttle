@@ -21,7 +21,7 @@
     "vue-chartjs": "^5.2.0",
     "chart.js": "^4.3.3",
     "socket.io-client": "2.3.0",
-    "marked": "^5.1.1"
+    "marked": "^5.1.2"
   },
   "devDependencies": {
     "@mdi/font": "^7.0.96",

@@ -15,7 +15,7 @@
         </div>
       </v-toolbar-title>
       <v-toolbar-items v-if="!mobile" class="hidden-xs-only">
-        <v-tabs class="pa-2">
+        <v-tabs class="pa-2 tab-with-margin">
           <v-tab
             v-for="({ text, icon, page }, i) in pageLinks"
             :key="i"
@@ -46,3 +46,14 @@ import { useDisplay } from 'vuetify';
 const { mobile } = useDisplay();
 const pageLinks = getPageLinks();
 </script>
+
+<style scoped>
+.tab-with-margin .v-tab {
+  display: flex;
+  align-items: center;
+}
+
+.tab-with-margin .v-tab .v-icon {
+  margin-right: 4px;
+}
+</style>
