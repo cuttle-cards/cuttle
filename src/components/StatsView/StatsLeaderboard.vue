@@ -54,7 +54,7 @@
 </template>
 <script>
 import { uniq, countBy } from 'lodash';
-import StatsLeaderboardCell from '@/components/StatsLeaderboardCell.vue';
+import StatsLeaderboardCell from '@/components/StatsView/StatsLeaderboardCell.vue';
 
 import Result from '_/types/Result';
 

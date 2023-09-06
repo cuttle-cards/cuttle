@@ -109,10 +109,10 @@
 <script>
 import dayjs from 'dayjs';
 import { io } from '@/plugins/sails.js';
-import AwardCard from '@/components/AwardCard.vue';
-import StatsLeaderboard from '@/components/StatsLeaderboard.vue';
-import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
-import StatsUsageChart from '@/components/StatsUsageChart.vue';
+import AwardCard from '@/components/StatsView/AwardCard.vue';
+import StatsLeaderboard from '@/components/StatsView/StatsLeaderboard.vue';
+import StatsScoringDialog from '@/components/StatsView/StatsScoringDialog.vue';
+import StatsUsageChart from '@/components/StatsView/StatsUsageChart.vue';
 
 export default {
   name: 'StatsView',

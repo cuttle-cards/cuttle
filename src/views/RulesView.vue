@@ -288,7 +288,7 @@
   </div>
 </template>
 <script>
-import RulePreview from '@/components/RulePreview.vue';
+import RulePreview from '@/components/RulesView/RulePreview.vue';
 import BaseVideo from '../components/Global/BaseVideo.vue';
 
 export default {

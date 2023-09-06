@@ -143,8 +143,8 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import GameListItem from '@/components/GameListItem.vue';
-import CreateGameDialog from '@/components/CreateGameDialog.vue';
+import GameListItem from '@/components/HomeView/GameListItem.vue';
+import CreateGameDialog from '@/components/HomeView/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 import GameStatus from '../../utils/GameStatus.json';
 
