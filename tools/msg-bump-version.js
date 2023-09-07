@@ -13,7 +13,7 @@ const msg = `
                         /  /'
 
   Don't forget to bump 'version' in the package files!
-  Every PR should increase the package file versions by either a
+  Every PR should increase the package file versions by either a:
   patch, minor, or major number, based on the version label on the
   issue being addressed.
 
