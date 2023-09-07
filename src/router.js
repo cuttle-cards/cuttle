@@ -1,12 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-
-
-import HomeView from '@/views/HomeView.vue';
-import LoginView from '@/views/LoginView.vue';
-import LobbyView from '@/views/LobbyView.vue';
-import GameView from '@/views/GameView.vue';
-import RulesView from '@/views/RulesView.vue';
-import StatsView from '@/views/StatsView.vue';
 import store from '@/store/store.js';
 
 export const ROUTE_NAME_GAME = 'Game';
@@ -40,18 +32,18 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HomeView,
+    component: () => import('@/routes/home/HomeView.vue'),
     beforeEnter: mustBeAuthenticated,
   },
   {
     path: '/login',
     name: ROUTE_NAME_LOGIN,
-    component: LoginView,
+    component: () => import('@/routes/auth/LoginView.vue'),
   },
   {
     path: '/signup',
     name: ROUTE_NAME_SIGNUP,
-    component: LoginView,
+    component: () => import('@/routes/auth/LoginView.vue'),
   },
   // This route is just a passthrough to make sure the user is fully logged out before putting
   // them on the login screen
@@ -63,12 +55,12 @@ const routes = [
   {
     path: '/rules',
     name: ROUTE_NAME_RULES,
-    component: RulesView,
+    component: () => import('@/routes/rules/RulesView.vue'),
   },
   {
     name: ROUTE_NAME_LOBBY,
     path: '/lobby/:gameId',
-    component: LobbyView,
+    component: () => import('@/routes/lobby/LobbyView.vue'),
     // TODO: Add logic to redirect if a given game does not exist
     beforeEnter: mustBeAuthenticated,
     meta: {
@@ -78,7 +70,7 @@ const routes = [
   {
     name: ROUTE_NAME_GAME,
     path: '/game/:gameId',
-    component: GameView,
+    component: () => import('@/routes/game/GameView.vue'),
     // TODO: Add logic to redirect if a given game does not exist
     // mustBeAuthenticated intentionally left off here
     // If a user refreshes the relogin modal will fire and allow them to continue playing
@@ -89,7 +81,7 @@ const routes = [
   {
     name: ROUTE_NAME_SPECTATE,
     path: '/spectate/:gameId',
-    component: GameView,
+    component: () => import('@/routes/game/GameView.vue'),
     meta: {
       hideNavigation: true,
     },
@@ -97,13 +89,13 @@ const routes = [
   {
     path: '/stats',
     name: ROUTE_NAME_STATS,
-    component: StatsView,
+    component: () => import('@/routes/stats/StatsView.vue'),
     beforeEnter: mustBeAuthenticated,
   },
   {
     path: '/stats/:seasonId',
     name: ROUTE_NAME_STATS_SEASON,
-    component: StatsView,
+    component: () => import('@/routes/stats/StatsView.vue'),
     beforeEnter: mustBeAuthenticated,
   },
 ];
