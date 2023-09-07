@@ -12,10 +12,13 @@ const msg = `
                 K.=,;.__ /^~/___..'''
                         /  /'
 
-  Don't forget to bump the version in the package files!
-    - npm run version:patch (0.0.X)
-    - npm run version:minor (0.X.0)
-    - npm run version:major (X.0.0)
+  Don't forget to bump 'version' in the package files!
+  Every PR should increase the package file versions by either a
+  patch, minor, or major number, based on the version label on the
+  issue being addressed.
+
+  See contributing docs for more information:
+    https://github.com/cuttle-cards/cuttle/blob/main/docs/CONTRIBUTING.md#make-changes
 
 `;
 
