@@ -1,0 +1,37 @@
+name: Run NPM Script
+
+on:
+  workflow_call:
+    inputs:
+      label:
+        required: true
+        type: string
+      file:
+        required: true
+        type: string
+
+jobs:
+  run_npm_script:
+    name: 'Run Custom Script'
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout and node setup are shared in both `pr-actions.yml` and `run-npm-script.yml`
+      # If you change one, please change the other
+      - name: git checkout
+        uses: actions/checkout@v3
+      - name: set node version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.12.1'
+          cache: 'npm'
+      - name: install latest npm
+        run: |
+          npm install -g npm@9 &&
+          npm --version
+      - name: ${{ inputs.label }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          cd .github/actions
+          npm install
+          node ${{ inputs.file }}

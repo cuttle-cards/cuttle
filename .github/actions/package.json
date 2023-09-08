@@ -1,0 +1,15 @@
+{
+  "name": "cuttle-actions",
+  "version": "0.1.0",
+  "description": "GitHub Actions for Cuttle",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0"
+  }
+}
