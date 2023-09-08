@@ -1,6 +1,6 @@
 <template>
   <div
-    class="home pa-4"
+    class="home h-100 pa-4 bg-surface-1"
     :class="{
       home: $vuetify.display.lgAndUp,
     }"
@@ -17,17 +17,14 @@
       </v-row>
       <div id="game-list-card">
         <v-row>
-          <v-col :cols="$vuetify.display.mdAndDown ? 12 : 9">
+          <v-col>
             <div id="card-content-header" class="mb-4">
               <h1 id="home-card-title">
-                Games
+                Game Finder
               </h1>
-              <v-row class="create-game-btn">
-                <create-game-dialog @error="handleError" />
-              </v-row>
             </div>
             <div id="game-list">
-              <v-tabs v-model="tab" bg-color="primary" fixed-tabs>
+              <!-- <v-tabs v-model="tab" bg-color="primary" fixed-tabs>
                 <v-tab :value="TABS.PLAY" data-cy-game-list-selector="play">
                   Play
                 </v-tab>
@@ -72,10 +69,16 @@
                     />
                   </div>
                 </v-window-item>
-              </v-window>
+              </v-window> -->
+              <!-- <v-card flat> -->
+    <!-- <v-container fluid> -->
+      <div class="d-flex mx-auto text-surface-1">
+          <v-btn variant="plain">Play</v-btn>
+          <v-btn variant="plain">Spectate</v-btn>
+      </div>
             </div>
           </v-col>
-          <v-col id="side-nav" :cols="$vuetify.display.mdAndDown ? 12 : 3">
+          <!-- <v-col id="side-nav" :cols="$vuetify.display.mdAndDown ? 12 : 3">
             <img
               v-if="$vuetify.display.lgAndUp"
               id="logo"
@@ -129,7 +132,7 @@
               </v-btn>
               to see who's around to play!
             </p>
-          </v-col>
+          </v-col> -->
         </v-row>
       </div>
     </v-container>
@@ -210,12 +213,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-h1 {
-  background: linear-gradient(268.89deg, rgba(98, 2, 238, 0.87) 73.76%, rgba(253, 98, 34, 0.87) 99.59%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
 
 h2 {
   font-size: 1.25rem;
@@ -264,7 +261,7 @@ p {
 
 #game-list {
   box-sizing: border-box;
-  background: #cdd1d4;
+  background: #FFF4D7;
   border-radius: 8px;
   min-height: 55vh;
   display: flex;
@@ -290,7 +287,12 @@ p {
 }
 
 #home-card-title {
-  font-size: 2em;
+  font-size: 5em;
+  color: #fff4d7;
+  font-family: 'Luckiest Guy', serif !important;
+  font-weight: 400;
+  line-height: 5rem;
+  margin: 0 auto;
 }
 
 @media (min-width: 980px) {
