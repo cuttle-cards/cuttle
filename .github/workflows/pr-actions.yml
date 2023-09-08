@@ -37,10 +37,18 @@ jobs:
           exit 1
       - run: echo "PR is not Draft"
 
+  # Require a team label
+  version-label:
+    uses: ./.github/workflows/run-npm-script.yml
+    needs: draft
+    with:
+      label: "Check PR Version Label"
+      script: "check-version-label"
+
   # Check Linting status
   lint:
     uses: ./.github/workflows/run-npm-script.yml
-    needs: draft
+    needs: version-label
     with:
       label: 'Lint'
       script: 'npm run lint'
@@ -48,7 +56,7 @@ jobs:
   # Run Jest Unit Tests
   test-unit:
     uses: ./.github/workflows/run-npm-script.yml
-    needs: draft
+    needs: version-label
     with:
       label: 'Test: Unit'
       script: 'npm run test:unit'
@@ -56,7 +64,7 @@ jobs:
   # Run Cypress End to End Tests
   test-e2e:
     uses: ./.github/workflows/test-e2e.yml
-    needs: draft
+    needs: version-label
     secrets:
       record-key: d1f04332-8bb9-4570-90e4-7c29b9510ee3
       github-token: ${{ secrets.GITHUB_TOKEN }}
