@@ -1,23 +1,31 @@
 <template>
   <v-app id="app">
-    <navigation-drawer v-if="showNav" />
+    <the-header v-if="showNav" />
     <v-main>
       <router-view />
     </v-main>
+    <the-footer v-if="showNav && isSmallDevice" />
   </v-app>
 </template>
 
 <script>
-import NavigationDrawer from '@/components/NavigationDrawer.vue';
+import TheHeader from '@/components/TheHeader.vue';
+import TheFooter from '@/components/TheFooter.vue';
 
 export default {
   components: {
-    NavigationDrawer,
+    TheHeader,
+    TheFooter
   },
   data(){
     return{
       showNav: false,
     };
+  },
+  computed:{
+    isSmallDevice() {
+      return this.$vuetify.display.smAndDown;
+    },
   },
   watch:{
   '$route.meta'({hideNavigation}){
