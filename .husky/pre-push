@@ -1,0 +1,1 @@
+node tools/msg-bump-version.js
