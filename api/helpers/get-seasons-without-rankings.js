@@ -24,7 +24,9 @@ module.exports = {
         };
         // initialize gameCounts and uniquePlayersPerWeek
         const startTime = dayjs(season.startTime);
-        const endTime = dayjs(season.endTime);
+        const currentTime = dayjs();
+        const seasonEndTime = dayjs(season.endTime);
+        const endTime = currentTime.isBefore(seasonEndTime) ? currentTime : seasonEndTime;
         // Round week count up to account for incomplete weeks
         const numWeeks = Math.ceil(endTime.diff(startTime, 'week', true));
         for (let i=0; i<numWeeks; i++) {
