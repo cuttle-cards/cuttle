@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="show"
-    :persistent="persistent"
+    :persistent="false"
     max-width="650"
     :scrollable="scrollable"
     elevation
