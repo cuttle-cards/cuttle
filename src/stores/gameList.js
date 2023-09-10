@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
-import GameStatus  from '../../../utils/GameStatus.json';
+import GameStatus from '../../utils/GameStatus.json';
 
 class GameSummary {
   constructor(obj) {
