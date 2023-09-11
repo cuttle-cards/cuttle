@@ -1,46 +1,13 @@
 import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
-import {
-  getLocalStorage,
-  setLocalStorage,
-  LS_IS_RETURNING_USER_NAME,
-} from '../../utils/local-storage-utils.js';
+import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '@/utils/local-storage-utils.js';
 
 // TODO Figure out how to reconsolidate this with backend
 const getPlayerPnumByUsername = (players, username) => {
   const pNum = players.findIndex(({ username: pUsername }) => pUsername === username);
   return pNum > -1 ? pNum : null;
 };
-
-async function handleLogin(username, password, signup = false) {
-  const authType = signup ? 'signup' : 'login';
-  try {
-    const response = await fetch(`/user/${authType}`, {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-      credentials: 'include',
-    });
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw data.message;
-    }
-    await reconnectSockets();
-    // If the response was successful, the user is logged in
-    useAuthStore.actions.setIsReturningUser();
-    useAuthStore.actions.authSuccess(username);
-    return;
-  } catch (err) {
-    useAuthStore.actions.clearAuth();
-    throw new Error(err);
-  }
-}
 
 export const useAuthStore = defineStore('authStore', {
   state: () => ({
@@ -59,11 +26,11 @@ export const useAuthStore = defineStore('authStore', {
       this.$reset();
     },
     async requestLogin({ username, password }) {
-      return handleLogin(username, password);
+      return this.handleLogin(username, password);
     },
 
     async requestSignup({ username, password }) {
-      return handleLogin(username, password, true);
+      return this.handleLogin(username, password, true);
     },
 
     async requestLogout() {
@@ -175,6 +142,34 @@ export const useAuthStore = defineStore('authStore', {
       if (!isReturningUser) {
         setLocalStorage(LS_IS_RETURNING_USER_NAME, true);
         this.state.isReturningUser = true;
+      }
+    },
+    async handleLogin(username, password, signup = false) {
+      const authType = signup ? 'signup' : 'login';
+      try {
+        const response = await fetch(`/user/${authType}`, {
+          method: 'POST',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+          }),
+          body: JSON.stringify({
+            username,
+            password,
+          }),
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.message;
+        }
+        await reconnectSockets();
+        // If the response was successful, the user is logged in
+        this.setIsReturningUser();
+        this.authSuccess(username);
+        return;
+      } catch (err) {
+        this.clearAuth();
+        throw new Error(err);
       }
     },
   },
