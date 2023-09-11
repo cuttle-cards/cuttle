@@ -25,6 +25,12 @@ export const useAuthStore = defineStore('auth', {
     clearAuth() {
       this.$reset();
     },
+    setMustReauthenticate(state, val) {
+      state.mustReauthenticate = val;
+    },
+    setIsReturningUser(state, val) {
+      state.isReturningUser = val;
+    },
     async requestLogin({ username, password }) {
       return this.handleLogin(username, password);
     },
