@@ -78,10 +78,8 @@ export const useAuthStore = defineStore('auth', {
       });
     },
     async requestStatus(route) {
-      const { state } = this;
-
       // If we've authenticated before, fast fail
-      if (state.authenticated !== null) {
+      if (this.authenticated !== null) {
         return;
       }
 
