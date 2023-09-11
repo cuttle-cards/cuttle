@@ -2,9 +2,8 @@ import { useAuthStore } from '@/stores/auth';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_HOME } from '@/router';
 
-const authUserStore = useAuthStore();
-
 export function handleConnect() {
+  const authUserStore = useAuthStore();
   // Request latest game state if socket reconnects during game
   const { username } = authUserStore;
   switch (router.currentRoute.value.name) {
