@@ -133,19 +133,18 @@ export const useAuthStore = defineStore('auth', {
       io.socket.reconnect();
     },
     getIsReturningUser() {
-      const { isReturningUser } = this.state;
-      if (isReturningUser === null) {
+      if (this.isReturningUser === null) {
         const val = getLocalStorage(LS_IS_RETURNING_USER_NAME);
-        this.state.isReturningUser(val);
+        this.setIsReturningUser(val);
         return val;
       }
     },
     // eslint-disable-next-line no-dupe-keys
     setIsReturningUser() {
-      const { isReturningUser } = this.state;
-      if (!isReturningUser) {
+     
+      if (!this.isReturningUser) {
         setLocalStorage(LS_IS_RETURNING_USER_NAME, true);
-        this.state.isReturningUser = true;
+        this.setIsReturningUser = true;
       }
     },
     async handleLogin(username, password, signup = false) {
