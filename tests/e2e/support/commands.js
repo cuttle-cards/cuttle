@@ -180,13 +180,17 @@ Cypress.Commands.add('signupOpponent', (opponent) => {
 Cypress.Commands.add('signupPlayer', (player) => {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store')
-    .then((store) => store.dispatch('requestSignup', { username: player.username, password: player.password }));
+    .then((store) =>
+      store.dispatch('requestSignup', { username: player.username, password: player.password }),
+    );
   cy.log(`Signed up player ${player.username}`);
 });
 Cypress.Commands.add('loginPlayer', (player) => {
   cy.window()
     .its('cuttle.app.config.globalProperties.$store')
-    .then((store) => store.dispatch('requestLogin', { username: player.username, password: player.password }));
+    .then((store) =>
+      store.dispatch('requestLogin', { username: player.username, password: player.password }),
+    );
   cy.log(`Logged in as player ${player.username}`);
 });
 
@@ -1265,7 +1269,9 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
 });
 
 Cypress.Commands.add('vueRoute', (route) => {
-  cy.window().its('cuttle.app.config.globalProperties.$router').then((router) => router.push(route));
+  cy.window()
+    .its('cuttle.app.config.globalProperties.$router')
+    .then((router) => router.push(route));
 });
 
 /**
@@ -1327,7 +1333,7 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
         reqBody.deck = deck;
       }
 
-      io.socket.get('/game/loadFixture', reqBody, function handleResponse(res, jwres) {
+      io.socket.get('/test/loadGameFixture', reqBody, function handleResponse(res, jwres) {
         if (!jwres.statusCode === 200) {
           return Promise.reject(jwres.error);
         }
