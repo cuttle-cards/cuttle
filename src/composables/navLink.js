@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useStore } from 'vuex';
+import { useAuthStore } from '@/stores/auth';
 import {
   ROUTE_NAME_HOME,
   ROUTE_NAME_LOGIN,
@@ -9,11 +9,11 @@ import {
 } from '@/router.js';
 
 export function getPageLinks() {
-  const store = useStore();
+  const authStore = useAuthStore();
   const { t } = useI18n();
 
   return computed(() => {
-    const { authenticated } = store.state.auth;
+    const authenticated = authStore.auth;
     if (!authenticated) {
       return [
         { text: t('global.login'), icon: 'login', page: { name: ROUTE_NAME_LOGIN } },
