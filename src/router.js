@@ -18,9 +18,10 @@ export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
 export const ROUTE_NAME_STATS_SEASON = 'StatsBySeason';
 
-const authStore = useAuthStore();
+
 
 const mustBeAuthenticated = async (to, from, next) => {
+  const authStore = useAuthStore();
   if (authStore.authenticated) {
     return next();
   }
@@ -32,6 +33,7 @@ const mustBeAuthenticated = async (to, from, next) => {
 };
 
 const logoutAndRedirect = async (to, from, next) => {
+  const authStore = useAuthStore();
   await authStore.requestLogout();
   return next('/login');
 };
@@ -114,6 +116,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, _from, next) => {
+  const authStore = useAuthStore();
   // Make sure we try and reestablish a player's session if one exists
   // We do this before the route resolves to preempt the reauth/logout logic
   await authStore.requestStatus(to);
