@@ -1,3 +1,4 @@
+import { defineStore } from 'pinia';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 
@@ -47,18 +48,6 @@ function resetState() {
   };
 }
 
-function handleGameResponse(context, jwres, resolve, reject) {
-  switch (jwres.statusCode) {
-    case 200:
-      return resolve();
-    case 403:
-      context.commit('setMustReauthenticate', true, { root: true });
-      return reject(jwres.body.message);
-    default:
-      return reject(jwres.body.message);
-  }
-}
-
 /**
  * @returns number of queens a given player has
  * @param player is the player object
@@ -71,195 +60,189 @@ function queenCount(player) {
 }
 
 const initialState = resetState();
-export default {
-  state: initialState,
+export const useGameStore = defineStore('game', {
+  state: () => initialState,
   getters: {
-    discarding(state) {
-      return state.discarding;
-    },
-    player(state) {
+    player: (state)  => {
       return state.players[state.myPNum];
     },
-    playerPointTotal(state, getters) {
-      if (!getters.player) {
+    playerPointTotal: () => {
+      if (!this.player) {
         return 0;
       }
-      return getters.player.points.reduce((total, card) => total + card.rank, 0) || 0;
+      return this.player.points.reduce((total, card) => total + card.rank, 0) || 0;
     },
-    playerQueenCount(state, getters) {
-      return queenCount(getters.player);
+    playerQueenCount: () => {
+      return queenCount(this.player);
     },
-    playerUsername(state, getters) {
-      if (!getters.player) {
+    playerUsername: () => {
+      if (!this.player) {
         return null;
       }
-      return getters.player.username;
+      return this.player.username;
     },
-    opponent(state) {
+    opponent: (state) => {
       if (state.players.length < 2) {
         return null;
       }
       return state.players[(state.myPNum + 1) % 2];
     },
-    opponentIsReady(state, getters) {
-      if (!getters.opponent) {
+    opponentIsReady: (state) => {
+      if (!this.opponent) {
         return null;
       }
       return state.myPNum === 0 ? state.p1Ready : state.p0Ready;
     },
-    opponentUsername(state, getters) {
-      if (!getters.opponent) {
+    opponentUsername: () => {
+      if (!this.opponent) {
         return null;
       }
-      return getters.opponent.username;
+      return this.opponent.username;
     },
-    opponentPointTotal(state, getters) {
-      if (!getters.opponent) {
+    opponentPointhis: () => {
+      if (!this.opponent) {
         return 0;
       }
-      return getters.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
+      return this.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
     },
-    opponentQueenCount(state, getters) {
-      return queenCount(getters.opponent);
+    opponentQueenCount: () => {
+      return queenCount(this.opponent);
     },
-    playerWins(state) {
+    playerWins: (state) => {
       return state.gameIsOver && state.winnerPNum === state.myPNum;
     },
-    resolvingSeven(state) {
+    resolvingSeven: (state) => {
       return state.playingFromDeck || state.waitingForOpponentToPlayFromDeck;
     },
-    isPlayersTurn(state) {
+    isPlayersTurn: (state) => {
       return state.turn % 2 === state.myPNum;
     },
-    hasGlassesEight(state, getters) {
-      return getters.player.faceCards.filter((card) => card.rank === 8).length > 0;
-    },
-  },
-  mutations: {
-    setGameId(state, val) {
-      state.id = val;
-    },
-    updateGame(state, newGame) {
-      if (Object.hasOwnProperty.call(newGame, 'lastEvent')) {
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'change')) {
-          state.lastEventChange = newGame.lastEvent.change;
-        } else {
-          state.lastEventChange = null;
-        }
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'oneOff')) {
-          state.lastEventOneOffRank = newGame.lastEvent.oneOff.rank;
-        } else {
-          state.lastEventOneOffRank = null;
-        }
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'oneOffTargetType')) {
-          state.lastEventTargetType = newGame.lastEvent.oneOffTargetType;
-        } else {
-          state.lastEventTargetType = null;
-        }
-      }
-      state.waitingForOpponentToStalemate = false;
-      if (Object.hasOwnProperty.call(newGame, 'id')) state.id = newGame.id;
-      if (Object.hasOwnProperty.call(newGame, 'turn')) state.turn = newGame.turn;
-      if (Object.hasOwnProperty.call(newGame, 'chat')) state.chat = cloneDeep(newGame.chat);
-      if (Object.hasOwnProperty.call(newGame, 'deck')) state.deck = cloneDeep(newGame.deck);
-      if (Object.hasOwnProperty.call(newGame, 'scrap')) state.scrap = cloneDeep(newGame.scrap);
-      if (Object.hasOwnProperty.call(newGame, 'log')) state.log = cloneDeep(newGame.log);
-      if (Object.hasOwnProperty.call(newGame, 'name')) state.name = newGame.name;
-      if (Object.hasOwnProperty.call(newGame, 'p0Ready')) state.p0Ready = newGame.p0Ready;
-      if (Object.hasOwnProperty.call(newGame, 'p1Ready')) state.p1Ready = newGame.p1Ready;
-      if (Object.hasOwnProperty.call(newGame, 'passes')) state.passes = newGame.passes;
-      if (Object.hasOwnProperty.call(newGame, 'players')) state.players = cloneDeep(newGame.players);
-      if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
-        state.spectatingUsers = newGame.spectatingUsers;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'twos')) state.twos = cloneDeep(newGame.twos);
-
-      if (Object.hasOwnProperty.call(newGame, 'topCard')) state.topCard = cloneDeep(newGame.topCard);
-      else state.topCard = null;
-
-      if (Object.hasOwnProperty.call(newGame, 'secondCard')) state.secondCard = cloneDeep(newGame.secondCard);
-      else state.secondCard = null;
-
-      if (Object.hasOwnProperty.call(newGame, 'oneOff')) state.oneOff = cloneDeep(newGame.oneOff);
-      else state.oneOff = null;
-
-      if (Object.hasOwnProperty.call(newGame, 'oneOffTarget'))
-        state.oneOffTarget = cloneDeep(newGame.oneOffTarget);
-      else state.oneOffTarget = null;
-
-      if (Object.hasOwnProperty.call(newGame, 'isRanked')) state.isRanked = newGame.isRanked;
-      if (Object.hasOwnProperty.call(newGame, 'currentMatch')) state.currentMatch = newGame.currentMatch;
-    },
-    setMyPNum(state, val) {
-      state.myPNum = val;
-    },
-    opponentJoined(state, newPlayer) {
-      state.players.push(cloneDeep(newPlayer));
-      state.players.sort((player, opponent) => player.pNum - opponent.pNum);
-    },
-    successfullyJoined(state, player) {
-      state.players.push(cloneDeep(player));
-    },
-    resetState(state) {
-      // Must use Object.assign to preserve reactivity
-      Object.assign(state, resetState());
-    },
-    updateReady(state, pNum) {
-      if (pNum === 0) {
-        state.p0Ready = !state.p0Ready;
-      } else {
-        state.p1Ready = !state.p1Ready;
-      }
-    },
-    opponentLeft(state) {
-      state.players = state.players.filter((player) => player.pNum === state.myPNum);
-    },
-    setMyTurnToCounter(state, val) {
-      state.myTurnToCounter = val;
-    },
-    // Countering
-    setWaitingForOpponentToCounter(state, val) {
-      state.waitingForOpponentToCounter = val;
-    },
-    // Threes
-    setPickingFromScrap(state, val) {
-      state.pickingFromScrap = val;
-    },
-    setWaitingForOpponentToPickFromScrap(state, val) {
-      state.waitingForOpponentToPickFromScrap = val;
-    },
-    // Fours
-    setDiscarding(state, val) {
-      state.discarding = val;
-    },
-    setWaitingForOpponentToDiscard(state, val) {
-      state.waitingForOpponentToDiscard = val;
-    },
-    // Sevens
-    setPlayingFromDeck(state, val) {
-      state.playingFromDeck = val;
-    },
-    setWaitingForOpponentToPlayFromDeck(state, val) {
-      state.waitingForOpponentToPlayFromDeck = val;
-    },
-    // Game Over
-    setGameOver(state, { gameOver, conceded, winner, currentMatch }) {
-      state.gameIsOver = gameOver;
-      state.conceded = conceded;
-      state.winnerPNum = winner;
-      state.currentMatch = currentMatch;
-    },
-    setWaitingForOpponentToStalemate(state, value) {
-      state.waitingForOpponentToStalemate = value;
-    },
-    setConsideringOpponentStalemateRequest(state, value) {
-      state.consideringOpponentStalemateRequest = value;
+    hasGlassesEight: () => {
+      return this.player.faceCards.filter((card) => card.rank === 8).length > 0;
     },
   },
   actions: {
-    updateGameThenResetPNumIfNull(context, game) {
-      context.commit('updateGame', game);
-      context.dispatch('resetPNumIfNull');
+    setGameId(val) {
+      this.id = val;
+    },
+    updateGame(newGame) {
+      if (Object.hasOwnProperty.call(newGame, 'lastEvent')) {
+        if (Object.hasOwnProperty.call(newGame.lastEvent, 'change')) {
+          this.lastEventChange = newGame.lastEvent.change;
+        } else {
+          this.lastEventChange = null;
+        }
+        if (Object.hasOwnProperty.call(newGame.lastEvent, 'oneOff')) {
+          this.lastEventOneOffRank = newGame.lastEvent.oneOff.rank;
+        } else {
+          this.lastEventOneOffRank = null;
+        }
+        if (Object.hasOwnProperty.call(newGame.lastEvent, 'oneOffTargetType')) {
+          this.lastEventTargetType = newGame.lastEvent.oneOffTargetType;
+        } else {
+          this.lastEventTargetType = null;
+        }
+      }
+      this.waitingForOpponentToStalemate = false;
+      if (Object.hasOwnProperty.call(newGame, 'id')) this.id = newGame.id;
+      if (Object.hasOwnProperty.call(newGame, 'turn')) this.turn = newGame.turn;
+      if (Object.hasOwnProperty.call(newGame, 'chat')) this.chat = cloneDeep(newGame.chat);
+      if (Object.hasOwnProperty.call(newGame, 'deck')) this.deck = cloneDeep(newGame.deck);
+      if (Object.hasOwnProperty.call(newGame, 'scrap')) this.scrap = cloneDeep(newGame.scrap);
+      if (Object.hasOwnProperty.call(newGame, 'log')) this.log = cloneDeep(newGame.log);
+      if (Object.hasOwnProperty.call(newGame, 'name')) this.name = newGame.name;
+      if (Object.hasOwnProperty.call(newGame, 'p0Ready')) this.p0Ready = newGame.p0Ready;
+      if (Object.hasOwnProperty.call(newGame, 'p1Ready')) this.p1Ready = newGame.p1Ready;
+      if (Object.hasOwnProperty.call(newGame, 'passes')) this.passes = newGame.passes;
+      if (Object.hasOwnProperty.call(newGame, 'players')) this.players = cloneDeep(newGame.players);
+      if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
+        this.spectatingUsers = newGame.spectatingUsers;
+      }
+      if (Object.hasOwnProperty.call(newGame, 'twos')) this.twos = cloneDeep(newGame.twos);
+
+      if (Object.hasOwnProperty.call(newGame, 'topCard')) this.topCard = cloneDeep(newGame.topCard);
+      else this.topCard = null;
+
+      if (Object.hasOwnProperty.call(newGame, 'secondCard')) this.secondCard = cloneDeep(newGame.secondCard);
+      else this.secondCard = null;
+
+      if (Object.hasOwnProperty.call(newGame, 'oneOff')) this.oneOff = cloneDeep(newGame.oneOff);
+      else this.oneOff = null;
+
+      if (Object.hasOwnProperty.call(newGame, 'oneOffTarget'))
+        this.oneOffTarget = cloneDeep(newGame.oneOffTarget);
+      else this.oneOffTarget = null;
+
+      if (Object.hasOwnProperty.call(newGame, 'isRanked')) this.isRanked = newGame.isRanked;
+      if (Object.hasOwnProperty.call(newGame, 'currentMatch')) this.currentMatch = newGame.currentMatch;
+    },
+    setMyPNum(val) {
+      this.myPNum = val;
+    },
+    opponentJoined(newPlayer) {
+      this.players.push(cloneDeep(newPlayer));
+      this.players.sort((player, opponent) => player.pNum - opponent.pNum);
+    },
+    successfullyJoined(player) {
+      this.players.push(cloneDeep(player));
+    },
+    resetState() {
+      this.$reset;
+    },
+    updateReady(pNum) {
+      if (pNum === 0) {
+        this.p0Ready = !this.p0Ready;
+      } else {
+        this.p1Ready = !this.p1Ready;
+      }
+    },
+    opponentLeft() {
+      this.players = this.players.filter((player) => player.pNum === this.myPNum);
+    },
+    setMyTurnToCounter(val) {
+      this.myTurnToCounter = val;
+    },
+    // Countering
+    setWaitingForOpponentToCounter(val) {
+      this.waitingForOpponentToCounter = val;
+    },
+    // Threes
+    setPickingFromScrap(val) {
+      this.pickingFromScrap = val;
+    },
+    setWaitingForOpponentToPickFromScrap(val) {
+      this.waitingForOpponentToPickFromScrap = val;
+    },
+    // Fours
+    setDiscarding(val) {
+      this.discarding = val;
+    },
+    setWaitingForOpponentToDiscard(val) {
+      this.waitingForOpponentToDiscard = val;
+    },
+    // Sevens
+    setPlayingFromDeck(val) {
+      this.playingFromDeck = val;
+    },
+    setWaitingForOpponentToPlayFromDeck(val) {
+      this.waitingForOpponentToPlayFromDeck = val;
+    },
+    // Game Over
+    setGameOver({ gameOver, conceded, winner, currentMatch }) {
+      this.gameIsOver = gameOver;
+      this.conceded = conceded;
+      this.winnerPNum = winner;
+      this.currentMatch = currentMatch;
+    },
+    setWaitingForOpponentToStalemate(value) {
+      this.waitingForOpponentToStalemate = value;
+    },
+    setConsideringOpponentStalemateRequest(value) {
+      this.consideringOpponentStalemateRequest = value;
+    },
+    updateGameThenResetPNumIfNull(game) {
+      this.updateGame(game);
+      this.resetPNumIfNull();
     },
     resetPNumIfNull(context) {
       // Set my pNum if it is null
@@ -270,7 +253,7 @@ export default {
         if (myPNum === -1) {
           myPNum = null;
         }
-        context.commit('setMyPNum', myPNum);
+        this.setMyPNum(myPNum);
       }
     },
     /**
@@ -279,15 +262,15 @@ export default {
      * and updates complete game which will put both cards in the scrap
      * @returns void
      */
-    processScuttle(context, { game, playedCardId, targetCardId, playedBy }) {
+    processScuttle({ game, playedCardId, targetCardId, playedBy }) {
       // Update in one step if this player scuttled or if pNum is not set
-      if (!context.getters.player) {
-        context.dispatch('updateGameThenResetPNumIfNull', game);
+      if (!this.player) {
+        this.updateGameThenResetPNumIfNull(game);
         return;
       }
 
-      const scuttlingPlayer = context.state.players[playedBy];
-      const scuttledPlayer = context.state.players[(playedBy + 1) % 2];
+      const scuttlingPlayer = this.state.players[playedBy];
+      const scuttledPlayer = this.state.players[(playedBy + 1) % 2];
 
       // Remove played card from scuttling player's hand and temporarily add to target's attachments
       const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCardId);
@@ -295,7 +278,7 @@ export default {
 
       // Update game in one-step if moved cards are not found
       if (playedCardIndex === undefined || targetCardIndex === undefined) {
-        context.dispatch('updateGameThenResetPNumIfNull', game);
+        this.updateGameThenResetPNumIfNull(game);
         return;
       }
 
@@ -305,11 +288,23 @@ export default {
 
       // Finish complete update of the game state after 1s
       setTimeout(() => {
-        context.dispatch('updateGameThenResetPNumIfNull', game);
+        this.updateGameThenResetPNumIfNull(game);
       }, 1000);
     },
 
-    async requestSubscribe(context, gameId) {
+    handleGameResponse(jwres, resolve, reject) {
+      switch (jwres.statusCode) {
+        case 200:
+          return resolve();
+        case 403:
+          this.setMustReauthenticate({ root: true });
+          return reject(jwres.body.message);
+        default:
+          return reject(jwres.body.message);
+      }
+    },
+
+    async requestSubscribe(gameId) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/subscribe',
@@ -318,9 +313,9 @@ export default {
           },
           function handleResponse(res, jwres) {
             if (jwres.statusCode === 200) {
-              context.commit('updateGame', res.game);
-              context.commit('setMyPNum', res.pNum);
-              context.commit('successfullyJoined', {
+              this.updateGame(res.game);
+              this.setMyPNum(res.pNum);
+              this.successfullyJoined({
                 username: res.playerUsername,
                 pNum: res.pNum,
               });
@@ -333,7 +328,7 @@ export default {
       });
     },
 
-    async requestSpectate(context, gameId) {
+    async requestSpectate(gameId) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/spectate',
@@ -342,8 +337,8 @@ export default {
           },
           function handleResponse(res, jwres) {
             if (jwres.statusCode === 200) {
-              context.commit('updateGame', res);
-              context.commit('setMyPNum', 0);
+              this.updateGame(res);
+              this.setMyPNum(0);
               return resolve();
             }
             return reject(new Error('Unable to spectate game'));
@@ -351,22 +346,22 @@ export default {
         );
       });
     },
-    async requestSpectateLeave(context) {
+    async requestSpectateLeave() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/spectateLeave', function handleResponse(res, jwres) {
           if (jwres.statusCode === 200) {
-            context.commit('resetState');
+            this.resetState();
             return resolve();
           }
           return reject(new Error('Error leaving game as spectator'));
         });
       });
     },
-    async requestLeaveLobby(context) {
+    async requestLeaveLobby() {
       return new Promise((resolve, reject) => {
         io.socket.post('/game/leaveLobby', function handleResponse(res, jwres) {
           if (jwres.statusCode === 200) {
-            context.commit('resetState');
+            this.resetState();
             return resolve();
           }
           return reject(new Error('Error leaving lobby'));
@@ -386,10 +381,10 @@ export default {
     ///////////////////
     // In-Game Moves //
     ///////////////////
-    async requestDrawCard(context) {
+    async requestDrawCard() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/draw', function handleResponse(res, jwres) {
-          return handleGameResponse(context, jwres, resolve, reject);
+          return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
@@ -401,7 +396,7 @@ export default {
             cardId,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       });
@@ -414,7 +409,7 @@ export default {
             cardId,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       });
@@ -423,7 +418,7 @@ export default {
      *
      * @param cardData @example {cardId: number, targetId: number}
      */
-    async requestScuttle(context, cardData) {
+    async requestScuttle(cardData) {
       const { cardId, targetId } = cardData;
       return new Promise((resolve, reject) => {
         io.socket.get(
@@ -431,32 +426,32 @@ export default {
           {
             cardId,
             targetId,
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       });
     },
-    async requestPlayOneOff(context, cardId) {
+    async requestPlayOneOff(cardId) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/untargetedOneOff',
           {
             cardId,
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       }).then(() => {
-        context.commit('setWaitingForOpponentToCounter', true);
+        this.setWaitingForOpponentToCounter(true);
         return Promise.resolve();
       });
     },
-    async requestPlayTargetedOneOff(context, { cardId, targetId, pointId, targetType }) {
+    async requestPlayTargetedOneOff({ cardId, targetId, pointId, targetType }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/targetedOneOff',
@@ -465,28 +460,28 @@ export default {
             targetId,
             pointId,
             targetType,
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       }).then(() => {
-        context.commit('setWaitingForOpponentToCounter', true);
+        this.setWaitingForOpponentToCounter(true);
       });
     },
-    async requestPlayJack(context, { cardId, targetId }) {
+    async requestPlayJack({ cardId, targetId }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/jack',
           {
             cardId,
             targetId,
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
-          },
+            return this.handleGameResponse(jwres, resolve, reject);
+          }
         );
       });
     },
@@ -495,7 +490,7 @@ export default {
      * @param {required} cardId1
      * @param {optional} cardId2
      */
-    async requestDiscard(context, { cardId1, cardId2 }) {
+    async requestDiscard({ cardId1, cardId2 }) {
       let reqData = {
         cardId1,
       };
@@ -507,44 +502,43 @@ export default {
       }
       return new Promise((resolve, reject) => {
         io.socket.get('/game/resolveFour', reqData, function (res, jwres) {
-          return handleGameResponse(context, jwres, resolve, reject);
+          return this.this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
-    async requestResolve(context) {
-      context.commit('setMyTurnToCounter', false);
-
+    async requestResolve() {
+      this.setMyTurnToCounter(false);
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/resolve',
           {
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       });
     },
-    async requestResolveThree(context, cardId) {
-      context.commit('setMyTurnToCounter', false);
+    async requestResolveThree(cardId) {
+      this.setMyTurnToCounter(false);
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/resolveThree',
           {
             cardId,
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       }).then(() => {
-        context.commit('setWaitingForOpponentToCounter', false);
+        this.setWaitingForOpponentToCounter(false);
       });
     },
-    async requestResolveSevenDoubleJacks(context, { cardId, index }) {
-      context.commit('setMyTurnToCounter', false);
+    async requestResolveSevenDoubleJacks({ cardId, index }) {
+      this.setMyTurnToCounter(false);
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/seven/jack',
@@ -552,36 +546,36 @@ export default {
             cardId,
             index, // 0 if topCard, 1 if secondCard
             targetId: -1, // -1 for the double jacks with no points to steal case
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       });
     },
-    async requestCounter(context, twoId) {
-      context.commit('setMyTurnToCounter', false);
+    async requestCounter(twoId) {
+      this.setMyTurnToCounter(false);
 
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/counter',
           {
             cardId: twoId,
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       }).then(() => {
-        context.commit('setWaitingForOpponentToCounter', true);
+        this.setWaitingForOpponentToCounter(true);
       });
     },
     ////////////
     // Sevens //
     ////////////
-    async requestPlayPointsSeven(context, { cardId, index }) {
+    async requestPlayPointsSeven({ cardId, index }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/seven/points',
@@ -590,12 +584,12 @@ export default {
             index, // 0 if topCard, 1 if secondCard
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       });
     },
-    async requestScuttleSeven(context, { cardId, index, targetId }) {
+    async requestScuttleSeven({ cardId, index, targetId }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/seven/scuttle',
@@ -603,15 +597,15 @@ export default {
             cardId,
             index,
             targetId,
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       });
     },
-    async requestPlayJackSeven(context, { cardId, index, targetId }) {
+    async requestPlayJackSeven({ cardId, index, targetId }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/seven/jack',
@@ -619,15 +613,15 @@ export default {
             cardId,
             index, // 0 if topCard, 1 if secondCard
             targetId,
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       });
     },
-    async requestPlayFaceCardSeven(context, { index, cardId }) {
+    async requestPlayFaceCardSeven({ index, cardId }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/seven/faceCard',
@@ -636,29 +630,29 @@ export default {
             index,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       });
     },
-    async requestPlayOneOffSeven(context, { cardId, index }) {
+    async requestPlayOneOffSeven({ cardId, index }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/seven/untargetedOneOff',
           {
             cardId,
             index, // 0 if topCard, 1 if secondCard
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       }).then(() => {
-        context.commit('setWaitingForOpponentToCounter', true);
+        this.setWaitingForOpponentToCounter(true);
       });
     },
-    async requestPlayTargetedOneOffSeven(context, { cardId, index, targetId, pointId, targetType }) {
+    async requestPlayTargetedOneOffSeven({ cardId, index, targetId, pointId, targetType }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/seven/targetedOneOff',
@@ -668,53 +662,53 @@ export default {
             pointId,
             targetType,
             index, // 0 if topCard, 1 if secondCard
-            opId: context.getters.opponent.id,
+            opId: this.opponent.id,
           },
           function handleResponse(res, jwres) {
-            return handleGameResponse(context, jwres, resolve, reject);
+            return this.handleGameResponse(jwres, resolve, reject);
           },
         );
       }).then(() => {
-        context.commit('setWaitingForOpponentToCounter', true);
+        this.setWaitingForOpponentToCounter(true);
       });
     },
-    async requestPass(context) {
+    async requestPass() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/pass', function handleResponse(res, jwres) {
-          return handleGameResponse(context, jwres, resolve, reject);
+          return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
-    async requestConcede(context) {
+    async requestConcede() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/concede', function handleResponse(res, jwres) {
-          return handleGameResponse(context, jwres, resolve, reject);
+          return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
-    async requestStalemate(context) {
+    async requestStalemate() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/stalemate', function handleResponse(res, jwres) {
-          return handleGameResponse(context, jwres, resolve, reject);
+          return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
-    async rejectStalemate(context) {
+    async rejectStalemate() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/reject-stalemate', function handleResponse(res, jwres) {
-          return handleGameResponse(context, jwres, resolve, reject);
+          return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
-    async requestUnsubscribeFromGame(context) {
+    async requestUnsubscribeFromGame() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/over', function handleResponse(res, jwres) {
           if (jwres.statusCode === 200) {
-            context.commit('resetState');
+            this.resetState();
           }
-          return handleGameResponse(context, jwres, resolve, reject);
+          return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
   }, // End actions
-}; // End game module
+}); // End game module
