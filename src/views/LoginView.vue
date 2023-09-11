@@ -233,9 +233,9 @@ export default {
   methods: {
     async submitLogin() {
       this.loading = true;
-      const action = this.isLoggingIn ? 'requestLogin' : 'requestSignup';
+      const action = this.isLoggingIn ? this.authStore.requestLogin : this.authStore.requestSignup;
       try {
-        await this.$store.dispatch(action, {
+        await action({
           username: this.username,
           password: this.pw,
         });
