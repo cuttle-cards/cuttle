@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
-import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '../../utils/local-storage-utils.js';
+import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '@/utils/local-storage-utils.js';
 
 // TODO Figure out how to reconsolidate this with backend
 const getPlayerPnumByUsername = (players, username) => {
