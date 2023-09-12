@@ -393,8 +393,8 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
-
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
 import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
 import GameCard from '@/components/GameView/GameCard.vue';
 import GameDialogs from '@/components/GameView/GameDialogs.vue';
@@ -440,27 +440,24 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
+    ...mapStores(useGameStore, {
+      isPlayersTurn: 'isPlayersTurn',
+      player: 'player',
+      playerPointTotal: 'playerPointTotal',
+      playerQueenCound: 'playerQueenCount',
+      playerUsername: 'playerUsername',
+      opponent: 'opponent',
+      opponentPointTotal: 'opponentPointTotal',
+      opponentQueenCount: 'opponentQueenCount',
+      opponentUsername: 'opponentUsername',
+      resolvingSeven: 'resolvingSeven',
+      hasGlassesEight: 'hasGlassesEight',
     }),
-    ...mapGetters([
-      'isPlayersTurn',
-      'player',
-      'playerPointTotal',
-      'playerQueenCount',
-      'playerUsername',
-      'opponent',
-      'opponentPointTotal',
-      'opponentQueenCount',
-      'opponentUsername',
-      'resolvingSeven',
-      'hasGlassesEight',
-    ]),
     isSpectating() {
       return this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE;
     },
     showOpponentHand() {
-      return this.hasGlassesEight || this.isSpectating;
+      return this.gameStore.hasGlassesEight || this.isSpectating;
     },
 
     ////////////////////
@@ -483,7 +480,7 @@ export default {
     // Game, Deck, Log, Scrap, and Spectators //
     ///////////////////////////////////////////
     game() {
-      return this.$store.state.game;
+      return this.gameStore;
     },
     deck() {
       return this.game.deck;
@@ -758,13 +755,13 @@ export default {
       }
     },
     selectTopCard() {
-      if (!this.waitingForOpponentToPlayFromDeck) {
+      if (!this.gameStore.waitingForOpponentToPlayFromDeck) {
         this.secondCardIsSelected = false;
         this.topCardIsSelected = !this.topCardIsSelected;
       }
     },
     selectSecondCard() {
-      if (!this.waitingForOpponentToPlayFromDeck) {
+      if (!this.gameStore.waitingForOpponentToPlayFromDeck) {
         this.topCardIsSelected = false;
         this.secondCardIsSelected = !this.secondCardIsSelected;
       }
