@@ -442,8 +442,6 @@ export default {
   },
   computed: {
     ...mapStores(useGameStore),
-    ...mapState(useAuthStore, ['authenticated']),
-    ...mapActions(useAuthStore, ['setMustReauthenticate']),
     ...mapState(useGameStore, 
       ['isPlayersTurn',
       'player',
@@ -456,7 +454,9 @@ export default {
       'opponentUsername',
       'resolvingSeven',
       'hasGlassesEight',
-    ]),
+      ]),
+    ...mapState(useAuthStore, ['authenticated']),
+    ...mapActions(useAuthStore, ['setMustReauthenticate']),
     isSpectating() {
       return this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE;
     },
