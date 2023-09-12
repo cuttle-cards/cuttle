@@ -1,11 +1,13 @@
+import { useGameStore } from '@/stores/game';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router';
 import SocketEvent from '../../../types/SocketEvent';
-const store = {};
+
 
 
 // Handles socket updates of game data
 export async function handleInGameEvents(evData) {
+  const gameStore = useGameStore();
   await router.isReady();
   const currentRoute = router.currentRoute.value;
 
@@ -20,20 +22,20 @@ export async function handleInGameEvents(evData) {
   // Handle GameOver
   if (evData.victory && evData.victory.gameOver) {
     setTimeout(() => {
-      store.commit('setGameOver', evData.victory);
+      gameStore.setGameOver(evData.victory);
     }, 1000);
   }
   switch (evData.change) {
     case SocketEvent.READY: {
-      store.commit('updateReady', evData.pNum);
+      gameStore.updateReady(evData.pNum);
       return;
     }
     case SocketEvent.INITIALIZE: {
       // Update state
-      store.commit('resetState');
-      store.dispatch('updateGameThenResetPNumIfNull', evData.game);
+      gameStore.resetState();
+      gameStore.updateGameThenResetPNumIfNull(evData.game);
       if (isSpectating) {
-        store.commit('setMyPNum', 0); // always spectate as p0
+        gameStore.setMyPNum(0); // always spectate as p0
       }
       break;
     }
@@ -44,46 +46,46 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.LOAD_FIXTURE:
     case SocketEvent.JACK:
     case SocketEvent.DELETE_DECK:
-      store.dispatch('updateGameThenResetPNumIfNull', evData.game);
+      gameStore.updateGameThenResetPNumIfNull(evData.game);
       break;
     case SocketEvent.SCUTTLE:
-      store.dispatch('processScuttle', evData);
+      gameStore.processScuttle(evData);
       break;
     case SocketEvent.RESOLVE_THREE:
-      store.dispatch('updateGameThenResetPNumIfNull', evData.game);
-      store.commit('setPickingFromScrap', false);
-      store.commit('setWaitingForOpponentToPickFromScrap', false);
+      gameStore.updateGameThenResetPNumIfNull(evData.game);
+      gameStore.setPickingFromScrap(false);
+      gameStore.setWaitingForOpponentToPickFromScrap(false);
       break;
     case SocketEvent.RESOLVE_FOUR:
-      store.dispatch('updateGameThenResetPNumIfNull', evData.game);
-      store.commit('setWaitingForOpponentToDiscard', false);
-      store.commit('setDiscarding', false);
+      gameStore.updateGameThenResetPNumIfNull(evData.game);
+      gameStore.setWaitingForOpponentToDiscard(false);
+      gameStore.setDiscarding(false);
       break;
     case SocketEvent.RESOLVE:
-      store.dispatch('updateGameThenResetPNumIfNull', evData.game);
-      store.commit('setWaitingForOpponentToCounter', false);
-      store.commit('setMyTurnToCounter', false);
+      gameStore.updateGameThenResetPNumIfNull(evData.game);
+      gameStore.setWaitingForOpponentToCounter(false);
+      gameStore.setMyTurnToCounter(false);
       if (evData.happened) {
         switch (evData.oneOff.rank) {
           case 3:
-            if (evData.playedBy !== store.state.game.myPNum) {
-              store.commit('setWaitingForOpponentToPickFromScrap', true);
+            if (evData.playedBy !== gameStore.myPNum) {
+              gameStore.setWaitingForOpponentToPickFromScrap(true);
             } else {
-              store.commit('setPickingFromScrap', true);
+              gameStore.setPickingFromScrap(true);
             }
             break;
           case 4:
-            if (evData.playedBy === store.state.game.myPNum) {
-              store.commit('setWaitingForOpponentToDiscard', true);
+            if (evData.playedBy === gameStore.myPNum) {
+              gameStore.setWaitingForOpponentToDiscard(true);
             } else {
-              store.commit('setDiscarding', true);
+              gameStore.setDiscarding(true);
             }
             break;
           case 7:
-            if (evData.playedBy === store.state.game.myPNum) {
-              store.commit('setPlayingFromDeck', true);
+            if (evData.playedBy === gameStore.myPNum) {
+              gameStore.setPlayingFromDeck(true);
             } else {
-              store.commit('setWaitingForOpponentToPlayFromDeck', true);
+              gameStore.setWaitingForOpponentToPlayFromDeck(true);
             }
             break;
           default:
@@ -94,13 +96,13 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.TARGETED_ONE_OFF:
     case SocketEvent.ONE_OFF:
     case SocketEvent.COUNTER:
-      store.dispatch('updateGameThenResetPNumIfNull', evData.game);
-      if (evData.pNum !== store.state.game.myPNum) {
-        store.commit('setWaitingForOpponentToCounter', false);
-        store.commit('setMyTurnToCounter', true);
+      gameStore.updateGameThenResetPNumIfNull(evData.game);
+      if (evData.pNum !== gameStore.myPNum) {
+        gameStore.setWaitingForOpponentToCounter(false);
+        gameStore.setMyTurnToCounter(true);
       } else {
-        store.commit('setWaitingForOpponentToCounter', true);
-        store.commit('setMyTurnToCounter', false);
+        gameStore.setWaitingForOpponentToCounter(true);
+        gameStore.setMyTurnToCounter(false);
       }
       break;
     // Sevens
@@ -108,33 +110,33 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.SEVEN_FACE_CARD:
     case SocketEvent.SEVEN_JACK:
     case SocketEvent.SEVEN_SCUTTLE:
-      store.dispatch('updateGameThenResetPNumIfNull', evData.game);
-      store.commit('setPlayingFromDeck', false);
-      store.commit('setWaitingForOpponentToPlayFromDeck', false);
+      gameStore.updateGameThenResetPNumIfNull(evData.game);
+      gameStore.setPlayingFromDeck(false);
+      gameStore.setWaitingForOpponentToPlayFromDeck(false);
       break;
     case SocketEvent.SEVEN_ONE_OFF:
     case SocketEvent.SEVEN_TARGETED_ONE_OFF:
-      store.dispatch('updateGameThenResetPNumIfNull', evData.game);
-      store.commit('setPlayingFromDeck', false);
-      store.commit('setWaitingForOpponentToPlayFromDeck', false);
-      if (evData.pNum !== store.state.game.myPNum) {
-        store.commit('setWaitingForOpponentToCounter', false);
-        store.commit('setMyTurnToCounter', true);
+      gameStore.updateGameThenResetPNumIfNull(evData.game);
+      gameStore.setPlayingFromDeck(false);
+      gameStore.setWaitingForOpponentToPlayFromDeck(false);
+      if (evData.pNum !== gameStore.myPNum) {
+        gameStore.setWaitingForOpponentToCounter(false);
+        gameStore.setMyTurnToCounter(true);
       }
       break;
     case SocketEvent.RE_LOGIN:
     case SocketEvent.SPECTATOR_JOINED:
     case SocketEvent.SPECTATOR_LEFT:
-      store.dispatch('updateGameThenResetPNumIfNull', evData.game);
+      gameStore.updateGameThenResetPNumIfNull(evData.game);
       break;
     case SocketEvent.REQUEST_STALEMATE:
-      if (evData.requestedByPNum !== store.state.game.myPNum && !evData.victory.gameOver) {
-        store.commit('setConsideringOpponentStalemateRequest', true);
+      if (evData.requestedByPNum !== gameStore.myPNum && !evData.victory.gameOver) {
+        gameStore.setConsideringOpponentStalemateRequest(true);
       }
       break;
     case SocketEvent.REJECT_STALEMATE:
-      store.commit('setConsideringOpponentStalemateRequest', false);
-      store.commit('setWaitingForOpponentToStalemate', false);
+      gameStore.setConsideringOpponentStalemateRequest(false);
+      gameStore.setWaitingForOpponentToStalemate(false);
       break;
   }
 
@@ -146,7 +148,7 @@ export async function handleInGameEvents(evData) {
       router.push({
         name: targetRouteName,
         params: {
-          gameId: store.state.game.id,
+          gameId: gameStore.id,
         },
       });
     }
