@@ -1,7 +1,7 @@
 <template>
   <div id="game-view-wrapper">
     <!-- Unauthenticated/Must re-log in/ Unavailable game -->
-    <template v-if="$store.state.game.myPNum === null">
+    <template v-if="gameStore.myPNum === null">
       <game-unavailable-view />
     </template>
 
@@ -393,8 +393,9 @@
 </template>
 
 <script>
-import { mapStores } from 'pinia';
+import { mapStores, mapState } from 'pinia';
 import { useGameStore } from '@/stores/game';
+import { useAuthStore } from '@/stores/auth';
 import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
 import GameCard from '@/components/GameView/GameCard.vue';
 import GameDialogs from '@/components/GameView/GameDialogs.vue';
@@ -440,19 +441,21 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useGameStore, {
-      isPlayersTurn: 'isPlayersTurn',
-      player: 'player',
-      playerPointTotal: 'playerPointTotal',
-      playerQueenCound: 'playerQueenCount',
-      playerUsername: 'playerUsername',
-      opponent: 'opponent',
-      opponentPointTotal: 'opponentPointTotal',
-      opponentQueenCount: 'opponentQueenCount',
-      opponentUsername: 'opponentUsername',
-      resolvingSeven: 'resolvingSeven',
-      hasGlassesEight: 'hasGlassesEight',
-    }),
+    ...mapStores(useGameStore),
+    ...mapStores(useAuthStore),
+    ...mapState(useGameStore, 
+      ['isPlayersTurn',
+      'player',
+      'playerPointTotal',
+      'playerQueenCount',
+      'playerUsername',
+      'opponent',
+      'opponentPointTotal',
+      'opponentQueenCount',
+      'opponentUsername',
+      'resolvingSeven',
+      'hasGlassesEight',
+    ]),
     isSpectating() {
       return this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE;
     },
@@ -702,19 +705,19 @@ export default {
     },
   },
   async mounted() {
-    if (this.isSpectating && !this.$store.state.game.id) {
+    if (this.isSpectating && !this.gameStore.id) {
       let { gameId } = this.$router.currentRoute.value.params;
       gameId = Number(gameId);
       if (!Number.isInteger(gameId)) {
-        await this.$store.dispatch('requestUnsubscribeFromGame');
+        await this.gameStore.requestUnsubscribeFromGame();
         this.$router.push(ROUTE_NAME_HOME);
         return;
       }
-      this.$store.dispatch('requestSpectate', Number(gameId));
+      this.gameStore.requestSpectate(Number(gameId));
     }
 
-    if (!this.$store.state.auth.authenticated) {
-      this.$store.commit('setMustReauthenticate', true);
+    if (!this.authStore.authenticated) {
+      this.authStore.setMustReauthenticate(true);
     }
     document.documentElement.style.setProperty('--browserHeight', `${window.innerHeight / 100}px`);
     window.addEventListener('resize', () => {
@@ -817,8 +820,7 @@ export default {
     drawCard() {
       if (!this.resolvingSeven) {
         if (this.deckLength > 0) {
-          this.$store
-            .dispatch('requestDrawCard')
+          this.gameStore.requestDrawCard()
             .then(this.clearSelection)
             .catch((err) => {
               this.snackBarMessage = err;
@@ -826,8 +828,7 @@ export default {
               this.clearSelection();
             });
         } else {
-          this.$store
-            .dispatch('requestPass')
+          this.gameStore.requestPass()
             .then(this.clearSelection)
             .catch((err) => {
               this.snackBarMessage = err;
@@ -841,16 +842,14 @@ export default {
       this.clearOverlays();
       if (this.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestPlayPointsSeven', {
+        this.gameStore.requestPlayPointsSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
           })
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.$store
-          .dispatch('requestPlayPoints', this.selectedCard.id)
+        this.gameStore.requestPlayPoints(this.selectedCard.id)
           .then(this.clearSelection)
           .catch(this.handleError);
       }
@@ -859,16 +858,14 @@ export default {
       this.clearOverlays();
       if (this.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestPlayFaceCardSeven', {
+        this.gameStore.requestPlayFaceCardSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
           })
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.$store
-          .dispatch('requestPlayFaceCard', this.selectedCard.id)
+        this.gameStore.requestPlayFaceCard(this.selectedCard.id)
           .then(this.clearSelection)
           .catch(this.handleError);
       }
@@ -876,8 +873,7 @@ export default {
     scuttle(targetIndex) {
       if (this.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestScuttleSeven', {
+        this.gameStore.requestScuttleSeven({
             cardId: this.cardSelectedFromDeck.id,
             targetId: this.opponent.points[targetIndex].id,
             index: deckIndex,
@@ -885,8 +881,7 @@ export default {
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.$store
-          .dispatch('requestScuttle', {
+        this.gameStore.requestScuttle({
             cardId: this.selectedCard.id,
             targetId: this.opponent.points[targetIndex].id,
           })
@@ -915,8 +910,7 @@ export default {
       }
       if (this.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestPlayTargetedOneOffSeven', {
+        this.gameStore.requestPlayTargetedOneOffSeven({
             cardId: this.cardSelectedFromDeck.id,
             targetId: target.id,
             pointId: jackedPointId,
@@ -926,8 +920,7 @@ export default {
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.$store
-          .dispatch('requestPlayTargetedOneOff', {
+        this.gameStore.requestPlayTargetedOneOff({
             cardId: this.selectedCard.id,
             targetId: target.id,
             pointId: jackedPointId,
@@ -941,8 +934,7 @@ export default {
       const target = this.opponent.points[targetIndex];
       if (this.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestPlayJackSeven', {
+        this.gameStore.requestPlayJackSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
             targetId: target.id,
@@ -950,8 +942,7 @@ export default {
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.$store
-          .dispatch('requestPlayJack', {
+        this.gameStore.requestPlayJack({
             cardId: this.selectedCard.id,
             targetId: target.id,
           })
@@ -1018,8 +1009,7 @@ export default {
         if (!this.cardSelectedFromDeck) return;
 
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestPlayOneOffSeven', {
+        this.gameStore.requestPlayOneOffSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
           })
@@ -1028,8 +1018,7 @@ export default {
       }
       if (!this.selectedCard) return;
 
-      this.$store
-        .dispatch('requestPlayOneOff', this.selectedCard.id)
+      this.gameStore.requestPlayOneOff(this.selectedCard.id)
         .then(this.clearSelection)
         .catch(this.handleError);
     },
