@@ -28,9 +28,6 @@ export const useAuthStore = defineStore('auth', {
     setMustReauthenticate(val) {
       this.mustReauthenticate = val;
     },
-    setIsReturningUser(val) {
-      this.isReturningUser = val;
-    },
     async requestLogin({ username, password }) {
       return this.handleLogin(username, password);
     },
@@ -135,16 +132,14 @@ export const useAuthStore = defineStore('auth', {
     getIsReturningUser() {
       if (this.isReturningUser === null) {
         const val = getLocalStorage(LS_IS_RETURNING_USER_NAME);
-        this.setIsReturningUser(val);
+        this.isReturningUser = val;
         return val;
       }
     },
-    // eslint-disable-next-line no-dupe-keys
     setIsReturningUser() {
-     
       if (!this.isReturningUser) {
         setLocalStorage(LS_IS_RETURNING_USER_NAME, true);
-        this.setIsReturningUser = true;
+        this.isReturningUser = true;
       }
     },
     async handleLogin(username, password, signup = false) {
