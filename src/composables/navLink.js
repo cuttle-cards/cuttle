@@ -13,7 +13,7 @@ export function getPageLinks() {
   const { t } = useI18n();
 
   return computed(() => {
-    const authenticated = authStore.auth;
+    const { authenticated } = authStore;
     if (!authenticated) {
       return [
         { text: t('global.login'), icon: 'login', page: { name: ROUTE_NAME_LOGIN } },
