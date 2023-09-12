@@ -393,7 +393,7 @@
 </template>
 
 <script>
-import { mapStores, mapState } from 'pinia';
+import { mapStores, mapState, mapActions } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
@@ -442,7 +442,8 @@ export default {
   },
   computed: {
     ...mapStores(useGameStore),
-    ...mapStores(useAuthStore),
+    ...mapState(useAuthStore, ['authenticated']),
+    ...mapActions(useAuthStore, ['setMustReauthenticate']),
     ...mapState(useGameStore, 
       ['isPlayersTurn',
       'player',
