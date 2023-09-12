@@ -36,8 +36,14 @@
               v-for="(gameStatus, i) in matchGameStats"
               :key="`${gameStatus}-${i}`"
               class="d-flex flex-column mr-4 align-center"
+              :data-cy="`match-result-game-${i+1}`"
             >
-              <v-icon size="x-large" color="surface-2" :icon="iconFromGameStatus(gameStatus)" />
+              <v-icon
+                size="x-large"
+                color="surface-2"
+                :icon="iconFromGameStatus(gameStatus)"
+                :data-cy="`icon-${gameStatus}`"
+              />
               {{ gameStatus }}
             </div>
           </div>
@@ -62,6 +68,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
+import GameStatus from '../../../utils/GameStatus.json';
 
 export default {
   name: 'GameOverDialog',
@@ -154,16 +161,10 @@ export default {
     matchGameStats() {
       const currentMatchGames = this.game.currentMatch?.games ?? [];
       return currentMatchGames.map((game) => {
-        switch (game.result) {
-          case 0: // p0 won game
-            return game.p0 === this.player.id ? 'W' : 'L';
-          case 1: // p1 won game
-            return game.p1 === this.player.id ? 'W' : 'L';
-          case 2: // draw
-            return 'D';
-          default: // incomplete
-            return 'I';
-        }
+        if (game.status === GameStatus.FINISHED){
+          return game.winner === null ? 'D' : game.winner === this.opponent.id ? 'L' : 'W';
+        } 
+        return 'I';
       });
     },
     matchIsOver() {

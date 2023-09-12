@@ -20,21 +20,26 @@ const seasonFixtures = [
     endTime: dayjs('2022-03-16 18:00').valueOf(),
   },
   {
+    name: 'Current Season',
+    startTime: dayjs().subtract(2, 'week').valueOf(),
+    endTime: dayjs().add(11, 'week').valueOf(),
+  },
+  {
     name: 'Future Spades Season',
     startTime: dayjs().add(1, 'year').valueOf(),
     endTime: dayjs().add(1, 'year').valueOf(),
   },
   {
     name: 'World Championship Season',
-    startTime: dayjs().subtract(1, 'second').valueOf(),
-    endTime: dayjs().add(13, 'week').valueOf(),
+    startTime: dayjs().subtract(2, 'week').subtract(10, 'second').valueOf(),
+    endTime: dayjs().subtract(2, 'week').subtract(9, 'second').valueOf(), 
     firstPlace: 'player1',
     secondPlace: 'player2',
     thirdPlace: 'player3',
     fourthPlace: 'player4',
     bracketLink: 'https://github.com/cuttle-cards/cuttle',
     footageLink: 'https://github.com/cuttle-cards/cuttle-assets',
-  },
+  }
 ];
 
 const seasonOneMatches = [
@@ -264,6 +269,49 @@ const seasonTwoMatches = [
   },
 ];
 
+const seasonFourMatches = [
+  ////////////
+  // Week 1 //
+  ////////////
+  // Player 1 week 1
+  {
+    player1: 'player1',
+    player2: 'player2',
+    winner: 'player2',
+    startTime: dayjs().subtract(2, 'week').valueOf(),
+    endTime: dayjs().subtract(2, 'week').valueOf(),
+  },
+  {
+    player1: 'player1',
+    player2: 'player3',
+    winner: 'player1',
+    startTime: dayjs().subtract(2, 'week').add(2, 'day').valueOf(),
+    endTime: dayjs().subtract(2, 'week').add(2, 'day').valueOf(),
+  },
+  {
+    player1: 'player1',
+    player2: 'player4',
+    winner: 'player4',
+    startTime: dayjs().subtract(2, 'week').add(3, 'day').valueOf(),
+    endTime: dayjs().subtract(2, 'week').add(3, 'day').valueOf(),
+  },
+  // Player 2 week 1
+  {
+    player1: 'player2',
+    player2: 'player3',
+    winner: 'player3',
+    startTime: dayjs().subtract(2, 'week').valueOf(),
+    endTime: dayjs().subtract(2, 'week').valueOf(),
+  },
+  {
+    player1: 'player2',
+    player2: 'player4',
+    winner: 'player2',
+    startTime: dayjs().subtract(2, 'week').add(1, 'day').valueOf(),
+    endTime: dayjs().subtract(2, 'week').add(1, 'day').valueOf(),
+  },
+];
+
 const seasonThreeMatches = [
   ////////////
   // Week 1 //
@@ -463,6 +511,49 @@ const seasonTwoGames = [
     p1: 'player2',
   },
 ];
+const seasonFourGames = [
+  // Week 1
+  {
+    name: 'Current Season Week 1, Game 1',
+    status: GameStatus.FINISHED,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    winner: 'player1',
+    updatedAt: dayjs().subtract(2, 'week').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  // Week 2
+  {
+    name: 'Current Season Week 2, Game 1',
+    status: GameStatus.FINISHED,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    winner: 'player1',
+    updatedAt: dayjs().subtract(1, 'week').add(1, 'day').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+  {
+    name: 'Current Season Week 2, Game 2',
+    status: GameStatus.FINISHED,
+    p0Ready: true,
+    p1Ready: true,
+    passes: 0,
+    turn: 12,
+    isRanked: false,
+    winner: 'player1',
+    updatedAt: dayjs().subtract(1, 'week').add(2, 'day').valueOf(),
+    p0: 'player1',
+    p1: 'player2',
+  },
+];
 
 const gamesWithoutASeason = [
   {
@@ -493,8 +584,8 @@ const gamesWithoutASeason = [
   },
 ];
 
-const gameFixtures = [...seasonOneGames, ...seasonTwoGames, ...gamesWithoutASeason];
+const gameFixtures = [...seasonOneGames, ...seasonTwoGames, ...seasonFourGames ,...gamesWithoutASeason];
 
-const matchesFixture = [...seasonOneMatches, ...seasonTwoMatches, ...seasonThreeMatches];
+const matchesFixture = [...seasonOneMatches, ...seasonTwoMatches, ...seasonFourMatches ,...seasonThreeMatches];
 
 export { seasonFixtures, matchesFixture, gameFixtures };
