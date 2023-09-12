@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
 import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '@/utils/local-storage-utils.js';
+import { useGameStore } from '@/stores/game';
 
 // TODO Figure out how to reconsolidate this with backend
 const getPlayerPnumByUsername = (players, username) => {
@@ -61,9 +62,10 @@ export const useAuthStore = defineStore('auth', {
           },
           function handleResponse(res, jwres) {
             if (jwres.statusCode === 200) {
+              const gameStore = useGameStore();
               this.mustReauthenticate = false;
               const pNum =
-                res.pNum ?? getPlayerPnumByUsername(this.rootState.game.players, this.username);
+                res.pNum ?? getPlayerPnumByUsername(gameStore.players, this.username);
 
               this.setMyPNum(pNum);
               return resolve(res);
