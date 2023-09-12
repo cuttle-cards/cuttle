@@ -19,17 +19,17 @@ export const useAuthStore = defineStore('auth', {
   }),
   actions: {
     authSuccess(username) {
-      this.state.authenticated = true;
-      this.state.username = username;
+      this.authenticated = true;
+      this.username = username;
     },
     clearAuth() {
       this.$reset();
     },
-    setMustReauthenticate(state, val) {
-      state.mustReauthenticate = val;
+    setMustReauthenticate(val) {
+      this.mustReauthenticate = val;
     },
-    setIsReturningUser(state, val) {
-      state.isReturningUser = val;
+    setIsReturningUser(val) {
+      this.isReturningUser = val;
     },
     async requestLogin({ username, password }) {
       return this.handleLogin(username, password);
@@ -66,7 +66,7 @@ export const useAuthStore = defineStore('auth', {
             if (jwres.statusCode === 200) {
               this.mustReauthenticate = false;
               const pNum =
-                res.pNum ?? getPlayerPnumByUsername(this.rootState.game.players, this.state.username);
+                res.pNum ?? getPlayerPnumByUsername(this.rootState.game.players, this.username);
 
               this.setMyPNum(pNum);
               return resolve(res);
