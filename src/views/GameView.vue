@@ -52,7 +52,7 @@
       <div class="opponent-hand-container">
         <div id="opponent-hand" class="d-flex flex-column justify-start align-center px-2 pb-2 mx-auto">
           <div class="user-cards-grid-container">
-            <username-tool-tip id="opponent-username-container" :username="opponentUsername" />
+            <username-tool-tip id="opponent-username-container" :username="gameStore.opponentUsername" />
             <div class="opponent-cards-container">
               <div id="opponent-hand-cards" class="d-flex justify-center align-start">
                 <transition name="slide-below" mode="out-in">
@@ -70,7 +70,7 @@
                       selected-class="success"
                       :show-arrows="true"
                     >
-                      <v-slide-group-item v-for="card in opponent.hand" :key="card.id">
+                      <v-slide-group-item v-for="card in gameStore.opponent.hand" :key="card.id">
                         <game-card
                           :key="card.id"
                           :suit="card.suit"
@@ -81,7 +81,7 @@
                       </v-slide-group-item>
                     </v-slide-group>
                     <game-card
-                      v-for="card in opponent.hand"
+                      v-for="card in gameStore.opponent.hand"
                       v-else
                       :key="card.id"
                       :suit="card.suit"
@@ -98,7 +98,7 @@
                     class="opponent-hand-wrapper transition-all"
                   >
                     <game-card
-                      v-for="(card, index) in opponent.hand"
+                      v-for="(card, index) in gameStore.opponent.hand"
                       :key="index"
                       data-opponent-hand-card
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
@@ -113,7 +113,7 @@
 
       <!-- Opponent Score -->
       <h3 id="opponent-score" class="mb-3">
-        <span>POINTS: {{ opponentPointTotal }}</span>
+        <span>POINTS: {{ gameStore.opponentPointTotal }}</span>
         <score-goal-tool-tip
           :king-count="opponentKingCount"
           :points-to-win="opponentPointsToWin"
@@ -126,11 +126,11 @@
         <div id="field-left">
           <v-card
             id="deck"
-            :class="{ 'reveal-top-two': resolvingSeven }"
+            :class="{ 'reveal-top-two': gameStore.resolvingSeven }"
             elevation="0"
             @click="drawCard"
           >
-            <template v-if="!resolvingSeven">
+            <template v-if="!gameStore.resolvingSeven">
               <v-card-actions class="c-deck-count">
                 ({{ deckLength }})
               </v-card-actions>
@@ -139,7 +139,7 @@
               </h1>
             </template>
 
-            <template v-if="resolvingSeven">
+            <template v-if="gameStore.resolvingSeven">
               <p class="mt-2">
                 Play from Deck
               </p>
@@ -186,7 +186,7 @@
             <div id="opponent-field">
               <transition-group :name="opponentPointsTransition" tag="div" class="field-points">
                 <div
-                  v-for="(card, index) in opponent.points"
+                  v-for="(card, index) in gameStore.opponent.points"
                   :key="card.id"
                   class="field-point-container transition-all"
                 >
@@ -215,7 +215,7 @@
               </transition-group>
               <transition-group :name="opponentFaceCardsTransition" tag="div" class="field-effects">
                 <game-card
-                  v-for="(card, index) in opponent.faceCards"
+                  v-for="(card, index) in gameStore.opponent.faceCards"
                   :key="card.id"
                   :suit="card.suit"
                   :rank="card.rank"
@@ -231,7 +231,7 @@
             <div id="player-field" class="mb-4">
               <transition-group :name="playerPointsTransition" tag="div" class="field-points">
                 <div
-                  v-for="card in player.points"
+                  v-for="card in gameStore.player.points"
                   :key="card.id"
                   class="field-point-container transition-all"
                 >
@@ -257,7 +257,7 @@
               </transition-group>
               <transition-group :name="playerFaceCardsTransition" tag="div" class="field-effects">
                 <game-card
-                  v-for="card in player.faceCards"
+                  v-for="card in gameStore.player.faceCards"
                   :key="card.id"
                   :suit="card.suit"
                   :rank="card.rank"
@@ -289,7 +289,7 @@
       </div>
 
       <h3 id="player-score">
-        <span>POINTS: {{ playerPointTotal }}</span>
+        <span>POINTS: {{ gameStore.playerPointTotal }}</span>
         <score-goal-tool-tip
           :king-count="playerKingCount"
           :points-to-win="playerPointsToWin"
@@ -298,7 +298,7 @@
         <span
           id="turn-indicator"
           class="ml-2"
-          :class="{ 'text-black': isPlayersTurn, 'text-white': !isPlayersTurn }"
+          :class="{ 'text-black': gameStore.isPlayersTurn, 'text-white': !gameStore.isPlayersTurn }"
         >
           {{ turnText }}
         </span>
@@ -311,13 +311,13 @@
             v-if="!targeting"
             id="player-hand-cards"
             class="user-cards-grid-container"
-            :class="{ 'my-turn': isPlayersTurn }"
+            :class="{ 'my-turn': gameStore.isPlayersTurn }"
           >
             <username-tool-tip
               v-if="$vuetify.display.smAndUp"
               id="player-username-container"
               key="player-username"
-              :username="playerUsername"
+              :username="gameStore.playerUsername"
               :is-player="true"
             />
             <div class="player-cards-container">
@@ -325,16 +325,16 @@
                 tag="div"
                 name="slide-above"
                 class="d-flex justify-center align-start player-cards-mobile-overrides"
-                :class="{ 'my-turn': isPlayersTurn }"
+                :class="{ 'my-turn': gameStore.isPlayersTurn }"
               >
                 <v-slide-group v-if="$vuetify.display.xs" key="slide-group" :show-arrows="true">
-                  <v-slide-group-item v-for="(card, index) in player.hand" :key="card.id">
+                  <v-slide-group-item v-for="(card, index) in gameStore.player.hand" :key="card.id">
                     <game-card
                       :key="card.id"
                       :suit="card.suit"
                       :rank="card.rank"
                       :is-selected="selectedCard && card.id === selectedCard.id"
-                      :is-frozen="player.frozenId === card.id"
+                      :is-frozen="gameStore.player.frozenId === card.id"
                       class="mt-2 transition-all"
                       :is-hand-card="true"
                       :data-player-hand-card="`${card.rank}-${card.suit}`"
@@ -344,13 +344,13 @@
                 </v-slide-group>
 
                 <game-card
-                  v-for="(card, index) in player.hand"
+                  v-for="(card, index) in gameStore.player.hand"
                   v-else
                   :key="card.id"
                   :suit="card.suit"
                   :rank="card.rank"
                   :is-selected="selectedCard && card.id === selectedCard.id"
-                  :is-frozen="player.frozenId === card.id"
+                  :is-frozen="gameStore.player.frozenId === card.id"
                   class="mt-2 transition-all"
                   :is-hand-card="true"
                   :data-player-hand-card="`${card.rank}-${card.suit}`"
@@ -364,7 +364,7 @@
             id="player-hand-targeting"
             key="target-selection-overlay"
             :selected-card="selectedCard || cardSelectedFromDeck"
-            :is-players-turn="isPlayersTurn"
+            :is-players-turn="gameStore.isPlayersTurn"
             :move-display-name="targetingMoveDisplayName"
             @cancel="clearSelection"
           />
@@ -393,7 +393,7 @@
 </template>
 
 <script>
-import { mapStores, mapState, mapActions } from 'pinia';
+import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
@@ -442,21 +442,7 @@ export default {
   },
   computed: {
     ...mapStores(useGameStore),
-    ...mapState(useGameStore, 
-      ['isPlayersTurn',
-      'player',
-      'playerPointTotal',
-      'playerQueenCount',
-      'playerUsername',
-      'opponent',
-      'opponentPointTotal',
-      'opponentQueenCount',
-      'opponentUsername',
-      'resolvingSeven',
-      'hasGlassesEight',
-      ]),
-    ...mapState(useAuthStore, ['authenticated']),
-    ...mapActions(useAuthStore, ['setMustReauthenticate']),
+    ...mapStores(useAuthStore),
     isSpectating() {
       return this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE;
     },
@@ -508,10 +494,10 @@ export default {
     // King Counts //
     /////////////////
     playerKingCount() {
-      return this.kingCount(this.player);
+      return this.kingCount(this.gameStore.player);
     },
     opponentKingCount() {
-      return this.kingCount(this.opponent);
+      return this.kingCount(this.gameStore.opponent);
     },
     ///////////////////
     // Points to Win //
@@ -615,15 +601,15 @@ export default {
     // Interactions //
     //////////////////
     selectedCard() {
-      return this.selectionIndex !== null ? this.player.hand[this.selectionIndex] : null;
+      return this.selectionIndex !== null ? this.gameStore.player.hand[this.selectionIndex] : null;
     },
     turnText() {
-      return this.isPlayersTurn ? 'YOUR TURN' : "OPPONENT'S TURN";
+      return this.gameStore.isPlayersTurn ? 'YOUR TURN' : "OPPONENT'S TURN";
     },
     validScuttleIds() {
-      const selectedCard = this.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
+      const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
       if (!selectedCard) return [];
-      return this.opponent.points
+      return this.gameStore.opponent.points
         .filter((potentialTarget) => {
           return (
             selectedCard.rank > potentialTarget.rank ||
@@ -633,11 +619,11 @@ export default {
         .map((validTarget) => validTarget.id);
     },
     validFaceCardTargetIds() {
-      switch (this.opponentQueenCount) {
+      switch (this.gameStore.opponentQueenCount) {
         case 0: {
-          const opponentFaceCardIds = this.opponent.faceCards.map((card) => card.id);
+          const opponentFaceCardIds = this.gameStore.opponent.faceCards.map((card) => card.id);
           const opponentJackIds = [];
-          this.opponent.points.forEach((card) => {
+          this.gameStore.opponent.points.forEach((card) => {
             if (card.attachments.length > 0) {
               opponentJackIds.push(card.attachments[card.attachments.length - 1].id);
             }
@@ -645,26 +631,26 @@ export default {
           return [...opponentFaceCardIds, ...opponentJackIds];
         }
         case 1:
-          return [this.opponent.faceCards.find((card) => card.rank === 12).id];
+          return [this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id];
         default:
           return [];
       }
     },
     validMoves() {
-      if (!this.isPlayersTurn) return [];
-      const selectedCard = this.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
+      if (!this.gameStore.isPlayersTurn) return [];
+      const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
       if (!selectedCard) return [];
       switch (this.targetingMoveName) {
         case 'scuttle':
           return this.validScuttleIds;
         case 'jack':
-          return this.opponent.points.map((validTarget) => validTarget.id);
+          return this.gameStore.opponent.points.map((validTarget) => validTarget.id);
         case 'targetedOneOff': {
           // Twos and nines can target face cards
           let res = [...this.validFaceCardTargetIds];
           // Nines can additionally target points if opponent has no queens
-          if (selectedCard.rank === 9 && this.opponentQueenCount === 0) {
-            res = [...res, ...this.opponent.points.map((validTarget) => validTarget.id)];
+          if (selectedCard.rank === 9 && this.gameStore.opponentQueenCount === 0) {
+            res = [...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id)];
           }
           return res;
         }
@@ -675,9 +661,9 @@ export default {
     nineTarget() {
       switch (this.targetType) {
         case 'point':
-          return this.nineTargetIndex !== null ? this.opponent.points[this.nineTargetIndex] : null;
+          return this.nineTargetIndex !== null ? this.gameStore.opponent.points[this.nineTargetIndex] : null;
         case 'faceCard':
-          return this.nineTargetIndex !== null ? this.opponent.faceCards[this.nineTargetIndex] : null;
+          return this.nineTargetIndex !== null ? this.gameStore.opponent.faceCards[this.nineTargetIndex] : null;
         default:
           return null;
       }
@@ -819,7 +805,7 @@ export default {
     // Player Moves //
     //////////////////
     drawCard() {
-      if (!this.resolvingSeven) {
+      if (!this.gameStore.resolvingSeven) {
         if (this.deckLength > 0) {
           this.gameStore.requestDrawCard()
             .then(this.clearSelection)
@@ -841,7 +827,7 @@ export default {
     },
     playPoints() {
       this.clearOverlays();
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
         this.gameStore.requestPlayPointsSeven({
             cardId: this.cardSelectedFromDeck.id,
@@ -857,7 +843,7 @@ export default {
     },
     playFaceCard() {
       this.clearOverlays();
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
         this.gameStore.requestPlayFaceCardSeven({
             cardId: this.cardSelectedFromDeck.id,
@@ -872,11 +858,11 @@ export default {
       }
     },
     scuttle(targetIndex) {
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
         this.gameStore.requestScuttleSeven({
             cardId: this.cardSelectedFromDeck.id,
-            targetId: this.opponent.points[targetIndex].id,
+            targetId: this.gameStore.opponent.points[targetIndex].id,
             index: deckIndex,
           })
           .then(this.clearSelection)
@@ -884,7 +870,7 @@ export default {
       } else {
         this.gameStore.requestScuttle({
             cardId: this.selectedCard.id,
-            targetId: this.opponent.points[targetIndex].id,
+            targetId: this.gameStore.opponent.points[targetIndex].id,
           })
           .then(this.clearSelection)
           .catch(this.handleError);
@@ -895,21 +881,21 @@ export default {
       let jackedPointId;
       switch (targetType) {
         case 'faceCard':
-          target = this.opponent.faceCards[targetIndex];
+          target = this.gameStore.opponent.faceCards[targetIndex];
           break;
         case 'point':
-          target = this.opponent.points[targetIndex];
+          target = this.gameStore.opponent.points[targetIndex];
           break;
         case 'jack':
           if (targetIndex < 0) {
             // targeting the last jack attached to a point card
-            const targetJacks = this.opponent.points[-targetIndex - 1].attachments;
+            const targetJacks = this.gameStore.opponent.points[-targetIndex - 1].attachments;
             target = targetJacks[targetJacks.length - 1];
-            jackedPointId = this.opponent.points[-targetIndex - 1].id;
+            jackedPointId = this.gameStore.opponent.points[-targetIndex - 1].id;
           }
           break;
       }
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
         this.gameStore.requestPlayTargetedOneOffSeven({
             cardId: this.cardSelectedFromDeck.id,
@@ -932,8 +918,8 @@ export default {
       }
     },
     playJack(targetIndex) {
-      const target = this.opponent.points[targetIndex];
-      if (this.resolvingSeven) {
+      const target = this.gameStore.opponent.points[targetIndex];
+      if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
         this.gameStore.requestPlayJackSeven({
             cardId: this.cardSelectedFromDeck.id,
@@ -954,7 +940,7 @@ export default {
     targetOpponentPointCard(targetIndex) {
       if (!this.selectedCard && !this.topCardIsSelected && !this.secondCardIsSelected) return;
       let cardRank;
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         if (!this.cardSelectedFromDeck) return;
         cardRank = this.cardSelectedFromDeck.rank;
       } else {
@@ -989,7 +975,7 @@ export default {
     },
     targetOpponentFaceCard(targetIndex) {
       let cardToPlay = null;
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         if (!this.cardSelectedFromDeck) return;
         cardToPlay = this.cardSelectedFromDeck;
       } else {
@@ -1006,7 +992,7 @@ export default {
       }
     },
     playOneOff() {
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         if (!this.cardSelectedFromDeck) return;
 
         const deckIndex = this.topCardIsSelected ? 0 : 1;
