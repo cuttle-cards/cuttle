@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
-
+import { mapState, mapActions } from 'pinia';
+import { useGameStore } from '@/stores/gameList';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
 
 export default {
@@ -85,20 +85,18 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      isRanked: ({ game }) => game.isRanked,
-    }),
-    ...mapGetters(['opponentIsReady', 'opponentUsername']),
+    ...mapState(useGameStore, ['isRanked', 'opponentIsReady', 'opponentUsername']),
+    ...mapActions(useGameStore, ['requestReady', 'requestLeaveLobby']),
     gameId() {
-      return this.$store.state.game.id;
+      return this.gameStore.id;
     },
     gameName() {
-      return this.$store.state.game.name;
+      return this.gameStore.name;
     },
     iAmReady() {
-      return this.$store.state.game.myPNum === 0
-        ? this.$store.state.game.p0Ready
-        : this.$store.state.game.p1Ready;
+      return this.gameStore.myPNum === 0
+        ? this.gameStore.p0Ready
+        : this.gameStore.p1Ready;
     },
     readyButtonText() {
       return this.iAmReady ? 'UNREADY' : 'READY';
@@ -120,12 +118,11 @@ export default {
   methods: {
     async ready() {
       this.readying = true;
-      await this.$store.dispatch('requestReady');
+      await this.gameStore.requestReady();
       this.readying = false;
     },
     leave() {
-      this.$store
-        .dispatch('requestLeaveLobby')
+      this.gameStore.requestLeaveLobby()
         .then(() => {
           this.$router.push('/');
         })
