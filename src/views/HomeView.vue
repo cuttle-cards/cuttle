@@ -142,7 +142,8 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { useGameListStore } from '@/stores/gameList';
+import { mapStores } from 'pinia';
 import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '@/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
@@ -169,16 +170,16 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      playableGameList: ({ gameList }) => gameList.openGames,
-      specateGameList: ({ gameList }) => gameList.spectateGames,
+    ...mapStores(useGameListStore, {
+      playableGameList: 'gameList',
+      specateGameList : 'specateGameList',
     }),
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
   },
   async created() {
-    await this.$store.dispatch('requestGameList');
+    await this.gameListStore.requestGameList();
   },
   methods: {
     clearSnackBar() {
@@ -186,7 +187,7 @@ export default {
       this.showSnackBar = false;
     },
     handleSubscribeError(gameId, message) {
-      this.$store.commit('updateGameStatus', {id: gameId, newStatus: GameStatus.STARTED});
+      this.gameListStore.updateGameStatus({id: gameId, newStatus: GameStatus.STARTED});
       this.handleError(message);
     },
     handleError(message) {
@@ -196,8 +197,7 @@ export default {
       this.showCreateGameDialog = false;
     },
     logout() {
-      this.$store
-        .dispatch('requestLogout')
+      this.gameListStore.requestLogout()
         .then(() => {
           this.$router.push('/login');
         })
