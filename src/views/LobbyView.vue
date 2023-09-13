@@ -71,7 +71,7 @@
 
 <script>
 import { mapStores } from 'pinia';
-import { useGameStore } from '@/stores/gameList';
+import { useGameStore } from '@/stores/game';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
 
 export default {

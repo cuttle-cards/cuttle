@@ -8,15 +8,14 @@ import App from '@/App.vue';
 const pinia = createPinia();
 
 const app = createApp(App);
-
-// Add pinia store to vue
-app.use(pinia);
-
 // Add router to vue
 app.use(router);
 
 // Add vuetify to vue
 app.use(vuetify);
+
+// Add pinia store to vue
+app.use(pinia);
 
 // Add localization to vue
 app.use(i18n);

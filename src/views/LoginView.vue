@@ -168,6 +168,8 @@
 
 <script>
 import { useI18n } from 'vue-i18n';
+import { mapStores } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 import MarkdownContent from '@/components/Global/MarkdownContent.vue';
@@ -203,6 +205,7 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useAuthStore),
     isLoggingIn() {
       return this.$route.name === ROUTE_NAME_LOGIN;
     },
