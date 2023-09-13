@@ -143,7 +143,7 @@
 </template>
 <script>
 import { useGameListStore } from '@/stores/gameList';
-import { mapState, mapStores } from 'pinia';
+import { mapStores } from 'pinia';
 import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '@/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
@@ -170,11 +170,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(useGameListStore, {
-      playableGameList: 'gameList',
-      specateGameList : 'specateGameList',
-    }),
     ...mapStores(useGameListStore),
+    playableGameList() {
+      return this.gameListStore.gameList;  
+    },
+    specateGameList() {
+      return this.gameListStore.spectateGameList;
+    },
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
