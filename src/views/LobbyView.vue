@@ -7,8 +7,8 @@
       <v-col md="8" class="my-auto">
         <h1>
           Lobby for {{ gameName }}
-          <small v-if="isRanked" class="lobby-ranked-text">
-            (Ranked <v-icon v-if="isRanked" size="medium">mdi-trophy</v-icon>)
+          <small v-if="gameStore.isRanked" class="lobby-ranked-text">
+            (Ranked <v-icon v-if="gameStore.isRanked" size="medium">mdi-trophy</v-icon>)
           </small>
         </h1>
       </v-col>
@@ -26,8 +26,8 @@
         <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
         <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
         <lobby-player-indicator
-          :player-username="opponentUsername"
-          :player-ready="opponentIsReady"
+          :player-username="gameStore.opponentUsername"
+          :player-ready="gameStore.opponentIsReady"
           data-cy="opponent-indicator"
         />
       </v-col>
@@ -56,7 +56,7 @@
         >
           {{ readyButtonText }}
           <v-icon
-            v-if="isRanked"
+            v-if="gameStore.isRanked"
             class="ml-1"
             size="small"
             icon="mdi-trophy"
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'pinia';
+import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/gameList';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
 
@@ -85,8 +85,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(useGameStore, ['isRanked', 'opponentIsReady', 'opponentUsername']),
-    ...mapActions(useGameStore, ['requestReady', 'requestLeaveLobby']),
+    ...mapStores(useGameStore),
     gameId() {
       return this.gameStore.id;
     },
