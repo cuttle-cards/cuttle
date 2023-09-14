@@ -223,10 +223,6 @@ export default {
   border-radius: 16px;
 }
 
-//  Handle on hover 
-::-webkit-scrollbar-thumb:hover {
-  background: #fa1414;
-}
 
 .discord {
   max-height: 48px;

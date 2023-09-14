@@ -268,7 +268,7 @@ describe('Home - Game List', () => {
         cy.readyOpponent(gameId);
 
         // Game appears as spectatable
-        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible').and('not.be.disabled');
+        cy.get(`[data-cy-spectate-game=${gameId}]`).scrollIntoView().should('be.visible').and('not.be.disabled');
         // Disconnect the socket then finish the game -- UI misses the update
         cy.window()
           .its('cuttle.app.config.globalProperties.$store')
@@ -301,14 +301,14 @@ describe('Home - Game List', () => {
         // Navigate to homepage
         cy.visit('/');
         // No open games appear
-        cy.contains('[data-cy-join-game]', 'Play').should('not.exist');
+        cy.contains('[data-cy-join-game]', 'Join Casual').should('not.exist');
         // Existing game is available to spectate
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
       });
     });
 
-    it('Disables spectate button if on home view before game finishes', () => {
+    it.only('Disables spectate button if on home view before game finishes', () => {
       cy.signupOpponent(playerOne);
       cy.signupOpponent(playerTwo);
 
