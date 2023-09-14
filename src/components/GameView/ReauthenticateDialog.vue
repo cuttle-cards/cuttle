@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 
@@ -69,7 +71,7 @@ export default {
   },
   data() {
     return {
-      username: this.$store.state.auth.username,
+      username: this.authStore.username,
       password: '',
       isLoggingIn: false,
       showSnackBar: false,
@@ -77,6 +79,7 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useAuthStore),
     show: {
       get() {
         return this.modelValue;
@@ -92,8 +95,7 @@ export default {
     },
     login() {
       this.isLoggingIn = true;
-      this.$store
-        .dispatch('requestReauthenticate', {
+      this.authStore.requestReauthenticate({
           username: this.username,
           password: this.password,
         })
