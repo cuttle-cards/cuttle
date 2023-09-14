@@ -67,20 +67,20 @@ export const useGameStore = defineStore('game', {
     player: (state)  => {
       return state.players[state.myPNum];
     },
-    playerPointTotal: () => {
-      if (!this.player) {
+    playerPointTotal: (state) => {
+      if (!state.player) {
         return 0;
       }
-      return this.player.points.reduce((total, card) => total + card.rank, 0) || 0;
+      return state.player.points.reduce((total, card) => total + card.rank, 0) || 0;
     },
-    playerQueenCount: () => {
-      return queenCount(this.player);
+    playerQueenCount: (state) => {
+      return queenCount(state.player);
     },
-    playerUsername: () => {
-      if (!this.player) {
+    playerUsername: (state) => {
+      if (!state.player) {
         return null;
       }
-      return this.player.username;
+      return state.player.username;
     },
     opponent: (state) => {
       if (state.players.length < 2) {
@@ -100,14 +100,14 @@ export const useGameStore = defineStore('game', {
       }
       return state.opponent.username;
     },
-    opponentPointhis: () => {
-      if (!this.opponent) {
+    opponentPointhis: (state) => {
+      if (!state.opponent) {
         return 0;
       }
-      return this.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
+      return state.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
     },
-    opponentQueenCount: () => {
-      return queenCount(this.opponent);
+    opponentQueenCount: (state) => {
+      return queenCount(state.opponent);
     },
     playerWins: (state) => {
       return state.gameIsOver && state.winnerPNum === state.myPNum;
@@ -118,8 +118,8 @@ export const useGameStore = defineStore('game', {
     isPlayersTurn: (state) => {
       return state.turn % 2 === state.myPNum;
     },
-    hasGlassesEight: () => {
-      return this.player.faceCards.filter((card) => card.rank === 8).length > 0;
+    hasGlassesEight: (state) => {
+      return state.player.faceCards.filter((card) => card.rank === 8).length > 0;
     },
   },
   actions: {
