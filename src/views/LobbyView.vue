@@ -17,7 +17,7 @@
     <v-row>
       <v-col offset="1">
         <lobby-player-indicator
-          :player-username="$store.state.auth.username"
+          :player-username="authStore.username"
           :player-ready="iAmReady"
           data-cy="my-indicator"
         />
@@ -72,6 +72,7 @@
 <script>
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
+import { useAuthStore } from '@/stores/auth';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
 
 export default {
@@ -85,7 +86,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useGameStore),
+    ...mapStores(useGameStore, useAuthStore),
     gameId() {
       return this.gameStore.id;
     },
