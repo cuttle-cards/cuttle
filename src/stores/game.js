@@ -292,7 +292,7 @@ export const useGameStore = defineStore('game', {
       }, 1000);
     },
 
-    handleGameResponse(jwres, resolve, reject) {
+    handleGameResponse: (jwres, resolve, reject) => {
       switch (jwres.statusCode) {
         case 200:
           return resolve();
@@ -311,7 +311,7 @@ export const useGameStore = defineStore('game', {
           {
             gameId,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.updateGame(res.game);
               this.setMyPNum(res.pNum);
@@ -335,7 +335,7 @@ export const useGameStore = defineStore('game', {
           {
             gameId,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.updateGame(res);
               this.setMyPNum(0);
@@ -348,7 +348,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestSpectateLeave() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/spectateLeave', function handleResponse(res, jwres) {
+        io.socket.get('/game/spectateLeave', (res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
             return resolve();
@@ -359,7 +359,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestLeaveLobby() {
       return new Promise((resolve, reject) => {
-        io.socket.post('/game/leaveLobby', function handleResponse(res, jwres) {
+        io.socket.post('/game/leaveLobby',(res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
             return resolve();
@@ -370,7 +370,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestReady() {
       return new Promise((resolve, reject) => {
-        io.socket.post('/game/ready', function handleResponse(res, jwres) {
+        io.socket.post('/game/ready', (res, jwres) => {
           if (jwres.statusCode === 200) {
             return resolve(res);
           }
