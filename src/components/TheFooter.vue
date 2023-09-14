@@ -1,7 +1,7 @@
 <template>
   <footer>
     <v-bottom-navigation
-      bg-color="primary"
+      bg-color="surface-2"
       :elevation="0"
       grow
     >
@@ -9,6 +9,7 @@
         v-for="({ text, icon, page }, i) in pageLinks"
         :key="i"
         variant="text"
+        class="text-surface-1"
         :data-cy="text"
         :title="text"
         :to="page"

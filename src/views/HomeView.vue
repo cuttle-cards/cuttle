@@ -1,20 +1,11 @@
 <template>
   <div
-    class="home h-100 pa-4 bg-surface-1"
+    class="home h-100  bg-surface-1"
     :class="{
       home: $vuetify.display.lgAndUp,
     }"
   >
     <v-container>
-      <v-row v-if="$vuetify.display.mdAndDown">
-        <img
-          id="logo"
-          alt="Cuttle logo"
-          src="/img/logo.png"
-          height="20vh"
-          class="mb-4"
-        >
-      </v-row>
       <div id="game-list-card">
         <v-row>
           <v-col>
@@ -24,17 +15,34 @@
               </h1>
             </div>
             <div id="game-list">
-              <!-- <v-tabs v-model="tab" bg-color="primary" fixed-tabs>
-                <v-tab :value="TABS.PLAY" data-cy-game-list-selector="play">
-                  Play
-                </v-tab>
-                <v-tab :value="TABS.SPECTATE" data-cy-game-list-selector="spectate">
-                  Spectate
-                </v-tab>
-              </v-tabs>
-              <v-window v-model="tab" class="pa-4">
+              <div class="py-md-5 py-3 d-flex mx-auto text-surface-1">
+                <v-btn
+                  class="px-md-16 px-4 mx-2"
+                  rounded="0"
+                  :elevation="0"
+                  :color="tab === TABS.PLAY ? 'surface-1' : 'surface-2'"
+                  text-color="white"
+                  data-cy-game-list-selector="play"
+                  @click="tab = TABS.PLAY"
+                >
+                  PLAY
+                </v-btn>
+                <v-btn
+                  class="px-md-16 px-4 mx-md-2"
+                  rounded="0"
+                  :elevation="0"
+                  :color="tab === TABS.SPECTATE ? 'surface-1' : 'surface-2'"
+                  text-color="white"
+                  data-cy-game-list-selector="spectate"
+                  @click="tab = TABS.SPECTATE"
+                >
+                  SPECTATE
+                </v-btn>
+              </div>
+              <v-divider v-if="$vuetify.display.mdAndDown" color="surface-1" class="border-opacity-100" />
+              <v-window v-model="tab" class="pa-4 overflow-y-auto">
                 <v-window-item :value="TABS.PLAY">
-                  <p v-if="playableGameList.length === 0" data-cy="text-if-no-game">
+                  <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-surface-1">
                     No Active Games
                   </p>
                   <div v-for="game in playableGameList" :key="game.id">
@@ -51,7 +59,7 @@
                   </div>
                 </v-window-item>
                 <v-window-item :value="TABS.SPECTATE">
-                  <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text">
+                  <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text" class="text-surface-1">
                     No Games Available to Spectate
                   </p>
                   <div v-for="game in specateGameList" :key="game.id">
@@ -69,70 +77,44 @@
                     />
                   </div>
                 </v-window-item>
-              </v-window> -->
-              <!-- <v-card flat> -->
-    <!-- <v-container fluid> -->
-      <div class="d-flex mx-auto text-surface-1">
-          <v-btn variant="plain">Play</v-btn>
-          <v-btn variant="plain">Spectate</v-btn>
-      </div>
+              </v-window>
             </div>
           </v-col>
-          <!-- <v-col id="side-nav" :cols="$vuetify.display.mdAndDown ? 12 : 3">
-            <img
-              v-if="$vuetify.display.lgAndUp"
-              id="logo"
-              alt="Cuttle logo"
-              src="/img/logo.png"
-            >
+        </v-row>            
+        <v-row>
+          <v-col class="game-list-btn">
+            <create-game-dialog @error="handleError" />
+          </v-col>
+        </v-row>
+        <v-row class="game-list-btn px-1">
+          <v-col class="pa-0">
             <v-btn
-              variant="outlined"
-              color="primary"
-              class="mt-4"
-              to="/rules"
-              data-cy="rules-link"
-              :size="buttonSize"
-            >
-              Rules
-            </v-btn>
-            <v-btn
-              variant="outlined"
-              color="secondary"
-              class="mt-4"
-              href="https://human-ai-interaction.github.io/cuttle-bot/"
-              target="_blank"
-              data-cy="ai-link"
-              :size="buttonSize"
-            >
-              Play with AI
-            </v-btn>
-            <v-btn
-              variant="outlined"
-              class="mt-4"
+              v-if="!$vuetify.display.smAndUp"
+              variant="text"
+              color="surface-2"
+              class="pa-2"
               href="https://discord.gg/9vrAZ8xGyh"
               target="_blank"
-              :size="buttonSize"
+              size="medium"
             >
-              Discord
+              <img class="discord" src="/img/loginView/logo-discord-cream.svg">
             </v-btn>
-            <h6 class="text-h6 mt-4">
-              Looking to Play?
-            </h6>
-            <p class="mt-0">
-              Our weekly play sessions are open to everyone!
-            </p>
-            <ul>
-              <li>Wednesday Nights at 8:30pm EST</li>
-              <li>Thursdays at 12pm EST</li>
-            </ul>
-            <p>
-              Can't find a match?
-              <v-btn variant="text" href="https://discord.gg/9vrAZ8xGyh">
-                Join our discord
-              </v-btn>
-              to see who's around to play!
-            </p>
-          </v-col> -->
+            <v-btn
+              v-else
+              variant="outlined"
+              color="surface-2"
+              class="pa-2"
+              href="https://discord.gg/9vrAZ8xGyh"
+              target="_blank"
+              size="medium"
+            >
+              <img class="discord" src="/img/loginView/logo-discord-cream.svg">
+              <span v-if="$vuetify.display.smAndUp">{{ t('login.joinDiscord') }}</span>
+            </v-btn>
+          </v-col>
+          <v-col class="d-flex justify-center align-center pa-0">    
+            <how-it-works-dialog />
+          </v-col>
         </v-row>
       </div>
     </v-container>
@@ -145,11 +127,13 @@
   </div>
 </template>
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapState } from 'vuex';
 import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '@/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 import GameStatus from '../../utils/GameStatus.json';
+import HowItWorksDialog from '@/components/HowItWorksDialog.vue';
 
 const TABS = {
   PLAY: 'play',
@@ -162,6 +146,15 @@ export default {
     GameListItem,
     CreateGameDialog,
     BaseSnackbar,
+    HowItWorksDialog
+  },
+    setup() {
+    // Vuetify has its own translation layer that isn't very good
+    // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
+    // level and utilize it this way with a composable. There may be another more global way but
+    // I haven't found anything just yet
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {
@@ -213,6 +206,32 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+// width 
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+// Track 
+::-webkit-scrollbar-track {
+  background: #FFF4D7;
+  border-radius: 16px;
+}
+
+// Handle
+::-webkit-scrollbar-thumb {
+  background: #4A2416;
+  border-radius: 16px;
+}
+
+//  Handle on hover 
+::-webkit-scrollbar-thumb:hover {
+  background: #fa1414;
+}
+
+.discord {
+  max-height: 48px;
+  margin-right: 18px;
+}
 
 h2 {
   font-size: 1.25rem;
@@ -263,16 +282,22 @@ p {
   box-sizing: border-box;
   background: #FFF4D7;
   border-radius: 8px;
-  min-height: 55vh;
+  min-height: 50vh;
+  max-height: 50vh;
   display: flex;
-  min-width: 100%;
+  max-width: 50%;
+  margin: auto;
   flex-direction: column;
 
   p {
     text-align: center;
   }
 }
-
+.game-list-btn {
+  padding: 12px 8px;
+    max-width: 50%;
+  margin: 0 auto;
+}
 #add-new-game {
   display: flex;
   flex-direction: row;
@@ -287,12 +312,26 @@ p {
 }
 
 #home-card-title {
-  font-size: 5em;
+  font-size: 5rem;
   color: #fff4d7;
   font-family: 'Luckiest Guy', serif !important;
   font-weight: 400;
   line-height: 5rem;
   margin: 0 auto;
+}
+
+@media (max-width: 844px) {
+  #game-list {
+  max-width: 100%;
+}
+.game-list-btn {
+    max-width: 100%;
+}
+}
+@media (max-width: 980px) {
+  #home-card-title {
+    font-size: 2rem;
+  }
 }
 
 @media (min-width: 980px) {

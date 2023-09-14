@@ -4,7 +4,7 @@
       <v-btn
         color="surface-1"
         data-cy="user-menu"
-        class="d-flex text-body-1 font-weight-medium mr-16"
+        class="d-flex text-body-1 font-weight-medium mr-md-16"
         v-bind="props"
         variant="text"
       >
