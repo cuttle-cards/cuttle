@@ -383,7 +383,7 @@ export const useGameStore = defineStore('game', {
     ///////////////////
     async requestDrawCard() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/draw', function handleResponse(res, jwres) {
+        io.socket.get('/game/draw', (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
@@ -502,7 +502,7 @@ export const useGameStore = defineStore('game', {
       }
       return new Promise((resolve, reject) => {
         io.socket.get('/game/resolveFour', reqData, function (res, jwres) {
-          return this.this.handleGameResponse(jwres, resolve, reject);
+          return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
