@@ -172,10 +172,10 @@ export default {
   computed: {
     ...mapStores(useGameListStore),
     playableGameList() {
-      return this.gameListStore.gameList;  
+      return this.gameListStore.openGames;  
     },
     specateGameList() {
-      return this.gameListStore.spectateGameList;
+      return this.gameListStore.spectateGames;
     },
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
