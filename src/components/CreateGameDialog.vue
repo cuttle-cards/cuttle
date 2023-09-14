@@ -67,6 +67,8 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useGameListStore } from '@/stores/gameList';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '../../utils/local-storage-utils.js';
@@ -83,6 +85,9 @@ export default {
       isRanked: false,
     };
   },
+  computed: {
+    ...mapStores(useGameListStore),  
+  },
   watch: {
     isRanked(isRanked) {
       this.setRankedPreference(isRanked);
@@ -94,8 +99,7 @@ export default {
   methods: {
     submitNewGame() {
       this.loading = true;
-      this.$store
-        .dispatch('requestCreateGame', {
+      this.gameListStore.requestCreateGame({
           gameName: this.gameName,
           isRanked: this.isRanked,
         })
