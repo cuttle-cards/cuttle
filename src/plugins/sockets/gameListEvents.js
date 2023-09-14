@@ -28,7 +28,7 @@ export function handleJoin(evData) {
   });
   // If we are in game: update our game with new player
   if (evData.gameId === gameStore.id) {
-    gameListStore.opponentJoined(evData.newPlayer);
+    gameStore.opponentJoined(evData.newPlayer);
   }
 }
 

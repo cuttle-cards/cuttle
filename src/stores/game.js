@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 
 function resetState() {
-  return {
+  return ({
     id: null,
     chat: [],
     deck: [],
@@ -45,7 +46,7 @@ function resetState() {
     waitingForOpponentToStalemate: false,
     consideringOpponentStalemateRequest: false,
     currentMatch: null,
-  };
+  });
 }
 
 /**
@@ -88,16 +89,16 @@ export const useGameStore = defineStore('game', {
       return state.players[(state.myPNum + 1) % 2];
     },
     opponentIsReady: (state) => {
-      if (!this.opponent) {
+      if (!state.opponent) {
         return null;
       }
       return state.myPNum === 0 ? state.p1Ready : state.p0Ready;
     },
-    opponentUsername: () => {
-      if (!this.opponent) {
+    opponentUsername: (state) => {
+      if (!state.opponent) {
         return null;
       }
-      return this.opponent.username;
+      return state.opponent.username;
     },
     opponentPointhis: () => {
       if (!this.opponent) {
@@ -244,11 +245,12 @@ export const useGameStore = defineStore('game', {
       this.updateGame(game);
       this.resetPNumIfNull();
     },
-    resetPNumIfNull(context) {
+    resetPNumIfNull() {
+      const authStore = useAuthStore();
       // Set my pNum if it is null
-      if (context.state.myPNum === null) {
-        let myPNum = context.state.players.findIndex(
-          (player) => player.username === context.rootState.auth.username,
+      if (this.myPNum === null) {
+        let myPNum = this.players.findIndex(
+          (player) => player.username === authStore.username,
         );
         if (myPNum === -1) {
           myPNum = null;
@@ -388,7 +390,7 @@ export const useGameStore = defineStore('game', {
         });
       });
     },
-    async requestPlayPoints(context, cardId) {
+    async requestPlayPoints(cardId) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/points',
@@ -401,7 +403,7 @@ export const useGameStore = defineStore('game', {
         );
       });
     },
-    async requestPlayFaceCard(context, cardId) {
+    async requestPlayFaceCard(cardId) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/faceCard',
