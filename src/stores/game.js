@@ -395,7 +395,7 @@ export const useGameStore = defineStore('game', {
           {
             cardId,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -408,7 +408,7 @@ export const useGameStore = defineStore('game', {
           {
             cardId,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -428,7 +428,7 @@ export const useGameStore = defineStore('game', {
             targetId,
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -442,7 +442,7 @@ export const useGameStore = defineStore('game', {
             cardId,
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -462,7 +462,7 @@ export const useGameStore = defineStore('game', {
             targetType,
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -479,7 +479,7 @@ export const useGameStore = defineStore('game', {
             targetId,
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           }
         );
@@ -514,7 +514,7 @@ export const useGameStore = defineStore('game', {
           {
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -529,7 +529,7 @@ export const useGameStore = defineStore('game', {
             cardId,
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -548,7 +548,7 @@ export const useGameStore = defineStore('game', {
             targetId: -1, // -1 for the double jacks with no points to steal case
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -564,7 +564,7 @@ export const useGameStore = defineStore('game', {
             cardId: twoId,
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -583,7 +583,7 @@ export const useGameStore = defineStore('game', {
             cardId,
             index, // 0 if topCard, 1 if secondCard
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -599,7 +599,7 @@ export const useGameStore = defineStore('game', {
             targetId,
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -615,7 +615,7 @@ export const useGameStore = defineStore('game', {
             targetId,
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -629,7 +629,7 @@ export const useGameStore = defineStore('game', {
             cardId,
             index,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -644,7 +644,7 @@ export const useGameStore = defineStore('game', {
             index, // 0 if topCard, 1 if secondCard
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -664,7 +664,7 @@ export const useGameStore = defineStore('game', {
             index, // 0 if topCard, 1 if secondCard
             opId: this.opponent.id,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -674,35 +674,35 @@ export const useGameStore = defineStore('game', {
     },
     async requestPass() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/pass', function handleResponse(res, jwres) {
+        io.socket.get('/game/pass', (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
     async requestConcede() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/concede', function handleResponse(res, jwres) {
+        io.socket.get('/game/concede', (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
     async requestStalemate() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/stalemate', function handleResponse(res, jwres) {
+        io.socket.get('/game/stalemate', (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
     async rejectStalemate() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/reject-stalemate', function handleResponse(res, jwres) {
+        io.socket.get('/game/reject-stalemate', (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
     async requestUnsubscribeFromGame() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/over', function handleResponse(res, jwres) {
+        io.socket.get('/game/over', (res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
           }
