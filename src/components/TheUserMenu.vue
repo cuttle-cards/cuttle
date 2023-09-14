@@ -13,7 +13,7 @@
           aria-hidden="false"
           role="img"
         />
-        {{ $store.state.auth.username }}
+        {{ authStore.username }}
       </v-btn>
     </template>
     <v-list density="compact" class="bg-surface-2 text-surface-1">
@@ -31,10 +31,12 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/stores/auth';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
 
+const authStore = useAuthStore();
 const { t } = useI18n();
 
 const menuItems = computed(() => {
