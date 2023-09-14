@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import BaseDialog from '@/core/components/BaseDialog.vue';
-import GameCard from './GameCard.vue';
+import BaseDialog from '~core/components/BaseDialog.vue';
+import GameCard from '~routes/game/components/GameCard.vue';
 
 export default {
   name: 'FourDialog',

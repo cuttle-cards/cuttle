@@ -67,9 +67,9 @@
 </template>
 
 <script>
-import BaseDialog from '@/core/components/BaseDialog.vue';
-import StatsScoringDialog from '@/core/components/StatsScoringDialog.vue';
-import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '../../../../utils/local-storage-utils.js';
+import BaseDialog from '~core/components/BaseDialog.vue';
+import StatsScoringDialog from '~core/components/StatsScoringDialog.vue';
+import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '_/utils/local-storage-utils.js';
 
 export default {
   name: 'CreateGameDialog',

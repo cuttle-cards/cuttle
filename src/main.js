@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
 
-import vuetify from '@/plugins/vuetify';
+import vuetify from '~plugins/vuetify';
 import router from '@/router';
-import store from '@/store/store';
+import store from '~store/store';
 import i18n from '@/i18n';
 import { initCuttleGlobals } from '_/utils/config-utils';
 

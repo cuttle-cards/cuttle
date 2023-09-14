@@ -39,8 +39,8 @@
 </template>
 
 <script setup>
-import { getPageLinks } from '../composables/navLink.js';
-import TheUserMenu from './TheUserMenu.vue';
+import { getPageLinks } from '~core/composables/navLink.js';
+import TheUserMenu from '~core/components/TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 
 const { mobile } = useDisplay();

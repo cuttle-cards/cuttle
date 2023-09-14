@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import ReauthenticateDialog from './ReauthenticateDialog.vue';
-import GameUnavailableOverlay from './GameUnavailableOverlay.vue';
+import ReauthenticateDialog from '~routes/game/components/ReauthenticateDialog.vue';
+import GameUnavailableOverlay from '~routes/game/components/GameUnavailableOverlay.vue';
 
 export default {
   name: 'GameUnavailable',

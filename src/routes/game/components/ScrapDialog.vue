@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import CardListSortable from './CardListSortable.vue';
-import BaseDialog from '@/core/components/BaseDialog.vue';
+import CardListSortable from '~routes/game/components/CardListSortable.vue';
+import BaseDialog from '~core/components/BaseDialog.vue';
 
 export default {
   name: 'ScrapDialog',

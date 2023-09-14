@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import BaseDialog from '@/core/components/BaseDialog.vue';
+import BaseDialog from '~core/components/BaseDialog.vue';
 import GameCard from './GameCard.vue';
 
 export default {

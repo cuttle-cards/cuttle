@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { io } from '@/plugins/sails.js';
+import { io } from '~plugins/sails.js';
 
 function resetState() {
   return {

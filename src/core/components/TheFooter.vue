@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { getPageLinks } from '../composables/navLink.js';
+import { getPageLinks } from '~core/composables/navLink.js';
 
 const pageLinks = getPageLinks();
 </script>

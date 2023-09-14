@@ -69,8 +69,8 @@
 </template>
 
 <script>
-import BaseDialog from '@/core/components/BaseDialog.vue';
-import RulesDialog from '@/core/components/RulesDialog.vue';
+import BaseDialog from '~core/components/BaseDialog.vue';
+import RulesDialog from '~core/components/RulesDialog.vue';
 export default {
   name: 'GameMenu',
   components: {

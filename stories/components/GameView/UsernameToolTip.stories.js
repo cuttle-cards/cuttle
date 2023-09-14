@@ -1,4 +1,4 @@
-import UsernameToolTip from '@/core/components/UsernameToolTip';
+import UsernameToolTip from '~core/components/UsernameToolTip';
 
 export default {
   /* 👇 The title prop is optional.

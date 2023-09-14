@@ -124,8 +124,8 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 
-import MoveChoiceOverlay from './MoveChoiceOverlay.vue';
-import GameCard from './GameCard.vue';
+import MoveChoiceOverlay from '~routes/game/components/MoveChoiceOverlay.vue';
+import GameCard from '~routes/game/components/GameCard.vue';
 
 export default {
   name: 'GameOverlays',
