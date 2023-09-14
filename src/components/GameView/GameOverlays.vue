@@ -159,7 +159,7 @@ export default {
     // off of the global state to directly access the state values
     ...mapStores(useGameStore),
     waitingForGameToStart() {
-      return !(this.$store.state.game.p0Ready && this.$store.state.game.p1Ready);
+      return !(this.gameStore.p0Ready && this.gameStore.p1Ready);
     },
     showWaitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';
