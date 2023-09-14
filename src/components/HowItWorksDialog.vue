@@ -21,9 +21,14 @@
         <span class="my-2">Our weekly play sessions are open to everyone:</span>
         <li>Wednesday nights at 8:30pm EST</li>
         <li>Thursdays at 12pm EST</li>
-        <span class="my-2"> Can’t find a match? Join us on <a  class="text-cyan-lighten-2 text-decoration-none" href="https://discord.gg/9vrAZ8xGyh" target="_blank">discord </a> to chat with other players and to see who is available to play at any time.</span>
-        <span class="my-2">Want to play solo? Try <a data-cy="ai-link" class="text-cyan-lighten-2 text-decoration-none" href="https://human-ai-interaction.github.io/cuttle-bot/" target="_blank"> playing vs AI </a> to learn the ropes and test your mettle.</span>
-        <span class="my-2">Want to learn more? Check out our <router-link data-cy=rules-link class="text-cyan-lighten-2 text-decoration-none" to="/rules"> about page </router-link> to learn the rules and read about the cuttle.cards project.</span>
+        <span class="my-2"> Can’t find a match? Join us on <a class="text-cyan-lighten-2 text-decoration-none" href="https://discord.gg/9vrAZ8xGyh" target="_blank">discord </a> to chat with other players and to see who is available to play at any time.</span>
+        <span class="my-2">Want to play solo? Try <a
+          data-cy="ai-link"
+          class="text-cyan-lighten-2 text-decoration-none"
+          href="https://human-ai-interaction.github.io/cuttle-bot/"
+          target="_blank"
+        > playing vs AI </a> to learn the ropes and test your mettle.</span>
+        <span class="my-2">Want to learn more? Check out our <router-link data-cy="rules-link" class="text-cyan-lighten-2 text-decoration-none" to="/rules"> about page </router-link> to learn the rules and read about the cuttle.cards project.</span>
       </section>
     </template>
     <template #actions>
