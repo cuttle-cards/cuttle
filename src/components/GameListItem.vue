@@ -114,7 +114,6 @@ export default {
     buttonAttrs() {
       return {
         color: 'surface-1',
-        rounded: false,
         variant: 'outlined',
         minWidth: '200',
         loading: this.joiningGame,

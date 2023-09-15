@@ -1,6 +1,6 @@
 <template>
   <base-dialog
-    :id="`how-it-work-dialog`"
+    :id="`how-it-works`"
     v-model="show"
     title="Looking TO Play ?"
     :opacity="1"
@@ -11,7 +11,7 @@
         color="surface-2"
         variant="text"
         size="medium"
-        data-cy="how-it-work-button"
+        data-cy="how-it-works-button"
       >
         How it works
       </v-btn>
@@ -33,7 +33,7 @@
     </template>
     <template #actions>
       <v-btn
-        data-cy="how-it-work-dialog-okay"
+        data-cy="how-it-works-okay"
         color="surface-1"
         variant="flat"
         class="text-surface-2"
@@ -49,9 +49,8 @@
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 
 export default {
-  name: 'HowItWworks',
+  name: 'HowItWorks',
   components: { BaseDialog },
-  emits: ['error'],
   data() {
     return {
       show: false,

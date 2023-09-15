@@ -10,7 +10,6 @@
       <v-btn
         class="px-16 w-100"
         color="newPrimary"
-        type="submit"
         size="x-large"
         text-color="white"
         data-cy="create-game-btn"

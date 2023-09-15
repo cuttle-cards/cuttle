@@ -48,14 +48,14 @@ describe('Home - Page Content', () => {
   });
 
   it('How It Works Dialog And Links Work', () => {
-    cy.get('[data-cy=how-it-work-button]').click();
+    cy.get('[data-cy=how-it-works-button]').click();
     cy.get('[data-cy=ai-link]').should(
       'have.attr',
       'href',
       'https://human-ai-interaction.github.io/cuttle-bot/',
     );
-    cy.get('[data-cy=how-it-work-dialog-okay]').click();
-    cy.get('[data-cy=how-it-work-button]').click();
+    cy.get('[data-cy=how-it-works-okay]').click();
+    cy.get('[data-cy=how-it-works-button]').click();
     cy.get('[data-cy=rules-link]').click();
     cy.hash().should('eq', '#/rules');
   });

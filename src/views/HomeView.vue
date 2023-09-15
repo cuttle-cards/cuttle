@@ -1,9 +1,6 @@
 <template>
   <div
-    class="home h-100  bg-surface-1"
-    :class="{
-      home: $vuetify.display.lgAndUp,
-    }"
+    :class="[$vuetify.display.lgAndUp ?? 'home', 'h-100 bg-surface-1']"
   >
     <v-container>
       <div id="game-list-card">
