@@ -28,7 +28,13 @@
           href="https://human-ai-interaction.github.io/cuttle-bot/"
           target="_blank"
         > playing vs AI </a> to learn the ropes and test your mettle.</span>
-        <span class="my-2">Want to learn more? Check out our <router-link data-cy="rules-link" class="text-cyan-lighten-2 text-decoration-none" to="/rules"> about page </router-link> to learn the rules and read about the cuttle.cards project.</span>
+        <span class="my-2">Want to learn more? Check out our 
+          <router-link 
+            data-cy="rules-link" 
+            class="text-cyan-lighten-2 text-decoration-none" 
+            to="/rules"
+          > about page </router-link> to learn the rules and read about the cuttle.cards project.
+        </span>
       </section>
     </template>
     <template #actions>
