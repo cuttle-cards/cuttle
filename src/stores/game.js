@@ -3,8 +3,19 @@ import { useAuthStore } from '@/stores/auth';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 
-function resetState() {
-  return ({
+/**
+ * @returns number of queens a given player has
+ * @param player is the player object
+ */
+function queenCount(player) {
+  if (!player) {
+    return null;
+  }
+  return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
+}
+
+export const useGameStore = defineStore('game', {
+  state: () => ({
     id: null,
     chat: [],
     deck: [],
@@ -45,24 +56,7 @@ function resetState() {
     conceded: false,
     waitingForOpponentToStalemate: false,
     consideringOpponentStalemateRequest: false,
-    currentMatch: null,
-  });
-}
-
-/**
- * @returns number of queens a given player has
- * @param player is the player object
- */
-function queenCount(player) {
-  if (!player) {
-    return null;
-  }
-  return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
-}
-
-const initialState = resetState();
-export const useGameStore = defineStore('game', {
-  state: () => initialState,
+    currentMatch: null}),
   getters: {
     player: (state)  => {
       return state.players[state.myPNum];
