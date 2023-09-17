@@ -12,6 +12,9 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+import { useGameStore } from '@/stores/game';
 import ReauthenticateDialog from '@/components/GameView/ReauthenticateDialog.vue';
 import GameUnavailableOverlay from './GameUnavailableOverlay.vue';
 
@@ -19,15 +22,16 @@ export default {
   name: 'GameUnavailable',
   components: { ReauthenticateDialog, GameUnavailableOverlay },
   computed: {
+    ...mapStores(useAuthStore, useGameStore),
     unavailableGame() {
-      return !this.$store.state.game.id;
+      return !this.gameStore.id;
     },
     mustReauthenticate: {
       get() {
-        return this.$store.state.auth.mustReauthenticate;
+        return this.authStore.mustReauthenticate;
       },
       set(val) {
-        this.$store.commit('setMustReauthenticate', val);
+        this.authStore.setMustReauthenticate(val);
       },
     },
   },
