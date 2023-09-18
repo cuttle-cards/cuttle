@@ -265,8 +265,8 @@ export const useGameStore = defineStore('game', {
         return;
       }
 
-      const scuttlingPlayer = this.state.players[playedBy];
-      const scuttledPlayer = this.state.players[(playedBy + 1) % 2];
+      const scuttlingPlayer = this.players[playedBy];
+      const scuttledPlayer = this.players[(playedBy + 1) % 2];
 
       // Remove played card from scuttling player's hand and temporarily add to target's attachments
       const playedCardIndex = scuttlingPlayer.hand.findIndex((card) => card.id === playedCardId);
