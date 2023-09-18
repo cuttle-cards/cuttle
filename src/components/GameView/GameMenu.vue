@@ -155,9 +155,9 @@ export default {
       this.loading = true;
       try {
         await this.gameStore.requestStalemate();
-        this.$store.commit('setWaitingForOpponentToStalemate', true);
+        this.gameStore.setWaitingForOpponentToStalemate(true);
       } catch (e) {
-        this.$store.commit('setWaitingForOpponentToStalemate', false);
+        this.gameStore.setWaitingForOpponentToStalemate(false);
       }
       this.loading = false;
       this.shownDialog = '';
