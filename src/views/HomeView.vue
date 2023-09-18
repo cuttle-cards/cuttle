@@ -142,8 +142,8 @@
   </div>
 </template>
 <script>
-import { useGameListStore } from '@/stores/gameList';
 import { mapStores } from 'pinia';
+import { useGameListStore } from '@/stores/gameList';
 import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '@/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
