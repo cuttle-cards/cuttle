@@ -12,7 +12,7 @@ const getPlayerPnumByUsername = (players, username) => {
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    authenticated: false,
+    authenticated: null,
     username: null,
     mustReauthenticate: false,
     isReturningUser: null,

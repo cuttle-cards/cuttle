@@ -56,6 +56,7 @@
 import GameStatus from '../../utils/GameStatus.json';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
+import { useGameListStore } from '@/stores/gameList';
 
 export default {
   name: 'GameListItem',
@@ -104,7 +105,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useGameStore),
+    ...mapStores(useGameStore, useGameListStore),
     numPlayersReady() {
       return this.p0ready + this.p1ready;
     },
@@ -150,7 +151,7 @@ export default {
         .catch((error) => {
           this.joiningGame = false;
           this.$emit('error', error);
-          this.gameStore.gameFinished(this.gameId);
+          this.gameListStore.gameFinished(this.gameId);
         });
     },
   },

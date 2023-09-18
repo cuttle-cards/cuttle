@@ -23,6 +23,7 @@ export const ROUTE_NAME_STATS_SEASON = 'StatsBySeason';
 const mustBeAuthenticated = async (to, from, next) => {
   const authStore = useAuthStore();
   if (authStore.authenticated) {
+    console.log('made it');
     return next();
   }
   const isReturningUser = await authStore.getIsReturningUser();

@@ -76,7 +76,6 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     cy.signupPlayer(myUser);
   }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
-    cy.log(cy.window());
     cy.window()
       .its('gameStore')
       .then((store) => store.requestSubscribe(gameSummary.gameId));
