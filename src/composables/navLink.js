@@ -16,14 +16,14 @@ export function getPageLinks() {
     const { authenticated } = store.state.auth;
     if (!authenticated) {
       return [
-        { text: t('global.login'), icon: 'login', page: { name: ROUTE_NAME_LOGIN } },
-        { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES } },
+        { text: t('global.login'), icon: 'login', page: { name: ROUTE_NAME_LOGIN }, 'cy_name': 'Log In' },
+        { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES }, 'cy_name': 'About' },
       ];
     } 
     return [
-      { text: t('global.play'), icon: 'play', page: { name: ROUTE_NAME_HOME } },
-      { text: t('global.stats'), icon: 'chart-bar', page: { name: ROUTE_NAME_STATS } },
-      { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES } },
+      { text: t('global.play'), icon: 'play', page: { name: ROUTE_NAME_HOME }, 'cy_name': 'Play' },
+      { text: t('global.stats'), icon: 'chart-bar', page: { name: ROUTE_NAME_STATS }, 'cy_name': 'Stats' },
+      { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES }, 'cy_name': 'About' },
     ];
   });
 }

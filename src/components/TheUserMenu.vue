@@ -40,13 +40,13 @@
         </v-list>
       </v-menu>
       <v-list-item
-        v-for="({ text, icon, page }, i) in menuItems"
+        v-for="({ text, icon, page, cy_name }, i) in menuItems"
         :key="i"
         :prepend-icon="`mdi-${icon}`"
         :title="text"
         :to="page"
         exact
-        :data-nav="text"
+        :data-nav="cy_name"
       />
     </v-list>
   </v-menu>
@@ -60,7 +60,7 @@ import { ROUTE_NAME_LOGOUT } from '@/router.js';
 const { t } = useI18n();
 
 const menuItems = computed(() => {
-  return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } }];
+  return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT }, cy_name: 'Log Out' }];
 });
 
 </script>

@@ -14,24 +14,24 @@ describe('Localization ', () => {
   beforeEach(setup);
 
   it('Checking Translation For Spanish', () => {
-    langaugeMenu('es', es);
+    checkTranslation ('es', es);
   });
 
   it('Checking Translation For French', () => {
-    langaugeMenu('fr', fr);
+    checkTranslation ('fr', fr);
   });
 });
 
-function langaugeMenu(name, data) {
+function checkTranslation(name, lang) {
   // Open the menu
   cy.get('[data-cy="user-menu"]').click();
   cy.get('[data-cy="language-menu"]').click();
 
   //Selects the language 
-  cy.get('[data-lang="' + name + '"]').click();
+  cy.get(`[data-lang="${name}"]`).click();
 
   // checks elements in navbar has changed language
-  cy.get('[data-cy="' + data.global.play + '"]').should('contain', data.global.play);
+  cy.get('[data-cy="Play"]').should('contain', lang.global.play);
   cy.get('[data-cy="user-menu"]').click();
-  cy.get('[data-nav="' + data.global.logout + '"]').should('contain', data.global.logout);
+  cy.get('[data-nav="Log Out"]').should('contain', lang.global.logout);
 }
