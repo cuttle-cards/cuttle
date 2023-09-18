@@ -97,17 +97,17 @@ describe('Home - Game List', () => {
 
     it('Joins an open game', () => {
       cy.window()
-        .its('cuttle.app.config.globalProperties.$store.state.game')
-        .then((gameState) => {
-          expect(gameState.id).to.eq(null);
+        .its('gameStore')
+        .then((store) => {
+          expect(store.id).to.eq(null);
         });
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false });
       cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
       cy.hash().should('contain', '#/lobby');
       cy.window()
-        .its('cuttle.app.config.globalProperties.$store.state.game')
-        .then((gameState) => {
-          assertSuccessfulJoin(gameState);
+        .its('gameStore')
+        .then((store) => {
+          assertSuccessfulJoin(store);
         });
     });
 
@@ -136,10 +136,10 @@ describe('Home - Game List', () => {
       // Should have redirected to lobby page and updated store
       cy.hash().should('contain', '#/lobby');
       cy.window()
-        .its('cuttle.app.config.globalProperties.$store.state.game')
-        .then((gameState) => {
+        .its('gameStore')
+        .then((store) => {
           // expect(gameState.gameId).to.not.eq(null);
-          assertSuccessfulJoin(gameState);
+          assertSuccessfulJoin(store);
         });
     });
   });
@@ -163,8 +163,8 @@ describe('Home - Game List', () => {
 
       // Manually re-enable join button to confirm backend rejects request
       cy.window()
-        .its('cuttle.app.config.globalProperties.$store')
-        .then((store) => store.commit('otherLeftGame', gameData.gameId));
+        .its('gameListStore')
+        .then((store) => store.otherLeftGame(gameData.gameId));
       cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled').click().should('be.disabled');
 
       assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
@@ -217,9 +217,9 @@ describe('Home - Game List', () => {
 
         cy.url().should('include', '/spectate/');
         cy.window()
-          .its('cuttle.app.config.globalProperties.$store.state.game')
-          .then((gameState) => {
-            expect(gameState.id).to.not.eq(null);
+          .its('gameStore')
+          .then((store) => {
+            expect(store.id).to.not.eq(null);
           });
       });
     });
@@ -268,12 +268,12 @@ describe('Home - Game List', () => {
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible').and('not.be.disabled');
         // Disconnect the socket then finish the game -- UI misses the update
         cy.window()
-          .its('cuttle.app.config.globalProperties.$store')
-          .then((store) => store.dispatch('disconnectSocket'));
+          .its('authStore')
+          .then((store) => store.disconnectSocket());
         cy.concedeOpponent();
         cy.window()
-          .its('cuttle.app.config.globalProperties.$store')
-          .then((store) => store.dispatch('reconnectSocket'));
+          .its('authStore')
+          .then((store) => store.reconnectSocket());
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
         assertSnackbarError('Unable to spectate game', 'newgame');
         // Spectate button should now be disabled
@@ -465,7 +465,7 @@ describe('Home - Create Game', () => {
       .should('include.text', '0 / 2 players');
     // Test store
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store.state.gameList.openGames')
+      .its('gameListStore.openGames')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect 0 players in game in store');
@@ -490,7 +490,7 @@ describe('Home - Create Game', () => {
       .should('include.text', '0 / 2 players');
     // Test store
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store.state.gameList.openGames')
+      .its('gameListStore.openGames')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
@@ -513,7 +513,7 @@ describe('Home - Create Game', () => {
 
     // Test store
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store.state.gameList.openGames')
+      .its('gameListStore.openGames')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
         expect(games[0].numPlayers).to.eq(0, 'Expect no players in gameLists game in store, but found some');
@@ -563,10 +563,14 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=game-list-item]').should('have.length', 0); // No games appear
     // Test Store
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store.state')
-      .then((state) => {
-        expect(state.game.gameId).to.eq(undefined, 'Store game should not have id');
-        expect(state.gameList.openGames.length).to.eq(0, 'Game list should be empty in store, but is not');
+      .its('gameStore')
+      .then((store) => {
+        expect(store.gameId).to.eq(undefined, 'Store game should not have id');
+      });
+    cy.window()
+      .its('gameListStore')
+      .then((store) => {
+        expect(store.openGames.length).to.eq(0, 'Game list should be empty in store, but is not');
       });
     assertSnackbarError('Game name cannot be blank', 'newgame');
   });
