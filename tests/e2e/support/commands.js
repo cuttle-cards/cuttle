@@ -117,8 +117,8 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
     }
     cy.readyOpponent();
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store')
-      .then((store) => store.dispatch('requestSubscribe', gameSummary.gameId));
+      .its('gameStore')
+      .then((store) => store.requestSubscribe(gameSummary.gameId));
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
@@ -154,9 +154,9 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
     cy.get('[data-cy-spectate-game]').click();
     cy.url().should('include', '/spectate/');
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store.state.game')
-      .then((gameState) => {
-        expect(gameState.id).to.not.eq(null);
+      .its('gameStore')
+      .then((game) => {
+        expect(game.id).to.not.eq(null);
       });
   });
 });
@@ -186,8 +186,8 @@ Cypress.Commands.add('signupPlayer', (player) => {
 });
 Cypress.Commands.add('loginPlayer', (player) => {
   cy.window()
-    .its('cuttle.app.config.globalProperties.$store')
-    .then((store) => store.dispatch('requestLogin', { username: player.username, password: player.password }));
+    .its('authStore')
+    .then((store) => store.requestLogin({ username: player.username, password: player.password }));
   cy.log(`Logged in as player ${player.username}`);
 });
 
@@ -326,8 +326,8 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
   }
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.getters.opponent')
-    .then((opponent) => {
+    .its('gameStore')
+    .then(({ opponent }) => {
       const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
@@ -359,7 +359,7 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
   }
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const foundCard = game.players[pNum].hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
@@ -407,7 +407,7 @@ Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
   }
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const foundCard = game.players[pNum].hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
@@ -442,8 +442,8 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
   }
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.getters.opponent')
-    .then((opponent) => {
+    .its('gameStore')
+    .then(({ opponent }) => {
       const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
@@ -521,7 +521,7 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
   }
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const player = game.players[game.myPNum];
       const opponent = game.players[(game.myPNum + 1) % 2];
@@ -560,7 +560,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
   }
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const playerId = game.players[game.myPNum].id;
       const opponent = game.players[(game.myPNum + 1) % 2];
@@ -605,7 +605,7 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
   }
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('cameStore')
     .then((game) => {
       const player = game.players[game.myPNum];
       const playerId = player.id;
@@ -680,7 +680,7 @@ Cypress.Commands.add('counterOpponent', (card) => {
   }
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const opponent = game.players[(game.myPNum + 1) % 2];
       const playerId = game.players[game.myPNum].id;
@@ -713,7 +713,7 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
   }
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const opId = game.players[game.myPNum].id;
       const foundCard = game.scrap.find((scrapCard) => cardsMatch(card, scrapCard));
@@ -742,7 +742,7 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
 Cypress.Commands.add('resolveOpponent', () => {
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const opId = game.players[game.myPNum].id;
       io.socket.get(
@@ -768,7 +768,7 @@ Cypress.Commands.add('resolveOpponent', () => {
 Cypress.Commands.add('discardOpponent', (card1, card2) => {
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       let cardId1 = undefined;
       let cardId2 = undefined;
@@ -808,7 +808,7 @@ Cypress.Commands.add('playPointsFromSevenOpponent', (card) => {
   });
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       let foundCard;
       let index;
@@ -857,7 +857,7 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
   });
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       let foundCard;
       let index;
@@ -907,7 +907,7 @@ Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
   });
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const player = game.players[game.myPNum];
       const opponent = game.players[(game.myPNum + 1) % 2];
@@ -971,7 +971,7 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
 
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const player = game.players[game.myPNum];
       let foundCard;
@@ -1042,7 +1042,7 @@ Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
   });
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       let foundCard;
       let index;
@@ -1100,7 +1100,7 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
   let index;
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const player = game.players[game.myPNum];
       if (cardsMatch(card, game.topCard)) {
@@ -1249,7 +1249,7 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
     message: printCard(card),
   });
   cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const foundCard = game.players[game.myPNum].hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
