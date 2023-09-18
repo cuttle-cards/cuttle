@@ -365,7 +365,7 @@ export function assertVictory() {
   cy.log('Asserting player victory');
   cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
   cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       if (game.isRanked) {
         const gameNumber = game.currentMatch.games.length;
@@ -390,7 +390,7 @@ export function assertLoss() {
   cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
   cy.get('[data-cy=loss-img]').should('be.visible');
   cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       if (game.isRanked) {
         const gameNumber = game.currentMatch.games.length;
@@ -415,7 +415,7 @@ export function assertStalemate() {
   cy.get('#game-over-dialog').should('be.visible').get('[data-cy=stalemate-heading]').should('be.visible');
   cy.get('[data-cy=stalemate-img]').should('be.visible');
   cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       if (game.isRanked) {
         const gameNumber = game.currentMatch.games.length;
