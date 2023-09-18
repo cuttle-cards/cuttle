@@ -476,7 +476,7 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
   }
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const player = game.players[game.myPNum];
       const opponent = game.players[(game.myPNum + 1) % 2];
