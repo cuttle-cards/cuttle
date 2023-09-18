@@ -262,7 +262,7 @@ describe('Lobby - P1 Perspective', () => {
           .should('contain', 'READY');
         cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
         //Return updated store state
-        return cy.wrap(store.state.game);
+        return cy.wrap(store);
       })
       .then((updatedGameState) => {
         //Test updated store state
@@ -309,7 +309,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
 
     // Disconnect socket and then opponent hits ready to start game
-    cy.window().its('gameStore')
+    cy.window().its('authStore')
       .then((store) => store.disconnectSocket());
     cy.readyOpponent();
 
