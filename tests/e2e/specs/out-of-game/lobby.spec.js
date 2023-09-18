@@ -208,7 +208,7 @@ describe('Lobby - P1 Perspective', () => {
       // Join game as this user and navigate to lobby
       cy.window()
         .its('gameStore')
-        .then((store) => store.dispatch('requestSubscribe', gameSummary.gameId));
+        .then((store) => store.requestSubscribe(gameSummary.gameId));
       cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     });
   });
