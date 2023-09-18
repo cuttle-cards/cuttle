@@ -76,9 +76,10 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     cy.signupPlayer(myUser);
   }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+    cy.log(cy.window());
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store')
-      .then((store) => store.dispatch('requestSubscribe', gameSummary.gameId));
+      .its('gameStore')
+      .then((store) => store.requestSubscribe(gameSummary.gameId));
     cy.log(`Subscribed to game ${gameSummary.gameId}`);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
@@ -179,8 +180,8 @@ Cypress.Commands.add('signupOpponent', (opponent) => {
 });
 Cypress.Commands.add('signupPlayer', (player) => {
   cy.window()
-    .its('cuttle.app.config.globalProperties.$store')
-    .then((store) => store.dispatch('requestSignup', { username: player.username, password: player.password }));
+    .its('authStore')
+    .then((store) => store.requestSignup({ username: player.username, password: player.password }));
   cy.log(`Signed up player ${player.username}`);
 });
 Cypress.Commands.add('loginPlayer', (player) => {
@@ -210,8 +211,8 @@ Cypress.Commands.add('createGameOpponent', (name) => {
 Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store')
-    .then((store) => store.dispatch('requestCreateGame', { gameName, isRanked }));
+    .its('gameListStore')
+    .then((store) => store.requestCreateGame({ gameName, isRanked }));
 });
 
 Cypress.Commands.add('subscribeOpponent', (id) => {
@@ -1288,7 +1289,7 @@ Cypress.Commands.add('vueRoute', (route) => {
 Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
   return cy
     .window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('gameStore')
     .then((game) => {
       const p0HandCardIds = getCardIds(game, fixture.p0Hand);
       const p0PointCardIds = getCardIds(game, fixture.p0Points);

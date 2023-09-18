@@ -1,5 +1,8 @@
 import devtools from '@vue/devtools';
 import { version } from '_/package.json';
+import { useGameStore } from '@/stores/game';
+import { useAuthStore } from '@/stores/auth';
+import { useGameListStore } from '@/stores/gameList';
 
 export function initCuttleGlobals(app) {
   // We work under the assumption that this function will only be called in a context
@@ -24,4 +27,14 @@ export function initCuttleGlobals(app) {
       console.warn('Failed to connect vue devtools - try running npm run start:devtools');
     }
   }
+
+  if (import.meta.env.DEV) { 
+    const gameStore = useGameStore();
+    const authStore = useAuthStore();
+    const gameList = useGameListStore();
+    window.gameStore = gameStore;
+    window.authStore = authStore;
+    window.gameListStore = gameList;
+  }
+
 }
