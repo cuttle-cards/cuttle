@@ -105,7 +105,8 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useGameStore, useGameListStore),
+    ...mapStores(useGameStore),
+    ...mapStores(useGameListStore),
     numPlayersReady() {
       return this.p0ready + this.p1ready;
     },
