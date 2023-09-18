@@ -78,6 +78,7 @@ export const useAuthStore = defineStore('auth', {
       });
     },
     async requestStatus(route) {
+      
       // If we've authenticated before, fast fail
       if (this.authenticated !== null) {
         return;
@@ -93,7 +94,6 @@ export const useAuthStore = defineStore('auth', {
         });
         const status = await response.json();
         const { authenticated, username, gameId } = status;
-
         // If the user is not authenticated, we're done here
         if (!authenticated) {
           this.clearAuth();
@@ -116,8 +116,9 @@ export const useAuthStore = defineStore('auth', {
         //     - `Game.subscribe` is called
         //     - `Game.publish` is called
         if (gameId && (isGame || isLobby)) {
+          const gameStore = useGameStore();
           await this.requestReauthenticate({ username }).then(({ game }) => {
-            this.updateGame(game);
+            gameStore.updateGame(game);
           });
         }
 
