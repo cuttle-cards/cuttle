@@ -182,7 +182,7 @@ export const useGameStore = defineStore('game', {
       this.players.push(cloneDeep(player));
     },
     resetState() {
-      this.$reset;
+      this.$reset();
     },
     updateReady(pNum) {
       if (pNum === 0) {
