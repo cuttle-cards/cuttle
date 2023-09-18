@@ -6,11 +6,10 @@ function assertSuccessfulAuth(username) {
   cy.hash().should('eq', '#/');
   // Check store auth data
   cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.auth')
-    .as('authState')
-    .then((authState) => {
-      expect(authState.authenticated).to.eq(true);
-      expect(authState.username).to.eq(username);
+    .its('authStore')
+    .then((store) => {
+      expect(store.authenticated).to.eq(true);
+      expect(store.username).to.eq(username);
     });
 }
 
@@ -19,11 +18,10 @@ function assertFailedAuth(path) {
   cy.hash().should('eq', path);
   // Check store auth data
   cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.auth')
-    .as('authState')
-    .then((authState) => {
-      expect(authState.authenticated).to.eq(false);
-      expect(authState.username).to.eq(null);
+    .its('authStore')
+    .then((store) => {
+      expect(store.authenticated).to.eq(false);
+      expect(store.username).to.eq(null);
     });
 }
 
