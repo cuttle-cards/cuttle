@@ -109,7 +109,7 @@ describe('Lobby - P0 Perspective', () => {
         cy.get('[data-cy=ready-button]').click();
         cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
         //Return updated store state
-        return cy.wrap(store.state.game);
+        return cy.wrap(store);
       })
       .then((updatedGameState) => {
         //Test updated store state

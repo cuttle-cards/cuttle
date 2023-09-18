@@ -36,7 +36,7 @@ export function handleLeftGame(evData) {
   const gameListStore = useGameListStore();
   const gameStore = useGameStore();
   if (evData.id === gameStore.id) {
-    gameListStore.opponentLeft();
+    gameStore.opponentLeft();
   } else {
     gameListStore.otherLeftGame(evData.id);
   }
