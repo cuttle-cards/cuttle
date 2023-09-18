@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 
 export default {
@@ -52,6 +54,7 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useGameStore),
     show: {
       get() {
         return this.modelValue;
@@ -65,7 +68,7 @@ export default {
     async acceptStalemate() {
       this.loadingAccept = true;
       try {
-        await this.$store.dispatch('requestStalemate');
+        await this.gameStore.requestStalemate();
       } finally {
         this.loadingAccept = false;
         this.show = false;
@@ -74,7 +77,7 @@ export default {
     async rejectStalemate() {
       this.loadingReject = true;
       try {
-        await this.$store.dispatch('rejectStalemate');
+        await this.gameStore.rejectStalemate();
       } finally {
         this.loadingReject = false;
         this.show = false;
