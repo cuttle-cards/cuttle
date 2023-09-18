@@ -94,7 +94,7 @@ export const useGameStore = defineStore('game', {
       }
       return state.opponent.username;
     },
-    opponentPointhis: (state) => {
+    opponentPointTotal: (state) => {
       if (!state.opponent) {
         return 0;
       }
