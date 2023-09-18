@@ -189,11 +189,11 @@ export default {
     async goHome() {
       this.leavingGame = true;
       try {
-        await this.$store.dispatch('requestUnsubscribeFromGame');
+        await this.gameStore.requestUnsubscribeFromGame();
       } finally {
         this.leavingGame = false;
         this.$router.push('/');
-        this.$store.commit('setGameOver', {
+        this.gameStore.setGameOver({
           gameOver: false,
           conceded: false,
           winner: null,
