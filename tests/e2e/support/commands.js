@@ -604,7 +604,7 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
   }
   return cy
     .window()
-    .its('cameStore')
+    .its('gameStore')
     .then((game) => {
       const player = game.players[game.myPNum];
       const playerId = player.id;
