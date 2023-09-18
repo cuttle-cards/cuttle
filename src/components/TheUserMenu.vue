@@ -34,8 +34,8 @@
             :key="`${i}-${lang}`"
             :value="lang"
             :title="lang"
-            @click="$i18n.locale = lang"
             :data-lang="lang"
+            @click="$i18n.locale = lang"
           />
         </v-list>
       </v-menu>
@@ -63,5 +63,4 @@ const menuItems = computed(() => {
   return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT } }];
 });
 
-const langValue = {en:'English', es:'Español'} 
 </script>
