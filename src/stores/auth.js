@@ -12,8 +12,7 @@ const getPlayerPnumByUsername = (players, username) => {
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    // This value will ONLY be null on the initial load
-    authenticated: null,
+    authenticated: false,
     username: null,
     mustReauthenticate: false,
     isReturningUser: null,
