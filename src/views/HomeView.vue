@@ -54,10 +54,10 @@
                   </div>
                 </v-window-item>
                 <v-window-item :value="TABS.SPECTATE">
-                  <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text">
+                  <p v-if="spectateGameList.length === 0" data-cy="no-spectate-game-text">
                     No Games Available to Spectate
                   </p>
-                  <div v-for="game in specateGameList" :key="game.id">
+                  <div v-for="game in spectateGameList" :key="game.id">
                     <game-list-item
                       :name="game.name"
                       :p0ready="game.p0Ready ? 1 : 0"
@@ -174,7 +174,7 @@ export default {
     playableGameList() {
       return this.gameListStore.openGames;  
     },
-    specateGameList() {
+    spectateGameList() {
       return this.gameListStore.spectateGames;
     },
     buttonSize() {
