@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="list-item" data-cy="game-list-item">
-      <v-col sm="0" lg="8" class="list-item__inner-text">
+      <v-col lg="8" class="list-item__inner-text">
         <p class="game-name text-surface-1" data-cy="game-list-item-name">
           {{ name }}
         </p>
@@ -9,7 +9,7 @@
           {{ readyText }} players
         </p>
       </v-col>
-      <v-col sm="0" lg="4" class="list-item__button pr-md-0">
+      <v-col lg="4" class="list-item__button pr-md-0">
         <!-- Join Button -->
         <v-btn
           v-if="!isSpectatable"

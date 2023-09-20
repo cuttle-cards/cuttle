@@ -1,38 +1,31 @@
 <template>
-  <div :class="[$vuetify.display.lgAndUp ?? 'home', 'h-100 bg-surface-1']">
-    <v-container>
-      <div id="game-list-card">
+  <div class="h-100 bg-surface-1">
+      <v-container id="home-container" class="container">
+        <h1 id="home-card-title">
+          Game Finder
+        </h1>
         <v-row>
-          <v-col>
-            <div id="card-content-header" class="mb-4">
-              <h1 id="home-card-title">
-                Game Finder
-              </h1>
-            </div>
-            <div id="game-list">
-              <div class="py-md-5 py-3 d-flex mx-auto text-surface-1">
-                <v-btn
-                  class="px-md-16 px-4 mx-2"
+          <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
+            <div
+              id="game-list"
+              class="mx-auto homeContent"
+            >
+              <div class="py-3 d-flex mx-auto text-surface-1">
+                <v-btn-toggle
+                  v-model="tab"
                   rounded="0"
-                  :elevation="0"
-                  :color="tab === TABS.PLAY ? 'surface-1' : 'surface-2'"
-                  text-color="white"
-                  data-cy-game-list-selector="play"
-                  @click="tab = TABS.PLAY"
+                  color="#4a2416"
+                  variant="text"
+                  mandatory
                 >
-                  PLAY
-                </v-btn>
-                <v-btn
-                  class="px-md-16 px-4 mx-md-2"
-                  rounded="0"
-                  :elevation="0"
-                  :color="tab === TABS.SPECTATE ? 'surface-1' : 'surface-2'"
-                  text-color="white"
-                  data-cy-game-list-selector="spectate"
-                  @click="tab = TABS.SPECTATE"
-                >
-                  SPECTATE
-                </v-btn>
+                  <v-btn :value="TABS.PLAY">
+                    PLAY
+                  </v-btn>
+
+                  <v-btn :value="TABS.SPECTATE">
+                    SPECTATE
+                  </v-btn>
+                </v-btn-toggle>
               </div>
               <v-divider v-if="$vuetify.display.mdAndDown" color="surface-1" class="border-opacity-100" />
               <v-window v-model="tab" class="pa-4 overflow-y-auto">
@@ -75,44 +68,45 @@
               </v-window>
             </div>
           </v-col>
-        </v-row>            
+        </v-row>
         <v-row>
-          <v-col class="game-list-btn">
-            <create-game-dialog @error="handleError" />
+          <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
+            <div class="mx-auto my-2 homeContent">
+              <create-game-dialog @error="handleError" />
+              <div
+                class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-2"
+              >
+                <v-btn
+                  v-if="!$vuetify.display.smAndUp"
+                  variant="text"
+                  color="surface-2"
+                  class="px-2"
+                  href="https://discord.gg/9vrAZ8xGyh"
+                  target="_blank"
+                  size="x-large"
+                >
+                  <img class="discord" src="/img/loginView/logo-discord-cream.svg">
+                </v-btn>
+                <v-btn
+                  v-else
+                  variant="outlined"
+                  class="text-subtitle-1"
+                  color="surface-2"
+                  href="https://discord.gg/9vrAZ8xGyh"
+                  target="_blank"
+                  size="x-large"
+                >
+                  <img class="discord" src="/img/loginView/logo-discord-cream.svg">
+                  <span v-if="$vuetify.display.smAndUp">
+                    {{ t('login.joinDiscord') }}
+                  </span>
+                </v-btn>
+                <how-it-works-dialog />
+              </div>
+            </div>
           </v-col>
         </v-row>
-        <v-row class="game-list-btn px-1">
-          <v-col class="pa-0">
-            <v-btn
-              v-if="!$vuetify.display.smAndUp"
-              variant="text"
-              color="surface-2"
-              class="pa-2"
-              href="https://discord.gg/9vrAZ8xGyh"
-              target="_blank"
-              size="medium"
-            >
-              <img class="discord" src="/img/loginView/logo-discord-cream.svg">
-            </v-btn>
-            <v-btn
-              v-else
-              variant="outlined"
-              color="surface-2"
-              class="pa-2"
-              href="https://discord.gg/9vrAZ8xGyh"
-              target="_blank"
-              size="medium"
-            >
-              <img class="discord" src="/img/loginView/logo-discord-cream.svg">
-              <span v-if="$vuetify.display.smAndUp">{{ t('login.joinDiscord') }}</span>
-            </v-btn>
-          </v-col>
-          <v-col class="d-flex justify-center align-center pa-0">    
-            <how-it-works-dialog />
-          </v-col>
-        </v-row>
-      </div>
-    </v-container>
+      </v-container>
     <BaseSnackbar
       v-model="showSnackBar"
       :message="snackBarMessage"
@@ -220,7 +214,7 @@ export default {
 
 
 .discord {
-  max-height: 48px;
+  max-height: 30px;
   margin-right: 18px;
 }
 
@@ -237,9 +231,10 @@ p {
 }
 
 .container {
-  width: 95%;
-  margin: 0 auto;
-  max-height: 95vh;
+  width: 75%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .page-title {
@@ -252,9 +247,14 @@ p {
   margin: 0 auto;
 }
 
-.create-game-btn {
-  display: flex;
-  justify-content: flex-end;
+.home-card-games {
+  padding: 0;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.homeContent {
+  max-width: 580px;
 }
 
 #side-nav {
@@ -276,7 +276,6 @@ p {
   min-height: 50vh;
   max-height: 50vh;
   display: flex;
-  max-width: 50%;
   margin: auto;
   flex-direction: column;
 
@@ -284,11 +283,7 @@ p {
     text-align: center;
   }
 }
-.game-list-btn {
-  padding: 12px 8px;
-    max-width: 50%;
-  margin: 0 auto;
-}
+
 #add-new-game {
   display: flex;
   flex-direction: row;
@@ -308,18 +303,24 @@ p {
   font-family: 'Luckiest Guy', serif !important;
   font-weight: 400;
   line-height: 5rem;
-  margin: 0 auto;
+  margin: 0 auto 40px auto;
 }
 
 @media (max-width: 844px) {
   #game-list {
   max-width: 100%;
 }
-.game-list-btn {
-    max-width: 100%;
 }
+@media (max-width: 600px) {
+  .discord {
+    max-height: 40px;
+    margin: 0;
+  }
 }
 @media (max-width: 980px) {
+  .container{
+    width: 95%;
+  }
   #home-card-title {
     font-size: 2rem;
   }
@@ -347,8 +348,5 @@ p {
     overflow: auto;
   }
 
-  .create-game-btn {
-    margin-right: 0.5rem;
-  }
 }
 </style>

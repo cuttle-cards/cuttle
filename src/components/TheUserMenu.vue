@@ -2,7 +2,7 @@
   <v-menu transition="slide-x-transition">
     <template #activator="{ props }">
       <v-btn
-        color="surface-1"
+        :color="isHomeView ? 'surface-1' : 'surface-2'"
         data-cy="user-menu"
         class="d-flex text-body-1 font-weight-medium mr-md-16"
         v-bind="props"
@@ -35,6 +35,13 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
+
+defineProps({
+  isHomeView: {
+    type: Boolean,
+    default: true
+  }
+})
 
 const { t } = useI18n();
 

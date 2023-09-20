@@ -1,10 +1,10 @@
 <template>
   <v-app id="app">
-    <the-header v-if="showNav" />
+    <the-header v-if="showNav" :navToggle="navToggle" />
     <v-main>
       <router-view />
     </v-main>
-    <the-footer v-if="showNav && isSmallDevice" />
+    <the-footer v-if="showNav && isSmallDevice" :navToggle="navToggle" />
   </v-app>
 </template>
 
@@ -26,6 +26,11 @@ export default {
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
+    navToggle() {
+      const isHomeView = this.$router.currentRoute.value.name === 'Home';
+      const linkColor = isHomeView ? 'text-surface-1' : 'text-surface-2'; 
+      return {isHomeView, linkColor};
+    }
   },
   watch:{
   '$route.meta'({hideNavigation}){

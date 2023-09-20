@@ -16,6 +16,7 @@ const cuttleTheme = {
     newSecondary: '#5865F2',
     disabled: '#ACACAC',
     accent: '#219653',
+    anchor: '#4dd0e1',
     'accent-darken1': '#007b3b',
     'accent-darken2': '#006224',
     'accent-darken3': '#00490d',
