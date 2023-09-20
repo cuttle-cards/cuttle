@@ -11,9 +11,6 @@
 <script>
 import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
-import { useGameStore } from '@/stores/game';
-import { useAuthStore } from '@/stores/auth';
-import { useGameListStore } from '@/stores/gameList';
 
 export default {
   components: {
@@ -35,17 +32,6 @@ export default {
     this.showNav = !hideNavigation;
   }
   },
-  created() {
-    //Pass store to window object on testing
-    if (import.meta.env.DEV) { 
-      const gameStore = useGameStore();
-      const authStore = useAuthStore();
-      const gameList = useGameListStore();
-      window.gameStore = gameStore;
-      window.authStore = authStore;
-      window.gameListStore = gameList;
-    }
-  }
 };
 </script>
 
