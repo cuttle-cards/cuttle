@@ -1,8 +1,5 @@
 import devtools from '@vue/devtools';
 import { version } from '_/package.json';
-import { useGameStore } from '@/stores/game';
-import { useAuthStore } from '@/stores/auth';
-import { useGameListStore } from '@/stores/gameList';
 
 export function initCuttleGlobals(app) {
   // We work under the assumption that this function will only be called in a context
@@ -15,15 +12,7 @@ export function initCuttleGlobals(app) {
     app: test ? app : null,
     test,
   };
-      //Pass store to window object on testing
-      if (test) { 
-        const gameStore = useGameStore();
-        const authStore = useAuthStore();
-        const gameList = useGameListStore();
-        window.gameStore = gameStore;
-        window.authStore = authStore;
-        window.gameListStore = gameList;
-      }
+
 
   window.cuttle = cuttle;
 
