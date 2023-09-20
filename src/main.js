@@ -1,8 +1,9 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import vuetify from '@/plugins/vuetify';
-import router from '@/router';
+import router from '@/router'; 
 import i18n from '@/i18n';
+import { initCuttleGlobals } from '_/utils/config-utils';
 import App from '@/App.vue';
 const pinia = createPinia();
 
@@ -20,4 +21,7 @@ app.use(pinia);
 app.use(i18n);
 
 app.mount('#app');
+
+// Add Cuttle window object
+initCuttleGlobals(app);
 
