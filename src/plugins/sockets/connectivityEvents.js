@@ -1,9 +1,11 @@
 import { useAuthStore } from '@/stores/auth';
+import { useGameStore } from '@/stores/game';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_HOME } from '@/router';
 
 export function handleConnect() {
   const authStore = useAuthStore();
+  const gameStore = useGameStore();
   // Request latest game state if socket reconnects during game
   const { username } = authStore;
   switch (router.currentRoute.value.name) {
@@ -15,7 +17,7 @@ export function handleConnect() {
         router.push(ROUTE_NAME_HOME);
         return;
       }
-      return authStore.requestSpectate(gameId);
+      return gameStore.requestSpectate(gameId);
     }
     default:
       return;
