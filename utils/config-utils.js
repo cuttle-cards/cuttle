@@ -1,9 +1,5 @@
 import devtools from '@vue/devtools';
 import { version } from '_/package.json';
-import { useGameStore } from '@/stores/game';
-import { useAuthStore } from '@/stores/auth';
-import { useGameListStore } from '@/stores/gameList';
-import { useRouter } from 'vue-router';
 
 export function initCuttleGlobals() {
   // We work under the assumption that this function will only be called in a context
@@ -20,12 +16,6 @@ export function initCuttleGlobals() {
 
 
      //Pass store to window object on testing
-  if (test) { 
-    window.gameStore = useGameStore();
-    window.authStore = useAuthStore();
-    window.gameListStore = useGameListStore();
-    window.cuttleRouter = useRouter();
-    }
 
 
   // Connect the devtools -- non-prod only

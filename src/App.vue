@@ -12,8 +12,10 @@
 import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
 import { initCuttleGlobals } from '../utils/config-utils';
-
-
+import { useGameStore } from '@/stores/game';
+import { useAuthStore } from '@/stores/auth';
+import { useGameListStore } from '@/stores/gameList';
+import { useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -36,6 +38,12 @@ export default {
   }
   },
   created() {
+    if (window.cypress !== null) { 
+    window.gameStore = useGameStore();
+    window.authStore = useAuthStore();
+    window.gameListStore = useGameListStore();
+    window.cuttleRouter = useRouter();
+    }
     initCuttleGlobals();
   }
 };
