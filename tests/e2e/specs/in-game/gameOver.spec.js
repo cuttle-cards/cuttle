@@ -560,7 +560,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.stalemateOpponent();
     assertStalemate();
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store.state.game')
+      .its('gameStore')
       .then((game) => {
         const results = game.currentMatch.games.map(({ status, winner }) => ({ status, winner }));
         validateGameResult(results[0], this.playerOneId);
