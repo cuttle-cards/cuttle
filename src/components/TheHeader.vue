@@ -3,7 +3,7 @@
     <v-toolbar data-cy="nav-drawer" :color="navToggle.isHomeView ? 'surface-2' : 'surface-1'">
       <v-toolbar-title>
         <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between" style="cursor: pointer">
-          <TheUserMenu :isHomeView="navToggle.isHomeView" />
+          <TheUserMenu :is-home-view="navToggle.isHomeView" />
           <img
             v-if="navToggle.isHomeView"
             id="logo"
@@ -14,7 +14,7 @@
             class="ma-md-auto"
           >
           <img
-          v-else
+            v-else
             id="logo"
             alt="Cuttle logo"
             src="/img/cuttle_logo_text_white.svg"
@@ -54,19 +54,22 @@ import { getPageLinks } from '@/composables/navLink.js';
 import TheUserMenu from './TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 import { useRoute } from 'vue-router';
-import { computed, ref, toRefs, watch } from 'vue';
+import { toRefs } from 'vue';
 
 const props = defineProps({
   navToggle:{
-    isHomeView: {
-    type: Boolean,
-    default: true
-  },
-    linkColor: {
-      type: String,
-      default: 'text-surface-1'
+        type: Object,
+        default: () => ({ 
+          isHomeView: {
+            type: Boolean,
+            default: true
+        },
+        linkColor: {
+          type: String,
+          default: 'text-surface-1'
+        }
+      })
     }
-  }
 });
 
 const { navToggle } = toRefs(props);
@@ -77,7 +80,7 @@ const pageLinks = getPageLinks();
 
 const tabColor = (page) => {
   return route.name === page ? 'text-newPrimary' : navToggle.value.linkColor;
-}
+};
 
 
 

@@ -32,16 +32,20 @@ import { toRefs } from 'vue';
 
 const props = defineProps({
   navToggle:{
-    isHomeView: {
-    type: Boolean,
-    default: true
-  },
-    linkColor: {
-      type: String,
-      default: 'text-surface-1'
+        type: Object,
+        default: () => ({ 
+          isHomeView: {
+            type: Boolean,
+            default: true
+        },
+        linkColor: {
+          type: String,
+          default: 'text-surface-1'
+        }
+      })
     }
-  }
-})
+});
 
+const { navToggle } = toRefs(props);
 const pageLinks = getPageLinks();
 </script>

@@ -1,112 +1,116 @@
 <template>
   <div class="h-100 bg-surface-1">
-      <v-container id="home-container" class="container">
-        <h1 id="home-card-title">
-          Game Finder
-        </h1>
-        <v-row>
-          <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
-            <div
-              id="game-list"
-              class="mx-auto homeContent"
-            >
-              <div class="py-3 d-flex mx-auto text-surface-1">
-                <v-btn-toggle
-                  v-model="tab"
-                  rounded="0"
-                  color="#4a2416"
-                  variant="text"
-                  mandatory
-                >
-                  <v-btn :value="TABS.PLAY">
-                    PLAY
-                  </v-btn>
-
-                  <v-btn :value="TABS.SPECTATE">
-                    SPECTATE
-                  </v-btn>
-                </v-btn-toggle>
-              </div>
-              <v-divider v-if="$vuetify.display.mdAndDown" color="surface-1" class="border-opacity-100" />
-              <v-window v-model="tab" class="pa-4 overflow-y-auto">
-                <v-window-item :value="TABS.PLAY">
-                  <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-surface-1">
-                    No Active Games
-                  </p>
-                  <div v-for="game in playableGameList" :key="game.id">
-                    <game-list-item
-                      :name="game.name"
-                      :p0ready="game.p0Ready ? 1 : 0"
-                      :p1ready="game.p1Ready ? 1 : 0"
-                      :game-id="game.id"
-                      :status="game.status"
-                      :num-players="game.numPlayers"
-                      :is-ranked="game.isRanked"
-                      @error="handleSubscribeError(game.id, $event)"
-                    />
-                  </div>
-                </v-window-item>
-                <v-window-item :value="TABS.SPECTATE">
-                  <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text" class="text-surface-1">
-                    No Games Available to Spectate
-                  </p>
-                  <div v-for="game in specateGameList" :key="game.id">
-                    <game-list-item
-                      :name="game.name"
-                      :p0ready="game.p0Ready ? 1 : 0"
-                      :p1ready="game.p1Ready ? 1 : 0"
-                      :game-id="game.id"
-                      :status="game.status"
-                      :num-players="game.numPlayers"
-                      :is-ranked="game.isRanked"
-                      :is-spectatable="true"
-                      :disable-spectate="game.isOver"
-                      @error="handleError"
-                    />
-                  </div>
-                </v-window-item>
-              </v-window>
-            </div>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
-            <div class="mx-auto my-2 homeContent">
-              <create-game-dialog @error="handleError" />
-              <div
-                class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-2"
+    <v-container id="home-container" class="container">
+      <h1 id="home-card-title">
+        Game Finder
+      </h1>
+      <v-row>
+        <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
+          <div
+            id="game-list"
+            class="mx-auto homeContent"
+          >
+            <div class="py-3 d-flex mx-auto text-surface-1">
+              <v-btn-toggle
+                v-model="tab"
+                rounded="0"
+                color="#4a2416"
+                variant="text"
+                mandatory
               >
-                <v-btn
-                  v-if="!$vuetify.display.smAndUp"
-                  variant="text"
-                  color="surface-2"
-                  class="px-2"
-                  href="https://discord.gg/9vrAZ8xGyh"
-                  target="_blank"
-                  size="x-large"
+                <v-btn 
+                  :value="TABS.PLAY" 
+                  data-cy-game-list-selector="play"
                 >
-                  <img class="discord" src="/img/loginView/logo-discord-cream.svg">
+                  PLAY
                 </v-btn>
-                <v-btn
-                  v-else
-                  variant="outlined"
-                  class="text-subtitle-1"
-                  color="surface-2"
-                  href="https://discord.gg/9vrAZ8xGyh"
-                  target="_blank"
-                  size="x-large"
+
+                <v-btn 
+                  :value="TABS.SPECTATE"
+                  data-cy-game-list-selector="spectate"
                 >
-                  <img class="discord" src="/img/loginView/logo-discord-cream.svg">
-                  <span v-if="$vuetify.display.smAndUp">
-                    {{ t('login.joinDiscord') }}
-                  </span>
+                  SPECTATE
                 </v-btn>
-                <how-it-works-dialog />
-              </div>
+              </v-btn-toggle>
             </div>
-          </v-col>
-        </v-row>
-      </v-container>
+            <v-divider v-if="$vuetify.display.mdAndDown" color="surface-1" class="border-opacity-100" />
+            <v-window v-model="tab" class="pa-4 overflow-y-auto">
+              <v-window-item :value="TABS.PLAY">
+                <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-surface-1">
+                  No Active Games
+                </p>
+                <div v-for="game in playableGameList" :key="game.id">
+                  <game-list-item
+                    :name="game.name"
+                    :p0ready="game.p0Ready ? 1 : 0"
+                    :p1ready="game.p1Ready ? 1 : 0"
+                    :game-id="game.id"
+                    :status="game.status"
+                    :num-players="game.numPlayers"
+                    :is-ranked="game.isRanked"
+                    @error="handleSubscribeError(game.id, $event)"
+                  />
+                </div>
+              </v-window-item>
+              <v-window-item :value="TABS.SPECTATE">
+                <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text" class="text-surface-1">
+                  No Games Available to Spectate
+                </p>
+                <div v-for="game in specateGameList" :key="game.id">
+                  <game-list-item
+                    :name="game.name"
+                    :p0ready="game.p0Ready ? 1 : 0"
+                    :p1ready="game.p1Ready ? 1 : 0"
+                    :game-id="game.id"
+                    :status="game.status"
+                    :num-players="game.numPlayers"
+                    :is-ranked="game.isRanked"
+                    :is-spectatable="true"
+                    :disable-spectate="game.isOver"
+                    @error="handleError"
+                  />
+                </div>
+              </v-window-item>
+            </v-window>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
+          <div class="mx-auto my-2 homeContent">
+            <create-game-dialog @error="handleError" />
+            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-2">
+              <v-btn
+                v-if="!$vuetify.display.smAndUp"
+                variant="text"
+                color="surface-2"
+                class="px-2"
+                href="https://discord.gg/9vrAZ8xGyh"
+                target="_blank"
+                size="x-large"
+              >
+                <img class="discord" src="/img/loginView/logo-discord-cream.svg">
+              </v-btn>
+              <v-btn
+                v-else
+                variant="outlined"
+                class="text-subtitle-1"
+                color="surface-2"
+                href="https://discord.gg/9vrAZ8xGyh"
+                target="_blank"
+                size="x-large"
+              >
+                <img class="discord" src="/img/loginView/logo-discord-cream.svg">
+                <span v-if="$vuetify.display.smAndUp">
+                  {{ t('login.joinDiscord') }}
+                </span>
+              </v-btn>
+              <how-it-works-dialog />
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
     <BaseSnackbar
       v-model="showSnackBar"
       :message="snackBarMessage"

@@ -1,10 +1,10 @@
 <template>
   <v-app id="app">
-    <the-header v-if="showNav" :navToggle="navToggle" />
+    <the-header v-if="showNav" :nav-toggle="navToggle" />
     <v-main>
       <router-view />
     </v-main>
-    <the-footer v-if="showNav && isSmallDevice" :navToggle="navToggle" />
+    <the-footer v-if="showNav && isSmallDevice" :nav-toggle="navToggle" />
   </v-app>
 </template>
 

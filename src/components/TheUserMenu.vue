@@ -41,7 +41,7 @@ defineProps({
     type: Boolean,
     default: true
   }
-})
+});
 
 const { t } = useI18n();
 
