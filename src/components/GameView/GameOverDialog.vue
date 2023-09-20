@@ -157,7 +157,6 @@ export default {
     },
     matchGameStats() {
       const currentMatchGames = this.gameStore.currentMatch?.games ?? [];
-      console.log(currentMatchGames);
       return currentMatchGames.map((game) => {
         if (game.status === GameStatus.FINISHED){
           return game.winner === null ? 'D' : game.winner === this.gameStore.opponent.id ? 'L' : 'W';
