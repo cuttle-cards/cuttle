@@ -1,6 +1,5 @@
 import devtools from '@vue/devtools';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-
 import { version } from '_/package.json';
 import { initCuttleGlobals } from '_/utils/config-utils';
 
@@ -28,28 +27,34 @@ describe('initCuttleGlobals', () => {
     expect(window.cuttle.version).toEqual(version);
   });
 
-  it('should add app to window.cuttle when testing is enabled', () => {
+  it('should add stores and router to window.cuttle when testing is enabled', () => {
     // Cypress needs to exist in the window to enable testing
     window.Cypress = {};
-    const mockApp = { app: true };
-    initCuttleGlobals(mockApp);
-    expect(window.cuttle.app).toEqual(mockApp);
+    initCuttleGlobals();
+    expect(window.gameStore).toBeTruthy();
+    expect(window.authStore).toBeTruthy();
+    expect(window.gameListStore).toBeTruthy();
+    expect(window.cuttleRouter).toBeTruthy();
     expect(window.cuttle.test).toBe(true);
   });
 
-  it('should not add app to window.cuttle when testing is not enabled', () => {
+  it('should not add store and router to window.cuttle when testing is not enabled', () => {
     // Cypress needs to exist in the window to enable testing
     delete window.Cypress;
-    const mockApp = { app: true };
-    initCuttleGlobals(mockApp);
-    expect(window.cuttle.app).toEqual(null);
+    initCuttleGlobals();
+    expect(window.gameStore).toBeUndefined();
+    expect(window.authStore).toBeUndefined();
+    expect(window.gameListStore).toBeUndefined();
+    expect(window.cuttleRouter).toBeUndefined();
     expect(window.cuttle.test).toBe(false);
   });
 
   it('should not add app to window.cuttle when testing is not enabled', () => {
-    const mockApp = { app: true };
-    initCuttleGlobals(mockApp);
-    expect(window.cuttle.app).toEqual(null);
+    initCuttleGlobals();
+    expect(window.gameStore).toBeUndefined();
+    expect(window.authStore).toBeUndefined();
+    expect(window.gameListStore).toBeUndefined();
+    expect(window.cuttleRouter).toBeUndefined();
     expect(window.cuttle.test).toBe(false);
   });
 
