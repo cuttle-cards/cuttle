@@ -1265,7 +1265,7 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
 });
 
 Cypress.Commands.add('vueRoute', (route) => {
-  cy.window().its('cuttle.app.config.globalProperties.$router').then((router) => router.push(route));
+  cy.window().its('cuttleRouter').then((router) => router.push(route));
 });
 
 /**
