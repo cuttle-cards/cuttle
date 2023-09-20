@@ -17,10 +17,10 @@
       <v-toolbar-items v-if="!mobile" class="hidden-xs-only">
         <v-tabs class="pa-2">
           <v-tab
-            v-for="({ text, icon, page, cy_name }, i) in pageLinks"
+            v-for="({ text, icon, page, cyName }, i) in pageLinks"
             :key="i"
             variant="text"
-            :data-cy="cy_name"
+            :data-cy="cyName"
             :title="text"
             :to="page"
           >
