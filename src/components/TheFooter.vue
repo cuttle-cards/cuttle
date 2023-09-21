@@ -6,10 +6,10 @@
       grow
     >
       <v-btn
-        v-for="({ text, icon, page }, i) in pageLinks"
+        v-for="({ text, icon, page, cyName }, i) in pageLinks"
         :key="i"
         variant="text"
-        :data-cy="text"
+        :data-cy="cyName"
         :title="text"
         :to="page"
       >
