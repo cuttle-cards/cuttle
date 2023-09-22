@@ -39,7 +39,7 @@
         each player wins against unique opponents (ignoring stalemates) and assign players points based on
         their weekly standing.
       </p>
-      <v-list class="mt-4" bgColor="#FFFDD0" baseColor="#7B3F00">
+      <v-list class="mt-4" bg-color="surface-2" base-color="surface-1">
         <v-list-item>
           <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace">
             5 Points
