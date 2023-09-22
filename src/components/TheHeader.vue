@@ -27,11 +27,11 @@
       <v-toolbar-items v-if="!mobile" class="hidden-xs-only">
         <v-tabs class="pa-2">
           <v-tab
-            v-for="({ text, icon, page }, i) in pageLinks"
+            v-for="({ text, icon, page, cyName }, i) in pageLinks"
             :key="i"
             :class="tabColor(page.name)"
             variant="text"
-            :data-cy="text"
+            :data-cy="cyName"
             :title="text"
             :to="page"
           >
