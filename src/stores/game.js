@@ -188,21 +188,12 @@ export const useGameStore = defineStore('game', {
     opponentLeft() {
       this.players = this.players.filter((player) => player.pNum === this.myPNum);
     },
-    setWaitingForOpponentToPlayFromDeck(val) {
-      this.waitingForOpponentToPlayFromDeck = val;
-    },
     // Game Over
     setGameOver({ gameOver, conceded, winner, currentMatch }) {
       this.gameIsOver = gameOver;
       this.conceded = conceded;
       this.winnerPNum = winner;
       this.currentMatch = currentMatch;
-    },
-    setWaitingForOpponentToStalemate(value) {
-      this.waitingForOpponentToStalemate = value;
-    },
-    setConsideringOpponentStalemateRequest(value) {
-      this.consideringOpponentStalemateRequest = value;
     },
     updateGameThenResetPNumIfNull(game) {
       this.updateGame(game);

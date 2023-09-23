@@ -85,7 +85,7 @@ export async function handleInGameEvents(evData) {
             if (evData.playedBy === gameStore.myPNum) {
               gameStore.playingFromDeck = true;
             } else {
-              gameStore.setWaitingForOpponentToPlayFromDeck(true);
+              gameStore.waitingForOpponentToPlayFromDeck = true;
             }
             break;
           default:
@@ -112,13 +112,13 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.SEVEN_SCUTTLE:
       gameStore.updateGameThenResetPNumIfNull(evData.game);
       gameStore.playingFromDeck = false;
-      gameStore.setWaitingForOpponentToPlayFromDeck(false);
+      gameStore.waitingForOpponentToPlayFromDeck = false;
       break;
     case SocketEvent.SEVEN_ONE_OFF:
     case SocketEvent.SEVEN_TARGETED_ONE_OFF:
       gameStore.updateGameThenResetPNumIfNull(evData.game);
       gameStore.playingFromDeck = false;
-      gameStore.setWaitingForOpponentToPlayFromDeck(false);
+      gameStore.waitingForOpponentToPlayFromDeck = false;
       if (evData.pNum !== gameStore.myPNum) {
         gameStore.waitingForOpponentToCounter = false;
         gameStore.myTurnToCounter = true;
@@ -131,12 +131,12 @@ export async function handleInGameEvents(evData) {
       break;
     case SocketEvent.REQUEST_STALEMATE:
       if (evData.requestedByPNum !== gameStore.myPNum && !evData.victory.gameOver) {
-        gameStore.setConsideringOpponentStalemateRequest(true);
+        gameStore.consideringOpponentStalemateRequest = true;
       }
       break;
     case SocketEvent.REJECT_STALEMATE:
-      gameStore.setConsideringOpponentStalemateRequest(false);
-      gameStore.setWaitingForOpponentToStalemate(false);
+      gameStore.consideringOpponentStalemateRequest = false;
+      gameStore.waitingForOpponentToStalemate = false;
       break;
   }
 
