@@ -67,7 +67,7 @@ export default {
       },
     },
     hand() {
-      return this.gameStore.players[this.gameStore.myPNum].hand;
+      return this.gameStore.player.hand;
     },
     readyToDiscard() {
       return this.selectedIds.length === 2 || (this.selectedIds.length === 1 && this.hand.length === 1);
