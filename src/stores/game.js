@@ -117,9 +117,6 @@ export const useGameStore = defineStore('game', {
     },
   },
   actions: {
-    setGameId(val) {
-      this.id = val;
-    },
     updateGame(newGame) {
       if (Object.hasOwnProperty.call(newGame, 'lastEvent')) {
         if (Object.hasOwnProperty.call(newGame.lastEvent, 'change')) {
@@ -170,9 +167,6 @@ export const useGameStore = defineStore('game', {
 
       if (Object.hasOwnProperty.call(newGame, 'isRanked')) this.isRanked = newGame.isRanked;
       if (Object.hasOwnProperty.call(newGame, 'currentMatch')) this.currentMatch = newGame.currentMatch;
-    },
-    setMyPNum(val) {
-      this.myPNum = val;
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
@@ -249,7 +243,7 @@ export const useGameStore = defineStore('game', {
         if (myPNum === -1) {
           myPNum = null;
         }
-        this.setMyPNum(myPNum);
+        this.myPNum = myPNum;
       }
     },
     /**
@@ -310,7 +304,7 @@ export const useGameStore = defineStore('game', {
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.updateGame(res.game);
-              this.setMyPNum(res.pNum);
+              this.myPNum = res.pNum;
               this.successfullyJoined({
                 username: res.playerUsername,
                 pNum: res.pNum,
@@ -334,7 +328,7 @@ export const useGameStore = defineStore('game', {
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.updateGame(res);
-              this.setMyPNum(0);
+              this.myPNum = 0;
               return resolve();
             }
             return reject(new Error('Unable to spectate game'));

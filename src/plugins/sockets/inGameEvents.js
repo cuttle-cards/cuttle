@@ -35,7 +35,7 @@ export async function handleInGameEvents(evData) {
       gameStore.resetState();
       gameStore.updateGameThenResetPNumIfNull(evData.game);
       if (isSpectating) {
-        gameStore.setMyPNum(0); // always spectate as p0
+        gameStore.myPNum = 0; // always spectate as p0
       }
       break;
     }
