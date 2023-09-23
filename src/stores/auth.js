@@ -68,7 +68,7 @@ export const useAuthStore = defineStore('auth', {
               const pNum =
                 res.pNum ?? getPlayerPnumByUsername(gameStore.players, this.username);
 
-              gameStore.setMyPNum(pNum);
+              gameStore.myPnum = pNum;
               return resolve(res);
             }
             this.clearAuth();
