@@ -37,7 +37,7 @@ export default {
   },
   created() {
     //Pass store to window object on testing
-    if (window.cypress !== null) { 
+    if (window.Cypress !== null) { 
     window.gameStore = useGameStore();
     window.authStore = useAuthStore();
     window.gameListStore = useGameListStore();
