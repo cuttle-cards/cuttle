@@ -188,10 +188,6 @@ export const useGameStore = defineStore('game', {
     opponentLeft() {
       this.players = this.players.filter((player) => player.pNum === this.myPNum);
     },
-    // Countering
-    setWaitingForOpponentToCounter(val) {
-      this.waitingForOpponentToCounter = val;
-    },
     // Threes
     setPickingFromScrap(val) {
       this.pickingFromScrap = val;
@@ -434,7 +430,7 @@ export const useGameStore = defineStore('game', {
           },
         );
       }).then(() => {
-        this.setWaitingForOpponentToCounter(true);
+        this.waitingForOpponentToCounter = true;
         return Promise.resolve();
       });
     },
@@ -454,7 +450,7 @@ export const useGameStore = defineStore('game', {
           },
         );
       }).then(() => {
-        this.setWaitingForOpponentToCounter(true);
+        this.waitingForOpponentToCounter = true;
       });
     },
     async requestPlayJack({ cardId, targetId }) {
@@ -521,7 +517,7 @@ export const useGameStore = defineStore('game', {
           },
         );
       }).then(() => {
-        this.setWaitingForOpponentToCounter(false);
+        this.waitingForOpponentToCounter = false;
       });
     },
     async requestResolveSevenDoubleJacks({ cardId, index }) {
@@ -556,7 +552,7 @@ export const useGameStore = defineStore('game', {
           },
         );
       }).then(() => {
-        this.setWaitingForOpponentToCounter(true);
+        this.waitingForOpponentToCounter = true;
       });
     },
     ////////////
@@ -636,7 +632,7 @@ export const useGameStore = defineStore('game', {
           },
         );
       }).then(() => {
-        this.setWaitingForOpponentToCounter(true);
+        this.waitingForOpponentToCounter = true;
       });
     },
     async requestPlayTargetedOneOffSeven({ cardId, index, targetId, pointId, targetType }) {
@@ -656,7 +652,7 @@ export const useGameStore = defineStore('game', {
           },
         );
       }).then(() => {
-        this.setWaitingForOpponentToCounter(true);
+        this.waitingForOpponentToCounter = true;
       });
     },
     async requestPass() {
