@@ -1,10 +1,10 @@
 <template>
   <v-app id="app">
-    <the-header v-if="showNav" :nav-toggle="navToggle" />
+    <the-header v-if="showNav" :theme="theme" />
     <v-main>
       <router-view />
     </v-main>
-    <the-footer v-if="showNav && isSmallDevice" :nav-toggle="navToggle" />
+    <the-footer v-if="showNav && isSmallDevice" :theme="theme" />
   </v-app>
 </template>
 
@@ -26,10 +26,10 @@ export default {
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
-    navToggle() {
+    theme() {
       const isHomeView = this.$router.currentRoute.value.name === 'Home';
-      const linkColor = isHomeView ? 'text-surface-1' : 'text-surface-2'; 
-      return {isHomeView, linkColor};
+      const theme = isHomeView ? 'light' : 'dark'; 
+      return theme;
     }
   },
   watch:{

@@ -1,7 +1,7 @@
 <template>
   <footer>
     <v-bottom-navigation
-      :bg-color="navToggle.isHomeView ? 'surface-2' : 'surface-1'"
+      :bg-color="theme === 'light' ? 'surface-2' : 'surface-1'"
       :elevation="0"
       grow
     >
@@ -9,7 +9,7 @@
         v-for="({ text, icon, page, cyName }, i) in pageLinks"
         :key="i"
         variant="text"
-        :class="[navToggle.isHomeView ? 'text-surface-1' : 'text-surface-2']"
+        :class="[theme === 'light' ? 'text-surface-1' : 'text-surface-2']"
         :data-cy="cyName"
         :title="text"
         :to="page"
@@ -28,24 +28,13 @@
 
 <script setup>
 import { getPageLinks } from '@/composables/navLink.js';
-import { toRefs } from 'vue';
 
-const props = defineProps({
-  navToggle:{
-        type: Object,
-        default: () => ({ 
-          isHomeView: {
-            type: Boolean,
-            default: true
-        },
-        linkColor: {
-          type: String,
-          default: 'text-surface-1'
-        }
-      })
+defineProps({
+  theme:{
+      type:String,
+      default:'light'
     }
 });
 
-const { navToggle } = toRefs(props);
 const pageLinks = getPageLinks();
 </script>

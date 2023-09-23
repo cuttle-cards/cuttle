@@ -77,9 +77,9 @@
       </v-row>
       <v-row>
         <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
-          <div class="mx-auto my-2 homeContent">
+          <div class="mx-auto my-4 my-xl-2 homeContent">
             <create-game-dialog @error="handleError" />
-            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-2">
+            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
               <v-btn
                 v-if="!$vuetify.display.smAndUp"
                 variant="text"
@@ -94,7 +94,7 @@
               <v-btn
                 v-else
                 variant="outlined"
-                class="text-subtitle-1"
+                class="text-subtitle-1 px-xl-16"
                 color="surface-2"
                 href="https://discord.gg/9vrAZ8xGyh"
                 target="_blank"
@@ -307,9 +307,22 @@ p {
   font-family: 'Luckiest Guy', serif !important;
   font-weight: 400;
   line-height: 5rem;
-  margin: 0 auto 40px auto;
+  margin: 32px auto 16px auto;
 }
 
+@media (min-width: 1920px ) {
+.homeContent {
+  max-width: 100%;
+}
+.home-card-games {
+  padding: 0;
+  max-width: 100%;
+  margin: 12px auto 5px auto;
+}
+#game-list {
+  min-height: 60vh;
+}
+}
 @media (max-width: 844px) {
   #game-list {
   max-width: 100%;

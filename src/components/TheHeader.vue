@@ -1,11 +1,11 @@
 <template>
   <header>
-    <v-toolbar data-cy="nav-drawer" :color="navToggle.isHomeView ? 'surface-2' : 'surface-1'">
+    <v-toolbar data-cy="nav-drawer" :color="theme === 'light' ? 'surface-2' : 'surface-1'">
       <v-toolbar-title>
         <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between" style="cursor: pointer">
-          <TheUserMenu :is-home-view="navToggle.isHomeView" />
+          <TheUserMenu :theme="theme" />
           <img
-            v-if="navToggle.isHomeView"
+            v-if="theme === 'light'"
             id="logo"
             alt="Cuttle logo"
             src="/img/cuttle_logo_text_brown.svg"
@@ -54,34 +54,27 @@ import { getPageLinks } from '@/composables/navLink.js';
 import TheUserMenu from './TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 import { useRoute } from 'vue-router';
-import { toRefs } from 'vue';
+import { ref, toRefs, watch } from 'vue';
 
 const props = defineProps({
-  navToggle:{
-        type: Object,
-        default: () => ({ 
-          isHomeView: {
-            type: Boolean,
-            default: true
-        },
-        linkColor: {
-          type: String,
-          default: 'text-surface-1'
-        }
-      })
+  theme:{
+      type:String,
+      default:'light'
     }
 });
 
-const { navToggle } = toRefs(props);
-
 const route = useRoute();
+const { theme } = toRefs(props);
 const { mobile } = useDisplay();
 const pageLinks = getPageLinks();
+const linkColor = ref(theme.value === 'light' ? 'text-surface-1' : 'text-surface-2');
 
 const tabColor = (page) => {
-  return route.name === page ? 'text-newPrimary' : navToggle.value.linkColor;
+  return route.name === page ? 'text-newPrimary' : linkColor.value;
 };
 
-
-
+watch(theme, (newValue) => {
+  console.log(newValue);
+  linkColor.value = newValue === 'light' ? 'text-surface-1' : 'text-surface-2';
+});
 </script>
