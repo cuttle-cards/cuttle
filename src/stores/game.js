@@ -188,10 +188,6 @@ export const useGameStore = defineStore('game', {
     opponentLeft() {
       this.players = this.players.filter((player) => player.pNum === this.myPNum);
     },
-    // Fours
-    setDiscarding(val) {
-      this.discarding = val;
-    },
     setWaitingForOpponentToDiscard(val) {
       this.waitingForOpponentToDiscard = val;
     },

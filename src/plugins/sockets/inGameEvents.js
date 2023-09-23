@@ -59,7 +59,7 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.RESOLVE_FOUR:
       gameStore.updateGameThenResetPNumIfNull(evData.game);
       gameStore.setWaitingForOpponentToDiscard(false);
-      gameStore.setDiscarding(false);
+      gameStore.discarding = false;
       break;
     case SocketEvent.RESOLVE:
       gameStore.updateGameThenResetPNumIfNull(evData.game);
@@ -78,7 +78,7 @@ export async function handleInGameEvents(evData) {
             if (evData.playedBy === gameStore.myPNum) {
               gameStore.setWaitingForOpponentToDiscard(true);
             } else {
-              gameStore.setDiscarding(true);
+              gameStore.discarding = true;
             }
             break;
           case 7:
