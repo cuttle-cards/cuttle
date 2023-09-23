@@ -23,7 +23,7 @@
             :data-cy="cyName"
             :title="text"
             :to="page"
-            :style="{margin : '4px' }"
+            :style="{margin :'4px'}"
           >
             <v-icon
               :icon="`mdi-${icon}`"
