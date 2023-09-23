@@ -188,10 +188,6 @@ export const useGameStore = defineStore('game', {
     opponentLeft() {
       this.players = this.players.filter((player) => player.pNum === this.myPNum);
     },
-    // Sevens
-    setPlayingFromDeck(val) {
-      this.playingFromDeck = val;
-    },
     setWaitingForOpponentToPlayFromDeck(val) {
       this.waitingForOpponentToPlayFromDeck = val;
     },
