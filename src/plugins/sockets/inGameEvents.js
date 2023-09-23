@@ -53,7 +53,7 @@ export async function handleInGameEvents(evData) {
       break;
     case SocketEvent.RESOLVE_THREE:
       gameStore.updateGameThenResetPNumIfNull(evData.game);
-      gameStore.setPickingFromScrap(false);
+      gameStore.pickingFromScrap = false;
       gameStore.setWaitingForOpponentToPickFromScrap(false);
       break;
     case SocketEvent.RESOLVE_FOUR:
@@ -71,7 +71,7 @@ export async function handleInGameEvents(evData) {
             if (evData.playedBy !== gameStore.myPNum) {
               gameStore.setWaitingForOpponentToPickFromScrap(true);
             } else {
-              gameStore.setPickingFromScrap(true);
+              gameStore.pickingFromScrap = true;
             }
             break;
           case 4:
