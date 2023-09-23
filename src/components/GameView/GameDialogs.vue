@@ -2,8 +2,8 @@
   <div class="game-dialogs">
     <counter-dialog
       :model-value="showCounterDialog"
-      :one-off="game.oneOff"
-      :target="game.oneOffTarget"
+      :one-off="gameStore.oneOff"
+      :target="gameStore.oneOffTarget"
       :twos-in-hand="twosInHand"
       :twos-played="twosPlayed"
       @resolve="resolve"
@@ -11,17 +11,17 @@
     />
     <cannot-counter-dialog
       :model-value="showCannotCounterDialog"
-      :one-off="game.oneOff"
+      :one-off="gameStore.oneOff"
       :opponent-queen-count="gameStore.opponentQueenCount"
       :player-two-count="playerTwoCount"
       :twos-played="twosPlayed"
-      :target="game.oneOffTarget"
+      :target="gameStore.oneOffTarget"
       @resolve="resolve"
     />
     <four-dialog :model-value="gameStore.discarding" @discard="discard" />
     <three-dialog
       :model-value="pickingFromScrap"
-      :one-off="game.oneOff"
+      :one-off="gameStore.oneOff"
       :scrap="scrap"
       @resolve-three="resolveThree($event)"
     />
@@ -69,22 +69,15 @@ export default {
   },
   emits: ['clear-selection', 'handle-error'],
   computed: {
-    ...mapStores(useGameStore),
-    ...mapStores(useAuthStore),
-    game() {
-      // TODO: Figure out a better way to do this, mapping the whole module is a
-      // bit unusual-- the usages can probably be changed to only need a subset,
-      // or moved to some sort of store method or getter
-      return this.gameStore;
-    },
+    ...mapStores(useGameStore, useAuthStore),
     gameIsOver() {
-      return this.game.gameIsOver;
+      return this.gameStore.gameIsOver;
     },
     hasTwoInHand() {
       return this.twosInHand.length > 0;
     },
     myTurnToCounter() {
-      return this.game.myTurnToCounter;
+      return this.gameStore.myTurnToCounter;
     },
     // TODO: Refactor and combine usage in GameView.vue
     mustReauthenticate: {
@@ -96,13 +89,13 @@ export default {
       },
     },
     pickingFromScrap() {
-      return this.game.pickingFromScrap;
+      return this.gameStore.pickingFromScrap;
     },
     playerTwoCount() {
       return this.twoCount(this.gameStore.player);
     },
     scrap() {
-      return this.game.scrap;
+      return this.gameStore.scrap;
     },
     secondCard() {
       return this.gameStore.secondCard;
@@ -142,7 +135,7 @@ export default {
       return this.gameStore.player.hand.filter((card) => card.rank === 2);
     },
     twosPlayed() {
-      return this.game.twos;
+      return this.gameStore.twos;
     },
   },
   methods: {
