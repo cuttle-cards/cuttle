@@ -20,11 +20,11 @@ app.use(vuetify);
 // Add vuex store to vue
 app.use(store);
 
+// Use language from Local Storage if it exists
+i18n.global.locale.value = getLocalStorage('preferredLocale') ?? 'en';
+
 // Add localization to vue
 app.use(i18n);
-
-//Using Language from Loacal Storage if not found than by defualt English is selceted
-i18n.global.locale.value = getLocalStorage('preferredLocale') ?? 'en';
 
 app.mount('#app');
 
