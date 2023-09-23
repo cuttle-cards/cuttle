@@ -249,11 +249,12 @@ export const useGameStore = defineStore('game', {
     },
 
     handleGameResponse: (jwres, resolve, reject) => {
+      const authStore = useAuthStore();
       switch (jwres.statusCode) {
         case 200:
           return resolve();
         case 403:
-          this.setMustReauthenticate({ root: true });
+          authStore.mustReauthenticate =  true;
           return reject(jwres.body.message);
         default:
           return reject(jwres.body.message);

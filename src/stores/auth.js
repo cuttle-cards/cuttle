@@ -27,9 +27,6 @@ export const useAuthStore = defineStore('auth', {
       this.authenticated = false;
       this.username = null;
     },
-    setMustReauthenticate(val) {
-      this.mustReauthenticate = val;
-    },
     async requestLogin({ username, password }) {
       return this.handleLogin(username, password);
     },

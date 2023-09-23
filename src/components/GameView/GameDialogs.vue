@@ -85,7 +85,7 @@ export default {
         return this.authStore.mustReauthenticate;
       },
       set(val) {
-        this.authStore.setMustReauthenticate(val);
+        this.authStore.mustReauthenticate = val;
       },
     },
     pickingFromScrap() {

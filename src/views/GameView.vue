@@ -704,7 +704,7 @@ export default {
     }
 
     if (!this.authStore.authenticated) {
-      this.authStore.setMustReauthenticate(true);
+      this.authStore.mustReauthenticate = true;
     }
     document.documentElement.style.setProperty('--browserHeight', `${window.innerHeight / 100}px`);
     window.addEventListener('resize', () => {
