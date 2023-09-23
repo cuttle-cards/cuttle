@@ -64,7 +64,7 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.RESOLVE:
       gameStore.updateGameThenResetPNumIfNull(evData.game);
       gameStore.setWaitingForOpponentToCounter(false);
-      gameStore.setMyTurnToCounter(false);
+      gameStore.myTurnToCounter = false;
       if (evData.happened) {
         switch (evData.oneOff.rank) {
           case 3:
@@ -99,10 +99,10 @@ export async function handleInGameEvents(evData) {
       gameStore.updateGameThenResetPNumIfNull(evData.game);
       if (evData.pNum !== gameStore.myPNum) {
         gameStore.setWaitingForOpponentToCounter(false);
-        gameStore.setMyTurnToCounter(true);
+        gameStore.myTurnToCounter = true;
       } else {
         gameStore.setWaitingForOpponentToCounter(true);
-        gameStore.setMyTurnToCounter(false);
+        gameStore.myTurnToCounter = false;
       }
       break;
     // Sevens
@@ -121,7 +121,7 @@ export async function handleInGameEvents(evData) {
       gameStore.setWaitingForOpponentToPlayFromDeck(false);
       if (evData.pNum !== gameStore.myPNum) {
         gameStore.setWaitingForOpponentToCounter(false);
-        gameStore.setMyTurnToCounter(true);
+        gameStore.myTurnToCounter = true;
       }
       break;
     case SocketEvent.RE_LOGIN:

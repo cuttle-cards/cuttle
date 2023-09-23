@@ -188,9 +188,6 @@ export const useGameStore = defineStore('game', {
     opponentLeft() {
       this.players = this.players.filter((player) => player.pNum === this.myPNum);
     },
-    setMyTurnToCounter(val) {
-      this.myTurnToCounter = val;
-    },
     // Countering
     setWaitingForOpponentToCounter(val) {
       this.waitingForOpponentToCounter = val;
@@ -497,7 +494,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestResolve() {
-      this.setMyTurnToCounter(false);
+      this.myTurnToCounter = false;
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/resolve',
@@ -511,7 +508,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestResolveThree(cardId) {
-      this.setMyTurnToCounter(false);
+      this.myTurnToCounter = false;
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/resolveThree',
@@ -528,7 +525,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestResolveSevenDoubleJacks({ cardId, index }) {
-      this.setMyTurnToCounter(false);
+      this.myTurnToCounter = false;
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/seven/jack',
@@ -545,7 +542,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestCounter(twoId) {
-      this.setMyTurnToCounter(false);
+      this.myTurnToCounter = false;
 
       return new Promise((resolve, reject) => {
         io.socket.get(
