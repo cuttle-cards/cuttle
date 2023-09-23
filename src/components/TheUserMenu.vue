@@ -35,7 +35,7 @@
             :value="lang"
             :title="lang"
             :data-lang="lang"
-            @click="$i18n.locale = lang"
+            @click="changeLocale(lang)"
           />
         </v-list>
       </v-menu>
@@ -56,8 +56,14 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
+import { setLocalStorage } from '../../utils/local-storage-utils';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+
+const changeLocale = (lang) => {
+  locale.value = lang;
+  setLocalStorage('preferredLocale', lang);
+};
 
 const menuItems = computed(() => {
   return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT }, cyName: 'Log Out' }];
