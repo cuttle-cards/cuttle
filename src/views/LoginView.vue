@@ -117,7 +117,7 @@
                 target="_blank"
               >
                 <img class="discord" src="/img/loginView/logo-discord.svg">
-                {{ t('login.joinDiscord') }}
+                <span style="white-space: normal;">{{ t('login.joinDiscord') }}</span>
               </v-btn>
             </v-form>
 
