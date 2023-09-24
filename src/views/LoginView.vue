@@ -117,7 +117,7 @@
                 target="_blank"
               >
                 <img class="discord" src="/img/loginView/logo-discord.svg">
-                <span style="white-space: normal;">{{ t('login.joinDiscord') }}</span>
+                <span class="discordButton">{{ t('login.joinDiscord') }}</span>
               </v-btn>
             </v-form>
 
@@ -366,6 +366,10 @@ export default {
 
   .video-container__wrapper {
     width: 85%;
+  }
+
+  .discordButton{
+    white-space: normal;
   }
 }
 </style>
