@@ -345,6 +345,10 @@ export default {
   margin-right: 18px;
 }
 
+.discordButton{
+    white-space: normal;
+  }
+
 #username-login-form {
   padding: 0;
   max-width: 640px;
@@ -366,10 +370,6 @@ export default {
 
   .video-container__wrapper {
     width: 85%;
-  }
-
-  .discordButton{
-    white-space: normal;
   }
 }
 </style>
