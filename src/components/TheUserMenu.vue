@@ -2,7 +2,7 @@
   <v-menu transition="slide-x-transition">
     <template #activator="{ props }">
       <v-btn
-        :color="theme === 'light' ? 'surface-1' : 'surface-2'"
+        :color="variant === 'light' ? 'surface-1' : 'surface-2'"
         data-cy="user-menu"
         class="d-flex text-body-1 font-weight-medium mr-md-16"
         v-bind="props"
@@ -59,7 +59,7 @@ import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
 
 defineProps({
-  theme:{
+  variant:{
       type:String,
       default:'light'
     }

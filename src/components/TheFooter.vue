@@ -1,7 +1,7 @@
 <template>
   <footer>
     <v-bottom-navigation
-      :bg-color="theme === 'light' ? 'surface-2' : 'surface-1'"
+      :bg-color="variant === 'light' ? 'surface-2' : 'surface-1'"
       :elevation="0"
       grow
     >
@@ -9,7 +9,7 @@
         v-for="({ text, icon, page, cyName }, i) in pageLinks"
         :key="i"
         variant="text"
-        :class="[theme === 'light' ? 'text-surface-1' : 'text-surface-2']"
+        :class="[variant === 'light' ? 'text-surface-1' : 'text-surface-2']"
         :data-cy="cyName"
         :title="text"
         :to="page"
@@ -30,7 +30,7 @@
 import { getPageLinks } from '@/composables/navLink.js';
 
 defineProps({
-  theme:{
+  variant:{
       type:String,
       default:'light'
     }

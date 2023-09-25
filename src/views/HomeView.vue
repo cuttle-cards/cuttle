@@ -206,7 +206,7 @@ export default {
 
 // Track 
 ::-webkit-scrollbar-track {
-  background: #FFF4D7;
+  background: rgba(var(--v-theme-surface-2));
   border-radius: 16px;
 }
 
@@ -275,7 +275,7 @@ p {
 
 #game-list {
   box-sizing: border-box;
-  background: #FFF4D7;
+  background: rgba(var(--v-theme-surface-2));
   border-radius: 8px;
   min-height: 50vh;
   max-height: 50vh;
@@ -303,7 +303,7 @@ p {
 
 #home-card-title {
   font-size: 5rem;
-  color: #fff4d7;
+  color: rgba(var(--v-theme-surface-2));
   font-family: 'Luckiest Guy', serif !important;
   font-weight: 400;
   line-height: 5rem;

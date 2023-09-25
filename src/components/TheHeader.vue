@@ -1,23 +1,13 @@
 <template>
   <header>
-    <v-toolbar data-cy="nav-drawer" :color="theme === 'light' ? 'surface-2' : 'surface-1'">
+    <v-toolbar data-cy="nav-drawer" :color="variant === 'light' ? 'surface-2' : 'surface-1'">
       <v-toolbar-title>
         <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between" style="cursor: pointer">
-          <TheUserMenu :theme="theme" />
+          <TheUserMenu :variant="variant" />
           <img
-            v-if="theme === 'light'"
             id="logo"
             alt="Cuttle logo"
-            src="/img/cuttle_logo_text_brown.svg"
-            width="60"
-            height="60"
-            class="ma-md-auto"
-          >
-          <img
-            v-else
-            id="logo"
-            alt="Cuttle logo"
-            src="/img/cuttle_logo_text_white.svg"
+            :src="`/img/cuttle_logo_text_${logoColor}.svg`"
             width="60"
             height="60"
             class="ma-md-auto"
@@ -55,27 +45,24 @@ import { getPageLinks } from '@/composables/navLink.js';
 import TheUserMenu from './TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 import { useRoute } from 'vue-router';
-import { ref, toRefs, watch } from 'vue';
+import { computed, ref, toRefs, watch } from 'vue';
 
 const props = defineProps({
-  theme:{
+  variant:{
       type:String,
       default:'light'
     }
 });
 
 const route = useRoute();
-const { theme } = toRefs(props);
+const { variant } = toRefs(props);
 const { mobile } = useDisplay();
 const pageLinks = getPageLinks();
-const linkColor = ref(theme.value === 'light' ? 'text-surface-1' : 'text-surface-2');
+const linkColor = computed(() => variant.value === 'light' ? 'text-surface-1' : 'text-surface-2');
+const logoColor = computed(() => variant.value === 'light' ? 'brown' : 'white');
 
 const tabColor = (page) => {
   return route.name === page ? 'text-newPrimary' : linkColor.value;
 };
 
-watch(theme, (newValue) => {
-  console.log(newValue);
-  linkColor.value = newValue === 'light' ? 'text-surface-1' : 'text-surface-2';
-});
 </script>
