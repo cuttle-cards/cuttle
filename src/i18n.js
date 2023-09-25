@@ -13,13 +13,17 @@ const messages = {
  es,
  fr,
 };
-// i18n.global.locale.value = getLocalStorage('preferredLocale') ?? 'en';
+
+const preferredLocale = getLocalStorage('preferredLocale');
+const fallbackLocale = 'en';
+const locale = Object.keys(messages).includes(preferredLocale) ? preferredLocale : fallbackLocale; 
+
 const i18n = createI18n({
   legacy: false,
   globalInjection: true,
-  locale: getLocalStorage('preferredLocale') ?? 'en',
+  locale,
   // https://vue-i18n.intlify.dev/guide/essentials/fallback.html
-  fallbackLocale: 'en',
+  fallbackLocale,
   messages,
 });
 
