@@ -36,6 +36,7 @@
             :to="page"
           >
             <v-icon
+              class="mr-1"
               :icon="`mdi-${icon}`"
               :aria-label="text"
               aria-hidden="false"
