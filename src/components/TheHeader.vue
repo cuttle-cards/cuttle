@@ -45,7 +45,7 @@ import { getPageLinks } from '@/composables/navLink.js';
 import TheUserMenu from './TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 import { useRoute } from 'vue-router';
-import { computed, ref, toRefs, watch } from 'vue';
+import { computed, toRefs } from 'vue';
 
 const props = defineProps({
   variant:{
