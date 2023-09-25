@@ -5,7 +5,6 @@ import router from '@/router';
 import store from '@/store/store';
 import i18n from '@/i18n';
 import { initCuttleGlobals } from '_/utils/config-utils';
-import { getLocalStorage } from '_/utils/local-storage-utils';
 import App from '@/App.vue';
 
 
@@ -21,7 +20,6 @@ app.use(vuetify);
 app.use(store);
 
 // Use language from Local Storage if it exists
-i18n.global.locale.value = getLocalStorage('preferredLocale') ?? 'en';
 
 // Add localization to vue
 app.use(i18n);

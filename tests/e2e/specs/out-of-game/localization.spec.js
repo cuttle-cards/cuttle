@@ -42,7 +42,7 @@ describe('Localization', () => {
     cy.get('[data-nav="Log Out"]').should('contain', lang.global.logout);
   };
 
-  it('Should check translation for default', () => {
+  it('Should check translation for English (default)', () => {
     checkAndChangeLanguage('en', en);
   });
 
