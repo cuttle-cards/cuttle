@@ -19,8 +19,6 @@ app.use(vuetify);
 // Add vuex store to vue
 app.use(store);
 
-// Use language from Local Storage if it exists
-
 // Add localization to vue
 app.use(i18n);
 
