@@ -5,7 +5,6 @@ import router from '@/router';
 import store from '@/store/store';
 import i18n from '@/i18n';
 import { initCuttleGlobals } from '_/utils/config-utils';
-
 import App from '@/App.vue';
 
 
