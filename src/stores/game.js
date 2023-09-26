@@ -56,9 +56,10 @@ export const useGameStore = defineStore('game', {
     conceded: false,
     waitingForOpponentToStalemate: false,
     consideringOpponentStalemateRequest: false,
-    currentMatch: null}),
+    currentMatch: null,
+  }),
   getters: {
-    player: (state)  => {
+    player: (state) => {
       return state.players[state.myPNum];
     },
     playerPointTotal: (state) => {
@@ -203,9 +204,7 @@ export const useGameStore = defineStore('game', {
       const authStore = useAuthStore();
       // Set my pNum if it is null
       if (this.myPNum === null) {
-        let myPNum = this.players.findIndex(
-          (player) => player.username === authStore.username,
-        );
+        let myPNum = this.players.findIndex((player) => player.username === authStore.username);
         if (myPNum === -1) {
           myPNum = null;
         }
@@ -254,7 +253,7 @@ export const useGameStore = defineStore('game', {
         case 200:
           return resolve();
         case 403:
-          authStore.mustReauthenticate =  true;
+          authStore.mustReauthenticate = true;
           return reject(jwres.body.message);
         default:
           return reject(jwres.body.message);
@@ -316,7 +315,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestLeaveLobby() {
       return new Promise((resolve, reject) => {
-        io.socket.post('/game/leaveLobby',(res, jwres) => {
+        io.socket.post('/game/leaveLobby', (res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
             return resolve();
@@ -438,7 +437,7 @@ export const useGameStore = defineStore('game', {
           },
           (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
-          }
+          },
         );
       });
     },
@@ -668,4 +667,4 @@ export const useGameStore = defineStore('game', {
       });
     },
   }, // End actions
-}); // End game module
+}); // End game store
