@@ -66,8 +66,6 @@ defineProps({
     }
 });
 
-const { t } = useI18n();
-
 const { t, locale } = useI18n();
 
 const changeLocale = (lang) => {
