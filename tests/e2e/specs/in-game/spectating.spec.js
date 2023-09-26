@@ -95,7 +95,8 @@ describe('Spectating Games', () => {
     );
 
     // Disconnect spectator's socket
-    cy.window().its('authStore')
+    cy.window()
+      .its('cuttle.authStore')
       .then((store) => store.disconnectSocket());
 
     // P0 plays ace of clubs
@@ -103,7 +104,8 @@ describe('Spectating Games', () => {
     cy.playPointsSpectator(Card.ACE_OF_CLUBS, 0);
 
     // Reconnect the socket
-    cy.window().its('authStore')
+    cy.window()
+      .its('cuttle.authStore')
       .then((store) => store.reconnectSocket());
 
     // Spectator receives the update
@@ -168,7 +170,7 @@ describe('Spectating Games', () => {
     });
 
     cy.window()
-      .its('gameStore')
+      .its('cuttle.gameStore')
       .then((game) => {
         const aceOfSpadesId = getCardId(game, Card.ACE_OF_SPADES);
         cy.wrap(aceOfSpadesId).as('aceOfSpades');

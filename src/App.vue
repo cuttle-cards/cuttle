@@ -18,31 +18,31 @@ import { useGameListStore } from '@/stores/gameList';
 export default {
   components: {
     TheHeader,
-    TheFooter
+    TheFooter,
   },
-  data(){
-    return{
+  data() {
+    return {
       showNav: false,
     };
   },
-  computed:{
+  computed: {
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
   },
-  watch:{
-  '$route.meta'({hideNavigation}){
-    this.showNav = !hideNavigation;
-  }
+  watch: {
+    '$route.meta'({ hideNavigation }) {
+      this.showNav = !hideNavigation;
+    },
   },
   created() {
     //Pass store to window object on testing
-    if (window.Cypress !== null) { 
-    window.gameStore = useGameStore();
-    window.authStore = useAuthStore();
-    window.gameListStore = useGameListStore();
+    if (window.Cypress) {
+      window.cuttle.gameStore = useGameStore();
+      window.cuttle.authStore = useAuthStore();
+      window.cuttle.gameListStore = useGameListStore();
     }
-  }
+  },
 };
 </script>
 
@@ -55,7 +55,6 @@ export default {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 
 /* v-main automatically applies a min-height attribute of '100vh' to the '.v-application--wrap' class below */
 /* This can be an issue on mobile devices, as 'vh' unit does not account for the url bar in mobile browsers */

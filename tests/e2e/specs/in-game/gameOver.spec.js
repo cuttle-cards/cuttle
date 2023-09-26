@@ -499,7 +499,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.concedeOpponent();
     assertVictory();
     cy.window()
-      .its('gameStore')
+      .its('cuttle.gameStore')
       .then((game) => {
         const results = game.currentMatch.games.map(({ status, winner }) => ({ status, winner }));
         validateGameResult(results[0], this.playerOneId);
@@ -530,7 +530,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.playPointsOpponent(Card.ACE_OF_SPADES);
     assertLoss();
     cy.window()
-      .its('gameStore')
+      .its('cuttle.gameStore')
       .then((game) => {
         const results = game.currentMatch.games.map(({ status, winner }) => ({ status, winner }));
         validateGameResult(results[0], this.playerOneId);
@@ -560,7 +560,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.stalemateOpponent();
     assertStalemate();
     cy.window()
-      .its('gameStore')
+      .its('cuttle.gameStore')
       .then((game) => {
         const results = game.currentMatch.games.map(({ status, winner }) => ({ status, winner }));
         validateGameResult(results[0], this.playerOneId);

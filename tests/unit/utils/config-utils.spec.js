@@ -11,7 +11,6 @@ const mockConsole = {
 };
 
 describe('initCuttleGlobals', () => {
-
   beforeEach(() => {
     vi.stubEnv('VITE_ENV', 'production');
     vi.stubGlobal('window', mockWindow);
@@ -27,17 +26,16 @@ describe('initCuttleGlobals', () => {
     expect(window.cuttle.version).toEqual(version);
   });
 
-  it('should add stores and router to window.cuttle when testing is enabled', () => {
+  it('should add app to window.cuttle when testing is enabled', () => {
     // Cypress needs to exist in the window to enable testing
     window.Cypress = {};
-    initCuttleGlobals();
     const mockApp = { app: true };
     initCuttleGlobals(mockApp);
     expect(window.cuttle.app).toEqual(mockApp);
     expect(window.cuttle.test).toBe(true);
   });
 
-  it('should not add store and router to window.cuttle when testing is not enabled', () => {
+  it('should not add app to window.cuttle when testing is not enabled', () => {
     // Cypress needs to exist in the window to enable testing
     delete window.Cypress;
     const mockApp = { app: true };
@@ -73,5 +71,4 @@ describe('initCuttleGlobals', () => {
     initCuttleGlobals();
     expect(spyWarn).toHaveBeenCalled();
   });
-
 });

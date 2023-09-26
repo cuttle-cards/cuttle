@@ -17,12 +17,14 @@ describe('Websockets', () => {
     });
 
     // Disconnect player's socket
-    cy.window().its('authStore')
+    cy.window()
+      .its('cuttle.authStore')
       .then((store) => store.disconnectSocket());
     // Opponent plays points
     cy.playPointsOpponent(Card.ACE_OF_SPADES);
     // Reconnect the socket
-    cy.window().its('authStore')
+    cy.window()
+      .its('cuttle.authStore')
       .then((store) => store.reconnectSocket());
     // Should see resulting update after socket reconnects
     assertGameState(1, {
