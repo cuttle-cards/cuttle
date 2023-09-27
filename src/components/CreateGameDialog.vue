@@ -23,7 +23,9 @@
         <a
           class="text-cyan-lighten-2 text-decoration-none"
           href="https://human-ai-interaction.github.io/cuttle-bot/"
-          target="_blank">playing vs AI
+          target="_blank"
+        >
+          playing vs AI
         </a> 
         to learn the ropes and test your mettle.
       </h4>
