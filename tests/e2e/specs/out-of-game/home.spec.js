@@ -170,8 +170,10 @@ describe('Home - Game List', () => {
       cy.window()
         .its('cuttle.gameListStore')
         .then((store) => store.otherLeftGame(gameData.gameId));
-      cy.contains('[data-cy-join-game]', 'Join Casual').should('not.be.disabled').click().should('be.disabled');
-
+      cy.contains('[data-cy-join-game]', 'Join Casual')
+        .should('not.be.disabled')
+        .click()
+        .should('be.disabled');
 
       assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
     });
@@ -271,7 +273,10 @@ describe('Home - Game List', () => {
         cy.readyOpponent(gameId);
 
         // Game appears as spectatable
-        cy.get(`[data-cy-spectate-game=${gameId}]`).scrollIntoView().should('be.visible').and('not.be.disabled');
+        cy.get(`[data-cy-spectate-game=${gameId}]`)
+          .scrollIntoView()
+          .should('be.visible')
+          .and('not.be.disabled');
         // Disconnect the socket then finish the game -- UI misses the update
         cy.window()
           .its('cuttle.authStore')
