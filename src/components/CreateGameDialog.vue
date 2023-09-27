@@ -8,16 +8,27 @@
   >
     <template #activator>
       <v-btn
-        class="text-surface-2"
-        color="primary"
+        class="px-16 w-100"
+        color="newPrimary"
+        size="x-large"
+        text-color="white"
         data-cy="create-game-btn"
-        rounded
-        elevation="8"
       >
-        Create Game
+        Create a game
       </v-btn>
     </template>
     <template #body>
+      <h4>
+        Want to play solo? Try 
+        <a
+          class="text-cyan-lighten-2 text-decoration-none"
+          href="https://human-ai-interaction.github.io/cuttle-bot/"
+          target="_blank"
+        >
+          playing vs AI
+        </a> 
+        to learn the ropes and test your mettle.
+      </h4>
       <form name="create_game_form" class="d-flex align-center">
         <v-switch
           v-model="isRanked"

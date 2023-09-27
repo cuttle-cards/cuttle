@@ -133,7 +133,7 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
   cy.vueRoute('/');
   cy.createGamePlayer({ gameName: 'Spectator Game', isRanked: false }).then((gameData) => {
     // Test that JOIN button starts enabled
-    cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
+    cy.contains('[data-cy-join-game]', 'Join Casual').should('not.be.disabled');
     // Sign up 2 users and subscribe them to game
     cy.signupOpponent(playerOne);
     cy.subscribeOpponent(gameData.gameId);
@@ -141,7 +141,7 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
     cy.readyOpponent(gameData.gameId);
     cy.signupOpponent(playerTwo);
     cy.subscribeOpponent(gameData.gameId);
-    cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
+    cy.contains('[data-cy-join-game]', 'Join Casual').should('be.disabled');
 
     // Switch to spectate tab
     cy.get('[data-cy-game-list-selector=spectate]').click();

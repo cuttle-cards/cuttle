@@ -43,16 +43,19 @@ describe('Home - Page Content', () => {
   beforeEach(setup);
 
   it('Displays headers and logo', () => {
-    cy.contains('h1', 'Games');
+    cy.contains('h1', 'Game Finder');
     cy.get('#logo');
   });
 
-  it('Play AI and Rules page links work', () => {
+  it('How It Works Dialog And Links Work', () => {
+    cy.get('[data-cy=how-it-works-button]').click();
     cy.get('[data-cy=ai-link]').should(
       'have.attr',
       'href',
       'https://human-ai-interaction.github.io/cuttle-bot/',
     );
+    cy.get('[data-cy=how-it-works-okay]').click();
+    cy.get('[data-cy=how-it-works-button]').click();
     cy.get('[data-cy=rules-link]').click();
     cy.hash().should('eq', '#/rules');
   });
@@ -104,7 +107,7 @@ describe('Home - Game List', () => {
           expect(store.id).to.eq(null);
         });
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false });
-      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
+      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
       cy.hash().should('contain', '#/lobby');
       cy.window()
         .its('cuttle.gameStore')
@@ -134,7 +137,7 @@ describe('Home - Game List', () => {
       cy.signupOpponent(opponentOne);
       cy.subscribeOpponent(gameData.gameId);
       // Our user then joins through UI
-      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Play').click();
+      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
       // Should have redirected to lobby page and updated store
       cy.hash().should('contain', '#/lobby');
       cy.window()
@@ -153,7 +156,7 @@ describe('Home - Game List', () => {
      */
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Test that JOIN button starts enabled
-      cy.contains('button.v-btn', 'Play').should('not.be.disabled');
+      cy.contains('button.v-btn', 'Join Casual').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
       cy.signupOpponent(opponentOne);
       cy.subscribeOpponent(gameData.gameId);
@@ -161,13 +164,14 @@ describe('Home - Game List', () => {
       cy.subscribeOpponent(gameData.gameId);
 
       // Test that join button is now disabled
-      cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
+      cy.contains('[data-cy-join-game]', 'Join Casual').should('be.disabled');
 
       // Manually re-enable join button to confirm backend rejects request
       cy.window()
         .its('cuttle.gameListStore')
         .then((store) => store.otherLeftGame(gameData.gameId));
-      cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled').click().should('be.disabled');
+      cy.contains('[data-cy-join-game]', 'Join Casual').should('not.be.disabled').click().should('be.disabled');
+
 
       assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
     });
@@ -180,7 +184,7 @@ describe('Home - Game List', () => {
      */
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
       // Test that JOIN button starts enabled
-      cy.contains('button.v-btn', 'Play').should('not.be.disabled');
+      cy.contains('button.v-btn', 'Join Casual').should('not.be.disabled');
       // Sign up 2 users and subscribe them to game
       cy.signupOpponent(opponentOne);
       cy.subscribeOpponent(gameData.gameId);
@@ -188,10 +192,10 @@ describe('Home - Game List', () => {
       cy.subscribeOpponent(gameData.gameId);
 
       // Test that join button is now disabled
-      cy.contains('[data-cy-join-game]', 'Play').should('be.disabled');
+      cy.contains('[data-cy-join-game]', 'Join Casual').should('be.disabled');
 
       cy.leaveLobbyOpponent(gameData.gameId);
-      cy.contains('[data-cy-join-game]', 'Play').should('not.be.disabled');
+      cy.contains('[data-cy-join-game]', 'Join Casual').should('not.be.disabled');
     });
   });
 
@@ -199,7 +203,7 @@ describe('Home - Game List', () => {
     it('Spectates a game', () => {
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then(({ gameId }) => {
         // Test that JOIN button starts enabled
-        cy.contains(`[data-cy-join-game=${gameId}]`, 'Play').should('not.be.disabled');
+        cy.contains(`[data-cy-join-game=${gameId}]`, 'Join Casual').should('not.be.disabled');
         // Sign up 2 users and subscribe them to game
         cy.signupOpponent(playerOne);
         cy.subscribeOpponent(gameId);
@@ -207,7 +211,7 @@ describe('Home - Game List', () => {
         cy.readyOpponent(gameId);
         cy.signupOpponent(playerTwo);
         cy.subscribeOpponent(gameId, 1);
-        cy.contains(`[data-cy-join-game=${gameId}]`, 'Play').should('be.disabled');
+        cy.contains(`[data-cy-join-game=${gameId}]`, 'Join Casual').should('be.disabled');
 
         // Switch to spectate tab
         cy.get('[data-cy-game-list-selector=spectate]').click();
@@ -267,7 +271,7 @@ describe('Home - Game List', () => {
         cy.readyOpponent(gameId);
 
         // Game appears as spectatable
-        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible').and('not.be.disabled');
+        cy.get(`[data-cy-spectate-game=${gameId}]`).scrollIntoView().should('be.visible').and('not.be.disabled');
         // Disconnect the socket then finish the game -- UI misses the update
         cy.window()
           .its('cuttle.authStore')
@@ -300,7 +304,7 @@ describe('Home - Game List', () => {
         // Navigate to homepage
         cy.visit('/');
         // No open games appear
-        cy.contains('[data-cy-join-game]', 'Play').should('not.exist');
+        cy.contains('[data-cy-join-game]', 'Join Casual').should('not.exist');
         // Existing game is available to spectate
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
