@@ -2,8 +2,9 @@
   <v-menu transition="slide-x-transition">
     <template #activator="{ props }">
       <v-btn
+        :color="variant === 'light' ? 'surface-1' : 'surface-2'"
         data-cy="user-menu"
-        class="d-flex text-body-1"
+        class="d-flex text-body-1 mr-md-16"
         v-bind="props"
         variant="text"
       >
@@ -57,6 +58,13 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
 import { setLocalStorage } from '../../utils/local-storage-utils';
+
+defineProps({
+  variant:{
+      type:String,
+      default:'light'
+    }
+});
 
 const { t, locale } = useI18n();
 

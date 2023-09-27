@@ -1,13 +1,13 @@
 <template>
   <header>
-    <v-toolbar data-cy="nav-drawer" color="primary">
+    <v-toolbar data-cy="nav-drawer" :color="variant === 'light' ? 'surface-2' : 'surface-1'">
       <v-toolbar-title>
         <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between" style="cursor: pointer">
-          <TheUserMenu />
+          <TheUserMenu :variant="variant" />
           <img
             id="logo"
             alt="Cuttle logo"
-            src="/img/cuttle_logo_text_white.svg"
+            :src="`/img/cuttle_logo_text_${logoColor}.svg`"
             width="60"
             height="60"
             class="ma-md-auto desktop-logo"
@@ -19,6 +19,7 @@
           <v-tab
             v-for="({ text, icon, page, cyName }, i) in pageLinks"
             :key="i"
+            :class="tabColor(page.name)"
             variant="text"
             :data-cy="cyName"
             :title="text"
@@ -43,9 +44,27 @@
 import { getPageLinks } from '@/composables/navLink.js';
 import TheUserMenu from './TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
+import { useRoute } from 'vue-router';
+import { computed, toRefs } from 'vue';
 
+const props = defineProps({
+  variant:{
+      type:String,
+      default:'light'
+    }
+});
+
+const route = useRoute();
+const { variant } = toRefs(props);
 const { mobile } = useDisplay();
 const pageLinks = getPageLinks();
+const linkColor = computed(() => variant.value === 'light' ? 'text-surface-1' : 'text-surface-2');
+const logoColor = computed(() => variant.value === 'light' ? 'brown' : 'white');
+
+const tabColor = (page) => {
+  return route.name === page ? 'text-newPrimary' : linkColor.value;
+};
+
 </script>
 
 <style scoped>

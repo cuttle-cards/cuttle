@@ -1,137 +1,115 @@
 <template>
-  <div
-    class="home pa-4"
-    :class="{
-      home: $vuetify.display.lgAndUp,
-    }"
-  >
-    <v-container>
-      <v-row v-if="$vuetify.display.mdAndDown">
-        <img
-          id="logo"
-          alt="Cuttle logo"
-          src="/img/logo.png"
-          height="20vh"
-          class="mb-4"
-        >
+  <div class="h-100 bg-surface-1">
+    <v-container id="home-container" class="container">
+      <h1 id="home-card-title">
+        Game Finder
+      </h1>
+      <v-row>
+        <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
+          <div
+            id="game-list"
+            class="mx-auto homeContent"
+          >
+            <div class="py-3 d-flex mx-auto text-surface-1">
+              <v-btn-toggle
+                v-model="tab"
+                rounded="0"
+                color="#4a2416"
+                variant="text"
+                mandatory
+              >
+                <v-btn 
+                  :value="TABS.PLAY" 
+                  data-cy-game-list-selector="play"
+                >
+                  PLAY
+                </v-btn>
+
+                <v-btn 
+                  :value="TABS.SPECTATE"
+                  data-cy-game-list-selector="spectate"
+                >
+                  SPECTATE
+                </v-btn>
+              </v-btn-toggle>
+            </div>
+            <v-divider v-if="$vuetify.display.mdAndDown" color="surface-1" class="border-opacity-100" />
+            <v-window v-model="tab" class="pa-4 overflow-y-auto">
+              <v-window-item :value="TABS.PLAY">
+                <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-surface-1">
+                  No Active Games
+                </p>
+                <div v-for="game in playableGameList" :key="game.id">
+                  <game-list-item
+                    :name="game.name"
+                    :p0ready="game.p0Ready ? 1 : 0"
+                    :p1ready="game.p1Ready ? 1 : 0"
+                    :game-id="game.id"
+                    :status="game.status"
+                    :num-players="game.numPlayers"
+                    :is-ranked="game.isRanked"
+                    @error="handleSubscribeError(game.id, $event)"
+                  />
+                </div>
+              </v-window-item>
+              <v-window-item :value="TABS.SPECTATE">
+                <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text" class="text-surface-1">
+                  No Games Available to Spectate
+                </p>
+                <div v-for="game in specateGameList" :key="game.id">
+                  <game-list-item
+                    :name="game.name"
+                    :p0ready="game.p0Ready ? 1 : 0"
+                    :p1ready="game.p1Ready ? 1 : 0"
+                    :game-id="game.id"
+                    :status="game.status"
+                    :num-players="game.numPlayers"
+                    :is-ranked="game.isRanked"
+                    :is-spectatable="true"
+                    :disable-spectate="game.isOver"
+                    @error="handleError"
+                  />
+                </div>
+              </v-window-item>
+            </v-window>
+          </div>
+        </v-col>
       </v-row>
-      <div id="game-list-card">
-        <v-row>
-          <v-col :cols="$vuetify.display.mdAndDown ? 12 : 9">
-            <div id="card-content-header" class="mb-4">
-              <h1 id="home-card-title">
-                Games
-              </h1>
-              <v-row class="create-game-btn">
-                <create-game-dialog @error="handleError" />
-              </v-row>
-            </div>
-            <div id="game-list">
-              <v-tabs v-model="tab" bg-color="primary" fixed-tabs>
-                <v-tab :value="TABS.PLAY" data-cy-game-list-selector="play">
-                  Play
-                </v-tab>
-                <v-tab :value="TABS.SPECTATE" data-cy-game-list-selector="spectate">
-                  Spectate
-                </v-tab>
-              </v-tabs>
-              <v-window v-model="tab" class="pa-4">
-                <v-window-item :value="TABS.PLAY">
-                  <p v-if="playableGameList.length === 0" data-cy="text-if-no-game">
-                    No Active Games
-                  </p>
-                  <div v-for="game in playableGameList" :key="game.id">
-                    <game-list-item
-                      :name="game.name"
-                      :p0ready="game.p0Ready ? 1 : 0"
-                      :p1ready="game.p1Ready ? 1 : 0"
-                      :game-id="game.id"
-                      :status="game.status"
-                      :num-players="game.numPlayers"
-                      :is-ranked="game.isRanked"
-                      @error="handleSubscribeError(game.id, $event)"
-                    />
-                  </div>
-                </v-window-item>
-                <v-window-item :value="TABS.SPECTATE">
-                  <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text">
-                    No Games Available to Spectate
-                  </p>
-                  <div v-for="game in specateGameList" :key="game.id">
-                    <game-list-item
-                      :name="game.name"
-                      :p0ready="game.p0Ready ? 1 : 0"
-                      :p1ready="game.p1Ready ? 1 : 0"
-                      :game-id="game.id"
-                      :status="game.status"
-                      :num-players="game.numPlayers"
-                      :is-ranked="game.isRanked"
-                      :is-spectatable="true"
-                      :disable-spectate="game.isOver"
-                      @error="handleError"
-                    />
-                  </div>
-                </v-window-item>
-              </v-window>
-            </div>
-          </v-col>
-          <v-col id="side-nav" :cols="$vuetify.display.mdAndDown ? 12 : 3">
-            <img
-              v-if="$vuetify.display.lgAndUp"
-              id="logo"
-              alt="Cuttle logo"
-              src="/img/logo.png"
-            >
-            <v-btn
-              variant="outlined"
-              color="primary"
-              class="mt-4"
-              to="/rules"
-              data-cy="rules-link"
-              :size="buttonSize"
-            >
-              Rules
-            </v-btn>
-            <v-btn
-              variant="outlined"
-              color="secondary"
-              class="mt-4"
-              href="https://human-ai-interaction.github.io/cuttle-bot/"
-              target="_blank"
-              data-cy="ai-link"
-              :size="buttonSize"
-            >
-              Play with AI
-            </v-btn>
-            <v-btn
-              variant="outlined"
-              class="mt-4"
-              href="https://discord.gg/9vrAZ8xGyh"
-              target="_blank"
-              :size="buttonSize"
-            >
-              Discord
-            </v-btn>
-            <h6 class="text-h6 mt-4">
-              Looking to Play?
-            </h6>
-            <p class="mt-0">
-              Our weekly play sessions are open to everyone!
-            </p>
-            <ul>
-              <li>Wednesday Nights at 8:30pm EST</li>
-              <li>Thursdays at 12pm EST</li>
-            </ul>
-            <p>
-              Can't find a match?
-              <v-btn variant="text" href="https://discord.gg/9vrAZ8xGyh">
-                Join our discord
+      <v-row>
+        <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
+          <div class="mx-auto my-4 my-xl-2 homeContent">
+            <create-game-dialog @error="handleError" />
+            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
+              <v-btn
+                v-if="!$vuetify.display.smAndUp"
+                variant="text"
+                color="surface-2"
+                class="px-2"
+                href="https://discord.gg/9vrAZ8xGyh"
+                target="_blank"
+                size="x-large"
+              >
+                <img class="discord" src="/img/loginView/logo-discord-cream.svg">
               </v-btn>
-              to see who's around to play!
-            </p>
-          </v-col>
-        </v-row>
-      </div>
+              <v-btn
+                v-else
+                variant="outlined"
+                class="text-subtitle-1 px-xl-16"
+                color="surface-2"
+                href="https://discord.gg/9vrAZ8xGyh"
+                target="_blank"
+                size="x-large"
+              >
+                <img class="discord" src="/img/loginView/logo-discord-cream.svg">
+                <span v-if="$vuetify.display.smAndUp">
+                  {{ t('login.joinDiscord') }}
+                </span>
+              </v-btn>
+              <how-it-works-dialog />
+            </div>
+          </div>
+        </v-col>
+      </v-row>
     </v-container>
     <BaseSnackbar
       v-model="showSnackBar"
@@ -142,11 +120,13 @@
   </div>
 </template>
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapState } from 'vuex';
 import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '@/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 import GameStatus from '../../utils/GameStatus.json';
+import HowItWorksDialog from '@/components/HowItWorksDialog.vue';
 
 const TABS = {
   PLAY: 'play',
@@ -159,6 +139,15 @@ export default {
     GameListItem,
     CreateGameDialog,
     BaseSnackbar,
+    HowItWorksDialog
+  },
+    setup() {
+    // Vuetify has its own translation layer that isn't very good
+    // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
+    // level and utilize it this way with a composable. There may be another more global way but
+    // I haven't found anything just yet
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {
@@ -210,11 +199,27 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-h1 {
-  background: linear-gradient(268.89deg, rgba(98, 2, 238, 0.87) 73.76%, rgba(253, 98, 34, 0.87) 99.59%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+// width 
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+// Track 
+::-webkit-scrollbar-track {
+  background: rgba(var(--v-theme-surface-2));
+  border-radius: 16px;
+}
+
+// Handle
+::-webkit-scrollbar-thumb {
+  background: #4A2416;
+  border-radius: 16px;
+}
+
+
+.discord {
+  max-height: 30px;
+  margin-right: 18px;
 }
 
 h2 {
@@ -230,9 +235,10 @@ p {
 }
 
 .container {
-  width: 95%;
-  margin: 0 auto;
-  max-height: 95vh;
+  width: 75%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .page-title {
@@ -245,9 +251,14 @@ p {
   margin: 0 auto;
 }
 
-.create-game-btn {
-  display: flex;
-  justify-content: flex-end;
+.home-card-games {
+  padding: 0;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.homeContent {
+  max-width: 580px;
 }
 
 #side-nav {
@@ -264,11 +275,12 @@ p {
 
 #game-list {
   box-sizing: border-box;
-  background: #cdd1d4;
+  background: rgba(var(--v-theme-surface-2));
   border-radius: 8px;
-  min-height: 55vh;
+  min-height: 50vh;
+  max-height: 50vh;
   display: flex;
-  min-width: 100%;
+  margin: auto;
   flex-direction: column;
 
   p {
@@ -290,7 +302,45 @@ p {
 }
 
 #home-card-title {
-  font-size: 2em;
+  font-size: 5rem;
+  color: rgba(var(--v-theme-surface-2));
+  font-family: 'Luckiest Guy', serif !important;
+  font-weight: 400;
+  line-height: 5rem;
+  margin: 32px auto 16px auto;
+}
+
+@media (min-width: 1920px ) {
+.homeContent {
+  max-width: 100%;
+}
+.home-card-games {
+  padding: 0;
+  max-width: 100%;
+  margin: 12px auto 5px auto;
+}
+#game-list {
+  min-height: 60vh;
+}
+}
+@media (max-width: 844px) {
+  #game-list {
+  max-width: 100%;
+}
+}
+@media (max-width: 600px) {
+  .discord {
+    max-height: 40px;
+    margin: 0;
+  }
+}
+@media (max-width: 980px) {
+  .container{
+    width: 95%;
+  }
+  #home-card-title {
+    font-size: 2rem;
+  }
 }
 
 @media (min-width: 980px) {
@@ -315,8 +365,5 @@ p {
     overflow: auto;
   }
 
-  .create-game-btn {
-    margin-right: 0.5rem;
-  }
 }
 </style>
