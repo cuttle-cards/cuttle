@@ -10,7 +10,7 @@
             src="/img/cuttle_logo_text_white.svg"
             width="60"
             height="60"
-            class="ma-md-auto"
+            class="ma-md-auto desktop-logo"
           >
         </div>
       </v-toolbar-title>
@@ -47,3 +47,12 @@ import { useDisplay } from 'vuetify';
 const { mobile } = useDisplay();
 const pageLinks = getPageLinks();
 </script>
+
+<style scoped>
+@media screen and (min-width: 960px) {
+  .desktop-logo {
+    position: absolute;
+    left: calc(50% - 60px);
+  }
+}
+</style>
