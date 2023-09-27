@@ -18,7 +18,15 @@
       </v-btn>
     </template>
     <template #body>
-      <h4>Want to play solo? Try <a class="text-cyan-lighten-2 text-decoration-none" href="https://human-ai-interaction.github.io/cuttle-bot/">playing vs AI</a> to learn the ropes and test your mettle.</h4>
+      <h4>
+        Want to play solo? Try 
+        <a
+          class="text-cyan-lighten-2 text-decoration-none"
+          href="https://human-ai-interaction.github.io/cuttle-bot/"
+          target="_blank">playing vs AI
+        </a> 
+        to learn the ropes and test your mettle.
+      </h4>
       <form name="create_game_form" class="d-flex align-center">
         <v-switch
           v-model="isRanked"
