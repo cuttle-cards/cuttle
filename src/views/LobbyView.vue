@@ -7,8 +7,8 @@
       <v-col md="8" class="my-auto">
         <h1>
           Lobby for {{ gameName }}
-          <small v-if="isRanked" class="lobby-ranked-text">
-            (Ranked <v-icon v-if="isRanked" size="medium">mdi-trophy</v-icon>)
+          <small v-if="gameStore.isRanked" class="lobby-ranked-text">
+            (Ranked <v-icon v-if="gameStore.isRanked" size="medium">mdi-trophy</v-icon>)
           </small>
         </h1>
       </v-col>
@@ -17,7 +17,7 @@
     <v-row>
       <v-col offset="1">
         <lobby-player-indicator
-          :player-username="$store.state.auth.username"
+          :player-username="authStore.username"
           :player-ready="iAmReady"
           data-cy="my-indicator"
         />
@@ -26,8 +26,8 @@
         <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
         <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
         <lobby-player-indicator
-          :player-username="opponentUsername"
-          :player-ready="opponentIsReady"
+          :player-username="gameStore.opponentUsername"
+          :player-ready="gameStore.opponentIsReady"
           data-cy="opponent-indicator"
         />
       </v-col>
@@ -56,7 +56,7 @@
         >
           {{ readyButtonText }}
           <v-icon
-            v-if="isRanked"
+            v-if="gameStore.isRanked"
             class="ml-1"
             size="small"
             icon="mdi-trophy"
@@ -70,8 +70,9 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
-
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
+import { useAuthStore } from '@/stores/auth';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
 
 export default {
@@ -85,20 +86,17 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      isRanked: ({ game }) => game.isRanked,
-    }),
-    ...mapGetters(['opponentIsReady', 'opponentUsername']),
+    ...mapStores(useGameStore, useAuthStore),
     gameId() {
-      return this.$store.state.game.id;
+      return this.gameStore.id;
     },
     gameName() {
-      return this.$store.state.game.name;
+      return this.gameStore.name;
     },
     iAmReady() {
-      return this.$store.state.game.myPNum === 0
-        ? this.$store.state.game.p0Ready
-        : this.$store.state.game.p1Ready;
+      return this.gameStore.myPNum === 0
+        ? this.gameStore.p0Ready
+        : this.gameStore.p1Ready;
     },
     readyButtonText() {
       return this.iAmReady ? 'UNREADY' : 'READY';
@@ -120,12 +118,11 @@ export default {
   methods: {
     async ready() {
       this.readying = true;
-      await this.$store.dispatch('requestReady');
+      await this.gameStore.requestReady();
       this.readying = false;
     },
     leave() {
-      this.$store
-        .dispatch('requestLeaveLobby')
+      this.gameStore.requestLeaveLobby()
         .then(() => {
           this.$router.push('/');
         })

@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
 import MoveChoiceCard from '@/components/GameView/MoveChoiceCard.vue';
 import GameCard from '@/components/GameView/GameCard.vue';
 
@@ -85,6 +87,7 @@ export default {
   },
   emits: ['points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel'],
   computed: {
+    ...mapStores(useGameStore),
     // Determines if any moves are available
     allMovesAreDisabled() {
       return (
@@ -116,7 +119,7 @@ export default {
     scuttleMove() {
       const scuttleDisabled = this.allMovesAreDisabled || !this.hasValidScuttleTarget;
       let scuttleDisabledExplanation = 'You can only scuttle smaller point cards';
-      if (this.$store.getters.opponent.points.length === 0) {
+      if (this.gameStore.opponent.points.length === 0) {
         scuttleDisabledExplanation = 'Your opponent has no point cards to scuttle';
       }
       if (this.allMovesAreDisabled) {
@@ -135,9 +138,9 @@ export default {
       let oneOffDisabledExplanation = this.disabledText;
       //Check deck while playing 7s
       if (this.selectedCard.rank === 7) {
-        const noTopCard = !this.$store.state.game.topCard;
-        const playingTopCard = this.selectedCard?.id === this.$store.state.game.topCard?.id;
-        const noSecondCard = !this.$store.state.game.secondCard;
+        const noTopCard = !this.gameStore.topCard;
+        const playingTopCard = this.selectedCard?.id === this.gameStore.topCard?.id;
+        const noSecondCard = !this.gameStore.secondCard;
         if (noTopCard || (playingTopCard && noSecondCard)) {
           oneOffDisabled = true;
           oneOffDisabledExplanation = "Can't be played with empty deck";
@@ -163,8 +166,8 @@ export default {
           let validTargetExists;
           // Twos
           if (this.selectedCard.rank === 2) {
-            const numOpFaceCards = this.$store.getters.opponent.faceCards.length;
-            const numOpJacks = this.$store.getters.opponent.points.reduce((jackCount, pointCard) => {
+            const numOpFaceCards = this.gameStore.opponent.faceCards.length;
+            const numOpJacks = this.gameStore.opponent.points.reduce((jackCount, pointCard) => {
               return jackCount + pointCard.attachments.length;
             }, 0);
             const numTotalTargets = numOpFaceCards + numOpJacks;
@@ -175,7 +178,7 @@ export default {
             }
           } else {
             const numValidTargets =
-              this.$store.getters.opponent.points.length + this.$store.getters.opponent.faceCards.length;
+              this.gameStore.opponent.points.length + this.gameStore.opponent.faceCards.length;
             if (numValidTargets === 0) {
               oneOffDisabled = true;
               oneOffDisabledExplanation = 'There are no point cards or Royals to target';
@@ -263,7 +266,7 @@ export default {
       // Can't scuttle with a royal
       if (this.selectedCard.rank >= 11) return false;
       // Return true iff at least one opponent point card is scuttleable w/ selected card
-      return this.$store.getters.opponent.points.some((opponentPointCard) => {
+      return this.gameStore.opponent.points.some((opponentPointCard) => {
         return (
           this.selectedCard.rank > opponentPointCard.rank ||
           (this.selectedCard.rank === opponentPointCard.rank &&

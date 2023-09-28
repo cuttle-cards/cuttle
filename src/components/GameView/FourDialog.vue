@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import GameCard from '@/components/GameView/GameCard.vue';
 
@@ -55,6 +57,7 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useGameStore),
     show: {
       get() {
         return this.modelValue;
@@ -64,7 +67,7 @@ export default {
       },
     },
     hand() {
-      return this.$store.state.game.players[this.$store.state.game.myPNum].hand;
+      return this.gameStore.player.hand;
     },
     readyToDiscard() {
       return this.selectedIds.length === 2 || (this.selectedIds.length === 1 && this.hand.length === 1);

@@ -53,7 +53,10 @@
 </template>
 
 <script>
-import GameStatus  from '../../utils/GameStatus.json';
+import GameStatus from '../../utils/GameStatus.json';
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
+import { useGameListStore } from '@/stores/gameList';
 
 export default {
   name: 'GameListItem',
@@ -102,6 +105,7 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useGameStore, useGameListStore),
     numPlayersReady() {
       return this.p0ready + this.p1ready;
     },
@@ -126,8 +130,7 @@ export default {
   methods: {
     subscribeToGame() {
       this.joiningGame = true;
-      this.$store
-        .dispatch('requestSubscribe', this.gameId)
+      this.gameStore.requestSubscribe(this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/lobby/${this.gameId}`);
@@ -139,8 +142,7 @@ export default {
     },
     spectateGame() {
       this.joiningGame = true;
-      this.$store
-        .dispatch('requestSpectate', this.gameId)
+      this.gameStore.requestSpectate(this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/spectate/${this.gameId}`);
@@ -148,7 +150,7 @@ export default {
         .catch((error) => {
           this.joiningGame = false;
           this.$emit('error', error);
-          this.$store.commit('gameFinished', this.gameId);
+          this.gameListStore.gameFinished(this.gameId);
         });
     },
   },

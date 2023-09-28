@@ -34,6 +34,8 @@
 
 <script>
 import { useI18n } from 'vue-i18n';
+import { mapStores } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 
 import {
   ROUTE_NAME_HOME,
@@ -61,8 +63,9 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useAuthStore),
     authenticated() {
-      return this.$store.state.auth.authenticated;
+      return this.authStore.authenticated;
     },
     pageLinks() {
       const rules = [

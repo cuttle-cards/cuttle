@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "5.4.0",
+  "version": "5.5.0",
   "dependencies": {
     "chart.js": "^4.3.3",
     "connect-redis": "3.0.2",
@@ -9,6 +9,7 @@
     "lodash": "^4.17.21",
     "machinepack-passwords": "2.3.0",
     "marked": "^5.1.1",
+    "pinia": "^2.1.6",
     "sails": "1.5.3",
     "sails-disk": "^2.1.2",
     "sails-hook-orm": "2.1.1",
@@ -20,8 +21,7 @@
     "vue-chartjs": "^5.2.0",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.2.4",
-    "vuetify": "^3.3.11",
-    "vuex": "^4.1.0"
+    "vuetify": "^3.3.11"
   },
   "devDependencies": {
     "@mdi/font": "^7.0.96",

@@ -6,10 +6,7 @@
       </h1>
       <v-row>
         <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
-          <div
-            id="game-list"
-            class="mx-auto homeContent"
-          >
+          <div id="game-list" class="mx-auto homeContent">
             <div class="py-3 d-flex mx-auto text-surface-1">
               <v-btn-toggle
                 v-model="tab"
@@ -18,17 +15,11 @@
                 variant="text"
                 mandatory
               >
-                <v-btn 
-                  :value="TABS.PLAY" 
-                  data-cy-game-list-selector="play"
-                >
+                <v-btn :value="TABS.PLAY" data-cy-game-list-selector="play">
                   PLAY
                 </v-btn>
 
-                <v-btn 
-                  :value="TABS.SPECTATE"
-                  data-cy-game-list-selector="spectate"
-                >
+                <v-btn :value="TABS.SPECTATE" data-cy-game-list-selector="spectate">
                   SPECTATE
                 </v-btn>
               </v-btn-toggle>
@@ -53,10 +44,14 @@
                 </div>
               </v-window-item>
               <v-window-item :value="TABS.SPECTATE">
-                <p v-if="specateGameList.length === 0" data-cy="no-spectate-game-text" class="text-surface-1">
+                <p
+                  v-if="spectateGameList.length === 0"
+                  data-cy="no-spectate-game-text"
+                  class="text-surface-1"
+                >
                   No Games Available to Spectate
                 </p>
-                <div v-for="game in specateGameList" :key="game.id">
+                <div v-for="game in spectateGameList" :key="game.id">
                   <game-list-item
                     :name="game.name"
                     :p0ready="game.p0Ready ? 1 : 0"
@@ -120,8 +115,9 @@
   </div>
 </template>
 <script>
+import { mapStores } from 'pinia';
+import { useGameListStore } from '@/stores/gameList';
 import { useI18n } from 'vue-i18n';
-import { mapState } from 'vuex';
 import GameListItem from '@/components/GameListItem.vue';
 import CreateGameDialog from '@/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
@@ -139,9 +135,9 @@ export default {
     GameListItem,
     CreateGameDialog,
     BaseSnackbar,
-    HowItWorksDialog
+    HowItWorksDialog,
   },
-    setup() {
+  setup() {
     // Vuetify has its own translation layer that isn't very good
     // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
     // level and utilize it this way with a composable. There may be another more global way but
@@ -158,16 +154,19 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      playableGameList: ({ gameList }) => gameList.openGames,
-      specateGameList: ({ gameList }) => gameList.spectateGames,
-    }),
+    ...mapStores(useGameListStore),
+    playableGameList() {
+      return this.gameListStore.openGames;
+    },
+    spectateGameList() {
+      return this.gameListStore.spectateGames;
+    },
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
   },
   async created() {
-    await this.$store.dispatch('requestGameList');
+    await this.gameListStore.requestGameList();
   },
   methods: {
     clearSnackBar() {
@@ -175,7 +174,7 @@ export default {
       this.showSnackBar = false;
     },
     handleSubscribeError(gameId, message) {
-      this.$store.commit('updateGameStatus', {id: gameId, newStatus: GameStatus.STARTED});
+      this.gameListStore.updateGameStatus({ id: gameId, newStatus: GameStatus.STARTED });
       this.handleError(message);
     },
     handleError(message) {
@@ -185,8 +184,8 @@ export default {
       this.showCreateGameDialog = false;
     },
     logout() {
-      this.$store
-        .dispatch('requestLogout')
+      this.gameListStore
+        .requestLogout()
         .then(() => {
           this.$router.push('/login');
         })
@@ -199,12 +198,12 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-// width 
+// width
 ::-webkit-scrollbar {
   width: 5px;
 }
 
-// Track 
+// Track
 ::-webkit-scrollbar-track {
   background: rgba(var(--v-theme-surface-2));
   border-radius: 16px;
@@ -212,10 +211,9 @@ export default {
 
 // Handle
 ::-webkit-scrollbar-thumb {
-  background: #4A2416;
+  background: #4a2416;
   border-radius: 16px;
 }
-
 
 .discord {
   max-height: 30px;
@@ -310,23 +308,23 @@ p {
   margin: 32px auto 16px auto;
 }
 
-@media (min-width: 1920px ) {
-.homeContent {
-  max-width: 100%;
-}
-.home-card-games {
-  padding: 0;
-  max-width: 100%;
-  margin: 12px auto 5px auto;
-}
-#game-list {
-  min-height: 60vh;
-}
+@media (min-width: 1920px) {
+  .homeContent {
+    max-width: 100%;
+  }
+  .home-card-games {
+    padding: 0;
+    max-width: 100%;
+    margin: 12px auto 5px auto;
+  }
+  #game-list {
+    min-height: 60vh;
+  }
 }
 @media (max-width: 844px) {
   #game-list {
-  max-width: 100%;
-}
+    max-width: 100%;
+  }
 }
 @media (max-width: 600px) {
   .discord {
@@ -335,7 +333,7 @@ p {
   }
 }
 @media (max-width: 980px) {
-  .container{
+  .container {
     width: 95%;
   }
   #home-card-title {
@@ -364,6 +362,5 @@ p {
   #game-list {
     overflow: auto;
   }
-
 }
 </style>
