@@ -2,8 +2,6 @@ on:
   pull_request:
     branches:
       - dev-temporary
-    # Defaults + ready_for_review to trigger a re-run when a Draft PR is converted to a normal PR
-    # See: https://github.community/t/dont-run-actions-on-draft-pull-requests/16817/17
     types: [closed]
 jobs:
   setup:
