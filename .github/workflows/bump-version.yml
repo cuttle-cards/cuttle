@@ -25,5 +25,5 @@ jobs:
       - name: set remote origin
         run: git remote set-url --push origin https://itsalaidbacklife:$GITHUB_TOKEN@github.com/cuttle-cards/cuttle
       - name: push
-        run git push origin dev-temporary
+        run: git push origin dev-temporary
 
