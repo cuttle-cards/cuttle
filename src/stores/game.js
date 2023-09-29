@@ -37,6 +37,7 @@ export const useGameStore = defineStore('game', {
     waitingForOpponentToCounter: false,
     myTurnToCounter: false,
     isRanked: false,
+    rankAlert: false,
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
@@ -187,6 +188,7 @@ export const useGameStore = defineStore('game', {
       }
     },
     updateMode(ranked) {
+      this.rankAlert = true;
       this.isRanked = ranked;
     },
     opponentLeft() {

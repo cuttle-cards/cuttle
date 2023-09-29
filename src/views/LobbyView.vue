@@ -77,6 +77,14 @@
       </v-col>
       <v-spacer />
     </v-row>
+    <BaseSnackbar
+      v-model="gameStore.rankAlert"
+      :timeout="2000"
+      :message="`Game Mode: ${gameStore.isRanked ? 'Ranked' : 'Normal'}`"
+      color="surface-1"
+      data-cy="edit-snackbar"
+      location="top"
+    />
   </v-container>
 </template>
 
@@ -85,11 +93,13 @@ import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
+import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 
 export default {
   name: 'LobbyView',
   components: {
     LobbyPlayerIndicator,
+    BaseSnackbar
   },
   data() {
     return {
