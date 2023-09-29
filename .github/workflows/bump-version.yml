@@ -26,6 +26,7 @@ jobs:
         run: npm run version:patch
       - name: merge into main
         run: |
+          git fetch origin main-temporary
           git checkout main-temporary
           git merge dev-temporary
       - name: push
