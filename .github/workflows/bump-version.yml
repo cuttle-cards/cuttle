@@ -1,0 +1,23 @@
+on:
+  pull_request:
+    branches:
+      - dev-temporary
+    types: [closed]
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: install
+        - run: npm ci
+  bump-major-version:
+    if: github.event.pull_request.merged == true
+    if: contains(github.event.pull_request.labels.*.name, 'version-major')
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+        uses: actions/checkout@v3
+    - name: bump major version
+      - run: npm run version:major
