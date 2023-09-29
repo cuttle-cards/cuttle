@@ -102,7 +102,7 @@ export default {
       return this.gameStore.myPNum === 0 ? this.gameStore.p0Ready : this.gameStore.p1Ready;
     },
     readyButtonText() {
-      return this.iAmReady ? this.t('lobby.unready') : this.t('lobby.ready');
+      return this.t(this.iAmReady ? 'lobby.unready' : 'lobby.ready');
     },
   },
   watch: {
