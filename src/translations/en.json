@@ -23,5 +23,24 @@
     "content2": "Be the first to score 21 points in this explosive battle of wits. Mount a valient offense while disupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the Deep?",
     "readRules": "Read the Rules",
     "joinDiscord": "Join our discord community"
+  },
+  "home": {
+    "howItWorks": {
+      "button": "How it works",
+      "title": "Looking To Play?",
+      "content": "Our weekly play sessions are open to everyone:",
+      "wednesday": "Wednesday nights at 8:30pm EST",
+      "thursday": "Thursdays at 12pm EST",
+      "findMatch": "Can't find a match? Join us on",
+      "discord": "discord",
+      "content2": "to chat with other players and to see who is available to play at any time.",
+      "playSolo": "Want to play solo? Try",
+      "playAI": "playing vs AI",
+      "mettle": "to learn the ropes and test your mettle.",
+      "learnMore": "Want to learn more? Check out our",
+      "about": "about page",
+      "about2": "to learn the rules and read about the cuttle.cards project.",
+      "okayButton": "okay"
+    }
   }
 }

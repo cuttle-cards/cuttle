@@ -15,6 +15,7 @@
         data-cy="how-it-works-button"
       >
         How it works
+        <!-- {{ t('home.button') }} -->
       </v-btn>
     </template>
     <template #body>
@@ -70,8 +71,17 @@
 </template>
 
 <script setup>
+// import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
+// setup() {
+//     // Vuetify has its own translation layer that isn't very good
+//     // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
+//     // level and utilize it this way with a composable. There may be another more global way but
+//     // I haven't found anything just yet
+//     const { t } = useI18n();
+//     return { t };
+//   }
 
 const show = ref(false);
 
