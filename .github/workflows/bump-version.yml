@@ -19,4 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - run: npm run version:major
+    - name: Checkout
+        uses: actions/checkout@v3
+    - name: bump major version
+      - run: npm run version:major
