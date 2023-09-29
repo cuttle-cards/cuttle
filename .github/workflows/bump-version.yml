@@ -12,9 +12,8 @@ jobs:
       - name: install
         run: npm ci
   bump-major-version:
-    if: |
-      github.event.pull_request.merged == true &&
-      contains(github.event.pull_request.labels.*.name, 'version-major')
+    needs: setup
+    if: github.event.pull_request.merged == true &&
     runs-on: ubuntu-latest
     
     steps:
@@ -26,6 +25,13 @@ jobs:
           git config --global user.name "Cuttle Continuous Integration"
           git config --global user.email "itsalaidbacklife@gmail.com"
       - name: bump major version
-        run: npm run version:major
+          if: contains(github.event.pull_request.labels.*.name, 'version-major')
+          run: npm run version:major
+      - name: bump minor version
+          if: contains(github.event.pull_request.labels.*.name, 'version-minor')
+          run: npm run version:minor
+      - name: bump patch version
+          if: contains(github.event.pull_request.labels.*.name, 'version-patch')
+          run: npm run version:patch
       - name: push
         run: git push origin dev-temporary
