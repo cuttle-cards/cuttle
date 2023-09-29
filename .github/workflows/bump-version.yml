@@ -20,10 +20,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: configure git
+        run: |
+          git remote set-url --push origin https://${{ secrets.GITHUB_TOKEN }}@github.com/cuttle-cards/cuttle
+          git config --global user.name "Cuttle Continuous Integration"
+          git config --global user.email "itsalaidbacklife@gmail.com"
       - name: bump major version
         run: npm run version:major
-      - name: set remote origin
-        run: git remote set-url --push origin https://itsalaidbacklife:$GITHUB_TOKEN@github.com/cuttle-cards/cuttle
-      - name: push please
+      - name: push
         run: git push origin dev-temporary
-
