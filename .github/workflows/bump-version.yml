@@ -12,8 +12,9 @@ jobs:
       - name: install
         run: npm ci
   bump-major-version:
-    if: github.event.pull_request.merged == true
-    if: contains(github.event.pull_request.labels.*.name, 'version-major')
+    if: |
+      github.event.pull_request.merged == true &&
+      contains(github.event.pull_request.labels.*.name, 'version-major')
     runs-on: ubuntu-latest
     
     steps:
