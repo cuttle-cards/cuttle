@@ -1,7 +1,7 @@
 on:
   pull_request:
     branches:
-      - dev-temporary
+      - main-temporary
     types: [closed]
 jobs:
   bump-version:
@@ -24,10 +24,5 @@ jobs:
       - name: bump patch version
         if: contains(github.event.pull_request.labels.*.name, 'version-patch')
         run: npm run version:patch
-      - name: merge into main
-        run: |
-          git fetch origin main-temporary
-          git checkout main-temporary
-          git merge dev-temporary
       - name: push
         run: git push origin main-temporary
