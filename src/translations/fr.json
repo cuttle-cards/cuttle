@@ -26,7 +26,7 @@
   },
   "lobby":{
     "lobbyFor": "Faire pression pour",
-    "ready": "prêt",
+    "ready": "PRÊT",
     "unready": "PAS PRÊT",
     "exit": "SORTIE",
     "invite": "Inviter"
