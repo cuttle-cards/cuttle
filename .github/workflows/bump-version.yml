@@ -29,4 +29,3 @@ jobs:
         run: npm run version:major
       - name: push
         run: git push origin dev-temporary
-
