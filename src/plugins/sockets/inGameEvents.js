@@ -30,6 +30,10 @@ export async function handleInGameEvents(evData) {
       gameStore.updateReady(evData.pNum);
       return;
     }
+    case SocketEvent.EDITMODE: {
+      gameStore.updateMode(evData.isRanked);
+      return;
+    }
     case SocketEvent.INITIALIZE: {
       // Update state
       gameStore.resetState();

@@ -186,6 +186,9 @@ export const useGameStore = defineStore('game', {
         this.p1Ready = !this.p1Ready;
       }
     },
+    updateMode(ranked) {
+      this.isRanked = ranked;
+    },
     opponentLeft() {
       this.players = this.players.filter((player) => player.pNum === this.myPNum);
     },
@@ -331,6 +334,18 @@ export const useGameStore = defineStore('game', {
             return resolve(res);
           }
           return reject(new Error('Error readying for game'));
+        });
+      });
+    },
+    async editMode({ isRanked }) {
+      return new Promise((resolve, reject) => {
+        io.socket.post('/game/editmode',{
+          isRanked,
+        }, (res, jwres) => {
+          if (jwres.statusCode === 200) {
+            return resolve(res);
+          }
+          return reject(new Error('Error Changing game mode'));
         });
       });
     },

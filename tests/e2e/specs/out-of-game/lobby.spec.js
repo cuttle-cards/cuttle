@@ -65,6 +65,18 @@ describe('Lobby - Page Content (Ranked)', () => {
   it('Displays ranked button', () => {
     cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
   });
+  
+  it('Checks Edit Game Mode', () => {
+    // Set To Casual Mode
+    cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
+    cy.contains('h1 small', 'Ranked').should('not.exist');
+    cy.get('[data-cy=ready-button-ranked-icon]').should('not.exist');
+    
+    // Set To Ranked Mode
+    cy.toggleInput('[data-cy=edit-game-ranked-switch]');
+    cy.contains('h1 small', 'Ranked');
+    cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
+  });
 });
 
 describe('Lobby - P0 Perspective', () => {
@@ -146,6 +158,19 @@ describe('Lobby - P0 Perspective', () => {
     //Opponent un-readies
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
+  });
+  it('Shows when oppenent Changes Mode', function () {
+    // Opponent subscribes & Changes Mode
+    cy.signupOpponent(opponentOne);
+    cy.subscribeOpponent(this.gameSummary.gameId);
+
+    cy.contains('h1 small', 'Ranked').should('not.exist');
+    cy.get('[data-cy=ready-button-ranked-icon]').should('not.exist');
+
+    cy.toggleInput('[data-cy=edit-game-ranked-switch]');
+
+    cy.contains('h1 small', 'Ranked');
+    cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
   });
 
   it('Game starts when both players are ready - opponent first', function () {

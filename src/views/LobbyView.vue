@@ -13,6 +13,17 @@
         </h1>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col offset="5">
+        <v-switch
+          v-model="gameStore.isRanked"
+          :label="gameStore.isRanked ? 'Ranked' : 'Normal'"
+          data-cy="edit-game-ranked-switch"
+          color="primary"
+          @update:model-value="modeChange"
+        />
+      </v-col>
+    </v-row>
     <!-- Usernames -->
     <v-row>
       <v-col offset="1">
@@ -120,6 +131,11 @@ export default {
       this.readying = true;
       await this.gameStore.requestReady();
       this.readying = false;
+    },
+    async modeChange() {
+      await this.gameStore.editMode({
+          isRanked: this.gameStore.isRanked,
+      });
     },
     leave() {
       this.gameStore.requestLeaveLobby()
