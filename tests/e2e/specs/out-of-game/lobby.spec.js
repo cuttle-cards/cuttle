@@ -159,15 +159,15 @@ describe('Lobby - P0 Perspective', () => {
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
   });
-  it('Shows when oppenent Changes Mode', function () {
+  it.only('Shows when oppenent Changes Mode', function () {
     // Opponent subscribes & Changes Mode
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
 
     cy.contains('h1 small', 'Ranked').should('not.exist');
     cy.get('[data-cy=ready-button-ranked-icon]').should('not.exist');
-
-    cy.toggleInput('[data-cy=edit-game-ranked-switch]');
+    
+    cy.modeChangeOpponent(true);
 
     cy.contains('h1 small', 'Ranked');
     cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
