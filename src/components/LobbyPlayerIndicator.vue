@@ -15,12 +15,13 @@
       class="ready-overlay text-truncate"
       :style="{ 'font-size': readyFontSize, 'padding-bottom': readyPadding }"
     >
-      READY
+      {{ t('lobby.ready') }}
     </div>
   </div>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 export default {
   name: 'LobbyPlayerIndicator',
   props: {
@@ -33,9 +34,13 @@ export default {
       default: false,
     },
   },
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   computed: {
     message() {
-      return this.playerUsername || 'Invite';
+      return this.playerUsername || this.t('lobby.invite');
     },
     playerPadding() {
       return this.$vuetify.display.mdAndUp ? '72px' : '32px';

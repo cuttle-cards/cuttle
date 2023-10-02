@@ -6,7 +6,7 @@
       </v-col>
       <v-col md="8" class="my-auto">
         <h1>
-          Lobby for {{ gameName }}
+          {{ `${t('lobby.lobbyFor')}  ${gameName}` }}
           <small v-if="gameStore.isRanked" class="lobby-ranked-text">
             (Ranked <v-icon v-if="gameStore.isRanked" size="medium">mdi-trophy</v-icon>)
           </small>
@@ -54,7 +54,7 @@
           data-cy="exit-button"
           @click="leave"
         >
-          EXIT
+          {{ t('lobby.exit') }}
         </v-btn>
       </v-col>
       <v-col cols="3">
@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
@@ -100,6 +101,10 @@ export default {
   components: {
     LobbyPlayerIndicator,
     BaseSnackbar
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {
@@ -115,12 +120,10 @@ export default {
       return this.gameStore.name;
     },
     iAmReady() {
-      return this.gameStore.myPNum === 0
-        ? this.gameStore.p0Ready
-        : this.gameStore.p1Ready;
+      return this.gameStore.myPNum === 0 ? this.gameStore.p0Ready : this.gameStore.p1Ready;
     },
     readyButtonText() {
-      return this.iAmReady ? 'UNREADY' : 'READY';
+      return this.t(this.iAmReady ? 'lobby.unready' : 'lobby.ready');
     },
   },
   watch: {
@@ -148,7 +151,8 @@ export default {
       });
     },
     leave() {
-      this.gameStore.requestLeaveLobby()
+      this.gameStore
+        .requestLeaveLobby()
         .then(() => {
           this.$router.push('/');
         })
