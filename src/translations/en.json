@@ -23,5 +23,12 @@
     "content2": "Be the first to score 21 points in this explosive battle of wits. Mount a valient offense while disupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the Deep?",
     "readRules": "Read the Rules",
     "joinDiscord": "Join our discord community"
+  },
+  "lobby":{
+    "lobbyFor": "Lobby for",
+    "ready": "READY",
+    "unready": "UNREADY",
+    "exit": "EXIT",
+    "invite": "Invite"
   }
 }
