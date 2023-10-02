@@ -14,6 +14,45 @@ function queenCount(player) {
   return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
 }
 
+//this will eventually be moved to tranlations
+const ruleText = [
+  'Scrap all points',
+  'Scrap target Royal or Glasses eight',
+  'Choose 1 card in the Scrap and put it to your hand',
+  'Your opponent discards two cards of their choice from their hand',
+  'Draw two cards from the deck',
+  'Scrap all Royals and Glasses eights',
+  'Play one of the top two cards of the deck and put the other back (both are revealed)',
+  'Your opponent plays with an open hand (their cards are revealed to you)',
+  "Return target card to its controller's hand. They can't play it next turn",
+  'No effect',
+  'Play on top of target point card to steal it',
+  'Your other cards may only be targeted by scuttles',
+  'Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)',
+];
+
+class GameCard {
+  constructor(card) {
+    if (!card) return;
+    const str_rank =
+      {
+        1: 'A',
+        11: 'J',
+        12: 'Q',
+        13: 'K',
+      }[card.rank] ?? card.rank;
+    // Stringify Suit
+    const str_suit = ['♣️', '♦️', '♥️', '♠️'][card.suit];
+    this.createdAt = card.createdAt;
+    this.updatedAt = card.updatedAt;
+    this.id = card.id;
+    this.suit = card.suit;
+    this.rank = card.rank;
+    this.name = str_rank + str_suit;
+    this.ruleText = ruleText[card.rank - 1];
+  }
+}
+
 export const useGameStore = defineStore('game', {
   state: () => ({
     id: null,
@@ -140,7 +179,8 @@ export const useGameStore = defineStore('game', {
       if (Object.hasOwnProperty.call(newGame, 'id')) this.id = newGame.id;
       if (Object.hasOwnProperty.call(newGame, 'turn')) this.turn = newGame.turn;
       if (Object.hasOwnProperty.call(newGame, 'chat')) this.chat = cloneDeep(newGame.chat);
-      if (Object.hasOwnProperty.call(newGame, 'deck')) this.deck = cloneDeep(newGame.deck);
+      if (Object.hasOwnProperty.call(newGame, 'deck'))
+        this.deck = newGame.deck?.map((card) => new GameCard(card));
       if (Object.hasOwnProperty.call(newGame, 'scrap')) this.scrap = cloneDeep(newGame.scrap);
       if (Object.hasOwnProperty.call(newGame, 'log')) this.log = cloneDeep(newGame.log);
       if (Object.hasOwnProperty.call(newGame, 'name')) this.name = newGame.name;
@@ -153,10 +193,12 @@ export const useGameStore = defineStore('game', {
       }
       if (Object.hasOwnProperty.call(newGame, 'twos')) this.twos = cloneDeep(newGame.twos);
 
-      if (Object.hasOwnProperty.call(newGame, 'topCard')) this.topCard = cloneDeep(newGame.topCard);
-      else this.topCard = null;
+      if (Object.hasOwnProperty.call(newGame, 'topCard')) {
+        this.topCard = new GameCard(newGame.topCard);
+      } else this.topCard = null;
 
-      if (Object.hasOwnProperty.call(newGame, 'secondCard')) this.secondCard = cloneDeep(newGame.secondCard);
+      if (Object.hasOwnProperty.call(newGame, 'secondCard'))
+        this.secondCard = new GameCard(newGame.secondCard);
       else this.secondCard = null;
 
       if (Object.hasOwnProperty.call(newGame, 'oneOff')) this.oneOff = cloneDeep(newGame.oneOff);
