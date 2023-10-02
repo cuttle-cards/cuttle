@@ -158,6 +158,7 @@ export const useGameStore = defineStore('game', {
   },
   actions: {
     updateGame(newGame) {
+      console.log(newGame.players);
       if (Object.hasOwnProperty.call(newGame, 'lastEvent')) {
         if (Object.hasOwnProperty.call(newGame.lastEvent, 'change')) {
           this.lastEventChange = newGame.lastEvent.change;
@@ -191,6 +192,8 @@ export const useGameStore = defineStore('game', {
         this.players = newGame.players.map((player) => ({
           ...player,
           hand: player.hand?.map((card) => new GameCard(card)) ?? player.hand,
+          points: player.points?.map((card) => new GameCard(card) ?? player.points),
+          faceCards: player.faceCards?.map((card) => new GameCard(card) ?? player.faceCards),
         }));
       if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
         this.spectatingUsers = newGame.spectatingUsers;
@@ -201,16 +204,16 @@ export const useGameStore = defineStore('game', {
         this.topCard = new GameCard(newGame.topCard);
       } else this.topCard = null;
 
-      if (Object.hasOwnProperty.call(newGame, 'secondCard'))
+      if (Object.hasOwnProperty.call(newGame, 'secondCard')) {
         this.secondCard = new GameCard(newGame.secondCard);
-      else this.secondCard = null;
+      } else this.secondCard = null;
 
       if (Object.hasOwnProperty.call(newGame, 'oneOff')) this.oneOff = cloneDeep(newGame.oneOff);
       else this.oneOff = null;
 
-      if (Object.hasOwnProperty.call(newGame, 'oneOffTarget'))
+      if (Object.hasOwnProperty.call(newGame, 'oneOffTarget')) {
         this.oneOffTarget = cloneDeep(newGame.oneOffTarget);
-      else this.oneOffTarget = null;
+      } else this.oneOffTarget = null;
 
       if (Object.hasOwnProperty.call(newGame, 'isRanked')) this.isRanked = newGame.isRanked;
       if (Object.hasOwnProperty.call(newGame, 'currentMatch')) this.currentMatch = newGame.currentMatch;
