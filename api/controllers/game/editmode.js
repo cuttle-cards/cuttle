@@ -5,9 +5,8 @@ module.exports = function (req, res) {
   Promise.all([promiseGame, promisePlayer])
     .then(function changeAndSave(values) {
       const [game, player] = values;
-      const gameUpdates = {};
 
-      gameUpdates.isRanked = isRanked;
+      const gameUpdates = {isRanked};
 
       Game.publish([game.id], {
         change:'editmode',
