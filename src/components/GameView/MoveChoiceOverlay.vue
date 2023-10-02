@@ -13,9 +13,14 @@
         color="white"
         size="x-large"
         data-cy="cancel-move"
+        aria-lable="Cancel Move"
         @click="$emit('cancel')"
       >
-        <v-icon icon="mdi-close" size="x-large" />
+        <v-icon
+          icon="mdi-close"
+          size="x-large" 
+          aria-hidden="true"
+        />
       </v-btn>
     </div>
     <div v-if="selectedCard" class="d-flex justify-center">

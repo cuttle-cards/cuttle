@@ -18,8 +18,13 @@
         Cancel
       </v-btn>
     </div>
-    <v-btn icon data-cy="cancel-target-mobile" @click="$emit('cancel')">
-      <v-icon icon="mdi-close" size="x-large" />
+    <v-btn
+      icon
+      data-cy="cancel-target-mobile"
+      aria-label="Cancel move"
+      @click="$emit('cancel')"
+    >
+      <v-icon icon="mdi-close" size="x-large" aria-hidden="true" />
     </v-btn>
   </div>
 </template>

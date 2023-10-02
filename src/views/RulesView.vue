@@ -89,6 +89,9 @@
             color="black"
             class="mr-4"
             icon="mid-crown"
+            aria-label="crown icon"
+            aria-hidden="false"
+            role="img"
           />
           <h1 class="gradient-text">
             Royals
@@ -124,6 +127,9 @@
             color="black"
             class="mr-4"
             icon="mdi-delete"
+            aria-label="one-off icon"
+            aria-hidden="false"
+            role="img"
           />
           <h1 class="gradient-text">
             One-Offs
