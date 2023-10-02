@@ -30,5 +30,11 @@
     "unready": "NO PREPARADO",
     "exit": "SALIR",
     "invite": "Invitar"
+  },
+  "home": {
+    "gameFinder": "Buscador de juegos",
+    "spectate": "ESPECTAR",
+    "noGameslist": "Sin juegos activos",
+    "noSpectatelist": "No hay juegos disponibles para ver"
   }
 }
