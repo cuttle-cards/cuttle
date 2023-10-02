@@ -190,7 +190,7 @@ export const useGameStore = defineStore('game', {
       if (Object.hasOwnProperty.call(newGame, 'players'))
         this.players = newGame.players.map((player) => ({
           ...player,
-          hand: player.hand.map((card) => new GameCard(card)),
+          hand: player.hand?.map((card) => new GameCard(card)) ?? player.hand,
         }));
       if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
         this.spectatingUsers = newGame.spectatingUsers;
