@@ -1,3 +1,4 @@
+const { getCardName } = require('../../../../utils/game-utils');
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -32,7 +33,7 @@ module.exports = function (req, res) {
               secondCard,
               log: [
                 ...game.log,
-                `${player.username} scrapped ${card.name}, since there are no point cards to steal on ${opponent.username}'s field.`,
+                `${player.username} scrapped ${getCardName(card)}, since there are no point cards to steal on ${opponent.username}'s field.`,
               ],
               lastEvent: {
                 change: 'sevenJack',

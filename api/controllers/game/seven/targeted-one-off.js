@@ -1,3 +1,6 @@
+const { ruleText } = require('../../../../src/translations/en.json');
+const { getCardName } = require('../../../../utils/game-utils');
+
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -54,7 +57,7 @@ module.exports = function (req, res) {
               attachedToTarget: null,
               log: [
                 ...game.log,
-                `${player.username} played the ${card.name} from the top of the deck as a one-off to ${card.ruleText}, targeting the ${target.name}.`,
+                `${player.username} played the ${getCardName(card)} from the top of the deck as a one-off to ${ruleText[card.rank]}, targeting the ${getCardName(target)}.`,
               ],
               lastEvent: {
                 change: 'sevenTargetedOneOff',

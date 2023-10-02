@@ -1,3 +1,4 @@
+const { getCardName } = require('../../../utils/game-utils');
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -10,7 +11,7 @@ module.exports = function (req, res) {
         resolving: null,
         passes: 0,
         turn: game.turn + 1,
-        log: [...game.log, `${player.username} took the ${card.name} from the Scrap pile to their hand.`],
+        log: [...game.log, `${player.username} took the ${getCardName(card)} from the Scrap pile to their hand.`],
         lastEvent: {
           change: 'resolveThree',
         },

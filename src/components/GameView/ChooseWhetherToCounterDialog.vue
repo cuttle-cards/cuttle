@@ -23,7 +23,7 @@
       <div class="d-flex justify-center align-center my-8">
         <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
         <p class="ml-8">
-          {{ oneOff.ruleText }}
+          {{ t(`ruleText[${oneOff.rank}]`) }}
         </p>
         <div v-if="target" id="target-wrapper">
           <span id="target-icon-wrapper" class="d-flex justify-center align-center">
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import GameCard from '@/components/GameView/GameCard.vue';
 import GameCardName from '@/components/GameView/GameCardName.vue';
@@ -88,6 +89,10 @@ export default {
     },
   },
   emits: ['choose-to-counter', 'resolve'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   computed: {
     show: {
       get() {

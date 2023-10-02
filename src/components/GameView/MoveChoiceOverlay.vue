@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import MoveChoiceCard from '@/components/GameView/MoveChoiceCard.vue';
@@ -86,6 +87,10 @@ export default {
     },
   },
   emits: ['points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   computed: {
     ...mapStores(useGameStore),
     // Determines if any moves are available
@@ -149,7 +154,7 @@ export default {
       return {
         displayName: 'One-Off',
         eventName: 'oneOff',
-        moveDescription: this.selectedCard.ruleText,
+        moveDescription: this.t(`ruleText[${this.selectedCard.rank}]`) ,
         disabled: oneOffDisabled,
         disabledExplanation: oneOffDisabledExplanation,
       };
@@ -189,7 +194,7 @@ export default {
       return {
         displayName: 'One-Off',
         eventName: 'targetedOneOff',
-        moveDescription: this.selectedCard.ruleText,
+        moveDescription: this.t(`ruleText[${this.selectedCard.rank}]`) ,
         disabled: oneOffDisabled,
         disabledExplanation: oneOffDisabledExplanation,
       };
@@ -251,7 +256,7 @@ export default {
             {
               displayName: 'Royal',
               eventName: 'faceCard',
-              moveDescription: this.selectedCard.ruleText,
+              moveDescription: this.t(`ruleText[${this.selectedCard.rank}]`) ,
               disabled: this.allMovesAreDisabled,
               disabledExplanation: this.disabledText,
             },
