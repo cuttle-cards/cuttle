@@ -27,7 +27,10 @@
         </p>
         <div v-if="target" id="target-wrapper">
           <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-            <v-icon size="x-large" color="red" icon="mdi-target" 
+            <v-icon
+              size="x-large"
+              color="red"
+              icon="mdi-target" 
               aria-label="target icon"
               aria-hidden="false"
               role="img"            

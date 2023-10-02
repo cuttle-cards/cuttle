@@ -3,12 +3,17 @@
     <template #body>
       <p>Your opponent has requested a stalemate. If you accept, the game will end in a tie.</p>
       <div class="d-flex justify-center">
-        <v-icon class="mr-8" size="80px" icon="mdi-offer"
+        <v-icon
+          class="mr-8"
+          size="80px"
+          icon="mdi-offer"
           aria-label="offer icon"
           aria-hidden="false"
           role="img"        
         />
-        <v-icon size="80px" icon="mdi-help-circle"
+        <v-icon
+          size="80px"
+          icon="mdi-help-circle"
           aria-label="help icon"
           aria-hidden="false"
           role="img"         

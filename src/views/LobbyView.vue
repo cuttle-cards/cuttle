@@ -9,7 +9,9 @@
           {{ `${t('lobby.lobbyFor')}  ${gameName}` }}
           <small v-if="gameStore.isRanked" class="lobby-ranked-text">
             (Ranked 
-            <v-icon v-if="gameStore.isRanked" size="medium"
+            <v-icon
+              v-if="gameStore.isRanked"
+              size="medium"
               icon="mdi-trophy"
               aria-label="trophy icon"
               aria-hidden="false"

@@ -18,7 +18,9 @@
           data-cy="ranked-info-button"
         >
           <span v-if="showButtonText">How are ranks determined?</span>
-          <v-icon class="ml-1" icon="mdi-information-outline" 
+          <v-icon
+            class="ml-1"
+            icon="mdi-information-outline" 
             aria-label="information icon"
             aria-hidden="false"
             role="img"

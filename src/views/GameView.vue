@@ -15,10 +15,10 @@
           color="white"
           icon="mdi-account-clock"
           size="large"
-          @click.stop="showHistoryDrawer = !showHistoryDrawer"
           aria-label="account clock icon"
           aria-hidden="false"
-          role="img"  
+          role="img"
+          @click.stop="showHistoryDrawer = !showHistoryDrawer"  
         />
       </div>
 
@@ -34,7 +34,10 @@
             <h3>History</h3>
             <template #append>
               <v-btn icon variant="text" @click.stop="showHistoryDrawer = !showHistoryDrawer">
-                <v-icon color="neutral" icon="mdi-window-close" size="large" 
+                <v-icon
+                  color="neutral"
+                  icon="mdi-window-close"
+                  size="large" 
                   aria-label="window close icon"
                   aria-hidden="false"
                   role="img"

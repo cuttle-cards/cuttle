@@ -10,7 +10,10 @@
         icon
         variant="text"
       >
-        <v-icon class="mr-1" icon="mdi-eye-outline" size="large"
+        <v-icon
+          class="mr-1"
+          icon="mdi-eye-outline"
+          size="large"
           aria-label="eye icon"
           aria-hidden="false"
           role="img"         

@@ -10,7 +10,9 @@
           icon
           variant="text"
         >
-          <v-icon color="neutral-lighten-2" icon="mdi-cog" 
+          <v-icon
+            color="neutral-lighten-2"
+            icon="mdi-cog" 
             aria-label="cog icon"
             aria-hidden="false"
             role="img"    

@@ -21,7 +21,8 @@
         variant="text"
         @click="clear"
       >
-        <v-icon icon="mdi-close" 
+        <v-icon
+          icon="mdi-close" 
           aria-label="close icon"
           aria-hidden="false"
           role="img"  

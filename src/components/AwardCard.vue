@@ -5,7 +5,10 @@
     :data-tournament="`${place}${suffix}`"
   >
     <div class="medal-icon pa-8 d-flex align-center">
-      <v-icon size="48" :color="medalColor" icon="mdi-medal"
+      <v-icon
+        size="48"
+        :color="medalColor"
+        icon="mdi-medal"
         aria-label="medal icon"
         aria-hidden="false"
         role="img" 
