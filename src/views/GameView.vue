@@ -15,9 +15,9 @@
           color="white"
           icon="mdi-account-clock"
           size="large"
-          aria-label="account clock icon"
+          aria-label="Show game history"
           aria-hidden="false"
-          role="img"
+          role="button"
           @click.stop="showHistoryDrawer = !showHistoryDrawer"  
         />
       </div>
@@ -38,9 +38,9 @@
                   color="neutral"
                   icon="mdi-window-close"
                   size="large" 
-                  aria-label="Show game history"
+                  aria-label="window close icon"
                   aria-hidden="false"
-                  role="button"
+                  role="img"
                 />
               </v-btn>
             </template>
