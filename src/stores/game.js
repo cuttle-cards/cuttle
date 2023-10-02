@@ -339,15 +339,17 @@ export const useGameStore = defineStore('game', {
         });
       });
     },
-    async editMode({ isRanked }) {
+    async setIsRanked({ isRanked }) {
       return new Promise((resolve, reject) => {
-        io.socket.post('/game/editmode',{
+        io.socket.post('/game/setIsRanked',{
           isRanked,
         }, (res, jwres) => {
           if (jwres.statusCode === 200) {
             return resolve(res);
           }
-          return reject(new Error('Error Changing game mode'));
+          console.log(res);
+          const modeName = isRanked ? 'ranked' : 'casual';
+          return reject(new Error(`Unable to change game to ${modeName}`));
         });
       });
     },

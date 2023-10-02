@@ -159,7 +159,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
   });
-  it.only('Shows when oppenent Changes Mode', function () {
+  it('Shows when oppenent Changes Mode', function () {
     // Opponent subscribes & Changes Mode
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);

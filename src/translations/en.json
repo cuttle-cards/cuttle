@@ -29,6 +29,8 @@
     "ready": "READY",
     "unready": "UNREADY",
     "exit": "EXIT",
-    "invite": "Invite"
+    "invite": "Invite",
+    "ranked": "Ranked",
+    "casual": "Casual"
   }
 }

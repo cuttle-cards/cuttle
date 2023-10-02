@@ -80,7 +80,7 @@
     <BaseSnackbar
       v-model="gameStore.rankAlert"
       :timeout="2000"
-      :message="`Game Mode: ${gameStore.isRanked ? 'Ranked' : 'Normal'}`"
+      :message="`Game Mode: ${gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')}`"
       color="surface-1"
       data-cy="edit-snackbar"
       location="top"
@@ -146,7 +146,7 @@ export default {
       this.readying = false;
     },
     async modeChange() {
-      await this.gameStore.editMode({
+      await this.gameStore.setIsRanked({
           isRanked: this.gameStore.isRanked,
       });
     },

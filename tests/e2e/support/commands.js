@@ -278,7 +278,7 @@ Cypress.Commands.add('readyOpponent', (id) => {
 });
 Cypress.Commands.add('modeChangeOpponent', (isRanked) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/game/editmode',{
+    io.socket.post('/game/setIsRanked',{
       isRanked,
     }, (res, jwres) => {
       if (jwres.statusCode === 200) {
