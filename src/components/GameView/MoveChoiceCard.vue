@@ -10,8 +10,8 @@
       :theme="isHovering ? 'light': 'dark'"
       :width="cardWidth"
       :data-move-choice="eventName"
-      @click.stop="$emit('choose-move')"
       :aria-label="`Choose Move: ${moveName}`"
+      @click.stop="$emit('choose-move')"
     >
       <v-card-title class="d-flex justify-center">
         <h2>{{ moveName }}</h2>

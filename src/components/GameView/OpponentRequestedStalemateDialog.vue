@@ -25,8 +25,8 @@
         :diabled="loadingAccept"
         :loading="loadingReject"
         data-cy="reject-stalemate"
-        @click="rejectStalemate"
         aria-lable="Reject Request"
+        @click="rejectStalemate"
       >
         Reject Request
       </v-btn>
@@ -36,8 +36,8 @@
         data-cy="accept-stalemate"
         :loading="loadingAccept"
         :disabled="loadingReject"
-        @click="acceptStalemate"
         aria-lable="Accept Stalemate"
+        @click="acceptStalemate"
       >
         Accept Stalemate
       </v-btn>

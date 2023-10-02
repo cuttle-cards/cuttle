@@ -13,8 +13,8 @@
         color="white"
         size="x-large"
         data-cy="cancel-move"
-        @click="$emit('cancel')"
         aria-lable="Cancel Move"
+        @click="$emit('cancel')"
       >
         <v-icon
           icon="mdi-close"
