@@ -7,26 +7,27 @@
   >
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
-        Your opponent has played the 
+        Your opponent has played the
         <game-card-name :card-name="oneOff.name" />
         as a one-off
-        <span v-if="target"> targeting your 
+        <span v-if="target">
+          targeting your
           <game-card-name :card-name="target.name" />
         </span>
       </div>
       <div v-else class="my-2">
-        Your opponent has played 
+        Your opponent has played
         <game-card-name :card-name="opponentLastTwo.name" />
         to Counter
         <span v-if="playerLastTwo">
-          your 
+          your
           <game-card-name :card-name="playerLastTwo.name" />.
         </span>
       </div>
       <div class="d-flex justify-center align-center my-8">
         <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
         <p class="ml-8">
-          {{ oneOff.ruleText }}
+          {{ t(`ruleText[${oneOff.rank}]`) }}
         </p>
         <div v-if="target" id="target-wrapper">
           <span id="target-icon-wrapper" class="d-flex justify-center align-center">
@@ -47,7 +48,7 @@
       <v-btn
         data-cy="cannot-counter-resolve"
         color="surface-1"
-        variant="flat" 
+        variant="flat"
         @click="$emit('resolve')"
       >
         Resolve
@@ -57,6 +58,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import GameCard from '@/components/GameView/GameCard.vue';
 import GameCardName from '@/components/GameView/GameCardName.vue';
@@ -95,6 +97,10 @@ export default {
     },
   },
   emits: ['resolve'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   computed: {
     show: {
       get() {
