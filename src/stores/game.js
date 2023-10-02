@@ -187,7 +187,11 @@ export const useGameStore = defineStore('game', {
       if (Object.hasOwnProperty.call(newGame, 'p0Ready')) this.p0Ready = newGame.p0Ready;
       if (Object.hasOwnProperty.call(newGame, 'p1Ready')) this.p1Ready = newGame.p1Ready;
       if (Object.hasOwnProperty.call(newGame, 'passes')) this.passes = newGame.passes;
-      if (Object.hasOwnProperty.call(newGame, 'players')) this.players = cloneDeep(newGame.players);
+      if (Object.hasOwnProperty.call(newGame, 'players'))
+        this.players = newGame.players.map((player) => ({
+          ...player,
+          hand: player.hand.map((card) => new GameCard(card)),
+        }));
       if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
         this.spectatingUsers = newGame.spectatingUsers;
       }
