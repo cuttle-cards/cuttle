@@ -43,6 +43,9 @@
                 color="surface-2"
                 :icon="iconFromGameStatus(gameStatus)"
                 :data-cy="`icon-${gameStatus}`"
+                :aria-label="`${gameStatus} icon`"
+                aria-hidden="false"
+                role="img"
               />
               {{ gameStatus }}
             </div>
