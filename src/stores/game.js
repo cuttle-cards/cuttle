@@ -50,6 +50,7 @@ class GameCard {
     this.rank = card.rank;
     this.name = str_rank + str_suit;
     this.ruleText = ruleText[card.rank - 1];
+    this.attachedTo = card.attachedTo;
   }
 }
 
