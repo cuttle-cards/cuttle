@@ -3,7 +3,11 @@
     <template #title>
       <h1>Rules of Cuttle</h1>
       <v-btn icon @click="close">
-        <v-icon icon="mdi-close" size="large" color="surface-1" />
+        <v-icon icon="mdi-close" size="large" color="surface-1" 
+          aria-label="close icon"
+          aria-hidden="false"
+          role="img"
+        />
       </v-btn>
     </template>
     <template #body>

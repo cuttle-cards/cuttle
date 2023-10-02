@@ -10,7 +10,11 @@
         icon
         variant="text"
       >
-        <v-icon class="mr-1" icon="mdi-eye-outline" size="large" />
+        <v-icon class="mr-1" icon="mdi-eye-outline" size="large"
+          aria-label="eye icon"
+          aria-hidden="false"
+          role="img"         
+        />
         <span v-if="!$vuetify.display.xs" class="pr-2">{{ spectatingUsers.length }}</span>
       </v-btn>
     </template>

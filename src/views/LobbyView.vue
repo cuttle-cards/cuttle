@@ -8,7 +8,14 @@
         <h1>
           {{ `${t('lobby.lobbyFor')}  ${gameName}` }}
           <small v-if="gameStore.isRanked" class="lobby-ranked-text">
-            (Ranked <v-icon v-if="gameStore.isRanked" size="medium">mdi-trophy</v-icon>)
+            (Ranked 
+            <v-icon v-if="gameStore.isRanked" size="medium"
+              icon="mdi-trophy"
+              aria-label="trophy icon"
+              aria-hidden="false"
+              role="img"
+            />
+            )
           </small>
         </h1>
       </v-col>
@@ -61,6 +68,9 @@
             size="small"
             icon="mdi-trophy"
             data-cy="ready-button-ranked-icon"
+            aria-label="trophy icon"
+            aria-hidden="false"
+            role="img"
           />
         </v-btn>
       </v-col>

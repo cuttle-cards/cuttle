@@ -17,7 +17,11 @@
       <template v-if="cards.length === 0">
         <div class="d-flex flex-column">
           <p>{{ emptyText }}</p>
-          <v-icon icon="mdi-cancel" size="x-large" />
+          <v-icon icon="mdi-cancel" size="x-large" 
+            aria-label="cancel icon"
+            aria-hidden="false"
+            role="img"
+          />
         </div>
       </template>
       <!-- Cards in the scrap -->

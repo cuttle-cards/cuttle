@@ -18,6 +18,9 @@
         color="black"
         class="mr-2"
         :icon="`mdi-${icon}`"
+        :aria-label="`icon for ${title} in cuttle`"
+        aria-hidden="false"
+        role="img"
       />
       <strong>{{ title }}:</strong>
       {{ description }}

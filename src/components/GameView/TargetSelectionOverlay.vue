@@ -19,7 +19,11 @@
       </v-btn>
     </div>
     <v-btn icon data-cy="cancel-target-mobile" @click="$emit('cancel')">
-      <v-icon icon="mdi-close" size="x-large" />
+      <v-icon icon="mdi-close" size="x-large"
+        aria-label="close icon"
+        aria-hidden="false"
+        role="img"       
+      />
     </v-btn>
   </div>
 </template>

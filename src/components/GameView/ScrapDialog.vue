@@ -20,7 +20,11 @@
           data-cy="close-scrap-dialog-x" 
           @click="show = false"
         >
-          <v-icon icon="mdi-close" size="large" />
+          <v-icon icon="mdi-close" size="large" 
+          aria-label="close icon"
+          aria-hidden="false"
+          role="img"           
+          />
         </v-btn>
       </div>
     </template>

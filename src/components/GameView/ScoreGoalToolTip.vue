@@ -10,7 +10,11 @@
           v-bind="props"
           variant="plain"
         >
-          <v-icon color="white" icon="mdi-information" size="small" />
+          <v-icon color="white" icon="mdi-information" size="small" 
+          aria-label="information icon"
+          aria-hidden="false"
+          role="img"           
+          />
         </v-btn>
       </template>
       <v-list class="score-goal-explanation">

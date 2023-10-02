@@ -14,6 +14,9 @@
       class="player-card-icon mr-1 mt-1"
       color="#00a5ff"
       icon="mdi-snowflake"
+      aria-label="snowflake icon"
+      aria-hidden="false"
+      role="img"
     />
     <v-overlay
       :model-value="isValidTarget"
