@@ -14,13 +14,12 @@
         size="x-large"
         data-cy="cancel-move"
         @click="$emit('cancel')"
+        aria-lable="Cancel Move"
       >
         <v-icon
           icon="mdi-close"
           size="x-large" 
-          aria-label="close icon"
-          aria-hidden="false"
-          role="img"
+          aria-hidden="true"
         />
       </v-btn>
     </div>

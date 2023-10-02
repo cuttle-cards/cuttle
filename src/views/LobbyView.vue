@@ -13,9 +13,7 @@
               v-if="gameStore.isRanked"
               size="medium"
               icon="mdi-trophy"
-              aria-label="trophy icon"
-              aria-hidden="false"
-              role="img"
+              aria-hidden="true"
             />
             )
           </small>
@@ -70,9 +68,7 @@
             size="small"
             icon="mdi-trophy"
             data-cy="ready-button-ranked-icon"
-            aria-label="trophy icon"
-            aria-hidden="false"
-            role="img"
+            aria-hidden="true"
           />
         </v-btn>
       </v-col>

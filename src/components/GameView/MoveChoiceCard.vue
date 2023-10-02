@@ -11,6 +11,7 @@
       :width="cardWidth"
       :data-move-choice="eventName"
       @click.stop="$emit('choose-move')"
+      :aria-label="`Choose Move: ${moveName}`"
     >
       <v-card-title class="d-flex justify-center">
         <h2>{{ moveName }}</h2>
@@ -20,9 +21,7 @@
           v-if="iconName"
           size="x-large"
           :icon="iconName" 
-          :aria-label="`${iconName} icon`"
-          aria-hidden="false"
-          role="img"
+          aria-hidden="true"
         />
         <p>{{ moveDescription }}</p>
         <p v-if="disabled && !!disabledExplanation" class="text-red">

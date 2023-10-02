@@ -17,15 +17,14 @@
           icon
           color="surface-1"
           elevation="0"
-          data-cy="close-scrap-dialog-x" 
+          data-cy="close-scrap-dialog-x"
+          aria-label="Close scrap dialog" 
           @click="show = false"
         >
           <v-icon
             icon="mdi-close"
             size="large" 
-            aria-label="close icon"
-            aria-hidden="false"
-            role="img"           
+            aria-hidden="true"          
           />
         </v-btn>
       </div>

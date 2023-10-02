@@ -38,9 +38,9 @@
                   color="neutral"
                   icon="mdi-window-close"
                   size="large" 
-                  aria-label="window close icon"
+                  aria-label="Show game history"
                   aria-hidden="false"
-                  role="img"
+                  role="button"
                 />
               </v-btn>
             </template>

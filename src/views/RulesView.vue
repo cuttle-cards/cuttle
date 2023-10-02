@@ -127,7 +127,7 @@
             color="black"
             class="mr-4"
             icon="mdi-delete"
-            aria-label="delete icon"
+            aria-label="one-off icon"
             aria-hidden="false"
             role="img"
           />

@@ -9,14 +9,13 @@
           icon
           v-bind="props"
           variant="plain"
+          :aria-label="`Open scoring goal menu for ${isPlayer ? 'your score' : 'your opponents score'}`"
         >
           <v-icon
             color="white"
             icon="mdi-information"
             size="small" 
-            aria-label="information icon"
-            aria-hidden="false"
-            role="img"           
+            aria-hidden="true"
           />
         </v-btn>
       </template>

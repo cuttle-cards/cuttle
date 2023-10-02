@@ -31,9 +31,7 @@
               size="x-large"
               color="red"
               icon="mdi-target" 
-              aria-label="target icon"
-              aria-hidden="false"
-              role="img"            
+              aria-hidden="true"           
             />
           </span>
           <game-card :suit="target.suit" :rank="target.rank" />

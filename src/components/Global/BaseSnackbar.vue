@@ -20,13 +20,9 @@
         icon
         variant="text"
         @click="clear"
+        aria-label="Close snackbar"
       >
-        <v-icon
-          icon="mdi-close" 
-          aria-label="close icon"
-          aria-hidden="false"
-          role="img"  
-        />
+      <v-icon icon="mdi-close" aria-hidden="true" />
       </v-btn>
     </template>
   </v-snackbar>

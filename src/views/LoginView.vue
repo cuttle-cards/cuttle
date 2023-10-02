@@ -13,9 +13,7 @@
               icon="mdi-account-circle"
               color="white"
               class="ml-2"
-              aria-label="account icon"
-              aria-hidden="false"
-              role="img" 
+              aria-hidden="true"
             />
           </v-btn>
         </nav>

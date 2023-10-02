@@ -7,16 +7,12 @@
           class="mr-8"
           size="80px"
           icon="mdi-offer"
-          aria-label="offer icon"
-          aria-hidden="false"
-          role="img"        
+          aria-hidden="true"
         />
         <v-icon
           size="80px"
           icon="mdi-help-circle"
-          aria-label="help icon"
-          aria-hidden="false"
-          role="img"         
+          aria-hidden="true"
         />
       </div>
     </template>
@@ -30,6 +26,7 @@
         :loading="loadingReject"
         data-cy="reject-stalemate"
         @click="rejectStalemate"
+        aria-lable="Reject Request"
       >
         Reject Request
       </v-btn>
@@ -40,6 +37,7 @@
         :loading="loadingAccept"
         :disabled="loadingReject"
         @click="acceptStalemate"
+        aria-lable="Accept Stalemate"
       >
         Accept Stalemate
       </v-btn>

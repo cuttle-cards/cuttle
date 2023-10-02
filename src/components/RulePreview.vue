@@ -18,7 +18,7 @@
         color="black"
         class="mr-2"
         :icon="`mdi-${icon}`"
-        :aria-label="`icon for ${title} in cuttle`"
+        :aria-label="`${title} move choice icon`"
         aria-hidden="false"
         role="img"
       />

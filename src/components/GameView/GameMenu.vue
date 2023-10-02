@@ -9,14 +9,9 @@
           v-bind="props"
           icon
           variant="text"
+          aria-label="Open Game Menu"
         >
-          <v-icon
-            color="neutral-lighten-2"
-            icon="mdi-cog" 
-            aria-label="cog icon"
-            aria-hidden="false"
-            role="img"    
-          />
+        <v-icon color="neutral-lighten-2" icon="mdi-cog" aria-hidden="true" />
         </v-btn>
       </template>
       <!-- Menu -->

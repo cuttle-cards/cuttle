@@ -20,9 +20,7 @@
           <v-icon
             icon="mdi-cancel"
             size="x-large" 
-            aria-label="cancel icon"
-            aria-hidden="false"
-            role="img"
+            aria-hidden="true"
           />
         </div>
       </template>
