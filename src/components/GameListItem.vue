@@ -24,12 +24,14 @@
             class="mr-4"
             size="medium"
             icon="mdi-trophy-variant-outline"
+            aria-hidden="true"
           />
           <v-icon
             v-else
             class="mr-4"
             size="medium"
             icon="mdi-coffee-outline"
+            aria-hidden="true"
           />
           {{ joinButtonText }}
         </v-btn>

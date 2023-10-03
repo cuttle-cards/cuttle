@@ -10,13 +10,19 @@
       :theme="isHovering ? 'light': 'dark'"
       :width="cardWidth"
       :data-move-choice="eventName"
+      :aria-label="`Choose Move: ${moveName}`"
       @click.stop="$emit('choose-move')"
     >
       <v-card-title class="d-flex justify-center">
         <h2>{{ moveName }}</h2>
       </v-card-title>
       <v-card-text class="d-flex flex-column justify-center align-center">
-        <v-icon v-if="iconName" size="x-large" :icon="iconName" />
+        <v-icon
+          v-if="iconName"
+          size="x-large"
+          :icon="iconName" 
+          aria-hidden="true"
+        />
         <p>{{ moveDescription }}</p>
         <p v-if="disabled && !!disabledExplanation" class="text-red">
           {{ disabledExplanation }}
