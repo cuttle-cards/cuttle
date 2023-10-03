@@ -37,10 +37,11 @@
     "spectate": "SPECTATEUR",
     "noGameslist": "Aucun jeu actif",
     "noSpectatelist": "Aucun jeu disponible pour regarder",
-    "createGame": "Créer un jeu",
+    "openCreateGame": "Créer un jeu",
+    "submitCreateGame": "Créer jeu",
     "players": "joueurs",
     "playAiContent":"Envie de jouer en solo? Essayer",
     "playAiLink":"jouer contre l'IA",
-    "playAiContent2":"pour apprendre les cordes du métier et tester votre courage."
+    "playAiContent2":"pour apprendre les bases et tester votre courage."
   }
 }

@@ -37,10 +37,11 @@
     "spectate": "ESPECTAR",
     "noGameslist": "Sin juegos activos",
     "noSpectatelist": "No hay juegos disponibles para ver",
-    "createGame": "Crear un juego",
+    "openCreateGame": "Crear un juego",
+    "submitCreateGame": "Crear juego",
     "players": "jugadores",
     "playAiContent":"Quieres jugar solo? Intentar",
     "playAiLink":"jugando contra la IA",
-    "playAiContent2":"para aprender las cuerdas y poner a prueba tu temple."
+    "playAiContent2":"para aprender lo básico y poner a prueba tu temple."
   }
 }

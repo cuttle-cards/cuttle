@@ -14,19 +14,19 @@
         text-color="white"
         data-cy="create-game-btn"
       >
-        {{ t('home.createGame') }}
+        {{ t('home.openCreateGame') }}
       </v-btn>
     </template>
     <template #body>
       <h4>
-        {{ t('home.playAiContent') }} 
+        {{ t('home.playAiContent') }}
         <a
           class="text-cyan-lighten-2 text-decoration-none"
           href="https://human-ai-interaction.github.io/cuttle-bot/"
           target="_blank"
         >
           {{ t('home.playAiLink') }}
-        </a> 
+        </a>
         {{ t('home.playAiContent2') }}
       </h4>
       <form name="create_game_form" class="d-flex align-center">
@@ -70,7 +70,7 @@
           variant="flat"
           @click="submitNewGame"
         >
-          {{ t('home.createGame') }}
+          {{ t('home.submitCreateGame') }}
         </v-btn>
       </v-form>
     </template>
@@ -90,12 +90,8 @@ export default {
   components: { StatsScoringDialog, BaseDialog },
   emits: ['error'],
   setup() {
-    // Vuetify has its own translation layer that isn't very good
-    // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
-    // level and utilize it this way with a composable. There may be another more global way but
-    // I haven't found anything just yet
     const { t } = useI18n();
-  return { t };
+    return { t };
   },
   data() {
     return {
@@ -106,7 +102,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useGameListStore),  
+    ...mapStores(useGameListStore),
   },
   watch: {
     isRanked(isRanked) {
@@ -119,7 +115,8 @@ export default {
   methods: {
     submitNewGame() {
       this.loading = true;
-      this.gameListStore.requestCreateGame({
+      this.gameListStore
+        .requestCreateGame({
           gameName: this.gameName,
           isRanked: this.isRanked,
         })

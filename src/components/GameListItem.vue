@@ -101,12 +101,8 @@ export default {
   },
   emits: ['error'],
   setup() {
-    // Vuetify has its own translation layer that isn't very good
-    // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
-    // level and utilize it this way with a composable. There may be another more global way but
-    // I haven't found anything just yet
     const { t } = useI18n();
-  return { t };
+    return { t };
   },
   data() {
     return {
@@ -139,7 +135,8 @@ export default {
   methods: {
     subscribeToGame() {
       this.joiningGame = true;
-      this.gameStore.requestSubscribe(this.gameId)
+      this.gameStore
+        .requestSubscribe(this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/lobby/${this.gameId}`);
@@ -151,7 +148,8 @@ export default {
     },
     spectateGame() {
       this.joiningGame = true;
-      this.gameStore.requestSpectate(this.gameId)
+      this.gameStore
+        .requestSpectate(this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/spectate/${this.gameId}`);
