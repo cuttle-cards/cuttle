@@ -122,7 +122,7 @@
                 target="_blank"
               >
                 <img class="discord" src="/img/loginView/logo-discord.svg">
-                {{ t('login.joinDiscord') }}
+                <span class="discordButton">{{ t('login.joinDiscord') }}</span>
               </v-btn>
             </v-form>
 
@@ -352,6 +352,10 @@ export default {
   max-height: 48px;
   margin-right: 18px;
 }
+
+.discordButton{
+    white-space: normal;
+  }
 
 #username-login-form {
   padding: 0;
