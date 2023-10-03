@@ -8,7 +8,8 @@
     "stats": "Estadísticas",
     "username": "Nombre de usuario",
     "password": "Contraseña",
-    "collapseMenu": "Contraer menú"
+    "collapseMenu": "Contraer menú",
+    "cancel": "Cancelar"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
@@ -35,6 +36,11 @@
     "gameFinder": "Buscador de juegos",
     "spectate": "ESPECTAR",
     "noGameslist": "Sin juegos activos",
-    "noSpectatelist": "No hay juegos disponibles para ver"
+    "noSpectatelist": "No hay juegos disponibles para ver",
+    "createGame": "Crear un juego",
+    "players": "jugadores",
+    "playAiContent":"Quieres jugar solo? Intentar",
+    "playAiLink":"jugando contra la IA",
+    "playAiContent2":"para aprender las cuerdas y poner a prueba tu temple."
   }
 }

@@ -6,7 +6,7 @@
           {{ name }}
         </p>
         <p v-if="!isSpectatable" class="text-surface-1">
-          {{ readyText }} players
+          {{ readyText }} {{t('home.players')}}
         </p>
       </v-col>
       <v-col lg="4" class="list-item__button pr-md-0">
@@ -44,7 +44,7 @@
           @click="spectateGame"
         >
           <v-icon class="mr-4" size="medium" icon="mdi-eye" />
-          Spectate
+          {{t('home.spectate')}}
         </v-btn>
       </v-col>
     </v-row>
@@ -57,6 +57,7 @@ import GameStatus from '../../utils/GameStatus.json';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useGameListStore } from '@/stores/gameList';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'GameListItem',
@@ -99,6 +100,14 @@ export default {
     },
   },
   emits: ['error'],
+  setup() {
+    // Vuetify has its own translation layer that isn't very good
+    // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
+    // level and utilize it this way with a composable. There may be another more global way but
+    // I haven't found anything just yet
+    const { t } = useI18n();
+  return { t };
+  },
   data() {
     return {
       joiningGame: false,

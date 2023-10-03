@@ -14,20 +14,20 @@
         text-color="white"
         data-cy="create-game-btn"
       >
-        Create a game
+        {{t('home.createGame')}}
       </v-btn>
     </template>
     <template #body>
       <h4>
-        Want to play solo? Try 
+        {{t('home.playAiContent')}} 
         <a
           class="text-cyan-lighten-2 text-decoration-none"
           href="https://human-ai-interaction.github.io/cuttle-bot/"
           target="_blank"
         >
-          playing vs AI
+          {{t('home.playAiLink')}}
         </a> 
-        to learn the ropes and test your mettle.
+        {{t('home.playAiContent2')}}
       </h4>
       <form name="create_game_form" class="d-flex align-center">
         <v-switch
@@ -59,7 +59,7 @@
           color="surface-1"
           @click="cancelCreateGame"
         >
-          Cancel
+          {{t('global.cancel')}}
         </v-btn>
         <v-btn
           form="create_game_form"
@@ -70,7 +70,7 @@
           variant="flat"
           @click="submitNewGame"
         >
-          Create Game
+          {{t('home.createGame')}}
         </v-btn>
       </v-form>
     </template>
@@ -83,11 +83,20 @@ import { useGameListStore } from '@/stores/gameList';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '../../utils/local-storage-utils.js';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'CreateGameDialog',
   components: { StatsScoringDialog, BaseDialog },
   emits: ['error'],
+  setup() {
+    // Vuetify has its own translation layer that isn't very good
+    // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
+    // level and utilize it this way with a composable. There may be another more global way but
+    // I haven't found anything just yet
+    const { t } = useI18n();
+  return { t };
+  },
   data() {
     return {
       show: false,
