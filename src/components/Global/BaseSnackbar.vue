@@ -19,9 +19,10 @@
         data-cy="close-snackbar"
         icon
         variant="text"
+        aria-label="Close snackbar"
         @click="clear"
       >
-        <v-icon icon="mdi-close" />
+        <v-icon icon="mdi-close" aria-hidden="true" />
       </v-btn>
     </template>
   </v-snackbar>
