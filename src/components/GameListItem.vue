@@ -6,7 +6,7 @@
           {{ name }}
         </p>
         <p v-if="!isSpectatable" class="text-surface-1">
-          {{ readyText }} {{t('home.players')}}
+          {{ readyText }} {{ t('home.players') }}
         </p>
       </v-col>
       <v-col lg="4" class="list-item__button pr-md-0">
@@ -44,7 +44,7 @@
           @click="spectateGame"
         >
           <v-icon class="mr-4" size="medium" icon="mdi-eye" />
-          {{t('home.spectate')}}
+          {{ t('home.spectate') }}
         </v-btn>
       </v-col>
     </v-row>

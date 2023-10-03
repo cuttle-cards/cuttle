@@ -14,20 +14,20 @@
         text-color="white"
         data-cy="create-game-btn"
       >
-        {{t('home.createGame')}}
+        {{ t('home.createGame') }}
       </v-btn>
     </template>
     <template #body>
       <h4>
-        {{t('home.playAiContent')}} 
+        {{ t('home.playAiContent') }} 
         <a
           class="text-cyan-lighten-2 text-decoration-none"
           href="https://human-ai-interaction.github.io/cuttle-bot/"
           target="_blank"
         >
-          {{t('home.playAiLink')}}
+          {{ t('home.playAiLink') }}
         </a> 
-        {{t('home.playAiContent2')}}
+        {{ t('home.playAiContent2') }}
       </h4>
       <form name="create_game_form" class="d-flex align-center">
         <v-switch
@@ -59,7 +59,7 @@
           color="surface-1"
           @click="cancelCreateGame"
         >
-          {{t('global.cancel')}}
+          {{ t('global.cancel') }}
         </v-btn>
         <v-btn
           form="create_game_form"
@@ -70,7 +70,7 @@
           variant="flat"
           @click="submitNewGame"
         >
-          {{t('home.createGame')}}
+          {{ t('home.createGame') }}
         </v-btn>
       </v-form>
     </template>
