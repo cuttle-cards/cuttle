@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: print dummy secret
-        run: echo \ndummy secret is ${{ secrets.BS_TEST_SECRET }}
+      - name: print if dummy secret dummy secret
+        run: echo length of dummy secret is ${{ secrets.BS_TEST_SECRET.length }}
       - name: configure git
         run: |
           git remote set-url origin https://${{ secrets.GH_PUSH_TOKEN }}@github.com/cuttle-cards/cuttle
