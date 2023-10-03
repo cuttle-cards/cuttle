@@ -2,8 +2,9 @@
   <v-menu transition="slide-x-transition">
     <template #activator="{ props }">
       <v-btn
+        :color="variant === 'light' ? 'surface-1' : 'surface-2'"
         data-cy="user-menu"
-        class="d-flex text-body-1"
+        class="d-flex text-body-1 mr-md-16"
         v-bind="props"
         variant="text"
       >
@@ -13,7 +14,7 @@
           aria-hidden="false"
           role="img"
         />
-        {{ $store.state.auth.username }}
+        {{ authStore.username }}
       </v-btn>
     </template>
     <v-list density="compact" class="bg-surface-2 text-surface-1">
@@ -53,10 +54,22 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/stores/auth';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
 import { setLocalStorage } from '../../utils/local-storage-utils';
+
+
+const authStore = useAuthStore();
+
+defineProps({
+  variant:{
+      type:String,
+      default:'light'
+    }
+});
+
 
 const { t, locale } = useI18n();
 
@@ -64,6 +77,7 @@ const changeLocale = (lang) => {
   locale.value = lang;
   setLocalStorage('preferredLocale', lang);
 };
+
 
 const menuItems = computed(() => {
   return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT }, cyName: 'Log Out' }];

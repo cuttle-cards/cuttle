@@ -6,9 +6,16 @@
       </v-col>
       <v-col md="8" class="my-auto">
         <h1>
-          Lobby for {{ gameName }}
-          <small v-if="isRanked" class="lobby-ranked-text">
-            (Ranked <v-icon v-if="isRanked" size="medium">mdi-trophy</v-icon>)
+          {{ `${t('lobby.lobbyFor')}  ${gameName}` }}
+          <small v-if="gameStore.isRanked" class="lobby-ranked-text">
+            (Ranked 
+            <v-icon
+              v-if="gameStore.isRanked"
+              size="medium"
+              icon="mdi-trophy"
+              aria-hidden="true"
+            />
+            )
           </small>
         </h1>
       </v-col>
@@ -17,7 +24,7 @@
     <v-row>
       <v-col offset="1">
         <lobby-player-indicator
-          :player-username="$store.state.auth.username"
+          :player-username="authStore.username"
           :player-ready="iAmReady"
           data-cy="my-indicator"
         />
@@ -26,8 +33,8 @@
         <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
         <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
         <lobby-player-indicator
-          :player-username="opponentUsername"
-          :player-ready="opponentIsReady"
+          :player-username="gameStore.opponentUsername"
+          :player-ready="gameStore.opponentIsReady"
           data-cy="opponent-indicator"
         />
       </v-col>
@@ -43,7 +50,7 @@
           data-cy="exit-button"
           @click="leave"
         >
-          EXIT
+          {{ t('lobby.exit') }}
         </v-btn>
       </v-col>
       <v-col cols="3">
@@ -56,11 +63,12 @@
         >
           {{ readyButtonText }}
           <v-icon
-            v-if="isRanked"
+            v-if="gameStore.isRanked"
             class="ml-1"
             size="small"
             icon="mdi-trophy"
             data-cy="ready-button-ranked-icon"
+            aria-hidden="true"
           />
         </v-btn>
       </v-col>
@@ -70,8 +78,10 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
-
+import { useI18n } from 'vue-i18n';
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
+import { useAuthStore } from '@/stores/auth';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
 
 export default {
@@ -79,29 +89,28 @@ export default {
   components: {
     LobbyPlayerIndicator,
   },
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       readying: false,
     };
   },
   computed: {
-    ...mapState({
-      isRanked: ({ game }) => game.isRanked,
-    }),
-    ...mapGetters(['opponentIsReady', 'opponentUsername']),
+    ...mapStores(useGameStore, useAuthStore),
     gameId() {
-      return this.$store.state.game.id;
+      return this.gameStore.id;
     },
     gameName() {
-      return this.$store.state.game.name;
+      return this.gameStore.name;
     },
     iAmReady() {
-      return this.$store.state.game.myPNum === 0
-        ? this.$store.state.game.p0Ready
-        : this.$store.state.game.p1Ready;
+      return this.gameStore.myPNum === 0 ? this.gameStore.p0Ready : this.gameStore.p1Ready;
     },
     readyButtonText() {
-      return this.iAmReady ? 'UNREADY' : 'READY';
+      return this.t(this.iAmReady ? 'lobby.unready' : 'lobby.ready');
     },
   },
   watch: {
@@ -120,12 +129,12 @@ export default {
   methods: {
     async ready() {
       this.readying = true;
-      await this.$store.dispatch('requestReady');
+      await this.gameStore.requestReady();
       this.readying = false;
     },
     leave() {
-      this.$store
-        .dispatch('requestLeaveLobby')
+      this.gameStore
+        .requestLeaveLobby()
         .then(() => {
           this.$router.push('/');
         })

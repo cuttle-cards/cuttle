@@ -1,10 +1,8 @@
+import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
-import {
-  getLocalStorage,
-  setLocalStorage,
-  LS_IS_RETURNING_USER_NAME,
-} from '../../../utils/local-storage-utils.js';
+import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '../../utils/local-storage-utils.js';
+import { useGameStore } from '@/stores/game';
 
 // TODO Figure out how to reconsolidate this with backend
 const getPlayerPnumByUsername = (players, username) => {
@@ -12,69 +10,32 @@ const getPlayerPnumByUsername = (players, username) => {
   return pNum > -1 ? pNum : null;
 };
 
-async function handleLogin(context, username, password, signup = false) {
-  const authType = signup ? 'signup' : 'login';
-  try {
-    const response = await fetch(`/user/${authType}`, {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-      credentials: 'include',
-    });
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw data.message;
-    }
-    await reconnectSockets();
-    // If the response was successful, the user is logged in
-    context.dispatch('setIsReturningUser');
-    context.commit('authSuccess', username);
-    return;
-  } catch (err) {
-    context.commit('clearAuth');
-    throw new Error(err);
-  }
-}
-
-export default {
-  state: {
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
     // This value will ONLY be null on the initial load
     authenticated: null,
     username: null,
     mustReauthenticate: false,
     isReturningUser: null,
-  },
-  mutations: {
-    authSuccess(state, username) {
-      state.authenticated = true;
-      state.username = username;
-    },
-    clearAuth(state) {
-      state.authenticated = false;
-      state.username = null;
-    },
-    setMustReauthenticate(state, val) {
-      state.mustReauthenticate = val;
-    },
-    setIsReturningUser(state, val) {
-      state.isReturningUser = val;
-    },
-  },
+  }),
   actions: {
-    async requestLogin(context, { username, password }) {
-      return handleLogin(context, username, password);
+    authSuccess(username) {
+      this.authenticated = true;
+      this.username = username;
+    },
+    clearAuth() {
+      this.authenticated = false;
+      this.username = null;
+    },
+    async requestLogin({ username, password }) {
+      return this.handleLogin(username, password);
     },
 
-    async requestSignup(context, { username, password }) {
-      return handleLogin(context, username, password, true);
+    async requestSignup({ username, password }) {
+      return this.handleLogin(username, password, true);
     },
 
-    async requestLogout(context) {
+    async requestLogout() {
       try {
         await fetch('/user/logout', {
           credentials: 'include',
@@ -84,39 +45,39 @@ export default {
         // so we just capture the error and allow it to clearAuth anyway
         console.error(err);
       }
-      context.commit('clearAuth');
+      this.clearAuth();
       return;
     },
-    requestReauthenticate(context, { username, password }) {
+    requestReauthenticate({ username, password }) {
       return new Promise((resolve, reject) => {
         // Assume successful login - cancel upon error
-        context.commit('authSuccess', username);
+        this.authSuccess(username);
         io.socket.get(
           '/user/reLogin',
           {
             username,
             password,
           },
-          function handleResponse(res, jwres) {
+          (res, jwres) => {
             if (jwres.statusCode === 200) {
-              context.commit('setMustReauthenticate', false);
+              const gameStore = useGameStore();
+              this.mustReauthenticate = false;
               const pNum =
-                res.pNum ?? getPlayerPnumByUsername(context.rootState.game.players, context.state.username);
+                res.pNum ?? getPlayerPnumByUsername(gameStore.players, this.username);
 
-              context.commit('setMyPNum', pNum);
+              gameStore.myPNum = pNum;
               return resolve(res);
             }
-            context.commit('clearAuth');
+            this.clearAuth();
             return reject(res.message);
           },
         );
       });
     },
-    async requestStatus(context, route) {
-      const { state } = context;
-
+    async requestStatus(route) {
+      
       // If we've authenticated before, fast fail
-      if (state.authenticated !== null) {
+      if (this.authenticated !== null) {
         return;
       }
 
@@ -130,16 +91,15 @@ export default {
         });
         const status = await response.json();
         const { authenticated, username, gameId } = status;
-
         // If the user is not authenticated, we're done here
         if (!authenticated) {
-          context.commit('clearAuth');
+          this.clearAuth();
           return;
         }
 
         // If the user is authenticated and has a username, add it to the store
         if (username) {
-          context.commit('authSuccess', username);
+          this.authSuccess(username);
         }
 
         // If the user is currently authenticated and part of a game, we need to resubscribe them
@@ -153,14 +113,15 @@ export default {
         //     - `Game.subscribe` is called
         //     - `Game.publish` is called
         if (gameId && (isGame || isLobby)) {
-          await context.dispatch('requestReauthenticate', { username }).then(({ game }) => {
-            context.commit('updateGame', game);
+          const gameStore = useGameStore();
+          await this.requestReauthenticate({ username }).then(({ game }) => {
+            gameStore.updateGame(game);
           });
         }
 
         return;
       } catch (err) {
-        context.commit('clearAuth');
+        this.clearAuth();
       }
     },
     disconnectSocket() {
@@ -169,20 +130,46 @@ export default {
     reconnectSocket() {
       io.socket.reconnect();
     },
-    getIsReturningUser(context) {
-      const { isReturningUser } = context.state;
-      if (isReturningUser === null) {
+    getIsReturningUser() {
+      if (this.isReturningUser === null) {
         const val = getLocalStorage(LS_IS_RETURNING_USER_NAME);
-        context.commit('setIsReturningUser', val);
+        this.isReturningUser = val;
         return val;
       }
     },
-    setIsReturningUser(context) {
-      const { isReturningUser } = context.state;
-      if (!isReturningUser) {
+    setIsReturningUser() {
+      if (!this.isReturningUser) {
         setLocalStorage(LS_IS_RETURNING_USER_NAME, true);
-        context.commit('setIsReturningUser', true);
+        this.isReturningUser = true;
+      }
+    },
+    async handleLogin(username, password, signup = false) {
+      const authType = signup ? 'signup' : 'login';
+      try {
+        const response = await fetch(`/user/${authType}`, {
+          method: 'POST',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+          }),
+          body: JSON.stringify({
+            username,
+            password,
+          }),
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.message;
+        }
+        await reconnectSockets();
+        // If the response was successful, the user is logged in
+        this.setIsReturningUser();
+        this.authSuccess(username);
+        return;
+      } catch (err) {
+        this.clearAuth();
+        throw new Error(err);
       }
     },
   },
-};
+});

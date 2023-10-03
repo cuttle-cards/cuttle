@@ -8,16 +8,27 @@
   >
     <template #activator>
       <v-btn
-        class="text-surface-2"
-        color="primary"
+        class="px-16 w-100"
+        color="newPrimary"
+        size="x-large"
+        text-color="white"
         data-cy="create-game-btn"
-        rounded
-        elevation="8"
       >
-        Create Game
+        Create a game
       </v-btn>
     </template>
     <template #body>
+      <h4>
+        Want to play solo? Try 
+        <a
+          class="text-cyan-lighten-2 text-decoration-none"
+          href="https://human-ai-interaction.github.io/cuttle-bot/"
+          target="_blank"
+        >
+          playing vs AI
+        </a> 
+        to learn the ropes and test your mettle.
+      </h4>
       <form name="create_game_form" class="d-flex align-center">
         <v-switch
           v-model="isRanked"
@@ -67,6 +78,8 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useGameListStore } from '@/stores/gameList';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '../../utils/local-storage-utils.js';
@@ -83,6 +96,9 @@ export default {
       isRanked: false,
     };
   },
+  computed: {
+    ...mapStores(useGameListStore),  
+  },
   watch: {
     isRanked(isRanked) {
       this.setRankedPreference(isRanked);
@@ -94,8 +110,7 @@ export default {
   methods: {
     submitNewGame() {
       this.loading = true;
-      this.$store
-        .dispatch('requestCreateGame', {
+      this.gameListStore.requestCreateGame({
           gameName: this.gameName,
           isRanked: this.isRanked,
         })

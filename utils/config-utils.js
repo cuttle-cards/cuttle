@@ -11,8 +11,8 @@ export function initCuttleGlobals(app) {
     // Expose app for debugging/testing in lower envs
     app: test ? app : null,
     test,
-  };
 
+  };
   window.cuttle = cuttle;
 
   // Connect the devtools -- non-prod only
@@ -24,4 +24,5 @@ export function initCuttleGlobals(app) {
       console.warn('Failed to connect vue devtools - try running npm run start:devtools');
     }
   }
+
 }

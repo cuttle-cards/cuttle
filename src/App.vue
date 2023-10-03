@@ -1,37 +1,52 @@
 <template>
   <v-app id="app">
-    <the-header v-if="showNav" />
+    <the-header v-if="showNav" :variant="variant" />
     <v-main>
       <router-view />
     </v-main>
-    <the-footer v-if="showNav && isSmallDevice" />
+    <the-footer v-if="showNav && isSmallDevice" :variant="variant" />
   </v-app>
 </template>
 
 <script>
 import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
+import { useGameStore } from '@/stores/game';
+import { useAuthStore } from '@/stores/auth';
+import { useGameListStore } from '@/stores/gameList';
 
 export default {
   components: {
     TheHeader,
-    TheFooter
+    TheFooter,
   },
-  data(){
-    return{
+  data() {
+    return {
       showNav: false,
     };
   },
-  computed:{
+  computed: {
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
+    variant() {
+      const isHomeView = this.$router.currentRoute.value.name === 'Home';
+      return isHomeView ? 'light' : 'dark'; 
+    }
   },
-  watch:{
-  '$route.meta'({hideNavigation}){
-    this.showNav = !hideNavigation;
-  }
- }
+  watch: {
+    '$route.meta'({ hideNavigation }) {
+      this.showNav = !hideNavigation;
+    },
+  },
+  created() {
+    //Pass store to window object on testing
+    if (window.Cypress) {
+      window.cuttle.gameStore = useGameStore();
+      window.cuttle.authStore = useAuthStore();
+      window.cuttle.gameListStore = useGameListStore();
+    }
+  },
 };
 </script>
 
@@ -44,7 +59,6 @@ export default {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 
 /* v-main automatically applies a min-height attribute of '100vh' to the '.v-application--wrap' class below */
 /* This can be an issue on mobile devices, as 'vh' unit does not account for the url bar in mobile browsers */

@@ -1,26 +1,19 @@
 <template>
   <div>
     <v-row class="list-item" data-cy="game-list-item">
-      <v-col v-if="$vuetify.display.lgAndUp" sm="2" lg="3">
-        <v-img
-          src="/img/logo-head.svg"
-          class="my-1"
-          cover
-          :width="62"
-        />
-      </v-col>
-      <v-col sm="7" lg="6" class="list-item__inner-text">
-        <p class="game-name" data-cy="game-list-item-name">
+      <v-col lg="8" class="list-item__inner-text">
+        <p class="game-name text-surface-1" data-cy="game-list-item-name">
           {{ name }}
         </p>
-        <p v-if="!isSpectatable">
+        <p v-if="!isSpectatable" class="text-surface-1">
           {{ readyText }} players
         </p>
       </v-col>
-      <v-col cols="3" class="list-item__button">
+      <v-col lg="4" class="list-item__button pr-md-0">
         <!-- Join Button -->
         <v-btn
           v-if="!isSpectatable"
+          class="w-100"
           v-bind="buttonAttrs"
           :disabled="gameIsFull"
           :data-cy-join-game="gameId"
@@ -30,13 +23,22 @@
             v-if="isRanked"
             class="mr-4"
             size="medium"
-            icon="mdi-trophy"
+            icon="mdi-trophy-variant-outline"
+            aria-hidden="true"
+          />
+          <v-icon
+            v-else
+            class="mr-4"
+            size="medium"
+            icon="mdi-coffee-outline"
+            aria-hidden="true"
           />
           {{ joinButtonText }}
         </v-btn>
         <!-- Spectate Button -->
         <v-btn
           v-else
+          class="w-100"
           v-bind="buttonAttrs"
           :data-cy-spectate-game="gameId"
           :data-cy-join-game="gameId"
@@ -48,12 +50,15 @@
         </v-btn>
       </v-col>
     </v-row>
-    <v-divider class="mb-4" />
+    <v-divider color="surface-1" class="mb-4 mx-2 border-opacity-100 px-5" />
   </div>
 </template>
 
 <script>
-import GameStatus  from '../../utils/GameStatus.json';
+import GameStatus from '../../utils/GameStatus.json';
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
+import { useGameListStore } from '@/stores/gameList';
 
 export default {
   name: 'GameListItem',
@@ -102,6 +107,7 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useGameStore, useGameListStore),
     numPlayersReady() {
       return this.p0ready + this.p1ready;
     },
@@ -109,12 +115,11 @@ export default {
       return `${this.numPlayers} / 2`;
     },
     joinButtonText() {
-      return this.isRanked ? 'Play Ranked' : 'Play';
+      return this.isRanked ? 'Join Ranked' : 'Join Casual';
     },
     buttonAttrs() {
       return {
-        color: 'primary',
-        rounded: true,
+        color: 'surface-1',
         variant: 'outlined',
         minWidth: '200',
         loading: this.joiningGame,
@@ -127,8 +132,7 @@ export default {
   methods: {
     subscribeToGame() {
       this.joiningGame = true;
-      this.$store
-        .dispatch('requestSubscribe', this.gameId)
+      this.gameStore.requestSubscribe(this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/lobby/${this.gameId}`);
@@ -140,8 +144,7 @@ export default {
     },
     spectateGame() {
       this.joiningGame = true;
-      this.$store
-        .dispatch('requestSpectate', this.gameId)
+      this.gameStore.requestSpectate(this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/spectate/${this.gameId}`);
@@ -149,7 +152,7 @@ export default {
         .catch((error) => {
           this.joiningGame = false;
           this.$emit('error', error);
-          this.$store.commit('gameFinished', this.gameId);
+          this.gameListStore.gameFinished(this.gameId);
         });
     },
   },
@@ -165,9 +168,9 @@ export default {
   word-break: break-all;
   & .game-name {
     font-weight: 600;
-    font-size: 1.1em;
+    font-size: 1.5em;
     text-align: left;
-    width: 60%;
+    // width: 60%;
     padding-right: 1rem;
   }
   & p {
@@ -175,7 +178,7 @@ export default {
     margin: 3px auto;
   }
   &__inner-text {
-    display: flex;
+    // display: flex;
     align-items: center;
     padding-bottom: 1rem;
     padding-top: 0.25rem;
@@ -183,7 +186,7 @@ export default {
   &__button {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
     margin-top: 0;
     padding-top: 0.5rem;
   }
@@ -191,11 +194,11 @@ export default {
 
 @media (min-width: 1264px) {
   .list-item {
-    max-width: 95%;
+    max-width: 100%;
     flex-direction: row;
-    padding: 0;
+    padding: 10px 10px;
     & .game-name {
-      font-size: 1rem;
+      font-size: 1.5rem;
       margin-bottom: 1rem;
       width: 100%;
     }

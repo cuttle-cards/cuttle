@@ -9,8 +9,9 @@
           v-bind="props"
           icon
           variant="text"
+          aria-label="Open Game Menu"
         >
-          <v-icon color="neutral-lighten-2" icon="mdi-cog" />
+          <v-icon color="neutral-lighten-2" icon="mdi-cog" aria-hidden="true" />
         </v-btn>
       </template>
       <!-- Menu -->
@@ -69,6 +70,8 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import RulesDialog from '@/components/RulesDialog.vue';
 export default {
@@ -91,6 +94,7 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useGameStore),
     showEndGameDialog:{
       get() {
         return this.showConcedeDialog || this.showStalemateDialog;
@@ -145,16 +149,16 @@ export default {
     },
     async concede() {
       this.loading = true;
-      await this.$store.dispatch('requestConcede');
+      await this.gameStore.requestConcede();
       this.shownDialog = '';
     },
     async requestStalemate() {
       this.loading = true;
       try {
-        await this.$store.dispatch('requestStalemate');
-        this.$store.commit('setWaitingForOpponentToStalemate', true);
+        await this.gameStore.requestStalemate();
+        this.gameStore.waitingForOpponentToStalemate = true;
       } catch (e) {
-        this.$store.commit('setWaitingForOpponentToStalemate', false);
+        this.gameStore.waitingForOpponentToStalemate = false;
       }
       this.loading = false;
       this.shownDialog = '';
@@ -162,7 +166,7 @@ export default {
     async stopSpectate() {
       try {
         this.loading = true;
-        await this.$store.dispatch('requestSpectateLeave');
+        await this.gameStore.requestSpectateLeave();
       } finally {
         this.loading = false;
         this.$router.push('/');

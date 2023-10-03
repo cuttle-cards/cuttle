@@ -1,6 +1,5 @@
 import devtools from '@vue/devtools';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-
 import { version } from '_/package.json';
 import { initCuttleGlobals } from '_/utils/config-utils';
 
@@ -12,7 +11,6 @@ const mockConsole = {
 };
 
 describe('initCuttleGlobals', () => {
-
   beforeEach(() => {
     vi.stubEnv('VITE_ENV', 'production');
     vi.stubGlobal('window', mockWindow);
@@ -73,5 +71,4 @@ describe('initCuttleGlobals', () => {
     initCuttleGlobals();
     expect(spyWarn).toHaveBeenCalled();
   });
-
 });

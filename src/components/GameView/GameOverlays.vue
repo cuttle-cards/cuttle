@@ -21,7 +21,7 @@
 
     <v-overlay
       id="waiting-for-opponent-counter-scrim"
-      v-model="waitingForOpponentToCounter"
+      v-model="gameStore.waitingForOpponentToCounter"
       class="d-flex flex-column justify-center align-center"
       scrim="surface-1"
     >
@@ -30,16 +30,16 @@
       </h1>
       <div id="counter-scrim-cards">
         <game-card
-          v-if="oneOff"
-          :rank="oneOff.rank"
-          :suit="oneOff.suit"
-          :data-overlay-one-off="`${oneOff.rank}-${oneOff.suit}`"
-          :jacks="twos"
+          v-if="gameStore.oneOff"
+          :rank="gameStore.oneOff.rank"
+          :suit="gameStore.oneOff.suit"
+          :data-overlay-one-off="`${gameStore.oneOff.rank}-${gameStore.oneOff.suit}`"
+          :jacks="gameStore.twos"
           class="overlay-card"
         />
         <div>
           <game-card
-            v-for="(two, index) in twos"
+            v-for="(two, index) in gameStore.twos"
             :key="`overlay-two-${two.id}`"
             :rank="two.rank"
             :suit="two.suit"
@@ -53,7 +53,7 @@
 
     <v-overlay
       id="waiting-for-opponent-discard-scrim"
-      v-model="waitingForOpponentToDiscard"
+      v-model="gameStore.waitingForOpponentToDiscard"
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
@@ -63,7 +63,7 @@
 
     <v-overlay
       id="waiting-for-opponent-resolve-three-scrim"
-      v-model="waitingForOpponentToPickFromScrap"
+      v-model="gameStore.waitingForOpponentToPickFromScrap"
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
@@ -93,7 +93,7 @@
 
     <v-overlay
       id="waiting-for-opponent-stalemate-scrim"
-      v-model="waitingForOpponentToStalemate"
+      v-model="gameStore.waitingForOpponentToStalemate"
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
@@ -106,10 +106,10 @@
       :model-value="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
       :selected-card="selectedCard || cardSelectedFromDeck"
       :card-selected-from-deck="cardSelectedFromDeck"
-      :is-players-turn="isPlayersTurn"
-      :opponent-queen-count="opponentQueenCount"
-      :frozen-id="player.frozenId"
-      :playing-from-deck="playingFromDeck"
+      :is-players-turn="gameStore.isPlayersTurn"
+      :opponent-queen-count="gameStore.opponentQueenCount"
+      :frozen-id="gameStore.player.frozenId"
+      :playing-from-deck="gameStore.playingFromDeck"
       @points="$emit('points')"
       @face-card="$emit('face-card')"
       @scuttle="handleTargeting"
@@ -122,7 +122,8 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
 
 import MoveChoiceOverlay from '@/components/GameView/MoveChoiceOverlay.vue';
 import GameCard from '@/components/GameView/GameCard.vue';
@@ -156,49 +157,29 @@ export default {
   computed: {
     // Since we're not using namespacing, we need to destructure the game module
     // off of the global state to directly access the state values
-    ...mapState({
-      waitingForOpponentToCounter: ({ game }) => game.waitingForOpponentToCounter,
-      waitingForOpponentToDiscard: ({ game }) => game.waitingForOpponentToDiscard,
-      waitingForOpponentToPickFromScrap: ({ game }) => game.waitingForOpponentToPickFromScrap,
-      waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
-      waitingForOpponentToStalemate: ({ game }) => game.waitingForOpponentToStalemate,
-      topCard: ({ game }) => game.topCard,
-      secondCard: ({ game }) => game.secondCard,
-      oneOff: ({ game }) => game.oneOff,
-      twos: ({ game }) => game.twos,
-      playingFromDeck: ({ game }) => game.playingFromDeck,
-    }),
-    ...mapGetters([
-      'isPlayersTurn',
-      'playerQueenCount',
-      'opponentQueenCount',
-      'opponentPointTotal',
-      'opponent',
-      'hasGlassesEight',
-      'player',
-    ]),
+    ...mapStores(useGameStore),
     waitingForGameToStart() {
-      return !(this.$store.state.game.p0Ready && this.$store.state.game.p1Ready);
+      return !(this.gameStore.p0Ready && this.gameStore.p1Ready);
     },
     showWaitingForOpponetToCounterMessage() {
       const mayCounter = 'Opponent May Counter';
       const mustResolve = 'Opponent Must Resolve';
-      const opponentHasTwo = this.opponent.hand.some((card) => card.rank === 2);
-      if (this.playerQueenCount || (this.hasGlassesEight && !opponentHasTwo)) {
+      const opponentHasTwo = this.gameStore.opponent.hand.some((card) => card.rank === 2);
+      if (this.gameStore.playerQueenCount || (this.gameStore.hasGlassesEight && !opponentHasTwo)) {
         return mustResolve;
       }
       return mayCounter;
     },
     showWaitingForOpponentToDiscardJackFromDeck() {
       return (
-        this.waitingForOpponentToPlayFromDeck &&
-        this.topCard.rank === 11 &&
-        (!this.secondCard || this.secondCard.rank === 11) &&
-        (this.opponentPointTotal === 0 || this.opponentQueenCount > 0)
+        this.gameStore.waitingForOpponentToPlayFromDeck &&
+        this.gameStore.topCard.rank === 11 &&
+        (!this.gameStore.secondCard || this.gameStore.secondCard.rank === 11) &&
+        (this.gameStore.opponentPointTotal === 0 || this.gameStore.opponentQueenCount > 0)
       );
     },
     showWaitingForOpponentToPlayFromDeck() {
-      return this.waitingForOpponentToPlayFromDeck && !this.showWaitingForOpponentToDiscardJackFromDeck;
+      return this.gameStore.waitingForOpponentToPlayFromDeck && !this.showWaitingForOpponentToDiscardJackFromDeck;
     },
   },
   methods: {
@@ -208,11 +189,11 @@ export default {
     async goHome() {
       this.leavingGame = true;
       try {
-        await this.$store.dispatch('requestUnsubscribeFromGame');
+        await this.gameStore.requestUnsubscribeFromGame();
       } finally {
         this.leavingGame = false;
         this.$router.push('/');
-        this.$store.commit('setGameOver', {
+        this.gameStore.setGameOver({
           gameOver: false,
           conceded: false,
           winner: null,

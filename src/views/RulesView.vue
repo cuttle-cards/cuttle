@@ -89,6 +89,9 @@
             color="black"
             class="mr-4"
             icon="mid-crown"
+            aria-label="crown icon"
+            aria-hidden="false"
+            role="img"
           />
           <h1 class="gradient-text">
             Royals
@@ -124,6 +127,9 @@
             color="black"
             class="mr-4"
             icon="mdi-delete"
+            aria-label="one-off icon"
+            aria-hidden="false"
+            role="img"
           />
           <h1 class="gradient-text">
             One-Offs
@@ -288,6 +294,8 @@
   </div>
 </template>
 <script>
+import { mapStores } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 import RulePreview from '@/components/RulePreview.vue';
 import BaseVideo from '../components/Global/BaseVideo.vue';
 
@@ -298,8 +306,9 @@ export default {
     BaseVideo
 },
   computed: {
+    ...mapStores(useAuthStore),
     buttonText() {
-      if (this.$store.state.auth.username) {
+      if (this.authStore.username) {
         return 'Find a Game';
       }
       return 'Sign Up to Play Online';

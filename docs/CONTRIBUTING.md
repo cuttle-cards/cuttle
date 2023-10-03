@@ -129,7 +129,7 @@ For other tests, it may be valuable to seed the database directly with records f
 
 Once your changes are ready, don't forget run the linter `npm run lint:fix` so the code is automatically formatted. Then you will need to run the test suites so that your changes are not breaking them. You may also create new tests or update any tests due to new behavioral changes.
 
-To run the test suite, start by running the cmd `npm run start:server`. This will start the node server. Then you can run either `npm run e2e:client` or `npm run e2e:gui`. After all the tests has pass, you can self-review the changes yourself to speed up the review process:zap:.
+To run the test suite, start by running the cmd `npm run start:server`. This will start the node server. Then you can run either `npm run e2e:client` or `npm run e2e:gui`. After all the tests have passed, you can self-review the changes yourself to speed up the review process:zap:.
 
 Now, commit the changes once you are happy with them.
 
