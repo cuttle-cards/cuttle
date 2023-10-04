@@ -343,7 +343,6 @@ export const useGameStore = defineStore('game', {
           if (jwres.statusCode === 200) {
             return resolve(res);
           }
-          console.log(res);
           const modeName = isRanked ? 'ranked' : 'casual';
           return reject(new Error(`Unable to change game to ${modeName}`));
         });
