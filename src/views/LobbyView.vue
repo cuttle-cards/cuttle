@@ -88,7 +88,6 @@
       :message="`${t('lobby.rankedChangedAlert')} ${gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')}`"
       color="surface-1"
       data-cy="edit-snackbar"
-      location="top right"
     />
   </v-container>
 </template>
