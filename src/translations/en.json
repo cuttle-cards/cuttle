@@ -8,7 +8,8 @@
     "stats": "Stats",
     "username": "Username",
     "password": "Password",
-    "collapseMenu": "Collapse Menu"
+    "collapseMenu": "Collapse Menu",
+    "cancel": "Cancel"
   },
   "login": {
     "noAccount": "Don't have an account?",
@@ -33,5 +34,17 @@
     "ranked": "Ranked",
     "casual": "Casual",
     "rankedChangedAlert":"Game Mode changed to"
+  },
+  "home":{
+    "gameFinder": "Game Finder",
+    "spectate": "SPECTATE",
+    "noGameslist": "No Active Games",
+    "noSpectatelist": "No Games Available to Spectate",
+    "openCreateGame ": "Create a game",
+    "submitCreateGame": "Create game",
+    "players": "players",
+    "playAiContent":"Want to play solo? Try",
+    "playAiLink":"playing vs AI",
+    "playAiContent2":"to learn the ropes and test your mettle."
   }
 }

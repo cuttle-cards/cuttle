@@ -8,7 +8,8 @@
     "stats": "Estadísticas",
     "username": "Nombre de usuario",
     "password": "Contraseña",
-    "collapseMenu": "Contraer menú"
+    "collapseMenu": "Contraer menú",
+    "cancel": "Cancelar"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
@@ -33,5 +34,17 @@
     "ranked": "Clasificado",
     "casual": "Casual",
     "rankedChangedAlert":"Modo de juego cambió a"
+  },
+  "home": {
+    "gameFinder": "Buscador de juegos",
+    "spectate": "ESPECTAR",
+    "noGameslist": "Sin juegos activos",
+    "noSpectatelist": "No hay juegos disponibles para ver",
+    "openCreateGame": "Crear un juego",
+    "submitCreateGame": "Crear juego",
+    "players": "jugadores",
+    "playAiContent":"Quieres jugar solo? Intentar",
+    "playAiLink":"jugando contra la IA",
+    "playAiContent2":"para aprender lo básico y poner a prueba tu temple."
   }
 }
