@@ -9,7 +9,9 @@
     "username": "Nom d'utilisateur",
     "password": "Mot de passe",
     "collapseMenu": "Réduire le menu",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "ranked": "Classé",
+    "casual": "Occasionnel"
   },
   "login": {
     "noAccount": "Vous n'avez pas de compte ?",
@@ -31,8 +33,6 @@
     "unready": "PAS PRÊT",
     "exit": "SORTIE",
     "invite": "Inviter",
-    "ranked": "Classé",
-    "casual": "Occasionnel",
     "rankedChangedAlert":"Jeu mode modifié à"
   },
   "home": {
@@ -45,6 +45,8 @@
     "players": "joueurs",
     "playAiContent":"Envie de jouer en solo? Essayer",
     "playAiLink":"jouer contre l'IA",
-    "playAiContent2":"pour apprendre les bases et tester votre courage."
+    "playAiContent2":"pour apprendre les bases et tester votre courage.",
+    "gameName": "Jeu Nom",
+    "join": "Rejoindre"
   }
 }

@@ -9,7 +9,9 @@
     "username": "Username",
     "password": "Password",
     "collapseMenu": "Collapse Menu",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "ranked": "Ranked",
+    "casual": "Casual"
   },
   "login": {
     "noAccount": "Don't have an account?",
@@ -31,8 +33,6 @@
     "unready": "UNREADY",
     "exit": "EXIT",
     "invite": "Invite",
-    "ranked": "Ranked",
-    "casual": "Casual",
     "rankedChangedAlert":"Game Mode changed to"
   },
   "home":{
@@ -45,6 +45,8 @@
     "players": "players",
     "playAiContent":"Want to play solo? Try",
     "playAiLink":"playing vs AI",
-    "playAiContent2":"to learn the ropes and test your mettle."
+    "playAiContent2":"to learn the ropes and test your mettle.",
+    "gameName": "Game Name",
+    "join":"Join"
   }
 }

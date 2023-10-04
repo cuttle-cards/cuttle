@@ -11,7 +11,7 @@
             <v-switch
               v-model="gameStore.isRanked"
               class="mx-4"
-              :label="gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')"
+              :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
               data-cy="edit-game-ranked-switch"
               color="primary"
               hide-details
