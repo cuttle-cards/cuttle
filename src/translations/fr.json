@@ -31,6 +31,7 @@
     "exit": "SORTIE",
     "invite": "Inviter",
     "ranked": "Classé",
-    "casual": "Occasionnel"
+    "casual": "Occasionnel",
+    "rankedChangedAlert":"Jeu mode modifié à"
   }
 }

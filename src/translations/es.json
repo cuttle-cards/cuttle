@@ -31,6 +31,7 @@
     "exit": "SALIR",
     "invite": "Invitar",
     "ranked": "Clasificado",
-    "casual": "Casual"
+    "casual": "Casual",
+    "rankedChangedAlert":"Modo de juego cambió a"
   }
 }

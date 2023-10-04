@@ -24,7 +24,7 @@
       <v-col offset="5">
         <v-switch
           v-model="gameStore.isRanked"
-          :label="gameStore.isRanked ? 'Ranked' : 'Normal'"
+          :label="gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')"
           data-cy="edit-game-ranked-switch"
           color="primary"
           @update:model-value="setIsRanked"
@@ -88,7 +88,7 @@
     <BaseSnackbar
       v-model="gameStore.showIsRankedChangedAlert"
       :timeout="2000"
-      :message="`Game Mode changed to ${gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')}`"
+      :message="`${t('lobby.rankedChangedAlert')} ${gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')}`"
       color="surface-1"
       data-cy="edit-snackbar"
       location="top"
