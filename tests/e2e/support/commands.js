@@ -276,6 +276,26 @@ Cypress.Commands.add('readyOpponent', (id) => {
     );
   });
 });
+Cypress.Commands.add('setIsRankedOpponent', (isRanked) => {
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.post('/game/setIsRanked',{
+      isRanked,
+    }, (res, jwres) => {
+      if (jwres.statusCode === 200) {
+        return resolve(res);
+      }
+      return reject(new Error('Error Changing game mode'));
+    });
+  });
+});
+Cypress.Commands.add('toggleInput', (selector, checked = false) => {
+  const before = checked ? 'be.checked' : 'not.be.checked';
+  const after = checked ? 'not.be.checked' : 'be.checked';
+  cy.get(`${selector} input`)
+    .should(before)
+    .click({ force: true }) // Force to click hidden input inside switch
+    .should(after);
+});
 
 Cypress.Commands.add('leaveLobbyOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {

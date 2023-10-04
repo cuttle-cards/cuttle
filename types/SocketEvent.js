@@ -10,6 +10,7 @@ export default {
   POINTS: 'points',
   RE_LOGIN: 'reLogin',
   READY: 'ready',
+  SET_IS_RANKED: 'setIsRanked',
   REJECT_STALEMATE: 'rejectStalemate',
   REQUEST_STALEMATE: 'requestStalemate',
   RESOLVE: 'resolve',

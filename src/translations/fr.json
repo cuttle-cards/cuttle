@@ -30,7 +30,10 @@
     "ready": "PRÊT",
     "unready": "PAS PRÊT",
     "exit": "SORTIE",
-    "invite": "Inviter"
+    "invite": "Inviter",
+    "ranked": "Classé",
+    "casual": "Occasionnel",
+    "rankedChangedAlert":"Jeu mode modifié à"
   },
   "home": {
     "gameFinder": "Recherche de jeu",

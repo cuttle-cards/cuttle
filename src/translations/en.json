@@ -30,7 +30,10 @@
     "ready": "READY",
     "unready": "UNREADY",
     "exit": "EXIT",
-    "invite": "Invite"
+    "invite": "Invite",
+    "ranked": "Ranked",
+    "casual": "Casual",
+    "rankedChangedAlert":"Game Mode changed to"
   },
   "home":{
     "gameFinder": "Game Finder",
