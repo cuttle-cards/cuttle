@@ -11,7 +11,6 @@ module.exports = async function (req, res) {
     sails.sockets.blast('setIsRanked', { gameId: game.id, isRanked: isRanked });
     
     Game.publish([game.id], {
-      change:'setIsRanked',
       userId: req.session.usr,
       pNum: req.session.pNum,
       gameId: game.id,
