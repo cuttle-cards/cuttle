@@ -2,7 +2,7 @@
   <base-dialog
     :id="`create-game-dialog`"
     v-model="show"
-    title="Create Game"
+    :title="t('home.submitCreateGame')"
     :opacity="1"
     data-cy="create-game-dialog"
   >
@@ -32,7 +32,7 @@
       <form name="create_game_form" class="d-flex align-center">
         <v-switch
           v-model="isRanked"
-          :label="isRanked ? 'Ranked' : 'Normal'"
+          :label="isRanked ? t('global.ranked') : t('global.casual')"
           data-cy="create-game-ranked-switch"
           color="surface-2"
         />
@@ -44,7 +44,7 @@
           name="game-name"
           autofocus
           :disabled="loading"
-          label="Game Name"
+          :label="t('home.gameName')"
           variant="outlined"
           data-cy="game-name-input"
         />

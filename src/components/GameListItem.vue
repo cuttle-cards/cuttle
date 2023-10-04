@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="list-item" data-cy="game-list-item">
-      <v-col lg="8" class="list-item__inner-text">
+      <v-col lg="6" class="list-item__inner-text">
         <p class="game-name text-surface-1" data-cy="game-list-item-name">
           {{ name }}
         </p>
@@ -9,7 +9,7 @@
           {{ readyText }} {{ t('home.players') }}
         </p>
       </v-col>
-      <v-col lg="4" class="list-item__button pr-md-0">
+      <v-col lg="6" class="list-item__button pr-md-0">
         <!-- Join Button -->
         <v-btn
           v-if="!isSpectatable"
@@ -120,7 +120,7 @@ export default {
       return `${this.numPlayers} / 2`;
     },
     joinButtonText() {
-      return this.isRanked ? 'Join Ranked' : 'Join Casual';
+      return `${this.t('home.join')} ${this.isRanked ? this.t('global.ranked') : this.t('global.casual')}`;
     },
     buttonAttrs() {
       return {

@@ -9,7 +9,9 @@
     "username": "Nombre de usuario",
     "password": "Contraseña",
     "collapseMenu": "Contraer menú",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "ranked": "Clasificado",
+    "casual": "Casual"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
@@ -31,8 +33,6 @@
     "unready": "NO PREPARADO",
     "exit": "SALIR",
     "invite": "Invitar",
-    "ranked": "Clasificado",
-    "casual": "Casual",
     "rankedChangedAlert":"Modo de juego cambió a"
   },
   "home": {
@@ -45,6 +45,8 @@
     "players": "jugadores",
     "playAiContent":"Quieres jugar solo? Intentar",
     "playAiLink":"jugando contra la IA",
-    "playAiContent2":"para aprender lo básico y poner a prueba tu temple."
+    "playAiContent2":"para aprender lo básico y poner a prueba tu temple.",
+    "gameName": "Juego Nombre",
+    "join": "Unirse"
   }
 }

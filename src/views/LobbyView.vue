@@ -11,7 +11,7 @@
             <v-switch
               v-model="gameStore.isRanked"
               class="mx-4"
-              :label="gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')"
+              :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
               data-cy="edit-game-ranked-switch"
               color="primary"
               hide-details
@@ -49,8 +49,8 @@
     </v-row>
     <!-- Buttons -->
     <v-row class="mt-4">
-      <v-spacer />
-      <v-col cols="3" offset="1">
+      <v-spacer v-if="this.$vuetify.display.smAndUp" />
+      <v-col sm="3" cols="6" offset-sm="1">
         <v-btn
           :disabled="readying"
           variant="outlined"
@@ -61,7 +61,7 @@
           {{ t('lobby.exit') }}
         </v-btn>
       </v-col>
-      <v-col cols="3">
+      <v-col sm="3" cols="6">
         <v-btn
           :loading="readying"
           contained
@@ -80,15 +80,14 @@
           />
         </v-btn>
       </v-col>
-      <v-spacer />
+      <v-spacer v-if="this.$vuetify.display.smAndUp" />
     </v-row>
     <BaseSnackbar
       v-model="gameStore.showIsRankedChangedAlert"
       :timeout="2000"
-      :message="`${t('lobby.rankedChangedAlert')} ${gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')}`"
+      :message="`${t('lobby.rankedChangedAlert')} ${gameStore.isRanked ? t('global.ranked') : t('global.casual')}`"
       color="surface-1"
       data-cy="edit-snackbar"
-      location="top right"
     />
   </v-container>
 </template>
