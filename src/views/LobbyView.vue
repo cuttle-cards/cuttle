@@ -5,32 +5,29 @@
         <img id="logo" alt="Cuttle logo" src="/img/logo.png">
       </v-col>
       <v-col md="8" class="my-auto">
-        <h1>
+        <h1 class="d-sm-flex align-center">
           {{ `${t('lobby.lobbyFor')}  ${gameName}` }}
-          <small v-if="gameStore.isRanked" class="lobby-ranked-text">
-            (Ranked 
+          <small class="lobby-ranked-text d-flex align-center">
+            <v-switch
+              v-model="gameStore.isRanked"
+              class="mx-4"
+              :label="gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')"
+              data-cy="edit-game-ranked-switch"
+              color="primary"
+              hide-details
+              @update:model-value="setIsRanked"
+            />
             <v-icon
-              v-if="gameStore.isRanked"
+              class="mx-1"
               size="medium"
-              icon="mdi-trophy"
+              :icon="`mdi-${gameStore.isRanked ? 'trophy' : 'coffee'}`"
               aria-hidden="true"
             />
-            )
           </small>
         </h1>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col offset="5">
-        <v-switch
-          v-model="gameStore.isRanked"
-          :label="gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')"
-          data-cy="edit-game-ranked-switch"
-          color="primary"
-          @update:model-value="setIsRanked"
-        />
-      </v-col>
-    </v-row>
+
     <!-- Usernames -->
     <v-row>
       <v-col offset="1">
@@ -91,7 +88,7 @@
       :message="`${t('lobby.rankedChangedAlert')} ${gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')}`"
       color="surface-1"
       data-cy="edit-snackbar"
-      location="top"
+      location="top right"
     />
   </v-container>
 </template>
