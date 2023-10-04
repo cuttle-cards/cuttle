@@ -66,7 +66,7 @@ describe('Lobby - Page Content (Ranked)', () => {
     cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
   });
   
-  it('Checks Edit Game Mode', () => {
+  it('Changes games to ranked and casual from the lobby', () => {
     // Set To Casual Mode
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
     cy.contains('h1 small', 'Ranked').should('not.exist');
@@ -159,7 +159,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
   });
-  it('Shows when oppenent Changes Mode', function () {
+  it('Shows when opponent changes game to ranked or casual', function () {
     // Opponent subscribes & Changes Mode
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
@@ -167,7 +167,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.contains('h1 small', 'Ranked').should('not.exist');
     cy.get('[data-cy=ready-button-ranked-icon]').should('not.exist');
     
-    cy.modeChangeOpponent(true);
+    cy.setIsRankedOpponent(true);
 
     cy.contains('h1 small', 'Ranked');
     cy.get('[data-cy=ready-button-ranked-icon]').should('exist');

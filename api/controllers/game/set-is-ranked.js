@@ -6,6 +6,10 @@ module.exports = async function (req, res) {
   
     const gameUpdates = { isRanked };
 
+    await Game.updateOne({ id: game.id }).set(gameUpdates);
+    
+    sails.sockets.blast('setIsRanked', { gameId: game.id, isRanked: isRanked });
+    
     Game.publish([game.id], {
       change:'setIsRanked',
       userId: req.session.usr,
@@ -13,7 +17,6 @@ module.exports = async function (req, res) {
       gameId: game.id,
       isRanked: isRanked,
     });
-    await Game.updateOne({ id: game.id }).set(gameUpdates);
 
     return res.ok();
   } catch (err) {

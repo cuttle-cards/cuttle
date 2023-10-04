@@ -31,7 +31,8 @@ export async function handleInGameEvents(evData) {
       return;
     }
     case SocketEvent.SET_IS_RANKED: {
-      gameStore.updateMode(evData.isRanked);
+      gameStore.isRanked = evData.isRanked;
+      gameStore.showIsRankedChangedAlert = true;
       return;
     }
     case SocketEvent.INITIALIZE: {

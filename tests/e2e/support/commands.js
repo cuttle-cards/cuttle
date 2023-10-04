@@ -276,7 +276,7 @@ Cypress.Commands.add('readyOpponent', (id) => {
     );
   });
 });
-Cypress.Commands.add('modeChangeOpponent', (isRanked) => {
+Cypress.Commands.add('setIsRankedOpponent', (isRanked) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.post('/game/setIsRanked',{
       isRanked,

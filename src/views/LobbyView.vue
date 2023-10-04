@@ -20,7 +20,7 @@
           :label="gameStore.isRanked ? 'Ranked' : 'Normal'"
           data-cy="edit-game-ranked-switch"
           color="primary"
-          @update:model-value="modeChange"
+          @update:model-value="setIsRanked"
         />
       </v-col>
     </v-row>
@@ -78,9 +78,9 @@
       <v-spacer />
     </v-row>
     <BaseSnackbar
-      v-model="gameStore.rankAlert"
+      v-model="gameStore.showIsRankedChangedAlert"
       :timeout="2000"
-      :message="`Game Mode: ${gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')}`"
+      :message="`Game Mode changed to ${gameStore.isRanked ? t('lobby.ranked') : t('lobby.casual')}`"
       color="surface-1"
       data-cy="edit-snackbar"
       location="top"
@@ -145,8 +145,8 @@ export default {
       await this.gameStore.requestReady();
       this.readying = false;
     },
-    async modeChange() {
-      await this.gameStore.setIsRanked({
+    async setIsRanked() {
+      await this.gameStore.requestSetIsRanked({
           isRanked: this.gameStore.isRanked,
       });
     },

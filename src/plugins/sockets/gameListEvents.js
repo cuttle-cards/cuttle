@@ -41,3 +41,8 @@ export function handleLeftGame(evData) {
     gameListStore.otherLeftGame(evData.id);
   }
 }
+
+export function handleIsRanked(evData) {
+  const gameListStore = useGameListStore();
+  gameListStore.setIsRanked({gameId: evData.gameId,isRanked: evData.isRanked});
+}

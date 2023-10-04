@@ -37,7 +37,7 @@ export const useGameStore = defineStore('game', {
     waitingForOpponentToCounter: false,
     myTurnToCounter: false,
     isRanked: false,
-    rankAlert: false,
+    showIsRankedChangedAlert: false,
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
@@ -187,10 +187,6 @@ export const useGameStore = defineStore('game', {
         this.p1Ready = !this.p1Ready;
       }
     },
-    updateMode(ranked) {
-      this.rankAlert = true;
-      this.isRanked = ranked;
-    },
     opponentLeft() {
       this.players = this.players.filter((player) => player.pNum === this.myPNum);
     },
@@ -339,7 +335,7 @@ export const useGameStore = defineStore('game', {
         });
       });
     },
-    async setIsRanked({ isRanked }) {
+    async requestSetIsRanked({ isRanked }) {
       return new Promise((resolve, reject) => {
         io.socket.post('/game/setIsRanked',{
           isRanked,
