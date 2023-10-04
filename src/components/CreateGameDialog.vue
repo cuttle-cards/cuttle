@@ -2,7 +2,7 @@
   <base-dialog
     :id="`create-game-dialog`"
     v-model="show"
-    title="Create Game"
+    :title="t('home.submitCreateGame')"
     :opacity="1"
     data-cy="create-game-dialog"
   >
