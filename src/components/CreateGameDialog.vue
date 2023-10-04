@@ -14,20 +14,20 @@
         text-color="white"
         data-cy="create-game-btn"
       >
-        Create a game
+        {{ t('home.openCreateGame') }}
       </v-btn>
     </template>
     <template #body>
       <h4>
-        Want to play solo? Try 
+        {{ t('home.playAiContent') }}
         <a
           class="text-cyan-lighten-2 text-decoration-none"
           href="https://human-ai-interaction.github.io/cuttle-bot/"
           target="_blank"
         >
-          playing vs AI
-        </a> 
-        to learn the ropes and test your mettle.
+          {{ t('home.playAiLink') }}
+        </a>
+        {{ t('home.playAiContent2') }}
       </h4>
       <form name="create_game_form" class="d-flex align-center">
         <v-switch
@@ -59,7 +59,7 @@
           color="surface-1"
           @click="cancelCreateGame"
         >
-          Cancel
+          {{ t('global.cancel') }}
         </v-btn>
         <v-btn
           form="create_game_form"
@@ -70,7 +70,7 @@
           variant="flat"
           @click="submitNewGame"
         >
-          Create Game
+          {{ t('home.submitCreateGame') }}
         </v-btn>
       </v-form>
     </template>
@@ -83,11 +83,16 @@ import { useGameListStore } from '@/stores/gameList';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '../../utils/local-storage-utils.js';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'CreateGameDialog',
   components: { StatsScoringDialog, BaseDialog },
   emits: ['error'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       show: false,
@@ -97,7 +102,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useGameListStore),  
+    ...mapStores(useGameListStore),
   },
   watch: {
     isRanked(isRanked) {
@@ -110,7 +115,8 @@ export default {
   methods: {
     submitNewGame() {
       this.loading = true;
-      this.gameListStore.requestCreateGame({
+      this.gameListStore
+        .requestCreateGame({
           gameName: this.gameName,
           isRanked: this.isRanked,
         })

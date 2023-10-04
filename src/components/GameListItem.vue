@@ -6,7 +6,7 @@
           {{ name }}
         </p>
         <p v-if="!isSpectatable" class="text-surface-1">
-          {{ readyText }} players
+          {{ readyText }} {{ t('home.players') }}
         </p>
       </v-col>
       <v-col lg="4" class="list-item__button pr-md-0">
@@ -46,7 +46,7 @@
           @click="spectateGame"
         >
           <v-icon class="mr-4" size="medium" icon="mdi-eye" />
-          Spectate
+          {{ t('home.spectate') }}
         </v-btn>
       </v-col>
     </v-row>
@@ -59,6 +59,7 @@ import GameStatus from '../../utils/GameStatus.json';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useGameListStore } from '@/stores/gameList';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'GameListItem',
@@ -101,6 +102,10 @@ export default {
     },
   },
   emits: ['error'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       joiningGame: false,
@@ -132,7 +137,8 @@ export default {
   methods: {
     subscribeToGame() {
       this.joiningGame = true;
-      this.gameStore.requestSubscribe(this.gameId)
+      this.gameStore
+        .requestSubscribe(this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/lobby/${this.gameId}`);
@@ -144,7 +150,8 @@ export default {
     },
     spectateGame() {
       this.joiningGame = true;
-      this.gameStore.requestSpectate(this.gameId)
+      this.gameStore
+        .requestSpectate(this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/spectate/${this.gameId}`);
