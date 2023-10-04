@@ -3,8 +3,17 @@
     <template #body>
       <p>Your opponent has requested a stalemate. If you accept, the game will end in a tie.</p>
       <div class="d-flex justify-center">
-        <v-icon class="mr-8" size="80px" icon="mdi-offer" />
-        <v-icon size="80px" icon="mdi-help-circle" />
+        <v-icon
+          class="mr-8"
+          size="80px"
+          icon="mdi-offer"
+          aria-hidden="true"
+        />
+        <v-icon
+          size="80px"
+          icon="mdi-help-circle"
+          aria-hidden="true"
+        />
       </div>
     </template>
 
@@ -16,6 +25,7 @@
         :diabled="loadingAccept"
         :loading="loadingReject"
         data-cy="reject-stalemate"
+        aria-lable="Reject Request"
         @click="rejectStalemate"
       >
         Reject Request
@@ -26,6 +36,7 @@
         data-cy="accept-stalemate"
         :loading="loadingAccept"
         :disabled="loadingReject"
+        aria-lable="Accept Stalemate"
         @click="acceptStalemate"
       >
         Accept Stalemate

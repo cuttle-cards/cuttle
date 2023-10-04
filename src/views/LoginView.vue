@@ -9,7 +9,12 @@
           <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
           <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
             {{ buttonText }}
-            <v-icon icon="mdi-account-circle" color="white" class="ml-2" />
+            <v-icon
+              icon="mdi-account-circle"
+              color="white"
+              class="ml-2"
+              aria-hidden="true"
+            />
           </v-btn>
         </nav>
 
