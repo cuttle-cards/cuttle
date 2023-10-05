@@ -62,6 +62,12 @@ export const useGameListStore = defineStore('gameList', {
         updatedGame.numPlayers--;
       }
     },
+    setIsRanked({gameId, isRanked}) {
+      const updatedGame = this.openGames.find((game) => game.id === gameId);
+      if (updatedGame) {
+        updatedGame.isRanked = isRanked;
+      }
+    },
     addSpectateGameToList(newGame) {
       this.spectateGames.push(new GameSummary(newGame));
     },

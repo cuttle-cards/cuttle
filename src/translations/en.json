@@ -8,7 +8,10 @@
     "stats": "Stats",
     "username": "Username",
     "password": "Password",
-    "collapseMenu": "Collapse Menu"
+    "collapseMenu": "Collapse Menu",
+    "cancel": "Cancel",
+    "ranked": "Ranked",
+    "casual": "Casual"
   },
   "login": {
     "noAccount": "Don't have an account?",
@@ -30,6 +33,7 @@
     "unready": "UNREADY",
     "exit": "EXIT",
     "invite": "Invite"
+    "rankedChangedAlert":"Game Mode changed to"
   },
   "ruleText":{
     "1": "Scrap all points",
@@ -45,5 +49,19 @@
     "11": "Play on top of target point card to steal it",
     "12": "Your other cards may only be targeted by scuttles",
     "13": "Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)"
+  },
+  "home":{
+    "gameFinder": "Game Finder",
+    "spectate": "SPECTATE",
+    "noGameslist": "No Active Games",
+    "noSpectatelist": "No Games Available to Spectate",
+    "openCreateGame": "Create a game",
+    "submitCreateGame": "Create game",
+    "players": "players",
+    "playAiContent":"Want to play solo? Try",
+    "playAiLink":"playing vs AI",
+    "playAiContent2":"to learn the ropes and test your mettle.",
+    "gameName": "Game Name",
+    "join":"Join"
   }
 }

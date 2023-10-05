@@ -62,6 +62,7 @@ export const useGameStore = defineStore('game', {
     waitingForOpponentToCounter: false,
     myTurnToCounter: false,
     isRanked: false,
+    showIsRankedChangedAlert: false,
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
@@ -367,6 +368,19 @@ export const useGameStore = defineStore('game', {
             return resolve(res);
           }
           return reject(new Error('Error readying for game'));
+        });
+      });
+    },
+    async requestSetIsRanked({ isRanked }) {
+      return new Promise((resolve, reject) => {
+        io.socket.post('/game/setIsRanked',{
+          isRanked,
+        }, (res, jwres) => {
+          if (jwres.statusCode === 200) {
+            return resolve(res);
+          }
+          const modeName = isRanked ? 'ranked' : 'casual';
+          return reject(new Error(`Unable to change game to ${modeName}`));
         });
       });
     },

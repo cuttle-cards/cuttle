@@ -5,21 +5,29 @@
         <img id="logo" alt="Cuttle logo" src="/img/logo.png">
       </v-col>
       <v-col md="8" class="my-auto">
-        <h1>
+        <h1 class="d-sm-flex align-center">
           {{ `${t('lobby.lobbyFor')}  ${gameName}` }}
-          <small v-if="gameStore.isRanked" class="lobby-ranked-text">
-            (Ranked 
+          <small class="lobby-ranked-text d-flex align-center">
+            <v-switch
+              v-model="gameStore.isRanked"
+              class="mx-4"
+              :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
+              data-cy="edit-game-ranked-switch"
+              color="primary"
+              hide-details
+              @update:model-value="setIsRanked"
+            />
             <v-icon
-              v-if="gameStore.isRanked"
+              class="mx-1"
               size="medium"
-              icon="mdi-trophy"
+              :icon="`mdi-${gameStore.isRanked ? 'trophy' : 'coffee'}`"
               aria-hidden="true"
             />
-            )
           </small>
         </h1>
       </v-col>
     </v-row>
+
     <!-- Usernames -->
     <v-row>
       <v-col offset="1">
@@ -41,8 +49,8 @@
     </v-row>
     <!-- Buttons -->
     <v-row class="mt-4">
-      <v-spacer />
-      <v-col cols="3" offset="1">
+      <v-spacer v-if="this.$vuetify.display.smAndUp" />
+      <v-col sm="3" cols="6" offset-sm="1">
         <v-btn
           :disabled="readying"
           variant="outlined"
@@ -53,7 +61,7 @@
           {{ t('lobby.exit') }}
         </v-btn>
       </v-col>
-      <v-col cols="3">
+      <v-col sm="3" cols="6">
         <v-btn
           :loading="readying"
           contained
@@ -72,8 +80,15 @@
           />
         </v-btn>
       </v-col>
-      <v-spacer />
+      <v-spacer v-if="this.$vuetify.display.smAndUp" />
     </v-row>
+    <BaseSnackbar
+      v-model="gameStore.showIsRankedChangedAlert"
+      :timeout="2000"
+      :message="`${t('lobby.rankedChangedAlert')} ${gameStore.isRanked ? t('global.ranked') : t('global.casual')}`"
+      color="surface-1"
+      data-cy="edit-snackbar"
+    />
   </v-container>
 </template>
 
@@ -83,11 +98,13 @@ import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
+import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 
 export default {
   name: 'LobbyView',
   components: {
     LobbyPlayerIndicator,
+    BaseSnackbar
   },
   setup() {
     const { t } = useI18n();
@@ -131,6 +148,11 @@ export default {
       this.readying = true;
       await this.gameStore.requestReady();
       this.readying = false;
+    },
+    async setIsRanked() {
+      await this.gameStore.requestSetIsRanked({
+          isRanked: this.gameStore.isRanked,
+      });
     },
     leave() {
       this.gameStore

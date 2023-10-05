@@ -1,15 +1,15 @@
 <template>
   <div>
     <v-row class="list-item" data-cy="game-list-item">
-      <v-col lg="8" class="list-item__inner-text">
+      <v-col lg="6" class="list-item__inner-text">
         <p class="game-name text-surface-1" data-cy="game-list-item-name">
           {{ name }}
         </p>
         <p v-if="!isSpectatable" class="text-surface-1">
-          {{ readyText }} players
+          {{ readyText }} {{ t('home.players') }}
         </p>
       </v-col>
-      <v-col lg="4" class="list-item__button pr-md-0">
+      <v-col lg="6" class="list-item__button pr-md-0">
         <!-- Join Button -->
         <v-btn
           v-if="!isSpectatable"
@@ -46,7 +46,7 @@
           @click="spectateGame"
         >
           <v-icon class="mr-4" size="medium" icon="mdi-eye" />
-          Spectate
+          {{ t('home.spectate') }}
         </v-btn>
       </v-col>
     </v-row>
@@ -59,6 +59,7 @@ import GameStatus from '../../utils/GameStatus.json';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useGameListStore } from '@/stores/gameList';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'GameListItem',
@@ -101,6 +102,10 @@ export default {
     },
   },
   emits: ['error'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       joiningGame: false,
@@ -115,7 +120,7 @@ export default {
       return `${this.numPlayers} / 2`;
     },
     joinButtonText() {
-      return this.isRanked ? 'Join Ranked' : 'Join Casual';
+      return `${this.t('home.join')} ${this.isRanked ? this.t('global.ranked') : this.t('global.casual')}`;
     },
     buttonAttrs() {
       return {
@@ -132,7 +137,8 @@ export default {
   methods: {
     subscribeToGame() {
       this.joiningGame = true;
-      this.gameStore.requestSubscribe(this.gameId)
+      this.gameStore
+        .requestSubscribe(this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/lobby/${this.gameId}`);
@@ -144,7 +150,8 @@ export default {
     },
     spectateGame() {
       this.joiningGame = true;
-      this.gameStore.requestSpectate(this.gameId)
+      this.gameStore
+        .requestSpectate(this.gameId)
         .then(() => {
           this.joiningGame = false;
           this.$router.push(`/spectate/${this.gameId}`);
