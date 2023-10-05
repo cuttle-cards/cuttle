@@ -31,7 +31,7 @@ class GameCard {
     this.suit = card.suit;
     this.rank = card.rank;
     this.name = str_rank + str_suit;
-    this.attachments = card.attachments;
+    this.attachments = card.attachments.map(attachment => createGameCard(attachment));
   }
 }
 const createGameCard = (card) => {
@@ -166,28 +166,31 @@ export const useGameStore = defineStore('game', {
       if (Object.hasOwnProperty.call(newGame, 'id')) this.id = newGame.id;
       if (Object.hasOwnProperty.call(newGame, 'turn')) this.turn = newGame.turn;
       if (Object.hasOwnProperty.call(newGame, 'chat')) this.chat = cloneDeep(newGame.chat);
-      if (Object.hasOwnProperty.call(newGame, 'deck'))
+      if (Object.hasOwnProperty.call(newGame, 'deck')) {
         this.deck = newGame.deck?.map((card) => createGameCard(card));
-      if (Object.hasOwnProperty.call(newGame, 'scrap'))
+      }
+      if (Object.hasOwnProperty.call(newGame, 'scrap')) {
         this.scrap = newGame.scrap?.map((card) => createGameCard(card));
+      }
       if (Object.hasOwnProperty.call(newGame, 'log')) this.log = cloneDeep(newGame.log);
       if (Object.hasOwnProperty.call(newGame, 'name')) this.name = newGame.name;
       if (Object.hasOwnProperty.call(newGame, 'p0Ready')) this.p0Ready = newGame.p0Ready;
       if (Object.hasOwnProperty.call(newGame, 'p1Ready')) this.p1Ready = newGame.p1Ready;
       if (Object.hasOwnProperty.call(newGame, 'passes')) this.passes = newGame.passes;
-      if (Object.hasOwnProperty.call(newGame, 'players'))
+      if (Object.hasOwnProperty.call(newGame, 'players')) {
         this.players = newGame.players.map((player) => ({
           ...player,
-          hand: player.hand?.map((card) => createGameCard(card)) ?? player.hand,
-          points: player.points?.map((card) => createGameCard(card) ?? player.points),
-          faceCards: player.faceCards?.map((card) => createGameCard(card) ?? player.faceCards),
+          hand: player.hand?.map((card) => createGameCard(card)),
+          points: player.points?.map((card) => createGameCard(card)),
+          faceCards: player.faceCards?.map((card) => createGameCard(card)),
         }));
+      }
       if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
         this.spectatingUsers = newGame.spectatingUsers;
       }
-      if (Object.hasOwnProperty.call(newGame, 'twos'))
+      if (Object.hasOwnProperty.call(newGame, 'twos')) {
         this.twos = newGame.twos?.map((card) => createGameCard(card));
-
+      }
       if (Object.hasOwnProperty.call(newGame, 'topCard')) {
         this.topCard = createGameCard(newGame.topCard);
       } else this.topCard = null;
