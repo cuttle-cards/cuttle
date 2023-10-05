@@ -32,7 +32,7 @@
     "ready": "PRÊT",
     "unready": "PAS PRÊT",
     "exit": "SORTIE",
-    "invite": "Inviter"
+    "invite": "Inviter",
     "rankedChangedAlert":"Jeu mode modifié à"
   },
   "ruleText":{
