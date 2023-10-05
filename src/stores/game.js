@@ -31,7 +31,7 @@ class GameCard {
     this.suit = card.suit;
     this.rank = card.rank;
     this.name = str_rank + str_suit;
-    this.attachments = card.attachments.map(attachment => createGameCard(attachment));
+    this.attachments = card.attachments?.map(attachment => createGameCard(attachment));
   }
 }
 const createGameCard = (card) => {
