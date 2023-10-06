@@ -1,5 +1,5 @@
 <template>
-  <base-dialog id="four-discard-dialog" v-model="show" title="Discard Two Cards">
+  <BaseDialog id="four-discard-dialog" v-model="show" title="Discard Two Cards">
     <template #body>
       <p class="mb-4">
         Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to
@@ -7,7 +7,7 @@
       </p>
       <!-- Cards in hand -->
       <div class="d-flex flex-wrap card-container">
-        <game-card
+        <GameCard
           v-for="(card, index) in hand"
           :key="card.id"
           :suit="card.suit"
@@ -29,7 +29,7 @@
         Discard
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>

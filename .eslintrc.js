@@ -33,6 +33,10 @@ module.exports = {
         allowElseIf: true,
       },
     ],
+    'vue/component-name-in-template-casing': ['error', 'PascalCase', {
+      'registeredComponentsOnly': false,
+      'ignores': ['/^v-/']
+      }],
     'no-case-declarations': 'error',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

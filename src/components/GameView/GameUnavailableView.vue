@@ -2,11 +2,11 @@
   <div>
     <!-- Reauthenticate-->
     <template v-if="mustReauthenticate">
-      <reauthenticate-dialog v-model="mustReauthenticate" />
+      <ReauthenticateDialog v-model="mustReauthenticate" />
     </template>
     <!-- Game doesn't exist-->
     <template v-else-if="unavailableGame">
-      <game-unavailable-overlay :show="unavailableGame" />
+      <GameUnavailableOverlay :show="unavailableGame" />
     </template>
   </div>
 </template>

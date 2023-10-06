@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     v-if="oneOff"
     id="three-dialog"
     v-model="show"
@@ -8,7 +8,7 @@
   >
     <template #body>
       <div class="d-flex flex-wrap justify-center align-center my-8">
-        <card-list-sortable
+        <CardListSortable
           :cards="scrap"
           data-selector-prefix="three-dialog"
           :selected-ids="selectedIds"
@@ -28,7 +28,7 @@
         Resolve
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>

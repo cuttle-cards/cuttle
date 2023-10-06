@@ -24,7 +24,7 @@
       </v-btn>
     </div>
     <div v-if="selectedCard" class="d-flex justify-center">
-      <game-card
+      <GameCard
         :suit="selectedCard.suit"
         :rank="selectedCard.rank"
         :data-player-overlay-card="`${selectedCard.rank}-${selectedCard.suit}`"
@@ -33,7 +33,7 @@
     </div>
     <!-- Move choices -->
     <div id="options-wrapper" class="d-flex justify-space-between my-4">
-      <move-choice-card
+      <MoveChoiceCard
         v-for="move in moveChoices"
         :key="move.displayName"
         :move-name="move.displayName"

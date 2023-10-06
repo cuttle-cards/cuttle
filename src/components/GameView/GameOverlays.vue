@@ -29,7 +29,7 @@
         {{ showWaitingForOpponetToCounterMessage }}
       </h1>
       <div id="counter-scrim-cards">
-        <game-card
+        <GameCard
           v-if="gameStore.oneOff"
           :rank="gameStore.oneOff.rank"
           :suit="gameStore.oneOff.suit"
@@ -38,7 +38,7 @@
           class="overlay-card"
         />
         <div>
-          <game-card
+          <GameCard
             v-for="(two, index) in gameStore.twos"
             :key="`overlay-two-${two.id}`"
             :rank="two.rank"
@@ -101,7 +101,7 @@
       </h1>
     </v-overlay>
 
-    <move-choice-overlay
+    <MoveChoiceOverlay
       v-if="selectedCard || cardSelectedFromDeck"
       :model-value="!targeting && (!!selectedCard || !!cardSelectedFromDeck)"
       :selected-card="selectedCard || cardSelectedFromDeck"
