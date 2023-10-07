@@ -13,6 +13,7 @@
           aria-label="Open user menu"
           aria-hidden="false"
           role="img"
+          class="mr-1"
         />
         {{ authStore.username }}
       </v-btn>
