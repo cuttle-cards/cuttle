@@ -37,7 +37,7 @@
   },
   "game":{
     "moves":{
-      "ruleText":{
+      "effects":{
         "1": "Supprimez tous les points",
         "2": "Scrap Target Royal ou Lunettes huit",
         "3": "Choisissez 1 carte dans la Scrap et mettez-la dans votre main",
