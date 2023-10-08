@@ -48,5 +48,13 @@
     "playAiContent2":"pour apprendre les bases et tester votre courage.",
     "gameName": "Jeu Nom",
     "join": "Rejoindre"
+  },
+  "game":{
+    "dialogs":{
+      "spectatorListMenu":{
+        "spectators":"Spectateurs",
+        "noSpectators":"Il n'y a actuellement aucun spectateur"
+      }
+    }
   }
 }

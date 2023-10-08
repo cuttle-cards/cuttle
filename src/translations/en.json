@@ -48,5 +48,13 @@
     "playAiContent2":"to learn the ropes and test your mettle.",
     "gameName": "Game Name",
     "join":"Join"
+  },
+  "game":{
+    "dialogs":{
+      "spectatorListMenu":{
+        "spectators":"Spectators",
+        "noSpectators":"Currently no spectators"
+      }
+    }
   }
 }

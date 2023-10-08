@@ -48,5 +48,13 @@
     "playAiContent2":"para aprender lo básico y poner a prueba tu temple.",
     "gameName": "Juego Nombre",
     "join": "Unirse"
+  },
+  "game":{
+    "dialogs":{
+      "spectatorListMenu":{
+        "spectators":"Espectadores",
+        "noSpectators":"Actualmente no hay espectadores"
+      }
+    }
   }
 }
