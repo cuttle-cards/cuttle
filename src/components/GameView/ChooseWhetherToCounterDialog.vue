@@ -23,7 +23,7 @@
       <div class="d-flex justify-center align-center my-8">
         <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
         <p class="ml-8">
-          {{ t(`ruleText[${oneOff.rank}]`) }}
+          {{ t(`game.moves.effects[${oneOff.rank}]`) }}
         </p>
         <div v-if="target" id="target-wrapper">
           <span id="target-icon-wrapper" class="d-flex justify-center align-center">

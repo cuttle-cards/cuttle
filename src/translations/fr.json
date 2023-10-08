@@ -35,20 +35,24 @@
     "invite": "Inviter",
     "rankedChangedAlert":"Jeu mode modifié à"
   },
-  "ruleText":{
-    "1": "Supprimez tous les points",
-    "2": "Scrap Target Royal ou Lunettes huit",
-    "3": "Choisissez 1 carte dans la Scrap et mettez-la dans votre main",
-    "4": "Votre adversaire défausse deux cartes de son choix de sa main",
-    "5": "Tirez deux cartes du jeu",
-    "6": "Supprimez tous les Royals et les Glasses Eights",
-    "7": "Jouez l'une des deux cartes du dessus du paquet et remettez l'autre (les deux sont révélées)",
-    "8": "Votre adversaire joue avec une main ouverte (ses cartes vous sont révélées)",
-    "9": "Renvoyez la carte ciblée dans la main de son contrôleur. Ils ne peuvent pas y jouer au prochain tour",
-    "10": "Aucun effet",
-    "11": "Jouez sur la carte de point cible pour la voler",
-    "12": "Vos autres cartes ne peuvent être ciblées que par des scuttles",
-    "13": "Réduit les points dont vous avez besoin pour gagner. (1K : 14 pts, 2K : 10 pts, 3K : 5 pts, 4K : 0 pts)"
+  "game":{
+    "moves":{
+      "ruleText":{
+        "1": "Supprimez tous les points",
+        "2": "Scrap Target Royal ou Lunettes huit",
+        "3": "Choisissez 1 carte dans la Scrap et mettez-la dans votre main",
+        "4": "Votre adversaire défausse deux cartes de son choix de sa main",
+        "5": "Tirez deux cartes du jeu",
+        "6": "Supprimez tous les Royals et les Glasses Eights",
+        "7": "Jouez l'une des deux cartes du dessus du paquet et remettez l'autre (les deux sont révélées)",
+        "8": "Votre adversaire joue avec une main ouverte (ses cartes vous sont révélées)",
+        "9": "Renvoyez la carte ciblée dans la main de son contrôleur. Ils ne peuvent pas y jouer au prochain tour",
+        "10": "Aucun effet",
+        "11": "Jouez sur la carte de point cible pour la voler",
+        "12": "Vos autres cartes ne peuvent être ciblées que par des scuttles",
+        "13": "Réduit les points dont vous avez besoin pour gagner. (1K : 14 pts, 2K : 10 pts, 3K : 5 pts, 4K : 0 pts)"
+      }
+    }
   },
   "home": {
     "gameFinder": "Recherche de jeu",

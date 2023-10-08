@@ -35,20 +35,24 @@
     "invite": "Invite",
     "rankedChangedAlert":"Game Mode changed to"
   },
-  "ruleText":{
-    "1": "Scrap all points",
-    "2": "Scrap target Royal or Glasses eight",
-    "3": "Choose 1 card in the Scrap and put it to your hand",
-    "4": "Your opponent discards two cards of their choice from their hand",
-    "5": "Draw two cards from the deck",
-    "6": "Scrap all Royals and Glasses eights",
-    "7": "Play one of the top two cards of the deck and put the other back (both are revealed)",
-    "8": "Your opponent plays with an open hand (their cards are revealed to you)",
-    "9": "Return target card to its controller's hand. They can't play it next turn",
-    "10": "No effect",
-    "11": "Play on top of target point card to steal it",
-    "12": "Your other cards may only be targeted by scuttles",
-    "13": "Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)"
+  "game":{
+    "moves":{
+      "effects":{
+        "1": "Scrap all points",
+        "2": "Scrap target Royal or Glasses eight",
+        "3": "Choose 1 card in the Scrap and put it to your hand",
+        "4": "Your opponent discards two cards of their choice from their hand",
+        "5": "Draw two cards from the deck",
+        "6": "Scrap all Royals and Glasses eights",
+        "7": "Play one of the top two cards of the deck and put the other back (both are revealed)",
+        "8": "Your opponent plays with an open hand (their cards are revealed to you)",
+        "9": "Return target card to its controller's hand. They can't play it next turn",
+        "10": "No effect",
+        "11": "Play on top of target point card to steal it",
+        "12": "Your other cards may only be targeted by scuttles",
+        "13": "Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)"
+      }
+    }
   },
   "home":{
     "gameFinder": "Game Finder",

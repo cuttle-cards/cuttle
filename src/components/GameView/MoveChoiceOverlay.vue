@@ -159,7 +159,7 @@ export default {
       return {
         displayName: 'One-Off',
         eventName: 'oneOff',
-        moveDescription: this.t(`ruleText[${this.selectedCard.rank}]`) ,
+        moveDescription: this.t(`game.moves.effects[${this.selectedCard.rank}]`) ,
         disabled: oneOffDisabled,
         disabledExplanation: oneOffDisabledExplanation,
       };
@@ -199,7 +199,7 @@ export default {
       return {
         displayName: 'One-Off',
         eventName: 'targetedOneOff',
-        moveDescription: this.t(`ruleText[${this.selectedCard.rank}]`) ,
+        moveDescription: this.t(`game.moves.effects[${this.selectedCard.rank}]`) ,
         disabled: oneOffDisabled,
         disabledExplanation: oneOffDisabledExplanation,
       };
@@ -261,7 +261,7 @@ export default {
             {
               displayName: 'Royal',
               eventName: 'faceCard',
-              moveDescription: this.t(`ruleText[${this.selectedCard.rank}]`) ,
+              moveDescription: this.t(`game.moves.effects[${this.selectedCard.rank}]`) ,
               disabled: this.allMovesAreDisabled,
               disabledExplanation: this.disabledText,
             },
