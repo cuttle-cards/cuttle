@@ -1,4 +1,4 @@
-const { game:gameTrans } = require('../../../src/translations/en.json');
+const { game:gameText } = require('../../../src/translations/en.json');
 const { getCardName } = require('../../../utils/game-utils');
 
 module.exports = function (req, res) {
@@ -52,7 +52,7 @@ module.exports = function (req, res) {
                     oneOff: card.id,
                     log: [
                       ...game.log,
-                      `${player.username} played the ${getCardName(card)} as a one-off to ${gameTrans.moves.effects[card.rank]}.`,
+                      `${player.username} played the ${getCardName(card)} as a one-off to ${gameText.moves.effects[card.rank]}.`,
                     ],
                     lastEvent: {
                       change: 'oneOff',

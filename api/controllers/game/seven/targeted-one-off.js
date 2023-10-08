@@ -1,4 +1,4 @@
-const { game:gameTrans } = require('../../../../src/translations/en.json');
+const { game:gameText } = require('../../../../src/translations/en.json');
 const { getCardName } = require('../../../../utils/game-utils');
 
 module.exports = function (req, res) {
@@ -57,7 +57,7 @@ module.exports = function (req, res) {
               attachedToTarget: null,
               log: [
                 ...game.log,
-                `${player.username} played the ${getCardName(card)} from the top of the deck as a one-off to ${gameTrans.moves.effects[card.rank]}, targeting the ${getCardName(target)}.`,
+                `${player.username} played the ${getCardName(card)} from the top of the deck as a one-off to ${gameText.moves.effects[card.rank]}, targeting the ${getCardName(target)}.`,
               ],
               lastEvent: {
                 change: 'sevenTargetedOneOff',
