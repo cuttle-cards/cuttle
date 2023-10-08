@@ -49,7 +49,7 @@
     </v-row>
     <!-- Buttons -->
     <v-row class="mt-4">
-      <v-spacer v-if="this.$vuetify.display.smAndUp" />
+      <v-spacer v-if="$vuetify.display.smAndUp" />
       <v-col sm="3" cols="6" offset-sm="1">
         <v-btn
           :disabled="readying"
@@ -80,7 +80,7 @@
           />
         </v-btn>
       </v-col>
-      <v-spacer v-if="this.$vuetify.display.smAndUp" />
+      <v-spacer v-if="$vuetify.display.smAndUp" />
     </v-row>
     <BaseSnackbar
       v-model="gameStore.showIsRankedChangedAlert"
