@@ -316,9 +316,21 @@ export default {
     opacity: 0;
   }
 }
+@keyframes slidePlayerPortrait {
+  100% {
+    transform: translateY(200px);
+    opacity: 0;
+  }
+}
 @keyframes slideOpponent {
   100% {
     transform: translate(200px, -200px);
+    opacity: 0;
+  }
+}
+@keyframes slideOpponentPortrait {
+  100% {
+    transform: translateY(-200px);
     opacity: 0;
   }
 }
@@ -332,5 +344,13 @@ export default {
       height: calc(10vh / 1.45);
     }
   }
+
+  .threesPlayer{
+    animation: slidePlayerPortrait 2s ease;
+}
+  .threesOpponent{
+    animation: slideOpponentPortrait 2s ease;
+}
+
 }
 </style>
