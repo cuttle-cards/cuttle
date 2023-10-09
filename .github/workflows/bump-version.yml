@@ -27,4 +27,4 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'version-patch')
         run: npm run version:patch
       - name: push
-        run: git push origin main-temporary-
+        run: git push origin main-temporary-2
