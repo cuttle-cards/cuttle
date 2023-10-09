@@ -284,13 +284,6 @@ export default {
   }
 }
 
-.threesPlayer{
-  animation: slidePlayer 2s ease;
-}
-.threesOpponent{
-  animation: slideOpponent 2s ease;
-}
-
 .slide-below-leave-active,
 .slide-above-leave-active,
 .in-below-out-left-leave-active {
@@ -309,6 +302,12 @@ export default {
   transform: translateY(-32px);
 }
 
+.threesPlayer{
+  animation: slidePlayer 2s ease;
+}
+.threesOpponent{
+  animation: slideOpponent 2s ease;
+}
 
 @keyframes slidePlayer {
   100% {
@@ -344,13 +343,12 @@ export default {
       height: calc(10vh / 1.45);
     }
   }
-
   .threesPlayer{
     animation: slidePlayerPortrait 2s ease;
-}
+  }
   .threesOpponent{
     animation: slideOpponentPortrait 2s ease;
-}
+  }
 
 }
 </style>
