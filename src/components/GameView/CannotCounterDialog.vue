@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     v-if="oneOff"
     id="cannot-counter-dialog"
     v-model="show"
@@ -7,25 +7,25 @@
   >
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
-        Your opponent has played the
-        <game-card-name :card-name="oneOff.name" />
+        Your opponent has played the 
+        <GameCardName :card-name="oneOff.name" />
         as a one-off
         <span v-if="target">
           targeting your
-          <game-card-name :card-name="target.name" />
+          <GameCardName :card-name="target.name" />
         </span>
       </div>
       <div v-else class="my-2">
-        Your opponent has played
-        <game-card-name :card-name="opponentLastTwo.name" />
+        Your opponent has played 
+        <GameCardName :card-name="opponentLastTwo.name" />
         to Counter
         <span v-if="playerLastTwo">
-          your
-          <game-card-name :card-name="playerLastTwo.name" />.
+          your 
+          <GameCardName :card-name="playerLastTwo.name" />.
         </span>
       </div>
       <div class="d-flex justify-center align-center my-8">
-        <game-card :suit="oneOff.suit" :rank="oneOff.rank" />
+        <GameCard :suit="oneOff.suit" :rank="oneOff.rank" />
         <p class="ml-8">
           {{ t(`game.moves.effects[${oneOff.rank}]`) }}
         </p>
@@ -39,7 +39,7 @@
               aria-hidden="true"
             />
           </span>
-          <game-card :suit="target.suit" :rank="target.rank" />
+          <GameCard :suit="target.suit" :rank="target.rank" />
         </div>
       </div>
       You cannot Counter, because {{ reason }}.
@@ -55,7 +55,7 @@
         Resolve
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>
