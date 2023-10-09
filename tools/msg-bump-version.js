@@ -12,13 +12,12 @@ const msg = `
                 K.=,;.__ /^~/___..'''
                         /  /'
 
-  Don't forget to bump 'version' in the package files!
-  Every PR should increase the package file versions by either a
-  patch, minor, or major number, based on the version label on the
-  issue being addressed.
+  Thanks for contributing to cuttle.cards!
+  You *don't* need to update the version manually now;
+  it's been automated!
 
   See contributing docs for more information:
-    https://github.com/cuttle-cards/cuttle/blob/main/docs/CONTRIBUTING.md#make-changes
+    https://github.com/cuttle-cards/cuttle/blob/main/docs/CONTRIBUTING.md#(automated)-version-management
 
 `;
 
