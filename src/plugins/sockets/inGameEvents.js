@@ -53,7 +53,7 @@ export async function handleInGameEvents(evData) {
       break;
     case SocketEvent.RESOLVE_THREE:
       gameStore.updateGameThenResetPNumIfNull(evData.game);
-      gameStore.processResolveThree(evData.animation);
+      gameStore.processResolveThree(evData.choiceAndPlayer);
       gameStore.pickingFromScrap = false;
       gameStore.waitingForOpponentToPickFromScrap = false;
       break;
