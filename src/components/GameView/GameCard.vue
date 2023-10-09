@@ -309,31 +309,31 @@ export default {
 }
 
 .threesPlayer{
-  animation: slidePlayer 2s ease;
+  animation: slidePlayerThree 1s ease;
 }
 .threesOpponent{
-  animation: slideOpponent 2s ease;
+  animation: slideOpponentThree 1s ease;
 }
 
-@keyframes slidePlayer {
+@keyframes slidePlayerThree {
   100% {
     transform: translate(200px, 50px);
     opacity: 0;
   }
 }
-@keyframes slidePlayerPortrait {
+@keyframes slidePlayerThreePortrait {
   100% {
     transform: translateY(200px);
     opacity: 0;
   }
 }
-@keyframes slideOpponent {
+@keyframes slideOpponentThree {
   100% {
     transform: translate(200px, -200px);
     opacity: 0;
   }
 }
-@keyframes slideOpponentPortrait {
+@keyframes slideOpponentThreePortrait {
   100% {
     transform: translateY(-200px);
     opacity: 0;
@@ -350,10 +350,10 @@ export default {
     }
   }
   .threesPlayer{
-    animation: slidePlayerPortrait 2s ease;
+    animation: slidePlayerThreePortrait 1s ease;
   }
   .threesOpponent{
-    animation: slideOpponentPortrait 2s ease;
+    animation: slideOpponentThreePortrait 1s ease;
   }
 
 }
