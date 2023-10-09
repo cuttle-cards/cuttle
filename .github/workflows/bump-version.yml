@@ -1,7 +1,7 @@
 on:
   pull_request:
     branches:
-      - main-temporary
+      - main-temporary-2
     types: [closed]
 jobs:
   bump-version:
