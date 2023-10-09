@@ -14,7 +14,7 @@ jobs:
         run: echo length of dummy secret is ${{ secrets.BS_TEST_SECRET == 'lolz' }}
       - name: configure git
         run: |
-          git remote set-url origin https://itsalaidbacklife@github.com/cuttle-cards/cuttle
+          git remote set-url origin https://itsalaidbacklife:${{ secrets.GH_PUSH_TOKEN }}@github.com/cuttle-cards/cuttle
           git config --global user.name "Cuttle Continuous Integration"
           git config --global user.email "itsalaidbacklife@gmail.com"
       - name: bump major version
@@ -27,4 +27,4 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'version-patch')
         run: npm run version:patch
       - name: push
-        run: git push origin main-temporary-2
+        run: git push origin main-temporary
