@@ -6,6 +6,8 @@
       glasses: isGlasses,
       jack: isJack,
       frozen: isFrozen,
+      threesPlayer: isThrees && playerChoosingFromScrap,
+      threesOpponent: isThrees && !playerChoosingFromScrap
     }"
     :elevation="elevation"
   >
@@ -39,7 +41,11 @@
       class="opponent-card-back"
       alt="card back"
     >
-    <img v-else :src="`/img/cards/card-${suit}-${rank}.svg`" :alt="cardName">
+    <img
+      v-else
+      :src="`/img/cards/card-${suit}-${rank}.svg`"
+      :alt="cardName"
+    >
   </v-card>
 </template>
 
@@ -78,6 +84,14 @@ export default {
     isFrozen: {
       type: Boolean,
       default: false,
+    },
+    isThrees: {
+      type: Boolean,
+      default:false
+    },
+    playerChoosingFromScrap: {
+      type: Boolean,
+      default: false
     },
     scuttledBy: {
       type: Object,
@@ -175,6 +189,9 @@ export default {
           return '';
       }
     },
+    threesClass() {
+      return this.playerChoosingFromScrap ? 'slide-below-leave-to' : null;
+    }
   },
 };
 </script>
@@ -270,6 +287,13 @@ export default {
   }
 }
 
+.threesPlayer{
+  animation: slidePlayer 2s ease;
+}
+.threesOpponent{
+  animation: slideOpponent 2s ease;
+}
+
 .slide-below-leave-active,
 .slide-above-leave-active,
 .in-below-out-left-leave-active {
@@ -286,6 +310,20 @@ export default {
 .slide-above-leave-to {
   opacity: 0;
   transform: translateY(-32px);
+}
+
+
+@keyframes slidePlayer {
+  100% {
+    transform: translate(200px, 50px);
+    opacity: 0;
+  }
+}
+@keyframes slideOpponent {
+  100% {
+    transform: translate(200px, -200px);
+    opacity: 0;
+  }
 }
 
 @media (max-width: 600px) {
