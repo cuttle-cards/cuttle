@@ -46,7 +46,7 @@
     <BaseSnackbar
       v-model="showSnackBar"
       :message="snackBarMessage"
-      data-cy="game-snackbar"
+      data-cy="reauth-snackbar"
       @clear="clearSnackBar"
     />
   </div>
