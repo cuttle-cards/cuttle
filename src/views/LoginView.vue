@@ -7,15 +7,18 @@
       <v-container id="welcome-container" fluid class="welcomeContainer">
         <nav class="d-flex justify-space-between align-center mb-2">
           <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
-          <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
-            {{ buttonText }}
-            <v-icon
-              icon="mdi-account-circle"
-              color="white"
-              class="ml-2"
-              aria-hidden="true"
-            />
-          </v-btn>
+          <div class="d-flex align-center">          
+            <LanguageSelection />
+            <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
+              {{ buttonText }}
+              <v-icon
+                icon="mdi-account-circle"
+                color="white"
+                class="ml-2"
+                aria-hidden="true"
+              />
+            </v-btn>
+          </div>
         </nav>
 
         <div class="d-flex h-75 flex-column justify-space-around align-center mt-2">
@@ -179,6 +182,7 @@ import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 import MarkdownContent from '@/components/Global/MarkdownContent.vue';
 import BaseVideo from '../components/Global/BaseVideo.vue';
+import LanguageSelection from '../components/LanguageSelection.vue';
 
 
 export default {
@@ -187,6 +191,7 @@ export default {
     BaseSnackbar,
     BaseVideo,
     MarkdownContent,
+    LanguageSelection
   },
   setup() {
     // Vuetify has its own translation layer that isn't very good

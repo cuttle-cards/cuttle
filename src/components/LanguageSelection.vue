@@ -4,8 +4,7 @@
       <v-list-item
         data-cy="language-menu"
         v-bind="props"
-        :prepend-icon="`mdi-web`"
-        append-icon="mdi-chevron-right"
+        :prepend-icon="`mdi-web mr-2`"
         :title="$i18n.locale"
       />
     </template>
