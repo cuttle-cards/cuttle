@@ -14,6 +14,31 @@ function queenCount(player) {
   return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
 }
 
+class GameCard {
+  constructor(card) {
+    const str_rank =
+      {
+        1: 'A',
+        11: 'J',
+        12: 'Q',
+        13: 'K',
+      }[card.rank] ?? card.rank;
+    // Stringify Suit
+    const str_suit = ['♣️', '♦️', '♥️', '♠️'][card.suit];
+    this.createdAt = card.createdAt;
+    this.updatedAt = card.updatedAt;
+    this.id = card.id;
+    this.suit = card.suit;
+    this.rank = card.rank;
+    this.name = str_rank + str_suit;
+    this.attachments = card.attachments?.map(attachment => createGameCard(attachment));
+  }
+}
+const createGameCard = (card) => {
+  if (!card) return null;
+  return new GameCard(card);
+};
+
 export const useGameStore = defineStore('game', {
   state: () => ({
     id: null,
@@ -141,31 +166,45 @@ export const useGameStore = defineStore('game', {
       if (Object.hasOwnProperty.call(newGame, 'id')) this.id = newGame.id;
       if (Object.hasOwnProperty.call(newGame, 'turn')) this.turn = newGame.turn;
       if (Object.hasOwnProperty.call(newGame, 'chat')) this.chat = cloneDeep(newGame.chat);
-      if (Object.hasOwnProperty.call(newGame, 'deck')) this.deck = cloneDeep(newGame.deck);
-      if (Object.hasOwnProperty.call(newGame, 'scrap')) this.scrap = cloneDeep(newGame.scrap);
+      if (Object.hasOwnProperty.call(newGame, 'deck')) {
+        this.deck = newGame.deck?.map((card) => createGameCard(card));
+      }
+      if (Object.hasOwnProperty.call(newGame, 'scrap')) {
+        this.scrap = newGame.scrap?.map((card) => createGameCard(card));
+      }
       if (Object.hasOwnProperty.call(newGame, 'log')) this.log = cloneDeep(newGame.log);
       if (Object.hasOwnProperty.call(newGame, 'name')) this.name = newGame.name;
       if (Object.hasOwnProperty.call(newGame, 'p0Ready')) this.p0Ready = newGame.p0Ready;
       if (Object.hasOwnProperty.call(newGame, 'p1Ready')) this.p1Ready = newGame.p1Ready;
       if (Object.hasOwnProperty.call(newGame, 'passes')) this.passes = newGame.passes;
-      if (Object.hasOwnProperty.call(newGame, 'players')) this.players = cloneDeep(newGame.players);
+      if (Object.hasOwnProperty.call(newGame, 'players')) {
+        this.players = newGame.players.map((player) => ({
+          ...player,
+          hand: player.hand?.map((card) => createGameCard(card)),
+          points: player.points?.map((card) => createGameCard(card)),
+          faceCards: player.faceCards?.map((card) => createGameCard(card)),
+        }));
+      }
       if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
         this.spectatingUsers = newGame.spectatingUsers;
       }
-      if (Object.hasOwnProperty.call(newGame, 'twos')) this.twos = cloneDeep(newGame.twos);
+      if (Object.hasOwnProperty.call(newGame, 'twos')) {
+        this.twos = newGame.twos?.map((card) => createGameCard(card));
+      }
+      if (Object.hasOwnProperty.call(newGame, 'topCard')) {
+        this.topCard = createGameCard(newGame.topCard);
+      } else this.topCard = null;
 
-      if (Object.hasOwnProperty.call(newGame, 'topCard')) this.topCard = cloneDeep(newGame.topCard);
-      else this.topCard = null;
+      if (Object.hasOwnProperty.call(newGame, 'secondCard')) {
+        this.secondCard = createGameCard(newGame.secondCard);
+      } else this.secondCard = null;
 
-      if (Object.hasOwnProperty.call(newGame, 'secondCard')) this.secondCard = cloneDeep(newGame.secondCard);
-      else this.secondCard = null;
-
-      if (Object.hasOwnProperty.call(newGame, 'oneOff')) this.oneOff = cloneDeep(newGame.oneOff);
+      if (Object.hasOwnProperty.call(newGame, 'oneOff')) this.oneOff = createGameCard(newGame.oneOff);
       else this.oneOff = null;
 
-      if (Object.hasOwnProperty.call(newGame, 'oneOffTarget'))
-        this.oneOffTarget = cloneDeep(newGame.oneOffTarget);
-      else this.oneOffTarget = null;
+      if (Object.hasOwnProperty.call(newGame, 'oneOffTarget')) {
+        this.oneOffTarget = createGameCard(newGame.oneOffTarget);
+      } else this.oneOffTarget = null;
 
       if (Object.hasOwnProperty.call(newGame, 'isRanked')) this.isRanked = newGame.isRanked;
       if (Object.hasOwnProperty.call(newGame, 'currentMatch')) this.currentMatch = newGame.currentMatch;

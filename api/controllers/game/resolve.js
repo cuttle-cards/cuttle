@@ -1,3 +1,5 @@
+const { getCardName } = require('../../../utils/game-utils');
+
 module.exports = function (req, res) {
   //Note: the player calling resolve is the opponent of the one playing the one-off, if it resolves
   const promiseGame = gameService.findGame({ gameId: req.session.game });
@@ -21,7 +23,7 @@ module.exports = function (req, res) {
         opponentUpdates.frozenId = null;
         gameUpdates.log = [
           ...game.log,
-          `The ${game.oneOff.name} is countered, and all cards played this turn are scrapped.`,
+          `The ${getCardName(game.oneOff)} is countered, and all cards played this turn are scrapped.`,
         ];
         happened = false;
       } else {
@@ -50,7 +52,7 @@ module.exports = function (req, res) {
             // Update log
             gameUpdates.log = [
               ...game.log,
-              `The ${game.oneOff.name} one-off resolves; all point cards are scrapped.`,
+              `The ${getCardName(game.oneOff)} one-off resolves; all point cards are scrapped.`,
             ];
             updatePromises = [
               // Remove all jacks from point cards
@@ -69,7 +71,7 @@ module.exports = function (req, res) {
               ...gameUpdates,
               log: [
                 ...game.log,
-                `The ${game.oneOff.name} resolves; the ${game.oneOffTarget.name} is scrapped.`,
+                `The ${getCardName(game.oneOff)} resolves; the ${getCardName(game.oneOffTarget)} is scrapped.`,
               ],
             };
             // Scrap the one-off target
@@ -99,7 +101,7 @@ module.exports = function (req, res) {
               resolving: game.oneOff.id,
               log: [
                 ...game.log,
-                `The ${game.oneOff.name} one-off resolves; ${player.username} will draw one card of their choice from the Scrap pile.`,
+                `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} will draw one card of their choice from the Scrap pile.`,
               ],
             };
             break;
@@ -109,7 +111,7 @@ module.exports = function (req, res) {
               resolving: game.oneOff.id,
               log: [
                 ...game.log,
-                `The ${game.oneOff.name} one-off resolves; ${opponent.username} must discard two cards.`,
+                `The ${getCardName(game.oneOff)} one-off resolves; ${opponent.username} must discard two cards.`,
               ],
             };
             break;
@@ -124,7 +126,7 @@ module.exports = function (req, res) {
               if (game.secondCard) {
                 gameUpdates.log = [
                   ...game.log,
-                  `The ${game.oneOff.name} one-off resolves; ${player.username} draws two cards.`,
+                  `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} draws two cards.`,
                 ];
                 cardsToDraw.push(game.secondCard.id);
                 gameUpdates.secondCard = null;
@@ -149,7 +151,7 @@ module.exports = function (req, res) {
               } else {
                 gameUpdates.log = [
                   ...game.log,
-                  `The ${game.oneOff.name} one-off resolves; ${player.username} draws the last card.`,
+                  `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} draws the last card.`,
                 ];
               }
               //Player could only draw one card, due to hand limit
@@ -167,7 +169,7 @@ module.exports = function (req, res) {
                   cardsToRemoveFromDeck.push(newSecondCard);
                   gameUpdates.log = [
                     ...game.log,
-                    `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card to reach the hand limit (8).`,
+                    `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} draws one card to reach the hand limit (8).`,
                   ];
 
                   // Player draws last card in deck, to reach hand limit (only draws 1)
@@ -175,7 +177,7 @@ module.exports = function (req, res) {
               } else {
                 gameUpdates.log = [
                   ...game.log,
-                  `The ${game.oneOff.name} one-off resolves; ${player.username} draws one card (last in deck) to reach the hand limit (8).`,
+                  `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} draws one card (last in deck) to reach the hand limit (8).`,
                 ];
               }
             }
@@ -227,7 +229,7 @@ module.exports = function (req, res) {
             }
             gameUpdates.log = [
               ...game.log,
-              `The ${game.oneOff.name} one-off resolves; all Royals and Glasses are scrapped.`,
+              `The ${getCardName(game.oneOff)} one-off resolves; all Royals and Glasses are scrapped.`,
             ];
             updatePromises = [
               ...updatePromises,
@@ -248,12 +250,12 @@ module.exports = function (req, res) {
             if (game.secondCard) {
               gameUpdates.log = [
                 ...game.log,
-                `The ${game.oneOff.name} one-off resolves; they will play one card from the top two in the deck. Top two cards are the ${game.topCard.name} and ${game.secondCard.name}.`,
+                `The ${getCardName(game.oneOff)} one-off resolves; they will play one card from the top two in the deck. Top two cards are the ${getCardName(game.topCard)} and ${getCardName(game.secondCard)}.`,
               ];
             } else {
               gameUpdates.log = [
                 ...game.log,
-                `The ${game.oneOff.name} one-off resolves. They will play the ${game.topCard.name} as it is the last card in the deck.`,
+                `The ${getCardName(game.oneOff)} one-off resolves. They will play the ${getCardName(game.topCard)} as it is the last card in the deck.`,
               ];
             }
             break; //End resolve SEVEN
@@ -267,7 +269,7 @@ module.exports = function (req, res) {
               ...gameUpdates,
               log: [
                 ...game.log,
-                `The ${game.oneOff.name} one-off resolves, returning the ${game.oneOffTarget.name} to ${opponent.username}'s hand. It cannot be played next turn.`,
+                `The ${getCardName(game.oneOff)} one-off resolves, returning the ${getCardName(game.oneOffTarget)} to ${opponent.username}'s hand. It cannot be played next turn.`,
               ],
             };
             switch (game.oneOffTargetType) {
