@@ -7,6 +7,7 @@ import {
   handleGameFinished,
   handleJoin,
   handleLeftGame,
+  handleIsRanked,
 } from './sockets/gameListEvents';
 import { handleConnect } from './sockets/connectivityEvents';
 
@@ -57,6 +58,7 @@ io.socket.on('join', handleJoin);
 
 io.socket.on('leftGame', handleLeftGame);
 
+io.socket.on('setIsRanked', handleIsRanked);
 //////////////////
 // Connectivity //
 //////////////////

@@ -8,7 +8,10 @@
     "stats": "Statistiques",
     "username": "Nom d'utilisateur",
     "password": "Mot de passe",
-    "collapseMenu": "Réduire le menu"
+    "collapseMenu": "Réduire le menu",
+    "cancel": "Annuler",
+    "ranked": "Classé",
+    "casual": "Occasionnel"
   },
   "login": {
     "noAccount": "Vous n'avez pas de compte ?",
@@ -29,6 +32,21 @@
     "ready": "PRÊT",
     "unready": "PAS PRÊT",
     "exit": "SORTIE",
-    "invite": "Inviter"
+    "invite": "Inviter",
+    "rankedChangedAlert":"Jeu mode modifié à"
+  },
+  "home": {
+    "gameFinder": "Recherche de jeu",
+    "spectate": "SPECTATEUR",
+    "noGameslist": "Aucun jeu actif",
+    "noSpectatelist": "Aucun jeu disponible pour regarder",
+    "openCreateGame": "Créer un jeu",
+    "submitCreateGame": "Créer jeu",
+    "players": "joueurs",
+    "playAiContent":"Envie de jouer en solo? Essayer",
+    "playAiLink":"jouer contre l'IA",
+    "playAiContent2":"pour apprendre les bases et tester votre courage.",
+    "gameName": "Jeu Nom",
+    "join": "Rejoindre"
   }
 }

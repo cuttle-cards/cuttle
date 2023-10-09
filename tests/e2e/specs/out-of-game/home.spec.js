@@ -18,15 +18,6 @@ function assertSuccessfulJoin(gameState) {
   cy.contains('h1', `Lobby for ${gameState.name}`);
 }
 
-function toggleInput(selector, checked = false) {
-  const before = checked ? 'be.checked' : 'not.be.checked';
-  const after = checked ? 'not.be.checked' : 'be.checked';
-  cy.get(`${selector} input`)
-    .should(before)
-    .click({ force: true }) // Force to click hidden input inside switch
-    .should(after);
-}
-
 function setupGameBetweenTwoUnseenPlayers(gameName) {
   cy.createGameOpponent(gameName).then(({ gameId }) => {
     cy.wrap(gameId).as(`${gameName}GameId`);
@@ -441,7 +432,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
 
-    toggleInput('[data-cy=create-game-ranked-switch]');
+    cy.toggleInput('[data-cy=create-game-ranked-switch]');
 
     cy.get('[data-cy=ranked-info-button]').should('exist');
 
@@ -452,7 +443,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
 
-    toggleInput('[data-cy=create-game-ranked-switch]', true);
+    cy.toggleInput('[data-cy=create-game-ranked-switch]', true);
 
     // Reload to get a fresh session so we use localStorage
     cy.reload();
@@ -518,7 +509,7 @@ describe('Home - Create Game', () => {
       .should('be.visible')
       .type('test game');
 
-    toggleInput('[data-cy=create-game-ranked-switch]');
+    cy.toggleInput('[data-cy=create-game-ranked-switch]');
 
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
 

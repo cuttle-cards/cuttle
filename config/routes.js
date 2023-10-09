@@ -62,6 +62,7 @@ module.exports.routes = {
   '/game/spectateLeave': 'game/spectate-leave',
   '/game/reconnect': 'game/reconnect',
   '/game/ready': 'game/ready',
+  '/game/setIsRanked': 'game/set-is-ranked',
   '/game/leaveLobby': 'game/leave-lobby',
   '/game/draw': 'game/draw',
   '/game/pass': 'game/pass',
