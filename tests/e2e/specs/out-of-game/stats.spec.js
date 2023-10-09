@@ -1,5 +1,5 @@
-import { playerOne, playerTwo, playerThree, playerFour, playerFive } from '../../fixtures/userFixtures';
-import { seasonFixtures, matchesFixture, gameFixtures } from '../../fixtures/statsFixtures';
+import { gameFixtures, matchesFixture, seasonFixtures } from '../../fixtures/statsFixtures';
+import { playerFive, playerFour, playerOne, playerThree, playerTwo } from '../../fixtures/userFixtures';
 const dayjs = require('dayjs');
 
 function setup() {
@@ -69,8 +69,8 @@ function setup() {
 describe('Stats Page Error States', () => {
   it('Redirects to login when attempting to navigate to stats while unauthenticated', () => {
     cy.wipeDatabase();
-    cy.visit('/#/stats');
-    cy.hash().should('eq', '#/signup');
+    cy.visit('//stats');
+    cy.hash().should('eq', '/signup');
   });
 });
 

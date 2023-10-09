@@ -1,6 +1,7 @@
 import { assertGameState, assertVictory } from '../../support/helpers';
-import { opponentOne } from '../../fixtures/userFixtures';
+
 import { Card } from '../../fixtures/cards';
+import { opponentOne } from '../../fixtures/userFixtures';
 
 describe('Reconnecting to a game', () => {
   it('Persists session after refreshing the page', () => {
@@ -676,12 +677,12 @@ describe('Display correct dialog for unavailable game', () => {
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
     //go back to game URL
-    cy.get('@gameSummary').then(({ gameId }) => cy.visit(`#/game/${gameId}`));
+    cy.get('@gameSummary').then(({ gameId }) => cy.visit(`/game/${gameId}`));
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
     cy.get('[data-cy="leave-unavailable-game-button"]').click();
-    cy.hash().should('equal', '#/');
+    cy.hash().should('equal', '/');
     //go to random url
-    cy.visit('#/game/12345');
+    cy.visit('/game/12345');
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
   });
 });

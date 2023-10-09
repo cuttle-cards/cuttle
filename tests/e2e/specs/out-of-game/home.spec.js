@@ -1,9 +1,10 @@
-import dayjs from 'dayjs';
-import { assertSnackbarError } from '../../support/helpers';
-import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
-import { SnackBarError } from '../../fixtures/snackbarError';
+
+import { Card } from '../../fixtures/cards';
 import GameStatus from '../../../../utils/GameStatus.json';
+import { SnackBarError } from '../../fixtures/snackbarError';
+import { assertSnackbarError } from '../../support/helpers';
+import dayjs from 'dayjs';
 
 function setup() {
   cy.wipeDatabase();
@@ -48,7 +49,7 @@ describe('Home - Page Content', () => {
     cy.get('[data-cy=how-it-works-okay]').click();
     cy.get('[data-cy=how-it-works-button]').click();
     cy.get('[data-cy=rules-link]').click();
-    cy.hash().should('eq', '#/rules');
+    cy.hash().should('eq', '/rules');
   });
 
   it('Logs user out', () => {
@@ -99,7 +100,7 @@ describe('Home - Game List', () => {
         });
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false });
       cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
-      cy.hash().should('contain', '#/lobby');
+      cy.hash().should('contain', '/lobby');
       cy.window()
         .its('cuttle.gameStore')
         .then((store) => {
@@ -130,7 +131,7 @@ describe('Home - Game List', () => {
       // Our user then joins through UI
       cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
       // Should have redirected to lobby page and updated store
-      cy.hash().should('contain', '#/lobby');
+      cy.hash().should('contain', '/lobby');
       cy.window()
         .its('cuttle.gameStore')
         .then((store) => {

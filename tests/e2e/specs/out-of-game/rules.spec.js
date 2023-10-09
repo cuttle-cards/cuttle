@@ -9,21 +9,21 @@ describe('Rules Page', () => {
 
   it('Top Home button - Navigates to Login when unauthenticated and home when authenticated', () => {
     cy.get('[data-cy=top-home-button]').click();
-    cy.hash().should('eq', '#/signup');
+    cy.hash().should('eq', '/signup');
     // Log in and try button again
     cy.signupPlayer(myUser);
     cy.vueRoute('/rules');
     cy.get('[data-cy=top-home-button]').click();
-    cy.hash().should('eq', '#/');
+    cy.hash().should('eq', '/');
   });
 
   it('Bottom Home button - Navigates to Login when unauthenticated and home when authenticated', () => {
     cy.get('[data-cy=bottom-home-button]').click();
-    cy.hash().should('eq', '#/signup');
+    cy.hash().should('eq', '/signup');
     // Log in and try button again
     cy.signupPlayer(myUser);
     cy.vueRoute('/rules');
     cy.get('[data-cy=bottom-home-button]').click();
-    cy.hash().should('eq', '#/');
+    cy.hash().should('eq', '/');
   });
 });

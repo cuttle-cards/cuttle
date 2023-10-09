@@ -1,8 +1,9 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
-import HomeView from '@/views/HomeView.vue';
-import LoginView from '@/views/LoginView.vue';
-import LobbyView from '@/views/LobbyView.vue';
+import { createRouter, createWebHistory } from 'vue-router';
+
 import GameView from '@/views/GameView.vue';
+import HomeView from '@/views/HomeView.vue';
+import LobbyView from '@/views/LobbyView.vue';
+import LoginView from '@/views/LoginView.vue';
 import RulesView from '@/views/RulesView.vue';
 import StatsView from '@/views/StatsView.vue';
 import { useAuthStore } from '@/stores/auth';
@@ -111,7 +112,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 

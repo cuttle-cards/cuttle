@@ -1,12 +1,13 @@
+import { assertGameState, assertLoss, assertSnackbarError, getCardId } from '../../support/helpers';
 import {
-  playerOne,
-  playerTwo,
-  playerThree,
-  playerFour,
   myUser,
   opponentOne,
+  playerFour,
+  playerOne,
+  playerThree,
+  playerTwo,
 } from '../../fixtures/userFixtures';
-import { assertGameState, assertSnackbarError, getCardId, assertLoss } from '../../support/helpers';
+
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
 
@@ -352,7 +353,7 @@ describe('Spectating Games', () => {
         .should('not.contain', 'Request Stalemate')
         .should('not.contain', 'Concede');
       cy.get('[data-cy="stop-spectating"]').click();
-      cy.hash().should('eq', '#/');
+      cy.hash().should('eq', '/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).click();
       cy.get('[data-cy="spectate-list-button"]').should('contain', '1').click();
