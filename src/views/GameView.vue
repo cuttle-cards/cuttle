@@ -18,7 +18,7 @@
           aria-label="Show game history"
           aria-hidden="false"
           role="button"
-          @click.stop="showHistoryDrawer = !showHistoryDrawer"  
+          @click.stop="showHistoryDrawer = !showHistoryDrawer"
         />
       </div>
 
@@ -37,7 +37,7 @@
                 <v-icon
                   color="neutral"
                   icon="mdi-window-close"
-                  size="large" 
+                  size="large"
                   aria-label="window close icon"
                   aria-hidden="false"
                   role="img"
@@ -178,11 +178,18 @@
           <scrap-dialog :scrap="scrap">
             <template #activator>
               <div id="scrap" class="d-flex flex-column align-center">
-                <h3>Scrap</h3>
-                <span>({{ scrap.length }})</span>
-                <v-btn variant="outlined" color="primary" class="mt-4">
-                  View
-                </v-btn>
+                <game-card
+                  v-if="gameStore.cardChosenFromScrap"
+                  :suit="gameStore.cardChosenFromScrap.suit"
+                  :rank="gameStore.cardChosenFromScrap.rank"
+                />
+                <div v-else class="d-flex flex-column align-center">
+                  <h3>Scrap</h3>
+                  <span>({{ scrap.length }})</span>
+                  <v-btn variant="outlined" color="primary" class="mt-4">
+                    View
+                  </v-btn>
+                </div>
               </div>
             </template>
           </scrap-dialog>
@@ -673,7 +680,9 @@ export default {
         case 'point':
           return this.nineTargetIndex !== null ? this.gameStore.opponent.points[this.nineTargetIndex] : null;
         case 'faceCard':
-          return this.nineTargetIndex !== null ? this.gameStore.opponent.faceCards[this.nineTargetIndex] : null;
+          return this.nineTargetIndex !== null
+            ? this.gameStore.opponent.faceCards[this.nineTargetIndex]
+            : null;
         default:
           return null;
       }
@@ -817,7 +826,8 @@ export default {
     drawCard() {
       if (!this.gameStore.resolvingSeven) {
         if (this.deckLength > 0) {
-          this.gameStore.requestDrawCard()
+          this.gameStore
+            .requestDrawCard()
             .then(this.clearSelection)
             .catch((err) => {
               this.snackBarMessage = err;
@@ -825,7 +835,8 @@ export default {
               this.clearSelection();
             });
         } else {
-          this.gameStore.requestPass()
+          this.gameStore
+            .requestPass()
             .then(this.clearSelection)
             .catch((err) => {
               this.snackBarMessage = err;
@@ -839,14 +850,16 @@ export default {
       this.clearOverlays();
       if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore.requestPlayPointsSeven({
+        this.gameStore
+          .requestPlayPointsSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
           })
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.gameStore.requestPlayPoints(this.selectedCard.id)
+        this.gameStore
+          .requestPlayPoints(this.selectedCard.id)
           .then(this.clearSelection)
           .catch(this.handleError);
       }
@@ -855,14 +868,16 @@ export default {
       this.clearOverlays();
       if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore.requestPlayFaceCardSeven({
+        this.gameStore
+          .requestPlayFaceCardSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
           })
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.gameStore.requestPlayFaceCard(this.selectedCard.id)
+        this.gameStore
+          .requestPlayFaceCard(this.selectedCard.id)
           .then(this.clearSelection)
           .catch(this.handleError);
       }
@@ -870,7 +885,8 @@ export default {
     scuttle(targetIndex) {
       if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore.requestScuttleSeven({
+        this.gameStore
+          .requestScuttleSeven({
             cardId: this.cardSelectedFromDeck.id,
             targetId: this.gameStore.opponent.points[targetIndex].id,
             index: deckIndex,
@@ -878,7 +894,8 @@ export default {
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.gameStore.requestScuttle({
+        this.gameStore
+          .requestScuttle({
             cardId: this.selectedCard.id,
             targetId: this.gameStore.opponent.points[targetIndex].id,
           })
@@ -907,7 +924,8 @@ export default {
       }
       if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore.requestPlayTargetedOneOffSeven({
+        this.gameStore
+          .requestPlayTargetedOneOffSeven({
             cardId: this.cardSelectedFromDeck.id,
             targetId: target.id,
             pointId: jackedPointId,
@@ -917,7 +935,8 @@ export default {
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.gameStore.requestPlayTargetedOneOff({
+        this.gameStore
+          .requestPlayTargetedOneOff({
             cardId: this.selectedCard.id,
             targetId: target.id,
             pointId: jackedPointId,
@@ -931,7 +950,8 @@ export default {
       const target = this.gameStore.opponent.points[targetIndex];
       if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore.requestPlayJackSeven({
+        this.gameStore
+          .requestPlayJackSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
             targetId: target.id,
@@ -939,7 +959,8 @@ export default {
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.gameStore.requestPlayJack({
+        this.gameStore
+          .requestPlayJack({
             cardId: this.selectedCard.id,
             targetId: target.id,
           })
@@ -1006,7 +1027,8 @@ export default {
         if (!this.cardSelectedFromDeck) return;
 
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore.requestPlayOneOffSeven({
+        this.gameStore
+          .requestPlayOneOffSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
           })
@@ -1015,7 +1037,8 @@ export default {
       }
       if (!this.selectedCard) return;
 
-      this.gameStore.requestPlayOneOff(this.selectedCard.id)
+      this.gameStore
+        .requestPlayOneOff(this.selectedCard.id)
         .then(this.clearSelection)
         .catch(this.handleError);
     },
@@ -1260,7 +1283,12 @@ export default {
       height: 85%;
       font-size: 0.75em;
       letter-spacing: 0.25px;
-      font-family: 'Libre Baskerville', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+      font-family:
+        'Libre Baskerville',
+        Century Gothic,
+        CenturyGothic,
+        AppleGothic,
+        sans-serif;
     }
   }
 }
@@ -1268,7 +1296,12 @@ export default {
 .history-title {
   font-size: 1.25em;
   font-weight: 700;
-  font-family: 'Cormorant Infant', Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+  font-family:
+    'Cormorant Infant',
+    Century Gothic,
+    CenturyGothic,
+    AppleGothic,
+    sans-serif;
 }
 
 @media screen and (min-width: 1024px) {
@@ -1375,7 +1408,9 @@ export default {
     transition: all 1s;
     &.my-turn {
       border: 4px solid rgba(var(--v-theme-accent));
-      box-shadow: 0 15px 16px -12px rgba(0, 123, 59, 0.8), 0 24px 38px 12px rgba(0, 123, 59, 0.8),
+      box-shadow:
+        0 15px 16px -12px rgba(0, 123, 59, 0.8),
+        0 24px 38px 12px rgba(0, 123, 59, 0.8),
         0 10px 50px 16px rgba(33, 150, 83, 0.8) !important;
       background: linear-gradient(0deg, rgba(253, 98, 34, 1), rgba(255, 255, 255, 0.3));
     }
@@ -1469,8 +1504,8 @@ export default {
 }
 
 @media (max-width: 960px) and (orientation: landscape) {
- #player-score{
-  margin-top: -16px;
- }
+  #player-score {
+    margin-top: -16px;
+  }
 }
 </style>
