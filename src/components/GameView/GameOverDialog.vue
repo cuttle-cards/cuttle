@@ -1,5 +1,5 @@
 <template>
-  <base-dialog id="game-over-dialog" v-model="show">
+  <BaseDialog id="game-over-dialog" v-model="show">
     <template #title>
       <h1 :data-cy="headingDataAttr" :class="isMobilePortrait ? 'text-h4' : ''">
         {{ heading }}
@@ -65,7 +65,7 @@
         Go Home
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>

@@ -31,7 +31,7 @@
     <!-- Usernames -->
     <v-row>
       <v-col offset="1">
-        <lobby-player-indicator
+        <LobbyPlayerIndicator
           :player-username="authStore.username"
           :player-ready="iAmReady"
           data-cy="my-indicator"
@@ -40,7 +40,7 @@
       <v-col offset="1">
         <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
         <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
-        <lobby-player-indicator
+        <LobbyPlayerIndicator
           :player-username="gameStore.opponentUsername"
           :player-ready="gameStore.opponentIsReady"
           data-cy="opponent-indicator"

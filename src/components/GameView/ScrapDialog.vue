@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     id="scrap-dialog"
     v-model="show"
     :scrollable="true"
@@ -31,7 +31,7 @@
     </template>
     <template #body>
       <div class="mt-4">
-        <card-list-sortable
+        <CardListSortable
           :cards="scrap"
           empty-text="There are no cards in the scrap pile."
           data-selector-prefix="scrap-dialog"
@@ -48,7 +48,7 @@
         Close
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>

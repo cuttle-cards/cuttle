@@ -25,7 +25,7 @@
         </div>
       </template>
       <!-- Cards in the scrap -->
-      <game-card
+      <GameCard
         v-for="card in sortedCards"
         :key="card.id"
         class="mx-1 my-1 sortable-list-card"
