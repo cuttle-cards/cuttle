@@ -42,6 +42,7 @@ module.exports = function (req, res) {
         change: 'resolveThree',
         game: fullGame,
         victory,
+        chosenCardId: req.body.cardId
       });
       return res.ok();
     })
