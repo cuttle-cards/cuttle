@@ -6,8 +6,8 @@
       glasses: isGlasses,
       jack: isJack,
       frozen: isFrozen,
-      threesPlayer: isThrees && playerChoosingFromScrap,
-      threesOpponent: isThrees && !playerChoosingFromScrap
+      threesPlayer: isPlayerThreesTarget,
+      threesOpponent: isOpponentThreesTarget
     }"
     :elevation="elevation"
   >
@@ -85,7 +85,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    isThrees: {
+    isThreesTarget: {
       type: Boolean,
       default:false
     },
@@ -189,6 +189,12 @@ export default {
           return '';
       }
     },
+    isPlayerThreesTarget() {
+      return this.isThrees && this.playerChoosingFromScrap;
+    },
+    isOpponentThreesTarget() {
+      return this.isThrees && !this.playerChoosingFromScrap;
+    }
   },
 };
 </script>

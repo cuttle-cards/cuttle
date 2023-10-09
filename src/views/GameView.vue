@@ -182,7 +182,7 @@
                   v-if="gameStore.cardChosenFromScrap"
                   :suit="gameStore.cardChosenFromScrap.suit"
                   :rank="gameStore.cardChosenFromScrap.rank"
-                  :is-threes="true"
+                  :is-threes-target="true"
                   :player-choosing-from-scrap="gameStore.playerChoosingFromScrap"
                 />
                 <div v-else class="d-flex flex-column align-center">
