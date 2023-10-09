@@ -98,8 +98,7 @@ describe('Playing THREEs', () => {
     });
   });
 
-  it.only('Opponent plays 3s successfully', () => {
-    cy.viewport(393, 851);
+  it('Opponent plays 3s successfully', () => {
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES],
