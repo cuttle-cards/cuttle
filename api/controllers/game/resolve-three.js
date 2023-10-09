@@ -38,11 +38,12 @@ module.exports = function (req, res) {
         game: fullGame,
         gameModel,
       });
+      const animation = { chosenCard: req.body.cardId, pNum: req.session.pNum };
       Game.publish([fullGame.id], {
         change: 'resolveThree',
         game: fullGame,
         victory,
-        chosenCardId: req.body.cardId
+        animation
       });
       return res.ok();
     })

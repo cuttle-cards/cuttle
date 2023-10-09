@@ -66,6 +66,7 @@ export const useGameStore = defineStore('game', {
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
+    cardChosenFromScrap: null,
     // Fours
     discarding: false,
     waitingForOpponentToDiscard: false,
@@ -285,6 +286,11 @@ export const useGameStore = defineStore('game', {
       setTimeout(() => {
         this.updateGameThenResetPNumIfNull(game);
       }, 1000);
+    },
+
+    processResolveThree({ chosenCard, pNum }) {
+      this.cardChosenFromScrap = this.players[pNum].hand.find((card) => card.id === chosenCard);
+      console.log(this.cardChosenFromScrap);
     },
 
     handleGameResponse: (jwres, resolve, reject) => {
