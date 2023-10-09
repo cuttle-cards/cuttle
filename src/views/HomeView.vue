@@ -31,7 +31,7 @@
                   {{ t('home.noGameslist') }}
                 </p>
                 <div v-for="game in playableGameList" :key="game.id">
-                  <game-list-item
+                  <GameListItem
                     :name="game.name"
                     :p0ready="game.p0Ready ? 1 : 0"
                     :p1ready="game.p1Ready ? 1 : 0"
@@ -52,7 +52,7 @@
                   {{ t('home.noSpectatelist') }}
                 </p>
                 <div v-for="game in spectateGameList" :key="game.id">
-                  <game-list-item
+                  <GameListItem
                     :name="game.name"
                     :p0ready="game.p0Ready ? 1 : 0"
                     :p1ready="game.p1Ready ? 1 : 0"
@@ -73,7 +73,7 @@
       <v-row>
         <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
           <div class="mx-auto my-4 my-xl-2 homeContent">
-            <create-game-dialog @error="handleError" />
+            <CreateGameDialog @error="handleError" />
             <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
               <v-btn
                 v-if="!$vuetify.display.smAndUp"
@@ -100,7 +100,7 @@
                   {{ t('login.joinDiscord') }}
                 </span>
               </v-btn>
-              <how-it-works-dialog />
+              <HowItWorksDialog />
             </div>
           </div>
         </v-col>

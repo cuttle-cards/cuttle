@@ -37,7 +37,7 @@
             {{ row.rank }}
           </td>
           <td v-for="(week) in ['total', ...selectedWeeks]" :key="`${row.username}-${week}`">
-            <stats-leaderboard-cell
+            <StatsLeaderboardCell
               :player-row="row"
               :week="week"
               :selected-metric="selectedMetric"

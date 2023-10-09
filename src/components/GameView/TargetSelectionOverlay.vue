@@ -1,6 +1,6 @@
 <template>
   <div id="player-hand-targeting" class="d-flex justify-start" :class="{ 'my-turn': isPlayersTurn }">
-    <game-card
+    <GameCard
       :suit="selectedCard.suit"
       :rank="selectedCard.rank"
       :is-selected="true"

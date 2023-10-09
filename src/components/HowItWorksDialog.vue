@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     id="how-it-works"
     v-model="show"
     title="Looking To Play?"
@@ -44,13 +44,13 @@
           to learn the ropes and test your mettle.
         </span>
         <span class="my-2">Want to learn more? Check out our 
-          <router-link 
+          <RouterLink 
             data-cy="rules-link" 
             class="text-anchor text-decoration-none" 
             to="/rules"
           >
             about page 
-          </router-link>
+          </RouterLink>
           to learn the rules and read about the cuttle.cards project.
         </span>
       </section>
@@ -66,7 +66,7 @@
         Okay
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script setup>

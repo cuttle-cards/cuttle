@@ -2,14 +2,14 @@
   <div id="game-view-wrapper">
     <!-- Unauthenticated/Must re-log in/ Unavailable game -->
     <template v-if="gameStore.myPNum === null">
-      <game-unavailable-view />
+      <GameUnavailableView />
     </template>
 
     <!-- Authenticated View -->
     <template v-else>
       <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center">
-        <spectator-list-menu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
-        <game-menu :is-spectating="isSpectating" />
+        <SpectatorListMenu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
+        <GameMenu :is-spectating="isSpectating" />
         <v-icon
           v-if="$vuetify.display.xs"
           color="white"
@@ -62,11 +62,11 @@
       <div class="opponent-hand-container">
         <div id="opponent-hand" class="d-flex flex-column justify-start align-center px-2 pb-2 mx-auto">
           <div class="user-cards-grid-container">
-            <username-tool-tip id="opponent-username-container" :username="gameStore.opponentUsername" />
+            <UsernameToolTip id="opponent-username-container" :username="gameStore.opponentUsername" />
             <div class="opponent-cards-container">
               <div id="opponent-hand-cards" class="d-flex justify-center align-start">
-                <transition name="slide-below" mode="out-in">
-                  <transition-group
+                <Transition name="slide-below" mode="out-in">
+                  <TransitionGroup
                     v-if="showOpponentHand"
                     id="opponent-hand-glasses"
                     key="opponent-hand-glasses"
@@ -81,7 +81,7 @@
                       :show-arrows="true"
                     >
                       <v-slide-group-item v-for="card in gameStore.opponent.hand" :key="card.id">
-                        <game-card
+                        <GameCard
                           :key="card.id"
                           :suit="card.suit"
                           :rank="card.rank"
@@ -90,7 +90,7 @@
                         />
                       </v-slide-group-item>
                     </v-slide-group>
-                    <game-card
+                    <GameCard
                       v-for="card in gameStore.opponent.hand"
                       v-else
                       :key="card.id"
@@ -99,22 +99,22 @@
                       :data-opponent-hand-card="`${card.rank}-${card.suit}`"
                       class="transition-all opponent-hand-card-revealed"
                     />
-                  </transition-group>
-                  <transition-group
+                  </TransitionGroup>
+                  <TransitionGroup
                     v-else
                     key="opponent-hand"
                     tag="div"
                     name="slide-above"
                     class="opponent-hand-wrapper transition-all"
                   >
-                    <game-card
+                    <GameCard
                       v-for="(card, index) in gameStore.opponent.hand"
                       :key="index"
                       data-opponent-hand-card
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
                     />
-                  </transition-group>
-                </transition>
+                  </TransitionGroup>
+                </Transition>
               </div>
             </div>
           </div>
@@ -124,7 +124,7 @@
       <!-- Opponent Score -->
       <h3 id="opponent-score" class="mb-3">
         <span>POINTS: {{ gameStore.opponentPointTotal }}</span>
-        <score-goal-tool-tip
+        <ScoreGoalToolTip
           :king-count="opponentKingCount"
           :points-to-win="opponentPointsToWin"
           :is-player="false"
@@ -154,7 +154,7 @@
                 Play from Deck
               </p>
               <div class="d-flex">
-                <game-card
+                <GameCard
                   v-if="topCard"
                   :suit="topCard.suit"
                   :rank="topCard.rank"
@@ -163,7 +163,7 @@
                   class="mb-4 resolving-seven-card"
                   @click="selectTopCard"
                 />
-                <game-card
+                <GameCard
                   v-if="secondCard"
                   :suit="secondCard.suit"
                   :rank="secondCard.rank"
@@ -175,7 +175,7 @@
               </div>
             </template>
           </v-card>
-          <scrap-dialog :scrap="scrap">
+          <ScrapDialog :scrap="scrap">
             <template #activator>
               <div id="scrap" class="d-flex flex-column align-center">
                 <h3>Scrap</h3>
@@ -185,7 +185,7 @@
                 </v-btn>
               </div>
             </template>
-          </scrap-dialog>
+          </ScrapDialog>
         </div>
       </div>
 
@@ -194,13 +194,13 @@
         <div id="field" class="d-flex justify-center align-center p-2 mx-auto">
           <div id="field-center">
             <div id="opponent-field">
-              <transition-group :name="opponentPointsTransition" tag="div" class="field-points">
+              <TransitionGroup :name="opponentPointsTransition" tag="div" class="field-points">
                 <div
                   v-for="(card, index) in gameStore.opponent.points"
                   :key="card.id"
                   class="field-point-container transition-all"
                 >
-                  <game-card
+                  <GameCard
                     :suit="card.suit"
                     :rank="card.rank"
                     :is-valid-target="validMoves.includes(card.id)"
@@ -210,7 +210,7 @@
                     @click="targetOpponentPointCard(index)"
                   />
                   <div class="jacks-container">
-                    <game-card
+                    <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
                       :suit="jack.suit"
@@ -222,9 +222,9 @@
                     />
                   </div>
                 </div>
-              </transition-group>
-              <transition-group :name="opponentFaceCardsTransition" tag="div" class="field-effects">
-                <game-card
+              </TransitionGroup>
+              <TransitionGroup :name="opponentFaceCardsTransition" tag="div" class="field-effects">
+                <GameCard
                   v-for="(card, index) in gameStore.opponent.faceCards"
                   :key="card.id"
                   :suit="card.suit"
@@ -235,17 +235,17 @@
                   class="transition-all"
                   @click="targetOpponentFaceCard(index)"
                 />
-              </transition-group>
+              </TransitionGroup>
             </div>
             <v-divider light />
             <div id="player-field" class="mb-4">
-              <transition-group :name="playerPointsTransition" tag="div" class="field-points">
+              <TransitionGroup :name="playerPointsTransition" tag="div" class="field-points">
                 <div
                   v-for="card in gameStore.player.points"
                   :key="card.id"
                   class="field-point-container transition-all"
                 >
-                  <game-card
+                  <GameCard
                     :suit="card.suit"
                     :rank="card.rank"
                     :jacks="card.attachments"
@@ -254,7 +254,7 @@
                     controlled-by="player"
                   />
                   <div class="jacks-container">
-                    <game-card
+                    <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
                       :suit="jack.suit"
@@ -264,9 +264,9 @@
                     />
                   </div>
                 </div>
-              </transition-group>
-              <transition-group :name="playerFaceCardsTransition" tag="div" class="field-effects">
-                <game-card
+              </TransitionGroup>
+              <TransitionGroup :name="playerFaceCardsTransition" tag="div" class="field-effects">
+                <GameCard
                   v-for="card in gameStore.player.faceCards"
                   :key="card.id"
                   :suit="card.suit"
@@ -275,7 +275,7 @@
                   :data-player-face-card="`${card.rank}-${card.suit}`"
                   class="transition-all"
                 />
-              </transition-group>
+              </TransitionGroup>
             </div>
           </div>
         </div>
@@ -300,7 +300,7 @@
 
       <h3 id="player-score">
         <span>POINTS: {{ gameStore.playerPointTotal }}</span>
-        <score-goal-tool-tip
+        <ScoreGoalToolTip
           :king-count="playerKingCount"
           :points-to-win="playerPointsToWin"
           :is-player="true"
@@ -323,7 +323,7 @@
             class="user-cards-grid-container"
             :class="{ 'my-turn': gameStore.isPlayersTurn }"
           >
-            <username-tool-tip
+            <UsernameToolTip
               v-if="$vuetify.display.smAndUp"
               id="player-username-container"
               key="player-username"
@@ -331,7 +331,7 @@
               :is-player="true"
             />
             <div class="player-cards-container">
-              <transition-group
+              <TransitionGroup
                 tag="div"
                 name="slide-above"
                 class="d-flex justify-center align-start player-cards-mobile-overrides"
@@ -339,7 +339,7 @@
               >
                 <v-slide-group v-if="$vuetify.display.xs" key="slide-group" :show-arrows="true">
                   <v-slide-group-item v-for="(card, index) in gameStore.player.hand" :key="card.id">
-                    <game-card
+                    <GameCard
                       :key="card.id"
                       :suit="card.suit"
                       :rank="card.rank"
@@ -353,7 +353,7 @@
                   </v-slide-group-item>
                 </v-slide-group>
 
-                <game-card
+                <GameCard
                   v-for="(card, index) in gameStore.player.hand"
                   v-else
                   :key="card.id"
@@ -366,10 +366,10 @@
                   :data-player-hand-card="`${card.rank}-${card.suit}`"
                   @click="selectCard(index)"
                 />
-              </transition-group>
+              </TransitionGroup>
             </div>
           </div>
-          <target-selection-overlay
+          <TargetSelectionOverlay
             v-if="targeting && (selectedCard || cardSelectedFromDeck)"
             id="player-hand-targeting"
             key="target-selection-overlay"
@@ -387,7 +387,7 @@
         data-cy="game-snackbar"
         @clear="clearSnackBar"
       />
-      <game-overlays
+      <GameOverlays
         :targeting="targeting"
         :selected-card="selectedCard"
         :card-selected-from-deck="cardSelectedFromDeck"
@@ -397,7 +397,7 @@
         @points="playPoints"
         @target="beginTargeting"
       />
-      <game-dialogs @clear-selection="clearSelection" @handle-error="handleError" />
+      <GameDialogs @clear-selection="clearSelection" @handle-error="handleError" />
     </template>
   </div>
 </template>

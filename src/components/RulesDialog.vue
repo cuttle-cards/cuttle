@@ -1,5 +1,5 @@
 <template>
-  <base-dialog id="rulesDialog" max-width="1250">
+  <BaseDialog id="rulesDialog" max-width="1250">
     <template #title>
       <h1>Rules of Cuttle</h1>
       <v-btn icon aria-label="Close rules dialog" @click="close">
@@ -181,7 +181,7 @@
         Got It!
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>
