@@ -9,12 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PUSH_TOKEN }}
       - name: print if dummy secret dummy secret
         run: echo dummy secret = lolz ? ${{ secrets.BS_TEST_SECRET == 'lolz' }}
       - name: configure git
         run: |
-          git remote set-url origin https://itsalaidbacklife:${{ secrets.GH_PUSH_TOKEN }}@github.com/cuttle-cards/cuttle
+          git remote set-url origin https://itsalaidbacklife@github.com/cuttle-cards/cuttle
           git config --global user.name "Cuttle Continuous Integration"
           git config --global user.email "itsalaidbacklife@gmail.com"
       - name: bump major version
