@@ -1,3 +1,4 @@
+const { getCardName } = require('../../../../utils/game-utils');
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -26,7 +27,7 @@ module.exports = function (req, res) {
                   resolving: null,
                   log: [
                     ...game.log,
-                    `${player.username} scuttled ${opponent.username}'s ${target.name} with the ${card.name} from the top of the deck.`,
+                    `${player.username} scuttled ${opponent.username}'s ${getCardName(target)} with the ${getCardName(card)} from the top of the deck.`,
                   ],
                   lastEvent: {
                     change: 'sevenScuttle',
