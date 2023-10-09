@@ -35,6 +35,25 @@
     "invite": "Invitar",
     "rankedChangedAlert":"Modo de juego cambió a"
   },
+  "game":{
+    "moves":{
+      "effects":{
+        "1": "Desechar todos los puntos",
+        "2": "Deseche el objetivo Royal o Glasses ocho",
+        "3": "Elige 1 carta del Scrap y ponla en tu mano.",
+        "4": "Tu oponente descarta dos cartas de su elección de su mano.",
+        "5": "Saca dos cartas de la baraja.",
+        "6": "Elimina todos los ochos Royals y Glasses",
+        "7": "Juega una de las dos cartas superiores del mazo y devuelve la otra (ambas se revelan)",
+        "8": "Tu oponente juega con la mano abierta (sus cartas te son reveladas)",
+        "9": "Devuelve la carta objetivo a la mano de su controlador. No pueden jugarlo el próximo turno.",
+        "10": "Sin efecto",
+        "11": "Juega encima de la carta de puntos objetivo para robarla.",
+        "12": "Tus otras cartas solo pueden ser objetivo de scuttles.",
+        "13": "Reduce los puntos que necesitas para ganar. (1K: 14 puntos, 2K: 10 puntos, 3K: 5 puntos, 4K: 0 puntos)"
+      }
+    }
+  },
   "home": {
     "gameFinder": "Buscador de juegos",
     "spectate": "ESPECTAR",
