@@ -299,7 +299,7 @@ export const useGameStore = defineStore('game', {
       setTimeout(() => {
         this.cardChosenFromScrap = null;
         this.playerChoosingFromScrap = false;
-      }, 1000);
+      }, 2000);
     },
 
     handleGameResponse: (jwres, resolve, reject) => {

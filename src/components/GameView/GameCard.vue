@@ -309,10 +309,10 @@ export default {
 }
 
 .threesPlayer{
-  animation: slidePlayerThree 1s ease;
+  animation: slidePlayerThree 2s ease;
 }
 .threesOpponent{
-  animation: slideOpponentThree 1s ease;
+  animation: slideOpponentThree 2s ease;
 }
 
 @keyframes slidePlayerThree {
@@ -350,10 +350,10 @@ export default {
     }
   }
   .threesPlayer{
-    animation: slidePlayerThreePortrait 1s ease;
+    animation: slidePlayerThreePortrait 2s ease;
   }
   .threesOpponent{
-    animation: slideOpponentThreePortrait 1s ease;
+    animation: slideOpponentThreePortrait 2s ease;
   }
 
 }
