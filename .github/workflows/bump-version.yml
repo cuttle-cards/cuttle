@@ -11,8 +11,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: print if dummy secret dummy secret
-        run: echo length of dummy secret is ${{ secrets.BS_TEST_SECRET == 'lolz' }}
-      - name: configure git pretty please
+        run: echo dummy secret = lolz ? ${{ secrets.BS_TEST_SECRET == 'lolz' }}
+      - name: configure git
         run: |
           git remote set-url origin https://itsalaidbacklife:${{ secrets.GH_PUSH_TOKEN }}@github.com/cuttle-cards/cuttle
           git config --global user.name "Cuttle Continuous Integration"
