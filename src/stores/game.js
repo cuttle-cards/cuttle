@@ -290,8 +290,9 @@ export const useGameStore = defineStore('game', {
     },
 
     processResolveThree({ chosenCard, pNum }) {
-      this.cardChosenFromScrap = this.players[pNum].hand.find((card) => card.id === chosenCard);
+      this.cardChosenFromScrap = this.players[pNum].hand.find(({id}) => id === chosenCard);
       this.playerChoosingFromScrap = this.myPNum === pNum;
+      
       setTimeout(() => {
         this.cardChosenFromScrap = null;
         this.playerChoosingFromScrap = false;
