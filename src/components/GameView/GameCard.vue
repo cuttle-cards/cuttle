@@ -190,10 +190,10 @@ export default {
       }
     },
     isPlayerThreesTarget() {
-      return this.isThrees && this.playerChoosingFromScrap;
+      return this.isThreesTarget && this.playerChoosingFromScrap;
     },
     isOpponentThreesTarget() {
-      return this.isThrees && !this.playerChoosingFromScrap;
+      return this.isThreesTarget && !this.playerChoosingFromScrap;
     }
   },
 };
