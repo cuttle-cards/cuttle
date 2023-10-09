@@ -189,9 +189,6 @@ export default {
           return '';
       }
     },
-    threesClass() {
-      return this.playerChoosingFromScrap ? 'slide-below-leave-to' : null;
-    }
   },
 };
 </script>
