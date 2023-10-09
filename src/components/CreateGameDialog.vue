@@ -53,6 +53,7 @@
     <template #actions>
       <v-form>
         <v-btn
+          class="mr-2"
           data-cy="cancel-create-game"
           :disabled="loading"
           variant="text"

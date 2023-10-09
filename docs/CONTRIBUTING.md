@@ -28,17 +28,14 @@ If you spot a problem with the docs, [search if an issue already exists](https:/
 
 Scan through our [existing issues](https://github.com/cuttle-cards/cuttle/issues) to find one that interests you. You can narrow down the search using `labels` as filters. See [Labels](/contributing/how-to-use-labels.md) for more information. As a general rule, we don’t assign issues to anyone. If you find an issue to work on, you are welcome to open a PR with a fix.
 
-### Make Changes
+### (Automated) Version Management
 
-We follow semantic versioning (semver) for Cuttle Cards, which uses version numbers like 4.3.22. The versioning scheme consists of major, minor, and patch versions. When submitting a PR, please update the version field in package.json based on the version label of the issue being addressed.
+This repo automatically increments the package version based on version labels that the core team applies to pull requests. **You do not need to update the `version` fields in package files** because it is handled automatically. Cuttle uses semantic versioning (semver), which uses version numbers like 4.3.22. The versioning scheme consists of major, minor, and patch versions. 
 
-If the issue is labeled:
 
-* `patch-version`, run `npm run version:patch` to increment the patch number in the version field (e.g., from 4.3.22 to 4.3.23)
-* `minor-version`, run `npm run version:minor` to reset the patch number to zero and increment the minor version (e.g., from 4.3.22 to 4.4.0).
-* `major-version`, run `npm run version:major` to set both the patch and minor versions to zero and increment the major version (e.g., from 4.3.22 to 5.0.0).
-
-Please note that you don't need to repeat this process for `package-lock.json` as it automatically inherits the version number from package.json whenever dependencies are updated or an npm install is started.
+* `patch-version`, the automation will increment the patch number in the version field (e.g., from 4.3.22 to 4.3.23)
+* `minor-version`, the automation will reset the patch number to zero and increment the minor version (e.g., from 4.3.22 to 4.4.0).
+* `major-version`, the automation will set both the patch and minor versions to zero and increment the major version (e.g., from 4.3.22 to 5.0.0).
 
 ### Test-Driven Development
 

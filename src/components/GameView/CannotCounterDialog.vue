@@ -10,7 +10,8 @@
         Your opponent has played the 
         <GameCardName :card-name="oneOff.name" />
         as a one-off
-        <span v-if="target"> targeting your 
+        <span v-if="target"> 
+        targeting your 
           <GameCardName :card-name="target.name" />
         </span>
       </div>
@@ -26,7 +27,7 @@
       <div class="d-flex justify-center align-center my-8">
         <GameCard :suit="oneOff.suit" :rank="oneOff.rank" />
         <p class="ml-8">
-          {{ oneOff.ruleText }}
+          {{ t(`game.moves.effects[${oneOff.rank}]`) }}
         </p>
         <div v-if="target" id="target-wrapper">
           <span id="target-icon-wrapper" class="d-flex justify-center align-center">
@@ -48,7 +49,7 @@
       <v-btn
         data-cy="cannot-counter-resolve"
         color="surface-1"
-        variant="flat" 
+        variant="flat"
         @click="$emit('resolve')"
       >
         Resolve
@@ -58,6 +59,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import GameCard from '@/components/GameView/GameCard.vue';
 import GameCardName from '@/components/GameView/GameCardName.vue';
@@ -96,6 +98,10 @@ export default {
     },
   },
   emits: ['resolve'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   computed: {
     show: {
       get() {

@@ -1,3 +1,4 @@
+const { getCardName } = require('../../../../utils/game-utils');
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -23,7 +24,7 @@ module.exports = function (req, res) {
               },
               log: [
                 ...game.log,
-                `${player.username} played the ${card.name} from the top of the deck for points.`,
+                `${player.username} played the ${getCardName(card)} from the top of the deck for points.`,
               ],
             };
             const updatePromises = [

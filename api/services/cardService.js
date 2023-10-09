@@ -34,42 +34,10 @@ module.exports = {
       }
 
       const { gameId, suit, rank } = options;
-      // Stringify Rank
-      const str_rank =
-        {
-          1: 'A',
-          11: 'J',
-          12: 'Q',
-          13: 'K',
-        }[rank] ?? rank;
-
-      // Stringify Suit
-      const str_suit = ['♣️', '♦️', '♥️', '♠️'][suit];
-
-      const str_name = str_rank + str_suit;
-
-      const ruleText = [
-        'Scrap all points',
-        'Scrap target Royal or Glasses eight',
-        'Choose 1 card in the Scrap and put it to your hand',
-        'Your opponent discards two cards of their choice from their hand',
-        'Draw two cards from the deck',
-        'Scrap all Royals and Glasses eights',
-        'Play one of the top two cards of the deck and put the other back (both are revealed)',
-        'Your opponent plays with an open hand (their cards are revealed to you)',
-        "Return target card to its controller's hand. They can't play it next turn",
-        'No effect',
-        'Play on top of target point card to steal it',
-        'Your other cards may only be targeted by scuttles',
-        'Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)',
-      ][rank - 1]; // ranks start at 1
-
       // Create card record
       return Card.create({
         suit: suit,
         rank: rank,
-        name: str_name,
-        ruleText: ruleText,
         deck: gameId,
       })
         .fetch()
@@ -80,7 +48,7 @@ module.exports = {
           if (err) {
             return reject(err);
           }
-          return reject({ message: `Error creating card: ${str_name}` });
+          return reject({ message: `Error creating card` });
         });
     });
   },

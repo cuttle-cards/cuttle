@@ -14,15 +14,6 @@ module.exports = {
     rank: {
       type: 'number',
     },
-
-    name: {
-      type: 'string',
-    },
-
-    ruleText: {
-      type: 'string',
-    },
-
     deck: {
       model: 'game',
     },
