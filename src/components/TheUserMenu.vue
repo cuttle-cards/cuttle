@@ -18,8 +18,8 @@
         {{ authStore.username }}
       </v-btn>
     </template>
-    <LanguageSelection />
     <v-list density="compact" class="bg-surface-2 text-surface-1">
+      <LanguageSelection is-in-user-menu />
       <v-list-item
         v-for="({ text, icon, page, cyName }, i) in menuItems"
         :key="i"
