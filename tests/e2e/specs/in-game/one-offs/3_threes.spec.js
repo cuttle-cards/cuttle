@@ -25,7 +25,6 @@ describe('Playing THREEs', () => {
   });
 
   it('Plays 3s successfully', () => {
-    
     const scrap = [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS];
 
     // Set Up
