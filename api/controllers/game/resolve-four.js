@@ -1,3 +1,4 @@
+const { getCardName } = require('../../../utils/game-utils');
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -35,10 +36,10 @@ module.exports = function (req, res) {
         cardsToScrap.push(card2.id);
         gameUpdates.log = [
           ...game.log,
-          `${player.username} discarded the ${card1.name} and the ${card2.name}.`,
+          `${player.username} discarded the ${getCardName(card1)} and the ${getCardName(card2)}.`,
         ];
       } else {
-        gameUpdates.log = [...game.log, `${player.username} discarded the ${card1.name}.`];
+        gameUpdates.log = [...game.log, `${player.username} discarded the ${getCardName(card1)}.`];
       }
       const updatePromises = [
         Game.updateOne(game.id).set(gameUpdates),

@@ -27,7 +27,7 @@
             {{ t('login.subtitle') }}
           </p>
           <div class="w-75 my-4 video">
-            <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI" />
+            <BaseVideo source="https://www.youtube.com/embed/qOqkNbhMdsI" />
             <v-btn
               class="rulesBtn w-100 mt-8"
               size="x-large"

@@ -31,7 +31,7 @@
     <!-- Usernames -->
     <v-row>
       <v-col offset="1">
-        <lobby-player-indicator
+        <LobbyPlayerIndicator
           :player-username="authStore.username"
           :player-ready="iAmReady"
           data-cy="my-indicator"
@@ -40,7 +40,7 @@
       <v-col offset="1">
         <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
         <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
-        <lobby-player-indicator
+        <LobbyPlayerIndicator
           :player-username="gameStore.opponentUsername"
           :player-ready="gameStore.opponentIsReady"
           data-cy="opponent-indicator"
@@ -49,7 +49,7 @@
     </v-row>
     <!-- Buttons -->
     <v-row class="mt-4">
-      <v-spacer v-if="this.$vuetify.display.smAndUp" />
+      <v-spacer v-if="$vuetify.display.smAndUp" />
       <v-col sm="3" cols="6" offset-sm="1">
         <v-btn
           :disabled="readying"
@@ -80,7 +80,7 @@
           />
         </v-btn>
       </v-col>
-      <v-spacer v-if="this.$vuetify.display.smAndUp" />
+      <v-spacer v-if="$vuetify.display.smAndUp" />
     </v-row>
     <BaseSnackbar
       v-model="gameStore.showIsRankedChangedAlert"

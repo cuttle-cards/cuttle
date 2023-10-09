@@ -1,3 +1,4 @@
+const { getCardName } = require('../../../utils/game-utils');
 module.exports = function (req, res) {
   const game = gameService.findGame({ gameId: req.session.game });
   const player = userService.findUser({ userId: req.session.usr });
@@ -18,7 +19,7 @@ module.exports = function (req, res) {
                   const gameUpdates = {
                     log: [
                       ...game.log,
-                      `${player.username} stole ${opponent.username}'s ${target.name} with the ${card.name}`,
+                      `${player.username} stole ${opponent.username}'s ${getCardName(target)} with the ${getCardName(card)}`,
                     ],
                     turn: game.turn + 1,
                     passes: 0,

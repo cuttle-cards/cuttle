@@ -1,5 +1,5 @@
 <template>
-  <base-line-chart
+  <BaseLineChart
     id="usage-stats-chart"
     :title="title"
     :data-sets="dataSets"

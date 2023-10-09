@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     :id="`create-game-dialog`"
     v-model="show"
     :title="t('home.submitCreateGame')"
@@ -36,7 +36,7 @@
           data-cy="create-game-ranked-switch"
           color="surface-2"
         />
-        <stats-scoring-dialog activator-color="surface-2" :show-button-text="false" />
+        <StatsScoringDialog activator-color="surface-2" :show-button-text="false" />
       </form>
       <v-form @submit.prevent="submitNewGame">
         <v-text-field
@@ -53,6 +53,7 @@
     <template #actions>
       <v-form>
         <v-btn
+          class="mr-2"
           data-cy="cancel-create-game"
           :disabled="loading"
           variant="text"
@@ -74,7 +75,7 @@
         </v-btn>
       </v-form>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>

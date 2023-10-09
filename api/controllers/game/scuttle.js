@@ -1,3 +1,4 @@
+const { getCardName } = require('../../../utils/game-utils');
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -29,7 +30,7 @@ module.exports = function (req, res) {
       }
       // Move is legal; make changes
       const attachmentIds = target.attachments.map((card) => card.id);
-      const logMessage = `${player.username} scuttled ${opponent.username}'s ${target.name} with the ${card.name}`;
+      const logMessage = `${player.username} scuttled ${opponent.username}'s ${getCardName(target)} with the ${getCardName(card)}`;
       // Define update dictionaries
       const gameUpdates = {
         passes: 0,
