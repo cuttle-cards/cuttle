@@ -10,8 +10,8 @@
         Your opponent has played the 
         <GameCardName :card-name="oneOff.name" />
         as a one-off
-        <span v-if="target"> 
-          targeting your 
+        <span v-if="target">
+          targeting your
           <GameCardName :card-name="target.name" />
         </span>
       </div>
