@@ -178,7 +178,7 @@
           <ScrapDialog :scrap="scrap">
             <template #activator>
               <div id="scrap" class="d-flex flex-column align-center">
-                <game-card
+                <GameCard
                   v-if="gameStore.cardChosenFromScrap"
                   :suit="gameStore.cardChosenFromScrap.suit"
                   :rank="gameStore.cardChosenFromScrap.rank"
