@@ -11,7 +11,7 @@
         <GameCardName :card-name="oneOff.name" />
         as a one-off
         <span v-if="target"> 
-        targeting your 
+          targeting your 
           <GameCardName :card-name="target.name" />
         </span>
       </div>
