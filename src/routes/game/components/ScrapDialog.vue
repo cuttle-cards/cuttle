@@ -2,7 +2,7 @@
   <BaseDialog
     id="scrap-dialog"
     v-model="show"
-    scrollable="true"
+    :scrollable="true"
     :persistent="false"
   >
     <template #activator="{ props }">
