@@ -19,7 +19,7 @@
       </v-btn>
     </template>
     <v-list density="compact" class="bg-surface-2 text-surface-1">
-      <LanguageSelection is-in-user-menu />
+      <TheLanguageSelector is-in-user-menu />
       <v-list-item
         v-for="({ text, icon, page, cyName }, i) in menuItems"
         :key="i"
@@ -39,7 +39,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
 
-import LanguageSelection from './LanguageSelection.vue';
+import TheLanguageSelector from './TheLanguageSelector.vue';
 
 const authStore = useAuthStore();
 

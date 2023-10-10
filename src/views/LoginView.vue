@@ -8,7 +8,7 @@
         <nav class="d-flex justify-space-between align-center mb-2">
           <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
           <div class="d-flex align-center">          
-            <LanguageSelection />
+            <TheLanguageSelector />
             <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
               {{ buttonText }}
               <v-icon
@@ -182,7 +182,7 @@ import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 import MarkdownContent from '@/components/Global/MarkdownContent.vue';
 import BaseVideo from '../components/Global/BaseVideo.vue';
-import LanguageSelection from '../components/LanguageSelection.vue';
+import TheLanguageSelector from '../components/TheLanguageSelector.vue';
 
 
 export default {
@@ -191,7 +191,7 @@ export default {
     BaseSnackbar,
     BaseVideo,
     MarkdownContent,
-    LanguageSelection
+    TheLanguageSelector
   },
   setup() {
     // Vuetify has its own translation layer that isn't very good
