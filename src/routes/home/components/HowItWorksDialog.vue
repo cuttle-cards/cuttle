@@ -71,7 +71,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import BaseDialog from '@/components/Global/BaseDialog.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
 
 const show = ref(false);
 

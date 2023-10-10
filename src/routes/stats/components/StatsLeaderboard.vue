@@ -57,7 +57,6 @@ import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { uniq, countBy } from 'lodash';
 import StatsLeaderboardCell from '@/routes/stats/components/StatsLeaderboardCell.vue';
-
 import Result from '_/types/Result';
 
 export const Metrics = {

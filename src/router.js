@@ -6,7 +6,6 @@ import GameView from '@/routes/game/GameView.vue';
 import RulesView from '@/routes/rules/RulesView.vue';
 import StatsView from '@/routes/stats/StatsView.vue';
 import { useAuthStore } from '@/stores/auth';
-import store from '@/store/store.js';
 
 export const ROUTE_NAME_GAME = 'Game';
 export const ROUTE_NAME_SPECTATE = 'Spectate';

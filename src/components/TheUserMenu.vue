@@ -59,7 +59,7 @@ import { useAuthStore } from '@/stores/auth';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
-import { setLocalStorage } from '../../utils/local-storage-utils';
+import { setLocalStorage } from '_/utils/local-storage-utils';
 
 
 const authStore = useAuthStore();
