@@ -45,7 +45,7 @@
 
     <section ref="loginContainer">
       <v-container id="login-container" class="container">
-        <img id="logo" alt="Cuttle logo" src="/img/logo.png">
+        <img id="logo" alt="Cuttle logo" :src="logoSrc">
         <v-row>
           <!-- Left side form -->
           <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12">
@@ -175,6 +175,7 @@
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { useThemedLogo } from '@/composables/themedLogo';
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 import MarkdownContent from '@/components/Global/MarkdownContent.vue';
@@ -194,7 +195,11 @@ export default {
     // level and utilize it this way with a composable. There may be another more global way but
     // I haven't found anything just yet
     const { t } = useI18n();
-    return { t };
+    const { logoSrc } = useThemedLogo();
+    return {
+      t,
+      logoSrc,
+    };
   },
   data() {
     return {
