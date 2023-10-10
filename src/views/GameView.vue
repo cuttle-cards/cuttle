@@ -493,8 +493,8 @@ export default {
     },
     deckLength() {
       let res = this.deck.length;
-      if (this.game.topCard) res++;
-      if (this.game.secondCard) res++;
+      if (this.game.topCard) {res++;}
+      if (this.game.secondCard) {res++;}
       return res;
     },
     spectatingUsers() {
@@ -618,7 +618,7 @@ export default {
     },
     validScuttleIds() {
       const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
-      if (!selectedCard) return [];
+      if (!selectedCard) {return [];}
       return this.gameStore.opponent.points
         .filter((potentialTarget) => {
           return (
@@ -647,9 +647,9 @@ export default {
       }
     },
     validMoves() {
-      if (!this.gameStore.isPlayersTurn) return [];
+      if (!this.gameStore.isPlayersTurn) {return [];}
       const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
-      if (!selectedCard) return [];
+      if (!selectedCard) {return [];}
       switch (this.targetingMoveName) {
         case 'scuttle':
           return this.validScuttleIds;
@@ -689,8 +689,8 @@ export default {
       return this.game.secondCard;
     },
     cardSelectedFromDeck() {
-      if (this.topCardIsSelected) return this.topCard;
-      if (this.secondCardIsSelected) return this.secondCard;
+      if (this.topCardIsSelected) {return this.topCard;}
+      if (this.secondCardIsSelected) {return this.secondCard;}
       return null;
     },
   },
@@ -948,13 +948,13 @@ export default {
       }
     },
     targetOpponentPointCard(targetIndex) {
-      if (!this.selectedCard && !this.topCardIsSelected && !this.secondCardIsSelected) return;
+      if (!this.selectedCard && !this.topCardIsSelected && !this.secondCardIsSelected) {return;}
       let cardRank;
       if (this.gameStore.resolvingSeven) {
-        if (!this.cardSelectedFromDeck) return;
+        if (!this.cardSelectedFromDeck) {return;}
         cardRank = this.cardSelectedFromDeck.rank;
       } else {
-        if (!this.selectedCard) return;
+        if (!this.selectedCard) {return;}
         cardRank = this.selectedCard.rank;
       }
       switch (cardRank) {
@@ -986,10 +986,10 @@ export default {
     targetOpponentFaceCard(targetIndex) {
       let cardToPlay = null;
       if (this.gameStore.resolvingSeven) {
-        if (!this.cardSelectedFromDeck) return;
+        if (!this.cardSelectedFromDeck) {return;}
         cardToPlay = this.cardSelectedFromDeck;
       } else {
-        if (!this.selectedCard) return;
+        if (!this.selectedCard) {return;}
         cardToPlay = this.selectedCard;
       }
 
@@ -1003,7 +1003,7 @@ export default {
     },
     playOneOff() {
       if (this.gameStore.resolvingSeven) {
-        if (!this.cardSelectedFromDeck) return;
+        if (!this.cardSelectedFromDeck) {return;}
 
         const deckIndex = this.topCardIsSelected ? 0 : 1;
         this.gameStore.requestPlayOneOffSeven({
@@ -1013,7 +1013,7 @@ export default {
           .then(this.clearSelection)
           .catch(this.handleError);
       }
-      if (!this.selectedCard) return;
+      if (!this.selectedCard) {return;}
 
       this.gameStore.requestPlayOneOff(this.selectedCard.id)
         .then(this.clearSelection)

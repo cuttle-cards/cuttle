@@ -35,7 +35,7 @@ module.exports = {
       let numPlayer2Wins = 0;
 
       for (const priorGame of [game, ...relevantMatch.games]) {
-        if (!priorGame.winner) continue;
+        if (!priorGame.winner) {continue;}
         if (priorGame.winner === relevantMatch.player1) {
           numPlayer1Wins++;
         } else {

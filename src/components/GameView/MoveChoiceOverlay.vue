@@ -274,7 +274,7 @@ export default {
      */
     hasValidScuttleTarget() {
       // Can't scuttle with a royal
-      if (this.selectedCard.rank >= 11) return false;
+      if (this.selectedCard.rank >= 11) {return false;}
       // Return true iff at least one opponent point card is scuttleable w/ selected card
       return this.gameStore.opponent.points.some((opponentPointCard) => {
         return (

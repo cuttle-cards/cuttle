@@ -41,6 +41,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
     semi: ['error', 'always'],
+    curly: 'error',
     'vue/html-closing-bracket-newline': ['error', {
       'singleline': 'never',
       'multiline': 'always'

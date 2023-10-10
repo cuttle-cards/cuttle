@@ -10,7 +10,7 @@ module.exports = function (req, res, next) {
   // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
   if (Object.hasOwnProperty.call(req.body, 'targetId')) {
-    if (typeof req.body.targetId === 'number') return next();
+    if (typeof req.body.targetId === 'number') {return next();}
   }
 
   // User is not allowed
