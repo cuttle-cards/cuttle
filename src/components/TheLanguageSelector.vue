@@ -2,11 +2,11 @@
   <v-menu location="end">
     <template #activator="{ props }">
       <v-list-item
-        :class="isInUserMenu ? `bg-surface-2 text-surface-1` : ``"
+        :class="activatorClass"
         data-cy="language-menu"
         v-bind="props"
-        :prepend-icon="isInUserMenu ? `mdi-web` : `mdi-web mr-2`"
-        :append-icon="isInUserMenu ? `mdi-chevron-right` : ``"
+        :prepend-icon="icons.prepend"
+        :append-icon="icons.append"
         :title="$i18n.locale"
       />
     </template>
@@ -26,15 +26,23 @@
 
 <script setup>
 import { setLocalStorage } from '../../utils/local-storage-utils';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 const { locale } = useI18n();
 
-defineProps({
-  isInUserMenu: {
-      type: Boolean,
-      default: false,
-    }
+const props = defineProps({
+  variant: {
+    type: String,
+    default: 'dark',
+  },
+  hasChevron: {
+    type: Boolean,
+    default: false,
+  }
 });
+
+const activatorClass = computed(() => props.variant === 'dark' ? `bg-surface-2 text-surface-1` : '');
+const icons = computed(() => props.hasChevron ? { prepend: 'mdi-web', append: 'mdi-chevron-right'} : { prepend: 'mdi-web mr-2', append: ''});
 
 const changeLocale = (lang) => {
   locale.value = lang;

@@ -19,7 +19,7 @@
       </v-btn>
     </template>
     <v-list density="compact" class="bg-surface-2 text-surface-1">
-      <TheLanguageSelector is-in-user-menu />
+      <TheLanguageSelector has-chevron />
       <v-list-item
         v-for="({ text, icon, page, cyName }, i) in menuItems"
         :key="i"

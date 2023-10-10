@@ -8,7 +8,7 @@
         <nav class="d-flex justify-space-between align-center mb-2">
           <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
           <div class="d-flex align-center">          
-            <TheLanguageSelector />
+            <TheLanguageSelector variant="light" />
             <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
               {{ buttonText }}
               <v-icon
