@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     id="scrap-dialog"
     v-model="show"
     scrollable="true"
@@ -17,16 +17,21 @@
           icon
           color="surface-1"
           elevation="0"
-          data-cy="close-scrap-dialog-x" 
+          data-cy="close-scrap-dialog-x"
+          aria-label="Close scrap dialog" 
           @click="show = false"
         >
-          <v-icon icon="mdi-close" size="large" />
+          <v-icon
+            icon="mdi-close"
+            size="large" 
+            aria-hidden="true"          
+          />
         </v-btn>
       </div>
     </template>
     <template #body>
       <div class="mt-4">
-        <card-list-sortable
+        <CardListSortable
           :cards="scrap"
           empty-text="There are no cards in the scrap pile."
           data-selector-prefix="scrap-dialog"
@@ -43,7 +48,7 @@
         Close
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>

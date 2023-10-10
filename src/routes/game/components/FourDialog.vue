@@ -1,5 +1,5 @@
 <template>
-  <base-dialog id="four-discard-dialog" v-model="show" title="Discard Two Cards">
+  <BaseDialog id="four-discard-dialog" v-model="show" title="Discard Two Cards">
     <template #body>
       <p class="mb-4">
         Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to
@@ -7,7 +7,7 @@
       </p>
       <!-- Cards in hand -->
       <div class="d-flex flex-wrap card-container">
-        <game-card
+        <GameCard
           v-for="(card, index) in hand"
           :key="card.id"
           :suit="card.suit"
@@ -29,10 +29,12 @@
         Discard
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
 
@@ -55,6 +57,7 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useGameStore),
     show: {
       get() {
         return this.modelValue;
@@ -64,7 +67,7 @@ export default {
       },
     },
     hand() {
-      return this.$store.state.game.players[this.$store.state.game.myPNum].hand;
+      return this.gameStore.player.hand;
     },
     readyToDiscard() {
       return this.selectedIds.length === 2 || (this.selectedIds.length === 1 && this.hand.length === 1);

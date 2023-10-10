@@ -1,3 +1,4 @@
+const { getCardName } = require('../../../utils/game-utils');
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -15,11 +16,11 @@ module.exports = function (req, res) {
           if (card.rank === 2) {
             if (!opHasQueen) {
               if (game.twos.length > 0) {
-                logEntry = `${player.username} played the ${card.name} to counter ${opponent.username}'s ${
-                  game.twos[game.twos.length - 1].name
+                logEntry = `${player.username} played the ${getCardName(card)} to counter ${opponent.username}'s ${
+                  getCardName(game.twos[game.twos.length - 1])
                 }.`;
               } else {
-                logEntry = `${player.username} played the ${card.name} to counter ${opponent.username}'s ${game.oneOff.name}.`;
+                logEntry = `${player.username} played the ${getCardName(card)} to counter ${opponent.username}'s ${getCardName(game.oneOff)}.`;
               }
               const gameUpdates = {
                 lastEvent: {

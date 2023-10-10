@@ -37,7 +37,7 @@
             {{ row.rank }}
           </td>
           <td v-for="(week) in ['total', ...selectedWeeks]" :key="`${row.username}-${week}`">
-            <stats-leaderboard-cell
+            <StatsLeaderboardCell
               :player-row="row"
               :week="week"
               :selected-metric="selectedMetric"
@@ -53,6 +53,8 @@
   </div>
 </template>
 <script>
+import { mapStores } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 import { uniq, countBy } from 'lodash';
 import StatsLeaderboardCell from '@/routes/stats/components/StatsLeaderboardCell.vue';
 
@@ -84,6 +86,7 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useAuthStore),
     noSeasonRankingsExist() {
       return !this.season || !this.season.rankings || this.season.rankings.length === 0;
     },
@@ -355,7 +358,7 @@ export default {
       return this.playersByResult(username, Result.LOST, weekNum);
     },
     isCurrentPlayer(username) {
-      return username === this.$store.state.auth.username;
+      return username === this.authStore.username;
     },
     tableRowClass(item) {
       return this.isCurrentPlayer(item.username) ? 'active-user-stats' : '';

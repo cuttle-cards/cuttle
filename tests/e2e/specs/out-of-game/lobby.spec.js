@@ -6,8 +6,8 @@ function setup(isRanked = false) {
   cy.signupPlayer(myUser);
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store')
-      .then((store) => store.dispatch('requestSubscribe', gameSummary.gameId));
+      .its('cuttle.gameStore')
+      .then((store) => store.requestSubscribe(gameSummary.gameId));
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     cy.wrap(gameSummary).as('gameSummary');
   });
@@ -15,7 +15,7 @@ function setup(isRanked = false) {
 function assertGameStarted(noMovesYet = true) {
   cy.url().should('include', '/game');
   cy.window()
-    .its('cuttle.app.config.globalProperties.$store.state.game')
+    .its('cuttle.gameStore')
     .then((game) => {
       expect(game.players[1].hand.length).to.eq(6);
       if (noMovesYet) {
@@ -65,7 +65,18 @@ describe('Lobby - Page Content (Ranked)', () => {
   it('Displays ranked button', () => {
     cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
   });
-
+  
+  it('Changes games to ranked and casual from the lobby', () => {
+    // Set To Casual Mode
+    cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
+    cy.contains('h1 small', 'Ranked').should('not.exist');
+    cy.get('[data-cy=ready-button-ranked-icon]').should('not.exist');
+    
+    // Set To Ranked Mode
+    cy.toggleInput('[data-cy=edit-game-ranked-switch]');
+    cy.contains('h1 small', 'Ranked');
+    cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
+  });
 });
 
 describe('Lobby - P0 Perspective', () => {
@@ -80,12 +91,12 @@ describe('Lobby - P0 Perspective', () => {
     cy.hash().should('eq', '#/');
     // Test store state
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store.state')
+      .its('cuttle.gameStore')
       .then((state) => {
-        expect(state.game.players.length).to.eq(0);
-        expect(state.game.id).to.eq(null);
-        expect(state.game.name).to.eq(null);
-        expect(state.game.myPNum).to.eq(null);
+        expect(state.players.length).to.eq(0);
+        expect(state.id).to.eq(null);
+        expect(state.name).to.eq(null);
+        expect(state.myPNum).to.eq(null);
       });
   });
 
@@ -100,16 +111,16 @@ describe('Lobby - P0 Perspective', () => {
     cy.get('[data-cy=my-indicator]').should('have.class', 'ready').contains(myUser.username);
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store')
+      .its('cuttle.gameStore')
       .then((store) => {
         // Test: store state
-        expect(store.state.game.p0Ready).to.eq(true); // Player is ready
-        expect(store.getters.opponentIsReady).to.eq(null); // Opponent is missing (not ready)
+        expect(store.p0Ready).to.eq(true); // Player is ready
+        expect(store.opponentIsReady).to.eq(null); // Opponent is missing (not ready)
         // Click Unready button
         cy.get('[data-cy=ready-button]').click();
         cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
         //Return updated store state
-        return cy.wrap(store.state.game);
+        return cy.wrap(store);
       })
       .then((updatedGameState) => {
         //Test updated store state
@@ -120,7 +131,7 @@ describe('Lobby - P0 Perspective', () => {
   it('Shows when opponent joins, leaves, and re-joins', () => {
     cy.contains('[data-cy=opponent-indicator]', 'Invite');
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store.state.game')
+      .its('cuttle.gameStore')
       .then((gameData) => {
         cy.contains('[data-cy=opponent-indicator]', 'Invite');
         // Sign up new user and subscribe them to game
@@ -147,6 +158,19 @@ describe('Lobby - P0 Perspective', () => {
     //Opponent un-readies
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
+  });
+  it('Shows when opponent changes game to ranked or casual', function () {
+    // Opponent subscribes & Changes Mode
+    cy.signupOpponent(opponentOne);
+    cy.subscribeOpponent(this.gameSummary.gameId);
+
+    cy.contains('h1 small', 'Ranked').should('not.exist');
+    cy.get('[data-cy=ready-button-ranked-icon]').should('not.exist');
+    
+    cy.setIsRankedOpponent(true);
+
+    cy.contains('h1 small', 'Ranked');
+    cy.get('[data-cy=ready-button-ranked-icon]').should('exist');
   });
 
   it('Game starts when both players are ready - opponent first', function () {
@@ -207,8 +231,8 @@ describe('Lobby - P1 Perspective', () => {
       cy.subscribeOpponent(gameSummary.gameId);
       // Join game as this user and navigate to lobby
       cy.window()
-        .its('cuttle.app.config.globalProperties.$store')
-        .then((store) => store.dispatch('requestSubscribe', gameSummary.gameId));
+        .its('cuttle.gameStore')
+        .then((store) => store.requestSubscribe(gameSummary.gameId));
       cy.vueRoute(`/lobby/${gameSummary.gameId}`);
     });
   });
@@ -249,11 +273,11 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=my-indicator]').should('have.class', 'ready').contains(myUser.username);
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store')
+      .its('cuttle.gameStore')
       .then((store) => {
         // Test: store state
-        expect(store.state.game.p1Ready).to.eq(true); // Player is ready
-        expect(store.getters.opponentIsReady).to.eq(false); // Opponent is not ready
+        expect(store.p1Ready).to.eq(true); // Player is ready
+        expect(store.opponentIsReady).to.eq(false); // Opponent is not ready
         // Click Unready button
         cy.get('[data-cy=ready-button]')
           .should('contain', 'UNREADY')
@@ -262,7 +286,7 @@ describe('Lobby - P1 Perspective', () => {
           .should('contain', 'READY');
         cy.get('[data-cy=my-indicator]').should('not.have.class', 'ready');
         //Return updated store state
-        return cy.wrap(store.state.game);
+        return cy.wrap(store);
       })
       .then((updatedGameState) => {
         //Test updated store state
@@ -275,8 +299,8 @@ describe('Lobby - P1 Perspective', () => {
     cy.readyOpponent();
     // Join game again
     cy.window()
-      .its('cuttle.app.config.globalProperties.$store')
-      .then((store) => store.dispatch('requestSubscribe', this.gameSummary.gameId));
+      .its('cuttle.gameStore')
+      .then((store) => store.requestSubscribe(this.gameSummary.gameId));
     cy.vueRoute(`/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy=ready-button]').click();
     // Test that game started
@@ -296,7 +320,6 @@ describe('Lobby - P1 Perspective', () => {
   });
 
   it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
-
     cy.get('[data-cy=ready-button]').click();
     cy.get('[data-cy=my-indicator]').should('have.class', 'ready');
 
@@ -309,8 +332,9 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-cy=opponent-indicator]').should('not.have.class', 'ready');
 
     // Disconnect socket and then opponent hits ready to start game
-    cy.window().its('cuttle.app.config.globalProperties.$store')
-      .then((store) => store.dispatch('disconnectSocket'));
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
     cy.readyOpponent();
 
     cy.drawCardOpponent();

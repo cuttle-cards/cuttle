@@ -1,21 +1,24 @@
 <template>
   <div id="game-view-wrapper">
     <!-- Unauthenticated/Must re-log in/ Unavailable game -->
-    <template v-if="$store.state.game.myPNum === null">
-      <game-unavailable-view />
+    <template v-if="gameStore.myPNum === null">
+      <GameUnavailableView />
     </template>
 
     <!-- Authenticated View -->
     <template v-else>
       <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center">
-        <spectator-list-menu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
-        <game-menu :is-spectating="isSpectating" />
+        <SpectatorListMenu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
+        <GameMenu :is-spectating="isSpectating" />
         <v-icon
           v-if="$vuetify.display.xs"
           color="white"
           icon="mdi-account-clock"
           size="large"
-          @click.stop="showHistoryDrawer = !showHistoryDrawer"
+          aria-label="Show game history"
+          aria-hidden="false"
+          role="button"
+          @click.stop="showHistoryDrawer = !showHistoryDrawer"  
         />
       </div>
 
@@ -31,7 +34,14 @@
             <h3>History</h3>
             <template #append>
               <v-btn icon variant="text" @click.stop="showHistoryDrawer = !showHistoryDrawer">
-                <v-icon color="neutral" icon="mdi-window-close" size="large" />
+                <v-icon
+                  color="neutral"
+                  icon="mdi-window-close"
+                  size="large" 
+                  aria-label="window close icon"
+                  aria-hidden="false"
+                  role="img"
+                />
               </v-btn>
             </template>
           </v-list-item>
@@ -52,11 +62,11 @@
       <div class="opponent-hand-container">
         <div id="opponent-hand" class="d-flex flex-column justify-start align-center px-2 pb-2 mx-auto">
           <div class="user-cards-grid-container">
-            <username-tool-tip id="opponent-username-container" :username="opponentUsername" />
+            <UsernameToolTip id="opponent-username-container" :username="gameStore.opponentUsername" />
             <div class="opponent-cards-container">
               <div id="opponent-hand-cards" class="d-flex justify-center align-start">
-                <transition name="slide-below" mode="out-in">
-                  <transition-group
+                <Transition name="slide-below" mode="out-in">
+                  <TransitionGroup
                     v-if="showOpponentHand"
                     id="opponent-hand-glasses"
                     key="opponent-hand-glasses"
@@ -70,8 +80,8 @@
                       selected-class="success"
                       :show-arrows="true"
                     >
-                      <v-slide-group-item v-for="card in opponent.hand" :key="card.id">
-                        <game-card
+                      <v-slide-group-item v-for="card in gameStore.opponent.hand" :key="card.id">
+                        <GameCard
                           :key="card.id"
                           :suit="card.suit"
                           :rank="card.rank"
@@ -80,8 +90,8 @@
                         />
                       </v-slide-group-item>
                     </v-slide-group>
-                    <game-card
-                      v-for="card in opponent.hand"
+                    <GameCard
+                      v-for="card in gameStore.opponent.hand"
                       v-else
                       :key="card.id"
                       :suit="card.suit"
@@ -89,22 +99,22 @@
                       :data-opponent-hand-card="`${card.rank}-${card.suit}`"
                       class="transition-all opponent-hand-card-revealed"
                     />
-                  </transition-group>
-                  <transition-group
+                  </TransitionGroup>
+                  <TransitionGroup
                     v-else
                     key="opponent-hand"
                     tag="div"
                     name="slide-above"
                     class="opponent-hand-wrapper transition-all"
                   >
-                    <game-card
-                      v-for="(card, index) in opponent.hand"
+                    <GameCard
+                      v-for="(card, index) in gameStore.opponent.hand"
                       :key="index"
                       data-opponent-hand-card
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
                     />
-                  </transition-group>
-                </transition>
+                  </TransitionGroup>
+                </Transition>
               </div>
             </div>
           </div>
@@ -113,8 +123,8 @@
 
       <!-- Opponent Score -->
       <h3 id="opponent-score" class="mb-3">
-        <span>POINTS: {{ opponentPointTotal }}</span>
-        <score-goal-tool-tip
+        <span>POINTS: {{ gameStore.opponentPointTotal }}</span>
+        <ScoreGoalToolTip
           :king-count="opponentKingCount"
           :points-to-win="opponentPointsToWin"
           :is-player="false"
@@ -126,11 +136,11 @@
         <div id="field-left">
           <v-card
             id="deck"
-            :class="{ 'reveal-top-two': resolvingSeven }"
+            :class="{ 'reveal-top-two': gameStore.resolvingSeven }"
             elevation="0"
             @click="drawCard"
           >
-            <template v-if="!resolvingSeven">
+            <template v-if="!gameStore.resolvingSeven">
               <v-card-actions class="c-deck-count">
                 ({{ deckLength }})
               </v-card-actions>
@@ -139,12 +149,12 @@
               </h1>
             </template>
 
-            <template v-if="resolvingSeven">
+            <template v-if="gameStore.resolvingSeven">
               <p class="mt-2">
                 Play from Deck
               </p>
               <div class="d-flex">
-                <game-card
+                <GameCard
                   v-if="topCard"
                   :suit="topCard.suit"
                   :rank="topCard.rank"
@@ -153,7 +163,7 @@
                   class="mb-4 resolving-seven-card"
                   @click="selectTopCard"
                 />
-                <game-card
+                <GameCard
                   v-if="secondCard"
                   :suit="secondCard.suit"
                   :rank="secondCard.rank"
@@ -165,7 +175,7 @@
               </div>
             </template>
           </v-card>
-          <scrap-dialog :scrap="scrap">
+          <ScrapDialog :scrap="scrap">
             <template #activator>
               <div id="scrap" class="d-flex flex-column align-center">
                 <h3>Scrap</h3>
@@ -175,7 +185,7 @@
                 </v-btn>
               </div>
             </template>
-          </scrap-dialog>
+          </ScrapDialog>
         </div>
       </div>
 
@@ -184,13 +194,13 @@
         <div id="field" class="d-flex justify-center align-center p-2 mx-auto">
           <div id="field-center">
             <div id="opponent-field">
-              <transition-group :name="opponentPointsTransition" tag="div" class="field-points">
+              <TransitionGroup :name="opponentPointsTransition" tag="div" class="field-points">
                 <div
-                  v-for="(card, index) in opponent.points"
+                  v-for="(card, index) in gameStore.opponent.points"
                   :key="card.id"
                   class="field-point-container transition-all"
                 >
-                  <game-card
+                  <GameCard
                     :suit="card.suit"
                     :rank="card.rank"
                     :is-valid-target="validMoves.includes(card.id)"
@@ -200,7 +210,7 @@
                     @click="targetOpponentPointCard(index)"
                   />
                   <div class="jacks-container">
-                    <game-card
+                    <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
                       :suit="jack.suit"
@@ -212,10 +222,10 @@
                     />
                   </div>
                 </div>
-              </transition-group>
-              <transition-group :name="opponentFaceCardsTransition" tag="div" class="field-effects">
-                <game-card
-                  v-for="(card, index) in opponent.faceCards"
+              </TransitionGroup>
+              <TransitionGroup :name="opponentFaceCardsTransition" tag="div" class="field-effects">
+                <GameCard
+                  v-for="(card, index) in gameStore.opponent.faceCards"
                   :key="card.id"
                   :suit="card.suit"
                   :rank="card.rank"
@@ -225,17 +235,17 @@
                   class="transition-all"
                   @click="targetOpponentFaceCard(index)"
                 />
-              </transition-group>
+              </TransitionGroup>
             </div>
             <v-divider light />
             <div id="player-field" class="mb-4">
-              <transition-group :name="playerPointsTransition" tag="div" class="field-points">
+              <TransitionGroup :name="playerPointsTransition" tag="div" class="field-points">
                 <div
-                  v-for="card in player.points"
+                  v-for="card in gameStore.player.points"
                   :key="card.id"
                   class="field-point-container transition-all"
                 >
-                  <game-card
+                  <GameCard
                     :suit="card.suit"
                     :rank="card.rank"
                     :jacks="card.attachments"
@@ -244,7 +254,7 @@
                     controlled-by="player"
                   />
                   <div class="jacks-container">
-                    <game-card
+                    <GameCard
                       v-for="jack in card.attachments"
                       :key="jack.id"
                       :suit="jack.suit"
@@ -254,10 +264,10 @@
                     />
                   </div>
                 </div>
-              </transition-group>
-              <transition-group :name="playerFaceCardsTransition" tag="div" class="field-effects">
-                <game-card
-                  v-for="card in player.faceCards"
+              </TransitionGroup>
+              <TransitionGroup :name="playerFaceCardsTransition" tag="div" class="field-effects">
+                <GameCard
+                  v-for="card in gameStore.player.faceCards"
                   :key="card.id"
                   :suit="card.suit"
                   :rank="card.rank"
@@ -265,7 +275,7 @@
                   :data-player-face-card="`${card.rank}-${card.suit}`"
                   class="transition-all"
                 />
-              </transition-group>
+              </TransitionGroup>
             </div>
           </div>
         </div>
@@ -289,8 +299,8 @@
       </div>
 
       <h3 id="player-score">
-        <span>POINTS: {{ playerPointTotal }}</span>
-        <score-goal-tool-tip
+        <span>POINTS: {{ gameStore.playerPointTotal }}</span>
+        <ScoreGoalToolTip
           :king-count="playerKingCount"
           :points-to-win="playerPointsToWin"
           :is-player="true"
@@ -298,7 +308,7 @@
         <span
           id="turn-indicator"
           class="ml-2"
-          :class="{ 'text-black': isPlayersTurn, 'text-white': !isPlayersTurn }"
+          :class="{ 'text-black': gameStore.isPlayersTurn, 'text-white': !gameStore.isPlayersTurn }"
         >
           {{ turnText }}
         </span>
@@ -311,30 +321,30 @@
             v-if="!targeting"
             id="player-hand-cards"
             class="user-cards-grid-container"
-            :class="{ 'my-turn': isPlayersTurn }"
+            :class="{ 'my-turn': gameStore.isPlayersTurn }"
           >
-            <username-tool-tip
+            <UsernameToolTip
               v-if="$vuetify.display.smAndUp"
               id="player-username-container"
               key="player-username"
-              :username="playerUsername"
+              :username="gameStore.playerUsername"
               :is-player="true"
             />
             <div class="player-cards-container">
-              <transition-group
+              <TransitionGroup
                 tag="div"
                 name="slide-above"
                 class="d-flex justify-center align-start player-cards-mobile-overrides"
-                :class="{ 'my-turn': isPlayersTurn }"
+                :class="{ 'my-turn': gameStore.isPlayersTurn }"
               >
                 <v-slide-group v-if="$vuetify.display.xs" key="slide-group" :show-arrows="true">
-                  <v-slide-group-item v-for="(card, index) in player.hand" :key="card.id">
-                    <game-card
+                  <v-slide-group-item v-for="(card, index) in gameStore.player.hand" :key="card.id">
+                    <GameCard
                       :key="card.id"
                       :suit="card.suit"
                       :rank="card.rank"
                       :is-selected="selectedCard && card.id === selectedCard.id"
-                      :is-frozen="player.frozenId === card.id"
+                      :is-frozen="gameStore.player.frozenId === card.id"
                       class="mt-2 transition-all"
                       :is-hand-card="true"
                       :data-player-hand-card="`${card.rank}-${card.suit}`"
@@ -343,28 +353,28 @@
                   </v-slide-group-item>
                 </v-slide-group>
 
-                <game-card
-                  v-for="(card, index) in player.hand"
+                <GameCard
+                  v-for="(card, index) in gameStore.player.hand"
                   v-else
                   :key="card.id"
                   :suit="card.suit"
                   :rank="card.rank"
                   :is-selected="selectedCard && card.id === selectedCard.id"
-                  :is-frozen="player.frozenId === card.id"
+                  :is-frozen="gameStore.player.frozenId === card.id"
                   class="mt-2 transition-all"
                   :is-hand-card="true"
                   :data-player-hand-card="`${card.rank}-${card.suit}`"
                   @click="selectCard(index)"
                 />
-              </transition-group>
+              </TransitionGroup>
             </div>
           </div>
-          <target-selection-overlay
+          <TargetSelectionOverlay
             v-if="targeting && (selectedCard || cardSelectedFromDeck)"
             id="player-hand-targeting"
             key="target-selection-overlay"
             :selected-card="selectedCard || cardSelectedFromDeck"
-            :is-players-turn="isPlayersTurn"
+            :is-players-turn="gameStore.isPlayersTurn"
             :move-display-name="targetingMoveDisplayName"
             @cancel="clearSelection"
           />
@@ -377,7 +387,7 @@
         data-cy="game-snackbar"
         @clear="clearSnackBar"
       />
-      <game-overlays
+      <GameOverlays
         :targeting="targeting"
         :selected-card="selectedCard"
         :card-selected-from-deck="cardSelectedFromDeck"
@@ -387,14 +397,15 @@
         @points="playPoints"
         @target="beginTargeting"
       />
-      <game-dialogs @clear-selection="clearSelection" @handle-error="handleError" />
+      <GameDialogs @clear-selection="clearSelection" @handle-error="handleError" />
     </template>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
-
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
+import { useAuthStore } from '@/stores/auth';
 import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
@@ -440,27 +451,13 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      waitingForOpponentToPlayFromDeck: ({ game }) => game.waitingForOpponentToPlayFromDeck,
-    }),
-    ...mapGetters([
-      'isPlayersTurn',
-      'player',
-      'playerPointTotal',
-      'playerQueenCount',
-      'playerUsername',
-      'opponent',
-      'opponentPointTotal',
-      'opponentQueenCount',
-      'opponentUsername',
-      'resolvingSeven',
-      'hasGlassesEight',
-    ]),
+    ...mapStores(useGameStore),
+    ...mapStores(useAuthStore),
     isSpectating() {
       return this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE;
     },
     showOpponentHand() {
-      return this.hasGlassesEight || this.isSpectating;
+      return this.gameStore.hasGlassesEight || this.isSpectating;
     },
 
     ////////////////////
@@ -483,7 +480,7 @@ export default {
     // Game, Deck, Log, Scrap, and Spectators //
     ///////////////////////////////////////////
     game() {
-      return this.$store.state.game;
+      return this.gameStore;
     },
     deck() {
       return this.game.deck;
@@ -507,10 +504,10 @@ export default {
     // King Counts //
     /////////////////
     playerKingCount() {
-      return this.kingCount(this.player);
+      return this.kingCount(this.gameStore.player);
     },
     opponentKingCount() {
-      return this.kingCount(this.opponent);
+      return this.kingCount(this.gameStore.opponent);
     },
     ///////////////////
     // Points to Win //
@@ -614,15 +611,15 @@ export default {
     // Interactions //
     //////////////////
     selectedCard() {
-      return this.selectionIndex !== null ? this.player.hand[this.selectionIndex] : null;
+      return this.selectionIndex !== null ? this.gameStore.player.hand[this.selectionIndex] : null;
     },
     turnText() {
-      return this.isPlayersTurn ? 'YOUR TURN' : "OPPONENT'S TURN";
+      return this.gameStore.isPlayersTurn ? 'YOUR TURN' : "OPPONENT'S TURN";
     },
     validScuttleIds() {
-      const selectedCard = this.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
+      const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
       if (!selectedCard) return [];
-      return this.opponent.points
+      return this.gameStore.opponent.points
         .filter((potentialTarget) => {
           return (
             selectedCard.rank > potentialTarget.rank ||
@@ -632,11 +629,11 @@ export default {
         .map((validTarget) => validTarget.id);
     },
     validFaceCardTargetIds() {
-      switch (this.opponentQueenCount) {
+      switch (this.gameStore.opponentQueenCount) {
         case 0: {
-          const opponentFaceCardIds = this.opponent.faceCards.map((card) => card.id);
+          const opponentFaceCardIds = this.gameStore.opponent.faceCards.map((card) => card.id);
           const opponentJackIds = [];
-          this.opponent.points.forEach((card) => {
+          this.gameStore.opponent.points.forEach((card) => {
             if (card.attachments.length > 0) {
               opponentJackIds.push(card.attachments[card.attachments.length - 1].id);
             }
@@ -644,26 +641,26 @@ export default {
           return [...opponentFaceCardIds, ...opponentJackIds];
         }
         case 1:
-          return [this.opponent.faceCards.find((card) => card.rank === 12).id];
+          return [this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id];
         default:
           return [];
       }
     },
     validMoves() {
-      if (!this.isPlayersTurn) return [];
-      const selectedCard = this.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
+      if (!this.gameStore.isPlayersTurn) return [];
+      const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
       if (!selectedCard) return [];
       switch (this.targetingMoveName) {
         case 'scuttle':
           return this.validScuttleIds;
         case 'jack':
-          return this.opponent.points.map((validTarget) => validTarget.id);
+          return this.gameStore.opponent.points.map((validTarget) => validTarget.id);
         case 'targetedOneOff': {
           // Twos and nines can target face cards
           let res = [...this.validFaceCardTargetIds];
           // Nines can additionally target points if opponent has no queens
-          if (selectedCard.rank === 9 && this.opponentQueenCount === 0) {
-            res = [...res, ...this.opponent.points.map((validTarget) => validTarget.id)];
+          if (selectedCard.rank === 9 && this.gameStore.opponentQueenCount === 0) {
+            res = [...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id)];
           }
           return res;
         }
@@ -674,9 +671,9 @@ export default {
     nineTarget() {
       switch (this.targetType) {
         case 'point':
-          return this.nineTargetIndex !== null ? this.opponent.points[this.nineTargetIndex] : null;
+          return this.nineTargetIndex !== null ? this.gameStore.opponent.points[this.nineTargetIndex] : null;
         case 'faceCard':
-          return this.nineTargetIndex !== null ? this.opponent.faceCards[this.nineTargetIndex] : null;
+          return this.nineTargetIndex !== null ? this.gameStore.opponent.faceCards[this.nineTargetIndex] : null;
         default:
           return null;
       }
@@ -705,19 +702,19 @@ export default {
     },
   },
   async mounted() {
-    if (this.isSpectating && !this.$store.state.game.id) {
+    if (this.isSpectating && !this.gameStore.id) {
       let { gameId } = this.$router.currentRoute.value.params;
       gameId = Number(gameId);
       if (!Number.isInteger(gameId)) {
-        await this.$store.dispatch('requestUnsubscribeFromGame');
+        await this.gameStore.requestUnsubscribeFromGame();
         this.$router.push(ROUTE_NAME_HOME);
         return;
       }
-      this.$store.dispatch('requestSpectate', Number(gameId));
+      this.gameStore.requestSpectate(Number(gameId));
     }
 
-    if (!this.$store.state.auth.authenticated) {
-      this.$store.commit('setMustReauthenticate', true);
+    if (!this.authStore.authenticated) {
+      this.authStore.mustReauthenticate = true;
     }
     document.documentElement.style.setProperty('--browserHeight', `${window.innerHeight / 100}px`);
     window.addEventListener('resize', () => {
@@ -758,13 +755,13 @@ export default {
       }
     },
     selectTopCard() {
-      if (!this.waitingForOpponentToPlayFromDeck) {
+      if (!this.gameStore.waitingForOpponentToPlayFromDeck) {
         this.secondCardIsSelected = false;
         this.topCardIsSelected = !this.topCardIsSelected;
       }
     },
     selectSecondCard() {
-      if (!this.waitingForOpponentToPlayFromDeck) {
+      if (!this.gameStore.waitingForOpponentToPlayFromDeck) {
         this.topCardIsSelected = false;
         this.secondCardIsSelected = !this.secondCardIsSelected;
       }
@@ -818,10 +815,9 @@ export default {
     // Player Moves //
     //////////////////
     drawCard() {
-      if (!this.resolvingSeven) {
+      if (!this.gameStore.resolvingSeven) {
         if (this.deckLength > 0) {
-          this.$store
-            .dispatch('requestDrawCard')
+          this.gameStore.requestDrawCard()
             .then(this.clearSelection)
             .catch((err) => {
               this.snackBarMessage = err;
@@ -829,8 +825,7 @@ export default {
               this.clearSelection();
             });
         } else {
-          this.$store
-            .dispatch('requestPass')
+          this.gameStore.requestPass()
             .then(this.clearSelection)
             .catch((err) => {
               this.snackBarMessage = err;
@@ -842,56 +837,50 @@ export default {
     },
     playPoints() {
       this.clearOverlays();
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestPlayPointsSeven', {
+        this.gameStore.requestPlayPointsSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
           })
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.$store
-          .dispatch('requestPlayPoints', this.selectedCard.id)
+        this.gameStore.requestPlayPoints(this.selectedCard.id)
           .then(this.clearSelection)
           .catch(this.handleError);
       }
     },
     playFaceCard() {
       this.clearOverlays();
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestPlayFaceCardSeven', {
+        this.gameStore.requestPlayFaceCardSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
           })
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.$store
-          .dispatch('requestPlayFaceCard', this.selectedCard.id)
+        this.gameStore.requestPlayFaceCard(this.selectedCard.id)
           .then(this.clearSelection)
           .catch(this.handleError);
       }
     },
     scuttle(targetIndex) {
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestScuttleSeven', {
+        this.gameStore.requestScuttleSeven({
             cardId: this.cardSelectedFromDeck.id,
-            targetId: this.opponent.points[targetIndex].id,
+            targetId: this.gameStore.opponent.points[targetIndex].id,
             index: deckIndex,
           })
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.$store
-          .dispatch('requestScuttle', {
+        this.gameStore.requestScuttle({
             cardId: this.selectedCard.id,
-            targetId: this.opponent.points[targetIndex].id,
+            targetId: this.gameStore.opponent.points[targetIndex].id,
           })
           .then(this.clearSelection)
           .catch(this.handleError);
@@ -902,24 +891,23 @@ export default {
       let jackedPointId;
       switch (targetType) {
         case 'faceCard':
-          target = this.opponent.faceCards[targetIndex];
+          target = this.gameStore.opponent.faceCards[targetIndex];
           break;
         case 'point':
-          target = this.opponent.points[targetIndex];
+          target = this.gameStore.opponent.points[targetIndex];
           break;
         case 'jack':
           if (targetIndex < 0) {
             // targeting the last jack attached to a point card
-            const targetJacks = this.opponent.points[-targetIndex - 1].attachments;
+            const targetJacks = this.gameStore.opponent.points[-targetIndex - 1].attachments;
             target = targetJacks[targetJacks.length - 1];
-            jackedPointId = this.opponent.points[-targetIndex - 1].id;
+            jackedPointId = this.gameStore.opponent.points[-targetIndex - 1].id;
           }
           break;
       }
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestPlayTargetedOneOffSeven', {
+        this.gameStore.requestPlayTargetedOneOffSeven({
             cardId: this.cardSelectedFromDeck.id,
             targetId: target.id,
             pointId: jackedPointId,
@@ -929,8 +917,7 @@ export default {
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.$store
-          .dispatch('requestPlayTargetedOneOff', {
+        this.gameStore.requestPlayTargetedOneOff({
             cardId: this.selectedCard.id,
             targetId: target.id,
             pointId: jackedPointId,
@@ -941,11 +928,10 @@ export default {
       }
     },
     playJack(targetIndex) {
-      const target = this.opponent.points[targetIndex];
-      if (this.resolvingSeven) {
+      const target = this.gameStore.opponent.points[targetIndex];
+      if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestPlayJackSeven', {
+        this.gameStore.requestPlayJackSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
             targetId: target.id,
@@ -953,8 +939,7 @@ export default {
           .then(this.clearSelection)
           .catch(this.handleError);
       } else {
-        this.$store
-          .dispatch('requestPlayJack', {
+        this.gameStore.requestPlayJack({
             cardId: this.selectedCard.id,
             targetId: target.id,
           })
@@ -965,7 +950,7 @@ export default {
     targetOpponentPointCard(targetIndex) {
       if (!this.selectedCard && !this.topCardIsSelected && !this.secondCardIsSelected) return;
       let cardRank;
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         if (!this.cardSelectedFromDeck) return;
         cardRank = this.cardSelectedFromDeck.rank;
       } else {
@@ -1000,7 +985,7 @@ export default {
     },
     targetOpponentFaceCard(targetIndex) {
       let cardToPlay = null;
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         if (!this.cardSelectedFromDeck) return;
         cardToPlay = this.cardSelectedFromDeck;
       } else {
@@ -1017,12 +1002,11 @@ export default {
       }
     },
     playOneOff() {
-      if (this.resolvingSeven) {
+      if (this.gameStore.resolvingSeven) {
         if (!this.cardSelectedFromDeck) return;
 
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.$store
-          .dispatch('requestPlayOneOffSeven', {
+        this.gameStore.requestPlayOneOffSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
           })
@@ -1031,8 +1015,7 @@ export default {
       }
       if (!this.selectedCard) return;
 
-      this.$store
-        .dispatch('requestPlayOneOff', this.selectedCard.id)
+      this.gameStore.requestPlayOneOff(this.selectedCard.id)
         .then(this.clearSelection)
         .catch(this.handleError);
     },

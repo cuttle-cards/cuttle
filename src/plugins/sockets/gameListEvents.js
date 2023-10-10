@@ -1,35 +1,51 @@
-import store from '@/store/store.js';
+import { useGameListStore } from '@/stores/gameList';
+import { useGameStore } from '@/stores/game';
 import { cloneDeep } from 'lodash';
 
 export function handleGameCreated(evData) {
+  const gameListStore = useGameListStore();
   const newGame = cloneDeep(evData);
-  store.commit('addGameToList', newGame);
+  gameListStore.addGameToList(newGame);
 }
 
 export function handleGameStarted({ gameId }) {
-  store.commit('gameStarted', gameId);
+  const gameListStore = useGameListStore();
+  gameListStore.gameStarted(gameId);
 }
 
 export function handleGameFinished({ gameId }) {
-  store.commit('gameFinished', gameId);
+  const gameListStore = useGameListStore();
+  gameListStore.gameFinished(gameId);
 }
 
 export function handleJoin(evData) {
-  store.commit('joinGame', {
+  const gameListStore = useGameListStore();
+  const gameStore = useGameStore();
+  gameListStore.joinGame({
     gameId: evData.gameId,
     newPlayer: evData.newPlayer,
     newStatus: evData.newStatus,
   });
   // If we are in game: update our game with new player
-  if (evData.gameId === store.state.game.id) {
-    store.commit('opponentJoined', evData.newPlayer);
+  if (evData.gameId === gameStore.id) {
+    gameStore.opponentJoined(evData.newPlayer);
   }
 }
 
 export function handleLeftGame(evData) {
-  if (evData.id === store.state.game.id) {
-    store.commit('opponentLeft');
+  const gameListStore = useGameListStore();
+  const gameStore = useGameStore();
+  if (evData.id === gameStore.id) {
+    gameStore.opponentLeft();
   } else {
-    store.commit('otherLeftGame', evData.id);
+    gameListStore.otherLeftGame(evData.id);
   }
+}
+
+export function handleIsRanked(evData) {
+  const gameListStore = useGameListStore();
+  const gameStore = useGameStore();
+  gameStore.isRanked = evData.isRanked;
+  gameStore.showIsRankedChangedAlert = true;
+  gameListStore.setIsRanked({gameId: evData.gameId,isRanked: evData.isRanked});
 }

@@ -2,16 +2,19 @@
   <div>
     <!-- Reauthenticate-->
     <template v-if="mustReauthenticate">
-      <reauthenticate-dialog v-model="mustReauthenticate" />
+      <ReauthenticateDialog v-model="mustReauthenticate" />
     </template>
     <!-- Game doesn't exist-->
     <template v-else-if="unavailableGame">
-      <game-unavailable-overlay :show="unavailableGame" />
+      <GameUnavailableOverlay :show="unavailableGame" />
     </template>
   </div>
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
+import { useGameStore } from '@/stores/game';
 import ReauthenticateDialog from '@/routes/game/components/ReauthenticateDialog.vue';
 import GameUnavailableOverlay from '@/routes/game/components/GameUnavailableOverlay.vue';
 
@@ -19,15 +22,16 @@ export default {
   name: 'GameUnavailable',
   components: { ReauthenticateDialog, GameUnavailableOverlay },
   computed: {
+    ...mapStores(useAuthStore, useGameStore),
     unavailableGame() {
-      return !this.$store.state.game.id;
+      return !this.gameStore.id;
     },
     mustReauthenticate: {
       get() {
-        return this.$store.state.auth.mustReauthenticate;
+        return this.authStore.mustReauthenticate;
       },
       set(val) {
-        this.$store.commit('setMustReauthenticate', val);
+        this.authStore.mustReauthenticate = val;
       },
     },
   },

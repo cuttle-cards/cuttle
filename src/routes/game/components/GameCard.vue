@@ -14,17 +14,20 @@
       class="player-card-icon mr-1 mt-1"
       color="#00a5ff"
       icon="mdi-snowflake"
+      aria-label="snowflake icon (card is frozen)"
+      aria-hidden="false"
+      role="img"
     />
     <v-overlay
       :model-value="isValidTarget"
       contained
       class="valid-move target-overlay"
     />
-    <transition :name="scuttledByTransition">
+    <Transition :name="scuttledByTransition">
       <template v-if="scuttledBy">
         <img :class="scuttledByClass" :src="`/img/cards/card-${scuttledBy.suit}-${scuttledBy.rank}.svg`">
       </template>
-    </transition>
+    </Transition>
     <img
       v-if="isGlasses"
       :src="`/img/cards/glasses-${suitName.toLowerCase()}.png`"

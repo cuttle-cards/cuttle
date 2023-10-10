@@ -1,5 +1,5 @@
 <template>
-  <base-dialog id="game-over-dialog" v-model="show">
+  <BaseDialog id="game-over-dialog" v-model="show">
     <template #title>
       <h1 :data-cy="headingDataAttr" :class="isMobilePortrait ? 'text-h4' : ''">
         {{ heading }}
@@ -24,11 +24,11 @@
       </template>
       <template v-if="currentMatch">
         <p v-if="currentMatch" class="dialog-text" data-cy="match-result-section">
-          Match against {{ opponent.username }}
+          Match against {{ gameStore.opponent.username }}
           <span>: {{ matchIsOver ? 'Finished' : 'In Progress' }}</span>
         </p>
         <p v-if="matchIsOver" class="dialog-text" data-cy="match-winner-message">
-          You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ opponent.username }}
+          You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ gameStore.opponent.username }}
         </p>
         <div data-cy="match-result-games" class="mb-4">
           <div class="d-flex">
@@ -43,6 +43,9 @@
                 color="surface-2"
                 :icon="iconFromGameStatus(gameStatus)"
                 :data-cy="`icon-${gameStatus}`"
+                :aria-label="`${gameStatus} icon`"
+                aria-hidden="false"
+                role="img"
               />
               {{ gameStatus }}
             </div>
@@ -62,11 +65,12 @@
         Go Home
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 
@@ -104,16 +108,12 @@ export default {
         // do nothing - parent controls whether dialog is open
       },
     },
-    ...mapState({
-      playingFromDeck: ({ game }) => game.playingFromDeck,
-      game: ({ game }) => game,
-    }),
-    ...mapGetters(['player', 'opponent']),
+    ...mapStores(useGameStore),
     heading() {
       if (this.matchIsOver) {
         return this.playerWinsMatch ? 'You Win the Match' : 'You Lose the Match';
       }
-      const currentMatchGames = this.game.currentMatch?.games ?? [];
+      const currentMatchGames = this.gameStore.currentMatch?.games ?? [];
       const gameNumberPrefix = currentMatchGames.length > 0 ? `Game ${currentMatchGames.length}: ` : '';
       const winnerMessage = this.stalemate ? 'Draw' : this.playerWinsGame ? 'You Win' : 'You Lose';
 
@@ -156,33 +156,33 @@ export default {
       return 'loss-img';
     },
     currentMatch() {
-      return this.game.currentMatch;
+      return this.gameStore.currentMatch;
     },
     matchGameStats() {
-      const currentMatchGames = this.game.currentMatch?.games ?? [];
+      const currentMatchGames = this.gameStore.currentMatch?.games ?? [];
       return currentMatchGames.map((game) => {
         if (game.status === GameStatus.FINISHED){
-          return game.winner === null ? 'D' : game.winner === this.opponent.id ? 'L' : 'W';
+          return game.winner === null ? 'D' : game.winner === this.gameStore.opponent.id ? 'L' : 'W';
         } 
         return 'I';
       });
     },
     matchIsOver() {
-      return this.game.currentMatch?.winner;
+      return this.gameStore.currentMatch?.winner;
     },
     playerWinsMatch() {
-      return this.game.currentMatch?.winner === this.player.id;
+      return this.gameStore.currentMatch?.winner === this.gameStore.player.id;
     },
   },
   methods: {
     async goHome() {
       this.leavingGame = true;
       try {
-        await this.$store.dispatch('requestUnsubscribeFromGame');
+        await this.gameStore.requestUnsubscribeFromGame();
       } finally {
         this.leavingGame = false;
         this.$router.push('/');
-        this.$store.commit('setGameOver', {
+        this.gameStore.setGameOver({
           gameOver: false,
           conceded: false,
           winner: null,

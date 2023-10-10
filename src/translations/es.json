@@ -8,7 +8,10 @@
     "stats": "Estadísticas",
     "username": "Nombre de usuario",
     "password": "Contraseña",
-    "collapseMenu": "Contraer menú"
+    "collapseMenu": "Contraer menú",
+    "cancel": "Cancelar",
+    "ranked": "Clasificado",
+    "casual": "Casual"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
@@ -23,5 +26,46 @@
     "content2": "Sé el primero en alcanzar 21 puntos en esta explosiva batalla de ingenio. Monta una ofensiva valiente mientras interrumpes a tu oponente con trucos malvados. ¿Tienes lo necesario para convertirte en el Señor de las Profundidades?",
     "readRules": "Leer las reglas",
     "joinDiscord": "Únete a nuestra comunidad en Discord"
+  },
+  "lobby":{
+    "lobbyFor": "Lobby para",
+    "ready": "PREPARADO",
+    "unready": "NO PREPARADO",
+    "exit": "SALIR",
+    "invite": "Invitar",
+    "rankedChangedAlert":"Modo de juego cambió a"
+  },
+  "game":{
+    "moves":{
+      "effects":{
+        "1": "Desechar todos los puntos",
+        "2": "Deseche el objetivo Royal o Glasses ocho",
+        "3": "Elige 1 carta del Scrap y ponla en tu mano.",
+        "4": "Tu oponente descarta dos cartas de su elección de su mano.",
+        "5": "Saca dos cartas de la baraja.",
+        "6": "Elimina todos los ochos Royals y Glasses",
+        "7": "Juega una de las dos cartas superiores del mazo y devuelve la otra (ambas se revelan)",
+        "8": "Tu oponente juega con la mano abierta (sus cartas te son reveladas)",
+        "9": "Devuelve la carta objetivo a la mano de su controlador. No pueden jugarlo el próximo turno.",
+        "10": "Sin efecto",
+        "11": "Juega encima de la carta de puntos objetivo para robarla.",
+        "12": "Tus otras cartas solo pueden ser objetivo de scuttles.",
+        "13": "Reduce los puntos que necesitas para ganar. (1K: 14 puntos, 2K: 10 puntos, 3K: 5 puntos, 4K: 0 puntos)"
+      }
+    }
+  },
+  "home": {
+    "gameFinder": "Buscador de juegos",
+    "spectate": "ESPECTAR",
+    "noGameslist": "Sin juegos activos",
+    "noSpectatelist": "No hay juegos disponibles para ver",
+    "openCreateGame": "Crear un juego",
+    "submitCreateGame": "Crear juego",
+    "players": "jugadores",
+    "playAiContent":"Quieres jugar solo? Intentar",
+    "playAiLink":"jugando contra la IA",
+    "playAiContent2":"para aprender lo básico y poner a prueba tu temple.",
+    "gameName": "Juego Nombre",
+    "join": "Unirse"
   }
 }

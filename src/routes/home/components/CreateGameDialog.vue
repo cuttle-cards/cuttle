@@ -1,31 +1,42 @@
 <template>
-  <base-dialog
+  <BaseDialog
     :id="`create-game-dialog`"
     v-model="show"
-    title="Create Game"
+    :title="t('home.submitCreateGame')"
     :opacity="1"
     data-cy="create-game-dialog"
   >
     <template #activator>
       <v-btn
-        class="text-surface-2"
-        color="primary"
+        class="px-16 w-100"
+        color="newPrimary"
+        size="x-large"
+        text-color="white"
         data-cy="create-game-btn"
-        rounded
-        elevation="8"
       >
-        Create Game
+        {{ t('home.openCreateGame') }}
       </v-btn>
     </template>
     <template #body>
+      <h4>
+        {{ t('home.playAiContent') }}
+        <a
+          class="text-cyan-lighten-2 text-decoration-none"
+          href="https://human-ai-interaction.github.io/cuttle-bot/"
+          target="_blank"
+        >
+          {{ t('home.playAiLink') }}
+        </a>
+        {{ t('home.playAiContent2') }}
+      </h4>
       <form name="create_game_form" class="d-flex align-center">
         <v-switch
           v-model="isRanked"
-          :label="isRanked ? 'Ranked' : 'Normal'"
+          :label="isRanked ? t('global.ranked') : t('global.casual')"
           data-cy="create-game-ranked-switch"
           color="surface-2"
         />
-        <stats-scoring-dialog activator-color="surface-2" :show-button-text="false" />
+        <StatsScoringDialog activator-color="surface-2" :show-button-text="false" />
       </form>
       <v-form @submit.prevent="submitNewGame">
         <v-text-field
@@ -33,7 +44,7 @@
           name="game-name"
           autofocus
           :disabled="loading"
-          label="Game Name"
+          :label="t('home.gameName')"
           variant="outlined"
           data-cy="game-name-input"
         />
@@ -42,13 +53,14 @@
     <template #actions>
       <v-form>
         <v-btn
+          class="mr-2"
           data-cy="cancel-create-game"
           :disabled="loading"
           variant="text"
           color="surface-1"
           @click="cancelCreateGame"
         >
-          Cancel
+          {{ t('global.cancel') }}
         </v-btn>
         <v-btn
           form="create_game_form"
@@ -59,14 +71,17 @@
           variant="flat"
           @click="submitNewGame"
         >
-          Create Game
+          {{ t('home.submitCreateGame') }}
         </v-btn>
       </v-form>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useGameListStore } from '@/stores/gameList';
+import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/BaseDialog.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '_/utils/local-storage-utils.js';
@@ -75,6 +90,10 @@ export default {
   name: 'CreateGameDialog',
   components: { StatsScoringDialog, BaseDialog },
   emits: ['error'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       show: false,
@@ -82,6 +101,9 @@ export default {
       loading: false,
       isRanked: false,
     };
+  },
+  computed: {
+    ...mapStores(useGameListStore),
   },
   watch: {
     isRanked(isRanked) {
@@ -94,8 +116,8 @@ export default {
   methods: {
     submitNewGame() {
       this.loading = true;
-      this.$store
-        .dispatch('requestCreateGame', {
+      this.gameListStore
+        .requestCreateGame({
           gameName: this.gameName,
           isRanked: this.isRanked,
         })

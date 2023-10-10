@@ -1,3 +1,4 @@
+import { defineStore } from 'pinia';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import GameStatus  from '_/utils/GameStatus.json';
@@ -12,74 +13,78 @@ class GameSummary {
     this.isOver = false;
   }
 }
-export default {
-  state: {
+export const useGameListStore = defineStore('gameList', {
+  state: () => ({
     openGames: [],
     spectateGames: [],
-  },
-  mutations: {
+  }),
+  actions: {
     // Open/Playable Games
-    refreshGames(state, { openGames, spectateGames }) {
-      state.openGames = openGames.map((game) => new GameSummary(game));
-      state.spectateGames = spectateGames.map((game) => new GameSummary(game));
+    refreshGames({ openGames, spectateGames }) {
+      this.openGames = openGames.map((game) => new GameSummary(game));
+      this.spectateGames = spectateGames.map((game) => new GameSummary(game));
     },
-    addGameToList(state, newGame) {
-      state.openGames.push(new GameSummary(newGame));
+    addGameToList(newGame) {
+      this.openGames.push(new GameSummary(newGame));
     },
-    gameStarted(state, gameId) {
-      const gameIndex = state.openGames.findIndex((game) => game.id === gameId);
-      if (gameIndex < 0 || gameIndex > state.openGames.length) {
+    gameStarted(gameId) {
+      const gameIndex = this.openGames.findIndex((game) => game.id === gameId);
+      if (gameIndex < 0 || gameIndex > this.openGames.length) {
         return;
       }
-      const [startedGame] = state.openGames.splice(gameIndex, 1);
+      const [startedGame] = this.openGames.splice(gameIndex, 1);
       startedGame.status = GameStatus.STARTED;
-      state.spectateGames.push(startedGame);
+      this.spectateGames.push(startedGame);
     },
-    gameFinished(state, gameId) {
-      const game = state.spectateGames.find((game) => game.id === gameId);
+    gameFinished(gameId) {
+      const game = this.spectateGames.find((game) => game.id === gameId);
       if (!game) {
         return;
       }
       game.isOver = true;
     },
-    updateGameStatus(state, data) {
-      const updatedGame = state.openGames.find((game) => game.id === data.id);
+    updateGameStatus(data) {
+      const updatedGame = this.openGames.find((game) => game.id === data.id);
       if (updatedGame) {
         updatedGame.status = data.newStatus;
       }
     },
-    joinGame(state, data) {
-      const updatedGame = state.openGames.find((game) => game.id === data.gameId);
+    joinGame(data) {
+      const updatedGame = this.openGames.find((game) => game.id === data.gameId);
       if (updatedGame) {
         updatedGame.numPlayers++;
         updatedGame.status = data.newStatus;
       }
     },
-    otherLeftGame(state, gameId) {
-      const updatedGame = state.openGames.find((game) => game.id === gameId);
+    otherLeftGame(gameId) {
+      const updatedGame = this.openGames.find((game) => game.id === gameId);
       if (updatedGame) {
         updatedGame.numPlayers--;
       }
     },
-    addSpectateGameToList(state, newGame) {
-      state.spectateGames.push(new GameSummary(newGame));
+    setIsRanked({gameId, isRanked}) {
+      const updatedGame = this.openGames.find((game) => game.id === gameId);
+      if (updatedGame) {
+        updatedGame.isRanked = isRanked;
+      }
     },
-  },
-  actions: {
-    requestGameList(context) {
+    addSpectateGameToList(newGame) {
+      this.spectateGames.push(new GameSummary(newGame));
+    },
+    requestGameList() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/getList', function handleResponse(resData, jwres) {
+        io.socket.get('/game/getList', (resData, jwres) => {
           if (jwres.statusCode === 200) {
             const openGames = cloneDeep(resData.openGames);
             const spectateGames = cloneDeep(resData.spectatableGames);
-            context.commit('refreshGames', { openGames, spectateGames });
+            this.refreshGames({ openGames, spectateGames });
             return resolve(openGames);
           }
           return reject(new Error('Could not retrieve list of games'));
         });
       });
     },
-    requestCreateGame(context, { gameName, isRanked = false }) {
+    requestCreateGame({ gameName, isRanked = false }) {
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/game/create',
@@ -87,7 +92,7 @@ export default {
             gameName,
             isRanked,
           },
-          function handleResponse(resData, jwres) {
+          (resData, jwres) => {
             if (jwres.statusCode === 200) {
               return resolve(resData);
             }
@@ -106,4 +111,4 @@ export default {
       });
     },
   },
-};
+});

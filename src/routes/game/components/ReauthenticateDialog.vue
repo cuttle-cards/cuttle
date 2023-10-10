@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-dialog id="reauthenticate-dialog" v-model="show" title="Reconnect to Game">
+    <BaseDialog id="reauthenticate-dialog" v-model="show" title="Reconnect to Game">
       <template #body>
         <p class="mb-4">
           You have disconnected due to inactivity. Log in again to resume your session
@@ -41,7 +41,7 @@
           Log In
         </v-btn>
       </template>
-    </base-dialog>
+    </BaseDialog>
 
     <BaseSnackbar
       v-model="showSnackBar"
@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import { mapStores } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 import BaseDialog from '@/components/BaseDialog.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 
@@ -69,7 +71,6 @@ export default {
   },
   data() {
     return {
-      username: this.$store.state.auth.username,
       password: '',
       isLoggingIn: false,
       showSnackBar: false,
@@ -77,6 +78,10 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useAuthStore),
+    username() {
+      return this.authStore.username;
+    },
     show: {
       get() {
         return this.modelValue;
@@ -92,8 +97,7 @@ export default {
     },
     login() {
       this.isLoggingIn = true;
-      this.$store
-        .dispatch('requestReauthenticate', {
+      this.authStore.requestReauthenticate({
           username: this.username,
           password: this.password,
         })

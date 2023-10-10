@@ -5,6 +5,7 @@ import LobbyView from '@/routes/lobby/LobbyView.vue';
 import GameView from '@/routes/game/GameView.vue';
 import RulesView from '@/routes/rules/RulesView.vue';
 import StatsView from '@/routes/stats/StatsView.vue';
+import { useAuthStore } from '@/stores/auth';
 import store from '@/store/store.js';
 
 export const ROUTE_NAME_GAME = 'Game';
@@ -18,11 +19,14 @@ export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
 export const ROUTE_NAME_STATS_SEASON = 'StatsBySeason';
 
+
+
 const mustBeAuthenticated = async (to, from, next) => {
-  if (store.state.auth.authenticated) {
+  const authStore = useAuthStore();
+  if (authStore.authenticated) {
     return next();
   }
-  const isReturningUser = await store.dispatch('getIsReturningUser');
+  const isReturningUser = await authStore.getIsReturningUser();
   if (isReturningUser === 'true') {
     return next('/login');
   }
@@ -30,7 +34,8 @@ const mustBeAuthenticated = async (to, from, next) => {
 };
 
 const logoutAndRedirect = async (to, from, next) => {
-  await store.dispatch('requestLogout');
+  const authStore = useAuthStore();
+  await authStore.requestLogout();
   return next('/login');
 };
 
@@ -112,10 +117,11 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, _from, next) => {
+  const authStore = useAuthStore();
   // Make sure we try and reestablish a player's session if one exists
   // We do this before the route resolves to preempt the reauth/logout logic
-  await store.dispatch('requestStatus', to);
-  if (!store.state.auth.authenticated) {
+  await authStore.requestStatus(to);
+  if (!authStore.authenticated) {
     to.meta.hideNavigation = true;
   }
   next();

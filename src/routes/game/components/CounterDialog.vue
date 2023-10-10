@@ -1,5 +1,5 @@
 <template>
-  <choose-whether-to-counter-dialog
+  <ChooseWhetherToCounterDialog
     v-if="oneOff"
     :model-value="show && !choseToCounter"
     :one-off="oneOff"
@@ -10,7 +10,7 @@
     @resolve="resolve"
   />
 
-  <choose-two-dialog
+  <ChooseTwoDialog
     v-if="oneOff"
     :model-value="show && choseToCounter"
     :one-off="oneOff"

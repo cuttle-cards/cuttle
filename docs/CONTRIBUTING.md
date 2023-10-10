@@ -28,16 +28,14 @@ If you spot a problem with the docs, [search if an issue already exists](https:/
 
 Scan through our [existing issues](https://github.com/cuttle-cards/cuttle/issues) to find one that interests you. You can narrow down the search using `labels` as filters. See [Labels](/contributing/how-to-use-labels.md) for more information. As a general rule, we don’t assign issues to anyone. If you find an issue to work on, you are welcome to open a PR with a fix.
 
-### Make Changes
+### (Automated) Version Management
+
+This repo automatically increments the package version based on version labels that the core team applies to pull requests. **You do not need to update the `version` fields in package files** because it is handled automatically. Cuttle uses semantic versioning (semver), which uses version numbers like 4.3.22. The versioning scheme consists of major, minor, and patch versions. 
 
 
-We follow semantic versioning (semver) for Cuttle Cards, which uses version numbers like 4.3.22. The versioning scheme consists of major, minor, and patch versions. When submitting a PR, please update the version field in package.json based on the version label of the issue being addressed.
-
-If the issue is labeled patch-version, increment the patch number in the version field (e.g., from 4.3.22 to 4.3.23).
-If the issue is labeled minor-version, reset the patch number to zero and increment the minor version (e.g., from 4.3.22 to 4.4.0).
-If the issue is labeled major-version, set both the patch and minor versions to zero and increment the major version (e.g., from 4.3.22 to 5.0.0).
-Please note that you don't need to repeat this process for package-lock.json as it automatically inherits the version number from package.json whenever dependencies are updated.
-
+* `patch-version`, the automation will increment the patch number in the version field (e.g., from 4.3.22 to 4.3.23)
+* `minor-version`, the automation will reset the patch number to zero and increment the minor version (e.g., from 4.3.22 to 4.4.0).
+* `major-version`, the automation will set both the patch and minor versions to zero and increment the major version (e.g., from 4.3.22 to 5.0.0).
 
 ### Test-Driven Development
 
@@ -128,7 +126,7 @@ For other tests, it may be valuable to seed the database directly with records f
 
 Once your changes are ready, don't forget run the linter `npm run lint:fix` so the code is automatically formatted. Then you will need to run the test suites so that your changes are not breaking them. You may also create new tests or update any tests due to new behavioral changes.
 
-To run the test suite, start by running the cmd `npm run start:server`. This will start the node server. Then you can run either `npm run e2e:client` or `npm run e2e:gui`. After all the tests has pass, you can self-review the changes yourself to speed up the review process:zap:.
+To run the test suite, start by running the cmd `npm run start:server`. This will start the node server. Then you can run either `npm run e2e:client` or `npm run e2e:gui`. After all the tests have passed, you can self-review the changes yourself to speed up the review process:zap:.
 
 Now, commit the changes once you are happy with them.
 

@@ -38,6 +38,7 @@ module.exports.policies = {
   'game/subscribe': ['isLoggedIn', 'hasGameId'],
   'game/spectate': ['isLoggedIn', 'hasGameId'],
   'game/ready': 'isLoggedIn',
+  'game/setIsRanked': 'isInGame',
   'game/leave-lobby': ['isSocket', 'isLoggedIn', 'isInGame'],
   'game/draw': ['isLoggedIn', 'isInGame'],
   'game/pass': ['isLoggedIn', 'isInGame'],

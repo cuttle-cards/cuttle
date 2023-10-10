@@ -17,11 +17,15 @@
       <template v-if="cards.length === 0">
         <div class="d-flex flex-column">
           <p>{{ emptyText }}</p>
-          <v-icon icon="mdi-cancel" size="x-large" />
+          <v-icon
+            icon="mdi-cancel"
+            size="x-large" 
+            aria-hidden="true"
+          />
         </div>
       </template>
       <!-- Cards in the scrap -->
-      <game-card
+      <GameCard
         v-for="card in sortedCards"
         :key="card.id"
         class="mx-1 my-1 sortable-list-card"

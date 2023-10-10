@@ -9,7 +9,12 @@
           <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
           <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
             {{ buttonText }}
-            <v-icon icon="mdi-account-circle" color="white" class="ml-2" />
+            <v-icon
+              icon="mdi-account-circle"
+              color="white"
+              class="ml-2"
+              aria-hidden="true"
+            />
           </v-btn>
         </nav>
 
@@ -19,7 +24,7 @@
             {{ t('login.subtitle') }}
           </p>
           <div class="w-75 my-4 video">
-            <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI" />
+            <BaseVideo source="https://www.youtube.com/embed/qOqkNbhMdsI" />
             <v-btn
               class="rulesBtn w-100 mt-8"
               size="x-large"
@@ -117,7 +122,7 @@
                 target="_blank"
               >
                 <img class="discord" src="/img/loginView/logo-discord.svg">
-                {{ t('login.joinDiscord') }}
+                <span class="discordButton">{{ t('login.joinDiscord') }}</span>
               </v-btn>
             </v-form>
 
@@ -168,11 +173,13 @@
 
 <script>
 import { useI18n } from 'vue-i18n';
-
+import { mapStores } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import MarkdownContent from '@/components/MarkdownContent.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
+
 
 export default {
   name: 'LoginView',
@@ -203,6 +210,7 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useAuthStore),
     isLoggingIn() {
       return this.$route.name === ROUTE_NAME_LOGIN;
     },
@@ -222,7 +230,7 @@ export default {
       return this.t('login.haveAccount');
     },
   },
- mounted() {
+  mounted() {
     if (this.isLoggingIn) {
       this.scrollAndFocusLogin();
     }
@@ -230,9 +238,9 @@ export default {
   methods: {
     async submitLogin() {
       this.loading = true;
-      const action = this.isLoggingIn ? 'requestLogin' : 'requestSignup';
+      const action = this.isLoggingIn ? this.authStore.requestLogin : this.authStore.requestSignup;
       try {
-        await this.$store.dispatch(action, {
+        await action({
           username: this.username,
           password: this.pw,
         });
@@ -344,6 +352,10 @@ export default {
   max-height: 48px;
   margin-right: 18px;
 }
+
+.discordButton{
+    white-space: normal;
+  }
 
 #username-login-form {
   padding: 0;

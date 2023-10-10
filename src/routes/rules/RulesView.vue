@@ -39,7 +39,7 @@
           Watch the official cuttle.cards tutorial to learn the rules and get a feel for the flow of the game.
         </p>
         <div class="w-50 my-4 mx-auto">
-          <base-video source="https://www.youtube.com/embed/qOqkNbhMdsI" />
+          <BaseVideo source="https://www.youtube.com/embed/qOqkNbhMdsI" />
         </div>
       </v-row>
 
@@ -77,7 +77,7 @@
           sm="12"
           class="my-4"
         >
-          <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
+          <RulePreview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
 
@@ -89,6 +89,9 @@
             color="black"
             class="mr-4"
             icon="mid-crown"
+            aria-label="crown icon"
+            aria-hidden="false"
+            role="img"
           />
           <h1 class="gradient-text">
             Royals
@@ -112,7 +115,7 @@
           sm="12"
           class="my-4"
         >
-          <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
+          <RulePreview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
 
@@ -124,6 +127,9 @@
             color="black"
             class="mr-4"
             icon="mdi-delete"
+            aria-label="one-off icon"
+            aria-hidden="false"
+            role="img"
           />
           <h1 class="gradient-text">
             One-Offs
@@ -148,7 +154,7 @@
           sm="12"
           class="my-4"
         >
-          <rule-preview v-bind="rule" ref="preview" @animate="handleAnimate" />
+          <RulePreview v-bind="rule" ref="preview" @animate="handleAnimate" />
         </v-col>
       </v-row>
 
@@ -288,6 +294,8 @@
   </div>
 </template>
 <script>
+import { mapStores } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 import RulePreview from '@/routes/rules/components/RulePreview.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
 
@@ -298,8 +306,9 @@ export default {
     BaseVideo
 },
   computed: {
+    ...mapStores(useAuthStore),
     buttonText() {
-      if (this.$store.state.auth.username) {
+      if (this.authStore.username) {
         return 'Find a Game';
       }
       return 'Sign Up to Play Online';

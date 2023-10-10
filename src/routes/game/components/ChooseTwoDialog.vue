@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     v-if="oneOff"
     id="choose-two-dialog"
     v-model="show"
@@ -10,7 +10,7 @@
         Which Two would you like to counter with? (Click the card)
       </p>
       <div id="twos-in-hand" class="d-flex justify-center mb-4">
-        <game-card
+        <GameCard
           v-for="two in twosInHand"
           :key="two.id"
           :suit="two.suit"
@@ -30,7 +30,7 @@
         Cancel
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>
