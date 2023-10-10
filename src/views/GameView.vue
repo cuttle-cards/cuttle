@@ -178,20 +178,21 @@
           <ScrapDialog :scrap="scrap">
             <template #activator>
               <div id="scrap" class="d-flex flex-column align-center">
-                <GameCard
-                  v-if="gameStore.cardChosenFromScrap"
-                  :suit="gameStore.cardChosenFromScrap.suit"
-                  :rank="gameStore.cardChosenFromScrap.rank"
-                  :is-threes-target="true"
-                  :player-choosing-from-scrap="gameStore.playerChoosingFromScrap"
-                />
-                <div v-else class="d-flex flex-column align-center">
-                  <h3>Scrap</h3>
-                  <span>({{ scrap.length }})</span>
-                  <v-btn variant="outlined" color="primary" class="mt-4">
-                    View
-                  </v-btn>
-                </div>
+                <Transition :name="threesTransition">
+                  <GameCard
+                    v-if="threesScrapChoice"
+                    :suit="threesScrapChoice.suit"
+                    :rank="threesScrapChoice.rank"
+                    class="gameCard"
+                  />
+                  <div v-else class="d-flex flex-column align-center scrapPile">
+                    <h3>Scrap</h3>
+                    <span>({{ scrap.length }})</span>
+                    <v-btn variant="outlined" color="primary" class="mt-4">
+                      View
+                    </v-btn>
+                  </div>
+                </Transition>
               </div>
             </template>
           </ScrapDialog>
@@ -527,9 +528,16 @@ export default {
     opponentPointsToWin() {
       return this.pointsToWin(this.opponentKingCount);
     },
+    threesScrapChoice() {
+      return this.gameStore.cardChosenFromScrap;
+    },
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
+    threesTransition() {  
+        return this.gameStore.playerChoosingFromScrap ? `threes-player` : `threes-opponent`;
+    },
+
     playerPointsTransition() {
       switch (this.game.lastEventChange) {
         case 'resolve':
@@ -711,6 +719,11 @@ export default {
         this.scrollToLastLog();
       });
     },
+    threesScrapChoice: function () {
+      setTimeout(() => {
+        this.gameStore.cardChosenFromScrap = null;
+      }, 500);
+    }
   },
   async mounted() {
     if (this.isSpectating && !this.gameStore.id) {
@@ -1105,6 +1118,44 @@ export default {
   opacity: 0;
   transform: translateY(-32px);
 }
+
+
+.gameCard{
+  position: absolute;
+  transition: all 1.5s ease-out;
+}
+
+.scrapPile{
+  transition: all 1.5s ease
+}
+
+.threes-player-enter-from.scrapPile{
+  opacity: 0;
+}
+
+.threes-player-leave-to.gameCard{
+  opacity: 0;
+  transform: translate(200px, 50px);
+}
+
+.threes-opponent-leave-to.gameCard{
+  transform: translate(200px, -200px);
+  opacity: 0;
+}
+
+
+@media (max-width: 600px) {
+  .threes-player-leave-to{
+    opacity: 0;
+    transform: translateY(200px);
+    }
+  
+  .threes-opponent-leave-to {
+    transform: translate(-200px);
+    opacity: 0;
+  }
+}
+
 ////////////
 // Styles //
 ////////////

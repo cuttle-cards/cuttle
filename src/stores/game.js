@@ -163,6 +163,13 @@ export const useGameStore = defineStore('game', {
         } else {
           this.lastEventTargetType = null;
         }
+        if (Object.hasOwnProperty.call(newGame.lastEvent, 'chosenCard')) {
+          this.cardChosenFromScrap = newGame.lastEvent.chosenCard;
+          this.playerChoosingFromScrap = newGame.lastEvent.pNum === this.myPNum;
+        } else {
+          this.cardChosenFromScrap = null;
+          this.playerChoosingFromScrap = null;
+        }
       }
       this.waitingForOpponentToStalemate = false;
       if (Object.hasOwnProperty.call(newGame, 'id')) this.id = newGame.id;
@@ -288,20 +295,6 @@ export const useGameStore = defineStore('game', {
         this.updateGameThenResetPNumIfNull(game);
       }, 1000);
     },
-
-    processResolveThree({ chosenCard, pNum }, game) {
-      this.pickingFromScrap = false;
-      this.waitingForOpponentToPickFromScrap = false;
-      this.cardChosenFromScrap = this.scrap.find(({ id }) => id === chosenCard);
-      this.playerChoosingFromScrap = this.myPNum === pNum;
-      this.updateGameThenResetPNumIfNull(game);
-
-      setTimeout(() => {
-        this.cardChosenFromScrap = null;
-        this.playerChoosingFromScrap = false;
-      }, 2000);
-    },
-
     handleGameResponse: (jwres, resolve, reject) => {
       const authStore = useAuthStore();
       switch (jwres.statusCode) {

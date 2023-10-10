@@ -6,8 +6,6 @@
       glasses: isGlasses,
       jack: isJack,
       frozen: isFrozen,
-      threesPlayer: isPlayerThreesTarget,
-      threesOpponent: isOpponentThreesTarget
     }"
     :elevation="elevation"
   >
@@ -84,14 +82,6 @@ export default {
     isFrozen: {
       type: Boolean,
       default: false,
-    },
-    isThreesTarget: {
-      type: Boolean,
-      default:false
-    },
-    playerChoosingFromScrap: {
-      type: Boolean,
-      default: false
     },
     scuttledBy: {
       type: Object,
@@ -189,12 +179,6 @@ export default {
           return '';
       }
     },
-    isPlayerThreesTarget() {
-      return this.isThreesTarget && this.playerChoosingFromScrap;
-    },
-    isOpponentThreesTarget() {
-      return this.isThreesTarget && !this.playerChoosingFromScrap;
-    }
   },
 };
 </script>
@@ -315,30 +299,6 @@ export default {
   animation: slideOpponentThree 2s ease;
 }
 
-@keyframes slidePlayerThree {
-  100% {
-    transform: translate(200px, 50px);
-    opacity: 0;
-  }
-}
-@keyframes slidePlayerThreePortrait {
-  100% {
-    transform: translateY(200px);
-    opacity: 0;
-  }
-}
-@keyframes slideOpponentThree {
-  100% {
-    transform: translate(200px, -200px);
-    opacity: 0;
-  }
-}
-@keyframes slideOpponentThreePortrait {
-  100% {
-    transform: translateY(-200px);
-    opacity: 0;
-  }
-}
 
 @media (max-width: 600px) {
   .player-card {
@@ -348,12 +308,6 @@ export default {
       max-width: 10vh;
       height: calc(10vh / 1.45);
     }
-  }
-  .threesPlayer{
-    animation: slidePlayerThreePortrait 2s ease;
-  }
-  .threesOpponent{
-    animation: slideOpponentThreePortrait 2s ease;
   }
 
 }

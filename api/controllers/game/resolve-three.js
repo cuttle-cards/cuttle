@@ -14,6 +14,8 @@ module.exports = function (req, res) {
         log: [...game.log, `${player.username} took the ${getCardName(card)} from the Scrap pile to their hand.`],
         lastEvent: {
           change: 'resolveThree',
+          pNum: req.session.pNum,
+          chosenCard: card
         },
       };
       const updatePromises = [
@@ -38,12 +40,10 @@ module.exports = function (req, res) {
         game: fullGame,
         gameModel,
       });
-      const choiceAndPlayer = { chosenCard: req.body.cardId, pNum: req.session.pNum };
       Game.publish([fullGame.id], {
         change: 'resolveThree',
         game: fullGame,
         victory,
-        choiceAndPlayer
       });
       return res.ok();
     })
