@@ -1,4 +1,4 @@
-import store from '~store/store.js';
+import store from '@/store/store.js';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_HOME } from '@/router';
 

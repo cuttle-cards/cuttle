@@ -1,4 +1,4 @@
-import store from '~store/store.js';
+import store from '@/store/store.js';
 import { cloneDeep } from 'lodash';
 
 export function handleGameCreated(evData) {

@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import GameCard from '~routes/game/components/GameCard.vue';
-import BaseDialog from '~core/components/BaseDialog.vue';
+import GameCard from '@/routes/game/components/GameCard.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
 
 export default {
   name: 'ChooseTwoDialog',

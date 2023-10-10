@@ -46,14 +46,14 @@
 import { mapGetters } from 'vuex';
 import { mapState } from 'vuex';
 
-import CannotCounterDialog from '~routes/game/components/CannotCounterDialog.vue';
-import CounterDialog from '~routes/game/components/CounterDialog.vue';
-import FourDialog from '~routes/game/components/FourDialog.vue';
-import GameOverDialog from '~routes/game/components/GameOverDialog.vue';
-import ReauthenticateDialog from '~routes/game/components/ReauthenticateDialog.vue';
-import SevenDoubleJacksDialog from '~routes/game/components/SevenDoubleJacksDialog.vue';
-import ThreeDialog from '~routes/game/components/ThreeDialog.vue';
-import OpponentRequestedStalemateDialog from '~routes/game/components/OpponentRequestedStalemateDialog.vue';
+import CannotCounterDialog from '@/routes/game/components/CannotCounterDialog.vue';
+import CounterDialog from '@/routes/game/components/CounterDialog.vue';
+import FourDialog from '@/routes/game/components/FourDialog.vue';
+import GameOverDialog from '@/routes/game/components/GameOverDialog.vue';
+import ReauthenticateDialog from '@/routes/game/components/ReauthenticateDialog.vue';
+import SevenDoubleJacksDialog from '@/routes/game/components/SevenDoubleJacksDialog.vue';
+import ThreeDialog from '@/routes/game/components/ThreeDialog.vue';
+import OpponentRequestedStalemateDialog from '@/routes/game/components/OpponentRequestedStalemateDialog.vue';
 
 export default {
   name: 'GameDialogs',

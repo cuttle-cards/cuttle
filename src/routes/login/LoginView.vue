@@ -170,9 +170,9 @@
 import { useI18n } from 'vue-i18n';
 
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
-import BaseSnackbar from '~core/components/BaseSnackbar.vue';
-import MarkdownContent from '~core/components/MarkdownContent.vue';
-import BaseVideo from '~core/components/BaseVideo.vue';
+import BaseSnackbar from '@/components/BaseSnackbar.vue';
+import MarkdownContent from '@/components/MarkdownContent.vue';
+import BaseVideo from '@/components/BaseVideo.vue';
 
 export default {
   name: 'LoginView',

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-import { options } from '~plugins/vuetify';
+import { options } from '@/plugins/vuetify';
 import 'vuetify/dist/vuetify.min.css';
 import './storybook.css';
 

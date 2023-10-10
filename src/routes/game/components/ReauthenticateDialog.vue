@@ -52,8 +52,8 @@
 </template>
 
 <script>
-import BaseDialog from '~core/components/BaseDialog.vue';
-import BaseSnackbar from '~core/components/BaseSnackbar.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
+import BaseSnackbar from '@/components/BaseSnackbar.vue';
 
 export default {
   name: 'ReauthenticateDialog',

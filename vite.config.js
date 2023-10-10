@@ -35,10 +35,6 @@ export default defineConfig(({ mode }) => {
       alias: {
         _: resolve(__dirname),
         '@': resolve(__dirname, './src'),
-        '~core': resolve(__dirname, './src/core'),
-        '~plugins': resolve(__dirname, './src/plugins'),
-        '~routes': resolve(__dirname, './src/routes'),
-        '~store': resolve(__dirname, './src/store'),
       },
     },
     server: {

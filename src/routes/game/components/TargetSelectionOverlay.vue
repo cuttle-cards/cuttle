@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import GameCard from '~routes/game/components/GameCard.vue';
+import GameCard from '@/routes/game/components/GameCard.vue';
 
 export default {
   name: 'TargetSelectionOverlay',

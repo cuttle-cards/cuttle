@@ -143,9 +143,9 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import GameListItem from '~routes/home/components/GameListItem.vue';
-import CreateGameDialog from '~routes/home/components/CreateGameDialog.vue';
-import BaseSnackbar from '~core/components/BaseSnackbar.vue';
+import GameListItem from '@/routes/home/components/GameListItem.vue';
+import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
+import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import GameStatus from '_/utils/GameStatus.json';
 
 const TABS = {

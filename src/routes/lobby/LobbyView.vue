@@ -72,7 +72,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 
-import LobbyPlayerIndicator from '~routes/lobby/components/LobbyPlayerIndicator.vue';
+import LobbyPlayerIndicator from '@/routes/lobby/components/LobbyPlayerIndicator.vue';
 
 export default {
   name: 'LobbyView',

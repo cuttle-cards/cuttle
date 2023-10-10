@@ -1,14 +1,14 @@
 import sails from 'sails.io.js';
 import socketIoClient from 'socket.io-client';
-import { handleInGameEvents } from '~plugins/sockets/inGameEvents';
+import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 import {
   handleGameStarted,
   handleGameCreated,
   handleGameFinished,
   handleJoin,
   handleLeftGame,
-} from '~plugins/sockets/gameListEvents';
-import { handleConnect } from '~plugins/sockets/connectivityEvents';
+} from '@/plugins/sockets/gameListEvents';
+import { handleConnect } from '@/plugins/sockets/connectivityEvents';
 
 export const io = sails(socketIoClient);
 

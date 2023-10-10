@@ -396,17 +396,17 @@
 import { mapGetters, mapState } from 'vuex';
 
 import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
-import BaseSnackbar from '~core/components/BaseSnackbar.vue';
-import UsernameToolTip from '~core/components/UsernameToolTip.vue';
-import GameCard from '~routes/game/components/GameCard.vue';
-import GameDialogs from '~routes/game/components/GameDialogs.vue';
-import GameMenu from '~routes/game/components/GameMenu.vue';
-import GameOverlays from '~routes/game/components/GameOverlays.vue';
-import ScoreGoalToolTip from '~routes/game/components/ScoreGoalToolTip.vue';
-import GameUnavailableView from '~routes/game/components/GameUnavailableView.vue';
-import TargetSelectionOverlay from '~routes/game/components/TargetSelectionOverlay.vue';
-import ScrapDialog from '~routes/game/components/ScrapDialog.vue';
-import SpectatorListMenu from '~routes/game/components/SpectatorListMenu.vue';
+import BaseSnackbar from '@/components/BaseSnackbar.vue';
+import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
+import GameCard from '@/routes/game/components/GameCard.vue';
+import GameDialogs from '@/routes/game/components/GameDialogs.vue';
+import GameMenu from '@/routes/game/components/GameMenu.vue';
+import GameOverlays from '@/routes/game/components/GameOverlays.vue';
+import ScoreGoalToolTip from '@/routes/game/components/ScoreGoalToolTip.vue';
+import GameUnavailableView from '@/routes/game/components/GameUnavailableView.vue';
+import TargetSelectionOverlay from '@/routes/game/components/TargetSelectionOverlay.vue';
+import ScrapDialog from '@/routes/game/components/ScrapDialog.vue';
+import SpectatorListMenu from '@/routes/game/components/SpectatorListMenu.vue';
 
 export default {
   name: 'GameView',

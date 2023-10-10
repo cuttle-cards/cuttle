@@ -1,5 +1,11 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import store from '~store/store.js';
+import HomeView from '@/routes/home/HomeView.vue';
+import LoginView from '@/routes/login/LoginView.vue';
+import LobbyView from '@/routes/lobby/LobbyView.vue';
+import GameView from '@/routes/game/GameView.vue';
+import RulesView from '@/routes/rules/RulesView.vue';
+import StatsView from '@/routes/stats/StatsView.vue';
+import store from '@/store/store.js';
 
 export const ROUTE_NAME_GAME = 'Game';
 export const ROUTE_NAME_SPECTATE = 'Spectate';
@@ -32,18 +38,18 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/routes/home/HomeView.vue'),
+    component: HomeView,
     beforeEnter: mustBeAuthenticated,
   },
   {
     path: '/login',
     name: ROUTE_NAME_LOGIN,
-    component: () => import('@/routes/auth/LoginView.vue'),
+    component: LoginView,
   },
   {
     path: '/signup',
     name: ROUTE_NAME_SIGNUP,
-    component: () => import('@/routes/auth/LoginView.vue'),
+    component: LoginView,
   },
   // This route is just a passthrough to make sure the user is fully logged out before putting
   // them on the login screen
@@ -55,12 +61,12 @@ const routes = [
   {
     path: '/rules',
     name: ROUTE_NAME_RULES,
-    component: () => import('@/routes/rules/RulesView.vue'),
+    component: RulesView,
   },
   {
     name: ROUTE_NAME_LOBBY,
     path: '/lobby/:gameId',
-    component: () => import('@/routes/lobby/LobbyView.vue'),
+    component: LobbyView,
     // TODO: Add logic to redirect if a given game does not exist
     beforeEnter: mustBeAuthenticated,
     meta: {
@@ -70,7 +76,7 @@ const routes = [
   {
     name: ROUTE_NAME_GAME,
     path: '/game/:gameId',
-    component: () => import('@/routes/game/GameView.vue'),
+    component: GameView,
     // TODO: Add logic to redirect if a given game does not exist
     // mustBeAuthenticated intentionally left off here
     // If a user refreshes the relogin modal will fire and allow them to continue playing
@@ -81,7 +87,7 @@ const routes = [
   {
     name: ROUTE_NAME_SPECTATE,
     path: '/spectate/:gameId',
-    component: () => import('@/routes/game/GameView.vue'),
+    component: GameView,
     meta: {
       hideNavigation: true,
     },
@@ -89,13 +95,13 @@ const routes = [
   {
     path: '/stats',
     name: ROUTE_NAME_STATS,
-    component: () => import('@/routes/stats/StatsView.vue'),
+    component: StatsView,
     beforeEnter: mustBeAuthenticated,
   },
   {
     path: '/stats/:seasonId',
     name: ROUTE_NAME_STATS_SEASON,
-    component: () => import('@/routes/stats/StatsView.vue'),
+    component: StatsView,
     beforeEnter: mustBeAuthenticated,
   },
 ];

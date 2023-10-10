@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import BaseDialog from '~core/components/BaseDialog.vue';
-import CardListSortable from '~routes/game/components/CardListSortable.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
+import CardListSortable from '@/routes/game/components/CardListSortable.vue';
 
 export default {
   name: 'ThreeDialog',

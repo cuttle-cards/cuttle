@@ -1,4 +1,4 @@
-import { io, reconnectSockets } from '~plugins/sails.js';
+import { io, reconnectSockets } from '@/plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
 import {
   getLocalStorage,

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import BaseLineChart from '~core/components/BaseLineChart.vue';
+import BaseLineChart from '@/components/BaseLineChart.vue';
 
 export default {
   name: 'StatsUsageChart',

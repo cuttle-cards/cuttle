@@ -89,8 +89,8 @@
 </template>
 
 <script>
-import BaseDialog from '~core/components/BaseDialog.vue';
-import AwardCard from '~core/components/AwardCard.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
+import AwardCard from '@/components/AwardCard.vue';
 
 export default {
   name: 'StatsScoringDialog',

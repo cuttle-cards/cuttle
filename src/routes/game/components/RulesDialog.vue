@@ -180,7 +180,7 @@
 </template>
 
 <script>
-import BaseDialog from '~core/components/BaseDialog.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
 
 export default {
   name: 'RulesDialog',

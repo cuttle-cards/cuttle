@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { Metrics } from '~routes/stats/components/StatsLeaderboard.vue';
+import { Metrics } from '@/routes/stats/components/StatsLeaderboard.vue';
 
 export default {
   name: 'StatsLeaderboardCell',

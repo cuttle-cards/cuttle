@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import MoveChoiceCard from '~routes/game/components/MoveChoiceCard.vue';
-import GameCard from '~routes/game/components/GameCard.vue';
+import MoveChoiceCard from '@/routes/game/components/MoveChoiceCard.vue';
+import GameCard from '@/routes/game/components/GameCard.vue';
 
 export default {
   name: 'MoveChoiceOverlay',

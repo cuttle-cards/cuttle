@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import GameCard from '~routes/game/components/GameCard.vue';
+import GameCard from '@/routes/game/components/GameCard.vue';
 import { orderBy } from 'lodash';
 
 export default {

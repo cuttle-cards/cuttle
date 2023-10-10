@@ -108,11 +108,11 @@
 
 <script>
 import dayjs from 'dayjs';
-import { io } from '~plugins/sails.js';
-import AwardCard from '~core/components/AwardCard.vue';
-import StatsScoringDialog from '~core/components/StatsScoringDialog.vue';
-import StatsLeaderboard from '~routes/stats/components/StatsLeaderboard.vue';
-import StatsUsageChart from '~routes/stats/components/StatsUsageChart.vue';
+import { io } from '@/plugins/sails.js';
+import AwardCard from '@/components/AwardCard.vue';
+import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
+import StatsLeaderboard from '@/routes/stats/components/StatsLeaderboard.vue';
+import StatsUsageChart from '@/routes/stats/components/StatsUsageChart.vue';
 
 export default {
   name: 'StatsView',

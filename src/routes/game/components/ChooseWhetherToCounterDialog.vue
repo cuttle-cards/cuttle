@@ -58,9 +58,9 @@
 </template>
 
 <script>
-import BaseDialog from '~core/components/BaseDialog.vue';
-import GameCard from '~routes/game/components/GameCard.vue';
-import GameCardName from '~routes/game/components/GameCardName.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
+import GameCard from '@/routes/game/components/GameCard.vue';
+import GameCardName from '@/routes/game/components/GameCardName.vue';
 
 export default {
   name: 'ChooseWhetherToCounterDialog',

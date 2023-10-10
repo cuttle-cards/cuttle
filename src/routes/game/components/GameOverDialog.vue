@@ -67,7 +67,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
-import BaseDialog from '~core/components/BaseDialog.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 
 export default {

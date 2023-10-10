@@ -67,8 +67,8 @@
 </template>
 
 <script>
-import BaseDialog from '~core/components/BaseDialog.vue';
-import StatsScoringDialog from '~core/components/StatsScoringDialog.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
+import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '_/utils/local-storage-utils.js';
 
 export default {
