@@ -63,7 +63,9 @@ module.exports = function (req, res) {
                     pNum: req.session.pNum,
                   },
                 };
-                if (point) {gameUpdates.attachedToTarget = point.id;}
+                if (point) {
+                  gameUpdates.attachedToTarget = point.id;
+                }
 
                 const playerUpdates = { frozenId: null };
 

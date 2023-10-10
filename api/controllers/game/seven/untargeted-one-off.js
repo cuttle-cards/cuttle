@@ -21,26 +21,34 @@ module.exports = function (req, res) {
               switch (card.rank) {
                 case 3:
                   if (game.scrap.length === 0)
-                    {return Promise.reject({
+                    {
+                      return Promise.reject({
                       message: 'You can only play a 3 ONE-OFF if there are cards in the scrap pile',
-                    });}
+                      });
+                    }
                   break;
                 case 4:
                   if (opponent.hand.length === 0)
-                    {return Promise.reject({
+                    {
+                      return Promise.reject({
                       message: 'You cannot play a 4 as a ONE-OFF while your opponent has no cards in hand',
-                    });}
+                      });
+                    }
                   break;
                 case 5:
                 case 7:
                   if (!game.topCard)
-                    {return Promise.reject({
+                    {
+                      return Promise.reject({
                       message: 'You can only play a 7 as a ONE-OFF if there are cards in the deck',
-                    });}
+                      });
+                    }
                   if (game.topCard.id === card.id && !game.secondCard)
-                    {return Promise.reject({
+                    {
+                      return Promise.reject({
                       message: 'You can not play a 7 as a ONE-OFF if it the last card in the deck',
-                    });}
+                      });
+                    }
                   break;
               }
               const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({

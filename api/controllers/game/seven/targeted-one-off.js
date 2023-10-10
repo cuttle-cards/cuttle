@@ -65,7 +65,9 @@ module.exports = function (req, res) {
               },
             };
 
-            if (point) {gameUpdates.attachedToTarget = point.id;}
+            if (point) {
+              gameUpdates.attachedToTarget = point.id;
+            }
 
             const updatePromises = [
               Game.updateOne(game.id).set(gameUpdates),

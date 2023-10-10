@@ -270,8 +270,12 @@ export default {
 
       // sort and prioritize total scores before taking into account total wins
       return scoreboard.sort((a, b) => {
-        if (b.totalScore > a.totalScore) {return 1;}
-        if (b.totalScore < a.totalScore) {return -1;}
+        if (b.totalScore > a.totalScore) {
+          return 1;
+        }
+        if (b.totalScore < a.totalScore) {
+          return -1;
+        }
         return b.totalWins - a.totalWins;
       });
     },

@@ -1,12 +1,24 @@
 import { SnackBarError } from '../fixtures/snackbarError';
 
 export function hasValidSuitAndRank(card) {
-  if (!Object.prototype.hasOwnProperty.call(card, 'rank')) {return false;}
-  if (!Object.prototype.hasOwnProperty.call(card, 'suit')) {return false;}
-  if (!Number.isInteger(card.rank)) {return false;}
-  if (!Number.isInteger(card.suit)) {return false;}
-  if (card.rank < 1 || card.rank > 13) {return false;}
-  if (card.suit < 0 || card.suit > 3) {return false;}
+  if (!Object.prototype.hasOwnProperty.call(card, 'rank')) {
+    return false;
+  }
+  if (!Object.prototype.hasOwnProperty.call(card, 'suit')) {
+    return false;
+  }
+  if (!Number.isInteger(card.rank)) {
+    return false;
+  }
+  if (!Number.isInteger(card.suit)) {
+    return false;
+  }
+  if (card.rank < 1 || card.rank > 13) {
+    return false;
+  }
+  if (card.suit < 0 || card.suit > 3) {
+    return false;
+  }
   return true;
 }
 /**
@@ -78,20 +90,32 @@ export function cardsMatch(card1, card2) {
  * @throws error if card not found in game
  */
 export function getCardId(game, card) {
-  if (cardsMatch(card, game.topCard)) {return game.topCard.id;}
-  if (cardsMatch(card, game.secondCard)) {return game.secondCard.id;}
+  if (cardsMatch(card, game.topCard)) {
+    return game.topCard.id;
+  }
+  if (cardsMatch(card, game.secondCard)) {
+    return game.secondCard.id;
+  }
 
   const foundInScrap = game.scrap.find((scrapCard) => cardsMatch(card, scrapCard));
-  if (foundInScrap) {return foundInScrap.id;}
+  if (foundInScrap) {
+    return foundInScrap.id;
+  }
 
   const foundInP0Hand = game.players[0].hand.find((handCard) => cardsMatch(card, handCard));
-  if (foundInP0Hand) {return foundInP0Hand.id;}
+  if (foundInP0Hand) {
+    return foundInP0Hand.id;
+  }
 
   const foundInP1Hand = game.players[1].hand.find((handCard) => cardsMatch(card, handCard));
-  if (foundInP1Hand) {return foundInP1Hand.id;}
+  if (foundInP1Hand) {
+    return foundInP1Hand.id;
+  }
 
   const foundInDeck = game.deck.find((deckCard) => cardsMatch(card, deckCard));
-  if (foundInDeck) {return foundInDeck.id;}
+  if (foundInDeck) {
+    return foundInDeck.id;
+  }
 
   throw new Error(
     `Could not find desired card ${card.rank} of ${card.suit} in deck, scrap, or either player's hand`,

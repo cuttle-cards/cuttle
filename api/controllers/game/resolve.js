@@ -281,9 +281,11 @@ module.exports = function (req, res) {
               case 'point': {
                 const targetCard = opPoints.find((point) => point.id === game.oneOffTarget.id);
                 if (!targetCard)
-                  {return Promise.reject({
+                  {
+                    return Promise.reject({
                     message: `Could not find target point card ${game.oneOffTarget.id} to return to opponent's hand`,
-                  });}
+                    });
+                  }
                 // Scrap all jacks attached to target
                 cardsToScrap = [...cardsToScrap, ...targetCard.attachments.map((jack) => jack.id)];
                 updatePromises.push(
@@ -366,7 +368,9 @@ module.exports = function (req, res) {
         happened,
       });
       // If the game is over, clean it up
-      if (victory.gameOver) {await gameService.clearGame({ userId: req.session.usr });}
+      if (victory.gameOver) {
+        await gameService.clearGame({ userId: req.session.usr });
+      }
       return res.ok();
     })
     .catch(function failed(err) {
