@@ -16,7 +16,6 @@ export const ROUTE_NAME_LOGOUT = 'Logout';
 export const ROUTE_NAME_RULES = 'Rules';
 export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
-export const ROUTE_NAME_STATS_SEASON = 'StatsBySeason';
 
 
 
@@ -97,14 +96,8 @@ const routes = [
     },
   },
   {
-    path: '/stats',
+    path: '/stats/:seasonId?',
     name: ROUTE_NAME_STATS,
-    component: StatsView,
-    beforeEnter: mustBeAuthenticated,
-  },
-  {
-    path: '/stats/:seasonId',
-    name: ROUTE_NAME_STATS_SEASON,
     component: StatsView,
     beforeEnter: mustBeAuthenticated,
   },

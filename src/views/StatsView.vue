@@ -168,7 +168,7 @@ export default {
   watch: {
     selectedSeason() {
       this.selectedSeason
-        ? this.$router.replace({ name: 'StatsBySeason', params: { seasonId: this.selectedSeason.id } })
+        ? this.$router.replace({ name: 'Stats', params: { seasonId: this.selectedSeason.id } })
         : null;
     },
   },
