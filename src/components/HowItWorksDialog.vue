@@ -1,10 +1,9 @@
 <template>
   <base-dialog
-    v-for="({ text }, i) in titleItems"
     id="how-it-works"
     :key="i"
     v-model="show"
-    :title="text"
+    :title="t('home.howItWorks.title')"
     :opacity="1"
     data-cy="create-game-dialog"
   >
@@ -74,15 +73,9 @@
 <script setup>
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
-import { computed } from 'vue';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 
 const { t } = useI18n();
-
-const titleItems = computed(() => {
-  return [{ text: t('home.howItWorks.title')}];
-});
-
 
 const show = ref(false);
 
