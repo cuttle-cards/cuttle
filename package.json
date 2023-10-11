@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "5.14.0",
+  "version": "5.16.0",
   "dependencies": {
     "chart.js": "^4.3.3",
     "connect-redis": "3.0.2",
@@ -25,14 +25,15 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.0.96",
-    "@storybook/addon-actions": "6.5.12",
-    "@storybook/addon-essentials": "6.5.12",
-    "@storybook/addon-interactions": "6.5.12",
-    "@storybook/addon-links": "6.5.12",
-    "@storybook/builder-webpack4": "6.5.12",
-    "@storybook/manager-webpack4": "6.5.12",
-    "@storybook/testing-library": "0.0.13",
-    "@storybook/vue": "6.5.12",
+    "@storybook/addon-actions": "7.4.6",
+    "@storybook/addon-essentials": "7.4.6",
+    "@storybook/addon-interactions": "7.4.6",
+    "@storybook/addon-links": "7.4.6",
+    "@storybook/blocks": "^7.4.6",
+    "@storybook/testing-library": "0.2.2",
+    "@storybook/vue": "7.4.6",
+    "@storybook/vue3": "^7.4.6",
+    "@storybook/vue3-vite": "^7.4.6",
     "@vitejs/plugin-vue": "^3.1.0",
     "@vue/devtools": "^6.5.0",
     "concurrently": "^8.0.1",
@@ -42,20 +43,23 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-storybook": "0.6.4",
+    "eslint-plugin-storybook": "0.6.15",
     "eslint-plugin-vitest": "0.0.34",
     "eslint-plugin-vue": "9.5.1",
     "eslint-plugin-vuetify": "^2.0.5",
     "husky": "^8.0.3",
     "prettier": "^3.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rimraf": "^3.0.2",
     "sass": "^1.55.0",
+    "storybook": "^7.4.6",
     "vite": "^3.2.5",
     "vite-plugin-vuetify": "^1.0.0-alpha.17",
     "vitest": "^0.28.5"
   },
   "engines": {
-    "node": "18.12.1"
+    "node": "18.18"
   },
   "main": "app.js",
   "private": true,
@@ -84,12 +88,13 @@
     "e2e:server:playground": "cross-env VITE_API_URL=http://localhost:1337 cypress run --config-file tests/e2e/playground/playground.config.js",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
-    "storybook": "start-storybook -p 6006",
-    "storybook:build": "build-storybook",
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build",
     "test:unit": "vitest run",
     "prepare": "husky install",
     "version:patch": "npm version patch",
     "version:minor": "npm version minor",
-    "version:major": "npm version major"
+    "version:major": "npm version major",
+    "build-storybook": "storybook build"
   }
 }
