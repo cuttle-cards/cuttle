@@ -1,7 +1,6 @@
 <template>
   <base-dialog
     id="how-it-works"
-    :key="i"
     v-model="show"
     :title="t('home.howItWorks.title')"
     :opacity="1"
