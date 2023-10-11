@@ -67,5 +67,13 @@
     "playAiContent2":"para aprender lo básico y poner a prueba tu temple.",
     "gameName": "Juego Nombre",
     "join": "Unirse"
+  },
+  "reauthentication": {
+    "reconnectToGame": "Vuelve a conectarte al juego",
+    "youHaveDisconnected": "Te has desconectado por inactividad. Inicie sesión nuevamente para reanudar su sesión",
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "leaveGame": "Dejó el juego",
+    "login": "Iniciar sesión"
   }
 }

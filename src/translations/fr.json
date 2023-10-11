@@ -67,5 +67,13 @@
     "playAiContent2":"pour apprendre les bases et tester votre courage.",
     "gameName": "Jeu Nom",
     "join": "Rejoindre"
+  },
+  "reauthentication": {
+    "reconnectToGame": "Reconnectez-vous au jeu",
+    "youHaveDisconnected": "Vous vous êtes déconnecté pour cause d'inactivité. Connectez-vous à nouveau pour reprendre votre session",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "leaveGame": "Quitter jeu",
+    "login": "Se connecter"
   }
 }

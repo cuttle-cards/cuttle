@@ -67,5 +67,13 @@
     "playAiContent2":"to learn the ropes and test your mettle.",
     "gameName": "Game Name",
     "join":"Join"
+  },
+  "reauthentication": {
+    "reconnectToGame": "Reconnect to game",
+    "youHaveDisconnected": "You have disconnected due to inactivity. Log in again to resume your session",
+    "username": "Username",
+    "password": "Password",
+    "leaveGame": "Leave Game",
+    "login": "Log In"
   }
 }
