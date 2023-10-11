@@ -292,14 +292,6 @@ export default {
   transform: translateY(-32px);
 }
 
-.threesPlayer{
-  animation: slidePlayerThree 2s ease;
-}
-.threesOpponent{
-  animation: slideOpponentThree 2s ease;
-}
-
-
 @media (max-width: 600px) {
   .player-card {
     max-height: 10vh;
@@ -309,6 +301,5 @@ export default {
       height: calc(10vh / 1.45);
     }
   }
-
 }
 </style>
