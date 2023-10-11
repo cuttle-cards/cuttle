@@ -274,6 +274,12 @@
           Reveal just the one card and continue play like normal. Similar to the above situation, if you
           reveal a Jack and your opponent does not have any point cards in play, that Jack is scrapped.
         </p>
+        <h3>What happens when the deck is exhausted?</h3>
+        <p class="mb-4">
+          When there are no cards left in the deck, players may pass on their turn instead of drawing. 
+          If there are three consecutive passes i.e. player 1 passes, player 2 passes, then player 1 
+          passes again, the game ends in a stalemate and neither player wins.
+        </p>
         <h3>Where can I play Cuttle?</h3>
         <p class="mb-4">
           You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online,
