@@ -28,7 +28,7 @@
             href="https://discord.gg/9vrAZ8xGyh" 
             target="_blank"
           >
-            {{ t('home.howItWorks.discord') }} 
+            discord 
           </a> 
           {{ t('home.howItWorks.content2') }}
         </span>

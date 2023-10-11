@@ -62,7 +62,6 @@
       "wednesday": "Wednesday nights at 8:30pm EST",
       "thursday": "Thursdays at 12pm EST",
       "findMatch": "Can't find a match? Join us on",
-      "discord": "discord",
       "content2": "to chat with other players and to see who is available to play at any time.",
       "playSolo": "Want to play solo? Try",
       "playAI": "playing vs AI",
@@ -86,4 +85,3 @@
     "join": "Join"
   }
 }
-
