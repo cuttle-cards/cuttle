@@ -1,7 +1,0 @@
-/* Need higher specificity to override the defaults */
-.sbdocs .cuttle-logo {
-  display: block;
-  max-width: 350px;
-  height: auto;
-  margin: 0 auto 2em;
-}
