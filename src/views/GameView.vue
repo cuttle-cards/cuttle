@@ -180,9 +180,9 @@
               <div id="scrap" class="d-flex flex-column align-center">
                 <Transition :name="threesTransition">
                   <GameCard
-                    v-if="threesScrapChoice"
-                    :suit="threesScrapChoice.suit"
-                    :rank="threesScrapChoice.rank"
+                    v-if="showScrapChoice"
+                    :suit="gameStore.cardChosenFromScrap.suit"
+                    :rank="gameStore.cardChosenFromScrap.rank"
                     class="gameCard"
                   />
                   <div v-else class="d-flex flex-column align-center scrapPile">
@@ -528,14 +528,18 @@ export default {
     opponentPointsToWin() {
       return this.pointsToWin(this.opponentKingCount);
     },
-    threesScrapChoice() {
-      return this.gameStore.cardChosenFromScrap;
-    },
+
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
-    threesTransition() {  
-        return this.gameStore.playerChoosingFromScrap ? `threes-player` : `threes-opponent`;
+    showScrapChoice() {
+      return (
+        this.gameStore.cardChosenFromScrap &&
+        this.gameStore.scrap?.some(({ id }) => id === this.gameStore.cardChosenFromScrap.id)
+      );
+    },
+    threesTransition() {
+      return this.gameStore.playerChoosingFromScrap ? `threes-player` : `threes-opponent`;
     },
 
     playerPointsTransition() {
@@ -719,11 +723,6 @@ export default {
         this.scrollToLastLog();
       });
     },
-    threesScrapChoice: function () {
-      setTimeout(() => {
-        this.gameStore.cardChosenFromScrap = null;
-      }, 500);
-    }
   },
   async mounted() {
     if (this.isSpectating && !this.gameStore.id) {
@@ -1119,37 +1118,35 @@ export default {
   transform: translateY(-32px);
 }
 
-
-.gameCard{
+.gameCard {
   position: absolute;
   transition: all 1.5s ease-out;
 }
 
-.scrapPile{
-  transition: all 1.5s ease
+.scrapPile {
+  transition: all 1.5s ease;
 }
 
 .threes-player-enter-from.scrapPile,
-.threes-opponent-enter-from.scrapPile{
+.threes-opponent-enter-from.scrapPile {
   opacity: 0;
 }
-.threes-player-leave-to.gameCard{
+.threes-player-leave-to.gameCard {
   opacity: 0;
   transform: translate(200px, 50px);
 }
 
-.threes-opponent-leave-to.gameCard{
+.threes-opponent-leave-to.gameCard {
   transform: translate(200px, -200px);
   opacity: 0;
 }
 
-
 @media (max-width: 600px) {
-  .threes-player-leave-to{
+  .threes-player-leave-to {
     opacity: 0;
     transform: translateY(200px);
-    }
-  
+  }
+
   .threes-opponent-leave-to {
     transform: translate(-200px);
     opacity: 0;
