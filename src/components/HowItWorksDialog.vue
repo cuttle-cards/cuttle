@@ -2,7 +2,7 @@
   <BaseDialog
     id="how-it-works"
     v-model="show"
-    title="Looking To Play?"
+    :title="t('home.howItWorks.title')"
     :opacity="1"
     data-cy="create-game-dialog"
   >
@@ -14,15 +14,15 @@
         size="x-large"
         data-cy="how-it-works-button"
       >
-        How it works
+        {{ t('home.howItWorks.button') }}
       </v-btn>
     </template>
     <template #body>
       <section class="d-flex flex-column">
-        <span class="my-2">Our weekly play sessions are open to everyone:</span>
-        <li>Wednesday nights at 8:30pm EST</li>
-        <li>Thursdays at 12pm EST</li>
-        <span class="my-2"> Can&#39;t find a match? Join us on 
+        <span class="my-2">{{ t('home.howItWorks.content') }}</span>
+        <li>{{ t('home.howItWorks.wednesday') }}</li>
+        <li>{{ t('home.howItWorks.thursday') }}</li>
+        <span class="my-2"> {{ t('home.howItWorks.findMatch') }} 
           <a 
             class="text-anchor text-decoration-none" 
             href="https://discord.gg/9vrAZ8xGyh" 
@@ -30,28 +30,28 @@
           >
             discord 
           </a> 
-          to chat with other players and to see who is available to play at any time.
+          {{ t('home.howItWorks.content2') }}
         </span>
-        <span class="my-2">Want to play solo? Try 
+        <span class="my-2">{{ t('home.howItWorks.playSolo') }} 
           <a
             data-cy="ai-link"
             class="text-anchor text-decoration-none"
             href="https://human-ai-interaction.github.io/cuttle-bot/"
             target="_blank"
           >
-            playing vs AI 
+            {{ t('home.howItWorks.playAI') }} 
           </a> 
-          to learn the ropes and test your mettle.
+          {{ t('home.howItWorks.mettle') }}
         </span>
-        <span class="my-2">Want to learn more? Check out our 
+        <span class="my-2">{{ t('home.howItWorks.learnMore') }} 
           <RouterLink 
             data-cy="rules-link" 
             class="text-anchor text-decoration-none" 
             to="/rules"
-          >
-            about page 
+          > 
+            {{ t('home.howItWorks.about') }} 
           </RouterLink>
-          to learn the rules and read about the cuttle.cards project.
+          {{ t('home.howItWorks.about2') }}
         </span>
       </section>
     </template>
@@ -63,15 +63,18 @@
         class="text-surface-2"
         @click="close"
       >
-        Okay
+        {{ t('home.howItWorks.okayButton') }}
       </v-btn>
     </template>
   </BaseDialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
+
+const { t } = useI18n();
 
 const show = ref(false);
 
