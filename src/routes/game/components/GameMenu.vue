@@ -73,9 +73,9 @@
 <script>
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
-import BaseDialog from '@/components/BaseDialog.vue';
-import RulesDialog from '@/routes/game/components/RulesDialog.vue';
-import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
+import BaseDialog from '@/components/Global/BaseDialog.vue';
+import RulesDialog from '@/components/RulesDialog.vue';
+import TheLanguageSelector from '../TheLanguageSelector.vue';
 export default {
   name: 'GameMenu',
   components: {
