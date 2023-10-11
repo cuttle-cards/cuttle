@@ -55,7 +55,7 @@
     "vitest": "^0.28.5"
   },
   "engines": {
-    "node": "18.12.1"
+    "node": "18.18"
   },
   "main": "app.js",
   "private": true,
