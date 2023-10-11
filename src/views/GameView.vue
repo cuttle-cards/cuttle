@@ -1129,10 +1129,10 @@ export default {
   transition: all 1.5s ease
 }
 
-.threes-player-enter-from.scrapPile{
+.threes-player-enter-from.scrapPile,
+.threes-opponent-enter-from.scrapPile{
   opacity: 0;
 }
-
 .threes-player-leave-to.gameCard{
   opacity: 0;
   transform: translate(200px, 50px);
