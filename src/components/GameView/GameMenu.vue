@@ -9,8 +9,9 @@
           v-bind="props"
           icon
           variant="text"
+          aria-label="Open Game Menu"
         >
-          <v-icon color="neutral-lighten-2" icon="mdi-cog" />
+          <v-icon color="neutral-lighten-2" icon="mdi-cog" aria-hidden="true" />
         </v-btn>
       </template>
       <!-- Menu -->
@@ -30,13 +31,14 @@
           <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
             Request Stalemate
           </v-list-item>
+          <TheLanguageSelector />
         </template>
       </v-list>
     </v-menu>
 
-    <rules-dialog v-model="showRulesDialog" @open="closeMenu" @close="closeDialog" />
+    <RulesDialog v-model="showRulesDialog" @open="closeMenu" @close="closeDialog" />
 
-    <base-dialog id="request-gameover-dialog" v-model="showEndGameDialog" :title="dialogTitle">
+    <BaseDialog id="request-gameover-dialog" v-model="showEndGameDialog" :title="dialogTitle">
       <template #body>
         <p class="pt-4 pb-8">
           {{ dialogText }}
@@ -64,7 +66,7 @@
           {{ dialogTitle }}
         </v-btn>
       </template>
-    </base-dialog>
+    </BaseDialog>
   </div>
 </template>
 
@@ -73,12 +75,14 @@ import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/Global/BaseDialog.vue';
 import RulesDialog from '@/components/RulesDialog.vue';
+import TheLanguageSelector from '../TheLanguageSelector.vue';
 export default {
   name: 'GameMenu',
   components: {
     BaseDialog,
     RulesDialog,
-  },
+    TheLanguageSelector
+},
   props: {
     isSpectating: {
       type: Boolean,

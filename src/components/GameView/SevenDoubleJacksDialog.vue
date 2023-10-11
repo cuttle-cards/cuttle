@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     id="seven-double-jacks-dialog"
     v-model="show"
     title="Select a Card"
@@ -8,7 +8,7 @@
       <span>Oops, seems you cannot make a move. Select one of the jacks to scrap.</span>
       <div class="d-flex flex-wrap justify-center align-center my-8">
         <template v-if="topCard">
-          <game-card
+          <GameCard
             class="mx-4 my-1"
             :suit="topCard.suit"
             :rank="topCard.rank"
@@ -18,7 +18,7 @@
           />
         </template>
         <template v-if="secondCard">
-          <game-card
+          <GameCard
             class="mx-4 my-1"
             :suit="secondCard.suit"
             :rank="secondCard.rank"
@@ -41,7 +41,7 @@
         Resolve
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>

@@ -13,13 +13,18 @@
         color="white"
         size="x-large"
         data-cy="cancel-move"
+        aria-lable="Cancel Move"
         @click="$emit('cancel')"
       >
-        <v-icon icon="mdi-close" size="x-large" />
+        <v-icon
+          icon="mdi-close"
+          size="x-large" 
+          aria-hidden="true"
+        />
       </v-btn>
     </div>
     <div v-if="selectedCard" class="d-flex justify-center">
-      <game-card
+      <GameCard
         :suit="selectedCard.suit"
         :rank="selectedCard.rank"
         :data-player-overlay-card="`${selectedCard.rank}-${selectedCard.suit}`"
@@ -28,7 +33,7 @@
     </div>
     <!-- Move choices -->
     <div id="options-wrapper" class="d-flex justify-space-between my-4">
-      <move-choice-card
+      <MoveChoiceCard
         v-for="move in moveChoices"
         :key="move.displayName"
         :move-name="move.displayName"
@@ -44,6 +49,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import MoveChoiceCard from '@/components/GameView/MoveChoiceCard.vue';
@@ -86,6 +92,10 @@ export default {
     },
   },
   emits: ['points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   computed: {
     ...mapStores(useGameStore),
     // Determines if any moves are available
@@ -149,7 +159,7 @@ export default {
       return {
         displayName: 'One-Off',
         eventName: 'oneOff',
-        moveDescription: this.selectedCard.ruleText,
+        moveDescription: this.t(`game.moves.effects[${this.selectedCard.rank}]`) ,
         disabled: oneOffDisabled,
         disabledExplanation: oneOffDisabledExplanation,
       };
@@ -189,7 +199,7 @@ export default {
       return {
         displayName: 'One-Off',
         eventName: 'targetedOneOff',
-        moveDescription: this.selectedCard.ruleText,
+        moveDescription: this.t(`game.moves.effects[${this.selectedCard.rank}]`) ,
         disabled: oneOffDisabled,
         disabledExplanation: oneOffDisabledExplanation,
       };
@@ -251,7 +261,7 @@ export default {
             {
               displayName: 'Royal',
               eventName: 'faceCard',
-              moveDescription: this.selectedCard.ruleText,
+              moveDescription: this.t(`game.moves.effects[${this.selectedCard.rank}]`) ,
               disabled: this.allMovesAreDisabled,
               disabledExplanation: this.disabledText,
             },

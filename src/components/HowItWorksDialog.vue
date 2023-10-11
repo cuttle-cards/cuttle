@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     id="how-it-works"
     v-model="show"
     :title="t('home.howItWorks.title')"
@@ -44,13 +44,13 @@
           {{ t('home.howItWorks.mettle') }}
         </span>
         <span class="my-2">{{ t('home.howItWorks.learnMore') }} 
-          <router-link 
+          <RouterLink 
             data-cy="rules-link" 
             class="text-anchor text-decoration-none" 
             to="/rules"
-          >
+          > 
             {{ t('home.howItWorks.about') }} 
-          </router-link>
+          </RouterLink>
           {{ t('home.howItWorks.about2') }}
         </span>
       </section>
@@ -66,7 +66,7 @@
         {{ t('home.howItWorks.okayButton') }}
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script setup>

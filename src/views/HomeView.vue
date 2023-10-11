@@ -2,7 +2,7 @@
   <div class="h-100 bg-surface-1">
     <v-container id="home-container" class="container">
       <h1 id="home-card-title">
-        Game Finder
+        {{ t('home.gameFinder') }}
       </h1>
       <v-row>
         <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
@@ -16,11 +16,11 @@
                 mandatory
               >
                 <v-btn :value="TABS.PLAY" data-cy-game-list-selector="play">
-                  PLAY
+                  {{ t('global.play') }}
                 </v-btn>
 
                 <v-btn :value="TABS.SPECTATE" data-cy-game-list-selector="spectate">
-                  SPECTATE
+                  {{ t('home.spectate') }}
                 </v-btn>
               </v-btn-toggle>
             </div>
@@ -28,10 +28,10 @@
             <v-window v-model="tab" class="pa-4 overflow-y-auto">
               <v-window-item :value="TABS.PLAY">
                 <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-surface-1">
-                  No Active Games
+                  {{ t('home.noGameslist') }}
                 </p>
                 <div v-for="game in playableGameList" :key="game.id">
-                  <game-list-item
+                  <GameListItem
                     :name="game.name"
                     :p0ready="game.p0Ready ? 1 : 0"
                     :p1ready="game.p1Ready ? 1 : 0"
@@ -49,10 +49,10 @@
                   data-cy="no-spectate-game-text"
                   class="text-surface-1"
                 >
-                  No Games Available to Spectate
+                  {{ t('home.noSpectatelist') }}
                 </p>
                 <div v-for="game in spectateGameList" :key="game.id">
-                  <game-list-item
+                  <GameListItem
                     :name="game.name"
                     :p0ready="game.p0Ready ? 1 : 0"
                     :p1ready="game.p1Ready ? 1 : 0"
@@ -73,7 +73,7 @@
       <v-row>
         <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
           <div class="mx-auto my-4 my-xl-2 homeContent">
-            <create-game-dialog @error="handleError" />
+            <CreateGameDialog @error="handleError" />
             <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
               <v-btn
                 v-if="!$vuetify.display.smAndUp"
@@ -100,7 +100,7 @@
                   {{ t('login.joinDiscord') }}
                 </span>
               </v-btn>
-              <how-it-works-dialog />
+              <HowItWorksDialog />
             </div>
           </div>
         </v-col>

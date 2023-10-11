@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     id="rankedScoring"
     v-model="show"
     :persistent="false"
@@ -18,7 +18,7 @@
           data-cy="ranked-info-button"
         >
           <span v-if="showButtonText">How are ranks determined?</span>
-          <v-icon class="ml-1" icon="mdi-information-outline" />
+          <v-icon class="ml-1" icon="mdi-information-outline" aria-hidden="true" />
         </v-btn>
       </slot>
     </template>
@@ -31,9 +31,9 @@
         <strong>champions are permanantly accoladed on the site.</strong>
       </p>
       <div class="d-flex justify-space-around flex-wrap mt-4">
-        <award-card username="Champion player" :place="1" class="mb-4" />
-        <award-card username="Second Place Player" :place="2" class="mb-4" />
-        <award-card username="Third Place Player" :place="3" class="mb-4" />
+        <AwardCard username="Champion player" :place="1" class="mb-4" />
+        <AwardCard username="Second Place Player" :place="2" class="mb-4" />
+        <AwardCard username="Third Place Player" :place="3" class="mb-4" />
       </div>
       <p>
         Each Season is divided into 13 weeks. For each week, we count the number of best 2/3 ranked matches
@@ -86,7 +86,7 @@
         Got It!
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>

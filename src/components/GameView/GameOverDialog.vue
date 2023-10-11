@@ -1,5 +1,5 @@
 <template>
-  <base-dialog id="game-over-dialog" v-model="show">
+  <BaseDialog id="game-over-dialog" v-model="show">
     <template #title>
       <h1 :data-cy="headingDataAttr" :class="isMobilePortrait ? 'text-h4' : ''">
         {{ heading }}
@@ -43,6 +43,9 @@
                 color="surface-2"
                 :icon="iconFromGameStatus(gameStatus)"
                 :data-cy="`icon-${gameStatus}`"
+                :aria-label="`${gameStatus} icon`"
+                aria-hidden="false"
+                role="img"
               />
               {{ gameStatus }}
             </div>
@@ -62,7 +65,7 @@
         Go Home
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>

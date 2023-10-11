@@ -1,6 +1,6 @@
 <template>
   <div id="player-hand-targeting" class="d-flex justify-start" :class="{ 'my-turn': isPlayersTurn }">
-    <game-card
+    <GameCard
       :suit="selectedCard.suit"
       :rank="selectedCard.rank"
       :is-selected="true"
@@ -18,8 +18,13 @@
         Cancel
       </v-btn>
     </div>
-    <v-btn icon data-cy="cancel-target-mobile" @click="$emit('cancel')">
-      <v-icon icon="mdi-close" size="x-large" />
+    <v-btn
+      icon
+      data-cy="cancel-target-mobile"
+      aria-label="Cancel move"
+      @click="$emit('cancel')"
+    >
+      <v-icon icon="mdi-close" size="x-large" aria-hidden="true" />
     </v-btn>
   </div>
 </template>

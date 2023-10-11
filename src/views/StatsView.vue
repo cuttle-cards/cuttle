@@ -37,19 +37,19 @@
             Season Champions
           </h2>
           <div class="d-flex justify-space-around flex-wrap">
-            <award-card
+            <AwardCard
               v-if="selectedSeason && selectedSeason.firstPlace"
               :username="selectedSeason.firstPlace"
               :place="1"
               class="mb-4"
             />
-            <award-card
+            <AwardCard
               v-if="selectedSeason && selectedSeason.secondPlace"
               :username="selectedSeason.secondPlace"
               :place="2"
               class="mb-4"
             />
-            <award-card
+            <AwardCard
               v-if="selectedSeason && selectedSeason.thirdPlace"
               :username="selectedSeason.thirdPlace"
               :place="3"
@@ -74,9 +74,9 @@
         <template v-if="weeklyRanking">
           <h2 class="text-h2 mb-4">
             Weekly Rankings
-            <stats-scoring-dialog />
+            <StatsScoringDialog />
           </h2>
-          <stats-leaderboard :loading="loadingData" :season="selectedSeason" />
+          <StatsLeaderboard :loading="loadingData" :season="selectedSeason" />
         </template>
 
         <!-- Usage stats -->
@@ -84,7 +84,7 @@
           <h2 class="text-h2 mt-8 mb-4">
             Site Usage
           </h2>
-          <stats-usage-chart :season="selectedSeason" />
+          <StatsUsageChart :season="selectedSeason" />
         </div>
         <!-- Error display -->
         <div v-if="error" class="d-flex flex-column align-center text-center">
@@ -168,7 +168,7 @@ export default {
   watch: {
     selectedSeason() {
       this.selectedSeason
-        ? this.$router.replace({ name: 'StatsBySeason', params: { seasonId: this.selectedSeason.id } })
+        ? this.$router.replace({ name: 'Stats', params: { seasonId: this.selectedSeason.id } })
         : null;
     },
   },
