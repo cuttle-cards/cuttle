@@ -76,6 +76,8 @@ import BaseDialog from '@/components/BaseDialog.vue';
 
 const { t } = useI18n();
 
+const { t } = useI18n();
+
 const show = ref(false);
 
 const close = () => {
