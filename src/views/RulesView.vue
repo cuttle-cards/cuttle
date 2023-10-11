@@ -5,7 +5,7 @@
         <img
           id="logo"
           alt="Cuttle logo"
-          src="/img/logo.png"
+          :src="logoSrc"
           height="20vh"
           class="mb-8"
         >
@@ -296,6 +296,7 @@
 <script>
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { useThemedLogo } from '@/composables/themedLogo';
 import RulePreview from '@/components/RulePreview.vue';
 import BaseVideo from '../components/Global/BaseVideo.vue';
 
@@ -304,7 +305,13 @@ export default {
   components: {
     RulePreview,
     BaseVideo
-},
+  },
+  setup() {
+    const { logoSrc } = useThemedLogo();
+    return {
+      logoSrc,
+    };
+  },
   computed: {
     ...mapStores(useAuthStore),
     buttonText() {

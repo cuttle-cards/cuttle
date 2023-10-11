@@ -7,15 +7,18 @@
       <v-container id="welcome-container" fluid class="welcomeContainer">
         <nav class="d-flex justify-space-between align-center mb-2">
           <img class="cardLogo" src="/img/loginView/logo-cards-behind.svg">
-          <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
-            {{ buttonText }}
-            <v-icon
-              icon="mdi-account-circle"
-              color="white"
-              class="ml-2"
-              aria-hidden="true"
-            />
-          </v-btn>
+          <div class="d-flex align-center">          
+            <TheLanguageSelector variant="light" />
+            <v-btn variant="text" class="text-h6" @click="scrollAndFocusLogin">
+              {{ buttonText }}
+              <v-icon
+                icon="mdi-account-circle"
+                color="white"
+                class="ml-2"
+                aria-hidden="true"
+              />
+            </v-btn>
+          </div>
         </nav>
 
         <div class="d-flex h-75 flex-column justify-space-around align-center mt-2">
@@ -45,7 +48,7 @@
 
     <section ref="loginContainer">
       <v-container id="login-container" class="container">
-        <img id="logo" alt="Cuttle logo" src="/img/logo.png">
+        <img id="logo" alt="Cuttle logo" :src="logoSrc">
         <v-row>
           <!-- Left side form -->
           <v-col id="username-login-form" :cols="$vuetify.display.mdAndUp ? 8 : 12">
@@ -175,10 +178,12 @@
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { useThemedLogo } from '@/composables/themedLogo';
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 import MarkdownContent from '@/components/Global/MarkdownContent.vue';
 import BaseVideo from '../components/Global/BaseVideo.vue';
+import TheLanguageSelector from '../components/TheLanguageSelector.vue';
 
 
 export default {
@@ -187,6 +192,7 @@ export default {
     BaseSnackbar,
     BaseVideo,
     MarkdownContent,
+    TheLanguageSelector
   },
   setup() {
     // Vuetify has its own translation layer that isn't very good
@@ -194,7 +200,11 @@ export default {
     // level and utilize it this way with a composable. There may be another more global way but
     // I haven't found anything just yet
     const { t } = useI18n();
-    return { t };
+    const { logoSrc } = useThemedLogo();
+    return {
+      t,
+      logoSrc,
+    };
   },
   data() {
     return {

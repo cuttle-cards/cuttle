@@ -1,37 +1,22 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify';
-import { options } from '@/plugins/vuetify';
-import 'vuetify/dist/vuetify.min.css';
-import './storybook.css';
+/** @type { import('@storybook/vue3').Preview } */
+import { setup } from "@storybook/vue3";
+import vuetify from "../src/plugins/vuetify";
 
-Vue.use(Vuetify);
+setup((app) => {
+  // Registers your app's plugins into Storybook
+  app.use(vuetify);
+});
 
-// https://storybook.js.org/docs/vue/configure/overview#configure-story-rendering
-export const parameters = {
-  actions: { argTypesRegex: '^on[A-Z].*' },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
+const preview = {
+  parameters: {
+    actions: { argTypesRegex: '^on[A-Z].*' },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/,
+      },
     },
   },
 };
 
-export const decorators = [
-  (story, context) => {
-    const vuetify = new Vuetify(options);
-    const wrapped = story(context);
-
-    return Vue.extend({
-      vuetify,
-      components: { wrapped },
-      // props: {},
-      // watch: {},
-      template: `
-      <v-app class="sb-app">
-          <wrapped/>
-      </v-app>
-      `,
-    });
-  },
-];
+export default preview;

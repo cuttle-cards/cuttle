@@ -11,7 +11,7 @@
         icon="mdi-medal"
         aria-label="medal icon"
         aria-hidden="false"
-        role="img" 
+        role="img"
       />
     </div>
     <div class="text d-flex flex-column align-center px-10 text-center justify-center">
@@ -34,7 +34,7 @@ export default {
     place: {
       type: Number,
       required: true,
-    }, 
+    },
   },
   computed: {
     theme() {
