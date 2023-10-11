@@ -57,7 +57,6 @@ import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import BaseDialog from '@/components/BaseDialog.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
-import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'ReauthenticateDialog',
