@@ -15,10 +15,11 @@
     <div class="d-flex flex-wrap justify-center align-center mb-4 mt-2">
       <!-- Empty Placeholder -->
       <template v-if="cards.length === 0">
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column align-center">
           <p>{{ emptyText }}</p>
           <v-icon
             icon="mdi-cancel"
+            class="my-1"
             size="x-large" 
             aria-hidden="true"
           />
