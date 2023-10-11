@@ -39,7 +39,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
 
-import TheLanguageSelector from './TheLanguageSelector.vue';
+import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 
 const authStore = useAuthStore();
 
