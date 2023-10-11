@@ -2,7 +2,7 @@
   <v-container id="lobby-wrapper">
     <v-row>
       <v-col sm="3" md="1" class="my-auto">
-        <img id="logo" alt="Cuttle logo" src="/img/logo.png">
+        <img id="logo" alt="Cuttle logo" :src="logoSrc">
       </v-col>
       <v-col md="8" class="my-auto">
         <h1 class="d-sm-flex align-center">
@@ -97,6 +97,7 @@ import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import { useThemedLogo } from '@/composables/themedLogo';
 import LobbyPlayerIndicator from '@/components/LobbyPlayerIndicator.vue';
 import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
 
@@ -108,7 +109,11 @@ export default {
   },
   setup() {
     const { t } = useI18n();
-    return { t };
+    const { logoSrc } = useThemedLogo();
+    return {
+      t,
+      logoSrc,
+    };
   },
   data() {
     return {
