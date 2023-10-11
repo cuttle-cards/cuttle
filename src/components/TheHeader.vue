@@ -42,7 +42,7 @@
 
 <script setup>
 import { getPageLinks } from '@/composables/navLink.js';
-import TheUserMenu from './TheUserMenu.vue';
+import TheUserMenu from '@/components/TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 import { useRoute } from 'vue-router';
 import { computed, toRefs } from 'vue';
