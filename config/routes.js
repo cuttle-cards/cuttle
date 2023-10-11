@@ -45,12 +45,11 @@ module.exports.routes = {
    *                                                                          *
    ***************************************************************************/
 
-  // '/'                             :   'userController.homepage',
-  '/user/signup': 'userController.signup',
-  '/user/login': 'userController.login',
-  '/user/reLogin': 'userController.reLogin',
-  '/user/logout': 'userController.logout',
-  '/user/status': 'userController.status',
+  '/user/signup': 'UserController.signup',
+  '/user/login': 'UserController.login',
+  '/user/reLogin': 'UserController.reLogin',
+  '/user/logout': 'UserController.logout',
+  '/user/status': 'UserController.status',
 
   'GET /health': 'HealthController.getHealth',
   'GET /stats': 'StatsController.getStats',

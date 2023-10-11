@@ -9,6 +9,8 @@
  * https://sailsjs.com/config/http
  */
 
+const serveIndex = require('../api/middlewares/serve-index');
+
 module.exports.http = {
   /****************************************************************************
    *                                                                           *
@@ -26,16 +28,20 @@ module.exports.http = {
      * (This Sails app's routes are handled by the "router" middleware below.)  *
      *                                                                          *
      ***************************************************************************/
-    // order: [
-    //   'cookieParser',
-    //   'session',
-    //   'bodyParser',
-    //   'compress',
-    //   'poweredBy',
-    //   'router',
-    //   'www',
-    //   'favicon',
-    // ],
+    order: [
+      'cookieParser',
+      'session',
+      'bodyParser',
+      'compress',
+      'poweredBy',
+      'router',
+      'serveIndex',
+      'www',
+      'favicon',
+    ],
+
+    serveIndex,
+
     /***************************************************************************
      *                                                                          *
      * The body parser that will handle incoming multipart HTTP requests.       *
