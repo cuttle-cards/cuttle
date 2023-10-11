@@ -221,7 +221,9 @@ export const useGameStore = defineStore('game', {
         this.secondCard = null;
       }
 
-      if (Object.hasOwnProperty.call(newGame, 'oneOff')) {this.oneOff = createGameCard(newGame.oneOff);}
+      if (Object.hasOwnProperty.call(newGame, 'oneOff')) {
+        this.oneOff = createGameCard(newGame.oneOff);
+      }
       else {
         this.oneOff = null;
       }

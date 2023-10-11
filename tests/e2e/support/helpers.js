@@ -134,7 +134,9 @@ export function getCardIds(game, suitAndRankList) {
 
 function cardSortComparator(card1, card2) {
   let res = card1.rank - card2.rank;
-  if (res === 0) {res = card1.suit - card2.suit;}
+  if (res === 0) {
+    res = card1.suit - card2.suit;
+  }
   return res;
 }
 export function cardListsMatch(list1, list2) {

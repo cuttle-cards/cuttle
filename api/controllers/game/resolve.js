@@ -283,7 +283,7 @@ module.exports = function (req, res) {
                 if (!targetCard)
                   {
                     return Promise.reject({
-                    message: `Could not find target point card ${game.oneOffTarget.id} to return to opponent's hand`,
+                      message: `Could not find target point card ${game.oneOffTarget.id} to return to opponent's hand`,
                     });
                   }
                 // Scrap all jacks attached to target

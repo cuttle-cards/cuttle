@@ -28,7 +28,7 @@ module.exports = function (req, res) {
                     if (game.scrap.length < 1)
                       {
                         return Promise.reject({
-                        message: 'You can only play a 3 as a one-off, if there are cards in the scrap pile',
+                          message: 'You can only play a 3 as a one-off, if there are cards in the scrap pile',
                         });
                       }
                     break;
@@ -36,7 +36,7 @@ module.exports = function (req, res) {
                     if (opponent.hand.length === 0)
                       {
                         return Promise.reject({
-                        message: 'You cannot play a 4 as a one-off while your opponent has no cards in hand',
+                          message: 'You cannot play a 4 as a one-off while your opponent has no cards in hand',
                         });
                       }
                     break;
@@ -45,7 +45,7 @@ module.exports = function (req, res) {
                     if (!game.topCard)
                       {
                         return Promise.reject({
-                        message: "You can't play that card as a one-off, unless there are cards in the deck",
+                          message: "You can't play that card as a one-off, unless there are cards in the deck",
                         });
                       }
                     break;

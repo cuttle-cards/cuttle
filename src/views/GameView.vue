@@ -653,7 +653,9 @@ export default {
       }
     },
     validMoves() {
-      if (!this.gameStore.isPlayersTurn) {return [];}
+      if (!this.gameStore.isPlayersTurn) {
+        return [];
+      }
       const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
       if (!selectedCard) {
         return [];
@@ -1037,7 +1039,9 @@ export default {
           .then(this.clearSelection)
           .catch(this.handleError);
       }
-      if (!this.selectedCard) {return;}
+      if (!this.selectedCard) {
+        return;
+      }
 
       this.gameStore.requestPlayOneOff(this.selectedCard.id)
         .then(this.clearSelection)
