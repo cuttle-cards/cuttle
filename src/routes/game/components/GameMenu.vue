@@ -31,6 +31,7 @@
           <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
             Request Stalemate
           </v-list-item>
+          <TheLanguageSelector />
         </template>
       </v-list>
     </v-menu>
@@ -74,12 +75,14 @@ import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
 import RulesDialog from '@/routes/game/components/RulesDialog.vue';
+import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 export default {
   name: 'GameMenu',
   components: {
     BaseDialog,
     RulesDialog,
-  },
+    TheLanguageSelector
+},
   props: {
     isSpectating: {
       type: Boolean,
