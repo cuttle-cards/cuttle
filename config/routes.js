@@ -100,4 +100,6 @@ module.exports.routes = {
   '/test/loadSeasonFixture': 'TestController.loadSeasonFixture',
   '/test/loadMatchFixtures': 'TestController.loadMatchFixtures',
   '/test/loadFinishedGameFixtures': 'TestController.loadFinishedGameFixtures',
+
+  '/*': { controller: 'ViewController', action: 'serveIndex', skipAssets: true }
 };
