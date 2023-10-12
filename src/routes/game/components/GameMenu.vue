@@ -17,19 +17,19 @@
       <!-- Menu -->
       <v-list id="game-menu" class="text-surface-1" bg-color="surface-2">
         <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'">
-          Rules
+          {{ `${t('game.dialogs.gameMenu.rules')}` }}
         </v-list-item>
         <!-- Stop Spectating -->
         <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
-          Go Home
+          {{ `${t('game.dialogs.gameMenu.home')}` }}
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <template v-else>
           <v-list-item data-cy="concede-initiate" @click="shownDialog = 'concede'">
-            Concede
+            {{ `${t('game.dialogs.gameMenu.concede')}` }}
           </v-list-item>
           <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
-            Request Stalemate
+            {{ `${t('game.dialogs.gameMenu.stalemate')}` }}
           </v-list-item>
           <TheLanguageSelector />
         </template>
@@ -54,7 +54,7 @@
           class="mr-4"
           @click="closeDialog"
         >
-          Cancel
+          {{ `${t('game.dialogs.gameMenu.cancel')}` }}
         </v-btn>
         <v-btn
           variant="flat"
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
@@ -88,6 +89,10 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {
@@ -111,7 +116,7 @@ export default {
       },
     },
     dialogTitle() {
-      return this.showConcedeDialog ? 'Concede' : 'Request Stalemate';
+      return this.showConcedeDialog ? this.$t('game.dialogs.gameMenu.concede') : this.$t('game.dialogs.gameMenu.stalemate');
     },
     dialogText() {
       return this.showConcedeDialog

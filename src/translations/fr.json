@@ -52,6 +52,15 @@
         "12": "Vos autres cartes ne peuvent être ciblées que par des scuttles",
         "13": "Réduit les points dont vous avez besoin pour gagner. (1K : 14 pts, 2K : 10 pts, 3K : 5 pts, 4K : 0 pts)"
       }
+    },
+    "dialogs":{
+      "gameMenu":{
+        "rules": "Règles",
+        "concede": "Concéder",
+        "stalemate": "Demande dans l'impasse",
+        "cancel": "Annuler",
+        "home": "Rentre"
+      }
     }
   },
   "home": {
