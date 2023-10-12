@@ -52,6 +52,20 @@
         "12": "Vos autres cartes ne peuvent être ciblées que par des scuttles",
         "13": "Réduit les points dont vous avez besoin pour gagner. (1K : 14 pts, 2K : 10 pts, 3K : 5 pts, 4K : 0 pts)"
       }
+    },
+    "dialogs":{
+      "scrapDialog": {
+        "close": "Fermer",
+        "scrapPile": "Pile de ferraille",
+        "noCards": "Il n'y a aucune carte dans la pile de ferraille."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Trier",
+          "chronologically": "Chronologiquement",
+          "rank": "Par Rang"
+        }
+      }
     }
   },
   "home": {
