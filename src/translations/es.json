@@ -44,6 +44,18 @@
         "password": "Contraseña",
         "leaveGame": "Dejó el juego",
         "login": "Iniciar sesión"
+      },
+      "scrapDialog": {
+        "close": "Cerca",
+        "scrapPile": "Pila de chatarra",
+        "noCards": "No hay cartas en la pila de chatarra."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Clasificar",
+          "chronologically": "Cronológicamente",
+          "rank": "Por Rango"
+        }
       }
     },
     "moves":{
