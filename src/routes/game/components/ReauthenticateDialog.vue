@@ -1,23 +1,23 @@
 <template>
   <div>
-    <BaseDialog id="reauthenticate-dialog" v-model="show" title="Reconnect to Game">
+    <BaseDialog id="reauthenticate-dialog" v-model="show" :title="t('game.dialogs.reauthentication.reconnectToGame')">
       <template #body>
         <p class="mb-4">
-          You have disconnected due to inactivity. Log in again to resume your session
+          {{ t('game.dialogs.reauthentication.youHaveDisconnected') }}
         </p>
         <form ref="form" @submit.prevent="login">
           <v-text-field
             v-model="username"
             variant="outlined"
             :density="$vuetify.display.mdAndDown && 'compact'"
-            label="Username"
+            :label="t('game.dialogs.reauthentication.username')"
             :loading="isLoggingIn"
             data-cy="username"
           />
           <v-text-field
             v-model="password"
             variant="outlined"
-            label="Password"
+            :label="t('game.dialogs.reauthentication.password')"
             :density="$vuetify.display.mdAndDown && 'compact'"
             type="password"
             :loading="isLoggingIn"
@@ -29,7 +29,7 @@
 
       <template #actions>
         <v-btn variant="text" color="primary" @click="leaveGame">
-          Leave Game
+          {{ t('game.dialogs.reauthentication.leaveGame') }}
         </v-btn>
         <v-btn
           color="primary"
@@ -38,7 +38,7 @@
           :loading="isLoggingIn"
           @click="submit"
         >
-          Log In
+          {{ t('game.dialogs.reauthentication.login') }}
         </v-btn>
       </template>
     </BaseDialog>
@@ -57,6 +57,7 @@ import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import BaseDialog from '@/components/BaseDialog.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'ReauthenticateDialog',
@@ -69,6 +70,10 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {
