@@ -7,7 +7,7 @@
         :data-cy="`${dataSelectorPrefix}-sort-dropdown`"
         :items="sortOptions"
         :menu-props="{ contentClass: `${dataSelectorPrefix}-sort-menu` }"
-        label="Sort"
+        :label="t('game.dialogs.cardListSortable.sort.label')"
         variant="outlined"
         hide-details
       />
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import GameCard from '@/routes/game/components/GameCard.vue';
 import { orderBy } from 'lodash';
 
@@ -81,12 +82,16 @@ export default {
     },
   },
   emits: ['select-card'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       sortByRank: true,
       sortOptions: [
-        { title: 'Chronologically', value: false },
-        { title: 'By Rank', value: true },
+        { title: this.t('game.dialogs.cardListSortable.sort.chronologically'), value: false },
+        { title: this.t('game.dialogs.cardListSortable.sort.rank'), value: true },
       ],
     };
   },
