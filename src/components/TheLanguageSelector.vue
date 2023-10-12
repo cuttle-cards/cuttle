@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { setLocalStorage } from '../../utils/local-storage-utils';
+import { setLocalStorage } from '_/utils/local-storage-utils';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 const { locale } = useI18n();

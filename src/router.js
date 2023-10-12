@@ -1,10 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import HomeView from '@/views/HomeView.vue';
-import LoginView from '@/views/LoginView.vue';
-import LobbyView from '@/views/LobbyView.vue';
-import GameView from '@/views/GameView.vue';
-import RulesView from '@/views/RulesView.vue';
-import StatsView from '@/views/StatsView.vue';
+import HomeView from '@/routes/home/HomeView.vue';
+import LoginView from '@/routes/login/LoginView.vue';
+import LobbyView from '@/routes/lobby/LobbyView.vue';
+import GameView from '@/routes/game/GameView.vue';
+import RulesView from '@/routes/rules/RulesView.vue';
+import StatsView from '@/routes/stats/StatsView.vue';
 import { useAuthStore } from '@/stores/auth';
 
 export const ROUTE_NAME_GAME = 'Game';

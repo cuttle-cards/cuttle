@@ -1,7 +1,7 @@
 import { useGameStore } from '@/stores/game';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router';
-import SocketEvent from '../../../types/SocketEvent';
+import SocketEvent from '_/types/SocketEvent';
 
 
 
