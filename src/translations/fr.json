@@ -44,6 +44,11 @@
         "password": "Mot de passe",
         "leaveGame": "Quitter jeu",
         "login": "Se connecter"
+      },
+      "four": {
+        "discardTwoCards": "Défaussez deux cartes",
+        "discard": "Jeter",
+        "oppponentHasResolved": "Votre adversaire a résolu un Quatre One-Off. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       }
     },
     "moves":{

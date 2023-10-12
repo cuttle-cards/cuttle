@@ -44,6 +44,11 @@
         "password": "Contraseña",
         "leaveGame": "Dejó el juego",
         "login": "Iniciar sesión"
+      },
+      "four": {
+        "discardTwoCards": "Descartar dos cartas",
+        "discard": "Desechar",
+        "oppponentHasResolved": "Tu oponente ha resuelto un Four One-Off. Debes descartar dos cartas. Haz clic para seleccionar cartas para descartar."
       }
     },
     "moves":{

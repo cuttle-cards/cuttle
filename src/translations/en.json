@@ -44,6 +44,11 @@
         "password": "Password",
         "leaveGame": "Leave Game",
         "login": "Log In"
+      },
+      "four": {
+        "discardTwoCards": "Discard Two Cards",
+        "discard": "Discard",
+        "oppponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
       }
     },
     "moves":{
