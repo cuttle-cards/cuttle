@@ -44,18 +44,6 @@
         "password": "Password",
         "leaveGame": "Leave Game",
         "login": "Log In"
-      },
-      "scrapDialog": {
-        "close": "Close",
-        "scrapPile": "Scrap Pile",
-        "noCards": "There are no cards in the scrap pile."
-      },
-      "cardListSortable": {
-        "sort": {
-          "label": "Sort",
-          "chronologically": "Chronologically",
-          "rank": "By Rank"
-        }
       }
     },
     "moves":{
