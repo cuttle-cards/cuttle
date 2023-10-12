@@ -1,23 +1,23 @@
 <template>
   <div>
-    <BaseDialog id="reauthenticate-dialog" v-model="show" :title="t('reauthentication.reconnectToGame')">
+    <BaseDialog id="reauthenticate-dialog" v-model="show" :title="t('game.dialogs.reauthentication.reconnectToGame')">
       <template #body>
         <p class="mb-4">
-          {{ t('reauthentication.youHaveDisconnected') }}
+          {{ t('game.dialogs.reauthentication.youHaveDisconnected') }}
         </p>
         <form ref="form" @submit.prevent="login">
           <v-text-field
             v-model="username"
             variant="outlined"
             :density="$vuetify.display.mdAndDown && 'compact'"
-            :label="t('reauthentication.username')"
+            :label="t('game.dialogs.reauthentication.username')"
             :loading="isLoggingIn"
             data-cy="username"
           />
           <v-text-field
             v-model="password"
             variant="outlined"
-            :label="t('reauthentication.password')"
+            :label="t('game.dialogs.reauthentication.password')"
             :density="$vuetify.display.mdAndDown && 'compact'"
             type="password"
             :loading="isLoggingIn"
@@ -29,7 +29,7 @@
 
       <template #actions>
         <v-btn variant="text" color="primary" @click="leaveGame">
-          {{ t('reauthentication.leaveGame') }}
+          {{ t('game.dialogs.reauthentication.leaveGame') }}
         </v-btn>
         <v-btn
           color="primary"
@@ -38,7 +38,7 @@
           :loading="isLoggingIn"
           @click="submit"
         >
-          {{ t('reauthentication.login') }}
+          {{ t('game.dialogs.reauthentication.login') }}
         </v-btn>
       </template>
     </BaseDialog>
@@ -55,8 +55,8 @@
 <script>
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
-import BaseDialog from '@/components/Global/BaseDialog.vue';
-import BaseSnackbar from '@/components/Global/BaseSnackbar.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
+import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import { useI18n } from 'vue-i18n';
 
 export default {

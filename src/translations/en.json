@@ -36,6 +36,16 @@
     "rankedChangedAlert":"Game Mode changed to"
   },
   "game":{
+    "dialogs": {
+      "reauthentication": {
+        "reconnectToGame": "Reconnect to game",
+        "youHaveDisconnected": "You have disconnected due to inactivity. Log in again to resume your session",
+        "username": "Username",
+        "password": "Password",
+        "leaveGame": "Leave Game",
+        "login": "Log In"
+      }
+    },
     "moves":{
       "effects":{
         "1": "Scrap all points",

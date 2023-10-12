@@ -65,7 +65,7 @@ export const useAuthStore = defineStore('auth', {
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               const gameStore = useGameStore();
-              this.mustReauthenticate = false;
+              this.mustReauthenticate = true;
               const pNum =
                 res.pNum ?? getPlayerPnumByUsername(gameStore.players, this.username);
 
