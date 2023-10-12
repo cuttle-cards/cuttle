@@ -36,6 +36,16 @@
     "rankedChangedAlert":"Modo de juego cambió a"
   },
   "game":{
+    "dialogs": {
+      "reauthentication": {
+        "reconnectToGame": "Vuelve a conectarte al juego",
+        "youHaveDisconnected": "Te has desconectado por inactividad. Inicie sesión nuevamente para reanudar su sesión",
+        "username": "Nombre de usuario",
+        "password": "Contraseña",
+        "leaveGame": "Dejó el juego",
+        "login": "Iniciar sesión"
+      }
+    },
     "moves":{
       "effects":{
         "1": "Desechar todos los puntos",

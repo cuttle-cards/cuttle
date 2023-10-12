@@ -190,7 +190,9 @@ export default {
           this.$router.push('/login');
         })
         .catch((err) => {
-          if (err) console.error(err);
+          if (err) {
+            console.error(err);
+          }
           console.log('Error logging out');
         });
     },
