@@ -26,22 +26,28 @@ module.exports = function (req, res) {
                 switch (card.rank) {
                   case 3:
                     if (game.scrap.length < 1)
-                      return Promise.reject({
-                        message: 'You can only play a 3 as a one-off, if there are cards in the scrap pile',
-                      });
+                      {
+                        return Promise.reject({
+                          message: 'You can only play a 3 as a one-off, if there are cards in the scrap pile',
+                        });
+                      }
                     break;
                   case 4:
                     if (opponent.hand.length === 0)
-                      return Promise.reject({
-                        message: 'You cannot play a 4 as a one-off while your opponent has no cards in hand',
-                      });
+                      {
+                        return Promise.reject({
+                          message: 'You cannot play a 4 as a one-off while your opponent has no cards in hand',
+                        });
+                      }
                     break;
                   case 5:
                   case 7:
                     if (!game.topCard)
-                      return Promise.reject({
-                        message: "You can't play that card as a one-off, unless there are cards in the deck",
-                      });
+                      {
+                        return Promise.reject({
+                          message: "You can't play that card as a one-off, unless there are cards in the deck",
+                        });
+                      }
                     break;
                   default:
                     break;
