@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import BaseDialog from '@/components/Global/BaseDialog.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
 import AwardCard from '@/components/AwardCard.vue';
 
 export default {

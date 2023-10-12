@@ -55,6 +55,22 @@
     }
   },
   "home": {
+    "howItWorks": {
+      "button": "Cómo funciona",
+      "title": "¿Buscas jugar?",
+      "content": "Nuestras sesiones de juego semanales están abiertas a todos:",
+      "wednesday": "Miércoles por la noche a las 8:30 p.m. EST",
+      "thursday": "Jueves a las 12 p.m. EST",
+      "findMatch": "¿No encuentras una coincidencia? Únete a nosotros",
+      "content2": "para chatear con otros jugadores y ver quién está disponible para jugar en cualquier momento.",
+      "playSolo": "¿Quieres jugar solo? Intentar",
+      "playAI": "jugando contra la IA",
+      "mettle": "para aprender a manejar y poner a prueba tu temple.",
+      "learnMore": "¿Querer aprender más? Echa un vistazo a nuestro",
+      "about": "acerca de la página",
+      "about2": "para aprender las reglas y leer sobre el proyecto cuttle.cards.",
+      "okayButton": "bueno"
+    },
     "gameFinder": "Buscador de juegos",
     "spectate": "ESPECTAR",
     "noGameslist": "Sin juegos activos",
@@ -62,9 +78,9 @@
     "openCreateGame": "Crear un juego",
     "submitCreateGame": "Crear juego",
     "players": "jugadores",
-    "playAiContent":"Quieres jugar solo? Intentar",
-    "playAiLink":"jugando contra la IA",
-    "playAiContent2":"para aprender lo básico y poner a prueba tu temple.",
+    "playAiContent": "Quieres jugar solo? Intentar",
+    "playAiLink": "jugando contra la IA",
+    "playAiContent2": "para aprender lo básico y poner a prueba tu temple.",
     "gameName": "Juego Nombre",
     "join": "Unirse"
   },

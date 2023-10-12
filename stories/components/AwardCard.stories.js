@@ -1,4 +1,4 @@
-import AwardCard from '../../src/components/AwardCard.vue';
+import AwardCard from '@/components/AwardCard.vue';
 
 export default {
   title: 'AwardCard',
