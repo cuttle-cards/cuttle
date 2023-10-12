@@ -59,7 +59,9 @@
         "concede": "Concéder",
         "stalemate": "Demande dans l'impasse",
         "cancel": "Annuler",
-        "home": "Rentre"
+        "home": "Rentre",
+        "concedeDialog": "Le jeu se termine et votre adversaire gagne.",
+        "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par une impasse. La demande sera annulée si l'adversaire refuse ou si l'un des deux joueurs joue un coup."
       }
     }
   },

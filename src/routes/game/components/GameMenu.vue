@@ -120,8 +120,8 @@ export default {
     },
     dialogText() {
       return this.showConcedeDialog
-        ? 'The game will end and your opponent will win.'
-        : 'If your opponent agrees, the game will end in a stalemate. The request will cancel if the opponent declines or either player makes a move';
+        ? this.$t('game.dialogs.gameMenu.concedeDialog')
+        : this.$t('game.dialogs.gameMenu.stalemateDialog');
     },
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
