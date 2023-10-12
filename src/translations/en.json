@@ -44,6 +44,18 @@
         "password": "Password",
         "leaveGame": "Leave Game",
         "login": "Log In"
+      },
+      "scrapDialog": {
+        "close": "Close",
+        "scrapPile": "Scrap Pile",
+        "noCards": "There are no cards in the scrap pile."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Sort",
+          "chronologically": "Chronologically",
+          "rank": "By Rank"
+        }
       }
     },
     "moves":{
@@ -61,20 +73,6 @@
         "11": "Play on top of target point card to steal it",
         "12": "Your other cards may only be targeted by scuttles",
         "13": "Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)"
-      }
-    },
-    "dialogs":{
-      "scrapDialog": {
-        "close": "Close",
-        "scrapPile": "Scrap Pile",
-        "noCards": "There are no cards in the scrap pile."
-      },
-      "cardListSortable": {
-        "sort": {
-          "label": "Sort",
-          "chronologically": "Chronologically",
-          "rank": "By Rank"
-        }
       }
     }
   },
