@@ -14,7 +14,7 @@
         size="x-large"
         data-cy="how-it-works-button"
       >
-        {{ t('home.howItWorks.button') }} 
+        {{ t('home.howItWorks.button') }}
       </v-btn>
     </template>
     <template #body>
