@@ -532,7 +532,6 @@ export default {
     opponentPointsToWin() {
       return this.pointsToWin(this.opponentKingCount);
     },
-
     ///////////////////////////
     // Transition Directions //
     ///////////////////////////
@@ -545,7 +544,6 @@ export default {
     threesTransition() {
       return this.gameStore.playerChoosingFromScrap ? `threes-player` : `threes-opponent`;
     },
-
     playerPointsTransition() {
       switch (this.game.lastEventChange) {
         case 'resolve':
@@ -1145,7 +1143,6 @@ export default {
   opacity: 0;
   transform: translateY(-32px);
 }
-
 .gameCard {
   position: absolute;
   transition: all 1.5s ease-out;
@@ -1180,7 +1177,6 @@ export default {
     opacity: 0;
   }
 }
-
 ////////////
 // Styles //
 ////////////
