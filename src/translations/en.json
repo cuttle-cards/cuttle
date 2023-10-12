@@ -49,6 +49,18 @@
         "discardTwoCards": "Discard Two Cards",
         "discard": "Discard",
         "oppponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
+      },
+      "scrapDialog": {
+        "close": "Close",
+        "scrapPile": "Scrap Pile",
+        "noCards": "There are no cards in the scrap pile."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Sort",
+          "chronologically": "Chronologically",
+          "rank": "By Rank"
+        }
       }
     },
     "moves":{

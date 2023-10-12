@@ -45,6 +45,18 @@
         "leaveGame": "Quitter jeu",
         "login": "Se connecter"
       },
+      "scrapDialog": {
+        "close": "Fermer",
+        "scrapPile": "Pile de ferraille",
+        "noCards": "Il n'y a aucune carte dans la pile de ferraille."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Trier",
+          "chronologically": "Chronologiquement",
+          "rank": "Par Rang"
+        }
+      },
       "four": {
         "discardTwoCards": "Défaussez deux cartes",
         "discard": "Jeter",
