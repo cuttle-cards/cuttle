@@ -7,20 +7,20 @@
   >
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
-        Your opponent has played the 
+        {{ t(`game.dialogs.cannotCounterDialog.opponentPlayed`) }}
         <GameCardName :card-name="oneOff.name" />
-        as a one-off
+        {{ t(`game.dialogs.cannotCounterDialog.oneOff`) }}
         <span v-if="target">
-          targeting your
+          {{ t(`game.dialogs.cannotCounterDialog.target`) + t(`global.your`) }}
           <GameCardName :card-name="target.name" />
         </span>
       </div>
       <div v-else class="my-2">
-        Your opponent has played 
+        {{ t(`game.dialogs.cannotCounterDialog.opponentPlayed`) }}
         <GameCardName :card-name="opponentLastTwo.name" />
-        to Counter
+        {{ t(`game.dialogs.cannotCounterDialog.counter`) }}
         <span v-if="playerLastTwo">
-          your 
+          {{ t(`global.your`) }}
           <GameCardName :card-name="playerLastTwo.name" />.
         </span>
       </div>
@@ -42,7 +42,7 @@
           <GameCard :suit="target.suit" :rank="target.rank" />
         </div>
       </div>
-      You cannot Counter, because {{ reason }}.
+      {{ t(`game.dialogs.cannotCounterDialog.cannotCounter`) + reason }}.
     </template>
 
     <template #actions>
@@ -52,7 +52,7 @@
         variant="flat"
         @click="$emit('resolve')"
       >
-        Resolve
+        {{ t(`game.resolve`) }}
       </v-btn>
     </template>
   </BaseDialog>
@@ -113,8 +113,8 @@ export default {
     },
     reason() {
       let reason = '';
-      const OPPONENT_HAS_QUEEN = 'your opponent has a queen';
-      const PLAYER_HAS_NO_TWOS = 'you do not have a two';
+      const OPPONENT_HAS_QUEEN = this.$t('game.dialogs.cannotCounterDialog.reasons.opponentWithQueen');
+      const PLAYER_HAS_NO_TWOS = this.$t('game.dialogs.cannotCounterDialog.reasons.noTwoPresent');
       if (this.opponentQueenCount > 0) {
         reason += OPPONENT_HAS_QUEEN;
       }
