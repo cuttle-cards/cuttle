@@ -334,7 +334,7 @@ export const useGameStore = defineStore('game', {
 
       setTimeout(() => {
         this.updateGameThenResetPNumIfNull(game);
-      }, 1000);
+      }, 500);
 
     },
     handleGameResponse: (jwres, resolve, reject) => {
