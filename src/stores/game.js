@@ -335,7 +335,6 @@ export const useGameStore = defineStore('game', {
       setTimeout(() => {
         this.updateGameThenResetPNumIfNull(game);
       }, 1000);
-
     },
     handleGameResponse: (jwres, resolve, reject) => {
       const authStore = useAuthStore();
