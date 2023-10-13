@@ -35,7 +35,69 @@
     "invite": "Invitar",
     "rankedChangedAlert":"Modo de juego cambió a"
   },
+  "game":{
+    "dialogs": {
+      "reauthentication": {
+        "reconnectToGame": "Vuelve a conectarte al juego",
+        "youHaveDisconnected": "Te has desconectado por inactividad. Inicie sesión nuevamente para reanudar su sesión",
+        "username": "Nombre de usuario",
+        "password": "Contraseña",
+        "leaveGame": "Dejó el juego",
+        "login": "Iniciar sesión"
+      },
+      "scrapDialog": {
+        "close": "Cerca",
+        "scrapPile": "Pila de chatarra",
+        "noCards": "No hay cartas en la pila de chatarra."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Clasificar",
+          "chronologically": "Cronológicamente",
+          "rank": "Por Rango"
+        }
+      },
+      "four": {
+        "discardTwoCards": "Descartar dos cartas",
+        "discard": "Desechar",
+        "oppponentHasResolved": "Tu oponente ha resuelto un Four One-Off. Debes descartar dos cartas. Haz clic para seleccionar cartas para descartar."
+      }
+    },
+    "moves":{
+      "effects":{
+        "1": "Desechar todos los puntos",
+        "2": "Deseche el objetivo Royal o Glasses ocho",
+        "3": "Elige 1 carta del Scrap y ponla en tu mano.",
+        "4": "Tu oponente descarta dos cartas de su elección de su mano.",
+        "5": "Saca dos cartas de la baraja.",
+        "6": "Elimina todos los ochos Royals y Glasses",
+        "7": "Juega una de las dos cartas superiores del mazo y devuelve la otra (ambas se revelan)",
+        "8": "Tu oponente juega con la mano abierta (sus cartas te son reveladas)",
+        "9": "Devuelve la carta objetivo a la mano de su controlador. No pueden jugarlo el próximo turno.",
+        "10": "Sin efecto",
+        "11": "Juega encima de la carta de puntos objetivo para robarla.",
+        "12": "Tus otras cartas solo pueden ser objetivo de scuttles.",
+        "13": "Reduce los puntos que necesitas para ganar. (1K: 14 puntos, 2K: 10 puntos, 3K: 5 puntos, 4K: 0 puntos)"
+      }
+    }
+  },
   "home": {
+    "howItWorks": {
+      "button": "Cómo funciona",
+      "title": "¿Buscas jugar?",
+      "content": "Nuestras sesiones de juego semanales están abiertas a todos:",
+      "wednesday": "Miércoles por la noche a las 8:30 p.m. EST",
+      "thursday": "Jueves a las 12 p.m. EST",
+      "findMatch": "¿No encuentras una coincidencia? Únete a nosotros",
+      "content2": "para chatear con otros jugadores y ver quién está disponible para jugar en cualquier momento.",
+      "playSolo": "¿Quieres jugar solo? Intentar",
+      "playAI": "jugando contra la IA",
+      "mettle": "para aprender a manejar y poner a prueba tu temple.",
+      "learnMore": "¿Querer aprender más? Echa un vistazo a nuestro",
+      "about": "acerca de la página",
+      "about2": "para aprender las reglas y leer sobre el proyecto cuttle.cards.",
+      "okayButton": "bueno"
+    },
     "gameFinder": "Buscador de juegos",
     "spectate": "ESPECTAR",
     "noGameslist": "Sin juegos activos",
@@ -43,9 +105,9 @@
     "openCreateGame": "Crear un juego",
     "submitCreateGame": "Crear juego",
     "players": "jugadores",
-    "playAiContent":"Quieres jugar solo? Intentar",
-    "playAiLink":"jugando contra la IA",
-    "playAiContent2":"para aprender lo básico y poner a prueba tu temple.",
+    "playAiContent": "Quieres jugar solo? Intentar",
+    "playAiLink": "jugando contra la IA",
+    "playAiContent2": "para aprender lo básico y poner a prueba tu temple.",
     "gameName": "Juego Nombre",
     "join": "Unirse"
   },

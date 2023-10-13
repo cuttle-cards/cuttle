@@ -1,10 +1,10 @@
 <template>
   <v-app id="app">
-    <the-header v-if="showNav" :variant="variant" />
+    <TheHeader v-if="showNav" :variant="variant" />
     <v-main>
-      <router-view />
+      <RouterView />
     </v-main>
-    <the-footer v-if="showNav && isSmallDevice" :variant="variant" />
+    <TheFooter v-if="showNav && isSmallDevice" :variant="variant" />
   </v-app>
 </template>
 

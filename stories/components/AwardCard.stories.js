@@ -1,21 +1,22 @@
-import AwardCard from '@/components/AwardCard';
+import AwardCard from '@/components/AwardCard.vue';
 
 export default {
-  /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
-   * to learn how to generate automatic titles
-   */
   title: 'AwardCard',
   component: AwardCard,
 };
 
-const Template = (args, { argTypes }) => ({
+const getComponent = (args) => ({
   components: { AwardCard },
-  props: Object.keys(argTypes),
+  setup() {
+    return { args };
+  },
   template: `
-  <div class="d-flex justify-space-around flex-wrap">
-    <award-card v-bind="$props" class="mb-4" />
-  </div>
+    <div class="d-flex justify-space-around flex-wrap">
+      <AwardCard
+        v-bind="args"
+        class="mb-4"
+      />
+    </div>
   `,
   computed: {
     // TODO: Make this more global in the app (and in storybook)
@@ -25,8 +26,34 @@ const Template = (args, { argTypes }) => ({
   },
 });
 
-export const Default = Template.bind({});
-Default.args = {
-  username: 'username',
-  place: 1,
+export const First = {
+  render: getComponent,
+  args: {
+    username: 'username',
+    place: 1,
+  },
+};
+
+export const Second = {
+  render: getComponent,
+  args: {
+    username: 'username',
+    place: 2,
+  },
+};
+
+export const Third = {
+  render: getComponent,
+  args: {
+    username: 'username',
+    place: 3,
+  },
+};
+
+export const Default = {
+  render: getComponent,
+  args: {
+    username: 'username',
+    place: 4,
+  },
 };

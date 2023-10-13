@@ -1,3 +1,4 @@
+const { getCardName } = require('../../../utils/game-utils');
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -10,7 +11,7 @@ module.exports = function (req, res) {
           if ((card.rank >= 12 && card.rank <= 13) || card.rank === 8) {
             if (player.frozenId !== card.id) {
               // Everything okay; make changes
-              let logEntry = `${player.username} played the ${card.name}`;
+              let logEntry = `${player.username} played the ${getCardName(card)}`;
               if (card.rank === 8) {
                 logEntry += ' as a Glasses eight';
               }
@@ -64,7 +65,9 @@ module.exports = function (req, res) {
         victory,
       });
       // If the game is over, clean it up
-      if (victory.gameOver) await gameService.clearGame({ userId: req.session.usr });
+      if (victory.gameOver) {
+        await gameService.clearGame({ userId: req.session.usr });
+      }
       return res.ok();
     })
     .catch(function failed(err) {

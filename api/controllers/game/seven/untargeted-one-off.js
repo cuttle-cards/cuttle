@@ -1,3 +1,6 @@
+const { game:gameText } = require('../../../../src/translations/en.json');
+const { getCardName } = require('../../../../utils/game-utils');
+
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -18,26 +21,34 @@ module.exports = function (req, res) {
               switch (card.rank) {
                 case 3:
                   if (game.scrap.length === 0)
-                    return Promise.reject({
-                      message: 'You can only play a 3 ONE-OFF if there are cards in the scrap pile',
-                    });
+                    {
+                      return Promise.reject({
+                        message: 'You can only play a 3 ONE-OFF if there are cards in the scrap pile',
+                      });
+                    }
                   break;
                 case 4:
                   if (opponent.hand.length === 0)
-                    return Promise.reject({
-                      message: 'You cannot play a 4 as a ONE-OFF while your opponent has no cards in hand',
-                    });
+                    {
+                      return Promise.reject({
+                        message: 'You cannot play a 4 as a ONE-OFF while your opponent has no cards in hand',
+                      });
+                    }
                   break;
                 case 5:
                 case 7:
                   if (!game.topCard)
-                    return Promise.reject({
-                      message: 'You can only play a 7 as a ONE-OFF if there are cards in the deck',
-                    });
+                    {
+                      return Promise.reject({
+                        message: 'You can only play a 7 as a ONE-OFF if there are cards in the deck',
+                      });
+                    }
                   if (game.topCard.id === card.id && !game.secondCard)
-                    return Promise.reject({
-                      message: 'You can not play a 7 as a ONE-OFF if it the last card in the deck',
-                    });
+                    {
+                      return Promise.reject({
+                        message: 'You can not play a 7 as a ONE-OFF if it the last card in the deck',
+                      });
+                    }
                   break;
               }
               const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({
@@ -51,7 +62,7 @@ module.exports = function (req, res) {
                 oneOff: card.id,
                 log: [
                   ...game.log,
-                  `${player.username} played the ${card.name} from the top of the deck as a one-off to ${card.ruleText}.`,
+                  `${player.username} played the ${getCardName(card)} from the top of the deck as a one-off to ${gameText.moves.effects[card.rank]}.`,
                 ],
                 lastEvent: {
                   change: 'sevenOneOff',

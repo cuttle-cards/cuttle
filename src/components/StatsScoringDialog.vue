@@ -1,5 +1,5 @@
 <template>
-  <base-dialog
+  <BaseDialog
     id="rankedScoring"
     v-model="show"
     :persistent="false"
@@ -31,9 +31,9 @@
         <strong>champions are permanantly accoladed on the site.</strong>
       </p>
       <div class="d-flex justify-space-around flex-wrap mt-4">
-        <award-card username="Champion player" :place="1" class="mb-4" />
-        <award-card username="Second Place Player" :place="2" class="mb-4" />
-        <award-card username="Third Place Player" :place="3" class="mb-4" />
+        <AwardCard username="Champion player" :place="1" class="mb-4" />
+        <AwardCard username="Second Place Player" :place="2" class="mb-4" />
+        <AwardCard username="Third Place Player" :place="3" class="mb-4" />
       </div>
       <p>
         Each Season is divided into 13 weeks. For each week, we count the number of best 2/3 ranked matches
@@ -86,11 +86,11 @@
         Got It!
       </v-btn>
     </template>
-  </base-dialog>
+  </BaseDialog>
 </template>
 
 <script>
-import BaseDialog from '@/components/Global/BaseDialog.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
 import AwardCard from '@/components/AwardCard.vue';
 
 export default {
