@@ -25,7 +25,7 @@
         variant="flat"
         @click="moveToHand"
       >
-        {{ t('game.resolve') }}
+        {{ t('game.dialogs.threeDialog.resolve') }}
       </v-btn>
     </template>
   </BaseDialog>

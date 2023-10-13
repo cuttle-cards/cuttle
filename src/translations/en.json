@@ -64,8 +64,18 @@
           "rank": "By Rank"
         }
       },
+      "cannotCounterDialog": {
+        "opponentPlayed": "Your opponent has played the ",
+        "oneOff": "as a one-off",
+        "target": "targeting ",
+        "counter": "to Counter",
+        "cannotCounter": "You cannot Counter, because ",
+        "reasons": {
+          "opponentWithQueen": "your opponent has a queen",
+          "noTwoPresent": "you do not have a two"
+        },
       "threeDialog": {
-        "title": "Select a Card from Scrap",
+        "title": "Select a Card from Scrap"
       }
     },
     "moves":{
@@ -232,4 +242,5 @@
       "whereToPlayAnswer": "You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, there is only one place:"
     }
   }
+}
 }

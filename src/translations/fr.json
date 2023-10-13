@@ -59,8 +59,23 @@
           "rank": "Par Rang"
         }
       },
+      "four": {
+        "discardTwoCards": "Défaussez deux cartes",
+        "discard": "Jeter",
+        "oppponentHasResolved": "Votre adversaire a résolu un Quatre One-Off. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
+      },
+      "cannotCounterDialog": {
+        "opponentPlayed": "Votre adversaire a joué le ",
+        "oneOff": "comme un one-off",
+        "target": "ciblage ",
+        "counter": "contrer",
+        "cannotCounter": "Vous ne pouvez pas contrer, parce que",
+        "reasons": {
+          "opponentWithQueen": "ton adversaire a une queen",
+          "noTwoPresent": "tu n'as pas de deux"
+        },
       "threeDialog": {
-        "title": "Sélectionnez une carte dans Scrap",
+        "title": "Sélectionnez une carte dans Scrap"
       }
     },
     "moves":{
@@ -227,4 +242,5 @@
       "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami! Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit:"  
     }
   }
+}
 }
