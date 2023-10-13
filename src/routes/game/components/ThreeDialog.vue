@@ -3,7 +3,7 @@
     v-if="oneOff"
     id="three-dialog"
     v-model="show"
-    title="Select a Card from Scrap"
+    :title="t('game.dialogs.threeDialog.title')"
     scrollable
   >
     <template #body>
@@ -25,13 +25,14 @@
         variant="flat"
         @click="moveToHand"
       >
-        Resolve
+        {{ t('game.dialogs.threeDialog.resolve') }}
       </v-btn>
     </template>
   </BaseDialog>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/BaseDialog.vue';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
 
@@ -57,6 +58,10 @@ export default {
     },
   },
   emits: ['resolveThree'],
+  setup() {
+  const { t } = useI18n();
+  return { t };
+  },
   data() {
     return {
       choseToCounter: false,

@@ -56,6 +56,10 @@
           "chronologically": "Chronologically",
           "rank": "By Rank"
         }
+      },
+      "threeDialog": {
+        "title": "Select a Card from Scrap",
+        "resolve": "Resolve"
       }
     },
     "moves":{

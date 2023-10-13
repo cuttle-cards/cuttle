@@ -56,6 +56,10 @@
           "chronologically": "Chronologiquement",
           "rank": "Par Rang"
         }
+      },
+      "threeDialog": {
+        "title": "Sélectionnez une carte dans Scrap",
+        "resolve": "Résoudre"
       }
     },
     "moves":{
