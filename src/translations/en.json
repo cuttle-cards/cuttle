@@ -79,6 +79,12 @@
         "12": "Your other cards may only be targeted by scuttles",
         "13": "Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)"
       }
+    },
+    "menus":{
+      "spectatorListMenu":{
+        "spectators":"Spectators",
+        "noSpectators":"Currently no spectators"
+      }
     }
   },
   "home":{
@@ -110,13 +116,5 @@
     "playAiContent2": "to learn the ropes and test your mettle.",
     "gameName": "Game Name",
     "join": "Join"
-  },
-  "game":{
-    "menus":{
-      "spectatorListMenu":{
-        "spectators":"Spectators",
-        "noSpectators":"Currently no spectators"
-      }
-    }
   }
 }
