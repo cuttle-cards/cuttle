@@ -11,7 +11,8 @@
     "collapseMenu": "Contraer menú",
     "cancel": "Cancelar",
     "ranked": "Clasificado",
-    "casual": "Casual"
+    "casual": "Casual",
+    "your": "su"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
@@ -61,6 +62,20 @@
         "discardTwoCards": "Descartar dos cartas",
         "discard": "Desechar",
         "oppponentHasResolved": "Tu oponente ha resuelto un Four One-Off. Debes descartar dos cartas. Haz clic para seleccionar cartas para descartar."
+      },
+      "cannotCounterDialog": {
+        "opponentPlayed": "Tu oponente ha jugado el",
+        "oneOff": "como un one-off",
+        "target": "apuntar ",
+        "counter": "para contrarrestar",
+        "cannotCounter": "No puedes contrarrestar, porque",
+        "action": {
+          "resolve": "Resolver"
+        },
+        "reasons": {
+          "opponentWithQueen": "Tu oponente tiene una queen",
+          "noTwoPresent": "no tienes un dos"
+        }
       }
     },
     "moves":{
