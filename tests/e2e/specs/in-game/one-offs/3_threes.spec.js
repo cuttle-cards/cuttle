@@ -69,7 +69,7 @@ describe('Playing THREEs', () => {
     // Player selects a card from scrap
     cy.get('[data-three-dialog-card=10-2]').click();
     cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
-
+    cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
     assertGameState(0, {
       p0Hand: [Card.TEN_OF_HEARTS],
       p0Points: [],
@@ -137,7 +137,8 @@ describe('Playing THREEs', () => {
     cy.resolveThreeOpponent(Card.ACE_OF_SPADES);
 
     cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.exist');
-
+    cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
+    
     assertGameState(0, {
       p0Hand: [],
       p0Points: [],

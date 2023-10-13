@@ -328,13 +328,14 @@ export const useGameStore = defineStore('game', {
       }, 1000);
     },
     processThrees(chosenCard, game) {
+      this.waitingForOpponentToPickFromScrap = false;
+      this.pickingFromScrap = false;
+      this.cardChosenFromScrap = chosenCard;
+
       setTimeout(() => {
         this.updateGameThenResetPNumIfNull(game);
       }, 1000);
 
-      this.waitingForOpponentToPickFromScrap = false;
-      this.pickingFromScrap = false;
-      this.cardChosenFromScrap = chosenCard;
     },
     handleGameResponse: (jwres, resolve, reject) => {
       const authStore = useAuthStore();

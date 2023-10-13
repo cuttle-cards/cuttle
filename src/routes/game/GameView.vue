@@ -184,6 +184,7 @@
                     :suit="gameStore.cardChosenFromScrap.suit"
                     :rank="gameStore.cardChosenFromScrap.rank"
                     class="gameCard"
+                    data-cy="scrap-chosen-card"
                   />
                   <div v-else class="d-flex flex-column align-center scrapPile">
                     <h3>Scrap</h3>
