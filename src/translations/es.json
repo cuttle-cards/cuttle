@@ -50,7 +50,7 @@
     "join": "Unirse"
   },
   "game":{
-    "dialogs":{
+    "menus":{
       "spectatorListMenu":{
         "spectators":"Espectadores",
         "noSpectators":"Actualmente no hay espectadores"

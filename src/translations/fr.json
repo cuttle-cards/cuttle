@@ -50,7 +50,7 @@
     "join": "Rejoindre"
   },
   "game":{
-    "dialogs":{
+    "menus":{
       "spectatorListMenu":{
         "spectators":"Spectateurs",
         "noSpectators":"Il n'y a actuellement aucun spectateur"

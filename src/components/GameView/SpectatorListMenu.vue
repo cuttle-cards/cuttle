@@ -29,10 +29,10 @@
       data-cy="spectate-list-menu"
     >
       <v-list-item-title v-if="spectatingUsers.length > 0">
-        {{ `${t('game.dialogs.spectatorListMenu.spectators')}` }}
+        {{ `${t('game.menus.spectatorListMenu.spectators')}` }}
       </v-list-item-title>
       <v-list-item-title v-else>
-        {{ `${t('game.dialogs.spectatorListMenu.noSpectators')}` }}
+        {{ `${t('game.menus.spectatorListMenu.noSpectators')}` }}
       </v-list-item-title>
       <v-list-item v-for="spectator in spectatingUsers" :key="spectator">
         {{ spectator }}
