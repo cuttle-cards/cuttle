@@ -52,7 +52,7 @@
         variant="flat"
         @click="$emit('resolve')"
       >
-        {{ t(`game.dialogs.cannotCounterDialog.action.resolve`) }}
+        {{ t(`game.resolve`) }}
       </v-btn>
     </template>
   </BaseDialog>

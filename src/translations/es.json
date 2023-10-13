@@ -37,6 +37,7 @@
     "rankedChangedAlert":"Modo de juego cambió a"
   },
   "game":{
+    "resolve": "Resolver",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Vuelve a conectarte al juego",
@@ -69,9 +70,6 @@
         "target": "apuntar ",
         "counter": "para contrarrestar",
         "cannotCounter": "No puedes contrarrestar, porque",
-        "action": {
-          "resolve": "Resolver"
-        },
         "reasons": {
           "opponentWithQueen": "Tu oponente tiene una queen",
           "noTwoPresent": "no tienes un dos"

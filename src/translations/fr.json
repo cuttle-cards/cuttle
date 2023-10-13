@@ -37,6 +37,7 @@
     "rankedChangedAlert":"Jeu mode modifié à"
   },
   "game":{
+    "resolve": "Résoudre",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnectez-vous au jeu",
@@ -69,9 +70,6 @@
         "target": "ciblage ",
         "counter": "contrer",
         "cannotCounter": "Vous ne pouvez pas contrer, parce que",
-        "action": {
-          "resolve": "Résoudre"
-        },
         "reasons": {
           "opponentWithQueen": "ton adversaire a une queen",
           "noTwoPresent": "tu n'as pas de deux"

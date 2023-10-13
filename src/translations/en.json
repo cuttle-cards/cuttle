@@ -36,7 +36,8 @@
     "invite": "Invite",
     "rankedChangedAlert":"Game Mode changed to"
   },
-  "game":{
+  "game": {
+    "resolve": "Resolve",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnect to game",
@@ -69,9 +70,6 @@
         "target": "targeting ",
         "counter": "to Counter",
         "cannotCounter": "You cannot Counter, because ",
-        "action": {
-          "resolve": "Resolve"
-        },
         "reasons": {
           "opponentWithQueen": "your opponent has a queen",
           "noTwoPresent": "you do not have a two"
