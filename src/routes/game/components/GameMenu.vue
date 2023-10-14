@@ -17,19 +17,19 @@
       <!-- Menu -->
       <v-list id="game-menu" class="text-surface-1" bg-color="surface-2">
         <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'">
-          {{ `${t('game.dialogs.gameMenu.rules')}` }}
+          {{ `${t('game.menus.gameMenu.rules')}` }}
         </v-list-item>
         <!-- Stop Spectating -->
         <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
-          {{ `${t('game.dialogs.gameMenu.home')}` }}
+          {{ `${t('game.menus.gameMenu.home')}` }}
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <template v-else>
           <v-list-item data-cy="concede-initiate" @click="shownDialog = 'concede'">
-            {{ `${t('game.dialogs.gameMenu.concede')}` }}
+            {{ `${t('game.menus.gameMenu.concede')}` }}
           </v-list-item>
           <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
-            {{ `${t('game.dialogs.gameMenu.stalemate')}` }}
+            {{ `${t('game.menus.gameMenu.stalemate')}` }}
           </v-list-item>
           <TheLanguageSelector />
         </template>
@@ -54,7 +54,7 @@
           class="mr-4"
           @click="closeDialog"
         >
-          {{ `${t('game.dialogs.gameMenu.cancel')}` }}
+          {{ `${t('game.menus.gameMenu.cancel')}` }}
         </v-btn>
         <v-btn
           variant="flat"
@@ -116,12 +116,12 @@ export default {
       },
     },
     dialogTitle() {
-      return this.showConcedeDialog ? this.$t('game.dialogs.gameMenu.concede') : this.$t('game.dialogs.gameMenu.stalemate');
+      return this.showConcedeDialog ? this.$t('game.menus.gameMenu.concede') : this.$t('game.menus.gameMenu.stalemate');
     },
     dialogText() {
       return this.showConcedeDialog
-        ? this.$t('game.dialogs.gameMenu.concedeDialog')
-        : this.$t('game.dialogs.gameMenu.stalemateDialog');
+        ? this.$t('game.menus.gameMenu.concedeDialog')
+        : this.$t('game.menus.gameMenu.stalemateDialog');
     },
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
