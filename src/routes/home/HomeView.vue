@@ -74,7 +74,7 @@
         <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
           <div class="mx-auto my-4 my-xl-2 homeContent">
             <CreateGameDialog @error="handleError" />
-            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
+            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center my-4">
               <v-btn
                 v-if="!$vuetify.display.smAndUp"
                 variant="text"
@@ -190,7 +190,9 @@ export default {
           this.$router.push('/login');
         })
         .catch((err) => {
-          if (err) console.error(err);
+          if (err) {
+            console.error(err);
+          }
           console.log('Error logging out');
         });
     },

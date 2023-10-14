@@ -475,7 +475,7 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.get('#cannot-counter-dialog')
       .should('be.visible')
       .should('contain', 'You cannot Counter, because your opponent has a queen.')
-      .contains('Your opponent has played 2♥️ to Counter', {includeShadowDom: true});
+      .contains('Your opponent has played the 2♥️ to Counter', {includeShadowDom: true});
     cy.get('[data-cy=cannot-counter-resolve]')
       .click();
   });
