@@ -92,6 +92,12 @@
         "12": "Tus otras cartas solo pueden ser objetivo de scuttles.",
         "13": "Reduce los puntos que necesitas para ganar. (1K: 14 puntos, 2K: 10 puntos, 3K: 5 puntos, 4K: 0 puntos)"
       }
+    },
+    "menus":{
+      "spectatorListMenu":{
+        "spectators":"Espectadores",
+        "noSpectators":"Actualmente no hay espectadores"
+      }
     }
   },
   "home": {
