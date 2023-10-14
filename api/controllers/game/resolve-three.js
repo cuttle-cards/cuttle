@@ -11,9 +11,14 @@ module.exports = function (req, res) {
         resolving: null,
         passes: 0,
         turn: game.turn + 1,
-        log: [...game.log, `${player.username} took the ${getCardName(card)} from the Scrap pile to their hand.`],
+        log: [
+          ...game.log,
+          `${player.username} took the ${getCardName(card)} from the Scrap pile to their hand.`,
+        ],
         lastEvent: {
           change: 'resolveThree',
+          pNum: req.session.pNum,
+          chosenCard: card,
         },
       };
       const updatePromises = [
@@ -26,14 +31,14 @@ module.exports = function (req, res) {
         // Remove selected card from scrap
         Game.removeFromCollection(game.id, 'scrap').members([card.id]),
       ];
-      return Promise.all([game, ...updatePromises]);
+      return Promise.all([game, card, ...updatePromises]);
     })
     .then(function populateGame(values) {
-      const [game] = values;
-      return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
+      const [game, card] = values;
+      return Promise.all([gameService.populateGame({ gameId: game.id }), game, card]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel] = values;
+      const [fullGame, gameModel, card] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
@@ -42,6 +47,7 @@ module.exports = function (req, res) {
         change: 'resolveThree',
         game: fullGame,
         victory,
+        chosenCard: card,
       });
       return res.ok();
     })
