@@ -108,8 +108,8 @@
                     class="opponent-hand-wrapper transition-all"
                   >
                     <GameCard
-                      v-for="(card, index) in gameStore.opponent.hand"
-                      :key="index"
+                      v-for="(card) in gameStore.opponent.hand"
+                      :key="card.id"
                       :suit="checkIsFoursDiscarded(card) && card.suit"
                       :rank="checkIsFoursDiscarded(card) && card.rank"
                       data-opponent-hand-card
