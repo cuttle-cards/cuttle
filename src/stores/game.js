@@ -73,6 +73,7 @@ export const useGameStore = defineStore('game', {
     // Fours
     discarding: false,
     waitingForOpponentToDiscard: false,
+    discardedCards : null,
     // Sevens
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,
@@ -171,6 +172,11 @@ export const useGameStore = defineStore('game', {
         } else {
           this.cardChosenFromScrap = null;
           this.playerChoosingFromScrap = null;
+        }
+        if (Object.hasOwnProperty.call(newGame.lastEvent, 'discardedCards')) {
+          this.discardedCards = newGame.lastEvent.discardedCards;
+        } else {
+          this.discardedCards = null;
         }
       }
       this.waitingForOpponentToStalemate = false;
@@ -331,6 +337,15 @@ export const useGameStore = defineStore('game', {
       this.waitingForOpponentToPickFromScrap = false;
       this.pickingFromScrap = false;
       this.cardChosenFromScrap = chosenCard;
+
+      setTimeout(() => {
+        this.updateGameThenResetPNumIfNull(game);
+      }, 1000);
+    },
+    processFours(discardedCards, game) {
+      this.waitingForOpponentToDiscard = false;
+      this.discarding = false;
+      this.discardedCards = discardedCards;
 
       setTimeout(() => {
         this.updateGameThenResetPNumIfNull(game);
