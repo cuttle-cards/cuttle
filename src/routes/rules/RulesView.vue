@@ -15,12 +15,10 @@
       <v-row class="flex-column align-start mt-5">
         <div>
           <h1 class="gradient-text">
-            Rules of Cuttle
+            {{ `${t('rules.rulesTitle')}` }}
           </h1>
           <p class="d-block">
-            Cuttle is a two player battle card game played with a standard 52-card deck of cards. It has the
-            strategic nuance of trading card games like Magic, with the elegant balance of a standard
-            deck--and you can play it for free! Test your mettle in the deepest card game under the sea!
+            {{ `${t('rules.rulesText')}` }}
           </p>
           <div class="d-flex justify-center mt-5">
             <v-btn to="/" color="primary" data-cy="top-home-button">
@@ -33,10 +31,10 @@
       <!-- Tutorial -->
       <v-row class="flex-column align-start mt-5">
         <h1 class="gradient-text">
-          Tutorial Video
+          {{ `${t('rules.tutorialTitle')}` }}
         </h1>
         <p>
-          Watch the official cuttle.cards tutorial to learn the rules and get a feel for the flow of the game.
+          {{ `${t('rules.tutorialText')}` }}
         </p>
         <div class="w-50 my-4 mx-auto">
           <BaseVideo source="https://www.youtube.com/embed/qOqkNbhMdsI" />
@@ -46,22 +44,20 @@
       <!-- Goal -->
       <v-row class="flex-column align-start mt-5">
         <h1 class="gradient-text">
-          Goal
+          {{ `${t('rules.goalTitle')}` }}
         </h1>
         <p class="d-block">
-          The goal is to be the first player to have 21 or more points worth of point cards on your field. The
-          first player to reach the goal wins immediately. One player (traditionally the dealer) is dealt 6
-          cards and their opponent is dealt 5. The player with 5 cards goes first.
+          {{ `${t('rules.goalText')}` }}
         </p>
       </v-row>
 
       <!-- Play -->
       <v-row class="flex-column align-start mt-5">
         <h1 class="d-block gradient-text">
-          Play
+          {{ `${t('rules.playTitle')}` }}
         </h1>
         <p class="d-block">
-          On your turn you must perform exactly one of the following actions:
+          {{ `${t('rules.playText')}` }}
         </p>
       </v-row>
       <v-row
@@ -94,12 +90,11 @@
             role="img"
           />
           <h1 class="gradient-text">
-            Royals
+            {{ `${t('rules.royalsTitle')}` }}
           </h1>
         </div>
         <p class="d-block">
-          Royals (Kings, Queens, and Jacks) may be played to the field for a persistent benefit that remains
-          in effect until the card is scrapped. Each Royal gives a different effect.
+          {{ `${t('rules.royalsText')}` }}
         </p>
       </v-row>
       <v-row
@@ -132,13 +127,11 @@
             role="img"
           />
           <h1 class="gradient-text">
-            One-Offs
+            {{ `${t('rules.oneoffsTitle')}` }}
           </h1>
         </div>
         <p>
-          Number cards (except 8's and 10's) can be played for a One-Off effect, which scraps the card for an
-          effect based on the rank of the card played. Whenever a one-off is played, the other player may
-          counter it using a two to cancel the effect.
+          {{ `${t('rules.oneoffsText')}` }}
         </p>
       </v-row>
       <v-row
@@ -161,68 +154,51 @@
       <!-- Multiplayer Variants -->
       <v-row class="d-flex flex-column mb-4">
         <h1 class="gradient-text">
-          Multiplayer Variants
+          {{ `${t('rules.multiplayerTitle')}` }}
         </h1>
         <p class="mb-4">
-          Presently only 2-player cuttle is available at
-          <a href="https://www.cuttle.cards"> www.cuttle.cards</a>, however Cuttle can be played with 2-4
-          players. 3 and 4-player Cuttle each have slight variations on the rules to optimize the game balance
-          while changing the pace and the feel. Give them a try next time you're playing Cuttle in a group!
+          {{ `${t('rules.multiplayerText1')}` }}
+          <a href="https://www.cuttle.cards"> www.cuttle.cards</a>
+          {{ `${t('rules.multiplayerText2')}` }}
         </p>
-        <h3>3 Player Cuttle: Cutthroat</h3>
+        <h3>{{ `${t('rules.3PTitle')}` }}</h3>
         <p class="mb-4">
-          Cutthroat is a brutally fast-paced 1v1v1 version of Cuttle, full of betrayal and pivotal moments!
+          {{ `${t('rules.3PText')}` }}
         </p>
-        <p>The rules are the same as above with the following changes:</p>
+        <p>{{ `${t('rules.3PRules')}` }}</p>
         <ul class="mb-4">
           <li>
-            The win condition is reduced. Players need 14 points to win by default, 9 points with one King in
-            play, 5 points with two Kings in play, and having 3 Kings in play immediately wins (goal becomes
-            zero).
+            {{ `${t('rules.3PRule1')}` }}
           </li>
           <li>
-            To start play, deal each player 5 cards and the player to the left of the dealer goes first. Which
-            player is the dealer rotates clockwise each game.
+            {{ `${t('rules.3PRule2')}` }}
           </li>
           <li>
-            Shuffle two Jokers into the deck. Jokers count as Royals with the effect "Steal target Royal".
+            {{ `${t('rules.3PRule3')}` }}
           </li>
-          <li>The hand limit is reduced to 7 (from 8).</li>
+          <li>{{ `${t('rules.3PRule4')}` }}</li>
         </ul>
 
-        <h3>4 Player Cuttle: 2v2</h3>
+        <h3>{{ `${t('rules.4PTitle')}` }}</h3>
         <p class="mb-4">
-          4 player Cuttle is a 2v2 team game. Each player sits across from their partner. Your team wins if
-          either you or your teammate reach your respective goals, but players do not share cards on their
-          hand or field (points are counted separately and your Royals do not directly affect your partner).
+          {{ `${t('rules.4PText')}` }}
         </p>
         <p>
-          The rules are otherwise the same as 1v1 Cuttle, with play proceeding clockwise from the left of the
-          dealer, with the following other changes:
+          {{ `${t('rules.4PRules')}` }}
         </p>
         <ul>
           <li>
-            Each player is dealt 5 cards, play starts left of the dealer and proceeds clockwise from there.
+            {{ `${t('rules.4PRule1')}` }}
           </li>
           <li>
-            Shuffle two Jokers into the deck. Jokers count as Royals with the effect "Steal target Royal".
-            Similar to Jacks, they may transfer control of a Royal from any player to any other player.
+            {{ `${t('rules.4PRule2')}` }}
           </li>
-          <li>The hand limit is reduced to 7 (from 8).</li>
+          <li>{{ `${t('rules.4PRule3')}` }}</li>
           <li>
-            Jacks may be played to transfer control of any point card to any other player. You may therefore
-            "steal" points from yourself (or anyone else) in order to give them to your partner, potentially
-            winning on your turn with their points (their goal is still determined by the count of their own
-            Kings on the field).
+            {{ `${t('rules.4PRule4')}` }}
           </li>
           <li>
-            Nines can be played for an alternative, similar effect. Whenever an opponent plays a Royal, you
-            may immediately play a Nine in response to return that card to its owner's hand immediately,
-            preventing its effect from taking place. Doing so may be done out of turn and does not take your
-            turn, but does not prevent the target's owner from playing the card again on their next turn.
-            Alternatively, you may still play a Nine for its original one-off effect on your turn (taking your
-            turn to do so) to return a card to its controller's hand and prevent them from playing that card
-            on their next turn.
+            {{ `${t('rules.4PRule5')}` }}
           </li>
         </ul>
       </v-row>
@@ -230,60 +206,47 @@
       <!-- FAQ -->
       <v-row class="d-flex flex-column mb-4">
         <h1 class="gradient-text">
-          FAQ
+          {{ `${t('rules.faqTitle')}` }}
         </h1>
-        <h3>Can I play a two to counter a point card? What about a scuttle?</h3>
+        <h3>{{ `${t('rules.twoCounter')}` }}</h3>
         <p class="mb-4">
-          Nope! Twos can only counter One-Offs. You can play a two to destroy a Royal or Glasses Eight, but
-          this takes your turn, unlike countering.
+          {{ `${t('rules.twoCounterAnswer')}` }}
         </p>
-        <h3>Do Queens protect against countering with a two?</h3>
+        <h3>{{ `${t('rules.queenProtectTwo')}` }}</h3>
         <p class="mb-4">
-          Yes! Queens protect against targeting, when a card applies a unique effect to one specific card.
-          This means your other cards (not the Queen, herself) are protected against Twos (either effect),
-          Nines, and Jacks.
+          {{ `${t('rules.queenProtectTwoAnswer')}` }}
         </p>
-        <h3>Do Queens protect against scuttling? What about Aces & Sixes?</h3>
+        <h3>{{ `${t('rules.queenProtectScuttle')}` }}</h3>
         <p class="mb-4">
-          No! Scuttling doesn't count as targeting, and neither do the board-wiping effects of Aces or Sixes.
-          Queens only protect against the effects of Twos, Nines, and Jacks.
+          {{ `${t('rules.queenProtectScuttleAnswer')}` }}
         </p>
-        <h3>Can I counter a Two with a Two?</h3>
+        <h3>{{ `${t('rules.twoOnTwo')}` }}</h3>
         <p class="mb-4">
-          Heck yeah! Playing a Two to counter is a One-Off, which can be countered with a two. Stacked
-          counters make for exciting plays and pivotal strategic moments.
+          {{ `${t('rules.twoOnTwoAnswer')}` }}
         </p>
-        <h3>Can I win by playing a King?</h3>
+        <h3>{{ `${t('rules.kingWin')}` }}</h3>
         <p class="mb-4">
-          Yes! If you meet the required number of points, you win immediately. This means if you play a King
-          when you already have enough points to meet the new limit, you win on that turn.
+          {{ `${t('rules.kingWinAnswer')}` }}
         </p>
-        <h3>If I play an Ace or a Six, are my cards destroyed as well?</h3>
+        <h3>{{ `${t('rules.aceDestruction')}` }}</h3>
         <p class="mb-4">
-          Yes. Aces and Sixes destroy all Point Cards and all Royals plus Glasses Eights, respectively. That
-          includes any that you have out. Try to avoid destroying too many of your own cards!
+          {{ `${t('rules.aceDestructionAnswer')}` }}
         </p>
-        <h3>My Seven revealed two Jacks and my opponent has no points. What happens?</h3>
+        <h3>{{ `${t('rules.revealNoPoints')}` }}</h3>
         <p class="mb-4">
-          If playing both cards revealed by a Seven is impossible (namely revealing two Jacks and your
-          opponent has no point cards in play), choose one card to discard and place the other back on top of
-          the deck.
+          {{ `${t('rules.revealNoPointsAnswer')}` }}
         </p>
-        <h3>What if I play a Seven and there is only one card left in the deck?</h3>
+        <h3>{{ `${t('rules.revealOneLeft')}` }}</h3>
         <p class="mb-4">
-          Reveal just the one card and continue play like normal. Similar to the above situation, if you
-          reveal a Jack and your opponent does not have any point cards in play, that Jack is scrapped.
+          {{ `${t('rules.revealOneLeftAnswer')}` }}
         </p>
-        <h3>What happens when the deck is exhausted?</h3>
+        <h3>{{ `${t('rules.deckExhaust')}` }}</h3>
         <p class="mb-4">
-          When there are no cards left in the deck, players may pass on their turn instead of drawing. 
-          If there are three consecutive passes i.e. player 1 passes, player 2 passes, then player 1 
-          passes again, the game ends in a stalemate and neither player wins.
+          {{ `${t('rules.deckExhaustAnswer')}` }}
         </p>
-        <h3>Where can I play Cuttle?</h3>
+        <h3>{{ `${t('rules.whereToPlay')}` }}</h3>
         <p class="mb-4">
-          You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online,
-          there is only one place:
+          {{ `${t('rules.whereToPlayAnswer')}` }}
           <a href="https://www.cuttle.cards"> www.cuttle.cards </a>
         </p>
         <v-btn
@@ -300,6 +263,7 @@
   </div>
 </template>
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import RulePreview from '@/routes/rules/components/RulePreview.vue';
@@ -313,8 +277,10 @@ export default {
     BaseVideo
   },
   setup() {
+    const { t } = useI18n();
     const { logoSrc } = useThemedLogo();
     return {
+      t,
       logoSrc,
     };
   },
@@ -322,9 +288,9 @@ export default {
     ...mapStores(useAuthStore),
     buttonText() {
       if (this.authStore.username) {
-        return 'Find a Game';
+        return `${this.$t('rules.findGame')}`;
       }
-      return 'Sign Up to Play Online';
+      return `${this.$t('rules.signUp')}`;
     },
   },
   created() {
@@ -332,18 +298,16 @@ export default {
       // First Row
       [
         {
-          title: 'Draw',
+          title: `${this.$t('rules.draw')}`,
           icon: 'cards-playing-spade-multiple',
-          description:
-            'Take one card from the deck. You may not draw past the 8-card hand limit.  If there are no cards left in the deck, you may pass.  Three consecutive passes ends the game in a stalemate',
+          description: `${this.$t('rules.drawDescription')}`,
           staticImg: '/img/game/cuttle-board.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/draw.gif?raw=true',
         },
         {
-          title: 'Points',
+          title: `${this.$t('rules.points')}`,
           icon: 'numeric',
-          description:
-            'Play a number card from your hand. Worth its rank in points and lasts until scrapped.',
+          description: `${this.$t('rules.pointsDescription')}`,
           staticImg: '/img/game/cuttle-points.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/points.gif?raw=true',
         },
@@ -351,17 +315,17 @@ export default {
       // Second Row
       [
         {
-          title: 'Scuttle',
+          title: `${this.$t('rules.scuttle')}`,
           icon: 'skull-crossbones',
-          description: `Scrap an opponent's point card with a bigger one from your hand.  Ties are broken by the suit: ♣️ (weakest) < ♦️ < ♥️ < ♠️ (strongest).`,
+          description: `${this.$t('rules.scuttleDescription')}`,
           staticImg: '/img/game/cuttle-scuttle.png',
           animatedImg:
             'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/scuttling.gif?raw=true',
         },
         {
-          title: 'Royal',
+          title: `${this.$t('rules.royal')}`,
           icon: 'crown',
-          description: `Play a royal to the field for a persistent benefit -- as long as it stays in play`,
+          description: `${this.$t('rules.royalDescription')}`,
           staticImg: '/img/game/cuttle-king.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
         },
@@ -369,16 +333,16 @@ export default {
       // Third Row
       [
         {
-          title: 'One-Off',
+          title: `${this.$t('rules.oneoff')}`,
           icon: 'delete',
-          description: 'Scrap a number card for an effect based on the rank of the card.',
+          description: `${this.$t('rules.oneoffDescription')}`,
           staticImg: '/img/game/cuttle-one-off-six.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/six.gif?raw=true',
         },
         {
-          title: 'Glasses',
+          title: `${this.$t('rules.glasses')}`,
           icon: 'sunglasses',
-          description: `Play an Eight to reveal your opponent's hand (lasts until scrapped).`,
+          description: `${this.$t('rules.glassesDescription')}`,
           staticImg: '/img/game/cuttle-glasses.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/glasses.gif?raw=true',
         },
@@ -387,26 +351,25 @@ export default {
     this.royals = [
       [
         {
-          title: 'King',
+          title: `${this.$t('rules.king')}`,
           icon: 'crown',
-          description:
-            'Reduce the number of points you need to win (21, 14, 10, 5, 0 points with 0, 1, 2, 3, 4 Kings).',
+          description: `${this.$t('rules.kingDescription')}`,
           staticImg: '/img/game/cuttle-king.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
         },
         {
-          title: 'Queen',
+          title: `${this.$t('rules.queen')}`,
           icon: 'crown',
-          description: `Protects your other cards from being targeted by the effects of other cards. This protects your cards against 2's (both effects), 9's, and Jacks, but not scuttling.`,
+          description: `${this.$t('rules.queenDescription')}`,
           staticImg: '/img/game/cuttle-queen.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/queen.gif?raw=true',
         },
       ],
       [
         {
-          title: 'Jack',
+          title: `${this.$t('rules.jack')}`,
           icon: 'crown',
-          description: `Play on an opponent's point card to steal it. Point card returns to opponent if the Jack is scrapped or if another Jack is used to steal it back.`,
+          description: `${this.$t('rules.jackDescription')}`,
           staticImg: '/img/game/cuttle-jack.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
         },
@@ -415,73 +378,73 @@ export default {
     this.oneOffs = [
       [
         {
-          title: 'Ace',
+          title: `${this.$t('rules.ace')}`,
           icon: 'delete',
-          description: 'Scrap all point cards on the field.',
+          description: `${this.$t('rules.aceDescription')}`,
           staticImg: '/img/game/cuttle-one-off-ace.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/ace.gif?raw=true',
         },
         {
-          title: 'Two - Effect 1',
+          title: `${this.$t('rules.twoE1')}`,
           icon: 'delete',
-          description: `Two's have two alternative one-off effects: Counter target One-Off Effect. May be played during your opponent's turn.`,
+          description: `${this.$t('rules.twoE1Description')}`,
           staticImg: '/img/game/cuttle-counter.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/counter.gif?raw=true',
         },
       ],
       [
         {
-          title: 'Two - Effect 2',
+          title: `${this.$t('rules.twoE2')}`,
           icon: 'delete',
-          description: 'Twos have two alternative one-off effects: Scrap target Royal or Glasses Eight.',
+          description: `${this.$t('rules.twoE2Description')}`,
           staticImg: '/img/game/cuttle-one-off-two.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/two.gif?raw=true',
         },
         {
-          title: 'Three',
+          title: `${this.$t('rules.three')}`,
           icon: 'delete',
-          description: 'Choose a card from the scrap pile and put it in your hand.',
+          description: `${this.$t('rules.threeDescription')}`,
           staticImg: '/img/game/cuttle-one-off-three.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/three.gif?raw=true',
         },
       ],
       [
         {
-          title: 'Four',
+          title: `${this.$t('rules.four')}`,
           icon: 'delete',
-          description: 'Your opponent discards two cards of their choice.',
+          description: `${this.$t('rules.fourDescription')}`,
           staticImg: '/img/game/cuttle-one-off-four.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/four.gif?raw=true',
         },
         {
-          title: 'Five',
+          title: `${this.$t('rules.five')}`,
           icon: 'delete',
-          description: 'Draw two cards from the deck up to the 8 card hand limit.',
+          description: `${this.$t('rules.fiveDescription')}`,
           staticImg: '/img/game/cuttle-one-off-five.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/five.gif?raw=true',
         },
       ],
       [
         {
-          title: 'Six',
+          title: `${this.$t('rules.six')}`,
           icon: 'delete',
-          description: 'Scrap all Royals and Glasses Eights on the field.',
+          description: `${this.$t('rules.sixDescription')}`,
           staticImg: '/img/game/cuttle-one-off-six.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/six.gif?raw=true',
         },
         {
-          title: 'Seven',
+          title: `${this.$t('rules.seven')}`,
           icon: 'delete',
-          description: 'Reveal the top two cards from the deck and choose one to play however you choose.',
+          description: `${this.$t('rules.sevenDescription')}`,
           staticImg: '/img/game/cuttle-one-off-seven.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/seven.gif?raw=true',
         },
       ],
       [
         {
-          title: 'Nine',
+          title: `${this.$t('rules.nine')}`,
           icon: 'delete',
-          description: `Return a card from your opponent's field to their hand. They cannot play it next turn.`,
+          description: `${this.$t('rules.nineDescription')}`,
           staticImg: '/img/game/cuttle-one-off-nine.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/nine.gif?raw=true',
         },
