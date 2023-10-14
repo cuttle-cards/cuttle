@@ -11,7 +11,8 @@
     "collapseMenu": "Réduire le menu",
     "cancel": "Annuler",
     "ranked": "Classé",
-    "casual": "Occasionnel"
+    "casual": "Occasionnel",
+    "your": "ton"
   },
   "login": {
     "noAccount": "Vous n'avez pas de compte ?",
@@ -36,6 +37,45 @@
     "rankedChangedAlert":"Jeu mode modifié à"
   },
   "game":{
+    "resolve": "Résoudre",
+    "dialogs": {
+      "reauthentication": {
+        "reconnectToGame": "Reconnectez-vous au jeu",
+        "youHaveDisconnected": "Vous vous êtes déconnecté pour cause d'inactivité. Connectez-vous à nouveau pour reprendre votre session",
+        "username": "Nom d'utilisateur",
+        "password": "Mot de passe",
+        "leaveGame": "Quitter jeu",
+        "login": "Se connecter"
+      },
+      "scrapDialog": {
+        "close": "Fermer",
+        "scrapPile": "Pile de ferraille",
+        "noCards": "Il n'y a aucune carte dans la pile de ferraille."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Trier",
+          "chronologically": "Chronologiquement",
+          "rank": "Par Rang"
+        }
+      },
+      "four": {
+        "discardTwoCards": "Défaussez deux cartes",
+        "discard": "Jeter",
+        "oppponentHasResolved": "Votre adversaire a résolu un Quatre One-Off. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
+      },
+      "cannotCounterDialog": {
+        "opponentPlayed": "Votre adversaire a joué le ",
+        "oneOff": "comme un one-off",
+        "target": "ciblage ",
+        "counter": "contrer",
+        "cannotCounter": "Vous ne pouvez pas contrer, parce que",
+        "reasons": {
+          "opponentWithQueen": "ton adversaire a une queen",
+          "noTwoPresent": "tu n'as pas de deux"
+        }
+      }
+    },
     "moves":{
       "effects":{
         "1": "Supprimez tous les points",

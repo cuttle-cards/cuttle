@@ -35,7 +35,9 @@ class GameCard {
   }
 }
 const createGameCard = (card) => {
-  if (!card) return null;
+  if (!card) {
+    return null;
+  }
   return new GameCard(card);
 };
 
@@ -163,20 +165,36 @@ export const useGameStore = defineStore('game', {
         }
       }
       this.waitingForOpponentToStalemate = false;
-      if (Object.hasOwnProperty.call(newGame, 'id')) this.id = newGame.id;
-      if (Object.hasOwnProperty.call(newGame, 'turn')) this.turn = newGame.turn;
-      if (Object.hasOwnProperty.call(newGame, 'chat')) this.chat = cloneDeep(newGame.chat);
+      if (Object.hasOwnProperty.call(newGame, 'id')) {
+        this.id = newGame.id;
+      }
+      if (Object.hasOwnProperty.call(newGame, 'turn')) {
+        this.turn = newGame.turn;
+      }
+      if (Object.hasOwnProperty.call(newGame, 'chat')) {
+        this.chat = cloneDeep(newGame.chat);
+      }
       if (Object.hasOwnProperty.call(newGame, 'deck')) {
         this.deck = newGame.deck?.map((card) => createGameCard(card));
       }
       if (Object.hasOwnProperty.call(newGame, 'scrap')) {
         this.scrap = newGame.scrap?.map((card) => createGameCard(card));
       }
-      if (Object.hasOwnProperty.call(newGame, 'log')) this.log = cloneDeep(newGame.log);
-      if (Object.hasOwnProperty.call(newGame, 'name')) this.name = newGame.name;
-      if (Object.hasOwnProperty.call(newGame, 'p0Ready')) this.p0Ready = newGame.p0Ready;
-      if (Object.hasOwnProperty.call(newGame, 'p1Ready')) this.p1Ready = newGame.p1Ready;
-      if (Object.hasOwnProperty.call(newGame, 'passes')) this.passes = newGame.passes;
+      if (Object.hasOwnProperty.call(newGame, 'log')) {
+        this.log = cloneDeep(newGame.log);
+      }
+      if (Object.hasOwnProperty.call(newGame, 'name')) {
+        this.name = newGame.name;
+      }
+      if (Object.hasOwnProperty.call(newGame, 'p0Ready')) {
+        this.p0Ready = newGame.p0Ready;
+      }
+      if (Object.hasOwnProperty.call(newGame, 'p1Ready')) {
+        this.p1Ready = newGame.p1Ready;
+      }
+      if (Object.hasOwnProperty.call(newGame, 'passes')) {
+        this.passes = newGame.passes;
+      }
       if (Object.hasOwnProperty.call(newGame, 'players')) {
         this.players = newGame.players.map((player) => ({
           ...player,
@@ -193,21 +211,35 @@ export const useGameStore = defineStore('game', {
       }
       if (Object.hasOwnProperty.call(newGame, 'topCard')) {
         this.topCard = createGameCard(newGame.topCard);
-      } else this.topCard = null;
+      } else {
+        this.topCard = null;
+      }
 
       if (Object.hasOwnProperty.call(newGame, 'secondCard')) {
         this.secondCard = createGameCard(newGame.secondCard);
-      } else this.secondCard = null;
+      } else {
+        this.secondCard = null;
+      }
 
-      if (Object.hasOwnProperty.call(newGame, 'oneOff')) this.oneOff = createGameCard(newGame.oneOff);
-      else this.oneOff = null;
+      if (Object.hasOwnProperty.call(newGame, 'oneOff')) {
+        this.oneOff = createGameCard(newGame.oneOff);
+      }
+      else {
+        this.oneOff = null;
+      }
 
       if (Object.hasOwnProperty.call(newGame, 'oneOffTarget')) {
         this.oneOffTarget = createGameCard(newGame.oneOffTarget);
-      } else this.oneOffTarget = null;
+      } else {
+        this.oneOffTarget = null;
+      }
 
-      if (Object.hasOwnProperty.call(newGame, 'isRanked')) this.isRanked = newGame.isRanked;
-      if (Object.hasOwnProperty.call(newGame, 'currentMatch')) this.currentMatch = newGame.currentMatch;
+      if (Object.hasOwnProperty.call(newGame, 'isRanked')) {
+        this.isRanked = newGame.isRanked;
+      }
+      if (Object.hasOwnProperty.call(newGame, 'currentMatch')) {
+        this.currentMatch = newGame.currentMatch;
+      }
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));

@@ -11,7 +11,8 @@
     "collapseMenu": "Collapse Menu",
     "cancel": "Cancel",
     "ranked": "Ranked",
-    "casual": "Casual"
+    "casual": "Casual",
+    "your": "your"
   },
   "login": {
     "noAccount": "Don't have an account?",
@@ -35,7 +36,46 @@
     "invite": "Invite",
     "rankedChangedAlert":"Game Mode changed to"
   },
-  "game":{
+  "game": {
+    "resolve": "Resolve",
+    "dialogs": {
+      "reauthentication": {
+        "reconnectToGame": "Reconnect to game",
+        "youHaveDisconnected": "You have disconnected due to inactivity. Log in again to resume your session",
+        "username": "Username",
+        "password": "Password",
+        "leaveGame": "Leave Game",
+        "login": "Log In"
+      },
+      "four": {
+        "discardTwoCards": "Discard Two Cards",
+        "discard": "Discard",
+        "oppponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
+      },
+      "scrapDialog": {
+        "close": "Close",
+        "scrapPile": "Scrap Pile",
+        "noCards": "There are no cards in the scrap pile."
+      },
+      "cardListSortable": {
+        "sort": {
+          "label": "Sort",
+          "chronologically": "Chronologically",
+          "rank": "By Rank"
+        }
+      },
+      "cannotCounterDialog": {
+        "opponentPlayed": "Your opponent has played the ",
+        "oneOff": "as a one-off",
+        "target": "targeting ",
+        "counter": "to Counter",
+        "cannotCounter": "You cannot Counter, because ",
+        "reasons": {
+          "opponentWithQueen": "your opponent has a queen",
+          "noTwoPresent": "you do not have a two"
+        }
+      }
+    },
     "moves":{
       "effects":{
         "1": "Scrap all points",

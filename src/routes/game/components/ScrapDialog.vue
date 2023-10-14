@@ -12,7 +12,7 @@
     </template>
     <template #title>
       <div class="d-flex justify-space-between align-center w-100">
-        <h1>Scrap Pile</h1>
+        <h1>{{ t('game.dialogs.scrapDialog.scrapPile') }}</h1>
         <v-btn 
           icon
           color="surface-1"
@@ -33,7 +33,7 @@
       <div class="mt-4">
         <CardListSortable
           :cards="scrap"
-          empty-text="There are no cards in the scrap pile."
+          :empty-text="t('game.dialogs.scrapDialog.noCards')"
           data-selector-prefix="scrap-dialog"
         />
       </div>
@@ -45,13 +45,14 @@
         variant="flat"
         @click="show = false"
       >
-        Close
+        {{ t('game.dialogs.scrapDialog.close') }}
       </v-btn>
     </template>
   </BaseDialog>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import CardListSortable from '@/routes/game/components/CardListSortable.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
 
@@ -66,6 +67,10 @@ export default {
       type: Array,
       required: true,
     },
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {
