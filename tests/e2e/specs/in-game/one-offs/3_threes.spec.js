@@ -69,7 +69,11 @@ describe('Playing THREEs', () => {
     // Player selects a card from scrap
     cy.get('[data-three-dialog-card=10-2]').click();
     cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
+    
+    //check scrap card shows and then disappears
     cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
+    cy.get('[data-cy="scrap-chosen-card"]').should('not.exist');
+    
     assertGameState(0, {
       p0Hand: [Card.TEN_OF_HEARTS],
       p0Points: [],
@@ -100,7 +104,7 @@ describe('Playing THREEs', () => {
   it('Opponent plays 3s successfully', () => {
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.EIGHT_OF_CLUBS],
+      p0Hand: [Card.ACE_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES],
       p0FaceCards: [],
       p1Hand: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.THREE_OF_CLUBS],
@@ -117,7 +121,7 @@ describe('Playing THREEs', () => {
     cy.resolveOpponent();
 
     assertGameState(0, {
-      p0Hand: [Card.EIGHT_OF_CLUBS],
+      p0Hand: [],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.THREE_OF_CLUBS],
@@ -137,14 +141,14 @@ describe('Playing THREEs', () => {
     cy.resolveThreeOpponent(Card.ACE_OF_SPADES);
 
     cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.exist');
+
+    //check scrap card shows and then disappears
     cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
-    
-    cy.get('[data-player-hand-card=8-0]').click(); // ace of spades
-    cy.get('[data-move-choice=points]').click();
-    
+    cy.get('[data-cy="scrap-chosen-card"]').should('not.exist');
+
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.EIGHT_OF_CLUBS],
+      p0Points: [],
       p0FaceCards: [],
       p1Hand: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.ACE_OF_SPADES],
       p1Points: [],
