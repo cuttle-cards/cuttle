@@ -39,7 +39,11 @@
       class="opponent-card-back"
       alt="card back"
     >
-    <img v-else :src="`/img/cards/card-${suit}-${rank}.svg`" :alt="cardName">
+    <img
+      v-else
+      :src="`/img/cards/card-${suit}-${rank}.svg`"
+      :alt="cardName"
+    >
   </v-card>
 </template>
 
