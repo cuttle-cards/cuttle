@@ -38,6 +38,8 @@
   },
   "game":{
     "resolve": "Resolver",
+    "scrap": "Desechar",
+    "view": "Ver",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Vuelve a conectarte al juego",
@@ -77,6 +79,20 @@
       }
     },
     "moves":{
+      "disabledMove" : {
+        "topTwo": "Debes jugar una de las dos cartas superiores del mazo",
+        "notTurn": "No es tu turno",
+        "frozenCard": "Esta carta está congelada"
+      },
+      "points": {
+        "displayName": "Puntos",
+        "description": "Gana 1 punto | Gana {count} puntos"
+      },
+      "scuttle": {
+        "description": "Desechar una carta de menor valor",
+        "disabled": "Solo puedes desechar cartas de menor valor",
+        "disabledNoPoints": "Tu oponente no tiene cartas de puntos que desechar"
+      },
       "effects":{
         "1": "Desechar todos los puntos",
         "2": "Deseche el objetivo Royal o Glasses ocho",
@@ -98,6 +114,16 @@
         "spectators":"Espectadores",
         "noSpectators":"Actualmente no hay espectadores"
       }
+    },
+    "counter": {
+      "points": "PUNTOS",
+      "goal": "OBJETIVO",
+      "kings": "0 Reyes | 1 Rey | {count} Reyes",
+      "yourTurn": "TU TURNO",
+      "opponentTurn": "TURNO DEL OPONENTE"
+    },
+    "history": {
+      "title": "Historial"
     }
   },
   "home": {

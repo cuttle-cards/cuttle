@@ -123,7 +123,7 @@
 
       <!-- Opponent Score -->
       <h3 id="opponent-score" class="mb-3">
-        <span>POINTS: {{ gameStore.opponentPointTotal }}</span>
+        <span>{{ t('game.counter.points') }}: {{ gameStore.opponentPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="opponentKingCount"
           :points-to-win="opponentPointsToWin"
@@ -187,10 +187,10 @@
                     data-cy="scrap-chosen-card"
                   />
                   <div v-else class="d-flex flex-column align-center scrapPile">
-                    <h3>Scrap</h3>
+                    <h3>{{ $t('game.scrap') }}</h3>
                     <span>({{ scrap.length }})</span>
                     <v-btn variant="outlined" color="primary" class="mt-4">
-                      View
+                      {{ $t('game.view') }}
                     </v-btn>
                   </div>
                 </Transition>
@@ -297,7 +297,7 @@
         <div id="field-right">
           <div id="history" class="d-flex flex-column justify-start align-center elevation-10">
             <h3 class="history-title">
-              History
+              {{ $t('game.history.title') }}
             </h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
@@ -310,7 +310,7 @@
       </div>
 
       <h3 id="player-score">
-        <span>POINTS: {{ gameStore.playerPointTotal }}</span>
+        <span>{{ t('game.counter.points') }}: {{ gameStore.playerPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="playerKingCount"
           :points-to-win="playerPointsToWin"
@@ -415,6 +415,7 @@
 
 <script>
 import { mapStores } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
@@ -444,6 +445,10 @@ export default {
     UsernameToolTip,
     BaseSnackbar,
     SpectatorListMenu,
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {
@@ -638,7 +643,7 @@ export default {
       return this.selectionIndex !== null ? this.gameStore.player.hand[this.selectionIndex] : null;
     },
     turnText() {
-      return this.gameStore.isPlayersTurn ? 'YOUR TURN' : "OPPONENT'S TURN";
+      return this.gameStore.isPlayersTurn ? this.t('game.counter.yourTurn') : this.t('game.counter.opponentTurn');
     },
     validScuttleIds() {
       const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;

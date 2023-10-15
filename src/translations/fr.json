@@ -38,6 +38,8 @@
   },
   "game":{
     "resolve": "Résoudre",
+    "scrap": "Écarter",
+    "view": "Regarder",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnectez-vous au jeu",
@@ -77,6 +79,20 @@
       }
     },
     "moves":{
+      "disabledMove" : {
+        "topTwo": "Vous devez jouer l'une des deux premières cartes du paquet",
+        "notTurn": "Ce n'est pas ton tour",
+        "frozenCard": "Cette carte est gelée"
+      },
+      "points": {
+        "displayName": "Points",
+        "description": "Gagnez 1 point | Gagnez {count} points"
+      },
+      "scuttle": {
+        "description": "Écartez une carte de moindre valeur en points",
+        "disabled": "Vous ne pouvez écarter que des cartes de points plus faibles",
+        "disabledNoPoints": "Votre adversaire n'a pas de cartes de points à écarter"
+      },
       "effects":{
         "1": "Supprimez tous les points",
         "2": "Scrap Target Royal ou Lunettes huit",
@@ -98,6 +114,16 @@
         "spectators":"Spectateurs",
         "noSpectators":"Il n'y a actuellement aucun spectateur"
       }
+    },
+    "counter": {
+      "points": "POINTS",
+      "goal": "OBJECTIF",
+      "kings": "0 Rois | 1 Roi | {count} Rois",
+      "yourTurn": "TON TOUR",
+      "opponentTurn": "TOUR DE L'ADVERSAIRE"
+    },
+    "history": {
+      "title": "Historique"
     }
   },
   "home": {

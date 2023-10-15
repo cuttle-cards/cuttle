@@ -38,6 +38,8 @@
   },
   "game": {
     "resolve": "Resolve",
+    "scrap": "Scrap",
+    "view": "View",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnect to game",
@@ -77,6 +79,20 @@
       }
     },
     "moves":{
+      "disabledMove" : {
+        "topTwo": "You must play one of the top two cards from the deck",
+        "notTurn": "It's not your turn",
+        "frozenCard": "This card is frozen"
+      },
+      "points": {
+        "displayName": "Points",
+        "description": "Gain 1 point | Gain {count} points"
+      },
+      "scuttle": {
+        "description": "Scrap a lower point card",
+        "disabled": "You can only scuttle smaller point cards",
+        "disabledNoPoints": "Your opponent has no point cards to scuttle"
+      },
       "effects":{
         "1": "Scrap all points",
         "2": "Scrap target Royal or Glasses eight",
@@ -98,6 +114,16 @@
         "spectators":"Spectators",
         "noSpectators":"Currently no spectators"
       }
+    },
+    "counter": {
+      "points": "POINTS",
+      "goal": "GOAL",
+      "kings": "0 Kings | 1 King | {count} Kings",
+      "yourTurn": "YOUR TURN",
+      "opponentTurn": "OPPONENT'S TURN"
+    },
+    "history": {
+      "title": "History"
     }
   },
   "home":{

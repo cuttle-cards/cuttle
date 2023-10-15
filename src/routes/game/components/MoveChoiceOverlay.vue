@@ -109,17 +109,16 @@ export default {
     // Determines which disabled text to display
     disabledText() {
       if (this.playingFromDeck && !this.cardSelectedFromDeck) {
-        return 'You must play one of the top two cards from the deck';
+        return this.t('game.moves.disabledMove.topTwo');
       } else if (this.allMovesAreDisabled) {
-        return !this.isPlayersTurn ? "It's not your turn" : 'This card is frozen';
+        return !this.isPlayersTurn ? this.t('game.moves.disabledMove.notTurn') : this.t('game.moves.disabledMove.frozenCard');
       }
       return '';
     },
     pointsMove() {
-      const pointsDescription =
-        `Gain ${this.selectedCard.rank} point` + (this.selectedCard.rank === 1 ? '' : 's');
+      const pointsDescription = this.t('game.moves.points.description', {count: this.selectedCard.rank});
       return {
-        displayName: 'Points',
+        displayName: this.t('game.moves.points.displayName'),
         eventName: 'points',
         moveDescription: pointsDescription,
         disabled: this.allMovesAreDisabled,
@@ -128,9 +127,9 @@ export default {
     },
     scuttleMove() {
       const scuttleDisabled = this.allMovesAreDisabled || !this.hasValidScuttleTarget;
-      let scuttleDisabledExplanation = 'You can only scuttle smaller point cards';
+      let scuttleDisabledExplanation = this.t('game.moves.scuttle.disabled');
       if (this.gameStore.opponent.points.length === 0) {
-        scuttleDisabledExplanation = 'Your opponent has no point cards to scuttle';
+        scuttleDisabledExplanation = this.t('game.moves.scuttle.disabledNoPoints');
       }
       if (this.allMovesAreDisabled) {
         scuttleDisabledExplanation = this.disabledText;
@@ -138,7 +137,7 @@ export default {
       return {
         displayName: 'Scuttle',
         eventName: 'scuttle',
-        moveDescription: 'Scrap a lower point card',
+        moveDescription: this.t('game.moves.scuttle.description'),
         disabled: scuttleDisabled,
         disabledExplanation: scuttleDisabledExplanation,
       };

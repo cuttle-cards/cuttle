@@ -1,6 +1,6 @@
 <template>
   <span>
-    <span class="ml-4" :data-cy="dataCyName"> GOAL: {{ pointsToWin }} </span>
+    <span class="ml-4" :data-cy="dataCyName"> {{ $t('game.counter.goal') }}: {{ pointsToWin }} </span>
     <v-menu :location="isPlayer ? 'top' : 'bottom'">
       <template #activator="{ props }">
         <v-btn
@@ -20,17 +20,29 @@
         </v-btn>
       </template>
       <v-list class="score-goal-explanation">
-        <v-list-item :class="{ 'current-goal': kingCount === 0 }"> 0 Kings: 21pts </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 1 }"> 1 King: 14pts </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 2 }"> 2 Kings: 10pts </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 3 }"> 3 Kings: 5pts </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 4 }"> 4 Kings: 0pts </v-list-item>
+        <v-list-item :class="{ 'current-goal': kingCount === 0 }"> 
+          {{ t('game.counter.kings', {count : 0}) }}: 21pts 
+        </v-list-item>
+        <v-list-item :class="{ 'current-goal': kingCount === 1 }">
+          {{ t('game.counter.kings', {count : 1}) }}: 14pts 
+        </v-list-item>
+        <v-list-item :class="{ 'current-goal': kingCount === 2 }">
+          {{ t('game.counter.kings', 2) }}: 10pts
+        </v-list-item>
+        <v-list-item :class="{ 'current-goal': kingCount === 3 }">
+          {{ t('game.counter.kings', {count: 3}) }}: 5pts
+        </v-list-item>
+        <v-list-item :class="{ 'current-goal': kingCount === 4 }">
+          {{ t('game.counter.kings', {count: 4}) }}: 0pts
+        </v-list-item>
       </v-list>
     </v-menu>
   </span>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
+
 export default {
   name: 'ScoreGoalTooltip',
   props: {
@@ -46,6 +58,10 @@ export default {
       default: true,
       type: Boolean,
     },
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   computed: {
     dataCyName() {
