@@ -111,7 +111,7 @@ export default {
       if (this.playingFromDeck && !this.cardSelectedFromDeck) {
         return this.t('game.moves.disabledMove.topTwo');
       } else if (this.allMovesAreDisabled) {
-        return !this.isPlayersTurn ? this.t('game.moves.disabledMove.notTurn') : this.t('game.moves.disabledMove.frozenCard');
+        return this.t(!this.isPlayersTurn ? 'game.moves.disabledMove.notTurn' : 'game.moves.disabledMove.frozenCard');
       }
       return '';
     },
