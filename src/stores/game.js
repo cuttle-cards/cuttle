@@ -13,6 +13,21 @@ function queenCount(player) {
   }
   return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
 }
+  
+const compareByRankThenSuit = (card1, card2) => {
+  return (card1.rank - card2.rank) || (card1.suit - card2.suit);
+};
+
+const setPlayers = (player, myPnum) => {
+  const sortP1 = (cards) => player.pNum === myPnum ? cards?.sort(compareByRankThenSuit) : cards;
+  return {
+    ...player,
+    hand: sortP1(player.hand)?.map((card) => createGameCard(card)),
+    points: sortP1(player.points)?.map((card) => createGameCard(card)),
+    faceCards: sortP1(player.faceCards)?.map((card) => createGameCard(card))
+  };
+};
+
 
 class GameCard {
   constructor(card) {
@@ -211,12 +226,7 @@ export const useGameStore = defineStore('game', {
         this.passes = newGame.passes;
       }
       if (Object.hasOwnProperty.call(newGame, 'players')) {
-        this.players = newGame.players.map((player) => ({
-          ...player,
-          hand: player.hand?.map((card) => createGameCard(card)),
-          points: player.points?.map((card) => createGameCard(card)),
-          faceCards: player.faceCards?.map((card) => createGameCard(card)),
-        }));
+        this.players = newGame.players.map((player) => setPlayers(player, this.myPNum));
       }
       if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
         this.spectatingUsers = newGame.spectatingUsers;
