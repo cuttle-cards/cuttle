@@ -29,7 +29,7 @@
             {{ t('game.menus.gameMenu.concede') }}
           </v-list-item>
           <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
-            {{ ('game.menus.gameMenu.stalemate') }}
+            {{ t('game.menus.gameMenu.stalemate') }}
           </v-list-item>
           <TheLanguageSelector />
         </template>
@@ -54,7 +54,7 @@
           class="mr-4"
           @click="closeDialog"
         >
-          {{ `${t('game.menus.gameMenu.cancel')}` }}
+          {{ t('game.menus.gameMenu.cancel') }}
         </v-btn>
         <v-btn
           variant="flat"
