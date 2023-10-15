@@ -17,7 +17,7 @@
       <!-- Menu -->
       <v-list id="game-menu" class="text-surface-1" bg-color="surface-2">
         <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'">
-          {{ `${t('game.menus.gameMenu.rules')}` }}
+          {{  t('game.menus.gameMenu.rules')  }}
         </v-list-item>
         <!-- Stop Spectating -->
         <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
