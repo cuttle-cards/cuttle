@@ -50,7 +50,7 @@
         "login": "Iniciar sesión"
       },
       "scrapDialog": {
-        "close": "Cerca",
+        "close": "Cerrar",
         "scrapPile": "Pila de chatarra",
         "noCards": "No hay cartas en la pila de chatarra."
       },
