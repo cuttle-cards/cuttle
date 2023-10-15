@@ -116,7 +116,7 @@ export default {
       },
     },
     dialogTitle() {
-      return this.showConcedeDialog ? this.$t('game.menus.gameMenu.concede') : this.$t('game.menus.gameMenu.stalemate');
+      return this.t( this.showConcedeDialog ? 'game.menus.gameMenu.concede' : 'game.menus.gameMenu.stalemate')
     },
     dialogText() {
       return this.showConcedeDialog
