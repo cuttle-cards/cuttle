@@ -17,19 +17,19 @@
       <!-- Menu -->
       <v-list id="game-menu" class="text-surface-1" bg-color="surface-2">
         <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'">
-          {{  t('game.menus.gameMenu.rules')  }}
+          {{ t('game.menus.gameMenu.rules') }}
         </v-list-item>
         <!-- Stop Spectating -->
         <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
-          {{ `${t('game.menus.gameMenu.home')}` }}
+          {{ t('game.menus.gameMenu.home') }}
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <template v-else>
           <v-list-item data-cy="concede-initiate" @click="shownDialog = 'concede'">
-            {{ `${t('game.menus.gameMenu.concede')}` }}
+            {{ t('game.menus.gameMenu.concede') }}
           </v-list-item>
           <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
-            {{ `${t('game.menus.gameMenu.stalemate')}` }}
+            {{ ('game.menus.gameMenu.stalemate') }}
           </v-list-item>
           <TheLanguageSelector />
         </template>
@@ -116,12 +116,12 @@ export default {
       },
     },
     dialogTitle() {
-      return this.t( this.showConcedeDialog ? 'game.menus.gameMenu.concede' : 'game.menus.gameMenu.stalemate')
+      return this.t( this.showConcedeDialog ? 'game.menus.gameMenu.concede' : 'game.menus.gameMenu.stalemate');
     },
     dialogText() {
-      return this.showConcedeDialog
-        ? this.$t('game.menus.gameMenu.concedeDialog')
-        : this.$t('game.menus.gameMenu.stalemateDialog');
+      return this.t(this.showConcedeDialog
+        ? 'game.menus.gameMenu.concedeDialog'
+        : 'game.menus.gameMenu.stalemateDialog');
     },
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
