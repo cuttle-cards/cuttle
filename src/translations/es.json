@@ -102,6 +102,10 @@
         "home": "Vete a casa",
         "concedeDialog": "El juego terminará y tu oponente ganará.",
         "stalemateDialog": "Si el adversario acepta, la partida terminará en tablas. La solicitud se anulará si el adversario declina o cualquiera de los dos jugadores realiza un movimiento."
+      },
+      "spectatorListMenu":{
+        "spectators":"Espectadores",
+        "noSpectators":"Actualmente no hay espectadores"
       }
     }
   },
