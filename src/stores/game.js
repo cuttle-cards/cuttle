@@ -31,7 +31,7 @@ class GameCard {
     this.suit = card.suit;
     this.rank = card.rank;
     this.name = str_rank + str_suit;
-    this.attachments = card.attachments?.map(attachment => createGameCard(attachment));
+    this.attachments = card.attachments?.map((attachment) => createGameCard(attachment));
   }
 }
 const createGameCard = (card) => {
@@ -68,6 +68,8 @@ export const useGameStore = defineStore('game', {
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
+    cardChosenFromScrap: null,
+    playerChoosingFromScrap: false,
     // Fours
     discarding: false,
     waitingForOpponentToDiscard: false,
@@ -162,6 +164,13 @@ export const useGameStore = defineStore('game', {
           this.lastEventTargetType = newGame.lastEvent.oneOffTargetType;
         } else {
           this.lastEventTargetType = null;
+        }
+        if (Object.hasOwnProperty.call(newGame.lastEvent, 'chosenCard')) {
+          this.cardChosenFromScrap = newGame.lastEvent.chosenCard;
+          this.playerChoosingFromScrap = newGame.lastEvent.pNum === this.myPNum;
+        } else {
+          this.cardChosenFromScrap = null;
+          this.playerChoosingFromScrap = null;
         }
       }
       this.waitingForOpponentToStalemate = false;
@@ -318,7 +327,15 @@ export const useGameStore = defineStore('game', {
         this.updateGameThenResetPNumIfNull(game);
       }, 1000);
     },
+    processThrees(chosenCard, game) {
+      this.waitingForOpponentToPickFromScrap = false;
+      this.pickingFromScrap = false;
+      this.cardChosenFromScrap = chosenCard;
 
+      setTimeout(() => {
+        this.updateGameThenResetPNumIfNull(game);
+      }, 1000);
+    },
     handleGameResponse: (jwres, resolve, reject) => {
       const authStore = useAuthStore();
       switch (jwres.statusCode) {
@@ -408,15 +425,19 @@ export const useGameStore = defineStore('game', {
     },
     async requestSetIsRanked({ isRanked }) {
       return new Promise((resolve, reject) => {
-        io.socket.post('/game/setIsRanked',{
-          isRanked,
-        }, (res, jwres) => {
-          if (jwres.statusCode === 200) {
-            return resolve(res);
-          }
-          const modeName = isRanked ? 'ranked' : 'casual';
-          return reject(new Error(`Unable to change game to ${modeName}`));
-        });
+        io.socket.post(
+          '/game/setIsRanked',
+          {
+            isRanked,
+          },
+          (res, jwres) => {
+            if (jwres.statusCode === 200) {
+              return resolve(res);
+            }
+            const modeName = isRanked ? 'ranked' : 'casual';
+            return reject(new Error(`Unable to change game to ${modeName}`));
+          },
+        );
       });
     },
     ///////////////////

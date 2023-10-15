@@ -29,10 +29,10 @@
       data-cy="spectate-list-menu"
     >
       <v-list-item-title v-if="spectatingUsers.length > 0">
-        Spectators
+        {{ `${t('game.menus.spectatorListMenu.spectators')}` }}
       </v-list-item-title>
       <v-list-item-title v-else>
-        Currently no spectators
+        {{ `${t('game.menus.spectatorListMenu.noSpectators')}` }}
       </v-list-item-title>
       <v-list-item v-for="spectator in spectatingUsers" :key="spectator">
         {{ spectator }}
@@ -42,12 +42,18 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
+
 export default {
   props: {
     spectatingUsers: {
       type: Array,
       required: true,
     },
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return { spectatingMenu: false };
