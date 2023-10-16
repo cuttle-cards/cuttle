@@ -20,11 +20,13 @@
         </v-btn>
       </template>
       <v-list class="score-goal-explanation">
-        <v-list-item :class="{ 'current-goal': kingCount === 0 }"> 0 Kings: 21pts </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 1 }"> 1 King: 14pts </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 2 }"> 2 Kings: 10pts </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 3 }"> 3 Kings: 5pts </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 4 }"> 4 Kings: 0pts </v-list-item>
+        <v-list-item 
+          v-for="(points, index) in kingsPoints" 
+          :key="index" 
+          :class="{ 'current-goal': kingCount === index }"
+        >
+          {{ points }}
+        </v-list-item>
       </v-list>
     </v-menu>
   </span>
@@ -46,6 +48,17 @@ export default {
       default: true,
       type: Boolean,
     },
+  },
+  data() {
+    return {
+      kingsPoints: [
+        '0 Kings: 21pts',
+        '1 King: 14pts',
+        '2 Kings: 10pts',
+        '3 Kings: 5pts',
+        '4 Kings: 0pts'
+      ]
+    };
   },
   computed: {
     dataCyName() {
