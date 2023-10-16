@@ -90,11 +90,11 @@
             role="img"
           />
           <h1 class="gradient-text">
-            {{ t('rules.royalsTitle') }}
+            {{ t('rules.royals.title') }}
           </h1>
         </div>
         <p class="d-block">
-          {{ t('rules.royalsText') }}
+          {{ t('rules.royals.text') }}
         </p>
       </v-row>
       <v-row
@@ -127,11 +127,11 @@
             role="img"
           />
           <h1 class="gradient-text">
-            {{ t('rules.oneoffsTitle') }}
+            {{ t('rules.oneoffs.title') }}
           </h1>
         </div>
         <p>
-          {{ t('rules.oneoffsText') }}
+          {{ t('rules.oneoffs.text') }}
         </p>
       </v-row>
       <v-row
@@ -161,44 +161,44 @@
           <a href="https://www.cuttle.cards"> www.cuttle.cards</a>
           {{ t('rules.multiplayerText2') }}
         </p>
-        <h3>{{ t('rules.3PTitle') }}</h3>
+        <h3>{{ t('rules.3Players.title') }}</h3>
         <p class="mb-4">
-          {{ t('rules.3PText') }}
+          {{ t('rules.3Players.text') }}
         </p>
-        <p>{{ t('rules.3PRules') }}</p>
+        <p>{{ t('rules.3Players.rules') }}</p>
         <ul class="mb-4">
           <li>
-            {{ t('rules.3PRule1') }}
+            {{ t('rules.3Players.rule1') }}
           </li>
           <li>
-            {{ t('rules.3PRule2') }}
+            {{ t('rules.3Players.rule2') }}
           </li>
           <li>
-            {{ t('rules.3PRule3') }}
+            {{ t('rules.3Players.rule3') }}
           </li>
-          <li>{{ t('rules.3PRule4') }}</li>
+          <li>{{ t('rules.3Players.rule4') }}</li>
         </ul>
 
-        <h3>{{ t('rules.4PTitle') }}</h3>
+        <h3>{{ t('rules.4Players.title') }}</h3>
         <p class="mb-4">
-          {{ t('rules.4PText') }}
+          {{ t('rules.4Players.text') }}
         </p>
         <p>
-          {{ t('rules.4PRules') }}
+          {{ t('rules.4Players.rules') }}
         </p>
         <ul>
           <li>
-            {{ t('rules.4PRule1') }}
+            {{ t('rules.4Players.rule1') }}
           </li>
           <li>
-            {{ t('rules.4PRule2') }}
+            {{ t('rules.4Players.rule2') }}
           </li>
-          <li>{{ t('rules.4PRule3') }}</li>
+          <li>{{ t('rules.4Players.rule3') }}</li>
           <li>
-            {{ t('rules.4PRule4') }}
+            {{ t('rules.4Players.rule4') }}
           </li>
           <li>
-            {{ t('rules.4PRule5') }}
+            {{ t('rules.4Players.rule5') }}
           </li>
         </ul>
       </v-row>
@@ -206,47 +206,47 @@
       <!-- FAQ -->
       <v-row class="d-flex flex-column mb-4">
         <h1 class="gradient-text">
-          {{ t('rules.faqTitle') }}
+          {{ t('rules.faq.title') }}
         </h1>
-        <h3>{{ t('rules.twoCounter') }}</h3>
+        <h3>{{ t('rules.faq.twoCounter') }}</h3>
         <p class="mb-4">
-          {{ t('rules.twoCounterAnswer') }}
+          {{ t('rules.faq.twoCounterAnswer') }}
         </p>
-        <h3>{{ t('rules.queenProtectTwo') }}</h3>
+        <h3>{{ t('rules.faq.queenProtectTwo') }}</h3>
         <p class="mb-4">
-          {{ t('rules.queenProtectTwoAnswer') }}
+          {{ t('rules.faq.queenProtectTwoAnswer') }}
         </p>
-        <h3>{{ t('rules.queenProtectScuttle') }}</h3>
+        <h3>{{ t('rules.faq.queenProtectScuttle') }}</h3>
         <p class="mb-4">
-          {{ t('rules.queenProtectScuttleAnswer') }}
+          {{ t('rules.faq.queenProtectScuttleAnswer') }}
         </p>
-        <h3>{{ t('rules.twoOnTwo') }}</h3>
+        <h3>{{ t('rules.faq.twoOnTwo') }}</h3>
         <p class="mb-4">
-          {{ t('rules.twoOnTwoAnswer') }}
+          {{ t('rules.faq.twoOnTwoAnswer') }}
         </p>
-        <h3>{{ t('rules.kingWin') }}</h3>
+        <h3>{{ t('rules.faq.kingWin') }}</h3>
         <p class="mb-4">
-          {{ t('rules.kingWinAnswer') }}
+          {{ t('rules.faq.kingWinAnswer') }}
         </p>
-        <h3>{{ t('rules.aceDestruction') }}</h3>
+        <h3>{{ t('rules.faq.aceDestruction') }}</h3>
         <p class="mb-4">
-          {{ t('rules.aceDestructionAnswer') }}
+          {{ t('rules.faq.aceDestructionAnswer') }}
         </p>
-        <h3>{{ t('rules.revealNoPoints') }}</h3>
+        <h3>{{ t('rules.faq.revealNoPoints') }}</h3>
         <p class="mb-4">
-          {{ t('rules.revealNoPointsAnswer') }}
+          {{ t('rules.faq.revealNoPointsAnswer') }}
         </p>
-        <h3>{{ t('rules.revealOneLeft') }}</h3>
+        <h3>{{ t('rules.faq.revealOneLeft') }}</h3>
         <p class="mb-4">
-          {{ t('rules.revealOneLeftAnswer') }}
+          {{ t('rules.faq.revealOneLeftAnswer') }}
         </p>
-        <h3>{{ t('rules.deckExhaust') }}</h3>
+        <h3>{{ t('rules.faq.deckExhaust') }}</h3>
         <p class="mb-4">
-          {{ t('rules.deckExhaustAnswer') }}
+          {{ t('rules.faq.deckExhaustAnswer') }}
         </p>
-        <h3>{{ t('rules.whereToPlay') }}</h3>
+        <h3>{{ t('rules.faq.whereToPlay') }}</h3>
         <p class="mb-4">
-          {{ t('rules.whereToPlayAnswer') }}
+          {{ t('rules.faq.whereToPlayAnswer') }}
           <a href="https://www.cuttle.cards"> www.cuttle.cards </a>
         </p>
         <v-btn
@@ -351,25 +351,25 @@ export default {
     this.royals = [
       [
         {
-          title: this.$t('rules.king'),
+          title: this.$t('rules.royals.king'),
           icon: 'crown',
-          description: this.$t('rules.kingDescription'),
+          description: this.$t('rules.royals.kingDescription'),
           staticImg: '/img/game/cuttle-king.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
         },
         {
-          title: this.$t('rules.queen'),
+          title: this.$t('rules.royals.queen'),
           icon: 'crown',
-          description: this.$t('rules.queenDescription'),
+          description: this.$t('rules.royals.queenDescription'),
           staticImg: '/img/game/cuttle-queen.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/queen.gif?raw=true',
         },
       ],
       [
         {
-          title: this.$t('rules.jack'),
+          title: this.$t('rules.royals.jack'),
           icon: 'crown',
-          description: this.$t('rules.jackDescription'),
+          description: this.$t('rules.royals.jackDescription'),
           staticImg: '/img/game/cuttle-jack.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
         },
@@ -378,73 +378,73 @@ export default {
     this.oneOffs = [
       [
         {
-          title: this.$t('rules.ace'),
+          title: this.$t('rules.oneoffs.ace'),
           icon: 'delete',
-          description: this.$t('rules.aceDescription'),
+          description: this.$t('rules.oneoffs.aceDescription'),
           staticImg: '/img/game/cuttle-one-off-ace.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/ace.gif?raw=true',
         },
         {
-          title: this.$t('rules.twoE1'),
+          title: this.$t('rules.oneoffs.twoE1'),
           icon: 'delete',
-          description: this.$t('rules.twoE1Description'),
+          description: this.$t('rules.oneoffs.twoE1Description'),
           staticImg: '/img/game/cuttle-counter.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/counter.gif?raw=true',
         },
       ],
       [
         {
-          title: this.$t('rules.twoE2'),
+          title: this.$t('rules.oneoffs.twoE2'),
           icon: 'delete',
-          description: this.$t('rules.twoE2Description'),
+          description: this.$t('rules.oneoffs.twoE2Description'),
           staticImg: '/img/game/cuttle-one-off-two.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/two.gif?raw=true',
         },
         {
-          title: this.$t('rules.three'),
+          title: this.$t('rules.oneoffs.three'),
           icon: 'delete',
-          description: this.$t('rules.threeDescription'),
+          description: this.$t('rules.oneoffs.threeDescription'),
           staticImg: '/img/game/cuttle-one-off-three.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/three.gif?raw=true',
         },
       ],
       [
         {
-          title: this.$t('rules.four'),
+          title: this.$t('rules.oneoffs.four'),
           icon: 'delete',
-          description: this.$t('rules.fourDescription'),
+          description: this.$t('rules.oneoffs.fourDescription'),
           staticImg: '/img/game/cuttle-one-off-four.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/four.gif?raw=true',
         },
         {
-          title: this.$t('rules.five'),
+          title: this.$t('rules.oneoffs.five'),
           icon: 'delete',
-          description: this.$t('rules.fiveDescription'),
+          description: this.$t('rules.oneoffs.fiveDescription'),
           staticImg: '/img/game/cuttle-one-off-five.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/five.gif?raw=true',
         },
       ],
       [
         {
-          title: this.$t('rules.six'),
+          title: this.$t('rules.oneoffs.six'),
           icon: 'delete',
-          description: this.$t('rules.sixDescription'),
+          description: this.$t('rules.oneoffs.sixDescription'),
           staticImg: '/img/game/cuttle-one-off-six.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/six.gif?raw=true',
         },
         {
-          title: this.$t('rules.seven'),
+          title: this.$t('rules.oneoffs.seven'),
           icon: 'delete',
-          description: this.$t('rules.sevenDescription'),
+          description: this.$t('rules.oneoffs.sevenDescription'),
           staticImg: '/img/game/cuttle-one-off-seven.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/seven.gif?raw=true',
         },
       ],
       [
         {
-          title: this.$t('rules.nine'),
+          title: this.$t('rules.oneoffs.nine'),
           icon: 'delete',
-          description: this.$t('rules.nineDescription'),
+          description: this.$t('rules.oneoffs.nineDescription'),
           staticImg: '/img/game/cuttle-one-off-nine.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/nine.gif?raw=true',
         },
