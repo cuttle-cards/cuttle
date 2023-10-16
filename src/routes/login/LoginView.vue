@@ -272,7 +272,12 @@ export default {
       this.username = '';
       this.pw = '';
       this.loading = false;
-      this.$router.push('/');
+      if (this.authStore.loginRedirect) {
+        this.$router.push(this.authStore.loginRedirect);
+        this.authStore.loginRedirect = null;
+      } else {
+        this.$router.push('/');
+      }
     },
     handleError(message) {
       this.showSnackBar = true;

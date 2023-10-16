@@ -6,6 +6,7 @@ import GameView from '@/routes/game/GameView.vue';
 import RulesView from '@/routes/rules/RulesView.vue';
 import StatsView from '@/routes/stats/StatsView.vue';
 import { useAuthStore } from '@/stores/auth';
+import { useGameListStore } from '@/stores/gameList';
 
 export const ROUTE_NAME_GAME = 'Game';
 export const ROUTE_NAME_SPECTATE = 'Spectate';
@@ -71,7 +72,19 @@ const routes = [
     path: '/lobby/:gameId',
     component: LobbyView,
     // TODO: Add logic to redirect if a given game does not exist
-    beforeEnter: mustBeAuthenticated,
+    beforeEnter: async (to, _from, next) => {
+      const authStore = useAuthStore();
+      const gameStore = useGameListStore();
+      console.log(to.path);
+      if (!gameStore.doesGameExist(to.path.charAt(to.path.length - 1))) {
+        next('/login');
+      } else if (!authStore.authenticated || authStore.authenticated == null) {
+        authStore.setLoginRedirect(to.path);
+        next('/login');
+      } else {
+        next();
+      }
+    },
     meta: {
       hideNavigation: true,
     },

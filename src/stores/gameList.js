@@ -36,6 +36,10 @@ export const useGameListStore = defineStore('gameList', {
       startedGame.status = GameStatus.STARTED;
       this.spectateGames.push(startedGame);
     },
+    doesGameExist(gameId) {
+      const game = this.openGames.find((game) => game.id == gameId);
+      return (game) ? true : false;
+    },
     gameFinished(gameId) {
       const game = this.spectateGames.find((game) => game.id === gameId);
       if (!game) {

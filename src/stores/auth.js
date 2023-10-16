@@ -21,6 +21,7 @@ export const useAuthStore = defineStore('auth', {
     username: null,
     mustReauthenticate: false,
     isReturningUser: null,
+    loginRedirect: null,
   }),
   actions: {
     authSuccess(username) {
@@ -30,6 +31,9 @@ export const useAuthStore = defineStore('auth', {
     clearAuth() {
       this.authenticated = false;
       this.username = null;
+    },
+    setLoginRedirect(redirectPath) {
+      this.loginRedirect = redirectPath;
     },
     async requestLogin({ username, password }) {
       return this.handleLogin(username, password);
