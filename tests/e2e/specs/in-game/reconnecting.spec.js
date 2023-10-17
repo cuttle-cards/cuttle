@@ -95,7 +95,7 @@ describe('Reconnecting to a game', () => {
       });
     });
 
-    it.only('targetedOneOff -- reconnect into cannot counter dialog', () => {
+    it('targetedOneOff -- reconnect into cannot counter dialog', () => {
       cy.setupGameAsP1();
 
       cy.loadGameFixture(1, {
