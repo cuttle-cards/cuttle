@@ -55,11 +55,11 @@ export default {
   name: 'GameCard',
   props: {
     suit: {
-      type: [Number, Boolean],
+      type: Number,
       default: undefined,
     },
     rank: {
-      type: [Number, Boolean],
+      type: Number,
       default: undefined,
     },
     isSelected: {

@@ -110,8 +110,8 @@
                     <GameCard
                       v-for="(card) in gameStore.opponent.hand"
                       :key="card.id"
-                      :suit="checkIsFoursDiscarded(card) && card.suit"
-                      :rank="checkIsFoursDiscarded(card) && card.rank"
+                      :suit="isBeingDiscarded(card) ? card.suit : undefined"
+                      :rank="isBeingDiscarded(card) ? card.rank : undefined"
                       data-opponent-hand-card
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
                     />
@@ -1090,7 +1090,7 @@ export default {
         this.$refs.logsContainer.scrollTop = this.$refs.logsContainer.scrollHeight;
       }
     },
-    checkIsFoursDiscarded(card) {
+    isBeingDiscarded(card) {
       return this.gameStore.discardedCards?.some(id => id === card.id); 
     }
   },
