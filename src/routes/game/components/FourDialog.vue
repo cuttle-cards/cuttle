@@ -1,9 +1,8 @@
 <template>
-  <BaseDialog id="four-discard-dialog" v-model="show" title="Discard Two Cards">
+  <BaseDialog id="four-discard-dialog" v-model="show" :title="t('game.dialogs.four.discardTwoCards')">
     <template #body>
       <p class="mb-4">
-        Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to
-        discard.
+        {{ t('game.dialogs.four.oppponentHasResolved') }}
       </p>
       <!-- Cards in hand -->
       <div class="d-flex flex-wrap card-container">
@@ -26,7 +25,7 @@
         :disabled="!readyToDiscard"
         @click="discard"
       >
-        Discard
+        {{ t('game.dialogs.four.discard') }}
       </v-btn>
     </template>
   </BaseDialog>
@@ -37,6 +36,7 @@ import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'FourDialog',
@@ -51,6 +51,10 @@ export default {
     },
   },
   emits: ['discard'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       selectedIds: [],

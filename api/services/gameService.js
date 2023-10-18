@@ -7,13 +7,7 @@ const GameStatus = require('../../utils/GameStatus.json');
  * @param {rank: number, suit: number} card1
  * @param {rank: number, suit: number} card2
  */
-function compareByRankThenSuit(card1, card2) {
-  let res = card1.rank - card2.rank;
-  if (res === 0) {
-    res = card1.suit - card2.suit;
-  }
-  return res;
-}
+
 
 async function fetchSpectatorUsernames(gameId) {
   const spectators = await UserSpectatingGame.find({
@@ -31,9 +25,6 @@ function formatPlayerData(user, points) {
     points,
   };
   delete res.encryptedPassword;
-  res.hand.sort(compareByRankThenSuit);
-  res.points.sort(compareByRankThenSuit);
-  res.faceCards.sort(compareByRankThenSuit);
   return res;
 }
 

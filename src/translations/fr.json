@@ -11,7 +11,8 @@
     "collapseMenu": "Réduire le menu",
     "cancel": "Annuler",
     "ranked": "Classé",
-    "casual": "Occasionnel"
+    "casual": "Occasionnel",
+    "your": "ton"
   },
   "login": {
     "noAccount": "Vous n'avez pas de compte ?",
@@ -36,6 +37,7 @@
     "rankedChangedAlert":"Jeu mode modifié à"
   },
   "game":{
+    "resolve": "Résoudre",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnectez-vous au jeu",
@@ -59,7 +61,6 @@
       },
       "threeDialog": {
         "title": "Sélectionnez une carte dans Scrap",
-        "resolve": "Résoudre"
       }
     },
     "moves":{
@@ -77,6 +78,21 @@
         "11": "Jouez sur la carte de point cible pour la voler",
         "12": "Vos autres cartes ne peuvent être ciblées que par des scuttles",
         "13": "Réduit les points dont vous avez besoin pour gagner. (1K : 14 pts, 2K : 10 pts, 3K : 5 pts, 4K : 0 pts)"
+      }
+    },
+    "menus":{
+      "gameMenu":{
+        "rules": "Règles",
+        "concede": "Concéder",
+        "stalemate": "Demande dans l'impasse",
+        "cancel": "Annuler",
+        "home": "Rentre",
+        "concedeDialog": "Le jeu se termine et votre adversaire gagne.",
+        "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par une impasse. La demande sera annulée si l'adversaire refuse ou si l'un des deux joueurs joue un coup."
+      },
+      "spectatorListMenu":{
+        "spectators":"Spectateurs",
+        "noSpectators":"Il n'y a actuellement aucun spectateur"
       }
     }
   },

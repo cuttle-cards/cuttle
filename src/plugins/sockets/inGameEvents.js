@@ -3,8 +3,6 @@ import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router';
 import SocketEvent from '_/types/SocketEvent';
 
-
-
 // Handles socket updates of game data
 export async function handleInGameEvents(evData) {
   const gameStore = useGameStore();
@@ -14,7 +12,7 @@ export async function handleInGameEvents(evData) {
   const { gameId: urlGameId } = currentRoute.params;
   const eventGameId = evData.game?.id ?? evData.gameId;
   const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
-  
+
   // No-op if the event's gameId doesn't match the url
   if (!urlGameId || Number(urlGameId) !== eventGameId) {
     return;
@@ -52,14 +50,10 @@ export async function handleInGameEvents(evData) {
       gameStore.processScuttle(evData);
       break;
     case SocketEvent.RESOLVE_THREE:
-      gameStore.updateGameThenResetPNumIfNull(evData.game);
-      gameStore.pickingFromScrap = false;
-      gameStore.waitingForOpponentToPickFromScrap = false;
+      gameStore.processThrees(evData.chosenCard, evData.game);
       break;
     case SocketEvent.RESOLVE_FOUR:
-      gameStore.updateGameThenResetPNumIfNull(evData.game);
-      gameStore.waitingForOpponentToDiscard = false;
-      gameStore.discarding = false;
+      gameStore.processFours(evData.discardedCards, evData.game);
       break;
     case SocketEvent.RESOLVE:
       gameStore.updateGameThenResetPNumIfNull(evData.game);
@@ -140,16 +134,15 @@ export async function handleInGameEvents(evData) {
       break;
   }
 
-
-    // Validate current route & navigate if incorrect
-    const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
-    const shouldNavigate = currentRoute.name === ROUTE_NAME_LOBBY;
-    if (shouldNavigate) {
-      router.push({
-        name: targetRouteName,
-        params: {
-          gameId: gameStore.id,
-        },
-      });
-    }
+  // Validate current route & navigate if incorrect
+  const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
+  const shouldNavigate = currentRoute.name === ROUTE_NAME_LOBBY;
+  if (shouldNavigate) {
+    router.push({
+      name: targetRouteName,
+      params: {
+        gameId: gameStore.id,
+      },
+    });
+  }
 }

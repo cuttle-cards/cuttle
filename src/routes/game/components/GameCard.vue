@@ -28,18 +28,25 @@
         <img :class="scuttledByClass" :src="`/img/cards/card-${scuttledBy.suit}-${scuttledBy.rank}.svg`">
       </template>
     </Transition>
-    <img
-      v-if="isGlasses"
-      :src="`/img/cards/glasses-${suitName.toLowerCase()}.png`"
-      :alt="`Glasses - $${cardName}`"
-    >
-    <img
-      v-else-if="isBack"
-      src="/img/cards/card-back.png"
-      class="opponent-card-back"
-      alt="card back"
-    >
-    <img v-else :src="`/img/cards/card-${suit}-${rank}.svg`" :alt="cardName">
+    <Transition name="card-flip">
+      <img
+        v-if="isGlasses"
+        :src="`/img/cards/glasses-${suitName.toLowerCase()}.png`"
+        :alt="`Glasses - $${cardName}`"
+      >
+      <img
+        v-else-if="isBack"
+        src="/img/cards/card-back.png"
+        class="opponent-card-back"
+        alt="card back"
+      >
+      <img
+        v-else
+        :src="`/img/cards/card-${suit}-${rank}.svg`"
+        :alt="cardName"
+        class="face-card"
+      >
+    </Transition>
   </v-card>
 </template>
 
@@ -286,6 +293,16 @@ export default {
 .slide-above-leave-to {
   opacity: 0;
   transform: translateY(-32px);
+}
+
+.card-flip-enter-active{
+  transition: all 1s;
+}
+.card-flip-enter-from{
+  transform: rotateY(-90deg);
+}
+.card-flip-enter-to{
+  transform: rotateY(0deg);
 }
 
 @media (max-width: 600px) {
