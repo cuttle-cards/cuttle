@@ -53,9 +53,7 @@ export async function handleInGameEvents(evData) {
       gameStore.processThrees(evData.chosenCard, evData.game);
       break;
     case SocketEvent.RESOLVE_FOUR:
-      gameStore.updateGameThenResetPNumIfNull(evData.game);
-      gameStore.waitingForOpponentToDiscard = false;
-      gameStore.discarding = false;
+      gameStore.processFours(evData.discardedCards, evData.game);
       break;
     case SocketEvent.RESOLVE:
       gameStore.updateGameThenResetPNumIfNull(evData.game);
