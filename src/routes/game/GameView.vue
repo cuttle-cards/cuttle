@@ -1151,11 +1151,11 @@ export default {
 }
 .gameCard {
   position: absolute;
-  transition: all 1.5s ease-out;
+  transition: all 1s ease-out;
 }
 
 .scrapPile {
-  transition: all 1.5s ease;
+  transition: all 1s ease;
 }
 
 .threes-player-enter-from.scrapPile,
