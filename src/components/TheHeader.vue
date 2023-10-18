@@ -14,7 +14,7 @@
           >
         </div>
       </v-toolbar-title>
-      <v-toolbar-items v-if="!mobile" class="hidden-xs-only">
+      <v-toolbar-items v-if="!smAndDown" class="hidden-xs-only">
         <v-tabs class="pa-2">
           <v-tab
             v-for="({ text, icon, page, cyName }, i) in pageLinks"
@@ -56,7 +56,7 @@ const props = defineProps({
 
 const route = useRoute();
 const { variant } = toRefs(props);
-const { mobile } = useDisplay();
+const { smAndDown } = useDisplay();
 const pageLinks = getPageLinks();
 const linkColor = computed(() => variant.value === 'light' ? 'text-surface-1' : 'text-surface-2');
 const logoColor = computed(() => variant.value === 'light' ? 'brown' : 'white');
