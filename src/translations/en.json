@@ -173,8 +173,8 @@
       "jackDescription": "Play on an opponent's point card to steal it. Point card returns to opponent if the Jack is scrapped or if another Jack is used to steal it back."
     },
     "oneoffs": {
-      "oneoffsTitle": "One-Offs",
-      "oneoffsText": "Number cards (except 8's and 10's) can be played for a One-Off effect, which scraps the card for an effect based on the rank of the card played. Whenever a one-off is played, the other player may counter it using a two to cancel the effect.",
+      "title": "One-Offs",
+      "text": "Number cards (except 8's and 10's) can be played for a One-Off effect, which scraps the card for an effect based on the rank of the card played. Whenever a one-off is played, the other player may counter it using a two to cancel the effect.",
       "ace": "Ace",
       "aceDescription": "Scrap all point cards on the field.",
       "twoE1": "Two - Effect 1",
