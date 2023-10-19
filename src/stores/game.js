@@ -294,8 +294,8 @@ export const useGameStore = defineStore('game', {
       this.currentMatch = currentMatch;
     },
     updateGameThenResetPNumIfNull(game) {
-      this.updateGame(game);
       this.resetPNumIfNull();
+      this.updateGame(game);    
     },
     resetPNumIfNull() {
       const authStore = useAuthStore();
@@ -383,8 +383,8 @@ export const useGameStore = defineStore('game', {
           },
           (res, jwres) => {
             if (jwres.statusCode === 200) {
-              this.updateGame(res.game);
               this.myPNum = res.pNum;
+              this.updateGame(res.game);
               this.successfullyJoined({
                 username: res.playerUsername,
                 pNum: res.pNum,
