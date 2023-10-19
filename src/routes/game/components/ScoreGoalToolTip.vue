@@ -21,11 +21,11 @@
       </template>
       <v-list class="score-goal-explanation">
         <v-list-item 
-          v-for="(points, index) in kingsPoints" 
+          v-for="(explanation, index) in kingsPoints" 
           :key="index" 
           :class="{ 'current-goal': kingCount === index }"
         >
-          {{ points }}
+          {{ explanation }}
         </v-list-item>
       </v-list>
     </v-menu>
