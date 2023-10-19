@@ -41,19 +41,21 @@ module.exports = function (req, res) {
       } else {
         gameUpdates.log = [...game.log, `${player.username} discarded the ${getCardName(card1)}.`];
       }
+      gameUpdates.lastEvent.discardedCards = cardsToScrap;
+      
       const updatePromises = [
         Game.updateOne(game.id).set(gameUpdates),
         Game.addToCollection(game.id, 'scrap').members(cardsToScrap),
         User.removeFromCollection(player.id, 'hand').members(cardsToScrap),
       ];
-      return Promise.all([game, ...updatePromises]);
+      return Promise.all([game,cardsToScrap, ...updatePromises]);
     }) // End changeAndSave
     .then(function populateGame(values) {
-      const [game] = values;
-      return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
+      const [game, cardsToScrap] = values;
+      return Promise.all([gameService.populateGame({ gameId: game.id }), game, cardsToScrap]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel] = values;
+      const [fullGame, gameModel, discardedCards] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
@@ -62,6 +64,7 @@ module.exports = function (req, res) {
         change: 'resolveFour',
         game: fullGame,
         victory,
+        discardedCards
       });
       return res.ok();
     })

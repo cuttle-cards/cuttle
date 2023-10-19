@@ -108,8 +108,10 @@
                     class="opponent-hand-wrapper transition-all"
                   >
                     <GameCard
-                      v-for="(card, index) in gameStore.opponent.hand"
-                      :key="index"
+                      v-for="(card) in gameStore.opponent.hand"
+                      :key="card.id"
+                      :suit="isBeingDiscarded(card) ? card.suit : undefined"
+                      :rank="isBeingDiscarded(card) ? card.rank : undefined"
                       data-opponent-hand-card
                       class="transition-all opponent-card-back-wrapper opponent-hand-card mx-2"
                     />
@@ -1093,6 +1095,9 @@ export default {
         this.$refs.logsContainer.scrollTop = this.$refs.logsContainer.scrollHeight;
       }
     },
+    isBeingDiscarded(card) {
+      return this.gameStore.discardedCards?.some(id => id === card.id); 
+    }
   },
 };
 </script>
@@ -1151,11 +1156,11 @@ export default {
 }
 .gameCard {
   position: absolute;
-  transition: all 1.5s ease-out;
+  transition: all 1s ease-out;
 }
 
 .scrapPile {
-  transition: all 1.5s ease;
+  transition: all 1s ease;
 }
 
 .threes-player-enter-from.scrapPile,
