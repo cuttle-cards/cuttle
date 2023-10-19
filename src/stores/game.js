@@ -293,7 +293,7 @@ export const useGameStore = defineStore('game', {
       this.winnerPNum = winner;
       this.currentMatch = currentMatch;
     },
-    updateGameThenResetPNumIfNull(game) {
+    resetPNumIfNullThanUpdateGame(game) {
       this.resetPNumIfNull();
       this.updateGame(game);    
     },
@@ -317,7 +317,7 @@ export const useGameStore = defineStore('game', {
     processScuttle({ game, playedCardId, targetCardId, playedBy }) {
       // Update in one step if this player scuttled or if pNum is not set
       if (!this.player) {
-        this.updateGameThenResetPNumIfNull(game);
+        this.resetPNumIfNullThanUpdateGame(game);
         return;
       }
 
@@ -330,7 +330,7 @@ export const useGameStore = defineStore('game', {
 
       // Update game in one-step if moved cards are not found
       if (playedCardIndex === undefined || targetCardIndex === undefined) {
-        this.updateGameThenResetPNumIfNull(game);
+        this.resetPNumIfNullThanUpdateGame(game);
         return;
       }
 
@@ -340,7 +340,7 @@ export const useGameStore = defineStore('game', {
 
       // Finish complete update of the game state after 1s
       setTimeout(() => {
-        this.updateGameThenResetPNumIfNull(game);
+        this.resetPNumIfNullThanUpdateGame(game);
       }, 1000);
     },
     processThrees(chosenCard, game) {
@@ -349,7 +349,7 @@ export const useGameStore = defineStore('game', {
       this.cardChosenFromScrap = chosenCard;
 
       setTimeout(() => {
-        this.updateGameThenResetPNumIfNull(game);
+        this.resetPNumIfNullThanUpdateGame(game);
       }, 1000);
     },
     processFours(discardedCards, game) {
@@ -358,7 +358,7 @@ export const useGameStore = defineStore('game', {
       this.discardedCards = discardedCards;
 
       setTimeout(() => {
-        this.updateGameThenResetPNumIfNull(game);
+        this.resetPNumIfNullThanUpdateGame(game);
       }, 1000);
     },
     handleGameResponse: (jwres, resolve, reject) => {
