@@ -17,19 +17,19 @@
       <!-- Menu -->
       <v-list id="game-menu" class="text-surface-1" bg-color="surface-2">
         <v-list-item data-cy="rules-open" @click="shownDialog = 'rules'">
-          Rules
+          {{ t('game.menus.gameMenu.rules') }}
         </v-list-item>
         <!-- Stop Spectating -->
         <v-list-item v-if="isSpectating" data-cy="stop-spectating" @click.stop="stopSpectate">
-          Go Home
+          {{ t('game.menus.gameMenu.home') }}
         </v-list-item>
         <!-- Concede Dialog (Initiate + Confirm) -->
         <template v-else>
           <v-list-item data-cy="concede-initiate" @click="shownDialog = 'concede'">
-            Concede
+            {{ t('game.menus.gameMenu.concede') }}
           </v-list-item>
           <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
-            Request Stalemate
+            {{ t('game.menus.gameMenu.stalemate') }}
           </v-list-item>
           <TheLanguageSelector />
         </template>
@@ -54,7 +54,7 @@
           class="mr-4"
           @click="closeDialog"
         >
-          Cancel
+          {{ t('game.menus.gameMenu.cancel') }}
         </v-btn>
         <v-btn
           variant="flat"
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
@@ -88,6 +89,10 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {
@@ -111,12 +116,12 @@ export default {
       },
     },
     dialogTitle() {
-      return this.showConcedeDialog ? 'Concede' : 'Request Stalemate';
+      return this.t( this.showConcedeDialog ? 'game.menus.gameMenu.concede' : 'game.menus.gameMenu.stalemate');
     },
     dialogText() {
-      return this.showConcedeDialog
-        ? 'The game will end and your opponent will win.'
-        : 'If your opponent agrees, the game will end in a stalemate. The request will cancel if the opponent declines or either player makes a move';
+      return this.t(this.showConcedeDialog
+        ? 'game.menus.gameMenu.concedeDialog'
+        : 'game.menus.gameMenu.stalemateDialog');
     },
     buttonSize() {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';

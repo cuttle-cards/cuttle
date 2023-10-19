@@ -13,6 +13,21 @@ function queenCount(player) {
   }
   return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
 }
+  
+const compareByRankThenSuit = (card1, card2) => {
+  return (card1.rank - card2.rank) || (card1.suit - card2.suit);
+};
+
+const setPlayers = (player, myPnum) => {
+  const sortP1 = (cards) => player.pNum === myPnum ? cards?.sort(compareByRankThenSuit) : cards;
+  return {
+    ...player,
+    hand: sortP1(player.hand)?.map((card) => createGameCard(card)),
+    points: sortP1(player.points)?.map((card) => createGameCard(card)),
+    faceCards: sortP1(player.faceCards)?.map((card) => createGameCard(card))
+  };
+};
+
 
 class GameCard {
   constructor(card) {
@@ -73,6 +88,7 @@ export const useGameStore = defineStore('game', {
     // Fours
     discarding: false,
     waitingForOpponentToDiscard: false,
+    discardedCards : null,
     // Sevens
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,
@@ -172,6 +188,11 @@ export const useGameStore = defineStore('game', {
           this.cardChosenFromScrap = null;
           this.playerChoosingFromScrap = null;
         }
+        if (Object.hasOwnProperty.call(newGame.lastEvent, 'discardedCards')) {
+          this.discardedCards = newGame.lastEvent.discardedCards;
+        } else {
+          this.discardedCards = null;
+        }
       }
       this.waitingForOpponentToStalemate = false;
       if (Object.hasOwnProperty.call(newGame, 'id')) {
@@ -205,12 +226,7 @@ export const useGameStore = defineStore('game', {
         this.passes = newGame.passes;
       }
       if (Object.hasOwnProperty.call(newGame, 'players')) {
-        this.players = newGame.players.map((player) => ({
-          ...player,
-          hand: player.hand?.map((card) => createGameCard(card)),
-          points: player.points?.map((card) => createGameCard(card)),
-          faceCards: player.faceCards?.map((card) => createGameCard(card)),
-        }));
+        this.players = newGame.players.map((player) => setPlayers(player, this.myPNum));
       }
       if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
         this.spectatingUsers = newGame.spectatingUsers;
@@ -331,6 +347,15 @@ export const useGameStore = defineStore('game', {
       this.waitingForOpponentToPickFromScrap = false;
       this.pickingFromScrap = false;
       this.cardChosenFromScrap = chosenCard;
+
+      setTimeout(() => {
+        this.updateGameThenResetPNumIfNull(game);
+      }, 1000);
+    },
+    processFours(discardedCards, game) {
+      this.waitingForOpponentToDiscard = false;
+      this.discarding = false;
+      this.discardedCards = discardedCards;
 
       setTimeout(() => {
         this.updateGameThenResetPNumIfNull(game);

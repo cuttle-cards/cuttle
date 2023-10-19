@@ -103,7 +103,7 @@ describe('Reconnecting to a game', () => {
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [Card.ACE_OF_CLUBS],
-        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SIX_OF_HEARTS],
         p1FaceCards: [Card.KING_OF_CLUBS],
       });
 
@@ -122,7 +122,7 @@ describe('Reconnecting to a game', () => {
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [Card.ACE_OF_CLUBS],
-        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SIX_OF_HEARTS],
         p1FaceCards: [],
         scrap: [Card.TWO_OF_CLUBS, Card.KING_OF_CLUBS],
       });
