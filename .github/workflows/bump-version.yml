@@ -9,15 +9,14 @@ jobs:
       runs-on: ubuntu-latest
   
       env:
-        GH_PUSH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
+        GH_PUSH_TOKEN: ${{ secrets.GH_PUSH_TOKEN || github.token }}
   
       steps:
-        - name: Check for GH_PUSH_TOKEN
-          run: echo "GH_PUSH_TOKEN is $GH_PUSH_TOKEN"
-          if: env.GH_PUSH_TOKEN != ''
   
         - name: Checkout
           uses: actions/checkout@v4
+          with:
+            token: ${{ env.GH_PUSH_TOKEN }}
   
         - name: configure git
           run: |
@@ -25,9 +24,6 @@ jobs:
             git config --global user.name "Cuttle Continuous Integration"
             git config --global user.email "itsalaidbacklife@gmail.com"
   
-        - name: Check for GH_PUSH_TOKEN (again)
-          run: echo "GH_PUSH_TOKEN is $GH_PUSH_TOKEN"
-          if: env.GH_PUSH_TOKEN != ''
   
         - name: bump patch version
           if: contains(github.event.pull_request.labels.*.name, 'version-patch') && env.GH_PUSH_TOKEN != ''
@@ -44,4 +40,3 @@ jobs:
         - name: push
           if: env.GH_PUSH_TOKEN != ''
           run: git push origin main
-  
