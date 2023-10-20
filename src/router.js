@@ -71,13 +71,11 @@ const routes = [
     name: ROUTE_NAME_LOBBY,
     path: '/lobby/:gameId',
     component: LobbyView,
-    // TODO: Add logic to redirect if a given game does not exist
     beforeEnter: async (to, _from, next) => {
       const authStore = useAuthStore();
-      const gameStore = useGameListStore();
-      console.log(to.path);
-      if (!gameStore.doesGameExist(to.path.charAt(to.path.length - 1))) {
-        next('/login');
+      const gameListStore = useGameListStore();
+      if (!gameListStore.doesGameExist(to.path.split('lobby/')[1])) {
+        next('/');
       } else if (!authStore.authenticated || authStore.authenticated == null) {
         authStore.setLoginRedirect(to.path);
         next('/login');

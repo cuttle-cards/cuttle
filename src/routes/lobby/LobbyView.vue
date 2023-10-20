@@ -1,4 +1,23 @@
 <template>
+  <BaseDialog 
+    v-model="errorLoadingDialogVisible"
+    title="Error Joining Lobby"
+  >
+    <template #body>
+      <span>Oops. </span><br>
+      <span>Could not join that game at this time. Go home to find another one</span>
+    </template>
+    <template #actions>
+      <v-btn
+        color="surface-2"
+        variant="flat"
+        @click="goHome"
+      >
+        Go Home
+      </v-btn>
+    </template>
+  </BaseDialog>
+  <v-skeleton-loader v-if="loading" type="article" />
   <v-container id="lobby-wrapper">
     <v-row>
       <v-col sm="3" md="1" class="my-auto">
@@ -100,12 +119,14 @@ import { useAuthStore } from '@/stores/auth';
 import { useThemedLogo } from '@/composables/themedLogo';
 import LobbyPlayerIndicator from '@/routes/lobby/components/LobbyPlayerIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
 
 export default {
   name: 'LobbyView',
   components: {
     LobbyPlayerIndicator,
-    BaseSnackbar
+    BaseSnackbar,
+    BaseDialog,
   },
   setup() {
     const { t } = useI18n();
@@ -118,6 +139,8 @@ export default {
   data() {
     return {
       readying: false,
+      loading: false,
+      errorLoadingDialogVisible: false,
     };
   },
   computed: {
@@ -148,6 +171,12 @@ export default {
       }
     },
   },
+  async created() {
+    if (!this.gameStore.id || this.gameStore.id === null) {
+      this.subscribeToGame(window.location.hash.split('lobby/')[1]);
+      this.$router.push(`/lobby/${window.location.hash.split('lobby/')[1]}`);
+    }
+  },
   methods: {
     async ready() {
       this.readying = true;
@@ -169,6 +198,23 @@ export default {
           console.log(err);
         });
     },
+    subscribeToGame(gameId) {
+      this.loading = true;
+      gameId = Number(gameId);
+      this.gameStore
+        .requestSubscribe(gameId)
+        .then(() => {
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.errorLoadingDialogVisible = true;
+          console.log(err);
+        });
+    },
+    goHome() {
+      this.$router.push('/');
+    }
   },
 };
 </script>
