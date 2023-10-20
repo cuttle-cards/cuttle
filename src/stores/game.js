@@ -383,6 +383,7 @@ export const useGameStore = defineStore('game', {
           },
           (res, jwres) => {
             if (jwres.statusCode === 200) {
+              this.resetState();
               this.myPNum = res.pNum;
               this.updateGame(res.game);
               this.successfullyJoined({
@@ -407,8 +408,8 @@ export const useGameStore = defineStore('game', {
           },
           (res, jwres) => {
             if (jwres.statusCode === 200) {
-              this.updateGame(res);
               this.myPNum = 0;
+              this.updateGame(res);
               return resolve();
             }
             return reject(new Error('Unable to spectate game'));
