@@ -301,7 +301,7 @@ export const useGameStore = defineStore('game', {
       const authStore = useAuthStore();
       // Set my pNum if it is null
       if (this.myPNum === null) {
-        let myPNum = game.players.findIndex((player) => player.username === authStore.username);
+        let myPNum = game.players.findIndex(({username}) => username === authStore.username);
         if (myPNum === -1) {
           myPNum = null;
         }
