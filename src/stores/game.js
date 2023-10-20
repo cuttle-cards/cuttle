@@ -294,14 +294,14 @@ export const useGameStore = defineStore('game', {
       this.currentMatch = currentMatch;
     },
     resetPNumIfNullThanUpdateGame(game) {
-      this.resetPNumIfNull();
+      this.resetPNumIfNull(game);
       this.updateGame(game);    
     },
-    resetPNumIfNull() {
+    resetPNumIfNull(game) {
       const authStore = useAuthStore();
       // Set my pNum if it is null
       if (this.myPNum === null) {
-        let myPNum = this.players.findIndex((player) => player.username === authStore.username);
+        let myPNum = game.players.findIndex((player) => player.username === authStore.username);
         if (myPNum === -1) {
           myPNum = null;
         }
