@@ -1,30 +1,42 @@
 on:
-  pull_request:
-    branches:
-      - main
-    types: [closed]
+    pull_request:
+      branches:
+        - main
+      types: [closed]
+  
 jobs:
-  bump-version:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_PUSH_TOKEN }}
-      - name: configure git
-        run: |
-          git remote set-url origin https://itsalaidbacklife@github.com/cuttle-cards/cuttle
-          git config --global user.name "Cuttle Continuous Integration"
-          git config --global user.email "itsalaidbacklife@gmail.com"
-      - name: bump patch version
-        if: contains(github.event.pull_request.labels.*.name, 'version-patch')
-        run: npm run version:patch
-      - name: bump minor version
-        if: contains(github.event.pull_request.labels.*.name, 'version-minor')
-        run: npm run version:minor
-      - name: bump major version
-        if: contains(github.event.pull_request.labels.*.name, 'version-major')
-        run: npm run version:major
-      - name: push
-        run: git push origin main
+    bump-version:
+      runs-on: ubuntu-latest
+  
+      env:
+        GH_PUSH_TOKEN: ${{ secrets.GH_PUSH_TOKEN || github.token }}
+  
+      steps:
+  
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            token: ${{ env.GH_PUSH_TOKEN }}
+  
+        - name: configure git
+          run: |
+            git remote set-url origin https://itsalaidbacklife@github.com/cuttle-cards/cuttle
+            git config --global user.name "Cuttle Continuous Integration"
+            git config --global user.email "itsalaidbacklife@gmail.com"
+  
+  
+        - name: bump patch version
+          if: contains(github.event.pull_request.labels.*.name, 'version-patch') && env.GH_PUSH_TOKEN != ''
+          run: npm run version:patch
+  
+        - name: bump minor version
+          if: contains(github.event.pull_request.labels.*.name, 'version-minor') && env.GH_PUSH_TOKEN != ''
+          run: npm run version:minor
+  
+        - name: bump major version
+          if: contains(github.event.pull_request.labels.*.name, 'version-major') && env.GH_PUSH_TOKEN != ''
+          run: npm run version:major
+  
+        - name: push
+          if: env.GH_PUSH_TOKEN != ''
+          run: git push origin main
