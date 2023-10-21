@@ -83,12 +83,12 @@ export const useGameStore = defineStore('game', {
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
-    cardChosenFromScrap: null,
-    playerChoosingFromScrap: false,
+    lastEventCardChosen: null,
+    lastEventPlayerChoosing: false,
     // Fours
     discarding: false,
     waitingForOpponentToDiscard: false,
-    discardedCards : null,
+    lastEventDiscardedCards : null,
     // Sevens
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,
@@ -165,106 +165,38 @@ export const useGameStore = defineStore('game', {
   },
   actions: {
     updateGame(newGame) {
-      if (Object.hasOwnProperty.call(newGame, 'lastEvent')) {
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'change')) {
-          this.lastEventChange = newGame.lastEvent.change;
-        } else {
-          this.lastEventChange = null;
+      const cardKeys = ['topCard', 'secondCard', 'oneOff', 'oneOffTarget'];
+      const cardArrayKeys = ['deck', 'scrap', 'twos'];
+      
+      Object.keys(newGame).forEach(key => {
+        //set lastEvent properties
+        if (key === 'lastEvent') {
+          Object.keys(newGame.lastEvent).forEach( lastEventKey => {
+            if (lastEventKey === 'oneOff') {
+              this.lastEventOneOffRank = newGame.lastEvent?.oneOff?.rank ?? null;
+            }
+            else if (lastEventKey === 'chosenCard') {
+              this.lastEventPlayerChoosing = (newGame.lastEvent?.pNum === this.myPNum) ?? null;
+            }
+            else {
+              this[key + lastEventKey] = newGame.lastEvent?.[lastEventKey] ?? null;
+            }
+          });
         }
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'oneOff')) {
-          this.lastEventOneOffRank = newGame.lastEvent.oneOff.rank;
-        } else {
-          this.lastEventOneOffRank = null;
+        //set the rest
+        if (cardArrayKeys.includes(key)) {
+          this[key] = newGame[key]?.map((card) => createGameCard(card)) ?? null;
+        } else if (cardKeys.includes(key)) {
+          this[key] = createGameCard(newGame[key]) ?? null;
         }
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'oneOffTargetType')) {
-          this.lastEventTargetType = newGame.lastEvent.oneOffTargetType;
-        } else {
-          this.lastEventTargetType = null;
+        else if (key === 'players') {
+          this.players = newGame.players?.map((player) => setPlayers(player, this.myPNum)) ?? null;
         }
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'chosenCard')) {
-          this.cardChosenFromScrap = newGame.lastEvent.chosenCard;
-          this.playerChoosingFromScrap = newGame.lastEvent.pNum === this.myPNum;
-        } else {
-          this.cardChosenFromScrap = null;
-          this.playerChoosingFromScrap = null;
+        else {
+          this[key] = newGame[key] ?? null;
         }
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'discardedCards')) {
-          this.discardedCards = newGame.lastEvent.discardedCards;
-        } else {
-          this.discardedCards = null;
-        }
-      }
+      });
       this.waitingForOpponentToStalemate = false;
-      if (Object.hasOwnProperty.call(newGame, 'id')) {
-        this.id = newGame.id;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'turn')) {
-        this.turn = newGame.turn;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'chat')) {
-        this.chat = cloneDeep(newGame.chat);
-      }
-      if (Object.hasOwnProperty.call(newGame, 'deck')) {
-        this.deck = newGame.deck?.map((card) => createGameCard(card));
-      }
-      if (Object.hasOwnProperty.call(newGame, 'scrap')) {
-        this.scrap = newGame.scrap?.map((card) => createGameCard(card));
-      }
-      if (Object.hasOwnProperty.call(newGame, 'log')) {
-        this.log = cloneDeep(newGame.log);
-      }
-      if (Object.hasOwnProperty.call(newGame, 'name')) {
-        this.name = newGame.name;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'p0Ready')) {
-        this.p0Ready = newGame.p0Ready;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'p1Ready')) {
-        this.p1Ready = newGame.p1Ready;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'passes')) {
-        this.passes = newGame.passes;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'players')) {
-        this.players = newGame.players.map((player) => setPlayers(player, this.myPNum));
-      }
-      if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
-        this.spectatingUsers = newGame.spectatingUsers;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'twos')) {
-        this.twos = newGame.twos?.map((card) => createGameCard(card));
-      }
-      if (Object.hasOwnProperty.call(newGame, 'topCard')) {
-        this.topCard = createGameCard(newGame.topCard);
-      } else {
-        this.topCard = null;
-      }
-
-      if (Object.hasOwnProperty.call(newGame, 'secondCard')) {
-        this.secondCard = createGameCard(newGame.secondCard);
-      } else {
-        this.secondCard = null;
-      }
-
-      if (Object.hasOwnProperty.call(newGame, 'oneOff')) {
-        this.oneOff = createGameCard(newGame.oneOff);
-      }
-      else {
-        this.oneOff = null;
-      }
-
-      if (Object.hasOwnProperty.call(newGame, 'oneOffTarget')) {
-        this.oneOffTarget = createGameCard(newGame.oneOffTarget);
-      } else {
-        this.oneOffTarget = null;
-      }
-
-      if (Object.hasOwnProperty.call(newGame, 'isRanked')) {
-        this.isRanked = newGame.isRanked;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'currentMatch')) {
-        this.currentMatch = newGame.currentMatch;
-      }
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
@@ -346,7 +278,7 @@ export const useGameStore = defineStore('game', {
     processThrees(chosenCard, game) {
       this.waitingForOpponentToPickFromScrap = false;
       this.pickingFromScrap = false;
-      this.cardChosenFromScrap = chosenCard;
+      this.lastEventCardChosen = chosenCard;
 
       setTimeout(() => {
         this.resetPNumIfNullThenUpdateGame(game);
@@ -355,7 +287,7 @@ export const useGameStore = defineStore('game', {
     processFours(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
       this.discarding = false;
-      this.discardedCards = discardedCards;
+      this.lastEventDiscardedCards = discardedCards;
 
       setTimeout(() => {
         this.resetPNumIfNullThenUpdateGame(game);
