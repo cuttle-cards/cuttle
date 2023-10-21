@@ -175,7 +175,7 @@ export const useGameStore = defineStore('game', {
             if (lastEventKey === 'oneOff') {
               this.lastEventOneOffRank = newGame.lastEvent?.oneOff?.rank ?? null;
             }
-            else if (lastEventKey === 'chosenCard') {
+            else if (lastEventKey === 'pNum') {
               this.lastEventPlayerChoosing = (newGame.lastEvent?.pNum === this.myPNum) ?? null;
             }
             else {
