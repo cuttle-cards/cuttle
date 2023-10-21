@@ -293,9 +293,9 @@ export const useGameStore = defineStore('game', {
       this.winnerPNum = winner;
       this.currentMatch = currentMatch;
     },
-    resetPNumIfNullThanUpdateGame(game) {
+    resetPNumIfNullThenUpdateGame(game) {
       this.resetPNumIfNull(game);
-      this.updateGame(game);    
+      this.updateGame(game);
     },
     resetPNumIfNull(game) {
       const authStore = useAuthStore();
@@ -317,7 +317,7 @@ export const useGameStore = defineStore('game', {
     processScuttle({ game, playedCardId, targetCardId, playedBy }) {
       // Update in one step if this player scuttled or if pNum is not set
       if (!this.player) {
-        this.resetPNumIfNullThanUpdateGame(game);
+        this.resetPNumIfNullThenUpdateGame(game);
         return;
       }
 
@@ -330,7 +330,7 @@ export const useGameStore = defineStore('game', {
 
       // Update game in one-step if moved cards are not found
       if (playedCardIndex === undefined || targetCardIndex === undefined) {
-        this.resetPNumIfNullThanUpdateGame(game);
+        this.resetPNumIfNullThenUpdateGame(game);
         return;
       }
 
@@ -340,7 +340,7 @@ export const useGameStore = defineStore('game', {
 
       // Finish complete update of the game state after 1s
       setTimeout(() => {
-        this.resetPNumIfNullThanUpdateGame(game);
+        this.resetPNumIfNullThenUpdateGame(game);
       }, 1000);
     },
     processThrees(chosenCard, game) {
@@ -349,7 +349,7 @@ export const useGameStore = defineStore('game', {
       this.cardChosenFromScrap = chosenCard;
 
       setTimeout(() => {
-        this.resetPNumIfNullThanUpdateGame(game);
+        this.resetPNumIfNullThenUpdateGame(game);
       }, 1000);
     },
     processFours(discardedCards, game) {
@@ -358,7 +358,7 @@ export const useGameStore = defineStore('game', {
       this.discardedCards = discardedCards;
 
       setTimeout(() => {
-        this.resetPNumIfNullThanUpdateGame(game);
+        this.resetPNumIfNullThenUpdateGame(game);
       }, 1000);
     },
     handleGameResponse: (jwres, resolve, reject) => {

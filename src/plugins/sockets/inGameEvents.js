@@ -30,7 +30,7 @@ export async function handleInGameEvents(evData) {
     }
     case SocketEvent.INITIALIZE: {
       // Update state
-      gameStore.resetPNumIfNullThanUpdateGame(evData.game);
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       if (isSpectating) {
         gameStore.myPNum = 0; // always spectate as p0
       }
@@ -43,7 +43,7 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.LOAD_FIXTURE:
     case SocketEvent.JACK:
     case SocketEvent.DELETE_DECK:
-      gameStore.resetPNumIfNullThanUpdateGame(evData.game);
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     case SocketEvent.SCUTTLE:
       gameStore.processScuttle(evData);
@@ -55,7 +55,7 @@ export async function handleInGameEvents(evData) {
       gameStore.processFours(evData.discardedCards, evData.game);
       break;
     case SocketEvent.RESOLVE:
-      gameStore.resetPNumIfNullThanUpdateGame(evData.game);
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       gameStore.waitingForOpponentToCounter = false;
       gameStore.myTurnToCounter = false;
       if (evData.happened) {
@@ -89,7 +89,7 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.TARGETED_ONE_OFF:
     case SocketEvent.ONE_OFF:
     case SocketEvent.COUNTER:
-      gameStore.resetPNumIfNullThanUpdateGame(evData.game);
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       if (evData.pNum !== gameStore.myPNum) {
         gameStore.waitingForOpponentToCounter = false;
         gameStore.myTurnToCounter = true;
@@ -103,13 +103,13 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.SEVEN_FACE_CARD:
     case SocketEvent.SEVEN_JACK:
     case SocketEvent.SEVEN_SCUTTLE:
-      gameStore.resetPNumIfNullThanUpdateGame(evData.game);
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       gameStore.playingFromDeck = false;
       gameStore.waitingForOpponentToPlayFromDeck = false;
       break;
     case SocketEvent.SEVEN_ONE_OFF:
     case SocketEvent.SEVEN_TARGETED_ONE_OFF:
-      gameStore.resetPNumIfNullThanUpdateGame(evData.game);
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       gameStore.playingFromDeck = false;
       gameStore.waitingForOpponentToPlayFromDeck = false;
       if (evData.pNum !== gameStore.myPNum) {
@@ -120,7 +120,7 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.RE_LOGIN:
     case SocketEvent.SPECTATOR_JOINED:
     case SocketEvent.SPECTATOR_LEFT:
-      gameStore.resetPNumIfNullThanUpdateGame(evData.game);
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     case SocketEvent.REQUEST_STALEMATE:
       if (evData.requestedByPNum !== gameStore.myPNum && !evData.victory.gameOver) {
