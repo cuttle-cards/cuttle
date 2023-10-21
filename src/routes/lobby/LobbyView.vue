@@ -200,9 +200,8 @@ export default {
     },
     subscribeToGame(gameId) {
       this.loading = true;
-      gameId = Number(gameId);
       this.gameStore
-        .requestSubscribe(gameId)
+        .requestSubscribe(Number(gameId))
         .then(() => {
           this.loading = false;
         })
