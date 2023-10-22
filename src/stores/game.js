@@ -174,11 +174,9 @@ export const useGameStore = defineStore('game', {
           Object.keys(newGame.lastEvent).forEach( lastEventKey => {
             if (lastEventKey === 'oneOff') {
               this.lastEventOneOffRank = newGame.lastEvent?.oneOff?.rank ?? null;
-            }
-            else if (lastEventKey === 'pNum') {
+            } else if (lastEventKey === 'pNum') {
               this.lastEventPlayerChoosing = (newGame.lastEvent?.pNum === this.myPNum) ?? null;
-            }
-            else {
+            } else {
               this[key + lastEventKey] = newGame.lastEvent?.[lastEventKey] ?? null;
             }
           });
@@ -188,11 +186,9 @@ export const useGameStore = defineStore('game', {
           this[key] = newGame[key]?.map((card) => createGameCard(card)) ?? null;
         } else if (cardKeys.includes(key)) {
           this[key] = createGameCard(newGame[key]) ?? null;
-        }
-        else if (key === 'players') {
+        } else if (key === 'players') {
           this.players = newGame.players?.map((player) => setPlayers(player, this.myPNum)) ?? null;
-        }
-        else {
+        } else {
           this[key] = newGame[key] ?? null;
         }
       });
