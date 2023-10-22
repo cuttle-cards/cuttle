@@ -124,10 +124,12 @@
         "noSpectators":"Currently no spectators"
       }
     },
-    "counter": {
+    "score": {
       "points": "POINTS",
       "goal": "GOAL",
-      "kings": "0 Kings | 1 King | {count} Kings",
+      "kings": "0 Kings | 1 King | {count} Kings"
+    },
+    "turn": {
       "yourTurn": "YOUR TURN",
       "opponentTurn": "OPPONENT'S TURN"
     },

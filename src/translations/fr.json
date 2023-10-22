@@ -124,10 +124,12 @@
         "noSpectators":"Il n'y a actuellement aucun spectateur"
       }
     },
-    "counter": {
+    "score": {
       "points": "POINTS",
       "goal": "OBJECTIF",
-      "kings": "0 Rois | 1 Roi | {count} Rois",
+      "kings": "0 Rois | 1 Roi | {count} Rois"
+    },
+    "turn": {
       "yourTurn": "TON TOUR",
       "opponentTurn": "TOUR DE L'ADVERSAIRE"
     },

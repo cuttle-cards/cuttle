@@ -125,7 +125,7 @@
 
       <!-- Opponent Score -->
       <h3 id="opponent-score" class="mb-3">
-        <span>{{ t('game.counter.points') }}: {{ gameStore.opponentPointTotal }}</span>
+        <span>{{ t('game.score.points') }}: {{ gameStore.opponentPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="opponentKingCount"
           :points-to-win="opponentPointsToWin"
@@ -312,7 +312,7 @@
       </div>
 
       <h3 id="player-score">
-        <span>{{ t('game.counter.points') }}: {{ gameStore.playerPointTotal }}</span>
+        <span>{{ t('game.score.points') }}: {{ gameStore.playerPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="playerKingCount"
           :points-to-win="playerPointsToWin"
@@ -645,7 +645,7 @@ export default {
       return this.selectionIndex !== null ? this.gameStore.player.hand[this.selectionIndex] : null;
     },
     turnText() {
-      return this.t(this.gameStore.isPlayersTurn ? 'game.counter.yourTurn' : 'game.counter.opponentTurn');
+      return this.t(this.gameStore.isPlayersTurn ? 'game.turn.yourTurn' : 'game.turn.opponentTurn');
     },
     validScuttleIds() {
       const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;

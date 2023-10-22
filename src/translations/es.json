@@ -124,10 +124,12 @@
         "noSpectators":"Actualmente no hay espectadores"
       }
     },
-    "counter": {
+    "score": {
       "points": "PUNTOS",
       "goal": "OBJETIVO",
-      "kings": "0 Reyes | 1 Rey | {count} Reyes",
+      "kings": "0 Reyes | 1 Rey | {count} Reyes"
+    },
+    "turn": {
       "yourTurn": "TU TURNO",
       "opponentTurn": "TURNO DEL OPONENTE"
     },
