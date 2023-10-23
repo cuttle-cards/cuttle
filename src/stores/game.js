@@ -293,15 +293,15 @@ export const useGameStore = defineStore('game', {
       this.winnerPNum = winner;
       this.currentMatch = currentMatch;
     },
-    updateGameThenResetPNumIfNull(game) {
+    resetPNumIfNullThenUpdateGame(game) {
+      this.resetPNumIfNull(game);
       this.updateGame(game);
-      this.resetPNumIfNull();
     },
-    resetPNumIfNull() {
+    resetPNumIfNull(game) {
       const authStore = useAuthStore();
       // Set my pNum if it is null
       if (this.myPNum === null) {
-        let myPNum = this.players.findIndex((player) => player.username === authStore.username);
+        let myPNum = game.players.findIndex(({username}) => username === authStore.username);
         if (myPNum === -1) {
           myPNum = null;
         }
@@ -317,7 +317,7 @@ export const useGameStore = defineStore('game', {
     processScuttle({ game, playedCardId, targetCardId, playedBy }) {
       // Update in one step if this player scuttled or if pNum is not set
       if (!this.player) {
-        this.updateGameThenResetPNumIfNull(game);
+        this.resetPNumIfNullThenUpdateGame(game);
         return;
       }
 
@@ -330,7 +330,7 @@ export const useGameStore = defineStore('game', {
 
       // Update game in one-step if moved cards are not found
       if (playedCardIndex === undefined || targetCardIndex === undefined) {
-        this.updateGameThenResetPNumIfNull(game);
+        this.resetPNumIfNullThenUpdateGame(game);
         return;
       }
 
@@ -340,7 +340,7 @@ export const useGameStore = defineStore('game', {
 
       // Finish complete update of the game state after 1s
       setTimeout(() => {
-        this.updateGameThenResetPNumIfNull(game);
+        this.resetPNumIfNullThenUpdateGame(game);
       }, 1000);
     },
     processThrees(chosenCard, game) {
@@ -349,7 +349,7 @@ export const useGameStore = defineStore('game', {
       this.cardChosenFromScrap = chosenCard;
 
       setTimeout(() => {
-        this.updateGameThenResetPNumIfNull(game);
+        this.resetPNumIfNullThenUpdateGame(game);
       }, 1000);
     },
     processFours(discardedCards, game) {
@@ -358,7 +358,7 @@ export const useGameStore = defineStore('game', {
       this.discardedCards = discardedCards;
 
       setTimeout(() => {
-        this.updateGameThenResetPNumIfNull(game);
+        this.resetPNumIfNullThenUpdateGame(game);
       }, 1000);
     },
     handleGameResponse: (jwres, resolve, reject) => {
@@ -383,8 +383,9 @@ export const useGameStore = defineStore('game', {
           },
           (res, jwres) => {
             if (jwres.statusCode === 200) {
-              this.updateGame(res.game);
+              this.resetState();
               this.myPNum = res.pNum;
+              this.updateGame(res.game);
               this.successfullyJoined({
                 username: res.playerUsername,
                 pNum: res.pNum,
@@ -407,8 +408,8 @@ export const useGameStore = defineStore('game', {
           },
           (res, jwres) => {
             if (jwres.statusCode === 200) {
-              this.updateGame(res);
               this.myPNum = 0;
+              this.updateGame(res);
               return resolve();
             }
             return reject(new Error('Unable to spectate game'));
