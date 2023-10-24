@@ -5,7 +5,7 @@
     </div>
     <v-container>
       <div class="d-flex align-center">
-        <h1>Lobby</h1>
+        <h1>{{ t('lobby.lobbyFor') }}</h1>
       </div>
       <h5>{{ gameName }}</h5>
       <v-row>
@@ -17,7 +17,7 @@
           />
         </v-col>
         <v-col md="4" cols="12" class="d-flex align-center justify-center">
-          <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo" />
+          <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo">
         </v-col>
         <v-col md="4" cols="12">
           <LobbyPlayerIndicator
@@ -28,7 +28,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
           <div class="mx-auto my-4 my-xl-2 homeContent">
             <v-btn
@@ -36,18 +36,22 @@
               color="newPrimary"
               size="x-large"
               text-color="white"
-              data-cy="create-game-btn"
+              data-cy="ready-button"
               @click="ready"
             >
               {{ readyButtonText }}
+              <v-icon
+                class="ml-1"
+                size="small"
+                :icon="`mdi-${rankedIcon}`"
+                :data-cy="`ready-button-${rankedIcon}-icon`"
+              />
             </v-btn>
-            <div
-              class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4"
-            >
+            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
               <div class="rank-switch">
                 <v-switch
-                  variant="outlined"
                   v-model="gameStore.isRanked"
+                  variant="outlined"
                   class="mx-md-4 pl-2"
                   :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
                   data-cy="edit-game-ranked-switch"
@@ -56,9 +60,9 @@
                   @update:model-value="setIsRanked"
                 />
                 <v-icon
-                  class="mr-2"
+                  class="mr-2 mr-md-4"
                   size="medium"
-                  :icon="`mdi-${gameStore.isRanked ? 'trophy' : 'coffee'}`"
+                  :icon="`mdi-${rankedIcon}`"
                   aria-hidden="true"
                 />
               </div>
@@ -68,15 +72,15 @@
                 class="w-50 px-16 py-2"
                 color="surface-2"
                 data-cy="exit-button"
-                @click="leave"
                 size="x-large"
+                @click="leave"
               >
                 {{ t('lobby.exit') }}
               </v-btn>
             </div>
           </div>
         </v-col>
-        <v-spacer></v-spacer>
+        <v-spacer />
       </v-row>
     </v-container>
     <BaseSnackbar
@@ -130,6 +134,9 @@ export default {
     readyButtonText() {
       return this.t(this.iAmReady ? 'lobby.unready' : 'lobby.ready');
     },
+    rankedIcon(){
+      return this.gameStore.isRanked ? 'trophy' : 'coffee';
+    }
   },
   watch: {
     opponentUsername(newVal) {
@@ -217,6 +224,12 @@ h5 {
   line-height: 5rem;
   margin: auto auto 16px auto;
 }
+@media (min-width: 980px) {
+  .rank-switch {
+    padding: 0;
+  }  
+}
+
 @media (max-width: 660px) {
   .rank-switch {
     padding: 0;

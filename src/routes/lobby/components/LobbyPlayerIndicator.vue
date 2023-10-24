@@ -2,8 +2,20 @@
   <div v-if="playerUsername" class="player-card">
     <span class="player-name">{{ playerUsername }}</span>
     <Transition name="card-flip">
-      <img v-if="playerReady" src="/img/cards/card-ready.png" class="opponent-card-back" alt="card back" />
-      <img v-else src="/img/cards/card-back.png" class="opponent-card-back" alt="card back" />
+      <img
+        v-if="playerReady"
+        src="/img/cards/card-ready.png"
+        class="card-container"
+        alt="card front"
+        data-cy="lobby-ready-card"
+      >
+      <img
+        v-else
+        src="/img/cards/card-back.png"
+        class="card-container"
+        alt="card back"
+        data-cy="lobby-back-card"
+      >
     </Transition>
   </div>
   <div v-else class="player-indicator" :style="{ padding: playerPadding }">
@@ -51,10 +63,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.opponent-card-back {
+.card-container {
   border-radius: 10px;
-  max-height: 40vh;
-  max-width: calc(40vh / 1.45);
+  max-height: 35vh;
+  max-width: calc(35vh / 1.45);
   width: 100%;
 }
 .card-flip-enter-active {
@@ -67,8 +79,10 @@ export default {
   transform: rotateY(0deg);
 }
 .player-card {
-  display: grid;
-  justify-content: center;
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
 }
 .player-name {
   padding: 5px;
@@ -95,12 +109,21 @@ export default {
   z-index: 1;
 }
 
-@media (max-width: 660px) {
+@media (min-width: 1920px) {
+  .player-card{
+    height: 50vh;
+  }
+}
+
+@media (max-width: 600px) {
+  .player-card{
+    height: 22vh;
+  }
   .player-name {
     padding: 2px;
     font-size: 1rem;
   }
-  .opponent-card-back {
+  .card-container {
     max-height: 20vh;
     max-width: calc(20vh / 1.45);
   }
