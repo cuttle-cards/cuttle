@@ -102,7 +102,7 @@ import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import LobbyPlayerIndicator from './components/LobbyPlayerIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
-import TheLanguageSelector from '/home/harsh/projects/cuttle/src/components/TheLanguageSelector.vue';
+import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 
 export default {
   name: 'LobbyView',
