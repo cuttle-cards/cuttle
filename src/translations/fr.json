@@ -74,6 +74,12 @@
           "opponentWithQueen": "ton adversaire a une queen",
           "noTwoPresent": "tu n'as pas de deux"
         }
+      },    
+      "opponentRequestedStalemateDialog": {
+        "title": "Accepter L'impasse?" ,
+        "opponentHasRequested": "Votre adversaire a demandé une impasse. Si vous acceptez, la partie se terminera par une égalité.",
+        "reject": "Rejeter la Demande",
+        "accept": "Accepter L'impasse"
       }
     },
     "moves":{
