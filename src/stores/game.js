@@ -173,7 +173,7 @@ export const useGameStore = defineStore('game', {
     },
   },
   actions: {
-    updateGame(newGame, source = '') {
+    updateGame(newGame) {
       if (Object.hasOwnProperty.call(newGame, 'lastEvent')) {
         if (Object.hasOwnProperty.call(newGame.lastEvent, 'change')) {
           this.lastEventChange = newGame.lastEvent.change;

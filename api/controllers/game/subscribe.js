@@ -36,6 +36,9 @@ module.exports = function (req, res) {
       // Set session data
       req.session.game = game.id;
       req.session.pNum = pNum;
+      req.session.rematchOldGame = game.id;
+      req.session.rematchOldPNum = pNum;
+      console.log('subscribe', 'game', game.id, 'user', user.username, 'pnum', pNum);
       // Update models
       const addPlayerToGame = Game.addToCollection(game.id, 'players').members([user.id]);
       const updatePlayer = User.updateOne({ id: user.id }).set({ pNum });

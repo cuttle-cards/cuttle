@@ -55,6 +55,7 @@ module.exports = {
   reLogin: async function (req, res) {
     try {
       const { username, password } = req.body;
+      console.log('recovering session', username);
       const { loggedIn } = req.session;
       const user = await userAPI.findUserByUsername(username);
       // Validate password if not logged in -- will error if incorrect
@@ -71,7 +72,20 @@ module.exports = {
           ? await gameService.populateGame({ gameId })
           : null;
 
-      console.log('user relogin', username, password, user.id, 'game', gameId);
+      console.log(
+        'user relogin',
+        username,
+        user.id,
+        'game',
+        gameId,
+        'oldGame',
+        req.session.rematchOldGame,
+        'old pnum',
+        req.session.rematchOldPNum,
+        'user.pNum',
+        user.pNum,
+        user.rematchOldPNum,
+      );
       req.session.loggedIn = true;
       req.session.usr = user.id;
 
@@ -80,6 +94,7 @@ module.exports = {
         req.session.game = unpopulatedGame.id;
         req.session.pNum = user.pNum ?? undefined;
       }
+      req.session.rematchOldPNum = user.pNum;
 
       if (populatedGame) {
         Game.publish([populatedGame.id], {

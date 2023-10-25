@@ -382,20 +382,29 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     cy.loginPlayer(playerOne);
     cy.setupGameAsSpectator();
   });
-  it.only('Spectate unranked games with rematch', function () {
+  it('Spectate unranked games with rematch', function () {
     // 1st game: Opponent concedes
     cy.recoverSessionOpponent(playerTwo);
     cy.concedeOpponent();
     assertVictory();
+    cy.log('rematch player2');
     cy.rematchOpponent({ rematch: true });
     cy.wait(1000);
+    cy.log('recoversession player1');
     cy.recoverSessionOpponent(playerOne);
     cy.wait(1000);
+    cy.log('rematch player1');
     cy.rematchOpponent({ rematch: true });
-    cy.wait(1000);
+    cy.log('join rematch player 1');
     cy.joinRematchOpponent();
+    cy.log('recover player 2');
     cy.recoverSessionOpponent(playerTwo);
+    cy.log('join rematch player 2');
     cy.joinRematchOpponent();
+    cy.wait(1000);
+
+    cy.reload();
+    cy.signupOpponent(playerThree);
     cy.wait(1000);
 
     cy.window()
@@ -405,10 +414,6 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
         cy.url().should('include', `/spectate/${game.id}`);
         cy.setOpponentToSpectate(game.id);
       });
-
-    cy.reload();
-    cy.signupOpponent(playerThree);
-    cy.wait(1000);
 
     cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
     cy.get('[data-cy="spectate-list-menu"')

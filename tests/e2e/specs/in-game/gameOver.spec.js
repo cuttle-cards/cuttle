@@ -707,7 +707,7 @@ describe('Creating And Updating Ranked Matches', () => {
   });
 });
 
-describe.only('Creating And Updating Ranked Matches With Rematch', () => {
+describe('Creating And Updating Ranked Matches With Rematch', () => {
   beforeEach(function () {
     cy.wipeDatabase();
     cy.visit('/');
@@ -763,6 +763,7 @@ describe.only('Creating And Updating Ranked Matches With Rematch', () => {
         cy.expect(winners[0]).to.eq(game.players[0].id);
       });
     cy.get('[data-cy=gameover-rematch]').click();
+    cy.wait(1000);
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
@@ -979,7 +980,7 @@ describe.only('Creating And Updating Ranked Matches With Rematch', () => {
   });
 });
 
-describe.only('Creating And Updating Unranked Matches With Rematch', () => {
+describe('Creating And Updating Unranked Matches With Rematch', () => {
   beforeEach(function () {
     cy.wipeDatabase();
     cy.visit('/');

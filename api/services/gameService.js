@@ -135,7 +135,7 @@ module.exports = {
   /* Takes a user id and clears all game data
    * from the associated user
    */
-  clearGame: async function (options, isRematch = false) {
+  clearGame: async function (options) {
     return User.findOne(options.userId)
       .populateAll()
       .then(function findUserGame(player) {
@@ -182,13 +182,12 @@ module.exports = {
                 { faceCards: playerIds },
                 // NOTE: jacks in play should be destroyed using CASCADE on foreign key constraint on attachedTo
               ];
+              if (player.pNum) {
+                updatePromises.push(User.updateOne({ id: player.id }).set({ rematchOldPNum: player.pNum }));
+              }
               updatePromises.push(
                 // Remove players from game
                 Game.replaceCollection(game.id, 'players').members([]),
-                // Set pNum's to null
-                User.update({ id: playerIds }).set({
-                  pNum: null,
-                }),
                 // Delete all cards in the game
                 Card.destroy({
                   or: deleteCardsCriteria,

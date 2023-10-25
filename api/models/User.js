@@ -28,6 +28,11 @@ module.exports = {
       allowNull: true,
       isIn: [0, 1],
     },
+    rematchOldPNum: {
+      type: 'number',
+      allowNull: true,
+      isIn: [0, 1],
+    },
     hand: {
       collection: 'card',
       via: 'hand',

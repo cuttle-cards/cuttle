@@ -141,6 +141,10 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.NEW_GAME_FOR_REMATCH: {
       gameStore.setRematchGameId(evData.gameId);
       gameStore.requestJoinRematch();
+
+      if (currentRoute.name === ROUTE_NAME_SPECTATE) {
+        gameStore.updateGame(evData.newGame);
+      }
       if (currentRoute.name === ROUTE_NAME_REMATCH) {
         router
           .push({
@@ -157,14 +161,18 @@ export async function handleInGameEvents(evData) {
     }
     case SocketEvent.JOIN_REMATCH: {
       if (currentRoute.name === ROUTE_NAME_SPECTATE) {
+        gameStore.updateGame(evData.game);
         console.log('join rematch from spectate', JSON.stringify(evData.game, null, 2));
-        gameStore.updateGame(evData.game, 'join-rematch');
-        router.push({
-          name: ROUTE_NAME_SPECTATE,
-          params: {
-            gameId: evData.gameId,
-          },
-        });
+        router
+          .push({
+            name: ROUTE_NAME_SPECTATE,
+            params: {
+              gameId: evData.gameId,
+            },
+          })
+          .then(() => {
+            window.location.reload();
+          });
       }
       break;
     }
