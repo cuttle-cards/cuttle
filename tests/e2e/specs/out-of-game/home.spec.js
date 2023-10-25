@@ -15,7 +15,8 @@ function setup() {
 function assertSuccessfulJoin(gameState) {
   expect(gameState.id).to.not.eq(null);
   cy.url().should('include', '/lobby/');
-  cy.contains('h1', `Lobby for ${gameState.name}`);
+  cy.contains('h1', `Lobby for`);
+  cy.contains('h5', `${gameState.name}`);
 }
 
 function setupGameBetweenTwoUnseenPlayers(gameName) {
