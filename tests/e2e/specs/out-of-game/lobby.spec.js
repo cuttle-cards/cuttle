@@ -80,7 +80,7 @@ describe('Lobby - Page Content (Ranked)', () => {
     checkRanked(false);
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
     
-    // // Set To Ranked Mode
+    // Set To Ranked Mode
     cy.toggleInput('[data-cy=edit-game-ranked-switch]');
     checkRanked(true);
     cy.get('[data-cy=ready-button-trophy-icon]').should('exist');
