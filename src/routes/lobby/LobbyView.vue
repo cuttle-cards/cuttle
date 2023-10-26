@@ -135,7 +135,7 @@ export default {
       return this.t(this.iAmReady ? 'lobby.unready' : 'lobby.ready');
     },
     rankedIcon(){
-      return this.gameStore.isRanked ? 'trophy' : 'coffee';
+      return this.gameStore.isRanked ? 'sword-cross' : 'coffee';
     }
   },
   watch: {

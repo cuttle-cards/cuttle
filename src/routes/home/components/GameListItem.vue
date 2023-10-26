@@ -23,14 +23,7 @@
             v-if="isRanked"
             class="mr-4"
             size="medium"
-            icon="mdi-trophy-variant-outline"
-            aria-hidden="true"
-          />
-          <v-icon
-            v-else
-            class="mr-4"
-            size="medium"
-            icon="mdi-coffee-outline"
+            :icon="isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline'"
             aria-hidden="true"
           />
           {{ joinButtonText }}
