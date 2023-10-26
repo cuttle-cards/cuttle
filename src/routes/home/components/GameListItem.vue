@@ -20,7 +20,6 @@
           @click="subscribeToGame"
         >
           <v-icon
-            v-if="isRanked"
             class="mr-4"
             size="medium"
             :icon="isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline'"
