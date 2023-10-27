@@ -368,6 +368,7 @@ describe('Spectating Games', () => {
 });
 
 describe('Creating And Updating Unranked Matches With Rematch - Spectating', () => {
+  // describe.only('Creating And Updating Unranked Matches With Rematch - Spectating', () => {
   beforeEach(function () {
     cy.wipeDatabase();
     cy.visit('/');
@@ -388,30 +389,51 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     cy.concedeOpponent();
     assertVictory();
     cy.log('rematch player2');
-    cy.rematchOpponent({ rematch: true });
-    cy.wait(1000);
-    cy.log('recoversession player1');
-    cy.recoverSessionOpponent(playerOne);
-    cy.wait(1000);
-    cy.log('rematch player1');
-    cy.rematchOpponent({ rematch: true });
-    cy.log('join rematch player 1');
-    cy.joinRematchOpponent();
-    cy.log('recover player 2');
-    cy.recoverSessionOpponent(playerTwo);
-    cy.log('join rematch player 2');
-    cy.joinRematchOpponent();
-    cy.wait(1000);
 
-    cy.reload();
-    cy.signupOpponent(playerThree);
+    cy.rematchOpponent({ rematch: true });
+
     cy.wait(1000);
 
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
-        console.log('game', game);
-        cy.url().should('include', `/spectate/${game.id}`);
+        cy.expect(game.p0Rematch).to.be.null;
+        cy.expect(game.p1Rematch).to.be.true;
+      });
+
+    cy.log('recoversession player1');
+    cy.recoverSessionOpponent(playerOne);
+    cy.log('rematch player1');
+
+    cy.wait(1000);
+
+    cy.rematchOpponent({ rematch: true });
+    cy.wait(1000);
+
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        // new game, so rematch is null
+        cy.expect(game.p0Rematch).to.be.null;
+        cy.expect(game.p1Rematch).to.be.null;
+      });
+
+    cy.log('join rematch player 1');
+    cy.joinRematchOpponent();
+
+    cy.log('recover player 2');
+    console.log('recover player 2');
+    cy.recoverSessionOpponent(playerTwo);
+    cy.log('join rematch player 2');
+    console.log('join rematch player 2');
+    cy.joinRematchOpponent();
+
+    cy.signupOpponent(playerThree);
+
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.url({ timeout: 10000 }).should('include', `/spectate/${game.id}`);
         cy.setOpponentToSpectate(game.id);
       });
 

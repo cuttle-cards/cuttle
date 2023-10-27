@@ -327,7 +327,6 @@ Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get('/user/reLogin', userFixture, function handleResponse(res, jwres) {
       if (jwres.statusCode !== 200 || res === false) {
-        console.error(jwres, res);
         return reject(new Error('error recovering session'));
       }
       return resolve();
@@ -1286,7 +1285,6 @@ Cypress.Commands.add('reconnectOpponent', (opponent) => {
 Cypress.Commands.add('rematchAndJoinRematchOpponent', () => {
   io.socket.get('/game/rematch', { rematch: true }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
-      console.log('error rematch', jwres);
       throw new Error(jwres.body.message);
     }
 
@@ -1302,7 +1300,6 @@ Cypress.Commands.add('rematchAndJoinRematchOpponent', () => {
 Cypress.Commands.add('rematchOpponent', ({ rematch }) => {
   io.socket.get('/game/rematch', { rematch }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
-      console.log('error rematch', jwres);
       throw new Error(jwres.body.message);
     }
   });
@@ -1311,7 +1308,6 @@ Cypress.Commands.add('rematchOpponent', ({ rematch }) => {
 Cypress.Commands.add('joinRematchOpponent', () => {
   io.socket.get('/game/join-rematch', function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
-      console.log('error join rematch', jwres);
       throw new Error(jwres.body.message);
     }
     return Promise.resolve(jwres);

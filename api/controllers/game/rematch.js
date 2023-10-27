@@ -7,10 +7,17 @@ module.exports = async function (req, res) {
     const { pNum, rematchOldGame: oldGameId, rematchOldPNum: oldPNum } = req.session;
     const { rematch } = req.body;
 
-    console.log('rematch test', oldGameId, pNum, oldPNum, rematch);
+    try {
+      await Game.findOne({ id: oldGameId }).populate('players');
+    } catch (err) {
+      if (rematch === false) {
+        delete req.session.rematchOldGame;
+        delete req.session.rematchOldPNum;
+        return res.ok();
+      }
+    }
     const game = await Game.findOne({ id: oldGameId }).populate('players');
     const gameUpdates = { [`p${oldPNum}Rematch`]: rematch };
-    console.log('rematch', req.session.usr, 'oldgame', oldGameId, 'oldpnum', oldPNum, gameUpdates);
     if (rematch === false) {
       delete req.session.rematchOldGame;
       delete req.session.rematchOldPNum;
@@ -21,13 +28,10 @@ module.exports = async function (req, res) {
     // In case other player updated the game at the same time
     const updatedGame = await Game.findOne({ id: game.id }).populate('players');
 
-    const user = await User.findOne({ id: req.session.usr });
-
     const currentMatch = await Match.findOne({ id: updatedGame.match });
     const shouldNewGameBeRanked = currentMatch?.winner ? false : updatedGame.isRanked;
 
     const { p0: newP1Id, p1: newP0Id } = updatedGame;
-    console.log('rematch old game p0 p1', newP1Id, newP0Id);
 
     Game.publish([game.id], {
       change: 'rematch',
@@ -40,8 +44,8 @@ module.exports = async function (req, res) {
       (updatedGame.p0Rematch && gameUpdates.p1Rematch) || (updatedGame.p1Rematch && gameUpdates.p0Rematch);
 
     if (bothWantToRematch) {
+      console.log('both want to rematch');
       const newGame = await gameAPI.createGame(game.name, shouldNewGameBeRanked);
-      console.log('both user want to rematch', user.game, newGame.id, user.id, user.username);
       await Promise.all([
         Game.updateOne({ id: newGame.id }).set({ rematchOldGame: updatedGame.id }),
         Game.updateOne({ id: updatedGame.id }).set({ rematchGame: newGame.id }),
@@ -52,7 +56,6 @@ module.exports = async function (req, res) {
         User.updateOne({ id: newP0Id }).set({ pNum: 0 }),
         User.updateOne({ id: newP1Id }).set({ pNum: 1 }),
       ]);
-      console.log('rematch user game', user.game, newGame.id, user.id, user.username);
       await Game.updateOne({ id: newGame.id }).set({
         status: gameService.GameStatus.STARTED,
       });
@@ -74,7 +77,6 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    console.error(err);
-    return res.badRequest(err);
+    return res.ok();
   }
 };

@@ -33,6 +33,9 @@ module.exports = {
       allowNull: true,
       isIn: [0, 1],
     },
+    rematchOldGame: {
+      model: 'game',
+    },
     hand: {
       collection: 'card',
       via: 'hand',

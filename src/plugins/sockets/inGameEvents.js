@@ -20,6 +20,7 @@ export async function handleInGameEvents(evData) {
     ) &&
     (!urlGameId || Number(urlGameId) !== eventGameId)
   ) {
+    console.log('triggering no op', evData.change, urlGameId, eventGameId);
     return;
   }
   // Handle GameOver
@@ -140,12 +141,12 @@ export async function handleInGameEvents(evData) {
       return;
     case SocketEvent.NEW_GAME_FOR_REMATCH: {
       gameStore.setRematchGameId(evData.gameId);
-      gameStore.requestJoinRematch();
 
       if (currentRoute.name === ROUTE_NAME_SPECTATE) {
         gameStore.updateGame(evData.newGame);
       }
       if (currentRoute.name === ROUTE_NAME_REMATCH) {
+        gameStore.requestJoinRematch();
         router
           .push({
             name: ROUTE_NAME_GAME,
@@ -163,16 +164,19 @@ export async function handleInGameEvents(evData) {
       if (currentRoute.name === ROUTE_NAME_SPECTATE) {
         gameStore.updateGame(evData.game);
         console.log('join rematch from spectate', JSON.stringify(evData.game, null, 2));
-        router
-          .push({
-            name: ROUTE_NAME_SPECTATE,
-            params: {
-              gameId: evData.gameId,
-            },
-          })
-          .then(() => {
-            window.location.reload();
-          });
+        console.log(urlGameId, evData.game.id, typeof urlGameId, typeof evData.game.id);
+        if (parseInt(urlGameId, 10) !== evData.game.id) {
+          router
+            .push({
+              name: ROUTE_NAME_SPECTATE,
+              params: {
+                gameId: evData.gameId,
+              },
+            })
+            .then(() => {
+              gameStore.requestSpectate(evData.gameId);
+            });
+        }
       }
       break;
     }

@@ -73,7 +73,6 @@ module.exports = {
 
     if (game.players) {
       if (game.players.length < 2) {
-        console.error("error populating game: game doesn't have two players");
         throw new Error({ message: 'Cannot populate game without two players' });
       }
     } else {
@@ -183,9 +182,17 @@ module.exports = {
                 // NOTE: jacks in play should be destroyed using CASCADE on foreign key constraint on attachedTo
               ];
               if (player.pNum) {
-                updatePromises.push(User.updateOne({ id: player.id }).set({ rematchOldPNum: player.pNum }));
+                updatePromises.push(
+                  User.updateOne({ id: player.id }).set({
+                    rematchOldPNum: player.pNum,
+                  }),
+                );
               }
+              console.log('clear game', game.id, playerIds);
               updatePromises.push(
+                User.update({ id: { in: playerIds } }).set({
+                  rematchOldGame: game.id,
+                }),
                 // Remove players from game
                 Game.replaceCollection(game.id, 'players').members([]),
                 // Delete all cards in the game

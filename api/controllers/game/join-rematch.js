@@ -3,18 +3,21 @@
  */
 module.exports = async function (req, res) {
   try {
-    const { usr: userId, game: gameId, rematchOldGame: oldGameId, rematchOldPNum: oldPNum } = req.session;
-    console.log('join rematch 01', oldGameId, oldPNum, gameId, userId);
+    const { usr: userId } = req.session;
 
-    const [user, tmpOldGame] = await Promise.all([
-      User.findOne({ id: userId }),
-      Game.findOne({ id: oldGameId }),
-    ]);
-    const oldGame = tmpOldGame.rematchGame ? tmpOldGame : await Game.findOne(tmpOldGame.rematchOldGame);
+    const user = await User.findOne({ id: userId });
+    const oldGame = await Game.findOne({ id: user.rematchOldGame });
 
+    console.log(
+      'user join rematch 00',
+      user.id,
+      user.rematchOldGame,
+      oldGame ? oldGame.id : null,
+      oldGame ? oldGame.rematchGame : null,
+    );
     const newGameId = oldGame.rematchGame;
-    console.log('join rematch', oldGame.id, newGameId, user.pNum, user.id, user.username);
-    const game = await Game.findOne({ id: newGameId }).populate('players');
+    console.log('user join rematch 01', user.rematchOldGame, oldGame.id, newGameId);
+    const game = await gameService.populateGame({ gameId: newGameId });
     Game.subscribe(req, [game.id]);
 
     req.session.game = game.id;
@@ -32,7 +35,6 @@ module.exports = async function (req, res) {
       gameId: game.id,
       game,
     });
-    console.log('join rematch', oldGame.id, newGameId, game.id, user.pNum, user.id, user.username);
 
     return res.ok({ game, pNum: user.pNum, playerUsername: user.username });
   } catch (err) {

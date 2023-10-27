@@ -281,6 +281,11 @@ export const useGameStore = defineStore('game', {
       if (Object.hasOwnProperty.call(newGame, 'p1Rematch')) {
         this.p1Rematch = newGame.p1Rematch;
       }
+      if (Object.hasOwnProperty.call(newGame, 'gameIsOver')) {
+        this.gameIsOver = newGame.gameIsOver;
+      } else {
+        this.gameIsOver = false;
+      }
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
