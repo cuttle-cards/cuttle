@@ -178,7 +178,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.setIsRankedOpponent(true);
 
     checkRanked(true);
-    cy.get('[data-cy=ready-button-trophy-icon]').should('exist');
+    cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
   });
 
   it('Game starts when both players are ready - opponent first', function () {
