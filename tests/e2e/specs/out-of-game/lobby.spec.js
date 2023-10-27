@@ -71,7 +71,7 @@ describe('Lobby - Page Content (Ranked)', () => {
   });
 
   it('Displays ranked button', () => {
-    cy.get('[data-cy=ready-button-trophy-icon]').should('exist');
+    cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
   });
   
   it('Changes games to ranked and casual from the lobby', () => {
@@ -83,7 +83,7 @@ describe('Lobby - Page Content (Ranked)', () => {
     // Set To Ranked Mode
     cy.toggleInput('[data-cy=edit-game-ranked-switch]');
     checkRanked(true);
-    cy.get('[data-cy=ready-button-trophy-icon]').should('exist');
+    cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
   });
 });
 
