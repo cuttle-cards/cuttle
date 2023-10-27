@@ -1,22 +1,22 @@
 <template>
   <div v-if="playerUsername" class="player-card">
     <span class="player-name">{{ playerUsername }}</span>
-    <Transition name="card-flip">
+    <div class="card-container">
       <img
-        v-if="playerReady"
         src="/img/cards/card-ready.png"
-        class="card-container"
+        class="card-front"
+        :class="{ 'ready': playerReady }"
         alt="card front"
         data-cy="lobby-ready-card"
       >
       <img
-        v-else
         src="/img/cards/card-back.png"
-        class="card-container"
+        class="card-back"
+        :class="{ 'ready': playerReady }"
         alt="card back"
         data-cy="lobby-back-card"
       >
-    </Transition>
+    </div>
   </div>
   <div v-else class="player-indicator" :style="{ padding: playerPadding }">
     <div class="avatar">
@@ -64,20 +64,40 @@ export default {
 
 <style lang="scss" scoped>
 .card-container {
-  border-radius: 10px;
-  max-height: 35vh;
-  max-width: calc(35vh / 1.45);
+  height: 35vh;
+  width: calc(35vh / 1.45);
+  transform-style: preserve-3d;
+  perspective: 1200px;
+  position: relative;
+}
+
+.card-container img {
   width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.4s ease-in-out;
 }
-.card-flip-enter-active {
-  transition: all 1s;
+.card-front {
+  z-index: 0;
+  backface-visibility: hidden;
+  transform: rotateY(-180deg);
 }
-.card-flip-enter-from {
-  transform: rotateY(-90deg);
-}
-.card-flip-enter-to {
+.card-front.ready {
   transform: rotateY(0deg);
 }
+.card-back {
+  transform: rotateY(0deg);
+  z-index: -1;
+  backface-visibility: hidden;
+}
+.card-back.ready {
+  transform: rotateY(180deg);
+
+}
+
 .player-card {
   height: 40vh;
   display: flex;
