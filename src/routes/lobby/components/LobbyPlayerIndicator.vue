@@ -79,23 +79,20 @@ export default {
   top: 0;
   left: 0;
   transition: all 0.4s ease-in-out;
-}
-.card-front {
-  z-index: 0;
   backface-visibility: hidden;
-  transform: rotateY(-180deg);
-}
-.card-front.ready {
-  transform: rotateY(0deg);
 }
 .card-back {
-  transform: rotateY(0deg);
   z-index: -1;
-  backface-visibility: hidden;
+}
+.card-front.ready,
+.card-back {
+  transform: rotateY(0deg);
+}
+.card-front {
+  transform: rotateY(-180deg);
 }
 .card-back.ready {
   transform: rotateY(180deg);
-
 }
 
 .player-card {
