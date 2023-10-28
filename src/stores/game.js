@@ -209,31 +209,6 @@ export const useGameStore = defineStore('game', {
           this[key] = newGame[key] ?? null;
         }
       });
-
-      // Object.keys(newGame).forEach((key) => {
-      //   //set lastEvent properties
-      //   if (key === 'lastEvent') {
-      //     Object.keys(newGame.lastEvent).forEach((lastEventKey) => {
-      //       if (lastEventKey === 'oneOff') {
-      //         this.lastEventOneOffRank = newGame.lastEvent?.oneOff?.rank ?? null;
-      //       } else if (lastEventKey === 'pNum') {
-      //         this.lastEventPlayerChoosing = newGame.lastEvent?.pNum === this.myPNum ?? null;
-      //       } else {
-      //         this[key + lastEventKey] = newGame.lastEvent?.[lastEventKey] ?? null;
-      //       }
-      //     });
-      //   }
-      //   //set the rest
-      //   if (['deck', 'scrap', 'twos'].includes(key)) {
-      //     this[key] = newGame[key]?.map((card) => createGameCard(card)) ?? null;
-      //   } else if (['topCard', 'secondCard', 'oneOff', 'oneOffTarget'].includes(key)) {
-      //     this[key] = createGameCard(newGame[key]) ?? null;
-      //   } else if (key === 'players') {
-      //     this.players = newGame.players?.map((player) => setPlayers(player, this.myPNum)) ?? null;
-      //   } else {
-      //     this[key] = newGame[key] ?? null;
-      //   }
-      // });
       this.waitingForOpponentToStalemate = false;
     },
     opponentJoined(newPlayer) {
