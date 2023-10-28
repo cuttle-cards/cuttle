@@ -205,6 +205,7 @@ export const useGameStore = defineStore('game', {
         if (updateGameMap.key) {
           updateGameMap[key](newGame);
         } else {
+          //set or null keys not designated in updateGameMap
           this[key] = newGame[key] ?? null;
         }
       });
