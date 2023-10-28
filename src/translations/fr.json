@@ -74,7 +74,10 @@
           "opponentWithQueen": "ton adversaire a une queen",
           "noTwoPresent": "tu n'as pas de deux"
         }
-      },    
+      },
+      "threeDialog": {
+        "title": "Sélectionnez une carte dans Scrap"
+      },
       "opponentRequestedStalemateDialog": {
         "title": "Accepter L'impasse?" ,
         "opponentHasRequested": "Votre adversaire a demandé une impasse. Si vous acceptez, la partie se terminera par une égalité.",
