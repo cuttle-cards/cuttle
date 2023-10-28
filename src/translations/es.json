@@ -82,9 +82,9 @@
         "accept": "Aceptar el punto muerto"
       },
       "sevenDoubleJacksDialog": {
-        "title": "Select a card",
-        "cannotMove": "Oops! It seems like you can't play. Select a Jack to scrap.",
-        "resolve": "Resolve"
+        "title": "Seleccione una página",
+        "cannotMove": "Parece que no puedes jugar. Selecciona una jota para descartar.",
+        "resolve": "Resolver"
       }
     },
     "moves":{
