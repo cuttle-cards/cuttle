@@ -4,7 +4,7 @@
     v-model="show"
     :title="t('game.dialogs.sevenDoubleJacksDialog.title')"
   >
-    <template #body> 
+    <template #body>
       <span>{{ t('game.dialogs.sevenDoubleJacksDialog.cannotMove') }}</span>
       <div class="d-flex flex-wrap justify-center align-center my-8">
         <template v-if="topCard">
