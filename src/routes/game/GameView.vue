@@ -31,7 +31,7 @@
       >
         <template #prepend>
           <v-list-item>
-            <h3>History</h3>
+            <h3>{{ t('game.history.title') }}</h3>
             <template #append>
               <v-btn icon variant="text" @click.stop="showHistoryDrawer = !showHistoryDrawer">
                 <v-icon
@@ -147,13 +147,13 @@
                 ({{ deckLength }})
               </v-card-actions>
               <h1 v-if="deckLength === 0" id="empty-deck-text">
-                PASS
+                {{ t('game.pass') }}
               </h1>
             </template>
 
             <template v-if="gameStore.resolvingSeven">
               <p class="mt-2">
-                Play from Deck
+                {{ t('game.playFromDeck') }}
               </p>
               <div class="d-flex">
                 <GameCard

@@ -40,6 +40,8 @@
     "resolve": "Résoudre",
     "scrap": "Écarter",
     "view": "Regarder",
+    "pass": "PASSER",
+    "playFromDeck": "Jouer depuis le Paquet",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnectez-vous au jeu",
@@ -82,7 +84,11 @@
       "disabledMove" : {
         "topTwo": "Vous devez jouer l'une des deux premières cartes du paquet",
         "notTurn": "Ce n'est pas ton tour",
-        "frozenCard": "Cette carte est gelée"
+        "frozenCard": "Cette carte est gelée",
+        "emptyDeck": "On ne peut pas jouer avec le paquet vide",
+        "multipleQueens": "Tu ne peux pas jouer un {rank} lorsque ton adversaire a deux ou plus de queens",
+        "noRoyals": "Il n'y a pas de Rois à cibler",
+        "noRoyalsOrPoints": "Il n'y a pas de cartes à points ni de Rois à cibler"
       },
       "points": {
         "displayName": "Points",
@@ -107,6 +113,17 @@
         "11": "Jouez sur la carte de point cible pour la voler",
         "12": "Vos autres cartes ne peuvent être ciblées que par des scuttles",
         "13": "Réduit les points dont vous avez besoin pour gagner. (1K : 14 pts, 2K : 10 pts, 3K : 5 pts, 4K : 0 pts)"
+      },
+      "jack": {
+        "description": "Vole une carte de points de l'adversaire",
+        "disabled": "Vous ne pouvez pas voler une carte de points de l'adversaire tant qu'il possède une reine"
+      },
+      "glasses": {
+        "displayName": "Lunettes ",
+        "description": "Votre adversaire joue à cartes découvertes"
+      },
+      "royal": {
+        "displayName": "Royauté"
       }
     },
     "menus":{
