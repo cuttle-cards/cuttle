@@ -1,6 +1,11 @@
 import { assertGameState, playOutOfTurn } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 
+before(() => {
+  cy.refreshOpponentSocket();
+  cy.log('Opponent socket refreshed');
+});
+
 describe('Sixes One-Offs', () => {
   beforeEach(() => {
     cy.setupGameAsP0();

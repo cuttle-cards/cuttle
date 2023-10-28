@@ -75,7 +75,6 @@ Cypress.Commands.add('requestGameList', () => {
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
  */
 Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = false) => {
-  cy.refreshOpponentSocket();
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
@@ -105,7 +104,6 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
 });
 
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
-  cy.refreshOpponentSocket();
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
@@ -134,7 +132,6 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   cy.log('Finished setting up game as p1');
 });
 Cypress.Commands.add('setupGameAsSpectator', () => {
-  cy.refreshOpponentSocket();
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(myUser);
