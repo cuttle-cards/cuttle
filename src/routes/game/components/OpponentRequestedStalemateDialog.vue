@@ -1,7 +1,11 @@
 <template>
-  <BaseDialog id="opponent-requested-stalemate-dialog" v-model="show" title="Accept Stalemate?">
+  <BaseDialog
+    id="opponent-requested-stalemate-dialog"
+    v-model="show"
+    :title="t('game.dialogs.opponentRequestedStalemateDialog.title')"
+  >
     <template #body>
-      <p>Your opponent has requested a stalemate. If you accept, the game will end in a tie.</p>
+      <p>{{ t('game.dialogs.opponentRequestedStalemateDialog.opponentHasRequested') }} </p>
       <div class="d-flex justify-center">
         <v-icon
           class="mr-8"
@@ -28,7 +32,7 @@
         aria-lable="Reject Request"
         @click="rejectStalemate"
       >
-        Reject Request
+        {{ t('game.dialogs.opponentRequestedStalemateDialog.reject') }}
       </v-btn>
       <v-btn
         color="error"
@@ -39,7 +43,7 @@
         aria-lable="Accept Stalemate"
         @click="acceptStalemate"
       >
-        Accept Stalemate
+        {{ t('game.dialogs.opponentRequestedStalemateDialog.accept') }}
       </v-btn>
     </template>
   </BaseDialog>
@@ -49,6 +53,7 @@
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'OpponentRequestedStalemateDialog',
@@ -57,6 +62,10 @@ export default {
   },
   props: {
     modelValue: Boolean,
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {

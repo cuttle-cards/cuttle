@@ -20,6 +20,7 @@ jobs:
             token: ${{ env.GH_PUSH_TOKEN }}
   
         - name: configure git
+          if: env.GH_PUSH_TOKEN != ''
           run: |
             git remote set-url origin https://itsalaidbacklife@github.com/cuttle-cards/cuttle
             git config --global user.name "Cuttle Continuous Integration"
