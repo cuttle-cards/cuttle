@@ -2,10 +2,10 @@
   <BaseDialog
     id="seven-double-jacks-dialog"
     v-model="show"
-    title="Select a Card"
+    :title="t('game.dialogs.sevenDoubleJacksDialog.title')"
   >
-    <template #body>
-      <span>Oops, seems you cannot make a move. Select one of the jacks to scrap.</span>
+    <template #body> 
+      <span>{{ t('game.dialogs.sevenDoubleJacksDialog.cannotMove') }}</span>
       <div class="d-flex flex-wrap justify-center align-center my-8">
         <template v-if="topCard">
           <GameCard
@@ -38,13 +38,14 @@
         variant="flat"
         @click="moveToScrap"
       >
-        Resolve
+        {{ t('game.dialogs.sevenDoubleJacksDialog.resolve') }}
       </v-btn>
     </template>
   </BaseDialog>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
 
@@ -69,6 +70,10 @@ export default {
     },
   },
   emits: ['resolveSevenDoubleJacks'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       selectedCardId: null,
