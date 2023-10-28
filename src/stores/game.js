@@ -202,12 +202,7 @@ export const useGameStore = defineStore('game', {
       };
       //loop through all keys sent through socket message and run corresponding function
       Object.keys(newGame).forEach((key) => {
-        if (updateGameMap.key) {
-          updateGameMap[key](newGame);
-        } else {
-          //set or null keys not designated in updateGameMap
-          this[key] = newGame[key] ?? null;
-        }
+        return updateGameMap[key] ? updateGameMap[key](newGame) : (this[key] = newGame[key] ?? null);
       });
       this.waitingForOpponentToStalemate = false;
     },
