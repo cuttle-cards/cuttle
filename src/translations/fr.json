@@ -83,6 +83,11 @@
         "opponentHasRequested": "Votre adversaire a demandé une impasse. Si vous acceptez, la partie se terminera par une égalité.",
         "reject": "Rejeter la Demande",
         "accept": "Accepter L'impasse"
+      },
+      "sevenDoubleJacksDialog": {
+        "title": "Sélectionnez une carte",
+        "cannotMove": "On dirait bien que vous ne pouvez pas jouer. Sélectionnez un Valet à défausser.",
+        "resolve": "Continuer"
       }
     },
     "moves":{
