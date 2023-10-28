@@ -74,12 +74,20 @@
           "opponentWithQueen": "your opponent has a queen",
           "noTwoPresent": "you do not have a two"
         }
-      },    
+      },
+      "threeDialog": {
+        "title": "Select a Card from Scrap"
+      },
       "opponentRequestedStalemateDialog": {
         "title": "Accept Stalemate?" ,
         "opponentHasRequested": "Your opponent has requested a stalemate. If you accept, the game will end in a tie.",
         "reject": "Reject Request",
         "accept": "Accept Stalemate"
+      },
+      "sevenDoubleJacksDialog": {
+        "title": "Select a card",
+        "cannotMove": "Oops! It seems like you can't play. Select a Jack to scrap.",
+        "resolve": "Resolve"
       }
     },
     "moves":{

@@ -16,6 +16,11 @@ Cypress.Commands.add('wipeDatabase', () => {
   cy.log('Wiped database');
 });
 
+Cypress.Commands.add('refreshOpponentSocket', () => {
+  io.socket.disconnect();
+  io.socket.reconnect();
+});
+
 Cypress.Commands.add('setBadSession', () => {
   return new Cypress.Promise((resolve) => {
     io.socket.get('/test/badSession', function () {
@@ -278,14 +283,18 @@ Cypress.Commands.add('readyOpponent', (id) => {
 });
 Cypress.Commands.add('setIsRankedOpponent', (isRanked) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/game/setIsRanked',{
-      isRanked,
-    }, (res, jwres) => {
-      if (jwres.statusCode === 200) {
-        return resolve(res);
-      }
-      return reject(new Error('Error Changing game mode'));
-    });
+    io.socket.post(
+      '/game/setIsRanked',
+      {
+        isRanked,
+      },
+      (res, jwres) => {
+        if (jwres.statusCode === 200) {
+          return resolve(res);
+        }
+        return reject(new Error('Error Changing game mode'));
+      },
+    );
   });
 });
 Cypress.Commands.add('toggleInput', (selector, checked = false) => {
