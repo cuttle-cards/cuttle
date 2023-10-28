@@ -20,20 +20,12 @@
         </v-btn>
       </template>
       <v-list class="score-goal-explanation">
-        <v-list-item :class="{ 'current-goal': kingCount === 0 }"> 
-          {{ t('game.score.kings', 0) }}: 21pts 
-        </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 1 }">
-          {{ t('game.score.kings', 1) }}: 14pts 
-        </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 2 }">
-          {{ t('game.score.kings', 2) }}: 10pts
-        </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 3 }">
-          {{ t('game.score.kings', 3) }}: 5pts
-        </v-list-item>
-        <v-list-item :class="{ 'current-goal': kingCount === 4 }">
-          {{ t('game.score.kings', 4) }}: 0pts
+        <v-list-item 
+          v-for="(explanation, index) in kingsPoints" 
+          :key="index" 
+          :class="{ 'current-goal': kingCount === index }"
+        >
+          {{ explanation }}
         </v-list-item>
       </v-list>
     </v-menu>
@@ -67,6 +59,15 @@ export default {
     dataCyName() {
       return this.isPlayer ? 'player-player-points-to-win' : 'opponent-points-to-win';
     },
+    kingsPoints() {
+      return  [
+        `${this.t('game.score.kings', 0)}: 21pts`,
+        `${this.t('game.score.kings', 1)}: 14pts`,
+        `${this.t('game.score.kings', 2)}: 10pts`,
+        `${this.t('game.score.kings', 3)}: 5pts`,
+        `${this.t('game.score.kings', 4)}: 0pts`
+      ];
+    }
   },
 };
 </script>

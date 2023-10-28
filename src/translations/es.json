@@ -78,6 +78,20 @@
           "opponentWithQueen": "Tu oponente tiene una queen",
           "noTwoPresent": "no tienes un dos"
         }
+      },
+      "threeDialog": {
+        "title": "Seleccione una tarjeta de Scrap"
+      },
+      "opponentRequestedStalemateDialog": {
+        "title": "Aceptar el Punto Muerto?" ,
+        "opponentHasRequested": "Tu oponente ha solicitado un punto muerto. Si aceptas, el juego terminará en empate.",
+        "reject": "Rechazar Solicitud",
+        "accept": "Aceptar el punto muerto"
+      },
+      "sevenDoubleJacksDialog": {
+        "title": "Seleccione una página",
+        "cannotMove": "Parece que no puedes jugar. Selecciona una jota para descartar.",
+        "resolve": "Resolver"
       }
     },
     "moves":{

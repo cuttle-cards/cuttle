@@ -1,21 +1,28 @@
 <template>
-  <div
-    class="player-indicator"
-    :class="{ ready: playerReady, 'player-in': playerUsername != null }"
-    :style="{ padding: playerPadding }"
-    elevation="1"
-  >
-    <div class="avatar text-truncate">
+  <div v-if="playerUsername" class="player-card">
+    <span class="player-name">{{ playerUsername }}</span>
+    <div class="card-container">
+      <img
+        src="/img/cards/card-ready.png"
+        class="card-front"
+        :class="{ 'ready': playerReady }"
+        alt="card front"
+        data-cy="lobby-ready-card"
+      >
+      <img
+        src="/img/cards/card-back.png"
+        class="card-back"
+        :class="{ 'ready': playerReady }"
+        alt="card back"
+        data-cy="lobby-back-card"
+      >
+    </div>
+  </div>
+  <div v-else class="player-indicator" :style="{ padding: playerPadding }">
+    <div class="avatar">
       <h3>
         {{ message }}
       </h3>
-    </div>
-    <div
-      v-if="playerReady"
-      class="ready-overlay text-truncate"
-      :style="{ 'font-size': readyFontSize, 'padding-bottom': readyPadding }"
-    >
-      {{ t('lobby.ready') }}
     </div>
   </div>
 </template>
@@ -56,16 +63,54 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-container {
+  height: 35vh;
+  width: calc(35vh / 1.45);
+  transform-style: preserve-3d;
+  perspective: 1200px;
+  position: relative;
+}
+
+.card-container img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.4s ease-in-out;
+  backface-visibility: hidden;
+}
+.card-back {
+  z-index: -1;
+}
+.card-front.ready,
+.card-back {
+  transform: rotateY(0deg);
+}
+.card-front {
+  transform: rotateY(-180deg);
+}
+.card-back.ready {
+  transform: rotateY(180deg);
+}
+
+.player-card {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+}
+.player-name {
+  padding: 5px;
+  font-size: 1.5rem;
+}
 .player-indicator {
   position: relative;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(var(--v-theme-neutral-lighten3));
   border-radius: 8px;
-}
-.player-in {
-  background-image: linear-gradient(45deg, rgba(var(--v-theme-secondary)), rgba(var(--v-theme-primary)));
 }
 .avatar {
   display: inline-block;
@@ -76,24 +121,28 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 4px dashed rgba(var(--v-theme-accent-darken1));
-  background-color: rgba(var(--v-theme-neutral));
+  border: 4px dashed rgba(var(--v-theme-surface-2));
+  background-color: rgba(var(--v-theme-surface-1));
   z-index: 1;
 }
-.ready .avatar {
-  border: 4px solid rgba(var(--v-theme-accent));
+
+@media (min-width: 1920px) {
+  .player-card{
+    height: 50vh;
+  }
 }
-.ready-overlay {
-  display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: flex-end;
-  padding-top: 16px;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  color: #ffffff;
-  border-radius: 8px;
-  box-sizing: border-box;
+
+@media (max-width: 600px) {
+  .player-card{
+    height: 22vh;
+  }
+  .player-name {
+    padding: 2px;
+    font-size: 1rem;
+  }
+  .card-container {
+    max-height: 20vh;
+    max-width: calc(20vh / 1.45);
+  }
 }
 </style>
