@@ -38,6 +38,10 @@
   },
   "game": {
     "resolve": "Resolve",
+    "scrap": "Scrap",
+    "view": "View",
+    "pass": "PASS",
+    "playFromDeck": "Play from Deck",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnect to game",
@@ -91,6 +95,24 @@
       }
     },
     "moves":{
+      "disabledMove" : {
+        "topTwo": "You must play one of the top two cards from the deck",
+        "notTurn": "It's not your turn",
+        "frozenCard": "This card is frozen",
+        "emptyDeck": "Can't be played with empty deck",
+        "multipleQueens": "You can't play a {rank} while your opponent has two or more queens",
+        "noRoyals": "There are no Royals to target",
+        "noRoyalsOrPoints": "There are no point cards or Royals to target"
+      },
+      "points": {
+        "displayName": "Points",
+        "description": "Gain 1 point | Gain {count} points"
+      },
+      "scuttle": {
+        "description": "Scrap a lower point card",
+        "disabled": "You can only scuttle smaller point cards",
+        "disabledNoPoints": "Your opponent has no point cards to scuttle"
+      },
       "effects":{
         "1": "Scrap all points",
         "2": "Scrap target Royal or Glasses eight",
@@ -105,6 +127,17 @@
         "11": "Play on top of target point card to steal it",
         "12": "Your other cards may only be targeted by scuttles",
         "13": "Reduces the points you need to win. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)"
+      },
+      "jack": {
+        "description": "Steal an opponent's point card",
+        "disabled": "You cannot jack your opponent's points while they have a queen"
+      },
+      "glasses": {
+        "displayName": "Glasses",
+        "description": "Your opponent plays open handed"
+      },
+      "royal": {
+        "displayName": "Royal"
       }
     },
     "menus":{
@@ -121,6 +154,18 @@
         "spectators":"Spectators",
         "noSpectators":"Currently no spectators"
       }
+    },
+    "score": {
+      "points": "POINTS",
+      "goal": "GOAL",
+      "kings": "0 Kings | 1 King | {count} Kings"
+    },
+    "turn": {
+      "yourTurn": "YOUR TURN",
+      "opponentTurn": "OPPONENT'S TURN"
+    },
+    "history": {
+      "title": "History"
     }
   },
   "home":{
