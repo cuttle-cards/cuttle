@@ -13,21 +13,20 @@ function queenCount(player) {
   }
   return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
 }
-  
+
 const compareByRankThenSuit = (card1, card2) => {
-  return (card1.rank - card2.rank) || (card1.suit - card2.suit);
+  return card1.rank - card2.rank || card1.suit - card2.suit;
 };
 
 const setPlayers = (player, myPnum) => {
-  const sortP1 = (cards) => player.pNum === myPnum ? cards?.sort(compareByRankThenSuit) : cards;
+  const sortP1 = (cards) => (player.pNum === myPnum ? cards?.sort(compareByRankThenSuit) : cards);
   return {
     ...player,
     hand: sortP1(player.hand)?.map((card) => createGameCard(card)),
     points: sortP1(player.points)?.map((card) => createGameCard(card)),
-    faceCards: sortP1(player.faceCards)?.map((card) => createGameCard(card))
+    faceCards: sortP1(player.faceCards)?.map((card) => createGameCard(card)),
   };
 };
-
 
 class GameCard {
   constructor(card) {
@@ -88,7 +87,7 @@ export const useGameStore = defineStore('game', {
     // Fours
     discarding: false,
     waitingForOpponentToDiscard: false,
-    lastEventDiscardedCards : null,
+    lastEventDiscardedCards: null,
     // Sevens
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,
@@ -165,33 +164,75 @@ export const useGameStore = defineStore('game', {
   },
   actions: {
     updateGame(newGame) {
-      const cardKeys = ['topCard', 'secondCard', 'oneOff', 'oneOffTarget'];
-      const cardArrayKeys = ['deck', 'scrap', 'twos'];
-      
-      Object.keys(newGame).forEach(key => {
-        //set lastEvent properties
-        if (key === 'lastEvent') {
-          Object.keys(newGame.lastEvent).forEach( lastEventKey => {
-            if (lastEventKey === 'oneOff') {
-              this.lastEventOneOffRank = newGame.lastEvent?.oneOff?.rank ?? null;
-            } else if (lastEventKey === 'pNum') {
-              this.lastEventPlayerChoosing = (newGame.lastEvent?.pNum === this.myPNum) ?? null;
-            } else {
-              this[key + lastEventKey] = newGame.lastEvent?.[lastEventKey] ?? null;
-            }
-          });
-        }
-        //set the rest
-        if (cardArrayKeys.includes(key)) {
-          this[key] = newGame[key]?.map((card) => createGameCard(card)) ?? null;
-        } else if (cardKeys.includes(key)) {
-          this[key] = createGameCard(newGame[key]) ?? null;
-        } else if (key === 'players') {
-          this.players = newGame.players?.map((player) => setPlayers(player, this.myPNum)) ?? null;
+      const updateGameMap = {
+        id: (newGame) => (this.id = newGame.id),
+        turn: (newGame) => (this.turn = newGame.turn),
+        chat: (newGame) => (this.chat = cloneDeep(newGame.chat)),
+        deck: (newGame) => (this.deck = newGame.deck.map((card) => createGameCard(card))),
+        scrap: (newGame) => (this.scrap = newGame.scrap.map((card) => createGameCard(card))),
+        log: (newGame) => (this.log = cloneDeep(newGame.log)),
+        name: (newGame) => (this.name = newGame.name),
+        p0Ready: (newGame) => (this.p0Ready = newGame.p0Ready),
+        p1Ready: (newGame) => (this.p1Ready = newGame.p1Ready),
+        passes: (newGame) => (this.passes = newGame.passes),
+        players: (newGame) => {
+          this.players = newGame.players.map((player) => setPlayers(player, this.myPNum)) ?? null;
+        },
+        spectatingUsers: (newGame) => (this.spectatingUsers = newGame.spectatingUsers),
+        twos: (newGame) => (this.twos = newGame.twos.map((card) => createGameCard(card))),
+        topCard: (newGame) => (this.topCard = createGameCard(newGame.topCard) ?? null),
+        secondCard: (newGame) => (this.secondCard = createGameCard(newGame.secondCard) ?? null),
+        oneOff: (newGame) => (this.oneOff = createGameCard(newGame.oneOff) ?? null),
+        oneOffTarget: (newGame) => (this.oneOffTarget = createGameCard(newGame.oneOffTarget) ?? null),
+        isRanked: (newGame) => (this.isRanked = newGame.isRanked),
+        currentMatch: (newGame) => (this.currentMatch = newGame.currentMatch),
+        lastEvent: (newGame) => {
+          const lastEventMap = {
+            change: (newGame) => (this.lastEventChange = newGame.lastEvent.change),
+            oneOff: (newGame) => (this.lastEventOneOffRank = newGame.lastEvent.oneOff.rank),
+            oneOffTargetType: (newGame) => (this.lastEventTargetType = newGame.lastEvent.oneOffTargetType),
+            discardedCards: (newGame) => (this.discardedCards = newGame.lastEvent.discardedCards),
+            chosenCard: (newGame) => {
+              this.cardChosenFromScrap = newGame.lastEvent.chosenCard;
+              this.playerChoosingFromScrap = newGame.lastEvent.pNum === this.myPNum;
+            },
+          };
+          Object.keys(newGame.lastEvent).forEach((lastEventKey) => lastEventMap[lastEventKey](newGame));
+        },
+      };
+      //loop through all keys sent through socket message and run corresponding function
+      Object.keys(newGame).forEach((key) => {
+        if (updateGameMap.key) {
+          updateGameMap[key](newGame);
         } else {
           this[key] = newGame[key] ?? null;
         }
       });
+
+      // Object.keys(newGame).forEach((key) => {
+      //   //set lastEvent properties
+      //   if (key === 'lastEvent') {
+      //     Object.keys(newGame.lastEvent).forEach((lastEventKey) => {
+      //       if (lastEventKey === 'oneOff') {
+      //         this.lastEventOneOffRank = newGame.lastEvent?.oneOff?.rank ?? null;
+      //       } else if (lastEventKey === 'pNum') {
+      //         this.lastEventPlayerChoosing = newGame.lastEvent?.pNum === this.myPNum ?? null;
+      //       } else {
+      //         this[key + lastEventKey] = newGame.lastEvent?.[lastEventKey] ?? null;
+      //       }
+      //     });
+      //   }
+      //   //set the rest
+      //   if (['deck', 'scrap', 'twos'].includes(key)) {
+      //     this[key] = newGame[key]?.map((card) => createGameCard(card)) ?? null;
+      //   } else if (['topCard', 'secondCard', 'oneOff', 'oneOffTarget'].includes(key)) {
+      //     this[key] = createGameCard(newGame[key]) ?? null;
+      //   } else if (key === 'players') {
+      //     this.players = newGame.players?.map((player) => setPlayers(player, this.myPNum)) ?? null;
+      //   } else {
+      //     this[key] = newGame[key] ?? null;
+      //   }
+      // });
       this.waitingForOpponentToStalemate = false;
     },
     opponentJoined(newPlayer) {
@@ -229,7 +270,7 @@ export const useGameStore = defineStore('game', {
       const authStore = useAuthStore();
       // Set my pNum if it is null
       if (this.myPNum === null) {
-        let myPNum = game.players.findIndex(({username}) => username === authStore.username);
+        let myPNum = game.players.findIndex(({ username }) => username === authStore.username);
         if (myPNum === -1) {
           myPNum = null;
         }
