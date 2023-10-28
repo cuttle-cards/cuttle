@@ -197,12 +197,14 @@ export const useGameStore = defineStore('game', {
               this.playerChoosingFromScrap = newGame.lastEvent.pNum === this.myPNum;
             },
           };
-          Object.keys(newGame.lastEvent).forEach((lastEventKey) => lastEventMap[lastEventKey](newGame));
+          Object.keys(newGame.lastEvent).forEach((lastEventKey) => {
+            return lastEventMap[lastEventKey] ? lastEventMap[lastEventKey](newGame) : null;
+          });
         },
       };
       //loop through all keys sent through socket message and run corresponding function
       Object.keys(newGame).forEach((key) => {
-        return updateGameMap[key] ? updateGameMap[key](newGame) : (this[key] = newGame[key] ?? null);
+        return updateGameMap[key] ? updateGameMap[key](newGame) : null;
       });
       this.waitingForOpponentToStalemate = false;
     },
