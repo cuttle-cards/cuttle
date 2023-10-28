@@ -38,6 +38,10 @@
   },
   "game":{
     "resolve": "Resolver",
+    "scrap": "Desechar",
+    "view": "Ver",
+    "pass": "PASAR",
+    "playFromDeck": "Jugar desde el Mazo",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Vuelve a conectarte al juego",
@@ -48,7 +52,7 @@
         "login": "Iniciar sesión"
       },
       "scrapDialog": {
-        "close": "Cerca",
+        "close": "Cerrar",
         "scrapPile": "Pila de chatarra",
         "noCards": "No hay cartas en la pila de chatarra."
       },
@@ -91,6 +95,24 @@
       }
     },
     "moves":{
+      "disabledMove" : {
+        "topTwo": "Debes jugar una de las dos cartas superiores del mazo",
+        "notTurn": "No es tu turno",
+        "frozenCard": "Esta carta está congelada",
+        "emptyDeck": "No se puede jugar con el mazo vacío",
+        "multipleQueens": "No puedes jugar un {rank} mientras tu oponente tenga 2 o más reinas",
+        "noRoyals": "No hay Royals a los que apuntar",
+        "noRoyalsOrPoints": "No hay cartas de puntos ni Royals a los que apuntar"
+      },
+      "points": {
+        "displayName": "Puntos",
+        "description": "Gana 1 punto | Gana {count} puntos"
+      },
+      "scuttle": {
+        "description": "Desechar una carta de menor valor",
+        "disabled": "Solo puedes desechar cartas de menor valor",
+        "disabledNoPoints": "Tu oponente no tiene cartas de puntos que desechar"
+      },
       "effects":{
         "1": "Desechar todos los puntos",
         "2": "Deseche el objetivo Royal o Glasses ocho",
@@ -105,6 +127,17 @@
         "11": "Juega encima de la carta de puntos objetivo para robarla.",
         "12": "Tus otras cartas solo pueden ser objetivo de scuttles.",
         "13": "Reduce los puntos que necesitas para ganar. (1K: 14 puntos, 2K: 10 puntos, 3K: 5 puntos, 4K: 0 puntos)"
+      },
+      "jack": {
+        "description": "Roba una carta de puntos del oponente",
+        "disabled": "No puedes robar una carta de puntos del oponente mientras tenga una reina"
+      },
+      "glasses": {
+        "displayName": "Gafas",
+        "description": "Tu oponente juega con las cartas boca arriba"
+      },
+      "royal": {
+        "displayName": "Realeza"
       }
     },
     "menus":{
@@ -121,6 +154,18 @@
         "spectators":"Espectadores",
         "noSpectators":"Actualmente no hay espectadores"
       }
+    },
+    "score": {
+      "points": "PUNTOS",
+      "goal": "OBJETIVO",
+      "kings": "0 Reyes | 1 Rey | {count} Reyes"
+    },
+    "turn": {
+      "yourTurn": "TU TURNO",
+      "opponentTurn": "TURNO DEL OPONENTE"
+    },
+    "history": {
+      "title": "Historial"
     }
   },
   "home": {
