@@ -82,7 +82,7 @@
         "accept": "Accepter L'impasse"
       },
       "sevenDoubleJacksDialog": {
-        "title": "Selectionnez une carte",
+        "title": "Sélectionnez une carte",
         "cannotMove": "On dirait bien que vous ne pouvez pas jouer. Sélectionnez un Valet à défausser.",
         "resolve": "Continuer"
       }
