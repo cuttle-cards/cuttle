@@ -191,9 +191,9 @@ export const useGameStore = defineStore('game', {
             change: (newGame) => (this.lastEventChange = newGame.lastEvent.change),
             oneOff: (newGame) => (this.lastEventOneOffRank = newGame.lastEvent.oneOff.rank),
             oneOffTargetType: (newGame) => (this.lastEventTargetType = newGame.lastEvent.oneOffTargetType),
-            discardedCards: (newGame) => (this.discardedCards = newGame.lastEvent.discardedCards),
+            discardedCards: (newGame) => (this.lastEventDiscardedCards = newGame.lastEvent.discardedCards),
             chosenCard: (newGame) => {
-              this.cardChosenFromScrap = newGame.lastEvent.chosenCard;
+              this.lastEventCardChosen = newGame.lastEvent.chosenCard;
               this.playerChoosingFromScrap = newGame.lastEvent.pNum === this.myPNum;
             },
           };
