@@ -16,6 +16,11 @@ Cypress.Commands.add('wipeDatabase', () => {
   cy.log('Wiped database');
 });
 
+Cypress.Commands.add('refreshOpponentSocket', () => {
+  io.socket.disconnect();
+  io.socket.reconnect();
+});
+
 Cypress.Commands.add('setBadSession', () => {
   return new Cypress.Promise((resolve) => {
     io.socket.get('/test/badSession', function () {
@@ -70,6 +75,7 @@ Cypress.Commands.add('requestGameList', () => {
  * @param {boolean} alreadyAuthenticated: skips setup steps: db wipe, signup, navigate /
  */
 Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = false) => {
+  cy.refreshOpponentSocket();
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
@@ -99,6 +105,7 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
 });
 
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
+  cy.refreshOpponentSocket();
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
     cy.visit('/');
@@ -127,6 +134,7 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   cy.log('Finished setting up game as p1');
 });
 Cypress.Commands.add('setupGameAsSpectator', () => {
+  cy.refreshOpponentSocket();
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(myUser);
@@ -278,14 +286,18 @@ Cypress.Commands.add('readyOpponent', (id) => {
 });
 Cypress.Commands.add('setIsRankedOpponent', (isRanked) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/game/setIsRanked',{
-      isRanked,
-    }, (res, jwres) => {
-      if (jwres.statusCode === 200) {
-        return resolve(res);
-      }
-      return reject(new Error('Error Changing game mode'));
-    });
+    io.socket.post(
+      '/game/setIsRanked',
+      {
+        isRanked,
+      },
+      (res, jwres) => {
+        if (jwres.statusCode === 200) {
+          return resolve(res);
+        }
+        return reject(new Error('Error Changing game mode'));
+      },
+    );
   });
 });
 Cypress.Commands.add('toggleInput', (selector, checked = false) => {
