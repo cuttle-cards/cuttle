@@ -49,6 +49,16 @@ export default defineConfig(({ mode }) => {
               type: 'image/png',
             },
             {
+              src: '/pwa-icons/logo-head-96.png',
+              sizes: '96x96',
+              type: 'image/png',
+            },
+            {
+              src: '/pwa-icons/logo-head-120.png',
+              sizes: '120x120',
+              type: 'image/png',
+            },
+            {
               src: '/pwa-icons/logo-head-128.png',
               sizes: '128x128',
               type: 'image/png',
@@ -59,8 +69,23 @@ export default defineConfig(({ mode }) => {
               type: 'image/png',
             },
             {
+              src: '/pwa-icons/logo-head-152.png',
+              sizes: '152x152',
+              type: 'image/png',
+            },
+            {
+              src: '/pwa-icons/logo-head-180.png',
+              sizes: '180x180',
+              type: 'image/png',
+            },
+            {
               src: '/pwa-icons/logo-head-192.png',
               sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: '/pwa-icons/logo-head-384.png',
+              sizes: '384x384',
               type: 'image/png',
             },
             {
