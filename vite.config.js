@@ -39,6 +39,7 @@ export default defineConfig(({ mode }) => {
           description: 'The deepest card game under the sea!',
           theme_color: '#FFF4D7',
           background_color: '#FFF4D7',
+          display: 'fullscreen',
           id: '/#/',
           start_url: '/#/',
           icons: [

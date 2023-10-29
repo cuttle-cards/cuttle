@@ -526,7 +526,7 @@ define(['exports'], (function (exports) { 'use strict';
           });
         }
         return handler;
-      } else {
+      } 
         {
           finalAssertExports.isType(handler, 'function', {
             moduleName: 'workbox-routing',
@@ -538,7 +538,7 @@ define(['exports'], (function (exports) { 'use strict';
         return {
           handle: handler
         };
-      }
+      
     };
 
     /*
@@ -850,7 +850,7 @@ define(['exports'], (function (exports) { 'use strict';
         }
         // If we don't have a handler because there was no matching route, then
         // fall back to defaultHandler if that's defined.
-        const method = request.method;
+        const {method} = request;
         if (!handler && this._defaultHandlerMap.has(method)) {
           {
             debugMessages.push(`Failed to find a matching route. Falling ` + `back to the default handler for ${method}.`);
@@ -1369,7 +1369,7 @@ define(['exports'], (function (exports) { 'use strict';
           if (event.type === 'install') {
             if (state && state.originalRequest && state.originalRequest instanceof Request) {
               // TODO: `state` should never be undefined...
-              const url = state.originalRequest.url;
+              const {url} = state.originalRequest;
               if (cachedResponse) {
                 this.notUpdatedURLs.push(url);
               } else {
@@ -1868,7 +1868,7 @@ define(['exports'], (function (exports) { 'use strict';
           let fetchResponse;
           // See https://github.com/GoogleChrome/workbox/issues/1796
           fetchResponse = await fetch(request, request.mode === 'navigate' ? undefined : this._strategy.fetchOptions);
-          if ("development" !== 'production') {
+          if ('development' !== 'production') {
             logger.debug(`Network request for ` + `'${getFriendlyURL(request.url)}' returned a response with ` + `status '${fetchResponse.status}'.`);
           }
           for (const callback of this.iterateCallbacks('fetchDidSucceed')) {
@@ -2337,7 +2337,7 @@ define(['exports'], (function (exports) { 'use strict';
             request: options.request
           };
         }
-        const event = options.event;
+        const {event} = options;
         const request = typeof options.request === 'string' ? new Request(options.request) : options.request;
         const params = 'params' in options ? options.params : undefined;
         const handler = new StrategyHandler(this, {
