@@ -13,7 +13,7 @@ module.exports = {
   },
   extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base'],
   plugins: ['cypress', 'vitest', 'prettier'],
-  ignorePatterns: ['/node_modules/*', '/assets/*'],
+  ignorePatterns: ['/node_modules/*', '/assets/*', '/dev-dist/*'],
   rules: {
     'max-len': [
       'warn',
@@ -33,31 +33,44 @@ module.exports = {
         allowElseIf: true,
       },
     ],
-    'vue/component-name-in-template-casing': ['error', 'PascalCase', {
-      'registeredComponentsOnly': true,
-      }],
+    'vue/component-name-in-template-casing': [
+      'error',
+      'PascalCase',
+      {
+        registeredComponentsOnly: true,
+      },
+    ],
     'no-case-declarations': 'error',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
     semi: ['error', 'always'],
     curly: 'error',
-    'vue/html-closing-bracket-newline': ['error', {
-      'singleline': 'never',
-      'multiline': 'always'
-    }],
-    'vue/max-attributes-per-line': ['error', {
-      'singleline': {
-        'max': 3
-      },      
-      'multiline': {
-        'max': 1
-      }
-    }],
-    'vue/first-attribute-linebreak': ['error', {
-      'singleline': 'beside',
-      'multiline': 'below'
-    }],
+    'vue/html-closing-bracket-newline': [
+      'error',
+      {
+        singleline: 'never',
+        multiline: 'always',
+      },
+    ],
+    'vue/max-attributes-per-line': [
+      'error',
+      {
+        singleline: {
+          max: 3,
+        },
+        multiline: {
+          max: 1,
+        },
+      },
+    ],
+    'vue/first-attribute-linebreak': [
+      'error',
+      {
+        singleline: 'beside',
+        multiline: 'below',
+      },
+    ],
   },
   overrides: [
     {
