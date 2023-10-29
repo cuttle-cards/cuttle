@@ -1,22 +1,21 @@
 <template>
   <div v-if="playerUsername" class="player-card">
     <span class="player-name">{{ playerUsername }}</span>
-    <div class="card-container">
+    <div class="card-container" :class="[playerReady ? 'ready' : 'notReady']">
       <img
         src="/img/cards/card-ready.png"
         class="card-front"
-        :class="{ 'ready': playerReady }"
         alt="card front"
         data-cy="lobby-ready-card"
       >
       <img
         src="/img/cards/card-back.png"
         class="card-back"
-        :class="{ 'ready': playerReady }"
         alt="card back"
         data-cy="lobby-back-card"
       >
     </div>
+    <p>{{ playerReady }}</p>
   </div>
   <div v-else class="player-indicator" :style="{ padding: playerPadding }">
     <div class="avatar">
@@ -70,7 +69,6 @@ export default {
   perspective: 1200px;
   position: relative;
 }
-
 .card-container img {
   width: 100%;
   height: 100%;
@@ -84,15 +82,18 @@ export default {
 .card-back {
   z-index: -1;
 }
-.card-front.ready,
-.card-back {
-  transform: rotateY(0deg);
+.card-container.ready .card-front,
+.card-container.notReady .card-back {
+  rotate: y 0deg;
+  filter: blur(0px);
 }
-.card-front {
-  transform: rotateY(-180deg);
+.card-container.notReady .card-front {
+  rotate: y -180deg;
+  filter: blur(5px);
 }
-.card-back.ready {
-  transform: rotateY(180deg);
+.card-container.ready .card-back {
+  rotate: y 180deg;
+  filter: blur(5px);
 }
 
 .player-card {
@@ -111,6 +112,7 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+  border: 1px solid red;
 }
 .avatar {
   display: inline-block;
