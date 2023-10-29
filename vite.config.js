@@ -40,8 +40,8 @@ export default defineConfig(({ mode }) => {
           theme_color: '#FFF4D7',
           background_color: '#FFF4D7',
           display: 'fullscreen',
-          id: '/#/',
-          start_url: 'cuttle.cards/#/',
+          id: '/',
+          start_url: '/',
           icons: [
             {
               src: '/pwa-icons/logo-head-72.png',
