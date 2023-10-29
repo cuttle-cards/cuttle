@@ -1,10 +1,5 @@
 <template>
-  <BaseLineChart
-    id="usage-stats-chart"
-    :title="title"
-    :data-sets="dataSets"
-    :labels="labels"
-  />
+  <BaseLineChart id="usage-stats-chart" :title="title" :data-sets="dataSets" :labels="labels" />
 </template>
 
 <script>
@@ -50,7 +45,7 @@ export default {
           borderColor: this.theme.newSecondary,
         },
       ];
-    }
+    },
   },
 };
 </script>

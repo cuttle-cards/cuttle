@@ -33,9 +33,7 @@
       <section class="px-8">
         <!-- Season Champions -->
         <div class="mb-10">
-          <h2 v-if="showSeasonChampions" class="text-h2 mb-4">
-            Season Champions
-          </h2>
+          <h2 v-if="showSeasonChampions" class="text-h2 mb-4">Season Champions</h2>
           <div class="d-flex justify-space-around flex-wrap">
             <AwardCard
               v-if="selectedSeason && selectedSeason.firstPlace"
@@ -80,26 +78,17 @@
         </template>
 
         <!-- Usage stats -->
-        <div id="usage-stats-section">
-          <h2 class="text-h2 mt-8 mb-4">
-            Site Usage
-          </h2>
+        <div v-if="selectedSeason" id="usage-stats-section">
+          <h2 class="text-h2 mt-8 mb-4">Site Usage</h2>
           <StatsUsageChart :season="selectedSeason" />
         </div>
         <!-- Error display -->
         <div v-if="error" class="d-flex flex-column align-center text-center">
-          <h3 class="text-h3">
-            Oops!
-          </h3>
+          <h3 class="text-h3">Oops!</h3>
           <p class="text-body-1">
             There was a problem loading the leaderboard. Refresh the page to try again.
           </p>
-          <v-img
-            alt="Dead cuttle logo"
-            src="/img/logo-dead.svg"
-            :width="200"
-            class="mt-4"
-          />
+          <v-img alt="Dead cuttle logo" src="/img/logo-dead.svg" :width="200" class="mt-4" />
         </div>
       </section>
     </div>

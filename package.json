@@ -55,6 +55,7 @@
     "sass": "^1.55.0",
     "storybook": "^7.4.6",
     "vite": "^3.2.5",
+    "vite-plugin-pwa": "^0.16.6",
     "vite-plugin-vuetify": "^1.0.0-alpha.17",
     "vitest": "^0.28.5"
   },
