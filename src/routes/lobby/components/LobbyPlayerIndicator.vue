@@ -1,7 +1,7 @@
 <template>
   <div v-if="playerUsername" class="player-card">
     <span class="player-name">{{ playerUsername }}</span>
-    <div class="card-container" :class="[playerReady ? 'ready' : 'notReady']">
+    <div class="card-container" :class="[playerReady ? 'ready' : 'notReady']" data-cy="lobby-card-container">
       <img
         src="/img/cards/card-ready.png"
         class="card-front"
