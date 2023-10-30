@@ -387,7 +387,7 @@ export const useGameStore = defineStore('game', {
               this.myPNum = res.pNum;
               this.updateGame(res.game);
               this.successfullyJoined({
-                username: res.playerUsername,
+                username: res.username, // was playerUsername but it doesn't exist
                 pNum: res.pNum,
               });
               return resolve();
