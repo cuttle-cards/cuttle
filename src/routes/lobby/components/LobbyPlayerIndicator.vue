@@ -16,6 +16,9 @@
         alt="card back"
         data-cy="lobby-back-card"
       >
+      <div class="water-container">
+        <div class="water" />
+      </div>
     </div>
   </div>
   <div v-else class="player-indicator" :style="{ padding: playerPadding }">
@@ -124,6 +127,34 @@ export default {
   border: 4px dashed rgba(var(--v-theme-surface-2));
   background-color: rgba(var(--v-theme-surface-1));
   z-index: 1;
+}
+
+.water-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: transparent;
+  border-radius: 10px;
+  -webkit-clip-path: polygon(0 0, 100%, 0, 90% 100%, 10% 100%);
+  clip-path: polygon(0 0, 100%, 0, 90% 100%, 10% 100%);
+}
+.water {
+  width: 3600px;
+  height: 800px;
+  background-image: url('/img/waves.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  animation: waving 5s;
+  animation-fill-mode: forwards;
+  z-index: 1;
+}
+
+@keyframes waving {
+  0%{ right: 3000px; top: -120px; }
+  100%{ right: 0; top: 400px; }
 }
 
 @media (min-width: 1920px) {
