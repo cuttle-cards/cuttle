@@ -109,17 +109,16 @@ export default {
     // Determines which disabled text to display
     disabledText() {
       if (this.playingFromDeck && !this.cardSelectedFromDeck) {
-        return 'You must play one of the top two cards from the deck';
+        return this.t('game.moves.disabledMove.topTwo');
       } else if (this.allMovesAreDisabled) {
-        return !this.isPlayersTurn ? "It's not your turn" : 'This card is frozen';
+        return this.t(!this.isPlayersTurn ? 'game.moves.disabledMove.notTurn' : 'game.moves.disabledMove.frozenCard');
       }
       return '';
     },
     pointsMove() {
-      const pointsDescription =
-        `Gain ${this.selectedCard.rank} point` + (this.selectedCard.rank === 1 ? '' : 's');
+      const pointsDescription = this.t('game.moves.points.description', {count: this.selectedCard.rank});
       return {
-        displayName: 'Points',
+        displayName: this.t('game.moves.points.displayName'),
         eventName: 'points',
         moveDescription: pointsDescription,
         disabled: this.allMovesAreDisabled,
@@ -128,9 +127,9 @@ export default {
     },
     scuttleMove() {
       const scuttleDisabled = this.allMovesAreDisabled || !this.hasValidScuttleTarget;
-      let scuttleDisabledExplanation = 'You can only scuttle smaller point cards';
+      let scuttleDisabledExplanation = this.t('game.moves.scuttle.disabled');
       if (this.gameStore.opponent.points.length === 0) {
-        scuttleDisabledExplanation = 'Your opponent has no point cards to scuttle';
+        scuttleDisabledExplanation = this.t('game.moves.scuttle.disabledNoPoints');
       }
       if (this.allMovesAreDisabled) {
         scuttleDisabledExplanation = this.disabledText;
@@ -138,7 +137,7 @@ export default {
       return {
         displayName: 'Scuttle',
         eventName: 'scuttle',
-        moveDescription: 'Scrap a lower point card',
+        moveDescription: this.t('game.moves.scuttle.description'),
         disabled: scuttleDisabled,
         disabledExplanation: scuttleDisabledExplanation,
       };
@@ -153,7 +152,7 @@ export default {
         const noSecondCard = !this.gameStore.secondCard;
         if (noTopCard || (playingTopCard && noSecondCard)) {
           oneOffDisabled = true;
-          oneOffDisabledExplanation = "Can't be played with empty deck";
+          oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
         }
       }
       return {
@@ -171,7 +170,7 @@ export default {
       if (!this.allMovesAreDisabled) {
         if (this.opponentQueenCount >= 2) {
           oneOffDisabled = true;
-          oneOffDisabledExplanation = `You can't play a ${this.selectedCard.rank} while your opponent has two or more queens`;
+          oneOffDisabledExplanation = this.t('game.moves.disabledMove.multipleQueens', {rank: this.selectedCard.rank});
         } else {
           let validTargetExists;
           // Twos
@@ -184,14 +183,14 @@ export default {
             validTargetExists = numTotalTargets >= 1;
             if (!validTargetExists) {
               oneOffDisabled = true;
-              oneOffDisabledExplanation = 'There are no Royals to target';
+              oneOffDisabledExplanation = this.t('game.moves.disabledMove.noRoyals');
             }
           } else {
             const numValidTargets =
               this.gameStore.opponent.points.length + this.gameStore.opponent.faceCards.length;
             if (numValidTargets === 0) {
               oneOffDisabled = true;
-              oneOffDisabledExplanation = 'There are no point cards or Royals to target';
+              oneOffDisabledExplanation = this.t('game.moves.disabledMove.noRoyalsOrPoints');
             }
           }
         }
@@ -209,14 +208,14 @@ export default {
       let disabledExplanation = '';
       if (!this.allMovesAreDisabled) {
         ableToJack = this.opponentQueenCount === 0;
-        disabledExplanation = "You cannot jack your opponent's points while they have a queen";
+        disabledExplanation = this.t('game.moves.jack.disabled');
       } else {
         disabledExplanation = this.disabledText;
       }
       return {
-        displayName: 'Royal',
+        displayName: this.t('game.moves.royal.displayName'),
         eventName: 'jack',
-        moveDescription: "Steal an opponent's point card",
+        moveDescription: this.t('game.moves.jack.description'),
         disabled: !ableToJack || this.allMovesAreDisabled,
         disabledExplanation,
       };
@@ -244,9 +243,9 @@ export default {
             this.scuttleMove,
             // Glasses
             {
-              displayName: 'Glasses',
+              displayName: this.t('game.moves.glasses.displayName'),
               eventName: 'faceCard',
-              moveDescription: 'Your opponent plays open handed',
+              moveDescription: this.t('game.moves.glasses.description'),
               disabled: this.allMovesAreDisabled,
               disabledExplanation: this.disabledText,
             },
@@ -259,7 +258,7 @@ export default {
         case 13:
           return [
             {
-              displayName: 'Royal',
+              displayName: this.t('game.moves.royal.displayName'),
               eventName: 'faceCard',
               moveDescription: this.t(`game.moves.effects[${this.selectedCard.rank}]`) ,
               disabled: this.allMovesAreDisabled,
