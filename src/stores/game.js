@@ -285,7 +285,7 @@ export const useGameStore = defineStore('game', {
     },
     opponentLeft() {
       this.players = this.players.filter((player) => player.pNum === this.myPNum);
-
+      
       if(this.myPNum == 0) {
         this.p1Ready = false;
       } else {

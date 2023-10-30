@@ -54,9 +54,10 @@ describe('Lobby - Page Content', () => {
 
   it('Shows both players indicators', () => {
     cy.get('[data-cy=my-indicator]').contains(myUser.username).should('not.contain', '@');
-    // cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
+
     //check if card-back is not flipped/visible
     cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
+    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
     cy.get('[data-cy=opponent-indicator]').contains('Invite');
   });
 
@@ -128,7 +129,6 @@ describe('Lobby - P0 Perspective', () => {
         expect(store.opponentIsReady).to.eq(null); // Opponent is missing (not ready)
         // Click Unready button
         cy.get('[data-cy=ready-button]').click();
-        // cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
         //back-card visible, ready-card not visible
         cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
         cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
@@ -174,7 +174,6 @@ describe('Lobby - P0 Perspective', () => {
         cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
         // Opponent readies up
         cy.readyOpponent();
-        // cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
         // card-back not visible, ready-card visible
         cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 180deg');
         cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y 0deg');
@@ -202,18 +201,15 @@ describe('Lobby - P0 Perspective', () => {
     // Opponent subscribes & readies up
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
-    // cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
     //card-back visible, ready-card not visible
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
     cy.readyOpponent();
-    // cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
     // card-back not visible, ready-card visible
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 180deg');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y 0deg');
     //Opponent un-readies
     cy.readyOpponent();
-    // cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
     // card-back visible, ready-card not visible
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
@@ -234,7 +230,6 @@ describe('Lobby - P0 Perspective', () => {
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.readyOpponent().then(() => {
-      // cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
     // back-card not visible, ready-card visible
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 180deg');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y 0deg');
@@ -267,16 +262,14 @@ describe('Lobby - P0 Perspective', () => {
       cy.get('[data-cy=my-indicator]').contains(myUser.username);
       cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
       cy.readyOpponent();
-      cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
-
-      cy.reload();
-      // cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
-      // back-card not visible, ready-card visible
+      // opponent : back-card not visible, ready-card visible
       cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 180deg');
       cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y 0deg');
-
-      // cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-      // back-card visible, ready-card not visible
+      cy.reload();
+      // opponent : back-card not visible, ready-card visible
+      cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 180deg');
+      cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y 0deg');
+      // me : back-card visible, ready-card not visible
       cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
       cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
       cy.get('[data-cy=ready-button]').click();
@@ -310,32 +303,21 @@ describe('Lobby - P1 Perspective', () => {
   it('Shows when oppenent Readies/Unreadies', () => {
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
 
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
-    
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
-
-    // back-card visibli, ready-card not visible
+    // opponent : back-card visible, ready-card not visible
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
     cy.readyOpponent();
-    // cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]', {timeOut: 10000}).should('exist');
     // oponent: ready-card visible with a delay of 1 second
+    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]', {timeOut: 10000}).should('have.css', 'rotate', 'y 180deg');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]', {timeOut: 10000}).should('have.css', 'rotate', 'y 0deg');
-    
-    
-    // cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
     // me: back-card visible
     cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
+    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
     //Opponent un-readies
     cy.readyOpponent();
-    // cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
     //oponent: back-card visible, ready-card not visible
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
-
-    // cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
     // me: back-card visible, ready-card not visible
     cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
     cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
@@ -359,9 +341,6 @@ describe('Lobby - P1 Perspective', () => {
       .contains('UNREADY');
     // Test: player indicator classes
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
-
     // opponent: back-card visible, ready-card not visible
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
@@ -377,11 +356,7 @@ describe('Lobby - P1 Perspective', () => {
           .click()
           .should('not.contain', 'UNREADY')
           .should('contain', 'READY');
-
-        cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-        cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
         // me: back-card visible, ready-card not visible
-
         cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
         cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
         //Return updated store state
@@ -420,32 +395,20 @@ describe('Lobby - P1 Perspective', () => {
 
   it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
     cy.get('[data-cy=ready-button]').click();
-    // cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
     //me: back-card not visible, ready-card visible
     cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 180deg');
     cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y 0deg');
 
     cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
-    // cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
     // opponent: back-card visible, ready-card not visible
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
 
     cy.reload();
-    // cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
     // me: back-card not visible, ready-card visible
     cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 180deg');
     cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y 0deg');
     cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
-    // cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
     //opponent: back-card visible, ready-card not visible
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('have.css', 'rotate', 'y 0deg');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('have.css', 'rotate', 'y -180deg');
