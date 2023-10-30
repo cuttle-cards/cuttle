@@ -130,20 +130,20 @@ export default {
 }
 
 .water-container {
+  position: absolute;
   top: 0;
-  max-height: 33vh;
-  max-width: calc(35vh / 1.45);
+  height: 100%;
+  width: 100%;
   overflow: hidden;
   background-color: transparent;
   border-radius: 10px;
-  position: relative;
   -webkit-clip-path: polygon(0 0, 100%, 0, 90% 100%, 10% 100%);
   clip-path: polygon(0 0, 100%, 0, 90% 100%, 10% 100%);
 }
 .water {
   width: 3600px;
   height: 800px;
-  background-image: url('../../../../public/img/waves.svg');
+  background-image: url('/img/waves.svg');
   background-repeat: no-repeat;
   background-size: contain;
   position: relative;
