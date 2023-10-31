@@ -80,7 +80,7 @@
         </template>
 
         <!-- Usage stats -->
-        <div v-if="selectedSeason" id="usage-stats-section">
+        <div id="usage-stats-section">
           <h2 class="text-h2 mt-8 mb-4">
             Site Usage
           </h2>
