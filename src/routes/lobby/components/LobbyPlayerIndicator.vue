@@ -145,7 +145,7 @@ export default {
   height: 800px;
   background-image: url('/img/waves.svg');
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   position: relative;
   animation: waving 5s;
   animation-fill-mode: forwards;
@@ -153,8 +153,10 @@ export default {
 }
 
 @keyframes waving {
-  0%{ right: 3000px; top: -120px; }
-  100%{ right: 0; top: 400px; }
+  0%{ right: 3000px; top: -120px; opacity: 1; }
+  50%{ opacity: 1; }
+  80%{ opacity: 1; }
+  100%{ right: 0; top: 500px; opacity: 0; }
 }
 
 @media (min-width: 1920px) {
