@@ -20,11 +20,14 @@
           <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo">
         </v-col>
         <v-col md="4" cols="12">
-          <LobbyPlayerIndicator
-            :player-username="gameStore.opponentUsername"
-            :player-ready="gameStore.opponentIsReady"
-            data-cy="opponent-indicator"
-          />
+          <Transition>
+            <LobbyPlayerIndicator
+              v-if="gameStore.opponentUsername"
+              :player-username="gameStore.opponentUsername"
+              :player-ready="gameStore.opponentIsReady"
+              data-cy="opponent-indicator"
+            />
+          </Transition>
         </v-col>
       </v-row>
       <v-row>
@@ -224,6 +227,26 @@ h5 {
   line-height: 5rem;
   margin: auto auto 16px auto;
 }
+
+.v-leave-active {
+  animation: burst-bubble 0.5s ease;
+}
+
+@keyframes burst-bubble {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 @media (min-width: 980px) {
   .rank-switch {
     padding: 0;
