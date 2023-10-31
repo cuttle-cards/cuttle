@@ -1,33 +1,35 @@
 <template>
-  <div v-if="playerUsername" class="player-card">
-    <span class="player-name">{{ playerUsername }}</span>
-    <div class="card-container">
-      <img
-        src="/img/cards/card-ready.png"
-        class="card-front"
-        :class="{ 'ready': playerReady }"
-        alt="card front"
-        data-cy="lobby-ready-card"
-      >
-      <img
-        src="/img/cards/card-back.png"
-        class="card-back"
-        :class="{ 'ready': playerReady }"
-        alt="card back"
-        data-cy="lobby-back-card"
-      >
-      <div class="water-container">
-        <div class="water" />
+  <Transition name="cards" mode="out-in">
+    <div v-if="playerUsername" class="player-card">
+      <span class="player-name">{{ playerUsername }}</span>
+      <div class="card-container">
+        <img
+          src="/img/cards/card-ready.png"
+          class="card-front"
+          :class="{ 'ready': playerReady }"
+          alt="card front"
+          data-cy="lobby-ready-card"
+        >
+        <img
+          src="/img/cards/card-back.png"
+          class="card-back"
+          :class="{ 'ready': playerReady }"
+          alt="card back"
+          data-cy="lobby-back-card"
+        >
+        <div class="water-container">
+          <div class="water" />
+        </div>
       </div>
     </div>
-  </div>
-  <div v-else class="player-indicator" :style="{ padding: playerPadding }">
-    <div class="avatar">
-      <h3>
-        {{ message }}
-      </h3>
+    <div v-else class="player-indicator" :style="{ padding: playerPadding }">
+      <div class="avatar">
+        <h3>
+          {{ message }}
+        </h3>
+      </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script>
@@ -145,7 +147,7 @@ export default {
   height: 800px;
   background-image: url('/img/waves.svg');
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   position: relative;
   animation: waving 5s;
   animation-fill-mode: forwards;
@@ -153,8 +155,29 @@ export default {
 }
 
 @keyframes waving {
-  0%{ right: 3000px; top: -120px; }
-  100%{ right: 0; top: 400px; }
+  0%{ right: 3000px; top: -120px; opacity: 1; }
+  50%{ opacity: 1; }
+  80%{ opacity: 1; }
+  100%{ right: 0; top: 500px; opacity: 0; }
+}
+
+.cards-leave-active {
+  animation: burst-bubble 0.5s ease;
+}
+
+@keyframes burst-bubble {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @media (min-width: 1920px) {
