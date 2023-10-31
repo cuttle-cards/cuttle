@@ -13,7 +13,7 @@ module.exports = {
   },
   extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base'],
   plugins: ['cypress', 'vitest', 'prettier'],
-  ignorePatterns: ['/node_modules/*', '/assets/*', '/dev-dist/*'],
+  ignorePatterns: ['/node_modules/*', '/assets/*'],
   rules: {
     'max-len': [
       'warn',
