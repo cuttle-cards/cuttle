@@ -33,6 +33,7 @@ export default defineConfig(({ mode }) => {
           enabled: true,
           type: 'module',
         },
+        selfDestroying: true,
         manifest: {
           name: 'Cuttle.cards',
           short_name: 'Cuttle',

@@ -77,11 +77,7 @@ Cypress.Commands.add('requestGameList', () => {
 Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = false) => {
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
-    cy.visit('/', {
-      onBeforeLoad(win) {
-        delete win.navigator.__proto__.serviceWorker;
-      },
-    });
+    cy.visit('/');
     cy.signupPlayer(myUser);
   }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
@@ -110,11 +106,7 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
   if (!alreadyAuthenticated) {
     cy.wipeDatabase();
-    cy.visit('/', {
-      onBeforeLoad(win) {
-        delete win.navigator.__proto__.serviceWorker;
-      },
-    });
+    cy.visit('/');
     cy.signupPlayer(myUser);
   }
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
@@ -141,11 +133,7 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
 });
 Cypress.Commands.add('setupGameAsSpectator', () => {
   cy.wipeDatabase();
-  cy.visit('/', {
-    onBeforeLoad(win) {
-      delete win.navigator.__proto__.serviceWorker;
-    },
-  });
+  cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
   cy.createGamePlayer({ gameName: 'Spectator Game', isRanked: false }).then((gameData) => {
