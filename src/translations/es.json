@@ -92,6 +92,28 @@
         "title": "Seleccione una página",
         "cannotMove": "Parece que no puedes jugar. Selecciona una jota para descartar.",
         "resolve": "Resolver"
+      },
+      "statsScoringDialog": {
+        "ranksDetermination": "¿Cómo se determinan los rangos?",
+        "competitiveCuttle": {
+          "description": "Cuttle competitivo se divide en 4 temporadas por año, una por palo: Tréboles, Diamantes, Corazones y Espadas. Al final de cada temporada, los 8 mejores jugadores juegan un campeonato de doble eliminación y el",
+          "highlight": "Los campeones son permanentemente reconocidos en el sitio."
+        },
+        "seasonDescription": "Cada temporada se divide en 13 semanas. Para cada semana, contamos el número de partidos mejor clasificados de 2/3 que cada jugador gana contra oponentes únicos (ignorando los puntos muertos) y asignamos puntos a los jugadores según su clasificación semanal.",
+        "points": {
+          "displayName": "Puntos",
+          "singular": "Punto",
+          "description": {
+            "5Points": "El jugador con más victorias obtiene 5 puntos por semana",
+            "4Points": "El segundo jugador con más victorias obtiene 4 puntos para la semana",
+            "3Points": "El jugador con la 3ra más victorias obtiene 3 puntos por semana",
+            "2Points": "Cada otro jugador que ganó al menos un partido obtiene 2 puntos por semana",
+            "1Point": "Cada jugador que haya completado un partido sin ganar recibe 1 punto por semana"
+          }
+        },
+        "statsAndRanking": "Puedes ver las estadísticas y clasificaciones de cada temporada en esta página. Al final de cada temporada, los 8 mejores jugadores compiten en un campeonato de doble eliminación. ¡Al final del año, los 8 mejores jugadores del campeonato de temporada competirán en el campeonato mundial de Cuttle! ¿Tienes lo necesario para convertirte en",
+        "lordOfTheDeep": "Señor de las profundidades?",
+        "gotIt": "¡Entiendo!"
       }
     },
     "moves":{

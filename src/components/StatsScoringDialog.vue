@@ -17,7 +17,7 @@
           variant="text"
           data-cy="ranked-info-button"
         >
-          <span v-if="showButtonText">How are ranks determined?</span>
+          <span v-if="showButtonText">{{ t('game.dialogs.statsScoringDialog.ranksDetermination') }}</span>
           <v-icon class="ml-1" icon="mdi-information-outline" aria-hidden="true" />
         </v-btn>
       </slot>
@@ -25,10 +25,8 @@
     <!-- Dialog -->
     <template #body>
       <p>
-        Competitive Cuttle is divided into 4 seasons per year, one per suit: Clubs, Diamonds, Hearts, and
-        Spades. At the end of each season, the top 8 players play a double elimination championship tournament
-        and the
-        <strong>champions are permanantly accoladed on the site.</strong>
+        {{ t('game.dialogs.statsScoringDialog.competitiveCuttle.description') }}
+        <strong>{{ t('game.dialogs.statsScoringDialog.competitiveCuttle.highlight') }}</strong>
       </p>
       <div class="d-flex justify-space-around flex-wrap mt-4">
         <AwardCard username="Champion player" :place="1" class="mb-4" />
@@ -36,54 +34,49 @@
         <AwardCard username="Third Place Player" :place="3" class="mb-4" />
       </div>
       <p>
-        Each Season is divided into 13 weeks. For each week, we count the number of best 2/3 ranked matches
-        each player wins against unique opponents (ignoring stalemates) and assign players points based on
-        their weekly standing.
+        {{ t('game.dialogs.statsScoringDialog.seasonDescription') }}
       </p>
       <v-list class="mt-4" bg-color="surface-2" base-color="surface-1">
         <v-list-item>
           <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace">
-            5 Points
+            5 {{ t('game.dialogs.statsScoringDialog.points.displayName') }}
           </v-chip>
-          The player with the most wins gets 5 points for the week
+          {{ t('game.dialogs.statsScoringDialog.points.description.5Points') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace">
-            4 Points
+            4 {{ t('game.dialogs.statsScoringDialog.points.displayName') }}
           </v-chip>
-          The player with the 2nd most wins gets 4 points for the week
+          {{ t('game.dialogs.statsScoringDialog.points.description.4Points') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace">
-            3 Points
+            3 {{ t('game.dialogs.statsScoringDialog.points.displayName') }}
           </v-chip>
-          The player with the 3rd most wins gets 3 points for the week
+          {{ t('game.dialogs.statsScoringDialog.points.description.3Points') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary">
-            2 Points
+            2 {{ t('game.dialogs.statsScoringDialog.points.displayName') }}
           </v-chip>
-          Each other player who won at least one match gets 2 points for the week
+          {{ t('game.dialogs.statsScoringDialog.points.description.2Points') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="outlined" class="mr-2 mb-1" color="#000">
-            1 Point
+            1 {{ t('game.dialogs.statsScoringDialog.points.singular') }}
           </v-chip>
-          Each other player who completed a match without winning gets 1 point for the week
+          {{ t('game.dialogs.statsScoringDialog.points.description.1Point') }}
         </v-list-item>
       </v-list>
       <p class="mt-4">
-        You can view the statistics and rankings for each season on this page. At the end of each season, the
-        top 8 players compete in a double elimination championship tournament. At the end of the year, the top
-        8 players from the Season Championships compete in the Cuttle World Championship! Do you have what it
-        takes to become
-        <strong> Lord of the Deep? </strong>
+        {{ t('game.dialogs.statsScoringDialog.statsAndRanking') }}
+        <strong> {{ t('game.dialogs.statsScoringDialog.lordOfTheDeep') }} </strong>
       </p>
       <!-- Actions -->
     </template>
     <template #actions>
       <v-btn variant="outlined" color="surface-1" @click="show = false">
-        Got It!
+        {{ t('game.dialogs.statsScoringDialog.gotIt') }}
       </v-btn>
     </template>
   </BaseDialog>
@@ -92,6 +85,7 @@
 <script>
 import BaseDialog from '@/components/BaseDialog.vue';
 import AwardCard from '@/components/AwardCard.vue';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'StatsScoringDialog',
@@ -113,6 +107,10 @@ export default {
     return {
       show: false,
     };
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   computed: {
     theme() {

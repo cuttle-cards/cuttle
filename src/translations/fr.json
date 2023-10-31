@@ -92,6 +92,28 @@
         "title": "Sélectionnez une carte",
         "cannotMove": "On dirait bien que vous ne pouvez pas jouer. Sélectionnez un Valet à défausser.",
         "resolve": "Continuer"
+      },
+      "statsScoringDialog": {
+        "ranksDetermination": "Comment sont déterminés les classements?",
+        "competitiveCuttle": {
+          "description": "Competitive Cuttle est divisé en 4 saisons par an, une par couleur : trèfle, carreau, cœur et pique. A la fin de chaque saison, les 8 meilleurs joueurs disputent un tournoi de championnat à double élimination et le",
+          "highlight": "les champions sont récompensés en permanence sur le site."
+        },
+        "seasonDescription": "Chaque saison est divisée en 13 semaines. Pour chaque semaine, nous comptons le nombre de matchs classés aux 2/3 que chaque joueur remporte contre des adversaires uniques (en ignorant les impasses) et attribuons des points aux joueurs en fonction de leur classement hebdomadaire.",
+        "points": {
+          "displayName": "Points",
+          "singular": "Point",
+          "description": {
+            "5Points": "Le joueur avec le plus de victoires obtient 5 points pour la semaine",
+            "4Points": "Le joueur avec le 2ème plus grand nombre de victoires obtient 4 points pour la semaine",
+            "3Points": "Le joueur avec le 3ème plus grand nombre de victoires obtient 3 points pour la semaine",
+            "2Points": "Chaque autre joueur qui a gagné au moins un match reçoit 2 points pour la semaine",
+            "1Point": "Chaque autre joueur qui termine un match sans gagner reçoit 1 point pour la semaine"
+          }
+        },
+        "statsAndRanking": "Vous pouvez consulter les statistiques et les classements de chaque saison sur cette page. À la fin de chaque saison, les 8 meilleurs joueurs s'affrontent dans un tournoi de championnat à double élimination. À la fin de l'année, les 8 meilleurs joueurs des Championnats de Saison s'affrontent au Championnat du Monde de Cuttle ! As-tu ce qu'il faut pour devenir le",
+        "lordOfTheDeep": "Seigneur des Profondeurs ?",
+        "gotIt": "J'ai compris!"
       }
     },
     "moves":{
