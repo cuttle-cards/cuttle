@@ -12,7 +12,8 @@
     "cancel": "Annuler",
     "ranked": "Classé",
     "casual": "Occasionnel",
-    "your": "ton"
+    "your": "ton",
+    "close": "Fermer"
   },
   "login": {
     "noAccount": "Vous n'avez pas de compte ?",
@@ -52,7 +53,6 @@
         "login": "Se connecter"
       },
       "scrapDialog": {
-        "close": "Fermer",
         "scrapPile": "Pile de ferraille",
         "noCards": "Il n'y a aucune carte dans la pile de ferraille."
       },
@@ -298,5 +298,24 @@
       "whereToPlay": "Où puis-je jouer à Cuttle?",
       "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami! Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit:"  
     }
+  },
+  "stats": {
+    "error": {
+      "oops": "Oops!",
+      "message": "Un problème est survenu lors du chargement du classement. Actualisez la page pour réessayer."
+    },
+    "siteUsage": "Utilisation du site",
+    "weeklyRankings": "Classements hebdomadaires",
+    "season": {
+      "champions": "Champions de la saison",
+      "click": "Cliquez sur",
+      "tournamentBracket": "ici pour voir le tableau officiel du tournoi",
+      "tournamentFootage": "ici pour regarder les images officielles du tournoi",
+      "playByPlay": "avec commentaire play-by-play."
+    },
+    "winRate": "Taux de réussite",
+    "wins": "Gagne",
+    "losses": "Pertes",
+    "results": "Résultats"
   }
 }

@@ -12,7 +12,8 @@
     "cancel": "Cancel",
     "ranked": "Ranked",
     "casual": "Casual",
-    "your": "your"
+    "your": "your",
+    "close": "Close"
   },
   "login": {
     "noAccount": "Don't have an account?",
@@ -57,7 +58,6 @@
         "oppponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
       },
       "scrapDialog": {
-        "close": "Close",
         "scrapPile": "Scrap Pile",
         "noCards": "There are no cards in the scrap pile."
       },
@@ -298,5 +298,24 @@
       "whereToPlay": "Where can I play Cuttle?",
       "whereToPlayAnswer": "You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, there is only one place:"
     }
+  },
+  "stats": {
+    "error": {
+      "oops": "Oops!",
+      "message": "There was a problem loading the leaderboard. Refresh the page to try again."
+    },
+    "siteUsage": "Site Usage",
+    "weeklyRankings": "Weekly Rankings",
+    "season": {
+      "champions": "Season Champions",
+      "click": "Click",
+      "tournamentBracket": "here to see the official tournament bracket",
+      "tournamentFootage": "here to watch the official tournament footage",
+      "playByPlay": "with play-by-play commentary."
+    },
+    "winRate": "Win Rate",
+    "wins": "Wins",
+    "losses": "Losses",
+    "results": "Results"
   }
 }
