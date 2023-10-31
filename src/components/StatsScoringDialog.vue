@@ -103,14 +103,14 @@ export default {
       default: 'primary',
   }
   },
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       show: false,
     };
-  },
-  setup() {
-    const { t } = useI18n();
-    return { t };
   },
   computed: {
     theme() {
