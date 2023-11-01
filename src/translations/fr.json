@@ -37,7 +37,11 @@
     "rankedChangedAlert":"Mode de jeu modifié à"
   },
   "game":{
-    "resolve": "Reprendre",
+    "resolve": "Résoudre",
+    "scrap": "Écarter",
+    "view": "Regarder",
+    "pass": "PASSER",
+    "playFromDeck": "Jouer depuis le Paquet",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnectez-vous au jeu.",
@@ -75,7 +79,19 @@
           "noTwoPresent": "vous n'avez pas de Deux."
         }
       },
+      "threeDialog": {
+        "title": "Sélectionnez une carte dans Scrap"
+      },
       "opponentRequestedStalemateDialog": {
+        "title": "Accepter L'impasse?" ,
+        "opponentHasRequested": "Votre adversaire a demandé une impasse. Si vous acceptez, la partie se terminera par une égalité.",
+        "reject": "Rejeter la Demande",
+        "accept": "Accepter L'impasse"
+      },
+      "sevenDoubleJacksDialog": {
+        "title": "Sélectionnez une carte",
+        "cannotMove": "On dirait bien que vous ne pouvez pas jouer. Sélectionnez un Valet à défausser.",
+        "resolve": "Continuer"
         "title": "Accepter le match nul ?" ,
         "opponentHasRequested": "Votre adversaire propose match nul. Si vous acceptez, la partie se terminera par une égalité.",
         "reject": "Rejeter",
@@ -88,6 +104,24 @@
       }
     },
     "moves":{
+      "disabledMove" : {
+        "topTwo": "Vous devez jouer l'une des deux premières cartes du paquet",
+        "notTurn": "Ce n'est pas ton tour",
+        "frozenCard": "Cette carte est gelée",
+        "emptyDeck": "On ne peut pas jouer avec le paquet vide",
+        "multipleQueens": "Tu ne peux pas jouer un {rank} lorsque ton adversaire a deux ou plus de queens",
+        "noRoyals": "Il n'y a pas de Rois à cibler",
+        "noRoyalsOrPoints": "Il n'y a pas de cartes à points ni de Rois à cibler"
+      },
+      "points": {
+        "displayName": "Points",
+        "description": "Gagnez 1 point | Gagnez {count} points"
+      },
+      "scuttle": {
+        "description": "Écartez une carte de moindre valeur en points",
+        "disabled": "Vous ne pouvez écarter que des cartes de points plus faibles",
+        "disabledNoPoints": "Votre adversaire n'a pas de cartes de points à écarter"
+      },
       "effects":{
         "1": "Elimine tous les points.",
         "2": "Cible et élimine une figures ou un huit en lunettes.",
@@ -118,6 +152,18 @@
         "spectators":"Spectateurs",
         "noSpectators":"Il n'y a actuellement aucun spectateur."
       }
+    },
+    "score": {
+      "points": "POINTS",
+      "goal": "OBJECTIF",
+      "kings": "0 Rois | 1 Roi | {count} Rois"
+    },
+    "turn": {
+      "yourTurn": "TON TOUR",
+      "opponentTurn": "TOUR DE L'ADVERSAIRE"
+    },
+    "history": {
+      "title": "Historique"
     }
   },
   "home": {
