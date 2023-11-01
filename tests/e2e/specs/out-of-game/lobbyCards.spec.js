@@ -1,19 +1,5 @@
 import { myUser, opponentOne } from '../../fixtures/userFixtures';
 
-
-function setup(isRanked = false) {
-  cy.wipeDatabase();
-  cy.visit('/');
-  cy.signupPlayer(myUser);
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((store) => store.requestSubscribe(gameSummary.gameId));
-    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
-    cy.wrap(gameSummary).as('gameSummary');
-  });
-}
-
 describe('P0 Perspective', () => {
   beforeEach(() => {
     //creates a game and player joins it
@@ -41,6 +27,30 @@ describe('P0 Perspective', () => {
       .then((store) => {
         expect(store.p1Ready).to.eq(store.opponentIsReady); // IS THIS OK TO FAIL ?
       });
+  });
+
+  it('opponent joins, player leaves and joins back', () => {
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((gameData) => {
+        cy.signupOpponent(opponentOne);
+        cy.subscribeOpponent(gameData.id);
+      });
+    playerLeavesLobby();
+    //joins back
+    cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
+
+    //check both names are different in state
+    cy.window()
+    .its('cuttle.gameStore')
+    .then((gameData) => {
+      expect(gameData.players[0].username).to.not.eq(gameData.players[1].username);
+    });
+    
+    playerIndicatorShowsNameAndCard();
+    playerShouldNotBeReady();
+    opponentIndicatorShowsNameAndCard(); // FAILS => OPPONENT HAS PLAYER'S NAME IN THE UI
+    opponentShouldNotBeReady();
   });
 
   it('opponent joins, readies and leaves', () => {
@@ -74,41 +84,21 @@ describe('P0 Perspective', () => {
         // opponentShouldBeReady(); // THIS SHOULD FAIL
       });
   });
-
-  it('opponent joins, readies, leaves, joins back, player leaves and come back', () => {
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((gameData) => {
-        cy.signupOpponent(opponentOne);
-        cy.subscribeOpponent(gameData.id);
-        cy.readyOpponent();
-        cy.leaveLobbyOpponent();
-        cy.subscribeOpponent(gameData.id);
-        opponentIndicatorShowsNameAndCard();
-        opponentShouldNotBeReady();  // THIS SHOULD NOT FAIL
-        // opponentShouldBeReady(); // THIS SHOULD FAIL
-      });
-    playerLeavesLobby();
-    //joins back
-    cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
-
-    //check both names are different in state
-    cy.window()
-    .its('cuttle.gameStore')
-    .then((gameData) => {
-      expect(gameData.players[0].username).to.not.eq(gameData.players[1].username);
-    });
-    
-    playerIndicatorShowsNameAndCard();
-    playerShouldNotBeReady();
-    opponentIndicatorShowsNameAndCard(); // FAILS => OPPONENT HAS PLAYER'S NAME IN THE UI
-    opponentShouldNotBeReady();
-  });
 });
 
-
-
 // functions
+function setup(isRanked = false) {
+  cy.wipeDatabase();
+  cy.visit('/');
+  cy.signupPlayer(myUser);
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((store) => store.requestSubscribe(gameSummary.gameId));
+    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+    cy.wrap(gameSummary).as('gameSummary');
+  });
+}
 
 function clickReadyButton() {
   cy.get('[data-cy=ready-button]').click();
