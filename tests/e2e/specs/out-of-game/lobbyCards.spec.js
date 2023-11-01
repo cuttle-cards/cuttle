@@ -22,11 +22,11 @@ describe('P0 Perspective', () => {
     cy.leaveLobbyOpponent();
     opponentIndicatorShouldBeEmpty();
     testReadyValueInState('p1', false);
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((store) => {
-        // expect(store.p1Ready).to.eq(store.opponentIsReady); // IS THIS OK TO FAIL ?
-      });
+    // cy.window()
+    //   .its('cuttle.gameStore')
+    //  .then((store) => {
+    //   expect(store.p1Ready).to.eq(store.opponentIsReady); // IS THIS OK TO FAIL ?
+    //   });
   });
 
   it('opponent joins, player leaves and joins back', () => {
@@ -63,11 +63,11 @@ describe('P0 Perspective', () => {
     // testReadyValueInState('p1', null); // THIS SHOULD NOT FAIL
     testReadyValueInState('p1', false); // THIS SHOULD PROBABLY FAIL
     // testReadyValueInState('p1', true); // THIS SHOULD FAIL
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((store) => {
+    // cy.window()
+    //  .its('cuttle.gameStore')
+    //  .then((store) => {
         // expect(store.p1Ready).to.eq(store.opponentIsReady); // IS THIS OK TO FAIL ?
-      });
+    //  });
   });
 
   it('opponent joins, readies, leaves and joins back', () => {
