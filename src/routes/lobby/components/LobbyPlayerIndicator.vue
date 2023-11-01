@@ -15,7 +15,6 @@
         data-cy="lobby-back-card"
       >
     </div>
-    <p>{{ playerReady }}</p>
   </div>
   <div v-else class="player-indicator" :style="{ padding: playerPadding }">
     <div class="avatar">
@@ -112,7 +111,6 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
-  border: 1px solid red;
 }
 .avatar {
   display: inline-block;
