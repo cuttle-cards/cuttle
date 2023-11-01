@@ -7,7 +7,7 @@
   >
     <template #body>
       <p class="mb-4">
-        Which Two would you like to counter with? (Click the card)
+        {{ t('game.dialogs.counterDialogs.selectCard') }}
       </p>
       <div id="twos-in-hand" class="d-flex justify-center mb-4">
         <GameCard
@@ -27,7 +27,7 @@
         data-cy="cancel-counter"
         @click="resolve"
       >
-        Cancel
+        {{ t('global.cancel') }}
       </v-btn>
     </template>
   </BaseDialog>
@@ -36,6 +36,7 @@
 <script>
 import GameCard from '@/routes/game/components/GameCard.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'ChooseTwoDialog',
@@ -63,6 +64,10 @@ export default {
     },
   },
   emits: ['counter', 'resolve'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   computed: {
     show: {
       get() {

@@ -2,21 +2,21 @@
   <BaseDialog id="counter-dialog" v-model="show" title="Chance to Counter">
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
-        Your opponent has played the 
+        {{ t('game.dialogs.counterDialogs.opponentPlayed') }}
         <GameCardName :card-name="oneOff.name" />
-        as a one-off
+        {{ t('game.dialogs.counterDialogs.oneOff') }}
         <span v-if="target"> 
-          targeting your 
+          {{ t('game.dialogs.counterDialogs.target' + 'global.your') }} 
           <GameCardName :card-name="target.name" />
         </span>
       </div>
       <div v-else class="my-2">
-        Your opponent has played 
+        {{ t('game.dialogs.counterDialogs.opponentPlayed') }}
         <GameCardName :card-name="opponentLastTwo.name" />
 
-        to Counter
+        {{ t('game.dialogs.counterDialogs.toCounter') }} 
         <span v-if="playerLastTwo">
-          your 
+          {{ t('global.your') }}
           <GameCardName :card-name="playerLastTwo.name" />
         </span>
       </div>
@@ -37,7 +37,7 @@
           <GameCard :suit="target.suit" :rank="target.rank" />
         </div>
       </div>
-      Would you like to play a two to counter?
+      {{ t('game.dialogs.counterDialogs.playTwo') }}
     </template>
 
     <template #actions>
@@ -48,7 +48,7 @@
         class="mr-4"
         @click="resolve"
       >
-        Resolve
+        {{ t('game.resolve') }}
       </v-btn>
       <v-btn
         data-cy="counter"
@@ -56,7 +56,7 @@
         variant="flat"
         @click="$emit('choose-to-counter')"
       >
-        Counter
+        {{ t('game.dialogs.counterDialogs.counter') }}
       </v-btn>
     </template>
   </BaseDialog>

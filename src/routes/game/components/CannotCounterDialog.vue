@@ -7,18 +7,18 @@
   >
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">
-        {{ t(`game.dialogs.cannotCounterDialog.opponentPlayed`) }}
+        {{ t(`game.dialogs.counterDialogs.opponentPlayed`) }}
         <GameCardName :card-name="oneOff.name" />
-        {{ t(`game.dialogs.cannotCounterDialog.oneOff`) }}
+        {{ t(`game.dialogs.counterDialogs.oneOff`) }}
         <span v-if="target">
-          {{ t(`game.dialogs.cannotCounterDialog.target`) + t(`global.your`) }}
+          {{ t(`game.dialogs.counterDialogs.target`) + t(`global.your`) }} 
           <GameCardName :card-name="target.name" />
         </span>
       </div>
       <div v-else class="my-2">
-        {{ t(`game.dialogs.cannotCounterDialog.opponentPlayed`) }}
+        {{ t(`game.dialogs.counterDialogs.opponentPlayed`) }}
         <GameCardName :card-name="opponentLastTwo.name" />
-        {{ t(`game.dialogs.cannotCounterDialog.counter`) }}
+        {{ t(`game.dialogs.counterDialogs.toCounter`) }}
         <span v-if="playerLastTwo">
           {{ t(`global.your`) }}
           <GameCardName :card-name="playerLastTwo.name" />.
@@ -42,7 +42,7 @@
           <GameCard :suit="target.suit" :rank="target.rank" />
         </div>
       </div>
-      {{ t(`game.dialogs.cannotCounterDialog.cannotCounter`) + reason }}.
+      {{ t(`game.dialogs.counterDialogs.cannotCounter`) + reason }}.
     </template>
 
     <template #actions>
@@ -113,8 +113,8 @@ export default {
     },
     reason() {
       let reason = '';
-      const OPPONENT_HAS_QUEEN = this.$t('game.dialogs.cannotCounterDialog.reasons.opponentWithQueen');
-      const PLAYER_HAS_NO_TWOS = this.$t('game.dialogs.cannotCounterDialog.reasons.noTwoPresent');
+      const OPPONENT_HAS_QUEEN = this.$t('game.dialogs.counterDialogs.reasons.opponentWithQueen');
+      const PLAYER_HAS_NO_TWOS = this.$t('game.dialogs.counterDialogs.reasons.noTwoPresent');
       if (this.opponentQueenCount > 0) {
         reason += OPPONENT_HAS_QUEEN;
       }
