@@ -3,7 +3,7 @@
     v-if="oneOff"
     id="choose-two-dialog"
     v-model="show"
-    title="Choose Two"
+    :title="t('game.dialogs.counterDialogs.chooseTwoTitle')"
   >
     <template #body>
       <p class="mb-4">

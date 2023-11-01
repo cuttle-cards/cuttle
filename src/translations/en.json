@@ -69,6 +69,9 @@
         }
       },
       "counterDialogs": {
+        "counterTitle": "Chance To Counter",
+        "chooseTwoTitle": "Choose Two",
+        "cannotCounterTitle": "Cannot Counter",
         "selectCard" : "Which Two would you like to counter with? (Click the card)",
         "opponentPlayed": "Your opponent has played the ",
         "oneOff": "as a one-off",

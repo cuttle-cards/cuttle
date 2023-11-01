@@ -69,6 +69,9 @@
         "oppponentHasResolved": "Votre adversaire a résolu un Quatre One-Off. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
       "counterDialogs": {
+        "counterTitle": "Chance de contrer",
+        "chooseTwoTitle": "Choisissez deux",
+        "cannotCounterTitle": "Impossible de contrer",
         "selectCard": "Avec quels deux souhaitez-vous contrer ? (Cliquez sur la carte)",
         "opponentPlayed": "Votre adversaire a joué le ",
         "oneOff": "comme un one-off",

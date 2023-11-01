@@ -3,7 +3,7 @@
     v-if="oneOff"
     id="cannot-counter-dialog"
     v-model="show"
-    title="Cannot Counter"
+    :title="t('game.dialogs.counterDialogs.cannotCounterTitle')"
   >
     <template #body>
       <div v-if="!opponentLastTwo" class="my-2">

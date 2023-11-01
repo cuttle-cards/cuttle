@@ -69,6 +69,9 @@
         "oppponentHasResolved": "Tu oponente ha resuelto un Four One-Off. Debes descartar dos cartas. Haz clic para seleccionar cartas para descartar."
       },
       "counterDialogs": {
+        "counterTitle": "Oportunidad de contrarrestar",
+        "chooseTwoTitle": "Escoge dos",
+        "cannotCounterTitle": "No Puede contrarrestar",
         "selectCard" : "¿Con cuáles dos te gustaría contrarrestar? (Haz clic en la tarjeta)",
         "opponentPlayed": "Tu oponente ha jugado el",
         "oneOff": "como un one-off",
