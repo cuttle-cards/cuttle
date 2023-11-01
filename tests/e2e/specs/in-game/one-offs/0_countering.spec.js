@@ -405,7 +405,7 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.log('Player counters back (2nd counter)');
     cy.get('#counter-dialog')
       .should('be.visible')
-      .contains('Your opponent has played 2♥️ to Counter', { includeShadowDom: true });
+      .contains('Your opponent has played the 2♥️ to Counter', { includeShadowDom: true });
     cy.get('[data-cy=counter]').click();
 
     cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-0]').click();
@@ -418,7 +418,7 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.log('Player counters (4th counter)');
     cy.get('#counter-dialog')
       .should('be.visible')
-      .contains('Your opponent has played 2♠️ to Counter your 2♣️', { includeShadowDom: true });
+      .contains('Your opponent has played the 2♠️ to Counter your 2♣️', { includeShadowDom: true });
     cy.get('[data-cy=counter]').click();
     cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-1]').click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
