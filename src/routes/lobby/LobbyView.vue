@@ -224,6 +224,7 @@ h5 {
   line-height: 5rem;
   margin: auto auto 16px auto;
 }
+
 @media (min-width: 980px) {
   .rank-switch {
     padding: 0;

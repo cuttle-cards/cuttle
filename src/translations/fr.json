@@ -38,6 +38,10 @@
   },
   "game":{
     "resolve": "Résoudre",
+    "scrap": "Écarter",
+    "view": "Regarder",
+    "pass": "PASSER",
+    "playFromDeck": "Jouer depuis le Paquet",
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnectez-vous au jeu",
@@ -74,15 +78,41 @@
           "opponentWithQueen": "ton adversaire a une queen",
           "noTwoPresent": "tu n'as pas de deux"
         }
-      },    
+      },
+      "threeDialog": {
+        "title": "Sélectionnez une carte dans Scrap"
+      },
       "opponentRequestedStalemateDialog": {
         "title": "Accepter L'impasse?" ,
         "opponentHasRequested": "Votre adversaire a demandé une impasse. Si vous acceptez, la partie se terminera par une égalité.",
         "reject": "Rejeter la Demande",
         "accept": "Accepter L'impasse"
+      },
+      "sevenDoubleJacksDialog": {
+        "title": "Sélectionnez une carte",
+        "cannotMove": "On dirait bien que vous ne pouvez pas jouer. Sélectionnez un Valet à défausser.",
+        "resolve": "Continuer"
       }
     },
     "moves":{
+      "disabledMove" : {
+        "topTwo": "Vous devez jouer l'une des deux premières cartes du paquet",
+        "notTurn": "Ce n'est pas ton tour",
+        "frozenCard": "Cette carte est gelée",
+        "emptyDeck": "On ne peut pas jouer avec le paquet vide",
+        "multipleQueens": "Tu ne peux pas jouer un {rank} lorsque ton adversaire a deux ou plus de queens",
+        "noRoyals": "Il n'y a pas de Rois à cibler",
+        "noRoyalsOrPoints": "Il n'y a pas de cartes à points ni de Rois à cibler"
+      },
+      "points": {
+        "displayName": "Points",
+        "description": "Gagnez 1 point | Gagnez {count} points"
+      },
+      "scuttle": {
+        "description": "Écartez une carte de moindre valeur en points",
+        "disabled": "Vous ne pouvez écarter que des cartes de points plus faibles",
+        "disabledNoPoints": "Votre adversaire n'a pas de cartes de points à écarter"
+      },
       "effects":{
         "1": "Supprimez tous les points",
         "2": "Scrap Target Royal ou Lunettes huit",
@@ -97,6 +127,17 @@
         "11": "Jouez sur la carte de point cible pour la voler",
         "12": "Vos autres cartes ne peuvent être ciblées que par des scuttles",
         "13": "Réduit les points dont vous avez besoin pour gagner. (1K : 14 pts, 2K : 10 pts, 3K : 5 pts, 4K : 0 pts)"
+      },
+      "jack": {
+        "description": "Vole une carte de points de l'adversaire",
+        "disabled": "Vous ne pouvez pas voler une carte de points de l'adversaire tant qu'il possède une reine"
+      },
+      "glasses": {
+        "displayName": "Lunettes ",
+        "description": "Votre adversaire joue à cartes découvertes"
+      },
+      "royal": {
+        "displayName": "Royauté"
       }
     },
     "menus":{
@@ -113,6 +154,18 @@
         "spectators":"Spectateurs",
         "noSpectators":"Il n'y a actuellement aucun spectateur"
       }
+    },
+    "score": {
+      "points": "POINTS",
+      "goal": "OBJECTIF",
+      "kings": "0 Rois | 1 Roi | {count} Rois"
+    },
+    "turn": {
+      "yourTurn": "TON TOUR",
+      "opponentTurn": "TOUR DE L'ADVERSAIRE"
+    },
+    "history": {
+      "title": "Historique"
     }
   },
   "home": {
