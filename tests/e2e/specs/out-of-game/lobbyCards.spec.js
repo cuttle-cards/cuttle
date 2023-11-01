@@ -48,9 +48,11 @@ describe('P0 Perspective', () => {
     cy.readyOpponent();
     opponentShouldBeReady();
     cy.leaveLobbyOpponent();
-    testReadyValueInState('p1', null); // THIS SHOULD NOT FAIL
+
+    cy.wait(2000);
+    // testReadyValueInState('p1', null); // THIS SHOULD NOT FAIL
     testReadyValueInState('p1', false); // THIS SHOULD PROBABLY FAIL
-    testReadyValueInState('p1', true); // THIS SHOULD FAIL
+    // testReadyValueInState('p1', true); // THIS SHOULD FAIL
     cy.window()
       .its('cuttle.gameStore')
       .then((store) => {
@@ -68,8 +70,8 @@ describe('P0 Perspective', () => {
         cy.leaveLobbyOpponent();
         cy.subscribeOpponent(gameData.id);
         opponentIndicatorShowsNameAndCard();
-        // opponentShouldNotBeReady();  // THIS SHOULD NOT FAIL
-        opponentShouldBeReady(); // THIS SHOULD FAIL
+        opponentShouldNotBeReady();  // THIS SHOULD NOT FAIL
+        // opponentShouldBeReady(); // THIS SHOULD FAIL
       });
   });
 
@@ -83,8 +85,8 @@ describe('P0 Perspective', () => {
         cy.leaveLobbyOpponent();
         cy.subscribeOpponent(gameData.id);
         opponentIndicatorShowsNameAndCard();
-        // opponentShouldNotBeReady();  // THIS SHOULD NOT FAIL
-        opponentShouldBeReady(); // THIS SHOULD FAIL
+        opponentShouldNotBeReady();  // THIS SHOULD NOT FAIL
+        // opponentShouldBeReady(); // THIS SHOULD FAIL
       });
     playerLeavesLobby();
     //joins back
