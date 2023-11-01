@@ -199,7 +199,7 @@ describe('Countering One-Offs', () => {
     });
   });
 
-  it.only('Triple counters successfully', () => {
+  it('Triple counters successfully', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS],
