@@ -2,7 +2,7 @@
   <Transition name="cards" mode="out-in">
     <div v-if="playerUsername" class="player-card">
       <span class="player-name">{{ playerUsername }}</span>
-      <div class="card-container" :class="[ playerReady ? 'ready' : 'notReady' ]">
+      <div class="card-container" data-cy="lobby-card-container" :class="[ playerReady ? 'ready' : 'notReady' ]">
         <img
           src="/img/cards/card-ready.png"
           class="card-front"
