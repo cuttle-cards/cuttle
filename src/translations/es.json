@@ -44,7 +44,9 @@
     "playFromDeck": "Jugar desde el Mazo",
     "overlays": {
       "waitingForGameToStart": "Esperando que empiece el juego",
-      "leaveGame": "Dejó el Juego"
+      "leaveGame": "Dejó el Juego",
+      "opponentMayCounter": "Oponente Puede Contrarrestar",
+      "opponentMustResolve": "Oponente Debe Resolver"
     },
     "dialogs": {
       "reauthentication": {
