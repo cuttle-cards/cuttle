@@ -48,7 +48,8 @@
       "opponentMayCounter": "Opponent May Counter",
       "opponentMustResolve": "Opponent Must Resolve",
       "opponentIsDiscarding": "Opponent Is Discarding",
-      "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap"
+      "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
+      "opponentPlayingFromDeck": "Opponent Playing from Deck"
     },
     "dialogs": {
       "reauthentication": {
