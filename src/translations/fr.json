@@ -47,7 +47,8 @@
       "leaveGame": "Quitter Jeu",
       "opponentMayCounter": "L'Adversaire Peut Contrer",
       "opponentMustResolve": "L'Adversaire Doit Résoudre",
-      "opponentIsDiscarding": "L'Adversaire se Défausse"
+      "opponentIsDiscarding": "L'Adversaire se Défausse",
+      "opponentChoosingFromScrap": "Adversaire Choisissant une Carte à Partir de la Ferraille"
     },
     "dialogs": {
       "reauthentication": {

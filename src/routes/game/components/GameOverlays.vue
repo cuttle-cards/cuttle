@@ -67,7 +67,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        Opponent Choosing Card from Scrap
+        {{ t('game.overlays.opponentChoosingFromScrap') }}
       </h1>
     </v-overlay>
 
