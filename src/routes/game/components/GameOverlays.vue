@@ -57,7 +57,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        Opponent Is Discarding
+        {{ t('game.overlays.opponentIsDiscarding') }}
       </h1>
     </v-overlay>
 
