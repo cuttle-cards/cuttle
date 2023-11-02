@@ -50,7 +50,8 @@
       "opponentIsDiscarding": "L'Adversaire se Défausse",
       "opponentChoosingFromScrap": "Adversaire Choisissant une Carte à Partir de la Ferraille",
       "opponentPlayingFromDeck": "Adversaire Jouant depuis le Deck",
-      "opponentMustDiscardJack": "L'Adversaire Doit Défausser Jack"
+      "opponentMustDiscardJack": "L'Adversaire Doit Défausser Jack",
+      "opponentConsideringStalemate": "L'Adversaire Envisage une Demande D'Impasse"
     },
     "dialogs": {
       "reauthentication": {

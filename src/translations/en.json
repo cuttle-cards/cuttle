@@ -50,7 +50,8 @@
       "opponentIsDiscarding": "Opponent Is Discarding",
       "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
       "opponentPlayingFromDeck": "Opponent Playing from Deck",
-      "opponentMustDiscardJack": "Opponent Must Discard Jack"
+      "opponentMustDiscardJack": "Opponent Must Discard Jack",
+      "opponentConsideringStalemate": "Opponent Considering Stalemate Request"
     },
     "dialogs": {
       "reauthentication": {
