@@ -46,7 +46,8 @@
       "waitingForGameToStart": "En Attendant le Début du Jeu",
       "leaveGame": "Quitter Jeu",
       "opponentMayCounter": "L'Adversaire Peut Contrer",
-      "opponentMustResolve": "L'Adversaire Doit Résoudre"
+      "opponentMustResolve": "L'Adversaire Doit Résoudre",
+      "opponentIsDiscarding": "L'Adversaire se Défausse"
     },
     "dialogs": {
       "reauthentication": {
