@@ -6,7 +6,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        Waiting for Game to Start
+        {{ t('game.overlays.waitingForGameToStart') }}
       </h1>
       <v-btn
         color="secondary"
@@ -15,7 +15,7 @@
         :loading="leavingGame"
         @click="goHome"
       >
-        Leave Game
+        {{ t('game.overlays.leaveGame') }}
       </v-btn>
     </v-overlay>
 
