@@ -48,7 +48,8 @@
       "opponentMayCounter": "Oponente Puede Contrarrestar",
       "opponentMustResolve": "Oponente Debe Resolver",
       "opponentIsDiscarding": "Oponente se Descarta",
-      "opponentChoosingFromScrap": "Tarjeta de Elección del Oponente de la Chatarra"
+      "opponentChoosingFromScrap": "Tarjeta de Elección del Oponente de la Chatarra",
+      "opponentPlayingFromDeck": "Oponente Jugando desde el Mazo"
     },
     "dialogs": {
       "reauthentication": {
