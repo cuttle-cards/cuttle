@@ -47,7 +47,8 @@
       "leaveGame": "Leave Game",
       "opponentMayCounter": "Opponent May Counter",
       "opponentMustResolve": "Opponent Must Resolve",
-      "opponentIsDiscarding": "Opponent Is Discarding"
+      "opponentIsDiscarding": "Opponent Is Discarding",
+      "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap"
     },
     "dialogs": {
       "reauthentication": {
