@@ -123,6 +123,7 @@
 
 <script>
 import { mapStores } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 
 import MoveChoiceOverlay from '@/routes/game/components/MoveChoiceOverlay.vue';
@@ -149,6 +150,10 @@ export default {
     },
   },
   emits:['points', 'face-card', 'one-off', 'clear-selection', 'target'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       leavingGame: false,
