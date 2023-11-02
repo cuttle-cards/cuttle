@@ -49,7 +49,8 @@
       "opponentMustResolve": "L'Adversaire Doit Résoudre",
       "opponentIsDiscarding": "L'Adversaire se Défausse",
       "opponentChoosingFromScrap": "Adversaire Choisissant une Carte à Partir de la Ferraille",
-      "opponentPlayingFromDeck": "Adversaire Jouant depuis le Deck"
+      "opponentPlayingFromDeck": "Adversaire Jouant depuis le Deck",
+      "opponentMustDiscardJack": "L'Adversaire Doit Défausser Jack"
     },
     "dialogs": {
       "reauthentication": {
