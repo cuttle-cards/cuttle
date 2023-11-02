@@ -98,6 +98,22 @@
         "title": "Seleccione una página",
         "cannotMove": "Parece que no puedes jugar. Selecciona una jota para descartar.",
         "resolve": "Resolver"
+      },
+      "gameOverDialog": {
+        "game": "Juego",
+        "you": "Tú",
+        "youWin": "Tú Ganas",
+        "youWinTheMatch": "Tú Ganas el Partido",
+        "won": "ganado",
+        "youLose": "Tú Pierdes",
+        "youLoseTheMatch": "Tú Pierdes el Partido",
+        "lost": "perdida",
+        "draw": "Empatar",
+        "matchAgainst": "Partido contra",
+        "yourGameAgainst": "tu juego contra",
+        "finished": "Finalizado",
+        "inProgress": "En Curso",
+        "goHome": "Vete a Casa"
       }
     },
     "moves":{
