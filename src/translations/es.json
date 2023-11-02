@@ -42,6 +42,10 @@
     "view": "Ver",
     "pass": "PASAR",
     "playFromDeck": "Jugar desde el Mazo",
+    "overlays": {
+      "waitingForGameToStart": "Esperando que empiece el juego",
+      "leaveGame": "Dejó el Juego"
+    },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Vuelve a conectarte al juego",

@@ -42,6 +42,10 @@
     "view": "View",
     "pass": "PASS",
     "playFromDeck": "Play from Deck",
+    "overlays": {
+      "waitingForGameToStart": "Waiting for Game to Start",
+      "leaveGame": "Leave Game"
+    },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnect to game",

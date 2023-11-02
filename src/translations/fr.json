@@ -42,6 +42,10 @@
     "view": "Regarder",
     "pass": "PASSER",
     "playFromDeck": "Jouer depuis le Paquet",
+    "overlays": {
+      "waitingForGameToStart": "En Attendant le Début du Jeu",
+      "leaveGame": "Quitter Jeu"
+    },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnectez-vous au jeu",
