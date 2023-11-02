@@ -50,7 +50,8 @@
       "opponentIsDiscarding": "Oponente se Descarta",
       "opponentChoosingFromScrap": "Tarjeta de Elección del Oponente de la Chatarra",
       "opponentPlayingFromDeck": "Oponente Jugando desde el Mazo",
-      "opponentMustDiscardJack": "Oponente Debe Descartar a Jack"
+      "opponentMustDiscardJack": "Oponente Debe Descartar a Jack",
+      "opponentConsideringStalemate": "Oponente Considerando Solicitud de Punto Muerto"
     },
     "dialogs": {
       "reauthentication": {
