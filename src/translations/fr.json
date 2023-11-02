@@ -44,7 +44,9 @@
     "playFromDeck": "Jouer depuis le Paquet",
     "overlays": {
       "waitingForGameToStart": "En Attendant le Début du Jeu",
-      "leaveGame": "Quitter Jeu"
+      "leaveGame": "Quitter Jeu",
+      "opponentMayCounter": "L'Adversaire Peut Contrer",
+      "opponentMustResolve": "L'Adversaire Doit Résoudre"
     },
     "dialogs": {
       "reauthentication": {

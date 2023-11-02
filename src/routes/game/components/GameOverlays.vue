@@ -167,8 +167,8 @@ export default {
       return !(this.gameStore.p0Ready && this.gameStore.p1Ready);
     },
     showWaitingForOpponetToCounterMessage() {
-      const mayCounter = 'Opponent May Counter';
-      const mustResolve = 'Opponent Must Resolve';
+      const mayCounter = this.t('game.overlays.opponentMayCounter');
+      const mustResolve = this.t('game.overlays.opponentMustResolve');
       const opponentHasTwo = this.gameStore.opponent.hand.some((card) => card.rank === 2);
       if (this.gameStore.playerQueenCount || (this.gameStore.hasGlassesEight && !opponentHasTwo)) {
         return mustResolve;

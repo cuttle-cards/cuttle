@@ -44,7 +44,9 @@
     "playFromDeck": "Play from Deck",
     "overlays": {
       "waitingForGameToStart": "Waiting for Game to Start",
-      "leaveGame": "Leave Game"
+      "leaveGame": "Leave Game",
+      "opponentMayCounter": "Opponent May Counter",
+      "opponentMustResolve": "Opponent Must Resolve"
     },
     "dialogs": {
       "reauthentication": {
