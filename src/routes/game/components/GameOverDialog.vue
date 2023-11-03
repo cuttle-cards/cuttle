@@ -26,11 +26,10 @@
         <p v-if="currentMatch" class="dialog-text" data-cy="match-result-section">
           <!-- Match against opponent: finished / in progress -->
           {{ t('game.dialogs.gameOverDialog.matchAgainst') }} {{ gameStore.opponent.username }}
-          <span>: {{ matchIsOver ? t('game.dialogs.gameOverDialog.finished') : t('game.dialogs.gameOverDialog.inProgress') }}</span>
+          <span>: {{ t(matchIsOver ? 'game.dialogs.gameOverDialog.finished' : 'game.dialogs.gameOverDialog.inProgress') }}</span>
         </p>
-        <p v-if="matchIsOver" class="dialog-text" data-cy="match-winner-message">
-          <!-- You won/lost your game against  -->
-          {{ t('game.dialogs.gameOverDialog.you') }} {{ playerWinsMatch ? t('game.dialogs.gameOverDialog.won') : t('game.dialogs.gameOverDialog.lost') }} {{ t('game.dialogs.gameOverDialog.yourGameAgainst') }} {{ gameStore.opponent.username }}
+        <p class="dialog-text" data-cy="match-winner-message">
+          {{ yourGameAgainst }}
         </p>
         <div data-cy="match-result-games" class="mb-4">
           <div class="d-flex">
@@ -71,6 +70,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
@@ -97,7 +97,6 @@ export default {
     },
   },
   setup() {
-    // Vuetify has its own translation layer that isn't very good. It seems to conflict with the namespace of vue-i18n so we need to import it at the component level and utilize it this way with a composable. There may be another more global way but I haven't found anything just yet
     const { t } = useI18n();
     return {
       t,
@@ -118,16 +117,23 @@ export default {
       },
     },
     ...mapStores(useGameStore),
+    yourGameAgainst() {
+      if (this.matchIsOver) {
+        // You won/lost your game against
+        return `${this.t('game.dialogs.gameOverDialog.you')} ${this.t(this.playerWinsMatch ? 'game.dialogs.gameOverDialog.won' : 'game.dialogs.gameOverDialog.lost')} ${this.t('game.dialogs.gameOverDialog.yourGameAgainst')} ${this.gameStore.opponent.username}`;
+      }
+      return '';
+    },
     heading() {
       if (this.matchIsOver) {
         // You win the match / you lose the match
-        return this.playerWinsMatch ? this.t('game.dialogs.gameOverDialog.youWinTheMatch') : this.t('game.dialogs.gameOverDialog.youLoseTheMatch');
+        return this.t(this.playerWinsMatch ? 'game.dialogs.gameOverDialog.youWinTheMatch' : 'game.dialogs.gameOverDialog.youLoseTheMatch');
       }
       const currentMatchGames = this.gameStore.currentMatch?.games ?? [];
       // Game number
-      const gameNumberPrefix = currentMatchGames.length > 0 ? this.t('game.dialogs.gameOverDialog.game') `${currentMatchGames.length}: ` : '';
+      const gameNumberPrefix = currentMatchGames.length > 0 ? `${this.t('game.dialogs.gameOverDialog.game')} ${currentMatchGames.length}: ` : '';
       // Draw / You Win / You Lose
-      const winnerMessage = this.stalemate ? this.t('game.dialogs.gameOverDialog.draw') : this.playerWinsGame ? this.t('game.dialogs.gameOverDialog.youWin') : this.t('game.dialogs.gameOverDialog.youLose');
+      const winnerMessage = this.t(this.stalemate ? 'game.dialogs.gameOverDialog.draw' : this.playerWinsGame ? 'game.dialogs.gameOverDialog.youWin' : 'game.dialogs.gameOverDialog.youLose');
 
       return `${gameNumberPrefix}${winnerMessage}`;
     },
