@@ -24,9 +24,8 @@
       </template>
       <template v-if="currentMatch">
         <p v-if="currentMatch" class="dialog-text" data-cy="match-result-section">
-          <!-- Match against opponent: finished / in progress -->
-          {{ t('game.dialogs.gameOverDialog.matchAgainst') }} {{ gameStore.opponent.username }}
-          <span>: {{ matchIsOver ? t('game.dialogs.gameOverDialog.finished') : t('game.dialogs.gameOverDialog.inProgress') }}</span>
+          Match against {{ gameStore.opponent.username }}
+          <span>: {{ matchIsOver ? 'Finished' : 'In Progress' }}</span>
         </p>
         <p v-if="matchIsOver" class="dialog-text" data-cy="match-winner-message">
           <!-- You won/lost your game against  -->
