@@ -2,7 +2,7 @@
   <Transition name="cards" mode="out-in">
     <div v-if="playerUsername" class="player-card">
       <span class="player-name">{{ playerUsername }}</span>
-      <div class="card-container" data-cy="lobby-card-container" :class="[ playerReady ? 'ready' : 'notReady' ]">
+      <div class="card-container" data-cy="lobby-card-container" :class="{ 'ready' : playerReady }">
         <img
           src="/img/cards/card-ready.png"
           class="card-front"
@@ -86,18 +86,18 @@ export default {
 .card-back {
   z-index: -1;
 }
-.card-container.ready .card-front,
-.card-container.notReady .card-back {
-  rotate: y 0deg;
-  filter: blur(0px);
-}
-.card-container.notReady .card-front {
+
+.card-container .card-front {
   rotate: y -180deg;
-  filter: blur(5px);
 }
+
+.card-container.ready .card-front,
+.card-container .card-back {
+  rotate: y 0deg;
+}
+
 .card-container.ready .card-back {
   rotate: y 180deg;
-  filter: blur(5px);
 }
 
 .player-card {
