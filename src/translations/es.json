@@ -42,6 +42,17 @@
     "view": "Ver",
     "pass": "PASAR",
     "playFromDeck": "Jugar desde el Mazo",
+    "overlays": {
+      "waitingForGameToStart": "Esperando que empiece el juego",
+      "leaveGame": "Dejó el Juego",
+      "opponentMayCounter": "Oponente Puede Contrarrestar",
+      "opponentMustResolve": "Oponente Debe Resolver",
+      "opponentIsDiscarding": "Oponente se Descarta",
+      "opponentChoosingFromScrap": "Tarjeta de Elección del Oponente de la Chatarra",
+      "opponentPlayingFromDeck": "Oponente Jugando desde el Mazo",
+      "opponentMustDiscardJack": "Oponente Debe Descartar a Jack",
+      "opponentConsideringStalemate": "Oponente Considerando Solicitud de Punto Muerto"
+    },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Vuelve a conectarte al juego",

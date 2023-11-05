@@ -42,6 +42,17 @@
     "view": "View",
     "pass": "PASS",
     "playFromDeck": "Play from Deck",
+    "overlays": {
+      "waitingForGameToStart": "Waiting for Game to Start",
+      "leaveGame": "Leave Game",
+      "opponentMayCounter": "Opponent May Counter",
+      "opponentMustResolve": "Opponent Must Resolve",
+      "opponentIsDiscarding": "Opponent Is Discarding",
+      "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
+      "opponentPlayingFromDeck": "Opponent Playing from Deck",
+      "opponentMustDiscardJack": "Opponent Must Discard Jack",
+      "opponentConsideringStalemate": "Opponent Considering Stalemate Request"
+    },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnect to game",
