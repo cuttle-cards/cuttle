@@ -1,11 +1,8 @@
 module.exports = async function (req, res) {
   try {
-    // Read pNum from req body first, for testing purposes
-    const { pNum } = req.session;
-
     //Find winner id & pnum
     const { p0, p1 } = await gameService.findGame({ gameId: req.session.game });
-    const winner = (pNum + 1) % 2;
+    const winner = (req.session.pNum + 1) % 2;
     const winningUser = winner === 1 ? p1 : p0;
 
     // Update database
