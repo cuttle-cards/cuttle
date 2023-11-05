@@ -95,6 +95,7 @@
       }`"
       color="surface-1"
       data-cy="edit-snackbar"
+      @clear="gameStore.showIsRankedChangedAlert = false"
     />
   </div>
 </template>
