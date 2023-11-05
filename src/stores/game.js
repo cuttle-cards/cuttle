@@ -271,8 +271,8 @@ export const useGameStore = defineStore('game', {
       this.players.sort((player, opponent) => player.pNum - opponent.pNum);
     },
     successfullyJoined(player) {
+      // Add player, sort by pNum
       this.players.push(cloneDeep(player));
-      // sort players so p0 is at index 0 and p1 is at index 1 (bug repair)
       this.players.sort((player, opponent) => player.pNum - opponent.pNum);
     },
     resetState() {
@@ -287,8 +287,7 @@ export const useGameStore = defineStore('game', {
     },
     opponentLeft() {
       this.players = this.players.filter((player) => player.pNum === this.myPNum);
-      
-      //set opponent as not ready (bug repair)
+
       if(this.myPNum == 0) {
         this.p1Ready = false;
       } else {
@@ -396,7 +395,7 @@ export const useGameStore = defineStore('game', {
               this.myPNum = res.pNum;
               this.updateGame(res.game);
               this.successfullyJoined({
-                username: res.username, // was playerUsername but it doesn't exist 
+                username: res.username,
                 pNum: res.pNum,
               });
               return resolve();
