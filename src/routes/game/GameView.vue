@@ -8,7 +8,6 @@
     <!-- Authenticated View -->
     <template v-else>
       <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center">
-        <FullScreenButton format="iconButton" />
         <SpectatorListMenu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
         <GameMenu :is-spectating="isSpectating" />
         <v-icon
@@ -433,7 +432,6 @@ import GameUnavailableView from '@/routes/game/components/GameUnavailableView.vu
 import TargetSelectionOverlay from '@/routes/game/components/TargetSelectionOverlay.vue';
 import ScrapDialog from '@/routes/game/components/ScrapDialog.vue';
 import SpectatorListMenu from '@/routes/game/components/SpectatorListMenu.vue';
-import FullScreenButton from '@/components/FullScreenButton.vue';
 
 export default {
   name: 'GameView',
@@ -448,8 +446,7 @@ export default {
     ScrapDialog,
     UsernameToolTip,
     BaseSnackbar,
-    SpectatorListMenu,
-    FullScreenButton
+    SpectatorListMenu
   },
   setup() {
     const { t } = useI18n();
