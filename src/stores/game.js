@@ -13,21 +13,26 @@ function queenCount(player) {
   }
   return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
 }
-  
+
 const compareByRankThenSuit = (card1, card2) => {
-  return (card1.rank - card2.rank) || (card1.suit - card2.suit);
+  return card1.rank - card2.rank || card1.suit - card2.suit;
 };
 
-const setPlayers = (player, myPnum) => {
-  const sortP1 = (cards) => player.pNum === myPnum ? cards?.sort(compareByRankThenSuit) : cards;
+const setPlayers = (player, myPnum, hasGlasses, isSpectating) => {
+  const sortCards = (cards) => {
+    if (isSpectating || hasGlasses || player.pNum === myPnum) {
+      return cards?.sort(compareByRankThenSuit);
+    }
+    return cards;
+  };
+
   return {
     ...player,
-    hand: sortP1(player.hand)?.map((card) => createGameCard(card)),
-    points: sortP1(player.points)?.map((card) => createGameCard(card)),
-    faceCards: sortP1(player.faceCards)?.map((card) => createGameCard(card))
+    hand: sortCards(player.hand)?.map((card) => createGameCard(card)),
+    points: sortCards(player.points)?.map((card) => createGameCard(card)),
+    faceCards: sortCards(player.faceCards)?.map((card) => createGameCard(card)),
   };
 };
-
 
 class GameCard {
   constructor(card) {
@@ -88,7 +93,7 @@ export const useGameStore = defineStore('game', {
     // Fours
     discarding: false,
     waitingForOpponentToDiscard: false,
-    discardedCards : null,
+    discardedCards: null,
     // Sevens
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,
@@ -160,7 +165,14 @@ export const useGameStore = defineStore('game', {
       return state.turn % 2 === state.myPNum;
     },
     hasGlassesEight: (state) => {
-      return state.player.faceCards.filter((card) => card.rank === 8).length > 0;
+      return state.player?.faceCards?.filter((card) => card.rank === 8).length > 0 ?? null;
+    },
+    isSpectating: (state) => {
+      const authStore = useAuthStore();
+      if (!state.playerUsername) {
+        return false;
+      }
+      return state.myPNum === 0 && state.playerUsername !== authStore.username;
     },
   },
   actions: {
@@ -226,7 +238,9 @@ export const useGameStore = defineStore('game', {
         this.passes = newGame.passes;
       }
       if (Object.hasOwnProperty.call(newGame, 'players')) {
-        this.players = newGame.players.map((player) => setPlayers(player, this.myPNum));
+        this.players = newGame.players.map((player) =>
+          setPlayers(player, this.myPNum, this.hasGlassesEight, this.isSpectating),
+        );
       }
       if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
         this.spectatingUsers = newGame.spectatingUsers;
@@ -248,8 +262,7 @@ export const useGameStore = defineStore('game', {
 
       if (Object.hasOwnProperty.call(newGame, 'oneOff')) {
         this.oneOff = createGameCard(newGame.oneOff);
-      }
-      else {
+      } else {
         this.oneOff = null;
       }
 
@@ -301,7 +314,7 @@ export const useGameStore = defineStore('game', {
       const authStore = useAuthStore();
       // Set my pNum if it is null
       if (this.myPNum === null) {
-        let myPNum = game.players.findIndex(({username}) => username === authStore.username);
+        let myPNum = game.players.findIndex(({ username }) => username === authStore.username);
         if (myPNum === -1) {
           myPNum = null;
         }
