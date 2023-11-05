@@ -1,6 +1,7 @@
 <template>
   <v-list-item
     v-if="format === 'listItem'"
+    data-cy="full-screen-list-item"
     class="full-screen-list-item"
     :prepend-icon="fullScreenState.icon"
     :title="fullScreenState.text"
@@ -9,10 +10,12 @@
 
   <button 
     v-if="format === 'iconButton'"
+    
     class="full-screen-button" 
     @click="toggleFullScreen"
   >
     <v-icon
+      data-cy="full-screen-icon-button"
       :class="{ 'dimmed': dimmed }"
       size="large"
       :icon="fullScreenState.icon"
