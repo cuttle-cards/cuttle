@@ -44,6 +44,17 @@
     "view": "View",
     "pass": "PASS",
     "playFromDeck": "Play from Deck",
+    "overlays": {
+      "waitingForGameToStart": "Waiting for Game to Start",
+      "leaveGame": "Leave Game",
+      "opponentMayCounter": "Opponent May Counter",
+      "opponentMustResolve": "Opponent Must Resolve",
+      "opponentIsDiscarding": "Opponent Is Discarding",
+      "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
+      "opponentPlayingFromDeck": "Opponent Playing from Deck",
+      "opponentMustDiscardJack": "Opponent Must Discard Jack",
+      "opponentConsideringStalemate": "Opponent Considering Stalemate Request"
+    },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnect to game",
@@ -70,11 +81,17 @@
           "rank": "By Rank"
         }
       },
-      "cannotCounterDialog": {
+      "counterDialogs": {
+        "counterTitle": "Chance To Counter",
+        "chooseTwoTitle": "Choose Two",
+        "cannotCounterTitle": "Cannot Counter",
+        "selectCard" : "Which Two would you like to counter with? (Click the card)",
         "opponentPlayed": "Your opponent has played the ",
         "oneOff": "as a one-off",
         "target": "targeting ",
-        "counter": "to Counter",
+        "toCounter": "to Counter",
+        "counter": "counter",
+        "playTwo": "Would you like to play a two to counter?",
         "cannotCounter": "You cannot Counter, because ",
         "reasons": {
           "opponentWithQueen": "your opponent has a queen",

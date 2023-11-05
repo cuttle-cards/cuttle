@@ -42,6 +42,17 @@
     "view": "Regarder",
     "pass": "PASSER",
     "playFromDeck": "Jouer depuis le Paquet",
+    "overlays": {
+      "waitingForGameToStart": "En Attendant le Début du Jeu",
+      "leaveGame": "Quitter Jeu",
+      "opponentMayCounter": "L'Adversaire Peut Contrer",
+      "opponentMustResolve": "L'Adversaire Doit Résoudre",
+      "opponentIsDiscarding": "L'Adversaire se Défausse",
+      "opponentChoosingFromScrap": "Adversaire Choisissant une Carte à Partir de la Ferraille",
+      "opponentPlayingFromDeck": "Adversaire Jouant depuis le Deck",
+      "opponentMustDiscardJack": "L'Adversaire Doit Défausser Jack",
+      "opponentConsideringStalemate": "L'Adversaire Envisage une Demande D'Impasse"
+    },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnectez-vous au jeu",
@@ -68,11 +79,17 @@
         "discard": "Jeter",
         "oppponentHasResolved": "Votre adversaire a résolu un Quatre One-Off. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
-      "cannotCounterDialog": {
+      "counterDialogs": {
+        "counterTitle": "Chance de contrer",
+        "chooseTwoTitle": "Choisissez deux",
+        "cannotCounterTitle": "Impossible de contrer",
+        "selectCard": "Avec quels deux souhaitez-vous contrer ? (Cliquez sur la carte)",
         "opponentPlayed": "Votre adversaire a joué le ",
         "oneOff": "comme un one-off",
         "target": "ciblage ",
+        "toCounter": "contrer",
         "counter": "contrer",
+        "playTwo": "Aimeriez-vous jouer à deux pour contrer ?",
         "cannotCounter": "Vous ne pouvez pas contrer, parce que",
         "reasons": {
           "opponentWithQueen": "ton adversaire a une queen",
