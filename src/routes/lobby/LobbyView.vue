@@ -2,7 +2,11 @@
   <div id="lobby-wrapper">
     <div class="langauge-selector">
       <TheLanguageSelector variant="light" />
+      <div class="full-screen">
+        <FullScreenButton format="iconButton" dimmed />
+      </div>
     </div>
+    
     <v-container>
       <div class="d-flex align-center">
         <h1>{{ t('lobby.lobbyFor') }}</h1>
@@ -103,6 +107,7 @@ import { useAuthStore } from '@/stores/auth';
 import LobbyPlayerIndicator from './components/LobbyPlayerIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
+import FullScreenButton from '../../components/FullScreenButton.vue';
 
 export default {
   name: 'LobbyView',
@@ -110,7 +115,8 @@ export default {
     LobbyPlayerIndicator,
     BaseSnackbar,
     TheLanguageSelector,
-  },
+    FullScreenButton
+},
   setup() {
     const { t } = useI18n();
     return { t };
@@ -182,6 +188,12 @@ export default {
   right: 0;
   top: 20px;
   width: min-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-center;
+}
+.full-screen{
+  padding-right: 10px;
 }
 
 .rank-switch {

@@ -19,6 +19,7 @@
       </v-btn>
     </template>
     <v-list density="compact" class="bg-surface-2 text-surface-1">
+      <FullScreenButton dimmed />
       <TheLanguageSelector has-chevron />
       <v-list-item
         v-for="({ text, icon, page, cyName }, i) in menuItems"
@@ -38,6 +39,7 @@ import { useAuthStore } from '@/stores/auth';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
+import FullScreenButton from '@/components/FullScreenButton.vue';
 
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 
