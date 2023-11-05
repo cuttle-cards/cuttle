@@ -28,7 +28,7 @@
 import { useFullScreen } from '@/composables/fullScreen.js';
 import { onMounted } from 'vue';
 
-const props = defineProps({
+defineProps({
   format: {
       type: String,
       default: 'listItem',
