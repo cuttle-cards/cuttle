@@ -68,7 +68,7 @@
         <v-btn
           class="mr-4"
           color="surface-1"
-          variant="flat"
+          variant="outlined"
           data-cy="gameover-go-home"
           :loading="leavingGame"
           @click="goHome"
