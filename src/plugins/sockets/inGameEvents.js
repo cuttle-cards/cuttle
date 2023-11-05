@@ -20,7 +20,6 @@ export async function handleInGameEvents(evData) {
     ) &&
     (!urlGameId || Number(urlGameId) !== eventGameId)
   ) {
-    console.log('triggering no op', evData.change, urlGameId, eventGameId);
     return;
   }
   // Handle GameOver
@@ -163,8 +162,6 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.JOIN_REMATCH: {
       if (currentRoute.name === ROUTE_NAME_SPECTATE) {
         gameStore.updateGame(evData.game);
-        console.log('join rematch from spectate', JSON.stringify(evData.game, null, 2));
-        console.log(urlGameId, evData.game.id, typeof urlGameId, typeof evData.game.id);
         if (parseInt(urlGameId, 10) !== evData.game.id) {
           router
             .push({

@@ -8,15 +8,7 @@ module.exports = async function (req, res) {
     const user = await User.findOne({ id: userId });
     const oldGame = await Game.findOne({ id: user.rematchOldGame });
 
-    console.log(
-      'user join rematch 00',
-      user.id,
-      user.rematchOldGame,
-      oldGame ? oldGame.id : null,
-      oldGame ? oldGame.rematchGame : null,
-    );
     const newGameId = oldGame.rematchGame;
-    console.log('user join rematch 01', user.rematchOldGame, oldGame.id, newGameId);
     const game = await gameService.populateGame({ gameId: newGameId });
     Game.subscribe(req, [game.id]);
 

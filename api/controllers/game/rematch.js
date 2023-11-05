@@ -44,7 +44,6 @@ module.exports = async function (req, res) {
       (updatedGame.p0Rematch && gameUpdates.p1Rematch) || (updatedGame.p1Rematch && gameUpdates.p0Rematch);
 
     if (bothWantToRematch) {
-      console.log('both want to rematch');
       const newGame = await gameAPI.createGame(game.name, shouldNewGameBeRanked);
       await Promise.all([
         Game.updateOne({ id: newGame.id }).set({ rematchOldGame: updatedGame.id }),

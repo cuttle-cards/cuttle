@@ -368,7 +368,6 @@ describe('Spectating Games', () => {
 });
 
 describe('Creating And Updating Unranked Matches With Rematch - Spectating', () => {
-  // describe.only('Creating And Updating Unranked Matches With Rematch - Spectating', () => {
   beforeEach(function () {
     cy.wipeDatabase();
     cy.visit('/');
@@ -422,10 +421,8 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     cy.joinRematchOpponent();
 
     cy.log('recover player 2');
-    console.log('recover player 2');
     cy.recoverSessionOpponent(playerTwo);
     cy.log('join rematch player 2');
-    console.log('join rematch player 2');
     cy.joinRematchOpponent();
 
     cy.signupOpponent(playerThree);

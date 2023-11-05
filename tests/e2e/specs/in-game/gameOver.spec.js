@@ -707,7 +707,6 @@ describe('Creating And Updating Ranked Matches', () => {
   });
 });
 
-// describe.only('Creating And Updating Ranked Matches With Rematch', () => {
 describe('Creating And Updating Ranked Matches With Rematch', () => {
   beforeEach(function () {
     cy.wipeDatabase();
@@ -982,7 +981,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 });
 
 describe('Creating And Updating Unranked Matches With Rematch', () => {
-  // describe.only('Creating And Updating Unranked Matches With Rematch', () => {
   beforeEach(function () {
     cy.wipeDatabase();
     cy.visit('/');

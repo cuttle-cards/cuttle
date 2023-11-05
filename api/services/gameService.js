@@ -188,7 +188,6 @@ module.exports = {
                   }),
                 );
               }
-              console.log('clear game', game.id, playerIds);
               updatePromises.push(
                 User.update({ id: { in: playerIds } }).set({
                   rematchOldGame: game.id,
