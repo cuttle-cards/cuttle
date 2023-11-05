@@ -18,9 +18,9 @@ const compareByRankThenSuit = (card1, card2) => {
   return card1.rank - card2.rank || card1.suit - card2.suit;
 };
 
-const setPlayers = (player, myPnum, hasGlasses, isSpectating) => {
+const setPlayers = (player, myPnum, hasGlassesEight, isSpectating) => {
   const sortCards = (cards) => {
-    if (isSpectating || hasGlasses || player.pNum === myPnum) {
+    if (isSpectating || hasGlassesEight || player.pNum === myPnum) {
       return cards?.sort(compareByRankThenSuit);
     }
     return cards;
@@ -72,6 +72,7 @@ export const useGameStore = defineStore('game', {
     p1Ready: false,
     passes: 0,
     players: [],
+    isSpectating: false,
     spectatingUsers: [],
     scrap: [],
     turn: 0,
@@ -166,13 +167,6 @@ export const useGameStore = defineStore('game', {
     },
     hasGlassesEight: (state) => {
       return state.player?.faceCards?.filter((card) => card.rank === 8).length > 0 ?? null;
-    },
-    isSpectating: (state) => {
-      const authStore = useAuthStore();
-      if (!state.playerUsername) {
-        return false;
-      }
-      return state.myPNum === 0 && state.playerUsername !== authStore.username;
     },
   },
   actions: {
@@ -422,6 +416,7 @@ export const useGameStore = defineStore('game', {
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.myPNum = 0;
+              this.isSpectating = true;
               this.updateGame(res);
               return resolve();
             }
