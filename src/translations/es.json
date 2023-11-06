@@ -42,6 +42,17 @@
     "view": "Ver",
     "pass": "PASAR",
     "playFromDeck": "Jugar desde el Mazo",
+    "overlays": {
+      "waitingForGameToStart": "Esperando que empiece el juego",
+      "leaveGame": "Dejó el Juego",
+      "opponentMayCounter": "Oponente Puede Contrarrestar",
+      "opponentMustResolve": "Oponente Debe Resolver",
+      "opponentIsDiscarding": "Oponente se Descarta",
+      "opponentChoosingFromScrap": "Tarjeta de Elección del Oponente de la Chatarra",
+      "opponentPlayingFromDeck": "Oponente Jugando desde el Mazo",
+      "opponentMustDiscardJack": "Oponente Debe Descartar a Jack",
+      "opponentConsideringStalemate": "Oponente Considerando Solicitud de Punto Muerto"
+    },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Vuelve a conectarte al juego",
@@ -68,11 +79,17 @@
         "discard": "Desechar",
         "oppponentHasResolved": "Tu oponente ha resuelto un Four One-Off. Debes descartar dos cartas. Haz clic para seleccionar cartas para descartar."
       },
-      "cannotCounterDialog": {
+      "counterDialogs": {
+        "counterTitle": "Oportunidad de contrarrestar",
+        "chooseTwoTitle": "Escoge dos",
+        "cannotCounterTitle": "No Puede contrarrestar",
+        "selectCard" : "¿Con cuáles dos te gustaría contrarrestar? (Haz clic en la tarjeta)",
         "opponentPlayed": "Tu oponente ha jugado el",
         "oneOff": "como un one-off",
         "target": "apuntar ",
-        "counter": "para contrarrestar",
+        "toCounter": "para contrarrestar",
+        "counter" : "contrarrestar",
+        "playTwo": "¿Te gustaría jugar un dos para contrarrestar?",
         "cannotCounter": "No puedes contrarrestar, porque",
         "reasons": {
           "opponentWithQueen": "Tu oponente tiene una queen",
