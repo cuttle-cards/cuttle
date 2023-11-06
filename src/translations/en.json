@@ -26,7 +26,13 @@
     "content": "Cuttle is a 2 player battle card game played with a standard 52-card deck of cards. It has the strategic nuance of trading card games like Magic, with the elegant balance of a standard deck -- and you can play it for free! Test your mettle in the deepest cardgame under the sea!",
     "content2": "Be the first to score 21 points in this explosive battle of wits. Mount a valient offense while disupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the Deep?",
     "readRules": "Read the Rules",
-    "joinDiscord": "Join our discord community"
+    "joinDiscord": "Join our discord community",
+    "snackbar": {
+       "usernameIsTaken": "That username is already registered to another user; try logging in!",
+       "userNotFound": "Could not find that user with that username. Try signing up!",
+       "wrongPassword": "Username and password do not match",
+       "testError": "This is a test dude!"
+     }
   },
   "lobby":{
     "lobbyFor": "Lobby for",
