@@ -274,10 +274,9 @@ export default {
       this.loading = false;
       this.$router.push('/');
     },
-    handleError(message) {
-      console.log('handleError: ', message);
+    handleError(messageKey) {
       this.showSnackBar = true;
-      this.snackBarMessage = message;
+      this.snackBarMessage = messageKey;
       this.loading = false;
     },
     clearSnackBar() {

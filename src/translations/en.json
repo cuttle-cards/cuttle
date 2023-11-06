@@ -30,8 +30,7 @@
     "snackbar": {
        "usernameIsTaken": "That username is already registered to another user; try logging in!",
        "userNotFound": "Could not find that user with that username. Try signing up!",
-       "wrongPassword": "Username and password do not match",
-       "testError": "This is a test dude!"
+       "wrongPassword": "Username and password do not match"
      }
   },
   "lobby":{
