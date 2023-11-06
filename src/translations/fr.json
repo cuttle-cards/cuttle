@@ -144,6 +144,17 @@
         "11": "Cible et vole une carte à points.",
         "12": "Protège vos cartes à points des attaques tactiques",
         "13": "Réduit votre objectif de points. (1K : 14 pts, 2K : 10 pts, 3K : 5 pts, 4K : 0 pts)"
+      },
+      "jack": {
+        "description": "Vole un ecarte à points de votre adversaire",
+        "disabled": "Impossible de voler une carte à points quand elle est protégée par une Reine"
+      },
+      "glasses": {
+        "displayName": "Glasses",
+        "description": "L'adversaire joue avec sa main ouverte."
+      },
+      "royal": {
+        "displayName": "Figure"
       }
     },
     "menus":{
