@@ -120,10 +120,6 @@ export async function handleInGameEvents(evData) {
       break;
     case SocketEvent.RE_LOGIN:
     case SocketEvent.SPECTATOR_JOINED:
-      if (isSpectating) {
-        gameStore.isSpectating = true;
-      }
-      break;
     case SocketEvent.SPECTATOR_LEFT:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
