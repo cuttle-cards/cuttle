@@ -15,7 +15,7 @@ function queenCount(player) {
 }
 
 const compareByRankThenSuit = (card1, card2) => {
-  return card1.rank - card2.rank || card1.suit - card2.suit;
+  return (card1.rank - card2.rank) || (card1.suit - card2.suit);
 };
 
 const setPlayers = (player, myPnum, hasGlassesEight, isSpectating) => {
