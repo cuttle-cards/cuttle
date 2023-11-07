@@ -30,10 +30,11 @@ export async function handleInGameEvents(evData) {
     }
     case SocketEvent.INITIALIZE: {
       // Update state
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       if (isSpectating) {
         gameStore.myPNum = 0; // always spectate as p0
+        gameStore.isSpectating = true;
       }
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     }
     case SocketEvent.DRAW:
@@ -119,6 +120,10 @@ export async function handleInGameEvents(evData) {
       break;
     case SocketEvent.RE_LOGIN:
     case SocketEvent.SPECTATOR_JOINED:
+      if (isSpectating) {
+        gameStore.isSpectating = true;
+      }
+      break;
     case SocketEvent.SPECTATOR_LEFT:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
