@@ -36,11 +36,6 @@ const logoutAndRedirect = async (to, from, next) => {
   return next('/login');
 };
 
-const setIsSpectating = () => {
-  const gameStore = useGameStore();
-  gameStore.isSpectating = true;
-};
-
 const routes = [
   {
     path: '/',
@@ -95,7 +90,6 @@ const routes = [
     name: ROUTE_NAME_SPECTATE,
     path: '/spectate/:gameId',
     component: GameView,
-    beforeEnter: setIsSpectating,
     meta: {
       hideNavigation: true,
     },
