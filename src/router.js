@@ -6,6 +6,7 @@ import GameView from '@/routes/game/GameView.vue';
 import RulesView from '@/routes/rules/RulesView.vue';
 import StatsView from '@/routes/stats/StatsView.vue';
 import { useAuthStore } from '@/stores/auth';
+import { useGameStore } from '@/stores/game';
 
 export const ROUTE_NAME_GAME = 'Game';
 export const ROUTE_NAME_SPECTATE = 'Spectate';
@@ -16,8 +17,6 @@ export const ROUTE_NAME_LOGOUT = 'Logout';
 export const ROUTE_NAME_RULES = 'Rules';
 export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
-
-
 
 const mustBeAuthenticated = async (to, from, next) => {
   const authStore = useAuthStore();
@@ -35,6 +34,11 @@ const logoutAndRedirect = async (to, from, next) => {
   const authStore = useAuthStore();
   await authStore.requestLogout();
   return next('/login');
+};
+
+const setIsSpectating = () => {
+  const gameStore = useGameStore();
+  gameStore.isSpectating = true;
 };
 
 const routes = [
@@ -91,6 +95,7 @@ const routes = [
     name: ROUTE_NAME_SPECTATE,
     path: '/spectate/:gameId',
     component: GameView,
+    beforeEnter: setIsSpectating,
     meta: {
       hideNavigation: true,
     },
