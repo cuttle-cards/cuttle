@@ -79,7 +79,6 @@ module.exports = {
         req.session.game = unpopulatedGame.id;
         req.session.pNum = user.pNum ?? undefined;
       }
-      req.session.rematchOldPNum = user.pNum;
 
       if (populatedGame) {
         Game.publish([populatedGame.id], {

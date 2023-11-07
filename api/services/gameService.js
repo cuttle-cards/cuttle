@@ -181,10 +181,18 @@ module.exports = {
                 { faceCards: playerIds },
                 // NOTE: jacks in play should be destroyed using CASCADE on foreign key constraint on attachedTo
               ];
-              if (player.pNum) {
+              if (player.pNum !== null) {
                 updatePromises.push(
                   User.updateOne({ id: player.id }).set({
                     rematchOldPNum: player.pNum,
+                  }),
+                );
+              }
+              const opponent = game.players.find((p) => p.id !== player.id);
+              if (opponent.pNum !== null) {
+                updatePromises.push(
+                  User.updateOne({ id: opponent.id }).set({
+                    rematchOldPNum: opponent.pNum,
                   }),
                 );
               }

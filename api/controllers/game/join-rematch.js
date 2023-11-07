@@ -13,8 +13,6 @@ module.exports = async function (req, res) {
     Game.subscribe(req, [game.id]);
 
     req.session.game = game.id;
-    req.session.rematchOldGame = game.id;
-    req.session.rematchOldPNum = user.pNum;
     req.session.pNum = user.pNum;
 
     const gameUpdates = {
