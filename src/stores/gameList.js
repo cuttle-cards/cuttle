@@ -52,16 +52,14 @@ export const useGameListStore = defineStore('gameList', {
     joinGame(data) {
       const updatedGame = this.openGames.find((game) => game.id === data.gameId);
       if (updatedGame) {
-        // updatedGame.numPlayers++;
-        updatedGame.numPlayers = Math.min(2, updatedGame.numPlayers + 1)
+        updatedGame.numPlayers = Math.min(2, updatedGame.numPlayers + 1);
         updatedGame.status = data.newStatus;
       }
     },
     otherLeftGame(gameId) {
       const updatedGame = this.openGames.find((game) => game.id === gameId);
       if (updatedGame) {
-        // updatedGame.numPlayers--;
-        updatedGame.numPlayers = Math.min(2, updatedGame.numPlayers - 1)
+        updatedGame.numPlayers = Math.min(2, updatedGame.numPlayers - 1);
       }
     },
     setIsRanked({gameId, isRanked}) {
