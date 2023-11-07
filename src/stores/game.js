@@ -169,7 +169,7 @@ export const useGameStore = defineStore('game', {
       if (!state.player) {
         return false;
       }
-      return state.player.faceCards?.filter((card) => card.rank === 8).length > 0 ?? null;
+      return state.player.faceCards?.filter((card) => card.rank === 8).length > 0 ?? false;
     },
   },
   actions: {
