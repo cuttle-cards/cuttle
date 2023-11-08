@@ -35,7 +35,7 @@
         </h1>
         <p>
           {{ t('rules.rulesReadText') }} 
-          <a href="https://github.com/cuttle-cards/cuttle/files/13283371/cuttle_rules.pdf"> Cuttle Cheestsheet </a>
+          <a href="/img/cuttle_rules.pdf" target="_blank"> Cuttle Cheestsheet </a>
           {{ t('rules.rulesWatchText') }}
         </p>
         <div class="w-50 my-4 mx-auto">
