@@ -42,6 +42,17 @@
     "view": "Ver",
     "pass": "PASAR",
     "playFromDeck": "Jugar desde el Mazo",
+    "overlays": {
+      "waitingForGameToStart": "Esperando que empiece el juego",
+      "leaveGame": "Dejó el Juego",
+      "opponentMayCounter": "Oponente Puede Contrarrestar",
+      "opponentMustResolve": "Oponente Debe Resolver",
+      "opponentIsDiscarding": "Oponente se Descarta",
+      "opponentChoosingFromScrap": "Tarjeta de Elección del Oponente de la Chatarra",
+      "opponentPlayingFromDeck": "Oponente Jugando desde el Mazo",
+      "opponentMustDiscardJack": "Oponente Debe Descartar a Jack",
+      "opponentConsideringStalemate": "Oponente Considerando Solicitud de Punto Muerto"
+    },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Vuelve a conectarte al juego",
@@ -221,12 +232,13 @@
     "join": "Unirse"
   },
   "rules": {
-    "rulesTitle": "Reglas de Cuttle",
-    "rulesText": "Cuttle es un juego de cartas de batalla para dos jugadores que se juega con una baraja de cartas estándar de 52 cartas. Tiene el matiz estratégico de los juegos de cartas coleccionables como Magic, con el elegante equilibrio de una baraja estándar... ¡y puedes jugarlo gratis! ¡Pon a prueba tu temple en el juego de cartas más profundo bajo el mar!",
+    "cuttleTitle": "¿Qué es Cuttle?",
+    "cuttleText": "Cuttle es un juego de cartas de batalla para dos jugadores que se juega con una baraja estándar de 52 cartas. Tiene la sutileza estratégica de juegos de cartas de intercambio como Magic, con el equilibrio elegante de una baraja estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu habilidad en el juego de cartas más profundo bajo el mar!",
     "findGame": "Encuentra un juego",
     "signUp":"Inscríbete para jugar en línea",
-    "tutorialTitle": "Video Tutorial",
-    "tutorialText": "Mira el tutorial oficial de cuttle.cards para aprender las reglas y tener una idea del flujo del juego.",
+    "rulesTitle": "Reglas de Cuttle",
+    "rulesReadText": "Leer le oficial",
+    "rulesWatchText": "o mira el tutorial en video de Cuttle.cards a continuación para aprender las reglas y familiarizarte con el flujo del juego.",
     "goalTitle": "Objetivo",
     "goalText": "El objetivo es ser el primer jugador en tener 21 o más puntos en tarjetas de puntos en tu campo. El primer jugador que llegue a la meta gana inmediatamente. Un jugador (tradicionalmente el crupier) recibe 6 cartas y su oponente recibe 5. El jugador con 5 cartas juega primero.",
     "playTitle": "Juega",
