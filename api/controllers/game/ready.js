@@ -46,7 +46,6 @@ module.exports = function (req, res) {
         return res.ok();
       })
       .catch(function failed(err) {
-        console.error("Couldn't subscribe to game", err);
         return res.badRequest(err);
       });
   } else {

@@ -411,24 +411,6 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
     });
 });
 
-Cypress.Commands.add('concedeSpectator', (pNum) => {
-  io.socket.get('/game/concede', { pNum }, function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-    return jwres;
-  });
-});
-
-Cypress.Commands.add('rematchSpectator', (pNum) => {
-  io.socket.get('/game/rematch', { pNum }, function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-    return jwres;
-  });
-});
-
 Cypress.Commands.add('playPointsById', (cardId) => {
   return io.socket.get(
     '/game/points',

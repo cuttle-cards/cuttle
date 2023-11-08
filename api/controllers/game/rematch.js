@@ -41,38 +41,39 @@ module.exports = async function (req, res) {
     const bothWantToRematch =
       (updatedGame.p0Rematch && gameUpdates.p1Rematch) || (updatedGame.p1Rematch && gameUpdates.p0Rematch);
 
-    if (bothWantToRematch) {
-      const newGame = await gameAPI.createGame(game.name, shouldNewGameBeRanked);
-      await Promise.all([
-        Game.updateOne({ id: newGame.id }).set({ rematchOldGame: updatedGame.id }),
-        Game.updateOne({ id: updatedGame.id }).set({ rematchGame: newGame.id }),
-        Game.replaceCollection(newGame.id, 'players').members([newP0Id, newP1Id]),
-      ]);
-      updatedGame.rematchGame = newGame.id;
-      await Promise.all([
-        User.updateOne({ id: newP0Id }).set({ pNum: 0 }),
-        User.updateOne({ id: newP1Id }).set({ pNum: 1 }),
-      ]);
-      await Game.updateOne({ id: newGame.id }).set({
-        status: gameService.GameStatus.STARTED,
-      });
-
-      const newGame2 = await Game.findOne({ id: newGame.id }).populate('players');
-      // Create Cards
-      const newFullGame = await gameService.dealCards(newGame2, gameUpdates);
-
-      Game.publish([game.id], {
-        change: 'newGameForRematch',
-        game: updatedGame,
-        pNum,
-        gameId: newGame.id,
-        newGame: newFullGame,
-      });
-
-      return res.ok({ newGameId: newGame.id });
+    if (!bothWantToRematch) {
+      return res.ok();
     }
 
-    return res.ok();
+    const newGame = await gameAPI.createGame(
+      game.name,
+      shouldNewGameBeRanked,
+      gameService.GameStatus.STARTED,
+    );
+    await Promise.all([
+      Game.updateOne({ id: newGame.id }).set({ rematchOldGame: updatedGame.id }),
+      Game.updateOne({ id: updatedGame.id }).set({ rematchGame: newGame.id }),
+      Game.replaceCollection(newGame.id, 'players').members([newP0Id, newP1Id]),
+    ]);
+    updatedGame.rematchGame = newGame.id;
+    await Promise.all([
+      User.updateOne({ id: newP0Id }).set({ pNum: 0 }),
+      User.updateOne({ id: newP1Id }).set({ pNum: 1 }),
+    ]);
+
+    const newGame2 = await Game.findOne({ id: newGame.id }).populate('players');
+    // Create Cards
+    const newFullGame = await gameService.dealCards(newGame2, gameUpdates);
+
+    Game.publish([game.id], {
+      change: 'newGameForRematch',
+      game: updatedGame,
+      pNum,
+      gameId: newGame.id,
+      newGame: newFullGame,
+    });
+
+    return res.ok({ newGameId: newGame.id });
   } catch (err) {
     return res.ok();
   }

@@ -391,7 +391,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
 
     cy.rematchOpponent({ rematch: true });
 
-    cy.wait(1000);
+    cy.get('[data-cy="opponent-wants-rematch"]').should('be.visible');
 
     cy.window()
       .its('cuttle.gameStore')

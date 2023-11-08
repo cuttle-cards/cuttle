@@ -55,10 +55,10 @@
           </div>
         </div>
       </template>
-      <p v-if="opponentWantsToRematch">
+      <p v-if="opponentWantsToRematch" data-cy="opponent-wants-rematch">
         {{ gameStore.opponent.username }} wants to rematch
       </p>
-      <p v-if="opponentDeclinedRematch">
+      <p v-if="opponentDeclinedRematch" data-cy="opponent-declined-rematch">
         {{ gameStore.opponent.username }} declined rematch and left the game
       </p>
     </template>
