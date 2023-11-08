@@ -28,7 +28,7 @@
           {{ t('game.dialogs.gameOverDialog.matchAgainst') }} {{ gameStore.opponent.username }}:
           <span>
             {{ t(matchIsOver ? 'game.dialogs.gameOverDialog.finished' : 'game.dialogs.gameOverDialog.inProgress') }}
-            </span>
+          </span>
         </p>
         <p class="dialog-text" data-cy="match-winner-message">
           {{ yourGameAgainst }}
