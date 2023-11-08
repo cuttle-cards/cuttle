@@ -109,6 +109,22 @@
         "title": "Select a card",
         "cannotMove": "Oops! It seems like you can't play. Select a Jack to scrap.",
         "resolve": "Resolve"
+      },
+      "gameOverDialog": {
+        "game": "Game",
+        "you": "You",
+        "youWin": "You Win",
+        "youWinTheMatch": "You Win the Match",
+        "won": "won",
+        "youLose": "You Lose",
+        "youLoseTheMatch": "You Lose the Match",
+        "lost": "lost",
+        "draw": "Draw",
+        "matchAgainst": "Match against",
+        "yourGameAgainst": "your game against",
+        "finished": "Finished",
+        "inProgress": "In Progress",
+        "goHome": "Go Home"
       }
     },
     "moves":{

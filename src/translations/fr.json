@@ -109,6 +109,22 @@
         "title": "Sélectionnez une carte",
         "cannotMove": "On dirait bien que vous ne pouvez pas jouer. Sélectionnez un Valet à défausser.",
         "resolve": "Continuer"
+      },
+      "gameOverDialog": {
+        "game": "Jeu",
+        "you": "Toi",
+        "youWin": "Vous Gagnez",
+        "youWinTheMatch": "Tu Gagnes le Match",
+        "won": "gagné",
+        "youLose": "Tu as Perdu",
+        "youLoseTheMatch": "Tu Perds le Match",
+        "lost": "perdu",
+        "draw": "Match nul",
+        "matchAgainst": "Match contre",
+        "yourGameAgainst": "ton match contre",
+        "finished": "Fini",
+        "inProgress": "En Cours",
+        "goHome": "Rentrer à la Maison"
       }
     },
     "moves":{
