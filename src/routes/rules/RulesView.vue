@@ -15,10 +15,10 @@
       <v-row class="flex-column align-start mt-5">
         <div>
           <h1 class="gradient-text">
-            {{ t('rules.rulesTitle') }}
+            {{ t('rules.cuttleTitle') }}
           </h1>
           <p class="d-block">
-            {{ t('rules.rulesText') }}
+            {{ t('rules.cuttleText') }}
           </p>
           <div class="d-flex justify-center mt-5">
             <v-btn to="/" color="primary" data-cy="top-home-button">
@@ -31,10 +31,12 @@
       <!-- Tutorial -->
       <v-row class="flex-column align-start mt-5">
         <h1 class="gradient-text">
-          {{ t('rules.tutorialTitle') }}
+          {{ t('rules.rulesTitle') }}
         </h1>
         <p>
-          {{ t('rules.tutorialText') }}
+          {{ t('rules.rulesReadText') }} 
+          <a href="/img/cuttle_rules.pdf" target="_blank"> Cuttle Cheestsheet </a>
+          {{ t('rules.rulesWatchText') }}
         </p>
         <div class="w-50 my-4 mx-auto">
           <BaseVideo source="https://www.youtube.com/embed/qOqkNbhMdsI" />
