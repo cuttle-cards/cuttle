@@ -24,11 +24,14 @@
       </template>
       <template v-if="currentMatch">
         <p v-if="currentMatch" class="dialog-text" data-cy="match-result-section">
-          Match against {{ gameStore.opponent.username }}
-          <span>: {{ matchIsOver ? 'Finished' : 'In Progress' }}</span>
+          <!-- Match against opponent: finished / in progress -->
+          {{ t('game.dialogs.gameOverDialog.matchAgainst') }} {{ gameStore.opponent.username }}:
+          <span>
+            {{ t(matchIsOver ? 'game.dialogs.gameOverDialog.finished' : 'game.dialogs.gameOverDialog.inProgress') }}
+          </span>
         </p>
-        <p v-if="matchIsOver" class="dialog-text" data-cy="match-winner-message">
-          You {{ playerWinsMatch ? 'won' : 'lost' }} your game against {{ gameStore.opponent.username }}
+        <p class="dialog-text" data-cy="match-winner-message">
+          {{ yourGameAgainst }}
         </p>
         <div data-cy="match-result-games" class="mb-4">
           <div class="d-flex">
@@ -62,13 +65,14 @@
         :loading="leavingGame"
         @click="goHome"
       >
-        Go Home
+        {{ t('game.dialogs.gameOverDialog.goHome') }}
       </v-btn>
     </template>
   </BaseDialog>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
@@ -94,6 +98,12 @@ export default {
       required: true,
     },
   },
+  setup() {
+    const { t } = useI18n();
+    return {
+      t,
+    };
+  },
   data() {
     return {
       leavingGame: false,
@@ -109,13 +119,23 @@ export default {
       },
     },
     ...mapStores(useGameStore),
+    yourGameAgainst() {
+      if (this.matchIsOver) {
+        // You won/lost your game against
+        return `${this.t('game.dialogs.gameOverDialog.you')} ${this.t(this.playerWinsMatch ? 'game.dialogs.gameOverDialog.won' : 'game.dialogs.gameOverDialog.lost')} ${this.t('game.dialogs.gameOverDialog.yourGameAgainst')} ${this.gameStore.opponent.username}`;
+      }
+      return '';
+    },
     heading() {
       if (this.matchIsOver) {
-        return this.playerWinsMatch ? 'You Win the Match' : 'You Lose the Match';
+        // You win the match / you lose the match
+        return this.t(this.playerWinsMatch ? 'game.dialogs.gameOverDialog.youWinTheMatch' : 'game.dialogs.gameOverDialog.youLoseTheMatch');
       }
       const currentMatchGames = this.gameStore.currentMatch?.games ?? [];
-      const gameNumberPrefix = currentMatchGames.length > 0 ? `Game ${currentMatchGames.length}: ` : '';
-      const winnerMessage = this.stalemate ? 'Draw' : this.playerWinsGame ? 'You Win' : 'You Lose';
+      // Game number
+      const gameNumberPrefix = currentMatchGames.length > 0 ? `${this.t('game.dialogs.gameOverDialog.game')} ${currentMatchGames.length}: ` : '';
+      // Draw / You Win / You Lose
+      const winnerMessage = this.t(this.stalemate ? 'game.dialogs.gameOverDialog.draw' : this.playerWinsGame ? 'game.dialogs.gameOverDialog.youWin' : 'game.dialogs.gameOverDialog.youLose');
 
       return `${gameNumberPrefix}${winnerMessage}`;
     },
