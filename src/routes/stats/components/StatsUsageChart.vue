@@ -50,7 +50,7 @@ export default {
           borderColor: this.theme.newSecondary,
         },
       ];
-    }
+    },
   },
 };
 </script>

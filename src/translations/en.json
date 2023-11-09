@@ -109,6 +109,22 @@
         "title": "Select a card",
         "cannotMove": "Oops! It seems like you can't play. Select a Jack to scrap.",
         "resolve": "Resolve"
+      },
+      "gameOverDialog": {
+        "game": "Game",
+        "you": "You",
+        "youWin": "You Win",
+        "youWinTheMatch": "You Win the Match",
+        "won": "won",
+        "youLose": "You Lose",
+        "youLoseTheMatch": "You Lose the Match",
+        "lost": "lost",
+        "draw": "Draw",
+        "matchAgainst": "Match against",
+        "yourGameAgainst": "your game against",
+        "finished": "Finished",
+        "inProgress": "In Progress",
+        "goHome": "Go Home"
       }
     },
     "moves":{
@@ -216,12 +232,13 @@
     "join": "Join"
   },
   "rules": {
-    "rulesTitle": "Rules of Cuttle",
-    "rulesText": "Cuttle is a two player battle card game played with a standard 52-card deck of cards. It has the strategic nuance of trading card games like Magic, with the elegant balance of a standard deck--and you can play it for free! Test your mettle in the deepest card game under the sea!",
+    "cuttleTitle": "What is Cuttle?",
+    "cuttleText": "Cuttle is a two player battle card game played with a standard 52-card deck of cards. It has the strategic nuance of trading card games like Magic, with the elegant balance of a standard deck--and you can play it for free! Test your mettle in the deepest card game under the sea!",
     "findGame": "Find a game",
     "signUp":"Sign Up to Play Online",
-    "tutorialTitle": "Tutorial Video",
-    "tutorialText": "Watch the official cuttle.cards tutorial to learn the rules and get a feel for the flow of the game.",
+    "rulesTitle": "Rules of Cuttle",
+    "rulesReadText": "Read the official",
+    "rulesWatchText": "or watch cuttle.cards video tutorial below to learn the rules and get a feel for the flow of the game.",
     "goalTitle": "Goal",
     "goalText": "The goal is to be the first player to have 21 or more points worth of point cards on your field. The first player to reach the goal wins immediately. One player (traditionally the dealer) is dealt 6 cards and their opponent is dealt 5. The player with 5 cards goes first.",
     "playTitle": "Play",
