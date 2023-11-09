@@ -79,11 +79,20 @@ describe('Lobby - Page Content (Ranked)', () => {
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
     checkRanked(false);
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
+
+    // snackbar displays casual game
+    cy.get('[data-cy=edit-snackbar]').should('exist');
+    cy.get('[data-cy=edit-snackbar]').contains('Game Mode changed to Casual ');
     
     // Set To Ranked Mode
     cy.toggleInput('[data-cy=edit-game-ranked-switch]');
     checkRanked(true);
     cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
+
+    // snackbar displays ranked game and closes
+    cy.get('[data-cy=edit-snackbar]').contains('Game Mode changed to Ranked ');
+    cy.get('[data-cy=close-snackbar]').click();
+    cy.get('[data-cy=edit-snackbar]').should('not.exist');
   });
 });
 

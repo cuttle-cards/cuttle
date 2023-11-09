@@ -111,7 +111,7 @@ export default {
   components: {
     LobbyPlayerIndicator,
     BaseSnackbar,
-    TheLanguageSelector
+    TheLanguageSelector,
 },
   setup() {
     const { t } = useI18n();
@@ -184,9 +184,6 @@ export default {
   right: 0;
   top: 20px;
   width: min-content;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-center;
 }
 
 .rank-switch {

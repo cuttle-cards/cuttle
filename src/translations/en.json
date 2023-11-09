@@ -12,9 +12,7 @@
     "cancel": "Cancel",
     "ranked": "Ranked",
     "casual": "Casual",
-    "your": "your",
-    "fullScreen": "full screen",
-    "exitFullScreen": "Exit Full Screen"
+    "your": "your"
   },
   "login": {
     "noAccount": "Don't have an account?",
