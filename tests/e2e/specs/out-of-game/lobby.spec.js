@@ -1,4 +1,4 @@
-import { myUser, opponentOne } from '../../fixtures/userFixtures';
+import { myUser, opponentOne } from '../../fixtures/userFixtures';git branch
 import en from '../../../../src/translations/en.json';
 
 describe('Lobby - Page content of casual game', () => {
@@ -389,13 +389,13 @@ describe('Lobby - P1 Perspective', () => {
   it('Game starts when both players are ready - opponent readies first after player joins', function () {
     cy.readyOpponent();
     playerGetsReady();
-      assertGameStarted();
+    assertGameStarted();
   });
 
   it('Game starts when both players are ready - player readies first', () => {
     playerGetsReady();
     cy.readyOpponent();
-      assertGameStarted();
+    assertGameStarted();
   });
 
   // it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
