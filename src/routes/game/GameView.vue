@@ -446,7 +446,7 @@ export default {
     ScrapDialog,
     UsernameToolTip,
     BaseSnackbar,
-    SpectatorListMenu,
+    SpectatorListMenu
   },
   setup() {
     const { t } = useI18n();

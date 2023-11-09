@@ -3,6 +3,7 @@
     <div class="langauge-selector">
       <TheLanguageSelector variant="light" />
     </div>
+    
     <v-container>
       <div class="d-flex align-center">
         <h1>{{ t('lobby.lobbyFor') }}</h1>
@@ -91,6 +92,7 @@
       }`"
       color="surface-1"
       data-cy="edit-snackbar"
+      @clear="gameStore.showIsRankedChangedAlert = false"
     />
   </div>
 </template>
@@ -109,8 +111,8 @@ export default {
   components: {
     LobbyPlayerIndicator,
     BaseSnackbar,
-    TheLanguageSelector,
-  },
+    TheLanguageSelector
+},
   setup() {
     const { t } = useI18n();
     return { t };
@@ -182,6 +184,9 @@ export default {
   right: 0;
   top: 20px;
   width: min-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-center;
 }
 
 .rank-switch {
