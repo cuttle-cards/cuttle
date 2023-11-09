@@ -400,9 +400,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
         cy.expect(game.p1Rematch).to.be.true;
       });
 
-    cy.log('recoversession player1');
     cy.recoverSessionOpponent(playerOne);
-    cy.log('rematch player1');
 
     cy.wait(1000);
 

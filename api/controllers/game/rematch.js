@@ -9,7 +9,6 @@ module.exports = async function (req, res) {
 
     const user = await User.findOne({ id: userId });
     const oldGameId = user.rematchOldGame;
-    const oldPNum = user.rematchOldPNum;
 
     try {
       await Game.findOne({ id: oldGameId }).populate('players');
@@ -19,6 +18,7 @@ module.exports = async function (req, res) {
       }
     }
     const game = await Game.findOne({ id: oldGameId }).populate('players');
+    const oldPNum = game.p0 === userId ? 0 : 1;
     const gameUpdates = { [`p${oldPNum}Rematch`]: rematch };
 
     await Game.updateOne({ id: game.id }).set(gameUpdates);
@@ -51,7 +51,6 @@ module.exports = async function (req, res) {
       gameService.GameStatus.STARTED,
     );
     await Promise.all([
-      Game.updateOne({ id: newGame.id }).set({ rematchOldGame: updatedGame.id }),
       Game.updateOne({ id: updatedGame.id }).set({ rematchGame: newGame.id }),
       Game.replaceCollection(newGame.id, 'players').members([newP0Id, newP1Id]),
     ]);

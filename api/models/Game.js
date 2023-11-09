@@ -44,9 +44,6 @@ module.exports = {
     rematchGame: {
       model: 'game',
     },
-    rematchOldGame: {
-      model: 'game',
-    },
     passes: {
       type: 'number',
       defaultsTo: 0,
