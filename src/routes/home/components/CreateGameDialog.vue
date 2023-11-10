@@ -33,7 +33,6 @@
         <StatsScoringDialog
           activator-color="surface-2"
           :show-button-text="false"
-          name="element"
         />
         <v-switch
           v-model="isRanked"
