@@ -30,13 +30,18 @@
         {{ t('home.playAiContent2') }}
       </h4>
       <form name="create_game_form" class="d-flex align-center">
+        <StatsScoringDialog
+          activator-color="surface-2"
+          :show-button-text="false"
+          name="element"
+        />
         <v-switch
           v-model="isRanked"
           :label="isRanked ? t('global.ranked') : t('global.casual')"
           data-cy="create-game-ranked-switch"
           color="surface-2"
+          class="d-flex align-center"
         />
-        <StatsScoringDialog activator-color="surface-2" :show-button-text="false" />
       </form>
       <v-form @submit.prevent="submitNewGame">
         <v-text-field
