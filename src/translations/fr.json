@@ -109,6 +109,22 @@
         "title": "Sélectionnez une carte",
         "cannotMove": "On dirait bien que vous ne pouvez pas jouer. Sélectionnez un Valet à défausser.",
         "resolve": "Continuer"
+      },
+      "gameOverDialog": {
+        "game": "Jeu",
+        "you": "Toi",
+        "youWin": "Vous Gagnez",
+        "youWinTheMatch": "Tu Gagnes le Match",
+        "won": "gagné",
+        "youLose": "Tu as Perdu",
+        "youLoseTheMatch": "Tu Perds le Match",
+        "lost": "perdu",
+        "draw": "Match nul",
+        "matchAgainst": "Match contre",
+        "yourGameAgainst": "ton match contre",
+        "finished": "Fini",
+        "inProgress": "En Cours",
+        "goHome": "Rentrer à la Maison"
       }
     },
     "moves":{
@@ -216,12 +232,13 @@
     "join": "Rejoindre"
   },
   "rules": {
-    "rulesTitle": "Règles de Cuttle",
-    "rulesText": "Cuttle est un jeu de cartes de combat à deux joueurs joué avec un jeu de cartes standard de 52 cartes. Il présente la nuance stratégique des jeux de cartes à collectionner comme Magic, avec l'équilibre élégant d'un jeu standard - et vous pouvez y jouer gratuitement ! Testez votre courage dans le jeu de cartes le plus intense des abysse !",
+    "cuttleTitle": "Qu'est-ce que Cuttle?",
+    "cuttleText": "Cuttle est un jeu de cartes de combat à deux joueurs joué avec un jeu de cartes standard de 52 cartes. Il présente la nuance stratégique des jeux de cartes à collectionner comme Magic, avec l'équilibre élégant d'un jeu standard - et vous pouvez y jouer gratuitement ! Testez votre courage dans le jeu de cartes le plus intense des abysse !",
     "findGame": "Trouver une partie",
     "signUp":"Inscrivez-vous pour jouer en ligne",
-    "tutorialTitle": "Tutoriel vidéo",
-    "tutorialText": "Regardez le tuto officielle de cuttle.cards pour connaître les règles et découvrir le déroulement du jeu.",
+    "rulesTitle": "Règles de Cuttle",
+    "rulesReadText": "Lisez l'officiel",
+    "rulesWatchText": "Ou regardez le tutoriel vidéo de cuttle.cards ci-dessous pour apprendre les règles et vous familiariser avec le déroulement du jeu.",
     "goalTitle": "objectif",
     "goalText": "L'objectif est d'être le premier joueur à atteindre ou dépasser 21 points. Le premier joueur à atteindre l'objectif gagne immédiatement. Un joueur (traditionnellement celui qui distribue) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes joue en premier.",
     "playTitle": "Jouer",
