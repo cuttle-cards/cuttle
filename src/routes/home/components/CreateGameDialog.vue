@@ -39,7 +39,6 @@
           :label="isRanked ? t('global.ranked') : t('global.casual')"
           data-cy="create-game-ranked-switch"
           color="surface-2"
-          class="d-flex align-center"
         />
       </form>
       <v-form @submit.prevent="submitNewGame">
