@@ -41,7 +41,11 @@ module.exports = function gameHook() {
             } else if (!games) {
               return reject({ message: "Can't find games" });
             }
-            const openGames = games.filter(({ players }) => players.length < 2);
+            const openGames = games
+                .filter(({ players }) => players.length < 2)
+                .map(({username, pNum}) => {
+                  return { username, pNum };
+                });
             return resolve(openGames);
           });
       });
