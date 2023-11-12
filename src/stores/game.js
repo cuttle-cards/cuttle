@@ -169,7 +169,7 @@ export const useGameStore = defineStore('game', {
       this.lastEventTargetType = newGame.lastEvent?.oneOffTargetType ?? null;
       this.cardChosenFromScrap = newGame.lastEvent?.chosenCard ?? null;
       this.playerChoosingFromScrap = newGame.lastEvent?.pNum === this.myPNum ?? null;
-      this.discardedCards = newGame.lastEvent.discardedCards ?? null;
+      this.discardedCards = newGame.lastEvent?.discardedCards ?? null;
       this.waitingForOpponentToStalemate = false;
       this.id = newGame.id || this.id;
       this.turn = newGame.turn || this.turn;
