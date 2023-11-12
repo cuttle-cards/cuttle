@@ -164,49 +164,32 @@ export const useGameStore = defineStore('game', {
   },
   actions: {
     updateGame(newGame) {
-      const updateGameMap = {
-        id: (newGame) => (this.id = newGame.id),
-        turn: (newGame) => (this.turn = newGame.turn),
-        chat: (newGame) => (this.chat = cloneDeep(newGame.chat)),
-        deck: (newGame) => (this.deck = newGame.deck.map((card) => createGameCard(card))),
-        scrap: (newGame) => (this.scrap = newGame.scrap.map((card) => createGameCard(card))),
-        log: (newGame) => (this.log = cloneDeep(newGame.log)),
-        name: (newGame) => (this.name = newGame.name),
-        p0Ready: (newGame) => (this.p0Ready = newGame.p0Ready),
-        p1Ready: (newGame) => (this.p1Ready = newGame.p1Ready),
-        passes: (newGame) => (this.passes = newGame.passes),
-        players: (newGame) => {
-          this.players = newGame.players.map((player) => setPlayers(player, this.myPNum)) ?? null;
-        },
-        spectatingUsers: (newGame) => (this.spectatingUsers = newGame.spectatingUsers),
-        twos: (newGame) => (this.twos = newGame.twos.map((card) => createGameCard(card))),
-        topCard: (newGame) => (this.topCard = createGameCard(newGame.topCard) ?? null),
-        secondCard: (newGame) => (this.secondCard = createGameCard(newGame.secondCard) ?? null),
-        oneOff: (newGame) => (this.oneOff = createGameCard(newGame.oneOff) ?? null),
-        oneOffTarget: (newGame) => (this.oneOffTarget = createGameCard(newGame.oneOffTarget) ?? null),
-        isRanked: (newGame) => (this.isRanked = newGame.isRanked),
-        currentMatch: (newGame) => (this.currentMatch = newGame.currentMatch),
-        lastEvent: (newGame) => {
-          const lastEventMap = {
-            change: (newGame) => (this.lastEventChange = newGame.lastEvent.change),
-            oneOff: (newGame) => (this.lastEventOneOffRank = newGame.lastEvent.oneOff.rank),
-            oneOffTargetType: (newGame) => (this.lastEventTargetType = newGame.lastEvent.oneOffTargetType),
-            discardedCards: (newGame) => (this.lastEventDiscardedCards = newGame.lastEvent.discardedCards),
-            chosenCard: (newGame) => {
-              this.lastEventCardChosen = newGame.lastEvent.chosenCard;
-              this.playerChoosingFromScrap = newGame.lastEvent.pNum === this.myPNum;
-            },
-          };
-          Object.keys(newGame.lastEvent).forEach((lastEventKey) => {
-            return lastEventMap[lastEventKey] ? lastEventMap[lastEventKey](newGame) : null;
-          });
-        },
-      };
-      //loop through all keys sent through socket message and run corresponding function
-      Object.keys(newGame).forEach((key) => {
-        return updateGameMap[key] ? updateGameMap[key](newGame) : null;
-      });
+      this.lastEventChange = newGame.lastEvent?.change ?? null;
+      this.lastEventOneOffRank = newGame.lastEvent?.oneOff?.rank ?? null;
+      this.lastEventTargetType = newGame.lastEvent?.oneOffTargetType ?? null;
+      this.cardChosenFromScrap = newGame.lastEvent?.chosenCard ?? null;
+      this.playerChoosingFromScrap = newGame.lastEvent?.pNum === this.myPNum ?? null;
+      this.discardedCards = newGame.lastEvent.discardedCards ?? null;
       this.waitingForOpponentToStalemate = false;
+      this.id = newGame.id || this.id;
+      this.turn = newGame.turn || this.turn;
+      // this.chat = cloneDeep(newGame.chat);
+      this.deck = newGame.deck?.map((card) => createGameCard(card)) || this.deck;
+      this.scrap = newGame.scrap?.map((card) => createGameCard(card)) || this.scrap;
+      this.log = cloneDeep(newGame.log) || this.log;
+      this.name = newGame.name || this.name;
+      this.p0Ready = newGame.p0Ready || this.p0Ready;
+      this.p1Ready = newGame.p1Ready || this.p1Ready;
+      this.passes = newGame.passes || this.passes;
+      this.players = newGame.players?.map((player) => setPlayers(player, this.myPNum)) || this.players;
+      this.spectatingUsers = newGame.spectatingUsers || this.spectatingUsers;
+      this.twos = newGame.twos?.map((card) => createGameCard(card)) || this.twos;
+      this.topCard = createGameCard(newGame.topCard) ?? null;
+      this.secondCard = createGameCard(newGame.secondCard) ?? null;
+      this.oneOff = createGameCard(newGame.oneOff) ?? null;
+      this.oneOffTarget = createGameCard(newGame.oneOffTarget) ?? null;
+      this.isRanked = newGame.isRanked || this.isRanked;
+      this.currentMatch = newGame.currentMatch || this.currentMatch;
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
