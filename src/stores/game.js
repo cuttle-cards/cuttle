@@ -166,10 +166,7 @@ export const useGameStore = defineStore('game', {
       return state.turn % 2 === state.myPNum;
     },
     hasGlassesEight: (state) => {
-      if (!state.player) {
-        return false;
-      }
-      return state.player.faceCards?.filter((card) => card.rank === 8).length > 0 ?? false;
+      return state.player?.faceCards?.filter((card) => card.rank === 8).length > 0 ?? false;
     },
   },
   actions: {
