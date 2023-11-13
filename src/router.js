@@ -17,8 +17,6 @@ export const ROUTE_NAME_RULES = 'Rules';
 export const ROUTE_NAME_SIGNUP = 'Signup';
 export const ROUTE_NAME_STATS = 'Stats';
 
-
-
 const mustBeAuthenticated = async (to, from, next) => {
   const authStore = useAuthStore();
   if (authStore.authenticated) {
