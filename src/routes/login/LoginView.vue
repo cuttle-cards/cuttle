@@ -131,7 +131,7 @@
 
             <BaseSnackbar
               v-model="showSnackBar"
-              :message="snackBarMessage"
+              :message="t(snackBarMessage)"
               data-cy="auth-snackbar"
               @clear="clearSnackBar"
             />
@@ -274,9 +274,9 @@ export default {
       this.loading = false;
       this.$router.push('/');
     },
-    handleError(message) {
+    handleError(messageKey) {
       this.showSnackBar = true;
-      this.snackBarMessage = message;
+      this.snackBarMessage = messageKey;
       this.loading = false;
     },
     clearSnackBar() {
