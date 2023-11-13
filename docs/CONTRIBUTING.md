@@ -81,6 +81,8 @@ Click the **PENCIL** icon top right of any docs page to make small changes such 
 
 6. Create a working branch by `git checkout -b feature/[your feature or issue number]` or `git checkout -b bug/[your fix or issue number]` and start with your changes!
 
+7. It's best practice to checkout main (`git checkout main`), pull from the official repo’s main (`git pull https://github.com/cuttle-cards/cuttle.git main`), checkout your feature branch (`git checkout branchName`), and merge main back into your branch (`git merge main`) every time you start coding.
+
 #### How To TDD Using Cypress
 
 The easiest way to seed data is using test code. The existing in-game end-to-end tests (found in the `/tests/e2e/specs/in-game/*.spec.js` files) generally call the `cy.setupGameAsP0()` or `cy.setupGameAsP1()` are imported from `tests/e2e/support/helpers.js`. These test helpers will run inside the `beforeEach()` hooks that run before each test. This will automatically:

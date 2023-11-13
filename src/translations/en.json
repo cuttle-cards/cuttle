@@ -51,7 +51,11 @@
       "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
       "opponentPlayingFromDeck": "Opponent Playing from Deck",
       "opponentMustDiscardJack": "Opponent Must Discard Jack",
-      "opponentConsideringStalemate": "Opponent Considering Stalemate Request"
+      "opponentConsideringStalemate": "Opponent Considering Stalemate Request",
+      "gameUnavailable": {
+        "title": "Oops!",
+        "content": "Looks like this game isn't available."
+      }
     },
     "dialogs": {
       "reauthentication": {
