@@ -26,7 +26,12 @@
     "content": "Cuttle es un juego de cartas de batalla para 2 jugadores que se juega con un mazo estándar de 52 cartas. Tiene la sutileza estratégica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu temple en el juego de cartas más profundo bajo el mar!",
     "content2": "Sé el primero en alcanzar 21 puntos en esta explosiva batalla de ingenio. Monta una ofensiva valiente mientras interrumpes a tu oponente con trucos malvados. ¿Tienes lo necesario para convertirte en el Señor de las Profundidades?",
     "readRules": "Leer las reglas",
-    "joinDiscord": "Únete a nuestra comunidad en Discord"
+    "joinDiscord": "Únete a nuestra comunidad en Discord",
+    "snackbar": {
+       "usernameIsTaken": "That username is already registered to another user; try logging in!",
+       "userNotFound": "Could not find that user with that username. Try signing up!",
+       "wrongPassword": "Username and password do not match"
+     }
   },
   "lobby":{
     "lobbyFor": "Lobby para",

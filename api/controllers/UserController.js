@@ -19,7 +19,7 @@ module.exports = {
       const foundUser = await User.findOne({ username: username });
       if (foundUser) {
         throw {
-          message: 'That username is already registered to another user; try logging in!',
+          message: 'login.snackbar.usernameIsTaken',
         };
       }
       // Encrypt pw and create new user
@@ -40,7 +40,7 @@ module.exports = {
       const user = await User.findOne({ username: username });
       if (!user) {
         throw {
-          message: 'Could not find that user with that username. Try signing up!',
+          message: 'login.snackbar.userNotFound',
         };
       }
       await passwordAPI.checkPass(password, user.encryptedPassword);
