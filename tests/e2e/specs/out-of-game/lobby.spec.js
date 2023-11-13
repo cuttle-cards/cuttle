@@ -1,4 +1,6 @@
-import { myUser, opponentOne } from '../../fixtures/userFixtures';git branch
+import { myUser, opponentOne } from '../../fixtures/userFixtures';
+
+
 import en from '../../../../src/translations/en.json';
 
 describe('Lobby - Page content of casual game', () => {
@@ -398,21 +400,21 @@ describe('Lobby - P1 Perspective', () => {
     assertGameStarted();
   });
 
-  // it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
-  //   playerGetsReady();
-  //   cy.reload();
-  //   // Disconnect socket and then opponent hits ready to start game
-  //   cy.window()
-  //     .its('cuttle.authStore')
-  //     .then((store) => store.disconnectSocket());
-  //   cy.readyOpponent();
-  //   cy.drawCardOpponent();
-  //   // Reload the page -- should bring user into the game
-  //   cy.reload();
-  //     assertGameStarted(false); // skip hand size assertion
-  //     cy.get('[data-player-hand-card]').should('have.length', 6);
-  //     cy.get('[data-opponent-hand-card]').should('have.length', 6);
-  // });
+  it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
+    playerGetsReady();
+    userShouldDisplayReady('player', true);
+    // Disconnect socket and then opponent hits ready to start game
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+    cy.readyOpponent();
+    cy.drawCardOpponent();
+    // Reload the page -- should bring user into the game
+    cy.reload();
+    assertGameStarted(false); // skip hand size assertion
+    cy.get('[data-player-hand-card]').should('have.length', 6);
+    cy.get('[data-opponent-hand-card]').should('have.length', 6);
+  });
 });
 
 
