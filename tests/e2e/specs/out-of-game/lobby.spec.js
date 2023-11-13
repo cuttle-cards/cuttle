@@ -174,7 +174,9 @@ describe('Lobby - P0 Perspective', () => {
 
     checkRanked(false);
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
-    
+    cy.contains('Game Mode changed to').should('exist');
+    cy.get('[data-cy="close-snackbar"]').click();
+    cy.contains('Game Mode changed to').should('not.exist');
     cy.setIsRankedOpponent(true);
 
     checkRanked(true);
