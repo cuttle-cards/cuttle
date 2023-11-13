@@ -98,7 +98,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        <div>{{ t('opponentConsideringStalemate') }}</div>
+        <div>{{ t('game.overlays.opponentConsideringStalemate') }}</div>
       </h1>
     </v-overlay>
 
