@@ -79,20 +79,20 @@ describe('P0 Perspective - Player joins/leaves, ready/unready', () => {
   });
 
   it('Player readies, exists and joins back', () => {
-      indicatorShowsNameAndCard('player');
+    indicatorShowsNameAndCard('player');
     playerGetsReady();
-      userShouldDisplayReady('player', true);
-      testReadyValueInState('p0', true);
+    userShouldDisplayReady('player', true);
+    testReadyValueInState('p0', true);
     playerGetsNotReady();
-      userShouldDisplayReady('player', false);
-      testReadyValueInState('p0', false);
+    userShouldDisplayReady('player', false);
+    testReadyValueInState('p0', false);
     playerLeavesLobby();
-      testReadyValueInState('p0', false);
+    testReadyValueInState('p0', false);
     //joins back
     cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', false);
-      testReadyValueInState('p0', false);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', false);
+    testReadyValueInState('p0', false);
   });
 });
 
@@ -103,35 +103,35 @@ describe('P0 Perspective - opponent join/leave, ready/unready', () => {
   });
 
   it('opponent joins and leaves', () => {
-      indicatorShowsNameAndCard('player');
+    indicatorShowsNameAndCard('player');
     playersArrayShouldBeEqualTo(1);
-      opponentjoinsLobby();
-      indicatorShowsNameAndCard('opponent');
-      userShouldDisplayReady('opponent', false);
-      testReadyValueInState('p1', false);
-      playersArrayShouldBeEqualTo(2);
+    opponentjoinsLobby();
+    indicatorShowsNameAndCard('opponent');
+    userShouldDisplayReady('opponent', false);
+    testReadyValueInState('p1', false);
+    playersArrayShouldBeEqualTo(2);
     cy.leaveLobbyOpponent();
-      indicatorShowsNameAndCard('player');
-      opponentIndicatorShouldBeEmpty();
-      playersArrayShouldBeEqualTo(1);
-      testReadyValueInState('p1', false);
+    indicatorShowsNameAndCard('player');
+    opponentIndicatorShouldBeEmpty();
+    playersArrayShouldBeEqualTo(1);
+    testReadyValueInState('p1', false);
   });
 
   it('opponent joins, player leaves and joins back', () => {
     opponentjoinsLobby();
     playerLeavesLobby();
-      playersArrayShouldBeEqualTo(0);
-      testReadyValueInState('p1', false);
-      checkOpponentIsReadyInGetter(null);
+    playersArrayShouldBeEqualTo(0);
+    testReadyValueInState('p1', false);
+    checkOpponentIsReadyInGetter(null);
     // joins back
     cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', false);
-      indicatorShowsNameAndCard('opponent');
-      userShouldDisplayReady('opponent', false);
-      testReadyValueInState('p0', false);
-      testReadyValueInState('p1', false);
-      checkOpponentIsReadyInGetter(false);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', false);
+    indicatorShowsNameAndCard('opponent');
+    userShouldDisplayReady('opponent', false);
+    testReadyValueInState('p0', false);
+    testReadyValueInState('p1', false);
+    checkOpponentIsReadyInGetter(false);
 
     //check that players array is sorted (p0 at index O, p1 at index 1)
     cy.window()
@@ -150,16 +150,16 @@ describe('P0 Perspective - opponent join/leave, ready/unready', () => {
         cy.subscribeOpponent(gameData.id);
         cy.readyOpponent();
         cy.leaveLobbyOpponent();
-          opponentIndicatorShouldBeEmpty();
-          testReadyValueInState('p1', false);
-          checkOpponentIsReadyInGetter(null);
-          playersArrayShouldBeEqualTo(1);
+        opponentIndicatorShouldBeEmpty();
+        testReadyValueInState('p1', false);
+        checkOpponentIsReadyInGetter(null);
+        playersArrayShouldBeEqualTo(1);
         cy.subscribeOpponent(gameData.id);
-          indicatorShowsNameAndCard('opponent');
-          userShouldDisplayReady('opponent', false);
-          testReadyValueInState('p1', false);
-          checkOpponentIsReadyInGetter(false);
-          playersArrayShouldBeEqualTo(2);
+        indicatorShowsNameAndCard('opponent');
+        userShouldDisplayReady('opponent', false);
+        testReadyValueInState('p1', false);
+        checkOpponentIsReadyInGetter(false);
+        playersArrayShouldBeEqualTo(2);
       });
   });
 
@@ -203,8 +203,8 @@ describe('P0 Perspective - page reloading', () => {
     it('join, reload', function () {
     cy.reload();
     cy.url().should('include', '/lobby');
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', false);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', false);
       opponentIndicatorShouldBeEmpty();
   });
 
@@ -212,15 +212,15 @@ describe('P0 Perspective - page reloading', () => {
     cy.toggleInput('[data-cy=edit-game-ranked-switch]');
     cy.reload();
     cy.url().should('include', '/lobby');
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', false);
-      opponentIndicatorShouldBeEmpty();
-      checkRanked(true);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', false);
+    opponentIndicatorShouldBeEmpty();
+    checkRanked(true);
     cy.window()
-    .its('cuttle.gameStore')
-    .then((gameData) => {
-      expect(gameData.isRanked).to.eq(true);      
-    });
+      .its('cuttle.gameStore')
+      .then((gameData) => {
+        expect(gameData.isRanked).to.eq(true);      
+      });
   });
 
   it('join, get ready, reload', function () {
@@ -237,23 +237,23 @@ describe('P0 Perspective - page reloading', () => {
     cy.toggleInput('[data-cy=edit-game-ranked-switch]');
     cy.reload();
     cy.url().should('include', '/lobby');
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', true);
-      opponentIndicatorShouldBeEmpty();
-      checkRanked(true);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', true);
+    opponentIndicatorShouldBeEmpty();
+    checkRanked(true);
   });
 
   it('join, opponent joins, reload', function () {
     opponentjoinsLobby();
     cy.reload();
     cy.url().should('include', '/lobby');
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', false);
-      indicatorShowsNameAndCard('opponent');
-      userShouldDisplayReady('opponent', false);
-      testReadyValueInState('p0', false);
-      testReadyValueInState('p1', false);
-      checkOpponentIsReadyInGetter(false);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', false);
+    indicatorShowsNameAndCard('opponent');
+    userShouldDisplayReady('opponent', false);
+    testReadyValueInState('p0', false);
+    testReadyValueInState('p1', false);
+    checkOpponentIsReadyInGetter(false);
   });
 
   it('join, opponent joins, player  gets ready, reload', function () {
@@ -261,13 +261,13 @@ describe('P0 Perspective - page reloading', () => {
     playerGetsReady();
     cy.reload();
     cy.url().should('include', '/lobby');
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', true);
-      indicatorShowsNameAndCard('opponent');
-      userShouldDisplayReady('opponent', false);
-      testReadyValueInState('p0', true);
-      testReadyValueInState('p1', false);
-      checkOpponentIsReadyInGetter(false);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', true);
+    indicatorShowsNameAndCard('opponent');
+    userShouldDisplayReady('opponent', false);
+    testReadyValueInState('p0', true);
+    testReadyValueInState('p1', false);
+    checkOpponentIsReadyInGetter(false);
   });
 
   it('join, opponent joins, opponent gets ready, reload', function () {
@@ -275,13 +275,13 @@ describe('P0 Perspective - page reloading', () => {
     cy.readyOpponent();
     cy.reload();
     cy.url().should('include', '/lobby');
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', false);
-      indicatorShowsNameAndCard('opponent');
-      userShouldDisplayReady('opponent', true);
-      testReadyValueInState('p0', false);
-      testReadyValueInState('p1', true);
-      checkOpponentIsReadyInGetter(true);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', false);
+    indicatorShowsNameAndCard('opponent');
+    userShouldDisplayReady('opponent', true);
+    testReadyValueInState('p0', false);
+    testReadyValueInState('p1', true);
+    checkOpponentIsReadyInGetter(true);
   });
 });
 
@@ -311,69 +311,69 @@ describe('Lobby - P1 Perspective', () => {
 
   it('Ready & UnReady buttons work', () => {
     playerGetsReady();
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', true);
-      indicatorShowsNameAndCard('opponent');
-      userShouldDisplayReady('opponent', false);
-      testReadyValueInState('p1', true);
-      testReadyValueInState('p0', false);
-      checkOpponentIsReadyInGetter(false);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', true);
+    indicatorShowsNameAndCard('opponent');
+    userShouldDisplayReady('opponent', false);
+    testReadyValueInState('p1', true);
+    testReadyValueInState('p0', false);
+    checkOpponentIsReadyInGetter(false);
     playerGetsNotReady();
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', false);
-      testReadyValueInState('p1', false);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', false);
+    testReadyValueInState('p1', false);
   });
 
   it('Shows when oppenent Readies/Unreadies', () => {
     cy.readyOpponent();
-      userShouldDisplayReady('player', false);
-      userShouldDisplayReady('opponent', true);
-      testReadyValueInState('p1', false);
-      testReadyValueInState('p0', true);
-      checkOpponentIsReadyInGetter(true);
+    userShouldDisplayReady('player', false);
+    userShouldDisplayReady('opponent', true);
+    testReadyValueInState('p1', false);
+    testReadyValueInState('p0', true);
+    checkOpponentIsReadyInGetter(true);
     cy.readyOpponent();
-      userShouldDisplayReady('player', false);
-      userShouldDisplayReady('opponent', false);
-      testReadyValueInState('p1', false);
-      testReadyValueInState('p0', false);
-      checkOpponentIsReadyInGetter(false);
+    userShouldDisplayReady('player', false);
+    userShouldDisplayReady('opponent', false);
+    testReadyValueInState('p1', false);
+    testReadyValueInState('p0', false);
+    checkOpponentIsReadyInGetter(false);
   });
 
   it('Shows when opponent leaves and rejoins', function () {
     cy.leaveLobbyOpponent(); // Opponent leaves
-      userShouldDisplayReady('player', false);
-      opponentIndicatorShouldBeEmpty();
-      testReadyValueInState('p1', false);
-      testReadyValueInState('p0', false);
-      checkOpponentIsReadyInGetter(null);
+    userShouldDisplayReady('player', false);
+    opponentIndicatorShouldBeEmpty();
+    testReadyValueInState('p1', false);
+    testReadyValueInState('p0', false);
+    checkOpponentIsReadyInGetter(null);
     cy.subscribeOpponent(this.gameSummary.gameId);
-      indicatorShowsNameAndCard('opponent');
+    indicatorShowsNameAndCard('opponent');
   });
 
   it('join, get ready, reload', function () {
     playerGetsReady();
     cy.reload();
     cy.url().should('include', '/lobby');
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', true);
-      indicatorShowsNameAndCard('opponent');
-      userShouldDisplayReady('opponent', false);
-      testReadyValueInState('p1', true);
-      testReadyValueInState('p0', false);
-      checkOpponentIsReadyInGetter(false);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', true);
+    indicatorShowsNameAndCard('opponent');
+    userShouldDisplayReady('opponent', false);
+    testReadyValueInState('p1', true);
+    testReadyValueInState('p0', false);
+    checkOpponentIsReadyInGetter(false);
   });
 
   it('join, opponent gets ready, reload', function () {
     cy.readyOpponent();
     cy.reload();
     cy.url().should('include', '/lobby');
-      indicatorShowsNameAndCard('player');
-      userShouldDisplayReady('player', false);
-      indicatorShowsNameAndCard('opponent');
-      userShouldDisplayReady('opponent', true);
-      testReadyValueInState('p1', false);
-      testReadyValueInState('p0', true);
-      checkOpponentIsReadyInGetter(true);
+    indicatorShowsNameAndCard('player');
+    userShouldDisplayReady('player', false);
+    indicatorShowsNameAndCard('opponent');
+    userShouldDisplayReady('opponent', true);
+    testReadyValueInState('p1', false);
+    testReadyValueInState('p0', true);
+    checkOpponentIsReadyInGetter(true);
   });
 
   it('Game starts when both players are ready - opponent ready before joining', function () {
