@@ -51,7 +51,11 @@
       "opponentChoosingFromScrap": "Adversaire Choisissant une Carte à Partir de la Ferraille",
       "opponentPlayingFromDeck": "Adversaire Jouant depuis le Deck",
       "opponentMustDiscardJack": "L'Adversaire Doit Défausser Jack",
-      "opponentConsideringStalemate": "L'Adversaire Envisage une Demande D'Impasse"
+      "opponentConsideringStalemate": "L'Adversaire Envisage une Demande D'Impasse",
+      "gameUnavailable": {
+        "title": "Oops!",
+        "content": "Esta parte no parece estar disponible."
+      }
     },
     "dialogs": {
       "reauthentication": {

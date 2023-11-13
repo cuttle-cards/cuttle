@@ -7,9 +7,9 @@
   >
     <div class="overlay-header">
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', ['font-weight-bold']]">
-        Oops!
+        {{ t('game.overlays.gameUnavailable.title') }}
       </h1>
-      <p>Looks like this game isn't available</p>
+      <p>{{ t('game.overlays.gameUnavailable.content') }}</p>
     </div>
     <v-btn
       color="secondary"
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
 export default {
   name: 'GameUnavailable',
   props: {
@@ -31,6 +32,10 @@ export default {
       type: Boolean,
       required: true,
     },
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
 };
 </script>

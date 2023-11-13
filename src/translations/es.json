@@ -51,7 +51,11 @@
       "opponentChoosingFromScrap": "Tarjeta de Elección del Oponente de la Chatarra",
       "opponentPlayingFromDeck": "Oponente Jugando desde el Mazo",
       "opponentMustDiscardJack": "Oponente Debe Descartar a Jack",
-      "opponentConsideringStalemate": "Oponente Considerando Solicitud de Punto Muerto"
+      "opponentConsideringStalemate": "Oponente Considerando Solicitud de Punto Muerto",
+      "gameUnavailable": {
+        "title": "Oops!",
+        "content": "Looks like this game isn't available."
+      }
     },
     "dialogs": {
       "reauthentication": {
