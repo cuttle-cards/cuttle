@@ -28,8 +28,6 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 - **Casual game** :  Standard game that has no effect on statistics.
 - **Ranked game** :  Competitive game from wich the outcome is compiled in the statistics of the current seaon.
 
-
-
 ## Translation guide
 
 - **Scuttle** :  This word is meant to stay the same in every language.  It is used as a noun and a verb in English, but these two uses are not an obligation.  For languages with grammatical genders, the translator may use the one that 'sounds better' in their language.
