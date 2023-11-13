@@ -2,6 +2,7 @@
 
 Here, we try to determine a terminology for the game of scuttle that will help future translators.  The goal is to keep the 'Cuttle feel' and have a uniformed terminology throughout the translations.
 
+
 ## The "Cuttle feel"
 Some of the terminology refers to the seas and the ocean's depth, but it's not meant to be applied to every term in the game.  Most words used are just standard words used in card games in general. Each language should use words and expressions that feel right to native speakers and not use literal trnaslations with the only goal of using the same word/expression as in the English version.  
 
@@ -16,6 +17,7 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 - **Field** :  The area where a player lays their 'active' card.
 - **Table** :  The whole area where cards are played containing the two fields.
 
+
 ## Definition of non phisical entities
 
 - **Scuttle** :  When a player targets and scraps an opponent's point card.  Name and verb.
@@ -27,6 +29,7 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 - **Season** :  A period of time during wich the stats are compiled.
 - **Casual game** :  Standard game that has no effect on statistics.
 - **Ranked game** :  Competitive game from wich the outcome is compiled in the statistics of the current seaon.
+
 
 ## Translation guide
 
