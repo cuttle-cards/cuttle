@@ -26,7 +26,12 @@
     "content": "Cuttle est un jeu de cartes de bataille pour 2 joueurs joué avec un jeu de 52 cartes standard. Il possède la subtilité stratégique des jeux de cartes à collectionner comme Magic, avec l'équilibre élégant d'un jeu de cartes standard -- et vous pouvez y jouer gratuitement ! Testez votre bravoure dans le jeu de cartes le plus intense des abysse !",
     "content2": "Soyez le premier à marquer 21 points dans cette exaltante bataille d'intelligence. Montez une offensive vaillante tout en perturbant votre adversaire avec des astuces fourbes . Avez-vous ce qu'il faut pour conquérir les Profondeurs ?",
     "readRules": "Lire les règles",
-    "joinDiscord": "Rejoignez notre communauté sur Discord."
+    "joinDiscord": "Rejoignez notre communauté sur Discord.",
+    "snackbar": {
+       "usernameIsTaken": "Ce pseudo est déjà enregistré.  Essayez de vous connecter!",
+       "userNotFound": "Ce pseudo est inconnu au bataillon.  Inscrivez vous!",
+       "wrongPassword": "Le pseudo et le mot de passe ne correspondent pas."
+     }
   },
   "lobby":{
     "lobbyFor": "Vestibule de ",
