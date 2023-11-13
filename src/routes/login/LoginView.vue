@@ -131,7 +131,7 @@
 
             <BaseSnackbar
               v-model="showSnackBar"
-              :message="t(snackBarMessage)"
+              :message="snackBarMessage"
               data-cy="auth-snackbar"
               @clear="clearSnackBar"
             />
@@ -256,7 +256,7 @@ export default {
         });
         this.handleLogin();
       } catch (err) {
-        this.handleError(err);
+        this.handleError(err.message);
       }
     },
     switchMode() {
@@ -276,7 +276,7 @@ export default {
     },
     handleError(messageKey) {
       this.showSnackBar = true;
-      this.snackBarMessage = messageKey;
+      this.snackBarMessage =  this.t(messageKey);
       this.loading = false;
     },
     clearSnackBar() {
