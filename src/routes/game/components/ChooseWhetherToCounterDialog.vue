@@ -45,7 +45,6 @@
         data-cy="counter"
         color="newPrimary"
         variant="flat"
-        prepend-icon="mdi-close-circle"
         @click="$emit('choose-to-counter')"
       >
         {{ t('game.dialogs.counterDialogs.counter') }}
@@ -54,7 +53,6 @@
         data-cy="decline-counter-resolve"
         color="surface-1"
         variant="flat"
-        prepend-icon="mdi-check-circle"
         class="ml-4"
         @click="resolve"
       >

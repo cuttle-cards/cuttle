@@ -50,7 +50,6 @@
         data-cy="cannot-counter-counter"
         variant="flat"
         disabled
-        prepend-icon="mdi-close-circle"
       >
         {{ t('game.dialogs.counterDialogs.counter') }}
       </v-btn>
@@ -58,7 +57,6 @@
         data-cy="cannot-counter-resolve"
         color="surface-1"
         class="ml-4"
-        prepend-icon="mdi-check-circle"
         variant="flat"
         @click="$emit('resolve')"
       >
