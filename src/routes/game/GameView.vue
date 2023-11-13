@@ -421,7 +421,7 @@ import { mapStores } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
-import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
+import { ROUTE_NAME_HOME } from '@/router';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -475,7 +475,7 @@ export default {
     ...mapStores(useGameStore),
     ...mapStores(useAuthStore),
     isSpectating() {
-      return this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE;
+      return this.gameStore.isSpectating;
     },
     showOpponentHand() {
       return this.gameStore.hasGlassesEight || this.isSpectating;
