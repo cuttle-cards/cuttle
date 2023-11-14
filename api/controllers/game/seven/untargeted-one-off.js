@@ -23,7 +23,7 @@ module.exports = function (req, res) {
                   if (game.scrap.length === 0)
                     {
                       return Promise.reject({
-                        message: 'You can only play a 3 ONE-OFF if there are cards in the scrap pile',
+                        message: 'game.snackbar.oneOffs.scrapIsEmpty',
                       });
                     }
                   break;
@@ -31,7 +31,7 @@ module.exports = function (req, res) {
                   if (opponent.hand.length === 0)
                     {
                       return Promise.reject({
-                        message: 'You cannot play a 4 as a ONE-OFF while your opponent has no cards in hand',
+                        message: 'game.snackbar.oneOffs.opponentHasNoCards',
                       });
                     }
                   break;
@@ -40,13 +40,13 @@ module.exports = function (req, res) {
                   if (!game.topCard)
                     {
                       return Promise.reject({
-                        message: 'You can only play a 7 as a ONE-OFF if there are cards in the deck',
+                        message: 'game.snackbar.oneOffs.sevenWithEmptyDeck',
                       });
                     }
                   if (game.topCard.id === card.id && !game.secondCard)
                     {
                       return Promise.reject({
-                        message: 'You can not play a 7 as a ONE-OFF if it the last card in the deck',
+                        message: 'game.snackbar.oneOffs.sevenWithOneCardInDeck',
                       });
                     }
                   break;
@@ -77,16 +77,16 @@ module.exports = function (req, res) {
             }
             default:
               return Promise.reject({
-                message: 'You cannot play that card as a ONE-OFF without a target',
+                message: 'game.snackbar.oneOffs.cantPLayWithoutATArget',
               });
           }
         } else {
           return Promise.reject({
-            message: 'You can only play cards from the top of the deck while resolving a seven',
+            message: 'game.snackbar.seven.pickAndPlay',
           });
         }
       } else {
-        return Promise.reject({ message: "It's not your turn" });
+        return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
       }
     })
     .then(function populateGame(values) {

@@ -9,24 +9,24 @@ module.exports = function (req, res) {
     .then(function changeAndSave(values) {
       const [game, player, opponent, card, target] = values;
       if (game.turn % 2 !== player.pNum) {
-        return Promise.reject({ message: "It's not your turn." });
+        return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
       }
       if (card.hand !== player.id) {
-        return Promise.reject({ message: 'You can only play a card that is in your hand' });
+        return Promise.reject({ message: 'game.snackbar.scuttle.playFromHand' });
       }
       if (target.points !== opponent.id) {
         return Promise.reject({
-          message: 'You can only scuttle a card your opponent has played for points',
+          message: 'game.snackbar.scuttle.mustTargetPointCard',
         });
       }
       if (card.rank < target.rank || (card.rank === target.rank && card.suit < target.suit)) {
         return Promise.reject({
           message:
-            "You can only scuttle an opponent's point card with a higher rank point card, or the same rank with a higher suit. Suit order (low to high) is: Clubs < Diamonds < Hearts < Spades",
+            'game.snackbar.scuttle.rankTooLow',
         });
       }
       if (player.frozenId === card.id) {
-        return Promise.reject({ message: 'That card is frozen! You must wait a turn to play it.' });
+        return Promise.reject({ message: 'game.snackbar.global.cardFrosen' });
       }
       // Move is legal; make changes
       const attachmentIds = target.attachments.map((card) => card.id);

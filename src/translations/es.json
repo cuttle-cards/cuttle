@@ -208,6 +208,19 @@
     },
     "history": {
       "title": "Historial"
+    },
+    "snackbar": {
+      "global": {
+        "notYourTurn": "It's not your turn!"
+      },
+      "draw": {
+        "deckIsEmpty": "The deck is empty; you cannot draw.",
+        "handLimit": "You are at the hand limit; you cannot draw."
+      },
+      "faceCards": {
+        "withoutTarget": "You can only play Kings, Queens, and Eights as Face Cards, without a TARGET",
+        "mustPick": "You must pick a card from the deck to play when resolving a seven"
+      }
     }
   },
   "home": {

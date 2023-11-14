@@ -58,11 +58,11 @@ module.exports = function (req, res) {
                 break;
               }
               return Promise.reject({
-                message: "Your opponent's queen prevents you from targeting their other cards",
+                message: 'game.snackbar.oneOffs.targetWithQueen',
               });
             default:
               return Promise.reject({
-                message: 'You cannot play a targeted one-off when your opponent has more than one Queen',
+                message: 'game.snackbar.oneOffs.TargetWithMultipleQueens',
               });
           } //End queenCount validation
           // Normal sevens
@@ -99,16 +99,16 @@ module.exports = function (req, res) {
               return Promise.all([game, ...updatePromises]);
             }
             return Promise.reject({
-              message: "You can only steal your opponent's points with a jack",
+              message: 'game.snackbar.jack.stealOnlyWithJack',
             });
           }
-          return Promise.reject({ message: "You can only jack your opponent's point cards" });
+          return Promise.reject({ message: 'game.snackbar.jack.stealOnlyPointCards' });
         }
         return Promise.reject({
-          message: 'You can only one of the top two cards from the deck while resolving a seven',
+          message: 'game.snackbar.seven.pickAndPlay',
         });
       }
-      return Promise.reject({ message: "It's not your turn" });
+      return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
     })
     .then(function populateGame(values) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);

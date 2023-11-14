@@ -48,20 +48,20 @@ module.exports = function (req, res) {
               }
               return Promise.reject({
                 message:
-                  "You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)",
+                  'game.snackbar.scuttle.targetTooHigh',
               });
             }
             return Promise.reject({
-              message: "You can only scuttle a card in your oppponent's points",
+              message: 'game.snackbar.scuttle.cantTargetRoyal',
             });
           }
-          return Promise.reject({ message: 'You can only scuttle with an ace through ten' });
+          return Promise.reject({ message: 'game.snackbar.scuttle.onyPointCards' });
         }
         return Promise.reject({
-          message: 'You can only one of the top two cards from the deck while resolving a seven',
+          message: 'game.snackbar.seven.pickAndPlay',
         });
       }
-      return Promise.reject({ message: "It's not your turn" });
+      return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
     }) //End changeAndSave()
     .then(function populateGame(values) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);

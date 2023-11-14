@@ -208,6 +208,19 @@
     },
     "history": {
       "title": "Historique"
+    },
+    "snackbar": {
+      "global": {
+        "notYourTurn": "Ce n'est pas votre tour."
+      },
+      "draw": {
+        "deckIsEmpty": "Le paquet est vide, impossible de piocher.",
+        "handLimit": "Vous avez déjà en main le nombre limite de cartes."
+      },
+      "faceCard": {
+        "withoutTarget": "Les Rois, Dames et Huits ne peuvent pas cibler une carte.",
+        "mustPick": "Après avoir joué un Sept, vous devez jouer une des deux premières cartes du jeu"
+      }
     }
   },
   "home": {

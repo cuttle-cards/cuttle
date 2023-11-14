@@ -36,11 +36,11 @@ module.exports = function (req, res) {
                   break;
                 }
                 return Promise.reject({
-                  message: "Your opponent's queen prevents you from targeting their other cards",
+                  message: 'game.snackbar.oneOffs.targetWithQueen',
                 });
               default:
                 return Promise.reject({
-                  message: 'You cannot play a targeted one-off when your opponent has more than one Queen',
+                  message: 'game.snackbar.oneOffs.TargetWithMultipleQueens',
                 });
             } //End queenCount validation
             const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({
@@ -78,11 +78,11 @@ module.exports = function (req, res) {
           }
         } else {
           return Promise.reject({
-            message: 'You can only play cards from the top of the deck while resolving a seven',
+            message: 'game.snackbar.seven.pickAndPlay',
           });
         }
       } else {
-        return Promise.reject({ message: "It's not your turn" });
+        return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
       }
     })
     .then(function populateGame(values) {
