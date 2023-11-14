@@ -77,6 +77,9 @@ describe('Lobby - Page Content (Ranked)', () => {
   it('Changes games to ranked and casual from the lobby', () => {
     // Set To Casual Mode
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
+    cy.contains('Game Mode changed to').should('exist');
+    cy.get('[data-cy="close-snackbar"]').click();
+    cy.contains('Game Mode changed to').should('not.exist');
     checkRanked(false);
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
     
@@ -174,7 +177,6 @@ describe('Lobby - P0 Perspective', () => {
 
     checkRanked(false);
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
-    
     cy.setIsRankedOpponent(true);
 
     checkRanked(true);
