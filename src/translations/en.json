@@ -231,7 +231,8 @@
       },
       "jack": {
         "stealOnlyWithJack": "You can only steal your opponent's points with a jack",
-        "stealOnlyPointCards": "You can only steal your opponent's point cards"
+        "stealOnlyPointCards": "You can only steal your opponent's point cards",
+        "noJackWithQueen": "You cannot use a Jack while your opponent has a Queen."
       },
       "scuttle": {
         "rankTooLow": "You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)",

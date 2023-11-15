@@ -44,11 +44,11 @@ module.exports = function (req, res) {
                   return Promise.all([game, ...updatePromises]);
                 }
                 return Promise.reject({
-                  message: 'game.snackbar.global.cardFrosen',
+                  message: 'game.snackbar.global.cardFrozen',
                 });
               }
               return Promise.reject({
-                message: 'You cannot use a Jack while your opponent has a Queen.',
+                message: 'game.snackbar.jack.noJackWithQueen',
               });
             }
             return Promise.reject({

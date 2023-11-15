@@ -26,7 +26,7 @@ module.exports = function (req, res) {
         });
       }
       if (player.frozenId === card.id) {
-        return Promise.reject({ message: 'game.snackbar.global.cardFrosen' });
+        return Promise.reject({ message: 'game.snackbar.global.cardFrozen' });
       }
       // Move is legal; make changes
       const attachmentIds = target.attachments.map((card) => card.id);
