@@ -1,6 +1,12 @@
 const { randomUUID } = require('crypto'); // Added in: node v14.17.0
 const dayjs = require('dayjs');
 
+async function sleep(durationInMillis) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, durationInMillis);
+  });
+}
+
 module.exports = {
   friendlyName: 'Lock a game',
 
@@ -17,27 +23,35 @@ module.exports = {
   },
 
   fn: async ({ gameId }, exits) => {
-    const LOCK_WAIT_TIME_MS = 200;
+    const LOCK_RETRY_TIME_MS = 200;
+    const LOCK_MAX_WAIT_TIME_MS = 2000;
+    const MAX_ATTEMPTS = 50;
     const uuId = randomUUID();
-    const now = dayjs();
-    const lockIsStaleTimeout = now.subtract(30, 'second');
-    const maxAttempts = 50;
-    // const waitBetweenTries = 
-    try {
-      const updatedGame = Game.updateOne({
-        id: gameId,
-        or: [
-          {lock: null},
-          {lockedAt: {'<=': lockIsStaleTimeout}}
-        ],
-      }).set({lock: uuId, lockedAt: now});
-      const newLock = updatedGame?.lock;
-      if (newLock === uuId) {
-        return exits.success(uuId);
+    const startTime = dayjs();
+    const timeToGiveUp = startTime.add(LOCK_MAX_WAIT_TIME_MS, 'millisecond');
+    let now = startTime;
+    let numAttempts = 0;
+    let lockIsStaleTimeout = startTime.subtract(30, 'second');
+    while (numAttempts < MAX_ATTEMPTS && now.valueOf() < timeToGiveUp.valueOf) {
+      try {
+        numAttempts++;
+        now = dayjs();
+        const updatedGame = Game.updateOne({
+          id: gameId,
+          or: [
+            {lock: null},
+            {lockedAt: {'<=': lockIsStaleTimeout.valueOf()}}
+          ],
+        }).set({lock: uuId, lockedAt: now.valueOf()});
+        const newLock = updatedGame?.lock;
+        if (newLock === uuId) {
+          return exits.success(uuId);
+        }
+        await sleep(LOCK_RETRY_TIME_MS);
+      } catch (err) {
+        return exits.error(err);
       }
-
-    } catch (err) {
-      return exits.error(err);
     }
+    return exits.error(`Timed out aquiring lock for game ${gameId}`);
   },
 };
