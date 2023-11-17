@@ -23,18 +23,13 @@ module.exports = {
   },
 
   fn: async ({ gameId }, exits) => {
-    const LOCK_RETRY_TIME_MS = 250;
-    const LOCK_MAX_WAIT_TIME_MS = 5000;
+    const RETRY_TIME = 250;
     const MAX_ATTEMPTS = 20;
     const uuId = randomUUID();
-    const startTime = dayjs();
-    const timeToGiveUp = startTime.add(LOCK_MAX_WAIT_TIME_MS, 'millisecond').valueOf();
-    let now = startTime.valueOf();
-    let numAttempts = 0;
-    while (numAttempts < MAX_ATTEMPTS && now < timeToGiveUp) {
+    
+    for (let numAttempts = 0; numAttempts < MAX_ATTEMPTS; numAttempts++) {
       try {
-        numAttempts++;
-        now = dayjs().valueOf();
+        const now = dayjs().valueOf();
         const lockIsStaleTimeout = dayjs().subtract(30, 'second').valueOf();
 
         // Lock & re-fetch game if unlocked or lock is expired
@@ -53,7 +48,7 @@ module.exports = {
         }
 
         // Otherwise wait and try agin
-        await sleep(LOCK_RETRY_TIME_MS);
+        await sleep(RETRY_TIME);
       } catch (err) {
         return exits.error(err);
       }
