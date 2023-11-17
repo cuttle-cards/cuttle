@@ -28,21 +28,21 @@ module.exports = {
     const MAX_ATTEMPTS = 50;
     const uuId = randomUUID();
     const startTime = dayjs();
-    const timeToGiveUp = startTime.add(LOCK_MAX_WAIT_TIME_MS, 'millisecond');
-    let now = startTime;
+    const timeToGiveUp = startTime.add(LOCK_MAX_WAIT_TIME_MS, 'millisecond').valueOf();
+    let now = startTime.valueOf();
+    let lockIsStaleTimeout = startTime.subtract(30, 'second').valueOf();
     let numAttempts = 0;
-    let lockIsStaleTimeout = startTime.subtract(30, 'second');
-    while (numAttempts < MAX_ATTEMPTS && now.valueOf() < timeToGiveUp.valueOf) {
+    while (numAttempts < MAX_ATTEMPTS && now < timeToGiveUp) {
       try {
         numAttempts++;
-        now = dayjs();
+        now = dayjs().valueOf();
         const updatedGame = Game.updateOne({
           id: gameId,
           or: [
             {lock: null},
-            {lockedAt: {'<=': lockIsStaleTimeout.valueOf()}}
+            {lockedAt: {'<=': lockIsStaleTimeout}}
           ],
-        }).set({lock: uuId, lockedAt: now.valueOf()});
+        }).set({lock: uuId, lockedAt: now});
         const newLock = updatedGame?.lock;
         if (newLock === uuId) {
           return exits.success(uuId);
