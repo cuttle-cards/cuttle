@@ -5,10 +5,11 @@ module.exports = function (req, res) {
   if (req.session.game && req.session.usr) {
     const promiseGame = gameAPI.findGame(req.session.game);
     const promiseUser = userAPI.findUser(req.session.usr);
-    Promise.all([promiseGame, promiseUser])
+    const promiseLock = sails.helpers.lockGame(req.session.game);
+    Promise.all([promiseGame, promiseUser, promiseLock])
       // Assign player readiness
       .then(function foundRecords(values) {
-        const [game, user] = values;
+        const [game, user, lock] = values;
         let { pNum } = user;
         let bothReady = false;
         const gameUpdates = {};
@@ -76,6 +77,7 @@ module.exports = function (req, res) {
                 Game.replaceCollection(game.id, 'deck').members(shuffledDeck),
                 // Other game updates
                 Game.updateOne({ id: game.id }).set(gameUpdates),
+                sails.helpers.unlockGame(lock),
               ];
 
               return Promise.all([game, p0, p1, ...updatePromises]);
@@ -101,7 +103,9 @@ module.exports = function (req, res) {
           pNum: user.pNum,
           gameId: game.id,
         });
-        return Game.updateOne({ id: game.id }).set(gameUpdates);
+        const updateGamePromise = Game.updateOne({ id: game.id }).set(gameUpdates);
+        const unlockGamePromise = sails.helpers.unlockGame(lock);
+        return Promise.all([updateGamePromise, unlockGamePromise]);
       }) //End foundRecords
       .then(function respond() {
         return res.ok();
