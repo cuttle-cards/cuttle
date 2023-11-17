@@ -23,9 +23,9 @@ module.exports = {
   },
 
   fn: async ({ gameId }, exits) => {
-    const LOCK_RETRY_TIME_MS = 200;
-    const LOCK_MAX_WAIT_TIME_MS = 2000;
-    const MAX_ATTEMPTS = 50;
+    const LOCK_RETRY_TIME_MS = 500;
+    const LOCK_MAX_WAIT_TIME_MS = 5000;
+    const MAX_ATTEMPTS = 10;
     const uuId = randomUUID();
     const startTime = dayjs();
     const timeToGiveUp = startTime.add(LOCK_MAX_WAIT_TIME_MS, 'millisecond').valueOf();
