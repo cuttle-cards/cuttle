@@ -119,5 +119,14 @@ module.exports = {
     winner: {
       model: 'user',
     },
+    lock: {
+      type: 'string',
+      allowNull: true,
+    },
+    // Time game was last locked in millis since epoch
+    lockedAt: {
+      type: 'number',
+      columnType: 'integer',
+    },
   }, // end attributes
 }; // end exports
