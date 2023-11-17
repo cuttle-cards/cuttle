@@ -47,8 +47,16 @@
 
     <template #actions>
       <v-btn
+        data-cy="cannot-counter-counter"
+        variant="flat"
+        disabled
+      >
+        {{ t('game.dialogs.counterDialogs.counter') }}
+      </v-btn>
+      <v-btn
         data-cy="cannot-counter-resolve"
         color="surface-1"
+        class="ml-4"
         variant="flat"
         @click="$emit('resolve')"
       >

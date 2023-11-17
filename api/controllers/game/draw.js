@@ -1,5 +1,8 @@
 module.exports = function (req, res) {
-  const pGame = gameService.findGame({ gameId: req.session.game }).then(function checkTurn(game) {
+  const pGame = gameService.findGame({ gameId: req.session.game }).then(function checkTurnAndOneOff(game) {
+    if (game.oneOff) {
+      return Promise.reject({ message: "Can't play while waiting for opponent to counter" });
+    }
     if (req.session.pNum === game.turn % 2) {
       if (game.topCard) {
         return Promise.resolve(game);
