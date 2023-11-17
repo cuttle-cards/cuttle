@@ -11,7 +11,7 @@ module.exports = {
   friendlyName: 'Lock a game',
 
   description:
-    'Lock a game to reserve it for updates until the game is unlocked or the lock times out',
+    'Lock a game to reserve it for updates until the game is unlocked or the lock times out. Will error if we cannot obtain a lock before hitting the max wait time or the max number of attempts',
 
   inputs: {
     gameId: {
@@ -36,6 +36,8 @@ module.exports = {
         numAttempts++;
         now = dayjs().valueOf();
         const lockIsStaleTimeout = dayjs().subtract(30, 'second').valueOf();
+
+        // Lock & re-fetch game if unlocked or lock is expired
         const updatedGame = Game.updateOne({
           id: gameId,
           or: [
