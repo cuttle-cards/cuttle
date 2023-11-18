@@ -33,7 +33,7 @@ module.exports = {
         const lockIsStaleTimeout = dayjs().subtract(30, 'second').valueOf();
 
         // Lock & re-fetch game if unlocked or lock is expired
-        const updatedGame = Game.updateOne({
+        const updatedGame = await Game.updateOne({
           id: gameId,
           or: [
             {lock: null},
