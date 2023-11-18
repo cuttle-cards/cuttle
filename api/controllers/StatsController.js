@@ -183,4 +183,46 @@ module.exports = {
       return res.ok(seasons.map(transformSeasonToDTO));
     });
   },
+  getCurrentStats: async function (req, res) {
+    const [currentSeason] = await sails.helpers.getSeasonsWithoutRankings();
+
+    const users = User.find({});
+    const currentSeasonMatches = Match.find({
+      startTime: { '>': currentSeason.startTime },
+      endTime: { '<': currentSeason.endTime },
+    });
+    const currentSeasonGames = Game.find({
+      status: gameService.GameStatus.FINISHED,
+      updatedAt: { '>': currentSeason.startTime, '<': currentSeason.endTime },
+    });
+
+    return Promise.all([currentSeason, users, currentSeasonMatches, currentSeasonGames]).then(
+      ([currentSeason, users, matches, games]) => {
+        const idToUserMap = new Map();
+        users.forEach((user) => {
+          idToUserMap.set(user.id, user);
+        });
+
+        matches.forEach((match) => {
+          if (!match.endTime || !match.winner) return;
+          const player1 = idToUserMap.get(match.player1);
+          const player2 = idToUserMap.get(match.player2);
+          if (player1 && player2) {
+            // Player 1
+            addMatchToRankings(currentSeason, match, player1, player2);
+            // Player 2
+            addMatchToRankings(currentSeason, match, player2, player1);
+          }
+        });
+
+        games.forEach((game) => {
+          const weekNum = dayjs(game.updatedAt).diff(currentSeason.startTime, 'week');
+          currentSeason.gameCounts[weekNum]++;
+          currentSeason.uniquePlayersPerWeek[weekNum].add(game.p0);
+          currentSeason.uniquePlayersPerWeek[weekNum].add(game.p1);
+        });
+        return res.ok([transformSeasonToDTO(currentSeason)]);
+      },
+    );
+  },
 };
