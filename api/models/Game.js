@@ -127,6 +127,7 @@ module.exports = {
     lockedAt: {
       type: 'number',
       columnType: 'integer',
+      allowNull: true,
     },
   }, // end attributes
 }; // end exports
