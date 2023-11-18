@@ -1,4 +1,4 @@
-const { randomUUID } = require('crypto'); // Added in: node v14.17.0
+const { randomUUID } = require('crypto');
 const dayjs = require('dayjs');
 
 async function sleep(durationInMs) {
