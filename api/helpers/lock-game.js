@@ -1,9 +1,9 @@
 const { randomUUID } = require('crypto'); // Added in: node v14.17.0
 const dayjs = require('dayjs');
 
-async function sleep(durationInMillis) {
+async function sleep(durationInMs) {
   return new Promise((resolve) => {
-    setTimeout(resolve, durationInMillis);
+    setTimeout(resolve, durationInMs);
   });
 }
 
