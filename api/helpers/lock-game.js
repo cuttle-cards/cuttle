@@ -39,7 +39,7 @@ module.exports = {
             { lock: null },
             { lockedAt: { '<=': lockIsStaleTimeout } }
           ],
-        }).set({lock: uuId, lockedAt: now});
+        }).set({ lock: uuId, lockedAt: now });
 
         // If we successfully wrote our uuid, resolve
         const newLock = updatedGame?.lock;
