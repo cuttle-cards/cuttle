@@ -36,8 +36,8 @@ module.exports = {
         const updatedGame = await Game.updateOne({
           id: gameId,
           or: [
-            {lock: null},
-            {lockedAt: {'<=': lockIsStaleTimeout}}
+            { lock: null },
+            { lockedAt: { '<=': lockIsStaleTimeout } }
           ],
         }).set({lock: uuId, lockedAt: now});
 
