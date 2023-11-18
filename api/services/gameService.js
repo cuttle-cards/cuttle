@@ -182,9 +182,6 @@ module.exports = {
                 // NOTE: jacks in play should be destroyed using CASCADE on foreign key constraint on attachedTo
               ];
               updatePromises.push(
-                User.update({ id: { in: playerIds } }).set({
-                  rematchOldGame: game.id,
-                }),
                 // Remove players from game
                 Game.replaceCollection(game.id, 'players').members([]),
                 // Delete all cards in the game

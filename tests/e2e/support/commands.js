@@ -1264,13 +1264,13 @@ Cypress.Commands.add('reconnectOpponent', (opponent) => {
   );
 });
 
-Cypress.Commands.add('rematchAndJoinRematchOpponent', () => {
-  io.socket.get('/game/rematch', { rematch: true }, function handleResponse(res, jwres) {
+Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
+  io.socket.get('/game/rematch', { gameId, rematch: true }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }
 
-    io.socket.get('/game/join-rematch', function handleResponse(res, jwres) {
+    io.socket.get('/game/join-rematch', { oldGameId: gameId }, function handleResponse(res, jwres) {
       if (jwres.statusCode !== 200) {
         throw new Error(jwres.body.message);
       }
@@ -1279,16 +1279,16 @@ Cypress.Commands.add('rematchAndJoinRematchOpponent', () => {
   });
 });
 
-Cypress.Commands.add('rematchOpponent', ({ rematch }) => {
-  io.socket.get('/game/rematch', { rematch }, function handleResponse(res, jwres) {
+Cypress.Commands.add('rematchOpponent', ({ gameId, rematch }) => {
+  io.socket.get('/game/rematch', { gameId, rematch }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }
   });
 });
 
-Cypress.Commands.add('joinRematchOpponent', () => {
-  io.socket.get('/game/join-rematch', function handleResponse(res, jwres) {
+Cypress.Commands.add('joinRematchOpponent', ({ oldGameId = null }) => {
+  io.socket.get('/game/join-rematch', { oldGameId }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }

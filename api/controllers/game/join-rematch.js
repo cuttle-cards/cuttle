@@ -4,11 +4,14 @@
 module.exports = async function (req, res) {
   try {
     const { usr: userId } = req.session;
+    const { oldGameId } = req.body;
 
     const user = await User.findOne({ id: userId });
-    const oldGame = await Game.findOne({ id: user.rematchOldGame });
 
-    const newGameId = oldGame.rematchGame;
+    const oldGame = await Game.findOne({ id: oldGameId });
+
+    const newGameId = oldGame?.rematchGame;
+
     const game = await gameService.populateGame({ gameId: newGameId });
     Game.subscribe(req, [game.id]);
 
@@ -26,7 +29,7 @@ module.exports = async function (req, res) {
       game,
     });
 
-    return res.ok({ game, pNum: user.pNum, playerUsername: user.username });
+    return res.ok();
   } catch (err) {
     return res.badRequest(err);
   }

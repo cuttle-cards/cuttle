@@ -763,7 +763,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         cy.expect(winners[0]).to.eq(game.players[0].id);
       });
     cy.get('[data-cy=gameover-rematch]').click();
-    cy.wait(1000);
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
@@ -773,7 +772,11 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         cy.expect(p1Rematch).to.eq(null);
       });
     cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
-    cy.rematchAndJoinRematchOpponent();
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchAndJoinRematchOpponent({ gameId: game.id });
+      });
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
@@ -822,15 +825,17 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       });
 
     cy.log('Opponent requests rematch first');
-    cy.rematchOpponent({ rematch: true });
-    cy.wait(1000);
-    cy.get('#game-over-dialog')
-      .should('be.visible')
-      .should('contain', 'Player2 wants to rematch')
-      .get('[data-cy=gameover-rematch]')
-      .click();
-    cy.log('Opponent then joins new game');
-    cy.joinRematchOpponent();
+    cy.url().then((url) => {
+      const oldGameId = url.split('/').pop();
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+      cy.get('#game-over-dialog')
+        .should('be.visible')
+        .should('contain', 'Player2 wants to rematch')
+        .get('[data-cy=gameover-rematch]')
+        .click();
+
+      cy.joinRematchOpponent({ oldGameId });
+    });
 
     cy.url().should('include', '/game');
 
@@ -853,7 +858,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
     cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
     cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
-    cy.wait(1000);
     // Opponent confirms
     cy.stalemateOpponent();
     assertStalemate();
@@ -866,8 +870,11 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     // Play again
     cy.get('#game-over-dialog').should('be.visible').get('[data-cy=gameover-rematch]').click();
-    cy.wait(1000);
-    cy.rematchAndJoinRematchOpponent();
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchAndJoinRematchOpponent({ gameId: game.id });
+      });
     cy.url().should('include', '/game');
 
     // Validate match data
@@ -898,8 +905,11 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       });
 
     cy.get('#game-over-dialog').should('be.visible').get('[data-cy=gameover-rematch]').click();
-    cy.wait(1000);
-    cy.rematchAndJoinRematchOpponent();
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchAndJoinRematchOpponent({ gameId: game.id });
+      });
     cy.url().should('include', '/game');
 
     // Game now should be unranked
@@ -958,7 +968,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     cy.url().should('not.include', '/game');
   });
-  it('Creates a match when two players play a ranked game for the first time this week, leave game during rematch', function () {
+  it('Creates a match when two players play a ranked game for the first time this week, leave game during rematch, button should be disabled', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
@@ -974,8 +984,11 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         cy.expect(winners[0]).to.eq(game.players[0].id);
       });
     // Opponent leaves game, we should see rematch button disabled
-    cy.rematchOpponent({ rematch: false });
-    cy.wait(1000);
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchOpponent({ gameId: game.id, rematch: false });
+      });
     cy.get('[data-cy=gameover-rematch]').should('be.disabled');
   });
 });
@@ -1016,7 +1029,11 @@ describe('Creating And Updating Unranked Matches With Rematch', () => {
         cy.expect(p1Rematch).to.eq(null);
       });
     cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
-    cy.rematchAndJoinRematchOpponent();
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchAndJoinRematchOpponent({ gameId: game.id });
+      });
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
@@ -1054,15 +1071,20 @@ describe('Creating And Updating Unranked Matches With Rematch', () => {
     assertLoss();
 
     cy.log('Opponent requests rematch first');
-    cy.rematchOpponent({ rematch: true });
-    cy.wait(1000);
-    cy.get('#game-over-dialog')
-      .should('be.visible')
-      .should('contain', 'Player2 wants to rematch')
-      .get('[data-cy=gameover-rematch]')
-      .click();
-    cy.log('Opponent then joins new game');
-    cy.joinRematchOpponent();
+
+    cy.url().then((url) => {
+      const oldGameId = url.split('/').pop();
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+
+      cy.get('#game-over-dialog')
+        .should('be.visible')
+        .should('contain', 'Player2 wants to rematch')
+        .get('[data-cy=gameover-rematch]')
+        .click();
+      cy.log('Opponent then joins new game');
+
+      cy.joinRematchOpponent({ oldGameId });
+    });
 
     cy.url().should('include', '/game');
 
@@ -1072,15 +1094,17 @@ describe('Creating And Updating Unranked Matches With Rematch', () => {
     cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
     cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
     cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
-    cy.wait(1000);
     // Opponent confirms
     cy.stalemateOpponent();
     assertStalemate();
 
     // Play again
     cy.get('#game-over-dialog').should('be.visible').get('[data-cy=gameover-rematch]').click();
-    cy.wait(1000);
-    cy.rematchAndJoinRematchOpponent();
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchAndJoinRematchOpponent({ gameId: game.id });
+      });
     cy.url().should('include', '/game');
 
     // 4th game
@@ -1089,8 +1113,11 @@ describe('Creating And Updating Unranked Matches With Rematch', () => {
     cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
     assertLoss();
     cy.get('#game-over-dialog').should('be.visible').get('[data-cy=gameover-rematch]').click();
-    cy.wait(1000);
-    cy.rematchAndJoinRematchOpponent();
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchAndJoinRematchOpponent({ gameId: game.id });
+      });
     cy.url().should('include', '/game');
   });
 });

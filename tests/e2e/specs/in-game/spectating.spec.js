@@ -389,7 +389,11 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     assertVictory();
     cy.log('rematch player2');
 
-    cy.rematchOpponent({ rematch: true });
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchOpponent({ gameId: game.id, rematch: true });
+      });
 
     cy.get('[data-cy="opponent-wants-rematch"]').should('be.visible');
 
@@ -404,7 +408,11 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
 
     cy.wait(1000);
 
-    cy.rematchOpponent({ rematch: true });
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchOpponent({ gameId: game.id, rematch: true });
+      });
     cy.wait(1000);
 
     cy.window()
@@ -416,12 +424,16 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
       });
 
     cy.log('join rematch player 1');
-    cy.joinRematchOpponent();
 
-    cy.log('recover player 2');
-    cy.recoverSessionOpponent(playerTwo);
-    cy.log('join rematch player 2');
-    cy.joinRematchOpponent();
+    cy.url().then((url) => {
+      const oldGameId = url.split('/').pop();
+      cy.joinRematchOpponent({ oldGameId });
+
+      cy.log('recover player 2');
+      cy.recoverSessionOpponent(playerTwo);
+      cy.log('join rematch player 2');
+      cy.joinRematchOpponent({ oldGameId });
+    });
 
     cy.signupOpponent(playerThree);
 

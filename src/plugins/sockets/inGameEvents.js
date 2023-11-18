@@ -145,7 +145,8 @@ export async function handleInGameEvents(evData) {
         gameStore.updateGame(evData.newGame);
       }
       if (currentRoute.name === ROUTE_NAME_REMATCH) {
-        gameStore.requestJoinRematch();
+        const { gameId } = currentRoute.params;
+        gameStore.requestJoinRematch({ oldGameId: gameId });
         router
           .push({
             name: ROUTE_NAME_GAME,

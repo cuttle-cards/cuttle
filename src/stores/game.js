@@ -826,16 +826,16 @@ export const useGameStore = defineStore('game', {
         });
       });
     },
-    async requestRematch({ rematch = true }) {
+    async requestRematch({ gameId, rematch = true }) {
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/rematch', { rematch }, (res, jwres) => {
+        io.socket.get('/game/rematch', { gameId, rematch }, (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
     },
-    async requestJoinRematch() {
+    async requestJoinRematch({ oldGameId }) {
       return await new Promise((resolve, reject) => {
-        io.socket.get('/game/join-rematch', (res, jwres) => {
+        io.socket.get('/game/join-rematch', { oldGameId }, (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });

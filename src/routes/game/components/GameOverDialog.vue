@@ -240,7 +240,7 @@ export default {
       this.leavingGame = true;
       try {
         await this.gameStore.requestUnsubscribeFromGame();
-        await this.gameStore.requestRematch({ rematch: false});
+        await this.gameStore.requestRematch({gameId:this.gameStore.id, rematch: false});
       } finally {
         this.leavingGame = false;
         this.$router.push('/');
@@ -254,7 +254,7 @@ export default {
     async rematch() {
       this.gameStore.setGameOver({gameOver: false});
       try {
-        await this.gameStore.requestRematch({ rematch: true});
+        await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: true});
       } catch (e) {
         this.showSnackbar = true;
         this.snackBarMessage = 'Error requesting rematch';
