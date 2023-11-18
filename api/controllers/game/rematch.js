@@ -53,12 +53,10 @@ module.exports = async function (req, res) {
     await Promise.all([
       Game.updateOne({ id: updatedGame.id }).set({ rematchGame: newGame.id }),
       Game.replaceCollection(newGame.id, 'players').members([newP0Id, newP1Id]),
-    ]);
-    updatedGame.rematchGame = newGame.id;
-    await Promise.all([
       User.updateOne({ id: newP0Id }).set({ pNum: 0 }),
       User.updateOne({ id: newP1Id }).set({ pNum: 1 }),
     ]);
+    updatedGame.rematchGame = newGame.id;
 
     const newGame2 = await Game.findOne({ id: newGame.id }).populate('players');
     // Create Cards
