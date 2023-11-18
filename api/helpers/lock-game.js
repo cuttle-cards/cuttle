@@ -50,6 +50,7 @@ module.exports = {
         // Otherwise wait and try agin
         await sleep(RETRY_TIME);
       } catch (err) {
+        // Unexpected error e.g. database connection
         return exits.error(err);
       }
     }
