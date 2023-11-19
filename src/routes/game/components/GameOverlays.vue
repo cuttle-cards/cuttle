@@ -6,7 +6,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        Waiting for Game to Start
+        {{ t('game.overlays.waitingForGameToStart') }}
       </h1>
       <v-btn
         color="secondary"
@@ -15,7 +15,7 @@
         :loading="leavingGame"
         @click="goHome"
       >
-        Leave Game
+        {{ t('game.overlays.leaveGame') }}
       </v-btn>
     </v-overlay>
 
@@ -24,6 +24,7 @@
       v-model="gameStore.waitingForOpponentToCounter"
       class="d-flex flex-column justify-center align-center"
       scrim="surface-1"
+      persistent
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
         {{ showWaitingForOpponetToCounterMessage }}
@@ -57,7 +58,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        Opponent Is Discarding
+        {{ t('game.overlays.opponentIsDiscarding') }}
       </h1>
     </v-overlay>
 
@@ -67,7 +68,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        Opponent Choosing Card from Scrap
+        {{ t('game.overlays.opponentChoosingFromScrap') }}
       </h1>
     </v-overlay>
 
@@ -77,7 +78,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        Opponent Playing from Deck
+        {{ t('game.overlays.opponentPlayingFromDeck') }}
       </h1>
     </v-overlay>
 
@@ -87,7 +88,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        Opponent Must Discard Jack
+        {{ t('game.overlays.opponentMustDiscardJack') }}
       </h1>
     </v-overlay>
 
@@ -97,7 +98,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        <div>Opponent Considering Stalemate Request</div>
+        <div>{{ t('game.overlays.opponentConsideringStalemate') }}</div>
       </h1>
     </v-overlay>
 
@@ -123,6 +124,7 @@
 
 <script>
 import { mapStores } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 
 import MoveChoiceOverlay from '@/routes/game/components/MoveChoiceOverlay.vue';
@@ -149,6 +151,10 @@ export default {
     },
   },
   emits:['points', 'face-card', 'one-off', 'clear-selection', 'target'],
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       leavingGame: false,
@@ -162,8 +168,8 @@ export default {
       return !(this.gameStore.p0Ready && this.gameStore.p1Ready);
     },
     showWaitingForOpponetToCounterMessage() {
-      const mayCounter = 'Opponent May Counter';
-      const mustResolve = 'Opponent Must Resolve';
+      const mayCounter = this.t('game.overlays.opponentMayCounter');
+      const mustResolve = this.t('game.overlays.opponentMustResolve');
       const opponentHasTwo = this.gameStore.opponent.hand.some((card) => card.rank === 2);
       if (this.gameStore.playerQueenCount || (this.gameStore.hasGlassesEight && !opponentHasTwo)) {
         return mustResolve;

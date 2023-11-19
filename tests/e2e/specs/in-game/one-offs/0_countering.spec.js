@@ -227,9 +227,8 @@ describe('Countering One-Offs', () => {
     cy.log('Player counters again (3rd counter');
     cy.get('#counter-dialog')
       .should('be.visible')
-      .contains('Your opponent has played 2♣️ to Counter your 2♥️', {includeShadowDom: true});
-    cy.get('[data-cy=counter]')
-      .click();
+      .contains('Your opponent has played the 2♣️ to Counter your 2♥️', { includeShadowDom: true });
+    cy.get('[data-cy=counter]').click();
     cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-3]').click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     // Opponent resolves
@@ -406,9 +405,8 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.log('Player counters back (2nd counter)');
     cy.get('#counter-dialog')
       .should('be.visible')
-      .contains('Your opponent has played 2♥️ to Counter', {includeShadowDom: true});
-    cy.get('[data-cy=counter]')
-      .click();
+      .contains('Your opponent has played the 2♥️ to Counter', { includeShadowDom: true });
+    cy.get('[data-cy=counter]').click();
 
     cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-0]').click();
 
@@ -420,9 +418,8 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.log('Player counters (4th counter)');
     cy.get('#counter-dialog')
       .should('be.visible')
-      .contains('Your opponent has played 2♠️ to Counter your 2♣️', {includeShadowDom: true});
-    cy.get('[data-cy=counter]')
-      .click();
+      .contains('Your opponent has played the 2♠️ to Counter your 2♣️', { includeShadowDom: true });
+    cy.get('[data-cy=counter]').click();
     cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-1]').click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
@@ -475,9 +472,8 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.get('#cannot-counter-dialog')
       .should('be.visible')
       .should('contain', 'You cannot Counter, because your opponent has a queen.')
-      .contains('Your opponent has played the 2♥️ to Counter', {includeShadowDom: true});
-    cy.get('[data-cy=cannot-counter-resolve]')
-      .click();
+      .contains('Your opponent has played the 2♥️ to Counter', { includeShadowDom: true });
+    cy.get('[data-cy=cannot-counter-resolve]').click();
   });
 });
 
@@ -505,6 +501,18 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
       cy.get('#waiting-for-opponent-counter-scrim')
         .should('be.visible')
         .should('contain', 'Opponent May Counter');
+
+      //make sure drawing is not possible
+      cy.window()
+        .its('cuttle.gameStore')
+        .then(async (store) => {
+          try {
+            await store.requestDrawCard();
+            expect(true).to.eq(false, 'Expected request to draw card to error');
+          } catch (err) {
+            expect(err).to.eq("Can't play while waiting for opponent to counter");
+          }
+        });
     });
 
     it('Displays "Opponent May Counter" when player has glasses but opponent has a two in hand', () => {

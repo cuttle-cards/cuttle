@@ -1,6 +1,6 @@
 <template>
   <span>
-    <span class="ml-4" :data-cy="dataCyName"> GOAL: {{ pointsToWin }} </span>
+    <span class="ml-4" :data-cy="dataCyName"> {{ $t('game.score.goal') }}: {{ pointsToWin }} </span>
     <v-menu :location="isPlayer ? 'top' : 'bottom'">
       <template #activator="{ props }">
         <v-btn
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
+
 export default {
   name: 'ScoreGoalTooltip',
   props: {
@@ -49,21 +51,23 @@ export default {
       type: Boolean,
     },
   },
-  data() {
-    return {
-      kingsPoints: [
-        '0 Kings: 21pts',
-        '1 King: 14pts',
-        '2 Kings: 10pts',
-        '3 Kings: 5pts',
-        '4 Kings: 0pts'
-      ]
-    };
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   computed: {
     dataCyName() {
       return this.isPlayer ? 'player-player-points-to-win' : 'opponent-points-to-win';
     },
+    kingsPoints() {
+      return  [
+        `${this.t('game.score.kings', 0)}: 21pts`,
+        `${this.t('game.score.kings', 1)}: 14pts`,
+        `${this.t('game.score.kings', 2)}: 10pts`,
+        `${this.t('game.score.kings', 3)}: 5pts`,
+        `${this.t('game.score.kings', 4)}: 0pts`
+      ];
+    }
   },
 };
 </script>

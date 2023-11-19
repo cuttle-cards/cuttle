@@ -31,7 +31,7 @@
       >
         <template #prepend>
           <v-list-item>
-            <h3>History</h3>
+            <h3>{{ t('game.history.title') }}</h3>
             <template #append>
               <v-btn icon variant="text" @click.stop="showHistoryDrawer = !showHistoryDrawer">
                 <v-icon
@@ -125,7 +125,7 @@
 
       <!-- Opponent Score -->
       <h3 id="opponent-score" class="mb-3">
-        <span>POINTS: {{ gameStore.opponentPointTotal }}</span>
+        <span>{{ t('game.score.points') }}: {{ gameStore.opponentPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="opponentKingCount"
           :points-to-win="opponentPointsToWin"
@@ -147,13 +147,13 @@
                 ({{ deckLength }})
               </v-card-actions>
               <h1 v-if="deckLength === 0" id="empty-deck-text">
-                PASS
+                {{ t('game.pass') }}
               </h1>
             </template>
 
             <template v-if="gameStore.resolvingSeven">
               <p class="mt-2">
-                Play from Deck
+                {{ t('game.playFromDeck') }}
               </p>
               <div class="d-flex">
                 <GameCard
@@ -189,10 +189,10 @@
                     data-cy="scrap-chosen-card"
                   />
                   <div v-else class="d-flex flex-column align-center scrapPile">
-                    <h3>Scrap</h3>
+                    <h3>{{ $t('game.scrap') }}</h3>
                     <span>({{ scrap.length }})</span>
                     <v-btn variant="outlined" color="primary" class="mt-4">
-                      View
+                      {{ $t('game.view') }}
                     </v-btn>
                   </div>
                 </Transition>
@@ -299,7 +299,7 @@
         <div id="field-right">
           <div id="history" class="d-flex flex-column justify-start align-center elevation-10">
             <h3 class="history-title">
-              History
+              {{ $t('game.history.title') }}
             </h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
@@ -312,7 +312,7 @@
       </div>
 
       <h3 id="player-score">
-        <span>POINTS: {{ gameStore.playerPointTotal }}</span>
+        <span>{{ t('game.score.points') }}: {{ gameStore.playerPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="playerKingCount"
           :points-to-win="playerPointsToWin"
@@ -417,9 +417,10 @@
 
 <script>
 import { mapStores } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
-import { ROUTE_NAME_HOME, ROUTE_NAME_SPECTATE } from '@/router';
+import { ROUTE_NAME_HOME } from '@/router';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -447,6 +448,10 @@ export default {
     BaseSnackbar,
     SpectatorListMenu,
   },
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       showSnackbar: false,
@@ -467,7 +472,7 @@ export default {
     ...mapStores(useGameStore),
     ...mapStores(useAuthStore),
     isSpectating() {
-      return this.$router.currentRoute.value.name === ROUTE_NAME_SPECTATE;
+      return this.gameStore.isSpectating;
     },
     showOpponentHand() {
       return this.gameStore.hasGlassesEight || this.isSpectating;
@@ -640,7 +645,7 @@ export default {
       return this.selectionIndex !== null ? this.gameStore.player.hand[this.selectionIndex] : null;
     },
     turnText() {
-      return this.gameStore.isPlayersTurn ? 'YOUR TURN' : "OPPONENT'S TURN";
+      return this.t(this.gameStore.isPlayersTurn ? 'game.turn.yourTurn' : 'game.turn.opponentTurn');
     },
     validScuttleIds() {
       const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
