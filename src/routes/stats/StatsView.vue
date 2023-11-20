@@ -181,11 +181,11 @@ export default {
       }
       this.seasons = res;
       this.selectedSeason = this.seasons[0];
+      console.log(this.seasons);
     });
   },
   methods: {
     checkAndSelectSeason(seasonId) {
-      console.log(seasonId);
       const requestedSeason = this.seasons.find(({ id }) => id === seasonId);
       if (requestedSeason.rankings.length) {
         return this.selectedSeason = requestedSeason;
@@ -194,11 +194,11 @@ export default {
       io.socket.get('/stats/seasons', {
         requestedSeason
       }, (res) => {
-        if (!res?.length) {
+        if (!res?.id) {
         this.error = true;
         return;
         }
-        this.seasons = [...this.seasons].map(({ season }) => season.id === seasonId ? { ...res } : season);
+        this.seasons = [...this.seasons].map((season) => season.id === seasonId ? { ...res } : season);
         this.selectedSeason = this.seasons.find(({ id }) => id === seasonId);
       })
       
