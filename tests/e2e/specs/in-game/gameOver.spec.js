@@ -747,6 +747,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.loginPlayer(playerOne);
     cy.setupGameAsP0(true, true);
   });
+  
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
@@ -817,6 +818,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
 
     assertLoss();
+
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
@@ -861,6 +863,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     // Opponent confirms
     cy.stalemateOpponent();
     assertStalemate();
+    
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
@@ -938,6 +941,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       });
     });
   });
+  
   it('Creates a match when two players play a ranked game for the first time this week, leave game during rematch', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
@@ -968,6 +972,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     cy.url().should('not.include', '/game');
   });
+  
   it('Creates a match when two players play a ranked game for the first time this week, leave game during rematch, button should be disabled', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
@@ -1008,6 +1013,7 @@ describe('Creating And Updating Unranked Matches With Rematch', () => {
     cy.loginPlayer(playerOne);
     cy.setupGameAsP0(true, false);
   });
+  
   it('Unranked games with rematch', function () {
     // 1st game: Opponent concedes
     cy.concedeOpponent();

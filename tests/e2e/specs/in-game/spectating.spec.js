@@ -382,6 +382,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     cy.loginPlayer(playerOne);
     cy.setupGameAsSpectator();
   });
+
   it('Spectate unranked games with rematch', function () {
     // 1st game: Opponent concedes
     cy.recoverSessionOpponent(playerTwo);
