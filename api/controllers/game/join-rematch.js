@@ -6,7 +6,7 @@ module.exports = async function (req, res) {
     const { usr: userId } = req.session;
     const { oldGameId } = req.body;
 
-    const [ user, game ] = await Promise.all([
+    const [ user, oldGame ] = await Promise.all([
       User.findOne({ id: userId }),
       Game.findOne({ id: oldGameId }),
     ]);
