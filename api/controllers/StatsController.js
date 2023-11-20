@@ -35,6 +35,34 @@ function getSeasonFromTimeStamp(sortedSeasons, timeStamp) {
   return null;
 }
 
+function updateRankingsFromGames(games, season) {
+  games.forEach((game) => {
+    const weekNum = dayjs(game.updatedAt).diff(season.startTime, 'week');
+    season.gameCounts[weekNum]++;
+    season.uniquePlayersPerWeek[weekNum].add(game.p0);
+    season.uniquePlayersPerWeek[weekNum].add(game.p1);
+  });
+}
+
+function updateRankingsFromMatches(users, matches, season) {
+  const idToUserMap = new Map();
+  users.forEach((user) => {
+    idToUserMap.set(user.id, user);
+  });
+
+  matches.forEach((match) => {
+    if (!match.endTime || !match.winner) return;
+    const player1 = idToUserMap.get(match.player1);
+    const player2 = idToUserMap.get(match.player2);
+    if (player1 && player2) {
+      // Player 1
+      addMatchToRankings(season, match, player1, player2);
+      // Player 2
+      addMatchToRankings(season, match, player2, player1);
+    }
+  });
+}
+
 /**
  * Adds a match to a player's season rankings in the appropriate week
  * @param {
@@ -62,9 +90,11 @@ function getSeasonFromTimeStamp(sortedSeasons, timeStamp) {
  * @param {User} player which player's record to update
  * @param {User} opponent // The opponent in the match
  */
+
 function addMatchToRankings(season, match, player, opponent) {
   // Calculate which week match counts towards
   const weekNum = dayjs(match.startTime).diff(dayjs(season.startTime), 'week') + 1;
+  console.log(season.rankings);
   const playerSeason = season.rankings.get(player.id);
   // Create player season if it doesn't already exist
   if (!playerSeason) {
@@ -136,57 +166,10 @@ function transformSeasonToDTO(season) {
 }
 
 module.exports = {
-  getStats: function (_req, res) {
-    // Find records
-    const seasons = sails.helpers.getSeasonsWithoutRankings();
-    const matches = Match.find({});
-    const users = User.find({});
-    const games = Game.find({ status: gameService.GameStatus.FINISHED }); // Only find completed games
-    return Promise.all([seasons, matches, users, games]).then(([seasons, matches, users, games]) => {
-      const idToUserMap = new Map();
-      users.forEach((user) => {
-        idToUserMap.set(user.id, user);
-      });
-
-      // Add each match to the appropriate rankings
-      matches.forEach((match) => {
-        // Only count finished matches
-        if (match.endTime && match.winner) {
-          const relevantSeason = getSeasonFromTimeStamp(seasons, match.startTime);
-          if (!relevantSeason) {
-            return;
-          }
-          const player1 = idToUserMap.get(match.player1);
-          const player2 = idToUserMap.get(match.player2);
-          if (player1 && player2) {
-            // Player 1
-            addMatchToRankings(relevantSeason, match, player1, player2);
-            // Player 2
-            addMatchToRankings(relevantSeason, match, player2, player1);
-          }
-        }
-      });
-
-      games.forEach((game) => {
-        const relevantSeason = getSeasonFromTimeStamp(seasons, game.updatedAt);
-        if (!relevantSeason) {
-          return;
-        }
-
-        const weekNum = dayjs(game.updatedAt).diff(relevantSeason.startTime, 'week');
-
-        relevantSeason.gameCounts[weekNum]++;
-        relevantSeason.uniquePlayersPerWeek[weekNum].add(game.p0);
-        relevantSeason.uniquePlayersPerWeek[weekNum].add(game.p1);
-      });
-      // Format seasons (convert maps to arrays and objects)
-      return res.ok(seasons.map(transformSeasonToDTO));
-    });
-  },
-  getCurrentStats: async function (req, res) {
-    const [currentSeason] = await sails.helpers.getSeasonsWithoutRankings();
-
-    const users = User.find({});
+  getCurrentStats: async function (_req, res) {
+    const seasons = await sails.helpers.getSeasonsWithoutRankings();
+    const [currentSeason] = seasons;
+    const allUsers = User.find({});
     const currentSeasonMatches = Match.find({
       startTime: { '>': currentSeason.startTime },
       endTime: { '<': currentSeason.endTime },
@@ -195,34 +178,30 @@ module.exports = {
       status: gameService.GameStatus.FINISHED,
       updatedAt: { '>': currentSeason.startTime, '<': currentSeason.endTime },
     });
-
-    return Promise.all([currentSeason, users, currentSeasonMatches, currentSeasonGames]).then(
-      ([currentSeason, users, matches, games]) => {
-        const idToUserMap = new Map();
-        users.forEach((user) => {
-          idToUserMap.set(user.id, user);
-        });
-
-        matches.forEach((match) => {
-          if (!match.endTime || !match.winner) return;
-          const player1 = idToUserMap.get(match.player1);
-          const player2 = idToUserMap.get(match.player2);
-          if (player1 && player2) {
-            // Player 1
-            addMatchToRankings(currentSeason, match, player1, player2);
-            // Player 2
-            addMatchToRankings(currentSeason, match, player2, player1);
-          }
-        });
-
-        games.forEach((game) => {
-          const weekNum = dayjs(game.updatedAt).diff(currentSeason.startTime, 'week');
-          currentSeason.gameCounts[weekNum]++;
-          currentSeason.uniquePlayersPerWeek[weekNum].add(game.p0);
-          currentSeason.uniquePlayersPerWeek[weekNum].add(game.p1);
-        });
-        return res.ok([transformSeasonToDTO(currentSeason)]);
-      },
-    );
+    const [users, matches, games] = await Promise.all([allUsers, currentSeasonMatches, currentSeasonGames]);
+    updateRankingsFromMatches(users, matches, currentSeason);
+    updateRankingsFromGames(games, currentSeason);
+    seasons[0] = transformSeasonToDTO(currentSeason);
+    return res.ok(seasons);
+  },
+  getRequestedStats: async function (req, res) {
+    const { requestedSeason } = req.body;
+    const allUsers = User.find({});
+    const requestedSeasonMatches = Match.find({
+      startTime: { '>': requestedSeason.startTime },
+      endTime: { '<': requestedSeason.endTime },
+    });
+    const requestedSeasonGames = Game.find({
+      status: gameService.GameStatus.FINISHED,
+      updatedAt: { '>': requestedSeason.startTime, '<': requestedSeason.endTime },
+    });
+    const [users, matches, games] = await Promise.all([
+      allUsers,
+      requestedSeasonMatches,
+      requestedSeasonGames,
+    ]);
+    updateRankingsFromMatches(users, matches, requestedSeason);
+    updateRankingsFromGames(games, requestedSeason);
+    return res.ok(transformSeasonToDTO(requestedSeason));
   },
 };

@@ -80,7 +80,7 @@
         </template>
 
         <!-- Usage stats -->
-        <div id="usage-stats-section">
+        <div v-if="selectedSeason" id="usage-stats-section">
           <h2 class="text-h2 mt-8 mb-4">
             Site Usage
           </h2>
@@ -173,21 +173,35 @@ export default {
     },
   },
   created() {
-    io.socket.get('/stats', (res) => {
+    io.socket.get('/stats/current', (res) => {
       this.loadingData = false;
       if (!res?.length) {
         this.error = true;
         return;
       }
       this.seasons = res;
-      const seasonId = parseInt(this.$route.params.seasonId);
-      this.checkAndSelectSeason(seasonId);
+      this.selectedSeason = this.seasons[0];
     });
   },
   methods: {
     checkAndSelectSeason(seasonId) {
+      console.log(seasonId);
       const requestedSeason = this.seasons.find(({ id }) => id === seasonId);
-      this.selectedSeason = requestedSeason || this.seasons[0];
+      if (requestedSeason.rankings.length) {
+        return this.selectedSeason = requestedSeason;
+      }
+
+      io.socket.get('/stats/seasons', {
+        requestedSeason
+      }, (res) => {
+        if (!res?.length) {
+        this.error = true;
+        return;
+        }
+        this.seasons = [...this.seasons].map(({ season }) => season.id === seasonId ? { ...res } : season);
+        this.selectedSeason = this.seasons.find(({ id }) => id === seasonId);
+      })
+      
     },
   },
 };
