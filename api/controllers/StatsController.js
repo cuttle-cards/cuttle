@@ -39,6 +39,10 @@ function updateRankingsFromGames(games, season) {
   games.forEach((game) => {
     const weekNum = dayjs(game.updatedAt).diff(season.startTime, 'week');
     season.gameCounts[weekNum]++;
+
+    if (!(season.uniquePlayersPerWeek[weekNum] instanceof Set)) {
+      season.uniquePlayersPerWeek[weekNum] = new Set();
+    }
     season.uniquePlayersPerWeek[weekNum].add(game.p0);
     season.uniquePlayersPerWeek[weekNum].add(game.p1);
   });
@@ -94,7 +98,11 @@ function updateRankingsFromMatches(users, matches, season) {
 function addMatchToRankings(season, match, player, opponent) {
   // Calculate which week match counts towards
   const weekNum = dayjs(match.startTime).diff(dayjs(season.startTime), 'week') + 1;
-  console.log(season.rankings);
+
+  if (!(season.rankings instanceof Map)) {
+    season.rankings = new Map();
+  }
+
   const playerSeason = season.rankings.get(player.id);
   // Create player season if it doesn't already exist
   if (!playerSeason) {
