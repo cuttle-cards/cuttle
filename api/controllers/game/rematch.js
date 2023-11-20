@@ -7,13 +7,6 @@ module.exports = async function (req, res) {
     const { usr: userId, pNum } = req.session;
     const { gameId, rematch } = req.body;
 
-    try {
-      await Game.findOne({ id: gameId }).populate('players');
-    } catch (err) {
-      if (rematch === false) {
-        return res.ok();
-      }
-    }
     const game = await Game.findOne({ id: gameId }).populate('players');
     const oldPNum = game.p0 === userId ? 0 : 1;
     const gameUpdates = { [`p${oldPNum}Rematch`]: rematch };
