@@ -98,7 +98,7 @@ describe('Lobby - P0 Perspective', () => {
 
   it('Exits the Lobby', () => {
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
-      
+    cy.get('[data-cy=exit-button]').click();
     // Confirm navigation back to home
     cy.hash().should('eq', '#/');
     // Test store state
