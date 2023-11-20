@@ -834,7 +834,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestJoinRematch({ oldGameId }) {
-      return await new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         io.socket.get('/game/join-rematch', { oldGameId }, (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
