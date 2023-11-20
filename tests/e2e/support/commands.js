@@ -1264,6 +1264,38 @@ Cypress.Commands.add('reconnectOpponent', (opponent) => {
   );
 });
 
+Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
+  io.socket.get('/game/rematch', { gameId, rematch: true }, function handleResponse(res, jwres) {
+    if (jwres.statusCode !== 200) {
+      throw new Error(jwres.body.message);
+    }
+
+    io.socket.get('/game/join-rematch', { oldGameId: gameId }, function handleResponse(res, jwres) {
+      if (jwres.statusCode !== 200) {
+        throw new Error(jwres.body.message);
+      }
+      return Promise.resolve(jwres);
+    });
+  });
+});
+
+Cypress.Commands.add('rematchOpponent', ({ gameId, rematch }) => {
+  io.socket.get('/game/rematch', { gameId, rematch }, function handleResponse(res, jwres) {
+    if (jwres.statusCode !== 200) {
+      throw new Error(jwres.body.message);
+    }
+  });
+});
+
+Cypress.Commands.add('joinRematchOpponent', ({ oldGameId = null }) => {
+  io.socket.get('/game/join-rematch', { oldGameId }, function handleResponse(res, jwres) {
+    if (jwres.statusCode !== 200) {
+      throw new Error(jwres.body.message);
+    }
+    return Promise.resolve(jwres);
+  });
+});
+
 /**
  * @param card: {suit: number, rank: number}
  */

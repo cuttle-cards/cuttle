@@ -55,20 +55,45 @@
           </div>
         </div>
       </template>
+      <p v-if="opponentWantsToRematch" data-cy="opponent-wants-rematch">
+        {{ gameStore.opponent.username }} wants to rematch
+      </p>
+      <p v-if="opponentDeclinedRematch" data-cy="opponent-declined-rematch">
+        {{ gameStore.opponent.username }} declined rematch and left the game
+      </p>
     </template>
 
     <template #actions>
-      <v-btn
-        color="surface-1"
-        variant="flat"
-        data-cy="gameover-go-home"
-        :loading="leavingGame"
-        @click="goHome"
-      >
-        {{ t('game.dialogs.gameOverDialog.goHome') }}
-      </v-btn>
+      <div class="d-flex gap-2">
+        <v-btn
+          class="mr-4"
+          color="surface-1"
+          variant="outlined"
+          data-cy="gameover-go-home"
+          :loading="leavingGame"
+          @click="goHome"
+        >
+          {{ t('game.dialogs.gameOverDialog.goHome') }}
+        </v-btn>
+        <v-btn
+          color="primary"
+          :disabled="opponentDeclinedRematch"
+          variant="flat"
+          data-cy="gameover-rematch"
+          @click="rematch"
+        >
+          {{ t('game.dialogs.gameOverDialog.rematch') }}
+        </v-btn>
+      </div>
     </template>
   </BaseDialog>
+  <BaseSnackbar
+    v-model="showSnackbar"
+    :message="snackBarMessage"
+    :color="snackColor"
+    data-cy="game-over-snackbar"
+    @clear="clearSnackBar"
+  />
 </template>
 
 <script>
@@ -77,14 +102,15 @@ import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
+import BaseSnackbar from '@/components/BaseSnackbar.vue';
 
 export default {
   name: 'GameOverDialog',
   components: {
     BaseDialog,
+    BaseSnackbar,
   },
   props: {
- 
     modelValue: {
       type: Boolean,
       required: true,
@@ -107,6 +133,9 @@ export default {
   data() {
     return {
       leavingGame: false,
+      showSnackbar: false,
+      snackBarMessage: '',
+      snackColor: 'error',
     };
   },
   computed: {
@@ -193,12 +222,25 @@ export default {
     playerWinsMatch() {
       return this.gameStore.currentMatch?.winner === this.gameStore.player.id;
     },
+    opponentWantsToRematch() {
+      return (
+        (this.gameStore.p0Rematch && this.gameStore.myPNum === 1) 
+        || (this.gameStore.p1Rematch && this.gameStore.myPNum === 0)
+      );
+    },
+    opponentDeclinedRematch() {
+      return (
+        (this.gameStore.p0Rematch === false && this.gameStore.myPNum === 1) ||
+        (this.gameStore.p1Rematch === false && this.gameStore.myPNum === 0)
+      );
+    },
   },
   methods: {
     async goHome() {
       this.leavingGame = true;
       try {
         await this.gameStore.requestUnsubscribeFromGame();
+        await this.gameStore.requestRematch({gameId:this.gameStore.id, rematch: false});
       } finally {
         this.leavingGame = false;
         this.$router.push('/');
@@ -208,6 +250,20 @@ export default {
           winner: null,
         });
       }
+    },
+    async rematch() {
+      this.gameStore.setGameOver({gameOver: false});
+      try {
+        await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: true});
+      } catch (e) {
+        this.showSnackbar = true;
+        this.snackBarMessage = 'Error requesting rematch';
+        this.$router.push('/');
+      }
+    },
+    clearSnackBar() {
+      this.showSnackbar = false;
+      this.snackBarMessage = '';
     },
     iconFromGameStatus(gameStatus) {
       switch (gameStatus) {
@@ -247,5 +303,4 @@ export default {
   max-width: 90px;
   max-height: 90px;
 }
-
 </style>

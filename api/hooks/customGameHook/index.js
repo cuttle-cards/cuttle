@@ -5,12 +5,12 @@ module.exports = function gameHook() {
   // Game API //
   //////////////
   return {
-    createGame: function (gameName, isRanked = false) {
+    createGame: function (gameName, isRanked = false, status = gameService.GameStatus.CREATED) {
       return new Promise(function (resolve, reject) {
         Game.create({
           name: gameName,
-          status: gameService.GameStatus.CREATED,
           isRanked: isRanked === true,
+          status,
         })
           .fetch()
           .then((game) => {
@@ -32,7 +32,7 @@ module.exports = function gameHook() {
         const recentUpdateThreshhold = dayjs().subtract(1, 'day').valueOf();
         Game.find({
           status: gameService.GameStatus.CREATED,
-          createdAt: { '>=': recentUpdateThreshhold }
+          createdAt: { '>=': recentUpdateThreshhold },
         })
           .populate('players')
           .exec(function (error, games) {
