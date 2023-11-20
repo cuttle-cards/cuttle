@@ -958,6 +958,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         cy.expect(winners[0]).to.eq(game.players[0].id);
       });
     cy.get('[data-cy=gameover-rematch]').click();
+    cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
@@ -967,13 +968,12 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         cy.expect(p0Rematch).to.eq(true);
         cy.expect(p1Rematch).to.eq(null);
       });
-    cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
     cy.get('[data-cy=leave-unstarted-game-button]').should('be.visible').click();
 
     cy.url().should('not.include', '/game');
   });
   
-  it('Creates a match when two players play a ranked game for the first time this week, leave game during rematch, button should be disabled', function () {
+  it('Disables the rematch button in the GameOverDialog when opponent declines a rematch before the player makes a choice', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
