@@ -11,7 +11,7 @@ module.exports = {
   friendlyName: 'Lock a game',
 
   description:
-    'Lock a game to reserve it for updates until the game is unlocked or the lock times out. Will error if we cannot obtain a lock before hitting the max wait time or the max number of attempts',
+    'Lock a game to reserve it for updates until the game is unlocked or the lock times out. Will error if we cannot obtain a lock before hitting the max wait time or the max number of attempts. Returns the game record that has been locked.',
 
   inputs: {
     gameId: {
