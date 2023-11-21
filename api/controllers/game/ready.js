@@ -2,7 +2,7 @@ module.exports = async function (req, res) {
   try {
     // Query for game and users
     const game =  await sails.helpers.lockGame(req.session.game);
-    const players = await User.find({game: req.session.game}).sort((p1, p2) => p1.pNum - p2.pNum);
+    const players = await User.find({game: req.session.game}).sort('pNum');
     const user = players[ req.session.pNum ];
     game.players = players;
 
