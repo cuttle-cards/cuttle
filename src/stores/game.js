@@ -15,7 +15,7 @@ function queenCount(player) {
 }
 
 const compareByRankThenSuit = (card1, card2) => {
-  return (card1.rank - card2.rank) || (card1.suit - card2.suit);
+  return card1.rank - card2.rank || card1.suit - card2.suit;
 };
 
 const setPlayers = (player, myPnum, hasGlassesEight, isSpectating) => {
@@ -70,6 +70,9 @@ export const useGameStore = defineStore('game', {
     name: null,
     p0Ready: false,
     p1Ready: false,
+    p0Rematch: null,
+    p1Rematch: null,
+    rematchGameId: null,
     passes: 0,
     players: [],
     isSpectating: false,
@@ -272,6 +275,17 @@ export const useGameStore = defineStore('game', {
       if (Object.hasOwnProperty.call(newGame, 'currentMatch')) {
         this.currentMatch = newGame.currentMatch;
       }
+      if (Object.hasOwnProperty.call(newGame, 'p0Rematch')) {
+        this.p0Rematch = newGame.p0Rematch;
+      }
+      if (Object.hasOwnProperty.call(newGame, 'p1Rematch')) {
+        this.p1Rematch = newGame.p1Rematch;
+      }
+      if (Object.hasOwnProperty.call(newGame, 'gameIsOver')) {
+        this.gameIsOver = newGame.gameIsOver;
+      } else {
+        this.gameIsOver = false;
+      }
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
@@ -303,6 +317,12 @@ export const useGameStore = defineStore('game', {
     resetPNumIfNullThenUpdateGame(game) {
       this.resetPNumIfNull(game);
       this.updateGame(game);
+    },
+    setRematch({ pNum, rematch }) {
+      this[`p${pNum}Rematch`] = rematch;
+    },
+    setRematchGameId({ gameId }) {
+      this.rematchGameId = gameId;
     },
     resetPNumIfNull(game) {
       const authStore = useAuthStore();
@@ -802,6 +822,20 @@ export const useGameStore = defineStore('game', {
           if (jwres.statusCode === 200) {
             this.resetState();
           }
+          return this.handleGameResponse(jwres, resolve, reject);
+        });
+      });
+    },
+    async requestRematch({ gameId, rematch = true }) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/rematch', { gameId, rematch }, (res, jwres) => {
+          return this.handleGameResponse(jwres, resolve, reject);
+        });
+      });
+    },
+    async requestJoinRematch({ oldGameId }) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/join-rematch', { oldGameId }, (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
