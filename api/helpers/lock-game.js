@@ -44,7 +44,7 @@ module.exports = {
         // If we successfully wrote our uuid, resolve
         const newLock = updatedGame?.lock;
         if (newLock === uuId) {
-          return exits.success(uuId);
+          return exits.success(updatedGame);
         }
 
         // Otherwise wait and try agin

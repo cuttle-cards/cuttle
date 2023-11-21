@@ -1,15 +1,14 @@
-const gameAPI = sails.hooks['customgamehook'];
 const userAPI = sails.hooks['customuserhook'];
 
 module.exports = async function (req, res) {
   if (req.session.game && req.session.usr) {
-    const promiseGame = gameAPI.findGame(req.session.game);
+    const promiseGame = sails.helpers.lockGame(req.session.game);
     const promiseUser = userAPI.findUser(req.session.usr);
-    const promiseLock = sails.helpers.lockGame(req.session.game);
-    Promise.all([promiseGame, promiseUser, promiseLock])
+    Promise.all([promiseGame, promiseUser])
       // Assign player readiness
       .then(function foundRecords(values) {
-        const [game, user, lock] = values;
+        const [game, user] = values;
+        const { lock } = game;
         let { pNum } = user;
         let bothReady = false;
         const gameUpdates = {};
