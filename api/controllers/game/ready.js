@@ -1,7 +1,7 @@
 const gameAPI = sails.hooks['customgamehook'];
 const userAPI = sails.hooks['customuserhook'];
 
-module.exports = function (req, res) {
+module.exports = async function (req, res) {
   if (req.session.game && req.session.usr) {
     const promiseGame = gameAPI.findGame(req.session.game);
     const promiseUser = userAPI.findUser(req.session.usr);
@@ -35,12 +35,16 @@ module.exports = function (req, res) {
           // Create Cards
           return gameService.dealCards(game, gameUpdates);
         }
+
+        // Send socket message to players
         Game.publish([game.id], {
           change: 'ready',
           userId: user.id,
           pNum: user.pNum,
           gameId: game.id,
         });
+
+        // Update database
         const updateGamePromise = Game.updateOne({ id: game.id }).set(gameUpdates);
         const unlockGamePromise = sails.helpers.unlockGame(lock);
         return Promise.all([updateGamePromise, unlockGamePromise]);
