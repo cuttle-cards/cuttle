@@ -18,13 +18,19 @@ const compareByRankThenSuit = (card1, card2) => {
   return card1.rank - card2.rank || card1.suit - card2.suit;
 };
 
-const setPlayers = (player, myPnum) => {
-  const sortP1 = (cards) => (player.pNum === myPnum ? cards?.sort(compareByRankThenSuit) : cards);
+const setPlayers = (player, myPnum, hasGlassesEight, isSpectating) => {
+  const sortCards = (cards) => {
+    if (isSpectating || hasGlassesEight || player.pNum === myPnum) {
+      return cards?.sort(compareByRankThenSuit);
+    }
+    return cards;
+  };
+
   return {
     ...player,
-    hand: sortP1(player.hand)?.map((card) => createGameCard(card)),
-    points: sortP1(player.points)?.map((card) => createGameCard(card)),
-    faceCards: sortP1(player.faceCards)?.map((card) => createGameCard(card)),
+    hand: sortCards(player.hand)?.map((card) => createGameCard(card)),
+    points: sortCards(player.points)?.map((card) => createGameCard(card)),
+    faceCards: sortCards(player.faceCards)?.map((card) => createGameCard(card)),
   };
 };
 
@@ -64,8 +70,12 @@ export const useGameStore = defineStore('game', {
     name: null,
     p0Ready: false,
     p1Ready: false,
+    p0Rematch: null,
+    p1Rematch: null,
+    rematchGameId: null,
     passes: 0,
     players: [],
+    isSpectating: false,
     spectatingUsers: [],
     scrap: [],
     turn: 0,
@@ -159,7 +169,7 @@ export const useGameStore = defineStore('game', {
       return state.turn % 2 === state.myPNum;
     },
     hasGlassesEight: (state) => {
-      return state.player.faceCards.filter((card) => card.rank === 8).length > 0;
+      return state.player?.faceCards?.filter((card) => card.rank === 8).length > 0 ?? false;
     },
   },
   actions: {
@@ -190,6 +200,7 @@ export const useGameStore = defineStore('game', {
       this.oneOffTarget = createGameCard(newGame.oneOffTarget) ?? null;
       this.isRanked = newGame.isRanked || this.isRanked;
       this.currentMatch = newGame.currentMatch || this.currentMatch;
+      this.gameIsOver = newGame.gameIsOver || false;
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
@@ -221,6 +232,12 @@ export const useGameStore = defineStore('game', {
     resetPNumIfNullThenUpdateGame(game) {
       this.resetPNumIfNull(game);
       this.updateGame(game);
+    },
+    setRematch({ pNum, rematch }) {
+      this[`p${pNum}Rematch`] = rematch;
+    },
+    setRematchGameId({ gameId }) {
+      this.rematchGameId = gameId;
     },
     resetPNumIfNull(game) {
       const authStore = useAuthStore();
@@ -334,6 +351,7 @@ export const useGameStore = defineStore('game', {
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.myPNum = 0;
+              this.isSpectating = true;
               this.updateGame(res);
               return resolve();
             }
@@ -719,6 +737,20 @@ export const useGameStore = defineStore('game', {
           if (jwres.statusCode === 200) {
             this.resetState();
           }
+          return this.handleGameResponse(jwres, resolve, reject);
+        });
+      });
+    },
+    async requestRematch({ gameId, rematch = true }) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/rematch', { gameId, rematch }, (res, jwres) => {
+          return this.handleGameResponse(jwres, resolve, reject);
+        });
+      });
+    },
+    async requestJoinRematch({ oldGameId }) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/join-rematch', { oldGameId }, (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });

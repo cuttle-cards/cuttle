@@ -26,15 +26,20 @@
     "content": "Cuttle is a 2 player battle card game played with a standard 52-card deck of cards. It has the strategic nuance of trading card games like Magic, with the elegant balance of a standard deck -- and you can play it for free! Test your mettle in the deepest cardgame under the sea!",
     "content2": "Be the first to score 21 points in this explosive battle of wits. Mount a valient offense while disupting your opponent with dastardly tricks. Do you have what it takes to become the Lord of the Deep?",
     "readRules": "Read the Rules",
-    "joinDiscord": "Join our discord community"
+    "joinDiscord": "Join our discord community",
+    "snackbar": {
+       "usernameIsTaken": "That username is already registered to another user; try logging in!",
+       "userNotFound": "Could not find that user with that username. Try signing up!",
+       "wrongPassword": "Username and password do not match"
+     }
   },
-  "lobby":{
+  "lobby": {
     "lobbyFor": "Lobby for",
     "ready": "READY",
     "unready": "UNREADY",
     "exit": "EXIT",
     "invite": "Invite",
-    "rankedChangedAlert":"Game Mode changed to"
+    "rankedChangedAlert": "Game Mode changed to"
   },
   "game": {
     "resolve": "Resolve",
@@ -51,7 +56,11 @@
       "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
       "opponentPlayingFromDeck": "Opponent Playing from Deck",
       "opponentMustDiscardJack": "Opponent Must Discard Jack",
-      "opponentConsideringStalemate": "Opponent Considering Stalemate Request"
+      "opponentConsideringStalemate": "Opponent Considering Stalemate Request",
+      "gameUnavailable": {
+        "title": "Oops!",
+        "content": "Looks like this game isn't available."
+      }
     },
     "dialogs": {
       "reauthentication": {
@@ -83,7 +92,7 @@
         "counterTitle": "Chance To Counter",
         "chooseTwoTitle": "Choose Two",
         "cannotCounterTitle": "Cannot Counter",
-        "selectCard" : "Which Two would you like to counter with? (Click the card)",
+        "selectCard": "Which Two would you like to counter with? (Click the card)",
         "opponentPlayed": "Your opponent has played the ",
         "oneOff": "as a one-off",
         "target": "targeting ",
@@ -100,7 +109,7 @@
         "title": "Select a Card from Scrap"
       },
       "opponentRequestedStalemateDialog": {
-        "title": "Accept Stalemate?" ,
+        "title": "Accept Stalemate?",
         "opponentHasRequested": "Your opponent has requested a stalemate. If you accept, the game will end in a tie.",
         "reject": "Reject Request",
         "accept": "Accept Stalemate"
@@ -124,11 +133,12 @@
         "yourGameAgainst": "your game against",
         "finished": "Finished",
         "inProgress": "In Progress",
-        "goHome": "Go Home"
+        "goHome": "Go Home",
+        "rematch": "Rematch"
       }
     },
-    "moves":{
-      "disabledMove" : {
+    "moves": {
+      "disabledMove": {
         "topTwo": "You must play one of the top two cards from the deck",
         "notTurn": "It's not your turn",
         "frozenCard": "This card is frozen",
@@ -146,7 +156,7 @@
         "disabled": "You can only scuttle smaller point cards",
         "disabledNoPoints": "Your opponent has no point cards to scuttle"
       },
-      "effects":{
+      "effects": {
         "1": "Scrap all points",
         "2": "Scrap target Royal or Glasses eight",
         "3": "Choose 1 card in the Scrap and put it to your hand",
@@ -173,8 +183,8 @@
         "displayName": "Royal"
       }
     },
-    "menus":{
-      "gameMenu":{
+    "menus": {
+      "gameMenu": {
         "rules": "Rules",
         "concede": "Concede",
         "stalemate": "Request Stalemate",
@@ -183,9 +193,9 @@
         "concedeDialog": "The game will end and your opponent will win.",
         "stalemateDialog": "If your opponent agrees, the game will end in a stalemate. The request will cancel if the opponent declines or either player makes a move."
       },
-    "spectatorListMenu":{
-        "spectators":"Spectators",
-        "noSpectators":"Currently no spectators"
+      "spectatorListMenu": {
+        "spectators": "Spectators",
+        "noSpectators": "Currently no spectators"
       }
     },
     "score": {
@@ -201,7 +211,7 @@
       "title": "History"
     }
   },
-  "home":{
+  "home": {
     "howItWorks": {
       "button": "How it works",
       "title": "Looking To Play?",
@@ -235,7 +245,7 @@
     "cuttleTitle": "What is Cuttle?",
     "cuttleText": "Cuttle is a two player battle card game played with a standard 52-card deck of cards. It has the strategic nuance of trading card games like Magic, with the elegant balance of a standard deck--and you can play it for free! Test your mettle in the deepest card game under the sea!",
     "findGame": "Find a game",
-    "signUp":"Sign Up to Play Online",
+    "signUp": "Sign Up to Play Online",
     "rulesTitle": "Rules of Cuttle",
     "rulesReadText": "Read the official",
     "rulesWatchText": "or watch cuttle.cards video tutorial below to learn the rules and get a feel for the flow of the game.",
