@@ -4,45 +4,11 @@ const Result = require('../../types/Result.es5');
 /////////////
 // Helpers //
 /////////////
-/**
- * Find the season in which a given timestamp occurred using binary search
- * @param {*} sortedSeasons - Seasons sorted (OLDEST FIRST)
- * @param {*} timeStamp - Desired time in millis since epoch
- * @returns the season | null if none is found
- */
-function getSeasonFromTimeStamp(sortedSeasons, timeStamp) {
-  if (sortedSeasons.length <= 0) {
-    return null;
-  }
-  let minIndex = 0;
-  let maxIndex = sortedSeasons.length - 1;
-  let currentIndex = Math.floor((minIndex + maxIndex) / 2);
-  // let currentSeason = sortedSeasons[currentIndex];
-  while (minIndex <= maxIndex) {
-    const currentSeason = sortedSeasons[currentIndex];
-    if (timeStamp >= currentSeason.startTime && timeStamp <= currentSeason.endTime) {
-      return currentSeason;
-    }
-    // Target time is before current season
-    if (timeStamp < currentSeason.startTime) {
-      minIndex = currentIndex + 1;
-      // Target time is after current season
-    } else {
-      maxIndex = currentIndex - 1;
-    }
-    currentIndex = currentIndex = Math.floor((minIndex + maxIndex) / 2);
-  }
-  return null;
-}
 
 function updateRankingsFromGames(games, season) {
   games.forEach((game) => {
     const weekNum = dayjs(game.updatedAt).diff(season.startTime, 'week');
     season.gameCounts[weekNum]++;
-
-    if (!(season.uniquePlayersPerWeek[weekNum] instanceof Set)) {
-      season.uniquePlayersPerWeek[weekNum] = new Set();
-    }
     season.uniquePlayersPerWeek[weekNum].add(game.p0);
     season.uniquePlayersPerWeek[weekNum].add(game.p1);
   });
@@ -55,7 +21,9 @@ function updateRankingsFromMatches(users, matches, season) {
   });
 
   matches.forEach((match) => {
-    if (!match.endTime || !match.winner) return;
+    if (!match.endTime || !match.winner) {
+      return;
+    }
     const player1 = idToUserMap.get(match.player1);
     const player2 = idToUserMap.get(match.player2);
     if (player1 && player2) {
@@ -98,11 +66,6 @@ function updateRankingsFromMatches(users, matches, season) {
 function addMatchToRankings(season, match, player, opponent) {
   // Calculate which week match counts towards
   const weekNum = dayjs(match.startTime).diff(dayjs(season.startTime), 'week') + 1;
-
-  if (!(season.rankings instanceof Map)) {
-    season.rankings = new Map();
-  }
-
   const playerSeason = season.rankings.get(player.id);
   // Create player season if it doesn't already exist
   if (!playerSeason) {
@@ -193,7 +156,9 @@ module.exports = {
     return res.ok(seasons);
   },
   getRequestedStats: async function (req, res) {
-    const { requestedSeason } = req.body;
+    const { seasonId } = req.body;
+    const [requestedSeason] = await sails.helpers.getSeasonsWithoutRankings.with({ seasonId });
+
     const allUsers = User.find({});
     const requestedSeasonMatches = Match.find({
       startTime: { '>': requestedSeason.startTime },
@@ -210,6 +175,11 @@ module.exports = {
     ]);
     updateRankingsFromMatches(users, matches, requestedSeason);
     updateRankingsFromGames(games, requestedSeason);
-    return res.ok(transformSeasonToDTO(requestedSeason));
+    return res.ok(
+      transformSeasonToDTO({
+        rankings: requestedSeason.rankings,
+        uniquePlayersPerWeek: requestedSeason.uniquePlayersPerWeek,
+      }),
+    );
   },
 };
