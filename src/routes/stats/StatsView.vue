@@ -180,27 +180,29 @@ export default {
         return;
       }
       this.seasons = res;
-      this.selectedSeason = this.seasons[0];
-      console.log(this.seasons);
+      [this.selectedSeason] = this.seasons;
     });
   },
   methods: {
     checkAndSelectSeason(seasonId) {
-      const requestedSeason = this.seasons.find(({ id }) => id === seasonId);
-      if (requestedSeason.rankings.length) {
-        return this.selectedSeason = requestedSeason;
+      const requestedSeason = () => { return this.seasons.find(({ id }) => id === seasonId); };
+      if (requestedSeason().rankings.length) {
+        return this.selectedSeason = requestedSeason();
       }
 
       io.socket.get('/stats/seasons', {
-        requestedSeason
+        seasonId
       }, (res) => {
-        if (!res?.id) {
+        if (!res.rankings) {
         this.error = true;
         return;
         }
-        this.seasons = [...this.seasons].map((season) => season.id === seasonId ? { ...res } : season);
-        this.selectedSeason = this.seasons.find(({ id }) => id === seasonId);
-      })
+        
+        this.seasons = [...this.seasons].map((season) => season.id === seasonId ?
+          { ...season, rankings: res.rankings, uniquePlayersPerWeek: res.uniquePlayersPerWeek }
+          : season);
+        this.selectedSeason = requestedSeason();
+      });
       
     },
   },
