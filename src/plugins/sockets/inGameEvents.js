@@ -1,6 +1,6 @@
 import { useGameStore } from '@/stores/game';
 import router from '@/router.js';
-import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router';
+import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY, ROUTE_NAME_REMATCH } from '@/router';
 import SocketEvent from '_/types/SocketEvent';
 
 // Handles socket updates of game data
@@ -14,7 +14,12 @@ export async function handleInGameEvents(evData) {
   const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
 
   // No-op if the event's gameId doesn't match the url
-  if (!urlGameId || Number(urlGameId) !== eventGameId) {
+  if (
+    ![SocketEvent.REMATCH, SocketEvent.NEW_GAME_FOR_REMATCH, SocketEvent.JOIN_REMATCH].includes(
+      evData.change,
+    ) &&
+    (!urlGameId || Number(urlGameId) !== eventGameId)
+  ) {
     return;
   }
   // Handle GameOver
@@ -118,6 +123,61 @@ export async function handleInGameEvents(evData) {
         gameStore.myTurnToCounter = true;
       }
       break;
+    case SocketEvent.REMATCH:
+      gameStore.setRematch({ pNum: evData.pNum, rematch: evData.game[`p${evData.pNum}Rematch`] });
+      if (
+        evData.pNum === gameStore.myPNum &&
+        currentRoute.name !== ROUTE_NAME_SPECTATE &&
+        evData.game[`p${evData.pNum}Rematch`]
+      ) {
+        router.push({
+          name: ROUTE_NAME_REMATCH,
+          params: {
+            gameId: gameStore.id,
+          },
+        });
+      }
+      return;
+    case SocketEvent.NEW_GAME_FOR_REMATCH: {
+      gameStore.setRematchGameId(evData.gameId);
+
+      if (currentRoute.name === ROUTE_NAME_SPECTATE) {
+        gameStore.updateGame(evData.newGame);
+      }
+      if (currentRoute.name === ROUTE_NAME_REMATCH) {
+        const { gameId } = currentRoute.params;
+        gameStore.requestJoinRematch({ oldGameId: gameId });
+        router
+          .push({
+            name: ROUTE_NAME_GAME,
+            params: {
+              gameId: evData.gameId,
+            },
+          })
+          .then(() => {
+            window.location.reload();
+          });
+      }
+      break;
+    }
+    case SocketEvent.JOIN_REMATCH: {
+      if (currentRoute.name === ROUTE_NAME_SPECTATE) {
+        gameStore.updateGame(evData.game);
+        if (parseInt(urlGameId, 10) !== evData.game.id) {
+          router
+            .push({
+              name: ROUTE_NAME_SPECTATE,
+              params: {
+                gameId: evData.gameId,
+              },
+            })
+            .then(() => {
+              gameStore.requestSpectate(evData.gameId);
+            });
+        }
+      }
+      break;
+    }
     case SocketEvent.RE_LOGIN:
     case SocketEvent.SPECTATOR_JOINED:
     case SocketEvent.SPECTATOR_LEFT:

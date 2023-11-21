@@ -33,15 +33,15 @@
        "wrongPassword": "Le pseudo et le mot de passe ne correspondent pas."
      }
   },
-  "lobby":{
+  "lobby": {
     "lobbyFor": "Vestibule de ",
     "ready": "PRÊT",
     "unready": "PAS PRÊT",
     "exit": "SORTIR",
     "invite": "Inviter",
-    "rankedChangedAlert":"Mode de jeu modifié à"
+    "rankedChangedAlert": "Mode de jeu modifié à"
   },
-  "game":{
+  "game": {
     "resolve": "Résoudre",
     "scrap": "Écarter",
     "view": "Regarder",
@@ -109,7 +109,7 @@
         "title": "Sélectionnez une carte dans Scrap"
       },
       "opponentRequestedStalemateDialog": {
-        "title": "Accepter L'impasse?" ,
+        "title": "Accepter L'impasse?",
         "opponentHasRequested": "Votre adversaire a demandé une impasse. Si vous acceptez, la partie se terminera par une égalité.",
         "reject": "Rejeter la Demande",
         "accept": "Accepter L'impasse"
@@ -133,11 +133,12 @@
         "yourGameAgainst": "ton match contre",
         "finished": "Fini",
         "inProgress": "En Cours",
-        "goHome": "Rentrer à la Maison"
+        "goHome": "Rentrer à la Maison",
+        "rematch": "rejouer"
       }
     },
-    "moves":{
-      "disabledMove" : {
+    "moves": {
+      "disabledMove": {
         "topTwo": "Vous devez jouer l'une des deux premières cartes du paquet",
         "notTurn": "Ce n'est pas ton tour",
         "frozenCard": "Cette carte est gelée",
@@ -155,7 +156,7 @@
         "disabled": "Vous ne pouvez écarter que des cartes de points plus faibles",
         "disabledNoPoints": "Votre adversaire n'a pas de cartes de points à écarter"
       },
-      "effects":{
+      "effects": {
         "1": "Elimine tous les points.",
         "2": "Cible et élimine une figures ou un huit en lunettes.",
         "3": "Récupérez un carte dans la corbeille.",
@@ -182,8 +183,8 @@
         "displayName": "Figure"
       }
     },
-    "menus":{
-      "gameMenu":{
+    "menus": {
+      "gameMenu": {
         "rules": "Règles",
         "concede": "Déclarer forfait",
         "stalemate": "Proposer match nul",
@@ -192,9 +193,9 @@
         "concedeDialog": "Le jeu se termine et votre adversaire l'emporte.",
         "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par une égalité. La demande sera annulée si l'adversaire refuse ou si l'un des deux joueurs joue un coup."
       },
-      "spectatorListMenu":{
-        "spectators":"Spectateurs",
-        "noSpectators":"Il n'y a actuellement aucun spectateur."
+      "spectatorListMenu": {
+        "spectators": "Spectateurs",
+        "noSpectators": "Il n'y a actuellement aucun spectateur."
       }
     },
     "score": {
@@ -244,7 +245,7 @@
     "cuttleTitle": "Qu'est-ce que Cuttle?",
     "cuttleText": "Cuttle est un jeu de cartes de combat à deux joueurs joué avec un jeu de cartes standard de 52 cartes. Il présente la nuance stratégique des jeux de cartes à collectionner comme Magic, avec l'équilibre élégant d'un jeu standard - et vous pouvez y jouer gratuitement ! Testez votre courage dans le jeu de cartes le plus intense des abysse !",
     "findGame": "Trouver une partie",
-    "signUp":"Inscrivez-vous pour jouer en ligne",
+    "signUp": "Inscrivez-vous pour jouer en ligne",
     "rulesTitle": "Règles de Cuttle",
     "rulesReadText": "Lisez l'officiel",
     "rulesWatchText": "Ou regardez le tutoriel vidéo de cuttle.cards ci-dessous pour apprendre les règles et vous familiariser avec le déroulement du jeu.",
@@ -306,7 +307,7 @@
       "rule1": "La condition de victoire est réduite. Les joueurs ont besoin de 14 points pour gagner par défaut, de 9 points avec un roi en jeu ou de 5 points avec deux rois. 3 rois en jeu vous fait gagner immédiatement (l'objectif étant de zéro point).",
       "rule2": "Un joueur distribue 5 cartes à chacun et le joueur à sa gauche commence. Les joueurs distribue à tour de rôle et dans le sens horaire.",
       "rule3": "Se joue avec un paquet de 54 carte comprenant les deux jokers qui ont la capacité de voler une carte Figure active à un adversaire.",
-      "rule4": "Votre main est limitée à 7 cartes (au lien de 8)."  
+      "rule4": "Votre main est limitée à 7 cartes (au lien de 8)."
     },
     "4Players": {
       "title": "Cuttle à 4 joueurs: 2v2",
@@ -339,7 +340,7 @@
       "deckExhaust": "Que se passe-t-il lorsqu'il n'y a plus de carte dans le paquet ?",
       "deckExhaustAnswer": "Lorsqu'il n'y a plus de cartes dans le paquet, les joueurs peuvent passer leur tour au lieu de piocher. S'il y a trois passes consécutives, c'est-à-dire que le joueur 1 passe, le joueur 2 passe, puis le joueur 1 passe à nouveau, la partie se termine par une impasse et il y a égalité.",
       "whereToPlay": "Où puis-je jouer à Cuttle?",
-      "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami! Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit:"  
+      "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami! Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit:"
     }
   }
 }

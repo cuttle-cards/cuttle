@@ -33,15 +33,15 @@
        "wrongPassword": "Username and password do not match"
      }
   },
-  "lobby":{
+  "lobby": {
     "lobbyFor": "Lobby para",
     "ready": "PREPARADO",
     "unready": "NO PREPARADO",
     "exit": "SALIR",
     "invite": "Invitar",
-    "rankedChangedAlert":"Modo de juego cambió a"
+    "rankedChangedAlert": "Modo de juego cambió a"
   },
-  "game":{
+  "game": {
     "resolve": "Resolver",
     "scrap": "Desechar",
     "view": "Ver",
@@ -92,12 +92,12 @@
         "counterTitle": "Oportunidad de contrarrestar",
         "chooseTwoTitle": "Escoge dos",
         "cannotCounterTitle": "No Puede contrarrestar",
-        "selectCard" : "¿Con cuáles dos te gustaría contrarrestar? (Haz clic en la tarjeta)",
+        "selectCard": "¿Con cuáles dos te gustaría contrarrestar? (Haz clic en la tarjeta)",
         "opponentPlayed": "Tu oponente ha jugado el",
         "oneOff": "como un one-off",
         "target": "apuntar ",
         "toCounter": "para contrarrestar",
-        "counter" : "contrarrestar",
+        "counter": "contrarrestar",
         "playTwo": "¿Te gustaría jugar un dos para contrarrestar?",
         "cannotCounter": "No puedes contrarrestar, porque",
         "reasons": {
@@ -109,7 +109,7 @@
         "title": "Seleccione una tarjeta de Scrap"
       },
       "opponentRequestedStalemateDialog": {
-        "title": "Aceptar el Punto Muerto?" ,
+        "title": "Aceptar el Punto Muerto?",
         "opponentHasRequested": "Tu oponente ha solicitado un punto muerto. Si aceptas, el juego terminará en empate.",
         "reject": "Rechazar Solicitud",
         "accept": "Aceptar el punto muerto"
@@ -133,11 +133,12 @@
         "yourGameAgainst": "tu juego contra",
         "finished": "Finalizado",
         "inProgress": "En Curso",
-        "goHome": "Vete a Casa"
+        "goHome": "Vete a Casa",
+        "rematch": "Repetir Juego"
       }
     },
-    "moves":{
-      "disabledMove" : {
+    "moves": {
+      "disabledMove": {
         "topTwo": "Debes jugar una de las dos cartas superiores del mazo",
         "notTurn": "No es tu turno",
         "frozenCard": "Esta carta está congelada",
@@ -155,7 +156,7 @@
         "disabled": "Solo puedes desechar cartas de menor valor",
         "disabledNoPoints": "Tu oponente no tiene cartas de puntos que desechar"
       },
-      "effects":{
+      "effects": {
         "1": "Desechar todos los puntos",
         "2": "Deseche el objetivo Royal o Glasses ocho",
         "3": "Elige 1 carta del Scrap y ponla en tu mano.",
@@ -182,8 +183,8 @@
         "displayName": "Realeza"
       }
     },
-    "menus":{
-      "gameMenu":{
+    "menus": {
+      "gameMenu": {
         "rules": "Reglas",
         "concede": "Ceda",
         "stalemate": "Solicitud de bloqueo",
@@ -192,9 +193,9 @@
         "concedeDialog": "El juego terminará y tu oponente ganará.",
         "stalemateDialog": "Si el adversario acepta, la partida terminará en tablas. La solicitud se anulará si el adversario declina o cualquiera de los dos jugadores realiza un movimiento."
       },
-      "spectatorListMenu":{
-        "spectators":"Espectadores",
-        "noSpectators":"Actualmente no hay espectadores"
+      "spectatorListMenu": {
+        "spectators": "Espectadores",
+        "noSpectators": "Actualmente no hay espectadores"
       }
     },
     "score": {
@@ -244,7 +245,7 @@
     "cuttleTitle": "¿Qué es Cuttle?",
     "cuttleText": "Cuttle es un juego de cartas de batalla para dos jugadores que se juega con una baraja estándar de 52 cartas. Tiene la sutileza estratégica de juegos de cartas de intercambio como Magic, con el equilibrio elegante de una baraja estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu habilidad en el juego de cartas más profundo bajo el mar!",
     "findGame": "Encuentra un juego",
-    "signUp":"Inscríbete para jugar en línea",
+    "signUp": "Inscríbete para jugar en línea",
     "rulesTitle": "Reglas de Cuttle",
     "rulesReadText": "Leer le oficial",
     "rulesWatchText": "o mira el tutorial en video de Cuttle.cards a continuación para aprender las reglas y familiarizarte con el flujo del juego.",
@@ -294,12 +295,12 @@
       "seven": "Siete",
       "sevenDescription": "Revela las dos primeras cartas del mazo y elige una para jugar como quieras.",
       "nine": "Nueve",
-      "nineDescription": "Devuelve una carta del campo de tu oponente a su mano. No pueden jugarlo el próximo turno."  
+      "nineDescription": "Devuelve una carta del campo de tu oponente a su mano. No pueden jugarlo el próximo turno."
     },
     "multiplayerTitle": "Variantes Multijugador",
     "multiplayerText1": "Actualmente, solo está disponible cuttle para 2 jugadores en ",
     "multiplayerText2": "sin embargo, Cuttle se puede jugar con 2-4 jugadores. Cuttle, para 3 y 4 jugadores, tiene ligeras variaciones en las reglas para optimizar el equilibrio del juego y al mismo tiempo cambiar el ritmo y la sensación. ¡Pruébalos la próxima vez que juegues a Cuttle en grupo!",
-    "3Players":{
+    "3Players": {
       "title": "Cuttle de 3 jugadores: Cutthroat",
       "text": "Cutthroat es una versión 1 contra 1 contra 1 de ritmo brutal, llena de traición y momentos cruciales.",
       "rules": "Las reglas son las mismas que las anteriores con los siguientes cambios:",

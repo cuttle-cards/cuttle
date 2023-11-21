@@ -89,6 +89,8 @@ module.exports.routes = {
   '/game/concede': 'game/concede',
   '/game/stalemate': 'game/stalemate',
   '/game/reject-stalemate': 'game/stalemate-reject',
+  '/game/rematch': 'game/rematch',
+  '/game/join-rematch': 'game/join-rematch',
   '/game/chat': 'game/chat',
   '/game/gameData': 'game/game-data',
   // DEVELOPMENT ONLY
