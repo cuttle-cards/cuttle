@@ -76,7 +76,7 @@
           {{ t('game.dialogs.gameOverDialog.goHome') }}
         </v-btn>
         <v-btn
-          color="primary"
+          color="surface-1"
           :disabled="opponentDeclinedRematch"
           variant="flat"
           data-cy="gameover-rematch"
