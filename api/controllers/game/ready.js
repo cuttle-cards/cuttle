@@ -27,9 +27,15 @@ module.exports = async function (req, res) {
       sails.sockets.blast('gameStarted', { gameId: game.id });
       // Ensure game is no longer available for new players to join
       gameUpdates.status = gameService.GameStatus.STARTED;
-      // Create Cards
+      // Deal cards
       await gameService.dealCards(game, gameUpdates);
     }
+
+    // Update game in db
+    await Promise.all([
+      Game.updateOne({ id: game.id }).set(gameUpdates),
+      sails.helpers.unlockGame(game.lock),      
+    ]);
 
     // Send socket message
     Game.publish([game.id], {
@@ -38,10 +44,6 @@ module.exports = async function (req, res) {
       pNum: user.pNum,
       gameId: game.id,
     });
-
-    const updateGamePromise = Game.updateOne({ id: game.id }).set(gameUpdates);
-    const unlockGamePromise = sails.helpers.unlockGame(game.lock);
-    await Promise.all([updateGamePromise, unlockGamePromise]);
 
     return res.ok();
   } catch (err) {
