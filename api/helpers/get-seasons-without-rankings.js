@@ -5,11 +5,21 @@ module.exports = {
 
   description: 'Get all Season records and initialize them with an empty map of rankings',
 
-  fn: async (_, exits) => {
-    const seasons = await Season.find({
-      where: { startTime: { '<=': dayjs().valueOf() } },
-      sort: 'startTime DESC',
-    }).populateAll();
+  inputs: {
+    seasonId: {
+      type: 'number',
+      required: false,
+    },
+  },
+
+  fn: async (inputs, exits) => {
+    const { seasonId } = inputs;
+    const seasons = seasonId
+      ? await Season.find({ id: seasonId }).populateAll()
+      : await Season.find({
+          where: { startTime: { '<=': dayjs().valueOf() } },
+          sort: 'startTime DESC',
+        }).populateAll();
     return exits.success(
       seasons.map((season) => {
         const res = {
@@ -29,7 +39,7 @@ module.exports = {
         const endTime = currentTime.isBefore(seasonEndTime) ? currentTime : seasonEndTime;
         // Round week count up to account for incomplete weeks
         const numWeeks = Math.ceil(endTime.diff(startTime, 'week', true));
-        for (let i=0; i<numWeeks; i++) {
+        for (let i = 0; i < numWeeks; i++) {
           res.gameCounts.push(0);
           res.uniquePlayersPerWeek.push(new Set());
         }
