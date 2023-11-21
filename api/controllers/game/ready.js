@@ -28,7 +28,7 @@ module.exports = async function (req, res) {
       // Ensure game is no longer available for new players to join
       gameUpdates.status = gameService.GameStatus.STARTED;
       // Create Cards
-      return gameService.dealCards(game, gameUpdates);
+      await gameService.dealCards(game, gameUpdates);
     }
 
     // Send socket message
