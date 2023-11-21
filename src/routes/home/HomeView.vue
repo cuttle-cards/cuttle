@@ -25,6 +25,34 @@
               </v-btn-toggle>
             </div>
             <v-divider v-if="$vuetify.display.mdAndDown" color="surface-1" class="border-opacity-100" />
+            <template v-if="loadingData" class="3">
+                  <div class="mx-3">
+                    <v-row v-for="i in 2" :key="`gamelistSkeleton${i}`" class="list-item py-2 ma-0 align-center">
+                        <v-col lg="6" cols="12" class="list-item__inner-text pb-0 ma-0 mb-2 mb-lg-3">
+                            <v-skeleton-loader class="pa-0" 
+                                type="text"
+                                max-width="160"
+                                color="surface-2"
+                                height="30"
+                            />
+                              <v-skeleton-loader class="pa-0" 
+                                type="text"
+                                max-width="130"
+                                color="surface-2"
+                                height="30"
+                            />
+                        </v-col>
+                        <v-col lg="6" cols="12" class="list-item__button mx-auto pa-0">
+                            <v-skeleton-loader class="py-0 pl-0 pr-2 mx-auto" 
+                              type="heading"
+                              color="surface-2"
+                        />
+                        </v-col>
+                        <v-divider color="surface-1" class="border-opacity-25" />
+                    </v-row>
+                  </div>
+                </template>
+                <template v-else>
             <v-window v-model="tab" class="pa-4 overflow-y-auto">
               <v-window-item :value="TABS.PLAY">
                 <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-surface-1">
@@ -67,6 +95,7 @@
                 </div>
               </v-window-item>
             </v-window>
+          </template>
           </div>
         </v-col>
       </v-row>
@@ -151,6 +180,7 @@ export default {
       tab: TABS.PLAY,
       showSnackBar: false,
       snackBarMessage: '',
+      loadingData: true,
     };
   },
   computed: {
@@ -167,6 +197,7 @@ export default {
   },
   async created() {
     await this.gameListStore.requestGameList();
+    this.loadingData = false;
   },
   methods: {
     clearSnackBar() {
@@ -309,6 +340,11 @@ p {
   line-height: 5rem;
   margin: 32px auto 16px auto;
 }
+#game-list :deep .v-skeleton-loader__heading{
+  height:34px;
+  width:100%;
+  border-radius: 4px;
+}
 
 @media (min-width: 1920px) {
   .homeContent {
@@ -366,3 +402,4 @@ p {
   }
 }
 </style>
+
