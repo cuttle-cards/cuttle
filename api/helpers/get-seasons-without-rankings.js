@@ -12,8 +12,7 @@ module.exports = {
     },
   },
 
-  fn: async (inputs, exits) => {
-    const { seasonId } = inputs;
+  fn: async ({ seasonId }, exits) => {
     const seasons = seasonId
       ? await Season.find({ id: seasonId }).populateAll()
       : await Season.find({
