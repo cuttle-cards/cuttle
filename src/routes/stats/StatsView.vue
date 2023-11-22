@@ -190,9 +190,7 @@ export default {
         return this.selectedSeason = requestedSeason();
       }
 
-      io.socket.get('/stats/seasons', {
-        seasonId
-      }, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
+      io.socket.get(`/stats/seasons/${seasonId}`, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
         if (!rankings) {
         this.error = true;
         return;

@@ -270,19 +270,17 @@ describe('Usage stats', () => {
     cy.request('http://localhost:1337/stats/current').then(({ body: seasons }) => {
       const populateSeason = (season) => {
         return new Cypress.Promise((resolve, reject) => {
-          cy.request('POST', 'http://localhost:1337/stats/seasons', { seasonId: season.id }).then(
-            ({ body }) => {
-              if (!body) {
-                reject(new Error('error populating season'));
-              }
-              resolve({
-                ...season,
-                gameCounts: body.gameCounts,
-                rankings: body.rankings,
-                uniquePlayersPerWeek: body.uniquePlayersPerWeek,
-              });
-            },
-          );
+          cy.request(`http://localhost:1337/stats/seasons/${season.id}`).then(({ body }) => {
+            if (!body) {
+              reject(new Error('error populating season'));
+            }
+            resolve({
+              ...season,
+              gameCounts: body.gameCounts,
+              rankings: body.rankings,
+              uniquePlayersPerWeek: body.uniquePlayersPerWeek,
+            });
+          });
         });
       };
 
