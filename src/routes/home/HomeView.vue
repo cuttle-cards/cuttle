@@ -25,7 +25,7 @@
               </v-btn-toggle>
             </div>
             <v-divider v-if="$vuetify.display.mdAndDown" color="surface-1" class="border-opacity-100" />
-            <template v-if="loadingData" class="3">
+            <template v-if="loadingData">
                   <div class="mx-3">
                     <v-row v-for="i in 2" :key="`gamelistSkeleton${i}`" class="list-item py-2 ma-0 align-center">
                         <v-col lg="6" cols="12" class="list-item__inner-text pb-0 ma-0 mb-2 mb-lg-3">
