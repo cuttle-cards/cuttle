@@ -192,14 +192,14 @@ export default {
 
       io.socket.get('/stats/seasons', {
         seasonId
-      }, (res) => {
-        if (!res.rankings) {
+      }, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
+        if (!rankings) {
         this.error = true;
         return;
         }
         
         this.seasons = [...this.seasons].map((season) => season.id === seasonId ?
-          { ...season, rankings: res.rankings, uniquePlayersPerWeek: res.uniquePlayersPerWeek }
+          { ...season, gameCounts, rankings, uniquePlayersPerWeek }
           : season);
         this.selectedSeason = requestedSeason();
       });

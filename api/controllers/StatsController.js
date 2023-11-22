@@ -175,11 +175,11 @@ module.exports = {
     ]);
     updateRankingsFromMatches(users, matches, requestedSeason);
     updateRankingsFromGames(games, requestedSeason);
-    return res.ok(
-      transformSeasonToDTO({
-        rankings: requestedSeason.rankings,
-        uniquePlayersPerWeek: requestedSeason.uniquePlayersPerWeek,
-      }),
-    );
+    const updatedSeason = transformSeasonToDTO(requestedSeason);
+    res.ok({
+      gameCounts: updatedSeason.gameCounts,
+      rankings: updatedSeason.rankings,
+      uniquePlayersPerWeek: updatedSeason.uniquePlayersPerWeek,
+    });
   },
 };
