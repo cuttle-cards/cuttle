@@ -136,8 +136,8 @@ module.exports = {
     },
     // Time game was last locked in millis since epoch
     lockedAt: {
-      type: 'ref',
-      columnType: 'bigint',
+      type: 'number',
+      columnType: 'integer',
       allowNull: true,
     },
   }, // end attributes
