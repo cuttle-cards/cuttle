@@ -33,7 +33,7 @@
        "wrongPassword": "El nombre de usuario y la contraseña no coinciden"
      }
   },
-  "lobby":{
+  "lobby": {
     "lobbyFor": "Lobby para",
     "ready": "ESTOY LISTO",
     "unready": "NO ESTOY LISTO",
@@ -41,7 +41,7 @@
     "invite": "Invitar",
     "rankedChangedAlert":"El modo de juego cambió a"
   },
-  "game":{
+  "game": {
     "resolve": "Resolver",
     "scrap": "Descartar",
     "view": "Ver",
@@ -92,12 +92,12 @@
         "counterTitle": "Oportunidad de contrarrestar",
         "chooseTwoTitle": "Elige dos",
         "cannotCounterTitle": "No se puede contrarrestar",
-        "selectCard" : "¿Con qué Dos te gustaría contrarrestar? (Haz clic en la carta)",
+        "selectCard": "¿Con qué Dos te gustaría contrarrestar? (Haz clic en la carta)",
         "opponentPlayed": "Tu rival ha jugado ",
         "oneOff": "como una habilidad Única",
         "target": "con el objetivo ",
         "toCounter": "para contrarrestar",
-        "counter" : "contrarrestar",
+        "counter": "contrarrestar",
         "playTwo": "¿Te gustaría jugar un Dos para contrarrestar?",
         "cannotCounter": "No puedes contrarrestar porque ",
         "reasons": {
@@ -136,8 +136,8 @@
         "goHome": "Volver al menú"
       }
     },
-    "moves":{
-      "disabledMove" : {
+    "moves": {
+      "disabledMove": {
         "topTwo": "Debes jugar una de las dos cartas superiores del mazo",
         "notTurn": "No es tu turno",
         "frozenCard": "Esta carta está bloqueada",
@@ -155,7 +155,7 @@
         "disabled": "Solo puedes hundir cartas de menor valor",
         "disabledNoPoints": "Tu rival no tiene cartas de puntos para hundir"
       },
-      "effects":{
+      "effects": {
         "1": "Descarta todas las cartas de puntos en juego",
         "2": "Descarta la Figura o las Gafas Ocho objetivo",
         "3": "Elige una carta del mazo de descarte y ponla en tu mano",
@@ -182,8 +182,8 @@
         "displayName": "Figura"
       }
     },
-    "menus":{
-      "gameMenu":{
+    "menus": {
+      "gameMenu": {
         "rules": "Reglas",
         "concede": "Conceder",
         "stalemate": "Solicitud de empate",
@@ -192,9 +192,9 @@
         "concedeDialog": "El juego terminará y tu rival ganará.",
         "stalemateDialog": "Si tu rival acepta, la partida terminará en empate. La solicitud se anulará si el rival la rechaza o cualquiera de los dos jugadores realiza un movimiento."
       },
-      "spectatorListMenu":{
-        "spectators":"Espectadores",
-        "noSpectators":"Actualmente no hay espectadores"
+      "spectatorListMenu": {
+        "spectators": "Espectadores",
+        "noSpectators": "Actualmente no hay espectadores"
       }
     },
     "score": {
@@ -244,7 +244,7 @@
     "cuttleTitle": "¿Qué es Cuttle?",
     "cuttleText": "Cuttle es un juego de batalla de cartas para 2 jugadores que se juega con una baraja de naipes estándar de 52 cartas. Tiene la sutileza estratégica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu habilidad en el juego de cartas más profundo bajo el mar!",
     "findGame": "Encuentra una partida",
-    "signUp":"Inicia sesión para jugar online",
+    "signUp": "Inicia sesión para jugar online",
     "rulesTitle": "Reglas de Cuttle",
     "rulesReadText": "Lee la",
     "rulesWatchText": "oficial o mira el tutorial de cuttle.cards a continuación para aprender las reglas y familiarizarte con el flujo del juego.",
@@ -266,7 +266,7 @@
     "glassesDescription": "Juega un Ocho para revelar la mano de tu rival (dura mientras la carta siga en juego).",
     "royals": {
       "title": "Figuras",
-    "text": "Las Figuras (Sotas, Reinas y Reyes) se pueden jugar en el campo para obtener un beneficio, que permanece mientras la carta siga en juego. Cada Figura proporciona un efecto diferente.",
+      "text": "Las Figuras (Sotas, Reinas y Reyes) se pueden jugar en el campo para obtener un beneficio, que permanece mientras la carta siga en juego. Cada Figura proporciona un efecto diferente.",
       "king": "Rey",
       "kingDescription": "Reduce la cantidad de puntos que necesitas para ganar. (1K: 14 puntos, 2K: 10 puntos, 3K: 5 puntos, 4K: 0 puntos)",
       "queen": "Reina",
