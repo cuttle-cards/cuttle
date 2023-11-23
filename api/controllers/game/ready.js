@@ -29,12 +29,15 @@ module.exports = async function (req, res) {
     if (bothReady) {
       // Inform all clients this game has started
       sails.sockets.blast('gameStarted', { gameId: game.id });
-      // Ensure game is no longer available for new players to join
       gameUpdates.status = gameService.GameStatus.STARTED;
-      // Deal cards
+      // Deal cards (also emits socket event)
       await gameService.dealCards(game, gameUpdates);
+
+    // Otherwise send socket message that player is ready
     } else {
-      // Send socket message
+
+      await Game.updateOne({ id: game.id }).set(gameUpdates);
+
       Game.publish([game.id], {
         change: 'ready',
         userId: user.id,
@@ -42,7 +45,6 @@ module.exports = async function (req, res) {
         gameId: game.id,
       });
 
-     await Game.updateOne({ id: game.id }).set(gameUpdates);
     }
 
     await sails.helpers.unlockGame(game.lock);
