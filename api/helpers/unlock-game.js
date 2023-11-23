@@ -2,7 +2,7 @@ module.exports = {
   friendlyName: 'Unlock a game',
 
   description:
-    'Unlock a game using the previously required lock UUID. Will unset lock and lockedAt columns for the game matching the current lock.',
+    'Unlock a game using the previously required lock UUID. Will unset lock and lockedAt columns for the game matching the current lock. Returns successfully even if the write operation to unlock no-ops i.e. the lock in question has timed out.',
 
   inputs: {
     lock: {
