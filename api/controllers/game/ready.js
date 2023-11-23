@@ -33,21 +33,19 @@ module.exports = async function (req, res) {
       gameUpdates.status = gameService.GameStatus.STARTED;
       // Deal cards
       await gameService.dealCards(game, gameUpdates);
+    } else {
+      // Send socket message
+      Game.publish([game.id], {
+        change: 'ready',
+        userId: user.id,
+        pNum: user.pNum,
+        gameId: game.id,
+      });
+
+     await Game.updateOne({ id: game.id }).set(gameUpdates);
     }
 
-    // Update game in db
-    await Promise.all([
-      Game.updateOne({ id: game.id }).set(gameUpdates),
-      sails.helpers.unlockGame(game.lock),      
-    ]);
-
-    // Send socket message
-    Game.publish([game.id], {
-      change: 'ready',
-      userId: user.id,
-      pNum: user.pNum,
-      gameId: game.id,
-    });
+    await sails.helpers.unlockGame(game.lock);
 
     return res.ok();
   } catch (err) {
