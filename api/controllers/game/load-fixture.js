@@ -115,7 +115,7 @@ module.exports = function (req, res) {
     .then(async function removeCardsFromDeck(values) {
       const [game] = values;
       // If deck was specified, delete all other cards from the deck
-      const {deck} = req.body;
+      const { deck } = req.body;
       if (deck) {
         await Game.replaceCollection(game.id, 'deck').members(deck);
       }

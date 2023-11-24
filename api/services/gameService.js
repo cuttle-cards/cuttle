@@ -1,13 +1,11 @@
 const userService = require('../../api/services/userService.js');
 const GameStatus = require('../../utils/GameStatus.json');
 
-
 /**
  * @returns int <= 0 if card1 is lower rank or same rank & lower suit
  * @param {rank: number, suit: number} card1
  * @param {rank: number, suit: number} card2
  */
-
 
 async function fetchSpectatorUsernames(gameId) {
   const spectators = await UserSpectatingGame.find({
@@ -63,21 +61,24 @@ module.exports = {
    ****options = {gameId: gameId}
    */
   populateGame: async function (options) {
-    if (!options) {
+    if (options) {
       if (!Object.hasOwnProperty.call(options, 'gameId') && !typeof options.gameId === 'number') {
         throw new Error({ message: 'gameId is required and must be a number' });
       }
+    } else {
       throw new Error({ message: 'Cannot populate Game without GameId (options had no gameId)' });
     }
     // find game
     const game = await gameService.findGame({ gameId: options.gameId });
 
-    if (!game.players) {
+    if (game.players) {
       if (game.players.length < 2) {
         throw new Error({ message: 'Cannot populate game without two players' });
       }
+    } else {
       throw new Error({ message: 'Cannot populate game, because it does not have players collection' });
     }
+
     //find users and points
     const [p0, p1, spectatingUsers, p0Points, p1Points] = await Promise.all([
       userService.findUser({ userId: game.players[0].id }),
@@ -86,6 +87,7 @@ module.exports = {
       cardService.findPoints({ userId: game.players[0].id }),
       cardService.findPoints({ userId: game.players[1].id }),
     ]);
+
     // then format results
     const populatedP0 = formatPlayerData(p0, p0Points);
     const populatedP1 = formatPlayerData(p1, p1Points);
@@ -182,10 +184,6 @@ module.exports = {
               updatePromises.push(
                 // Remove players from game
                 Game.replaceCollection(game.id, 'players').members([]),
-                // Set pNum's to null
-                User.update({ id: playerIds }).set({
-                  pNum: null,
-                }),
                 // Delete all cards in the game
                 Card.destroy({
                   or: deleteCardsCriteria,
@@ -233,5 +231,75 @@ module.exports = {
       cardsToRemoveFromDeck.push(newSecondCard);
     }
     return res;
+  },
+
+  dealCards: function (game, gameUpdates) {
+    return new Promise(function makeDeck(resolveMakeDeck) {
+      const p0 = game.players.find((player) => player.pNum === 0);
+      const p1 = game.players.find((player) => player.pNum === 1);
+      const promiseFindP0 = userService.findUser({ userId: p0.id });
+      const promiseFindP1 = userService.findUser({ userId: p1.id });
+      const data = [Promise.resolve(game), promiseFindP0, promiseFindP1];
+      for (let suit = 0; suit < 4; suit++) {
+        for (let rank = 1; rank < 14; rank++) {
+          const promiseCard = cardService.createCard({
+            gameId: game.id,
+            suit,
+            rank,
+          });
+          data.push(promiseCard);
+        }
+      }
+      return resolveMakeDeck(Promise.all(data));
+    })
+      .then(function deal(values) {
+        const [game, p0, p1, ...deck] = values;
+
+        // Shuffle deck & map cards => their ids
+        const shuffledDeck = _.shuffle(deck).map((card) => card.id);
+        // Take 1st 5 cards for p0
+        const dealToP0 = shuffledDeck.splice(0, 5);
+        // Take next 6 cards for p1
+        const dealToP1 = shuffledDeck.splice(0, 6);
+        // Take next 2 cards for topCard & secondCard
+        gameUpdates.topCard = shuffledDeck.shift();
+        gameUpdates.secondCard = shuffledDeck.shift();
+        gameUpdates.lastEvent = {
+          change: 'initialize',
+        };
+        gameUpdates.p0 = p0.id;
+        gameUpdates.p1 = p1.id;
+        gameUpdates.p0Ready = true;
+        gameUpdates.p1Ready = true;
+        gameUpdates.p0Rematch = null;
+        gameUpdates.p1Rematch = null;
+
+        // Update records
+        const updatePromises = [
+          // Deal to p0
+          User.replaceCollection(p0.id, 'hand').members(dealToP0),
+          // Deal to p1
+          User.replaceCollection(p1.id, 'hand').members(dealToP1),
+          // Replace Deck
+          Game.replaceCollection(game.id, 'deck').members(shuffledDeck),
+          // Other game updates
+          Game.updateOne({ id: game.id }).set(gameUpdates),
+        ];
+
+        return Promise.all([game, p0, p1, ...updatePromises]);
+      })
+      .then(function getPopulatedGame(values) {
+        return gameService.populateGame({ gameId: values[0].id });
+      })
+      .then(function publish(fullGame) {
+        Game.publish([fullGame.id], {
+          change: 'initialize',
+          game: fullGame,
+        });
+        return Promise.resolve(fullGame);
+      })
+      .catch(function failedToDeal(err) {
+        return Promise.reject(err);
+      });
   },
 };
