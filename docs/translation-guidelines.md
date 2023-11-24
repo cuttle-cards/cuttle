@@ -21,7 +21,7 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 ## Definition of non phisical entities
 
 - **Scuttle** :  When a player targets and scraps an opponent's point card.  Name and verb.
-- **One-off** :  The special capacity of a point card.  One-off refers to the idea of it being a one time action.  Royals don't have one-offs. Their capacity don't have a specific name.
+- **One-off** :  The special capacity of a number card.  One-off refers to the idea of it being a one time action.  Royals don't have one-offs. Their capacity don't have a specific name.
 - **To target** :  To choose an opponent's card that will undergo an attack.
 - **To discard** :  To take a card, usually from your hand, and put it in the scrap pile.
 - **To pick** :  To take a card from the top of the deck.
