@@ -24,7 +24,7 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 - **One-off** :  The special capacity of a number card.  One-off refers to the idea of it being a one time action.  Royals don't have one-offs. Their capacity don't have a specific name.
 - **To target** :  To choose an opponent's card that will undergo an attack.
 - **To discard** :  To take a card, usually from your hand, and put it in the scrap pile.
-- **To pick** :  To take a card from the top of the deck.
+- **To Draw** :  To take a card from the top of the deck.
 - **Stalemate** :  The game has reached a dead end, it then ends in a tie.
 - **Season** :  A period of time during wich the stats are compiled.
 - **Casual game** :  Standard game that has no effect on statistics.
