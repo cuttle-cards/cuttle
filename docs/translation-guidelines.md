@@ -1,6 +1,6 @@
 # Translation guidelines
 
-Here, we try to determine a terminology for the game of scuttle that will help future translators.  The goal is to keep the 'Cuttle feel' and have a uniformed terminology throughout the translations.
+Here, we try to determine a terminology for the game of Cuttle that will help future translators.  The goal is to keep the 'Cuttle feel' and have a uniformed terminology throughout the translations.
 
 
 ## The "Cuttle feel"
