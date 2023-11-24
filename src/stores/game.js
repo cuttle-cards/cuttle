@@ -293,15 +293,10 @@ export const useGameStore = defineStore('game', {
       }
     },
     opponentLeft() {
-      this.players = this.players.filter((player) => player.pNum === this.myPNum);
-      
-      // this.updateReady((this.pNum + 1) % 2 );
+      const opponentPnum = this.opponent.pNum;
+      this[`p${opponentPnum}Ready`] = false;
 
-      if(this.myPNum === 0) {
-        this.p1Ready = false;
-      } else {
-        this.p0Ready = false;
-      }
+      this.players = this.players.filter((player) => player.pNum === this.myPNum);
     },
     // Game Over
     setGameOver({ gameOver, conceded, winner, currentMatch }) {
