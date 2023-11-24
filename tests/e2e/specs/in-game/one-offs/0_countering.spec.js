@@ -501,6 +501,18 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
       cy.get('#waiting-for-opponent-counter-scrim')
         .should('be.visible')
         .should('contain', 'Opponent May Counter');
+
+      //make sure drawing is not possible
+      cy.window()
+        .its('cuttle.gameStore')
+        .then(async (store) => {
+          try {
+            await store.requestDrawCard();
+            expect(true).to.eq(false, 'Expected request to draw card to error');
+          } catch (err) {
+            expect(err).to.eq("Can't play while waiting for opponent to counter");
+          }
+        });
     });
 
     it('Displays "Opponent May Counter" when player has glasses but opponent has a two in hand', () => {
