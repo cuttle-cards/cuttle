@@ -26,7 +26,7 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 - **To discard** :  To take a card, usually from your hand, and put it in the scrap pile.
 - **To Draw** :  To take a card from the top of the deck.
 - **Stalemate** :  The game has reached a dead end, it then ends in a tie.
-- **Season** :  A period of time during wich the stats are compiled.
+- **Season** :  A period of time during which the stats are compiled.
 - **Casual game** :  Standard game that has no effect on statistics.
 - **Ranked game** :  Competitive game from wich the outcome is compiled in the statistics of the current seaon.
 
