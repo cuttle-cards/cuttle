@@ -864,18 +864,14 @@ export default {
             .requestDrawCard()
             .then(this.clearSelection)
             .catch((messageKey) => {
-              this.snackBarMessage = this.t(messageKey);
-              this.showSnackbar = true;
-              this.clearSelection();
+              this.handleError(messageKey);
             });
         } else {
           this.gameStore
             .requestPass()
             .then(this.clearSelection)
             .catch((messageKey) => {
-              this.snackBarMessage = this.t(messageKey);
-              this.showSnackbar = true;
-              this.clearSelection();
+              this.handleError(messageKey);
             });
         }
       }

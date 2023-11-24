@@ -49,22 +49,12 @@ module.exports = function (req, res) {
             return Promise.all([game, ...updatePromises]);
           }
           const queenCount = userService.queenCount({ user: opponent });
-          switch (queenCount) {
-            case 0:
-              break;
-            case 1:
-              if (target.faceCards === opponent.id && target.rank === 12) {
-                // break early
-                break;
-              }
-              return Promise.reject({
-                message: 'game.snackbar.oneOffs.targetWithQueen',
+          if(queenCount >= 1) {
+            return Promise.reject({
+                message: 'game.snackbar.global.blockedByQueen',
               });
-            default:
-              return Promise.reject({
-                message: 'game.snackbar.oneOffs.TargetWithMultipleQueens',
-              });
-          } //End queenCount validation
+          }
+          //End queenCount validation
           // Normal sevens
           if (target.points === opponent.id) {
             if (card.rank === 11) {

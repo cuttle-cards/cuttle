@@ -35,7 +35,7 @@ module.exports = function (req, res) {
               message: 'game.snackbar.global.cardFrozen',
             });
           }
-          return Promise.reject({ message: 'game.snackbar.global.numberOnlyForPoints' });
+          return Promise.reject({ message: 'game.snackbar.points.numberOnlyForPoints' });
         }
         return Promise.reject({ message: 'game.snackbar.global.playFromHand' });
       }

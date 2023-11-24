@@ -48,14 +48,14 @@ module.exports = function (req, res) {
               }
               return Promise.reject({
                 message:
-                  'game.snackbar.scuttle.targetTooHigh',
+                  'game.snackbar.scuttle.rankTooLow',
               });
             }
             return Promise.reject({
-              message: 'game.snackbar.scuttle.cantTargetRoyal',
+              message: 'game.snackbar.scuttle.mustTargetPointCard',
             });
           }
-          return Promise.reject({ message: 'game.snackbar.scuttle.onyPointCards' });
+          return Promise.reject({ message: 'game.snackbar.scuttle.mustUsePointCard' });
         }
         return Promise.reject({
           message: 'game.snackbar.seven.pickAndPlay',

@@ -215,7 +215,8 @@
         "notYourTurn": "It's not your turn!",
         "cardFrozen": "That card is frozen! You must wait a turn to play it.",
         "playFromHand": "You can only play a card that is in your hand",
-        "numberOnlyForPoints": "You can only play a number card as points."
+        "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
+        "blockedByMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen"
       },
       "seven": {
         "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven."
@@ -228,7 +229,8 @@
         "withoutTarget": "Only Kings, Queens, and Eights may be played as Face Cards without a target"
       },
       "points": {
-        "onlyPointCards": "You can only play Ace - Ten cards as points"
+        "onlyPointCards": "You can only play Ace - Ten cards as points",
+        "numberOnlyForPoints": "You can only play a number card as points."
       },
       "jack": {
         "stealOnlyWithJack": "You can only steal your opponent's points with a jack",
@@ -237,9 +239,7 @@
       },
       "scuttle": {
         "rankTooLow": "You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)",
-        "cantTargetRoyal": "You can only scuttle a card in your oppponent's points",
-        "onlyPointCards": "You can only scuttle with an ace through ten",
-        "playFromHand": "You can only play a card that is in your hand",
+        "mustUsePointCard": "You can only scuttle with an ace through ten",
         "mustTargetPointCard": "You can only scuttle a card your opponent has played for points"
       },
       "oneOffs": {
@@ -248,8 +248,8 @@
         "sevenWithEmptyDeck": "You can only play a 7 as a ONE-OFF if there are cards in the deck",
         "sevenWithOneCardInDeck": "You cannot play a 7 as a ONE-OFF if it is the last card in the deck",
         "cantPlayWithoutATarget": "You cannot play that card as a ONE-OFF without a target",
-        "targetWithQueen": "Your opponent's queen prevents you from targeting their other cards",
-        "TargetWithMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen",
+        "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
+        "blockedByMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen",
         "onlyTwoOrNine": "You can only play a 2, or a 9 as targeted one-offs.",
         "oneOffInPlay": "There is already a one-off in play; you cannot play any card, except a two to counter."
       }

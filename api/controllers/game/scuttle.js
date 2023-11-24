@@ -12,7 +12,7 @@ module.exports = function (req, res) {
         return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
       }
       if (card.hand !== player.id) {
-        return Promise.reject({ message: 'game.snackbar.scuttle.playFromHand' });
+        return Promise.reject({ message: 'game.snackbar.global.playFromHand' });
       }
       if (target.points !== opponent.id) {
         return Promise.reject({

@@ -39,12 +39,12 @@ module.exports = function (req, res) {
                     break;
                   }
                   return Promise.reject({
-                    message: 'game.snackbar.onneOffs.targetWithQueen',
+                    message: 'game.snackbar.global.blockedByQueen',
                   });
                 default:
                   return Promise.reject({
                     message:
-                      'game.snackbar.oneOffs.TargetWithMultipleQueens',
+                      'game.snackbar.global.blockedByMultipleQueens',
                   });
               }
               if (player.frozenId !== card.id) {

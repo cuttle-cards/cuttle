@@ -77,7 +77,7 @@ module.exports = function (req, res) {
             }
             default:
               return Promise.reject({
-                message: 'game.snackbar.oneOffs.cantPLayWithoutATArget',
+                message: 'game.snackbar.oneOffs.cantPLayWithoutATarget',
               });
           }
         } else {

@@ -36,11 +36,11 @@ module.exports = function (req, res) {
                   break;
                 }
                 return Promise.reject({
-                  message: 'game.snackbar.oneOffs.targetWithQueen',
+                  message: 'game.snackbar.oneOffs.blockedByQueen',
                 });
               default:
                 return Promise.reject({
-                  message: 'game.snackbar.oneOffs.TargetWithMultipleQueens',
+                  message: 'game.snackbar.oneOffs.blockedByMultipleQueens',
                 });
             } //End queenCount validation
             const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({
