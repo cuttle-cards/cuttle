@@ -4,7 +4,7 @@ Here, we try to determine a terminology for the game of Cuttle that will help fu
 
 
 ## The "Cuttle feel"
-Some of the terminology refers to the seas and the ocean's depth, but it's not meant to be applied to every term in the game.  Most words used are just standard words used in card games in general. Each language should use words and expressions that feel right to native speakers and not use literal trnaslations with the only goal of using the same word/expression as in the English version.  
+Some of the terminology refers to the seas and the ocean's depth, but it's not meant to be applied to every term in the game.  Most words used are just standard words used in card games in general. Each language should use words and expressions that feel right to native speakers and not use literal translations with the only goal of using the same word/expression as in the English version.  
 
 
 ## Definition of phisical entities
