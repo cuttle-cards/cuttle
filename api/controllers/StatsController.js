@@ -138,48 +138,55 @@ function transformSeasonToDTO(season) {
 
 module.exports = {
   getCurrentStats: async function (_req, res) {
-    const seasons = await sails.helpers.getSeasonsWithoutRankings();
-    const [currentSeason] = seasons;
-    const allUsers = User.find({});
-    const currentSeasonMatches = Match.find({
-      startTime: { '>': currentSeason.startTime },
-      endTime: { '<': currentSeason.endTime },
-    });
-    const currentSeasonGames = Game.find({
-      status: gameService.GameStatus.FINISHED,
-      updatedAt: { '>': currentSeason.startTime, '<': currentSeason.endTime },
-    });
-    const [users, matches, games] = await Promise.all([allUsers, currentSeasonMatches, currentSeasonGames]);
-    updateRankingsFromMatches(users, matches, currentSeason);
-    updateRankingsFromGames(games, currentSeason);
-    seasons[0] = transformSeasonToDTO(currentSeason);
-    return res.ok(seasons);
+    try {
+      const seasons = await sails.helpers.getSeasonsWithoutRankings();
+      const [currentSeason] = seasons;
+      const allUsers = User.find({});
+      const currentSeasonMatches = Match.find({
+        startTime: { '>': currentSeason.startTime },
+        endTime: { '<': currentSeason.endTime },
+      });
+      const currentSeasonGames = Game.find({
+        status: gameService.GameStatus.FINISHED,
+        updatedAt: { '>': currentSeason.startTime, '<': currentSeason.endTime },
+      });
+      const [users, matches, games] = await Promise.all([allUsers, currentSeasonMatches, currentSeasonGames]);
+      updateRankingsFromMatches(users, matches, currentSeason);
+      updateRankingsFromGames(games, currentSeason);
+      seasons[0] = transformSeasonToDTO(currentSeason);
+      return res.ok(seasons);
+    } catch (err) {
+      return res.badRequest(err);
+    }
   },
   getRequestedStats: async function (req, res) {
     const { seasonId } = req.params;
-    const [requestedSeason] = await sails.helpers.getSeasonsWithoutRankings.with({ seasonId });
-
-    const allUsers = User.find({});
-    const requestedSeasonMatches = Match.find({
-      startTime: { '>': requestedSeason.startTime },
-      endTime: { '<': requestedSeason.endTime },
-    });
-    const requestedSeasonGames = Game.find({
-      status: gameService.GameStatus.FINISHED,
-      updatedAt: { '>': requestedSeason.startTime, '<': requestedSeason.endTime },
-    });
-    const [users, matches, games] = await Promise.all([
-      allUsers,
-      requestedSeasonMatches,
-      requestedSeasonGames,
-    ]);
-    updateRankingsFromMatches(users, matches, requestedSeason);
-    updateRankingsFromGames(games, requestedSeason);
-    const updatedSeason = transformSeasonToDTO(requestedSeason);
-    res.ok({
-      gameCounts: updatedSeason.gameCounts,
-      rankings: updatedSeason.rankings,
-      uniquePlayersPerWeek: updatedSeason.uniquePlayersPerWeek,
-    });
+    try {
+      const [requestedSeason] = await sails.helpers.getSeasonsWithoutRankings.with({ seasonId });
+      const allUsers = User.find({});
+      const requestedSeasonMatches = Match.find({
+        startTime: { '>': requestedSeason.startTime },
+        endTime: { '<': requestedSeason.endTime },
+      });
+      const requestedSeasonGames = Game.find({
+        status: gameService.GameStatus.FINISHED,
+        updatedAt: { '>': requestedSeason.startTime, '<': requestedSeason.endTime },
+      });
+      const [users, matches, games] = await Promise.all([
+        allUsers,
+        requestedSeasonMatches,
+        requestedSeasonGames,
+      ]);
+      updateRankingsFromMatches(users, matches, requestedSeason);
+      updateRankingsFromGames(games, requestedSeason);
+      const updatedSeason = transformSeasonToDTO(requestedSeason);
+      return res.ok({
+        gameCounts: updatedSeason.gameCounts,
+        rankings: updatedSeason.rankings,
+        uniquePlayersPerWeek: updatedSeason.uniquePlayersPerWeek,
+      });
+    } catch (err) {
+      return res.badRequest(err);
+    }
   },
 };

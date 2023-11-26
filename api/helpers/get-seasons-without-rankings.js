@@ -19,6 +19,9 @@ module.exports = {
           where: { startTime: { '<=': dayjs().valueOf() } },
           sort: 'startTime DESC',
         }).populateAll();
+    if (!seasons.length) {
+      return exits.error(new Error('Could not find requested season data'));
+    }
     return exits.success(
       seasons.map((season) => {
         const res = {

@@ -185,21 +185,24 @@ export default {
   },
   methods: {
     checkAndSelectSeason(seasonId) {
-      const requestedSeason = () => { return this.seasons.find(({ id }) => id === seasonId); };
-      if (requestedSeason().rankings.length) {
-        return this.selectedSeason = requestedSeason();
+      this.loadingData = true;
+      const requestedSeason = this.seasons.find(({ id }) => id === seasonId);
+
+      if (requestedSeason?.rankings?.length) {
+        this.loadingData = false;
+        this.selectedSeason = requestedSeason;
+        return;
       }
 
       io.socket.get(`/stats/seasons/${seasonId}`, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
         if (!rankings) {
-        this.error = true;
-        return;
+          this.error = true;
+          this.loadingData = false;
+          return;
         }
-        
-        this.seasons = [...this.seasons].map((season) => season.id === seasonId ?
-          { ...season, gameCounts, rankings, uniquePlayersPerWeek }
-          : season);
-        this.selectedSeason = requestedSeason();
+     
+        this.selectedSeason = { ...requestedSeason, gameCounts, rankings, uniquePlayersPerWeek };
+        this.loadingData = false;
       });
       
     },
