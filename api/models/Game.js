@@ -11,7 +11,7 @@ module.exports = {
       type: 'string',
       required: true,
     },
-        /**
+    /**
      *  Enum for status:
      * 1 - NEW (game has been created but has not started)
      * 2 - STARTED (game has been started but has not yet finished)
@@ -32,6 +32,17 @@ module.exports = {
     p1Ready: {
       type: 'boolean',
       defaultsTo: false,
+    },
+    p0Rematch: {
+      type: 'boolean',
+      allowNull: true,
+    },
+    p1Rematch: {
+      type: 'boolean',
+      allowNull: true,
+    },
+    rematchGame: {
+      model: 'game',
     },
     passes: {
       type: 'number',
@@ -118,6 +129,16 @@ module.exports = {
     },
     winner: {
       model: 'user',
+    },
+    lock: {
+      type: 'string',
+      allowNull: true,
+    },
+    // Time game was last locked in millis since epoch
+    lockedAt: {
+      type: 'number',
+      columnType: 'int8',
+      allowNull: true,
     },
   }, // end attributes
 }; // end exports

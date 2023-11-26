@@ -94,7 +94,7 @@
             size="x-large"
             color="black"
             class="mr-4"
-            icon="mid-crown"
+            icon="mdi-crown"
             aria-label="crown icon"
             aria-hidden="false"
             role="img"
