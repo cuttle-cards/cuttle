@@ -173,13 +173,19 @@ export default {
     },
   },
   created() {
-    io.socket.get('/stats/current', (res) => {
+    io.socket.get('/stats/seasons/current', (res) => {
       this.loadingData = false;
       if (!res?.length) {
         this.error = true;
         return;
       }
       this.seasons = res;
+
+      const seasonId = parseInt(this.$route.params.seasonId);
+      if (seasonId) {
+        this.checkAndSelectSeason(seasonId);
+        return;
+      }
       [this.selectedSeason] = this.seasons;
     });
   },
