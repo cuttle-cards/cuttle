@@ -162,7 +162,7 @@ module.exports = {
   getSeasonStats: async function (req, res) {
     const seasonId = parseInt(req.params.seasonId);
     try {
-      const [requestedSeason] = await sails.helpers.getSeasonsWithoutRankings.with({ seasonId });
+      const [requestedSeason] = await sails.helpers.getSeasonsWithoutRankings(seasonId);
       const allUsers = User.find({});
       const requestedSeasonMatches = Match.find({
         startTime: { '>': requestedSeason.startTime },
