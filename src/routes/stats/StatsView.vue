@@ -92,7 +92,7 @@
             Oops!
           </h3>
           <p class="text-body-1">
-            There was a problem loading the leaderboard. Refresh the page to try again.
+            There was a problem loading the leaderboard. Refresh the page or select another season to try again.
           </p>
           <v-img
             alt="Dead cuttle logo"
@@ -203,6 +203,7 @@ export default {
       io.socket.get(`/stats/seasons/${seasonId}`, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
         if (!rankings) {
           this.error = true;
+          this.selectedSeason = null;
           this.loadingData = false;
           return;
         }
