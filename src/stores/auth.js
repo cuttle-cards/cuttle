@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
-import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
+import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE } from '@/router';
 import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '_/utils/local-storage-utils.js';
 import { useGameStore } from '@/stores/game';
 
@@ -82,6 +82,7 @@ export const useAuthStore = defineStore('auth', {
       const { name } = route;
       const isLobby = name === ROUTE_NAME_LOBBY;
       const isGame = name === ROUTE_NAME_GAME;
+      const isSpectating = name === ROUTE_NAME_SPECTATE;
 
       try {
         const response = await fetch('/user/status', {
@@ -110,6 +111,13 @@ export const useAuthStore = defineStore('auth', {
         //     - `gameService.populateGame` is called
         //     - `Game.subscribe` is called
         //     - `Game.publish` is called
+
+        const gameStore = useGameStore();
+        if (!gameId && isSpectating) {
+          let { gameId } = route.params;
+          gameStore.requestSpectate(Number(gameId));
+        }
+
         if (gameId && (isGame || isLobby)) {
           const gameStore = useGameStore();
           await this.requestReauthenticate({ username }).then(({ game }) => {
