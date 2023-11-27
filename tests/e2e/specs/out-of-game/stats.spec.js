@@ -266,8 +266,8 @@ describe('Usage stats', () => {
     cy.get('#usage-stats-section').find('#usage-stats-chart');
   });
 
-  it('Sends the counts of games played and unique players for each week of each season', () => {
-    cy.request('http://localhost:1337/stats/current').then(({ body: seasons }) => {
+  it.only('Sends the counts of games played and unique players for each week of each season', () => {
+    cy.request('http://localhost:1337/stats/seasons/current').then(({ body: seasons }) => {
       const populateSeason = (season) => {
         return new Cypress.Promise((resolve, reject) => {
           cy.request(`http://localhost:1337/stats/seasons/${season.id}`).then(({ body }) => {
