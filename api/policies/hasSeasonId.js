@@ -7,7 +7,7 @@
  *
  */
 module.exports = function (req, res, next) {
-  const id = parseInt(req.params.seasonId);
+  const id = parseInt(req?.params?.seasonId);
   if (id && typeof id === 'number') {
     return next();
   }
