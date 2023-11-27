@@ -19,6 +19,7 @@
 module.exports.policies = {
   statsController: {
     '*': 'isLoggedIn',
+    getSeasonStats: ['isLoggedIn', 'hasSeasonId'],
   },
 
   UserController: {
