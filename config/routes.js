@@ -54,8 +54,8 @@ module.exports.routes = {
 
   'GET /health': 'HealthController.getHealth',
 
-  '/stats/current': 'StatsController.getCurrentStats',
-  '/stats/seasons/:seasonId': 'StatsController.getRequestedStats',
+  '/stats/seasons/current': 'StatsController.getCurrentStats',
+  '/stats/seasons/:seasonId': 'StatsController.getSeasonStats',
 
   '/game/create': 'game/create',
   '/game/getList': 'game/get-list',

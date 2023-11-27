@@ -5,7 +5,7 @@ const Result = require('../../types/Result.es5');
 // Helpers //
 /////////////
 
-function updateRankingsFromGames(games, season) {
+function computeUsageStats(games, season) {
   games.forEach((game) => {
     const weekNum = dayjs(game.updatedAt).diff(season.startTime, 'week');
     season.gameCounts[weekNum]++;
@@ -152,17 +152,17 @@ module.exports = {
       });
       const [users, matches, games] = await Promise.all([allUsers, currentSeasonMatches, currentSeasonGames]);
       updateRankingsFromMatches(users, matches, currentSeason);
-      updateRankingsFromGames(games, currentSeason);
+      computeUsageStats(games, currentSeason);
       seasons[0] = transformSeasonToDTO(currentSeason);
       return res.ok(seasons);
     } catch (err) {
       return res.badRequest(err);
     }
   },
-  getRequestedStats: async function (req, res) {
+  getSeasonStats: async function (req, res) {
     const { seasonId } = req.params;
     try {
-      const [requestedSeason] = await sails.helpers.getSeasonsWithoutRankings.with({ seasonId });
+      const [requestedSeason] = await sails.helpers.getSeasonsWithoutRankings({ seasonId });
       const allUsers = User.find({});
       const requestedSeasonMatches = Match.find({
         startTime: { '>': requestedSeason.startTime },
@@ -178,7 +178,7 @@ module.exports = {
         requestedSeasonGames,
       ]);
       updateRankingsFromMatches(users, matches, requestedSeason);
-      updateRankingsFromGames(games, requestedSeason);
+      computeUsageStats(games, requestedSeason);
       const updatedSeason = transformSeasonToDTO(requestedSeason);
       return res.ok({
         gameCounts: updatedSeason.gameCounts,
