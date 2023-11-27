@@ -114,12 +114,11 @@ export const useAuthStore = defineStore('auth', {
 
         const gameStore = useGameStore();
         if (!gameId && isSpectating) {
-          let { gameId } = route.params;
+          const { gameId } = route.params;
           gameStore.requestSpectate(Number(gameId));
         }
 
         if (gameId && (isGame || isLobby)) {
-          const gameStore = useGameStore();
           await this.requestReauthenticate({ username }).then(({ game }) => {
             gameStore.updateGame(game);
           });
