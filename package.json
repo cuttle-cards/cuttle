@@ -24,7 +24,7 @@
     "vuetify": "3.4"
   },
   "devDependencies": {
-    "@mdi/font": "^7.0.96",
+    "@mdi/font": "^7.3.67",
     "@storybook/addon-actions": "7.4.6",
     "@storybook/addon-essentials": "7.4.6",
     "@storybook/addon-interactions": "7.4.6",
