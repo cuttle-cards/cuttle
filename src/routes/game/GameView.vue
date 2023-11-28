@@ -420,7 +420,6 @@ import { mapStores } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
-import { ROUTE_NAME_HOME } from '@/router';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -745,17 +744,6 @@ export default {
     },
   },
   async mounted() {
-    if (this.isSpectating && !this.gameStore.id) {
-      let { gameId } = this.$router.currentRoute.value.params;
-      gameId = Number(gameId);
-      if (!Number.isInteger(gameId)) {
-        await this.gameStore.requestUnsubscribeFromGame();
-        this.$router.push(ROUTE_NAME_HOME);
-        return;
-      }
-      this.gameStore.requestSpectate(Number(gameId));
-    }
-
     if (!this.authStore.authenticated) {
       this.authStore.mustReauthenticate = true;
     }
