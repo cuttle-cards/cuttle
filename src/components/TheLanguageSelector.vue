@@ -1,10 +1,10 @@
 <template>
   <v-menu location="end">
-    <template #activator="{ props }">
+    <template #activator="{ props: activatorProps }">
       <v-list-item
         :class="activatorClass"
         data-cy="language-menu"
-        v-bind="props"
+        v-bind="activatorProps"
         :prepend-icon="icons.prepend"
         :append-icon="icons.append"
         :title="$i18n.locale"
