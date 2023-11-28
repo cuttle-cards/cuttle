@@ -2,7 +2,7 @@
  * hasSeasonId
  *
  * @module      :: Policy
- * @description :: Only allows requests that contain a 'password' parameter, which is a string
+ * @description :: Only allows requests that contain a 'seasonId' parameter, which is a stringified number
  * @docs        :: http://sailsjs.org/#!/documentation/concepts/Policies
  *
  */

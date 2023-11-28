@@ -194,6 +194,7 @@ export default {
       this.loadingData = true;
       const requestedSeason = this.seasons.find(({ id }) => id === seasonId);
 
+      // if rankings are already downloaded, we're done
       if (requestedSeason?.rankings?.length) {
         this.loadingData = false;
         this.selectedSeason = requestedSeason;
