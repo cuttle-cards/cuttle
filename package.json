@@ -5,7 +5,7 @@
   "dependencies": {
     "chart.js": "4.4",
     "connect-redis": "3.0.2",
-    "dayjs": "^1.11.9",
+    "dayjs": "1.11",
     "lodash": "^4.17.21",
     "machinepack-passwords": "2.3.0",
     "marked": "^5.1.1",
