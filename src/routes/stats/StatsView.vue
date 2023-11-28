@@ -201,6 +201,7 @@ export default {
         return;
       }
 
+      // otherwise download rankings for selected season
       io.socket.get(`/stats/seasons/${seasonId}`, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
         if (!rankings) {
           this.error = true;
