@@ -35,7 +35,7 @@
     "@storybook/vue3": "^7.6.0",
     "@storybook/vue3-vite": "^7.6.0",
     "@vitejs/plugin-vue": "^4.5.0",
-    "@vue/devtools": "^6.5.0",
+    "@vue/devtools": "^6.5.1",
     "concurrently": "^8.0.1",
     "cross-env": "^7.0.3",
     "cypress": "^13.4.0",
