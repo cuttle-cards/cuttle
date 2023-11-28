@@ -32,7 +32,7 @@
     "@storybook/blocks": "^7.6.0",
     "@storybook/testing-library": "0.2.2",
     "@storybook/vue": "^7.6.0",
-    "@storybook/vue3": "^7.4.6",
+    "@storybook/vue3": "^7.6.0",
     "@storybook/vue3-vite": "^7.4.6",
     "@vitejs/plugin-vue": "^3.1.0",
     "@vue/devtools": "^6.5.0",
