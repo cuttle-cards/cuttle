@@ -46,7 +46,7 @@
     "eslint-plugin-storybook": "0.6.15",
     "eslint-plugin-vitest": "^0.3.10",
     "eslint-plugin-vue": "^9.18.1",
-    "eslint-plugin-vuetify": "^2.0.5",
+    "eslint-plugin-vuetify": "^2.1.0",
     "husky": "^8.0.3",
     "prettier": "^3.0.1",
     "react": "^18.2.0",
