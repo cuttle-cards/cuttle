@@ -3,7 +3,7 @@
   "description": "The deepest card game under the sea",
   "version": "6.3.0",
   "dependencies": {
-    "chart.js": "^4.3.3",
+    "chart.js": "4.4",
     "connect-redis": "3.0.2",
     "dayjs": "^1.11.9",
     "lodash": "^4.17.21",
