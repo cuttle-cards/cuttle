@@ -16,6 +16,7 @@ const text = computed(() => parse(props.markdown, {
 </script>
 
 <template>
+  <!-- eslint-disable-next-line vue/no-v-html -->
   <div class="markdown" v-html="text" />
 </template>
 
