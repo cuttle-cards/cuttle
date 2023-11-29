@@ -183,8 +183,8 @@
                 <Transition :name="threesTransition">
                   <GameCard
                     v-if="showScrapChoice"
-                    :suit="gameStore.cardChosenFromScrap.suit"
-                    :rank="gameStore.cardChosenFromScrap.rank"
+                    :suit="gameStore.lastEventCardChosen.suit"
+                    :rank="gameStore.lastEventCardChosen.rank"
                     class="gameCard"
                     data-cy="scrap-chosen-card"
                   />
@@ -544,12 +544,12 @@ export default {
     ///////////////////////////
     showScrapChoice() {
       return (
-        this.gameStore.cardChosenFromScrap &&
-        this.gameStore.scrap?.some(({ id }) => id === this.gameStore.cardChosenFromScrap.id)
+        this.gameStore.lastEventCardChosen &&
+        this.gameStore.scrap?.some(({ id }) => id === this.gameStore.lastEventCardChosen.id)
       );
     },
     threesTransition() {
-      return this.gameStore.playerChoosingFromScrap ? `threes-player` : `threes-opponent`;
+      return this.gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`;
     },
     playerPointsTransition() {
       switch (this.game.lastEventChange) {
@@ -1084,7 +1084,7 @@ export default {
       }
     },
     isBeingDiscarded(card) {
-      return this.gameStore.discardedCards?.some(id => id === card.id); 
+      return this.gameStore.lastEventDiscardedCards?.some(id => id === card.id); 
     }
   },
 };
