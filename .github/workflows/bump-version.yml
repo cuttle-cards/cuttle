@@ -1,83 +1,106 @@
+name: Bump Version
+
 on:
   pull_request:
-    branches:
-      - main
     types: [closed]
+    branches: [main]
 
 jobs:
-  bump-version:
+  check-token:
     runs-on: ubuntu-latest
-
-    env:
-      GH_PUSH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
-
+    outputs:
+      GH_PUSH_TOKEN: ${{ steps.check.outputs.GH_PUSH_TOKEN }}
     steps:
+      - name: Check GH_PUSH_TOKEN
+        id: check
+        run: |
+          if [[ -z "${{ secrets.GH_PUSH_TOKEN }}" ]]; then
+            echo "GH_PUSH_TOKEN is not set. Exiting."
+            exit 1
+          fi
+          echo "::set-output name=GH_PUSH_TOKEN::${{ secrets.GH_PUSH_TOKEN }}"
+        shell: bash
 
-      - name: Checkout
-        uses: actions/checkout@v4
-        if: env.GH_PUSH_TOKEN != ''
+  check-merged:
+    needs: check-token
+    runs-on: ubuntu-latest
+    outputs:
+      merged: ${{ steps.check.outputs.merged }}
+    steps:
+      - name: Check if PR is merged
+        id: check
+        run: |
+          if [[ "${{ github.event.pull_request.merged }}" != "true" ]]; then
+            echo "Pull request is not merged. Exiting."
+            exit 1
+          fi
+          echo "::set-output name=merged::${{ github.event.pull_request.merged }}"
+        shell: bash
+
+  get-labels:
+    needs: check-merged
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get.outputs.version }}
+    steps:
+      - name: Get labels
+        id: get
+        run: |
+          LABELS=$(jq -r '.pull_request.labels[].name' <<< '${{ toJson(github.event) }}')
+          VERSION_LABELS=$(echo "$LABELS" | grep -E '^version-(patch|minor|major)$' || true)
+          if [[ $(echo "$VERSION_LABELS" | wc -l) -ne 1 ]]; then
+            echo "Exactly one version label is required. Exiting."
+            exit 1
+          fi
+          echo "::set-output name=version::$(echo "$VERSION_LABELS" | sed 's/^version-//')"
+        shell: bash
+
+  bump-and-push-version:
+    needs: [check-token, get-labels]
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.bump.outputs.version }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          token: ${{ env.GH_PUSH_TOKEN }}
+          node-version: 18
 
-      - name: configure git
-        if: env.GH_PUSH_TOKEN != ''
-        run: |
-          git remote set-url origin https://itsalaidbacklife@github.com/cuttle-cards/cuttle
-          git config --global user.name "Cuttle Continuous Integration"
-          git config --global user.email "itsalaidbacklife@gmail.com"
+      - name: Install Dependencies
+        run: npm ci
 
-      # Bump version
-      - name: bump patch version
-        id: bump_patch
+      - name: Bump Version
+        id: bump
         run: |
-          if contains(github.event.pull_request.labels.*.name, 'version-patch') && env.GH_PUSH_TOKEN != ''
-          then
-            npm run version:patch
-            echo "::set-output name=bumped::true"
-          fi
+          npm version ${{ needs.get-labels.outputs.version }} --no-git-tag-version
+          VERSION=$(node -p "require('./package.json').version")
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git commit -am "Bump version to $VERSION"
+          echo "::set-output name=version::$VERSION"
         shell: bash
 
-      - name: bump minor version
-        id: bump_minor
-        run: |
-          if contains(github.event.pull_request.labels.*.name, 'version-minor') && env.GH_PUSH_TOKEN != ''
-          then
-            npm run version:minor
-            echo "::set-output name=bumped::true"
-          fi
-        shell: bash
-
-      - name: bump major version
-        id: bump_major
-        run: |
-          if contains(github.event.pull_request.labels.*.name, 'version-major') && env.GH_PUSH_TOKEN != ''
-          then
-            npm run version:major
-            echo "::set-output name=bumped::true"
-          fi
-        shell: bash
-
-      - name: Get version
-        id: package
-        run: |
-          echo "::set-output name=version::$(node -p "require('./package.json').version")"
-        shell: bash
-
-      # Push changes to main if a version bump occurred
       - name: Push changes
-        run: git push origin main
-        if: steps.bump_patch.outputs.bumped == 'true' || steps.bump_minor.outputs.bumped == 'true' || steps.bump_major.outputs.bumped == 'true'
+        run: |
+          git push origin main
+          git push origin --tags
+        env:
+          GH_PUSH_TOKEN: ${{ needs.check-token.outputs.GH_PUSH_TOKEN }}
         shell: bash
 
-      # Create a new GitHub release if a version bump occurred
+  create-release:
+    needs: [get-labels, bump-and-push-version]
+    runs-on: ubuntu-latest
+    steps:
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        if: steps.bump_patch.outputs.bumped == 'true' || steps.bump_minor.outputs.bumped == 'true' || steps.bump_major.outputs.bumped == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          release_name: Release ${{ steps.package.outputs.version }}
+          tag_name: ${{ needs.get-labels.outputs.version }}
+          name: ${{ needs.get-labels.outputs.version }}
           draft: false
           prerelease: false
-          tag_name: ${{ steps.package.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
