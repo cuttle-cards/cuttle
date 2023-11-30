@@ -573,7 +573,7 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
           targetId: foundTarget.id,
         },
         function handleResponse(res, jwres) {
-          if (!jwres.statusCode === 200) {
+          if (jwres.statusCode !== 200) {
             throw new Error(jwres.body.message);
           }
           return jwres;
@@ -610,7 +610,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
           cardId: foundCard.id,
         },
         function handleResponse(res, jwres) {
-          if (!jwres.statusCode === 200) {
+          if (jwres.statusCode !== 200) {
             throw new Error(jwres.body.message);
           }
           return jwres;
@@ -690,7 +690,7 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
           targetType,
         },
         function handleResponse(res, jwres) {
-          if (!jwres.statusCode === 200) {
+          if (jwres.statusCode !== 200) {
             throw new Error(jwres.body.message);
           }
           return jwres;
@@ -758,7 +758,7 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
           opId,
         },
         function handleResponse(res, jwres) {
-          if (!jwres.statusCode === 200) {
+          if (jwres.statusCode !== 200) {
             throw new Error(jwres.body.message);
           }
           return jwres;
@@ -779,7 +779,7 @@ Cypress.Commands.add('resolveOpponent', () => {
           opId,
         },
         function handleResponse(res, jwres) {
-          if (!jwres.statusCode === 200) {
+          if (jwres.statusCode !== 200) {
             throw new Error(jwres.body.message);
           }
           return jwres;
@@ -813,7 +813,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
           cardId2,
         },
         function handleResponse(res, jwres) {
-          if (!jwres.statusCode === 200) {
+          if (jwres.statusCode !== 200) {
             throw new Error(jwres.body.message);
           }
           return jwres;
@@ -1391,7 +1391,7 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
       }
 
       io.socket.get('/game/loadFixture', reqBody, function handleResponse(res, jwres) {
-        if (!jwres.statusCode === 200) {
+        if (jwres.statusCode !== 200) {
           return Promise.reject(jwres.error);
         }
         return Promise.resolve(jwres);
