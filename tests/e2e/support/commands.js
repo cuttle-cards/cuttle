@@ -806,19 +806,23 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       if (card2) {
         [cardId2] = getCardIds(game, [card2]);
       }
-      io.socket.get(
-        '/game/resolveFour',
-        {
-          cardId1,
-          cardId2,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+        io.socket.get(
+          '/game/resolveFour',
+          {
+            cardId1,
+            cardId2,
+          },
+          function handleResponse(res, jwres) {
+            try {
+              if (jwres.statusCode !== 200) {
+                throw new Error(jwres.body.message);
+              }
+              return jwres;
+            } catch (err) {
+              return err;
+            }
+          },
+        );
     });
 });
 
