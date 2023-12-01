@@ -76,7 +76,7 @@ describe('Stats Page Error States', () => {
 
 describe('Stats Page', () => {
   beforeEach(setup);
-  
+
   it('Displays Headers, Cards, and Table', () => {
     const [seasonOne] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
