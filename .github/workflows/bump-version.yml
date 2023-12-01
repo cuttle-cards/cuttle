@@ -8,17 +8,26 @@ on:
 jobs:
   check-token:
     runs-on: ubuntu-latest
+    outputs:
+      hasToken: ${{ steps.check.outputs.hasToken }}
     steps:
       - name: Check GH_PUSH_TOKEN
+        id: check
+        # https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/
         run: |
           if [[ -z "${{ secrets.GH_PUSH_TOKEN }}" ]]; then
-            echo "GH_PUSH_TOKEN is not set. Exiting."
-            exit 1
+            echo "GH_PUSH_TOKEN is not set." >> $GITHUB_STEP_SUMMARY
+            echo "This workflow requires the GH_PUSH_TOKEN secret to push commits and create releases. Please add the secret to your repository." >> $GITHUB_STEP_SUMMARY
+            echo "hasToken=false" >> $GITHUB_OUTPUT
+          else
+            echo "GH_PUSH_TOKEN is set." >> $GITHUB_STEP_SUMMARY
+            echo "hasToken=true" >> $GITHUB_OUTPUT
           fi
         shell: bash
 
   check-merged:
     needs: check-token
+    if: needs.check-token.outputs.hasToken == 'true'
     runs-on: ubuntu-latest
     outputs:
       merged: ${{ steps.check.outputs.merged }}
@@ -34,7 +43,8 @@ jobs:
         shell: bash
 
   get-labels:
-    needs: check-merged
+    needs: [check-token, check-merged]
+    if: needs.check-token.outputs.hasToken == 'true'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.get.outputs.version }}
@@ -52,7 +62,8 @@ jobs:
         shell: bash
 
   bump-and-push-version:
-    needs: get-labels
+    needs: [check-token, get-labels]
+    if: needs.check-token.outputs.hasToken == 'true'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.bump.outputs.version }}
@@ -88,7 +99,8 @@ jobs:
           GH_PUSH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
 
   create-release:
-    needs: bump-and-push-version
+    needs: [check-token, bump-and-push-version]
+    if: needs.check-token.outputs.hasToken == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Create Release
