@@ -491,7 +491,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.loginPlayer(playerOne);
     cy.setupGameAsP0(true, true);
   });
-  it.only('Creates a match when two players play a ranked game for the first time this week', function () {
+  it('Creates a match when two players play a ranked game for the first time this week', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
@@ -716,8 +716,8 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     // Set up season
     const [, diamondsSeason] = seasonFixtures;
-    diamondsSeason.startTime = dayjs().subtract(2, 'week').subtract(1, 'day').valueOf();
-    diamondsSeason.endTime = dayjs().add(11, 'weeks').valueOf();
+    diamondsSeason.startTime = dayjs.utc().subtract(2, 'week').subtract(1, 'day').format();
+    diamondsSeason.endTime = dayjs.utc().add(11, 'weeks').format();
     cy.loadSeasonFixture([diamondsSeason]);
     // Sign up to players and store their id's for comparison to match data
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -731,16 +731,16 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
           player1: this.playerOneId,
           player2: this.playerTwoId,
           winner: this.playerOneId,
-          startTime: dayjs().subtract(1, 'week').subtract(1, 'day').valueOf(),
-          endTime: dayjs().subtract(1, 'week').subtract(1, 'day').valueOf(),
+          startTime: dayjs.utc().subtract(1, 'week').subtract(1, 'day').format(),
+          endTime: dayjs.utc().subtract(1, 'week').subtract(1, 'day').format(),
         };
 
         const currentMatchWithDifferentOpponent = {
           player1: this.playerOneId,
           player2: this.playerThreeId,
           winner: null,
-          startTime: dayjs().subtract(1, 'hour').valueOf(),
-          endTime: dayjs().subtract(1, 'hour').valueOf(),
+          startTime: dayjs.utc().subtract(1, 'hour').format(),
+          endTime: dayjs.utc().subtract(1, 'hour').format(),
         };
 
         cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);
@@ -750,7 +750,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.setupGameAsP0(true, true);
   });
   
-  it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
+  it.only('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
@@ -794,11 +794,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
-      expect(currentMatch.player1.id).to.eq(this.playerOneId);
-      expect(currentMatch.player2.id).to.eq(this.playerTwoId);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
-      expect(currentMatch.endTime).to.eq(null);
-      expect(currentMatch.games.length).to.eq(1);
+      validateMatchResult(currentMatch, 1, this.playerOneId, this.playerTwoId, null);
     });
 
     cy.log('Starting second game');
@@ -847,13 +843,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
-      expect(currentMatch.player1.id).to.eq(this.playerOneId);
-      expect(currentMatch.player2.id).to.eq(this.playerTwoId);
-      expect(currentMatch.games.length).to.eq(2);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
-      // Match is incomplete
-      expect(currentMatch.endTime).to.eq(null);
-      expect(currentMatch.winner).to.eq(null);
+      validateMatchResult(currentMatch, 2, this.playerOneId, this.playerTwoId, null);
     });
 
     // 3rd game: Ends via requested stalemate
@@ -886,13 +876,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
-      expect(currentMatch.player1.id).to.eq(this.playerOneId);
-      expect(currentMatch.player2.id).to.eq(this.playerTwoId);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
-      expect(currentMatch.games.length).to.eq(3);
-      // Match is incomplete
-      expect(currentMatch.endTime).to.eq(null);
-      expect(currentMatch.winner).to.eq(null);
+      validateMatchResult(currentMatch, 3, this.playerOneId, this.playerTwoId, null);
       cy.log('Match data is correct after third game', res);
     });
 
@@ -925,13 +909,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
       // Expect old match to have no games associated with it
       expect(oldMatch.games.length).to.eq(0);
-      expect(currentMatch.player1.id).to.eq(this.playerOneId);
-      expect(currentMatch.player2.id).to.eq(this.playerTwoId);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
-      expect(currentMatch.games.length).to.eq(4);
-      // Match is complete
-      expect(currentMatch.winner.id).to.eq(this.playerTwoId);
-      expect(currentMatch.endTime).to.be.greaterThan(0);
+      validateMatchResult(currentMatch, 4, this.playerOneId, this.playerTwoId, this.playerTwoId);
       cy.log('Match data is correctly unaffected after sixth game', res);
 
       // Confirm game was set to unranked
