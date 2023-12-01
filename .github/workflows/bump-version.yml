@@ -8,17 +8,13 @@ on:
 jobs:
   check-token:
     runs-on: ubuntu-latest
-    outputs:
-      GH_PUSH_TOKEN: ${{ steps.check.outputs.GH_PUSH_TOKEN }}
     steps:
       - name: Check GH_PUSH_TOKEN
-        id: check
         run: |
           if [[ -z "${{ secrets.GH_PUSH_TOKEN }}" ]]; then
             echo "GH_PUSH_TOKEN is not set. Exiting."
             exit 1
           fi
-          echo "::set-output name=GH_PUSH_TOKEN::${{ secrets.GH_PUSH_TOKEN }}"
         shell: bash
 
   check-merged:
@@ -34,7 +30,7 @@ jobs:
             echo "Pull request is not merged. Exiting."
             exit 1
           fi
-          echo "::set-output name=merged::${{ github.event.pull_request.merged }}"
+          echo "merged=${{ github.event.pull_request.merged }}" >> $GITHUB_OUTPUT
         shell: bash
 
   get-labels:
@@ -52,11 +48,11 @@ jobs:
             echo "Exactly one version label is required. Exiting."
             exit 1
           fi
-          echo "::set-output name=version::$(echo "$VERSION_LABELS" | sed 's/^version-//')"
+          echo "version=$(echo "$VERSION_LABELS" | sed 's/^version-//')" >> $GITHUB_OUTPUT
         shell: bash
 
   bump-and-push-version:
-    needs: [check-token, get-labels]
+    needs: get-labels
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.bump.outputs.version }}
@@ -80,27 +76,27 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git commit -am "Bump version to $VERSION"
-          echo "::set-output name=version::$VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Push changes
         run: |
           git push origin main
-          git push origin --tags
+          git tag v$VERSION
+          git push origin v$VERSION
         env:
-          GH_PUSH_TOKEN: ${{ needs.check-token.outputs.GH_PUSH_TOKEN }}
-        shell: bash
+          GH_PUSH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
 
   create-release:
-    needs: [get-labels, bump-and-push-version]
+    needs: bump-and-push-version
     runs-on: ubuntu-latest
     steps:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.get-labels.outputs.version }}
-          name: ${{ needs.get-labels.outputs.version }}
+          tag_name: ${{ needs.bump-and-push-version.outputs.version }}
+          name: ${{ needs.bump-and-push-version.outputs.version }}
           draft: false
           prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
