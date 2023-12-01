@@ -14,12 +14,12 @@ module.exports = {
     },
     startTime: {
       type: 'ref',
-      columnType: 'timestamptz',
+      columnType:'timestamptz',
       required: true,
     },
     endTime: {
       type: 'ref',
-      columnType: 'timestamptz',
+      columnType:'timestamptz',
       required: true,
     },
     bracketLink: {

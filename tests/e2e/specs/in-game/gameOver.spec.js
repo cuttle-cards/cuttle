@@ -6,10 +6,7 @@ import GameStatus from '../../../../utils/GameStatus.json';
 
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault('America/New_York');
 
 function goHomeJoinNewGame() {
   cy.log('Going home');
@@ -25,11 +22,11 @@ function goHomeJoinNewGame() {
 function validateMatchResult(match, length, p1, p2, winnerId) {
   expect(match.player1.id).to.eq(p1);
   expect(match.player2.id).to.eq(p2);
-  expect(match.startTime).to.be.greaterThan(0);
+  expect(match.startTime).to.not.be.null;
   expect(match.games.length).to.eq(length);
   if (winnerId) {
     expect(match.winner.id).to.eq(winnerId);
-    expect(match.endTime).to.be.greaterThan(0);
+    expect(match.endTime).to.not.be.null;
   }
 }
 
@@ -461,8 +458,8 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // Set up season
     const [, diamondsSeason] = seasonFixtures;
-    diamondsSeason.startTime = dayjs().subtract(2, 'week').subtract(1, 'day').format();
-    diamondsSeason.endTime = dayjs().add(11, 'weeks').format();
+    diamondsSeason.startTime = dayjs.utc().subtract(2, 'week').subtract(1, 'day').format();
+    diamondsSeason.endTime = dayjs.utc().add(11, 'weeks').format();
     cy.loadSeasonFixture([diamondsSeason]);
     // Sign up to players and store their id's for comparison to match data
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -476,16 +473,16 @@ describe('Creating And Updating Ranked Matches', () => {
           player1: this.playerOneId,
           player2: this.playerTwoId,
           winner: this.playerOneId,
-          startTime: dayjs().subtract(1, 'week').subtract(1, 'day').format(),
-          endTime: dayjs().subtract(1, 'week').subtract(1, 'day').format(),
+          startTime: dayjs.utc().subtract(1, 'week').subtract(1, 'day').format(),
+          endTime: dayjs.utc().subtract(1, 'week').subtract(1, 'day').format(),
         };
 
         const currentMatchWithDifferentOpponent = {
           player1: this.playerOneId,
           player2: this.playerThreeId,
           winner: null,
-          startTime: dayjs().subtract(1, 'hour').format(),
-          endTime: dayjs().subtract(1, 'hour').format(),
+          startTime: dayjs.utc().subtract(1, 'hour').format(),
+          endTime: dayjs.utc().subtract(1, 'hour').format(),
         };
 
         cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);
