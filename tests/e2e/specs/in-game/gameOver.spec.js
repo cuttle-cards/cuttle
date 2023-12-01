@@ -750,7 +750,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.setupGameAsP0(true, true);
   });
   
-  it.only('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
+  it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
