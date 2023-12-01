@@ -20,7 +20,7 @@ module.exports = {
       : await Season.find({
         where: { startTime: { '<=': dayjs.utc().format() } },
         sort: 'startTime DESC',
-      });
+      }).populateAll();
     if (!seasons.length) {
       return exits.error(new Error('Could not find requested season data'));
     }
