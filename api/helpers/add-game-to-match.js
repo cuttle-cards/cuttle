@@ -1,6 +1,4 @@
 const dayjs = require('dayjs');
-const utc = require('dayjs/plugin/utc');
-dayjs.extend(utc);
 
 
 module.exports = {
@@ -53,12 +51,12 @@ module.exports = {
       // End the match if this game clinches it
       if (numPlayer1Wins >= 2) {
         relevantMatch = await Match.updateOne(relevantMatch.id).set({
-          endTime: dayjs.utc().format(),
+          endTime: dayjs().format(),
           winner: relevantMatch.player1,
         });
       } else if (numPlayer2Wins >= 2) {
         relevantMatch = await Match.updateOne(relevantMatch.id).set({
-          endTime: dayjs.utc().format(),
+          endTime: dayjs().format(),
           winner: relevantMatch.player2,
         });
       }

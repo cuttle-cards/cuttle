@@ -1,6 +1,4 @@
 const dayjs = require('dayjs');
-const utc = require('dayjs/plugin/utc');
-dayjs.extend(utc);
 
 
 module.exports = {
@@ -25,7 +23,7 @@ module.exports = {
   },
 
   fn: async ({ player1, player2 }, exits) => {
-    const currentTime = dayjs.utc();
+    const currentTime = dayjs();
     try {
       const currentSeason = await Season.findOne({
         startTime: { '<=': currentTime.format() },
@@ -36,7 +34,7 @@ module.exports = {
         return exits.success();
       }
       // Find relevant match between specified players for current week
-      const seasonStartTime = dayjs.utc(currentSeason.startTime);
+      const seasonStartTime = dayjs(currentSeason.startTime);
       const weeksSinceSeasonStart = currentTime.diff(seasonStartTime, 'week');
       const currentWeekStartTime = seasonStartTime.add(weeksSinceSeasonStart, 'week').format();
       const currentWeekEndTime = seasonStartTime.add(weeksSinceSeasonStart + 1, 'week').format();

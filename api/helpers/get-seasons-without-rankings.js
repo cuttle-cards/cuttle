@@ -1,6 +1,4 @@
 const dayjs = require('dayjs');
-const utc = require('dayjs/plugin/utc');
-dayjs.extend(utc);
 
 module.exports = {
   friendlyName: 'Get Seasons Without Matches',
@@ -18,7 +16,7 @@ module.exports = {
     const seasons = seasonId
       ? await Season.find({ id: seasonId }).populateAll()
       : await Season.find({
-        where: { startTime: { '<=': dayjs.utc().format() } },
+        where: { startTime: { '<=': dayjs().format() } },
         sort: 'startTime DESC',
       }).populateAll();
     if (!seasons.length) {
@@ -37,7 +35,7 @@ module.exports = {
           uniquePlayersPerWeek: [],
         };
         // initialize gameCounts and uniquePlayersPerWeek
-        const currentTime = dayjs.utc();
+        const currentTime = dayjs();
         const endTime = currentTime.isBefore(dayjs(season.endTime)) ? currentTime : dayjs(season.endTime);
         // Round week count up to account for incomplete weeks
         const numWeeks = Math.ceil(endTime.diff(dayjs(season.startTime), 'week', true));
