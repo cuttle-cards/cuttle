@@ -80,7 +80,7 @@
         </template>
 
         <!-- Usage stats -->
-        <div id="usage-stats-section">
+        <div v-if="selectedSeason" id="usage-stats-section">
           <h2 class="text-h2 mt-8 mb-4">
             Site Usage
           </h2>
@@ -92,7 +92,7 @@
             Oops!
           </h3>
           <p class="text-body-1">
-            There was a problem loading the leaderboard. Refresh the page to try again.
+            There was a problem loading the leaderboard. Refresh the page or select another season to try again.
           </p>
           <v-img
             alt="Dead cuttle logo"
@@ -173,21 +173,47 @@ export default {
     },
   },
   created() {
-    io.socket.get('/stats', (res) => {
+    io.socket.get('/stats/seasons/current', (res) => {
       this.loadingData = false;
       if (!res?.length) {
         this.error = true;
         return;
       }
       this.seasons = res;
+
       const seasonId = parseInt(this.$route.params.seasonId);
-      this.checkAndSelectSeason(seasonId);
+      if (seasonId) {
+        this.checkAndSelectSeason(seasonId);
+        return;
+      }
+      [this.selectedSeason] = this.seasons;
     });
   },
   methods: {
     checkAndSelectSeason(seasonId) {
+      this.loadingData = true;
       const requestedSeason = this.seasons.find(({ id }) => id === seasonId);
-      this.selectedSeason = requestedSeason || this.seasons[0];
+
+      // if rankings are already downloaded, we're done
+      if (requestedSeason?.rankings?.length) {
+        this.loadingData = false;
+        this.selectedSeason = requestedSeason;
+        return;
+      }
+
+      // otherwise download rankings for selected season
+      io.socket.get(`/stats/seasons/${seasonId}`, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
+        if (!rankings) {
+          this.error = true;
+          this.selectedSeason = null;
+          this.loadingData = false;
+          return;
+        }
+     
+        this.selectedSeason = { ...requestedSeason, gameCounts, rankings, uniquePlayersPerWeek };
+        this.loadingData = false;
+      });
+      
     },
   },
 };

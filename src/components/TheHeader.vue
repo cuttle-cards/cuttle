@@ -14,7 +14,7 @@
           >
         </div>
       </v-toolbar-title>
-      <v-toolbar-items v-if="!smAndDown" class="hidden-xs-only">
+      <v-toolbar-items v-if="!smAndDown" class="hidden-xs">
         <v-tabs class="pa-2">
           <v-tab
             v-for="({ text, icon, page, cyName }, i) in pageLinks"

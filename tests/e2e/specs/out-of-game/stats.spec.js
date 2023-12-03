@@ -257,7 +257,6 @@ describe('Stats Page', () => {
       cy.get('[data-cy=season-select]').should('contain', seasonTwo.name);
     });
   });
-
 });
 
 describe('Usage stats', () => {
@@ -268,42 +267,69 @@ describe('Usage stats', () => {
   });
 
   it('Sends the counts of games played and unique players for each week of each season', () => {
-    cy.request('http://localhost:1337/stats').then(({body: seasons}) => {
-      // Clubs 2022 stats
-      const clubs2022 = seasons.find(({name}) => name === 'Clubs 2022');
-      expect(clubs2022).not.to.be.undefined;
-      // Week 1 stats
-      expect(clubs2022.gameCounts[0]).to.eq(4);
-      expect(clubs2022.uniquePlayersPerWeek[0]).to.eq(3);
-      // Week 2 stats
-      expect(clubs2022.gameCounts[1]).to.eq(2);
-      expect(clubs2022.uniquePlayersPerWeek[1]).to.eq(4);
-      // Week 3 stats
-      expect(clubs2022.gameCounts[2]).to.eq(0);
-      expect(clubs2022.uniquePlayersPerWeek[2]).to.eq(0);
-      // Week 3 stats
-      expect(clubs2022.gameCounts[3]).to.eq(1);
-      expect(clubs2022.uniquePlayersPerWeek[3]).to.eq(2);
+    cy.request('http://localhost:1337/stats/seasons/current').then(({ body: seasons }) => {
+      const populateSeason = (season) => {
+        return new Cypress.Promise((resolve, reject) => {
+          cy.request(`http://localhost:1337/stats/seasons/${season.id}`).then(({ body }) => {
+            if (!body) {
+              reject(new Error('error populating season'));
+            }
+            resolve({
+              ...season,
+              gameCounts: body.gameCounts,
+              rankings: body.rankings,
+              uniquePlayersPerWeek: body.uniquePlayersPerWeek,
+            });
+          });
+        });
+      };
 
-      // Diamonds 2022 stats
-      const diamonds2022 = seasons.find(({name}) => name === 'Diamonds 2022');
-      expect(diamonds2022).not.to.be.undefined;
-      // Week 1 stats
-      expect(diamonds2022.gameCounts[0]).to.eq(1);
-      expect(diamonds2022.uniquePlayersPerWeek[0]).to.eq(2);
-      // Week 2 stats
-      expect(diamonds2022.gameCounts[1]).to.eq(2);
-      expect(diamonds2022.uniquePlayersPerWeek[1]).to.eq(2);
+      cy.wrap(
+        Cypress.Promise.all(
+          seasons.map((season) => {
+            if (season.rankings.length) {
+              return season;
+            }
+            return populateSeason(season);
+          }),
+        ),
+      ).then((updatedSeasons) => {
+        //Clubs 2022 stats
+        const clubs2022 = updatedSeasons.find(({ name }) => name === 'Clubs 2022');
+        expect(clubs2022).not.to.be.undefined;
+        // Week 1 stats
+        expect(clubs2022.gameCounts[0]).to.eq(4);
+        expect(clubs2022.uniquePlayersPerWeek[0]).to.eq(3);
+        // Week 2 stats
+        expect(clubs2022.gameCounts[1]).to.eq(2);
+        expect(clubs2022.uniquePlayersPerWeek[1]).to.eq(4);
+        // Week 3 stats
+        expect(clubs2022.gameCounts[2]).to.eq(0);
+        expect(clubs2022.uniquePlayersPerWeek[2]).to.eq(0);
+        // Week 3 stats
+        expect(clubs2022.gameCounts[3]).to.eq(1);
+        expect(clubs2022.uniquePlayersPerWeek[3]).to.eq(2);
 
-      // Current Season stats
-      const currentSeason = seasons.find(({name}) => name === 'Current Season');
-      expect(currentSeason).not.to.be.undefined;
-      // Week 1 stats
-      expect(currentSeason.gameCounts[0]).to.eq(1);
-      expect(currentSeason.uniquePlayersPerWeek[0]).to.eq(2);
-      // Week 2 stats
-      expect(currentSeason.gameCounts[1]).to.eq(2);
-      expect(currentSeason.uniquePlayersPerWeek[1]).to.eq(2);
+        // Diamonds 2022 stats
+        const diamonds2022 = updatedSeasons.find(({ name }) => name === 'Diamonds 2022');
+        expect(diamonds2022).not.to.be.undefined;
+        // Week 1 stats
+        expect(diamonds2022.gameCounts[0]).to.eq(1);
+        expect(diamonds2022.uniquePlayersPerWeek[0]).to.eq(2);
+        // Week 2 stats
+        expect(diamonds2022.gameCounts[1]).to.eq(2);
+        expect(diamonds2022.uniquePlayersPerWeek[1]).to.eq(2);
+
+        // Current Season stats
+        const currentSeason = updatedSeasons.find(({ name }) => name === 'Current Season');
+        expect(currentSeason).not.to.be.undefined;
+        // Week 1 stats
+        expect(currentSeason.gameCounts[0]).to.eq(1);
+        expect(currentSeason.uniquePlayersPerWeek[0]).to.eq(2);
+        // Week 2 stats
+        expect(currentSeason.gameCounts[1]).to.eq(2);
+        expect(currentSeason.uniquePlayersPerWeek[1]).to.eq(2);
+      });
     });
   });
 });

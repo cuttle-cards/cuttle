@@ -183,8 +183,8 @@
                 <Transition :name="threesTransition">
                   <GameCard
                     v-if="showScrapChoice"
-                    :suit="gameStore.cardChosenFromScrap.suit"
-                    :rank="gameStore.cardChosenFromScrap.rank"
+                    :suit="gameStore.lastEventCardChosen.suit"
+                    :rank="gameStore.lastEventCardChosen.rank"
                     class="gameCard"
                     data-cy="scrap-chosen-card"
                   />
@@ -420,7 +420,6 @@ import { mapStores } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
-import { ROUTE_NAME_HOME } from '@/router';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -545,12 +544,12 @@ export default {
     ///////////////////////////
     showScrapChoice() {
       return (
-        this.gameStore.cardChosenFromScrap &&
-        this.gameStore.scrap?.some(({ id }) => id === this.gameStore.cardChosenFromScrap.id)
+        this.gameStore.lastEventCardChosen &&
+        this.gameStore.scrap?.some(({ id }) => id === this.gameStore.lastEventCardChosen.id)
       );
     },
     threesTransition() {
-      return this.gameStore.playerChoosingFromScrap ? `threes-player` : `threes-opponent`;
+      return this.gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`;
     },
     playerPointsTransition() {
       switch (this.game.lastEventChange) {
@@ -745,17 +744,6 @@ export default {
     },
   },
   async mounted() {
-    if (this.isSpectating && !this.gameStore.id) {
-      let { gameId } = this.$router.currentRoute.value.params;
-      gameId = Number(gameId);
-      if (!Number.isInteger(gameId)) {
-        await this.gameStore.requestUnsubscribeFromGame();
-        this.$router.push(ROUTE_NAME_HOME);
-        return;
-      }
-      this.gameStore.requestSpectate(Number(gameId));
-    }
-
     if (!this.authStore.authenticated) {
       this.authStore.mustReauthenticate = true;
     }
@@ -1092,7 +1080,7 @@ export default {
       }
     },
     isBeingDiscarded(card) {
-      return this.gameStore.discardedCards?.some(id => id === card.id); 
+      return this.gameStore.lastEventDiscardedCards?.some(id => id === card.id); 
     }
   },
 };
