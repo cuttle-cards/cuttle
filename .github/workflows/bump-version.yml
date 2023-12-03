@@ -1,114 +1,151 @@
+# Based on https://github.com/seriouslysean/demo--auto-bump-forked-prs
+
 name: Bump Version
 
 on:
-  pull_request:
-    types: [closed]
-    branches: [main]
+  workflow_run:
+    workflows: ["Prepare Version Bump"]
+    types:
+      - completed
 
 jobs:
+  check-previous-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if previous workflow was successful
+        run: |
+          if [[ "${{ github.event.workflow_run.conclusion }}" != "success" ]]; then
+            echo "### ❌ Previous Workflow Failed" >> $GITHUB_STEP_SUMMARY
+            echo "The triggering workflow did not complete successfully, please review the workflow run details." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "### ✅ Previous Workflow Succeeded" >> $GITHUB_STEP_SUMMARY
+          fi
+        shell: bash
+
   check-token:
     runs-on: ubuntu-latest
-    outputs:
-      hasToken: ${{ steps.check.outputs.hasToken }}
     steps:
       - name: Check GH_PUSH_TOKEN
-        id: check
-        # https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/
         run: |
           if [[ -z "${{ secrets.GH_PUSH_TOKEN }}" ]]; then
-            echo "GH_PUSH_TOKEN is not set." >> $GITHUB_STEP_SUMMARY
-            echo "This workflow requires the GH_PUSH_TOKEN secret to push commits and create releases. Please add the secret to your repository." >> $GITHUB_STEP_SUMMARY
-            echo "hasToken=false" >> $GITHUB_OUTPUT
+            echo "### ❌ GH_PUSH_TOKEN Error" >> $GITHUB_STEP_SUMMARY
+            echo "The \`GH_PUSH_TOKEN\` secret is not set, which is required for git operations." >> $GITHUB_STEP_SUMMARY
+            exit 1
           else
-            echo "GH_PUSH_TOKEN is set." >> $GITHUB_STEP_SUMMARY
-            echo "hasToken=true" >> $GITHUB_OUTPUT
+            echo "### ✅ GH_PUSH_TOKEN Found" >> $GITHUB_STEP_SUMMARY
           fi
         shell: bash
 
-  check-merged:
-    needs: check-token
-    if: needs.check-token.outputs.hasToken == 'true'
+  download-artifact:
+    needs: [check-previous-workflow, check-token]
     runs-on: ubuntu-latest
-    outputs:
-      merged: ${{ steps.check.outputs.merged }}
     steps:
-      - name: Check if PR is merged
-        id: check
+      - name: Wait and download version artifact
         run: |
-          if [[ "${{ github.event.pull_request.merged }}" != "true" ]]; then
-            echo "Pull request is not merged. Exiting."
-            exit 1
-          fi
-          echo "merged=${{ github.event.pull_request.merged }}" >> $GITHUB_OUTPUT
+          attempt_number=1
+          max_attempts=10
+          artifact_name="version-${{ github.event.workflow_run.id }}"
+          while [ "$attempt_number" -le "$max_attempts" ]; do
+            echo "Attempt $attempt_number of $max_attempts"
+            response=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/artifacts")
+            artifact_id=$(echo "$response" | jq --arg artifact_name "$artifact_name" '.artifacts[] | select(.name==$artifact_name) | .id')
+
+            if [ -n "$artifact_id" ]; then
+              echo "Artifact $artifact_name with ID $artifact_id is available"
+              # If available, download the artifact
+              curl -L -o "version-artifact.zip" \
+                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$artifact_id/zip"
+              unzip -j "version-artifact.zip" "version.txt" -d .
+              # Check if the version.txt was extracted successfully
+              if [[ ! -f "version.txt" ]]; then
+                echo "### ❌ Failed to extract version.txt" >> $GITHUB_STEP_SUMMARY
+                exit 1
+              fi
+              break
+            else
+              echo "Artifact $artifact_name is not available yet"
+              if [ "$attempt_number" -eq "$max_attempts" ]; then
+                echo "### ❌ Artifact $artifact_name is not available after $max_attempts attempts" >> $GITHUB_STEP_SUMMARY
+                exit 1
+              fi
+              attempt_number=$((attempt_number+1))
+              echo "Waiting before retrying..."
+              sleep 10
+            fi
+          done
         shell: bash
 
-  get-labels:
-    needs: [check-token, check-merged]
-    if: needs.check-token.outputs.hasToken == 'true'
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.get.outputs.version }}
-    steps:
-      - name: Get labels
-        id: get
+      - name: Read BUMP_TYPE from version file and set as output
+        id: read_bump_type
         run: |
-          LABELS=$(jq -r '.pull_request.labels[].name' <<< '${{ toJson(github.event) }}')
-          VERSION_LABELS=$(echo "$LABELS" | grep -E '^version-(patch|minor|major)$' || true)
-          if [[ $(echo "$VERSION_LABELS" | wc -l) -ne 1 ]]; then
-            echo "Exactly one version label is required. Exiting."
-            exit 1
-          fi
-          echo "version=$(echo "$VERSION_LABELS" | sed 's/^version-//')" >> $GITHUB_OUTPUT
+          BUMP_TYPE=$(cat version.txt)
+          echo "### 📄 Bump Type" >> $GITHUB_STEP_SUMMARY
+          echo "The BUMP_TYPE set for this run is \`${BUMP_TYPE}\`." >> $GITHUB_STEP_SUMMARY
+          echo "BUMP_TYPE=${BUMP_TYPE}" >> $GITHUB_ENV
+          echo "BUMP_TYPE=${BUMP_TYPE}" >> $GITHUB_OUTPUT
         shell: bash
+
+    outputs:
+      BUMP_TYPE: ${{ steps.read_bump_type.outputs.BUMP_TYPE }}
 
   bump-and-push-version:
-    needs: [check-token, get-labels]
-    if: needs.check-token.outputs.hasToken == 'true'
+    needs: download-artifact
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.bump.outputs.version }}
     steps:
-      - name: Checkout Repository
+      - name: Check out code with token
         uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
         with:
-          node-version: 18
+          token: ${{ secrets.GH_PUSH_TOKEN }}
 
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Bump Version
-        id: bump
+      - name: Configure Git
         run: |
-          npm version ${{ needs.get-labels.outputs.version }} --no-git-tag-version
-          VERSION=$(node -p "require('./package.json').version")
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
+
+      - name: Bump Version, create tag and commit
+        id: bump_version
+        run: |
+          BUMP_TYPE=${{ needs.download-artifact.outputs.BUMP_TYPE }}
+          echo "Current BUMP_TYPE: $BUMP_TYPE"
+          npm version "$BUMP_TYPE" --no-git-tag-version
+          VERSION=$(node -p "require('./package.json').version")
+          echo "::set-output name=VERSION::$VERSION" # This sets the VERSION as step output
           git commit -am "Bump version to $VERSION"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          git tag "$VERSION"
+          git push origin HEAD:main
+          git push origin "$VERSION"
         shell: bash
 
-      - name: Push changes
+      - name: Version Bump Summary
         run: |
-          git push origin main
-          git tag v$VERSION
-          git push origin v$VERSION
-        env:
-          GH_PUSH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
+          VERSION=${{ steps.bump_version.outputs.VERSION }}
+          echo "### 🚀 Version Bumped" >> $GITHUB_STEP_SUMMARY
+          echo "The project version has been increased to **$VERSION**." >> $GITHUB_STEP_SUMMARY
+          echo "This includes a new Git tag and commit for **$VERSION** which has been pushed to the repository." >> $GITHUB_STEP_SUMMARY
+          echo "Check out the [commit history](https://github.com/${{ github.repository }}/commits/main) to see the changes." >> $GITHUB_STEP_SUMMARY
+        shell: bash
+
+    outputs:
+      VERSION: ${{ steps.bump_version.outputs.VERSION }}
 
   create-release:
-    needs: [check-token, bump-and-push-version]
-    if: needs.check-token.outputs.hasToken == 'true'
+    needs: bump-and-push-version
     runs-on: ubuntu-latest
     steps:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.bump-and-push-version.outputs.version }}
-          name: ${{ needs.bump-and-push-version.outputs.version }}
-          draft: false
-          prerelease: false
+          tag_name: v${{ needs.bump-and-push-version.outputs.VERSION }}
+          name: Release v${{ needs.bump-and-push-version.outputs.VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
+
+      - name: Release Summary
+        run: |
+          echo "### 🎉 New Release Created" >> $GITHUB_STEP_SUMMARY
+          echo "A new release version \`${{ needs.bump-and-push-version.outputs.VERSION }}\` has been published!" >> $GITHUB_STEP_SUMMARY
+          echo "[View the new release](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.bump-and-push-version.outputs.VERSION }})" >> $GITHUB_STEP_SUMMARY
