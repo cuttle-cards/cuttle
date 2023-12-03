@@ -186,7 +186,7 @@ describe('Lobby - P0 Perspective', () => {
       });
   });
 
-  it('Shows when oppenent Readies/Unreadies', function () {
+  it('Shows when oppenent Readies/Unreadies', () => {
     // Opponent subscribes & readies up
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
@@ -198,7 +198,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('not.have.class', 'ready');
   });
 
-  it('Shows when opponent changes game to ranked or casual', function () {
+  it('Shows when opponent changes game to ranked or casual', () => {
     // Opponent subscribes & Changes Mode
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
@@ -211,7 +211,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
   });
 
-  it('Game starts when both players are ready - opponent first', function () {
+  it('Game starts when both players are ready - opponent first', () => {
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.readyOpponent().then(() => {
@@ -220,7 +220,7 @@ describe('Lobby - P0 Perspective', () => {
     });
   });
 
-  it('Game starts when both players are ready - player first', function () {
+  it('Game starts when both players are ready - player first', () => {
     cy.get('[data-cy=ready-button]').click();
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
@@ -230,7 +230,7 @@ describe('Lobby - P0 Perspective', () => {
   });
 
   describe('Reloading the lobby', () => {
-    it('Reloads lobby data after page refresh when the game has not started', function () {
+    it('Reloads lobby data after page refresh when the game has not started', () => {
       cy.reload();
       cy.url().should('include', '/lobby');
       cy.get('[data-cy=my-indicator]').contains(myUser.username);
@@ -361,7 +361,7 @@ describe('Lobby - P1 Perspective', () => {
     });
   });
 
-  it('Game starts when both players are ready - opponent ready before joining', function () {
+  it('Game starts when both players are ready - opponent ready before joining', () => {
     cy.get('[data-cy=exit-button]').click(); // leave game so opponent can ready before player joins
     cy.readyOpponent();
     // Join game again
@@ -386,7 +386,7 @@ describe('Lobby - P1 Perspective', () => {
     assertGameStarted();
   });
 
-  it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', function () {
+  it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', () => {
     cy.get('[data-cy=ready-button]').click();
     cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
 
