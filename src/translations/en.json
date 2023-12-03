@@ -248,8 +248,6 @@
         "sevenWithEmptyDeck": "You can only play a 7 as a ONE-OFF if there are cards in the deck",
         "sevenWithOneCardInDeck": "You cannot play a 7 as a ONE-OFF if it is the last card in the deck",
         "cantPlayWithoutATarget": "You cannot play that card as a ONE-OFF without a target",
-        "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
-        "blockedByMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen",
         "onlyTwoOrNine": "You can only play a 2, or a 9 as targeted one-offs.",
         "oneOffInPlay": "There is already a one-off in play; you cannot play any card, except a two to counter."
       }
