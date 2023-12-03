@@ -374,7 +374,6 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
 
     // Sign up players
     cy.signupOpponent(playerOne).as('playerOneId');
-    cy.signupOpponent(playerThree).as('playerThreeId'); // spectator
     // Opponent will be player 2 (the last one we log in as)
     cy.signupOpponent(playerTwo).as('playerTwoId');
 
