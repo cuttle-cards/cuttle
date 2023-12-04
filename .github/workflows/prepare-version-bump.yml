@@ -1,14 +1,10 @@
-# Based on https://github.com/seriouslysean/demo--auto-bump-forked-prs
-
 name: Prepare Version Bump
-
-on:
+'on':
   pull_request:
     types:
       - closed
     branches:
       - main
-
 jobs:
   check-merged:
     runs-on: ubuntu-latest
@@ -35,6 +31,11 @@ jobs:
     outputs:
       version_type: ${{ steps.get.outputs.version_type }}
     steps:
+      # This step requires that the repo has 3 types of version bump labels. Make any adjustments as
+      # needed to ensure that this step accurately parses the bump type.
+      #     - version:patch
+      #     - version:minor
+      #     - version:major
       - name: Get labels
         id: get
         run: |
@@ -48,7 +49,7 @@ jobs:
             exit 1
           fi
 
-          VERSION_TYPE=$(echo "$VERSION_LABELS" | sed 's/^version-//')
+          VERSION_TYPE=$(echo "$VERSION_LABELS" | sed 's/^version://')
           echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
           echo "$VERSION_TYPE" > version.txt
 
@@ -57,7 +58,7 @@ jobs:
         shell: bash
 
       - name: Archive version
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: 'version-${{ github.run_id }}'
           path: version.txt
