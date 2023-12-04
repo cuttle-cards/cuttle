@@ -49,7 +49,7 @@ jobs:
             exit 1
           fi
 
-          VERSION_TYPE=$(echo "$VERSION_LABELS" | sed 's/^version://')
+          VERSION_TYPE=$(echo "$VERSION_LABELS" | sed 's/^version-//')
           echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
           echo "$VERSION_TYPE" > version.txt
 
