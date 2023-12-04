@@ -24,14 +24,14 @@ jobs:
   check-token:
     runs-on: ubuntu-latest
     steps:
-      - name: Check PAT
+      - name: Check GH_PUSH_TOKEN
         run: |
-          if [[ -z "${{ secrets.PAT }}" ]]; then
-            echo "### ❌ PAT Error" >> $GITHUB_STEP_SUMMARY
-            echo "The \`PAT\` secret is not set, which is required for git operations." >> $GITHUB_STEP_SUMMARY
+          if [[ -z "${{ secrets.GH_PUSH_TOKEN }}" ]]; then
+            echo "### ❌ GH_PUSH_TOKEN Error" >> $GITHUB_STEP_SUMMARY
+            echo "The \`GH_PUSH_TOKEN\` secret is not set, which is required for git operations." >> $GITHUB_STEP_SUMMARY
             exit 1
           else
-            echo "### ✅ PAT Found" >> $GITHUB_STEP_SUMMARY
+            echo "### ✅ GH_PUSH_TOKEN Found" >> $GITHUB_STEP_SUMMARY
           fi
         shell: bash
 
@@ -39,52 +39,42 @@ jobs:
     needs: [check-previous-workflow, check-token]
     runs-on: ubuntu-latest
     steps:
-      - name: Wait and download version artifact
+      # No need to retry this logic, the previous workflow will fail if
+      # the artifact isn't uploaded
+      - name: Download version artifact
         uses: actions/github-script@v7
         env:
           WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
         with:
           script: |
-            let attempt_number = 1;
-            const max_attempts = 10;
             const artifact_name = `version-${process.env.WORKFLOW_RUN_ID}`;
-            while (attempt_number <= max_attempts) {
-              console.log(`Attempt ${attempt_number} of ${max_attempts}`);
-              const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                run_id: process.env.WORKFLOW_RUN_ID,
-              });
-              const matchArtifact = artifacts.data.artifacts.find((artifact) =>
-                artifact.name === artifact_name
-              );
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: process.env.WORKFLOW_RUN_ID,
+            });
+            const matchArtifact = artifacts.data.artifacts.find((artifact) =>
+              artifact.name === artifact_name
+            );
 
-              if (matchArtifact) {
-                console.log(`Artifact ${artifact_name} with ID ${matchArtifact.id} is available`);
-                const download = await github.rest.actions.downloadArtifact({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  artifact_id: matchArtifact.id,
-                  archive_format: 'zip',
-                });
-                const fs = require('fs');
-                fs.writeFileSync('./version-artifact.zip', Buffer.from(download.data));
-                const unzip = require('child_process').execSync('unzip -j "version-artifact.zip" "version.txt" -d .');
-                if (!fs.existsSync('version.txt')) {
-                  console.log('### ❌ Failed to extract version.txt');
-                  process.exit(1);
-                }
-                break;
-              } else {
-                console.log(`Artifact ${artifact_name} is not available yet`);
-                if (attempt_number === max_attempts) {
-                  console.log(`### ❌ Artifact ${artifact_name} is not available after ${max_attempts} attempts`);
-                  process.exit(1);
-                }
-                attempt_number++;
-                console.log('Waiting before retrying...');
-                await new Promise(resolve => setTimeout(resolve, 10000));
-              }
+            if (!matchArtifact) {
+              console.log(`### ❌ Artifact ${artifact_name} is not available`);
+              process.exit(1);
+            }
+
+            console.log(`Artifact ${artifact_name} with ID ${matchArtifact.id} is available`);
+            const download = await github.rest.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: matchArtifact.id,
+              archive_format: 'zip',
+            });
+            const fs = require('fs');
+            fs.writeFileSync('./version-artifact.zip', Buffer.from(download.data));
+            const unzip = require('child_process').execSync('unzip -j "version-artifact.zip" "version.txt" -d .');
+            if (!fs.existsSync('version.txt')) {
+              console.log('### ❌ Failed to extract version.txt');
+              process.exit(1);
             }
 
       - name: Read BUMP_TYPE from version file and set as output
@@ -106,7 +96,7 @@ jobs:
       - name: Check out code with token
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GH_PUSH_TOKEN }}
 
       - name: Configure Git
         run: |
@@ -149,7 +139,7 @@ jobs:
           tag_name: ${{ needs.bump-and-push-version.outputs.VERSION }}
           name: ${{ needs.bump-and-push-version.outputs.VERSION }}
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
 
       - name: Release Summary
         run: |
