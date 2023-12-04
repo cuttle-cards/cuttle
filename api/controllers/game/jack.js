@@ -44,24 +44,24 @@ module.exports = function (req, res) {
                   return Promise.all([game, ...updatePromises]);
                 }
                 return Promise.reject({
-                  message: 'That card is frozen! You must wait a turn to play it',
+                  message: 'game.snackbar.global.cardFrozen',
                 });
               }
               return Promise.reject({
-                message: 'You cannot use a Jack while your opponent has a Queen.',
+                message: 'game.snackbar.jack.noJackWithQueen',
               });
             }
             return Promise.reject({
-              message: "You can only play a Jack on an opponent's Point card.",
+              message: 'game.snackbar.jack.stealOnlyPointCards',
             });
           }
           return Promise.reject({
-            message: "You can only use a Jack to steal an opponent's Point card",
+            message: 'game.snackbar.jack.stealOnlyPointCards',
           });
         }
-        return Promise.reject({ message: 'You can only play a card that is in your hand' });
+        return Promise.reject({ message: 'game.snackbar.global.playFromHand' });
       }
-      return Promise.reject({ message: "It's not your turn" });
+      return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
     }) //End changeAndSave()
     .then(function populateGame(values) {
       const [game] = values;
