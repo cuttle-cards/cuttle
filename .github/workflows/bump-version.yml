@@ -24,14 +24,14 @@ jobs:
   check-token:
     runs-on: ubuntu-latest
     steps:
-      - name: Check PAT
+      - name: Check GH_PUSH_TOKEN
         run: |
-          if [[ -z "${{ secrets.PAT }}" ]]; then
-            echo "### ❌ PAT Error" >> $GITHUB_STEP_SUMMARY
-            echo "The \`PAT\` secret is not set, which is required for git operations." >> $GITHUB_STEP_SUMMARY
+          if [[ -z "${{ secrets.GH_PUSH_TOKEN }}" ]]; then
+            echo "### ❌ GH_PUSH_TOKEN Error" >> $GITHUB_STEP_SUMMARY
+            echo "The \`GH_PUSH_TOKEN\` secret is not set, which is required for git operations." >> $GITHUB_STEP_SUMMARY
             exit 1
           else
-            echo "### ✅ PAT Found" >> $GITHUB_STEP_SUMMARY
+            echo "### ✅ GH_PUSH_TOKEN Found" >> $GITHUB_STEP_SUMMARY
           fi
         shell: bash
 
@@ -96,7 +96,7 @@ jobs:
       - name: Check out code with token
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GH_PUSH_TOKEN }}
 
       - name: Configure Git
         run: |
@@ -139,7 +139,7 @@ jobs:
           tag_name: ${{ needs.bump-and-push-version.outputs.VERSION }}
           name: ${{ needs.bump-and-push-version.outputs.VERSION }}
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
 
       - name: Release Summary
         run: |
