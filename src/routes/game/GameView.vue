@@ -762,8 +762,8 @@ export default {
       this.snackBarMessage = '';
       this.showSnackbar = false;
     },
-    handleError(err) {
-      this.snackBarMessage = err;
+    handleError(messageKey) {
+      this.snackBarMessage = this.t(messageKey);
       this.showSnackbar = true;
       this.clearSelection();
     },
@@ -853,19 +853,15 @@ export default {
           this.gameStore
             .requestDrawCard()
             .then(this.clearSelection)
-            .catch((err) => {
-              this.snackBarMessage = err;
-              this.showSnackbar = true;
-              this.clearSelection();
+            .catch((messageKey) => {
+              this.handleError(messageKey);
             });
         } else {
           this.gameStore
             .requestPass()
             .then(this.clearSelection)
-            .catch((err) => {
-              this.snackBarMessage = err;
-              this.showSnackbar = true;
-              this.clearSelection();
+            .catch((messageKey) => {
+              this.handleError(messageKey);
             });
         }
       }
