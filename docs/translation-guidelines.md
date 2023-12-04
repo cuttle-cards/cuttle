@@ -9,7 +9,7 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 
 ## Definition of physical entities
 
-- **Point card** :  Any card with a numeric value (1 to ten).
+- **Point card** :  Any card with a numeric value (1 to ten) that's been played to the field for points 
 - **Royal** :  Any card with a figure.  King, Queen or Jack.
 - **Deck** :  The pile of cards that have not been picked or distributed.
 - **Scrap pile** :  The pile of discarded cards.
@@ -23,7 +23,7 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 - **Scuttle** :  When a player targets and scraps an opponent's point card.  Name and verb.
 - **One-off** :  The special capacity of a number card.  One-off refers to the idea of it being a one time action.  Royals don't have one-offs. Their capacity don't have a specific name.
 - **To target** :  To choose an opponent's card that will undergo an attack.
-- **To discard** :  To take a card, usually from your hand, and put it in the scrap pile.
+- **To discard** :  To take a card from your hand, and put it in the scrap pile.
 - **To Draw** :  To take a card from the top of the deck.
 - **Stalemate** :  The game has reached a dead end, it then ends in a tie.
 - **Season** :  A period of time during which the stats are compiled.
@@ -38,6 +38,6 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 - **To srap a card** :  To get rid of a card by putting it in the scrap pile.  
 - **Deck, hand, discard, pick, royal,...** :  Most language already have a specific terminology for card games.  These words should be used.
 - **One-off** :  This refers to the idea of an action taking place once with no persistent effect.  If the target language has such a word/expression, it may be used. 
-  A basic literal translation (with Google translate) might sound weird.  In that case, it can be translated to something like "Capacity, Effect, tactical, super power, ...". 
+  A basic literal translation (with Google translate) of one-off might sound weird.  In that case, it can be translated to something like "Ability, Effect, super power, ...". 
 - **Glasses eight** :  The idea is that a sideways 8 looks like a pair of glasses and glasses give you good vision, therefore allowing you to see you opponent's hand. Ideally this term should be translated to a word for glasses, but if that sounds unnatural in the target language, consider alternatives that convey that this is a card that grants vision
 - **Field** :  The field is the area of cards that are in play. Its literal translation might not be of good use, depending on the language.  In French, for example, it wouldn't make much sense to use it. If field doesn't work, use a word that conveys that this is the active area where cards are played.
