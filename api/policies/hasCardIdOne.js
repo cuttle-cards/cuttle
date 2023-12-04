@@ -17,5 +17,5 @@ module.exports = function (req, res, next) {
 
   // User is not allowed
   // (default res.forbidden() behavior can be overridden in `config/403.js`)
-  return res.forbidden({ message: 'You must select at least one card' });
+  return res.badRequest({ message: 'You must select at least one card' });
 };

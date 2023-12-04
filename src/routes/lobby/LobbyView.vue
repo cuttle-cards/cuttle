@@ -10,6 +10,8 @@
       <h5>{{ gameName }}</h5>
       <v-row>
         <v-col md="4" cols="12">
+          <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
+          <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
           <LobbyPlayerIndicator
             :player-username="authStore.username"
             :player-ready="iAmReady"
@@ -91,6 +93,7 @@
       }`"
       color="surface-1"
       data-cy="edit-snackbar"
+      @clear="gameStore.showIsRankedChangedAlert = false"
     />
   </div>
 </template>
@@ -127,6 +130,9 @@ export default {
     },
     gameName() {
       return this.gameStore.name;
+    },
+    opponentUsername() {
+      return this.gameStore?.opponentUsername;
     },
     iAmReady() {
       return this.gameStore.myPNum === 0 ? this.gameStore.p0Ready : this.gameStore.p1Ready;

@@ -1,11 +1,7 @@
 import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
-import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME } from '@/router';
-import {
-  getLocalStorage,
-  setLocalStorage,
-  LS_IS_RETURNING_USER_NAME,
-} from '_/utils/local-storage-utils.js';
+import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE } from '@/router';
+import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '_/utils/local-storage-utils.js';
 import { useGameStore } from '@/stores/game';
 
 // TODO Figure out how to reconsolidate this with backend
@@ -66,8 +62,7 @@ export const useAuthStore = defineStore('auth', {
             if (jwres.statusCode === 200) {
               const gameStore = useGameStore();
               this.mustReauthenticate = false;
-              const pNum =
-                res.pNum ?? getPlayerPnumByUsername(gameStore.players, this.username);
+              const pNum = res.pNum ?? getPlayerPnumByUsername(gameStore.players, this.username);
 
               gameStore.myPNum = pNum;
               return resolve(res);
@@ -79,7 +74,6 @@ export const useAuthStore = defineStore('auth', {
       });
     },
     async requestStatus(route) {
-      
       // If we've authenticated before, fast fail
       if (this.authenticated !== null) {
         return;
@@ -88,6 +82,7 @@ export const useAuthStore = defineStore('auth', {
       const { name } = route;
       const isLobby = name === ROUTE_NAME_LOBBY;
       const isGame = name === ROUTE_NAME_GAME;
+      const isSpectating = name === ROUTE_NAME_SPECTATE;
 
       try {
         const response = await fetch('/user/status', {
@@ -116,8 +111,14 @@ export const useAuthStore = defineStore('auth', {
         //     - `gameService.populateGame` is called
         //     - `Game.subscribe` is called
         //     - `Game.publish` is called
+
+        const gameStore = useGameStore();
+        if (!gameId && isSpectating) {
+          const { gameId } = route.params;
+          gameStore.requestSpectate(Number(gameId));
+        }
+
         if (gameId && (isGame || isLobby)) {
-          const gameStore = useGameStore();
           await this.requestReauthenticate({ username }).then(({ game }) => {
             gameStore.updateGame(game);
           });

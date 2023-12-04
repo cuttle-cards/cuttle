@@ -42,21 +42,21 @@
 
     <template #actions>
       <v-btn
-        data-cy="decline-counter-resolve"
-        color="surface-1"
-        variant="outlined"
-        class="mr-4"
-        @click="resolve"
-      >
-        {{ t('game.resolve') }}
-      </v-btn>
-      <v-btn
         data-cy="counter"
-        color="surface-1"
+        color="newPrimary"
         variant="flat"
         @click="$emit('choose-to-counter')"
       >
         {{ t('game.dialogs.counterDialogs.counter') }}
+      </v-btn>
+      <v-btn
+        data-cy="decline-counter-resolve"
+        color="surface-1"
+        variant="flat"
+        class="ml-4"
+        @click="resolve"
+      >
+        {{ t('game.resolve') }}
       </v-btn>
     </template>
   </BaseDialog>

@@ -58,6 +58,22 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "screenshots" : [
+    {
+      "src": "/cuttleScreenshotWide.jpg",
+      "sizes": "1280x738",
+      "type": "image/gif",
+      "form_factor": "wide",
+      "label": "Gameview"
+    },
+    {
+      "src": "/cuttleScreenshot.jpg",
+      "sizes": "680x559",
+      "type": "image/gif",
+      "form_factor": "narrow",
+      "label": "Gameview"
+    }
   ]
 }
 

@@ -36,6 +36,7 @@
         />
         <v-switch
           v-model="isRanked"
+          class="d-flex align-center"
           :label="isRanked ? t('global.ranked') : t('global.casual')"
           data-cy="create-game-ranked-switch"
           color="surface-2"
