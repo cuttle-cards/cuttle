@@ -28,6 +28,7 @@ export async function handleInGameEvents(evData) {
       gameStore.setGameOver(evData.victory);
     }, 1000);
   }
+  gameStore.lastEventChange = evData.change;
   switch (evData.change) {
     case SocketEvent.READY: {
       gameStore.updateReady(evData.pNum);

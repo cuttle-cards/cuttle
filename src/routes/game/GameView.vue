@@ -420,6 +420,7 @@ import { mapStores } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import SocketEvent from '_/types/SocketEvent';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -544,6 +545,7 @@ export default {
     ///////////////////////////
     showScrapChoice() {
       return (
+        this.gameStore.lastEventChange === SocketEvent.RESOLVE_THREE &&
         this.gameStore.lastEventCardChosen &&
         this.gameStore.scrap?.some(({ id }) => id === this.gameStore.lastEventCardChosen.id)
       );
