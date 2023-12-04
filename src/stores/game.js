@@ -537,7 +537,7 @@ export const useGameStore = defineStore('game', {
         };
       }
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/resolveFour', reqData, function (res, jwres) {
+        io.socket.get('/game/resolveFour', reqData, (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
