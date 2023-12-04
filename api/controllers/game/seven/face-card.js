@@ -43,14 +43,14 @@ module.exports = function (req, res) {
             return Promise.all([game, ...updatePromises]);
           }
           return Promise.reject({
-            message: 'You can only play Kings, Queens, and Eights as Face Cards, without a TARGET',
+            message: 'game.snackbar.faceCards.withoutTarget',
           });
         }
         return Promise.reject({
-          message: 'You must pick a card from the deck to play when resolving a seven',
+          message: 'game.snackbar.seven.pickAndPlay',
         });
       }
-      return Promise.reject({ message: "It's not your turn" });
+      return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
     })
     .then(function populateGame(values) {
       const [game] = values;

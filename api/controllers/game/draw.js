@@ -7,16 +7,16 @@ module.exports = function (req, res) {
       if (game.topCard) {
         return Promise.resolve(game);
       }
-      return Promise.reject({ message: 'The deck is empty; you cannot draw' });
+      return Promise.reject({ message: 'game.snackbar.draw.deckIsEmpty' });
     }
-    return Promise.reject({ message: "It's not your turn." });
+    return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
   });
 
   const pUser = userService.findUser({ userId: req.session.usr }).then(function handLimit(user) {
     if (user.hand.length < 8) {
       return Promise.resolve(user);
     }
-    return Promise.reject({ message: 'You are at the hand limit; you cannot draw.' });
+    return Promise.reject({ message: 'game.snackbar.draw.handLimit' });
   });
 
   // Make changes after finding records
