@@ -72,3 +72,46 @@ describe('Localization', () => {
     checkLobbyTranslation(fr);
   });
 });
+
+describe('language files', () => {
+  function extractKeys(obj, keyList = []) {
+    for (let key in obj) {
+      if (typeof obj[key] === 'object' && obj[key] !== null) {
+        extractKeys(obj[key], keyList);
+      } else {
+        keyList.push(key);
+      }
+    }
+    return keyList;
+  }
+
+  let enKeys = extractKeys(en).sort();
+  let frKeys = extractKeys(fr).sort();
+  let esKeys = extractKeys(es).sort();
+
+  it('French should have the same keys', () => {
+    for(let i = 0; i < enKeys.length; i++) {
+      expect(enKeys[i]).to.eql(frKeys[i]);
+    }
+
+  });
+
+  it('French should have no empty strings', () => {
+    frKeys.forEach((key) => {
+      expect(fr[key]).to.not.eql('');
+    });
+
+  }); 
+
+  it('Spanish should have the same keys', () => {
+    for(let i = 0; i < enKeys.length; i++) {
+      expect(enKeys[i]).to.eql(esKeys[i]);
+    }
+  });
+
+  it('Spanish should have no empty strings', () => {
+    frKeys.forEach((key) => {
+      expect(es[key]).to.not.eql('');
+    });
+  });
+});
