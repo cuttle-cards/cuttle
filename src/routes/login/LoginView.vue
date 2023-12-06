@@ -298,10 +298,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.loginViewContainer {
-  background-color: #fff4d7;
-}
-
 .welcomeContainer {
   min-width: 100vw;
   min-height: 100vh;
