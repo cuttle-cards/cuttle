@@ -368,7 +368,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.window()
       .its('cuttle.gameStore')
       .then((store) => store.requestSubscribe(this.gameSummary.gameId));
-    cy.vueRoute('/lobby/${this.gameSummary.gameId}');
+    cy.vueRoute(`/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy=ready-button]').click();
     // Test that game started
     assertGameStarted();
