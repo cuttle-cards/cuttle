@@ -93,14 +93,12 @@ describe('language files', () => {
     for(let i = 0; i < enKeys.length; i++) {
       expect(enKeys[i]).to.eql(frKeys[i]);
     }
-
   });
 
   it('French should have no empty strings', () => {
     frKeys.forEach((key) => {
       expect(fr[key]).to.not.eql('');
     });
-
   }); 
 
   it('Spanish should have the same keys', () => {
