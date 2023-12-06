@@ -177,9 +177,9 @@ export const useGameStore = defineStore('game', {
       this.lastEventChange = newGame.lastEvent?.change ?? null;
       this.lastEventOneOffRank = newGame.lastEvent?.oneOff?.rank ?? null;
       this.lastEventTargetType = newGame.lastEvent?.oneOffTargetType ?? null;
-      this.cardChosenFromScrap = newGame.lastEvent?.chosenCard ?? null;
-      this.playerChoosingFromScrap = newGame.lastEvent?.pNum === this.myPNum ?? null;
-      this.discardedCards = newGame.lastEvent?.discardedCards ?? null;
+      this.lastEventCardChosen = newGame.lastEvent?.chosenCard ?? null;
+      this.lastEventPlayerChoosing = newGame.lastEvent?.pNum === this.myPNum ?? null;
+      this.lastEventDiscardedCards = newGame.lastEvent?.discardedCards ?? null;
       this.waitingForOpponentToStalemate = false;
       this.id = newGame.id ?? this.id;
       this.turn = newGame.turn ?? this.turn;
@@ -537,7 +537,7 @@ export const useGameStore = defineStore('game', {
         };
       }
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/resolveFour', reqData, function (res, jwres) {
+        io.socket.get('/game/resolveFour', reqData, (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
