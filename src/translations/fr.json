@@ -209,6 +209,48 @@
     },
     "history": {
       "title": "Historique"
+    },
+    "snackbar": {
+      "global": {
+        "notYourTurn": "Ce n'est pas votre tour !",
+        "cardFrozen": "Cette carte est gelée ! Vous ne pourrez la jouer qu'au prochain tour.",
+        "playFromHand": "Vous ne pouez jouer que des cartes de votre main.",
+        "blockedByQueen": "La Dame de votre adversaire empêche ses autres cartes d'être ciblées.",
+        "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame."
+      },
+      "seven": {
+        "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte du paquet."
+      },
+      "draw": {
+        "deckIsEmpty": "Le paquet est vide, voune pouvez pas piocher.",
+        "handLimit": "Votre limite de carte en main est atteinte !"
+      },
+      "faceCards": {
+        "withoutTarget": "Les Rois, Dames et Huits sont les seules figures qui peuvent être joués sans cibler une carte."
+      },
+      "points": {
+        "onlyPointCards": "Les cartes de l'As au Dix ne peuvent être jouées que pour les points.",
+        "numberOnlyForPoints": "Les cartes numérales ne peuvent être jouées que pour les points."
+      },
+      "jack": {
+        "stealOnlyWithJack": "Vous ne pouvez voler une carte points qu'avec un Valet.",
+        "stealOnlyPointCards": "Seule les cartes à points peuvent être volées.",
+        "noJackWithQueen": "You cannot use a Jack while your opponent has a Queen."
+      },
+      "scuttle": {
+        "rankTooLow": "Pour faire un scuttle, votre carte doit être d'un rang ou une couleur plus élevé que la carte ciblée. (trèfle < carreau < coeur < pique)",
+        "mustUsePointCard": "Les scuttle ne se font qu'avec des cartes à points.",
+        "mustTargetPointCard": "Les scuttles ne peuvent cibler que les cartes à points."
+      },
+      "oneOffs": {
+        "scrapIsEmpty": "La capacité du Trois n'est possible que si la corbeille n'est pas vide.",
+        "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main.",
+        "sevenWithEmptyDeck": "La capacité du Sept n'est possible que si le paquet n'est pas vide.",
+        "sevenWithOneCardInDeck": "Impossible de jouer la capacité du Sept si c'était la dernière carte du paquet.",
+        "cantPlayWithoutATarget": "La capacité de cette nécessite de cibler une carte.",
+        "onlyTwoOrNine": "La capacité du Deux et du Neuf nécessite de cibler une carte.",
+        "oneOffInPlay": "Une capacité est en cours d'exécution, vous ne pouvez jouer qu'un deux pour contrer."
+      }
     }
   },
   "home": {

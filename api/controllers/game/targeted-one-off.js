@@ -39,12 +39,12 @@ module.exports = function (req, res) {
                     break;
                   }
                   return Promise.reject({
-                    message: "Your opponent's queen prevents you from targeting their other cards",
+                    message: 'game.snackbar.global.blockedByQueen',
                   });
                 default:
                   return Promise.reject({
                     message:
-                      'You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen',
+                      'game.snackbar.global.blockedByMultipleQueens',
                   });
               }
               if (player.frozenId !== card.id) {
@@ -78,20 +78,20 @@ module.exports = function (req, res) {
                 return Promise.all([game, ...updatePromises]);
               }
               return Promise.reject({
-                message: 'That card is frozen! You must wait a turn to play it',
+                message: 'game.snackbar.global.cardFrozen',
               });
             }
             return Promise.reject({
-              message: 'You can only play a 2, or a 9 as targeted one-offs.',
+              message: 'game.snackbar.oneOffs.onlyTwoOrNine',
             });
           }
-          return Promise.reject({ message: 'You cannot play a card that is not in your hand' });
+          return Promise.reject({ message: 'game.snackbar.global.playFromHand' });
         }
         return Promise.reject({
-          message: 'There is already a one-off in play; you cannot play any card, except a two to counter.',
+          message: 'game.snackbar.oneOffs.oneOffInPlay',
         });
       }
-      return Promise.reject({ message: "It's not your turn." });
+      return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
     }) //End changeAndSave()
     .then(function populateGame(values) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);
