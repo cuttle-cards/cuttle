@@ -89,6 +89,12 @@ describe('language files', () => {
   let frKeys = extractKeys(fr).sort();
   let esKeys = extractKeys(es).sort();
 
+  it('English should have no empty strings', () => {
+    enKeys.forEach((key) => {
+      expect(en[key]).to.not.eql('');
+    });
+  });
+
   it('French should have the same keys', () => {
     for(let i = 0; i < enKeys.length; i++) {
       expect(enKeys[i]).to.eql(frKeys[i]);
