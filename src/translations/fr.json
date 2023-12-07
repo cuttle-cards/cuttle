@@ -229,7 +229,6 @@
         "withoutTarget": "Les Rois, Dames et Huits sont les seules figures qui peuvent être joués sans cibler une carte."
       },
       "points": {
-        "onlyPointCards": "Les cartes de l'As au Dix ne peuvent être jouées que pour les points.",
         "numberOnlyForPoints": "Les cartes numérales ne peuvent être jouées que pour les points."
       },
       "jack": {

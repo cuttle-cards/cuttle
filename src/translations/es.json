@@ -228,7 +228,6 @@
         "withoutTarget": "Only Kings, Queens, and Eights may be played as Face Cards without a target"
       },
       "points": {
-        "onlyPointCards": "You can only play Ace - Ten cards as points",
         "numberOnlyForPoints": "You can only play a number card as points."
       },
       "jack": {
