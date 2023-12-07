@@ -75,13 +75,13 @@ describe('Localization', () => {
 
 describe('language files', () => {
   function extractKeys(obj, keyList = []) {
-    for (let key in obj) {
+    Object.keys(obj).forEach(key => {
       if (typeof obj[key] === 'object' && obj[key] !== null) {
         extractKeys(obj[key], keyList);
       } else {
         keyList.push(key);
       }
-    }
+    });
     return keyList;
   }
 
