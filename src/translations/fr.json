@@ -13,7 +13,8 @@
     "ranked": "Classée",
     "casual": "Classique",
     "your": "ton",
-    "close": "Fermer"
+    "close": "Fermer",
+    "click": "Cliquez sur"
   },
   "login": {
     "noAccount": "Vous n'avez pas de compte?",
@@ -393,7 +394,6 @@
     "weeklyRankings": "Classements hebdomadaires",
     "season": {
       "champions": "Champions de la saison",
-      "click": "Cliquez sur",
       "tournamentBracket": "ici pour voir le tableau officiel du tournoi",
       "tournamentFootage": "ici pour regarder les images officielles du tournoi",
       "playByPlay": "avec commentaire play-by-play."

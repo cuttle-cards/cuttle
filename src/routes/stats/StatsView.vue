@@ -57,13 +57,13 @@
             />
           </div>
           <p v-if="selectedSeason && selectedSeason.bracketLink" class="text-body-1">
-            {{ t('stats.season.click') }}
+            {{ t('global.click') }}
             <a :href="selectedSeason.bracketLink" target="_blank" data-cy="tournament-bracket-link">
               {{ t('stats.season.tournamentBracket') }}
             </a>
           </p>
           <p v-if="selectedSeason && selectedSeason.footageLink" class="text-body-1">
-            {{ t('stats.season.click') }}
+            {{ t('global.click') }}
             <a :href="selectedSeason.footageLink" target="_blank" data-cy="tournament-footage-link">
               {{ t('stats.season.tournamentFootage') }}
             </a>

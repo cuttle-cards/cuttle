@@ -13,7 +13,8 @@
     "ranked": "Ranked",
     "casual": "Casual",
     "your": "your",
-    "close": "Close"
+    "close": "Close",
+    "click": "Click"
   },
   "login": {
     "noAccount": "Don't have an account?",
@@ -393,7 +394,6 @@
     "weeklyRankings": "Weekly Rankings",
     "season": {
       "champions": "Season Champions",
-      "click": "Click",
       "tournamentBracket": "here to see the official tournament bracket",
       "tournamentFootage": "here to watch the official tournament footage",
       "playByPlay": "with play-by-play commentary."

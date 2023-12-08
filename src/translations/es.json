@@ -13,7 +13,8 @@
     "ranked": "Competitivo",
     "casual": "Amistoso",
     "your": "tu",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "click": "Hacer clic"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
@@ -392,7 +393,6 @@
     "weeklyRankings": "Clasificaciones semanales",
     "season": {
       "champions": "Campeones de temporada",
-      "click": "Hacer clic",
       "tournamentBracket": "aquí para ver el cuadro oficial del torneo",
       "tournamentFootage": "aquí para ver las imágenes oficiales del torneo",
       "playByPlay": "con comentarios jugada por jugada."
