@@ -4,35 +4,35 @@ const Result = require('../../types/Result.es5');
 /////////////
 // Helpers //
 /////////////
-/**
- * Find the season in which a given timestamp occurred using binary search
- * @param {*} sortedSeasons - Seasons sorted (OLDEST FIRST)
- * @param {*} timeStamp - Desired time in millis since epoch
- * @returns the season | null if none is found
- */
-function getSeasonFromTimeStamp(sortedSeasons, timeStamp) {
-  if (sortedSeasons.length <= 0) {
-    return null;
-  }
-  let minIndex = 0;
-  let maxIndex = sortedSeasons.length - 1;
-  let currentIndex = Math.floor((minIndex + maxIndex) / 2);
-  // let currentSeason = sortedSeasons[currentIndex];
-  while (minIndex <= maxIndex) {
-    const currentSeason = sortedSeasons[currentIndex];
-    if (timeStamp >= currentSeason.startTime && timeStamp <= currentSeason.endTime) {
-      return currentSeason;
+
+function computeUsageStats(games, season) {
+  games.forEach((game) => {
+    const weekNum = dayjs(game.updatedAt).diff(season.startTime, 'week');
+    season.gameCounts[weekNum]++;
+    season.uniquePlayersPerWeek[weekNum].add(game.p0);
+    season.uniquePlayersPerWeek[weekNum].add(game.p1);
+  });
+}
+
+function updateRankingsFromMatches(users, matches, season) {
+  const idToUserMap = new Map();
+  users.forEach((user) => {
+    idToUserMap.set(user.id, user);
+  });
+
+  matches.forEach((match) => {
+    if (!match.endTime || !match.winner) {
+      return;
     }
-    // Target time is before current season
-    if (timeStamp < currentSeason.startTime) {
-      minIndex = currentIndex + 1;
-      // Target time is after current season
-    } else {
-      maxIndex = currentIndex - 1;
+    const player1 = idToUserMap.get(match.player1);
+    const player2 = idToUserMap.get(match.player2);
+    if (player1 && player2) {
+      // Player 1
+      addMatchToRankings(season, match, player1, player2);
+      // Player 2
+      addMatchToRankings(season, match, player2, player1);
     }
-    currentIndex = currentIndex = Math.floor((minIndex + maxIndex) / 2);
-  }
-  return null;
+  });
 }
 
 /**
@@ -62,6 +62,7 @@ function getSeasonFromTimeStamp(sortedSeasons, timeStamp) {
  * @param {User} player which player's record to update
  * @param {User} opponent // The opponent in the match
  */
+
 function addMatchToRankings(season, match, player, opponent) {
   // Calculate which week match counts towards
   const weekNum = dayjs(match.startTime).diff(dayjs(season.startTime), 'week') + 1;
@@ -136,51 +137,56 @@ function transformSeasonToDTO(season) {
 }
 
 module.exports = {
-  getStats: function (_req, res) {
-    // Find records
-    const seasons = sails.helpers.getSeasonsWithoutRankings();
-    const matches = Match.find({});
-    const users = User.find({});
-    const games = Game.find({ status: gameService.GameStatus.FINISHED }); // Only find completed games
-    return Promise.all([seasons, matches, users, games]).then(([seasons, matches, users, games]) => {
-      const idToUserMap = new Map();
-      users.forEach((user) => {
-        idToUserMap.set(user.id, user);
+  getCurrentStats: async function (_req, res) {
+    try {
+      const seasons = await sails.helpers.getSeasonsWithoutRankings();
+      const [currentSeason] = seasons;
+      const allUsers = User.find({});
+      const currentSeasonMatches = Match.find({
+        startTime: { '>': currentSeason.startTime },
+        endTime: { '<': currentSeason.endTime },
       });
-
-      // Add each match to the appropriate rankings
-      matches.forEach((match) => {
-        // Only count finished matches
-        if (match.endTime && match.winner) {
-          const relevantSeason = getSeasonFromTimeStamp(seasons, match.startTime);
-          if (!relevantSeason) {
-            return;
-          }
-          const player1 = idToUserMap.get(match.player1);
-          const player2 = idToUserMap.get(match.player2);
-          if (player1 && player2) {
-            // Player 1
-            addMatchToRankings(relevantSeason, match, player1, player2);
-            // Player 2
-            addMatchToRankings(relevantSeason, match, player2, player1);
-          }
-        }
+      const currentSeasonGames = Game.find({
+        status: gameService.GameStatus.FINISHED,
+        updatedAt: { '>': currentSeason.startTime, '<': currentSeason.endTime },
       });
-
-      games.forEach((game) => {
-        const relevantSeason = getSeasonFromTimeStamp(seasons, game.updatedAt);
-        if (!relevantSeason) {
-          return;
-        }
-
-        const weekNum = dayjs(game.updatedAt).diff(relevantSeason.startTime, 'week');
-
-        relevantSeason.gameCounts[weekNum]++;
-        relevantSeason.uniquePlayersPerWeek[weekNum].add(game.p0);
-        relevantSeason.uniquePlayersPerWeek[weekNum].add(game.p1);
+      const [users, matches, games] = await Promise.all([allUsers, currentSeasonMatches, currentSeasonGames]);
+      updateRankingsFromMatches(users, matches, currentSeason);
+      computeUsageStats(games, currentSeason);
+      seasons[0] = transformSeasonToDTO(currentSeason);
+      return res.ok(seasons);
+    } catch (err) {
+      return res.badRequest(err);
+    }
+  },
+  getSeasonStats: async function (req, res) {
+    const seasonId = parseInt(req.params.seasonId);
+    try {
+      const [requestedSeason] = await sails.helpers.getSeasonsWithoutRankings(seasonId);
+      const allUsers = User.find({});
+      const requestedSeasonMatches = Match.find({
+        startTime: { '>': requestedSeason.startTime },
+        endTime: { '<': requestedSeason.endTime },
       });
-      // Format seasons (convert maps to arrays and objects)
-      return res.ok(seasons.map(transformSeasonToDTO));
-    });
+      const requestedSeasonGames = Game.find({
+        status: gameService.GameStatus.FINISHED,
+        updatedAt: { '>': requestedSeason.startTime, '<': requestedSeason.endTime },
+      });
+      const [users, matches, games] = await Promise.all([
+        allUsers,
+        requestedSeasonMatches,
+        requestedSeasonGames,
+      ]);
+      updateRankingsFromMatches(users, matches, requestedSeason);
+      computeUsageStats(games, requestedSeason);
+      const updatedSeason = transformSeasonToDTO(requestedSeason);
+      return res.ok({
+        gameCounts: updatedSeason.gameCounts,
+        rankings: updatedSeason.rankings,
+        uniquePlayersPerWeek: updatedSeason.uniquePlayersPerWeek,
+      });
+    } catch (err) {
+      return res.badRequest(err);
+    }
   },
 };

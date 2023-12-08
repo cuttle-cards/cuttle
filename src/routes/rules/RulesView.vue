@@ -15,10 +15,10 @@
       <v-row class="flex-column align-start mt-5">
         <div>
           <h1 class="gradient-text">
-            {{ t('rules.rulesTitle') }}
+            {{ t('rules.cuttleTitle') }}
           </h1>
           <p class="d-block">
-            {{ t('rules.rulesText') }}
+            {{ t('rules.cuttleText') }}
           </p>
           <div class="d-flex justify-center mt-5">
             <v-btn to="/" color="primary" data-cy="top-home-button">
@@ -31,10 +31,12 @@
       <!-- Tutorial -->
       <v-row class="flex-column align-start mt-5">
         <h1 class="gradient-text">
-          {{ t('rules.tutorialTitle') }}
+          {{ t('rules.rulesTitle') }}
         </h1>
         <p>
-          {{ t('rules.tutorialText') }}
+          {{ t('rules.rulesReadText') }} 
+          <a href="/img/cuttle_rules.pdf" target="_blank"> Cuttle Cheestsheet </a>
+          {{ t('rules.rulesWatchText') }}
         </p>
         <div class="w-50 my-4 mx-auto">
           <BaseVideo source="https://www.youtube.com/embed/qOqkNbhMdsI" />
@@ -73,7 +75,15 @@
           sm="12"
           class="my-4"
         >
-          <RulePreview v-bind="rule" ref="preview" @animate="handleAnimate" />
+          <RulePreview
+            ref="preview" 
+            :title="t(rule.title)" 
+            :description="t(rule.description)"
+            :animated-img="rule.animatedImg"
+            :static-img="rule.staticImg"
+            :icon="rule.icon"
+            @animate="handleAnimate" 
+          />
         </v-col>
       </v-row>
 
@@ -84,7 +94,7 @@
             size="x-large"
             color="black"
             class="mr-4"
-            icon="mid-crown"
+            icon="mdi-crown"
             aria-label="crown icon"
             aria-hidden="false"
             role="img"
@@ -110,7 +120,15 @@
           sm="12"
           class="my-4"
         >
-          <RulePreview v-bind="rule" ref="preview" @animate="handleAnimate" />
+          <RulePreview
+            ref="preview"
+            :title="t(rule.title)"
+            :description="t(rule.description)"
+            :animated-img="rule.animatedImg"
+            :static-img="rule.staticImg"
+            :icon="rule.icon"
+            @animate="handleAnimate"
+          />
         </v-col>
       </v-row>
 
@@ -147,7 +165,15 @@
           sm="12"
           class="my-4"
         >
-          <RulePreview v-bind="rule" ref="preview" @animate="handleAnimate" />
+          <RulePreview
+            ref="preview"
+            :title="t(rule.title)"
+            :description="t(rule.description)"
+            :animated-img="rule.animatedImg"
+            :static-img="rule.staticImg"
+            :icon="rule.icon"
+            @animate="handleAnimate"
+          />
         </v-col>
       </v-row>
 
@@ -298,16 +324,16 @@ export default {
       // First Row
       [
         {
-          title: this.$t('rules.draw'),
+          title: 'rules.draw',
           icon: 'cards-playing-spade-multiple',
-          description: this.$t('rules.drawDescription'),
+          description: 'rules.drawDescription',
           staticImg: '/img/game/cuttle-board.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/draw.gif?raw=true',
         },
         {
-          title: this.$t('rules.points'),
+          title: 'rules.points',
           icon: 'numeric',
-          description: this.$t('rules.pointsDescription'),
+          description: 'rules.pointsDescription',
           staticImg: '/img/game/cuttle-points.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/points.gif?raw=true',
         },
@@ -315,17 +341,17 @@ export default {
       // Second Row
       [
         {
-          title: this.$t('rules.scuttle'),
+          title: 'rules.scuttle',
           icon: 'skull-crossbones',
-          description: this.$t('rules.scuttleDescription'),
+          description: 'rules.scuttleDescription',
           staticImg: '/img/game/cuttle-scuttle.png',
           animatedImg:
             'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/scuttling.gif?raw=true',
         },
         {
-          title: this.$t('rules.royal'),
+          title: 'rules.royal',
           icon: 'crown',
-          description: this.$t('rules.royalDescription'),
+          description: 'rules.royalDescription',
           staticImg: '/img/game/cuttle-king.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
         },
@@ -333,16 +359,16 @@ export default {
       // Third Row
       [
         {
-          title: this.$t('rules.oneoff'),
+          title: 'rules.oneoff',
           icon: 'delete',
-          description: this.$t('rules.oneoffDescription'),
+          description: 'rules.oneoffDescription',
           staticImg: '/img/game/cuttle-one-off-six.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/six.gif?raw=true',
         },
         {
-          title: this.$t('rules.glasses'),
+          title: 'rules.glasses',
           icon: 'sunglasses',
-          description: this.$t('rules.glassesDescription'),
+          description: 'rules.glassesDescription',
           staticImg: '/img/game/cuttle-glasses.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/glasses.gif?raw=true',
         },
@@ -351,25 +377,25 @@ export default {
     this.royals = [
       [
         {
-          title: this.$t('rules.royals.king'),
+          title: 'rules.royals.king',
           icon: 'crown',
-          description: this.$t('rules.royals.kingDescription'),
+          description: 'rules.royals.kingDescription',
           staticImg: '/img/game/cuttle-king.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
         },
         {
-          title: this.$t('rules.royals.queen'),
+          title: 'rules.royals.queen',
           icon: 'crown',
-          description: this.$t('rules.royals.queenDescription'),
+          description: 'rules.royals.queenDescription',
           staticImg: '/img/game/cuttle-queen.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/queen.gif?raw=true',
         },
       ],
       [
         {
-          title: this.$t('rules.royals.jack'),
+          title: 'rules.royals.jack',
           icon: 'crown',
-          description: this.$t('rules.royals.jackDescription'),
+          description: 'rules.royals.jackDescription',
           staticImg: '/img/game/cuttle-jack.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
         },
@@ -378,73 +404,73 @@ export default {
     this.oneOffs = [
       [
         {
-          title: this.$t('rules.oneoffs.ace'),
+          title: 'rules.oneoffs.ace',
           icon: 'delete',
-          description: this.$t('rules.oneoffs.aceDescription'),
+          description: 'rules.oneoffs.aceDescription',
           staticImg: '/img/game/cuttle-one-off-ace.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/ace.gif?raw=true',
         },
         {
-          title: this.$t('rules.oneoffs.twoE1'),
+          title: 'rules.oneoffs.twoE1',
           icon: 'delete',
-          description: this.$t('rules.oneoffs.twoE1Description'),
+          description: 'rules.oneoffs.twoE1Description',
           staticImg: '/img/game/cuttle-counter.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/counter.gif?raw=true',
         },
       ],
       [
         {
-          title: this.$t('rules.oneoffs.twoE2'),
+          title: 'rules.oneoffs.twoE2',
           icon: 'delete',
-          description: this.$t('rules.oneoffs.twoE2Description'),
+          description: 'rules.oneoffs.twoE2Description',
           staticImg: '/img/game/cuttle-one-off-two.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/two.gif?raw=true',
         },
         {
-          title: this.$t('rules.oneoffs.three'),
+          title: 'rules.oneoffs.three',
           icon: 'delete',
-          description: this.$t('rules.oneoffs.threeDescription'),
+          description: 'rules.oneoffs.threeDescription',
           staticImg: '/img/game/cuttle-one-off-three.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/three.gif?raw=true',
         },
       ],
       [
         {
-          title: this.$t('rules.oneoffs.four'),
+          title: 'rules.oneoffs.four',
           icon: 'delete',
-          description: this.$t('rules.oneoffs.fourDescription'),
+          description: 'rules.oneoffs.fourDescription',
           staticImg: '/img/game/cuttle-one-off-four.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/four.gif?raw=true',
         },
         {
-          title: this.$t('rules.oneoffs.five'),
+          title: 'rules.oneoffs.five',
           icon: 'delete',
-          description: this.$t('rules.oneoffs.fiveDescription'),
+          description: 'rules.oneoffs.fiveDescription',
           staticImg: '/img/game/cuttle-one-off-five.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/five.gif?raw=true',
         },
       ],
       [
         {
-          title: this.$t('rules.oneoffs.six'),
+          title: 'rules.oneoffs.six',
           icon: 'delete',
-          description: this.$t('rules.oneoffs.sixDescription'),
+          description: 'rules.oneoffs.sixDescription',
           staticImg: '/img/game/cuttle-one-off-six.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/six.gif?raw=true',
         },
         {
-          title: this.$t('rules.oneoffs.seven'),
+          title: 'rules.oneoffs.seven',
           icon: 'delete',
-          description: this.$t('rules.oneoffs.sevenDescription'),
+          description: 'rules.oneoffs.sevenDescription',
           staticImg: '/img/game/cuttle-one-off-seven.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/seven.gif?raw=true',
         },
       ],
       [
         {
-          title: this.$t('rules.oneoffs.nine'),
+          title: 'rules.oneoffs.nine',
           icon: 'delete',
-          description: this.$t('rules.oneoffs.nineDescription'),
+          description: 'rules.oneoffs.nineDescription',
           staticImg: '/img/game/cuttle-one-off-nine.png',
           animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/nine.gif?raw=true',
         },

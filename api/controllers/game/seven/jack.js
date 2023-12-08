@@ -49,22 +49,12 @@ module.exports = function (req, res) {
             return Promise.all([game, ...updatePromises]);
           }
           const queenCount = userService.queenCount({ user: opponent });
-          switch (queenCount) {
-            case 0:
-              break;
-            case 1:
-              if (target.faceCards === opponent.id && target.rank === 12) {
-                // break early
-                break;
-              }
-              return Promise.reject({
-                message: "Your opponent's queen prevents you from targeting their other cards",
+          if(queenCount >= 1) {
+            return Promise.reject({
+                message: 'game.snackbar.global.blockedByQueen',
               });
-            default:
-              return Promise.reject({
-                message: 'You cannot play a targeted one-off when your opponent has more than one Queen',
-              });
-          } //End queenCount validation
+          }
+          //End queenCount validation
           // Normal sevens
           if (target.points === opponent.id) {
             if (card.rank === 11) {
@@ -99,16 +89,16 @@ module.exports = function (req, res) {
               return Promise.all([game, ...updatePromises]);
             }
             return Promise.reject({
-              message: "You can only steal your opponent's points with a jack",
+              message: 'game.snackbar.jack.stealOnlyWithJack',
             });
           }
-          return Promise.reject({ message: "You can only jack your opponent's point cards" });
+          return Promise.reject({ message: 'game.snackbar.jack.stealOnlyPointCards' });
         }
         return Promise.reject({
-          message: 'You can only one of the top two cards from the deck while resolving a seven',
+          message: 'game.snackbar.seven.pickAndPlay',
         });
       }
-      return Promise.reject({ message: "It's not your turn" });
+      return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
     })
     .then(function populateGame(values) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);

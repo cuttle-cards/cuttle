@@ -26,7 +26,7 @@ module.exports = function () {
               return reject(err);
             },
             incorrect: function () {
-              return reject({ message: 'Username and password do not match' });
+              return reject({ message: 'login.snackbar.wrongPassword' });
             },
             success: function () {
               return resolve(true);

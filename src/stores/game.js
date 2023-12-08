@@ -13,21 +13,26 @@ function queenCount(player) {
   }
   return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
 }
-  
+
 const compareByRankThenSuit = (card1, card2) => {
-  return (card1.rank - card2.rank) || (card1.suit - card2.suit);
+  return card1.rank - card2.rank || card1.suit - card2.suit;
 };
 
-const setPlayers = (player, myPnum) => {
-  const sortP1 = (cards) => player.pNum === myPnum ? cards?.sort(compareByRankThenSuit) : cards;
+const setPlayers = (player, myPnum, hasGlassesEight, isSpectating) => {
+  const sortCards = (cards) => {
+    if (isSpectating || hasGlassesEight || player.pNum === myPnum) {
+      return cards?.sort(compareByRankThenSuit);
+    }
+    return cards;
+  };
+
   return {
     ...player,
-    hand: sortP1(player.hand)?.map((card) => createGameCard(card)),
-    points: sortP1(player.points)?.map((card) => createGameCard(card)),
-    faceCards: sortP1(player.faceCards)?.map((card) => createGameCard(card))
+    hand: sortCards(player.hand)?.map((card) => createGameCard(card)),
+    points: sortCards(player.points)?.map((card) => createGameCard(card)),
+    faceCards: sortCards(player.faceCards)?.map((card) => createGameCard(card)),
   };
 };
-
 
 class GameCard {
   constructor(card) {
@@ -65,8 +70,12 @@ export const useGameStore = defineStore('game', {
     name: null,
     p0Ready: false,
     p1Ready: false,
+    p0Rematch: null,
+    p1Rematch: null,
+    rematchGameId: null,
     passes: 0,
     players: [],
+    isSpectating: false,
     spectatingUsers: [],
     scrap: [],
     turn: 0,
@@ -83,12 +92,12 @@ export const useGameStore = defineStore('game', {
     // Threes
     waitingForOpponentToPickFromScrap: false,
     pickingFromScrap: false,
-    cardChosenFromScrap: null,
-    playerChoosingFromScrap: false,
+    lastEventCardChosen: null,
+    lastEventPlayerChoosing: false,
     // Fours
     discarding: false,
     waitingForOpponentToDiscard: false,
-    discardedCards : null,
+    lastEventDiscardedCards: null,
     // Sevens
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,
@@ -160,111 +169,43 @@ export const useGameStore = defineStore('game', {
       return state.turn % 2 === state.myPNum;
     },
     hasGlassesEight: (state) => {
-      return state.player.faceCards.filter((card) => card.rank === 8).length > 0;
+      return state.player?.faceCards?.filter((card) => card.rank === 8).length > 0 ?? false;
     },
   },
   actions: {
     updateGame(newGame) {
-      if (Object.hasOwnProperty.call(newGame, 'lastEvent')) {
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'change')) {
-          this.lastEventChange = newGame.lastEvent.change;
-        } else {
-          this.lastEventChange = null;
-        }
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'oneOff')) {
-          this.lastEventOneOffRank = newGame.lastEvent.oneOff.rank;
-        } else {
-          this.lastEventOneOffRank = null;
-        }
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'oneOffTargetType')) {
-          this.lastEventTargetType = newGame.lastEvent.oneOffTargetType;
-        } else {
-          this.lastEventTargetType = null;
-        }
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'chosenCard')) {
-          this.cardChosenFromScrap = newGame.lastEvent.chosenCard;
-          this.playerChoosingFromScrap = newGame.lastEvent.pNum === this.myPNum;
-        } else {
-          this.cardChosenFromScrap = null;
-          this.playerChoosingFromScrap = null;
-        }
-        if (Object.hasOwnProperty.call(newGame.lastEvent, 'discardedCards')) {
-          this.discardedCards = newGame.lastEvent.discardedCards;
-        } else {
-          this.discardedCards = null;
-        }
-      }
+      this.lastEventChange = newGame.lastEvent?.change ?? null;
+      this.lastEventOneOffRank = newGame.lastEvent?.oneOff?.rank ?? null;
+      this.lastEventTargetType = newGame.lastEvent?.oneOffTargetType ?? null;
+      this.lastEventCardChosen = newGame.lastEvent?.chosenCard ?? null;
+      this.lastEventPlayerChoosing = newGame.lastEvent?.pNum === this.myPNum ?? null;
+      this.lastEventDiscardedCards = newGame.lastEvent?.discardedCards ?? null;
       this.waitingForOpponentToStalemate = false;
-      if (Object.hasOwnProperty.call(newGame, 'id')) {
-        this.id = newGame.id;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'turn')) {
-        this.turn = newGame.turn;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'chat')) {
-        this.chat = cloneDeep(newGame.chat);
-      }
-      if (Object.hasOwnProperty.call(newGame, 'deck')) {
-        this.deck = newGame.deck?.map((card) => createGameCard(card));
-      }
-      if (Object.hasOwnProperty.call(newGame, 'scrap')) {
-        this.scrap = newGame.scrap?.map((card) => createGameCard(card));
-      }
-      if (Object.hasOwnProperty.call(newGame, 'log')) {
-        this.log = cloneDeep(newGame.log);
-      }
-      if (Object.hasOwnProperty.call(newGame, 'name')) {
-        this.name = newGame.name;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'p0Ready')) {
-        this.p0Ready = newGame.p0Ready;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'p1Ready')) {
-        this.p1Ready = newGame.p1Ready;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'passes')) {
-        this.passes = newGame.passes;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'players')) {
-        this.players = newGame.players.map((player) => setPlayers(player, this.myPNum));
-      }
-      if (Object.hasOwnProperty.call(newGame, 'spectatingUsers')) {
-        this.spectatingUsers = newGame.spectatingUsers;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'twos')) {
-        this.twos = newGame.twos?.map((card) => createGameCard(card));
-      }
-      if (Object.hasOwnProperty.call(newGame, 'topCard')) {
-        this.topCard = createGameCard(newGame.topCard);
-      } else {
-        this.topCard = null;
-      }
-
-      if (Object.hasOwnProperty.call(newGame, 'secondCard')) {
-        this.secondCard = createGameCard(newGame.secondCard);
-      } else {
-        this.secondCard = null;
-      }
-
-      if (Object.hasOwnProperty.call(newGame, 'oneOff')) {
-        this.oneOff = createGameCard(newGame.oneOff);
-      }
-      else {
-        this.oneOff = null;
-      }
-
-      if (Object.hasOwnProperty.call(newGame, 'oneOffTarget')) {
-        this.oneOffTarget = createGameCard(newGame.oneOffTarget);
-      } else {
-        this.oneOffTarget = null;
-      }
-
-      if (Object.hasOwnProperty.call(newGame, 'isRanked')) {
-        this.isRanked = newGame.isRanked;
-      }
-      if (Object.hasOwnProperty.call(newGame, 'currentMatch')) {
-        this.currentMatch = newGame.currentMatch;
-      }
+      this.id = newGame.id ?? this.id;
+      this.turn = newGame.turn ?? this.turn;
+      // this.chat = cloneDeep(newGame.chat);
+      this.deck = newGame.deck?.map((card) => createGameCard(card)) ?? this.deck;
+      this.scrap = newGame.scrap?.map((card) => createGameCard(card)) ?? this.scrap;
+      this.log = cloneDeep(newGame.log) ?? this.log;
+      this.name = newGame.name ?? this.name;
+      this.p0Ready = newGame.p0Ready ?? this.p0Ready;
+      this.p1Ready = newGame.p1Ready ?? this.p1Ready;
+      this.passes = newGame.passes ?? this.passes;
+      this.players =
+        newGame.players?.map((player) =>
+          setPlayers(player, this.myPNum, this.hasGlassesEight, this.isSpectating),
+        ) ?? this.players;
+      this.spectatingUsers = newGame.spectatingUsers ?? this.spectatingUsers;
+      this.twos = newGame.twos?.map((card) => createGameCard(card)) ?? this.twos;
+      this.topCard = createGameCard(newGame.topCard) ?? null;
+      this.secondCard = createGameCard(newGame.secondCard) ?? null;
+      this.oneOff = createGameCard(newGame.oneOff) ?? null;
+      this.oneOffTarget = createGameCard(newGame.oneOffTarget) ?? null;
+      this.isRanked = newGame.isRanked ?? this.isRanked;
+      this.currentMatch = newGame.currentMatch ?? this.currentMatch;
+      this.p0Rematch = newGame.p0Rematch ?? null;
+      this.p1Rematch = newGame.p1Rematch ?? null;
+      this.gameIsOver = newGame.gameIsOver ?? false;
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
@@ -297,11 +238,17 @@ export const useGameStore = defineStore('game', {
       this.resetPNumIfNull(game);
       this.updateGame(game);
     },
+    setRematch({ pNum, rematch }) {
+      this[`p${pNum}Rematch`] = rematch;
+    },
+    setRematchGameId({ gameId }) {
+      this.rematchGameId = gameId;
+    },
     resetPNumIfNull(game) {
       const authStore = useAuthStore();
       // Set my pNum if it is null
       if (this.myPNum === null) {
-        let myPNum = game.players.findIndex(({username}) => username === authStore.username);
+        let myPNum = game.players.findIndex(({ username }) => username === authStore.username);
         if (myPNum === -1) {
           myPNum = null;
         }
@@ -346,7 +293,7 @@ export const useGameStore = defineStore('game', {
     processThrees(chosenCard, game) {
       this.waitingForOpponentToPickFromScrap = false;
       this.pickingFromScrap = false;
-      this.cardChosenFromScrap = chosenCard;
+      this.lastEventCardChosen = chosenCard;
 
       setTimeout(() => {
         this.resetPNumIfNullThenUpdateGame(game);
@@ -355,7 +302,7 @@ export const useGameStore = defineStore('game', {
     processFours(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
       this.discarding = false;
-      this.discardedCards = discardedCards;
+      this.lastEventDiscardedCards = discardedCards;
 
       setTimeout(() => {
         this.resetPNumIfNullThenUpdateGame(game);
@@ -409,6 +356,7 @@ export const useGameStore = defineStore('game', {
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.myPNum = 0;
+              this.isSpectating = true;
               this.updateGame(res);
               return resolve();
             }
@@ -589,7 +537,7 @@ export const useGameStore = defineStore('game', {
         };
       }
       return new Promise((resolve, reject) => {
-        io.socket.get('/game/resolveFour', reqData, function (res, jwres) {
+        io.socket.get('/game/resolveFour', reqData, (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
@@ -794,6 +742,20 @@ export const useGameStore = defineStore('game', {
           if (jwres.statusCode === 200) {
             this.resetState();
           }
+          return this.handleGameResponse(jwres, resolve, reject);
+        });
+      });
+    },
+    async requestRematch({ gameId, rematch = true }) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/rematch', { gameId, rematch }, (res, jwres) => {
+          return this.handleGameResponse(jwres, resolve, reject);
+        });
+      });
+    },
+    async requestJoinRematch({ oldGameId }) {
+      return new Promise((resolve, reject) => {
+        io.socket.get('/game/join-rematch', { oldGameId }, (res, jwres) => {
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });

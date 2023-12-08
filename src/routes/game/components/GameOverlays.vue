@@ -3,6 +3,7 @@
     <v-overlay
       id="waiting-for-game-to-start-scrim"
       v-model="waitingForGameToStart"
+      persistent
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
@@ -22,6 +23,7 @@
     <v-overlay
       id="waiting-for-opponent-counter-scrim"
       v-model="gameStore.waitingForOpponentToCounter"
+      persistent
       class="d-flex flex-column justify-center align-center"
       scrim="surface-1"
     >
@@ -54,6 +56,7 @@
     <v-overlay
       id="waiting-for-opponent-discard-scrim"
       v-model="gameStore.waitingForOpponentToDiscard"
+      persistent
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
@@ -64,6 +67,7 @@
     <v-overlay
       id="waiting-for-opponent-resolve-three-scrim"
       v-model="gameStore.waitingForOpponentToPickFromScrap"
+      persistent
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
@@ -84,6 +88,7 @@
     <v-overlay
       id="waiting-for-opponent-to-discard-jack-from-deck"
       v-model="showWaitingForOpponentToDiscardJackFromDeck"
+      persistent
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
@@ -97,7 +102,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        <div>{{ t('opponentConsideringStalemate') }}</div>
+        <div>{{ t('game.overlays.opponentConsideringStalemate') }}</div>
       </h1>
     </v-overlay>
 

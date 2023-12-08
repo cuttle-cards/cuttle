@@ -13,7 +13,6 @@
         <v-btn
           v-bind="props"
           :color="activatorColor"
-          class="mb-2"
           variant="text"
           data-cy="ranked-info-button"
         >
