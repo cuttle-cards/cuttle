@@ -38,31 +38,31 @@
       <v-list class="mt-4" bg-color="surface-2" base-color="surface-1">
         <v-list-item>
           <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace">
-            5 {{ t('game.dialogs.statsScoringDialog.points.displayName') }}
+            {{ t('game.dialogs.statsScoringDialog.points.displayName', 5) }}
           </v-chip>
           {{ t('game.dialogs.statsScoringDialog.points.description.5Points') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace">
-            4 {{ t('game.dialogs.statsScoringDialog.points.displayName') }}
+            {{ t('game.dialogs.statsScoringDialog.points.displayName', 4) }}
           </v-chip>
           {{ t('game.dialogs.statsScoringDialog.points.description.4Points') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace">
-            3 {{ t('game.dialogs.statsScoringDialog.points.displayName') }}
+            {{ t('game.dialogs.statsScoringDialog.points.displayName', 3) }}
           </v-chip>
           {{ t('game.dialogs.statsScoringDialog.points.description.3Points') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary">
-            2 {{ t('game.dialogs.statsScoringDialog.points.displayName') }}
+            {{ t('game.dialogs.statsScoringDialog.points.displayName', 2) }}
           </v-chip>
           {{ t('game.dialogs.statsScoringDialog.points.description.2Points') }}
         </v-list-item>
         <v-list-item>
           <v-chip variant="outlined" class="mr-2 mb-1" color="#000">
-            1 {{ t('game.dialogs.statsScoringDialog.points.singular') }}
+            {{ t('game.dialogs.statsScoringDialog.points.displayName', 1) }}
           </v-chip>
           {{ t('game.dialogs.statsScoringDialog.points.description.1Point') }}
         </v-list-item>

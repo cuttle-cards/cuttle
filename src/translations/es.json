@@ -127,8 +127,7 @@
         },
         "seasonDescription": "Cada temporada se divide en 13 semanas. Para cada semana, contamos el número de partidos mejor clasificados de 2/3 que cada jugador gana contra oponentes únicos (ignorando los puntos muertos) y asignamos puntos a los jugadores según su clasificación semanal.",
         "points": {
-          "displayName": "Puntos",
-          "singular": "Punto",
+          "displayName": "1 Punto | {count} Puntos",
           "description": {
             "5Points": "El jugador con más victorias obtiene 5 puntos por semana",
             "4Points": "El segundo jugador con más victorias obtiene 4 puntos para la semana",

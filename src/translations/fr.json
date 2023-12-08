@@ -127,8 +127,7 @@
         },
         "seasonDescription": "Chaque saison est divisée en 13 semaines. Pour chaque semaine, nous comptons le nombre de matchs classés aux 2/3 que chaque joueur remporte contre des adversaires uniques (en ignorant les impasses) et attribuons des points aux joueurs en fonction de leur classement hebdomadaire.",
         "points": {
-          "displayName": "Points",
-          "singular": "Point",
+          "displayName": "1 Point | {count} Points",
           "description": {
             "5Points": "Le joueur avec le plus de victoires obtient 5 points pour la semaine",
             "4Points": "Le joueur avec le 2ème plus grand nombre de victoires obtient 4 points pour la semaine",
