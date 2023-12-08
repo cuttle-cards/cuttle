@@ -27,4 +27,7 @@ export default {
   SPECTATOR_LEFT: 'spectatorLeft',
   TARGETED_ONE_OFF: 'targetedOneOff',
   UPDATED: 'updated',
+  REMATCH: 'rematch',
+  NEW_GAME_FOR_REMATCH: 'newGameForRematch',
+  JOIN_REMATCH: 'joinRematch',
 };

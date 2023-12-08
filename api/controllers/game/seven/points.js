@@ -34,10 +34,10 @@ module.exports = function (req, res) {
             ];
             return Promise.all([game, ...updatePromises]);
           }
-          return Promise.reject({ message: 'You can only play Ace - Ten cards as points' });
+          return Promise.reject({ message: 'game.snackbar.points.numberOnlyForPoints' });
         }
         return Promise.reject({
-          message: 'You must pick a card from the deck to play when resolving a seven',
+          message: 'game.snackbar.seven.pickAndPlay',
         });
       }
       return Promise.reject({ message: "It's not your turn" });

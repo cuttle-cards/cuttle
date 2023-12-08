@@ -32,14 +32,14 @@ module.exports = function (req, res) {
               return Promise.all([game, ...updatePromises]);
             }
             return Promise.reject({
-              message: 'That card is frozen! You must wait a turn to play it',
+              message: 'game.snackbar.global.cardFrozen',
             });
           }
-          return Promise.reject({ message: 'You can only play a number card as points.' });
+          return Promise.reject({ message: 'game.snackbar.points.numberOnlyForPoints' });
         }
-        return Promise.reject({ message: 'You can only play a card that is in your hand.' });
+        return Promise.reject({ message: 'game.snackbar.global.playFromHand' });
       }
-      return Promise.reject({ message: "It's not your turn." });
+      return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
     })
     .then(function populateGame(values) {
       const [game] = values;

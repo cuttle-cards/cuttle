@@ -6,7 +6,13 @@ import {
   myUser,
   opponentOne,
 } from '../../fixtures/userFixtures';
-import { assertGameState, assertSnackbarError, getCardId, assertLoss } from '../../support/helpers';
+import {
+  assertGameState,
+  assertSnackbarError,
+  assertVictory,
+  getCardId,
+  assertLoss,
+} from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
 
@@ -358,5 +364,89 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-button"]').should('contain', '1').click();
       cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
     });
+  });
+});
+
+describe('Creating And Updating Unranked Matches With Rematch - Spectating', () => {
+  beforeEach(function () {
+    cy.wipeDatabase();
+    cy.visit('/');
+
+    // Sign up players
+    cy.signupOpponent(playerOne).as('playerOneId');
+    // Opponent will be player 2 (the last one we log in as)
+    cy.signupOpponent(playerTwo).as('playerTwoId');
+
+    // Log in as playerOne
+    cy.loginPlayer(playerOne);
+    cy.setupGameAsSpectator();
+  });
+
+  it('Spectate unranked games with rematch', function () {
+    // 1st game: Opponent concedes
+    cy.recoverSessionOpponent(playerTwo);
+    cy.concedeOpponent();
+    assertVictory();
+    cy.log('rematch player2');
+
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchOpponent({ gameId: game.id, rematch: true });
+      });
+
+    cy.get('[data-cy="opponent-wants-rematch"]').should('be.visible');
+
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.expect(game.p0Rematch).to.be.null;
+        cy.expect(game.p1Rematch).to.be.true;
+      });
+
+    cy.recoverSessionOpponent(playerOne);
+
+    cy.wait(1000);
+
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.rematchOpponent({ gameId: game.id, rematch: true });
+      });
+    cy.wait(1000);
+
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        // new game, so rematch is null
+        cy.expect(game.p0Rematch).to.be.null;
+        cy.expect(game.p1Rematch).to.be.null;
+      });
+
+    cy.log('join rematch player 1');
+
+    cy.url().then((url) => {
+      const oldGameId = url.split('/').pop();
+      cy.joinRematchOpponent({ oldGameId });
+
+      cy.log('recover player 2');
+      cy.recoverSessionOpponent(playerTwo);
+      cy.log('join rematch player 2');
+      cy.joinRematchOpponent({ oldGameId });
+    });
+
+    cy.signupOpponent(playerThree);
+
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        cy.url({ timeout: 10000 }).should('include', `/spectate/${game.id}`);
+        cy.setOpponentToSpectate(game.id);
+      });
+
+    cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+    cy.get('[data-cy="spectate-list-menu"')
+      .should('contain', 'myUsername')
+      .should('contain', playerThree.username);
   });
 });

@@ -53,7 +53,9 @@ module.exports.routes = {
   '/user/status': 'userController.status',
 
   'GET /health': 'HealthController.getHealth',
-  'GET /stats': 'StatsController.getStats',
+
+  '/stats/seasons/current': 'StatsController.getCurrentStats',
+  '/stats/seasons/:seasonId': 'StatsController.getSeasonStats',
 
   '/game/create': 'game/create',
   '/game/getList': 'game/get-list',
@@ -87,6 +89,8 @@ module.exports.routes = {
   '/game/concede': 'game/concede',
   '/game/stalemate': 'game/stalemate',
   '/game/reject-stalemate': 'game/stalemate-reject',
+  '/game/rematch': 'game/rematch',
+  '/game/join-rematch': 'game/join-rematch',
   '/game/chat': 'game/chat',
   '/game/gameData': 'game/game-data',
   // DEVELOPMENT ONLY

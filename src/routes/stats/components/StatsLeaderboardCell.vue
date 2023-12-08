@@ -9,7 +9,6 @@
           ...props,
           ...dataAttribute,
         }"
-        dark
       >
         {{ chipText }}
       </v-chip>

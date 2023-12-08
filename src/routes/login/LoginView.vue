@@ -256,7 +256,7 @@ export default {
         });
         this.handleLogin();
       } catch (err) {
-        this.handleError(err);
+        this.handleError(err.message);
       }
     },
     switchMode() {
@@ -274,9 +274,9 @@ export default {
       this.loading = false;
       this.$router.push('/');
     },
-    handleError(message) {
+    handleError(messageKey) {
       this.showSnackBar = true;
-      this.snackBarMessage = message;
+      this.snackBarMessage =  this.t(messageKey);
       this.loading = false;
     },
     clearSnackBar() {
