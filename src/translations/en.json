@@ -393,6 +393,7 @@
     "siteUsage": "Site Usage",
     "weeklyRankings": "Weekly Rankings",
     "season": {
+      "select": "Select Season",
       "champions": "Season Champions",
       "tournamentBracket": "here to see the official tournament bracket",
       "tournamentFootage": "here to watch the official tournament footage",

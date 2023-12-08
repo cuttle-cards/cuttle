@@ -15,7 +15,7 @@
           :items="seasons"
           item-title="name"
           return-object
-          label="Select Season"
+          :label="t('stats.season.select')"
           data-cy="season-select"
         >
           <template #selection="{ item }">
