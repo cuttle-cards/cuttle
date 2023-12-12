@@ -133,7 +133,10 @@
         "yourGameAgainst": "tu partida contra",
         "finished": "Finalizada",
         "inProgress": "En Curso",
-        "goHome": "Volver al menú"
+        "goHome": "Volver al menú",
+        "rematch":"revanche",
+        "askRematch": "quiere volver a tocar",
+        "declineRematch": "rechazó y abandonó el juego"
       }
     },
     "moves": {
