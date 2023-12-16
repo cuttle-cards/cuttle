@@ -135,8 +135,8 @@
         "inProgress": "En Curso",
         "goHome": "Volver al menú",
         "rematch":"revanche",
-        "askRematch": "quiere volver a tocar",
-        "declineRematch": "rechazó y abandonó el juego"
+        "askRematch": "quiere une revanche",
+        "declineRematch": "rechazó la revancha y abandonó el juego"
       }
     },
     "moves": {
