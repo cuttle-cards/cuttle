@@ -68,7 +68,7 @@ module.exports = async function (req, res) {
     let player1wins = pastGames.filter(({winner}) => winner === seriesP1.id).length;
     let stalemates = pastGames.filter(({winner}) => winner === null).length;
     
-    const newName = `${seriesP0.username} VS ${seriesP1.username} ${player0Wins} - ${player1wins} - ${stalemates}`;
+    const newName = `${seriesP0.username} VS ${seriesP1.username} ${player0Wins}-${player1wins}-${stalemates}`;
     await Game.updateOne({ id: newGame.id }).set({ name: newName });
 
     const newGame2 = await Game.findOne({ id: newGame.id }).populate('players');
