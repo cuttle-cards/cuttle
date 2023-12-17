@@ -1089,6 +1089,9 @@ describe('Creating And Updating Unranked Matches With Rematch', () => {
         .click();
       cy.log('Opponent then joins new game');
 
+      cy.window().its('cuttle.gameStore').then((game) => {
+        cy.expect(game.name).to.eq('Player1 VS Player2 1-0-0');
+      });
       cy.joinRematchOpponent({ oldGameId });
     });
 
@@ -1109,6 +1112,7 @@ describe('Creating And Updating Unranked Matches With Rematch', () => {
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
+        cy.expect(game.name).to.eq('Player1 VS Player2 1-1-0');
         cy.rematchAndJoinRematchOpponent({ gameId: game.id });
       });
     cy.url().should('include', '/game');
@@ -1122,6 +1126,7 @@ describe('Creating And Updating Unranked Matches With Rematch', () => {
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
+        cy.expect(game.name).to.eq('Player1 VS Player2 1-1-1');
         cy.rematchAndJoinRematchOpponent({ gameId: game.id });
       });
     cy.url().should('include', '/game');
