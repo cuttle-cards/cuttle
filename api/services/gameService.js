@@ -71,10 +71,15 @@ module.exports = {
     // find game
     const game = await gameService.findGame({ gameId: options.gameId });
 
+
     if (game.players) {
       if (game.players.length < 2) {
+        /*no game was found*/
+        if(game.players.length == 0){
+          return res.status(400).send('Bad Request: Specific condition encountered');
+        }
         throw new Error({ message: 'Cannot populate game without two players' });
-      }
+      } 
     } else {
       throw new Error({ message: 'Cannot populate game, because it does not have players collection' });
     }
