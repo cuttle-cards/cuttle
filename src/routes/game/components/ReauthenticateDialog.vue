@@ -77,6 +77,7 @@ export default {
   },
   data() {
     return {
+      username: '',
       password: '',
       isLoggingIn: false,
       showSnackBar: false,
@@ -85,9 +86,6 @@ export default {
   },
   computed: {
     ...mapStores(useAuthStore),
-    username() {
-      return this.authStore.username;
-    },
     show: {
       get() {
         return this.modelValue;
