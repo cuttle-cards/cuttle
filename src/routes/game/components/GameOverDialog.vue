@@ -56,10 +56,10 @@
         </div>
       </template>
       <p v-if="opponentWantsToRematch" data-cy="opponent-wants-rematch">
-        {{ gameStore.opponent.username }} wants to rematch
+        {{ gameStore.opponent.username }} {{ t('game.dialogs.gameOverDialog.askRematch') }}
       </p>
       <p v-if="opponentDeclinedRematch" data-cy="opponent-declined-rematch">
-        {{ gameStore.opponent.username }} declined rematch and left the game
+        {{ gameStore.opponent.username }}  {{ t('game.dialogs.gameOverDialog.declineRematch') }}
       </p>
     </template>
 
