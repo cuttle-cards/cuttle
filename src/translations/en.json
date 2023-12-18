@@ -411,8 +411,8 @@
     "selectMetric": "Select Metric",
     "selectWeeks": "Select Weeks",
     "seasonTotal": "Season Total",
-    "pointsAndWinds": "Points et victoires",
-    "pointsOnly": "Points seulement",
+    "pointsAndWins": "Points and Wins",
+    "pointsOnly": "Points Only",
     "winsOnly": "Wins Only"
   }
 }
