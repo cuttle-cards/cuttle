@@ -135,7 +135,9 @@
         "finished": "Finished",
         "inProgress": "In Progress",
         "goHome": "Go Home",
-        "rematch": "Rematch"
+        "rematch": "Rematch",
+        "askRematch": "wants to rematch",
+        "declineRematch": "declined rematch and left the game"
       }
     },
     "moves": {

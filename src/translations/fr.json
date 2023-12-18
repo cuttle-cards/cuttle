@@ -135,7 +135,9 @@
         "finished": "Fini",
         "inProgress": "En Cours",
         "goHome": "Retourner au vestibule",
-        "rematch": "Rejouer"
+        "rematch": "Rejouer",
+        "askRematch": "veut rejouer",
+        "declineRematch": "a décliné l'invitation et a quitté la partie"
       }
     },
     "moves": {
