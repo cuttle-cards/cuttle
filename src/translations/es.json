@@ -6,6 +6,8 @@
     "rules": "Reglas",
     "play": "Jugar",
     "stats": "Estadísticas",
+    "user": "Usuaria",
+    "rank": "Rango",
     "username": "Nombre de usuario",
     "password": "Contraseña",
     "collapseMenu": "Contraer menú",
@@ -404,6 +406,13 @@
     "winRate": "Ratio de victorias",
     "wins": "Gana",
     "losses": "Pérdidas",
-    "results": "Resultados"
+    "results": "Resultados",
+    "week": "Semana",
+    "selectMetric": "Seleccionar métrica",
+    "selectWeeks": "Seleccionar semanas",
+    "seasonTotal": "Total de la temporada",
+    "pointsAndWinds": "Puntos y victorias",
+    "pointsOnly": "Solo puntos",
+    "winsOnly": "Solo gana"
   }
 }

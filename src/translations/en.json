@@ -6,6 +6,8 @@
     "rules": "About",
     "play": "Play",
     "stats": "Stats",
+    "user": "User",
+    "rank": "Rank",
     "username": "Username",
     "password": "Password",
     "collapseMenu": "Collapse Menu",
@@ -404,6 +406,13 @@
     "winRate": "Win Rate",
     "wins": "Wins",
     "losses": "Losses",
-    "results": "Results"
+    "results": "Results",
+    "week": "Week",
+    "selectMetric": "Select Metric",
+    "selectWeeks": "Select Weeks",
+    "seasonTotal": "Season Total",
+    "pointsAndWinds": "Points et victoires",
+    "pointsOnly": "Points seulement",
+    "winsOnly": "Wins Only"
   }
 }

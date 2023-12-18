@@ -6,6 +6,8 @@
     "rules": "Règles",
     "play": "Jouer",
     "stats": "Statistiques",
+    "user": "Utilisatrice",
+    "rank": "Rang",
     "username": "Nom d'utilisateur",
     "password": "Mot de passe",
     "collapseMenu": "Réduire le menu",
@@ -404,6 +406,13 @@
     "winRate": "Taux de réussite",
     "wins": "Gagne",
     "losses": "Pertes",
-    "results": "Résultats"
+    "results": "Résultats",
+    "week": "Semaine",
+    "selectMetric": "Sélectionnez une métrique",
+    "selectWeeks": "Sélectionnez des semaines",
+    "seasonTotal": "Total de la saison",
+    "pointsAndWinds": "Points and Wins",
+    "pointsOnly": "Points seulement",
+    "winsOnly": "Gagne seulement"
   }
 }
