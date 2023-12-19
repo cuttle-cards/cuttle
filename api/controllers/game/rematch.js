@@ -59,7 +59,7 @@ module.exports = async function (req, res) {
       if (!gameToAdd.rematchGame) {
         return; 
       }
-        await getRematchGames(gameToAdd.id);
+      await getRematchGames(gameToAdd.id);
     };
     await getRematchGames(newGame.id);
     const seriesP0 = [p0, p1].find(({ id }) => id === rematchGames[0].p0);
