@@ -49,9 +49,9 @@ module.exports = async function (req, res) {
     updatedGame.rematchGame = newGame.id;
 
     //Get all exisiting rematchGames
-    let rematchGames = [];
+    const rematchGames = [];
     const getRematchGames = async (gameId) => {
-      const [gameToAdd] = await Game.find({ rematchGame: gameId });
+      const gameToAdd = await Game.findOne({ rematchGame: gameId });
       if (gameToAdd) {
         rematchGames.unshift(gameToAdd);
         if (gameToAdd.rematchGame) {
