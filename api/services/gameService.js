@@ -71,17 +71,15 @@ module.exports = {
     // find game
     const game = await gameService.findGame({ gameId: options.gameId });
 
-
     if (game.players) {
       if (game.players.length < 2) {
         /*no game was found*/
         if(game.players.length == 0){
-          return { status: 400, message: 'Bad Request: cannot find a game' };
-          //return res.badRequest('400 Bad Request: cannot find a game');*/
-          console.log("CHRISTMAS");
-          console.error('400 Bad Request: cannot find a game');
+          return { status: 400, message: 'Bad Request: Cannot find a game' };
         }
-        throw new Error({ message: 'Cannot populate game without two players' });
+        else{
+          throw new Error({ message: 'Cannot populate game without two players' });
+        }
       } 
 
     } else {
