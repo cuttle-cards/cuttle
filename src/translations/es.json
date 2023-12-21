@@ -134,7 +134,9 @@
         "finished": "Finalizada",
         "inProgress": "En Curso",
         "goHome": "Volver al menú",
-        "rematch": "Rematch"
+        "rematch":"revanche",
+        "askRematch": "quiere una revancha",
+        "declineRematch": "rechazó la revancha y abandonó el juego"
       }
     },
     "moves": {
@@ -229,7 +231,6 @@
         "withoutTarget": "Only Kings, Queens, and Eights may be played as Face Cards without a target"
       },
       "points": {
-        "onlyPointCards": "You can only play Ace - Ten cards as points",
         "numberOnlyForPoints": "You can only play a number card as points."
       },
       "jack": {

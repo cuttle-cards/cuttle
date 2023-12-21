@@ -6,6 +6,8 @@ function getThemedSuffix() {
   switch (currentMonth) {
     case 10:
       return '-spooky';
+    case 12:
+      return '-santa';
     default:
       return '';
   }
