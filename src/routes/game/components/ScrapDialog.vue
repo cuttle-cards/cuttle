@@ -45,7 +45,7 @@
         variant="flat"
         @click="show = false"
       >
-        {{ t('game.dialogs.scrapDialog.close') }}
+        {{ t('global.close') }}
       </v-btn>
     </template>
   </BaseDialog>
