@@ -65,9 +65,9 @@ module.exports = async function (req, res) {
     const seriesP0 = [p0, p1].find(({ id }) => id === rematchGames[0].p0);
     const seriesP1 = [p0, p1].find(({ id }) => id === rematchGames[0].p1);
     //Get rematchGame win counts
-    let player0Wins = rematchGames.filter(({winner}) => winner === seriesP0.id).length;
-    let player1wins = rematchGames.filter(({winner}) => winner === seriesP1.id).length;
-    let stalemates = rematchGames.filter(({winner}) => winner === null).length;
+    const player0Wins = rematchGames.filter(({winner}) => winner === seriesP0.id).length;
+    const player1wins = rematchGames.filter(({winner}) => winner === seriesP1.id).length;
+    const stalemates = rematchGames.filter(({winner}) => winner === null).length;
     
     const newName = `${seriesP0.username} VS ${seriesP1.username} ${player0Wins}-${player1wins}-${stalemates}`;
     await Game.updateOne({ id: newGame.id }).set({ name: newName });
