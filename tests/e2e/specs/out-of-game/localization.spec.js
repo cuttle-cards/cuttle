@@ -97,8 +97,9 @@ describe('language files', () => {
   });
 
   it('French should have the same keys', () => {
-    for(let i = 0; i < enKeys.length; i++) {
-      expect(enKeys[i]).to.eql(frKeys[i]);
+    for (let i = 0; i < enKeys.length; i++) {
+      const assertionMsg = `fr.json should have the key ${ enKeys[i] } for key number ${ i }, but instead it had key ${ frKeys[i] }`;
+      expect(enKeys[i]).to.eq(frKeys[i], assertionMsg);
     }
   });
 
