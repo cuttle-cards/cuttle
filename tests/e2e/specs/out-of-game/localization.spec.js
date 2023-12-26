@@ -85,13 +85,14 @@ describe('language files', () => {
     return keyList;
   }
 
-  let enKeys = extractKeys(en).sort();
-  let frKeys = extractKeys(fr).sort();
-  let esKeys = extractKeys(es).sort();
+  const enKeys = extractKeys(en).sort();
+  const frKeys = extractKeys(fr).sort();
+  const esKeys = extractKeys(es).sort();
 
   it('English should have no empty strings', () => {
     enKeys.forEach((key) => {
-      expect(en[key]).to.not.eql('');
+      const assertionMsg = `en.json value at key ${key} should be non-empty, but it was empty`;
+      expect(en[key]).to.not.eq('', assertionMsg);
     });
   });
 
@@ -103,19 +104,22 @@ describe('language files', () => {
 
   it('French should have no empty strings', () => {
     frKeys.forEach((key) => {
-      expect(fr[key]).to.not.eql('');
+      const assertionMsg = `fr.json should have non-empty value for key ${key}, but it value was empty`;
+      expect(fr[key]).to.not.eq('', assertionMsg);
     });
   }); 
 
   it('Spanish should have the same keys', () => {
     for(let i = 0; i < enKeys.length; i++) {
-      expect(enKeys[i]).to.eql(esKeys[i]);
+      const assertionMsg = `es.json should have the key ${ enKeys[i] } for key number ${ i }, but instead it had key ${ esKeys[i] }`;
+      expect(enKeys[i]).to.eq(esKeys[i], assertionMsg);
     }
   });
 
   it('Spanish should have no empty strings', () => {
     frKeys.forEach((key) => {
-      expect(es[key]).to.not.eql('');
+      const assertionMsg = `es.json should have nonempty value for key ${key}, but it value was empty`;
+      expect(es[key]).to.not.eq('', assertionMsg);
     });
   });
 });
