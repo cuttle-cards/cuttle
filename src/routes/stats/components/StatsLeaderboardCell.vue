@@ -14,17 +14,17 @@
       </v-chip>
     </template>
     <v-card :data-player-results="`${username}-week-${week}`">
-      <v-card-title>{{ username }} {{ menuHeader }} Results</v-card-title>
+      <v-card-title>{{ username }} {{ menuHeader }} {{ t('stats.results') }}</v-card-title>
       <v-card-text>
-        <h3>Wins</h3>
+        <h3>{{ t('stats.wins') }}</h3>
         <v-list :data-players-beaten="`${username}-week-${week}`">
           {{ playersBeatenText }}
         </v-list>
-        <h3>Losses</h3>
+        <h3>{{ t('stats.losses') }}</h3>
         <v-list :data-players-lost-to="`${username}-week-${week}`">
           {{ playersLostToText }}
         </v-list>
-        <h3>Win Rate</h3>
+        <h3>{{ t('stats.winRate') }}</h3>
         <v-list :data-win-rate="`${username}-week-${week}`">
           {{ winRateText }}
         </v-list>
@@ -36,7 +36,7 @@
           color="primary"
           @click="showMenu = false"
         >
-          Close
+          {{ t('global.close') }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -45,6 +45,7 @@
 
 <script>
 import { Metrics } from '@/routes/stats/components/StatsLeaderboard.vue';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'StatsLeaderboardCell',
@@ -78,6 +79,10 @@ export default {
       type: String,
       default: '',
     },
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {
