@@ -1,27 +1,12 @@
 <template>
   <BaseDialog id="game-over-dialog" v-model="show">
     <template #title>
-      <h1 :data-cy="headingDataAttr" :class="isMobilePortrait ? 'text-h4' : ''">
+      <h1 :data-cy="headingDataAttr" :class="isMobilePortrait ? 'text-h4' : 'heading'">
         {{ heading }}
       </h1>
-      <v-img
-        v-if="currentMatch && !isMobilePortrait"
-        :src="logoSrc"
-        :data-cy="logoDataAttr"
-        class="logo-image-match"
-      />
     </template>
 
     <template #body>
-      <template v-if="isMobilePortrait || !currentMatch">
-        <div class="d-flex justify-center">
-          <v-img
-            :src="logoSrc"
-            :data-cy="logoDataAttr"
-            :class="isMobilePortrait ? 'small-logo-image' : 'logo-image'"
-          />
-        </div>
-      </template>
       <template v-if="currentMatch">
         <p v-if="currentMatch" class="dialog-text" data-cy="match-result-section">
           <!-- Match against opponent: finished / in progress -->
@@ -279,25 +264,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.logo-image {
-  height: auto;
-  max-width: 180px;
-  margin-bottom: 16px;
-}
 
-.small-logo-image {
-  height: auto;
-  max-width: 120px;
-  margin-bottom: 16px;
-}
-
-.logo-image-match {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  height: auto;
-  min-width: 90px;
-  max-width: 90px;
-  max-height: 90px;
-}
 </style>
