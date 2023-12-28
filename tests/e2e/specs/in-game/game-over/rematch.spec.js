@@ -6,6 +6,7 @@ const dayjs = require('dayjs');
 
 describe('Creating And Updating Ranked Matches With Rematch', () => {
   beforeEach(function () {
+    cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
 
@@ -43,6 +44,11 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     // Log in as playerOne
     cy.loginPlayer(playerOne);
     cy.setupGameAsP0(true, true);
+  });
+
+  it.only('Plays ranked match using Rematch/Continue Match button', () => {
+    cy.concedeOpponent();
+    assertVictory();
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {

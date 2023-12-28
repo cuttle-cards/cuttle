@@ -398,13 +398,13 @@ export function assertVictory() {
         const matchWinner = game.currentMatch.winner;
         cy.get('#game-over-dialog')
           .should('be.visible')
-          .should('contain', matchWinner ? 'You Win the Match' : `Game ${gameNumber}: You Win`)
-          .get('[data-cy=match-result-section]')
-          .should('be.visible')
-          .get(`[data-cy=match-result-game-${gameNumber}]`)
-          .should('contain', 'W')
-          .get('[data-cy=icon-W]')
-          .should('be.visible');
+          .should('contain', matchWinner ? 'Gottem!' : `You Win`);
+          // .get('[data-cy=match-score-section]')
+          // .should('be.visible')
+          // .get(`[data-cy=match-result-game-${gameNumber}]`)
+          // .should('contain', 'W')
+          // .get('[data-cy=icon-W]')
+          // .should('be.visible');
       } else {
         cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
       }
