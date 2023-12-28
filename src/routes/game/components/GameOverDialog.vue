@@ -158,15 +158,12 @@ export default {
     heading() {
       if (this.matchIsOver) {
         // You win the match / you lose the match
-        return this.t(this.playerWinsMatch ? 'game.dialogs.gameOverDialog.youWinTheMatch' : 'game.dialogs.gameOverDialog.youLoseTheMatch');
+        const messageName = this.playerWinsMatch ? 'game.dialogs.gameOverDialog.youWinTheMatch' : 'game.dialogs.gameOverDialog.youLoseTheMatch';
+        return this.t(messageName);
       }
-      const currentMatchGames = this.gameStore.currentMatch?.games ?? [];
-      // Game number
-      const gameNumberPrefix = currentMatchGames.length > 0 ? `${this.t('game.dialogs.gameOverDialog.game')} ${currentMatchGames.length}: ` : '';
-      // Draw / You Win / You Lose
-      const winnerMessage = this.t(this.stalemate ? 'game.dialogs.gameOverDialog.draw' : this.playerWinsGame ? 'game.dialogs.gameOverDialog.youWin' : 'game.dialogs.gameOverDialog.youLose');
-
-      return `${gameNumberPrefix}${winnerMessage}`;
+      // Draw / You Won / You Lose
+      const messageName = this.stalemate ? 'game.dialogs.gameOverDialog.draw' : this.playerWinsGame ? 'game.dialogs.gameOverDialog.youWin' : 'game.dialogs.gameOverDialog.youLose';
+      return this.t(messageName);
     },
     headingDataAttr() {
       if (this.stalemate) {
