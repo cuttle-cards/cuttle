@@ -125,7 +125,7 @@
       "gameOverDialog": {
         "game": "Game",
         "you": "You",
-        "youWin": "You Win",
+        "youWin": "You Won",
         "youWinTheMatch": "You Win the Match",
         "won": "won",
         "youLose": "You Lose",
