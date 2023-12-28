@@ -295,7 +295,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 });
 
-describe('Creating And Updating Unranked Matches With Rematch', () => {
+describe('Creating And Updating Casual Games With Rematch', () => {
   beforeEach(function () {
     cy.wipeDatabase();
     cy.visit('/');
