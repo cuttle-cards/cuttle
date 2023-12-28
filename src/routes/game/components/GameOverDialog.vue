@@ -264,5 +264,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.heading {
+  text-align: center;
+  text-align: center;
+  font-family: Luckiest Guy;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-top: 24px;
+  width: 100%;
+}
 </style>
