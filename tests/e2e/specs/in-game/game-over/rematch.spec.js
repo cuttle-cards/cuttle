@@ -48,10 +48,20 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
   it.only('Plays ranked match using Rematch/Continue Match button', () => {
     cy.concedeOpponent();
-    assertVictory({wins: 1, losses: 0, stalemates: 0});
+    assertVictory({wins: 1, losses: 0, stalemates: 0, lastResult: 'Won'});
     cy.get('[data-cy=match-score-counter-wins]')
       .should('contain', 1)
       .should('have.class', 'selected');
+
+    cy.wait(1500);
+
+    cy.url().then((url) => {
+      const oldGameId = url.split('/').pop();
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+    });
+
+    cy.get('[data-player-rematch-indicator]')
+      .should('be.visible');
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {

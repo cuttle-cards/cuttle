@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog id="game-over-dialog" v-model="show">
+  <BaseDialog id="game-over-dialog" v-model="show" width="600" >
     <template #title>
       <h1 :data-cy="headingDataAttr" :class="isMobilePortrait ? 'text-h4' : 'heading'">
         {{ heading }}
@@ -14,6 +14,10 @@
         :stalemates="stalemates"
         :latest-result="latestResult"
       />
+      <section class="d-flex justify-space-between">
+        <LobbyPlayerIndicator :player-username="gameStore.player.username" :player-ready="gameStore.iWantRematch" />
+        <LobbyPlayerIndicator :player-username="gameStore.opponent.username" :player-ready="gameStore.opponentWantsRematch" />
+      </section>
       <template v-if="currentMatch">
         <p v-if="currentMatch" class="dialog-text" data-cy="match-result-section">
           <!-- Match against opponent: finished / in progress -->
@@ -97,6 +101,7 @@ import GameStatus from '_/utils/GameStatus.json';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import MatchScoreCounter from './MatchScoreCounter.vue';
 import MatchStatusBanner from './MatchStatusBanner.vue';
+import LobbyPlayerIndicator from '@/routes/lobby/components/LobbyPlayerIndicator.vue';
 
 export default {
   name: 'GameOverDialog',
@@ -105,6 +110,7 @@ export default {
     BaseSnackbar,
     MatchScoreCounter,
     MatchStatusBanner,
+    LobbyPlayerIndicator
   },
   props: {
     modelValue: {

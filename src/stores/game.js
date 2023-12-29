@@ -171,6 +171,20 @@ export const useGameStore = defineStore('game', {
     hasGlassesEight: (state) => {
       return state.player?.faceCards?.filter((card) => card.rank === 8).length > 0 ?? false;
     },
+    iWantRematch: (state) => {
+      if (state.myPNum === null) {
+        return false;
+      }
+      const key = `p${state.myPNum}Rematch`;
+      return state[key];
+    },
+    opponentWantsRematch: (state) => {
+      if (state.myPNum === null) {
+        return false;
+      }
+      const key = `p${(state.myPNum + 1) % 2}Rematch`;
+      return state[key];
+    },
   },
   actions: {
     updateGame(newGame) {
