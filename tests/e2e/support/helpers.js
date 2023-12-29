@@ -402,12 +402,18 @@ export function assertVictory(score = null) {
             return;
           }
           const { wins, losses, stalemates } = score;
+
+          cy.get('[data-cy=continue-match-banner]')
+            .should('be.visible')
+            .should('contain', 'Continue Match?');
+
           cy.get('[data-cy=match-score-counter]')
             .should('be.visible');
           cy.get('[data-cy=match-score-counter-wins]')
             .should('contain', `W: ${wins}`);
           cy.get('[data-cy=match-score-counter-losses]')
             .should('contain', `L: ${losses}`);
+
           // .get('[data-cy=match-score-section]')
           // .should('be.visible')
           // .get(`[data-cy=match-result-game-${gameNumber}]`)

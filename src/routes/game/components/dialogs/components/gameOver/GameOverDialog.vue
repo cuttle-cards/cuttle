@@ -7,6 +7,9 @@
     </template>
 
     <template #body>
+      <section class="match-status-banner" data-cy="continue-match-banner">
+        <h2 class="banner-h2">Continue Match?</h2>
+      </section>
       <MatchScoreCounter
         :wins="wins"
         :losses="losses"
@@ -289,6 +292,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+* {
+  color: rgba(var(--v-theme-surface-2));
+}
 .heading {
   text-align: center;
   text-align: center;
@@ -300,4 +306,24 @@ export default {
   padding-top: 24px;
   width: 100%;
 }
+
+.match-status-banner {
+  background-color: rgba(var(--v-theme-newPrimary));
+  color: #fff;
+  margin: -24px -24px 16px -24px;
+  padding: 8px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & .banner-h2 {
+    text-align: center;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px;
+  }
+}
+
 </style>
