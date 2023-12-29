@@ -7,7 +7,7 @@
     </template>
 
     <template #body>
-      <MatchStatusBanner :is-ranked="isRanked" />
+      <MatchStatusBanner />
       <MatchScoreCounter
         :wins="wins"
         :losses="losses"

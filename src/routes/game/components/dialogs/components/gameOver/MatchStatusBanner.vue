@@ -3,7 +3,7 @@
     <div class="d-flex align-center">
       <v-icon :icon="matchStatusIcon" color="surface-2" :data-cy="matchStatusIconDataCy" />
       <h2 class="banner-h2">
-        Continue Match?
+        {{ headerText }}
       </h2>
       <v-icon :icon="matchStatusIcon" color="surface-2" :data-cy="matchStatusIconDataCy" />
     </div>
@@ -12,21 +12,40 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useGameStore } from '@/stores/game.js';
 
-const props = defineProps({
-  isRanked: {
-    type: Boolean,
-    required: true,
-  },
-  // Username of winner
-  matchWinner: {
-    type: String,
-    default: '',
-  },
+const gameStore = useGameStore();
+
+const isRanked = computed(() => gameStore.isRanked);
+const isSpectating = computed(() => gameStore.isSpectating);
+
+const matchStatusIcon = computed(() => isRanked.value ? 'mdi-sword-cross' : 'mdi-coffee-outline');
+const matchStatusIconDataCy = computed(() => isRanked.value ? 'ranked-icon' : 'casual-icon');
+
+const specatingHeader = computed(() => {
+  if (gameStore.winnerPNum === null) {
+    return 'Stalemate';
+  }
+  const winnerUsername = gameStore.players[gameStore.winnerPNum].username;
+  return `${winnerUsername} won`;
 });
 
-const matchStatusIcon = computed(() => props.isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline');
-const matchStatusIconDataCy = computed(() => props.isRanked ? 'ranked-icon' : 'casual-icon');
+const playingHeader = computed(() => {
+  if (!isRanked.value) {
+    return 'Rematch?';
+  }
+
+  if (gameStore.currentMatch?.winner === null) {
+    return 'Continue Match?';
+  }
+
+  const youLose = gameStore.currentMatch?.winner === gameStore.opponent.id;
+  return youLose ? `${gameStore.opponent.username} Won` : `You beant ${gameStore.opponent.username}`;
+});
+
+const headerText = computed(() => {
+  return isSpectating.value ? specatingHeader.value : playingHeader.value;
+});
 </script>
 
 <style scoped lang="scss">
