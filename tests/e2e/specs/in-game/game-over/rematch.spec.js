@@ -48,7 +48,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
   it.only('Plays ranked match using Rematch/Continue Match button', () => {
     cy.concedeOpponent();
-    assertVictory();
+    assertVictory({wins: 1, losses: 0, stalemates: 0});
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {

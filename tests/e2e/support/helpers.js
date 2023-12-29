@@ -387,18 +387,23 @@ function assertStoreMatchesFixture(fixture) {
     });
 }
 
-export function assertVictory() {
+export function assertVictory(score = null) {
   cy.log('Asserting player victory');
   cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
       if (game.isRanked) {
-        const gameNumber = game.currentMatch.games.length;
         const matchWinner = game.currentMatch.winner;
         cy.get('#game-over-dialog')
           .should('be.visible')
           .should('contain', matchWinner ? 'Gottem!' : 'You Won');
+          if (!score) {
+            return;
+          }
+          const { wins, losses, stalemates } = score;
+          cy.get('[data-cy-game-over-score-counter]')
+            .should('be.visible');
           // .get('[data-cy=match-score-section]')
           // .should('be.visible')
           // .get(`[data-cy=match-result-game-${gameNumber}]`)
