@@ -7,7 +7,12 @@
     </template>
 
     <template #body>
-      <MatchScoreCounter :wins="1" :losses="1" :stalemates="0" />
+      <MatchScoreCounter
+        :wins="1"
+        :losses="1"
+        :stalemates="0"
+        :latest-result="latestResult"
+      />
       <template v-if="currentMatch">
         <p v-if="currentMatch" class="dialog-text" data-cy="match-result-section">
           <!-- Match against opponent: finished / in progress -->
@@ -163,6 +168,12 @@ export default {
       }
 
       return 'loss-heading';
+    },
+    latestResult() {
+      if (this.stalemate) {
+        return 'Stalemate';
+      }
+      return this.playerWinsGame ? 'Won' : 'Lost';
     },
     isMobilePortrait() {
       return this.$vuetify.display.xs;

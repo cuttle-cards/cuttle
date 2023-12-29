@@ -1,13 +1,25 @@
 <template>
   <div class="outer-container">
-    <div class="inner-container" data-cy-match-score-counter>
-      <span class="individual-score selected">
+    <div class="inner-container" data-cy="match-score-counter">
+      <span
+        class="individual-score"
+        :class="{'selected': latestResult === 'Won'}"
+        data-cy="match-score-counter-wins"
+      >
         W: {{ wins }}
       </span>
-      <span class="individual-score">
+      <span
+        class="individual-score"
+        :class="{'selected': latestResult === 'Lost'}"
+        data-cy="match-score-counter-losses"
+      >
         L: {{ losses }}
       </span>
-      <span class="individual-score">
+      <span
+        class="individual-score"
+        :class="{'selected': latestResult === 'Stalemate'}"
+        data-cy="match-score-counter-stalemates"
+      >
         T: {{ stalemates }}
       </span>
     </div>
@@ -27,6 +39,11 @@ const props = defineProps({
   stalemates: {
     type: Number,
     default: 0,
+  },
+  latestResult: {
+    type: String,
+    required: true,
+    validator: (val) => ['Won', 'Lost', 'Stalemate'].includes(val),
   }
 });
 </script>
