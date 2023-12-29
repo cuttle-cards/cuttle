@@ -8,7 +8,13 @@
 
     <template #body>
       <section class="match-status-banner" data-cy="continue-match-banner">
-        <h2 class="banner-h2">Continue Match?</h2>
+        <div class="d-flex align-center">
+          <v-icon :icon="matchStatusIcon" color="surface-2" :data-cy="matchStatusIconDataCy" />
+          <h2 class="banner-h2">
+            Continue Match?
+          </h2>
+          <v-icon :icon="matchStatusIcon" color="surface-2" :data-cy="matchStatusIconDataCy" />
+        </div>
       </section>
       <MatchScoreCounter
         :wins="wins"
@@ -226,6 +232,15 @@ export default {
     stalemates() {
       return this.matchGameStats.filter((gameResult) => gameResult === 'D').length;
     },
+    isRanked() {
+      return this.gameStore.isRanked;
+    },
+    matchStatusIcon() {
+      return this.isRanked ? 'mdi-sword-cross' : 'mdi-coffee-outline';
+    },
+    matchStatusIconDataCy() {
+      return this.isRanked ? 'ranked-icon' : 'casual-icon';
+    },
     matchIsOver() {
       return this.gameStore.currentMatch?.winner;
     },
@@ -323,6 +338,7 @@ export default {
     font-style: normal;
     font-weight: 700;
     line-height: 32px;
+    margin: 8px;
   }
 }
 

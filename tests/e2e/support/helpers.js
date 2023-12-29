@@ -398,14 +398,15 @@ export function assertVictory(score = null) {
         cy.get('#game-over-dialog')
           .should('be.visible')
           .should('contain', matchWinner ? 'Gottem!' : 'You Won');
+
+          cy.get('[data-cy=continue-match-banner]')
+            .should('be.visible')
+            .should('contain', 'Continue Match?')
+            .find('[data-cy=ranked-icon]');
           if (!score) {
             return;
           }
           const { wins, losses, stalemates } = score;
-
-          cy.get('[data-cy=continue-match-banner]')
-            .should('be.visible')
-            .should('contain', 'Continue Match?');
 
           cy.get('[data-cy=match-score-counter]')
             .should('be.visible');
