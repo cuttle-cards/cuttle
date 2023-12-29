@@ -75,7 +75,7 @@ import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
-import RulesDialog from '@/routes/game/components/RulesDialog.vue';
+import RulesDialog from '@/routes/game/components/dialogs/components/RulesDialog.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 export default {
   name: 'GameMenu',
