@@ -8,9 +8,9 @@
 
     <template #body>
       <MatchScoreCounter
-        :wins="1"
-        :losses="1"
-        :stalemates="0"
+        :wins="wins"
+        :losses="losses"
+        :stalemates="stalemates"
         :latest-result="latestResult"
       />
       <template v-if="currentMatch">
@@ -211,6 +211,17 @@ export default {
         } 
         return 'I';
       });
+    },
+    wins() {
+      // const currentMatchGames = this.gameStore.currentMatch?.games ?? [];
+      // return currentMatchGames.filter((game) => game.winner === this.authStore.)
+      return this.matchGameStats.filter((gameResult) => gameResult === 'W').length;
+    },
+    losses() {
+      return this.matchGameStats.filter((gameResult) => gameResult === 'L').length;
+    },
+    stalemates() {
+      return this.matchGameStats.filter((gameResult) => gameResult === 'D').length;
     },
     matchIsOver() {
       return this.gameStore.currentMatch?.winner;
