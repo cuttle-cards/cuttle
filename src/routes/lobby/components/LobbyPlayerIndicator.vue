@@ -1,7 +1,6 @@
 <template>
   <Transition name="cards" mode="out-in">
     <div v-if="playerUsername" class="player-card">
-      <span class="player-name">{{ playerUsername }}</span>
       <div class="card-container" data-cy="lobby-card-container" :class="{ 'ready' : playerReady }">
         <img
           src="/img/cards/card-ready.png"
@@ -19,6 +18,7 @@
           <div class="water" />
         </div>
       </div>
+      <span class="player-name">{{ playerUsername }}</span>
     </div>
     <div v-else class="player-indicator" :style="{ padding: playerPadding }">
       <div class="avatar">

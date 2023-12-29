@@ -14,7 +14,7 @@
         :stalemates="stalemates"
         :latest-result="latestResult"
       />
-      <section class="d-flex justify-space-between">
+      <section class="d-flex justify-space-between mt-4">
         <LobbyPlayerIndicator :player-username="gameStore.player.username" :player-ready="gameStore.iWantRematch" />
         <LobbyPlayerIndicator :player-username="gameStore.opponent.username" :player-ready="gameStore.opponentWantsRematch" />
       </section>
