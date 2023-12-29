@@ -7,7 +7,7 @@
     </template>
 
     <template #body>
-      <section class="match-status-banner" data-cy="continue-match-banner">
+      <section class="match-status-banner" :class="isRanked ? 'ranked' : 'casual'" data-cy="continue-match-banner">
         <div class="d-flex align-center">
           <v-icon :icon="matchStatusIcon" color="surface-2" :data-cy="matchStatusIconDataCy" />
           <h2 class="banner-h2">
@@ -323,14 +323,18 @@ export default {
 }
 
 .match-status-banner {
-  background-color: rgba(var(--v-theme-newPrimary));
-  color: #fff;
   margin: -24px -24px 16px -24px;
   padding: 8px 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  &.ranked {
+    background-color: rgba(var(--v-theme-newPrimary));
+  }
+  &.casual {
+    background-color: rgba(var(--v-theme-newSecondary));
+  }
 
   & .banner-h2 {
     text-align: center;
