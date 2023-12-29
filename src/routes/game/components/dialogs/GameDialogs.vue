@@ -49,7 +49,7 @@ import { useAuthStore } from '@/stores/auth';
 import CannotCounterDialog from './components/CannotCounterDialog.vue';
 import CounterDialog from './components/CounterDialog.vue';
 import FourDialog from './components/FourDialog.vue';
-import GameOverDialog from './components/GameOver/GameOverDialog.vue';
+import GameOverDialog from './components/gameOver/components/GameOverDialog.vue';
 import ReauthenticateDialog from './components/ReauthenticateDialog.vue';
 import SevenDoubleJacksDialog from './components/SevenDoubleJacksDialog.vue';
 import ThreeDialog from './components/ThreeDialog.vue';
