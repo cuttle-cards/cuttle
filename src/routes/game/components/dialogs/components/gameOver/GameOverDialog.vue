@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog id="game-over-dialog" v-model="show" width="600" >
+  <BaseDialog id="game-over-dialog" v-model="show">
     <template #title>
       <h1 :data-cy="headingDataAttr" :class="isMobilePortrait ? 'text-h4' : 'heading'">
         {{ heading }}
