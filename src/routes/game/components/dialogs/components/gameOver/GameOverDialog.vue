@@ -7,6 +7,7 @@
     </template>
 
     <template #body>
+      <MatchScoreCounter :wins="1" :losses="1" :stalemates="0" />
       <template v-if="currentMatch">
         <p v-if="currentMatch" class="dialog-text" data-cy="match-result-section">
           <!-- Match against opponent: finished / in progress -->
@@ -88,12 +89,14 @@ import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
+import MatchScoreCounter from './MatchScoreCounter.vue';
 
 export default {
   name: 'GameOverDialog',
   components: {
     BaseDialog,
     BaseSnackbar,
+    MatchScoreCounter,
   },
   props: {
     modelValue: {

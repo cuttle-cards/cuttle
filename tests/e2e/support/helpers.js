@@ -402,7 +402,7 @@ export function assertVictory(score = null) {
             return;
           }
           const { wins, losses, stalemates } = score;
-          cy.get('[data-cy-game-over-score-counter]')
+          cy.get('[data-cy-match-score-counter]')
             .should('be.visible');
           // .get('[data-cy=match-score-section]')
           // .should('be.visible')
