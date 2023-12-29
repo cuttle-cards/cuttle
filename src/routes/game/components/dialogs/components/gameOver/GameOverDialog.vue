@@ -18,45 +18,6 @@
         <LobbyPlayerIndicator :player-username="gameStore.player.username" :player-ready="gameStore.iWantRematch" />
         <LobbyPlayerIndicator :player-username="gameStore.opponent.username" :player-ready="gameStore.opponentWantsRematch" />
       </section>
-      <template v-if="currentMatch">
-        <p v-if="currentMatch" class="dialog-text" data-cy="match-result-section">
-          <!-- Match against opponent: finished / in progress -->
-          {{ t('game.dialogs.gameOverDialog.matchAgainst') }} {{ gameStore.opponent.username }}:
-          <span>
-            {{ t(matchIsOver ? 'game.dialogs.gameOverDialog.finished' : 'game.dialogs.gameOverDialog.inProgress') }}
-          </span>
-        </p>
-        <p class="dialog-text" data-cy="match-winner-message">
-          {{ yourGameAgainst }}
-        </p>
-        <div data-cy="match-result-games" class="mb-4">
-          <div class="d-flex">
-            <div
-              v-for="(gameStatus, i) in matchGameStats"
-              :key="`${gameStatus}-${i}`"
-              class="d-flex flex-column mr-4 align-center"
-              :data-cy="`match-result-game-${i+1}`"
-            >
-              <v-icon
-                size="x-large"
-                color="surface-2"
-                :icon="iconFromGameStatus(gameStatus)"
-                :data-cy="`icon-${gameStatus}`"
-                :aria-label="`${gameStatus} icon`"
-                aria-hidden="false"
-                role="img"
-              />
-              {{ gameStatus }}
-            </div>
-          </div>
-        </div>
-      </template>
-      <p v-if="opponentWantsToRematch" data-cy="opponent-wants-rematch">
-        {{ gameStore.opponent.username }} {{ t('game.dialogs.gameOverDialog.askRematch') }}
-      </p>
-      <p v-if="opponentDeclinedRematch" data-cy="opponent-declined-rematch">
-        {{ gameStore.opponent.username }}  {{ t('game.dialogs.gameOverDialog.declineRematch') }}
-      </p>
     </template>
 
     <template #actions>
@@ -150,13 +111,6 @@ export default {
       },
     },
     ...mapStores(useGameStore),
-    yourGameAgainst() {
-      if (this.matchIsOver) {
-        // You won/lost your game against
-        return `${this.t('game.dialogs.gameOverDialog.you')} ${this.t(this.playerWinsMatch ? 'game.dialogs.gameOverDialog.won' : 'game.dialogs.gameOverDialog.lost')} ${this.t('game.dialogs.gameOverDialog.yourGameAgainst')} ${this.gameStore.opponent.username}`;
-      }
-      return '';
-    },
     heading() {
       if (this.matchIsOver) {
         // You win the match / you lose the match
