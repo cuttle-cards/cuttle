@@ -81,8 +81,8 @@ export default {
   perspective: 1200px;
   position: relative;
   &.small {
-    height: 20vh;
-    width: calc(20vh / 1.45);
+    height: 13vh;
+    width: calc(13vh / 1.45);
   }
 }
 .card-container img {
