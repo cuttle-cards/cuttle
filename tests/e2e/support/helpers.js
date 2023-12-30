@@ -403,6 +403,7 @@ export function assertVictory(score = null) {
             .should('be.visible')
             .should('contain', 'Continue Match?')
             .find('[data-cy=ranked-icon]');
+
           if (!score) {
             return;
           }
@@ -411,7 +412,8 @@ export function assertVictory(score = null) {
           cy.get('[data-cy=match-score-counter]')
             .should('be.visible');
           cy.get('[data-cy=match-score-counter-wins]')
-            .should('contain', `W: ${wins}`);
+            .should('contain', `W: ${wins}`)
+            .should('have.class', 'selected');
           cy.get('[data-cy=match-score-counter-losses]')
             .should('contain', `L: ${losses}`);
 
@@ -460,7 +462,8 @@ export function assertLoss(score = null) {
           cy.get('[data-cy=match-score-counter-wins]')
             .should('contain', `W: ${wins}`);
           cy.get('[data-cy=match-score-counter-losses]')
-            .should('contain', `L: ${losses}`);
+            .should('contain', `L: ${losses}`)
+            .should('have.class', 'selected');
       } else {
         cy.get('#game-over-dialog').should('be.visible').should('not.contain', 'Match against');
       }
