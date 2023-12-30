@@ -72,6 +72,25 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.get('[data-cy=opponent-indicator]')
       .find('[data-cy="lobby-card-container"]')
         .should('have.class', 'ready');
+
+    // Player hits rematch and starts new game
+    cy.get('[data-cy=gameover-rematch]').click();
+    // Player should have 6 cards now that new game has started
+    cy.get('[data-player-hand-card]')
+      .should('have.length', 6);
+
+    // Player concedes
+    cy.get('#game-menu-activator').click({ force: true });
+    cy.get('#game-menu')
+      .should('be.visible')
+      .get('[data-cy=concede-initiate]')
+      .click();
+    cy.get('#request-gameover-dialog')
+      .should('be.visible')
+      .get('[data-cy=request-gameover-confirm]')
+      .click();
+
+    assertLoss({wins: 1, losses: 1, stalemates: 0, lastResult: 'Lost'});
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
