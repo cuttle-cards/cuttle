@@ -53,15 +53,25 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .should('contain', 1)
       .should('have.class', 'selected');
 
-    cy.wait(1500);
+    // Neither player has requested rematch yet
+    cy.get('[data-cy=my-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+    cy.get('[data-cy=opponent-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
 
     cy.url().then((url) => {
       const oldGameId = url.split('/').pop();
       cy.rematchOpponent({ gameId: oldGameId, rematch: true });
     });
 
-    cy.get(`[data-cy-ready-indicator=${playerOne.username}]`)
-      .should('be.visible');
+    cy.get('[data-cy=my-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+    cy.get('[data-cy=opponent-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('have.class', 'ready');
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {

@@ -19,11 +19,13 @@
           :player-username="gameStore.player.username"
           :player-ready="gameStore.iWantRematch"
           small
+          data-cy="my-indicator"
         />
         <LobbyPlayerIndicator
           :player-username="gameStore.opponent.username"
           :player-ready="gameStore.opponentWantsRematch"
           small
+          data-cy="opponent-indicator"
         />
       </section>
     </template>
