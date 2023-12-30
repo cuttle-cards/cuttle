@@ -120,6 +120,9 @@ export default {
     },
     ...mapStores(useGameStore),
     heading() {
+      if (this.gameStore.isSpectating) {
+        return this.spectatorHeading;
+      }
       if (this.matchIsOver) {
         // You win the match / you lose the match
         const messageName = this.playerWinsMatch ? 'game.dialogs.gameOverDialog.youWinTheMatch' : 'game.dialogs.gameOverDialog.youLoseTheMatch';
@@ -128,6 +131,16 @@ export default {
       // Draw / You Won / You Lose
       const messageName = this.stalemate ? 'game.dialogs.gameOverDialog.draw' : this.playerWinsGame ? 'game.dialogs.gameOverDialog.youWin' : 'game.dialogs.gameOverDialog.youLose';
       return this.t(messageName);
+    },
+    spectatorHeading() {
+      switch (this.gameStore.winnerPNum) {
+        case 0:
+          return 'P1 Wins';
+        case 1:
+          return 'P2 Wins';
+        default:
+          return 'Stalemate';
+      }
     },
     headingDataAttr() {
       if (this.stalemate) {
