@@ -43,13 +43,13 @@
           {{ t('game.dialogs.gameOverDialog.goHome') }}
         </v-btn>
         <v-btn
-          color="surface-1"
+          :color="rematchButtonColor"
           :disabled="opponentDeclinedRematch"
           variant="flat"
           data-cy="gameover-rematch"
           @click="rematch"
         >
-          {{ t('game.dialogs.gameOverDialog.rematch') }}
+          {{ rematchButtonText }}
         </v-btn>
       </div>
     </template>
@@ -230,6 +230,15 @@ export default {
         (this.gameStore.p1Rematch === false && this.gameStore.myPNum === 0)
       );
     },
+    rematchButtonColor() {
+      return this.isRanked ? 'newPrimary' : 'newSecondary';
+    },
+    rematchButtonText() {
+      if (this.gameStore.isSpectating) {
+        return 'Spectate';
+      }
+      return this.isRanked ? 'Continue Match' : 'Rematch';
+    }
   },
   methods: {
     async goHome() {
