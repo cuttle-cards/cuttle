@@ -1,6 +1,6 @@
 <template>
   <section class="match-status-banner" :class="isRanked ? 'ranked' : 'casual'" data-cy="continue-match-banner">
-    <div class="d-flex align-center">
+    <div class="banner-content">
       <v-icon :icon="matchStatusIcon" color="surface-2" :data-cy="matchStatusIconDataCy" />
       <h2 class="banner-h2">
         {{ headerText }}
@@ -70,6 +70,13 @@ const headerText = computed(() => {
     font-weight: 700;
     line-height: 32px;
     margin: 8px;
+  }
+
+  & .banner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
   }
 }
 </style>
