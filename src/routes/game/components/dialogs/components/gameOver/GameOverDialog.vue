@@ -7,7 +7,6 @@
     </template>
 
     <template #body>
-      <MatchStatusBanner />
       <MatchScoreCounter
         :wins="wins"
         :losses="losses"
@@ -28,6 +27,7 @@
           data-cy="opponent-indicator"
         />
       </section>
+      <MatchStatusBanner />
     </template>
 
     <template #actions>

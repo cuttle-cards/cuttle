@@ -50,7 +50,7 @@ const headerText = computed(() => {
 
 <style scoped lang="scss">
 .match-status-banner {
-  margin: -24px -24px 16px -24px;
+  margin: 0px -24px -10px -24px;
   padding: 8px 24px;
   display: flex;
   flex-direction: column;
