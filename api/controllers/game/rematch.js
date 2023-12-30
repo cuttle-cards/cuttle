@@ -21,17 +21,16 @@ module.exports = async function (req, res) {
 
     const { p0: newP1Id, p1: newP0Id } = updatedGame;
 
-    Game.publish([game.id], {
-      change: 'rematch',
-      game: updatedGame,
-      pNum,
-    });
-
-    // CHALLENGE: race condition
     const bothWantToRematch =
       (updatedGame.p0Rematch && gameUpdates.p1Rematch) || (updatedGame.p1Rematch && gameUpdates.p0Rematch);
 
     if (!bothWantToRematch) {
+      Game.publish([game.id], {
+        change: 'rematch',
+        game: updatedGame,
+        pNum,
+      });
+  
       return res.ok();
     }
 
