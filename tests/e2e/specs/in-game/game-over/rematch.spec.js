@@ -60,7 +60,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       cy.rematchOpponent({ gameId: oldGameId, rematch: true });
     });
 
-    cy.get('[data-player-rematch-indicator]')
+    cy.get(`[data-cy-ready-indicator=${playerOne.username}]`)
       .should('be.visible');
   });
   

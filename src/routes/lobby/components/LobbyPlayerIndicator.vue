@@ -1,6 +1,6 @@
 <template>
   <Transition name="cards" mode="out-in">
-    <div v-if="playerUsername" class="player-card">
+    <div v-if="playerUsername" class="player-card" :data-cy-ready-indicator="playerUsername">
       <div
         class="card-container"
         :class="{ 'ready' : playerReady, small }"
