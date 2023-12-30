@@ -1,7 +1,11 @@
 <template>
   <Transition name="cards" mode="out-in">
     <div v-if="playerUsername" class="player-card">
-      <div class="card-container" data-cy="lobby-card-container" :class="{ 'ready' : playerReady }">
+      <div
+        class="card-container"
+        :class="{ 'ready' : playerReady, small }"
+        data-cy="lobby-card-container"
+      >
         <img
           src="/img/cards/card-ready.png"
           class="card-front"
@@ -43,6 +47,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    small: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
     const { t } = useI18n();
@@ -72,6 +80,10 @@ export default {
   transform-style: preserve-3d;
   perspective: 1200px;
   position: relative;
+  &.small {
+    height: 20vh;
+    width: calc(20vh / 1.45);
+  }
 }
 .card-container img {
   width: 100%;

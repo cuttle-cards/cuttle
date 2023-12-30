@@ -15,8 +15,16 @@
         :latest-result="latestResult"
       />
       <section class="d-flex justify-space-between mt-6 mb-8">
-        <LobbyPlayerIndicator :player-username="gameStore.player.username" :player-ready="gameStore.iWantRematch" />
-        <LobbyPlayerIndicator :player-username="gameStore.opponent.username" :player-ready="gameStore.opponentWantsRematch" />
+        <LobbyPlayerIndicator
+          :player-username="gameStore.player.username"
+          :player-ready="gameStore.iWantRematch"
+          small
+        />
+        <LobbyPlayerIndicator
+          :player-username="gameStore.opponent.username"
+          :player-ready="gameStore.opponentWantsRematch"
+          small
+        />
       </section>
     </template>
 
