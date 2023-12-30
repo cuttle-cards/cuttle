@@ -101,7 +101,6 @@ export default {
 }
 
 .player-card {
-  height: 40vh;
   display: flex;
   flex-direction: column;
   place-items: center;
@@ -180,16 +179,7 @@ export default {
   }
 }
 
-@media (min-width: 1920px) {
-  .player-card{
-    height: 50vh;
-  }
-}
-
 @media (max-width: 600px) {
-  .player-card{
-    height: 22vh;
-  }
   .player-name {
     padding: 2px;
     font-size: 1rem;
