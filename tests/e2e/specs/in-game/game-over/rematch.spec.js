@@ -140,6 +140,9 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
       cy.concedeOpponent();
       assertVictory({wins: 2, losses: 1, stalemates: 1});
+
+      cy.get('[data-cy=gameover-rematch]')
+        .should('not.exist');
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {

@@ -43,6 +43,7 @@
           {{ t('game.dialogs.gameOverDialog.goHome') }}
         </v-btn>
         <v-btn
+          v-if="!matchIsOver"
           :color="rematchButtonColor"
           :disabled="rematchButtonDisabled"
           variant="flat"
