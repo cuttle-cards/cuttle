@@ -44,7 +44,7 @@
         </v-btn>
         <v-btn
           :color="rematchButtonColor"
-          :disabled="opponentDeclinedRematch"
+          :disabled="rematchButtonDisabled"
           variant="flat"
           data-cy="gameover-rematch"
           @click="rematch"
@@ -238,7 +238,10 @@ export default {
         return 'Spectate';
       }
       return this.isRanked ? 'Continue Match' : 'Rematch';
-    }
+    },
+    rematchButtonDisabled() {
+      return this.opponentDeclinedRematch || this.gameStore.iWantRematch;
+    },
   },
   methods: {
     async goHome() {

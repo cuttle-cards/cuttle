@@ -98,7 +98,9 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .find('[data-cy="lobby-card-container"]')
         .should('not.have.class', 'ready');
 
-    cy.get('[data-cy=gameover-rematch]').click();
+    cy.get('[data-cy=gameover-rematch]')
+      .click()
+      .should('be.disabled');
 
     cy.get('[data-cy=my-indicator]')
       .find('[data-cy="lobby-card-container"]')
