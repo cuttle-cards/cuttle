@@ -91,6 +91,17 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .click();
 
     assertLoss({wins: 1, losses: 1, stalemates: 0, lastResult: 'Lost'});
+
+    // cy.get('[data-cy=gameover-rematch]').click();
+
+    // cy.get('[data-cy=my-indicator]')
+    //   .find('[data-cy="lobby-card-container"]')
+    //     .should('not.have.class', 'ready');
+
+    // Game 3 starts
+    // Player should have 6 cards now that new game has started
+    // cy.get('[data-player-hand-card]')
+    //   .should('have.length', 5);
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
