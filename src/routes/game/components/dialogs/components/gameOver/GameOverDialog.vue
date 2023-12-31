@@ -15,7 +15,8 @@
       />
       <section class="d-flex justify-space-around mt-6 mb-8">
         <template v-if="matchIsOver">
-        
+          <MatchWonOrLostIndicator :username="gameStore.player.username" :won-match="true" />
+          <MatchWonOrLostIndicator :username="gameStore.opponent.username" :won-match="false" />
         </template>
         <template v-else>
           <LobbyPlayerIndicator
@@ -78,6 +79,7 @@ import GameStatus from '_/utils/GameStatus.json';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import MatchScoreCounter from './components/MatchScoreCounter.vue';
 import MatchStatusBanner from './components/MatchStatusBanner.vue';
+import MatchWonOrLostIndicator from './components/MatchWonOrLostIndicator.vue';
 import LobbyPlayerIndicator from '@/routes/lobby/components/LobbyPlayerIndicator.vue';
 
 export default {
@@ -87,6 +89,7 @@ export default {
     BaseSnackbar,
     MatchScoreCounter,
     MatchStatusBanner,
+    MatchWonOrLostIndicator,
     LobbyPlayerIndicator
   },
   props: {
