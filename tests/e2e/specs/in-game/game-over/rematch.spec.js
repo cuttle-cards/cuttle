@@ -141,8 +141,11 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       cy.concedeOpponent();
       assertVictory({wins: 2, losses: 1, stalemates: 1});
 
+      // Rematch button and indicators should not display (match is over)
       cy.get('[data-cy=gameover-rematch]')
         .should('not.exist');
+      cy.get('[data-cy=my-rematch-indicator]').should('not.exist');
+      cy.get('[data-cy=opponent-rematch-indicator]').should('not.exist');
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {

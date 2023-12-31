@@ -14,18 +14,23 @@
         :latest-result="latestResult"
       />
       <section class="d-flex justify-space-around mt-6 mb-8">
-        <LobbyPlayerIndicator
-          :player-username="gameStore.player.username"
-          :player-ready="gameStore.iWantRematch"
-          small
-          data-cy="my-rematch-indicator"
-        />
-        <LobbyPlayerIndicator
-          :player-username="gameStore.opponent.username"
-          :player-ready="gameStore.opponentWantsRematch"
-          small
-          data-cy="opponent-rematch-indicator"
-        />
+        <template v-if="matchIsOver">
+        
+        </template>
+        <template v-else>
+          <LobbyPlayerIndicator
+            :player-username="gameStore.player.username"
+            :player-ready="gameStore.iWantRematch"
+            small
+            data-cy="my-rematch-indicator"
+          />
+          <LobbyPlayerIndicator
+            :player-username="gameStore.opponent.username"
+            :player-ready="gameStore.opponentWantsRematch"
+            small
+            data-cy="opponent-rematch-indicator"
+          />
+        </template>
       </section>
       <MatchStatusBanner />
     </template>
