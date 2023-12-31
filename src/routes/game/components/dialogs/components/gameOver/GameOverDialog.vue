@@ -76,8 +76,8 @@ import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
-import MatchScoreCounter from './MatchScoreCounter.vue';
-import MatchStatusBanner from './MatchStatusBanner.vue';
+import MatchScoreCounter from './components/MatchScoreCounter.vue';
+import MatchStatusBanner from './components/MatchStatusBanner.vue';
 import LobbyPlayerIndicator from '@/routes/lobby/components/LobbyPlayerIndicator.vue';
 
 export default {
