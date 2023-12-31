@@ -4,6 +4,29 @@ import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixture
 
 const dayjs = require('dayjs');
 
+function startRematchPlayerFirst() {
+  cy.get('[data-cy=my-indicator]')
+    .find('[data-cy="lobby-card-container"]')
+    .should('not.have.class', 'ready');
+
+  cy.get('[data-cy=gameover-rematch]')
+    .click()
+    .should('be.disabled');
+
+  cy.get('[data-cy=continue-match-banner]')
+    .should('be.visible')
+    .should('contain', 'Waiting for Opponent');
+
+  cy.get('[data-cy=my-indicator]')
+    .find('[data-cy="lobby-card-container"]')
+      .should('have.class', 'ready');
+
+  cy.url().then((url) => {
+    const oldGameId = Number(url.split('/').pop());
+    cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
+  });
+}
+
 describe('Creating And Updating Ranked Matches With Rematch', () => {
   beforeEach(function () {
     cy.viewport(1920, 1080);
@@ -95,29 +118,8 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     assertLoss({wins: 1, losses: 1, stalemates: 0, lastResult: 'Lost'});
 
-    cy.get('[data-cy=my-indicator]')
-      .find('[data-cy="lobby-card-container"]')
-        .should('not.have.class', 'ready');
-
-    cy.get('[data-cy=gameover-rematch]')
-      .click()
-      .should('be.disabled');
-
-    cy.get('[data-cy=continue-match-banner]')
-      .should('be.visible')
-      .should('contain', 'Waiting for Opponent')
-      .find('[data-cy=ranked-icon]');
-
-    cy.get('[data-cy=my-indicator]')
-      .find('[data-cy="lobby-card-container"]')
-        .should('have.class', 'ready');
-
-    cy.url().then((url) => {
-      const oldGameId = Number(url.split('/').pop());
-      cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
-    });
-
     // Game 3 - Stalemate
+    startRematchPlayerFirst();
     cy.get('[data-player-hand-card]')
       .should('have.length', 5);
 
@@ -131,30 +133,10 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         .click();
 
       assertStalemate({wins: 1, losses: 1, stalemates: 1});
-      cy.get('[data-cy=my-indicator]')
-      .find('[data-cy="lobby-card-container"]')
-        .should('not.have.class', 'ready');
-
-      cy.get('[data-cy=gameover-rematch]')
-        .click()
-        .should('be.disabled');
-
-      cy.get('[data-cy=continue-match-banner]')
-        .should('be.visible')
-        .should('contain', 'Waiting for Opponent')
-        .find('[data-cy=ranked-icon]');
-
-      cy.get('[data-cy=my-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
-
-      cy.url().then((url) => {
-        const oldGameId = Number(url.split('/').pop());
-        cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
-      });
 
       // Game 4 - Player wins match
-
+      startRematchPlayerFirst();
+      cy.get('[data-player-hand-card]').should('have.length', 6);
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
