@@ -231,6 +231,9 @@ export default {
       );
     },
     rematchButtonColor() {
+      if (this.rematchButtonDisabled) {
+        return undefined;
+      }
       return this.isRanked ? 'newPrimary' : 'newSecondary';
     },
     rematchButtonText() {
