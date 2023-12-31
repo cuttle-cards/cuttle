@@ -102,6 +102,11 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .click()
       .should('be.disabled');
 
+    cy.get('[data-cy=continue-match-banner]')
+      .should('be.visible')
+      .should('contain', 'Waiting for Opponent')
+      .find('[data-cy=ranked-icon]');
+
     cy.get('[data-cy=my-indicator]')
       .find('[data-cy="lobby-card-container"]')
         .should('have.class', 'ready');

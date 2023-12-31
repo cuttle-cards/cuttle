@@ -31,6 +31,10 @@ const specatingHeader = computed(() => {
 });
 
 const playingHeader = computed(() => {
+  if (gameStore.iWantRematch) {
+    return 'Waiting for Opponent';
+  }
+
   if (!isRanked.value) {
     return 'Rematch?';
   }
