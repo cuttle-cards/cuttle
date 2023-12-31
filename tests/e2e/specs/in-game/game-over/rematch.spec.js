@@ -47,6 +47,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it.only('Plays ranked match using Rematch/Continue Match button', () => {
+    // Game 1: Opponent concedes
     cy.concedeOpponent();
     assertVictory({wins: 1, losses: 0, stalemates: 0, lastResult: 'Won'});
     cy.get('[data-cy=match-score-counter-wins]')
@@ -77,7 +78,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       cy.joinRematchOpponent({ oldGameId });
     });
 
-    // Player should have 6 cards now that new game has started
+    // Game 2: Player concedes
     cy.get('[data-player-hand-card]')
       .should('have.length', 6);
 
@@ -116,8 +117,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
     });
 
-    // Game 3 starts
-    // Player should have 6 cards now that new game has started
+    // Game 3 - Stalemate
     cy.get('[data-player-hand-card]')
       .should('have.length', 5);
 
@@ -131,6 +131,30 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         .click();
 
       assertStalemate({wins: 1, losses: 1, stalemates: 1});
+      cy.get('[data-cy=my-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+
+      cy.get('[data-cy=gameover-rematch]')
+        .click()
+        .should('be.disabled');
+
+      cy.get('[data-cy=continue-match-banner]')
+        .should('be.visible')
+        .should('contain', 'Waiting for Opponent')
+        .find('[data-cy=ranked-icon]');
+
+      cy.get('[data-cy=my-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+          .should('have.class', 'ready');
+
+      cy.url().then((url) => {
+        const oldGameId = Number(url.split('/').pop());
+        cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
+      });
+
+      // Game 4 - Player wins match
+
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
