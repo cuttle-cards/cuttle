@@ -120,13 +120,8 @@ export default {
     stalemate() {
       return this.gameStore.gameIsOver && this.gameStore.winnerPNum === null;
     },
-    consideringOpponentStalemateRequest: {
-      get() {
-        return this.gameStore.consideringOpponentStalemateRequest;
-      },
-      set(val) {
-        this.gameStore.consideringOpponentStalemateRequest = val;
-      },
+    consideringOpponentStalemateRequest() {
+      return this.gameStore.consideringOpponentStalemateRequest;
     },
     topCard() {
       return this.gameStore.topCard;
