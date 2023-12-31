@@ -389,7 +389,10 @@ function assertStoreMatchesFixture(fixture) {
 
 export function assertVictory(score = null) {
   cy.log('Asserting player victory');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
+  cy.get('#game-over-dialog')
+    .should('be.visible')
+    .get('[data-cy=victory-heading]')
+    .should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -432,7 +435,6 @@ export function assertLoss(score = null) {
     .should('be.visible')
     .get('[data-cy=loss-heading]')
     .should('be.visible');
-  // cy.get('[data-cy=loss-img]').should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
