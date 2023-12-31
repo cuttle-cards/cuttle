@@ -27,6 +27,18 @@ function startRematchPlayerFirst() {
   });
 }
 
+function concedePlayer() {
+  cy.get('#game-menu-activator').click({ force: true });
+  cy.get('#game-menu')
+    .should('be.visible')
+    .get('[data-cy=concede-initiate]')
+    .click();
+  cy.get('#request-gameover-dialog')
+    .should('be.visible')
+    .get('[data-cy=request-gameover-confirm]')
+    .click();
+}
+
 describe('Creating And Updating Ranked Matches With Rematch', () => {
   beforeEach(function () {
     cy.viewport(1920, 1080);
@@ -69,7 +81,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.setupGameAsP0(true, true);
   });
 
-  it.only('Plays ranked match using Rematch/Continue Match button', () => {
+  it('Wins match played with Rematch/Continue Match button', () => {
     // Game 1: Opponent concedes
     cy.concedeOpponent();
     assertVictory({wins: 1, losses: 0, stalemates: 0});
@@ -105,17 +117,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.get('[data-player-hand-card]')
       .should('have.length', 6);
 
-    // Player concedes
-    cy.get('#game-menu-activator').click({ force: true });
-    cy.get('#game-menu')
-      .should('be.visible')
-      .get('[data-cy=concede-initiate]')
-      .click();
-    cy.get('#request-gameover-dialog')
-      .should('be.visible')
-      .get('[data-cy=request-gameover-confirm]')
-      .click();
-
+    concedePlayer();
     assertLoss({wins: 1, losses: 1, stalemates: 0});
 
     // Game 3 - Stalemate
@@ -152,6 +154,24 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         .find('[data-cy-result-img=won]');
       cy.get('[data-cy=opponent-match-result]')
         .find('[data-cy-result-img=lost]');
+  });
+
+  it.only('Loses a ranked match played with the Rematch/Continue Match button', () => {
+    // Game 1 - Player concedes
+    concedePlayer();
+    assertLoss({wins: 0, losses: 1, stalemates: 0});
+
+    // Game 2 - Opponent concedes
+    startRematchPlayerFirst();
+    cy.get('[data-player-hand-card]').should('have.length', 6);
+    cy.concedeOpponent();
+    assertVictory({wins: 1, losses: 1, stalemates: 0});
+
+    // Game 3 - Player concedes & loses match
+    startRematchPlayerFirst();
+    cy.get('[data-player-hand-card]').should('have.length', 5);
+    concedePlayer();
+    assertLoss({wins: 1, losses: 2, stalemates: 0});
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
