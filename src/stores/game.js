@@ -744,6 +744,7 @@ export const useGameStore = defineStore('game', {
     async requestStalemate() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/stalemate', (res, jwres) => {
+          this.consideringOpponentStalemateRequest = false;
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
@@ -751,6 +752,7 @@ export const useGameStore = defineStore('game', {
     async rejectStalemate() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/reject-stalemate', (res, jwres) => {
+          this.consideringOpponentStalemateRequest = false;
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });

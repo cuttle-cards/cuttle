@@ -125,7 +125,7 @@ export default {
         return this.gameStore.consideringOpponentStalemateRequest;
       },
       set(val) {
-        this.gameStore.setConsideringOpponentStalemateRequest(val);
+        this.gameStore.consideringOpponentStalemateRequest = val;
       },
     },
     topCard() {
