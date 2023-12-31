@@ -257,9 +257,8 @@ export default {
       }
     },
     async rematch() {
-      this.gameStore.setGameOver({gameOver: false});
       try {
-        await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: true});
+        await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: true});
       } catch (e) {
         this.showSnackbar = true;
         this.snackBarMessage = 'Error requesting rematch';
