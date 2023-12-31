@@ -172,6 +172,12 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.get('[data-player-hand-card]').should('have.length', 5);
     concedePlayer();
     assertLoss({wins: 1, losses: 2, stalemates: 0});
+
+    // Player1 won and Player2 lost
+    cy.get('[data-cy=player-match-result]')
+      .find('[data-cy-result-img=lost]');
+    cy.get('[data-cy=opponent-match-result]')
+      .find('[data-cy-result-img=won]');
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
