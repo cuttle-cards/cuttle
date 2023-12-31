@@ -5,9 +5,9 @@ const gameAPI = sails.hooks['customgamehook'];
 module.exports = async function (req, res) {
   try {
     const { usr: userId, pNum } = req.session;
-    const { gameId, rematch } = req.body;
+    const { gameId: oldGameId, rematch } = req.body;
 
-    const game = await Game.findOne({ id: gameId }).populate('players');
+    const game = await Game.findOne({ id: oldGameId }).populate('players');
     const oldPNum = game.p0 === userId ? 0 : 1;
     const gameUpdates = { [`p${oldPNum}Rematch`]: rematch };
 
@@ -79,6 +79,7 @@ module.exports = async function (req, res) {
       change: 'newGameForRematch',
       game: updatedGame,
       pNum,
+      oldGameId,
       gameId: newGame.id,
       newGame: newFullGame,
     });

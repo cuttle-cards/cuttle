@@ -125,57 +125,33 @@ export async function handleInGameEvents(evData) {
       break;
     case SocketEvent.REMATCH:
       gameStore.setRematch({ pNum: evData.pNum, rematch: evData.game[`p${evData.pNum}Rematch`] });
-      if (
-        evData.pNum === gameStore.myPNum &&
-        currentRoute.name !== ROUTE_NAME_SPECTATE &&
-        evData.game[`p${evData.pNum}Rematch`]
-      ) {
-        router.push({
-          name: ROUTE_NAME_REMATCH,
-          params: {
-            gameId: gameStore.id,
-          },
-        });
-      }
       return;
     case SocketEvent.NEW_GAME_FOR_REMATCH: {
+      // ignore if not currently in/spectating relevant game
+      if (
+        Number(urlGameId) !== evData.oldGameId || 
+        ![ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE].includes(currentRoute.name)
+      ) {
+        return;
+      }
       gameStore.setRematchGameId(evData.gameId);
+      const { gameId: oldGameId } = currentRoute.params;
 
       if (currentRoute.name === ROUTE_NAME_SPECTATE) {
+        await gameStore.requestSpectate(evData.gameId);
         gameStore.updateGame(evData.newGame);
+      } else {
+        await gameStore.requestJoinRematch({ oldGameId });
+        gameStore.myPNum = null;
+        gameStore.resetPNumIfNullThenUpdateGame(evData.newGame);
       }
-      if (currentRoute.name === ROUTE_NAME_REMATCH) {
-        const { gameId } = currentRoute.params;
-        gameStore.requestJoinRematch({ oldGameId: gameId });
-        router
-          .push({
-            name: ROUTE_NAME_GAME,
-            params: {
-              gameId: evData.gameId,
-            },
-          })
-          .then(() => {
-            window.location.reload();
-          });
-      }
-      break;
-    }
-    case SocketEvent.JOIN_REMATCH: {
-      if (currentRoute.name === ROUTE_NAME_SPECTATE) {
-        gameStore.updateGame(evData.game);
-        if (parseInt(urlGameId, 10) !== evData.game.id) {
-          router
-            .push({
-              name: ROUTE_NAME_SPECTATE,
-              params: {
-                gameId: evData.gameId,
-              },
-            })
-            .then(() => {
-              gameStore.requestSpectate(evData.gameId);
-            });
-        }
-      }
+
+      router.push({
+          name: currentRoute.name,
+          params: {
+            gameId: evData.gameId,
+          },
+        });
       break;
     }
     case SocketEvent.RE_LOGIN:
