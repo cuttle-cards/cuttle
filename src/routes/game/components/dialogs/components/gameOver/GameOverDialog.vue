@@ -268,19 +268,15 @@ export default {
   },
   methods: {
     async goHome() {
-      this.leavingGame = true;
-      try {
-        await this.gameStore.requestUnsubscribeFromGame();
-        await this.gameStore.requestRematch({gameId:this.gameStore.id, rematch: false});
-      } finally {
-        this.leavingGame = false;
-        this.$router.push('/');
-        this.gameStore.setGameOver({
-          gameOver: false,
-          conceded: false,
-          winner: null,
-        });
-      }
+      this.leavingGame = false;
+      this.$router.push('/');
+      this.gameStore.setGameOver({
+        gameOver: false,
+        conceded: false,
+        winner: null,
+      });
+      await this.gameStore.requestUnsubscribeFromGame();
+      await this.gameStore.requestRematch({gameId:this.gameStore.id, rematch: false});
     },
     async rematch() {
       try {
