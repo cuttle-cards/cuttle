@@ -64,17 +64,19 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
       cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+      cy.get('[data-cy=my-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+          .should('not.have.class', 'ready');
+      cy.get('[data-cy=opponent-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+          .should('have.class', 'ready');
+  
+      // Player hits rematch and starts new game
+      cy.get('[data-cy=gameover-rematch]').click();
+
+      cy.joinRematchOpponent({ oldGameId });
     });
 
-    cy.get('[data-cy=my-indicator]')
-      .find('[data-cy="lobby-card-container"]')
-        .should('not.have.class', 'ready');
-    cy.get('[data-cy=opponent-indicator]')
-      .find('[data-cy="lobby-card-container"]')
-        .should('have.class', 'ready');
-
-    // Player hits rematch and starts new game
-    cy.get('[data-cy=gameover-rematch]').click();
     // Player should have 6 cards now that new game has started
     cy.get('[data-player-hand-card]')
       .should('have.length', 6);
@@ -104,12 +106,24 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
-      cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+      cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
     });
+
     // Game 3 starts
     // Player should have 6 cards now that new game has started
     cy.get('[data-player-hand-card]')
       .should('have.length', 5);
+
+      // Opponent requests stalemate
+      cy.stalemateOpponent();
+
+      // Player accepts stalemate
+      cy.get('#opponent-requested-stalemate-dialog')
+        .should('be.visible')
+        .find('[data-cy=accept-stalemate]')
+        .click();
+
+      assertStalemate({wins: 1, losses: 1, stalemates: 1});
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
