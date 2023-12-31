@@ -72,7 +72,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   it.only('Plays ranked match using Rematch/Continue Match button', () => {
     // Game 1: Opponent concedes
     cy.concedeOpponent();
-    assertVictory({wins: 1, losses: 0, stalemates: 0, lastResult: 'Won'});
+    assertVictory({wins: 1, losses: 0, stalemates: 0});
     cy.get('[data-cy=match-score-counter-wins]')
       .should('contain', 1)
       .should('have.class', 'selected');
@@ -116,7 +116,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .get('[data-cy=request-gameover-confirm]')
       .click();
 
-    assertLoss({wins: 1, losses: 1, stalemates: 0, lastResult: 'Lost'});
+    assertLoss({wins: 1, losses: 1, stalemates: 0});
 
     // Game 3 - Stalemate
     startRematchPlayerFirst();
@@ -137,6 +137,9 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       // Game 4 - Player wins match
       startRematchPlayerFirst();
       cy.get('[data-player-hand-card]').should('have.length', 6);
+
+      cy.concedeOpponent();
+      assertVictory({wins: 2, losses: 1, stalemates: 1});
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {

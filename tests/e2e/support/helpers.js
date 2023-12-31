@@ -401,7 +401,7 @@ export function assertVictory(score = null) {
 
           cy.get('[data-cy=continue-match-banner]')
             .should('be.visible')
-            .should('contain', 'Continue Match?')
+            .should('contain', matchWinner ? 'Good Match!': 'Continue Match?')
             .find('[data-cy=ranked-icon]');
 
           if (!score) {

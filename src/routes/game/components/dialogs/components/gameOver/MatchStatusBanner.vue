@@ -43,8 +43,7 @@ const playingHeader = computed(() => {
     return 'Continue Match?';
   }
 
-  const youLose = gameStore.currentMatch?.winner === gameStore.opponent.id;
-  return youLose ? `${gameStore.opponent.username} Won` : `You beant ${gameStore.opponent.username}`;
+  return 'Good Match!';
 });
 
 const headerText = computed(() => {
