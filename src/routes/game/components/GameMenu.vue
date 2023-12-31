@@ -159,6 +159,7 @@ export default {
       this.loading = true;
       await this.gameStore.requestConcede();
       this.shownDialog = '';
+      this.loading = false;
     },
     async requestStalemate() {
       this.loading = true;
