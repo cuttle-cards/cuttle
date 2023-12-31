@@ -146,6 +146,12 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         .should('not.exist');
       cy.get('[data-cy=my-rematch-indicator]').should('not.exist');
       cy.get('[data-cy=opponent-rematch-indicator]').should('not.exist');
+
+      // Player1 won and Player2 lost
+      cy.get('[data-cy=player-match-result]')
+        .find('[data-cy-result-img=won]');
+      cy.get('[data-cy=opponent-match-result]')
+        .find('[data-cy-result-img=lost]');
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {

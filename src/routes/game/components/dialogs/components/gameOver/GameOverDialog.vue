@@ -15,8 +15,16 @@
       />
       <section class="d-flex justify-space-around mt-6 mb-8">
         <template v-if="matchIsOver">
-          <MatchWonOrLostIndicator :username="gameStore.player.username" :won-match="true" />
-          <MatchWonOrLostIndicator :username="gameStore.opponent.username" :won-match="false" />
+          <MatchWonOrLostIndicator
+            :username="gameStore.player.username"
+            :won-match="playerWinsMatch"
+            data-cy="player-match-result"
+          />
+          <MatchWonOrLostIndicator
+            :username="gameStore.opponent.username"
+            :won-match="opponentWinsMatch"
+            data-cy="opponent-match-result"
+          />
         </template>
         <template v-else>
           <LobbyPlayerIndicator
@@ -226,6 +234,9 @@ export default {
     },
     playerWinsMatch() {
       return this.gameStore.currentMatch?.winner === this.gameStore.player.id;
+    },
+    opponentWinsMatch() {
+      return this.gameStore.currentMatch?.winner === this.gameStore.opponent.id;
     },
     opponentWantsToRematch() {
       return (
