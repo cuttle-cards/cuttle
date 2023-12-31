@@ -5,7 +5,7 @@ import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixture
 const dayjs = require('dayjs');
 
 function startRematchPlayerFirst() {
-  cy.get('[data-cy=my-indicator]')
+  cy.get('[data-cy=my-rematch-indicator]')
     .find('[data-cy="lobby-card-container"]')
     .should('not.have.class', 'ready');
 
@@ -17,7 +17,7 @@ function startRematchPlayerFirst() {
     .should('be.visible')
     .should('contain', 'Waiting for Opponent');
 
-  cy.get('[data-cy=my-indicator]')
+  cy.get('[data-cy=my-rematch-indicator]')
     .find('[data-cy="lobby-card-container"]')
       .should('have.class', 'ready');
 
@@ -78,20 +78,20 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .should('have.class', 'selected');
 
     // Neither player has requested rematch yet
-    cy.get('[data-cy=my-indicator]')
+    cy.get('[data-cy=my-rematch-indicator]')
       .find('[data-cy="lobby-card-container"]')
         .should('not.have.class', 'ready');
-    cy.get('[data-cy=opponent-indicator]')
+    cy.get('[data-cy=opponent-rematch-indicator]')
       .find('[data-cy="lobby-card-container"]')
         .should('not.have.class', 'ready');
 
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
       cy.rematchOpponent({ gameId: oldGameId, rematch: true });
-      cy.get('[data-cy=my-indicator]')
+      cy.get('[data-cy=my-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
           .should('not.have.class', 'ready');
-      cy.get('[data-cy=opponent-indicator]')
+      cy.get('[data-cy=opponent-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
           .should('have.class', 'ready');
   
