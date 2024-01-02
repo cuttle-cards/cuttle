@@ -1,11 +1,21 @@
 <template>
   <section class="match-status-banner" :class="wrapperClass" data-cy="continue-match-banner">
     <div class="banner-content">
-      <v-icon :icon="matchStatusIcon" color="surface-2" :data-cy="matchStatusIconDataCy" />
+      <v-icon
+        v-if="!gameStore.opponentDeclinedRematch"
+        :icon="matchStatusIcon"
+        color="surface-2"
+        :data-cy="matchStatusIconDataCy"
+      />
       <h2 class="banner-h2">
         {{ headerText }}
       </h2>
-      <v-icon :icon="matchStatusIcon" color="surface-2" :data-cy="matchStatusIconDataCy" />
+      <v-icon
+        v-if="!gameStore.opponentDeclinedRematch"
+        :icon="matchStatusIcon"
+        color="surface-2"
+        :data-cy="matchStatusIconDataCy"
+      />
     </div>
   </section>
 </template>
