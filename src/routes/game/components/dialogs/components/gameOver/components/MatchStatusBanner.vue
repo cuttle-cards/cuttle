@@ -1,5 +1,5 @@
 <template>
-  <section class="match-status-banner" :class="isRanked ? 'ranked' : 'casual'" data-cy="continue-match-banner">
+  <section class="match-status-banner" :class="wrapperClass" data-cy="continue-match-banner">
     <div class="banner-content">
       <v-icon :icon="matchStatusIcon" color="surface-2" :data-cy="matchStatusIconDataCy" />
       <h2 class="banner-h2">
@@ -31,6 +31,10 @@ const specatingHeader = computed(() => {
 });
 
 const playingHeader = computed(() => {
+  if (gameStore.opponentDeclinedRematch) {
+    return 'Opponent left - click to go home.';
+  }
+
   if (gameStore.iWantRematch) {
     return 'Waiting for Opponent';
   }
@@ -49,6 +53,13 @@ const playingHeader = computed(() => {
 const headerText = computed(() => {
   return isSpectating.value ? specatingHeader.value : playingHeader.value;
 });
+
+const wrapperClass = computed(() => {
+  if (gameStore.opponentDeclinedRematch) {
+    return 'opponent-left';
+  }
+  return isRanked.value ? 'ranked' : 'casual';
+});
 </script>
 
 <style scoped lang="scss">
@@ -64,6 +75,10 @@ const headerText = computed(() => {
   }
   &.casual {
     background-color: rgba(var(--v-theme-newSecondary));
+  }
+  &.opponent-left {
+    background-color: #FAAB34;
+    color: rgba(var(--v-theme-surface-1));
   }
 
   & .banner-h2 {

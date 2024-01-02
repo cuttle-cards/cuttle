@@ -186,6 +186,9 @@ export const useGameStore = defineStore('game', {
       const key = `p${(state.myPNum + 1) % 2}Rematch`;
       return state[key];
     },
+    opponentDeclinedRematch()  {
+      return this.opponentWantsRematch === false;
+    }
   },
   actions: {
     updateGame(newGame) {
