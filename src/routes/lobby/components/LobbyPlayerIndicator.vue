@@ -15,7 +15,7 @@
           data-cy="lobby-card-container"
         >
           <img
-            src="/img/cards/card-ready.png"
+            :src="`/img/cards/card-${cardFaceName}.png`"
             class="card-front"
             alt="card front"
             data-cy="lobby-ready-card"
@@ -64,6 +64,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    cardFaceName: {
+      type: String,
+      default: 'ready',
+      validator: (val) => ['ready', 'rematch'].includes(val),
+    }
   },
   setup() {
     const { t } = useI18n();
