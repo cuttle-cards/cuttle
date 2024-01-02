@@ -11,7 +11,7 @@ function queenCount(player) {
   if (!player) {
     return null;
   }
-  return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
+  return player?.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0) ?? 0;
 }
 
 const compareByRankThenSuit = (card1, card2) => {
@@ -121,7 +121,7 @@ export const useGameStore = defineStore('game', {
       if (!state.player) {
         return 0;
       }
-      return state.player.points.reduce((total, card) => total + card.rank, 0) || 0;
+      return state.player?.points.reduce((total, card) => total + card.rank, 0) || 0;
     },
     playerQueenCount: (state) => {
       return queenCount(state.player);
@@ -154,7 +154,7 @@ export const useGameStore = defineStore('game', {
       if (!state.opponent) {
         return 0;
       }
-      return state.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
+      return state.opponent?.points.reduce((total, card) => total + card.rank, 0) || 0;
     },
     opponentQueenCount: (state) => {
       return queenCount(state.opponent);
@@ -178,6 +178,7 @@ export const useGameStore = defineStore('game', {
       const key = `p${state.myPNum}Rematch`;
       return state[key];
     },
+    // `null` if deciding, false if declined, true if accepted
     opponentWantsRematch: (state) => {
       if (state.myPNum === null) {
         return false;
