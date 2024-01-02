@@ -89,6 +89,9 @@ const wrapperClass = computed(() => {
   &.opponent-left {
     background-color: #FAAB34;
     color: rgba(var(--v-theme-surface-1));
+    & .banner-content {
+      justify-content: center;
+    }
   }
 
   & .banner-h2 {
