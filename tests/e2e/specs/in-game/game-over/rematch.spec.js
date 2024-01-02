@@ -156,7 +156,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         .find('[data-cy-result-img=lost]');
   });
 
-  it.only('Loses a ranked match played with the Rematch/Continue Match button', () => {
+  it('Loses a ranked match played with the Rematch/Continue Match button', () => {
     // Game 1 - Player concedes
     concedePlayer();
     assertLoss({wins: 0, losses: 1, stalemates: 0});
@@ -178,6 +178,22 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .find('[data-cy-result-img=lost]');
     cy.get('[data-cy=opponent-match-result]')
       .find('[data-cy-result-img=won]');
+  });
+
+  it.only('Shows when opponent declines continuing your ranked match', () => {
+    cy.concedeOpponent();
+    assertVictory({wins: 1, losses: 0, stalemates: 0});
+
+    cy.url().then((url) => {
+      const oldGameId = Number(url.split('/').pop());
+      // Opponent declines rematch
+      cy.rematchOpponent({ gameId: oldGameId, rematch: false });
+    });
+
+    cy.get('[data-cy=continue-match-banner]')
+      .should('be.visible')
+      .should('have.class', 'opponent-left')
+      .should('contain', 'Opponent left - click to go home.');
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
