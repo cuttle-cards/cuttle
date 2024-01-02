@@ -194,6 +194,9 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .should('be.visible')
       .should('have.class', 'opponent-left')
       .should('contain', 'Opponent left - click to go home.');
+
+    cy.get('[data-cy=gameover-rematch]')
+      .should('be.disabled');
   });
   
   it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
