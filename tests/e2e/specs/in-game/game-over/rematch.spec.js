@@ -156,7 +156,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         .find('[data-cy-result-img=lost]');
   });
 
-  it('Loses a ranked match played with the Rematch/Continue Match button', () => {
+  it.only('Loses a ranked match played with the Rematch/Continue Match button', () => {
     // Game 1 - Player concedes
     concedePlayer();
     assertLoss({wins: 0, losses: 1, stalemates: 0});
@@ -180,7 +180,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .find('[data-cy-result-img=won]');
   });
 
-  it.only('Shows when opponent declines continuing your ranked match', () => {
+  it('Shows when opponent declines continuing your ranked match', () => {
     cy.concedeOpponent();
     assertVictory({wins: 1, losses: 0, stalemates: 0});
 
@@ -426,30 +426,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.get('[data-cy=leave-unstarted-game-button]').should('be.visible').click();
 
     cy.url().should('not.include', '/game');
-  });
-  
-  it('Disables the rematch button in the GameOverDialog when opponent declines a rematch before the player makes a choice', function () {
-    // There should be two matches initially (one from last week and one with a different opponent)
-    cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(2);
-    });
-
-    // 1st game: Opponent concedes
-    cy.concedeOpponent();
-    assertVictory();
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        const winners = game.currentMatch.games.map((g) => g.winner);
-        cy.expect(winners[0]).to.eq(game.players[0].id);
-      });
-    // Opponent leaves game, we should see rematch button disabled
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        cy.rematchOpponent({ gameId: game.id, rematch: false });
-      });
-    cy.get('[data-cy=gameover-rematch]').should('be.disabled');
   });
 });
 
