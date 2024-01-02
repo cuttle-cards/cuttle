@@ -245,10 +245,7 @@ export default {
       );
     },
     opponentDeclinedRematch() {
-      return (
-        (this.gameStore.p0Rematch === false && this.gameStore.myPNum === 1) ||
-        (this.gameStore.p1Rematch === false && this.gameStore.myPNum === 0)
-      );
+      return this.gameStore.opponentDeclinedRematch;
     },
     rematchButtonColor() {
       if (this.rematchButtonDisabled) {
