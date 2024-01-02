@@ -1,27 +1,36 @@
 <template>
   <Transition name="cards" mode="out-in">
     <div v-if="playerUsername" class="player-card" :data-cy-ready-indicator="playerUsername">
-      <div
-        class="card-container"
-        :class="{ 'ready' : playerReady, small }"
-        data-cy="lobby-card-container"
-      >
+      <div v-if="playerDeclined">
         <img
-          src="/img/cards/card-ready.png"
-          class="card-front"
-          alt="card front"
-          data-cy="lobby-ready-card"
+          src="/img/cards/card-back-declined.png"
+          alt="player declined rematch card"
+          data-cy="player-declined-rematch"
         >
-        <img
-          src="/img/cards/card-back.png"
-          class="card-back"
-          alt="card back"
-          data-cy="lobby-back-card"
-        >
-        <div class="water-container">
-          <div class="water" />
-        </div>
       </div>
+      <template v-else>
+        <div
+          class="card-container"
+          :class="{ 'ready' : playerReady, small }"
+          data-cy="lobby-card-container"
+        >
+          <img
+            src="/img/cards/card-ready.png"
+            class="card-front"
+            alt="card front"
+            data-cy="lobby-ready-card"
+          >
+          <img
+            src="/img/cards/card-back.png"
+            class="card-back"
+            alt="card back"
+            data-cy="lobby-back-card"
+          >
+          <div class="water-container">
+            <div class="water" />
+          </div>
+        </div>
+      </template>
       <span class="player-name">{{ playerUsername }}</span>
     </div>
     <div v-else class="player-indicator" :style="{ padding: playerPadding }">
@@ -48,6 +57,10 @@ export default {
       default: false,
     },
     small: {
+      type: Boolean,
+      default: false,
+    },
+    playerDeclined: {
       type: Boolean,
       default: false,
     },

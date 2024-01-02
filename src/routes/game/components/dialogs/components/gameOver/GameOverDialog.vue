@@ -36,6 +36,7 @@
           <LobbyPlayerIndicator
             :player-username="gameStore.opponent.username"
             :player-ready="gameStore.opponentWantsRematch"
+            :player-declined="gameStore.opponentDeclinedRematch"
             small
             data-cy="opponent-rematch-indicator"
           />

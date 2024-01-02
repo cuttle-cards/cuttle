@@ -190,6 +190,10 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       cy.rematchOpponent({ gameId: oldGameId, rematch: false });
     });
 
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="player-declined-rematch"]')
+        .should('be.visible');
+
     cy.get('[data-cy=continue-match-banner]')
       .should('be.visible')
       .should('have.class', 'opponent-left')
