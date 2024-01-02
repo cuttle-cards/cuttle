@@ -2,6 +2,7 @@ import { useGameStore } from '@/stores/game';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY, ROUTE_NAME_REMATCH } from '@/router';
 import SocketEvent from '_/types/SocketEvent';
+import { sleep } from '@/util/sleep';
 
 // Handles socket updates of game data
 export async function handleInGameEvents(evData) {
@@ -134,6 +135,10 @@ export async function handleInGameEvents(evData) {
       ) {
         return;
       }
+      gameStore.p0Rematch = true;
+      gameStore.p1Rematch = true;
+      // wait for card flip animations
+      await sleep(500);
       gameStore.setRematchGameId(evData.gameId);
       const { gameId: oldGameId } = currentRoute.params;
 
