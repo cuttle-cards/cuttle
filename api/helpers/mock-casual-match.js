@@ -1,10 +1,9 @@
 async function getRematchGames (game, priorRematchGames = []) {
-  const rematchGames = [...priorRematchGames, game];
+  const rematchGames = [game, ...priorRematchGames];
   const gameToAdd = await Game.findOne({ rematchGame: game.id });
   if (!gameToAdd) {
     return rematchGames;
   }
-  rematchGames.unshift(gameToAdd);
   if (!gameToAdd.rematchGame) {
     return rematchGames;
   }
