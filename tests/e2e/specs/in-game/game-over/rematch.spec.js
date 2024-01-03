@@ -507,12 +507,31 @@ describe('Creating And Updating Casual Games With Rematch', () => {
       p1FaceCards: [],
     });
 
+    // Players pass to end game
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
+
     assertStalemate({wins: 2, losses: 1, stalemates: 1});
+    // Opponent leaves
+    cy.url().then((url) => {
+      const oldGameId = Number(url.split('/').pop());
+      cy.rematchOpponent({ gameId: oldGameId, rematch: false });
+    });
+
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="player-declined-rematch"]')
+        .should('be.visible');
+
+    cy.get('[data-cy=continue-match-banner]')
+      .should('be.visible')
+      .should('have.class', 'opponent-left')
+      .should('contain', 'Opponent left - click to go home.');
+
+    cy.get('[data-cy=gameover-rematch]')
+      .should('be.disabled');
     // cy.window()
     //   .its('cuttle.gameStore')
     //   .then((game) => {
