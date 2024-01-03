@@ -508,8 +508,8 @@ export function assertStalemate(score = null) {
           .find('[data-cy=ranked-icon]');
       } else {
         cy.get('#game-over-dialog')
-          .find('[data-cy=loss-heading]')
-          .should('contain', 'Stalemate');
+          .find('[data-cy=stalemate-heading]')
+          .should('contain', 'Draw');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
