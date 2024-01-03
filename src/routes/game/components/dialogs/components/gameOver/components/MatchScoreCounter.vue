@@ -1,6 +1,6 @@
 <template>
   <div class="outer-container">
-    <div class="inner-container" data-cy="match-score-counter">
+    <div class="inner-container" :class="isRanked ? 'ranked' : 'casual'" data-cy="match-score-counter">
       <span
         class="individual-score"
         :class="{'selected': latestResult === 'Won'}"
@@ -44,7 +44,11 @@ const props = defineProps({
     type: String,
     required: true,
     validator: (val) => ['Won', 'Lost', 'Stalemate'].includes(val),
-  }
+  },
+  isRanked: {
+    type: Boolean,
+    required: true,
+  },
 });
 </script>
 
@@ -72,9 +76,14 @@ const props = defineProps({
   margin: 8px;
   padding: 8px;
 
-  &.selected {
+  .ranked &.selected {
     background-color: rgba(var(--v-theme-newPrimary));
-    color: rgba(var(--v-theme-surface-2)); 
+    color: rgba(var(--v-theme-surface-2));
+  }
+
+  .casual &.selected {
+    background-color: rgba(var(--v-theme-newSecondary));
+    color: rgba(var(--v-theme-surface-2));
   }
 }
 

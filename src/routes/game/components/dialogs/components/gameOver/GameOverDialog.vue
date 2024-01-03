@@ -12,6 +12,7 @@
         :losses="losses"
         :stalemates="stalemates"
         :latest-result="latestResult"
+        :is-ranked="isRanked"
       />
       <section class="d-flex justify-space-around mt-6 mb-8">
         <template v-if="matchIsOver">
