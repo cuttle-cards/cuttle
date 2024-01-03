@@ -57,9 +57,8 @@ module.exports = function (req, res) {
           winner: null
         };
         await Game.updateOne({ id: game.id }).set(gameUpdates);
-        if (game.isRanked) {
-          victory.currentMatch = await sails.helpers.addGameToMatch(game);
-        }
+        victory.currentMatch = await sails.helpers.addGameToMatch(game);
+
         await gameService.clearGame({ userId: req.session.usr });
       }
       Game.publish([game.id], {

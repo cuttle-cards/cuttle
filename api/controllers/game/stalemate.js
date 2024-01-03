@@ -39,7 +39,7 @@ module.exports = async function (req, res) {
     updatePromises.push(Game.updateOne({ id: gameId }).set(gameUpdates));
     await Promise.all(updatePromises);
 
-    if (victory.gameOver && gameUpdates.status === gameService.GameStatus.FINISHED && game.isRanked) {
+    if (victory.gameOver && gameUpdates.status === gameService.GameStatus.FINISHED) {
       victory.currentMatch = await sails.helpers.addGameToMatch(game);
     }
 

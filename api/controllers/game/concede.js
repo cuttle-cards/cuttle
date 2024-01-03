@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
     });
     const game = await gameService.populateGame({ gameId: req.session.game });
     await gameService.clearGame({ userId: req.session.usr });
-    const currentMatch = game.isRanked ? await sails.helpers.addGameToMatch(game) : null;
+    const currentMatch = await sails.helpers.addGameToMatch(game);
     // Send socket message
     const victory = {
       gameOver: true,
