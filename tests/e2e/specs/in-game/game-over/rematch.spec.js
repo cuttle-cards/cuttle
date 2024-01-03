@@ -1,4 +1,4 @@
-import { assertLoss, assertVictory, assertStalemate } from '../../../support/helpers';
+import { assertLoss, assertVictory, assertStalemate, assertGameState } from '../../../support/helpers';
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
@@ -475,6 +475,44 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.get('[data-player-hand-card=10-1]').click();
     cy.get('[data-move-choice=points]').click();
     assertVictory({wins: 2, losses: 1, stalemates: 0});
+
+    // Game 4: Stalemate via passes
+    startRematchPlayerFirst();
+    cy.get('[data-player-hand-card]')
+      .should('have.length', 6);
+
+    cy.loadGameFixture(1, {
+        p0Hand: [Card.TEN_OF_DIAMONDS],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [Card.TEN_OF_SPADES],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.ACE_OF_CLUBS,
+        secondCard: Card.ACE_OF_DIAMONDS,
+        deck: [],
+      });
+
+    cy.log('Drawing last two cards');
+    cy.drawCardOpponent();
+    cy.get('#deck').should('contain', '(1)').click();
+    cy.log('Deck empty');
+
+    assertGameState(1, {
+      p0Hand: [Card.TEN_OF_DIAMONDS, Card.ACE_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TEN_OF_SPADES, Card.ACE_OF_DIAMONDS],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+
+    cy.passOpponent();
+    cy.get('#turn-indicator').contains('YOUR TURN');
+    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.passOpponent();
+    assertStalemate({wins: 2, losses: 1, stalemates: 1});
     // cy.window()
     //   .its('cuttle.gameStore')
     //   .then((game) => {
