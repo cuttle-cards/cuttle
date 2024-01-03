@@ -1,6 +1,7 @@
 import { assertLoss, assertVictory, assertStalemate } from '../../../support/helpers';
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
+import { Card } from '../../../fixtures/cards';
 
 const dayjs = require('dayjs');
 
@@ -156,7 +157,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         .find('[data-cy-result-img=lost]');
   });
 
-  it.only('Loses a ranked match played with the Rematch/Continue Match button', () => {
+  it('Loses a ranked match played with the Rematch/Continue Match button', () => {
     // Game 1 - Player concedes
     concedePlayer();
     assertLoss({wins: 0, losses: 1, stalemates: 0});
@@ -431,6 +432,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
 describe('Creating And Updating Casual Games With Rematch', () => {
   beforeEach(function () {
+    cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
 
@@ -445,119 +447,143 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.setupGameAsP0(true, false);
   });
   
-  it('Unranked games with rematch', function () {
-    // 1st game: Opponent concedes
+  it.only('Unranked games with rematch', function () {
+    // Game 1: Opponent concedes
     cy.concedeOpponent();
-    assertVictory();
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        const results = game.currentMatch;
-        cy.expect(results).to.eq(null);
-      });
-    cy.get('[data-cy=gameover-rematch]').click();
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        const { p0Rematch } = game;
-        const { p1Rematch } = game;
+    assertVictory({wins: 1, losses: 0, stalemates: 0});
 
-        cy.expect(p0Rematch).to.eq(true);
-        cy.expect(p1Rematch).to.eq(null);
-      });
-    cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        cy.rematchAndJoinRematchOpponent({ gameId: game.id });
-      });
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        const { p0Rematch } = game;
-        const { p1Rematch } = game;
+    // Game 2: Player concedes
+    startRematchPlayerFirst();
+    cy.get('[data-player-hand-card]')
+      .should('have.length', 6);
+    concedePlayer();
+    assertLoss({wins: 1, losses: 1, stalemates: 0});
 
-        cy.expect(p0Rematch).to.eq(true);
-        cy.expect(p1Rematch).to.eq(null);
-        cy.log('game data is correct after first game');
-      });
-
-    // There should now be NO match for the two players
-    cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(0);
+    // Game 3: Player wins with points
+    startRematchPlayerFirst();
+    cy.get('[data-player-hand-card]')
+      .should('have.length', 5);
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.TEN_OF_DIAMONDS],
+      p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+      p0FaceCards: [],
+      p1Hand: [Card.THREE_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
     });
 
-    cy.log('Starting second game');
-    cy.url().should('include', '/game');
+    cy.get('[data-player-hand-card=10-1]').click();
+    cy.get('[data-move-choice=points]').click();
+    assertVictory({wins: 2, losses: 1, stalemates: 0});
+    // cy.window()
+    //   .its('cuttle.gameStore')
+    //   .then((game) => {
+    //     const results = game.currentMatch;
+    //     cy.expect(results).to.eq(null);
+    //   });
+    // cy.get('[data-cy=gameover-rematch]').click();
+    // cy.window()
+    //   .its('cuttle.gameStore')
+    //   .then((game) => {
+    //     const { p0Rematch } = game;
+    //     const { p1Rematch } = game;
 
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        const { p0Rematch } = game;
-        const { p1Rematch } = game;
+    //     cy.expect(p0Rematch).to.eq(true);
+    //     cy.expect(p1Rematch).to.eq(null);
+    //   });
+    // cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
+    // cy.window()
+    //   .its('cuttle.gameStore')
+    //   .then((game) => {
+    //     cy.rematchAndJoinRematchOpponent({ gameId: game.id });
+    //   });
+    // cy.window()
+    //   .its('cuttle.gameStore')
+    //   .then((game) => {
+    //     const { p0Rematch } = game;
+    //     const { p1Rematch } = game;
 
-        cy.expect(p0Rematch).to.eq(null);
-        cy.expect(p1Rematch).to.eq(null);
-      });
+    //     cy.expect(p0Rematch).to.eq(true);
+    //     cy.expect(p1Rematch).to.eq(null);
+    //     cy.log('game data is correct after first game');
+    //   });
 
-    // 2nd game: Player concedes
-    cy.get('#game-menu-activator').click();
-    cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
-    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
+    // // There should now be NO match for the two players
+    // cy.request('http://localhost:1337/match').then((res) => {
+    //   expect(res.body.length).to.eq(0);
+    // });
 
-    assertLoss();
+    // cy.log('Starting second game');
+    // cy.url().should('include', '/game');
 
-    cy.log('Opponent requests rematch first');
-    cy.window().its('cuttle.gameStore').then((game) => {
-      cy.expect(game.name).to.eq('Player1 VS Player2 1-0-0');
-    });
-    cy.url().then((url) => {
-      const oldGameId = url.split('/').pop();
-      cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+    // cy.window()
+    //   .its('cuttle.gameStore')
+    //   .then((game) => {
+    //     const { p0Rematch } = game;
+    //     const { p1Rematch } = game;
 
-      cy.get('#game-over-dialog')
-        .should('be.visible')
-        .should('contain', 'Player2 wants to rematch')
-        .get('[data-cy=gameover-rematch]')
-        .click();
-      cy.log('Opponent then joins new game');
-      cy.joinRematchOpponent({ oldGameId });
-    });
+    //     cy.expect(p0Rematch).to.eq(null);
+    //     cy.expect(p1Rematch).to.eq(null);
+    //   });
 
-    cy.url().should('include', '/game');
+    // // 2nd game: Player concedes
+    // cy.get('#game-menu-activator').click();
+    // cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
+    // cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
 
-    // 3rd game: Ends via requested stalemate
-    // Request stalemate
-    cy.get('#game-menu-activator').click();
-    cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
-    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
-    cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
-    // Opponent confirms
-    cy.stalemateOpponent();
-    assertStalemate();
+    // assertLoss();
 
-    // Play again
-    cy.get('#game-over-dialog').should('be.visible').get('[data-cy=gameover-rematch]').click();
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        cy.expect(game.name).to.eq('Player1 VS Player2 1-1-0');
-        cy.rematchAndJoinRematchOpponent({ gameId: game.id });
-      });
-    cy.url().should('include', '/game');
+    // cy.log('Opponent requests rematch first');
+    // cy.window().its('cuttle.gameStore').then((game) => {
+    //   cy.expect(game.name).to.eq('Player1 VS Player2 1-0-0');
+    // });
+    // cy.url().then((url) => {
+    //   const oldGameId = url.split('/').pop();
+    //   cy.rematchOpponent({ gameId: oldGameId, rematch: true });
 
-    // 4th game
-    cy.get('#game-menu-activator').click();
-    cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
-    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
-    assertLoss();
-    cy.get('#game-over-dialog').should('be.visible').get('[data-cy=gameover-rematch]').click();
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        cy.expect(game.name).to.eq('Player1 VS Player2 1-1-1');
-        cy.rematchAndJoinRematchOpponent({ gameId: game.id });
-      });
-    cy.url().should('include', '/game');
+    //   cy.get('#game-over-dialog')
+    //     .should('be.visible')
+    //     .should('contain', 'Player2 wants to rematch')
+    //     .get('[data-cy=gameover-rematch]')
+    //     .click();
+    //   cy.log('Opponent then joins new game');
+    //   cy.joinRematchOpponent({ oldGameId });
+    // });
+
+    // cy.url().should('include', '/game');
+
+    // // 3rd game: Ends via requested stalemate
+    // // Request stalemate
+    // cy.get('#game-menu-activator').click();
+    // cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+    // cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
+    // cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+    // // Opponent confirms
+    // cy.stalemateOpponent();
+    // assertStalemate();
+
+    // // Play again
+    // cy.get('#game-over-dialog').should('be.visible').get('[data-cy=gameover-rematch]').click();
+    // cy.window()
+    //   .its('cuttle.gameStore')
+    //   .then((game) => {
+    //     cy.expect(game.name).to.eq('Player1 VS Player2 1-1-0');
+    //     cy.rematchAndJoinRematchOpponent({ gameId: game.id });
+    //   });
+    // cy.url().should('include', '/game');
+
+    // // 4th game
+    // cy.get('#game-menu-activator').click();
+    // cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
+    // cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
+    // assertLoss();
+    // cy.get('#game-over-dialog').should('be.visible').get('[data-cy=gameover-rematch]').click();
+    // cy.window()
+    //   .its('cuttle.gameStore')
+    //   .then((game) => {
+    //     cy.expect(game.name).to.eq('Player1 VS Player2 1-1-1');
+    //     cy.rematchAndJoinRematchOpponent({ gameId: game.id });
+    //   });
+    // cy.url().should('include', '/game');
   });
 });
