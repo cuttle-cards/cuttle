@@ -493,7 +493,7 @@ export function assertStalemate(score = null) {
     .should('be.visible')
     .get('[data-cy=stalemate-heading]')
     .should('be.visible')
-    .should('contain', 'Stalemate');
+    .should('contain', 'Draw');
 
   cy.window()
     .its('cuttle.gameStore')
