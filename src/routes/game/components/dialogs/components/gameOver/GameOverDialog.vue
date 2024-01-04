@@ -298,13 +298,13 @@ export default {
     async continueSpectating() {
       this.gameStore.iWantToContinueSpectating = true;
       if (this.gameStore.p0Rematch && this.gameStore.p1Rematch) {
+        this.gameStore.iWantToContinueSpectating = false;
         await this.gameStore.requestSpectate(this.gameStore.rematchGameId);
-        this.gameStore.updateGame(this.gameStore.rematchGame);
 
         this.$router.push({
           name: this.$router.currentRoute.name,
           params: {
-            gameId: this.gameStore.rematchGame,
+            gameId: this.gameStore.rematchGameId,
           },
         });
       }
