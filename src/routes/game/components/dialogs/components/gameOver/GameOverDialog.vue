@@ -171,10 +171,10 @@ export default {
       }
 
       if (this.playerWinsGame) {
-        return 'victory-heading';
+        return this.gameStore.isSpectating ?  'p0-wins-heading' : 'victory-heading';
       }
 
-      return 'loss-heading';
+      return this.gameStore.isSpectating ? 'p1-wins-heading' : 'loss-heading';
     },
     latestResult() {
       if (this.stalemate) {

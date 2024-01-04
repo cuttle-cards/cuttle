@@ -535,6 +535,15 @@ export function assertStalemate(score = null) {
     });
 }
 
+export function assertP0VictoryAsSpectator({p0Wins, p1Wins, stalemates}) {
+  cy.log('Asserting P0 Win as Stalemate');
+  cy.get('#game-over-dialog')
+    .should('be.visible')
+    .get('[data-cy=p0-wins-heading]')
+    .should('be.visible')
+    .should('contain', 'P1 Wins');
+}
+
 /**
  * @param fixture:
  * {

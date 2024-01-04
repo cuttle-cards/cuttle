@@ -1,4 +1,4 @@
-import { assertLoss, assertVictory, assertStalemate, assertGameState } from '../../../support/helpers';
+import { assertLoss, assertVictory, assertStalemate, assertP0VictoryAsSpectator, assertGameState } from '../../../support/helpers';
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
@@ -447,7 +447,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.setupGameAsP0(true, false);
   });
   
-  it.only('Unranked games with rematch', function () {
+  it('Unranked games with rematch', function () {
     // Game 1: Opponent concedes
     cy.concedeOpponent();
     assertVictory({wins: 1, losses: 0, stalemates: 0});
@@ -642,5 +642,19 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     //     cy.rematchAndJoinRematchOpponent({ gameId: game.id });
     //   });
     // cy.url().should('include', '/game');
+  });
+});
+
+describe('Spectating Rematches', () => {
+  describe('Spectating Casual Rematches', () => {
+    beforeEach(() => {
+      cy.setupGameAsSpectator();
+    });
+  
+    it.only('Spectates a casual match using rematch', () => {
+      cy.recoverSessionOpponent(playerTwo);
+      cy.concedeOpponent();
+      assertP0VictoryAsSpectator({p0Wins: 1, p1Wins: 0, stalemates: 0});
+    });
   });
 });
