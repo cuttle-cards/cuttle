@@ -112,6 +112,7 @@ export const useGameStore = defineStore('game', {
     waitingForOpponentToStalemate: false,
     consideringOpponentStalemateRequest: false,
     currentMatch: null,
+    iWantToContinueSpectating: false,
   }),
   getters: {
     player: (state) => {
@@ -188,7 +189,10 @@ export const useGameStore = defineStore('game', {
     },
     opponentDeclinedRematch()  {
       return this.opponentWantsRematch === false;
-    }
+    },
+    someoneDeclinedRematch() {
+      return this.iWantRematch === false || this.opponentDeclinedRematch;
+    },
   },
   actions: {
     updateGame(newGame) {
@@ -263,9 +267,6 @@ export const useGameStore = defineStore('game', {
     },
     setRematch({ pNum, rematch }) {
       this[`p${pNum}Rematch`] = rematch;
-    },
-    setRematchGameId({ gameId }) {
-      this.rematchGameId = gameId;
     },
     resetPNumIfNull(game) {
       const authStore = useAuthStore();

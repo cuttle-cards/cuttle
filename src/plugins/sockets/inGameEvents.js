@@ -137,9 +137,15 @@ export async function handleInGameEvents(evData) {
       }
       gameStore.p0Rematch = true;
       gameStore.p1Rematch = true;
+      gameStore.rematchGameId = evData.gameId;
+      // stop early if spectating and haven't yet chosen to continue spectating
+      if (gameStore.isSpectating && !gameStore.iWantToContinueSpectating) {
+        return;
+      }
+
       // wait for card flip animations
       await sleep(500);
-      gameStore.setRematchGameId(evData.gameId);
+
       const { gameId: oldGameId } = currentRoute.params;
 
       if (currentRoute.name === ROUTE_NAME_SPECTATE) {

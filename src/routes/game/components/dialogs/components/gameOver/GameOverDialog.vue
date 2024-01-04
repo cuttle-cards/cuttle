@@ -265,6 +265,9 @@ export default {
       return this.isRanked ? 'Continue Match' : 'Rematch';
     },
     rematchButtonDisabled() {
+      if (this.gameStore.isSpectating) {
+        return this.gameStore.someoneDeclinedRematch || this.gameStore.iWantToContinueSpectating;
+      }
       return this.opponentDeclinedRematch || this.gameStore.iWantRematch;
     },
   },
@@ -282,12 +285,30 @@ export default {
     },
     async rematch() {
       try {
+        if (this.gameStore.isSpectating) {
+          return this.continueSpectating();
+        }
         await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: true});
       } catch (e) {
         this.showSnackbar = true;
         this.snackBarMessage = 'Error requesting rematch';
         this.$router.push('/');
       }
+    },
+    async continueSpectating() {
+      this.gameStore.iWantToContinueSpectating = true;
+      if (this.gameStore.p0Rematch && this.gameStore.p1Rematch) {
+        await this.gameStore.requestSpectate(this.gameStore.rematchGameId);
+        this.gameStore.updateGame(this.gameStore.rematchGame);
+
+        this.$router.push({
+          name: this.$router.currentRoute.name,
+          params: {
+            gameId: this.gameStore.rematchGame,
+          },
+        });
+      }
+      return;
     },
     clearSnackBar() {
       this.showSnackbar = false;

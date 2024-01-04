@@ -655,6 +655,37 @@ describe('Spectating Rematches', () => {
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
       assertP0VictoryAsSpectator({p0Wins: 1, p1Wins: 0, stalemates: 0});
+
+      // cy.recoverSessionOpponent(playerOne);
+      // P0 requests rematch
+      cy.url().then((url) => {
+        const oldGameId = Number(url.split('/').pop());
+        cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+      });
+
+      cy.get('[data-cy=opponent-rematch-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+        .should('have.class', 'ready');
+
+      cy.recoverSessionOpponent(playerOne);
+      cy.wait(1000);
+      cy.url().then((url) => {
+        const oldGameId = Number(url.split('/').pop());
+        cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+      });
+
+      cy.get('[data-cy=my-rematch-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+        .should('have.class', 'ready');
+
+      // Wait to confirm dialog stays open
+      cy.wait(1000);
+      cy.get('#game-over-dialog')
+        .should('be.visible')
+        .find('[data-cy=gameover-rematch]')
+        .click();
+      cy.get('[data-cy=player-username]')
+        .should('contain', playerTwo.username);
     });
   });
 });
