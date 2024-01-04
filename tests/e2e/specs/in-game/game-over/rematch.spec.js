@@ -656,7 +656,6 @@ describe('Spectating Rematches', () => {
       cy.concedeOpponent();
       assertP0VictoryAsSpectator({p0Wins: 1, p1Wins: 0, stalemates: 0});
 
-      // cy.recoverSessionOpponent(playerOne);
       // P0 requests rematch
       cy.url().then((url) => {
         const oldGameId = Number(url.split('/').pop());
@@ -686,6 +685,15 @@ describe('Spectating Rematches', () => {
         .click();
       cy.get('[data-cy=player-username]')
         .should('contain', playerTwo.username);
+
+      // Game 2
+      cy.recoverSessionOpponent(playerTwo);
+      cy.concedeOpponent();
+
+      cy.get('[data-cy=gameover-rematch')
+        .should('not.be.disabled')
+        .click()
+        .should('be.disabled');
     });
   });
 });
