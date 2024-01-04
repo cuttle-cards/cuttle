@@ -543,7 +543,7 @@ export function assertP0VictoryAsSpectator({p0Wins, p1Wins, stalemates}) {
     .should('be.visible')
     .should('contain', 'P1 Wins');
 
-    cy.get('[data-cy=match-score-counter]')
+  cy.get('[data-cy=match-score-counter]')
     .should('be.visible');
   cy.get('[data-cy=match-score-counter-wins]')
     .should('contain', `P1: ${p0Wins}`)
@@ -554,6 +554,11 @@ export function assertP0VictoryAsSpectator({p0Wins, p1Wins, stalemates}) {
   cy.get('[data-cy=match-score-counter-stalemates]')
     .should('contain', `T: ${stalemates}`)
     .should('not.have.class', 'selected');
+
+  cy.get('[data-cy=continue-match-banner]')
+    .should('be.visible')
+    .should('contain', 'Continue Spectating?')
+    .find('[data-cy=casual-icon]');
 }
 
 /**

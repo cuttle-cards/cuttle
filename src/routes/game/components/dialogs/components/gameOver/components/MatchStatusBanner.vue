@@ -33,11 +33,8 @@ const matchStatusIcon = computed(() => isRanked.value ? 'mdi-sword-cross' : 'mdi
 const matchStatusIconDataCy = computed(() => isRanked.value ? 'ranked-icon' : 'casual-icon');
 
 const specatingHeader = computed(() => {
-  if (gameStore.winnerPNum === null) {
-    return 'Stalemate';
-  }
-  const winnerUsername = gameStore.players[gameStore.winnerPNum].username;
-  return `${winnerUsername} won`;
+  const someOneDeclinedRematch = [gameStore.p0Rematch, gameStore.p1Rematch].includes(false);
+  return someOneDeclinedRematch ? 'Opponent left - click to go home.' : 'Continue Spectating?';
 });
 
 const playingHeader = computed(() => {
