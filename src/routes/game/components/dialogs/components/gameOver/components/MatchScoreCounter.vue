@@ -6,14 +6,14 @@
         :class="{'selected': latestResult === 'Won'}"
         data-cy="match-score-counter-wins"
       >
-        W: {{ wins }}
+        {{ winsLabel }}: {{ wins }}
       </span>
       <span
         class="individual-score"
         :class="{'selected': latestResult === 'Lost'}"
         data-cy="match-score-counter-losses"
       >
-        L: {{ losses }}
+        {{ lossesLabel }}: {{ losses }}
       </span>
       <span
         class="individual-score"
@@ -27,6 +27,8 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 const props = defineProps({
   wins: {
       type: Number,
@@ -49,7 +51,14 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  isSpectating: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const winsLabel = computed(() => props.isSpectating ? 'P1' : 'W');
+const lossesLabel = computed(() => props.isSpectating ? 'P2' : 'L');
 </script>
 
 <style scoped lang="scss">
