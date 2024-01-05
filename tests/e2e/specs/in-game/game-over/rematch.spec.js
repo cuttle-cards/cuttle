@@ -706,6 +706,16 @@ describe('Spectating Rematches', () => {
       cy.get('[data-cy=opponent-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
         .should('have.class', 'ready');
+
+        
+      rematchPlayerAsSpectator(playerTwo);
+
+      cy.get('[data-cy=my-rematch-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+        .should('have.class', 'ready');
+
+      cy.get('[data-cy=player-username]')
+        .should('contain', playerOne.username);
     });
   });
 });
