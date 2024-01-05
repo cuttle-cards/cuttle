@@ -727,6 +727,15 @@ describe('Spectating Rematches', () => {
       cy.get('[data-cy=gameover-rematch')
         .should('not.be.disabled');
 
+      rematchPlayerAsSpectator(playerTwo, false);
+
+      cy.get('[data-cy=continue-match-banner]')
+        .should('be.visible')
+        .should('have.class', 'opponent-left')
+        .should('contain', 'Player left - click to go home.');
+
+      cy.get('[data-cy=gameover-rematch')
+        .should('be.disabled');
     });
   });
 });

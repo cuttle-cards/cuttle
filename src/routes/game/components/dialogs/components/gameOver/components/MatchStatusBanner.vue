@@ -35,7 +35,7 @@ const matchStatusIconDataCy = computed(() => isRanked.value ? 'ranked-icon' : 'c
 const specatingHeader = computed(() => {
   const someOneDeclinedRematch = [gameStore.p0Rematch, gameStore.p1Rematch].includes(false);
   if (someOneDeclinedRematch) {
-    return 'Opponent left - click to go home.';
+    return 'Player left - click to go home.';
   }
   if (gameStore.iWantToContinueSpectating) {
     return 'Waiting for Players';
