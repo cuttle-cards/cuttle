@@ -40,6 +40,15 @@ function concedePlayer() {
     .click();
 }
 
+function rematchPlayerAsSpectator(userFixture, rematch = true) {
+  cy.recoverSessionOpponent(userFixture);
+  cy.wait(1000);
+  cy.url().then((url) => {
+    const oldGameId = Number(url.split('/').pop());
+    cy.rematchOpponent({ gameId: oldGameId, rematch });
+  });
+}
+
 describe('Creating And Updating Ranked Matches With Rematch', () => {
   beforeEach(function () {
     cy.viewport(1920, 1080);
@@ -658,21 +667,13 @@ describe('Spectating Rematches', () => {
       // assertP0VictoryAsSpectator({p0Wins: 1, p1Wins: 0, stalemates: 0});
 
       // P0 requests rematch
-      cy.url().then((url) => {
-        const oldGameId = Number(url.split('/').pop());
-        cy.rematchOpponent({ gameId: oldGameId, rematch: true });
-      });
+      rematchPlayerAsSpectator(playerTwo);
 
       cy.get('[data-cy=opponent-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
         .should('have.class', 'ready');
 
-      cy.recoverSessionOpponent(playerOne);
-      cy.wait(1000);
-      cy.url().then((url) => {
-        const oldGameId = Number(url.split('/').pop());
-        cy.rematchOpponent({ gameId: oldGameId, rematch: true });
-      });
+      rematchPlayerAsSpectator(playerOne);
 
       cy.get('[data-cy=my-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
@@ -700,6 +701,11 @@ describe('Spectating Rematches', () => {
       cy.get('[data-cy=continue-match-banner]')
         .should('be.visible')
         .should('contain', 'Waiting for Players');
+
+      rematchPlayerAsSpectator(playerOne);
+      cy.get('[data-cy=opponent-rematch-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+        .should('have.class', 'ready');
     });
   });
 });
