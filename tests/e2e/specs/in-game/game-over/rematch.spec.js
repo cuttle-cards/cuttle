@@ -736,6 +736,9 @@ describe('Spectating Rematches', () => {
 
       cy.get('[data-cy=gameover-rematch')
         .should('be.disabled');
+
+      cy.get('[data-cy=gameover-go-home]').click();
+      cy.url().should('not.include', '/spectate');
     });
   });
 });
