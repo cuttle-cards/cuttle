@@ -696,6 +696,10 @@ describe('Spectating Rematches', () => {
         .should('not.be.disabled')
         .click()
         .should('be.disabled');
+
+      cy.get('[data-cy=continue-match-banner]')
+        .should('be.visible')
+        .should('contain', 'Waiting for Players');
     });
   });
 });
