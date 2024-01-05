@@ -143,6 +143,8 @@ export async function handleInGameEvents(evData) {
         return;
       }
 
+      gameStore.iWantToContinueSpectating = false;
+
       // wait for card flip animations
       await sleep(500);
 

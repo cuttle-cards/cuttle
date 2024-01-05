@@ -714,8 +714,19 @@ describe('Spectating Rematches', () => {
         .find('[data-cy="lobby-card-container"]')
         .should('have.class', 'ready');
 
+      // Game 3 -- Stalemate then player 1 declines rematch
       cy.get('[data-cy=player-username]')
         .should('contain', playerOne.username);
+
+      cy.recoverSessionOpponent(playerTwo);
+      cy.stalemateOpponent();
+
+      cy.recoverSessionOpponent(playerOne);
+      cy.stalemateOpponent();
+
+      cy.get('[data-cy=gameover-rematch')
+        .should('not.be.disabled');
+
     });
   });
 });
