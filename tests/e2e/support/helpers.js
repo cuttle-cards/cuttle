@@ -535,30 +535,51 @@ export function assertStalemate(score = null) {
     });
 }
 
-export function assertP0VictoryAsSpectator({p0Wins, p1Wins, stalemates}) {
+export function assertGameOverAsSpectator({p1Wins, p2Wins, stalemates, winner, isRanked}) {
+  let headingDataCy;
+  let headingText;
+  let selectedScore;
+  switch (winner) {
+    case 'p1':
+      headingDataCy = 'p1-wins-heading';
+      headingText = 'P1 Wins';
+      selectedScore = '[data-cy=match-score-counter-wins]';
+      break;
+    case 'p2':
+      headingDataCy = 'p2-wins-heading';
+      headingText = 'P2 Wins';
+      selectedScore = '[data-cy=match-score-counter-losses]';
+      break;
+    default:
+      headingDataCy = 'stalemate-heading';
+      headingText = 'Draw';
+      selectedScore = '[data-cy=match-score-counter-stalemates]';
+      break;
+  }
   cy.log('Asserting P0 Win as Stalemate');
   cy.get('#game-over-dialog')
     .should('be.visible')
-    .get('[data-cy=p0-wins-heading]')
+    .get(`[data-cy=${headingDataCy}]`)
     .should('be.visible')
-    .should('contain', 'P1 Wins');
+    .should('contain', headingText);
 
   cy.get('[data-cy=match-score-counter]')
     .should('be.visible');
   cy.get('[data-cy=match-score-counter-wins]')
-    .should('contain', `P1: ${p0Wins}`)
-    .should('have.class', 'selected');
+    .should('contain', `P1: ${p1Wins}`);
   cy.get('[data-cy=match-score-counter-losses]')
-    .should('contain', `P2: ${p1Wins}`)
-    .should('not.have.class', 'selected');
+    .should('contain', `P2: ${p2Wins}`);
   cy.get('[data-cy=match-score-counter-stalemates]')
-    .should('contain', `T: ${stalemates}`)
-    .should('not.have.class', 'selected');
+    .should('contain', `T: ${stalemates}`);
 
+  cy.get(selectedScore)
+    .should('have.class', 'selected');
+
+  const isRankedIcon = isRanked ? 'ranked-icon' : 'casual-icon';
   cy.get('[data-cy=continue-match-banner]')
     .should('be.visible')
     .should('contain', 'Continue Spectating?')
-    .find('[data-cy=casual-icon]');
+    .find(`[data-cy=${isRankedIcon}]`);
 }
 
 /**

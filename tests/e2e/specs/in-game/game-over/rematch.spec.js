@@ -1,4 +1,4 @@
-import { assertLoss, assertVictory, assertStalemate, assertP0VictoryAsSpectator, assertGameState } from '../../../support/helpers';
+import { assertLoss, assertVictory, assertStalemate, assertGameOverAsSpectator, assertGameState } from '../../../support/helpers';
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
@@ -654,7 +654,8 @@ describe('Spectating Rematches', () => {
     it.only('Spectates a casual match using rematch', () => {
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
-      assertP0VictoryAsSpectator({p0Wins: 1, p1Wins: 0, stalemates: 0});
+      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false});
+      // assertP0VictoryAsSpectator({p0Wins: 1, p1Wins: 0, stalemates: 0});
 
       // P0 requests rematch
       cy.url().then((url) => {
@@ -690,6 +691,7 @@ describe('Spectating Rematches', () => {
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
 
+      assertGameOverAsSpectator({p1Wins: 0, p2Wins: 2, stalemates: 0, winner: 'p2', isRanked: false});
       cy.get('[data-cy=gameover-rematch')
         .should('not.be.disabled')
         .click()
