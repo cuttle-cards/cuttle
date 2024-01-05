@@ -6,6 +6,8 @@
           src="/img/cards/card-back-declined.png"
           alt="player declined rematch card"
           data-cy="player-declined-rematch"
+          class="card-container"
+          :class="{ small }"
         >
       </div>
       <template v-else>
@@ -99,8 +101,8 @@ export default {
   perspective: 1200px;
   position: relative;
   &.small {
-    height: 13vh;
-    width: calc(13vh / 1.45);
+    height: 20vh;
+    width: calc(20vh / 1.45);
   }
 }
 .card-container img {
