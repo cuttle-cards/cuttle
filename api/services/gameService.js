@@ -73,15 +73,8 @@ module.exports = {
 
     if (game.players) {
       if (game.players.length < 2) {
-        /*no game was found*/
-        if(game.players.length == 0){
-          return { status: 400, message: 'Bad Request: Cannot find a game' };
-        }
-        else{
-          throw new Error({ message: 'Cannot populate game without two players' });
-        }
+        throw new Error({ message: 'Cannot populate game without two players' });
       } 
-
     } else {
       throw new Error({ message: 'Cannot populate game, because it does not have players collection' });
     }
