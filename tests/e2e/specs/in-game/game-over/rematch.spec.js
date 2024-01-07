@@ -659,8 +659,8 @@ describe('Spectating Rematches', () => {
     beforeEach(() => {
       cy.setupGameAsSpectator();
     });
-  
-    it.only('Spectates a casual match using rematch', () => {
+    
+    it('Spectates a casual match using rematch', () => {
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
       assertGameOverAsSpectator({p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false});
@@ -739,6 +739,30 @@ describe('Spectating Rematches', () => {
 
       cy.get('[data-cy=gameover-go-home]').click();
       cy.url().should('not.include', '/spectate');
+    });
+  });
+
+  describe('Spectating Ranked Matches', () => {
+    beforeEach(() => {
+      cy.setupGameAsSpectator(true);
+      const [, , currentSeason ] = seasonFixtures;
+      cy.loadSeasonFixture([ currentSeason ]);
+    });
+
+    it.only('Specates a ranked match using rematch', () => {
+      // Game 1: playerOne wins with points
+      cy.loadGameFixture(0, {
+        p0Hand: [Card.TEN_OF_DIAMONDS],
+        p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+        p0FaceCards: [],
+        p1Hand: [Card.THREE_OF_CLUBS],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.recoverSessionOpponent(playerOne);
+      cy.playPointsSpectator(Card.TEN_OF_DIAMONDS, 0);
+
     });
   });
 });
