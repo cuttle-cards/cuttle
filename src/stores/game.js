@@ -174,7 +174,6 @@ export const useGameStore = defineStore('game', {
   },
   actions: {
     updateGame(newGame) {
-      this.gameIsOver = newGame.gameIsOver ?? false;
       this.lastEventChange = newGame.lastEvent?.change ?? null;
       this.lastEventOneOffRank = newGame.lastEvent?.oneOff?.rank ?? null;
       this.lastEventTargetType = newGame.lastEvent?.oneOffTargetType ?? null;
@@ -207,6 +206,7 @@ export const useGameStore = defineStore('game', {
       this.currentMatch = newGame.currentMatch ?? this.currentMatch;
       this.p0Rematch = newGame.p0Rematch ?? null;
       this.p1Rematch = newGame.p1Rematch ?? null;
+      this.gameIsOver = newGame.gameIsOver ?? false;
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
