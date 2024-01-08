@@ -9,7 +9,7 @@ Some of the terminology refers to the seas and the ocean's depth, but it's not m
 
 ## Text formatting
 
-- **Capitalize Titles** :  Every word in a  title must be capitalized.  (e.g. : "counterTitle": "Chance To Counter" )
+- **Capitalize Titles**: Every word in a title must capitalize its first letter (e.g. : "counterTitle": "Chance To Counter" ).
 
 
 ## Definition of physical entities
