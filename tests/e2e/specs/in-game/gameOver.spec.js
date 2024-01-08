@@ -384,7 +384,7 @@ describe('Stalemates', () => {
         .click();
     });
 
-    it('Asks for stalemate then disconnects before opponent reconnects', () => {
+    it('Player requests stalemate, then reloads before opponent accepts', () => {
       cy.setupGameAsP1();
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
