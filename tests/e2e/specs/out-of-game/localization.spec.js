@@ -72,3 +72,55 @@ describe('Localization', () => {
     checkLobbyTranslation(fr);
   });
 });
+
+describe('language files', () => {
+  function extractKeys(obj, keyList = []) {
+    Object.keys(obj).forEach(key => {
+      if (typeof obj[key] === 'object' && obj[key] !== null) {
+        extractKeys(obj[key], keyList);
+      } else {
+        keyList.push(key);
+      }
+    });
+    return keyList;
+  }
+
+  const enKeys = extractKeys(en).sort();
+  const frKeys = extractKeys(fr).sort();
+  const esKeys = extractKeys(es).sort();
+
+  it('English should have no empty strings', () => {
+    enKeys.forEach((key) => {
+      const assertionMsg = `en.json value at key ${key} should be non-empty, but it was empty`;
+      expect(en[key]).to.not.eq('', assertionMsg);
+    });
+  });
+
+  it('French should have the same keys', () => {
+    for (let i = 0; i < enKeys.length; i++) {
+      const assertionMsg = `fr.json should have the key ${ enKeys[i] } for key number ${ i }, but instead it had key ${ frKeys[i] }`;
+      expect(enKeys[i]).to.eq(frKeys[i], assertionMsg);
+    }
+  });
+
+  it('French should have no empty strings', () => {
+    frKeys.forEach((key) => {
+      const assertionMsg = `fr.json should have non-empty value for key ${key}, but it value was empty`;
+      expect(fr[key]).to.not.eq('', assertionMsg);
+    });
+  }); 
+
+  it('Spanish should have the same keys', () => {
+    for(let i = 0; i < enKeys.length; i++) {
+      const assertionMsg = `es.json should have the key ${ enKeys[i] } for key number ${ i }, but instead it had key ${ esKeys[i] }`;
+      expect(enKeys[i]).to.eq(esKeys[i], assertionMsg);
+    }
+  });
+
+  it('Spanish should have no empty strings', () => {
+    frKeys.forEach((key) => {
+      const assertionMsg = `es.json should have nonempty value for key ${key}, but it value was empty`;
+      expect(es[key]).to.not.eq('', assertionMsg);
+    });
+  });
+});

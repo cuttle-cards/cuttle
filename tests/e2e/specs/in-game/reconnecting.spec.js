@@ -1,5 +1,5 @@
 import { assertGameState, assertVictory } from '../../support/helpers';
-import { opponentOne } from '../../fixtures/userFixtures';
+import { myUser, opponentOne } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
 
 describe('Reconnecting to a game', () => {
@@ -682,5 +682,20 @@ describe('Display correct dialog for unavailable game', () => {
     //go to random url
     cy.visit('#/game/12345');
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
+  });
+});
+
+describe('Reauthenticating in game', () => {
+  beforeEach(() => {
+    cy.setupGameAsP0();
+  });
+
+  it('Re-login using reauthenticate dialog', () => {
+    cy.clearCookies();
+    cy.reload();
+    cy.get('[data-cy=username]').click().type(myUser.username);
+    cy.get('[data-cy=password]').click().type(myUser.password);
+    cy.get('[data-cy=login]').click();
+    cy.get('#deck').should('be.visible');
   });
 });

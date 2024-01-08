@@ -15,7 +15,7 @@
           :items="seasons"
           item-title="name"
           return-object
-          label="Select Season"
+          :label="t('stats.season.select')"
           data-cy="season-select"
         >
           <template #selection="{ item }">
@@ -34,7 +34,7 @@
         <!-- Season Champions -->
         <div class="mb-10">
           <h2 v-if="showSeasonChampions" class="text-h2 mb-4">
-            Season Champions
+            {{ t('stats.season.champions') }}
           </h2>
           <div class="d-flex justify-space-around flex-wrap">
             <AwardCard
@@ -57,23 +57,23 @@
             />
           </div>
           <p v-if="selectedSeason && selectedSeason.bracketLink" class="text-body-1">
-            Click
+            {{ t('global.click') }}
             <a :href="selectedSeason.bracketLink" target="_blank" data-cy="tournament-bracket-link">
-              here to see the official tournament bracket
+              {{ t('stats.season.tournamentBracket') }}
             </a>
           </p>
           <p v-if="selectedSeason && selectedSeason.footageLink" class="text-body-1">
-            Click
+            {{ t('global.click') }}
             <a :href="selectedSeason.footageLink" target="_blank" data-cy="tournament-footage-link">
-              here to watch the official tournament footage
+              {{ t('stats.season.tournamentFootage') }}
             </a>
-            with play-by-play commentary.
+            {{ t('stats.season.playByPlay') }}
           </p>
         </div>
         <!-- Rankings Table -->
         <template v-if="weeklyRanking">
           <h2 class="text-h2 mb-4">
-            Weekly Rankings
+            {{ t('stats.weeklyRankings') }}
             <StatsScoringDialog />
           </h2>
           <StatsLeaderboard :loading="loadingData" :season="selectedSeason" />
@@ -82,17 +82,17 @@
         <!-- Usage stats -->
         <div v-if="selectedSeason" id="usage-stats-section">
           <h2 class="text-h2 mt-8 mb-4">
-            Site Usage
+            {{ t('stats.siteUsage') }}
           </h2>
           <StatsUsageChart :season="selectedSeason" />
         </div>
         <!-- Error display -->
         <div v-if="error" class="d-flex flex-column align-center text-center">
           <h3 class="text-h3">
-            Oops!
+            {{ t('stats.error.oops') }}
           </h3>
           <p class="text-body-1">
-            There was a problem loading the leaderboard. Refresh the page or select another season to try again.
+            {{ t('stats.error.message') }}
           </p>
           <v-img
             alt="Dead cuttle logo"
@@ -109,6 +109,7 @@
 <script>
 import dayjs from 'dayjs';
 import { io } from '@/plugins/sails.js';
+import { useI18n } from 'vue-i18n';
 import AwardCard from '@/components/AwardCard.vue';
 import StatsScoringDialog from '@/components/StatsScoringDialog.vue';
 import StatsLeaderboard from '@/routes/stats/components/StatsLeaderboard.vue';
@@ -128,6 +129,10 @@ export default {
     this.checkAndSelectSeason(seasonId);
     this.loadingData = false;
     next();
+  },
+  setup() {
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {

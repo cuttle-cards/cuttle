@@ -6,13 +6,17 @@
     "rules": "Règles",
     "play": "Jouer",
     "stats": "Statistiques",
+    "user": "Utilisatrice",
+    "rank": "Rang",
     "username": "Nom d'utilisateur",
     "password": "Mot de passe",
     "collapseMenu": "Réduire le menu",
     "cancel": "Annuler",
     "ranked": "Classée",
     "casual": "Classique",
-    "your": "ton"
+    "your": "ton",
+    "close": "Fermer",
+    "click": "Cliquez sur"
   },
   "login": {
     "noAccount": "Vous n'avez pas de compte?",
@@ -72,7 +76,6 @@
         "login": "Se connecter"
       },
       "scrapDialog": {
-        "close": "Fermer",
         "scrapPile": "Défausse",
         "noCards": "Il n'y a aucune carte dans la défausse."
       },
@@ -134,7 +137,9 @@
         "finished": "Fini",
         "inProgress": "En Cours",
         "goHome": "Retourner au vestibule",
-        "rematch": "Rejouer"
+        "rematch": "Rejouer",
+        "askRematch": "veut rejouer",
+        "declineRematch": "a décliné l'invitation et a quitté la partie"
       }
     },
     "moves": {
@@ -383,5 +388,31 @@
       "whereToPlay": "Où puis-je jouer à Cuttle?",
       "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami! Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit:"
     }
+  },
+  "stats": {
+    "error": {
+      "oops": "Oops!",
+      "message": "Un problème est survenu lors du chargement du classement. Actualisez la page ou sélectionnez une autre saison pour réessayer."
+    },
+    "siteUsage": "Utilisation du site",
+    "weeklyRankings": "Classements hebdomadaires",
+    "season": {
+      "select": "Sélectionnez la saison",
+      "champions": "Champions de la saison",
+      "tournamentBracket": "ici pour voir le tableau officiel du tournoi",
+      "tournamentFootage": "ici pour regarder les images officielles du tournoi",
+      "playByPlay": "avec commentaire play-by-play."
+    },
+    "winRate": "Taux de réussite",
+    "wins": "Gagne",
+    "losses": "Pertes",
+    "results": "Résultats",
+    "week": "Semaine",
+    "selectMetric": "Sélectionnez une métrique",
+    "selectWeeks": "Sélectionnez des semaines",
+    "seasonTotal": "Total de la saison",
+    "pointsAndWins": "Points and Wins",
+    "pointsOnly": "Points seulement",
+    "winsOnly": "Gagne seulement"
   }
 }
