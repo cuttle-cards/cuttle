@@ -6,13 +6,17 @@
     "rules": "Reglas",
     "play": "Jugar",
     "stats": "Estadísticas",
+    "user": "Usuaria",
+    "rank": "Rango",
     "username": "Nombre de usuario",
     "password": "Contraseña",
     "collapseMenu": "Contraer menú",
     "cancel": "Cancelar",
     "ranked": "Competitivo",
     "casual": "Amistoso",
-    "your": "tu"
+    "your": "tu",
+    "close": "Cerrar",
+    "click": "Hacer clic"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
@@ -72,7 +76,6 @@
         "login": "Iniciar sesión"
       },
       "scrapDialog": {
-        "close": "Cerrar",
         "scrapPile": "Mazo de descarte",
         "noCards": "No hay cartas en el mazo de descarte."
       },
@@ -133,7 +136,10 @@
         "yourGameAgainst": "tu partida contra",
         "finished": "Finalizada",
         "inProgress": "En Curso",
-        "goHome": "Volver al menú"
+        "goHome": "Volver al menú",
+        "rematch":"revanche",
+        "askRematch": "quiere una revancha",
+        "declineRematch": "rechazó la revancha y abandonó el juego"
       }
     },
     "moves": {
@@ -228,7 +234,6 @@
         "withoutTarget": "Only Kings, Queens, and Eights may be played as Face Cards without a target"
       },
       "points": {
-        "onlyPointCards": "You can only play Ace - Ten cards as points",
         "numberOnlyForPoints": "You can only play a number card as points."
       },
       "jack": {
@@ -383,5 +388,31 @@
       "whereToPlay": "¿Dónde puedo jugar a Cuttle?",
       "whereToPlayAnswer": "¡Puedes jugar a Cuttle en cualquier lugar donde tengas una baraja de cartas y un amigo! Si quieres jugar online, solo hay un lugar:"
     }
+  },
+  "stats": {
+    "error": {
+      "oops": "¡Ups!",
+      "message": "Hubo un problema al cargar la tabla de clasificación. Actualiza la página o selecciona otra temporada para volver a intentarlo."
+    },
+    "siteUsage": "Uso del sitio",
+    "weeklyRankings": "Clasificaciones semanales",
+    "season": {
+      "select": "Seleccionar temporada",
+      "champions": "Campeones de temporada",
+      "tournamentBracket": "aquí para ver el cuadro oficial del torneo",
+      "tournamentFootage": "aquí para ver las imágenes oficiales del torneo",
+      "playByPlay": "con comentarios jugada por jugada."
+    },
+    "winRate": "Ratio de victorias",
+    "wins": "Gana",
+    "losses": "Pérdidas",
+    "results": "Resultados",
+    "week": "Semana",
+    "selectMetric": "Seleccionar métrica",
+    "selectWeeks": "Seleccionar semanas",
+    "seasonTotal": "Total de la temporada",
+    "pointsAndWins": "Puntos y victorias",
+    "pointsOnly": "Solo puntos",
+    "winsOnly": "Solo gana"
   }
 }

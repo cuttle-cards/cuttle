@@ -308,7 +308,7 @@ export default {
 @media (max-width: 600px) {
   .player-card {
     max-height: 10vh;
-    max-width: calc(10vh / 1.45);
+    width: calc(10vh / 1.45);
     &.glasses {
       max-width: 10vh;
       height: calc(10vh / 1.45);

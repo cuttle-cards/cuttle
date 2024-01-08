@@ -34,7 +34,7 @@ module.exports = function (req, res) {
             ];
             return Promise.all([game, ...updatePromises]);
           }
-          return Promise.reject({ message: 'game.snackbar.points.onlyPointCards' });
+          return Promise.reject({ message: 'game.snackbar.points.numberOnlyForPoints' });
         }
         return Promise.reject({
           message: 'game.snackbar.seven.pickAndPlay',

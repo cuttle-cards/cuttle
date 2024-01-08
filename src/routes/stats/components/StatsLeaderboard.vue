@@ -5,14 +5,14 @@
       <v-select
         v-model="selectedMetric"
         :items="metricChoices"
-        label="Select Metric"
+        :label="t('stats.selectMetric')"
         class="filter-select mr-4 fit"
         data-cy="metric-select"
       />
       <v-select
         v-model="selectedWeeks"
         :items="weeks"
-        label="Select Weeks"
+        :label="t('stats.selectWeeks')"
         class="week-select"
         data-cy="week-select"
         multiple
@@ -56,6 +56,7 @@
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { uniq, countBy } from 'lodash';
+import { useI18n } from 'vue-i18n';
 import StatsLeaderboardCell from '@/routes/stats/components/StatsLeaderboardCell.vue';
 import Result from '_/types/Result';
 
@@ -77,6 +78,10 @@ export default {
       default: null,
     },
   },
+  setup() {
+    const { t } = useI18n();
+    return { t };
+  },
   data() {
     return {
       sortBy: 'rank',
@@ -94,12 +99,12 @@ export default {
         return [];
       }
       return [
-        { text: 'User', value: 'username' },
-        { text: 'Rank', value: 'rank' },
-        { text: 'Season Total', value: 'week_total' },
+        { text: this.t('global.user'), value: 'username' },
+        { text: this.t('global.rank'), value: 'rank' },
+        { text: this.t('stats.seasonTotal'), value: 'week_total' },
         ...this.selectedWeeks.map((weekNum) => {
           return {
-            text: `Week ${weekNum}`,
+            text: `${this.t('stats.week')} ${weekNum}`,
             value: `week_${weekNum}`,
           };
         }),
@@ -288,24 +293,24 @@ export default {
   created() {
     // Define non-reactive attributes for selection options
     this.metricChoices = [
-      { title: 'Points and Wins', value: Metrics.POINTS_AND_WINS },
-      { title: 'Points Only', value: Metrics.POINTS_ONLY },
-      { title: 'Wins Only', value: Metrics.WINS_ONLY },
+      { title: this.t('stats.pointsAndWins'), value: Metrics.POINTS_AND_WINS },
+      { title: this.t('stats.pointsOnly'), value: Metrics.POINTS_ONLY },
+      { title: this.t('stats.winsOnly'), value: Metrics.WINS_ONLY },
     ];
     this.weeks = [
-      { title: 'Week 1', value: 1 },
-      { title: 'Week 2', value: 2 },
-      { title: 'Week 3', value: 3 },
-      { title: 'Week 4', value: 4 },
-      { title: 'Week 5', value: 5 },
-      { title: 'Week 6', value: 6 },
-      { title: 'Week 7', value: 7 },
-      { title: 'Week 8', value: 8 },
-      { title: 'Week 9', value: 9 },
-      { title: 'Week 10', value: 10 },
-      { title: 'Week 11', value: 11 },
-      { title: 'Week 12', value: 12 },
-      { title: 'Week 13', value: 13 },
+      { title: `${this.t('stats.week')} 1`, value: 1 },
+      { title: `${this.t('stats.week')} 2`, value: 2 },
+      { title: `${this.t('stats.week')} 3`, value: 3 },
+      { title: `${this.t('stats.week')} 4`, value: 4 },
+      { title: `${this.t('stats.week')} 5`, value: 5 },
+      { title: `${this.t('stats.week')} 6`, value: 6 },
+      { title: `${this.t('stats.week')} 7`, value: 7 },
+      { title: `${this.t('stats.week')} 8`, value: 8 },
+      { title: `${this.t('stats.week')} 9`, value: 9 },
+      { title: `${this.t('stats.week')} 10`, value: 10 },
+      { title: `${this.t('stats.week')} 11`, value: 11 },
+      { title: `${this.t('stats.week')} 12`, value: 12 },
+      { title: `${this.t('stats.week')} 13`, value: 13 },
     ];
   },
   methods: {

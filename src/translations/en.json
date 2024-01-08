@@ -6,13 +6,17 @@
     "rules": "About",
     "play": "Play",
     "stats": "Stats",
+    "user": "User",
+    "rank": "Rank",
     "username": "Username",
     "password": "Password",
     "collapseMenu": "Collapse Menu",
     "cancel": "Cancel",
     "ranked": "Ranked",
     "casual": "Casual",
-    "your": "your"
+    "your": "your",
+    "close": "Close",
+    "click": "Click"
   },
   "login": {
     "noAccount": "Don't have an account?",
@@ -77,7 +81,6 @@
         "oppponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
       },
       "scrapDialog": {
-        "close": "Close",
         "scrapPile": "Scrap Pile",
         "noCards": "There are no cards in the scrap pile."
       },
@@ -134,7 +137,9 @@
         "finished": "Finished",
         "inProgress": "In Progress",
         "goHome": "Go Home",
-        "rematch": "Rematch"
+        "rematch": "Rematch",
+        "askRematch": "wants to rematch",
+        "declineRematch": "declined rematch and left the game"
       }
     },
     "moves": {
@@ -229,7 +234,6 @@
         "withoutTarget": "Only Kings, Queens, and Eights may be played as Face Cards without a target"
       },
       "points": {
-        "onlyPointCards": "You can only play Ace - Ten cards as points",
         "numberOnlyForPoints": "You can only play a number card as points."
       },
       "jack": {
@@ -384,5 +388,31 @@
       "whereToPlay": "Where can I play Cuttle?",
       "whereToPlayAnswer": "You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, there is only one place:"
     }
+  },
+  "stats": {
+    "error": {
+      "oops": "Oops!",
+      "message": "There was a problem loading the leaderboard. Refresh the page or select another season to try again."
+    },
+    "siteUsage": "Site Usage",
+    "weeklyRankings": "Weekly Rankings",
+    "season": {
+      "select": "Select Season",
+      "champions": "Season Champions",
+      "tournamentBracket": "here to see the official tournament bracket",
+      "tournamentFootage": "here to watch the official tournament footage",
+      "playByPlay": "with play-by-play commentary."
+    },
+    "winRate": "Win Rate",
+    "wins": "Wins",
+    "losses": "Losses",
+    "results": "Results",
+    "week": "Week",
+    "selectMetric": "Select Metric",
+    "selectWeeks": "Select Weeks",
+    "seasonTotal": "Season Total",
+    "pointsAndWins": "Points and Wins",
+    "pointsOnly": "Points Only",
+    "winsOnly": "Wins Only"
   }
 }
