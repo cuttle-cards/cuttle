@@ -74,7 +74,7 @@ module.exports = {
     if (game.players) {
       if (game.players.length < 2) {
         throw new Error({ message: 'Cannot populate game without two players' });
-      } 
+      }
     } else {
       throw new Error({ message: 'Cannot populate game, because it does not have players collection' });
     }

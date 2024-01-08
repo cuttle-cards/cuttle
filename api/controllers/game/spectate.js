@@ -17,7 +17,7 @@ module.exports = async function (req, res) {
     await UserSpectatingGame.findOrCreate(
       { gameSpectated: game.id, spectator: spectator.id },
       { gameSpectated: game.id, spectator: spectator.id },
-      ).exec(async (err, record, wasCreated) => {
+    ).exec(async (err, record, wasCreated) => {
       if (!wasCreated) {
         await UserSpectatingGame.update({ gameSpectated: game.id, spectator: spectator.id }).set({
           activelySpectating: true,
