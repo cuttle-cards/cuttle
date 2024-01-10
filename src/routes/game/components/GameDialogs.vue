@@ -19,6 +19,7 @@
       @resolve="resolve"
     />
     <FourDialog :model-value="gameStore.discarding" @discard="discard" />
+    <FiveDialog :model-value="discardingTwo" @discard="discard" />
     <ThreeDialog
       :model-value="pickingFromScrap"
       :one-off="gameStore.oneOff"
@@ -54,6 +55,7 @@ import ReauthenticateDialog from '@/routes/game/components/ReauthenticateDialog.
 import SevenDoubleJacksDialog from '@/routes/game/components/SevenDoubleJacksDialog.vue';
 import ThreeDialog from '@/routes/game/components/ThreeDialog.vue';
 import OpponentRequestedStalemateDialog from '@/routes/game/components/OpponentRequestedStalemateDialog.vue';
+import FiveDialog from '@/routes/game/components/FiveDialog.vue';
 
 export default {
   name: 'GameDialogs',
@@ -66,7 +68,8 @@ export default {
     SevenDoubleJacksDialog,
     ThreeDialog,
     OpponentRequestedStalemateDialog,
-  },
+    FiveDialog
+},
   emits: ['clear-selection', 'handle-error'],
   computed: {
     ...mapStores(useGameStore, useAuthStore),
@@ -90,6 +93,9 @@ export default {
     },
     pickingFromScrap() {
       return this.gameStore.pickingFromScrap;
+    },
+    discardingTwo() {
+      return true;
     },
     playerTwoCount() {
       return this.twoCount(this.gameStore.player);
