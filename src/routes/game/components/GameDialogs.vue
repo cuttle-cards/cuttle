@@ -95,7 +95,7 @@ export default {
       return this.gameStore.pickingFromScrap;
     },
     discardingTwo() {
-      return true;
+      return this.gameStore.discardingTwo;
     },
     playerTwoCount() {
       return this.twoCount(this.gameStore.player);

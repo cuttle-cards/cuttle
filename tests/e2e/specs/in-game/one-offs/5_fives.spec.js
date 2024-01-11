@@ -22,8 +22,8 @@ describe('FIVES', () => {
         topCard: Card.THREE_OF_CLUBS,
         secondCard: Card.EIGHT_OF_HEARTS,
       });
-      // // Player plays five
-      // cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+      // Player plays five
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
 
       // // Assert game state
       // assertGameState(0, {
