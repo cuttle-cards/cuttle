@@ -98,6 +98,8 @@ export const useGameStore = defineStore('game', {
     discarding: false,
     waitingForOpponentToDiscard: false,
     lastEventDiscardedCards: null,
+    //fives
+    discardingTwo: false,
     // Sevens
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,

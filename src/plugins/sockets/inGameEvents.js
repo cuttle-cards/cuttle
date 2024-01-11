@@ -73,6 +73,9 @@ export async function handleInGameEvents(evData) {
               gameStore.pickingFromScrap = true;
             }
             break;
+          case 5:
+            gameStore.discardingTwo = true;
+            break;
           case 4:
             if (evData.playedBy === gameStore.myPNum) {
               gameStore.waitingForOpponentToDiscard = true;
