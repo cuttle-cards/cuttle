@@ -762,7 +762,24 @@ describe('Spectating Rematches', () => {
 
       cy.recoverSessionOpponent(playerOne);
       cy.playPointsSpectator(Card.TEN_OF_DIAMONDS, 0);
+      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true});
 
+      rematchPlayerAsSpectator(playerTwo);
+
+      cy.get('[data-cy=gameover-rematch')
+        .should('not.be.disabled')
+        .click()
+        .should('be.disabled');
+
+      cy.get('[data-cy=continue-match-banner]')
+        .should('be.visible')
+        .should('contain', 'Waiting for Players');
+
+      rematchPlayerAsSpectator(playerOne);
+
+      // Game 2: playerTwo wins by playerOne conceding
+      cy.get('[data-cy=player-username]')
+        .should('contain', playerTwo.username);
     });
   });
 });
