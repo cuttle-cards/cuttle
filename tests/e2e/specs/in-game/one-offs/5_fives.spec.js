@@ -7,7 +7,7 @@ describe('FIVES', () => {
       cy.setupGameAsP0();
     });
 
-    it('Plays a five to discard 1 card, and draw 3', () => {
+    it('Plays a 5 to discard 1 card, and draw 3', () => {
       // Setup
       cy.loadGameFixture(0, {
         // Player is P0
