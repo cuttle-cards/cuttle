@@ -316,6 +316,7 @@ export const useGameStore = defineStore('game', {
       }, 1000);
     },
     processFives(discardedCards, game) {
+      this.waitingForOpponentToDiscard = false;
       this.discardingTwo = false;
       this.lastEventDiscardedCards = discardedCards;
 
