@@ -19,7 +19,7 @@
       @resolve="resolve"
     />
     <FourDialog :model-value="gameStore.discarding" @discard="discard" />
-    <FiveDialog :model-value="discardingTwo" @discard="discard" />
+    <FiveDialog @resolve-five="resolveFive" />
     <ThreeDialog
       :model-value="pickingFromScrap"
       :one-off="gameStore.oneOff"
@@ -94,9 +94,6 @@ export default {
     pickingFromScrap() {
       return this.gameStore.pickingFromScrap;
     },
-    discardingTwo() {
-      return this.gameStore.discardingTwo;
-    },
     playerTwoCount() {
       return this.twoCount(this.gameStore.player);
     },
@@ -167,6 +164,9 @@ export default {
     },
     resolveThree(cardId) {
       this.gameStore.requestResolveThree(cardId).then(this.clearSelection).catch(this.handleError);
+    },
+    resolveFive(cardId) {
+      this.gameStore.requestResolveFive(cardId);
     },
     resolveSevenDoubleJacks({ cardId, index }) {
       this.gameStore.requestResolveSevenDoubleJacks({ cardId, index })

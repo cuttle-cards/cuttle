@@ -77,6 +77,7 @@ module.exports.routes = {
   '/game/counter': 'game/counter',
   '/game/resolve': 'game/resolve',
   '/game/resolveFour': 'game/resolve-four',
+  '/game/resolveFive': 'game/resolve-five',
   '/game/resolveThree': 'game/resolve-three',
   // Resolving Sevens
   '/game/seven/points': 'game/seven/points',
