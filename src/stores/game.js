@@ -580,6 +580,22 @@ export const useGameStore = defineStore('game', {
         this.waitingForOpponentToCounter = false;
       });
     },
+    async requestResolveFive(cardId) {
+      this.myTurnToCounter = false;
+      return new Promise((resolve, reject) => {
+        io.socket.get(
+          '/game/resolveFive',
+          {
+            cardId,
+          },
+          (res, jwres) => {
+            return this.handleGameResponse(jwres, resolve, reject);
+          },
+        );
+      }).then(() => {
+        this.waitingForOpponentToCounter = false;
+      });
+    },
     async requestResolveSevenDoubleJacks({ cardId, index }) {
       this.myTurnToCounter = false;
       return new Promise((resolve, reject) => {
