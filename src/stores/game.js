@@ -315,6 +315,14 @@ export const useGameStore = defineStore('game', {
         this.resetPNumIfNullThenUpdateGame(game);
       }, 1000);
     },
+    processFives(discardedCards, game) {
+      this.discardingTwo = false;
+      this.lastEventDiscardedCards = discardedCards;
+
+      setTimeout(() => {
+        this.resetPNumIfNullThenUpdateGame(game);
+      }, 1000);
+    },
     handleGameResponse: (jwres, resolve, reject) => {
       const authStore = useAuthStore();
       switch (jwres.statusCode) {
