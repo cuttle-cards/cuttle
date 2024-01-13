@@ -18,39 +18,46 @@ module.exports = async function (req, res) {
     };
 
     const cardsToDraw = [];
+    const cardsToRemove= [];
     let newDeck = game.deck;
-    let thirdCard;
-
+    
     //Add one for card that is not yet discarded
-    if (player.hand.length < 9) {
+    if (player.hand.length < 9 && game.topCard) {
       cardsToDraw.push(game.topCard.id);
       gameUpdates.topCard = null;
       if (game.secondCard && player.hand.length < 8) {
         cardsToDraw.push(game.secondCard.id);
         gameUpdates.secondCard = null;
         if (game.deck.length > 1 && player.hand.length < 7) {
-          thirdCard = _.sample(game.deck);
+          const thirdCard = _.sample(game.deck);
           cardsToDraw.push(thirdCard.id);
-          newDeck = game.deck.filter(({ id }) => id !== thirdCard);
+          cardsToRemove.push(thirdCard.id);
+          newDeck = game.deck.filter(({ id }) => id !== thirdCard.id);
         }
       }
+      
+      //Update new topCard, secondCard, and deck
+      if (newDeck.length > 1) {
+        const [topCard, secondCard] = _.sampleSize(newDeck, 2);
+        gameUpdates.topCard = topCard.id;
+        gameUpdates.secondCard = secondCard.id;
+        cardsToRemove.push(topCard.id, secondCard.id);
+      } else if (newDeck.length === 1) {
+        const [topCard] = newDeck;
+        gameUpdates.topCard = topCard;
+        cardsToRemove.push(topCard.id);
+      }
+    } else {
+      throw new Error({ message: 'Cannot resolve 5 one-off with an empty deck, or full hand' });
     }
   
     const logMessage = cardsToDraw.length === 1 ? `draws 1 card` : `draws ${cardsToDraw.length} cards`;
     gameUpdates.log = [...game.log, `${player.username} discards the ${getCardName(card)} and ${logMessage}`];
   
-    if (game.deck.length > 1) {
-      const [topCard, secondCard] = _.sampleSize(newDeck, 2);
-      gameUpdates.topCard = topCard.id;
-      gameUpdates.secondCard = secondCard.id;
-    } else if (game.deck.length === 1) {
-      [gameUpdates.topCard] = newDeck;
-    }
-
     const updatePromises = [
       Game.updateOne(game.id).set(gameUpdates),
       Game.addToCollection(game.id, 'scrap').members([card.id]),
-      Game.removeFromCollection(game.id, 'deck').members([thirdCard.id]),
+      Game.removeFromCollection(game.id, 'deck').members([...cardsToRemove]),
       User.removeFromCollection(player.id, 'hand').members([card.id]),
       User.addToCollection(player.id, 'hand').members([...cardsToDraw]),
     ];
@@ -68,7 +75,6 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    console.log(err);
     return res.badRequest(err);
   }
 };
