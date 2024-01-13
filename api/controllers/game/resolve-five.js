@@ -21,14 +21,14 @@ module.exports = async function (req, res) {
     const cardsToRemove= [];
     let newDeck = game.deck;
     
-    //Add two for card that is not yet discarded and card that played one-off
+    //Add one for card that is not yet discarded 
     if (game.topCard) {
       cardsToDraw.push(game.topCard.id);
       gameUpdates.topCard = null;
-      if (game.secondCard && player.hand.length < 9) {
+      if (game.secondCard && player.hand.length < 8) {
         cardsToDraw.push(game.secondCard.id);
         gameUpdates.secondCard = null;
-        if (game.deck.length && player.hand.length < 8) {
+        if (game.deck.length && player.hand.length < 7) {
           const thirdCard = _.sample(game.deck);
           cardsToDraw.push(thirdCard.id);
           cardsToRemove.push(thirdCard.id);

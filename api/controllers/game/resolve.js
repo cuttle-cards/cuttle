@@ -124,7 +124,7 @@ module.exports = function (req, res) {
                 `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} must discard one card, and will draw up to three cards.`,
               ],
             };
-            break; //End resolve FIVE
+            break;
           }
           case 6: {
             const playerFaceCardIds = player.faceCards.map((faceCard) => faceCard.id);
