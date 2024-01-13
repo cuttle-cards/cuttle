@@ -91,6 +91,12 @@
         "discard": "Défausser",
         "oppponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
+      "five":{
+        "discardAndDraw" : "Jeter et piocher",
+        "nice": "Bon!",
+        "resolveFive": "Vous avez résolu un 5 ponctuel. Choisissez une carte à défausser et vous piocherez ensuite 3 cartes",
+        "resolveFiveNoCards": "Vous avez résolu un problème ponctuel de 5, mais vous n'avez aucune carte en main à défausser. Vous piochez 3 cartes sans les défausser. Doux!"
+      },
       "counterDialogs": {
         "counterTitle": "Chance de contrer",
         "chooseTwoTitle": "Choisissez un deux",

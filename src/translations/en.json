@@ -80,6 +80,12 @@
         "discard": "Discard",
         "oppponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
       },
+      "five":{
+        "discardAndDraw" : "Discard and Draw",
+        "nice": "Nice!",
+        "resolveFive": "You have resolved a 5 one-off. Choose a card to discard and then you will draw 3 cards",
+        "resolveFiveNoCards": "You have Resolved a 5 one-off, but have no cards in your hand to discard. You draw 3 cards without discarding. Sweet!"
+      },
       "scrapDialog": {
         "scrapPile": "Scrap Pile",
         "noCards": "There are no cards in the scrap pile."

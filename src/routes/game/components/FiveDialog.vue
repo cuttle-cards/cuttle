@@ -37,17 +37,20 @@ import GameCard from '@/routes/game/components/GameCard.vue';
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '@/stores/game.js';
+import { useI18n } from 'vue-i18n';
 
+const { t }  = useI18n();
 const gameStore = useGameStore();
 const { player } = storeToRefs(gameStore);
+
 
 const selectedCard = ref();
 const emit = defineEmits(['resolve-five']);
 
 const disableButton = computed(() => !player.value.hand.length || !selectCard.value);
-const title = computed(() => player.value.hand.length ? 'Discard a Card' : 'Nice!');
-const dialog = computed(() => player.value.hand.length ? 'You have resolved a 5 one-off. Choose a card to discard and then you will draw 3 cards' : 'You have Resolved a 5 one-off, but have no cards in your hand to discard. You draw 3 cards without discarding. Sweet!');
-const buttonText = computed(() => player.value.hand.length ? 'Discard a Card' : 'Draw');
+const title = computed(() => t(player.value.hand.length ? 'game.dialogs.five.discardAndDraw' : 'game.dialogs.five.nice'));
+const dialog = computed(() => t(player.value.hand.length ? 'game.dialogs.five.resolveFive' : 'game.dialogs.five.resolveFiveNoCards'));
+const buttonText = computed(() => t(player.value.hand.length ? 'game.dialogs.five.discardAndDraw' : 'rules.draw'));
 
 const selectCard = (index) => {
   selectedCard.value = player.value.hand[index].id;

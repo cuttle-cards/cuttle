@@ -91,6 +91,12 @@
         "discard": "Descartar",
         "oppponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
       },
+      "five":{
+        "discardAndDraw" : "Descartar y robar",
+        "nice": "Bueno!",
+        "resolveFive": "Has resuelto un 5 único. Elige una carta para descartar y luego robarás 3 cartas.",
+        "resolveFiveNoCards": "Has resuelto un 5 único, pero no tienes cartas en tu mano para descartar. Robas 3 cartas sin descartar. ¡Dulce!"
+      },
       "counterDialogs": {
         "counterTitle": "Oportunidad de contrarrestar",
         "chooseTwoTitle": "Elige dos",
