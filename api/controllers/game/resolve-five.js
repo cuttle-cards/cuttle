@@ -1,16 +1,24 @@
 const { getCardName } = require('../../../utils/game-utils');
-const gameService = require('../../services/gameService');
-
 module.exports = async function (req, res) {
   
   try {
     const promiseGame = gameService.findGame({ gameId: req.session.game });
-    const promisePlayer = User.findOne({ id: req.session.usr });
-    const promiseCard = cardService.findCard({ cardId: req.body.cardId1 });
-
+    const promisePlayer = userService.findUser({ userId: req.session.usr });
+    const promiseCard = cardService.findCard({ cardId: req.body.cardId });
     const [game, player, card] = await Promise.all([promiseGame, promisePlayer, promiseCard]);
-    const cardsToDraw = [];
 
+    const gameUpdates = {
+      passes: 0,
+      turn: game.turn + 1,
+      resolving: null,
+      lastEvent: {
+        change: 'resolveFive',
+        discardedCards: [card.id]
+      },
+
+    };
+
+    const cardsToDraw = [];
     let newDeck = game.deck;
 
     if (player.hand.length < 8) {
@@ -27,22 +35,13 @@ module.exports = async function (req, res) {
       }
     }
   
-    const logMessage = cardsToDraw.length === 1 ? `${player.username} draws 1 card` : `${player.username} draws ${cardsToDraw.length} cards`;
-    const gameUpdates = {
-      passes: 0,
-      turn: game.turn + 1,
-      resolving: null,
-      lastEvent: {
-        change: 'resolveFive',
-        discardedCards: [card.id]
-      },
-      log: [...game.log, `The ${getCardName(game.oneOff)} one-off resolves. ${logMessage}`]
-    };
-
+    const logMessage = cardsToDraw.length === 1 ? `draws 1 card` : `draws ${cardsToDraw.length} cards`;
+    gameUpdates.log = [...game.log, `${player.username} discards the ${getCardName(card)} and ${logMessage}`];
+  
     if (game.deck.length > 1) {
       const [topCard, secondCard] = _.sampleSize(newDeck, 2);
-      gameUpdates.topCard = topCard;
-      gameUpdates.secondCard = secondCard;
+      gameUpdates.topCard = topCard.id;
+      gameUpdates.secondCard = secondCard.id;
     } else if (game.deck.length === 1) {
       [gameUpdates.topCard] = newDeck;
     }
@@ -51,7 +50,7 @@ module.exports = async function (req, res) {
       Game.updateOne(game.id).set(gameUpdates),
       Game.addToCollection(game.id, 'scrap').members([card.id]),
       User.removeFromCollection(player.id, 'hand').members([card.id]),
-      User.addToCollection(player.id, 'hand').members([cardsToDraw]),
+      User.addToCollection(player.id, 'hand').members([...cardsToDraw]),
     ];
 
     await Promise.all([...updatePromises]);
@@ -66,7 +65,7 @@ module.exports = async function (req, res) {
     });
 
     return res.ok();
-  } catch(err) {
+  } catch (err) {
     return res.badRequest(err);
   }
 };
