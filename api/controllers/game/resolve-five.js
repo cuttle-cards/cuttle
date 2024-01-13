@@ -50,7 +50,7 @@ module.exports = async function (req, res) {
     const updatePromises = [
       Game.updateOne(game.id).set(gameUpdates),
       Game.addToCollection(game.id, 'scrap').members([card.id]),
-      Game.removeFromCollection(game.id, 'deck').members([thirdCard]),
+      Game.removeFromCollection(game.id, 'deck').members([thirdCard.id]),
       User.removeFromCollection(player.id, 'hand').members([card.id]),
       User.addToCollection(player.id, 'hand').members([...cardsToDraw]),
     ];
@@ -68,6 +68,7 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
+    console.log(err);
     return res.badRequest(err);
   }
 };

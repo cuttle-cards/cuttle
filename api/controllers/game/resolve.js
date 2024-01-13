@@ -121,7 +121,7 @@ module.exports = function (req, res) {
               resolving: game.oneOff.id,
               log: [
                 ...game.log,
-                `The ${getCardName(game.oneOff)} one-off resolves; ${opponent.username} must discard one card, and will draw up to three cards.`,
+                `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} must discard one card, and will draw up to three cards.`,
               ],
             };
             break; //End resolve FIVE
@@ -258,7 +258,7 @@ module.exports = function (req, res) {
         cardsToScrap.push(game.oneOff.id);
       }
       // Increment turn for anything except resolved three, four, and seven (which require follow up)
-      if (!happened || (happened && ![3, 4, 7].includes(oneOff.rank))) {
+      if (!happened || (happened && ![3, 4,5, 7].includes(oneOff.rank))) {
         gameUpdates = {
           ...gameUpdates,
           turn: game.turn + 1,
