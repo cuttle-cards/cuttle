@@ -44,7 +44,7 @@ module.exports = async function (req, res) {
         cardsToRemove.push(topCard.id, secondCard.id);
       } else if (newDeck.length === 1) {
         const [topCard] = newDeck;
-        gameUpdates.topCard = topCard;
+        gameUpdates.topCard = topCard.id;
         cardsToRemove.push(topCard.id);
       }
     } else {
