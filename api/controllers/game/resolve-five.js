@@ -28,7 +28,7 @@ module.exports = async function (req, res) {
       if (game.secondCard && player.hand.length < 9) {
         cardsToDraw.push(game.secondCard.id);
         gameUpdates.secondCard = null;
-        if (game.deck.length > 1 && player.hand.length < 8) {
+        if (game.deck.length && player.hand.length < 8) {
           const thirdCard = _.sample(game.deck);
           cardsToDraw.push(thirdCard.id);
           cardsToRemove.push(thirdCard.id);
