@@ -21,11 +21,11 @@
       <v-btn
         color="surface-1"
         variant="flat"
-        data-cy="submit-four-dialog"
-        :disabled="!selectedCard"
+        data-cy="submit-five-dialog"
+        :disabled="!disableButton"
         @click="emit('resolve-five', selectedCard)"
       >
-        discard
+        {{ buttonText }}
       </v-btn>
     </template>
   </BaseDialog>
@@ -44,9 +44,10 @@ const { player } = storeToRefs(gameStore);
 const selectedCard = ref();
 const emit = defineEmits(['resolve-five']);
 
-
+const disableButton = computed(() => !player.value.hand.length || !selectCard.value);
 const title = computed(() => player.value.hand.length ? 'Discard a Card' : 'Nice!');
 const dialog = computed(() => player.value.hand.length ? 'You have resolved a 5 one-off. Choose a card to discard and then you will draw 3 cards' : 'You have Resolved a 5 one-off, but have no cards in your hand to discard. You draw 3 cards without discarding. Sweet!');
+const buttonText = computed(() => player.value.hand.length ? 'Discard a Card' : 'Draw');
 
 const selectCard = (index) => {
   selectedCard.value = player.value.hand[index].id;

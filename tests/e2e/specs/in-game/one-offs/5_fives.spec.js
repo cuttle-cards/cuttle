@@ -7,7 +7,7 @@ describe('FIVES', () => {
       cy.setupGameAsP0();
     });
 
-    it.only('Plays a five to draw two cards', () => {
+    it('Plays a five to discard 1 card, and draw 3', () => {
       // Setup
       cy.loadGameFixture(0, {
         // Player is P0
@@ -24,25 +24,19 @@ describe('FIVES', () => {
       });
       // Player plays five
       cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+      cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+      cy.get('[data-discard-card=1-0]').click();
+      cy.get('[data-cy=submit-five-dialog]').click();
 
-      // // Assert game state
-      // assertGameState(0, {
-      //   // Player is P0
-      //   p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_HEARTS, Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS],
-      //   p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      //   p0FaceCards: [Card.KING_OF_SPADES],
-      //   // Opponent is P1
-      //   p1Hand: [Card.ACE_OF_HEARTS],
-      //   p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      //   p1FaceCards: [Card.KING_OF_HEARTS],
-      //   scrap: [Card.FIVE_OF_SPADES],
-      // });
-      // // Attempt to plays five out of turn
-      // cy.get('[data-player-hand-card=5-2]').click(); // five of hearts
-      // playOutOfTurn('oneOff');
+      cy.get('#deck').should('contain', '(39)');
+      // Assert game state
+      cy.get('[data-player-hand-card]').should('have.length', 4);
+      // Attempt to plays five out of turn
+      cy.get('[data-player-hand-card=5-2]').click(); // five of hearts
+      playOutOfTurn('oneOff');
     }); // End five one-off
 
-    it('Plays a 5 to draw the last two cards in the deck', () => {
+    it.only('Plays a 5 to draw the last two cards in the deck', () => {
       // Setup: player has one card in hand and only top & second card are in deck
       cy.loadGameFixture(0, {
         // Player is P0
@@ -62,17 +56,10 @@ describe('FIVES', () => {
 
       // Player plays and resolves a 5
       cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_CLUBS);
-      assertGameState(0, {
-        // Player is P0
-        p0Hand: [Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS],
-        p0Points: [],
-        p0FaceCards: [],
-        // Opponent is P1
-        p1Hand: [],
-        p1Points: [],
-        p1FaceCards: [],
-        scrap: [Card.FIVE_OF_CLUBS],
-      });
+      cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+      cy.get('[data-discard-card=1-0]').click();
+      cy.get('[data-cy=submit-five-dialog]').click();
+      
       // Deck should now be empty
       cy.get('#deck').should('contain', '(0)').should('contain', 'PASS');
     });
