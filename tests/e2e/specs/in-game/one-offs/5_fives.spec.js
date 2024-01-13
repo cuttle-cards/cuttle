@@ -75,7 +75,7 @@ describe('FIVES', () => {
       cy.get('[data-player-hand-card]').should('have.length', 3);
     });
 
-    it.only('Plays a 5 to draw two cards at max hand', () => {
+    it('Plays a 5 to draw two cards at max hand', () => {
       // Setup: there are three cards in the deck and player has a 5
       cy.loadGameFixture(0, {
         p0Hand: [Card.FIVE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.ACE_OF_DIAMONDS,
@@ -112,5 +112,47 @@ describe('FIVES', () => {
       });
       cy.get('#deck').should('contain', '(1)');
     });
+
+    it('Draws only 1 card when last card in deck', () => {
+      cy.loadGameFixture(0, {
+        // Player is P0
+        p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        // Deck
+        topCard: Card.THREE_OF_CLUBS,
+        secondCard: Card.EIGHT_OF_HEARTS,
+        deck:[]
+
+      });
+      //player plays a card
+      cy.get('[data-player-hand-card=2-0]').click();
+      cy.get('[data-move-choice=points]').click();
+      //opponent draws, leaving 1 card left in deck
+      cy.drawCardOpponent();
+
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+      cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+      cy.get('[data-discard-card=1-0]').click();
+      cy.get('[data-cy=submit-five-dialog]').click();
+
+      assertGameState(0, {
+        p0Hand: [Card.FIVE_OF_HEARTS, Card.EIGHT_OF_HEARTS],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS],
+        topCard: null,
+        secondCard: null,
+        deck: []
+      });
+    });
+
   });
 });
