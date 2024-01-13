@@ -61,9 +61,9 @@ module.exports = async function (req, res) {
     
     if (card) {
       updatePromises.push(Game.addToCollection(game.id, 'scrap').members([card.id]), User.removeFromCollection(player.id, 'hand').members([card.id]), );
-      gameUpdates.log = [...game.log, `${player.username} ${logMessage}`];
-    }else {
       gameUpdates.log = [...game.log, `${player.username} discards the ${getCardName(card)} and ${logMessage}`];
+    }else {
+      gameUpdates.log = [...game.log, `${player.username} ${logMessage}`];
     }
     
     await Promise.all([...updatePromises]);
@@ -74,11 +74,12 @@ module.exports = async function (req, res) {
       change: 'resolveFive',
       game: fullGame,
       victory,
-      discardedCards: [card.id]
+      discardedCards: card ? [card.id] : null
     });
 
     return res.ok();
   } catch (err) {
+    console.log(err);
     return res.badRequest(err);
   }
 };
