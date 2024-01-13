@@ -22,13 +22,14 @@ module.exports = async function (req, res) {
     let newDeck = game.deck;
     let thirdCard;
 
-    if (player.hand.length < 8) {
+    //1 extra because card is not yet removed from hand
+    if (player.hand.length < 9) {
       cardsToDraw.push(game.topCard.id);
       gameUpdates.topCard = null;
-      if (game.secondCard && player.hand.length < 7) {
+      if (game.secondCard && player.hand.length < 8) {
         cardsToDraw.push(game.secondCard.id);
         gameUpdates.secondCard = null;
-        if (game.deck.length > 1 && player.hand.length < 6) {
+        if (game.deck.length > 1 && player.hand.length < 7) {
           thirdCard = _.sample(game.deck);
           cardsToDraw.push(thirdCard.id);
           newDeck = game.deck.filter(({ id }) => id !== thirdCard);
@@ -51,7 +52,6 @@ module.exports = async function (req, res) {
       Game.updateOne(game.id).set(gameUpdates),
       Game.addToCollection(game.id, 'scrap').members([card.id]),
       Game.removeFromCollection(game.id, 'deck').members([thirdCard]),
-      User.removeFromCollection(player.id, 'hand').members([card.id]),
       User.addToCollection(player.id, 'hand').members([...cardsToDraw]),
     ];
 
