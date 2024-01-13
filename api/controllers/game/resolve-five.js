@@ -22,7 +22,7 @@ module.exports = async function (req, res) {
     let newDeck = game.deck;
     let thirdCard;
 
-    //1 extra because card is not yet removed from hand
+    //Add one for card that is not yet discarded
     if (player.hand.length < 9) {
       cardsToDraw.push(game.topCard.id);
       gameUpdates.topCard = null;
@@ -52,6 +52,7 @@ module.exports = async function (req, res) {
       Game.updateOne(game.id).set(gameUpdates),
       Game.addToCollection(game.id, 'scrap').members([card.id]),
       Game.removeFromCollection(game.id, 'deck').members([thirdCard]),
+      User.removeFromCollection(player.id, 'hand').members([card.id]),
       User.addToCollection(player.id, 'hand').members([...cardsToDraw]),
     ];
 
