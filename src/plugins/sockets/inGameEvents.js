@@ -60,6 +60,9 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.RESOLVE_FOUR:
       gameStore.processFours(evData.discardedCards, evData.game);
       break;
+    case SocketEvent.RESOLVE_FIVE:
+      gameStore.processFives(evData.discardedCards, evData.game);
+      break;
     case SocketEvent.RESOLVE:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       gameStore.waitingForOpponentToCounter = false;
