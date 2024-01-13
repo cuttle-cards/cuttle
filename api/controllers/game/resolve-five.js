@@ -15,7 +15,6 @@ module.exports = async function (req, res) {
         change: 'resolveFive',
         discardedCards: [card.id]
       },
-
     };
 
     const cardsToDraw = [];
