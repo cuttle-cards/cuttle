@@ -77,7 +77,11 @@ export async function handleInGameEvents(evData) {
             }
             break;
           case 5:
-            gameStore.discardingTwo = true;
+            if (evData.playedBy === gameStore.myPNum) {
+              gameStore.discardingTwo = true;
+            } else {
+              gameStore.waitingForOpponentToDiscard = true;
+            }
             break;
           case 4:
             if (evData.playedBy === gameStore.myPNum) {
