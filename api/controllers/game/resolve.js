@@ -121,7 +121,7 @@ module.exports = function (req, res) {
               resolving: game.oneOff.id,
               log: [
                 ...game.log,
-                `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} must discard one card, and will draw up to three cards.`,
+                `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} must discard one card, and will draw up to three.`,
               ],
             };
             break;
