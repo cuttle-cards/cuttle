@@ -4,7 +4,7 @@ module.exports = async function (req, res) {
   try {
     const promiseGame = gameService.findGame({ gameId: req.session.game });
     const promisePlayer = userService.findUser({ userId: req.session.usr });
-    const promiseCard = cardService.findCard({ cardId: req.body.cardId });
+    const promiseCard = req.body.cardId ? cardService.findCard({ cardId: req.body.cardId }) : null;
     const [game, player, card] = await Promise.all([promiseGame, promisePlayer, promiseCard]);
 
     const gameUpdates = {
@@ -13,7 +13,7 @@ module.exports = async function (req, res) {
       resolving: null,
       lastEvent: {
         change: 'resolveFive',
-        discardedCards: [card.id]
+        discardedCards: card ? [card.id] : null,
       },
     };
 
@@ -50,18 +50,22 @@ module.exports = async function (req, res) {
     } else {
       throw new Error({ message: 'Cannot resolve 5 one-off with an empty deck' });
     }
-  
-    const logMessage = cardsToDraw.length === 1 ? `draws 1 card` : `draws ${cardsToDraw.length} cards`;
-    gameUpdates.log = [...game.log, `${player.username} discards the ${getCardName(card)} and ${logMessage}`];
-  
+       
     const updatePromises = [
       Game.updateOne(game.id).set(gameUpdates),
-      Game.addToCollection(game.id, 'scrap').members([card.id]),
       Game.removeFromCollection(game.id, 'deck').members([...cardsToRemove]),
-      User.removeFromCollection(player.id, 'hand').members([card.id]),
       User.addToCollection(player.id, 'hand').members([...cardsToDraw]),
     ];
 
+    const logMessage = cardsToDraw.length === 1 ? `draws 1 card` : `draws ${cardsToDraw.length} cards`;
+    
+    if (card) {
+      updatePromises.push(Game.addToCollection(game.id, 'scrap').members([card.id]), User.removeFromCollection(player.id, 'hand').members([card.id]), );
+      gameUpdates.log = [...game.log, `${player.username} ${logMessage}`];
+    }else {
+      gameUpdates.log = [...game.log, `${player.username} discards the ${getCardName(card)} and ${logMessage}`];
+    }
+    
     await Promise.all([...updatePromises]);
     const fullGame = await gameService.populateGame({ gameId: game.id });
     const victory = await gameService.checkWinGame({ game: fullGame });
