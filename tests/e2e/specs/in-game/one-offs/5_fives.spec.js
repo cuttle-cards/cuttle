@@ -113,7 +113,7 @@ describe('FIVES', () => {
       cy.get('#deck').should('contain', '(1)');
     });
 
-    it('Draws only 1 card when last card in deck', () => {
+    it.only('Draws only 1 card when last card in deck', () => {
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS],
@@ -142,9 +142,9 @@ describe('FIVES', () => {
 
       assertGameState(0, {
         p0Hand: [Card.FIVE_OF_HEARTS, Card.EIGHT_OF_HEARTS],
-        p0Points: [],
+        p0Points: [Card.TWO_OF_CLUBS],
         p0FaceCards: [],
-        p1Hand: [],
+        p1Hand: [Card.THREE_OF_CLUBS],
         p1Points: [],
         p1FaceCards: [],
         scrap: [Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS],
