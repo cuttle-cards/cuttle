@@ -155,6 +155,15 @@ export default {
           oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
         }
       }
+
+      if (this.selectedCard.rank === 5) {
+        const noTopCard = !this.gameStore.topCard;
+        if (noTopCard) {
+          oneOffDisabled = true;
+          oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
+        }
+      }
+      
       return {
         displayName: 'One-Off',
         eventName: 'oneOff',
