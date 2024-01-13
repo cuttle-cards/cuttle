@@ -21,14 +21,14 @@ module.exports = async function (req, res) {
     const cardsToRemove= [];
     let newDeck = game.deck;
     
-    //Add one for card that is not yet discarded
-    if (player.hand.length < 9 && game.topCard) {
+    //Add two for card that is not yet discarded and card that played one-off
+    if (game.topCard) {
       cardsToDraw.push(game.topCard.id);
       gameUpdates.topCard = null;
-      if (game.secondCard && player.hand.length < 8) {
+      if (game.secondCard && player.hand.length < 9) {
         cardsToDraw.push(game.secondCard.id);
         gameUpdates.secondCard = null;
-        if (game.deck.length > 1 && player.hand.length < 7) {
+        if (game.deck.length > 1 && player.hand.length < 8) {
           const thirdCard = _.sample(game.deck);
           cardsToDraw.push(thirdCard.id);
           cardsToRemove.push(thirdCard.id);
@@ -48,7 +48,7 @@ module.exports = async function (req, res) {
         cardsToRemove.push(topCard.id);
       }
     } else {
-      throw new Error({ message: 'Cannot resolve 5 one-off with an empty deck, or full hand' });
+      throw new Error({ message: 'Cannot resolve 5 one-off with an empty deck' });
     }
   
     const logMessage = cardsToDraw.length === 1 ? `draws 1 card` : `draws ${cardsToDraw.length} cards`;
