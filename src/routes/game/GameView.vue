@@ -1176,8 +1176,12 @@ export default {
 // Styles //
 ////////////
 
-#body {
+body {
   user-select: none;
+}
+
+#rulesDialog {
+  user-select: text;
 }
 
 #game-view-wrapper {
