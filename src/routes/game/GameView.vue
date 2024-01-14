@@ -1175,6 +1175,11 @@ export default {
 ////////////
 // Styles //
 ////////////
+
+#body {
+  user-select: none;
+}
+
 #game-view-wrapper {
   color: #fff;
   width: 100vw;
@@ -1328,6 +1333,7 @@ export default {
 
 .history-container {
   grid-area: history;
+  user-select: text;
 }
 
 #field-right {
