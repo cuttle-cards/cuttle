@@ -22,7 +22,7 @@ module.exports = async function (req, res) {
     };
 
     const cardsToDraw = [];
-    const cardsToRemoveFromDeck= [];
+    const cardsToRemoveFromDeck = [];
     let newDeck = game.deck;
     
     //collect cards to put in players hand
