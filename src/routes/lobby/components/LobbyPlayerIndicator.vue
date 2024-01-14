@@ -16,7 +16,7 @@
           data-cy="lobby-back-card"
         >
         <div class="water-container">
-          <div class="water" />
+          <div class="water" :class="{ 'reverseWater' : gameStarted }" />
         </div>
       </div>
     </div>
@@ -40,6 +40,10 @@ export default {
       default: null,
     },
     playerReady: {
+      type: Boolean,
+      default: false,
+    },
+    gameStarted: {
       type: Boolean,
       default: false,
     },
@@ -154,11 +158,30 @@ export default {
   z-index: 1;
 }
 
+.reverseWater {
+  width: 3600px;
+  height: 800px;
+  background-image: url('/img/waves.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  animation: waving-reverse 3s;
+  animation-fill-mode: forwards;
+  z-index: 1;
+}
+
 @keyframes waving {
   0%{ right: 3000px; top: -120px; opacity: 1; }
   50%{ opacity: 1; }
   80%{ opacity: 1; }
   100%{ right: 0; top: 500px; opacity: 0; }
+}
+
+@keyframes waving-reverse {
+  0%{ right: 0; top: 500px; opacity: 0; }
+  30%{ opacity: 1; }
+  80%{ opacity: 1; }
+  100%{ right: 3000px; top: -240px; opacity: 1; }
 }
 
 .cards-leave-active {
