@@ -7,6 +7,10 @@ module.exports = async function (req, res) {
     const promiseCard = req.body.cardId ? cardService.findCard({ cardId: req.body.cardId }) : null;
     const [game, player, cardToDiscard] = await Promise.all([promiseGame, promisePlayer, promiseCard]);
 
+    if (!game.topCard) {
+      throw new Error({ message: 'Cannot resolve 5 one-off with an empty deck' });
+    }
+
     const gameUpdates = {
       passes: 0,
       turn: game.turn + 1,
@@ -21,36 +25,34 @@ module.exports = async function (req, res) {
     const cardsToRemoveFromDeck= [];
     let newDeck = game.deck;
     
-    //Add one for card that is not yet discarded 
-    if (game.topCard) {
-      cardsToDraw.push(game.topCard.id);
-      gameUpdates.topCard = null;
-      if (game.secondCard && player.hand.length < 8) {
-        cardsToDraw.push(game.secondCard.id);
-        gameUpdates.secondCard = null;
-        if (game.deck.length && player.hand.length < 7) {
-          const thirdCard = _.sample(game.deck);
-          cardsToDraw.push(thirdCard.id);
-          cardsToRemoveFromDeck.push(thirdCard.id);
-          newDeck = game.deck.filter(({ id }) => id !== thirdCard.id);
-        }
+    //collect cards to put in players hand
+    cardsToDraw.push(game.topCard.id);
+    if (game.secondCard) {
+      cardsToDraw.push(game.secondCard.id);
+      //Add one to player hand length for card that is not yet discarded
+      if (game.deck.length && player.hand.length < 7) {
+        const thirdCard = _.sample(game.deck);
+        cardsToDraw.push(thirdCard.id);
+        cardsToRemoveFromDeck.push(thirdCard.id);
+        newDeck = game.deck.filter(({ id }) => id !== thirdCard.id);
       }
-      
-      //Update new topCard, secondCard, and deck
-      if (newDeck.length > 1) {
-        const [topCard, secondCard] = _.sampleSize(newDeck, 2);
-        gameUpdates.topCard = topCard.id;
-        gameUpdates.secondCard = secondCard.id;
-        cardsToRemoveFromDeck.push(topCard.id, secondCard.id);
-      } else if (newDeck.length === 1) {
-        const [topCard] = newDeck;
-        gameUpdates.topCard = topCard.id;
-        cardsToRemoveFromDeck.push(topCard.id);
-      }
-    } else {
-      throw new Error({ message: 'Cannot resolve 5 one-off with an empty deck' });
     }
-       
+    
+    //Update new topCard, secondCard, and deck
+    if (newDeck.length > 1) {
+      const [topCard, secondCard] = _.sampleSize(newDeck, 2);
+      gameUpdates.topCard = topCard.id;
+      gameUpdates.secondCard = secondCard.id;
+      cardsToRemoveFromDeck.push(topCard.id, secondCard.id);
+    } else if (newDeck.length === 1) {
+      const [topCard] = newDeck;
+      gameUpdates.topCard = topCard.id;
+      cardsToRemoveFromDeck.push(topCard.id);
+    } else {
+      gameUpdates.topCard = null;
+      gameUpdates.secondCard = null;
+    }
+   
     const updatePromises = [
       Game.updateOne(game.id).set(gameUpdates),
       Game.removeFromCollection(game.id, 'deck').members([...cardsToRemoveFromDeck]),
