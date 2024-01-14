@@ -30,7 +30,8 @@ module.exports = async function (req, res) {
     if (game.secondCard) {
       cardsToDraw.push(game.secondCard.id);
       //Add one to player hand length for card that is not yet discarded
-      if (game.deck.length && player.hand.length < 7) {
+      const playerHandLimit = cardToDiscard ? 6 : 7;
+      if (game.deck.length && player.hand.length < playerHandLimit) {
         const thirdCard = _.sample(game.deck);
         cardsToDraw.push(thirdCard.id);
         cardsToRemoveFromDeck.push(thirdCard.id);
@@ -39,6 +40,9 @@ module.exports = async function (req, res) {
     }
     
     //Update new topCard, secondCard, and deck
+    gameUpdates.topCard = null;
+    gameUpdates.secondCard = null;
+
     if (newDeck.length > 1) {
       const [topCard, secondCard] = _.sampleSize(newDeck, 2);
       gameUpdates.topCard = topCard.id;
@@ -48,9 +52,6 @@ module.exports = async function (req, res) {
       const [topCard] = newDeck;
       gameUpdates.topCard = topCard.id;
       cardsToRemoveFromDeck.push(topCard.id);
-    } else {
-      gameUpdates.topCard = null;
-      gameUpdates.secondCard = null;
     }
    
     const updatePromises = [
