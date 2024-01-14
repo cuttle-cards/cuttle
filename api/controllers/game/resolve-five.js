@@ -30,7 +30,7 @@ module.exports = async function (req, res) {
     if (game.secondCard) {
       cardsToDraw.push(game.secondCard.id);
       //Add one to player hand length for card that is not yet discarded
-      const playerHandLimit = cardToDiscard ? 6 : 7;
+      const playerHandLimit = cardToDiscard ? 7 : 6;
       if (game.deck.length && player.hand.length < playerHandLimit) {
         const thirdCard = _.sample(game.deck);
         cardsToDraw.push(thirdCard.id);
