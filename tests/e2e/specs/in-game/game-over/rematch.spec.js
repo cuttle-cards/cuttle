@@ -867,6 +867,27 @@ describe('Spectating Rematches', () => {
       cy.stalemateOpponent();
 
       assertGameOverAsSpectator({p1Wins: 1, p2Wins: 1, stalemates: 2, winner: null, isRanked: true});
+
+      // Specator requests rematch, then players
+      cy.get('[data-cy=gameover-rematch')
+        .should('not.be.disabled')
+        .click()
+        .should('be.disabled');
+
+      cy.get('[data-cy=continue-match-banner]')
+        .should('be.visible')
+        .should('contain', 'Waiting for Players');
+
+      rematchPlayerAsSpectator(playerOne);
+      cy.get('[data-cy=my-rematch-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+          .should('have.class', 'ready');
+
+      rematchPlayerAsSpectator(playerTwo);
+      cy.get('[data-cy=opponent-rematch-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+          .should('have.class', 'ready');
+
     });
   });
 });
