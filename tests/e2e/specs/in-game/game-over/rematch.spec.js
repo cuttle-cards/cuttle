@@ -657,6 +657,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
 describe('Spectating Rematches', () => {
   describe('Spectating Casual Rematches', () => {
     beforeEach(() => {
+      cy.viewport(1920, 1080);
       cy.setupGameAsSpectator();
     });
     
@@ -664,17 +665,13 @@ describe('Spectating Rematches', () => {
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
       assertGameOverAsSpectator({p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false});
-      // assertP0VictoryAsSpectator({p0Wins: 1, p1Wins: 0, stalemates: 0});
 
-      // P0 requests rematch
+      // P0 and P1 request rematch, then spectator
       rematchPlayerAsSpectator(playerTwo);
-
       cy.get('[data-cy=opponent-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
         .should('have.class', 'ready');
-
       rematchPlayerAsSpectator(playerOne);
-
       cy.get('[data-cy=my-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
         .should('have.class', 'ready');
@@ -744,6 +741,7 @@ describe('Spectating Rematches', () => {
 
   describe('Spectating Ranked Matches', () => {
     beforeEach(() => {
+      cy.viewport(1920, 1080);
       cy.setupGameAsSpectator(true);
       const [, , currentSeason ] = seasonFixtures;
       cy.loadSeasonFixture([ currentSeason ]);
@@ -783,6 +781,7 @@ describe('Spectating Rematches', () => {
       cy.get('[data-cy=my-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
           .should('have.class', 'ready');
+
       // Game 2: playerTwo wins by playerOne conceding
       cy.get('[data-cy=player-username]')
         .should('contain', playerTwo.username);
@@ -837,6 +836,26 @@ describe('Spectating Rematches', () => {
       cy.passOpponent();
 
       assertGameOverAsSpectator({p1Wins: 1, p2Wins: 1, stalemates: 1, winner: null, isRanked: true});
+
+      // Specator requests rematch, then players
+      cy.get('[data-cy=gameover-rematch')
+        .should('not.be.disabled')
+        .click()
+        .should('be.disabled');
+
+      cy.get('[data-cy=continue-match-banner]')
+        .should('be.visible')
+        .should('contain', 'Waiting for Players');
+
+      rematchPlayerAsSpectator(playerOne);
+      cy.get('[data-cy=my-rematch-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+          .should('have.class', 'ready');
+
+      rematchPlayerAsSpectator(playerTwo);
+      cy.get('[data-cy=opponent-rematch-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+          .should('have.class', 'ready');
     });
   });
 });
