@@ -856,6 +856,17 @@ describe('Spectating Rematches', () => {
       cy.get('[data-cy=opponent-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
           .should('have.class', 'ready');
+
+      // Game 4: players stalemate by requesting stalemate
+      cy.get('[data-cy=player-username]')
+        .should('contain', playerTwo.username);
+      cy.recoverSessionOpponent(playerOne);
+      cy.stalemateOpponent();
+      cy.get('#opponent-requested-stalemate-dialog').should('be.visible');
+      cy.recoverSessionOpponent(playerTwo);
+      cy.stalemateOpponent();
+
+      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 1, stalemates: 2, winner: null, isRanked: true});
     });
   });
 });
