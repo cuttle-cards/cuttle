@@ -552,7 +552,7 @@ export function assertGameOverAsSpectator({p1Wins, p2Wins, stalemates, winner, i
       break;
     default:
       headingDataCy = 'stalemate-heading';
-      headingText = 'Draw';
+      headingText = 'Stalemate';
       selectedScore = '[data-cy=match-score-counter-stalemates]';
       break;
   }

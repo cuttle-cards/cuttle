@@ -809,6 +809,34 @@ describe('Spectating Rematches', () => {
       // Game 3: stalemate via passes
       cy.get('[data-cy=player-username]')
         .should('contain', playerOne.username);
+
+      cy.recoverSessionOpponent(playerOne);
+
+      cy.loadGameFixture(0, {
+        p0Hand: [Card.TEN_OF_DIAMONDS],
+        p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+        p0FaceCards: [],
+        p1Hand: [Card.THREE_OF_CLUBS],
+        p1Points: [],
+        p1FaceCards: [],
+        deck: [],
+      });
+
+      cy.drawCardOpponent();
+      cy.get('[data-player-hand-card]').should('have.length', 2);
+      cy.recoverSessionOpponent(playerTwo);
+      cy.drawCardOpponent();
+      cy.get('[data-opponent-hand-card]').should('have.length', 2);
+      cy.recoverSessionOpponent(playerOne);
+      cy.passOpponent();
+      cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+      cy.recoverSessionOpponent(playerTwo);
+      cy.passOpponent();
+      cy.get('#turn-indicator').contains('YOUR TURN');
+      cy.recoverSessionOpponent(playerOne);
+      cy.passOpponent();
+
+      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 1, stalemates: 1, winner: null, isRanked: true});
     });
   });
 });
