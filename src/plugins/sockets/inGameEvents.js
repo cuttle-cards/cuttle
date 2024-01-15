@@ -173,7 +173,10 @@ export async function handleInGameEvents(evData) {
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     case SocketEvent.REQUEST_STALEMATE:
-      if (evData.requestedByPNum !== gameStore.myPNum && !evData.victory.gameOver) {
+      if (evData.victory.gameOver) {
+        gameStore.consideringOpponentStalemateRequest = false;
+      }
+      else if (evData.requestedByPNum !== gameStore.myPNum) {
         gameStore.consideringOpponentStalemateRequest = true;
       }
       break;
