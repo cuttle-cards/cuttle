@@ -307,7 +307,7 @@ export default {
   min-height: 100vh;
   text-align: center;
   color: #fff4d7;
-  background: center / cover no-repeat url('/img/game/board-background.svg');
+  background: center / cover no-repeat url('/img/game/board-background.webp');
   box-shadow: inset 0 0 700px -1px #000000;
 }
 

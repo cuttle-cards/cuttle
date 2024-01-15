@@ -130,7 +130,7 @@ export default {
   color: #fff;
   width: 100vw;
   height: 100%;
-  background-image: url('/img/game/board-background.svg');
+  background-image: url('/img/game/board-background.webp');
   background-size: cover;
   background-position: center;
   display: grid;
