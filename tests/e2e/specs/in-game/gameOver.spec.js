@@ -385,6 +385,22 @@ describe('Stalemates', () => {
         .find('[data-cy=reject-stalemate]')
         .click();
     });
+
+    it('Player requests stalemate, then reloads before opponent accepts', () => {
+      cy.setupGameAsP1();
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      cy.get('#request-gameover-dialog')
+      .should('be.visible')
+      .get('[data-cy=request-gameover-confirm]')
+        .click();
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+      cy.reload();
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+      cy.stalemateOpponent();
+      assertStalemate();
+    });
+
   });
 });
 
