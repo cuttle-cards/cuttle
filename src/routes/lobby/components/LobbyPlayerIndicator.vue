@@ -153,21 +153,12 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  animation: waving 5s;
-  animation-fill-mode: forwards;
   z-index: 1;
+  animation: waving 5s forwards;
 }
 
 .reverseWater {
-  width: 3600px;
-  height: 800px;
-  background-image: url('/img/waves.svg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-  animation: waving-reverse 3s;
-  animation-fill-mode: forwards;
-  z-index: 1;
+  animation: waving-reverse 3s forwards;
 }
 
 @keyframes waving {
