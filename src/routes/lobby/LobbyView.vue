@@ -183,6 +183,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .langauge-selector {
   position: absolute;
   right: 0;
@@ -231,7 +232,7 @@ h5 {
   margin: auto auto 16px auto;
 }
 
-@media (min-width: 980px) {
+@media (min-width: 960px) {
   .rank-switch {
     padding: 0;
   }  
@@ -239,7 +240,7 @@ h5 {
 
 @media (max-width: 660px) {
   .rank-switch {
-    padding: 0;
+    padding: 0 3vw;
   }
   h1 {
     font-size: 2rem;
@@ -254,6 +255,11 @@ h5 {
     width: 100px;
     height: 100px;
   }
+}
+@media (max-width: 350px) {
+  .rank-switch {
+    width: 100%;
+  }  
 }
 
 #logo {
