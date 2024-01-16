@@ -735,6 +735,29 @@ Cypress.Commands.add('counterOpponent', (card) => {
     });
 });
 
+Cypress.Commands.add('resolveFiveOpponent', (card) => {
+  if (!hasValidSuitAndRank(card)) {
+    throw new Error('Cannot resolve five as opponent: Invalid card input');
+  }
+  return cy.window().its('cuttle.gameStore').then((game) => {
+    const foundCard = game.opponent.hand.find((handCard) => cardsMatch(card, handCard));
+    if (!foundCard) {
+      throw new Error(`Error resolving three as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`);
+    }
+    const cardId = foundCard.id;
+    io.socket.get('/game/resolveFive', {
+      cardId
+    },
+      function handleResponse(res, jwres) {
+        if (jwres.statusCode !== 200) {
+          throw new Error(jwres.body.message);
+        }
+        return jwres;
+      },
+    );
+  });
+});
+
 Cypress.Commands.add('resolveThreeOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot resolve three as opponent: Invalid card input');

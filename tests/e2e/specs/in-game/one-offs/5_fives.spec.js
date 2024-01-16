@@ -2,6 +2,7 @@ import { assertGameState, playOutOfTurn } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 
 describe('FIVES', () => {
+  
   describe('Playing FIVES', () => {
     beforeEach(() => {
       cy.setupGameAsP0();
@@ -153,6 +154,50 @@ describe('FIVES', () => {
         deck: []
       });
     });
+  });
 
+  describe('Playing 5 as opponent', () => {
+    beforeEach(() => {
+      cy.setupGameAsP1();
+    });
+
+    it('Plays 5 as opponent', () => {
+      cy.loadGameFixture(1, {
+        // Player is P0
+        p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        // Deck
+        topCard: Card.THREE_OF_CLUBS,
+        secondCard: Card.EIGHT_OF_HEARTS,
+        deck:[Card.SEVEN_OF_DIAMONDS]
+      });
+      cy.playOneOffOpponent(Card.FIVE_OF_SPADES);
+
+      cy.get('[data-cy=cannot-counter-dialog]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
+      cy.get('[data-cy=five-discard-dialog]').should('not.exist');
+      cy.resolveFiveOpponent(Card.FIVE_OF_HEARTS);
+      cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
+
+      assertGameState(1, {
+        p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS,Card.THREE_OF_CLUBS,Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS],
+        topCard: null,
+        secondCard: null,
+        deck: []
+      });
+
+    });
   });
 });
