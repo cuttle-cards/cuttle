@@ -157,7 +157,7 @@ export default {
   animation: waving 5s forwards;
 }
 
-.reverseWater {
+.water.reverseWater {
   animation: waving-reverse 3s forwards;
 }
 
