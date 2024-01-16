@@ -341,7 +341,7 @@
       "four": "Cuatro",
       "fourDescription": "Tu rival descarta dos cartas de su mano a su elección.",
       "five": "Cinco",
-      "fiveDescription": "Roba dos cartas del mazo de robo, sin superar el límite de 8 cartas en la mano.",
+      "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja hasta el límite de mano de 8 cartas.",
       "six": "Seis",
       "sixDescription": "Descarta todas las Figuras y Gafas Ocho en juego sobre el campo.",
       "seven": "Siete",

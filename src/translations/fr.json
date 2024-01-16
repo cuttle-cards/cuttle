@@ -341,7 +341,7 @@
       "four": "Quatre",
       "fourDescription": "Votre adversaire doit défausse deux cartes de son choix.",
       "five": "Cinq",
-      "fiveDescription": "Piochez deux cartes du jeu pour les ajouter à votre main. Attention de ne pas dépasser la limite de 8 cartes en main.",
+      "fiveDescription": "Défaussez une carte, puis piochez jusqu'à trois cartes du jeu jusqu'à la limite de 8 cartes en main.",
       "six": "Six",
       "sixDescription": "Élimine toutes les figures et les huit en lunettes de la table.",
       "seven": "Sept",

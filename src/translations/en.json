@@ -341,7 +341,7 @@
       "four": "Four",
       "fourDescription": "Your opponent discards two cards of their choice.",
       "five": "Five",
-      "fiveDescription": "Draw two cards from the deck up to the 8 card hand limit.",
+      "fiveDescription": "Discard one card then draw up to three cards from the deck up to the 8 card hand limit.",
       "six": "Six",
       "sixDescription": "Scrap all Royals and Glasses Eights on the field.",
       "seven": "Seven",
