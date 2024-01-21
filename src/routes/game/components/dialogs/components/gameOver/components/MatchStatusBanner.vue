@@ -40,6 +40,9 @@ const specatingHeader = computed(() => {
   if (gameStore.iWantToContinueSpectating) {
     return 'Waiting for Players';
   }
+  if (gameStore.currentMatch?.winner) {
+    return 'Good Match!';
+  }
   return 'Continue Spectating?';
 });
 

@@ -539,11 +539,13 @@ export function assertGameOverAsSpectator({p1Wins, p2Wins, stalemates, winner, i
   let headingDataCy;
   let headingText;
   let selectedScore;
+  let matchIsOver = false;
   switch (winner) {
     case 'p1':
       headingDataCy = 'p1-wins-heading';
       headingText = 'P1 Wins';
       if (p1Wins >= 2) {
+        matchIsOver = true;
         headingText += ' Match';
       }
       selectedScore = '[data-cy=match-score-counter-wins]';
@@ -552,6 +554,7 @@ export function assertGameOverAsSpectator({p1Wins, p2Wins, stalemates, winner, i
       headingDataCy = 'p2-wins-heading';
       headingText = 'P2 Wins';
       if (p2Wins >= 2) {
+        matchIsOver = true;
         headingText += ' Match';
       }
       selectedScore = '[data-cy=match-score-counter-losses]';
@@ -582,9 +585,10 @@ export function assertGameOverAsSpectator({p1Wins, p2Wins, stalemates, winner, i
     .should('have.class', 'selected');
 
   const isRankedIcon = isRanked ? 'ranked-icon' : 'casual-icon';
+  const bannerMessage = matchIsOver ? 'Good Match!' : 'Continue Spectating?';
   cy.get('[data-cy=continue-match-banner]')
     .should('be.visible')
-    .should('contain', 'Continue Spectating?')
+    .should('contain', bannerMessage)
     .find(`[data-cy=${isRankedIcon}]`);
 }
 
