@@ -159,9 +159,9 @@ export default {
     spectatorHeading() {
       switch (this.gameStore.winnerPNum) {
         case 0:
-          return 'P1 Wins';
+          return this.matchIsOver ? 'P1 Wins Match' : 'P1 Wins';
         case 1:
-          return 'P2 Wins';
+          return this.matchIsOver ? 'P2 Wins Match' : 'P2 Wins';
         default:
           return 'Stalemate';
       }

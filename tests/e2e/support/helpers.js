@@ -543,11 +543,17 @@ export function assertGameOverAsSpectator({p1Wins, p2Wins, stalemates, winner, i
     case 'p1':
       headingDataCy = 'p1-wins-heading';
       headingText = 'P1 Wins';
+      if (p1Wins >= 2) {
+        headingText += ' Match';
+      }
       selectedScore = '[data-cy=match-score-counter-wins]';
       break;
     case 'p2':
       headingDataCy = 'p2-wins-heading';
       headingText = 'P2 Wins';
+      if (p2Wins >= 2) {
+        headingText += ' Match';
+      }
       selectedScore = '[data-cy=match-score-counter-losses]';
       break;
     default:
