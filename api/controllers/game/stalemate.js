@@ -6,7 +6,8 @@ module.exports = async function (req, res) {
   try {
     const { game: gameId, pNum, usr: userId } = req.session;
     // Track which turn each player most recently requested stalemate
-    const game = await Game.findOne({ id: gameId }).populate('players');
+    const game = await Game.findOne({ id: gameId })
+      .populate('players', { sort: 'pNum' });
     let gameUpdates = {};
     const updatePromises = [];
     const keyPrefix = 'turnStalemateWasRequestedByP';
