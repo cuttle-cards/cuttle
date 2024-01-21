@@ -599,11 +599,10 @@ export const useGameStore = defineStore('game', {
             cardId,
           },
           (res, jwres) => {
+            this.waitingForOpponentToCounter = false;
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
-      }).then(() => {
-        this.waitingForOpponentToCounter = false;
       });
     },
     async requestResolveSevenDoubleJacks({ cardId, index }) {

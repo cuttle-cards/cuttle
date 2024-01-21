@@ -257,7 +257,7 @@ module.exports = function (req, res) {
         gameUpdates.oneOff = null;
         cardsToScrap.push(game.oneOff.id);
       }
-      // Increment turn for anything except resolved three, four, and seven (which require follow up)
+      // Increment turn for anything except resolved three, four, five, and seven (which require follow up)
       if (!happened || (happened && ![3, 4, 5, 7].includes(oneOff.rank))) {
         gameUpdates = {
           ...gameUpdates,

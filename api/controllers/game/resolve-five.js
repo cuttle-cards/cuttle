@@ -17,7 +17,7 @@ module.exports = async function (req, res) {
       resolving: null,
       lastEvent: {
         change: 'resolveFive',
-        discardedCards: cardToDiscard ? [cardToDiscard.id] : null,
+        discardedCards: cardToDiscard ? [cardToDiscard.id] : [],
       },
     };
 
@@ -60,12 +60,12 @@ module.exports = async function (req, res) {
       User.addToCollection(player.id, 'hand').members([...cardsToDraw]),
     ];
 
-    const logMessage = cardsToDraw.length === 1 ? `draws 1 cardToDiscard` : `draws ${cardsToDraw.length} cards`;
+    const logMessage = cardsToDraw.length === 1 ? `draws 1 card` : `draws ${cardsToDraw.length} cards`;
     
     if (cardToDiscard) {
       updatePromises.push(Game.addToCollection(game.id, 'scrap').members([cardToDiscard.id]), User.removeFromCollection(player.id, 'hand').members([cardToDiscard.id]), );
       gameUpdates.log = [...game.log, `${player.username} discards the ${getCardName(cardToDiscard)} and ${logMessage}`];
-    }else {
+    } else {
       gameUpdates.log = [...game.log, `${player.username} ${logMessage}`];
     }
     
