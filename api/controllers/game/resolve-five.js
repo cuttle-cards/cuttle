@@ -16,7 +16,7 @@ module.exports = async function (req, res) {
     if (game.turn % 2 !== player.pNum) {
       throw new Error({ message: 'It is not your turn!' });
     }
-    if (!game.resolving || game.resolving.rank !== 5) {
+    if (!game.oneOff || game.oneOff.rank !== 5) {
       throw new Error({ message: 'Incorrect card played' });
     }
 
