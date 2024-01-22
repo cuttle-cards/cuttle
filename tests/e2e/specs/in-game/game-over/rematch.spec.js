@@ -906,6 +906,10 @@ describe('Spectating Rematches', () => {
       cy.playPointsSpectator(Card.FOUR_OF_CLUBS, 0);
 
       assertGameOverAsSpectator({ p1Wins: 2, p2Wins: 1, stalemates: 2, winner: 'p1', isRanked: true});
+
+      cy.get('[data-cy=player-match-result] [data-cy-result-img=won]').should('be.visible');
+
+      cy.get('[data-cy=opponent-match-result] [data-cy-result-img=lost]').should('be.visible');
     });
 
     it('Rematches after request stalemate for spectator', () => {
