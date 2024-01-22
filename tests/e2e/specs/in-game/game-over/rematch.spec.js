@@ -910,33 +910,13 @@ describe('Spectating Rematches', () => {
       cy.get('[data-cy=player-match-result] [data-cy-result-img=won]').should('be.visible');
 
       cy.get('[data-cy=opponent-match-result] [data-cy-result-img=lost]').should('be.visible');
-    });
 
-    it('Rematches after request stalemate for spectator', () => {
-      cy.get('[data-cy=player-username]')
-        .should('contain', playerOne.username);
-      cy.recoverSessionOpponent(playerTwo);
-      cy.stalemateOpponent();
-      cy.get('#opponent-requested-stalemate-dialog').should('be.visible');
-      cy.recoverSessionOpponent(playerOne);
-      cy.stalemateOpponent();
-
-      assertGameOverAsSpectator({p1Wins: 0, p2Wins: 0, stalemates: 1, winner: null, isRanked: true});
-
-      rematchPlayerAsSpectator(playerOne);
-      cy.get('[data-cy=my-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
-
-      rematchPlayerAsSpectator(playerTwo);
-      cy.get('[data-cy=opponent-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
-
+      // Go home
       cy.get('[data-cy=gameover-rematch')
-          .should('not.be.disabled')
-          .click();
-
+        .should('not.exist');
+      cy.get('[data-cy=gameover-go-home]').click();
+      cy.url().should('not.include', '/spectate');
     });
+
   });
 });
