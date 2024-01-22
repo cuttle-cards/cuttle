@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog id="five-discard-dialog" :model-value="gameStore.discardingOne" :title="title">
+  <BaseDialog id="five-discard-dialog" :model-value="gameStore.showResolveFive" :title="title">
     <template #body>
       <p class="mb-4">
         {{ dialog }}

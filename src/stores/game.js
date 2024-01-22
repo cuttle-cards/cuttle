@@ -99,7 +99,7 @@ export const useGameStore = defineStore('game', {
     waitingForOpponentToDiscard: false,
     lastEventDiscardedCards: null,
     //fives
-    discardingOne: false,
+    showResolveFive: false,
     // Sevens
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,
@@ -318,7 +318,7 @@ export const useGameStore = defineStore('game', {
     },
     processFives(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
-      this.discardingOne = false;
+      this.showResolveFive = false;
       this.lastEventDiscardedCards = discardedCards;
 
       setTimeout(() => {

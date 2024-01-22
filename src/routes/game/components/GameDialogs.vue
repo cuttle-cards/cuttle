@@ -18,7 +18,7 @@
       :target="gameStore.oneOffTarget"
       @resolve="resolve"
     />
-    <FourDialog :model-value="gameStore.discarding" @discard="discard" />
+    <FourDialog :model-value="gameStore.showResolveFour" @discard="discard" />
     <FiveDialog @resolve-five="resolveFive" />
     <ThreeDialog
       :model-value="pickingFromScrap"
