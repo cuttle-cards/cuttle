@@ -10,8 +10,19 @@ module.exports = async function (req, res) {
     if (!game.topCard) {
       throw new Error({ message: 'Cannot resolve 5 one-off with an empty deck' });
     }
+    if (player.hand?.length && !cardToDiscard) {
+      throw new Error({ message: 'You must select one card to discard' });
+    }
+    if (game.turn % 2 !== player.pNum) {
+      throw new Error({ message: 'It is not your turn!' });
+    }
+    if (!game.resolving || game.resolving.rank !== 5) {
+      throw new Error({ message: 'Incorrect card played' });
+    }
 
+    console.log(game.oneOff);
     const gameUpdates = {
+      oneOff: null,
       passes: 0,
       turn: game.turn + 1,
       resolving: null,
@@ -58,6 +69,7 @@ module.exports = async function (req, res) {
       Game.updateOne(game.id).set(gameUpdates),
       Game.removeFromCollection(game.id, 'deck').members([...cardsToRemoveFromDeck]),
       User.addToCollection(player.id, 'hand').members([...cardsToDraw]),
+      Game.addToCollection(game.id, 'scrap').members([game.oneOff.id]),
     ];
 
     const logMessage = cardsToDraw.length === 1 ? `draws 1 card` : `draws ${cardsToDraw.length} cards`;

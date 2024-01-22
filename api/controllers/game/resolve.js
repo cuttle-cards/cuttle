@@ -253,7 +253,7 @@ module.exports = function (req, res) {
       // Add twos to the cards to scrap
       cardsToScrap = [...cardsToScrap, ...game.twos.map((two) => two.id)];
       const { oneOff } = game;
-      if (oneOff.rank !== 3 || !happened) {
+      if (![3,5].includes(oneOff.rank) || !happened) {
         gameUpdates.oneOff = null;
         cardsToScrap.push(game.oneOff.id);
       }
