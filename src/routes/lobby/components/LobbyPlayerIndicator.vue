@@ -15,9 +15,6 @@
           alt="card back"
           data-cy="lobby-back-card"
         >
-        <div class="water-container">
-          <div class="water" :class="{ 'reverseWater' : gameStarted }" />
-        </div>
       </div>
       <template v-else>
         <div
@@ -38,7 +35,7 @@
             data-cy="lobby-back-card"
           >
           <div class="water-container">
-            <div class="water" />
+            <div class="water" :class="{ 'reverseWater' : gameStarted }" />
           </div>
         </div>
       </template>
