@@ -8,7 +8,7 @@ describe('FIVES', () => {
       cy.setupGameAsP0();
     });
 
-    it.only('Plays a 5 to discard 1 card, and draw 3', () => {
+    it('Plays a 5 to discard 1 card, and draw 3', () => {
       // Setup
       cy.loadGameFixture(0, {
         // Player is P0
@@ -74,6 +74,44 @@ describe('FIVES', () => {
       // Deck should now be empty
       cy.get('#deck').should('contain', '(0)').should('contain', 'PASS');
       cy.get('[data-player-hand-card]').should('have.length', 3);
+    });
+
+    it('Plays a 5 with two cards left in the deck', () => {
+      cy.loadGameFixture(0, {
+        // Player is P0
+        p0Hand: [Card.FIVE_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        // Deck
+        topCard: Card.THREE_OF_CLUBS,
+        secondCard: Card.EIGHT_OF_HEARTS,
+        deck: [],
+      });
+
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_CLUBS);
+      cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+      cy.get('[data-cy=submit-five-dialog]').click();
+
+      assertGameState(0, {
+        p0Hand: [Card.THREE_OF_CLUBS,Card.EIGHT_OF_HEARTS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [Card.FIVE_OF_CLUBS],
+        topCard: null,
+        secondCard: null,
+        deck: []
+      });
+
+      cy.get('#deck').should('contain', '(0)').should('contain', 'PASS');
+      cy.get('[data-player-hand-card]').should('have.length', 2);
+
     });
 
     it('Plays a 5 to draw two cards at max hand', () => {
