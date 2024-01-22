@@ -318,7 +318,7 @@ export const useGameStore = defineStore('game', {
     },
     processFives(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
-      this.discardingTwo = false;
+      this.discardingOne = false;
       this.lastEventDiscardedCards = discardedCards;
 
       setTimeout(() => {
