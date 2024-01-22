@@ -9,6 +9,15 @@
           class="card-container"
           :class="{ small }"
         >
+        <img
+          src="/img/cards/card-back.png"
+          class="card-back"
+          alt="card back"
+          data-cy="lobby-back-card"
+        >
+        <div class="water-container">
+          <div class="water" :class="{ 'reverseWater' : gameStarted }" />
+        </div>
       </div>
       <template v-else>
         <div
@@ -70,7 +79,11 @@ export default {
       type: String,
       default: 'ready',
       validator: (val) => ['ready', 'rematch'].includes(val),
-    }
+    },
+    gameStarted: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
     const { t } = useI18n();
@@ -180,9 +193,12 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  animation: waving 5s;
-  animation-fill-mode: forwards;
   z-index: 1;
+  animation: waving 5s forwards;
+}
+
+.water.reverseWater {
+  animation: waving-reverse 3s forwards;
 }
 
 @keyframes waving {
@@ -190,6 +206,13 @@ export default {
   50%{ opacity: 1; }
   80%{ opacity: 1; }
   100%{ right: 0; top: 500px; opacity: 0; }
+}
+
+@keyframes waving-reverse {
+  0%{ right: 0; top: 500px; opacity: 0; }
+  30%{ opacity: 1; }
+  80%{ opacity: 1; }
+  100%{ right: 3000px; top: -240px; opacity: 1; }
 }
 
 .cards-leave-active {
