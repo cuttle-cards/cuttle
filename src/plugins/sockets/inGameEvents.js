@@ -143,8 +143,6 @@ export async function handleInGameEvents(evData) {
         return;
       }
 
-      gameStore.iWantToContinueSpectating = false;
-
       // wait for card flip animations
       await sleep(500);
 
@@ -165,6 +163,10 @@ export async function handleInGameEvents(evData) {
             gameId: evData.gameId,
           },
         });
+      
+      gameStore.iWantToContinueSpectating = false;
+      gameStore.p0Rematch = true;
+      gameStore.p1Rematch = true;
       break;
     }
     case SocketEvent.RE_LOGIN:
