@@ -9,12 +9,6 @@
           class="card-container"
           :class="{ small }"
         >
-        <img
-          src="/img/cards/card-back.png"
-          class="card-back"
-          alt="card back"
-          data-cy="lobby-back-card"
-        >
       </div>
       <template v-else>
         <div
