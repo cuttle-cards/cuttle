@@ -95,7 +95,7 @@ export const useGameStore = defineStore('game', {
     lastEventCardChosen: null,
     lastEventPlayerChoosing: false,
     // Fours
-    discarding: false,
+    showResolveFour: false,
     waitingForOpponentToDiscard: false,
     lastEventDiscardedCards: null,
     //fives
@@ -309,7 +309,7 @@ export const useGameStore = defineStore('game', {
     },
     processFours(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
-      this.discarding = false;
+      this.showResolveFour = false;
       this.lastEventDiscardedCards = discardedCards;
 
       setTimeout(() => {
