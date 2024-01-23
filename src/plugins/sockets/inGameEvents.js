@@ -165,8 +165,8 @@ export async function handleInGameEvents(evData) {
         });
       
       gameStore.iWantToContinueSpectating = false;
-      gameStore.p0Rematch = false;
-      gameStore.p1Rematch = false;
+      gameStore.p0Rematch = null;
+      gameStore.p1Rematch = null;
       break;
     }
     case SocketEvent.RE_LOGIN:
