@@ -541,6 +541,10 @@ describe('Creating And Updating Casual Games With Rematch', () => {
 
     cy.get('[data-cy=gameover-rematch]')
       .should('be.disabled');
+
+
+    // ORIGINAL TEST
+
     // cy.window()
     //   .its('cuttle.gameStore')
     //   .then((game) => {
@@ -747,7 +751,7 @@ describe('Spectating Rematches', () => {
       cy.loadSeasonFixture([ currentSeason ]);
     });
 
-    it.only('Specates a ranked match using rematch', () => {
+    it('Specates a ranked match using rematch', () => {
       // Game 1: playerOne wins with points
       cy.loadGameFixture(0, {
         p0Hand: [Card.TEN_OF_DIAMONDS],
@@ -918,5 +922,18 @@ describe('Spectating Rematches', () => {
       cy.url().should('not.include', '/spectate');
     });
 
+    it.only('Shows when player1 declines rematch while spectating ranked match', () => {
+      cy.recoverSessionOpponent(playerOne);
+      cy.concedeOpponent();
+      rematchPlayerAsSpectator(playerOne, false);   
+
+      cy.get('[data-cy=continue-match-banner]')
+        .should('be.visible')
+        .should('have.class', 'opponent-left')
+        .should('contain', 'Player left - click to go home.');
+    });
+
+    it('Shows when player2 declines rematch while spectating ranked match', () => {});
+    it('Spectates a ranked match where player 2 wins the match', () => {});
   });
 });

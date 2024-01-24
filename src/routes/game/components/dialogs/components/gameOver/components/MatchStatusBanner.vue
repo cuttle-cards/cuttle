@@ -2,7 +2,7 @@
   <section class="match-status-banner" :class="wrapperClass" data-cy="continue-match-banner">
     <div class="banner-content">
       <v-icon
-        v-if="!gameStore.opponentDeclinedRematch"
+        v-if="!gameStore.someoneDeclinedRematch"
         :icon="matchStatusIcon"
         color="surface-2"
         :data-cy="matchStatusIconDataCy"
@@ -11,7 +11,7 @@
         {{ headerText }}
       </h2>
       <v-icon
-        v-if="!gameStore.opponentDeclinedRematch"
+        v-if="!gameStore.someoneDeclinedRematch"
         :icon="matchStatusIcon"
         color="surface-2"
         :data-cy="matchStatusIconDataCy"
@@ -33,8 +33,7 @@ const matchStatusIcon = computed(() => isRanked.value ? 'mdi-sword-cross' : 'mdi
 const matchStatusIconDataCy = computed(() => isRanked.value ? 'ranked-icon' : 'casual-icon');
 
 const specatingHeader = computed(() => {
-  const someOneDeclinedRematch = [gameStore.p0Rematch, gameStore.p1Rematch].includes(false);
-  if (someOneDeclinedRematch) {
+  if (gameStore.someoneDeclinedRematch) {
     return 'Player left - click to go home.';
   }
   if (gameStore.iWantToContinueSpectating) {
@@ -71,7 +70,7 @@ const headerText = computed(() => {
 });
 
 const wrapperClass = computed(() => {
-  if (gameStore.opponentDeclinedRematch) {
+  if (gameStore.someoneDeclinedRematch) {
     return 'opponent-left';
   }
   return isRanked.value ? 'ranked' : 'casual';
