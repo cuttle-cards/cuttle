@@ -665,7 +665,7 @@ describe('Spectating Rematches', () => {
       cy.setupGameAsSpectator();
     });
     
-    it('Spectates a casual match using rematch', () => {
+    it.only('Spectates a casual match using rematch', () => {
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
       assertGameOverAsSpectator({p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false});
@@ -922,7 +922,7 @@ describe('Spectating Rematches', () => {
       cy.url().should('not.include', '/spectate');
     });
 
-    it.only('Shows when player1 declines rematch while spectating ranked match', () => {
+    it('Shows when player1 declines rematch while spectating ranked match', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       rematchPlayerAsSpectator(playerOne, false);   
