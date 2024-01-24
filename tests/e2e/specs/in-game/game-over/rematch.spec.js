@@ -927,6 +927,10 @@ describe('Spectating Rematches', () => {
       cy.concedeOpponent();
       rematchPlayerAsSpectator(playerOne, false);   
 
+      cy.get('[data-cy=my-rematch-indicator]')
+      .find('[data-cy="player-declined-rematch"]')
+        .should('be.visible');
+
       cy.get('[data-cy=continue-match-banner]')
         .should('be.visible')
         .should('have.class', 'opponent-left')

@@ -18,28 +18,29 @@
       <section class="d-flex justify-space-around mt-6 mb-8">
         <template v-if="matchIsOver">
           <MatchWonOrLostIndicator
-            :username="gameStore.player.username"
+            :username="leftPlayersername"
             :won-match="playerWinsMatch"
             data-cy="player-match-result"
           />
           <MatchWonOrLostIndicator
-            :username="gameStore.opponent.username"
+            :username="rightPlayersername"
             :won-match="opponentWinsMatch"
             data-cy="opponent-match-result"
           />
         </template>
         <template v-else>
           <LobbyPlayerIndicator
-            :player-username="gameStore.player.username"
-            :player-ready="gameStore.iWantRematch"
+            :player-username="leftPlayerUsername"
+            :player-ready="leftPlayerRematch === true"
+            :player-declined="leftPlayerRematch === false"
             card-face-name="rematch"
             small
             data-cy="my-rematch-indicator"
           />
           <LobbyPlayerIndicator
-            :player-username="gameStore.opponent.username"
-            :player-ready="gameStore.opponentWantsRematch"
-            :player-declined="gameStore.opponentDeclinedRematch"
+            :player-username="rightPlayerUsername"
+            :player-ready="rightPlayerRematch === true"
+            :player-declined="rightPlayerRematch === false"
             card-face-name="rematch"
             small
             data-cy="opponent-rematch-indicator"
@@ -87,6 +88,7 @@
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
+import { WhichPlayer, usePlayerData } from './composables/playerData';
 import BaseDialog from '@/components/BaseDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
@@ -121,8 +123,19 @@ export default {
   },
   setup() {
     const { t } = useI18n();
+    const gameStore = useGameStore();
+
+    const leftPlayer = gameStore.isSpectating ? WhichPlayer.ORIGINAL_P0 : WhichPlayer.CURRENT_PLAYER;
+    const rightPlayer = gameStore.isSpectating ? WhichPlayer.ORIGINAL_P1 : WhichPlayer.CURRENT_OPPONENT;
+    const { username: leftPlayerUsername, rematch: leftPlayerRematch } = usePlayerData(leftPlayer);
+    const { username: rightPlayerUsername, rematch: rightPlayerRematch } = usePlayerData(rightPlayer);
+
     return {
       t,
+      leftPlayerUsername,
+      leftPlayerRematch,
+      rightPlayerUsername,
+      rightPlayerRematch,
     };
   },
   data() {
@@ -216,7 +229,7 @@ export default {
       return currentMatchGames.map((game) => {
         if (game.status === GameStatus.FINISHED){
           return game.winner === null ? 'D' : game.winner === this.gameStore.opponent.id ? 'L' : 'W';
-        } 
+        }
         return 'I';
       });
     },
