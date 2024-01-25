@@ -33,7 +33,7 @@ const props = defineProps({
   wins: {
       type: Number,
       default: 0,
-    },
+  },
   losses: {
     type: Number,
     default: 0,
