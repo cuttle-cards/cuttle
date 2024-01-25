@@ -31,8 +31,8 @@ import { computed } from 'vue';
 
 const props = defineProps({
   wins: {
-      type: Number,
-      default: 0,
+    type: Number,
+    default: 0,
   },
   losses: {
     type: Number,
