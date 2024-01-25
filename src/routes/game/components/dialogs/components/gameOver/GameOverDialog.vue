@@ -195,7 +195,7 @@ export default {
         return 'stalemate-heading';
       }
 
-      if (this.isSpectating) {
+      if (this.gameStore.isSpectating) {
         const origianlP0 = this.gameStore.currentMatch?.games[0].p0;
         const winner = this.gameStore.players[this.gameStore.winnerPNum];
         return winner.id === origianlP0 ? 'p1-wins-heading' : 'p2-wins-heading';
@@ -207,7 +207,7 @@ export default {
       if (this.stalemate) {
         return 'Stalemate';
       }
-      if (this.isSpectating) {
+      if (this.gameStore.isSpectating) {
         const origianlP0 = this.gameStore.currentMatch?.games[0].p0;
         const winner = this.gameStore.players[this.gameStore.winnerPNum];
         return winner.id === origianlP0 ? 'Won' : 'Lost';
