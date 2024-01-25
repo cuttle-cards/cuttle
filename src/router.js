@@ -42,12 +42,12 @@ const checkAndSubscribeToLobby = async (to, from, next) => {
   const gameStore = useGameStore();
   const authStore = useAuthStore();
   const { gameId } = to.params;
-
+  
   if (!authStore.authenticated) {
     authStore.redirectGameId = +gameId;
     return next('/login');
   }
-  
+
   authStore.redirectGameId = null;
   if (gameStore.players.some(({username}) => username === authStore.username)) {
     return next();
@@ -137,7 +137,6 @@ const routes = [
     beforeEnter: mustBeAuthenticated,
   },
 ];
-
 
 const router = createRouter({
   history: createWebHashHistory(),
