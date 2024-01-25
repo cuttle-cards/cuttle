@@ -665,7 +665,7 @@ describe('Spectating Rematches', () => {
       cy.setupGameAsSpectator();
     });
     
-    it.only('Spectates a casual match using rematch', () => {
+    it('Spectates a casual match using rematch', () => {
       cy.log('Game 1: player1 wins via opponent conceding');
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
@@ -758,8 +758,9 @@ describe('Spectating Rematches', () => {
       cy.loadSeasonFixture([ currentSeason ]);
     });
 
-    it('Specates a ranked match using rematch', () => {
+    it.only('Specates a ranked match using rematch', () => {
       // Game 1: playerOne wins with points
+      cy.log('Game 1: player1 wins with points')
       cy.loadGameFixture(0, {
         p0Hand: [Card.TEN_OF_DIAMONDS],
         p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
@@ -794,21 +795,22 @@ describe('Spectating Rematches', () => {
           .should('have.class', 'ready');
 
       // Game 2: playerTwo wins by playerOne conceding
+      cy.log('Game 2: player2 wins via player1 conceding');
       cy.get('[data-cy=player-username]')
         .should('contain', playerTwo.username);
 
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
-      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 1, stalemates: 0, winner: 'p1', isRanked: true});
+      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true});
 
       // Both players rematch, then spectator
       rematchPlayerAsSpectator(playerTwo);
-      cy.get('[data-cy=my-rematch-indicator]')
+      cy.get('[data-cy=opponent-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
           .should('have.class', 'ready');
 
       rematchPlayerAsSpectator(playerOne);
-      cy.get('[data-cy=opponent-rematch-indicator]')
+      cy.get('[data-cy=my-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
           .should('have.class', 'ready');
 
@@ -817,6 +819,7 @@ describe('Spectating Rematches', () => {
         .click();
 
       // Game 3: stalemate via passes
+      cy.log('Game 3: stalemate via passes');
       cy.get('[data-cy=player-username]')
         .should('contain', playerOne.username);
 
@@ -869,6 +872,7 @@ describe('Spectating Rematches', () => {
           .should('have.class', 'ready');
 
       // Game 4: players stalemate by requesting stalemate
+      cy.log('Game 4: stalemate via stalemate request');
       cy.get('[data-cy=player-username]')
         .should('contain', playerTwo.username);
       cy.recoverSessionOpponent(playerOne);
@@ -890,17 +894,18 @@ describe('Spectating Rematches', () => {
         .should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
-      cy.get('[data-cy=opponent-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
-
-      rematchPlayerAsSpectator(playerTwo);
       cy.get('[data-cy=my-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
           .should('have.class', 'ready');
 
+      rematchPlayerAsSpectator(playerTwo);
+      cy.get('[data-cy=opponent-rematch-indicator]')
+        .find('[data-cy="lobby-card-container"]')
+          .should('have.class', 'ready');
 
-      // Game 5 -- playerOne wins the match with a king
+
+      // Game 5 -- playerOne wins the match with points
+      cy.log('Game 5: player1 wins via points and wins match');
       cy.get('[data-cy=player-username]')
         .should('contain', playerOne.username);
       cy.recoverSessionOpponent(playerOne);
