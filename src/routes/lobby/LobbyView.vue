@@ -15,6 +15,7 @@
           <LobbyPlayerIndicator
             :player-username="authStore.username"
             :player-ready="iAmReady"
+            :game-started="gameStarted"
             data-cy="my-indicator"
           />
         </v-col>
@@ -25,6 +26,7 @@
           <LobbyPlayerIndicator
             :player-username="gameStore.opponentUsername"
             :player-ready="gameStore.opponentIsReady"
+            :game-started="gameStarted"
             data-cy="opponent-indicator"
           />
         </v-col>
@@ -99,6 +101,8 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
@@ -116,7 +120,20 @@ export default {
   },
   setup() {
     const { t } = useI18n();
-    return { t };
+    const gameStarted = ref(false);
+
+    onBeforeRouteLeave((to, from, next) => {
+      if (to.name === 'Game') {
+        gameStarted.value = true;
+        setTimeout(() => {
+          next();
+        }, 2000);
+      } else {
+        next();
+      }
+    });
+
+    return { t, gameStarted };
   },
   data() {
     return {
