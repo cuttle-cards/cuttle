@@ -178,6 +178,7 @@
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { useGameStore } from '@/stores/game';
 import { useThemedLogo } from '@/composables/themedLogo';
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
@@ -220,7 +221,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useAuthStore),
+    ...mapStores(useAuthStore, useGameStore),
     isLoggingIn() {
       return this.$route.name === ROUTE_NAME_LOGIN;
     },
@@ -272,7 +273,10 @@ export default {
       this.username = '';
       this.pw = '';
       this.loading = false;
-      this.$router.push('/');
+      if (!this.authStore.redirectGameId) {
+        return this.$router.push('/');
+      }
+      return this.$router.push(`/lobby/${this.authStore.redirectGameId}`);
     },
     handleError(messageKey) {
       this.showSnackBar = true;
