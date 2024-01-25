@@ -48,10 +48,11 @@ const checkAndSubscribeToLobby = async (to, from, next) => {
     return next('/login');
   }
   
+  authStore.redirectGameId = null;
   if (gameStore.players.some(({username}) => username === authStore.username)) {
     return next();
   }
-
+  
   try {
     await gameStore.requestSubscribe(+gameId);
     next();
