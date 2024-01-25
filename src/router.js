@@ -6,6 +6,7 @@ import GameView from '@/routes/game/GameView.vue';
 import RulesView from '@/routes/rules/RulesView.vue';
 import StatsView from '@/routes/stats/StatsView.vue';
 import RematchView from '@/routes/rematch/RematchView.vue';
+import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 
 export const ROUTE_NAME_GAME = 'Game';
@@ -36,6 +37,31 @@ const logoutAndRedirect = async (to, from, next) => {
   await authStore.requestLogout();
   return next('/login');
 };
+
+const checkAndSubscribeToLobby = async (to, from, next) => {
+  const gameStore = useGameStore();
+  const authStore = useAuthStore();
+  const { gameId } = to.params;
+
+  if (!authStore.authenticated) {
+    authStore.redirectGameId = +gameId;
+    return next('/login');
+  }
+  
+  if (gameStore.players.some(({username}) => username === authStore.username)) {
+    return next();
+  }
+
+  try {
+    await gameStore.requestSubscribe(+gameId);
+    next();
+  }
+  catch (err) {
+    to.meta.error = err.message;
+    next();
+  }
+};
+
 
 const routes = [
   {
@@ -71,7 +97,7 @@ const routes = [
     path: '/lobby/:gameId',
     component: LobbyView,
     // TODO: Add logic to redirect if a given game does not exist
-    beforeEnter: mustBeAuthenticated,
+    beforeEnter: checkAndSubscribeToLobby,
     meta: {
       hideNavigation: true,
     },
@@ -110,6 +136,7 @@ const routes = [
     beforeEnter: mustBeAuthenticated,
   },
 ];
+
 
 const router = createRouter({
   history: createWebHashHistory(),
