@@ -693,7 +693,7 @@ describe('Spectating Rematches', () => {
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
 
-      assertGameOverAsSpectator({p1Wins: 0, p2Wins: 2, stalemates: 0, winner: 'p2', isRanked: false});
+      assertGameOverAsSpectator({p1Wins: 2, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false});
       cy.get('[data-cy=gameover-rematch')
         .should('not.be.disabled')
         .click()

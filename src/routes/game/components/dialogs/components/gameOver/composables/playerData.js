@@ -51,8 +51,24 @@ export function usePlayerData(whichPlayer) {
     }
   });
 
+  const wins = computed(() => {
+    switch (whichPlayer) {
+      case WhichPlayer.CURRENT_PLAYER:
+        return gameStore.currentMatch?.games.filter(game => game.winner === gameStore.opponent.id).length ?? 0;
+      case WhichPlayer.CURRENT_OPPONENT:
+        return gameStore.currentMatch?.games.filter(game => game.winner === gameStore.opponent.id).length ?? 0;
+      case WhichPlayer.ORIGINAL_P0:
+        return gameStore.currentMatch?.games.filter(game => game.winner === originalP0.value.id).length ?? 0;
+      case WhichPlayer.ORIGINAL_P1:
+        return gameStore.currentMatch?.games.filter(game => game.winner === originalP1.value.id).length ?? 0;
+      default:
+        return 0;
+    }
+  });
+
   return {
     username,
     rematch,
+    wins,
   };
 }

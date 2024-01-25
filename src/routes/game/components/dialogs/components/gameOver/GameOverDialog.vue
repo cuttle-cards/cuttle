@@ -8,8 +8,8 @@
 
     <template #body>
       <MatchScoreCounter
-        :wins="wins"
-        :losses="losses"
+        :wins="leftPlayerWins"
+        :losses="rightPlayerWins"
         :stalemates="stalemates"
         :latest-result="latestResult"
         :is-ranked="isRanked"
@@ -127,15 +127,27 @@ export default {
 
     const leftPlayer = gameStore.isSpectating ? WhichPlayer.ORIGINAL_P0 : WhichPlayer.CURRENT_PLAYER;
     const rightPlayer = gameStore.isSpectating ? WhichPlayer.ORIGINAL_P1 : WhichPlayer.CURRENT_OPPONENT;
-    const { username: leftPlayerUsername, rematch: leftPlayerRematch } = usePlayerData(leftPlayer);
-    const { username: rightPlayerUsername, rematch: rightPlayerRematch } = usePlayerData(rightPlayer);
+
+    const {
+        username: leftPlayerUsername,
+        rematch: leftPlayerRematch,
+        wins: leftPlayerWins
+    } = usePlayerData(leftPlayer);
+
+    const {
+      username: rightPlayerUsername,
+      rematch: rightPlayerRematch,
+      wins: rightPlayerWins
+    } = usePlayerData(rightPlayer);
 
     return {
       t,
       leftPlayerUsername,
       leftPlayerRematch,
+      leftPlayerWins,
       rightPlayerUsername,
       rightPlayerRematch,
+      rightPlayerWins,
     };
   },
   data() {
@@ -170,30 +182,37 @@ export default {
       return this.t(messageName);
     },
     spectatorHeading() {
-      switch (this.gameStore.winnerPNum) {
-        case 0:
-          return this.matchIsOver ? 'P1 Wins Match' : 'P1 Wins';
-        case 1:
-          return this.matchIsOver ? 'P2 Wins Match' : 'P2 Wins';
-        default:
-          return 'Stalemate';
+      if (this.gameStore.winnerPNum === null) {
+        return 'Stalemate';
       }
+      const winner = this.gameStore.players[this.gameStore.winnerPNum];
+      const res = winner.id === this.gameStore.currentMatch?.games[0].p0 ?
+        'P1 Wins' : 'P2 Wins';
+      return this.matchIsOver ? res + ' Match' : res;
     },
     headingDataAttr() {
       if (this.stalemate) {
         return 'stalemate-heading';
       }
 
-      if (this.playerWinsGame) {
-        return this.gameStore.isSpectating ?  'p1-wins-heading' : 'victory-heading';
+      if (this.isSpectating) {
+        const origianlP0 = this.gameStore.currentMatch?.games[0].p0;
+        const winner = this.gameStore.players[this.gameStore.winnerPNum];
+        return winner.id === origianlP0 ? 'p1-wins-heading' : 'p2-wins-heading';
       }
 
-      return this.gameStore.isSpectating ? 'p2-wins-heading' : 'loss-heading';
+      return this.playerWinsGame ? 'victory-heading' : 'loss-heading';
     },
     latestResult() {
       if (this.stalemate) {
         return 'Stalemate';
       }
+      if (this.isSpectating) {
+        const origianlP0 = this.gameStore.currentMatch?.games[0].p0;
+        const winner = this.gameStore.players[this.gameStore.winnerPNum];
+        return winner.id === origianlP0 ? 'Won' : 'Lost';
+      }
+
       return this.playerWinsGame ? 'Won' : 'Lost';
     },
     isMobilePortrait() {
@@ -242,7 +261,8 @@ export default {
       return this.matchGameStats.filter((gameResult) => gameResult === 'L').length;
     },
     stalemates() {
-      return this.matchGameStats.filter((gameResult) => gameResult === 'D').length;
+      return this.gameStore.currentMatch?.games
+        .filter((game) => game.status === GameStatus.FINISHED && game.winner === null).length;
     },
     isRanked() {
       return this.gameStore.isRanked;
