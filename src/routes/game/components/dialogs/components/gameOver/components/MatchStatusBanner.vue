@@ -7,7 +7,7 @@
         color="surface-2"
         :data-cy="matchStatusIconDataCy"
       />
-      <h2 class="banner-h2">
+      <h2 class="banner-h2" :class="headerClass">
         {{ headerText }}
       </h2>
       <v-icon
@@ -69,6 +69,8 @@ const headerText = computed(() => {
   return isSpectating.value ? specatingHeader.value : playingHeader.value;
 });
 
+const headerClass = computed(() => !gameStore.someoneDeclinedRematch && gameStore.iWantToContinueSpectating ? 'loading' : '');
+
 const wrapperClass = computed(() => {
   if (gameStore.someoneDeclinedRematch) {
     return 'opponent-left';
@@ -106,6 +108,15 @@ const wrapperClass = computed(() => {
     font-weight: 700;
     line-height: 32px;
     margin: 8px;
+
+    // https://stackoverflow.com/questions/13014808/is-there-any-way-to-animate-an-ellipsis-with-css-animations
+    &.loading:after {
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: bottom;
+      animation: ellipsis-animation steps(1,end) 2s infinite;
+      content: "\2026"; /* ascii code for the ellipsis character */
+    }
   }
 
   & .banner-content {
@@ -114,5 +125,12 @@ const wrapperClass = computed(() => {
     align-items: center;
     width: 100%;
   }
+}
+
+@keyframes ellipsis-animation {
+    0%  { clip-path: inset(0 100% 0 0); }
+    25% { clip-path: inset(0 66.6% 0 0); }
+    50% { clip-path: inset(0 33.3% 0 0); }
+    75% { clip-path: inset(0 0 0 0); }
 }
 </style>
