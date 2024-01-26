@@ -144,11 +144,11 @@
         "askRematch": "veut rejouer",
         "declineRematch": "a décliné l'invitation et a quitté la partie",
         "matchStatus": {
-          "playerLeft": "Joueur parti - cliquez pour retourner à la page d'accueil.",
+          "playerLeft": "Joueur parti",
           "waitingForPlayers": "En attente de joueurs",
           "goodMatch": "Bon match !",
           "continueSpectating": "Continuer à observer ?",
-          "opponentLeft": "Votre adversaire peft - cliquez pour retourner à la page d'accueil.",
+          "opponentLeft": "Votre adversaire peft",
           "waitingForOpponent": "En attente de l'adversaire",
           "continueMatch": "Continuer le match ?",
           "rematch?": "Revanche ?"

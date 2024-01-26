@@ -144,11 +144,11 @@
         "askRematch": "quiere una revancha",
         "declineRematch": "rechazó la revancha y abandonó el juego",
         "matchStatus": {
-          "playerLeft": "Jugador se ha ido - haz clic para volver a la página principal.",
+          "playerLeft": "Jugador se ha ido",
           "waitingForPlayers": "Esperando a los jugadores",
           "goodMatch": "¡Buen Partido!",
           "continueSpectating": "¿Continuar como espectador?",
-          "opponentLeft": "Rival se ha ido - haz clic para volver a la página principal.",
+          "opponentLeft": "Rival se ha ido",
           "waitingForOpponent": "Esperando al Rival",
           "continueMatch": "¿Continuar el Partido?",
           "rematch?": "¿Revancha?"
