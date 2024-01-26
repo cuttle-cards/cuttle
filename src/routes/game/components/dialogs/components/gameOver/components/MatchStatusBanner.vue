@@ -22,9 +22,11 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game.js';
 
 const gameStore = useGameStore();
+const { t } = useI18n();
 
 const isRanked = computed(() => gameStore.isRanked);
 const isSpectating = computed(() => gameStore.isSpectating);
@@ -32,37 +34,39 @@ const isSpectating = computed(() => gameStore.isSpectating);
 const matchStatusIcon = computed(() => isRanked.value ? 'mdi-sword-cross' : 'mdi-coffee-outline');
 const matchStatusIconDataCy = computed(() => isRanked.value ? 'ranked-icon' : 'casual-icon');
 
+const prefix = 'game.dialogs.gameOverDialog.matchStatus';
+
 const specatingHeader = computed(() => {
   if (gameStore.someoneDeclinedRematch) {
-    return 'Player left - click to go home.';
+    return t(`${prefix}.playerLeft`);
   }
   if (gameStore.iWantToContinueSpectating) {
-    return 'Waiting for Players';
+    return t(`${prefix}.waitingForPlayers`);
   }
   if (gameStore.currentMatch?.winner) {
-    return 'Good Match!';
+    return t(`${prefix}.goodMatch`);
   }
-  return 'Continue Spectating?';
+  return t(`${prefix}.continueSpectating`);
 });
 
 const playingHeader = computed(() => {
   if (gameStore.opponentDeclinedRematch) {
-    return 'Opponent left - click to go home.';
+    return t(`${prefix}.opponentLeft`);
   }
 
   if (gameStore.iWantRematch) {
-    return 'Waiting for Opponent';
+    return t(`${prefix}.waitingForOpponent`);
   }
 
   if (!isRanked.value) {
-    return 'Rematch?';
+    return t(`${prefix}.rematch?`);
   }
 
   if (gameStore.currentMatch?.winner === null) {
-    return 'Continue Match?';
+    return t(`${prefix}.continueMatch`);
   }
 
-  return 'Good Match!';
+  return t(`${prefix}.goodMatch`);
 });
 
 const headerText = computed(() => {

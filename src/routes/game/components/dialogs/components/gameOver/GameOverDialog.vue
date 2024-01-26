@@ -182,13 +182,15 @@ export default {
       return this.t(messageName);
     },
     spectatorHeading() {
+      const prefix = 'game.dialogs.gameOverDialog';
       if (this.gameStore.winnerPNum === null) {
-        return 'Stalemate';
+        return this.t(`${prefix}.draw`);
       }
       const winner = this.gameStore.players[this.gameStore.winnerPNum];
       const res = winner.id === this.gameStore.currentMatch?.games[0].p0 ?
-        'P1 Wins' : 'P2 Wins';
-      return this.matchIsOver ? res + ' Match' : res;
+        this.t(`${prefix}.p1Wins`) : this.t(`${prefix}.p2Wins`);
+      const matchTranslation = this.t(`${prefix}.match`);
+      return this.matchIsOver ? `${res} ${matchTranslation}` : res;
     },
     headingDataAttr() {
       if (this.stalemate) {

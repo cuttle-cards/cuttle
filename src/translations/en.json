@@ -131,7 +131,10 @@
         "youLose": "You Lose",
         "youLoseTheMatch": "Outmatched...",
         "lost": "lost",
-        "draw": "Draw",
+        "draw": "Stalemate",
+        "p1Wins": "P1 Wins",
+        "p2Wins": "P2 Wins",
+        "match": "Match",
         "matchAgainst": "Match against",
         "yourGameAgainst": "your game against",
         "finished": "Finished",
@@ -139,7 +142,17 @@
         "goHome": "Go Home",
         "rematch": "Rematch",
         "askRematch": "wants to rematch",
-        "declineRematch": "declined rematch and left the game"
+        "declineRematch": "declined rematch and left the game",
+        "matchStatus": {
+          "playerLeft": "Player left - click to go home.",
+          "waitingForPlayers": "Waiting for Players",
+          "goodMatch": "Good Match!",
+          "continueSpectating": "Continue Spectating?",
+          "opponentLeft": "Opponent left - click to go home.",
+          "waitingForOpponent": "Waiting for Opponent",
+          "continueMatch": "Continue Match?",
+          "rematch?": "Rematch?"
+        }
       }
     },
     "moves": {

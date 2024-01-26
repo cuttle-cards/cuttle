@@ -132,6 +132,9 @@
         "youLoseTheMatch": "Has perdido la partida",
         "lost": "perdida",
         "draw": "empate",
+        "p1Wins": "P1 Gana",
+        "p2Wins": "P2 Gana",
+        "match": "el Partida",
         "matchAgainst": "Partida contra",
         "yourGameAgainst": "tu partida contra",
         "finished": "Finalizada",
@@ -139,7 +142,17 @@
         "goHome": "Volver al menú",
         "rematch":"revanche",
         "askRematch": "quiere una revancha",
-        "declineRematch": "rechazó la revancha y abandonó el juego"
+        "declineRematch": "rechazó la revancha y abandonó el juego",
+        "matchStatus": {
+          "playerLeft": "Jugador se ha ido - haz clic para volver a la página principal.",
+          "waitingForPlayers": "Esperando a los jugadores",
+          "goodMatch": "¡Buen Partido!",
+          "continueSpectating": "¿Continuar como espectador?",
+          "opponentLeft": "Rival se ha ido - haz clic para volver a la página principal.",
+          "waitingForOpponent": "Esperando al Rival",
+          "continueMatch": "¿Continuar el Partido?",
+          "rematch?": "¿Revancha?"
+        }
       }
     },
     "moves": {
