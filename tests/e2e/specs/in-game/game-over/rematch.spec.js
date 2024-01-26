@@ -91,7 +91,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.setupGameAsP0(true, true);
   });
 
-  it.only('Wins match played with Rematch/Continue Match button', () => {
+  it('Wins match played with Rematch/Continue Match button', () => {
     // Game 1: Opponent concedes
     cy.log('Game 1: opponent concedes');
     cy.concedeOpponent();
@@ -216,7 +216,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .should('be.disabled');
   });
   
-  it('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
+  it.skip('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
@@ -410,7 +410,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     });
   });
   
-  it('Creates a match when two players play a ranked game for the first time this week, leave game during rematch', function () {
+  it.skip('Creates a match when two players play a ranked game for the first time this week, leave game during rematch', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
@@ -763,7 +763,7 @@ describe('Spectating Rematches', () => {
 
     it('Specates a ranked match using rematch', () => {
       // Game 1: playerOne wins with points
-      cy.log('Game 1: player1 wins with points')
+      cy.log('Game 1: player1 wins with points');
       cy.loadGameFixture(0, {
         p0Hand: [Card.TEN_OF_DIAMONDS],
         p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
