@@ -91,8 +91,9 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.setupGameAsP0(true, true);
   });
 
-  it('Wins match played with Rematch/Continue Match button', () => {
+  it.only('Wins match played with Rematch/Continue Match button', () => {
     // Game 1: Opponent concedes
+    cy.log('Game 1: opponent concedes');
     cy.concedeOpponent();
     assertVictory({wins: 1, losses: 0, stalemates: 0});
     cy.get('[data-cy=match-score-counter-wins]')
@@ -124,6 +125,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     });
 
     // Game 2: Player concedes
+    cy.log('Game 2: Player concedes');
     cy.get('[data-player-hand-card]')
       .should('have.length', 6);
 
@@ -131,6 +133,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     assertLoss({wins: 1, losses: 1, stalemates: 0});
 
     // Game 3 - Stalemate
+    cy.log('Game 3: stalemate via player request');
     startRematchPlayerFirst();
     cy.get('[data-player-hand-card]')
       .should('have.length', 5);
@@ -758,7 +761,7 @@ describe('Spectating Rematches', () => {
       cy.loadSeasonFixture([ currentSeason ]);
     });
 
-    it.only('Specates a ranked match using rematch', () => {
+    it('Specates a ranked match using rematch', () => {
       // Game 1: playerOne wins with points
       cy.log('Game 1: player1 wins with points')
       cy.loadGameFixture(0, {
