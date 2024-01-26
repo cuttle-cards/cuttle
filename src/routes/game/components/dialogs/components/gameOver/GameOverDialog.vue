@@ -29,7 +29,7 @@
           />
         </template>
         <template v-else>
-          <LobbyPlayerIndicator
+          <PlayerReadyIndicator
             :player-username="leftPlayerUsername"
             :player-ready="leftPlayerRematch === true"
             :player-declined="leftPlayerRematch === false"
@@ -37,7 +37,7 @@
             small
             data-cy="my-rematch-indicator"
           />
-          <LobbyPlayerIndicator
+          <PlayerReadyIndicator
             :player-username="rightPlayerUsername"
             :player-ready="rightPlayerRematch === true"
             :player-declined="rightPlayerRematch === false"
@@ -95,7 +95,7 @@ import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import MatchScoreCounter from './components/MatchScoreCounter.vue';
 import MatchStatusBanner from './components/MatchStatusBanner.vue';
 import MatchWonOrLostIndicator from './components/MatchWonOrLostIndicator.vue';
-import LobbyPlayerIndicator from '@/routes/lobby/components/LobbyPlayerIndicator.vue';
+import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 
 export default {
   name: 'GameOverDialog',
@@ -105,7 +105,7 @@ export default {
     MatchScoreCounter,
     MatchStatusBanner,
     MatchWonOrLostIndicator,
-    LobbyPlayerIndicator
+    PlayerReadyIndicator
   },
   props: {
     modelValue: {

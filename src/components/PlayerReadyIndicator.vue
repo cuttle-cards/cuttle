@@ -48,7 +48,7 @@
 <script>
 import { useI18n } from 'vue-i18n';
 export default {
-  name: 'LobbyPlayerIndicator',
+  name: 'PlayerReadyIndicator',
   props: {
     playerUsername: {
       type: String,
