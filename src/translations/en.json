@@ -141,8 +141,6 @@
         "inProgress": "In Progress",
         "goHome": "Go Home",
         "rematch": "Rematch",
-        "askRematch": "wants to rematch",
-        "declineRematch": "declined rematch and left the game",
         "matchStatus": {
           "playerLeft": "Player left - click to go home.",
           "waitingForPlayers": "Waiting for Players",

@@ -141,8 +141,6 @@
         "inProgress": "En Curso",
         "goHome": "Volver al menú",
         "rematch":"revanche",
-        "askRematch": "quiere una revancha",
-        "declineRematch": "rechazó la revancha y abandonó el juego",
         "matchStatus": {
           "playerLeft": "Jugador se ha ido",
           "waitingForPlayers": "Esperando a los jugadores",

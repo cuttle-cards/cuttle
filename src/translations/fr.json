@@ -141,8 +141,6 @@
         "inProgress": "En Cours",
         "goHome": "Retourner au vestibule",
         "rematch": "Rejouer",
-        "askRematch": "veut rejouer",
-        "declineRematch": "a décliné l'invitation et a quitté la partie",
         "matchStatus": {
           "playerLeft": "Joueur parti",
           "waitingForPlayers": "En attente de joueurs",
