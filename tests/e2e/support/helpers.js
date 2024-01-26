@@ -493,7 +493,7 @@ export function assertStalemate(score = null) {
     .should('be.visible')
     .get('[data-cy=stalemate-heading]')
     .should('be.visible')
-    .should('contain', 'Draw');
+    .should('contain', 'Stalemate');
 
   cy.window()
     .its('cuttle.gameStore')
@@ -509,7 +509,7 @@ export function assertStalemate(score = null) {
       } else {
         cy.get('#game-over-dialog')
           .find('[data-cy=stalemate-heading]')
-          .should('contain', 'Draw');
+          .should('contain', 'Stalemate');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
