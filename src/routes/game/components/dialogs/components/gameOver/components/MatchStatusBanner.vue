@@ -4,6 +4,8 @@
       <v-icon
         v-if="!gameStore.someoneDeclinedRematch"
         :icon="matchStatusIcon"
+        :aria-label="iconLabel"
+        :aria-hidden="false"
         color="surface-2"
         :data-cy="matchStatusIconDataCy"
       />
@@ -27,14 +29,15 @@ import { useGameStore } from '@/stores/game.js';
 
 const gameStore = useGameStore();
 const { t } = useI18n();
+const prefix = 'game.dialogs.gameOverDialog.matchStatus';
 
 const isRanked = computed(() => gameStore.isRanked);
 const isSpectating = computed(() => gameStore.isSpectating);
 
 const matchStatusIcon = computed(() => isRanked.value ? 'mdi-sword-cross' : 'mdi-coffee-outline');
 const matchStatusIconDataCy = computed(() => isRanked.value ? 'ranked-icon' : 'casual-icon');
+const iconLabel = computed(() => isRanked.value ? t(`${prefix}.rankedIconAlt`) : t(`${prefix}.casualIconAlt`));
 
-const prefix = 'game.dialogs.gameOverDialog.matchStatus';
 
 const specatingHeader = computed(() => {
   if (gameStore.someoneDeclinedRematch) {

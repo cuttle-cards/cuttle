@@ -149,7 +149,9 @@
           "opponentLeft": "Rival se ha ido",
           "waitingForOpponent": "Esperando al Rival",
           "continueMatch": "¿Continuar el Partido?",
-          "rematch?": "¿Revancha?"
+          "rematch?": "¿Revancha?",
+          "rankedIconAlt": "Ranked Match Icon (Crossed Swords)",
+          "casualIconAlt": "Casual Match Icon (Warm Mug)"
         }
       }
     },

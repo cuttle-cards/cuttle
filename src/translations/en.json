@@ -149,7 +149,9 @@
           "opponentLeft": "Opponent left - click to go home.",
           "waitingForOpponent": "Waiting for Opponent",
           "continueMatch": "Continue Match?",
-          "rematch?": "Rematch?"
+          "rematch?": "Rematch?",
+          "rankedIconAlt": "Ranked Match Icon (Crossed Swords)",
+          "casualIconAlt": "Casual Match Icon (Coffee Mug)"
         }
       }
     },

@@ -149,7 +149,9 @@
           "opponentLeft": "Votre adversaire peft",
           "waitingForOpponent": "En attente de l'adversaire",
           "continueMatch": "Continuer le match ?",
-          "rematch?": "Revanche ?"
+          "rematch?": "Revanche ?",
+          "rankedIconAlt": "Ranked Match Icon (Crossed Swords)",
+          "casualIconAlt": "Casual Match Icon (Warm Mug)"
         }
       }
     },
