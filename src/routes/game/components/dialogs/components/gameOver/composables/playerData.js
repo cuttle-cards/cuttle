@@ -54,7 +54,7 @@ export function usePlayerData(whichPlayer) {
   const wins = computed(() => {
     switch (whichPlayer) {
       case WhichPlayer.CURRENT_PLAYER:
-        return gameStore.currentMatch?.games.filter(game => game.winner === gameStore.opponent.id).length ?? 0;
+        return gameStore.currentMatch?.games.filter(game => game.winner === gameStore.player.id).length ?? 0;
       case WhichPlayer.CURRENT_OPPONENT:
         return gameStore.currentMatch?.games.filter(game => game.winner === gameStore.opponent.id).length ?? 0;
       case WhichPlayer.ORIGINAL_P0:
