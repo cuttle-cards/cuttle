@@ -1,15 +1,3 @@
-async function getRematchGames (game, priorRematchGames = []) {
-  const rematchGames = [game, ...priorRematchGames];
-  const gameToAdd = await Game.findOne({ rematchGame: game.id });
-  if (!gameToAdd) {
-    return rematchGames;
-  }
-  if (!gameToAdd.rematchGame) {
-    return rematchGames;
-  }
-  return getRematchGames(gameToAdd, rematchGames);
-}
-
 module.exports = {
   friendlyName: 'Mock Casual Match',
 
@@ -25,7 +13,7 @@ module.exports = {
   },
 
   fn: async ({ game }, exits) => {
-    const games  = await getRematchGames(game);
+    const games  = await sails.helpers.getRematchGames(game);
     const [ firstGame ] = games;
 
     return exits.success({

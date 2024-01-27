@@ -51,19 +51,8 @@ module.exports = async function (req, res) {
     updatedGame.rematchGame = newGame.id;
 
     //Get all exisiting rematchGames
-    const rematchGames = [];
-    const getRematchGames = async (gameId) => {
-      const gameToAdd = await Game.findOne({ rematchGame: gameId });
-      if (!gameToAdd) {
-        return;
-      }
-      rematchGames.unshift(gameToAdd);
-      if (!gameToAdd.rematchGame) {
-        return; 
-      }
-      await getRematchGames(gameToAdd.id);
-    };
-    await getRematchGames(newGame.id);
+    const rematchGames = await sails.helpers.getRematchGames(updatedGame);
+
     const seriesP0 = [p0, p1].find(({ id }) => id === rematchGames[0].p0);
     const seriesP1 = [p0, p1].find(({ id }) => id === rematchGames[0].p1);
     //Get rematchGame win counts
