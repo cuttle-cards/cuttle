@@ -7,7 +7,7 @@ module.exports = async function (req, res) {
     const { usr: userId } = req.session;
     const { gameId: oldGameId, rematch } = req.body;
 
-    const game = await Game.findOne({ id: oldGameId }).populate('players');
+    const game =  await sails.helpers.lockGame(req.session.game);
 
     // Early return if requesting user was not in the game
     if (game.p0 !== userId && game.p1 !== userId) {
@@ -16,10 +16,7 @@ module.exports = async function (req, res) {
     const oldPNum = game.p0 === userId ? 0 : 1;
     const gameUpdates = { [`p${oldPNum}Rematch`]: rematch };
 
-    await Game.updateOne({ id: game.id }).set(gameUpdates);
-
-    // In case other player updated the game at the same time
-    const updatedGame = await Game.findOne({ id: game.id }).populate('players');
+    const updatedGame = await Game.updateOne({ id: game.id }).set(gameUpdates);
 
     const currentMatch = await Match.findOne({ id: updatedGame.match });
     const shouldNewGameBeRanked = currentMatch?.winner ? false : updatedGame.isRanked;
@@ -36,6 +33,7 @@ module.exports = async function (req, res) {
         pNum: oldPNum,
       });
   
+      await sails.helpers.unlockGame(game.lock);
       return res.ok();
     }
 
@@ -89,6 +87,7 @@ module.exports = async function (req, res) {
       newGame: newFullGame,
     });
 
+    await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
   } catch (err) {
     return res.ok();
