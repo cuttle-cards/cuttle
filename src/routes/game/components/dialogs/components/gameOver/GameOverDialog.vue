@@ -18,12 +18,12 @@
       <section class="d-flex justify-space-around mt-6 mb-8">
         <template v-if="matchIsOver">
           <MatchWonOrLostIndicator
-            :username="leftPlayersername"
+            :username="leftPlayerUsername"
             :won-match="playerWinsMatch"
             data-cy="player-match-result"
           />
           <MatchWonOrLostIndicator
-            :username="rightPlayersername"
+            :username="rightPlayerUsername"
             :won-match="opponentWinsMatch"
             data-cy="opponent-match-result"
           />

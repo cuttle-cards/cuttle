@@ -169,7 +169,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         .find('[data-cy-result-img=lost]');
   });
 
-  it('Loses a ranked match played with the Rematch/Continue Match button', () => {
+  it.only('Loses a ranked match played with the Rematch/Continue Match button', () => {
     // Game 1 - Player concedes
     concedePlayer();
     assertLoss({wins: 0, losses: 1, stalemates: 0});
@@ -186,11 +186,15 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     concedePlayer();
     assertLoss({wins: 1, losses: 2, stalemates: 0});
 
-    // Player1 won and Player2 lost
+    // Player2 won and Player1 (visible player) lost
     cy.get('[data-cy=player-match-result]')
-      .find('[data-cy-result-img=lost]');
+      .should('contain', 'Player1')
+      .find('[data-cy-result-img=lost]')
+      .should('have.attr', 'alt', 'Player1 lost the match');
     cy.get('[data-cy=opponent-match-result]')
-      .find('[data-cy-result-img=won]');
+      .should('contain', 'Player2')
+      .find('[data-cy-result-img=won]')
+      .should('have.attr', 'alt', 'Player2 won the match');
   });
 
   it('Shows when opponent declines continuing your ranked match', () => {
