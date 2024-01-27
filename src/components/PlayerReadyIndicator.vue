@@ -4,7 +4,7 @@
       <div v-if="playerDeclined">
         <img
           src="/img/cards/card-back-declined.png"
-          alt="player declined rematch card"
+          :alt="t('global.playerReady.playerDeclinedAlt', { playerUsername })"
           data-cy="player-declined-rematch"
           class="card-container"
           :class="{ small }"
@@ -19,13 +19,13 @@
           <img
             :src="`/img/cards/card-${cardFaceName}.png`"
             class="card-front"
-            alt="card front"
+            :alt="t(`global.playerReady.${cardFaceName}Alt`, { playerUsername })"
             data-cy="lobby-ready-card"
           >
           <img
             src="/img/cards/card-back.png"
             class="card-back"
-            alt="card back"
+            :alt="t('global.playerReady.cardBackAlt', { playerUsername })"
             data-cy="lobby-back-card"
           >
           <div class="water-container">

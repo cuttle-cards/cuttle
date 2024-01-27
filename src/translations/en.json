@@ -16,7 +16,13 @@
     "casual": "Casual",
     "your": "your",
     "close": "Close",
-    "click": "Click"
+    "click": "Click",
+    "playerReady": {
+      "playerDeclinedAlt": "{playerUsername} declined rematch (card back)",
+      "cardBackAlt": "Card back -- Waiting for {playerUsername}",
+      "readyAlt": "Card front -- {playerUsername} is ready",
+      "rematchAlt": "Card front -- {playerUsername} wants rematch"
+    }
   },
   "login": {
     "noAccount": "Don't have an account?",

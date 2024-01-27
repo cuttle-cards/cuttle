@@ -16,7 +16,13 @@
     "casual": "Classique",
     "your": "ton",
     "close": "Fermer",
-    "click": "Cliquez sur"
+    "click": "Cliquez sur",
+    "playerReady": {
+      "playerDeclinedAlt": "${playerUsername} a décliné la carte de revanche",
+      "cardBackAlt": "Dos de la carte -- En attente de l'adversaire",
+      "readyAlt": "Face de la carte -- {playerUsername} est prêt",
+      "rematchAlt": "Face de la carte -- {playerUsername} veut une revanche"
+    }
   },
   "login": {
     "noAccount": "Vous n'avez pas de compte?",

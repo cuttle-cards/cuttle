@@ -16,7 +16,13 @@
     "casual": "Amistoso",
     "your": "tu",
     "close": "Cerrar",
-    "click": "Hacer clic"
+    "click": "Hacer clic",
+    "playerReady": {
+      "playerDeclinedAlt": "{name} rechazó la tarjeta de revancha",
+      "cardBackAlt": "Dorso de la tarjeta -- Esperando a {playerUsername}",
+      "readyAlt": "Frente de la tarjeta -- {playerUsername} está listo",
+      "rematchAlt": "Frente de la tarjeta -- {playerUsername} quiere revancha"
+    }
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
