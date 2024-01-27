@@ -2,12 +2,11 @@
 async function getRematchGames (game, priorRematchGames = []) {
   const rematchGames = [game, ...priorRematchGames];
   const gameToAdd = await Game.findOne({ rematchGame: game.id });
+
   if (!gameToAdd) {
     return rematchGames;
   }
-  if (!gameToAdd.rematchGame) {
-    return rematchGames;
-  }
+
   return getRematchGames(gameToAdd, rematchGames);
 }
 
