@@ -71,7 +71,7 @@ module.exports = function (req, res) {
                 secondCard,
                 log: [
                   ...game.log,
-                  `${player.username} stole ${opponent.username}'s ${target.name} with the ${card.name} from the top of the deck.`,
+                  `${player.username} stole ${opponent.username}'s ${getCardName(target)} with the ${getCardName(card)} from the top of the deck.`,
                 ],
               };
               updatePromises = [
