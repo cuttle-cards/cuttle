@@ -151,7 +151,9 @@
           "continueMatch": "Continue Match?",
           "rematch?": "Rematch?",
           "rankedIconAlt": "Ranked Match Icon (Crossed Swords)",
-          "casualIconAlt": "Casual Match Icon (Coffee Mug)"
+          "casualIconAlt": "Casual Match Icon (Coffee Mug)",
+          "wonTheMatch": "won the match",
+          "lostTheMatch": "lost the match"
         }
       }
     },

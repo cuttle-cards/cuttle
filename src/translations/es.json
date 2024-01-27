@@ -150,8 +150,10 @@
           "waitingForOpponent": "Esperando al Rival",
           "continueMatch": "¿Continuar el Partido?",
           "rematch?": "¿Revancha?",
-          "rankedIconAlt": "Ranked Match Icon (Crossed Swords)",
-          "casualIconAlt": "Casual Match Icon (Warm Mug)"
+          "rankedIconAlt": "Icono de Partida Clasificatoria (Espadas Cruzadas)",
+          "casualIconAlt": "Icône de Match Décontracté (Mug)",
+          "wonTheMatch": "ganó el partido",
+          "lostTheMatch": "perdió el partido"
         }
       }
     },

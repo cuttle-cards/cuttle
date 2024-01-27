@@ -14,6 +14,7 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   username: {
@@ -26,11 +27,14 @@ const props = defineProps({
   },
 });
 
+const { t } = useI18n();
+
 const imgSrc = computed(() => props.wonMatch ? 'logo-trophy.svg' : 'logo-dead.svg');
 
 const imgAlt = computed(() => {
-  const msgEnd = props.wonMatch ? 'won the match' : 'lost the match';
-  return `${props.username} ${msgEnd}`;
+  const keyPrefix = 'game.dialogs.gameOverDialog.matchStatus';
+  const keySuffix = props.wonMatch ? 'wonTheMatch' : 'lostTheMatch';
+  return `${props.username} ${t(`${keyPrefix}.${keySuffix}`)}`;
 });
 
 const imgDataCy = computed(() => props.wonMatch ? 'won' : 'lost');
