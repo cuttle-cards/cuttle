@@ -169,7 +169,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         .find('[data-cy-result-img=lost]');
   });
 
-  it.only('Loses a ranked match played with the Rematch/Continue Match button', () => {
+  it('Loses a ranked match played with the Rematch/Continue Match button', () => {
     // Game 1 - Player concedes
     concedePlayer();
     assertLoss({wins: 0, losses: 1, stalemates: 0});
