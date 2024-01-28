@@ -70,6 +70,15 @@ describe('Home - Page Content', () => {
 describe('Home - Game List', () => {
   beforeEach(setup);
 
+  describe('Redirection to home if url contains no gameId param', () => {
+    ['lobby', 'game', 'spectate', 'rematch'].forEach(route => {
+      it(`should redirect to home if no gameId is provided for /${route}`, () => {
+        cy.visit(`/${route}`);
+        cy.url().should('not.include', `/${route}`);
+      });
+    });
+  });
+
   describe('Open Games', () => {
     it('Displays a game for every open game on the server', () => {
       cy.createGamePlayer({ gameName: '111', isRanked: false });
