@@ -200,7 +200,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 .langauge-selector {
   position: absolute;
   right: 0;
@@ -217,8 +216,11 @@ export default {
   align-items: center;
   padding: 0 64px;
   width: 50%;
+  text-wrap: nowrap;
 }
-
+.rank-switch * {
+  flex-shrink: 0;
+}
 .vs-logo {
   width: 200px;
   height: 200px;
@@ -249,7 +251,7 @@ h5 {
   margin: auto auto 16px auto;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 980px) {
   .rank-switch {
     padding: 0;
   }  
