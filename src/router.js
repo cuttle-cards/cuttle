@@ -38,7 +38,7 @@ const logoutAndRedirect = async (to, from, next) => {
 };
 
 const redirectIfNoIdParam = (to, from, next) => {
-  if (to.params.gameId || to.params.seasonId) {
+  if (to.params.gameId) {
     next();
   } else {
     next('/');
@@ -118,7 +118,7 @@ const routes = [
     path: '/stats/:seasonId?',
     name: ROUTE_NAME_STATS,
     component: StatsView,
-    beforeEnter: [mustBeAuthenticated , redirectIfNoIdParam],
+    beforeEnter: mustBeAuthenticated,
     // beforeEnter: mustBeAuthenticated,
   },
 ];
