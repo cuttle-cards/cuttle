@@ -216,7 +216,6 @@ export default {
   align-items: center;
   padding: 0 64px;
   width: 50%;
-  text-wrap: nowrap;
 }
 .rank-switch * {
   flex-shrink: 0;
