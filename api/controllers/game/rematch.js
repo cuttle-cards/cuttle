@@ -31,7 +31,7 @@ module.exports = async function (req, res) {
       return res.ok();
     }
 
-    //Get all exisiting rematchGames
+    // Get all exisiting rematchGames
     const [ rematchGames, players, currentMatch ] = await Promise.all([
       sails.helpers.getRematchGames(game),
       User.find({id: [game.p0, game.p1]}),
@@ -43,13 +43,13 @@ module.exports = async function (req, res) {
     const seriesP1Id = firstGame.p1;
     const seriesP0Username = players.find((player) => player.id === seriesP0Id);
     const seriesP1Username = players.find((player) => player.id === seriesP1Id);
-    //Get rematchGame win counts
+    // Get rematchGame win counts
     const player0Wins = rematchGames.filter(({winner}) => winner === seriesP0Id).length;
     const player1wins = rematchGames.filter(({winner}) => winner === seriesP1Id).length;
     const stalemates = rematchGames.filter(({winner}) => winner === null).length;
-    
-    const newName = `${seriesP0Username} VS ${seriesP1Username} ${player0Wins}-${player1wins}-${stalemates}`;
 
+    // Set game name and isRanked
+    const newName = `${seriesP0Username} VS ${seriesP1Username} ${player0Wins}-${player1wins}-${stalemates}`;
     const shouldNewGameBeRanked = currentMatch?.winner ? false : game.isRanked;
 
     const newGame = await gameAPI.createGame(
@@ -57,7 +57,7 @@ module.exports = async function (req, res) {
       shouldNewGameBeRanked,
       gameService.GameStatus.STARTED,
     );
-    
+
     gameUpdates.rematchGame = newGame.id;
     const { p0: newP1Id, p1: newP0Id } = game;
 
