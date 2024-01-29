@@ -73,7 +73,7 @@ describe('Home - Game List', () => {
   describe('Redirection to home if url contains no gameId param', () => {
     ['lobby', 'game', 'spectate', 'rematch'].forEach(route => {
       it(`should redirect to home if no gameId is provided for /${route}`, () => {
-        cy.visit(`/${route}`);
+        cy.visit(`/#/${route}`);
         cy.url().should('not.include', `/${route}`);
       });
     });
