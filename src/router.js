@@ -39,7 +39,6 @@ const logoutAndRedirect = async (to, from, next) => {
 
 const redirectIfNoGameIdParam = (to, from, next) => {
   if (to.params.gameId) {
-  if (to.params.gameId) {
     next();
   } else {
     next('/');
