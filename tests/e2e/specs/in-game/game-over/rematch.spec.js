@@ -941,10 +941,11 @@ describe('Spectating Rematches', () => {
       cy.url().should('not.include', '/spectate');
     });
 
-    it('Shows when player1 declines rematch while spectating ranked match', () => {
+    it.only('Shows when player1 declines rematch while spectating ranked match', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
-      rematchPlayerAsSpectator(playerOne, false);   
+      assertGameOverAsSpectator({p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true});
+      rematchPlayerAsSpectator(playerOne, false);
 
       cy.get('[data-cy=my-rematch-indicator]')
       .find('[data-cy="player-declined-rematch"]')
@@ -956,7 +957,22 @@ describe('Spectating Rematches', () => {
         .should('contain', 'Player left - click to go home.');
     });
 
-    it('Shows when player2 declines rematch while spectating ranked match', () => {});
+    it.only('Shows when player2 declines rematch while spectating ranked match', () => {
+      cy.recoverSessionOpponent(playerTwo);
+      cy.concedeOpponent();
+      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true});
+      rematchPlayerAsSpectator(playerTwo, false);
+
+      cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="player-declined-rematch"]')
+        .should('be.visible');
+
+      cy.get('[data-cy=continue-match-banner]')
+        .should('be.visible')
+        .should('have.class', 'opponent-left')
+        .should('contain', 'Player left - click to go home.');
+    });
+
     it('Spectates a ranked match where player 2 wins the match', () => {});
   });
 });
