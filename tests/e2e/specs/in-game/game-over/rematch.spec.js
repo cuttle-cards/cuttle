@@ -973,7 +973,7 @@ describe('Spectating Rematches', () => {
         .should('contain', 'Player left - click to go home.');
     });
 
-    it.only('Spectates a ranked match where player 2 wins the match', () => {
+    it('Spectates a ranked match where player 2 wins the match', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true});
