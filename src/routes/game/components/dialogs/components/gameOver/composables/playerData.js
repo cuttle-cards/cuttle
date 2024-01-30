@@ -66,9 +66,29 @@ export function usePlayerData(whichPlayer) {
     }
   });
 
+  const wonMatch = computed(() => {
+    if (!gameStore.isRanked) {
+      return false;
+    }
+
+    switch (whichPlayer) {
+      case WhichPlayer.CURRENT_PLAYER:
+        return gameStore.currentMatch?.winner === gameStore.player.id;
+      case WhichPlayer.CURRENT_OPPONENT:
+        return gameStore.currentMatch?.winner === gameStore.opponent.id;
+      case WhichPlayer.ORIGINAL_P0:
+        return gameStore.currentMatch?.winner === originalP0.value.id;
+      case WhichPlayer.ORIGINAL_P1:
+        return gameStore.currentMatch?.winner === originalP1.value.id;
+      default:
+        return false;
+    }
+  });
+
   return {
     username,
     rematch,
     wins,
+    wonMatch,
   };
 }

@@ -19,12 +19,12 @@
         <template v-if="matchIsOver">
           <MatchWonOrLostIndicator
             :username="leftPlayerUsername"
-            :won-match="playerWinsMatch"
+            :won-match="leftPlayerWonMatch"
             data-cy="player-match-result"
           />
           <MatchWonOrLostIndicator
             :username="rightPlayerUsername"
-            :won-match="opponentWinsMatch"
+            :won-match="rightPlayerWonMatch"
             data-cy="opponent-match-result"
           />
         </template>
@@ -131,13 +131,15 @@ export default {
     const {
         username: leftPlayerUsername,
         rematch: leftPlayerRematch,
-        wins: leftPlayerWins
+        wins: leftPlayerWins,
+        wonMatch: leftPlayerWonMatch,
     } = usePlayerData(leftPlayer);
 
     const {
       username: rightPlayerUsername,
       rematch: rightPlayerRematch,
-      wins: rightPlayerWins
+      wins: rightPlayerWins,
+      wonMatch: rightPlayerWonMatch,
     } = usePlayerData(rightPlayer);
 
     return {
@@ -148,6 +150,8 @@ export default {
       rightPlayerUsername,
       rightPlayerRematch,
       rightPlayerWins,
+      leftPlayerWonMatch,
+      rightPlayerWonMatch,
     };
   },
   data() {
