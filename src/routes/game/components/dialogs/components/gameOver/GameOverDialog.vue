@@ -178,7 +178,7 @@ export default {
       }
       if (this.matchIsOver) {
         // You win the match / you lose the match
-        const messageName = this.playerWinsMatch ? 'game.dialogs.gameOverDialog.youWinTheMatch' : 'game.dialogs.gameOverDialog.youLoseTheMatch';
+        const messageName = this.leftPlayerWonMatch ? 'game.dialogs.gameOverDialog.youWinTheMatch' : 'game.dialogs.gameOverDialog.youLoseTheMatch';
         return this.t(messageName);
       }
       // Draw / You Won / You Lose
@@ -224,28 +224,6 @@ export default {
     isMobilePortrait() {
       return this.$vuetify.display.xs;
     },
-    logoSrc() {
-      if (this.stalemate) {
-        return '/img/logo-stalemate.svg';
-      }
-
-      if (this.playerWinsGame) {
-        return '/img/logo-body-no-text.svg';
-      }
-
-      return '/img/logo-dead.svg';
-    },
-    logoDataAttr() {
-      if (this.stalemate) {
-        return 'stalemate-img';
-      }
-
-      if (this.playerWinsGame) {
-        return 'victory-img';
-      }
-
-      return 'loss-img';
-    },
     currentMatch() {
       return this.gameStore.currentMatch;
     },
@@ -258,14 +236,6 @@ export default {
         return 'I';
       });
     },
-    wins() {
-      // const currentMatchGames = this.gameStore.currentMatch?.games ?? [];
-      // return currentMatchGames.filter((game) => game.winner === this.authStore.)
-      return this.matchGameStats.filter((gameResult) => gameResult === 'W').length;
-    },
-    losses() {
-      return this.matchGameStats.filter((gameResult) => gameResult === 'L').length;
-    },
     stalemates() {
       return this.gameStore.currentMatch?.games
         .filter((game) => game.status === GameStatus.FINISHED && game.winner === null).length;
@@ -275,18 +245,6 @@ export default {
     },
     matchIsOver() {
       return this.gameStore.currentMatch?.winner;
-    },
-    playerWinsMatch() {
-      return this.gameStore.currentMatch?.winner === this.gameStore.player.id;
-    },
-    opponentWinsMatch() {
-      return this.gameStore.currentMatch?.winner === this.gameStore.opponent.id;
-    },
-    opponentWantsToRematch() {
-      return (
-        (this.gameStore.p0Rematch && this.gameStore.myPNum === 1) 
-        || (this.gameStore.p1Rematch && this.gameStore.myPNum === 0)
-      );
     },
     opponentDeclinedRematch() {
       return this.gameStore.opponentDeclinedRematch;
