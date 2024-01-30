@@ -9,9 +9,9 @@ import {
 import {
   assertGameState,
   assertSnackbarError,
-  assertVictory,
   getCardId,
   assertGameOverAsSpectator,
+  rematchPlayerAsSpectator,
 } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
@@ -26,7 +26,7 @@ function setup() {
 describe('Spectating Games', () => {
   beforeEach(setup);
 
-  it.only('Spectates a game', () => {
+  it('Spectates a game', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
@@ -382,20 +382,17 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     cy.setupGameAsSpectator();
   });
 
-  it('Spectate unranked games with rematch', function () {
+it('Spectate unranked games with rematch', function () {
     // 1st game: Opponent concedes
     cy.recoverSessionOpponent(playerTwo);
     cy.concedeOpponent();
-    assertVictory();
-    cy.log('rematch player2');
+    assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false});
 
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        cy.rematchOpponent({ gameId: game.id, rematch: true });
-      });
+    rematchPlayerAsSpectator(playerTwo);
 
-    cy.get('[data-cy="opponent-wants-rematch"]').should('be.visible');
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+      .should('have.class', 'ready');
 
     cy.window()
       .its('cuttle.gameStore')
@@ -404,38 +401,27 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
         cy.expect(game.p1Rematch).to.be.true;
       });
 
-    cy.recoverSessionOpponent(playerOne);
+    rematchPlayerAsSpectator(playerOne);
 
-    cy.wait(1000);
-
+    
+    cy.get('[data-cy=my-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+      .should('have.class', 'ready');
+    
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
-        cy.rematchOpponent({ gameId: game.id, rematch: true });
+        cy.expect(game.p0Rematch).to.be.true;
+        cy.expect(game.p1Rematch).to.be.true;
       });
-    cy.wait(1000);
-
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        // new game, so rematch is null
-        cy.expect(game.p0Rematch).to.be.null;
-        cy.expect(game.p1Rematch).to.be.null;
-      });
-
-    cy.log('join rematch player 1');
-
-    cy.url().then((url) => {
-      const oldGameId = url.split('/').pop();
-      cy.joinRematchOpponent({ oldGameId });
-
-      cy.log('recover player 2');
-      cy.recoverSessionOpponent(playerTwo);
-      cy.log('join rematch player 2');
-      cy.joinRematchOpponent({ oldGameId });
-    });
 
     cy.signupOpponent(playerThree);
+
+    cy.get('[data-cy=gameover-rematch]')
+      .click();
+
+    cy.get('[data-cy=player-username]')
+        .should('contain', playerTwo.username);
 
     cy.window()
       .its('cuttle.gameStore')

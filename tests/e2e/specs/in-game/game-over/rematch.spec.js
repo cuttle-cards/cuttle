@@ -1,4 +1,11 @@
-import { assertLoss, assertVictory, assertStalemate, assertGameOverAsSpectator, assertGameState } from '../../../support/helpers';
+import {
+  assertLoss,
+  assertVictory,
+  assertStalemate,
+  assertGameOverAsSpectator,
+  assertGameState,
+  rematchPlayerAsSpectator,
+ } from '../../../support/helpers';
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
@@ -38,15 +45,6 @@ function concedePlayer() {
     .should('be.visible')
     .get('[data-cy=request-gameover-confirm]')
     .click();
-}
-
-function rematchPlayerAsSpectator(userFixture, rematch = true) {
-  cy.recoverSessionOpponent(userFixture);
-  cy.wait(1000);
-  cy.url().then((url) => {
-    const oldGameId = Number(url.split('/').pop());
-    cy.rematchOpponent({ gameId: oldGameId, rematch });
-  });
 }
 
 describe('Creating And Updating Ranked Matches With Rematch', () => {

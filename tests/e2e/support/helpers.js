@@ -592,6 +592,15 @@ export function assertGameOverAsSpectator({p1Wins, p2Wins, stalemates, winner, i
     .find(`[data-cy=${isRankedIcon}]`);
 }
 
+export function rematchPlayerAsSpectator(userFixture, rematch = true) {
+  cy.recoverSessionOpponent(userFixture);
+  cy.wait(1000);
+  cy.url().then((url) => {
+    const oldGameId = Number(url.split('/').pop());
+    cy.rematchOpponent({ gameId: oldGameId, rematch });
+  });
+}
+
 /**
  * @param fixture:
  * {
