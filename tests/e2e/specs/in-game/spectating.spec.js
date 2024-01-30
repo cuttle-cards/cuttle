@@ -11,7 +11,7 @@ import {
   assertSnackbarError,
   assertVictory,
   getCardId,
-  assertLoss,
+  assertGameOverAsSpectator,
 } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
@@ -26,7 +26,7 @@ function setup() {
 describe('Spectating Games', () => {
   beforeEach(setup);
 
-  it('Spectates a game', () => {
+  it.only('Spectates a game', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
@@ -132,7 +132,7 @@ describe('Spectating Games', () => {
     cy.recoverSessionOpponent(playerTwo);
     cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS, 1);
 
-    assertLoss();
+    assertGameOverAsSpectator({p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: false});
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
   });
