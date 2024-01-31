@@ -38,7 +38,7 @@
       :stalemate="stalemate"
     />
     <ReauthenticateDialog :model-value="mustReauthenticate" />
-    <OpponentRequestedStalemateDialog v-model="consideringOpponentStalemateRequest" />
+    <OpponentRequestedStalemateDialog :model-value="consideringOpponentStalemateRequest" />
   </div>
 </template>
 
