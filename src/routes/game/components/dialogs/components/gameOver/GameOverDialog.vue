@@ -227,15 +227,6 @@ export default {
     currentMatch() {
       return this.gameStore.currentMatch;
     },
-    matchGameStats() {
-      const currentMatchGames = this.gameStore.currentMatch?.games ?? [];
-      return currentMatchGames.map((game) => {
-        if (game.status === GameStatus.FINISHED){
-          return game.winner === null ? 'D' : game.winner === this.gameStore.opponent.id ? 'L' : 'W';
-        }
-        return 'I';
-      });
-    },
     stalemates() {
       return this.gameStore.currentMatch?.games
         .filter((game) => game.status === GameStatus.FINISHED && game.winner === null).length;
