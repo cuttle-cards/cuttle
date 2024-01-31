@@ -50,16 +50,17 @@ module.exports = function (req, res) {
       // Game ends in stalemate if 3 passes are made consecutively
       if (game.passes > 2) {
         victory.gameOver = true;
+        const { players } = game;
         const gameUpdates = {
-          p0: game.players[0].id,
-          p1: game.players[1].id,
+          p0: players[0].id,
+          p1: players[1].id,
           status: gameService.GameStatus.FINISHED,
           winner: null
         };
-        await Game.updateOne({ id: game.id }).set(gameUpdates);
-        if (game.isRanked) {
-          victory.currentMatch = await sails.helpers.addGameToMatch(game);
-        }
+        game = await Game.updateOne({ id: game.id }).set(gameUpdates);
+        game.players = players;
+        victory.currentMatch = await sails.helpers.addGameToMatch(game);
+
         await gameService.clearGame({ userId: req.session.usr });
       }
       Game.publish([game.id], {

@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import ChooseWhetherToCounterDialog from '@/routes/game/components/ChooseWhetherToCounterDialog.vue';
-import ChooseTwoDialog from '@/routes/game/components/ChooseTwoDialog.vue';
+import ChooseWhetherToCounterDialog from './ChooseWhetherToCounterDialog.vue';
+import ChooseTwoDialog from './ChooseTwoDialog.vue';
 
 export default {
   name: 'CounterDialog',
