@@ -16,7 +16,7 @@ module.exports = {
   fn: async ({ game }, exits) => {
     try {
       if (!game.isRanked) {
-        const match = sails.helpers.mockCasualMatch(game);
+        const match = sails.helpers.getCasualMatch(game);
         return exits.success(match);
       }
       const [player1, player2] = game.players;

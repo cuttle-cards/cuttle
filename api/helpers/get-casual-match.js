@@ -1,5 +1,5 @@
 module.exports = {
-  friendlyName: 'Mock Casual Match',
+  friendlyName: 'Get Casual Match for a specified casual game',
 
   description:
     'Finds all the games that are in the rematch chain of the specified game and combines them into a mocked Match object to mock the Match model',
