@@ -9,9 +9,9 @@ import { io } from '@/plugins/sails.js';
  */
 function queenCount(player) {
   if (!player) {
-    return null;
+    return 0;
   }
-  return player?.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0) ?? 0;
+  return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0) ?? 0;
 }
 
 const compareByRankThenSuit = (card1, card2) => {
