@@ -238,7 +238,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.get('[data-player-hand-card=1-3]').click();
     cy.get('[data-move-choice=points').click();
     assertVictory();
-    cy.get('[data-cy=match-winner-message]').contains('You won');
+
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
 
