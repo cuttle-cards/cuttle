@@ -268,8 +268,8 @@ export default {
         conceded: false,
         winner: null,
       });
-      await this.gameStore.requestUnsubscribeFromGame();
       await this.gameStore.requestRematch({gameId:this.gameStore.id, rematch: false});
+      await this.gameStore.requestUnsubscribeFromGame();
     },
     async rematch() {
       try {
