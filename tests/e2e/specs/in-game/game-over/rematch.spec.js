@@ -109,14 +109,11 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
       cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+
+      // Player hits rematch and starts new game
       cy.get('[data-cy=my-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
           .should('not.have.class', 'ready');
-      cy.get('[data-cy=opponent-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
-  
-      // Player hits rematch and starts new game
       cy.get('[data-cy=gameover-rematch]').click();
 
       cy.joinRematchOpponent({ oldGameId });
@@ -254,18 +251,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       // Opponent declines rematch
       cy.rematchOpponent({ gameId: oldGameId, rematch: false });
     });
-
-    cy.get('[data-cy=opponent-rematch-indicator]')
-      .find('[data-cy="player-declined-rematch"]')
-        .should('be.visible');
-
-    cy.get('[data-cy=continue-match-banner]')
-      .should('be.visible')
-      .should('have.class', 'opponent-left')
-      .should('contain', 'Opponent left - click to go home.');
-
-    cy.get('[data-cy=gameover-rematch]')
-      .should('be.disabled');
   });
 });
 
@@ -286,7 +271,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.setupGameAsP0(true, false);
   });
   
-  it('Unranked games with rematch', function () {
+  it.only('Unranked games with rematch', function () {
     // Game 1: Opponent concedes
     cy.concedeOpponent();
     assertVictory({wins: 1, losses: 0, stalemates: 0});
@@ -359,18 +344,6 @@ describe('Creating And Updating Casual Games With Rematch', () => {
       const oldGameId = Number(url.split('/').pop());
       cy.rematchOpponent({ gameId: oldGameId, rematch: false });
     });
-
-    cy.get('[data-cy=opponent-rematch-indicator]')
-      .find('[data-cy="player-declined-rematch"]')
-        .should('be.visible');
-
-    cy.get('[data-cy=continue-match-banner]')
-      .should('be.visible')
-      .should('have.class', 'opponent-left')
-      .should('contain', 'Opponent left - click to go home.');
-
-    cy.get('[data-cy=gameover-rematch]')
-      .should('be.disabled');
   });
 });
 

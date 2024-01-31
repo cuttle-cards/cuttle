@@ -1288,7 +1288,27 @@ Cypress.Commands.add('rematchOpponent', ({ gameId, rematch }) => {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }
+
+    return Promise.resolve(jwres);
   });
+
+  if (rematch) {
+    cy.get('[data-cy=opponent-rematch-indicator]')
+    .find('[data-cy="lobby-card-container"]')
+      .should('have.class', 'ready');
+  } else {
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="player-declined-rematch"]')
+      .should('be.visible');
+
+    cy.get('[data-cy=continue-match-banner]')
+      .should('be.visible')
+      .should('have.class', 'opponent-left')
+      .should('contain', 'Opponent left - click to go home.');
+
+    cy.get('[data-cy=gameover-rematch]')
+      .should('be.disabled');
+  }
 });
 
 Cypress.Commands.add('joinRematchOpponent', ({ oldGameId = null }) => {
