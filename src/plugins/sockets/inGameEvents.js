@@ -150,7 +150,6 @@ export async function handleInGameEvents(evData) {
 
       if (currentRoute.name === ROUTE_NAME_SPECTATE) {
         await gameStore.requestSpectate(evData.gameId);
-        gameStore.updateGame(evData.newGame);
       } else {
         await gameStore.requestJoinRematch({ oldGameId });
         gameStore.myPNum = null;
