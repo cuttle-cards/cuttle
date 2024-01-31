@@ -95,6 +95,4 @@ const lossesLabel = computed(() => props.isSpectating ? 'P2' : 'L');
     color: rgba(var(--v-theme-surface-2));
   }
 }
-
-
 </style>
