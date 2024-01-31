@@ -319,7 +319,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-* {
+#game-over-dialog {
   color: rgba(var(--v-theme-surface-2));
 }
 .heading {
