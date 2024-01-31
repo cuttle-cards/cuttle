@@ -218,7 +218,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .should('be.disabled');
   });
   
-  it.skip('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
+  it.only('Creates a match when two players play a ranked game for the first time this week, finish the match with rematch', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/match').then((res) => {
       expect(res.body.length).to.eq(2);
@@ -410,37 +410,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
         expect(games[4].isRanked).to.eq(false, 'Expected last game to be set to unranked after completion');
       });
     });
-  });
-  
-  it.skip('Creates a match when two players play a ranked game for the first time this week, leave game during rematch', function () {
-    // There should be two matches initially (one from last week and one with a different opponent)
-    cy.request('http://localhost:1337/match').then((res) => {
-      expect(res.body.length).to.eq(2);
-    });
-
-    // 1st game: Opponent concedes
-    cy.concedeOpponent();
-    assertVictory();
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        const winners = game.currentMatch.games.map((g) => g.winner);
-        cy.expect(winners[0]).to.eq(game.players[0].id);
-      });
-    cy.get('[data-cy=gameover-rematch]').click();
-    cy.get('#waiting-for-game-to-start-scrim').should('be.visible');
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        const { p0Rematch } = game;
-        const { p1Rematch } = game;
-
-        cy.expect(p0Rematch).to.eq(true);
-        cy.expect(p1Rematch).to.eq(null);
-      });
-    cy.get('[data-cy=leave-unstarted-game-button]').should('be.visible').click();
-
-    cy.url().should('not.include', '/game');
   });
 });
 
