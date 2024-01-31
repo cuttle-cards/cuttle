@@ -16,7 +16,13 @@
     "casual": "Casual",
     "your": "your",
     "close": "Close",
-    "click": "Click"
+    "click": "Click",
+    "playerReady": {
+      "playerDeclinedAlt": "{playerUsername} declined rematch (card back)",
+      "cardBackAlt": "Card back -- Waiting for {playerUsername}",
+      "readyAlt": "Card front -- {playerUsername} is ready",
+      "rematchAlt": "Card front -- {playerUsername} wants rematch"
+    }
   },
   "login": {
     "noAccount": "Don't have an account?",
@@ -125,21 +131,36 @@
       "gameOverDialog": {
         "game": "Game",
         "you": "You",
-        "youWin": "You Win",
-        "youWinTheMatch": "You Win the Match",
+        "youWin": "You Won",
+        "youWinTheMatch": "Gottem!",
         "won": "won",
         "youLose": "You Lose",
-        "youLoseTheMatch": "You Lose the Match",
+        "youLoseTheMatch": "Outmatched...",
         "lost": "lost",
-        "draw": "Draw",
+        "draw": "Stalemate",
+        "p1Wins": "P1 Wins",
+        "p2Wins": "P2 Wins",
+        "match": "Match",
         "matchAgainst": "Match against",
         "yourGameAgainst": "your game against",
         "finished": "Finished",
         "inProgress": "In Progress",
         "goHome": "Go Home",
         "rematch": "Rematch",
-        "askRematch": "wants to rematch",
-        "declineRematch": "declined rematch and left the game"
+        "matchStatus": {
+          "playerLeft": "Player left - click to go home.",
+          "waitingForPlayers": "Waiting for Players",
+          "goodMatch": "Good Match!",
+          "continueSpectating": "Continue Spectating?",
+          "opponentLeft": "Opponent left - click to go home.",
+          "waitingForOpponent": "Waiting for Opponent",
+          "continueMatch": "Continue Match?",
+          "rematch?": "Rematch?",
+          "rankedIconAlt": "Ranked Match Icon (Crossed Swords)",
+          "casualIconAlt": "Casual Match Icon (Coffee Mug)",
+          "wonTheMatch": "won the match",
+          "lostTheMatch": "lost the match"
+        }
       }
     },
     "moves": {
