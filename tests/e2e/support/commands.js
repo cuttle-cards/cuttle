@@ -1283,6 +1283,18 @@ Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
   });
 });
 
+/**
+ * @description Requests to accept/reject rematch on behalf of the test-controlled user
+ *  Note that when spectating, the caller needs to first update session data to match
+ *  the expected userFixture with cy.recoverSessionOpponent(). 
+ *  See helpers.js' rematchPlayerAsSpectator() for how this is done
+ * 
+ * @param { Object } data - Specifies which game, whether to accept rematch, and on behalf of whom
+ * @param { Number } data.gameId - Which game to request the rematch for
+ * @param { Boolean } data.rematch - Whether specified user should accept (true) or reject (false) the rematch
+ * @param { 'my' | 'opponent' } [data.whichPlayer] - Optionally specify whether this user
+ *  is originalP0 ('my') or originalP1 ('opponent'). For use when spectating
+ */
 Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer }) => {
   io.socket.get('/game/rematch', { gameId, rematch }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {

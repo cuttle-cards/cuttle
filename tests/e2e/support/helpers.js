@@ -600,7 +600,7 @@ export function rematchPlayerAsSpectator(userFixture, rematch = true) {
       const firstGame = gameStore.currentMatch?.games[0] ?? null;
       const originalP0 = firstGame?.p0 === gameStore.opponent.id ? gameStore.opponent : gameStore.player;
       const cardSelector = originalP0.username === userFixture.username ? 'my' : 'opponent';
-      
+
       cy.wrap(cardSelector).as('whichPlayer');
     });
 
