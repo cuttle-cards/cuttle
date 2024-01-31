@@ -47,6 +47,7 @@
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import FiveDialog from '@/routes/game/components/FiveDialog.vue';
 import CannotCounterDialog from './components/CannotCounterDialog.vue';
 import CounterDialog from './components/CounterDialog.vue';
 import FourDialog from './components/FourDialog.vue';
@@ -55,6 +56,7 @@ import ReauthenticateDialog from './components/ReauthenticateDialog.vue';
 import SevenDoubleJacksDialog from './components/SevenDoubleJacksDialog.vue';
 import ThreeDialog from './components/ThreeDialog.vue';
 import OpponentRequestedStalemateDialog from './components/OpponentRequestedStalemateDialog.vue';
+
 
 export default {
   name: 'GameDialogs',
