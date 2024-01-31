@@ -15,7 +15,7 @@ module.exports = async function (req, res) {
     let game =  await sails.helpers.lockGame(req.session.game);
 
     // Early return if requesting user was not in the game
-    if (game.p0 !== userId && game.p1 !== userId) {
+    if (![game.p0, game.p1].includes(userId)) {
       return;
     }
 
@@ -52,7 +52,7 @@ module.exports = async function (req, res) {
     // Get rematchGame win counts
     const player0Wins = rematchGames.filter(({winner}) => winner === seriesP0Id).length;
     const player1wins = rematchGames.filter(({winner}) => winner === seriesP1Id).length;
-    const stalemates = rematchGames.filter(({winner}) => winner === null).length;
+    const stalemates = rematchGames.filter(({winner}) => !winner).length;
 
     // Set game name and isRanked
     const newName = `${seriesP0Username} VS ${seriesP1Username} ${player0Wins}-${player1wins}-${stalemates}`;
