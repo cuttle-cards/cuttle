@@ -16,7 +16,8 @@ module.exports = {
   fn: async ({ game }, exits) => {
     try {
       if (!game.isRanked) {
-        return exits.success();
+        const match = sails.helpers.getCasualMatch(game);
+        return exits.success(match);
       }
       const [player1, player2] = game.players;
       let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1.id, player2.id);
