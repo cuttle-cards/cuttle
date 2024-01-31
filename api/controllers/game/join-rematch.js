@@ -19,17 +19,6 @@ module.exports = async function (req, res) {
     req.session.game = game.id;
     req.session.pNum = user.pNum;
 
-    const gameUpdates = {
-      lastEvent: { change: 'joinRematch' },
-    };
-
-    await Game.updateOne({ id: game.id }).set(gameUpdates);
-    Game.publish([oldGame.id], {
-      change: 'joinRematch',
-      gameId: game.id,
-      game,
-    });
-
     return res.ok();
   } catch (err) {
     return res.badRequest(err);

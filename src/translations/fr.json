@@ -16,7 +16,13 @@
     "casual": "Classique",
     "your": "ton",
     "close": "Fermer",
-    "click": "Cliquez sur"
+    "click": "Cliquez sur",
+    "playerReady": {
+      "playerDeclinedAlt": "${playerUsername} a décliné la carte de revanche",
+      "cardBackAlt": "Dos de la carte -- En attente de l'adversaire",
+      "readyAlt": "Face de la carte -- {playerUsername} est prêt",
+      "rematchAlt": "Face de la carte -- {playerUsername} veut une revanche"
+    }
   },
   "login": {
     "noAccount": "Vous n'avez pas de compte?",
@@ -132,14 +138,29 @@
         "youLoseTheMatch": "Vous avez perdu la partie",
         "lost": "perdu",
         "draw": "Match nul",
+        "p1Wins": "P1 Gagne",
+        "p2Wins": "P2 Gagne le Match",
+        "match": "Match",
         "matchAgainst": "Match contre",
         "yourGameAgainst": "ton match contre",
         "finished": "Fini",
         "inProgress": "En Cours",
         "goHome": "Retourner au vestibule",
         "rematch": "Rejouer",
-        "askRematch": "veut rejouer",
-        "declineRematch": "a décliné l'invitation et a quitté la partie"
+        "matchStatus": {
+          "playerLeft": "Joueur parti",
+          "waitingForPlayers": "En attente de joueurs",
+          "goodMatch": "Bon match !",
+          "continueSpectating": "Continuer à observer ?",
+          "opponentLeft": "Votre adversaire peft",
+          "waitingForOpponent": "En attente de l'adversaire",
+          "continueMatch": "Continuer le match ?",
+          "rematch?": "Revanche ?",
+          "rankedIconAlt": "Icône de Match Classé (Épées Croisées)",
+          "casualIconAlt": "Icône de Match Décontracté (Mug)",
+          "wonTheMatch": "a gagné le match",
+          "lostTheMatch": "a perdu le match"
+        }
       }
     },
     "moves": {
