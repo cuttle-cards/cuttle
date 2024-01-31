@@ -8,10 +8,10 @@ import { io } from '@/plugins/sails.js';
  * @param player is the player object
  */
 function queenCount(player) {
-  if (!player) {
+  if (!player?.faceCards) {
     return 0;
   }
-  return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0) ?? 0;
+  return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
 }
 
 const compareByRankThenSuit = (card1, card2) => {
@@ -122,7 +122,7 @@ export const useGameStore = defineStore('game', {
       if (!state.player) {
         return 0;
       }
-      return state.player?.points.reduce((total, card) => total + card.rank, 0) || 0;
+      return state.player?.points?.reduce((total, card) => total + card.rank, 0) || 0;
     },
     playerQueenCount: (state) => {
       return queenCount(state.player);
@@ -155,7 +155,7 @@ export const useGameStore = defineStore('game', {
       if (!state.opponent) {
         return 0;
       }
-      return state.opponent?.points.reduce((total, card) => total + card.rank, 0) || 0;
+      return state.opponent?.points?.reduce((total, card) => total + card.rank, 0) || 0;
     },
     opponentQueenCount: (state) => {
       return queenCount(state.opponent);
