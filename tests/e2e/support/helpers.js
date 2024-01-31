@@ -593,12 +593,26 @@ export function assertGameOverAsSpectator({p1Wins, p2Wins, stalemates, winner, i
 }
 
 export function rematchPlayerAsSpectator(userFixture, rematch = true) {
+  // Identify whether userFixture is for originalP0 or originalP1
+  cy.window()
+    .its('cuttle.gameStore')
+    .then((gameStore) => {
+      const firstGame = gameStore.currentMatch?.games[0] ?? null;
+      const originalP0 = firstGame?.p0 === gameStore.opponent.id ? gameStore.opponent : gameStore.player;
+      const cardSelector = originalP0.username === userFixture.username ? 'my' : 'opponent';
+      
+      cy.wrap(cardSelector).as('whichPlayer');
+    });
+
   cy.recoverSessionOpponent(userFixture);
   cy.wait(1000);
   cy.url().then((url) => {
     const oldGameId = Number(url.split('/').pop());
-    cy.rematchOpponent({ gameId: oldGameId, rematch });
+    cy.get('@whichPlayer').then((whichPlayer) => {
+      cy.rematchOpponent({ gameId: oldGameId, rematch, whichPlayer });
+    });
   });
+
 }
 
 /**

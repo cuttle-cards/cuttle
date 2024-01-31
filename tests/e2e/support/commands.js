@@ -1283,7 +1283,7 @@ Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
   });
 });
 
-Cypress.Commands.add('rematchOpponent', ({ gameId, rematch }) => {
+Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer }) => {
   io.socket.get('/game/rematch', { gameId, rematch }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
@@ -1291,20 +1291,21 @@ Cypress.Commands.add('rematchOpponent', ({ gameId, rematch }) => {
 
     return Promise.resolve(jwres);
   });
-
+  const cardSelector = whichPlayer ?? 'opponent';
   if (rematch) {
-    cy.get('[data-cy=opponent-rematch-indicator]')
+    cy.get(`[data-cy=${cardSelector}-rematch-indicator]`)
     .find('[data-cy="lobby-card-container"]')
       .should('have.class', 'ready');
   } else {
-    cy.get('[data-cy=opponent-rematch-indicator]')
+    cy.get(`[data-cy=${cardSelector}-rematch-indicator]`)
       .find('[data-cy="player-declined-rematch"]')
       .should('be.visible');
 
+    const playerOrOpponent = whichPlayer ? 'Player' : 'Opponent';
     cy.get('[data-cy=continue-match-banner]')
       .should('be.visible')
       .should('have.class', 'opponent-left')
-      .should('contain', 'Opponent left - click to go home.');
+      .should('contain', `${playerOrOpponent} left - click to go home.`);
 
     cy.get('[data-cy=gameover-rematch]')
       .should('be.disabled');

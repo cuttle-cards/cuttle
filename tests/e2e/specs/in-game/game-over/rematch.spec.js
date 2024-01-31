@@ -271,7 +271,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.setupGameAsP0(true, false);
   });
   
-  it.only('Unranked games with rematch', function () {
+  it('Unranked games with rematch', function () {
     // Game 1: Opponent concedes
     cy.concedeOpponent();
     assertVictory({wins: 1, losses: 0, stalemates: 0});
@@ -362,13 +362,8 @@ describe('Spectating Rematches', () => {
 
       // P0 and P1 request rematch, then spectator
       rematchPlayerAsSpectator(playerTwo);
-      cy.get('[data-cy=opponent-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-        .should('have.class', 'ready');
       rematchPlayerAsSpectator(playerOne);
-      cy.get('[data-cy=my-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-        .should('have.class', 'ready');
+
 
       // Wait to confirm dialog stays open
       cy.wait(1000);
@@ -395,15 +390,8 @@ describe('Spectating Rematches', () => {
         .should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
-      cy.get('[data-cy=my-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-        .should('have.class', 'ready');
-
       rematchPlayerAsSpectator(playerTwo);
 
-      cy.get('[data-cy=opponent-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-        .should('have.class', 'ready');
 
       // Game 3 -- Stalemate then player2 declines rematch
       cy.log('Game 3: Stalemate via request stalemate');
@@ -421,18 +409,6 @@ describe('Spectating Rematches', () => {
 
       // Player 2 declines rematch
       rematchPlayerAsSpectator(playerTwo, false);
-
-      cy.get('[data-cy=opponent-rematch-indicator]')
-      .find('[data-cy="player-declined-rematch"]')
-        .should('be.visible');
-
-      cy.get('[data-cy=continue-match-banner]')
-        .should('be.visible')
-        .should('have.class', 'opponent-left')
-        .should('contain', 'Player left - click to go home.');
-
-      cy.get('[data-cy=gameover-rematch')
-        .should('be.disabled');
 
       cy.get('[data-cy=gameover-go-home]').click();
       cy.url().should('not.include', '/spectate');
@@ -465,9 +441,6 @@ describe('Spectating Rematches', () => {
 
       // playerOne rematches, then spectator, then playerTwo
       rematchPlayerAsSpectator(playerTwo);
-      cy.get('[data-cy=opponent-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
 
       cy.get('[data-cy=gameover-rematch')
         .should('not.be.disabled')
@@ -479,9 +452,6 @@ describe('Spectating Rematches', () => {
         .should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
-      cy.get('[data-cy=my-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
 
       // Game 2: playerTwo wins by playerOne conceding
       cy.log('Game 2: player2 wins via player1 conceding');
@@ -494,14 +464,7 @@ describe('Spectating Rematches', () => {
 
       // Both players rematch, then spectator
       rematchPlayerAsSpectator(playerTwo);
-      cy.get('[data-cy=opponent-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
-
       rematchPlayerAsSpectator(playerOne);
-      cy.get('[data-cy=my-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
 
       cy.get('[data-cy=gameover-rematch')
         .should('not.be.disabled')
@@ -551,14 +514,7 @@ describe('Spectating Rematches', () => {
         .should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
-      cy.get('[data-cy=my-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
-
       rematchPlayerAsSpectator(playerTwo);
-      cy.get('[data-cy=opponent-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
 
       // Game 4: players stalemate by requesting stalemate
       cy.log('Game 4: stalemate via stalemate request');
@@ -583,15 +539,7 @@ describe('Spectating Rematches', () => {
         .should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
-      cy.get('[data-cy=my-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
-
       rematchPlayerAsSpectator(playerTwo);
-      cy.get('[data-cy=opponent-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
-
 
       // Game 5 -- playerOne wins the match with points
       cy.log('Game 5: player1 wins via points and wins match');
@@ -628,15 +576,6 @@ describe('Spectating Rematches', () => {
       cy.concedeOpponent();
       assertGameOverAsSpectator({p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true});
       rematchPlayerAsSpectator(playerOne, false);
-
-      cy.get('[data-cy=my-rematch-indicator]')
-      .find('[data-cy="player-declined-rematch"]')
-        .should('be.visible');
-
-      cy.get('[data-cy=continue-match-banner]')
-        .should('be.visible')
-        .should('have.class', 'opponent-left')
-        .should('contain', 'Player left - click to go home.');
     });
 
     it('Shows when player2 declines rematch while spectating ranked match', () => {
@@ -644,15 +583,6 @@ describe('Spectating Rematches', () => {
       cy.concedeOpponent();
       assertGameOverAsSpectator({p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true});
       rematchPlayerAsSpectator(playerTwo, false);
-
-      cy.get('[data-cy=opponent-rematch-indicator]')
-      .find('[data-cy="player-declined-rematch"]')
-        .should('be.visible');
-
-      cy.get('[data-cy=continue-match-banner]')
-        .should('be.visible')
-        .should('have.class', 'opponent-left')
-        .should('contain', 'Player left - click to go home.');
     });
 
     it('Spectates a ranked match where player 2 wins the match', () => {
@@ -662,14 +592,7 @@ describe('Spectating Rematches', () => {
 
       // Both players rematch, then spectator
       rematchPlayerAsSpectator(playerOne);
-      cy.get('[data-cy=my-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
-
       rematchPlayerAsSpectator(playerTwo);
-      cy.get('[data-cy=opponent-rematch-indicator]')
-        .find('[data-cy="lobby-card-container"]')
-          .should('have.class', 'ready');
 
       cy.get('[data-cy=gameover-rematch')
         .should('not.be.disabled')
