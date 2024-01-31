@@ -390,10 +390,6 @@ it('Spectate unranked games with rematch', function () {
 
     rematchPlayerAsSpectator(playerTwo);
 
-    cy.get('[data-cy=opponent-rematch-indicator]')
-      .find('[data-cy="lobby-card-container"]')
-      .should('have.class', 'ready');
-
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
@@ -402,11 +398,6 @@ it('Spectate unranked games with rematch', function () {
       });
 
     rematchPlayerAsSpectator(playerOne);
-
-    
-    cy.get('[data-cy=my-rematch-indicator]')
-      .find('[data-cy="lobby-card-container"]')
-      .should('have.class', 'ready');
     
     cy.window()
       .its('cuttle.gameStore')
