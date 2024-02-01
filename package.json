@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "dependencies": {
     "chart.js": "4.4",
     "connect-redis": "3.0.2",
