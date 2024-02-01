@@ -56,7 +56,7 @@
                 <v-switch
                   v-model="gameStore.isRanked"
                   variant="outlined"
-                  class="mx-md-4 pl-2"
+                  class="mx-md-4 pl-2 flex-shrink-0"
                   :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
                   data-cy="edit-game-ranked-switch"
                   color="primary"
@@ -217,9 +217,7 @@ export default {
   padding: 0 64px;
   width: 50%;
 }
-.rank-switch * {
-  flex-shrink: 0;
-}
+
 .vs-logo {
   width: 200px;
   height: 200px;
