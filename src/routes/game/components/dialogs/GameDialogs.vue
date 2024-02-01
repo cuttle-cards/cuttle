@@ -38,7 +38,7 @@
       :stalemate="stalemate"
     />
     <ReauthenticateDialog :model-value="mustReauthenticate" />
-    <OpponentRequestedStalemateDialog v-model="consideringOpponentStalemateRequest" />
+    <OpponentRequestedStalemateDialog :model-value="consideringOpponentStalemateRequest" />
   </div>
 </template>
 
@@ -46,14 +46,14 @@
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
-import CannotCounterDialog from '@/routes/game/components/CannotCounterDialog.vue';
-import CounterDialog from '@/routes/game/components/CounterDialog.vue';
-import FourDialog from '@/routes/game/components/FourDialog.vue';
-import GameOverDialog from '@/routes/game/components/GameOverDialog.vue';
-import ReauthenticateDialog from '@/routes/game/components/ReauthenticateDialog.vue';
-import SevenDoubleJacksDialog from '@/routes/game/components/SevenDoubleJacksDialog.vue';
-import ThreeDialog from '@/routes/game/components/ThreeDialog.vue';
-import OpponentRequestedStalemateDialog from '@/routes/game/components/OpponentRequestedStalemateDialog.vue';
+import CannotCounterDialog from './components/CannotCounterDialog.vue';
+import CounterDialog from './components/CounterDialog.vue';
+import FourDialog from './components/FourDialog.vue';
+import GameOverDialog from './components/gameOver/GameOverDialog.vue';
+import ReauthenticateDialog from './components/ReauthenticateDialog.vue';
+import SevenDoubleJacksDialog from './components/SevenDoubleJacksDialog.vue';
+import ThreeDialog from './components/ThreeDialog.vue';
+import OpponentRequestedStalemateDialog from './components/OpponentRequestedStalemateDialog.vue';
 
 export default {
   name: 'GameDialogs',
@@ -120,13 +120,8 @@ export default {
     stalemate() {
       return this.gameStore.gameIsOver && this.gameStore.winnerPNum === null;
     },
-    consideringOpponentStalemateRequest: {
-      get() {
-        return this.gameStore.consideringOpponentStalemateRequest;
-      },
-      set(val) {
-        this.gameStore.setConsideringOpponentStalemateRequest(val);
-      },
+    consideringOpponentStalemateRequest() {
+      return this.gameStore.consideringOpponentStalemateRequest;
     },
     topCard() {
       return this.gameStore.topCard;

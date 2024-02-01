@@ -12,7 +12,7 @@
         <v-col md="4" cols="12">
           <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
           <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
-          <LobbyPlayerIndicator
+          <PlayerReadyIndicator
             :player-username="authStore.username"
             :player-ready="iAmReady"
             :game-started="gameStarted"
@@ -23,7 +23,7 @@
           <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo">
         </v-col>
         <v-col md="4" cols="12">
-          <LobbyPlayerIndicator
+          <PlayerReadyIndicator
             :player-username="gameStore.opponentUsername"
             :player-ready="gameStore.opponentIsReady"
             :game-started="gameStarted"
@@ -107,14 +107,14 @@ import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
-import LobbyPlayerIndicator from './components/LobbyPlayerIndicator.vue';
+import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 
 export default {
   name: 'LobbyView',
   components: {
-    LobbyPlayerIndicator,
+    PlayerReadyIndicator,
     BaseSnackbar,
     TheLanguageSelector,
   },

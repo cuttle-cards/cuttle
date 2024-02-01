@@ -8,8 +8,8 @@ import { io } from '@/plugins/sails.js';
  * @param player is the player object
  */
 function queenCount(player) {
-  if (!player) {
-    return null;
+  if (!player?.faceCards) {
+    return 0;
   }
   return player.faceCards.reduce((queenCount, card) => queenCount + (card.rank === 12 ? 1 : 0), 0);
 }
@@ -112,6 +112,7 @@ export const useGameStore = defineStore('game', {
     waitingForOpponentToStalemate: false,
     consideringOpponentStalemateRequest: false,
     currentMatch: null,
+    iWantToContinueSpectating: false,
   }),
   getters: {
     player: (state) => {
@@ -121,7 +122,7 @@ export const useGameStore = defineStore('game', {
       if (!state.player) {
         return 0;
       }
-      return state.player.points.reduce((total, card) => total + card.rank, 0) || 0;
+      return state.player?.points?.reduce((total, card) => total + card.rank, 0) || 0;
     },
     playerQueenCount: (state) => {
       return queenCount(state.player);
@@ -154,7 +155,7 @@ export const useGameStore = defineStore('game', {
       if (!state.opponent) {
         return 0;
       }
-      return state.opponent.points.reduce((total, card) => total + card.rank, 0) || 0;
+      return state.opponent?.points?.reduce((total, card) => total + card.rank, 0) || 0;
     },
     opponentQueenCount: (state) => {
       return queenCount(state.opponent);
@@ -170,6 +171,27 @@ export const useGameStore = defineStore('game', {
     },
     hasGlassesEight: (state) => {
       return state.player?.faceCards?.filter((card) => card.rank === 8).length > 0 ?? false;
+    },
+    iWantRematch: (state) => {
+      if (state.myPNum === null) {
+        return false;
+      }
+      const key = `p${state.myPNum}Rematch`;
+      return state[key];
+    },
+    // `null` if deciding, false if declined, true if accepted
+    opponentWantsRematch: (state) => {
+      if (state.myPNum === null) {
+        return false;
+      }
+      const key = `p${(state.myPNum + 1) % 2}Rematch`;
+      return state[key];
+    },
+    opponentDeclinedRematch()  {
+      return this.opponentWantsRematch === false;
+    },
+    someoneDeclinedRematch() {
+      return this.iWantRematch === false || this.opponentDeclinedRematch;
     },
   },
   actions: {
@@ -246,9 +268,6 @@ export const useGameStore = defineStore('game', {
     },
     setRematch({ pNum, rematch }) {
       this[`p${pNum}Rematch`] = rematch;
-    },
-    setRematchGameId({ gameId }) {
-      this.rematchGameId = gameId;
     },
     resetPNumIfNull(game) {
       const authStore = useAuthStore();
@@ -731,6 +750,7 @@ export const useGameStore = defineStore('game', {
     async requestStalemate() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/stalemate', (res, jwres) => {
+          this.consideringOpponentStalemateRequest = false;
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
@@ -738,6 +758,7 @@ export const useGameStore = defineStore('game', {
     async rejectStalemate() {
       return new Promise((resolve, reject) => {
         io.socket.get('/game/reject-stalemate', (res, jwres) => {
+          this.consideringOpponentStalemateRequest = false;
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
