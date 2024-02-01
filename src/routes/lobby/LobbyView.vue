@@ -58,7 +58,7 @@
                   <v-switch
                     v-model="gameStore.isRanked"
                     variant="outlined"
-                    class="mx-md-4 pl-2"
+                    class="mx-md-4 pl-2 flex-shrink-0"
                     :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
                     data-cy="edit-game-ranked-switch"
                     color="primary"
@@ -264,7 +264,7 @@ h5 {
 
 @media (max-width: 660px) {
   .rank-switch {
-    padding: 0;
+    padding: 0 3vw;
   }
   h1 {
     font-size: 2rem;
@@ -279,6 +279,11 @@ h5 {
     width: 100px;
     height: 100px;
   }
+}
+@media (max-width: 350px) {
+  .rank-switch {
+    width: 100%;
+  }  
 }
 
 #logo {
