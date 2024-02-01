@@ -47,8 +47,8 @@ module.exports = async function (req, res) {
     const [ firstGame ] = rematchGames;
     const seriesP0Id = firstGame.p0;
     const seriesP1Id = firstGame.p1;
-    const seriesP0Username = players.find((player) => player.id === seriesP0Id);
-    const seriesP1Username = players.find((player) => player.id === seriesP1Id);
+    const seriesP0Username = players.find((player) => player.id === seriesP0Id).username;
+    const seriesP1Username = players.find((player) => player.id === seriesP1Id).username;
     // Get rematchGame win counts
     const player0Wins = rematchGames.filter(({winner}) => winner === seriesP0Id).length;
     const player1wins = rematchGames.filter(({winner}) => winner === seriesP1Id).length;
