@@ -82,10 +82,10 @@ describe('Video Playground', () => {
     cy.get('[data-player-hand-card=7-1]').click();
     cy.wait(800);
   
-    // cy.get('[data-move-choice=scuttle]').click();
+    cy.get('[data-move-choice=scuttle]').click();
 
-    // cy.wait(800);
-    // cy.get('[data-opponent-point-card=5-1]').click();
+    cy.wait(800);
+    cy.get('[data-opponent-point-card=5-1]').click();
   });
 
   it('Jacks', () => {
