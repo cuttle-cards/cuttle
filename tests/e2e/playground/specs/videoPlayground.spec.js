@@ -126,7 +126,7 @@ describe('Video Playground', () => {
     cy.get('[data-opponent-point-card=10-3]').click();
   });
 
-  it.only('Playing Aces', () => {
+  it('Playing Aces', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_HEARTS],
       p0Points: [Card.FOUR_OF_CLUBS],
@@ -144,6 +144,52 @@ describe('Video Playground', () => {
     cy.wait(1000);
 
     cy.get('[data-player-hand-card=1-3]').click();
+    cy.wait(800);
+
+    cy.get('[data-move-choice=oneOff]').click();
+    cy.wait(1000);
+
+    cy.resolveOpponent();
+  });
+
+  it.only('Playing Sixes', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [
+        Card.THREE_OF_CLUBS,
+        Card.SIX_OF_CLUBS,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_DIAMONDS,
+        Card.JACK_OF_CLUBS,
+        Card.JACK_OF_HEARTS,
+        Card.QUEEN_OF_CLUBS,
+      ],
+      p0Points: [Card.FIVE_OF_DIAMONDS, Card.TEN_OF_SPADES],
+      p0FaceCards: [Card.EIGHT_OF_SPADES],
+      p1Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Points: [Card.FOUR_OF_CLUBS],
+      p1FaceCards: [Card.KING_OF_CLUBS, Card.EIGHT_OF_DIAMONDS],
+    });
+
+    cy.get('[data-player-hand-card=11-0]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=4-0]').click();
+    cy.get('[data-player-point-card]').should('have.length', 3);
+
+    cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_SPADES);
+    cy.get('[data-player-point-card]').should('have.length', 2);
+
+    cy.get('[data-player-hand-card=11-2]').click();
+    cy.get('[data-move-choice=jack]').click();
+    cy.get('[data-opponent-point-card=10-3]').click();
+    cy.get('[data-player-point-card]').should('have.length', 3);
+
+    cy.playJackOpponent(Card.JACK_OF_SPADES, Card.TEN_OF_SPADES);
+    cy.get('[data-player-point-card]').should('have.length', 2);
+
+    cy.wait(1500);
+
+    // Part to record: playing the 6
+    cy.get('[data-player-hand-card=6-0]').click();
     cy.wait(800);
 
     cy.get('[data-move-choice=oneOff]').click();
