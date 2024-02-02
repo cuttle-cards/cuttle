@@ -86,6 +86,7 @@
     "e2e:server": "cross-env VITE_API_URL=http://localhost:1337 cypress run",
     "e2e:server:gui": "cross-env VITE_API_URL=http://localhost:1337 cypress open",
     "e2e:server:playground": "cross-env VITE_API_URL=http://localhost:1337 cypress run --config-file tests/e2e/playground/playground.config.js",
+    "e2e:gui:playground": "cypress open --config-file tests/e2e/playground/playground.config.js",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
     "storybook": "storybook dev -p 6006",
