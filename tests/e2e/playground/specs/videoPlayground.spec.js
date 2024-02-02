@@ -62,7 +62,7 @@ describe('Video Playground', () => {
     cy.get('[data-move-choice=faceCard]').click();
   });
 
-  it.only('Scuttles', () => {
+  it('Scuttles', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.KING_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
       p0Points: [Card.FOUR_OF_CLUBS],
