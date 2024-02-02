@@ -64,7 +64,7 @@ describe('Video Playground', () => {
     cy.get('[data-move-choice=faceCard]').click();
   });
 
-  it.only('Scuttles', () => {
+  it('Scuttles', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.KING_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
       p0Points: [Card.FOUR_OF_CLUBS],
@@ -89,5 +89,44 @@ describe('Video Playground', () => {
 
     cy.wait(800);
     cy.get('[data-opponent-point-card=5-1]').click();
+  });
+
+  it.only('Jacks', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.JACK_OF_CLUBS, Card.JACK_OF_DIAMONDS],
+      p0Points: [Card.FOUR_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [
+        Card.THREE_OF_CLUBS,
+        Card.SEVEN_OF_CLUBS,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_DIAMONDS,
+        Card.JACK_OF_HEARTS
+      ],
+      p1Points: [Card.FIVE_OF_DIAMONDS, Card.TEN_OF_SPADES],
+      p1FaceCards: [],
+    });
+
+    cy.wait(1000);
+
+    cy.get('[data-player-hand-card=11-0]').click();
+    cy.wait(800);
+
+    cy.get('[data-move-choice=jack]').click();
+    cy.wait(800);
+
+    cy.get('[data-opponent-point-card=10-3]').click();
+    cy.wait(1000);
+
+    cy.playJackOpponent(Card.JACK_OF_HEARTS, Card.TEN_OF_SPADES);
+    cy.wait(800);
+
+    cy.get('[data-player-hand-card=11-1]').click();
+    cy.wait(800);
+
+    cy.get('[data-move-choice=jack]').click();
+    cy.wait(800);
+
+    cy.get('[data-opponent-point-card=10-3]').click();
   });
 });
