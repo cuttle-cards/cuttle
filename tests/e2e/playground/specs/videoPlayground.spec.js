@@ -1,5 +1,15 @@
 import { Card } from '../../fixtures/cards';
 
+/**
+ * Video Playground
+ * This test file is used to create promotional videos of various moves in the game.
+ * It is NOT run in CI and will only be visible in they cypress ui if you open cypress
+ * with the playground-specific command of `npm run e2e:gui:playground`
+ * 
+ * Each test sets up a scenario and makes one or several moves, pausing in between
+ * for realistic timing. Game logic is not appropriately tested; the focus is on
+ * being able to record the screen to create quick move-highlight videos
+ */
 describe('Video Playground', () => {
   beforeEach(() => {
     cy.viewport(1920, 1080);
