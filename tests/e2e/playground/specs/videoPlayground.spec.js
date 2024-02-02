@@ -62,7 +62,7 @@ describe('Video Playground', () => {
     cy.get('[data-move-choice=faceCard]').click();
   });
 
-  it('Scuttles', () => {
+  it.only('Scuttles', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.KING_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
       p0Points: [Card.FOUR_OF_CLUBS],
@@ -82,10 +82,10 @@ describe('Video Playground', () => {
     cy.get('[data-player-hand-card=7-1]').click();
     cy.wait(800);
   
-    cy.get('[data-move-choice=scuttle]').click();
+    // cy.get('[data-move-choice=scuttle]').click();
 
-    cy.wait(800);
-    cy.get('[data-opponent-point-card=5-1]').click();
+    // cy.wait(800);
+    // cy.get('[data-opponent-point-card=5-1]').click();
   });
 
   it('Jacks', () => {
@@ -152,7 +152,7 @@ describe('Video Playground', () => {
     cy.resolveOpponent();
   });
 
-  it.only('Playing Sixes', () => {
+  it('Playing Sixes', () => {
     cy.loadGameFixture(0, {
       p0Hand: [
         Card.THREE_OF_CLUBS,
