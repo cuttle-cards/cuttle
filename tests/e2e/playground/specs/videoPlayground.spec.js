@@ -31,7 +31,6 @@ describe('Video Playground', () => {
       p1Points: [Card.FIVE_OF_HEARTS],
       p1FaceCards: [],
     });
-
     cy.wait(1000);
 
     cy.get('[data-player-hand-card=8-2]').click();
@@ -55,7 +54,6 @@ describe('Video Playground', () => {
       p1Points: [Card.QUEEN_OF_CLUBS],
       p1FaceCards: [],
     });
-
     cy.wait(1000);
   
     cy.get('[data-player-hand-card=13-2]').click();
@@ -79,7 +77,6 @@ describe('Video Playground', () => {
       p1Points: [Card.FIVE_OF_DIAMONDS, Card.TEN_OF_SPADES],
       p1FaceCards: [],
     });
-
     cy.wait(1000);
   
     cy.get('[data-player-hand-card=7-1]').click();
@@ -91,7 +88,7 @@ describe('Video Playground', () => {
     cy.get('[data-opponent-point-card=5-1]').click();
   });
 
-  it.only('Jacks', () => {
+  it('Jacks', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.JACK_OF_CLUBS, Card.JACK_OF_DIAMONDS],
       p0Points: [Card.FOUR_OF_CLUBS],
@@ -106,7 +103,6 @@ describe('Video Playground', () => {
       p1Points: [Card.FIVE_OF_DIAMONDS, Card.TEN_OF_SPADES],
       p1FaceCards: [],
     });
-
     cy.wait(1000);
 
     cy.get('[data-player-hand-card=11-0]').click();
@@ -128,5 +124,31 @@ describe('Video Playground', () => {
     cy.wait(800);
 
     cy.get('[data-opponent-point-card=10-3]').click();
+  });
+
+  it.only('Playing Aces', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_HEARTS],
+      p0Points: [Card.FOUR_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [
+        Card.THREE_OF_CLUBS,
+        Card.SEVEN_OF_CLUBS,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_DIAMONDS,
+        Card.JACK_OF_HEARTS
+      ],
+      p1Points: [Card.EIGHT_OF_CLUBS, Card.TEN_OF_SPADES],
+      p1FaceCards: [],
+    });
+    cy.wait(1000);
+
+    cy.get('[data-player-hand-card=1-3]').click();
+    cy.wait(800);
+
+    cy.get('[data-move-choice=oneOff]').click();
+    cy.wait(1000);
+
+    cy.resolveOpponent();
   });
 });
