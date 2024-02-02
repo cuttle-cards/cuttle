@@ -39,4 +39,29 @@ describe('Video Playground', () => {
 
     cy.get('[data-move-choice=points]').click();
   });
+
+  it.only('Plays a King', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.KING_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+      p0Points: [Card.TEN_OF_SPADES],
+      p0FaceCards: [],
+      p1Hand: [
+        Card.THREE_OF_CLUBS,
+        Card.FIVE_OF_HEARTS,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_DIAMONDS,
+        Card.NINE_OF_HEARTS
+      ],
+      p1Points: [Card.QUEEN_OF_CLUBS],
+      p1FaceCards: [],
+    });
+
+    cy.wait(1000);
+  
+    cy.get('[data-player-hand-card=13-2]').click();
+    cy.wait(800);
+  
+    cy.get('[data-move-choice=faceCard]').click();
+  });
+
 });
