@@ -39,10 +39,15 @@ const logoutAndRedirect = async (to, from, next) => {
 const checkAndSubscribeToLobby = async (to, from, next) => {
   const gameStore = useGameStore();
   const authStore = useAuthStore();
-  const { gameId } = to.params;
+  const gameId = parseInt(to.params.gameId);
   
+  if (Number.isNaN(gameId) || !Number.isFinite(gameId)) {
+    to.meta.error = 'Invalid lobby number';
+    return next();
+  }
+
   if (!authStore.authenticated) {
-    authStore.redirectGameId = +gameId;
+    authStore.redirectGameId = gameId;
     return next('/login');
   }
 
