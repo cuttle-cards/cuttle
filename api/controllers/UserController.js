@@ -61,7 +61,6 @@ module.exports = {
       if (!loggedIn) {
         await passwordAPI.checkPass(password, user.encryptedPassword);
       } 
-  
       // Query for game if user is in one
       const gameId = user.game ?? req.session.game;
       const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
