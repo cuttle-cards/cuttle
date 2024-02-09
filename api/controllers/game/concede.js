@@ -10,6 +10,7 @@ module.exports = async function (req, res) {
       status: gameService.GameStatus.FINISHED,
       winner: winningUser,
     });
+
     const game = await gameService.populateGame({ gameId: req.session.game });
     await gameService.clearGame({ userId: req.session.usr });
     const currentMatch = await sails.helpers.addGameToMatch(game);
@@ -20,6 +21,15 @@ module.exports = async function (req, res) {
       conceded: true,
       currentMatch,
     };
+
+    await Game.updateOne(req.session.game).set({
+      lastEvent: {
+        change: 'conceded',
+        game,
+        victory
+      }
+    });
+
     Game.publish([game.id], {
       change: 'concede',
       game,
