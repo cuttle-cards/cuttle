@@ -95,7 +95,6 @@ export const useAuthStore = defineStore('auth', {
           this.clearAuth();
           return;
         }
-
         // If the user is authenticated and has a username, add it to the store
         if (username) {
           this.authSuccess(username);
@@ -117,10 +116,15 @@ export const useAuthStore = defineStore('auth', {
           const { gameId } = route.params;
           gameStore.requestSpectate(Number(gameId));
         }
-
+        
         if (gameId && (isGame || isLobby)) {
           await this.requestReauthenticate({ username }).then(({ game }) => {
-            gameStore.updateGame(game);
+            gameStore.updateGame(game.lastEvent.game);
+            if (game.status === 3) {
+              gameStore.setGameOver(
+                game.lastEvent.victory
+              );
+            }
           });
         }
 
