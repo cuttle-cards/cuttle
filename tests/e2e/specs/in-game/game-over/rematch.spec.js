@@ -345,14 +345,6 @@ describe('Creating And Updating Casual Games With Rematch', () => {
       cy.rematchOpponent({ gameId: oldGameId, rematch: false });
     });
   });
-
-  it.only('Dialogs persist after refreshing when game is over', () => {
-    cy.concedeOpponent();
-    cy.get('[data-cy=game-over-dialog]').should('be.visible');
-    cy.reload();
-    cy.get('[data-cy=game-over-dialog]').should('be.visible');
-  });
-
 });
 
 describe('Spectating Rematches', () => {

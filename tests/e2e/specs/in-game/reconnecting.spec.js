@@ -699,3 +699,16 @@ describe('Reauthenticating in game', () => {
     cy.get('#deck').should('be.visible');
   });
 });
+
+describe('Reconnecting after game is over', () => {
+  beforeEach(() => {
+    cy.setupGameAsP0();
+  });
+  
+  it.only('Dialogs persist after refreshing when game is over', () => {
+    cy.concedeOpponent();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+});
