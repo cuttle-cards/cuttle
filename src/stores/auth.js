@@ -119,12 +119,12 @@ export const useAuthStore = defineStore('auth', {
         
         if (gameId && (isGame || isLobby)) {
           await this.requestReauthenticate({ username }).then(({ game }) => {
-            gameStore.updateGame(game.lastEvent.game);
-            if (game.status === 3) {
-              gameStore.setGameOver(
-                game.lastEvent.victory
-              );
+            if (game.status !== 3) {
+              gameStore.updateGame(game.lastEvent.game);
+              gameStore.setGameOver(game.lastEvent.victory);
+              return;
             }
+            gameStore.updateGame(game);
           });
         }
 
