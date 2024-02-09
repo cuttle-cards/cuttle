@@ -90,7 +90,7 @@ module.exports = {
         });
       }
 
-      const game = populatedGame ??  unpopulatedGame;
+      const game = populatedGame ?? unpopulatedGame;
       return res.ok({
         game,
         username: user.username,
