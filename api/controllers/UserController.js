@@ -60,21 +60,24 @@ module.exports = {
       // Validate password if not logged in -- will error if incorrect
       if (!loggedIn) {
         await passwordAPI.checkPass(password, user.encryptedPassword);
-      }
-
+      } 
+  
       // Query for game if user is in one
-      const gameId = user.game;
+      const gameId = user.game ?? req.session.game;
       const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
+      //Dont populate if game over
+      const gameIsFinished = unpopulatedGame.status === 3;
       // Get populated game if game has started
       const populatedGame =
-        unpopulatedGame && unpopulatedGame.p0Ready && unpopulatedGame.p1Ready
+        !gameIsFinished && unpopulatedGame && unpopulatedGame.p0Ready && unpopulatedGame.p1Ready
           ? await gameService.populateGame({ gameId })
           : null;
+      
 
       req.session.loggedIn = true;
       req.session.usr = user.id;
 
-      if (unpopulatedGame) {
+      if (unpopulatedGame && !gameIsFinished) {
         Game.subscribe(req, [unpopulatedGame.id]);
         req.session.game = unpopulatedGame.id;
         req.session.pNum = user.pNum ?? undefined;
@@ -87,11 +90,12 @@ module.exports = {
         });
       }
 
-      const game = populatedGame ?? unpopulatedGame;
+      const game = populatedGame ??  unpopulatedGame;
       return res.ok({
         game,
         username: user.username,
         pNum: user.pNum,
+        victory: unpopulatedGame?.lastEvent?.victory ?? null,
       });
     } catch (err) {
       return res.badRequest(err);
