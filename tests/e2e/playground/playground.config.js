@@ -6,7 +6,7 @@ module.exports = defineConfig({
   ...cypressConfig,
   e2e: {
     ...cypressConfig.e2e,
-    specPattern: 'tests/e2e/playground/specs/playground.spec.js',
+    specPattern: 'tests/e2e/playground/specs',
     excludeSpecPattern: '',
   },
 });

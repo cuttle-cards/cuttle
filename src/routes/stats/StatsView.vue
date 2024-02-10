@@ -126,7 +126,12 @@ export default {
   beforeRouteUpdate(to, from, next) {
     this.loadingData = true;
     const seasonId = parseInt(to.params.seasonId);
-    this.checkAndSelectSeason(seasonId);
+    if (seasonId) {
+      this.checkAndSelectSeason(seasonId);
+      this.loadingData = false;
+      return next();
+    }
+    [this.selectedSeason] = this.seasons;
     this.loadingData = false;
     next();
   },
@@ -179,8 +184,8 @@ export default {
   },
   created() {
     io.socket.get('/stats/seasons/current', (res) => {
-      this.loadingData = false;
       if (!res?.length) {
+        this.loadingData = false;
         this.error = true;
         return;
       }
@@ -191,6 +196,7 @@ export default {
         this.checkAndSelectSeason(seasonId);
         return;
       }
+      this.loadingData = false;
       [this.selectedSeason] = this.seasons;
     });
   },
