@@ -76,7 +76,7 @@ module.exports = {
       req.session.loggedIn = true;
       req.session.usr = user.id;
 
-      if (unpopulatedGame && !gameIsFinished) {
+      if (unpopulatedGame) {
         Game.subscribe(req, [unpopulatedGame.id]);
         req.session.game = unpopulatedGame.id;
         req.session.pNum = user.pNum ?? undefined;
@@ -88,13 +88,12 @@ module.exports = {
           game: populatedGame,
         });
       }
-
+      
       const game = populatedGame ?? unpopulatedGame;
       return res.ok({
         game,
         username: user.username,
         pNum: user.pNum,
-        victory: unpopulatedGame?.lastEvent?.victory ?? null,
       });
     } catch (err) {
       return res.badRequest(err);
