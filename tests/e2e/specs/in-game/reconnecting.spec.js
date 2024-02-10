@@ -705,10 +705,52 @@ describe('Reconnecting after game is over', () => {
     cy.setupGameAsP0();
   });
   
-  it.only('Dialogs persist after refreshing when game is over', () => {
+  it('Dialogs persist after refreshing when game is over by conceded', () => {
     cy.concedeOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
+  
+  it('Dialogs persist after refreshing when game is over by stalemate', () => {
+    cy.get('#game-menu-activator').click();
+    cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+    cy.get('#request-gameover-dialog')
+    .should('be.visible')
+    .get('[data-cy=request-gameover-confirm]')
+    .click();
+    cy.stalemateOpponent();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+
+  // it.only('Dialogs persist after refreshing when game is over by passing', () => {
+  //   cy.setupGameAsP0();
+  //   cy.loadGameFixture(0, {
+  //     p0Hand: [Card.SEVEN_OF_CLUBS],
+  //     p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+  //     p0FaceCards: [],
+  //     p1Hand: [],
+  //     p1Points: [],
+  //     p1FaceCards: [],
+  //     deck: [],
+  //   });
+
+  //   cy.log('Drawing last two cards');
+  //   cy.get('#deck').should('contain', '(2)').click();
+  //   cy.drawCardOpponent();
+  //   cy.log('Deck empty');
+
+  //   //Pass three times for stalemate
+  //   cy.get('#turn-indicator').contains('YOUR TURN');
+  //   cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+  //   cy.passOpponent();
+  //   cy.get('#turn-indicator').contains('YOUR TURN');
+  //   cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+  //   cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  //   cy.passOpponent();
+  // });
+
 });
