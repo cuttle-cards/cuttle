@@ -28,7 +28,6 @@ module.exports = async function (req, res) {
     
     // End in stalemate if both players requested stalemate this turn
     if (playerStalemateVal === opponentStalemateVal && opponentStalemateVal === game.turn) {
-      fullGame = await gameService.populateGame({ gameId });
       victory.gameOver = true;
       victory.currentMatch = await sails.helpers.addGameToMatch(game);
       gameUpdates = {
@@ -37,15 +36,20 @@ module.exports = async function (req, res) {
         p1: game.players[1].id,
         status: gameService.GameStatus.FINISHED,
         winner: null,
+      };
+      await Game.updateOne({ id: gameId }).set(gameUpdates);
+      fullGame = await gameService.populateGame({ gameId }); 
+      await Game.updateOne({ id: gameId }).set({
         lastEvent: {
           change: 'stalemate',
           game: { ...fullGame, gameUpdates },
           victory
         }
-      };
+      });      
       await gameService.clearGame({ userId });
-    } 
-    await Game.updateOne({ id: gameId }).set(gameUpdates);
+    } else {
+      await Game.updateOne({ id: gameId }).set(gameUpdates);
+    }
     
     Game.publish([game.id], {
       change: victory.gameOver ? 'requestStalemate' : 'stalemate',
