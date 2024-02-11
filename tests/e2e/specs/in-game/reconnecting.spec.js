@@ -705,7 +705,7 @@ describe('Reconnecting after game is over', () => {
     cy.setupGameAsP0();
   });
   
-  it('Dialogs persist after refreshing when game is over by conceded', () => {
+  it('Dialogs persist after refreshing when game is over by conceded and opponent request rematch', () => {
     cy.concedeOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.url().then((url) => {
@@ -716,6 +716,16 @@ describe('Reconnecting after game is over', () => {
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.get('[data-cy=match-score-counter-wins]').should('contain', 'W: 1');
+    cy.get('[data-cy=lobby-ready-card]').should('exist');
+  });
+
+  it('Dialogs persist after refreshing when game is over by conceded and player request rematch', () => {
+    cy.concedeOpponent();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.get('[data-cy=gameover-rematch]').click();
+    cy.get('[data-cy=lobby-ready-card]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.get('[data-cy=lobby-ready-card]').should('exist');
   });
   
@@ -809,7 +819,7 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
-  it.only('Dialogs persist after refreshing when game is over by resolving one-off', () => {
+  it('Dialogs persist after refreshing when game is over by resolving one-off', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -820,7 +830,6 @@ describe('Reconnecting after game is over', () => {
       deck:[]
     });
 
-
     cy.get('#deck').click();
     cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.SEVEN_OF_HEARTS);
     cy.get('[data-player-hand-card=7-3]').click();
@@ -829,6 +838,77 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-player-hand-card=6-1]').click();
     cy.get('[data-move-choice=oneOff]').should('be.visible').click();
     cy.resolveOpponent();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by resolving one-off from a seven', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.JACK_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.KING_OF_DIAMONDS,
+      secondCard: Card.TEN_OF_CLUBS,
+      deck:[]
+    });
+
+    cy.get('[data-player-hand-card=6-1]').click();
+    cy.get('[data-move-choice=points]').should('be.visible').click();
+    cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.SIX_OF_DIAMONDS);
+    cy.get('[data-player-hand-card=7-3]').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.resolveOpponent();
+    cy.get('[data-top-card=13-1]').click();
+    cy.get('[data-move-choice=faceCard]').should('be.visible').click();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by playing jack from a seven', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
+      p0Points: [Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [Card.SEVEN_OF_SPADES,],
+      p1FaceCards: [],
+      topCard: Card.JACK_OF_DIAMONDS,
+      deck:[]
+    });
+
+    cy.get('[data-player-hand-card=7-3]').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.resolveOpponent();
+    cy.get('[data-top-card=11-1]').should('be.visible').click();
+    cy.get('[data-move-choice=jack]').should('be.visible').click();
+    cy.get('[data-opponent-point-card=7-3]').should('be.visible').click();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by playing points from a seven', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
+      p0Points: [Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.SEVEN_OF_SPADES,
+      deck:[]
+    });
+
+    cy.get('[data-player-hand-card=7-3]').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.resolveOpponent();
+    cy.get('[data-top-card=7-3]').click();
+    cy.get('[data-move-choice=points]').should('be.visible').click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
