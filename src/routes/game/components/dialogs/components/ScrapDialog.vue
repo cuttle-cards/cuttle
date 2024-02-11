@@ -15,8 +15,8 @@
         <h1>{{ t('game.dialogs.scrapDialog.scrapPile') }}</h1>
         <v-btn 
           icon
-          color="surface-1"
-          elevation="0"
+          color="surface-2"
+          variant="text"
           data-cy="close-scrap-dialog-x"
           aria-label="Close scrap dialog" 
           @click="show = false"
