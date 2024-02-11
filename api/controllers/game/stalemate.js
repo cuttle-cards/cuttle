@@ -52,7 +52,7 @@ module.exports = async function (req, res) {
     }
     
     Game.publish([game.id], {
-      change: victory.gameOver ? 'requestStalemate' : 'stalemate',
+      change:'requestStalemate',
       game: fullGame ?? game,
       victory,
       requestedByPNum: pNum,
