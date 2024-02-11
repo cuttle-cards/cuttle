@@ -705,11 +705,18 @@ describe('Reconnecting after game is over', () => {
     cy.setupGameAsP0();
   });
   
-  it('Dialogs persist after refreshing when game is over by conceded', () => {
+  it.only('Dialogs persist after refreshing when game is over by conceded', () => {
     cy.concedeOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.url().then((url) => {
+      const oldGameId = Number(url.split('/').pop());
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+    });
+    cy.get('[data-cy=lobby-ready-card]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.get('[data-cy=match-score-counter-wins]').should('contain', 'W: 1');
+    cy.get('[data-cy=lobby-ready-card]').should('exist');
   });
   
   it('Dialogs persist after refreshing when game is over by stalemate', () => {
@@ -747,7 +754,7 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
-  it.only('Dialogs persist after refreshing when game is over by points', () => {
+  it('Dialogs persist after refreshing when game is over by points', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -760,6 +767,25 @@ describe('Reconnecting after game is over', () => {
 
     cy.get('[data-player-hand-card=7-0]').click();
     cy.get('[data-move-choice=points]').should('be.visible').click();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by points using Jack', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.JACK_OF_DIAMONDS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_CLUBS],
+      p1Points: [Card.SEVEN_OF_CLUBS],
+      p1FaceCards: [],
+      deck: [],
+    });
+
+    cy.get('[data-player-hand-card=11-1]').click();
+    cy.get('[data-move-choice=jack]').should('be.visible').click();
+    cy.get('[data-opponent-point-card=7-0]').click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
