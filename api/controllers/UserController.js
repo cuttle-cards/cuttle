@@ -72,7 +72,6 @@ module.exports = {
           ? await gameService.populateGame({ gameId })
           : null;
       
-
       req.session.loggedIn = true;
       req.session.usr = user.id;
 
