@@ -86,7 +86,7 @@ module.exports = function (req, res) {
       }
 
       Game.publish([fullGame.id], {
-        change: victory.gameIsOver ? 'winByPointsJack' :'jack',
+        change: 'jack',
         game: fullGame,
         victory,
       });
