@@ -63,7 +63,7 @@ module.exports = function (req, res) {
         fullGame = await gameService.populateGame({ gameId: game.id });
         await Game.updateOne({ id: game.id }).set({
           lastEvent: {
-            change: 'stalemate by passing',
+            change: 'stalemateByPassing',
             game: fullGame,
             victory
           }
@@ -71,7 +71,7 @@ module.exports = function (req, res) {
         await gameService.clearGame({ userId: req.session.usr });
       }
       Game.publish([game.id], {
-        change: victory.gameOver ? 'stalemateByPassing' : 'pass',
+        change: 'pass',
         game: fullGame ?? game,
         victory,
       });
