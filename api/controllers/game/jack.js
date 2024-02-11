@@ -73,6 +73,12 @@ module.exports = function (req, res) {
         game: fullGame,
         gameModel,
       });
+      
+      Game.publish([fullGame.id], {
+        change: 'jack',
+        game: fullGame,
+        victory,
+      });
       // If the game is over, clean it up
       if (victory.gameOver) {
         await Game.updateOne({ id: fullGame.id }).set({
@@ -84,12 +90,6 @@ module.exports = function (req, res) {
         });
         await gameService.clearGame({ userId: req.session.usr });
       }
-
-      Game.publish([fullGame.id], {
-        change: 'jack',
-        game: fullGame,
-        victory,
-      });
       return res.ok();
     })
     .catch(function failed(err) {
