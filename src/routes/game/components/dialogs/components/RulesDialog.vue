@@ -5,8 +5,8 @@
       <v-btn
         icon 
         aria-label="Close rules dialog"
-        color="surface-1" 
-        elevation="0"
+        color="surface-2" 
+        variant="text"
         @click="close"
       >
         <v-icon
