@@ -63,7 +63,7 @@ module.exports = function (req, res) {
         await gameService.clearGame({ userId: req.session.usr });
       }
       Game.publish([fullGame.id], {
-        change: victory.gameOver ? 'winByPoints' : 'points',
+        change: 'points',
         game: fullGame,
         victory,
       });
