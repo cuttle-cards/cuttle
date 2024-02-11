@@ -21,7 +21,13 @@ module.exports = async function (req, res) {
       conceded: true,
       currentMatch,
     };
-
+    
+    Game.publish([game.id], {
+      change: 'concede',
+      game,
+      victory,
+    });
+    
     await Game.updateOne(req.session.game).set({
       lastEvent: {
         change: 'conceded',
@@ -29,13 +35,6 @@ module.exports = async function (req, res) {
         victory
       }
     });
-
-    Game.publish([game.id], {
-      change: 'concede',
-      game,
-      victory,
-    });
-
     return res.ok();
   } catch (err) {
     return res.badRequest(err);
