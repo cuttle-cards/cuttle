@@ -5,9 +5,11 @@ import LobbyView from '@/routes/lobby/LobbyView.vue';
 import GameView from '@/routes/game/GameView.vue';
 import RulesView from '@/routes/rules/RulesView.vue';
 import StatsView from '@/routes/stats/StatsView.vue';
+import RematchView from '@/routes/rematch/RematchView.vue';
 import { useAuthStore } from '@/stores/auth';
 
 export const ROUTE_NAME_GAME = 'Game';
+export const ROUTE_NAME_REMATCH = 'Rematch';
 export const ROUTE_NAME_SPECTATE = 'Spectate';
 export const ROUTE_NAME_HOME = 'Home';
 export const ROUTE_NAME_LOBBY = 'Lobby';
@@ -81,6 +83,14 @@ const routes = [
     // TODO: Add logic to redirect if a given game does not exist
     // mustBeAuthenticated intentionally left off here
     // If a user refreshes the relogin modal will fire and allow them to continue playing
+    meta: {
+      hideNavigation: true,
+    },
+  },
+  {
+    name: ROUTE_NAME_REMATCH,
+    path: '/rematch/:gameId',
+    component: RematchView,
     meta: {
       hideNavigation: true,
     },

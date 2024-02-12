@@ -16,13 +16,7 @@
     "casual": "Amistoso",
     "your": "tu",
     "close": "Cerrar",
-    "click": "Hacer clic",
-    "playerReady": {
-      "playerDeclinedAlt": "{name} rechazó la tarjeta de revancha",
-      "cardBackAlt": "Dorso de la tarjeta -- Esperando a {playerUsername}",
-      "readyAlt": "Frente de la tarjeta -- {playerUsername} está listo",
-      "rematchAlt": "Frente de la tarjeta -- {playerUsername} quiere revancha"
-    }
+    "click": "Hacer clic"
   },
   "login": {
     "noAccount": "¿No tienes una cuenta?",
@@ -144,29 +138,14 @@
         "youLoseTheMatch": "Has perdido la partida",
         "lost": "perdida",
         "draw": "empate",
-        "p1Wins": "P1 Gana",
-        "p2Wins": "P2 Gana",
-        "match": "el Partida",
         "matchAgainst": "Partida contra",
         "yourGameAgainst": "tu partida contra",
         "finished": "Finalizada",
         "inProgress": "En Curso",
         "goHome": "Volver al menú",
         "rematch":"revanche",
-        "matchStatus": {
-          "playerLeft": "Jugador se ha ido",
-          "waitingForPlayers": "Esperando a los jugadores",
-          "goodMatch": "¡Buen Partido!",
-          "continueSpectating": "¿Continuar como espectador?",
-          "opponentLeft": "Rival se ha ido",
-          "waitingForOpponent": "Esperando al Rival",
-          "continueMatch": "¿Continuar el Partido?",
-          "rematch?": "¿Revancha?",
-          "rankedIconAlt": "Icono de Partida Clasificatoria (Espadas Cruzadas)",
-          "casualIconAlt": "Icône de Match Décontracté (Mug)",
-          "wonTheMatch": "ganó el partido",
-          "lostTheMatch": "perdió el partido"
-        }
+        "askRematch": "quiere una revancha",
+        "declineRematch": "rechazó la revancha y abandonó el juego"
       }
     },
     "moves": {

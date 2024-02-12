@@ -1,8 +1,7 @@
 import { useGameStore } from '@/stores/game';
 import router from '@/router.js';
-import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router';
+import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY, ROUTE_NAME_REMATCH } from '@/router';
 import SocketEvent from '_/types/SocketEvent';
-import { sleep } from '@/util/sleep';
 
 // Handles socket updates of game data
 export async function handleInGameEvents(evData) {
@@ -136,46 +135,57 @@ export async function handleInGameEvents(evData) {
       break;
     case SocketEvent.REMATCH:
       gameStore.setRematch({ pNum: evData.pNum, rematch: evData.game[`p${evData.pNum}Rematch`] });
-      return;
-    case SocketEvent.NEW_GAME_FOR_REMATCH: {
-      // ignore if not currently in/spectating relevant game
       if (
-        Number(urlGameId) !== evData.oldGameId || 
-        ![ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE].includes(currentRoute.name)
+        evData.pNum === gameStore.myPNum &&
+        currentRoute.name !== ROUTE_NAME_SPECTATE &&
+        evData.game[`p${evData.pNum}Rematch`]
       ) {
-        return;
-      }
-      gameStore.p0Rematch = true;
-      gameStore.p1Rematch = true;
-      gameStore.rematchGameId = evData.gameId;
-      // stop early if spectating and haven't yet chosen to continue spectating
-      if (gameStore.isSpectating && !gameStore.iWantToContinueSpectating) {
-        return;
-      }
-
-      // wait for card flip animations
-      await sleep(500);
-
-      const { gameId: oldGameId } = currentRoute.params;
-
-      if (currentRoute.name === ROUTE_NAME_SPECTATE) {
-        await gameStore.requestSpectate(evData.gameId);
-      } else {
-        await gameStore.requestJoinRematch({ oldGameId });
-        gameStore.myPNum = null;
-        gameStore.resetPNumIfNullThenUpdateGame(evData.newGame);
-      }
-
-      router.push({
-          name: currentRoute.name,
+        router.push({
+          name: ROUTE_NAME_REMATCH,
           params: {
-            gameId: evData.gameId,
+            gameId: gameStore.id,
           },
         });
-      
-      gameStore.iWantToContinueSpectating = false;
-      gameStore.p0Rematch = null;
-      gameStore.p1Rematch = null;
+      }
+      return;
+    case SocketEvent.NEW_GAME_FOR_REMATCH: {
+      gameStore.setRematchGameId(evData.gameId);
+
+      if (currentRoute.name === ROUTE_NAME_SPECTATE) {
+        gameStore.updateGame(evData.newGame);
+      }
+      if (currentRoute.name === ROUTE_NAME_REMATCH) {
+        const { gameId } = currentRoute.params;
+        gameStore.requestJoinRematch({ oldGameId: gameId });
+        router
+          .push({
+            name: ROUTE_NAME_GAME,
+            params: {
+              gameId: evData.gameId,
+            },
+          })
+          .then(() => {
+            window.location.reload();
+          });
+      }
+      break;
+    }
+    case SocketEvent.JOIN_REMATCH: {
+      if (currentRoute.name === ROUTE_NAME_SPECTATE) {
+        gameStore.updateGame(evData.game);
+        if (parseInt(urlGameId, 10) !== evData.game.id) {
+          router
+            .push({
+              name: ROUTE_NAME_SPECTATE,
+              params: {
+                gameId: evData.gameId,
+              },
+            })
+            .then(() => {
+              gameStore.requestSpectate(evData.gameId);
+            });
+        }
+      }
       break;
     }
     case SocketEvent.RE_LOGIN:
@@ -184,10 +194,9 @@ export async function handleInGameEvents(evData) {
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     case SocketEvent.REQUEST_STALEMATE:
-      // Show OpponentRequestedStalemateDialog if opponent requested stalemate
-      //   and game is not yet over
-      gameStore.consideringOpponentStalemateRequest = !evData.victory.gameOver && 
-        evData.requestedByPNum !== gameStore.myPNum;
+      if (evData.requestedByPNum !== gameStore.myPNum && !evData.victory.gameOver) {
+        gameStore.consideringOpponentStalemateRequest = true;
+      }
       break;
     case SocketEvent.REJECT_STALEMATE:
       gameStore.consideringOpponentStalemateRequest = false;

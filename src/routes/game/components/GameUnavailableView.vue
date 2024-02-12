@@ -15,7 +15,7 @@
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { useGameStore } from '@/stores/game';
-import ReauthenticateDialog from '@/routes/game/components/dialogs/components/ReauthenticateDialog.vue';
+import ReauthenticateDialog from '@/routes/game/components/ReauthenticateDialog.vue';
 import GameUnavailableOverlay from '@/routes/game/components/GameUnavailableOverlay.vue';
 
 export default {

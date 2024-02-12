@@ -130,15 +130,6 @@ to execute the entire test suite headlessly against localhost:1337, which you ca
 
 **NOTE** you should run `npm run build` (see above) before this command so that the server (backend) serves the most up-to-date version of the client.
 
-#### Testing Playground
-Cuttle has a separate folder of tests that are not intended to be run during CI or for normal development. These tests are used for various tasks and such as creating promotional videos of various moves in the game, or tinkering with repeatedly running test commands to check for flakiness. 
-
-The tests reside in `tests/e2e/playground/specs`. These test files do not appear when running the tests or opening cypress normally. 
-
-To see the playground tests in the cypress UI, run `npm run e2e:gui:playground`.
-
-To run the playground tests headlessly, first build the client with `npm run build` then run `npm run e2e:server:playground`.
-
 #### Debugging Backend Server
 
 You can utilize the node debugger in VSCode to debug the backend server.

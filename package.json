@@ -1,7 +1,7 @@
 {
   "name": "cuttle",
   "description": "The deepest card game under the sea",
-  "version": "7.0.3",
+  "version": "6.9.9",
   "dependencies": {
     "chart.js": "4.4",
     "connect-redis": "3.0.2",
@@ -83,7 +83,6 @@
     "build": "vite build",
     "e2e:client": "cypress run",
     "e2e:gui": "cypress open",
-    "e2e:gui:playground": "cypress open --config-file tests/e2e/playground/playground.config.js",
     "e2e:server": "cross-env VITE_API_URL=http://localhost:1337 cypress run",
     "e2e:server:gui": "cross-env VITE_API_URL=http://localhost:1337 cypress open",
     "e2e:server:playground": "cross-env VITE_API_URL=http://localhost:1337 cypress run --config-file tests/e2e/playground/playground.config.js",
