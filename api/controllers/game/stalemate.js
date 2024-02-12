@@ -6,10 +6,9 @@ module.exports = async function (req, res) {
   try {
     const { game: gameId, pNum, usr: userId } = req.session;
     // Track which turn each player most recently requested stalemate
-    const game = await Game.findOne({ id: gameId })
+    let game = await Game.findOne({ id: gameId })
       .populate('players', { sort: 'pNum' });
     let gameUpdates = {};
-    let fullGame;
     const keyPrefix = 'turnStalemateWasRequestedByP';
     const playerStalemateKey = `${keyPrefix}${pNum}`;
     const playerStalemateVal = game.turn;
@@ -28,8 +27,6 @@ module.exports = async function (req, res) {
     
     // End in stalemate if both players requested stalemate this turn
     if (playerStalemateVal === opponentStalemateVal && opponentStalemateVal === game.turn) {
-      victory.gameOver = true;
-      victory.currentMatch = await sails.helpers.addGameToMatch(game);
       gameUpdates = {
         ...gameUpdates,
         p0: game.players[0].id,
@@ -37,12 +34,17 @@ module.exports = async function (req, res) {
         status: gameService.GameStatus.FINISHED,
         winner: null,
       };
+      
       await Game.updateOne({ id: gameId }).set(gameUpdates);
-      fullGame = await gameService.populateGame({ gameId }); 
+      game = await gameService.populateGame({ gameId }); 
+      
+      victory.gameOver = true;
+      victory.currentMatch = await sails.helpers.addGameToMatch(game);
+      
       await Game.updateOne({ id: gameId }).set({
         lastEvent: {
           change: 'stalemate',
-          game: { ...fullGame, gameUpdates },
+          game: game,
           victory
         }
       });      
@@ -53,7 +55,7 @@ module.exports = async function (req, res) {
     
     Game.publish([game.id], {
       change:'requestStalemate',
-      game: fullGame ?? game,
+      game: game,
       victory,
       requestedByPNum: pNum,
     });
