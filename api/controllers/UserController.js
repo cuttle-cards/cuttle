@@ -60,12 +60,12 @@ module.exports = {
       // Validate password if not logged in -- will error if incorrect
       if (!loggedIn) {
         await passwordAPI.checkPass(password, user.encryptedPassword);
-      } 
+      }
       // Query for game if user is in one
-      const gameId = user.game ?? req.session.game;
+      const gameId = (user.game || req.session.game) ?? null;
       const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
       //Dont populate if game over
-      const gameIsFinished = unpopulatedGame.status === 3;
+      const gameIsFinished = unpopulatedGame?.status === 3;
       // Get populated game if game has started
       const populatedGame =
         !gameIsFinished && unpopulatedGame && unpopulatedGame.p0Ready && unpopulatedGame.p1Ready
