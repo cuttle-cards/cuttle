@@ -24,12 +24,7 @@
       aria-label="Cancel move"
       @click="$emit('cancel')"
     >
-      <v-icon
-        icon="mdi-close"
-        size="x-large"
-        color="surface-1"
-        aria-hidden="true"
-      />
+      <v-icon icon="mdi-close" size="x-large" aria-hidden="true" />
     </v-btn>
   </div>
 </template>
