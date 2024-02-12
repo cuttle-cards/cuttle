@@ -50,7 +50,6 @@ module.exports = function (req, res) {
       // Game ends in stalemate if 3 passes are made consecutively
       let fullGame = null;
       if (game.passes > 2) {
-        victory.currentMatch = await sails.helpers.addGameToMatch(game);
         victory.gameOver = true;
         const { players } = game;
         const gameUpdates = {
@@ -60,7 +59,10 @@ module.exports = function (req, res) {
           winner: null
         };
         await Game.updateOne({ id: game.id }).set(gameUpdates);
+        
         fullGame = await gameService.populateGame({ gameId: game.id });
+        victory.currentMatch = await sails.helpers.addGameToMatch(fullGame);
+        
         await Game.updateOne({ id: game.id }).set({
           lastEvent: {
             change: 'stalemateByPassing',
