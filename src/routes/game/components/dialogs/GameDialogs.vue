@@ -18,8 +18,10 @@
       :target="gameStore.oneOffTarget"
       @resolve="resolve"
     />
+
     <FourDialog :model-value="gameStore.showResolveFour" @discard="discard" />
     <FiveDialog @resolve-five="resolveFive" />
+
     <ThreeDialog
       :model-value="pickingFromScrap"
       :one-off="gameStore.oneOff"
@@ -47,6 +49,7 @@
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+
 import CannotCounterDialog from '@/routes/game/components/CannotCounterDialog.vue';
 import CounterDialog from '@/routes/game/components/CounterDialog.vue';
 import FourDialog from '@/routes/game/components/FourDialog.vue';
@@ -56,6 +59,7 @@ import SevenDoubleJacksDialog from '@/routes/game/components/SevenDoubleJacksDia
 import ThreeDialog from '@/routes/game/components/ThreeDialog.vue';
 import OpponentRequestedStalemateDialog from '@/routes/game/components/OpponentRequestedStalemateDialog.vue';
 import FiveDialog from '@/routes/game/components/FiveDialog.vue';
+
 
 export default {
   name: 'GameDialogs',
@@ -70,6 +74,7 @@ export default {
     OpponentRequestedStalemateDialog,
     FiveDialog
 },
+
   emits: ['clear-selection', 'handle-error'],
   computed: {
     ...mapStores(useGameStore, useAuthStore),
