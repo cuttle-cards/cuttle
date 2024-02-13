@@ -131,14 +131,14 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   });
   cy.log('Finished setting up game as p1');
 });
-Cypress.Commands.add('setupGameAsSpectator', () => {
+Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  cy.createGamePlayer({ gameName: 'Spectator Game', isRanked: false }).then((gameData) => {
+  cy.createGamePlayer({ gameName: 'Spectator Game', isRanked }).then((gameData) => {
     // Test that JOIN button starts enabled
-    cy.contains('[data-cy-join-game]', 'Join Casual').should('not.be.disabled');
+    cy.get('[data-cy-join-game]').should('not.be.disabled');
     // Sign up 2 users and subscribe them to game
     cy.signupOpponent(playerOne);
     cy.subscribeOpponent(gameData.gameId);
@@ -146,7 +146,7 @@ Cypress.Commands.add('setupGameAsSpectator', () => {
     cy.readyOpponent(gameData.gameId);
     cy.signupOpponent(playerTwo);
     cy.subscribeOpponent(gameData.gameId);
-    cy.contains('[data-cy-join-game]', 'Join Casual').should('be.disabled');
+    cy.get('[data-cy-join-game]').should('be.disabled');
 
     // Switch to spectate tab
     cy.get('[data-cy-game-list-selector=spectate]').click();
@@ -1306,12 +1306,45 @@ Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
   });
 });
 
-Cypress.Commands.add('rematchOpponent', ({ gameId, rematch }) => {
+/**
+ * @description Requests to accept/reject rematch on behalf of the test-controlled user
+ *  Note that when spectating, the caller needs to first update session data to match
+ *  the expected userFixture with cy.recoverSessionOpponent(). 
+ *  See helpers.js' rematchPlayerAsSpectator() for how this is done
+ * 
+ * @param { Object } data - Specifies which game, whether to accept rematch, and on behalf of whom
+ * @param { Number } data.gameId - Which game to request the rematch for
+ * @param { Boolean } data.rematch - Whether specified user should accept (true) or reject (false) the rematch
+ * @param { 'my' | 'opponent' } [data.whichPlayer] - Optionally specify whether this user
+ *  is originalP0 ('my') or originalP1 ('opponent'). For use when spectating
+ */
+Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer }) => {
   io.socket.get('/game/rematch', { gameId, rematch }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }
+
+    return Promise.resolve(jwres);
   });
+  const cardSelector = whichPlayer ?? 'opponent';
+  if (rematch) {
+    cy.get(`[data-cy=${cardSelector}-rematch-indicator]`)
+    .find('[data-cy="lobby-card-container"]')
+      .should('have.class', 'ready');
+  } else {
+    cy.get(`[data-cy=${cardSelector}-rematch-indicator]`)
+      .find('[data-cy="player-declined-rematch"]')
+      .should('be.visible');
+
+    const playerOrOpponent = whichPlayer ? 'Player' : 'Opponent';
+    cy.get('[data-cy=continue-match-banner]')
+      .should('be.visible')
+      .should('have.class', 'opponent-left')
+      .should('contain', `${playerOrOpponent} left - click to go home.`);
+
+    cy.get('[data-cy=gameover-rematch]')
+      .should('be.disabled');
+  }
 });
 
 Cypress.Commands.add('joinRematchOpponent', ({ oldGameId = null }) => {

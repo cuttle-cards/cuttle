@@ -124,9 +124,7 @@ module.exports = {
         ...game,
         ...gameUpdates,
       };
-      if (game.isRanked) {
-        res.currentMatch = await sails.helpers.addGameToMatch(game);
-      }
+      res.currentMatch = await sails.helpers.addGameToMatch(game);
     }
     return res;
   },

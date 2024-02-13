@@ -30,5 +30,4 @@ export default {
   UPDATED: 'updated',
   REMATCH: 'rematch',
   NEW_GAME_FOR_REMATCH: 'newGameForRematch',
-  JOIN_REMATCH: 'joinRematch',
 };
