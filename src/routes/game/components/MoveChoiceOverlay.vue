@@ -151,7 +151,7 @@ export default {
       const noSecondCard = !this.gameStore.secondCard;
 
       switch (this.selectedCard.rank) {
-        case 1:
+        case 7:
           if (noTopCard || (playingTopCard && noSecondCard)) {
             oneOffDisabled = true;
             oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
