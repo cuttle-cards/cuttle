@@ -70,16 +70,16 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
           player1: this.playerOneId,
           player2: this.playerTwoId,
           winner: this.playerOneId,
-          startTime: dayjs().subtract(1, 'week').subtract(1, 'day').valueOf(),
-          endTime: dayjs().subtract(1, 'week').subtract(1, 'day').valueOf(),
+          startTime: dayjs().utc().subtract(1, 'week').subtract(1, 'day').format(),
+          endTime: dayjs().utc().subtract(1, 'week').subtract(1, 'day').format(),
         };
 
         const currentMatchWithDifferentOpponent = {
           player1: this.playerOneId,
           player2: this.playerThreeId,
           winner: null,
-          startTime: dayjs().subtract(1, 'hour').valueOf(),
-          endTime: dayjs().subtract(1, 'hour').valueOf(),
+          startTime: dayjs().utc().subtract(1, 'hour').format(),
+          endTime: dayjs().utc().subtract(1, 'hour').format(),
         };
 
         cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);
