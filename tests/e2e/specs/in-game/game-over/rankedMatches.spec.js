@@ -5,6 +5,8 @@ import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixture
 import { Card } from '../../../fixtures/cards';
 
 const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 function validateMatchResult(match, length, p1, p2, winnerId) {
   expect(match.player1.id).to.eq(p1);

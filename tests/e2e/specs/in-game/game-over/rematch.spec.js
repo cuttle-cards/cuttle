@@ -11,6 +11,8 @@ import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixture
 import { Card } from '../../../fixtures/cards';
 
 const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 function startRematchPlayerFirst() {
   cy.get('[data-cy=my-rematch-indicator]')
