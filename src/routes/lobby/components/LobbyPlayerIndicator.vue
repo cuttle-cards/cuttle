@@ -1,39 +1,24 @@
 <template>
   <Transition name="cards" mode="out-in">
-    <div v-if="playerUsername" class="player-card" :data-cy-ready-indicator="playerUsername">
-      <div v-if="playerDeclined">
-        <img
-          src="/img/cards/card-back-declined.png"
-          :alt="t('global.playerReady.playerDeclinedAlt', { playerUsername })"
-          data-cy="player-declined-rematch"
-          class="card-container"
-          :class="{ small }"
-        >
-      </div>
-      <template v-else>
-        <div
-          class="card-container"
-          :class="{ 'ready' : playerReady, small }"
-          data-cy="lobby-card-container"
-        >
-          <img
-            :src="`/img/cards/card-${cardFaceName}.png`"
-            class="card-front"
-            :alt="t(`global.playerReady.${cardFaceName}Alt`, { playerUsername })"
-            data-cy="lobby-ready-card"
-          >
-          <img
-            src="/img/cards/card-back.png"
-            class="card-back"
-            :alt="t('global.playerReady.cardBackAlt', { playerUsername })"
-            data-cy="lobby-back-card"
-          >
-          <div class="water-container">
-            <div class="water" :class="{ 'reverseWater' : gameStarted }" />
-          </div>
-        </div>
-      </template>
+    <div v-if="playerUsername" class="player-card">
       <span class="player-name">{{ playerUsername }}</span>
+      <div class="card-container" data-cy="lobby-card-container" :class="{ 'ready' : playerReady }">
+        <img
+          src="/img/cards/card-ready.png"
+          class="card-front"
+          alt="card front"
+          data-cy="lobby-ready-card"
+        >
+        <img
+          src="/img/cards/card-back.png"
+          class="card-back"
+          alt="card back"
+          data-cy="lobby-back-card"
+        >
+        <div class="water-container">
+          <div class="water" :class="{ 'reverseWater' : gameStarted }" />
+        </div>
+      </div>
     </div>
     <div v-else class="player-indicator" :style="{ padding: playerPadding }">
       <div class="avatar">
@@ -48,7 +33,7 @@
 <script>
 import { useI18n } from 'vue-i18n';
 export default {
-  name: 'PlayerReadyIndicator',
+  name: 'LobbyPlayerIndicator',
   props: {
     playerUsername: {
       type: String,
@@ -57,19 +42,6 @@ export default {
     playerReady: {
       type: Boolean,
       default: false,
-    },
-    small: {
-      type: Boolean,
-      default: false,
-    },
-    playerDeclined: {
-      type: Boolean,
-      default: false,
-    },
-    cardFaceName: {
-      type: String,
-      default: 'ready',
-      validator: (val) => ['ready', 'rematch'].includes(val),
     },
     gameStarted: {
       type: Boolean,
@@ -104,10 +76,6 @@ export default {
   transform-style: preserve-3d;
   perspective: 1200px;
   position: relative;
-  &.small {
-    height: 20vh;
-    width: calc(20vh / 1.45);
-  }
 }
 .card-container img {
   width: 100%;
@@ -137,6 +105,7 @@ export default {
 }
 
 .player-card {
+  height: 40vh;
   display: flex;
   flex-direction: column;
   place-items: center;
@@ -225,7 +194,16 @@ export default {
   }
 }
 
+@media (min-width: 1920px) {
+  .player-card{
+    height: 50vh;
+  }
+}
+
 @media (max-width: 600px) {
+  .player-card{
+    height: 22vh;
+  }
   .player-name {
     padding: 2px;
     font-size: 1rem;

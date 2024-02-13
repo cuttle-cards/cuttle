@@ -12,7 +12,7 @@
         <v-col md="4" cols="12">
           <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
           <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
-          <PlayerReadyIndicator
+          <LobbyPlayerIndicator
             :player-username="authStore.username"
             :player-ready="iAmReady"
             :game-started="gameStarted"
@@ -23,7 +23,7 @@
           <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo">
         </v-col>
         <v-col md="4" cols="12">
-          <PlayerReadyIndicator
+          <LobbyPlayerIndicator
             :player-username="gameStore.opponentUsername"
             :player-ready="gameStore.opponentIsReady"
             :game-started="gameStarted"
@@ -56,7 +56,7 @@
                 <v-switch
                   v-model="gameStore.isRanked"
                   variant="outlined"
-                  class="mx-md-4 pl-2 flex-shrink-0"
+                  class="mx-md-4 pl-2"
                   :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
                   data-cy="edit-game-ranked-switch"
                   color="primary"
@@ -107,14 +107,14 @@ import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
-import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
+import LobbyPlayerIndicator from './components/LobbyPlayerIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 
 export default {
   name: 'LobbyView',
   components: {
-    PlayerReadyIndicator,
+    LobbyPlayerIndicator,
     BaseSnackbar,
     TheLanguageSelector,
   },
@@ -256,7 +256,7 @@ h5 {
 
 @media (max-width: 660px) {
   .rank-switch {
-    padding: 0 3vw;
+    padding: 0;
   }
   h1 {
     font-size: 2rem;
@@ -271,11 +271,6 @@ h5 {
     width: 100px;
     height: 100px;
   }
-}
-@media (max-width: 350px) {
-  .rank-switch {
-    width: 100%;
-  }  
 }
 
 #logo {

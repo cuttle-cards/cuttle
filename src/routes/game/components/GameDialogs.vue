@@ -39,7 +39,7 @@
       :stalemate="stalemate"
     />
     <ReauthenticateDialog :model-value="mustReauthenticate" />
-    <OpponentRequestedStalemateDialog :model-value="consideringOpponentStalemateRequest" />
+    <OpponentRequestedStalemateDialog v-model="consideringOpponentStalemateRequest" />
   </div>
 </template>
 
@@ -123,8 +123,13 @@ export default {
     stalemate() {
       return this.gameStore.gameIsOver && this.gameStore.winnerPNum === null;
     },
-    consideringOpponentStalemateRequest() {
-      return this.gameStore.consideringOpponentStalemateRequest;
+    consideringOpponentStalemateRequest: {
+      get() {
+        return this.gameStore.consideringOpponentStalemateRequest;
+      },
+      set(val) {
+        this.gameStore.setConsideringOpponentStalemateRequest(val);
+      },
     },
     topCard() {
       return this.gameStore.topCard;

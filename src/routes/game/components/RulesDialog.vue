@@ -2,17 +2,12 @@
   <BaseDialog id="rulesDialog" max-width="1250">
     <template #title>
       <h1>Rules of Cuttle</h1>
-      <v-btn
-        icon 
-        aria-label="Close rules dialog"
-        color="surface-2" 
-        variant="text"
-        @click="close"
-      >
+      <v-btn icon aria-label="Close rules dialog" @click="close">
         <v-icon
           icon="mdi-close"
-          size="large" 
-          aria-hidden="true"         
+          size="large"
+          color="surface-1" 
+          aria-hidden="true"
         />
       </v-btn>
     </template>
