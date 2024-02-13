@@ -145,23 +145,24 @@ export default {
     oneOffMove() {
       let oneOffDisabled = this.allMovesAreDisabled;
       let oneOffDisabledExplanation = this.disabledText;
-      //Check deck while playing 7s
-      if (this.selectedCard.rank === 7) {
-        const noTopCard = !this.gameStore.topCard;
-        const playingTopCard = this.selectedCard?.id === this.gameStore.topCard?.id;
-        const noSecondCard = !this.gameStore.secondCard;
-        if (noTopCard || (playingTopCard && noSecondCard)) {
-          oneOffDisabled = true;
-          oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
-        }
-      }
+      //Check deck while playing 5 or 7
+      const noTopCard = !this.gameStore.topCard;
+      const playingTopCard = this.selectedCard?.id === this.gameStore.topCard?.id;
+      const noSecondCard = !this.gameStore.secondCard;
 
-      if (this.selectedCard.rank === 5) {
-        const noTopCard = !this.gameStore.topCard;
-        if (noTopCard) {
-          oneOffDisabled = true;
-          oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
-        }
+      switch (this.selectedCard.rank) {
+        case 1:
+          if (noTopCard || (playingTopCard && noSecondCard)) {
+            oneOffDisabled = true;
+            oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
+          }
+          break;
+        case 5:
+          if (noTopCard) {
+            oneOffDisabled = true;
+            oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
+          }
+          break;
       }
       
       return {
