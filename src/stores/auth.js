@@ -121,6 +121,7 @@ export const useAuthStore = defineStore('auth', {
           await this.requestReauthenticate({ username }).then(({ game }) => {
             if (game.status === GameStatus.FINISHED) {
               gameStore.updateGame(game.lastEvent.game);
+              gameStore.setGameOver(game.lastEvent.victory);
               return;
             }
             gameStore.updateGame(game);
