@@ -117,12 +117,10 @@ export const useAuthStore = defineStore('auth', {
           const { gameId } = route.params;
           gameStore.requestSpectate(Number(gameId));
         }
-        
         if (gameId && (isGame || isLobby)) {
           await this.requestReauthenticate({ username }).then(({ game }) => {
             if (game.status === GameStatus.FINISHED) {
               gameStore.updateGame(game.lastEvent.game);
-              gameStore.setGameOver(game.lastEvent.victory);
               return;
             }
             gameStore.updateGame(game);
