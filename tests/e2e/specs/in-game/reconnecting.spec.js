@@ -705,8 +705,10 @@ describe('Reconnecting after game is over', () => {
     cy.setupGameAsP0();
   });
   
-  it.only('Dialogs persist after refreshing when game is over by conceded and opponent request rematch', () => {
+  it('Dialogs persist after refreshing when game is over by conceded and opponent request rematch', () => {
     cy.concedeOpponent();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
@@ -716,26 +718,32 @@ describe('Reconnecting after game is over', () => {
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.get('[data-cy=match-score-counter-wins]').should('contain', 'W: 1');
-    cy.get('[data-cy=lobby-ready-card]').should('exist');
+    cy.get('[data-cy=opponent-rematch-indicator]')  
+    .find('[data-cy="lobby-card-container"]')  
+    .should('have.class', 'ready');
   });
 
   it('Dialogs persist after refreshing when game is over by conceded and player request rematch', () => {
     cy.concedeOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.get('[data-cy=gameover-rematch]').click();
     cy.get('[data-cy=lobby-ready-card]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
-    cy.get('[data-cy=lobby-ready-card]').should('exist');
+    cy.get('[data-cy=opponent-rematch-indicator]')
+    .find('[data-cy="lobby-card-container"]')
+    .should('have.class', 'ready');
   });
   
   it('Dialogs persist after refreshing when game is over by stalemate', () => {
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
     cy.get('#request-gameover-dialog')
-    .should('be.visible')
-    .get('[data-cy=request-gameover-confirm]')
-    .click();
+      .should('be.visible')
+      .get('[data-cy=request-gameover-confirm]')
+      .click();
     cy.stalemateOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
