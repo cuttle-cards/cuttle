@@ -85,13 +85,6 @@ module.exports = {
         });
       }
 
-      if (unpopulatedGame.status === GameStatus.FINISHED) {
-        Game.publish([unpopulatedGame.id], {
-          change: unpopulatedGame.lastEvent.change,
-          victory: unpopulatedGame.lastEvent.victory,
-          game: unpopulatedGame.lastEvent.game
-        });
-      }
       const game = populatedGame ?? unpopulatedGame;
       return res.ok({
         game,
