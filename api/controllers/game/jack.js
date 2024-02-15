@@ -73,7 +73,6 @@ module.exports = function (req, res) {
         game: fullGame,
         gameModel,
       });
-      
       Game.publish([fullGame.id], {
         change: 'jack',
         game: fullGame,

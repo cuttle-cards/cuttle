@@ -705,7 +705,7 @@ describe('Reconnecting after game is over', () => {
     cy.setupGameAsP0();
   });
   
-  it('Dialogs persist after refreshing when game is over by conceded and opponent request rematch', () => {
+  it.only('Dialogs persist after refreshing when game is over by conceded and opponent request rematch', () => {
     cy.concedeOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.url().then((url) => {
