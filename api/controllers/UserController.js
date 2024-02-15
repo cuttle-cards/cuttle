@@ -8,7 +8,7 @@
 //////////////////
 // DEPENDENCIES //
 //////////////////
-
+const GameStatus = require('../../utils/GameStatus.json');
 const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
 
@@ -62,19 +62,16 @@ module.exports = {
         await passwordAPI.checkPass(password, user.encryptedPassword);
       }
       // Query for game if user is in one
-      const gameId = (user.game || req.session.game) ?? null;
+      const gameId = (user.game ?? req.session.game) ?? null;
       const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
-      //Dont populate if game over
-      const gameIsFinished = unpopulatedGame?.status === 3;
-      // Get populated game if game has started
       const populatedGame =
-        !gameIsFinished && unpopulatedGame && unpopulatedGame.p0Ready && unpopulatedGame.p1Ready
+        unpopulatedGame.status === GameStatus.STARTED
           ? await gameService.populateGame({ gameId })
           : null;
       
       req.session.loggedIn = true;
       req.session.usr = user.id;
-
+      
       if (unpopulatedGame) {
         Game.subscribe(req, [unpopulatedGame.id]);
         req.session.game = unpopulatedGame.id;
@@ -87,7 +84,14 @@ module.exports = {
           game: populatedGame,
         });
       }
-      
+
+      if (unpopulatedGame.status === GameStatus.FINISHED) {
+        Game.publish([unpopulatedGame.id], {
+          change: unpopulatedGame.lastEvent.change,
+          victory: unpopulatedGame.lastEvent.victory,
+          game: unpopulatedGame.lastEvent.game
+        });
+      }
       const game = populatedGame ?? unpopulatedGame;
       return res.ok({
         game,
