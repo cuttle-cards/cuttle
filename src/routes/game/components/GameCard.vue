@@ -227,7 +227,7 @@ export default {
   z-index: 1;
 }
 .opponent-card-back {
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .selected {
