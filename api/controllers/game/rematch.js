@@ -21,11 +21,12 @@ module.exports = async function (req, res) {
 
     // Determine whether to start new game
     const oldPNum = game.p0 === userId ? 0 : 1;
+    const rematchVal = { [`p${oldPNum}Rematch`]: rematch };
     const gameUpdates = {
-      [`p${oldPNum}Rematch`]: rematch,
+      ...rematchVal,
       lastEvent: {
         change: 'rematch',
-        game: { ...game.lastEvent.game, [`p${oldPNum}Rematch`]: rematch },
+        game: { ...game.lastEvent.game, ...rematchVal},
         victory: game.lastEvent.victory
       }
     };

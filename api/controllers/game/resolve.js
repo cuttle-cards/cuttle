@@ -358,7 +358,6 @@ module.exports = function (req, res) {
         game: fullGame,
         gameModel,
       });
-      
       Game.publish([fullGame.id], {
         change: 'resolve',
         oneOff,
@@ -371,7 +370,7 @@ module.exports = function (req, res) {
       if (victory.gameOver) {
         await Game.updateOne({ id: fullGame.id }).set({
           lastEvent: {
-            change: 'winByResolvingOneOff',
+            change: 'resolve',
             game: fullGame,
             victory
           }

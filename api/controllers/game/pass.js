@@ -65,7 +65,7 @@ module.exports = function (req, res) {
         
         await Game.updateOne({ id: game.id }).set({
           lastEvent: {
-            change: 'stalemateByPassing',
+            change: 'pass',
             game: fullGame,
             victory
           }

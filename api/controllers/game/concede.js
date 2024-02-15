@@ -27,10 +27,10 @@ module.exports = async function (req, res) {
       game,
       victory,
     });
-    
+     // Set lastEvent in db with full game state + victory status  
     await Game.updateOne(req.session.game).set({
       lastEvent: {
-        change: 'conceded',
+        change: 'concede',
         game,
         victory
       }
