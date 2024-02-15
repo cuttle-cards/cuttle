@@ -54,7 +54,7 @@ module.exports = async function (req, res) {
     }
     
     Game.publish([game.id], {
-      change:'requestStalemate',
+      change: 'requestStalemate',
       game: game,
       victory,
       requestedByPNum: pNum,
