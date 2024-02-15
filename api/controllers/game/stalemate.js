@@ -24,7 +24,6 @@ module.exports = async function (req, res) {
     };
 
     gameUpdates.lastEvent = { change: 'requestStalemate', requestedByPNum: pNum };
-    
     // End in stalemate if both players requested stalemate this turn
     if (playerStalemateVal === opponentStalemateVal && opponentStalemateVal === game.turn) {
       gameUpdates = {
@@ -43,7 +42,7 @@ module.exports = async function (req, res) {
       
       await Game.updateOne({ id: gameId }).set({
         lastEvent: {
-          change: 'stalemate',
+          change: 'requestStalemate',
           game: game,
           victory
         }

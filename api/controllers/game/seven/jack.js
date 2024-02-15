@@ -118,7 +118,7 @@ module.exports = function (req, res) {
       if (victory.gameOver) {
         await Game.updateOne({ id: fullGame.id }).set({
           lastEvent: {
-            change: 'winBySevenJack',
+            change: 'sevenJack',
             game: fullGame,
             victory,
           }
