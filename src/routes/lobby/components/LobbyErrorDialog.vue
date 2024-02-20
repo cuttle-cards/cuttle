@@ -8,7 +8,7 @@
   >
     <template #body>
       <div>
-        <p>{{ t('lobby.cannotJoin') + errorMessage }}</p>
+        <p>{{ `${ t('lobby.cannotJoin')} ${errorMessage}` }}</p>
       </div>
     </template>
     <template #actions>
