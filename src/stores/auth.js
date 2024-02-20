@@ -17,7 +17,6 @@ export const useAuthStore = defineStore('auth', {
     username: null,
     mustReauthenticate: false,
     isReturningUser: null,
-    redirectGameId: null,
   }),
   actions: {
     authSuccess(username) {
