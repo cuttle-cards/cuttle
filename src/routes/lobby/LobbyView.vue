@@ -148,7 +148,7 @@ export default {
   computed: {
     ...mapStores(useGameStore, useAuthStore),
     showLobbyError() {
-      return this.$route.meta.error ? true : false; 
+      return !!this.$route.meta.error; 
     },
     gameId() {
       return this.gameStore.id;
