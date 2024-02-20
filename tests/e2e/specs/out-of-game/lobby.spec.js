@@ -413,3 +413,43 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
 });
+
+describe('Redirecting to lobby from URL', () => {
+  
+  beforeEach(() => {
+    cy.wipeDatabase();
+    cy.visit('/');
+    cy.signupPlayer(myUser);
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
+      cy.wrap(gameSummary).as('gameSummary');
+      // Sign up new (other) user and subscribe them to game
+      cy.signupOpponent(opponentOne);
+      cy.subscribeOpponent(gameSummary.gameId);
+    });
+  });
+  
+  
+  it('Joins Lobby from url', function () {
+    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
+    cy.window()
+    .its('cuttle.gameStore')
+      .then((store) => 
+    expect(store.id).to.eq(this.gameSummary.gameId));
+  });
+
+  it('Redirects to login, then back to lobby after login attempt', function () {
+    cy.visit('/');
+    cy.get('[data-cy=user-menu]').click();
+    cy.get("[data-nav='Log Out']").click();
+    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    cy.url().should('include', `/login/${this.gameSummary.gameId}`);
+    cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=username]').type(myUser.username + '{enter}');
+    cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
+    cy.window()
+    .its('cuttle.gameStore')
+      .then((store) => 
+    expect(store.id).to.eq(this.gameSummary.gameId));
+  });
+});
