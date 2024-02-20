@@ -47,11 +47,9 @@ const checkAndSubscribeToLobby = async (to, from, next) => {
   }
 
   if (!authStore.authenticated) {
-    authStore.redirectGameId = gameId;
-    return next('/login');
+    return next(`/login/${gameId}`);
   }
 
-  authStore.redirectGameId = null;
   if (gameStore.players.some(({username}) => username === authStore.username)) {
     return next();
   }
@@ -75,7 +73,7 @@ const routes = [
     beforeEnter: mustBeAuthenticated,
   },
   {
-    path: '/login',
+    path: '/login/:redirectId?',
     name: ROUTE_NAME_LOGIN,
     component: LoginView,
   },
