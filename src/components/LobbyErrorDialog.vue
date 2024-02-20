@@ -13,7 +13,7 @@
     </template>
     <template #actions>
       <v-btn
-        data-cy="how-it-works-okay"
+        data-cy="lobby-error-go-home"
         color="surface-1"
         variant="flat"
         class="text-surface-2"
