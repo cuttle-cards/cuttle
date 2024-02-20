@@ -49,7 +49,8 @@
     "unready": "PAS PRÊT",
     "exit": "SORTIR",
     "invite": "Inviter",
-    "rankedChangedAlert": "Mode de jeu modifié à"
+    "rankedChangedAlert": "Mode de jeu modifié à",
+    "cannotJoin": "Vous ne pouvez pas rejoindre le lobby"
   },
   "game": {
     "resolve": "Résoudre",

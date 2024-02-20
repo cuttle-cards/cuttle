@@ -8,7 +8,7 @@
   >
     <template #body>
       <div>
-        <h4>Cannot Join Lobby {{ errorMessage }}</h4>
+        <p>{{ t('lobby.cannotJoin') + errorMessage }}</p>
       </div>
     </template>
     <template #actions>
@@ -19,18 +19,25 @@
         class="text-surface-2"
         @click="close"
       >
-        Go Home
+        {{ t('game.menus.gameMenu.home') }}
       </v-btn>
     </template>
   </BaseDialog>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
 import BaseDialog from '@/components/BaseDialog.vue';
 import { useRouter, useRoute } from 'vue-router';
-const { showLobbyError } = defineProps({ showLobbyError: {type: Boolean, default: false } });
+defineProps({
+  showLobbyError: {
+    type: Boolean,
+    default: false
+  }
+});
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
 
 const errorMessage = route.meta.error ? route.meta.error : 'Unknown Error';
 
