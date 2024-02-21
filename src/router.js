@@ -104,7 +104,7 @@ const routes = [
     },
   },
   {
-    path: '/stats/:seasonId?',
+    path: '/stats/:seasonId',
     name: ROUTE_NAME_STATS,
     component: StatsView,
     beforeEnter: mustBeAuthenticated,
