@@ -233,7 +233,7 @@ export default {
 .selected {
   img {
     border: 3px solid rgba(var(--v-theme-accent-lighten1));
-    border-radius: 5px;
+    border-radius: 10px;
   }
 }
 .jack {
