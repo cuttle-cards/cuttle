@@ -80,7 +80,7 @@ export const useAuthStore = defineStore('auth', {
         return;
       }
 
-      const { name } = route;
+      const { name, params } = route;
       const isLobby = name === ROUTE_NAME_LOBBY;
       const isGame = name === ROUTE_NAME_GAME;
       const isSpectating = name === ROUTE_NAME_SPECTATE;
@@ -92,6 +92,9 @@ export const useAuthStore = defineStore('auth', {
         const status = await response.json();
         const { authenticated, username, gameId } = status;
         // If the user is not authenticated, we're done here
+        if (isGame && +params.gameId !== gameId) {
+          this.$router.push(`/game/${gameId}`);
+        }
         if (!authenticated) {
           this.clearAuth();
           return;
