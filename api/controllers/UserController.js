@@ -70,7 +70,6 @@ module.exports = {
           : null;
       req.session.loggedIn = true;
       req.session.usr = user.id;
-      
       if (unpopulatedGame) {
         Game.subscribe(req, [unpopulatedGame.id]);
         req.session.game = unpopulatedGame.id;
