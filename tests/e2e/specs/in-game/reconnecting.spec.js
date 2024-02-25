@@ -732,7 +732,7 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-cy=lobby-ready-card]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
-    cy.get('[data-cy=opponent-rematch-indicator]')
+    cy.get('[data-cy=my-rematch-indicator]')
     .find('[data-cy="lobby-card-container"]')
     .should('have.class', 'ready');
   });
