@@ -65,7 +65,7 @@ module.exports = {
       const gameId = (user.game ?? req.session.game) ?? null;
       const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
       const populatedGame =
-        unpopulatedGame.status === GameStatus.STARTED
+        unpopulatedGame?.status === GameStatus.STARTED
           ? await gameService.populateGame({ gameId })
           : null;
       req.session.loggedIn = true;
