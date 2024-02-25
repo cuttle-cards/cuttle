@@ -92,9 +92,6 @@ export const useAuthStore = defineStore('auth', {
         const status = await response.json();
         const { authenticated, username, gameId } = status;
         // If the user is not authenticated, we're done here
-        if (isGame && +params.gameId !== gameId) {
-          this.$router.push(`/game/${gameId}`);
-        }
         if (!authenticated) {
           this.clearAuth();
           return;
@@ -103,7 +100,9 @@ export const useAuthStore = defineStore('auth', {
         if (username) {
           this.authSuccess(username);
         }
-
+        if (isGame && +params.gameId !== gameId) {
+          this.$router.push(`/game/${gameId}`);
+        }
         // If the user is currently authenticated and part of a game, we need to resubscribe them
         // The sequencing here is a little interesting, but this is what happens to get a user back
         // in to a game in progress:
