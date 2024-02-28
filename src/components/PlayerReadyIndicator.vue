@@ -36,7 +36,7 @@
       <span class="player-name">{{ playerUsername }}</span>
     </div>
     <div v-else class="player-indicator" :style="{ padding: playerPadding }">
-      <div class="avatar">
+      <div class="avatar" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='Lobby URL Copied to Clipboard!';">
         <h3>
           {{ message }}
         </h3>
