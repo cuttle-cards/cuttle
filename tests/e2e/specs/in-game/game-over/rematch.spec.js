@@ -57,8 +57,8 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     // Set up season
     const [, diamondsSeason] = seasonFixtures;
-    diamondsSeason.startTime = dayjs().subtract(2, 'week').subtract(1, 'day').valueOf();
-    diamondsSeason.endTime = dayjs().add(11, 'weeks').valueOf();
+    diamondsSeason.startTime = dayjs().subtract(2, 'week').subtract(1, 'day').format();
+    diamondsSeason.endTime = dayjs().add(11, 'weeks').format();
     cy.loadSeasonFixture([diamondsSeason]);
     // Sign up to players and store their id's for comparison to match data
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -127,7 +127,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
+      expect(currentMatch.startTime).to.not.eq(null);
       expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.games.length).to.eq(1);
     });
@@ -147,7 +147,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.games.length).to.eq(2);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
+      expect(currentMatch.startTime).to.not.eq(null);
       // Match is incomplete
       expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
@@ -177,7 +177,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.games.length).to.eq(3);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
+      expect(currentMatch.startTime).to.not.eq(null);
       // Match is incomplete
       expect(currentMatch.endTime).to.eq(null);
       expect(currentMatch.winner).to.eq(null);
@@ -209,9 +209,9 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.games.length).to.eq(4);
-      expect(currentMatch.startTime).to.be.greaterThan(0);
+      expect(currentMatch.startTime).to.not.eq(null);
       // Match is over - Player1 wins
-      expect(currentMatch.endTime).to.be.greaterThan(0);
+      expect(currentMatch.endTime).to.not.eq(null);
       expect(currentMatch.winner.id).to.eq(this.playerOneId);
     });
   });
