@@ -945,7 +945,6 @@ describe('Reconnecting after game is over', () => {
       const oldGameId = Number(url.split('/').pop());
       cy.wrap(oldGameId).as('oldGameId');
       cy.rematchOpponent({ gameId: oldGameId, rematch: true, skipDomAssertion: true });
-
       cy.joinRematchOpponent({ oldGameId });
     });
 
@@ -962,12 +961,9 @@ describe('Reconnecting after game is over', () => {
 
     cy.url().then((url) => {
       cy.get('@oldGameId').then((oldGameId) => {
-
         const currentGameId = Number(url.split('/').pop());
-        cy.log(oldGameId);
-        cy.log(typeof oldGameId);
         const expectedGameId = oldGameId + 1;
-        cy.log(expectedGameId);
+
         expect(currentGameId).to.eq(expectedGameId, 'Expected current url to point to new game id, but it did not');
       });
     });
@@ -996,7 +992,6 @@ describe('Reconnecting after game is over', () => {
       const oldGameId = Number(url.split('/').pop());
       cy.wrap(oldGameId).as('oldGameId');
       cy.rematchOpponent({ gameId: oldGameId, rematch: true, skipDomAssertion: true });
-
       cy.joinRematchOpponent({ oldGameId });
     });
 
