@@ -967,6 +967,10 @@ describe('Reconnecting after game is over', () => {
         expect(currentGameId).to.eq(expectedGameId, 'Expected current url to point to new game id, but it did not');
       });
     });
+
+    cy.get('[data-opponent-hand-card]').should('have.length', 5);
+    cy.drawCardOpponent();
+    cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
 
   it.skip('Brings player to the rematch game when player hits rematch, disconnects, then reconnects socket after opponent hit rematch and started game', function () {
@@ -1016,6 +1020,10 @@ describe('Reconnecting after game is over', () => {
         expect(currentGameId).to.eq(expectedGameId, 'Expected current url to point to new game id, but it did not');
       });
     });
+
+    cy.get('[data-opponent-hand-card]').should('have.length', 5);
+    cy.drawCardOpponent();
+    cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
 });
 
