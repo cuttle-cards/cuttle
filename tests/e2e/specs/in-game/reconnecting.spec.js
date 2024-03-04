@@ -922,4 +922,105 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
+  it.skip('Brings player to the rematch game when player hits rematch, disconnects, then refreshes after opponent hit rematch and started game', function () {
+    cy.concedeOpponent();
+
+    cy.get('[data-cy=gameover-rematch')
+      .should('not.be.disabled')
+      .click();
+
+    cy.get('[data-cy=my-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('have.class', 'ready');
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+
+    cy.url().then((url) => {
+      const oldGameId = Number(url.split('/').pop());
+      cy.wrap(oldGameId).as('oldGameId');
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true, skipDomAssertion: true });
+
+      cy.joinRematchOpponent({ oldGameId });
+    });
+
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+
+    cy.reload();
+
+    cy.get('#game-over-dialog')
+      .should('not.exist');
+    // Player should now be in new game
+    cy.get('[data-player-hand-card]').should('have.length', 6);
+
+    cy.url().then((url) => {
+      cy.get('@oldGameId').then((oldGameId) => {
+
+        const currentGameId = Number(url.split('/').pop());
+        cy.log(oldGameId);
+        cy.log(typeof oldGameId);
+        const expectedGameId = oldGameId + 1;
+        cy.log(expectedGameId);
+        expect(currentGameId).to.eq(expectedGameId, 'Expected current url to point to new game id, but it did not');
+      });
+    });
+  });
+
+  it.skip('Brings player to the rematch game when player hits rematch, disconnects, then reconnects socket after opponent hit rematch and started game', function () {
+    cy.concedeOpponent();
+
+    cy.get('[data-cy=gameover-rematch')
+      .should('not.be.disabled')
+      .click();
+
+    cy.get('[data-cy=my-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('have.class', 'ready');
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+
+    cy.url().then((url) => {
+      const oldGameId = Number(url.split('/').pop());
+      cy.wrap(oldGameId).as('oldGameId');
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true, skipDomAssertion: true });
+
+      cy.joinRematchOpponent({ oldGameId });
+    });
+
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.reconnectSocket());
+
+    cy.get('#game-over-dialog')
+      .should('not.exist');
+    // Player should now be in new game
+    cy.get('[data-player-hand-card]').should('have.length', 6);
+
+    cy.url().then((url) => {
+      cy.get('@oldGameId').then((oldGameId) => {
+        const currentGameId = Number(url.split('/').pop());
+        const expectedGameId = oldGameId + 1;
+
+        expect(currentGameId).to.eq(expectedGameId, 'Expected current url to point to new game id, but it did not');
+      });
+    });
+  });
 });
+
