@@ -922,7 +922,7 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
-  it.skip('Brings player to the rematch game when player hits rematch, disconnects, then refreshes after opponent hit rematch and started game', function () {
+  it.skip('Brings player to the rematch game when player hits rematch, disconnects, then refreshes after opponent hit rematch and started game', () => {
     cy.concedeOpponent();
 
     cy.get('[data-cy=gameover-rematch')
