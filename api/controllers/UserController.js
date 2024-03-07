@@ -93,13 +93,14 @@ module.exports = {
         });
       }
 
-      const game = unpopulatedGame.lastEvent?.game ?? (populatedGame ?? unpopulatedGame);
+      const game = unpopulatedGame?.lastEvent?.game ?? (populatedGame ?? unpopulatedGame);
       return res.ok({
         game,
         username: user.username,
         pNum: user.pNum,
       });
     } catch (err) {
+      console.log(err);
       return res.badRequest(err);
     }
   },
