@@ -117,7 +117,6 @@ export const useAuthStore = defineStore('auth', {
         }
         if (gameId && (isGame || isLobby)) {
           await this.requestReauthenticate({ username }).then(({ game }) => {
-            console.log(game);
             gameStore.updateGame(game);
           });
         }
