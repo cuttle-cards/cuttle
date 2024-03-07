@@ -922,7 +922,7 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
-  it.skip('Brings player to the rematch game when player hits rematch, disconnects, then refreshes after opponent hit rematch and started game', () => {
+  it('Brings player to the rematch game when player hits rematch, disconnects, then refreshes after opponent hit rematch and started game', () => {
     cy.concedeOpponent();
 
     cy.get('[data-cy=gameover-rematch')
@@ -973,7 +973,7 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
 
-  it.skip('Brings player to the rematch game when player hits rematch, disconnects, then reconnects socket after opponent hit rematch and started game', function () {
+  it('Brings player to the rematch game when player hits rematch, disconnects, then reconnects socket after opponent hit rematch and started game', function () {
     cy.concedeOpponent();
 
     cy.get('[data-cy=gameover-rematch')

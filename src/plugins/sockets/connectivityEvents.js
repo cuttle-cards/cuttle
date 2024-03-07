@@ -7,10 +7,10 @@ export function handleConnect() {
   const authStore = useAuthStore();
   const gameStore = useGameStore();
   // Request latest game state if socket reconnects during game
-  const { username } = authStore;
   switch (router.currentRoute.value.name) {
     case ROUTE_NAME_GAME:
-      return authStore.requestReauthenticate({ username });
+      authStore.authenticated = null;
+      return authStore.requestStatus(router.currentRoute.value);
     case ROUTE_NAME_SPECTATE: {
       const gameId = Number(router.currentRoute.value.params.gameId);
       if (!Number.isInteger(gameId)) {
