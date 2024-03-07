@@ -969,6 +969,7 @@ describe('Reconnecting after game is over', () => {
     });
 
     cy.get('[data-opponent-hand-card]').should('have.length', 5);
+    cy.wait(5000);
     cy.drawCardOpponent();
     cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
