@@ -100,7 +100,6 @@ module.exports = {
         pNum: user.pNum,
       });
     } catch (err) {
-      console.log(err);
       return res.badRequest(err);
     }
   },
