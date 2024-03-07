@@ -3,7 +3,6 @@ import { io, reconnectSockets } from '@/plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE } from '@/router';
 import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '_/utils/local-storage-utils.js';
 import { useGameStore } from '@/stores/game';
-import  GameStatus  from '_/utils/GameStatus.json';
 
 // TODO Figure out how to reconsolidate this with backend
 const getPlayerPnumByUsername = (players, username) => {
@@ -80,7 +79,7 @@ export const useAuthStore = defineStore('auth', {
         return;
       }
 
-      const { name, params } = route;
+      const { name } = route;
       const isLobby = name === ROUTE_NAME_LOBBY;
       const isGame = name === ROUTE_NAME_GAME;
       const isSpectating = name === ROUTE_NAME_SPECTATE;
@@ -100,9 +99,6 @@ export const useAuthStore = defineStore('auth', {
         if (username) {
           this.authSuccess(username);
         }
-        if (isGame && +params.gameId !== gameId) {
-          this.$router.push(`/game/${gameId}`);
-        }
         // If the user is currently authenticated and part of a game, we need to resubscribe them
         // The sequencing here is a little interesting, but this is what happens to get a user back
         // in to a game in progress:
@@ -121,11 +117,7 @@ export const useAuthStore = defineStore('auth', {
         }
         if (gameId && (isGame || isLobby)) {
           await this.requestReauthenticate({ username }).then(({ game }) => {
-            if (game.status === GameStatus.FINISHED) {
-              gameStore.updateGame(game.lastEvent.game);
-              gameStore.setGameOver(game.lastEvent.victory);
-              return;
-            }
+            console.log(game);
             gameStore.updateGame(game);
           });
         }

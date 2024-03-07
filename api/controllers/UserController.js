@@ -68,8 +68,10 @@ module.exports = {
         unpopulatedGame?.status === GameStatus.STARTED
           ? await gameService.populateGame({ gameId })
           : null;
+      
       req.session.loggedIn = true;
       req.session.usr = user.id;
+     
       if (unpopulatedGame) {
         Game.subscribe(req, [unpopulatedGame.id]);
         req.session.game = unpopulatedGame.id;
@@ -83,7 +85,15 @@ module.exports = {
         });
       }
 
-      const game = populatedGame ?? unpopulatedGame;
+      if (unpopulatedGame && unpopulatedGame.lastEvent.victory) {
+        Game.publish([unpopulatedGame.id], {
+          change: unpopulatedGame.lastEvent.change,
+          game: unpopulatedGame.lastEvent.game,
+          victory: unpopulatedGame.lastEvent.victory
+        });
+      }
+
+      const game = unpopulatedGame.lastEvent?.game ?? (populatedGame ?? unpopulatedGame);
       return res.ok({
         game,
         username: user.username,
