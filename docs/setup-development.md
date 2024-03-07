@@ -2,7 +2,7 @@
 
 ## Docker Development
 
-Cuttle can optionally be run with docker for maximal consistency. See [Docker](./docker/docker.md) Instructions.
+For maximal consistency Cuttle can be run with docker (See [Docker](./docker/docker.md) Instructions).
 
 ## Local Development
 
@@ -34,7 +34,9 @@ Open your shell/terminal of choice, `cd` into the root folder of this repo and r
 npm ci
 ```
 
-**NOTE** `ci` (as opposed to `install`) is a 'clean install' which ensures versions exactly match package-lock.json).
+**NOTE** `ci` (as opposed to `install`) is a 'clean install' which ensures versions exactly match `package-lock.json`.
+
+**TIP** If `npm ci` fails, check to make sure you have a compiler [installed](https://www.makeuseof.com/how-to-install-c-compiler-linux/) on your machine.
 
 ### Development
 
@@ -46,7 +48,7 @@ You can simultaneously run the server on `localhost:1337` and the client on `loc
 npm run start:dev
 ```
 
-This will also automatically open up [Vue Devtools](https://devtools.vuejs.org/). Alternatively, you can run them independantly with separate commands.
+This will also automatically open up [Vue Devtools](https://devtools.vuejs.org/). Alternatively, you can run them independently with separate commands.
 
 ##### Start the Server (sails backend)
 
@@ -72,7 +74,7 @@ To utilize [Vue Devtools](https://devtools.vuejs.org/), you can run
 npm run start:devtools
 ```
 
-This will open the vue devtools in a standalone application window that you can use to insepct the state of the application. This can be used both when the app is open normally in the browser, or when testing with cypress.
+This will open the vue devtools in a standalone application window that you can use to inspect the state of the application. This can be used both when the app is open normally in the browser, or when testing with cypress.
 
 #### Open in browser
 
@@ -80,7 +82,7 @@ Navigate to [localhost:8080](http:localhost:8080) in your browser of choice.
 
 #### Shutting down
 
-You can shut down the servers by hitting `ctrl + c` several times from the terminal windows they are running in. Shut down both servers to completely deletes all game & account data.
+You can shut down the client and server by hitting `ctrl + c` several times from the terminal windows they are running in. Shut down both the client and server to completely delete all game & account data.
 
 #### Build for production
 
@@ -90,50 +92,45 @@ From the root directory of the repo, you can run
 npm run build
 ```
 
-to compile the Vue SPA into the `assets` directory, which will be statically served by the server (sails backend) at the same port on which it is running to support the API. You can now shut down the client and view the applicaion as its built for production at localhost:1337 (default port for sails).
+to compile the Vue SPA into the `assets` directory, which will be statically served by the server (sails backend) at the same port on which it is running to support the API. You can now shut down the client and view the application as its built for production at `localhost:1337` (1337 is the default port for sails).
 
 #### Preview build (on other devices)
 
-You can build the frontend and boot the backend to serve the latest frontend preview from the sails server at port 1337 with
+You can build the frontend and boot the backend to serve the latest frontend preview from the sails server at port 1337 with:
 
 ```
 npm run start:preview
 ```
 
-This will let you see what the production build will look like when served from the backend. This also lets you view the app on other devices connected to the same wifi network opening your browser to your-local-ip-address:1337.
+This will let you see what the production build will look like when served from the backend. This also lets you view the app on other devices connected to the same wifi network by opening any network connected browsers to `your-local-ip-address:1337`.
 
 #### Run the tests
 
-While the application is running, (server + client) you can run
+While the application (server + client) is running, you can run the entire suite of end-to-end cypress tests against the client running at `localhost:8080`. This will execute the tests headlessly and output the results in your terminal:
 
 ```
 npm run e2e:client
 ```
 
-to run the entire suite of end-to-end cypress tests against the client running at localhost:8080. This will execute the tests headlessly and output the results in your terminal.
-
-You can also use
+You can also open the cypress UI, which is useful for executing a single test file if you are for example developing a new feature or a fix and want to focus on that aspect of the application (and see how it performs). This is very helpful for localhost development:
 
 ```
 npm run e2e:gui
 ```
 
-to open the cypress UI, which is useful for executing a single test file if you are for example developing a new feature or a fix and want to focus on that aspect of the application (and see how it performs). This is very helpful for localhost development.
-
-Lastly, you can run
+Lastly, you can execute the entire test suite headlessly against `localhost:1337`. You can use this to test the last-built version of the application. This is effectively what is done in CI when a pull request is submitted against the `main` branch of this repository:
 
 ```
 npm run e2e:server
 ```
 
-to execute the entire test suite headlessly against localhost:1337, which you can use to test the last-built version of the application. This is effectively what is done in CI when a pull request is submitted against the `main` branch of this repository.
-
 **NOTE** you should run `npm run build` (see above) before this command so that the server (backend) serves the most up-to-date version of the client.
 
 #### Testing Playground
-Cuttle has a separate folder of tests that are not intended to be run during CI or for normal development. These tests are used for various tasks and such as creating promotional videos of various moves in the game, or tinkering with repeatedly running test commands to check for flakiness. 
 
-The tests reside in `tests/e2e/playground/specs`. These test files do not appear when running the tests or opening cypress normally. 
+Cuttle has a separate folder of tests that are not intended to be run during CI or for normal development. These tests are used for various tasks and such as creating promotional videos of various moves in the game, or tinkering with repeatedly running test commands to check for flakiness.
+
+The tests reside in `tests/e2e/playground/specs`. These test files do not appear when running the tests or opening cypress normally.
 
 To see the playground tests in the cypress UI, run `npm run e2e:gui:playground`.
 
@@ -141,43 +138,41 @@ To run the playground tests headlessly, first build the client with `npm run bui
 
 #### Debugging Backend Server
 
-You can utilize the node debugger in VSCode to debug the backend server.
+You can utilize the node debugger in [VSCode](https://code.visualstudio.com/) to debug the backend server.
 
-To do so, start the backend server with:
+To do so, you must first start the backend server:
 
 ```
 npm run start:server
 ```
 
-Then, hit cmd+shift+p or ctrl+shift+p, and then enter `Debug: Attach to node process` in the top window opened, to select the process you want to watch.
+Then, open the command pallate by hitting `F1`, and then type and select `Debug: Attach to node process` to select the process you want to watch.
 
 You will be able to utilize many standard debugging features, such as setting breakpoints by clicking line numbers, stepping in and over functions, and watching variables. For details, please refer to the [documentation](https://code.visualstudio.com/docs/editor/debugging).
 
 #### Linting (Formatting)
 
-Format the project with
+Format the project:
 
 ```
 npm run lint:fix
 ```
 
-and use
+Check the formatting without auto-fixing problems. (This is what's run in CI when a PR is opened against the `main` branch):
 
 ```
 npm run lint
 ```
 
-to check the formatting without autofixing problems. (This is what's run in CI when a PR is opened against the `main` branch).
-
 #### Storybook (UX Documentation)
 
-Run Storybook locally with
+Run Storybook locally:
 
 ```
 npm run storybook
 ```
 
-It will start automatically on localhost:6006 and open a new tab in your browser.
+Storybook will start automatically on `localhost:6006` and open a new tab in your browser.
 
 ### Windows 11
 
