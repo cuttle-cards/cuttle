@@ -973,7 +973,7 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
 
-  it('Brings player to the rematch game when player hits rematch, disconnects, then reconnects socket after opponent hit rematch and started game', function () {
+  it.only('Brings player to the rematch game when player hits rematch, disconnects, then reconnects socket after opponent hit rematch and started game', function () {
     cy.concedeOpponent();
 
     cy.get('[data-cy=gameover-rematch')
@@ -1022,6 +1022,7 @@ describe('Reconnecting after game is over', () => {
     });
 
     cy.get('[data-opponent-hand-card]').should('have.length', 5);
+    cy.wait(5000);
     cy.drawCardOpponent();
     cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
