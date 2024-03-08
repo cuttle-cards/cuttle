@@ -336,12 +336,12 @@ Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
 
 Cypress.Commands.add('drawCardOpponent', () => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.get('/game/draw', function handleResponse(res, jwres) {
+    io.socket.get('/game/draw', function handleResponse(res, jwres) {      
       if (jwres.statusCode === 200) {
         return resolve();
       }
       
-      return reject(new Error(jwres));
+      return reject(new Error(jwres.error.message));
     });
   });
 });
