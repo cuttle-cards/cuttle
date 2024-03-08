@@ -341,7 +341,7 @@ Cypress.Commands.add('drawCardOpponent', () => {
         return resolve();
       }
       
-      return reject(new Error(jwres.error.message));
+      return reject(new Error('error requesting opponent draw card'));
     });
   });
 });
