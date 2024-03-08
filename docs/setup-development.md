@@ -2,7 +2,7 @@
 
 ## Docker Development
 
-For maximal consistency Cuttle can be run with docker (See [Docker](./docker/docker.md) Instructions).
+For maximal consistency, Cuttle can be run with docker (See [Docker Instructions](./docker/docker.md)).
 
 ## Local Development
 
@@ -36,7 +36,7 @@ npm ci
 
 **NOTE** `ci` (as opposed to `install`) is a 'clean install' which ensures versions exactly match `package-lock.json`.
 
-**TIP** If `npm ci` fails, check to make sure you have a compiler [installed](https://www.makeuseof.com/how-to-install-c-compiler-linux/) on your machine.
+**TIP** If `npm ci` fails, check to make sure you have a C compiler [installed](https://www.makeuseof.com/how-to-install-c-compiler-linux/) on your machine.
 
 ### Development
 
@@ -146,7 +146,7 @@ To do so, you must first start the backend server:
 npm run start:server
 ```
 
-Then, open the command pallate by hitting `F1`, and then type and select `Debug: Attach to node process` to select the process you want to watch.
+Then, open the command palette by hitting `F1`, and then type and select `Debug: Attach to node process` to select the process you want to watch. Choose the process labeled `node app.js` as this is the sailsjs server process.
 
 You will be able to utilize many standard debugging features, such as setting breakpoints by clicking line numbers, stepping in and over functions, and watching variables. For details, please refer to the [documentation](https://code.visualstudio.com/docs/editor/debugging).
 
