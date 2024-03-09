@@ -85,7 +85,7 @@ module.exports = {
         });
       }
 
-      if (unpopulatedGame && unpopulatedGame.lastEvent.victory) {
+      if (unpopulatedGame?.lastEvent?.victory) {
         Game.publish([unpopulatedGame.id], {
           change: unpopulatedGame.lastEvent.change,
           game: unpopulatedGame.lastEvent.game,
