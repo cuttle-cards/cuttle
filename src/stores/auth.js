@@ -119,7 +119,7 @@ export const useAuthStore = defineStore('auth', {
         if (gameId && (isGame || isLobby)) {
           await this.requestReauthenticate({ username }).then(({ game }) => {
             gameStore.updateGame(game);
-            if (+router.currentRoute.value.params.gameId !== game.id) {
+            if (Number(router.currentRoute.value.params.gameId !== game.id)) {
               router.push(`${isGame ? '/game/' : '/lobby/'}${game.id}`);
             }
           });
