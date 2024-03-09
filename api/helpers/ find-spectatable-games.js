@@ -12,7 +12,11 @@ module.exports = {
       const games = await Game.find({
         status:  gameService.GameStatus.STARTED,
         updatedAt: { '>=': recentUpdateThreshhold },
-      });
+      })
+          .populate('players')
+          .map(({username, pNum}) =>{
+            return { username, pNum};
+          });
       return exits.success(games);
     } catch (err) {
       return exits.error(err);
