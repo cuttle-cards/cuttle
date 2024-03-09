@@ -6,10 +6,9 @@ module.exports = async function (req, res) {
   try {
     const { game: gameId, pNum, usr: userId } = req.session;
     // Track which turn each player most recently requested stalemate
-    const game = await Game.findOne({ id: gameId })
+    let game = await Game.findOne({ id: gameId })
       .populate('players', { sort: 'pNum' });
     let gameUpdates = {};
-    const updatePromises = [];
     const keyPrefix = 'turnStalemateWasRequestedByP';
     const playerStalemateKey = `${keyPrefix}${pNum}`;
     const playerStalemateVal = game.turn;
@@ -25,10 +24,8 @@ module.exports = async function (req, res) {
     };
 
     gameUpdates.lastEvent = { change: 'requestStalemate', requestedByPNum: pNum };
-
     // End in stalemate if both players requested stalemate this turn
     if (playerStalemateVal === opponentStalemateVal && opponentStalemateVal === game.turn) {
-      victory.gameOver = true;
       gameUpdates = {
         ...gameUpdates,
         p0: game.players[0].id,
@@ -36,16 +33,24 @@ module.exports = async function (req, res) {
         status: gameService.GameStatus.FINISHED,
         winner: null,
       };
-      updatePromises.push(gameService.clearGame({ userId }));
-    }
-
-    updatePromises.push(Game.updateOne({ id: gameId }).set(gameUpdates));
-    await Promise.all(updatePromises);
-
-    if (victory.gameOver && gameUpdates.status === gameService.GameStatus.FINISHED) {
+      
+      await Game.updateOne({ id: gameId }).set(gameUpdates);
+      game = await gameService.populateGame({ gameId }); 
+      
+      victory.gameOver = true;
       victory.currentMatch = await sails.helpers.addGameToMatch(game);
+      
+      await Game.updateOne({ id: gameId }).set({
+        lastEvent: {
+          change: 'requestStalemate',
+          game: game,
+          victory
+        }
+      });      
+      await gameService.clearGame({ userId });
+    } else {
+      await Game.updateOne({ id: gameId }).set(gameUpdates);
     }
-
     Game.publish([game.id], {
       change: 'requestStalemate',
       game,
