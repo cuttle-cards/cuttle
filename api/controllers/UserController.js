@@ -75,19 +75,19 @@ module.exports = {
         req.session.game = unpopulatedGame.id;
         req.session.pNum = user.pNum ?? undefined;
       }
-
-      if (populatedGame) {
-        Game.publish([populatedGame.id], {
-          ...populatedGame.lastEvent,
-          game: populatedGame,
-        });
-      }
-
+      
       if (unpopulatedGame?.lastEvent?.victory) {
         Game.publish([unpopulatedGame.id], {
           change: unpopulatedGame.lastEvent.change,
           game: unpopulatedGame.lastEvent.game,
           victory: unpopulatedGame.lastEvent.victory
+        });
+      }
+      
+      if (populatedGame) {
+        Game.publish([populatedGame.id], {
+          ...populatedGame.lastEvent,
+          game: populatedGame,
         });
       }
 
