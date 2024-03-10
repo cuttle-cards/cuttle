@@ -435,11 +435,15 @@ describe('Redirecting to lobby from URL', () => {
     cy.window()
     .its('cuttle.gameStore')
       .then((store) => 
-    expect(store.id).to.eq(this.gameSummary.gameId));
+        expect(store.id).to.eq(this.gameSummary.gameId));
+    cy.readyOpponent();
+    cy.get('[data-cy=ready-button]').click();
+    cy.get('[data-opponent-hand-card]').should('have.length', 5);
   });
 
   it('Redirects to login, then back to lobby after login attempt', function () {
     cy.visit('/');
+    cy.readyOpponent();
     cy.get('[data-cy=user-menu]').click();
     cy.get("[data-nav='Log Out']").click();
     cy.visit(`#/lobby/${this.gameSummary.gameId}`);
@@ -450,6 +454,26 @@ describe('Redirecting to lobby from URL', () => {
     cy.window()
     .its('cuttle.gameStore')
       .then((store) => 
-    expect(store.id).to.eq(this.gameSummary.gameId));
+        expect(store.id).to.eq(this.gameSummary.gameId));
+    cy.get('[data-cy=lobby-card-container]').should('have.class', 'ready');
+    cy.get('[data-cy=ready-button]').click();
+    cy.get('[data-opponent-hand-card]').should('have.length', 5);
   });
+
+  it.only('Joins Lobby from url and refreshes', function () {
+    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
+    cy.window()
+    .its('cuttle.gameStore')
+      .then((store) => 
+        expect(store.id).to.eq(this.gameSummary.gameId));
+    cy.readyOpponent();
+    cy.get('[data-cy=lobby-card-container]').should('have.class', 'ready');
+    cy.reload();
+    cy.get('[data-cy=lobby-card-container]').should('have.class', 'ready');
+    cy.get('[data-cy=ready-button]').click();
+    cy.get('[data-opponent-hand-card]').should('have.length', 5);
+  });
+
+
 });
