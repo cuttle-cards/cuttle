@@ -1295,7 +1295,7 @@ Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
  * @param { 'my' | 'opponent' } [data.whichPlayer] - Optionally specify whether this user
  *  is originalP0 ('my') or originalP1 ('opponent'). For use when spectating
  */
-Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer }) => {
+Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDomAssertion }) => {
   io.socket.get('/game/rematch', { gameId, rematch }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
@@ -1303,6 +1303,11 @@ Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer }) => {
 
     return Promise.resolve(jwres);
   });
+
+  if (skipDomAssertion) {
+    return;
+  }
+
   const cardSelector = whichPlayer ?? 'opponent';
   if (rematch) {
     cy.get(`[data-cy=${cardSelector}-rematch-indicator]`)
