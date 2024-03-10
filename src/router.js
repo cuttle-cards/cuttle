@@ -35,6 +35,14 @@ const logoutAndRedirect = async (to, from, next) => {
   return next('/login');
 };
 
+const redirectIfNoGameIdParam = (to, from, next) => {
+  if (to.params.gameId) {
+    next();
+  } else {
+    next('/');
+  }
+};
+
 const routes = [
   {
     path: '/',
@@ -66,18 +74,19 @@ const routes = [
   },
   {
     name: ROUTE_NAME_LOBBY,
-    path: '/lobby/:gameId',
+    path: '/lobby/:gameId?',
     component: LobbyView,
     // TODO: Add logic to redirect if a given game does not exist
-    beforeEnter: mustBeAuthenticated,
+    beforeEnter: [mustBeAuthenticated, redirectIfNoGameIdParam],
     meta: {
       hideNavigation: true,
     },
   },
   {
     name: ROUTE_NAME_GAME,
-    path: '/game/:gameId',
+    path: '/game/:gameId?',
     component: GameView,
+    beforeEnter: redirectIfNoGameIdParam,
     // TODO: Add logic to redirect if a given game does not exist
     // mustBeAuthenticated intentionally left off here
     // If a user refreshes the relogin modal will fire and allow them to continue playing
@@ -87,14 +96,15 @@ const routes = [
   },
   {
     name: ROUTE_NAME_SPECTATE,
-    path: '/spectate/:gameId',
+    path: '/spectate/:gameId?',
     component: GameView,
+    beforeEnter: redirectIfNoGameIdParam,
     meta: {
       hideNavigation: true,
     },
   },
   {
-    path: '/stats/:seasonId?',
+    path: '/stats/:seasonId',
     name: ROUTE_NAME_STATS,
     component: StatsView,
     beforeEnter: mustBeAuthenticated,
