@@ -55,7 +55,7 @@ const checkAndSubscribeToLobby = async (to, from, next) => {
   }
   
   try {
-    await gameStore.requestSubscribe(+gameId);
+    await gameStore.requestSubscribe(gameId);
     next();
   }
   catch (err) {
