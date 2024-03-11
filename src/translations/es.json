@@ -48,8 +48,7 @@
     "unready": "NO ESTOY LISTO",
     "exit": "SALIR",
     "invite": "Invitar",
-    "rankedChangedAlert":"El modo de juego cambió a",
-    "cannotJoin": "No puedes unirte al lobby"
+    "rankedChangedAlert":"El modo de juego cambió a"
   },
   "game": {
     "resolve": "Resolver",

@@ -48,8 +48,7 @@
     "unready": "UNREADY",
     "exit": "EXIT",
     "invite": "Invite",
-    "rankedChangedAlert": "Game Mode changed to",
-    "cannotJoin": "Cannot Join Lobby"
+    "rankedChangedAlert": "Game Mode changed to"
   },
   "game": {
     "resolve": "Resolve",
