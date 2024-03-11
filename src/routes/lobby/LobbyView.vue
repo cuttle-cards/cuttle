@@ -1,105 +1,102 @@
 <template>
   <div id="lobby-wrapper">
-    <LobbyErrorDialog v-if="showLobbyError" :model-value="showLobbyError" />
-    <template v-else>
-      <div class="langauge-selector">
-        <TheLanguageSelector variant="light" />
+    <div class="langauge-selector">
+      <TheLanguageSelector variant="light" />
+    </div>
+    <v-container>
+      <div class="d-flex align-center">
+        <h1>{{ t('lobby.lobbyFor') }}</h1>
       </div>
-      <v-container>
-        <div class="d-flex align-center">
-          <h1>{{ t('lobby.lobbyFor') }}</h1>
-        </div>
-        <h5>{{ gameName }}</h5>
-        <v-row>
-          <v-col md="4" cols="12">
-            <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
-            <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
-            <PlayerReadyIndicator
-              :player-username="authStore.username"
-              :player-ready="iAmReady"
-              :game-started="gameStarted"
-              data-cy="my-indicator"
-            />
-          </v-col>
-          <v-col md="4" cols="12" class="d-flex align-center justify-center">
-            <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo">
-          </v-col>
-          <v-col md="4" cols="12">
-            <PlayerReadyIndicator
-              :player-username="gameStore.opponentUsername"
-              :player-ready="gameStore.opponentIsReady"
-              :game-started="gameStarted"
-              data-cy="opponent-indicator"
-            />
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-spacer />
-          <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
-            <div class="mx-auto my-4 my-xl-2 homeContent">
-              <v-btn
-                class="px-16 w-100"
-                color="newPrimary"
-                size="x-large"
-                text-color="white"
-                data-cy="ready-button"
-                @click="ready"
-              >
-                {{ readyButtonText }}
-                <v-icon
-                  class="ml-1"
-                  size="small"
-                  :icon="`mdi-${rankedIcon}`"
-                  :data-cy="`ready-button-${rankedIcon}-icon`"
+      <h5>{{ gameName }}</h5>
+      <v-row>
+        <v-col md="4" cols="12">
+          <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
+          <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
+          <PlayerReadyIndicator
+            :player-username="authStore.username"
+            :player-ready="iAmReady"
+            :game-started="gameStarted"
+            data-cy="my-indicator"
+          />
+        </v-col>
+        <v-col md="4" cols="12" class="d-flex align-center justify-center">
+          <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo">
+        </v-col>
+        <v-col md="4" cols="12">
+          <PlayerReadyIndicator
+            :player-username="gameStore.opponentUsername"
+            :player-ready="gameStore.opponentIsReady"
+            :game-started="gameStarted"
+            data-cy="opponent-indicator"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-spacer />
+        <v-col class="home-card-games" :cols="$vuetify.display.mdAndUp ? 8 : 12">
+          <div class="mx-auto my-4 my-xl-2 homeContent">
+            <v-btn
+              class="px-16 w-100"
+              color="newPrimary"
+              size="x-large"
+              text-color="white"
+              data-cy="ready-button"
+              @click="ready"
+            >
+              {{ readyButtonText }}
+              <v-icon
+                class="ml-1"
+                size="small"
+                :icon="`mdi-${rankedIcon}`"
+                :data-cy="`ready-button-${rankedIcon}-icon`"
+              />
+            </v-btn>
+            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
+              <div class="rank-switch">
+                <v-switch
+                  v-model="gameStore.isRanked"
+                  variant="outlined"
+                  class="mx-md-4 pl-2 flex-shrink-0"
+                  :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
+                  data-cy="edit-game-ranked-switch"
+                  color="primary"
+                  hide-details
+                  @update:model-value="setIsRanked"
                 />
-              </v-btn>
-              <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
-                <div class="rank-switch">
-                  <v-switch
-                    v-model="gameStore.isRanked"
-                    variant="outlined"
-                    class="mx-md-4 pl-2 flex-shrink-0"
-                    :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
-                    data-cy="edit-game-ranked-switch"
-                    color="primary"
-                    hide-details
-                    @update:model-value="setIsRanked"
-                  />
-                  <v-icon
-                    class="mr-2 mr-md-4"
-                    size="medium"
-                    :icon="`mdi-${rankedIcon}`"
-                    aria-hidden="true"
-                  />
-                </div>
-                <v-btn
-                  :disabled="readying"
-                  variant="text"
-                  class="w-50 px-16 py-2"
-                  color="surface-2"
-                  data-cy="exit-button"
-                  size="x-large"
-                  @click="leave"
-                >
-                  {{ t('lobby.exit') }}
-                </v-btn>
+                <v-icon
+                  class="mr-2 mr-md-4"
+                  size="medium"
+                  :icon="`mdi-${rankedIcon}`"
+                  aria-hidden="true"
+                />
               </div>
+              <v-btn
+                :disabled="readying"
+                variant="text"
+                class="w-50 px-16 py-2"
+                color="surface-2"
+                data-cy="exit-button"
+                size="x-large"
+                @click="leave"
+              >
+                {{ t('lobby.exit') }}
+              </v-btn>
             </div>
-          </v-col>
-          <v-spacer />
-        </v-row>
-      </v-container>
-      <BaseSnackbar
-        v-model="gameStore.showIsRankedChangedAlert"
-        :timeout="2000"
-        :message="`${t('lobby.rankedChangedAlert')} ${
-          gameStore.isRanked ? t('global.ranked') : t('global.casual')
-        }`"
-        color="surface-1"
-        data-cy="edit-snackbar"
-        @clear="gameStore.showIsRankedChangedAlert = false"
-      />
-    </template>
+          </div>
+        </v-col>
+        <v-spacer />
+      </v-row>
+    </v-container>
+    <BaseSnackbar
+      v-model="gameStore.showIsRankedChangedAlert"
+      :timeout="2000"
+      :message="`${t('lobby.rankedChangedAlert')} ${
+        gameStore.isRanked ? t('global.ranked') : t('global.casual')
+      }`"
+      color="surface-1"
+      data-cy="edit-snackbar"
+      @clear="gameStore.showIsRankedChangedAlert = false"
+    />
   </div>
 </template>
 
@@ -113,7 +110,6 @@ import { useAuthStore } from '@/stores/auth';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
-import LobbyErrorDialog from './components/LobbyErrorDialog.vue';
 
 export default {
   name: 'LobbyView',
@@ -121,7 +117,6 @@ export default {
     PlayerReadyIndicator,
     BaseSnackbar,
     TheLanguageSelector,
-    LobbyErrorDialog
   },
   setup() {
     const { t } = useI18n();
@@ -147,9 +142,6 @@ export default {
   },
   computed: {
     ...mapStores(useGameStore, useAuthStore),
-    showLobbyError() {
-      return !!this.$route.meta.error; 
-    },
     gameId() {
       return this.gameStore.id;
     },
