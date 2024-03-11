@@ -36,31 +36,34 @@ const logoutAndRedirect = async (to, from, next) => {
   return next('/login');
 };
 
-const checkAndSubscribeToLobby = async (to, from, next) => {
+const checkAndSubscribeToLobby = async (to, from) => {
   const gameStore = useGameStore();
   const authStore = useAuthStore();
   const gameId = parseInt(to.params.gameId);
   
-  if (Number.isNaN(gameId) || !Number.isFinite(gameId)) {
-    to.meta.error = 'Invalid lobby number';
-    return next();
-  }
-
-  if (!authStore.authenticated) {
-    return next(`/login/${gameId}`);
-  }
-
-  if (gameStore.players.some(({username}) => username === authStore.username)) {
-    return next();
-  }
-  
   try {
+    if (Number.isNaN(gameId) || !Number.isFinite(gameId)) {
+      throw new Error('Invalid Lobby Number');
+    }
+
+    if (!authStore.authenticated) {
+      return {path: `/login/${gameId}` };
+    }
+
+    if (gameStore.players.some(({username}) => username === authStore.username)) {
+      return true;
+    }
+      
     await gameStore.requestSubscribe(gameId);
-    next();
+    return true;
   }
   catch (err) {
-    to.meta.error = err.message;
-    next();
+    if (from.name === 'Home') {
+      throw new Error(err);
+    }
+
+    return {name: 'Home', state: {error: err.message} };
+    
   }
 };
 
