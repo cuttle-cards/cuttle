@@ -198,6 +198,11 @@ export default {
     await this.gameListStore.requestGameList();
     this.loadingData = false;    
   },
+  mounted() {
+    if (history?.state?.error) {
+      this.handleError(history.state.error);
+    }
+  },
   methods: {
     clearSnackBar() {
       this.snackMessage = '';
