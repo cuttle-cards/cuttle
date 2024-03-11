@@ -296,7 +296,6 @@ module.exports = function (req, res) {
         game: fullGame,
         gameModel,
       });
-
       Game.publish([fullGame.id], {
         change: 'resolve',
         oneOff,
@@ -307,6 +306,13 @@ module.exports = function (req, res) {
       });
       // If the game is over, clean it up
       if (victory.gameOver) {
+        await Game.updateOne({ id: fullGame.id }).set({
+          lastEvent: {
+            change: 'resolve',
+            game: fullGame,
+            victory
+          }
+        });
         await gameService.clearGame({ userId: req.session.usr });
       }
       return res.ok();

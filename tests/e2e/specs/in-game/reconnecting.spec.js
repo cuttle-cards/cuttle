@@ -699,3 +699,331 @@ describe('Reauthenticating in game', () => {
     cy.get('#deck').should('be.visible');
   });
 });
+
+describe('Reconnecting after game is over', () => {
+  beforeEach(() => {
+    cy.setupGameAsP0();
+  });
+  
+  it('Dialogs persist after refreshing when game is over by conceded and opponent request rematch', () => {
+    cy.concedeOpponent();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.url().then((url) => {
+      const oldGameId = Number(url.split('/').pop());
+      cy.rematchOpponent({ gameId: oldGameId, rematch: true });
+    });
+    cy.get('[data-cy=lobby-ready-card]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.get('[data-cy=match-score-counter-wins]').should('contain', 'W: 1');
+    cy.get('[data-cy=opponent-rematch-indicator]')  
+    .find('[data-cy="lobby-card-container"]')  
+    .should('have.class', 'ready');
+  });
+
+  it('Dialogs persist after refreshing when game is over by conceded and player request rematch', () => {
+    cy.concedeOpponent();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.get('[data-cy=gameover-rematch]').click();
+    cy.get('[data-cy=lobby-ready-card]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.get('[data-cy=my-rematch-indicator]')
+    .find('[data-cy="lobby-card-container"]')
+    .should('have.class', 'ready');
+  });
+  
+  it('Dialogs persist after refreshing when game is over by stalemate', () => {
+    cy.get('#game-menu-activator').click();
+    cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+    cy.get('#request-gameover-dialog')
+      .should('be.visible')
+      .get('[data-cy=request-gameover-confirm]')
+      .click();
+    cy.stalemateOpponent();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by passing', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+      deck: [],
+    });
+
+    cy.get('#deck').should('contain', '(2)').click();
+    cy.drawCardOpponent();
+    //Pass three times for stalemate
+    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.passOpponent();
+    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by points', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+      deck: [],
+    });
+
+    cy.get('[data-player-hand-card=7-0]').click();
+    cy.get('[data-move-choice=points]').should('be.visible').click();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by points playing jack', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.JACK_OF_DIAMONDS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_CLUBS],
+      p1Points: [Card.SEVEN_OF_CLUBS],
+      p1FaceCards: [],
+      deck: [],
+    });
+
+    cy.get('[data-player-hand-card=11-1]').click();
+    cy.get('[data-move-choice=jack]').should('be.visible').click();
+    cy.get('[data-opponent-point-card=7-0]').click();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by points playing king', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.KING_OF_DIAMONDS],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+      deck: [],
+    });
+
+    cy.get('[data-player-hand-card=13-1]').click();
+    cy.get('[data-move-choice=faceCard]').should('be.visible').click();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by resolving one-off', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.JACK_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+      deck:[]
+    });
+
+    cy.get('#deck').click();
+    cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.SEVEN_OF_HEARTS);
+    cy.get('[data-player-hand-card=7-3]').click();
+    cy.get('[data-move-choice=points]').should('be.visible').click();
+    cy.drawCardOpponent();
+    cy.get('[data-player-hand-card=6-1]').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.resolveOpponent();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by resolving one-off from a seven', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
+      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.JACK_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.KING_OF_DIAMONDS,
+      secondCard: Card.TEN_OF_CLUBS,
+      deck:[]
+    });
+
+    cy.get('[data-player-hand-card=6-1]').click();
+    cy.get('[data-move-choice=points]').should('be.visible').click();
+    cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.SIX_OF_DIAMONDS);
+    cy.get('[data-player-hand-card=7-3]').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.resolveOpponent();
+    cy.get('[data-top-card=13-1]').click();
+    cy.get('[data-move-choice=faceCard]').should('be.visible').click();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by playing jack from a seven', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
+      p0Points: [Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [Card.SEVEN_OF_SPADES,],
+      p1FaceCards: [],
+      topCard: Card.JACK_OF_DIAMONDS,
+      deck:[]
+    });
+
+    cy.get('[data-player-hand-card=7-3]').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.resolveOpponent();
+    cy.get('[data-top-card=11-1]').should('be.visible').click();
+    cy.get('[data-move-choice=jack]').should('be.visible').click();
+    cy.get('[data-opponent-point-card=7-3]').should('be.visible').click();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Dialogs persist after refreshing when game is over by playing points from a seven', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
+      p0Points: [Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.SEVEN_OF_SPADES,
+      deck:[]
+    });
+
+    cy.get('[data-player-hand-card=7-3]').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.resolveOpponent();
+    cy.get('[data-top-card=7-3]').click();
+    cy.get('[data-move-choice=points]').should('be.visible').click();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+    cy.reload();
+    cy.get('[data-cy=game-over-dialog]').should('be.visible');
+  });
+
+  it('Brings player to the rematch game when player hits rematch, disconnects, then refreshes after opponent hit rematch and started game', () => {
+    cy.concedeOpponent();
+
+    cy.get('[data-cy=gameover-rematch')
+      .should('not.be.disabled')
+      .click();
+
+    cy.get('[data-cy=my-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('have.class', 'ready');
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+
+    cy.url().then((url) => {
+      const oldGameId = Number(url.split('/').pop());
+      cy.wrap(oldGameId).as('oldGameId');
+      cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
+    });
+
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+
+    cy.reload();
+
+    cy.get('#game-over-dialog')
+      .should('not.exist');
+    // Player should now be in new game
+    cy.get('[data-player-hand-card]').should('have.length', 6);
+
+    cy.url().then((url) => {
+      cy.get('@oldGameId').then((oldGameId) => {
+        const currentGameId = Number(url.split('/').pop());
+        const expectedGameId = oldGameId + 1;
+
+        expect(currentGameId).to.eq(expectedGameId, 'Expected current url to point to new game id, but it did not');
+      });
+    });
+
+    cy.get('[data-opponent-hand-card]').should('have.length', 5);
+    cy.get('#turn-indicator').should('contain', "OPPONENT'S TURN");
+    cy.drawCardOpponent();
+    cy.get('[data-opponent-hand-card]').should('have.length', 6);
+  });
+
+  it('Brings player to the rematch game when player hits rematch, disconnects, then reconnects socket after opponent hit rematch and started game', () => {
+    cy.concedeOpponent();
+
+    cy.get('[data-cy=gameover-rematch')
+      .should('not.be.disabled')
+      .click();
+
+    cy.get('[data-cy=my-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('have.class', 'ready');
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+
+    cy.url().then((url) => {
+      const oldGameId = Number(url.split('/').pop());
+      cy.wrap(oldGameId).as('oldGameId');
+      cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
+    });
+
+    cy.get('[data-cy=opponent-rematch-indicator]')
+      .find('[data-cy="lobby-card-container"]')
+        .should('not.have.class', 'ready');
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.reconnectSocket());
+
+    cy.get('#game-over-dialog')
+      .should('not.exist');
+    // Player should now be in new game
+    cy.get('[data-player-hand-card]').should('have.length', 6);
+
+    cy.url().then((url) => {
+      cy.get('@oldGameId').then((oldGameId) => {
+        const currentGameId = Number(url.split('/').pop());
+        const expectedGameId = oldGameId + 1;
+
+        expect(currentGameId).to.eq(expectedGameId, 'Expected current url to point to new game id, but it did not');
+      });
+    });
+
+    cy.get('[data-opponent-hand-card]').should('have.length', 5);
+    cy.get('#turn-indicator').should('contain', "OPPONENT'S TURN");
+    cy.drawCardOpponent();
+    cy.get('[data-opponent-hand-card]').should('have.length', 6);
+  });
+});
+

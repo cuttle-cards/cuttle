@@ -57,10 +57,18 @@ module.exports = function (req, res) {
           status: gameService.GameStatus.FINISHED,
           winner: null
         };
-        game = await Game.updateOne({ id: game.id }).set(gameUpdates);
-        game.players = players;
+        await Game.updateOne({ id: game.id }).set(gameUpdates);
+        
+        game = await gameService.populateGame({ gameId: game.id });
         victory.currentMatch = await sails.helpers.addGameToMatch(game);
-
+        
+        await Game.updateOne({ id: game.id }).set({
+          lastEvent: {
+            change: 'pass',
+            game: game,
+            victory
+          }
+        });
         await gameService.clearGame({ userId: req.session.usr });
       }
       Game.publish([game.id], {

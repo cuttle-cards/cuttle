@@ -3,6 +3,7 @@ import { io, reconnectSockets } from '@/plugins/sails.js';
 import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE } from '@/router';
 import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '_/utils/local-storage-utils.js';
 import { useGameStore } from '@/stores/game';
+import router from '@/router.js';
 
 // TODO Figure out how to reconsolidate this with backend
 const getPlayerPnumByUsername = (players, username) => {
@@ -95,12 +96,10 @@ export const useAuthStore = defineStore('auth', {
           this.clearAuth();
           return;
         }
-
         // If the user is authenticated and has a username, add it to the store
         if (username) {
           this.authSuccess(username);
         }
-
         // If the user is currently authenticated and part of a game, we need to resubscribe them
         // The sequencing here is a little interesting, but this is what happens to get a user back
         // in to a game in progress:
@@ -117,10 +116,12 @@ export const useAuthStore = defineStore('auth', {
           const { gameId } = route.params;
           gameStore.requestSpectate(Number(gameId));
         }
-
         if (gameId && (isGame || isLobby)) {
           await this.requestReauthenticate({ username }).then(({ game }) => {
             gameStore.updateGame(game);
+            if (Number(router.currentRoute.value.params.gameId !== game.id)) {
+              router.push(`${isGame ? '/game/' : '/lobby/'}${game.id}`);
+            }
           });
         }
 
