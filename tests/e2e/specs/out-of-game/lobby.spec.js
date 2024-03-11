@@ -1,4 +1,5 @@
 import { myUser, opponentOne } from '../../fixtures/userFixtures';
+import { assertSnackbarError } from '../../support/helpers';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
@@ -460,7 +461,7 @@ describe('Redirecting to lobby from URL', () => {
     cy.get('[data-opponent-hand-card]').should('have.length', 5);
   });
 
-  it.only('Joins Lobby from url and refreshes', function () {
+  it('Joins Lobby from url and refreshes', function () {
     cy.visit(`#/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
     cy.window()
@@ -473,6 +474,14 @@ describe('Redirecting to lobby from URL', () => {
     cy.get('[data-cy=lobby-card-container]').should('have.class', 'ready');
     cy.get('[data-cy=ready-button]').click();
     cy.get('[data-opponent-hand-card]').should('have.length', 5);
+  });
+
+  it('Attempts to join invalid lobby', function () {
+    cy.visit('#/lobby/100000');
+    assertSnackbarError("Can't find game", 'newgame');
+    cy.visit('#/rules');
+    cy.visit('/');
+    cy.get(`[data-cy=newgame-snackbar] .v-snackbar__wrapper`).should('not.exist');
   });
 
 
