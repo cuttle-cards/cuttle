@@ -76,7 +76,7 @@ const routes = [
     beforeEnter: mustBeAuthenticated,
   },
   {
-    path: '/login/:redirectId?',
+    path: '/login/:lobbyRedirectId?',
     name: ROUTE_NAME_LOGIN,
     component: LoginView,
   },
