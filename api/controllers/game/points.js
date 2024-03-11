@@ -56,8 +56,15 @@ module.exports = function (req, res) {
         game: fullGame,
         victory,
       });
-      // If the game is over, clean it up
+      // If the game is over,store game in last event, then clean it up
       if (victory.gameOver) {
+        await Game.updateOne({ id: fullGame.id }).set({
+          lastEvent: {
+            change: 'points',
+            game: fullGame,
+            victory,
+          }
+        });
         await gameService.clearGame({ userId: req.session.usr });
       }
       return res.ok();
