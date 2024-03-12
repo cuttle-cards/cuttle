@@ -10,8 +10,6 @@
       <h5>{{ gameName }}</h5>
       <v-row>
         <v-col md="4" cols="12">
-          <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
-          <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
           <PlayerReadyIndicator
             :player-username="authStore.username"
             :player-ready="iAmReady"
