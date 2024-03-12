@@ -74,7 +74,7 @@ describe('Lobby - Page Content (Ranked)', () => {
   it('Displays ranked button', () => {
     cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
   });
-  
+
   it('Changes games to ranked and casual from the lobby', () => {
     // Set To Casual Mode
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
@@ -83,7 +83,7 @@ describe('Lobby - Page Content (Ranked)', () => {
     cy.contains('Game Mode changed to').should('not.exist');
     checkRanked(false);
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
-    
+
     // Set To Ranked Mode
     cy.toggleInput('[data-cy=edit-game-ranked-switch]');
     checkRanked(true);
@@ -100,7 +100,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
     cy.get('[data-cy=exit-button]').click();
     // Confirm navigation back to home
-    cy.hash().should('eq', '#/');
+    cy.hash().should('eq', '/');
     // Test store state
     cy.window()
       .its('cuttle.gameStore')
@@ -302,7 +302,7 @@ describe('Lobby - P1 Perspective', () => {
         .then((gameData) =>  {
           cy.subscribeOpponent(gameData.id);
         });
-    
+
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('exist').should('not.have.class', 'ready');
   });

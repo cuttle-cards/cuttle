@@ -675,12 +675,12 @@ describe('Display correct dialog for unavailable game', () => {
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
     //go back to game URL
-    cy.get('@gameSummary').then(({ gameId }) => cy.visit(`#/game/${gameId}`));
+    cy.get('@gameSummary').then(({ gameId }) => cy.visit(`/game/${gameId}`));
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
     cy.get('[data-cy="leave-unavailable-game-button"]').click();
-    cy.hash().should('equal', '#/');
+    cy.hash().should('equal', '/');
     //go to random url
-    cy.visit('#/game/12345');
+    cy.visit('/game/12345');
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
   });
 });
@@ -704,7 +704,7 @@ describe('Reconnecting after game is over', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
   });
-  
+
   it('Dialogs persist after refreshing when game is over by conceded and opponent request rematch', () => {
     cy.concedeOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
@@ -718,8 +718,8 @@ describe('Reconnecting after game is over', () => {
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.get('[data-cy=match-score-counter-wins]').should('contain', 'W: 1');
-    cy.get('[data-cy=opponent-rematch-indicator]')  
-    .find('[data-cy="lobby-card-container"]')  
+    cy.get('[data-cy=opponent-rematch-indicator]')
+    .find('[data-cy="lobby-card-container"]')
     .should('have.class', 'ready');
   });
 
@@ -736,7 +736,7 @@ describe('Reconnecting after game is over', () => {
     .find('[data-cy="lobby-card-container"]')
     .should('have.class', 'ready');
   });
-  
+
   it('Dialogs persist after refreshing when game is over by stalemate', () => {
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();

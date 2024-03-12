@@ -104,4 +104,7 @@ module.exports.routes = {
   '/test/loadSeasonFixture': 'TestController.loadSeasonFixture',
   '/test/loadMatchFixtures': 'TestController.loadMatchFixtures',
   '/test/loadFinishedGameFixtures': 'TestController.loadFinishedGameFixtures',
+
+  // Catch all for Vue paths
+  '/*': { controller: 'ViewController', action: 'serveIndex', skipAssets: true },
 };
