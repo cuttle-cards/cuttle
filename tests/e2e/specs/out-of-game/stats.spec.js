@@ -70,7 +70,7 @@ describe('Stats Page Error States', () => {
   it('Redirects to login when attempting to navigate to stats while unauthenticated', () => {
     cy.wipeDatabase();
     cy.visit('/stats');
-    cy.hash().should('eq', '/signup');
+    cy.location('pathname').should('eq', '/signup');
   });
 });
 
@@ -250,10 +250,10 @@ describe('Stats Page', () => {
     cy.get('@seasons').then((seasons) => {
       const [seasonOne, seasonTwo] = seasons;
       cy.vueRoute(`/stats/${seasonOne.id}`);
-      cy.hash().should('contain', seasonOne.id);
+      cy.location('pathname').should('contain', seasonOne.id);
       cy.get('[data-cy=season-select]').should('contain', seasonOne.name).click();
       cy.get('[role=listbox]').contains(seasonTwo.name).click();
-      cy.hash().should('contain', seasonTwo.id);
+      cy.location('pathname').should('contain', seasonTwo.id);
       cy.get('[data-cy=season-select]').should('contain', seasonTwo.name);
     });
   });

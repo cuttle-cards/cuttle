@@ -100,7 +100,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
     cy.get('[data-cy=exit-button]').click();
     // Confirm navigation back to home
-    cy.hash().should('eq', '/');
+    cy.location('pathname').should('eq', '/');
     // Test store state
     cy.window()
       .its('cuttle.gameStore')

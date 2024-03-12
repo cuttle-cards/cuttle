@@ -3,7 +3,7 @@ import { myUser } from '../../fixtures/userFixtures';
 
 function assertSuccessfulAuth(username) {
   // Confirm we have navigated to home
-  cy.hash().should('eq', '/');
+  cy.location('pathname').should('eq', '/');
   // Check store auth data
   cy.window()
     .its('cuttle.authStore')
@@ -15,7 +15,7 @@ function assertSuccessfulAuth(username) {
 
 function assertFailedAuth(path) {
   // Confirm we have not navigated away from login/signup
-  cy.hash().should('eq', path);
+  cy.location('pathname').should('eq', path);
   // Check store auth data
   cy.window()
     .its('cuttle.authStore')
@@ -42,7 +42,7 @@ describe('Auth - Page Content', () => {
   it('Displays logo and navigates to rules page', () => {
     cy.get('#logo');
     cy.get('[data-cy=rules-link]').click();
-    cy.hash().should('eq', '/rules');
+    cy.location('pathname').should('eq', '/rules');
   });
 
   it('Navigates to /login if returning visiter, /signup if first new visiter', () => {
@@ -52,10 +52,10 @@ describe('Auth - Page Content', () => {
     cy.get('[data-cy="user-menu"]').click();
     cy.get("[data-nav='Log Out']").click();
     cy.visit('/');
-    cy.hash().should('eq', '/login');
+    cy.location('pathname').should('eq', '/login');
     cy.clearLocalStorage();
     cy.visit('/');
-    cy.hash().should('eq', '/signup');
+    cy.location('pathname').should('eq', '/signup');
   });
 });
 

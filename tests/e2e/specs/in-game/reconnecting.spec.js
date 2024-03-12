@@ -678,7 +678,7 @@ describe('Display correct dialog for unavailable game', () => {
     cy.get('@gameSummary').then(({ gameId }) => cy.visit(`/game/${gameId}`));
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
     cy.get('[data-cy="leave-unavailable-game-button"]').click();
-    cy.hash().should('equal', '/');
+    cy.location('pathname').should('equal', '/');
     //go to random url
     cy.visit('/game/12345');
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
