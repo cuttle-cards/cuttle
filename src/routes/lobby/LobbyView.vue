@@ -20,7 +20,7 @@
           />
         </v-col>
         <v-col md="4" cols="12" class="d-flex align-center justify-center">
-          <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo">
+          <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo" />
         </v-col>
         <v-col md="4" cols="12">
           <PlayerReadyIndicator
@@ -51,7 +51,9 @@
                 :data-cy="`ready-button-${rankedIcon}-icon`"
               />
             </v-btn>
-            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
+            <div
+              class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4"
+            >
               <div class="rank-switch">
                 <v-switch
                   v-model="gameStore.isRanked"
@@ -63,12 +65,7 @@
                   hide-details
                   @update:model-value="setIsRanked"
                 />
-                <v-icon
-                  class="mr-2 mr-md-4"
-                  size="medium"
-                  :icon="`mdi-${rankedIcon}`"
-                  aria-hidden="true"
-                />
+                <v-icon class="mr-2 mr-md-4" size="medium" :icon="`mdi-${rankedIcon}`" aria-hidden="true" />
               </div>
               <v-btn
                 :disabled="readying"
@@ -101,7 +98,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
@@ -121,7 +118,14 @@ export default {
   setup() {
     const { t } = useI18n();
     const gameStarted = ref(false);
-
+    const joinAudio = ref(new Audio('/sounds/lobby/enter-lobby.mp3'));
+    const leaveAudio = ref(new Audio('/sounds/lobby/leave-lobby.mp3'));
+    onMounted(() => {
+      joinAudio.value.play();
+    });
+    onUnmounted(() => {
+      leaveAudio.value.play();
+    });
     onBeforeRouteLeave((to, from, next) => {
       if (to.name === 'Game') {
         gameStarted.value = true;
@@ -133,7 +137,7 @@ export default {
       }
     });
 
-    return { t, gameStarted };
+    return { t, gameStarted, joinAudio, leaveAudio };
   },
   data() {
     return {
@@ -157,20 +161,16 @@ export default {
     readyButtonText() {
       return this.t(this.iAmReady ? 'lobby.unready' : 'lobby.ready');
     },
-    rankedIcon(){
+    rankedIcon() {
       return this.gameStore.isRanked ? 'sword-cross' : 'coffee';
-    }
+    },
   },
   watch: {
     opponentUsername(newVal) {
       if (newVal) {
-        if (this.$refs.enterLobbySound.readyState === 4) {
-          this.$refs.enterLobbySound.play();
-        }
+        this.joinAudio.play();
       } else {
-        if (this.$refs.leaveLobbySound.readyState === 4) {
-          this.$refs.leaveLobbySound.play();
-        }
+        this.leaveAudio.play();
       }
     },
   },
@@ -251,7 +251,7 @@ h5 {
 @media (min-width: 980px) {
   .rank-switch {
     padding: 0;
-  }  
+  }
 }
 
 @media (max-width: 660px) {
@@ -275,7 +275,7 @@ h5 {
 @media (max-width: 350px) {
   .rank-switch {
     width: 100%;
-  }  
+  }
 }
 
 #logo {
