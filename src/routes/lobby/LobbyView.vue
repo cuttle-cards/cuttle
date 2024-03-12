@@ -20,7 +20,7 @@
           />
         </v-col>
         <v-col md="4" cols="12" class="d-flex align-center justify-center">
-          <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo" />
+          <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo">
         </v-col>
         <v-col md="4" cols="12">
           <PlayerReadyIndicator
@@ -51,9 +51,7 @@
                 :data-cy="`ready-button-${rankedIcon}-icon`"
               />
             </v-btn>
-            <div
-              class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4"
-            >
+            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
               <div class="rank-switch">
                 <v-switch
                   v-model="gameStore.isRanked"
@@ -65,7 +63,12 @@
                   hide-details
                   @update:model-value="setIsRanked"
                 />
-                <v-icon class="mr-2 mr-md-4" size="medium" :icon="`mdi-${rankedIcon}`" aria-hidden="true" />
+                <v-icon
+                  class="mr-2 mr-md-4"
+                  size="medium"
+                  :icon="`mdi-${rankedIcon}`"
+                  aria-hidden="true"
+                />
               </div>
               <v-btn
                 :disabled="readying"
