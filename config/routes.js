@@ -105,6 +105,7 @@ module.exports.routes = {
   '/test/loadMatchFixtures': 'TestController.loadMatchFixtures',
   '/test/loadFinishedGameFixtures': 'TestController.loadFinishedGameFixtures',
 
-  // Catch all for Vue paths
-  '/*': { controller: 'ViewController', action: 'serveIndex', skipAssets: true },
+  // Catch all for Vue paths only require get for http request so we don't interfer
+  // with any blueprints routes
+  'GET /*': { controller: 'ViewController', action: 'serveIndex', skipAssets: true },
 };
