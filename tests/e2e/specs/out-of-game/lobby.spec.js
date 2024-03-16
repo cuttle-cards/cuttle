@@ -430,7 +430,7 @@ describe('Redirecting to lobby from URL', () => {
   });
   
   
-  it('Joins Lobby from url', function () {
+  it('Joins Lobby via invite link', function () {
     cy.visit(`#/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
     cy.window()
