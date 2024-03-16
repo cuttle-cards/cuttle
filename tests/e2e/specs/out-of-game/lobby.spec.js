@@ -476,7 +476,7 @@ describe('Redirecting to lobby from URL', () => {
     cy.get('[data-opponent-hand-card]').should('have.length', 5);
   });
 
-  it('Attempts to join invalid lobby', function () {
+  it('Navigates Home and shows error snackbar when user visits invalid invite link', function () {
     cy.visit('#/lobby/100000');
     assertSnackbarError("Can't find game", 'newgame');
     cy.visit('#/rules');
