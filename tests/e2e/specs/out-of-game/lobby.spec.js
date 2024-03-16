@@ -442,7 +442,7 @@ describe('Redirecting to lobby from URL', () => {
     cy.get('[data-opponent-hand-card]').should('have.length', 5);
   });
 
-  it('Redirects to login, then back to lobby after login attempt', function () {
+  it('Redirects to login, then back to lobby when unauthenticated user visits invite link', function () {
     cy.visit('/');
     cy.readyOpponent();
     cy.get('[data-cy=user-menu]').click();
