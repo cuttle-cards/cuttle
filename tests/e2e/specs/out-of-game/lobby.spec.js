@@ -415,7 +415,7 @@ describe('Lobby - P1 Perspective', () => {
   });
 });
 
-describe('Redirecting to lobby from URL', () => {
+describe('Lobby invite links', () => {
   
   beforeEach(() => {
     cy.wipeDatabase();
