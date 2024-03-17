@@ -212,7 +212,6 @@ export default {
       this.showSnackBar = false;
     },
     handleSubscribeError(gameId, message) {
-      debugger;
       this.gameListStore.updateGameStatus({ id: gameId, newStatus: GameStatus.STARTED });
       this.handleError(message);
     },
