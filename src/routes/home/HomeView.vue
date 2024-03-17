@@ -197,7 +197,7 @@ export default {
   watch:{
     $route() {
       if (this.$route.query?.error) {
-        this.handleSubscribeError(this.$route.query.gameId, this.$route.query.error);
+        this.handleSubscribeError(Number(this.$route.query.gameId), this.$route.query.error);
         this.$router.replace('/');
       }
     }
@@ -212,6 +212,7 @@ export default {
       this.showSnackBar = false;
     },
     handleSubscribeError(gameId, message) {
+      debugger;
       this.gameListStore.updateGameStatus({ id: gameId, newStatus: GameStatus.STARTED });
       this.handleError(message);
     },
