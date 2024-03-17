@@ -194,14 +194,17 @@ export default {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
   },
+  watch:{
+    $route() {
+      if (this.$route.query?.error) {
+        this.handleError(this.$route.query.error);
+        this.$router.replace('/');
+      }
+    }
+  },
   async created() {
     await this.gameListStore.requestGameList();
     this.loadingData = false;    
-  },
-  mounted() {
-    if (history?.state?.error) {
-      this.handleError(history.state.error);
-    }
   },
   methods: {
     clearSnackBar() {

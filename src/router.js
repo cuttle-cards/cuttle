@@ -36,11 +36,10 @@ const logoutAndRedirect = async (to, from, next) => {
   return next('/login');
 };
 
-const checkAndSubscribeToLobby = async (to, from) => {
+const checkAndSubscribeToLobby = async (to) => {
   const gameStore = useGameStore();
   const authStore = useAuthStore();
   const gameId = parseInt(to.params.gameId);
-  
   try {
     if (Number.isNaN(gameId) || !Number.isFinite(gameId)) {
       throw new Error('Invalid Lobby Number');
@@ -58,12 +57,7 @@ const checkAndSubscribeToLobby = async (to, from) => {
     return true;
   }
   catch (err) {
-    if (from.name === 'Home') {
-      throw new Error(err);
-    }
-
-    return {name: 'Home', state: {error: err.message} };
-    
+   return { name: 'Home', query: { error: err.message} };
   }
 };
 

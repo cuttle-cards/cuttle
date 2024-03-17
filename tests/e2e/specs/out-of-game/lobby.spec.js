@@ -1,4 +1,4 @@
-import { myUser, opponentOne } from '../../fixtures/userFixtures';
+import { myUser, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
 import { assertSnackbarError } from '../../support/helpers';
 
 function setup(isRanked = false) {
@@ -421,6 +421,7 @@ describe('Lobby invite links', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
+    cy.visit('/');
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
@@ -476,12 +477,21 @@ describe('Lobby invite links', () => {
     cy.get('[data-opponent-hand-card]').should('have.length', 5);
   });
 
-  it('Navigates Home and shows error snackbar when user visits invalid invite link', function () {
+  it.only('Navigates Home and shows error snackbar when user visits invalid invite link', function () {
     cy.visit('#/lobby/100000');
     assertSnackbarError("Can't find game", 'newgame');
     cy.visit('#/rules');
     cy.visit('/');
     cy.get(`[data-cy=newgame-snackbar] .v-snackbar__wrapper`).should('not.exist');
+  });
+
+  it('Navigates Home and shows error snackbar when user visits invite link of full game', function () {
+    cy.get(`[data-cy-join-game=${this.gameSummary.gameId}]`).should('be.enabled');
+    cy.signupOpponent(opponentTwo);
+    cy.subscribeOpponent(this.gameSummary.gameId);
+    cy.get(`[data-cy-join-game=${this.gameSummary.gameId}]`).should('be.disabled');
+    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    assertSnackbarError("Cannot join that game because it's already full", 'newgame');
   });
 
 
