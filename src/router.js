@@ -57,7 +57,7 @@ const checkAndSubscribeToLobby = async (to) => {
     return true;
   }
   catch (err) {
-   return { name: 'Home', query: { error: err.message} };
+   return { name: 'Home', query: { gameId:gameId, error: err.message} };
   }
 };
 

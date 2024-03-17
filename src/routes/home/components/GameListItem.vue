@@ -132,9 +132,8 @@ export default {
       this.$router.push(`/lobby/${this.gameId}`).then(() => {
         this.joiningGame = false;
       })
-        .catch((error) => {
-          this.joiningGame = false;
-          this.$emit('error', error);
+        .catch(() => {
+        this.joiningGame = false;
         });
     },
     spectateGame() {

@@ -197,7 +197,7 @@ export default {
   watch:{
     $route() {
       if (this.$route.query?.error) {
-        this.handleError(this.$route.query.error);
+        this.handleSubscribeError(this.$route.query.gameId, this.$route.query.error);
         this.$router.replace('/');
       }
     }
