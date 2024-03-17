@@ -1,5 +1,6 @@
 import { myUser, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
 import { assertSnackbarError } from '../../support/helpers';
+import { SnackBarError } from '../../fixtures/snackbarError';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
@@ -479,7 +480,7 @@ describe('Lobby invite links', () => {
 
   it('Navigates Home and shows error snackbar when user visits invalid invite link', function () {
     cy.visit('#/lobby/100000');
-    assertSnackbarError("Can't find game", 'newgame');
+    assertSnackbarError(SnackBarError.CANT_FIND_GAME, 'newgame');
     cy.visit('#/rules');
     cy.visit('/');
     cy.get(`[data-cy=newgame-snackbar] .v-snackbar__wrapper`).should('not.exist');
@@ -491,7 +492,7 @@ describe('Lobby invite links', () => {
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.get(`[data-cy-join-game=${this.gameSummary.gameId}]`).should('be.disabled');
     cy.visit(`#/lobby/${this.gameSummary.gameId}`);
-    assertSnackbarError("Cannot join that game because it's already full", 'newgame');
+    assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
   });
 
 
