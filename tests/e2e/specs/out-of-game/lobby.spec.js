@@ -495,5 +495,4 @@ describe('Lobby invite links', () => {
     assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
   });
 
-
 });
