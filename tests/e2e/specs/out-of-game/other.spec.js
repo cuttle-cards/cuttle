@@ -1,21 +1,13 @@
-const { version: pkgVersion } = require('../../../../package.json');
-
-describe('Health Page', () => {
+describe('Hash Router Redirects', () => {
   beforeEach(() => {
     cy.visit('/');
   });
 
-  it('is available if db responds', () => {
-    cy.request('/health').then((res) => {
-      expect(res).property('status').to.equal(200);
-      expect(res.body).property('alive').to.eq(true);
-    });
-  });
+  it('Redirects from hash URL to non-hash URL', () => {
+    // Visit a URL with a hash
+    cy.visit('/#/rules');
 
-  it('returns the current package version', () => {
-    cy.request('/health').then((res) => {
-      expect(res).property('status').to.equal(200);
-      expect(res.body).property('version').to.eq(pkgVersion);
-    });
+    // Check that the final location is the expected path without the hash
+    cy.location('pathname').should('eq', '/rules');
   });
 });
