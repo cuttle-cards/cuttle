@@ -84,7 +84,7 @@
           <h2 class="text-h2 mt-8 mb-4">
             {{ t('stats.siteUsage') }}
           </h2>
-          <StatsUsageChart :season="selectedSeason" />
+          <StatsUsageChart v-if="selectedSeason.gameCounts>0" :season="selectedSeason" />
         </div>
         <!-- Error display -->
         <div v-if="error" class="d-flex flex-column align-center text-center">
