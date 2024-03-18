@@ -307,7 +307,7 @@ describe('Creating And Updating Ranked Matches', () => {
       cy.log('Match data is correctly unaffected after sixth game', res);
 
       // Confirm game was set to unranked
-      cy.request('http://localhost:1337/game').then((res) => {
+      cy.request('http://localhost:1337/test/game').then((res) => {
         // Sort games by updatedAt asc
         const games = res.body.sort((game1, game2) => game1.updatedAt - game2.updatedAt);
         expect(games.length).to.eq(7, 'Expected 7 games');

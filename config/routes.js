@@ -104,6 +104,7 @@ module.exports.routes = {
   '/test/loadSeasonFixture': 'TestController.loadSeasonFixture',
   '/test/loadMatchFixtures': 'TestController.loadMatchFixtures',
   '/test/loadFinishedGameFixtures': 'TestController.loadFinishedGameFixtures',
+  '/test/game': 'TestController.getGames',
   '/test/match': 'TestController.getMatches',
 
   // Catch all for Vue paths only require get for http request so we don't interfer
