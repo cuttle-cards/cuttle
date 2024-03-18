@@ -119,13 +119,13 @@ export default {
   setup() {
     const { t } = useI18n();
     const gameStarted = ref(false);
-    const joinAudio = ref(new Audio('/sounds/lobby/enter-lobby.mp3'));
-    const leaveAudio = ref(new Audio('/sounds/lobby/leave-lobby.mp3'));
+    const joinAudio = new Audio('/sounds/lobby/enter-lobby.mp3');
+    const leaveAudio =new Audio('/sounds/lobby/leave-lobby.mp3');
     onMounted(() => {
-      joinAudio.value.play();
+      joinAudio.play();
     });
     onUnmounted(() => {
-      leaveAudio.value.play();
+      leaveAudio.play();
     });
     onBeforeRouteLeave((to, from, next) => {
       if (to.name === 'Game') {
