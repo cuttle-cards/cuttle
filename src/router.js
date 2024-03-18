@@ -101,6 +101,20 @@ const routes = [
   },
 ];
 
+const getInitialPath = () => {
+  if (window.location.hash.startsWith('#/')) {
+    const path = window.location.hash.replace('#/', '');
+    window.location.hash = '';
+    return path;
+  }
+  return null;
+};
+
+const initialPath = getInitialPath();
+if (initialPath) {
+  window.history.replaceState({}, '', initialPath);
+}
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
