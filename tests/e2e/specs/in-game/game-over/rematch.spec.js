@@ -120,7 +120,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     });
 
     // Match should be incomplete with one game
-    cy.request('http://localhost:1337/match').then((res) => {
+    cy.request('http://localhost:1337/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -137,9 +137,9 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     concedePlayer();
     assertLoss({wins: 1, losses: 1, stalemates: 0});
-    
+
     // Match should be incomplete with two games
-    cy.request('http://localhost:1337/match').then((res) => {
+    cy.request('http://localhost:1337/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -169,7 +169,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     assertStalemate({wins: 1, losses: 1, stalemates: 1});
 
     // Match should be incomplete with three games
-    cy.request('http://localhost:1337/match').then((res) => {
+    cy.request('http://localhost:1337/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -201,7 +201,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .find('[data-cy-result-img=lost]');
 
     // Match should be completed with 4 games
-    cy.request('http://localhost:1337/match').then((res) => {
+    cy.request('http://localhost:1337/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
@@ -270,7 +270,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.loginPlayer(playerOne);
     cy.setupGameAsP0(true, false);
   });
-  
+
   it('Unranked games with rematch', function () {
     // Game 1: Opponent concedes
     cy.concedeOpponent();
@@ -353,7 +353,7 @@ describe('Spectating Rematches', () => {
       cy.viewport(1920, 1080);
       cy.setupGameAsSpectator();
     });
-    
+
     it('Spectates a casual match using rematch', () => {
       cy.log('Game 1: player1 wins via opponent conceding');
       cy.recoverSessionOpponent(playerTwo);
@@ -371,7 +371,7 @@ describe('Spectating Rematches', () => {
         .should('be.visible')
         .find('[data-cy=gameover-rematch]')
         .click();
-        
+
       // Game 2
       cy.log('Game 2: player1 wins via concede again');
       cy.get('[data-cy=player-username]')
