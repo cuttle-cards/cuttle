@@ -1,3 +1,4 @@
+import { defineAsyncComponent } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/routes/home/HomeView.vue';
 import LoginView from '@/routes/login/LoginView.vue';
@@ -98,6 +99,15 @@ const routes = [
     name: ROUTE_NAME_STATS,
     component: StatsView,
     beforeEnter: mustBeAuthenticated,
+  },
+  // Catch every other unsupported route
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'Not Found',
+    component: () => import(
+      /* webpackChunkName: "not-found-view" */
+      '@/routes/error/NotFoundView.vue'
+    ),
   },
 ];
 

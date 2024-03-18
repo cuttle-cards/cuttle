@@ -434,5 +434,8 @@
     "pointsAndWins": "Points and Wins",
     "pointsOnly": "Points Only",
     "winsOnly": "Wins Only"
+  },
+  "error": {
+    "title": "404 Not Found"
   }
 }
