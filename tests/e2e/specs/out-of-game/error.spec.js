@@ -1,4 +1,4 @@
-describe('Error Page', () => {
+describe('Not Found Page', () => {
   beforeEach(() => {
     cy.visit('/asdf'); // non-existent route
   });
