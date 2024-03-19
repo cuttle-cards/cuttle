@@ -436,6 +436,9 @@
     "winsOnly": "Solo gana"
   },
   "error": {
-    "title": "404 No Encontrado"
+    "404": {
+      "title": "404 No Encontrado"
+    }
+  }
   }
 }
