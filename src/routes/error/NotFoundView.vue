@@ -25,7 +25,7 @@ const { logoSrc } = useThemedLogo();
         <v-col cols="12" class="text-center">
           <router-link to="/" class="text-decoration-none">
             <h1 class="gradient-text">
-              {{ t('error.title') }}
+              {{ t('error.404.title') }}
             </h1>
           </router-link>
         </v-col>
