@@ -1,8 +1,4 @@
 describe('Hash Router Redirects', () => {
-  beforeEach(() => {
-    cy.visit('/');
-  });
-
   it('Redirects from hash URL to non-hash URL', () => {
     // Visit a URL with a hash
     cy.visit('/#/rules');
