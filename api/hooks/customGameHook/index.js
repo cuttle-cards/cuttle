@@ -59,7 +59,7 @@ module.exports = function gameHook() {
               if (error) {
                 res = error;
               } else {
-                res = { message: "Can't find game" };
+                res = { message: 'home.snackbar.cantFindGame' };
               }
               return reject(res);
             }

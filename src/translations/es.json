@@ -294,6 +294,11 @@
       "about2": "para aprender las reglas y leer sobre el proyecto cuttle.cards.",
       "okayButton": "ok"
     },
+    "snackbar" :{
+      "cannotJoin": "No puede unirme a ese juego porque ya está lleno.",
+      "spectateTwoPlayers" : "Solo puede ver un juego en curso con dos jugadores.",
+      "cantFindGame": "no puede encontrar el juego"
+    },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",
     "noGameslist": "No hay partidas activas",
