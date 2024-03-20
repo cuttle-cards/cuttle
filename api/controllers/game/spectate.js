@@ -10,7 +10,7 @@ module.exports = async function (req, res) {
       return res.badRequest({message: 'Cannot spectate game because you are playing'});
     }
     if (game.status !== gameService.GameStatus.STARTED || game.players.length < 2) {
-      return res.badRequest({ message: 'You can only spectate an ongoing game with two players' });
+      return res.badRequest({ message: 'home.snackbar.spectateTwoPlayers' });
     }
 
     // Subscribe socket to game

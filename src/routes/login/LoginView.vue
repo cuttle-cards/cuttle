@@ -272,7 +272,11 @@ export default {
       this.username = '';
       this.pw = '';
       this.loading = false;
-      this.$router.push('/');
+      const { lobbyRedirectId } = this.$route.params;
+      if (!lobbyRedirectId) {
+        return this.$router.push('/');
+      }
+      return this.$router.push(`/lobby/${lobbyRedirectId}`);
     },
     handleError(messageKey) {
       this.showSnackBar = true;
