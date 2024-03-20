@@ -42,7 +42,7 @@ const checkAndSubscribeToLobby = async (to) => {
   const gameId = parseInt(to.params.gameId);
   try {
     if (Number.isNaN(gameId) || !Number.isFinite(gameId)) {
-      throw new Error('Invalid Lobby Number');
+      throw new Error('home.snackbar.invalidLobbyNumber');
     }
 
     if (!authStore.authenticated) {
