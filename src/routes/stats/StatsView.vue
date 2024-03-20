@@ -84,7 +84,7 @@
           <h2 class="text-h2 mt-8 mb-4">
             {{ t('stats.siteUsage') }}
           </h2>
-          <StatsUsageChart v-if="selectedSeason.gameCounts>0" :season="selectedSeason" />
+          <StatsUsageChart v-if="showStatsUsageChart" :season="selectedSeason" />
         </div>
         <!-- Error display -->
         <div v-if="error" class="d-flex flex-column align-center text-center">
@@ -157,6 +157,10 @@ export default {
     seasonEndFormatted() {
       return !this.selectedSeason ? '' : dayjs(this.selectedSeason.endTime).format('YYYY/MM/DD');
     },
+    showStatsUsageChart() {
+      const gameCounts = this.selectedSeason.gameCounts || []; // Handle potential undefined value
+      return gameCounts.length > 0 && !gameCounts.every((count) => count === 0);
+  },
     showSeasonChampions() {
       return (
         this.selectedSeason &&
