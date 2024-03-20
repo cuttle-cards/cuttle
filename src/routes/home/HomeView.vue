@@ -194,6 +194,14 @@ export default {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
   },
+  watch:{
+    $route() {
+      if (this.$route.query?.error) {
+        this.handleSubscribeError(Number(this.$route.query.gameId), this.t(this.$route.query.error));
+        this.$router.replace('/');
+      }
+    }
+  },
   async created() {
     await this.gameListStore.requestGameList();
     this.loadingData = false;    

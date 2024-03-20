@@ -1,4 +1,6 @@
-import { myUser, opponentOne } from '../../fixtures/userFixtures';
+import { myUser, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
+import { assertSnackbarError } from '../../support/helpers';
+import { SnackBarError } from '../../fixtures/snackbarError';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
@@ -412,4 +414,85 @@ describe('Lobby - P1 Perspective', () => {
     cy.get('[data-player-hand-card]').should('have.length', 6);
     cy.get('[data-opponent-hand-card]').should('have.length', 6);
   });
+});
+
+describe('Lobby invite links', () => {
+  
+  beforeEach(() => {
+    cy.wipeDatabase();
+    cy.visit('/');
+    cy.signupPlayer(myUser);
+    cy.visit('/');
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
+      cy.wrap(gameSummary).as('gameSummary');
+      // Sign up new (other) user and subscribe them to game
+      cy.signupOpponent(opponentOne);
+      cy.subscribeOpponent(gameSummary.gameId);
+    });
+  });
+  
+  
+  it('Joins Lobby via invite link', function () {
+    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
+    cy.window()
+    .its('cuttle.gameStore')
+      .then((store) => 
+        expect(store.id).to.eq(this.gameSummary.gameId));
+    cy.readyOpponent();
+    cy.get('[data-cy=ready-button]').click();
+    cy.get('[data-opponent-hand-card]').should('have.length', 5);
+  });
+
+  it('Redirects to login, then back to lobby when unauthenticated user visits invite link', function () {
+    cy.visit('/');
+    cy.readyOpponent();
+    cy.get('[data-cy=user-menu]').click();
+    cy.get("[data-nav='Log Out']").click();
+    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    cy.url().should('include', `/login/${this.gameSummary.gameId}`);
+    cy.get('[data-cy=password]').type(myUser.password);
+    cy.get('[data-cy=username]').type(myUser.username + '{enter}');
+    cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
+    cy.window()
+    .its('cuttle.gameStore')
+      .then((store) => 
+        expect(store.id).to.eq(this.gameSummary.gameId));
+    cy.get('[data-cy=lobby-card-container]').should('have.class', 'ready');
+    cy.get('[data-cy=ready-button]').click();
+    cy.get('[data-opponent-hand-card]').should('have.length', 5);
+  });
+
+  it('Joins Lobby from url and refreshes', function () {
+    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
+    cy.window()
+    .its('cuttle.gameStore')
+      .then((store) => 
+        expect(store.id).to.eq(this.gameSummary.gameId));
+    cy.readyOpponent();
+    cy.get('[data-cy=lobby-card-container]').should('have.class', 'ready');
+    cy.reload();
+    cy.get('[data-cy=lobby-card-container]').should('have.class', 'ready');
+    cy.get('[data-cy=ready-button]').click();
+    cy.get('[data-opponent-hand-card]').should('have.length', 5);
+  });
+
+  it('Navigates Home and shows error snackbar when user visits invalid invite link', function () {
+    cy.visit('#/lobby/100000');
+    assertSnackbarError(SnackBarError.CANT_FIND_GAME, 'newgame');
+    cy.visit('#/rules');
+    cy.visit('/');
+    cy.get(`[data-cy=newgame-snackbar] .v-snackbar__wrapper`).should('not.exist');
+  });
+
+  it('Navigates Home and shows error snackbar when user visits invite link of full game', function () {
+    cy.get(`[data-cy-join-game=${this.gameSummary.gameId}]`).should('be.enabled');
+    cy.signupOpponent(opponentTwo);
+    cy.subscribeOpponent(this.gameSummary.gameId);
+    cy.get(`[data-cy-join-game=${this.gameSummary.gameId}]`).should('be.disabled');
+    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
+  });
+
 });

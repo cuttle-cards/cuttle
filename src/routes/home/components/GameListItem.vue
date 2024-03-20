@@ -129,15 +129,11 @@ export default {
   methods: {
     subscribeToGame() {
       this.joiningGame = true;
-      this.gameStore
-        .requestSubscribe(this.gameId)
-        .then(() => {
-          this.joiningGame = false;
-          this.$router.push(`/lobby/${this.gameId}`);
-        })
-        .catch((error) => {
-          this.joiningGame = false;
-          this.$emit('error', error);
+      this.$router.push(`/lobby/${this.gameId}`).then(() => {
+        this.joiningGame = false;
+      })
+        .catch(() => {
+        this.joiningGame = false;
         });
     },
     spectateGame() {

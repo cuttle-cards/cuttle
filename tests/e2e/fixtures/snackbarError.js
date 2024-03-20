@@ -5,6 +5,7 @@ const SnackBarError = {
   FROZEN_CARD: 'That card is frozen! You must wait a turn to play it',
   NOT_IN_GAME: "You can't do that because you're not a player in this game",
   GAME_IS_FULL: `Cannot join that game because it's already full`,
+  CANT_FIND_GAME: "Can't find game"
 };
 
 export { SnackBarError };

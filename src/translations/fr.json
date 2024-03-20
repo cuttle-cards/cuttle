@@ -294,6 +294,12 @@
       "about2": "pour apprendre les règles et en savoir plus sur le projet cuttle.cards.",
       "okayButton": "d'accord"
     },
+    "snackbar" :{
+      "cannotJoin": "vous ne pouvez pas rejoindre ce jeu car il est déjà complet",
+      "spectateTwoPlayers" : "Vous ne pouvez regarder qu'une partie en cours avec deux joueurs.",
+      "cantFindGame": "Je ne trouve pas le jeu",
+      "invalidLobbyNumber" : "Numéro de lobby invalide"
+    },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",
     "noGameslist": "Aucune partie active",
