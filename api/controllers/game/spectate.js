@@ -5,6 +5,10 @@ module.exports = async function (req, res) {
       gameService.populateGame({ gameId }),
       userService.findUser({ userId: req.session.usr }),
     ]);
+
+    if (game.players.some(({id}) => id === spectator.id)) {
+      return res.badRequest({message: 'Cannot spectate game because you are playing'});
+    }
     if (game.status !== gameService.GameStatus.STARTED || game.players.length < 2) {
       return res.badRequest({ message: 'You can only spectate an ongoing game with two players' });
     }
