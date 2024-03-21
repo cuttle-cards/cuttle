@@ -379,13 +379,15 @@ export const useGameStore = defineStore('game', {
             gameId,
           },
           (res, jwres) => {
+            console.log(jwres);
             if (jwres.statusCode === 200) {
               this.myPNum = 0;
               this.isSpectating = true;
               this.updateGame(res);
               return resolve();
             }
-            return reject(new Error('Unable to spectate game'));
+            const message = res.message ?? 'Unable to spectate game';
+            return reject(new Error(message));
           },
         );
       });
