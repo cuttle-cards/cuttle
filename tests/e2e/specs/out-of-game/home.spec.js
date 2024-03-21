@@ -299,8 +299,23 @@ describe('Home - Game List', () => {
     });
 
     it('Shows ongoing games as available to spectate when user navigates to home page', () => {
-      cy.setupGameAsP1(true);
-      cy.vueRoute('/');
+      cy.signupOpponent(playerOne);
+      cy.createGameOpponent('Spectatable game').then(({ gameId }) => {
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+
+        cy.signupOpponent(playerTwo);
+        cy.subscribeOpponent(gameId);
+        cy.readyOpponent(gameId);
+
+        // Navigate to homepage
+        cy.visit('/');
+        // No open games appear
+        cy.contains('[data-cy-join-game]', 'Join Casual').should('not.exist');
+        // Existing game is available to spectate
+        cy.get('[data-cy-game-list-selector=spectate]').click();
+        cy.get(`[data-cy-spectate-game=${gameId}]`).click();
+      });
     });
 
     it('Disables spectate button if on home view before game finishes', () => {
