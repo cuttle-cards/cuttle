@@ -295,10 +295,10 @@
       "okayButton": "okay"
     },
     "snackbar" :{
-      "cannotJoin": "No puede unirme a ese juego porque ya está lleno.",
-      "spectateTwoPlayers" : "Solo puede ver un juego en curso con dos jugadores.",
-      "cantFindGame": "no puede encontrar el juego",
-      "invalidLobbyNumber" : "Número de lobby no válido",
+      "cannotJoin": "Cannot join that game because it's already full",
+      "spectateTwoPlayers" : "You can only spectate an ongoing game with two players",
+      "cantFindGame": "Can't find game",
+      "invalidLobbyNumber" : "Invalid Lobby Number",
       "cannotSpectate" : "Cannot spectate game because you are playing"
     },
     "gameFinder": "Game Finder",
