@@ -138,6 +138,10 @@ export default {
     },
     spectateGame() {
       this.joiningGame = true;
+      if (this.gameId === this.gameStore.id) {
+        this.$router.push(`/game/${this.gameId}`);
+        return;
+      }
       this.gameStore
         .requestSpectate(this.gameId)
         .then(() => {
