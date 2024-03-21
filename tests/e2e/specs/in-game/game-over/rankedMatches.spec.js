@@ -65,7 +65,7 @@ describe('Creating And Updating Ranked Matches', () => {
 
   it('Leaves a ranked game after first game of match', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
-    cy.request('http://localhost:1337/test/match').then((res) => {
+    cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(2);
     });
 
@@ -101,7 +101,7 @@ describe('Creating And Updating Ranked Matches', () => {
 
   it('Creates a match when two players play a ranked game for the first time this week', function () {
     // There should be two matches initially (one from last week and one with a different opponent)
-    cy.request('http://localhost:1337/test/match').then((res) => {
+    cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(2);
     });
 
@@ -118,7 +118,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.url().should('not.include', '/game');
 
     // There should now be one match for the two players
-    cy.request('http://localhost:1337/test/match').then((res) => {
+    cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
       validateMatchResult(currentMatch, 1, this.playerOneId, this.playerTwoId);
@@ -150,7 +150,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.url().should('not.include', '/game');
 
     // The match for these two players should now have two games
-    cy.request('http://localhost:1337/test/match').then((res) => {
+    cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
       validateMatchResult(currentMatch, 2, this.playerOneId, this.playerTwoId);
@@ -181,7 +181,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.url().should('not.include', '/game');
 
     // Validate match data
-    cy.request('http://localhost:1337/test/match').then((res) => {
+    cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
       validateMatchResult(currentMatch, 3, this.playerOneId, this.playerTwoId);
@@ -215,7 +215,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.url().should('not.include', '/game');
 
     // Validate match data
-    cy.request('http://localhost:1337/test/match').then((res) => {
+    cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
       validateMatchResult(currentMatch, 4, this.playerOneId, this.playerTwoId);
@@ -249,7 +249,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.url().should('not.include', '/game');
 
     // Validate match data
-    cy.request('http://localhost:1337/test/match').then((res) => {
+    cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
       validateMatchResult(currentMatch, 4, this.playerOneId, this.playerTwoId);
@@ -279,7 +279,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.url().should('not.include', '/game');
 
     // Validate match data
-    cy.request('http://localhost:1337/test/match').then((res) => {
+    cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [, , currentMatch] = res.body;
       validateMatchResult(currentMatch, 5, this.playerOneId, this.playerTwoId, this.playerOneId);
@@ -295,7 +295,7 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.url().should('not.include', '/game');
 
     // Validate match data
-    cy.request('http://localhost:1337/test/match').then((res) => {
+    cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
       const [oldMatch, , currentMatch] = res.body;
 
@@ -307,7 +307,7 @@ describe('Creating And Updating Ranked Matches', () => {
       cy.log('Match data is correctly unaffected after sixth game', res);
 
       // Confirm game was set to unranked
-      cy.request('http://localhost:1337/test/game').then((res) => {
+      cy.request('http://localhost:1337/api/test/game').then((res) => {
         // Sort games by updatedAt asc
         const games = res.body.sort((game1, game2) => game1.updatedAt - game2.updatedAt);
         expect(games.length).to.eq(7, 'Expected 7 games');

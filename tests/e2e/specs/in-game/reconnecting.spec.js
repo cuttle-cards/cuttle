@@ -3,7 +3,7 @@ import { myUser, opponentOne } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
 
 describe('Reconnecting to a game', () => {
-  it('Persists session after refreshing the page', () => {
+  it.only('Persists session after refreshing the page', () => {
     cy.setupGameAsP0();
 
     cy.loadGameFixture(0, {

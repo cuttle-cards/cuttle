@@ -18,6 +18,9 @@ module.exports = {
   // models: {
   //   connection: 'someMongodbServer'
   // }
+  log: {
+    level: 'debug'
+  },
   blueprints: {
     rest: false,
     shortcuts: false,
