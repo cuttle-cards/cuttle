@@ -5,7 +5,6 @@ module.exports = async function (req, res) {
       gameService.populateGame({ gameId }),
       userService.findUser({ userId: req.session.usr }),
     ]);
-
     if (game.players.some(({id}) => id === spectator.id)) {
       return res.badRequest({message: 'Cannot spectate game because you are playing'});
     }
