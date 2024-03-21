@@ -379,7 +379,6 @@ export const useGameStore = defineStore('game', {
             gameId,
           },
           (res, jwres) => {
-            console.log(jwres);
             if (jwres.statusCode === 200) {
               this.myPNum = 0;
               this.isSpectating = true;
