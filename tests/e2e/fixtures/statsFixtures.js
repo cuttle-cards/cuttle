@@ -13,16 +13,22 @@ const seasonFixtures = [
     fourthPlace: 'player4',
     bracketLink: 'https://github.com/cuttle-cards/cuttle',
     footageLink: 'https://github.com/cuttle-cards/cuttle-assets',
+    gameCounts: [50, 80, 100, 110],
+    uniqePlayersPerWeek:[10, 15, 17, 22],
   },
   {
     name: 'Diamonds 2022',
     startTime: dayjs('2022-02-16 18:00').valueOf(),
     endTime: dayjs('2022-03-16 18:00').valueOf(),
+    gameCounts: [50, 80, 100, 110],
+    uniqePlayersPerWeek:[10, 15, 17, 22],
   },
   {
     name: 'Current Season',
     startTime: dayjs().subtract(2, 'week').valueOf(),
     endTime: dayjs().add(11, 'week').valueOf(),
+    gameCounts: [50, 80, 100, 110],
+    uniqePlayersPerWeek:[10, 15, 17, 22],
   },
   {
     name: 'Future Spades Season',
