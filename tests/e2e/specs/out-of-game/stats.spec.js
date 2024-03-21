@@ -267,10 +267,10 @@ describe('Usage stats', () => {
   });
 
   it('Sends the counts of games played and unique players for each week of each season', () => {
-    cy.request('http://localhost:1337/stats/seasons/current').then(({ body: seasons }) => {
+    cy.request('http://localhost:1337/api/stats/seasons/current').then(({ body: seasons }) => {
       const populateSeason = (season) => {
         return new Cypress.Promise((resolve, reject) => {
-          cy.request(`http://localhost:1337/stats/seasons/${season.id}`).then(({ body }) => {
+          cy.request(`http://localhost:1337/api/stats/seasons/${season.id}`).then(({ body }) => {
             if (!body) {
               reject(new Error('error populating season'));
             }

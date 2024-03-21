@@ -52,12 +52,12 @@ const checkAndSubscribeToLobby = async (to) => {
     if (gameStore.players.some(({username}) => username === authStore.username)) {
       return true;
     }
-      
+
     await gameStore.requestSubscribe(gameId);
     return true;
   }
   catch (err) {
-   return { name: 'Home', query: { gameId:gameId, error: err.message} };
+   return { name: 'Home', query: { gameId: gameId, error: err.message} };
   }
 };
 
