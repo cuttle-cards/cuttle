@@ -6,7 +6,7 @@ module.exports = async function (req, res) {
       userService.findUser({ userId: req.session.usr }),
     ]);
     if (game.players.some(({id}) => id === spectator.id)) {
-      return res.badRequest({message: 'Cannot spectate game because you are playing'});
+      return res.badRequest({message: 'home.snackbar.cannotSpectate'});
     }
     if (game.status !== gameService.GameStatus.STARTED || game.players.length < 2) {
       return res.badRequest({ message: 'home.snackbar.spectateTwoPlayers' });
