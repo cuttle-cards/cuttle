@@ -38,7 +38,7 @@ export const useAuthStore = defineStore('auth', {
 
     async requestLogout() {
       try {
-        await fetch('/user/logout', {
+        await fetch('/api/user/logout', {
           credentials: 'include',
         });
       } catch (err) {
@@ -54,7 +54,7 @@ export const useAuthStore = defineStore('auth', {
         // Assume successful login - cancel upon error
         this.authSuccess(username);
         io.socket.get(
-          '/user/reLogin',
+          '/api/user/reLogin',
           {
             username,
             password,
@@ -86,7 +86,7 @@ export const useAuthStore = defineStore('auth', {
       const isSpectating = name === ROUTE_NAME_SPECTATE;
 
       try {
-        const response = await fetch('/user/status', {
+        const response = await fetch('/api/user/status', {
           credentials: 'include',
         });
         const status = await response.json();
@@ -152,7 +152,7 @@ export const useAuthStore = defineStore('auth', {
     async handleLogin(username, password, signup = false) {
       const authType = signup ? 'signup' : 'login';
       try {
-        const response = await fetch(`/user/${authType}`, {
+        const response = await fetch(`/api/user/${authType}`, {
           method: 'POST',
           headers: new Headers({
             'Content-Type': 'application/json',

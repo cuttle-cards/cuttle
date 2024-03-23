@@ -440,5 +440,10 @@
     "pointsAndWins": "Points and Wins",
     "pointsOnly": "Points seulement",
     "winsOnly": "Gagne seulement"
+  },
+  "error": {
+    "404": {
+      "title": "404 Non Trouvé"
+    }
   }
 }
