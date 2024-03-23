@@ -2,7 +2,7 @@
 
 ## Players and Cards
 
-Cuttle is a 2-player card game, played with a standard 52 card deck, without jokers. You can read the rules with interactive gif-previews the [rules page](https://www.cuttle.cards/#/rules)
+Cuttle is a 2-player card game, played with a standard 52 card deck, without jokers. You can read the rules with interactive gif-previews the [rules page](https://www.cuttle.cards/rules)
 
 ## Goal
 
