@@ -193,6 +193,17 @@ describe('Home - Game List', () => {
     });
   });
 
+  it('Redirects to game URL when hitting spectate as a player', function () {
+    cy.signupOpponent(opponentOne);
+    cy.setupGameAsP1(true);
+    cy.vueRoute('/');
+    cy.get('[data-cy-game-list-selector=spectate]').click();
+    cy.get('@gameSummary').then(({ gameId }) => {
+      cy.get(`[data-cy-join-game=${gameId}]`).click();
+      cy.url().should('include', `/game/${gameId}`);
+    });
+  });
+
   describe('Spectating games', () => {
     it('Spectates a game', () => {
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then(({ gameId }) => {

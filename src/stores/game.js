@@ -385,7 +385,8 @@ export const useGameStore = defineStore('game', {
               this.updateGame(res);
               return resolve();
             }
-            return reject(new Error('Unable to spectate game'));
+            const message = res.message ?? 'Unable to spectate game';
+            return reject(new Error(message));
           },
         );
       });

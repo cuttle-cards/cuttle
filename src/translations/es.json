@@ -298,7 +298,8 @@
       "cannotJoin": "No puede unirme a ese juego porque ya está lleno.",
       "spectateTwoPlayers" : "Solo puede ver un juego en curso con dos jugadores.",
       "cantFindGame": "no puede encontrar el juego",
-      "invalidLobbyNumber" : "Número de lobby no válido"
+      "invalidLobbyNumber" : "Número de lobby no válido",
+      "cannotSpectate" : "No puede ver el juego porque estás jugando."
     },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",
