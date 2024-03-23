@@ -131,7 +131,6 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'Not Found',
     component: () => import(
-      /* webpackChunkName: "not-found-view" */
       '@/routes/error/NotFoundView.vue'
     ),
   },
