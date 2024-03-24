@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <TheHeader v-if="showNav" :variant="variant" />
+    <TheHeader :class="this.$router.currentRoute.value.name === 'Rules' ? 'fixed': ''" v-if="showNav" :variant="variant" />
     <v-main>
       <RouterView />
     </v-main>
@@ -30,7 +30,7 @@ export default {
       return this.$vuetify.display.smAndDown;
     },
     variant() {
-      const isHomeView = this.$router.currentRoute.value.name === 'Home';
+      const isHomeView = this.$router.currentRoute.value.name !== 'Stats';
       return isHomeView ? 'light' : 'dark'; 
     }
   },
@@ -68,5 +68,16 @@ export default {
   div > .v-application--wrap {
     min-height: 100%;
   }
+}
+html {
+  scroll-padding-top: 80px;
+}
+div,section {
+  scroll-margin-top: 80px;
+}
+.fixed{
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
 }
 </style>
