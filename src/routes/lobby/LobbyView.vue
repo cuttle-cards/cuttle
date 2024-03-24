@@ -10,8 +10,6 @@
       <h5>{{ gameName }}</h5>
       <v-row>
         <v-col md="4" cols="12">
-          <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
-          <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
           <PlayerReadyIndicator
             :player-username="authStore.username"
             :player-ready="iAmReady"
@@ -101,7 +99,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
@@ -121,7 +119,14 @@ export default {
   setup() {
     const { t } = useI18n();
     const gameStarted = ref(false);
-
+    const joinAudio = new Audio('/sounds/lobby/enter-lobby.mp3');
+    const leaveAudio =new Audio('/sounds/lobby/leave-lobby.mp3');
+    onMounted(() => {
+      joinAudio.play();
+    });
+    onUnmounted(() => {
+      leaveAudio.play();
+    });
     onBeforeRouteLeave((to, from, next) => {
       if (to.name === 'Game') {
         gameStarted.value = true;
@@ -133,7 +138,7 @@ export default {
       }
     });
 
-    return { t, gameStarted };
+    return { t, gameStarted, joinAudio, leaveAudio };
   },
   data() {
     return {
@@ -157,20 +162,16 @@ export default {
     readyButtonText() {
       return this.t(this.iAmReady ? 'lobby.unready' : 'lobby.ready');
     },
-    rankedIcon(){
+    rankedIcon() {
       return this.gameStore.isRanked ? 'sword-cross' : 'coffee';
-    }
+    },
   },
   watch: {
     opponentUsername(newVal) {
       if (newVal) {
-        if (this.$refs.enterLobbySound.readyState === 4) {
-          this.$refs.enterLobbySound.play();
-        }
+        this.joinAudio.play();
       } else {
-        if (this.$refs.leaveLobbySound.readyState === 4) {
-          this.$refs.leaveLobbySound.play();
-        }
+        this.leaveAudio.play();
       }
     },
   },
@@ -251,7 +252,7 @@ h5 {
 @media (min-width: 980px) {
   .rank-switch {
     padding: 0;
-  }  
+  }
 }
 
 @media (max-width: 660px) {
@@ -275,7 +276,7 @@ h5 {
 @media (max-width: 350px) {
   .rank-switch {
     width: 100%;
-  }  
+  }
 }
 
 #logo {
