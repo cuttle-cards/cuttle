@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/routes/home/HomeView.vue';
 import LoginView from '@/routes/login/LoginView.vue';
 import LobbyView from '@/routes/lobby/LobbyView.vue';
@@ -52,12 +52,12 @@ const checkAndSubscribeToLobby = async (to) => {
     if (gameStore.players.some(({username}) => username === authStore.username)) {
       return true;
     }
-      
+
     await gameStore.requestSubscribe(gameId);
     return true;
   }
   catch (err) {
-   return { name: 'Home', query: { gameId:gameId, error: err.message} };
+   return { name: 'Home', query: { gameId: gameId, error: err.message} };
   }
 };
 
@@ -126,10 +126,32 @@ const routes = [
     component: StatsView,
     beforeEnter: mustBeAuthenticated,
   },
+  // Catch every other unsupported route
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'Not Found',
+    component: () => import(
+      '@/routes/error/NotFoundView.vue'
+    ),
+  },
 ];
 
+const getInitialPath = () => {
+  if (window.location.hash.startsWith('#/')) {
+    const path = window.location.hash.replace('#/', '');
+    window.location.hash = '';
+    return path;
+  }
+  return null;
+};
+
+const initialPath = getInitialPath();
+if (initialPath) {
+  window.history.replaceState({}, '', initialPath);
+}
+
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 

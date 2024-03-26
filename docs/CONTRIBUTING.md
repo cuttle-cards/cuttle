@@ -30,7 +30,7 @@ Scan through our [existing issues](https://github.com/cuttle-cards/cuttle/issues
 
 ### (Automated) Version Management
 
-This repo automatically increments the package version based on version labels that the core team applies to pull requests. **You do not need to update the `version` fields in package files** because it is handled automatically. Cuttle uses semantic versioning (semver), which uses version numbers like 4.3.22. The versioning scheme consists of major, minor, and patch versions. 
+This repo automatically increments the package version based on version labels that the core team applies to pull requests. **You do not need to update the `version` fields in package files** because it is handled automatically. Cuttle uses semantic versioning (semver), which uses version numbers like 4.3.22. The versioning scheme consists of major, minor, and patch versions.
 
 
 * `patch-version`, the automation will increment the patch number in the version field (e.g., from 4.3.22 to 4.3.23)
@@ -75,9 +75,9 @@ Click the **PENCIL** icon top right of any docs page to make small changes such 
 
    **Recommended Way** - Please see [Test-Driven Development](#how-to-tdd-using-cypress)
 
-   While booted in development mode (the default), you can make requests to `/test/loadSeasonFixture` and `/test/loadMatchFixtures` to seed records into those tables.
+   While booted in development mode (the default), you can make requests to `/api/test/loadSeasonFixture` and `/api/test/loadMatchFixtures` to seed records into those tables.
 
-   To delete data from the database, you can make a request `/test/wipeDatabase` to your local server which will wipe all records.
+   To delete data from the database, you can make a request `/api/test/wipeDatabase` to your local server which will wipe all records.
 
 6. Create a working branch by `git checkout -b feature/[your feature or issue number]` or `git checkout -b bug/[your fix or issue number]` and start with your changes!
 

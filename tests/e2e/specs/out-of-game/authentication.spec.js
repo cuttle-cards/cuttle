@@ -3,7 +3,7 @@ import { myUser } from '../../fixtures/userFixtures';
 
 function assertSuccessfulAuth(username) {
   // Confirm we have navigated to home
-  cy.hash().should('eq', '#/');
+  cy.location('pathname').should('eq', '/');
   // Check store auth data
   cy.window()
     .its('cuttle.authStore')
@@ -15,7 +15,7 @@ function assertSuccessfulAuth(username) {
 
 function assertFailedAuth(path) {
   // Confirm we have not navigated away from login/signup
-  cy.hash().should('eq', path);
+  cy.location('pathname').should('eq', path);
   // Check store auth data
   cy.window()
     .its('cuttle.authStore')
@@ -35,14 +35,14 @@ function forceFormSubmit() {
 describe('Auth - Page Content', () => {
   beforeEach(() => {
     cy.wipeDatabase();
-    cy.visit('#/signup');
+    cy.visit('/signup');
     cy.signupOpponent(myUser);
   });
 
   it('Displays logo and navigates to rules page', () => {
     cy.get('#logo');
     cy.get('[data-cy=rules-link]').click();
-    cy.hash().should('eq', '#/rules');
+    cy.location('pathname').should('eq', '/rules');
   });
 
   it('Navigates to /login if returning visiter, /signup if first new visiter', () => {
@@ -52,17 +52,17 @@ describe('Auth - Page Content', () => {
     cy.get('[data-cy="user-menu"]').click();
     cy.get("[data-nav='Log Out']").click();
     cy.visit('/');
-    cy.hash().should('eq', '#/login');
+    cy.location('pathname').should('eq', '/login');
     cy.clearLocalStorage();
     cy.visit('/');
-    cy.hash().should('eq', '#/signup');
+    cy.location('pathname').should('eq', '/signup');
   });
 });
 
 describe('Logging In', () => {
   beforeEach(() => {
     cy.wipeDatabase();
-    cy.visit('#/login');
+    cy.visit('/login');
     cy.signupOpponent(myUser);
   });
 
@@ -94,21 +94,21 @@ describe('Logging In', () => {
     cy.get('[data-cy=password]').type(myUser.password);
     cy.get('[data-cy=submit]').click();
     assertSnackbarError('Could not find that user with that username. Try signing up!', 'auth');
-    assertFailedAuth('#/login');
+    assertFailedAuth('/login');
   });
   it('Rejects incorrect password', () => {
     cy.get('[data-cy=username]').type(myUser.username);
     cy.get('[data-cy=password]').type('incorrectPw');
     cy.get('[data-cy=submit]').click();
     assertSnackbarError('Username and password do not match', 'auth');
-    assertFailedAuth('#/login');
+    assertFailedAuth('/login');
   });
 });
 
 describe('Signing Up', () => {
   beforeEach(() => {
     cy.wipeDatabase();
-    cy.visit('#/signup');
+    cy.visit('/signup');
   });
 
   /**
@@ -140,21 +140,21 @@ describe('Signing Up', () => {
     cy.get('#password-messages').should('contain', 'Password must contain at least eight characters');
     cy.get('[data-cy=submit]').should('not.be', 'enabled');
     forceFormSubmit();
-    assertFailedAuth('#/signup');
+    assertFailedAuth('/signup');
     assertSnackbarError('Your password must contain at least eight characters', 'auth');
   });
   it('Password is required', () => {
     cy.get('[data-cy=username]').type(myUser.username);
     cy.get('[data-cy=submit]').should('not.be', 'enabled');
     forceFormSubmit();
-    assertFailedAuth('#/signup');
+    assertFailedAuth('/signup');
     assertSnackbarError('Password is required', 'auth');
   });
   it('Username is required', () => {
     cy.get('[data-cy=password]').type(myUser.password);
     cy.get('[data-cy=submit]').should('not.be', 'enabled');
     forceFormSubmit();
-    assertFailedAuth('#/signup');
+    assertFailedAuth('/signup');
     assertSnackbarError('Please provide a non-empty username', 'auth');
   });
   it('Rejects signup if username already exists', () => {
@@ -162,7 +162,7 @@ describe('Signing Up', () => {
     cy.get('[data-cy=username]').type(myUser.username);
     cy.get('[data-cy=password]').type(myUser.password);
     cy.get('[data-cy=submit]').click();
-    assertFailedAuth('#/signup');
+    assertFailedAuth('/signup');
     assertSnackbarError('That username is already registered to another user; try logging in!', 'auth');
   });
 });

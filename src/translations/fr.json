@@ -304,7 +304,8 @@
       "cannotJoin": "vous ne pouvez pas rejoindre ce jeu car il est déjà complet",
       "spectateTwoPlayers" : "Vous ne pouvez regarder qu'une partie en cours avec deux joueurs.",
       "cantFindGame": "Je ne trouve pas le jeu",
-      "invalidLobbyNumber" : "Numéro de lobby invalide"
+      "invalidLobbyNumber" : "Numéro de lobby invalide",
+      "cannotSpectate" : "Impossible de regarder le jeu parce que vous jouez"
     },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",
@@ -446,5 +447,10 @@
     "pointsAndWins": "Points and Wins",
     "pointsOnly": "Points seulement",
     "winsOnly": "Gagne seulement"
+  },
+  "error": {
+    "404": {
+      "title": "404 Non Trouvé"
+    }
   }
 }

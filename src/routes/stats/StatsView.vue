@@ -187,7 +187,7 @@ export default {
     },
   },
   created() {
-    io.socket.get('/stats/seasons/current', (res) => {
+    io.socket.get('/api/stats/seasons/current', (res) => {
       if (!res?.length) {
         this.loadingData = false;
         this.error = true;
@@ -217,18 +217,18 @@ export default {
       }
 
       // otherwise download rankings for selected season
-      io.socket.get(`/stats/seasons/${seasonId}`, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
+      io.socket.get(`/api/stats/seasons/${seasonId}`, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
         if (!rankings) {
           this.error = true;
           this.selectedSeason = null;
           this.loadingData = false;
           return;
         }
-     
+
         this.selectedSeason = { ...requestedSeason, gameCounts, rankings, uniquePlayersPerWeek };
         this.loadingData = false;
       });
-      
+
     },
   },
 };

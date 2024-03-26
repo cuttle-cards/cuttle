@@ -29,14 +29,14 @@
               <v-row v-for="i in 2" :key="`gamelistSkeleton${i}`" class="list-item py-2 ma-0 align-center">
                 <v-col lg="6" cols="12" class="list-item__inner-text pb-0 ma-0 mb-2 mb-lg-3">
                   <v-skeleton-loader
-                    class="pa-0" 
+                    class="pa-0"
                     type="text"
                     max-width="160"
                     color="surface-2"
                     height="30"
                   />
                   <v-skeleton-loader
-                    class="pa-0" 
+                    class="pa-0"
                     type="text"
                     max-width="130"
                     color="surface-2"
@@ -45,7 +45,7 @@
                 </v-col>
                 <v-col lg="6" cols="12" class="list-item__button mx-auto pa-0">
                   <v-skeleton-loader
-                    class="py-0 pl-0 pr-2 mx-auto" 
+                    class="py-0 pl-0 pr-2 mx-auto"
                     type="heading"
                     color="surface-2"
                   />
@@ -194,17 +194,20 @@ export default {
       return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
     },
   },
-  watch:{
-    $route() {
-      if (this.$route.query?.error) {
-        this.handleSubscribeError(Number(this.$route.query.gameId), this.t(this.$route.query.error));
-        this.$router.replace('/');
+  watch: {
+    $route: {
+      immediate: true,
+      handler() {
+        if (this.$route.query?.error) {
+          this.handleSubscribeError(Number(this.$route.query.gameId), this.t(this.$route.query.error));
+          this.$router.replace('/');
+        }
       }
     }
   },
   async created() {
     await this.gameListStore.requestGameList();
-    this.loadingData = false;    
+    this.loadingData = false;
   },
   methods: {
     clearSnackBar() {

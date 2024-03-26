@@ -304,7 +304,8 @@
       "cannotJoin": "Cannot join that game because it's already full",
       "spectateTwoPlayers" : "You can only spectate an ongoing game with two players",
       "cantFindGame": "Can't find game",
-      "invalidLobbyNumber" : "Invalid Lobby Number"
+      "invalidLobbyNumber" : "Invalid Lobby Number",
+      "cannotSpectate" : "Cannot spectate game because you are playing"
     },
     "gameFinder": "Game Finder",
     "spectate": "SPECTATE",
@@ -446,5 +447,10 @@
     "pointsAndWins": "Points and Wins",
     "pointsOnly": "Points Only",
     "winsOnly": "Wins Only"
+  },
+  "error": {
+    "404": {
+      "title": "404 Not Found"
+    }
   }
 }
