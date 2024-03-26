@@ -16,9 +16,9 @@ module.exports = {
     const seasons = seasonId
       ? await Season.find({ id: seasonId }).populateAll()
       : await Season.find({
-          where: { startTime: { '<=': dayjs().valueOf() } },
-          sort: 'startTime DESC',
-        }).populateAll();
+        where: { startTime: { '<=': dayjs().format() } },
+        sort: 'startTime DESC',
+      }).populateAll();
     if (!seasons.length) {
       return exits.error(new Error('Could not find requested season data'));
     }
@@ -35,12 +35,10 @@ module.exports = {
           uniquePlayersPerWeek: [],
         };
         // initialize gameCounts and uniquePlayersPerWeek
-        const startTime = dayjs(season.startTime);
         const currentTime = dayjs();
-        const seasonEndTime = dayjs(season.endTime);
-        const endTime = currentTime.isBefore(seasonEndTime) ? currentTime : seasonEndTime;
+        const endTime = currentTime.isBefore(dayjs(season.endTime)) ? currentTime : dayjs(season.endTime);
         // Round week count up to account for incomplete weeks
-        const numWeeks = Math.ceil(endTime.diff(startTime, 'week', true));
+        const numWeeks = Math.ceil(endTime.diff(dayjs(season.startTime), 'week', true));
         for (let i = 0; i < numWeeks; i++) {
           res.gameCounts.push(0);
           res.uniquePlayersPerWeek.push(new Set());

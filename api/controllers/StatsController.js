@@ -148,7 +148,7 @@ module.exports = {
       });
       const currentSeasonGames = Game.find({
         status: gameService.GameStatus.FINISHED,
-        updatedAt: { '>': currentSeason.startTime, '<': currentSeason.endTime },
+        updatedAt: { '>': dayjs(currentSeason.startTime).valueOf(), '<': dayjs(currentSeason.endTime).valueOf() },
       });
       const [users, matches, games] = await Promise.all([allUsers, currentSeasonMatches, currentSeasonGames]);
       updateRankingsFromMatches(users, matches, currentSeason);
@@ -170,7 +170,7 @@ module.exports = {
       });
       const requestedSeasonGames = Game.find({
         status: gameService.GameStatus.FINISHED,
-        updatedAt: { '>': requestedSeason.startTime, '<': requestedSeason.endTime },
+        updatedAt: { '>': dayjs(requestedSeason.startTime).valueOf(), '<': dayjs(requestedSeason.endTime).valueOf() },
       });
       const [users, matches, games] = await Promise.all([
         allUsers,

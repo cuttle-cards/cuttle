@@ -29,8 +29,8 @@ module.exports = {
     
     for (let numAttempts = 0; numAttempts < MAX_ATTEMPTS; numAttempts++) {
       try {
-        const now = dayjs().valueOf();
-        const lockIsStaleTimeout = dayjs().subtract(30, 'second').valueOf();
+        const now = dayjs().format();
+        const lockIsStaleTimeout = dayjs().subtract(30, 'second').format();
 
         // Lock & re-fetch game if unlocked or lock is expired
         const updatedGame = await Game.updateOne({
