@@ -37,7 +37,7 @@
     "readRules": "Leer las reglas",
     "joinDiscord": "Únete a nuestra comunidad en Discord",
     "snackbar": {
-       "usernameIsTaken": "Ese nombre de usuario ya está registrado; prueba a iniciar sesión", 
+       "usernameIsTaken": "Ese nombre de usuario ya está registrado; prueba a iniciar sesión",
        "userNotFound": "No se pudo encontrar ese nombre de usuario; prueba a registrarte",
        "wrongPassword": "El nombre de usuario y la contraseña no coinciden"
      }
@@ -294,6 +294,13 @@
       "about2": "para aprender las reglas y leer sobre el proyecto cuttle.cards.",
       "okayButton": "ok"
     },
+    "snackbar" :{
+      "cannotJoin": "No puede unirme a ese juego porque ya está lleno.",
+      "spectateTwoPlayers" : "Solo puede ver un juego en curso con dos jugadores.",
+      "cantFindGame": "no puede encontrar el juego",
+      "invalidLobbyNumber" : "Número de lobby no válido",
+      "cannotSpectate" : "No puede ver el juego porque estás jugando."
+    },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",
     "noGameslist": "No hay partidas activas",
@@ -361,7 +368,7 @@
       "seven": "Siete",
       "sevenDescription": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras.",
       "nine": "Nueve",
-      "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno"  
+      "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno"
     },
     "multiplayerTitle": "Variantes multijugador",
     "multiplayerText1": "Actualmente, solo está disponible Cuttle para 2 jugadores en ",
@@ -434,5 +441,10 @@
     "pointsAndWins": "Puntos y victorias",
     "pointsOnly": "Solo puntos",
     "winsOnly": "Solo gana"
+  },
+  "error": {
+    "404": {
+      "title": "404 No Encontrado"
+    }
   }
 }

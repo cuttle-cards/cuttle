@@ -69,8 +69,8 @@ function setup() {
 describe('Stats Page Error States', () => {
   it('Redirects to login when attempting to navigate to stats while unauthenticated', () => {
     cy.wipeDatabase();
-    cy.visit('/#/stats');
-    cy.hash().should('eq', '#/signup');
+    cy.visit('/stats');
+    cy.location('pathname').should('eq', '/signup');
   });
 });
 
@@ -250,10 +250,10 @@ describe('Stats Page', () => {
     cy.get('@seasons').then((seasons) => {
       const [seasonOne, seasonTwo] = seasons;
       cy.vueRoute(`/stats/${seasonOne.id}`);
-      cy.hash().should('contain', seasonOne.id);
+      cy.location('pathname').should('contain', seasonOne.id);
       cy.get('[data-cy=season-select]').should('contain', seasonOne.name).click();
       cy.get('[role=listbox]').contains(seasonTwo.name).click();
-      cy.hash().should('contain', seasonTwo.id);
+      cy.location('pathname').should('contain', seasonTwo.id);
       cy.get('[data-cy=season-select]').should('contain', seasonTwo.name);
     });
   });
@@ -267,10 +267,10 @@ describe('Usage stats', () => {
   });
 
   it('Sends the counts of games played and unique players for each week of each season', () => {
-    cy.request('http://localhost:1337/stats/seasons/current').then(({ body: seasons }) => {
+    cy.request('http://localhost:1337/api/stats/seasons/current').then(({ body: seasons }) => {
       const populateSeason = (season) => {
         return new Cypress.Promise((resolve, reject) => {
-          cy.request(`http://localhost:1337/stats/seasons/${season.id}`).then(({ body }) => {
+          cy.request(`http://localhost:1337/api/stats/seasons/${season.id}`).then(({ body }) => {
             if (!body) {
               reject(new Error('error populating season'));
             }

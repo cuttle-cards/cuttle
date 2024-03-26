@@ -17,7 +17,7 @@ module.exports = function (req, res) {
       // Fast fail if game is full
       const gameIsFull = sails.helpers.isGameFull(game);
       if (gameIsFull) {
-        throw { message: `Cannot join that game because it's already full` };
+        throw { message: 'home.snackbar.cannotJoin' };
       }
       // Does the user already have a pnum for this game?
       let pNum = getPlayerPnumByUsername(game.players, user.username);
