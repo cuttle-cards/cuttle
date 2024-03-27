@@ -85,6 +85,12 @@
         "discard": "Discard",
         "oppponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
       },
+      "five":{
+        "discardAndDraw" : "Discard and Draw",
+        "nice": "Nice!",
+        "resolveFive": "You have resolved a 5 one-off. Choose a card to discard and then you will draw 3 cards",
+        "resolveFiveNoCards": "You have Resolved a 5 one-off, but have no cards in your hand to discard. You draw 3 cards without discarding. Sweet!"
+      },
       "scrapDialog": {
         "scrapPile": "Scrap Pile",
         "noCards": "There are no cards in the scrap pile."
@@ -186,7 +192,7 @@
         "2": "Scrap target Royal or Glasses eight",
         "3": "Choose 1 card in the Scrap and put it to your hand",
         "4": "Your opponent discards two cards of their choice from their hand",
-        "5": "Draw two cards from the deck",
+        "5": "Discard 1 card, and draw up to 3",
         "6": "Scrap all Royals and Glasses eights",
         "7": "Play one of the top two cards of the deck and put the other back (both are revealed)",
         "8": "Your opponent plays with an open hand (their cards are revealed to you)",
@@ -362,7 +368,7 @@
       "four": "Four",
       "fourDescription": "Your opponent discards two cards of their choice.",
       "five": "Five",
-      "fiveDescription": "Draw two cards from the deck up to the 8 card hand limit.",
+      "fiveDescription": "Discard one card then draw up to three cards from the deck up to the 8 card hand limit.",
       "six": "Six",
       "sixDescription": "Scrap all Royals and Glasses Eights on the field.",
       "seven": "Seven",

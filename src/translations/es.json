@@ -96,6 +96,12 @@
         "discard": "Descartar",
         "oppponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
       },
+      "five":{
+        "discardAndDraw" : "Descartar y robar",
+        "nice": "Bueno!",
+        "resolveFive": "Has resuelto un 5 único. Elige una carta para descartar y luego robarás 3 cartas.",
+        "resolveFiveNoCards": "Has resuelto un 5 único, pero no tienes cartas en tu mano para descartar. Robas 3 cartas sin descartar. ¡Dulce!"
+      },
       "counterDialogs": {
         "counterTitle": "Oportunidad de contrarrestar",
         "chooseTwoTitle": "Elige dos",
@@ -186,7 +192,7 @@
         "2": "Descarta la Figura o las Gafas Ocho objetivo",
         "3": "Elige una carta del mazo de descarte y ponla en tu mano",
         "4": "Tu rival descarta dos cartas de su mano a su elección",
-        "5": "Roba dos cartas del mazo de robo",
+        "5": "Descarta 1 carta y roba hasta 3.",
         "6": "Descarta todas las Figuras y Gafas Ocho en juego",
         "7": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras",
         "8": "Puedes ver las cartas de la mano de tu rival (hasta que esta carta se descarte)",
@@ -362,7 +368,7 @@
       "four": "Cuatro",
       "fourDescription": "Tu rival descarta dos cartas de su mano a su elección.",
       "five": "Cinco",
-      "fiveDescription": "Roba dos cartas del mazo de robo, sin superar el límite de 8 cartas en la mano.",
+      "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja hasta el límite de mano de 8 cartas.",
       "six": "Seis",
       "sixDescription": "Descarta todas las Figuras y Gafas Ocho en juego sobre el campo.",
       "seven": "Siete",

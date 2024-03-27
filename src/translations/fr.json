@@ -96,6 +96,12 @@
         "discard": "Défausser",
         "oppponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
+      "five":{
+        "discardAndDraw" : "Jeter et piocher",
+        "nice": "Bon!",
+        "resolveFive": "Vous avez résolu un 5 ponctuel. Choisissez une carte à défausser et vous piocherez ensuite 3 cartes",
+        "resolveFiveNoCards": "Vous avez résolu un problème ponctuel de 5, mais vous n'avez aucune carte en main à défausser. Vous piochez 3 cartes sans les défausser. Doux!"
+      },
       "counterDialogs": {
         "counterTitle": "Chance de contrer",
         "chooseTwoTitle": "Choisissez un deux",
@@ -186,7 +192,7 @@
         "2": "Cible et élimine une figure ou un huit en lunettes.",
         "3": "Récupérez un carte dans la défausse.",
         "4": "Votre adversaire défausse deux cartes de son choix.",
-        "5": "Piochez deux cartes du paquet.",
+        "5": "Défaussez 1 carte et piochez-en jusqu'à 3",
         "6": "Élimine toutes les figures et les huit en lunettes.",
         "7": "Dévoilez deux cartes du paquet et jouez en une.",
         "8": "Révèle la main de votre adversaire.",
@@ -362,7 +368,7 @@
       "four": "Quatre",
       "fourDescription": "Votre adversaire doit défausse deux cartes de son choix.",
       "five": "Cinq",
-      "fiveDescription": "Piochez deux cartes du jeu pour les ajouter à votre main. Attention de ne pas dépasser la limite de 8 cartes en main.",
+      "fiveDescription": "Défaussez une carte, puis piochez jusqu'à trois cartes du jeu jusqu'à la limite de 8 cartes en main.",
       "six": "Six",
       "sixDescription": "Élimine toutes les figures et les huit en lunettes de la table.",
       "seven": "Sept",

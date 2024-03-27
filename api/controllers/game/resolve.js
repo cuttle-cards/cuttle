@@ -116,77 +116,15 @@ module.exports = function (req, res) {
             };
             break;
           case 5: {
-            //Draw top card
-            const handLen = player.hand.length;
-            const cardsToDraw = [game.topCard.id];
-            gameUpdates.topCard = null;
-            let cardsToRemoveFromDeck = [];
-            if (handLen < 7) {
-              //Draw second card, if it exists
-              if (game.secondCard) {
-                gameUpdates.log = [
-                  ...game.log,
-                  `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} draws two cards.`,
-                ];
-                cardsToDraw.push(game.secondCard.id);
-                gameUpdates.secondCard = null;
-                cardsToRemoveFromDeck = [...cardsToDraw];
-
-                //Replace top card, if there's a card in deck
-                if (game.deck.length >= 1) {
-                  const newTopCardIndex = _.random(game.deck.length - 1);
-                  const newTopCard = game.deck.splice(newTopCardIndex, 1)[0].id;
-                  gameUpdates.topCard = newTopCard;
-                  cardsToRemoveFromDeck.push(newTopCard);
-
-                  // Replace second card, if possible (after choosing new topcard)
-                  if (game.deck.length >= 1) {
-                    const newSecondCardIndex = _.random(game.deck.length - 1);
-                    const newSecondCard = game.deck.splice(newSecondCardIndex, 1)[0].id;
-                    gameUpdates.secondCard = newSecondCard;
-                    cardsToRemoveFromDeck.push(newSecondCard);
-                  }
-                }
-                // Player drew last card
-              } else {
-                gameUpdates.log = [
-                  ...game.log,
-                  `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} draws the last card.`,
-                ];
-              }
-              //Player could only draw one card, due to hand limit
-            } else {
-              // Replace top card with second card, if second card exists
-              if (game.secondCard) {
-                gameUpdates.topCard = game.secondCard.id;
-                gameUpdates.secondCard = null;
-
-                // If more cards are left in deck, replace second card with card from deck
-                if (game.deck.length >= 1) {
-                  const newSecondCardIndex = _.random(game.deck.length - 1);
-                  const newSecondCard = game.deck.splice(newSecondCardIndex, 1)[0].id;
-                  gameUpdates.secondCard = newSecondCard;
-                  cardsToRemoveFromDeck.push(newSecondCard);
-                  gameUpdates.log = [
-                    ...game.log,
-                    `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} draws one card to reach the hand limit (8).`,
-                  ];
-
-                  // Player draws last card in deck, to reach hand limit (only draws 1)
-                }
-              } else {
-                gameUpdates.log = [
-                  ...game.log,
-                  `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} draws one card (last in deck) to reach the hand limit (8).`,
-                ];
-              }
-            }
-            updatePromises = [
-              ...updatePromises,
-              Game.removeFromCollection(game.id, 'deck').members(cardsToRemoveFromDeck),
-              User.addToCollection(player.id, 'hand').members(cardsToDraw),
-            ];
-            break; //End resolve FIVE
+            gameUpdates = {
+              ...gameUpdates,
+              resolving: game.oneOff.id,
+              log: [
+                ...game.log,
+                `The ${getCardName(game.oneOff)} one-off resolves; ${player.username} must discard 1 card, and will draw up to 3.`,
+              ],
+            };
+            break;
           }
           case 6: {
             const playerFaceCardIds = player.faceCards.map((faceCard) => faceCard.id);
@@ -315,12 +253,12 @@ module.exports = function (req, res) {
       // Add twos to the cards to scrap
       cardsToScrap = [...cardsToScrap, ...game.twos.map((two) => two.id)];
       const { oneOff } = game;
-      if (oneOff.rank !== 3 || !happened) {
+      if (![3,5].includes(oneOff.rank) || !happened) {
         gameUpdates.oneOff = null;
         cardsToScrap.push(game.oneOff.id);
       }
-      // Increment turn for anything except resolved three, four, and seven (which require follow up)
-      if (!happened || (happened && ![3, 4, 7].includes(oneOff.rank))) {
+      // Increment turn for anything except resolved three, four, five, and seven (which require follow up)
+      if (!happened || (happened && ![3, 4, 5, 7].includes(oneOff.rank))) {
         gameUpdates = {
           ...gameUpdates,
           turn: game.turn + 1,

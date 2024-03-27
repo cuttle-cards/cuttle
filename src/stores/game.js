@@ -95,9 +95,11 @@ export const useGameStore = defineStore('game', {
     lastEventCardChosen: null,
     lastEventPlayerChoosing: false,
     // Fours
-    discarding: false,
+    showResolveFour: false,
     waitingForOpponentToDiscard: false,
     lastEventDiscardedCards: null,
+    //fives
+    showResolveFive: false,
     // Sevens
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,
@@ -326,7 +328,16 @@ export const useGameStore = defineStore('game', {
     },
     processFours(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
-      this.discarding = false;
+      this.showResolveFour = false;
+      this.lastEventDiscardedCards = discardedCards;
+
+      setTimeout(() => {
+        this.resetPNumIfNullThenUpdateGame(game);
+      }, 1000);
+    },
+    processFives(discardedCards, game) {
+      this.waitingForOpponentToDiscard = false;
+      this.showResolveFive = false;
       this.lastEventDiscardedCards = discardedCards;
 
       setTimeout(() => {
@@ -597,6 +608,21 @@ export const useGameStore = defineStore('game', {
         );
       }).then(() => {
         this.waitingForOpponentToCounter = false;
+      });
+    },
+    async requestResolveFive(cardId) {
+      this.myTurnToCounter = false;
+      return new Promise((resolve, reject) => {
+        io.socket.get(
+          '/api/game/resolveFive',
+          {
+            cardId,
+          },
+          (res, jwres) => {
+            this.waitingForOpponentToCounter = false;
+            return this.handleGameResponse(jwres, resolve, reject);
+          },
+        );
       });
     },
     async requestResolveSevenDoubleJacks({ cardId, index }) {
