@@ -78,7 +78,8 @@ module.exports.routes = {
   '/api/game/resolve': 'game/resolve',
   '/api/game/resolveFour': 'game/resolve-four',
   '/api/game/resolveThree': 'game/resolve-three',
-
+  '/api/game/resolveFive': 'game/resolve-five',
+  
   // Resolving Sevens
   '/api/game/seven/points': 'game/seven/points',
   '/api/game/seven/faceCard': 'game/seven/face-card',
