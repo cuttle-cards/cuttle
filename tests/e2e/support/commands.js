@@ -745,7 +745,7 @@ Cypress.Commands.add('resolveFiveOpponent', (card) => {
       throw new Error(`Error resolving three as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`);
     }
     const cardId = foundCard.id;
-    io.socket.get('api/game/resolveFive', {
+    io.socket.get('/api/game/resolveFive', {
       cardId
     },
       function handleResponse(res, jwres) {

@@ -614,7 +614,7 @@ export const useGameStore = defineStore('game', {
       this.myTurnToCounter = false;
       return new Promise((resolve, reject) => {
         io.socket.get(
-          'api/game/resolveFive',
+          '/api/game/resolveFive',
           {
             cardId,
           },
