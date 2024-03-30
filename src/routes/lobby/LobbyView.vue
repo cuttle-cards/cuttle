@@ -110,6 +110,7 @@ import { useAuthStore } from '@/stores/auth';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
+import { sleep } from '@/util/sleep';
 
 export default {
   name: 'LobbyView',
@@ -122,12 +123,11 @@ export default {
     const { t } = useI18n();
     const gameStarted = ref(false);
 
-    onBeforeRouteLeave((to, from, next) => {
+    onBeforeRouteLeave(async (to, from, next) => {
       if (to.name === 'Game') {
         gameStarted.value = true;
-        setTimeout(() => {
-          next();
-        }, 2000);
+        await sleep(2000);
+        next();
       } else {
         next();
       }
@@ -157,9 +157,9 @@ export default {
     readyButtonText() {
       return this.t(this.iAmReady ? 'lobby.unready' : 'lobby.ready');
     },
-    rankedIcon(){
+    rankedIcon() {
       return this.gameStore.isRanked ? 'sword-cross' : 'coffee';
-    }
+    },
   },
   watch: {
     opponentUsername(newVal) {
@@ -251,7 +251,7 @@ h5 {
 @media (min-width: 980px) {
   .rank-switch {
     padding: 0;
-  }  
+  }
 }
 
 @media (max-width: 660px) {
@@ -275,7 +275,7 @@ h5 {
 @media (max-width: 350px) {
   .rank-switch {
     width: 100%;
-  }  
+  }
 }
 
 #logo {

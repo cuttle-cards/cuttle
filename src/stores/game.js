@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
+import { sleep } from '@/util/sleep';
 
 /**
  * @returns number of queens a given player has
@@ -187,7 +188,7 @@ export const useGameStore = defineStore('game', {
       const key = `p${(state.myPNum + 1) % 2}Rematch`;
       return state[key];
     },
-    opponentDeclinedRematch()  {
+    opponentDeclinedRematch() {
       return this.opponentWantsRematch === false;
     },
     someoneDeclinedRematch() {
@@ -286,7 +287,7 @@ export const useGameStore = defineStore('game', {
      * and updates complete game which will put both cards in the scrap
      * @returns void
      */
-    processScuttle({ game, playedCardId, targetCardId, playedBy }) {
+    async processScuttle({ game, playedCardId, targetCardId, playedBy }) {
       // Update in one step if this player scuttled or if pNum is not set
       if (!this.player) {
         this.resetPNumIfNullThenUpdateGame(game);
@@ -311,27 +312,24 @@ export const useGameStore = defineStore('game', {
       targetCard.scuttledBy = playedCard;
 
       // Finish complete update of the game state after 1s
-      setTimeout(() => {
-        this.resetPNumIfNullThenUpdateGame(game);
-      }, 1000);
+      await sleep(1000);
+      this.resetPNumIfNullThenUpdateGame(game);
     },
-    processThrees(chosenCard, game) {
+    async processThrees(chosenCard, game) {
       this.waitingForOpponentToPickFromScrap = false;
       this.pickingFromScrap = false;
       this.lastEventCardChosen = chosenCard;
 
-      setTimeout(() => {
-        this.resetPNumIfNullThenUpdateGame(game);
-      }, 1000);
+      await sleep(1000);
+      this.resetPNumIfNullThenUpdateGame(game);
     },
-    processFours(discardedCards, game) {
+    async processFours(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
       this.discarding = false;
       this.lastEventDiscardedCards = discardedCards;
 
-      setTimeout(() => {
-        this.resetPNumIfNullThenUpdateGame(game);
-      }, 1000);
+      await sleep(1000);
+      this.resetPNumIfNullThenUpdateGame(game);
     },
     handleGameResponse: (jwres, resolve, reject) => {
       const authStore = useAuthStore();
