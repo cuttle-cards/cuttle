@@ -6,8 +6,7 @@
         <GameCardName :card-name="oneOff.name" />
         {{ t('game.dialogs.counterDialogs.oneOff') }}
         <span v-if="target" class="test">
-          {{ t('game.dialogs.counterDialogs.target') }} 
-          {{ t('global.your') }}
+          {{ `${t('game.dialogs.counterDialogs.target')} ${t('global.your')}` }}
           <GameCardName :card-name="target.name" />
         </span>
       </div>
