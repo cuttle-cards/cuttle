@@ -27,7 +27,12 @@
         </p>
         <div v-if="target" id="target-wrapper">
           <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-            <v-icon size="x-large" color="red" icon="mdi-target" aria-hidden="true" />
+            <v-icon 
+              size="x-large" 
+              color="red" 
+              icon="mdi-target" 
+              aria-hidden="true" 
+            />
           </span>
           <GameCard :suit="target.suit" :rank="target.rank" />
         </div>
@@ -36,10 +41,20 @@
     </template>
 
     <template #actions>
-      <v-btn data-cy="counter" color="newPrimary" variant="flat" @click="$emit('choose-to-counter')">
+      <v-btn 
+        data-cy="counter" 
+        color="newPrimary" 
+        variant="flat" 
+        @click="$emit('choose-to-counter')">
         {{ t('game.dialogs.counterDialogs.counter') }}
       </v-btn>
-      <v-btn data-cy="decline-counter-resolve" color="surface-1" variant="flat" class="ml-4" @click="resolve">
+      <v-btn 
+        data-cy="decline-counter-resolve" 
+        color="surface-1" 
+        variant="flat" 
+        class="ml-4" 
+        @click="resolve"
+      >
         {{ t('game.resolve') }}
       </v-btn>
     </template>
