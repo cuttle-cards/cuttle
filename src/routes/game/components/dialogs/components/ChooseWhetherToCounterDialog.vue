@@ -41,7 +41,7 @@
     </template>
 
     <template #actions>
-      <v-btn 
+      <v-btn
         data-cy="counter"
         color="newPrimary"
         variant="flat"
