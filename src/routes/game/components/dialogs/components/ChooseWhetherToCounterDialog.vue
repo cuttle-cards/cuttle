@@ -45,7 +45,8 @@
         data-cy="counter" 
         color="newPrimary" 
         variant="flat" 
-        @click="$emit('choose-to-counter')">
+        @click="$emit('choose-to-counter')"
+      >
         {{ t('game.dialogs.counterDialogs.counter') }}
       </v-btn>
       <v-btn 
