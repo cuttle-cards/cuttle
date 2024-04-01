@@ -27,7 +27,7 @@
         </p>
         <div v-if="target" id="target-wrapper">
           <span id="target-icon-wrapper" class="d-flex justify-center align-center">
-            <v-icon 
+            <v-icon
               size="x-large"
               color="red"
               icon="mdi-target"
@@ -42,14 +42,14 @@
 
     <template #actions>
       <v-btn 
-        data-cy="counter" 
-        color="newPrimary" 
-        variant="flat" 
+        data-cy="counter"
+        color="newPrimary"
+        variant="flat"
         @click="$emit('choose-to-counter')"
       >
         {{ t('game.dialogs.counterDialogs.counter') }}
       </v-btn>
-      <v-btn 
+      <v-btn
         data-cy="decline-counter-resolve"
         color="surface-1"
         variant="flat"
