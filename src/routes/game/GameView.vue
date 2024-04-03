@@ -1468,7 +1468,7 @@ export default {
   min-width: 50%;
   height: 100%;
   & #player-hand-cards,
-  #player-hand-targeting:deep {
+  & :deep(#player-hand-targeting) {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.46);
