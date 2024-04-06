@@ -457,5 +457,26 @@
     "404": {
       "title": "404 Non Trouvé"
     }
+  },
+  "callToAction": {
+    "betaTestTitle": "Test Bêta en Cours : Cliquez pour en savoir plus",
+    "betaTestAddition": "à propos du changement de règle des 5 revisités",
+    "revisedFives": "5 Révisés",
+    "revisedFivesAddition": "Changement de Règle",
+    "testDates": "Dates de Test : Avril",
+    "betaTest": "Test Bêta",
+    "ruleInfoHeader": "Informations sur la Règle",
+    "ruleInfo": "Jouer un 5 a maintenant un effet révisé unique : défaussez une carte, puis piochez trois cartes",
+    "whyImplementHeader": "Pourquoi implémentons-nous ceci ?",
+    "whyImplement": "Parce que les 5 prennent votre tour pour jouer et vous pourriez alternativement piocher une carte lors de votre tour, tandis que jouer un 5 semble vous donner deux cartes (youpi !), il remplace effectivement seulement lui-même sans faire autre chose pour vous. Afin de dynamiser le cinq et lui donner un but spécifique, tout en s'appuyant sur le thème des 5 qui cyclent votre main pour vous dessiner beaucoup de cartes, nous expérimentons une variation sur l'effet des 5 où vous défaussez d'abord une carte de votre main, puis piochez trois cartes ! Nous espérons que cela augmentera l'utilité de l'effet des 5 et affinera sa fonction stratégique. Et nous avons besoin de votre aide pour décider si cela devrait devenir un changement permanent !",
+    "howLongHeader": "Combien de temps dure cette bêta ?",
+    "howLong": "La bêta du recycler 5 débutera le lundi 8 avril et durera jusqu'au lundi 20 avril. Du début de la bêta jusqu'au Championnat de la Saison de Cuttle des Clubs 2024 le 13 avril 2024, les joueurs peuvent voter pour changer les 4 en effet recycler.",
+    "optedInHeader": "Qui participe ?",
+    "optedIn": "Pendant toute la durée de la bêta, tous les jeux joués sur cuttle.cards fonctionneront en utilisant l'effort de recyclage pour les 5.",
+    "gameModesHeader": "Quels modes de jeu cela affecte-t-il ?",
+    "gameModes": "La bêta affecte à la fois le jeu classé et le jeu occasionnel. Le jeu classé continuera à compter sur le tableau de bord comme d'habitude, donc vous n'avez pas besoin de sauter le jeu classé pour l'essayer !",
+    "learnMoreHeader": "Où pouvons-nous en apprendre plus ?",
+    "learnMore": "Vous pouvez en savoir plus sur ce changement d'équilibrage et la discussion environnante sur Discord, où les joueurs discutent du changement et s'ils aimeraient le voir devenir permanent. Dites-nous ce que vous en pensez !"
   }
+
 }

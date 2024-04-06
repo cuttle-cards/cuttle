@@ -457,5 +457,25 @@
     "404": {
       "title": "404 No Encontrado"
     }
+  },
+  "callToAction": {
+    "betaTestTitle": "Prueba Beta en Progreso: Haz clic para obtener más información",
+    "betaTestAddition": "sobre el cambio de regla de los 5 revisados",
+    "revisedFives": "5's Revisados",
+    "revisedFivesAddition": "Cambio de Regla",
+    "testDates": "Fechas de Prueba: Abril",
+    "betaTest": "Prueba Beta",
+    "ruleInfoHeader": "Información de la Regla",
+    "ruleInfo": "Jugar un 5 ahora tiene un efecto revisado único: descartar una carta y luego robar tres cartas",
+    "whyImplementHeader": "¿Por qué estamos implementando esto?",
+    "whyImplement": "Porque los 5 toman tu turno para jugar y alternativamente podrías robar una carta en tu turno, mientras que jugar un 5 se siente como si te diera dos cartas (¡yay!) efectivamente solo se reemplaza a sí mismo sin hacer nada más por ti. Para potenciar el cinco y darle un propósito específico, mientras nos inclinamos hacia el tema de los 5 que reciclan tu mano para dibujarte muchas cartas, estamos experimentando con una variación en el efecto de los 5 donde primero descartas una carta de tu mano, ¡luego robas tres cartas! ¡Esperamos que esto aumente la utilidad del efecto de los 5 y afine su función estratégica. Y necesitamos tu ayuda para decidir si esto debería convertirse en un cambio permanente!",
+    "howLongHeader": "¿Cuánto tiempo dura esta beta?",
+    "howLong": "La beta del reciclador 5 comenzará el lunes 8 de abril y durará hasta el lunes 20 de abril. Desde el inicio de la beta, hasta el Campeonato de la Temporada de Cuttle de Clubes de 2024 el 13 de abril de 2024, los jugadores pueden votar si cambiar los 4 al efecto reciclador",
+    "optedInHeader": "¿Quién está participando?",
+    "optedIn": "Durante la duración de la beta, todos los juegos jugados en cuttle.cards funcionarán utilizando el esfuerzo reciclador para los 5",
+    "gameModesHeader": "¿Qué modos de juego afecta esto?",
+    "gameModes": "La beta afecta tanto al juego clasificado como al casual. El juego clasificado seguirá contando en la tabla de clasificación como de costumbre, ¡así que no necesitas dejar de jugar clasificado para probarlo!",
+    "learnMoreHeader": "¿Dónde podemos obtener más información?",
+    "learnMore": "Puedes obtener más información sobre este cambio de balance y la discusión circundante en Discord, donde los jugadores están discutiendo el cambio y si les gustaría que se convierta en permanente. ¡Cuéntanos qué piensas!"
   }
 }
