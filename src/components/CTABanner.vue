@@ -84,18 +84,32 @@
 
 <script setup>
   import BaseDialog from '@/components/BaseDialog.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import GameCard from '@/routes/game/components/GameCard.vue';
+import { getLocalStorage, setLocalStorage} from '_/utils/local-storage-utils.js';
 
 const { t } = useI18n();
 const fiveCards = [{suit: 0, rank:5},{suit: 1, rank:5},{suit: 2, rank:5},{suit: 3, rank:5},];
 
 const show = ref(false);
+const preferenceSaved= ref(false);
 
 const close = () => {
+  if (!preferenceSaved.value) {
+    setLocalStorage('bannerDismissed', true);
+  }
   show.value = false;
 };
+
+
+onMounted(() => {
+  if (!getLocalStorage('bannerDismissed')) {
+    show.value = true;
+    preferenceSaved.value = true;
+  }
+});
+
 </script>
 
 <style scoped>
