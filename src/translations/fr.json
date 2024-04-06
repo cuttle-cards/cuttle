@@ -458,25 +458,26 @@
       "title": "404 Non Trouvé"
     }
   },
-  "callToAction": {
-    "betaTestTitle": "Test Bêta en Cours : Cliquez pour en savoir plus",
-    "betaTestAddition": "à propos du changement de règle des 5 revisités",
-    "revisedFives": "5 Révisés",
-    "revisedFivesAddition": "Changement de Règle",
-    "testDates": "Dates de Test : Avril",
-    "betaTest": "Test Bêta",
-    "ruleInfoHeader": "Informations sur la Règle",
-    "ruleInfo": "Jouer un 5 a maintenant un effet révisé unique : défaussez une carte, puis piochez trois cartes",
-    "whyImplementHeader": "Pourquoi implémentons-nous ceci ?",
-    "whyImplement": "Parce que les 5 prennent votre tour pour jouer et vous pourriez alternativement piocher une carte lors de votre tour, tandis que jouer un 5 semble vous donner deux cartes (youpi !), il remplace effectivement seulement lui-même sans faire autre chose pour vous. Afin de dynamiser le cinq et lui donner un but spécifique, tout en s'appuyant sur le thème des 5 qui cyclent votre main pour vous dessiner beaucoup de cartes, nous expérimentons une variation sur l'effet des 5 où vous défaussez d'abord une carte de votre main, puis piochez trois cartes ! Nous espérons que cela augmentera l'utilité de l'effet des 5 et affinera sa fonction stratégique. Et nous avons besoin de votre aide pour décider si cela devrait devenir un changement permanent !",
-    "howLongHeader": "Combien de temps dure cette bêta ?",
-    "howLong": "La bêta du recycler 5 débutera le lundi 8 avril et durera jusqu'au lundi 20 avril. Du début de la bêta jusqu'au Championnat de la Saison de Cuttle des Clubs 2024 le 13 avril 2024, les joueurs peuvent voter pour changer les 4 en effet recycler.",
-    "optedInHeader": "Qui participe ?",
-    "optedIn": "Pendant toute la durée de la bêta, tous les jeux joués sur cuttle.cards fonctionneront en utilisant l'effort de recyclage pour les 5.",
-    "gameModesHeader": "Quels modes de jeu cela affecte-t-il ?",
-    "gameModes": "La bêta affecte à la fois le jeu classé et le jeu occasionnel. Le jeu classé continuera à compter sur le tableau de bord comme d'habitude, donc vous n'avez pas besoin de sauter le jeu classé pour l'essayer !",
-    "learnMoreHeader": "Où pouvons-nous en apprendre plus ?",
-    "learnMore": "Vous pouvez en savoir plus sur ce changement d'équilibrage et la discussion environnante sur Discord, où les joueurs discutent du changement et s'ils aimeraient le voir devenir permanent. Dites-nous ce que vous en pensez !"
-  }
+    "callToAction": {
+      "betaTestTitle": "Beta en cours : Cliquez pour en savoir plus",
+      "betaTestAddition": "sur le changement de règle des 5 révisés",
+      "revisedFives": "5 Révisés",
+      "revisedFivesAddition": "Changement de règle",
+      "testDates": "Dates de test : Avril",
+      "betaTest": "Essai Beta",
+      "ruleInfoHeader": "Informations sur la règle",
+      "ruleInfo": "Jouer un 5 a désormais un effet révisé : défaussez une carte, puis piochez trois cartes",
+      "whyImplementHeader": "Pourquoi mettons-nous cela en œuvre ?",
+      "whyImplement": "Parce que les 5 prennent votre tour pour jouer et vous pourriez alternativement piocher une carte à votre tour, tandis que jouer un 5 donne l'impression d'obtenir deux cartes (yay !), en réalité il ne se remplace que lui-même sans rien faire d'autre pour vous. Afin de renforcer le cinq et de lui donner un objectif spécifique, tout en s'appuyant sur le thème des 5 qui font circuler votre main pour vous faire piocher beaucoup de cartes, nous expérimentons avec une variation de l'effet des 5 où vous défaussez d'abord une carte de votre main, puis piochez trois cartes ! Nous espérons que cela augmentera l'utilité de l'effet des 5 et affinera sa fonction stratégique. Et nous avons besoin de votre aide pour décider si cela devrait devenir un changement permanent !",
+      "howLongHeader": "Combien de temps dure cette beta ?",
+      "howLongPt1": "La bêta du 5 recyclé débutera le lundi 8 avril et se terminera le lundi 20 avril.",
+      "howLongPt2": "Depuis le début de la bêta, jusqu'au Championnat de la saison de Cuttle des Clubs 2024 le 13 avril 2024, les joueurs peuvent voter pour changer les 4 à l'effet de recyclage",
+      "optedInHeader": "Qui est inscrit ?",
+      "optedIn": "Pendant toute la durée de la bêta, tous les jeux joués sur cuttle.cards utiliseront l'effort de recyclage pour les 5",
+      "gameModesHeader": "Quels modes de jeu cela affecte-t-il ?",
+      "gameModes": "La bêta affecte à la fois le jeu classé et le jeu décontracté. Le jeu classé continuera à être pris en compte dans le classement comme d'habitude, donc vous n'avez pas besoin de sauter le jeu classé pour l'essayer !",
+      "learnMoreHeader": "Où pouvons-nous en apprendre davantage ?",
+      "learnMore": "Vous pouvez en apprendre plus sur ce changement d'équilibrage et la discussion environnante sur Discord, où les joueurs discutent du changement et s'ils aimeraient le voir permanent. Dites-nous ce que vous en pensez !"
+    }
 
 }

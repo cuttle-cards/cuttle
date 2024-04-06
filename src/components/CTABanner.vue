@@ -44,7 +44,7 @@
         />
       </div>
       <h2>{{ t('callToAction.ruleInfoHeader') }}</h2>
-      <p>{{ t('callToAction.ruleInfo') }}</p>
+      <p><strong class="text-newPrimary">{{ t('callToAction.ruleInfo') }}</strong></p>
       <h3>{{ t('callToAction.whyImplementHeader') }}</h3>
       <p>
         {{ t('callToAction.whyImplement') }}
@@ -53,7 +53,7 @@
         {{ t('callToAction.howLongHeader') }}
       </h3>
       <p>
-        {{ t('callToAction.howLong') }}
+        <strong class="text-newPrimary">{{ t('callToAction.howLongPt1') }}</strong>{{ t('callToAction.howLongPt2') }}
       </p>
       <h3>{{ t('callToAction.optedInHeader') }}</h3>
       <p>
@@ -116,6 +116,7 @@ onMounted(() => {
   .card:nth-child(n+2){
     margin-left: -9% !important;
   }
+
 
   p:nth-child(n+3){
     margin-bottom: 3%;
