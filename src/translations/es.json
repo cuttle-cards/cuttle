@@ -252,6 +252,11 @@
       "seven": {
         "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven."
       },
+      "five":{
+        "selectCardToDiscard" : "Debes seleccionar una carta para descartar",
+        "incorrectCard" : "Tarjeta incorrecta jugada",
+        "fiveDeckIsEmpty": "No se pueden resolver 5 juegos únicos con un mazo vacío"
+      },
       "draw": {
         "deckIsEmpty": "The deck is empty; you cannot draw.",
         "handLimit": "You are at the hand limit; you cannot draw."

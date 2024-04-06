@@ -252,6 +252,11 @@
       "seven": {
         "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte du paquet."
       },
+      "five":{
+        "selectCardToDiscard" : "Vous devez sélectionner une carte à défausser",
+        "incorrectCard" : "Mauvaise carte jouée",
+        "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
+      },
       "draw": {
         "deckIsEmpty": "Le paquet est vide, voune pouvez pas piocher.",
         "handLimit": "Votre limite de carte en main est atteinte !"

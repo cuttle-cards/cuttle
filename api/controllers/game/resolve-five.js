@@ -7,16 +7,16 @@ module.exports = async function (req, res) {
     const [game, player, cardToDiscard] = await Promise.all([promiseGame, promisePlayer, promiseCard]);
 
     if (!game.topCard) {
-      throw new Error({ message: 'Cannot resolve 5 one-off with an empty deck' });
+      throw new Error({ message: 'game.snackbar.five.fiveDeckIsEmpty' });
     }
     if (player.hand?.length && !cardToDiscard) {
-      throw new Error({ message: 'You must select one card to discard' });
+      throw new Error({ message: 'game.snackbar.five.selectCardToDiscard' });
     }
     if (game.turn % 2 !== player.pNum) {
-      throw new Error({ message: 'It is not your turn!' });
+      throw new Error({ message: 'game.snackbar.global.notYourTurn' });
     }
     if (!game.oneOff || game.oneOff?.rank !== 5) {
-      throw new Error({ message: 'Incorrect card played' });
+      throw new Error({ message: 'game.snackbar.five.incorrectCard' });
     }
 
     const gameUpdates = {

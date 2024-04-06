@@ -252,6 +252,11 @@
       "seven": {
         "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven."
       },
+      "five":{
+        "selectCardToDiscard" : "You must select one card to discard",
+        "incorrectCard" : "Incorrect card played",
+        "fiveDeckIsEmpty": "Cannot resolve 5 one-off with an empty deck"
+      },
       "draw": {
         "deckIsEmpty": "The deck is empty; you cannot draw.",
         "handLimit": "You are at the hand limit; you cannot draw."
