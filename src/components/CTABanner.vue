@@ -18,8 +18,8 @@
       </v-btn>
     </template>
     <template #title>
-      <v-container color="primary">
-        <h1 class="mb-2">
+      <div color="primary">
+        <h1 class="mb-4">
           {{ t('callToAction.revisedFives') }}
           <span class="d-none d-sm-inline">({{ t('callToAction.revisedFivesAddition') }})</span> 
         </h1>
@@ -30,10 +30,10 @@
             ml-2"
           >{{ t('callToAction.betaTest') }}</span>
         </p>
-      </v-container>
+      </div>
     </template>
     <template #body>
-      <v-container class="d-flex justify-center ">
+      <div class="d-flex justify-center my-4">
         <GameCard
           v-for="card in fiveCards"
           :key="card.suit + card.rank"
@@ -42,7 +42,7 @@
           class="card mb-10"
           :high-elevation="true"
         />
-      </v-container>
+      </div>
       <h2>{{ t('callToAction.ruleInfoHeader') }}</h2>
       <p>{{ t('callToAction.ruleInfo') }}</p>
       <h3>{{ t('callToAction.whyImplementHeader') }}</h3>
