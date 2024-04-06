@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
+import { sleep } from '../util/sleep';
 
 /**
  * @returns number of queens a given player has
@@ -189,7 +190,7 @@ export const useGameStore = defineStore('game', {
       const key = `p${(state.myPNum + 1) % 2}Rematch`;
       return state[key];
     },
-    opponentDeclinedRematch()  {
+    opponentDeclinedRematch() {
       return this.opponentWantsRematch === false;
     },
     someoneDeclinedRematch() {
@@ -331,18 +332,16 @@ export const useGameStore = defineStore('game', {
       this.showResolveFour = false;
       this.lastEventDiscardedCards = discardedCards;
 
-      setTimeout(() => {
-        this.resetPNumIfNullThenUpdateGame(game);
-      }, 1000);
+      sleep(1000);
+      this.resetPNumIfNullThenUpdateGame(game);
     },
     processFives(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
       this.showResolveFive = false;
       this.lastEventDiscardedCards = discardedCards;
 
-      setTimeout(() => {
-        this.resetPNumIfNullThenUpdateGame(game);
-      }, 1000);
+      sleep(1000);
+      this.resetPNumIfNullThenUpdateGame(game);
     },
     handleGameResponse: (jwres, resolve, reject) => {
       const authStore = useAuthStore();
@@ -612,6 +611,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestResolveFive(cardId) {
       this.myTurnToCounter = false;
+      this.waitingForOpponentToCounter = false;
       return new Promise((resolve, reject) => {
         io.socket.get(
           '/api/game/resolveFive',
@@ -619,7 +619,6 @@ export const useGameStore = defineStore('game', {
             cardId,
           },
           (res, jwres) => {
-            this.waitingForOpponentToCounter = false;
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
