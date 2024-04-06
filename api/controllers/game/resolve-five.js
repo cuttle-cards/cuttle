@@ -36,7 +36,7 @@ module.exports = async function (req, res) {
 
     //collect cards to put in players hand
     cardsToDraw.push(game.topCard.id);
-    if (game.secondCard) {
+    if (game.secondCard && player.hand.length <= 7) {
       cardsToDraw.push(game.secondCard.id);
       // Can draw third card if player will have <= 8 including discard + draw
       if (game.deck.length && player.hand.length <= 6) {
