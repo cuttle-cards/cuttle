@@ -1,6 +1,5 @@
 const { getCardName } = require('../../../utils/game-utils');
 module.exports = async function (req, res) {
-  
   try {
     const promiseGame = gameService.findGame({ gameId: req.session.game });
     const promisePlayer = userService.findUser({ userId: req.session.usr });
@@ -20,7 +19,6 @@ module.exports = async function (req, res) {
       throw new Error({ message: 'Incorrect card played' });
     }
 
-    console.log(game.oneOff);
     const gameUpdates = {
       oneOff: null,
       passes: 0,
@@ -35,7 +33,7 @@ module.exports = async function (req, res) {
     const cardsToDraw = [];
     const cardsToRemoveFromDeck = [];
     let newDeck = game.deck;
-    
+
     //collect cards to put in players hand
     cardsToDraw.push(game.topCard.id);
     if (game.secondCard) {
@@ -49,7 +47,7 @@ module.exports = async function (req, res) {
         newDeck = game.deck.filter(({ id }) => id !== thirdCard.id);
       }
     }
-    
+
     //Update new topCard, secondCard, and deck
     gameUpdates.topCard = null;
     gameUpdates.secondCard = null;
@@ -64,7 +62,7 @@ module.exports = async function (req, res) {
       gameUpdates.topCard = topCard.id;
       cardsToRemoveFromDeck.push(topCard.id);
     }
-   
+
     const updatePromises = [
       Game.updateOne(game.id).set(gameUpdates),
       Game.removeFromCollection(game.id, 'deck').members([...cardsToRemoveFromDeck]),
@@ -73,14 +71,20 @@ module.exports = async function (req, res) {
     ];
 
     const logMessage = cardsToDraw.length === 1 ? `draws 1 card` : `draws ${cardsToDraw.length} cards`;
-    
+
     if (cardToDiscard) {
-      updatePromises.push(Game.addToCollection(game.id, 'scrap').members([cardToDiscard.id]), User.removeFromCollection(player.id, 'hand').members([cardToDiscard.id]), );
-      gameUpdates.log = [...game.log, `${player.username} discards the ${getCardName(cardToDiscard)} and ${logMessage}`];
+      updatePromises.push(
+        Game.addToCollection(game.id, 'scrap').members([cardToDiscard.id]),
+        User.removeFromCollection(player.id, 'hand').members([cardToDiscard.id]),
+      );
+      gameUpdates.log = [
+        ...game.log,
+        `${player.username} discards the ${getCardName(cardToDiscard)} and ${logMessage}`,
+      ];
     } else {
       gameUpdates.log = [...game.log, `${player.username} ${logMessage}`];
     }
-    
+
     await Promise.all([...updatePromises]);
     const fullGame = await gameService.populateGame({ gameId: game.id });
     const victory = await gameService.checkWinGame({ game: fullGame });
@@ -89,7 +93,7 @@ module.exports = async function (req, res) {
       change: 'resolveFive',
       game: fullGame,
       victory,
-      discardedCards: cardToDiscard ? [cardToDiscard.id] : null
+      discardedCards: cardToDiscard ? [cardToDiscard.id] : null,
     });
 
     return res.ok();
