@@ -10,6 +10,7 @@ describe('Localization', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.vueRoute('/');
+    window.localStorage.setItem('bannerDismissed', true);
   });
 
   const checkAndChangeLanguage = (name, lang) => {
@@ -75,7 +76,7 @@ describe('Localization', () => {
 
 describe('language files', () => {
   function extractKeys(obj, keyList = []) {
-    Object.keys(obj).forEach(key => {
+    Object.keys(obj).forEach((key) => {
       if (typeof obj[key] === 'object' && obj[key] !== null) {
         extractKeys(obj[key], keyList);
       } else {
@@ -98,7 +99,7 @@ describe('language files', () => {
 
   it('French should have the same keys', () => {
     for (let i = 0; i < enKeys.length; i++) {
-      const assertionMsg = `fr.json should have the key ${ enKeys[i] } for key number ${ i }, but instead it had key ${ frKeys[i] }`;
+      const assertionMsg = `fr.json should have the key ${enKeys[i]} for key number ${i}, but instead it had key ${frKeys[i]}`;
       expect(enKeys[i]).to.eq(frKeys[i], assertionMsg);
     }
   });
@@ -108,11 +109,11 @@ describe('language files', () => {
       const assertionMsg = `fr.json should have non-empty value for key ${key}, but it value was empty`;
       expect(fr[key]).to.not.eq('', assertionMsg);
     });
-  }); 
+  });
 
   it('Spanish should have the same keys', () => {
-    for(let i = 0; i < enKeys.length; i++) {
-      const assertionMsg = `es.json should have the key ${ enKeys[i] } for key number ${ i }, but instead it had key ${ esKeys[i] }`;
+    for (let i = 0; i < enKeys.length; i++) {
+      const assertionMsg = `es.json should have the key ${enKeys[i]} for key number ${i}, but instead it had key ${esKeys[i]}`;
       expect(enKeys[i]).to.eq(esKeys[i], assertionMsg);
     }
   });
