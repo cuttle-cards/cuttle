@@ -441,6 +441,7 @@ describe('Home - Create Game', () => {
 
   it('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
+    window.localStorage.setItem('bannerDismissed', true);
 
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
