@@ -19,11 +19,21 @@
       </v-btn>
     </template>
     <template #title>
-      <div color="primary">
-        <h1 class="mb-4">
-          {{ t('callToAction.revisedFives') }}
-          <span class="d-none d-sm-inline">({{ t('callToAction.revisedFivesAddition') }})</span> 
-        </h1>
+      <div color="primary" class="w-100">
+        <div class="d-flex justify-space-between w-100">
+          <h1 class="mb-4">
+            {{ t('callToAction.revisedFives') }}
+            <span class="d-none d-sm-inline">({{ t('callToAction.revisedFivesAddition') }})</span>
+          </h1>
+          <v-btn
+            variant="text"
+            icon
+            size="x-large"
+            @click="close"
+          >
+            <v-icon icon="mdi-close" />
+          </v-btn>
+        </div>
         <p>
           {{ t('callToAction.testDates') }} 8-20 <span
             class="
