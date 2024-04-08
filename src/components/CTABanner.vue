@@ -55,6 +55,7 @@
       </h3>
       <p>
         <strong class="text-newPrimary">{{ t('callToAction.howLongPt1') }}</strong>{{ t('callToAction.howLongPt2') }}
+        <a href="https://forms.gle/9bK7pP3mTN4SWwwG7">{{ t('callToAction.here') }}.</a>
       </p>
       <h3>{{ t('callToAction.optedInHeader') }}</h3>
       <p>
