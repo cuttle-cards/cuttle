@@ -62,6 +62,7 @@
       "opponentMayCounter": "Opponent May Counter",
       "opponentMustResolve": "Opponent Must Resolve",
       "opponentIsDiscarding": "Opponent Is Discarding",
+      "opponentSkipsDiscarding": "Opponent Skips Discarding",
       "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
       "opponentPlayingFromDeck": "Opponent Playing from Deck",
       "opponentMustDiscardJack": "Opponent Must Discard Jack",
