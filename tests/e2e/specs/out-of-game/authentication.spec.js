@@ -37,6 +37,7 @@ describe('Auth - Page Content', () => {
     cy.wipeDatabase();
     cy.visit('/signup');
     cy.signupOpponent(myUser);
+    window.localStorage.setItem('bannerDismissed', true);
   });
 
   it('Displays logo and navigates to rules page', () => {
@@ -109,6 +110,7 @@ describe('Signing Up', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/signup');
+    window.localStorage.setItem('bannerDismissed', true);
   });
 
   /**

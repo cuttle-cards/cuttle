@@ -10,6 +10,7 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
+  window.localStorage.setItem('bannerDismissed', true);
 }
 
 function assertSuccessfulJoin(gameState) {
@@ -438,9 +439,11 @@ describe('Home - Game List', () => {
 describe('Home - Create Game', () => {
   beforeEach(setup);
 
-  it('Saves ranked setting between sessions', () => {
+  it.only('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
-
+    cy.window().then((win) => {
+      win.localStorage.setItem('bannerDismissed', true);
+    });
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
 
