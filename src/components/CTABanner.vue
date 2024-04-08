@@ -67,7 +67,9 @@
       </p>
       <h3>{{ t('callToAction.learnMoreHeader') }}</h3>
       <p>
-        {{ t('callToAction.learnMore') }}
+        {{ t('callToAction.learnMore1') }}
+        <a href="https://discord.gg/wK57MMu9GR">discord,</a>
+        {{ t('callToAction.learnMore2') }}
       </p>
     </template>
     <template #actions>

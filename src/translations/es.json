@@ -479,6 +479,7 @@
       "gameModesHeader": "¿Qué modos de juego afecta esto?",
       "gameModes": "La beta afecta tanto al juego clasificado como al casual. El juego clasificado seguirá contando en la tabla de clasificación como de costumbre, ¡así que no necesitas evitar jugar clasificado para probarlo!",
       "learnMoreHeader": "¿Dónde podemos aprender más?",
-      "learnMore": "Puedes aprender más sobre este cambio de equilibrio y la discusión circundante en Discord, donde los jugadores están discutiendo el cambio y si les gustaría verlo permanente. ¡Cuéntanos qué piensas!"
+      "learnMore1": "Puedes aprender más sobre este cambio de equilibrio y la discusión circundante en ",
+      "learnMore2": "donde los jugadores están discutiendo el cambio y si les gustaría verlo permanente. ¡Cuéntanos qué piensas!"
     }
 }

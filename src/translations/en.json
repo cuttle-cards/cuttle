@@ -479,7 +479,8 @@
     "gameModesHeader" : "What game modes does this affect?",
     "gameModes": "The beta affects both ranked and casual play. Ranked play will continue to count on the leaderboard as normal, so you don't need to skip playing ranked to try it out!",
     "learnMoreHeader" : "Where can we learn more?",
-    "learnMore" : "You can learn more about this balance change and the surrounding discussion on discord, where players are discussing the change and whether they would like to see it made permanent. Tell us what you think!"
+    "learnMore1" : "You can learn more about this balance change and the surrounding discussion on ",
+    "learnMore2" : "where players are discussing the change and whether they would like to see it made permanent. Tell us what you think!"
   }
 
 }
