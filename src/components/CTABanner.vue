@@ -2,6 +2,7 @@
   <BaseDialog
     id="cta-banner"
     v-model="show"
+    variant="light"
     :opacity="1"
     data-cy="create-game-dialog"
     scrollable
