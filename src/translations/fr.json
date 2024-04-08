@@ -471,7 +471,7 @@
       "whyImplement": "Parce que les 5 prennent votre tour pour jouer et vous pourriez alternativement piocher une carte à votre tour, tandis que jouer un 5 donne l'impression d'obtenir deux cartes (yay !), en réalité il ne se remplace que lui-même sans rien faire d'autre pour vous. Afin de renforcer le cinq et de lui donner un objectif spécifique, tout en s'appuyant sur le thème des 5 qui font circuler votre main pour vous faire piocher beaucoup de cartes, nous expérimentons avec une variation de l'effet des 5 où vous défaussez d'abord une carte de votre main, puis piochez trois cartes ! Nous espérons que cela augmentera l'utilité de l'effet des 5 et affinera sa fonction stratégique. Et nous avons besoin de votre aide pour décider si cela devrait devenir un changement permanent !",
       "howLongHeader": "Combien de temps dure cette beta ?",
       "howLongPt1": "La bêta du 5 recyclé débutera le lundi 8 avril et se terminera le lundi 20 avril.",
-      "howLongPt2": "Depuis le début de la bêta, jusqu'au Championnat de la saison de Cuttle des Clubs 2024 le 13 avril 2024, les joueurs peuvent voter pour changer les 4 à l'effet de recyclage",
+      "howLongPt2": "Depuis le début de la bêta, jusqu'au Championnat de la saison de Cuttle des Clubs 2024 le 13 avril 2024, les joueurs peuvent voter pour changer les 5 à l'effet de recyclage",
       "optedInHeader": "Qui est inscrit ?",
       "optedIn": "Pendant toute la durée de la bêta, tous les jeux joués sur cuttle.cards utiliseront l'effort de recyclage pour les 5",
       "gameModesHeader": "Quels modes de jeu cela affecte-t-il ?",
