@@ -55,7 +55,7 @@
       </h3>
       <p>
         <strong class="text-newPrimary">{{ t('callToAction.howLongPt1') }}</strong>{{ t('callToAction.howLongPt2') }}
-        <a href="https://forms.gle/9bK7pP3mTN4SWwwG7">{{ t('callToAction.here') }}.</a>
+        <a href="https://forms.gle/9bK7pP3mTN4SWwwG7" class="text-newSecondary">{{ t('callToAction.here') }}.</a>
       </p>
       <h3>{{ t('callToAction.optedInHeader') }}</h3>
       <p>
@@ -68,7 +68,7 @@
       <h3>{{ t('callToAction.learnMoreHeader') }}</h3>
       <p>
         {{ t('callToAction.learnMore1') }}
-        <a href="https://discord.gg/wK57MMu9GR">discord,</a>
+        <a href="https://discord.gg/wK57MMu9GR" class="text-newSecondary">discord,</a>
         {{ t('callToAction.learnMore2') }}
       </p>
     </template>
