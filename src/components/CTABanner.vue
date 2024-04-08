@@ -55,7 +55,6 @@
       </h3>
       <p>
         <strong class="text-newPrimary">{{ t('callToAction.howLongPt1') }}</strong>{{ t('callToAction.howLongPt2') }}
-        <a href="https://forms.gle/9bK7pP3mTN4SWwwG7" class="text-newSecondary">{{ t('callToAction.here') }}.</a>
       </p>
       <h3>{{ t('callToAction.optedInHeader') }}</h3>
       <p>
@@ -77,10 +76,18 @@
         data-cy="cta-banner-okay"
         color="surface-1"
         variant="flat"
-        class="text-surface-2"
         @click="close"
       >
         close
+      </v-btn>
+      <v-btn
+        href="https://forms.gle/9bK7pP3mTN4SWwwG7"
+        color="newPrimary"
+        variant="flat"
+        target="_blank"
+        class="ml-4"
+      >
+        {{ t('callToAction.voteNow') }}
       </v-btn>
     </template>
   </BaseDialog>
