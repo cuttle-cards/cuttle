@@ -101,12 +101,12 @@ const close = () => {
     setLocalStorage('bannerDismissed', true);
   }
   show.value = false;
+  preferenceSaved.value = true;
 };
 
 onMounted(() => {
   if (!getLocalStorage('bannerDismissed')) {
     show.value = true;
-    preferenceSaved.value = true;
   }
 });
 </script>
