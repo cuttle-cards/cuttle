@@ -76,7 +76,7 @@ describe('Lobby - Page Content (Ranked)', () => {
   it('Displays ranked button', () => {
     cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
   });
-  
+
   it('Changes games to ranked and casual from the lobby', () => {
     // Set To Casual Mode
     cy.toggleInput('[data-cy=edit-game-ranked-switch]', true);
@@ -85,7 +85,7 @@ describe('Lobby - Page Content (Ranked)', () => {
     cy.contains('Game Mode changed to').should('not.exist');
     checkRanked(false);
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
-    
+
     // Set To Ranked Mode
     cy.toggleInput('[data-cy=edit-game-ranked-switch]');
     checkRanked(true);
@@ -102,7 +102,7 @@ describe('Lobby - P0 Perspective', () => {
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
     cy.get('[data-cy=exit-button]').click();
     // Confirm navigation back to home
-    cy.hash().should('eq', '#/');
+    cy.location('pathname').should('eq', '/');
     // Test store state
     cy.window()
       .its('cuttle.gameStore')
@@ -304,7 +304,7 @@ describe('Lobby - P1 Perspective', () => {
         .then((gameData) =>  {
           cy.subscribeOpponent(gameData.id);
         });
-    
+
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('exist').should('not.have.class', 'ready');
   });
@@ -417,7 +417,7 @@ describe('Lobby - P1 Perspective', () => {
 });
 
 describe('Lobby invite links', () => {
-  
+
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
@@ -430,14 +430,14 @@ describe('Lobby invite links', () => {
       cy.subscribeOpponent(gameSummary.gameId);
     });
   });
-  
-  
+
+
   it('Joins Lobby via invite link', function () {
-    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    cy.visit(`/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
     cy.window()
     .its('cuttle.gameStore')
-      .then((store) => 
+      .then((store) =>
         expect(store.id).to.eq(this.gameSummary.gameId));
     cy.readyOpponent();
     cy.get('[data-cy=ready-button]').click();
@@ -449,14 +449,14 @@ describe('Lobby invite links', () => {
     cy.readyOpponent();
     cy.get('[data-cy=user-menu]').click();
     cy.get("[data-nav='Log Out']").click();
-    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    cy.visit(`/lobby/${this.gameSummary.gameId}`);
     cy.url().should('include', `/login/${this.gameSummary.gameId}`);
     cy.get('[data-cy=password]').type(myUser.password);
     cy.get('[data-cy=username]').type(myUser.username + '{enter}');
     cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
     cy.window()
     .its('cuttle.gameStore')
-      .then((store) => 
+      .then((store) =>
         expect(store.id).to.eq(this.gameSummary.gameId));
     cy.get('[data-cy=lobby-card-container]').should('have.class', 'ready');
     cy.get('[data-cy=ready-button]').click();
@@ -464,11 +464,11 @@ describe('Lobby invite links', () => {
   });
 
   it('Joins Lobby from url and refreshes', function () {
-    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    cy.visit(`/lobby/${this.gameSummary.gameId}`);
     cy.get('[data-cy-ready-indicator=definitelyNotTheGovernment6969]').should('be.visible');
     cy.window()
     .its('cuttle.gameStore')
-      .then((store) => 
+      .then((store) =>
         expect(store.id).to.eq(this.gameSummary.gameId));
     cy.readyOpponent();
     cy.get('[data-cy=lobby-card-container]').should('have.class', 'ready');
@@ -479,9 +479,9 @@ describe('Lobby invite links', () => {
   });
 
   it('Navigates Home and shows error snackbar when user visits invalid invite link', function () {
-    cy.visit('#/lobby/100000');
+    cy.visit('/lobby/100000');
     assertSnackbarError(SnackBarError.CANT_FIND_GAME, 'newgame');
-    cy.visit('#/rules');
+    cy.visit('/rules');
     cy.visit('/');
     cy.get(`[data-cy=newgame-snackbar] .v-snackbar__wrapper`).should('not.exist');
   });
@@ -491,7 +491,7 @@ describe('Lobby invite links', () => {
     cy.signupOpponent(opponentTwo);
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.get(`[data-cy-join-game=${this.gameSummary.gameId}]`).should('be.disabled');
-    cy.visit(`#/lobby/${this.gameSummary.gameId}`);
+    cy.visit(`/lobby/${this.gameSummary.gameId}`);
     assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
   });
 

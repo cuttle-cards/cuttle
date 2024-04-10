@@ -54,4 +54,26 @@ module.exports = {
     }
     return res.ok();
   },
+
+  getGames: async function (req, res) {
+    try {
+      const games = await Game.find();
+      return res.json(games);
+    } catch (err) {
+      return res.serverError(err);
+    }
+  },
+
+  getMatches: async function (req, res) {
+    try {
+      const matches = await Match.find()
+        .populate('games')
+        .populate('player1')
+        .populate('player2')
+        .populate('winner');
+      return res.json(matches);
+    } catch (err) {
+      return res.serverError(err);
+    }
+  },
 };

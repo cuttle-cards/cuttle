@@ -41,16 +41,16 @@ describe('Navigation', () => {
   function verifyAuthenticatedLinks() {
     // Navigate to Rules
     cy.get('[data-cy=About]').click();
-    cy.hash().should('equal', '#/rules');
+    cy.location('pathname').should('equal', '/rules');
     // Navigate to Home (Play)
     cy.get('[data-cy=Play]').click();
-    cy.hash().should('equal', '#/');
+    cy.location('pathname').should('equal', '/');
     // Navigate to Stats
     cy.get('[data-cy=Stats]').click();
-    cy.hash().should('equal', '#/stats');
+    cy.location('pathname').should('equal', '/stats');
     // Log out
     cy.get('[data-cy="user-menu"]').click();
     cy.get("[data-nav='Log Out']").click();
-    cy.hash().should('equal', '#/login');
+    cy.location('pathname').should('equal', '/login');
   }
 });

@@ -358,7 +358,7 @@ describe('Spectating Games', () => {
         .should('not.contain', 'Request Stalemate')
         .should('not.contain', 'Concede');
       cy.get('[data-cy="stop-spectating"]').click();
-      cy.hash().should('eq', '#/');
+      cy.location('pathname').should('eq', '/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).click();
       cy.get('[data-cy="spectate-list-button"]').should('contain', '1').click();
@@ -398,7 +398,7 @@ it('Spectate unranked games with rematch', function () {
       });
 
     rematchPlayerAsSpectator(playerOne);
-    
+
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
