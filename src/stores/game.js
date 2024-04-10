@@ -327,12 +327,12 @@ export const useGameStore = defineStore('game', {
         this.resetPNumIfNullThenUpdateGame(game);
       }, 1000);
     },
-    processFours(discardedCards, game) {
+    async processFours(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
       this.showResolveFour = false;
       this.lastEventDiscardedCards = discardedCards;
 
-      sleep(1000);
+      await sleep(1000);
       this.resetPNumIfNullThenUpdateGame(game);
     },
     async processFives(discardedCards, game) {
