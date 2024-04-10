@@ -18,7 +18,7 @@
           />
         </v-col>
         <v-col md="4" cols="12" class="d-flex align-center justify-center">
-          <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo">
+          <img src="/img/logo-stalemate.svg" class="vs-logo" alt="stalemate logo" />
         </v-col>
         <v-col md="4" cols="12">
           <PlayerReadyIndicator
@@ -49,7 +49,9 @@
                 :data-cy="`ready-button-${rankedIcon}-icon`"
               />
             </v-btn>
-            <div class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4">
+            <div
+              class="d-flex flex-row justify-md-space-between justify-space-evenly align-center flex-wrap my-4"
+            >
               <div class="rank-switch">
                 <v-switch
                   v-model="gameStore.isRanked"
@@ -61,12 +63,7 @@
                   hide-details
                   @update:model-value="setIsRanked"
                 />
-                <v-icon
-                  class="mr-2 mr-md-4"
-                  size="medium"
-                  :icon="`mdi-${rankedIcon}`"
-                  aria-hidden="true"
-                />
+                <v-icon class="mr-2 mr-md-4" size="medium" :icon="`mdi-${rankedIcon}`" aria-hidden="true" />
               </div>
               <v-btn
                 :disabled="readying"
@@ -120,12 +117,18 @@ export default {
     const { t } = useI18n();
     const gameStarted = ref(false);
     const joinAudio = new Audio('/sounds/lobby/enter-lobby.mp3');
-    const leaveAudio =new Audio('/sounds/lobby/leave-lobby.mp3');
+    const leaveAudio = new Audio('/sounds/lobby/leave-lobby.mp3');
     onMounted(() => {
-      joinAudio.play();
+      setTimeout(() => {
+        if (joinAudio.readyState === 4) {
+          joinAudio.play();
+        }
+      }, 500);
     });
     onUnmounted(() => {
-      leaveAudio.play();
+      if (leaveAudio.readyState === 4) {
+        leaveAudio.play();
+      }
     });
     onBeforeRouteLeave((to, from, next) => {
       if (to.name === 'Game') {
@@ -169,9 +172,13 @@ export default {
   watch: {
     opponentUsername(newVal) {
       if (newVal) {
-        this.joinAudio.play();
+        if (this.joinAudio.readyState === 4) {
+          this.joinAudio.play();
+        }
       } else {
-        this.leaveAudio.play();
+        if (this.leaveAudio.readyState === 4) {
+          this.leaveAudio.play();
+        }
       }
     },
   },
