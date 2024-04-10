@@ -335,12 +335,21 @@ export const useGameStore = defineStore('game', {
       sleep(1000);
       this.resetPNumIfNullThenUpdateGame(game);
     },
-    processFives(discardedCards, game) {
+    async processFives(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
       this.showResolveFive = false;
       this.lastEventDiscardedCards = discardedCards;
 
-      sleep(1000);
+      await sleep(1000);
+      const opponentHandAfterDiscard = this.opponent.hand.filter((card) => !discardedCards.includes(card.id));
+      const playerHandAfterDiscard = this.player.hand.filter((card) => !discardedCards.includes(card.id));
+      // Animate discard then update full game to animate draw
+      if (discardedCards.length) {
+        this.opponent.hand = opponentHandAfterDiscard;
+        this.player.hand = playerHandAfterDiscard;
+        await sleep(1000);
+      }
+
       this.resetPNumIfNullThenUpdateGame(game);
     },
     handleGameResponse: (jwres, resolve, reject) => {
