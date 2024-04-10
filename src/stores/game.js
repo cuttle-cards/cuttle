@@ -340,11 +340,12 @@ export const useGameStore = defineStore('game', {
       this.showResolveFive = false;
       this.lastEventDiscardedCards = discardedCards;
 
-      await sleep(1000);
-      const opponentHandAfterDiscard = this.opponent.hand.filter((card) => !discardedCards.includes(card.id));
-      const playerHandAfterDiscard = this.player.hand.filter((card) => !discardedCards.includes(card.id));
       // Animate discard then update full game to animate draw
-      if (discardedCards.length) {
+      if (discardedCards?.length) {
+        await sleep(1000);
+        const opponentHandAfterDiscard = this.opponent.hand.filter((card) => !discardedCards.includes(card.id));
+        const playerHandAfterDiscard = this.player.hand.filter((card) => !discardedCards.includes(card.id));
+
         this.opponent.hand = opponentHandAfterDiscard;
         this.player.hand = playerHandAfterDiscard;
         await sleep(1000);
