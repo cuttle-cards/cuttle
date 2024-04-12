@@ -4,7 +4,7 @@
       <v-img
         :src="staticImg"
         aspect-ratio="1.7778"
-        :alt="`How to play ${title} in Cuttle`"
+        :alt="t('rules.rulesPreviewImg', { title })"
         class="mr-2"
         aria-hidden="false"
         role="img"
@@ -12,7 +12,7 @@
     </v-col>
     <v-col>
       <p class="mb-2 text-surface-2">
-        <strong>{{ title }}</strong> <br />
+        <strong>{{ title }}</strong> <br>
         {{ description }}
       </p>
       <p class="mb-2 text-surface-2">
@@ -26,24 +26,11 @@
       </div>
     </v-col>
   </v-row>
-  <v-dialog v-model="animate" :persistent="persistent" max-width="650" elevation scrim="surface-1">
-    <div class="dialog-actions d-flex justify-end position-relative">
-      <v-btn
-        class="position-absolute closeIcon"
-        variant="text"
-        icon
-        data-cy="cancel-target-mobile"
-        aria-label="Close Dialog"
-        @click="toggleDialog"
-      >
-        <v-icon icon="mdi-close" color="white" size="x-large" aria-hidden="true" />
-      </v-btn>
-    </div>
-    <v-img :src="animatedImg" :alt="`Animated preview of ${title} in Cuttle`" />
-  </v-dialog>
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n';
+
 export default {
   name: 'RulePreview',
   props: {
@@ -64,10 +51,6 @@ export default {
     description2: {
       type: String,
     },
-    animatedImg: {
-      type: String,
-      default: '',
-    },
     staticImg: {
       type: String,
       required: true,
@@ -78,6 +61,12 @@ export default {
     },
   },
   emits: ['animate'],
+  setup(){
+    const { t } = useI18n();
+    return {
+      t
+    };
+  },
   data() {
     return {
       animate: false,
@@ -86,15 +75,8 @@ export default {
   methods: {
     toggleDialog() {
       this.animate = !this.animate;
+      this.$emit('animate');
     },
   },
 };
 </script>
-
-<style scoped>
-.closeIcon {
-  z-index: 99;
-  top: 0;
-  right: 0;
-}
-</style>

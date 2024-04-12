@@ -325,6 +325,8 @@
     "signUp": "Sign Up to Play Online",
     "rulesTitle": "Rules of Cuttle",
     "rulesReadText": "Read the official",
+    "rulesPreviewImg":"How to play {title} in Cuttle",
+    "rulesPreviewGif":"Animated preview of {title} in Cuttle",
     "rulesWatchText": "or watch cuttle.cards video tutorial below to learn the rules and get a feel for the flow of the game.",
     "goalTitle": "Goal",
     "goalText": "The goal is to be the first player to have 21 or more points worth of point cards on your field. The first player to reach the goal wins immediately. One player (traditionally the dealer) is dealt 6 cards and their opponent is dealt 5. The player with 5 cards goes first.",

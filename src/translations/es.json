@@ -325,6 +325,8 @@
     "signUp": "Inicia sesión para jugar online",
     "rulesTitle": "Reglas de Cuttle",
     "rulesReadText": "Lee la",
+    "rulesPreviewImg":"Cómo jugar {title} en Cuttle",
+    "rulesPreviewGif":"vista previa animada de {title} en Cuttle",
     "rulesWatchText": "oficial o mira el tutorial de cuttle.cards a continuación para aprender las reglas y familiarizarte con el flujo del juego.",
     "goalTitle": "Objetivo",
     "goalText": "El objetivo es ser el primer jugador en tener 21 o más puntos en cartas de puntos sobre tu campo. El primer jugador que llegue a la meta gana inmediatamente. Un jugador (tradicionalmente quien reparte) recibe 6 cartas y su rival recibe 5. El jugador con 5 cartas juega primero.",

@@ -1,23 +1,48 @@
 <template>
-  <div class="pa-4 bg-surface-1">
+  <div class="pa-4 bg-surface-1 text-surface-2">
     <v-container>
-      <v-row class="mt-10">
+      <v-row>
         <v-col class="sidebar-container" lg="3" sm="12">
           <ul class="ms-5 sidebar-title mt-8">
-            <li v-for="{ title, href } in sectionTitle" :key="title">
-              <router-link class="text-surface-2 text-h5 text-decoration-none" :to="{ name: 'Rules', hash: href }">{{t(title)}}</router-link>
+            <li
+              v-for="{ title, href, id } in sectionTitle"
+              :id="'listItem_' + id"
+              :key="title"
+              ref="items"
+            >
+              <router-link
+                :class="[
+                  activeTitle === id ? 'text-newPrimary' : 'text-surface-2',
+                  'text-h5 text-decoration-none',
+                ]"
+                :to="{ name: 'Rules', hash: href }"
+              >
+                {{ t(title) }}
+              </router-link>
             </li>
           </ul>
         </v-col>
 
         <!-- Rules -->
         <v-col>
-          <v-row id="introduction" class="flex-column align-start">
+          <RulePreviewDialog
+            v-model="previewDialog"
+            :image-url="imageUrl"
+            :title="previewTitle"
+            @close="closeAnimate"
+          />
+          <v-row
+            id="introduction"
+            v-intersect="{
+              handler: onIntersect,
+            }"
+            class="flex-column align-start"
+          >
             <div class="mt-8">
               <h1 class="text-h2 text-surface-2 mb-5 section-title">
                 {{ t('rules.introduction') }}
               </h1>
-              <h1 class="">
+              <h1>
                 {{ t('rules.cuttleTitle') }}
               </h1>
               <p class="d-block">
@@ -27,7 +52,7 @@
           </v-row>
           <!-- Tutorial -->
           <v-row class="flex-column align-start mt-5">
-            <h1 class="">
+            <h1>
               {{ t('rules.rulesTitle') }}
             </h1>
             <p>
@@ -40,11 +65,17 @@
             </div>
           </v-row>
           <!-- Goal -->
-          <v-row id="howtoplay" class="flex-column align-start mt-5">
+          <v-row
+            id="howtoplay"
+            v-intersect="{
+              handler: onIntersect,
+            }"
+            class="flex-column align-start mt-5"
+          >
             <h1 class="text-h2 text-surface-2 mb-5 section-title">
               {{ t('rules.howToPlay') }}
             </h1>
-            <h1 class="">
+            <h1>
               {{ t('rules.goalTitle') }}
             </h1>
             <p class="d-block">
@@ -57,7 +88,7 @@
               {{ t('rules.playTitle') }}
             </h1>
             <p class="d-block">
-              {{ t('rules.playText-1') }} <br />
+              {{ t('rules.playText-1') }} <br>
               {{ t('rules.playText-2') }}
             </p>
           </v-row>
@@ -73,9 +104,14 @@
             align="start"
             class="my-6"
           >
-            <div class="flex-column" v-for="rule in ruleRow" :key="rule.title">
+            <div v-for="rule in ruleRow" :key="rule.title" class="flex-column">
               <div class="d-flex">
-                <v-img :src="rule.staticImg" class="mr-1 max-w-24" aria-hidden="false" role="img" />
+                <v-img
+                  :src="rule.staticImg"
+                  class="mr-1 max-w-24"
+                  aria-hidden="false"
+                  role="img"
+                />
                 <h1>
                   {{ t(rule.title) }}
                 </h1>
@@ -90,22 +126,19 @@
                   aria-hidden="false"
                   role="img"
                 />
-                &nbsp; Clubs (weakest) &lt;
-                &nbsp;<v-img
+                &nbsp; Clubs (weakest) &lt; &nbsp;<v-img
                   src="../../../public/img/rulesView/rules_action_diamond.svg"
                   class="mr-1 max-w-24"
                   aria-hidden="false"
                   role="img"
                 />
-                &nbsp; Diamonds &lt;
-                &nbsp;<v-img
+                &nbsp; Diamonds &lt; &nbsp;<v-img
                   src="../../../public/img/rulesView/rules_action_hearts.svg"
                   class="mr-1 max-w-24"
                   aria-hidden="false"
                   role="img"
                 />
-                &nbsp; Hearts &lt;
-                &nbsp;<v-img
+                &nbsp; Hearts &lt; &nbsp;<v-img
                   src="../../../public/img/rulesView/rules_action_spades.svg"
                   class="mr-1 max-w-24"
                   aria-hidden="false"
@@ -116,7 +149,12 @@
             </div>
           </v-row>
           <!-- Royals -->
-          <section id="royals">
+          <section
+            id="royals"
+            v-intersect="{
+              handler: onIntersect,
+            }"
+          >
             <v-row class="flex-column">
               <h1 class="text-h2 text-surface-2 mt-5 section-title">
                 {{ t('rules.royals.title') }}
@@ -135,14 +173,18 @@
               ref="preview"
               :title="t(rule.title)"
               :description="t(rule.description)"
-              :animated-img="rule.animatedImg"
               :static-img="rule.staticImg"
               :icon="rule.icon"
-              @animate="handleAnimate"
+              @animate="handleAnimate(rule.animatedImg,t(rule.title))"
             />
           </v-row>
           <!-- One-Offs -->
-          <v-row id="oneoffs">
+          <v-row
+            id="oneoffs"
+            v-intersect="{
+              handler: onIntersect,
+            }"
+          >
             <h1 class="text-h2 text-surface-2 mt-5 section-title">
               {{ t('rules.oneoffs.title') }}
             </h1>
@@ -158,10 +200,9 @@
               ref="preview"
               :title="t(rule.title)"
               :description="t(rule.description)"
-              :animated-img="rule.animatedImg"
               :static-img="rule.staticImg"
               :icon="rule.icon"
-              @animate="handleAnimate"
+              @animate="handleAnimate(rule.animatedImg, t(rule.title))"
             />
             <RulePreview
               v-else
@@ -169,70 +210,30 @@
               :title="t(rule.title)"
               :description="t(rule.description)"
               :description2="t(rule.description2)"
-              :animated-img="rule.animatedImg"
               :static-img="rule.staticImg"
               :icon="rule.icon"
-              @animate="handleAnimate"
+              @animate="handleAnimate(rule.animatedImg, t(rule.title))"
             />
           </v-row>
 
           <v-row class="bg-surface-2 pa-8 rounded-xl d-flex flex-column align-center">
-            <h2 class="text-surface-1 pa-8">Ready To Play</h2>
-            <v-btn to="/" color="newPrimary"> Find A Game </v-btn>
+            <h2 class="text-surface-1 pa-8">
+              Ready To Play
+            </h2>
+            <v-btn to="/" color="newPrimary">
+              Find A Game
+            </v-btn>
           </v-row>
-          <!-- Multiplayer Variants
-          <v-row class="d-flex flex-column mb-4">
-            <h1 class="">
-              {{ t('rules.multiplayerTitle') }}
-            </h1>
-            <p class="mb-4">
-              {{ t('rules.multiplayerText1') }}
-              <a href="https://www.cuttle.cards"> www.cuttle.cards</a>
-              {{ t('rules.multiplayerText2') }}
-            </p>
-            <h3>{{ t('rules.3Players.title') }}</h3>
-            <p class="mb-4">
-              {{ t('rules.3Players.text') }}
-            </p>
-            <p>{{ t('rules.3Players.rules') }}</p>
-            <ul class="mb-4">
-              <li>
-                {{ t('rules.3Players.rule1') }}
-              </li>
-              <li>
-                {{ t('rules.3Players.rule2') }}
-              </li>
-              <li>
-                {{ t('rules.3Players.rule3') }}
-              </li>
-              <li>{{ t('rules.3Players.rule4') }}</li>
-            </ul>
-            <h3>{{ t('rules.4Players.title') }}</h3>
-            <p class="mb-4">
-              {{ t('rules.4Players.text') }}
-            </p>
-            <p>
-              {{ t('rules.4Players.rules') }}
-            </p>
-            <ul>
-              <li>
-                {{ t('rules.4Players.rule1') }}
-              </li>
-              <li>
-                {{ t('rules.4Players.rule2') }}
-              </li>
-              <li>{{ t('rules.4Players.rule3') }}</li>
-              <li>
-                {{ t('rules.4Players.rule4') }}
-              </li>
-              <li>
-                {{ t('rules.4Players.rule5') }}
-              </li>
-            </ul>
-          </v-row> -->
+
           <!-- FAQ -->
-          <v-row id="faq" class="d-flex flex-column mb-4">
-            <h1 class="mt-5">
+          <v-row
+            id="faq"
+            v-intersect="{
+              handler: onIntersect,
+            }"
+            class="d-flex flex-column mb-4"
+          >
+            <h1 class="text-h2 text-surface-2 my-6 section-title">
               {{ t('rules.faq.title') }}
             </h1>
             <h3>{{ t('rules.faq.twoCounter') }}</h3>
@@ -276,7 +277,13 @@
               {{ t('rules.faq.whereToPlayAnswer') }}
             </p>
           </v-row>
-          <v-row id="tournaments" class="flex-column">
+          <v-row
+            id="tournaments"
+            v-intersect="{
+              handler: onIntersect,
+            }"
+            class="flex-column"
+          >
             <h1 class="text-h2 text-surface-2 my-6 section-title">
               {{ t('rules.tournaments') }}
             </h1>
@@ -290,9 +297,24 @@
             </p>
 
             <div class="d-flex flex-column my-5">
-              <AwardCard username="Champion player" :place="1" :isCard="false" class="mb-4" />
-              <AwardCard username="Second Place Player" :place="2" :isCard="false" class="mb-4" />
-              <AwardCard username="Third Place Player" :place="3" :isCard="false" class="mb-4" />
+              <AwardCard
+                username="Champion player"
+                :place="1"
+                :is-card="false"
+                class="mb-4"
+              />
+              <AwardCard
+                username="Second Place Player"
+                :place="2"
+                :is-card="false"
+                class="mb-4"
+              />
+              <AwardCard
+                username="Third Place Player"
+                :place="3"
+                :is-card="false"
+                class="mb-4"
+              />
             </div>
             <p>
               Each Season is divided into 13 weeks. For each week, we count the number of best 2/3 ranked
@@ -301,23 +323,33 @@
             </p>
             <v-list class="mt-4 rounded-xl w-100" bg-color="surface-2" base-color="surface-1">
               <v-list-item>
-                <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace"> 5 Points </v-chip>
+                <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace">
+                  5 Points
+                </v-chip>
                 The player with the most wins gets 5 points for the week
               </v-list-item>
               <v-list-item>
-                <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace"> 4 Points </v-chip>
+                <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace">
+                  4 Points
+                </v-chip>
                 The player with the 2nd most wins gets 4 points for the week
               </v-list-item>
               <v-list-item>
-                <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace"> 3 Points </v-chip>
+                <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace">
+                  3 Points
+                </v-chip>
                 The player with the 3rd most wins gets 3 points for the week
               </v-list-item>
               <v-list-item>
-                <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary"> 2 Points </v-chip>
+                <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary">
+                  2 Points
+                </v-chip>
                 Each other player who won at least one match gets 2 points for the week
               </v-list-item>
               <v-list-item>
-                <v-chip variant="outlined" class="mr-2 mb-1" color="#000"> 1 Point </v-chip>
+                <v-chip variant="outlined" class="mr-2 mb-1" color="#000">
+                  1 Point
+                </v-chip>
                 Each other player who completed a match without winning gets 1 point for the week
               </v-list-item>
             </v-list>
@@ -348,6 +380,8 @@ import RulePreview from '@/routes/rules/components/RulePreview.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
 import { useThemedLogo } from '@/composables/themedLogo';
 import AwardCard from '../../components/AwardCard.vue';
+import { rules, royals, oneOffs, sectionTitle } from './data/rulesData';
+import RulePreviewDialog from './components/RulePreviewDialog.vue';
 
 export default {
   name: 'RulesView',
@@ -355,6 +389,7 @@ export default {
     RulePreview,
     BaseVideo,
     AwardCard,
+    RulePreviewDialog
   },
   setup() {
     const { t } = useI18n();
@@ -362,6 +397,14 @@ export default {
     return {
       t,
       logoSrc,
+    };
+  },
+    data() {
+    return {
+      activeTitle: 'introduction',
+      previewDialog: false,
+      imageUrl: '',
+      previewTitle: ''
     };
   },
   computed: {
@@ -375,162 +418,43 @@ export default {
     theme() {
       return this.$vuetify.theme.themes.cuttleTheme.colors;
     },
+    show: {
+      get() {
+        return this.modelValue;
+      },
+      set() {
+        // do nothing - parent controls whether dialog is open
+      },
+    },
   },
   created() {
-    this.rules = [
-      [
-        {
-          title: 'rules.draw',
-          icon: 'cards-playing-spade-multiple',
-          description: 'rules.drawDescription',
-          staticImg: '/img/rulesView/rules_action_draw.svg',
-        },
-        {
-          title: 'rules.points',
-          icon: 'numeric',
-          description: 'rules.pointsDescription',
-          staticImg: '/img/rulesView/rules_action_points.svg',
-        },
-      ],
-      [
-        {
-          title: 'rules.scuttle',
-          icon: 'skull-crossbones',
-          description: 'rules.scuttleDescription',
-          staticImg: '/img/rulesView/rules_action_skull.svg',
-        },
-        {
-          title: 'rules.royal',
-          icon: 'crown',
-          description: 'rules.royalDescription',
-          staticImg: '/img/rulesView/rules_action_royals.svg',
-        },
-      ],
-      [
-        {
-          title: 'rules.oneoff',
-          icon: 'delete',
-          description: 'rules.oneoffDescription',
-          staticImg: '/img/rulesView/rules_action_oneoffs.svg',
-        },
-      ],
-    ];
-    this.royals = [
-      [
-        {
-          title: 'rules.royals.king',
-          icon: 'crown',
-          description: 'rules.royals.kingDescription',
-          staticImg: '/img/rulesView/royals_king.svg',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
-        },
-        {
-          title: 'rules.royals.queen',
-          icon: 'crown',
-          description: 'rules.royals.queenDescription',
-          staticImg: '/img/rulesView/royals_queen.svg',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/queen.gif?raw=true',
-        },
-      ],
-      [
-        {
-          title: 'rules.royals.jack',
-          icon: 'crown',
-          description: 'rules.royals.jackDescription',
-          staticImg: '/img/rulesView/royals_jack.svg',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
-        },
-      ],
-    ];
-    this.oneOffs = [
-      {
-        title: 'rules.oneoffs.ace',
-        icon: 'delete',
-        description: 'rules.oneoffs.aceDescription',
-        staticImg: '/img/rulesView/oneoffs_ace.svg',
-        animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/ace.gif?raw=true',
-      },
-      {
-        title: 'rules.oneoffs.two',
-        icon: 'delete',
-        description: 'rules.oneoffs.twoE1Description',
-        description2: 'rules.oneoffs.twoE2Description',
-        staticImg: '/img/rulesView/oneoffs_two.svg',
-        animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/counter.gif?raw=true',
-      },
-      {
-        title: 'rules.oneoffs.three',
-        icon: 'delete',
-        description: 'rules.oneoffs.threeDescription',
-        staticImg: '/img/rulesView/oneoffs_three.svg',
-        animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/three.gif?raw=true',
-      },
-      {
-        title: 'rules.oneoffs.four',
-        icon: 'delete',
-        description: 'rules.oneoffs.fourDescription',
-        staticImg: '/img/rulesView/oneoffs_four.svg',
-        animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/four.gif?raw=true',
-      },
-      {
-        title: 'rules.oneoffs.five',
-        icon: 'delete',
-        description: 'rules.oneoffs.fiveDescription',
-        staticImg: '/img/rulesView/oneoffs_five.svg',
-        animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/five.gif?raw=true',
-      },
-      {
-        title: 'rules.oneoffs.six',
-        icon: 'delete',
-        description: 'rules.oneoffs.sixDescription',
-        staticImg: '/img/rulesView/oneoffs_six.svg',
-        animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/six.gif?raw=true',
-      },
-      {
-        title: 'rules.oneoffs.seven',
-        icon: 'delete',
-        description: 'rules.oneoffs.sevenDescription',
-        staticImg: '/img/rulesView/oneoffs_seven.svg',
-        animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/seven.gif?raw=true',
-      },
-      {
-        title: 'rules.oneoffs.eight',
-        icon: 'delete',
-        description: 'rules.oneoffs.eightDescription',
-        staticImg: '/img/rulesView/oneoffs_eight.svg',
-        animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/seven.gif?raw=true',
-      },
-      {
-        title: 'rules.oneoffs.nine',
-        icon: 'delete',
-        description: 'rules.oneoffs.nineDescription',
-        staticImg: '/img/rulesView/oneoffs_nine.svg',
-        animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/nine.gif?raw=true',
-      },
-    ];
-    this.sectionTitle = [
-      { title: 'rules.introduction', href: '#introduction' },
-      { title: 'rules.howToPlay', href: '#howtoplay' },
-      { title: 'rules.royals.title', href: '#royals' },
-      { title: 'rules.oneoffs.title', href: '#oneoffs' },
-      { title: 'rules.faq.title', href: '#faq' },
-      { title: 'rules.tournaments', href: '#tournaments' },
-    ];
+    (this.rules = rules),
+      (this.royals = royals),
+      (this.oneOffs = oneOffs),
+      (this.sectionTitle = sectionTitle);
   },
   methods: {
-    handleAnimate(cmp) {
-      const { animate } = cmp;
-      if (!animate) {
-        return;
-      }
-      // reset other previews if we're currently animating
-      this.$refs.preview.filter((c) => c !== cmp).forEach((c) => (c.animate = false));
+    onIntersect(isIntersecting, entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.activeTitle = entry.target.id;
+        }
+      });
     },
+    handleAnimate(imageUrl, title) {
+      this.imageUrl = imageUrl;
+      this.previewTitle = title;
+      this.previewDialog = true;
+    },
+    closeAnimate() {
+      this.imageUrl = '';
+      this.previewTitle = '';
+      this.previewDialog = false;
+    }
   },
 };
 </script>
 <style scoped>
-
 ::-webkit-scrollbar {
   width: 0px;
 }
@@ -540,15 +464,8 @@ export default {
   margin: 0 auto;
 }
 .sidebar-title {
-  
   display: flex;
   gap: 2rem;
-}
-
-h1,
-h3,
-p {
-  color: rgba(var(--v-theme-surface-2));
 }
 
 .section-title {
@@ -565,13 +482,14 @@ p {
 
 @media (min-width: 992px) {
   .sidebar-title {
-    position: fixed;
+    position: sticky;
+    top: 20px;
     flex-direction: column;
   }
 }
 
 @media (max-width: 992px) {
-  .sidebar-container{
+  .sidebar-container {
     background: rgba(var(--v-theme-surface-1));
     position: sticky;
     top: 30px;
@@ -581,8 +499,5 @@ p {
     white-space: nowrap;
     overflow-x: auto;
   }
-}
-
-@media (max-width: 768px) {
 }
 </style>
