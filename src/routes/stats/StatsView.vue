@@ -84,7 +84,7 @@
           <h2 class="text-h2 mt-8 mb-4">
             {{ t('stats.siteUsage') }}
           </h2>
-          <StatsUsageChart :season="selectedSeason" />
+          <StatsUsageChart v-if="showStatsUsageChart" :season="selectedSeason" />
         </div>
         <!-- Error display -->
         <div v-if="error" class="d-flex flex-column align-center text-center">
@@ -157,6 +157,10 @@ export default {
     seasonEndFormatted() {
       return !this.selectedSeason ? '' : dayjs(this.selectedSeason.endTime).format('YYYY/MM/DD');
     },
+    showStatsUsageChart() {
+      const gameCounts = this.selectedSeason.gameCounts || []; // Handle potential undefined value
+      return gameCounts.length > 0 && !gameCounts.every((count) => count === 0);
+  },
     showSeasonChampions() {
       return (
         this.selectedSeason &&
@@ -183,7 +187,7 @@ export default {
     },
   },
   created() {
-    io.socket.get('/stats/seasons/current', (res) => {
+    io.socket.get('/api/stats/seasons/current', (res) => {
       if (!res?.length) {
         this.loadingData = false;
         this.error = true;
@@ -213,18 +217,18 @@ export default {
       }
 
       // otherwise download rankings for selected season
-      io.socket.get(`/stats/seasons/${seasonId}`, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
+      io.socket.get(`/api/stats/seasons/${seasonId}`, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
         if (!rankings) {
           this.error = true;
           this.selectedSeason = null;
           this.loadingData = false;
           return;
         }
-     
+
         this.selectedSeason = { ...requestedSeason, gameCounts, rankings, uniquePlayersPerWeek };
         this.loadingData = false;
       });
-      
+
     },
   },
 };

@@ -51,6 +51,7 @@ import GameStatus from '_/utils/GameStatus.json';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useGameListStore } from '@/stores/gameList';
+import { useAuthStore } from '@/stores/auth';
 import { useI18n } from 'vue-i18n';
 
 export default {
@@ -104,7 +105,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useGameStore, useGameListStore),
+    ...mapStores(useGameStore, useAuthStore, useGameListStore),
     numPlayersReady() {
       return this.p0ready + this.p1ready;
     },
@@ -129,19 +130,19 @@ export default {
   methods: {
     subscribeToGame() {
       this.joiningGame = true;
-      this.gameStore
-        .requestSubscribe(this.gameId)
-        .then(() => {
-          this.joiningGame = false;
-          this.$router.push(`/lobby/${this.gameId}`);
-        })
-        .catch((error) => {
-          this.joiningGame = false;
-          this.$emit('error', error);
+      this.$router.push(`/lobby/${this.gameId}`).then(() => {
+        this.joiningGame = false;
+      })
+        .catch(() => {
+        this.joiningGame = false;
         });
     },
     spectateGame() {
       this.joiningGame = true;
+      if (this.gameStore.players.some(({username}) => username === this.authStore.username)) {
+        this.$router.push(`/game/${this.gameId}`);
+        return;
+      }
       this.gameStore
         .requestSpectate(this.gameId)
         .then(() => {

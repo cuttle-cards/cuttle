@@ -5,8 +5,8 @@
         {{ t('game.dialogs.counterDialogs.opponentPlayed') }}
         <GameCardName :card-name="oneOff.name" />
         {{ t('game.dialogs.counterDialogs.oneOff') }}
-        <span v-if="target"> 
-          {{ t('game.dialogs.counterDialogs.target' + 'global.your') }} 
+        <span v-if="target" class="test">
+          {{ `${t('game.dialogs.counterDialogs.target')} ${t('global.your')}` }}
           <GameCardName :card-name="target.name" />
         </span>
       </div>
@@ -14,7 +14,7 @@
         {{ t('game.dialogs.counterDialogs.opponentPlayed') }}
         <GameCardName :card-name="opponentLastTwo.name" />
 
-        {{ t('game.dialogs.counterDialogs.toCounter') }} 
+        {{ t('game.dialogs.counterDialogs.toCounter') }}
         <span v-if="playerLastTwo">
           {{ t('global.your') }}
           <GameCardName :card-name="playerLastTwo.name" />
@@ -30,8 +30,8 @@
             <v-icon
               size="x-large"
               color="red"
-              icon="mdi-target" 
-              aria-hidden="true"           
+              icon="mdi-target"
+              aria-hidden="true"
             />
           </span>
           <GameCard :suit="target.suit" :rank="target.rank" />

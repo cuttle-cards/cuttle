@@ -1,3 +1,4 @@
+import os from 'os';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -43,29 +44,17 @@ export default defineConfig(({ mode }) => {
       strictPort: true,
       cors: false,
       proxy: {
-        '/game': {
-          target: HOST_SERVER_URL,
-          changeOrigin: true,
-        },
-        // Required for the health response to work on the client
-        '/health': {
-          target: HOST_SERVER_URL,
-          changeOrigin: true,
-        },
-        '/user': {
-          target: HOST_SERVER_URL,
-          changeOrigin: true,
-        },
-        '/test': {
+        '/api': {
           target: HOST_SERVER_URL,
           changeOrigin: true,
         },
       },
       // Watching doesn't work on windows, so we need to use polling -- this does lead to high CPU
-      // usage though, which is a bit of a bummer. Should probably make this conditional at some
+      // usage though, which is a bit of a bummer.
       // point, see https://v3.vitejs.dev/config/server-options.html#server-watch
       watch: {
-        usePolling: true,
+        // returns 'win32' for Windows, regardless of the architecture
+        usePolling: os.platform() === 'win32',
       },
     },
     test: {

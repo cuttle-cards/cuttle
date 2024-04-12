@@ -49,7 +49,7 @@ describe('Home - Page Content', () => {
     cy.get('[data-cy=how-it-works-okay]').click();
     cy.get('[data-cy=how-it-works-button]').click();
     cy.get('[data-cy=rules-link]').click();
-    cy.hash().should('eq', '#/rules');
+    cy.location('pathname').should('eq', '/rules');
   });
 
   it('Logs user out', () => {
@@ -100,7 +100,7 @@ describe('Home - Game List', () => {
         });
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false });
       cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
-      cy.hash().should('contain', '#/lobby');
+      cy.location('pathname').should('contain', '/lobby');
       cy.window()
         .its('cuttle.gameStore')
         .then((store) => {
@@ -131,7 +131,7 @@ describe('Home - Game List', () => {
       // Our user then joins through UI
       cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
       // Should have redirected to lobby page and updated store
-      cy.hash().should('contain', '#/lobby');
+      cy.location('pathname').should('contain', '/lobby');
       cy.window()
         .its('cuttle.gameStore')
         .then((store) => {
@@ -190,6 +190,17 @@ describe('Home - Game List', () => {
 
       cy.leaveLobbyOpponent(gameData.gameId);
       cy.contains('[data-cy-join-game]', 'Join Casual').should('not.be.disabled');
+    });
+  });
+
+  it('Redirects to game URL when hitting spectate as a player', function () {
+    cy.signupOpponent(opponentOne);
+    cy.setupGameAsP1(true);
+    cy.vueRoute('/');
+    cy.get('[data-cy-game-list-selector=spectate]').click();
+    cy.get('@gameSummary').then(({ gameId }) => {
+      cy.get(`[data-cy-join-game=${gameId}]`).click();
+      cy.url().should('include', `/game/${gameId}`);
     });
   });
 

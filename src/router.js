@@ -1,10 +1,11 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/routes/home/HomeView.vue';
 import LoginView from '@/routes/login/LoginView.vue';
 import LobbyView from '@/routes/lobby/LobbyView.vue';
 import GameView from '@/routes/game/GameView.vue';
 import RulesView from '@/routes/rules/RulesView.vue';
 import StatsView from '@/routes/stats/StatsView.vue';
+import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 
 export const ROUTE_NAME_GAME = 'Game';
@@ -35,6 +36,32 @@ const logoutAndRedirect = async (to, from, next) => {
   return next('/login');
 };
 
+const checkAndSubscribeToLobby = async (to) => {
+  const gameStore = useGameStore();
+  const authStore = useAuthStore();
+  const gameId = parseInt(to.params.gameId);
+  try {
+    if (Number.isNaN(gameId) || !Number.isFinite(gameId)) {
+      throw new Error('home.snackbar.invalidLobbyNumber');
+    }
+
+    if (!authStore.authenticated) {
+      return {path: `/login/${gameId}` };
+    }
+
+    if (gameStore.players.some(({username}) => username === authStore.username)) {
+      return true;
+    }
+
+    await gameStore.requestSubscribe(gameId);
+    return true;
+  }
+  catch (err) {
+   return { name: 'Home', query: { gameId: gameId, error: err.message} };
+  }
+};
+
+
 const routes = [
   {
     path: '/',
@@ -43,7 +70,7 @@ const routes = [
     beforeEnter: mustBeAuthenticated,
   },
   {
-    path: '/login',
+    path: '/login/:lobbyRedirectId?',
     name: ROUTE_NAME_LOGIN,
     component: LoginView,
   },
@@ -69,7 +96,7 @@ const routes = [
     path: '/lobby/:gameId',
     component: LobbyView,
     // TODO: Add logic to redirect if a given game does not exist
-    beforeEnter: mustBeAuthenticated,
+    beforeEnter: checkAndSubscribeToLobby,
     meta: {
       hideNavigation: true,
     },
@@ -99,10 +126,32 @@ const routes = [
     component: StatsView,
     beforeEnter: mustBeAuthenticated,
   },
+  // Catch every other unsupported route
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'Not Found',
+    component: () => import(
+      '@/routes/error/NotFoundView.vue'
+    ),
+  },
 ];
 
+const getInitialPath = () => {
+  if (window.location.hash.startsWith('#/')) {
+    const path = window.location.hash.replace('#/', '');
+    window.location.hash = '';
+    return path;
+  }
+  return null;
+};
+
+const initialPath = getInitialPath();
+if (initialPath) {
+  window.history.replaceState({}, '', initialPath);
+}
+
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (to.hash) {

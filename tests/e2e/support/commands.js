@@ -12,7 +12,7 @@ io.sails.useCORSRouteToGetCookie = false;
 // Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
 
 Cypress.Commands.add('wipeDatabase', () => {
-  cy.request('localhost:1337/test/wipeDatabase');
+  cy.request('localhost:1337/api/test/wipeDatabase');
   cy.log('Wiped database');
 });
 
@@ -23,7 +23,7 @@ Cypress.Commands.add('refreshOpponentSocket', () => {
 
 Cypress.Commands.add('setBadSession', () => {
   return new Cypress.Promise((resolve) => {
-    io.socket.get('/test/badSession', function () {
+    io.socket.get('/api/test/badSession', function () {
       return resolve();
     });
   });
@@ -31,7 +31,7 @@ Cypress.Commands.add('setBadSession', () => {
 
 Cypress.Commands.add('loadSeasonFixture', (season) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/test/loadSeasonFixture', season, function (res, jwres) {
+    io.socket.post('/api/test/loadSeasonFixture', season, function (res, jwres) {
       if (jwres.statusCode !== 200) {
         return reject(new Error('Failed to load season'));
       }
@@ -42,7 +42,7 @@ Cypress.Commands.add('loadSeasonFixture', (season) => {
 
 Cypress.Commands.add('loadMatchFixtures', (matches) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/test/loadMatchFixtures', matches, function (res, jwres) {
+    io.socket.post('/api/test/loadMatchFixtures', matches, function (res, jwres) {
       if (jwres.statusCode !== 200) {
         return reject(new Error('Error loading match fixtures'));
       }
@@ -53,7 +53,7 @@ Cypress.Commands.add('loadMatchFixtures', (matches) => {
 
 Cypress.Commands.add('loadFinishedGameFixtures', (games) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/test/loadFinishedGameFixtures', games, function (res, jwres) {
+    io.socket.post('/api/test/loadFinishedGameFixtures', games, function (res, jwres) {
       if (jwres.statusCode !== 200) {
         return reject(new Error('Error loading game fixtures'));
       }
@@ -64,7 +64,7 @@ Cypress.Commands.add('loadFinishedGameFixtures', (games) => {
 
 Cypress.Commands.add('requestGameList', () => {
   return new Cypress.Promise((resolve) => {
-    io.socket.get('/game/getList', function () {
+    io.socket.get('/api/game/getList', function () {
       return resolve();
     });
   });
@@ -168,7 +168,7 @@ Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
 Cypress.Commands.add('signupOpponent', (opponent) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
-      'localhost:1337/user/signup',
+      'localhost:1337/api/user/signup',
       {
         username: opponent.username,
         password: opponent.password,
@@ -198,7 +198,7 @@ Cypress.Commands.add('loginPlayer', (player) => {
 Cypress.Commands.add('createGameOpponent', (name) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.post(
-      '/game/create',
+      '/api/game/create',
       {
         gameName: name,
       },
@@ -222,7 +222,7 @@ Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
 Cypress.Commands.add('subscribeOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
-      '/game/subscribe',
+      '/api/game/subscribe',
       {
         gameId: id,
       },
@@ -240,7 +240,7 @@ Cypress.Commands.add('subscribeOpponent', (id) => {
 Cypress.Commands.add('setOpponentToSpectate', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
-      '/game/spectate',
+      '/api/game/spectate',
       {
         gameId: id,
       },
@@ -256,7 +256,7 @@ Cypress.Commands.add('setOpponentToSpectate', (id) => {
 
 Cypress.Commands.add('setOpponentToLeaveSpectate', () => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.get('/game/spectateLeave', function handleResponse(res, jwres) {
+    io.socket.get('/api/game/spectateLeave', function handleResponse(res, jwres) {
       if (jwres.statusCode === 200) {
         return resolve();
       }
@@ -268,7 +268,7 @@ Cypress.Commands.add('setOpponentToLeaveSpectate', () => {
 Cypress.Commands.add('readyOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.get(
-      '/game/ready',
+      '/api/game/ready',
       {
         id,
       },
@@ -284,7 +284,7 @@ Cypress.Commands.add('readyOpponent', (id) => {
 Cypress.Commands.add('setIsRankedOpponent', (isRanked) => {
   return new Cypress.Promise((resolve, reject) => {
     io.socket.post(
-      '/game/setIsRanked',
+      '/api/game/setIsRanked',
       {
         isRanked,
       },
@@ -308,7 +308,7 @@ Cypress.Commands.add('toggleInput', (selector, checked = false) => {
 
 Cypress.Commands.add('leaveLobbyOpponent', (id) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.get('/game/leaveLobby', { id }, function handleResponse(_, jwres) {
+    io.socket.get('/api/game/leaveLobby', { id }, function handleResponse(_, jwres) {
       if (jwres.statusCode === 200) {
         return resolve();
       }
@@ -325,7 +325,7 @@ Cypress.Commands.add('leaveLobbyOpponent', (id) => {
  */
 Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.get('/user/reLogin', userFixture, function handleResponse(res, jwres) {
+    io.socket.get('/api/user/reLogin', userFixture, function handleResponse(res, jwres) {
       if (jwres.statusCode !== 200 || res === false) {
         return reject(new Error('error recovering session'));
       }
@@ -336,7 +336,7 @@ Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
 
 Cypress.Commands.add('drawCardOpponent', () => {
   return new Cypress.Promise((resolve, reject) => {
-    io.socket.get('/game/draw', function handleResponse(res, jwres) {
+    io.socket.get('/api/game/draw', function handleResponse(res, jwres) {
       if (jwres.statusCode === 200) {
         return resolve();
       }
@@ -364,7 +364,7 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
       }
       const cardId = foundCard.id;
       io.socket.get(
-        '/game/points',
+        '/api/game/points',
         {
           cardId,
         },
@@ -397,7 +397,7 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
       }
       const cardId = foundCard.id;
       io.socket.get(
-        '/game/points',
+        '/api/game/points',
         {
           cardId,
         },
@@ -413,7 +413,7 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
 
 Cypress.Commands.add('playPointsById', (cardId) => {
   return io.socket.get(
-    '/game/points',
+    '/api/game/points',
     {
       cardId,
     },
@@ -446,7 +446,7 @@ Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
       const cardId = foundCard.id;
       const opponentId = game.players[(pNum + 1) % 2].id;
       io.socket.get(
-        '/game/untargetedOneOff',
+        '/api/game/untargetedOneOff',
         {
           cardId,
           opId: opponentId,
@@ -480,7 +480,7 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
       }
       const cardId = foundCard.id;
       io.socket.get(
-        '/game/faceCard',
+        '/api/game/faceCard',
         {
           cardId,
         },
@@ -523,7 +523,7 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
       const cardId = foundCard.id;
       const targetId = foundTarget.id;
       io.socket.get(
-        '/game/jack',
+        '/api/game/jack',
         {
           opId: player.id,
           cardId,
@@ -566,7 +566,7 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
         );
       }
       io.socket.get(
-        '/game/scuttle',
+        '/api/game/scuttle',
         {
           opId: player.id,
           cardId: foundCard.id,
@@ -604,7 +604,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
         );
       }
       io.socket.get(
-        '/game/untargetedOneOff',
+        '/api/game/untargetedOneOff',
         {
           opId: playerId, // opponent's opponent is the player
           cardId: foundCard.id,
@@ -681,7 +681,7 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
         );
       }
       io.socket.get(
-        '/game/targetedOneOff',
+        '/api/game/targetedOneOff',
         {
           opId: playerId, // opponent's opponent is the player
           targetId: foundTarget.id,
@@ -720,7 +720,7 @@ Cypress.Commands.add('counterOpponent', (card) => {
       }
       const cardId = foundCard.id;
       io.socket.get(
-        '/game/counter',
+        '/api/game/counter',
         {
           cardId,
           opId: playerId,
@@ -752,7 +752,7 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
       }
       const cardId = foundCard.id;
       io.socket.get(
-        '/game/resolveThree',
+        '/api/game/resolveThree',
         {
           cardId,
           opId,
@@ -774,7 +774,7 @@ Cypress.Commands.add('resolveOpponent', () => {
     .then((game) => {
       const opId = game.players[game.myPNum].id;
       io.socket.get(
-        '/game/resolve',
+        '/api/game/resolve',
         {
           opId,
         },
@@ -807,7 +807,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
         [cardId2] = getCardIds(game, [card2]);
       }
         io.socket.get(
-          '/game/resolveFour',
+          '/api/game/resolveFour',
           {
             cardId1,
             cardId2,
@@ -860,7 +860,7 @@ Cypress.Commands.add('playPointsFromSevenOpponent', (card) => {
 
       const cardId = foundCard.id;
       io.socket.get(
-        '/game/seven/points',
+        '/api/game/seven/points',
         {
           cardId,
           index,
@@ -909,7 +909,7 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
 
       const cardId = foundCard.id;
       io.socket.get(
-        '/game/seven/faceCard',
+        '/api/game/seven/faceCard',
         {
           cardId,
           index,
@@ -969,7 +969,7 @@ Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
       const cardId = foundCard.id;
       const targetId = foundTarget.id;
       io.socket.get(
-        '/game/seven/scuttle',
+        '/api/game/seven/scuttle',
         {
           cardId,
           index,
@@ -1043,7 +1043,7 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
       }
 
       io.socket.get(
-        '/game/seven/jack',
+        '/api/game/seven/jack',
         {
           cardId,
           index,
@@ -1094,7 +1094,7 @@ Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
       const playerId = game.players[game.myPNum].id;
       const cardId = foundCard.id;
       io.socket.get(
-        '/game/seven/untargetedOneOff',
+        '/api/game/seven/untargetedOneOff',
         {
           cardId,
           index,
@@ -1192,7 +1192,7 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
       const targetId = foundTarget.id;
       const pointId = foundPointCard ? foundPointCard.id : null;
       io.socket.get(
-        '/game/seven/targetedOneOff',
+        '/api/game/seven/targetedOneOff',
         {
           cardId,
           index,
@@ -1213,7 +1213,7 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
 
 Cypress.Commands.add('passOpponent', () => {
   cy.log('Opponent Passes');
-  io.socket.get('/game/pass', function handleResponse(res, jwres) {
+  io.socket.get('/api/game/pass', function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }
@@ -1223,7 +1223,7 @@ Cypress.Commands.add('passOpponent', () => {
 
 Cypress.Commands.add('concedeOpponent', () => {
   return new Cypress.Promise((resolve) => {
-    io.socket.get('/game/concede', function handleResponse(res, jwres) {
+    io.socket.get('/api/game/concede', function handleResponse(res, jwres) {
       if (jwres.statusCode !== 200) {
         throw new Error(jwres.body.message);
       }
@@ -1234,7 +1234,7 @@ Cypress.Commands.add('concedeOpponent', () => {
 
 Cypress.Commands.add('stalemateOpponent', () => {
   cy.log('Opponent requests/accepts stalemate');
-  io.socket.get('/game/stalemate', function handleResponse(res, jwres) {
+  io.socket.get('/api/game/stalemate', function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }
@@ -1244,7 +1244,7 @@ Cypress.Commands.add('stalemateOpponent', () => {
 
 Cypress.Commands.add('rejectStalemateOpponent', () => {
   cy.log('Opponent rejects stalemate request');
-  io.socket.get('/game/reject-stalemate', function handleResponse(res, jwres) {
+  io.socket.get('/api/game/reject-stalemate', function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }
@@ -1255,7 +1255,7 @@ Cypress.Commands.add('rejectStalemateOpponent', () => {
 Cypress.Commands.add('reconnectOpponent', (opponent) => {
   cy.log('Opponent Reconnects');
   io.socket.get(
-    '/user/reLogin',
+    '/api/user/reLogin',
     {
       username: opponent.username,
       password: opponent.password,
@@ -1269,12 +1269,12 @@ Cypress.Commands.add('reconnectOpponent', (opponent) => {
 });
 
 Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
-  io.socket.get('/game/rematch', { gameId, rematch: true }, function handleResponse(res, jwres) {
+  io.socket.get('/api/game/rematch', { gameId, rematch: true }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }
 
-    io.socket.get('/game/join-rematch', { oldGameId: gameId }, function handleResponse(res, jwres) {
+    io.socket.get('/api/game/join-rematch', { oldGameId: gameId }, function handleResponse(res, jwres) {
       if (jwres.statusCode !== 200) {
         throw new Error(jwres.body.message);
       }
@@ -1286,23 +1286,28 @@ Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
 /**
  * @description Requests to accept/reject rematch on behalf of the test-controlled user
  *  Note that when spectating, the caller needs to first update session data to match
- *  the expected userFixture with cy.recoverSessionOpponent(). 
+ *  the expected userFixture with cy.recoverSessionOpponent().
  *  See helpers.js' rematchPlayerAsSpectator() for how this is done
- * 
+ *
  * @param { Object } data - Specifies which game, whether to accept rematch, and on behalf of whom
  * @param { Number } data.gameId - Which game to request the rematch for
  * @param { Boolean } data.rematch - Whether specified user should accept (true) or reject (false) the rematch
  * @param { 'my' | 'opponent' } [data.whichPlayer] - Optionally specify whether this user
  *  is originalP0 ('my') or originalP1 ('opponent'). For use when spectating
  */
-Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer }) => {
-  io.socket.get('/game/rematch', { gameId, rematch }, function handleResponse(res, jwres) {
+Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDomAssertion }) => {
+  io.socket.get('/api/game/rematch', { gameId, rematch }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }
 
     return Promise.resolve(jwres);
   });
+
+  if (skipDomAssertion) {
+    return;
+  }
+
   const cardSelector = whichPlayer ?? 'opponent';
   if (rematch) {
     cy.get(`[data-cy=${cardSelector}-rematch-indicator]`)
@@ -1325,7 +1330,7 @@ Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer }) => {
 });
 
 Cypress.Commands.add('joinRematchOpponent', ({ oldGameId = null }) => {
-  io.socket.get('/game/join-rematch', { oldGameId }, function handleResponse(res, jwres) {
+  io.socket.get('/api/game/join-rematch', { oldGameId }, function handleResponse(res, jwres) {
     if (jwres.statusCode !== 200) {
       throw new Error(jwres.body.message);
     }
@@ -1427,7 +1432,7 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
         reqBody.deck = deck;
       }
 
-      io.socket.get('/game/loadFixture', reqBody, function handleResponse(res, jwres) {
+      io.socket.get('/api/game/loadFixture', reqBody, function handleResponse(res, jwres) {
         if (jwres.statusCode !== 200) {
           return Promise.reject(jwres.error);
         }
