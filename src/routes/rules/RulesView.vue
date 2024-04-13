@@ -1,6 +1,7 @@
 <template>
   <div class="pa-4 bg-surface-1 text-surface-2">
     <v-container>
+      <BackToTop />
       <v-row>
         <v-col class="sidebar-container" lg="3" sm="12">
           <ul class="ms-5 sidebar-title mt-8">
@@ -10,15 +11,15 @@
               :key="title"
               ref="items"
             >
-              <router-link
+              <button
                 :class="[
                   activeTitle === id ? 'text-newPrimary' : 'text-surface-2',
                   'text-h5 text-decoration-none',
                 ]"
-                :to="{ name: 'Rules', hash: href }"
+                @click="onClick(href)"
               >
                 {{ t(title) }}
-              </router-link>
+              </button>
             </li>
           </ul>
         </v-col>
@@ -382,6 +383,8 @@ import { useThemedLogo } from '@/composables/themedLogo';
 import AwardCard from '../../components/AwardCard.vue';
 import { rules, royals, oneOffs, sectionTitle } from './data/rulesData';
 import RulePreviewDialog from './components/RulePreviewDialog.vue';
+import { useGoTo } from 'vuetify';
+import BackToTop from '@/components/BackToTop.vue';
 
 export default {
   name: 'RulesView',
@@ -389,18 +392,26 @@ export default {
     RulePreview,
     BaseVideo,
     AwardCard,
-    RulePreviewDialog
+    RulePreviewDialog,
+    BackToTop
   },
   setup() {
+    const goTo = useGoTo();
     const { t } = useI18n();
     const { logoSrc } = useThemedLogo();
     return {
       t,
       logoSrc,
+      goTo
     };
   },
     data() {
     return {
+      scorllOptions:{
+        duration: 1000,
+      offset: -100,
+      easing: 'easeInOutCubic',
+      },
       activeTitle: 'introduction',
       previewDialog: false,
       imageUrl: '',
@@ -418,14 +429,6 @@ export default {
     theme() {
       return this.$vuetify.theme.themes.cuttleTheme.colors;
     },
-    show: {
-      get() {
-        return this.modelValue;
-      },
-      set() {
-        // do nothing - parent controls whether dialog is open
-      },
-    },
   },
   created() {
     (this.rules = rules),
@@ -434,6 +437,9 @@ export default {
       (this.sectionTitle = sectionTitle);
   },
   methods: {
+    onClick(url) {
+      this.goTo(url, this.scorllOptions);
+    },
     onIntersect(isIntersecting, entries) {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -483,7 +489,7 @@ export default {
 @media (min-width: 992px) {
   .sidebar-title {
     position: sticky;
-    top: 20px;
+    top: 130px;
     flex-direction: column;
   }
 }

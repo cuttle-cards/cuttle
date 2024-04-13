@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <TheHeader v-if="showNav" :variant="variant" />
+    <TheHeader v-if="showNav" :variant="variant" :class="headerClass" />
     <v-main>
       <RouterView />
     </v-main>
@@ -26,6 +26,9 @@ export default {
     };
   },
   computed: {
+    headerClass() {
+      return  this.$router.currentRoute.value.name === 'Rules' ? 'sticky': '';
+    },
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
@@ -69,4 +72,12 @@ export default {
     min-height: 100%;
   }
 }
+
+.sticky{
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
 </style>

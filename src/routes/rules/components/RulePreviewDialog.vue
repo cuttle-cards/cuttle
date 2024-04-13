@@ -1,51 +1,60 @@
 <template>
-  <BaseDialog id="rules-preview" opacity="1" :persistent="false">
-    <template #title>
-      <h1>{{ title }}</h1>
+  <v-overlay
+    id="rule-preview-dialog"
+    class="game-ovelay text-center d-flex justify-center align-center"
+    width="650"
+  >
+    <div id="close-wrapper" class="d-flex justify-end my-4">
       <v-btn
         icon
-        aria-label="Close rules dialog"
-        color="surface-2"
         variant="text"
+        color="surface-2"
+        size="x-large"
+        aria-lable="close"
         @click="$emit('close')"
       >
-        <v-icon icon="mdi-close" size="large" aria-hidden="true" />
+        <v-icon
+          icon="mdi-close"
+          size="x-large" 
+          aria-hidden="true"
+        />
       </v-btn>
-    </template>
-    <template #body>
-      <v-skeleton-loader
-        v-if="!imageLoaded"
-        color="surface-1"
-        class="pa-6"
-        type="image"
-      />
-      <v-img v-else :src="imageUrl" :alt="t('rules.rulesPreviewGif', { title })" />
-    </template>
-  </BaseDialog>
+    </div>
+    <v-skeleton-loader
+      v-if="!imageLoaded"
+      color="surface-1"
+      class="pa-6"
+      type="card"
+    />
+    <v-img v-else :src="imageUrl" :alt="t('rules.rulesPreviewGif', { title })" />
+  </v-overlay>
 </template>
 
 <script setup>
-import { ref, defineProps,watch } from 'vue';
+import { ref, defineProps, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import BaseDialog from '@/components/BaseDialog.vue';
+
 const props = defineProps({
   imageUrl: {
     type: String,
-    default: ''
+    default: '',
   },
   title: {
     type: String,
-    default: ''
-  }
+    default: '',
+  },
 });
- defineEmits(['close']);
+defineEmits(['close']);
 const { t } = useI18n();
 
 const imageLoaded = ref(false);
 
-watch(() => props.imageUrl, () => {
-  preloadImage();
-});
+watch(
+  () => props.imageUrl,
+  () => {
+    preloadImage();
+  },
+);
 
 const preloadImage = () => {
   imageLoaded.value = false;
