@@ -217,6 +217,10 @@ describe('FIVES', () => {
 
       cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_HEARTS);
       cy.get('[data-cy=submit-five-dialog]').should('be.disabled').click({force: true});
+
+      cy.get('[data-discard-card=1-0]').click();
+      cy.get('[data-cy=submit-five-dialog]').click();
+      cy.get('[data-player-hand-card]').should('have.length', 6);
     });
   });
 
