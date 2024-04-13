@@ -193,7 +193,7 @@ describe('FIVES', () => {
       });
     });
 
-    it.only('Plays multiple 5s', () => {
+    it('Plays multiple 5s', () => {
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS],
@@ -207,6 +207,7 @@ describe('FIVES', () => {
 
       cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
       cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+      cy.get('[data-cy=submit-five-dialog]').should('be.disabled').click({force: true});
       cy.get('[data-discard-card=2-0]').click();
       cy.get('[data-cy=submit-five-dialog]').click();
 
