@@ -22,8 +22,8 @@
         color="surface-1"
         variant="flat"
         data-cy="submit-five-dialog"
-        :disabled="!disableButton"
-        @click="emit('resolve-five', selectedCard)"
+        :disabled="disableButton"
+        @click="resolveFive"
       >
         {{ buttonText }}
       </v-btn>
@@ -47,7 +47,7 @@ const { player } = storeToRefs(gameStore);
 const selectedCard = ref();
 const emit = defineEmits(['resolve-five']);
 
-const disableButton = computed(() => !player.value.hand.length || !selectCard.value);
+const disableButton = computed(() => player.value.hand.length && !selectedCard.value);
 const title = computed(() => t(player.value.hand.length ? 'game.dialogs.five.discardAndDraw' : 'game.dialogs.five.nice'));
 const dialog = computed(() => t(player.value.hand.length ? 'game.dialogs.five.resolveFive' : 'game.dialogs.five.resolveFiveNoCards'));
 const buttonText = computed(() => t(player.value.hand.length ? 'game.dialogs.five.discardAndDraw' : 'rules.draw'));
@@ -55,6 +55,12 @@ const buttonText = computed(() => t(player.value.hand.length ? 'game.dialogs.fiv
 const selectCard = (index) => {
   selectedCard.value = player.value.hand[index].id;
 };
+
+function resolveFive() {
+  emit('resolve-five', selectedCard.value);
+  selectedCard.value = null;
+
+}
 </script>
 
 <style lang="scss" scoped>
