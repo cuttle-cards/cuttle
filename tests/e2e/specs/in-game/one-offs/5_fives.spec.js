@@ -192,6 +192,37 @@ describe('FIVES', () => {
         deck: []
       });
     });
+
+    it('Plays multiple 5s', () => {
+      cy.loadGameFixture(0, {
+        // Player is P0
+        p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [Card.FOUR_OF_CLUBS],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+      cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+      cy.get('[data-cy=submit-five-dialog]').should('be.disabled').click({force: true});
+      cy.get('[data-discard-card=2-0]').click();
+      cy.get('[data-cy=submit-five-dialog]').click();
+
+      cy.get('[data-player-hand-card]').should('have.length', 5);
+
+      cy.playPointsOpponent(Card.FOUR_OF_CLUBS);
+      cy.get('[data-opponent-point-card=4-0]').should('be.visible');
+
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_HEARTS);
+      cy.get('[data-cy=submit-five-dialog]').should('be.disabled').click({force: true});
+
+      cy.get('[data-discard-card=1-0]').click();
+      cy.get('[data-cy=submit-five-dialog]').click();
+      cy.get('[data-player-hand-card]').should('have.length', 6);
+    });
   });
 
   describe('Playing 5 as opponent', () => {
