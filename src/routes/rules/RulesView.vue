@@ -16,7 +16,7 @@
                   activeTitle === id ? 'text-newPrimary' : 'text-surface-2',
                   'text-h5 text-decoration-none',
                 ]"
-                @click="onClick(href)"
+                @click="goToSection(href)"
               >
                 {{ t(title) }}
               </button>
@@ -58,7 +58,7 @@
             </h1>
             <p>
               {{ t('rules.rulesReadText') }}
-              <a href="/img/cuttle_rules.pdf" target="_blank" class="text-anchor"> Cuttle Cheestsheet </a>
+              <a href="/img/cuttle_rules.pdf" target="_blank" class="text-anchor"> Cuttle Cheatsheet</a>
               {{ t('rules.rulesWatchText') }}
             </p>
             <div class="w-100 my-4">
@@ -122,25 +122,25 @@
               </p>
               <p v-if="rule.title === 'rules.scuttle'" class="d-flex my-5">
                 <v-img
-                  src="../../../public/img/rulesView/rules_action_clubs.svg"
+                  src="img/rulesView/rules_action_clubs.svg"
                   class="mr-1 max-w-24"
                   aria-hidden="false"
                   role="img"
                 />
                 &nbsp; Clubs (weakest) &lt; &nbsp;<v-img
-                  src="../../../public/img/rulesView/rules_action_diamond.svg"
+                  src="img/rulesView/rules_action_diamond.svg"
                   class="mr-1 max-w-24"
                   aria-hidden="false"
                   role="img"
                 />
                 &nbsp; Diamonds &lt; &nbsp;<v-img
-                  src="../../../public/img/rulesView/rules_action_hearts.svg"
+                  src="img/rulesView/rules_action_hearts.svg"
                   class="mr-1 max-w-24"
                   aria-hidden="false"
                   role="img"
                 />
                 &nbsp; Hearts &lt; &nbsp;<v-img
-                  src="../../../public/img/rulesView/rules_action_spades.svg"
+                  src="img/rulesView/rules_action_spades.svg"
                   class="mr-1 max-w-24"
                   aria-hidden="false"
                   role="img"
@@ -358,7 +358,7 @@
 
           <v-row>
             <v-img
-              src="../../../../public/img/rulesView/leaderboard_example.jpg"
+              src="/img/rulesView/leaderboard_example.jpg"
               alt="leader board"
               class="mr-2 my-3 rounded-xl"
               aria-hidden="false"
@@ -437,7 +437,7 @@ export default {
       (this.sectionTitle = sectionTitle);
   },
   methods: {
-    onClick(url) {
+    goToSection(url) {
       this.goTo(url, this.scorllOptions);
     },
     onIntersect(isIntersecting, entries) {

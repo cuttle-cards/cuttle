@@ -158,9 +158,9 @@ const router = createRouter({
       return { el: to.hash, behavior: 'smooth' };
     } else if (savedPosition) {
       return savedPosition;
-    } else {
+    } 
       return { top: 0 };
-    }
+    
   }
 });
 
