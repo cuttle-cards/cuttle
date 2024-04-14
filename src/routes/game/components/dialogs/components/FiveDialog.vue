@@ -1,5 +1,10 @@
 <template>
-  <BaseDialog id="five-discard-dialog" :model-value="gameStore.showResolveFive" :title="title">
+  <BaseDialog
+    v-if="gameStore.showResolveFive"
+    id="five-discard-dialog"
+    :model-value="true"
+    :title="title"
+  >
     <template #body>
       <p class="mb-4">
         {{ dialog }}
@@ -42,7 +47,6 @@ import { useI18n } from 'vue-i18n';
 const { t }  = useI18n();
 const gameStore = useGameStore();
 const { player } = storeToRefs(gameStore);
-
 
 const selectedCard = ref();
 const emit = defineEmits(['resolve-five']);
