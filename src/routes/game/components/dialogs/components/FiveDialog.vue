@@ -1,6 +1,5 @@
 <template>
   <BaseDialog
-    v-if="gameStore.showResolveFive"
     id="five-discard-dialog"
     :model-value="true"
     :title="title"

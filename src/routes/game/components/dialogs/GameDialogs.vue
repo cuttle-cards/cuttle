@@ -20,7 +20,7 @@
     />
 
     <FourDialog :model-value="gameStore.showResolveFour" @discard="discard" />
-    <FiveDialog @resolve-five="resolveFive" />
+    <FiveDialog v-if="gameStore.showResolveFive" @resolve-five="resolveFive" />
 
     <ThreeDialog
       :model-value="pickingFromScrap"
