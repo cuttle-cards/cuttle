@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <TheHeader v-if="showNav" :variant="variant" />
-    <CTABanner v-if="showNav" />
     <v-main>
       <RouterView />
     </v-main>
@@ -12,7 +11,6 @@
 <script>
 import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
-import CTABanner from './components/CTABanner.vue';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import { useGameListStore } from '@/stores/gameList';
@@ -21,7 +19,6 @@ export default {
   components: {
     TheHeader,
     TheFooter,
-    CTABanner
   },
   data() {
     return {
@@ -72,4 +69,4 @@ export default {
     min-height: 100%;
   }
 }
-</style>
+</style>./components/FiveChangeDialog.vue

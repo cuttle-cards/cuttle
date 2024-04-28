@@ -1,23 +1,12 @@
 <template>
   <BaseDialog
-    id="cta-banner"
+    id="five-change-banner"
     v-model="show"
     variant="light"
     :opacity="1"
     data-cy="create-game-dialog"
     scrollable
   >
-    <template #activator>
-      <v-btn
-        color="newSecondary"
-        width="full"
-        rounded="0"
-        block
-      >
-        {{ t('callToAction.betaTestTitle') }}
-        <span class="d-none d-sm-block ml-1">{{ t('callToAction.betaTestAddition') }}</span>
-      </v-btn>
-    </template>
     <template #title>
       <div color="primary" class="w-100">
         <div class="d-flex justify-space-between w-100">
@@ -34,13 +23,6 @@
             <v-icon icon="mdi-close" />
           </v-btn>
         </div>
-        <p>
-          {{ t('callToAction.testDates') }} 8-20 <span
-            class="
-            beta
-            ml-2"
-          >{{ t('callToAction.betaTest') }}</span>
-        </p>
       </div>
     </template>
     <template #body>
@@ -60,16 +42,6 @@
       <p>
         {{ t('callToAction.whyImplement') }}
       </p>
-      <h3>
-        {{ t('callToAction.howLongHeader') }}
-      </h3>
-      <p>
-        <strong class="text-newPrimary">{{ t('callToAction.howLongPt1') }}</strong>{{ t('callToAction.howLongPt2') }}
-      </p>
-      <h3>{{ t('callToAction.optedInHeader') }}</h3>
-      <p>
-        {{ t('callToAction.optedIn') }}
-      </p>
       <h3>{{ t('callToAction.gameModesHeader') }}</h3>
       <p>
         {{ t('callToAction.gameModes') }}
@@ -83,21 +55,12 @@
     </template>
     <template #actions>
       <v-btn
-        data-cy="cta-banner-okay"
+        data-cy="five-change-banner-okay"
         color="surface-1"
         variant="flat"
         @click="close"
       >
         close
-      </v-btn>
-      <v-btn
-        href="https://forms.gle/9bK7pP3mTN4SWwwG7"
-        color="newPrimary"
-        variant="flat"
-        target="_blank"
-        class="ml-4"
-      >
-        {{ t('callToAction.voteNow') }}
       </v-btn>
     </template>
   </BaseDialog>
@@ -139,10 +102,4 @@ onMounted(() => {
     margin-bottom: 3%;
   }
 
-  .beta{
-    padding: 2px 10px;
-    background-color:#FFCCE0;
-    color: #E1306C;
-    border-radius: 35px;
-  }
 </style>
