@@ -76,7 +76,7 @@ describe('FIVES', () => {
       cy.get('[data-player-hand-card]').should('have.length', 3);
     });
 
-    it('Plays a 5 with two cards left in the deck', () => {
+    it('Plays a 5 with two cards left in the deck and nothing to discard', () => {
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.FIVE_OF_CLUBS],
