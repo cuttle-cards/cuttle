@@ -307,6 +307,40 @@ describe('FIVES', () => {
       cy.get('#deck').should('contain', 'PASS');
     });
 
+    it('Plays a 5 with nothing to discard with 1 card in the deck', () => {
+      cy.loadGameFixture(0, {
+        // Player is P0
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.FIVE_OF_SPADES,
+        secondCard: Card.TWO_OF_HEARTS,
+        deck: [Card.THREE_OF_CLUBS],
+      });
+      cy.get('#deck').click();
+      cy.drawCardOpponent();
+      cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+      cy.get('[data-cy=five-discard-dialog]').should('be.visible');
+      cy.get('[data-cy=submit-five-dialog]').click();
+
+      assertGameState(0, {
+        p0Hand: [Card.THREE_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [Card.TWO_OF_HEARTS],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [Card.FIVE_OF_SPADES],
+        topCard: null,
+        secondCard: null,
+        deck: [],
+      });
+    });
+
     it('Attempts to play 5 with an empty deck', () => {
       cy.loadGameFixture(0, {
         // Player is P0
