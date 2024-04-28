@@ -412,5 +412,41 @@ describe('FIVES', () => {
         deck: [],
       });
     });
+
+    it.only('plays five as opponent with nothing to discard', () => {
+      cy.loadGameFixture(1, {
+        // Player is P0
+        p0Hand: [Card.FIVE_OF_SPADES],
+        p0Points: [],
+        p0FaceCards: [],
+        // Opponent is P1
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        // Deck
+        topCard: Card.THREE_OF_CLUBS,
+        secondCard: Card.EIGHT_OF_HEARTS,
+        deck: [Card.SEVEN_OF_DIAMONDS],
+      });
+
+      cy.playOneOffOpponent(Card.FIVE_OF_SPADES);
+
+      cy.get('[data-cy=cannot-counter-dialog]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#waiting-for-opponent-discard-scrim').should('contain', 'Opponent Skips Discarding');
+      cy.resolveFiveOpponent();
+      assertGameState(1, {
+        p0Hand: [Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [Card.FIVE_OF_SPADES],
+        topCard: null,
+        secondCard: null,
+        deck: [],
+      });
+    });
   });
 });
