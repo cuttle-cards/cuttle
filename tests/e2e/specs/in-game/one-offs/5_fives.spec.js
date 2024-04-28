@@ -97,7 +97,7 @@ describe('FIVES', () => {
       cy.get('[data-cy=submit-five-dialog]').click();
 
       assertGameState(0, {
-        p0Hand: [Card.THREE_OF_CLUBS,Card.EIGHT_OF_HEARTS ],
+        p0Hand: [Card.THREE_OF_CLUBS,Card.EIGHT_OF_HEARTS],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
