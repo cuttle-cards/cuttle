@@ -442,7 +442,7 @@ describe('Home - Create Game', () => {
   it.only('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
     cy.window().then((win) => {
-      win.localStorage.setItem('bannerDismissed', true);
+      win.localStorage.setItem('fiveChangeBannerDismissed', true);
     });
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');

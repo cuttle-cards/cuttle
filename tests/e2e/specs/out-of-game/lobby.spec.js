@@ -5,7 +5,7 @@ import { SnackBarError } from '../../fixtures/snackbarError';
 function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
-  window.localStorage.setItem('bannerDismissed', true);
+  window.localStorage.setItem('fiveChangeBannerDismissed', true);
   cy.signupPlayer(myUser);
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()

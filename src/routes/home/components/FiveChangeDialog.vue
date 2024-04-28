@@ -80,14 +80,14 @@ const preferenceSaved= ref(false);
 
 const close = () => {
   if (!preferenceSaved.value) {
-    setLocalStorage('fiveChangebannerDismissed', true);
+    setLocalStorage('fiveChangeBannerDismissed', true);
   }
   show.value = false;
   preferenceSaved.value = true;
 };
 
 onMounted(() => {
-  if (!getLocalStorage('fiveChangebannerDismissed')) {
+  if (!getLocalStorage('fiveChangeBannerDismissed')) {
     show.value = true;
   }
 });

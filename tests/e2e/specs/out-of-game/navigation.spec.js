@@ -6,7 +6,7 @@ describe('Navigation', () => {
     cy.visit('/');
     cy.signupPlayer(playerOne);
     cy.vueRoute('/');
-    window.localStorage.setItem('bannerDismissed', true);
+    window.localStorage.setItem('fiveChangeBannerDismissed', true);
   });
 
   describe('Desktop Navigation', () => {

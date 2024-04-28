@@ -6,7 +6,7 @@ function setup() {
   cy.viewport(1980, 1080);
   cy.wipeDatabase();
   cy.visit('/');
-  window.localStorage.setItem('bannerDismissed', true);
+  window.localStorage.setItem('fiveChangeBannerDismissed', true);
   // Signup opponents and store their newly created ids
   cy.signupOpponent(playerOne).as('player1');
   cy.loginPlayer(playerOne);

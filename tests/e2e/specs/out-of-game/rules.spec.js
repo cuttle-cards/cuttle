@@ -5,7 +5,7 @@ describe('Rules Page', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.vueRoute('/rules');
-    window.localStorage.setItem('bannerDismissed', true);
+    window.localStorage.setItem('fiveChangeBannerDismissed', true);
   });
 
   it('Top Home button - Navigates to Login when unauthenticated and home when authenticated', () => {
