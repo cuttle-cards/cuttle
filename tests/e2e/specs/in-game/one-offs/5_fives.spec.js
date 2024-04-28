@@ -114,7 +114,7 @@ describe('FIVES', () => {
 
     });
 
-    it('Plays a 5 to draw two cards at max hand', () => {
+    it('Plays a 5 to draw two cards when already at hand limit (8)', () => {
       // Setup: there are three cards in the deck and player has a 5
       cy.loadGameFixture(0, {
         p0Hand: [Card.FIVE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.ACE_OF_DIAMONDS,
