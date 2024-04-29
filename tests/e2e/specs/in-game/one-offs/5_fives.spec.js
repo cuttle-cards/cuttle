@@ -362,6 +362,32 @@ describe('FIVES', () => {
       cy.get('[data-player-hand-card=5-3]').click();
       cy.get('[data-move-choice=oneOff]').should('have.class', 'v-card--disabled');
     });
+
+    describe('Illegal 5 plays', () => {
+      it.only('Cannot resolve five without discarding when you have cards in hand', () => {
+        cy.loadGameFixture(0, {
+        p0Hand: [Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.FOUR_OF_CLUBS,
+        secondCard: Card.ACE_OF_HEARTS,
+        deck: [],
+        });
+
+        cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+        cy.window().its('cuttle.gameStore').then((gameStore) => {
+          // Request to resolve five without discarding
+          gameStore.requestResolveFive(undefined).then((res) => {
+            expect(true).to.eq(false, `Expected request to resolve five without discarding to error, but instead came back 200: ${res}`);
+          }).catch((err) => {
+            expect(err).to.eq('game.snackbar.five.selectCardToDiscard');
+          });
+        });
+      });
+    });
   });
 
   describe('Playing 5 as opponent', () => {
@@ -413,7 +439,7 @@ describe('FIVES', () => {
       });
     });
 
-    it.only('plays five as opponent with nothing to discard', () => {
+    it('plays five as opponent with nothing to discard', () => {
       cy.loadGameFixture(1, {
         // Player is P0
         p0Hand: [Card.FIVE_OF_SPADES],
