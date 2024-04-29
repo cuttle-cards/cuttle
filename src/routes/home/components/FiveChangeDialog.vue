@@ -1,10 +1,10 @@
 <template>
   <BaseDialog
-    id="five-change-banner"
+    id="five-change-dialog"
     v-model="show"
     variant="light"
     :opacity="1"
-    data-cy="create-game-dialog"
+    data-cy="five-change-dialog"
     scrollable
   >
     <template #title>
@@ -55,7 +55,7 @@
     </template>
     <template #actions>
       <v-btn
-        data-cy="five-change-banner-okay"
+        data-cy="five-change-dialog-okay"
         color="surface-1"
         variant="flat"
         @click="close"
