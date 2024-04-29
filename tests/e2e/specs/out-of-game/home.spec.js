@@ -439,7 +439,7 @@ describe('Home - Game List', () => {
 describe('Home - Create Game', () => {
   beforeEach(setup);
 
-  it.only('Saves ranked setting between sessions', () => {
+  it('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
     cy.window().then((win) => {
       win.localStorage.setItem('fiveChangeBannerDismissed', true);
