@@ -615,3 +615,20 @@ describe('Home - Create Game', () => {
     });
   });
 });
+
+describe('Announcement Dialogs', () => {
+  it.only('Shows the FiveChangeDialog when user navigates to Home Page for the first time', () => {
+    cy.wipeDatabase();
+    cy.visit('/');
+    cy.signupPlayer(myUser);
+    cy.vueRoute('/');
+
+    cy.get('[data-cy=five-change-dialog]').should('be.visible');
+    cy.get('[data-cy=five-change-dialog-okay').click();
+
+    cy.get('[data-cy=five-change-dialog]').should('not.exist');
+
+    cy.reload();
+    cy.get('[data-cy=five-change-dialog]').should('not.exist');
+  });
+});
