@@ -62,7 +62,6 @@ const selectCard = (index) => {
 function resolveFive() {
   emit('resolve-five', selectedCard.value);
   selectedCard.value = null;
-
 }
 </script>
 
