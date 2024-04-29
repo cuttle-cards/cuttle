@@ -10,7 +10,7 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  window.localStorage.setItem('bannerDismissed', true);
+  window.localStorage.setItem('fiveChangeBannerDismissed', true);
 }
 
 function assertSuccessfulJoin(gameState) {

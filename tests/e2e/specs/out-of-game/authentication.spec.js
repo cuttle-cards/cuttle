@@ -110,7 +110,7 @@ describe('Signing Up', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/signup');
-    window.localStorage.setItem('bannerDismissed', true);
+    window.localStorage.setItem('fiveChangeBannerDismissed', true);
   });
 
   /**

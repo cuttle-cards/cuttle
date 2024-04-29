@@ -27,7 +27,7 @@ describe('Navigation', () => {
   describe('Mobile Navigation', () => {
     beforeEach(() => {
       cy.viewport('iphone-8');
-      window.localStorage.setItem('bannerDismissed', true);
+      window.localStorage.setItem('fiveChangeBannerDismissed', true);
     });
 
     it('When authenticated', () => {

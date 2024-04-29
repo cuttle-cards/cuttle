@@ -271,7 +271,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
-    window.localStorage.setItem('bannerDismissed', true);
+    window.localStorage.setItem('fiveChangeBannerDismissed', true);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
@@ -442,7 +442,7 @@ describe('Lobby invite links', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.visit('/');
-    window.localStorage.setItem('bannerDismissed', true);
+    window.localStorage.setItem('fiveChangeBannerDismissed', true);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
