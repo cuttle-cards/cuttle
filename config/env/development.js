@@ -11,20 +11,15 @@
  */
 
 module.exports = {
-  /***************************************************************************
-   * Set the default database connection for models in the development       *
-   * environment (see config/connections.js and config/models.js )           *
-   ***************************************************************************/
-  // models: {
-  //   connection: 'someMongodbServer'
-  // }
   log: {
     level: 'debug'
   },
+  // Disable default endpoints for each model e.g. GET /game/:id
   blueprints: {
     rest: false,
     shortcuts: false,
   },
+  // Needed to use custom 'select' statements using sails-disk
   models: {
     schema: true,
   }
