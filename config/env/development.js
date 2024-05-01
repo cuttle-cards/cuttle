@@ -25,4 +25,7 @@ module.exports = {
     rest: false,
     shortcuts: false,
   },
+  models: {
+    schema: true,
+  }
 };
