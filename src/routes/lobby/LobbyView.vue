@@ -100,7 +100,7 @@
 
 <script>
 import { onMounted, onUnmounted, ref, computed } from 'vue';
-import { onBeforeRouteLeave } from 'vue-router';
+import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
@@ -117,6 +117,8 @@ export default {
   },
   setup() {
     const { t } = useI18n();
+    const router = useRouter();
+
     const authStore = useAuthStore();
     const gameStore = useGameStore();
 
@@ -133,6 +135,23 @@ export default {
     const gameStarted = ref(false);
     const joinAudio = new Audio('/sounds/lobby/enter-lobby.mp3');
     const leaveAudio = new Audio('/sounds/lobby/leave-lobby.mp3');
+
+    async function ready() {
+      readying.value = true;
+      await gameStore.requestReady();
+      this.readying = false;
+    }
+
+    async function setIsRanked() {
+      await gameStore.requestSetIsRanked({
+        isRanked: gameStore.isRanked,
+      });
+    }
+
+    async function leave() {
+      await gameStore.requestLeaveLobby();
+      router.push('/');
+    }
 
     onMounted(() => {
       setTimeout(() => {
@@ -169,7 +188,10 @@ export default {
       readyButtonText,
       rankedIcon,
       joinAudio,
-      leaveAudio
+      leaveAudio,
+      ready,
+      setIsRanked,
+      leave,
     };
   },
   watch: {
@@ -183,28 +205,6 @@ export default {
           this.leaveAudio.play();
         }
       }
-    },
-  },
-  methods: {
-    async ready() {
-      this.readying = true;
-      await this.gameStore.requestReady();
-      this.readying = false;
-    },
-    async setIsRanked() {
-      await this.gameStore.requestSetIsRanked({
-        isRanked: this.gameStore.isRanked,
-      });
-    },
-    leave() {
-      this.gameStore
-        .requestLeaveLobby()
-        .then(() => {
-          this.$router.push('/');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
   },
 };
