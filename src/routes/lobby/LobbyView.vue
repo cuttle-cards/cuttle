@@ -99,10 +99,9 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref, computed } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
@@ -118,9 +117,20 @@ export default {
   },
   setup() {
     const { t } = useI18n();
+    const authStore = useAuthStore();
+    const gameStore = useGameStore();
+    const gameId = computed(() => gameStore.id);
+    const gameName = computed(() => gameStore.name);
+    const opponentUsername = computed(() => gameStore.opponentUsername);
+    const iAmReady = computed(() => {
+      return gameStore.myPNum === 0 ? gameStore.p0Ready : gameStore.p1Ready;
+    });
+    const readyButtonText = computed(() => t(iAmReady.value ? 'lobby.unready' : 'lobby.ready'));
+    const rankedIcon = computed(() => gameStore.isRanked ? 'sword-cross' : 'coffee');
     const gameStarted = ref(false);
     const joinAudio = new Audio('/sounds/lobby/enter-lobby.mp3');
     const leaveAudio = new Audio('/sounds/lobby/leave-lobby.mp3');
+
     onMounted(() => {
       setTimeout(() => {
         if (joinAudio.readyState === 4) {
@@ -144,33 +154,24 @@ export default {
       }
     });
 
-    return { t, gameStarted, joinAudio, leaveAudio };
+    return {
+      t,
+      gameStore,
+      authStore,
+      gameId,
+      gameName,
+      gameStarted,
+      opponentUsername,
+      readyButtonText,
+      rankedIcon,
+      joinAudio,
+      leaveAudio
+    };
   },
   data() {
     return {
       readying: false,
     };
-  },
-  computed: {
-    ...mapStores(useGameStore, useAuthStore),
-    gameId() {
-      return this.gameStore.id;
-    },
-    gameName() {
-      return this.gameStore.name;
-    },
-    opponentUsername() {
-      return this.gameStore?.opponentUsername;
-    },
-    iAmReady() {
-      return this.gameStore.myPNum === 0 ? this.gameStore.p0Ready : this.gameStore.p1Ready;
-    },
-    readyButtonText() {
-      return this.t(this.iAmReady ? 'lobby.unready' : 'lobby.ready');
-    },
-    rankedIcon() {
-      return this.gameStore.isRanked ? 'sword-cross' : 'coffee';
-    },
   },
   watch: {
     opponentUsername(newVal) {
