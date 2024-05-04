@@ -119,6 +119,9 @@ export default {
     const { t } = useI18n();
     const authStore = useAuthStore();
     const gameStore = useGameStore();
+
+    const readying = ref(false);
+
     const gameId = computed(() => gameStore.id);
     const gameName = computed(() => gameStore.name);
     const opponentUsername = computed(() => gameStore.opponentUsername);
@@ -158,6 +161,7 @@ export default {
       t,
       gameStore,
       authStore,
+      readying,
       gameId,
       gameName,
       gameStarted,
@@ -166,11 +170,6 @@ export default {
       rankedIcon,
       joinAudio,
       leaveAudio
-    };
-  },
-  data() {
-    return {
-      readying: false,
     };
   },
   watch: {
