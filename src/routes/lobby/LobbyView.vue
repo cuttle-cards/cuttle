@@ -115,7 +115,6 @@ const gameStore = useGameStore();
 
 const readying = ref(false);
 
-const gameId = computed(() => gameStore.id);
 const gameName = computed(() => gameStore.name);
 const opponentUsername = computed(() => gameStore.opponentUsername);
 const iAmReady = computed(() => {
