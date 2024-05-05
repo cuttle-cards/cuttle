@@ -103,6 +103,7 @@ import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import { playAudio } from '@/util/audio.js';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
@@ -123,6 +124,7 @@ const iAmReady = computed(() => {
 const readyButtonText = computed(() => t(iAmReady.value ? 'lobby.unready' : 'lobby.ready'));
 const rankedIcon = computed(() => gameStore.isRanked ? 'sword-cross' : 'coffee');
 const gameStarted = ref(false);
+
 const joinAudio = new Audio('/sounds/lobby/enter-lobby.mp3');
 const leaveAudio = new Audio('/sounds/lobby/leave-lobby.mp3');
 
@@ -145,28 +147,18 @@ async function leave() {
 
 watch(opponentUsername, (newVal) => {
   if (newVal) {
-    if (this.joinAudio.readyState === 4) {
-      this.joinAudio.play();
-    }
+    playAudio(joinAudio);
   } else {
-    if (this.leaveAudio.readyState === 4) {
-      this.leaveAudio.play();
-    }
+    playAudio(leaveAudio);
   }
 });
 
 onMounted(() => {
-  setTimeout(() => {
-    if (joinAudio.readyState === 4) {
-      joinAudio.play();
-    }
-  }, 500);
+  playAudio(joinAudio);
 });
 
 onUnmounted(() => {
-  if (leaveAudio.readyState === 4) {
-    leaveAudio.play();
-  }
+  playAudio(leaveAudio);
 });
 
 onBeforeRouteLeave((to, from, next) => {
