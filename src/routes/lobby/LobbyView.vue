@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, ref, computed } from 'vue';
+import { onMounted, onUnmounted, ref, computed, watch } from 'vue';
 import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
@@ -153,6 +153,18 @@ export default {
       router.push('/');
     }
 
+    watch(opponentUsername, (newVal) => {
+      if (newVal) {
+        if (this.joinAudio.readyState === 4) {
+          this.joinAudio.play();
+        }
+      } else {
+        if (this.leaveAudio.readyState === 4) {
+          this.leaveAudio.play();
+        }
+      }
+    });
+
     onMounted(() => {
       setTimeout(() => {
         if (joinAudio.readyState === 4) {
@@ -160,11 +172,13 @@ export default {
         }
       }, 500);
     });
+
     onUnmounted(() => {
       if (leaveAudio.readyState === 4) {
         leaveAudio.play();
       }
     });
+
     onBeforeRouteLeave((to, from, next) => {
       if (to.name === 'Game') {
         gameStarted.value = true;
@@ -193,19 +207,6 @@ export default {
       setIsRanked,
       leave,
     };
-  },
-  watch: {
-    opponentUsername(newVal) {
-      if (newVal) {
-        if (this.joinAudio.readyState === 4) {
-          this.joinAudio.play();
-        }
-      } else {
-        if (this.leaveAudio.readyState === 4) {
-          this.leaveAudio.play();
-        }
-      }
-    },
   },
 };
 </script>
