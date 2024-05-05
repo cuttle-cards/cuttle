@@ -141,7 +141,7 @@ const opponentUsername = computed(() => gameStore.opponentUsername);
 async function ready() {
   readying.value = true;
   await gameStore.requestReady();
-  this.readying = false;
+  readying.value = false;
 }
 
 async function setIsRanked() {
