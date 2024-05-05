@@ -108,26 +108,36 @@ import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 
+// Deps
 const { t } = useI18n();
 const router = useRouter();
 
-const authStore = useAuthStore();
-const gameStore = useGameStore();
-
-const readying = ref(false);
-
-const gameName = computed(() => gameStore.name);
-const opponentUsername = computed(() => gameStore.opponentUsername);
-const iAmReady = computed(() => {
-  return gameStore.myPNum === 0 ? gameStore.p0Ready : gameStore.p1Ready;
-});
-const readyButtonText = computed(() => t(iAmReady.value ? 'lobby.unready' : 'lobby.ready'));
-const rankedIcon = computed(() => gameStore.isRanked ? 'sword-cross' : 'coffee');
-const gameStarted = ref(false);
-
+// Audio
 const joinAudio = new Audio('/sounds/lobby/enter-lobby.mp3');
 const leaveAudio = new Audio('/sounds/lobby/leave-lobby.mp3');
 
+// Stores
+const authStore = useAuthStore();
+const gameStore = useGameStore();
+
+// Refs
+const readying = ref(false);
+const gameStarted = ref(false);
+
+// Computed Props
+const gameName = computed(() => gameStore.name);
+
+const iAmReady = computed(() => {
+  return gameStore.myPNum === 0 ? gameStore.p0Ready : gameStore.p1Ready;
+});
+
+const readyButtonText = computed(() => t(iAmReady.value ? 'lobby.unready' : 'lobby.ready'));
+
+const rankedIcon = computed(() => gameStore.isRanked ? 'sword-cross' : 'coffee');
+
+const opponentUsername = computed(() => gameStore.opponentUsername);
+
+// Methods
 async function ready() {
   readying.value = true;
   await gameStore.requestReady();
@@ -145,6 +155,7 @@ async function leave() {
   router.push('/');
 }
 
+// Watchers
 watch(opponentUsername, (newVal) => {
   if (newVal) {
     playAudio(joinAudio);
@@ -153,6 +164,7 @@ watch(opponentUsername, (newVal) => {
   }
 });
 
+// Lifecycle
 onMounted(() => {
   playAudio(joinAudio);
 });
@@ -161,6 +173,7 @@ onUnmounted(() => {
   playAudio(leaveAudio);
 });
 
+// Router
 onBeforeRouteLeave((to, from, next) => {
   if (to.name === 'Game') {
     gameStarted.value = true;
@@ -171,7 +184,6 @@ onBeforeRouteLeave((to, from, next) => {
     next();
   }
 });
-
 </script>
 
 <style scoped lang="scss">
