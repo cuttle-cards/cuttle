@@ -10,8 +10,6 @@
       <h5>{{ gameName }}</h5>
       <v-row>
         <v-col md="4" cols="12">
-          <audio ref="enterLobbySound" src="/sounds/lobby/enter-lobby.mp3" />
-          <audio ref="leaveLobbySound" src="/sounds/lobby/leave-lobby.mp3" />
           <PlayerReadyIndicator
             :player-username="authStore.username"
             :player-ready="iAmReady"
@@ -90,8 +88,7 @@
     <BaseSnackbar
       v-model="gameStore.showIsRankedChangedAlert"
       :timeout="2000"
-      :message="`${t('lobby.rankedChangedAlert')} ${
-        gameStore.isRanked ? t('global.ranked') : t('global.casual')
+      :message="`${t('lobby.rankedChangedAlert')} ${gameStore.isRanked ? t('global.ranked') : t('global.casual')
       }`"
       color="surface-1"
       data-cy="edit-snackbar"
@@ -100,13 +97,13 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue';
-import { onBeforeRouteLeave } from 'vue-router';
+<script setup>
+import { onMounted, onUnmounted, ref, computed, watch } from 'vue';
+import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import { playAudio } from '@/util/audio.js';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
@@ -222,6 +219,7 @@ export default {
   width: 200px;
   height: 200px;
 }
+
 h1 {
   font-size: 5rem;
   color: rgba(var(--v-theme-surface-2));
@@ -230,6 +228,7 @@ h1 {
   line-height: 5rem;
   margin: auto auto 16px auto;
 }
+
 #lobby-wrapper {
   color: rgba(var(--v-theme-surface-2));
   min-width: 100vw;
@@ -258,20 +257,24 @@ h5 {
   .rank-switch {
     padding: 0 3vw;
   }
+
   h1 {
     font-size: 2rem;
     margin: 0 auto 0 auto;
   }
+
   h5 {
     font-size: 2rem;
     line-height: 2rem;
     margin: 0 auto 16px auto;
   }
+
   .vs-logo {
     width: 100px;
     height: 100px;
   }
 }
+
 @media (max-width: 350px) {
   .rank-switch {
     width: 100%;
@@ -283,6 +286,7 @@ h5 {
   min-height: 64px;
   margin: 0 auto;
 }
+
 .lobby-ranked-text {
   color: var(--v-neutral-darken2);
 }
