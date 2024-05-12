@@ -436,7 +436,15 @@
       "title": "Tournois",
       "competitiveCuttle1": "Le Cuttle Compétitif est divisé en 4 saisons par an, une par couleur : Trèfle, Carreau, Cœur et Pique. À la fin de chaque saison, les 8 meilleurs joueurs participent à un tournoi de championnat à double élimination et les champions sont acclamés de façon permanente sur le site.",
       "competitiveCuttle2": "Chaque saison est divisée en 13 semaines. Pour chaque semaine, nous comptons le nombre de matchs classés au meilleur des 2/3 que chaque joueur remporte contre des adversaires uniques (en ignorant les matchs nuls) et attribuons des points aux joueurs en fonction de leur classement hebdomadaire.",
-      "exampleImgExplanation": "Exemple de page de statistiques / tournoi"
+      "exampleImgExplanation": "Exemple de page de statistiques / tournoi",
+      "scoring": {
+        "numPoints": "1 Point | {count} Points",
+        "firstPlace": "Le joueur avec le plus de victoires obtient 5 points pour la semaine",
+        "secondPlace": "Le joueur avec le 2ème plus grand nombre de victoires obtient 4 points pour la semaine",
+        "thirdPlace": "Le joueur avec le 3ème plus grand nombre de victoires obtient 3 points pour la semaine",
+        "oneWin": "Chaque autre joueur ayant remporté au moins un match obtient 2 points pour la semaine",
+        "completedMatch": "Chaque autre joueur ayant terminé un match sans gagner obtient 1 point pour la semaine"
+      }
     }
 
   },

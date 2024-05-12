@@ -359,33 +359,33 @@
               <v-list class="mt-4 rounded-xl w-100 my-8" bg-color="surface-2" base-color="surface-1">
                 <v-list-item>
                   <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace">
-                    5 Points
+                    {{ t('rules.tournaments.scoring.numPoints', 5) }}
                   </v-chip>
-                  The player with the most wins gets 5 points for the week
+                  {{ t('rules.tournaments.scoring.firstPlace') }}
                 </v-list-item>
                 <v-list-item>
                   <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace">
-                    4 Points
+                    {{ t('rules.tournaments.scoring.numPoints', 4) }}
                   </v-chip>
-                  The player with the 2nd most wins gets 4 points for the week
+                  {{ t('rules.tournaments.scoring.secondPlace') }}
                 </v-list-item>
                 <v-list-item>
                   <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace">
-                    3 Points
+                    {{ t('rules.tournaments.scoring.numPoints', 3) }}
                   </v-chip>
-                  The player with the 3rd most wins gets 3 points for the week
+                  {{ t('rules.tournaments.scoring.thirdPlace') }}
                 </v-list-item>
                 <v-list-item>
                   <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary">
-                    2 Points
+                    {{ t('rules.tournaments.scoring.numPoints', 2) }}
                   </v-chip>
-                  Each other player who won at least one match gets 2 points for the week
+                  {{ t('rules.tournaments.scoring.oneWin') }}
                 </v-list-item>
                 <v-list-item>
                   <v-chip variant="outlined" class="mr-2 mb-1" color="#000">
-                    1 Point
+                    {{ t('rules.tournaments.scoring.numPoints') }}
                   </v-chip>
-                  Each other player who completed a match without winning gets 1 point for the week
+                  &nbsp; {{ t('rules.tournaments.scoring.completedMatch') }}
                 </v-list-item>
               </v-list>
             </v-row>
