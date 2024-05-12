@@ -329,6 +329,9 @@
     "findGame": "Encuentra una partida",
     "signUp": "Inicia sesión para jugar online",
     "rulesTitle": "Reglas de Cuttle",
+    "preview": {
+      "watchVideo": "Ver Video"
+    },
     "rulesReadText": "Lee la",
     "rulesPreviewImg":"Cómo jugar {title} en Cuttle",
     "rulesPreviewGif":"vista previa animada de {title} en Cuttle",

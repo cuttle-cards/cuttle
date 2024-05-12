@@ -329,6 +329,9 @@
     "findGame": "Find a game",
     "signUp": "Sign Up to Play Online",
     "rulesTitle": "Rules of Cuttle",
+    "preview": {
+      "watchVideo": "Watch Video"
+    },
     "rulesReadText": "Read the official",
     "rulesPreviewImg":"How to play {title} in Cuttle",
     "rulesPreviewGif":"Animated preview of {title} in Cuttle",

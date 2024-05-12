@@ -21,7 +21,7 @@
       <div>
         <v-btn color="newPrimary" @click="toggleDialog">
           <v-icon icon="mdi-play" />
-          Wacth Video
+          {{ t('rules.preview.watchVideo') }}
         </v-btn>
       </div>
     </v-col>
