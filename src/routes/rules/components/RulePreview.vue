@@ -44,6 +44,7 @@ export default {
     },
     description2: {
       type: String,
+      default: '',
     },
     staticImg: {
       type: String,
