@@ -45,15 +45,15 @@
         {{ t('callToAction.whyImplement') }}
       </p>
 
-      <h3>{{ t('callToAction.previousBetaHeader') }}</h3>
-      <p>{{ t('callToAction.previousBeta') }}</p>
-
       <h3>{{ t('callToAction.howLongHeader') }}</h3>
       <p>
         <strong class="text-newPrimary">
           {{ t('callToAction.howLong') }}
         </strong>
       </p>
+
+      <h3>{{ t('callToAction.previousBetaHeader') }}</h3>
+      <p>{{ t('callToAction.previousBeta') }}</p>
 
       <h3>{{ t('callToAction.gameModesHeader') }}</h3>
       <p>
