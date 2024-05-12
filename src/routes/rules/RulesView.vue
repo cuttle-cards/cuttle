@@ -335,19 +335,19 @@
   
               <div class="d-flex flex-column my-5">
                 <AwardCard
-                  username="Champion player"
+                  :username="t('rules.tournaments.championPlayer')"
                   :place="1"
                   :is-card="false"
                   class="mb-4"
                 />
                 <AwardCard
-                  username="Second Place Player"
+                  :username="t('rules.tournaments.secondPlacePlayer')"
                   :place="2"
                   :is-card="false"
                   class="mb-4"
                 />
                 <AwardCard
-                  username="Third Place Player"
+                  :username="t('rules.tournaments.thirdPlacePlayer')"
                   :place="3"
                   :is-card="false"
                   class="mb-4"

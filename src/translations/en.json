@@ -436,6 +436,9 @@
       "title": "Tournaments",
       "competitiveCuttle1": "Competitive Cuttle is divided into 4 seasons per year,one per suit: Clubs, Diamonds, Hearts, and Spades. At the end of each season, the top 8 players play a double elimination championship tournament and the champions are permanently accoladed on the site.",
       "competitiveCuttle2": "Each Season is divided into 13 weeks. For each week, we count the number of best 2/3 rankedmatches each player wins against unique opponents (ignoring stalemates) and assign players points based on their weekly standing.",
+      "championPlayer": "Champion Player",
+      "secondPlacePlayer": "Second Place Player",
+      "thirdPlacePlayer": "Third Place Player",
       "exampleImgExplanation": "Example of stats / tournament page",
       "scoring": {
         "numPoints": "1 Point | {count} Points",

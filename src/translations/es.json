@@ -436,6 +436,9 @@
       "title": "Torneos",
       "competitiveCuttle1": "El Cuttle Competitivo se divide en 4 temporadas por año, una por palo: Tréboles, Diamantes, Corazones y Picas. Al final de cada temporada, los 8 mejores jugadores participan en un torneo de campeonato de eliminación doble y los campeones son aclamados permanentemente en el sitio.",
       "competitiveCuttle2": "Cada temporada se divide en 13 semanas. Para cada semana, contamos el número de partidos clasificatorios mejor de 2 de 3 que cada jugador gana contra oponentes únicos (ignorando los empates) y asignamos puntos a los jugadores según su posición semanal.",
+      "championPlayer": "Jugador Campeón",
+      "secondPlacePlayer": "Jugador Segundo Lugar",
+      "thirdPlacePlayer": "Jugador Tercer Lugar",      
       "exampleImgExplanation": "Ejemplo de página de estadísticas / torneo",
       "scoring": {
         "numPoints": "1 Punto | {count} Puntos",
