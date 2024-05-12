@@ -617,7 +617,7 @@ describe('Home - Create Game', () => {
 });
 
 describe('Announcement Dialogs', () => {
-  it.only('Shows the FiveChangeDialog when user navigates to Home Page for the first time', () => {
+  it('Shows the FiveChangeDialog when user navigates to Home Page for the first time', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
