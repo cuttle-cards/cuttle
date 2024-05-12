@@ -384,6 +384,10 @@
       "nine": "Nine",
       "nineDescription": "Return a card from your opponent's field to their hand. They cannot play it next turn."
     },
+    "readyToPlay": {
+      "readyToPlay": "Ready to Play?",
+      "findAGame": "Find a Game"
+    },
     "multiplayerTitle": "Multiplayer Variants",
     "multiplayerText1": "Presently only 2-player cuttle is available at ",
     "multiplayerText2": "however Cuttle can be played with 2-4 players. 3 and 4-player Cuttle each have slight variations on the rules to optimize the game balance while changing the pace and the feel. Give them a try next time you're playing Cuttle in a group!",

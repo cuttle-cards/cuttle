@@ -384,6 +384,10 @@
       "nine": "Nueve",
       "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno"
     },
+    "readyToPlay": {
+      "readyToPlay": "¿Listo para jugar?",
+      "findAGame": "Encuentra una partida"
+    },
     "multiplayerTitle": "Variantes multijugador",
     "multiplayerText1": "Actualmente, solo está disponible Cuttle para 2 jugadores en ",
     "multiplayerText2": "sin embargo, Cuttle se puede jugar con 2, 3 o 4 jugadores. Cuttle, para 3 y 4 jugadores, tiene ligeras variaciones en las reglas para optimizar el equilibrio del juego y al mismo tiempo cambiar el ritmo y la sensación. ¡Pruébalo la próxima vez que juegues a Cuttle en grupo!",

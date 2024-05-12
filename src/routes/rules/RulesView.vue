@@ -252,10 +252,10 @@
           <section class="section">
             <v-row class="bg-surface-2 pa-8 rounded-xl d-flex flex-column align-center">
               <h2 class="text-surface-1 pa-8">
-                Ready To Play?
+                {{ t('rules.readyToPlay.readyToPlay') }}
               </h2>
               <v-btn to="/" color="newPrimary">
-                Find A Game
+                {{ t('rules.readyToPlay.findAGame') }}
               </v-btn>
             </v-row>
           </section>

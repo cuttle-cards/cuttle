@@ -384,6 +384,10 @@
       "nine": "Neuf",
       "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour."
     },
+    "readyToPlay": {
+      "readyToPlay": "Prêt à jouer ?",
+      "findAGame": "Trouver une partie"
+    },
     "multiplayerTitle": "Variantes multijoueurs",
     "multiplayerText1": "Actuellement, seule la cuttle à 2 joueurs est disponible sur ",
     "multiplayerText2": "cependant, Cuttle peut être joué avec 2 à 4 joueurs. Cuttle, pour 3 et 4 joueurs, présente de légères variations dans les règles pour optimiser l'équilibre et le rythme du jeu. Essayez-les la prochaine fois que vous jouerez à Cuttle en groupe!",
