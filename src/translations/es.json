@@ -324,7 +324,6 @@
       "spades": "Picas (más fuerte)"
     },
     "howToPlay": "Cómo jugar",
-    "tournaments":"Torneos",
     "cuttleTitle": "¿Qué es Cuttle?",
     "cuttleText": "Cuttle es un juego de batalla de cartas para 2 jugadores que se juega con una baraja de naipes estándar de 52 cartas. Tiene la sutileza estratégica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu habilidad en el juego de cartas más profundo bajo el mar!",
     "findGame": "Encuentra una partida",
@@ -432,6 +431,12 @@
       "deckExhaustAnswer": "Cuando no quedan cartas en el mazo, los jugadores pueden pasar su turno en lugar de robar. Si hay tres pases consecutivos, es decir, el jugador 1 pasa, el jugador 2 pasa y luego el jugador 1 pasa nuevamente, el juego termina en un punto muerto y ningún jugador gana.",
       "whereToPlay": "¿Dónde puedo jugar a Cuttle?",
       "whereToPlayAnswer": "¡Puedes jugar a Cuttle en cualquier lugar donde tengas una baraja de cartas y un amigo! Si quieres jugar online, solo hay un lugar:"
+    },
+    "tournaments": {
+      "title": "Torneos",
+      "competitiveCuttle1": "El Cuttle Competitivo se divide en 4 temporadas por año, una por palo: Tréboles, Diamantes, Corazones y Picas. Al final de cada temporada, los 8 mejores jugadores participan en un torneo de campeonato de eliminación doble y los campeones son aclamados permanentemente en el sitio.",
+      "competitiveCuttle2": "Cada temporada se divide en 13 semanas. Para cada semana, contamos el número de partidos clasificatorios mejor de 2 de 3 que cada jugador gana contra oponentes únicos (ignorando los empates) y asignamos puntos a los jugadores según su posición semanal.",
+      "exampleImgExplanation": "Ejemplo de página de estadísticas / torneo"
     }
   },
   "stats": {

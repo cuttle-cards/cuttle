@@ -324,15 +324,13 @@
               class="flex-column"
             >
               <h1 class="text-h2 text-surface-2 my-6 section-title">
-                {{ t('rules.tournaments') }}
+                {{ t('rules.tournaments.title') }}
               </h1>
             </v-row>
   
             <v-row>
               <p>
-                Competitive Cuttle is divided into 4 seasons per year, one per suit: Clubs, Diamonds, Hearts,
-                and Spades. At the end of each season, the top 8 players play a double elimination championship
-                tournament and the champions are permanently accoladed on the site.
+                {{ t('rules.tournaments.competitiveCuttle1') }}
               </p>
   
               <div class="d-flex flex-column my-5">
@@ -356,9 +354,7 @@
                 />
               </div>
               <p>
-                Each Season is divided into 13 weeks. For each week, we count the number of best 2/3 ranked
-                matches each player wins against unique opponents (ignoring stalemates) and assign players
-                points based on their weekly standing.
+                {{ t('rules.tournaments.competitiveCuttle2') }}
               </p>
               <v-list class="mt-4 rounded-xl w-100 my-8" bg-color="surface-2" base-color="surface-1">
                 <v-list-item>
@@ -404,7 +400,7 @@
               />
             </v-row>
             <v-row>
-              <p>*Example of stats / tournament page</p>
+              <p>*{{ t('rules.tournaments.exampleImgExplanation') }}</p>
             </v-row>
           </section>
         </v-col>

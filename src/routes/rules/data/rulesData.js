@@ -138,7 +138,7 @@ const sectionTitle = [
   { id:'royals',title: 'rules.royals.title', href: '#royals' },
   { id:'oneoffs',title: 'rules.oneoffs.title', href: '#oneoffs' },
   { id:'faq',title: 'rules.faq.title', href: '#faq' },
-  { id: 'tournaments',title: 'rules.tournaments', href: '#tournaments' },
+  { id: 'tournaments',title: 'rules.tournaments.title', href: '#tournaments' },
 ];
 
 export { rules,  oneOffs, royals, sectionTitle };

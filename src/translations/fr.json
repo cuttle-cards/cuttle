@@ -324,7 +324,6 @@
       "spades": "Piques (le plus for)"
     },
     "howToPlay": "Comment jouer",
-    "tournaments":"Tournois",
     "cuttleTitle": "Qu'est-ce que Cuttle?",
     "cuttleText": "Cuttle est un jeu de cartes de combat à deux joueurs joué avec un jeu de cartes standard de 52 cartes. Il présente la nuance stratégique des jeux de cartes à collectionner comme Magic, avec l'équilibre élégant d'un jeu standard. Vous pouvez même y jouer gratuitement! Testez votre courage dans le jeu de cartes le plus intense des abysses!",
     "findGame": "Trouver une partie",
@@ -432,7 +431,14 @@
       "deckExhaustAnswer": "Lorsqu'il n'y a plus de cartes dans le paquet, les joueurs peuvent passer leur tour au lieu de piocher. S'il y a trois passes consécutives, c'est-à-dire que le joueur 1 passe, le joueur 2 passe, puis le joueur 1 passe à nouveau, la partie se termine par une impasse et il y a égalité.",
       "whereToPlay": "Où puis-je jouer à Cuttle?",
       "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami! Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit:"
+    },
+    "tournaments": {
+      "title": "Tournois",
+      "competitiveCuttle1": "Le Cuttle Compétitif est divisé en 4 saisons par an, une par couleur : Trèfle, Carreau, Cœur et Pique. À la fin de chaque saison, les 8 meilleurs joueurs participent à un tournoi de championnat à double élimination et les champions sont acclamés de façon permanente sur le site.",
+      "competitiveCuttle2": "Chaque saison est divisée en 13 semaines. Pour chaque semaine, nous comptons le nombre de matchs classés au meilleur des 2/3 que chaque joueur remporte contre des adversaires uniques (en ignorant les matchs nuls) et attribuons des points aux joueurs en fonction de leur classement hebdomadaire.",
+      "exampleImgExplanation": "Exemple de page de statistiques / tournoi"
     }
+
   },
   "stats": {
     "error": {
