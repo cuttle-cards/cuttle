@@ -7,6 +7,17 @@
     data-cy="five-change-dialog"
     scrollable
   >
+    <template #activator>
+      <v-btn
+        color="newSecondary"
+        width="full"
+        rounded="0"
+        block
+      >
+        {{ t('callToAction.revisedFives') }}
+        {{ t('callToAction.revisedFivesAddition') }}
+      </v-btn>
+    </template>
     <template #title>
       <div color="primary" class="w-100">
         <div class="d-flex justify-space-between w-100">
