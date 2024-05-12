@@ -42,6 +42,8 @@
       <p>
         {{ t('callToAction.whyImplement') }}
       </p>
+      <h3>{{ t('callToAction.previousBetaHeader') }}</h3>
+      <p>{{ t('callToAction.previousBeta') }}</p>
       <h3>{{ t('callToAction.gameModesHeader') }}</h3>
       <p>
         {{ t('callToAction.gameModes') }}
