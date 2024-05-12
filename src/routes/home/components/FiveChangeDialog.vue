@@ -36,18 +36,23 @@
           :high-elevation="true"
         />
       </div>
+
       <h2>{{ t('callToAction.ruleInfoHeader') }}</h2>
       <p><strong class="text-newPrimary">{{ t('callToAction.ruleInfo') }}</strong></p>
+
       <h3>{{ t('callToAction.whyImplementHeader') }}</h3>
       <p>
         {{ t('callToAction.whyImplement') }}
       </p>
+
       <h3>{{ t('callToAction.previousBetaHeader') }}</h3>
       <p>{{ t('callToAction.previousBeta') }}</p>
+
       <h3>{{ t('callToAction.gameModesHeader') }}</h3>
       <p>
         {{ t('callToAction.gameModes') }}
       </p>
+
       <h3>{{ t('callToAction.learnMoreHeader') }}</h3>
       <p>
         {{ t('callToAction.learnMore1') }}
