@@ -330,10 +330,10 @@
     "signUp": "Inicia sesión para jugar online",
     "rulesTitle": "Reglas de Cuttle",
     "preview": {
-      "watchVideo": "Ver Video"
+      "watchVideo": "Ver Video",
+      "imgAlt":"Cómo jugar {title} en Cuttle"
     },
     "rulesReadText": "Lee la",
-    "rulesPreviewImg":"Cómo jugar {title} en Cuttle",
     "rulesPreviewGif":"vista previa animada de {title} en Cuttle",
     "rulesWatchText": "oficial o mira el tutorial de cuttle.cards a continuación para aprender las reglas y familiarizarte con el flujo del juego.",
     "goalTitle": "Objetivo",

@@ -4,7 +4,7 @@
       <v-img
         :src="staticImg"
         aspect-ratio="1.7778"
-        :alt="t('rules.rulesPreviewImg', { title })"
+        :alt="t('rules.preview.imgAlt', { title })"
         class="mr-2"
         aria-hidden="false"
         role="img"
