@@ -38,12 +38,6 @@ export default {
       type: String,
       required: true,
     },
-    subtitle: {
-      type: String,
-    },
-    subtitle2: {
-      type: String,
-    },
     description: {
       type: String,
       required: true,
