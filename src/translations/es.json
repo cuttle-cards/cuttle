@@ -316,7 +316,13 @@
   },
   "rules": {
     "introduction": "Introducción",
-    "actions":"Comportamiento",
+    "actions":{
+      "title": "Comportamiento",
+      "clubs": "Tréboles (más débil)",
+      "diamonds": "Diamantes",
+      "hearts": "Corazones",
+      "spades": "Picas (más fuerte)"
+    },
     "howToPlay": "Cómo jugar",
     "tournaments":"Torneos",
     "cuttleTitle": "¿Qué es Cuttle?",

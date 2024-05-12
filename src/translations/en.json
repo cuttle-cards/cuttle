@@ -316,7 +316,13 @@
   },
   "rules": {
     "introduction": "Introduction",
-    "actions":"Actions",
+    "actions": {
+      "title": "Actions",
+      "clubs": "Clubs (weakest)",
+      "diamonds": "Diamonds",
+      "hearts": "Hearts",
+      "spades": "Spades (strongest)"
+    },
     "howToPlay": "How to play",
     "tournaments":"Tournaments",
     "cuttleTitle": "What is Cuttle?",

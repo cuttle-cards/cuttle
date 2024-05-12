@@ -41,6 +41,7 @@
               }"
               class="flex-column align-start"
             >
+              <!-- What is Cuttle? -->
               <div class="mt-8">
                 <h1 class="text-h2 text-surface-2 mb-5 section-title">
                   {{ t('rules.introduction') }}
@@ -102,10 +103,11 @@
             </v-row>
           </section>
 
+          <!-- Actions -->
           <section class="section">
             <v-row>
               <h1 class="text-h2 text-surface-2 mt-5 section-title">
-                {{ t('rules.actions') }}
+                {{ t('rules.actions.title') }}
               </h1>
             </v-row>
             <v-row
@@ -136,25 +138,38 @@
                     aria-hidden="false"
                     role="img"
                   />
-                  &nbsp; Clubs (weakest) &lt; &nbsp;<v-img
+                  &nbsp;
+                  {{ t('rules.actions.clubs') }}
+                  &lt; &nbsp;
+
+                  <v-img
                     src="img/rulesView/rules_action_diamond.svg"
                     class="mr-1 max-w-24"
                     aria-hidden="false"
                     role="img"
                   />
-                  &nbsp; Diamonds &lt; &nbsp;<v-img
+                  &nbsp;
+                  {{ t('rules.actions.diamonds') }}
+                  &lt; &nbsp;
+
+                  <v-img
                     src="img/rulesView/rules_action_hearts.svg"
                     class="mr-1 max-w-24"
                     aria-hidden="false"
                     role="img"
                   />
-                  &nbsp; Hearts &lt; &nbsp;<v-img
+                  &nbsp;
+                  {{ t('rules.actions.hearts') }}
+                  &lt; &nbsp;
+
+                  <v-img
                     src="img/rulesView/rules_action_spades.svg"
                     class="mr-1 max-w-24"
                     aria-hidden="false"
                     role="img"
                   />
-                  &nbsp; Spades (highest)
+                  &nbsp;
+                  {{ t('rules.actions.spades') }}
                 </p>
               </div>
             </v-row>

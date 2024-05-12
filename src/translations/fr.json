@@ -316,7 +316,13 @@
   },
   "rules": {
     "introduction": "Introduction",
-    "actions":"Actions",
+    "actions": {
+      "title": "Actions",
+      "clubs": "Trèfles (moins fort)",
+      "diamonds": "Carreaux",
+      "hearts": "Cœurs",
+      "spades": "Piques (le plus for)"
+    },
     "howToPlay": "Comment jouer",
     "tournaments":"Tournois",
     "cuttleTitle": "Qu'est-ce que Cuttle?",
