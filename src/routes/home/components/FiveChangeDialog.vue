@@ -61,6 +61,7 @@
         <strong class="text-newPrimary">
           {{ t('callToAction.howLong') }}
         </strong>
+        {{ t('callToAction.howLong2') }}
       </p>
 
       <h3>{{ t('callToAction.previousBetaHeader') }}</h3>
