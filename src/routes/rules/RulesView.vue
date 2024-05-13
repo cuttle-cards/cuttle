@@ -3,7 +3,12 @@
     <v-container>
       <BackToTop />
       <v-row>
-        <v-col class="sidebar-container" lg="3" sm="12">
+        <v-col
+          class="sidebar-container"
+          :class="authenticated ? 'authenticated' : 'unauthenticated'"
+          lg="3"
+          sm="12"
+        >
           <ul class="ms-5 sidebar-title mt-8">
             <li
               v-for="{ title, href, id } in sectionTitle"
@@ -455,6 +460,9 @@ export default {
   },
   computed: {
     ...mapStores(useAuthStore),
+    authenticated() {
+      return this.authStore.authenticated;
+    },
     buttonText() {
       if (this.authStore.username) {
         return this.$t('rules.findGame');
@@ -495,7 +503,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 ::-webkit-scrollbar {
   width: 0px;
 }
@@ -537,7 +545,13 @@ export default {
   .sidebar-container {
     background: rgba(var(--v-theme-surface-1));
     position: sticky;
-    top: 30px;
+
+    &.authenticated {
+      top: 60px;
+    }
+    &.unauthenticated {
+      top: 0px;
+    }
     z-index: 999;
   }
   .sidebar-title {
