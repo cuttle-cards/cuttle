@@ -14,16 +14,16 @@
         rounded="0"
         block
       >
-        {{ t('callToAction.revisedFives') }}
-        {{ t('callToAction.revisedFivesAddition') }}
+        {{ t('fiveChange.revisedFives') }}
+        {{ t('fiveChange.revisedFivesAddition') }}
       </v-btn>
     </template>
     <template #title>
       <div color="primary" class="w-100">
         <div class="d-flex justify-space-between w-100">
           <h1 class="mb-4">
-            {{ t('callToAction.revisedFives') }}
-            <span class="d-none d-sm-inline">({{ t('callToAction.revisedFivesAddition') }})</span>
+            {{ t('fiveChange.revisedFives') }}
+            <span class="d-none d-sm-inline">({{ t('fiveChange.revisedFivesAddition') }})</span>
           </h1>
           <v-btn
             variant="text"
@@ -48,35 +48,35 @@
         />
       </div>
 
-      <h2>{{ t('callToAction.ruleInfoHeader') }}</h2>
-      <p><strong class="text-newPrimary">{{ t('callToAction.ruleInfo') }}</strong></p>
+      <h2>{{ t('fiveChange.ruleInfoHeader') }}</h2>
+      <p><strong class="text-newPrimary">{{ t('fiveChange.ruleInfo') }}</strong></p>
 
-      <h3>{{ t('callToAction.whyImplementHeader') }}</h3>
+      <h3>{{ t('fiveChange.whyImplementHeader') }}</h3>
       <p>
-        {{ t('callToAction.whyImplement') }}
+        {{ t('fiveChange.whyImplement') }}
       </p>
 
-      <h3>{{ t('callToAction.howLongHeader') }}</h3>
+      <h3>{{ t('fiveChange.howLongHeader') }}</h3>
       <p>
         <strong class="text-newPrimary">
-          {{ t('callToAction.howLong') }}
+          {{ t('fiveChange.howLong') }}
         </strong>
-        {{ t('callToAction.howLong2') }}
+        {{ t('fiveChange.howLong2') }}
       </p>
 
-      <h3>{{ t('callToAction.previousBetaHeader') }}</h3>
-      <p>{{ t('callToAction.previousBeta') }}</p>
+      <h3>{{ t('fiveChange.previousBetaHeader') }}</h3>
+      <p>{{ t('fiveChange.previousBeta') }}</p>
 
-      <h3>{{ t('callToAction.gameModesHeader') }}</h3>
+      <h3>{{ t('fiveChange.gameModesHeader') }}</h3>
       <p>
-        {{ t('callToAction.gameModes') }}
+        {{ t('fiveChange.gameModes') }}
       </p>
 
-      <h3>{{ t('callToAction.learnMoreHeader') }}</h3>
+      <h3>{{ t('fiveChange.learnMoreHeader') }}</h3>
       <p>
-        {{ t('callToAction.learnMore1') }}
+        {{ t('fiveChange.learnMore1') }}
         <a href="https://discord.gg/wK57MMu9GR" class="text-newSecondary">discord,</a>
-        {{ t('callToAction.learnMore2') }}
+        {{ t('fiveChange.learnMore2') }}
       </p>
     </template>
     <template #actions>
