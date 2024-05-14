@@ -2,7 +2,7 @@
   <v-dialog
     v-model="show"
     :persistent="persistent"
-    max-width="650"
+    :max-width="maxWidth"
     :scrollable="scrollable"
     elevation
     scrim="surface-1"
@@ -69,7 +69,11 @@ export default {
     persistent: {
       type: Boolean,
       default: true
-    }
+    },
+    maxWidth: {
+      type: Number,
+      default: 650,
+    },
   },
   emits: ['update:modelValue'],
   computed: {

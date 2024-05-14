@@ -461,7 +461,7 @@
   },
   "fiveChange": {
     "revisedFives": "Recycleurs 5",
-    "revisedFivesAddition": "",
+    "revisedFivesAddition": "(Changement de règle)",
     "ruleInfoHeader": "Informations sur la règle",
     "ruleInfo": "Jouer un 5 a désormais un effet révisé : défaussez une carte, puis piochez trois cartes",
     "whyImplementHeader": "Pourquoi mettons-nous cela en œuvre ?",
