@@ -461,7 +461,7 @@
   },
   "fiveChange": {
     "revisedFives": "Recycler 5's",
-    "revisedFivesAddition": "Extended Beta",
+    "revisedFivesAddition": "(Extended Beta)",
     "ruleInfoHeader":"Rule Information",
     "ruleInfo": "Playing a 5 now has a revised one-off effect: discard a card, then draw three cards ",
     "whyImplementHeader" : "Why are we implementing this?",

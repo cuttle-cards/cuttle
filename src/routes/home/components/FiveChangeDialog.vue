@@ -23,7 +23,7 @@
         <div class="d-flex justify-space-between w-100">
           <h1 class="mb-4">
             {{ t('fiveChange.revisedFives') }}
-            <span class="d-none d-sm-inline">({{ t('fiveChange.revisedFivesAddition') }})</span>
+            <span class="d-none d-sm-inline">{{ t('fiveChange.revisedFivesAddition') }}</span>
           </h1>
           <v-btn
             variant="text"

@@ -461,7 +461,7 @@
   },
   "fiveChange": {
     "revisedFives": "5's Revisados",
-    "revisedFivesAddition": "Cambio de regla",
+    "revisedFivesAddition": "",
     "ruleInfoHeader": "Información de la Regla",
     "ruleInfo": "Jugar un 5 ahora tiene un efecto revisado: descarta una carta, luego roba tres cartas",
     "whyImplementHeader": "¿Por qué estamos implementando esto?",
