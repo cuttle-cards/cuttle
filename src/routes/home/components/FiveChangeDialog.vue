@@ -51,10 +51,6 @@
       <h2>{{ t('fiveChange.ruleInfoHeader') }}</h2>
       <p><strong class="text-newPrimary">{{ t('fiveChange.ruleInfo') }}</strong></p>
 
-      <h3>{{ t('fiveChange.whyImplementHeader') }}</h3>
-      <p>
-        {{ t('fiveChange.whyImplement') }}
-      </p>
 
       <h3>{{ t('fiveChange.howLongHeader') }}</h3>
       <p>
@@ -62,6 +58,12 @@
           {{ t('fiveChange.howLong') }}
         </strong>
         {{ t('fiveChange.howLong2') }}
+      </p>
+
+
+      <h3>{{ t('fiveChange.whyImplementHeader') }}</h3>
+      <p>
+        {{ t('fiveChange.whyImplement') }}
       </p>
 
       <h3>{{ t('fiveChange.previousBetaHeader') }}</h3>
