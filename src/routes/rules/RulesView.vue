@@ -6,7 +6,7 @@
         <v-col
           class="sidebar-container"
           :class="authenticated ? 'authenticated' : 'unauthenticated'"
-          lg="3"
+          md="3"
           sm="12"
         >
           <ul class="ms-5 sidebar-title mt-8">
