@@ -2,7 +2,8 @@ import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
-import { sleep } from '@/util/sleep';
+import { sleep } from '../util/sleep';
+
 
 /**
  * @returns number of queens a given player has
@@ -327,10 +328,28 @@ export const useGameStore = defineStore('game', {
     },
     async processFours(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
-      this.showResolveFive = false;
+      this.showResolveFour = false;
       this.lastEventDiscardedCards = discardedCards;
 
       await sleep(1000);
+      this.resetPNumIfNullThenUpdateGame(game);
+    },
+    async processFives(discardedCards, game) {
+      this.waitingForOpponentToDiscard = false;
+      this.showResolveFive = false;
+      this.lastEventDiscardedCards = discardedCards;
+
+      // Animate discard then update full game to animate draw
+      if (discardedCards?.length) {
+        await sleep(1000);
+        const opponentHandAfterDiscard = this.opponent.hand.filter((card) => !discardedCards.includes(card.id));
+        const playerHandAfterDiscard = this.player.hand.filter((card) => !discardedCards.includes(card.id));
+
+        this.opponent.hand = opponentHandAfterDiscard;
+        this.player.hand = playerHandAfterDiscard;
+        await sleep(1000);
+      }
+
       this.resetPNumIfNullThenUpdateGame(game);
     },
     handleGameResponse: (jwres, resolve, reject) => {
