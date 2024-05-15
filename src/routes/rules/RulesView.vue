@@ -259,7 +259,7 @@
               <h2 class="text-surface-1 pa-8">
                 {{ t('rules.readyToPlay.readyToPlay') }}
               </h2>
-              <v-btn to="/" color="newPrimary">
+              <v-btn to="/" color="newPrimary" data-cy="ready-to-play-button">
                 {{ t('rules.readyToPlay.findAGame') }}
               </v-btn>
             </v-row>

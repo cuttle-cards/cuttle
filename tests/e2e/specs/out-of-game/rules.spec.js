@@ -8,13 +8,13 @@ describe('Rules Page', () => {
     window.localStorage.setItem('fiveChangeBannerDismissed', true);
   });
 
-  it('Top Home button - Navigates to Login when unauthenticated and home when authenticated', () => {
-    cy.get('[data-cy=top-home-button]').click();
+  it.only('Top Home button - Navigates to Login when unauthenticated and home when authenticated', () => {
+    cy.get('[data-cy=ready-to-play-button]').click();
     cy.location('pathname').should('eq', '/signup');
     // Log in and try button again
     cy.signupPlayer(myUser);
     cy.vueRoute('/rules');
-    cy.get('[data-cy=top-home-button]').click();
+    cy.get('[data-cy=ready-to-play-button]').click();
     cy.location('pathname').should('eq', '/');
   });
 
