@@ -107,7 +107,6 @@ import { playAudio } from '@/util/audio.js';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
-import { sleep } from '@/util/sleep';
 
 // Deps
 const { t } = useI18n();
