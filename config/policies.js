@@ -52,6 +52,7 @@ module.exports.policies = {
   'game/counter': ['isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId'],
   'game/resolve': ['isLoggedIn', 'isInGame', 'hasOpId'],
   'game/resolve-four': ['isLoggedIn', 'isInGame', 'hasCardIdOne'],
+  'game/resolve-five': ['isLoggedIn', 'isInGame'],
   'game/resolve-three': ['isLoggedIn', 'isInGame', 'hasCardId'],
   'game/concede': ['isLoggedIn', 'isInGame'],
   'game/stalemate': ['isLoggedIn', 'isInGame'],
