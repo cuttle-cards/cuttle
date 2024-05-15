@@ -463,7 +463,7 @@ export default {
   margin-top: 64px;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 960px) {
   .sidebar-title {
     position: sticky;
     top: 130px;
@@ -471,7 +471,7 @@ export default {
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 960px) {
   .sidebar-container {
     background: rgba(var(--v-theme-surface-1));
     position: sticky;
