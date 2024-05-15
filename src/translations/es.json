@@ -338,8 +338,6 @@
     "howToPlay": "Cómo jugar",
     "cuttleTitle": "¿Qué es Cuttle?",
     "cuttleText": "Cuttle es un juego de batalla de cartas para 2 jugadores que se juega con una baraja de naipes estándar de 52 cartas. Tiene la sutileza estratégica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu habilidad en el juego de cartas más profundo bajo el mar!",
-    "findGame": "Encuentra una partida",
-    "signUp": "Inicia sesión para jugar online",
     "rulesTitle": "Reglas de Cuttle",
     "preview": {
       "watchVideo": "Ver Video",
@@ -399,8 +397,8 @@
       "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno"
     },
     "readyToPlay": {
-      "readyToPlay": "¿Listo para jugar?",
-      "findAGame": "Encuentra una partida"
+      "findGame": "Encuentra una partida",
+      "signUp": "Inicia sesión para jugar online"
     },
     "multiplayerTitle": "Variantes multijugador",
     "multiplayerText1": "Actualmente, solo está disponible Cuttle para 2 jugadores en ",

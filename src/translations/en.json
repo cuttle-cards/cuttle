@@ -338,8 +338,6 @@
     "howToPlay": "How to play",
     "cuttleTitle": "What is Cuttle?",
     "cuttleText": "Cuttle is a two player battle card game played with a standard 52-card deck of cards. It has the strategic nuance of trading card games like Magic, with the elegant balance of a standard deck--and you can play it for free! Test your mettle in the deepest card game under the sea!",
-    "findGame": "Find a game",
-    "signUp": "Sign Up to Play Online",
     "rulesTitle": "Rules of Cuttle",
     "preview": {
       "watchVideo": "Watch Video",
@@ -400,7 +398,8 @@
     },
     "readyToPlay": {
       "readyToPlay": "Ready to Play?",
-      "findAGame": "Find a Game"
+      "signUp": "Sign Up to Play Online",
+      "findGame": "Find a Game"
     },
     "multiplayerTitle": "Multiplayer Variants",
     "multiplayerText1": "Presently only 2-player cuttle is available at ",

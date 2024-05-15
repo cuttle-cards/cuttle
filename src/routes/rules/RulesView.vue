@@ -260,7 +260,7 @@
                 {{ t('rules.readyToPlay.readyToPlay') }}
               </h2>
               <v-btn to="/" color="newPrimary" data-cy="ready-to-play-button">
-                {{ t('rules.readyToPlay.findAGame') }}
+                {{ buttonText }}
               </v-btn>
             </v-row>
           </section>
@@ -465,9 +465,9 @@ export default {
     },
     buttonText() {
       if (this.authStore.username) {
-        return this.$t('rules.findGame');
+        return this.$t('rules.readyToPlay.findGame');
       }
-      return this.$t('rules.signUp');
+      return this.$t('rules.readyToPlay.signUp');
     },
     theme() {
       return this.$vuetify.theme.themes.cuttleTheme.colors;

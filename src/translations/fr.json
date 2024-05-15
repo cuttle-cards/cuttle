@@ -338,8 +338,6 @@
     "howToPlay": "Comment jouer",
     "cuttleTitle": "Qu'est-ce que Cuttle?",
     "cuttleText": "Cuttle est un jeu de cartes de combat à deux joueurs joué avec un jeu de cartes standard de 52 cartes. Il présente la nuance stratégique des jeux de cartes à collectionner comme Magic, avec l'équilibre élégant d'un jeu standard. Vous pouvez même y jouer gratuitement! Testez votre courage dans le jeu de cartes le plus intense des abysses!",
-    "findGame": "Trouver une partie",
-    "signUp": "Inscrivez-vous pour jouer en ligne",
     "rulesTitle": "Règles de Cuttle",
     "preview": {
       "watchVideo": "Regarder la vidéo",
@@ -399,8 +397,8 @@
       "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour."
     },
     "readyToPlay": {
-      "readyToPlay": "Prêt à jouer ?",
-      "findAGame": "Trouver une partie"
+      "findGame": "Trouver une partie",
+      "signUp": "Inscrivez-vous pour jouer en ligne"
     },
     "multiplayerTitle": "Variantes multijoueurs",
     "multiplayerText1": "Actuellement, seule la cuttle à 2 joueurs est disponible sur ",
