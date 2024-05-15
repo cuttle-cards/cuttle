@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
+import { sleep } from '../util/sleep';
 
 /**
  * @returns number of queens a given player has
@@ -95,9 +96,11 @@ export const useGameStore = defineStore('game', {
     lastEventCardChosen: null,
     lastEventPlayerChoosing: false,
     // Fours
-    discarding: false,
+    showResolveFour: false,
     waitingForOpponentToDiscard: false,
     lastEventDiscardedCards: null,
+    //fives
+    showResolveFive: false,
     // Sevens
     playingFromDeck: false,
     waitingForOpponentToPlayFromDeck: false,
@@ -187,7 +190,7 @@ export const useGameStore = defineStore('game', {
       const key = `p${(state.myPNum + 1) % 2}Rematch`;
       return state[key];
     },
-    opponentDeclinedRematch()  {
+    opponentDeclinedRematch() {
       return this.opponentWantsRematch === false;
     },
     someoneDeclinedRematch() {
@@ -324,14 +327,31 @@ export const useGameStore = defineStore('game', {
         this.resetPNumIfNullThenUpdateGame(game);
       }, 1000);
     },
-    processFours(discardedCards, game) {
+    async processFours(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
-      this.discarding = false;
+      this.showResolveFour = false;
       this.lastEventDiscardedCards = discardedCards;
 
-      setTimeout(() => {
-        this.resetPNumIfNullThenUpdateGame(game);
-      }, 1000);
+      await sleep(1000);
+      this.resetPNumIfNullThenUpdateGame(game);
+    },
+    async processFives(discardedCards, game) {
+      this.waitingForOpponentToDiscard = false;
+      this.showResolveFive = false;
+      this.lastEventDiscardedCards = discardedCards;
+
+      // Animate discard then update full game to animate draw
+      if (discardedCards?.length) {
+        await sleep(1000);
+        const opponentHandAfterDiscard = this.opponent.hand.filter((card) => !discardedCards.includes(card.id));
+        const playerHandAfterDiscard = this.player.hand.filter((card) => !discardedCards.includes(card.id));
+
+        this.opponent.hand = opponentHandAfterDiscard;
+        this.player.hand = playerHandAfterDiscard;
+        await sleep(1000);
+      }
+
+      this.resetPNumIfNullThenUpdateGame(game);
     },
     handleGameResponse: (jwres, resolve, reject) => {
       const authStore = useAuthStore();
@@ -597,6 +617,21 @@ export const useGameStore = defineStore('game', {
         );
       }).then(() => {
         this.waitingForOpponentToCounter = false;
+      });
+    },
+    async requestResolveFive(cardId) {
+      this.myTurnToCounter = false;
+      this.waitingForOpponentToCounter = false;
+      return new Promise((resolve, reject) => {
+        io.socket.get(
+          '/api/game/resolveFive',
+          {
+            cardId,
+          },
+          (res, jwres) => {
+            return this.handleGameResponse(jwres, resolve, reject);
+          },
+        );
       });
     },
     async requestResolveSevenDoubleJacks({ cardId, index }) {

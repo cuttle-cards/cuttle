@@ -10,6 +10,7 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
+  window.localStorage.setItem('fiveChangeBannerDismissed', true);
 }
 
 function assertSuccessfulJoin(gameState) {
@@ -440,7 +441,9 @@ describe('Home - Create Game', () => {
 
   it('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
-
+    cy.window().then((win) => {
+      win.localStorage.setItem('fiveChangeBannerDismissed', true);
+    });
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
 
@@ -610,5 +613,22 @@ describe('Home - Create Game', () => {
       // The game should go away after the ready
       cy.get('[data-cy=game-list-item]').should('have.length', 0);
     });
+  });
+});
+
+describe('Announcement Dialogs', () => {
+  it('Shows the FiveChangeDialog when user navigates to Home Page for the first time', () => {
+    cy.wipeDatabase();
+    cy.visit('/');
+    cy.signupPlayer(myUser);
+    cy.vueRoute('/');
+
+    cy.get('[data-cy=five-change-dialog]').should('be.visible');
+    cy.get('[data-cy=five-change-dialog-okay').click();
+
+    cy.get('[data-cy=five-change-dialog]').should('not.exist');
+
+    cy.reload();
+    cy.get('[data-cy=five-change-dialog]').should('not.exist');
   });
 });

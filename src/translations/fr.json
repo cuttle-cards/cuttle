@@ -62,6 +62,7 @@
       "opponentMayCounter": "L'adversaire peut contrer",
       "opponentMustResolve": "L'adversaire doit résoudre",
       "opponentIsDiscarding": "L'adversaire se défausse",
+      "opponentSkipsDiscarding": "L'adversaire saute la défausse",
       "opponentChoosingFromScrap": "L'adversaire choisit une carte à partir de la défausse",
       "opponentPlayingFromDeck": "Adversaire jouant depuis le paquet",
       "opponentMustDiscardJack": "L'adversaire doit défausser un valet",
@@ -95,6 +96,12 @@
         "discardTwoCards": "Défaussez deux cartes",
         "discard": "Défausser",
         "oppponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
+      },
+      "five":{
+        "discardAndDraw" : "Jeter et piocher",
+        "nice": "Bon!",
+        "resolveFive": "Vous avez résolu un 5 ponctuel. Choisissez une carte à défausser et vous piocherez ensuite 3 cartes",
+        "resolveFiveNoCards": "Vous avez résolu un problème ponctuel de 5, mais vous n'avez aucune carte en main à défausser. Vous piochez 3 cartes sans les défausser. Doux!"
       },
       "counterDialogs": {
         "counterTitle": "Chance de contrer",
@@ -186,7 +193,7 @@
         "2": "Cible et élimine une figure ou un huit en lunettes.",
         "3": "Récupérez un carte dans la défausse.",
         "4": "Votre adversaire défausse deux cartes de son choix.",
-        "5": "Piochez deux cartes du paquet.",
+        "5": "Défaussez 1 carte et piochez-en jusqu'à 3",
         "6": "Élimine toutes les figures et les huit en lunettes.",
         "7": "Dévoilez deux cartes du paquet et jouez en une.",
         "8": "Révèle la main de votre adversaire.",
@@ -245,6 +252,11 @@
       },
       "seven": {
         "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte du paquet."
+      },
+      "five":{
+        "selectCardToDiscard" : "Vous devez sélectionner une carte à défausser",
+        "incorrectCard" : "Mauvaise carte jouée",
+        "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
       },
       "draw": {
         "deckIsEmpty": "Le paquet est vide, voune pouvez pas piocher.",
@@ -362,7 +374,7 @@
       "four": "Quatre",
       "fourDescription": "Votre adversaire doit défausse deux cartes de son choix.",
       "five": "Cinq",
-      "fiveDescription": "Piochez deux cartes du jeu pour les ajouter à votre main. Attention de ne pas dépasser la limite de 8 cartes en main.",
+      "fiveDescription": "Défaussez une carte, puis piochez jusqu'à trois cartes du jeu jusqu'à la limite de 8 cartes en main.",
       "six": "Six",
       "sixDescription": "Élimine toutes les figures et les huit en lunettes de la table.",
       "seven": "Sept",
@@ -446,5 +458,24 @@
     "404": {
       "title": "404 Non Trouvé"
     }
+  },
+  "fiveChange": {
+    "revisedFives": "Recycleurs 5",
+    "revisedFivesAddition": "(Changement de règle)",
+    "ruleInfoHeader": "Informations sur la règle",
+    "ruleInfo": "Jouer un 5 a désormais un effet révisé : défaussez une carte, puis piochez trois cartes",
+    "whyImplementHeader": "Pourquoi mettons-nous cela en œuvre ?",
+    "whyImplement": "Parce que les 5 prennent votre tour pour jouer et vous pourriez alternativement piocher une carte à votre tour, tandis que jouer un 5 donne l'impression d'obtenir deux cartes (yay !), en réalité il ne se remplace que lui-même sans rien faire d'autre pour vous. Afin de renforcer le cinq et de lui donner un objectif spécifique, tout en s'appuyant sur le thème des 5 qui font circuler votre main pour vous faire piocher beaucoup de cartes, nous expérimentons avec une variation de l'effet des 5 où vous défaussez d'abord une carte de votre main, puis piochez trois cartes ! Nous espérons que cela augmentera l'utilité de l'effet des 5 et affinera sa fonction stratégique. Et nous avons besoin de votre aide pour décider si cela devrait devenir un changement permanent !",
+    "previousBetaHeader": "Avons-nous déjà testé cela auparavant ?",
+    "previousBeta": "Nous avons précédemment lancé une phase bêta de 2 semaines pour tester les recycleurs de niveau 5 en Avril. La communauté a voté et le résultat était de 69 % contre 31 % en faveur du changement. Nous avons reçu des retours précieux, notamment que de nombreux joueurs souhaitaient disposer de plus de temps pour tester les recycleurs de niveau 5 avant de prendre une décision finale. Nous attachons une grande importance au respect des souhaits de la communauté et à la réflexion et à la prudence dans tout changement des règles du jeu. Dans cet esprit, nous prolongeons la phase bêta des recycleurs de niveau 5 jusqu'au Championnat de la saison des Diamonds 2024 !",
+    "howLongHeader": "Combien de temps dure la bêta étendue ?",
+    "howLong": "La bêta du Recycler 5 se déroulera du mardi 14 mai au mercredi 31 juillet.",
+    "howLong2": "Afin de donner aux joueurs une ample opportunité d'essayer l'effet, le dernier tour de vote rouvrira à la fin de la saison Diamonds 2024 début juillet.",
+    "gameModesHeader": "Quels modes de jeu cela affecte-t-il ?",
+    "gameModes": "La bêta affecte à la fois le jeu classé et le jeu décontracté. Le jeu classé continuera à être pris en compte dans le classement comme d'habitude, donc vous n'avez pas besoin de sauter le jeu classé pour l'essayer !",
+    "learnMoreHeader": "Où pouvons-nous en apprendre davantage ?",
+    "learnMore1": "Vous pouvez en apprendre plus sur ce changement d'équilibrage et la discussion environnante sur ",
+    "learnMore2": "où les joueurs discutent du changement et s'ils aimeraient le voir permanent. Dites-nous ce que vous en pensez !"
   }
+
 }
