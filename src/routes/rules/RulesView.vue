@@ -167,26 +167,16 @@
               </h1>
             </v-row>
             <v-row
-              v-for="(rule) in oneOffs"
+              v-for="rule in oneOffs"
               :key="rule.title"
               align="start"
               class="my-6"
             >
               <RulePreview
-                v-if="rowIndex !== 1"
                 ref="preview"
                 :title="t(rule.title)"
                 :description="t(rule.description)"
-                :static-img="rule.staticImg"
-                :icon="rule.icon"
-                @animate="handleAnimate(rule.animatedImg, t(rule.title))"
-              />
-              <RulePreview
-                v-else
-                ref="preview"
-                :title="t(rule.title)"
-                :description="t(rule.description)"
-                :description2="t(rule.description2)"
+                :description2="t(rule.description2 ?? '')"
                 :static-img="rule.staticImg"
                 :icon="rule.icon"
                 @animate="handleAnimate(rule.animatedImg, t(rule.title))"

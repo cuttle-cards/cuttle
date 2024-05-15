@@ -15,7 +15,7 @@
         <strong>{{ title }}</strong> <br>
         {{ description }}
       </p>
-      <p class="mb-2 text-surface-2">
+      <p v-if="description2" class="mb-2 text-surface-2">
         {{ description2 }}
       </p>
       <div>
