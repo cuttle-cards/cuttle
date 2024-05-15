@@ -25,8 +25,9 @@ export async function handleInGameEvents(evData) {
   }
   // Handle GameOver
   if (evData.victory && evData.victory.gameOver) {
-    await sleep(1000);
-    gameStore.setGameOver(evData.victory);
+    sleep(1000).then(() => {
+      gameStore.setGameOver(evData.victory);
+    });
   }
   switch (evData.change) {
     case SocketEvent.READY: {
