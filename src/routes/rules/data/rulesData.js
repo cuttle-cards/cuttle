@@ -7,12 +7,15 @@ const rules = [
       description: 'rules.drawDescription',
       staticImg: '/img/rulesView/rules_action_draw.svg',
     },
+  ],
+  [
     {
       title: 'rules.points',
       icon: 'numeric',
       description: 'rules.pointsDescription',
       staticImg: '/img/rulesView/rules_action_points.svg',
     },
+
   ],
   [
     {
