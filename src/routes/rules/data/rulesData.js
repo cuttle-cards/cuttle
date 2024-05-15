@@ -35,31 +35,27 @@ const rules = [
 ];
 
 const royals = [
-  [
-    {
-      title: 'rules.royals.king',
-      icon: 'crown',
-      description: 'rules.royals.kingDescription',
-      staticImg: '/img/rulesView/royals_king.svg',
-      animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
-    },
-    {
-      title: 'rules.royals.queen',
-      icon: 'crown',
-      description: 'rules.royals.queenDescription',
-      staticImg: '/img/rulesView/royals_queen.svg',
-      animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/queen.gif?raw=true',
-    },
-  ],
-  [
-    {
-      title: 'rules.royals.jack',
-      icon: 'crown',
-      description: 'rules.royals.jackDescription',
-      staticImg: '/img/rulesView/royals_jack.svg',
-      animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
-    },
-  ],
+  {
+    title: 'rules.royals.king',
+    icon: 'crown',
+    description: 'rules.royals.kingDescription',
+    staticImg: '/img/rulesView/royals_king.svg',
+    animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
+  },
+  {
+    title: 'rules.royals.queen',
+    icon: 'crown',
+    description: 'rules.royals.queenDescription',
+    staticImg: '/img/rulesView/royals_queen.svg',
+    animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/queen.gif?raw=true',
+  },
+  {
+    title: 'rules.royals.jack',
+    icon: 'crown',
+    description: 'rules.royals.jackDescription',
+    staticImg: '/img/rulesView/royals_jack.svg',
+    animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
+  },
 ];
 const oneOffs = [
   {

@@ -137,13 +137,12 @@
               </v-row>
             </div>
             <v-row
-              v-for="(ruleRow, rowIndex) in royals"
-              :key="`royal-row-${rowIndex}`"
+              v-for="rule in royals"
+              :key="rule.title"
               align="start"
               class="my-6"
             >
               <RulePreview
-                v-for="rule in ruleRow"
                 :key="rule.title"
                 ref="preview"
                 :title="t(rule.title)"
@@ -168,8 +167,8 @@
               </h1>
             </v-row>
             <v-row
-              v-for="(rule, rowIndex) in oneOffs"
-              :key="`one-off-row-${rowIndex}`"
+              v-for="(rule) in oneOffs"
+              :key="rule.title"
               align="start"
               class="my-6"
             >
