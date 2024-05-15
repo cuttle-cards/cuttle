@@ -4,7 +4,6 @@ import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import { sleep } from '../util/sleep';
 
-
 /**
  * @returns number of queens a given player has
  * @param player is the player object
@@ -342,7 +341,9 @@ export const useGameStore = defineStore('game', {
       // Animate discard then update full game to animate draw
       if (discardedCards?.length) {
         await sleep(1000);
-        const opponentHandAfterDiscard = this.opponent.hand.filter((card) => !discardedCards.includes(card.id));
+        const opponentHandAfterDiscard = this.opponent.hand.filter(
+          (card) => !discardedCards.includes(card.id),
+        );
         const playerHandAfterDiscard = this.player.hand.filter((card) => !discardedCards.includes(card.id));
 
         this.opponent.hand = opponentHandAfterDiscard;
