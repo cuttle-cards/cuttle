@@ -28,13 +28,12 @@
   </v-row>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-export default {
-  name: 'RulePreview',
-  props: {
-    title: {
+const _props = defineProps({
+  title: {
       type: String,
       required: true,
     },
@@ -54,24 +53,16 @@ export default {
       type: String,
       default: '',
     },
-  },
-  emits: ['animate'],
-  setup(){
-    const { t } = useI18n();
-    return {
-      t
-    };
-  },
-  data() {
-    return {
-      animate: false,
-    };
-  },
-  methods: {
-    toggleDialog() {
-      this.animate = !this.animate;
-      this.$emit('animate');
-    },
-  },
-};
+});
+
+const emit = defineEmits(['animate']);
+
+const { t } = useI18n();
+
+const animate = ref(false);
+
+function toggleDialog() {
+  animate.value = !animate.value;
+  emit('animate');
+}
 </script>
