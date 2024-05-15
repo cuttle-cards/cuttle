@@ -1,23 +1,17 @@
 
 const rules = [
-  [
     {
       title: 'rules.draw',
       icon: 'cards-playing-spade-multiple',
       description: 'rules.drawDescription',
       staticImg: '/img/rulesView/rules_action_draw.svg',
     },
-  ],
-  [
     {
       title: 'rules.points',
       icon: 'numeric',
       description: 'rules.pointsDescription',
       staticImg: '/img/rulesView/rules_action_points.svg',
     },
-
-  ],
-  [
     {
       title: 'rules.scuttle',
       icon: 'skull-crossbones',
@@ -30,15 +24,12 @@ const rules = [
       description: 'rules.royalDescription',
       staticImg: '/img/rulesView/rules_action_royals.svg',
     },
-  ],
-  [
     {
       title: 'rules.oneoff',
       icon: 'delete',
       description: 'rules.oneoffDescription',
       staticImg: '/img/rulesView/rules_action_oneoffs.svg',
     },
-  ],
 ];
 
 const royals = [

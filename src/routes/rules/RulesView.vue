@@ -116,12 +116,12 @@
               </h1>
             </v-row>
             <v-row
-              v-for="(ruleRow, rowIndex) in rules"
-              :key="`rule-row-${rowIndex}`"
+              v-for="(rule) in rules"
+              :key="rule.title"
               align="start"
               class="my-6"
             >
-              <div v-for="rule in ruleRow" :key="rule.title" class="flex-column">
+              <div class="flex-column">
                 <div class="d-flex">
                   <v-img
                     :src="rule.staticImg"
