@@ -145,11 +145,11 @@
               <RulePreview
                 :key="rule.title"
                 ref="preview"
-                :title="t(rule.title)"
-                :description="t(rule.description)"
+                :title="rule.title"
+                :description="rule.description"
                 :static-img="rule.staticImg"
                 :icon="rule.icon"
-                @animate="handleAnimate(rule.animatedImg,t(rule.title))"
+                @animate="handleAnimate(rule.animatedImg, rule.title)"
               />
             </v-row>
           </section>
@@ -174,12 +174,12 @@
             >
               <RulePreview
                 ref="preview"
-                :title="t(rule.title)"
-                :description="t(rule.description)"
-                :description2="t(rule.description2 ?? '')"
+                :title="rule.title"
+                :description="rule.description"
+                :description2="rule.description2"
                 :static-img="rule.staticImg"
                 :icon="rule.icon"
-                @animate="handleAnimate(rule.animatedImg, t(rule.title))"
+                @animate="handleAnimate(rule.animatedImg, rule.title)"
               />
             </v-row>
           </section>
@@ -425,7 +425,7 @@ export default {
     },
     handleAnimate(imageUrl, title) {
       this.imageUrl = imageUrl;
-      this.previewTitle = title;
+      this.previewTitle = this.t(title);
       this.previewDialog = true;
     },
     closeAnimate() {
