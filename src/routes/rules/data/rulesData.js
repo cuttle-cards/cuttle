@@ -1,3 +1,4 @@
+import ScuttleSuitOrder from '../components/ScuttleSuitOrder.vue';
 
 const rules = [
     {
@@ -17,6 +18,7 @@ const rules = [
       icon: 'skull-crossbones',
       description: 'rules.scuttleDescription',
       staticImg: '/img/rulesView/rules_action_skull.svg',
+      childComponent: ScuttleSuitOrder,
     },
     {
       title: 'rules.royal',
