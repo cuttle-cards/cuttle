@@ -415,6 +415,7 @@ export default {
   methods: {
     goToSection(url) {
       this.goTo(url, this.scorllOptions);
+      window.location.hash = url;
     },
     onIntersect(isIntersecting, entries) {
       entries.forEach((entry) => {
