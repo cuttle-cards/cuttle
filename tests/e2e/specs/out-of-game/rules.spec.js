@@ -8,23 +8,13 @@ describe('Rules Page', () => {
     window.localStorage.setItem('fiveChangeBannerDismissed', true);
   });
 
-  it.only('Top Home button - Navigates to Login when unauthenticated and home when authenticated', () => {
+  it('Navigates to Login when unauthenticated and home when authenticated using the Ready To Play button', () => {
     cy.get('[data-cy=ready-to-play-button]').should('contain', 'Sign Up').click();
     cy.location('pathname').should('eq', '/signup');
     // Log in and try button again
     cy.signupPlayer(myUser);
     cy.vueRoute('/rules');
     cy.get('[data-cy=ready-to-play-button]').should('contain', 'Find a Game').click();
-    cy.location('pathname').should('eq', '/');
-  });
-
-  it('Bottom Home button - Navigates to Login when unauthenticated and home when authenticated', () => {
-    cy.get('[data-cy=bottom-home-button]').click();
-    cy.location('pathname').should('eq', '/signup');
-    // Log in and try button again
-    cy.signupPlayer(myUser);
-    cy.vueRoute('/rules');
-    cy.get('[data-cy=bottom-home-button]').click();
     cy.location('pathname').should('eq', '/');
   });
 });
