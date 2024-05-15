@@ -18,7 +18,10 @@
       :target="gameStore.oneOffTarget"
       @resolve="resolve"
     />
-    <FourDialog :model-value="gameStore.discarding" @discard="discard" />
+
+    <FourDialog :model-value="gameStore.showResolveFour" @discard="discard" />
+    <FiveDialog v-if="gameStore.showResolveFive" @resolve-five="resolveFive" />
+
     <ThreeDialog
       :model-value="pickingFromScrap"
       :one-off="gameStore.oneOff"
@@ -54,6 +57,8 @@ import ReauthenticateDialog from './components/ReauthenticateDialog.vue';
 import SevenDoubleJacksDialog from './components/SevenDoubleJacksDialog.vue';
 import ThreeDialog from './components/ThreeDialog.vue';
 import OpponentRequestedStalemateDialog from './components/OpponentRequestedStalemateDialog.vue';
+import FiveDialog from './components/FiveDialog.vue';
+
 
 export default {
   name: 'GameDialogs',
@@ -66,7 +71,9 @@ export default {
     SevenDoubleJacksDialog,
     ThreeDialog,
     OpponentRequestedStalemateDialog,
-  },
+    FiveDialog
+},
+
   emits: ['clear-selection', 'handle-error'],
   computed: {
     ...mapStores(useGameStore, useAuthStore),
@@ -156,6 +163,9 @@ export default {
     },
     resolveThree(cardId) {
       this.gameStore.requestResolveThree(cardId).then(this.clearSelection).catch(this.handleError);
+    },
+    resolveFive(cardId) {
+      this.gameStore.requestResolveFive(cardId);
     },
     resolveSevenDoubleJacks({ cardId, index }) {
       this.gameStore.requestResolveSevenDoubleJacks({ cardId, index })

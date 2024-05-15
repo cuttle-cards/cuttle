@@ -6,6 +6,7 @@ describe('Navigation', () => {
     cy.visit('/');
     cy.signupPlayer(playerOne);
     cy.vueRoute('/');
+    window.localStorage.setItem('fiveChangeBannerDismissed', true);
   });
 
   describe('Desktop Navigation', () => {
@@ -26,6 +27,7 @@ describe('Navigation', () => {
   describe('Mobile Navigation', () => {
     beforeEach(() => {
       cy.viewport('iphone-8');
+      window.localStorage.setItem('fiveChangeBannerDismissed', true);
     });
 
     it('When authenticated', () => {

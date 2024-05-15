@@ -62,6 +62,7 @@
       "opponentMayCounter": "El rival puede contrarrestar",
       "opponentMustResolve": "El rival debe resolver",
       "opponentIsDiscarding": "El rival se está descartando",
+      "opponentSkipsDiscarding": "El oponente salta descartando",
       "opponentChoosingFromScrap": "El rival está eligiendo del mazo de descarte",
       "opponentPlayingFromDeck": "El rival está jugando desde el mazo",
       "opponentMustDiscardJack": "El rival debe descartar la Sota",
@@ -95,6 +96,12 @@
         "discardTwoCards": "Descartar dos cartas",
         "discard": "Descartar",
         "oppponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
+      },
+      "five":{
+        "discardAndDraw" : "Descartar y robar",
+        "nice": "Bueno!",
+        "resolveFive": "Has resuelto un 5 único. Elige una carta para descartar y luego robarás 3 cartas.",
+        "resolveFiveNoCards": "Has resuelto un 5 único, pero no tienes cartas en tu mano para descartar. Robas 3 cartas sin descartar. ¡Dulce!"
       },
       "counterDialogs": {
         "counterTitle": "Oportunidad de contrarrestar",
@@ -186,7 +193,7 @@
         "2": "Descarta la Figura o las Gafas Ocho objetivo",
         "3": "Elige una carta del mazo de descarte y ponla en tu mano",
         "4": "Tu rival descarta dos cartas de su mano a su elección",
-        "5": "Roba dos cartas del mazo de robo",
+        "5": "Descarta 1 carta y roba hasta 3.",
         "6": "Descarta todas las Figuras y Gafas Ocho en juego",
         "7": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras",
         "8": "Puedes ver las cartas de la mano de tu rival (hasta que esta carta se descarte)",
@@ -245,6 +252,11 @@
       },
       "seven": {
         "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven."
+      },
+      "five":{
+        "selectCardToDiscard" : "Debes seleccionar una carta para descartar",
+        "incorrectCard" : "Tarjeta incorrecta jugada",
+        "fiveDeckIsEmpty": "No se pueden resolver 5 juegos únicos con un mazo vacío"
       },
       "draw": {
         "deckIsEmpty": "The deck is empty; you cannot draw.",
@@ -362,7 +374,7 @@
       "four": "Cuatro",
       "fourDescription": "Tu rival descarta dos cartas de su mano a su elección.",
       "five": "Cinco",
-      "fiveDescription": "Roba dos cartas del mazo de robo, sin superar el límite de 8 cartas en la mano.",
+      "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja hasta el límite de mano de 8 cartas.",
       "six": "Seis",
       "sixDescription": "Descarta todas las Figuras y Gafas Ocho en juego sobre el campo.",
       "seven": "Siete",
@@ -446,5 +458,23 @@
     "404": {
       "title": "404 No Encontrado"
     }
+  },
+  "fiveChange": {
+    "revisedFives": "Recicladoras 5",
+    "revisedFivesAddition": "(Cambio de regla)",
+    "ruleInfoHeader": "Información de la Regla",
+    "ruleInfo": "Jugar un 5 ahora tiene un efecto revisado: descarta una carta, luego roba tres cartas",
+    "whyImplementHeader": "¿Por qué estamos implementando esto?",
+    "whyImplement": "Porque los 5 toman tu turno para jugar y podrías alternativamente robar una carta en tu turno, mientras jugar un 5 se siente como si obtuvieras dos cartas (¡yay!) en realidad solo se reemplaza a sí mismo sin hacer nada más por ti. Con el fin de potenciar el cinco y darle un propósito específico, mientras nos inclinamos hacia el tema de los 5's ciclando tu mano para robarte muchas cartas, estamos experimentando con una catación en el efecto de los 5 donde primero descartas una carta de tu mano, ¡luego robas tres cartas! ¡Esperamos que esto aumente la utilidad del efecto de los 5 y afine su función estratégica. Y necesitamos tu ayuda para decidir si esto debería convertirse en un cambio permanente!",
+    "previousBetaHeader": "¿Hemos probado esto antes?",
+    "previousBeta": "Previo a esto, realizamos una prueba beta de 2 semanas para el reciclador 5 en Abril. La comunidad votó y el resultado fue del 69% al 31% a favor del cambio. Recibimos comentarios valiosos, especialmente que muchos jugadores sintieron que les gustaría más tiempo para probar el reciclador 5 antes de tomar una decisión final. Nos importa profundamente respetar los deseos de la comunidad y ser considerados y conservadores al realizar cualquier cambio en las reglas del juego. Con ese espíritu, ¡estamos extendiendo la fase beta del reciclador 5 hasta el Campeonato de la Temporada de Cuttle 2024!",
+    "howLongHeader": "¿Cuánto tiempo dura la beta extendida?",
+    "howLong": "La beta del Recycler 5 se ejecutará desde el martes 14 de mayo hasta el miércoles 31 de julio.",
+    "howLong2": "Con el fin de dar a los jugadores una amplia oportunidad de probar el efecto, la última ronda de votación volverá a abrirse al final de la temporada Diamonds 2024 a principios de julio.",
+    "gameModesHeader": "¿Qué modos de juego afecta esto?",
+    "gameModes": "La beta afecta tanto al juego clasificado como al casual. El juego clasificado seguirá contando en la tabla de clasificación como de costumbre, ¡así que no necesitas evitar jugar clasificado para probarlo!",
+    "learnMoreHeader": "¿Dónde podemos aprender más?",
+    "learnMore1": "Puedes aprender más sobre este cambio de equilibrio y la discusión circundante en ",
+    "learnMore2": "donde los jugadores están discutiendo el cambio y si les gustaría verlo permanente. ¡Cuéntanos qué piensas!"
   }
 }

@@ -62,6 +62,7 @@
       "opponentMayCounter": "Opponent May Counter",
       "opponentMustResolve": "Opponent Must Resolve",
       "opponentIsDiscarding": "Opponent Is Discarding",
+      "opponentSkipsDiscarding": "Opponent Skips Discarding",
       "opponentChoosingFromScrap": "Opponent Choosing Card from Scrap",
       "opponentPlayingFromDeck": "Opponent Playing from Deck",
       "opponentMustDiscardJack": "Opponent Must Discard Jack",
@@ -84,6 +85,12 @@
         "discardTwoCards": "Discard Two Cards",
         "discard": "Discard",
         "oppponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
+      },
+      "five":{
+        "discardAndDraw" : "Discard and Draw",
+        "nice": "Nice!",
+        "resolveFive": "You have resolved a 5 one-off. Choose a card to discard and then you will draw 3 cards",
+        "resolveFiveNoCards": "You have Resolved a 5 one-off, but have no cards in your hand to discard. You draw 3 cards without discarding. Sweet!"
       },
       "scrapDialog": {
         "scrapPile": "Scrap Pile",
@@ -186,7 +193,7 @@
         "2": "Scrap target Royal or Glasses eight",
         "3": "Choose 1 card in the Scrap and put it to your hand",
         "4": "Your opponent discards two cards of their choice from their hand",
-        "5": "Draw two cards from the deck",
+        "5": "Discard 1 card, and draw up to 3",
         "6": "Scrap all Royals and Glasses eights",
         "7": "Play one of the top two cards of the deck and put the other back (both are revealed)",
         "8": "Your opponent plays with an open hand (their cards are revealed to you)",
@@ -245,6 +252,11 @@
       },
       "seven": {
         "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven."
+      },
+      "five":{
+        "selectCardToDiscard" : "You must select one card to discard",
+        "incorrectCard" : "Incorrect card played",
+        "fiveDeckIsEmpty": "Cannot resolve 5 one-off with an empty deck"
       },
       "draw": {
         "deckIsEmpty": "The deck is empty; you cannot draw.",
@@ -362,7 +374,7 @@
       "four": "Four",
       "fourDescription": "Your opponent discards two cards of their choice.",
       "five": "Five",
-      "fiveDescription": "Draw two cards from the deck up to the 8 card hand limit.",
+      "fiveDescription": "Discard one card then draw up to three cards from the deck up to the 8 card hand limit.",
       "six": "Six",
       "sixDescription": "Scrap all Royals and Glasses Eights on the field.",
       "seven": "Seven",
@@ -446,5 +458,24 @@
     "404": {
       "title": "404 Not Found"
     }
+  },
+  "fiveChange": {
+    "revisedFives": "Recycler 5's",
+    "revisedFivesAddition": "(Extended Beta)",
+    "ruleInfoHeader":"Rule Information",
+    "ruleInfo": "Playing a 5 now has a revised one-off effect: discard a card, then draw three cards ",
+    "whyImplementHeader" : "Why are we implementing this?",
+    "whyImplement" : "Because 5's take your turn to play and you could alternatively draw a card on your turn, while playing a 5 feels like it gets you two cards (yay!) it effectively only replaces itself without doing anything else for you. In order to power up the five and give it a specific purpose, while leaning into the theme of cycling your hand to draw you lots of cards, we're experimenting with a variation on the 5's effect where you first discard a card from your hand, then draw three cards! We hope this will increase the usefulness of the 5's effect and hone its strategic function. And we need your help deciding if this should become a permanent change!",
+    "previousBetaHeader": "Have we tested this before?",
+    "previousBeta": "We previously ran a 2-week beta trialing recycler 5's back in April. The community voted and the result was 69% to 31% in favor of the change. We got some valuable feedback, most importantly that many players felt they would like more time to trial recycler 5's before a final decision is made. We care deeply about respecting the community's wishes and about being thoughtful and conservative about making any changes to the rules of the game. In that spirit, we are extending the recycler 5 beta through the Diamonds 2024 Cuttle Season Championship!",
+    "howLongHeader": "How long is the extended beta?",
+    "howLong": "The recycler 5 beta will run from Tuesday May 14th, until Wednesday, July 31st.",
+    "howLong2": "In order to give players ample opportunity to try the effect, the final round of voting will re-open in at the end of the Diamonds 2024 season in early July.",
+    "gameModesHeader" : "What game modes does this affect?",
+    "gameModes": "The beta affects both ranked and casual play. Ranked play will continue to count on the leaderboard as normal, so you don't need to skip playing ranked to try it out!",
+    "learnMoreHeader" : "Where can we learn more?",
+    "learnMore1" : "You can learn more about this balance change and the surrounding discussion on ",
+    "learnMore2" : "where players are discussing the change and whether they would like to see it made permanent. Tell us what you think!"
   }
+
 }

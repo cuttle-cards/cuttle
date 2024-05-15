@@ -60,6 +60,9 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.RESOLVE_FOUR:
       gameStore.processFours(evData.discardedCards, evData.game);
       break;
+    case SocketEvent.RESOLVE_FIVE:
+      gameStore.processFives(evData.discardedCards, evData.game);
+      break;
     case SocketEvent.RESOLVE:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       gameStore.waitingForOpponentToCounter = false;
@@ -73,11 +76,18 @@ export async function handleInGameEvents(evData) {
               gameStore.pickingFromScrap = true;
             }
             break;
+          case 5:
+            if (evData.playedBy === gameStore.myPNum) {
+              gameStore.showResolveFive = true;
+            } else {
+              gameStore.waitingForOpponentToDiscard = true;
+            }
+            break;
           case 4:
             if (evData.playedBy === gameStore.myPNum) {
               gameStore.waitingForOpponentToDiscard = true;
             } else {
-              gameStore.discarding = true;
+              gameStore.showResolveFour = true;
             }
             break;
           case 7:
