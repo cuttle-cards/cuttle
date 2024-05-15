@@ -115,69 +115,11 @@
                 {{ t('rules.actions.title') }}
               </h1>
             </v-row>
-            <v-row
-              v-for="(rule) in rules"
+            <RuleParagraph
+              v-for="rule in rules"
               :key="rule.title"
-              align="start"
-              class="my-6"
-            >
-              <div class="flex-column">
-                <div class="d-flex">
-                  <v-img
-                    :src="rule.staticImg"
-                    class="mr-1 max-w-24"
-                    aria-hidden="false"
-                    role="img"
-                  />
-                  <h1>
-                    {{ t(rule.title) }}
-                  </h1>
-                </div>
-                <p class="d-block">
-                  {{ t(rule.description) }}
-                </p>
-                <p v-if="rule.title === 'rules.scuttle'" class="d-flex my-5">
-                  <v-img
-                    src="img/rulesView/rules_action_clubs.svg"
-                    class="mr-1 max-w-24"
-                    aria-hidden="false"
-                    role="img"
-                  />
-                  &nbsp;
-                  {{ t('rules.actions.clubs') }}
-                  &lt; &nbsp;
-
-                  <v-img
-                    src="img/rulesView/rules_action_diamond.svg"
-                    class="mr-1 max-w-24"
-                    aria-hidden="false"
-                    role="img"
-                  />
-                  &nbsp;
-                  {{ t('rules.actions.diamonds') }}
-                  &lt; &nbsp;
-
-                  <v-img
-                    src="img/rulesView/rules_action_hearts.svg"
-                    class="mr-1 max-w-24"
-                    aria-hidden="false"
-                    role="img"
-                  />
-                  &nbsp;
-                  {{ t('rules.actions.hearts') }}
-                  &lt; &nbsp;
-
-                  <v-img
-                    src="img/rulesView/rules_action_spades.svg"
-                    class="mr-1 max-w-24"
-                    aria-hidden="false"
-                    role="img"
-                  />
-                  &nbsp;
-                  {{ t('rules.actions.spades') }}
-                </p>
-              </div>
-            </v-row>
+              :rule="rule"
+            />
           </section>
 
           <!-- Royals -->
@@ -414,16 +356,17 @@
   </div>
 </template>
 <script>
-import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
+import { useGoTo } from 'vuetify';
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
+import { useThemedLogo } from '@/composables/themedLogo';
+import { rules, royals, oneOffs, sectionTitle } from './data/rulesData';
+import RuleParagraph from './components/RuleParagraph.vue';
 import RulePreview from '@/routes/rules/components/RulePreview.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
-import { useThemedLogo } from '@/composables/themedLogo';
 import AwardCard from '../../components/AwardCard.vue';
-import { rules, royals, oneOffs, sectionTitle } from './data/rulesData';
 import RulePreviewDialog from './components/RulePreviewDialog.vue';
-import { useGoTo } from 'vuetify';
 import BackToTop from '@/components/BackToTop.vue';
 
 export default {
@@ -433,7 +376,8 @@ export default {
     BaseVideo,
     AwardCard,
     RulePreviewDialog,
-    BackToTop
+    BackToTop,
+    RuleParagraph,
   },
   setup() {
     const goTo = useGoTo();
@@ -503,6 +447,7 @@ export default {
   },
 };
 </script>
+
 <style scoped lang="scss">
 ::-webkit-scrollbar {
   width: 0px;
@@ -523,10 +468,6 @@ export default {
 
 .sidebar-title li {
   list-style: none;
-}
-
-.max-w-24 {
-  max-width: 24px;
 }
 
 .section {
