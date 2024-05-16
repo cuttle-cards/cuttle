@@ -397,6 +397,7 @@
       "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno"
     },
     "readyToPlay": {
+      "readyToPlay": "¿Listo para jugar?",
       "findGame": "Encuentra una partida",
       "signUp": "Inicia sesión para jugar online"
     },

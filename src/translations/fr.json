@@ -397,6 +397,7 @@
       "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour."
     },
     "readyToPlay": {
+      "readyToPlay": "Prêt à jouer ?",
       "findGame": "Trouver une partie",
       "signUp": "Inscrivez-vous pour jouer en ligne"
     },
