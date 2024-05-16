@@ -343,7 +343,9 @@ export const useGameStore = defineStore('game', {
       // Animate discard then update full game to animate draw
       if (discardedCards?.length) {
         await sleep(1000);
-        const opponentHandAfterDiscard = this.opponent.hand.filter((card) => !discardedCards.includes(card.id));
+        const opponentHandAfterDiscard = this.opponent.hand.filter(
+          (card) => !discardedCards.includes(card.id),
+        );
         const playerHandAfterDiscard = this.player.hand.filter((card) => !discardedCards.includes(card.id));
 
         this.opponent.hand = opponentHandAfterDiscard;
@@ -819,6 +821,9 @@ export const useGameStore = defineStore('game', {
     async requestJoinRematch({ oldGameId }) {
       return new Promise((resolve, reject) => {
         io.socket.get('/api/game/join-rematch', { oldGameId }, (res, jwres) => {
+          if (jwres.statusCode === 200) {
+            this.resetState();
+          }
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });
