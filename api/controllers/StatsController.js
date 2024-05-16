@@ -145,14 +145,17 @@ module.exports = {
         select: ['id', 'username'],
       });
       const currentSeasonMatches = Match.find({
-        startTime: { '>': currentSeason.startTime },
-        endTime: { '<': currentSeason.endTime },
+        startTime: { '>': dayjs(currentSeason.startTime).format() },
+        endTime: { '<': dayjs(currentSeason.endTime).format() },
       });
       const currentSeasonGames = Game.find({
         select: ['updatedAt', 'p0', 'p1'],
         where: {
           status: gameService.GameStatus.FINISHED,
-          updatedAt: { '>': currentSeason.startTime, '<': currentSeason.endTime },
+          updatedAt: {
+            '>': dayjs(currentSeason.startTime).format(),
+            '<': dayjs(currentSeason.endTime).format(),
+          },
         },
       });
       const [users, matches, games] = await Promise.all([allUsers, currentSeasonMatches, currentSeasonGames]);
@@ -172,14 +175,17 @@ module.exports = {
         select: ['id', 'username'],
       });
       const requestedSeasonMatches = Match.find({
-        startTime: { '>': requestedSeason.startTime },
-        endTime: { '<': requestedSeason.endTime },
+        startTime: { '>': dayjs(requestedSeason.startTime).format() },
+        endTime: { '<': dayjs(requestedSeason.endTime).format() },
       });
       const requestedSeasonGames = Game.find({
         select: ['updatedAt', 'p0', 'p1'],
         where: {
           status: gameService.GameStatus.FINISHED,
-          updatedAt: { '>': requestedSeason.startTime, '<': requestedSeason.endTime },
+          updatedAt: {
+            '>': dayjs(requestedSeason.startTime).format(),
+            '<': dayjs(requestedSeason.endTime).format(),
+          },
         },
       });
       const [users, matches, games] = await Promise.all([
