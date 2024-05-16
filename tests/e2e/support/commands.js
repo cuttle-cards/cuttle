@@ -735,6 +735,36 @@ Cypress.Commands.add('counterOpponent', (card) => {
     });
 });
 
+Cypress.Commands.add('resolveFiveOpponent', (card) => {
+  if (card && !hasValidSuitAndRank(card)) {
+    throw new Error('Cannot resolve five as opponent: Invalid card input');
+  }
+  return cy
+    .window()
+    .its('cuttle.gameStore')
+    .then((game) => {
+      const foundCard = card ? game.opponent.hand.find((handCard) => cardsMatch(card, handCard)) : null;
+      if (card && !foundCard) {
+        throw new Error(
+          `Error resolving three as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`,
+        );
+      }
+      const cardId = foundCard?.id ?? null;
+      io.socket.get(
+        '/api/game/resolveFive',
+        {
+          cardId,
+        },
+        function handleResponse(res, jwres) {
+          if (jwres.statusCode !== 200) {
+            throw new Error(jwres.body.message);
+          }
+          return jwres;
+        },
+      );
+    });
+});
+
 Cypress.Commands.add('resolveThreeOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot resolve three as opponent: Invalid card input');
@@ -806,23 +836,23 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       if (card2) {
         [cardId2] = getCardIds(game, [card2]);
       }
-        io.socket.get(
-          '/api/game/resolveFour',
-          {
-            cardId1,
-            cardId2,
-          },
-          function handleResponse(res, jwres) {
-            try {
-              if (jwres.statusCode !== 200) {
-                throw new Error(jwres.body.message);
-              }
-              return jwres;
-            } catch (err) {
-              return err;
+      io.socket.get(
+        '/api/game/resolveFour',
+        {
+          cardId1,
+          cardId2,
+        },
+        function handleResponse(res, jwres) {
+          try {
+            if (jwres.statusCode !== 200) {
+              throw new Error(jwres.body.message);
             }
-          },
-        );
+            return jwres;
+          } catch (err) {
+            return err;
+          }
+        },
+      );
     });
 });
 
@@ -1311,7 +1341,7 @@ Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDom
   const cardSelector = whichPlayer ?? 'opponent';
   if (rematch) {
     cy.get(`[data-cy=${cardSelector}-rematch-indicator]`)
-    .find('[data-cy="lobby-card-container"]')
+      .find('[data-cy="lobby-card-container"]')
       .should('have.class', 'ready');
   } else {
     cy.get(`[data-cy=${cardSelector}-rematch-indicator]`)
@@ -1324,8 +1354,7 @@ Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDom
       .should('have.class', 'opponent-left')
       .should('contain', `${playerOrOpponent} left - click to go home.`);
 
-    cy.get('[data-cy=gameover-rematch]')
-      .should('be.disabled');
+    cy.get('[data-cy=gameover-rematch]').should('be.disabled');
   }
 });
 

@@ -141,14 +141,19 @@ module.exports = {
     try {
       const seasons = await sails.helpers.getSeasonsWithoutRankings();
       const [currentSeason] = seasons;
-      const allUsers = User.find({});
+      const allUsers = User.find({
+        select: ['id', 'username'],
+      });
       const currentSeasonMatches = Match.find({
         startTime: { '>': currentSeason.startTime },
         endTime: { '<': currentSeason.endTime },
       });
       const currentSeasonGames = Game.find({
-        status: gameService.GameStatus.FINISHED,
-        updatedAt: { '>': dayjs(currentSeason.startTime).valueOf(), '<': dayjs(currentSeason.endTime).valueOf() },
+        select: ['updatedAt', 'p0', 'p1'],
+        where: {
+          status: gameService.GameStatus.FINISHED,
+          updatedAt: { '>': currentSeason.startTime, '<': currentSeason.endTime },
+        },
       });
       const [users, matches, games] = await Promise.all([allUsers, currentSeasonMatches, currentSeasonGames]);
       updateRankingsFromMatches(users, matches, currentSeason);
@@ -163,14 +168,19 @@ module.exports = {
     const seasonId = parseInt(req.params.seasonId);
     try {
       const [requestedSeason] = await sails.helpers.getSeasonsWithoutRankings(seasonId);
-      const allUsers = User.find({});
+      const allUsers = User.find({
+        select: ['id', 'username'],
+      });
       const requestedSeasonMatches = Match.find({
         startTime: { '>': requestedSeason.startTime },
         endTime: { '<': requestedSeason.endTime },
       });
       const requestedSeasonGames = Game.find({
-        status: gameService.GameStatus.FINISHED,
-        updatedAt: { '>': dayjs(requestedSeason.startTime).valueOf(), '<': dayjs(requestedSeason.endTime).valueOf() },
+        select: ['updatedAt', 'p0', 'p1'],
+        where: {
+          status: gameService.GameStatus.FINISHED,
+          updatedAt: { '>': requestedSeason.startTime, '<': requestedSeason.endTime },
+        },
       });
       const [users, matches, games] = await Promise.all([
         allUsers,

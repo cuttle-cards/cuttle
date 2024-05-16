@@ -108,6 +108,32 @@ describe('Playing SEVENS', () => {
     });
   });
 
+  it('Resets state after conceding during 7 resolve', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [],
+      p1Points: [Card.NINE_OF_CLUBS],
+      p1FaceCards: [],
+      topCard: Card.NINE_OF_DIAMONDS,
+      secondCard: Card.SIX_OF_DIAMONDS,
+    });
+
+    cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+    cy.get('[data-second-card=6-1]').should('exist').and('be.visible');
+    cy.get('#game-menu-activator').click();
+    cy.get('[data-cy=concede-initiate]').click();
+    cy.get('[data-cy=request-gameover-confirm]').click();
+    cy.get('[data-cy=gameover-rematch]').click();
+    cy.url().then((url) => {
+      const oldGameId = Number(url.split('/').pop());
+      cy.rematchAndJoinRematchOpponent({ gameId: oldGameId });
+    });
+    cy.get('#deck').should('not.have.class', 'reveal-top-two');
+  });
+
   describe('Plays jack from a seven - special case', () => {
     it('Plays jack from a seven - special case - double jacks with some points to steal should work as normal', () => {
       cy.loadGameFixture(0, {

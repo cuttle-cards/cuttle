@@ -60,7 +60,7 @@
       class="game-overlay"
     >
       <h1 :class="[$vuetify.display.xs === true ? 'text-h5' : 'text-h3', 'overlay-header']">
-        {{ t('game.overlays.opponentIsDiscarding') }}
+        {{ t(opponentDiscardingText) }}
       </h1>
     </v-overlay>
 
@@ -190,6 +190,11 @@ export default {
     },
     showWaitingForOpponentToPlayFromDeck() {
       return this.gameStore.waitingForOpponentToPlayFromDeck && !this.showWaitingForOpponentToDiscardJackFromDeck;
+    },
+    opponentDiscardingText() {
+      return this.gameStore.opponent.hand.length === 0 ?
+        'game.overlays.opponentSkipsDiscarding' :
+        'game.overlays.opponentIsDiscarding';
     },
   },
   methods: {

@@ -5,7 +5,7 @@ import {
   assertGameOverAsSpectator,
   assertGameState,
   rematchPlayerAsSpectator,
- } from '../../../support/helpers';
+} from '../../../support/helpers';
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
@@ -19,17 +19,13 @@ function startRematchPlayerFirst() {
     .find('[data-cy="lobby-card-container"]')
     .should('not.have.class', 'ready');
 
-  cy.get('[data-cy=gameover-rematch]')
-    .click()
-    .should('be.disabled');
+  cy.get('[data-cy=gameover-rematch]').click().should('be.disabled');
 
-  cy.get('[data-cy=continue-match-banner]')
-    .should('be.visible')
-    .should('contain', 'Waiting for Opponent');
+  cy.get('[data-cy=continue-match-banner]').should('be.visible').should('contain', 'Waiting for Opponent');
 
   cy.get('[data-cy=my-rematch-indicator]')
     .find('[data-cy="lobby-card-container"]')
-      .should('have.class', 'ready');
+    .should('have.class', 'ready');
 
   cy.url().then((url) => {
     const oldGameId = Number(url.split('/').pop());
@@ -39,14 +35,8 @@ function startRematchPlayerFirst() {
 
 function concedePlayer() {
   cy.get('#game-menu-activator').click({ force: true });
-  cy.get('#game-menu')
-    .should('be.visible')
-    .get('[data-cy=concede-initiate]')
-    .click();
-  cy.get('#request-gameover-dialog')
-    .should('be.visible')
-    .get('[data-cy=request-gameover-confirm]')
-    .click();
+  cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
+  cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
 }
 
 describe('Creating And Updating Ranked Matches With Rematch', () => {
@@ -54,6 +44,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
+    window.localStorage.setItem('fiveChangeBannerDismissed', true);
 
     // Set up season
     const [, diamondsSeason] = seasonFixtures;
@@ -91,22 +82,20 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.setupGameAsP0(true, true);
   });
 
-  it('Wins match played with Rematch/Continue Match button', function() {
+  it('Wins match played with Rematch/Continue Match button', function () {
     // Game 1: Opponent concedes
     cy.log('Game 1: opponent concedes');
     cy.concedeOpponent();
-    assertVictory({wins: 1, losses: 0, stalemates: 0});
-    cy.get('[data-cy=match-score-counter-wins]')
-      .should('contain', 1)
-      .should('have.class', 'selected');
+    assertVictory({ wins: 1, losses: 0, stalemates: 0 });
+    cy.get('[data-cy=match-score-counter-wins]').should('contain', 1).should('have.class', 'selected');
 
     // Neither player has requested rematch yet
     cy.get('[data-cy=my-rematch-indicator]')
       .find('[data-cy="lobby-card-container"]')
-        .should('not.have.class', 'ready');
+      .should('not.have.class', 'ready');
     cy.get('[data-cy=opponent-rematch-indicator]')
       .find('[data-cy="lobby-card-container"]')
-        .should('not.have.class', 'ready');
+      .should('not.have.class', 'ready');
 
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
@@ -115,7 +104,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       // Player hits rematch and starts new game
       cy.get('[data-cy=my-rematch-indicator]')
         .find('[data-cy="lobby-card-container"]')
-          .should('not.have.class', 'ready');
+        .should('not.have.class', 'ready');
       cy.get('[data-cy=gameover-rematch]').click();
 
       cy.joinRematchOpponent({ oldGameId });
@@ -134,11 +123,10 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     // Game 2: Player concedes
     cy.log('Game 2: Player concedes');
-    cy.get('[data-player-hand-card]')
-      .should('have.length', 6);
+    cy.get('[data-player-hand-card]').should('have.length', 6);
 
     concedePlayer();
-    assertLoss({wins: 1, losses: 1, stalemates: 0});
+    assertLoss({ wins: 1, losses: 1, stalemates: 0 });
 
     // Match should be incomplete with two games
     cy.request('http://localhost:1337/api/test/match').then((res) => {
@@ -156,8 +144,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     // Game 3 - Stalemate
     cy.log('Game 3: stalemate via player request');
     startRematchPlayerFirst();
-    cy.get('[data-player-hand-card]')
-      .should('have.length', 5);
+    cy.get('[data-player-hand-card]').should('have.length', 5);
 
     // Opponent requests stalemate
     cy.stalemateOpponent();
@@ -168,7 +155,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
       .find('[data-cy=accept-stalemate]')
       .click();
 
-    assertStalemate({wins: 1, losses: 1, stalemates: 1});
+    assertStalemate({ wins: 1, losses: 1, stalemates: 1 });
 
     // Match should be incomplete with three games
     cy.request('http://localhost:1337/api/test/match').then((res) => {
@@ -188,19 +175,16 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.get('[data-player-hand-card]').should('have.length', 6);
 
     cy.concedeOpponent();
-    assertVictory({wins: 2, losses: 1, stalemates: 1});
+    assertVictory({ wins: 2, losses: 1, stalemates: 1 });
 
     // Rematch button and indicators should not display (match is over)
-    cy.get('[data-cy=gameover-rematch]')
-      .should('not.exist');
+    cy.get('[data-cy=gameover-rematch]').should('not.exist');
     cy.get('[data-cy=my-rematch-indicator]').should('not.exist');
     cy.get('[data-cy=opponent-rematch-indicator]').should('not.exist');
 
     // Player1 won and Player2 lost
-    cy.get('[data-cy=player-match-result]')
-      .find('[data-cy-result-img=won]');
-    cy.get('[data-cy=opponent-match-result]')
-      .find('[data-cy-result-img=lost]');
+    cy.get('[data-cy=player-match-result]').find('[data-cy-result-img=won]');
+    cy.get('[data-cy=opponent-match-result]').find('[data-cy-result-img=lost]');
 
     // Match should be completed with 4 games
     cy.request('http://localhost:1337/api/test/match').then((res) => {
@@ -219,19 +203,19 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   it('Loses a ranked match played with the Rematch/Continue Match button', () => {
     // Game 1 - Player concedes
     concedePlayer();
-    assertLoss({wins: 0, losses: 1, stalemates: 0});
+    assertLoss({ wins: 0, losses: 1, stalemates: 0 });
 
     // Game 2 - Opponent concedes
     startRematchPlayerFirst();
     cy.get('[data-player-hand-card]').should('have.length', 6);
     cy.concedeOpponent();
-    assertVictory({wins: 1, losses: 1, stalemates: 0});
+    assertVictory({ wins: 1, losses: 1, stalemates: 0 });
 
     // Game 3 - Player concedes & loses match
     startRematchPlayerFirst();
     cy.get('[data-player-hand-card]').should('have.length', 5);
     concedePlayer();
-    assertLoss({wins: 1, losses: 2, stalemates: 0});
+    assertLoss({ wins: 1, losses: 2, stalemates: 0 });
 
     // Player2 won and Player1 (visible player) lost
     cy.get('[data-cy=player-match-result]')
@@ -246,7 +230,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
   it('Shows when opponent declines continuing your ranked match', () => {
     cy.concedeOpponent();
-    assertVictory({wins: 1, losses: 0, stalemates: 0});
+    assertVictory({ wins: 1, losses: 0, stalemates: 0 });
 
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
@@ -261,6 +245,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
+    window.localStorage.setItem('fiveChangeBannerDismissed', true);
 
     // Sign up players
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -276,19 +261,17 @@ describe('Creating And Updating Casual Games With Rematch', () => {
   it('Unranked games with rematch', function () {
     // Game 1: Opponent concedes
     cy.concedeOpponent();
-    assertVictory({wins: 1, losses: 0, stalemates: 0});
+    assertVictory({ wins: 1, losses: 0, stalemates: 0 });
 
     // Game 2: Player concedes
     startRematchPlayerFirst();
-    cy.get('[data-player-hand-card]')
-      .should('have.length', 6);
+    cy.get('[data-player-hand-card]').should('have.length', 6);
     concedePlayer();
-    assertLoss({wins: 1, losses: 1, stalemates: 0});
+    assertLoss({ wins: 1, losses: 1, stalemates: 0 });
 
     // Game 3: Player wins with points
     startRematchPlayerFirst();
-    cy.get('[data-player-hand-card]')
-      .should('have.length', 5);
+    cy.get('[data-player-hand-card]').should('have.length', 5);
     cy.loadGameFixture(0, {
       p0Hand: [Card.TEN_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
@@ -300,24 +283,23 @@ describe('Creating And Updating Casual Games With Rematch', () => {
 
     cy.get('[data-player-hand-card=10-1]').click();
     cy.get('[data-move-choice=points]').click();
-    assertVictory({wins: 2, losses: 1, stalemates: 0});
+    assertVictory({ wins: 2, losses: 1, stalemates: 0 });
 
     // Game 4: Stalemate via passes
     startRematchPlayerFirst();
-    cy.get('[data-player-hand-card]')
-      .should('have.length', 6);
+    cy.get('[data-player-hand-card]').should('have.length', 6);
 
     cy.loadGameFixture(1, {
-        p0Hand: [Card.TEN_OF_DIAMONDS],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [Card.TEN_OF_SPADES],
-        p1Points: [],
-        p1FaceCards: [],
-        topCard: Card.ACE_OF_CLUBS,
-        secondCard: Card.ACE_OF_DIAMONDS,
-        deck: [],
-      });
+      p0Hand: [Card.TEN_OF_DIAMONDS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.TEN_OF_SPADES],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.ACE_OF_CLUBS,
+      secondCard: Card.ACE_OF_DIAMONDS,
+      deck: [],
+    });
 
     cy.log('Drawing last two cards');
     cy.drawCardOpponent();
@@ -340,7 +322,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
 
-    assertStalemate({wins: 2, losses: 1, stalemates: 1});
+    assertStalemate({ wins: 2, losses: 1, stalemates: 1 });
     // Opponent leaves
     cy.url().then((url) => {
       const oldGameId = Number(url.split('/').pop());
@@ -354,51 +336,40 @@ describe('Spectating Rematches', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
       cy.setupGameAsSpectator();
+      window.localStorage.setItem('fiveChangeBannerDismissed', true);
     });
 
     it('Spectates a casual match using rematch', () => {
       cy.log('Game 1: player1 wins via opponent conceding');
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
-      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false});
+      assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
 
       // P0 and P1 request rematch, then spectator
       rematchPlayerAsSpectator(playerTwo);
       rematchPlayerAsSpectator(playerOne);
 
-
       // Wait to confirm dialog stays open
       cy.wait(1000);
-      cy.get('#game-over-dialog')
-        .should('be.visible')
-        .find('[data-cy=gameover-rematch]')
-        .click();
+      cy.get('#game-over-dialog').should('be.visible').find('[data-cy=gameover-rematch]').click();
 
       // Game 2
       cy.log('Game 2: player1 wins via concede again');
-      cy.get('[data-cy=player-username]')
-        .should('contain', playerTwo.username);
+      cy.get('[data-cy=player-username]').should('contain', playerTwo.username);
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
 
-      assertGameOverAsSpectator({p1Wins: 2, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false});
-      cy.get('[data-cy=gameover-rematch')
-        .should('not.be.disabled')
-        .click()
-        .should('be.disabled');
+      assertGameOverAsSpectator({ p1Wins: 2, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click().should('be.disabled');
 
-      cy.get('[data-cy=continue-match-banner]')
-        .should('be.visible')
-        .should('contain', 'Waiting for Players');
+      cy.get('[data-cy=continue-match-banner]').should('be.visible').should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
       rematchPlayerAsSpectator(playerTwo);
 
-
       // Game 3 -- Stalemate then player2 declines rematch
       cy.log('Game 3: Stalemate via request stalemate');
-      cy.get('[data-cy=player-username]')
-        .should('contain', playerOne.username);
+      cy.get('[data-cy=player-username]').should('contain', playerOne.username);
 
       cy.recoverSessionOpponent(playerTwo);
       cy.stalemateOpponent();
@@ -406,8 +377,7 @@ describe('Spectating Rematches', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.stalemateOpponent();
 
-      cy.get('[data-cy=gameover-rematch')
-        .should('not.be.disabled');
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled');
 
       // Player 2 declines rematch
       rematchPlayerAsSpectator(playerTwo, false);
@@ -421,8 +391,9 @@ describe('Spectating Rematches', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
       cy.setupGameAsSpectator(true);
-      const [, , currentSeason ] = seasonFixtures;
-      cy.loadSeasonFixture([ currentSeason ]);
+      window.localStorage.setItem('fiveChangeBannerDismissed', true);
+      const [, , currentSeason] = seasonFixtures;
+      cy.loadSeasonFixture([currentSeason]);
     });
 
     it('Specates a ranked match using rematch', () => {
@@ -439,43 +410,34 @@ describe('Spectating Rematches', () => {
 
       cy.recoverSessionOpponent(playerOne);
       cy.playPointsSpectator(Card.TEN_OF_DIAMONDS, 0);
-      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true});
+      assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true });
 
       // playerOne rematches, then spectator, then playerTwo
       rematchPlayerAsSpectator(playerTwo);
 
-      cy.get('[data-cy=gameover-rematch')
-        .should('not.be.disabled')
-        .click()
-        .should('be.disabled');
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click().should('be.disabled');
 
-      cy.get('[data-cy=continue-match-banner]')
-        .should('be.visible')
-        .should('contain', 'Waiting for Players');
+      cy.get('[data-cy=continue-match-banner]').should('be.visible').should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
 
       // Game 2: playerTwo wins by playerOne conceding
       cy.log('Game 2: player2 wins via player1 conceding');
-      cy.get('[data-cy=player-username]')
-        .should('contain', playerTwo.username);
+      cy.get('[data-cy=player-username]').should('contain', playerTwo.username);
 
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
-      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true});
+      assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
 
       // Both players rematch, then spectator
       rematchPlayerAsSpectator(playerTwo);
       rematchPlayerAsSpectator(playerOne);
 
-      cy.get('[data-cy=gameover-rematch')
-        .should('not.be.disabled')
-        .click();
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click();
 
       // Game 3: stalemate via passes
       cy.log('Game 3: stalemate via passes');
-      cy.get('[data-cy=player-username]')
-        .should('contain', playerOne.username);
+      cy.get('[data-cy=player-username]').should('contain', playerOne.username);
 
       cy.recoverSessionOpponent(playerOne);
 
@@ -503,50 +465,38 @@ describe('Spectating Rematches', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.passOpponent();
 
-      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 1, stalemates: 1, winner: null, isRanked: true});
+      assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 1, stalemates: 1, winner: null, isRanked: true });
 
       // Specator requests rematch, then players
-      cy.get('[data-cy=gameover-rematch')
-        .should('not.be.disabled')
-        .click()
-        .should('be.disabled');
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click().should('be.disabled');
 
-      cy.get('[data-cy=continue-match-banner]')
-        .should('be.visible')
-        .should('contain', 'Waiting for Players');
+      cy.get('[data-cy=continue-match-banner]').should('be.visible').should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
       rematchPlayerAsSpectator(playerTwo);
 
       // Game 4: players stalemate by requesting stalemate
       cy.log('Game 4: stalemate via stalemate request');
-      cy.get('[data-cy=player-username]')
-        .should('contain', playerTwo.username);
+      cy.get('[data-cy=player-username]').should('contain', playerTwo.username);
       cy.recoverSessionOpponent(playerOne);
       cy.stalemateOpponent();
       cy.get('#opponent-requested-stalemate-dialog').should('be.visible');
       cy.recoverSessionOpponent(playerTwo);
       cy.stalemateOpponent();
 
-      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 1, stalemates: 2, winner: null, isRanked: true});
+      assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 1, stalemates: 2, winner: null, isRanked: true });
 
       // Specator requests rematch, then players
-      cy.get('[data-cy=gameover-rematch')
-        .should('not.be.disabled')
-        .click()
-        .should('be.disabled');
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click().should('be.disabled');
 
-      cy.get('[data-cy=continue-match-banner]')
-        .should('be.visible')
-        .should('contain', 'Waiting for Players');
+      cy.get('[data-cy=continue-match-banner]').should('be.visible').should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
       rematchPlayerAsSpectator(playerTwo);
 
       // Game 5 -- playerOne wins the match with points
       cy.log('Game 5: player1 wins via points and wins match');
-      cy.get('[data-cy=player-username]')
-        .should('contain', playerOne.username);
+      cy.get('[data-cy=player-username]').should('contain', playerOne.username);
       cy.recoverSessionOpponent(playerOne);
       cy.loadGameFixture(0, {
         p0Hand: [Card.FOUR_OF_CLUBS],
@@ -560,15 +510,14 @@ describe('Spectating Rematches', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.playPointsSpectator(Card.FOUR_OF_CLUBS, 0);
 
-      assertGameOverAsSpectator({ p1Wins: 2, p2Wins: 1, stalemates: 2, winner: 'p1', isRanked: true});
+      assertGameOverAsSpectator({ p1Wins: 2, p2Wins: 1, stalemates: 2, winner: 'p1', isRanked: true });
 
       cy.get('[data-cy=player-match-result] [data-cy-result-img=won]').should('be.visible');
 
       cy.get('[data-cy=opponent-match-result] [data-cy-result-img=lost]').should('be.visible');
 
       // Go home
-      cy.get('[data-cy=gameover-rematch')
-        .should('not.exist');
+      cy.get('[data-cy=gameover-rematch').should('not.exist');
       cy.get('[data-cy=gameover-go-home]').click();
       cy.url().should('not.include', '/spectate');
     });
@@ -576,42 +525,37 @@ describe('Spectating Rematches', () => {
     it('Shows when player1 declines rematch while spectating ranked match', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
-      assertGameOverAsSpectator({p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true});
+      assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
       rematchPlayerAsSpectator(playerOne, false);
     });
 
     it('Shows when player2 declines rematch while spectating ranked match', () => {
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
-      assertGameOverAsSpectator({p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true});
+      assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true });
       rematchPlayerAsSpectator(playerTwo, false);
     });
 
     it('Spectates a ranked match where player 2 wins the match', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
-      assertGameOverAsSpectator({p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true});
+      assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
 
       // Both players rematch, then spectator
       rematchPlayerAsSpectator(playerOne);
       rematchPlayerAsSpectator(playerTwo);
 
-      cy.get('[data-cy=gameover-rematch')
-        .should('not.be.disabled')
-        .click();
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click();
 
-      cy.get('[data-cy=player-username]')
-        .should('contain', playerTwo.username);
+      cy.get('[data-cy=player-username]').should('contain', playerTwo.username);
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
 
-      assertGameOverAsSpectator({p1Wins: 0, p2Wins: 2, stalemates: 0, winner: 'p2', isRanked: true});
+      assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 2, stalemates: 0, winner: 'p2', isRanked: true });
 
       // Player2 won and Player1 lost
-      cy.get('[data-cy=player-match-result]')
-        .find('[data-cy-result-img=lost]');
-      cy.get('[data-cy=opponent-match-result]')
-        .find('[data-cy-result-img=won]');
+      cy.get('[data-cy=player-match-result]').find('[data-cy-result-img=lost]');
+      cy.get('[data-cy=opponent-match-result]').find('[data-cy-result-img=won]');
     });
   });
 });

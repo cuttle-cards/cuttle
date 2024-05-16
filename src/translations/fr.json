@@ -62,6 +62,7 @@
       "opponentMayCounter": "L'adversaire peut contrer",
       "opponentMustResolve": "L'adversaire doit résoudre",
       "opponentIsDiscarding": "L'adversaire se défausse",
+      "opponentSkipsDiscarding": "L'adversaire saute la défausse",
       "opponentChoosingFromScrap": "L'adversaire choisit une carte à partir de la défausse",
       "opponentPlayingFromDeck": "Adversaire jouant depuis le paquet",
       "opponentMustDiscardJack": "L'adversaire doit défausser un valet",
@@ -95,6 +96,12 @@
         "discardTwoCards": "Défaussez deux cartes",
         "discard": "Défausser",
         "oppponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
+      },
+      "five":{
+        "discardAndDraw" : "Jeter et piocher",
+        "nice": "Bon!",
+        "resolveFive": "Vous avez résolu un 5 ponctuel. Choisissez une carte à défausser et vous piocherez ensuite 3 cartes",
+        "resolveFiveNoCards": "Vous avez résolu un problème ponctuel de 5, mais vous n'avez aucune carte en main à défausser. Vous piochez 3 cartes sans les défausser. Doux!"
       },
       "counterDialogs": {
         "counterTitle": "Chance de contrer",
@@ -186,7 +193,7 @@
         "2": "Cible et élimine une figure ou un huit en lunettes.",
         "3": "Récupérez un carte dans la défausse.",
         "4": "Votre adversaire défausse deux cartes de son choix.",
-        "5": "Piochez deux cartes du paquet.",
+        "5": "Défaussez 1 carte et piochez-en jusqu'à 3",
         "6": "Élimine toutes les figures et les huit en lunettes.",
         "7": "Dévoilez deux cartes du paquet et jouez en une.",
         "8": "Révèle la main de votre adversaire.",
@@ -245,6 +252,11 @@
       },
       "seven": {
         "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte du paquet."
+      },
+      "five":{
+        "selectCardToDiscard" : "Vous devez sélectionner une carte à défausser",
+        "incorrectCard" : "Mauvaise carte jouée",
+        "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
       },
       "draw": {
         "deckIsEmpty": "Le paquet est vide, voune pouvez pas piocher.",
@@ -315,23 +327,36 @@
     "join": "Rejoindre"
   },
   "rules": {
+    "introduction": "Introduction",
+    "actions": {
+      "title": "Actions",
+      "clubs": "Trèfles (moins fort)",
+      "diamonds": "Carreaux",
+      "hearts": "Cœurs",
+      "spades": "Piques (le plus for)"
+    },
+    "howToPlay": "Comment jouer",
     "cuttleTitle": "Qu'est-ce que Cuttle?",
     "cuttleText": "Cuttle est un jeu de cartes de combat à deux joueurs joué avec un jeu de cartes standard de 52 cartes. Il présente la nuance stratégique des jeux de cartes à collectionner comme Magic, avec l'équilibre élégant d'un jeu standard. Vous pouvez même y jouer gratuitement! Testez votre courage dans le jeu de cartes le plus intense des abysses!",
-    "findGame": "Trouver une partie",
-    "signUp": "Inscrivez-vous pour jouer en ligne",
     "rulesTitle": "Règles de Cuttle",
+    "preview": {
+      "watchVideo": "Regarder la vidéo",
+      "imgAlt":"Comment jouer {title} dans Cuttle"
+    },
     "rulesReadText": "Lisez l'officiel",
+    "rulesPreviewGif":"Aperçu animé de {title} dans Cuttle",
     "rulesWatchText": "Ou regardez le tutoriel vidéo de cuttle.cards ci-dessous pour apprendre les règles et vous familiariser avec le déroulement du jeu.",
     "goalTitle": "objectif",
     "goalText": "L'objectif est d'être le premier joueur à atteindre ou dépasser 21 points. Le premier joueur à atteindre l'objectif gagne immédiatement. Un joueur (traditionnellement celui qui distribue) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes joue en premier.",
     "playTitle": "Jouer",
-    "playText": "À votre tour, vous devez effectuer l'une des actions suivantes:",
+    "playText-1": "Un joueur (traditionnellement le croupier) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes commence.",
+    "playText-2": "À votre tour, vous devez effectuer exactement l’une des actions suivantes :",
     "draw": "Piocher",
     "drawDescription": "Prenez une carte du paquet. Vous ne pouvez pas avoir plus de 8 cartes en main. S'il n'y a plus de cartes dans le paquet, vous pouvez passer. Trois passes consécutives entraine un match nul.",
     "points": "Points",
     "pointsDescription": "Les cartes à points (de 1 à 10) peuvent être posé dans votre zone pour accumuler des points et tenter d'atteindre l'objectif. Les cartes à points peuvent être éliminées par certaines cartes tactiques ou par un scuttle.",
     "scuttle": "Scuttle",
-    "scuttleDescription": "Pour éliminer une carte à points de votre adversaire, ciblez la avec une carte à points de votre main. Votre carte doit avoir une valeur égale ou suppérieur à celle de la carte ciblée.  Pour les cartes de valeur égale, on se réfère alors à leur famille : ♣️ (le plus faible) < ♦️ < ♥️ < ♠️ (le plus fort).",
+    "scuttleDescription": "Supprimez la carte de points d'un adversaire avec une plus grosse de votre main. Les égalités sont brisées par le costume :",
     "royal": "Figures",
     "royalDescription": "Posez un Roi pour réduire votre objectif de points. Si ce roi est détruit, votre objectif augmente à nouveau.",
     "oneoff": "Capacité tactique",
@@ -353,22 +378,28 @@
       "text": "Les cartes numériques (sauf 8 et 10) ont toutes des capacités tactiques. Lorsqu'elles sont jouées, l'adversaire peut contrer l'attaque avec un Deux. ",
       "ace": "As",
       "aceDescription": "Il supprime toutes les cartes à points de la table.",
-      "twoE1": "Deux - Capacité 1",
-      "twoE1Description": "Le Deux a deux Capacités.  Il peut être joué pendant le tour de votre adversaire pour contrer une attaque tactique.",
-      "twoE2": "Deux - Effet 2",
-      "twoE2Description": "Sinon, il peut éliminer une Figure ou un Huit en lunettes.",
+      "two": "Two - Multi Use Effect Card",
+      "twoE1Description": "Effet 1 : contrer l'effet ponctuel ciblé. Peut être joué pendant le tour de votre adversaire.",
+      "twoE2Description": "Effet 2 : Retirez la cible Royal ou Glasses Eight.",
       "three": "Trois",
       "threeDescription": "Vous permet de récupérer de la corbeille une carte de votre choix.",
       "four": "Quatre",
       "fourDescription": "Votre adversaire doit défausse deux cartes de son choix.",
       "five": "Cinq",
-      "fiveDescription": "Piochez deux cartes du jeu pour les ajouter à votre main. Attention de ne pas dépasser la limite de 8 cartes en main.",
+      "fiveDescription": "Défaussez une carte, puis piochez jusqu'à trois cartes du jeu jusqu'à la limite de 8 cartes en main.",
       "six": "Six",
       "sixDescription": "Élimine toutes les figures et les huit en lunettes de la table.",
       "seven": "Sept",
       "sevenDescription": "Révélez les deux premières cartes du jeu et jouez en une immédiatement.",
+      "eight": "Huit",
+      "eightDescription": "Révélez la main de votre adversaire (dure jusqu'à sa mise au rebut).",
       "nine": "Neuf",
       "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour."
+    },
+    "readyToPlay": {
+      "readyToPlay": "Prêt à jouer ?",
+      "findGame": "Trouver une partie",
+      "signUp": "Inscrivez-vous pour jouer en ligne"
     },
     "multiplayerTitle": "Variantes multijoueurs",
     "multiplayerText1": "Actuellement, seule la cuttle à 2 joueurs est disponible sur ",
@@ -393,7 +424,7 @@
       "rule5": "Le Neuf a une capacité supplémentaire. Il peut être joué pour contrer une carte figure jouée par un adversaire. Ainsi joué, le Neuf n'empêche pas cet adversaire de rejouer la même carte à son prochain tour.  Si vous jouez un Neuf à votre tour (son effet habituel est appliqué. L'adversaire reprend en main la carte ciblée et n'a pas le droit de la jouer à son prochain tour."
     },
     "faq": {
-      "title": "Questions les plus fréquentes",
+      "title": "FAQ",
       "twoCounter": "Puis-je jouer un deux pour contrer une carte à points ou un scuttle?",
       "twoCounterAnswer": "Non! Les Deux ne peuvent pas contrer que les carte à points. Ils ne peuvent que contrer les attaques spéciales ou détruire une carte figure active.",
       "queenProtectTwo": "Les reines protègent-elles contre une contre-attaque avec un deux?",
@@ -414,7 +445,25 @@
       "deckExhaustAnswer": "Lorsqu'il n'y a plus de cartes dans le paquet, les joueurs peuvent passer leur tour au lieu de piocher. S'il y a trois passes consécutives, c'est-à-dire que le joueur 1 passe, le joueur 2 passe, puis le joueur 1 passe à nouveau, la partie se termine par une impasse et il y a égalité.",
       "whereToPlay": "Où puis-je jouer à Cuttle?",
       "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami! Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit:"
+    },
+    "tournaments": {
+      "title": "Tournois",
+      "competitiveCuttle1": "Le Cuttle Compétitif est divisé en 4 saisons par an, une par couleur : Trèfle, Carreau, Cœur et Pique. À la fin de chaque saison, les 8 meilleurs joueurs participent à un tournoi de championnat à double élimination et les champions sont acclamés de façon permanente sur le site.",
+      "competitiveCuttle2": "Chaque saison est divisée en 13 semaines. Pour chaque semaine, nous comptons le nombre de matchs classés au meilleur des 2/3 que chaque joueur remporte contre des adversaires uniques (en ignorant les matchs nuls) et attribuons des points aux joueurs en fonction de leur classement hebdomadaire.",
+      "championPlayer": "Joueur Champion",
+      "secondPlacePlayer": "Joueur Deuxième Place",
+      "thirdPlacePlayer": "Joueur Troisième Place",      
+      "exampleImgExplanation": "Exemple de page de statistiques / tournoi",
+      "scoring": {
+        "numPoints": "1 Point | {count} Points",
+        "firstPlace": "Le joueur avec le plus de victoires obtient 5 points pour la semaine",
+        "secondPlace": "Le joueur avec le 2ème plus grand nombre de victoires obtient 4 points pour la semaine",
+        "thirdPlace": "Le joueur avec le 3ème plus grand nombre de victoires obtient 3 points pour la semaine",
+        "oneWin": "Chaque autre joueur ayant remporté au moins un match obtient 2 points pour la semaine",
+        "completedMatch": "Chaque autre joueur ayant terminé un match sans gagner obtient 1 point pour la semaine"
+      }
     }
+
   },
   "stats": {
     "error": {
@@ -446,5 +495,24 @@
     "404": {
       "title": "404 Non Trouvé"
     }
+  },
+  "fiveChange": {
+    "revisedFives": "Recycleurs 5",
+    "revisedFivesAddition": "(Changement de règle)",
+    "ruleInfoHeader": "Informations sur la règle",
+    "ruleInfo": "Jouer un 5 a désormais un effet révisé : défaussez une carte, puis piochez trois cartes",
+    "whyImplementHeader": "Pourquoi mettons-nous cela en œuvre ?",
+    "whyImplement": "Parce que les 5 prennent votre tour pour jouer et vous pourriez alternativement piocher une carte à votre tour, tandis que jouer un 5 donne l'impression d'obtenir deux cartes (yay !), en réalité il ne se remplace que lui-même sans rien faire d'autre pour vous. Afin de renforcer le cinq et de lui donner un objectif spécifique, tout en s'appuyant sur le thème des 5 qui font circuler votre main pour vous faire piocher beaucoup de cartes, nous expérimentons avec une variation de l'effet des 5 où vous défaussez d'abord une carte de votre main, puis piochez trois cartes ! Nous espérons que cela augmentera l'utilité de l'effet des 5 et affinera sa fonction stratégique. Et nous avons besoin de votre aide pour décider si cela devrait devenir un changement permanent !",
+    "previousBetaHeader": "Avons-nous déjà testé cela auparavant ?",
+    "previousBeta": "Nous avons précédemment lancé une phase bêta de 2 semaines pour tester les recycleurs de niveau 5 en Avril. La communauté a voté et le résultat était de 69 % contre 31 % en faveur du changement. Nous avons reçu des retours précieux, notamment que de nombreux joueurs souhaitaient disposer de plus de temps pour tester les recycleurs de niveau 5 avant de prendre une décision finale. Nous attachons une grande importance au respect des souhaits de la communauté et à la réflexion et à la prudence dans tout changement des règles du jeu. Dans cet esprit, nous prolongeons la phase bêta des recycleurs de niveau 5 jusqu'au Championnat de la saison des Diamonds 2024 !",
+    "howLongHeader": "Combien de temps dure la bêta étendue ?",
+    "howLong": "La bêta du Recycler 5 se déroulera du mardi 14 mai au mercredi 31 juillet.",
+    "howLong2": "Afin de donner aux joueurs une ample opportunité d'essayer l'effet, le dernier tour de vote rouvrira à la fin de la saison Diamonds 2024 début juillet.",
+    "gameModesHeader": "Quels modes de jeu cela affecte-t-il ?",
+    "gameModes": "La bêta affecte à la fois le jeu classé et le jeu décontracté. Le jeu classé continuera à être pris en compte dans le classement comme d'habitude, donc vous n'avez pas besoin de sauter le jeu classé pour l'essayer !",
+    "learnMoreHeader": "Où pouvons-nous en apprendre davantage ?",
+    "learnMore1": "Vous pouvez en apprendre plus sur ce changement d'équilibrage et la discussion environnante sur ",
+    "learnMore2": "où les joueurs discutent du changement et s'ils aimeraient le voir permanent. Dites-nous ce que vous en pensez !"
   }
+
 }

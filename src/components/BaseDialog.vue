@@ -2,7 +2,7 @@
   <v-dialog
     v-model="show"
     :persistent="persistent"
-    max-width="650"
+    :max-width="maxWidth"
     :scrollable="scrollable"
     elevation
     scrim="surface-1"
@@ -16,7 +16,8 @@
       :id="id"
       :data-cy="id"
       class="dialog-card"
-      color="surface-1"
+      :class="variant"
+      :color="backgroundColor"
       :style="`opacity:${opacity}`"
     >
       <v-card-title class="d-flex justify-space-between pt-4">
@@ -52,6 +53,11 @@ export default {
       type: String,
       required: true,
     },
+    variant: {
+      type: String,
+      default: 'dark',
+      validator: (val) => ['light', 'dark'].includes(val),
+    },
     scrollable: {
       type: Boolean,
       default: false,
@@ -63,7 +69,11 @@ export default {
     persistent: {
       type: Boolean,
       default: true
-    }
+    },
+    maxWidth: {
+      type: Number,
+      default: 650,
+    },
   },
   emits: ['update:modelValue'],
   computed: {
@@ -75,25 +85,47 @@ export default {
         this.$emit('update:modelValue', val);
       },
     },
+    isLight() {
+      return this.variant === 'light';
+    },
+    backgroundColor() {
+      return this.isLight ? 'surface-2': 'surface-1';
+    },
+    textColor() {
+      return this.isLight ? 'surface-1' : 'surface-2';
+    },
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .dialog-card {
-  /* Stuck using important because vuetify applies it to these styles for cards */
-  color: rgba(var(--v-theme-surface-2)) !important;
   border-radius: 12px !important;
   border: 4px solid rgba(var(--v-theme-surface-2));
+  
+  &.dark {
+    /* Stuck using important because vuetify applies it to these styles for cards */
+    color: rgba(var(--v-theme-surface-2)) !important;
+  }
+
+  &.light {
+    /* Stuck using important because vuetify applies it to these styles for cards */
+    color: rgba(var(--v-theme-surface-1)) !important;
+  }
 }
 
+
 .dialog-actions {
-  background-color: rgba(var(--v-theme-surface-2));
   padding-left: 8px;
   padding-right: 8px;
   padding-top: 8px;
   padding-bottom: 2px;
   border-bottom-left-radius: 8px;
   border: none;
+
+  .dark & {
+    background-color: rgba(var(--v-theme-surface-2));
+  }
+
 }
 </style>

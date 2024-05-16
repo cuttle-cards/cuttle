@@ -21,6 +21,7 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
+  window.localStorage.setItem('fiveChangeBannerDismissed', true);
 }
 
 describe('Spectating Games', () => {
@@ -132,7 +133,7 @@ describe('Spectating Games', () => {
     cy.recoverSessionOpponent(playerTwo);
     cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS, 1);
 
-    assertGameOverAsSpectator({p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: false});
+    assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: false });
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
   });
@@ -380,13 +381,14 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     // Log in as playerOne
     cy.loginPlayer(playerOne);
     cy.setupGameAsSpectator();
+    window.localStorage.setItem('fiveChangeBannerDismissed', true);
   });
 
-it('Spectate unranked games with rematch', function () {
+  it('Spectate unranked games with rematch', function () {
     // 1st game: Opponent concedes
     cy.recoverSessionOpponent(playerTwo);
     cy.concedeOpponent();
-    assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false});
+    assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
 
     rematchPlayerAsSpectator(playerTwo);
 
@@ -408,11 +410,9 @@ it('Spectate unranked games with rematch', function () {
 
     cy.signupOpponent(playerThree);
 
-    cy.get('[data-cy=gameover-rematch]')
-      .click();
+    cy.get('[data-cy=gameover-rematch]').click();
 
-    cy.get('[data-cy=player-username]')
-        .should('contain', playerTwo.username);
+    cy.get('[data-cy=player-username]').should('contain', playerTwo.username);
 
     cy.window()
       .its('cuttle.gameStore')

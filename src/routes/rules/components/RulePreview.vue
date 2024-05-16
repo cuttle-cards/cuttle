@@ -1,44 +1,39 @@
 <template>
-  <div class="rule-preview">
-    <v-img
-      v-if="!animate"
-      :src="staticImg"
-      :alt="`How to play ${title} in Cuttle`"
-      aspect-ratio="1.7778"
-    />
-    <v-img
-      v-else
-      :src="animatedImg"
-      :alt="`Animated preview of ${title} in Cuttle`"
-      aspect-ratio="1.7778"
-    />
-    <p class="mt-2">
-      <v-icon
-        v-if="icon"
-        color="black"
+  <v-row>
+    <v-col lg="2" sm="5">
+      <v-img
+        :src="staticImg"
+        aspect-ratio="1.7778"
+        :alt="t('rules.preview.imgAlt', { title: t(title) })"
         class="mr-2"
-        :icon="`mdi-${icon}`"
-        :aria-label="`${title} move choice icon`"
         aria-hidden="false"
         role="img"
       />
-      <strong>{{ title }}:</strong>
-      {{ description }}
-    </p>
-    <div class="d-flex justify-center">
-      <v-btn :color="buttonColor" variant="outlined" @click="toggleAnimate">
-        <v-icon :icon="buttonIcon" />
-        {{ buttonText }}
-      </v-btn>
-    </div>
-  </div>
+    </v-col>
+    <v-col>
+      <p class="mb-2 text-surface-2">
+        <strong>{{ t(title) }}</strong> <br>
+        {{ t(description) }}
+      </p>
+      <p v-if="description2" class="mb-2 text-surface-2">
+        {{ t(description2) }}
+      </p>
+      <div>
+        <v-btn color="newPrimary" @click="toggleDialog">
+          <v-icon icon="mdi-play" />
+          {{ t('rules.preview.watchVideo') }}
+        </v-btn>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
-<script>
-export default {
-  name: 'RulePreview',
-  props: {
-    title: {
+<script setup>
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+defineProps({
+  title: {
       type: String,
       required: true,
     },
@@ -46,7 +41,7 @@ export default {
       type: String,
       required: true,
     },
-    animatedImg: {
+    description2: {
       type: String,
       default: '',
     },
@@ -58,29 +53,16 @@ export default {
       type: String,
       default: '',
     },
-  },
-  emits: ['animate'],
-  data() {
-    return {
-      animate: false,
-    };
-  },
-  computed: {
-    buttonText() {
-      return this.animate ? 'Stop' : `${this.title}`;
-    },
-    buttonIcon() {
-      return this.animate ? 'mdi-stop' : 'mdi-play';
-    },
-    buttonColor() {
-      return this.animate ? 'secondary' : 'primary';
-    },
-  },
-  methods: {
-    toggleAnimate() {
-      this.animate = !this.animate;
-      this.$emit('animate', this);
-    },
-  },
-};
+});
+
+const emit = defineEmits(['animate']);
+
+const { t } = useI18n();
+
+const animate = ref(false);
+
+function toggleDialog() {
+  animate.value = !animate.value;
+  emit('animate');
+}
 </script>
