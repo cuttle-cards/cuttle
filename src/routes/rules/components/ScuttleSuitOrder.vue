@@ -6,7 +6,7 @@
       aria-hidden="false"
       role="img"
     />
-        &nbsp;
+    &nbsp;
     {{ t('rules.actions.clubs') }}
     &lt; &nbsp;
 
@@ -16,7 +16,7 @@
       aria-hidden="false"
       role="img"
     />
-        &nbsp;
+    &nbsp;
     {{ t('rules.actions.diamonds') }}
     &lt; &nbsp;
 
@@ -26,7 +26,7 @@
       aria-hidden="false"
       role="img"
     />
-        &nbsp;
+    &nbsp;
     {{ t('rules.actions.hearts') }}
     &lt; &nbsp;
 
@@ -36,7 +36,7 @@
       aria-hidden="false"
       role="img"
     />
-        &nbsp;
+    &nbsp;
     {{ t('rules.actions.spades') }}
   </p>
 </template>
