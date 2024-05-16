@@ -11,8 +11,6 @@ import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixture
 import { Card } from '../../../fixtures/cards';
 
 const dayjs = require('dayjs');
-const utc = require('dayjs/plugin/utc');
-dayjs.extend(utc);
 
 function startRematchPlayerFirst() {
   cy.get('[data-cy=my-rematch-indicator]')
@@ -63,16 +61,16 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
           player1: this.playerOneId,
           player2: this.playerTwoId,
           winner: this.playerOneId,
-          startTime: dayjs().utc().subtract(1, 'week').subtract(1, 'day').format(),
-          endTime: dayjs().utc().subtract(1, 'week').subtract(1, 'day').format(),
+          startTime: dayjs().subtract(1, 'week').subtract(1, 'day').format(),
+          endTime: dayjs().subtract(1, 'week').subtract(1, 'day').format(),
         };
 
         const currentMatchWithDifferentOpponent = {
           player1: this.playerOneId,
           player2: this.playerThreeId,
           winner: null,
-          startTime: dayjs().utc().subtract(1, 'hour').format(),
-          endTime: dayjs().utc().subtract(1, 'hour').format(),
+          startTime: dayjs().subtract(1, 'hour').format(),
+          endTime: dayjs().subtract(1, 'hour').format(),
         };
 
         cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);
