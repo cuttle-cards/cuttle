@@ -125,7 +125,7 @@ const oneOffs = [
   },
 ];
 
-const sectionTitle = [
+const sectionTitles = [
   { id: 'introduction',title: 'rules.introduction', href: '#introduction' },
   { id:'howtoplay',title: 'rules.howToPlay', href: '#howtoplay' },
   { id:'royals',title: 'rules.royals.title', href: '#royals' },
@@ -134,4 +134,4 @@ const sectionTitle = [
   { id: 'tournaments',title: 'rules.tournaments.title', href: '#tournaments' },
 ];
 
-export { rules,  oneOffs, royals, sectionTitle };
+export { rules,  oneOffs, royals, sectionTitles };

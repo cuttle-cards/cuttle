@@ -11,7 +11,7 @@
         >
           <ul class="ms-5 sidebar-title mt-8">
             <li
-              v-for="{ title, href, id } in sectionTitle"
+              v-for="{ title, href, id } in sectionTitles"
               :id="'listItem_' + id"
               :key="title"
               ref="items"
@@ -350,7 +350,7 @@ import { useGoTo } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 import { useThemedLogo } from '@/composables/themedLogo';
-import { rules, royals, oneOffs, sectionTitle } from './data/rulesData';
+import { rules, royals, oneOffs, sectionTitles } from './data/rulesData';
 import RuleParagraph from './components/RuleParagraph.vue';
 import RulePreview from '@/routes/rules/components/RulePreview.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
@@ -410,7 +410,7 @@ export default {
     (this.rules = rules),
       (this.royals = royals),
       (this.oneOffs = oneOffs),
-      (this.sectionTitle = sectionTitle);
+      (this.sectionTitles = sectionTitles);
   },
   methods: {
     goToSection(url) {
