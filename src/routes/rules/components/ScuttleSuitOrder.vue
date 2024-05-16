@@ -1,5 +1,5 @@
 <template>
-  <p class="d-flex my-5">
+  <p class="d-flex my-5 align-end ">
     <v-img
       src="img/rulesView/rules_action_clubs.svg"
       class="mr-1 max-w-24"
