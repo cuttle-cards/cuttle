@@ -44,7 +44,9 @@ const props = defineProps({
     default: '',
   },
 });
+
 defineEmits(['close']);
+
 const { t } = useI18n();
 
 const imageLoaded = ref(false);
