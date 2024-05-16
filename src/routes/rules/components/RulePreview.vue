@@ -32,7 +32,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const _props = defineProps({
+defineProps({
   title: {
       type: String,
       required: true,
