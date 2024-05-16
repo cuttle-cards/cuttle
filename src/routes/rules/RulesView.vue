@@ -407,10 +407,10 @@ export default {
     },
   },
   created() {
-    (this.rules = rules),
-      (this.royals = royals),
-      (this.oneOffs = oneOffs),
-      (this.sectionTitles = sectionTitles);
+    this.rules = rules;
+    this.royals = royals;
+    this.oneOffs = oneOffs;
+    this.sectionTitles = sectionTitles;
   },
   methods: {
     goToSection(url) {
