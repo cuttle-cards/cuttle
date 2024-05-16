@@ -14,8 +14,8 @@ module.exports.models = {
   datastore: 'default',
   migrate: 'drop',
   attributes: {
-    createdAt: { type: 'number', autoCreatedAt: true },
-    updatedAt: { type: 'number', autoUpdatedAt: true },
+    createdAt: { type: 'ref', columnType: 'timestamptz', autoCreatedAt: true },
+    updatedAt: { type: 'ref', columnType: 'timestamptz', autoUpdatedAt: true },
     id: { type: 'number', autoIncrement: true },
   },
   /******************************************************************************
