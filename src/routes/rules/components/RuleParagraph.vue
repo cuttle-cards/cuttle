@@ -6,17 +6,17 @@
     <div class="flex-column">
       <div class="d-flex">
         <v-img
-          :src="props.rule.staticImg"
+          :src="rule.staticImg"
           class="mr-1 max-w-24"
           aria-hidden="false"
           role="img"
         />
         <h1>
-          {{ t(props.rule.title) }}
+          {{ t(rule.title) }}
         </h1>
       </div>
       <p class="d-block">
-        {{ t(props.rule.description) }}
+        {{ t(rule.description) }}
       </p>
       <component :is="rule.childComponent" v-if="rule.childComponent" />
     </div>
@@ -26,7 +26,7 @@
 <script setup>
 import { useI18n } from 'vue-i18n';
 
-const props = defineProps({
+defineProps({
   rule: {
     type: Object,
     required: true
