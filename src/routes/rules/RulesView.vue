@@ -1,499 +1,493 @@
 <template>
-  <div class="pa-4">
+  <div class="pa-4 bg-surface-1 text-surface-2">
     <v-container>
+      <BackToTop />
       <v-row>
-        <img
-          id="logo"
-          alt="Cuttle logo"
-          :src="logoSrc"
-          height="20vh"
-          class="mb-8"
-        >
-      </v-row>
-
-      <!-- Rules -->
-      <v-row class="flex-column align-start mt-5">
-        <div>
-          <h1 class="gradient-text">
-            {{ t('rules.cuttleTitle') }}
-          </h1>
-          <p class="d-block">
-            {{ t('rules.cuttleText') }}
-          </p>
-          <div class="d-flex justify-center mt-5">
-            <v-btn to="/" color="primary" data-cy="top-home-button">
-              {{ buttonText }}
-            </v-btn>
-          </div>
-        </div>
-      </v-row>
-
-      <!-- Tutorial -->
-      <v-row class="flex-column align-start mt-5">
-        <h1 class="gradient-text">
-          {{ t('rules.rulesTitle') }}
-        </h1>
-        <p>
-          {{ t('rules.rulesReadText') }} 
-          <a href="/img/cuttle_rules.pdf" target="_blank"> Cuttle Cheestsheet </a>
-          {{ t('rules.rulesWatchText') }}
-        </p>
-        <div class="w-50 my-4 mx-auto">
-          <BaseVideo source="https://www.youtube.com/embed/qOqkNbhMdsI" />
-        </div>
-      </v-row>
-
-      <!-- Goal -->
-      <v-row class="flex-column align-start mt-5">
-        <h1 class="gradient-text">
-          {{ t('rules.goalTitle') }}
-        </h1>
-        <p class="d-block">
-          {{ t('rules.goalText') }}
-        </p>
-      </v-row>
-
-      <!-- Play -->
-      <v-row class="flex-column align-start mt-5">
-        <h1 class="d-block gradient-text">
-          {{ t('rules.playTitle') }}
-        </h1>
-        <p class="d-block">
-          {{ t('rules.playText') }}
-        </p>
-      </v-row>
-      <v-row
-        v-for="(ruleRow, rowIndex) in rules"
-        :key="`rule-row-${rowIndex}`"
-        align="start"
-        class="my-6"
-      >
         <v-col
-          v-for="(rule) in ruleRow"
-          :key="rule.title"
-          md="6"
+          class="sidebar-container"
+          :class="authenticated ? 'authenticated' : 'unauthenticated'"
+          md="3"
           sm="12"
-          class="my-4"
         >
-          <RulePreview
-            ref="preview" 
-            :title="t(rule.title)" 
-            :description="t(rule.description)"
-            :animated-img="rule.animatedImg"
-            :static-img="rule.staticImg"
-            :icon="rule.icon"
-            @animate="handleAnimate" 
-          />
+          <ul class="ms-5 sidebar-title mt-8">
+            <li
+              v-for="{ title, href, id } in sectionTitles"
+              :id="'listItem_' + id"
+              :key="title"
+              ref="items"
+            >
+              <button
+                :class="[
+                  activeTitle === id ? 'text-newPrimary' : 'text-surface-2',
+                  'text-h5 text-decoration-none',
+                ]"
+                @click="goToSection(href)"
+              >
+                {{ t(title) }}
+              </button>
+            </li>
+          </ul>
         </v-col>
-      </v-row>
 
-      <!-- Royals -->
-      <v-row class="flex-column">
-        <div class="d-flex">
-          <v-icon
-            size="x-large"
-            color="black"
-            class="mr-4"
-            icon="mdi-crown"
-            aria-label="crown icon"
-            aria-hidden="false"
-            role="img"
+        <v-col>
+          <RulePreviewDialog
+            v-model="previewDialog"
+            :image-url="imageUrl"
+            :title="previewTitle"
+            @close="closeAnimate"
           />
-          <h1 class="gradient-text">
-            {{ t('rules.royals.title') }}
-          </h1>
-        </div>
-        <p class="d-block">
-          {{ t('rules.royals.text') }}
-        </p>
-      </v-row>
-      <v-row
-        v-for="(ruleRow, rowIndex) in royals"
-        :key="`royal-row-${rowIndex}`"
-        align="start"
-        class="my-6"
-      >
-        <v-col
-          v-for="(rule) in ruleRow"
-          :key="rule.title"
-          md="6"
-          sm="12"
-          class="my-4"
-        >
-          <RulePreview
-            ref="preview"
-            :title="t(rule.title)"
-            :description="t(rule.description)"
-            :animated-img="rule.animatedImg"
-            :static-img="rule.staticImg"
-            :icon="rule.icon"
-            @animate="handleAnimate"
-          />
+
+          <!-- Introduction -->
+          <section>
+            <v-row
+              id="introduction"
+              v-intersect="{
+                handler: onIntersect,
+              }"
+              class="flex-column align-start"
+            >
+              <!-- What is Cuttle? -->
+              <div class="mt-8">
+                <h1 class="text-h2 text-surface-2 mb-5 section-title">
+                  {{ t('rules.introduction') }}
+                </h1>
+                <h1>
+                  {{ t('rules.cuttleTitle') }}
+                </h1>
+                <p class="d-block">
+                  {{ t('rules.cuttleText') }}
+                </p>
+              </div>
+            </v-row>
+
+            <!-- Tutorial -->
+            <v-row class="flex-column align-start my-8">
+              <h1>
+                {{ t('rules.rulesTitle') }}
+              </h1>
+              <p>
+                {{ t('rules.rulesReadText') }}
+                <a href="/img/cuttle_rules.pdf" target="_blank" class="text-anchor"> Cuttle Cheatsheet</a>
+                {{ t('rules.rulesWatchText') }}
+              </p>
+              <div class="w-100 my-4">
+                <BaseVideo source="https://www.youtube.com/embed/qOqkNbhMdsI" />
+              </div>
+            </v-row>
+          </section>
+
+          <!-- How to Play -->
+          <section class="section">
+            <!-- Goal -->
+            <v-row
+              id="howtoplay"
+              v-intersect="{
+                handler: onIntersect,
+              }"
+              class="flex-column align-start section"
+            >
+              <h1 class="text-h2 text-surface-2 mb-5 section-title">
+                {{ t('rules.howToPlay') }}
+              </h1>
+              <h1>
+                {{ t('rules.goalTitle') }}
+              </h1>
+              <p class="d-block">
+                {{ t('rules.goalText') }}
+              </p>
+            </v-row>
+            <!-- Play -->
+            <v-row class="flex-column align-start mt-5">
+              <h1 class="d-block">
+                {{ t('rules.playTitle') }}
+              </h1>
+              <p class="d-block">
+                {{ t('rules.playText-1') }} <br>
+                {{ t('rules.playText-2') }}
+              </p>
+            </v-row>
+          </section>
+
+          <!-- Actions -->
+          <section class="section">
+            <v-row>
+              <h1 class="text-h2 text-surface-2 mt-5 section-title">
+                {{ t('rules.actions.title') }}
+              </h1>
+            </v-row>
+            <RuleParagraph
+              v-for="rule in rules"
+              :key="rule.title"
+              :rule="rule"
+            />
+          </section>
+
+          <!-- Royals -->
+          <section class="section">
+            <div
+              id="royals"
+              v-intersect="{
+                handler: onIntersect,
+              }"
+            >
+              <v-row class="flex-column">
+                <h1 class="text-h2 text-surface-2 mt-5 section-title">
+                  {{ t('rules.royals.title') }}
+                </h1>
+              </v-row>
+            </div>
+            <v-row
+              v-for="rule in royals"
+              :key="rule.title"
+              align="start"
+              class="my-6"
+            >
+              <RulePreview
+                :key="rule.title"
+                ref="preview"
+                :title="rule.title"
+                :description="rule.description"
+                :static-img="rule.staticImg"
+                :icon="rule.icon"
+                @animate="handleAnimate(rule.animatedImg, rule.title)"
+              />
+            </v-row>
+          </section>
+
+          <section class="section">
+            <!-- One-Offs -->
+            <v-row
+              id="oneoffs"
+              v-intersect="{
+                handler: onIntersect,
+              }"
+            >
+              <h1 class="text-h2 text-surface-2 mt-5 section-title">
+                {{ t('rules.oneoffs.title') }}
+              </h1>
+            </v-row>
+            <v-row
+              v-for="rule in oneOffs"
+              :key="rule.title"
+              align="start"
+              class="my-6"
+            >
+              <RulePreview
+                ref="preview"
+                :title="rule.title"
+                :description="rule.description"
+                :description2="rule.description2"
+                :static-img="rule.staticImg"
+                :icon="rule.icon"
+                @animate="handleAnimate(rule.animatedImg, rule.title)"
+              />
+            </v-row>
+          </section>
+
+          <!-- Ready to Play? -->
+          <section class="section">
+            <v-row class="bg-surface-2 pa-8 rounded-xl d-flex flex-column align-center">
+              <h2 class="text-surface-1 pa-8">
+                {{ t('rules.readyToPlay.readyToPlay') }}
+              </h2>
+              <v-btn to="/" color="newPrimary" data-cy="ready-to-play-button">
+                {{ buttonText }}
+              </v-btn>
+            </v-row>
+          </section>
+
+          <!-- FAQ -->
+          <section class="section">
+            <v-row
+              id="faq"
+              v-intersect="{
+                handler: onIntersect,
+              }"
+              class="d-flex flex-column mb-4"
+            >
+              <h1 class="text-h2 text-surface-2 my-6 section-title">
+                {{ t('rules.faq.title') }}
+              </h1>
+              <h3>{{ t('rules.faq.twoCounter') }}</h3>
+              <p class="mb-4">
+                {{ t('rules.faq.twoCounterAnswer') }}
+              </p>
+              <h3>{{ t('rules.faq.queenProtectTwo') }}</h3>
+              <p class="mb-4">
+                {{ t('rules.faq.queenProtectTwoAnswer') }}
+              </p>
+              <h3>{{ t('rules.faq.queenProtectScuttle') }}</h3>
+              <p class="mb-4">
+                {{ t('rules.faq.queenProtectScuttleAnswer') }}
+              </p>
+              <h3>{{ t('rules.faq.twoOnTwo') }}</h3>
+              <p class="mb-4">
+                {{ t('rules.faq.twoOnTwoAnswer') }}
+              </p>
+              <h3>{{ t('rules.faq.kingWin') }}</h3>
+              <p class="mb-4">
+                {{ t('rules.faq.kingWinAnswer') }}
+              </p>
+              <h3>{{ t('rules.faq.aceDestruction') }}</h3>
+              <p class="mb-4">
+                {{ t('rules.faq.aceDestructionAnswer') }}
+              </p>
+              <h3>{{ t('rules.faq.revealNoPoints') }}</h3>
+              <p class="mb-4">
+                {{ t('rules.faq.revealNoPointsAnswer') }}
+              </p>
+              <h3>{{ t('rules.faq.revealOneLeft') }}</h3>
+              <p class="mb-4">
+                {{ t('rules.faq.revealOneLeftAnswer') }}
+              </p>
+              <h3>{{ t('rules.faq.deckExhaust') }}</h3>
+              <p class="mb-4">
+                {{ t('rules.faq.deckExhaustAnswer') }}
+              </p>
+              <h3>{{ t('rules.faq.whereToPlay') }}</h3>
+              <p class="mb-4">
+                {{ t('rules.faq.whereToPlayAnswer') }}
+              </p>
+            </v-row>
+          </section>
+
+          <section class="section">
+            <v-row
+              id="tournaments"
+              v-intersect="{
+                handler: onIntersect,
+              }"
+              class="flex-column"
+            >
+              <h1 class="text-h2 text-surface-2 my-6 section-title">
+                {{ t('rules.tournaments.title') }}
+              </h1>
+            </v-row>
+  
+            <v-row>
+              <p>
+                {{ t('rules.tournaments.competitiveCuttle1') }}
+              </p>
+  
+              <div class="d-flex flex-column my-5">
+                <AwardCard
+                  :username="t('rules.tournaments.championPlayer')"
+                  :place="1"
+                  :is-card="false"
+                  class="mb-4"
+                />
+                <AwardCard
+                  :username="t('rules.tournaments.secondPlacePlayer')"
+                  :place="2"
+                  :is-card="false"
+                  class="mb-4"
+                />
+                <AwardCard
+                  :username="t('rules.tournaments.thirdPlacePlayer')"
+                  :place="3"
+                  :is-card="false"
+                  class="mb-4"
+                />
+              </div>
+              <p>
+                {{ t('rules.tournaments.competitiveCuttle2') }}
+              </p>
+              <v-list class="mt-4 rounded-xl w-100 my-8" bg-color="surface-2" base-color="surface-1">
+                <v-list-item>
+                  <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.firstPlace">
+                    {{ t('rules.tournaments.scoring.numPoints', 5) }}
+                  </v-chip>
+                  {{ t('rules.tournaments.scoring.firstPlace') }}
+                </v-list-item>
+                <v-list-item>
+                  <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.secondPlace">
+                    {{ t('rules.tournaments.scoring.numPoints', 4) }}
+                  </v-chip>
+                  {{ t('rules.tournaments.scoring.secondPlace') }}
+                </v-list-item>
+                <v-list-item>
+                  <v-chip variant="elevated" class="mr-2 mb-1" :color="theme.thirdPlace">
+                    {{ t('rules.tournaments.scoring.numPoints', 3) }}
+                  </v-chip>
+                  {{ t('rules.tournaments.scoring.thirdPlace') }}
+                </v-list-item>
+                <v-list-item>
+                  <v-chip variant="outlined" class="mr-2 mb-1" :color="theme.primary">
+                    {{ t('rules.tournaments.scoring.numPoints', 2) }}
+                  </v-chip>
+                  {{ t('rules.tournaments.scoring.oneWin') }}
+                </v-list-item>
+                <v-list-item>
+                  <v-chip variant="outlined" class="mr-2 mb-1" color="#000">
+                    {{ t('rules.tournaments.scoring.numPoints') }}
+                  </v-chip>
+                  &nbsp; {{ t('rules.tournaments.scoring.completedMatch') }}
+                </v-list-item>
+              </v-list>
+            </v-row>
+  
+            <v-row>
+              <v-img
+                src="/img/rulesView/leaderboard_example.jpg"
+                alt="leader board"
+                class="mr-2 my-3 rounded-xl"
+                aria-hidden="false"
+                role="img"
+              />
+            </v-row>
+            <v-row>
+              <p>*{{ t('rules.tournaments.exampleImgExplanation') }}</p>
+            </v-row>
+          </section>
         </v-col>
-      </v-row>
-
-      <!-- One-Offs -->
-      <v-row>
-        <div class="d-flex">
-          <v-icon
-            size="x-large"
-            color="black"
-            class="mr-4"
-            icon="mdi-delete"
-            aria-label="one-off icon"
-            aria-hidden="false"
-            role="img"
-          />
-          <h1 class="gradient-text">
-            {{ t('rules.oneoffs.title') }}
-          </h1>
-        </div>
-        <p>
-          {{ t('rules.oneoffs.text') }}
-        </p>
-      </v-row>
-      <v-row
-        v-for="(ruleRow, rowIndex) in oneOffs"
-        :key="`one-off-row-${rowIndex}`"
-        align="start"
-        class="my-6"
-      >
-        <v-col
-          v-for="(rule) in ruleRow"
-          :key="rule.title"
-          md="6"
-          sm="12"
-          class="my-4"
-        >
-          <RulePreview
-            ref="preview"
-            :title="t(rule.title)"
-            :description="t(rule.description)"
-            :animated-img="rule.animatedImg"
-            :static-img="rule.staticImg"
-            :icon="rule.icon"
-            @animate="handleAnimate"
-          />
-        </v-col>
-      </v-row>
-
-      <!-- Multiplayer Variants -->
-      <v-row class="d-flex flex-column mb-4">
-        <h1 class="gradient-text">
-          {{ t('rules.multiplayerTitle') }}
-        </h1>
-        <p class="mb-4">
-          {{ t('rules.multiplayerText1') }}
-          <a href="https://www.cuttle.cards"> www.cuttle.cards</a>
-          {{ t('rules.multiplayerText2') }}
-        </p>
-        <h3>{{ t('rules.3Players.title') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.3Players.text') }}
-        </p>
-        <p>{{ t('rules.3Players.rules') }}</p>
-        <ul class="mb-4">
-          <li>
-            {{ t('rules.3Players.rule1') }}
-          </li>
-          <li>
-            {{ t('rules.3Players.rule2') }}
-          </li>
-          <li>
-            {{ t('rules.3Players.rule3') }}
-          </li>
-          <li>{{ t('rules.3Players.rule4') }}</li>
-        </ul>
-
-        <h3>{{ t('rules.4Players.title') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.4Players.text') }}
-        </p>
-        <p>
-          {{ t('rules.4Players.rules') }}
-        </p>
-        <ul>
-          <li>
-            {{ t('rules.4Players.rule1') }}
-          </li>
-          <li>
-            {{ t('rules.4Players.rule2') }}
-          </li>
-          <li>{{ t('rules.4Players.rule3') }}</li>
-          <li>
-            {{ t('rules.4Players.rule4') }}
-          </li>
-          <li>
-            {{ t('rules.4Players.rule5') }}
-          </li>
-        </ul>
-      </v-row>
-
-      <!-- FAQ -->
-      <v-row class="d-flex flex-column mb-4">
-        <h1 class="gradient-text">
-          {{ t('rules.faq.title') }}
-        </h1>
-        <h3>{{ t('rules.faq.twoCounter') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.faq.twoCounterAnswer') }}
-        </p>
-        <h3>{{ t('rules.faq.queenProtectTwo') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.faq.queenProtectTwoAnswer') }}
-        </p>
-        <h3>{{ t('rules.faq.queenProtectScuttle') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.faq.queenProtectScuttleAnswer') }}
-        </p>
-        <h3>{{ t('rules.faq.twoOnTwo') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.faq.twoOnTwoAnswer') }}
-        </p>
-        <h3>{{ t('rules.faq.kingWin') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.faq.kingWinAnswer') }}
-        </p>
-        <h3>{{ t('rules.faq.aceDestruction') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.faq.aceDestructionAnswer') }}
-        </p>
-        <h3>{{ t('rules.faq.revealNoPoints') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.faq.revealNoPointsAnswer') }}
-        </p>
-        <h3>{{ t('rules.faq.revealOneLeft') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.faq.revealOneLeftAnswer') }}
-        </p>
-        <h3>{{ t('rules.faq.deckExhaust') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.faq.deckExhaustAnswer') }}
-        </p>
-        <h3>{{ t('rules.faq.whereToPlay') }}</h3>
-        <p class="mb-4">
-          {{ t('rules.faq.whereToPlayAnswer') }}
-          <a href="https://www.cuttle.cards"> www.cuttle.cards </a>
-        </p>
-        <v-btn
-          to="/"
-          width="300px"
-          color="primary"
-          class="align-self-center"
-          data-cy="bottom-home-button"
-        >
-          {{ buttonText }}
-        </v-btn>
       </v-row>
     </v-container>
   </div>
 </template>
 <script>
-import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
+import { useGoTo } from 'vuetify';
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
+import { useThemedLogo } from '@/composables/themedLogo';
+import { rules, royals, oneOffs, sectionTitles } from './data/rulesData';
+import RuleParagraph from './components/RuleParagraph.vue';
 import RulePreview from '@/routes/rules/components/RulePreview.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
-import { useThemedLogo } from '@/composables/themedLogo';
+import AwardCard from '../../components/AwardCard.vue';
+import RulePreviewDialog from './components/RulePreviewDialog.vue';
+import BackToTop from '@/components/BackToTop.vue';
 
 export default {
   name: 'RulesView',
   components: {
     RulePreview,
-    BaseVideo
+    BaseVideo,
+    AwardCard,
+    RulePreviewDialog,
+    BackToTop,
+    RuleParagraph,
   },
   setup() {
+    const goTo = useGoTo();
     const { t } = useI18n();
     const { logoSrc } = useThemedLogo();
     return {
       t,
       logoSrc,
+      goTo
+    };
+  },
+    data() {
+    return {
+      scorllOptions:{
+        duration: 1000,
+      offset: -100,
+      easing: 'easeInOutCubic',
+      },
+      activeTitle: 'introduction',
+      previewDialog: false,
+      imageUrl: '',
+      previewTitle: ''
     };
   },
   computed: {
     ...mapStores(useAuthStore),
+    authenticated() {
+      return this.authStore.authenticated;
+    },
     buttonText() {
       if (this.authStore.username) {
-        return this.$t('rules.findGame');
+        return this.$t('rules.readyToPlay.findGame');
       }
-      return this.$t('rules.signUp');
+      return this.$t('rules.readyToPlay.signUp');
+    },
+    theme() {
+      return this.$vuetify.theme.themes.cuttleTheme.colors;
     },
   },
   created() {
-    this.rules = [
-      // First Row
-      [
-        {
-          title: 'rules.draw',
-          icon: 'cards-playing-spade-multiple',
-          description: 'rules.drawDescription',
-          staticImg: '/img/game/cuttle-board.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/draw.gif?raw=true',
-        },
-        {
-          title: 'rules.points',
-          icon: 'numeric',
-          description: 'rules.pointsDescription',
-          staticImg: '/img/game/cuttle-points.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/points.gif?raw=true',
-        },
-      ],
-      // Second Row
-      [
-        {
-          title: 'rules.scuttle',
-          icon: 'skull-crossbones',
-          description: 'rules.scuttleDescription',
-          staticImg: '/img/game/cuttle-scuttle.png',
-          animatedImg:
-            'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/scuttling.gif?raw=true',
-        },
-        {
-          title: 'rules.royal',
-          icon: 'crown',
-          description: 'rules.royalDescription',
-          staticImg: '/img/game/cuttle-king.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
-        },
-      ],
-      // Third Row
-      [
-        {
-          title: 'rules.oneoff',
-          icon: 'delete',
-          description: 'rules.oneoffDescription',
-          staticImg: '/img/game/cuttle-one-off-six.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/six.gif?raw=true',
-        },
-        {
-          title: 'rules.glasses',
-          icon: 'sunglasses',
-          description: 'rules.glassesDescription',
-          staticImg: '/img/game/cuttle-glasses.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/glasses.gif?raw=true',
-        },
-      ],
-    ];
-    this.royals = [
-      [
-        {
-          title: 'rules.royals.king',
-          icon: 'crown',
-          description: 'rules.royals.kingDescription',
-          staticImg: '/img/game/cuttle-king.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/king.gif?raw=true',
-        },
-        {
-          title: 'rules.royals.queen',
-          icon: 'crown',
-          description: 'rules.royals.queenDescription',
-          staticImg: '/img/game/cuttle-queen.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/queen.gif?raw=true',
-        },
-      ],
-      [
-        {
-          title: 'rules.royals.jack',
-          icon: 'crown',
-          description: 'rules.royals.jackDescription',
-          staticImg: '/img/game/cuttle-jack.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
-        },
-      ],
-    ];
-    this.oneOffs = [
-      [
-        {
-          title: 'rules.oneoffs.ace',
-          icon: 'delete',
-          description: 'rules.oneoffs.aceDescription',
-          staticImg: '/img/game/cuttle-one-off-ace.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/ace.gif?raw=true',
-        },
-        {
-          title: 'rules.oneoffs.twoE1',
-          icon: 'delete',
-          description: 'rules.oneoffs.twoE1Description',
-          staticImg: '/img/game/cuttle-counter.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/counter.gif?raw=true',
-        },
-      ],
-      [
-        {
-          title: 'rules.oneoffs.twoE2',
-          icon: 'delete',
-          description: 'rules.oneoffs.twoE2Description',
-          staticImg: '/img/game/cuttle-one-off-two.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/two.gif?raw=true',
-        },
-        {
-          title: 'rules.oneoffs.three',
-          icon: 'delete',
-          description: 'rules.oneoffs.threeDescription',
-          staticImg: '/img/game/cuttle-one-off-three.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/three.gif?raw=true',
-        },
-      ],
-      [
-        {
-          title: 'rules.oneoffs.four',
-          icon: 'delete',
-          description: 'rules.oneoffs.fourDescription',
-          staticImg: '/img/game/cuttle-one-off-four.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/four.gif?raw=true',
-        },
-        {
-          title: 'rules.oneoffs.five',
-          icon: 'delete',
-          description: 'rules.oneoffs.fiveDescription',
-          staticImg: '/img/game/cuttle-one-off-five.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/five.gif?raw=true',
-        },
-      ],
-      [
-        {
-          title: 'rules.oneoffs.six',
-          icon: 'delete',
-          description: 'rules.oneoffs.sixDescription',
-          staticImg: '/img/game/cuttle-one-off-six.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/six.gif?raw=true',
-        },
-        {
-          title: 'rules.oneoffs.seven',
-          icon: 'delete',
-          description: 'rules.oneoffs.sevenDescription',
-          staticImg: '/img/game/cuttle-one-off-seven.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/seven.gif?raw=true',
-        },
-      ],
-      [
-        {
-          title: 'rules.oneoffs.nine',
-          icon: 'delete',
-          description: 'rules.oneoffs.nineDescription',
-          staticImg: '/img/game/cuttle-one-off-nine.png',
-          animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/nine.gif?raw=true',
-        },
-      ],
-    ];
+    this.rules = rules;
+    this.royals = royals;
+    this.oneOffs = oneOffs;
+    this.sectionTitles = sectionTitles;
   },
   methods: {
-    handleAnimate(cmp) {
-      const { animate } = cmp;
-      if (!animate) {
-        return;
-      }
-      // reset other previews if we're currently animating
-      this.$refs.preview.filter((c) => c !== cmp).forEach((c) => (c.animate = false));
+    goToSection(url) {
+      this.goTo(url, this.scorllOptions);
+      window.location.hash = url;
     },
+    onIntersect(isIntersecting, entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.activeTitle = entry.target.id;
+        }
+      });
+    },
+    handleAnimate(imageUrl, title) {
+      this.imageUrl = imageUrl;
+      this.previewTitle = this.t(title);
+      this.previewDialog = true;
+    },
+    closeAnimate() {
+      this.imageUrl = '';
+      this.previewTitle = '';
+      this.previewDialog = false;
+    }
   },
 };
 </script>
-<style scoped>
+
+<style scoped lang="scss">
+::-webkit-scrollbar {
+  width: 0px;
+}
+
 #logo {
   height: 20vh;
   margin: 0 auto;
 }
+.sidebar-title {
+  display: flex;
+  gap: 2rem;
+}
 
+.section-title {
+  font-family: 'Luckiest Guy', serif !important;
+}
 
+.sidebar-title li {
+  list-style: none;
+}
+
+.section {
+  margin-top: 64px;
+}
+
+@media (min-width: 960px) {
+  .sidebar-title {
+    position: sticky;
+    top: 130px;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 960px) {
+  .sidebar-container {
+    background: rgba(var(--v-theme-surface-1));
+    position: sticky;
+
+    &.authenticated {
+      top: 60px;
+    }
+    &.unauthenticated {
+      top: 0px;
+    }
+    z-index: 999;
+  }
+  .sidebar-title {
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+}
 </style>
