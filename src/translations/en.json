@@ -327,23 +327,36 @@
     "join": "Join"
   },
   "rules": {
+    "introduction": "Introduction",
+    "actions": {
+      "title": "Actions",
+      "clubs": "Clubs (weakest)",
+      "diamonds": "Diamonds",
+      "hearts": "Hearts",
+      "spades": "Spades (strongest)"
+    },
+    "howToPlay": "How to play",
     "cuttleTitle": "What is Cuttle?",
     "cuttleText": "Cuttle is a two player battle card game played with a standard 52-card deck of cards. It has the strategic nuance of trading card games like Magic, with the elegant balance of a standard deck--and you can play it for free! Test your mettle in the deepest card game under the sea!",
-    "findGame": "Find a game",
-    "signUp": "Sign Up to Play Online",
     "rulesTitle": "Rules of Cuttle",
+    "preview": {
+      "watchVideo": "Watch Video",
+      "imgAlt":"How to play {title} in Cuttle"
+    },
     "rulesReadText": "Read the official",
+    "rulesPreviewGif":"Animated preview of {title} in Cuttle",
     "rulesWatchText": "or watch cuttle.cards video tutorial below to learn the rules and get a feel for the flow of the game.",
     "goalTitle": "Goal",
     "goalText": "The goal is to be the first player to have 21 or more points worth of point cards on your field. The first player to reach the goal wins immediately. One player (traditionally the dealer) is dealt 6 cards and their opponent is dealt 5. The player with 5 cards goes first.",
     "playTitle": "Play",
-    "playText": "On your turn you must perform exactly one of the following actions:",
+    "playText-1": "One player (traditionally the dealer) is dealt 6 cards and their opponent is dealt 5. The player with 5 cards goes first.",
+    "playText-2": "On your turn you must perform exactly one of the following actions:",
     "draw": "Draw",
     "drawDescription": "Take one card from the deck. You may not draw past the 8-card hand limit.  If there are no cards left in the deck, you may pass.  Three consecutive passes ends the game in a stalemate",
     "points": "Points",
     "pointsDescription": "Play a number card from your hand. Worth its rank in points and lasts until scrapped.",
     "scuttle": "Scuttle",
-    "scuttleDescription": "Scrap an opponent's point card with a bigger one from your hand. Ties are broken by the suit: ♣️ (weakest) < ♦️ < ♥️ < ♠️ (strongest).",
+    "scuttleDescription": "Scrap an opponent's point card with a bigger one from your hand. Ties are broken by the suit:",
     "royal": "Royal",
     "royalDescription": "Play a royal to the field for a persistent benefit -- as long as it stays in play",
     "oneoff": "One-Off",
@@ -365,10 +378,9 @@
       "text": "Number cards (except 8's and 10's) can be played for a One-Off effect, which scraps the card for an effect based on the rank of the card played. Whenever a one-off is played, the other player may counter it using a two to cancel the effect.",
       "ace": "Ace",
       "aceDescription": "Scrap all point cards on the field.",
-      "twoE1": "Two - Effect 1",
-      "twoE1Description": "Two's have two alternative one-off effects: Counter target One-Off Effect. May be played during your opponent's turn.",
-      "twoE2": "Two - Effect 2",
-      "twoE2Description": "Twos have two alternative one-off effects: Scrap target Royal or Glasses Eight.",
+      "two": "Two - Multi Use Effect Card",
+      "twoE1Description": "Effect 1: Counter target One-Off Effect. May be played during your opponent's turn.",
+      "twoE2Description": "Effect 2: Scrap target Royal or Glasses Eight.",
       "three": "Three",
       "threeDescription": "Choose a card from the scrap pile and put it in your hand.",
       "four": "Four",
@@ -379,8 +391,15 @@
       "sixDescription": "Scrap all Royals and Glasses Eights on the field.",
       "seven": "Seven",
       "sevenDescription": "Reveal the top two cards from the deck and choose one to play however you choose.",
+      "eight": "Eight",
+      "eightDescription": "Reveal your opponent's hand (lasts until scrapped).",
       "nine": "Nine",
       "nineDescription": "Return a card from your opponent's field to their hand. They cannot play it next turn."
+    },
+    "readyToPlay": {
+      "readyToPlay": "Ready to Play?",
+      "signUp": "Sign Up to Play Online",
+      "findGame": "Find a Game"
     },
     "multiplayerTitle": "Multiplayer Variants",
     "multiplayerText1": "Presently only 2-player cuttle is available at ",
@@ -426,6 +445,23 @@
       "deckExhaustAnswer": "When there are no cards left in the deck, players may pass on their turn instead of drawing. If there are three consecutive passes i.e. player 1 passes, player 2 passes, then player 1 passes again, the game ends in a stalemate and neither player wins.",
       "whereToPlay": "Where can I play Cuttle?",
       "whereToPlayAnswer": "You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, there is only one place:"
+    },
+    "tournaments": {
+      "title": "Tournaments",
+      "competitiveCuttle1": "Competitive Cuttle is divided into 4 seasons per year,one per suit: Clubs, Diamonds, Hearts, and Spades. At the end of each season, the top 8 players play a double elimination championship tournament and the champions are permanently accoladed on the site.",
+      "competitiveCuttle2": "Each Season is divided into 13 weeks. For each week, we count the number of best 2/3 rankedmatches each player wins against unique opponents (ignoring stalemates) and assign players points based on their weekly standing.",
+      "championPlayer": "Champion Player",
+      "secondPlacePlayer": "Second Place Player",
+      "thirdPlacePlayer": "Third Place Player",
+      "exampleImgExplanation": "Example of stats / tournament page",
+      "scoring": {
+        "numPoints": "1 Point | {count} Points",
+        "firstPlace": "The player with the most wins gets 5 points for the week",
+        "secondPlace": "The player with the 2nd most wins gets 4 points for the week",
+        "thirdPlace": "The player with the 3rd most wins gets 3 points for the week",
+        "oneWin": "Each other player who won at least one match gets 2 points for the week",
+        "completedMatch": "Each other player who completed a match without winning gets 1 point for the week"
+      }
     }
   },
   "stats": {

@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <TheHeader v-if="showNav" :variant="variant" />
+    <TheHeader v-if="showNav" :variant="variant" class="sticky" />
     <v-main>
       <RouterView />
     </v-main>
@@ -30,7 +30,7 @@ export default {
       return this.$vuetify.display.smAndDown;
     },
     variant() {
-      const isHomeView = this.$router.currentRoute.value.name === 'Home';
+      const isHomeView = this.$router.currentRoute.value.name !== 'Stats';
       return isHomeView ? 'light' : 'dark'; 
     }
   },
@@ -69,4 +69,12 @@ export default {
     min-height: 100%;
   }
 }
+
+.sticky{
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
 </style>
