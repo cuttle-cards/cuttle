@@ -57,6 +57,7 @@ const royals = [
     animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
   },
 ];
+
 const oneOffs = [
   {
     title: 'rules.oneoffs.ace',
