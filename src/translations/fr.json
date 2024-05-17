@@ -330,10 +330,12 @@
     "introduction": "Introduction",
     "actions": {
       "title": "Actions",
-      "clubs": "Trèfles (moins fort)",
+      "clubs": "Trèfles",
       "diamonds": "Carreaux",
       "hearts": "Cœurs",
-      "spades": "Piques (le plus for)"
+      "spades": "Piques",
+      "weakest": "moins fort",
+      "strongest": "le plus for"
     },
     "howToPlay": "Comment jouer",
     "cuttleTitle": "Qu'est-ce que Cuttle?",
