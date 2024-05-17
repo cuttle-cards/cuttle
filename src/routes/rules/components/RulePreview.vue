@@ -19,11 +19,7 @@
         {{ t(description2) }}
       </p>
       <div>
-<<<<<<< HEAD
         <v-btn color="newPrimary" :data-cy-open-rule-preview="title" @click="toggleDialog">
-=======
-        <v-btn color="newPrimary" @click="toggleDialog">
->>>>>>> main
           <v-icon icon="mdi-play" />
           {{ t('rules.preview.watchVideo') }}
         </v-btn>
