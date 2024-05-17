@@ -27,16 +27,12 @@
       class="pa-6"
       type="card"
     />
-<<<<<<< HEAD
     <v-img
       v-else
       :src="imageUrl"
       :alt="t('rules.rulesPreviewGif', { title })"
       :data-cy-preview-gif="title"
     />
-=======
-    <v-img v-else :src="imageUrl" :alt="t('rules.rulesPreviewGif', { title })" />
->>>>>>> main
   </v-overlay>
 </template>
 
