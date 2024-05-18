@@ -126,6 +126,26 @@ describe('Video Playground', () => {
     cy.get('[data-opponent-point-card=10-3]').click();
   });
 
+  it.only('Play Queens', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_HEARTS, Card.FOUR_OF_SPADES],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.QUEEN_OF_SPADES, Card.JACK_OF_DIAMONDS],
+      p1Points: [],
+      p1FaceCards: [Card.KING_OF_CLUBS],
+    });
+    cy.wait(1000);
+
+    cy.get('[data-player-hand-card=4-3]').click();
+    cy.get('[data-move-choice=points]').click();
+    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.wait(1000);
+
+    cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.FOUR_OF_SPADES);
+    cy.get('#turn-indicator').contains('YOUR TURN');
+  });
+
   it('Playing Aces', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_HEARTS],
