@@ -408,7 +408,7 @@ export default {
     this.intersectConfig = {
       handler: onIntersect,
       options: {
-          threshhold: 0,
+          threshhold: .2,
           rootMargin: '-150px 0px -300px 0px',
         }
     };
