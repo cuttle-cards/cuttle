@@ -222,7 +222,7 @@ export default {
   computed: {
     ...mapStores(useAuthStore),
     isLoggingIn() {
-      return this.$route.name === ROUTE_NAME_LOGIN;
+      return this.$route.hash === '#login';
     },
     formHeaderText() {
       return this.isLoggingIn ? this.t('login.formHeaderLogin') : this.t('login.formHeaderSignup');
