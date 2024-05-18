@@ -107,8 +107,9 @@
                   {{ buttonText }}
                 </v-btn>
                 <v-btn
-                  class="px-0 text-h6"
+                  class="text-h6"
                   color="black"
+                  size="large"
                   variant="text"
                   data-cy="switch-mode"
                   @click="switchMode"
