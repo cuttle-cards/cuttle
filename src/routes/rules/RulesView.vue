@@ -362,7 +362,7 @@ export default {
   },
     data() {
     return {
-      scorllOptions:{
+      scrollOptions:{
         duration: 1000,
       offset: -100,
       easing: 'easeInOutCubic',
@@ -405,7 +405,7 @@ export default {
   },
   methods: {
     goToSection(url) {
-      this.goTo(url, this.scorllOptions);
+      this.goTo(url, this.scrollOptions);
       window.location.hash = url;
     },
     onIntersect(_isIntersecting, entries) {
