@@ -169,18 +169,16 @@ onMounted(() => {
   playAudio(joinAudio);
 });
 
-onUnmounted(() => {
-  playAudio(leaveAudio);
-});
-
 // Router
 onBeforeRouteLeave((to, from, next) => {
   if (to.name === 'Game') {
     gameStarted.value = true;
+    playAudio(joinAudio);
     setTimeout(() => {
       next();
     }, 2000);
   } else {
+    playAudio(leaveAudio);
     next();
   }
 });
