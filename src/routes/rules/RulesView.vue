@@ -392,7 +392,7 @@ export default {
         handler: this.onIntersect,
         options: {
           threshhold: 0,
-          rootMargin: '0px 0px -300px 0px',
+          rootMargin: '-150px 0px -300px 0px',
         }
       };
     }
