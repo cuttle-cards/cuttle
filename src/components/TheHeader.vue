@@ -3,7 +3,20 @@
     <v-toolbar data-cy="nav-drawer" :color="variant === 'light' ? 'surface-2' : 'surface-1'">
       <v-toolbar-title>
         <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between" style="cursor: pointer">
-          <TheUserMenu :variant="variant" />
+          <TheUserMenu v-if="authStore.authenticated" :variant="variant" />
+          <v-btn
+            v-else
+            :to="{
+              name: ROUTE_NAME_SIGNUP,
+              hash: '#login'
+            }
+            "
+            variant="text"
+            color="surface-1"
+            prepend-icon="mdi-login"
+          >
+            Sign Up
+          </v-btn>
           <img
             id="logo"
             alt="Cuttle logo"
@@ -41,7 +54,9 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/stores/auth';
 import { getPageLinks } from '@/composables/navLink.js';
+import { ROUTE_NAME_SIGNUP } from '@/router.js';
 import TheUserMenu from '@/components/TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 import { useRoute } from 'vue-router';
@@ -55,6 +70,8 @@ const props = defineProps({
 });
 
 const route = useRoute();
+const authStore = useAuthStore();
+
 const { variant } = toRefs(props);
 const { smAndDown } = useDisplay();
 const pageLinks = getPageLinks();

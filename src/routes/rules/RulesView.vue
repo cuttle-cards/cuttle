@@ -476,13 +476,7 @@ export default {
   .sidebar-container {
     background: rgba(var(--v-theme-surface-1));
     position: sticky;
-
-    &.authenticated {
-      top: 60px;
-    }
-    &.unauthenticated {
-      top: 0px;
-    }
+    top: 64px;
     z-index: 999;
   }
   .sidebar-title {

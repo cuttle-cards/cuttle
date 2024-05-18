@@ -16,8 +16,8 @@ export function getPageLinks() {
     const { authenticated } = authStore;
     if (!authenticated) {
       return [
-        { text: t('global.login'), icon: 'login', page: { name: ROUTE_NAME_LOGIN }, cyName: 'Log In' },
-        { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES }, cyName: 'About' },
+          // { text: t('global.login'), icon: 'login', page: { name: ROUTE_NAME_LOGIN }, cyName: 'Log In' },
+          // { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES }, cyName: 'About' },
       ];
     } 
     return [
