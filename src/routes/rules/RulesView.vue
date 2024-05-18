@@ -41,9 +41,7 @@
           <section>
             <v-row
               id="introduction"
-              v-intersect="{
-                handler: onIntersect,
-              }"
+              v-intersect="intersectConfig"
               class="flex-column align-start"
             >
               <!-- What is Cuttle? -->
@@ -81,9 +79,7 @@
             <!-- Goal -->
             <v-row
               id="howtoplay"
-              v-intersect="{
-                handler: onIntersect,
-              }"
+              v-intersect="intersectConfig"
               class="flex-column align-start section"
             >
               <h1 class="text-h2 text-surface-2 mb-5 section-title">
@@ -123,13 +119,8 @@
           </section>
 
           <!-- Royals -->
-          <section class="section">
-            <div
-              id="royals"
-              v-intersect="{
-                handler: onIntersect,
-              }"
-            >
+          <section id="royals" v-intersect="intersectConfig" class="section">
+            <div>
               <v-row class="flex-column">
                 <h1 class="text-h2 text-surface-2 mt-5 section-title">
                   {{ t('rules.royals.title') }}
@@ -154,14 +145,9 @@
             </v-row>
           </section>
 
-          <section class="section">
+          <section id="oneoffs" v-intersect="intersectConfig" class="section">
             <!-- One-Offs -->
-            <v-row
-              id="oneoffs"
-              v-intersect="{
-                handler: onIntersect,
-              }"
-            >
+            <v-row>
               <h1 class="text-h2 text-surface-2 mt-5 section-title">
                 {{ t('rules.oneoffs.title') }}
               </h1>
@@ -200,9 +186,7 @@
           <section class="section">
             <v-row
               id="faq"
-              v-intersect="{
-                handler: onIntersect,
-              }"
+              v-intersect="intersectConfig"
               class="d-flex flex-column mb-4"
             >
               <h1 class="text-h2 text-surface-2 my-6 section-title">
@@ -254,9 +238,7 @@
           <section class="section">
             <v-row
               id="tournaments"
-              v-intersect="{
-                handler: onIntersect,
-              }"
+              v-intersect="intersectConfig"
               class="flex-column"
             >
               <h1 class="text-h2 text-surface-2 my-6 section-title">
@@ -405,6 +387,15 @@ export default {
     theme() {
       return this.$vuetify.theme.themes.cuttleTheme.colors;
     },
+    intersectConfig() {
+      return {
+        handler: this.onIntersect,
+        options: {
+          threshhold: 0,
+          rootMargin: '0px 0px -300px 0px',
+        }
+      };
+    }
   },
   created() {
     this.rules = rules;
@@ -417,7 +408,7 @@ export default {
       this.goTo(url, this.scorllOptions);
       window.location.hash = url;
     },
-    onIntersect(isIntersecting, entries) {
+    onIntersect(_isIntersecting, entries) {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           this.activeTitle = entry.target.id;
