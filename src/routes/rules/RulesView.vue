@@ -364,8 +364,8 @@ export default {
     return {
       scrollOptions:{
         duration: 1000,
-      offset: -100,
-      easing: 'easeInOutCubic',
+        offset: -100,
+        easing: 'easeInOutCubic',
       },
       activeTitle: 'introduction',
       previewDialog: false,
