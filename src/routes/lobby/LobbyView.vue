@@ -98,7 +98,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, computed, watch } from 'vue';
+import { onMounted, ref, computed, watch } from 'vue';
 import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
@@ -169,18 +169,16 @@ onMounted(() => {
   playAudio(joinAudio);
 });
 
-onUnmounted(() => {
-  playAudio(leaveAudio);
-});
-
 // Router
 onBeforeRouteLeave((to, from, next) => {
   if (to.name === 'Game') {
     gameStarted.value = true;
+    playAudio(joinAudio);
     setTimeout(() => {
       next();
     }, 2000);
   } else {
+    playAudio(leaveAudio);
     next();
   }
 });
