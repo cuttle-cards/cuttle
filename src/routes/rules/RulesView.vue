@@ -472,7 +472,7 @@ export default {
     position: sticky;
 
     &.authenticated {
-      top: 60px;
+      top: 64px;
     }
     &.unauthenticated {
       top: 0px;
