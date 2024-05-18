@@ -223,6 +223,9 @@ export default {
   computed: {
     ...mapStores(useAuthStore),
     isLoggingIn() {
+      return this.$route.name === ROUTE_NAME_LOGIN;
+    },
+    goingToForm() {
       return this.$route.hash === '#login';
     },
     formHeaderText() {
@@ -242,7 +245,7 @@ export default {
     },
   },
   mounted() {
-    if (this.isLoggingIn) {
+    if (this.goingToForm) {
       this.scrollAndFocusLogin();
     }
   },
@@ -263,11 +266,10 @@ export default {
     switchMode() {
       this.pw = '';
       if (this.isLoggingIn) {
-        this.$router.push({ name: ROUTE_NAME_SIGNUP });
+        this.$router.push({ name: ROUTE_NAME_SIGNUP, hash: '#login' });
       } else {
-        this.$router.push({ name: ROUTE_NAME_LOGIN });
+        this.$router.push({ name: ROUTE_NAME_LOGIN, hash: '#login' });
       }
-      this.scrollAndFocusLogin();
     },
     handleLogin() {
       this.username = '';
