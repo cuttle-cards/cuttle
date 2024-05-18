@@ -362,11 +362,6 @@ export default {
   },
     data() {
     return {
-      scrollOptions:{
-        duration: 1000,
-        offset: -100,
-        easing: 'easeInOutCubic',
-      },
       activeTitle: 'introduction',
       previewDialog: false,
       imageUrl: '',
@@ -387,33 +382,41 @@ export default {
     theme() {
       return this.$vuetify.theme.themes.cuttleTheme.colors;
     },
-    intersectConfig() {
-      return {
-        handler: this.onIntersect,
-        options: {
-          threshhold: 0,
-          rootMargin: '-150px 0px -300px 0px',
-        }
-      };
-    }
   },
   created() {
     this.rules = rules;
     this.royals = royals;
     this.oneOffs = oneOffs;
     this.sectionTitles = sectionTitles;
-  },
-  methods: {
-    goToSection(url) {
-      this.goTo(url, this.scrollOptions);
-      window.location.hash = url;
-    },
-    onIntersect(_isIntersecting, entries) {
+
+    // Scrolling
+    this.scrollOptions = {
+      duration: 1000,
+      offset: -100,
+      easing: 'easeInOutCubic',
+    };
+
+    // Intersection
+    const onIntersect = (_isIntersecting, entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           this.activeTitle = entry.target.id;
         }
       });
+    };
+
+    this.intersectConfig = {
+      handler: onIntersect,
+      options: {
+          threshhold: 0,
+          rootMargin: '-150px 0px -300px 0px',
+        }
+    };
+  },
+  methods: {
+    goToSection(url) {
+      this.goTo(url, this.scrollOptions);
+      window.location.hash = url;
     },
     handleAnimate(imageUrl, title) {
       this.imageUrl = imageUrl;
