@@ -17,4 +17,11 @@ describe('Rules Page', () => {
     cy.get('[data-cy=ready-to-play-button]').should('contain', 'Find a Game').click();
     cy.location('pathname').should('eq', '/');
   });
+
+  it('It displays rule preview gifs when user clicks "Watch Video"', () => {
+    cy.get('[data-cy-open-rule-preview="rules.royals.king"]').click();
+    cy.get('[data-cy-preview-gif="King"', {timeout: 5000}).should('be.visible');
+    cy.get('[data-cy="close-preview-gif"]').click();
+    cy.get('[data-cy-preview-gif="King"').should('not.exist');
+  });
 });

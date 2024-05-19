@@ -11,6 +11,7 @@
         color="surface-2"
         size="x-large"
         aria-lable="close"
+        data-cy="close-preview-gif"
         @click="$emit('close')"
       >
         <v-icon
@@ -26,7 +27,12 @@
       class="pa-6"
       type="card"
     />
-    <v-img v-else :src="imageUrl" :alt="t('rules.rulesPreviewGif', { title })" />
+    <v-img
+      v-else
+      :src="imageUrl"
+      :alt="t('rules.rulesPreviewGif', { title })"
+      :data-cy-preview-gif="title"
+    />
   </v-overlay>
 </template>
 

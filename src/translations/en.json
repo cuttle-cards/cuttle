@@ -330,10 +330,12 @@
     "introduction": "Introduction",
     "actions": {
       "title": "Actions",
-      "clubs": "Clubs (weakest)",
+      "clubs": "Clubs",
       "diamonds": "Diamonds",
       "hearts": "Hearts",
-      "spades": "Spades (strongest)"
+      "spades": "Spades",
+      "weakest": "Weakest",
+      "strongest": "Strongest"
     },
     "howToPlay": "How to play",
     "cuttleTitle": "What is Cuttle?",

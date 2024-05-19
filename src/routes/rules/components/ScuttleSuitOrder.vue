@@ -1,5 +1,5 @@
 <template>
-  <p class="d-flex my-5">
+  <p class="d-flex my-5 align-center justify-center">
     <v-img
       src="img/rulesView/rules_action_clubs.svg"
       class="mr-1 max-w-24"
@@ -7,7 +7,10 @@
       role="img"
     />
     &nbsp;
-    {{ t('rules.actions.clubs') }}
+    <template v-if="!smAndDown">
+      {{ t('rules.actions.clubs') }}
+    </template>
+    ( {{ t('rules.actions.weakest') }} )
     &lt; &nbsp;
 
     <v-img
@@ -17,7 +20,9 @@
       role="img"
     />
     &nbsp;
-    {{ t('rules.actions.diamonds') }}
+    <template v-if="!smAndDown">
+      {{ t('rules.actions.diamonds') }}
+    </template>
     &lt; &nbsp;
 
     <v-img
@@ -27,7 +32,9 @@
       role="img"
     />
     &nbsp;
-    {{ t('rules.actions.hearts') }}
+    <template v-if="!smAndDown">
+      {{ t('rules.actions.hearts') }}
+    </template>
     &lt; &nbsp;
 
     <v-img
@@ -37,14 +44,20 @@
       role="img"
     />
     &nbsp;
-    {{ t('rules.actions.spades') }}
+    <template v-if="!smAndDown">
+      {{ t('rules.actions.spades') }}
+    </template>
+    ( {{ t('rules.actions.strongest') }} )
   </p>
 </template>
 
 <script setup>
 import { useI18n } from 'vue-i18n';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
 
 const { t } = useI18n();
+
+const { smAndDown } = useDisplay();
 </script>
 
 <style scoped>
