@@ -3,7 +3,6 @@ import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 import {
   ROUTE_NAME_HOME,
-  ROUTE_NAME_LOGIN,
   ROUTE_NAME_RULES,
   ROUTE_NAME_STATS,
 } from '@/router.js';
