@@ -57,7 +57,7 @@
             </p>
 
             <v-form
-              id="login"
+              id="form"
               v-model="isFormValid"
               class="mx-auto loginForm"
               @submit.prevent="submitLogin"
@@ -226,7 +226,7 @@ export default {
       return this.$route.name === ROUTE_NAME_LOGIN;
     },
     goingToForm() {
-      return this.$route.hash === '#login';
+      return this.$route.hash === '#login-container';
     },
     formHeaderText() {
       return this.isLoggingIn ? this.t('login.formHeaderLogin') : this.t('login.formHeaderSignup');
@@ -266,9 +266,9 @@ export default {
     switchMode() {
       this.pw = '';
       if (this.isLoggingIn) {
-        this.$router.push({ name: ROUTE_NAME_SIGNUP, hash: '#login' });
+        this.$router.push({ name: ROUTE_NAME_SIGNUP, hash: '#login-container' });
       } else {
-        this.$router.push({ name: ROUTE_NAME_LOGIN, hash: '#login' });
+        this.$router.push({ name: ROUTE_NAME_LOGIN, hash: '#login-container' });
       }
     },
     handleLogin() {

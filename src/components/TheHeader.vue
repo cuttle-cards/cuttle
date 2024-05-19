@@ -88,7 +88,7 @@ const signupButtonLink = computed(() => {
   const routeName = authStore.getIsReturningUser() ? ROUTE_NAME_LOGIN : ROUTE_NAME_SIGNUP;
   return {
     name: routeName,
-    hash: '#login'
+    hash: '#login-container'
   };
 });
 </script>
