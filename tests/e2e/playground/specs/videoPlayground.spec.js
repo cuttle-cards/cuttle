@@ -133,7 +133,7 @@ describe('Video Playground', () => {
       p0FaceCards: [],
       p1Hand: [Card.QUEEN_OF_SPADES, Card.JACK_OF_DIAMONDS],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_CLUBS],
+      p1FaceCards: [Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS],
     });
     cy.wait(1000);
 
@@ -144,6 +144,44 @@ describe('Video Playground', () => {
 
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.FOUR_OF_SPADES);
     cy.get('#turn-indicator').contains('YOUR TURN');
+    cy.wait(1000);
+
+    // START RECORDING HERE //
+    // Player uses 2 on opponent jack
+    cy.get('[data-player-hand-card=2-0]').click();
+    cy.wait(500);
+    cy.get('[data-move-choice=targetedOneOff]').click();
+    cy.wait(800);
+    cy.get('[data-opponent-face-card=13-1]').click();
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    cy.wait(500);
+    cy.resolveOpponent();
+
+    // Opponent plays queen
+    cy.wait(1000);
+    cy.playFaceCardOpponent(Card.QUEEN_OF_SPADES);
+    cy.get('#turn-indicator').contains('YOUR TURN');
+
+    // Player attempts to 2 the king, but can't
+    cy.get('[data-player-hand-card=2-2]').click();
+    cy.wait(500);
+    cy.get('[data-move-choice=targetedOneOff]').click();
+    cy.wait(800);
+    cy.get('[data-opponent-face-card=13-0]').click();
+
+    // Close snackbar, then try on the queen
+    cy.wait(1000);
+    cy.get('[data-cy=close-snackbar]').click();
+
+    // Player successfully 2's queen
+    cy.get('[data-player-hand-card=2-2]').click();
+    cy.wait(500);
+    cy.get('[data-move-choice=targetedOneOff]').click();
+    cy.wait(800);
+    cy.get('[data-opponent-face-card=12-3]').click();
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    cy.wait(500);
+    cy.resolveOpponent();
   });
 
   it('Playing Aces', () => {
