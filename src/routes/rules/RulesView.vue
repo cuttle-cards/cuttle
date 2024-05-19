@@ -5,7 +5,6 @@
       <v-row>
         <v-col
           class="sidebar-container"
-          :class="authenticated ? 'authenticated' : 'unauthenticated'"
           md="3"
           sm="12"
         >
@@ -397,7 +396,7 @@ export default {
       return this.authStore.authenticated;
     },
     buttonText() {
-      if (this.authStore.username) {
+      if (this.authenticated) {
         return this.$t('rules.readyToPlay.findGame');
       }
       return this.$t('rules.readyToPlay.signUp');
