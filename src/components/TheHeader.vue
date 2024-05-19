@@ -6,16 +6,12 @@
           <TheUserMenu v-if="authStore.authenticated" :variant="variant" />
           <v-btn
             v-else
-            :to="{
-              name: ROUTE_NAME_SIGNUP,
-              hash: '#login'
-            }
-            "
+            :to="signupButtonLink"
             variant="text"
             color="surface-1"
             prepend-icon="mdi-login"
           >
-            Sign Up
+            {{ signupButtonText }}
           </v-btn>
           <img
             id="logo"
@@ -54,9 +50,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 import { getPageLinks } from '@/composables/navLink.js';
-import { ROUTE_NAME_SIGNUP } from '@/router.js';
+import { ROUTE_NAME_SIGNUP, ROUTE_NAME_LOGIN } from '@/router.js';
 import TheUserMenu from '@/components/TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 import { useRoute } from 'vue-router';
@@ -70,6 +67,7 @@ const props = defineProps({
 });
 
 const route = useRoute();
+const { t } = useI18n();
 const authStore = useAuthStore();
 
 const { variant } = toRefs(props);
@@ -82,6 +80,17 @@ const tabColor = (page) => {
   return route.name === page ? 'text-newPrimary' : linkColor.value;
 };
 
+const signupButtonText = computed(() => {
+  return authStore.getIsReturningUser() ? t('global.login') : t('global.signup');
+});
+
+const signupButtonLink = computed(() => {
+  const routeName = authStore.getIsReturningUser() ? ROUTE_NAME_LOGIN : ROUTE_NAME_SIGNUP;
+  return {
+    name: routeName,
+    hash: '#login'
+  };
+});
 </script>
 
 <style scoped>
