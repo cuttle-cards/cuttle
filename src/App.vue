@@ -4,7 +4,7 @@
     <v-main>
       <RouterView />
     </v-main>
-    <TheFooter v-if="showNav && isSmallDevice && isAuthenticated" :variant="variant" />
+    <TheFooter v-if="showFooter" :variant="variant" />
   </v-app>
 </template>
 
@@ -37,6 +37,9 @@ export default {
     variant() {
       const isHomeView = this.$router.currentRoute.value.name !== 'Stats';
       return isHomeView ? 'light' : 'dark'; 
+    },
+    showFooter() {
+      return this.showNav && this.isSmallDevice && this.isAuthenticated;
     }
   },
   watch: {
