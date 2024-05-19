@@ -10,6 +10,7 @@
             variant="text"
             color="surface-1"
             prepend-icon="mdi-login"
+            data-cy="login-link"
           >
             {{ signupButtonText }}
           </v-btn>
