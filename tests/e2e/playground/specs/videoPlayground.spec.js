@@ -126,7 +126,7 @@ describe('Video Playground', () => {
     cy.get('[data-opponent-point-card=10-3]').click();
   });
 
-  it.only('Play Queens', () => {
+  it('Play Queens', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_HEARTS, Card.FOUR_OF_SPADES],
       p0Points: [],
@@ -194,6 +194,29 @@ describe('Video Playground', () => {
     cy.wait(1000);
 
     cy.resolveOpponent();
+  });
+
+  describe('Playing Twos', () => {
+    it.only('Two to scrap a royal', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [Card.ACE_OF_SPADES, Card.TWO_OF_HEARTS, Card.SEVEN_OF_HEARTS],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [Card.TEN_OF_SPADES],
+        p1Points: [],
+        p1FaceCards: [Card.KING_OF_DIAMONDS, Card.KING_OF_SPADES],
+      });
+      cy.wait(2000);
+
+      // START RECORDING HERE //
+      cy.get('[data-player-hand-card=2-2]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=targetedOneOff]').click();
+      cy.wait(1000);
+      cy.get('[data-opponent-face-card=13-3]').click();
+      cy.wait(1000);
+      cy.resolveOpponent();
+    });
   });
 
   it('Playing Sixes', () => {
