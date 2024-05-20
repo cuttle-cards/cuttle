@@ -4,7 +4,7 @@
       v-if="show"
       position="fixed"
       location="bottom right"
-      class="mt-auto mx-4 mb-16"
+      class="mt-auto mx-4 mb-16 fab"
       color="surface-2"
       elevation="8"
       icon="mdi-chevron-up"
@@ -30,3 +30,9 @@ function onClick() {
   });
 }
 </script>
+
+<style scoped>
+.fab {
+  z-index: 1;
+}
+</style>
