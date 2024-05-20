@@ -197,7 +197,7 @@ describe('Video Playground', () => {
   });
 
   describe('Playing Twos', () => {
-    it.only('Two to scrap a royal', () => {
+    it('Two to scrap a royal', () => {
       cy.loadGameFixture(0, {
         p0Hand: [Card.ACE_OF_SPADES, Card.TWO_OF_HEARTS, Card.SEVEN_OF_HEARTS],
         p0Points: [],
@@ -216,6 +216,52 @@ describe('Video Playground', () => {
       cy.get('[data-opponent-face-card=13-3]').click();
       cy.wait(1000);
       cy.resolveOpponent();
+    });
+
+    it.only('Plays a 2 to counter opponent one-off', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [Card.TWO_OF_HEARTS, Card.SEVEN_OF_HEARTS],
+        p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+        p0FaceCards: [],
+        p1Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      cy.get('#deck').click();
+      cy.wait(2000);
+      // START RECORDING //
+
+      // Opponent Aces
+      cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
+      cy.wait(1500);
+
+      // Player Counters
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
+      cy.wait(1000);
+
+
+      cy.get('#choose-two-dialog')
+        .should('be.visible')
+        .get('[data-counter-dialog-card=2-2]')
+        .click();
+      cy.wait(1000);
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+
+      // Opponent Resolves
+      cy.resolveOpponent();
+      cy.wait(1000);
+      cy.get('#turn-indicator').contains('YOUR TURN');
+
+      // Player plays points for the win
+      cy.get('[data-player-hand-card=7-2]').click();
+      cy.wait(800);
+      cy.get('[data-move-choice=points]').click();
+
+      cy.get('#game-over-dialog').should('exist');
     });
   });
 
