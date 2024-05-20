@@ -6,7 +6,7 @@
     :opacity="1"
     data-cy="five-change-dialog"
     scrollable
-    max-width="750"
+    :max-width="750"
   >
     <template #activator>
       <v-btn
