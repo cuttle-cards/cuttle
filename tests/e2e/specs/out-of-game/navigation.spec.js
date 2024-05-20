@@ -58,7 +58,7 @@ describe('Navigation', () => {
       cy.signupPlayer(playerOne);
       cy.vueRoute('/');
     });
-    
+
     it('Navigates to Rules, Home, Stats and Login when authenticated on DESKTOP', () => {
       cy.viewport(1920, 1080);
       cy.reload();
