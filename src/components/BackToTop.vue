@@ -4,7 +4,7 @@
       v-if="show"
       position="fixed"
       location="bottom right"
-      class="mt-auto ma-4"
+      class="mt-auto mx-4 mb-16"
       color="surface-2"
       elevation="8"
       icon="mdi-chevron-up"
