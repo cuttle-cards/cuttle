@@ -1,6 +1,5 @@
 const dayjs = require('dayjs');
 
-
 module.exports = {
   friendlyName: 'Add Game to Match',
 
@@ -52,12 +51,12 @@ module.exports = {
       // End the match if this game clinches it
       if (numPlayer1Wins >= 2) {
         relevantMatch = await Match.updateOne(relevantMatch.id).set({
-          endTime: dayjs().format(),
+          endTime: dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z'),
           winner: relevantMatch.player1,
         });
       } else if (numPlayer2Wins >= 2) {
         relevantMatch = await Match.updateOne(relevantMatch.id).set({
-          endTime: dayjs().format(),
+          endTime: dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z'),
           winner: relevantMatch.player2,
         });
       }

@@ -16,9 +16,9 @@ module.exports = {
     const seasons = seasonId
       ? await Season.find({ id: seasonId }).populateAll()
       : await Season.find({
-        where: { startTime: { '<=': dayjs().format() } },
-        sort: 'startTime DESC',
-      }).populateAll();
+          where: { startTime: { '<=': dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z') } },
+          sort: 'startTime DESC',
+        }).populateAll();
     if (!seasons.length) {
       return exits.error(new Error('Could not find requested season data'));
     }

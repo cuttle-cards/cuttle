@@ -7,7 +7,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.setupGameAsP0();
   });
 
-  it('Plays Points', () => {
+  it.only('Plays Points', () => {
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],

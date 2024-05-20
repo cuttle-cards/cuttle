@@ -26,19 +26,16 @@ module.exports = {
     const RETRY_TIME = 250;
     const MAX_ATTEMPTS = 20;
     const uuId = randomUUID();
-    
+
     for (let numAttempts = 0; numAttempts < MAX_ATTEMPTS; numAttempts++) {
       try {
-        const now = dayjs().format();
-        const lockIsStaleTimeout = dayjs().subtract(30, 'second').format();
+        const now = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z');
+        const lockIsStaleTimeout = dayjs().subtract(30, 'second').format('YYYY-MM-DD HH:mm:ss.SSS Z');
 
         // Lock & re-fetch game if unlocked or lock is expired
         const updatedGame = await Game.updateOne({
           id: gameId,
-          or: [
-            { lock: null },
-            { lockedAt: { '<=': lockIsStaleTimeout } }
-          ],
+          or: [{ lock: null }, { lockedAt: { '<=': lockIsStaleTimeout } }],
         }).set({ lock: uuId, lockedAt: now });
 
         // If we successfully wrote our uuid, resolve
