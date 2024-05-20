@@ -483,5 +483,9 @@ export default {
     white-space: nowrap;
     overflow-x: auto;
   }
+
+  .section-title {
+    font-size: 2.5rem !important;
+  }
 }
 </style>
