@@ -408,7 +408,7 @@ export default {
       handler: onIntersect,
       options: {
           threshhold: .2,
-          rootMargin: '-150px 0px -300px 0px',
+          rootMargin: '-150px 0px -500px 0px',
         }
     };
   },
