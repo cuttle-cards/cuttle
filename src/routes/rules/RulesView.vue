@@ -104,7 +104,7 @@
           </section>
 
           <!-- Actions -->
-          <section class="section">
+          <section id="actions" v-intersect="intersectConfig" class="section">
             <v-row>
               <h1 class="text-h2 text-surface-2 mt-5 section-title">
                 {{ t('rules.actions.title') }}

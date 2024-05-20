@@ -128,6 +128,7 @@ const oneOffs = [
 const sectionTitles = [
   { id: 'introduction',title: 'rules.introduction', href: '#introduction' },
   { id:'howtoplay',title: 'rules.howToPlay', href: '#howtoplay' },
+  { id:'actions',title: 'rules.actions.title', href: '#actions' },
   { id:'royals',title: 'rules.royals.title', href: '#royals' },
   { id:'oneoffs',title: 'rules.oneoffs.title', href: '#oneoffs' },
   { id:'faq',title: 'rules.faq.title', href: '#faq' },
