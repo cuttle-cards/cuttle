@@ -104,7 +104,7 @@
           </section>
 
           <!-- Actions -->
-          <section class="section">
+          <section id="actions" v-intersect="intersectConfig" class="section">
             <v-row>
               <h1 class="text-h2 text-surface-2 mt-5 section-title">
                 {{ t('rules.actions.title') }}
@@ -408,7 +408,7 @@ export default {
       handler: onIntersect,
       options: {
           threshhold: .2,
-          rootMargin: '-150px 0px -300px 0px',
+          rootMargin: '-150px 0px -500px 0px',
         }
     };
   },
