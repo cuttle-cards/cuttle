@@ -5,7 +5,6 @@
       <v-row>
         <v-col
           class="sidebar-container"
-          :class="authenticated ? 'authenticated' : 'unauthenticated'"
           md="3"
           sm="12"
         >
@@ -374,7 +373,7 @@ export default {
       return this.authStore.authenticated;
     },
     buttonText() {
-      if (this.authStore.username) {
+      if (this.authenticated) {
         return this.$t('rules.readyToPlay.findGame');
       }
       return this.$t('rules.readyToPlay.signUp');
@@ -470,13 +469,7 @@ export default {
   .sidebar-container {
     background: rgba(var(--v-theme-surface-1));
     position: sticky;
-
-    &.authenticated {
-      top: 64px;
-    }
-    &.unauthenticated {
-      top: 0px;
-    }
+    top: 64px;
     z-index: 999;
   }
   .sidebar-title {
