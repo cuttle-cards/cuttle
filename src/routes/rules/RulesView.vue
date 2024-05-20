@@ -8,7 +8,7 @@
           md="3"
           sm="12"
         >
-          <ul class="ms-5 sidebar-title mt-8">
+          <ul ref="sidebarContainer" class="ms-5 sidebar-title mt-8">
             <li
               v-for="{ title, href, id } in sectionTitles"
               :id="'listItem_' + id"
@@ -402,6 +402,7 @@ export default {
           this.activeTitle = entry.target.id;
         }
       });
+      this.goTo.horizontal('#listItem_' + this.activeTitle ,{ container: this.$refs.sidebarContainer });
     };
 
     this.intersectConfig = {
