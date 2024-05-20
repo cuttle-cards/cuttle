@@ -1,3 +1,5 @@
+const dayjs = require('dayjs');
+
 /**
  * Card.js
  *
@@ -56,5 +58,13 @@ module.exports = {
     targeted: {
       model: 'game',
     },
+  },
+  beforeCreate(record, proceed) {
+    record.createdAt = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    return proceed();
+  },
+  beforeUpdate(record, proceed) {
+    record.updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    return proceed();
   },
 };

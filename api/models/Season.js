@@ -1,3 +1,4 @@
+const dayjs = require('dayjs');
 /**
  * Season.js
  *
@@ -14,12 +15,12 @@ module.exports = {
     },
     startTime: {
       type: 'ref',
-      columnType:'timestamptz',
+      columnType: 'timestamptz',
       required: true,
     },
     endTime: {
       type: 'ref',
-      columnType:'timestamptz',
+      columnType: 'timestamptz',
       required: true,
     },
     bracketLink: {
@@ -42,4 +43,12 @@ module.exports = {
       model: 'user',
     },
   }, // end attributes
+  beforeCreate(record, proceed) {
+    record.createdAt = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    return proceed();
+  },
+  beforeUpdate(record, proceed) {
+    record.updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    return proceed();
+  },
 }; // end exports

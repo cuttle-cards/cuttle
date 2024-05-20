@@ -1,3 +1,4 @@
+const dayjs = require('dayjs');
 /**
  * UserSpectatingGame.js
  *
@@ -17,5 +18,13 @@ module.exports = {
     spectator: {
       model: 'user',
     },
+  },
+  beforeCreate(record, proceed) {
+    record.createdAt = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    return proceed();
+  },
+  beforeUpdate(record, proceed) {
+    record.updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    return proceed();
   },
 };
