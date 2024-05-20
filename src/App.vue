@@ -4,11 +4,12 @@
     <v-main>
       <RouterView />
     </v-main>
-    <TheFooter v-if="showNav && isSmallDevice" :variant="variant" />
+    <TheFooter v-if="showFooter" :variant="variant" />
   </v-app>
 </template>
 
 <script>
+import { mapStores } from 'pinia';
 import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
 import { useGameStore } from '@/stores/game';
@@ -26,12 +27,19 @@ export default {
     };
   },
   computed: {
+    ...mapStores(useAuthStore),
+    isAuthenticated() {
+      return this.authStore.authenticated;
+    },
     isSmallDevice() {
       return this.$vuetify.display.smAndDown;
     },
     variant() {
       const isHomeView = this.$router.currentRoute.value.name !== 'Stats';
       return isHomeView ? 'light' : 'dark'; 
+    },
+    showFooter() {
+      return this.showNav && this.isSmallDevice && this.isAuthenticated;
     }
   },
   watch: {

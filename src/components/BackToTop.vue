@@ -4,7 +4,7 @@
       v-if="show"
       position="fixed"
       location="bottom right"
-      class="mt-auto ma-4"
+      class="fab"
       color="surface-2"
       elevation="8"
       icon="mdi-chevron-up"
@@ -30,3 +30,10 @@ function onClick() {
   });
 }
 </script>
+
+<style scoped>
+.fab {
+  margin: auto 8px 64px 8px;
+  z-index: 1;
+}
+</style>

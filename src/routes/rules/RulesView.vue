@@ -5,7 +5,6 @@
       <v-row>
         <v-col
           class="sidebar-container"
-          :class="authenticated ? 'authenticated' : 'unauthenticated'"
           md="3"
           sm="12"
         >
@@ -105,7 +104,7 @@
           </section>
 
           <!-- Actions -->
-          <section class="section">
+          <section id="actions" v-intersect="intersectConfig" class="section">
             <v-row>
               <h1 class="text-h2 text-surface-2 mt-5 section-title">
                 {{ t('rules.actions.title') }}
@@ -374,7 +373,7 @@ export default {
       return this.authStore.authenticated;
     },
     buttonText() {
-      if (this.authStore.username) {
+      if (this.authenticated) {
         return this.$t('rules.readyToPlay.findGame');
       }
       return this.$t('rules.readyToPlay.signUp');
@@ -409,7 +408,7 @@ export default {
       handler: onIntersect,
       options: {
           threshhold: .2,
-          rootMargin: '-150px 0px -300px 0px',
+          rootMargin: '-150px 0px -500px 0px',
         }
     };
   },
@@ -470,18 +469,16 @@ export default {
   .sidebar-container {
     background: rgba(var(--v-theme-surface-1));
     position: sticky;
-
-    &.authenticated {
-      top: 64px;
-    }
-    &.unauthenticated {
-      top: 0px;
-    }
+    top: 64px;
     z-index: 999;
   }
   .sidebar-title {
     white-space: nowrap;
     overflow-x: auto;
+  }
+
+  .section-title {
+    font-size: 2.5rem !important;
   }
 }
 </style>
