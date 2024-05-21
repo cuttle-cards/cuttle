@@ -373,7 +373,9 @@
       "queen": "Queen",
       "queenDescription": "Protects your other cards from being targeted by the effects of other cards. This protects your cards against 2's (both effects), 9's, and Jacks, but not scuttling.",
       "jack": "Jack",
-      "jackDescription": "Play on an opponent's point card to steal it. Point card returns to opponent if the Jack is scrapped or if another Jack is used to steal it back."
+      "jackDescription": "Play on an opponent's point card to steal it. Point card returns to opponent if the Jack is scrapped or if another Jack is used to steal it back.",
+      "eight": "Eight",
+      "eightDescription": "Play a 'Glasses Eight' to reveal your opponent's hand. This counts as a Royal and lasts until scrapped."
     },
     "oneoffs": {
       "title": "One-Offs",
@@ -393,8 +395,6 @@
       "sixDescription": "Scrap all Royals and Glasses Eights on the field.",
       "seven": "Seven",
       "sevenDescription": "Reveal the top two cards from the deck and choose one to play however you choose.",
-      "eight": "Eight",
-      "eightDescription": "Reveal your opponent's hand (lasts until scrapped).",
       "nine": "Nine",
       "nineDescription": "Return a card from your opponent's field to their hand. They cannot play it next turn."
     },
@@ -446,7 +446,7 @@
       "deckExhaust": "What happens when the deck is exhausted?",
       "deckExhaustAnswer": "When there are no cards left in the deck, players may pass on their turn instead of drawing. If there are three consecutive passes i.e. player 1 passes, player 2 passes, then player 1 passes again, the game ends in a stalemate and neither player wins.",
       "whereToPlay": "Where can I play Cuttle?",
-      "whereToPlayAnswer": "You can play Cuttle anywhere you have a deck of cards and a friend! If you want to play online, there is only one place:"
+      "whereToPlayAnswer": "You can play Cuttle anywhere you have a deck of cards and a friend. If you want to play online, there is only one place: cuttle.cards"
     },
     "tournaments": {
       "title": "Tournaments",

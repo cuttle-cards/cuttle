@@ -138,7 +138,6 @@
                 :title="rule.title"
                 :description="rule.description"
                 :static-img="rule.staticImg"
-                :icon="rule.icon"
                 @animate="handleAnimate(rule.animatedImg, rule.title)"
               />
             </v-row>
