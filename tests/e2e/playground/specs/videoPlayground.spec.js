@@ -265,7 +265,7 @@ describe('Video Playground', () => {
     });
   });
 
-  it.only('Playing Threes', () => {
+  it('Playing Threes', () => {
     cy.loadGameFixture(0, {
       p0Hand: [
         Card.THREE_OF_CLUBS,
@@ -294,9 +294,37 @@ describe('Video Playground', () => {
     cy.resolveOpponent();
 
     cy.get('#three-dialog').should('be.visible');
+    cy.wait(500);
     cy.get('[data-three-dialog-card=6-1]').click();
     cy.wait(1000);
     cy.get('[data-cy=three-resolve').click();
+  });
+
+  it.only('Playing Fours', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [
+        Card.FOUR_OF_CLUBS,
+        Card.SIX_OF_DIAMONDS,
+        Card.NINE_OF_HEARTS,
+      ],
+      p0Points: [Card.FIVE_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_HEARTS, Card.JACK_OF_SPADES],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.wait(1500);
+
+    // START RECORDING //
+    cy.get('[data-player-hand-card=4-0]').click();
+    cy.wait(1000);
+    cy.get('[data-move-choice=oneOff]').click();
+    cy.wait(1000);
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    cy.resolveOpponent();
+    cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
+    cy.wait(1000);
+    cy.discardOpponent(Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES);
   });
 
   it('Playing Sixes', () => {
