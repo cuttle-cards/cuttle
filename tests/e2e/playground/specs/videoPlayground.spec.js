@@ -218,7 +218,7 @@ describe('Video Playground', () => {
       cy.resolveOpponent();
     });
 
-    it.only('Plays a 2 to counter opponent one-off', () => {
+    it('Plays a 2 to counter opponent one-off', () => {
       cy.loadGameFixture(0, {
         p0Hand: [Card.TWO_OF_HEARTS, Card.SEVEN_OF_HEARTS],
         p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
@@ -263,6 +263,40 @@ describe('Video Playground', () => {
 
       cy.get('#game-over-dialog').should('exist');
     });
+  });
+
+  it.only('Playing Threes', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [
+        Card.THREE_OF_CLUBS,
+        Card.SEVEN_OF_CLUBS,
+        Card.EIGHT_OF_CLUBS,
+      ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Points: [],
+      p1FaceCards: [Card.KING_OF_CLUBS, Card.EIGHT_OF_DIAMONDS, Card.QUEEN_OF_SPADES],
+      scrap: [
+        Card.SIX_OF_DIAMONDS,
+        Card.TEN_OF_SPADES,
+        Card.JACK_OF_DIAMONDS
+      ],
+    });
+    cy.wait(1500);
+
+    // START RECORDING //
+    cy.get('[data-player-hand-card=3-0]').click();
+    cy.wait(1000);
+    cy.get('[data-move-choice=oneOff]').click();
+    cy.wait(1000);
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    cy.resolveOpponent();
+
+    cy.get('#three-dialog').should('be.visible');
+    cy.get('[data-three-dialog-card=6-1]').click();
+    cy.wait(1000);
+    cy.get('[data-cy=three-resolve').click();
   });
 
   it('Playing Sixes', () => {
