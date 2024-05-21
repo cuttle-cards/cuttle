@@ -24,10 +24,10 @@ export async function handleInGameEvents(evData) {
     return;
   }
   // Handle GameOver
-  if (evData.victory && evData.victory.gameOver) {
-    setTimeout(() => {
+  if (evData.victory?.gameOver) {
+    sleep(1000).then(() => {
       gameStore.setGameOver(evData.victory);
-    }, 1000);
+    });
   }
   switch (evData.change) {
     case SocketEvent.READY: {
@@ -140,7 +140,7 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.NEW_GAME_FOR_REMATCH: {
       // ignore if not currently in/spectating relevant game
       if (
-        Number(urlGameId) !== evData.oldGameId || 
+        Number(urlGameId) !== evData.oldGameId ||
         ![ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE].includes(currentRoute.name)
       ) {
         return;
@@ -167,12 +167,12 @@ export async function handleInGameEvents(evData) {
       }
 
       router.push({
-          name: currentRoute.name,
-          params: {
-            gameId: evData.gameId,
-          },
-        });
-      
+        name: currentRoute.name,
+        params: {
+          gameId: evData.gameId,
+        },
+      });
+
       gameStore.iWantToContinueSpectating = false;
       gameStore.p0Rematch = null;
       gameStore.p1Rematch = null;
@@ -186,8 +186,8 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.REQUEST_STALEMATE:
       // Show OpponentRequestedStalemateDialog if opponent requested stalemate
       //   and game is not yet over
-      gameStore.consideringOpponentStalemateRequest = !evData.victory.gameOver && 
-        evData.requestedByPNum !== gameStore.myPNum;
+      gameStore.consideringOpponentStalemateRequest =
+        !evData.victory.gameOver && evData.requestedByPNum !== gameStore.myPNum;
       break;
     case SocketEvent.REJECT_STALEMATE:
       gameStore.consideringOpponentStalemateRequest = false;
