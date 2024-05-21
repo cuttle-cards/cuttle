@@ -446,7 +446,7 @@
       "deckExhaust": "Que se passe-t-il lorsqu'il n'y a plus de carte dans le paquet ?",
       "deckExhaustAnswer": "Lorsqu'il n'y a plus de cartes dans le paquet, les joueurs peuvent passer leur tour au lieu de piocher. S'il y a trois passes consécutives, c'est-à-dire que le joueur 1 passe, le joueur 2 passe, puis le joueur 1 passe à nouveau, la partie se termine par une impasse et il y a égalité.",
       "whereToPlay": "Où puis-je jouer à Cuttle?",
-      "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami! Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit:"
+      "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami. Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit: cuttle.cards"
     },
     "tournaments": {
       "title": "Tournois",

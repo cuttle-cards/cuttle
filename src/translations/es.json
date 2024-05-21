@@ -446,7 +446,7 @@
       "deckExhaust": "¿Qué pasa cuando se agota el mazo de robo?",
       "deckExhaustAnswer": "Cuando no quedan cartas en el mazo, los jugadores pueden pasar su turno en lugar de robar. Si hay tres pases consecutivos, es decir, el jugador 1 pasa, el jugador 2 pasa y luego el jugador 1 pasa nuevamente, el juego termina en un punto muerto y ningún jugador gana.",
       "whereToPlay": "¿Dónde puedo jugar a Cuttle?",
-      "whereToPlayAnswer": "¡Puedes jugar a Cuttle en cualquier lugar donde tengas una baraja de cartas y un amigo! Si quieres jugar online, solo hay un lugar:"
+      "whereToPlayAnswer": "Puedes jugar a Cuttle en cualquier lugar donde tengas una baraja de cartas y un amigo. Si quieres jugar online, solo hay un lugar: cuttle.cards!"
     },
     "tournaments": {
       "title": "Torneos",
