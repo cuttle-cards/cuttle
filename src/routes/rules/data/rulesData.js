@@ -48,6 +48,12 @@ const royals = [
     staticImg: '/img/rulesView/royals_jack.svg',
     animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
   },
+  {
+    title: 'rules.oneoffs.eight',
+    description: 'rules.oneoffs.eightDescription',
+    staticImg: '/img/rulesView/oneoffs_eight.svg',
+    animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/glasses.gif?raw=true',
+  },
 ];
 
 const oneOffs = [
@@ -93,12 +99,6 @@ const oneOffs = [
     description: 'rules.oneoffs.sevenDescription',
     staticImg: '/img/rulesView/oneoffs_seven.svg',
     animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/seven.gif?raw=true',
-  },
-  {
-    title: 'rules.oneoffs.eight',
-    description: 'rules.oneoffs.eightDescription',
-    staticImg: '/img/rulesView/oneoffs_eight.svg',
-    animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/glasses.gif?raw=true',
   },
   {
     title: 'rules.oneoffs.nine',
