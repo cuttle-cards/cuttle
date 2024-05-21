@@ -819,6 +819,9 @@ export const useGameStore = defineStore('game', {
     async requestJoinRematch({ oldGameId }) {
       return new Promise((resolve, reject) => {
         io.socket.get('/api/game/join-rematch', { oldGameId }, (res, jwres) => {
+          if (jwres.statusCode === 200) {
+            this.resetState();
+          }
           return this.handleGameResponse(jwres, resolve, reject);
         });
       });

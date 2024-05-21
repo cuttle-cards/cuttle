@@ -330,10 +330,12 @@
     "introduction": "Introducción",
     "actions":{
       "title": "Comportamiento",
-      "clubs": "Tréboles (más débil)",
+      "clubs": "Tréboles",
       "diamonds": "Diamantes",
       "hearts": "Corazones",
-      "spades": "Picas (más fuerte)"
+      "spades": "Picas",
+      "weakest": "más débil",
+      "strongest": "más fuerte"
     },
     "howToPlay": "Cómo jugar",
     "cuttleTitle": "¿Qué es Cuttle?",
@@ -424,7 +426,7 @@
       "rule5": "Se pueden jugar Nueves para obtener un efecto alternativo similar: siempre que un rival juegue una Figura, puedes jugar inmediatamente un Nueve en respuesta para devolver esa carta a la mano de su propietario inmediatamente, evitando que se produzca su efecto. Hacerlo puede hacerse fuera de turno y no gasta tu turno, pero no impide que el propietario del objetivo vuelva a jugar la carta en su siguiente turno. Alternativamente, aún puedes jugar un Nueve para obtener su efecto único original en tu turno (gastando tu turno para hacerlo), para devolver una carta a la mano de su controlador y evitar que juegue esa carta en su próximo turno."
     },
     "faq": {
-      "title": "Preguntas frecuentes",
+      "title": "FAQ",
       "twoCounter": "¿Puedo jugar un Dos para contrarrestar una carta de puntos? ¿Y para impedir que me hundan una carta de puntos?",
       "twoCounterAnswer": "¡No! Los Doses solo pueden contrarrestar las habilidades Únicas. Puedes jugar un Dos para destruir una Figura o unas Gafas Ocho, pero esto gasta tu turno, a diferencia de si se usa para contrarrestar.",
       "queenProtectTwo": "¿Las Reinas protegen contra el la habilidad de contrarrestar del Dos?",
