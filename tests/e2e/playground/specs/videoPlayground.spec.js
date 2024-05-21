@@ -327,7 +327,7 @@ describe('Video Playground', () => {
     cy.discardOpponent(Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES);
   });
 
-  it.only('Playing Fives', () => {
+  it('Playing Fives', () => {
     cy.loadGameFixture(0, {
       p0Hand: [
         Card.FIVE_OF_HEARTS,
@@ -401,6 +401,92 @@ describe('Video Playground', () => {
     cy.get('[data-move-choice=oneOff]').click();
     cy.wait(1000);
 
+    cy.resolveOpponent();
+  });
+
+  it('Playing sevens', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [
+        Card.SEVEN_OF_SPADES,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_HEARTS,
+      ],
+      p0Points: [Card.NINE_OF_DIAMONDS],
+      p0FaceCards: [],
+      p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_HEARTS, Card.QUEEN_OF_CLUBS],
+      p1Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+      p1FaceCards: [],
+      topCard: Card.ACE_OF_CLUBS,
+      secondCard: Card.JACK_OF_HEARTS,
+    });
+    cy.wait(1500);
+
+    // START RECORDING //
+    cy.get('[data-player-hand-card=7-3]').click();
+    cy.wait(1000);
+    cy.get('[data-move-choice=oneOff]').click();
+    cy.wait(1000);
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+    cy.resolveOpponent();
+    cy.wait(1000);
+    cy.get('[data-second-card=11-2]').click();
+    cy.wait(1000);
+    cy.get('[data-move-choice=jack]').click();
+    cy.wait(1000);
+    cy.get('[data-opponent-point-card=10-3]').click();
+  });
+
+  it('Playing eights', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [
+        Card.ACE_OF_CLUBS,
+        Card.TWO_OF_DIAMONDS,
+        Card.THREE_OF_SPADES,
+        Card.FOUR_OF_CLUBS,
+        Card.FOUR_OF_HEARTS,
+        Card.EIGHT_OF_CLUBS,
+        Card.NINE_OF_HEARTS,
+      ],
+      p0Points: [Card.NINE_OF_CLUBS],
+      p0FaceCards: [],
+      p1Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS, Card.TWO_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.QUEEN_OF_SPADES],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+    cy.wait(1500);
+
+    // START RECORDING //
+    cy.get('[data-player-hand-card=8-0]').click();
+    cy.wait(1000);
+    cy.get('[data-move-choice=faceCard]').click();
+    cy.wait(1000);
+  });
+
+  it.only('Playing Nines', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.ACE_OF_SPADES, Card.NINE_OF_CLUBS, Card.TEN_OF_SPADES],
+      p0Points: [Card.TEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.FIVE_OF_HEARTS, Card.SIX_OF_SPADES, Card.JACK_OF_DIAMONDS],
+      p1Points: [Card.TEN_OF_CLUBS],
+      p1FaceCards: [],
+    });
+    cy.get('[data-player-hand-card]').should('have.length', 3);
+    cy.get('[data-player-hand-card=10-3]').click();
+    cy.get('[data-move-choice=points]').click();
+    cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+    cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_SPADES);
+    cy.wait(2000);
+    cy.get('#turn-indicator').contains('YOUR TURN');
+    
+    // START RECORDING HERE //
+    cy.get('[data-player-hand-card=9-0]').click();
+    cy.wait(1000);
+    cy.get('[data-move-choice=targetedOneOff]').click();
+    cy.wait(1000);
+    cy.get('[data-opponent-face-card=11-1]').click();
+    cy.wait(1000);
+    cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.resolveOpponent();
   });
 });
