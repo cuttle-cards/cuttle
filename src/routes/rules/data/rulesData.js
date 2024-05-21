@@ -114,7 +114,7 @@ const oneOffs = [
     icon: 'delete',
     description: 'rules.oneoffs.eightDescription',
     staticImg: '/img/rulesView/oneoffs_eight.svg',
-    animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/seven.gif?raw=true',
+    animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/glasses.gif?raw=true',
   },
   {
     title: 'rules.oneoffs.nine',
