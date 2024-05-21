@@ -289,7 +289,7 @@ export const useGameStore = defineStore('game', {
      * and updates complete game which will put both cards in the scrap
      * @returns void
      */
-    processScuttle({ game, playedCardId, targetCardId, playedBy }) {
+    async processScuttle({ game, playedCardId, targetCardId, playedBy }) {
       // Update in one step if this player scuttled or if pNum is not set
       if (!this.player) {
         this.resetPNumIfNullThenUpdateGame(game);
@@ -314,18 +314,16 @@ export const useGameStore = defineStore('game', {
       targetCard.scuttledBy = playedCard;
 
       // Finish complete update of the game state after 1s
-      setTimeout(() => {
-        this.resetPNumIfNullThenUpdateGame(game);
-      }, 1000);
+      await sleep(1000);
+      this.resetPNumIfNullThenUpdateGame(game);
     },
-    processThrees(chosenCard, game) {
+    async processThrees(chosenCard, game) {
       this.waitingForOpponentToPickFromScrap = false;
       this.pickingFromScrap = false;
       this.lastEventCardChosen = chosenCard;
 
-      setTimeout(() => {
-        this.resetPNumIfNullThenUpdateGame(game);
-      }, 1000);
+      await sleep(1000);
+      this.resetPNumIfNullThenUpdateGame(game);
     },
     async processFours(discardedCards, game) {
       this.waitingForOpponentToDiscard = false;
