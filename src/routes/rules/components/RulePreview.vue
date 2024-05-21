@@ -49,10 +49,6 @@ defineProps({
       type: String,
       required: true,
     },
-    icon: {
-      type: String,
-      default: '',
-    },
 });
 
 const emit = defineEmits(['animate']);
