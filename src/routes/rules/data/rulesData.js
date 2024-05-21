@@ -49,8 +49,8 @@ const royals = [
     animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/jack.gif?raw=true',
   },
   {
-    title: 'rules.oneoffs.eight',
-    description: 'rules.oneoffs.eightDescription',
+    title: 'rules.royals.eight',
+    description: 'rules.royals.eightDescription',
     staticImg: '/img/rulesView/oneoffs_eight.svg',
     animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/glasses.gif?raw=true',
   },
