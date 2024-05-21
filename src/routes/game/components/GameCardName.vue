@@ -1,5 +1,7 @@
 <template>
-  <strong class="card-name">{{ cardName }}</strong>
+  <div class="card-name">
+    {{ cardName }}
+  </div> 
 </template>
 
 <script>
@@ -27,5 +29,6 @@ export default {
   border-radius: 8px;
   margin-right: 4px;
   margin-left: 4px;
+  display:inline-block;
 }
 </style>
