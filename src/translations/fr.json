@@ -373,7 +373,9 @@
       "queen": "Reine",
       "queenDescription": "Elle protège vos autres cartes des ataques du 2, du 9 et des valets, mais pas d'un scuttle.",
       "jack": "Valet",
-      "jackDescription": "Il vous permet de cibler et voler une carte à points à votre adversaire. Il peut la récupérer en la volant à son tour (avec un autre valet) ou en détruisant votre valet avec une capacité tactique."
+      "jackDescription": "Il vous permet de cibler et voler une carte à points à votre adversaire. Il peut la récupérer en la volant à son tour (avec un autre valet) ou en détruisant votre valet avec une capacité tactique.",
+      "eight": "Huit",
+      "eightDescription": "Jouez un 'Huit Lunettes' pour révéler la main de votre adversaire. Cela compte comme un Royal et dure jusqu'à être écarté."
     },
     "oneoffs": {
       "title": "Capacité",
@@ -393,8 +395,6 @@
       "sixDescription": "Élimine toutes les figures et les huit en lunettes de la table.",
       "seven": "Sept",
       "sevenDescription": "Révélez les deux premières cartes du jeu et jouez en une immédiatement.",
-      "eight": "Huit",
-      "eightDescription": "Révélez la main de votre adversaire (dure jusqu'à sa mise au rebut).",
       "nine": "Neuf",
       "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour."
     },
@@ -446,7 +446,7 @@
       "deckExhaust": "Que se passe-t-il lorsqu'il n'y a plus de carte dans le paquet ?",
       "deckExhaustAnswer": "Lorsqu'il n'y a plus de cartes dans le paquet, les joueurs peuvent passer leur tour au lieu de piocher. S'il y a trois passes consécutives, c'est-à-dire que le joueur 1 passe, le joueur 2 passe, puis le joueur 1 passe à nouveau, la partie se termine par une impasse et il y a égalité.",
       "whereToPlay": "Où puis-je jouer à Cuttle?",
-      "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami! Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit:"
+      "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami. Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit: cuttle.cards"
     },
     "tournaments": {
       "title": "Tournois",
