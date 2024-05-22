@@ -142,11 +142,11 @@ module.exports = {
     },
   }, // end attributes
   beforeCreate(record, proceed) {
-    record.createdAt = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    record.createdAt = dayjs(record.createdAt).format('YYYY-MM-DD HH:mm:ss.SSS Z');
     return proceed();
   },
   beforeUpdate(record, proceed) {
-    record.updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    record.updatedAt = dayjs(record.createdAt).format('YYYY-MM-DD HH:mm:ss.SSS Z');
     return proceed();
   },
 }; // end exports
