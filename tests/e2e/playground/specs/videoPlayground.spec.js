@@ -462,7 +462,7 @@ describe('Video Playground', () => {
     cy.wait(1000);
   });
 
-  it.only('Playing Nines', () => {
+  it('Playing Nines', () => {
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.NINE_OF_CLUBS, Card.TEN_OF_SPADES],
       p0Points: [Card.TEN_OF_HEARTS],
