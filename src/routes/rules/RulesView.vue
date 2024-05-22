@@ -5,11 +5,10 @@
       <v-row>
         <v-col
           class="sidebar-container"
-          :class="authenticated ? 'authenticated' : 'unauthenticated'"
           md="3"
           sm="12"
         >
-          <ul class="ms-5 sidebar-title mt-8">
+          <ul ref="sidebarContainer" class="ms-5 sidebar-title mt-8">
             <li
               v-for="{ title, href, id } in sectionTitles"
               :id="'listItem_' + id"
@@ -41,9 +40,7 @@
           <section>
             <v-row
               id="introduction"
-              v-intersect="{
-                handler: onIntersect,
-              }"
+              v-intersect="intersectConfig"
               class="flex-column align-start"
             >
               <!-- What is Cuttle? -->
@@ -81,9 +78,7 @@
             <!-- Goal -->
             <v-row
               id="howtoplay"
-              v-intersect="{
-                handler: onIntersect,
-              }"
+              v-intersect="intersectConfig"
               class="flex-column align-start section"
             >
               <h1 class="text-h2 text-surface-2 mb-5 section-title">
@@ -109,7 +104,7 @@
           </section>
 
           <!-- Actions -->
-          <section class="section">
+          <section id="actions" v-intersect="intersectConfig" class="section">
             <v-row>
               <h1 class="text-h2 text-surface-2 mt-5 section-title">
                 {{ t('rules.actions.title') }}
@@ -123,13 +118,8 @@
           </section>
 
           <!-- Royals -->
-          <section class="section">
-            <div
-              id="royals"
-              v-intersect="{
-                handler: onIntersect,
-              }"
-            >
+          <section id="royals" v-intersect="intersectConfig" class="section">
+            <div>
               <v-row class="flex-column">
                 <h1 class="text-h2 text-surface-2 mt-5 section-title">
                   {{ t('rules.royals.title') }}
@@ -148,20 +138,14 @@
                 :title="rule.title"
                 :description="rule.description"
                 :static-img="rule.staticImg"
-                :icon="rule.icon"
                 @animate="handleAnimate(rule.animatedImg, rule.title)"
               />
             </v-row>
           </section>
 
-          <section class="section">
+          <section id="oneoffs" v-intersect="intersectConfig" class="section">
             <!-- One-Offs -->
-            <v-row
-              id="oneoffs"
-              v-intersect="{
-                handler: onIntersect,
-              }"
-            >
+            <v-row>
               <h1 class="text-h2 text-surface-2 mt-5 section-title">
                 {{ t('rules.oneoffs.title') }}
               </h1>
@@ -200,9 +184,7 @@
           <section class="section">
             <v-row
               id="faq"
-              v-intersect="{
-                handler: onIntersect,
-              }"
+              v-intersect="intersectConfig"
               class="d-flex flex-column mb-4"
             >
               <h1 class="text-h2 text-surface-2 my-6 section-title">
@@ -254,9 +236,7 @@
           <section class="section">
             <v-row
               id="tournaments"
-              v-intersect="{
-                handler: onIntersect,
-              }"
+              v-intersect="intersectConfig"
               class="flex-column"
             >
               <h1 class="text-h2 text-surface-2 my-6 section-title">
@@ -380,11 +360,6 @@ export default {
   },
     data() {
     return {
-      scorllOptions:{
-        duration: 1000,
-      offset: -100,
-      easing: 'easeInOutCubic',
-      },
       activeTitle: 'introduction',
       previewDialog: false,
       imageUrl: '',
@@ -397,7 +372,7 @@ export default {
       return this.authStore.authenticated;
     },
     buttonText() {
-      if (this.authStore.username) {
+      if (this.authenticated) {
         return this.$t('rules.readyToPlay.findGame');
       }
       return this.$t('rules.readyToPlay.signUp');
@@ -411,18 +386,36 @@ export default {
     this.royals = royals;
     this.oneOffs = oneOffs;
     this.sectionTitles = sectionTitles;
-  },
-  methods: {
-    goToSection(url) {
-      this.goTo(url, this.scorllOptions);
-      window.location.hash = url;
-    },
-    onIntersect(isIntersecting, entries) {
+
+    // Scrolling
+    this.scrollOptions = {
+      duration: 1000,
+      offset: -100,
+      easing: 'easeInOutCubic',
+    };
+
+    // Intersection
+    const onIntersect = (_isIntersecting, entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           this.activeTitle = entry.target.id;
         }
       });
+      this.goTo.horizontal('#listItem_' + this.activeTitle ,{ container: this.$refs.sidebarContainer });
+    };
+
+    this.intersectConfig = {
+      handler: onIntersect,
+      options: {
+          threshhold: .2,
+          rootMargin: '-150px 0px -500px 0px',
+        }
+    };
+  },
+  methods: {
+    goToSection(url) {
+      this.goTo(url, this.scrollOptions);
+      window.location.hash = url;
     },
     handleAnimate(imageUrl, title) {
       this.imageUrl = imageUrl;
@@ -476,18 +469,16 @@ export default {
   .sidebar-container {
     background: rgba(var(--v-theme-surface-1));
     position: sticky;
-
-    &.authenticated {
-      top: 60px;
-    }
-    &.unauthenticated {
-      top: 0px;
-    }
+    top: 64px;
     z-index: 999;
   }
   .sidebar-title {
     white-space: nowrap;
     overflow-x: auto;
+  }
+
+  .section-title {
+    font-size: 2.5rem !important;
   }
 }
 </style>

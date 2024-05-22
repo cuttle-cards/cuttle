@@ -373,7 +373,9 @@
       "queen": "Reina",
       "queenDescription": "Protege tus otras cartas de ser objetivo de habilidades Únicas de otras cartas. Esto protege tus cartas contra Doses (ambos efectos), Nueves y Sotas, pero no contra hundimientos.",
       "jack": "Sota (Jota)",
-      "jackDescription": "Juega sobre una carta de puntos objetivo para robarla. La carta de puntos regresa al rival si la Sota se descarta o si se usa otra Sota para recuperarla."
+      "jackDescription": "Juega sobre una carta de puntos objetivo para robarla. La carta de puntos regresa al rival si la Sota se descarta o si se usa otra Sota para recuperarla.",
+      "eight": "Ocho",
+      "eightDescription": "Juega un 'Ocho de Gafas' para revelar la mano de tu oponente. Esto cuenta como un Real y dura hasta ser desechado."
     },
     "oneoffs": {
       "title": "Habilidades Únicas",
@@ -393,8 +395,6 @@
       "sixDescription": "Descarta todas las Figuras y Gafas Ocho en juego sobre el campo.",
       "seven": "Siete",
       "sevenDescription": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras.",
-      "eight": "Ocho",
-      "eightDescription": "Revela la mano de tu oponente (dura hasta que se desecha).",
       "nine": "Nueve",
       "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno"
     },
@@ -446,7 +446,7 @@
       "deckExhaust": "¿Qué pasa cuando se agota el mazo de robo?",
       "deckExhaustAnswer": "Cuando no quedan cartas en el mazo, los jugadores pueden pasar su turno en lugar de robar. Si hay tres pases consecutivos, es decir, el jugador 1 pasa, el jugador 2 pasa y luego el jugador 1 pasa nuevamente, el juego termina en un punto muerto y ningún jugador gana.",
       "whereToPlay": "¿Dónde puedo jugar a Cuttle?",
-      "whereToPlayAnswer": "¡Puedes jugar a Cuttle en cualquier lugar donde tengas una baraja de cartas y un amigo! Si quieres jugar online, solo hay un lugar:"
+      "whereToPlayAnswer": "Puedes jugar a Cuttle en cualquier lugar donde tengas una baraja de cartas y un amigo. Si quieres jugar online, solo hay un lugar: cuttle.cards!"
     },
     "tournaments": {
       "title": "Torneos",

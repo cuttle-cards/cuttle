@@ -140,8 +140,8 @@ export const useAuthStore = defineStore('auth', {
       if (this.isReturningUser === null) {
         const val = getLocalStorage(LS_IS_RETURNING_USER_NAME);
         this.isReturningUser = val;
-        return val;
       }
+      return this.isReturningUser;
     },
     setIsReturningUser() {
       if (!this.isReturningUser) {

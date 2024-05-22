@@ -57,7 +57,7 @@
             </p>
 
             <v-form
-              id="login"
+              id="form"
               v-model="isFormValid"
               class="mx-auto loginForm"
               @submit.prevent="submitLogin"
@@ -107,8 +107,9 @@
                   {{ buttonText }}
                 </v-btn>
                 <v-btn
-                  class="px-0 text-h6"
+                  class="text-h6"
                   color="black"
+                  size="large"
                   variant="text"
                   data-cy="switch-mode"
                   @click="switchMode"
@@ -224,6 +225,9 @@ export default {
     isLoggingIn() {
       return this.$route.name === ROUTE_NAME_LOGIN;
     },
+    goingToForm() {
+      return this.$route.hash === '#login-container';
+    },
     formHeaderText() {
       return this.isLoggingIn ? this.t('login.formHeaderLogin') : this.t('login.formHeaderSignup');
     },
@@ -241,7 +245,7 @@ export default {
     },
   },
   mounted() {
-    if (this.isLoggingIn) {
+    if (this.goingToForm) {
       this.scrollAndFocusLogin();
     }
   },
@@ -262,11 +266,10 @@ export default {
     switchMode() {
       this.pw = '';
       if (this.isLoggingIn) {
-        this.$router.push({ name: ROUTE_NAME_SIGNUP });
+        this.$router.push({ name: ROUTE_NAME_SIGNUP, hash: '#login-container' });
       } else {
-        this.$router.push({ name: ROUTE_NAME_LOGIN });
+        this.$router.push({ name: ROUTE_NAME_LOGIN, hash: '#login-container' });
       }
-      this.scrollAndFocusLogin();
     },
     handleLogin() {
       this.username = '';

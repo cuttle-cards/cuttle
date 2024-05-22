@@ -31,6 +31,7 @@ describe('Localization', () => {
     cy.contains('h1', lang.login.title);
     cy.get('[data-cy="submit"]').should('contain', lang.global.login);
     cy.loginPlayer(myUser);
+    cy.vueRoute('/');
     cy.reload();
     // Check elements in the navbar again
     cy.get('[data-cy="Play"]').should('contain', lang.global.play);

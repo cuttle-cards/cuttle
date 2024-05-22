@@ -12,7 +12,7 @@ const { logoSrc } = useThemedLogo();
         <v-col cols="12" class="text-center">
           <router-link to="/">
             <img
-              id="logo"
+              id="not-found-logo"
               alt="Cuttle logo"
               :src="logoSrc"
               height="20vh"
@@ -35,7 +35,7 @@ const { logoSrc } = useThemedLogo();
 </template>
 
 <style scoped>
-#logo {
+#not-found-logo {
   height: 20vh;
   margin: 0 auto;
 }

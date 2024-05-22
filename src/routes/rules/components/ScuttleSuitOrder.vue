@@ -7,7 +7,7 @@
       role="img"
     />
     &nbsp;
-    <template v-if="!sm">
+    <template v-if="!smAndDown">
       {{ t('rules.actions.clubs') }}
     </template>
     ( {{ t('rules.actions.weakest') }} )
@@ -20,7 +20,7 @@
       role="img"
     />
     &nbsp;
-    <template v-if="!sm">
+    <template v-if="!smAndDown">
       {{ t('rules.actions.diamonds') }}
     </template>
     &lt; &nbsp;
@@ -32,7 +32,7 @@
       role="img"
     />
     &nbsp;
-    <template v-if="!sm">
+    <template v-if="!smAndDown">
       {{ t('rules.actions.hearts') }}
     </template>
     &lt; &nbsp;
@@ -44,7 +44,7 @@
       role="img"
     />
     &nbsp;
-    <template v-if="!sm">
+    <template v-if="!smAndDown">
       {{ t('rules.actions.spades') }}
     </template>
     ( {{ t('rules.actions.strongest') }} )
@@ -57,7 +57,7 @@ import { useDisplay } from 'vuetify/lib/framework.mjs';
 
 const { t } = useI18n();
 
-const { sm } = useDisplay();
+const { smAndDown } = useDisplay();
 </script>
 
 <style scoped>
