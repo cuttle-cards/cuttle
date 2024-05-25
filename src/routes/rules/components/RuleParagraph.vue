@@ -40,20 +40,4 @@ const { t } = useI18n();
 .max-w-24 {
   max-width: 24px;
 }
-
-.text-label-lg {
-  font-family: Changa;
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 34px;
-  text-align: left;
-}
-
-.text-md {
-  font-family: Changa;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22px;
-  text-align: left;
-}
 </style>

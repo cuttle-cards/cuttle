@@ -79,19 +79,6 @@ function toggleDialog() {
 
 <style scoped>
 .text-label-lg {
-  font-family: Changa;
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 34px;
-  text-align: left;
   margin-bottom: 8px;
-}
-
-.text-md {
-  font-family: Changa;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 22px;
-  text-align: left;
 }
 </style>
