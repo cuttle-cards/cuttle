@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row class="mb-10">
     <v-col lg="2" sm="5">
       <v-img
         :src="staticImg"
@@ -11,16 +11,21 @@
       />
     </v-col>
     <v-col>
-      <p class="mb-2 text-surface-2">
-        <strong>{{ t(title) }}</strong> <br>
-        {{ t(description) }}
-      </p>
-      <p v-if="description2" class="mb-2 text-surface-2">
-        {{ t(description2) }}
-      </p>
+      <h6 class="text-label-lg">
+        {{ t(title) }}
+      </h6>
+      <div class="text-surface-2">
+        <p class="text-md">
+          {{ t(description) }}
+        </p>
+        <p v-if="description2" class="mt-4 text-surface-2 text-md">
+          {{ t(description2) }}
+        </p>
+      </div>
       <div>
         <v-btn
           v-if="hasVideo"
+          class="mt-6"
           color="newPrimary"
           :data-cy-open-rule-preview="title"
           @click="toggleDialog"
@@ -71,3 +76,22 @@ function toggleDialog() {
   emit('animate');
 }
 </script>
+
+<style scoped>
+.text-label-lg {
+  font-family: Changa;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 34px;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.text-md {
+  font-family: Changa;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: left;
+}
+</style>
