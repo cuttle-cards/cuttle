@@ -11,9 +11,9 @@
       />
     </v-col>
     <v-col>
-      <h6 class="text-label-lg">
+      <h2 class="text-label-lg">
         {{ t(title) }}
-      </h6>
+      </h2>
       <div class="text-surface-2">
         <p class="text-md">
           {{ t(description) }}
