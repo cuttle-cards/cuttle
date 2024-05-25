@@ -43,7 +43,7 @@
               v-intersect="intersectConfig"
               class="flex-column align-start mt-8"
             >
-              <h1 class="text-h2 text-surface-2 mb-5 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.introduction') }}
               </h1>
               <!-- What is Cuttle? -->
@@ -81,7 +81,7 @@
               v-intersect="intersectConfig"
               class="flex-column align-start section"
             >
-              <h1 class="text-h2 text-surface-2 mb-5 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.howToPlay') }}
               </h1>
               <h2 class="text-label-lg">
@@ -106,7 +106,7 @@
           <!-- Actions -->
           <section id="actions" v-intersect="intersectConfig" class="section">
             <v-row>
-              <h1 class="text-h2 text-surface-2 mt-5 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.actions.title') }}
               </h1>
             </v-row>
@@ -121,7 +121,7 @@
           <section id="royals" v-intersect="intersectConfig" class="section">
             <div>
               <v-row class="flex-column">
-                <h1 class="text-h2 text-surface-2 mt-5 section-title">
+                <h1 class="text-h2 text-surface-2 section-title">
                   {{ t('rules.royals.title') }}
                 </h1>
               </v-row>
@@ -147,7 +147,7 @@
           <section id="oneoffs" v-intersect="intersectConfig" class="section">
             <!-- One-Offs -->
             <v-row>
-              <h1 class="text-h2 text-surface-2 mt-5 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.oneoffs.title') }}
               </h1>
             </v-row>
@@ -189,7 +189,7 @@
               v-intersect="intersectConfig"
               class="d-flex flex-column mb-4"
             >
-              <h1 class="text-h2 text-surface-2 my-6 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.faq.title') }}
               </h1>
               <FAQEntry v-for="question in faq" :key="`faq-entry-${question}`" :msg-key="question" />
@@ -203,7 +203,7 @@
               v-intersect="intersectConfig"
               class="flex-column"
             >
-              <h1 class="text-h2 text-surface-2 my-6 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.tournaments.title') }}
               </h1>
             </v-row>
@@ -416,6 +416,12 @@ export default {
 
 .section-title {
   font-family: 'Luckiest Guy', serif !important;
+  background-color: rgba(var(--v-theme-newPrimary));
+  width: 100%;
+  padding-top: 16px;
+  padding-left: 24px;
+  border-radius: 16px;
+  margin-bottom: 40px;
 }
 
 .sidebar-title li {
