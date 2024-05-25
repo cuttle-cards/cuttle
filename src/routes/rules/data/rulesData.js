@@ -106,6 +106,11 @@ const oneOffs = [
     staticImg: '/img/rulesView/oneoffs_nine.svg',
     animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/nine.gif?raw=true',
   },
+  {
+    title: 'rules.oneoffs.ten',
+    description: 'rules.oneoffs.tenDescription',
+    staticImg: '/img/rulesView/oneoffs_ten.svg',
+  },
 ];
 
 const sectionTitles = [

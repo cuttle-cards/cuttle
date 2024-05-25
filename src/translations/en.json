@@ -396,7 +396,9 @@
       "seven": "Seven",
       "sevenDescription": "Reveal the top two cards from the deck and choose one to play however you choose.",
       "nine": "Nine",
-      "nineDescription": "Return a card from your opponent's field to their hand. They cannot play it next turn."
+      "nineDescription": "Return a card from your opponent's field to their hand. They cannot play it next turn.",
+      "ten": "Ten",
+      "tenDescription": "No effect."
     },
     "readyToPlay": {
       "readyToPlay": "Ready to Play?",

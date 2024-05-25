@@ -396,7 +396,9 @@
       "seven": "Sept",
       "sevenDescription": "Révélez les deux premières cartes du jeu et jouez en une immédiatement.",
       "nine": "Neuf",
-      "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour."
+      "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour.",
+      "ten": "Dix",
+      "tenDescription": "Aucun effet."      
     },
     "readyToPlay": {
       "readyToPlay": "Prêt à jouer ?",

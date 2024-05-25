@@ -138,6 +138,7 @@
                 :title="rule.title"
                 :description="rule.description"
                 :static-img="rule.staticImg"
+                :has-video="!!rule.animatedImg"
                 @animate="handleAnimate(rule.animatedImg, rule.title)"
               />
             </v-row>
@@ -163,6 +164,7 @@
                 :description2="rule.description2"
                 :static-img="rule.staticImg"
                 :icon="rule.icon"
+                :has-video="!!rule.animatedImg"
                 @animate="handleAnimate(rule.animatedImg, rule.title)"
               />
             </v-row>

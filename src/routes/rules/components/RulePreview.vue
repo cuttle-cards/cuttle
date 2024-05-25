@@ -19,7 +19,12 @@
         {{ t(description2) }}
       </p>
       <div>
-        <v-btn color="newPrimary" :data-cy-open-rule-preview="title" @click="toggleDialog">
+        <v-btn
+          v-if="hasVideo"
+          color="newPrimary"
+          :data-cy-open-rule-preview="title"
+          @click="toggleDialog"
+        >
           <v-icon icon="mdi-play" />
           {{ t('rules.preview.watchVideo') }}
         </v-btn>
@@ -48,6 +53,10 @@ defineProps({
     staticImg: {
       type: String,
       required: true,
+    },
+    hasVideo: {
+      type: Boolean,
+      default: true,
     },
 });
 

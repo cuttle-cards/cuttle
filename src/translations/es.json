@@ -396,7 +396,9 @@
       "seven": "Siete",
       "sevenDescription": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras.",
       "nine": "Nueve",
-      "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno"
+      "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno",
+      "ten": "Diez",
+      "tenDescription": "Sin efecto."
     },
     "readyToPlay": {
       "readyToPlay": "¿Listo para jugar?",
