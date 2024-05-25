@@ -1,21 +1,21 @@
 <template>
   <v-row
-    align="start"
-    class="my-6"
+    align="center"
+    class="my-8"
   >
     <div class="flex-column">
-      <div class="d-flex">
+      <div class="d-flex align-center mb-4">
         <v-img
           :src="rule.staticImg"
           class="mr-1 max-w-24"
           aria-hidden="false"
           role="img"
         />
-        <h1>
+        <h2 class="text-label-lg">
           {{ t(rule.title) }}
-        </h1>
+        </h2>
       </div>
-      <p class="d-block">
+      <p class="d-block text-md">
         {{ t(rule.description) }}
       </p>
       <component :is="rule.childComponent" v-if="rule.childComponent" />
@@ -39,5 +39,21 @@ const { t } = useI18n();
 <style scoped>
 .max-w-24 {
   max-width: 24px;
+}
+
+.text-label-lg {
+  font-family: Changa;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 34px;
+  text-align: left;
+}
+
+.text-md {
+  font-family: Changa;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: left;
 }
 </style>
