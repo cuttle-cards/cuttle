@@ -41,28 +41,28 @@
             <v-row
               id="introduction"
               v-intersect="intersectConfig"
-              class="flex-column align-start"
+              class="flex-column align-start mt-8"
             >
+              <h1 class="text-h2 text-surface-2 mb-5 section-title">
+                {{ t('rules.introduction') }}
+              </h1>
               <!-- What is Cuttle? -->
-              <div class="mt-8">
-                <h1 class="text-h2 text-surface-2 mb-5 section-title">
-                  {{ t('rules.introduction') }}
-                </h1>
-                <h1>
+              <div>
+                <h2 class="text-label-lg">
                   {{ t('rules.cuttleTitle') }}
-                </h1>
-                <p class="d-block">
+                </h2>
+                <p class="d-block text-lg">
                   {{ t('rules.cuttleText') }}
                 </p>
               </div>
             </v-row>
 
-            <!-- Tutorial -->
+            <!-- Rules of Cuttle -->
             <v-row class="flex-column align-start my-8">
-              <h1>
+              <h2 class="text-label-lg">
                 {{ t('rules.rulesTitle') }}
-              </h1>
-              <p>
+              </h2>
+              <p class="text-lg">
                 {{ t('rules.rulesReadText') }}
                 <a href="/img/cuttle_rules.pdf" target="_blank" class="text-anchor"> Cuttle Cheatsheet</a>
                 {{ t('rules.rulesWatchText') }}
@@ -84,19 +84,19 @@
               <h1 class="text-h2 text-surface-2 mb-5 section-title">
                 {{ t('rules.howToPlay') }}
               </h1>
-              <h1>
+              <h2 class="text-label-lg">
                 {{ t('rules.goalTitle') }}
-              </h1>
-              <p class="d-block">
+              </h2>
+              <p class="d-block text-md">
                 {{ t('rules.goalText') }}
               </p>
             </v-row>
             <!-- Play -->
-            <v-row class="flex-column align-start mt-5">
-              <h1 class="d-block">
+            <v-row class="flex-column align-start mt-8">
+              <h2 class="d-block text-label-lg">
                 {{ t('rules.playTitle') }}
-              </h1>
-              <p class="d-block">
+              </h2>
+              <p class="d-block text-md">
                 {{ t('rules.playText-1') }} <br>
                 {{ t('rules.playText-2') }}
               </p>
@@ -247,7 +247,7 @@
             </v-row>
   
             <v-row>
-              <p>
+              <p class="text-md">
                 {{ t('rules.tournaments.competitiveCuttle1') }}
               </p>
   
@@ -271,7 +271,7 @@
                   class="mb-4"
                 />
               </div>
-              <p>
+              <p class="text-md">
                 {{ t('rules.tournaments.competitiveCuttle2') }}
               </p>
               <v-list class="mt-4 rounded-xl w-100 my-8" bg-color="surface-2" base-color="surface-1">
@@ -318,7 +318,9 @@
               />
             </v-row>
             <v-row>
-              <p>*{{ t('rules.tournaments.exampleImgExplanation') }}</p>
+              <p class="text-md">
+                *{{ t('rules.tournaments.exampleImgExplanation') }}
+              </p>
             </v-row>
           </section>
         </v-col>
@@ -457,6 +459,32 @@ export default {
 
 .section {
   margin-top: 64px;
+}
+
+.text-label-lg {
+  font-family: Changa;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 34px;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.text-lg {
+  font-family: Changa;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0.015em;
+  text-align: left;
+}
+
+.text-md {
+  font-family: Changa;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: left;
 }
 
 @media (min-width: 960px) {
