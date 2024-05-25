@@ -192,7 +192,7 @@
               <h1 class="text-h2 text-surface-2 my-6 section-title">
                 {{ t('rules.faq.title') }}
               </h1>
-              <FAQEntry v-for="question in faq" :key="question" :msg-key="question" />
+              <FAQEntry v-for="question in faq" :key="`faq-entry-${question}`" :msg-key="question" />
             </v-row>
           </section>
 
