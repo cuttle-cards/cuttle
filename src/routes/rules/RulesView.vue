@@ -192,49 +192,11 @@
               <h1 class="text-h2 text-surface-2 my-6 section-title">
                 {{ t('rules.faq.title') }}
               </h1>
-              <h3>{{ t('rules.faq.twoCounter') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.twoCounterAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.queenProtectTwo') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.queenProtectTwoAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.queenProtectScuttle') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.queenProtectScuttleAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.twoOnTwo') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.twoOnTwoAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.kingWin') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.kingWinAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.aceDestruction') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.aceDestructionAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.revealNoPoints') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.revealNoPointsAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.revealOneLeft') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.revealOneLeftAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.deckExhaust') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.deckExhaustAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.whereToPlay') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.whereToPlayAnswer') }}
-              </p>
+              <FAQEntry v-for="question in faq" :key="question" :msg-key="question" />
             </v-row>
           </section>
 
+          <!-- Tournaments -->
           <section class="section">
             <v-row
               id="tournaments"
@@ -334,12 +296,13 @@ import { useGoTo } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 import { useThemedLogo } from '@/composables/themedLogo';
-import { rules, royals, oneOffs, sectionTitles } from './data/rulesData';
+import { rules, royals, oneOffs, faq, sectionTitles } from './data/rulesData';
 import RuleParagraph from './components/RuleParagraph.vue';
 import RulePreview from '@/routes/rules/components/RulePreview.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
 import AwardCard from '../../components/AwardCard.vue';
 import RulePreviewDialog from './components/RulePreviewDialog.vue';
+import FAQEntry from './components/FAQEntry.vue';
 import BackToTop from '@/components/BackToTop.vue';
 
 export default {
@@ -351,6 +314,7 @@ export default {
     RulePreviewDialog,
     BackToTop,
     RuleParagraph,
+    FAQEntry,
   },
   setup() {
     const goTo = useGoTo();
@@ -390,6 +354,7 @@ export default {
     this.royals = royals;
     this.oneOffs = oneOffs;
     this.sectionTitles = sectionTitles;
+    this.faq = faq;
 
     // Scrolling
     this.scrollOptions = {

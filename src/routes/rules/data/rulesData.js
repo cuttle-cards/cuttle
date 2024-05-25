@@ -113,6 +113,19 @@ const oneOffs = [
   },
 ];
 
+const faq = [
+  'twoCounter',
+  'queenProtectTwo',
+  'queenProtectScuttle',
+  'twoOnTwo',
+  'kingWin',
+  'aceDestruction',
+  'revealNoPoints',
+  'revealOneLeft',
+  'deckExhaust',
+  'whereToPlay',
+];
+
 const sectionTitles = [
   { id: 'introduction', title: 'rules.introduction', href: '#introduction' },
   { id:'howtoplay', title: 'rules.howToPlay', href: '#howtoplay' },
@@ -123,4 +136,4 @@ const sectionTitles = [
   { id: 'tournaments', title: 'rules.tournaments.title', href: '#tournaments' },
 ];
 
-export { rules,  oneOffs, royals, sectionTitles };
+export { rules,  oneOffs, royals, faq, sectionTitles };
