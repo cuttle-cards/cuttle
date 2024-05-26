@@ -68,6 +68,11 @@ const { t } = useI18n();
 }
 
 @media (min-width: 960px) {
+  .sidebar-container {
+    margin-left: -48px;
+    margin-right: 48px;
+  }
+
   .sidebar-title {
     position: sticky;
     top: 130px;
