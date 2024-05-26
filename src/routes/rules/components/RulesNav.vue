@@ -9,17 +9,16 @@
         v-for="{ title, href, id } in sectionTitles"
         :id="'listItem_' + id"
         :key="title"
+        class="list-item"
         ref="items"
       >
-        <button
-          :class="[
-            activeTitle === id ? 'active-title' : '',
-            'text-h5 text-decoration-none text-surface-2',
-          ]"
+        <a
+          :class="activeTitle === id ? 'active-title' : ''"
+          class="nav-button text-label-md"
           @click="emit('click', href)"
         >
           {{ t(title) }}
-        </button>
+        </a>
       </li>
     </ul>
   </v-col>
@@ -51,8 +50,17 @@ const { t } = useI18n();
   gap: 2rem;
 }
 
-.sidebar-title li {
+.sidebar-title .list-item {
   list-style: none;
+  width: 100%;
+}
+
+.nav-button {
+  display: block;
+  padding: 16px;
+  width: 100%;
+  border-radius: 16px;
+  cursor: pointer;
 }
 
 .active-title {
