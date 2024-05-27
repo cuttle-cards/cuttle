@@ -384,7 +384,7 @@
       "ace": "As",
       "aceDescription": "Descarta todas las cartas de puntos en juego sobre el campo.",
       "two": "Dos - Tarjeta de efectos multiusos",
-      "twoE1Description": "Efecto 1: Contrarresta el efecto único del objetivo. Puede jugarse durante el turno de tu oponente.",
+      "twoE1Description": "Efecto 1: Contrarresta el efecto único objetivo. Los contraataques pueden jugarse durante el turno de tu oponente.",
       "twoE2Description": "Efecto 2: Elimina el objetivo Royal o Glasses Eight.",
       "three": "Tres",
       "threeDescription": "Elige una carta del mazo de descarte y ponla en tu mano.",
