@@ -8,9 +8,9 @@
     <ul ref="sidebarContainer" class="ms-5 sidebar-title mt-8">
       <li
         v-for="{ title, href, id } in sectionTitles"
-        :id="'listItem_' + id"
+        :id="'navItem_' + id"
         :key="title"
-        class="list-item"
+        class="nav-item"
       >
         <a
           :class="activeTitle === id ? 'active-title' : ''"
@@ -50,7 +50,7 @@ const sidebarContainer = ref();
 
 watch(() => props.activeTitle,
   (newVal) => {
-    goTo.horizontal(`#listItem_${newVal}`, { container: sidebarContainer.value });
+    goTo.horizontal(`#navItem_${newVal}`, { container: sidebarContainer.value });
   }
 );
 </script>
@@ -61,7 +61,7 @@ watch(() => props.activeTitle,
   gap: 2rem;
 }
 
-.sidebar-title .list-item {
+.sidebar-title .nav-item {
   list-style: none;
   width: 100%;
 }
