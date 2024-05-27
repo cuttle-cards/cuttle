@@ -25,8 +25,8 @@ module.exports = {
     const currentTime = dayjs();
     try {
       const currentSeason = await Season.findOne({
-        startTime: { '<=': currentTime.format('YYYY-MM-DD HH:mm:ss.SSS Z') },
-        endTime: { '>=': currentTime.format('YYYY-MM-DD HH:mm:ss.SSS Z') },
+        startTime: { '<=': currentTime.format() },
+        endTime: { '>=': currentTime.format() },
       });
       // FIXME: Handle missing season gracefully
       if (!currentSeason) {
@@ -35,17 +35,13 @@ module.exports = {
       // Find relevant match between specified players for current week
       const seasonStartTime = dayjs(currentSeason.startTime);
       const weeksSinceSeasonStart = currentTime.diff(seasonStartTime, 'week');
-      const currentWeekStartTime = seasonStartTime
-        .add(weeksSinceSeasonStart, 'week')
-        .format('YYYY-MM-DD HH:mm:ss.SSS Z');
-      const currentWeekEndTime = seasonStartTime
-        .add(weeksSinceSeasonStart + 1, 'week')
-        .format('YYYY-MM-DD HH:mm:ss.SSS Z');
+      const currentWeekStartTime = seasonStartTime.add(weeksSinceSeasonStart, 'week');
+      const currentWeekEndTime = seasonStartTime.add(weeksSinceSeasonStart + 1, 'week');
       let currentMatch = await Match.findOne({
         and: [
           // Match started within current week
-          { startTime: { '>=': currentWeekStartTime } },
-          { startTime: { '<=': currentWeekEndTime } },
+          { startTime: { '>=': currentWeekStartTime.format() } },
+          { startTime: { '<=': currentWeekEndTime.format() } },
           // Match is between specified players
           {
             or: [
@@ -60,7 +56,7 @@ module.exports = {
       // Create current match if it doesn't already exist
       if (!currentMatch) {
         currentMatch = await Match.create({
-          startTime: currentTime.format('YYYY-MM-DD HH:mm:ss.SSS Z'),
+          startTime: currentTime.format(),
           player1,
           player2,
         }).fetch();

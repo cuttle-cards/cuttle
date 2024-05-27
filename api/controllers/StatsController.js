@@ -145,16 +145,16 @@ module.exports = {
         select: ['id', 'username'],
       });
       const currentSeasonMatches = Match.find({
-        startTime: { '>': dayjs(currentSeason.startTime).format('YYYY-MM-DD HH:mm:ss.SSS Z') },
-        endTime: { '<': dayjs(currentSeason.endTime).format('YYYY-MM-DD HH:mm:ss.SSS Z') },
+        startTime: { '>': currentSeason.startTime },
+        endTime: { '<': currentSeason.endTime },
       });
       const currentSeasonGames = Game.find({
         select: ['updatedAt', 'p0', 'p1'],
         where: {
           status: gameService.GameStatus.FINISHED,
           updatedAt: {
-            '>': dayjs(currentSeason.startTime).format('YYYY-MM-DD HH:mm:ss.SSS Z'),
-            '<': dayjs(currentSeason.endTime).format('YYYY-MM-DD HH:mm:ss.SSS Z'),
+            '>': currentSeason.startTime,
+            '<': currentSeason.endTime,
           },
         },
       });
@@ -175,16 +175,16 @@ module.exports = {
         select: ['id', 'username'],
       });
       const requestedSeasonMatches = Match.find({
-        startTime: { '>': dayjs(requestedSeason.startTime).format('YYYY-MM-DD HH:mm:ss.SSS Z') },
-        endTime: { '<': dayjs(requestedSeason.endTime).format('YYYY-MM-DD HH:mm:ss.SSS Z') },
+        startTime: { '>': requestedSeason.startTime },
+        endTime: { '<': requestedSeason.endTime },
       });
       const requestedSeasonGames = Game.find({
         select: ['updatedAt', 'p0', 'p1'],
         where: {
           status: gameService.GameStatus.FINISHED,
           updatedAt: {
-            '>': dayjs(requestedSeason.startTime).format('YYYY-MM-DD HH:mm:ss.SSS Z'),
-            '<': dayjs(requestedSeason.endTime).format('YYYY-MM-DD HH:mm:ss.SSS Z'),
+            '>': requestedSeason.startTime,
+            '<': requestedSeason.endTime,
           },
         },
       });

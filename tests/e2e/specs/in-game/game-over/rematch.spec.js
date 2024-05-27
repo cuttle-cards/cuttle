@@ -46,11 +46,8 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     // Set up season
     const [, diamondsSeason] = seasonFixtures;
-    diamondsSeason.startTime = dayjs()
-      .subtract(2, 'week')
-      .subtract(1, 'day')
-      .format('YYYY-MM-DD HH:mm:ss.SSS Z');
-    diamondsSeason.endTime = dayjs().add(11, 'weeks').format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    diamondsSeason.startTime = dayjs().subtract(2, 'week').subtract(1, 'day').format();
+    diamondsSeason.endTime = dayjs().add(11, 'weeks').format();
     cy.loadSeasonFixture([diamondsSeason]);
     // Sign up to players and store their id's for comparison to match data
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -64,16 +61,16 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
           player1: this.playerOneId,
           player2: this.playerTwoId,
           winner: this.playerOneId,
-          startTime: dayjs().subtract(1, 'week').subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss.SSS Z'),
-          endTime: dayjs().subtract(1, 'week').subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss.SSS Z'),
+          startTime: dayjs().subtract(1, 'week').subtract(1, 'day').format(),
+          endTime: dayjs().subtract(1, 'week').subtract(1, 'day').format(),
         };
 
         const currentMatchWithDifferentOpponent = {
           player1: this.playerOneId,
           player2: this.playerThreeId,
           winner: null,
-          startTime: dayjs().subtract(1, 'hour').format('YYYY-MM-DD HH:mm:ss.SSS Z'),
-          endTime: dayjs().subtract(1, 'hour').format('YYYY-MM-DD HH:mm:ss.SSS Z'),
+          startTime: dayjs().subtract(1, 'hour').format(),
+          endTime: dayjs().subtract(1, 'hour').format(),
         };
 
         cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);

@@ -29,7 +29,7 @@ module.exports = function gameHook() {
     },
     findOpenGames: function () {
       return new Promise(function (resolve, reject) {
-        const recentUpdateThreshhold = dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss.SSS Z');
+        const recentUpdateThreshhold = dayjs().subtract(1, 'day').format();
         Game.find({
           status: gameService.GameStatus.CREATED,
           createdAt: { '>=': recentUpdateThreshhold },

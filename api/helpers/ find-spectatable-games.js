@@ -6,7 +6,7 @@ module.exports = {
   description: 'Finds all the games that are available to spectate',
 
   fn: async (_, exits) => {
-    const recentUpdateThreshhold = dayjs().subtract(5, 'minute').format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    const recentUpdateThreshhold = dayjs().subtract(5, 'minute').format();
     try {
       const games = await Game.find({
         status: gameService.GameStatus.STARTED,

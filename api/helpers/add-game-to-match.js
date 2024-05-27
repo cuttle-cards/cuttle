@@ -51,12 +51,12 @@ module.exports = {
       // End the match if this game clinches it
       if (numPlayer1Wins >= 2) {
         relevantMatch = await Match.updateOne(relevantMatch.id).set({
-          endTime: dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z'),
+          endTime: dayjs().format(),
           winner: relevantMatch.player1,
         });
       } else if (numPlayer2Wins >= 2) {
         relevantMatch = await Match.updateOne(relevantMatch.id).set({
-          endTime: dayjs().format('YYYY-MM-DD HH:mm:ss.SSS Z'),
+          endTime: dayjs().format(),
           winner: relevantMatch.player2,
         });
       }
