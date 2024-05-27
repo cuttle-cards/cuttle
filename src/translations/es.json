@@ -371,7 +371,8 @@
       "king": "Rey",
       "kingDescription": "Reduce la cantidad de puntos que necesitas para ganar. (1K: 14 puntos, 2K: 10 puntos, 3K: 5 puntos, 4K: 0 puntos)",
       "queen": "Reina",
-      "queenDescription": "Protege tus otras cartas de ser objetivo de habilidades Únicas de otras cartas. Esto protege tus cartas contra Doses (ambos efectos), Nueves y Sotas, pero no contra hundimientos.",
+      "queenDescription": "Protege tus otras cartas de ser objetivo de habilidades Únicas de otras cartas. Esto protege tus cartas contra Doses (ambos efectos), Nueves y Sotas.",
+      "queenDescription2": "No protege contra ases, seises o hundimiento.",
       "jack": "Sota (Jota)",
       "jackDescription": "Juega sobre una carta de puntos objetivo para robarla. La carta de puntos regresa al rival si la Sota se descarta o si se usa otra Sota para recuperarla.",
       "eight": "Ocho",
@@ -383,7 +384,7 @@
       "ace": "As",
       "aceDescription": "Descarta todas las cartas de puntos en juego sobre el campo.",
       "two": "Dos - Tarjeta de efectos multiusos",
-      "twoE1Description": "Efecto 1: Contrarresta el efecto único del objetivo. Puede jugarse durante el turno de tu oponente.",
+      "twoE1Description": "Efecto 1: Contrarresta el efecto único objetivo. Los contraataques pueden jugarse durante el turno de tu oponente.",
       "twoE2Description": "Efecto 2: Elimina el objetivo Royal o Glasses Eight.",
       "three": "Tres",
       "threeDescription": "Elige una carta del mazo de descarte y ponla en tu mano.",
@@ -394,9 +395,11 @@
       "six": "Seis",
       "sixDescription": "Descarta todas las Figuras y Gafas Ocho en juego sobre el campo.",
       "seven": "Siete",
-      "sevenDescription": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras.",
+      "sevenDescription": "Revela las dos primeras cartas del mazo a ambos jugadores y elige una para jugar como desees.",
       "nine": "Nueve",
-      "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno"
+      "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno",
+      "ten": "Diez",
+      "tenDescription": "Sin efecto."
     },
     "readyToPlay": {
       "readyToPlay": "¿Listo para jugar?",

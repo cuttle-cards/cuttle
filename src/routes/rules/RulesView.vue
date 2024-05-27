@@ -3,30 +3,7 @@
     <v-container>
       <BackToTop />
       <v-row>
-        <v-col
-          class="sidebar-container"
-          md="3"
-          sm="12"
-        >
-          <ul ref="sidebarContainer" class="ms-5 sidebar-title mt-8">
-            <li
-              v-for="{ title, href, id } in sectionTitles"
-              :id="'listItem_' + id"
-              :key="title"
-              ref="items"
-            >
-              <button
-                :class="[
-                  activeTitle === id ? 'text-newPrimary' : 'text-surface-2',
-                  'text-h5 text-decoration-none',
-                ]"
-                @click="goToSection(href)"
-              >
-                {{ t(title) }}
-              </button>
-            </li>
-          </ul>
-        </v-col>
+        <RulesNav :section-titles="sectionTitles" :active-title="activeTitle" @click="goToSection($event)" />
 
         <v-col>
           <RulePreviewDialog
@@ -41,28 +18,28 @@
             <v-row
               id="introduction"
               v-intersect="intersectConfig"
-              class="flex-column align-start"
+              class="flex-column align-start mt-8"
             >
+              <h1 class="text-h2 text-surface-2 section-title">
+                {{ t('rules.introduction') }}
+              </h1>
               <!-- What is Cuttle? -->
-              <div class="mt-8">
-                <h1 class="text-h2 text-surface-2 mb-5 section-title">
-                  {{ t('rules.introduction') }}
-                </h1>
-                <h1>
+              <div>
+                <h2 class="text-label-lg">
                   {{ t('rules.cuttleTitle') }}
-                </h1>
-                <p class="d-block">
+                </h2>
+                <p class="d-block text-lg">
                   {{ t('rules.cuttleText') }}
                 </p>
               </div>
             </v-row>
 
-            <!-- Tutorial -->
+            <!-- Rules of Cuttle -->
             <v-row class="flex-column align-start my-8">
-              <h1>
+              <h2 class="text-label-lg">
                 {{ t('rules.rulesTitle') }}
-              </h1>
-              <p>
+              </h2>
+              <p class="text-lg">
                 {{ t('rules.rulesReadText') }}
                 <a href="/img/cuttle_rules.pdf" target="_blank" class="text-anchor"> Cuttle Cheatsheet</a>
                 {{ t('rules.rulesWatchText') }}
@@ -81,22 +58,22 @@
               v-intersect="intersectConfig"
               class="flex-column align-start section"
             >
-              <h1 class="text-h2 text-surface-2 mb-5 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.howToPlay') }}
               </h1>
-              <h1>
+              <h2 class="text-label-lg">
                 {{ t('rules.goalTitle') }}
-              </h1>
-              <p class="d-block">
+              </h2>
+              <p class="d-block text-md">
                 {{ t('rules.goalText') }}
               </p>
             </v-row>
             <!-- Play -->
-            <v-row class="flex-column align-start mt-5">
-              <h1 class="d-block">
+            <v-row class="flex-column align-start mt-8">
+              <h2 class="d-block text-label-lg">
                 {{ t('rules.playTitle') }}
-              </h1>
-              <p class="d-block">
+              </h2>
+              <p class="d-block text-md">
                 {{ t('rules.playText-1') }} <br>
                 {{ t('rules.playText-2') }}
               </p>
@@ -106,7 +83,7 @@
           <!-- Actions -->
           <section id="actions" v-intersect="intersectConfig" class="section">
             <v-row>
-              <h1 class="text-h2 text-surface-2 mt-5 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.actions.title') }}
               </h1>
             </v-row>
@@ -121,7 +98,7 @@
           <section id="royals" v-intersect="intersectConfig" class="section">
             <div>
               <v-row class="flex-column">
-                <h1 class="text-h2 text-surface-2 mt-5 section-title">
+                <h1 class="text-h2 text-surface-2 section-title">
                   {{ t('rules.royals.title') }}
                 </h1>
               </v-row>
@@ -137,7 +114,9 @@
                 ref="preview"
                 :title="rule.title"
                 :description="rule.description"
+                :description2="rule.description2"
                 :static-img="rule.staticImg"
+                :has-video="!!rule.animatedImg"
                 @animate="handleAnimate(rule.animatedImg, rule.title)"
               />
             </v-row>
@@ -146,7 +125,7 @@
           <section id="oneoffs" v-intersect="intersectConfig" class="section">
             <!-- One-Offs -->
             <v-row>
-              <h1 class="text-h2 text-surface-2 mt-5 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.oneoffs.title') }}
               </h1>
             </v-row>
@@ -163,6 +142,7 @@
                 :description2="rule.description2"
                 :static-img="rule.staticImg"
                 :icon="rule.icon"
+                :has-video="!!rule.animatedImg"
                 @animate="handleAnimate(rule.animatedImg, rule.title)"
               />
             </v-row>
@@ -187,65 +167,27 @@
               v-intersect="intersectConfig"
               class="d-flex flex-column mb-4"
             >
-              <h1 class="text-h2 text-surface-2 my-6 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.faq.title') }}
               </h1>
-              <h3>{{ t('rules.faq.twoCounter') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.twoCounterAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.queenProtectTwo') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.queenProtectTwoAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.queenProtectScuttle') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.queenProtectScuttleAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.twoOnTwo') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.twoOnTwoAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.kingWin') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.kingWinAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.aceDestruction') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.aceDestructionAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.revealNoPoints') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.revealNoPointsAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.revealOneLeft') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.revealOneLeftAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.deckExhaust') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.deckExhaustAnswer') }}
-              </p>
-              <h3>{{ t('rules.faq.whereToPlay') }}</h3>
-              <p class="mb-4">
-                {{ t('rules.faq.whereToPlayAnswer') }}
-              </p>
+              <FAQEntry v-for="question in faq" :key="`faq-entry-${question}`" :msg-key="question" />
             </v-row>
           </section>
 
+          <!-- Tournaments -->
           <section class="section">
             <v-row
               id="tournaments"
               v-intersect="intersectConfig"
               class="flex-column"
             >
-              <h1 class="text-h2 text-surface-2 my-6 section-title">
+              <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.tournaments.title') }}
               </h1>
             </v-row>
   
             <v-row>
-              <p>
+              <p class="text-md">
                 {{ t('rules.tournaments.competitiveCuttle1') }}
               </p>
   
@@ -269,7 +211,7 @@
                   class="mb-4"
                 />
               </div>
-              <p>
+              <p class="text-md">
                 {{ t('rules.tournaments.competitiveCuttle2') }}
               </p>
               <v-list class="mt-4 rounded-xl w-100 my-8" bg-color="surface-2" base-color="surface-1">
@@ -316,7 +258,9 @@
               />
             </v-row>
             <v-row>
-              <p>*{{ t('rules.tournaments.exampleImgExplanation') }}</p>
+              <p class="text-md">
+                *{{ t('rules.tournaments.exampleImgExplanation') }}
+              </p>
             </v-row>
           </section>
         </v-col>
@@ -330,12 +274,14 @@ import { useGoTo } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 import { useThemedLogo } from '@/composables/themedLogo';
-import { rules, royals, oneOffs, sectionTitles } from './data/rulesData';
+import { rules, royals, oneOffs, faq, sectionTitles } from './data/rulesData';
+import RulesNav from './components/RulesNav.vue';
 import RuleParagraph from './components/RuleParagraph.vue';
 import RulePreview from '@/routes/rules/components/RulePreview.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
 import AwardCard from '../../components/AwardCard.vue';
 import RulePreviewDialog from './components/RulePreviewDialog.vue';
+import FAQEntry from './components/FAQEntry.vue';
 import BackToTop from '@/components/BackToTop.vue';
 
 export default {
@@ -347,6 +293,8 @@ export default {
     RulePreviewDialog,
     BackToTop,
     RuleParagraph,
+    FAQEntry,
+    RulesNav,
   },
   setup() {
     const goTo = useGoTo();
@@ -386,6 +334,7 @@ export default {
     this.royals = royals;
     this.oneOffs = oneOffs;
     this.sectionTitles = sectionTitles;
+    this.faq = faq;
 
     // Scrolling
     this.scrollOptions = {
@@ -401,13 +350,11 @@ export default {
           this.activeTitle = entry.target.id;
         }
       });
-      this.goTo.horizontal('#listItem_' + this.activeTitle ,{ container: this.$refs.sidebarContainer });
     };
 
     this.intersectConfig = {
       handler: onIntersect,
       options: {
-          threshhold: .2,
           rootMargin: '-150px 0px -500px 0px',
         }
     };
@@ -440,43 +387,26 @@ export default {
   height: 20vh;
   margin: 0 auto;
 }
-.sidebar-title {
-  display: flex;
-  gap: 2rem;
-}
 
 .section-title {
   font-family: 'Luckiest Guy', serif !important;
-}
-
-.sidebar-title li {
-  list-style: none;
+  background-color: rgba(var(--v-theme-newPrimary));
+  width: 100%;
+  padding-top: 16px;
+  padding-left: 24px;
+  border-radius: 16px;
+  margin-bottom: 40px;
 }
 
 .section {
   margin-top: 64px;
 }
 
-@media (min-width: 960px) {
-  .sidebar-title {
-    position: sticky;
-    top: 130px;
-    flex-direction: column;
-  }
+.text-label-lg {
+  margin-bottom: 8px;
 }
 
 @media (max-width: 960px) {
-  .sidebar-container {
-    background: rgba(var(--v-theme-surface-1));
-    position: sticky;
-    top: 64px;
-    z-index: 999;
-  }
-  .sidebar-title {
-    white-space: nowrap;
-    overflow-x: auto;
-  }
-
   .section-title {
     font-size: 2.5rem !important;
   }

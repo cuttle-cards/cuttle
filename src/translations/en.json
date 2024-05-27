@@ -371,7 +371,8 @@
       "king": "King",
       "kingDescription": "Reduce the number of points you need to win (21, 14, 10, 5, 0 points with 0, 1, 2, 3, 4 Kings).",
       "queen": "Queen",
-      "queenDescription": "Protects your other cards from being targeted by the effects of other cards. This protects your cards against 2's (both effects), 9's, and Jacks, but not scuttling.",
+      "queenDescription": "Protects your other cards from being targeted by the effects of other cards. This protects your cards against 2's (both effects), 9's, and Jacks.",
+      "queenDescription2": "Does not protect against aces, sixes or scuttling.",
       "jack": "Jack",
       "jackDescription": "Play on an opponent's point card to steal it. Point card returns to opponent if the Jack is scrapped or if another Jack is used to steal it back.",
       "eight": "Eight",
@@ -383,7 +384,7 @@
       "ace": "Ace",
       "aceDescription": "Scrap all point cards on the field.",
       "two": "Two - Multi Use Effect Card",
-      "twoE1Description": "Effect 1: Counter target One-Off Effect. May be played during your opponent's turn.",
+      "twoE1Description": "Effect 1: Counter target One-Off Effect. Counters may be played during your opponent's turn.",
       "twoE2Description": "Effect 2: Scrap target Royal or Glasses Eight.",
       "three": "Three",
       "threeDescription": "Choose a card from the scrap pile and put it in your hand.",
@@ -394,9 +395,11 @@
       "six": "Six",
       "sixDescription": "Scrap all Royals and Glasses Eights on the field.",
       "seven": "Seven",
-      "sevenDescription": "Reveal the top two cards from the deck and choose one to play however you choose.",
+      "sevenDescription": "Reveal the top two cards of the deck to both players and choose one to play however you choose.",
       "nine": "Nine",
-      "nineDescription": "Return a card from your opponent's field to their hand. They cannot play it next turn."
+      "nineDescription": "Return a card from your opponent's field to their hand. They cannot play it next turn.",
+      "ten": "Ten",
+      "tenDescription": "No effect."
     },
     "readyToPlay": {
       "readyToPlay": "Ready to Play?",
