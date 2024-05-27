@@ -1,7 +1,9 @@
 <template>
   <div class="mb-8">
     <strong class="text-label-md">{{ question }}</strong>
-    <p class="text-md mt-4">{{ answer }}</p>
+    <p class="text-md mt-4">
+      {{ answer }}
+    </p>
   </div>
 </template>
 

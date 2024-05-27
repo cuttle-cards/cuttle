@@ -3,7 +3,7 @@
     <v-container>
       <BackToTop />
       <v-row>
-        <RulesNav :section-titles="sectionTitles" :active-title="activeTitle" @click="goToSection($event)"/>
+        <RulesNav :section-titles="sectionTitles" :active-title="activeTitle" @click="goToSection($event)" />
 
         <v-col>
           <RulePreviewDialog
