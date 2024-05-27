@@ -55,16 +55,21 @@ watch(() => props.activeTitle,
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .sidebar-title {
   display: flex;
   gap: 2rem;
+
+  & .nav-item {
+    list-style: none;
+    width: 100%;
+    border-radius: 16px;
+    &:hover {
+      background-color: rgba(100, 96, 84, .4);
+    }
+  }
 }
 
-.sidebar-title .nav-item {
-  list-style: none;
-  width: 100%;
-}
 
 .nav-button {
   display: block;
