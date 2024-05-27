@@ -349,7 +349,6 @@ export default {
           this.activeTitle = entry.target.id;
         }
       });
-      // this.goTo.horizontal('#listItem_' + this.activeTitle ,{ container: this.$refs.sidebarContainer });
     };
 
     this.intersectConfig = {

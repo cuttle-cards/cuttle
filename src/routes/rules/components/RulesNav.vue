@@ -25,9 +25,11 @@
 </template>
 
 <script setup>
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useGoTo } from 'vuetify';
 
-defineProps({
+const props = defineProps({
   sectionTitles: {
     type: Array,
     required: true,
@@ -42,6 +44,13 @@ const emit = defineEmits(['click']);
 
 const { t } = useI18n();
 
+// Scrolling Active link into view
+const goTo = useGoTo();
+const sidebarContainer = ref();
+
+watch(() => props.activeTitle, (newVal) => {
+  goTo.horizontal(`#listItem_${newVal}` ,{ container: sidebarContainer.value });
+});
 </script>
 
 <style scoped>
