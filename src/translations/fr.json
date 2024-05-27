@@ -371,7 +371,8 @@
       "king": "Roi",
       "kingDescription": "Il réduit le nombre de points dont vous avez besoin pour gagner (21, 14, 10, 5, 0 points avec 0, 1, 2, 3, 4 rois).",
       "queen": "Reine",
-      "queenDescription": "Elle protège vos autres cartes des ataques du 2, du 9 et des valets, mais pas d'un scuttle.",
+      "queenDescription": "Elle protège vos autres cartes des ataques du 2, du 9 et des valets.",
+      "queenDescription2": "Ne protège pas contre les as, les six ou le sabordage.",
       "jack": "Valet",
       "jackDescription": "Il vous permet de cibler et voler une carte à points à votre adversaire. Il peut la récupérer en la volant à son tour (avec un autre valet) ou en détruisant votre valet avec une capacité tactique.",
       "eight": "Huit",
@@ -383,7 +384,7 @@
       "ace": "As",
       "aceDescription": "Il supprime toutes les cartes à points de la table.",
       "two": "Two - Multi Use Effect Card",
-      "twoE1Description": "Effet 1 : contrer l'effet ponctuel ciblé. Peut être joué pendant le tour de votre adversaire.",
+      "twoE1Description": "Effet 1: Contrecarrez l'effet unique ciblé. Les contres peuvent être joués pendant le tour de votre adversaire.",
       "twoE2Description": "Effet 2 : Retirez la cible Royal ou Glasses Eight.",
       "three": "Trois",
       "threeDescription": "Vous permet de récupérer de la corbeille une carte de votre choix.",
@@ -394,9 +395,11 @@
       "six": "Six",
       "sixDescription": "Élimine toutes les figures et les huit en lunettes de la table.",
       "seven": "Sept",
-      "sevenDescription": "Révélez les deux premières cartes du jeu et jouez en une immédiatement.",
+      "sevenDescription": "Révélez les deux premières cartes du deck aux deux joueurs et choisissez-en une à jouer comme vous le souhaitez.",
       "nine": "Neuf",
-      "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour."
+      "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour.",
+      "ten": "Dix",
+      "tenDescription": "Aucun effet."      
     },
     "readyToPlay": {
       "readyToPlay": "Prêt à jouer ?",
