@@ -3,6 +3,7 @@
     class="sidebar-container"
     md="3"
     sm="12"
+    tag="nav"
   >
     <ul ref="sidebarContainer" class="ms-5 sidebar-title mt-8">
       <li
