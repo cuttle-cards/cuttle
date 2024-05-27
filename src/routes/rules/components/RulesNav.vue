@@ -11,7 +11,6 @@
         :id="'listItem_' + id"
         :key="title"
         class="list-item"
-        ref="items"
       >
         <a
           :class="activeTitle === id ? 'active-title' : ''"
@@ -49,9 +48,11 @@ const { t } = useI18n();
 const goTo = useGoTo();
 const sidebarContainer = ref();
 
-watch(() => props.activeTitle, (newVal) => {
-  goTo.horizontal(`#listItem_${newVal}` ,{ container: sidebarContainer.value });
-});
+watch(() => props.activeTitle,
+  (newVal) => {
+    goTo.horizontal(`#listItem_${newVal}`, { container: sidebarContainer.value });
+  }
+);
 </script>
 
 <style scoped>
