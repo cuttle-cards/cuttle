@@ -395,7 +395,7 @@
       "six": "Seis",
       "sixDescription": "Descarta todas las Figuras y Gafas Ocho en juego sobre el campo.",
       "seven": "Siete",
-      "sevenDescription": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras.",
+      "sevenDescription": "Revela las dos primeras cartas del mazo a ambos jugadores y elige una para jugar como desees.",
       "nine": "Nueve",
       "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno",
       "ten": "Diez",
