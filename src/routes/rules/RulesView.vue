@@ -114,6 +114,7 @@
                 ref="preview"
                 :title="rule.title"
                 :description="rule.description"
+                :description2="rule.description2"
                 :static-img="rule.staticImg"
                 :has-video="!!rule.animatedImg"
                 @animate="handleAnimate(rule.animatedImg, rule.title)"

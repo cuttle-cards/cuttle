@@ -39,6 +39,7 @@ const royals = [
   {
     title: 'rules.royals.queen',
     description: 'rules.royals.queenDescription',
+    description2: 'rules.royals.queenDescription2',
     staticImg: '/img/rulesView/royals_queen.png',
     animatedImg: 'https://github.com/cuttle-cards/cuttle-assets/blob/main/assets/queen.gif?raw=true',
   },
