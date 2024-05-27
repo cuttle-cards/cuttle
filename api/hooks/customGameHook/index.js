@@ -1,5 +1,6 @@
 const dayjs = require('dayjs');
-
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 module.exports = function gameHook() {
   //////////////
   // Game API //
@@ -29,7 +30,7 @@ module.exports = function gameHook() {
     },
     findOpenGames: function () {
       return new Promise(function (resolve, reject) {
-        const recentUpdateThreshhold = dayjs().subtract(1, 'day').format();
+        const recentUpdateThreshhold = dayjs.utc().subtract(1, 'day').toDate();
         Game.find({
           status: gameService.GameStatus.CREATED,
           createdAt: { '>=': recentUpdateThreshhold },
