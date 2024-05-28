@@ -1,6 +1,6 @@
 <template>
   <v-col
-    :class="isModal ? '' : 'notInModal'"
+    :class="isInModal ? 'inModal' : 'notInModal'"
     class="sidebar-container"
     :md="msize"
     sm="12"
@@ -39,7 +39,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  isModal : {
+  isInModal : {
       type :Boolean,
       default: false
       }
@@ -64,7 +64,7 @@ export default {
   name: 'RulesNav',
   computed: {
     msize() {
-      return this.isModal ? 12 : 3;
+      return this.isInModal ? 12 : 3;
     }
   }
 };
@@ -97,7 +97,17 @@ export default {
 .active-title {
   background-color: rgba(var(--v-theme-newPrimary));
 }
-
+.inModal.sidebar-container{
+     background: rgba(var(--v-theme-surface-1));
+    position: sticky;
+    top: 0;
+    z-index:18;
+}
+@media (max-width: 450px) {
+  .inModal.sidebar-container{
+    display:none;
+  }
+}
 @media (min-width: 960px) {
   .notInModal.sidebar-container {
     margin-left: -48px;

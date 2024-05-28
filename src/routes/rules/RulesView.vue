@@ -1,12 +1,13 @@
 <template>
   <div class="pa-4 bg-surface-1 text-surface-2">
     <v-container>
-      <BackToTop :target-id="isModal && '#rulesDialog'" />
+      <BackToTop :target-id="isInModal && '#rulesDialog'" />
+
       <v-row>
         <RulesNav 
           :section-titles="sectionTitles" 
           :active-title="activeTitle" 
-          :is-modal="isModal"
+          :is-in-modal="isInModal"
           @click="goToSection($event)" 
         />
 
@@ -154,7 +155,7 @@
           </section>
 
           <!-- Ready to Play? -->
-          <section v-if="!isModal" class="section">
+          <section v-if="!isInModal" class="section">
             <v-row class="bg-surface-2 pa-8 rounded-xl d-flex flex-column align-center">
               <h2 class="text-surface-1 pa-8">
                 {{ t('rules.readyToPlay.readyToPlay') }}
@@ -302,7 +303,7 @@ export default {
     RulesNav,
   },
   props: {
-    isModal : {
+    isInModal : {
       type :Boolean,
       default: false
       }

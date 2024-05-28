@@ -14,7 +14,9 @@
 </template>
 
 <script>
+
 import { ref } from 'vue';
+
 
 export default {
   name:'BackToTop',
@@ -32,10 +34,9 @@ export default {
     onScroll(e) {
       const scrollTopValue = !!this.targetId ? e.target.scrollTop : window.scrollY ;
       this.show = scrollTopValue > 200;
-      console.log(this.show);
     },
     onClick() {
-      const targetSchroll = !!this.targetId ? document.getElementById('rulesDialog') : window ;
+      const targetSchroll = !!this.targetId ? document.getElementById('rulesDialog') : window 
       targetSchroll.scrollTo({
         top: 0,
         behavior: 'smooth',
@@ -49,5 +50,7 @@ export default {
 button {
   margin: auto 8px 64px 8px;
   z-index: 1;
+  right :32px;
+  bottom:0;
 }
 </style>
