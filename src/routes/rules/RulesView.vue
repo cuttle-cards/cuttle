@@ -1,7 +1,8 @@
 <template>
   <div class="pa-4 bg-surface-1 text-surface-2">
     <v-container>
-      <BackToTop :is-in-modal="isInModal" />
+      <BackToTop :target-id="isInModal && '#rulesDialog'" />
+
       <v-row>
         <RulesNav 
           :section-titles="sectionTitles" 
