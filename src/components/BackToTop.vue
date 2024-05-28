@@ -1,5 +1,18 @@
 <template>
-  <div v-scroll="onScroll">
+  <div v-if="isModal" v-scroll:#rulesDialog="onScroll">  
+    <v-btn
+      v-if="show"
+      position="fixed"
+      location="bottom right"
+      class="fab"
+      color="surface-2"
+      elevation="8"
+      icon="mdi-chevron-up"
+      size="large"
+      @click="onClick"
+    />
+  </div>
+  <div v-else v-scroll="onScroll">
     <v-btn
       v-if="show"
       position="fixed"
@@ -14,21 +27,67 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { ref } from 'vue';
 
-const show = ref(false);
 
-function onScroll() {
-  show.value = window.scrollY > 200;
-}
+export default {
+  props: {isModal : {
+    type :Boolean,
+    default: false
+    }
+  },
+  data: () => ({
+    show : ref(false),
+  }),
+  methods: {
+    onScroll(e) {
+      const scrollTopValue = this.isModal? e.target.scrollTop : window.scrollY ;
+      this.show = scrollTopValue > 200;
+    },
+    onClick() {
+      const targetSchroll = this.isModal? document.getElementById('rulesDialog') : window ;
+      targetSchroll.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+  },
+  render(createElement) {
+    // Define the button element
+    const button = this.show
+      ? createElement('v-btn', {
+          attrs: {
+            position: 'fixed',
+            location: 'bottom right',
+            class: 'fab',
+            color: 'surface-2',
+            elevation: '8',
+            icon: 'mdi-chevron-up',
+            size: 'large',
+          },
+          on: {
+            click: this.onClick,
+          },
+        })
+      : null;
 
-function onClick() {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  });
-}
+    // Define the div element with the scroll directive
+    return createElement(
+      'div',
+      {
+        directives: [
+          {
+            name: 'scroll',
+            value: this.onScroll,
+            ...(this.isModal ? { arg: 'rulesDialog' } : {}),
+          },
+        ],
+      },
+      [button]
+    );
+  }
+};
 </script>
 
 <style scoped>
