@@ -6,6 +6,7 @@
         aria-label="Close rules dialog"
         color="surface-2" 
         class="position-fixed top-0 right-10"
+        size="large"
         @click="close"
       >
         <v-icon
@@ -16,7 +17,7 @@
       </v-btn>
     </template>
     <template #body>
-      <RulesView :is-modal="true" />
+      <RulesView :is-in-modal="true" />
     </template>
     <template #actions>
       <v-btn variant="outlined" color="surface-1" @click="close">
@@ -53,7 +54,7 @@ export default {
   width: 100%;
 }
 .right-10{
-  right:25px;
+  right:38px;
   z-index: 19;
 }
 </style>
