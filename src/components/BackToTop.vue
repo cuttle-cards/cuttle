@@ -1,22 +1,9 @@
 <template>
-  <div v-if="isModal" v-scroll:#rulesDialog="onScroll">  
+  <div v-scroll:[dynamic_target]="onScroll">
     <v-btn
       v-if="show"
       position="fixed"
       location="bottom right"
-      color="surface-2"
-      elevation="8"
-      icon="mdi-chevron-up"
-      size="large"
-      @click="onClick"
-    />
-  </div>
-  <div v-else v-scroll="onScroll">
-    <v-btn
-      v-if="show"
-      position="fixed"
-      location="bottom right"
-      class="fab"
       color="surface-2"
       elevation="8"
       icon="mdi-chevron-up"
@@ -54,7 +41,11 @@ export default {
       });
     }
   },
-
+  computed: {
+    dynamic_target: function () { 
+      return this?.isModal ? '#rulesDialog' : '' 
+    }
+  }
 };
 </script>
 
