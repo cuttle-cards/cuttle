@@ -1,7 +1,8 @@
 <template>
   <v-col
+    :class="isModal ? '' : 'notInModal'"
     class="sidebar-container"
-    md="3"
+    :md="msize"
     sm="12"
     tag="nav"
   >
@@ -38,6 +39,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  isModal : {
+      type :Boolean,
+      default: false
+      }
 });
 
 const emit = defineEmits(['click']);
@@ -53,6 +58,16 @@ watch(() => props.activeTitle,
     goTo.horizontal(`#navItem_${newVal}`, { container: sidebarContainer.value });
   }
 );
+</script>
+<script>
+export default {
+  name: 'RulesNav',
+  computed: {
+    msize() {
+      return this.isModal ? 12 : 3;
+    }
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -84,12 +99,12 @@ watch(() => props.activeTitle,
 }
 
 @media (min-width: 960px) {
-  .sidebar-container {
+  .notInModal.sidebar-container {
     margin-left: -48px;
     margin-right: 48px;
   }
 
-  .sidebar-title {
+  .notInModal .sidebar-title {
     position: sticky;
     top: 130px;
     flex-direction: column;
@@ -100,8 +115,11 @@ watch(() => props.activeTitle,
   .sidebar-container {
     background: rgba(var(--v-theme-surface-1));
     position: sticky;
-    top: 64px;
-    z-index: 999;
+    top: 0;
+    z-index:18;
+  }
+  .notInModal.sidebar-container{
+    top:64px;
   }
   .sidebar-title {
     white-space: nowrap;
@@ -112,4 +130,8 @@ watch(() => props.activeTitle,
     font-size: 2.5rem !important;
   }
 }
+
+
+
+
 </style>

@@ -1,9 +1,14 @@
 <template>
   <div class="pa-4 bg-surface-1 text-surface-2">
     <v-container>
-      <BackToTop />
+      <BackToTop :is-modal="isModal" />
       <v-row>
-        <RulesNav :section-titles="sectionTitles" :active-title="activeTitle" @click="goToSection($event)" />
+        <RulesNav 
+          :section-titles="sectionTitles" 
+          :active-title="activeTitle" 
+          :is-modal="isModal"
+          @click="goToSection($event)" 
+        />
 
         <v-col>
           <RulePreviewDialog
@@ -149,7 +154,7 @@
           </section>
 
           <!-- Ready to Play? -->
-          <section class="section">
+          <section v-if="!isModal" class="section">
             <v-row class="bg-surface-2 pa-8 rounded-xl d-flex flex-column align-center">
               <h2 class="text-surface-1 pa-8">
                 {{ t('rules.readyToPlay.readyToPlay') }}
@@ -295,6 +300,12 @@ export default {
     RuleParagraph,
     FAQEntry,
     RulesNav,
+  },
+  props: {
+    isModal : {
+      type :Boolean,
+      default: false
+      }
   },
   setup() {
     const goTo = useGoTo();

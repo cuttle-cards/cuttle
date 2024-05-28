@@ -4,7 +4,6 @@
       v-if="show"
       position="fixed"
       location="bottom right"
-      class="fab"
       color="surface-2"
       elevation="8"
       icon="mdi-chevron-up"
@@ -28,15 +27,16 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-
+import { ref  } from 'vue';
 
 export default {
-  props: {isModal : {
+  name:'BackToTop',
+  props: {
+    isModal : {
     type :Boolean,
     default: false
-    }
-  },
+    },
+  },  
   data: () => ({
     show : ref(false),
   }),
@@ -44,6 +44,7 @@ export default {
     onScroll(e) {
       const scrollTopValue = this.isModal? e.target.scrollTop : window.scrollY ;
       this.show = scrollTopValue > 200;
+      console.log(this.show);
     },
     onClick() {
       const targetSchroll = this.isModal? document.getElementById('rulesDialog') : window ;
@@ -53,45 +54,12 @@ export default {
       });
     }
   },
-  render(createElement) {
-    // Define the button element
-    const button = this.show
-      ? createElement('v-btn', {
-          attrs: {
-            position: 'fixed',
-            location: 'bottom right',
-            class: 'fab',
-            color: 'surface-2',
-            elevation: '8',
-            icon: 'mdi-chevron-up',
-            size: 'large',
-          },
-          on: {
-            click: this.onClick,
-          },
-        })
-      : null;
 
-    // Define the div element with the scroll directive
-    return createElement(
-      'div',
-      {
-        directives: [
-          {
-            name: 'scroll',
-            value: this.onScroll,
-            ...(this.isModal ? { arg: 'rulesDialog' } : {}),
-          },
-        ],
-      },
-      [button]
-    );
-  }
 };
 </script>
 
 <style scoped>
-.fab {
+button {
   margin: auto 8px 64px 8px;
   z-index: 1;
 }
