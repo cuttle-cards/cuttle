@@ -32,11 +32,11 @@ export default {
   }),
   methods: {
     onScroll(e) {
-      const scrollTopValue = !!this.targetId ? e.target.scrollTop : window.scrollY ;
+      const scrollTopValue = this.targetId ? e.target.scrollTop : window.scrollY ;
       this.show = scrollTopValue > 200;
     },
     onClick() {
-      const targetSchroll = !!this.targetId ? document.getElementById('rulesDialog') : window 
+      const targetSchroll = this.targetId ? document.getElementById('rulesDialog') : window ;
       targetSchroll.scrollTo({
         top: 0,
         behavior: 'smooth',
