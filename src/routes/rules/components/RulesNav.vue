@@ -40,9 +40,9 @@ const props = defineProps({
     required: true,
   },
   isInModal : {
-      type :Boolean,
-      default: false
-      }
+    type :Boolean,
+    default: false
+  }
 });
 
 const emit = defineEmits(['click']);
