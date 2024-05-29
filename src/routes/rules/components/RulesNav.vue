@@ -140,8 +140,4 @@ export default {
     font-size: 2.5rem !important;
   }
 }
-
-
-
-
 </style>
