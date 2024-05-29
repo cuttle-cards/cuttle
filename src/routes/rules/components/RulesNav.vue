@@ -97,11 +97,11 @@ export default {
 .active-title {
   background-color: rgba(var(--v-theme-newPrimary));
 }
-.inModal.sidebar-container{
-     background: rgba(var(--v-theme-surface-1));
-    position: sticky;
-    top: 0;
-    z-index:18;
+.inModal.sidebar-container {
+  background: rgba(var(--v-theme-surface-1));
+  position: sticky;
+  top: 0;
+  z-index:18;
 }
 @media (max-width: 450px) {
   .inModal.sidebar-container{
