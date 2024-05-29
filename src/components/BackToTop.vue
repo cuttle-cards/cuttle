@@ -50,7 +50,7 @@ export default {
 button {
   margin: auto 8px 64px 8px;
   z-index: 1;
-  right :32px;
-  bottom:0;
+  right: 32px;
+  bottom: 0;
 }
 </style>
