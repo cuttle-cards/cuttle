@@ -13,37 +13,29 @@
   </div>
 </template>
 
-<script>
-
+<script setup>
 import { ref } from 'vue';
 
+const show = ref(false)
 
-export default {
-  name:'BackToTop',
-  props: {
-    targetId: {
-      type: String,
-      default: '',
-      required: false
-    },
-  },
-  data: () => ({
-    show : ref(false),
-  }),
-  methods: {
-    onScroll(e) {
-      const scrollTopValue = this.targetId ? e.target.scrollTop : window.scrollY ;
-      this.show = scrollTopValue > 200;
-    },
-    onClick() {
-      const targetSchroll = this.targetId ? document.getElementById('rulesDialog') : window ;
-      targetSchroll.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
-  }
-};
+let props = defineProps({targetId: {
+  type: String,
+  default: '',
+  required: false
+}})
+
+function onScroll(e) {
+  const scrollTopValue = props.targetId ? e.target.scrollTop : window.scrollY ;
+  show.value = scrollTopValue > 200;
+}
+
+function onClick() {
+  const targetSchroll = props.targetId ? document.getElementById('rulesDialog') : window ;
+  targetSchroll.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+}
 </script>
 
 <style scoped>
