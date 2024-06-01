@@ -30,8 +30,8 @@ function onScroll(e) {
 }
 
 function onClick() {
-  const targetSchroll = props.targetId ? document.getElementById('rulesDialog') : window ;
-  targetSchroll.scrollTo({
+  const scrollTarget = props.targetId ? document.getElementById('rulesDialog') : window;
+  scrollTarget.scrollTo({
     top: 0,
     behavior: 'smooth',
   });
