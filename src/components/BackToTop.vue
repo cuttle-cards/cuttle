@@ -18,7 +18,7 @@ import { ref } from 'vue';
 
 const show = ref(false)
 
-let props = defineProps({targetId: {
+const props = defineProps({targetId: {
   type: String,
   default: '',
   required: false
