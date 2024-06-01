@@ -25,7 +25,7 @@ const props = defineProps({targetId: {
 }})
 
 function onScroll(e) {
-  const scrollTopValue = props.targetId ? e.target.scrollTop : window.scrollY ;
+  const scrollTopValue = props.targetId ? e.target.scrollTop : window.scrollY;
   show.value = scrollTopValue > 200;
 }
 
