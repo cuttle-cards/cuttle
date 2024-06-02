@@ -51,6 +51,7 @@ module.exports = {
 
   loadMatchFixtures: async function (req, res) {
     try {
+      // transform timestamps to `Date` objects, as sails-disk doesn't support ISO timestamp strings
       const editedMatches = req.body.map((match) => {
         return {
           ...match,
