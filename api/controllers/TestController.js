@@ -5,6 +5,10 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
+
 module.exports = {
   wipeDatabase: function (req, res) {
     return Promise.all([
@@ -30,7 +34,15 @@ module.exports = {
 
   loadSeasonFixture: async function (req, res) {
     try {
-      const seasons = await Season.createEach(req.body).fetch();
+      // transform timestamps to `Date` objects, as sails-disk doesn't support ISO timestamps
+      const editedSeasons = req.body.map((season) => {
+        return {
+          ...season,
+          startTime: dayjs.utc(season.startTime).toDate(),
+          endTime: dayjs.utc(season.endTime).toDate(),
+        };
+      });
+      const seasons = await Season.createEach(editedSeasons).fetch();
       return res.ok(seasons);
     } catch (e) {
       return res.badRequest(e);
@@ -39,7 +51,14 @@ module.exports = {
 
   loadMatchFixtures: async function (req, res) {
     try {
-      await Match.createEach(req.body);
+      const editedMatches = req.body.map((match) => {
+        return {
+          ...match,
+          startTime: dayjs.utc(match.startTime).toDate(),
+          endTime: dayjs.utc(match.endTime).toDate(),
+        };
+      });
+      await Match.createEach(editedMatches);
     } catch (e) {
       return res.badRequest(e);
     }
@@ -48,7 +67,13 @@ module.exports = {
 
   loadFinishedGameFixtures: async function (req, res) {
     try {
-      await Game.createEach(req.body);
+      const editedGames = req.body.map((game) => {
+        return {
+          ...game,
+          updatedAt: dayjs.utc(game.updatedAt).toDate(),
+        };
+      });
+      await Game.createEach(editedGames);
     } catch (e) {
       return res.badRequest(e);
     }

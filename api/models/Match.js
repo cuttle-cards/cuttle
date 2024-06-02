@@ -1,4 +1,3 @@
-const dayjs = require('dayjs');
 /**
  * Match.js
  *
@@ -35,12 +34,4 @@ module.exports = {
       via: 'match',
     },
   }, // end attributes
-  beforeCreate(record, proceed) {
-    record.createdAt = dayjs(record.createdAt).format('YYYY-MM-DD HH:mm:ss.SSS Z');
-    return proceed();
-  },
-  beforeUpdate(record, proceed) {
-    record.updatedAt = dayjs(record.createdAt).format('YYYY-MM-DD HH:mm:ss.SSS Z');
-    return proceed();
-  },
 }; // end exports

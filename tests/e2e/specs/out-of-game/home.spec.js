@@ -1,9 +1,11 @@
-import dayjs from 'dayjs';
 import { assertSnackbarError } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
 import GameStatus from '../../../../utils/GameStatus.json';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 function setup() {
   cy.wipeDatabase();
@@ -112,7 +114,7 @@ describe('Home - Game List', () => {
     it('Does not show games older than 24 hours', () => {
       cy.loadFinishedGameFixtures([
         { name: 'New Game', status: GameStatus.CREATED },
-        { name: 'Old Game', status: GameStatus.CREATED, createdAt: dayjs().subtract(1, 'day').valueOf() },
+        { name: 'Old Game', status: GameStatus.CREATED, createdAt: dayjs.utc().subtract(1, 'day').toDate() },
       ]);
       cy.visit('/');
       cy.get('[data-cy=game-list-item]').should('have.length', 1);

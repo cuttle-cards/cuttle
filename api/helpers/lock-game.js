@@ -1,5 +1,7 @@
 const { randomUUID } = require('crypto');
 const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 async function sleep(durationInMs) {
   return new Promise((resolve) => {
@@ -29,8 +31,8 @@ module.exports = {
 
     for (let numAttempts = 0; numAttempts < MAX_ATTEMPTS; numAttempts++) {
       try {
-        const now = dayjs().format();
-        const lockIsStaleTimeout = dayjs().subtract(30, 'second').format();
+        const now = dayjs.utc().toDate();
+        const lockIsStaleTimeout = dayjs.utc().subtract(30, 'second').toDate();
 
         // Lock & re-fetch game if unlocked or lock is expired
         const updatedGame = await Game.updateOne({

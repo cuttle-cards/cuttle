@@ -1,4 +1,6 @@
 const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 module.exports = {
   friendlyName: 'Find Or Create Current Match Between Two Players',
@@ -22,26 +24,26 @@ module.exports = {
   },
 
   fn: async ({ player1, player2 }, exits) => {
-    const currentTime = dayjs();
+    const currentTime = dayjs.utc();
     try {
       const currentSeason = await Season.findOne({
-        startTime: { '<=': currentTime.format() },
-        endTime: { '>=': currentTime.format() },
+        startTime: { '<=': currentTime.toDate() },
+        endTime: { '>=': currentTime.toDate() },
       });
       // FIXME: Handle missing season gracefully
       if (!currentSeason) {
         return exits.success();
       }
       // Find relevant match between specified players for current week
-      const seasonStartTime = dayjs(currentSeason.startTime);
+      const seasonStartTime = dayjs.utc(currentSeason.startTime);
       const weeksSinceSeasonStart = currentTime.diff(seasonStartTime, 'week');
-      const currentWeekStartTime = seasonStartTime.add(weeksSinceSeasonStart, 'week');
-      const currentWeekEndTime = seasonStartTime.add(weeksSinceSeasonStart + 1, 'week');
+      const currentWeekStartTime = seasonStartTime.add(weeksSinceSeasonStart, 'week').toDate();
+      const currentWeekEndTime = seasonStartTime.add(weeksSinceSeasonStart + 1, 'week').toDate();
       let currentMatch = await Match.findOne({
         and: [
           // Match started within current week
-          { startTime: { '>=': currentWeekStartTime.format() } },
-          { startTime: { '<=': currentWeekEndTime.format() } },
+          { startTime: { '>=': currentWeekStartTime } },
+          { startTime: { '<=': currentWeekEndTime } },
           // Match is between specified players
           {
             or: [
@@ -56,7 +58,7 @@ module.exports = {
       // Create current match if it doesn't already exist
       if (!currentMatch) {
         currentMatch = await Match.create({
-          startTime: currentTime.format(),
+          startTime: currentTime.toDate(),
           player1,
           player2,
         }).fetch();
