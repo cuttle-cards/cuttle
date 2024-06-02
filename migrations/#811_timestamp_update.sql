@@ -134,3 +134,4 @@ update "userspectatinggame"
 set 
   "createdAt" = to_timestamp("oldCreatedAt" / 1000.0),
   "updatedAt" = to_timestamp("oldUpdatedAt" / 1000.0);
+  
