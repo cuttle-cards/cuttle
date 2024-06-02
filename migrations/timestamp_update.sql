@@ -80,3 +80,57 @@ set
   "lockedAt" = to_timestamp("oldLockedAt" / 1000.0),
   "createdAt" = to_timestamp("oldCreatedAt" / 1000.0),
   "updatedAt" = to_timestamp("oldUpdatedAt" / 1000.0);
+
+----------------
+-- user table --
+----------------
+alter table "user"
+rename column "createdAt" to "oldCreatedAt";
+
+alter table "user"
+rename column "updatedAt" to "oldUpdatedAt";
+
+alter table "user"
+add column "createdAt" timestamptz,
+add column "updatedAt" timestamptz;
+
+update "user"
+set 
+  "createdAt" = to_timestamp("oldCreatedAt" / 1000.0),
+  "updatedAt" = to_timestamp("oldUpdatedAt" / 1000.0);
+
+----------------
+-- card table --
+----------------
+alter table "card"
+rename column "createdAt" to "oldCreatedAt";
+
+alter table "card"
+rename column "updatedAt" to "oldUpdatedAt";
+
+alter table "card"
+add column "createdAt" timestamptz,
+add column "updatedAt" timestamptz;
+
+update "card"
+set 
+  "createdAt" = to_timestamp("oldCreatedAt" / 1000.0),
+  "updatedAt" = to_timestamp("oldUpdatedAt" / 1000.0);
+
+------------------------------
+-- userspectatinggame table --
+------------------------------
+alter table "userspectatinggame"
+rename column "createdAt" to "oldCreatedAt";
+
+alter table "userspectatinggame"
+rename column "updatedAt" to "oldUpdatedAt";
+
+alter table "userspectatinggame"
+add column "createdAt" timestamptz,
+add column "updatedAt" timestamptz;
+
+update "userspectatinggame"
+set 
+  "createdAt" = to_timestamp("oldCreatedAt" / 1000.0),
+  "updatedAt" = to_timestamp("oldUpdatedAt" / 1000.0);
