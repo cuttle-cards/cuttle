@@ -34,6 +34,7 @@ module.exports = {
 
   loadSeasonFixture: async function (req, res) {
     try {
+      // transform timestamps to `Date` objects, as sails-disk doesn't support ISO timestamps
       const editedSeasons = req.body.map((season) => {
         return {
           ...season,
