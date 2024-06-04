@@ -1,10 +1,10 @@
 <template>
-  <div v-scroll:[targetId]="onScroll">
+  <div v-scroll:[parentModalId]="onScroll">
     <v-btn
       v-if="show"
       position="fixed"
-      location="bottom right"
       color="surface-2"
+      class="fab"
       elevation="8"
       icon="mdi-chevron-up"
       size="large"
@@ -16,21 +16,23 @@
 <script setup>
 import { ref } from 'vue';
 
-const show = ref(false)
+const show = ref(false);
 
-const props = defineProps({targetId: {
-  type: String,
-  default: '',
-  required: false
-}})
-
+const props = defineProps({
+  parentModalId: {
+        type: String,
+        default: '',
+        required: false
+      },
+});
+console.log( 'gfhdjs'+props.parentModalId);
 function onScroll(e) {
-  const scrollTopValue = props.targetId ? e.target.scrollTop : window.scrollY;
+  const scrollTopValue = props.parentModalId ? e.target.scrollTop : window.scrollY;
   show.value = scrollTopValue > 200;
 }
 
 function onClick() {
-  const scrollTarget = props.targetId ? document.getElementById('rulesDialog') : window;
+  const scrollTarget = props.parentModalId ? document.querySelector(props.parentModalId) : window;
   scrollTarget.scrollTo({
     top: 0,
     behavior: 'smooth',
@@ -39,10 +41,15 @@ function onClick() {
 </script>
 
 <style scoped>
-button {
+.fab {
   margin: auto 8px 64px 8px;
   z-index: 1;
-  right: 32px;
+  right: 23px;
   bottom: 0;
+}
+@media (max-width: 600px) {
+  .fab {
+    right: 13px;
+  }
 }
 </style>

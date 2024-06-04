@@ -1,10 +1,11 @@
 <template>
-  <div class="pa-4 bg-surface-1 text-surface-2">
+  <div :class="[ isInModal ? 'bg-surface-1 text-surface-2' : 'pa-4 bg-surface-1 text-surface-2' ]">
     <v-container>
-      <BackToTop :target-id="isInModal && '#rulesDialog'" />
+      <BackToTop :parent-modal-id="isInModal && parentModalId" />
 
       <v-row>
         <RulesNav 
+          v-if="!isInModal"
           :section-titles="sectionTitles" 
           :active-title="activeTitle" 
           :is-in-modal="isInModal"
@@ -306,7 +307,11 @@ export default {
     isInModal : {
       type :Boolean,
       default: false
-      }
+      },
+      parentModalId : {
+        type:String,
+        default: ''
+      },
   },
   setup() {
     const goTo = useGoTo();
@@ -356,6 +361,7 @@ export default {
     };
 
     // Intersection
+
     const onIntersect = (_isIntersecting, entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -364,12 +370,13 @@ export default {
       });
     };
 
-    this.intersectConfig = {
+    this.intersectConfig = this.isInModal ? {} : {
       handler: onIntersect,
       options: {
           rootMargin: '-150px 0px -500px 0px',
         }
     };
+    
   },
   methods: {
     goToSection(url) {
@@ -405,6 +412,7 @@ export default {
   background-color: rgba(var(--v-theme-newPrimary));
   width: 100%;
   padding-top: 16px;
+  padding-bottom: 16px;
   padding-left: 24px;
   border-radius: 16px;
   margin-bottom: 40px;
@@ -417,10 +425,15 @@ export default {
 .text-label-lg {
   margin-bottom: 8px;
 }
-
+@media (max-width: 600px) {
+  .section-title {
+    padding-left: 0px;
+    text-align: center;
+  }
+}
 @media (max-width: 960px) {
   .section-title {
-    font-size: 2.5rem !important;
+    font-size: 2.4rem !important;
   }
 }
 </style>

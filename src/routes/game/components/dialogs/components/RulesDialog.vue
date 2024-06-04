@@ -1,13 +1,13 @@
 <template>
   <BaseDialog id="rulesDialog" max-width="1250">
-    <template #title>
+    <template #body>
       <v-btn
         icon 
         aria-label="Close rules dialog"
         color="surface-2" 
-        class="position-fixed top-0 right-10"
+        class="position-fixed top-0 closeBtn"
         size="large"
-        @click="close"
+        @click="emit('close')"
       >
         <v-icon
           icon="mdi-close"
@@ -15,46 +15,36 @@
           aria-hidden="true"         
         />
       </v-btn>
-    </template>
-    <template #body>
-      <RulesView :is-in-modal="true" />
+      <RulesView :is-in-modal="true" :parent-modal-id="'#rulesDialog'" />
     </template>
     <template #actions>
-      <v-btn variant="outlined" color="surface-1" @click="close">
+      <v-btn variant="outlined" color="surface-1" @click="emit('close')">
         Got It!
       </v-btn>
     </template>
   </BaseDialog>
 </template>
 
-<script>
-import BaseDialog from '@/components/BaseDialog.vue';
-import RulesView from '@/routes/rules/RulesView.vue';
-export default {
-  name: 'RulesDialog',
-  components: {
-    BaseDialog,
-    RulesView,
-  },
-  emits: ['close'],
-  computed: {
-    buttonSize() {
-      return this.$vuetify.display.mdAndDown ? 'small' : 'medium';
-    },
-  },
-  methods: {
-    close() {
-      this.$emit('close');
-    },
-  },
-};
+<script setup>
+  import BaseDialog from '@/components/BaseDialog.vue';
+  import RulesView from '@/routes/rules/RulesView.vue';
+
+  const emit = defineEmits(['close']);
+
 </script>
+
 <style lang="scss" scoped>
 .rules-button {
   width: 100%;
 }
-.right-10{
-  right:38px;
+.closeBtn {
+  right: 30px;
   z-index: 19;
+  top: 15px;
+}
+@media (max-width: 600px) {
+  .closeBtn {
+    right: 20px;
+  }
 }
 </style>

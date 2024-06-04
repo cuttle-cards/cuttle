@@ -1,8 +1,7 @@
 <template>
   <v-col
-    :class="isInModal ? 'inModal' : 'notInModal'"
     class="sidebar-container"
-    :md="msize"
+    md="3"
     sm="12"
     tag="nav"
   >
@@ -59,16 +58,6 @@ watch(() => props.activeTitle,
   }
 );
 </script>
-<script>
-export default {
-  name: 'RulesNav',
-  computed: {
-    msize() {
-      return this.isInModal ? 12 : 3;
-    }
-  }
-};
-</script>
 
 <style scoped lang="scss">
 .sidebar-title {
@@ -85,7 +74,6 @@ export default {
   }
 }
 
-
 .nav-button {
   display: block;
   padding: 16px;
@@ -97,24 +85,14 @@ export default {
 .active-title {
   background-color: rgba(var(--v-theme-newPrimary));
 }
-.inModal.sidebar-container {
-  background: rgba(var(--v-theme-surface-1));
-  position: sticky;
-  top: 0;
-  z-index:18;
-}
-@media (max-width: 450px) {
-  .inModal.sidebar-container{
-    display:none;
-  }
-}
+
 @media (min-width: 960px) {
-  .notInModal.sidebar-container {
+  .sidebar-container {
     margin-left: -48px;
     margin-right: 48px;
   }
 
-  .notInModal .sidebar-title {
+  .sidebar-title {
     position: sticky;
     top: 130px;
     flex-direction: column;
@@ -125,11 +103,8 @@ export default {
   .sidebar-container {
     background: rgba(var(--v-theme-surface-1));
     position: sticky;
-    top: 0;
-    z-index:18;
-  }
-  .notInModal.sidebar-container{
-    top:64px;
+    top: 64px;
+    z-index: 999;
   }
   .sidebar-title {
     white-space: nowrap;
