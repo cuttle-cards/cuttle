@@ -5,7 +5,7 @@
     :data-tournament="`${place}${suffix}`"
     :variant="isCard ? 'elevated' : 'text'"
   >
-    <div class="medal-icon d-flex align-center" :class="[isCard ? 'white' : 'cream']">
+    <div class="medal-icon d-flex align-center" :class="[isCard ? 'white px-5 py-5' : 'cream']">
       <v-icon
         size="48"
         :color="medalColor"
@@ -17,7 +17,7 @@
     </div>
     <div
       class="text d-flex flex-column align-center px-10 text-center justify-center"
-      :class="[isCard ? 'white' : 'cream']"
+      :class="[isCard ? 'chocolate background-cream py-5' : 'cream']"
     >
       <h3 class="mx-4">
         {{ username }}
@@ -80,6 +80,9 @@ export default {
 </script>
 
 <style scoped>
+.medal-icon {
+  height: 100%;
+}
 .medal-icon.cream {
   background-color: rgba(var(--v-theme-surface-2));
 }
@@ -89,10 +92,16 @@ export default {
 .text {
   height: 100%;
 }
+.text.chocolate {
+  color: rgba(var(--v-theme-surface-1));
+}
 .text.cream {
   color: rgba(var(--v-theme-surface-2));
 }
 .text.white {
   color: #fff;
+}
+.background-cream {
+  background-color: rgba(var(--v-theme-surface-2));
 }
 </style>
