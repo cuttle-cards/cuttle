@@ -121,18 +121,30 @@ function addMatchToRankings(season, match, player, opponent) {
  * }
  */
 function transformSeasonToDTO(season) {
-  const { rankings, ...rest } = season;
+  let { rankings, gameCounts, uniquePlayersPerWeek, ...rest } = season;
+
   // Convert rankings from Map to Array
-  const rankingsAsArray = Array.from(rankings.values()).map((player) => {
+  rankings = Array.from(rankings.values()).map((player) => {
     return {
       ...player,
       matches: Object.fromEntries(player.matches), // Convert matches from Map to Object
     };
   });
+
+  // Remove zero-valued gameCounts + uniquePlayersPerWeek from the end
+  if (gameCounts[gameCounts.length - 1] === 0) {
+    gameCounts.pop();
+    uniquePlayersPerWeek.pop();
+  }
+
+  // Convert uniquePlayersPerWeek from Set[] to int[] number of players
+  uniquePlayersPerWeek = uniquePlayersPerWeek.map((playerSet) => playerSet.size);
+
   return {
     ...rest,
-    rankings: rankingsAsArray,
-    uniquePlayersPerWeek: season.uniquePlayersPerWeek.map((playerSet) => playerSet.size),
+    rankings,
+    gameCounts,
+    uniquePlayersPerWeek,
   };
 }
 
