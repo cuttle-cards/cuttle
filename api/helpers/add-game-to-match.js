@@ -1,4 +1,6 @@
 const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 module.exports = {
   friendlyName: 'Add Game to Match',
@@ -51,12 +53,12 @@ module.exports = {
       // End the match if this game clinches it
       if (numPlayer1Wins >= 2) {
         relevantMatch = await Match.updateOne(relevantMatch.id).set({
-          endTime: dayjs().valueOf(),
+          endTime: dayjs.utc().toDate(),
           winner: relevantMatch.player1,
         });
       } else if (numPlayer2Wins >= 2) {
         relevantMatch = await Match.updateOne(relevantMatch.id).set({
-          endTime: dayjs().valueOf(),
+          endTime: dayjs.utc().toDate(),
           winner: relevantMatch.player2,
         });
       }

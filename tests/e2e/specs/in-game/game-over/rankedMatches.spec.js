@@ -5,15 +5,17 @@ import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixture
 import { Card } from '../../../fixtures/cards';
 
 const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 function validateMatchResult(match, length, p1, p2, winnerId) {
   expect(match.player1.id).to.eq(p1);
   expect(match.player2.id).to.eq(p2);
-  expect(match.startTime).to.be.greaterThan(0);
+  expect(match.startTime).to.not.eq(null);
   expect(match.games.length).to.eq(length);
   if (winnerId) {
     expect(match.winner.id).to.eq(winnerId);
-    expect(match.endTime).to.be.greaterThan(0);
+    expect(match.endTime).to.not.eq(null);
   }
 }
 
@@ -29,8 +31,8 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // Set up season
     const [, diamondsSeason] = seasonFixtures;
-    diamondsSeason.startTime = dayjs().subtract(2, 'week').subtract(1, 'day').valueOf();
-    diamondsSeason.endTime = dayjs().add(11, 'weeks').valueOf();
+    diamondsSeason.startTime = dayjs.utc().subtract(2, 'week').subtract(1, 'day').toDate();
+    diamondsSeason.endTime = dayjs.utc().add(11, 'weeks').toDate();
     cy.loadSeasonFixture([diamondsSeason]);
     // Sign up to players and store their id's for comparison to match data
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -44,16 +46,16 @@ describe('Creating And Updating Ranked Matches', () => {
           player1: this.playerOneId,
           player2: this.playerTwoId,
           winner: this.playerOneId,
-          startTime: dayjs().subtract(1, 'week').subtract(1, 'day').valueOf(),
-          endTime: dayjs().subtract(1, 'week').subtract(1, 'day').valueOf(),
+          startTime: dayjs.utc().subtract(1, 'week').subtract(1, 'day').toDate(),
+          endTime: dayjs.utc().subtract(1, 'week').subtract(1, 'day').toDate(),
         };
 
         const currentMatchWithDifferentOpponent = {
           player1: this.playerOneId,
           player2: this.playerThreeId,
           winner: null,
-          startTime: dayjs().subtract(1, 'hour').valueOf(),
-          endTime: dayjs().subtract(1, 'hour').valueOf(),
+          startTime: dayjs.utc().subtract(1, 'hour').toDate(),
+          endTime: dayjs.utc().subtract(1, 'hour').toDate(),
         };
 
         cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);
