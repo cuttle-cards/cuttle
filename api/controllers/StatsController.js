@@ -121,10 +121,15 @@ function addMatchToRankings(season, match, player, opponent) {
  * }
  */
 function transformSeasonToDTO(season) {
-  let { rankings, gameCounts, uniquePlayersPerWeek, ...rest } = season;
+  const {
+    rankings: originalRankings,
+    gameCounts: originalGameCounts,
+    uniquePlayersPerWeek: originalUniquePlayersPerWeek,
+    ...rest
+  } = season;
 
   // Convert rankings from Map to Array
-  rankings = Array.from(rankings.values()).map((player) => {
+  const rankings = Array.from(originalRankings.values()).map((player) => {
     return {
       ...player,
       matches: Object.fromEntries(player.matches), // Convert matches from Map to Object
@@ -132,6 +137,8 @@ function transformSeasonToDTO(season) {
   });
 
   // Remove zero-valued gameCounts + uniquePlayersPerWeek from the end
+  const gameCounts = [...originalGameCounts];
+  let uniquePlayersPerWeek = [...originalUniquePlayersPerWeek];
   if (gameCounts[gameCounts.length - 1] === 0) {
     gameCounts.pop();
     uniquePlayersPerWeek.pop();
