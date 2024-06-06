@@ -26,10 +26,10 @@
 </template>
 
 <script setup>
-  import BaseDialog from '@/components/BaseDialog.vue';
-  import RulesView from '@/routes/rules/RulesView.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
+import RulesView from '@/routes/rules/RulesView.vue';
 
-  const emit = defineEmits(['close']);
+const emit = defineEmits(['close']);
 
 </script>
 
