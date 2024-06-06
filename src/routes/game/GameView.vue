@@ -7,7 +7,7 @@
 
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center">
+      <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center" :style="spectatingWrapperStyle">
         <SpectatorListMenu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
         <GameMenu :is-spectating="isSpectating" />
         <v-icon
@@ -472,6 +472,11 @@ export default {
     ...mapStores(useAuthStore),
     isSpectating() {
       return this.gameStore.isSpectating;
+    },
+    spectatingWrapperStyle() {
+      return {
+        zIndex: this.isSpectating ? 2401 : 3 // Allows spectators to access game menu wrapper in any moment
+      };
     },
     showOpponentHand() {
       return this.gameStore.hasGlassesEight || this.isSpectating;
@@ -1198,7 +1203,6 @@ export default {
   display: inline-block;
   right: 0;
   margin: 10px;
-  z-index: 3;
 }
 
 .valid-move {
