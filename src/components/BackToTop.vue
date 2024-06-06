@@ -43,12 +43,12 @@ function onClick() {
 .fab {
   margin: auto 8px 64px 8px;
   z-index: 1;
-  right: 23px;
+  right: 24px;
   bottom: 0;
 }
 @media (max-width: 600px) {
   .fab {
-    right: 13px;
+    right: 14px;
   }
 }
 </style>

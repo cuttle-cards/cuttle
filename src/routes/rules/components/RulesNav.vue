@@ -38,10 +38,6 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  isInModal : {
-    type :Boolean,
-    default: false
-  }
 });
 
 const emit = defineEmits(['click']);

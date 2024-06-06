@@ -40,7 +40,7 @@ const emit = defineEmits(['close']);
 .closeBtn {
   right: 30px;
   z-index: 19;
-  top: 15px;
+  top: 16px;
 }
 @media (max-width: 600px) {
   .closeBtn {

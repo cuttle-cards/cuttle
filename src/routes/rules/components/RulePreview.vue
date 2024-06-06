@@ -1,6 +1,6 @@
 <template>
   <v-row class="mb-10">
-    <v-col lg="4" sm="5" cols="12">
+    <v-col lg="4" sm="5">
       <v-img
         :src="staticImg"
         aspect-ratio="1.7778"
