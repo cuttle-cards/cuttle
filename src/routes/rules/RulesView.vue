@@ -1,9 +1,16 @@
 <template>
-  <div class="pa-4 bg-surface-1 text-surface-2">
+  <div :class="[ isInModal ? 'bg-surface-1 text-surface-2' : 'pa-4 bg-surface-1 text-surface-2' ]">
     <v-container>
-      <BackToTop />
+      <BackToTop :parent-modal-id="isInModal && parentModalId" />
+
       <v-row>
-        <RulesNav :section-titles="sectionTitles" :active-title="activeTitle" @click="goToSection($event)" />
+        <RulesNav 
+          v-if="!isInModal"
+          :section-titles="sectionTitles" 
+          :active-title="activeTitle" 
+          :is-in-modal="isInModal"
+          @click="goToSection($event)" 
+        />
 
         <v-col>
           <RulePreviewDialog
@@ -149,7 +156,7 @@
           </section>
 
           <!-- Ready to Play? -->
-          <section class="section">
+          <section v-if="!isInModal" class="section">
             <v-row class="bg-surface-2 pa-8 rounded-xl d-flex flex-column align-center">
               <h2 class="text-surface-1 pa-8">
                 {{ t('rules.readyToPlay.readyToPlay') }}
@@ -296,6 +303,16 @@ export default {
     FAQEntry,
     RulesNav,
   },
+  props: {
+    isInModal : {
+      type :Boolean,
+      default: false
+      },
+      parentModalId : {
+        type:String,
+        default: ''
+      },
+  },
   setup() {
     const goTo = useGoTo();
     const { t } = useI18n();
@@ -344,6 +361,7 @@ export default {
     };
 
     // Intersection
+
     const onIntersect = (_isIntersecting, entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -352,12 +370,13 @@ export default {
       });
     };
 
-    this.intersectConfig = {
+    this.intersectConfig = this.isInModal ? {} : {
       handler: onIntersect,
       options: {
           rootMargin: '-150px 0px -500px 0px',
         }
     };
+    
   },
   methods: {
     goToSection(url) {
@@ -405,10 +424,9 @@ export default {
 .text-label-lg {
   margin-bottom: 8px;
 }
-
 @media (max-width: 960px) {
   .section-title {
-    font-size: 2.5rem !important;
+    font-size: 2.4rem !important;
   }
 }
 </style>
