@@ -13,11 +13,13 @@ module.exports = {
       required: true,
     },
     startTime: {
-      type: 'number',
+      type: 'ref',
+      columnType: 'timestamptz',
       required: true,
     },
     endTime: {
-      type: 'number',
+      type: 'ref',
+      columnType: 'timestamptz',
       required: true,
     },
     bracketLink: {

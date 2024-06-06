@@ -121,18 +121,37 @@ function addMatchToRankings(season, match, player, opponent) {
  * }
  */
 function transformSeasonToDTO(season) {
-  const { rankings, ...rest } = season;
+  const {
+    rankings: originalRankings,
+    gameCounts: originalGameCounts,
+    uniquePlayersPerWeek: originalUniquePlayersPerWeek,
+    ...rest
+  } = season;
+
   // Convert rankings from Map to Array
-  const rankingsAsArray = Array.from(rankings.values()).map((player) => {
+  const rankings = Array.from(originalRankings.values()).map((player) => {
     return {
       ...player,
       matches: Object.fromEntries(player.matches), // Convert matches from Map to Object
     };
   });
+
+  // Remove zero-valued gameCounts + uniquePlayersPerWeek from the end
+  const gameCounts = [...originalGameCounts];
+  let uniquePlayersPerWeek = [...originalUniquePlayersPerWeek];
+  if (gameCounts[gameCounts.length - 1] === 0) {
+    gameCounts.pop();
+    uniquePlayersPerWeek.pop();
+  }
+
+  // Convert uniquePlayersPerWeek from Set[] to int[] number of players
+  uniquePlayersPerWeek = uniquePlayersPerWeek.map((playerSet) => playerSet.size);
+
   return {
     ...rest,
-    rankings: rankingsAsArray,
-    uniquePlayersPerWeek: season.uniquePlayersPerWeek.map((playerSet) => playerSet.size),
+    rankings,
+    gameCounts,
+    uniquePlayersPerWeek,
   };
 }
 
@@ -152,7 +171,10 @@ module.exports = {
         select: ['updatedAt', 'p0', 'p1'],
         where: {
           status: gameService.GameStatus.FINISHED,
-          updatedAt: { '>': currentSeason.startTime, '<': currentSeason.endTime },
+          updatedAt: {
+            '>': currentSeason.startTime,
+            '<': currentSeason.endTime,
+          },
         },
       });
       const [users, matches, games] = await Promise.all([allUsers, currentSeasonMatches, currentSeasonGames]);
@@ -179,7 +201,10 @@ module.exports = {
         select: ['updatedAt', 'p0', 'p1'],
         where: {
           status: gameService.GameStatus.FINISHED,
-          updatedAt: { '>': requestedSeason.startTime, '<': requestedSeason.endTime },
+          updatedAt: {
+            '>': requestedSeason.startTime,
+            '<': requestedSeason.endTime,
+          },
         },
       });
       const [users, matches, games] = await Promise.all([

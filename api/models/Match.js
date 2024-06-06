@@ -20,13 +20,14 @@ module.exports = {
       model: 'user',
     },
     startTime: {
-      type: 'number',
+      type: 'ref',
+      columnType: 'timestamptz',
       required: true,
     },
     endTime: {
-      type: 'number',
+      type: 'ref',
+      columnType: 'timestamptz',
       required: false,
-      allowNull: true,
     },
     games: {
       collection: 'Game',
