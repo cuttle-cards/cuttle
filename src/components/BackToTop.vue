@@ -25,7 +25,6 @@ const props = defineProps({
         required: false
       },
 });
-console.log( 'gfhdjs'+props.parentModalId);
 function onScroll(e) {
   const scrollTopValue = props.parentModalId ? e.target.scrollTop : window.scrollY;
   show.value = scrollTopValue > 200;
