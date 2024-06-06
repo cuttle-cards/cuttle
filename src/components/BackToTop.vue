@@ -48,7 +48,7 @@ function onClick() {
 }
 @media (max-width: 600px) {
   .fab {
-    right: 14px;
+    right: 16px;
   }
 }
 </style>

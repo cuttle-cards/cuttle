@@ -38,7 +38,7 @@ const emit = defineEmits(['close']);
   width: 100%;
 }
 .closeBtn {
-  right: 30px;
+  right: 32px;
   z-index: 19;
   top: 16px;
 }

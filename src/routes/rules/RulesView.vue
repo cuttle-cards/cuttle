@@ -412,7 +412,6 @@ export default {
   background-color: rgba(var(--v-theme-newPrimary));
   width: 100%;
   padding-top: 16px;
-  padding-bottom: 16px;
   padding-left: 24px;
   border-radius: 16px;
   margin-bottom: 40px;
@@ -424,12 +423,6 @@ export default {
 
 .text-label-lg {
   margin-bottom: 8px;
-}
-@media (max-width: 600px) {
-  .section-title {
-    padding-left: 0px;
-    text-align: center;
-  }
 }
 @media (max-width: 960px) {
   .section-title {
