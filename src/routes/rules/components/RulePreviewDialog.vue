@@ -1,8 +1,8 @@
 <template>
   <v-overlay
     id="rule-preview-dialog"
-    class="game-ovelay text-center d-flex justify-center align-center"
-    width="650"
+    class="text-center d-flex justify-center align-center"
+    content-class="game-overlay"
   >
     <div id="close-wrapper" class="d-flex justify-end my-4">
       <v-btn
@@ -73,3 +73,10 @@ const preloadImage = () => {
   img.src = props.imageUrl;
 };
 </script>
+
+<style>
+.game-overlay {
+  width: 650px;
+  max-width: 90vw;
+}
+</style>
