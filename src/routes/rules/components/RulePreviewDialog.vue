@@ -74,8 +74,8 @@ const preloadImage = () => {
 };
 </script>
 
-<style>
-.game-overlay {
+<style scoped>
+:deep(.game-overlay) {
   width: 650px;
   max-width: 90vw;
 }
