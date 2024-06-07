@@ -70,7 +70,6 @@ watch(() => props.activeTitle,
   }
 }
 
-
 .nav-button {
   display: block;
   padding: 16px;
