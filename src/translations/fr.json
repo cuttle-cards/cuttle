@@ -271,7 +271,7 @@
       "jack": {
         "stealOnlyWithJack": "Vous ne pouvez voler une carte points qu'avec un Valet.",
         "stealOnlyPointCards": "Seule les cartes à points peuvent être volées.",
-        "noJackWithQueen": "You cannot use a Jack while your opponent has a Queen."
+        "noJackWithQueen": "Vous ne pouvez pas jouer un Valet car votre adversaire a une Reine."
       },
       "scuttle": {
         "rankTooLow": "Pour faire un scuttle, votre carte doit être d'un rang ou une couleur plus élevé que la carte ciblée. (trèfle < carreau < coeur < pique)",
@@ -335,7 +335,7 @@
       "hearts": "Cœurs",
       "spades": "Piques",
       "weakest": "moins fort",
-      "strongest": "le plus for"
+      "strongest": "le plus fort"
     },
     "howToPlay": "Comment jouer",
     "cuttleTitle": "Qu'est-ce que Cuttle?",
