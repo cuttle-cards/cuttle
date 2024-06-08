@@ -7,7 +7,7 @@
 
     <!-- Authenticated View -->
     <template v-else>
-      <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center" :style="spectatingWrapperStyle">
+      <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center" :style="menuWrapperStyle">
         <SpectatorListMenu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
         <GameMenu :is-spectating="isSpectating" />
         <v-icon
@@ -473,9 +473,9 @@ export default {
     isSpectating() {
       return this.gameStore.isSpectating;
     },
-    spectatingWrapperStyle() {
+    menuWrapperStyle() {
       return {
-        zIndex: this.isSpectating ? 2401 : 3 // Allows spectators to access game menu wrapper in any moment
+        zIndex: this.isSpectating ? 2411 : 3 // Allows spectators to access game menu wrapper in any moment
       };
     },
     showOpponentHand() {
