@@ -248,22 +248,22 @@
         "cardFrozen": "¡Esa carta está bloqueada! Debes esperar a tu turno para jugarla.",
         "playFromHand": "Solo puedes jugar una carta que se encuentre en tu mano",
         "blockedByQueen": "La Reina de tu oponente evita que puedas seleccionar como objetivo sus otras cartas",
-        "blockedByMultipleQueens": "No puedes jugar una carta de habilidad con objetivo (Dos, Nueve) cuando tu oponente tiene más de una reina"
+        "blockedByMultipleQueens": "No puedes jugar una carta de habilidad única con objetivo (Dos, Nueve) cuando tu oponente tiene más de una reina"
       },
       "seven": {
         "pickAndPlay": "Solo puedes jugar las cartas superiores del mazo mientras se resuelve un Siete"
       },
       "five":{
         "selectCardToDiscard" : "Debes seleccionar una carta para descartar",
-        "incorrectCard" : "Tarjeta incorrecta jugada",
-        "fiveDeckIsEmpty": "No se pueden resolver 5 juegos únicos con un mazo vacío"
+        "incorrectCard" : "Carta incorrecta jugada",
+        "fiveDeckIsEmpty": "No se puede resolver la habilidad única de un 5 con un mazo vacío"
       },
       "draw": {
         "deckIsEmpty": "El mazo está vacío; no puedes robar.",
         "handLimit": "Tu mano ha alcanzado el límite; no puedes robar."
       },
       "faceCards": {
-        "withoutTarget": "Solo Reyes, Reinas y Ochos puedes ser jugados como cartas de habilidad sin objetivo"
+        "withoutTarget": "Solo Reyes, Reinas y Ochos pueden ser jugados como cartas de realeza sin objetivo"
       },
       "points": {
         "numberOnlyForPoints": "Solo puedes jugar las cartas numeradas como cartas de puntos."
@@ -279,13 +279,13 @@
         "mustTargetPointCard": "Solo puedes hundir una carta que tu oponente haya jugado como puntos"
       },
       "oneOffs": {
-        "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad si hay cartas en el mazo de descarte",
-        "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad mientras tu oponente no tenga cartas en su mano",
-        "sevenWithEmptyDeck": "Solo puedes jugar un 7 como carta de habilidad si hay cartas en el mazo",
-        "sevenWithOneCardInDeck": "No puedes jugar un 7 como carta de habilidad si es la última carta del mazo",
-        "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad sin un objetivo",
-        "onlyTwoOrNine": "Solo puedes jugar un 2 o un 9 como cartas de habilidad con objetivo",
-        "oneOffInPlay": "Ya hay en juego una carta de habilidad; no puedes jugar ninguna carta, excepto un Dos para contrarrestar."
+        "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad única si hay cartas en el mazo de descarte",
+        "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano",
+        "sevenWithEmptyDeck": "Solo puedes jugar un 7 como carta de habilidad única si hay cartas en el mazo",
+        "sevenWithOneCardInDeck": "No puedes jugar un 7 como carta de habilidad única si es la última carta del mazo",
+        "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad única sin un objetivo",
+        "onlyTwoOrNine": "Solo puedes jugar un 2 o un 9 como cartas de habilidad única con objetivo",
+        "oneOffInPlay": "Ya hay en juego una carta de habilidad única; no puedes jugar ninguna carta, excepto un Dos para contrarrestar."
       }
     }
   },
