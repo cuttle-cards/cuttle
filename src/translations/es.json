@@ -68,7 +68,7 @@
       "opponentMustDiscardJack": "El rival debe descartar la Sota",
       "opponentConsideringStalemate": "El rival está considerando la solicitud de empate",
       "gameUnavailable": {
-        "title": "Ups!",
+        "title": "¡Ups!",
         "content": "Parece que esta partida no está disponible."
       }
     },
@@ -99,7 +99,7 @@
       },
       "five":{
         "discardAndDraw" : "Descartar y robar",
-        "nice": "Bueno!",
+        "nice": "¡Bien!",
         "resolveFive": "Has resuelto un 5 único. Elige una carta para descartar y luego robarás 3 cartas.",
         "resolveFiveNoCards": "Has resuelto un 5 único, pero no tienes cartas en tu mano para descartar. Robas 3 cartas sin descartar. ¡Dulce!"
       },
@@ -156,16 +156,16 @@
         "matchStatus": {
           "playerLeft": "Jugador se ha ido",
           "waitingForPlayers": "Esperando a los jugadores",
-          "goodMatch": "¡Buen Partido!",
+          "goodMatch": "¡Buena Partida!",
           "continueSpectating": "¿Continuar como espectador?",
           "opponentLeft": "Rival se ha ido",
           "waitingForOpponent": "Esperando al Rival",
-          "continueMatch": "¿Continuar el Partido?",
+          "continueMatch": "¿Continuar la Partida?",
           "rematch?": "¿Revancha?",
           "rankedIconAlt": "Icono de Partida Clasificatoria (Espadas Cruzadas)",
           "casualIconAlt": "Icône de Match Décontracté (Mug)",
-          "wonTheMatch": "ganó el partido",
-          "lostTheMatch": "perdió el partido"
+          "wonTheMatch": "ganó la partida",
+          "lostTheMatch": "perdió la partida"
         }
       }
     },
@@ -244,48 +244,48 @@
     },
     "snackbar": {
       "global": {
-        "notYourTurn": "It's not your turn!",
-        "cardFrozen": "That card is frozen! You must wait a turn to play it.",
-        "playFromHand": "You can only play a card that is in your hand",
-        "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
-        "blockedByMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen"
+        "notYourTurn": "¡No es tu turno!",
+        "cardFrozen": "¡Esa carta está bloqueada! Debes esperar a tu turno para jugarla.",
+        "playFromHand": "Solo puedes jugar una carta que se encuentre en tu mano",
+        "blockedByQueen": "La Reina de tu oponente evita que puedas seleccionar como objetivo sus otras cartas",
+        "blockedByMultipleQueens": "No puedes jugar una carta de habilidad única con objetivo (Dos, Nueve) cuando tu oponente tiene más de una reina"
       },
       "seven": {
-        "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven."
+        "pickAndPlay": "Solo puedes jugar las cartas superiores del mazo mientras se resuelve un Siete"
       },
       "five":{
         "selectCardToDiscard" : "Debes seleccionar una carta para descartar",
-        "incorrectCard" : "Tarjeta incorrecta jugada",
-        "fiveDeckIsEmpty": "No se pueden resolver 5 juegos únicos con un mazo vacío"
+        "incorrectCard" : "Carta incorrecta jugada",
+        "fiveDeckIsEmpty": "No se puede resolver la habilidad única de un 5 con un mazo vacío"
       },
       "draw": {
-        "deckIsEmpty": "The deck is empty; you cannot draw.",
-        "handLimit": "You are at the hand limit; you cannot draw."
+        "deckIsEmpty": "El mazo está vacío; no puedes robar.",
+        "handLimit": "Tu mano ha alcanzado el límite; no puedes robar."
       },
       "faceCards": {
-        "withoutTarget": "Only Kings, Queens, and Eights may be played as Face Cards without a target"
+        "withoutTarget": "Solo Reyes, Reinas y Ochos pueden ser jugados como cartas de realeza sin objetivo"
       },
       "points": {
-        "numberOnlyForPoints": "You can only play a number card as points."
+        "numberOnlyForPoints": "Solo puedes jugar las cartas numeradas como cartas de puntos."
       },
       "jack": {
-        "stealOnlyWithJack": "You can only steal your opponent's points with a jack",
-        "stealOnlyPointCards": "You can only steal your opponent's point cards",
-        "noJackWithQueen": "You cannot use a Jack while your opponent has a Queen."
+        "stealOnlyWithJack": "Solo puedes robar los puntos de tu oponente con una Sota",
+        "stealOnlyPointCards": "Solo puedes robar las cartas de puntos de tu oponente",
+        "noJackWithQueen": "No puedes usar una Sota mientras tu oponente tiene una Reina."
       },
       "scuttle": {
-        "rankTooLow": "You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)",
-        "mustUsePointCard": "You can only scuttle with an ace through ten",
-        "mustTargetPointCard": "You can only scuttle a card your opponent has played for points"
+        "rankTooLow": "Solo puedes hundir si el rango de tu carta es mayor, o si el rango es igual y tu palo es mayor (Tréboles < Diamantes < Corazones < Picas)",
+        "mustUsePointCard": "Solo puedes hundir con una carta de rango As hasta Diez",
+        "mustTargetPointCard": "Solo puedes hundir una carta que tu oponente haya jugado como puntos"
       },
       "oneOffs": {
-        "scrapIsEmpty": "You can only play a 3 ONE-OFF if there are cards in the scrap pile",
-        "opponentHasNoCards": "You cannot play a 4 as a ONE-OFF while your opponent has no cards in hand",
-        "sevenWithEmptyDeck": "You can only play a 7 as a ONE-OFF if there are cards in the deck",
-        "sevenWithOneCardInDeck": "You cannot play a 7 as a ONE-OFF if it is the last card in the deck",
-        "cantPlayWithoutATarget": "You cannot play that card as a ONE-OFF without a target",
-        "onlyTwoOrNine": "You can only play a 2, or a 9 as targeted one-offs.",
-        "oneOffInPlay": "There is already a one-off in play; you cannot play any card, except a two to counter."
+        "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad única si hay cartas en el mazo de descarte",
+        "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano",
+        "sevenWithEmptyDeck": "Solo puedes jugar un 7 como carta de habilidad única si hay cartas en el mazo",
+        "sevenWithOneCardInDeck": "No puedes jugar un 7 como carta de habilidad única si es la última carta del mazo",
+        "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad única sin un objetivo",
+        "onlyTwoOrNine": "Solo puedes jugar un 2 o un 9 como cartas de habilidad única con objetivo",
+        "oneOffInPlay": "Ya hay en juego una carta de habilidad única; no puedes jugar ninguna carta, excepto un Dos para contrarrestar."
       }
     }
   },
@@ -449,12 +449,12 @@
       "deckExhaust": "¿Qué pasa cuando se agota el mazo de robo?",
       "deckExhaustAnswer": "Cuando no quedan cartas en el mazo, los jugadores pueden pasar su turno en lugar de robar. Si hay tres pases consecutivos, es decir, el jugador 1 pasa, el jugador 2 pasa y luego el jugador 1 pasa nuevamente, el juego termina en un punto muerto y ningún jugador gana.",
       "whereToPlay": "¿Dónde puedo jugar a Cuttle?",
-      "whereToPlayAnswer": "Puedes jugar a Cuttle en cualquier lugar donde tengas una baraja de cartas y un amigo. Si quieres jugar online, solo hay un lugar: cuttle.cards!"
+      "whereToPlayAnswer": "Puedes jugar a Cuttle en cualquier lugar donde tengas una baraja de cartas y un amigo. Si quieres jugar online, solo hay un lugar: ¡cuttle.cards!"
     },
     "tournaments": {
       "title": "Torneos",
       "competitiveCuttle1": "El Cuttle Competitivo se divide en 4 temporadas por año, una por palo: Tréboles, Diamantes, Corazones y Picas. Al final de cada temporada, los 8 mejores jugadores participan en un torneo de campeonato de eliminación doble y los campeones son aclamados permanentemente en el sitio.",
-      "competitiveCuttle2": "Cada temporada se divide en 13 semanas. Para cada semana, contamos el número de partidos clasificatorios mejor de 2 de 3 que cada jugador gana contra oponentes únicos (ignorando los empates) y asignamos puntos a los jugadores según su posición semanal.",
+      "competitiveCuttle2": "Cada temporada se divide en 13 semanas. Para cada semana, contamos el número de partidas clasificatorias mejor de 2 de 3 que cada jugador gana contra oponentes únicos (ignorando los empates) y asignamos puntos a los jugadores según su posición semanal.",
       "championPlayer": "Jugador Campeón",
       "secondPlacePlayer": "Jugador Segundo Lugar",
       "thirdPlacePlayer": "Jugador Tercer Lugar",      
@@ -464,8 +464,8 @@
         "firstPlace": "El jugador con más victorias obtiene 5 puntos por semana",
         "secondPlace": "El jugador con la segunda mayor cantidad de victorias obtiene 4 puntos por semana",
         "thirdPlace": "El jugador con la tercera mayor cantidad de victorias obtiene 3 puntos por semana",
-        "oneWin": "Cada otro jugador que ganó al menos un partido obtiene 2 puntos por semana",
-        "completedMatch": "Cada otro jugador que completó un partido sin ganar obtiene 1 punto por semana"
+        "oneWin": "Cada otro jugador que ganó al menos una partida obtiene 2 puntos por semana",
+        "completedMatch": "Cada otro jugador que completó una partida sin ganar obtiene 1 punto por semana"
       }
       
     }
