@@ -10,15 +10,15 @@ The goal is to be the first player to have 21 **or more** points. When a player 
 
 ## Setting Up
 
-Each player starts on one side of the game board and is dealt a hand from the deck. One player is dealt six cards; the other is dealt 5 and goes first. A _scrap pile_ area is designated for destroyed cards.
+Each player starts on one side of the game board and is dealt a hand from the deck. One player is dealt six cards; the other is dealt 5 and goes first. A _scrap pile_ area is designated for scrapped cards.
 
 ## Playing
 
-On your turn you must make exactly one of the following moves below.
+On your turn you must make exactly one of the following actions below.
 
-## Moves
+## Actions
 
-1. **Draw:** You may draw one card from the deck and put it in your hand. You may not draw past the 8-card hand-limit. If the deck is empty, you may pass. If three consecutive turns end with a pass, the game is a draw.
+1. **Draw:** You may take one card from the deck. You may not draw past the 8-card hand limit. If there are no cards left in the deck, you may pass. Three consecutive passes ends the game in a stalemate.
 
    - Click the deck to draw a card
 
@@ -26,50 +26,54 @@ On your turn you must make exactly one of the following moves below.
 
    - To play a card for points, click a card in your hand to select it, then click your field.
 
-3. **Scuttling:** You may player a number card from your hand onto a lower valued number card that your opponent has played for points; this destroys both cards. You may also scuttle a card of the same rank, if your card has the higher suit. The suit order is Clubs (weakest) < Diamonds < Hearts < Spades (strongest).
+3. **Scuttle:** You may player a number card from your hand onto a lower valued number card that your opponent has played for points; this scraps both cards. You may also scuttle a card of the same rank, if your card has the higher suit. The suit order is Clubs (weakest) < Diamonds < Hearts < Spades (strongest).
 
    - To scuttle an opponent's point card, click a higher number card (Ace - Ten) in your hand to select it, then click the card you'd like to scuttle.
 
-4. **Face Cards and Glasses Eights:** Face cards and eights can be played as **Face Cards and Glasses Eights**. While on your board, Face Cards and Glasses Eights provide you advantages. An explanation of the different Face Cards and Glasses Eights can be found below.
+4. **Royals and Glasses Eights:** Royals and eights can be played as **Royals and Glasses Eights**. While on your board, Royals and Glasses Eights provide you advantages. An explanation of the different Royals and Glasses Eights can be found below.
 
-   - To play a Face Card or Glasses Eight, click the card in your hand to select it, then click your field (in green) to play it.
+   - To play a Royal or Glasses Eight, click the card in your hand to select it, then click your field (in green) to play it.
 
-5. **One-Offs:** Ace-Sevens and also Nines can be played as **One-Offs**. Playing a card for a One-Off effect discards (to the scrap pile) in exchange for an effect, based on the rank of the card. A list of all the effects can be found below.
+5. **One-Offs:** Ace-Sevens and also Nines can be played as **One-Offs**. Playing a card for a One-Off effect scraps the card in exchange for an effect, based on the rank of the card. A list of all the effects can be found below.
    - To play a card as a **One-Off**, click a card in your hand to select it, then click the **Scrap Pile** or an opponent's card to target.
 
 ## One-Offs
 
-- **Ace**: Destroy all **Point** cards
+- **Ace**: Scrap all **Point** cards
 - **Two**: One of two effects:
-  1. Destroy **target Face Card or Glasses Eight**
-  2. Counter **target One-Off** (play this when an opponent plays a **One-Off** effect to stop it from happening)
+  1. Counter **target One-Off** (play this when an opponent plays a **One-Off** effect to stop it from happening)
+  2. Scrap **target Royal or Glasses Eight**
 - **Three**: Choose one card from the **Scrap Pile** and put it in your hand.
-- **Four**: Your opponent discards two cards of her choice from her hand to the **Scrap Pile**
-- **Five**: Draw two cards from the **Deck**.
-- **Six**: Destroy all **Face Cards and Glasses Eights**
+- **Four**: Your opponent discards two cards of their choice from their hand to the **Scrap Pile**
+- **Five**: Discard one card then draw up to three cards from the **Deck** up to the 8 card hand limit.
+- **Six**: Scrap all **Royals and Glasses Eights**
 - **Seven**: Reveal the top two cards from the **Deck** and choose one of them to play immediately. Play this card however you would like. The other card is placed back on top of the deck.
-- **Nine**: Return an opponent's card on the board to their hand. It can't be played next turn.
+- **Nine**: Return an opponent's card on the field to their hand. It can't be played next turn.
 
-## Face Cards & Glasses Eights
+## Royals & Glasses Eights
 
-- **Eight**: While you control an Eight as a **"Glasses Eight"**, your opponent plays with her hand revealed to you. Unlike one-offs, Glasses Eights remain under your control until destroyed.
-- **Jack**: Play a jack on top of a **Point Card** to move it to your side of the board. You keep control of the point card as long as you control the top jack.
-- **Queen**: While you control a Queen, your other cards cannot be **targeted** by your opponent's cards.
+- **Eight**: While you control an Eight as a **"Glasses Eight"**, your opponent plays with her hand revealed to you. Unlike one-offs, Glasses Eights remain under your control until scrapped.
+- **Jack**: Play a Jack on top of an oppnent's **Point Card** to steal it. Point card returns to opponent if the Jack is scrapped or if another Jack is used to steal it back.
+- **Queen**: While you control a Queen, your other cards cannot be **targeted** by your opponent's cards. (Does not protect against aces, sixes or scuttling.)
 - **King**: While you have a King, the minimum points needed to win is reduced. Each additional King further reduces the limit.
   - 1 King: 14 points to win
   - 2 Kings: 10 points to win
-  - 3 Kings: 7 points to win
-  - 4 Kings: 5 points to win
+  - 3 Kings: 5 points to win
+  - 4 Kings: 0 points to win
 
 ## FAQ
 
-### Can I play a two to counter a point card? What about a scuttle? Can I play a two to destroy my opponent's Face Card or Glasses Eight on her turn?
+### Can I play a two to counter a point card? What about a scuttle? Can I play a two to scrap my opponent's Royal or Glasses Eight on their turn?
 
-Nope! Twos can only counter One-Offs. You can play a two to destroy a Face Card or Glasses Eight, but this takes your turn, unlike countering.
+Nope! Twos can only counter One-Offs. You can play a two to destroy a Royal or Glasses Eight, but this takes your turn, unlike countering.
 
 ### Do Queens protect against countering with a two?
 
 Yes! Queens protect against **targeting**, when a card applies a unique effect to one specific card. This means your other cards (not the Queen, herself) are protected against Twos (either effect), Nines, and Jacks.
+
+### Do Queens protect against scuttling? What about Aces & Sixes?
+
+No! Scuttling doesn't count as targeting, and neither do the board-wiping effects of Aces or Sixes. Queens only protect against the effects of Twos, Nines, and Jacks.
 
 ### Can I counter a Two with a Two?
 
@@ -81,7 +85,19 @@ Yes. If you meet the required number of points, you win immediately. This means 
 
 ### If I play an Ace or a Six, are my cards destroyed as well?
 
-Yes. Aces and Sixes destroy all **Point Cards** and all **Face Cards and Glasses Eights**, respectively. That includes any that you have out. Try to avoid destroying many of your own cards!
+Yes. Aces and Sixes destroy all **Point Cards** and all **Royals and Glasses Eights**, respectively. That includes any that you have out. Try to avoid destroying many of your own cards!
+
+### My Seven revealed two Jacks and my opponent has no points. What happens?
+
+If playing both cards revealed by a Seven is impossible (namely revealing two Jacks and your opponent has no point cards in play), choose one card to discard and place the other back on top of the deck.
+
+### What if I play a Seven and there is only one card left in the deck?
+
+Reveal just the one card and continue play like normal. Similar to the above situation, if you reveal a Jack and your opponent does not have any point cards in play, that Jack is scrapped.
+
+### What happens when the deck is exhausted?
+
+When there are no cards left in the deck, players may pass on their turn instead of drawing. If there are three consecutive passes i.e. player 1 passes, player 2 passes, then player 1 passes again, the game ends in a stalemate and neither player wins.
 
 ### Where can I play Cuttle?
 
