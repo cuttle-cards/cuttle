@@ -19,19 +19,19 @@ module.exports = {
      * 3 - SCUTTLE
      * 4 - FACECARD
      * 5 - JACK
-     * 6 - UNTARGETEDONEOFF
-     * 7 - TARGETEDONEOFF
+     * 6 - UNTARGETED_ONE_OFF
+     * 7 - TARGETEDONE_OFF
      * 8 - COUNTER
      * 9 - RESOLVE
-     * 10 - RESOLVETHREE
-     * 11 - RESOLVEFOUR
-     * 12 - RESOLVEFIVE
-     * 13 - SEVENPOINTS
-     * 14 - SEVENSCUTTLE
-     * 15 - SEVENFACECARD
-     * 16 - SEVENJACK
-     * 17 - SEVENUNTARGETEDONEOFF
-     * 18 - SEVENTARGETEDONEOFF
+     * 10 - RESOLVE_THREE
+     * 11 - RESOLVE_FOUR
+     * 12 - RESOLVE_FIVE
+     * 13 - SEVEN_POINTS
+     * 14 - SEVEN_SCUTTLE
+     * 15 - SEVEN_FACECARD
+     * 16 - SEVEN_JACK
+     * 17 - SEVEN_UNTARGETED_ONE_OFF
+     * 18 - SEVENTARGETEDONE_OFF
      * 19 - PASS
     */
     moveType: {
@@ -55,17 +55,17 @@ module.exports = {
       type: 'number',
       required: true,
     },
-    // What phase of a turn the game is currently in
+    /**
+     * Enum for phase:
+     * 1 - MAIN
+     * 2 - COUNTERING
+     * 3 - RESOLVING_THREE
+     * 4 - RESOLVING_FOUR
+     * 5 - RESOLVING_FIVE
+     * 6 - RESOLVING_SEVEN
+    */
     phase: {
-      type: 'string',
-      isIn: [
-        'main',
-        'countering',
-        'resolvingThree',
-        'resolvingFour',
-        'resolvingFive',
-        'resolvingSeven'
-      ],
+      type: 'number',
       required: true,
     },
     // Cards in p0’s hand
