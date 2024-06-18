@@ -470,13 +470,13 @@ export const useGameStore = defineStore('game', {
     // In-Game Moves //
     ///////////////////
     async requestDrawCard() {
-      this.handleAPIGet('draw');
+      await this.handleAPIGet('draw');
     },
     async requestPlayPoints(cardId) {
-      this.handleAPIGet('points', { cardId });
+      await this.handleAPIGet('points', { cardId });
     },
     async requestPlayFaceCard(cardId) {
-      this.handleAPIGet('faceCard', { cardId });
+      await this.handleAPIGet('faceCard', { cardId });
     },
     /**
      *
@@ -484,16 +484,16 @@ export const useGameStore = defineStore('game', {
      */
     async requestScuttle(cardData) {
       const { cardId, targetId } = cardData;
-      this.handleAPIGet('scuttle', { cardId, targetId, opId: this.opponent.id });
+      await this.handleAPIGet('scuttle', { cardId, targetId, opId: this.opponent.id });
     },
     async requestPlayOneOff(cardId) {
-      this.handleAPIGet('untargetedOneOff', { cardId, opId: this.opponent.id }).then(() => {
+      await this.handleAPIGet('untargetedOneOff', { cardId, opId: this.opponent.id }).then(() => {
         this.waitingForOpponentToCounter = true;
         return Promise.resolve();
       });
     },
     async requestPlayTargetedOneOff({ cardId, targetId, pointId, targetType }) {
-      this.handleAPIGet('targetedOneOff', {
+      await this.handleAPIGet('targetedOneOff', {
         cardId,
         targetId,
         pointId,
@@ -504,7 +504,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestPlayJack({ cardId, targetId }) {
-      this.handleAPIGet('jack', {
+      await this.handleAPIGet('jack', {
         cardId,
         targetId,
         opId: this.opponent.id,
@@ -517,26 +517,26 @@ export const useGameStore = defineStore('game', {
      */
     async requestDiscard({ cardId1, cardId2 }) {
       const reqData = cardId2 ? { cardId1, cardId2 } : { cardId1 };
-      this.handleAPIGet('resolveFour', { reqData });
+      await this.handleAPIGet('resolveFour', { reqData });
     },
     async requestResolve() {
       this.myTurnToCounter = false;
-      this.handleAPIGet('resolve', { opId: this.opponent.id });
+      await this.handleAPIGet('resolve', { opId: this.opponent.id });
     },
     async requestResolveThree(cardId) {
       this.myTurnToCounter = false;
-      this.handleAPIGet('resolveThree', { cardId, opId: this.opponent.id }).then(() => {
+      await this.handleAPIGet('resolveThree', { cardId, opId: this.opponent.id }).then(() => {
         this.waitingForOpponentToCounter = false;
       });
     },
     async requestResolveFive(cardId) {
       this.myTurnToCounter = false;
       this.waitingForOpponentToCounter = false;
-      this.handleAPIGet('resolveFive', { cardId });
+      await this.handleAPIGet('resolveFive', { cardId });
     },
     async requestResolveSevenDoubleJacks({ cardId, index }) {
       this.myTurnToCounter = false;
-      this.handleAPIGet('seven/jack', {
+      await this.handleAPIGet('seven/jack', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
         targetId: -1, // -1 for the double jacks with no points to steal case
@@ -545,7 +545,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestCounter(twoId) {
       this.myTurnToCounter = false;
-      this.handleAPIGet('counter', { cardId: twoId, opId: this.opponent.id }).then(() => {
+      await this.handleAPIGet('counter', { cardId: twoId, opId: this.opponent.id }).then(() => {
         this.waitingForOpponentToCounter = true;
       });
     },
@@ -553,13 +553,13 @@ export const useGameStore = defineStore('game', {
     // Sevens //
     ////////////
     async requestPlayPointsSeven({ cardId, index }) {
-      this.handleAPIGet('seven/points', {
+      await this.handleAPIGet('seven/points', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
       });
     },
     async requestScuttleSeven({ cardId, index, targetId }) {
-      this.handleAPIGet('seven/scuttle', {
+      await this.handleAPIGet('seven/scuttle', {
         cardId,
         index,
         targetId,
@@ -567,7 +567,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestPlayJackSeven({ cardId, index, targetId }) {
-      this.handleAPIGet('seven/jack', {
+      await this.handleAPIGet('seven/jack', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
         targetId,
@@ -575,13 +575,13 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestPlayFaceCardSeven({ index, cardId }) {
-      this.handleAPIGet('seven/faceCard', {
+      await this.handleAPIGet('seven/faceCard', {
         cardId,
         index,
       });
     },
     async requestPlayOneOffSeven({ cardId, index }) {
-      this.handleAPIGet('seven/untargetedOneOff', {
+      await this.handleAPIGet('seven/untargetedOneOff', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
         opId: this.opponent.id,
@@ -590,7 +590,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestPlayTargetedOneOffSeven({ cardId, index, targetId, pointId, targetType }) {
-      this.handleAPIGet('seven/targetedOneOff', {
+      await this.handleAPIGet('seven/targetedOneOff', {
         cardId,
         targetId,
         pointId,
@@ -602,18 +602,18 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestPass() {
-      this.handleAPIGet('pass');
+      await this.handleAPIGet('pass');
     },
     async requestConcede() {
-      this.handleAPIGet('concede');
+      await this.handleAPIGet('concede');
     },
     async requestStalemate() {
-      this.handleAPIGet('stalemate').then(() => {
+      await this.handleAPIGet('stalemate').then(() => {
         this.consideringOpponentStalemateRequest = false;
       });
     },
     async rejectStalemate() {
-      this.handleAPIGet('reject-stalemate').then(() => {
+      await this.handleAPIGet('reject-stalemate').then(() => {
         this.consideringOpponentStalemateRequest = false;
       });
     },
@@ -628,7 +628,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestRematch({ gameId, rematch = true }) {
-      this.handleAPIGet('rematch', { gameId, rematch });
+      await this.handleAPIGet('rematch', { gameId, rematch });
     },
     async requestJoinRematch({ oldGameId }) {
       return new Promise((resolve, reject) => {
