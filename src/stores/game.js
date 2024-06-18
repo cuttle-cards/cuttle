@@ -365,14 +365,14 @@ export const useGameStore = defineStore('game', {
           return reject(jwres.body.message);
       }
     },
-    makeSocketRequest(slug, obj, method = 'get') {
+    makeSocketRequest(slug, body, method = 'get') {
       const prefix = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? 'gamestate' : 'game';
       return new Promise((resolve, reject) => {
         io.socket.request(
           {
             method: method,
             url: `/api/${prefix}/${slug}`,
-            data: obj,
+            data: body,
           },
           (res, jwres) => {
             return this.handleGameResponse(jwres, resolve, reject);
