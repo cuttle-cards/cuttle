@@ -135,13 +135,11 @@ module.exports = {
     oneOff: {
       type: 'string',
       allowNull: true,
-      defaultsTo: null,
     },
     // One-off target card
     oneOffTarget: {
       type: 'string',
       allowNull: true,
-      defaultsTo: null,
     },
     // Twos
     twos: {
@@ -153,7 +151,6 @@ module.exports = {
     resolving: {
       type: 'string',
       allowNull: true,
-      defaultsTo: null,
     },
   },
 };
