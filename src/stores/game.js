@@ -517,7 +517,7 @@ export const useGameStore = defineStore('game', {
      */
     async requestDiscard({ cardId1, cardId2 }) {
       const reqData = cardId2 ? { cardId1, cardId2 } : { cardId1 };
-      await this.handleAPIGet('resolveFour', { reqData });
+      await this.handleAPIGet('resolveFour', reqData);
     },
     async requestResolve() {
       this.myTurnToCounter = false;
