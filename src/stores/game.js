@@ -366,7 +366,7 @@ export const useGameStore = defineStore('game', {
       }
     },
     makeSocketRequest(slug, obj, method = 'get') {
-      const prefix = process.env.VITE_USE_GAMESTATE_API ? 'gamestate' : 'game';
+      const prefix = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? 'gamestate' : 'game';
       return new Promise((resolve, reject) => {
         io.socket.request(
           {
