@@ -366,12 +366,15 @@ export const useGameStore = defineStore('game', {
       }
     },
     makeSocketRequest(slug, body, method = 'get') {
-      const prefix = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? 'gamestate' : 'game';
+      const url =
+        import.meta.env.VITE_USE_GAMESTATE_API === 'true'
+          ? `/api/gamestate/${this.id}/move/${slug}`
+          : `/api/game/${slug}`;
       return new Promise((resolve, reject) => {
         io.socket.request(
           {
             method: method,
-            url: `/api/${prefix}/${slug}`,
+            url: url,
             data: body,
           },
           (res, jwres) => {
