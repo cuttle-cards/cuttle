@@ -365,7 +365,24 @@ export const useGameStore = defineStore('game', {
           return reject(jwres.body.message);
       }
     },
-
+    makeSocketRequest(slug, data, method = 'get') {
+      const url =
+        import.meta.env.VITE_USE_GAMESTATE_API === 'true'
+          ? `/api/gamestate/${this.id}/move/${slug}`
+          : `/api/game/${slug}`;
+      return new Promise((resolve, reject) => {
+        io.socket.request(
+          {
+            method,
+            url,
+            data,
+          },
+          (res, jwres) => {
+            return this.handleGameResponse(jwres, resolve, reject);
+          },
+        );
+      });
+    },
     async requestSubscribe(gameId) {
       return new Promise((resolve, reject) => {
         io.socket.get(
@@ -464,37 +481,13 @@ export const useGameStore = defineStore('game', {
     // In-Game Moves //
     ///////////////////
     async requestDrawCard() {
-      return new Promise((resolve, reject) => {
-        io.socket.get('/api/game/draw', (res, jwres) => {
-          return this.handleGameResponse(jwres, resolve, reject);
-        });
-      });
+      await this.makeSocketRequest('draw');
     },
     async requestPlayPoints(cardId) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/points',
-          {
-            cardId,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      });
+      await this.makeSocketRequest('points', { cardId });
     },
     async requestPlayFaceCard(cardId) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/faceCard',
-          {
-            cardId,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      });
+      await this.makeSocketRequest('faceCard', { cardId });
     },
     /**
      *
@@ -502,69 +495,28 @@ export const useGameStore = defineStore('game', {
      */
     async requestScuttle(cardData) {
       const { cardId, targetId } = cardData;
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/scuttle',
-          {
-            cardId,
-            targetId,
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      });
+      await this.makeSocketRequest('scuttle', { cardId, targetId, opId: this.opponent.id });
     },
     async requestPlayOneOff(cardId) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/untargetedOneOff',
-          {
-            cardId,
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      }).then(() => {
-        this.waitingForOpponentToCounter = true;
-        return Promise.resolve();
-      });
+      await this.makeSocketRequest('untargetedOneOff', { cardId, opId: this.opponent.id });
+      this.waitingForOpponentToCounter = true;
+      return Promise.resolve();
     },
     async requestPlayTargetedOneOff({ cardId, targetId, pointId, targetType }) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/targetedOneOff',
-          {
-            cardId,
-            targetId,
-            pointId,
-            targetType,
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      }).then(() => {
-        this.waitingForOpponentToCounter = true;
+      await this.makeSocketRequest('targetedOneOff', {
+        cardId,
+        targetId,
+        pointId,
+        targetType,
+        opId: this.opponent.id,
       });
+      this.waitingForOpponentToCounter = true;
     },
     async requestPlayJack({ cardId, targetId }) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/jack',
-          {
-            cardId,
-            targetId,
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
+      await this.makeSocketRequest('jack', {
+        cardId,
+        targetId,
+        opId: this.opponent.id,
       });
     },
     /**
@@ -573,230 +525,101 @@ export const useGameStore = defineStore('game', {
      * @param {optional} cardId2
      */
     async requestDiscard({ cardId1, cardId2 }) {
-      let reqData = {
-        cardId1,
-      };
-      if (cardId2) {
-        reqData = {
-          cardId1,
-          cardId2,
-        };
-      }
-      return new Promise((resolve, reject) => {
-        io.socket.get('/api/game/resolveFour', reqData, (res, jwres) => {
-          return this.handleGameResponse(jwres, resolve, reject);
-        });
-      });
+      const reqData = cardId2 ? { cardId1, cardId2 } : { cardId1 };
+      await this.makeSocketRequest('resolveFour', reqData);
     },
     async requestResolve() {
       this.myTurnToCounter = false;
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/resolve',
-          {
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      });
+      await this.makeSocketRequest('resolve', { opId: this.opponent.id });
     },
     async requestResolveThree(cardId) {
       this.myTurnToCounter = false;
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/resolveThree',
-          {
-            cardId,
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      }).then(() => {
-        this.waitingForOpponentToCounter = false;
-      });
+      await this.makeSocketRequest('resolveThree', { cardId, opId: this.opponent.id });
+      this.waitingForOpponentToCounter = false;
     },
     async requestResolveFive(cardId) {
       this.myTurnToCounter = false;
       this.waitingForOpponentToCounter = false;
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/resolveFive',
-          {
-            cardId,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      });
+      await this.makeSocketRequest('resolveFive', { cardId });
     },
     async requestResolveSevenDoubleJacks({ cardId, index }) {
       this.myTurnToCounter = false;
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/seven/jack',
-          {
-            cardId,
-            index, // 0 if topCard, 1 if secondCard
-            targetId: -1, // -1 for the double jacks with no points to steal case
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
+      await this.makeSocketRequest('seven/jack', {
+        cardId,
+        index, // 0 if topCard, 1 if secondCard
+        targetId: -1, // -1 for the double jacks with no points to steal case
+        opId: this.opponent.id,
       });
     },
     async requestCounter(twoId) {
       this.myTurnToCounter = false;
-
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/counter',
-          {
-            cardId: twoId,
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      }).then(() => {
-        this.waitingForOpponentToCounter = true;
-      });
+      await this.makeSocketRequest('counter', { cardId: twoId, opId: this.opponent.id });
+      this.waitingForOpponentToCounter = true;
     },
     ////////////
     // Sevens //
     ////////////
     async requestPlayPointsSeven({ cardId, index }) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/seven/points',
-          {
-            cardId,
-            index, // 0 if topCard, 1 if secondCard
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
+      await this.makeSocketRequest('seven/points', {
+        cardId,
+        index, // 0 if topCard, 1 if secondCard
       });
     },
     async requestScuttleSeven({ cardId, index, targetId }) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/seven/scuttle',
-          {
-            cardId,
-            index,
-            targetId,
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
+      await this.makeSocketRequest('seven/scuttle', {
+        cardId,
+        index,
+        targetId,
+        opId: this.opponent.id,
       });
     },
     async requestPlayJackSeven({ cardId, index, targetId }) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/seven/jack',
-          {
-            cardId,
-            index, // 0 if topCard, 1 if secondCard
-            targetId,
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
+      await this.makeSocketRequest('seven/jack', {
+        cardId,
+        index, // 0 if topCard, 1 if secondCard
+        targetId,
+        opId: this.opponent.id,
       });
     },
     async requestPlayFaceCardSeven({ index, cardId }) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/seven/faceCard',
-          {
-            cardId,
-            index,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
+      await this.makeSocketRequest('seven/faceCard', {
+        cardId,
+        index,
       });
     },
     async requestPlayOneOffSeven({ cardId, index }) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/seven/untargetedOneOff',
-          {
-            cardId,
-            index, // 0 if topCard, 1 if secondCard
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      }).then(() => {
-        this.waitingForOpponentToCounter = true;
+      await this.makeSocketRequest('seven/untargetedOneOff', {
+        cardId,
+        index, // 0 if topCard, 1 if secondCard
+        opId: this.opponent.id,
       });
+      this.waitingForOpponentToCounter = true;
     },
     async requestPlayTargetedOneOffSeven({ cardId, index, targetId, pointId, targetType }) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/seven/targetedOneOff',
-          {
-            cardId,
-            targetId,
-            pointId,
-            targetType,
-            index, // 0 if topCard, 1 if secondCard
-            opId: this.opponent.id,
-          },
-          (res, jwres) => {
-            return this.handleGameResponse(jwres, resolve, reject);
-          },
-        );
-      }).then(() => {
-        this.waitingForOpponentToCounter = true;
+      await this.makeSocketRequest('seven/targetedOneOff', {
+        cardId,
+        targetId,
+        pointId,
+        targetType,
+        index, // 0 if topCard, 1 if secondCard
+        opId: this.opponent.id,
       });
+      this.waitingForOpponentToCounter = true;
     },
     async requestPass() {
-      return new Promise((resolve, reject) => {
-        io.socket.get('/api/game/pass', (res, jwres) => {
-          return this.handleGameResponse(jwres, resolve, reject);
-        });
-      });
+      await this.makeSocketRequest('pass');
     },
     async requestConcede() {
-      return new Promise((resolve, reject) => {
-        io.socket.get('/api/game/concede', (res, jwres) => {
-          return this.handleGameResponse(jwres, resolve, reject);
-        });
-      });
+      await this.makeSocketRequest('concede');
     },
     async requestStalemate() {
-      return new Promise((resolve, reject) => {
-        io.socket.get('/api/game/stalemate', (res, jwres) => {
-          this.consideringOpponentStalemateRequest = false;
-          return this.handleGameResponse(jwres, resolve, reject);
-        });
+      await this.makeSocketRequest('stalemate').then(() => {
+        this.consideringOpponentStalemateRequest = false;
       });
     },
     async rejectStalemate() {
-      return new Promise((resolve, reject) => {
-        io.socket.get('/api/game/reject-stalemate', (res, jwres) => {
-          this.consideringOpponentStalemateRequest = false;
-          return this.handleGameResponse(jwres, resolve, reject);
-        });
+      await this.makeSocketRequest('reject-stalemate').then(() => {
+        this.consideringOpponentStalemateRequest = false;
       });
     },
     async requestUnsubscribeFromGame() {
@@ -810,11 +633,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestRematch({ gameId, rematch = true }) {
-      return new Promise((resolve, reject) => {
-        io.socket.get('/api/game/rematch', { gameId, rematch }, (res, jwres) => {
-          return this.handleGameResponse(jwres, resolve, reject);
-        });
-      });
+      await this.makeSocketRequest('rematch', { gameId, rematch });
     },
     async requestJoinRematch({ oldGameId }) {
       return new Promise((resolve, reject) => {
