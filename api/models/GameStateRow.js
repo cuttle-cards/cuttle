@@ -2,6 +2,17 @@
    * GameState.js
    * 
    * @description :: A GameState record represents one move made by a player and the resulting game state
+* Each card is specified by a String id that describes the cards suit and rank, as follows
+*
+* SUIT: ‘C’ (Clubs), ‘D’ (Diamonds), ‘H’ (Hearts), ‘S’ (Spades)
+* RANK: ‘A’ (Ace), ‘2’, ‘3’, ‘4’, ‘5’, ‘6’, ‘7’, ‘8’, ‘9’, ‘T’ (Ten), ‘J’ (Jack), ‘Q’ (Queen), ‘K’ (King)
+*
+* So ‘AC’ is the Ace of Clubs, ‘4D’ is the Four of Diamonds, and ‘TH’ is the Ten of Spades
+* Jacks that are attached to a card are represented as their id in parenthese, followed by ‘-’ then either ‘p0’ or ‘p1’ depending on their controller
+* @example p0Points: [‘3D’, ‘4S(JS-p0)’, ‘TH(JH-p0,JC-p1,JD-p0)’]
+* P0 has 3 point cards: 3 of diamonds, 4 of spades, 10 of hearts, 
+* with the jack of spades attached to the 4 of spades, and the other three jacks attached to the Ten of Hearts
+
    */
 
 module.exports = {
@@ -57,11 +68,11 @@ module.exports = {
       allowNull: true,
       columnType: 'text',
     },
-    // The 2nd card that is relevant to the move
-    targetCard2Id: {
-      type: 'string',
-      allowNull: true,
-      columnType: 'text',
+    // Cards discarded for a 4 or 5
+    discardedCards: {
+      type: 'json',
+      defaultsTo: [],
+      columnType: 'text[]',
     },
     // Which turn number the move was made on
     turn: {
