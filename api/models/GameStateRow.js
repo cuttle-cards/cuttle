@@ -60,13 +60,13 @@ module.exports = {
       columnType: 'int4',
     },
     // The card that was played
-    playedCardId: {
+    playedCard: {
       type: 'string',
       allowNull: true,
       columnType: 'text',
     },
     // The card that was targeted
-    targetCardId: {
+    targetCard: {
       type: 'string',
       allowNull: true,
       columnType: 'text',
