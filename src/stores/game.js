@@ -5,6 +5,15 @@ import { io } from '@/plugins/sails.js';
 import { sleep } from '../util/sleep';
 
 /**
+ * Throws an error if VITE_USE_GAMESTATE_API is enabled
+ */
+const checkGameStateApi = () => {
+  if (import.meta.env.VITE_USE_GAMESTATE_API === 'true') {
+    throw 'This action is not supported yet in GameState API';
+  }
+};
+
+/**
  * @returns number of queens a given player has
  * @param player is the player object
  */
@@ -481,12 +490,15 @@ export const useGameStore = defineStore('game', {
     // In-Game Moves //
     ///////////////////
     async requestDrawCard() {
+      checkGameStateApi();
       await this.makeSocketRequest('draw');
     },
     async requestPlayPoints(cardId) {
+      checkGameStateApi();
       await this.makeSocketRequest('points', { cardId });
     },
     async requestPlayFaceCard(cardId) {
+      checkGameStateApi();
       await this.makeSocketRequest('faceCard', { cardId });
     },
     /**
@@ -494,15 +506,18 @@ export const useGameStore = defineStore('game', {
      * @param cardData @example {cardId: number, targetId: number}
      */
     async requestScuttle(cardData) {
+      checkGameStateApi();
       const { cardId, targetId } = cardData;
       await this.makeSocketRequest('scuttle', { cardId, targetId, opId: this.opponent.id });
     },
     async requestPlayOneOff(cardId) {
+      checkGameStateApi();
       await this.makeSocketRequest('untargetedOneOff', { cardId, opId: this.opponent.id });
       this.waitingForOpponentToCounter = true;
       return Promise.resolve();
     },
     async requestPlayTargetedOneOff({ cardId, targetId, pointId, targetType }) {
+      checkGameStateApi();
       await this.makeSocketRequest('targetedOneOff', {
         cardId,
         targetId,
@@ -513,6 +528,7 @@ export const useGameStore = defineStore('game', {
       this.waitingForOpponentToCounter = true;
     },
     async requestPlayJack({ cardId, targetId }) {
+      checkGameStateApi();
       await this.makeSocketRequest('jack', {
         cardId,
         targetId,
@@ -525,24 +541,29 @@ export const useGameStore = defineStore('game', {
      * @param {optional} cardId2
      */
     async requestDiscard({ cardId1, cardId2 }) {
+      checkGameStateApi();
       const reqData = cardId2 ? { cardId1, cardId2 } : { cardId1 };
       await this.makeSocketRequest('resolveFour', reqData);
     },
     async requestResolve() {
+      checkGameStateApi();
       this.myTurnToCounter = false;
       await this.makeSocketRequest('resolve', { opId: this.opponent.id });
     },
     async requestResolveThree(cardId) {
+      checkGameStateApi();
       this.myTurnToCounter = false;
       await this.makeSocketRequest('resolveThree', { cardId, opId: this.opponent.id });
       this.waitingForOpponentToCounter = false;
     },
     async requestResolveFive(cardId) {
+      checkGameStateApi();
       this.myTurnToCounter = false;
       this.waitingForOpponentToCounter = false;
       await this.makeSocketRequest('resolveFive', { cardId });
     },
     async requestResolveSevenDoubleJacks({ cardId, index }) {
+      checkGameStateApi();
       this.myTurnToCounter = false;
       await this.makeSocketRequest('seven/jack', {
         cardId,
@@ -552,6 +573,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestCounter(twoId) {
+      checkGameStateApi();
       this.myTurnToCounter = false;
       await this.makeSocketRequest('counter', { cardId: twoId, opId: this.opponent.id });
       this.waitingForOpponentToCounter = true;
@@ -560,12 +582,14 @@ export const useGameStore = defineStore('game', {
     // Sevens //
     ////////////
     async requestPlayPointsSeven({ cardId, index }) {
+      checkGameStateApi();
       await this.makeSocketRequest('seven/points', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
       });
     },
     async requestScuttleSeven({ cardId, index, targetId }) {
+      checkGameStateApi();
       await this.makeSocketRequest('seven/scuttle', {
         cardId,
         index,
@@ -574,6 +598,7 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestPlayJackSeven({ cardId, index, targetId }) {
+      checkGameStateApi();
       await this.makeSocketRequest('seven/jack', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
@@ -582,12 +607,14 @@ export const useGameStore = defineStore('game', {
       });
     },
     async requestPlayFaceCardSeven({ index, cardId }) {
+      checkGameStateApi();
       await this.makeSocketRequest('seven/faceCard', {
         cardId,
         index,
       });
     },
     async requestPlayOneOffSeven({ cardId, index }) {
+      checkGameStateApi();
       await this.makeSocketRequest('seven/untargetedOneOff', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
@@ -596,6 +623,7 @@ export const useGameStore = defineStore('game', {
       this.waitingForOpponentToCounter = true;
     },
     async requestPlayTargetedOneOffSeven({ cardId, index, targetId, pointId, targetType }) {
+      checkGameStateApi();
       await this.makeSocketRequest('seven/targetedOneOff', {
         cardId,
         targetId,
@@ -607,6 +635,7 @@ export const useGameStore = defineStore('game', {
       this.waitingForOpponentToCounter = true;
     },
     async requestPass() {
+      checkGameStateApi();
       await this.makeSocketRequest('pass');
     },
     async requestConcede() {
