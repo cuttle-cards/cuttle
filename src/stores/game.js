@@ -365,7 +365,7 @@ export const useGameStore = defineStore('game', {
           return reject(jwres.body.message);
       }
     },
-    makeSocketRequest(slug, body, method = 'get') {
+    makeSocketRequest(slug, data, method = 'get') {
       const url =
         import.meta.env.VITE_USE_GAMESTATE_API === 'true'
           ? `/api/gamestate/${this.id}/move/${slug}`
