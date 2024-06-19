@@ -120,6 +120,10 @@ module.exports = {
       type: 'json',
       defaultsTo: {},
     },
+    gameStates: {
+      collection: 'gamestaterow',
+      via: 'gameId',
+    },
     match: {
       model: 'match',
     },
