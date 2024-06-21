@@ -383,7 +383,7 @@ export const useGameStore = defineStore('game', {
             data,
           },
           (res, jwres) => {
-            if (usingGameStateAPI && res === 'Not Found') {
+            if (usingGameStateAPI && jwres.statusCode === 404) {
               reject('This action is not supported yet in GameState API');
             }
             return this.handleGameResponse(jwres, resolve, reject);
