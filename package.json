@@ -86,7 +86,7 @@
     "build": "vite build",
     "build:gamestate": "cross-env VITE_USE_GAMESTATE_API=true vite build",
     "e2e:client": "cypress run",
-    "e2e:client:gamestate": "cypress run --env \"CYPRESS_USE_GAMESTATE_API=true\"",
+    "e2e:client:gamestate": "cypress run --env CYPRESS_USE_GAMESTATE_API=true",
     "e2e:gui": "cypress open",
     "e2e:gui:gamestate": "cypress open --env CYPRESS_USE_GAMESTATE_API=true",
     "e2e:gui:playground": "cypress open --config-file tests/e2e/playground/playground.config.js",
