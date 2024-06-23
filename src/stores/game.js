@@ -365,11 +365,39 @@ export const useGameStore = defineStore('game', {
           return reject(jwres.body.message);
       }
     },
-    makeSocketRequest(slug, data, method = 'get') {
-      const url =
-        import.meta.env.VITE_USE_GAMESTATE_API === 'true'
-          ? `/api/gamestate/${this.id}/move/${slug}`
-          : `/api/game/${slug}`;
+    transformGameUrl(slug) {
+      if (import.meta.env.VITE_USE_GAMESTATE_API !== 'true') {
+        return `/api/game/${slug}`;
+      }
+
+      switch (slug) {
+        case 'draw':
+        case 'points':
+        case 'faceCard':
+        case 'scuttle':
+        case 'untargetedOneOff':
+        case 'targetedOneOff':
+        case 'jack':
+        case 'counter':
+        case 'resolve':
+        case 'resolveThree':
+        case 'resolveFour':
+        case 'resolveFive':
+        case 'seven/points':
+        case 'seven/scuttle':
+        case 'seven/faceCard':
+        case 'seven/jack':
+        case 'seven/untargetedOneOff':
+        case 'seven/targetedOneOff':
+        case 'pass':
+          // add all the move-making ones here
+          return `api/game/${this.gameId}/move/${slug}`;
+        default:
+          return `/api/game/${slug}`;
+      }
+    },
+    makeSocketRequest(slug, data, method = 'POST') {
+      const url = this.transformGameUrl(slug);
       return new Promise((resolve, reject) => {
         io.socket.request(
           {
@@ -377,7 +405,10 @@ export const useGameStore = defineStore('game', {
             url,
             data,
           },
-          (res, jwres) => {
+          (_res, jwres) => {
+            if (import.meta.env.VITE_USE_GAMESTATE_API === 'true' && jwres.statusCode === 404) {
+              reject('This action is not supported yet in GameState API');
+            }
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
