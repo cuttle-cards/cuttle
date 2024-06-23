@@ -58,7 +58,10 @@ export default defineConfig(({ mode }) => {
       },
     },
     test: {
-      include: ['**/tests/unit/**/*.{j,t}s?(x)'],
+      include: ['**/tests/unit/**/*.spec.{j,t}s?(x)'],
+      globals: true,
+      environment: 'node',
+      setupFiles: ['./tests/unit/setup.vitest.js'],
     },
     build: {
       outDir: 'assets',
