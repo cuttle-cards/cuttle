@@ -4,8 +4,6 @@ import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import { sleep } from '../util/sleep';
 
-const nonGameStateAPIMoves = new Set(['concede', 'stalemate', 'reject-stalemate', 'rematch']);
-
 /**
  * @returns number of queens a given player has
  * @param player is the player object
