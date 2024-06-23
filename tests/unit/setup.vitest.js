@@ -29,8 +29,8 @@ beforeAll(() => {
 });
 
 afterAll(() => {
+  return new Promise((resolve, reject) => {
   if (sailsApp) {
-    return new Promise((resolve, reject) => {
     try {
         return Sails.lower(() => {
           console.log('\n\nSuccessfully lowered sails\n\n');
@@ -40,6 +40,7 @@ afterAll(() => {
         console.log('\n\n', err, '\n\n');
         return reject(err);
       }
-    });
-  }
+    }
+    return resolve();
+  });
 });
