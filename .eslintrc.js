@@ -8,13 +8,14 @@ const sailsGlobals = {
   cardService: true,
   gameService: true,
   userService: true,
-  //
+  // Models
   Card: true,
   Season: true,
   Match: true,
   User: true,
   Game: true,
   UserSpectatingGame: true,
+  GameStateRow: true,
 };
 
 module.exports = {
