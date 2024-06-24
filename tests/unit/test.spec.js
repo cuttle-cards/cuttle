@@ -7,7 +7,7 @@ describe('Sails basics', () => {
   it('should read from and write to the db', async () => {
     let users = await User.find();
     expect(users.length).toBe(0);
-    const newUser = await User.create({username: 'foo', encryptedPassword: 'butts'});
+    await User.create({username: 'foo', encryptedPassword: 'butts'});
   
     users = await User.find({});
     expect(users.length).toBe(1);
