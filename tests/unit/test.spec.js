@@ -4,6 +4,10 @@ import { version } from '_/package.json';
 import { initCuttleGlobals } from '_/utils/config-utils';
 
 describe('Sails basics', () => {
+  beforeEach(async () => {
+    await sails.helpers.wipeDatabase();
+  });
+
   it('should read from and write to the db', async () => {
     let users = await User.find();
     expect(users.length).toBe(0);
