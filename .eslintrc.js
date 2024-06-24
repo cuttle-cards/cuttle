@@ -119,9 +119,9 @@ module.exports = {
     // Vittest specific rules
     {
       files: ['**/tests/unit/**/*.{j,t}s?(x)'],
+      globals: sailsGlobals,
       rules: {
         ...sharedTestRules,
-        globals: sailsGlobals,
       },
     },
     // Cypress specific rules
