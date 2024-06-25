@@ -65,6 +65,11 @@ module.exports = {
     rest: false,
     shortcuts: false,
   },
+
+    //set GameStateApi to false on production
+    custom : {
+      useGameStateApi :  true,
+    }
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
    ***************************************************************************/

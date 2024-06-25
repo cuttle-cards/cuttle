@@ -80,6 +80,12 @@ module.exports = function (req, res) {
         targetCardId: req.body.targetId,
         playedBy: req.session.pNum,
       });
+      if(sails.config.custom.useGameStateApi){
+        const testSave = await sails.helpers.saveGamestate(fullGame,  1, 3, 1);
+        console.log(testSave);
+      }
+      // const testUnpack = await sails.helpers.unpackGameState();
+      // console.log(testUnpack);
       return res.ok();
     })
     .catch(function failed(err) {

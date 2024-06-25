@@ -22,5 +22,9 @@ module.exports = {
   // Needed to use custom 'select' statements using sails-disk
   models: {
     schema: true,
+  },
+  //use GameStateApi ?
+  custom : {
+    useGameStateApi : process.env.VITE_USE_GAMESTATE_API === 'true' ? true : false,
   }
 };

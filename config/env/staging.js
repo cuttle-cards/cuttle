@@ -41,4 +41,9 @@ module.exports = {
       'http://localhost:1337',
     ],
   },
+
+    //use GameStateApi ?
+    custom : {
+      useGameStateApi : true,
+    }
 };

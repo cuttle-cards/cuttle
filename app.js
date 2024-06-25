@@ -22,6 +22,9 @@
 // no matter where we actually lift from.
 process.chdir(__dirname);
 
+// Load environment variables from .env file
+require('dotenv').config();
+
 // Ensure a "sails" can be located:
 (function () {
   var sails;
