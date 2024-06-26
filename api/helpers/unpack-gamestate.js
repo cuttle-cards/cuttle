@@ -1,60 +1,5 @@
 const utils = require('../utils/convertCard');
-// const gameStateRow= {
-//   // gameId: {
-//   //   model: 'game',
-//   //   required: true,
-//   // },
-//   gameId : 12,
-//   // Which player made the move (0 if p0, 1 if p1)
-//   playedBy: 0,
-//   /**
-//    * Enum for moveType:
-//    */
-//   moveType : 3,
-//   // The card that was played
-//   playedCard : null,
-//   // The card that was targeted
-//   targetCard: null,
-//   // Cards discarded for a 4 or 5
-//   discardedCards: [],
-//   // Which turn number the move was made on
-//   turn: 0,
-//   /**
-//    * Enum for phase:
-//    * 1 - MAIN
-//    * 2 - COUNTERING
-//    * 3 - RESOLVING_THREE
-//    * 4 - RESOLVING_FOUR
-//    * 5 - RESOLVING_FIVE
-//    * 7 - RESOLVING_SEVEN
-//    */
-//   phase : 1,
-//   // Cards in p0’s hand
-//   p0Hand : ['TH', 'JD'],
-//   // Cards in p1’s hand
-//   p1Hand: ['7H', 'KD'],
-//   // Cards in p0’s points
-//   p0Points: ['3D', '4S(JS-p0)', 'TH(JH-p0,JC-p1,JD-p0)'],
-
-//   // Cards in p1’s points
-//   p1Points : ['TH(JH-p0,JC-p1,JD-p0)'],
-//   // Cards in p0’s face cards
-//   p0FaceCards : ['KH'],
-//   // Cards in p1’s face cards
-//   p1FaceCards : ['QD'],
-//   // Cards in the deck, in order
-//   deck : ['7H', 'KD' , '9D', '6D', '4D', '3D'],
-//   // Cards in the scrap
-//   scrap : ['7H', 'KD' , '9D', '6D', '4D', '3D'],
-//   // One-off card
-//   oneOff :null,
-//   // One-off target card
-//   oneOffTarget :null,
-//   // Twos
-//   twos :null,
-//   // Resolving card
-//   resolving :null,
-// };
+//const Player = require('../models/Player');
 
 module.exports = {
   friendlyName: 'unpack GameState',
@@ -67,14 +12,19 @@ module.exports = {
       description: 'GameStateRow - record from the database',
       required: true,
     },    
-    game: {
-      type: 'ref',
-      description: 'Game',
+    p0Id: {
+      type: 'number',
+      description: 'player0Id',
+      required: true,
+    },
+    p1Id: {
+      type: 'number',
+      description: 'player0Id',
       required: true,
     },
   },
 
-  fn: async ({gameStateRow, game }, exits) => {
+  fn: async ({gameStateRow, p0Id, p1Id  }, exits) => {
       try{
 
         const attributesToConvert = [
@@ -85,9 +35,12 @@ module.exports = {
       const allPromises = attributesToConvert.map(attribute => {
           const value = gameStateRow[attribute];
           if (value !== null && value !== undefined) {
+              // single card
               if (typeof value === 'string') {
                   return utils.convertStringToCard(value, gameStateRow.gameId);
-              } else if (Array.isArray(value)) {
+              } 
+               // Array of cards
+              else if (Array.isArray(value)) {
                   return Promise.all(value.map(card => utils.convertStringToCard(card, gameStateRow.gameId)));
               }
           }
@@ -99,22 +52,27 @@ module.exports = {
           playedCard, targetCardId, targetCard2Id, oneOff, oneOffTarget, twos, resolving
       ] = await Promise.all(allPromises);
 
+      const p0Data ={ 
+        pNum : 0, 
+        hand : p0Hand, 
+        points : p0Points, 
+        faceCards : p0FaceCards,
+        id : p0Id
+      };
+      const updatedP0 = await Player.create( p0Data).fetch();  
 
-        const p0 =  new Player ({ id:0, 
-                                  hand: p0Hand, 
-                                  points: p0Points, 
-                                  faceCards :p0FaceCards, //TODO USER
-                                });
-
-        const p1 =  new Player ({ id:1, 
-                                  hand: p1Hand, 
-                                  points: p1Points, 
-                                  faceCards :p1FaceCards,
-                                });
+        const p1Data = { 
+          pNum : 1, 
+          hand : p1Hand, 
+          points : p1Points, 
+          faceCards : p1FaceCards,
+          id: p1Id
+        };
+        const updatedP1 = await Player.create( p1Data).fetch();  
 
         const convertedData ={   
-                                  p0 :p0,
-                                  p1 : p1,
+                                  p0 : updatedP0,
+                                  p1 : updatedP1,
                                   deck : deck,
                                   scrap : scrap,
                                   playedCard :playedCard,
@@ -141,23 +99,23 @@ module.exports = {
 };
 
 
-class Player{
-  //int
-  id = null;
-  //String
-  name =  null;
-  //Array<Card>
-  hand = null;
-  //Array<Card>
-  points = null;
-  //Array<Card>
-  faceCards = null;
+// class Player{
+//   //int
+//   id = null;
+//   //String
+//   name =  null;
+//   //Array<Card>
+//   hand = null;
+//   //Array<Card>
+//   points = null;
+//   //Array<Card>
+//   faceCards = null;
 
-  constructor(player) {
-      this.hand = player.hand ? player.hand : null; 
-      this.points = player.points ? player.points :null; 
-      this.faceCards = player.faceCards ? player.faceCards :null;
-      this.name = player.name ? player.name :null; 
-      this.id = player.id ? player.id :null;
-  }
-}
+//   constructor(player) {
+//       this.hand = player.hand ? player.hand : null; 
+//       this.points = player.points ? player.points :null; 
+//       this.faceCards = player.faceCards ? player.faceCards :null;
+//       this.name = player.name ? player.name :null; 
+//       this.id = player.id ? player.id :null;
+//   }
+// }

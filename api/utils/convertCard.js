@@ -73,7 +73,7 @@ function rankAndSuitToCardId (str){
  * @returns {string} string representation of the card atatchements attributs
  */
  function concatAttachtToString(card, playedBy){
-    if( card.attachments === null || card.attachments === undefined){
+    if( card.attachments === null || card.attachments === undefined || card.attachments.length === 0){
         return '';
     }
 

@@ -109,6 +109,7 @@ module.exports = {
         UserSpectatingGame: true,
         GameStateRow: true,
         GameState: true,
+        Player:true
       },
       rules: {
         'no-undef': 'error',

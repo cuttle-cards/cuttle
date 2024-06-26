@@ -2,7 +2,7 @@ module.exports = {
   attributes: {
     // FK to the games table
     gameId: {
-      type: 'number',
+      model: 'game',
       required: true,
     },
     // Which player made the move (0 if p0, 1 if p1)
@@ -78,11 +78,11 @@ module.exports = {
     },
     // Cards in the deck, in order
     deck: {
-      type: 'ref'
+      type: 'ref',
     },
     // Cards in the scrap
     scrap: {
-      type: 'ref'
+      type: 'ref',
     },
     // One-off card
     oneOff: {
