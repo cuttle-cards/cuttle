@@ -6,8 +6,9 @@ describe('Game Basic Moves - P0 Perspective', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
   });
-
+  
   it('Plays Points', () => {
+
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
@@ -16,6 +17,11 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
+    });
+    //testGamestateAPI Unpacking
+    cy.window().its('cuttle.gameStore').then((game) => {
+      cy.log('testGamestateAPI');
+      cy.testGameStatePacking(game);
     });
 
     // Play points (ace of spades)
@@ -181,6 +187,12 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1FaceCards: [],
     });
 
+        //testGamestateAPI Unpacking
+        cy.window().its('cuttle.gameStore').then((game) => {
+          cy.log('testGamestateAPI');
+          cy.testGameStatePacking(game);
+        });
+
     // Player plays king
     cy.get('[data-player-hand-card=13-0]').click(); // king of clubs
     cy.get('[data-move-choice=faceCard]').click();
@@ -267,7 +279,11 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1FaceCards: [Card.QUEEN_OF_HEARTS],
       scrap: [],
     });
-
+    //testGamestateAPI Unpacking
+    cy.window().its('cuttle.gameStore').then((game) => {
+      cy.log('testGamestateAPI');
+      cy.testGameStatePacking(game);
+    });
     // Player is now prevented from playing a jack
     cy.get('[data-player-hand-card=11-1]').click();
     cy.get('[data-move-choice=jack]')
@@ -453,6 +469,11 @@ describe('Playing 8s', () => {
       p1Points: [Card.ACE_OF_DIAMONDS],
       p1FaceCards: [],
     });
+        //testGamestateAPI Unpacking
+        cy.window().its('cuttle.gameStore').then((game) => {
+          cy.log('testGamestateAPI');
+          cy.testGameStatePacking(game);
+        });
 
     // Attempt to play eight out of turn for points
     cy.get('[data-player-hand-card=8-2]').click();
