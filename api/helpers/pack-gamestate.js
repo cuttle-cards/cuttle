@@ -52,11 +52,8 @@ module.exports = {
 
         const combinedData = {...gameState, ...convertedData };
 
-        console.log(combinedData);
-
         return exits.success(combinedData);
     } catch (err) {
-        console.log(err);
         return exits.error(err.message); 
     }
 

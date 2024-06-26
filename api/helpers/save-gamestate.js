@@ -29,16 +29,9 @@ module.exports = {
   fn: async ({game, playedBy, moveType, phase}, exits) => {
 
     try {
-        // const addedInfos = {gameId: game.id, playedBy : playedBy, moveType : moveType,phase : phase }; 
-        // const merged = {...game, ...addedInfos};
-        // const gameState = await GameState.create(merged).fetch();
-        // const gameStateRowData = await sails.helpers.packGamestate(gameState);
-        // console.log(gameStateRowData);
-        //const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
     
-        return exits.success(true);
+        return exits.success();
     } catch (err) {
-        console.log(err);
         return exits.error(err);
     }
   },

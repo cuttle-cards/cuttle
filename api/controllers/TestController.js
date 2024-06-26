@@ -111,33 +111,18 @@ module.exports = {
           const merged = {...game, ...addedInfos};
           // create gamestate
           const gameState = await GameState.create(merged).fetch();
-          console.log(gameState);
 
           // create gamestateRow
           const gameStateRowData = await sails.helpers.packGamestate(gameState);
           const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
-          // p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-          // p0Points: [Card.TEN_OF_SPADES],
-          // p0FaceCards: [Card.KING_OF_SPADES],
-          // p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          // p1Points: [Card.TEN_OF_HEARTS],
-          // p1FaceCards: [Card.KING_OF_HEARTS],
-
-          // res.p0Hand = ['AS', 'AC'];
-          // res.p0Points = ['TS'];
-          // res.p0FaceCards = ['KS'];
-          // res.p1Hand = ['AH', 'AD'];
-          // res.p1Points = ['TH'];
-          // res.p1FaceCards = ['KH'];
 
           // turn gamestateRow back to a gamestate
           await GameState.destroyOne(gameState.id);
           const gameStateConverted = await sails.helpers.unpackGamestate(gameStateRow, 
                                                                             game.players[0].id, 
                                                                             game.players[1].id);
-          console.log(gameStateConverted);
 
-          return res.json(gameStateRow);
+          return res.json({gameState, gameStateRow, gameStateConverted});
 
       } catch (err) {
         return res.serverError(err);

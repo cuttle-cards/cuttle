@@ -1551,20 +1551,6 @@ Cypress.Commands.add('testGameStatePacking', (game) => {
         return reject(new Error('Failed to load season'));
       }
       cy.log(res);
-      //assertGameStateAPi(res);
-      // p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-      // p0Points: [Card.TEN_OF_SPADES],
-      // p0FaceCards: [Card.KING_OF_SPADES],
-      // p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      // p1Points: [Card.TEN_OF_HEARTS],
-      // p1FaceCards: [Card.KING_OF_HEARTS],
-
-      // res.p0Hand = ['AS', 'AC'];
-      // res.p0Points = ['TS'];
-      // res.p0FaceCards = ['KS'];
-      // res.p1Hand = ['AH', 'AD'];
-      // res.p1Points = ['TH'];
-      // res.p1FaceCards = ['KH'];
 
       return resolve(res);
     });
