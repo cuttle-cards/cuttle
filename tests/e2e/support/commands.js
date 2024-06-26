@@ -7,7 +7,7 @@ import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtu
 const io = require('sails.io.js')(require('socket.io-client'));
 io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
-const env = Cypress.env('gameStateApi');
+const env = Cypress.env('gameStateAPI');
 
 const transformGameUrl = (api, slug) => {
   if (env !== 'true') {
