@@ -121,7 +121,7 @@ Cypress.Commands.add('loadFinishedGameFixtures', (games) => {
 });
 
 Cypress.Commands.add('requestGameList', () => {
-  makeSocketRequest('game', 'getList', null);
+  makeSocketRequest('game', 'getList');
 });
 
 /**
