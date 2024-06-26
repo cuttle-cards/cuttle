@@ -9,6 +9,9 @@ module.exports = defineConfig({
     excludeSpecPattern: ['tests/e2e/specs/playground.spec.js'],
     supportFile: 'tests/e2e/support/index.js',
   },
+  env: {
+    gameStateAPI: process.env.VITE_USE_GAMESTATE_API || 'false',
+  },
   // Retry tests 2 times headlessly, no retries in UI
   retries: {
     runMode: 2,

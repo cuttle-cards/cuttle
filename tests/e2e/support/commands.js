@@ -1,15 +1,70 @@
 import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
 
-const gameStateApiError = 'This action is not supported yet in GameState API';
-
 /**
  * Require & configure socket connection to server
  */
 const io = require('sails.io.js')(require('socket.io-client'));
 io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
+const env = Cypress.env('gameStateApi');
 
+const transformGameUrl = (api, slug) => {
+  if (env !== 'true') {
+    return `/api/${api}/${slug}`;
+  }
+  cy.window()
+    .its('cuttle.gameStore.id')
+    .then((gameId) => {
+      switch (slug) {
+        case 'draw':
+        case 'points':
+        case 'faceCard':
+        case 'scuttle':
+        case 'untargetedOneOff':
+        case 'targetedOneOff':
+        case 'jack':
+        case 'counter':
+        case 'resolve':
+        case 'resolveThree':
+        case 'resolveFour':
+        case 'resolveFive':
+        case 'seven/points':
+        case 'seven/scuttle':
+        case 'seven/faceCard':
+        case 'seven/jack':
+        case 'seven/untargetedOneOff':
+        case 'seven/targetedOneOff':
+        case 'pass':
+          // add all the move-making ones here
+          return `api/game/${gameId}/move/${slug}`;
+        default:
+          return `/api/${api}/${slug}`;
+      }
+    });
+};
+
+const makeSocketRequest = (api, slug, data, method = 'POST') => {
+  const url = transformGameUrl(api, slug);
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.request(
+      {
+        method,
+        url,
+        data,
+      },
+      function handleResponse(res, jwres) {
+        if (env === 'true' && jwres.statusCode === 404) {
+          reject('This action is not supported yet in GameState API');
+        }
+        if (jwres.statusCode !== 200) {
+          return reject(jwres.error?.message);
+        }
+        return resolve(res);
+      },
+    );
+  });
+};
 // Pass error logs to the terminal console
 // See https://github.com/cypress-io/cypress/issues/3199#issuecomment-1019270203
 // Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
@@ -66,11 +121,7 @@ Cypress.Commands.add('loadFinishedGameFixtures', (games) => {
 });
 
 Cypress.Commands.add('requestGameList', () => {
-  return new Cypress.Promise((resolve) => {
-    io.socket.get('/api/game/getList', function () {
-      return resolve();
-    });
-  });
+  makeSocketRequest('game', 'getList', null);
 });
 
 /**
@@ -169,20 +220,9 @@ Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
 });
 
 Cypress.Commands.add('signupOpponent', (opponent) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.get(
-      'localhost:1337/api/user/signup',
-      {
-        username: opponent.username,
-        password: opponent.password,
-      },
-      function (res, jwres) {
-        if (jwres.statusCode !== 200) {
-          return reject(new Error('Failed to sign up via command'));
-        }
-        return resolve(res);
-      },
-    );
+  makeSocketRequest('user', 'signup', {
+    username: opponent.username,
+    password: opponent.password,
   });
 });
 Cypress.Commands.add('signupPlayer', (player) => {
@@ -199,19 +239,8 @@ Cypress.Commands.add('loginPlayer', (player) => {
 });
 
 Cypress.Commands.add('createGameOpponent', (name) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.post(
-      '/api/game/create',
-      {
-        gameName: name,
-      },
-      function handleResponse(resData, jwres) {
-        if (jwres.statusCode === 200) {
-          return resolve(resData);
-        }
-        return reject(new Error('Error creating game', resData));
-      },
-    );
+  makeSocketRequest('game', 'create', {
+    gameName: name,
   });
 });
 
@@ -222,84 +251,26 @@ Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
     .then((store) => store.requestCreateGame({ gameName, isRanked }));
 });
 
-Cypress.Commands.add('subscribeOpponent', (id) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.get(
-      '/api/game/subscribe',
-      {
-        gameId: id,
-      },
-      function handleResponse(_res, jwres) {
-        if (jwres.statusCode === 200) {
-          return resolve();
-        }
-        const errMessage = jwres?.message ?? jwres?.error ?? 'Unknown error';
-        return reject(new Error(`Error subscribing opponent to game ${id}: ${errMessage}`));
-      },
-    );
-  });
+Cypress.Commands.add('subscribeOpponent', (gameId) => {
+  makeSocketRequest('game', 'subscribe', { gameId });
 });
 
-Cypress.Commands.add('setOpponentToSpectate', (id) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.get(
-      '/api/game/spectate',
-      {
-        gameId: id,
-      },
-      function handleResponse(res, jwres) {
-        if (jwres.statusCode === 200) {
-          return resolve();
-        }
-        return reject(new Error('error spectating'));
-      },
-    );
-  });
+Cypress.Commands.add('setOpponentToSpectate', (gameId) => {
+  makeSocketRequest('game', 'spectate', { gameId });
 });
 
 Cypress.Commands.add('setOpponentToLeaveSpectate', () => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.get('/api/game/spectateLeave', function handleResponse(res, jwres) {
-      if (jwres.statusCode === 200) {
-        return resolve();
-      }
-      return reject(new Error('error leaving spectated game'));
-    });
-  });
+  makeSocketRequest('game', 'spectateLeave', null);
 });
 
 Cypress.Commands.add('readyOpponent', (id) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.get(
-      '/api/game/ready',
-      {
-        id,
-      },
-      function handleResponse(res, jwres) {
-        if (jwres.statusCode === 200) {
-          return resolve();
-        }
-        return reject(new Error('error readying up opponent'));
-      },
-    );
-  });
+  makeSocketRequest('game', 'ready', { id });
 });
+
 Cypress.Commands.add('setIsRankedOpponent', (isRanked) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.post(
-      '/api/game/setIsRanked',
-      {
-        isRanked,
-      },
-      (res, jwres) => {
-        if (jwres.statusCode === 200) {
-          return resolve(res);
-        }
-        return reject(new Error('Error Changing game mode'));
-      },
-    );
-  });
+  makeSocketRequest('game', 'setIsRanked', { isRanked });
 });
+
 Cypress.Commands.add('toggleInput', (selector, checked = false) => {
   const before = checked ? 'be.checked' : 'not.be.checked';
   const after = checked ? 'not.be.checked' : 'be.checked';
@@ -310,14 +281,7 @@ Cypress.Commands.add('toggleInput', (selector, checked = false) => {
 });
 
 Cypress.Commands.add('leaveLobbyOpponent', (id) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.get('/api/game/leaveLobby', { id }, function handleResponse(_, jwres) {
-      if (jwres.statusCode === 200) {
-        return resolve();
-      }
-      return reject(new Error('error on opponent leaving lobby'));
-    });
-  });
+  makeSocketRequest('game', 'leaveLobby', { id });
 });
 
 /**
@@ -327,37 +291,17 @@ Cypress.Commands.add('leaveLobbyOpponent', (id) => {
  *   userFixture should be imported from the userFixtures.js file
  */
 Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.get('/api/user/reLogin', userFixture, function handleResponse(res, jwres) {
-      if (jwres.statusCode !== 200 || res === false) {
-        return reject(new Error('error recovering session'));
-      }
-      return resolve();
-    });
-  });
+  makeSocketRequest('user', 'reLogin', userFixture);
 });
 
 Cypress.Commands.add('drawCardOpponent', () => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.get('/api/game/draw', function handleResponse(res, jwres) {
-      if (jwres.statusCode === 200) {
-        return resolve();
-      }
-      return reject(new Error('error requesting opponent draw card'));
-    });
-  });
+  makeSocketRequest('game', 'draw', null);
 });
 
 /**
  * @param card {suit: number, rank: number}
  */
 Cypress.Commands.add('playPointsOpponent', (card) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent points: Invalid card input');
   }
@@ -372,18 +316,7 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
         );
       }
       const cardId = foundCard.id;
-      io.socket.get(
-        '/api/game/points',
-        {
-          cardId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'points', { cardId });
     });
 });
 
@@ -391,9 +324,6 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
  * @param card {suit: number, rank: number}
  */
 Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent points: Invalid card input');
   }
@@ -408,46 +338,18 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
         );
       }
       const cardId = foundCard.id;
-      io.socket.get(
-        '/api/game/points',
-        {
-          cardId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'points', { cardId });
     });
 });
 
 Cypress.Commands.add('playPointsById', (cardId) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
-  return io.socket.get(
-    '/api/game/points',
-    {
-      cardId,
-    },
-    function handleResponse(_, jwres) {
-      if (jwres.statusCode !== 200) {
-        throw new Error(jwres.body.message);
-      }
-      return jwres;
-    },
-  );
+  makeSocketRequest('game', 'points', { cardId });
 });
 
 /**
  * @param card {suit: number, rank: number}
  */
 Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent one-off as spectator: Invalid card input');
   }
@@ -462,20 +364,8 @@ Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
         );
       }
       const cardId = foundCard.id;
-      const opponentId = game.players[(pNum + 1) % 2].id;
-      io.socket.get(
-        '/api/game/untargetedOneOff',
-        {
-          cardId,
-          opId: opponentId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      const opId = game.players[(pNum + 1) % 2].id;
+      makeSocketRequest('game', 'untargetedOneOff', { cardId, opId });
     });
 });
 
@@ -483,9 +373,6 @@ Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
  * @param card {suit: number, rank: number}
  */
 Cypress.Commands.add('playFaceCardOpponent', (card) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent Face Card: Invalid card input');
   }
@@ -500,18 +387,7 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
         );
       }
       const cardId = foundCard.id;
-      io.socket.get(
-        '/api/game/faceCard',
-        {
-          cardId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'faceCard', { cardId });
     });
 });
 
@@ -520,9 +396,6 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
  * @param target {suit: number, rank: number}
  */
 Cypress.Commands.add('playJackOpponent', (card, target) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent face card: Invalid card input');
   }
@@ -546,20 +419,7 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
       }
       const cardId = foundCard.id;
       const targetId = foundTarget.id;
-      io.socket.get(
-        '/api/game/jack',
-        {
-          opId: player.id,
-          cardId,
-          targetId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'jack', { opId: player.id, cardId, targetId });
     });
 });
 
@@ -568,9 +428,6 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
  * @param target {suit: number, rank: number}
  */
 Cypress.Commands.add('scuttleOpponent', (card, target) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot scuttle as opponent: Invalid card input');
   }
@@ -592,27 +449,15 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
           `Error scuttling as opponent: could not find ${target.rank} of ${target.suit} in player's points`,
         );
       }
-      io.socket.get(
-        '/api/game/scuttle',
-        {
-          opId: player.id,
-          cardId: foundCard.id,
-          targetId: foundTarget.id,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'scuttle', {
+        opId: player.id,
+        cardId: foundCard.id,
+        targetId: foundTarget.id,
+      });
     });
 });
 
 Cypress.Commands.add('playOneOffOpponent', (card) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot scuttle as opponent: Invalid card input');
   }
@@ -633,19 +478,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
           `Error playing untargetted one-off as opponent: ${printCard(card)} is not a valid oneOff`,
         );
       }
-      io.socket.get(
-        '/api/game/untargetedOneOff',
-        {
-          opId: playerId, // opponent's opponent is the player
-          cardId: foundCard.id,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'untargetedOneOff', { opId: playerId, cardId: foundCard.id });
     });
 });
 
@@ -655,9 +488,6 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
  * @param targetType string 'faceCard' | 'point' | 'jack'
  */
 Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play targeted one-off as opponent: Invalid card input');
   }
@@ -713,22 +543,13 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
           'Error playing targeted one-off as opponent: could not find point card in player field',
         );
       }
-      io.socket.get(
-        '/api/game/targetedOneOff',
-        {
-          opId: playerId, // opponent's opponent is the player
-          targetId: foundTarget.id,
-          cardId: foundCard.id,
-          pointId: foundPointCard ? foundPointCard.id : null,
-          targetType,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'targetedOneOff', {
+        opId: playerId, // opponent's opponent is the player
+        targetId: foundTarget.id,
+        cardId: foundCard.id,
+        pointId: foundPointCard ? foundPointCard.id : null,
+        targetType,
+      });
     });
 });
 
@@ -736,9 +557,6 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
  * @param card {suit: number, rank: number}
  */
 Cypress.Commands.add('counterOpponent', (card) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play counter as opponent: Invalid card input');
   }
@@ -747,7 +565,7 @@ Cypress.Commands.add('counterOpponent', (card) => {
     .its('cuttle.gameStore')
     .then((game) => {
       const opponent = game.players[(game.myPNum + 1) % 2];
-      const playerId = game.players[game.myPNum].id;
+      const opId = game.players[game.myPNum].id;
       const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
         throw new Error(
@@ -755,26 +573,11 @@ Cypress.Commands.add('counterOpponent', (card) => {
         );
       }
       const cardId = foundCard.id;
-      io.socket.get(
-        '/api/game/counter',
-        {
-          cardId,
-          opId: playerId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'counter', { cardId, opId });
     });
 });
 
 Cypress.Commands.add('resolveFiveOpponent', (card) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (card && !hasValidSuitAndRank(card)) {
     throw new Error('Cannot resolve five as opponent: Invalid card input');
   }
@@ -789,25 +592,11 @@ Cypress.Commands.add('resolveFiveOpponent', (card) => {
         );
       }
       const cardId = foundCard?.id ?? null;
-      io.socket.get(
-        '/api/game/resolveFive',
-        {
-          cardId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'resolveFive', { cardId });
     });
 });
 
 Cypress.Commands.add('resolveThreeOpponent', (card) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot resolve three as opponent: Invalid card input');
   }
@@ -823,43 +612,17 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
         );
       }
       const cardId = foundCard.id;
-      io.socket.get(
-        '/api/game/resolveThree',
-        {
-          cardId,
-          opId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'resolveThree', { cardId, opId });
     });
 });
 
 Cypress.Commands.add('resolveOpponent', () => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   return cy
     .window()
     .its('cuttle.gameStore')
     .then((game) => {
       const opId = game.players[game.myPNum].id;
-      io.socket.get(
-        '/api/game/resolve',
-        {
-          opId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'resolve', { opId });
     });
 });
 
@@ -869,9 +632,6 @@ Cypress.Commands.add('resolveOpponent', () => {
  * @param card2 {suit: number, rank: number} OPTIONAL
  */
 Cypress.Commands.add('discardOpponent', (card1, card2) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   return cy
     .window()
     .its('cuttle.gameStore')
@@ -884,23 +644,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       if (card2) {
         [cardId2] = getCardIds(game, [card2]);
       }
-      io.socket.get(
-        '/api/game/resolveFour',
-        {
-          cardId1,
-          cardId2,
-        },
-        function handleResponse(res, jwres) {
-          try {
-            if (jwres.statusCode !== 200) {
-              throw new Error(jwres.body.message);
-            }
-            return jwres;
-          } catch (err) {
-            return err;
-          }
-        },
-      );
+      makeSocketRequest('game', 'resolveFour', { cardId1, cardId2 });
     });
 });
 
@@ -908,9 +652,6 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
  * @param card {suit: number, rank: number}
  */
 Cypress.Commands.add('playPointsFromSevenOpponent', (card) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent points: Invalid card input');
   }
@@ -940,19 +681,7 @@ Cypress.Commands.add('playPointsFromSevenOpponent', (card) => {
       }
 
       const cardId = foundCard.id;
-      io.socket.get(
-        '/api/game/seven/points',
-        {
-          cardId,
-          index,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'seven/points', { cardId, index });
     });
 });
 
@@ -960,9 +689,6 @@ Cypress.Commands.add('playPointsFromSevenOpponent', (card) => {
  * @param card {suit: number, rank: number}
  */
 Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent face card: Invalid card input');
   }
@@ -992,19 +718,7 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
       }
 
       const cardId = foundCard.id;
-      io.socket.get(
-        '/api/game/seven/faceCard',
-        {
-          cardId,
-          index,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'seven/faceCard', { cardId, index });
     });
 });
 
@@ -1013,9 +727,6 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
  * @param target {suit: number, rank: number}
  */
 Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent points: Invalid card input');
   }
@@ -1055,21 +766,12 @@ Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
 
       const cardId = foundCard.id;
       const targetId = foundTarget.id;
-      io.socket.get(
-        '/api/game/seven/scuttle',
-        {
-          cardId,
-          index,
-          targetId,
-          opId: player.id,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'seven/scuttle', {
+        cardId,
+        index,
+        targetId,
+        opId: player.id,
+      });
     });
 });
 
@@ -1078,9 +780,6 @@ Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
  * @param target {suit: number, rank: number
  */
 Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent points: Invalid card input');
   }
@@ -1131,22 +830,12 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
       } else {
         targetId = -1;
       }
-
-      io.socket.get(
-        '/api/game/seven/jack',
-        {
-          cardId,
-          index,
-          targetId,
-          opId: player.id,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'seven/jack', {
+        cardId,
+        index,
+        targetId,
+        opId: player.id,
+      });
     });
 });
 
@@ -1154,9 +843,6 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
  * @param card {suit: number, rank: number}
  */
 Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error('Cannot play opponent one-ff from seven: Invalid card input');
   }
@@ -1186,27 +872,15 @@ Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
       }
       const playerId = game.players[game.myPNum].id;
       const cardId = foundCard.id;
-      io.socket.get(
-        '/api/game/seven/untargetedOneOff',
-        {
-          cardId,
-          index,
-          opId: playerId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'seven/untargetedOneOff', {
+        cardId,
+        index,
+        opId: playerId,
+      });
     });
 });
 
 Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targetType) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   if (!hasValidSuitAndRank(card)) {
     throw new Error(
       `Cannot play targeted one-off from seven for opponent: Invalid card to play: ${JSON.stringify(card)}`,
@@ -1287,99 +961,47 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
       const cardId = foundCard.id;
       const targetId = foundTarget.id;
       const pointId = foundPointCard ? foundPointCard.id : null;
-      io.socket.get(
-        '/api/game/seven/targetedOneOff',
-        {
-          cardId,
-          index,
-          targetId,
-          targetType,
-          pointId,
-          opId: playerId,
-        },
-        function handleResponse(res, jwres) {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.body.message);
-          }
-          return jwres;
-        },
-      );
+      makeSocketRequest('game', 'seven/targetedOneOff', {
+        cardId,
+        index,
+        targetId,
+        targetType,
+        pointId,
+        opId: playerId,
+      });
     });
 });
 
 Cypress.Commands.add('passOpponent', () => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   cy.log('Opponent Passes');
-  io.socket.get('/api/game/pass', function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-    return jwres;
-  });
+  makeSocketRequest('game', 'pass', null);
 });
 
 Cypress.Commands.add('concedeOpponent', () => {
-  return new Cypress.Promise((resolve) => {
-    io.socket.get('/api/game/concede', function handleResponse(res, jwres) {
-      if (jwres.statusCode !== 200) {
-        throw new Error(jwres.body.message);
-      }
-      return resolve(jwres);
-    });
-  });
+  makeSocketRequest('game', 'concede', null);
 });
 
 Cypress.Commands.add('stalemateOpponent', () => {
   cy.log('Opponent requests/accepts stalemate');
-  io.socket.get('/api/game/stalemate', function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-    return jwres;
-  });
+  makeSocketRequest('game', 'stalemate', null);
 });
 
 Cypress.Commands.add('rejectStalemateOpponent', () => {
   cy.log('Opponent rejects stalemate request');
-  io.socket.get('/api/game/reject-stalemate', function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-    return jwres;
-  });
+  makeSocketRequest('game', 'reject-stalemate', null);
 });
 
 Cypress.Commands.add('reconnectOpponent', (opponent) => {
   cy.log('Opponent Reconnects');
-  io.socket.get(
-    '/api/user/reLogin',
-    {
-      username: opponent.username,
-      password: opponent.password,
-    },
-    function handleResponse(res, jwres) {
-      if (jwres.statusCode !== 200) {
-        throw new Error(`Error reconnecting opponent: ${jwres.body.message}`);
-      }
-    },
-  );
+  makeSocketRequest('user', 'relogin', {
+    username: opponent.username,
+    password: opponent.password,
+  });
 });
 
 Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
-  io.socket.get('/api/game/rematch', { gameId, rematch: true }, function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-
-    io.socket.get('/api/game/join-rematch', { oldGameId: gameId }, function handleResponse(res, jwres) {
-      if (jwres.statusCode !== 200) {
-        throw new Error(jwres.body.message);
-      }
-      return Promise.resolve(jwres);
-    });
-  });
+  makeSocketRequest('game', 'rematch', { gameId, rematch: true });
+  makeSocketRequest('game', 'join-rematch', { oldGameId: gameId });
 });
 
 /**
@@ -1395,13 +1017,7 @@ Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
  *  is originalP0 ('my') or originalP1 ('opponent'). For use when spectating
  */
 Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDomAssertion }) => {
-  io.socket.get('/api/game/rematch', { gameId, rematch }, function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-
-    return Promise.resolve(jwres);
-  });
+  makeSocketRequest('game', 'rematch', { gameId, rematch });
 
   if (skipDomAssertion) {
     return;
@@ -1428,12 +1044,7 @@ Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDom
 });
 
 Cypress.Commands.add('joinRematchOpponent', ({ oldGameId = null }) => {
-  io.socket.get('/api/game/join-rematch', { oldGameId }, function handleResponse(res, jwres) {
-    if (jwres.statusCode !== 200) {
-      throw new Error(jwres.body.message);
-    }
-    return Promise.resolve(jwres);
-  });
+  makeSocketRequest('game', 'join-rematch', { oldGameId });
 });
 
 /**
@@ -1489,9 +1100,6 @@ Cypress.Commands.add('vueRoute', (route) => {
  * }
  */
 Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
-  if (Cypress.env('CYPRESS_USE_GAMESTATE_API')) {
-    throw new Error(gameStateApiError);
-  }
   return cy
     .window()
     .its('cuttle.gameStore')
@@ -1533,12 +1141,7 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
         reqBody.deck = deck;
       }
 
-      io.socket.get('/api/game/loadFixture', reqBody, function handleResponse(res, jwres) {
-        if (jwres.statusCode !== 200) {
-          return Promise.reject(jwres.error);
-        }
-        return Promise.resolve(jwres);
-      });
+      makeSocketRequest('game', 'loadFixture', reqBody);
       const playerHandLength = pNum === 0 ? p0HandCardIds.length : p1HandCardIds.length;
       cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
     });
