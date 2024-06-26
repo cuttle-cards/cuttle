@@ -58,7 +58,7 @@ const makeSocketRequest = (api, slug, data, method = 'POST') => {
           reject('This action is not supported yet in GameState API');
         }
         if (jwres.statusCode !== 200) {
-          return reject(jwres.error?.message);
+          return reject(jwres.error.message);
         }
         return resolve(res);
       },
