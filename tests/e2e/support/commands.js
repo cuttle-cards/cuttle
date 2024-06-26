@@ -88,36 +88,15 @@ Cypress.Commands.add('setBadSession', () => {
 });
 
 Cypress.Commands.add('loadSeasonFixture', (season) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/api/test/loadSeasonFixture', season, function (res, jwres) {
-      if (jwres.statusCode !== 200) {
-        return reject(new Error('Failed to load season'));
-      }
-      return resolve(res);
-    });
-  });
+  cy.makeSocketRequest('test', 'loadSeasonFixture', season);
 });
 
 Cypress.Commands.add('loadMatchFixtures', (matches) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/api/test/loadMatchFixtures', matches, function (res, jwres) {
-      if (jwres.statusCode !== 200) {
-        return reject(new Error('Error loading match fixtures'));
-      }
-      return resolve();
-    });
-  });
+  cy.makeSocketRequest('test', 'loadMatchFixture', matches);
 });
 
 Cypress.Commands.add('loadFinishedGameFixtures', (games) => {
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/api/test/loadFinishedGameFixtures', games, function (res, jwres) {
-      if (jwres.statusCode !== 200) {
-        return reject(new Error('Error loading game fixtures'));
-      }
-      return resolve();
-    });
-  });
+  cy.makeSocketRequest('test', 'loadFinishedGameFixtures', games);
 });
 
 Cypress.Commands.add('requestGameList', () => {
