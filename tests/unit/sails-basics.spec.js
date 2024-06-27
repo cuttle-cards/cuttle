@@ -1,9 +1,63 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeAll, afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import devtools from '@vue/devtools';
 import { version } from '_/package.json';
 import { initCuttleGlobals } from '_/utils/config-utils';
+// import Sails from 'sails';
+const SailsServer = require('sails').constructor;
+// const SailsServer = Sails.Sails;
 
 describe('Sails basics', () => {
+
+let sailsApp;
+
+beforeAll(() => {
+  return new Promise((resolve, reject) => {
+    sailsApp = new SailsServer();
+    sailsApp.lift({
+      environment: 'development',
+      port: 1337,
+      log: {
+        level: 'error'
+      },
+      hooks: {
+        grunt: false
+      },
+    }, (err, server) => {
+
+      
+      if (err) {
+        console.log('Sails error on bootwith error');
+        console.log('\n\n', err, '\n\n');
+        return reject(err);
+      }
+      
+      console.log('\n\nBooted sails\n\n');
+      sailsApp = server;
+      return resolve();
+    });
+    // console.log('Somehow skipped sails lift callback without error');
+    // return resolve();
+  });
+});
+
+  afterAll(() => {
+    return new Promise((resolve, reject) => {
+      if (!sailsApp){
+        return resolve();
+      }
+      try {
+          sailsApp.lower(() => {
+            console.log('\n\nSuccessfully lowered sails\n\n');
+            return resolve();
+          });
+        } catch (err) {
+          console.log('\nFailed to lower sails\n');
+          console.log(err, '\n\n');
+          return reject(err);
+        }
+    });
+  });
+
   beforeEach(async () => {
     await sails.helpers.wipeDatabase();
   });
