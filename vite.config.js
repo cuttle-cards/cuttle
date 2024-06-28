@@ -59,9 +59,6 @@ export default defineConfig(({ mode }) => {
     },
     test: {
       include: ['**/tests/unit/specs/**/*.spec.{j,t}s?(x)'],
-      poolOptions: {
-        threads: false,
-      },
       threads: false,
       globals: true,
       environment: 'node',
