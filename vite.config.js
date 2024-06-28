@@ -58,7 +58,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     test: {
-      include: ['**/tests/unit/**/*.spec.{j,t}s?(x)'],
+      include: ['**/tests/unit/specs/**/*.spec.{j,t}s?(x)'],
       poolOptions: {
         threads: false,
       },

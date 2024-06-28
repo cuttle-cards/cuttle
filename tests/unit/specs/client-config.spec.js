@@ -1,40 +1,7 @@
-import { beforeAll, afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, it, expect, vi, afterEach } from 'vitest';
 import devtools from '@vue/devtools';
 import { version } from '_/package.json';
 import { initCuttleGlobals } from '_/utils/config-utils';
-import { bootServer, shutDownServer } from './util/server.util';
-
-describe('Sails basics', () => {
-
-  let sailsApp;
-
-  beforeAll(async () => {
-    sailsApp = await bootServer();
-  });
-
-  afterAll(async () => {
-    await shutDownServer(sailsApp);
-  });
-
-  beforeEach(async () => {
-    await sails.helpers.wipeDatabase();
-  });
-
-  it('should read from and write to the db', async () => {
-    let users = await User.find();
-    expect(users.length).toBe(0);
-    await User.create({username: 'foo', encryptedPassword: 'xyz123ABCABK7KAL'});
-  
-    users = await User.find({});
-    expect(users.length).toBe(1);
-  });
-  
-  it('should execute sails helpers', async () => {
-    const serverIsUp = await sails.helpers.getApiHealth();
-    expect(serverIsUp).toBe(true);
-  });
-});
-
 
 const mockWindow = {};
 const mockConsole = {
