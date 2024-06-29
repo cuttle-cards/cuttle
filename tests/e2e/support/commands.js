@@ -65,6 +65,7 @@ Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => 
     );
   });
 });
+
 // Pass error logs to the terminal console
 // See https://github.com/cypress-io/cypress/issues/3199#issuecomment-1019270203
 // Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
@@ -611,8 +612,7 @@ Cypress.Commands.add('resolveOpponent', () => {
  * @param card2 {suit: number, rank: number} OPTIONAL
  */
 Cypress.Commands.add('discardOpponent', (card1, card2) => {
-  return cy
-    .window()
+  cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
       let cardId1 = undefined;
@@ -623,7 +623,28 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       if (card2) {
         [cardId2] = getCardIds(game, [card2]);
       }
-      cy.makeSocketRequest('game', 'resolveFour', { cardId1, cardId2 });
+      //dont use makeSocketRequest due to edge case checking error on opponent side
+      const url = transformGameUrl('game', 'resolveFour');
+      io.socket.request(
+        {
+          method: 'post',
+          url,
+          data: { cardId1, cardId2 },
+        },
+        function handleResponse(res, jwres) {
+          try {
+            if (env === 'true' && jwres.statusCode === 404) {
+              throw new Error('This action is not supported yet in GameState API');
+            }
+            if (jwres.statusCode !== 200) {
+              throw new Error(jwres.error.message);
+            }
+            return res;
+          } catch (err) {
+            return err;
+          }
+        },
+      );
     });
 });
 
