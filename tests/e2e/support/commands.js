@@ -92,7 +92,7 @@ Cypress.Commands.add('loadSeasonFixture', (season) => {
 });
 
 Cypress.Commands.add('loadMatchFixtures', (matches) => {
-  cy.makeSocketRequest('test', 'loadMatchFixture', matches);
+  cy.makeSocketRequest('test', 'loadMatchFixtures', matches);
 });
 
 Cypress.Commands.add('loadFinishedGameFixtures', (games) => {
