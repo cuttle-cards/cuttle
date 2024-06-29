@@ -117,7 +117,6 @@ module.exports = {
           const gameStateRowData = await sails.helpers.packGamestate(gameState);
           const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
 
-
           return res.json(gameStateRow);
 
       } catch (err) {
