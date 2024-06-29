@@ -9,6 +9,8 @@ const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 
+const GameState = require('../utils/GameState');
+
 module.exports = {
   wipeDatabase: function (req, res) {
     return Promise.all([
@@ -101,5 +103,25 @@ module.exports = {
     } catch (err) {
       return res.serverError(err);
     }
+  },
+  testGameStatePacking : async function(req, res){
+      try {
+          const gamet = req.body.game;
+
+          const addedInfos = { gameId : gamet.id, playedBy : 1, moveType : 3, phase : 1 , 'p0' : gamet.players[0], 'p1' : gamet.players[1]}; 
+          const merged = {...gamet, ...addedInfos};
+          // create gamestate
+          const gameState = new GameState(merged);
+
+          // create gamestateRow
+          const gameStateRowData = await sails.helpers.packGamestate(gameState);
+          const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
+
+
+          return res.json(gameStateRow);
+
+      } catch (err) {
+        return res.serverError(err);
+      }
   },
 };

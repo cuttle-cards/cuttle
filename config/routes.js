@@ -108,6 +108,8 @@ module.exports.routes = {
   '/api/test/loadFinishedGameFixtures': 'TestController.loadFinishedGameFixtures',
   '/api/test/game': 'TestController.getGames',
   '/api/test/match': 'TestController.getMatches',
+  '/api/test/testgamestatepacking': 'TestController.testGameStatePacking',
+  //'/api/test/testgamestateunpacking': 'TestController.testGameStateUnpacking',
 
   // Catch all for Vue paths only require get for http request so we don't interfer
   // with any blueprints routes

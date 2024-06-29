@@ -632,3 +632,23 @@ export function assertGameState(pNum, fixture, spectating = false) {
   assertDomMatchesFixture(pNum, fixture, spectating);
   assertStoreMatchesFixture(fixture);
 }
+
+
+export function cardsArraysMatch(res, fixture) {
+  // If length is not equal
+  if (res.length != fixture.length){
+    return false;
+  }
+  res.sort();
+  fixture.sort();
+  // Comparing each element of array
+  for (let i = 0; i < res.length; i++){
+    // get content before parentheses -> main Card
+    let resCleaned = res[i].replace(/\(.*?\)/g, '');
+    if (resCleaned != fixture[i]){
+      return false;
+    }
+  }
+
+  return true;
+}
