@@ -666,42 +666,48 @@ export function cardsArraysMatch(res, fixture) {
  */
 export function assertResGameStateixture(res,fixture) {
 
-  // Player 0
-  expect(cardListsMatch(res.players[0].hand, fixture.p0Hand)).to.eq(
-    true,
-    `P0 Hand should match fixture, but actual: ${printCardList(
-      res.players[0].hand,
-    )} did not match ficture: ${printCardList(fixture.p0Hand)}`,
-  );
-  expect(cardListsMatch(res.players[0].points, fixture.p0Points)).to.eq(
-    true,
-    `P0 Points should match fixture, but actual: ${printCardList(
-      res.players[0].points,
-    )} did not match ficture: ${printCardList(fixture.p0Points)}`,
-  );
-  expect(cardListsMatch(res.players[0].faceCards, fixture.p0FaceCards)).to.eq(
-    true,
-    `P0 Face Cards should match fixture, but actual: ${printCardList(
-      res.players[0].faceCards,
-    )} did not match ficture: ${printCardList(fixture.p0FaceCards)}`,
-  );
-  // Player 1
-  expect(cardListsMatch(res.players[1].hand, fixture.p1Hand)).to.eq(
-    true,
-    `P1 Hand should match fixture, but actual: ${printCardList(
-      res.players[1].hand,
-    )} did not match ficture: ${printCardList(fixture.p1Hand)}`,
-  );
-  expect(cardListsMatch(res.players[1].points, fixture.p1Points)).to.eq(
-    true,
-    `P1 Points should match fixture, but actual: ${printCardList(
-      res.players[1].points,
-    )} did not match ficture: ${printCardList(fixture.p1Points)}`,
-  );
-  expect(cardListsMatch(res.players[1].faceCards, fixture.p1FaceCards)).to.eq(
-    true,
-    `P1 Face Cards should match fixture, but actual: ${printCardList(
-      res.players[1].faceCards,
-    )} did not match ficture: ${printCardList(fixture.p1FaceCards)}`,
-  );
+    // Player 0
+    expect(cardListsMatch(res.players[0].hand, fixture.p0Hand)).to.eq(
+      true,
+      `GameState P0 Hand should match fixture, but actual: ${printCardList(
+        res.players[0].hand,
+      )} did not match ficture: ${printCardList(fixture.p0Hand)}`,
+    );
+    expect(cardListsMatch(res.players[0].points, fixture.p0Points)).to.eq(
+      true,
+      `GameState P0 Points should match fixture, but actual: ${printCardList(
+        res.players[0].points,
+      )} did not match ficture: ${printCardList(fixture.p0Points)}`,
+    );
+    expect(cardListsMatch(res.players[0].faceCards, fixture.p0FaceCards)).to.eq(
+      true,
+      `GameState P0 Face Cards should match fixture, but actual: ${printCardList(
+        res.players[0].faceCards,
+      )} did not match ficture: ${printCardList(fixture.p0FaceCards)}`,
+    );
+    // Player 1
+    expect(cardListsMatch(res.players[1].hand, fixture.p1Hand)).to.eq(
+      true,
+      `GameState P1 Hand should match fixture, but actual: ${printCardList(
+        res.players[1].hand,
+      )} did not match ficture: ${printCardList(fixture.p1Hand)}`,
+    );
+    expect(cardListsMatch(res.players[1].points, fixture.p1Points)).to.eq(
+      true,
+      `GameState P1 Points should match fixture, but actual: ${printCardList(
+        res.players[1].points,
+      )} did not match ficture: ${printCardList(fixture.p1Points)}`,
+    );
+    expect(cardListsMatch(res.players[1].faceCards, fixture.p1FaceCards)).to.eq(
+      true,
+      `GameState P1 Face Cards should match fixture, but actual: ${printCardList(
+        res.players[1].faceCards,
+      )} did not match ficture: ${printCardList(fixture.p1FaceCards)}`,
+    );
+        expect(cardListsMatch(res.players[1].faceCards, fixture.p1FaceCards)).to.eq(
+      true,
+      `GameState P1 Face Cards should match fixture, but actual: ${printCardList(
+        res.players[1].faceCards,
+      )} did not match ficture: ${printCardList(fixture.p1FaceCards)}`,
+    );
 }

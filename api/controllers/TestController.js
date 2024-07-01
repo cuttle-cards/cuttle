@@ -104,12 +104,12 @@ module.exports = {
   },
   testGameStatePacking : async function(req, res){
       try {
-          const gamet =  JSON.parse(req.body.serializedGame);
+          const gamet =  req.body.game;
 
           const addedInfos = { gameId : gamet.id, playedBy : 1, moveType : 3, phase : 1 , 'p0' : gamet.players[0], 'p1' : gamet.players[1]}; 
           const merged = {...gamet, ...addedInfos};
 
-          // converted data from gamestate format to a gamestateRow  format (string representation)
+          // converted data from gamestate format to a gamestateRow format (string representation)
           const gameStateRowData = await sails.helpers.packGamestate(merged);
           const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
 
@@ -124,7 +124,7 @@ module.exports = {
   
   testGameStateUnpacking : async function(req, res){
       try {
-          const gameStateRow =  JSON.parse(req.body.resApi);
+          const gameStateRow =  req.body.resApi;
 
           const game = await Game.findOne({ id: gameStateRow.gameId });
 
@@ -138,7 +138,7 @@ module.exports = {
           const p1Data = await User.findOne({id:game.p1});
           await Player.create(p1Data);  
           
-          //create gamesatte
+          //create gameste
           await GameState.create(convertedData);
 
           //populate all

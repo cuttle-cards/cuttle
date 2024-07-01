@@ -1,4 +1,4 @@
-import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
+import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard , assertResGameStateixture , cardsArraysMatch} from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
 
 const gameStateApiError = 'This action is not supported yet in GameState API';
@@ -1542,4 +1542,78 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
       const playerHandLength = pNum === 0 ? p0HandCardIds.length : p1HandCardIds.length;
       cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
     });
+});
+
+
+Cypress.Commands.add('testConvertionGamestate', (resApi, fixture) => {
+   cy.log('gameStateAPi test object format');
+    io.socket.post(
+      '/api/test/testgamestateunpacking',
+      {
+        resApi,
+      },
+      (res, jwres) => {
+        cy.log('Testing gameStateApi unpacking game gameStateRow -> gameState');
+        expect(jwres.statusCode).to.equal(200); 
+        assertResGameStateixture(res, fixture);
+      },
+    ); 
+
+});
+
+
+Cypress.Commands.add('testConvertionGamestateRow', (stringFormat, objectFormat) => {
+
+  cy.window().its('cuttle.gameStore').then((game) => {
+    const testPromise = new Cypress.Promise((resolve, reject) => {
+      io.socket.post('/api/test/testgamestatepacking', { game }, (res, jwres) => {
+
+        if (jwres.statusCode !== 200) {
+          return reject(new Error('Failed to load season'));
+        }
+        return resolve(res);
+      });
+    });
+
+    testPromise.then((res) => {
+          // If stringFormat has content, compare the game state arrays
+          if (stringFormat.p0Hand !== null || stringFormat.p0Hand !==  undefined) {
+            cy.log('Testing gameStateApi packing game gameState -> gameStateRow');
+
+              expect(cardsArraysMatch(res.p0Hand, stringFormat.p0Hand)).to.eq(
+                true,
+                `GameStateRow P0Hand should match ${stringFormat.p0Hand}, 
+                but actual: ${res.p0Hand} did not match fixture`
+              );
+              expect( cardsArraysMatch(res.p0FaceCards, stringFormat.p0FaceCards)).to.eq( 
+                true,
+                `GameStateRow p0FaceCards should match ${stringFormat.p0FaceCards}, 
+                but actual: ${res.p0FaceCards} did not match ficture`);
+
+              expect( cardsArraysMatch(res.p0Points, stringFormat.p0Points)).to.eq( 
+                true,
+                `GameStateRow p0Points should match ${stringFormat.p0Points}, 
+                but actual: ${res.p0Points} did not match ficture`);
+
+              expect( cardsArraysMatch(res.p1Hand, stringFormat.p1Hand) ).to.eq( 
+                true,
+                `GameStateRow p1Hand should match ${stringFormat.p1Hand}, 
+                but actual: ${res.p1Hand} did not match ficture`);
+
+              expect( cardsArraysMatch(res.p1FaceCards, stringFormat.p1FaceCards)).to.eq( 
+                true,
+                `GameStateRow p1FaceCards should match ${stringFormat.p1FaceCards}, 
+                but actual: ${res.p1FaceCards} did not match ficture`);
+
+              expect( cardsArraysMatch(res.p1Points, stringFormat.p1Points)).to.eq( 
+                true,
+                `GameStateRow p1Points should match ${stringFormat.p1Points}, 
+                but actual: ${res.p1Points} did not match ficture`);
+          }
+
+        cy.testConvertionGamestate(res, objectFormat);
+    }).catch((error) => {
+      throw error;
+    });
+  });
 });

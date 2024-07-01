@@ -60,7 +60,7 @@ module.exports = {
           return Promise.resolve(null);  // Handle null or undefined attributes
       });
   
-      const [deck, scrap, playedCard, targetCardId, oneOff, oneOffTarget, twos, resolving
+      const [, , , , , , deck, scrap, playedCard, targetCardId, oneOff, oneOffTarget, twos, resolving
       ] = await Promise.all(allPromises);
          
 

@@ -1,4 +1,4 @@
-import { assertGameState , assertResGameStateixture} from '../../../support/helpers';
+import { assertGameState } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 
 describe('Play TWOS', () => {
@@ -146,40 +146,20 @@ describe('Play TWOS', () => {
         scrap: [Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS],
       });
 
-      //GameStateAPI
-      cy.log ('Testing packing');
-      cy.window().its('cuttle.gameStore').then((game) => {
-        let serializedGame = JSON.stringify(game);
-        cy.request({
-          method: 'POST',
-          url: '/api/test/testgamestatepacking',
-          body: {serializedGame}
-        }).then((response) => {
-
-          expect(response.status).to.equal(200); 
-          
-          cy.log('Testing gameStateApi unpacking gameStateRow -> gameState');
-          const resApi = JSON.stringify(response.body);
-          cy.request({
-            method: 'POST',
-            url: '/api/test/testgamestateunpacking',
-            body: {resApi}
-          }).then((res) => {
-
-            assertResGameStateixture(res.body, {
-              p0Hand: [],
-              p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-              p0FaceCards: [],
-              p1Hand: [],
-              p1Points: [],
-              p1FaceCards: [],
-              scrap: [Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS],
-            });
-          });
-
-        });
-      });
-      //End GameStateAPI
+    //testGamestateAPI packing
+    cy.log('Testing gameStateApi packing game -> gameStateRow');
+    cy.testConvertionGamestateRow(
+         null,  
+        {
+          p0Hand: [],
+          p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+          scrap: [Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS],
+        }
+      );
 
     });
   });

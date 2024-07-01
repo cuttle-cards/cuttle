@@ -195,9 +195,7 @@ module.exports = {
                     suit: card.attachments[i].suit,
                     rank: card.attachments[i].rank,
                     attachedTo: mainCard.id,
-                    //deck: gameId,
                     index: i,
-                    cardId: gameId
               };
               if(playerId !== null){
                 data[model] = playerId;
