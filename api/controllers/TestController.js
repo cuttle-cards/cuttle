@@ -104,7 +104,7 @@ module.exports = {
   },
   testGameStatePacking : async function(req, res){
       try {
-          const gamet = req.body.game;
+          const gamet =  JSON.parse(req.body.serializedGame);
 
           const addedInfos = { gameId : gamet.id, playedBy : 1, moveType : 3, phase : 1 , 'p0' : gamet.players[0], 'p1' : gamet.players[1]}; 
           const merged = {...gamet, ...addedInfos};
@@ -124,7 +124,7 @@ module.exports = {
   
   testGameStateUnpacking : async function(req, res){
       try {
-          const gameStateRow = req.body.resApi;
+          const gameStateRow =  JSON.parse(req.body.resApi);
 
           const game = await Game.findOne({ id: gameStateRow.gameId });
 

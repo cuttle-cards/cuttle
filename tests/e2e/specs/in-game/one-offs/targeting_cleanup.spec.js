@@ -198,16 +198,17 @@ describe('Clean-up of One-Off Targets', () => {
     //GameStateAPI
     cy.log ('Testing packing');
     cy.window().its('cuttle.gameStore').then((game) => {
+      let serializedGame = JSON.stringify(game);
       cy.request({
         method: 'POST',
         url: '/api/test/testgamestatepacking',
-        body: {game}
+        body: {serializedGame}
       }).then((response) => {
 
         expect(response.status).to.equal(200); 
         
         cy.log('Testing gameStateApi unpacking gameStateRow -> gameState');
-        const resApi = response.body;
+        const resApi = JSON.stringify(response.body);
         cy.request({
           method: 'POST',
           url: '/api/test/testgamestateunpacking',
