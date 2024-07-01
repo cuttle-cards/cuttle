@@ -1,18 +1,6 @@
-import { beforeAll, afterAll, beforeEach, describe, expect, it } from 'vitest';
-
-import { bootServer, shutDownServer } from '../util/server.util';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('Sails basics', () => {
-
-  let sailsApp;
-
-  beforeAll(async () => {
-    sailsApp = await bootServer();
-  });
-
-  afterAll(async () => {
-    await shutDownServer(sailsApp);
-  });
 
   beforeEach(async () => {
     await sails.helpers.wipeDatabase();

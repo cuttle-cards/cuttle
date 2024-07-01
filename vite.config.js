@@ -62,6 +62,7 @@ export default defineConfig(({ mode }) => {
       threads: false,
       globals: true,
       environment: 'node',
+      setupFiles: ['tests/unit/setup.vitest.js'],
     },
     build: {
       outDir: 'assets',
