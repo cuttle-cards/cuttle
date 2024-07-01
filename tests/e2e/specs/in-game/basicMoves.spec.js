@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError, playOutOfTurn, cardsArraysMatch} from '../../support/helpers';
+import { assertGameState, assertSnackbarError, playOutOfTurn, cardsArraysMatch, assertResGameStateixture} from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
 
@@ -17,6 +17,40 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
+
+        //testGamestateAPI packing
+        cy.log('Testing gameStateApi packing game -> gameStateRow');
+
+        cy.window().its('cuttle.gameStore').then((game) => {
+          cy.request({
+            method: 'POST',
+            url: '/api/test/testgamestatepacking',
+            body: {game}
+          }).then((response) => {
+            expect(response.status).to.equal(200); 
+    
+    
+            cy.log('Testing gameStateApi unpacking gameStateRow -> gameState');
+            const resApi = response.body;
+            cy.request({
+              method: 'POST',
+              url: '/api/test/testgamestateunpacking',
+              body: {resApi}
+            }).then((res) => {
+    
+              assertResGameStateixture(res.body, {
+                p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
+                p0Points: [Card.TEN_OF_SPADES],
+                p0FaceCards: [Card.KING_OF_SPADES],
+                p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+                p1Points: [Card.TEN_OF_HEARTS],
+                p1FaceCards: [Card.KING_OF_HEARTS],
+              });
+            });
+    
+    
+          });
+        });
 
     // Play points (ace of spades)
     cy.get('[data-player-hand-card=1-3]').click(); // ace of spades
@@ -226,58 +260,75 @@ describe('Game Basic Moves - P0 Perspective', () => {
       scrap: [],
     });
 
-        //testGamestateAPI packing
-        cy.log('Testing gameSatatApi packing game -> gameStateRow');
+    //testGamestateAPI packing
+    cy.log('Testing gameStateApi packing game -> gameStateRow');
 
-        cy.window().its('cuttle.gameStore').then((game) => {
-          cy.request({
-            method: 'POST',
-            url: '/api/test/testgamestatepacking',
-            body: {game}
-          }).then((response) => {
-            // Ensure the request was successful and process the response
-            expect(response.status).to.equal(200); // Example assertion for status code
-      
-            // Optionally log the response
-            cy.log('API Response:', response.body);
-    
-            expect( cardsArraysMatch(response.body.p0Hand, [])).to.eq(
-               true,
-              `P0Hand should match [], 
-                but actual: ${response.body.p0Hand} did not match ficture: []`,
-            );
+    cy.window().its('cuttle.gameStore').then((game) => {
+      cy.request({
+        method: 'POST',
+        url: '/api/test/testgamestatepacking',
+        body: {game}
+      }).then((response) => {
+ 
+        expect(response.status).to.equal(200); 
 
-            expect( cardsArraysMatch(response.body.p0Points, ['TH'])).to.eq(
-              true,
-              `p0Points should match [Card.KING_OF_CLUBS, Card.KING_OF_SPADES], 
-                but actual: ${response.body.p0Points} did not match ficture: ['TH']`,
-            );
+        expect( cardsArraysMatch(response.body.p0Hand, [])).to.eq(
+            true,
+          `P0Hand should match [], 
+            but actual: ${response.body.p0Hand} did not match ficture: []`,
+        );
 
-            expect( cardsArraysMatch(response.body.p0FaceCards,['KS', 'KC'])).to.eq(
-              true,
-              `P0Hand should match [Card.KING_OF_CLUBS, Card.KING_OF_SPADES], 
-                but actual: ${response.body.p0FaceCards} did not match ficture:  [''KS', 'KC']`,
-            );
+        expect( cardsArraysMatch(response.body.p0Points, ['TH'])).to.eq(
+          true,
+          `p0Points should match [Card.KING_OF_CLUBS, Card.KING_OF_SPADES], 
+            but actual: ${response.body.p0Points} did not match ficture: ['TH']`,
+        );
 
-            expect( cardsArraysMatch(response.body.p1Hand,['6H']) ).to.eq(
-              true,
-              `p1Hand should match [Card.SIX_OF_HEARTS], 
-                but actual: ${response.body.p1Hand} did not match ficture: v`,
-            );
+        expect( cardsArraysMatch(response.body.p0FaceCards,['KS', 'KC'])).to.eq(
+          true,
+          `P0Hand should match [Card.KING_OF_CLUBS, Card.KING_OF_SPADES], 
+            but actual: ${response.body.p0FaceCards} did not match ficture:  [''KS', 'KC']`,
+        );
 
-            expect( cardsArraysMatch(response.body.p1Points, ['AD'])).to.eq(
-              true,
-              `p1Points should match [Card.ACE_OF_DIAMONDS], 
-                but actual: ${response.body.p1Points} did not match ficture: ['AD']`,
-            );
+        expect( cardsArraysMatch(response.body.p1Hand,['6H']) ).to.eq(
+          true,
+          `p1Hand should match [Card.SIX_OF_HEARTS], 
+            but actual: ${response.body.p1Hand} did not match ficture: v`,
+        );
 
-            expect( cardsArraysMatch(response.body.p1FaceCards, ['KD'])).to.eq(
-              true,
-              `p1FaceCards should match  [Card.KING_OF_DIAMONDS], 
-                but actual: ${response.body.p1FaceCards} did not match ficture:  ['KH']`,
-            );
+        expect( cardsArraysMatch(response.body.p1Points, ['AD'])).to.eq(
+          true,
+          `p1Points should match [Card.ACE_OF_DIAMONDS], 
+            but actual: ${response.body.p1Points} did not match ficture: ['AD']`,
+        );
+
+        expect( cardsArraysMatch(response.body.p1FaceCards, ['KD'])).to.eq(
+          true,
+          `p1FaceCards should match  [Card.KING_OF_DIAMONDS], 
+            but actual: ${response.body.p1FaceCards} did not match ficture:  ['KH']`,
+        );
+
+        cy.log('Testing gameStateApi unpacking gameStateRow -> gameState');
+        const resApi = response.body;
+        cy.request({
+          method: 'POST',
+          url: '/api/test/testgamestateunpacking',
+          body: {resApi}
+        }).then((res) => {
+
+          assertResGameStateixture(res.body, {
+            p0Hand: [],
+            p0Points: [Card.TEN_OF_HEARTS],
+            p0FaceCards: [Card.KING_OF_CLUBS, Card.KING_OF_SPADES],
+            p1Hand: [Card.SIX_OF_HEARTS],
+            p1Points: [Card.ACE_OF_DIAMONDS],
+            p1FaceCards: [Card.KING_OF_DIAMONDS],
           });
         });
+
+
+      });
+    });
     
   });
 
@@ -675,18 +726,16 @@ describe('Play Jacks', () => {
       scrap: [],
     });
 
-    cy.log ('Testing unpacking');
+    //GameStateAPI
+    cy.log ('Testing packing');
     cy.window().its('cuttle.gameStore').then((game) => {
       cy.request({
         method: 'POST',
         url: '/api/test/testgamestatepacking',
         body: {game}
       }).then((response) => {
-        // Ensure the request was successful and process the response
-        expect(response.status).to.equal(200); // Example assertion for status code
-  
-        // Optionally log the response
-        cy.log('API Response:', response.body);
+
+        expect(response.status).to.equal(200); 
 
         expect( cardsArraysMatch(response.body.p0Hand, ['KS', 'AS'])).to.eq( //[Card.ACE_OF_SPADES, Card.KING_OF_SPADES]
            true,
@@ -723,7 +772,32 @@ describe('Play Jacks', () => {
           `p1Points should match [Card.TEN_OF_HEARTS], 
             but actual: ${response.body.scrap} did not match ficture: [`,
         );
+ 
+        cy.log('Testing gameStateApi unpacking gameStateRow -> gameState');
+        const resApi = response.body;
+        cy.request({
+          method: 'POST',
+          url: '/api/test/testgamestateunpacking',
+          body: {resApi}
+        }).then((res) => {
+
+          assertResGameStateixture(res.body, {
+            p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
+            p0Points: [Card.TEN_OF_SPADES],
+            p0FaceCards: [],
+            p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+            p1Points: [Card.TEN_OF_HEARTS],
+            p1FaceCards: [Card.KING_OF_HEARTS],
+            scrap: [],
+          });
+        });
+
       });
     });
+
+    //End GameStateAPI
+
+
+
   });
 });

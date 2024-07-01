@@ -1,4 +1,4 @@
-import { assertGameState } from '../../../support/helpers';
+import { assertGameState, assertResGameStateixture } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 
 describe('Clean-up of One-Off Targets', () => {
@@ -194,6 +194,42 @@ describe('Clean-up of One-Off Targets', () => {
       p1FaceCards: [],
       scrap: [Card.NINE_OF_SPADES, Card.TWO_OF_CLUBS],
     });
+
+    //GameStateAPI
+    cy.log ('Testing packing');
+    cy.window().its('cuttle.gameStore').then((game) => {
+      cy.request({
+        method: 'POST',
+        url: '/api/test/testgamestatepacking',
+        body: {game}
+      }).then((response) => {
+
+        expect(response.status).to.equal(200); 
+        
+        cy.log('Testing gameStateApi unpacking gameStateRow -> gameState');
+        const resApi = response.body;
+        cy.request({
+          method: 'POST',
+          url: '/api/test/testgamestateunpacking',
+          body: {resApi}
+        }).then((res) => {
+
+          assertResGameStateixture(res.body, {
+              // Opponent is p0
+              p0Hand: [Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
+              p0Points: [Card.TEN_OF_HEARTS],
+              p0FaceCards: [],
+              //player is p1
+              p1Hand: [Card.SIX_OF_HEARTS],
+              p1Points: [Card.ACE_OF_DIAMONDS],
+              p1FaceCards: [],
+              scrap: [Card.NINE_OF_SPADES, Card.TWO_OF_CLUBS],
+          });
+        });
+
+      });
+    });
+    //End GameStateAPI
 
     // Player plays another point
     cy.get('[data-player-hand-card=6-2]').click();

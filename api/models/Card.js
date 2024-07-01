@@ -56,5 +56,27 @@ module.exports = {
     targeted: {
       model: 'game',
     },
-  },
+
+    //FKs to gamestate
+    deckGst: {
+      model: 'gameState',
+    },
+    scrapGst: {
+      model: 'gameState',
+    },
+    twosGst: {
+      model: 'gameState',
+    },
+
+    handGst: {
+      model: 'player',
+    },
+    pointsGst: {
+      model: 'player',
+    },
+
+    faceCardsGst: {
+      model: 'player',
+    },
+  }
 };

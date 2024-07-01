@@ -161,12 +161,6 @@ function oraganiseAttachments(str){
     return { mainCard : mainCard, attachments : attachments.length >0 ?  attachments : null};
 }
 
-
-
-function isFrozen(){
-  return false;
-}
-
  
 module.exports = {
 /**
@@ -175,36 +169,49 @@ module.exports = {
  * @param {string} str - string representation of the card
  * @returns {Card} Card object
  */
-  convertStringToCard: async function (str) { //, gameId
+  convertStringToCard: async function (str, playerId, model, gameId) { 
     try {
       const card = separateAttachtToCard(str);
+      const data = {  
+        suit : card.mainCard.suit, 
+        rank : card.mainCard.rank, 
+        cardId: gameId
+      };
+      if(playerId !== null){
+        data[model+'Gst'] = playerId;
+      }
+      else if (model === 'deck' || model === 'scrap' || model === 'twos' ){
+        data[model+'Gst'] = gameId;
+      }
+
       //mainCard
-      const mainCard = await Card.create({  
-                            suit : card.mainCard.suit, 
-                            rank : card.mainCard.rank, 
-                            isFrozen : isFrozen(),
-                            //deck: gameId,
-                          }).fetch();
+      let mainCard = await Card.create(data).fetch();
 
       //attachments
       if(card.attachments !== null && card.attachments !== undefined){
  
           for (let i = 0 ; i< card.attachments.length ; i++) {
-              let attachment = await Card.create({
-                                            suit: card.attachments[i].suit,
-                                            rank: card.attachments[i].rank,
-                                            isFrozen: isFrozen(),
-                                            attachedTo: mainCard.id,
-                                            //deck: gameId,
-                                            index: i,
-                                      }).fetch();
+              let dataatt = {
+                    suit: card.attachments[i].suit,
+                    rank: card.attachments[i].rank,
+                    attachedTo: mainCard.id,
+                    //deck: gameId,
+                    index: i,
+                    cardId: gameId
+              };
+              if(playerId !== null){
+                data[model] = playerId;
+              }
+
+              let attachment = await Card.create(dataatt).fetch();
 
               await Card.addToCollection(mainCard.id, 'attachments').members([attachment.id]);
+              mainCard = await cardService.findCard({ cardId: mainCard.id });
   
           }
       }
-      const cardCreated = await cardService.findCard({ cardId: mainCard.id });
-      return cardCreated;
+      
+      return mainCard;
 
     } catch (err) {
       throw new Error('Error at unpacking cards : ' + err);
@@ -229,5 +236,3 @@ module.exports = {
     }
   }
 };
-
-//TODO discardedCards ?

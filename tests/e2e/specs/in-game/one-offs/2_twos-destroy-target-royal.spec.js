@@ -1,4 +1,4 @@
-import { assertGameState } from '../../../support/helpers';
+import { assertGameState , assertResGameStateixture} from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 
 describe('Play TWOS', () => {
@@ -145,6 +145,41 @@ describe('Play TWOS', () => {
         p1FaceCards: [],
         scrap: [Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS],
       });
+
+      //GameStateAPI
+      cy.log ('Testing packing');
+      cy.window().its('cuttle.gameStore').then((game) => {
+        cy.request({
+          method: 'POST',
+          url: '/api/test/testgamestatepacking',
+          body: {game}
+        }).then((response) => {
+
+          expect(response.status).to.equal(200); 
+          
+          cy.log('Testing gameStateApi unpacking gameStateRow -> gameState');
+          const resApi = response.body;
+          cy.request({
+            method: 'POST',
+            url: '/api/test/testgamestateunpacking',
+            body: {resApi}
+          }).then((res) => {
+
+            assertResGameStateixture(res.body, {
+              p0Hand: [],
+              p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+              p0FaceCards: [],
+              p1Hand: [],
+              p1Points: [],
+              p1FaceCards: [],
+              scrap: [Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS],
+            });
+          });
+
+        });
+      });
+      //End GameStateAPI
+
     });
   });
 });
