@@ -37,7 +37,7 @@ const transformGameUrl = (api, slug) => {
         case 'seven/targetedOneOff':
         case 'pass':
           // add all the move-making ones here
-          return `api/game/${gameId}/move/${slug}`;
+          return `/api/game/${gameId}/move/${slug}`;
         default:
           return `/api/${api}/${slug}`;
       }
