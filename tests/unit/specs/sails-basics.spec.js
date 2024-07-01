@@ -20,4 +20,3 @@ describe('Sails basics', () => {
     expect(serverIsUp).toBe(true);
   });
 });
-
