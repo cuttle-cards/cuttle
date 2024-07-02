@@ -1,5 +1,5 @@
+import { beforeEach, describe, it, expect, vi, afterEach } from 'vitest';
 import devtools from '@vue/devtools';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { version } from '_/package.json';
 import { initCuttleGlobals } from '_/utils/config-utils';
 
@@ -19,6 +19,11 @@ describe('initCuttleGlobals', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+  });
+
+  it('should execute sails helpers', async () => {
+    const serverIsUp = await sails.helpers.getApiHealth();
+    expect(serverIsUp).toBe(true);
   });
 
   it('should add version to window.cuttle', () => {
