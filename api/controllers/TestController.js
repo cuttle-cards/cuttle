@@ -95,4 +95,68 @@ module.exports = {
       return res.serverError(err);
     }
   },
+  testGameStatePacking : async function(req, res){
+      try {
+          const gamet =  req.body.game;
+
+          const addedInfos = { gameId : gamet.id, playedBy : 1, moveType : 3, phase : 1 , 'p0' : gamet.players[0], 'p1' : gamet.players[1]}; 
+          const merged = {...gamet, ...addedInfos};
+
+          // converted data from gamestate format to a gamestateRow format (string representation)
+          const gameStateRowData = await sails.helpers.packGamestate(merged);
+          const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
+
+          Game.addToCollection(gamet.id, 'gameStates').members([gameStateRow.gameId]);
+
+          return res.json(gameStateRow);
+
+      } catch (err) {
+        return res.serverError(err);
+      }
+  },
+  
+  testGameStateUnpacking : async function(req, res){
+      try {
+          const gameStateRow =  req.body.resApi;
+
+          const game = await Game.findOne({ id: gameStateRow.gameId });
+
+          // converted data from gamestateRow format to a gamestate format (card object)
+          const convertedData = await sails.helpers.unpackGamestate(gameStateRow, 
+                                                                    game.p0, 
+                                                                    game.p1);
+          //create copys of users
+          const p0Data = await User.findOne({id:game.p0});
+          await Player.create(p0Data);    
+          const p1Data = await User.findOne({id:game.p1});
+          await Player.create(p1Data);  
+          
+          //create gameste
+          await GameState.create(convertedData);
+
+          //populate all
+          const p0Updated = await Player.findOne({id:game.p0}).populate('hand')
+                                                              .populate('points')
+                                                              .populate('faceCards');
+          const p1Updated = await Player.findOne({id:game.p1}).populate('hand')
+                                                              .populate('points')
+                                                              .populate('faceCards');     
+          const updatedGameState = await GameState.findOne({gameId:gameStateRow.gameId})
+                                                              .populate('p0')
+                                                              .populate('p1')
+                                                              .populate('deck')
+                                                              .populate('scrap')
+                                                              .populate('playedCard')
+                                                              .populate('targetCard')
+                                                              .populate('oneOff')
+                                                              .populate('resolving')
+                                                              .populate('twos', { sort: 'updatedAt' })
+                                                              .populate('oneOffTarget'); 
+
+          return res.json({updatedGameState, players : [p0Updated, p1Updated]});
+
+      } catch (err) {
+        return res.serverError(err);
+      }
+  }
 };
