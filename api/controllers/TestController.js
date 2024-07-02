@@ -10,15 +10,8 @@ const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 
 module.exports = {
-  wipeDatabase: function (req, res) {
-    return Promise.all([
-      Game.destroy({}),
-      User.destroy({}),
-      Card.destroy({}),
-      Season.destroy({}),
-      Match.destroy({}),
-      UserSpectatingGame.destroy({}),
-    ])
+  wipeDatabase: function (_req, res) {
+    return sails.helpers.wipeDatabase()
       .then(() => {
         return res.ok();
       })

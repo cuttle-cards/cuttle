@@ -1,6 +1,23 @@
 const sharedTestRules = {
   'import/no-unresolved': ['off'],
 };
+
+const sailsGlobals = {
+  _: true,
+  sails: true,
+  cardService: true,
+  gameService: true,
+  userService: true,
+  // Models
+  Card: true,
+  Season: true,
+  Match: true,
+  User: true,
+  Game: true,
+  UserSpectatingGame: true,
+  GameStateRow: true,
+};
+
 module.exports = {
   root: true,
   env: {
@@ -111,6 +128,7 @@ module.exports = {
         GameState:true,
         Player: true
       },
+      globals: sailsGlobals,
       rules: {
         'no-undef': 'error',
         'no-prototype-builtins': 'error',
@@ -119,7 +137,10 @@ module.exports = {
     // Vittest specific rules
     {
       files: ['**/tests/unit/**/*.{j,t}s?(x)'],
-      rules: sharedTestRules,
+      globals: sailsGlobals,
+      rules: {
+        ...sharedTestRules,
+      },
     },
     // Cypress specific rules
     {
