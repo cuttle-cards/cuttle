@@ -9,6 +9,9 @@ const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 
+const GameState = require('../temp/GameState');
+const Player = require('../temp/Player');
+
 module.exports = {
   wipeDatabase: function (_req, res) {
     return sails.helpers.wipeDatabase()
@@ -97,16 +100,16 @@ module.exports = {
   },
   testGameStatePacking : async function(req, res){
       try {
-          const gamet =  req.body.game;
 
-          const addedInfos = { gameId : gamet.id, playedBy : 1, moveType : 3, phase : 1 , 'p0' : gamet.players[0], 'p1' : gamet.players[1]}; 
-          const merged = {...gamet, ...addedInfos};
+          const game =  req.body.game;
+          //Add data needed for a gameState moveType : 3, phase : 1  => random data
+          const addedInfos = { gameId : game.id, playedBy : 1 , moveType : 3, phase : 1 , 'p0' : game.players[0], 'p1' : game.players[1]}; 
+          const merged = {...game, ...addedInfos};
 
-          // converted data from gamestate format to a gamestateRow format (string representation)
-          const gameStateRowData = await sails.helpers.packGamestate(merged);
-          const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
+          const gameState = new GameState(merged);
 
-          Game.addToCollection(gamet.id, 'gameStates').members([gameStateRow.gameId]);
+          //Save Data to a gamestateRow
+          const gameStateRow = await sails.helpers.gamestate.saveGamestate(gameState);
 
           return res.json(gameStateRow);
 
@@ -122,38 +125,14 @@ module.exports = {
           const game = await Game.findOne({ id: gameStateRow.gameId });
 
           // converted data from gamestateRow format to a gamestate format (card object)
-          const convertedData = await sails.helpers.unpackGamestate(gameStateRow, 
-                                                                    game.p0, 
-                                                                    game.p1);
-          //create copys of users
-          const p0Data = await User.findOne({id:game.p0});
-          await Player.create(p0Data);    
-          const p1Data = await User.findOne({id:game.p1});
-          await Player.create(p1Data);  
-          
-          //create gameste
-          await GameState.create(convertedData);
+          const convertedData = await sails.helpers.gamestate.unpackGamestate(gameStateRow, 
+                                                                                  game.p0, 
+                                                                                  game.p1);
+          const p0 = new Player ( convertedData.p0 );
+          const p1 = new Player ( convertedData.p1 );
+          const updatedGameState = new GameState( convertedData );
 
-          //populate all
-          const p0Updated = await Player.findOne({id:game.p0}).populate('hand')
-                                                              .populate('points')
-                                                              .populate('faceCards');
-          const p1Updated = await Player.findOne({id:game.p1}).populate('hand')
-                                                              .populate('points')
-                                                              .populate('faceCards');     
-          const updatedGameState = await GameState.findOne({gameId:gameStateRow.gameId})
-                                                              .populate('p0')
-                                                              .populate('p1')
-                                                              .populate('deck')
-                                                              .populate('scrap')
-                                                              .populate('playedCard')
-                                                              .populate('targetCard')
-                                                              .populate('oneOff')
-                                                              .populate('resolving')
-                                                              .populate('twos', { sort: 'updatedAt' })
-                                                              .populate('oneOffTarget'); 
-
-          return res.json({updatedGameState, players : [p0Updated, p1Updated]});
+          return res.json({updatedGameState, players : [p0, p1]});
 
       } catch (err) {
         return res.serverError(err);

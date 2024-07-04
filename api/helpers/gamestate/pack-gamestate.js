@@ -1,5 +1,3 @@
-const utils = require('../utils/convertCard');
-
 module.exports = {
   friendlyName: 'pack GameState',
 
@@ -8,53 +6,57 @@ module.exports = {
   inputs: {
     gameState: {
       type: 'ref',
-      description: 'gameState to a gamestateRow -> with  String representation iunstead of Card Object',
+      description: 'gameState to a gamestateRow -> with  String representation instead of Card Object',
       required: true,
     },
   },
+  sync: true,
 
-  fn: async ({gameState }, exits) => {
+  fn:  ({ gameState }, exits) => {
 
       try{
-        const convertedData={};
+        const convertedData = {};
 
         const attributesToConvert = [
           'deck', 'scrap', 'playedCard', 'targetCardId', 'targetCard2Id', 'oneOff', 'oneOffTarget', 'twos', 'resolving'
         ];
 
-        attributesToConvert.forEach(attribute => {
+        attributesToConvert.forEach( attribute => {
             const value = gameState[attribute];
             if (value !== null && value !== undefined) {
                 if (typeof value === 'string') {
-                  convertedData[attribute]  = utils.convertCardToString(value, gameState.playedBy);
+                  convertedData[attribute]  = sails.helpers.gamestate.convertCardToId(value);
                 } else if (Array.isArray(value)) {
-                  convertedData[attribute]  = value.map(card => utils.convertCardToString(card, gameState.playedBy)); 
+                  convertedData[attribute]  = value.map(card => sails.helpers.gamestate.convertCardToId(card, gameState.playedBy)); 
                 }
             }
-            else{
+            else {
               convertedData[attribute]  = null;  // Handle null or undefined attributes
             }
         });
 
         // Correspondance of attribute name in GameStateRow to attribute name in GameState + player
-        const playerAttToConvert = [{ rowName : 'p0Hand', gamestateName : 'hand', player : 'p0'}, 
+        const playerAttToConvert = [
+                                    { rowName : 'p0Hand', gamestateName : 'hand', player : 'p0'}, 
                                     { rowName :'p1Hand', gamestateName :'hand', player : 'p1'}, 
                                     { rowName :'p0Points',  gamestateName :'points', player : 'p0'},
                                     { rowName :'p1Points',  gamestateName :'points', player : 'p1'}, 
                                     { rowName :'p0FaceCards',  gamestateName :'faceCards', player : 'p0'}, 
-                                    { rowName :'p1FaceCards',  gamestateName :'faceCards', player : 'p1' }]; 
+                                    { rowName :'p1FaceCards',  gamestateName :'faceCards', player : 'p1' }
+                                  ]; 
+
         playerAttToConvert.forEach(attribute => { 
-           // ex GameState format for p0Hand : gamestate.p0.hand
-          const value = gameState[attribute.player][attribute.gamestateName];
+           
+          const value = gameState[attribute.player][attribute.gamestateName];// ex GameState format for p0Hand : gamestate.p0.hand
           if(value !== null && value !== undefined){
-            convertedData[attribute.rowName]  = value.map(card => utils.convertCardToString(card, attribute.player));
+            convertedData[attribute.rowName]  = value.map(card => sails.helpers.gamestate.convertCardToId(card, attribute.player));
           }
+        
         });
 
         const combinedData = {...gameState, ...convertedData };
 
       
-
         return exits.success(combinedData);
     } catch (err) {
         return exits.error(err.message); 
