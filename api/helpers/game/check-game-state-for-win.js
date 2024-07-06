@@ -1,7 +1,7 @@
-const GameStatus = require('../../utils/GameStatus.json');
+const GameStatus = require('../../../utils/GameStatus.json');
 
 module.exports = {
-  friendlyName: 'Check Win Game',
+  friendlyName: 'Check Game State for win',
 
   description: 'Determines if the game has ended and returns a victory object',
 
