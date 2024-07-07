@@ -19,41 +19,46 @@ module.exports = {
   },
 
   fn: async function ({ game, gameState }, exits) {
-    let victory;
+    //Combine game and gamestate users and delete passwords
+    const p0 = { ...game.p0, ...gameState.p0 };
+    delete p0.encryptedPassword;
+    const p1 = { ...game.p1, ...gameState.p1 };
+    delete p1.encryptedPassword;
+    const players = [p0, p1];
 
     const lastEventChange = Object.keys(GameMoveType).find((key) => GameMoveType[key] === gameState.moveType);
-    const lastEventOneOffRank = lastEventChange === 'resolve' ? gameState.oneOff?.rank : null;
-    const lastEventCardChosen = lastEventChange === 'resolveThree' ? gameState.chosenCard : null;
     const lastEventPlayerChoosing = lastEventChange === 'resolveThree' ? gameState.playedBy : null;
-    const lastEventDiscardedCards = lastEventChange === 'resolveFour' ? gameState.discardedCards : null;
-
+    const lastEventTargetType = gameState.targetCard?.rank > 10 ? 'faceCard' : 'point';
+    //Only define what is changing, rest is defined by spread operator
     const populatedGame = {
       ...game,
       ...gameState,
-      players: [
-        { ...game.p0, ...gameState.p0 },
-        { ...game.p1, ...gameState.p1 },
-      ],
-      p0Ready: game.p0Ready,
-      p1Ready: game.p1Ready,
+      players,
       deck: gameState.deck.slice(2),
       topCard: gameState.deck[0],
       secondCard: gameState.deck[1],
       currentMatch: game.match,
       lastEvent: {
         change: lastEventChange,
-        oneOffRank: lastEventOneOffRank,
-        cardChosen: lastEventCardChosen,
+        oneOffRank: gameState.oneOff?.rank,
+        targetType: lastEventTargetType,
+        cardChosen: gameState.chosenCard,
         playerChoosing: lastEventPlayerChoosing,
-        discardedCards: lastEventDiscardedCards,
+        discardedCards: gameState.discardedCards,
       },
     };
+
+    const victory = await sails.helpers.game.checkGameStateForWin(game, players);
 
     Game.publish([game.id], {
       change: lastEventChange,
       game: populatedGame,
       victory,
     });
+
+    if (victory) {
+      sails.sockets.blast('gameFinished', { gameId: game.id });
+    }
 
     return exits.success(victory, game);
   },
