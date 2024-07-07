@@ -11,16 +11,21 @@ module.exports = {
       description: 'Game state object',
       required: true,
     },
+    players: {
+      type: 'array',
+      description: 'Array of combined game players as well as gameState players',
+      required: true,
+    },
   },
 
-  fn: async function ({ game }, exits) {
+  fn: async function ({ game, players }, exits) {
     const res = {
       gameOver: false,
       winner: null,
       conceded: false,
       currentMatch: null,
     };
-    const [p0, p1] = game.players;
+    const [p0, p1] = players;
     const p0Wins = userService.checkWin({ user: p0 });
     const p1Wins = userService.checkWin({ user: p1 });
     if (p0Wins || p1Wins) {
