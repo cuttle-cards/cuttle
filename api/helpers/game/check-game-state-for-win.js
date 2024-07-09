@@ -19,15 +19,35 @@ module.exports = {
   },
 
   fn: async function ({ game, players }, exits) {
+    const checkWin = (player) => {
+      const points = player.points.reduce((sum, { rank }) => sum + rank, 0);
+      const kings = player.faceCards.filter((faceCard) => faceCard.rank === 13).length;
+      switch (kings) {
+        case 0:
+          return points >= 21;
+        case 1:
+          return points >= 14;
+        case 2:
+          return points >= 10;
+        case 3:
+          return points >= 5;
+        case 4:
+          return points >= 0;
+      }
+      return false;
+    };
+
     const res = {
       gameOver: false,
       winner: null,
       conceded: false,
       currentMatch: null,
     };
+
     const [p0, p1] = players;
-    const p0Wins = userService.checkWin({ user: p0 });
-    const p1Wins = userService.checkWin({ user: p1 });
+    const p0Wins = checkWin(p0);
+    const p1Wins = checkWin(p1);
+
     if (p0Wins || p1Wins) {
       res.gameOver = true;
       const gameUpdates = {};
