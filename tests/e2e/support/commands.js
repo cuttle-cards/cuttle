@@ -1,4 +1,4 @@
-import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard , assertGameStateRow, gCardsConvertion} from './helpers';
+import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
 
 /**
@@ -1145,67 +1145,4 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
       const playerHandLength = pNum === 0 ? p0HandCardIds.length : p1HandCardIds.length;
       cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
     });
-});
-
-
-Cypress.Commands.add('testConvertionGamestateRow', async (applygCardsConvertion, fixture) => {
-  let gameStateRow =  {};
-
-  if(applygCardsConvertion){
-    gameStateRow = gCardsConvertion(fixture);
-  }
-  else{
-    gameStateRow =  fixture;
-  }
-  const testPromise = new Cypress.Promise((resolve, reject) => {
-    io.socket.post('/api/test/testGameStateUnpacking', { gameStateRow }, (res, jwres) => {
-
-      if (jwres.statusCode !== 200) {
-        return reject(new Error('Error Server'));
-      }
-      
-      return resolve(res);
-    });
-  });
-  testPromise.then((res) => {
-        cy.log('Testing gameStateApi packing from gameState -> gameStateRow');
-        assertGameStateRow(res, gameStateRow);
-        io.socket.post(
-          '/api/test/testGameStatePacking',
-          {
-           res,
-          },
-          (response, jwres) => {
-           // cy.log('Testing gameStateApi unpacking game gameStateRow -> gameState');
-            expect(jwres.statusCode).to.equal(200); 
-            assertGameStateRow(res, response.gameStateRow);
-          },
-        ); 
-  
-    
-  }).catch((error) => {
-      throw error;
-  });
-
-  //const gameStateCleaned = await sails.helpers.gamestate.validateGameState(gameStateObject);
-
-  //const gameStateRow = await sails.helpers.gamestate.saveGamestate(gameStateCleaned);
-
-});
-
-Cypress.Commands.add('testConvertionGamestate', (gameState) => {
-  console.log('ghd');
-  cy.log('gameStateAPi test object format');
-   io.socket.post(
-     '/api/test/testGameStatePacking',
-     {
-      gameState,
-     },
-     (res, jwres) => {
-      // cy.log('Testing gameStateApi unpacking game gameStateRow -> gameState');
-       expect(jwres.statusCode).to.equal(200); 
-       assertGameStateRow(gameState, res);
-     },
-   ); 
-
 });

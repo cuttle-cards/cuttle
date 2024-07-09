@@ -1,11 +1,13 @@
-import { gameStateRowMap } from '../../fixtures/gameStateRowMap';
+import { testConvertionGamestateRow } from '../util/commands';
+import { gameStateRowMap } from '../fixtures/gameStateRowMap';
+import { describe, it } from 'vitest';
 const g = gameStateRowMap;
 
 describe('Test gamestate to gamestateRow and vice versa', () => {
 
   it('Convert cards to gamestateRow then gamestate', () => {
 
-    cy.testConvertionGamestateRow(
+    testConvertionGamestateRow(
         true ,  // use g.cards.ACE_OF_SPADES format
         { 
             p0Hand: [g.cards.ACE_OF_SPADES, g.cards.ACE_OF_CLUBS],
@@ -30,7 +32,7 @@ describe('Test gamestate to gamestateRow and vice versa', () => {
       );
   });
   it('Convert cards from gamestateRow to a gamestate', () => {
-      cy.testConvertionGamestateRow(
+      testConvertionGamestateRow(
         false, // use gamestateRow format
         { 
           p0Hand: [],

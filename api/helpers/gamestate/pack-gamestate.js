@@ -55,12 +55,10 @@ module.exports = {
             convertedData[attribute.rowName]  = value.map(card => 
                             sails.helpers.gamestate.convertCardToId(card, attribute.player));
           }
-        
         });
 
         const combinedData = {...gameState, ...convertedData };
 
-      
         return exits.success(combinedData);
     } catch (err) {
         return exits.error(err.message); 
