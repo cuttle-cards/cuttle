@@ -23,7 +23,7 @@ function convertIdToCard (str){
         throw new Error('Unrecognisabled suit ' + tempCard.suit);
       } 
 
-      return { suit: suit, rank : rank};   
+      return { suit: suit, rank : rank, id: str, attachments : null};   
   }
   
   throw new Error('Unrecognised card identifier ' + str);
@@ -33,7 +33,7 @@ function convertIdToCard (str){
  /**
  * separate the attachments to the Card identifier in a String representation
  *
- * @param {string } str - Card Object, playerId
+ * @param {string } str - Card Object
  * @returns {Object} Object with maincard and its attachments in format
  * {       
  *      mainCard :{
@@ -50,12 +50,14 @@ function convertIdToCard (str){
  function separateAttachtToCard(str){ 
     //  Simple card eg :‘3D’
     if(str.length===2){
-        return { mainCard : convertIdToCard(str), attachments : null };
+        return convertIdToCard(str);
     }
     // Card with attachment(attached by Jacks) eg : ‘TH(JH-p0,JC-p1,JD-p0)’
     else if(str.length >2){
         const y = oraganiseAttachments(str);
-        return { mainCard : convertIdToCard(y.mainCard), attachments : y.attachments };
+        const mainCard = convertIdToCard(y.mainCard);
+        mainCard['attachments'] = y.attachments ;
+        return  mainCard ;
     } 
     throw new Error('Unrecognised card identifier format' + str);
 }
@@ -80,24 +82,24 @@ function convertIdToCard (str){
  */
  function oraganiseAttachments(str){
     // get content before parentheses -> main Card
-    let mainCard = str.replace(/\(.*?\)/g, '');
+    let mainCardId = str.replace(/\(.*?\)/g, '');
 
     //get content inside parentheses -> attachements
     const regex = /\(([^)]+)\)/;
     const attachmentsString = str.match(regex);
     //split using the comma
     const attachmentsArray = attachmentsString ? attachmentsString[1].split(',') : [];
+    
     const attachments = [];
-
-    attachmentsArray.forEach(element => {
+    attachmentsArray.map(element => { 
           //split using the '-' -> [0]:before : card, [1]:player
           let content = element.split('-');
           let card =  convertIdToCard( content[0] );
-      
+          card['attachedTo'] = mainCardId;
           attachments.push(card);
     });
 
-    return { mainCard : mainCard, attachments : attachments.length >0 ?  attachments : null};
+    return { mainCard : mainCardId, attachments : attachments.length >0 ?  attachments : null};
 }
 
 /**
@@ -115,52 +117,18 @@ module.exports = {
   inputs: {
     str: {
       type: 'string',
-      description: 'string rep of a card',
+      description: 'string representation of a card',
       required: true,
     },
-    playedBy: {
-      type: 'number',
-      description: 'player',
-      required: false,
-    },
   },
-  //sync: true,
+  sync: true,
 
-  fn: async ({ str, playerId }, exits) => {
+  fn: ({ str }, exits) => {
 
         try {
           const card = separateAttachtToCard(str);
-          const data = {  
-            suit : card.mainCard.suit, 
-            rank : card.mainCard.rank, 
-          };
-
-          //mainCard
-          let mainCard = await Card.create(data).fetch();
-
-          //attachments
-          if(card.attachments !== null && card.attachments !== undefined){
-
-              for (let i = 0 ; i< card.attachments.length ; i++) {
-                  let dataatt = {
-                        suit: card.attachments[i].suit,
-                        rank: card.attachments[i].rank,
-                        attachedTo: mainCard.id,
-                        index: i,
-                  };
-                  if(playerId !== null){
-                    data[model] = playerId;
-                  }
-
-                  let attachment = await Card.create(dataatt).fetch();
-
-                  await Card.addToCollection(mainCard.id, 'attachments').members([attachment.id]);
-                  mainCard = await cardService.findCard({ cardId: mainCard.id });
-
-              }
-          }
           
-          return exits.success(mainCard);
+          return exits.success(card);
         } catch (err) {
           return  exits.error(err.message);
         }

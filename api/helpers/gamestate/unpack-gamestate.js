@@ -1,7 +1,7 @@
 module.exports = {
   friendlyName: 'unpack GameState',
 
-  description: 'This helper inputs a GameStateRow and output a GameState. Convert all the String representations of cards to the Card objects, and aggregating the p0Hand, p0Points, and p0FaceCards attributes into the p0: Player object (doing the same for p1).',
+  description: 'This helper inputs a GameStateRow and outputs a GameState. Converts all the String representations of cards to the Card objects, and aggregates the p0Hand, p0Points, and p0FaceCards attributes into the p0 and p1 Player objects.',
 
   inputs: {
     gameStateRow: {
@@ -9,80 +9,57 @@ module.exports = {
       description: 'GameStateRow - record from the database',
       required: true,
     },    
-    p0: {
-      type: 'number',
-      description: 'player0Id',
-      required: true,
-    },
-    p1: {
-      type: 'number',
-      description: 'player0Id',
-      required: true,
-    },
   },
+  sync: true,
 
-  fn: async ({gameStateRow, p0, p1  }, exits) => {
-      try{
+  fn:  ({gameStateRow  }, exits) => {
+    try{
 
         const attributesToConvert = [
           'deck', 'scrap', 'playedCard', 'targetCardId', 'oneOff', 'oneOffTarget', 'twos', 'resolving',
           'p0Hand', 'p1Hand', 'p0Points', 'p1Points', 'p0FaceCards', 'p1FaceCards', 
-      ];
-      const playerAttToConvert = [
-                                  { rowName : 'p0Hand', gamestateName : 'hand', player : p0 }, 
-                                  { rowName : 'p1Hand', gamestateName : 'hand', player : p1 }, 
-                                  { rowName : 'p0Points',  gamestateName : 'points', player : p0 },
-                                  { rowName : 'p1Points',  gamestateName : 'points', player : p1 }, 
-                                  { rowName : 'p0FaceCards',  gamestateName : 'faceCards', player : p0 }, 
-                                  { rowName : 'p1FaceCards',  gamestateName : 'faceCards', player : p1 }
-                                ];
+        ];
 
-  
-      const allPromises = attributesToConvert.map(attribute => {
-          const value = gameStateRow[attribute];
-          if (value !== null && value !== undefined) {
-              // single card
-              if (typeof value === 'string') {
-                  return sails.helpers.gamestate.convertIdToCard( value);
-              } 
-               // Array of cards
-              else if (Array.isArray(value)) {
-                  let att = playerAttToConvert.find(o => o.rowName === attribute);
-                  let obj = att !== null && att !== undefined ? att : {player : 0};
-                  return Promise.all(value.map(card => sails.helpers.gamestate.convertIdToCard( card, 
-                                                                                          obj.player)));
-              }
-          }
-          return Promise.resolve(null);  // Handle null or undefined attributes
-      });
-  
-      const [ deck, scrap, playedCard, targetCardId, oneOff, oneOffTarget, twos, resolving,
-        p0Hand, p1Hand, p0Points, p1Points, p0FaceCards, p1FaceCards
-      ] = await Promise.all(allPromises);
+      const convertedData = {};
+      attributesToConvert.map(attribute => {
+            const value = gameStateRow[attribute];
+            if ( value ) {
+                // single card
+                if (typeof value === 'string') {
+                  convertedData[attribute]  =  sails.helpers.gamestate.convertIdToCard( value);
+                } 
+                // Array of cards
+                else if (Array.isArray(value)) {
+                    convertedData[attribute]  = value.map(card => sails.helpers.gamestate.convertIdToCard( card));
+                }
+            }
+        });
 
-      const p0Data = { hand : p0Hand, faceCards: p0FaceCards, points : p0Points, id : p0 };
-      const p1Data = { hand : p1Hand, faceCards: p1FaceCards, points : p1Points, id : p1 };
-        
 
-      const convertedData = {     gameId: gameStateRow.gameId,
-                                  playedBy : gameStateRow.playedBy,
-                                  moveType : gameStateRow.moveType,
-                                  turn : gameStateRow.turn,
-                                  phase : gameStateRow.phase,
-                                  p0 : p0Data,
-                                  p1 : p1Data,
-                                  deck : deck,
-                                  scrap: scrap,
-                                  twos : twos,
-                                  playedCard : playedCard !== null ? playedCard : null,
-                                  targetCardId : targetCardId !== null ? targetCardId : null,
-                                  oneOff : oneOff !== null ? oneOff : null,
-                                  oneOffTarget: oneOffTarget !== null ? oneOffTarget : null,
-                                  resolving : resolving !== null && resolving !== undefined ? resolving : null,
-                                };
-                                
-                               
-        return exits.success(convertedData);
+        const p0Data = { hand : convertedData.p0Hand, faceCards: convertedData.p0FaceCards, points : convertedData.p0Points};
+        const p1Data = { hand : convertedData.p1Hand, faceCards: convertedData.p1FaceCards, points : convertedData.p1Points };
+          
+
+        const data = {    gameId: gameStateRow.gameId,
+                          playedBy : gameStateRow.playedBy,
+                          moveType : gameStateRow.moveType,
+                          turn : gameStateRow.turn,
+                          phase : gameStateRow.phase,
+                          p0 : p0Data,
+                          p1 : p1Data,
+                          deck : convertedData.deck,
+                          scrap: convertedData.scrap,
+                          twos : convertedData.twos,
+                          playedCard : convertedData.playedCard !== null ? convertedData.playedCard : null,
+                          targetCardId : convertedData.targetCardId !== null ? convertedData.targetCardId : null,
+                          oneOff : convertedData.oneOff !== null ? convertedData.oneOff : null,
+                          oneOffTarget: convertedData.oneOffTarget !== null ? convertedData.oneOffTarget : null,
+                          resolving : convertedData.resolving !== null && convertedData.resolving !== undefined ? convertedData.resolving : null,
+                      }; 
+
+          const convertedGameState = sails.helpers.gamestate.validateGamestate( data );  
+
+          return exits.success(convertedGameState);
     } catch (err) {
       return exits.error(err.message); 
     }
