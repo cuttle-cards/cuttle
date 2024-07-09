@@ -9,8 +9,6 @@ const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 
-const GameState = require('../temp/GameState');
-const Player = require('../temp/Player');
 
 module.exports = {
   wipeDatabase: function (_req, res) {
@@ -101,17 +99,10 @@ module.exports = {
   testGameStatePacking : async function(req, res){
       try {
 
-          const game =  req.body.game;
-          //Add data needed for a gameState moveType : 3, phase : 1  => random data
-          const addedInfos = { gameId : game.id, playedBy : 1 , moveType : 3, phase : 1 , 'p0' : game.players[0], 'p1' : game.players[1]}; 
-          const merged = {...game, ...addedInfos};
+          const game =  req.body.res;
+          const gameStateRow = await sails.helpers.gamestate.saveGamestate(game);
 
-          const gameState = new GameState(merged);
-
-          //Save Data to a gamestateRow
-          const gameStateRow = await sails.helpers.gamestate.saveGamestate(gameState);
-
-          return res.json(gameStateRow);
+          return res.json({gameStateRow});
 
       } catch (err) {
         return res.serverError(err);
@@ -120,19 +111,12 @@ module.exports = {
   
   testGameStateUnpacking : async function(req, res){
       try {
-          const gameStateRow =  req.body.resApi;
-
-          const game = await Game.findOne({ id: gameStateRow.gameId });
+          const gameStateRow =  req.body.gameStateRow;
 
           // converted data from gamestateRow format to a gamestate format (card object)
-          const convertedData = await sails.helpers.gamestate.unpackGamestate(gameStateRow, 
-                                                                                  game.p0, 
-                                                                                  game.p1);
-          const p0 = new Player ( convertedData.p0 );
-          const p1 = new Player ( convertedData.p1 );
-          const updatedGameState = new GameState( convertedData );
+          const gameState =  sails.helpers.gamestate.unpackGamestate(gameStateRow);
 
-          return res.json({updatedGameState, players : [p0, p1]});
+          return res.json(gameState);
 
       } catch (err) {
         return res.serverError(err);

@@ -145,22 +145,6 @@ describe('Play TWOS', () => {
         p1FaceCards: [],
         scrap: [Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS],
       });
-
-    //testGamestateAPI packing
-    cy.log('Testing gameStateApi packing game -> gameStateRow');
-    cy.testConvertionGamestateRow(
-         null,  
-        {
-          p0Hand: [],
-          p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-          p0FaceCards: [],
-          p1Hand: [],
-          p1Points: [],
-          p1FaceCards: [],
-          scrap: [Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS],
-        }
-      );
-
     });
   });
 });

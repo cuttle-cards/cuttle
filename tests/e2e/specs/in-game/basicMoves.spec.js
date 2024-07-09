@@ -18,26 +18,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
 
-    //testGamestateAPI packing
-    cy.log('Testing gameStateApi packing game -> gameStateRow');
-    cy.testConvertionGamestateRow(        {
-          p0Hand: ['AS', 'AC'],
-          p0Points: ['TS'],
-          p0FaceCards: ['KS'],
-          p1Hand: ['AH', 'AD'],
-          p1Points: ['TH'],
-          p1FaceCards: ['KH'],
-        },  
-        {
-          p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-          p0Points: [Card.TEN_OF_SPADES],
-          p0FaceCards: [Card.KING_OF_SPADES],
-          p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          p1Points: [Card.TEN_OF_HEARTS],
-          p1FaceCards: [Card.KING_OF_HEARTS],
-        }
-      );
-
     // Play points (ace of spades)
     cy.get('[data-player-hand-card=1-3]').click(); // ace of spades
     cy.get('[data-move-choice=points]').click();
@@ -244,29 +224,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1Points: [Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_DIAMONDS],
       scrap: [],
-    });
-
-    //testGamestateAPI packing
-    cy.log('Testing gameStateApi packing game -> gameStateRow');
-    cy.testConvertionGamestateRow({
-          p0Hand: [],
-          p0Points:['TH'],
-          p0FaceCards:['KC', 'KS'],
-          p1Hand: ['6H'],
-          p1Points: ['AD'],
-          p1FaceCards: ['KD'],
-          scrap: [],
-        }, 
-        {
-          p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-          p0Points: [Card.TEN_OF_SPADES],
-          p0FaceCards: [Card.KING_OF_SPADES],
-          p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          p1Points: [Card.TEN_OF_HEARTS],
-          p1FaceCards: [Card.KING_OF_HEARTS],
-        }
-      );
-    
+    });    
   });
 
   it('Plays Queens', () => {
@@ -662,29 +620,5 @@ describe('Play Jacks', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
       scrap: [],
     });
-
-    //testGamestateAPI packing
-    cy.log('Testing gameStateApi packing game -> gameStateRow');
-    cy.testConvertionGamestateRow({
-      // card converted to String
-          p0Hand: [],
-          p0Points:['TH'],
-          p0FaceCards:['KC', 'KS'],
-          p1Hand: ['6H'],
-          p1Points: ['AD'],
-          p1FaceCards: ['KD'],
-          scrap: [],
-        }, 
-        {
-          // copy of above asseretion
-          p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-          p0Points: [Card.TEN_OF_SPADES],
-          p0FaceCards: [],
-          p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          p1Points: [Card.TEN_OF_HEARTS],
-          p1FaceCards: [Card.KING_OF_HEARTS],
-          scrap: [],
-        }
-      );
   });
 });

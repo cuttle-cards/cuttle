@@ -1,5 +1,6 @@
-import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard , assertResGameStateFixture , assertResGameStateString} from './helpers';
+import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard , assertGameStateRow, gCardsConvertion} from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
+import { gameStateRowMap } from '../fixtures/gameStateRowMap';
 
 /**
  * Require & configure socket connection to server
@@ -1148,46 +1149,64 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
 });
 
 
-Cypress.Commands.add('testConvertionGamestate', (resApi, fixture) => {
-   cy.log('gameStateAPi test object format');
-    io.socket.post(
-      '/api/test/testgamestateunpacking',
-      {
-        resApi,
-      },
-      (res, jwres) => {
-       // cy.log('Testing gameStateApi unpacking game gameStateRow -> gameState');
-        expect(jwres.statusCode).to.equal(200); 
-        assertResGameStateFixture(res, fixture);
-      },
-    ); 
+Cypress.Commands.add('testConvertionGamestateRow', async (applygCardsConvertion, fixture) => {
+  let gameStateRow =  {};
+  console.log(applygCardsConvertion);
+  if(applygCardsConvertion){
+    gameStateRow = gCardsConvertion(fixture);
+  }
+  else{
+    gameStateRow =  fixture;
+  }
+  const testPromise = new Cypress.Promise((resolve, reject) => {
+    io.socket.post('/api/test/testGameStateUnpacking', { gameStateRow }, (res, jwres) => {
+
+      if (jwres.statusCode !== 200) {
+        return reject(new Error('Error Server'));
+      }
+      
+      return resolve(res);
+    });
+  });
+  testPromise.then((res) => {
+        cy.log('Testing gameStateApi packing from gameState -> gameStateRow');
+        assertGameStateRow(res, gameStateRow);
+        io.socket.post(
+          '/api/test/testGameStatePacking',
+          {
+           res,
+          },
+          (response, jwres) => {
+           // cy.log('Testing gameStateApi unpacking game gameStateRow -> gameState');
+            expect(jwres.statusCode).to.equal(200); 
+            assertGameStateRow(res, response.gameStateRow);
+          },
+        ); 
+  
+    
+  }).catch((error) => {
+      throw error;
+  });
+
+  //const gameStateCleaned = await sails.helpers.gamestate.validateGameState(gameStateObject);
+
+  //const gameStateRow = await sails.helpers.gamestate.saveGamestate(gameStateCleaned);
 
 });
 
+Cypress.Commands.add('testConvertionGamestate', (gameState) => {
+  console.log('ghd')
+  cy.log('gameStateAPi test object format');
+   io.socket.post(
+     '/api/test/testGameStatePacking',
+     {
+      gameState,
+     },
+     (res, jwres) => {
+      // cy.log('Testing gameStateApi unpacking game gameStateRow -> gameState');
+       expect(jwres.statusCode).to.equal(200); 
+       assertGameStateRow(gameState, res);
+     },
+   ); 
 
-Cypress.Commands.add('testConvertionGamestateRow', (stringFormat, objectFormat) => {
-
-  cy.window().its('cuttle.gameStore').then((game) => {
-    const testPromise = new Cypress.Promise((resolve, reject) => {
-      io.socket.post('/api/test/testgamestatepacking', { game }, (res, jwres) => {
-
-        if (jwres.statusCode !== 200) {
-          return reject(new Error('Failed to load season'));
-        }
-        return resolve(res);
-      });
-    });
-
-    testPromise.then((res) => {
-          // If stringFormat has content, compare the game state arrays
-          if (stringFormat.p0Hand !== null || stringFormat.p0Hand !==  undefined) {
-            cy.log('Testing gameStateApi packing game gameState -> gameStateRow');
-            assertResGameStateString(res, stringFormat);
-          }
-
-        cy.testConvertionGamestate(res, objectFormat);
-    }).catch((error) => {
-      throw error;
-    });
-  });
 });

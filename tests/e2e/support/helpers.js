@@ -1,4 +1,5 @@
 import { SnackBarError } from '../fixtures/snackbarError';
+import { gameStateRowMap } from '../fixtures/gameStateRowMap';
 
 export function hasValidSuitAndRank(card) {
   if (!Object.prototype.hasOwnProperty.call(card, 'rank')) {
@@ -633,19 +634,77 @@ export function assertGameState(pNum, fixture, spectating = false) {
   assertStoreMatchesFixture(fixture);
 }
 
+export function gCardsConvertion(fixture){
+  let gameStateRow =  {};
+  for (let key in fixture) {
+      if (Array.isArray(fixture[key])){   
+        let temp = [];
+        fixture[key].forEach(card => {
+          if(card){
+            temp.push(card.Id);
+          }
+        });
+        gameStateRow[key]  = temp;
+      }
+      else if (key === 'p0'|| key === 'p1'){
 
-export function cardsArraysMatch(res, fixture) {
+      }
+      else if (isNaN(fixture[key])){
+        if(fixture[key]){
+          gameStateRow[key]  = fixture[key]['Id'];
+        }
+      }
+      else{
+        gameStateRow[key]  = fixture[key];
+      }
+    }
+    return gameStateRow;
+}
+
+
+function findCardById(Id) {
+  for (const card in gameStateRowMap.cards) {
+    if (gameStateRowMap.cards[card]['Id'] === Id) {
+      return card;
+    }
+  }
+  return; 
+}
+function findCardBySRankSuit(card) {
+  for (const el in gameStateRowMap.cards) {
+    if (cardsMatch (gameStateRowMap.cards[el]['objectRep'], card)) {
+      return el;
+    }
+  }
+  return; 
+}
+function gameStateRowMatch(gameStateLine, gameStateRowLine) {
   // If length is not equal
-  if (res.length != fixture.length){
+  if (gameStateLine.length !== gameStateRowLine.length){
     return false;
   }
-  res.sort();
-  fixture.sort();
+
+  //Convert Cards though GameStateRowMap
+  const rowCardConverted = gameStateRowLine.map((Id) => {   
+                                                        // get content before parentheses -> main Card
+                                                        let cleanId = Id.replace(/\(.*?\)/g, '');
+                                                        return findCardById(cleanId)
+                                                        });
+                                                        console.log(gameStateRowLine)
+  const gstCardConverted = gameStateLine.map(card => findCardBySRankSuit(card));
+
+  if ((rowCardConverted.length != gstCardConverted.length) || 
+      (rowCardConverted.length != gameStateRowLine.length) ||
+      (gstCardConverted.length != gameStateLine.length)
+    ){
+    return false;
+  }
+
+  rowCardConverted.sort();
+  gstCardConverted.sort();
   // Comparing each element of array
-  for (let i = 0; i < res.length; i++){
-    // get content before parentheses -> main Card
-    let resCleaned = res[i].replace(/\(.*?\)/g, '');
-    if (resCleaned != fixture[i]){
+  for (let i = 0; i < rowCardConverted.length; i++){
+    if (rowCardConverted[i] != gstCardConverted[i]){
       return false;
     }
   }
@@ -654,111 +713,46 @@ export function cardsArraysMatch(res, fixture) {
 }
 
 /**
- * @param fixture:
- * {
- * 	 p0Hand: {suit: number, rank: number}[],
- *   p0Points: {suit: number, rank: number}[],
- *   p0FaceCards: {suit: number, rank: number}[],
- *   p1Hand: {suit: number, rank: number}[],
- *   p1Points: {suit: number, rank: number}[],
- *   p1FaceCards: {suit: number, rank: number}[],
- * }
+ * @param gameState:
+ * @param gameStateRow
  */
-export function assertResGameStateFixture(res,fixture) {
+export function assertGameStateRow(gameState, gameStateRow) {
+    const attributesToConvert = [
+      'deck', 'scrap', 'playedCard', 'targetCardId', 'targetCard2Id', 'oneOff', 'oneOffTarget', 'twos', 'resolving',
+      'p0Hand', 'p1Hand', 'p0Points', 'p1Points', 'p0FaceCards', 'p1FaceCards'
+    ];
+    for (let el in gameStateRow) {
+      if(!attributesToConvert.includes(el)){
+        continue;
+      }
+      let rowValue;
+      let gameStateValue;
+        // if is listed in the pathMap = meaning the paths differ from gamestate to gamestateRow
+        if(Object.hasOwn(gameStateRowMap.pathMap, el)){
+          rowValue = gameStateRow[el] ? gameStateRow[el] : [];
+          const y = gameState[gameStateRowMap.pathMap[el]['player']][gameStateRowMap.pathMap[el]['att']];
+          gameStateValue = y  ? y : [];
+        } 
+        else if (Array.isArray( gameStateRow[el])){
+          rowValue = gameStateRow[el];
+          gameStateValue = gameState[el];
+        }
+        else if (typeof  gameStateRow[el] === 'string'){
+          rowValue = [ gameStateRow[el] ];
+          gameStateValue = [ gameState[el] ];
+        }
+        if(!gameStateRow[el] ){
+          rowValue = [];
+        }
+        if(!gameStateValue){
+          gameStateValue = [];
+        }
+        expect(gameStateRowMatch( gameStateValue , rowValue)).to.eq(
+          true,
+          `GameStateRow ${el} should match ${rowValue}, 
+          but actual: ${gameStateValue} did not match fixture`
+        );
+  
+  };
 
-    // Player 0
-    expect(cardListsMatch(res.players[0].hand, fixture.p0Hand)).to.eq(
-      true,
-      `GameState P0 Hand should match fixture, but actual: ${printCardList(
-        res.players[0].hand,
-      )} did not match ficture: ${printCardList(fixture.p0Hand)}`,
-    );
-    expect(cardListsMatch(res.players[0].points, fixture.p0Points)).to.eq(
-      true,
-      `GameState P0 Points should match fixture, but actual: ${printCardList(
-        res.players[0].points,
-      )} did not match ficture: ${printCardList(fixture.p0Points)}`,
-    );
-    expect(cardListsMatch(res.players[0].faceCards, fixture.p0FaceCards)).to.eq(
-      true,
-      `GameState P0 Face Cards should match fixture, but actual: ${printCardList(
-        res.players[0].faceCards,
-      )} did not match ficture: ${printCardList(fixture.p0FaceCards)}`,
-    );
-    // Player 1
-    expect(cardListsMatch(res.players[1].hand, fixture.p1Hand)).to.eq(
-      true,
-      `GameState P1 Hand should match fixture, but actual: ${printCardList(
-        res.players[1].hand,
-      )} did not match ficture: ${printCardList(fixture.p1Hand)}`,
-    );
-    expect(cardListsMatch(res.players[1].points, fixture.p1Points)).to.eq(
-      true,
-      `GameState P1 Points should match fixture, but actual: ${printCardList(
-        res.players[1].points,
-      )} did not match ficture: ${printCardList(fixture.p1Points)}`,
-    );
-    expect(cardListsMatch(res.players[1].faceCards, fixture.p1FaceCards)).to.eq(
-      true,
-      `GameState P1 Face Cards should match fixture, but actual: ${printCardList(
-        res.players[1].faceCards,
-      )} did not match ficture: ${printCardList(fixture.p1FaceCards)}`,
-    );
-        expect(cardListsMatch(res.players[1].faceCards, fixture.p1FaceCards)).to.eq(
-      true,
-      `GameState P1 Face Cards should match fixture, but actual: ${printCardList(
-        res.players[1].faceCards,
-      )} did not match ficture: ${printCardList(fixture.p1FaceCards)}`,
-    );
-}
-
-/**
- * @param stringFormat:
- * {
- * 	 p0Hand: string[],
- *   p0Points: string[],
- *   p0FaceCards: string[],
- *   p1Hand: string[],
- *   p1Points: string[],
- *   p1FaceCards: string[],
- * }
- * @param res{
- * 	 p0Hand: {suit: number, rank: number}[],
- *   p0Points: {suit: number, rank: number}[],
- *   p0FaceCards: {suit: number, rank: number}[],
- *   p1Hand: {suit: number, rank: number}[],
- *   p1Points: {suit: number, rank: number}[],
- *   p1FaceCards: {suit: number, rank: number}[],
- * }
- */
-export function assertResGameStateString(res, stringFormat) {
-  expect(cardsArraysMatch(res.p0Hand, stringFormat.p0Hand)).to.eq(
-    true,
-    `GameStateRow P0Hand should match ${stringFormat.p0Hand}, 
-    but actual: ${res.p0Hand} did not match fixture`
-  );
-  expect( cardsArraysMatch(res.p0FaceCards, stringFormat.p0FaceCards)).to.eq( 
-    true,
-    `GameStateRow p0FaceCards should match ${stringFormat.p0FaceCards}, 
-    but actual: ${res.p0FaceCards} did not match ficture`);
-
-  expect( cardsArraysMatch(res.p0Points, stringFormat.p0Points)).to.eq( 
-    true,
-    `GameStateRow p0Points should match ${stringFormat.p0Points}, 
-    but actual: ${res.p0Points} did not match ficture`);
-
-  expect( cardsArraysMatch(res.p1Hand, stringFormat.p1Hand) ).to.eq( 
-    true,
-    `GameStateRow p1Hand should match ${stringFormat.p1Hand}, 
-    but actual: ${res.p1Hand} did not match ficture`);
-
-  expect( cardsArraysMatch(res.p1FaceCards, stringFormat.p1FaceCards)).to.eq( 
-    true,
-    `GameStateRow p1FaceCards should match ${stringFormat.p1FaceCards}, 
-    but actual: ${res.p1FaceCards} did not match ficture`);
-
-  expect( cardsArraysMatch(res.p1Points, stringFormat.p1Points)).to.eq( 
-    true,
-    `GameStateRow p1Points should match ${stringFormat.p1Points}, 
-    but actual: ${res.p1Points} did not match ficture`);
 }	
