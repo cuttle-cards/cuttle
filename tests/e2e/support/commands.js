@@ -1,6 +1,5 @@
 import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard , assertGameStateRow, gCardsConvertion} from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
-import { gameStateRowMap } from '../fixtures/gameStateRowMap';
 
 /**
  * Require & configure socket connection to server
@@ -1151,7 +1150,7 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
 
 Cypress.Commands.add('testConvertionGamestateRow', async (applygCardsConvertion, fixture) => {
   let gameStateRow =  {};
-  console.log(applygCardsConvertion);
+
   if(applygCardsConvertion){
     gameStateRow = gCardsConvertion(fixture);
   }
@@ -1195,7 +1194,7 @@ Cypress.Commands.add('testConvertionGamestateRow', async (applygCardsConvertion,
 });
 
 Cypress.Commands.add('testConvertionGamestate', (gameState) => {
-  console.log('ghd')
+  console.log('ghd');
   cy.log('gameStateAPi test object format');
    io.socket.post(
      '/api/test/testGameStatePacking',

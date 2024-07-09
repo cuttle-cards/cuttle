@@ -36,8 +36,17 @@ module.exports = {
         });
 
 
-        const p0Data = { hand : convertedData.p0Hand, faceCards: convertedData.p0FaceCards, points : convertedData.p0Points};
-        const p1Data = { hand : convertedData.p1Hand, faceCards: convertedData.p1FaceCards, points : convertedData.p1Points };
+        const p0Data = { 
+                        hand : convertedData.p0Hand, 
+                        faceCards: convertedData.p0FaceCards, 
+                        points : convertedData.p0Points
+                       };
+
+        const p1Data = { 
+                        hand : convertedData.p1Hand, 
+                        faceCards: convertedData.p1FaceCards, 
+                        points : convertedData.p1Points 
+                      };
           
 
         const data = {    gameId: gameStateRow.gameId,
@@ -50,11 +59,11 @@ module.exports = {
                           deck : convertedData.deck,
                           scrap: convertedData.scrap,
                           twos : convertedData.twos,
-                          playedCard : convertedData.playedCard !== null ? convertedData.playedCard : null,
-                          targetCardId : convertedData.targetCardId !== null ? convertedData.targetCardId : null,
-                          oneOff : convertedData.oneOff !== null ? convertedData.oneOff : null,
-                          oneOffTarget: convertedData.oneOffTarget !== null ? convertedData.oneOffTarget : null,
-                          resolving : convertedData.resolving !== null && convertedData.resolving !== undefined ? convertedData.resolving : null,
+                          playedCard : convertedData.playedCard  ? convertedData.playedCard : null,
+                          targetCardId : convertedData.targetCardId  ? convertedData.targetCardId : null,
+                          oneOff : convertedData.oneOff  ? convertedData.oneOff : null,
+                          oneOffTarget: convertedData.oneOffTarget ? convertedData.oneOffTarget : null,
+                          resolving : convertedData.resolving ? convertedData.resolving : null,
                       }; 
 
           const convertedGameState = sails.helpers.gamestate.validateGamestate( data );  

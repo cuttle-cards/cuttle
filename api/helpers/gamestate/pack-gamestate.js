@@ -14,7 +14,7 @@ module.exports = {
 
   fn:  ({ gameState }, exits) => {
 
-      try{
+      try {
         const convertedData = {};
 
         const attributesToConvert = [
@@ -23,12 +23,14 @@ module.exports = {
 
         attributesToConvert.forEach( attribute => {
             const value = gameState[attribute];
-            if (value !== null && value !== undefined) {
-                if (typeof value === 'string') {
-                  convertedData[attribute]  = sails.helpers.gamestate.convertCardToId(value);
-                } else if (Array.isArray(value)) {
-                  convertedData[attribute]  = value.map(card => sails.helpers.gamestate.convertCardToId(card, gameState.playedBy)); 
+            if (value) {
+                if (Array.isArray(value)) {
+                  convertedData[attribute]  = value.map(card => 
+                                sails.helpers.gamestate.convertCardToId(card, gameState.playedBy)); 
                 }
+                else if (value && isNaN(value)) {
+                  convertedData[attribute]  = sails.helpers.gamestate.convertCardToId(value);
+                } 
             }
             else {
               convertedData[attribute]  = null;  // Handle null or undefined attributes
@@ -47,9 +49,11 @@ module.exports = {
 
         playerAttToConvert.forEach(attribute => { 
            
-          const value = gameState[attribute.player][attribute.gamestateName];// ex GameState format for p0Hand : gamestate.p0.hand
-          if(value !== null && value !== undefined){
-            convertedData[attribute.rowName]  = value.map(card => sails.helpers.gamestate.convertCardToId(card, attribute.player));
+          const value = gameState[attribute.player][attribute.gamestateName];
+          // ex GameState format for p0Hand : gamestate.p0.hand
+          if(value){
+            convertedData[attribute.rowName]  = value.map(card => 
+                            sails.helpers.gamestate.convertCardToId(card, attribute.player));
           }
         
         });

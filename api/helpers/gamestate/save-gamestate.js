@@ -14,24 +14,10 @@ module.exports = {
 
   fn: async ({ gameState }, exits) => {
     
-    // Test if gamestate is provided
-    if(!gameState || gameState.gameId == null || gameState.gameId == undefined ){
-      return exits.error({message: 'No GameState provided or undefined gameId'  });
-    }
-    // Test if required fields are provided
-    const requiredField = ['playedBy', 'moveType', 'phase' ];
-    requiredField.forEach(attribute => {
-      if(!gameState.hasOwnProperty(attribute) && gameState[attribute] == null){
-        return exits.error({message: 'A required GameStateRow attribute is null :' + attribute  });
-      }
-    });
-
-
-
     try {
-
+        const gameStateCleaned = sails.helpers.gamestate.validateGamestate(gameState);
         // converted data from gamestate format to a gamestateRow format
-        const gameStateRowData = await sails.helpers.gamestate.packGamestate(gameState);
+        const gameStateRowData = sails.helpers.gamestate.packGamestate(gameStateCleaned);
         const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
 
        //await Game.addToCollection(game.id, 'gameStates').members([gameStateRow.gameId]); //TODO

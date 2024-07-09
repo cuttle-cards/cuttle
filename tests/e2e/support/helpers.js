@@ -646,9 +646,6 @@ export function gCardsConvertion(fixture){
         });
         gameStateRow[key]  = temp;
       }
-      else if (key === 'p0'|| key === 'p1'){
-
-      }
       else if (isNaN(fixture[key])){
         if(fixture[key]){
           gameStateRow[key]  = fixture[key]['Id'];
@@ -688,9 +685,9 @@ function gameStateRowMatch(gameStateLine, gameStateRowLine) {
   const rowCardConverted = gameStateRowLine.map((Id) => {   
                                                         // get content before parentheses -> main Card
                                                         let cleanId = Id.replace(/\(.*?\)/g, '');
-                                                        return findCardById(cleanId)
+                                                        return findCardById(cleanId);
                                                         });
-                                                        console.log(gameStateRowLine)
+
   const gstCardConverted = gameStateLine.map(card => findCardBySRankSuit(card));
 
   if ((rowCardConverted.length != gstCardConverted.length) || 
@@ -753,6 +750,6 @@ export function assertGameStateRow(gameState, gameStateRow) {
           but actual: ${gameStateValue} did not match fixture`
         );
   
-  };
+  }
 
 }	

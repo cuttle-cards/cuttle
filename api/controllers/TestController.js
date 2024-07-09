@@ -111,7 +111,7 @@ module.exports = {
   
   testGameStateUnpacking : async function(req, res){
       try {
-          const gameStateRow =  req.body.gameStateRow;
+          const {gameStateRow} = req.body;
 
           // converted data from gamestateRow format to a gamestate format (card object)
           const gameState =  sails.helpers.gamestate.unpackGamestate(gameStateRow);

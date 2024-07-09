@@ -111,21 +111,6 @@ module.exports = {
     // Sails specific rules
     {
       files: ['**/api/**/*.{j,t}s?(x)'],
-      globals: {
-        _: true,
-        sails: true,
-        cardService: true,
-        gameService: true,
-        userService: true,
-        //
-        Card: true,
-        Season: true,
-        Match: true,
-        User: true,
-        Game: true,
-        UserSpectatingGame: true,
-        GameStateRow:true,
-      },
       globals: sailsGlobals,
       rules: {
         'no-undef': 'error',

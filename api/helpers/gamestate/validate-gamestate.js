@@ -29,11 +29,11 @@ if(param === null || param === undefined ||  isNaN(param) || param <0 || param >
 }
 return param;
 }
-
+/* TODO
 function validatePlayer(param){
 
   return param;
-}
+}*/
 
 
 module.exports = {
