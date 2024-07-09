@@ -33,7 +33,7 @@ function convertCardToId(card){
         return '';
     }
 
-    let playerNum = playedBy === '0' ? 'p0' : 'p1'; 
+    let playerNum = playedBy === 'p0' ? 'p0' : 'p1'; 
 
     let attachmentStr ='(';
 

@@ -1,5 +1,4 @@
-const gameStateRowMap = {
-  cards : {
+const Cards = {
     // Clubs
     ACE_OF_CLUBS: {  rank: 1, suit: 0 , id : 'AC'},
     TWO_OF_CLUBS: {  rank: 2, suit: 0 , id : '2C'},
@@ -56,17 +55,7 @@ const gameStateRowMap = {
     JACK_OF_SPADES: {  rank: 11, suit: 3 , id : 'JS' },
     QUEEN_OF_SPADES: {  rank: 12, suit: 3 , id : 'QS'},
     KING_OF_SPADES: {  rank: 13, suit: 3 , id : 'KS'},
-  },
+  };
 
-  //
-  pathMap : { 
-    p0Hand : {rowPath : 'p0Hand', player : 'p0', att : 'hand'},
-    p0Points : {rowPath : 'p0Points', player : 'p0', att : 'points'},
-    p0FaceCards : {rowPath : 'p0FaceCards', player : 'p0', att : 'faceCards'},
-    p1Hand : {rowPath : 'p1Hand', player : 'p1', att : 'hand'},
-    p1Points : {rowPath : 'p1Points', player : 'p1', att : 'points'},
-    p1FaceCards :{rowPath : 'p1FaceCards', player : 'p1', att : 'faceCards'}
-  }
-};
 
-export { gameStateRowMap };
+export { Cards };

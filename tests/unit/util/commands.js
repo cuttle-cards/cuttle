@@ -1,22 +1,21 @@
-import { assertGameStateRow, gCardsConvertion} from './helpers';
+import { assertGameStateRow, assertGameState} from './helpers';
 
 
-export async function testConvertionGamestateRow(applygCardsConvertion, fixture){
-    let gameStateRowFixture =  {};
+export async function testConvertionGamestate(fixture){
 
-    if(applygCardsConvertion){
-      gameStateRowFixture = gCardsConvertion(fixture);
-    }
-    else{
-      gameStateRowFixture =  fixture;
-    }
-    const gameState =  await sails.helpers.gamestate.unpackGamestate(gameStateRowFixture);
+  const gameStateRow = await sails.helpers.gamestate.saveGamestate(fixture.gameState);
+  assertGameStateRow(fixture.gameStateRow, gameStateRow);
 
-    assertGameStateRow(gameState, gameStateRowFixture);
+  const gameState =  await sails.helpers.gamestate.unpackGamestate(gameStateRow);
+  assertGameState(fixture.gameState, gameState);
 
+}
 
-    const gameStateRow = await sails.helpers.gamestate.saveGamestate(gameState);
+export async function testConvertionGamestateRow(fixture){
+  const gameState =  await sails.helpers.gamestate.unpackGamestate(fixture.gameStateRow);
 
-    assertGameStateRow(gameState, gameStateRow);
+  const gameStateRow = await sails.helpers.gamestate.saveGamestate(gameState);
+  assertGameStateRow(fixture.gameStateRow, gameStateRow);
+
 
 }

@@ -51,7 +51,7 @@ module.exports = {
           const value = gameState[attribute.player][attribute.gamestateName];
           // ex GameState format for p0Hand : gamestate.p0.hand
           if(value){
-            if(attribute.gamestateName = 'points'){ 
+            if(attribute.gamestateName === 'points'){ 
               convertedData[attribute.rowName]  = value.map(card => 
                 sails.helpers.gamestate.convertCardToId(card, attribute.player));
             }
