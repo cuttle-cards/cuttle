@@ -56,7 +56,7 @@ module.exports = {
       victory,
     });
 
-    if (victory) {
+    if (victory.gameOver) {
       sails.sockets.blast('gameFinished', { gameId: game.id });
     }
 
