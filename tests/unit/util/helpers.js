@@ -75,27 +75,27 @@ function gameStateRowMatch(gameStateLine, gameStateRowLine) {
   if (gameStateLine.length !== gameStateRowLine.length){
     return false;
   }
+  //Convert Cards though GameStateRowMap
   const rowAttachment =[];
   const rowCardConverted = [];
-  //Convert Cards though GameStateRowMap
- gameStateRowLine.map((id) => {   
-                  // get content before parentheses -> main Card
-                  let cleanId = id.replace(/\(.*?\)/g, '');
-                  if(id.length >2){
-                    rowAttachment.push({ maincard : cleanId, attachments : getRowAttachments(id) });
-                  }
-                  rowCardConverted.push(findCardById(cleanId));
+ gameStateRowLine.forEach(id => {   
+                    // get content before parentheses -> main Card
+                    let cleanId = id.replace(/\(.*?\)/g, '');
+                    if(id.length >2){
+                      rowAttachment.push({ maincard : cleanId, attachments : getRowAttachments(id) });
+                    }
+                    rowCardConverted.push(findCardById(cleanId));
                   });
 
   const gAttachment = [];
   const gstCardConverted = [];
-  gameStateLine.map(card =>{
-                if(card.attachments){
-                  const gAtt = card.attachments.map(attachment => attachment.id);
-                  gAttachment.push( { maincard : card.id , attachments : gAtt});
-                }
-                gstCardConverted.push(findCardBySRankSuit(card));
-  });
+  gameStateLine.forEach(card => {
+                  if(card.attachments){
+                    const gAtt = card.attachments.map(attachment => attachment.id);
+                    gAttachment.push( { maincard : card.id , attachments : gAtt});
+                  }
+                  gstCardConverted.push(findCardBySRankSuit(card));
+                 });
 
   if ((rowCardConverted.length != gstCardConverted.length) || 
       (rowCardConverted.length != gameStateRowLine.length) ||

@@ -25,10 +25,9 @@ module.exports = {
             const value = gameState[attribute];
             if (value) {
                 if (Array.isArray(value)) {
-                  convertedData[attribute]  = value.map(card => 
-                                sails.helpers.gamestate.convertCardToId(card, gameState.playedBy)); 
+                  convertedData[attribute]  = value.map(card => sails.helpers.gamestate.convertCardToId(card)); 
                 }
-                else if (value && isNaN(value)) {
+                else if (isNaN(value)) {
                   convertedData[attribute]  = sails.helpers.gamestate.convertCardToId(value);
                 } 
             }
@@ -52,8 +51,13 @@ module.exports = {
           const value = gameState[attribute.player][attribute.gamestateName];
           // ex GameState format for p0Hand : gamestate.p0.hand
           if(value){
-            convertedData[attribute.rowName]  = value.map(card => 
-                            sails.helpers.gamestate.convertCardToId(card, attribute.player));
+            if(attribute.gamestateName = 'points'){ 
+              convertedData[attribute.rowName]  = value.map(card => 
+                sails.helpers.gamestate.convertCardToId(card, attribute.player));
+            }
+            else{
+              convertedData[attribute.rowName]  = value.map(card => sails.helpers.gamestate.convertCardToId(card));
+            }
           }
         });
 

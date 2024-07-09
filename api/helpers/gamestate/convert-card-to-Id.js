@@ -33,7 +33,8 @@ function convertCardToId(card){
         return '';
     }
 
-    let playerNum = playedBy === '0' ? 'p0' : 'p1';
+    let playerNum = playedBy === '0' ? 'p0' : 'p1'; 
+
     let attachmentStr ='(';
 
     //Format => (JH-p0,JC-p1,JD-p0) cardInString + '-' + player (+',')

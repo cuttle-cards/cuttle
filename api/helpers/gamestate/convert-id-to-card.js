@@ -23,7 +23,7 @@ function convertIdToCard (str){
         throw new Error('Unrecognisabled suit ' + tempCard.suit);
       } 
 
-      return { suit: suit, rank : rank, id: str, attachments : null};   
+    return { suit: suit, rank : rank, id: str, attachments : null};   
   }
   
   throw new Error('Unrecognised card identifier ' + str);

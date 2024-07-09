@@ -15,12 +15,12 @@ module.exports = {
   fn: async ({ gameState }, exits) => {
     
     try {
+        //validate and format
         const gameStateCleaned = sails.helpers.gamestate.validateGamestate(gameState);
-        // converted data from gamestate format to a gamestateRow format
+        //convert
         const gameStateRowData = sails.helpers.gamestate.packGamestate(gameStateCleaned);
+        //Save and fetch
         const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
-
-       //await Game.addToCollection(game.id, 'gameStates').members([gameStateRow.gameId]); //TODO
 
         return exits.success(gameStateRow);
 
