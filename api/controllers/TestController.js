@@ -96,30 +96,4 @@ module.exports = {
       return res.serverError(err);
     }
   },
-  testGameStatePacking : async function(req, res){
-      try {
-
-          const game =  req.body.res;
-          const gameStateRow = await sails.helpers.gamestate.saveGamestate(game);
-
-          return res.json({gameStateRow});
-
-      } catch (err) {
-        return res.serverError(err);
-      }
-  },
-  
-  testGameStateUnpacking : async function(req, res){
-      try {
-          const {gameStateRow} = req.body;
-
-          // converted data from gamestateRow format to a gamestate format (card object)
-          const gameState =  sails.helpers.gamestate.unpackGamestate(gameStateRow);
-
-          return res.json(gameState);
-
-      } catch (err) {
-        return res.serverError(err);
-      }
-  }
 };
