@@ -28,7 +28,20 @@ module.exports = {
 
     const lastEventChange = Object.keys(GameMoveType).find((key) => GameMoveType[key] === gameState.moveType);
     const lastEventPlayerChoosing = lastEventChange === 'resolveThree' ? gameState.playedBy : null;
-    const lastEventTargetType = gameState.targetCard?.rank > 10 ? 'faceCard' : 'point';
+
+    const lastEventTargetType = () => {
+      if (!['targetedOneOff', 'sevenTargetedOneOff'].includes(lastEventChange)) {
+        return null;
+      }
+
+      if (gameState.targetCard?.rank === 11) {
+        return 'jack';
+      }
+      if (gameState.targetCard?.rank > 11) {
+        return 'faceCard';
+      }
+      return 'point';
+    };
     //Only define what is changing, rest is defined by spread operator
     const populatedGame = {
       ...game,
