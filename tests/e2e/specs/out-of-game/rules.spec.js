@@ -5,7 +5,7 @@ describe('Rules Page', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.vueRoute('/rules');
-    window.localStorage.setItem('fiveChangeBannerDismissed', true);
+    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
   });
 
   it('Navigates to Login when unauthenticated and home when authenticated using the Ready To Play button', () => {
@@ -20,7 +20,7 @@ describe('Rules Page', () => {
 
   it('It displays rule preview gifs when user clicks "Watch Video"', () => {
     cy.get('[data-cy-open-rule-preview="rules.royals.king"]').click();
-    cy.get('[data-cy-preview-gif="King"', {timeout: 5000}).should('be.visible');
+    cy.get('[data-cy-preview-gif="King"', { timeout: 5000 }).should('be.visible');
     cy.get('[data-cy="close-preview-gif"]').click();
     cy.get('[data-cy-preview-gif="King"').should('not.exist');
   });
