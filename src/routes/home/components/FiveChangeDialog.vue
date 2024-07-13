@@ -92,6 +92,7 @@
         {{ t('global.close') }}
       </v-btn>
       <v-btn
+        href="https://forms.gle/XDeE8j1jJ6DoMdmU7"
         color="newPrimary"
         variant="flat"
         target="_blank"
