@@ -12,7 +12,7 @@ module.exports = {
       required: true,
     },
     players: {
-      type: 'array',
+      type: 'ref',
       description: 'Array of combined game players as well as gameState players',
       required: true,
     },

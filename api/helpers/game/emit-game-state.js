@@ -1,4 +1,4 @@
-import GameMoveType from '../../../utils/GameMoveType.json';
+const GameMoveType = require('../../../utils/GameMoveType.json');
 
 module.exports = {
   friendlyName: 'Emit Game State',
