@@ -37,10 +37,10 @@
     "readRules": "Lire les règles",
     "joinDiscord": "Rejoignez notre communauté sur Discord.",
     "snackbar": {
-       "usernameIsTaken": "Ce pseudo est déjà enregistré. Essayez de vous connecter!",
-       "userNotFound": "Ce pseudo est inconnu au bataillon. Inscrivez vous!",
-       "wrongPassword": "Le pseudo et le mot de passe ne correspondent pas."
-     }
+      "usernameIsTaken": "Ce pseudo est déjà enregistré. Essayez de vous connecter!",
+      "userNotFound": "Ce pseudo est inconnu au bataillon. Inscrivez vous!",
+      "wrongPassword": "Le pseudo et le mot de passe ne correspondent pas."
+    }
   },
   "lobby": {
     "lobbyFor": "Vestibule de ",
@@ -97,8 +97,8 @@
         "discard": "Défausser",
         "oppponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
-      "five":{
-        "discardAndDraw" : "Jeter et piocher",
+      "five": {
+        "discardAndDraw": "Jeter et piocher",
         "nice": "Bon!",
         "resolveFive": "Vous avez résolu un 5 ponctuel. Choisissez une carte à défausser et vous piocherez ensuite 3 cartes",
         "resolveFiveNoCards": "Vous avez résolu un problème ponctuel de 5, mais vous n'avez aucune carte en main à défausser. Vous piochez 3 cartes sans les défausser. Doux!"
@@ -253,9 +253,9 @@
       "seven": {
         "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte du paquet."
       },
-      "five":{
-        "selectCardToDiscard" : "Vous devez sélectionner une carte à défausser",
-        "incorrectCard" : "Mauvaise carte jouée",
+      "five": {
+        "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
+        "incorrectCard": "Mauvaise carte jouée",
         "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
       },
       "draw": {
@@ -306,12 +306,12 @@
       "about2": "pour apprendre les règles et en savoir plus sur le projet cuttle.cards.",
       "okayButton": "d'accord"
     },
-    "snackbar" :{
+    "snackbar": {
       "cannotJoin": "vous ne pouvez pas rejoindre ce jeu car il est déjà complet",
-      "spectateTwoPlayers" : "Vous ne pouvez regarder qu'une partie en cours avec deux joueurs.",
+      "spectateTwoPlayers": "Vous ne pouvez regarder qu'une partie en cours avec deux joueurs.",
       "cantFindGame": "Je ne trouve pas le jeu",
-      "invalidLobbyNumber" : "Numéro de lobby invalide",
-      "cannotSpectate" : "Impossible de regarder le jeu parce que vous jouez"
+      "invalidLobbyNumber": "Numéro de lobby invalide",
+      "cannotSpectate": "Impossible de regarder le jeu parce que vous jouez"
     },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",
@@ -343,10 +343,10 @@
     "rulesTitle": "Règles de Cuttle",
     "preview": {
       "watchVideo": "Regarder la vidéo",
-      "imgAlt":"Comment jouer {title} dans Cuttle"
+      "imgAlt": "Comment jouer {title} dans Cuttle"
     },
     "rulesReadText": "Lisez l'officiel",
-    "rulesPreviewGif":"Aperçu animé de {title} dans Cuttle",
+    "rulesPreviewGif": "Aperçu animé de {title} dans Cuttle",
     "rulesWatchText": "Ou regardez le tutoriel vidéo de cuttle.cards ci-dessous pour apprendre les règles et vous familiariser avec le déroulement du jeu.",
     "goalTitle": "objectif",
     "goalText": "L'objectif est d'être le premier joueur à atteindre ou dépasser 21 points. Le premier joueur à atteindre l'objectif gagne immédiatement. Un joueur (traditionnellement celui qui distribue) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes joue en premier.",
@@ -399,7 +399,7 @@
       "nine": "Neuf",
       "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour.",
       "ten": "Dix",
-      "tenDescription": "Aucun effet."      
+      "tenDescription": "Aucun effet."
     },
     "readyToPlay": {
       "readyToPlay": "Prêt à jouer ?",
@@ -457,7 +457,7 @@
       "competitiveCuttle2": "Chaque saison est divisée en 13 semaines. Pour chaque semaine, nous comptons le nombre de matchs classés au meilleur des 2/3 que chaque joueur remporte contre des adversaires uniques (en ignorant les matchs nuls) et attribuons des points aux joueurs en fonction de leur classement hebdomadaire.",
       "championPlayer": "Joueur Champion",
       "secondPlacePlayer": "Joueur Deuxième Place",
-      "thirdPlacePlayer": "Joueur Troisième Place",      
+      "thirdPlacePlayer": "Joueur Troisième Place",
       "exampleImgExplanation": "Exemple de page de statistiques / tournoi",
       "scoring": {
         "numPoints": "1 Point | {count} Points",
@@ -468,7 +468,6 @@
         "completedMatch": "Chaque autre joueur ayant terminé un match sans gagner obtient 1 point pour la semaine"
       }
     }
-
   },
   "stats": {
     "error": {
@@ -517,7 +516,7 @@
     "gameModes": "La bêta affecte à la fois le jeu classé et le jeu décontracté. Le jeu classé continuera à être pris en compte dans le classement comme d'habitude, donc vous n'avez pas besoin de sauter le jeu classé pour l'essayer !",
     "learnMoreHeader": "Où pouvons-nous en apprendre davantage ?",
     "learnMore1": "Vous pouvez en apprendre plus sur ce changement d'équilibrage et la discussion environnante sur ",
-    "learnMore2": "où les joueurs discutent du changement et s'ils aimeraient le voir permanent. Dites-nous ce que vous en pensez !"
+    "learnMore2": "où les joueurs discutent du changement et s'ils aimeraient le voir permanent. Dites-nous ce que vous en pensez !",
+    "voteNow": "Votez Maintenant"
   }
-
 }

@@ -89,7 +89,16 @@
         variant="flat"
         @click="close"
       >
-        close
+        {{ t('global.close') }}
+      </v-btn>
+      <v-btn
+        href="https://forms.gle/XDeE8j1jJ6DoMdmU7"
+        color="newPrimary"
+        variant="flat"
+        target="_blank"
+        class="ml-4"
+      >
+        {{ t('fiveChange.voteNow') }}
       </v-btn>
     </template>
   </BaseDialog>
@@ -109,14 +118,14 @@ const preferenceSaved= ref(false);
 
 const close = () => {
   if (!preferenceSaved.value) {
-    setLocalStorage('fiveChangeBannerDismissed', true);
+    setLocalStorage('finalFiveChangeBannerDismissed', true);
   }
   show.value = false;
   preferenceSaved.value = true;
 };
 
 onMounted(() => {
-  if (!getLocalStorage('fiveChangeBannerDismissed')) {
+  if (!getLocalStorage('finalFiveChangeBannerDismissed')) {
     show.value = true;
   }
 });
