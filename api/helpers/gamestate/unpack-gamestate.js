@@ -13,7 +13,7 @@ module.exports = {
   sync: true,
 
   fn:  ({ gameStateRow  }, exits) => {
-    try{
+    try {
 
         const attributesToConvert = [
           'deck', 'scrap', 'playedCard', 'targetCardId', 'oneOff', 'oneOffTarget', 'twos', 'resolving',
