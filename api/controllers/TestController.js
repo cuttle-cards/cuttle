@@ -9,7 +9,6 @@ const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 
-
 module.exports = {
   wipeDatabase: function (_req, res) {
     return sails.helpers.wipeDatabase()
