@@ -12,7 +12,7 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  window.localStorage.setItem('fiveChangeBannerDismissed', true);
+  window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
 }
 
 function assertSuccessfulJoin(gameState) {
@@ -444,7 +444,7 @@ describe('Home - Create Game', () => {
   it('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
     cy.window().then((win) => {
-      win.localStorage.setItem('fiveChangeBannerDismissed', true);
+      win.localStorage.setItem('finalFiveChangeBannerDismissed', true);
     });
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
