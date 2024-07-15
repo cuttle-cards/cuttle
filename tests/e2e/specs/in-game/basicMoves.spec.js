@@ -224,7 +224,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1Points: [Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.KING_OF_DIAMONDS],
       scrap: [],
-    });    
+    });
   });
 
   it('Plays Queens', () => {
