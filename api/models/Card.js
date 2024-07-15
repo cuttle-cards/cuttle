@@ -56,5 +56,5 @@ module.exports = {
     targeted: {
       model: 'game',
     },
-  }
+  },
 };
