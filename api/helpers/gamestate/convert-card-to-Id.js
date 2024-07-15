@@ -29,7 +29,7 @@ function convertCardToId(card){
  * @returns {string} string representation of the card atatchements attributs
  */
  function concatAttachtToId(card, playedBy){
-    if( card.attachments === null || card.attachments === undefined || card.attachments.length === 0){
+    if(!card.attachments || !card.attachments.length){
         return '';
     }
 
