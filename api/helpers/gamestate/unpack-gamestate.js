@@ -12,7 +12,7 @@ module.exports = {
   },
   sync: true,
 
-  fn:  ({gameStateRow  }, exits) => {
+  fn:  ({ gameStateRow  }, exits) => {
     try{
 
         const attributesToConvert = [
