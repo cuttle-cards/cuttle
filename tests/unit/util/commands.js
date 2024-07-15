@@ -16,6 +16,4 @@ export async function testConvertionGamestateRow(fixture){
 
   const gameStateRow = await sails.helpers.gamestate.saveGamestate(gameState);
   assertGameStateRow(fixture.gameStateRow, gameStateRow);
-
-
 }
