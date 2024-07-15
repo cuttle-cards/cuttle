@@ -17,7 +17,7 @@ function convertCardToId(card){
     throw new Error('Unrecognisabled suit ' + card.suit ) ;
   }
   if(rankKey === undefined || rankKey === null){
-    throw new Error('Unrecognisabled rank ' +  card.rank) ;
+    throw new Error('Unrecognizable rank ' +  card.rank) ;
   }
   return rankKey + suitKey;
 }
