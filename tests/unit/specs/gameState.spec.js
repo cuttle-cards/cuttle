@@ -50,7 +50,7 @@ const test = {
       phase : 2,
     }
   };
-describe('Test gamestate to gamestateRow and vice versa', () => {
+describe('Coverting GameState's and to GameStateRow's', () => {
 
   it('Convert cards from gamestate to GameStateRow', () => {
     testConvertionGamestateRow(test);
