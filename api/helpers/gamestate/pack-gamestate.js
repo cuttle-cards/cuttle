@@ -1,7 +1,7 @@
 module.exports = {
   friendlyName: 'pack GameState',
 
-  description: 'This helper inputs a GameState and output a gamestateRow. Convert all the object representations of cards to the string, and aggregating the p0Hand, p0Points, and p0FaceCards attributes into the p0: Player object (doing the same for p1).',
+  description: 'Transforms a GameState into a GameStateRow. Converts the object representations of cards to the strings, and aggregates the p0Hand, p0Points, and p0FaceCards attributes into the p0: Player object (doing the same for p1).',
 
   inputs: {
     gameState: {
