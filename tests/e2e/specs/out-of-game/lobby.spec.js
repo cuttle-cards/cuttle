@@ -5,7 +5,7 @@ import { SnackBarError } from '../../fixtures/snackbarError';
 function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
-  window.localStorage.setItem('fiveChangeBannerDismissed', true);
+  window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
   cy.signupPlayer(myUser);
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
@@ -271,7 +271,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
-    window.localStorage.setItem('fiveChangeBannerDismissed', true);
+    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
@@ -442,7 +442,7 @@ describe('Lobby invite links', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.visit('/');
-    window.localStorage.setItem('fiveChangeBannerDismissed', true);
+    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game

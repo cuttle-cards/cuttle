@@ -42,7 +42,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
-    window.localStorage.setItem('fiveChangeBannerDismissed', true);
+    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
 
     // Set up season
     const [, diamondsSeason] = seasonFixtures;
@@ -243,7 +243,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
-    window.localStorage.setItem('fiveChangeBannerDismissed', true);
+    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
 
     // Sign up players
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -334,7 +334,7 @@ describe('Spectating Rematches', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
       cy.setupGameAsSpectator();
-      window.localStorage.setItem('fiveChangeBannerDismissed', true);
+      window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
     });
 
     it('Spectates a casual match using rematch', () => {
@@ -389,7 +389,7 @@ describe('Spectating Rematches', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
       cy.setupGameAsSpectator(true);
-      window.localStorage.setItem('fiveChangeBannerDismissed', true);
+      window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
       const [, , currentSeason] = seasonFixtures;
       cy.loadSeasonFixture([currentSeason]);
     });
