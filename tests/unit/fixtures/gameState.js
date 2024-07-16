@@ -10,7 +10,8 @@ const fixture = {
         },
         p1: {
           hand : [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          points : [Card.TEN_OF_HEARTS, { ... Card.ACE_OF_CLUBS, attachments: [Card.JACK_OF_CLUBS]}],
+          points : [Card.TEN_OF_HEARTS,
+                    { ... Card.ACE_OF_CLUBS, attachments: [Card.JACK_OF_SPADES]}],
           faceCards : [],
         },
         deck : [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS, Card.KING_OF_HEARTS],
@@ -33,7 +34,7 @@ const fixture = {
     p0Points : ['TS', '8D(JC-p1,JS-p0)'],
     p0FaceCards : ['KS'],
     p1Hand : ['AH', 'AD'],
-    p1Points : ['TH', 'AC(JC-p1)'],
+    p1Points : ['TH', 'AC(JS-p1)'],
     p1FaceCards : [],
     deck : ['AS', 'AC', 'KH'],
     scrap : [],

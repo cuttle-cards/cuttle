@@ -59,7 +59,6 @@ function convertIdToCard (str) {
                         suit: number || string,
                         rank: number || string,
                         id : string,
-                        attachedTo : string
                     }];
           }
  /**
@@ -90,7 +89,7 @@ function convertIdToCard (str) {
         attachments: [{
                         suit: number || string;
                         rank: number || string;
-                        attachedTo : string;
+                        id : string;
                     }];
           }
  /**
@@ -112,9 +111,7 @@ function convertIdToCard (str) {
     const attachments = attachmentsArray.map(element => {
           //split using the '-' -> [0]:before : card, [1]:player
           let content = element.split('-');
-          let card =  convertIdToCard( content[0] );
-          card['attachedTo'] = mainCardId;
-          return card;
+          return convertIdToCard( content[0] );
     });
 
 
