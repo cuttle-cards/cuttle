@@ -114,7 +114,6 @@ function convertIdToCard (str) {
           return convertIdToCard( content[0] );
     });
 
-
     return {...maincard, attachments : attachments};
 }
 
@@ -148,6 +147,5 @@ module.exports = {
       } catch (err) {
         return exits.error(err.message);
       }
-
     }
 };

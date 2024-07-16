@@ -1,7 +1,7 @@
 import { describe, it , expect} from 'vitest';
 import { fixture } from '../fixtures/gameState';
 
-describe('Coverting GameStates and to GameStateRows', () => {
+describe('Coverting GameState\'s and to GameStateRow\'s', () => {
 
   it('Converts GameState to GameStateRow(pack)', async () => {
     const gameStateRow = await sails.helpers.gamestate.saveGamestate(fixture.gameState);
@@ -12,7 +12,6 @@ describe('Coverting GameStates and to GameStateRows', () => {
 
     expect(fixture.gameStateRow).toEqual(gameStateRow);
   });
-
 
   it('Converts GameStateRow to GameState(unpack)', () => {
     const gameState =  sails.helpers.gamestate.unpackGamestate(fixture.gameStateRow);

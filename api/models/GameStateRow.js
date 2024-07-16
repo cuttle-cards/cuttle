@@ -159,7 +159,7 @@ module.exports = {
     twos: {
       type: 'json',
       columnType: 'text[]',
-      //required: true,
+      required: true,
     },
     // Resolving card
     resolving: {
