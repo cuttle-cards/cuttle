@@ -67,6 +67,7 @@ describe('initCuttleGlobals', () => {
   });
 
   // TODO May not be valuable, also fine to just skip it
+
   it.skip('should fail gracefully when devtools can not connect', () => {
     // Force staging
     import.meta.env.VITE_ENV = 'staging';

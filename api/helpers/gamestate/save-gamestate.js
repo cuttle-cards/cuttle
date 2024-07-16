@@ -8,12 +8,11 @@ module.exports = {
       type: 'ref',
       description: 'GameState',
       required: true,
-    },    
-
+    },
   },
 
   fn: async ({ gameState }, exits) => {
-    
+
     try {
         //validate and format
         const gameStateCleaned = sails.helpers.gamestate.validateGamestate(gameState);
@@ -27,6 +26,5 @@ module.exports = {
     } catch (err) {
         return exits.error({message: 'Error while Saving GameStateRow :' + err });
     }
-
   }
 };

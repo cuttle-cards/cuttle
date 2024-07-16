@@ -12,52 +12,56 @@ module.exports = {
   },
   sync: true,
 
-  fn:  ({ gameState }, exits) => {
+  fn: ({ gameState }, exits) => {
 
       try {
         const convertedData = {};
 
         const attributesToConvert = [
-          'deck', 'scrap', 'playedCard', 'targetCardId', 'targetCard2Id', 'oneOff', 'oneOffTarget', 'twos', 'resolving'
+          'deck', 'scrap', 'playedCard', 'targetCard', 'oneOff', 'oneOffTarget', 'twos', 'resolving',
+          'discardedCards'
         ];
 
-        attributesToConvert.forEach( attribute => {
+        attributesToConvert.forEach(attribute => {
             const value = gameState[attribute];
             if (value) {
-                if (Array.isArray(value)) {
-                  convertedData[attribute]  = value.map(card => sails.helpers.gamestate.convertCardToId(card)); 
-                }
-                else if (isNaN(value)) {
-                  convertedData[attribute]  = sails.helpers.gamestate.convertCardToId(value);
-                } 
+                const { convertCardToId } = sails.helpers.gamestate;
+                convertedData[attribute] = Array.isArray(value) ?
+                                              value.map(card => convertCardToId(card))
+                                              : convertCardToId(value);
             }
             else {
-              convertedData[attribute]  = null;  // Handle null or undefined attributes
+              convertedData[attribute] = null;  // Handle null or undefined attributes
             }
         });
 
         // Correspondance of attribute name in GameStateRow to attribute name in GameState + player
         const playerAttToConvert = [
-                                    { rowName : 'p0Hand', gamestateName : 'hand', player : 'p0'}, 
-                                    { rowName :'p1Hand', gamestateName :'hand', player : 'p1'}, 
-                                    { rowName :'p0Points',  gamestateName :'points', player : 'p0'},
-                                    { rowName :'p1Points',  gamestateName :'points', player : 'p1'}, 
-                                    { rowName :'p0FaceCards',  gamestateName :'faceCards', player : 'p0'}, 
-                                    { rowName :'p1FaceCards',  gamestateName :'faceCards', player : 'p1' }
-                                  ]; 
+                                    { rowName : 'p0Hand', gamestateName : 'hand', player : 'p0'},
+                                    { rowName : 'p1Hand', gamestateName : 'hand', player : 'p1'},
+                                    { rowName : 'p0Points', gamestateName : 'points', player : 'p0'},
+                                    { rowName : 'p1Points', gamestateName : 'points', player : 'p1'},
+                                    { rowName : 'p0FaceCards', gamestateName : 'faceCards', player : 'p0'},
+                                    { rowName : 'p1FaceCards', gamestateName : 'faceCards', player : 'p1'}
+                                  ];
 
-        playerAttToConvert.forEach(attribute => { 
-           
+        playerAttToConvert.forEach(attribute => {
+           // ex GameState format for p0Hand : gamestate.p0.hand
           const value = gameState[attribute.player][attribute.gamestateName];
-          // ex GameState format for p0Hand : gamestate.p0.hand
-          if(value){
-            if(attribute.gamestateName === 'points'){ 
-              convertedData[attribute.rowName]  = value.map(card => 
-                sails.helpers.gamestate.convertCardToId(card, attribute.player));
-            }
-            else{
-              convertedData[attribute.rowName]  = value.map(card => sails.helpers.gamestate.convertCardToId(card));
-            }
+
+          if (value) {
+              // For the points attribute, the cards owner is needed to convert attachement induced by Jacks
+              // => 8D(JH-p0,JC-p1,JD-p0)
+              if (attribute.gamestateName === 'points') {
+                  convertedData[attribute.rowName] = value.map(card =>
+                    sails.helpers.gamestate.convertCardToId(card, attribute.player));
+              }
+              else {
+                convertedData[attribute.rowName] = value.map(card => sails.helpers.gamestate.convertCardToId(card));
+              }
+          }
+          else {
+            convertedData[attribute.rowName] = [];
           }
         });
 
@@ -65,7 +69,7 @@ module.exports = {
 
         return exits.success(combinedData);
     } catch (err) {
-        return exits.error(err.message); 
+        return exits.error(err.message);
     }
   }
 };

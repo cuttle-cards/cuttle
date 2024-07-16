@@ -1,90 +1,24 @@
-import { expect } from 'vitest';
+import { expect, test } from 'vitest';
 
-function cardsMatch(card1, card2) {
-  if(card1 && card2){
-    return card1.rank === card2.rank && card1.suit === card2.suit;
-  }
-  return false;
-}
 
-function gameStateRowMatch(fixture, res) {
-  // If length is not equal
-  if (fixture.length !== res.length){
-    return false;
-  }
- 
-  fixture.sort();
-  res.sort();
-  // Comparing each element of array
-  for (let i = 0; i < fixture.length; i++){
-    if (fixture[i] != res[i]){
-      return false;
-    }
-  }
-  return true;
-}
-
-function gameStateMatch( res, fixture) {
-  // If length is not equal
-  if (fixture.length !== res.length){
-    return false;
-  }
- 
-  fixture.sort((a, b) => a.id.localeCompare(b.id));
-  res.sort((a, b) => a.id.localeCompare(b.id));
-  // Comparing each element of array
-  for (let i = 0; i < fixture.length; i++){
-    if (!cardsMatch(fixture[i] , res[i])){
-      return false;
-    }
-    //attachments
-    if(Object.hasOwn(fixture[i] , 'attachments')){
-      for (let j = 0; j < fixture[i]['attachments'].length; j++){
-
-        let fixtureAtt = fixture[i]['attachments'][j];
-        let resAtt = res[i]['attachments'][j] ? res[i]['attachments'][j] : null;
-        if (!cardsMatch(fixtureAtt, resAtt)){
-          return false;
-        }
-
+function removeAttribute (points, attributeToRemove){
+  const cleanData = points.map ((card)=>{
+    card.attachments.forEach(attachment => {
+      if (Object.hasOwn(attachment, attributeToRemove) ){
+        delete attachment[attributeToRemove];
       }
-    }
-  }
-  return true;
+    });
+    return card;
+  });
+  return cleanData;
 }
 
 export function assertGameStateRow(fixture, gameStateRow) {
-  const attributesToConvert = [
-    'deck', 'scrap', 'playedCard', 'targetCardId', 'targetCard2Id', 'oneOff', 'oneOffTarget', 'twos', 'resolving',
-    'p0Hand', 'p1Hand', 'p0Points', 'p1Points', 'p0FaceCards', 'p1FaceCards'
-  ];
-  for (let el in gameStateRow) {
-    if(!attributesToConvert.includes(el)){
-      continue;
-    }
-    let fixtureValue;
-    let resValue;
-    if (Array.isArray( gameStateRow[el])){
-        fixtureValue = fixture[el];
-        resValue = gameStateRow[el];
-      }
-      else if (typeof  gameStateRow[el] === 'string'){
-        fixtureValue = [ fixture[el] ];
-        resValue = [ gameStateRow[el] ];
-      }
-      if(!fixtureValue ){
-        fixtureValue = [];
-      }
-      if(!resValue){
-        resValue = [];
-      }
+  //remove attributes added while creating the entry in the database
+  const attributesToRemove = ['createdAt', 'id', 'updatedAt'];
+  attributesToRemove.forEach(el => delete gameStateRow[el]);
 
-      expect(gameStateRowMatch( resValue , fixtureValue)).to.eq(
-        true,
-        `GameStateRow ${el} should match ${fixtureValue}, 
-        but actual: ${resValue} did not match fixture`
-      );
-  }
+  expect(fixture).toEqual(gameStateRow);
 }
 
 /**
@@ -92,48 +26,12 @@ export function assertGameStateRow(fixture, gameStateRow) {
  * @param gameStateRow
  */
 export function assertGameState(fixture, gameState) {
-  const attributesToConvert = [
-    'deck', 'scrap', 'playedCard', 'targetCardId', 'targetCard2Id', 'oneOff', 'oneOffTarget', 'twos', 'resolving',
-    'p0', 'p1'
-  ];
-  for (let el in gameState) {
-    if(!attributesToConvert.includes(el)){
-      continue;
-    }
-    let fixtureValue;
-    let resValue;
-    if(el =='p0'|| el =='p1'){
-        for (let element in fixture[el]){
-            fixtureValue = fixture[el][element];
-            resValue = gameState[el][element];
 
-            expect(gameStateMatch( resValue , fixtureValue)).to.eq(
-              true,
-              `GameState ${el} ${element} should match ${fixtureValue}, 
-              but actual: ${resValue} did not match fixture`
-            );
-        }
-      } 
+  //For Jack's Attachment => an attribute 'attachedTo' on attached cards on 'points' is not present on fixtures
+  const attributeToRemove = 'attachedTo';
+  gameState.p0.points = removeAttribute( gameState.p0.points, attributeToRemove);
+  gameState.p1.points = removeAttribute(gameState.p1.points, attributeToRemove);
 
-      else if (Array.isArray( fixture[el])){
-        fixtureValue = fixture[el] ?  fixture[el]  : [];
-        resValue = gameState[el] ?  gameState[el]  : [];
-      }
-      else if (isNaN(fixture[el] )){
-        fixtureValue = fixture[el] ? [ fixture[el] ] : [];
-        resValue = gameState[el] ? [ gameState[el] ] : [];
-      }
-     if( !fixture[el]){
-      fixtureValue = [];
-     }
-     if( !gameState[el]){
-      resValue = [];
-     }
+  expect(fixture).toEqual(gameState);
 
-      expect(gameStateMatch( resValue , fixtureValue)).to.eq(
-        true,
-        `GameState ${el} should match ${fixtureValue}, 
-        but actual: ${resValue} did not match fixture`
-      );
-  }
-}	
+}
