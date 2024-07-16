@@ -1,41 +1,41 @@
 
 function validateGameId(param) {
-  if (param === null || param === undefined ||  isNaN(param)) {
+  if (param === null || param === undefined || isNaN(param)) {
     throw new Error( 'The gameId cannot be empty and must be a number');
   }
   return param;
 }
 
 function validateMoveType(param) {
-  if (param === null  || param === undefined ||  isNaN(param) || param <0 || param >19) {
-    throw new Error('The MoveType must be a number 0 to 19');
+  if (param === null  || param === undefined || isNaN(param) || param < 0 || param > 19) {
+    throw new Error('The MoveType cannot be empty and must be a number 0 to 19');
   }
   return param;
 }
 
 function validateTurn(param) {
-  if (param === null || param === undefined ||  isNaN(param) ) {
-    throw new Error('The turn must be a number');
+  if (param === null || param === undefined || isNaN(param)) {
+    throw new Error('The turn cannot be empty and must be a number');
   }
   return param;
 }
 
 function validatePhase(param) {
-  if (param === null || param === undefined ||  isNaN(param) || param <0 || (param >5 && param !==7)) {
+  if (param === null || param === undefined || isNaN(param) || param < 0 || (param > 5 && param !== 7)) {
     throw new Error('The phase must be a number in [1, 2, 3, 4, 5, 7]');
   }
   return param;
 }
 
 function validatePlayedBy(param) {
-  if (param === null || param === undefined ||  isNaN(param) || param <0 || param >1) {
+  if (param === null || param === undefined || isNaN(param) || param < 0 || param > 1) {
     throw new Error('The playedBy attribute cannot be null and must be a number in [0,1]');
   }
   return param;
 }
 
 function validatePlayerData(player) {
-  const data ={};
+  const data = {};
   data['hand'] = player.hand ?? [];
   data['points'] = player.points ?? [];
   data['faceCards'] = player.faceCards ?? [];
@@ -66,8 +66,8 @@ fn: ({ gameState }, exits) => {
             turn : validateTurn(gameState.turn),
             phase : validatePhase(gameState.phase),
 
-            p0 : validatePlayerData( gameState.p0 ),
-            p1 : validatePlayerData( gameState.p1 ),
+            p0 : validatePlayerData(gameState.p0),
+            p1 : validatePlayerData(gameState.p1),
 
             deck : gameState.deck ?? [],
             scrap : gameState.scrap ?? [],
