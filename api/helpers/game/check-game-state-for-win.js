@@ -20,8 +20,8 @@ module.exports = {
 
   fn: async function ({ game, players }, exits) {
     const checkWin = (player) => {
-      const points = player.points.reduce((sum, { rank }) => sum + rank, 0);
-      const kings = player.faceCards.filter((faceCard) => faceCard.rank === 13).length;
+      const points = player.points?.reduce((sum, { rank }) => sum + rank, 0);
+      const kings = player.faceCards?.filter((faceCard) => faceCard.rank === 13).length;
       switch (kings) {
         case 0:
           return points >= 21;
