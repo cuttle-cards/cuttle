@@ -59,8 +59,6 @@ module.exports = {
     /* Still needs
       -waitingForOpponentToStalemate
       -log
-      -passes
-      -oneOffTarget
       -attachedtoTargetType
     
     */
