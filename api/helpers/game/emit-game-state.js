@@ -45,10 +45,10 @@ module.exports = {
     const victory = await sails.helpers.game.checkGameStateForWin(game, players);
 
     const countPasses = () => {
-      if (game.gameStates.length < 3) {
+      if (!game.gameStates.length < 3) {
         return 0;
       }
-      game.gameStates.slice(game.gameStates.length - 3).reduce((row, acc) => {
+      game.gameStates.reduce((row, acc) => {
         if (row.moveType !== '18') {
           return acc;
         }
