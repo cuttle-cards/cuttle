@@ -108,7 +108,7 @@ const resolveThree = {
         isFrozen: false,
       },
       oneOffRank: null,
-      oneOffTargetType: null,
+      oneOffTargetType: '',
       discardedCards: null,
     },
     lock: null,

@@ -46,6 +46,7 @@ const resolveThreeGame = {
     lock: null,
     lockedAt: null,
     rematchGame: null,
+    gameStates: [],
     winner: null,
     match: null,
   },
