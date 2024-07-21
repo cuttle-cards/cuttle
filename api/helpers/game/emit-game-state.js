@@ -47,8 +47,8 @@ module.exports = {
       if (!game.gameStates.length < 3) {
         return 0;
       }
-      game.gameStates.reduce((row, totalPasses) => {
-        if (row.moveType !== '18') {
+      game.gameStates.reduce(({ moveType }, totalPasses) => {
+        if (moveType !== '18') {
           return totalPasses;
         }
         return totalPasses + 1;
