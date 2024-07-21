@@ -32,7 +32,6 @@ module.exports = {
       if (!['targetedOneOff', 'sevenTargetedOneOff'].includes(lastEventChange)) {
         return '';
       }
-
       if (gameState.targetCard?.rank === 11) {
         return 'jack';
       }
@@ -58,9 +57,7 @@ module.exports = {
 
     /* Still needs
       -waitingForOpponentToStalemate
-      -log
-      -attachedtoTargetType
-    
+      -log  
     */
     const socketGame = {
       players, //

@@ -89,13 +89,13 @@ const resolveThree = {
     passes: 0,
     oneOffTargetType: '',
     turn: 1,
-    log: [
-      'myUsername played the 3♣️ as a one-off to Choose 1 card in the Scrap and put it to your hand.',
-      'The 3♣️ one-off resolves; myUsername will draw one card of their choice from the Scrap pile.',
-      'myUsername took the 10♥️ from the Scrap pile to their hand.',
-    ],
-    turnStalemateWasRequestedByP0: -1,
-    turnStalemateWasRequestedByP1: -1,
+    // log: [
+    //   'myUsername played the 3♣️ as a one-off to Choose 1 card in the Scrap and put it to your hand.',
+    //   'The 3♣️ one-off resolves; myUsername will draw one card of their choice from the Scrap pile.',
+    //   'myUsername took the 10♥️ from the Scrap pile to their hand.',
+    // ],
+    // turnStalemateWasRequestedByP0: -1,
+    // turnStalemateWasRequestedByP1: -1,
     chat: [],
     isRanked: false,
     lastEvent: {
@@ -120,7 +120,6 @@ const resolveThree = {
     oneOff: null,
     resolving: null,
     oneOffTarget: null,
-    attachedToTarget: null,
   },
   victory: {
     conceded: false,
