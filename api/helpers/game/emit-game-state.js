@@ -56,7 +56,6 @@ module.exports = {
     };
 
     /* Still needs
-      -turnPlayerRequestStalemate
       -log  
     */
     const socketGame = {
