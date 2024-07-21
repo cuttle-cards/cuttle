@@ -56,7 +56,7 @@ module.exports = {
     };
 
     /* Still needs
-      -waitingForOpponentToStalemate
+      -turnPlayerRequestStalemate
       -log  
     */
     const socketGame = {
