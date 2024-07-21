@@ -94,8 +94,8 @@ const resolveThree = {
     //   'The 3♣️ one-off resolves; myUsername will draw one card of their choice from the Scrap pile.',
     //   'myUsername took the 10♥️ from the Scrap pile to their hand.',
     // ],
-    // turnStalemateWasRequestedByP0: -1,
-    // turnStalemateWasRequestedByP1: -1,
+    turnStalemateWasRequestedByP0: -1,
+    turnStalemateWasRequestedByP1: -1,
     chat: [],
     isRanked: false,
     lastEvent: {

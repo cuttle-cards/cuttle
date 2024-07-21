@@ -60,43 +60,45 @@ module.exports = {
       -log  
     */
     const socketGame = {
-      players, //
-      id: game.id, //
+      players,
+      id: game.id,
       createdAt: gameState.createdAt,
-      name: game.name, //
-      chat: game.chat, //
-      status: game.status, //
+      name: game.name,
+      chat: game.chat,
+      status: game.status,
       p0: game.p0,
       p1: game.p1,
-      p0Ready: game.p0Ready, //
-      p1Ready: game.p1Ready, //
-      p0Rematch: game.p0Rematch, //
-      p1Rematch: game.p1Rematch, //
+      p0Ready: game.p0Ready,
+      p1Ready: game.p1Ready,
+      p0Rematch: game.p0Rematch,
+      p1Rematch: game.p1Rematch,
+      turnStalemateWasRequestedByP0: game.turnStalemateWasRequestedByP0,
+      turnStalemateWasRequestedByP1: game.turnStalemateWasRequestedByP1,
       lock: game.lock,
       lockedAt: game.lockedAt,
       rematchGame: game.rematchGame,
-      spectatingUsers: game.spectatingUsers, //
-      isRanked: game.isRanked, //
-      winner: victory.winner, //
+      spectatingUsers: game.spectatingUsers,
+      isRanked: game.isRanked,
+      winner: victory.winner,
       match: victory.currentMatch,
       passes: countPasses(),
-      turn: gameState.turn, //
-      deck: gameState.deck.slice(2), //
-      scrap: gameState.scrap, //
-      topCard: gameState.deck[0], //
-      secondCard: gameState.deck[1], //
-      twos: gameState.twos, //
-      oneOff: gameState.oneOff, //
+      turn: gameState.turn,
+      deck: gameState.deck.slice(2),
+      scrap: gameState.scrap,
+      topCard: gameState.deck[0],
+      secondCard: gameState.deck[1],
+      twos: gameState.twos,
+      oneOff: gameState.oneOff,
       resolving: gameState.resolving,
-      oneOffTarget: gameState.oneOffTarget, //
+      oneOffTarget: gameState.oneOffTarget,
       oneOffTargetType: lastEventTargetType(),
       lastEvent: {
-        change: lastEventChange, //
-        oneOffRank: gameState.oneOff?.rank ?? null, //
-        oneOffTargetType: lastEventTargetType(), //
-        chosenCard: gameState.targetCard ?? null, //
-        pNum: gameState.playedBy, //
-        discardedCards: gameState.discardedCards ?? null, //
+        change: lastEventChange,
+        oneOffRank: gameState.oneOff?.rank ?? null,
+        oneOffTargetType: lastEventTargetType(),
+        chosenCard: gameState.targetCard ?? null,
+        pNum: gameState.playedBy,
+        discardedCards: gameState.discardedCards ?? null,
       },
     };
 
