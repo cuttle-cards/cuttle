@@ -20,9 +20,15 @@ const rankMap = {
  * Convert card id to the card identifier rank and suit
  *
  * @param { String } id - string representation of the card
- * @returns { Object } card { suit: suit, rank : rank, id : string, isFrozen : boolean, attachment :[]}
+ * @param { Boolean } freezeCard - whenever a card is frozen by a 9 in resolving
+ * @returns { Object } card {
+ *                            suit: string,
+ *                            rank : int,
+ *                            id : string,
+ *                            isFrozen : boolean,
+ *                            attachment :[]}
  */
-function convertIdToCard (id) {
+function convertIdToCard (id, freezeCard) {
   const idCard = id.split('');
 
   if (idCard.length===2) {
@@ -40,7 +46,7 @@ function convertIdToCard (id) {
         throw new Error('Unrecognised suit ' + tempCard.suit);
       }
 
-    return { suit, rank, id , isFrozen :false, attachments :[]};
+    return { suit, rank, id , isFrozen : freezeCard, attachments :[]};
   }
 
   throw new Error('Unrecognised card identifier ' + id);
@@ -49,10 +55,11 @@ function convertIdToCard (id) {
 /**
  * Convert a string representation to a card object
  *
- * @param {string} str - string representation of the card
+ * @param { String } str - string representation of the card
  * @example KH (King of Hearts)
  * @example 4D(JC-p0) (Four of diamonds under Jack of Clubs)
- * @returns {Card} Card object {
+ * @param { Boolean } freezeCard - whenever a card is frozen by a 9 in resolving
+ * @returns { Card } Card object {
                                   suit: number || string,
                                   rank: number || string,
                                   id : string,
@@ -79,10 +86,16 @@ module.exports = {
       description: 'string representation of a card',
       required: true,
     },
+    freezeCard: {
+      type: 'boolean',
+      description: 'if the card is Frozen by use of 9 during resolve MoveType',
+      required: false,
+      defaultsTo: false,
+    },
   },
   sync: true,
 
-  fn: ({ str }, exits) => {
+  fn: ({ str, freezeCard }, exits) => {
       try {
             //remove whitespace
             str = str.replace(/\s+/g, '');
@@ -90,10 +103,10 @@ module.exports = {
             // get content before parentheses if any
             const mainCardId = str.replace(/\(.*?\)/g, '');
             //convert
-            const maincard = convertIdToCard(mainCardId);
+            const maincard = convertIdToCard(mainCardId, freezeCard);
 
             // Handle attachment or return []
-            // attachment format : 4D(JC-p0)
+            // attachment format eg 4D(JC-p0, JD-p1)
             // -> get content inside parentheses
             const regex = /\(([^)]+)\)/;
             const attachmentsString = str.match(regex);
@@ -103,7 +116,7 @@ module.exports = {
             const attachments = attachmentsArray.map(element => {
                   // -> split using the '-' -> [0]:before : card, [1]:player
                   const content = element.split('-');
-                  return convertIdToCard( content[0] );
+                  return convertIdToCard( content[0] , false);
             });
 
         return exits.success({...maincard, attachments : attachments});
