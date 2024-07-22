@@ -1,8 +1,9 @@
  /**
  * Convert the attachments attribute of a card object to its string representation
  *
- * @param {Card, playerid } card, player - Card Object, playerId
- * @returns {string} string representation of the card atatchements attributs
+ * @param { Card } card - the card object to convert
+ * @param { 'p0' | 'p1' } cardOwner - which player owns the card
+ * @returns { String } string representation of the card atatchements attributs
  */
  function concatAttachtToId(card, cardOwner) {
     if (!card.attachments || !card.attachments.length) {
@@ -41,14 +42,14 @@ function validateCardId(id) {
 /**
  * Convert a card object to its string representation
  *
- * @param { Card} card - card object
- * @returns {string} String representation of the card
+ * @param { Card } card - card object
+ * @returns { String } String representation of the card
  */
 
 module.exports = {
-  friendlyName: 'Convert card object to id (string representation )',
+  friendlyName: 'Convert card to String',
 
-  description: '',
+  description: 'Converts card object to string representation',
 
   inputs: {
     card: {

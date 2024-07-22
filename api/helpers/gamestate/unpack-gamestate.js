@@ -20,49 +20,63 @@ module.exports = {
         'discardedCards', 'p0Hand', 'p1Hand', 'p0Points', 'p1Points', 'p0FaceCards', 'p1FaceCards',
       ];
 
+      // Parse if a card need to be Frozen
+      // moveType = 9(resolve) && playedCard = 9
+      const cardtoFreeze = '';
+      if (gameStateRow.moveType === 9 && gameStateRow.playedCard.indexOf('9') !== -1) {
+         cardtoFreeze = gameStateRow.oneOffTarget.id;
+      }
+
       const convertedData = {};
       attributesToConvert.forEach(attribute => {
             const value = gameStateRow[attribute];
             if (value) {
-                const { convertIdToCard } = sails.helpers.gamestate;
-                convertedData[attribute] = Array.isArray(value) ?
-                                                          value.map(card => convertIdToCard(card))
-                                                          : convertIdToCard(value);
+              const { convertStrToCard } = sails.helpers.gamestate;
+              convertedData[attribute] = Array.isArray(value) ?
+                                                        value.map(str => {
+                                                            let isFrozen = false;
+                                                            const card = convertStrToCard(str);
+                                                            if (card.id === cardtoFreeze){
+                                                              let isFrozen = true ;
+                                                            }
+                                                            return { ...card, ...{ isFrozen : isFrozen}};
+                                                        })
+                                                        : convertStrToCard(value);
             }
         });
 
 
         const p0 = {
-                    hand : convertedData.p0Hand,
-                    faceCards: convertedData.p0FaceCards,
-                    points : convertedData.p0Points
+                      hand : convertedData.p0Hand,
+                      faceCards: convertedData.p0FaceCards,
+                      points : convertedData.p0Points
                     };
 
         const p1 = {
-                    hand : convertedData.p1Hand,
-                    faceCards: convertedData.p1FaceCards,
-                    points : convertedData.p1Points
+                      hand : convertedData.p1Hand,
+                      faceCards: convertedData.p1FaceCards,
+                      points : convertedData.p1Points
                     };
 
 
         const data = {
-                      gameId: gameStateRow.gameId,
-                      playedBy : gameStateRow.playedBy,
-                      moveType : gameStateRow.moveType,
-                      turn : gameStateRow.turn,
-                      phase : gameStateRow.phase,
+                        gameId: gameStateRow.gameId,
+                        playedBy : gameStateRow.playedBy,
+                        moveType : gameStateRow.moveType,
+                        turn : gameStateRow.turn,
+                        phase : gameStateRow.phase,
 
-                      p0,
-                      p1,
-                      deck : convertedData.deck,
-                      scrap: convertedData.scrap,
-                      twos : convertedData.twos,
-                      playedCard : convertedData.playedCard ?? null,
-                      targetCard : convertedData.targetCard ?? null,
-                      oneOff : convertedData.oneOff ?? null,
-                      oneOffTarget: convertedData.oneOffTarget ?? null,
-                      resolving : convertedData.resolving ?? null,
-                      discardedCards : convertedData.discardedCards ?? null,
+                        p0,
+                        p1,
+                        deck : convertedData.deck,
+                        scrap: convertedData.scrap,
+                        twos : convertedData.twos,
+                        playedCard : convertedData.playedCard ?? null,
+                        targetCard : convertedData.targetCard ?? null,
+                        oneOff : convertedData.oneOff ?? null,
+                        oneOffTarget: convertedData.oneOffTarget ?? null,
+                        resolving : convertedData.resolving ?? null,
+                        discardedCards : convertedData.discardedCards ?? null,
                       };
 
           const convertedGameState = sails.helpers.gamestate.validateGamestate( data );

@@ -52,4 +52,5 @@ const fixture = {
     targetCard : null
   }
 };
+
 export { fixture };

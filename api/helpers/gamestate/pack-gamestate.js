@@ -1,12 +1,12 @@
 module.exports = {
   friendlyName: 'pack GameState',
 
-  description: 'Transforms a GameState into a GameStateRow. Converts the object representations of cards to the strings, and aggregates the p0Hand, p0Points, and p0FaceCards attributes into the p0: Player object (doing the same for p1).',
+  description: 'Transforms a GameState into a GameStateRow. Converts the object representations of cards to the strings, and separates the p0 and p1 Player objects into the p0Hand, p0Points, and p0FaceCards attributes (doing the same for p1).',
 
   inputs: {
     gameState: {
       type: 'ref',
-      description: 'gameState to a gamestateRow -> with  String representation instead of Card Object',
+      description: 'gameState to be converted to a row',
       required: true,
     },
   },
@@ -25,10 +25,10 @@ module.exports = {
         attributesToConvert.forEach(attribute => {
             const value = gameState[attribute];
             if (value) {
-                const { convertCardToId } = sails.helpers.gamestate;
+                const { convertCardToStr } = sails.helpers.gamestate;
                 convertedData[attribute] = Array.isArray(value) ?
-                                              value.map(card => convertCardToId(card))
-                                              : convertCardToId(value);
+                                              value.map(card => convertCardToStr(card))
+                                              : convertCardToStr(value);
             }
             else {
               convertedData[attribute] = null;  // Handle null or undefined attributes
@@ -54,10 +54,10 @@ module.exports = {
               // => 8D(JH-p0,JC-p1,JD-p0)
               if (attribute.gamestateName === 'points') {
                   convertedData[attribute.rowName] = value.map(card =>
-                    sails.helpers.gamestate.convertCardToId(card, attribute.player));
+                    sails.helpers.gamestate.convertCardToStr(card, attribute.player));
               }
               else {
-                convertedData[attribute.rowName] = value.map(card => sails.helpers.gamestate.convertCardToId(card));
+                convertedData[attribute.rowName] = value.map(card => sails.helpers.gamestate.convertCardToStr(card));
               }
           }
           else {
