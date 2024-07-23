@@ -1,4 +1,4 @@
-import { describe, it , expect} from 'vitest';
+import { describe, it , expect, beforeEach} from 'vitest';
 import { fixture } from '../fixtures/gameState';
 
 describe('Coverting GameState\'s and GameStateRow\'s', () => {
