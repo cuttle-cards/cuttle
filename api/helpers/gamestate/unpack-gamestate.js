@@ -1,4 +1,4 @@
-const MoveType = require('../../../utils/GameStatus.json');
+const MoveType = require('../../../utils/MoveType.json');
 
 module.exports = {
   friendlyName: 'unpack GameState',
