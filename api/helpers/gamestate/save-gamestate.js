@@ -1,7 +1,7 @@
 module.exports = {
   friendlyName: 'Save GameStateRow',
 
-  description: 'This helper saves a gamestateRow to the database, converting a gamestate to a gamestateRow(to a string representation for database storing)',
+  description: 'This helper saves a GameStateRow to the database, converting a GameState to a GameStateRow (using string representations for card lists)',
 
   inputs: {
     gameState: {
