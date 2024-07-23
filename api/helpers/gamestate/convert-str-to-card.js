@@ -85,6 +85,7 @@ module.exports = {
       type: 'string',
       description: 'string representation of a card',
       required: true,
+      example: 'TH(JD-p0)', // 10H under Jack of Diamonds
     },
     freezeCard: {
       type: 'boolean',
