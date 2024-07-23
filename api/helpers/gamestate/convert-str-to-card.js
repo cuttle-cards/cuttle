@@ -116,7 +116,7 @@ module.exports = {
             const attachments = attachmentsArray.map(element => {
                   // -> split using the '-' -> [0]:before : card, [1]:player
                   const content = element.split('-');
-                  return convertIdToCard( content[0] , false);
+                  return convertIdToCard(content[0] , false);
             });
 
         return exits.success({...maincard, attachments : attachments});
