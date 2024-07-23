@@ -47,6 +47,8 @@ friendlyName: 'Format and validate a GameState',
 
 description: 'Format and validate a GameState',
 
+extendedDescription: 'Sets default values where missing and throws error if any set attributes are invalid'
+
 inputs: {
   gameState: {
     type: 'ref',
