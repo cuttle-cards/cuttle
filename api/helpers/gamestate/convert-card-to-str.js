@@ -74,7 +74,7 @@ module.exports = {
           return exits.success(cardId + attachments);
 
       } catch (err) {
-        return exits.error('Error at unpacking cards : ' + err.message);
+        return exits.error('Error at unpacking cards: ' + err.message);
       }
     }
 };

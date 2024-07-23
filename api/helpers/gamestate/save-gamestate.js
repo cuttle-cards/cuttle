@@ -6,7 +6,7 @@ module.exports = {
   inputs: {
     gameState: {
       type: 'ref',
-      description: 'GameState',
+      description: 'GameState to convert and save',
       required: true,
     },
   },

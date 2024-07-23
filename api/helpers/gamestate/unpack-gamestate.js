@@ -37,39 +37,39 @@ module.exports = {
                                         })
                                         : convertStrToCard(value);
         }
-        });
+      });
 
       const p0 = {
-                    hand : convertedData.p0Hand,
+                    hand: convertedData.p0Hand,
                     faceCards: convertedData.p0FaceCards,
-                    points : convertedData.p0Points
+                    points: convertedData.p0Points
                   };
 
       const p1 = {
-                    hand : convertedData.p1Hand,
+                    hand: convertedData.p1Hand,
                     faceCards: convertedData.p1FaceCards,
-                    points : convertedData.p1Points
+                    points: convertedData.p1Points
                   };
 
 
       const data = {
                       gameId: gameStateRow.gameId,
-                      playedBy : gameStateRow.playedBy,
-                      moveType : gameStateRow.moveType,
-                      turn : gameStateRow.turn,
-                      phase : gameStateRow.phase,
+                      playedBy: gameStateRow.playedBy,
+                      moveType: gameStateRow.moveType,
+                      turn: gameStateRow.turn,
+                      phase: gameStateRow.phase,
 
                       p0,
                       p1,
-                      deck : convertedData.deck,
+                      deck: convertedData.deck,
                       scrap: convertedData.scrap,
-                      twos : convertedData.twos,
-                      playedCard : convertedData.playedCard ?? null,
-                      targetCard : convertedData.targetCard ?? null,
-                      oneOff : convertedData.oneOff ?? null,
+                      twos: convertedData.twos,
+                      playedCard: convertedData.playedCard ?? null,
+                      targetCard: convertedData.targetCard ?? null,
+                      oneOff: convertedData.oneOff ?? null,
                       oneOffTarget: convertedData.oneOffTarget ?? null,
-                      resolving : convertedData.resolving ?? null,
-                      discardedCards : convertedData.discardedCards ?? null,
+                      resolving: convertedData.resolving ?? null,
+                      discardedCards: convertedData.discardedCards ?? null,
                     };
 
       const convertedGameState = sails.helpers.gamestate.validateGamestate( data );

@@ -13,14 +13,15 @@ describe('Coverting GameState\'s and GameStateRow\'s', () => {
     //remove attributes added while creating the entry in the database
     const stripDbAttributes = (obj) => {
       const attributesToRemove = ['createdAt', 'id', 'updatedAt'];
-      attributesToRemove.forEach(attr => delete obj[attr]);      
+      attributesToRemove.forEach(attr => delete obj[attr]);
     };
 
     stripDbAttributes(gameStateRow);
     expect(gameStateRow).toEqual(fixture.gameStateRow);
 
-    const dbGameStateRows = GameState.find({});
-    expect(dbGameSTateRows.length).toEqual(1);
+    const dbGameStateRows = await GameStateRow.find({ gameId : gameStateRow.gameId });
+    expect(dbGameStateRows.length).toEqual(1);
+
     const [ savedRow ] = dbGameStateRows;
     stripDbAttributes(savedRow);
     expect(savedRow).toEqual(fixture.gameStateRow);

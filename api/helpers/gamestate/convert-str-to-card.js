@@ -10,6 +10,14 @@ const suitMap = {
 //Rank: ‘A’ (Ace), ‘2’, ‘3’, ‘4’, ‘5’, ‘6’, ‘7’, ‘8’, ‘9’, ‘T’ (Ten), ‘J’ (Jack), ‘Q’ (Queen), ‘K’ (King)
 const rankMap = {
   'A': 1,
+  '2': 2,
+  '3': 3,
+  '4': 4,
+  '5': 5,
+  '6': 6,
+  '7': 7,
+  '8': 8,
+  '9': 9,
   'T': 10,
   'J': 11,
   'Q': 12,
@@ -20,24 +28,24 @@ const rankMap = {
  * Convert card id to the card identifier rank and suit
  *
  * @param { String } id - string representation of the card
- * @param { Boolean } freezeCard - whenever a card is frozen by a 9 in resolving
+ * @param { Boolean } isFrozen - whenever a card is frozen by a 9 in resolving
  * @returns { Object } card {
  *                            suit: string,
- *                            rank : int,
- *                            id : string,
- *                            isFrozen : boolean,
- *                            attachment :[]}
+ *                            rank: int,
+ *                            id: string,
+ *                            isFrozen: boolean,
+ *                            attachment:[]}
  */
-function convertIdToCard (id, freezeCard) {
+function convertIdToCard (id, isFrozen) {
   const idCard = id.split('');
 
   if (idCard.length===2) {
 
-      const tempCard = { rank : id[0], suit : id[1] };
+      const tempCard = { rank: id[0], suit: id[1] };
 
-      const suit = typeof tempCard.suit === 'string' ? suitMap[tempCard.suit.toUpperCase()] : undefined;
+      const suit = suitMap[tempCard.suit];
 
-      const rank = !isNaN(tempCard.rank) ? parseInt(tempCard.rank) : rankMap[tempCard.rank.toUpperCase()];
+      const rank = rankMap[tempCard.rank];
 
       if (rank === undefined) {
         throw new Error('Unrecognised rank ' + tempCard.rank);
@@ -46,7 +54,7 @@ function convertIdToCard (id, freezeCard) {
         throw new Error('Unrecognised suit ' + tempCard.suit);
       }
 
-    return { suit, rank, id , isFrozen : freezeCard, attachments :[]};
+    return { suit, rank, id , isFrozen , attachments:[]};
   }
 
   throw new Error('Unrecognised card identifier ' + id);
@@ -62,14 +70,14 @@ function convertIdToCard (id, freezeCard) {
  * @returns { Card } Card object {
                                   suit: number || string,
                                   rank: number || string,
-                                  id : string,
-                                  isfrozen : boolean,
+                                  id: string,
+                                  isfrozen: boolean,
                                   attachments: [{
                                                   suit: number || string,
                                                   rank: number || string,
-                                                  id : string,
-                                                  isfrozen : boolean,
-                                                  attachments :[]
+                                                  id: string,
+                                                  isfrozen: boolean,
+                                                  attachments:[]
                                               }];
                                 }
  /**
@@ -87,7 +95,7 @@ module.exports = {
       required: true,
       example: 'TH(JD-p0)', // 10H under Jack of Diamonds
     },
-    freezeCard: {
+    isFrozen: {
       type: 'boolean',
       description: 'if the card is Frozen by use of 9 during resolve MoveType',
       required: false,
@@ -96,7 +104,7 @@ module.exports = {
   },
   sync: true,
 
-  fn: ({ str, freezeCard }, exits) => {
+  fn: ({ str, isFrozen }, exits) => {
       try {
             //remove whitespace
             str = str.replace(/\s+/g, '');
@@ -104,7 +112,7 @@ module.exports = {
             // get content before parentheses if any
             const mainCardId = str.replace(/\(.*?\)/g, '');
             //convert
-            const maincard = convertIdToCard(mainCardId, freezeCard);
+            const maincard = convertIdToCard(mainCardId, isFrozen);
 
             // Handle attachment or return []
             // attachment format eg 4D(JC-p0, JD-p1)
@@ -120,7 +128,7 @@ module.exports = {
                   return convertIdToCard(content[0] , false);
             });
 
-        return exits.success({...maincard, attachments : attachments});
+        return exits.success({...maincard, attachments: attachments});
       } catch (err) {
         return exits.error(err.message);
       }

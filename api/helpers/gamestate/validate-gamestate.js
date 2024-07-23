@@ -43,50 +43,50 @@ function validatePlayerData(player) {
 }
 
 module.exports = {
-friendlyName: 'Format and validate a GameState',
+  friendlyName: 'Format and validate a GameState',
 
-description: 'Format and validate a GameState',
+  description: 'Format and validate a GameState',
 
-extendedDescription: 'Sets default values where missing and throws error if any set attributes are invalid'
+  extendedDescription: 'Sets default values where missing and throws error if any set attributes are invalid',
 
-inputs: {
-  gameState: {
-    type: 'ref',
-    description: 'gamestate',
-    required: true,
+  inputs: {
+    gameState: {
+      type: 'ref',
+      description: 'gamestate',
+      required: true,
+    },
   },
-},
-sync: true,
+  sync: true,
 
-fn: ({ gameState }, exits) => {
+  fn: ({ gameState }, exits) => {
 
-  try {
-        const gameStateUpdated = {
-            gameId : validateGameId(gameState.gameId),
-            playedBy : validatePlayedBy(gameState.playedBy),
-            moveType : validateMoveType(gameState.moveType),
-            turn : validateTurn(gameState.turn),
-            phase : validatePhase(gameState.phase),
+    try {
+      const gameStateUpdated = {
+          gameId: validateGameId(gameState.gameId),
+          playedBy: validatePlayedBy(gameState.playedBy),
+          moveType: validateMoveType(gameState.moveType),
+          turn: validateTurn(gameState.turn),
+          phase: validatePhase(gameState.phase),
 
-            p0 : validatePlayerData(gameState.p0),
-            p1 : validatePlayerData(gameState.p1),
+          p0: validatePlayerData(gameState.p0),
+          p1: validatePlayerData(gameState.p1),
 
-            deck : gameState.deck ?? [],
-            scrap : gameState.scrap ?? [],
-            twos : gameState.twos ?? [],
-            discardedCards : gameState.discardedCards ?? [],
+          deck: gameState.deck ?? [],
+          scrap: gameState.scrap ?? [],
+          twos: gameState.twos ?? [],
+          discardedCards: gameState.discardedCards ?? [],
 
-            playedCard :  gameState.playedCard ?? null,
-            targetCard : gameState.targetCard ?? null,
-            oneOff : gameState.oneOff ?? null,
-            oneOffTarget : gameState.oneOffTarget ?? null,
-            resolving : gameState.resolving ?? null,
-        };
+          playedCard:  gameState.playedCard ?? null,
+          targetCard: gameState.targetCard ?? null,
+          oneOff: gameState.oneOff ?? null,
+          oneOffTarget: gameState.oneOffTarget ?? null,
+          resolving: gameState.resolving ?? null,
+      };
 
-        return exits.success(gameStateUpdated);
+      return exits.success(gameStateUpdated);
     } catch (err) {
         return exits.error(err.message);
     }
-}
+  }
 };
 
