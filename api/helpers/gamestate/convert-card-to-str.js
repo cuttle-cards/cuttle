@@ -47,9 +47,9 @@ function validateCardId(id) {
  */
 
 module.exports = {
-  friendlyName: 'Convert card to String',
+  friendlyName: 'Convert Card to String',
 
-  description: 'Converts card object to string representation',
+  description: 'Converts Card object to string representation',
 
   inputs: {
     card: {
