@@ -1,4 +1,5 @@
 const GameMoveType = require('../../../utils/GameMoveType.json');
+const { getLogMessage } = require('../../../utils/log-utils');
 
 module.exports = {
   friendlyName: 'Emit Game State',
@@ -20,9 +21,9 @@ module.exports = {
 
   fn: async function ({ game, gameState }, exits) {
     //Combine game and gamestate users and delete passwords
-    const p0 = { ...game.players[0], ...gameState.p0 };
+    const p0 = { ...game.p0, ...gameState.p0 };
     delete p0.encryptedPassword;
-    const p1 = { ...game.players[1], ...gameState.p1 };
+    const p1 = { ...game.p1, ...gameState.p1 };
     delete p1.encryptedPassword;
     const players = [p0, p1];
 
@@ -41,7 +42,7 @@ module.exports = {
       return 'point';
     };
 
-    const victory = await sails.helpers.game.checkGameStateForWin(game, players);
+    const victory = await sails.helpers.gamestate.checkGameStateForWin(game, players);
 
     const countPasses = () => {
       if (!game.gameStates.length < 3) {
@@ -55,9 +56,14 @@ module.exports = {
       }, 0);
     };
 
-    /* Still needs
-      -log  
-    */
+    const getFullLog = () => {
+      const prevLog = game.gameStates?.map((row) => {
+        getLogMessage(game, row);
+      });
+
+      return [...prevLog, getLogMessage(game, gameState)];
+    };
+
     const socketGame = {
       players,
       id: game.id,
@@ -65,8 +71,6 @@ module.exports = {
       name: game.name,
       chat: game.chat,
       status: game.status,
-      p0: game.p0,
-      p1: game.p1,
       p0Ready: game.p0Ready,
       p1Ready: game.p1Ready,
       p0Rematch: game.p0Rematch,
@@ -80,6 +84,7 @@ module.exports = {
       isRanked: game.isRanked,
       winner: victory.winner,
       match: victory.currentMatch,
+      log: getFullLog(),
       passes: countPasses(),
       turn: gameState.turn,
       deck: gameState.deck.slice(2),
