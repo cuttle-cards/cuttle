@@ -1,7 +1,7 @@
 const { game: gameText } = require('../src/translations/en.json');
 const { getCardName } = require('./game-utils');
 
-const getLog = (game, gameState) => {
+const getLogMessage = (game, gameState) => {
   const { moveType, playedCard, targetCard, oneOff, oneOffTarget, deck, twos, discardedCards } = gameState;
   const { gameStates } = game;
   const previousRow = gameStates[gameStates.length - 1];
@@ -9,9 +9,9 @@ const getLog = (game, gameState) => {
   const player = game[`p${gameState.playedBy}`]?.username;
   const opponent = game[`p${gameState.playedBy % 2}`]?.username;
 
-  const playedCardName = getCardName(playedCard);
-  const targetCardName = getCardName(targetCard);
-  const oneOffCardName = getCardName(oneOff);
+  const playedCardName = playedCard ? getCardName(playedCard) : null;
+  const targetCardName = targetCard ? getCardName(targetCard) : null;
+  const oneOffCardName = oneOff ? getCardName(oneOff) : null;
 
   const getResolveFiveMessage = () => {
     const amountOfCardsDrawn =
@@ -57,7 +57,7 @@ const getLog = (game, gameState) => {
       ${opponent}'s ${oneOffCardName}.`;
 
     case 10:
-      switch (oneOff.rank) {
+      switch (oneOff?.rank) {
         case 1:
           return `The ${oneOffCardName} one-off resolves; all point cards are scrapped.`;
         case 2:
@@ -131,4 +131,4 @@ const getLog = (game, gameState) => {
   }
 };
 
-export { getLog };
+module.exports = { getLogMessage };
