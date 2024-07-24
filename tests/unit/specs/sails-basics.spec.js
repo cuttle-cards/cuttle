@@ -10,11 +10,11 @@ describe('Sails basics', () => {
     let users = await User.find();
     expect(users.length).toBe(0);
     await User.create({username: 'foo', encryptedPassword: 'xyz123ABCABK7KAL'});
-  
+
     users = await User.find({});
     expect(users.length).toBe(1);
   });
-  
+
   it('should execute sails helpers', async () => {
     const serverIsUp = await sails.helpers.getApiHealth();
     expect(serverIsUp).toBe(true);
