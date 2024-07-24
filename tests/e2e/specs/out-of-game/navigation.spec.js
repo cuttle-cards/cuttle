@@ -17,42 +17,38 @@ function verifyAuthenticatedLinks() {
 }
 
 function verifyUnauthenticatedLinks() {
-      // Rules page has TheHeader, but no links other than Signup
-      cy.get('[data-cy=rules-link]').click();
-      cy.location('pathname').should('equal', '/rules');
-      cy.get('[data-cy=nav-drawer]').should('be.visible');
-      cy.get('[data-cy=About]').should('not.exist');
-      cy.get('[data-cy=Play]').should('not.exist');
-      cy.get('[data-cy=Stats]').should('not.exist');
+  // Rules page has TheHeader, but no links other than Signup
+  cy.get('[data-cy=rules-link]').click();
+  cy.location('pathname').should('equal', '/rules');
+  cy.get('[data-cy=nav-drawer]').should('be.visible');
+  cy.get('[data-cy=About]').should('not.exist');
+  cy.get('[data-cy=Play]').should('not.exist');
+  cy.get('[data-cy=Stats]').should('not.exist');
 
-      // First time unauthenticated user sees 'Sign Up' link
-      cy.get('[data-cy=login-link]')
-        .should('contain', 'Sign Up')
-        .click();
-      cy.location('pathname').should('equal', '/signup');
+  // First time unauthenticated user sees 'Sign Up' link
+  cy.get('[data-cy=login-link]').should('contain', 'Sign Up').click();
+  cy.location('pathname').should('equal', '/signup');
 
-      // Sign Up, then log out and return to rules
-      cy.signupPlayer(playerOne);
-      cy.vueRoute('/rules');
-      cy.get('[data-cy="user-menu"]').click();
-      cy.get("[data-nav='Log Out']").click();
-      cy.get('[data-cy=rules-link]').click();
-      cy.location('pathname').should('equal', '/rules');
+  // Sign Up, then log out and return to rules
+  cy.signupPlayer(playerOne);
+  cy.vueRoute('/rules');
+  cy.get('[data-cy="user-menu"]').click();
+  cy.get("[data-nav='Log Out']").click();
+  cy.get('[data-cy=rules-link]').click();
+  cy.location('pathname').should('equal', '/rules');
 
-      // Returning unauthenticated users sees 'Log In' link
-      cy.get('[data-cy=login-link]')
-        .should('contain', 'Log In')
-        .click();
-      cy.location('pathname').should('equal', '/login');
+  // Returning unauthenticated users sees 'Log In' link
+  cy.get('[data-cy=login-link]').should('contain', 'Log In').click();
+  cy.location('pathname').should('equal', '/login');
 }
 
 describe('Navigation', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
-    window.localStorage.setItem('fiveChangeBannerDismissed', true);
+    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
   });
-  
+
   describe('Authenticated Navigation', () => {
     beforeEach(() => {
       cy.signupPlayer(playerOne);
@@ -70,14 +66,13 @@ describe('Navigation', () => {
       cy.reload();
       verifyAuthenticatedLinks();
     });
-
   });
-  
+
   describe('Unauthenticated Navigation', () => {
     beforeEach(() => {
-      window.localStorage.setItem('fiveChangeBannerDismissed', true);
+      window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
     });
-    
+
     it('Navigates between Login and Rules when unauthenticated on DESKTOP', () => {
       cy.viewport(1920, 1080);
       verifyUnauthenticatedLinks();

@@ -21,7 +21,7 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  window.localStorage.setItem('fiveChangeBannerDismissed', true);
+  window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
 }
 
 describe('Spectating Games', () => {
@@ -381,7 +381,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     // Log in as playerOne
     cy.loginPlayer(playerOne);
     cy.setupGameAsSpectator();
-    window.localStorage.setItem('fiveChangeBannerDismissed', true);
+    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
   });
 
   it('Spectate unranked games with rematch', function () {

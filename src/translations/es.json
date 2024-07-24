@@ -37,10 +37,10 @@
     "readRules": "Leer las reglas",
     "joinDiscord": "Únete a nuestra comunidad en Discord",
     "snackbar": {
-       "usernameIsTaken": "Ese nombre de usuario ya está registrado; prueba a iniciar sesión",
-       "userNotFound": "No se pudo encontrar ese nombre de usuario; prueba a registrarte",
-       "wrongPassword": "El nombre de usuario y la contraseña no coinciden"
-     }
+      "usernameIsTaken": "Ese nombre de usuario ya está registrado; prueba a iniciar sesión",
+      "userNotFound": "No se pudo encontrar ese nombre de usuario; prueba a registrarte",
+      "wrongPassword": "El nombre de usuario y la contraseña no coinciden"
+    }
   },
   "lobby": {
     "lobbyFor": "Lobby para",
@@ -48,7 +48,7 @@
     "unready": "NO ESTOY LISTO",
     "exit": "SALIR",
     "invite": "Invitar",
-    "rankedChangedAlert":"El modo de juego cambió a"
+    "rankedChangedAlert": "El modo de juego cambió a"
   },
   "game": {
     "resolve": "Resolver",
@@ -97,8 +97,8 @@
         "discard": "Descartar",
         "oppponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
       },
-      "five":{
-        "discardAndDraw" : "Descartar y robar",
+      "five": {
+        "discardAndDraw": "Descartar y robar",
         "nice": "¡Bien!",
         "resolveFive": "Has resuelto un 5 único. Elige una carta para descartar y luego robarás 3 cartas.",
         "resolveFiveNoCards": "Has resuelto un 5 único, pero no tienes cartas en tu mano para descartar. Robas 3 cartas sin descartar. ¡Dulce!"
@@ -124,7 +124,7 @@
         "title": "Seleccione una carta del mazo de descarte"
       },
       "opponentRequestedStalemateDialog": {
-        "title": "¿Aceptar el empate?" ,
+        "title": "¿Aceptar el empate?",
         "opponentHasRequested": "Tu rival ha solicitado un empate por llegar a un punto muerto. Si aceptas, el juego terminará en empate.",
         "reject": "Rechazar la solicitud",
         "accept": "Aceptar el empate"
@@ -152,7 +152,7 @@
         "finished": "Finalizada",
         "inProgress": "En Curso",
         "goHome": "Volver al menú",
-        "rematch":"revanche",
+        "rematch": "revanche",
         "matchStatus": {
           "playerLeft": "Jugador se ha ido",
           "waitingForPlayers": "Esperando a los jugadores",
@@ -253,9 +253,9 @@
       "seven": {
         "pickAndPlay": "Solo puedes jugar las cartas superiores del mazo mientras se resuelve un Siete"
       },
-      "five":{
-        "selectCardToDiscard" : "Debes seleccionar una carta para descartar",
-        "incorrectCard" : "Carta incorrecta jugada",
+      "five": {
+        "selectCardToDiscard": "Debes seleccionar una carta para descartar",
+        "incorrectCard": "Carta incorrecta jugada",
         "fiveDeckIsEmpty": "No se puede resolver la habilidad única de un 5 con un mazo vacío"
       },
       "draw": {
@@ -306,12 +306,12 @@
       "about2": "para aprender las reglas y leer sobre el proyecto cuttle.cards.",
       "okayButton": "ok"
     },
-    "snackbar" :{
+    "snackbar": {
       "cannotJoin": "No puede unirme a ese juego porque ya está lleno.",
-      "spectateTwoPlayers" : "Solo puede ver un juego en curso con dos jugadores.",
+      "spectateTwoPlayers": "Solo puede ver un juego en curso con dos jugadores.",
       "cantFindGame": "no puede encontrar el juego",
-      "invalidLobbyNumber" : "Número de lobby no válido",
-      "cannotSpectate" : "No puede ver el juego porque estás jugando."
+      "invalidLobbyNumber": "Número de lobby no válido",
+      "cannotSpectate": "No puede ver el juego porque estás jugando."
     },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",
@@ -328,7 +328,7 @@
   },
   "rules": {
     "introduction": "Introducción",
-    "actions":{
+    "actions": {
       "title": "Comportamiento",
       "clubs": "Tréboles",
       "diamonds": "Diamantes",
@@ -343,10 +343,10 @@
     "rulesTitle": "Reglas de Cuttle",
     "preview": {
       "watchVideo": "Ver Video",
-      "imgAlt":"Cómo jugar {title} en Cuttle"
+      "imgAlt": "Cómo jugar {title} en Cuttle"
     },
     "rulesReadText": "Lee la",
-    "rulesPreviewGif":"vista previa animada de {title} en Cuttle",
+    "rulesPreviewGif": "vista previa animada de {title} en Cuttle",
     "rulesWatchText": "oficial o mira el tutorial de cuttle.cards a continuación para aprender las reglas y familiarizarte con el flujo del juego.",
     "goalTitle": "Objetivo",
     "goalText": "El objetivo es ser el primer jugador en tener 21 o más puntos en cartas de puntos sobre tu campo. El primer jugador que llegue a la meta gana inmediatamente. Un jugador (tradicionalmente quien reparte) recibe 6 cartas y su rival recibe 5. El jugador con 5 cartas juega primero.",
@@ -409,7 +409,7 @@
     "multiplayerTitle": "Variantes multijugador",
     "multiplayerText1": "Actualmente, solo está disponible Cuttle para 2 jugadores en ",
     "multiplayerText2": "sin embargo, Cuttle se puede jugar con 2, 3 o 4 jugadores. Cuttle, para 3 y 4 jugadores, tiene ligeras variaciones en las reglas para optimizar el equilibrio del juego y al mismo tiempo cambiar el ritmo y la sensación. ¡Pruébalo la próxima vez que juegues a Cuttle en grupo!",
-    "3Players":{
+    "3Players": {
       "title": "Cuttle para 3 jugadores: Cutthroat",
       "text": "Cutthroat es una versión 1 contra 1 contra 1 de ritmo brutal, llena de traición y momentos cruciales.",
       "rules": "Las reglas son las mismas que las anteriores con los siguientes cambios:",
@@ -457,7 +457,7 @@
       "competitiveCuttle2": "Cada temporada se divide en 13 semanas. Para cada semana, contamos el número de partidas clasificatorias mejor de 2 de 3 que cada jugador gana contra oponentes únicos (ignorando los empates) y asignamos puntos a los jugadores según su posición semanal.",
       "championPlayer": "Jugador Campeón",
       "secondPlacePlayer": "Jugador Segundo Lugar",
-      "thirdPlacePlayer": "Jugador Tercer Lugar",      
+      "thirdPlacePlayer": "Jugador Tercer Lugar",
       "exampleImgExplanation": "Ejemplo de página de estadísticas / torneo",
       "scoring": {
         "numPoints": "1 Punto | {count} Puntos",
@@ -467,7 +467,6 @@
         "oneWin": "Cada otro jugador que ganó al menos una partida obtiene 2 puntos por semana",
         "completedMatch": "Cada otro jugador que completó una partida sin ganar obtiene 1 punto por semana"
       }
-      
     }
   },
   "stats": {
@@ -517,6 +516,7 @@
     "gameModes": "La beta afecta tanto al juego clasificado como al casual. El juego clasificado seguirá contando en la tabla de clasificación como de costumbre, ¡así que no necesitas evitar jugar clasificado para probarlo!",
     "learnMoreHeader": "¿Dónde podemos aprender más?",
     "learnMore1": "Puedes aprender más sobre este cambio de equilibrio y la discusión circundante en ",
-    "learnMore2": "donde los jugadores están discutiendo el cambio y si les gustaría verlo permanente. ¡Cuéntanos qué piensas!"
+    "learnMore2": "donde los jugadores están discutiendo el cambio y si les gustaría verlo permanente. ¡Cuéntanos qué piensas!",
+    "voteNow": "Vota Ahora"
   }
 }

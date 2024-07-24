@@ -10,7 +10,7 @@ describe('Localization', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.vueRoute('/');
-    window.localStorage.setItem('fiveChangeBannerDismissed', true);
+    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
   });
 
   const checkAndChangeLanguage = (name, lang) => {
