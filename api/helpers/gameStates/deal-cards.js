@@ -12,6 +12,7 @@ module.exports = {
     game: {
       type: 'ref',
       description: 'Game record to be initialized with first GameState',
+      extendedDescription: 'Game is expected to have populated collection of .gameStates',
       required: true,
     },
   },
@@ -19,17 +20,21 @@ module.exports = {
   fn: async ({ game }, exits) => {
     
     try {
+
       if (game.status !== GameStatus.CREATED) {
         return exits.error({ message: 'Game has already started' });
       }
 
-      const previousGameStates = await GameStateRow.find({ gameId: game.id});
-      if (previousGameStates?.length) {
+      if (!game.gameStates) {
+        return exits.error({ message: 'Game was not populated with .gameStates collection' });
+      }
+
+      if (game.gameStates.length) {
         return exits.error({ message: 'Cards are already dealt' });
       }
 
       const deck = _.shuffle(
-        DeckIds.map(sails.helpers.gameStates.convertCardIdToCard)
+        DeckIds.map(sails.helpers.gameStates.convertStrToCard)
       );
 
       const p0 = {
@@ -43,6 +48,7 @@ module.exports = {
         points: [],
         faceCards: [],
       };
+
       const newGameState = {
         gameId: game.id,
         moveType: MoveType.INITIALIZE,
@@ -65,6 +71,7 @@ module.exports = {
       await sails.helpers.gameState.saveGameState(newGameState);
 
       await sails.helpers.gameState.emitGameState(game, newGameState);
+
       return exits.success(newGameState);
     } catch (err) {
       return exits.error(err);
