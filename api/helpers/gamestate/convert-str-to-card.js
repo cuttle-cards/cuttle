@@ -25,7 +25,7 @@ const rankMap = {
 };
 
 /**
- * Convert card id to the card identifier rank and suit
+ * Convert String card id (without attachments) to the Card object 
  *
  * @param { String } id - string representation of the card
  * @param { Boolean } isFrozen - whenever a card is frozen by a 9 in resolving
@@ -39,7 +39,7 @@ const rankMap = {
 function convertIdToCard (id, isFrozen) {
   const idCard = id.split('');
 
-  if (idCard.length===2) {
+  if (idCard.length === 2) {
 
       const tempCard = { rank: id[0], suit: id[1] };
 
@@ -66,17 +66,17 @@ function convertIdToCard (id, isFrozen) {
  * @param { String } str - string representation of the card
  * @example KH (King of Hearts)
  * @example 4D(JC-p0) (Four of diamonds under Jack of Clubs)
- * @param { Boolean } freezeCard - whenever a card is frozen by a 9 in resolving
+ * @param { Boolean } isFrozen - signifies a card was frozen by a 9 and can't be played this turn
  * @returns { Card } Card object {
                                   suit: number || string,
                                   rank: number || string,
                                   id: string,
-                                  isfrozen: boolean,
+                                  isFrozen: boolean,
                                   attachments: [{
                                                   suit: number || string,
                                                   rank: number || string,
                                                   id: string,
-                                                  isfrozen: boolean,
+                                                  isFrozen: boolean,
                                                   attachments:[]
                                               }];
                                 }
@@ -86,7 +86,7 @@ function convertIdToCard (id, isFrozen) {
 module.exports = {
   friendlyName: 'Convert card String to card Object',
 
-  description: 'Convert card id (string representation ) to card Object',
+  description: 'Convert String representation of card (ID and attachments to Card Object',
 
   inputs: {
     str: {
@@ -114,7 +114,7 @@ module.exports = {
             //convert
             const maincard = convertIdToCard(mainCardId, isFrozen);
 
-            // Handle attachment or return []
+            // Handle attachments or return []
             // attachment format eg 4D(JC-p0, JD-p1)
             // -> get content inside parentheses
             const regex = /\(([^)]+)\)/;
