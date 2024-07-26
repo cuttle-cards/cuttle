@@ -1,5 +1,5 @@
-const GameMoveType = require('../../../utils/GameMoveType.json');
-const { getLogMessage } = require('../../../utils/log-utils');
+const MoveType = require('../../../utils/MoveType.json');
+const { getLogMessage, screamingSnakeToCamelCase } = require('../../../utils/socket-utils');
 
 module.exports = {
   friendlyName: 'Emit Game State',
@@ -27,7 +27,9 @@ module.exports = {
     delete p1.encryptedPassword;
     const players = [p0, p1];
 
-    const lastEventChange = Object.keys(GameMoveType).find((key) => GameMoveType[key] === gameState.moveType);
+    const lastEventChange = screamingSnakeToCamelCase(
+      Object.keys(MoveType).find((key) => MoveType[key] === gameState.moveType),
+    );
 
     const lastEventTargetType = () => {
       if (!['targetedOneOff', 'sevenTargetedOneOff'].includes(lastEventChange)) {
@@ -45,11 +47,11 @@ module.exports = {
     const victory = await sails.helpers.gamestate.checkGameStateForWin(game, players);
 
     const countPasses = () => {
-      if (!game.gameStates.length < 3) {
+      if (!game.gameStates?.length < 3) {
         return 0;
       }
-      game.gameStates.reduce(({ moveType }, totalPasses) => {
-        if (moveType !== '18') {
+      return game.gameStates?.slice(-3).reduce(({ moveType }, totalPasses) => {
+        if (moveType !== MoveType.PASS) {
           return totalPasses;
         }
         return totalPasses + 1;
@@ -57,11 +59,9 @@ module.exports = {
     };
 
     const getFullLog = () => {
-      const prevLog = game.gameStates?.map((row) => {
-        getLogMessage(game, row);
+      return game.gameStates?.map((row) => {
+        return getLogMessage(game, row);
       });
-
-      return [...prevLog, getLogMessage(game, gameState)];
     };
 
     const socketGame = {
