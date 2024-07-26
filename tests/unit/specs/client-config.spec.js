@@ -56,24 +56,24 @@ describe('initCuttleGlobals', () => {
     expect(window.cuttle.test).toBe(false);
   });
 
-  it.skip('should automatically connect to devtools when in dev environment', () => {
-    // Force staging
-    import.meta.env.VITE_ENV = 'staging';
-    const spyConnect = vi.spyOn(devtools, 'connect');
-    const spyLog = vi.spyOn(console, 'log');
-    initCuttleGlobals();
-    expect(spyConnect).toHaveBeenCalledWith(null, 8098);
-    expect(spyLog).toHaveBeenCalledWith('Vue devtools connected');
-  });
+  // it.skip('should automatically connect to devtools when in dev environment', () => {
+  //   // Force staging
+  //   import.meta.env.VITE_ENV = 'staging';
+  //   const spyConnect = vi.spyOn(devtools, 'connect');
+  //   const spyLog = vi.spyOn(console, 'log');
+  //   initCuttleGlobals();
+  //   expect(spyConnect).toHaveBeenCalledWith(null, 8098);
+  //   expect(spyLog).toHaveBeenCalledWith('Vue devtools connected');
+  // });
 
-  // TODO May not be valuable, also fine to just skip it
-  it.skip('should fail gracefully when devtools can not connect', () => {
-    // Force staging
-    import.meta.env.VITE_ENV = 'staging';
-    // Force devtools error
-    vi.spyOn(devtools, 'connect').mockRejectedValue(new Error('Async error'));
-    const spyWarn = vi.spyOn(console, 'warn');
-    initCuttleGlobals();
-    expect(spyWarn).toHaveBeenCalled();
-  });
+  // // TODO May not be valuable, also fine to just skip it
+  // it.skip('should fail gracefully when devtools can not connect', () => {
+  //   // Force staging
+  //   import.meta.env.VITE_ENV = 'staging';
+  //   // Force devtools error
+  //   vi.spyOn(devtools, 'connect').mockRejectedValue(new Error('Async error'));
+  //   const spyWarn = vi.spyOn(console, 'warn');
+  //   initCuttleGlobals();
+  //   expect(spyWarn).toHaveBeenCalled();
+  // });
 });
