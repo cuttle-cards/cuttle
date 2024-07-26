@@ -16,7 +16,7 @@ export function initCuttleGlobals(app) {
   window.cuttle = cuttle;
 
   // Connect the devtools -- non-prod only
-  if (import.meta.env.DEV && import.meta.env.CUTTLE_ENV !== 'test') {
+  if (import.meta.env.DEV) {
     try {
       devtools.connect(null, 8098);
       console.log('Vue devtools connected');
