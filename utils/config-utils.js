@@ -1,4 +1,4 @@
-// import devtools from '@vue/devtools';
+import devtools from '@vue/devtools';
 import { version } from '_/package.json';
 
 export function initCuttleGlobals(app) {
@@ -17,7 +17,7 @@ export function initCuttleGlobals(app) {
   // Connect the devtools -- non-prod only
   if (import.meta.env.DEV) {
     try {
-      // devtools.connect(null, 8098);
+      devtools.connect(null, 8098);
       console.log('Vue devtools connected');
     } catch (err) {
       console.warn('Failed to connect vue devtools - try running npm run start:devtools');
