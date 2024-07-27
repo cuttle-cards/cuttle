@@ -1,7 +1,6 @@
-import devtools from '@vue/devtools';
 import { version } from '_/package.json';
 
-export function initCuttleGlobals(app) {
+export async function initCuttleGlobals(app) {
   // We work under the assumption that this function will only be called in a context
   // where the window object exists. If we plan to ever call this on the server we'll
   // need to revisit the implementation
@@ -11,18 +10,17 @@ export function initCuttleGlobals(app) {
     // Expose app for debugging/testing in lower envs
     app: test ? app : null,
     test,
-
   };
   window.cuttle = cuttle;
 
   // Connect the devtools -- non-prod only
   if (import.meta.env.DEV) {
     try {
+      const devtools = await import('@vue/devtools');
       devtools.connect(null, 8098);
       console.log('Vue devtools connected');
-    } catch(err) {
+    } catch (err) {
       console.warn('Failed to connect vue devtools - try running npm run start:devtools');
     }
   }
-
 }
