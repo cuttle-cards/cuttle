@@ -10,7 +10,9 @@ const screamingSnakeToCamelCase = (string) => {
 const getLogMessage = (game, gameState) => {
   const { moveType, playedCard, targetCard, oneOff, oneOffTarget, deck, twos, discardedCards } = gameState;
   const { gameStates } = game;
-  const previousRow = gameStates[gameStates.length - 1];
+
+  //second to last because last would be current gameState
+  const previousRow = gameStates[gameStates.length - 2];
 
   const player = game[`p${gameState.playedBy}`]?.username;
   const opponent = game[`p${gameState.playedBy % 2}`]?.username;
