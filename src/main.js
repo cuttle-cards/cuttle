@@ -21,6 +21,6 @@ app.use(pinia);
 app.use(i18n);
 
 // Add Cuttle window object
-initCuttleGlobals(app);
+await initCuttleGlobals(app);
 
 app.mount('#app');
