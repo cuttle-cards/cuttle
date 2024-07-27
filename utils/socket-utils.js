@@ -98,15 +98,15 @@ const getLogMessage = (game, gameState) => {
       return `${player} took the ${targetCardName} from the Scrap pile to their hand.`;
 
     case 12:
-      return `${player.username} discarded the ${getCardName(discardedCards[0])} 
+      return `${player} discarded the ${getCardName(discardedCards[0])} 
       ${discardedCards.length > 1 ? `and the ${getCardName(discardedCards[1])}` : '.'}`;
 
     case 13:
       if (discardedCards.length) {
-        return `${player.username} discards the ${getCardName(discardedCards[0])}
+        return `${player} discards the ${getCardName(discardedCards[0])}
         and ${getResolveFiveMessage()}`;
       }
-      return getResolveFiveMessage();
+      return `${player} ${getResolveFiveMessage()}`;
 
     case 14:
       return `${player} played the ${playedCardName} from the top of the deck for points.`;
