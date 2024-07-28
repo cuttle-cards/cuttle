@@ -22,7 +22,7 @@ describe('initCuttleGlobals', () => {
     vi.restoreAllMocks();
   });
 
-  it('should execute sails helpers', () => {
+  it('should execute sails helpers', async () => {
     const serverIsUp = await sails.helpers.getApiHealth();
     expect(serverIsUp).toBe(true);
   });
