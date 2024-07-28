@@ -23,7 +23,7 @@ describe('initCuttleGlobals', () => {
   });
 
   it('should execute sails helpers', () => {
-    const serverIsUp = sails.helpers.getApiHealth();
+    const serverIsUp = await sails.helpers.getApiHealth();
     expect(serverIsUp).toBe(true);
   });
 

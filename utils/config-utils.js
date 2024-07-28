@@ -1,5 +1,5 @@
-import { version } from '_/package.json';
 import devtools from '@vue/devtools';
+import { version } from '_/package.json';
 
 export function initCuttleGlobals(app) {
   // We work under the assumption that this function will only be called in a context
