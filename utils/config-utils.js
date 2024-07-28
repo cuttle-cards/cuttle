@@ -1,4 +1,5 @@
 import { version } from '_/package.json';
+import devtools from '@vue/devtools';
 
 export async function initCuttleGlobals(app) {
   // We work under the assumption that this function will only be called in a context
@@ -16,7 +17,6 @@ export async function initCuttleGlobals(app) {
   // Connect the devtools -- non-prod only
   if (import.meta.env.DEV) {
     try {
-      const devtools = await import('@vue/devtools');
       devtools.connect(null, 8098);
       console.log('Vue devtools connected');
     } catch (err) {
