@@ -1,7 +1,7 @@
 import { version } from '_/package.json';
 import devtools from '@vue/devtools';
 
-export async function initCuttleGlobals(app) {
+export function initCuttleGlobals(app) {
   // We work under the assumption that this function will only be called in a context
   // where the window object exists. If we plan to ever call this on the server we'll
   // need to revisit the implementation
