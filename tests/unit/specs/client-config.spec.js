@@ -3,6 +3,7 @@ import { version } from '_/package.json';
 import { initCuttleGlobals } from '_/utils/config-utils';
 
 const mockWindow = {};
+const mockDocument = {};
 const mockConsole = {
   log: vi.fn(),
   warn: vi.fn(),
@@ -12,6 +13,7 @@ const mockConsole = {
 describe('initCuttleGlobals', () => {
   beforeEach(() => {
     vi.stubEnv('VITE_ENV', 'production');
+    vi.stubGlobal('document', mockDocument);
     vi.stubGlobal('window', mockWindow);
     vi.stubGlobal('console', mockConsole);
   });
