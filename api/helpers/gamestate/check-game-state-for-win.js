@@ -3,7 +3,7 @@ const GameStatus = require('../../../utils/GameStatus.json');
 module.exports = {
   friendlyName: 'Check Game State for win',
 
-  description: 'Determines if the game has ended and returns a victory object',
+  description: 'Determines if the game has winner and updates game status and winner if so',
 
   inputs: {
     game: {
