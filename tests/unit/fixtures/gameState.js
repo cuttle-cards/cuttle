@@ -8,9 +8,9 @@ const fixture = {
         {
           ...Card.EIGHT_OF_DIAMONDS,
           attachments: [Card.JACK_OF_CLUBS, Card.JACK_OF_SPADES],
-        }
+        },
       ],
-      faceCards : [Card.KING_OF_SPADES],
+      faceCards: [Card.KING_OF_SPADES],
     },
     p1: {
       hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
@@ -19,7 +19,7 @@ const fixture = {
         {
           ...Card.ACE_OF_CLUBS,
           attachments: [Card.JACK_OF_SPADES],
-        }
+        },
       ],
       faceCards: [],
     },
@@ -33,10 +33,10 @@ const fixture = {
     playedCard: Card.TEN_OF_CLUBS,
     gameId: 1,
     playedBy: 1,
-    moveType: 3,
+    moveType: 'scuttle',
     turn: 3,
     phase: 2,
-    targetCard: null
+    targetCard: null,
   },
   gameStateRow: {
     p0Hand: ['AS'],
@@ -55,11 +55,11 @@ const fixture = {
     resolving: null,
     gameId: 1,
     playedBy: 1,
-    moveType: 3,
+    moveType: 'scuttle',
     turn: 3,
     phase: 2,
-    targetCard: null
-  }
+    targetCard: null,
+  },
 };
 
 export { fixture };
