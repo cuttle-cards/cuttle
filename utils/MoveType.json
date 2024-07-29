@@ -9,6 +9,7 @@
   "TARGETED_ONE_OFF": "targetOneOff",
   "COUNTER": "counter",
   "RESOLVE": "resolve",
+  "FIZZLE": "fizzle",
   "RESOLVE_THREE": "resolveThree",
   "RESOLVE_FOUR": "resolveFour",
   "RESOLVE_FIVE": "resolveFive",
