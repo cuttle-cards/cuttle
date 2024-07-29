@@ -47,15 +47,14 @@ module.exports = {
     const victory = await sails.helpers.gamestate.checkGameStateForWin(game, players);
 
     const countPasses = () => {
-      if (!game.gameStates?.length < 3) {
-        return 0;
-      }
-      return game.gameStates?.slice(-3).reduce(({ moveType }, totalPasses) => {
-        if (moveType !== MoveType.PASS) {
-          return totalPasses;
+      let numPasses = 0;
+      for (const gameState of game.gameStates.slice(-3)) {
+        if (gameState.moveType !== MoveType.PASS) {
+          return numPasses;
         }
-        return totalPasses + 1;
-      }, 0);
+        numPasses++;
+      }
+      return numPasses;
     };
 
     const getFullLog = () => {
@@ -67,7 +66,8 @@ module.exports = {
     const socketGame = {
       players,
       id: game.id,
-      createdAt: gameState.createdAt,
+      createdAt: game.createdAt,
+      updatedAt: gameState.createdAt,
       name: game.name,
       chat: game.chat,
       status: game.status,
