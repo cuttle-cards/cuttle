@@ -1,13 +1,13 @@
 const { game: gameText } = require('../src/translations/en.json');
 const { getCardName } = require('./game-utils');
 
-const screamingSnakeToCamelCase = (string) => {
+function screamingSnakeToCamelCase(string) {
   return string.toLowerCase().replace(/(_[a-z])/g, (match) => {
     return match[1].toUpperCase();
   });
-};
+}
 
-const getLogMessage = (game, gameState) => {
+function getLogMessage(game, gameState) {
   const { moveType, playedCard, targetCard, oneOff, oneOffTarget, deck, twos, discardedCards } = gameState;
   const { gameStates } = game;
 
@@ -137,6 +137,6 @@ const getLogMessage = (game, gameState) => {
     case 20:
       return `${player} passes.`;
   }
-};
+}
 
 module.exports = { getLogMessage, screamingSnakeToCamelCase };
