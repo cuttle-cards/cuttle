@@ -2,12 +2,6 @@ const { game: gameText } = require('../src/translations/en.json');
 const MoveType = require('./MoveType.json');
 const { getCardName } = require('./game-utils');
 
-function screamingSnakeToCamelCase(string) {
-  return string.toLowerCase().replace(/(_[a-z])/g, (match) => {
-    return match[1].toUpperCase();
-  });
-}
-
 function getLogMessage(game, gameState) {
   const { moveType, playedCard, targetCard, oneOff, oneOffTarget, deck, twos, discardedCards } = gameState;
 
@@ -139,4 +133,4 @@ function getLogMessage(game, gameState) {
   }
 }
 
-module.exports = { getLogMessage, screamingSnakeToCamelCase };
+module.exports = { getLogMessage };

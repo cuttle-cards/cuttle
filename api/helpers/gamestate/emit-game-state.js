@@ -1,5 +1,5 @@
 const MoveType = require('../../../utils/MoveType.json');
-const { getLogMessage, screamingSnakeToCamelCase } = require('../../../utils/socket-utils');
+const { getLogMessage } = require('../../../utils/socket-utils');
 
 module.exports = {
   friendlyName: 'Emit Game State',
@@ -107,7 +107,6 @@ module.exports = {
       game: socketGame,
       victory,
     });
-
     if (victory.gameOver) {
       sails.sockets.blast('gameFinished', { gameId: game.id });
     }
