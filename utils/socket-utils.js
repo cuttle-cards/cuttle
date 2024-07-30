@@ -1,4 +1,5 @@
 const { game: gameText } = require('../src/translations/en.json');
+const MoveType = require('./MoveType.json');
 const { getCardName } = require('./game-utils');
 
 function screamingSnakeToCamelCase(string) {
@@ -29,33 +30,33 @@ function getLogMessage(game, gameState) {
   };
 
   switch (moveType) {
-    case 2:
+    case MoveType.DRAW:
       return `${player} drew a card.`;
 
-    case 3:
+    case MoveType.POINTS:
       return `${player} played the ${playedCardName} for points.`;
 
-    case 4:
+    case MoveType.SCUTTLE:
       return `${player} scuttled ${opponent}'s ${targetCardName} 
       with the ${playedCardName}.`;
 
-    case 5:
+    case MoveType.FACECARD:
       return `${player} played the ${playedCardName}
       ${playedCard.rank === 8 ? ' as a glasses eight.' : '.'}`;
 
-    case 6:
+    case MoveType.JACK:
       return `${player} stole ${opponent}'s ${targetCardName} with the ${playedCardName}.`;
 
-    case 7:
+    case MoveType.UNTARGETED_ONE_OFF:
       return `${player} played the ${playedCardName} as a one-off to 
       ${gameText.moves.effects[playedCard.rank]}.`;
 
-    case 8:
+    case MoveType.TARGETED_ONE_OFF:
       return `${player} played the ${playedCardName} as a one-off to: ${
         gameText.moves.effects[playedCard.rank]
       }, targeting the ${targetCardName}.`;
 
-    case 9:
+    case MoveType.COUNTER:
       if (twos.length > 0) {
         return `${player} played the ${playedCardName} to counter ${opponent}'s ${getCardName(
           twos[twos.length - 1],
@@ -64,7 +65,7 @@ function getLogMessage(game, gameState) {
       return `${player} played the ${playedCardName} to counter 
       ${opponent}'s ${oneOffCardName}.`;
 
-    case 10:
+    case MoveType.RESOLVE:
       switch (oneOff?.rank) {
         case 1:
           return `The ${oneOffCardName} one-off resolves; all point cards are scrapped.`;
@@ -96,45 +97,45 @@ function getLogMessage(game, gameState) {
       }
       break;
 
-    case 11:
+    case MoveType.RESOLVE_THREE:
       return `${player} took the ${targetCardName} from the Scrap pile to their hand.`;
 
-    case 12:
+    case MoveType.RESOLVE_FOUR:
       return `${player} discarded the ${getCardName(discardedCards[0])} 
       ${discardedCards.length > 1 ? `and the ${getCardName(discardedCards[1])}` : '.'}`;
 
-    case 13:
+    case MoveType.RESOLVE_FIVE:
       if (discardedCards.length) {
         return `${player} discards the ${getCardName(discardedCards[0])}
         and ${getResolveFiveMessage()}`;
       }
       return `${player} ${getResolveFiveMessage()}`;
 
-    case 14:
+    case MoveType.SEVEN_POINTS:
       return `${player} played the ${playedCardName} from the top of the deck for points.`;
 
-    case 15:
+    case MoveType.SEVEN_SCUTTLE:
       return `${player} scuttled ${opponent}'s ${targetCardName} with the ${playedCardName} from the top of the deck.`;
 
-    case 16:
+    case MoveType.SEVEN_FACECARD:
       return `${player} played the ${playedCardName} from the top of the deck
       ${playedCard.rank === 8 ? ' as a Glasses eight.' : '.'}`;
 
-    case 17:
+    case MoveType.SEVEN_JACK:
       if (!targetCard) {
         return `${player} scrapped ${playedCardName}, since there are no point cards to steal on ${opponent}'s field.`;
       }
       return `${player} stole ${opponent}'s ${targetCardName} with the ${playedCardName} from the top of the deck.`;
 
-    case 18:
+    case MoveType.SEVEN_UNTARGETED_ONE_OFF:
       return `${player} played the ${playedCardName} from the top of the deck as a one-off to 
       ${gameText.moves.effects[playedCard.rank]}.`;
 
-    case 19:
+    case MoveType.SEVEN_TARGETED_ONE_OFF:
       return `${player} played the ${playedCardName} from the top of the deck as a one-off to 
       ${gameText.moves.effects[playedCard.rank]}, targeting the ${targetCardName}.`;
 
-    case 20:
+    case MoveType.PASS:
       return `${player} passes.`;
   }
 }
