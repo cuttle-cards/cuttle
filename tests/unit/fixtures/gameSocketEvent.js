@@ -43,7 +43,7 @@ const resolveThreeData = {
       {
         id: 1,
         playedBy: 0,
-        moveType: 11,
+        moveType: 'resolveThree',
         playedCard: { id: '3S', suit: 3, rank: 3, isFrozen: false },
         targetCard: { id: 'TH', suit: 2, rank: 10, isFrozen: false },
         discardedCard: null,
@@ -80,7 +80,7 @@ const resolveThreeData = {
   gameState: {
     id: 1,
     playedBy: 0,
-    moveType: 11,
+    moveType: 'resolveThree',
     playedCard: { id: '3S', suit: 3, rank: 3, isFrozen: false },
     targetCard: { id: 'TH', suit: 2, rank: 10, isFrozen: false },
     discardedCard: null,

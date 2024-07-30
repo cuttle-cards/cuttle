@@ -27,12 +27,8 @@ module.exports = {
     delete p1.encryptedPassword;
     const players = [p0, p1];
 
-    const lastEventChange = screamingSnakeToCamelCase(
-      Object.keys(MoveType).find((key) => MoveType[key] === gameState.moveType),
-    );
-
     const lastEventTargetType = () => {
-      if (!['targetedOneOff', 'sevenTargetedOneOff'].includes(lastEventChange)) {
+      if (!['targetedOneOff', 'sevenTargetedOneOff'].includes(gameState.moveType)) {
         return '';
       }
       if (gameState.targetCard?.rank === 11) {
@@ -97,7 +93,7 @@ module.exports = {
       oneOffTarget: gameState.oneOffTarget,
       oneOffTargetType: lastEventTargetType(),
       lastEvent: {
-        change: lastEventChange,
+        change: gameState.moveType,
         oneOffRank: gameState.oneOff?.rank ?? null,
         oneOffTargetType: lastEventTargetType(),
         chosenCard: gameState.targetCard ?? null,
@@ -107,7 +103,7 @@ module.exports = {
     };
 
     Game.publish([game.id], {
-      change: lastEventChange,
+      change: gameState.moveType,
       game: socketGame,
       victory,
     });
