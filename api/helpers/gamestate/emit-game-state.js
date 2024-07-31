@@ -19,93 +19,97 @@ module.exports = {
   },
 
   fn: async function ({ game, gameState }, exits) {
-    //Combine game and gamestate users and delete passwords
-    const p0 = { ...game.p0, ...gameState.p0 };
-    delete p0.encryptedPassword;
-    const p1 = { ...game.p1, ...gameState.p1 };
-    delete p1.encryptedPassword;
-    const players = [p0, p1];
+    try {
+      //Combine game and gamestate users and delete passwords
+      const p0 = { ...game.p0, ...gameState.p0 };
+      delete p0.encryptedPassword;
+      const p1 = { ...game.p1, ...gameState.p1 };
+      delete p1.encryptedPassword;
+      const players = [p0, p1];
 
-    const lastEventTargetType = () => {
-      if (!['targetedOneOff', 'sevenTargetedOneOff'].includes(gameState.moveType)) {
-        return '';
-      }
-      if (gameState.targetCard?.rank === 11) {
-        return 'jack';
-      }
-      if (gameState.targetCard?.rank > 11) {
-        return 'faceCard';
-      }
-      return 'point';
-    };
-
-    const victory = await sails.helpers.gamestate.checkGameStateForWin(game, players);
-
-    const countPasses = () => {
-      let numPasses = 0;
-      for (const gameState of game.gameStates.slice(-3)) {
-        if (gameState.moveType !== MoveType.PASS) {
-          return numPasses;
+      const lastEventTargetType = () => {
+        if (!['targetedOneOff', 'sevenTargetedOneOff'].includes(gameState.moveType)) {
+          return '';
         }
-        numPasses++;
-      }
-      return numPasses;
-    };
+        if (gameState.targetCard?.rank === 11) {
+          return 'jack';
+        }
+        if (gameState.targetCard?.rank > 11) {
+          return 'faceCard';
+        }
+        return 'point';
+      };
 
-    const fullLog = await sails.helpers.gamestate.getLog(game);
+      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, players);
 
-    const socketGame = {
-      players,
-      id: game.id,
-      createdAt: game.createdAt,
-      updatedAt: gameState.createdAt,
-      name: game.name,
-      chat: game.chat,
-      status: game.status,
-      p0Ready: game.p0Ready,
-      p1Ready: game.p1Ready,
-      p0Rematch: game.p0Rematch,
-      p1Rematch: game.p1Rematch,
-      turnStalemateWasRequestedByP0: game.turnStalemateWasRequestedByP0,
-      turnStalemateWasRequestedByP1: game.turnStalemateWasRequestedByP1,
-      lock: game.lock,
-      lockedAt: game.lockedAt,
-      rematchGame: game.rematchGame,
-      spectatingUsers: game.spectatingUsers,
-      isRanked: game.isRanked,
-      winner: victory.winner,
-      match: victory.currentMatch,
-      log: fullLog,
-      passes: countPasses(),
-      turn: gameState.turn,
-      deck: gameState.deck.slice(2),
-      scrap: gameState.scrap,
-      topCard: gameState.deck[0],
-      secondCard: gameState.deck[1],
-      twos: gameState.twos,
-      oneOff: gameState.oneOff,
-      resolving: gameState.resolving,
-      oneOffTarget: gameState.oneOffTarget,
-      oneOffTargetType: lastEventTargetType(),
-      lastEvent: {
-        change: gameState.moveType,
-        oneOffRank: gameState.oneOff?.rank ?? null,
+      const countPasses = () => {
+        let numPasses = 0;
+        for (const gameState of game.gameStates.slice(-3)) {
+          if (gameState.moveType !== MoveType.PASS) {
+            return numPasses;
+          }
+          numPasses++;
+        }
+        return numPasses;
+      };
+
+      const fullLog = await sails.helpers.gamestate.getLog(game);
+
+      const socketGame = {
+        players,
+        id: game.id,
+        createdAt: game.createdAt,
+        updatedAt: gameState.createdAt,
+        name: game.name,
+        chat: game.chat,
+        status: game.status,
+        p0Ready: game.p0Ready,
+        p1Ready: game.p1Ready,
+        p0Rematch: game.p0Rematch,
+        p1Rematch: game.p1Rematch,
+        turnStalemateWasRequestedByP0: game.turnStalemateWasRequestedByP0,
+        turnStalemateWasRequestedByP1: game.turnStalemateWasRequestedByP1,
+        lock: game.lock,
+        lockedAt: game.lockedAt,
+        rematchGame: game.rematchGame,
+        spectatingUsers: game.spectatingUsers,
+        isRanked: game.isRanked,
+        winner: victory.winner,
+        match: victory.currentMatch,
+        log: fullLog,
+        passes: countPasses(),
+        turn: gameState.turn,
+        deck: gameState.deck.slice(2),
+        scrap: gameState.scrap,
+        topCard: gameState.deck[0],
+        secondCard: gameState.deck[1],
+        twos: gameState.twos,
+        oneOff: gameState.oneOff,
+        resolving: gameState.resolving,
+        oneOffTarget: gameState.oneOffTarget,
         oneOffTargetType: lastEventTargetType(),
-        chosenCard: gameState.targetCard ?? null,
-        pNum: gameState.playedBy,
-        discardedCards: gameState.discardedCards.length ? gameState.discardedCards : null,
-      },
-    };
+        lastEvent: {
+          change: gameState.moveType,
+          oneOffRank: gameState.oneOff?.rank ?? null,
+          oneOffTargetType: lastEventTargetType(),
+          chosenCard: gameState.targetCard ?? null,
+          pNum: gameState.playedBy,
+          discardedCards: gameState.discardedCards.length ? gameState.discardedCards : null,
+        },
+      };
 
-    Game.publish([game.id], {
-      change: gameState.moveType,
-      game: socketGame,
-      victory,
-    });
-    if (victory.gameOver) {
-      sails.sockets.blast('gameFinished', { gameId: game.id });
+      Game.publish([game.id], {
+        change: gameState.moveType,
+        game: socketGame,
+        victory,
+      });
+      if (victory.gameOver) {
+        sails.sockets.blast('gameFinished', { gameId: game.id });
+      }
+
+      return exits.success({ victory, game: socketGame });
+    } catch (err) {
+      return exits.error(`Error emitting socket: ${err.message}`);
     }
-
-    return exits.success({ victory, game: socketGame });
   },
 };
