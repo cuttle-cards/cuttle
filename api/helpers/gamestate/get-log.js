@@ -14,24 +14,25 @@ module.exports = {
       required: true,
     },
   },
+  sync: true,
 
-  fn: async function ({ game }, exits) {
-    const getMessage = async (row) => {
+  fn: function ({ game }, exits) {
+    const getMessage = (row) => {
       const { moveType, playedCard, targetCard, oneOff, oneOffTarget, deck, twos, discardedCards } = row;
       //second to last because last would be current gameState
       const previousRow = game.gameStates[game.gameStates.length - 2] ?? null;
 
-      const getFullCardName = async (card) => {
-        const cardObject = await sails.helpers.gamestate.convertStrToCard(card);
+      const getFullCardName = (card) => {
+        const cardObject = sails.helpers.gamestate.convertStrToCard(card);
         return getCardName(cardObject);
       };
 
       const player = game[`p${row.playedBy}`]?.username;
       const opponent = game[`p${row.playedBy % 2}`]?.username;
 
-      const playedCardName = playedCard ? await getFullCardName(playedCard) : null;
-      const targetCardName = targetCard ? await getFullCardName(targetCard) : null;
-      const oneOffCardName = oneOff ? await getFullCardName(oneOff) : null;
+      const playedCardName = playedCard ? getFullCardName(playedCard) : null;
+      const targetCardName = targetCard ? getFullCardName(targetCard) : null;
+      const oneOffCardName = oneOff ? getFullCardName(oneOff) : null;
 
       const getResolveFiveMessage = () => {
         const amountOfCardsDrawn =
@@ -70,7 +71,7 @@ module.exports = {
         case MoveType.COUNTER:
           if (twos.length > 0) {
             return `${player} played the ${playedCardName} to counter ${opponent}'s 
-            ${await getFullCardName(twos[twos.length - 1])}.`;
+            ${getFullCardName(twos[twos.length - 1])}.`;
           }
           return `${player} played the ${playedCardName} to counter 
         ${opponent}'s ${oneOffCardName}.`;
@@ -80,9 +81,7 @@ module.exports = {
             case 1:
               return `The ${oneOffCardName} one-off resolves; all point cards are scrapped.`;
             case 2:
-              return `The ${oneOffCardName} resolves; the ${await getFullCardName(
-                oneOffTarget,
-              )} is scrapped.`;
+              return `The ${oneOffCardName} resolves; the ${getFullCardName(oneOffTarget)} is scrapped.`;
             case 3:
               return `The ${oneOffCardName} one-off resolves; 
             ${player} will draw one card of their choice from the Scrap pile.`;
@@ -97,15 +96,15 @@ module.exports = {
             case 7:
               if (deck.length < 2) {
                 return `The ${oneOffCardName} one-off resolves. 
-              They will play the ${await getFullCardName(deck[0])} as it is the last card in the deck.`;
+              They will play the ${getFullCardName(deck[0])} as it is the last card in the deck.`;
               }
               return `The ${oneOffCardName} one-off resolves; 
             they will play one card from the top two in the deck. Top 
-            two cards are the ${await getFullCardName(deck[0])} and ${await getFullCardName(deck[1])}.`;
+            two cards are the ${getFullCardName(deck[0])} and ${getFullCardName(deck[1])}.`;
 
             case 9:
               return `The ${oneOffCardName} one-off resolves, returning the 
-              ${await getFullCardName(oneOffTarget)} to 
+              ${getFullCardName(oneOffTarget)} to 
             ${opponent}'s hand. It cannot be played next turn.`;
           }
           break;
@@ -114,12 +113,12 @@ module.exports = {
           return `${player} took the ${targetCardName} from the Scrap pile to their hand.`;
 
         case MoveType.RESOLVE_FOUR:
-          return `${player} discarded the ${await getFullCardName(discardedCards[0])} 
-        ${discardedCards.length > 1 ? `and the ${await getFullCardName(discardedCards[1])}` : '.'}`;
+          return `${player} discarded the ${getFullCardName(discardedCards[0])} 
+        ${discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}` : '.'}`;
 
         case MoveType.RESOLVE_FIVE:
           if (discardedCards.length) {
-            return `${player} discards the ${await getFullCardName(discardedCards[0])}
+            return `${player} discards the ${getFullCardName(discardedCards[0])}
           and ${getResolveFiveMessage()}`;
           }
           return `${player} ${getResolveFiveMessage()}`;
@@ -153,11 +152,9 @@ module.exports = {
       }
     };
 
-    const fullLog = await Promise.all(
-      game.gameStates.map(async (row) => {
-        return await getMessage(row);
-      }),
-    );
+    const fullLog = game.gameStates.map((row) => {
+      return getMessage(row);
+    });
     return exits.success(fullLog);
   },
 };
