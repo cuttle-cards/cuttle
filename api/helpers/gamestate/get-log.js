@@ -1,0 +1,163 @@
+const MoveType = require('../../../utils/MoveType.json');
+const { getCardName } = require('../../../utils/game-utils');
+const { game: gameText } = require('../../../src/translations/en.json');
+
+module.exports = {
+  friendlyName: 'Get Game Log Messages',
+
+  description: 'Return a game log based on game moves played',
+
+  inputs: {
+    game: {
+      type: 'ref',
+      description: 'Game overview object',
+      required: true,
+    },
+  },
+
+  fn: async function ({ game }, exits) {
+    const getMessage = async (row) => {
+      const { moveType, playedCard, targetCard, oneOff, oneOffTarget, deck, twos, discardedCards } = row;
+      //second to last because last would be current gameState
+      const previousRow = game.gameStates[game.gameStates.length - 2] ?? null;
+
+      const getFullCardName = async (card) => {
+        const cardObject = await sails.helpers.gamestate.convertStrToCard(card);
+        return getCardName(cardObject);
+      };
+
+      const player = game[`p${row.playedBy}`]?.username;
+      const opponent = game[`p${row.playedBy % 2}`]?.username;
+
+      const playedCardName = playedCard ? await getFullCardName(playedCard) : null;
+      const targetCardName = targetCard ? await getFullCardName(targetCard) : null;
+      const oneOffCardName = oneOff ? await getFullCardName(oneOff) : null;
+
+      const getResolveFiveMessage = () => {
+        const amountOfCardsDrawn =
+          row[`p${row.playedBy}Hand`]?.length - previousRow[`p${row.playedBy}Hand`?.length];
+
+        return amountOfCardsDrawn === 1 ? `draws 1 card` : `draws ${amountOfCardsDrawn} cards`;
+      };
+
+      switch (moveType) {
+        case MoveType.DRAW:
+          return `${player} drew a card.`;
+
+        case MoveType.POINTS:
+          return `${player} played the ${playedCardName} for points.`;
+
+        case MoveType.SCUTTLE:
+          return `${player} scuttled ${opponent}'s ${targetCardName} 
+        with the ${playedCardName}.`;
+
+        case MoveType.FACECARD:
+          return `${player} played the ${playedCardName}
+        ${playedCard.rank === 8 ? ' as a glasses eight.' : '.'}`;
+
+        case MoveType.JACK:
+          return `${player} stole ${opponent}'s ${targetCardName} with the ${playedCardName}.`;
+
+        case MoveType.UNTARGETED_ONE_OFF:
+          return `${player} played the ${playedCardName} as a one-off to 
+        ${gameText.moves.effects[playedCard.rank]}.`;
+
+        case MoveType.TARGETED_ONE_OFF:
+          return `${player} played the ${playedCardName} as a one-off to: ${
+            gameText.moves.effects[playedCard.rank]
+          }, targeting the ${targetCardName}.`;
+
+        case MoveType.COUNTER:
+          if (twos.length > 0) {
+            return `${player} played the ${playedCardName} to counter ${opponent}'s 
+            ${await getFullCardName(twos[twos.length - 1])}.`;
+          }
+          return `${player} played the ${playedCardName} to counter 
+        ${opponent}'s ${oneOffCardName}.`;
+
+        case MoveType.RESOLVE:
+          switch (oneOff?.rank) {
+            case 1:
+              return `The ${oneOffCardName} one-off resolves; all point cards are scrapped.`;
+            case 2:
+              return `The ${oneOffCardName} resolves; the ${await getFullCardName(
+                oneOffTarget,
+              )} is scrapped.`;
+            case 3:
+              return `The ${oneOffCardName} one-off resolves; 
+            ${player} will draw one card of their choice from the Scrap pile.`;
+            case 4:
+              return `The ${oneOffCardName} one-off resolves; ${opponent} must discard two cards.`;
+            case 5:
+              return `The ${oneOffCardName} one-off resolves;
+             ${player} must discard 1 card, and will draw up to 3.`;
+            case 6:
+              return `The ${oneOffCardName} one-off resolves; all Royals and Glasses are scrapped.`;
+
+            case 7:
+              if (deck.length < 2) {
+                return `The ${oneOffCardName} one-off resolves. 
+              They will play the ${await getFullCardName(deck[0])} as it is the last card in the deck.`;
+              }
+              return `The ${oneOffCardName} one-off resolves; 
+            they will play one card from the top two in the deck. Top 
+            two cards are the ${await getFullCardName(deck[0])} and ${await getFullCardName(deck[1])}.`;
+
+            case 9:
+              return `The ${oneOffCardName} one-off resolves, returning the 
+              ${await getFullCardName(oneOffTarget)} to 
+            ${opponent}'s hand. It cannot be played next turn.`;
+          }
+          break;
+
+        case MoveType.RESOLVE_THREE:
+          return `${player} took the ${targetCardName} from the Scrap pile to their hand.`;
+
+        case MoveType.RESOLVE_FOUR:
+          return `${player} discarded the ${await getFullCardName(discardedCards[0])} 
+        ${discardedCards.length > 1 ? `and the ${await getFullCardName(discardedCards[1])}` : '.'}`;
+
+        case MoveType.RESOLVE_FIVE:
+          if (discardedCards.length) {
+            return `${player} discards the ${await getFullCardName(discardedCards[0])}
+          and ${getResolveFiveMessage()}`;
+          }
+          return `${player} ${getResolveFiveMessage()}`;
+
+        case MoveType.SEVEN_POINTS:
+          return `${player} played the ${playedCardName} from the top of the deck for points.`;
+
+        case MoveType.SEVEN_SCUTTLE:
+          return `${player} scuttled ${opponent}'s ${targetCardName} with the ${playedCardName} from the top of the deck.`;
+
+        case MoveType.SEVEN_FACECARD:
+          return `${player} played the ${playedCardName} from the top of the deck
+        ${playedCard.rank === 8 ? ' as a Glasses eight.' : '.'}`;
+
+        case MoveType.SEVEN_JACK:
+          if (!targetCard) {
+            return `${player} scrapped ${playedCardName}, since there are no point cards to steal on ${opponent}'s field.`;
+          }
+          return `${player} stole ${opponent}'s ${targetCardName} with the ${playedCardName} from the top of the deck.`;
+
+        case MoveType.SEVEN_UNTARGETED_ONE_OFF:
+          return `${player} played the ${playedCardName} from the top of the deck as a one-off to 
+        ${gameText.moves.effects[playedCard.rank]}.`;
+
+        case MoveType.SEVEN_TARGETED_ONE_OFF:
+          return `${player} played the ${playedCardName} from the top of the deck as a one-off to 
+        ${gameText.moves.effects[playedCard.rank]}, targeting the ${targetCardName}.`;
+
+        case MoveType.PASS:
+          return `${player} passes.`;
+      }
+    };
+
+    const fullLog = await Promise.all(
+      game.gameStates.map(async (row) => {
+        return await getMessage(row);
+      }),
+    );
+    return exits.success(fullLog);
+  },
+};

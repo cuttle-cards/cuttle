@@ -1,5 +1,4 @@
 const MoveType = require('../../../utils/MoveType.json');
-const { getLogMessage } = require('../../../utils/socket-utils');
 
 module.exports = {
   friendlyName: 'Emit Game State',
@@ -53,11 +52,7 @@ module.exports = {
       return numPasses;
     };
 
-    const getFullLog = () => {
-      return game.gameStates?.map((row) => {
-        return getLogMessage(game, row);
-      });
-    };
+    const fullLog = await sails.helpers.gamestate.getLog(game);
 
     const socketGame = {
       players,
@@ -80,7 +75,7 @@ module.exports = {
       isRanked: game.isRanked,
       winner: victory.winner,
       match: victory.currentMatch,
-      log: getFullLog(),
+      log: fullLog,
       passes: countPasses(),
       turn: gameState.turn,
       deck: gameState.deck.slice(2),
@@ -98,7 +93,7 @@ module.exports = {
         oneOffTargetType: lastEventTargetType(),
         chosenCard: gameState.targetCard ?? null,
         pNum: gameState.playedBy,
-        discardedCards: gameState.discardedCards ?? null,
+        discardedCards: gameState.discardedCards.length ? gameState.discardedCards : null,
       },
     };
 
