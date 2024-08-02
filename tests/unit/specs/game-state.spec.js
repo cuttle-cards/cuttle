@@ -42,7 +42,7 @@ describe('resolveThree', () => {
     stripDbAttributes(gameState);
     expect(gameState).toEqual(resolveThree.gameState);
 
-    const socketEvent = await sails.helpers.gamestate.emitGameState(resolveThree.game, gameState);
+    const socketEvent = await sails.helpers.gamestate.publishGameState(resolveThree.game, gameState);
     stripDbAttributes(socketEvent.game);
     expect(socketEvent).toEqual(resolveThree.socket);
   });

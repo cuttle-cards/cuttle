@@ -1,7 +1,7 @@
 const MoveType = require('../../../utils/MoveType.json');
 
 module.exports = {
-  friendlyName: 'Emit Game State',
+  friendlyName: 'Publish Game State',
 
   description: 'Determines if the game has ended and sends a socket event based on the game status.',
 
