@@ -53,7 +53,7 @@ module.exports = {
         return numPasses;
       };
 
-      const fullLog = await sails.helpers.gamestate.getLog(game);
+      const fullLog = sails.helpers.gamestate.getLog(game);
 
       const socketGame = {
         players,
