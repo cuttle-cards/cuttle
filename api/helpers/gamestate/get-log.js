@@ -10,7 +10,7 @@ module.exports = {
   inputs: {
     game: {
       type: 'ref',
-      description: 'Game overview object',
+      description: 'Game object, with populated .gameStates',
       required: true,
     },
   },
