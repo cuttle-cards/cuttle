@@ -52,6 +52,7 @@ module.exports = {
       res.gameOver = true;
       const gameUpdates = {};
       gameUpdates.status = GameStatus.FINISHED;
+
       if (p0Wins) {
         res.winner = 0;
         gameUpdates.winner = p0.id;
@@ -59,11 +60,14 @@ module.exports = {
         res.winner = 1;
         gameUpdates.winner = p1.id;
       }
+
       await Game.updateOne({ id: game.id }).set(gameUpdates);
+
       game = {
         ...game,
         ...gameUpdates,
       };
+
       res.currentMatch = await sails.helpers.addGameToMatch(game);
     }
     return exits.success(res);
