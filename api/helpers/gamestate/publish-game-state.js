@@ -40,7 +40,7 @@ module.exports = {
         return 'point';
       };
 
-      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, players);
+      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState);
 
       const countPasses = () => {
         let numPasses = 0;

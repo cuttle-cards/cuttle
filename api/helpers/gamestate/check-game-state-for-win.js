@@ -8,18 +8,20 @@ module.exports = {
   inputs: {
     game: {
       type: 'ref',
-      description: 'Game state object',
+      description: 'Game object',
       required: true,
     },
-    players: {
+    gameState: {
       type: 'ref',
-      description: 'Array of combined game players as well as gameState players',
+      description: 'GameState object',
       required: true,
     },
   },
 
-  fn: async function ({ game, players }, exits) {
-    const checkWin = (player) => {
+  fn: async function ({ game, gameState}, exits) {
+    
+    const checkWin = (pNum) => {
+      const player = pNum ? gameState.p1 : gameState.p0;
       const points = player.points?.reduce((sum, { rank }) => sum + rank, 0);
       const kings = player.faceCards?.filter((faceCard) => faceCard.rank === 13).length;
       switch (kings) {
@@ -44,9 +46,8 @@ module.exports = {
       currentMatch: null,
     };
 
-    const [p0, p1] = players;
-    const p0Wins = checkWin(p0);
-    const p1Wins = checkWin(p1);
+    const p0Wins = checkWin(0);
+    const p1Wins = checkWin(1);
 
     if (p0Wins || p1Wins) {
       res.gameOver = true;
@@ -55,10 +56,10 @@ module.exports = {
 
       if (p0Wins) {
         res.winner = 0;
-        gameUpdates.winner = p0.id;
+        gameUpdates.winner = game.p0.id;
       } else if (p1Wins) {
         res.winner = 1;
-        gameUpdates.winner = p1.id;
+        gameUpdates.winner = game.p1.id;
       }
 
       await Game.updateOne({ id: game.id }).set(gameUpdates);
