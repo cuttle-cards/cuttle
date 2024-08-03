@@ -17,10 +17,10 @@ module.exports = {
   sync: true,
 
   fn: function ({ game }, exits) {
-    const getMessage = (row) => {
+    const getMessage = (row, i) => {
       const { moveType, playedCard, targetCard, oneOff, oneOffTarget, deck, twos, discardedCards } = row;
       //second to last because last would be current gameState
-      const previousRow = game.gameStates[game.gameStates.length - 2] ?? null;
+      const previousRow = game.gameStates[i - 1] ?? null;
 
       const getFullCardName = (card) => {
         const cardObject = sails.helpers.gamestate.convertStrToCard(card);
@@ -152,8 +152,8 @@ module.exports = {
       }
     };
 
-    const fullLog = game.gameStates.map((row) => {
-      return getMessage(row);
+    const fullLog = game.gameStates.map((row, i) => {
+      return getMessage(row, i);
     });
     return exits.success(fullLog);
   },
