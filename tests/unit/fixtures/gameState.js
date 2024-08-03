@@ -234,6 +234,10 @@ const resolveThree = {
       turnStalemateWasRequestedByP1: -1,
       chat: [],
       isRanked: false,
+      pNum: 0,
+      playedBy: 0,
+      discardedCards: [],
+      chosenCard: Card.TEN_OF_HEARTS,
       lastEvent: {
         change: MoveType.RESOLVE_THREE,
         pNum: 0,

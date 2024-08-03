@@ -88,6 +88,10 @@ module.exports = {
         resolving: gameState.resolving,
         oneOffTarget: gameState.oneOffTarget,
         oneOffTargetType: lastEventTargetType(),
+        discardedCards: gameState.discardedCards,
+        chosenCard: gameState.targetCard,
+        playedBy: gameState.playedBy,
+        pNum: gameState.playedBy,
         lastEvent: {
           change: gameState.moveType,
           oneOffRank: gameState.oneOff?.rank ?? null,
