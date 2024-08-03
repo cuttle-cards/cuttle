@@ -1,4 +1,8 @@
 import { Card } from '../fixtures/Card';
+import GamePhase from '../../../utils/GamePhase.json';
+import MoveType from '../../../utils/MoveType.json';
+import GameStatus from '../../../utils/GameStatus.json';
+
 const fixture = {
   gameState: {
     p0: {
@@ -33,9 +37,9 @@ const fixture = {
     playedCard: Card.TEN_OF_CLUBS,
     gameId: 1,
     playedBy: 1,
-    moveType: 'scuttle',
+    moveType: MoveType.SCUTTLE,
     turn: 3,
-    phase: 2,
+    phase: GamePhase.COUNTERING,
     targetCard: null,
   },
   gameStateRow: {
@@ -55,9 +59,9 @@ const fixture = {
     resolving: null,
     gameId: 1,
     playedBy: 1,
-    moveType: 'scuttle',
+    moveType: MoveType.SCUTTLE,
     turn: 3,
-    phase: 2,
+    phase: GamePhase.COUNTERING,
     targetCard: null,
   },
 };
@@ -66,7 +70,7 @@ const resolveThree = {
   game: {
     id: 9,
     name: 'Test Game',
-    status: 2,
+    status: GameStatus.STARTED,
     createdAt: '2024-07-14T12:59:46.870Z',
     updatedAt: '2024-07-14T12:59:52.829Z',
     chat: [],
@@ -106,12 +110,12 @@ const resolveThree = {
     gameStates: [
       {
         playedBy: 0,
-        moveType: 'resolveThree',
+        moveType: MoveType.RESOLVE_THREE,
         playedCard: '3S',
         targetCard: 'TH',
         discardedCards: [],
         turn: 1,
-        phase: 1,
+        phase: GamePhase.MAIN,
         p0Hand: ['TH'],
         p0Points: [],
         p0FaceCards: [],
@@ -133,12 +137,12 @@ const resolveThree = {
 
   gameState: {
     playedBy: 0,
-    moveType: 'resolveThree',
+    moveType: MoveType.RESOLVE_THREE,
     playedCard: Card.THREE_OF_SPADES,
     targetCard: Card.TEN_OF_HEARTS,
     discardedCards: [],
     turn: 1,
-    phase: 1,
+    phase: GamePhase.MAIN,
     p0: {
       hand: [Card.TEN_OF_HEARTS],
       points: [],
@@ -160,12 +164,12 @@ const resolveThree = {
 
   gameStateRow: {
     playedBy: 0,
-    moveType: 'resolveThree',
+    moveType: MoveType.RESOLVE_THREE,
     playedCard: '3S',
     targetCard: 'TH',
     discardedCards: [],
     turn: 1,
-    phase: 1,
+    phase: GamePhase.MAIN,
     p0Hand: ['TH'],
     p0Points: [],
     p0FaceCards: [],
@@ -216,7 +220,7 @@ const resolveThree = {
       twos: [],
       spectatingUsers: [],
       name: 'Test Game',
-      status: 2,
+      status: GameStatus.STARTED,
       p0Ready: true,
       p1Ready: true,
       p0Rematch: null,
@@ -231,7 +235,7 @@ const resolveThree = {
       chat: [],
       isRanked: false,
       lastEvent: {
-        change: 'resolveThree',
+        change: MoveType.RESOLVE_THREE,
         pNum: 0,
         chosenCard: Card.TEN_OF_HEARTS,
         oneOffRank: null,
