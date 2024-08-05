@@ -19,8 +19,6 @@ module.exports = {
   fn: function ({ game }, exits) {
     const getMessage = (row, i) => {
       const { moveType, playedCard, targetCard, oneOff, oneOffTarget, deck, twos, discardedCards } = row;
-      //second to last because last would be current gameState
-      const previousRow = game.gameStates[i - 1] ?? null;
 
       const getFullCardName = (card) => {
         const cardObject = sails.helpers.gamestate.convertStrToCard(card);
@@ -35,6 +33,7 @@ module.exports = {
       const oneOffCardName = oneOff ? getFullCardName(oneOff) : null;
 
       const getResolveFiveMessage = () => {
+        const previousRow = game.gameStates[i - 1] ?? null;
         const amountOfCardsDrawn =
           row[`p${row.playedBy}Hand`]?.length - previousRow[`p${row.playedBy}Hand`?.length];
 
@@ -75,6 +74,9 @@ module.exports = {
           }
           return `${player} played the ${playedCardName} to counter 
         ${opponent}'s ${oneOffCardName}.`;
+
+        case MoveType.FIZZLE:
+          return `The ${getFullCardName(game.oneOff)} is countered, and all cards played this turn are scrapped.`;
 
         case MoveType.RESOLVE:
           switch (oneOff?.rank) {
