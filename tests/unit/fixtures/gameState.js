@@ -3,7 +3,7 @@ import GamePhase from '../../../utils/GamePhase.json';
 import MoveType from '../../../utils/MoveType.json';
 import GameStatus from '../../../utils/GameStatus.json';
 
-const fixture = {
+const scuttle = {
   gameState: {
     p0: {
       hand: [Card.ACE_OF_SPADES],
@@ -265,4 +265,4 @@ const resolveThree = {
   },
 };
 
-export { fixture, resolveThree };
+export { scuttle, resolveThree };
