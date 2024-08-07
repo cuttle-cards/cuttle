@@ -19,9 +19,10 @@ module.exports = {
   fn: function ({ game }, exits) {
     const getMessage = (row, i) => {
       const { moveType, playedCard, targetCard, oneOff, oneOffTarget, deck, twos, discardedCards } = row;
+      const { convertStrToCard } = sails.helpers.gamestate;
 
       const getFullCardName = (card) => {
-        const cardObject = sails.helpers.gamestate.convertStrToCard(card);
+        const cardObject = convertStrToCard(card);
         return getCardName(cardObject);
       };
 
@@ -76,10 +77,12 @@ module.exports = {
         ${opponent}'s ${oneOffCardName}.`;
 
         case MoveType.FIZZLE:
-          return `The ${getFullCardName(game.oneOff)} is countered, and all cards played this turn are scrapped.`;
+          return `The ${getFullCardName(
+            game.oneOff,
+          )} is countered, and all cards played this turn are scrapped.`;
 
         case MoveType.RESOLVE:
-          switch (oneOff?.rank) {
+          switch (convertStrToCard(oneOff).rank) {
             case 1:
               return `The ${oneOffCardName} one-off resolves; all point cards are scrapped.`;
             case 2:
@@ -105,9 +108,9 @@ module.exports = {
             two cards are the ${getFullCardName(deck[0])} and ${getFullCardName(deck[1])}.`;
 
             case 9:
-              return `The ${oneOffCardName} one-off resolves, returning the 
-              ${getFullCardName(oneOffTarget)} to 
-            ${opponent}'s hand. It cannot be played next turn.`;
+              return `The ${oneOffCardName} one-off resolves, returning the ${getFullCardName(
+                oneOffTarget,
+              )} to ${opponent}'s hand. It cannot be played next turn.`;
           }
           break;
 
