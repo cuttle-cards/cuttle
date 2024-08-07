@@ -32,13 +32,14 @@ describe("Converting GameState's and GameStateRow's and emitting sockets for Scu
     expect(points.gameState).toEqual(gameState);
   });
 
-  // it('Creates and Publishes socket event', async () => {
-  //   const socketEvent = await sails.helpers.gamestate.publishGameState(points.game, points.gameState);
-  //   stripDbAttributes(socketEvent.game);
-  //   delete socketEvent.game.match;
-  //   socketEvent.victory.currentMatch.games.forEach((game) => stripDbAttributes(game));
-  //   expect(socketEvent).toEqual(points.socket);
-  // });
+  it('Creates and Publishes socket event', async () => {
+    const socketEvent = await sails.helpers.gamestate.publishGameState(points.game, points.gameState);
+    stripDbAttributes(socketEvent.game);
+    delete socketEvent.game.match.startTime;
+    delete socketEvent.victory.currentMatch.startTime;
+    socketEvent.victory.currentMatch.games.forEach((game) => stripDbAttributes(game));
+    expect(socketEvent).toEqual(points.socket);
+  });
 });
 
 describe('Converting GameState, and GameStateRow, and Publishing Socket', () => {
