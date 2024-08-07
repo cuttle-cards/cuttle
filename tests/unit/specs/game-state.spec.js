@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { points } from '../fixtures/gameStates/points';
 import { resolveThree } from '../fixtures/gameStates/resolveThree';
+import { resolveNine } from '../fixtures/gameStates/resolveNine';
 
 //remove attributes added while creating the entry in the database
 function stripDbAttributes(obj) {
@@ -8,7 +9,7 @@ function stripDbAttributes(obj) {
   attributesToRemove.forEach((attr) => delete obj[attr]);
 }
 
-describe("Converting GameState's and GameStateRow's and emitting sockets for Scuttles", () => {
+describe("Converting GameState's and GameStateRow's and emitting sockets for Points", () => {
   beforeEach(async () => {
     await sails.helpers.wipeDatabase();
   });
@@ -42,7 +43,7 @@ describe("Converting GameState's and GameStateRow's and emitting sockets for Scu
   });
 });
 
-describe('Converting GameState, and GameStateRow, and Publishing Socket', () => {
+describe('Converting GameState, and GameStateRow, and Publishing Socket for Resolve Three', () => {
   beforeEach(async () => {
     await sails.helpers.wipeDatabase();
   });
@@ -73,5 +74,39 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket', () => 
     );
     stripDbAttributes(socketEvent.game);
     expect(socketEvent).toEqual(resolveThree.socket);
+  });
+});
+
+describe('Converting GameState, and GameStateRow, and Publishing Socket for Resolve Nine on Jack', () => {
+  beforeEach(async () => {
+    await sails.helpers.wipeDatabase();
+  });
+
+  it('Converts GameState to GameStateRow (packing)', async () => {
+    const gameStateRow = await sails.helpers.gamestate.saveGamestate(resolveNine.gameState);
+    stripDbAttributes(gameStateRow);
+    expect(gameStateRow).toEqual(resolveNine.gameStateRow);
+
+    const dbGameStateRows = await GameStateRow.find({ gameId: gameStateRow.gameId });
+    expect(dbGameStateRows.length).toEqual(1);
+
+    const [savedRow] = dbGameStateRows;
+    stripDbAttributes(savedRow);
+    expect(savedRow).toEqual(resolveNine.gameStateRow);
+  });
+
+  it('Converts GameStateRow to GameState (unpacking)', async () => {
+    const gameState = await sails.helpers.gamestate.unpackGamestate(resolveNine.gameStateRow);
+    stripDbAttributes(gameState);
+    expect(gameState).toEqual(resolveNine.gameState);
+  });
+
+  it('Creates and Publishes socket event', async () => {
+    const socketEvent = await sails.helpers.gamestate.publishGameState(
+      resolveNine.game,
+      resolveNine.gameState,
+    );
+    stripDbAttributes(socketEvent.game);
+    expect(socketEvent).toEqual(resolveNine.socket);
   });
 });
