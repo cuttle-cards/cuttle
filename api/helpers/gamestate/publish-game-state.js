@@ -55,6 +55,13 @@ module.exports = {
 
       const fullLog = sails.helpers.gamestate.getLog(game);
 
+      //Last Event, and Extra Socket Variables
+      const happened = gameState.moveType === MoveType.RESOLVE;
+      const { playedBy } = gameState;
+      const discardedCards = gameState.discardedCards.length ? gameState.discardedCards : null;
+      const chosenCard = gameState.moveType === MoveType.RESOLVE_THREE ? gameState.targetCard : null;
+      const pNum = playedBy;
+
       const socketGame = {
         players,
         id: game.id,
@@ -88,30 +95,36 @@ module.exports = {
         resolving: gameState.resolving,
         oneOffTarget: gameState.oneOffTarget,
         oneOffTargetType: lastEventTargetType(),
-        discardedCards: gameState.discardedCards,
-        chosenCard: gameState.targetCard,
-        playedBy: gameState.playedBy,
-        pNum: gameState.playedBy,
         lastEvent: {
           change: gameState.moveType,
           oneOffRank: gameState.oneOff?.rank ?? null,
           oneOffTargetType: lastEventTargetType(),
-          chosenCard: gameState.targetCard ?? null,
-          pNum: gameState.playedBy,
-          discardedCards: gameState.discardedCards.length ? gameState.discardedCards : null,
+          chosenCard,
+          pNum,
+          happened,
+          discardedCards,
         },
       };
 
-      Game.publish([game.id], {
+      const fullSocketEvent = {
         change: gameState.moveType,
         game: socketGame,
         victory,
-      });
+        happened,
+        discardedCards,
+        chosenCard,
+        playedBy,
+        pNum,
+        oneOff: gameState.oneOff,
+      };
+
+      Game.publish([game.id], fullSocketEvent);
+
       if (victory.gameOver) {
         sails.sockets.blast('gameFinished', { gameId: game.id });
       }
 
-      return exits.success({ victory, game: socketGame });
+      return exits.success(fullSocketEvent);
     } catch (err) {
       return exits.error(`Error emitting socket: ${err.message}`);
     }
