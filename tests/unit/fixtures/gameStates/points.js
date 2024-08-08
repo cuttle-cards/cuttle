@@ -20,7 +20,7 @@ const gameStateRow = {
   oneOffTarget: null,
   resolving: null,
   gameId: 1,
-  playedBy: 1,
+  playedBy: 0,
   moveType: MoveType.POINTS,
   turn: 3,
   phase: GamePhase.MAIN,
