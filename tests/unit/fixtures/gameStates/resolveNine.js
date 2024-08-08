@@ -29,7 +29,7 @@ const gameStateRow = {
 export const resolveNine = {
   game: { ...gameFixture, gameStates: [gameStateRow] },
 
-  gameStateRow: gameStateRow,
+  gameStateRow,
 
   gameState: {
     playedBy: 0,
