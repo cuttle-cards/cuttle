@@ -55,7 +55,7 @@ export const resolveThree = {
     gameId: 1,
   },
 
-  gameStateRow: gameStateRow,
+  gameStateRow,
 
   game: {
     ...gameFixture,
