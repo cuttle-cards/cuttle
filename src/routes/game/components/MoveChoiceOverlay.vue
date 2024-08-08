@@ -28,7 +28,7 @@
         :suit="selectedCard.suit"
         :rank="selectedCard.rank"
         :data-player-overlay-card="`${selectedCard.rank}-${selectedCard.suit}`"
-        :is-frozen="frozenId === selectedCard.id"
+        :is-frozen="frozenId === selectedCard.id || selectedCard.isFrozen"
       />
     </div>
     <!-- Move choices -->
