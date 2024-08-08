@@ -59,7 +59,7 @@ export const resolveNine = {
   },
 
   socket: {
-    change: 'resolve',
+    change: MoveType.RESOLVE,
     happened: true,
     oneOff: Card.NINE_OF_CLUBS,
     discardedCards: null,
@@ -71,7 +71,7 @@ export const resolveNine = {
       deck: [],
       isRanked: false,
       lastEvent: {
-        change: 'resolve',
+        change: MoveType.RESOLVE,
         happened: true,
         chosenCard: null,
         oneOffRank: 9,

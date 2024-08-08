@@ -76,8 +76,8 @@ export const points = {
   },
 
   socket: {
-    change: 'points',
-    happened: false,
+    change: MoveType.POINTS,
+    happened: true,
     oneOff: null,
     discardedCards: null,
     playedBy: 1,
@@ -185,7 +185,7 @@ export const points = {
         oneOffRank: null,
         oneOffTargetType: '',
         chosenCard: null,
-        happened: false,
+        happened: true,
         pNum: 1,
         discardedCards: null,
       },

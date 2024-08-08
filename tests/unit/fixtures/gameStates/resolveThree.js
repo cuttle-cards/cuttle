@@ -63,8 +63,8 @@ export const resolveThree = {
   },
 
   socket: {
-    change: 'resolveThree',
-    happened: false,
+    change: MoveType.RESOLVE_THREE,
+    happened: true,
     oneOff: null,
     discardedCards: null,
     chosenCard: Card.TEN_OF_HEARTS,
@@ -125,7 +125,7 @@ export const resolveThree = {
         oneOffRank: null,
         oneOffTargetType: '',
         discardedCards: null,
-        happened: false,
+        happened: true,
       },
       lock: null,
       lockedAt: null,

@@ -56,7 +56,7 @@ module.exports = {
       const fullLog = sails.helpers.gamestate.getLog(game);
 
       //Last Event, and Extra Socket Variables
-      const happened = gameState.moveType === MoveType.RESOLVE;
+      const happened = gameState.moveType !== MoveType.FIZZLE;
       const { playedBy } = gameState;
       const discardedCards = gameState.discardedCards.length ? gameState.discardedCards : null;
       const chosenCard = gameState.moveType === MoveType.RESOLVE_THREE ? gameState.targetCard : null;
