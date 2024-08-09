@@ -45,7 +45,7 @@ export const resolveNine = {
       faceCards: [],
     },
     p1: {
-      hand: [Card.JACK_OF_CLUBS],
+      hand: [{ ...Card.JACK_OF_CLUBS, isFrozen: true }],
       points: [],
       faceCards: [],
     },
@@ -86,8 +86,6 @@ export const resolveNine = {
       ],
       match: null,
       name: 'Test Game',
-      oneOff: Card.NINE_OF_CLUBS,
-      oneOffTarget: Card.JACK_OF_CLUBS,
       oneOffTargetType: '',
       p0Ready: true,
       p0Rematch: null,
@@ -109,7 +107,7 @@ export const resolveNine = {
           frozenId: null,
         },
         {
-          hand: [Card.JACK_OF_CLUBS],
+          hand: [{ ...Card.JACK_OF_CLUBS, isFrozen: true }],
           points: [],
           faceCards: [],
           createdAt: '2024-07-14T12:59:47.709Z',

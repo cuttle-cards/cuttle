@@ -133,9 +133,7 @@ export const resolveThree = {
       winner: null,
       topCard: Card.SIX_OF_SPADES,
       secondCard: Card.TWO_OF_HEARTS,
-      oneOff: null,
       resolving: null,
-      oneOffTarget: null,
     },
     victory: {
       conceded: false,

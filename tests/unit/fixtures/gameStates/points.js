@@ -6,10 +6,10 @@ import { gameFixture } from '../Game';
 
 const gameStateRow = {
   p0Hand: ['AS'],
-  p0Points: ['TS', '8D(JS-p0, JC-p1)'],
+  p0Points: ['TS', '8D(JS-p0,JC-p1)'],
   p0FaceCards: ['KS'],
   p1Hand: ['AH', 'AD'],
-  p1Points: ['TH', 'AC(JS-p1)'],
+  p1Points: ['TH', 'AC'],
   p1FaceCards: [],
   deck: ['7S', '7C', 'KH'],
   scrap: ['6C'],
@@ -35,20 +35,14 @@ export const points = {
         Card.TEN_OF_SPADES,
         {
           ...Card.EIGHT_OF_DIAMONDS,
-          attachments: [Card.JACK_OF_CLUBS, Card.JACK_OF_SPADES],
+          attachments: [Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS],
         },
       ],
       faceCards: [Card.KING_OF_SPADES],
     },
     p1: {
       hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      points: [
-        Card.TEN_OF_HEARTS,
-        {
-          ...Card.ACE_OF_CLUBS,
-          attachments: [Card.JACK_OF_SPADES],
-        },
-      ],
+      points: [Card.TEN_OF_HEARTS, Card.ACE_OF_CLUBS],
       faceCards: [],
     },
     deck: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_CLUBS, Card.KING_OF_HEARTS],
@@ -80,8 +74,8 @@ export const points = {
     happened: true,
     oneOff: null,
     discardedCards: null,
-    playedBy: 1,
-    pNum: 1,
+    playedBy: 0,
+    pNum: 0,
     chosenCard: null,
     game: {
       players: [
@@ -91,7 +85,7 @@ export const points = {
             Card.TEN_OF_SPADES,
             {
               ...Card.EIGHT_OF_DIAMONDS,
-              attachments: [Card.JACK_OF_CLUBS, Card.JACK_OF_SPADES],
+              attachments: [Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS],
             },
           ],
           faceCards: [Card.KING_OF_SPADES],
@@ -106,13 +100,7 @@ export const points = {
         },
         {
           hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          points: [
-            Card.TEN_OF_HEARTS,
-            {
-              ...Card.ACE_OF_CLUBS,
-              attachments: [Card.JACK_OF_SPADES],
-            },
-          ],
+          points: [Card.TEN_OF_HEARTS, Card.ACE_OF_CLUBS],
           faceCards: [],
           createdAt: '2024-07-14T12:59:47.709Z',
           updatedAt: '2024-07-14T12:59:51.769Z',
@@ -168,7 +156,7 @@ export const points = {
         winner: null,
       },
       winner: 0,
-      log: ['definitelyNotTheGovernment6969 played the 10♠️ for points.'],
+      log: ['myUsername played the 10♠️ for points.'],
       passes: 0,
       turn: 3,
       deck: [Card.KING_OF_HEARTS],
@@ -176,17 +164,15 @@ export const points = {
       topCard: Card.SEVEN_OF_SPADES,
       secondCard: Card.SEVEN_OF_CLUBS,
       twos: [],
-      oneOff: null,
       resolving: null,
-      oneOffTarget: null,
       oneOffTargetType: '',
       lastEvent: {
-        change: 'points',
+        change: MoveType.POINTS,
         oneOffRank: null,
         oneOffTargetType: '',
         chosenCard: null,
         happened: true,
-        pNum: 1,
+        pNum: 0,
         discardedCards: null,
       },
     },

@@ -106,6 +106,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
       resolveNine.game,
       resolveNine.gameState,
     );
+
     stripDbAttributes(socketEvent.game);
     expect(socketEvent).toEqual(resolveNine.socket);
   });
