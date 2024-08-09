@@ -88,24 +88,23 @@ module.exports = {
             case 2:
               return `The ${oneOffCardName} resolves; the ${getFullCardName(oneOffTarget)} is scrapped.`;
             case 3:
-              return `The ${oneOffCardName} one-off resolves; 
-            ${player} will draw one card of their choice from the Scrap pile.`;
+              return `The ${oneOffCardName} one-off resolves; ${player} will draw one card of their choice from the Scrap pile.`;
             case 4:
               return `The ${oneOffCardName} one-off resolves; ${opponent} must discard two cards.`;
             case 5:
-              return `The ${oneOffCardName} one-off resolves;
-             ${player} must discard 1 card, and will draw up to 3.`;
+              return `The ${oneOffCardName} one-off resolves; ${player} must discard 1 card, and will draw up to 3.`;
             case 6:
               return `The ${oneOffCardName} one-off resolves; all Royals and Glasses are scrapped.`;
 
             case 7:
               if (deck.length < 2) {
-                return `The ${oneOffCardName} one-off resolves. 
-              They will play the ${getFullCardName(deck[0])} as it is the last card in the deck.`;
+                return `The ${oneOffCardName} one-off resolves. They will play the ${getFullCardName(
+                  deck[0],
+                )} as it is the last card in the deck.`;
               }
-              return `The ${oneOffCardName} one-off resolves; 
-            they will play one card from the top two in the deck. Top 
-            two cards are the ${getFullCardName(deck[0])} and ${getFullCardName(deck[1])}.`;
+              return `The ${oneOffCardName} one-off resolves; they will play one card from the top two in the deck. Top two cards are the ${getFullCardName(
+                deck[0],
+              )} and ${getFullCardName(deck[1])}.`;
 
             case 9:
               return `The ${oneOffCardName} one-off resolves, returning the ${getFullCardName(
@@ -118,13 +117,15 @@ module.exports = {
           return `${player} took the ${targetCardName} from the Scrap pile to their hand.`;
 
         case MoveType.RESOLVE_FOUR:
-          return `${player} discarded the ${getFullCardName(discardedCards[0])} 
-        ${discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}` : '.'}`;
+          return `${player} discarded the ${getFullCardName(discardedCards[0])} ${
+            discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}` : '.'
+          }`;
 
         case MoveType.RESOLVE_FIVE:
           if (discardedCards.length) {
-            return `${player} discards the ${getFullCardName(discardedCards[0])}
-          and ${getResolveFiveMessage()}`;
+            return `${player} discards the ${getFullCardName(
+              discardedCards[0],
+            )} and ${getResolveFiveMessage()}`;
           }
           return `${player} ${getResolveFiveMessage()}`;
 
@@ -135,8 +136,9 @@ module.exports = {
           return `${player} scuttled ${opponent}'s ${targetCardName} with the ${playedCardName} from the top of the deck.`;
 
         case MoveType.SEVEN_FACECARD:
-          return `${player} played the ${playedCardName} from the top of the deck
-        ${playedCard.rank === 8 ? ' as a Glasses eight.' : '.'}`;
+          return `${player} played the ${playedCardName} from the top of the deck ${
+            playedCard.rank === 8 ? ' as a Glasses eight.' : '.'
+          }`;
 
         case MoveType.SEVEN_JACK:
           if (!targetCard) {
@@ -145,12 +147,14 @@ module.exports = {
           return `${player} stole ${opponent}'s ${targetCardName} with the ${playedCardName} from the top of the deck.`;
 
         case MoveType.SEVEN_UNTARGETED_ONE_OFF:
-          return `${player} played the ${playedCardName} from the top of the deck as a one-off to 
-        ${gameText.moves.effects[playedCard.rank]}.`;
+          return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${
+            gameText.moves.effects[playedCard.rank]
+          }.`;
 
         case MoveType.SEVEN_TARGETED_ONE_OFF:
-          return `${player} played the ${playedCardName} from the top of the deck as a one-off to 
-        ${gameText.moves.effects[playedCard.rank]}, targeting the ${targetCardName}.`;
+          return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${
+            gameText.moves.effects[playedCard.rank]
+          }, targeting the ${targetCardName}.`;
 
         case MoveType.PASS:
           return `${player} passes.`;
