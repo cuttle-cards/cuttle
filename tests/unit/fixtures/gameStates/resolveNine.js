@@ -6,7 +6,7 @@ import GamePhase from '../../../../utils/GamePhase.json';
 const gameStateRow = {
   playedBy: 0,
   moveType: MoveType.RESOLVE,
-  playedCard: '9C',
+  playedCard: null,
   targetCard: 'JC',
   discardedCards: [],
   turn: 3,
@@ -34,7 +34,7 @@ export const resolveNine = {
   gameState: {
     playedBy: 0,
     moveType: MoveType.RESOLVE,
-    playedCard: Card.NINE_OF_CLUBS,
+    playedCard: null,
     targetCard: Card.JACK_OF_CLUBS,
     discardedCards: [],
     turn: 3,
