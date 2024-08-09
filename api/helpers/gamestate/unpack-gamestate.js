@@ -45,8 +45,8 @@ module.exports = {
                 // Is the card frozen
                 const freezeCard =
                   gameStateRow.moveType === MoveType.RESOLVE &&
-                  gameStateRow.oneOff[0] === 9 &&
-                  gameStateRow.oneOffTarget === cardStr.substring(0, 2);
+                  gameStateRow.oneOff[0] === '9' &&
+                  gameStateRow.oneOffTarget === cardStr.substring(0, 3);
                 return convertStrToCard(cardStr, freezeCard);
               })
             : convertStrToCard(value);
