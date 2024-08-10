@@ -46,21 +46,19 @@ const checkAndSubscribeToLobby = async (to) => {
     }
 
     if (!authStore.authenticated) {
-      return {path: `/login/${gameId}` };
+      return { path: `/login/${gameId}` };
     }
 
-    if (gameStore.players.some(({username}) => username === authStore.username)) {
+    if (gameStore.players.some(({ username }) => username === authStore.username)) {
       return true;
     }
 
     await gameStore.requestSubscribe(gameId);
     return true;
-  }
-  catch (err) {
-   return { name: 'Home', query: { gameId: gameId, error: err.message} };
+  } catch (err) {
+    return { name: 'Home', query: { gameId: gameId, error: err.message } };
   }
 };
-
 
 const routes = [
   {
@@ -102,7 +100,7 @@ const routes = [
   },
   {
     name: ROUTE_NAME_LOBBY,
-    path: '/lobby/:gameId',
+    path: '/lobby/:gameId?',
     component: LobbyView,
     // TODO: Add logic to redirect if a given game does not exist
     beforeEnter: checkAndSubscribeToLobby,
@@ -112,7 +110,7 @@ const routes = [
   },
   {
     name: ROUTE_NAME_GAME,
-    path: '/game/:gameId',
+    path: '/game/:gameId?',
     component: GameView,
     // TODO: Add logic to redirect if a given game does not exist
     // mustBeAuthenticated intentionally left off here
@@ -139,9 +137,7 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'Not Found',
-    component: () => import(
-      '@/routes/error/NotFoundView.vue'
-    ),
+    component: () => import('@/routes/error/NotFoundView.vue'),
   },
 ];
 
@@ -167,10 +163,9 @@ const router = createRouter({
       return { el: to.hash, behavior: 'smooth' };
     } else if (savedPosition) {
       return savedPosition;
-    } 
-      return { top: 0 };
-    
-  }
+    }
+    return { top: 0 };
+  },
 });
 
 router.beforeEach(async (to, _from, next) => {
