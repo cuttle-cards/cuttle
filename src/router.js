@@ -121,7 +121,7 @@ const routes = [
   },
   {
     name: ROUTE_NAME_SPECTATE,
-    path: '/spectate/:gameId',
+    path: '/spectate/:gameId?',
     component: GameView,
     meta: {
       hideNavigation: true,
