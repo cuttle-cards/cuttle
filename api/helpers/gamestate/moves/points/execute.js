@@ -2,19 +2,19 @@
 const _ = require('lodash');
 
 module.exports = {
-  friendlyName: 'Draw a card',
+  friendlyName: 'Play Points',
 
-  description: 'Returns new GameState resulting from requested draw move',
+  description: 'Returns new GameState resulting from requested points move',
 
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest game state before the requesting player draws a card',
+      description: 'The latest game state before the requesting player plays a card for points',
       required: true,
     },
     /**
-     * @param {Object} requestedMove - Object describing the request to draw
-     * @param {1 | 0} requestedMove.playedBy - Which player is drawing
+     * @param {Object} requestedMove - Object describing the request to play points
+     * @param {1 | 0} requestedMove.playedBy - Which player is playing
      * @param { Card } requestedMove.cardPlayed - Card Played for points
      * @param { MoveType.POINTS } requestedMove.moveType - Specifies that this a Points move
      */
