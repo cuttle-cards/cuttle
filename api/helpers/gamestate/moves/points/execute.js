@@ -31,7 +31,7 @@ module.exports = {
     const player = playedBy ? result.p1 : result.p0;
     const cardIndex = player.hand.findIndex((id) => id === cardPlayed);
 
-    player.points.push(player.hand.splice(cardIndex, 1));
+    player.points.push(...player.hand.splice(cardIndex, 1));
     result.turn++;
 
     result = {
