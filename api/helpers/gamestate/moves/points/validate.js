@@ -26,7 +26,7 @@ module.exports = {
   },
   sync: true, // synchronous helper
   fn: ({ requestedMove, gameState }, exits) => {
-    const cardPlayed = gameState[`${requestedMove.playedBy}Hand`].includes(requestedMove.cardPlayed);
+    const cardPlayed = gameState[`${requestedMove.playedBy}Hand`].find(requestedMove.cardPlayed);
 
     if (gameState.phase !== GamePhase.MAIN) {
       throw { message: 'Cannot play points during this phase' };
