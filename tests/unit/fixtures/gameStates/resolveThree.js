@@ -7,7 +7,7 @@ import { Card } from '../Card';
 const gameStateRow = {
   playedBy: 0,
   moveType: MoveType.RESOLVE_THREE,
-  playedCard: '3S',
+  playedCard: null,
   targetCard: 'TH',
   discardedCards: [],
   turn: 1,
@@ -23,7 +23,7 @@ const gameStateRow = {
   oneOff: null,
   oneOffTarget: null,
   twos: [],
-  resolving: null,
+  resolved: '3S',
   gameId: 1,
 };
 
@@ -31,7 +31,7 @@ export const resolveThree = {
   gameState: {
     playedBy: 0,
     moveType: MoveType.RESOLVE_THREE,
-    playedCard: Card.THREE_OF_SPADES,
+    playedCard: null,
     targetCard: Card.TEN_OF_HEARTS,
     discardedCards: [],
     turn: 1,
@@ -51,7 +51,7 @@ export const resolveThree = {
     oneOff: null,
     oneOffTarget: null,
     twos: [],
-    resolving: null,
+    resolved: Card.THREE_OF_SPADES,
     gameId: 1,
   },
 
@@ -65,7 +65,7 @@ export const resolveThree = {
   socket: {
     change: MoveType.RESOLVE_THREE,
     happened: true,
-    oneOff: null,
+    oneOff: Card.THREE_OF_SPADES,
     discardedCards: null,
     chosenCard: Card.TEN_OF_HEARTS,
     playedBy: 0,
@@ -110,6 +110,7 @@ export const resolveThree = {
       p0Rematch: null,
       p1Rematch: null,
       rematchGame: null,
+      resolved: Card.THREE_OF_SPADES,
       passes: 0,
       oneOffTargetType: '',
       turn: 1,
@@ -122,7 +123,7 @@ export const resolveThree = {
         change: MoveType.RESOLVE_THREE,
         pNum: 0,
         chosenCard: Card.TEN_OF_HEARTS,
-        oneOffRank: null,
+        oneOff: Card.THREE_OF_SPADES,
         oneOffTargetType: '',
         discardedCards: null,
         happened: true,
@@ -133,7 +134,6 @@ export const resolveThree = {
       winner: null,
       topCard: Card.SIX_OF_SPADES,
       secondCard: Card.TWO_OF_HEARTS,
-      resolving: null,
     },
     victory: {
       conceded: false,

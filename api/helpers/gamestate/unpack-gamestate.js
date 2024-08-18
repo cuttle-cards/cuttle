@@ -25,7 +25,7 @@ module.exports = {
         'oneOff',
         'oneOffTarget',
         'twos',
-        'resolving',
+        'resolved',
         'discardedCards',
         'p0Hand',
         'p1Hand',
@@ -45,8 +45,8 @@ module.exports = {
                 // Is the card frozen
                 const freezeCard =
                   gameStateRow.moveType === MoveType.RESOLVE &&
-                  gameStateRow.oneOff[0] === '9' &&
-                  gameStateRow.oneOffTarget === cardStr.substring(0, 3);
+                  gameStateRow.resolved[0] === '9' &&
+                  gameStateRow.targetCard === cardStr.substring(0, 3);
                 return convertStrToCard(cardStr, freezeCard);
               })
             : convertStrToCard(value);
@@ -81,7 +81,7 @@ module.exports = {
         targetCard: convertedData.targetCard ?? null,
         oneOff: convertedData.oneOff ?? null,
         oneOffTarget: convertedData.oneOffTarget ?? null,
-        resolving: convertedData.resolving ?? null,
+        resolved: convertedData.resolved ?? null,
         discardedCards: convertedData.discardedCards ?? null,
       };
 

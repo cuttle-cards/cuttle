@@ -18,7 +18,7 @@ module.exports = {
 
   fn: function ({ game }, exits) {
     const getMessage = (row, i) => {
-      const { moveType, playedCard, targetCard, oneOff, oneOffTarget, deck, twos, discardedCards } = row;
+      const { moveType, playedCard, targetCard, resolved, deck, twos, discardedCards } = row;
       const { convertStrToCard } = sails.helpers.gamestate;
 
       const getFullCardName = (card) => {
@@ -31,7 +31,7 @@ module.exports = {
 
       const playedCardName = playedCard ? getFullCardName(playedCard) : null;
       const targetCardName = targetCard ? getFullCardName(targetCard) : null;
-      const oneOffCardName = oneOff ? getFullCardName(oneOff) : null;
+      const resolvedCardName = resolved ? getFullCardName(resolved) : null;
 
       const getResolveFiveMessage = () => {
         const previousRow = game.gameStates[i - 1] ?? null;
@@ -74,7 +74,7 @@ module.exports = {
             ${getFullCardName(twos[twos.length - 1])}.`;
           }
           return `${player} played the ${playedCardName} to counter 
-        ${opponent}'s ${oneOffCardName}.`;
+        ${opponent}'s ${resolvedCardName}.`;
 
         case MoveType.FIZZLE:
           return `The ${getFullCardName(
@@ -82,34 +82,32 @@ module.exports = {
           )} is countered, and all cards played this turn are scrapped.`;
 
         case MoveType.RESOLVE:
-          switch (convertStrToCard(oneOff).rank) {
+          switch (convertStrToCard(resolved).rank) {
             case 1:
-              return `The ${oneOffCardName} one-off resolves; all point cards are scrapped.`;
+              return `The ${resolvedCardName} one-off resolves; all point cards are scrapped.`;
             case 2:
-              return `The ${oneOffCardName} resolves; the ${getFullCardName(oneOffTarget)} is scrapped.`;
+              return `The ${resolvedCardName} resolves; the ${targetCardName} is scrapped.`;
             case 3:
-              return `The ${oneOffCardName} one-off resolves; ${player} will draw one card of their choice from the Scrap pile.`;
+              return `The ${resolvedCardName} one-off resolves; ${player} will draw one card of their choice from the Scrap pile.`;
             case 4:
-              return `The ${oneOffCardName} one-off resolves; ${opponent} must discard two cards.`;
+              return `The ${resolvedCardName} one-off resolves; ${opponent} must discard two cards.`;
             case 5:
-              return `The ${oneOffCardName} one-off resolves; ${player} must discard 1 card, and will draw up to 3.`;
+              return `The ${resolvedCardName} one-off resolves; ${player} must discard 1 card, and will draw up to 3.`;
             case 6:
-              return `The ${oneOffCardName} one-off resolves; all Royals and Glasses are scrapped.`;
+              return `The ${resolvedCardName} one-off resolves; all Royals and Glasses are scrapped.`;
 
             case 7:
               if (deck.length < 2) {
-                return `The ${oneOffCardName} one-off resolves. They will play the ${getFullCardName(
+                return `The ${resolvedCardName} one-off resolves. They will play the ${getFullCardName(
                   deck[0],
                 )} as it is the last card in the deck.`;
               }
-              return `The ${oneOffCardName} one-off resolves; they will play one card from the top two in the deck. Top two cards are the ${getFullCardName(
+              return `The ${resolvedCardName} one-off resolves; they will play one card from the top two in the deck. Top two cards are the ${getFullCardName(
                 deck[0],
               )} and ${getFullCardName(deck[1])}.`;
 
             case 9:
-              return `The ${oneOffCardName} one-off resolves, returning the ${getFullCardName(
-                oneOffTarget,
-              )} to ${opponent}'s hand. It cannot be played next turn.`;
+              return `The ${resolvedCardName} one-off resolves, returning the ${targetCardName} to ${opponent}'s hand. It cannot be played next turn.`;
           }
           break;
 

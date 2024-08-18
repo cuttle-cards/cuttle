@@ -84,7 +84,7 @@ module.exports = {
         targetCard: gameState.targetCard ?? null,
         oneOff: gameState.oneOff ?? null,
         oneOffTarget: gameState.oneOffTarget ?? null,
-        resolving: gameState.resolving ?? null,
+        resolved: gameState.resolved ?? null,
       };
 
       return exits.success(gameStateUpdated);

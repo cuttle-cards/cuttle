@@ -25,7 +25,7 @@ module.exports = {
         'oneOff',
         'oneOffTarget',
         'twos',
-        'resolving',
+        'resolved',
         'discardedCards',
       ];
 

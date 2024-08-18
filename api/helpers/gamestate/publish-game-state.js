@@ -91,16 +91,16 @@ module.exports = {
         topCard: gameState.deck[0],
         secondCard: gameState.deck[1],
         twos: gameState.twos,
-        resolving: gameState.resolving,
+        resolved: gameState.resolved,
         oneOffTargetType: lastEventTargetType(),
         lastEvent: {
           change: gameState.moveType,
-          oneOffRank: gameState.oneOff?.rank ?? null,
           oneOffTargetType: lastEventTargetType(),
           chosenCard,
           pNum,
           happened,
           discardedCards,
+          oneOff: gameState.resolved,
         },
       };
 
@@ -113,7 +113,7 @@ module.exports = {
         chosenCard,
         playedBy,
         pNum,
-        oneOff: gameState.oneOff,
+        oneOff: gameState.resolved,
       };
 
       Game.publish([game.id], fullSocketEvent);
