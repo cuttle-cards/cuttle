@@ -25,11 +25,14 @@ module.exports = {
   },
   sync: true, // synchronous helper
   fn: ({ currentState, requestedMove }, exits) => {
+    const { playedBy, cardPlayed } = requestedMove;
     let result = _.cloneDeep(currentState);
-    const player = requestedMove.playedBy ? result.p1 : result.p0;
+    const player = playedBy ? result.p1 : result.p0;
 
     player.points.push(requestedMove.cardPlayed);
-    player.hand = player.hand.filter(({ id }) => id !== requestedMove.cardPlayed.id);
+    player.hand = player.hand.filter(({ id }) => id !== cardPlayed.id);
+    result.scrap.push(cardPlayed);
+    result.turn++;
 
     result = {
       ...result,
