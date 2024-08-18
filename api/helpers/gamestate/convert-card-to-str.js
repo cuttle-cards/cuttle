@@ -15,7 +15,7 @@ function concatAttachtToId(card, cardOwner) {
   let opponent = cardOwner === 'p0' ? 'p1' : 'p0';
   // First player on the string owns the main card
   // => if card.attachments length is an odd number, start string construction with the opponent
-  let playerNum = card.attachments.length % 2 !== 0 ? opponent : cardOwner;
+  let playerNum = card.attachments.length % 2 === 0 ? cardOwner : opponent;
 
   const convertedCards = card.attachments.map((card) => {
     const cardInString = validateCardId(card.id) + '-' + playerNum;
