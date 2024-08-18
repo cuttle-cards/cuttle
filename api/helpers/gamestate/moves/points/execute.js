@@ -27,16 +27,17 @@ module.exports = {
   fn: ({ currentState, requestedMove }, exits) => {
     const { playedBy, cardPlayed } = requestedMove;
     let result = _.cloneDeep(currentState);
-    const player = playedBy ? result.p1 : result.p0;
 
-    player.points.push(requestedMove.cardPlayed);
-    player.hand = player.hand.filter(({ id }) => id !== cardPlayed.id);
-    result.scrap.push(cardPlayed);
+    const player = playedBy ? result.p1 : result.p0;
+    const cardIndex = player.hand.findIndex((id) => id === cardPlayed);
+
+    player.points.push(player.hand.splice(cardIndex, 1));
     result.turn++;
 
     result = {
       ...result,
       ...requestedMove,
+      cardPlayed: [...player.points].pop(),
     };
 
     return exits.success(result);
