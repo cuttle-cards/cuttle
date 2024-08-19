@@ -2,6 +2,10 @@ name: 'Test: End-To-End'
 
 on:
   workflow_call:
+    inputs:
+      gameStateApi-token:
+        required: true
+        type: boolean
     secrets:
       record-key:
         required: true
