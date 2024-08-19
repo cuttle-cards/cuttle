@@ -11,58 +11,61 @@ const env = Cypress.env('gameStateAPI');
 
 const transformGameUrl = (api, slug) => {
   if (env !== 'true') {
-    return `/api/${api}/${slug}`;
+    return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
 
-  switch (slug) {
-    case 'draw':
-    case 'points':
-    case 'faceCard':
-    case 'scuttle':
-    case 'untargetedOneOff':
-    case 'targetedOneOff':
-    case 'jack':
-    case 'counter':
-    case 'resolve':
-    case 'resolveThree':
-    case 'resolveFour':
-    case 'resolveFive':
-    case 'seven/points':
-    case 'seven/scuttle':
-    case 'seven/faceCard':
-    case 'seven/jack':
-    case 'seven/untargetedOneOff':
-    case 'seven/targetedOneOff':
-    case 'pass':
-      // add all the move-making ones here
-      cy.window()
-        .its('cuttle.gamestore.id')
-        .then((gameId) => `/api/game/${gameId}/move`);
-      break;
-    default:
-      return `/api/${api}/${slug}`;
+  const moveSlugs = [
+    'draw',
+    'points',
+    'faceCard',
+    'scuttle',
+    'untargetedOneOff',
+    'targetedOneOff',
+    'jack',
+    'counter',
+    'resolve',
+    'resolveThree',
+    'resolveFour',
+    'resolveFive',
+    'seven/points',
+    'seven/scuttle',
+    'seven/faceCard',
+    'seven/jack',
+    'seven/untargetedOneOff',
+    'seven/targetedOneOff',
+    'pass',
+  ];
+
+  if (moveSlugs.includes(slug)) {
+    return cy
+      .window()
+      .its('cuttle.gamestore.id')
+      .then((gameId) => `/api/game/${gameId}/move`);
   }
+
+  return Cypress.Promise.resolve(`/api/${api}/${slug}`);
 };
 
 Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => {
-  const url = transformGameUrl(api, slug);
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.request(
-      {
-        method,
-        url,
-        data,
-      },
-      function handleResponse(res, jwres) {
-        if (env === 'true' && jwres.statusCode === 404) {
-          reject('This action is not supported yet in GameState API');
-        }
-        if (jwres.statusCode !== 200) {
-          return reject(jwres.error.message);
-        }
-        return resolve(res);
-      },
-    );
+  return transformGameUrl(api, slug).then((url) => {
+    return new Cypress.Promise((resolve, reject) => {
+      io.socket.request(
+        {
+          method,
+          url,
+          data,
+        },
+        function handleResponse(res, jwres) {
+          if (env === 'true' && jwres.statusCode === 404) {
+            reject('This action is not supported yet in GameState API');
+          }
+          if (jwres.statusCode !== 200) {
+            return reject(jwres.error.message);
+          }
+          return resolve(res);
+        },
+      );
+    });
   });
 });
 
