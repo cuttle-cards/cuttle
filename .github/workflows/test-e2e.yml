@@ -6,6 +6,9 @@ on:
       gameStateApi-token:
         required: true
         type: string
+      configPath:
+        required: true
+        type: string
     secrets:
       record-key:
         required: true
@@ -59,7 +62,7 @@ jobs:
           record: true
           parallel: true
           start: npm start
-          config-file: gameStateCypress.config.js
+          config-file: ${{ inputs.configPath }}
           # wait for 2 minutes for the server to respond
           wait-on: 'http://localhost:1337'
           wait-on-timeout: 120
