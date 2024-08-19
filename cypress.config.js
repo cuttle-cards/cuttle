@@ -34,6 +34,4 @@ const cypressConfig = {
   videosFolder: 'tests/e2e/videos',
 };
 
-console.log(process.env.VITE_API_URL);
-
 module.exports = defineConfig(cypressConfig);
