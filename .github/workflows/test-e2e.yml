@@ -59,7 +59,7 @@ jobs:
           record: true
           parallel: true
           start: npm start
-          config-file: cypress.config.js
+          config-file: gameStateCypress.config.js
           # wait for 2 minutes for the server to respond
           wait-on: 'http://localhost:1337'
           wait-on-timeout: 120
