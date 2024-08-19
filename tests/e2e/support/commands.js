@@ -627,13 +627,13 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
         [cardId2] = getCardIds(game, [card2]);
       }
       //dont use makeSocketRequest due to edge case checking error on opponent side
-      const url = transformGameUrl('game', 'resolveFour');
-      io.socket.request(
-        {
+      transformGameUrl('game', 'resolveFour').then((url) => {
+        io.socket.request({
           method: 'post',
           url,
           data: { cardId1, cardId2 },
-        },
+        });
+      }),
         function handleResponse(res, jwres) {
           try {
             if (env === 'true' && jwres.statusCode === 404) {
@@ -646,8 +646,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
           } catch (err) {
             return err;
           }
-        },
-      );
+        };
     });
 });
 
