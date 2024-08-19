@@ -9,61 +9,61 @@ io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
 const env = Cypress.env('gameStateAPI');
 
-const transformGameUrl = (gameId, api, slug) => {
+const transformGameUrl = (api, slug) => {
   if (env !== 'true') {
     return `/api/${api}/${slug}`;
   }
-  switch (slug) {
-    case 'draw':
-    case 'points':
-    case 'faceCard':
-    case 'scuttle':
-    case 'untargetedOneOff':
-    case 'targetedOneOff':
-    case 'jack':
-    case 'counter':
-    case 'resolve':
-    case 'resolveThree':
-    case 'resolveFour':
-    case 'resolveFive':
-    case 'seven/points':
-    case 'seven/scuttle':
-    case 'seven/faceCard':
-    case 'seven/jack':
-    case 'seven/untargetedOneOff':
-    case 'seven/targetedOneOff':
-    case 'pass':
-      // add all the move-making ones here
-      return `/api/game/${gameId}/move`;
-    default:
-      return `/api/${api}/${slug}`;
-  }
-};
-
-Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => {
   cy.window()
     .its('cuttle.gameStore.id')
     .then((gameId) => {
-      const url = transformGameUrl(gameId, api, slug);
-      return new Cypress.Promise((resolve, reject) => {
-        io.socket.request(
-          {
-            method,
-            url,
-            data,
-          },
-          function handleResponse(res, jwres) {
-            if (env === 'true' && jwres.statusCode === 404) {
-              reject('This action is not supported yet in GameState API');
-            }
-            if (jwres.statusCode !== 200) {
-              return reject(jwres.error.message);
-            }
-            return resolve(res);
-          },
-        );
-      });
+      switch (slug) {
+        case 'draw':
+        case 'points':
+        case 'faceCard':
+        case 'scuttle':
+        case 'untargetedOneOff':
+        case 'targetedOneOff':
+        case 'jack':
+        case 'counter':
+        case 'resolve':
+        case 'resolveThree':
+        case 'resolveFour':
+        case 'resolveFive':
+        case 'seven/points':
+        case 'seven/scuttle':
+        case 'seven/faceCard':
+        case 'seven/jack':
+        case 'seven/untargetedOneOff':
+        case 'seven/targetedOneOff':
+        case 'pass':
+          // add all the move-making ones here
+          return `/api/game/${gameId}/move`;
+        default:
+          return `/api/${api}/${slug}`;
+      }
     });
+};
+
+Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => {
+  const url = transformGameUrl(api, slug);
+  return new Cypress.Promise((resolve, reject) => {
+    io.socket.request(
+      {
+        method,
+        url,
+        data,
+      },
+      function handleResponse(res, jwres) {
+        if (env === 'true' && jwres.statusCode === 404) {
+          reject('This action is not supported yet in GameState API');
+        }
+        if (jwres.statusCode !== 200) {
+          return reject(jwres.error.message);
+        }
+        return resolve(res);
+      },
+    );
+  });
 });
 
 // Pass error logs to the terminal console

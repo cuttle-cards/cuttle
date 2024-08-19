@@ -5,7 +5,7 @@ on:
     inputs:
       gameStateApi-token:
         required: true
-        type: boolean
+        type: string
     secrets:
       record-key:
         required: true
