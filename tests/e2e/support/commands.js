@@ -39,7 +39,7 @@ const transformGameUrl = (api, slug) => {
   if (moveSlugs.includes(slug)) {
     return cy
       .window()
-      .its('cuttle.gamestore.id')
+      .its('cuttle.gameStore.id')
       .then((gameId) => `/api/game/${gameId}/move`);
   }
 
