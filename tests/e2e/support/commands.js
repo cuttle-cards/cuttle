@@ -10,7 +10,7 @@ io.sails.useCORSRouteToGetCookie = false;
 const env = Cypress.env('gameStateAPI');
 
 const transformGameUrl = (api, slug) => {
-  if (env !== 'true') {
+  if (env !== 'true' && api !== 'game') {
     return `/api/${api}/${slug}`;
   }
   cy.window()
@@ -37,7 +37,7 @@ const transformGameUrl = (api, slug) => {
         case 'seven/targetedOneOff':
         case 'pass':
           // add all the move-making ones here
-          return `/api/game/${gameId}/move/${slug}`;
+          return `/api/game/${gameId}/move`;
         default:
           return `/api/${api}/${slug}`;
       }
