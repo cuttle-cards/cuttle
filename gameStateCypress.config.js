@@ -8,7 +8,7 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
     specPattern: ['tests/e2e/specs/**/*.spec.js'],
-    excludeSpecPattern: ['tests/e2e/specs/playground.spec.js'],
+    excludeSpecPattern: excludedFiles,
     supportFile: 'tests/e2e/support/index.js',
   },
   env: {
