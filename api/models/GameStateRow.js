@@ -138,8 +138,8 @@ module.exports = {
       columnType: 'text[]',
       required: true,
     },
-    // Resolving card
-    resolving: {
+    // Resolved card
+    resolved: {
       type: 'string',
       allowNull: true,
     },
