@@ -36,8 +36,11 @@ jobs:
           echo "VITE_USE_GAMESTATE_API=true" > env_var.txt
           fi
 
-      - name: Check ENV variable
-        run: echo "GAMESTATEAPI is set to $VITE_USE_GAMESTATE_API"
+      - name: Save environment variable
+        uses: actions/upload-artifact@v3
+        with:
+          name: env_var
+          path: env_var.txt
 
   draft:
     name: 'Check Draft Status'
