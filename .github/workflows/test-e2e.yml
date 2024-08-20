@@ -2,6 +2,10 @@ name: 'Test: End-To-End'
 
 on:
   workflow_call:
+    inputs:
+      use-gamestate-api:
+        required: true
+        type: string
     secrets:
       record-key:
         required: true
@@ -15,17 +19,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Download env artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: env_var
-          path: .
-
-      - name: Load environment variable
-        run: |
-          source env_var.txt
-          echo "Loaded VITE_USE_GAMESTATE_API=$VITE_USE_GAMESTATE_API"
 
       - name: Cypress install
         uses: cypress-io/github-action@v5
@@ -64,12 +57,13 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           record: true
-          parallel: true
+          parallel: false
           start: npm start
           config-file: cypress.config.js
           # wait for 2 minutes for the server to respond
           wait-on: 'http://localhost:1337'
           wait-on-timeout: 120
+
         env:
           VITE_API_URL: http://localhost:1337
           CYPRESS_RECORD_KEY: ${{ secrets.record-key }}
