@@ -67,6 +67,6 @@ jobs:
         env:
           VITE_API_URL: http://localhost:1337
           CYPRESS_RECORD_KEY: ${{ secrets.record-key }}
-          VITE_USE_GAMESTATE_API: '${{ env.VITE_USE_GAMESTATE_API }}'
+          VITE_USE_GAMESTATE_API: '${{ inputs.use-gamestate-api }}'
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.github-token }}
