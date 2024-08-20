@@ -30,6 +30,17 @@ jobs:
           if-no-files-found: error
           path: assets
 
+      - name: Download env artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: env_var
+          path: .
+
+      - name: Load environment variable
+        run: |
+          source env_var.txt
+          echo "Loaded VITE_USE_GAMESTATE_API=$VITE_USE_GAMESTATE_API"
+
   cypress-run:
     runs-on: ubuntu-22.04
     needs: install
