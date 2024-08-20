@@ -26,6 +26,19 @@ jobs:
   #  - Prevents all downstream jobs from running
   # Additionally, require each test to pass before running the next to prevent
   # running unnecessary jobs if any upstream jobs already failed
+
+  label-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set ENV based on label
+        run: |
+          if [[ "${{ join(github.event.pull_request.labels.*.name, ' ') }} }}" == 'gameStateApi' ]]; then
+            echo "VITE_USE_GAMESTATE_API=true" >> $GITHUB_ENV
+          fi
+
+      - name: Check ENV variable
+        run: echo "GAMESTATEAPI is set to $MY_ENV_VARIABLE"
+
   draft:
     name: 'Check Draft Status'
     runs-on: ubuntu-latest
@@ -57,17 +70,6 @@ jobs:
   test-e2e:
     uses: ./.github/workflows/test-e2e.yml
     needs: draft
-    with:
-      gameStateApi-token: 'false'
-    secrets:
-      record-key: d1f04332-8bb9-4570-90e4-7c29b9510ee3
-      github-token: ${{ secrets.GITHUB_TOKEN }}
-
-  test-e2e-gameState:
-    uses: ./.github/workflows/test-e2e.yml
-    needs: test-e2e
-    with:
-      gameStateApi-token: 'true'
     secrets:
       record-key: d1f04332-8bb9-4570-90e4-7c29b9510ee3
       github-token: ${{ secrets.GITHUB_TOKEN }}
