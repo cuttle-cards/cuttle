@@ -4,7 +4,12 @@ const useGameState = process.env.VITE_USE_GAMESTATE_API || 'false';
 
 const excludedFiles =
   useGameState === 'true'
-    ? ['tests/e2e/specs/playground.spec.js', 'tests/e2e/specs/in-game/**/*.spec.js']
+    ? [
+        'tests/e2e/specs/playground.spec.js',
+        'tests/e2e/specs/in-game/**/*.spec.js',
+        'tests/e2e/specs/out-of-game/home.spec.js',
+        'tests/e2e/specs/out-of-game/lobby.spec.js',
+      ]
     : ['test/e2e/specs/playground.spec.js'];
 
 const cypressConfig = {
