@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Set ENV based on label
         run: |
-          if [[ "${{ github.event.pull_request.labels }} }}" == 'gameStateApi' ]]; then
+          if [[ "${{ github.event.label.name }} " == 'gameStateApi' ]]; then
             echo "VITE_USE_GAMESTATE_API=true" >> $GITHUB_ENV
           fi
 
