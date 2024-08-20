@@ -6,6 +6,9 @@ on:
       use-gamestate-api:
         required: true
         type: string
+      parallel:
+        required: true
+        type: boolean
     secrets:
       record-key:
         required: true
@@ -57,7 +60,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           record: true
-          parallel: true
+          parallel: ${{ inputs.parallel }}
           start: npm start
           config-file: cypress.config.js
           # wait for 2 minutes for the server to respond
