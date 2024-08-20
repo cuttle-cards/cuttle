@@ -59,7 +59,6 @@ jobs:
     needs: draft
     with:
       use-gamestate-api: 'false'
-      record: true
     secrets:
       record-key: d1f04332-8bb9-4570-90e4-7c29b9510ee3
       github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -69,7 +68,6 @@ jobs:
     needs: draft
     with:
       use-gamestate-api: 'true'
-      record: false
     secrets:
       record-key: d1f04332-8bb9-4570-90e4-7c29b9510ee3
       github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -6,9 +6,6 @@ on:
       use-gamestate-api:
         required: true
         type: string
-      record:
-        required: true
-        type: boolean
     secrets:
       record-key:
         required: true
@@ -59,7 +56,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          record: ${{ inputs.record }}
+          record: true
           parallel: true
           start: npm start
           config-file: cypress.config.js
