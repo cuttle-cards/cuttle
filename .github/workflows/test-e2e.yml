@@ -57,7 +57,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           record: true
-          parallel: false
+          parallel: true
           start: npm start
           config-file: cypress.config.js
           # wait for 2 minutes for the server to respond

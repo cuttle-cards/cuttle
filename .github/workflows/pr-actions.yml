@@ -65,7 +65,7 @@ jobs:
 
   test-e2e-gameState:
     uses: ./.github/workflows/test-e2e.yml
-    needs: draft
+    needs: test-e2e
     with:
       gameStateApi-token: 'true'
     secrets:
