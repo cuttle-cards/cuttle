@@ -16,6 +16,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Download env artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: env_var
+          path: .
+
+      - name: Load environment variable
+        run: |
+          source env_var.txt
+          echo "Loaded VITE_USE_GAMESTATE_API=$VITE_USE_GAMESTATE_API"
+
       - name: Cypress install
         uses: cypress-io/github-action@v5
         with:
@@ -29,17 +40,6 @@ jobs:
           name: build
           if-no-files-found: error
           path: assets
-
-      - name: Download env artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: env_var
-          path: .
-
-      - name: Load environment variable
-        run: |
-          source env_var.txt
-          echo "Loaded VITE_USE_GAMESTATE_API=$VITE_USE_GAMESTATE_API"
 
   cypress-run:
     runs-on: ubuntu-22.04
