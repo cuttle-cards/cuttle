@@ -37,7 +37,7 @@ jobs:
           fi
 
       - name: Check ENV variable
-        run: echo "GAMESTATEAPI is set to $MY_ENV_VARIABLE"
+        run: echo "GAMESTATEAPI is set to $VITE_USE_GAMESTATE_API"
 
   draft:
     name: 'Check Draft Status'
