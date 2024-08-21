@@ -1,10 +1,9 @@
-// api/controller/game/:gameId/move
 // Request to make a move
 module.exports = async function (req, res) {
   try {
     const { validate, execute, parseRequest } = sails.helpers[req.body.moveType];
     const game = await sails.helpers.lockGame(req.params.gameId);
-    const gameState = sails.helpers.unpackGameState({ gameStateRow: [...game.gameStates.pop()] });
+    const gameState = sails.helpers.unpackGameState({ gameStateRow: [...game.gameStates].pop() });
     const requestedMove = parseRequest(req.body);
     validate({ gameState, requestedMove });
     const updatedState = execute({ gameState, requestedMove });
