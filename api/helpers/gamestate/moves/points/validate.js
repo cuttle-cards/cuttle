@@ -1,10 +1,9 @@
-// api/helpers/gameState/moves/points/validate.js
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Parse points request',
+  friendlyName: 'Validate request to play points',
 
-  description: 'Returns needed values to make points requests',
+  description: 'Verifies whether a request to make points is legal, throwing explanatory error if not.',
 
   inputs: {
     requestedMove: {

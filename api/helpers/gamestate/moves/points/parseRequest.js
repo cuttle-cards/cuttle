@@ -1,4 +1,10 @@
-// api/helpers/gameState/moves/points/parseRequest.js
+/**
+ * @param {Object} requestedMove - Object describing the request to play points
+ * @param {1 | 0} requestedMove.playedBy - Which player is playing
+ * @param { Card } requestedMove.cardPlayed - Card Played for points
+ * @param { MoveType.POINTS } requestedMove.moveType - Specifies that this a Points move
+ */
+
 module.exports = {
   friendlyName: 'Parse points request',
 
@@ -10,12 +16,6 @@ module.exports = {
       description: 'The body of the HTTP request',
       required: true,
     },
-    /**
-     * @param {Object} requestedMove - Object describing the request to play points
-     * @param {1 | 0} requestedMove.playedBy - Which player is playing
-     * @param { Card } requestedMove.cardPlayed - Card Played for points
-     * @param { MoveType.POINTS } requestedMove.moveType - Specifies that this a Points move
-     */
   },
   sync: true, // synchronous helper
   fn: ({ body }, exits) => {

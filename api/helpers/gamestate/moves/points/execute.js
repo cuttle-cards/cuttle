@@ -1,6 +1,3 @@
-// api/helpers/gameState/moves/points/execute.js
-const _ = require('lodash');
-
 module.exports = {
   friendlyName: 'Play Points',
 
