@@ -14,7 +14,7 @@ const transformGameUrl = (api, slug) => {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
 
-  const moveSlugs = [
+  const moveSlugs = new Set([
     'draw',
     'points',
     'faceCard',
@@ -34,9 +34,9 @@ const transformGameUrl = (api, slug) => {
     'seven/untargetedOneOff',
     'seven/targetedOneOff',
     'pass',
-  ];
+  ]);
 
-  if (moveSlugs.includes(slug)) {
+  if (moveSlugs.has(slug)) {
     return cy
       .window()
       .its('cuttle.gameStore.id')
