@@ -11,58 +11,61 @@ const env = Cypress.env('gameStateAPI');
 
 const transformGameUrl = (api, slug) => {
   if (env !== 'true') {
-    return `/api/${api}/${slug}`;
+    return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
-  cy.window()
-    .its('cuttle.gameStore.id')
-    .then((gameId) => {
-      switch (slug) {
-        case 'draw':
-        case 'points':
-        case 'faceCard':
-        case 'scuttle':
-        case 'untargetedOneOff':
-        case 'targetedOneOff':
-        case 'jack':
-        case 'counter':
-        case 'resolve':
-        case 'resolveThree':
-        case 'resolveFour':
-        case 'resolveFive':
-        case 'seven/points':
-        case 'seven/scuttle':
-        case 'seven/faceCard':
-        case 'seven/jack':
-        case 'seven/untargetedOneOff':
-        case 'seven/targetedOneOff':
-        case 'pass':
-          // add all the move-making ones here
-          return `/api/game/${gameId}/move/${slug}`;
-        default:
-          return `/api/${api}/${slug}`;
-      }
-    });
+
+  const moveSlugs = new Set([
+    'draw',
+    'points',
+    'faceCard',
+    'scuttle',
+    'untargetedOneOff',
+    'targetedOneOff',
+    'jack',
+    'counter',
+    'resolve',
+    'resolveThree',
+    'resolveFour',
+    'resolveFive',
+    'seven/points',
+    'seven/scuttle',
+    'seven/faceCard',
+    'seven/jack',
+    'seven/untargetedOneOff',
+    'seven/targetedOneOff',
+    'pass',
+  ]);
+
+  if (moveSlugs.has(slug)) {
+    return cy
+      .window()
+      .its('cuttle.gameStore.id')
+      .then((gameId) => `/api/game/${gameId}/move`);
+  }
+
+  return Cypress.Promise.resolve(`/api/${api}/${slug}`);
 };
 
 Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => {
-  const url = transformGameUrl(api, slug);
-  return new Cypress.Promise((resolve, reject) => {
-    io.socket.request(
-      {
-        method,
-        url,
-        data,
-      },
-      function handleResponse(res, jwres) {
-        if (env === 'true' && jwres.statusCode === 404) {
-          reject('This action is not supported yet in GameState API');
-        }
-        if (jwres.statusCode !== 200) {
-          return reject(jwres.error.message);
-        }
-        return resolve(res);
-      },
-    );
+  return transformGameUrl(api, slug).then((url) => {
+    return new Cypress.Promise((resolve, reject) => {
+      io.socket.request(
+        {
+          method,
+          url,
+          data,
+        },
+        function handleResponse(res, jwres) {
+          if (env === 'true' && jwres.statusCode === 404) {
+            reject('This action is not supported yet in GameState API');
+          }
+          if (jwres.statusCode !== 200) {
+            return reject(jwres.error.message);
+          }
+          return resolve(res);
+        },
+      );
+    });
   });
 });
 
@@ -624,13 +627,13 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
         [cardId2] = getCardIds(game, [card2]);
       }
       //dont use makeSocketRequest due to edge case checking error on opponent side
-      const url = transformGameUrl('game', 'resolveFour');
-      io.socket.request(
-        {
+      transformGameUrl('game', 'resolveFour').then((url) => {
+        io.socket.request({
           method: 'post',
           url,
           data: { cardId1, cardId2 },
-        },
+        });
+      }),
         function handleResponse(res, jwres) {
           try {
             if (env === 'true' && jwres.statusCode === 404) {
@@ -643,8 +646,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
           } catch (err) {
             return err;
           }
-        },
-      );
+        };
     });
 });
 
