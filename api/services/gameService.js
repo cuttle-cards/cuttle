@@ -232,6 +232,11 @@ module.exports = {
   },
 
   dealCards: function (game, gameUpdates) {
+    // Use gamestate api if feature flag is set, otherwise legacy
+    if (process.env.VITE_USE_GAMESTATE_API) {
+      return sails.helpers.gamestate.dealCards(game);
+    }
+
     return new Promise(function makeDeck(resolveMakeDeck) {
       const p0 = game.players.find((player) => player.pNum === 0);
       const p1 = game.players.find((player) => player.pNum === 1);
