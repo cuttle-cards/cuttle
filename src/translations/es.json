@@ -446,6 +446,8 @@
       "revealNoPointsAnswer": "Si es imposible jugar ambas cartas reveladas por un Siete (es decir, se revelan dos Sotas y tu rival no tiene cartas de puntos en juego), elige una de las dos Sotas para descartarla y coloca la otra nuevamente en la parte superior del mazo.",
       "revealOneLeft": "¿Qué pasa si juego un Siete y solo queda una carta en la baraja?",
       "revealOneLeftAnswer": "Muestra solo la carta que queda y continúa jugando como de costumbre. De manera similar a la situación anterior, si revelas una Sota y tu rival no tiene ninguna carta de puntos en juego, esa Sota se descarta.",
+      "emptyHandFive": "¿Qué pasa cuando juego un cinco con una mano vacía?",
+      "emptyHandFiveAnswer": "Si no tienes otras cartas en la mano cuando juegas un 5, simplemente saltas el descarte y robas tres cartas. Esto puede ser una jugada poderosa, pero arriesgada. Si funciona, terminas con dos cartas más de las que comenzaste en ese turno, pero si te la contrarrestan, ¡podrías quedarte sin cartas!",
       "deckExhaust": "¿Qué pasa cuando se agota el mazo de robo?",
       "deckExhaustAnswer": "Cuando no quedan cartas en el mazo, los jugadores pueden pasar su turno en lugar de robar. Si hay tres pases consecutivos, es decir, el jugador 1 pasa, el jugador 2 pasa y luego el jugador 1 pasa nuevamente, el juego termina en un punto muerto y ningún jugador gana.",
       "whereToPlay": "¿Dónde puedo jugar a Cuttle?",

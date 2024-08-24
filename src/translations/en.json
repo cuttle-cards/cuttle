@@ -446,6 +446,8 @@
       "revealNoPointsAnswer": "If playing both cards revealed by a Seven is impossible (namely revealing two Jacks and your opponent has no point cards in play), choose one card to discard and place the other back on top of the deck.",
       "revealOneLeft": "What if I play a Seven and there is only one card left in the deck?",
       "revealOneLeftAnswer": "Reveal just the one card and continue play like normal. Similar to the above situation, if you reveal a Jack and your opponent does not have any point cards in play, that Jack is scrapped.",
+      "emptyHandFive": "What happens when I play a five with an otherwise empty hand?",
+      "emptyHandFiveAnswer": "If you have no other cards in hand when you play a 5, you simply skip discarding and draw three cards. This can be a powerful, but risky play. If it works, you end up with two more cards than you started with that turn, but if it is countered, you could have no cards at all!",
       "deckExhaust": "What happens when the deck is exhausted?",
       "deckExhaustAnswer": "When there are no cards left in the deck, players may pass on their turn instead of drawing. If there are three consecutive passes i.e. player 1 passes, player 2 passes, then player 1 passes again, the game ends in a stalemate and neither player wins.",
       "whereToPlay": "Where can I play Cuttle?",
