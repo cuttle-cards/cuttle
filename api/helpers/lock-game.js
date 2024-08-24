@@ -34,8 +34,8 @@ module.exports = {
         const now = dayjs.utc().toDate();
         const lockIsStaleTimeout = dayjs.utc().subtract(30, 'second').toDate();
 
-        // Lock & re-fetch game if unlocked or lock is expired
-        const updatedGame = await Game.updateOne({
+        // Lock game if unlocked or lock is expired
+        let updatedGame = await Game.updateOne({
           id: gameId,
           or: [{ lock: null }, { lockedAt: { '<=': lockIsStaleTimeout } }],
         }).set({ lock: uuId, lockedAt: now });
@@ -43,6 +43,13 @@ module.exports = {
         // If we successfully wrote our uuid, resolve
         const newLock = updatedGame?.lock;
         if (newLock === uuId) {
+
+          // Re-fetch game and populate players and gamestates
+          updatedGame = await Game.findOne({ id: gameId })
+            .populate('p0')
+            .populate('p1')
+            .populate('gameStates', { sort: 'createdAt ASC' });
+
           return exits.success(updatedGame);
         }
 
