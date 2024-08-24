@@ -18,18 +18,18 @@
       </v-btn>
     </template>
     <template #body>
-      <h4>
-        {{ t('home.playAiContent') }}
-        <a
-          class="text-cyan-lighten-2 text-decoration-none"
-          href="https://human-ai-interaction.github.io/cuttle-bot/"
-          target="_blank"
-        >
-          {{ t('home.playAiLink') }}
-        </a>
-        {{ t('home.playAiContent2') }}
-      </h4>
       <v-form @submit.prevent="submitNewGame">
+        <h4>
+          {{ t('home.playAiContent') }}
+          <a
+            class="text-cyan-lighten-2 text-decoration-none"
+            href="https://human-ai-interaction.github.io/cuttle-bot/"
+            target="_blank"
+          >
+            {{ t('home.playAiLink') }}
+          </a>
+          {{ t('home.playAiContent2') }}
+        </h4>
         <div class="d-flex align-center">
           <StatsScoringDialog
             activator-color="surface-2"
