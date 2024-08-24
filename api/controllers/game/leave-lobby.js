@@ -10,8 +10,10 @@ module.exports = function (req, res) {
       };
       if (player.pNum === 0) {
         gameUpdates.p0Ready = false;
+        gameUpdates.p0 = null;
       } else {
         gameUpdates.p1Ready = false;
+        gameUpdates.p1 = null;
       }
 
       // Unsubscribe user from updates to this game
