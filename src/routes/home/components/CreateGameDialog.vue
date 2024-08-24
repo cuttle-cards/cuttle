@@ -19,6 +19,7 @@
     </template>
     <template #body>
       <v-form @submit.prevent="submitNewGame">
+        <!-- V form now wraps the whole #body -->
         <h4>
           {{ t('home.playAiContent') }}
           <a
