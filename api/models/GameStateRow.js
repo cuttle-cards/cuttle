@@ -31,33 +31,10 @@ module.exports = {
       isIn: [0, 1],
       required: true,
     },
-    /**
-     * Enum for moveType:
-     * 1 - DRAW
-     * 2 - POINTS
-     * 3 - SCUTTLE
-     * 4 - FACECARD
-     * 5 - JACK
-     * 6 - UNTARGETED_ONE_OFF
-     * 7 - TARGETEDONE_OFF
-     * 8 - COUNTER
-     * 9 - RESOLVE
-     * 10 - RESOLVE_THREE
-     * 11 - RESOLVE_FOUR
-     * 12 - RESOLVE_FIVE
-     * 13 - SEVEN_POINTS
-     * 14 - SEVEN_SCUTTLE
-     * 15 - SEVEN_FACECARD
-     * 16 - SEVEN_JACK
-     * 17 - SEVEN_UNTARGETED_ONE_OFF
-     * 18 - SEVENTARGETEDONE_OFF
-     * 19 - PASS
-     */
     moveType: {
-      type: 'number',
-      isIn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      type: 'string',
       required: true,
-      columnType: 'int4',
+      columnType: 'text',
     },
     // The card that was played
     playedCard: {
@@ -161,8 +138,8 @@ module.exports = {
       columnType: 'text[]',
       required: true,
     },
-    // Resolving card
-    resolving: {
+    // Resolved card
+    resolved: {
       type: 'string',
       allowNull: true,
     },
