@@ -15,12 +15,12 @@ module.exports = async function (req, res) {
     let game =  await sails.helpers.lockGame(req.session.game);
 
     // Early return if requesting user was not in the game
-    if (![game.p0, game.p1].includes(userId)) {
+    if (!userId || ![game.p0?.id, game.p1?.id].includes(userId)) {
       return;
     }
 
     // Determine whether to start new game
-    const oldPNum = game.p0 === userId ? 0 : 1;
+    const oldPNum = game.p0.id === userId ? 0 : 1;
     const rematchVal = { [`p${oldPNum}Rematch`]: rematch };
     const gameUpdates = {
       ...rematchVal,
@@ -48,7 +48,7 @@ module.exports = async function (req, res) {
     // Get all exisiting rematchGames to compute new game name & isRanked
     const [ rematchGames, players, currentMatch ] = await Promise.all([
       sails.helpers.getRematchGames(game),
-      User.find({id: [game.p0, game.p1]}),
+      User.find({id: [game.p0.id, game.p1.id]}),
       Match.findOne({ id: game.match })
     ]);
     // Determine who was p0 and p1 in first game in the series
