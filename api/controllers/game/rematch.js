@@ -53,8 +53,8 @@ module.exports = async function (req, res) {
     ]);
     // Determine who was p0 and p1 in first game in the series
     const [ firstGame ] = rematchGames;
-    const seriesP0Id = firstGame.p0;
-    const seriesP1Id = firstGame.p1;
+    const seriesP0Id = firstGame.p0?.id;
+    const seriesP1Id = firstGame.p1?.id;
     const seriesP0Username = players.find((player) => player.id === seriesP0Id).username;
     const seriesP1Username = players.find((player) => player.id === seriesP1Id).username;
     // Get rematchGame win counts
@@ -75,12 +75,12 @@ module.exports = async function (req, res) {
 
     // Update old game's rematchGame & add players to new game
     gameUpdates.rematchGame = newGame.id;
-    const { p0: newP1Id, p1: newP0Id } = game;
+    const { p0: newP1, p1: newP0 } = game;
     const [ updatedGame, p0, p1] = await Promise.all([
       Game.updateOne({ id: game.id }).set(gameUpdates),
-      User.updateOne({ id: newP0Id }).set({ pNum: 0 }),
-      User.updateOne({ id: newP1Id }).set({ pNum: 1 }),
-      Game.replaceCollection(newGame.id, 'players').members([newP0Id, newP1Id]),
+      User.updateOne({ id: newP0.id }).set({ pNum: 0 }),
+      User.updateOne({ id: newP1.id }).set({ pNum: 1 }),
+      Game.replaceCollection(newGame.id, 'players').members([newP0.id, newP1.id]),
     ]);
 
     // Deal cards in new game
