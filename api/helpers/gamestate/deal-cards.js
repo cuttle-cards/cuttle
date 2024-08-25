@@ -21,8 +21,8 @@ module.exports = {
     
     try {
 
-      if (game.status !== GameStatus.CREATED) {
-        return exits.error({ message: 'Game has already started' });
+      if (game.status !== GameStatus.STARTED) {
+        return exits.error({ message: 'Game has not yet started or is over' });
       }
 
       if (!game.gameStates) {
@@ -34,7 +34,7 @@ module.exports = {
       }
 
       const deck = _.shuffle(
-        DeckIds.map(sails.helpers.gameStates.convertStrToCard)
+        DeckIds.map((cardId) => sails.helpers.gamestate.convertStrToCard(cardId))
       );
 
       const p0 = {
@@ -68,9 +68,9 @@ module.exports = {
         resolving: null,
       };
 
-      await sails.helpers.gamestate.saveGameState(newGameState);
+      await sails.helpers.gamestate.saveGamestate(newGameState);
 
-      await sails.helpers.gamestate.emitGameState(game, newGameState);
+      await sails.helpers.gamestate.publishGameState(game, newGameState);
 
       return exits.success(newGameState);
     } catch (err) {
