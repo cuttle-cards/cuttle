@@ -68,9 +68,9 @@ module.exports = {
         resolving: null,
       };
 
-      await sails.helpers.gamestate.saveGamestate(newGameState);
-
-      await sails.helpers.gamestate.publishGameState(game, newGameState);
+      const { saveGamestate, publishGameState } = sails.helpers.gamestate;
+      await saveGamestate(newGameState);
+      await publishGameState(game, newGameState);
 
       return exits.success(newGameState);
     } catch (err) {
