@@ -446,6 +446,8 @@
       "revealNoPointsAnswer": "Si les deux cartes révélées par un Sept sont impossibles à jouer, (c'est-à-dire que vous révélez deux Valets et que votre adversaire n'a aucune carte à points en jeu), vous défaussez une de ces deux cartes et remettez l'autre sur le dessus du paquet.",
       "revealOneLeft": "Que se passe-t-il si je joue un Sept et qu'il ne reste qu'une seule carte dans le paquet?",
       "revealOneLeftAnswer": "Révélez cette dernière carte et continuez à jouer comme d'habitude. Semblable à la situation précédente, si vous révélez un valet et que votre adversaire n'a aucune carte à points en jeu, ce valet est défaussé.",
+      "emptyHandFive": "Que se passe-t-il lorsque je joue un cinq avec une main vide ?",
+      "emptyHandFiveAnswer": "Si vous n'avez pas d'autres cartes en main lorsque vous jouez un 5, vous sautez simplement la phase de défausse et piochez trois cartes. Cela peut être un jeu puissant, mais risqué. Si cela fonctionne, vous vous retrouvez avec deux cartes de plus que celles avec lesquelles vous avez commencé ce tour, mais si cela est contré, vous pourriez vous retrouver sans cartes !",
       "deckExhaust": "Que se passe-t-il lorsqu'il n'y a plus de carte dans le paquet ?",
       "deckExhaustAnswer": "Lorsqu'il n'y a plus de cartes dans le paquet, les joueurs peuvent passer leur tour au lieu de piocher. S'il y a trois passes consécutives, c'est-à-dire que le joueur 1 passe, le joueur 2 passe, puis le joueur 1 passe à nouveau, la partie se termine par une impasse et il y a égalité.",
       "whereToPlay": "Où puis-je jouer à Cuttle?",
