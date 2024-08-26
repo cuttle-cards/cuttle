@@ -28,7 +28,7 @@ module.exports = async function (req, res) {
         Game.publish(
           [req.session.game],
           {
-            change: 'initialize',
+            change: 'deal',
             pNum: req.session.pNum,
             game: game,
           },

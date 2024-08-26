@@ -268,7 +268,7 @@ module.exports = {
         gameUpdates.topCard = shuffledDeck.shift();
         gameUpdates.secondCard = shuffledDeck.shift();
         gameUpdates.lastEvent = {
-          change: 'initialize',
+          change: 'deal',
         };
         gameUpdates.p0 = p0.id;
         gameUpdates.p1 = p1.id;
@@ -296,7 +296,7 @@ module.exports = {
       })
       .then(function publish(fullGame) {
         Game.publish([fullGame.id], {
-          change: 'initialize',
+          change: 'deal',
           game: fullGame,
         });
         return Promise.resolve(fullGame);

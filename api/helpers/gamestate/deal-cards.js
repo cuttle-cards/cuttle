@@ -51,7 +51,7 @@ module.exports = {
 
       const newGameState = {
         gameId: game.id,
-        moveType: MoveType.INITIALIZE,
+        moveType: MoveType.DEAL,
         turn: 0,
         phase: GamePhase.MAIN,
         p0,
@@ -59,7 +59,7 @@ module.exports = {
         deck,
         scrap: [],
         twos: [],
-        playedBy: null,
+        playedBy: 1, // p1 "deals"
         playedCard: null,
         targetCardId: null,
         discardedCards: [],

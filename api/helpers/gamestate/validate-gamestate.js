@@ -33,7 +33,7 @@ function validatePhase(param) {
 }
 
 function validatePlayedBy(param) {
-  if (![null, 0, 1].includes(param)) {
+  if (![0, 1].includes(param)) {
     throw new Error('The playedBy attribute must be a number in [0,1]');
   }
   return param;

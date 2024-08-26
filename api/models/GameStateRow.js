@@ -29,7 +29,7 @@ module.exports = {
     playedBy: {
       type: 'number',
       isIn: [0, 1],
-      allowNull: true,
+      required: true,
     },
     moveType: {
       type: 'string',

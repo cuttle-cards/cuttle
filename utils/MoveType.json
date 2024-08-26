@@ -1,5 +1,5 @@
 {
-  "INITIALIZE": "initialize",
+  "DEAL": "deal",
   "DRAW": "draw",
   "POINTS": "points",
   "SCUTTLE": "scuttle",
