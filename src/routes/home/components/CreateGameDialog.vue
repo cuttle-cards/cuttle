@@ -18,8 +18,7 @@
       </v-btn>
     </template>
     <template #body>
-      <v-form @submit.prevent="submitNewGame">
-        <!-- V form now wraps the whole #body -->
+      <v-form id="create-game-form" @submit.prevent="submitNewGame">
         <h4>
           {{ t('home.playAiContent') }}
           <a
@@ -32,10 +31,7 @@
           {{ t('home.playAiContent2') }}
         </h4>
         <div class="d-flex align-center">
-          <StatsScoringDialog
-            activator-color="surface-2"
-            :show-button-text="false"
-          />
+          <StatsScoringDialog activator-color="surface-2" :show-button-text="false" />
           <v-switch
             v-model="isRanked"
             class="d-flex align-center"
@@ -72,7 +68,7 @@
         :loading="loading"
         color="surface-1"
         variant="flat"
-        @click="submitNewGame"
+        form="create-game-form"
       >
         {{ t('home.submitCreateGame') }}
       </v-btn>
