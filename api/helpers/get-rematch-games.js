@@ -1,9 +1,12 @@
 // Pull the logic into func outside fn to allow recursion w/o bumping into weirdness w/ sails' exits
 async function getRematchGames (game, priorRematchGames = []) {
-  const rematchGames = [game, ...priorRematchGames];
-  const gameToAdd = await Game.findOne({ rematchGame: game.id })
-    .populate('p0')
-    .populate('p1');
+  const transformedGame = {
+    ...game,
+    p0: game.p0?.id ?? game.p0,
+    p1: game.p1?.id ?? game.p1,
+  };
+  const rematchGames = [transformedGame, ...priorRematchGames];
+  const gameToAdd = await Game.findOne({ rematchGame: game.id });
 
   if (!gameToAdd) {
     return rematchGames;

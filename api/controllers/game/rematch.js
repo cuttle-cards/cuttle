@@ -53,8 +53,8 @@ module.exports = async function (req, res) {
     ]);
     // Determine who was p0 and p1 in first game in the series
     const [ firstGame ] = rematchGames;
-    const seriesP0Id = firstGame.p0?.id;
-    const seriesP1Id = firstGame.p1?.id;
+    const seriesP0Id = firstGame.p0;
+    const seriesP1Id = firstGame.p1;
     const seriesP0Username = players.find((player) => player.id === seriesP0Id).username;
     const seriesP1Username = players.find((player) => player.id === seriesP1Id).username;
     // Get rematchGame win counts
