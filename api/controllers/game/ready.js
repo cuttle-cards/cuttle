@@ -53,6 +53,7 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    return res.badRequest(err);
+    const message = err.raw?.message ?? err;
+    return res.badRequest({ message });
   }
 };
