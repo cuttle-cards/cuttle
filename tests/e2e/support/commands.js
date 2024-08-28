@@ -9,6 +9,12 @@ io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
 const env = Cypress.env('gameStateAPI');
 
+Cypress.Commands.add('skipOnGameStateApi', () => {
+  if (env === 'true') {
+    cy.state('runnable').ctx.skip();
+  }
+});
+
 const transformGameUrl = (api, slug) => {
   if (env !== 'true') {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
@@ -57,7 +63,7 @@ Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => 
         },
         function handleResponse(res, jwres) {
           if (env === 'true' && jwres.statusCode === 404) {
-            cy.state('runnable').ctx.skip();
+            reject('This action is not supported yet in GameState API');
           }
           if (jwres.statusCode !== 200) {
             return reject(jwres.error.message);

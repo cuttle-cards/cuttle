@@ -18,6 +18,7 @@ describe('Game View Layout', () => {
   });
 
   it('Three dialogs', () => {
+    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.THREE_OF_CLUBS],
@@ -75,6 +76,7 @@ describe('Game View Layout', () => {
   });
 
   it('Click the scrap to view contents', () => {
+    cy.skipOnGameStateApi();
     // Given-- the initial game state with 3 cards in the scrap
     const scrap = [
       Card.ACE_OF_SPADES,
@@ -145,6 +147,7 @@ describe('Game View Layout', () => {
   });
 
   it('Clicking the scrap while empty shows that it is empty', () => {
+    cy.skipOnGameStateApi();
     // Given-- the initial game state with 3 cards in the scrap
     cy.loadGameFixture(0, {
       p0Hand: [Card.THREE_OF_CLUBS],
@@ -167,6 +170,7 @@ describe('Game View Layout', () => {
 
 describe('Four dialogs layout', () => {
   beforeEach(() => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
   });
 

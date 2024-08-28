@@ -8,6 +8,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Plays Points', () => {
+    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
@@ -52,6 +53,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Scuttles as P0', () => {
+    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES, Card.SEVEN_OF_CLUBS],
@@ -171,6 +173,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Plays Kings', () => {
+    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS],
@@ -228,6 +231,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Plays Queens', () => {
+    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.QUEEN_OF_DIAMONDS, Card.QUEEN_OF_SPADES, Card.KING_OF_CLUBS, Card.JACK_OF_DIAMONDS],
@@ -281,6 +285,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Cancels selection and cancels decision to scuttle/targeted one-off/jack on mobile', () => {
+    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [
         Card.TWO_OF_SPADES,
@@ -386,6 +391,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
 describe('Game Basic Moves - P1 Perspective', () => {
   beforeEach(() => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
   });
 
@@ -427,6 +433,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
 
 describe('Playing 8s', () => {
   beforeEach(() => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
   });
 
@@ -502,6 +509,7 @@ describe('Playing 8s', () => {
 
 describe('Play Jacks', () => {
   beforeEach(() => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
   });
 
