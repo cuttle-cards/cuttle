@@ -1,28 +1,16 @@
 const { defineConfig } = require('cypress');
 
-const useGameState = process.env.VITE_USE_GAMESTATE_API || 'false';
-
-const excludedFiles =
-  useGameState === 'true'
-    ? [
-        'tests/e2e/specs/playground.spec.js',
-        'tests/e2e/specs/in-game/**/*.spec.js',
-        'tests/e2e/specs/out-of-game/home.spec.js',
-        'tests/e2e/specs/out-of-game/lobby.spec.js',
-      ]
-    : ['test/e2e/specs/playground.spec.js'];
-
 const cypressConfig = {
   projectId: 'i8bxr8',
   // https://docs.cypress.io/guides/references/configuration#e2e
   e2e: {
     baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
     specPattern: ['tests/e2e/specs/**/*.spec.js'],
-    excludeSpecPattern: excludedFiles,
+    excludeSpecPattern: ['test/e2e/specs/playground.spec.js'],
     supportFile: 'tests/e2e/support/index.js',
   },
   env: {
-    gameStateAPI: useGameState,
+    gameStateAPI: process.env.VITE_USE_GAMESTATE_API || 'false',
   },
   // Retry tests 2 times headlessly, no retries in UI
   retries: {
