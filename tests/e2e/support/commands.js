@@ -9,6 +9,20 @@ io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
 const env = Cypress.env('gameStateAPI');
 
+Cypress.Commands.add('skipTest', () => {
+  if (env === 'true') {
+    cy.state('runnable').ctx.skip();
+  }
+});
+
+Cypress.Commands.add('addSkipTestEventListener', () => {
+  cy.window().then((win) => {
+    win.addEventListener('skipTest', () => {
+      cy.state('runnable').ctx.skip();
+    });
+  });
+});
+
 const transformGameUrl = (api, slug) => {
   if (env !== 'true') {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
@@ -57,6 +71,7 @@ Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => 
         },
         function handleResponse(res, jwres) {
           if (env === 'true' && jwres.statusCode === 404) {
+            cy.skipTest();
             reject('This action is not supported yet in GameState API');
           }
           if (jwres.statusCode !== 200) {
@@ -138,6 +153,8 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     // Asserting 5 cards in players hand confirms game has loaded
     cy.get('#player-hand-cards .player-card').should('have.length', 5);
   });
+
+  cy.addSkipTestEventListener();
 });
 
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
@@ -167,6 +184,7 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
     cy.get('#player-hand-cards .player-card').should('have.length', 6);
   });
   cy.log('Finished setting up game as p1');
+  cy.addSkipTestEventListener();
 });
 Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
   cy.wipeDatabase();
@@ -200,6 +218,7 @@ Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
         expect(game.id).to.not.eq(null);
       });
   });
+  cy.addSkipTestEventListener();
 });
 
 Cypress.Commands.add('signupOpponent', (opponent) => {

@@ -407,6 +407,9 @@ export const useGameStore = defineStore('game', {
           },
           (_res, jwres) => {
             if (import.meta.env.VITE_USE_GAMESTATE_API === 'true' && jwres.statusCode === 404) {
+              if (window.Cypress) {
+                window.dispatchEvent(new CustomEvent('skipTest'));
+              }
               reject('This action is not supported yet in GameState API');
             }
             return this.handleGameResponse(jwres, resolve, reject);
