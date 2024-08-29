@@ -66,7 +66,6 @@ describe('Creating And Updating Ranked Matches', () => {
   });
 
   it('Leaves a ranked game after first game of match', function () {
-    cy.skipOnGameStateApi();
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(2);
