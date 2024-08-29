@@ -1,7 +1,7 @@
 <template>
   <div :class="[ isInModal ? 'bg-surface-1 text-surface-2' : 'pa-4 bg-surface-1 text-surface-2' ]">
     <v-container>
-      <BackToTop :parent-modal-id="isInModal && parentModalId" />
+      <BackToTop :parent-modal-id="isInModal ? parentModalId : ''" />
 
       <v-row>
         <RulesNav 
