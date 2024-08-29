@@ -138,6 +138,7 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
       .then((store) => store.requestSubscribe(gameSummary.gameId));
     cy.log(`Subscribed to game ${gameSummary.gameId}`);
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+    cy.addSkipTestEventListener();
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
     if (!alreadyAuthenticated) {
@@ -153,8 +154,6 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     // Asserting 5 cards in players hand confirms game has loaded
     cy.get('#player-hand-cards .player-card').should('have.length', 5);
   });
-
-  cy.addSkipTestEventListener();
 });
 
 Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = false) => {
@@ -178,19 +177,20 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
       .its('cuttle.gameStore')
       .then((store) => store.requestSubscribe(gameSummary.gameId));
     cy.vueRoute(`/lobby/${gameSummary.gameId}`);
+    cy.addSkipTestEventListener();
     cy.wrap(gameSummary).as('gameSummary');
     cy.get('[data-cy=ready-button]').click();
     // Asserting 6 cards in players hand confirms game has loaded
     cy.get('#player-hand-cards .player-card').should('have.length', 6);
   });
   cy.log('Finished setting up game as p1');
-  cy.addSkipTestEventListener();
 });
 Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
+  cy.addSkipTestEventListener();
   cy.createGamePlayer({ gameName: 'Spectator Game', isRanked }).then((gameData) => {
     // Test that JOIN button starts enabled
     cy.get('[data-cy-join-game]').should('not.be.disabled');
@@ -218,7 +218,6 @@ Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
         expect(game.id).to.not.eq(null);
       });
   });
-  cy.addSkipTestEventListener();
 });
 
 Cypress.Commands.add('signupOpponent', (opponent) => {
