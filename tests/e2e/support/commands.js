@@ -72,7 +72,6 @@ Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => 
         function handleResponse(res, jwres) {
           if (env === 'true' && jwres.statusCode === 404) {
             cy.skipTest();
-            reject('This action is not supported yet in GameState API');
           }
           if (jwres.statusCode !== 200) {
             return reject(jwres.error.message);
