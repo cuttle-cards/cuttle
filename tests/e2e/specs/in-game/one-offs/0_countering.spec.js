@@ -336,7 +336,6 @@ describe('Countering One-Offs', () => {
 });
 
 describe('Countering One-Offs P0 Perspective', () => {
-  cy.skipOnGameStateApi();
   beforeEach(() => {
     cy.skipOnGameStateApi();
     cy.setupGameAsP0();
