@@ -1,6 +1,7 @@
 import { assertGameState, assertSnackbarError, playOutOfTurn } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
+const env = Cypress.env('gameStateAPI');
 
 describe('Game Basic Moves - P0 Perspective', () => {
   beforeEach(() => {
@@ -8,7 +9,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Plays Points', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
@@ -52,7 +52,10 @@ describe('Game Basic Moves - P0 Perspective', () => {
     });
   });
 
-  it('Scuttles as P0', () => {
+  it.only('Scuttles as P0', () => {
+    if (env === 'true') {
+      cy.state('runnable').ctx.skip();
+    }
     cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {

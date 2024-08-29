@@ -337,7 +337,6 @@ describe('Countering One-Offs', () => {
 
 describe('Countering One-Offs P0 Perspective', () => {
   beforeEach(() => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
   });
 
@@ -490,14 +489,11 @@ describe('Countering One-Offs P0 Perspective', () => {
 });
 
 describe('Opponent May Counter vs Opponent Must Resolve', () => {
-  cy.skipOnGameStateApi();
   beforeEach(() => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
   });
 
   describe('Opponent May Counter', () => {
-    cy.skipOnGameStateApi();
     it('Displays "Opponent May Counter" when player had neither glasses nor a queen', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
@@ -554,7 +550,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
   });
 
   describe('Opponent Must Resolve', () => {
-    cy.skipOnGameStateApi();
     it('Displays "Opponent Must Resolve" when player has a queen', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
