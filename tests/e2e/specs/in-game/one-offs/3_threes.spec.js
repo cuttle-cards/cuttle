@@ -8,6 +8,7 @@ describe('Playing THREEs', () => {
   });
 
   it('Plays 3s with no cards in scrap', () => {
+    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS],
@@ -69,11 +70,11 @@ describe('Playing THREEs', () => {
     // Player selects a card from scrap
     cy.get('[data-three-dialog-card=10-2]').click();
     cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
-    
+
     //check scrap card shows and then disappears
     cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
     cy.get('[data-cy="scrap-chosen-card"]').should('not.exist');
-    
+
     assertGameState(0, {
       p0Hand: [Card.TEN_OF_HEARTS],
       p0Points: [],
@@ -102,6 +103,7 @@ describe('Playing THREEs', () => {
   });
 
   it('Opponent plays 3s successfully', () => {
+    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES],

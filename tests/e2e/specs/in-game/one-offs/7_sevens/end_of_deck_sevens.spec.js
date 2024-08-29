@@ -3,6 +3,7 @@ import { Card } from '../../../../fixtures/cards';
 
 describe('Playing sevens at the end of the deck', () => {
   it('Plays the last card for points from a seven', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [],
@@ -27,6 +28,7 @@ describe('Playing sevens at the end of the deck', () => {
   });
 
   it('Plays the top card of the deck when there are two cards left', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
@@ -63,6 +65,7 @@ describe('Playing sevens at the end of the deck', () => {
   });
 
   it('Plays the 2nd card in the deck when there are two cards left', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
@@ -99,6 +102,7 @@ describe('Playing sevens at the end of the deck', () => {
   });
 
   it('Cannot play seven one-off if deck is empty', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [],
@@ -119,6 +123,7 @@ describe('Playing sevens at the end of the deck', () => {
   });
 
   it('Cannot play last card of deck as 7 one-off when chaining sevens', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [],

@@ -9,6 +9,7 @@ describe('Playing NINES', () => {
     });
 
     it('Plays a nine to SCUTTLE a lower point card', () => {
+      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS],
         p0Points: [Card.TEN_OF_HEARTS],
@@ -36,6 +37,7 @@ describe('Playing NINES', () => {
     }); // End 9 scuttle
 
     it('Plays a nine as ONE-OFF on lower point card to return it to owners hand', () => {
+      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS],
         p0Points: [Card.TEN_OF_HEARTS],
@@ -66,6 +68,7 @@ describe('Playing NINES', () => {
     }); // End 9 one-off low point card
 
     it('Plays a nine as ONE-OFF on a higher point card to return it to owners hand', () => {
+      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [Card.NINE_OF_CLUBS, Card.NINE_OF_HEARTS],
         p0Points: [Card.TEN_OF_HEARTS],
@@ -108,6 +111,7 @@ describe('Playing NINES', () => {
     }); // End 9 one-off high-point card
 
     it('Plays a nine as a ONE-OFF to return a face card to its owners hand', () => {
+      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS],
         p0Points: [Card.TEN_OF_HEARTS],
@@ -139,6 +143,7 @@ describe('Playing NINES', () => {
     }); // End 9 on face card
 
     it('Plays a 9 on a jack to steal back point card', () => {
+      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [Card.ACE_OF_SPADES, Card.NINE_OF_CLUBS],
         p0Points: [Card.TEN_OF_SPADES],
@@ -198,6 +203,7 @@ describe('Playing NINES', () => {
     }); // End 9 on jack
 
     it('Cancels playing a nine one off', () => {
+      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS],
         p0Points: [Card.TEN_OF_HEARTS],
@@ -228,6 +234,7 @@ describe('Playing NINES', () => {
     });
 
     it('Plays a nine as a ONE-OFF, make sure that the bounced card is playable later', () => {
+      cy.skipOnGameStateApi();
       /*
       1). P0 plays a 9, targeting an in-play Queen
       2). P1 plays a 6's one-off, removing some cards
@@ -314,6 +321,7 @@ describe('Playing NINES', () => {
     });
 
     it('Plays a nine as a ONE-OFF, make sure that the bounced card is playable even if there is countering', () => {
+      cy.skipOnGameStateApi();
       /*
       1). P0 plays 9 one-off, targeting P1's Queen
       2). P1 plays 6's one-off
@@ -407,6 +415,7 @@ describe('Playing NINES', () => {
     });
 
     it('Disables playing a frozen number card until the following turn', () => {
+      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         p0Hand: [Card.NINE_OF_CLUBS],
         p0Points: [Card.THREE_OF_CLUBS],
@@ -461,6 +470,7 @@ describe('Playing NINES', () => {
     });
 
     it('Opponent plays a NINE on a jack to steal back point card', () => {
+      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         p0Hand: [Card.ACE_OF_SPADES, Card.NINE_OF_CLUBS, Card.ACE_OF_DIAMONDS],
         p0Points: [Card.TEN_OF_SPADES],
@@ -557,6 +567,7 @@ describe('Playing NINES', () => {
     }); // End 9 on jack
 
     it('Clears players frozen card after resolving one-off', () => {
+      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         p0Hand: [Card.NINE_OF_SPADES, Card.EIGHT_OF_HEARTS],
         p0Points: [],
