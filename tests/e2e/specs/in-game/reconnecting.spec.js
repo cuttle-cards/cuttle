@@ -526,11 +526,8 @@ describe('Reconnecting to a game', () => {
 
   describe('Reconnecting into One-Off resolutions', () => {
     describe('Reconnecting into 3s', () => {
-      beforeEach(() => {
-        cy.skipOnGameStateApi();
-      });
-
       it('Resolve 3 after reconnect -- Player fetches card', () => {
+        cy.skipOnGameStateApi();
         cy.setupGameAsP0();
         cy.loadGameFixture(0, {
           p0Hand: [Card.THREE_OF_CLUBS],
@@ -568,6 +565,7 @@ describe('Reconnecting to a game', () => {
       });
 
       it('Resolve opponents three after reconnect', () => {
+        cy.skipOnGameStateApi();
         cy.setupGameAsP1();
         cy.loadGameFixture(1, {
           p0Hand: [Card.THREE_OF_CLUBS],
@@ -684,11 +682,11 @@ describe('Reconnecting to a game', () => {
 
 describe('Display correct dialog for unavailable game', () => {
   beforeEach(() => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
   });
 
   it('Shows unavailable game dialog, then return home', () => {
+    cy.skipOnGameStateApi();
     cy.concedeOpponent();
     assertVictory();
     //go home
@@ -707,11 +705,11 @@ describe('Display correct dialog for unavailable game', () => {
 
 describe('Reauthenticating in game', () => {
   beforeEach(() => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
   });
 
   it('Re-login using reauthenticate dialog', () => {
+    cy.skipOnGameStateApi();
     cy.clearCookies();
     cy.reload();
     cy.get('[data-cy=username]').click().type(myUser.username);

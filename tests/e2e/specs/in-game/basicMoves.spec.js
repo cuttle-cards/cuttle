@@ -391,11 +391,11 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
 describe('Game Basic Moves - P1 Perspective', () => {
   beforeEach(() => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
   });
 
   it('Draws from deck', () => {
+    cy.skipOnGameStateApi();
     // Opponent draws card
     cy.drawCardOpponent();
     // Opponent now has 6 cards in hand
@@ -433,11 +433,11 @@ describe('Game Basic Moves - P1 Perspective', () => {
 
 describe('Playing 8s', () => {
   beforeEach(() => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
   });
 
   it('Plays eights for points', () => {
+    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
@@ -467,6 +467,7 @@ describe('Playing 8s', () => {
   }); // End play 8 for points
 
   it('Plays eights for glasses', () => {
+    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
@@ -509,11 +510,11 @@ describe('Playing 8s', () => {
 
 describe('Play Jacks', () => {
   beforeEach(() => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
   });
 
   it('Player and Opponent plays Jacks on different cards', () => {
+    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES],
@@ -557,6 +558,7 @@ describe('Play Jacks', () => {
   });
 
   it('Quadruple jacks successfully', () => {
+    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
