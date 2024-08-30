@@ -34,6 +34,7 @@ describe('Reconnecting to a game', () => {
   });
 
   it('Reconnects after refreshing the page', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
 
     cy.loadGameFixture(0, {
