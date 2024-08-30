@@ -8,15 +8,15 @@ module.exports = async function (req, res) {
 
     const { addCardId, publishGameState, saveGameState, convertStrToCard } = sails.helpers.gamestate;
 
-    const p0Hand = req.body.p0Hand?.map((card) => addCardId(card));
-    const p0Points = req.body.p0Points?.map((card) => addCardId(card));
-    const p0FaceCards = req.body.p0FaceCards?.map((card) => addCardId(card));
-    const p1Hand = req.body.p1Hand?.map((card) => addCardId(card));
-    const p1Points = req.body.p1Points?.map((card) => addCardId(card));
-    const p1FaceCards = req.body.p1FaceCards?.map((card) => addCardId(card));
-    const scrap = req.body.scrapCards?.map((card) => addCardId(card)) ?? null;
+    const p0Hand = req.body.p0Hand?.map((card) => addCardId(card)) ?? [];
+    const p0Points = req.body.p0Points?.map((card) => addCardId(card)) ?? [];
+    const p0FaceCards = req.body.p0FaceCards?.map((card) => addCardId(card)) ?? [];
+    const p1Hand = req.body.p1Hand?.map((card) => addCardId(card)) ?? [];
+    const p1Points = req.body.p1Points?.map((card) => addCardId(card)) ?? [];
+    const p1FaceCards = req.body.p1FaceCards?.map((card) => addCardId(card)) ?? [];
     const topCard = req.body.topCard ? addCardId(req.body.topCard) : null;
     const secondCard = req.body.secondCard ? addCardId(req.body.topCard) : null;
+    const scrap = req.body.scrapCards?.map((card) => addCardId(card)) ?? [];
 
     const allFixtureCards = [
       p0Hand,
