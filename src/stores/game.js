@@ -391,7 +391,7 @@ export const useGameStore = defineStore('game', {
         case 'seven/targetedOneOff':
         case 'pass':
           // add all the move-making ones here
-          return `/api/game/${this.gameId}/move/${slug}`;
+          return `/api/game/${this.id}/move/${slug}`;
         default:
           return `/api/game/${slug}`;
       }
