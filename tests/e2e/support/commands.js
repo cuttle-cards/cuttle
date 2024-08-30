@@ -9,12 +9,6 @@ io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
 const env = Cypress.env('gameStateAPI');
 
-Cypress.Commands.add('skipTest', () => {
-  if (env === 'true') {
-    cy.state('runnable').ctx.skip();
-  }
-});
-
 Cypress.Commands.add('addSkipTestEventListener', () => {
   cy.window().then((win) => {
     win.addEventListener('skipTest', () => {
