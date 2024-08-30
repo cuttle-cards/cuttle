@@ -1,4 +1,4 @@
-import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
+import { makeCardId, getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
 
 /**
@@ -1108,49 +1108,78 @@ Cypress.Commands.add('vueRoute', (route) => {
  * }
  */
 Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const p0HandCardIds = getCardIds(game, fixture.p0Hand);
-      const p0PointCardIds = getCardIds(game, fixture.p0Points);
-      const p0FaceCardIds = getCardIds(game, fixture.p0FaceCards);
-      const p1HandCardIds = getCardIds(game, fixture.p1Hand);
-      const p1PointCardIds = getCardIds(game, fixture.p1Points);
-      const p1FaceCardIds = getCardIds(game, fixture.p1FaceCards);
-      // build request body
-      let reqBody = {
-        p0Id: game.players[0].id,
-        p1Id: game.players[1].id,
-        p0HandCardIds,
-        p1HandCardIds,
-        p0PointCardIds,
-        p1PointCardIds,
-        p0FaceCardIds,
-        p1FaceCardIds,
-      };
-      // Get top card & second cards if specified
-      if (fixture.topCard) {
-        const [topCardId] = getCardIds(game, [fixture.topCard]);
-        reqBody.topCardId = topCardId;
-      }
-      if (fixture.secondCard) {
-        const [secondCardId] = getCardIds(game, [fixture.secondCard]);
-        reqBody.secondCardId = secondCardId;
-      }
-      // Get scrap if specified
-      if (fixture.scrap) {
-        const scrapCardIds = getCardIds(game, fixture.scrap);
-        reqBody.scrapCardIds = scrapCardIds;
-      }
+  /////////////////
+  //GameState Api//
+  ////////////////
+  if (env === 'true') {
+    const keyMappings = {
+      topCard: 'topCardId',
+      secondCard: 'secondCardId',
+      deck: 'deckIds',
+    };
 
-      if (fixture.deck) {
-        const deck = getCardIds(game, fixture.deck);
-        reqBody.deck = deck;
+    let reqBody = Object.keys(fixture).reduce((acc, key) => {
+      if (keyMappings[key]) {
+        acc[keyMappings[key]] = Array.isArray(fixture[key])
+          ? fixture[key].map(makeCardId)
+          : makeCardId(fixture[key]);
+      } else {
+        acc[`${key}CardIds`] = fixture[key].map(makeCardId);
       }
+      return acc;
+    }, {});
 
-      cy.makeSocketRequest('game', 'loadFixture', reqBody);
-      const playerHandLength = pNum === 0 ? p0HandCardIds.length : p1HandCardIds.length;
-      cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
-    });
+    cy.makeSocketRequest('game', 'loadFixtureGamestate', reqBody);
+    const playerHandLength = pNum === 0 ? reqBody.p0HandCardIds.length : reqBody.p1HandCardIds.length;
+    cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
+    //////////////
+    //Legacy API//
+    //////////////
+  } else {
+    return cy
+      .window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        const p0HandCardIds = getCardIds(game, fixture.p0Hand);
+        const p0PointCardIds = getCardIds(game, fixture.p0Points);
+        const p0FaceCardIds = getCardIds(game, fixture.p0FaceCards);
+        const p1HandCardIds = getCardIds(game, fixture.p1Hand);
+        const p1PointCardIds = getCardIds(game, fixture.p1Points);
+        const p1FaceCardIds = getCardIds(game, fixture.p1FaceCards);
+        // build request body
+        let reqBody = {
+          p0Id: game.players[0].id,
+          p1Id: game.players[1].id,
+          p0HandCardIds,
+          p1HandCardIds,
+          p0PointCardIds,
+          p1PointCardIds,
+          p0FaceCardIds,
+          p1FaceCardIds,
+        };
+        // Get top card & second cards if specified
+        if (fixture.topCard) {
+          const [topCardId] = getCardIds(game, [fixture.topCard]);
+          reqBody.topCardId = topCardId;
+        }
+        if (fixture.secondCard) {
+          const [secondCardId] = getCardIds(game, [fixture.secondCard]);
+          reqBody.secondCardId = secondCardId;
+        }
+        // Get scrap if specified
+        if (fixture.scrap) {
+          const scrapCardIds = getCardIds(game, fixture.scrap);
+          reqBody.scrapCardIds = scrapCardIds;
+        }
+
+        if (fixture.deck) {
+          const deck = getCardIds(game, fixture.deck);
+          reqBody.deck = deck;
+        }
+
+        cy.makeSocketRequest('game', 'loadFixture', reqBody);
+        const playerHandLength = pNum === 0 ? p0HandCardIds.length : p1HandCardIds.length;
+        cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
+      });
+  }
 });
