@@ -122,18 +122,6 @@ export function getCardId(game, card) {
   );
 }
 
-export function makeCardId(card) {
-  const strRank =
-    {
-      1: 'A',
-      11: 'J',
-      12: 'Q',
-      13: 'K',
-    }[card.rank] ?? card.rank;
-  const strSuit = ['C', 'D', 'H', 'S'][card.suit];
-  return strRank + strSuit;
-}
-
 /**
  * @param game: game obj from $store
  * @param suitAndRankList: {suit: number, rank: number}[]

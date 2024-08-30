@@ -19,5 +19,6 @@
   "SEVEN_JACK": "sevenJack",
   "SEVEN_UNTARGETED_ONE_OFF": "sevenUntargetedOneOff",
   "SEVEN_TARGETED_ONE_OFF": "sevenTargetedOneOff",
-  "PASS": "pass"
+  "PASS": "pass",
+  "LOADFIXTURE": "loadFixture"
 }
