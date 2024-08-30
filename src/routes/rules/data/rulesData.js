@@ -123,6 +123,7 @@ const faq = [
   'aceDestruction',
   'revealNoPoints',
   'revealOneLeft',
+  'emptyHandFive',
   'deckExhaust',
   'whereToPlay',
 ];
