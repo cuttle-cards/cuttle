@@ -1,4 +1,4 @@
-module.exports = function (req, res) {
+module.exports = function (req) {
   // Capture request data
   const p0HandCardIds = req.body.p0HandCardIds || [];
   const p0PointCardIds = req.body.p0PointCardIds || [];
