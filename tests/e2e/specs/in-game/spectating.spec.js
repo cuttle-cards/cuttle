@@ -307,7 +307,6 @@ describe('Spectating Games', () => {
 
   describe('Spectators Layout', () => {
     it('Display list of spectators and adds to list when new spectator joins', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsSpectator();
       cy.vueRoute('/');
       // Player 3 spectates player1 vs player2
@@ -336,14 +335,12 @@ describe('Spectating Games', () => {
     });
 
     it('Should display no spectators', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.get('[data-cy="spectate-list-button"]').should('contain', '0').click();
       cy.get('[data-cy="spectate-list-menu"]').should('contain', 'Currently no spectators');
     });
 
     it('Should remove spectators from list after leaving', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsSpectator();
       cy.signupOpponent(playerThree);
       cy.get('@gameData').then((gameData) => {
@@ -358,7 +355,6 @@ describe('Spectating Games', () => {
     });
 
     it('Should show correct menu options, leave game, then return to re-add name to list', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsSpectator();
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu')
@@ -393,7 +389,6 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
   });
 
   it('Spectate unranked games with rematch', function () {
-    cy.skipOnGameStateApi();
     // 1st game: Opponent concedes
     cy.recoverSessionOpponent(playerTwo);
     cy.concedeOpponent();

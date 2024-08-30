@@ -104,7 +104,6 @@ describe('Winning the game', () => {
   });
 
   it('Wins the game when opponent concedes', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -142,7 +141,6 @@ describe('Losing the game', () => {
   });
 
   it('Loses by conceding', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -233,7 +231,6 @@ describe('Stalemates', () => {
 
   describe('Requesting a stalemate', () => {
     it('Ends in stalemate when player requests stalemate and opponent agrees', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
@@ -263,7 +260,6 @@ describe('Stalemates', () => {
     });
 
     it('Ends in a stalemate when opponent requests a stalemate and player agrees', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
@@ -281,7 +277,6 @@ describe('Stalemates', () => {
     });
 
     it('Cancels the stalemate when player requests a stalemate and opponent rejects', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
@@ -324,7 +319,6 @@ describe('Stalemates', () => {
     });
 
     it('Cancels the stalemate when opponent requests and player rejects', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
@@ -378,7 +372,6 @@ describe('Stalemates', () => {
     });
 
     it('Player requests stalemate, then reloads before opponent accepts', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();

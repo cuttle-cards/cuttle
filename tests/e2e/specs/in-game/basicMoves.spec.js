@@ -285,7 +285,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Cancels selection and cancels decision to scuttle/targeted one-off/jack on mobile', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [
         Card.TWO_OF_SPADES,

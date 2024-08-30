@@ -686,7 +686,6 @@ describe('Display correct dialog for unavailable game', () => {
   });
 
   it('Shows unavailable game dialog, then return home', () => {
-    cy.skipOnGameStateApi();
     cy.concedeOpponent();
     assertVictory();
     //go home
@@ -709,7 +708,6 @@ describe('Reauthenticating in game', () => {
   });
 
   it('Re-login using reauthenticate dialog', () => {
-    cy.skipOnGameStateApi();
     cy.clearCookies();
     cy.reload();
     cy.get('[data-cy=username]').click().type(myUser.username);
@@ -725,7 +723,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by conceded and opponent request rematch', () => {
-    cy.skipOnGameStateApi();
     cy.concedeOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
@@ -744,7 +741,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by conceded and player request rematch', () => {
-    cy.skipOnGameStateApi();
     cy.concedeOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
@@ -759,7 +755,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by stalemate', () => {
-    cy.skipOnGameStateApi();
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
     cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();

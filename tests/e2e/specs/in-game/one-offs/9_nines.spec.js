@@ -203,7 +203,6 @@ describe('Playing NINES', () => {
     }); // End 9 on jack
 
     it('Cancels playing a nine one off', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS],
         p0Points: [Card.TEN_OF_HEARTS],
