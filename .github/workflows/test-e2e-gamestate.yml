@@ -21,15 +21,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Cypress install
-        uses: cypress-io/github-action@v5
-        with:
-          # Disable running of tests within install job
-          build: npm run build:gamestate
-
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
+          build: npm run build:gamestate
           record: true
           parallel: false
           start: npm start
