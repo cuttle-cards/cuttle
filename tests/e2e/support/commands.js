@@ -1,4 +1,4 @@
-import { makeCardId, getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
+import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
 
 /**
@@ -18,6 +18,13 @@ Cypress.Commands.add('skipOnGameStateApi', () => {
 const transformGameUrl = (api, slug) => {
   if (env !== 'true') {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
+  }
+
+  if (slug === 'loadFixtureGameState') {
+    return cy
+      .window()
+      .its('cuttle.gameStore.id')
+      .then((gameId) => `/api/game/${gameId}/loadFixtureGameState`);
   }
 
   const moveSlugs = new Set([
@@ -1108,33 +1115,8 @@ Cypress.Commands.add('vueRoute', (route) => {
  * }
  */
 Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
-  /////////////////
-  //GameState Api//
-  ////////////////
   if (env === 'true') {
-    const keyMappings = {
-      topCard: 'topCardId',
-      secondCard: 'secondCardId',
-      deck: 'deckIds',
-    };
-
-    let reqBody = Object.keys(fixture).reduce((acc, key) => {
-      if (keyMappings[key]) {
-        acc[keyMappings[key]] = Array.isArray(fixture[key])
-          ? fixture[key].map(makeCardId)
-          : makeCardId(fixture[key]);
-      } else {
-        acc[`${key}CardIds`] = fixture[key].map(makeCardId);
-      }
-      return acc;
-    }, {});
-
-    cy.makeSocketRequest('game', 'loadFixtureGamestate', reqBody);
-    const playerHandLength = pNum === 0 ? reqBody.p0HandCardIds.length : reqBody.p1HandCardIds.length;
-    cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
-    //////////////
-    //Legacy API//
-    //////////////
+    cy.makeSocketRequest('game', 'loadFixtureGamestate', fixture);
   } else {
     return cy
       .window()

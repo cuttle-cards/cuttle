@@ -79,7 +79,7 @@ module.exports.routes = {
   '/api/game/resolveFour': 'game/resolve-four',
   '/api/game/resolveThree': 'game/resolve-three',
   '/api/game/resolveFive': 'game/resolve-five',
-  
+
   // Resolving Sevens
   '/api/game/seven/points': 'game/seven/points',
   '/api/game/seven/faceCard': 'game/seven/face-card',
@@ -98,6 +98,7 @@ module.exports.routes = {
   // DEVELOPMENT ONLY
   '/api/game/stackDeck': 'game/stack-deck',
   '/api/game/loadFixture': 'game/load-fixture',
+  '/api/game/:gameId/loadFixtureGameState': 'game/load-fixture-gamestate',
   '/api/game/clear': 'game/clear-game',
 
   // Testing helpers
@@ -115,6 +116,6 @@ module.exports.routes = {
     controller: 'ViewController',
     action: 'serveIndex',
     skipAssets: true,
-    skipRegex: /^\/api\/.*$/ // ignore /api routes
+    skipRegex: /^\/api\/.*$/, // ignore /api routes
   },
 };

@@ -4,7 +4,7 @@ const DeckIds = require('../../../utils/DeckIds.json');
 
 module.exports = async function (req, res) {
   try {
-    const game = await Game.findOne({ id: req.session.game });
+    const game = await Game.findOne({ id: req.gameId });
 
     const { addCardId, publishGameState, saveGameState, convertStrToCard } = sails.helpers.gamestate;
 
