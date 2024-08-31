@@ -66,7 +66,8 @@ module.exports = {
       };
 
       const { saveGamestate, publishGameState } = sails.helpers.gamestate;
-      await saveGamestate(game, newGameState);
+      const gameStateRow = await saveGamestate(game, newGameState);
+      game.gameStates.push(gameStateRow);
       await publishGameState(game, newGameState);
 
       return exits.success(newGameState);
