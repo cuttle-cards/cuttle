@@ -57,7 +57,6 @@ const transformGameUrl = (api, slug) => {
 
 Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => {
   return transformGameUrl(api, slug).then((url) => {
-    console.log(url);
     return new Cypress.Promise((resolve, reject) => {
       io.socket.request(
         {
