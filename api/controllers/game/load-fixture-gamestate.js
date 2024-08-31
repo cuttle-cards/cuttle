@@ -52,8 +52,8 @@ module.exports = async function (req, res) {
       },
       p1: {
         hand: p1Hand,
-        points: p1FaceCards,
-        faceCards: p1Points,
+        points: p1Points,
+        faceCards: p1FaceCards,
       },
       deck: populatedDeck,
       scrap: scrap,

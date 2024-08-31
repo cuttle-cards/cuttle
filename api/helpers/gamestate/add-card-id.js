@@ -27,6 +27,6 @@ module.exports = {
     };
     const cardId = makeCardId(card);
 
-    return exits.success({ ...card, id: cardId });
+    return exits.success({ ...card, id: cardId, attachments: [] });
   },
 };
