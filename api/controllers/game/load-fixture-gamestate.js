@@ -4,10 +4,8 @@ const DeckIds = require('../../../utils/DeckIds.json');
 
 module.exports = async function (req, res) {
   try {
-    const game = await Game.findOne({ id: req.gameId });
-
-    const { addCardId, publishGameState, saveGameState, convertStrToCard } = sails.helpers.gamestate;
-
+    const game = await Game.findOne({ id: req.session.game });
+    const { addCardId, publishGameState, saveGamestate, convertStrToCard } = sails.helpers.gamestate;
     const p0Hand = req.body.p0Hand?.map((card) => addCardId(card)) ?? [];
     const p0Points = req.body.p0Points?.map((card) => addCardId(card)) ?? [];
     const p0FaceCards = req.body.p0FaceCards?.map((card) => addCardId(card)) ?? [];
@@ -28,30 +26,29 @@ module.exports = async function (req, res) {
       topCard,
       secondCard,
       scrap,
-    ];
+    ].flat();
 
     //Populate deck with all cards except the cards in the fixture
     const populatedDeck = req.body.deck
       ? req.body.deck.map((card) => addCardId(card))
-      : DeckIds.filter((id) => !allFixtureCards.flat().some((card) => card.id === id)).map((id) =>
-          convertStrToCard(id, false),
+      : _.shuffle(
+          DeckIds.filter((id) => !allFixtureCards.some((card) => card?.id === id)).map((id) =>
+            convertStrToCard(id, false),
+          ),
         );
 
-    //add top card and second card to the top of the deck
-    if (!req.body.deck) {
-      if (secondCard) {
-        populatedDeck.unshift(secondCard);
-      }
-      if (topCard) {
-        populatedDeck.unshift(topCard);
-      }
+    if (secondCard) {
+      populatedDeck.unshift(secondCard);
+    }
+    if (topCard) {
+      populatedDeck.unshift(topCard);
     }
 
     const gameState = {
       p0: {
         hand: p0Hand,
         points: p0Points,
-        p0FaceCards: p0FaceCards,
+        faceCards: p0FaceCards,
       },
       p1: {
         hand: p1Hand,
@@ -74,7 +71,7 @@ module.exports = async function (req, res) {
       targetCard: null,
     };
 
-    await saveGameState(gameState);
+    await saveGamestate(game, gameState);
     await publishGameState(game, gameState);
 
     return res.ok(gameState);

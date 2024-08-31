@@ -98,7 +98,7 @@ module.exports.routes = {
   // DEVELOPMENT ONLY
   '/api/game/stackDeck': 'game/stack-deck',
   '/api/game/loadFixture': 'game/load-fixture',
-  '/api/game/:gameId/loadFixtureGameState': 'game/load-fixture-gamestate',
+  '/api/game/loadFixtureGameState': 'game/load-fixture-gamestate',
   '/api/game/clear': 'game/clear-game',
 
   // Testing helpers

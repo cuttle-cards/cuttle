@@ -7,24 +7,20 @@ import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtu
 const io = require('sails.io.js')(require('socket.io-client'));
 io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
-const env = Cypress.env('gameStateAPI');
 
 Cypress.Commands.add('skipOnGameStateApi', () => {
-  if (env === 'true') {
+  if (Cypress.env('gameStateAPI')) {
     cy.state('runnable').ctx.skip();
   }
 });
 
 const transformGameUrl = (api, slug) => {
-  if (env !== 'true') {
+  if (Cypress.env('gameStateAPI')) {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
 
   if (slug === 'loadFixtureGameState') {
-    return cy
-      .window()
-      .its('cuttle.gameStore.id')
-      .then((gameId) => `/api/game/${gameId}/loadFixtureGameState`);
+    return Cypress.Promise.resolve(`/api/game/loadFixtureGameState`);
   }
 
   const moveSlugs = new Set([
@@ -61,6 +57,7 @@ const transformGameUrl = (api, slug) => {
 
 Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => {
   return transformGameUrl(api, slug).then((url) => {
+    console.log(url);
     return new Cypress.Promise((resolve, reject) => {
       io.socket.request(
         {
@@ -69,7 +66,7 @@ Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => 
           data,
         },
         function handleResponse(res, jwres) {
-          if (env === 'true' && jwres.statusCode === 404) {
+          if (Cypress.env('gameStateAPI') && jwres.statusCode === 404) {
             reject('This action is not supported yet in GameState API');
           }
           if (jwres.statusCode !== 200) {
@@ -649,7 +646,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       }),
         function handleResponse(res, jwres) {
           try {
-            if (env === 'true' && jwres.statusCode === 404) {
+            if (Cypress.env('gameStateAPI') && jwres.statusCode === 404) {
               throw new Error('This action is not supported yet in GameState API');
             }
             if (jwres.statusCode !== 200) {
@@ -1115,7 +1112,7 @@ Cypress.Commands.add('vueRoute', (route) => {
  * }
  */
 Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
-  if (env === 'true') {
+  if (Cypress.env('gameStateAPI')) {
     cy.makeSocketRequest('game', 'loadFixtureGamestate', fixture);
   } else {
     return cy

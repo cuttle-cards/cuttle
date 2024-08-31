@@ -13,14 +13,11 @@ module.exports = {
   sync: true,
 
   fn: ({ card }, exits) => {
-    if (!card || !card.rank || !card.suit) {
-      return exits.error('Failed to append Card Fixture');
-    }
-
     const makeCardId = (card) => {
       const strRank =
         {
           1: 'A',
+          10: 'T',
           11: 'J',
           12: 'Q',
           13: 'K',
@@ -28,7 +25,8 @@ module.exports = {
       const strSuit = ['C', 'D', 'H', 'S'][card.suit];
       return strRank + strSuit;
     };
+    const cardId = makeCardId(card);
 
-    return exits.success({ ...card, id: makeCardId(card) });
+    return exits.success({ ...card, id: cardId });
   },
 };
