@@ -40,7 +40,14 @@ module.exports = function (req, res) {
       const addPlayerToGame = Game.addToCollection(game.id, 'players').members([user.id]);
       const updatePlayer = User.updateOne({ id: user.id }).set({ pNum });
 
-      return Promise.all([game, updatePlayer, addPlayerToGame]);
+      // Set game.p0 or game.p1 as requesting user's id
+      const pNumUpdate = {};
+      const pNumKey = `p${pNum}`;
+      pNumUpdate[pNumKey] = user.id;
+      game[pNumKey] = user.id;
+      const updateGame = Game.updateOne({id: game.id}).set(pNumUpdate);
+
+      return Promise.all([game, updatePlayer, addPlayerToGame, updateGame]);
     })
     .then(function respond(values) {
       const [game, user] = values;
