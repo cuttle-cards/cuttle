@@ -1,29 +1,32 @@
 const MoveType = require('../../../utils/MoveType.json');
 
 module.exports = {
-  friendlyName: 'Publish Game State',
+  friendlyName: 'Publish updatedGame State',
 
-  description: 'Determines if the game has ended and sends a socket event based on the game status.',
+  description:
+    'Determines if the updatedGame has ended and sends a socket event based on the updatedGame status.',
 
   inputs: {
     game: {
       type: 'ref',
-      description: 'Game overview object',
+      description: 'updatedGame overview object',
       required: true,
     },
     gameState: {
       type: 'ref',
-      description: 'Game state object',
+      description: 'game state object',
       required: true,
     },
   },
 
   fn: async function ({ game, gameState }, exits) {
     try {
-      //Combine game and gamestate users and delete passwords
-      const p0 = { ...game.p0, ...gameState.p0 };
+      const updatedGame = await Game.findOne({ id: game.id }).populate('gameStates');
+
+      //Combine updatedGame and gamestate users and delete passwords
+      const p0 = { ...updatedGame.p0, ...gameState.p0 };
       delete p0.encryptedPassword;
-      const p1 = { ...game.p1, ...gameState.p1 };
+      const p1 = { ...updatedGame.p1, ...gameState.p1 };
       delete p1.encryptedPassword;
       const players = [p0, p1];
 
@@ -40,11 +43,11 @@ module.exports = {
         return 'point';
       };
 
-      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState);
+      const victory = await sails.helpers.gamestate.checkGameStateForWin(updatedGame, gameState);
 
       const countPasses = () => {
         let numPasses = 0;
-        for (const gameState of game.gameStates.slice(-3)) {
+        for (const gameState of updatedGame.gameStates.slice(-3)) {
           if (gameState.moveType !== MoveType.PASS) {
             return numPasses;
           }
@@ -53,7 +56,7 @@ module.exports = {
         return numPasses;
       };
 
-      const fullLog = sails.helpers.gamestate.getLog(game);
+      const fullLog = sails.helpers.gamestate.getLog(updatedGame);
 
       //Last Event, and Extra Socket Variables
       const happened = gameState.moveType !== MoveType.FIZZLE;
@@ -64,23 +67,23 @@ module.exports = {
 
       const socketGame = {
         players,
-        id: game.id,
-        createdAt: game.createdAt,
+        id: updatedGame.id,
+        createdAt: updatedGame.createdAt,
         updatedAt: gameState.createdAt,
-        name: game.name,
-        chat: game.chat,
-        status: game.status,
-        p0Ready: game.p0Ready,
-        p1Ready: game.p1Ready,
-        p0Rematch: game.p0Rematch,
-        p1Rematch: game.p1Rematch,
-        turnStalemateWasRequestedByP0: game.turnStalemateWasRequestedByP0,
-        turnStalemateWasRequestedByP1: game.turnStalemateWasRequestedByP1,
-        lock: game.lock,
-        lockedAt: game.lockedAt,
-        rematchGame: game.rematchGame,
-        spectatingUsers: game.spectatingUsers,
-        isRanked: game.isRanked,
+        name: updatedGame.name,
+        chat: updatedGame.chat,
+        status: updatedGame.status,
+        p0Ready: updatedGame.p0Ready,
+        p1Ready: updatedGame.p1Ready,
+        p0Rematch: updatedGame.p0Rematch,
+        p1Rematch: updatedGame.p1Rematch,
+        turnStalemateWasRequestedByP0: updatedGame.turnStalemateWasRequestedByP0,
+        turnStalemateWasRequestedByP1: updatedGame.turnStalemateWasRequestedByP1,
+        lock: updatedGame.lock,
+        lockedAt: updatedGame.lockedAt,
+        rematchGame: updatedGame.rematchGame,
+        spectatingUsers: updatedGame.spectatingUsers,
+        isRanked: updatedGame.isRanked,
         winner: victory.winner,
         match: victory.currentMatch,
         log: fullLog,
@@ -116,10 +119,12 @@ module.exports = {
         oneOff: gameState.resolved,
       };
 
-      Game.publish([game.id], fullSocketEvent);
+      Game.publish([updatedGame.id], fullSocketEvent);
+
+      console.log(fullSocketEvent);
 
       if (victory.gameOver) {
-        sails.sockets.blast('gameFinished', { gameId: game.id });
+        sails.sockets.blast('gameFinished', { gameId: updatedGame.id });
       }
 
       return exits.success(fullSocketEvent);
