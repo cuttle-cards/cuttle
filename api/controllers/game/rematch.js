@@ -15,12 +15,12 @@ module.exports = async function (req, res) {
     let game =  await sails.helpers.lockGame(req.session.game);
 
     // Early return if requesting user was not in the game
-    if (![game.p0, game.p1].includes(userId)) {
+    if (!userId || ![game.p0?.id, game.p1?.id].includes(userId)) {
       return;
     }
 
     // Determine whether to start new game
-    const oldPNum = game.p0 === userId ? 0 : 1;
+    const oldPNum = game.p0.id === userId ? 0 : 1;
     const rematchVal = { [`p${oldPNum}Rematch`]: rematch };
     const gameUpdates = {
       ...rematchVal,
@@ -48,7 +48,7 @@ module.exports = async function (req, res) {
     // Get all exisiting rematchGames to compute new game name & isRanked
     const [ rematchGames, players, currentMatch ] = await Promise.all([
       sails.helpers.getRematchGames(game),
-      User.find({id: [game.p0, game.p1]}),
+      User.find({id: [game.p0.id, game.p1.id]}),
       Match.findOne({ id: game.match })
     ]);
     // Determine who was p0 and p1 in first game in the series
@@ -75,12 +75,12 @@ module.exports = async function (req, res) {
 
     // Update old game's rematchGame & add players to new game
     gameUpdates.rematchGame = newGame.id;
-    const { p0: newP1Id, p1: newP0Id } = game;
+    const { p0: newP1, p1: newP0 } = game;
     const [ updatedGame, p0, p1] = await Promise.all([
       Game.updateOne({ id: game.id }).set(gameUpdates),
-      User.updateOne({ id: newP0Id }).set({ pNum: 0 }),
-      User.updateOne({ id: newP1Id }).set({ pNum: 1 }),
-      Game.replaceCollection(newGame.id, 'players').members([newP0Id, newP1Id]),
+      User.updateOne({ id: newP0.id }).set({ pNum: 0 }),
+      User.updateOne({ id: newP1.id }).set({ pNum: 1 }),
+      Game.replaceCollection(newGame.id, 'players').members([newP0.id, newP1.id]),
     ]);
 
     // Deal cards in new game
@@ -99,6 +99,7 @@ module.exports = async function (req, res) {
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
   } catch (err) {
-    return res.ok();
+    const message = err.raw?.message ?? err;
+    return res.badRequest({ message });
   }
 };
