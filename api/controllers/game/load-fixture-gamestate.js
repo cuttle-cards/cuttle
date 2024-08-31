@@ -71,7 +71,8 @@ module.exports = async function (req, res) {
       targetCard: null,
     };
 
-    await saveGamestate(game, gameState);
+    await saveGamestate(gameState);
+
     await publishGameState(game, gameState);
 
     return res.ok(gameState);
