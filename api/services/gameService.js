@@ -233,7 +233,7 @@ module.exports = {
 
   dealCards: function (game, gameUpdates) {
     // Use gamestate api if feature flag is set, otherwise legacy
-    if (process.env.VITE_USE_GAMESTATE_API) {
+    if (process.env.VITE_USE_GAMESTATE_API === 'true') {
       return sails.helpers.gamestate.dealCards(game);
     }
 
