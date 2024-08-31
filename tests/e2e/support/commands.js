@@ -9,13 +9,13 @@ io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
 
 Cypress.Commands.add('skipOnGameStateApi', () => {
-  if (Cypress.env('gameStateAPI')) {
+  if (Cypress.env('gameStateAPI') === 'true') {
     cy.state('runnable').ctx.skip();
   }
 });
 
 const transformGameUrl = (api, slug) => {
-  if (Cypress.env('gameStateAPI')) {
+  if (Cypress.env('gameStateAPI') === 'true') {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
 
@@ -65,7 +65,7 @@ Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => 
           data,
         },
         function handleResponse(res, jwres) {
-          if (Cypress.env('gameStateAPI') && jwres.statusCode === 404) {
+          if (Cypress.env('gameStateAPI') === true && jwres.statusCode === 404) {
             reject('This action is not supported yet in GameState API');
           }
           if (jwres.statusCode !== 200) {
@@ -1111,7 +1111,7 @@ Cypress.Commands.add('vueRoute', (route) => {
  * }
  */
 Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
-  if (Cypress.env('gameStateAPI')) {
+  if (Cypress.env('gameStateAPI') === 'true') {
     cy.makeSocketRequest('game', 'loadFixtureGamestate', fixture);
   } else {
     return cy
