@@ -33,7 +33,7 @@ module.exports = async function (req, res) {
       ? req.body.deck.map((card) => addCardId(card))
       : _.shuffle(
           DeckIds.filter((id) => !allFixtureCards.some((card) => card?.id === id)).map((id) =>
-            convertStrToCard(id, false),
+            convertStrToCard(id),
           ),
         );
 
