@@ -7,15 +7,16 @@ import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtu
 const io = require('sails.io.js')(require('socket.io-client'));
 io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
+const env = Cypress.env('gameStateAPI');
 
 Cypress.Commands.add('skipOnGameStateApi', () => {
-  if (Cypress.env('gameStateAPI') === 'true') {
+  if (env === 'true') {
     cy.state('runnable').ctx.skip();
   }
 });
 
 const transformGameUrl = (api, slug) => {
-  if (Cypress.env('gameStateAPI') !== 'true') {
+  if (env !== 'true') {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
 
@@ -645,7 +646,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       }),
         function handleResponse(res, jwres) {
           try {
-            if (Cypress.env('gameStateAPI') && jwres.statusCode === 404) {
+            if (env === 'true' && jwres.statusCode === 404) {
               throw new Error('This action is not supported yet in GameState API');
             }
             if (jwres.statusCode !== 200) {
@@ -1111,7 +1112,7 @@ Cypress.Commands.add('vueRoute', (route) => {
  * }
  */
 Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
-  if (Cypress.env('gameStateAPI') === 'true') {
+  if (env === 'true') {
     cy.makeSocketRequest('game', 'loadFixtureGamestate', fixture);
   } else {
     return cy
