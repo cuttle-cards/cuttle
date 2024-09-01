@@ -17,7 +17,7 @@ module.exports = async function (req, res) {
     const p1FaceCards = req.body.p1FaceCards?.map((card) => addCardId(card));
     const topCard = req.body.topCard ? addCardId(req.body.topCard) : null;
     const secondCard = req.body.secondCard ? addCardId(req.body.topCard) : null;
-    const scrap = req.body.scrapCards?.map((card) => addCardId(card)) ?? [];
+    const scrap = req.body.scrap?.map((card) => addCardId(card)) ?? [];
 
     const allFixtureCards = [
       p0Hand,
