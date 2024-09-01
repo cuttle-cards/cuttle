@@ -41,13 +41,10 @@ module.exports = {
         }).set({ lock: uuId, lockedAt: now });
 
         // Re-fetch game and populate players and gamestates
-        const updatedGame = process.env.VITE_USE_GAMESTATE_API ? await Game.findOne({ id: gameId })
+        const updatedGame = await Game.findOne({ id: gameId })
           .populate('p0')
           .populate('p1')
-          .populate('gameStates', { sort: 'createdAt ASC' })
-        : await Game.findOne({ id: gameId })
-          .populate('p0')
-          .populate('p1');
+          .populate('gameStates', { sort: 'createdAt ASC' });
 
         // If we successfully wrote our uuid, resolve
         const newLock = updatedGame?.lock;
