@@ -33,8 +33,8 @@ function validatePhase(param) {
 }
 
 function validatePlayedBy(param) {
-  if (![0, 1].includes(param)) {
-    throw new Error('The playedBy attribute must be a number in [0,1]');
+  if (param === null || param === undefined || Number.isNaN(param) || param < 0 || param > 1) {
+    throw new Error('The playedBy attribute cannot be null and must be a number in [0,1]');
   }
   return param;
 }

@@ -1,8 +1,8 @@
 export default {
-  DEAL: 'deal',
   COUNTER: 'counter',
   DRAW: 'draw',
   FACE_CARD: 'faceCard',
+  INITIALIZE: 'initialize',
   JACK: 'jack',
   LOAD_FIXTURE: 'loadFixture',
   ONE_OFF: 'oneOff',

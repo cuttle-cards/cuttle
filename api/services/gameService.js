@@ -232,11 +232,6 @@ module.exports = {
   },
 
   dealCards: function (game, gameUpdates) {
-    // Use gamestate api if feature flag is set, otherwise legacy
-    if (process.env.VITE_USE_GAMESTATE_API) {
-      return sails.helpers.gamestate.dealCards(game);
-    }
-
     return new Promise(function makeDeck(resolveMakeDeck) {
       const p0 = game.players.find((player) => player.pNum === 0);
       const p1 = game.players.find((player) => player.pNum === 1);
@@ -268,7 +263,7 @@ module.exports = {
         gameUpdates.topCard = shuffledDeck.shift();
         gameUpdates.secondCard = shuffledDeck.shift();
         gameUpdates.lastEvent = {
-          change: 'deal',
+          change: 'initialize',
         };
         gameUpdates.p0 = p0.id;
         gameUpdates.p1 = p1.id;
@@ -296,7 +291,7 @@ module.exports = {
       })
       .then(function publish(fullGame) {
         Game.publish([fullGame.id], {
-          change: 'deal',
+          change: 'initialize',
           game: fullGame,
         });
         return Promise.resolve(fullGame);

@@ -31,9 +31,7 @@ module.exports = async function (req, res) {
       sails.sockets.blast('gameStarted', { gameId: game.id });
       gameUpdates.status = gameService.GameStatus.STARTED;
       // Deal cards (also emits socket event)
-      await Game.updateOne({ id: game.id }).set(gameUpdates);
-
-      await gameService.dealCards({...game, ...gameUpdates}, {});
+      await gameService.dealCards(game, gameUpdates);
 
     // Otherwise send socket message that player is ready
     } else {
@@ -53,7 +51,6 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    const message = err.raw?.message ?? err;
-    return res.badRequest({ message });
+    return res.badRequest(err);
   }
 };

@@ -34,7 +34,7 @@ export async function handleInGameEvents(evData) {
       gameStore.updateReady(evData.pNum);
       return;
     }
-    case SocketEvent.DEAL: {
+    case SocketEvent.INITIALIZE: {
       // Update state
       if (isSpectating) {
         gameStore.myPNum = 0; // always spectate as p0
