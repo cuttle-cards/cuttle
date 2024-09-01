@@ -7,7 +7,7 @@ module.exports = {
   friendlyName: 'Deal Cards',
 
   description:
-    'Creates initial GameStateRow for specified game, with cards dealt ot both players (5 for p0 and 6 for p1). Errors if Game has previous game or incorrec status.',
+    'Creates initial GameStateRow for specified game, with cards dealt to both players (5 for p0 and 6 for p1). Errors if Game has previous game or incorrect status.',
 
   inputs: {
     game: {
