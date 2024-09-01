@@ -16,7 +16,7 @@ Cypress.Commands.add('skipOnGameStateApi', () => {
 });
 
 const transformGameUrl = (api, slug) => {
-  if (env) {
+  if (!env) {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
 

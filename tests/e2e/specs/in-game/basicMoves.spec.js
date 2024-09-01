@@ -8,7 +8,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Plays Points', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
@@ -18,6 +17,9 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1Points: [Card.TEN_OF_HEARTS],
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
+
+    //Call after to check LoadFixture in gameState
+    cy.skipOnGameStateApi();
 
     // Play points (ace of spades)
     cy.get('[data-player-hand-card=1-3]').click(); // ace of spades
