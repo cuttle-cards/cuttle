@@ -10,7 +10,7 @@ const cypressConfig = {
     supportFile: 'tests/e2e/support/index.js',
   },
   env: {
-    gameStateAPI: process.env.VITE_USE_GAMESTATE_API || 'false',
+    gameStateAPI: process.env.VITE_USE_GAMESTATE_API,
   },
   // Retry tests 2 times headlessly, no retries in UI
   retries: {
