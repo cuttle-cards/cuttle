@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog id="rulesDialog" max-width="1250" :persistent="false">
+  <BaseDialog id="rulesDialog" :max-width="1250" :persistent="false">
     <template #body>
       <v-btn
         icon 
