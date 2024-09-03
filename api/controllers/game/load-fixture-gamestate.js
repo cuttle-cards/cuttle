@@ -70,6 +70,7 @@ module.exports = async function (req, res) {
     };
 
     const gameStateRow = await saveGamestate(gameState);
+    // add newest GameStateRow to game in memory instead of re-querying
     game.gameStates.push(gameStateRow);
     await publishGameState(game, gameState);
 
