@@ -389,10 +389,7 @@ function assertStoreMatchesFixture(fixture) {
 
 export function assertVictory(score = null) {
   cy.log('Asserting player victory');
-  cy.get('#game-over-dialog')
-    .should('be.visible')
-    .get('[data-cy=victory-heading]')
-    .should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -402,47 +399,40 @@ export function assertVictory(score = null) {
           .should('be.visible')
           .should('contain', matchWinner ? 'Gottem!' : 'You Won');
 
-          cy.get('[data-cy=continue-match-banner]')
-            .should('be.visible')
-            .should('contain', matchWinner ? 'Good Match!': 'Continue Match?')
-            .find('[data-cy=ranked-icon]');
+        cy.get('[data-cy=continue-match-banner]')
+          .should('be.visible')
+          .should('contain', matchWinner ? 'Good Match!' : 'Continue Match?')
+          .find('[data-cy=ranked-icon]');
+      } else {
+        cy.get('#game-over-dialog').find('[data-cy=victory-heading]').should('contain', 'You Won');
 
-          } else {
-            cy.get('#game-over-dialog')
-              .find('[data-cy=victory-heading]')
-              .should('contain', 'You Won');
+        cy.get('[data-cy=continue-match-banner]')
+          .should('be.visible')
+          .should('contain', 'Rematch?')
+          .find('[data-cy=casual-icon]');
+      }
 
-            cy.get('[data-cy=continue-match-banner]')
-              .should('be.visible')
-              .should('contain', 'Rematch?')
-              .find('[data-cy=casual-icon]');
-          }
+      if (!score) {
+        return;
+      }
+      const { wins, losses, stalemates } = score;
 
-          if (!score) {
-            return;
-          }
-          const { wins, losses, stalemates } = score;
-  
-          cy.get('[data-cy=match-score-counter]')
-            .should('be.visible');
-          cy.get('[data-cy=match-score-counter-wins]')
-            .should('contain', `W: ${wins}`)
-            .should('have.class', 'selected');
-          cy.get('[data-cy=match-score-counter-losses]')
-            .should('contain', `L: ${losses}`)
-            .should('not.have.class', 'selected');
-          cy.get('[data-cy=match-score-counter-stalemates]')
-            .should('contain', `T: ${stalemates}`)
-            .should('not.have.class', 'selected');
+      cy.get('[data-cy=match-score-counter]').should('be.visible');
+      cy.get('[data-cy=match-score-counter-wins]')
+        .should('contain', `W: ${wins}`)
+        .should('have.class', 'selected');
+      cy.get('[data-cy=match-score-counter-losses]')
+        .should('contain', `L: ${losses}`)
+        .should('not.have.class', 'selected');
+      cy.get('[data-cy=match-score-counter-stalemates]')
+        .should('contain', `T: ${stalemates}`)
+        .should('not.have.class', 'selected');
     });
 }
 
 export function assertLoss(score = null) {
   cy.log('Asserting player loss');
-  cy.get('#game-over-dialog')
-    .should('be.visible')
-    .get('[data-cy=loss-heading]')
-    .should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -454,12 +444,10 @@ export function assertLoss(score = null) {
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
-          .should('contain', matchWinner ? 'Good Match!': 'Continue Match?')
+          .should('contain', matchWinner ? 'Good Match!' : 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog')
-          .find('[data-cy=loss-heading]')
-          .should('contain', 'You Lose');
+        cy.get('#game-over-dialog').find('[data-cy=loss-heading]').should('contain', 'You Lose');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -473,8 +461,7 @@ export function assertLoss(score = null) {
 
       const { wins, losses, stalemates } = score;
 
-      cy.get('[data-cy=match-score-counter]')
-        .should('be.visible');
+      cy.get('[data-cy=match-score-counter]').should('be.visible');
       cy.get('[data-cy=match-score-counter-wins]')
         .should('contain', `W: ${wins}`)
         .should('not.have.class', 'selected');
@@ -499,17 +486,14 @@ export function assertStalemate(score = null) {
     .its('cuttle.gameStore')
     .then((game) => {
       if (game.isRanked) {
-        cy.get('#game-over-dialog')
-          .should('be.visible');
+        cy.get('#game-over-dialog').should('be.visible');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
           .should('contain', 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog')
-          .find('[data-cy=stalemate-heading]')
-          .should('contain', 'Stalemate');
+        cy.get('#game-over-dialog').find('[data-cy=stalemate-heading]').should('contain', 'Stalemate');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -521,8 +505,7 @@ export function assertStalemate(score = null) {
         return;
       }
       const { wins, losses, stalemates } = score;
-      cy.get('[data-cy=match-score-counter]')
-        .should('be.visible');
+      cy.get('[data-cy=match-score-counter]').should('be.visible');
       cy.get('[data-cy=match-score-counter-wins]')
         .should('contain', `W: ${wins}`)
         .should('not.have.class', 'selected');
@@ -535,7 +518,7 @@ export function assertStalemate(score = null) {
     });
 }
 
-export function assertGameOverAsSpectator({p1Wins, p2Wins, stalemates, winner, isRanked}) {
+export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, isRanked }) {
   let headingDataCy;
   let headingText;
   let selectedScore;
@@ -572,17 +555,12 @@ export function assertGameOverAsSpectator({p1Wins, p2Wins, stalemates, winner, i
     .should('be.visible')
     .should('contain', headingText);
 
-  cy.get('[data-cy=match-score-counter]')
-    .should('be.visible');
-  cy.get('[data-cy=match-score-counter-wins]')
-    .should('contain', `P1: ${p1Wins}`);
-  cy.get('[data-cy=match-score-counter-losses]')
-    .should('contain', `P2: ${p2Wins}`);
-  cy.get('[data-cy=match-score-counter-stalemates]')
-    .should('contain', `T: ${stalemates}`);
+  cy.get('[data-cy=match-score-counter]').should('be.visible');
+  cy.get('[data-cy=match-score-counter-wins]').should('contain', `P1: ${p1Wins}`);
+  cy.get('[data-cy=match-score-counter-losses]').should('contain', `P2: ${p2Wins}`);
+  cy.get('[data-cy=match-score-counter-stalemates]').should('contain', `T: ${stalemates}`);
 
-  cy.get(selectedScore)
-    .should('have.class', 'selected');
+  cy.get(selectedScore).should('have.class', 'selected');
 
   const isRankedIcon = isRanked ? 'ranked-icon' : 'casual-icon';
   const bannerMessage = matchIsOver ? 'Good Match!' : 'Continue Spectating?';
@@ -612,7 +590,6 @@ export function rematchPlayerAsSpectator(userFixture, rematch = true) {
       cy.rematchOpponent({ gameId: oldGameId, rematch, whichPlayer });
     });
   });
-
 }
 
 /**

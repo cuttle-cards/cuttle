@@ -409,6 +409,7 @@ describe('Lobby - P1 Perspective', () => {
   });
 
   it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', () => {
+    cy.skipOnGameStateApi();
     cy.get('[data-cy=ready-button]').click();
     cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
 

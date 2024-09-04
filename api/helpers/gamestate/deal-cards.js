@@ -6,7 +6,8 @@ const GamePhase = require('../../../utils/GamePhase.json');
 module.exports = {
   friendlyName: 'Deal Cards',
 
-  description: 'Creates initial GameStateRow for specified game, with cards dealt ot both players (5 for p0 and 6 for p1). Errors if Game has previous game or incorrec status.',
+  description:
+    'Creates initial GameStateRow for specified game, with cards dealt to both players (5 for p0 and 6 for p1). Errors if Game has previous game or incorrect status.',
 
   inputs: {
     game: {
@@ -18,9 +19,7 @@ module.exports = {
   },
 
   fn: async ({ game }, exits) => {
-    
     try {
-
       if (game.status !== GameStatus.STARTED) {
         return exits.error({ message: 'Game has not yet started or is over' });
       }
@@ -33,9 +32,7 @@ module.exports = {
         return exits.error({ message: 'Cards are already dealt' });
       }
 
-      const deck = _.shuffle(
-        DeckIds.map((cardId) => sails.helpers.gamestate.convertStrToCard(cardId))
-      );
+      const deck = _.shuffle(DeckIds.map((cardId) => sails.helpers.gamestate.convertStrToCard(cardId)));
 
       const p0 = {
         hand: deck.splice(0, 5),
@@ -69,7 +66,8 @@ module.exports = {
       };
 
       const { saveGamestate, publishGameState } = sails.helpers.gamestate;
-      await saveGamestate(newGameState);
+      const gameStateRow = await saveGamestate(newGameState);
+      game.gameStates.push(gameStateRow);
       await publishGameState(game, newGameState);
 
       return exits.success(newGameState);
