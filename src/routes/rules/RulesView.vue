@@ -1,15 +1,15 @@
 <template>
-  <div :class="[ isInModal ? 'bg-surface-1 text-surface-2' : 'pa-4 bg-surface-1 text-surface-2' ]">
+  <div :class="[isInModal ? 'bg-surface-1 text-surface-2' : 'pa-4 bg-surface-1 text-surface-2']">
     <v-container>
       <BackToTop :parent-modal-id="isInModal ? parentModalId : ''" />
 
       <v-row>
-        <RulesNav 
+        <RulesNav
           v-if="!isInModal"
-          :section-titles="sectionTitles" 
-          :active-title="activeTitle" 
+          :section-titles="sectionTitles"
+          :active-title="activeTitle"
           :is-in-modal="isInModal"
-          @click="goToSection($event)" 
+          @click="goToSection($event)"
         />
 
         <v-col>
@@ -22,11 +22,7 @@
 
           <!-- Introduction -->
           <section>
-            <v-row
-              id="introduction"
-              v-intersect="intersectConfig"
-              class="flex-column align-start mt-8"
-            >
+            <v-row id="introduction" v-intersect="intersectConfig" class="flex-column align-start mt-8">
               <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.introduction') }}
               </h1>
@@ -60,11 +56,7 @@
           <!-- How to Play -->
           <section class="section">
             <!-- Goal -->
-            <v-row
-              id="howtoplay"
-              v-intersect="intersectConfig"
-              class="flex-column align-start section"
-            >
+            <v-row id="howtoplay" v-intersect="intersectConfig" class="flex-column align-start section">
               <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.howToPlay') }}
               </h1>
@@ -94,11 +86,7 @@
                 {{ t('rules.actions.title') }}
               </h1>
             </v-row>
-            <RuleParagraph
-              v-for="rule in rules"
-              :key="rule.title"
-              :rule="rule"
-            />
+            <RuleParagraph v-for="rule in rules" :key="rule.title" :rule="rule" />
           </section>
 
           <!-- Royals -->
@@ -167,13 +155,33 @@
             </v-row>
           </section>
 
+          <!-- Rules for 3-4 Players -->
+          <section id="multiplayer" v-intersect="intersectConfig" class="section">
+            <v-row>
+              <h1 class="text-h2 text-surface-2 section-title">
+                {{ t('rules.multiplayerTitle') }}
+              </h1>
+              <p class="d-block text-lg">
+                {{ t('rules.multiplayerText1') }}
+                <a href="https://cuttle.cards" class="text-anchor">cuttle.cards</a>
+                {{ t('rules.multiplayerText2') }}
+              </p>
+            </v-row>
+            <v-row>
+              <MultiplayerRuleBlock
+                v-for="(ruleSet, index) in multiplayer"
+                :key="index"
+                :heading="t(ruleSet.title)"
+                :paragraph="t(ruleSet.text)"
+                :rules-difference="t(ruleSet.rulesDifference)"
+                :rules="ruleSet.rules.map((rule) => t(rule))"
+              />
+            </v-row>
+          </section>
+
           <!-- FAQ -->
           <section class="section">
-            <v-row
-              id="faq"
-              v-intersect="intersectConfig"
-              class="d-flex flex-column mb-4"
-            >
+            <v-row id="faq" v-intersect="intersectConfig" class="d-flex flex-column mb-4">
               <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.faq.title') }}
               </h1>
@@ -183,21 +191,17 @@
 
           <!-- Tournaments -->
           <section class="section">
-            <v-row
-              id="tournaments"
-              v-intersect="intersectConfig"
-              class="flex-column"
-            >
+            <v-row id="tournaments" v-intersect="intersectConfig" class="flex-column">
               <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.tournaments.title') }}
               </h1>
             </v-row>
-  
+
             <v-row>
               <p class="text-md">
                 {{ t('rules.tournaments.competitiveCuttle1') }}
               </p>
-  
+
               <div class="d-flex flex-column my-5">
                 <AwardCard
                   :username="t('rules.tournaments.championPlayer')"
@@ -254,7 +258,7 @@
                 </v-list-item>
               </v-list>
             </v-row>
-  
+
             <v-row>
               <v-img
                 src="/img/rulesView/leaderboard_example.jpg"
@@ -281,7 +285,7 @@ import { useGoTo } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 import { useThemedLogo } from '@/composables/themedLogo';
-import { rules, royals, oneOffs, faq, sectionTitles } from './data/rulesData';
+import { rules, royals, oneOffs, faq, sectionTitles, multiplayer } from './data/rulesData';
 import RulesNav from './components/RulesNav.vue';
 import RuleParagraph from './components/RuleParagraph.vue';
 import RulePreview from '@/routes/rules/components/RulePreview.vue';
@@ -290,6 +294,7 @@ import AwardCard from '../../components/AwardCard.vue';
 import RulePreviewDialog from './components/RulePreviewDialog.vue';
 import FAQEntry from './components/FAQEntry.vue';
 import BackToTop from '@/components/BackToTop.vue';
+import MultiplayerRuleBlock from './components/MultiplayerRuleBlock.vue';
 
 export default {
   name: 'RulesView',
@@ -302,16 +307,17 @@ export default {
     RuleParagraph,
     FAQEntry,
     RulesNav,
+    MultiplayerRuleBlock,
   },
   props: {
-    isInModal : {
-      type :Boolean,
-      default: false
-      },
-      parentModalId : {
-        type:String,
-        default: ''
-      },
+    isInModal: {
+      type: Boolean,
+      default: false,
+    },
+    parentModalId: {
+      type: String,
+      default: '',
+    },
   },
   setup() {
     const goTo = useGoTo();
@@ -320,15 +326,15 @@ export default {
     return {
       t,
       logoSrc,
-      goTo
+      goTo,
     };
   },
-    data() {
+  data() {
     return {
       activeTitle: 'introduction',
       previewDialog: false,
       imageUrl: '',
-      previewTitle: ''
+      previewTitle: '',
     };
   },
   computed: {
@@ -352,6 +358,7 @@ export default {
     this.oneOffs = oneOffs;
     this.sectionTitles = sectionTitles;
     this.faq = faq;
+    this.multiplayer = multiplayer;
 
     // Scrolling
     this.scrollOptions = {
@@ -370,13 +377,14 @@ export default {
       });
     };
 
-    this.intersectConfig = this.isInModal ? {} : {
-      handler: onIntersect,
-      options: {
-          rootMargin: '-150px 0px -500px 0px',
-        }
-    };
-    
+    this.intersectConfig = this.isInModal
+      ? {}
+      : {
+          handler: onIntersect,
+          options: {
+            rootMargin: '-150px 0px -500px 0px',
+          },
+        };
   },
   methods: {
     goToSection(url) {
@@ -392,7 +400,7 @@ export default {
       this.imageUrl = '';
       this.previewTitle = '';
       this.previewDialog = false;
-    }
+    },
   },
 };
 </script>
