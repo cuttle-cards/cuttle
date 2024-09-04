@@ -349,7 +349,7 @@
     "rulesPreviewGif": "Aperçu animé de {title} dans Cuttle",
     "rulesWatchText": "Ou regardez le tutoriel vidéo de cuttle.cards ci-dessous pour apprendre les règles et vous familiariser avec le déroulement du jeu.",
     "goalTitle": "objectif",
-    "goalText": "L'objectif est d'être le premier joueur à atteindre ou dépasser 21 points. Le premier joueur à atteindre l'objectif gagne immédiatement. Un joueur (traditionnellement celui qui distribue) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes joue en premier.",
+    "goalText": "L'objectif est d'être le premier joueur à atteindre ou dépasser 21 points.",
     "playTitle": "Jouer",
     "playText-1": "Un joueur (traditionnellement le croupier) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes commence.",
     "playText-2": "À votre tour, vous devez effectuer exactement l’une des actions suivantes :",
