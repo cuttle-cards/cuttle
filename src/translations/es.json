@@ -349,7 +349,7 @@
     "rulesPreviewGif": "vista previa animada de {title} en Cuttle",
     "rulesWatchText": "oficial o mira el tutorial de cuttle.cards a continuación para aprender las reglas y familiarizarte con el flujo del juego.",
     "goalTitle": "Objetivo",
-    "goalText": "El objetivo es ser el primer jugador en tener 21 o más puntos en cartas de puntos sobre tu campo.",
+    "goalText": "El objetivo es ser el primer jugador en tener 21 o más puntos en cartas de puntos sobre tu campo. El primer jugador que llegue a la meta gana inmediatamente.",
     "playTitle": "Turno",
     "playText-1": "Un jugador (tradicionalmente el crupier) recibe 6 cartas y su oponente recibe 5. El jugador con 5 cartas juega primero.",
     "playText-2": "En tu turno debes realizar exactamente una de las siguientes acciones:",
