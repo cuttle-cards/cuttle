@@ -97,7 +97,7 @@ module.exports.routes = {
   '/api/game/gameData': 'game/game-data',
 
   // GameStateAPI
-  'POST /api/game/:gameid/move': 'game/move',
+  'POST /api/game/:gameId/move': 'game/move',
 
   // DEVELOPMENT ONLY
   '/api/game/stackDeck': 'game/stack-deck',
