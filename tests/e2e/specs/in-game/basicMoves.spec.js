@@ -18,9 +18,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
 
-    //Call after to check LoadFixture in gameState
-    cy.skipOnGameStateApi();
-
     // Play points (ace of spades)
     cy.get('[data-player-hand-card=1-3]').click(); // ace of spades
     cy.get('[data-move-choice=points]').click();
