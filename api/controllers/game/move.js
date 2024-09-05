@@ -5,7 +5,7 @@ module.exports = async function (req, res) {
     const { execute, validate } = sails.helpers.gamestate.moves[req.body.moveType];
     const game = await sails.helpers.lockGame(req.params.gameId);
     const gameState = unpackGamestate(game.gameStates.at(-1));
-    validate(req.body, gameState);
+    await validate(req.body, gameState, game.lock);
     const updatedState = execute(gameState, req.body);
     await saveGamestate(updatedState);
     await publishGameState(game, updatedState);

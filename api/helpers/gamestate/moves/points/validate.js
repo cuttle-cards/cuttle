@@ -22,9 +22,13 @@ module.exports = {
       descriptions: 'Object containing the current game state',
       required: true,
     },
+    lock: {
+      type: 'string',
+      descriptions: 'UUID Lock',
+      required: true,
+    },
   },
-  sync: true, // synchronous helper
-  fn: ({ requestedMove, currentState }, exits) => {
+  fn: async ({ requestedMove, currentState, lock }, exits) => {
     try {
       const playedBy = requestedMove.playedBy ? 'p1' : 'p0';
 
@@ -51,6 +55,7 @@ module.exports = {
       }
       return exits.success();
     } catch (err) {
+      await sails.helpers.unlockGame(lock);
       return exits.error(err);
     }
   },
