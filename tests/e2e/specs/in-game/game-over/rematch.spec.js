@@ -81,6 +81,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it('Wins match played with Rematch/Continue Match button', function () {
+    cy.skipOnGameStateApi();
     // Game 1: Opponent concedes
     cy.log('Game 1: opponent concedes');
     cy.concedeOpponent();
@@ -199,6 +200,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it('Loses a ranked match played with the Rematch/Continue Match button', () => {
+    cy.skipOnGameStateApi();
     // Game 1 - Player concedes
     concedePlayer();
     assertLoss({ wins: 0, losses: 1, stalemates: 0 });
@@ -227,6 +229,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it('Shows when opponent declines continuing your ranked match', () => {
+    cy.skipOnGameStateApi();
     cy.concedeOpponent();
     assertVictory({ wins: 1, losses: 0, stalemates: 0 });
 
@@ -257,6 +260,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
   });
 
   it('Unranked games with rematch', function () {
+    cy.skipOnGameStateApi();
     // Game 1: Opponent concedes
     cy.concedeOpponent();
     assertVictory({ wins: 1, losses: 0, stalemates: 0 });
@@ -338,6 +342,7 @@ describe('Spectating Rematches', () => {
     });
 
     it('Spectates a casual match using rematch', () => {
+      cy.skipOnGameStateApi();
       cy.log('Game 1: player1 wins via opponent conceding');
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
@@ -395,6 +400,7 @@ describe('Spectating Rematches', () => {
     });
 
     it('Specates a ranked match using rematch', () => {
+      cy.skipOnGameStateApi();
       // Game 1: playerOne wins with points
       cy.log('Game 1: player1 wins with points');
       cy.loadGameFixture(0, {
@@ -535,6 +541,7 @@ describe('Spectating Rematches', () => {
     });
 
     it('Spectates a ranked match where player 2 wins the match', () => {
+      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });

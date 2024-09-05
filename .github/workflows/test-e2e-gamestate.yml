@@ -27,7 +27,7 @@ jobs:
           build: npm run build:gamestate
           record: true
           parallel: false
-          start: npm start
+          start: npm run start:server:gamestate
           config-file: cypress.config.js
           # wait for 2 minutes for the server to respond
           wait-on: 'http://localhost:1337'

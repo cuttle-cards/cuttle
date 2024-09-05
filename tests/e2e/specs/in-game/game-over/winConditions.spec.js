@@ -19,6 +19,7 @@ describe('Winning the game', () => {
   });
 
   it('Shows when player wins game with 21 points', () => {
+    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -44,6 +45,7 @@ describe('Winning the game', () => {
   });
 
   it('Shows when player wins game with 14 points and one king', () => {
+    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.JACK_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS],
@@ -73,6 +75,7 @@ describe('Winning the game', () => {
   });
 
   it('Shows when player wins game with 0 points and four kings', () => {
+    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.KING_OF_HEARTS],
       p0Points: [],
@@ -122,6 +125,7 @@ describe('Losing the game', () => {
   });
 
   it('Shows when opponent wins with 21 points', () => {
+    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -163,6 +167,7 @@ describe('Losing the game', () => {
 
 describe('Stalemates', () => {
   it('Passes three times for a stalemate', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
@@ -195,6 +200,7 @@ describe('Stalemates', () => {
   });
 
   it('Registers stalemate when opponent passes first/last', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
@@ -339,6 +345,7 @@ describe('Stalemates', () => {
     });
 
     it('Cancels stalemate after an additional turn passes', () => {
+      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
@@ -369,8 +376,8 @@ describe('Stalemates', () => {
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
       cy.get('#request-gameover-dialog')
-      .should('be.visible')
-      .get('[data-cy=request-gameover-confirm]')
+        .should('be.visible')
+        .get('[data-cy=request-gameover-confirm]')
         .click();
       cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
       cy.reload();
@@ -387,6 +394,7 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
   });
 
   it('Opponent concedes while seven oneOff is being resolved', () => {
+    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
@@ -423,6 +431,7 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
   });
 
   it('Concede game while resolving a four', () => {
+    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.FOUR_OF_CLUBS],
       p0Points: [],

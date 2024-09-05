@@ -7,6 +7,7 @@ describe('Websockets', () => {
   });
 
   it('Recovers latest event data when socket reconnects', () => {
+    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
       p0Points: [Card.TEN_OF_SPADES],
