@@ -24,28 +24,34 @@ module.exports = {
     },
   },
   sync: true, // synchronous helper
-  fn: ({ requestedMove, gameState }, exits) => {
-    const cardPlayed = gameState[`${requestedMove.playedBy}Hand`].find(requestedMove.cardPlayed);
+  fn: ({ requestedMove, currentState }, exits) => {
+    try {
+      const playedBy = requestedMove.playedBy ? 'p1' : 'p0';
 
-    if (gameState.phase !== GamePhase.MAIN) {
-      throw { message: 'Cannot play points during this phase' };
-    }
+      const cardPlayed = currentState[playedBy].hand.find(({ id }) => id === requestedMove.cardId);
 
-    if (!cardPlayed) {
-      throw { message: 'game.snackbar.global.playFromHand' };
-    }
+      if (currentState.phase !== GamePhase.MAIN) {
+        throw new Error('Cannot play points during this phase');
+      }
 
-    if (cardPlayed.isFrozen) {
-      throw { message: 'game.snackbar.global.cardFrozen' };
-    }
+      if (!cardPlayed) {
+        throw new Error('game.snackbar.global.playFromHand');
+      }
 
-    if (gameState.turn % 2 !== requestedMove.playedBy) {
-      throw { message: 'game.snackbar.global.notYourTurn' };
-    }
+      if (cardPlayed.isFrozen) {
+        throw new Error('game.snackbar.global.cardFrozen');
+      }
 
-    if (cardPlayed.rank > 10) {
-      throw { message: 'game.snackbar.points.numberOnlyForPoints' };
+      if (currentState.turn % 2 !== requestedMove.playedBy) {
+        throw new Error('game.snackbar.global.notYourTurn');
+      }
+
+      if (cardPlayed.rank > 10) {
+        throw new Error('game.snackbar.points.numberOnlyForPoints');
+      }
+      return exits.success();
+    } catch (err) {
+      return exits.error(err);
     }
-    exits.success();
   },
 };
