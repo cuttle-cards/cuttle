@@ -1,15 +1,15 @@
 <template>
-  <div :class="[isInModal ? 'bg-surface-1 text-surface-2' : 'pa-4 bg-surface-1 text-surface-2']">
+  <div :class="[ isInModal ? 'bg-surface-1 text-surface-2' : 'pa-4 bg-surface-1 text-surface-2' ]">
     <v-container>
       <BackToTop :parent-modal-id="isInModal ? parentModalId : ''" />
 
       <v-row>
-        <RulesNav
+        <RulesNav 
           v-if="!isInModal"
-          :section-titles="sectionTitles"
-          :active-title="activeTitle"
+          :section-titles="sectionTitles" 
+          :active-title="activeTitle" 
           :is-in-modal="isInModal"
-          @click="goToSection($event)"
+          @click="goToSection($event)" 
         />
 
         <v-col>
@@ -22,7 +22,11 @@
 
           <!-- Introduction -->
           <section>
-            <v-row id="introduction" v-intersect="intersectConfig" class="flex-column align-start mt-8">
+            <v-row
+              id="introduction"
+              v-intersect="intersectConfig"
+              class="flex-column align-start mt-8"
+            >
               <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.introduction') }}
               </h1>
@@ -56,7 +60,11 @@
           <!-- How to Play -->
           <section class="section">
             <!-- Goal -->
-            <v-row id="howtoplay" v-intersect="intersectConfig" class="flex-column align-start section">
+            <v-row
+              id="howtoplay"
+              v-intersect="intersectConfig"
+              class="flex-column align-start section"
+            >
               <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.howToPlay') }}
               </h1>
@@ -86,7 +94,11 @@
                 {{ t('rules.actions.title') }}
               </h1>
             </v-row>
-            <RuleParagraph v-for="rule in rules" :key="rule.title" :rule="rule" />
+            <RuleParagraph
+              v-for="rule in rules"
+              :key="rule.title"
+              :rule="rule"
+            />
           </section>
 
           <!-- Royals -->
@@ -181,7 +193,11 @@
 
           <!-- FAQ -->
           <section class="section">
-            <v-row id="faq" v-intersect="intersectConfig" class="d-flex flex-column mb-4">
+            <v-row
+              id="faq"
+              v-intersect="intersectConfig"
+              class="d-flex flex-column mb-4"
+            >
               <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.faq.title') }}
               </h1>
@@ -191,17 +207,21 @@
 
           <!-- Tournaments -->
           <section class="section">
-            <v-row id="tournaments" v-intersect="intersectConfig" class="flex-column">
+            <v-row
+              id="tournaments"
+              v-intersect="intersectConfig"
+              class="flex-column"
+            >
               <h1 class="text-h2 text-surface-2 section-title">
                 {{ t('rules.tournaments.title') }}
               </h1>
             </v-row>
-
+  
             <v-row>
               <p class="text-md">
                 {{ t('rules.tournaments.competitiveCuttle1') }}
               </p>
-
+  
               <div class="d-flex flex-column my-5">
                 <AwardCard
                   :username="t('rules.tournaments.championPlayer')"
@@ -258,7 +278,7 @@
                 </v-list-item>
               </v-list>
             </v-row>
-
+  
             <v-row>
               <v-img
                 src="/img/rulesView/leaderboard_example.jpg"
