@@ -330,14 +330,14 @@ export default {
     MultiplayerRuleBlock,
   },
   props: {
-    isInModal: {
-      type: Boolean,
-      default: false,
-    },
-    parentModalId: {
-      type: String,
-      default: '',
-    },
+    isInModal : {
+      type :Boolean,
+      default: false
+      },
+      parentModalId : {
+        type:String,
+        default: ''
+      },
   },
   setup() {
     const goTo = useGoTo();
@@ -346,15 +346,15 @@ export default {
     return {
       t,
       logoSrc,
-      goTo,
+      goTo
     };
   },
-  data() {
+    data() {
     return {
       activeTitle: 'introduction',
       previewDialog: false,
       imageUrl: '',
-      previewTitle: '',
+      previewTitle: ''
     };
   },
   computed: {
@@ -397,14 +397,13 @@ export default {
       });
     };
 
-    this.intersectConfig = this.isInModal
-      ? {}
-      : {
-          handler: onIntersect,
-          options: {
-            rootMargin: '-150px 0px -500px 0px',
-          },
-        };
+    this.intersectConfig = this.isInModal ? {} : {
+      handler: onIntersect,
+      options: {
+          rootMargin: '-150px 0px -500px 0px',
+        }
+    };
+    
   },
   methods: {
     goToSection(url) {
@@ -420,7 +419,7 @@ export default {
       this.imageUrl = '';
       this.previewTitle = '';
       this.previewDialog = false;
-    },
+    }
   },
 };
 </script>

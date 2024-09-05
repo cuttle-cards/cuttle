@@ -159,4 +159,4 @@ const sectionTitles = [
   { id: 'tournaments', title: 'rules.tournaments.title', href: '#tournaments' },
 ];
 
-export { rules, oneOffs, royals, faq, sectionTitles, multiplayer };
+export { rules,  oneOffs, royals, faq, sectionTitles, multiplayer };
