@@ -6,7 +6,7 @@ module.exports = {
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest game state before the requesting player plays a card for points',
+      description: 'The latest GameState before the requesting player plays a card for points',
       required: true,
     },
     /**
@@ -22,11 +22,11 @@ module.exports = {
   },
   sync: true, // synchronous helper
   fn: ({ currentState, requestedMove }, exits) => {
-    const { playedBy, cardPlayed } = requestedMove;
+    const { cardId, playedBy } = requestedMove;
     let result = _.cloneDeep(currentState);
 
     const player = playedBy ? result.p1 : result.p0;
-    const cardIndex = player.hand.findIndex((id) => id === cardPlayed);
+    const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
 
     player.points.push(...player.hand.splice(cardIndex, 1));
     result.turn++;
@@ -34,7 +34,7 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
-      cardPlayed: [...player.points].pop(),
+      cardPlayed: player.points.at(-1),
     };
 
     return exits.success(result);
