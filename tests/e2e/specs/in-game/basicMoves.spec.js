@@ -18,6 +18,9 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
 
+    //Call after to check LoadFixture in gameState
+    cy.skipOnGameStateApi();
+
     // Play points (ace of spades)
     cy.get('[data-player-hand-card=1-3]').click(); // ace of spades
     cy.get('[data-move-choice=points]').click();
@@ -52,6 +55,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Scuttles as P0', () => {
+    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES, Card.SEVEN_OF_CLUBS],
@@ -171,6 +175,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Plays Kings', () => {
+    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS],
@@ -228,6 +233,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Plays Queens', () => {
+    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.QUEEN_OF_DIAMONDS, Card.QUEEN_OF_SPADES, Card.KING_OF_CLUBS, Card.JACK_OF_DIAMONDS],
@@ -390,6 +396,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
   });
 
   it('Draws from deck', () => {
+    cy.skipOnGameStateApi();
     // Opponent draws card
     cy.drawCardOpponent();
     // Opponent now has 6 cards in hand
@@ -431,6 +438,7 @@ describe('Playing 8s', () => {
   });
 
   it('Plays eights for points', () => {
+    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
@@ -460,6 +468,7 @@ describe('Playing 8s', () => {
   }); // End play 8 for points
 
   it('Plays eights for glasses', () => {
+    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
@@ -506,6 +515,7 @@ describe('Play Jacks', () => {
   });
 
   it('Player and Opponent plays Jacks on different cards', () => {
+    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES],
@@ -549,6 +559,7 @@ describe('Play Jacks', () => {
   });
 
   it('Quadruple jacks successfully', () => {
+    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],

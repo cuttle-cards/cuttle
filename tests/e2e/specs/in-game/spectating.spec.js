@@ -28,6 +28,7 @@ describe('Spectating Games', () => {
   beforeEach(setup);
 
   it('Spectates a game', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
@@ -139,6 +140,7 @@ describe('Spectating Games', () => {
   });
 
   it('Correctly shows and hides dialogs and overlays', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS],
@@ -166,6 +168,7 @@ describe('Spectating Games', () => {
   });
 
   it('Leaves a spectated game and joins another without processing extraneous updates', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES],
@@ -213,6 +216,7 @@ describe('Spectating Games', () => {
   });
 
   it('Prevents spectator from making moves', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [
@@ -385,6 +389,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
   });
 
   it('Spectate unranked games with rematch', function () {
+    cy.skipOnGameStateApi();
     // 1st game: Opponent concedes
     cy.recoverSessionOpponent(playerTwo);
     cy.concedeOpponent();

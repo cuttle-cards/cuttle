@@ -102,6 +102,7 @@ describe('Creating And Updating Ranked Matches', () => {
   });
 
   it('Creates a match when two players play a ranked game for the first time this week', function () {
+    cy.skipOnGameStateApi();
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(2);

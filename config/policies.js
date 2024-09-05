@@ -84,6 +84,7 @@ module.exports.policies = {
   'game/stack-deck': 'developmentOrStagingOnly',
   'game/clear-game': 'developmentOrStagingOnly',
   'game/load-fixture': 'developmentOrStagingOnly',
+  'game/load-fixture-gamestate': 'developmentOrStagingOnly',
 
   TestController: {
     '*': 'developmentOrStagingOnly',
