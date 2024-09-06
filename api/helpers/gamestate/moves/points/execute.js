@@ -19,10 +19,14 @@ module.exports = {
       type: 'ref',
       description: 'The move being requested. Specifies which player is asking to play a card for points',
     },
+    playedBy: {
+      type: 'number',
+      description: 'Player number of player making move.',
+    },
   },
   sync: true, // synchronous helper
-  fn: ({ currentState, requestedMove }, exits) => {
-    const { cardId, playedBy } = requestedMove;
+  fn: ({ currentState, requestedMove, playedBy }, exits) => {
+    const { cardId } = requestedMove;
     let result = _.cloneDeep(currentState);
 
     const player = playedBy ? result.p1 : result.p0;
