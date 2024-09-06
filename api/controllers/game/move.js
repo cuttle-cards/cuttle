@@ -10,7 +10,7 @@ module.exports = async function (req, res) {
       throw new Error({ message: 'Game has not yet started' });
     }
 
-    //Check player exist, and is in game
+    // Verify whether user is in requested game and as which player
     let playedBy;
     switch (req.session.usr) {
       case game.p0.id:
@@ -22,6 +22,7 @@ module.exports = async function (req, res) {
       default:
         throw new Error('You are not a player in this game!');
     }
+
     validate(req.body, gameState, playedBy);
     const updatedState = execute(gameState, req.body, playedBy);
     const gameStateRow = await saveGamestate(updatedState);
