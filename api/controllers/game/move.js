@@ -18,7 +18,7 @@ module.exports = async function (req, res) {
         throw new Error('You are not a player in this game!');
     }
     const gameState = unpackGamestate(game.gameStates.at(-1));
-    validate(req.body, gameState);
+    validate(req.body, gameState, playedBy);
     const updatedState = execute(gameState, req.body, playedBy);
     const gameStateRow = await saveGamestate(updatedState);
     game.gameStates.push(gameStateRow);

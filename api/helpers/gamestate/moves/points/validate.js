@@ -22,11 +22,16 @@ module.exports = {
       descriptions: 'Object containing the current game state',
       required: true,
     },
+    pNum: {
+      type: 'number',
+      description: 'Player number of player requesting move',
+      required: true,
+    },
   },
   sync: true,
-  fn: ({ requestedMove, currentState }, exits) => {
+  fn: ({ requestedMove, currentState, pNum }, exits) => {
     try {
-      const playedBy = requestedMove.playedBy ? 'p1' : 'p0';
+      const playedBy = pNum ? 'p1' : 'p0';
 
       const cardPlayed = currentState[playedBy].hand.find(({ id }) => id === requestedMove.cardId);
 
@@ -42,7 +47,7 @@ module.exports = {
         throw new Error('game.snackbar.global.cardFrozen');
       }
 
-      if (currentState.turn % 2 !== requestedMove.playedBy) {
+      if (currentState.turn % 2 !== pNum) {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
