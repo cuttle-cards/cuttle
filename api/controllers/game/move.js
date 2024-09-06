@@ -29,7 +29,11 @@ module.exports = async function (req, res) {
   } catch (err) {
     //unlock game if failing due to validation
     if (game?.lock) {
-      await sails.helpers.unlockGame(game.lock);
+      try {
+        await sails.helpers.unlockGame(game.lock);
+      } catch (err) {
+        //fall through for generic error handling
+      }
     }
     return res.badRequest({ message: err.message });
   }
