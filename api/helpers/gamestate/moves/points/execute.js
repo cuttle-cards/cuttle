@@ -10,8 +10,7 @@ module.exports = {
       required: true,
     },
     /**
-     * @param {Object} requestedMove - Object describing the request to play points
-     * @param {1 | 0} requestedMove.playedBy - Which player is playing
+     * @param {Object} requestedMove - Object describing the request to play points (req.body)
      * @param { Card } requestedMove.cardPlayed - Card Played for points
      * @param { MoveType.POINTS } requestedMove.moveType - Specifies that this a Points move
      */
@@ -21,7 +20,7 @@ module.exports = {
     },
     playedBy: {
       type: 'number',
-      description: 'Player number of player making move.',
+      description: 'Player number of player requesting move.',
     },
   },
   sync: true, // synchronous helper
