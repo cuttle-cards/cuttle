@@ -38,7 +38,7 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
-      cardPlayed: player.points.at(-1),
+      playedCard: player.points.at(-1),
     };
 
     return exits.success(result);
