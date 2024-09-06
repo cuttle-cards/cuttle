@@ -305,7 +305,7 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
         );
       }
       const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'points', { cardId, playedBy: opponent.pNum, moveType: 'points' });
+      cy.makeSocketRequest('game', 'points', { moveType: 'points', cardId });
     });
 });
 

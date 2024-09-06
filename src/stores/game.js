@@ -515,7 +515,7 @@ export const useGameStore = defineStore('game', {
       await this.makeSocketRequest('draw');
     },
     async requestPlayPoints(cardId) {
-      await this.makeSocketRequest('points', { cardId, moveType: 'points', playedBy: this.myPNum });
+      await this.makeSocketRequest('points', { moveType: 'points', cardId });
     },
     async requestPlayFaceCard(cardId) {
       await this.makeSocketRequest('faceCard', { cardId });
