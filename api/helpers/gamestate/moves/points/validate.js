@@ -6,6 +6,11 @@ module.exports = {
   description: 'Verifies whether a request to make points is legal, throwing explanatory error if not.',
 
   inputs: {
+    currentState: {
+      type: 'ref',
+      descriptions: 'Object containing the current game state',
+      required: true,
+    },
     /**
      * @param {Object} requestedMove - Object describing the request to play points
      * @param {1 | 0} requestedMove.playedBy - Which player is playing
@@ -15,11 +20,6 @@ module.exports = {
     requestedMove: {
       type: 'ref',
       description: 'Object containing data needed for current move',
-      required: true,
-    },
-    currentState: {
-      type: 'ref',
-      descriptions: 'Object containing the current game state',
       required: true,
     },
     pNum: {
