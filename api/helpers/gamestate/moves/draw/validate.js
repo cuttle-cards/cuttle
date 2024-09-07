@@ -1,9 +1,9 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Validate request to play points',
+  friendlyName: 'Validate request to draw a card',
 
-  description: 'Verifies whether a request to make points is legal, throwing explanatory error if not.',
+  description: 'Verifies whether a request to draw a card is legal, throwing explanatory error if not.',
 
   inputs: {
     currentState: {
