@@ -1,5 +1,6 @@
 import { getCardIds, hasValidSuitAndRank, cardsMatch, printCard } from './helpers';
 import { myUser, opponentOne, playerOne, playerTwo } from '../fixtures/userFixtures';
+import MoveType from '../../../utils/MoveType.json';
 
 /**
  * Require & configure socket connection to server
@@ -305,7 +306,8 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
         );
       }
       const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'points', { moveType: 'points', cardId });
+      const moveType = MoveType.POINTS;
+      cy.makeSocketRequest('game', moveType, { moveType, cardId });
     });
 });
 
