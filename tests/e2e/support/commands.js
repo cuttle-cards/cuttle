@@ -284,7 +284,7 @@ Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
 });
 
 Cypress.Commands.add('drawCardOpponent', () => {
-  cy.makeSocketRequest('game', 'draw', null);
+  cy.makeSocketRequest('game', 'draw', {moveType: 'draw'});
 });
 
 /**
