@@ -512,7 +512,7 @@ export const useGameStore = defineStore('game', {
     // In-Game Moves //
     ///////////////////
     async requestDrawCard() {
-      await this.makeSocketRequest('draw');
+      await this.makeSocketRequest('draw', { moveType: 'draw' });
     },
     async requestPlayPoints(cardId) {
       await this.makeSocketRequest('points', { moveType: 'points', cardId });
