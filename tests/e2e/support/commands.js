@@ -46,7 +46,7 @@ const transformGameUrl = (api, slug) => {
     return cy
       .window()
       .its('cuttle.gameStore.id')
-      .then((gameId) => `/api/game/${gameId}/move`);
+      .then((gameId) => `/api/game/${gameId}/move/`);
   }
 
   return Cypress.Promise.resolve(`/api/${api}/${slug}`);
@@ -305,7 +305,7 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
         );
       }
       const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'points', { cardId });
+      cy.makeSocketRequest('game', 'points', { moveType: 'points', cardId });
     });
 });
 

@@ -391,7 +391,7 @@ export const useGameStore = defineStore('game', {
         case 'seven/targetedOneOff':
         case 'pass':
           // add all the move-making ones here
-          return `/api/game/${this.id}/move/${slug}`;
+          return `/api/game/${this.id}/move`;
         default:
           return `/api/game/${slug}`;
       }
@@ -515,7 +515,7 @@ export const useGameStore = defineStore('game', {
       await this.makeSocketRequest('draw');
     },
     async requestPlayPoints(cardId) {
-      await this.makeSocketRequest('points', { cardId });
+      await this.makeSocketRequest('points', { moveType: 'points', cardId });
     },
     async requestPlayFaceCard(cardId) {
       await this.makeSocketRequest('faceCard', { cardId });

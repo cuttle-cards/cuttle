@@ -18,9 +18,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
       p1FaceCards: [Card.KING_OF_HEARTS],
     });
 
-    //Call after to check LoadFixture in gameState
-    cy.skipOnGameStateApi();
-
     // Play points (ace of spades)
     cy.get('[data-player-hand-card=1-3]').click(); // ace of spades
     cy.get('[data-move-choice=points]').click();
@@ -438,7 +435,6 @@ describe('Playing 8s', () => {
   });
 
   it('Plays eights for points', () => {
-    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
