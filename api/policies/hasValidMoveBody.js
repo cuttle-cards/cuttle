@@ -10,6 +10,9 @@ const MoveType = require('../../utils/MoveType.json');
  */
 module.exports = function (req, res, next) {
   switch (req.body.moveType) {
+    case MoveType.DRAW:
+      // Draw requires no extra data
+      return res.next();
     case MoveType.POINTS:
       if (req.body.cardId) {
         return next();
