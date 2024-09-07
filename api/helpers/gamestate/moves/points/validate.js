@@ -6,6 +6,11 @@ module.exports = {
   description: 'Verifies whether a request to make points is legal, throwing explanatory error if not.',
 
   inputs: {
+    currentState: {
+      type: 'ref',
+      descriptions: 'Object containing the current game state',
+      required: true,
+    },
     /**
      * @param {Object} requestedMove - Object describing the request to play points
      * @param {1 | 0} requestedMove.playedBy - Which player is playing
@@ -17,23 +22,18 @@ module.exports = {
       description: 'Object containing data needed for current move',
       required: true,
     },
-    currentState: {
-      type: 'ref',
-      descriptions: 'Object containing the current game state',
-      required: true,
-    },
-    pNum: {
+    playedBy: {
       type: 'number',
       description: 'Player number of player requesting move',
       required: true,
     },
   },
   sync: true,
-  fn: ({ requestedMove, currentState, pNum }, exits) => {
+  fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
-      const playedBy = pNum ? 'p1' : 'p0';
+      const playerKey = playedBy ? 'p1' : 'p0';
 
-      const cardPlayed = currentState[playedBy].hand.find(({ id }) => id === requestedMove.cardId);
+      const cardPlayed = currentState[playerKey].hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.phase !== GamePhase.MAIN) {
         throw new Error(`Can only play points in main phase, not ${currentState.phase}`);
@@ -47,7 +47,7 @@ module.exports = {
         throw new Error('game.snackbar.global.cardFrozen');
       }
 
-      if (currentState.turn % 2 !== pNum) {
+      if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
