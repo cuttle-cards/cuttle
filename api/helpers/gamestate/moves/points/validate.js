@@ -22,7 +22,7 @@ module.exports = {
       description: 'Object containing data needed for current move',
       required: true,
     },
-    pNum: {
+    playedBy: {
       type: 'number',
       description: 'Player number of player requesting move',
       required: true,
