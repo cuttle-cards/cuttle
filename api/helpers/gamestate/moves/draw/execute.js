@@ -11,7 +11,7 @@ module.exports = {
     },
     /**
      * @param {Object} requestedMove - Object describing the request to play points (req.body)
-     * @param { MoveType.DRAW } requestedMove.moveType - Specifies that this a Points move
+     * @param { MoveType.DRAW } requestedMove.moveType - Specifies that this a Draw move
      */
     requestedMove: {
       type: 'ref',
@@ -24,19 +24,16 @@ module.exports = {
   },
   sync: true, // synchronous helper
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
-    const { cardId } = requestedMove;
     let result = _.cloneDeep(currentState);
 
     const player = playedBy ? result.p1 : result.p0;
-    const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
 
-    player.points.push(...player.hand.splice(cardIndex, 1));
+    player.hand.push(currentState.deck.shift());
     result.turn++;
 
     result = {
       ...result,
       ...requestedMove,
-      playedCard: player.points.at(-1),
     };
 
     return exits.success(result);
