@@ -329,8 +329,10 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
           `Error playing points while spectating: could not find ${card.rank} of ${card.suit} in specified player's hand`,
         );
       }
+
+      const moveType = MoveType.POINTS;
       const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'points', { cardId });
+      cy.makeSocketRequest('game', moveType, { moveType, cardId });
     });
 });
 
@@ -355,9 +357,11 @@ Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
           `Error playing one-off while spectating: could not find ${card.rank} of ${card.suit} in specified player's hand`,
         );
       }
+
+      const moveType = MoveType.UNTARGETED_ONE_OFF;
       const cardId = foundCard.id;
       const opId = game.players[(pNum + 1) % 2].id;
-      cy.makeSocketRequest('game', 'untargetedOneOff', { cardId, opId });
+      cy.makeSocketRequest('game', moveType, { moveType, cardId, opId });
     });
 });
 
