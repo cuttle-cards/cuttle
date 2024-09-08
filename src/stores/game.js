@@ -514,15 +514,15 @@ export const useGameStore = defineStore('game', {
     ///////////////////
     async requestDrawCard() {
       const moveType = MoveType.DRAW;
-      await this.makeSocketRequest(moveType, { moveType });
+      await this.makeSocketRequest('draw', { moveType });
     },
     async requestPlayPoints(cardId) {
       const moveType = MoveType.POINTS;
-      await this.makeSocketRequest(moveType, { moveType, cardId });
+      await this.makeSocketRequest('points', { moveType, cardId });
     },
     async requestPlayFaceCard(cardId) {
       const moveType = MoveType.FACECARD;
-      await this.makeSocketRequest(moveType, { moveType, cardId });
+      await this.makeSocketRequest('face-card', { moveType, cardId });
     },
     /**
      *
@@ -531,12 +531,12 @@ export const useGameStore = defineStore('game', {
     async requestScuttle(cardData) {
       const moveType = MoveType.SCUTTLE;
       const { cardId, targetId } = cardData;
-      await this.makeSocketRequest(moveType, { moveType, cardId, targetId, opId: this.opponent.id });
+      await this.makeSocketRequest('scuttle', { moveType, cardId, targetId, opId: this.opponent.id });
     },
 
     async requestPlayOneOff(cardId) {
       const moveType = MoveType.UNTARGETED_ONE_OFF;
-      await this.makeSocketRequest(moveType, {
+      await this.makeSocketRequest('untargeted-one-off', {
         moveType,
         cardId,
         opId: this.opponent.id
@@ -547,7 +547,7 @@ export const useGameStore = defineStore('game', {
 
     async requestPlayTargetedOneOff({ cardId, targetId, pointId, targetType }) {
       const moveType = MoveType.TARGETED_ONE_OFF;
-      await this.makeSocketRequest(moveType, {
+      await this.makeSocketRequest('targeted-one-off', {
         moveType,
         cardId,
         targetId,
@@ -561,7 +561,7 @@ export const useGameStore = defineStore('game', {
     async requestPlayJack({ cardId, targetId }) {
 
       const moveType = MoveType.JACK;
-      await this.makeSocketRequest(moveType, {
+      await this.makeSocketRequest('jack', {
         moveType,
         cardId,
         targetId,
@@ -578,20 +578,20 @@ export const useGameStore = defineStore('game', {
       const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
 
       const moveType = MoveType.RESOLVE_FOUR;
-      await this.makeSocketRequest(moveType, reqData);
+      await this.makeSocketRequest('resolve-four', reqData);
     },
 
     async requestResolve() {
       this.myTurnToCounter = false;
       const moveType = MoveType.RESOLVE;
-      await this.makeSocketRequest(moveType, { moveType, opId: this.opponent.id });
+      await this.makeSocketRequest('resolve', { moveType, opId: this.opponent.id });
     },
 
     async requestResolveThree(cardId) {
       this.myTurnToCounter = false;
       const moveType = MoveType.RESOLVE_THREE;
 
-      await this.makeSocketRequest(moveType, {
+      await this.makeSocketRequest('resolve-three', {
         moveType,
         cardId,
         opId: this.opponent.id,
@@ -604,14 +604,14 @@ export const useGameStore = defineStore('game', {
       this.waitingForOpponentToCounter = false;
       const moveType = MoveType.RESOLVE_FIVE;
 
-      await this.makeSocketRequest(moveType, { moveType, cardId });
+      await this.makeSocketRequest('resolve-five', { moveType, cardId });
     },
 
     async requestCounter(twoId) {
       this.myTurnToCounter = false;
       const moveType = MoveType.COUNTER;
 
-      await this.makeSocketRequest(moveType, {
+      await this.makeSocketRequest('counter', {
         moveType,
         cardId: twoId,
         opId: this.opponent.id
@@ -695,7 +695,7 @@ export const useGameStore = defineStore('game', {
 
     async requestPass() {
       const moveType = MoveType.PASS;
-      await this.makeSocketRequest(moveType, { moveType });
+      await this.makeSocketRequest('pass', { moveType });
     },
 
     async requestConcede() {
