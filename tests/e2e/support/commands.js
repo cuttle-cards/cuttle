@@ -285,7 +285,8 @@ Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
 });
 
 Cypress.Commands.add('drawCardOpponent', () => {
-  cy.makeSocketRequest('game', 'draw', null);
+  const moveType = MoveType.DRAW;
+  cy.makeSocketRequest('game', moveType, { moveType });
 });
 
 /**
@@ -377,8 +378,10 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
           `Error playing opponents Face Card: could not find ${card.rank} of ${card.suit} in opponent hand`,
         );
       }
+
       const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'faceCard', { cardId });
+      const moveType = MoveType.FACECARD;
+      cy.makeSocketRequest('game', moveType, { moveType, cardId });
     });
 });
 
@@ -408,9 +411,17 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
           `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`,
         );
       }
+
+      const moveType = MoveType.JACK;
       const cardId = foundCard.id;
       const targetId = foundTarget.id;
-      cy.makeSocketRequest('game', 'jack', { opId: player.id, cardId, targetId });
+
+      cy.makeSocketRequest('game', moveType, {
+        moveType,
+        opId: player.id,
+        cardId,
+        targetId,
+      });
     });
 });
 
@@ -440,7 +451,9 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
           `Error scuttling as opponent: could not find ${target.rank} of ${target.suit} in player's points`,
         );
       }
-      cy.makeSocketRequest('game', 'scuttle', {
+      const moveType = MoveType.SCUTTLE;
+      cy.makeSocketRequest('game', moveType, {
+        moveType,
         opId: player.id,
         cardId: foundCard.id,
         targetId: foundTarget.id,
@@ -469,7 +482,13 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
           `Error playing untargetted one-off as opponent: ${printCard(card)} is not a valid oneOff`,
         );
       }
-      cy.makeSocketRequest('game', 'untargetedOneOff', { opId: playerId, cardId: foundCard.id });
+
+      const moveType = MoveType.UNTARGETED_ONE_OFF;
+      cy.makeSocketRequest('game', moveType, {
+        moveType,
+        opId: playerId,
+        cardId: foundCard.id,
+      });
     });
 });
 
@@ -534,7 +553,10 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
           'Error playing targeted one-off as opponent: could not find point card in player field',
         );
       }
-      cy.makeSocketRequest('game', 'targetedOneOff', {
+
+      const moveType = MoveType.TARGETED_ONE_OFF;
+      cy.makeSocketRequest('game', moveType, {
+        moveType,
         opId: playerId, // opponent's opponent is the player
         targetId: foundTarget.id,
         cardId: foundCard.id,
@@ -563,8 +585,10 @@ Cypress.Commands.add('counterOpponent', (card) => {
           `Error countering as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`,
         );
       }
+
+      const moveType = MoveType.COUNTER;
       const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'counter', { cardId, opId });
+      cy.makeSocketRequest('game', moveType, { moveType, cardId, opId });
     });
 });
 
@@ -582,8 +606,10 @@ Cypress.Commands.add('resolveFiveOpponent', (card) => {
           `Error resolving three as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`,
         );
       }
+
+      const moveType = MoveType.RESOLVE_FIVE;
       const cardId = foundCard?.id ?? null;
-      cy.makeSocketRequest('game', 'resolveFive', { cardId });
+      cy.makeSocketRequest('game', moveType, { moveType, cardId });
     });
 });
 
@@ -602,8 +628,10 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
           `Error resolving three as opponent: could not find ${card.rank} of ${card.suit} in scrap`,
         );
       }
+
+      const moveType = MoveType.RESOLVE_THREE;
       const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'resolveThree', { cardId, opId });
+      cy.makeSocketRequest('game', moveType, { moveType, cardId, opId });
     });
 });
 
@@ -612,8 +640,9 @@ Cypress.Commands.add('resolveOpponent', () => {
     .window()
     .its('cuttle.gameStore')
     .then((game) => {
+      const moveType = MoveType.RESOLVE;
       const opId = game.players[game.myPNum].id;
-      cy.makeSocketRequest('game', 'resolve', { opId });
+      cy.makeSocketRequest('game', moveType, { moveType, opId });
     });
 });
 
@@ -634,12 +663,18 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       if (card2) {
         [cardId2] = getCardIds(game, [card2]);
       }
+
+      const moveType = MoveType.RESOLVE_FOUR;
       //dont use makeSocketRequest due to edge case checking error on opponent side
-      transformGameUrl('game', 'resolveFour').then((url) => {
+      transformGameUrl('game', moveType).then((url) => {
         io.socket.request({
           method: 'post',
           url,
-          data: { cardId1, cardId2 },
+          data: {
+            moveType,
+            cardId1,
+            cardId2,
+          },
         });
       }),
         function handleResponse(res, jwres) {
@@ -691,7 +726,11 @@ Cypress.Commands.add('playPointsFromSevenOpponent', (card) => {
       }
 
       const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'seven/points', { cardId, index });
+      cy.makeSocketRequest('game', 'seven/points', {
+        moveType: MoveType.SEVEN_POINTS,
+        cardId,
+        index,
+      });
     });
 });
 
@@ -728,7 +767,11 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
       }
 
       const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'seven/faceCard', { cardId, index });
+      cy.makeSocketRequest('game', 'seven/faceCard', {
+        moveType: MoveType.SEVEN_FACECARD,
+        cardId,
+        index,
+      });
     });
 });
 
@@ -777,6 +820,7 @@ Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
       const cardId = foundCard.id;
       const targetId = foundTarget.id;
       cy.makeSocketRequest('game', 'seven/scuttle', {
+        moveType: MoveType.SEVEN_SCUTTLE,
         cardId,
         index,
         targetId,
@@ -841,6 +885,7 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
         targetId = -1;
       }
       cy.makeSocketRequest('game', 'seven/jack', {
+        moveType: MoveType.SEVEN_JACK,
         cardId,
         index,
         targetId,
@@ -883,6 +928,7 @@ Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
       const playerId = game.players[game.myPNum].id;
       const cardId = foundCard.id;
       cy.makeSocketRequest('game', 'seven/untargetedOneOff', {
+        moveType: MoveType.SEVEN_UNTARGETED_ONE_OFF,
         cardId,
         index,
         opId: playerId,
@@ -972,6 +1018,7 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
       const targetId = foundTarget.id;
       const pointId = foundPointCard ? foundPointCard.id : null;
       cy.makeSocketRequest('game', 'seven/targetedOneOff', {
+        moveType: MoveType.SEVEN_TARGETED_ONE_OFF,
         cardId,
         index,
         targetId,
@@ -984,7 +1031,8 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
 
 Cypress.Commands.add('passOpponent', () => {
   cy.log('Opponent Passes');
-  cy.makeSocketRequest('game', 'pass', null);
+  const moveType = MoveType.PASS;
+  cy.makeSocketRequest('game', moveType, { moveType });
 });
 
 Cypress.Commands.add('concedeOpponent', () => {
