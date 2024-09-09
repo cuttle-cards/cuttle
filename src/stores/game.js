@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
+import MoveType from '../../utils/MoveType.json';
 import { sleep } from '../util/sleep';
 
 /**
@@ -391,7 +392,7 @@ export const useGameStore = defineStore('game', {
         case 'seven/targetedOneOff':
         case 'pass':
           // add all the move-making ones here
-          return `/api/game/${this.id}/move/${slug}`;
+          return `/api/game/${this.id}/move`;
         default:
           return `/api/game/${slug}`;
       }
@@ -512,29 +513,42 @@ export const useGameStore = defineStore('game', {
     // In-Game Moves //
     ///////////////////
     async requestDrawCard() {
-      await this.makeSocketRequest('draw');
+      const moveType = MoveType.DRAW;
+      await this.makeSocketRequest('draw', { moveType });
     },
     async requestPlayPoints(cardId) {
-      await this.makeSocketRequest('points', { cardId });
+      const moveType = MoveType.POINTS;
+      await this.makeSocketRequest('points', { moveType, cardId });
     },
     async requestPlayFaceCard(cardId) {
-      await this.makeSocketRequest('faceCard', { cardId });
+      const moveType = MoveType.FACECARD;
+      await this.makeSocketRequest('faceCard', { moveType, cardId });
     },
     /**
      *
      * @param cardData @example {cardId: number, targetId: number}
      */
     async requestScuttle(cardData) {
+      const moveType = MoveType.SCUTTLE;
       const { cardId, targetId } = cardData;
-      await this.makeSocketRequest('scuttle', { cardId, targetId, opId: this.opponent.id });
+      await this.makeSocketRequest('scuttle', { moveType, cardId, targetId, opId: this.opponent.id });
     },
+
     async requestPlayOneOff(cardId) {
-      await this.makeSocketRequest('untargetedOneOff', { cardId, opId: this.opponent.id });
+      const moveType = MoveType.UNTARGETED_ONE_OFF;
+      await this.makeSocketRequest('untargetedOneOff', {
+        moveType,
+        cardId,
+        opId: this.opponent.id
+      });
       this.waitingForOpponentToCounter = true;
       return Promise.resolve();
     },
+
     async requestPlayTargetedOneOff({ cardId, targetId, pointId, targetType }) {
+      const moveType = MoveType.TARGETED_ONE_OFF;
       await this.makeSocketRequest('targetedOneOff', {
+        moveType,
         cardId,
         targetId,
         pointId,
@@ -543,91 +557,132 @@ export const useGameStore = defineStore('game', {
       });
       this.waitingForOpponentToCounter = true;
     },
+
     async requestPlayJack({ cardId, targetId }) {
+
+      const moveType = MoveType.JACK;
       await this.makeSocketRequest('jack', {
+        moveType,
         cardId,
         targetId,
         opId: this.opponent.id,
       });
     },
+
     /**
      *
      * @param {required} cardId1
      * @param {optional} cardId2
      */
     async requestDiscard({ cardId1, cardId2 }) {
-      const reqData = cardId2 ? { cardId1, cardId2 } : { cardId1 };
+      const moveType = MoveType.RESOLVE_FOUR;
+      const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
+
       await this.makeSocketRequest('resolveFour', reqData);
     },
+
     async requestResolve() {
       this.myTurnToCounter = false;
-      await this.makeSocketRequest('resolve', { opId: this.opponent.id });
+      const moveType = MoveType.RESOLVE;
+      await this.makeSocketRequest('resolve', { moveType, opId: this.opponent.id });
     },
+
     async requestResolveThree(cardId) {
       this.myTurnToCounter = false;
-      await this.makeSocketRequest('resolveThree', { cardId, opId: this.opponent.id });
+      const moveType = MoveType.RESOLVE_THREE;
+
+      await this.makeSocketRequest('resolveThree', {
+        moveType,
+        cardId,
+        opId: this.opponent.id,
+      });
       this.waitingForOpponentToCounter = false;
     },
+
     async requestResolveFive(cardId) {
       this.myTurnToCounter = false;
       this.waitingForOpponentToCounter = false;
-      await this.makeSocketRequest('resolveFive', { cardId });
+      const moveType = MoveType.RESOLVE_FIVE;
+
+      await this.makeSocketRequest('resolveFive', { moveType, cardId });
     },
+
+    async requestCounter(twoId) {
+      this.myTurnToCounter = false;
+      const moveType = MoveType.COUNTER;
+
+      await this.makeSocketRequest('counter', {
+        moveType,
+        cardId: twoId,
+        opId: this.opponent.id
+      });
+      this.waitingForOpponentToCounter = true;
+    },
+
+    ////////////
+    // Sevens //
+    ////////////
+    async requestPlayPointsSeven({ cardId, index }) {
+      await this.makeSocketRequest('seven/points', {
+        moveType: MoveType.SEVEN_POINTS,
+        cardId,
+        index, // 0 if topCard, 1 if secondCard
+      });
+    },
+
+    async requestScuttleSeven({ cardId, index, targetId }) {
+      await this.makeSocketRequest('seven/scuttle', {
+        moveType: MoveType.SEVEN_SCUTTLE,
+        cardId,
+        index,
+        targetId,
+        opId: this.opponent.id,
+      });
+    },
+
+    async requestPlayJackSeven({ cardId, index, targetId }) {
+      await this.makeSocketRequest('seven/jack', {
+        moveType: MoveType.SEVEN_JACK,
+        cardId,
+        index, // 0 if topCard, 1 if secondCard
+        targetId,
+        opId: this.opponent.id,
+      });
+    },
+
     async requestResolveSevenDoubleJacks({ cardId, index }) {
       this.myTurnToCounter = false;
+
       await this.makeSocketRequest('seven/jack', {
+        moveType: MoveType.SEVEN_JACK,
         cardId,
         index, // 0 if topCard, 1 if secondCard
         targetId: -1, // -1 for the double jacks with no points to steal case
         opId: this.opponent.id,
       });
     },
-    async requestCounter(twoId) {
-      this.myTurnToCounter = false;
-      await this.makeSocketRequest('counter', { cardId: twoId, opId: this.opponent.id });
-      this.waitingForOpponentToCounter = true;
-    },
-    ////////////
-    // Sevens //
-    ////////////
-    async requestPlayPointsSeven({ cardId, index }) {
-      await this.makeSocketRequest('seven/points', {
-        cardId,
-        index, // 0 if topCard, 1 if secondCard
-      });
-    },
-    async requestScuttleSeven({ cardId, index, targetId }) {
-      await this.makeSocketRequest('seven/scuttle', {
-        cardId,
-        index,
-        targetId,
-        opId: this.opponent.id,
-      });
-    },
-    async requestPlayJackSeven({ cardId, index, targetId }) {
-      await this.makeSocketRequest('seven/jack', {
-        cardId,
-        index, // 0 if topCard, 1 if secondCard
-        targetId,
-        opId: this.opponent.id,
-      });
-    },
+
     async requestPlayFaceCardSeven({ index, cardId }) {
       await this.makeSocketRequest('seven/faceCard', {
+        moveType: MoveType.SEVEN_FACECARD,
         cardId,
         index,
       });
     },
+
     async requestPlayOneOffSeven({ cardId, index }) {
       await this.makeSocketRequest('seven/untargetedOneOff', {
+        moveType: MoveType.SEVEN_UNTARGETED_ONE_OFF,
         cardId,
         index, // 0 if topCard, 1 if secondCard
         opId: this.opponent.id,
       });
       this.waitingForOpponentToCounter = true;
     },
+
     async requestPlayTargetedOneOffSeven({ cardId, index, targetId, pointId, targetType }) {
       await this.makeSocketRequest('seven/targetedOneOff', {
+        moveType: MoveType.SEVEN_TARGETED_ONE_OFF,
         cardId,
         targetId,
         pointId,
@@ -637,22 +692,28 @@ export const useGameStore = defineStore('game', {
       });
       this.waitingForOpponentToCounter = true;
     },
+
     async requestPass() {
-      await this.makeSocketRequest('pass');
+      const moveType = MoveType.PASS;
+      await this.makeSocketRequest('pass', { moveType });
     },
+
     async requestConcede() {
       await this.makeSocketRequest('concede');
     },
+
     async requestStalemate() {
       await this.makeSocketRequest('stalemate').then(() => {
         this.consideringOpponentStalemateRequest = false;
       });
     },
+
     async rejectStalemate() {
       await this.makeSocketRequest('reject-stalemate').then(() => {
         this.consideringOpponentStalemateRequest = false;
       });
     },
+
     async requestUnsubscribeFromGame() {
       return new Promise((resolve, reject) => {
         io.socket.get('/api/game/over', (res, jwres) => {
@@ -663,9 +724,11 @@ export const useGameStore = defineStore('game', {
         });
       });
     },
+
     async requestRematch({ gameId, rematch = true }) {
       await this.makeSocketRequest('rematch', { gameId, rematch });
     },
+
     async requestJoinRematch({ oldGameId }) {
       return new Promise((resolve, reject) => {
         io.socket.get('/api/game/join-rematch', { oldGameId }, (res, jwres) => {
@@ -676,5 +739,6 @@ export const useGameStore = defineStore('game', {
         });
       });
     },
+
   }, // End actions
 }); // End game store

@@ -95,6 +95,10 @@ module.exports.routes = {
   '/api/game/join-rematch': 'game/join-rematch',
   '/api/game/chat': 'game/chat',
   '/api/game/gameData': 'game/game-data',
+
+  // GameStateAPI
+  'POST /api/game/:gameId/move': 'game/move',
+
   // DEVELOPMENT ONLY
   '/api/game/stackDeck': 'game/stack-deck',
   '/api/game/loadFixture': 'game/load-fixture',
