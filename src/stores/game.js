@@ -575,9 +575,9 @@ export const useGameStore = defineStore('game', {
      * @param {optional} cardId2
      */
     async requestDiscard({ cardId1, cardId2 }) {
+      const moveType = MoveType.RESOLVE_FOUR;
       const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
 
-      const moveType = MoveType.RESOLVE_FOUR;
       await this.makeSocketRequest('resolveFour', reqData);
     },
 
