@@ -155,6 +155,7 @@ const sectionTitles = [
   { id:'actions', title: 'rules.actions.title', href: '#actions' },
   { id:'royals', title: 'rules.royals.title', href: '#royals' },
   { id:'oneoffs', title: 'rules.oneoffs.title', href: '#oneoffs' },
+  { id: 'multiplayer', title: 'rules.multiplayerTitle', href: '#multiplayer'},
   { id:'faq', title: 'rules.faq.title', href: '#faq' },
   { id: 'tournaments', title: 'rules.tournaments.title', href: '#tournaments' },
 ];

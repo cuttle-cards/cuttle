@@ -448,12 +448,19 @@ export default {
   margin-top: 64px;
 }
 
+.section#multiplayer {
+  margin-top: 121px;
+}
+
 .text-label-lg {
   margin-bottom: 8px;
 }
 @media (max-width: 960px) {
   .section-title {
     font-size: 2.4rem !important;
+  }
+  .section#multiplayer {
+    margin-top: 118px;
   }
 }
 </style>

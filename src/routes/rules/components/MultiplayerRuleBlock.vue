@@ -9,8 +9,8 @@
       {{ paragraph }}
       {{ rulesDifference }}
     </p>
-    <ul class="list-outside-pl5 text-md">
-      <li v-for="(rule, index) in rules" :key="index">
+    <ul class="list-outside-pl5 text-md rules-ul">
+      <li class="rules-li" v-for="(rule, index) in rules" :key="index">
         {{ rule }}
       </li>
     </ul>
@@ -44,15 +44,15 @@ defineProps({
   margin: 2rem 0 0 0;
 }
 
-ul {
+.rules-ul {
   padding-left: 2rem;
 }
 
-li {
+.rules-li {
   padding: 0 0 1rem 0;
 }
 
-ul > li:first-child {
-  margin-top: 16px !important;
+.rules-ul > li:first-child {
+  margin-top: 16px;
 }
 </style>
