@@ -6,7 +6,7 @@
   "FACECARD": "faceCard",
   "JACK": "jack",
   "UNTARGETED_ONE_OFF": "untargetedOneOff",
-  "TARGETED_ONE_OFF": "targetOneOff",
+  "TARGETED_ONE_OFF": "targetedOneOff",
   "COUNTER": "counter",
   "RESOLVE": "resolve",
   "FIZZLE": "fizzle",
