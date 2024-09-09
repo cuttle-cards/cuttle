@@ -1,4 +1,5 @@
 const MoveType = require('../../utils/MoveType.json');
+const DeckIds = require('../../utils/DeckIds.json');
 
 /**
  * hasValidMoveBody
@@ -14,10 +15,15 @@ module.exports = function (req, res, next) {
       // Draw requires no extra data
       return next();
     case MoveType.POINTS:
-      if (req.body.cardId) {
-        return next();
+
+      if (!req.body.cardId) {
+        return res.badRequest({ message: 'Cannot play points without specifying a card' });
       }
-      return res.badRequest({ message: 'Cannot play points without specifying a card' });
+      if (!DeckIds.includes(req.body.cardId)) {
+        return res.badRequest({ message: `${req.body.cardId} is not a valid cardId` });
+      }
+
+      return next();
     default:
       return res.badRequest({ message: `Invalid moveType of ${req.body.moveType}` });
   }
