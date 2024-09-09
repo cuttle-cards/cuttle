@@ -93,6 +93,7 @@ module.exports = {
         twos: gameState.twos,
         resolved: gameState.resolved,
         oneOffTargetType: lastEventTargetType(),
+        oneOff: gameState.oneOff,
         lastEvent: {
           change: gameState.moveType,
           oneOffTargetType: lastEventTargetType(),
@@ -100,7 +101,7 @@ module.exports = {
           pNum,
           happened,
           discardedCards,
-          oneOff: gameState.resolved,
+          oneOff: gameState.oneOff,
         },
       };
 
@@ -113,7 +114,7 @@ module.exports = {
         chosenCard,
         playedBy,
         pNum,
-        oneOff: gameState.resolved,
+        oneOff: gameState.oneOff,
       };
 
       Game.publish([game.id], fullSocketEvent);
