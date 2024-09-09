@@ -449,7 +449,7 @@ export default {
 }
 
 .section#multiplayer {
-  margin-top: 121px;
+  margin-top: 120px;
 }
 
 .text-label-lg {
@@ -458,9 +458,6 @@ export default {
 @media (max-width: 960px) {
   .section-title {
     font-size: 2.4rem !important;
-  }
-  .section#multiplayer {
-    margin-top: 118px;
   }
 }
 </style>
