@@ -393,7 +393,6 @@ describe('Game Basic Moves - P1 Perspective', () => {
   });
 
   it('Draws from deck', () => {
-    cy.skipOnGameStateApi();
     // Opponent draws card
     cy.drawCardOpponent();
     // Opponent now has 6 cards in hand
