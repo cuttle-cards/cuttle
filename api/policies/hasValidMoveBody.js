@@ -14,11 +14,13 @@ module.exports = function (req, res, next) {
     case MoveType.DRAW:
       // Draw requires no extra data
       return next();
-    case MoveType.POINTS:
 
+    case MoveType.POINTS:
+    case MoveType.UNTARGETED_ONE_OFF:
       if (!req.body.cardId) {
-        return res.badRequest({ message: 'Cannot play points without specifying a card' });
+        return res.badRequest({ message: 'Must specify a card' });
       }
+
       if (!DeckIds.includes(req.body.cardId)) {
         return res.badRequest({ message: `${req.body.cardId} is not a valid cardId` });
       }
