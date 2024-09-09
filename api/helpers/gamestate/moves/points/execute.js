@@ -37,6 +37,7 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
+      playedBy,
       playedCard: player.points.at(-1),
     };
 
