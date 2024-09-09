@@ -34,6 +34,7 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
+      playedBy,
     };
 
     return exits.success(result);
