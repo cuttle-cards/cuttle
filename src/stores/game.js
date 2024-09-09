@@ -522,7 +522,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestPlayFaceCard(cardId) {
       const moveType = MoveType.FACECARD;
-      await this.makeSocketRequest('face-card', { moveType, cardId });
+      await this.makeSocketRequest('faceCard', { moveType, cardId });
     },
     /**
      *
@@ -536,7 +536,7 @@ export const useGameStore = defineStore('game', {
 
     async requestPlayOneOff(cardId) {
       const moveType = MoveType.UNTARGETED_ONE_OFF;
-      await this.makeSocketRequest('untargeted-one-off', {
+      await this.makeSocketRequest('untargetedOneOff', {
         moveType,
         cardId,
         opId: this.opponent.id
@@ -547,7 +547,7 @@ export const useGameStore = defineStore('game', {
 
     async requestPlayTargetedOneOff({ cardId, targetId, pointId, targetType }) {
       const moveType = MoveType.TARGETED_ONE_OFF;
-      await this.makeSocketRequest('targeted-one-off', {
+      await this.makeSocketRequest('targetedOneOff', {
         moveType,
         cardId,
         targetId,
@@ -578,7 +578,7 @@ export const useGameStore = defineStore('game', {
       const reqData = cardId2 ? { moveType, cardId1, cardId2 } : { moveType, cardId1 };
 
       const moveType = MoveType.RESOLVE_FOUR;
-      await this.makeSocketRequest('resolve-four', reqData);
+      await this.makeSocketRequest('resolveFour', reqData);
     },
 
     async requestResolve() {
@@ -591,7 +591,7 @@ export const useGameStore = defineStore('game', {
       this.myTurnToCounter = false;
       const moveType = MoveType.RESOLVE_THREE;
 
-      await this.makeSocketRequest('resolve-three', {
+      await this.makeSocketRequest('resolveThree', {
         moveType,
         cardId,
         opId: this.opponent.id,
@@ -604,7 +604,7 @@ export const useGameStore = defineStore('game', {
       this.waitingForOpponentToCounter = false;
       const moveType = MoveType.RESOLVE_FIVE;
 
-      await this.makeSocketRequest('resolve-five', { moveType, cardId });
+      await this.makeSocketRequest('resolveFive', { moveType, cardId });
     },
 
     async requestCounter(twoId) {

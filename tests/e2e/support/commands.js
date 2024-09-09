@@ -361,7 +361,7 @@ Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
       const moveType = MoveType.UNTARGETED_ONE_OFF;
       const cardId = foundCard.id;
       const opId = game.players[(pNum + 1) % 2].id;
-      cy.makeSocketRequest('game', 'untargeted-one-off', { moveType, cardId, opId });
+      cy.makeSocketRequest('game', 'untargetedOneOff', { moveType, cardId, opId });
     });
 });
 
@@ -385,7 +385,7 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
 
       const cardId = foundCard.id;
       const moveType = MoveType.FACECARD;
-      cy.makeSocketRequest('game', 'face-card', { moveType, cardId });
+      cy.makeSocketRequest('game', 'faceCard', { moveType, cardId });
     });
 });
 
@@ -488,7 +488,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
       }
 
       const moveType = MoveType.UNTARGETED_ONE_OFF;
-      cy.makeSocketRequest('game', 'untargeted-one-off', {
+      cy.makeSocketRequest('game', 'untargetedOneOff', {
         moveType,
         opId: playerId,
         cardId: foundCard.id,
@@ -559,7 +559,7 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
       }
 
       const moveType = MoveType.TARGETED_ONE_OFF;
-      cy.makeSocketRequest('game', 'targeted-one-off', {
+      cy.makeSocketRequest('game', 'targetedOneOff', {
         moveType,
         opId: playerId, // opponent's opponent is the player
         targetId: foundTarget.id,
@@ -613,7 +613,7 @@ Cypress.Commands.add('resolveFiveOpponent', (card) => {
 
       const moveType = MoveType.RESOLVE_FIVE;
       const cardId = foundCard?.id ?? null;
-      cy.makeSocketRequest('game', 'resolve', { moveType, cardId });
+      cy.makeSocketRequest('game', 'resolveFive', { moveType, cardId });
     });
 });
 
@@ -635,7 +635,7 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
 
       const moveType = MoveType.RESOLVE_THREE;
       const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'resolve-three', { moveType, cardId, opId });
+      cy.makeSocketRequest('game', 'resolveThree', { moveType, cardId, opId });
     });
 });
 
@@ -670,7 +670,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
 
       const moveType = MoveType.RESOLVE_FOUR;
       //dont use makeSocketRequest due to edge case checking error on opponent side
-      transformGameUrl('game', 'resolve-four').then((url) => {
+      transformGameUrl('game', 'resolveFour').then((url) => {
         io.socket.request({
           method: 'post',
           url,
