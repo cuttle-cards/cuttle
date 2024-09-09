@@ -167,6 +167,30 @@
             </v-row>
           </section>
 
+          <!-- Rules for 3-4 Players -->
+          <section id="multiplayer" v-intersect="intersectConfig" class="section">
+            <v-row>
+              <h1 class="text-h2 text-surface-2 section-title">
+                {{ t('rules.multiplayerTitle') }}
+              </h1>
+              <p class="d-block text-lg">
+                {{ t('rules.multiplayerText1') }}
+                <a href="https://cuttle.cards" class="text-anchor">cuttle.cards</a>
+                {{ t('rules.multiplayerText2') }}
+              </p>
+            </v-row>
+            <v-row>
+              <MultiplayerRuleBlock
+                v-for="(ruleSet, index) in multiplayer"
+                :key="index"
+                :heading="t(ruleSet.title)"
+                :paragraph="t(ruleSet.text)"
+                :rules-difference="t(ruleSet.rulesDifference)"
+                :rules="ruleSet.rules.map((rule) => t(rule))"
+              />
+            </v-row>
+          </section>
+
           <!-- FAQ -->
           <section class="section">
             <v-row
@@ -281,7 +305,7 @@ import { useGoTo } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 import { useThemedLogo } from '@/composables/themedLogo';
-import { rules, royals, oneOffs, faq, sectionTitles } from './data/rulesData';
+import { rules, royals, oneOffs, faq, sectionTitles, multiplayer } from './data/rulesData';
 import RulesNav from './components/RulesNav.vue';
 import RuleParagraph from './components/RuleParagraph.vue';
 import RulePreview from '@/routes/rules/components/RulePreview.vue';
@@ -290,6 +314,7 @@ import AwardCard from '../../components/AwardCard.vue';
 import RulePreviewDialog from './components/RulePreviewDialog.vue';
 import FAQEntry from './components/FAQEntry.vue';
 import BackToTop from '@/components/BackToTop.vue';
+import MultiplayerRuleBlock from './components/MultiplayerRuleBlock.vue';
 
 export default {
   name: 'RulesView',
@@ -302,6 +327,7 @@ export default {
     RuleParagraph,
     FAQEntry,
     RulesNav,
+    MultiplayerRuleBlock,
   },
   props: {
     isInModal : {
@@ -352,6 +378,7 @@ export default {
     this.oneOffs = oneOffs;
     this.sectionTitles = sectionTitles;
     this.faq = faq;
+    this.multiplayer = multiplayer;
 
     // Scrolling
     this.scrollOptions = {
@@ -419,6 +446,10 @@ export default {
 
 .section {
   margin-top: 64px;
+}
+
+.section#multiplayer {
+  margin-top: 120px;
 }
 
 .text-label-lg {
