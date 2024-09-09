@@ -1,3 +1,5 @@
+const GamePhase = require('../../../../../utils/GamePhase.json');
+
 module.exports = {
   friendlyName: 'Play Points',
 
@@ -37,6 +39,7 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
+      phase: GamePhase.MAIN,
       playedBy,
       playedCard: player.points.at(-1),
     };

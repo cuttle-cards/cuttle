@@ -1,3 +1,5 @@
+const GamePhase = require('../../../../../utils/GamePhase.json');
+
 module.exports = {
   friendlyName: 'Draw a card',
 
@@ -34,6 +36,7 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
+      phase: GamePhase.MAIN,
       playedBy,
     };
 
