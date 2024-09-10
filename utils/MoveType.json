@@ -5,8 +5,7 @@
   "SCUTTLE": "scuttle",
   "FACECARD": "faceCard",
   "JACK": "jack",
-  "UNTARGETED_ONE_OFF": "untargetedOneOff",
-  "TARGETED_ONE_OFF": "targetedOneOff",
+  "ONE_OFF": "oneOff",
   "COUNTER": "counter",
   "RESOLVE": "resolve",
   "FIZZLE": "fizzle",
@@ -17,8 +16,7 @@
   "SEVEN_SCUTTLE": "sevenScuttle",
   "SEVEN_FACECARD": "sevenFaceCard",
   "SEVEN_JACK": "sevenJack",
-  "SEVEN_UNTARGETED_ONE_OFF": "sevenUntargetedOneOff",
-  "SEVEN_TARGETED_ONE_OFF": "sevenTargetedOneOff",
+  "SEVEN_ONE_OFF": "sevenOneOff",
   "PASS": "pass",
   "LOADFIXTURE": "loadFixture"
 }

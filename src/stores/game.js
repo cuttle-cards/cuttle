@@ -535,7 +535,7 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestPlayOneOff(cardId) {
-      const moveType = MoveType.UNTARGETED_ONE_OFF;
+      const moveType = MoveType.ONE_OFF;
       await this.makeSocketRequest('untargetedOneOff', {
         moveType,
         cardId,
@@ -546,7 +546,7 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestPlayTargetedOneOff({ cardId, targetId, pointId, targetType }) {
-      const moveType = MoveType.TARGETED_ONE_OFF;
+      const moveType = MoveType.ONE_OFF;
       await this.makeSocketRequest('targetedOneOff', {
         moveType,
         cardId,
@@ -672,7 +672,7 @@ export const useGameStore = defineStore('game', {
 
     async requestPlayOneOffSeven({ cardId, index }) {
       await this.makeSocketRequest('seven/untargetedOneOff', {
-        moveType: MoveType.SEVEN_UNTARGETED_ONE_OFF,
+        moveType: MoveType.SEVEN_ONE_OFF,
         cardId,
         index, // 0 if topCard, 1 if secondCard
         opId: this.opponent.id,
@@ -682,7 +682,7 @@ export const useGameStore = defineStore('game', {
 
     async requestPlayTargetedOneOffSeven({ cardId, index, targetId, pointId, targetType }) {
       await this.makeSocketRequest('seven/targetedOneOff', {
-        moveType: MoveType.SEVEN_TARGETED_ONE_OFF,
+        moveType: MoveType.SEVEN_ONE_OFF,
         cardId,
         targetId,
         pointId,

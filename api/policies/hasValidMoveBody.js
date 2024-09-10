@@ -16,7 +16,7 @@ module.exports = function (req, res, next) {
       return next();
 
     case MoveType.POINTS:
-    case MoveType.UNTARGETED_ONE_OFF:
+    case MoveType.ONE_OFF:
       if (!req.body.cardId) {
         return res.badRequest({ message: 'Must specify a card' });
       }

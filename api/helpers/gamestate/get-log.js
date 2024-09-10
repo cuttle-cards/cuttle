@@ -59,14 +59,14 @@ module.exports = {
         case MoveType.JACK:
           return `${player} stole ${opponent}'s ${targetCardName} with the ${playedCardName}.`;
 
-        case MoveType.UNTARGETED_ONE_OFF:
-          return `${player} played the ${playedCardName} as a one-off to 
+        case MoveType.ONE_OFF: {
+          let log = `${player} played the ${playedCardName} as a one-off to 
         ${gameText.moves.effects[playedCard.rank]}.`;
-
-        case MoveType.TARGETED_ONE_OFF:
-          return `${player} played the ${playedCardName} as a one-off to: ${
-            gameText.moves.effects[playedCard.rank]
-          }, targeting the ${targetCardName}.`;
+          if (targetCardName) {
+            log += `, targeting the ${targetCardName}.`;
+          }
+          return log;
+        }
 
         case MoveType.COUNTER:
           if (twos.length > 0) {
