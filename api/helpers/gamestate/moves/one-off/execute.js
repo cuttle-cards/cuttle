@@ -14,6 +14,7 @@ module.exports = {
     /**
      * @param { Object } requestedMove - Object describing the request to play points (req.body)
      * @param { String } requestedMove.cardId - Card Played for points
+     * @param { String } [ requestedMove.targetId ] - OPTIONAL target of one-off
      * @param { MoveType.ONE_OFF } requestedMove.moveType
      */
     requestedMove: {
