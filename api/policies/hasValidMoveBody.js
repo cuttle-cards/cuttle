@@ -10,20 +10,30 @@ const DeckIds = require('../../utils/DeckIds.json');
  *
  */
 module.exports = function (req, res, next) {
-  switch (req.body.moveType) {
+  const { moveType, cardId, targetId } = req.body;
+
+  switch (moveType) {
     case MoveType.DRAW:
       // Draw requires no extra data
       return next();
 
     case MoveType.POINTS:
-    case MoveType.ONE_OFF:
-      if (!req.body.cardId) {
+    case MoveType.ONE_OFF: {
+      if (!cardId) {
         return res.badRequest({ message: 'Must specify a card' });
       }
 
-      if (!DeckIds.includes(req.body.cardId)) {
-        return res.badRequest({ message: `${req.body.cardId} is not a valid cardId` });
+      if (!DeckIds.includes(cardId)) {
+        return res.badRequest({ message: `${cardId} is not a valid cardId` });
       }
+
+      const [ rankAsStr ] = cardId;
+      const isTwoOrNine = ['2', '9'].includes(rankAsStr);
+      const missingTarget = !targetId || !DeckIds.includes(targetId);
+      if (isTwoOrNine && missingTarget) {
+        return res.badRequest({ message: 'You cannot play that one-off without a target' });
+      }
+    }
 
       return next();
     default:
