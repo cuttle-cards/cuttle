@@ -60,6 +60,8 @@ module.exports = {
       switch (cardPlayed.rank) {
         case 1:
           return exits.success();
+        case 2:
+          return exits.success();
         case 3:
           return exits.success();
         case 4:
@@ -69,6 +71,8 @@ module.exports = {
         case 6:
           return exits.success();
         case 7:
+          return exits.success();
+        case 9:
           return exits.success();
         default: 
           throw new Error('You cannot play that card as a one-off without a target.');
