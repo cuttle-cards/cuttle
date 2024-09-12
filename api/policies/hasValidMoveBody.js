@@ -10,7 +10,7 @@ const DeckIds = require('../../utils/DeckIds.json');
  *
  */
 module.exports = function (req, res, next) {
-  const { moveType, cardId, targetId } = req.body;
+  const { moveType, cardId, targetId, targetType } = req.body;
 
   switch (moveType) {
     case MoveType.DRAW:
@@ -29,7 +29,7 @@ module.exports = function (req, res, next) {
 
       const [ rankAsStr ] = cardId;
       const isTwoOrNine = ['2', '9'].includes(rankAsStr);
-      const missingTarget = !targetId || !DeckIds.includes(targetId);
+      const missingTarget = !targetId || !DeckIds.includes(targetId) || !['point', 'jack', 'faceCard'].includes(targetType);
       if (isTwoOrNine && missingTarget) {
         return res.badRequest({ message: 'You cannot play that one-off without a target' });
       }
