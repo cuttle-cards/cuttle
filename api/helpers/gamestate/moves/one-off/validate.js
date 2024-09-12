@@ -61,20 +61,40 @@ module.exports = {
       switch (cardPlayed.rank) {
         case 1:
           return exits.success();
+
         case 2:
           return exits.success();
+
         case 3:
+          if (!currentState.scrap.length) {
+            throw new Error('game.snackbar.oneOffs.scrapIsEmpty');
+          }
           return exits.success();
+
         case 4:
+          if (!opponent.hand.length) {
+            throw new Error('game.snackbar.oneOffs.opponentHasNoCards');
+          }
           return exits.success();
+
         case 5:
+          if (!currentState.deck.length) {
+            throw new Error('game.snackbar.five.fiveDeckIsEmpty');
+          }
           return exits.success();
+
         case 6:
           return exits.success();
+
         case 7:
+          if (!currentState.deck.length) {
+            throw new Error('game.snackbar.oneOffs.sevenWithEmptyDeck');
+          }
           return exits.success();
+
         case 9:
           return exits.success();
+
         default: 
           throw new Error('You cannot play that card as a one-off without a target.');
       }
