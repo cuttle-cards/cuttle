@@ -71,6 +71,7 @@ module.exports = {
         moveType: gameStateRow.moveType,
         turn: gameStateRow.turn,
         phase: gameStateRow.phase,
+        oneOffTargetType: gameStateRow.oneOffTargetType,
 
         p0,
         p1,
