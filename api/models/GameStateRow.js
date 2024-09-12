@@ -135,7 +135,7 @@ module.exports = {
     oneOffTargetType: {
       type: 'string',
       allowNull: true,
-      isIn: ['point', 'jack'],
+      isIn: ['point', 'jack', 'faceCard'],
     },
     // Twos
     twos: {
