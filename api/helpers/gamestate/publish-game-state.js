@@ -114,7 +114,7 @@ module.exports = {
         chosenCard,
         playedBy,
         pNum,
-        oneOff: gameState.oneOff,
+        oneOff: gameState.resolved,
       };
 
       Game.publish([game.id], fullSocketEvent);
