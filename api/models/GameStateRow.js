@@ -132,6 +132,11 @@ module.exports = {
       type: 'string',
       allowNull: true,
     },
+    oneOffTargetType: {
+      type: 'string',
+      allowNull: true,
+      isIn: ['point', 'jack'],
+    },
     // Twos
     twos: {
       type: 'json',
