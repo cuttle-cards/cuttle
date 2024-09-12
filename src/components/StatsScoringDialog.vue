@@ -4,7 +4,7 @@
     v-model="show"
     :persistent="false"
     title="Ranked Scoring"
-    max-width="1250"
+    :max-width="1250"
     :opacity="1"
   >
     <!-- Activator -->
