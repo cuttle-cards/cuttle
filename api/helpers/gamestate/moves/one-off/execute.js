@@ -1,5 +1,28 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
+function findTargetCard(targetId, targetType, opponent) {
+  switch (targetType) {
+    case 'point':
+      return opponent.points.find(card => card.id === targetId);
+
+    case 'faceCard':
+      return opponent.faceCards.find(card => card.id === targetId);
+
+    case 'jack':
+      for (let point of opponent.points) {
+        for (let jack of point.attachments) {
+          if (jack.id === targetId) {
+            return jack;
+          }
+        }
+      }
+      return;
+
+    default:
+      return null;
+  }
+}
+
 module.exports = {
   friendlyName: 'Play One-Off',
 
@@ -35,9 +58,13 @@ module.exports = {
     let result = _.cloneDeep(currentState);
 
     const player = currentState[`p${playedBy}`];
-    const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
+    const opponent = currentState[`p${(playedBy + 1 ) % 2}`];
 
+    const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
     const [ playedCard ] = player.hand.splice(cardIndex, 1);
+
+    const targetCard = findTargetCard(requestedMove.targetId, requestedMove.targetType, opponent);
+
 
     result = {
       ...result,
@@ -46,6 +73,9 @@ module.exports = {
       oneOff: playedCard,
       playedBy,
       playedCard,
+      targetCard,
+      oneOffTarget: targetCard,
+      oneOffTargetType: requestedMove.targetType ?? null,
     };
 
     return exits.success(result);
