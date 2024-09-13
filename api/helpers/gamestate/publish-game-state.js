@@ -101,7 +101,7 @@ module.exports = {
           pNum,
           happened,
           discardedCards,
-          oneOff: gameState.oneOff,
+          oneOff: gameState.resolved,
         },
       };
 
