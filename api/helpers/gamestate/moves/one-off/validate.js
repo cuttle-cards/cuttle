@@ -96,10 +96,9 @@ module.exports = {
               throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
             }
 
-            const queenCount = opponent.faceCards.reduce(
-              ((numQueens, faceCard) => (faceCard.rank === 12 ? numQueens + 1 : numQueens)),
-              0,
-            );
+            const queenCount = opponent.faceCards.find(
+              (faceCard) => faceCard.rank === 12
+            ).length;
 
 
             switch (queenCount) {
