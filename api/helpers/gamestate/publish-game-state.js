@@ -27,19 +27,6 @@ module.exports = {
       delete p1.encryptedPassword;
       const players = [p0, p1];
 
-      const lastEventTargetType = () => {
-        if (!['targetedOneOff', 'sevenTargetedOneOff'].includes(gameState.moveType)) {
-          return null;
-        }
-        if (gameState.targetCard?.rank === 11) {
-          return 'jack';
-        }
-        if (gameState.targetCard?.rank > 11) {
-          return 'faceCard';
-        }
-        return 'point';
-      };
-
       const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState);
 
       const countPasses = () => {
@@ -92,11 +79,11 @@ module.exports = {
         secondCard: gameState.deck[1],
         twos: gameState.twos,
         resolved: gameState.resolved,
-        oneOffTargetType: lastEventTargetType(),
+        oneOffTargetType: gameState.oneOffTargetType,
         oneOff: gameState.oneOff,
         lastEvent: {
           change: gameState.moveType,
-          oneOffTargetType: lastEventTargetType(),
+          oneOffTargetType: gameState.oneOffTargetType,
           chosenCard,
           pNum,
           happened,
