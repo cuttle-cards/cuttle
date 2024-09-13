@@ -1,9 +1,9 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Play Untargeted One-Off',
+  friendlyName: 'Play One-Off',
 
-  description: 'Returns new GameState resulting from requested untargetedOneOff move',
+  description: 'Returns new GameState resulting from requested one-off move',
 
   inputs: {
     currentState: {
@@ -12,14 +12,17 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to play points (req.body)
+     * @param { Object } requestedMove - The move being requested. 
+     * Specifies that the move is a one-off, which card is being played, 
+     * and if applicable, what target and targetType
+     * @param { MoveType.ONE_OFF } requestedMove.moveType
      * @param { String } requestedMove.cardId - Card Played for points
      * @param { String } [ requestedMove.targetId ] - OPTIONAL target of one-off
-     * @param { MoveType.ONE_OFF } requestedMove.moveType
+     * @param { 'point' | 'faceCard' | 'jack' } [ requestedMove.targetType ] - OPTIONAL where to locate target
      */
     requestedMove: {
       type: 'ref',
-      description: 'The move being requested. Specifies which player is asking to play a one-ff points',
+      description: 'The move being requested. Specifies which player is asking to play a one-off ',
     },
     playedBy: {
       type: 'number',
