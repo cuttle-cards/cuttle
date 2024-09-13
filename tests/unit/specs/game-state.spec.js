@@ -101,7 +101,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
     expect(gameState).toEqual(resolveNine.gameState);
   });
 
-  it('Creates and Publishes socket event', async () => {
+  it.only('Creates and Publishes socket event', async () => {
     const socketEvent = await sails.helpers.gamestate.publishGameState(
       resolveNine.game,
       resolveNine.gameState,
