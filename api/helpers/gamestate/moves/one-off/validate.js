@@ -83,15 +83,17 @@ module.exports = {
       }
 
       switch (cardPlayed.rank) {
+        // Ace and Six are always allowed
         case 1:
         case 6:
           return exits.success();
 
+        // 2 and 9 require legal target
         case 2:
         case 9:
           {
             const targetCard = findTargetCard(requestedMove.targetId, requestedMove.targetType, opponent);
-
+            // Must have target
             if (!targetCard) {
               throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
             }
@@ -100,48 +102,55 @@ module.exports = {
               (faceCard) => faceCard.rank === 12
             ).length;
 
-
+            // Legal if not blocked by opponent's queen(s)
             switch (queenCount) {
+              // No queens => always allowed
               case 0:
                 return exits.success();
 
+              // One queen => can only target the queen
               case 1: {
-                const [ targetRankAsString ] = requestedMove.targetId;
-                if (targetRankAsString !== 'Q') {
+                if (targetCard.rank !== 12) {
                   throw new Error('game.snackbar.global.blockedByQueen');
                 }
                 return exits.success();
               }
 
+              // 2+ queens => Can't target at all
               default:
                 throw new Error('game.snackbar.global.blockedByMultipleQueens');
             }
           }
 
+        // Three requires card(s) in scrap
         case 3:
           if (!currentState.scrap.length) {
             throw new Error('game.snackbar.oneOffs.scrapIsEmpty');
           }
           return exits.success();
 
+        // Four requires opponent to have cards in hand
         case 4:
           if (!opponent.hand.length) {
             throw new Error('game.snackbar.oneOffs.opponentHasNoCards');
           }
           return exits.success();
 
+        // Five requires cards in deck
         case 5:
           if (!currentState.deck.length) {
             throw new Error('game.snackbar.five.fiveDeckIsEmpty');
           }
           return exits.success();
 
+        // Seven requires cards in deck
         case 7:
           if (!currentState.deck.length) {
             throw new Error('game.snackbar.oneOffs.sevenWithEmptyDeck');
           }
           return exits.success();
 
+        // No other cards can be used for a one-off
         default:
           throw new Error('You cannot play that card as a one-off without a target.');
       }
