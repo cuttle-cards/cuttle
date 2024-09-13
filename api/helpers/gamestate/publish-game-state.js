@@ -79,11 +79,11 @@ module.exports = {
         secondCard: gameState.deck[1],
         twos: gameState.twos,
         resolved: gameState.resolved,
-        oneOffTargetType: gameState.oneOffTargetType,
         oneOff: gameState.oneOff,
+        oneOffTarget: gameState.oneOffTarget,
+        oneOffTargetType: gameState.oneOffTargetType,
         lastEvent: {
           change: gameState.moveType,
-          oneOffTargetType: gameState.oneOffTargetType,
           chosenCard,
           pNum,
           happened,
