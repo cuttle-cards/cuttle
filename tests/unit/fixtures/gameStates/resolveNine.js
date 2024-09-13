@@ -86,6 +86,7 @@ export const resolveNine = {
       ],
       match: null,
       name: 'Test Game',
+      oneOff: null,
       oneOffTargetType: '',
       p0Ready: true,
       p0Rematch: null,
