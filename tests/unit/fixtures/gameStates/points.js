@@ -168,11 +168,11 @@ export const points = {
       twos: [],
       resolved: null,
       oneOff: null,
-      oneOffTargetType: '',
+      oneOffTargetType: null,
       lastEvent: {
         change: MoveType.POINTS,
         oneOff: null,
-        oneOffTargetType: '',
+        oneOffTargetType: null,
         chosenCard: null,
         happened: true,
         pNum: 0,

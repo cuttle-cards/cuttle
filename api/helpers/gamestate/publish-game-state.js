@@ -29,7 +29,7 @@ module.exports = {
 
       const lastEventTargetType = () => {
         if (!['targetedOneOff', 'sevenTargetedOneOff'].includes(gameState.moveType)) {
-          return '';
+          return null;
         }
         if (gameState.targetCard?.rank === 11) {
           return 'jack';
