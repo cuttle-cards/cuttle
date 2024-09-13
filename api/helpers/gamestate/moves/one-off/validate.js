@@ -1,5 +1,28 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
+function findTargetCard(targetId, targetType, opponent) {
+  switch (targetType) {
+    case 'point':
+      return opponent.points.find(card => card.id === targetId);
+
+    case 'faceCard':
+      return opponent.faceCards.find(card => card.id === targetId);
+
+    case 'jack':
+      for (let point of opponent.points) {
+        for (let jack of point.attachments) {
+          if (jack.id === targetId) {
+            return jack;
+          }
+        }
+      }
+      return;
+
+    default:
+      throw new Error(`Need a target type to find the ${targetId}`);
+  }
+}
+
 module.exports = {
   friendlyName: 'Validate request to play untargeted one-off',
 
@@ -15,7 +38,7 @@ module.exports = {
     /**
      * @param { Object } requestedMove - Object describing the request to play points
      * @param { String } requestedMove.cardId - Card Played for points
-     * @param { String } [ requestedMove.targetId ] - OPTIONAL target of one-off
+     * @param { String } [ requestedMove.targetId ] - OPTIONAL target of one-off used for 2's and 9's
      * @param { MoveType.ONE_OFF } requestedMove.moveType
      */
     requestedMove: {
@@ -42,7 +65,9 @@ module.exports = {
       }
 
       if (currentState.oneOff) {
-        throw new Error('There is already a one-off in play; You cannot play any card, except a two to counter.');
+        throw new Error(
+          'There is already a one-off in play; You cannot play any card, except a two to counter.',
+        );
       }
 
       if (!cardPlayed) {
@@ -57,13 +82,42 @@ module.exports = {
         throw new Error('game.snackbar.global.cardFrozen');
       }
 
-
       switch (cardPlayed.rank) {
         case 1:
+        case 6:
           return exits.success();
 
         case 2:
-          return exits.success();
+        case 9:
+          {
+            const targetCard = findTargetCard(requestedMove.targetId, requestedMove.targetType, opponent);
+
+            if (!targetCard) {
+              throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
+            }
+
+            const queenCount = opponent.faceCards.reduce(
+              ((numQueens, faceCard) => (faceCard.rank === 12 ? numQueens + 1 : numQueens)),
+              0,
+            );
+
+
+            switch (queenCount) {
+              case 0:
+                return exits.success();
+
+              case 1: {
+                const [ targetRankAsString ] = requestedMove.targetId;
+                if (targetRankAsString !== 'Q') {
+                  throw new Error('game.snackbar.global.blockedByQueen');
+                }
+                return exits.success();
+              }
+
+              default:
+                throw new Error('game.snackbar.global.blockedByMultipleQueens');
+            }
+          }
 
         case 3:
           if (!currentState.scrap.length) {
@@ -83,22 +137,15 @@ module.exports = {
           }
           return exits.success();
 
-        case 6:
-          return exits.success();
-
         case 7:
           if (!currentState.deck.length) {
             throw new Error('game.snackbar.oneOffs.sevenWithEmptyDeck');
           }
           return exits.success();
 
-        case 9:
-          return exits.success();
-
-        default: 
+        default:
           throw new Error('You cannot play that card as a one-off without a target.');
       }
-
     } catch (err) {
       return exits.error(err);
     }
