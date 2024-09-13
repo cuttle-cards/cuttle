@@ -24,10 +24,10 @@ function findTargetCard(targetId, targetType, opponent) {
 }
 
 module.exports = {
-  friendlyName: 'Validate request to play untargeted one-off',
+  friendlyName: 'Validate request to play one-off',
 
   description:
-    'Verifies whether a request to play untargeted one-off is legal, throwing explanatory error if not.',
+    'Verifies whether a request to play one-off is legal, throwing explanatory error if not.',
 
   inputs: {
     currentState: {
@@ -37,9 +37,10 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - Object describing the request to play points
+     * @param { MoveType.ONE_OFF } requestedMove.moveType
      * @param { String } requestedMove.cardId - Card Played for points
      * @param { String } [ requestedMove.targetId ] - OPTIONAL target of one-off used for 2's and 9's
-     * @param { MoveType.ONE_OFF } requestedMove.moveType
+     * @param { 'point' | 'faceCard' | 'jack' } [ requestedMove.targetType ] - OPTIONAL where one-off target is located
      */
     requestedMove: {
       type: 'ref',
