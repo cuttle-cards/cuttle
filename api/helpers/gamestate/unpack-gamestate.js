@@ -71,7 +71,6 @@ module.exports = {
         moveType: gameStateRow.moveType,
         turn: gameStateRow.turn,
         phase: gameStateRow.phase,
-        oneOffTargetType: gameStateRow.oneOffTargetType,
 
         p0,
         p1,
@@ -82,6 +81,7 @@ module.exports = {
         targetCard: convertedData.targetCard ?? null,
         oneOff: convertedData.oneOff ?? null,
         oneOffTarget: convertedData.oneOffTarget ?? null,
+        oneOffTargetType: gameStateRow.oneOffTargetType,
         resolved: convertedData.resolved ?? null,
         discardedCards: convertedData.discardedCards ?? null,
       };
