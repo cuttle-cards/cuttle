@@ -112,6 +112,7 @@ export const resolveThree = {
       rematchGame: null,
       resolved: Card.THREE_OF_SPADES,
       passes: 0,
+      oneOff: null,
       oneOffTargetType: '',
       turn: 1,
       log: ['myUsername took the 10♥️ from the Scrap pile to their hand.'],

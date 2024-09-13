@@ -165,6 +165,7 @@ export const points = {
       secondCard: Card.SEVEN_OF_CLUBS,
       twos: [],
       resolved: null,
+      oneOff: null,
       oneOffTargetType: '',
       lastEvent: {
         change: MoveType.POINTS,
