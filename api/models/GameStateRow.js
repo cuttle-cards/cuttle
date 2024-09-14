@@ -52,7 +52,7 @@ module.exports = {
     discardedCards: {
       type: 'json',
       defaultsTo: [],
-      columnType: 'text[]',
+      columnType: 'jsonb',
     },
     // Which turn number the move was made on
     turn: {
@@ -77,49 +77,49 @@ module.exports = {
     // Cards in p0’s hand
     p0Hand: {
       type: 'json',
-      columnType: 'text[]',
+      columnType: 'jsonb',
       required: true,
     },
     // Cards in p1’s hand
     p1Hand: {
       type: 'json',
-      columnType: 'text[]',
+      columnType: 'jsonb',
       required: true,
     },
     // Cards in p0’s points
     p0Points: {
       type: 'json',
-      columnType: 'text[]',
+      columnType: 'jsonb',
       required: true,
     },
     // Cards in p1’s points
     p1Points: {
       type: 'json',
-      columnType: 'text[]',
+      columnType: 'jsonb',
       required: true,
     },
     // Cards in p0’s face cards
     p0FaceCards: {
       type: 'json',
-      columnType: 'text[]',
+      columnType: 'jsonb',
       required: true,
     },
     // Cards in p1’s face cards
     p1FaceCards: {
       type: 'json',
-      columnType: 'text[]',
+      columnType: 'jsonb',
       required: true,
     },
     // Cards in the deck, in order
     deck: {
       type: 'json',
-      columnType: 'text[]',
+      columnType: 'jsonb',
       required: true,
     },
     // Cards in the scrap
     scrap: {
       type: 'json',
-      columnType: 'text[]',
+      columnType: 'jsonb',
       required: true,
     },
     // One-off card
@@ -140,7 +140,7 @@ module.exports = {
     // Twos
     twos: {
       type: 'json',
-      columnType: 'text[]',
+      columnType: 'jsonb',
       required: true,
     },
     // Resolved card
