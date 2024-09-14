@@ -32,14 +32,14 @@
                   <v-skeleton-loader
                     class="pa-0"
                     type="text"
-                    max-width="160"
+                    :max-width="160"
                     color="surface-2"
                     height="30"
                   />
                   <v-skeleton-loader
                     class="pa-0"
                     type="text"
-                    max-width="130"
+                    :max-width="130"
                     color="surface-2"
                     height="30"
                   />
