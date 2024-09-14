@@ -56,8 +56,8 @@ module.exports = {
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
-      const player = currentState[`p${playedBy}`];
-      const opponent = currentState[`p${(playedBy + 1) % 2}`];
+      const player = playedBy ? currentState.p1 : currentState.p0;
+      const opponent = playedBy ? currentState.p0 : currentState.p1;
 
       const cardPlayed = player.hand.find(({ id }) => id === requestedMove.cardId);
 
