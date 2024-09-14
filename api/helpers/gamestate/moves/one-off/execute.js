@@ -3,10 +3,10 @@ const GamePhase = require('../../../../../utils/GamePhase.json');
 function findTargetCard(targetId, targetType, opponent) {
   switch (targetType) {
     case 'point':
-      return opponent.points.find(card => card.id === targetId);
+      return opponent.points.find(({ id }) => id === targetId);
 
     case 'faceCard':
-      return opponent.faceCards.find(card => card.id === targetId);
+      return opponent.faceCards.find(({ id }) => id === targetId);
 
     case 'jack':
       for (let point of opponent.points) {
