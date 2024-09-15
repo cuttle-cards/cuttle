@@ -99,7 +99,6 @@ describe('FOURS', () => {
     });
 
     it('Prevents playing a 4 when opponent has no cards in hand', () => {
-      cy.skipOnGameStateApi();
       // Set Up
       cy.loadGameFixture(0, {
         p0Hand: [Card.FOUR_OF_CLUBS],
