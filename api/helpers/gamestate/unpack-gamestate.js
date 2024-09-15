@@ -81,6 +81,7 @@ module.exports = {
         targetCard: convertedData.targetCard ?? null,
         oneOff: convertedData.oneOff ?? null,
         oneOffTarget: convertedData.oneOffTarget ?? null,
+        oneOffTargetType: gameStateRow.oneOffTargetType,
         resolved: convertedData.resolved ?? null,
         discardedCards: convertedData.discardedCards ?? null,
       };

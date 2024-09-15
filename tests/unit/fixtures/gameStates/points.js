@@ -18,6 +18,7 @@ const gameStateRow = {
   playedCard: 'TS',
   oneOff: null,
   oneOffTarget: null,
+  oneOffTargetType: null,
   resolved: null,
   gameId: 1,
   playedBy: 0,
@@ -51,6 +52,7 @@ export const points = {
     discardedCards: [],
     oneOff: null,
     oneOffTarget: null,
+    oneOffTargetType: null,
     resolved: null,
     playedCard: Card.TEN_OF_SPADES,
     gameId: 1,
@@ -72,11 +74,8 @@ export const points = {
   socket: {
     change: MoveType.POINTS,
     happened: true,
-    oneOff: null,
-    discardedCards: null,
     playedBy: 0,
     pNum: 0,
-    chosenCard: null,
     game: {
       players: [
         {
@@ -165,15 +164,13 @@ export const points = {
       secondCard: Card.SEVEN_OF_CLUBS,
       twos: [],
       resolved: null,
-      oneOffTargetType: '',
+      oneOff: null,
+      oneOffTarget: null,
+      oneOffTargetType: null,
       lastEvent: {
         change: MoveType.POINTS,
-        oneOff: null,
-        oneOffTargetType: '',
-        chosenCard: null,
         happened: true,
         pNum: 0,
-        discardedCards: null,
       },
     },
     victory: {

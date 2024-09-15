@@ -12,7 +12,7 @@ module.exports = {
       required: true,
     },
     /**
-     * @param {Object} requestedMove - Object describing the request to play points (req.body)
+     * @param { Object } requestedMove - Object describing the request to play points (req.body)
      * @param { MoveType.DRAW } requestedMove.moveType - Specifies that this a Draw move
      */
     requestedMove: {

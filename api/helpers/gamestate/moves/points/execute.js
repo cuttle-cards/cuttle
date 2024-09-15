@@ -12,8 +12,8 @@ module.exports = {
       required: true,
     },
     /**
-     * @param {Object} requestedMove - Object describing the request to play points (req.body)
-     * @param { Card } requestedMove.cardPlayed - Card Played for points
+     * @param { Object } requestedMove - Object describing the request to play points (req.body)
+     * @param { String } requestedMove.cardId - Card Played for points
      * @param { MoveType.POINTS } requestedMove.moveType - Specifies that this a Points move
      */
     requestedMove: {

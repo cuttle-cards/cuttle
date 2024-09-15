@@ -358,7 +358,7 @@ Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
         );
       }
 
-      const moveType = MoveType.UNTARGETED_ONE_OFF;
+      const moveType = MoveType.ONE_OFF;
       const cardId = foundCard.id;
       const opId = game.players[(pNum + 1) % 2].id;
       cy.makeSocketRequest('game', 'untargetedOneOff', { moveType, cardId, opId });
@@ -487,7 +487,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
         );
       }
 
-      const moveType = MoveType.UNTARGETED_ONE_OFF;
+      const moveType = MoveType.ONE_OFF;
       cy.makeSocketRequest('game', 'untargetedOneOff', {
         moveType,
         opId: playerId,
@@ -558,7 +558,7 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
         );
       }
 
-      const moveType = MoveType.TARGETED_ONE_OFF;
+      const moveType = MoveType.ONE_OFF;
       cy.makeSocketRequest('game', 'targetedOneOff', {
         moveType,
         opId: playerId, // opponent's opponent is the player

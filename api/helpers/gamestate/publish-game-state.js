@@ -27,19 +27,6 @@ module.exports = {
       delete p1.encryptedPassword;
       const players = [p0, p1];
 
-      const lastEventTargetType = () => {
-        if (!['targetedOneOff', 'sevenTargetedOneOff'].includes(gameState.moveType)) {
-          return '';
-        }
-        if (gameState.targetCard?.rank === 11) {
-          return 'jack';
-        }
-        if (gameState.targetCard?.rank > 11) {
-          return 'faceCard';
-        }
-        return 'point';
-      };
-
       const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState);
 
       const countPasses = () => {
@@ -92,15 +79,17 @@ module.exports = {
         secondCard: gameState.deck[1],
         twos: gameState.twos,
         resolved: gameState.resolved,
-        oneOffTargetType: lastEventTargetType(),
+        oneOff: gameState.oneOff,
+        oneOffTarget: gameState.oneOffTarget,
+        oneOffTargetType: gameState.oneOffTargetType,
         lastEvent: {
           change: gameState.moveType,
-          oneOffTargetType: lastEventTargetType(),
-          chosenCard,
           pNum,
           happened,
-          discardedCards,
-          oneOff: gameState.resolved,
+          // Conditionally included properties if truthy
+          ...(gameState.resolved && {oneOff: gameState.resolved}),
+          ...(chosenCard && { chosenCard }),
+          ...(discardedCards && { discardedCards }),
         },
       };
 
@@ -109,11 +98,12 @@ module.exports = {
         game: socketGame,
         victory,
         happened,
-        discardedCards,
-        chosenCard,
         playedBy,
         pNum,
-        oneOff: gameState.resolved,
+        // Conditionally included properties if truthy
+        ...(gameState.resolved && {oneOff: gameState.resolved}),
+        ...(chosenCard && { chosenCard }),
+        ...(discardedCards && { discardedCards }),
       };
 
       Game.publish([game.id], fullSocketEvent);
