@@ -64,10 +64,8 @@ export const resolveNine = {
     change: MoveType.RESOLVE,
     happened: true,
     oneOff: Card.NINE_OF_CLUBS,
-    discardedCards: null,
     pNum: 0,
     playedBy: 0,
-    chosenCard: null,
     game: {
       chat: [],
       deck: [],
@@ -75,9 +73,7 @@ export const resolveNine = {
       lastEvent: {
         change: MoveType.RESOLVE,
         happened: true,
-        chosenCard: null,
         oneOff: Card.NINE_OF_CLUBS,
-        discardedCards: null,
         pNum: 0,
       },
       lock: null,

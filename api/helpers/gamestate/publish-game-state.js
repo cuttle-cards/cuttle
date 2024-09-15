@@ -84,11 +84,12 @@ module.exports = {
         oneOffTargetType: gameState.oneOffTargetType,
         lastEvent: {
           change: gameState.moveType,
-          chosenCard,
           pNum,
           happened,
-          discardedCards,
-          oneOff: gameState.resolved,
+          // Conditionally included properties if truthy
+          ...(gameState.resolved && {oneOff: gameState.resolved}),
+          ...(chosenCard && { chosenCard }),
+          ...(discardedCards && { discardedCards }),
         },
       };
 
@@ -97,11 +98,12 @@ module.exports = {
         game: socketGame,
         victory,
         happened,
-        discardedCards,
-        chosenCard,
         playedBy,
         pNum,
-        oneOff: gameState.resolved,
+        // Conditionally included properties if truthy
+        ...(gameState.resolved && {oneOff: gameState.resolved}),
+        ...(chosenCard && { chosenCard }),
+        ...(discardedCards && { discardedCards }),
       };
 
       Game.publish([game.id], fullSocketEvent);

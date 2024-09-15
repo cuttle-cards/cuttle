@@ -74,11 +74,8 @@ export const points = {
   socket: {
     change: MoveType.POINTS,
     happened: true,
-    oneOff: null,
-    discardedCards: null,
     playedBy: 0,
     pNum: 0,
-    chosenCard: null,
     game: {
       players: [
         {
@@ -172,11 +169,8 @@ export const points = {
       oneOffTargetType: null,
       lastEvent: {
         change: MoveType.POINTS,
-        oneOff: null,
-        chosenCard: null,
         happened: true,
         pNum: 0,
-        discardedCards: null,
       },
     },
     victory: {
