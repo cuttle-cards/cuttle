@@ -99,6 +99,10 @@ module.exports = {
               throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
             }
 
+            if (cardPlayed.rank === 2 && !['faceCard', 'jack'].includes(requestedMove.targetType)) {
+              throw new Error('Twos can only target royals or glasses');
+            }
+
             const queenCount = opponent.faceCards.filter(
               (faceCard) => faceCard.rank === 12
             ).length;
