@@ -1,5 +1,6 @@
 import { assertGameState, assertSnackbarError, playOutOfTurn } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
+import { SnackBarError } from '../../../fixtures/snackbarError';
 const { _ } = Cypress;
 
 describe('Playing THREEs', () => {
@@ -21,7 +22,7 @@ describe('Playing THREEs', () => {
     // Player plays three
     cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
     cy.get('[data-move-choice=oneOff]').click();
-    assertSnackbarError('You can only play a 3 as a one-off if there are cards in the scrap pile');
+    assertSnackbarError(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
   });
 
   it('Plays 3s successfully', () => {

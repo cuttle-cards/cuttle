@@ -280,7 +280,7 @@
       },
       "oneOffs": {
         "scrapIsEmpty": "You can only play a 3 as a one-off if there are cards in the scrap pile",
-        "opponentHasNoCards": "You cannot play a 4 as a ONE-OFF while your opponent has no cards in hand",
+        "opponentHasNoCards": "You cannot play a 4 as a one-off while your opponent has no cards in hand",
         "sevenWithEmptyDeck": "You can only play a 7 as a ONE-OFF if there are cards in the deck",
         "sevenWithOneCardInDeck": "You cannot play a 7 as a ONE-OFF if it is the last card in the deck",
         "cantPlayWithoutATarget": "You cannot play that card as a ONE-OFF without a target",
