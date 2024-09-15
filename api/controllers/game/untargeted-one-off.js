@@ -28,7 +28,7 @@ module.exports = function (req, res) {
                     if (game.scrap.length < 1)
                       {
                         return Promise.reject({
-                          message: 'You can only play a 3 as a one-off, if there are cards in the scrap pile',
+                          message: 'game.snackbar.oneOffs.scrapIsEmpty',
                         });
                       }
                     break;

@@ -8,7 +8,6 @@ describe('Playing THREEs', () => {
   });
 
   it('Plays 3s with no cards in scrap', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS],
@@ -22,7 +21,7 @@ describe('Playing THREEs', () => {
     // Player plays three
     cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
     cy.get('[data-move-choice=oneOff]').click();
-    assertSnackbarError('You can only play a 3 as a one-off, if there are cards in the scrap pile');
+    assertSnackbarError('You can only play a 3 as a one-off if there are cards in the scrap pile');
   });
 
   it('Plays 3s successfully', () => {

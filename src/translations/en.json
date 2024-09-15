@@ -279,7 +279,7 @@
         "mustTargetPointCard": "You can only scuttle a card your opponent has played for points"
       },
       "oneOffs": {
-        "scrapIsEmpty": "You can only play a 3 ONE-OFF if there are cards in the scrap pile",
+        "scrapIsEmpty": "You can only play a 3 as a one-off if there are cards in the scrap pile",
         "opponentHasNoCards": "You cannot play a 4 as a ONE-OFF while your opponent has no cards in hand",
         "sevenWithEmptyDeck": "You can only play a 7 as a ONE-OFF if there are cards in the deck",
         "sevenWithOneCardInDeck": "You cannot play a 7 as a ONE-OFF if it is the last card in the deck",
