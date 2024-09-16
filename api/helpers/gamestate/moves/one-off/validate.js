@@ -66,9 +66,7 @@ module.exports = {
       }
 
       if (currentState.oneOff) {
-        throw new Error(
-          'There is already a one-off in play; You cannot play any card, except a two to counter.',
-        );
+        throw new Error('game.snackbar.oneOffs.oneOffInPlay');
       }
 
       if (!cardPlayed) {
