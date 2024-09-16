@@ -2,7 +2,7 @@ import { assertGameState, assertSnackbarError, playOutOfTurn } from '../../suppo
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
 
-describe.only('Game Basic Moves - P0 Perspective', () => {
+describe('Game Basic Moves - P0 Perspective', () => {
   beforeEach(() => {
     cy.setupGameAsP0();
   });
@@ -171,7 +171,7 @@ describe.only('Game Basic Moves - P0 Perspective', () => {
     cy.log('Scuttling is disabled with specific message when opponent has no points');
   });
 
-  it.only('Plays Kings', () => {
+  it('Plays Kings', () => {
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS],
@@ -228,7 +228,7 @@ describe.only('Game Basic Moves - P0 Perspective', () => {
     });
   });
 
-  it.only('Plays Queens', () => {
+  it('Plays Queens', () => {
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.QUEEN_OF_DIAMONDS, Card.QUEEN_OF_SPADES, Card.KING_OF_CLUBS, Card.JACK_OF_DIAMONDS],
@@ -460,7 +460,7 @@ describe('Playing 8s', () => {
     playOutOfTurn('points');
   }); // End play 8 for points
 
-  it.only('Plays eights for glasses', () => {
+  it('Plays eights for glasses', () => {
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
