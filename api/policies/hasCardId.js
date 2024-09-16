@@ -13,11 +13,11 @@ module.exports = function (req, res, next) {
     if (typeof req.body.cardId === 'number') {
       return next();
     }
-    return res.forbidden({
+    return res.badRequest({
       message: 'Error: You must provide a valid card for your move (ID was non-integer)',
     });
   }
-  return res.forbidden({
+  return res.badRequest({
     message: 'Error You must provide a valid card to make that move (No ID given)',
   });
 };
