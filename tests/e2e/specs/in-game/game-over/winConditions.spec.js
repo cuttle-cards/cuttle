@@ -75,7 +75,7 @@ describe('Winning the game', () => {
   });
 
   it('Shows when player wins game with 0 points and four kings', () => {
-    cy.skipOnGameStateApi();
+    
     cy.loadGameFixture(0, {
       p0Hand: [Card.KING_OF_HEARTS],
       p0Points: [],

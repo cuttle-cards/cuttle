@@ -3,7 +3,7 @@ const GamePhase = require('../../../../../utils/GamePhase.json');
 module.exports = {
   friendlyName: 'Play Face Card',
 
-  description: 'Returns new GameState resulting from requested Face Card  move',
+  description: 'Returns new GameState resulting from requested Face Card move',
 
   inputs: {
     currentState: {
@@ -12,8 +12,8 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to play points (req.body)
-     * @param { String } requestedMove.cardId - Card Played for points
+     * @param { Object } requestedMove - Object describing the request to play a face card (req.body)
+     * @param { String } requestedMove.cardId - Card Played being played as face card
      * @param { MoveType.FACECARD } requestedMove.moveType - Specifies that this a face card move
      */
     requestedMove: {
@@ -33,8 +33,9 @@ module.exports = {
     const player = playedBy ? result.p1 : result.p0;
     const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
 
-    const [playedCard] = player.hand.splice(cardIndex, 1);
-    player.push(playedCard);
+    const [ playedCard ] = player.hand.splice(cardIndex, 1);
+
+    player.faceCards.push(playedCard);
 
     result.turn++;
 

@@ -12,8 +12,8 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to play points
-     * @param { String } requestedMove.cardId - Card Played for points
+     * @param { Object } requestedMove - Object describing the request to play face card
+     * @param { String } requestedMove.cardId - Card Played as face card
      * @param { MoveType.FACECARD } requestedMove.moveType - Specifies that this a face card move
      */
     requestedMove: {
@@ -35,7 +35,7 @@ module.exports = {
       const cardPlayed = currentState[playerKey].hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error(`Can only play face card  in main phase, not ${currentState.phase}`);
+        throw new Error(`Can only play face card in main phase, not ${currentState.phase}`);
       }
 
       if (!cardPlayed) {
@@ -50,7 +50,7 @@ module.exports = {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
-      if ((cardPlayed.rank >= 12 && cardPlayed.rank <= 13) || cardPlayed.rank === 8) {
+      if (![8, 12, 13].includes(cardPlayed.rank)) {
         throw new Error('game.snackbar.faceCard.withoutTarget');
       }
 
