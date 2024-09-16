@@ -28,7 +28,7 @@ module.exports = function (req, res) {
                     if (game.scrap.length < 1)
                       {
                         return Promise.reject({
-                          message: 'game.snackbar.oneOffs.scrapIsEmpty',
+                          message: 'game.snackbar.oneOffs.three.scrapIsEmpty',
                         });
                       }
                     break;

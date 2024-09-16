@@ -58,7 +58,7 @@ module.exports = function (req, res) {
           return Promise.reject({ message: 'game.snackbar.scuttle.mustUsePointCard' });
         }
         return Promise.reject({
-          message: 'game.snackbar.seven.pickAndPlay',
+          message: 'game.snackbar.oneOffs.seven.pickAndPlay',
         });
       }
       return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });

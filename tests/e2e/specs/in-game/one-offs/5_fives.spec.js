@@ -425,7 +425,7 @@ describe('FIVES', () => {
               );
 
             } catch (err) {
-              expect(err).to.eq('game.snackbar.five.selectCardToDiscard');
+              expect(err).to.eq('game.snackbar.oneOffs.five.selectCardToDiscard');
             }
           });
       });

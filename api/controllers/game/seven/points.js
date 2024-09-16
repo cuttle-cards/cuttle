@@ -37,7 +37,7 @@ module.exports = function (req, res) {
           return Promise.reject({ message: 'game.snackbar.points.numberOnlyForPoints' });
         }
         return Promise.reject({
-          message: 'game.snackbar.seven.pickAndPlay',
+          message: 'game.snackbar.oneOffs.seven.pickAndPlay',
         });
       }
       return Promise.reject({ message: "It's not your turn" });

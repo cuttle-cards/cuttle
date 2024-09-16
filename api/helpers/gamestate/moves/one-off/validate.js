@@ -130,14 +130,14 @@ module.exports = {
         // Three requires card(s) in scrap
         case 3:
           if (!currentState.scrap.length) {
-            throw new Error('game.snackbar.oneOffs.scrapIsEmpty');
+            throw new Error('game.snackbar.oneOffs.three.scrapIsEmpty');
           }
           return exits.success();
 
         // Four requires opponent to have cards in hand
         case 4:
           if (!opponent.hand.length) {
-            throw new Error('game.snackbar.oneOffs.opponentHasNoCards');
+            throw new Error('game.snackbar.oneOffs.four.opponentHasNoCards');
           }
           return exits.success();
 

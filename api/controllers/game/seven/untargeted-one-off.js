@@ -23,7 +23,7 @@ module.exports = function (req, res) {
                   if (game.scrap.length === 0)
                     {
                       return Promise.reject({
-                        message: 'game.snackbar.oneOffs.scrapIsEmpty',
+                        message: 'game.snackbar.oneOffs.three.scrapIsEmpty',
                       });
                     }
                   break;
@@ -31,7 +31,7 @@ module.exports = function (req, res) {
                   if (opponent.hand.length === 0)
                     {
                       return Promise.reject({
-                        message: 'game.snackbar.oneOffs.opponentHasNoCards',
+                        message: 'game.snackbar.oneOffs.four.opponentHasNoCards',
                       });
                     }
                   break;
@@ -46,7 +46,7 @@ module.exports = function (req, res) {
                   if (game.topCard.id === card.id && !game.secondCard)
                     {
                       return Promise.reject({
-                        message: 'game.snackbar.oneOffs.sevenWithOneCardInDeck',
+                        message: 'game.snackbar.oneOffs.seven.oneCardInDeck',
                       });
                     }
                   break;
@@ -82,7 +82,7 @@ module.exports = function (req, res) {
           }
         } else {
           return Promise.reject({
-            message: 'game.snackbar.seven.pickAndPlay',
+            message: 'game.snackbar.oneOffs.seven.pickAndPlay',
           });
         }
       } else {
