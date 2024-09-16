@@ -415,19 +415,18 @@ describe('FIVES', () => {
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
         cy.window()
           .its('cuttle.gameStore')
-          .then((gameStore) => {
+          .then(async (gameStore) => {
             // Request to resolve five without discarding
-            gameStore
-              .requestResolveFive(undefined)
-              .then((res) => {
-                expect(true).to.eq(
-                  false,
-                  `Expected request to resolve five without discarding to error, but instead came back 200: ${res}`,
-                );
-              })
-              .catch((err) => {
-                expect(err).to.eq('game.snackbar.five.emptyDeck');
-              });
+            try {
+              const res = await gameStore.requestResolveFive(undefined);
+              expect(true).to.eq(
+                false,
+                `Expected request to resolve five without discarding to error, but instead came back 200: ${res}`,
+              );
+
+            } catch (err) {
+              expect(err).to.eq('game.snackbar.five.selectCardToDiscard');
+            }
           });
       });
     });
