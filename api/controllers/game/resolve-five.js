@@ -7,16 +7,16 @@ module.exports = async function (req, res) {
     const [game, player, cardToDiscard] = await Promise.all([promiseGame, promisePlayer, promiseCard]);
 
     if (!game.topCard) {
-      throw { message: 'game.snackbar.five.fiveDeckIsEmpty' };
+      throw { message: 'game.snackbar.oneOffs.five.fiveDeckIsEmpty' };
     }
     if (player.hand?.length && !cardToDiscard) {
-      throw { message: 'game.snackbar.five.selectCardToDiscard' };
+      throw { message: 'game.snackbar.oneOffs.five.selectCardToDiscard' };
     }
     if (game.turn % 2 !== player.pNum) {
       throw { message: 'game.snackbar.global.notYourTurn' };
     }
     if (!game.oneOff || game.oneOff?.rank !== 5) {
-      throw { message: 'game.snackbar.five.incorrectCard' };
+      throw { message: 'game.snackbar.oneOffs.five.incorrectCard' };
     }
 
     const gameUpdates = {

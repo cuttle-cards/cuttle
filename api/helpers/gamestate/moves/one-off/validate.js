@@ -66,9 +66,7 @@ module.exports = {
       }
 
       if (currentState.oneOff) {
-        throw new Error(
-          'There is already a one-off in play; You cannot play any card, except a two to counter.',
-        );
+        throw new Error('game.snackbar.oneOffs.oneOffInPlay');
       }
 
       if (!cardPlayed) {
@@ -130,21 +128,21 @@ module.exports = {
         // Three requires card(s) in scrap
         case 3:
           if (!currentState.scrap.length) {
-            throw new Error('game.snackbar.oneOffs.scrapIsEmpty');
+            throw new Error('game.snackbar.oneOffs.three.scrapIsEmpty');
           }
           return exits.success();
 
         // Four requires opponent to have cards in hand
         case 4:
           if (!opponent.hand.length) {
-            throw new Error('game.snackbar.oneOffs.opponentHasNoCards');
+            throw new Error('game.snackbar.oneOffs.four.opponentHasNoCards');
           }
           return exits.success();
 
-        // Five requires cards in deck
+        // Five and sevens require cards in deck
         case 5:
           if (!currentState.deck.length) {
-            throw new Error('game.snackbar.five.fiveDeckIsEmpty');
+            throw new Error('game.snackbar.five.emptyDeck');
           }
           return exits.success();
 

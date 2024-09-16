@@ -1,5 +1,6 @@
 import { assertGameState, assertSnackbarError } from '../../../../support/helpers';
 import { Card } from '../../../../fixtures/cards';
+import { SnackBarError } from '../../../../fixtures/snackbarError';
 
 describe('Playing SEVENS', () => {
   beforeEach(() => {
@@ -539,7 +540,7 @@ describe('Playing SEVENS', () => {
       // Should not allow playing 4 as one-off
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
-      assertSnackbarError('You cannot play a 4 as a ONE-OFF while your opponent has no cards in hand');
+      assertSnackbarError(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
     });
   }); // End player seven one-off describe
 

@@ -350,8 +350,11 @@ describe('FIVES', () => {
           deck: [],
         });
       });
+    });
 
-      it('Attempts to play 5 with an empty deck', () => {
+    describe('Illegal FIVES', () => {
+
+      it('Cannot to play 5 with an empty deck', () => {
         cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
@@ -367,15 +370,34 @@ describe('FIVES', () => {
           deck: [],
         });
         cy.get('#deck').click();
+        cy.get('#deck').should('contain', '(1)');
+
         cy.drawCardOpponent();
 
         cy.get('#deck').should('contain', 'PASS');
         cy.get('[data-player-hand-card=5-3]').click();
         cy.get('[data-move-choice=oneOff]').should('have.class', 'v-card--disabled');
-      });
-    });
 
-    describe('Illegal FIVES', () => {
+        // Forcibly make request to play 5 and confirm response is error
+        cy.window()
+          .its('cuttle.gameStore')
+          .then(async (gameStore) => {
+            const fiveId = gameStore.player.hand.find((card) => card.rank === 5 && card.suit === 3).id;
+
+            try {
+              const res = await gameStore.requestPlayOneOff(fiveId);
+              // If the promise resolves, this assertion will fail the test (as expected in your case)
+              expect(true).to.eq(
+                false,
+                `Expected request to resolve five without discarding to error, but instead came back 200: ${res}`,
+              );
+            } catch (err) {
+              // If the promise rejects, this will handle the error
+              expect(err).to.eq('game.snackbar.oneOffs.emptyDeck');
+            }
+          });
+      });
+
       it('Cannot resolve five without discarding when you have cards in hand', () => {
         cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
@@ -393,19 +415,18 @@ describe('FIVES', () => {
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
         cy.window()
           .its('cuttle.gameStore')
-          .then((gameStore) => {
+          .then(async (gameStore) => {
             // Request to resolve five without discarding
-            gameStore
-              .requestResolveFive(undefined)
-              .then((res) => {
-                expect(true).to.eq(
-                  false,
-                  `Expected request to resolve five without discarding to error, but instead came back 200: ${res}`,
-                );
-              })
-              .catch((err) => {
-                expect(err).to.eq('game.snackbar.five.selectCardToDiscard');
-              });
+            try {
+              const res = await gameStore.requestResolveFive(undefined);
+              expect(true).to.eq(
+                false,
+                `Expected request to resolve five without discarding to error, but instead came back 200: ${res}`,
+              );
+
+            } catch (err) {
+              expect(err).to.eq('game.snackbar.oneOffs.five.selectCardToDiscard');
+            }
           });
       });
     });
