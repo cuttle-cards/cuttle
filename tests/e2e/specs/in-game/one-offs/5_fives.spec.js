@@ -350,8 +350,11 @@ describe('FIVES', () => {
           deck: [],
         });
       });
+    });
 
-      it('Attempts to play 5 with an empty deck', () => {
+    describe('Illegal FIVES', () => {
+
+      it('Cannot to play 5 with an empty deck', () => {
         cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
@@ -394,9 +397,7 @@ describe('FIVES', () => {
             }
           });
       });
-    });
 
-    describe('Illegal FIVES', () => {
       it('Cannot resolve five without discarding when you have cards in hand', () => {
         cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
