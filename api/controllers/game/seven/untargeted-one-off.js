@@ -40,7 +40,7 @@ module.exports = function (req, res) {
                   if (!game.topCard)
                     {
                       return Promise.reject({
-                        message: 'game.snackbar.oneOffs.sevenWithEmptyDeck',
+                        message: 'game.snackbar.oneOffs.emptyDeck',
                       });
                     }
                   if (game.topCard.id === card.id && !game.secondCard)

@@ -45,7 +45,7 @@ module.exports = function (req, res) {
                     if (!game.topCard)
                       {
                         return Promise.reject({
-                          message: "You can't play that card as a one-off, unless there are cards in the deck",
+                          message: 'game.snackbar.oneOffs.emptyDeck',
                         });
                       }
                     break;

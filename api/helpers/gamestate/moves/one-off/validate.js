@@ -141,10 +141,10 @@ module.exports = {
           }
           return exits.success();
 
-        // Five requires cards in deck
+        // Five and sevens require cards in deck
         case 5:
           if (!currentState.deck.length) {
-            throw new Error('game.snackbar.five.fiveDeckIsEmpty');
+            throw new Error('game.snackbar.five.emptyDeck');
           }
           return exits.success();
 
