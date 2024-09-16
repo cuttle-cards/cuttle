@@ -19,7 +19,6 @@ describe('Winning the game', () => {
   });
 
   it('Shows when player wins game with 21 points', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
