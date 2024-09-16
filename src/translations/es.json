@@ -281,7 +281,7 @@
       "oneOffs": {
         "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad única si hay cartas en el mazo de descarte",
         "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano",
-        "sevenWithEmptyDeck": "Solo puedes jugar un 7 como carta de habilidad única si hay cartas en el mazo",
+        "emptyDeck": "No puedes jugar ese uno por uno a menos que haya cartas en el mazo",
         "sevenWithOneCardInDeck": "No puedes jugar un 7 como carta de habilidad única si es la última carta del mazo",
         "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad única sin un objetivo",
         "onlyTwoOrNine": "Solo puedes jugar un 2 o un 9 como cartas de habilidad única con objetivo",
