@@ -11,7 +11,7 @@ const DeckIds = require('../../utils/DeckIds.json');
  */
 module.exports = function (req, res, next) {
   const { moveType, cardId, targetId, targetType } = req.body;
-  alert(moveType ,'is is is ');
+
   switch (moveType) {
     case MoveType.DRAW:
       // Draw requires no extra data
