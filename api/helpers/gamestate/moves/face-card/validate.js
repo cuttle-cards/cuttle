@@ -32,7 +32,7 @@ module.exports = {
     try {
       const player = playedBy ? currentState.p1 : currentState.p0;
 
-      const cardPlayed = currentState[player].hand.find(({ id }) => id === requestedMove.cardId);
+      const cardPlayed = player.hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.phase !== GamePhase.MAIN) {
         throw new Error(`Can only play face card in main phase, not ${currentState.phase}`);
