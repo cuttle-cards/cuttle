@@ -10,7 +10,7 @@
       {{ rulesDifference }}
     </p>
     <ul class="list-outside-pl5 text-md rules-ul">
-      <li class="rules-li" v-for="(rule, index) in rules" :key="index">
+      <li v-for="(rule, index) in rules" :key="index" class="rules-li">
         {{ rule }}
       </li>
     </ul>

@@ -172,7 +172,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Plays Kings', () => {
-    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS],
@@ -463,7 +462,6 @@ describe('Playing 8s', () => {
   }); // End play 8 for points
 
   it('Plays eights for glasses', () => {
-    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
