@@ -78,7 +78,7 @@ module.exports = function (req, res) {
           }
         } else {
           return Promise.reject({
-            message: 'game.snackbar.seven.pickAndPlay',
+            message: 'game.snackbar.oneOffs.seven.pickAndPlay',
           });
         }
       } else {

@@ -1,5 +1,6 @@
 import { assertGameState, assertSnackbarError } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
+import { SnackBarError } from '../../../fixtures/snackbarError';
 
 describe('FOURS', () => {
   describe('Playing FOURS', () => {
@@ -98,7 +99,6 @@ describe('FOURS', () => {
     });
 
     it('Prevents playing a 4 when opponent has no cards in hand', () => {
-      cy.skipOnGameStateApi();
       // Set Up
       cy.loadGameFixture(0, {
         p0Hand: [Card.FOUR_OF_CLUBS],
@@ -114,7 +114,7 @@ describe('FOURS', () => {
       cy.get('[data-player-hand-card=4-0]').click(); // four of clubs
       cy.get('[data-move-choice=oneOff]').click();
 
-      assertSnackbarError('You cannot play a 4 as a one-off while your opponent has no cards in hand');
+      assertSnackbarError(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
 
       assertGameState(0, {
         p0Hand: [Card.FOUR_OF_CLUBS],

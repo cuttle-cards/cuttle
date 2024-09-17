@@ -250,14 +250,6 @@
         "blockedByQueen": "La Dame de votre adversaire empêche ses autres cartes d'être ciblées.",
         "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame."
       },
-      "seven": {
-        "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte du paquet."
-      },
-      "five": {
-        "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
-        "incorrectCard": "Mauvaise carte jouée",
-        "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
-      },
       "draw": {
         "deckIsEmpty": "Le paquet est vide, voune pouvez pas piocher.",
         "handLimit": "Votre limite de carte en main est atteinte !"
@@ -279,13 +271,25 @@
         "mustTargetPointCard": "Les scuttles ne peuvent cibler que les cartes à points."
       },
       "oneOffs": {
-        "scrapIsEmpty": "La capacité du Trois n'est possible que si la corbeille n'est pas vide.",
-        "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main.",
-        "sevenWithEmptyDeck": "La capacité du Sept n'est possible que si le paquet n'est pas vide.",
-        "sevenWithOneCardInDeck": "Impossible de jouer la capacité du Sept si c'était la dernière carte du paquet.",
+        "oneOffInPlay": "Une capacité est en cours d'exécution, vous ne pouvez jouer qu'un deux pour contrer.",
         "cantPlayWithoutATarget": "La capacité de cette nécessite de cibler une carte.",
         "onlyTwoOrNine": "La capacité du Deux et du Neuf nécessite de cibler une carte.",
-        "oneOffInPlay": "Une capacité est en cours d'exécution, vous ne pouvez jouer qu'un deux pour contrer."
+        "emptyDeck": "Vous ne pouvez pas jouer cette carte unique à moins qu'il y ait des cartes dans le deck",
+        "three": {
+          "scrapIsEmpty": "La capacité du Trois n'est possible que si la corbeille n'est pas vide."
+        },
+        "four": {
+          "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main."
+        },
+        "five": {
+          "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
+          "incorrectCard": "Mauvaise carte jouée",
+          "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
+        },
+        "seven": {
+          "oneCardInDeck": "Impossible de jouer la capacité du Sept si c'était la dernière carte du paquet.",
+          "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte du paquet."
+        }
       }
     }
   },
