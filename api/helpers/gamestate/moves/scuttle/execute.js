@@ -35,18 +35,16 @@ module.exports = {
     const player = playedBy ? result.p1 : result.p0;
     const opponent = playedBy ? result.p0 : result.p1;
 
-    const playedCard = player.hand.find(({ id }) => id === cardId);
-    const targetCard = opponent.points.find(({ id }) => id === targetId);
-    
     // removing playedCard from players hand and
     const cardPlayedIndex = player.hand.findIndex(({ id }) => id === cardId);
     const [ cardPlayed ] = player.hand.splice(cardPlayedIndex, 1);
-    result.scrap.push(playedCard);
     
     //remove target card from oppponent points
     const targetPlayedIndex = opponent.points.findIndex(({ id }) => id === targetId);
     const [ targetPlayed ]= opponent.points.splice(targetPlayedIndex, 1);
-    result.scrap.push(targetCard);
+    
+    //moving both card into scrap
+    result.scrap.push(targetPlayed, cardPlayed);
 
     result.turn++;
 
@@ -58,7 +56,6 @@ module.exports = {
       cardPlayed,
       targetPlayed
     };
-console.log(targetCard);
     return exits.success(result);
   },
 };
