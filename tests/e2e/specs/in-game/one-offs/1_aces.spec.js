@@ -12,7 +12,6 @@ describe('Ace One-Offs', () => {
   });
 
   it('Plays an Ace to destroy all point cards', () => {
-    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS],
