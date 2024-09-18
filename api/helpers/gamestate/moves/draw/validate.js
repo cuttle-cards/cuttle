@@ -13,8 +13,8 @@ module.exports = {
     },
     /**
      * @param { MoveType.DRAW } requestedMove.moveType - Specifies that this a draw move
-     * @param {Object} requestedMove - Object describing the request to draw
-     * @param {1 | 0} requestedMove.playedBy - Which player is playing
+     * @param { Object } requestedMove - Object describing the request to draw
+     * @param { 1 | 0 } requestedMove.playedBy - Which player is drawing
      */
     requestedMove: {
       type: 'ref',

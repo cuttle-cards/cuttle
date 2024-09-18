@@ -12,7 +12,7 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { MoveType.DRAW } requestedMove.moveType - Specifies that this a resolve move
+     * @param { MoveType.RESOLVE } requestedMove.moveType - Specifies that this a resolve move
      * @param { Object } requestedMove - Object describing the request to resolve
      * @param { 1 | 0 } requestedMove.playedBy - Which player is resolving
      */
