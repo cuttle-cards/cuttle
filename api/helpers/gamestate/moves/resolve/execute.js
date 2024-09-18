@@ -30,7 +30,7 @@ module.exports = {
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
     let result = _.cloneDeep(currentState);
 
-    const { oneOff, oneOffTarget, oneOffTargetType } = result;
+    const { oneOff } = result;
 
     // Move oneOff + twos into scrap and increment turn
     result.scrap.push(result.oneOff);
