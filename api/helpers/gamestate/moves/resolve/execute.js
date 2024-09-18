@@ -42,6 +42,7 @@ module.exports = {
       twos: [],
       turn: result.turn + 1,
       playedBy,
+      resolved: oneOff,
     };
 
     // If one-off was fizzles, make no other changes
@@ -52,6 +53,9 @@ module.exports = {
     }
 
     switch (oneOff.rank) {
+      case 1:
+        result = sails.helpers.gamestate.moves.resolve.ace(result);
+        break;
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }

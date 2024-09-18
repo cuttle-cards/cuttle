@@ -14,7 +14,8 @@ module.exports = function (req, res, next) {
 
   switch (moveType) {
     case MoveType.DRAW:
-      // Draw requires no extra data
+    case MoveType.RESOLVE:
+      // These moves require no extra data
     return next();
     
     case MoveType.FACECARD: {
