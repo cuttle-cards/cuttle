@@ -38,11 +38,12 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
+      phase: GamePhase.MAIN,
+      playedBy,
+      resolved: oneOff,
       oneOff: null,
       twos: [],
       turn: result.turn + 1,
-      playedBy,
-      resolved: oneOff,
     };
 
     // If one-off was fizzles, make no other changes
