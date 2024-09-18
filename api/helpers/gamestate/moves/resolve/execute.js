@@ -42,6 +42,8 @@ module.exports = {
       playedBy,
       resolved: oneOff,
       oneOff: null,
+      oneOffTarget: null,
+      oneOffTargetType: null,
       twos: [],
       turn: result.turn + 1,
     };
