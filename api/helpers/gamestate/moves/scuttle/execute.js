@@ -3,7 +3,7 @@ const GamePhase = require('../../../../../utils/GamePhase.json');
 module.exports = {
   friendlyName: 'Scuttle',
 
-  description: 'Returns new GameState resulting from requested draw move',
+  description: 'Returns new GameState resulting from requested scuttle move',
 
   inputs: {
     currentState: {
@@ -15,11 +15,11 @@ module.exports = {
      * @param { Object } requestedMove - Object describing the request to play scuttle
      * @param { String } requestMove.cardId - Card Played 
      * @param { String } requestMove.targetId - Card Targeted
-     * @param { MoveType.DRAW } requestedMove.moveType - Specifies that this a scuttle
+     * @param { MoveType.SCUTTLE } requestedMove.moveType - Specifies that this a scuttle
      */
     requestedMove: {
       type: 'ref',
-      description: 'The move being requested. Specifies moveType and which player is scuttling',
+      description: 'The move being requested. Specifies moveType, card played and targeted',
     },
     playedBy: {
       type: 'number',
@@ -30,7 +30,7 @@ module.exports = {
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
     let result = _.cloneDeep(currentState);
 
-    const { cardId, targetId } = requestedMove
+    const { cardId, targetId } = requestedMove;
 
     const player = playedBy ? result.p1 : result.p0;
     const opponent = playedBy ? result.p0 : result.p1;
@@ -39,12 +39,13 @@ module.exports = {
     const targetCard = opponent.points.find(({ id }) => id === targetId);
     
     // removing playedCard from players hand and
-    const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
-    player.hand.splice(cardIndex, 1);
+    const cardPlayedIndex = player.hand.findIndex(({ id }) => id === cardId);
+    const [ cardPlayed ] = player.hand.splice(cardPlayedIndex, 1);
     result.scrap.push(playedCard);
+    
     //remove target card from oppponent points
-    const targetIndex = opponent.points.findIndex(({ id }) => id === targetId);
-    opponent.points.splice(targetIndex, 1);
+    const targetPlayedIndex = opponent.points.findIndex(({ id }) => id === targetId);
+    const [ targetPlayed ]= opponent.points.splice(targetPlayedIndex, 1);
     result.scrap.push(targetCard);
 
     result.turn++;
@@ -54,8 +55,8 @@ module.exports = {
       ...requestedMove,
       phase: GamePhase.MAIN,
       playedBy,
-      playedCard: playedCard.id,
-      targetCard: targetCard.id
+      cardPlayed,
+      targetPlayed
     };
 console.log(targetCard);
     return exits.success(result);

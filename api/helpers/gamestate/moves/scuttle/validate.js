@@ -14,6 +14,7 @@ module.exports = {
     /**
      * @param { Object } requestedMove - Object describing the request to scuttle
      * @param { String } requestedMove.cardId - Card Played for scuttle
+     * @param { String } requestedMove.targetId - Card Targeted for scuttle
      * @param { MoveType.SCUTTLE } requestedMove.moveType - Specifies that this a scuttle
      */
     requestedMove: {
@@ -36,8 +37,6 @@ module.exports = {
       const cardPlayed = player.hand.find(({ id }) => id === requestedMove.cardId);
       const targetCard = opponent.points.find(({ id }) => id === requestedMove.targetId);
 
-      const targetPointCard = opponent.points.find(({ id }) => id === requestedMove.targetId);
-
       if (currentState.phase !== GamePhase.MAIN) {
         throw new Error(`Can only play points in main phase, not ${currentState.phase}`);
       }
@@ -58,7 +57,7 @@ module.exports = {
         throw new Error('game.snackbar.points.numberOnlyForPoints');
       }
 
-      if (!targetPointCard) {
+      if (!targetCard) {
         throw new Error('game.snackbar.scuttle.mustTargetPointCard');
       }
 
