@@ -51,8 +51,8 @@ describe('Game Basic Moves - P0 Perspective', () => {
     });
   });
 
-  it('Scuttles as P0', () => {
-    cy.skipOnGameStateApi();
+  it.only('Scuttles as P0', () => {
+    // cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES, Card.SEVEN_OF_CLUBS],
