@@ -81,7 +81,7 @@ module.exports = {
 
         case MoveType.FIZZLE:
           return `The ${getFullCardName(
-            game.oneOff,
+            resolved,
           )} is countered, and all cards played this turn are scrapped.`;
 
         case MoveType.RESOLVE:

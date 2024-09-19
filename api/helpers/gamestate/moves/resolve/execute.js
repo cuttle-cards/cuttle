@@ -33,6 +33,7 @@ module.exports = {
     const { oneOff } = result;
 
     // Move oneOff + twos into scrap and increment turn
+    const fizzles = result.twos.length % 2 === 1;
     result.scrap.push(result.oneOff);
     result.scrap.push(...result.twos);
     result = {
@@ -48,8 +49,7 @@ module.exports = {
       turn: result.turn + 1,
     };
 
-    // If one-off was fizzles, make no other changes
-    const fizzles = result.twos.length % 2 === 1;
+    // If one-off fizzles, make no other changes
     if (fizzles) {
       result.moveType = MoveType.FIZZLE;
       return exits.success(result);
