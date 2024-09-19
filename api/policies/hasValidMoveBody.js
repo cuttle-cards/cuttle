@@ -15,8 +15,19 @@ module.exports = function (req, res, next) {
   switch (moveType) {
     case MoveType.DRAW:
       // Draw requires no extra data
-      return next();
+    return next();
+    
+    case MoveType.FACECARD: {
+      if (!cardId) {
+        return res.badRequest({ message: 'Must specify a card' });
+      }
 
+      if (!DeckIds.includes(cardId)) {
+        return res.badRequest({ message: `${cardId} is not a valid cardId` });
+      }
+    }
+      return next();
+    
     case MoveType.POINTS:
     case MoveType.ONE_OFF:
       {
