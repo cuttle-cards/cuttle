@@ -17,8 +17,10 @@ module.exports = function (req, res, next) {
     case MoveType.RESOLVE:
       // These moves require no extra data
     return next();
-    
-    case MoveType.FACECARD: {
+
+    case MoveType.POINTS:
+    case MoveType.FACECARD:
+    case MoveType.COUNTER: {
       if (!cardId) {
         return res.badRequest({ message: 'Must specify a card' });
       }
@@ -28,8 +30,7 @@ module.exports = function (req, res, next) {
       }
     }
       return next();
-    
-    case MoveType.POINTS:
+
     case MoveType.ONE_OFF: {
       if (!cardId) {
         return res.badRequest({ message: 'Must specify a card' });
