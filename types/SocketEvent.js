@@ -14,6 +14,7 @@ export default {
   REJECT_STALEMATE: 'rejectStalemate',
   REQUEST_STALEMATE: 'requestStalemate',
   RESOLVE: 'resolve',
+  FIZZLE: 'fizzle',
   RESOLVE_THREE: 'resolveThree',
   RESOLVE_FOUR: 'resolveFour',
   RESOLVE_FIVE: 'resolveFive',
