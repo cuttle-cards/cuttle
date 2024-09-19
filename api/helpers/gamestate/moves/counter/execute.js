@@ -8,7 +8,7 @@ module.exports = {
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest GameState before the requesting player counters the pending one-off and counters',
+      description: 'The latest GameState before the requesting player counters the pending one-off',
       required: true,
     },
     /**
