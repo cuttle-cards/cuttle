@@ -41,7 +41,7 @@ module.exports = {
     
     //remove target card from oppponent points
     const targetPlayedIndex = opponent.points.findIndex(({ id }) => id === targetId);
-    const [ targetPlayed ]= opponent.points.splice(targetPlayedIndex, 1);
+    const [ targetCard ]= opponent.points.splice(targetPlayedIndex, 1);
     
     //moving both card into scrap
     result.scrap.push(targetPlayed, cardPlayed);
@@ -54,7 +54,7 @@ module.exports = {
       phase: GamePhase.MAIN,
       playedBy,
       cardPlayed,
-      targetPlayed
+      targetCard
     };
     return exits.success(result);
   },
