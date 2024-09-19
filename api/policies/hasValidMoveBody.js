@@ -53,7 +53,7 @@ module.exports = function (req, res, next) {
         }
 
         if (!DeckIds.includes(targetId)) {
-          return res.badRequest({ message: `${targetId} is not a valid cardId` });
+          return res.badRequest({ message: `${targetId} is not a valid targetId` });
         }
       }
       return next();
