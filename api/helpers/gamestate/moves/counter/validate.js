@@ -12,8 +12,8 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { MoveType.COUNTER } requestedMove.moveType - Specifies that this a resolve move
-     * @param { Object } requestedMove - Object describing the request to resolve
+     * @param { Object } requestedMove - Object describing the request to 
+     * @param { MoveType.COUNTER } requestedMove.moveType - Specifies that this a counter move
      * @param { 1 | 0 } requestedMove.playedBy - Which player is resolving
      */
     requestedMove: {

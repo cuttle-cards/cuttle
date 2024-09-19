@@ -13,13 +13,13 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - The move being requested. 
-     * Specifies that the move is to resolve
+     * Specifies that the move is to counter
      * @param { MoveType.COUNTER } requestedMove.moveType
      * @param { String } requestedMove.cardId
      */
     requestedMove: {
       type: 'ref',
-      description: 'The move being requested. Specifies which player is asking to counter',
+      description: 'The move being requested. Specifies the moveType and the card being played to counter',
     },
     playedBy: {
       type: 'number',
