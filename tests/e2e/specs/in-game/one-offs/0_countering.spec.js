@@ -485,7 +485,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
 
   describe('Opponent May Counter', () => {
     it('Displays "Opponent May Counter" when player had neither glasses nor a queen', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
@@ -512,7 +511,11 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
             await store.requestDrawCard();
             expect(true).to.eq(false, 'Expected request to draw card to error');
           } catch (err) {
-            expect(err).to.eq("Can't play while waiting for opponent to counter");
+            const errors = [
+              "Can't play while waiting for opponent to counter",
+              'Can only play draw in main phase',
+            ];
+            expect(err).to.be.oneOf(errors);
           }
         });
     });
