@@ -34,15 +34,15 @@ module.exports = {
     const player = playedBy ? result.p1 : result.p0;
     const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
     const targetCard = result.twos[result.twos.length - 1] ?? result.oneOff;
-    const [ cardPlayed ] = player.hand.splice(cardIndex, 1);
-    result.twos.push(cardPlayed);
+    const [ playedCard ] = player.hand.splice(cardIndex, 1);
+    result.twos.push(playedCard);
 
     result = {
       ...result,
       ...requestedMove,
       phase: GamePhase.COUNTERING,
       playedBy,
-      cardPlayed,
+      playedCard,
       targetCard,
     };
 
