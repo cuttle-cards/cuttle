@@ -44,7 +44,7 @@ module.exports = {
     const [ targetCard ]= opponent.points.splice(targetPlayedIndex, 1);
     
     //moving both card into scrap
-    result.scrap.push(targetPlayed, cardPlayed);
+    result.scrap.push(targetCard, cardPlayed);
 
     result.turn++;
 
