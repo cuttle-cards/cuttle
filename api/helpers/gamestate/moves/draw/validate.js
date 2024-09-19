@@ -33,7 +33,7 @@ module.exports = {
 
       // Must be MAIN phase of the turn
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error(`Can only play draw in main phase`);
+        throw new Error('Can only draw in main phase');
       }
 
       // Must be your turn
