@@ -1166,8 +1166,11 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
     return cy
       .window()
       .its('cuttle.gameStore.id')
-      .then((gameId) => {
-        return cy.makeSocketRequest(`game/${gameId}`, 'loadFixtureGameState', fixture);
+      .then(async (gameId) => {
+        await cy.makeSocketRequest(`game/${gameId}`, 'loadFixtureGameState', fixture);
+        const playerHandLength = pNum === 0 ? fixture.p0Hand.length : fixture.p1Hand.length;
+        cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
+        return;
       });
   }
 
