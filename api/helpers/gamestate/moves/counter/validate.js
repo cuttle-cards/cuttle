@@ -41,8 +41,8 @@ module.exports = {
       }
 
       const player = playedBy ? currentState.p1 : currentState.p0;
-      const cardPlayed = player.hand.find(({ id }) => requestedMove.cardId === id);
-      if (!cardPlayed) {
+      const playedCard = player.hand.find(({ id }) => requestedMove.cardId === id);
+      if (!playedCard) {
         throw new Error('game.snackbar.global.playFromHand');
       }
 
