@@ -60,7 +60,6 @@ module.exports = {
         result = sails.helpers.gamestate.moves.resolve.ace(result);
         break;
       case 7:
-        // Use currentState instead of result to avoid incrementing turn
         result = {
           ...result,
           phase: GamePhase.RESOLVING_SEVEN,
