@@ -66,7 +66,7 @@ export const resolveNine = {
     oneOff: Card.NINE_OF_CLUBS,
     pNum: 0,
     playedBy: 0,
-    targetCardId: "JC",
+    targetCardId: 'JC',
     game: {
       chat: [],
       deck: [],

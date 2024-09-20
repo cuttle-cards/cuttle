@@ -75,7 +75,7 @@ export const points = {
     change: MoveType.POINTS,
     happened: true,
     playedBy: 0,
-    playedCardId: "TS",
+    playedCardId: 'TS',
     pNum: 0,
     game: {
       players: [
