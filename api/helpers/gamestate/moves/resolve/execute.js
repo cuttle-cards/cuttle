@@ -32,8 +32,8 @@ module.exports = {
 
     const { oneOff } = result;
 
-    // Move oneOff + twos into scrap and increment turn
     const fizzles = result.twos.length % 2 === 1;
+    // Move oneOff + twos into scrap and increment turn
     result.scrap.push(result.oneOff);
     result.scrap.push(...result.twos);
     result = {
@@ -58,6 +58,15 @@ module.exports = {
     switch (oneOff.rank) {
       case 1:
         result = sails.helpers.gamestate.moves.resolve.ace(result);
+        break;
+      case 7:
+        // Use currentState instead of result to avoid incrementing turn
+        result = {
+          ...result,
+          phase: GamePhase.RESOLVING_SEVEN,
+          oneOff, // oneOff stays on the stack until resolveSeven move
+          turn: result.turn - 1, // turn doesn't increment until resolveSeven move
+        };
         break;
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
