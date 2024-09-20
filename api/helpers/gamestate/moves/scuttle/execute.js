@@ -37,14 +37,14 @@ module.exports = {
 
     // removing playedCard from players hand and
     const cardPlayedIndex = player.hand.findIndex(({ id }) => id === cardId);
-    const [ cardPlayed ] = player.hand.splice(cardPlayedIndex, 1);
+    const [ playedCard  ] = player.hand.splice(cardPlayedIndex, 1);
     
     //remove target card from oppponent points
     const targetPlayedIndex = opponent.points.findIndex(({ id }) => id === targetId);
     const [ targetCard ]= opponent.points.splice(targetPlayedIndex, 1);
     
     //moving both card into scrap
-    result.scrap.push(targetCard, cardPlayed);
+    result.scrap.push(targetCard, playedCard );
 
     result.turn++;
 
@@ -53,7 +53,7 @@ module.exports = {
       ...requestedMove,
       phase: GamePhase.MAIN,
       playedBy,
-      cardPlayed,
+      cardPlayed: playedCard ,
       targetCard
     };
     return exits.success(result);

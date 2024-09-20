@@ -34,18 +34,18 @@ module.exports = {
       const player = playedBy ? currentState.p1 : currentState.p0;
       const opponent = playedBy ? currentState.p0 : currentState.p1;
 
-      const cardPlayed = player.hand.find(({ id }) => id === requestedMove.cardId);
+      const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
       const targetCard = opponent.points.find(({ id }) => id === requestedMove.targetId);
 
       if (currentState.phase !== GamePhase.MAIN) {
         throw new Error(`Can only play points in main phase, not ${currentState.phase}`);
       }
 
-      if (!cardPlayed) {
+      if (!playedCard) {
         throw new Error('game.snackbar.global.playFromHand');
       }
 
-      if (cardPlayed.isFrozen) {
+      if (playedCard.isFrozen) {
         throw new Error('game.snackbar.global.cardFrozen');
       }
 
@@ -53,7 +53,7 @@ module.exports = {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
-      if (cardPlayed.rank > 10) {
+      if (playedCard.rank > 10) {
         throw new Error('game.snackbar.points.numberOnlyForPoints');
       }
 
@@ -61,7 +61,10 @@ module.exports = {
         throw new Error('game.snackbar.scuttle.mustTargetPointCard');
       }
 
-      if (cardPlayed.rank < targetCard.rank || (cardPlayed.rank === targetCard.rank && cardPlayed.suit < targetCard.suit)) {
+      const lowerRank = playedCard.rank < targetCard.rank;
+      const sameRankLowerSuit = playedCard.rank === targetCard.rank && playedCard.suit < targetCard.suit;
+      
+      if (lowerRank || sameRankLowerSuit) {
         throw new Error('game.snackbar.scuttle.rankTooLow');
       }
 
