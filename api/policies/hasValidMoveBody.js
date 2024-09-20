@@ -31,6 +31,20 @@ module.exports = function (req, res, next) {
     }
       return next();
 
+    case MoveType.SCUTTLE: {
+      if (!cardId || !targetId) {
+        return res.badRequest({ message: 'Must specify a card' });
+      }
+
+      const invalidCardId = [cardId, targetId].find(id => !DeckIds.includes(id));
+
+      if (invalidCardId) {
+        return res.badRequest({ message: `${invalidCardId} is not a valid cardId` });
+      }
+      
+    }
+      return next();
+    
     case MoveType.ONE_OFF: {
       if (!cardId) {
         return res.badRequest({ message: 'Must specify a card' });
