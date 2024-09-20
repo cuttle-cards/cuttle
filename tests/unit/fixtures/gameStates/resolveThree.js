@@ -70,6 +70,7 @@ export const resolveThree = {
     oneOff: Card.THREE_OF_SPADES,
     chosenCard: Card.TEN_OF_HEARTS,
     playedBy: 0,
+    targetCardId: "TH",
     pNum: 0,
     game: {
       players: [
