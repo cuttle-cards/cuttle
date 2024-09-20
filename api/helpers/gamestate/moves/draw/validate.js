@@ -12,9 +12,9 @@ module.exports = {
       required: true,
     },
     /**
-     * @param {Object} requestedMove - Object describing the request to play points
-     * @param {1 | 0} requestedMove.playedBy - Which player is playing
-     * @param { MoveType.DRAW } requestedMove.moveType - Specifies that this a Points move
+     * @param { MoveType.DRAW } requestedMove.moveType - Specifies that this a draw move
+     * @param { Object } requestedMove - Object describing the request to draw
+     * @param { 1 | 0 } requestedMove.playedBy - Which player is drawing
      */
     requestedMove: {
       type: 'ref',
@@ -33,7 +33,7 @@ module.exports = {
 
       // Must be MAIN phase of the turn
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error(`Can only play points in main phase, not ${currentState.phase}`);
+        throw new Error('Can only draw in main phase');
       }
 
       // Must be your turn

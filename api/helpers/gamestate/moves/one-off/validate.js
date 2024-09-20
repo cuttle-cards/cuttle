@@ -59,7 +59,7 @@ module.exports = {
       const player = playedBy ? currentState.p1 : currentState.p0;
       const opponent = playedBy ? currentState.p0 : currentState.p1;
 
-      const cardPlayed = player.hand.find(({ id }) => id === requestedMove.cardId);
+      const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.phase !== GamePhase.MAIN) {
         throw new Error(`Can only play one-off in main phase, not ${currentState.phase}`);
@@ -69,7 +69,7 @@ module.exports = {
         throw new Error('game.snackbar.oneOffs.oneOffInPlay');
       }
 
-      if (!cardPlayed) {
+      if (!playedCard) {
         throw new Error('game.snackbar.global.playFromHand');
       }
 
@@ -77,11 +77,11 @@ module.exports = {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
-      if (cardPlayed.isFrozen) {
+      if (playedCard.isFrozen) {
         throw new Error('game.snackbar.global.cardFrozen');
       }
 
-      switch (cardPlayed.rank) {
+      switch (playedCard.rank) {
         // Ace and Six are always allowed
         case 1:
         case 6:
@@ -97,7 +97,7 @@ module.exports = {
               throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
             }
 
-            if (cardPlayed.rank === 2 && !['faceCard', 'jack'].includes(requestedMove.targetType)) {
+            if (playedCard.rank === 2 && !['faceCard', 'jack'].includes(requestedMove.targetType)) {
               throw new Error('Twos can only target royals or glasses');
             }
 

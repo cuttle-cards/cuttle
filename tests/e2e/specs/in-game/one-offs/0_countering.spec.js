@@ -7,7 +7,6 @@ describe('Countering One-Offs', () => {
   });
 
   it('Displays the cannot counter modal and resolves stack when opponent plays a one-off if player has no twos', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
@@ -45,7 +44,6 @@ describe('Countering One-Offs', () => {
   });
 
   it('Counters one-off with a two', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
@@ -80,7 +78,6 @@ describe('Countering One-Offs', () => {
   });
 
   it('Declining option to counter resolves stack', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
@@ -114,7 +111,6 @@ describe('Countering One-Offs', () => {
   });
 
   it('Cancels decision to counter with Cancel button after choosing to counter', () => {
-    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(1, {
       // Opponent is P0
@@ -156,7 +152,6 @@ describe('Countering One-Offs', () => {
   });
 
   it('Double counters successfully', () => {
-    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(1, {
       // Opponent is P0
@@ -205,7 +200,6 @@ describe('Countering One-Offs', () => {
   });
 
   it('Triple counters successfully', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS],
@@ -254,7 +248,6 @@ describe('Countering One-Offs', () => {
   });
 
   it('Quadruple counters successfully', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
@@ -313,7 +306,6 @@ describe('Countering One-Offs', () => {
   });
 
   it('Cannot Counter When Opponent Has Queen', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
@@ -391,7 +383,6 @@ describe('Countering One-Offs P0 Perspective', () => {
   });
 
   it('Quadruple counters successfully - P0 Perspective', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       // Player is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
@@ -458,7 +449,6 @@ describe('Countering One-Offs P0 Perspective', () => {
   });
 
   it('Cannot Counter When Opponent Has Queen, dialog message', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       // Player is P0
       p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
@@ -495,7 +485,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
 
   describe('Opponent May Counter', () => {
     it('Displays "Opponent May Counter" when player had neither glasses nor a queen', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
@@ -522,13 +511,16 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
             await store.requestDrawCard();
             expect(true).to.eq(false, 'Expected request to draw card to error');
           } catch (err) {
-            expect(err).to.eq("Can't play while waiting for opponent to counter");
+            const errors = [
+              "Can't play while waiting for opponent to counter",
+              'Can only draw in main phase',
+            ];
+            expect(err).to.be.oneOf(errors);
           }
         });
     });
 
     it('Displays "Opponent May Counter" when player has glasses but opponent has a two in hand', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
@@ -551,7 +543,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
 
   describe('Opponent Must Resolve', () => {
     it('Displays "Opponent Must Resolve" when player has a queen', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
@@ -572,7 +563,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
     });
 
     it('Displays "Opponent Must Resolve" when player has glasses while opponent does not have a two in hand', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
@@ -593,7 +583,6 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
     });
 
     it('Display "Opponent Must Resolve" when player has a queen + glasses and their opponent does not have a 2 in hand', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         // Player is P0
         p0Hand: [Card.ACE_OF_CLUBS],
