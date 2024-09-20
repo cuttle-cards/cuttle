@@ -53,7 +53,7 @@ module.exports = {
       ...requestedMove,
       phase: GamePhase.MAIN,
       playedBy,
-      playedCard ,
+      playedCard,
       targetCard
     };
     return exits.success(result);
