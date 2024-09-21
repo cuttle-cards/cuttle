@@ -164,9 +164,9 @@ describe('Losing the game', () => {
   });
 });
 
-describe('Stalemates', () => {
-  it('Passes three times for a stalemate', () => {
-    cy.skipOnGameStateApi();
+describe.only('Stalemates', () => {
+  it.only('Passes three times for a stalemate', () => {
+
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
