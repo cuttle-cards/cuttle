@@ -30,7 +30,6 @@ module.exports = {
   sync: true,
   fn: ({ currentState, playedBy }, exits) => {
     try {
-      console.log("validiating.....");
       // Must be your turn
       if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
