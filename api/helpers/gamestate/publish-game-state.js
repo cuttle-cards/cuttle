@@ -108,7 +108,9 @@ module.exports = {
         playedBy,
         pNum,
         // Conditionally included properties if truthy
-        ...(gameState.resolved && {oneOff: gameState.resolved}),
+        ...(gameState.playedCard && { playedCardId: gameState.playedCard.id }),
+        ...(gameState.targetCard && { targetCardId: gameState.targetCard.id }),
+        ...(gameState.resolved && { oneOff: gameState.resolved }),
         ...(chosenCard && { chosenCard }),
         ...(discardedCards && { discardedCards }),
       };
