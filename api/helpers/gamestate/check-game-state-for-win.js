@@ -23,7 +23,7 @@ module.exports = {
     },
   },
 
-  fn: async function ({ game, gameState, countPasses}, exits) {
+  fn: async function ({ game, gameState, countPasses }, exits) {
     
     const checkWin = (pNum) => {
       const player = pNum ? gameState.p1 : gameState.p0;
