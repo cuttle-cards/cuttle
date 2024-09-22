@@ -13,6 +13,7 @@ module.exports = function (req, res, next) {
   const { moveType, cardId, targetId, targetType } = req.body;
 
   switch (moveType) {
+    case MoveType.PASS:
     case MoveType.DRAW:
     case MoveType.RESOLVE:
       // These moves require no extra data

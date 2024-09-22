@@ -166,7 +166,7 @@ describe('Losing the game', () => {
 
 describe('Stalemates', () => {
   it('Passes three times for a stalemate', () => {
-    cy.skipOnGameStateApi();
+
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
@@ -176,6 +176,8 @@ describe('Stalemates', () => {
       p1Points: [],
       p1FaceCards: [],
       deck: [],
+      topCard: Card.FOUR_OF_CLUBS,
+      secondCard: Card.SIX_OF_DIAMONDS,
     });
 
     cy.log('Drawing last two cards');
@@ -199,7 +201,7 @@ describe('Stalemates', () => {
   });
 
   it('Registers stalemate when opponent passes first/last', () => {
-    cy.skipOnGameStateApi();
+
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
@@ -209,6 +211,8 @@ describe('Stalemates', () => {
       p1Points: [],
       p1FaceCards: [],
       deck: [],
+      topCard: Card.FOUR_OF_CLUBS,
+      secondCard: Card.SIX_OF_DIAMONDS,
     });
 
     cy.get('#deck').should('contain', '(2)');
