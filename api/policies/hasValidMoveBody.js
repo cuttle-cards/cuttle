@@ -21,6 +21,7 @@ module.exports = function (req, res, next) {
 
     case MoveType.POINTS:
     case MoveType.FACECARD:
+    case MoveType.SEVEN_POINTS:
     case MoveType.COUNTER: {
       if (!cardId) {
         return res.badRequest({ message: 'Must specify a card' });

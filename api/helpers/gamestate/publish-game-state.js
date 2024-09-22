@@ -44,7 +44,14 @@ module.exports = {
 
       //Last Event, and Extra Socket Variables
       const happened = gameState.moveType !== MoveType.FIZZLE;
-      const { playedBy } = gameState;
+      let { playedBy } = gameState;
+
+      // When resolving, the player who resolves is the opponent
+      // of the one who played the one-off (if the one-off doesn't fizzle)
+      if ( gameState.moveType === MoveType.RESOLVE ) {
+        playedBy = (playedBy + 1) % 2;
+      }
+
       const discardedCards = gameState.discardedCards.length ? gameState.discardedCards : null;
       const chosenCard = gameState.moveType === MoveType.RESOLVE_THREE ? gameState.targetCard : null;
       const pNum = playedBy;
