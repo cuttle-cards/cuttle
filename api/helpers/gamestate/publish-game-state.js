@@ -27,9 +27,7 @@ module.exports = {
       delete p1.encryptedPassword;
       const players = [p0, p1];
 
-      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState);
-
-      const countPasses = () => {
+      const countPasses = (function () {
         let numPasses = 0;
         for (const gameState of game.gameStates.slice(-3)) {
           if (gameState.moveType !== MoveType.PASS) {
@@ -38,7 +36,9 @@ module.exports = {
           numPasses++;
         }
         return numPasses;
-      };
+      })();
+
+      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState, countPasses);
 
       const fullLog = sails.helpers.gamestate.getLog(game);
 
@@ -71,7 +71,7 @@ module.exports = {
         winner: victory.winner,
         match: victory.currentMatch,
         log: fullLog,
-        passes: countPasses(),
+        passes: countPasses,
         turn: gameState.turn,
         deck: gameState.deck.slice(2),
         scrap: gameState.scrap,

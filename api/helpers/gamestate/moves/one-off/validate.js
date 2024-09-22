@@ -142,7 +142,7 @@ module.exports = {
         // Five and sevens require cards in deck
         case 5:
           if (!currentState.deck.length) {
-            throw new Error('game.snackbar.five.emptyDeck');
+            throw new Error('game.snackbar.oneOffs.emptyDeck');
           }
           return exits.success();
 
