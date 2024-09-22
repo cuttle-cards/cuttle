@@ -27,8 +27,6 @@ module.exports = {
       delete p1.encryptedPassword;
       const players = [p0, p1];
 
-      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState);
-
       const countPasses = () => {
         let numPasses = 0;
         for (const gameState of game.gameStates.slice(-3)) {
@@ -39,6 +37,8 @@ module.exports = {
         }
         return numPasses;
       };
+
+      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState, countPasses());
 
       const fullLog = sails.helpers.gamestate.getLog(game);
 

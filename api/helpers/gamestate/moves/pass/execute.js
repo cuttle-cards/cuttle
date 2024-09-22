@@ -28,7 +28,6 @@ module.exports = {
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
     let result = _.cloneDeep(currentState);
 
-    result.passes++;
     result.turn++;
 
     result = {
@@ -37,7 +36,6 @@ module.exports = {
       phase: GamePhase.MAIN,
       playedBy,
     };
-console.log(result);
     return exits.success(result);
   },
 };

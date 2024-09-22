@@ -355,7 +355,7 @@ describe('FIVES', () => {
     describe('Illegal FIVES', () => {
 
       it('Cannot to play 5 with an empty deck', () => {
-        cy.skipOnGameStateApi();
+
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS],

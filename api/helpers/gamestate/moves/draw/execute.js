@@ -30,7 +30,7 @@ module.exports = {
 
     const player = playedBy ? result.p1 : result.p0;
 
-    player.hand.push(currentState.deck.shift());
+    player.hand.push(result.deck.shift());
     result.turn++;
 
     result = {

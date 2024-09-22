@@ -16,9 +16,14 @@ module.exports = {
       description: 'GameState object',
       required: true,
     },
+    countPasses: {
+      type: 'ref',
+      description: 'Passes Count',
+      required: true,
+    },
   },
 
-  fn: async function ({ game, gameState}, exits) {
+  fn: async function ({ game, gameState, countPasses}, exits) {
     
     const checkWin = (pNum) => {
       const player = pNum ? gameState.p1 : gameState.p0;
@@ -49,7 +54,7 @@ module.exports = {
     const p0Wins = checkWin(0);
     const p1Wins = checkWin(1);
 
-    if (p0Wins || p1Wins) {
+    if (p0Wins || p1Wins || countPasses >= 3) {
       res.gameOver = true;
       const gameUpdates = {};
       gameUpdates.status = GameStatus.FINISHED;
