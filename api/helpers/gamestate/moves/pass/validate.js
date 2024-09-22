@@ -12,8 +12,8 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { MoveType.PASS } requestedMove.moveType - Specifies that this a passing move
      * @param { Object } requestedMove - Object describing the request to pass
+     * @param { MoveType.PASS } requestedMove.moveType - Specifies that this a passing move
      * @param { 1 | 0 } requestedMove.playedBy - Which player is passing
      */
     requestedMove: {
@@ -37,7 +37,7 @@ module.exports = {
 
       // Must be MAIN phase of the turn
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('Can only draw in main phase');
+        throw new Error('Can only pass in main phase');
       }
 
       return exits.success();
