@@ -13,22 +13,41 @@ module.exports = function (req, res, next) {
   const { moveType, cardId, targetId, targetType } = req.body;
 
   switch (moveType) {
+    case MoveType.PASS:
     case MoveType.DRAW:
-      // Draw requires no extra data
-    return next();
-    
-    case MoveType.FACECARD: {
-      if (!cardId) {
-        return res.badRequest({ message: 'Must specify a card' });
-      }
-
-      if (!DeckIds.includes(cardId)) {
-        return res.badRequest({ message: `${cardId} is not a valid cardId` });
-      }
-    }
+    case MoveType.RESOLVE:
+      // These moves require no extra data
       return next();
-    
+
     case MoveType.POINTS:
+    case MoveType.FACECARD:
+    case MoveType.SEVEN_POINTS:
+    case MoveType.COUNTER:
+      {
+        if (!cardId) {
+          return res.badRequest({ message: 'Must specify a card' });
+        }
+
+        if (!DeckIds.includes(cardId)) {
+          return res.badRequest({ message: `${cardId} is not a valid cardId` });
+        }
+      }
+      return next();
+
+    case MoveType.SCUTTLE:
+      {
+        if (!cardId || !targetId) {
+          return res.badRequest({ message: 'Must specify a card' });
+        }
+
+        const invalidCardId = [cardId, targetId].find((id) => !DeckIds.includes(id));
+
+        if (invalidCardId) {
+          return res.badRequest({ message: `${invalidCardId} is not a valid cardId` });
+        }
+      }
+      return next();
+
     case MoveType.ONE_OFF:
       {
         if (!cardId) {

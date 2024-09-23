@@ -27,9 +27,7 @@ module.exports = {
       delete p1.encryptedPassword;
       const players = [p0, p1];
 
-      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState);
-
-      const countPasses = () => {
+      const countPasses = (function () {
         let numPasses = 0;
         for (const gameState of game.gameStates.slice(-3)) {
           if (gameState.moveType !== MoveType.PASS) {
@@ -38,13 +36,22 @@ module.exports = {
           numPasses++;
         }
         return numPasses;
-      };
+      })();
+
+      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState, countPasses);
 
       const fullLog = sails.helpers.gamestate.getLog(game);
 
       //Last Event, and Extra Socket Variables
       const happened = gameState.moveType !== MoveType.FIZZLE;
-      const { playedBy } = gameState;
+      let { playedBy } = gameState;
+
+      // When resolving, the player who resolves is the opponent
+      // of the one who played the one-off (if the one-off doesn't fizzle)
+      if ( gameState.moveType === MoveType.RESOLVE ) {
+        playedBy = (playedBy + 1) % 2;
+      }
+
       const discardedCards = gameState.discardedCards.length ? gameState.discardedCards : null;
       const chosenCard = gameState.moveType === MoveType.RESOLVE_THREE ? gameState.targetCard : null;
       const pNum = playedBy;
@@ -71,7 +78,7 @@ module.exports = {
         winner: victory.winner,
         match: victory.currentMatch,
         log: fullLog,
-        passes: countPasses(),
+        passes: countPasses,
         turn: gameState.turn,
         deck: gameState.deck.slice(2),
         scrap: gameState.scrap,
@@ -101,7 +108,9 @@ module.exports = {
         playedBy,
         pNum,
         // Conditionally included properties if truthy
-        ...(gameState.resolved && {oneOff: gameState.resolved}),
+        ...(gameState.playedCard && { playedCardId: gameState.playedCard.id }),
+        ...(gameState.targetCard && { targetCardId: gameState.targetCard.id }),
+        ...(gameState.resolved && { oneOff: gameState.resolved }),
         ...(chosenCard && { chosenCard }),
         ...(discardedCards && { discardedCards }),
       };

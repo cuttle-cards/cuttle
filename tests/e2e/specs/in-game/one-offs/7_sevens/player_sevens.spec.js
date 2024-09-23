@@ -8,7 +8,6 @@ describe('Playing SEVENS', () => {
   });
 
   it('Plays points from a seven', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],

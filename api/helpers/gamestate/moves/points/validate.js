@@ -32,17 +32,17 @@ module.exports = {
     try {
       const playerKey = playedBy ? 'p1' : 'p0';
 
-      const cardPlayed = currentState[playerKey].hand.find(({ id }) => id === requestedMove.cardId);
+      const playedCard = currentState[playerKey].hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.phase !== GamePhase.MAIN) {
         throw new Error(`Can only play points in main phase, not ${currentState.phase}`);
       }
 
-      if (!cardPlayed) {
+      if (!playedCard) {
         throw new Error('game.snackbar.global.playFromHand');
       }
 
-      if (cardPlayed.isFrozen) {
+      if (playedCard.isFrozen) {
         throw new Error('game.snackbar.global.cardFrozen');
       }
 
@@ -50,7 +50,7 @@ module.exports = {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
-      if (cardPlayed.rank > 10) {
+      if (playedCard.rank > 10) {
         throw new Error('game.snackbar.points.numberOnlyForPoints');
       }
 
