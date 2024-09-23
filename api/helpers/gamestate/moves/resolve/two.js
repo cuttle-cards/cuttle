@@ -21,7 +21,6 @@ module.exports = {
     // add target card in scrap
     result.scrap.push(result.targetCard);
     
-    // console.log(result);
     return exits.success(result);
   },
 };
