@@ -41,16 +41,16 @@ module.exports = {
       const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
       const targetIndex = opponent.points.findIndex(({ id }) => id === targetId);
 
-      //remove card from player's hand
-      const [playedCard] = player.hand.splice(cardIndex, 1);
+      // Remove card from player's hand
+      const [ playedCard ] = player.hand.splice(cardIndex, 1);
 
-      //remove target card from oppponent's points
-      const [targetCard] = opponent.points.splice(targetIndex, 1);
+      // Remove target card from oppponent's points
+      const [ targetCard ] = opponent.points.splice(targetIndex, 1);
 
-      //add jack(playedCard) to targetCard's attachment
+      // Add jack(playedCard) to targetCard's attachment
       targetCard.attachments.push(playedCard);
 
-      //add targetCard to player's points
+      // Add targetCard to player's points
       player.points.push(targetCard);
 
       result.turn++;

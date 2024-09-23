@@ -35,7 +35,7 @@ module.exports = {
       const playedCard = currentState[playerKey].hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error(`Can only play points in main phase, not ${currentState.phase}`);
+        throw new Error('game.snackbar.global.notInMainPhase');
       }
 
       if (!playedCard) {

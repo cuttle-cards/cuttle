@@ -249,7 +249,7 @@
         "playFromHand": "Vous ne pouez jouer que des cartes de votre main.",
         "blockedByQueen": "La Dame de votre adversaire empêche ses autres cartes d'être ciblées.",
         "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame.",
-        "notInMainPhase" : "Vous ne pouvez jouer cette carte qu'en phase principale"
+        "notInMainPhase" : "Vous ne pouvez faire cela qu'en phase principale"
       },
       "draw": {
         "deckIsEmpty": "La pioche est vide, vous ne pouvez pas piocher.",

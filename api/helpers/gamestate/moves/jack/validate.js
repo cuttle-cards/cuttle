@@ -34,39 +34,39 @@ module.exports = {
       const player = playedBy ? currentState.p1 : currentState.p0;
       const opponent = playedBy ? currentState.p0 : currentState.p1;
 
-      const cardPlayed = player.hand.find(({ id }) => id === requestedMove.cardId);
+      const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
       const targetCard = opponent.points.find(({ id }) => id === requestedMove.targetId);
 
-      //gameState phase should be MAIN
+      // GameState phase should be MAIN
       if (currentState.phase !== GamePhase.MAIN) {
         throw new Error('game.snackbar.global.notInMainPhase');
       }
 
-      //is it player turn
+      // Must be player's turn
       if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
       }
-      //is cardPlayed in player hand
-      if (!cardPlayed) {
+      // Must playedCard be in player's hand
+      if (!playedCard) {
         throw new Error('game.snackbar.global.playFromHand');
       }
 
-      //is cardPlayed a jack
-      if (cardPlayed.rank !== 11) {
+      // PlayedCard must be in player's hand
+      if (playedCard.rank !== 11) {
         throw new Error('game.snackbar.jack.stealOnlyPointCards');
       }
 
-      //is targetcard in the opponent points
+      // Targetcard must be in opponent's points
       if (!targetCard) {
         throw new Error('game.snackbar.jack.stealOnlyPointCards');
       }
 
-      //is cardPlayed frozen
-      if (cardPlayed.isFrozen) {
+      // PlayedCard must not be frozen
+      if (playedCard.isFrozen) {
         throw new Error('game.snackbar.global.cardFrozen');
       }
 
-      //Can't hack if opponent has queen
+      // Can't jack if opponent has queen
       const queenCount = opponent.faceCards.filter(({ rank }) => rank === 12).length;
       if (queenCount > 0) {
         throw new Error('game.snackbar.jack.noJackWithQueen');

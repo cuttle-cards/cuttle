@@ -249,7 +249,7 @@
         "playFromHand": "Solo puedes jugar una carta que se encuentre en tu mano",
         "blockedByQueen": "La Reina de tu oponente evita que puedas seleccionar como objetivo sus otras cartas",
         "blockedByMultipleQueens": "No puedes jugar una carta de habilidad única con objetivo (Dos, Nueve) cuando tu oponente tiene más de una reina",
-        "notInMainPhase" : "Solo puedes jugar esa carta en la fase principal"
+        "notInMainPhase" : "Solo puedes hacer eso en la fase principal"
       },
       "draw": {
         "deckIsEmpty": "El mazo está vacío; no puedes robar.",
