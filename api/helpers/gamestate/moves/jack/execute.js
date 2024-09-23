@@ -8,7 +8,7 @@ module.exports = {
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest gamestate before playing Jack',
+      description: 'The latest gameState before playing Jack',
       required: true,
     },
     /**
@@ -38,19 +38,20 @@ module.exports = {
       const player = playedBy ? result.p1 : result.p0;
       const opponent = playedBy ? result.p0 : result.p1;
 
-      const playedCard = player.hand.find(({ id }) => id === cardId);
-      const targetCard = opponent.points.find(({ id }) => id === targetId);
-
-      //add jack(playedCard) to targetcard attachment
-      targetCard.attachments.push(playedCard);
-      //add targetCard to player points
-      player.points.push(targetCard);
-      // remove jack(playedCard) from player hand
       const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
-      player.hand.splice(cardIndex, 1);
-      //remove target card from oppponent points
       const targetIndex = opponent.points.findIndex(({ id }) => id === targetId);
-      opponent.points.splice(targetIndex, 1);
+
+      //remove card from player's hand
+      const [playedCard] = player.hand.splice(cardIndex, 1);
+
+      //remove target card from oppponent's points
+      const [targetCard] = opponent.points.splice(targetIndex, 1);
+
+      //add jack(playedCard) to targetCard's attachment
+      targetCard.attachments.push(playedCard);
+
+      //add targetCard to player's points
+      player.points.push(targetCard);
 
       result.turn++;
 

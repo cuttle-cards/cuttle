@@ -55,16 +55,16 @@
     "scrap": "Écarter",
     "view": "Regarder",
     "pass": "PASSER",
-    "playFromDeck": "Jouer depuis le paquet",
+    "playFromDeck": "Jouer depuis la pioche",
     "overlays": {
       "waitingForGameToStart": "En attendant le début du jeu",
       "leaveGame": "Quitter le jeu",
       "opponentMayCounter": "L'adversaire peut contrer",
       "opponentMustResolve": "L'adversaire doit résoudre",
-      "opponentIsDiscarding": "L'adversaire se défausse",
+      "opponentIsDiscarding": "L'adversaire défausse une carte",
       "opponentSkipsDiscarding": "L'adversaire saute la défausse",
       "opponentChoosingFromScrap": "L'adversaire choisit une carte à partir de la défausse",
-      "opponentPlayingFromDeck": "Adversaire jouant depuis le paquet",
+      "opponentPlayingFromDeck": "Adversaire jouant depuis la pioche",
       "opponentMustDiscardJack": "L'adversaire doit défausser un valet",
       "opponentConsideringStalemate": "L'adversaire envisage une demande d'impasse",
       "gameUnavailable": {
@@ -101,7 +101,7 @@
         "discardAndDraw": "Jeter et piocher",
         "nice": "Bon!",
         "resolveFive": "Vous avez résolu un 5 ponctuel. Choisissez une carte à défausser et vous piocherez ensuite 3 cartes",
-        "resolveFiveNoCards": "Vous avez résolu un problème ponctuel de 5, mais vous n'avez aucune carte en main à défausser. Vous piochez 3 cartes sans les défausser. Doux!"
+        "resolveFiveNoCards": "Vous avez résolu un problème ponctuel de 5, mais vous n'avez aucune carte en main à défausser. Vous piochez 3 cartes sans les défausser. Sympa!"
       },
       "counterDialogs": {
         "counterTitle": "Chance de contrer",
@@ -125,7 +125,7 @@
       },
       "opponentRequestedStalemateDialog": {
         "title": "Accepter l'impasse?",
-        "opponentHasRequested": "Votre adversaire a demandé une impasse. Si vous acceptez, la partie se terminera par une nulle.",
+        "opponentHasRequested": "Votre adversaire a demandé une impasse. Si vous acceptez, la partie se terminera par un nul.",
         "reject": "Rejeter la demande",
         "accept": "Accepter l'impasse"
       },
@@ -171,10 +171,10 @@
     },
     "moves": {
       "disabledMove": {
-        "topTwo": "Vous devez jouer l'une des deux premières cartes du paquet",
+        "topTwo": "Vous devez jouer l'une des deux premières cartes de la pioche",
         "notTurn": "Ce n'est pas votre tour",
         "frozenCard": "Cette carte est gelée",
-        "emptyDeck": "On ne peut pas jouer avec le paquet vide",
+        "emptyDeck": "On ne peut pas jouer avec la pioche vide",
         "multipleQueens": "Vous ne pouvez pas jouer un {rank} lorsque votre adversaire a deux ou plusieurs reines",
         "noRoyals": "Il n'y a pas de rois à cibler",
         "noRoyalsOrPoints": "Il n'y a pas de cartes à points ni de rois à cibler"
@@ -195,7 +195,7 @@
         "4": "Votre adversaire défausse deux cartes de son choix.",
         "5": "Défaussez 1 carte et piochez-en jusqu'à 3",
         "6": "Élimine toutes les figures et les huit en lunettes.",
-        "7": "Dévoilez deux cartes du paquet et jouez en une.",
+        "7": "Dévoilez deux cartes de la pioche et jouez en une.",
         "8": "Révèle la main de votre adversaire.",
         "9": "L'adversaire reprend en main la carte ciblée qui est gelée pour un tour.",
         "10": "Aucune tactique.",
@@ -205,7 +205,7 @@
       },
       "jack": {
         "description": "Vole une carte à points de votre adversaire",
-        "disabled": "Impossible de voler une carte à points quand elle est protégée par une reine"
+        "disabled": "Impossible de voler une carte à points quand elle est protégée par une Reine"
       },
       "glasses": {
         "displayName": "Lunettes",
@@ -223,7 +223,7 @@
         "cancel": "Annuler",
         "home": "Accueil",
         "concedeDialog": "Le jeu se termine et votre adversaire l'emporte.",
-        "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par une nulle. La demande sera annulée si l'adversaire refuse ou si l'un des deux joueurs joue un coup."
+        "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par un nul. La demande sera annulée si l'adversaire refuse ou si l'un des deux joueurs joue un coup."
       },
       "spectatorListMenu": {
         "spectators": "Spectateurs",
@@ -248,35 +248,36 @@
         "cardFrozen": "Cette carte est gelée ! Vous ne pourrez la jouer qu'au prochain tour.",
         "playFromHand": "Vous ne pouez jouer que des cartes de votre main.",
         "blockedByQueen": "La Dame de votre adversaire empêche ses autres cartes d'être ciblées.",
-        "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame."
+        "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame.",
+        "notInMainPhase" : "Vous ne pouvez jouer cette carte qu'en phase principale"
       },
       "draw": {
-        "deckIsEmpty": "Le paquet est vide, voune pouvez pas piocher.",
+        "deckIsEmpty": "La pioche est vide, vous ne pouvez pas piocher.",
         "handLimit": "Votre limite de carte en main est atteinte !"
       },
       "faceCards": {
-        "withoutTarget": "Les Rois, Dames et Huits sont les seules figures qui peuvent être joués sans cibler une carte."
+        "withoutTarget": "Seuls les Rois, Dames et Huits peuvent être joués sans cibler une carte."
       },
       "points": {
-        "numberOnlyForPoints": "Les cartes numérales ne peuvent être jouées que pour les points."
+        "numberOnlyForPoints": "Les cartes numériques ne peuvent être jouées que pour les points."
       },
       "jack": {
-        "stealOnlyWithJack": "Vous ne pouvez voler une carte points qu'avec un Valet.",
-        "stealOnlyPointCards": "Seule les cartes à points peuvent être volées.",
+        "stealOnlyWithJack": "Vous ne pouvez voler une carte points de votre adversaire qu'avec un Valet.",
+        "stealOnlyPointCards": "Seules les cartes à points peuvent être volées.",
         "noJackWithQueen": "Vous ne pouvez pas jouer un Valet car votre adversaire a une Reine."
       },
       "scuttle": {
         "rankTooLow": "Pour faire un scuttle, votre carte doit être d'un rang ou une couleur plus élevé que la carte ciblée. (trèfle < carreau < coeur < pique)",
-        "mustUsePointCard": "Les scuttle ne se font qu'avec des cartes à points.",
+        "mustUsePointCard": "Les scuttles ne se font qu'avec des cartes à points.",
         "mustTargetPointCard": "Les scuttles ne peuvent cibler que les cartes à points."
       },
       "oneOffs": {
         "oneOffInPlay": "Une capacité est en cours d'exécution, vous ne pouvez jouer qu'un deux pour contrer.",
-        "cantPlayWithoutATarget": "La capacité de cette nécessite de cibler une carte.",
+        "cantPlayWithoutATarget": "La capacité de cette carte nécessite de cibler une carte.",
         "onlyTwoOrNine": "La capacité du Deux et du Neuf nécessite de cibler une carte.",
-        "emptyDeck": "Vous ne pouvez pas jouer cette carte unique à moins qu'il y ait des cartes dans le deck",
+        "emptyDeck": "Vous ne pouvez pas jouer cette carte à moins qu'il n'y ait des cartes dans la pioche",
         "three": {
-          "scrapIsEmpty": "La capacité du Trois n'est possible que si la corbeille n'est pas vide."
+          "scrapIsEmpty": "La capacité du Trois n'est possible que si la défausse n'est pas vide."
         },
         "four": {
           "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main."
@@ -287,8 +288,8 @@
           "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
         },
         "seven": {
-          "oneCardInDeck": "Impossible de jouer la capacité du Sept si c'était la dernière carte du paquet.",
-          "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte du paquet."
+          "oneCardInDeck": "Impossible de jouer la capacité du Sept si c'était la dernière carte de la pioche.",
+          "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte de la pioche."
         }
       }
     }
@@ -315,7 +316,7 @@
       "spectateTwoPlayers": "Vous ne pouvez regarder qu'une partie en cours avec deux joueurs.",
       "cantFindGame": "Je ne trouve pas le jeu",
       "invalidLobbyNumber": "Numéro de lobby invalide",
-      "cannotSpectate": "Impossible de regarder le jeu parce que vous jouez"
+      "cannotSpectate": "Impossible d'etre spectateur parce que vous jouez"
     },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",
@@ -358,11 +359,11 @@
     "playText-1": "Un joueur (traditionnellement le croupier) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes commence.",
     "playText-2": "À votre tour, vous devez effectuer exactement l’une des actions suivantes :",
     "draw": "Piocher",
-    "drawDescription": "Prenez une carte du paquet. Vous ne pouvez pas avoir plus de 8 cartes en main. S'il n'y a plus de cartes dans le paquet, vous pouvez passer. Trois passes consécutives entraine un match nul.",
+    "drawDescription": "Prenez une carte de la pioche. Vous ne pouvez pas avoir plus de 8 cartes en main. S'il n'y a plus de cartes dans la pioche, vous pouvez passer. Trois passes consécutives entraine un match nul.",
     "points": "Points",
-    "pointsDescription": "Les cartes à points (de 1 à 10) peuvent être posé dans votre zone pour accumuler des points et tenter d'atteindre l'objectif. Les cartes à points peuvent être éliminées par certaines cartes tactiques ou par un scuttle.",
+    "pointsDescription": "Les cartes à points (de 1 à 10) peuvent être posées dans votre zone pour accumuler des points et tenter d'atteindre l'objectif. Les cartes à points peuvent être éliminées par certaines cartes tactiques ou par un scuttle.",
     "scuttle": "Scuttle",
-    "scuttleDescription": "Supprimez la carte de points d'un adversaire avec une plus grosse de votre main. Les égalités sont brisées par le costume :",
+    "scuttleDescription": "Supprimez la carte à points d'un adversaire grâce à une carte plus élevée. Les égalités sont brisées par la couleur :",
     "royal": "Figures",
     "royalDescription": "Posez un Roi pour réduire votre objectif de points. Si ce roi est détruit, votre objectif augmente à nouveau.",
     "oneoff": "Capacité tactique",
@@ -375,8 +376,8 @@
       "king": "Roi",
       "kingDescription": "Il réduit le nombre de points dont vous avez besoin pour gagner (21, 14, 10, 5, 0 points avec 0, 1, 2, 3, 4 rois).",
       "queen": "Reine",
-      "queenDescription": "Elle protège vos autres cartes des ataques du 2, du 9 et des valets.",
-      "queenDescription2": "Ne protège pas contre les as, les six ou le sabordage.",
+      "queenDescription": "Elle protège vos autres cartes des attaques du 2, du 9 et des valets.",
+      "queenDescription2": "Ne protège pas contre les As, les Six ou le Sabordage.",
       "jack": "Valet",
       "jackDescription": "Il vous permet de cibler et voler une carte à points à votre adversaire. Il peut la récupérer en la volant à son tour (avec un autre valet) ou en détruisant votre valet avec une capacité tactique.",
       "eight": "Huit",
@@ -391,7 +392,7 @@
       "twoE1Description": "Effet 1: Contrecarrez l'effet unique ciblé. Les contres peuvent être joués pendant le tour de votre adversaire.",
       "twoE2Description": "Effet 2 : Retirez la cible Royal ou Glasses Eight.",
       "three": "Trois",
-      "threeDescription": "Vous permet de récupérer de la corbeille une carte de votre choix.",
+      "threeDescription": "Vous permet de récupérer de la défausse une carte de votre choix.",
       "four": "Quatre",
       "fourDescription": "Votre adversaire doit défausse deux cartes de son choix.",
       "five": "Cinq",
@@ -419,7 +420,7 @@
       "rules": "Les règles sont les mêmes que ci-dessus mais avec les modifications suivantes:",
       "rule1": "La condition de victoire est réduite. Les joueurs ont besoin de 14 points pour gagner par défaut, de 9 points avec un roi en jeu ou de 5 points avec deux rois. 3 rois en jeu vous fait gagner immédiatement (l'objectif étant de zéro point).",
       "rule2": "Un joueur distribue 5 cartes à chacun et le joueur à sa gauche commence. Les joueurs distribue à tour de rôle et dans le sens horaire.",
-      "rule3": "Se joue avec un paquet de 54 carte comprenant les deux jokers qui ont la capacité de voler une carte Figure active à un adversaire.",
+      "rule3": "Se joue avec un paquet de 54 cartes comprenant les deux jokers qui ont la capacité de voler une carte Figure active à un adversaire.",
       "rule4": "Votre main est limitée à 7 cartes (au lien de 8)."
     },
     "4Players": {
@@ -427,7 +428,7 @@
       "text": "Cuttle pour 4 joueurs est un jeu d'équipe 2 contre 2. Chaque joueur est assis en face de son partenaire. Votre équipe gagne si vous ou votre partenaire atteignez vos objectifs respectifs, mais les joueurs ne partagent pas de cartes en main ou sur la table (les points sont comptés séparément et vos cartes Figures n'affectent pas directement votre partenaire).",
       "rules": "Les règles sont les mêmes que celles de Cuttle 1v1 mais avec les changements suivants:",
       "rule1": "Un joueur distribue 5 cartes à chacun et le joueur à sa gauche commence. Les joueurs distribue à tour de rôle et dans le sens horaire.",
-      "rule2": "Se joue avec un paquet de 54 carte comprenant les deux jokers qui ont la capacité de transférer un carte Figure d'un joueur vers n'importe quel joueur.",
+      "rule2": "Se joue avec un paquet de 54 cartes comprenant les deux jokers qui ont la capacité de transférer un carte Figure d'un joueur vers n'importe quel joueur.",
       "rule3": "Votre main est limitée à 7 cartes (au lien de 8).",
       "rule4": "Les valets peuvent être joués pour transférer n'importe quelle carte à points à n'importe quel autre joueur. Par conséquent, vous pouvez 'voler' des points à vous-même (ou à n'importe qui d'autre) pour les donner à votre partenaire, gagnant potentiellement à votre tour avec leurs points (leur objectif est toujours déterminé par le nombre de  rois sur le terrain).",
       "rule5": "Le Neuf a une capacité supplémentaire. Il peut être joué pour contrer une carte figure jouée par un adversaire. Ainsi joué, le Neuf n'empêche pas cet adversaire de rejouer la même carte à son prochain tour.  Si vous jouez un Neuf à votre tour (son effet habituel est appliqué. L'adversaire reprend en main la carte ciblée et n'a pas le droit de la jouer à son prochain tour."
@@ -447,13 +448,13 @@
       "aceDestruction": "Si je joue un As ou un Six, mes cartes sont-elles également détruites?",
       "aceDestructionAnswer": "Oui, les as détruisent toutes les cartes à points, même les vôtres. Ainsi, les Sixs détruisent toutes les Figures et les 8 en Lunettes de la table.",
       "revealNoPoints": "Mon Sept a révélé deux Valets et mon adversaire n'a aucun point. Qu'est-ce qui se passe?",
-      "revealNoPointsAnswer": "Si les deux cartes révélées par un Sept sont impossibles à jouer, (c'est-à-dire que vous révélez deux Valets et que votre adversaire n'a aucune carte à points en jeu), vous défaussez une de ces deux cartes et remettez l'autre sur le dessus du paquet.",
-      "revealOneLeft": "Que se passe-t-il si je joue un Sept et qu'il ne reste qu'une seule carte dans le paquet?",
+      "revealNoPointsAnswer": "Si les deux cartes révélées par un Sept sont impossibles à jouer, (c'est-à-dire que vous révélez deux Valets et que votre adversaire n'a aucune carte à points en jeu), vous défaussez une de ces deux cartes et remettez l'autre sur le dessus de la pioche.",
+      "revealOneLeft": "Que se passe-t-il si je joue un Sept et qu'il ne reste qu'une seule carte dans la pioche?",
       "revealOneLeftAnswer": "Révélez cette dernière carte et continuez à jouer comme d'habitude. Semblable à la situation précédente, si vous révélez un valet et que votre adversaire n'a aucune carte à points en jeu, ce valet est défaussé.",
       "emptyHandFive": "Que se passe-t-il lorsque je joue un cinq avec une main vide ?",
       "emptyHandFiveAnswer": "Si vous n'avez pas d'autres cartes en main lorsque vous jouez un 5, vous sautez simplement la phase de défausse et piochez trois cartes. Cela peut être un jeu puissant, mais risqué. Si cela fonctionne, vous vous retrouvez avec deux cartes de plus que celles avec lesquelles vous avez commencé ce tour, mais si cela est contré, vous pourriez vous retrouver sans cartes !",
-      "deckExhaust": "Que se passe-t-il lorsqu'il n'y a plus de carte dans le paquet ?",
-      "deckExhaustAnswer": "Lorsqu'il n'y a plus de cartes dans le paquet, les joueurs peuvent passer leur tour au lieu de piocher. S'il y a trois passes consécutives, c'est-à-dire que le joueur 1 passe, le joueur 2 passe, puis le joueur 1 passe à nouveau, la partie se termine par une impasse et il y a égalité.",
+      "deckExhaust": "Que se passe-t-il lorsqu'il n'y a plus de carte dans la pioch ?",
+      "deckExhaustAnswer": "Lorsqu'il n'y a plus de cartes dans la pioche, les joueurs peuvent passer leur tour au lieu de piocher. S'il y a trois passes consécutives, c'est-à-dire que le joueur 1 passe, le joueur 2 passe, puis le joueur 1 passe à nouveau, la partie se termine par une impasse et il y a égalité.",
       "whereToPlay": "Où puis-je jouer à Cuttle?",
       "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami. Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit: cuttle.cards"
     },
