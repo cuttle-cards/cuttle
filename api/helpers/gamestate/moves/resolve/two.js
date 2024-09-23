@@ -1,0 +1,27 @@
+module.exports = {
+  friendlyName: 'Resolve Two One-Off',
+
+  description: 'Returns new GameState resulting from resolving a two, which scraps target royal and glasses eight on the field, and counter one-off cards.',
+
+  inputs: {
+    currentState: {
+      type: 'ref',
+      description: 'The latest GameState before the two resolves',
+      required: true,
+    },
+  },
+  sync: true, // synchronous helper
+  fn: ({ currentState }, exits) => {
+    let result = _.cloneDeep(currentState);
+
+    // remove target card from opponent hand 
+    const targetPlayedIndex = result.p1.faceCards.findIndex(({ id }) => id === result.targetCard.id);
+    result.p1.faceCards.splice(targetPlayedIndex, 1);
+
+    // add target card in scrap
+    result.scrap.push(result.targetCard);
+    
+    // console.log(result);
+    return exits.success(result);
+  },
+};

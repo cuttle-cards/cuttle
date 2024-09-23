@@ -59,6 +59,9 @@ module.exports = {
       case 1:
         result = sails.helpers.gamestate.moves.resolve.ace(result);
         break;
+      case 2:
+        result = sails.helpers.gamestate.moves.resolve.two(result);
+        break;
       case 3:
       case 4:
       case 5:

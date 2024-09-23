@@ -8,7 +8,6 @@ describe('Play TWOS', () => {
     });
 
     it('Plays Two to Destroy Face Card', () => {
-      cy.skipOnGameStateApi();
       // Set Up
       cy.loadGameFixture(0, {
         p0Hand: [Card.ACE_OF_SPADES, Card.TWO_OF_CLUBS],
