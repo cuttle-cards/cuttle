@@ -2,6 +2,7 @@ import { myUser } from '../../fixtures/userFixtures';
 import es from '../../../../src/translations/es.json';
 import fr from '../../../../src/translations/fr.json';
 import en from '../../../../src/translations/en.json';
+import { localStorageAnnouncementValue } from '../../../../src/routes/home/components/AnnouncementDialog.vue';
 
 describe('Localization', () => {
   beforeEach(() => {
@@ -10,7 +11,7 @@ describe('Localization', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.vueRoute('/');
-    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+    window.localStorage.setItem('announcement', localStorageAnnouncementValue);
   });
 
   const checkAndChangeLanguage = (name, lang) => {

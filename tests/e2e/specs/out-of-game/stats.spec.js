@@ -1,12 +1,13 @@
 import { playerOne, playerTwo, playerThree, playerFour, playerFive } from '../../fixtures/userFixtures';
 import { seasonFixtures, matchesFixture, gameFixtures } from '../../fixtures/statsFixtures';
+import { localStorageAnnouncementValue } from '../../../../src/routes/home/components/AnnouncementDialog.vue';
 const dayjs = require('dayjs');
 
 function setup() {
   cy.viewport(1980, 1080);
   cy.wipeDatabase();
   cy.visit('/');
-  window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+  window.localStorage.setItem('announcement', localStorageAnnouncementValue);
   // Signup opponents and store their newly created ids
   cy.signupOpponent(playerOne).as('player1');
   cy.loginPlayer(playerOne);

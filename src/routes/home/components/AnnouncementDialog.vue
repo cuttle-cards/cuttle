@@ -70,6 +70,9 @@ import { useI18n } from 'vue-i18n';
 import GameCard from '@/routes/game/components/GameCard.vue';
 import { getLocalStorage, setLocalStorage } from '_/utils/local-storage-utils.js';
 
+// eslint-disable-next-line vue/no-export-in-script-setup
+export const localStorageAnnouncementValue = 1;
+
 const { t } = useI18n();
 const displayCards = [{suit: 0, rank:5},{suit: 1, rank:4},{suit: 2, rank:10},{suit: 3, rank:2},];
 const show = ref(false);
@@ -77,14 +80,14 @@ const preferenceSaved= ref(false);
 
 const close = () => {
   if (!preferenceSaved.value) {
-    setLocalStorage('announcement', 1);
+    setLocalStorage('announcement', localStorageAnnouncementValue);
   }
   show.value = false;
   preferenceSaved.value = true;
 };
 
 onMounted(() => {
-  if (!getLocalStorage('announcement') === 1) {
+  if (!getLocalStorage('announcement') === localStorageAnnouncementValue) {
     show.value = true;
   }
 });

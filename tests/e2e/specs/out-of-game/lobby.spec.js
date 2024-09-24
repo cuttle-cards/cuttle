@@ -1,11 +1,12 @@
 import { myUser, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
 import { assertSnackbarError } from '../../support/helpers';
 import { SnackBarError } from '../../fixtures/snackbarError';
+import { localStorageAnnouncementValue } from '../../../../src/routes/home/components/AnnouncementDialog.vue';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();
   cy.visit('/');
-  window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+  window.localStorage.setItem('announcement', localStorageAnnouncementValue);
   cy.signupPlayer(myUser);
   cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
     cy.window()
@@ -271,7 +272,7 @@ describe('Lobby - P1 Perspective', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
-    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+    window.localStorage.setItem('announcement', localStorageAnnouncementValue);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game
@@ -443,7 +444,7 @@ describe('Lobby invite links', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.visit('/');
-    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+    window.localStorage.setItem('announcement', localStorageAnnouncementValue);
     cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameSummary) => {
       cy.wrap(gameSummary).as('gameSummary');
       // Sign up new (other) user and subscribe them to game

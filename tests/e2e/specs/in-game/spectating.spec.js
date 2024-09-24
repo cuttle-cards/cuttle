@@ -15,13 +15,14 @@ import {
 } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
+import { localStorageAnnouncementValue } from '../../../../src/routes/home/components/AnnouncementDialog.vue';
 
 function setup() {
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+  window.localStorage.setItem('announcement', localStorageAnnouncementValue);
 }
 
 describe('Spectating Games', () => {
@@ -385,7 +386,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     // Log in as playerOne
     cy.loginPlayer(playerOne);
     cy.setupGameAsSpectator();
-    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+    window.localStorage.setItem('announcement', localStorageAnnouncementValue);
   });
 
   it('Spectate unranked games with rematch', function () {

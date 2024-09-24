@@ -9,6 +9,7 @@ import {
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
+import { localStorageAnnouncementValue } from '../../../../../src/routes/home/components/AnnouncementDialog.vue';
 
 const dayjs = require('dayjs');
 
@@ -42,7 +43,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
-    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+    window.localStorage.setItem('announcement', localStorageAnnouncementValue);
 
     // Set up season
     const [, diamondsSeason] = seasonFixtures;
@@ -246,7 +247,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.viewport(1920, 1080);
     cy.wipeDatabase();
     cy.visit('/');
-    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+    window.localStorage.setItem('announcement', localStorageAnnouncementValue);
 
     // Sign up players
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -338,7 +339,7 @@ describe('Spectating Rematches', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
       cy.setupGameAsSpectator();
-      window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+      window.localStorage.setItem('announcement', localStorageAnnouncementValue);
     });
 
     it('Spectates a casual match using rematch', () => {
@@ -394,7 +395,7 @@ describe('Spectating Rematches', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
       cy.setupGameAsSpectator(true);
-      window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+      window.localStorage.setItem('announcement', localStorageAnnouncementValue);
       const [, , currentSeason] = seasonFixtures;
       cy.loadSeasonFixture([currentSeason]);
     });
