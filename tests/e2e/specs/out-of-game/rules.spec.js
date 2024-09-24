@@ -1,5 +1,5 @@
 import { myUser } from '../../fixtures/userFixtures';
-import { localStorageAnnouncementValue } from '../../../../src/routes/home/components/AnnouncementDialog.vue';
+import { localStorageAnnouncementValue } from '../../../../src/data/announcementData';
 
 describe('Rules Page', () => {
   beforeEach(() => {

@@ -2,7 +2,7 @@ import { myUser } from '../../fixtures/userFixtures';
 import es from '../../../../src/translations/es.json';
 import fr from '../../../../src/translations/fr.json';
 import en from '../../../../src/translations/en.json';
-import { localStorageAnnouncementValue } from '../../../../src/routes/home/components/AnnouncementDialog.vue';
+import { localStorageAnnouncementValue } from '../../../../src/data/announcementData';
 
 describe('Localization', () => {
   beforeEach(() => {

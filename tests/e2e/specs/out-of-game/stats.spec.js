@@ -1,6 +1,6 @@
 import { playerOne, playerTwo, playerThree, playerFour, playerFive } from '../../fixtures/userFixtures';
 import { seasonFixtures, matchesFixture, gameFixtures } from '../../fixtures/statsFixtures';
-import { localStorageAnnouncementValue } from '../../../../src/routes/home/components/AnnouncementDialog.vue';
+import { localStorageAnnouncementValue } from '../../../../src/data/announcementData';
 const dayjs = require('dayjs');
 
 function setup() {

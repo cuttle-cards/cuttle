@@ -9,7 +9,7 @@ import {
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
-import { localStorageAnnouncementValue } from '../../../../../src/routes/home/components/AnnouncementDialog.vue';
+import { localStorageAnnouncementValue } from '../../../../../src/data/announcementData';
 
 const dayjs = require('dayjs');
 

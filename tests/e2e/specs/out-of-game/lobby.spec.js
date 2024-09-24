@@ -1,7 +1,7 @@
 import { myUser, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
 import { assertSnackbarError } from '../../support/helpers';
 import { SnackBarError } from '../../fixtures/snackbarError';
-import { localStorageAnnouncementValue } from '../../../../src/routes/home/components/AnnouncementDialog.vue';
+import { localStorageAnnouncementValue } from '../../../../src/data/announcementData';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();

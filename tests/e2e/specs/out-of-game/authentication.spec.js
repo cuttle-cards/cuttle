@@ -1,6 +1,6 @@
 import { assertSnackbarError } from '../../support/helpers';
 import { myUser } from '../../fixtures/userFixtures';
-import { localStorageAnnouncementValue } from '../../../../src/routes/home/components/AnnouncementDialog.vue';
+import { localStorageAnnouncementValue } from '../../../../src/data/announcementData';
 
 function assertSuccessfulAuth(username) {
   // Confirm we have navigated to home

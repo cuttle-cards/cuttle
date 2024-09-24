@@ -1,5 +1,5 @@
 import { playerOne } from '../../fixtures/userFixtures';
-import { localStorageAnnouncementValue } from '../../../../src/routes/home/components/AnnouncementDialog.vue';
+import { localStorageAnnouncementValue } from '../../../../src/data/announcementData';
 
 function verifyAuthenticatedLinks() {
   // Navigate to Rules

@@ -1,5 +1,3 @@
-const value = 1;
- 
 <template>
   <BaseDialog
     id="announcement-dialog"
@@ -69,9 +67,7 @@ import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import GameCard from '@/routes/game/components/GameCard.vue';
 import { getLocalStorage, setLocalStorage } from '_/utils/local-storage-utils.js';
-
-// eslint-disable-next-line vue/no-export-in-script-setup
-export const localStorageAnnouncementValue = 1;
+import { localStorageAnnouncementValue } from '../../../data/announcementData';
 
 const { t } = useI18n();
 const displayCards = [{suit: 0, rank:5},{suit: 1, rank:4},{suit: 2, rank:10},{suit: 3, rank:2},];
@@ -87,7 +83,7 @@ const close = () => {
 };
 
 onMounted(() => {
-  if (!getLocalStorage('announcement') === localStorageAnnouncementValue) {
+  if (getLocalStorage('announcement') !== localStorageAnnouncementValue) {
     show.value = true;
   }
 });
