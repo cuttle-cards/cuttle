@@ -14,12 +14,29 @@ module.exports = {
   fn: ({ currentState }, exits) => {
     let result = _.cloneDeep(currentState);
 
-    // remove target card from opponent hand 
-    const targetPlayedIndex = result.p1.faceCards.findIndex(({ id }) => id === result.targetCard.id);
-    result.p1.faceCards.splice(targetPlayedIndex, 1);
 
-    // add target card in scrap
-    result.scrap.push(result.targetCard);
+    // Checks if target card is facecard or jack
+    if (result.oneOffTargetType === 'jack') {
+
+      const pointCard = result.p1.hand.map((card) => {
+        return card.attachements === result.targetCard;
+      });
+      
+      // removing jack from point card attachments
+      const targetedPointCard= result.p1.hand.find(({ id }) => id === pointCard.id);
+      targetedPointCard.attachements = [];
+
+      // add point card to player points
+      result.p0.hand.push(pointCard);
+
+    } else {
+      // remove target card from opponent hand 
+      const targetPlayedIndex = result.p1.faceCards.findIndex(({ id }) => id === result.targetCard.id);
+      result.p1.faceCards.splice(targetPlayedIndex, 1);
+
+    }
+      // add target card in scrap
+      result.scrap.push(result.targetCard);
     
     return exits.success(result);
   },

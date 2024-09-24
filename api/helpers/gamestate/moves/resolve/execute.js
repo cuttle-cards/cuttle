@@ -36,18 +36,6 @@ module.exports = {
     // Move oneOff + twos into scrap and increment turn
     result.scrap.push(result.oneOff);
     result.scrap.push(...result.twos);
-    result = {
-      ...result,
-      ...requestedMove,
-      phase: GamePhase.MAIN,
-      playedBy,
-      resolved: oneOff,
-      oneOff: null,
-      oneOffTarget: null,
-      oneOffTargetType: null,
-      twos: [],
-      turn: result.turn + 1,
-    };
 
     // If one-off fizzles, make no other changes
     if (fizzles) {
@@ -78,6 +66,19 @@ module.exports = {
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
+    
+    result = {
+      ...result,
+      ...requestedMove,
+      phase: GamePhase.MAIN,
+      playedBy,
+      resolved: oneOff,
+      oneOff: null,
+      oneOffTarget: null,
+      oneOffTargetType: null,
+      twos: [],
+      turn: result.turn + 1,
+    };
 
     return exits.success(result);
   },
