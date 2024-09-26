@@ -11,7 +11,6 @@
     <template #activator>
       <v-btn
         color="newSecondary"
-        width="full"
         rounded="0"
         block
       >
