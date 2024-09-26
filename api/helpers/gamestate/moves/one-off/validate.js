@@ -62,7 +62,7 @@ module.exports = {
       const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error(`Can only play one-off in main phase, not ${currentState.phase}`);
+        throw new Error('game.snackbar.global.notInMainPhase');
       }
 
       if (currentState.oneOff) {
