@@ -37,6 +37,9 @@
           :high-elevation="true"
         />
       </div>
+      <div class="d-flex justify-center">
+        <img v-if="announcementData.imgSrc" class="w-50" :src="announcementData.imgSrc">
+      </div>
       <p v-for="(paragraph, i) in announcementData.announcementText" :key="i">
         {{ paragraph }}
       </p>
