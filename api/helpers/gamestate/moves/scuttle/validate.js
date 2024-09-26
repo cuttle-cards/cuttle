@@ -40,9 +40,9 @@ module.exports = {
       if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
       }
-      
+
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error(`Can only play points in main phase, not ${currentState.phase}`);
+        throw new Error('game.snackbar.global.notInMainPhase');
       }
 
       if (!playedCard) {
@@ -63,7 +63,7 @@ module.exports = {
 
       const lowerRank = playedCard.rank < targetCard.rank;
       const sameRankLowerSuit = playedCard.rank === targetCard.rank && playedCard.suit < targetCard.suit;
-      
+
       if (lowerRank || sameRankLowerSuit) {
         throw new Error('game.snackbar.scuttle.rankTooLow');
       }

@@ -228,7 +228,6 @@ describe('Game Basic Moves - P0 Perspective', () => {
   });
 
   it('Plays Queens', () => {
-    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       p0Hand: [Card.QUEEN_OF_DIAMONDS, Card.QUEEN_OF_SPADES, Card.KING_OF_CLUBS, Card.JACK_OF_DIAMONDS],
@@ -507,7 +506,6 @@ describe('Play Jacks', () => {
   });
 
   it('Player and Opponent plays Jacks on different cards', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES],
@@ -551,7 +549,6 @@ describe('Play Jacks', () => {
   });
 
   it('Quadruple jacks successfully', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
