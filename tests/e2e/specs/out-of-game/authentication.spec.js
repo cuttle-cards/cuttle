@@ -1,6 +1,6 @@
 import { assertSnackbarError } from '../../support/helpers';
 import { myUser } from '../../fixtures/userFixtures';
-import { localStorageAnnouncementValue } from '../../../../src/data/announcementData';
+import { announcementData } from '../../../../src/data/announcementData';
 
 function assertSuccessfulAuth(username) {
   // Confirm we have navigated to home
@@ -38,7 +38,7 @@ describe('Auth - Page Content', () => {
     cy.wipeDatabase();
     cy.visit('/signup');
     cy.signupOpponent(myUser);
-    window.localStorage.setItem('announcement', localStorageAnnouncementValue);
+    window.localStorage.setItem('announcement', announcementData.id);
   });
 
   it('Displays logo and navigates to rules page', () => {
@@ -111,7 +111,7 @@ describe('Signing Up', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/signup');
-    window.localStorage.setItem('announcement', localStorageAnnouncementValue);
+    window.localStorage.setItem('announcement', announcementData.id);
   });
 
   /**

@@ -2,7 +2,7 @@ import { myUser } from '../../fixtures/userFixtures';
 import es from '../../../../src/translations/es.json';
 import fr from '../../../../src/translations/fr.json';
 import en from '../../../../src/translations/en.json';
-import { localStorageAnnouncementValue } from '../../../../src/data/announcementData';
+import { announcementData } from '../../../../src/data/announcementData';
 
 describe('Localization', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('Localization', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.vueRoute('/');
-    window.localStorage.setItem('announcement', localStorageAnnouncementValue);
+    window.localStorage.setItem('announcement', announcementData.id);
   });
 
   const checkAndChangeLanguage = (name, lang) => {

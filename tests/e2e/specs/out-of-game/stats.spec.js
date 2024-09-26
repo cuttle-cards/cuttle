@@ -1,13 +1,13 @@
 import { playerOne, playerTwo, playerThree, playerFour, playerFive } from '../../fixtures/userFixtures';
 import { seasonFixtures, matchesFixture, gameFixtures } from '../../fixtures/statsFixtures';
-import { localStorageAnnouncementValue } from '../../../../src/data/announcementData';
+import { announcementData } from '../../../../src/data/announcementData';
 const dayjs = require('dayjs');
 
 function setup() {
   cy.viewport(1980, 1080);
   cy.wipeDatabase();
   cy.visit('/');
-  window.localStorage.setItem('announcement', localStorageAnnouncementValue);
+  window.localStorage.setItem('announcement', announcementData.id);
   // Signup opponents and store their newly created ids
   cy.signupOpponent(playerOne).as('player1');
   cy.loginPlayer(playerOne);

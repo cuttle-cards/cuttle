@@ -1,12 +1,12 @@
 import { myUser } from '../../fixtures/userFixtures';
-import { localStorageAnnouncementValue } from '../../../../src/data/announcementData';
+import { announcementData } from '../../../../src/data/announcementData';
 
 describe('Rules Page', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.vueRoute('/rules');
-    window.localStorage.setItem('announcement', localStorageAnnouncementValue);
+    window.localStorage.setItem('announcement', announcementData.id);
   });
 
   it('Navigates to Login when unauthenticated and home when authenticated using the Ready To Play button', () => {
