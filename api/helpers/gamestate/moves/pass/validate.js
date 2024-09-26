@@ -37,7 +37,7 @@ module.exports = {
 
       // Must be MAIN phase of the turn
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('Can only pass in main phase');
+        throw new Error('game.snackbar.global.notInMainPhase');
       }
 
       return exits.success();

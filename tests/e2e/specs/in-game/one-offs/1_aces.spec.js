@@ -46,8 +46,6 @@ describe('Ace One-Offs', () => {
   }); // End ace one-off
 
   it('It scraps attached jacks when an ace resolves', () => {
-    cy.skipOnGameStateApi();
-
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_CLUBS, Card.JACK_OF_CLUBS, Card.JACK_OF_DIAMONDS],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
@@ -73,7 +71,7 @@ describe('Ace One-Offs', () => {
     cy.playJackOpponent(Card.JACK_OF_HEARTS, Card.TWO_OF_DIAMONDS);
     assertGameState(0, {
       p0Hand: [Card.ACE_OF_CLUBS, Card.JACK_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
       p0FaceCards: [],
       p1Hand: [Card.JACK_OF_SPADES],
       p1Points: [Card.NINE_OF_HEARTS, Card.TWO_OF_DIAMONDS],
@@ -119,8 +117,8 @@ describe('Ace One-Offs', () => {
         Card.JACK_OF_HEARTS,
         Card.JACK_OF_SPADES,
         Card.NINE_OF_HEARTS,
-        Card.TWO_OF_DIAMONDS
-      ]
+        Card.TWO_OF_DIAMONDS,
+      ],
     });
   });
 });

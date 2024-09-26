@@ -513,7 +513,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
           } catch (err) {
             const errors = [
               "Can't play while waiting for opponent to counter",
-              'Can only draw in main phase',
+              'game.snackbar.global.notInMainPhase',
             ];
             expect(err).to.be.oneOf(errors);
           }
