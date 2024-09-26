@@ -1,7 +1,7 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Play a Jack -> steal an opponent points card',
+  friendlyName: 'Play a Jack',
 
   description: 'Returns new GameState resulting from requested move',
 
@@ -30,43 +30,39 @@ module.exports = {
   sync: true,
 
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
-    try {
-      let result = _.cloneDeep(currentState);
+    let result = _.cloneDeep(currentState);
 
-      const { cardId, targetId } = requestedMove;
+    const { cardId, targetId } = requestedMove;
 
-      const player = playedBy ? result.p1 : result.p0;
-      const opponent = playedBy ? result.p0 : result.p1;
+    const player = playedBy ? result.p1 : result.p0;
+    const opponent = playedBy ? result.p0 : result.p1;
 
-      const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
-      const targetIndex = opponent.points.findIndex(({ id }) => id === targetId);
+    const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
+    const targetIndex = opponent.points.findIndex(({ id }) => id === targetId);
 
-      // Remove card from player's hand
-      const [ playedCard ] = player.hand.splice(cardIndex, 1);
+    // Remove card from player's hand
+    const [ playedCard ] = player.hand.splice(cardIndex, 1);
 
-      // Remove target card from oppponent's points
-      const [ targetCard ] = opponent.points.splice(targetIndex, 1);
+    // Remove target card from oppponent's points
+    const [ targetCard ] = opponent.points.splice(targetIndex, 1);
 
-      // Add jack(playedCard) to targetCard's attachment
-      targetCard.attachments.push(playedCard);
+    // Add jack(playedCard) to targetCard's attachment
+    targetCard.attachments.push(playedCard);
 
-      // Add targetCard to player's points
-      player.points.push(targetCard);
+    // Add targetCard to player's points
+    player.points.push(targetCard);
 
-      result.turn++;
+    result.turn++;
 
-      result = {
-        ...result,
-        ...requestedMove,
-        playedBy,
-        playedCard,
-        targetCard,
-        phase: GamePhase.MAIN,
-      };
+    result = {
+      ...result,
+      ...requestedMove,
+      playedBy,
+      playedCard,
+      targetCard,
+      phase: GamePhase.MAIN,
+    };
 
-      return exits.success(result);
-    } catch (err) {
-      return exits.error({ message: 'Cannot play Jack ' + err });
-    }
+    return exits.success(result);
   },
 };

@@ -46,7 +46,8 @@ module.exports = {
       if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
       }
-      // Must playedCard be in player's hand
+
+      // PlayedCard must be in player's hand
       if (!playedCard) {
         throw new Error('game.snackbar.global.playFromHand');
       }
