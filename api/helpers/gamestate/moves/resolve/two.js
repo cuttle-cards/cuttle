@@ -18,17 +18,28 @@ module.exports = {
     // Checks if target card is facecard or jack
     if (result.oneOffTargetType === 'jack') {
 
-      const pointCard = result.p1.hand.map((card) => {
-        return card.attachements === result.targetCard;
+      //getting cardIndex from opponents points
+      const cardIndex = result.p1.points.findIndex((card) => {
+        const attachIndex = card.attachments.findIndex((attachment) => {
+          return attachment.id === result.targetCard.id;
+        });
+        return attachIndex !== -1; // Check if the attachment exists in the card
       });
       
-      // removing jack from point card attachments
-      const targetedPointCard= result.p1.hand.find(({ id }) => id === pointCard.id);
-      targetedPointCard.attachements = [];
-
-      // add point card to player points
-      result.p0.hand.push(pointCard);
-
+      if (cardIndex !== -1) {
+        
+        //remove the card from opponents points
+        const [pointCard] = result.p1.points.splice(cardIndex, 1);
+        
+        //removing the jack from point cards attachment
+        pointCard.attachments = pointCard.attachments.filter((attachment) => {
+          return attachment.id !== result.targetCard.id;
+        });
+        
+        // add point card to player points
+        result.p0.points.push(pointCard);
+      }
+        
     } else {
       // remove target card from opponent hand 
       const targetPlayedIndex = result.p1.faceCards.findIndex(({ id }) => id === result.targetCard.id);

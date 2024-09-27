@@ -41,7 +41,7 @@ describe('Play TWOS', () => {
     });
 
     it('Plays TWO to Destroy Jacks', () => {
-      cy.skipOnGameStateApi();
+
       cy.loadGameFixture(0, {
         p0Hand: [Card.ACE_OF_SPADES, Card.TWO_OF_CLUBS],
         p0Points: [Card.TEN_OF_SPADES],
@@ -108,7 +108,7 @@ describe('Play TWOS', () => {
     });
 
     it('Opponent Plays TWO to Destroy Jacks', () => {
-      cy.skipOnGameStateApi();
+
       cy.loadGameFixture(1, {
         p0Hand: [Card.ACE_OF_SPADES, Card.TWO_OF_CLUBS],
         p0Points: [Card.TEN_OF_SPADES],

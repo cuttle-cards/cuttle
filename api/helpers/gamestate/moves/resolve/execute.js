@@ -33,9 +33,18 @@ module.exports = {
     const { oneOff } = result;
 
     const fizzles = result.twos.length % 2 === 1;
-    // Move oneOff + twos into scrap and increment turn
-    result.scrap.push(result.oneOff);
+    
+    // Move twos into scrap
     result.scrap.push(...result.twos);
+
+    result = {
+      ...result,
+      ...requestedMove,
+      phase:GamePhase.MAIN,
+      playedBy,
+      resolved: oneOff,
+      twos: [],
+    };
 
     // If one-off fizzles, make no other changes
     if (fizzles) {
@@ -62,21 +71,19 @@ module.exports = {
           oneOff, // oneOff stays on the stack until next move
           turn: result.turn - 1, // turn doesn't increment until the next move
         };
+
+        exits.success(result);
         break;
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
     
+    result.scrap.push(result.oneOff);
     result = {
       ...result,
-      ...requestedMove,
-      phase: GamePhase.MAIN,
-      playedBy,
-      resolved: oneOff,
       oneOff: null,
       oneOffTarget: null,
       oneOffTargetType: null,
-      twos: [],
       turn: result.turn + 1,
     };
 
