@@ -36,12 +36,12 @@ module.exports = {
     
     // Move twos into scrap
     result.scrap.push(...result.twos);
-
+    
     result = {
       ...result,
       ...requestedMove,
-      phase:GamePhase.MAIN,
       playedBy,
+      phase:GamePhase.MAIN,
       resolved: oneOff,
       twos: [],
     };
@@ -67,13 +67,9 @@ module.exports = {
         // Each one has its own phase designated by the rank
         result = {
           ...result,
-          phase: oneOff.rank,
-          oneOff, // oneOff stays on the stack until next move
-          turn: result.turn - 1, // turn doesn't increment until the next move
+          phase: oneOff.rank
         };
-
-        exits.success(result);
-        break;
+        return exits.success(result);
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
