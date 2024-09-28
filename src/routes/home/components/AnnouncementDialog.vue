@@ -6,6 +6,7 @@
     :opacity="1"
     data-cy="announcement-dialog"
     scrollable
+    :persistent="false"
     :max-width="750"
   >
     <template #activator>
@@ -37,12 +38,15 @@
           :high-elevation="true"
         />
       </div>
-      <div class="d-flex justify-center">
-        <img v-if="announcementData.imgSrc" class="w-50" :src="announcementData.imgSrc">
+      <div v-if="announcementData.imgSrc" class="d-flex justify-center">
+        <img class="w-50" :src="announcementData.imgSrc">
       </div>
-      <p v-for="(paragraph, i) in announcementData.announcementText" :key="i">
-        {{ paragraph }}
-      </p>
+      <div v-for="(text,i) in announcementData.announcementText" :key="i">  
+        <h2 v-if="text.heading">
+          {{ text.heading }}
+        </h2>  
+        <p> {{ text.paragraph }} </p>  
+      </div>  
     </template>
     <template #actions>
       <v-btn
@@ -89,8 +93,5 @@ onMounted(() => {
     margin-left: -9% !important;
   }
 
-  p:nth-child(n+3){
-    margin-bottom: 3%;
-  }
 
 </style>
