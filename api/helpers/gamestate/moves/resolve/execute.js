@@ -49,6 +49,7 @@ module.exports = {
     // If one-off fizzles, make no other changes
     if (fizzles) {
       result.moveType = MoveType.FIZZLE;
+      result.scrap.push(result.oneOff);
       return exits.success(result);
     }
 
