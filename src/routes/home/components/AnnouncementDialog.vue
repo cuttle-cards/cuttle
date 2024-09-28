@@ -46,7 +46,7 @@
     </template>
     <template #actions>
       <v-btn
-        data-cy="annoucement-dialog-okay"
+        data-cy="announcement-dialog-close"
         color="surface-1"
         variant="flat"
         @click="close"
