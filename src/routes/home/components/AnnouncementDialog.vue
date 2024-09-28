@@ -8,6 +8,7 @@
     scrollable
     :persistent="false"
     :max-width="750"
+    :title="announcementData.title"
   >
     <template #activator>
       <v-btn
@@ -17,15 +18,6 @@
       >
         {{ announcementData.activatorText }}
       </v-btn>
-    </template>
-    <template #title>
-      <div color="primary" class="w-100">
-        <div class="d-flex justify-center w-100">
-          <h1 class="mb-4">
-            {{ announcementData.title }}
-          </h1>
-        </div>
-      </div>
     </template>
     <template #body>
       <div v-if="announcementData.displayCards.length" class="d-flex justify-center my-4">
