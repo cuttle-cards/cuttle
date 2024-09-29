@@ -9,11 +9,18 @@ module.exports = {
       description: 'The latest GameState before the two resolves',
       required: true,
     },
+    playedBy: {
+      type: 'number',
+      description: 'Player number of player requesting move.',
+    }
   },
+
   sync: true, // synchronous helper
-  fn: ({ currentState }, exits) => {
+  fn: ({ currentState, playedBy }, exits) => {
     let result = _.cloneDeep(currentState);
 
+    const player = playedBy ? result.p0 : result.p1;
+    const opponent = playedBy ? result.p1 : result.p0;
 
     // Checks if target card is facecard or jack
     if (result.oneOffTargetType === 'jack') {
@@ -23,8 +30,8 @@ module.exports = {
       let jackIndex = -1;    // To store the index of the jack in the point card's attachments
       
       // Loop through the opponent's points (p1.points)
-      for (let i = 0; i < result.p1.points.length; i++) {
-        const card = result.p1.points[i];
+      for (let i = 0; i < opponent.points.length; i++) {
+        const card = opponent.points[i];
       
         // Loop through the card's attachments to find the jack
         for (let j = 0; j < card.attachments.length; j++) {
@@ -46,19 +53,18 @@ module.exports = {
       // If a point card with the jack was found
       if (pointCard) {
         // Remove the point card from the opponent's points (p1)
-        result.p1.points.splice(pointIndex, 1);
+        opponent.points.splice(pointIndex, 1);
       
         // Remove the jack from the point card's attachments
         pointCard.attachments.splice(jackIndex, 1); // Remove the attachment by index
       
         // Add the point card (now without the jack) to the player's points (p0)
-        result.p0.points.push(pointCard);
+        player.points.push(pointCard);
       }
     } else {
       // remove target card from opponent hand 
-      const targetPlayedIndex = result.p1.faceCards.findIndex(({ id }) => id === result.targetCard.id);
-      result.p1.faceCards.splice(targetPlayedIndex, 1);
-
+      const targetPlayedIndex = opponent.faceCards.findIndex(({ id }) => id === result.targetCard.id);
+      opponent.faceCards.splice(targetPlayedIndex, 1);
     }
       // add target card in scrap
       result.scrap.push(result.targetCard);
