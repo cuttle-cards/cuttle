@@ -1,4 +1,4 @@
-import { Card } from '../../tests/e2e/fixtures/cards';
+import { Card } from '../../../../../../tests/e2e/fixtures/cards';
 
 export const announcementData = {
   id: 'recyclerFivesPermanent',
