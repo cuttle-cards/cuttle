@@ -1,6 +1,6 @@
 import { playerOne, playerTwo, playerThree, playerFour, playerFive } from '../../fixtures/userFixtures';
 import { seasonFixtures, matchesFixture, gameFixtures } from '../../fixtures/statsFixtures';
-import { announcementData } from '../../../../src/data/announcementData';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 const dayjs = require('dayjs');
 
 function setup() {

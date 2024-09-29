@@ -9,7 +9,7 @@ import {
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
-import { announcementData } from '../../../../../src/data/announcementData';
+import { announcementData } from '../../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 const dayjs = require('dayjs');
 

@@ -1,7 +1,7 @@
 import { myUser, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
 import { assertSnackbarError } from '../../support/helpers';
 import { SnackBarError } from '../../fixtures/snackbarError';
-import { announcementData } from '../../../../src/data/announcementData';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 function setup(isRanked = false) {
   cy.wipeDatabase();

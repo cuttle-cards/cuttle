@@ -20,7 +20,7 @@
       </v-btn>
     </template>
     <template #body>
-      <div v-if="announcementData.displayCards.length" class="d-flex justify-center my-4">
+      <div v-if="announcementData.displayCards.length" class="cards d-flex my-4">
         <GameCard
           v-for="card in announcementData.displayCards"
           :key="card.suit + card.rank"
@@ -59,7 +59,7 @@ import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import GameCard from '@/routes/game/components/GameCard.vue';
 import { getLocalStorage, setLocalStorage } from '_/utils/local-storage-utils.js';
-import { announcementData } from '../../../data/announcementData';
+import { announcementData } from './data/announcementData';
 
 const { t } = useI18n();
 const show = ref(false);
@@ -77,15 +77,17 @@ onMounted(() => {
   if (getLocalStorage('announcement') !== announcementData.id) {
     show.value = true;
   }
+
 });
 </script>
 
 <style scoped>
-  .card:nth-child(n+2){
-    margin-left: -9% !important;
-  }
+.card:nth-child(n+2){
+  margin-left: -9% !important;
+}
 
-  :deep(.player-card) {
+:deep(.player-card) {
+    will-change: transform;
     max-height: inherit;
   }
 </style>

@@ -1,5 +1,5 @@
 import { myUser } from '../../fixtures/userFixtures';
-import { announcementData } from '../../../../src/data/announcementData';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 describe('Rules Page', () => {
   beforeEach(() => {

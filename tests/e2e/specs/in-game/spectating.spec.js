@@ -15,7 +15,7 @@ import {
 } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
-import { announcementData } from '../../../../src/data/announcementData';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 function setup() {
   cy.wipeDatabase();

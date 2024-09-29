@@ -2,7 +2,7 @@ import { myUser } from '../../fixtures/userFixtures';
 import es from '../../../../src/translations/es.json';
 import fr from '../../../../src/translations/fr.json';
 import en from '../../../../src/translations/en.json';
-import { announcementData } from '../../../../src/data/announcementData';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 describe('Localization', () => {
   beforeEach(() => {

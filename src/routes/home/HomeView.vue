@@ -152,7 +152,7 @@ import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import HowItWorksDialog from '@/routes/home/components/HowItWorksDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
-import AnnouncementDialog from './components/AnnouncementDialog.vue';
+import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
 
 const TABS = {
   PLAY: 'play',

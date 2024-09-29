@@ -1,6 +1,6 @@
 import { assertSnackbarError } from '../../support/helpers';
 import { myUser } from '../../fixtures/userFixtures';
-import { announcementData } from '../../../../src/data/announcementData';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 function assertSuccessfulAuth(username) {
   // Confirm we have navigated to home
