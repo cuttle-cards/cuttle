@@ -19,6 +19,7 @@ module.exports = {
   fn: ({ currentState, playedBy }, exits) => {
     let result = _.cloneDeep(currentState);
 
+    //the user who played the one off is the opposite of the one who is resolving it. 
     const player = playedBy ? result.p0 : result.p1;
     const opponent = playedBy ? result.p1 : result.p0;
 
