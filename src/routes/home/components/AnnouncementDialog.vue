@@ -85,5 +85,7 @@ onMounted(() => {
     margin-left: -9% !important;
   }
 
-
+  :deep(.player-card) {
+    max-height: inherit;
+  }
 </style>
