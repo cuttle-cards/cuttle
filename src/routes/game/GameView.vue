@@ -397,6 +397,7 @@
       <BaseSnackbar
         v-model="showSnackbar"
         :message="snackBarMessage"
+        :color="snackBarColor"
         data-cy="game-snackbar"
         @clear="clearSnackBar"
       />
@@ -455,6 +456,7 @@ export default {
     return {
       showSnackbar: false,
       snackBarMessage: '',
+      snackBarColor: '',
       selectionIndex: null, // when select a card set this value
       targeting: false,
       targetingMoveName: null,
@@ -768,7 +770,13 @@ export default {
     handleError(messageKey) {
       this.snackBarMessage = this.t(messageKey);
       this.showSnackbar = true;
+      this.snackBarColor = 'error';
       this.clearSelection();
+    },
+    showCustomSnackbarMessage(messageKey) {
+      this.snackBarMessage = this.t(messageKey);
+      this.showSnackbar = true;
+      this.snackBarColor = 'surface-1';
     },
     clearOverlays() {
       this.nineTargetIndex = null;
@@ -850,59 +858,71 @@ export default {
     //////////////////
     // Player Moves //
     //////////////////
-    drawCard() {
+    async drawCard() {
       if (!this.gameStore.resolvingSeven) {
-        if (this.deckLength > 0) {
-          this.gameStore
-            .requestDrawCard()
-            .then(this.clearSelection)
-            .catch((messageKey) => {
-              this.handleError(messageKey);
-            });
-        } else {
-          this.gameStore
-            .requestPass()
-            .then(this.clearSelection)
-            .catch((messageKey) => {
-              this.handleError(messageKey);
-            });
+        try {
+          const drawCard = this.deckLength > 0;
+          if (!drawCard) {
+            await this.gameStore.requestPass();
+          } else {
+            await this.gameStore.requestDrawCard();
+          }
+
+          if (drawCard && this.deckLength === 0) {
+            this.showCustomSnackbarMessage('Deck exhausted; revealing player hands');
+          }
+
+        } catch (messageKey) {
+          this.handleError(messageKey);
+        } finally {
+          this.clearSelection();
         }
       }
     },
-    playPoints() {
+    async playPoints() {
       this.clearOverlays();
-      if (this.gameStore.resolvingSeven) {
-        const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore
-          .requestPlayPointsSeven({
+      try {
+        const { resolvingSeven } = this.gameStore;
+        if (!resolvingSeven) {
+          await this.gameStore.requestPlayPoints(this.selectedCard.id);
+        } else {
+          const deckIndex = this.topCardIsSelected ? 0 : 1;
+          await this.gameStore.requestPlayPointsSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
-          })
-          .then(this.clearSelection)
-          .catch(this.handleError);
-      } else {
-        this.gameStore
-          .requestPlayPoints(this.selectedCard.id)
-          .then(this.clearSelection)
-          .catch(this.handleError);
+          });
+        }
+        if (resolvingSeven && this.deckLength === 0) {
+          this.showCustomSnackbarMessage('Deck exhausted; revealing player hands');
+        }
+      } catch (error) {
+        this.handleError(error);
+      } finally {
+        this.clearSelection();
       }
-    },
-    playFaceCard() {
+},
+    async playFaceCard() {
       this.clearOverlays();
-      if (this.gameStore.resolvingSeven) {
+      try {
+        const { resolvingSeven } = this.gameStore;
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore
+        if (!resolvingSeven) {
+          await this.gameStore
+            .requestPlayFaceCard(this.selectedCard.id);
+        } else {
+          await this.gameStore
           .requestPlayFaceCardSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
-          })
-          .then(this.clearSelection)
-          .catch(this.handleError);
-      } else {
-        this.gameStore
-          .requestPlayFaceCard(this.selectedCard.id)
-          .then(this.clearSelection)
-          .catch(this.handleError);
+          });
+        }
+        if (resolvingSeven && this.deckLength - 1 === 0) {
+          this.showCustomSnackbarMessage('Deck exhausted; revealing player hands');
+        }   
+      }catch(messageKey){
+        this.handleError(messageKey);
+      } finally {
+        this.clearSelection();
       }
     },
     scuttle(targetIndex) {
