@@ -197,6 +197,16 @@ export function assertSnackbarError(message, snackName = 'game') {
     .click();
 }
 
+export function assertCustomSnackBar(message, snackName = 'game') {
+  cy.get(`[data-cy=${snackName}-snackbar] .v-snackbar__wrapper`)
+    .should('be.visible')
+    .should('have.class', 'bg-surface-1')
+    .find(`.v-snackbar__content`)
+    .should('contain', message)
+    .get('[data-cy=close-snackbar]')
+    .click();
+}
+
 /**
  * Attempts to make a move out of turn and confirms that controls are disabled etc
  * Assumes a card is already selected and the move choice overlay is open

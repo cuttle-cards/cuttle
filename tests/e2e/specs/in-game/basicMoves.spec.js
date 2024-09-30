@@ -1,4 +1,9 @@
-import { assertGameState, assertSnackbarError, playOutOfTurn } from '../../support/helpers';
+import {
+  assertCustomSnackBar,
+  assertGameState,
+  assertSnackbarError,
+  playOutOfTurn,
+} from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
 
@@ -422,6 +427,23 @@ describe('Game Basic Moves - P1 Perspective', () => {
     cy.get('[data-player-hand-card]').should('have.length', 8);
     // Opponent still has 8 cards in hand
     cy.get('[data-opponent-hand-card]').should('have.length', 8);
+  });
+
+  it('draws last card from deck, and displays snackbar', () => {
+    cy.loadGameFixture(0, {
+      p0Hand: [Card.QUEEN_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.SIX_OF_HEARTS],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.FIVE_OF_CLUBS,
+      deck: [],
+    });
+
+    cy.drawCardOpponent();
+    cy.get('#deck').click();
+    assertCustomSnackBar('Deck exhausted; revealing player hands');
   });
 });
 

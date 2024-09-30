@@ -1,4 +1,5 @@
 import { assertGameState } from '../../../../support/helpers';
+import { assertCustomSnackBar } from '../../../../support/helpers';
 import { Card } from '../../../../fixtures/cards';
 
 describe('Playing sevens at the end of the deck', () => {
@@ -25,6 +26,7 @@ describe('Playing sevens at the end of the deck', () => {
     cy.get('[data-move-choice=points]').click();
 
     cy.get('#deck').find('#empty-deck-text').should('contain', 'PASS');
+    assertCustomSnackBar('Deck exhausted; revealing player hands');
   });
 
   it('Plays the top card of the deck when there are two cards left', () => {
