@@ -3,9 +3,9 @@ import { Card } from '../../../../../../tests/e2e/fixtures/cards';
 export const announcementData = {
   id: 'recyclerFivesPermanent',
   activatorText: 'Recycler Fives are here to stay!',
-  title: 'Keeping Recycler Fives',
+  title: 'Recycler Fives',
   imgSrc: null,
-  displayCards: [Card.FIVE_OF_CLUBS, Card.FIVE_OF_CLUBS, Card.FIVE_OF_CLUBS, Card.FIVE_OF_CLUBS],
+  displayCards: [Card.FIVE_OF_CLUBS, Card.FIVE_OF_DIAMONDS, Card.FIVE_OF_HEARTS, Card.FIVE_OF_SPADES],
   announcementText: [
     {
       heading: 'Recycler Fives are here to stay',
