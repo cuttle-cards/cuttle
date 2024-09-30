@@ -20,7 +20,7 @@
       </v-btn>
     </template>
     <template #body>
-      <div v-if="announcementData.displayCards.length" class="cards d-flex my-4">
+      <div v-if="announcementData.displayCards.length" class="cards d-flex justify-center my-4">
         <GameCard
           v-for="card in announcementData.displayCards"
           :key="card.suit + card.rank"
