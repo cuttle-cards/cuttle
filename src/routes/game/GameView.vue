@@ -478,9 +478,6 @@ export default {
         zIndex: this.isSpectating ? 2411 : 3 // Allows spectators to access game menu wrapper in any moment
       };
     },
-    showOpponentHand() {
-      return this.gameStore.hasGlassesEight || this.isSpectating;
-    },
 
     ////////////////////
     // Responsiveness //
@@ -739,6 +736,9 @@ export default {
         return this.secondCard;
       }
       return null;
+    },
+    showOpponentHand() {
+      return this.gameStore.hasGlassesEight || this.isSpectating || !this.topCard;
     },
   },
   watch: {

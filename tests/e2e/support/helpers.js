@@ -277,7 +277,7 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
     } else {
       cy.get('[data-opponent-hand-card]').should('not.exist');
     }
-    if (playerHasGlasses || spectating) {
+    if (playerHasGlasses || spectating || fixture.topCard === null) {
       fixture.p1Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
@@ -293,7 +293,7 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
     } else {
       cy.get('[data-opponent-hand-card]').should('not.exist');
     }
-    if (playerHasGlasses) {
+    if (playerHasGlasses || fixture.topCard === null) {
       fixture.p0Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
