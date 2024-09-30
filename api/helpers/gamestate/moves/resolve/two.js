@@ -27,10 +27,10 @@ module.exports = {
     if (result.oneOffTargetType === 'jack') {
 
       let pointCard = null;  // To store the point card when found
-      let pointIndex = -1;   // To store the index of the point card in p1.points
+      let pointIndex = -1;   // To store the index of the point card in opponent's points
       let jackIndex = -1;    // To store the index of the jack in the point card's attachments
       
-      // Loop through the opponent's points (p1.points)
+      // Loop through the opponent's points
       for (let i = 0; i < opponent.points.length; i++) {
         const card = opponent.points[i];
       
