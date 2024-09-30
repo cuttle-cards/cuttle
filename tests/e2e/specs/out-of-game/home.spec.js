@@ -3,6 +3,7 @@ import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
 import GameStatus from '../../../../utils/GameStatus.json';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
@@ -12,7 +13,7 @@ function setup() {
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+  window.localStorage.setItem('announcement', announcementData.id);
 }
 
 function assertSuccessfulJoin(gameState) {
@@ -445,7 +446,7 @@ describe('Home - Create Game', () => {
   it('Saves ranked setting between sessions', () => {
     cy.clearLocalStorage();
     cy.window().then((win) => {
-      win.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+      win.localStorage.setItem('announcement', announcementData.id);
     });
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
@@ -620,18 +621,18 @@ describe('Home - Create Game', () => {
 });
 
 describe('Announcement Dialogs', () => {
-  it('Shows the FiveChangeDialog when user navigates to Home Page for the first time', () => {
+  it('Shows the Announcement Dialog when user navigates to Home Page for the first time', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.vueRoute('/');
 
-    cy.get('[data-cy=five-change-dialog]').should('be.visible');
-    cy.get('[data-cy=five-change-dialog-okay').click();
+    cy.get('[data-cy=announcement-dialog]').should('be.visible');
+    cy.get('[data-cy=announcement-dialog-close]').click();
 
-    cy.get('[data-cy=five-change-dialog]').should('not.exist');
+    cy.get('[data-cy=fannouncement-dialog]').should('not.exist');
 
     cy.reload();
-    cy.get('[data-cy=five-change-dialog]').should('not.exist');
+    cy.get('[data-cy=announcement-dialog]').should('not.exist');
   });
 });
