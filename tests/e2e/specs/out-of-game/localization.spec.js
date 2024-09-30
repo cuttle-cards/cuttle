@@ -2,6 +2,7 @@ import { myUser } from '../../fixtures/userFixtures';
 import es from '../../../../src/translations/es.json';
 import fr from '../../../../src/translations/fr.json';
 import en from '../../../../src/translations/en.json';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 describe('Localization', () => {
   beforeEach(() => {
@@ -10,7 +11,7 @@ describe('Localization', () => {
     cy.visit('/');
     cy.signupPlayer(myUser);
     cy.vueRoute('/');
-    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+    window.localStorage.setItem('announcement', announcementData.id);
   });
 
   const checkAndChangeLanguage = (name, lang) => {

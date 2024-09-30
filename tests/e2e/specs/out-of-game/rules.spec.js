@@ -1,11 +1,12 @@
 import { myUser } from '../../fixtures/userFixtures';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 describe('Rules Page', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.vueRoute('/rules');
-    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+    window.localStorage.setItem('announcement', announcementData.id);
   });
 
   it('Navigates to Login when unauthenticated and home when authenticated using the Ready To Play button', () => {

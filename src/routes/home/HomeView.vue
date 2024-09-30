@@ -1,5 +1,5 @@
 <template>
-  <FiveChangeDialog />
+  <AnnouncementDialog />
   <div class="h-100 bg-surface-1">
     <v-container id="home-container" class="container">
       <h1 id="home-card-title">
@@ -152,7 +152,7 @@ import CreateGameDialog from '@/routes/home/components/CreateGameDialog.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import HowItWorksDialog from '@/routes/home/components/HowItWorksDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
-import FiveChangeDialog from './components/FiveChangeDialog.vue';
+import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
 
 const TABS = {
   PLAY: 'play',
@@ -166,7 +166,7 @@ export default {
     CreateGameDialog,
     BaseSnackbar,
     HowItWorksDialog,
-    FiveChangeDialog,
+    AnnouncementDialog,
   },
   setup() {
     // Vuetify has its own translation layer that isn't very good

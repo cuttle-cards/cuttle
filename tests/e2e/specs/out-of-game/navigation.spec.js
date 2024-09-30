@@ -1,4 +1,5 @@
 import { playerOne } from '../../fixtures/userFixtures';
+import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 function verifyAuthenticatedLinks() {
   // Navigate to Rules
@@ -46,7 +47,7 @@ describe('Navigation', () => {
   beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
-    window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+    window.localStorage.setItem('announcement', announcementData.id);
   });
 
   describe('Authenticated Navigation', () => {
@@ -70,7 +71,7 @@ describe('Navigation', () => {
 
   describe('Unauthenticated Navigation', () => {
     beforeEach(() => {
-      window.localStorage.setItem('finalFiveChangeBannerDismissed', true);
+      window.localStorage.setItem('announcement', announcementData.id);
     });
 
     it('Navigates between Login and Rules when unauthenticated on DESKTOP', () => {
