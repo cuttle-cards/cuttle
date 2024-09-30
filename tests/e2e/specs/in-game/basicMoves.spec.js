@@ -438,12 +438,25 @@ describe('Game Basic Moves - P1 Perspective', () => {
       p1Points: [],
       p1FaceCards: [],
       topCard: Card.FIVE_OF_CLUBS,
+      secondCard: Card.ACE_OF_CLUBS,
       deck: [],
     });
 
     cy.drawCardOpponent();
     cy.get('#deck').click();
     assertCustomSnackBar('Deck exhausted; revealing player hands');
+
+    assertGameState(1, {
+      p0Hand: [Card.QUEEN_OF_CLUBS, Card.FIVE_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.SIX_OF_HEARTS, Card.ACE_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: null,
+      secondCard: null,
+      deck: [],
+    });
   });
 });
 
