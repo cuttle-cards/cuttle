@@ -26,7 +26,6 @@ describe('Playing THREEs', () => {
   });
 
   it('Plays 3s successfully', () => {
-    cy.skipOnGameStateApi();
     const scrap = [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS];
 
     // Set Up
@@ -104,7 +103,6 @@ describe('Playing THREEs', () => {
   });
 
   it('Opponent plays 3s successfully', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES],

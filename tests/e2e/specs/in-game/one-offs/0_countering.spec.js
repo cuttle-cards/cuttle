@@ -333,7 +333,6 @@ describe('Countering One-Offs P0 Perspective', () => {
   });
 
   it('Can counter a three', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       // Player is P0
       p0Hand: [Card.FIVE_OF_CLUBS, Card.FOUR_OF_SPADES],
