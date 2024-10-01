@@ -278,7 +278,8 @@
         "emptyDeck": "Vous ne pouvez pas jouer cette carte à moins qu'il n'y ait des cartes dans la pioche",
         "three": {
           "scrapIsEmpty": "La capacité du Trois n'est possible que si la défausse n'est pas vide.",
-          "notResolvingThreePhase": "Peut choisir parmi le défausse en résolvant un 3."
+          "notResolvingThreePhase": "Peut choisir parmi le défausse en résolvant un 3.",
+          "mustPickFromScrap": "Vous devez choisir une carte de la défausse"
         },
         "four": {
           "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main."

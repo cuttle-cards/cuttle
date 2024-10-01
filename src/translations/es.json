@@ -278,7 +278,8 @@
         "emptyDeck": "No puedes jugar ese uno por uno a menos que haya cartas en el mazo",
         "three": {
           "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad única si hay cartas en el mazo de descarte",
-          "notResolvingThreePhase": "Se puede elegir del mazo de descartes al resolver un 3"
+          "notResolvingThreePhase": "Se puede elegir del mazo de descartes al resolver un 3",
+          "mustPickFromScrap": "Debes elegir una carta del mazo de descartes"
         },
         "four": {
           "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano"

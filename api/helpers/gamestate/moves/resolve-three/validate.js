@@ -32,16 +32,16 @@ module.exports = {
     try {
       const cardExists = currentState.scrap.find(card => card.id === requestedMove.cardId);
 
+      if (currentState.turn % 2 !== playedBy) {
+        throw new Error('game.snackbar.global.notYourTurn');
+      }
+
       if (currentState.phase !== GamePhase.RESOLVING_THREE) {
         throw new Error('game.snackbar.oneOffs.three.notResolvingThreePhase');
       }
 
       if (!cardExists) {
-        throw new Error('game.snackbar.global.playFromHand');
-      }
-
-      if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new Error('game.snackbar.oneOffs.three.mustPickFromScrap');
       }
 
       return exits.success();
