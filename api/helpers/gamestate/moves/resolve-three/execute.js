@@ -45,7 +45,9 @@ module.exports = {
       ...requestedMove,
       phase: GamePhase.MAIN,
       playedBy,
-      playedCard: targetCard,
+      playedCard: null,
+      targetCard,
+      resolved: result.oneOff,
       oneOff: null,
     };
 
