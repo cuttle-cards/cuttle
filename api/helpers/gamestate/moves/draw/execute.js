@@ -38,6 +38,8 @@ module.exports = {
       ...requestedMove,
       phase: GamePhase.MAIN,
       playedBy,
+      playedCard: null,
+      targetCard: null,
     };
 
     return exits.success(result);
