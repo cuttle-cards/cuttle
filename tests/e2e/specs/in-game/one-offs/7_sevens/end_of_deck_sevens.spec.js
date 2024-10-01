@@ -1,5 +1,4 @@
-import { assertGameState } from '../../../../support/helpers';
-import { assertCustomSnackBar } from '../../../../support/helpers';
+import { assertGameState, assertCustomSnackBar } from '../../../../support/helpers';
 import { Card } from '../../../../fixtures/cards';
 
 describe('Playing sevens at the end of the deck', () => {
