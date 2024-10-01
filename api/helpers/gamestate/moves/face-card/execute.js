@@ -45,6 +45,7 @@ module.exports = {
       phase: GamePhase.MAIN,
       playedBy,
       playedCard,
+      targetCard: null,
     };
 
     return exits.success(result);

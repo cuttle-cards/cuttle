@@ -42,10 +42,11 @@ module.exports = {
       ...result,
       ...requestedMove,
       phase: GamePhase.MAIN,
+      oneOff: null,
       playedBy,
       playedCard,
+      targetCard: null,
       resolved: oneOff,
-      oneOff: null,
     };
 
     return exits.success(result);
