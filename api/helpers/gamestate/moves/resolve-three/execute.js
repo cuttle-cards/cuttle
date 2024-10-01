@@ -30,9 +30,9 @@ module.exports = {
     const { cardId } = requestedMove;
     let result = _.cloneDeep(currentState);
 
-    const targetCard = result.scrap.find(card => card.id === requestedMove.cardId);
+    const targetCardIndex = result.scrap.findIndex(card => card.id === cardId);
     
-    result.scrap = result.scrap.filter(card => card.id !== cardId);
+    const [ targetCard ] = result.scrap.splice(targetCardIndex, 1);
     
     const player = playedBy ? result.p1 : result.p0;
     player.hand.push(targetCard);
