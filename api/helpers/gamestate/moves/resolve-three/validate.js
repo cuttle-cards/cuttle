@@ -14,7 +14,7 @@ module.exports = {
     /**
      * @param { Object } requestedMove - Object describing the request to resolve a three
      * @param { String } requestedMove.cardId - Card to retrieve from the scrap pile
-     * @param { MoveType.RESOLVING_THREE } requestedMove.moveType - Specifies that this a Resolving Three move
+     * @param { MoveType.RESOLVE_THREE } requestedMove.moveType - Specifies that this a Resolve Three move
      */
     requestedMove: {
       type: 'ref',
