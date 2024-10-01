@@ -249,7 +249,7 @@
         "playFromHand": "Vous ne pouez jouer que des cartes de votre main.",
         "blockedByQueen": "La Dame de votre adversaire empêche ses autres cartes d'être ciblées.",
         "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame.",
-        "notInMainPhase" : "Vous ne pouvez faire cela qu'en phase principale"
+        "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale"
       },
       "draw": {
         "deckIsEmpty": "La pioche est vide, vous ne pouvez pas piocher.",
@@ -506,5 +506,11 @@
     "404": {
       "title": "404 Non Trouvé"
     }
+  },
+  "announcement": {
+    "activatorText": "Alerte Nouvelle Fonctionnalité : Main de l’Adversaire Révélée!",
+    "title": "La Nouvelle Révélation de Cuttle",
+    "heading": "Maîtrisez la Fin de Partie : Main de l’Adversaire Exposée dans Cuttle!",
+    "paragraph": "Lorsque le paquet est complètement épuisé (il n’y a plus de cartes), vous pourrez désormais voir la main de votre adversaire ! Ce changement apporte un nouvel aspect au jeu, permettant des stratégies encore plus élaborées alors que vous vous dépêchez de surpasser votre adversaire en fin de partie."
   }
 }

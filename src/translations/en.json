@@ -249,7 +249,7 @@
         "playFromHand": "You can only play a card that is in your hand",
         "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
         "blockedByMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen",
-        "notInMainPhase" : "You can only do that in the main phase"
+        "notInMainPhase": "You can only do that in the main phase"
       },
       "draw": {
         "deckIsEmpty": "The deck is empty; you cannot draw.",
@@ -506,5 +506,11 @@
     "404": {
       "title": "404 Not Found"
     }
+  },
+  "announcement": {
+    "activatorText": "New Feature Alert: Opponent's Hand Revealed!",
+    "title": "Cuttle's New Reveal",
+    "heading": "Master the Endgame: Opponent's Hand Exposed in Cuttle!",
+    "paragraph": "When the deck is completely exhausted (runs out of cards), you will now be able to see your opponent's hand! This change brings a fresh twist to the game, allowing for even more strategic plays as you race to outmaneuver your opponent in the endgame."
   }
 }

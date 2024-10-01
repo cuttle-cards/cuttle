@@ -249,7 +249,7 @@
         "playFromHand": "Solo puedes jugar una carta que se encuentre en tu mano",
         "blockedByQueen": "La Reina de tu oponente evita que puedas seleccionar como objetivo sus otras cartas",
         "blockedByMultipleQueens": "No puedes jugar una carta de habilidad única con objetivo (Dos, Nueve) cuando tu oponente tiene más de una reina",
-        "notInMainPhase" : "Solo puedes hacer eso en la fase principal"
+        "notInMainPhase": "Solo puedes hacer eso en la fase principal"
       },
       "draw": {
         "deckIsEmpty": "El mazo está vacío; no puedes robar.",
@@ -506,5 +506,11 @@
     "404": {
       "title": "404 No Encontrado"
     }
+  },
+  "announcement": {
+    "activatorText": "¡Alerta de Nueva Función: Mano del Oponente Revelada!",
+    "title": "La Nueva Revelación de Cuttle",
+    "heading": "Domina el Final del Juego: ¡Mano del Oponente Expuesta en Cuttle!",
+    "paragraph": "Cuando el mazo se agote por completo (se quede sin cartas), ¡ahora podrás ver la mano de tu oponente! Este cambio le da un giro fresco al juego, permitiendo jugadas aún más estratégicas mientras te apresuras a superar a tu oponente en el final del juego."
   }
 }

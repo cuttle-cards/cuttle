@@ -8,7 +8,7 @@
     scrollable
     :persistent="false"
     :max-width="750"
-    :title="announcementData.title"
+    :title="t(announcementData.title)"
   >
     <template #activator>
       <v-btn
@@ -16,7 +16,7 @@
         rounded="0"
         block
       >
-        {{ announcementData.activatorText }}
+        {{ t(announcementData.activatorText) }}
       </v-btn>
     </template>
     <template #body>
@@ -35,9 +35,9 @@
       </div>
       <div v-for="(text,i) in announcementData.announcementText" :key="i" class="mb-4">
         <h2 v-if="text.heading">
-          {{ text.heading }}
+          {{ t(text.heading) }}
         </h2>  
-        <p> {{ text.paragraph }} </p>  
+        <p> {{ t(text.paragraph) }} </p>  
       </div>  
     </template>
     <template #actions>
