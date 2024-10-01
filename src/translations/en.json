@@ -253,7 +253,8 @@
       },
       "draw": {
         "deckIsEmpty": "The deck is empty; you cannot draw.",
-        "handLimit": "You are at the hand limit; you cannot draw."
+        "handLimit": "You are at the hand limit; you cannot draw.",
+        "exhaustedDeck": "Deck exhausted; revealing player hands"
       },
       "faceCards": {
         "withoutTarget": "Only Kings, Queens, and Eights may be played as Face Cards without a target"

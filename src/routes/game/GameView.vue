@@ -869,7 +869,7 @@ export default {
           }
 
           if (drawCard && this.deckLength === 0) {
-            this.showCustomSnackbarMessage('Deck exhausted; revealing player hands');
+            this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
           }
 
         } catch (messageKey) {
@@ -893,7 +893,7 @@ export default {
           });
         }
         if (resolvingSeven && this.deckLength === 0) {
-          this.showCustomSnackbarMessage('Deck exhausted; revealing player hands');
+          this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
         }
       } catch (error) {
         this.handleError(error);
@@ -917,7 +917,7 @@ export default {
           });
         }
         if (resolvingSeven && this.deckLength - 1 === 0) {
-          this.showCustomSnackbarMessage('Deck exhausted; revealing player hands');
+          this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
         }   
       }catch(messageKey){
         this.handleError(messageKey);

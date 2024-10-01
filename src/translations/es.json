@@ -253,7 +253,8 @@
       },
       "draw": {
         "deckIsEmpty": "El mazo está vacío; no puedes robar.",
-        "handLimit": "Tu mano ha alcanzado el límite; no puedes robar."
+        "handLimit": "Tu mano ha alcanzado el límite; no puedes robar.",
+        "exhaustedDeck": "Mazo agotado; revelando las manos de los jugadores"
       },
       "faceCards": {
         "withoutTarget": "Solo Reyes, Reinas y Ochos pueden ser jugados como cartas de realeza sin objetivo"
