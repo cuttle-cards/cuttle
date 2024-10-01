@@ -34,9 +34,7 @@ module.exports = {
 
     const fizzles = result.twos.length % 2 === 1;
     // Move oneOff + twos into scrap and increment turn
-    if (!oneOff.rank !== 3) {  // Don't add to scrap yet if it's a 3 one-off
-      result.scrap.push(result.oneOff);
-    }
+    result.scrap.push(result.oneOff);
     result.scrap.push(...result.twos);
     result = {
       ...result,
