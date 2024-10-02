@@ -456,7 +456,7 @@ export default {
     return {
       showSnackbar: false,
       snackBarMessage: '',
-      snackBarColor: '',
+      snackBarColor: 'error',
       selectionIndex: null, // when select a card set this value
       targeting: false,
       targetingMoveName: null,
