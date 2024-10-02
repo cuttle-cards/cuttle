@@ -430,7 +430,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
   });
 
   it('draws last card from deck, and displays snackbar', () => {
-    cy.loadGameFixture(0, {
+    cy.loadGameFixture(1, {
       p0Hand: [Card.QUEEN_OF_CLUBS],
       p0Points: [],
       p0FaceCards: [],
@@ -448,6 +448,37 @@ describe('Game Basic Moves - P1 Perspective', () => {
 
     assertGameState(1, {
       p0Hand: [Card.QUEEN_OF_CLUBS, Card.FIVE_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.SIX_OF_HEARTS, Card.ACE_OF_CLUBS],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: null,
+      secondCard: null,
+      deck: [],
+    });
+  });
+
+  it.only('Opponent draws last card from deck, and displays snackbar for player', () => {
+    cy.loadGameFixture(1, {
+      p0Hand: [Card.QUEEN_OF_CLUBS],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [Card.SIX_OF_HEARTS],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.FIVE_OF_CLUBS,
+      secondCard: Card.ACE_OF_CLUBS,
+      deck: [Card.TWO_OF_DIAMONDS],
+    });
+
+    cy.drawCardOpponent();
+    cy.get('#deck').click();
+    cy.drawCardOpponent();
+    assertCustomSnackBar('Deck exhausted; revealing player hands');
+
+    assertGameState(1, {
+      p0Hand: [Card.QUEEN_OF_CLUBS, Card.FIVE_OF_CLUBS, Card.TWO_OF_DIAMONDS],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [Card.SIX_OF_HEARTS, Card.ACE_OF_CLUBS],
