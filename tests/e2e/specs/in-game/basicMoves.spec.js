@@ -459,7 +459,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
     });
   });
 
-  it.only('Opponent draws last card from deck, and displays snackbar for player', () => {
+  it('Opponent draws last card from deck, and displays snackbar for player', () => {
     cy.loadGameFixture(1, {
       p0Hand: [Card.QUEEN_OF_CLUBS],
       p0Points: [],
