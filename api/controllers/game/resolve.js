@@ -1,7 +1,7 @@
 const { getCardName } = require('../../../utils/game-utils');
 
 module.exports = function (req, res) {
-  //Note: the player calling resolve is the opponent of the one playing the one-off, if it resolves
+  // Note: the player calling resolve is the opponent of the one playing the one-off, if it resolves
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.body.opId });
   const promiseOpponent = userService.findUser({ userId: req.session.usr });
@@ -64,7 +64,7 @@ module.exports = function (req, res) {
               // Remove opponent's points
               User.removeFromCollection(opponent.id, 'points').members(opponentPointIds),
             ];
-            break; //End resolve ACE
+            break; // End resolve ACE
           }
           case 2:
             gameUpdates = {
@@ -93,8 +93,8 @@ module.exports = function (req, res) {
                   User.addToCollection(player.id, 'points').members([game.attachedToTarget.id]),
                 ];
                 break;
-            } //End switch(oneOffTargetType)
-            break; //End resolve TWO
+            } // End switch(oneOffTargetType)
+            break; // End resolve TWO
           case 3:
             gameUpdates = {
               ...gameUpdates,
@@ -178,7 +178,7 @@ module.exports = function (req, res) {
               // Give opponent the point cards that return to them
               User.addToCollection(opponent.id, 'points').members(pointsGoingToOpponent),
             ];
-            break; //End resolve SIX
+            break; // End resolve SIX
           }
           case 7:
             gameUpdates = {
@@ -196,7 +196,7 @@ module.exports = function (req, res) {
                 `The ${getCardName(game.oneOff)} one-off resolves. They will play the ${getCardName(game.topCard)} as it is the last card in the deck.`,
               ];
             }
-            break; //End resolve SEVEN
+            break; // End resolve SEVEN
           case 9:
             updatePromises.push(
               // Place target back in opponent's hand
@@ -246,9 +246,9 @@ module.exports = function (req, res) {
                 gameUpdates.attachedToTarget = null;
                 break;
             }
-            break; //End resolve NINE
-        } //End switch on oneOff rank
-      } //End if(happened)
+            break; // End resolve NINE
+        } // End switch on oneOff rank
+      } // End if(happened)
 
       // Add twos to the cards to scrap
       cardsToScrap = [...cardsToScrap, ...game.twos.map((two) => two.id)];
@@ -285,7 +285,7 @@ module.exports = function (req, res) {
       const dataToReturn = [game, oneOff, player.pNum, happened, ...updatePromises];
 
       return Promise.all(dataToReturn);
-    }) //End changeAndSave
+    }) // End changeAndSave
     .then(function populateGame(values) {
       const [game, oneOff, pNum, happened] = values;
       return Promise.all([gameService.populateGame({ gameId: game.id }), oneOff, pNum, happened, game]);

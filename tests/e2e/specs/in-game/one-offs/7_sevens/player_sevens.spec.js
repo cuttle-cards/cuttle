@@ -672,7 +672,7 @@ describe('Playing SEVENS', () => {
         scrap: [Card.JACK_OF_CLUBS, Card.TWO_OF_SPADES, Card.SEVEN_OF_CLUBS],
         topCard: Card.FOUR_OF_CLUBS,
       });
-    }); //End playing TWO on jacks from a seven
+    }); // End playing TWO on jacks from a seven
 
     it('Plays a NINE from a seven', () => {
       cy.skipOnGameStateApi();
@@ -763,7 +763,7 @@ describe('Playing SEVENS', () => {
         scrap: [Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
         topCard: Card.TWO_OF_SPADES,
       });
-    }); //End playing NINE on jacks from a seven
+    }); // End playing NINE on jacks from a seven
     it('Disables move choices when selecting card in hand while resolving seven', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP0();

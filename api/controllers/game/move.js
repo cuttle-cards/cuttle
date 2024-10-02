@@ -32,12 +32,12 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    //unlock game if failing due to validation
+    // unlock game if failing due to validation
     if (game?.lock) {
       try {
         await sails.helpers.unlockGame(game.lock);
       } catch (err) {
-        //fall through for generic error handling
+        // fall through for generic error handling
       }
     }
     return res.badRequest({ message: err.message });

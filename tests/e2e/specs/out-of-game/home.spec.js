@@ -504,7 +504,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
 
     cy.get('[data-cy=create-game-dialog]').should('not.exist');
-    //Test DOM
+    // Test DOM
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')

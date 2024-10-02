@@ -100,7 +100,7 @@ export const useGameStore = defineStore('game', {
     showResolveFour: false,
     waitingForOpponentToDiscard: false,
     lastEventDiscardedCards: null,
-    //fives
+    // fives
     showResolveFive: false,
     // Sevens
     playingFromDeck: false,

@@ -26,7 +26,7 @@ module.exports = async function (req, res) {
 
     const allFixtureCards = Object.values(req.body).flat();
 
-    //Populate deck with all cards except the cards in the fixture
+    // Populate deck with all cards except the cards in the fixture
     const populatedDeck =
       deck ??
       _.shuffle(
