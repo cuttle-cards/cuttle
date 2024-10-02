@@ -749,6 +749,11 @@ export default {
         this.scrollToLastLog();
       });
     },
+    topCard(newTopCard, oldTopCard) {
+      if (oldTopCard && !newTopCard) {
+        this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
+      }
+    }
   },
   async mounted() {
     if (!this.authStore.authenticated) {
@@ -867,11 +872,6 @@ export default {
           } else {
             await this.gameStore.requestDrawCard();
           }
-
-          if (drawCard && this.deckLength === 0) {
-            this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
-          }
-
         } catch (messageKey) {
           this.handleError(messageKey);
         } finally {
@@ -891,9 +891,6 @@ export default {
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
           });
-        }
-        if (resolvingSeven && this.deckLength === 0) {
-          this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
         }
       } catch (error) {
         this.handleError(error);
@@ -916,9 +913,6 @@ export default {
             index: deckIndex,
           });
         }
-        if (resolvingSeven && this.deckLength - 1 === 0) {
-          this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
-        }   
       }catch(messageKey){
         this.handleError(messageKey);
       } finally {
