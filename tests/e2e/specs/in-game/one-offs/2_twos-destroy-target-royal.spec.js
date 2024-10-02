@@ -146,7 +146,7 @@ describe('Play TWOS', () => {
       cy.get('[data-player-face-card=11-0]').should('not.exist');
     }); // End playing TWO to destroy jack
 
-    it('Opponent Destroy Jacks', () => {
+    it('Opponent (p1) plays TWO to destroy a jack', () => {
 
       cy.loadGameFixture(0, {
         p0Hand: [Card.JACK_OF_CLUBS],
