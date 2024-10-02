@@ -99,9 +99,7 @@ describe('Playing sevens at the end of the deck', () => {
     });
   });
 
-  // unskip?
   it('Cannot play seven one-off if deck is empty', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [],
