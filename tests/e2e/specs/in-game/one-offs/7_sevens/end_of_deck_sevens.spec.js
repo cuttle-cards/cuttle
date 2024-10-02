@@ -63,9 +63,7 @@ describe('Playing sevens at the end of the deck', () => {
     });
   });
 
-  // unskip?
   it('Plays the 2nd card in the deck when there are two cards left', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
