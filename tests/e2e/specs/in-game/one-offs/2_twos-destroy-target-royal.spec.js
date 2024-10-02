@@ -40,6 +40,51 @@ describe('Play TWOS', () => {
       });
     });
 
+    it('Resolves a two to destroy a facecard after being double countered', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [Card.ACE_OF_SPADES, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
+        p0Points: [Card.TEN_OF_SPADES],
+        p0FaceCards: [Card.KING_OF_SPADES],
+        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TWO_OF_HEARTS],
+        p1Points: [Card.TEN_OF_HEARTS],
+        p1FaceCards: [Card.KING_OF_HEARTS],
+      });
+
+      // Play two as one off (two of clubs)
+      cy.get('[data-player-hand-card=2-0]').click();
+      cy.get('[data-move-choice=targetedOneOff]').click();
+      cy.get('#player-hand-targeting').should('be.visible');
+      cy.get('[data-opponent-face-card=13-2]').click(); // target king of hearts
+
+      // Opponent counters
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      cy.counterOpponent(Card.TWO_OF_HEARTS);
+
+      // Player counters back
+      cy.get('#counter-dialog')
+        .should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
+      cy.get('#choose-two-dialog')
+        .should('be.visible')
+        .get('[data-counter-dialog-card=2-1]')
+        .click();
+
+      // Opponent Resolves
+      cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
+      cy.resolveOpponent();
+
+      assertGameState(0, {
+        p0Hand: [Card.ACE_OF_SPADES],
+        p0Points: [Card.TEN_OF_SPADES],
+        p0FaceCards: [Card.KING_OF_SPADES],
+        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+        p1Points: [Card.TEN_OF_HEARTS],
+        p1FaceCards: [],
+        scrap: [Card.TWO_OF_DIAMONDS, Card.TWO_OF_HEARTS, Card.TWO_OF_CLUBS, Card.KING_OF_HEARTS],
+      });
+    });
+
     it('Plays TWO to Destroy Jacks', () => {
 
       cy.loadGameFixture(0, {
