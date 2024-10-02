@@ -766,40 +766,6 @@ describe('Playing SEVENS', () => {
     }); //End playing NINE on jacks from a seven
 
     it('Disables move choices when selecting card in hand while resolving seven', () => {
-      cy.skipOnGameStateApi();
-      cy.setupGameAsP0();
-      cy.loadGameFixture(0, {
-        p0Hand: [Card.SEVEN_OF_CLUBS, Card.TWO_OF_CLUBS],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [],
-        p1Points: [Card.TEN_OF_CLUBS],
-        p1FaceCards: [Card.KING_OF_CLUBS],
-        topCard: Card.FOUR_OF_DIAMONDS,
-        secondCard: Card.NINE_OF_CLUBS,
-      });
-
-      cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
-
-      cy.get('[data-second-card=9-0]').should('exist').and('be.visible');
-      cy.get('[data-top-card=4-1]').should('exist').and('be.visible');
-
-      cy.get('[data-player-hand-card=2-0]').click();
-
-      cy.get('[data-move-choice=points]')
-        .should('have.class', 'v-card--disabled')
-        .contains('You must play one of the top two cards from the deck');
-
-      cy.get('[data-move-choice=scuttle]')
-        .should('have.class', 'v-card--disabled')
-        .contains('You must play one of the top two cards from the deck');
-
-      cy.get('[data-move-choice=targetedOneOff]')
-        .should('have.class', 'v-card--disabled')
-        .contains('You must play one of the top two cards from the deck');
-    }); // End disables moves choices
-
-    it('Disables move choices when selecting card in hand while resolving seven', () => {
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.TWO_OF_CLUBS],
