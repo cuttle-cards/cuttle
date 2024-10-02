@@ -119,7 +119,6 @@ describe('Playing sevens at the end of the deck', () => {
     cy.get('[data-move-choice=oneOff').should('have.class', 'v-card--disabled');
   });
 
-  // unskip?
   it('Cannot play last card of deck as 7 one-off when chaining sevens', () => {
     cy.skipOnGameStateApi();
     cy.setupGameAsP1();
