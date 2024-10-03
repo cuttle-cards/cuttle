@@ -72,7 +72,7 @@ module.exports = {
         })
         .catch((err) => {
           return reject(err);
-        }); //End find()
-    }); //End returned Promise
+        }); // End find()
+    }); // End returned Promise
   },
 };

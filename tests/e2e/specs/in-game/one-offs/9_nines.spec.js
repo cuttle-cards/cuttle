@@ -450,7 +450,7 @@ describe('Playing NINES', () => {
       cy.get('[data-move-choice=points]')
         .should('have.class', 'v-card--disabled')
         .contains('This card is frozen')
-        .click({ force: true }); //Break out into separate test case
+        .click({ force: true }); // Break out into separate test case
       assertSnackbarError(SnackBarError.FROZEN_CARD);
       cy.log('Correctly prevented player from re-playing frozen jack next turn');
       // Player attempts to play the returned seven immediately for scuttle
@@ -461,7 +461,7 @@ describe('Playing NINES', () => {
       cy.get('[data-move-choice=scuttle]')
         .should('have.class', 'v-card--disabled')
         .contains('This card is frozen')
-        .click({ force: true }); //Break out into separate test case
+        .click({ force: true }); // Break out into separate test case
       // Player attempts to scuttle lower point card
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=3-0]').click();
@@ -525,7 +525,7 @@ describe('Playing NINES', () => {
       cy.get('[data-move-choice=jack]')
         .should('have.class', 'v-card--disabled')
         .contains('This card is frozen')
-        .click({ force: true }); //Break out into separate test case
+        .click({ force: true }); // Break out into separate test case
 
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=1-3]').click();
