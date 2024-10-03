@@ -3,7 +3,7 @@ import { points } from '../fixtures/gameStates/points';
 import { resolveThree } from '../fixtures/gameStates/resolveThree';
 import { resolveNine } from '../fixtures/gameStates/resolveNine';
 
-//remove attributes added while creating the entry in the database
+// remove attributes added while creating the entry in the database
 function stripDbAttributes(obj) {
   const attributesToRemove = ['createdAt', 'id', 'updatedAt'];
   attributesToRemove.forEach((attr) => delete obj[attr]);

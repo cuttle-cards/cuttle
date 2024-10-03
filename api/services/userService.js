@@ -23,7 +23,7 @@ module.exports = {
         }
         return reject({ message: 'No id given when finding user' });
 
-        //end if(options)
+        // end if(options)
       }
       return reject({ message: 'No id given when finding user' });
     });

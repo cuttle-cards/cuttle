@@ -669,7 +669,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       }
 
       const moveType = MoveType.RESOLVE_FOUR;
-      //dont use makeSocketRequest due to edge case checking error on opponent side
+      // dont use makeSocketRequest due to edge case checking error on opponent side
       transformGameUrl('game', 'resolveFour').then((url) => {
         io.socket.request({
           method: 'post',
