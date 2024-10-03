@@ -88,8 +88,12 @@ module.exports = {
         multiline: 'below',
       },
     ],
-    'array-bracket-spacing': ['error', 'always'],
-    'object-curly-spacing': ['error', 'always']
+    'array-bracket-spacing': [
+      'error', 'always'
+    ],
+    'object-curly-spacing': [
+      'error', 'always'
+    ]
   },
   overrides: [
     {
