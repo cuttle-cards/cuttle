@@ -38,9 +38,9 @@ module.exports = {
         return numPasses;
       })();
 
-      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState, countPasses);
+      const victory = await sails.helpers.gameStates.checkGameStateForWin(game, gameState, countPasses);
 
-      const fullLog = sails.helpers.gamestate.getLog(game);
+      const fullLog = sails.helpers.gameStates.getLog(game);
 
       // Last Event, and Extra Socket Variables
       const happened = gameState.moveType !== MoveType.FIZZLE;

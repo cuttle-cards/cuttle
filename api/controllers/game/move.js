@@ -2,8 +2,8 @@
 module.exports = async function (req, res) {
   let game;
   try {
-    const { saveGamestate, publishGameState, unpackGamestate } = sails.helpers.gamestate;
-    const { execute, validate } = sails.helpers.gamestate.moves[req.body.moveType];
+    const { saveGamestate, publishGameState, unpackGamestate } = sails.helpers.gameStates;
+    const { execute, validate } = sails.helpers.gameStates.moves[req.body.moveType];
     game = await sails.helpers.lockGame(req.params.gameId);
     const gameState = unpackGamestate(game.gameStates.at(-1));
     if (!game.gameStates.length || !gameState) {

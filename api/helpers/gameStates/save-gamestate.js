@@ -15,9 +15,9 @@ module.exports = {
 
     try {
         // validate and format
-        const gameStateCleaned = sails.helpers.gamestate.validateGamestate(gameState);
+        const gameStateCleaned = sails.helpers.gameStates.validateGamestate(gameState);
         // convert
-        const gameStateRowData = sails.helpers.gamestate.packGamestate(gameStateCleaned);
+        const gameStateRowData = sails.helpers.gameStates.packGamestate(gameStateCleaned);
         // Save and fetch
         const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
 
