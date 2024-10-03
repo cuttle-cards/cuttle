@@ -14,7 +14,7 @@ describe('Sixes One-Offs', () => {
   it('Plays a six to destroy all face cards', () => {
     // Setup
     cy.loadGameFixture(0, {
-      //Player is P0
+      // Player is P0
       p0Hand: [
         Card.ACE_OF_CLUBS,
         Card.SIX_OF_SPADES,
