@@ -14,15 +14,12 @@ module.exports = {
   fn: ({ currentState }, exits) => {
     let result = _.cloneDeep(currentState);
 
-    const player = result.playedBy ? result.p1 : result.p0;
-    const opponent = result.playedBy ? result.p0 : result.p1;
+    const { p0, p1 } = result;
     
-    let cardToScrap = [];
-
     const collectJacksAndFilterPoints = (playedBy, target) => {
       playedBy.points = playedBy.points.filter((point) => {
         const jackCount = point.attachments.length;
-        cardToScrap.push(...point.attachments);  // Collect all jacks
+        result.scrap.push(...point.attachments);  // Scrap all jacks
         point.attachments = []; // removing attachments from all cards
 
         if (jackCount % 2 === 1) {
@@ -33,17 +30,14 @@ module.exports = {
       });
     };
 
-    collectJacksAndFilterPoints(player, opponent);
-    collectJacksAndFilterPoints(opponent, player);
+    collectJacksAndFilterPoints(p0, p1);
+    collectJacksAndFilterPoints(p1, p0);
       
-    // Remove all played face cards
-    [player, opponent].forEach((card) => {
-      cardToScrap.push(...card.faceCards);
+    // Remove all played face cards and add in scrap
+    [p0, p1].forEach((card) => {
+      result.scrap.push(...card.faceCards);
       card.faceCards = [];
     });
-
-    // Add collected cards to scrap
-    result.scrap.push(...cardToScrap);
 
     return exits.success(result);
   },
