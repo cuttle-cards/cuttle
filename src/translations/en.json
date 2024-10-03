@@ -280,7 +280,10 @@
           "scrapIsEmpty": "You can only play a 3 as a one-off if there are cards in the scrap pile"
         },
         "four": {
-          "opponentHasNoCards": "You cannot play a 4 as a one-off while your opponent has no cards in hand"
+          "opponentHasNoCards": "You cannot play a 4 as a one-off while your opponent has no cards in hand",
+          "notYourTurn": "It's not your turn to discard",
+          "notResolvingFourPhase": "Can't discard unless your opponent played a four",
+          "mustSelectCards": "You must select two cards to discard"
         },
         "five": {
           "selectCardToDiscard": "You must select one card to discard",

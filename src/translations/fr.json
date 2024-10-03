@@ -280,7 +280,10 @@
           "scrapIsEmpty": "La capacité du Trois n'est possible que si la défausse n'est pas vide."
         },
         "four": {
-          "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main."
+          "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main.",
+          "notYourTurn": "Ce n'est pas à vous de défausser",
+          "notResolvingFourPhase": "Vous ne pouvez pas défausser à moins que votre adversaire n'ait joué un Quatre",
+          "mustSelectCards": "Vous devez sélectionner deux cartes à défausser"
         },
         "five": {
           "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
