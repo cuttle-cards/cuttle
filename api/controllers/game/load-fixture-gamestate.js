@@ -9,7 +9,7 @@ module.exports = async function (req, res) {
       .populate('p0')
       .populate('p1');
 
-    const { publishGameState, saveGamestate, convertStrToCard } = sails.helpers.gamestate;
+    const { publishGameState, saveGamestate, convertStrToCard } = sails.helpers.gameStates;
 
     const {
       p0Hand,
