@@ -1,6 +1,5 @@
 import { useAuthStore } from '@/stores/auth';
 import { useGameStore } from '@/stores/game';
-import { useGameListStore } from '@/stores/gameList';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_HOME } from '@/router';
 
@@ -21,6 +20,10 @@ export function handleConnect() {
       }
       return gameStore.requestSpectate(gameId);
     }
+    case ROUTE_NAME_HOME:
+      const { useGameListStore } = require('@/stores/gameList');
+      const gameListStore = useGameListStore();
+      return gameListStore.requestGameList();
     default:
       return;
   }
