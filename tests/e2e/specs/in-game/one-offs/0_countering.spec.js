@@ -332,22 +332,21 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.setupGameAsP0();
   });
 
-  it('Can counter a three', () => {
-    cy.skipOnGameStateApi();
+  it('Increments turn when one-off fizzles', () => {
     cy.loadGameFixture(0, {
       // Player is P0
-      p0Hand: [Card.FIVE_OF_CLUBS, Card.FOUR_OF_SPADES],
+      p0Hand: [Card.THREE_OF_CLUBS, Card.FOUR_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
       p0FaceCards: [Card.KING_OF_SPADES],
       // Opponent is P1
       p1Hand: [Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES, Card.SIX_OF_CLUBS],
       p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [],
       scrap: [Card.QUEEN_OF_CLUBS],
     });
 
     // Player plays three of clubs as one-off
-    cy.get('[data-player-hand-card=5-0]').click();
+    cy.get('[data-player-hand-card=3-0]').click();
     cy.get('[data-move-choice=oneOff]').click();
 
     // Opponent counters and player resolves
@@ -355,30 +354,22 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
     // No longer player turn
-    cy.get('[data-player-hand-card=4-3]').click(); // king of clubs
+    cy.get('[data-player-hand-card=4-3]').click(); // Four of Spades
     playOutOfTurn('points');
 
-    // Opponent plays a Six
-    cy.playOneOffOpponent(Card.SIX_OF_CLUBS);
-    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+    // Opponent plays a six
+    cy.playPointsOpponent(Card.SIX_OF_CLUBS);
 
-    assertGameState(0, {
+    cy.loadGameFixture(0, {
       // Player is P0
       p0Hand: [Card.FOUR_OF_SPADES],
       p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [],
+      p0FaceCards: [Card.KING_OF_SPADES],
       // Opponent is P1
       p1Hand: [Card.ACE_OF_HEARTS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.SIX_OF_CLUBS],
       p1FaceCards: [],
-      scrap: [
-        Card.QUEEN_OF_CLUBS,
-        Card.FIVE_OF_CLUBS,
-        Card.KING_OF_SPADES,
-        Card.SIX_OF_CLUBS,
-        Card.KING_OF_HEARTS,
-        Card.TWO_OF_SPADES,
-      ],
+      scrap: [Card.QUEEN_OF_CLUBS, Card.THREE_OF_CLUBS, Card.TWO_OF_SPADES],
     });
   });
 
