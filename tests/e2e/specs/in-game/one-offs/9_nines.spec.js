@@ -450,7 +450,7 @@ describe('Playing NINES', () => {
       cy.get('[data-move-choice=points]')
         .should('have.class', 'v-card--disabled')
         .contains('This card is frozen')
-        .click({ force: true }); //Break out into separate test case
+        .click({ force: true }); // Break out into separate test case
       assertSnackbar(SnackBarError.FROZEN_CARD);
 
       cy.log('Correctly prevented player from re-playing frozen jack next turn');
