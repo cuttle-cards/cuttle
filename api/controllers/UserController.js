@@ -8,7 +8,7 @@
 //////////////////
 // DEPENDENCIES //
 //////////////////
-const GameStatus = require('../../utils/GameStatus.json');
+const GameStatus = require('../../types/GameStatus.json');
 const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
 

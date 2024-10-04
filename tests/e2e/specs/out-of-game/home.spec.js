@@ -2,7 +2,7 @@ import { assertSnackbarError } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
-import GameStatus from '../../../../utils/GameStatus.json';
+import GameStatus from '../../../../types/GameStatus.json';
 import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
