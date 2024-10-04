@@ -34,13 +34,15 @@ module.exports = {
     const player = playedBy ? result.p1 : result.p0;
     const discardedCards = [];
 
-    player.hand.forEach((card, index, object) => {
-      if (card.id === cardId1 || card.id === cardId2) {
-        discardedCards.push(card);
-        result.scrap.push(card);
-        object.splice(index, 1);
-      }
-    });
+    const cardIndex1 = player.hand.findIndex(({ id }) => id === cardId1);
+
+    discardedCards.push(player.hand.cardIndex1);
+    result.scrap.push(...player.hand.splice(cardIndex1, 1));
+  
+    const cardIndex2 = player.hand.findIndex(({ id }) => id === cardId2);
+
+    discardedCards.push(player.hand.cardIndex2);
+    result.scrap.push(...player.hand.splice(cardIndex2, 1));
 
     result.turn++;
 
