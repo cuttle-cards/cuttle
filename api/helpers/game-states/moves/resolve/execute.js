@@ -61,7 +61,7 @@ module.exports = {
         result = sails.helpers.gameStates.moves.resolve.two(result, playedBy);
         break;
       case 6:
-        result = sails.helpers.gamestate.moves.resolve.six(result);
+        result = sails.helpers.gameStates.moves.resolve.six(result);
         break;
       case 3:
       case 4:
