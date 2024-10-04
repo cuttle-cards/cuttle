@@ -332,7 +332,7 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.setupGameAsP0();
   });
 
-  it.only('Increments turn when one-off fizzles', () => {
+  it('Increments turn when one-off fizzles', () => {
     cy.loadGameFixture(0, {
       // Player is P0
       p0Hand: [Card.THREE_OF_CLUBS, Card.FOUR_OF_SPADES],
