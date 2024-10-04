@@ -12,32 +12,30 @@ module.exports = {
   },
   sync: true, // synchronous helper
   fn: ({ currentState }, exits) => {
-    let result = _.cloneDeep(currentState);
+    const result = _.cloneDeep(currentState);
 
     const { p0, p1 } = result;
     
-    const collectJacksAndFilterPoints = (playedBy, target) => {
-      playedBy.points = playedBy.points.filter((point) => {
+    const scrapRoyalsAndSwapStolenPoints = (player, opponent) => {
+      // Scrap the face cards
+      result.scrap.push(...player.faceCards);
+      player.faceCards = [];
+
+      // Scrap jacks and return stolen point cards to original owner
+      player.points = player.points.filter((point) => {
         const jackCount = point.attachments.length;
         result.scrap.push(...point.attachments);  // Scrap all jacks
         point.attachments = []; // removing attachments from all cards
-
         if (jackCount % 2 === 1) {
-          target.points.push(point);  // Move point to opponent/player if odd number of jacks
+          opponent.points.push(point);  // Move point card to opponent if odd number of jacks
           return false;
         }
         return true;
       });
     };
-
-    collectJacksAndFilterPoints(p0, p1);
-    collectJacksAndFilterPoints(p1, p0);
-      
-    // Remove all played face cards and add in scrap
-    [p0, p1].forEach((card) => {
-      result.scrap.push(...card.faceCards);
-      card.faceCards = [];
-    });
+    
+    scrapRoyalsAndSwapStolenPoints(p0, p1);
+    scrapRoyalsAndSwapStolenPoints(p1, p0);
 
     return exits.success(result);
   },
