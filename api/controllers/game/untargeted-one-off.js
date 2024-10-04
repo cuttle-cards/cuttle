@@ -10,11 +10,11 @@ module.exports = function (req, res) {
     .then(function changeAndSave(values) {
       const [game, player, card, opponent] = values;
       if (game.turn % 2 === player.pNum) {
-        //Check Turn
+        // Check Turn
         if (!game.oneOff) {
-          //Check that no other one-off is in play
+          // Check that no other one-off is in play
           if (card.hand === player.id) {
-            //Check that card was in hand
+            // Check that card was in hand
             switch (card.rank) {
               case 1:
               case 3:
@@ -22,7 +22,7 @@ module.exports = function (req, res) {
               case 5:
               case 6:
               case 7:
-                //Check for legality of move (edge cases, per one-off)
+                // Check for legality of move (edge cases, per one-off)
                 switch (card.rank) {
                   case 3:
                     if (game.scrap.length < 1)

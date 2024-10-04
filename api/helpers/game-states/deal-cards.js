@@ -32,7 +32,7 @@ module.exports = {
         return exits.error({ message: 'Cards are already dealt' });
       }
 
-      const deck = _.shuffle(DeckIds.map((cardId) => sails.helpers.gamestate.convertStrToCard(cardId)));
+      const deck = _.shuffle(DeckIds.map((cardId) => sails.helpers.gameStates.convertStrToCard(cardId)));
 
       const p0 = {
         hand: deck.splice(0, 5),
@@ -65,7 +65,7 @@ module.exports = {
         resolving: null,
       };
 
-      const { saveGamestate, publishGameState } = sails.helpers.gamestate;
+      const { saveGamestate, publishGameState } = sails.helpers.gameStates;
       const gameStateRow = await saveGamestate(newGameState);
       game.gameStates.push(gameStateRow);
       await publishGameState(game, newGameState);

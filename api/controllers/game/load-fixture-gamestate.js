@@ -9,7 +9,7 @@ module.exports = async function (req, res) {
       .populate('p0')
       .populate('p1');
 
-    const { publishGameState, saveGamestate, convertStrToCard } = sails.helpers.gamestate;
+    const { publishGameState, saveGamestate, convertStrToCard } = sails.helpers.gameStates;
 
     const {
       p0Hand,
@@ -26,7 +26,7 @@ module.exports = async function (req, res) {
 
     const allFixtureCards = Object.values(req.body).flat();
 
-    //Populate deck with all cards except the cards in the fixture
+    // Populate deck with all cards except the cards in the fixture
     const populatedDeck =
       deck ??
       _.shuffle(

@@ -20,7 +20,7 @@ module.exports = {
 
   fn: async function ({ game, gameState }, exits) {
     try {
-      //Combine game and gamestate users and delete passwords
+      // Combine game and gamestate users and delete passwords
       const p0 = { ...game.p0, ...gameState.p0 };
       delete p0.encryptedPassword;
       const p1 = { ...game.p1, ...gameState.p1 };
@@ -38,11 +38,11 @@ module.exports = {
         return numPasses;
       })();
 
-      const victory = await sails.helpers.gamestate.checkGameStateForWin(game, gameState, countPasses);
+      const victory = await sails.helpers.gameStates.checkGameStateForWin(game, gameState, countPasses);
 
-      const fullLog = sails.helpers.gamestate.getLog(game);
+      const fullLog = sails.helpers.gameStates.getLog(game);
 
-      //Last Event, and Extra Socket Variables
+      // Last Event, and Extra Socket Variables
       const happened = gameState.moveType !== MoveType.FIZZLE;
       let { playedBy } = gameState;
 

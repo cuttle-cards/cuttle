@@ -384,7 +384,7 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
       }
 
       const cardId = foundCard.id;
-      const moveType = MoveType.FACECARD;
+      const moveType = MoveType.FACE_CARD;
       cy.makeSocketRequest('game', 'faceCard', { moveType, cardId });
     });
 });
@@ -669,7 +669,7 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       }
 
       const moveType = MoveType.RESOLVE_FOUR;
-      //dont use makeSocketRequest due to edge case checking error on opponent side
+      // dont use makeSocketRequest due to edge case checking error on opponent side
       transformGameUrl('game', 'resolveFour').then((url) => {
         io.socket.request({
           method: 'post',
@@ -772,7 +772,7 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
 
       const cardId = foundCard.id;
       cy.makeSocketRequest('game', 'seven/faceCard', {
-        moveType: MoveType.SEVEN_FACECARD,
+        moveType: MoveType.SEVEN_FACE_CARD,
         cardId,
         index,
       });

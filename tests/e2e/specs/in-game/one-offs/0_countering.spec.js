@@ -503,7 +503,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
         .should('be.visible')
         .should('contain', 'Opponent May Counter');
 
-      //make sure drawing is not possible
+      // make sure drawing is not possible
       cy.window()
         .its('cuttle.gameStore')
         .then(async (store) => {

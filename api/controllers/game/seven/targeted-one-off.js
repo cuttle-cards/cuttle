@@ -42,7 +42,7 @@ module.exports = function (req, res) {
                 return Promise.reject({
                   message: 'game.snackbar.global.blockedByMultipleQueens',
                 });
-            } //End queenCount validation
+            } // End queenCount validation
             const { topCard, secondCard, cardsToRemoveFromDeck } = gameService.sevenCleanUp({
               game: game,
               index: req.body.index,

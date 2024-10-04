@@ -1,6 +1,6 @@
 module.exports = async function (req, res) {
   try {
-    //Find winner id & pnum
+    // Find winner id & pnum
     const { p0, p1 } = await gameService.findGame({ gameId: req.session.game });
     const winner = (req.session.pNum + 1) % 2;
     const winningUser = winner === 1 ? p1 : p0;

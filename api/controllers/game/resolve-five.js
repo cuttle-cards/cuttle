@@ -34,7 +34,7 @@ module.exports = async function (req, res) {
     const cardsToRemoveFromDeck = [];
     let newDeck = game.deck;
 
-    //collect cards to put in players hand
+    // collect cards to put in players hand
     cardsToDraw.push(game.topCard.id);
     if (game.secondCard && player.hand.length <= 7) {
       cardsToDraw.push(game.secondCard.id);
@@ -47,7 +47,7 @@ module.exports = async function (req, res) {
       }
     }
 
-    //Update new topCard, secondCard, and deck
+    // Update new topCard, secondCard, and deck
     gameUpdates.topCard = null;
     gameUpdates.secondCard = null;
 

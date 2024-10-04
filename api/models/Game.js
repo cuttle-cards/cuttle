@@ -74,7 +74,7 @@ module.exports = {
     oneOffTargetType: {
       type: 'string',
     },
-    //Used to track if which point card
+    // Used to track if which point card
     // the current oneOffTarget is attached to
     // when oneOffTargeet is a jack
     attachedToTarget: {

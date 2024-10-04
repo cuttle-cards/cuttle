@@ -47,7 +47,7 @@ module.exports = {
       }
 
       // Must be your chance to counter
-      const yourTurnToCounter = sails.helpers.gamestate.yourTurnToCounter(currentState, playedBy);
+      const yourTurnToCounter = sails.helpers.gameStates.yourTurnToCounter(currentState, playedBy);
       if (!yourTurnToCounter) {
         throw new Error('Waiting for opponent to counter');
       }

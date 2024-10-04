@@ -296,7 +296,7 @@ describe('Usage stats', () => {
           }),
         ),
       ).then((updatedSeasons) => {
-        //Clubs 2022 stats
+        // Clubs 2022 stats
         const clubs2022 = updatedSeasons.find(({ name }) => name === 'Clubs 2022');
         expect(clubs2022).not.to.be.undefined;
         // Week 1 stats

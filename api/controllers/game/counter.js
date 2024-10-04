@@ -48,7 +48,7 @@ module.exports = function (req, res) {
         });
       }
       return Promise.reject({ message: 'You can only play a card that is in your hand' });
-    }) //End changeAndSave
+    }) // End changeAndSave
     .then(function populateGame(values) {
       return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);
     })
