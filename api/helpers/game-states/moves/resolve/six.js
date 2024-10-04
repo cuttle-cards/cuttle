@@ -25,7 +25,7 @@ module.exports = {
       player.points = player.points.filter((point) => {
         const jackCount = point.attachments.length;
         result.scrap.push(...point.attachments);  // Scrap all jacks
-        point.attachments = []; // removing attachments from all cards
+        point.attachments = []; // Remove all attachments
         if (jackCount % 2 === 1) {
           opponent.points.push(point);  // Move point card to opponent if odd number of jacks
           return false;
