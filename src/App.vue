@@ -48,7 +48,7 @@ export default {
     },
   },
   created() {
-    //Pass store to window object on testing
+    // Pass store to window object on testing
     if (window.Cypress) {
       window.cuttle.gameStore = useGameStore();
       window.cuttle.authStore = useAuthStore();
