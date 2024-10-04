@@ -50,6 +50,7 @@ module.exports = {
     if (fizzles) {
       result.moveType = MoveType.FIZZLE;
       result.scrap.push(result.oneOff);
+      result.turn++;
       return exits.success(result);
     }
 
