@@ -32,7 +32,7 @@ module.exports = {
       attributesToConvert.forEach((attribute) => {
         const value = gameState[attribute];
         if (value) {
-          const { convertCardToStr } = sails.helpers.gamestate;
+          const { convertCardToStr } = sails.helpers.gameStates;
           convertedData[attribute] = Array.isArray(value)
             ? value.map((card) => convertCardToStr(card))
             : convertCardToStr(value);
@@ -60,11 +60,11 @@ module.exports = {
           // => 8D(JH-p0,JC-p1,JD-p0)
           if (attribute.gamestateName === 'points') {
             convertedData[attribute.rowName] = value.map((card) =>
-              sails.helpers.gamestate.convertCardToStr(card, attribute.player),
+              sails.helpers.gameStates.convertCardToStr(card, attribute.player),
             );
           } else {
             convertedData[attribute.rowName] = value.map((card) =>
-              sails.helpers.gamestate.convertCardToStr(card),
+              sails.helpers.gameStates.convertCardToStr(card),
             );
           }
         } else {

@@ -79,7 +79,7 @@ module.exports = {
       throw new Error({ message: 'Cannot populate game, because it does not have players collection' });
     }
 
-    //find users and points
+    // find users and points
     const [p0, p1, spectatingUsers, p0Points, p1Points] = await Promise.all([
       userService.findUser({ userId: game.players[0].id }),
       userService.findUser({ userId: game.players[1].id }),
@@ -92,7 +92,7 @@ module.exports = {
     const populatedP0 = formatPlayerData(p0, p0Points);
     const populatedP1 = formatPlayerData(p1, p1Points);
     return { ...game, players: [populatedP0, populatedP1], spectatingUsers };
-  }, //End populateGame()
+  }, // End populateGame()
   /*
    ** Checks a game to determine if either player has won
    * @param options = {game: tmpGame, gameModel: GameModel}
@@ -234,7 +234,7 @@ module.exports = {
   dealCards: function (game, gameUpdates) {
     // Use gamestate api if feature flag is set, otherwise legacy
     if (process.env.VITE_USE_GAMESTATE_API) {
-      return sails.helpers.gamestate.dealCards(game);
+      return sails.helpers.gameStates.dealCards(game);
     }
 
     return new Promise(function makeDeck(resolveMakeDeck) {

@@ -12,7 +12,7 @@ module.exports = function () {
           },
         });
       });
-    }, //End encryptPass()
+    }, // End encryptPass()
 
     checkPass: function (pass, encryptedPass) {
       return new Promise(function (resolve, reject) {
@@ -33,6 +33,6 @@ module.exports = function () {
             },
           });
       });
-    }, //End checkPass()
-  }; //End return JSON
+    }, // End checkPass()
+  }; // End return JSON
 };

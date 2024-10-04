@@ -145,7 +145,7 @@ export default {
     oneOffMove() {
       let oneOffDisabled = this.allMovesAreDisabled;
       let oneOffDisabledExplanation = this.disabledText;
-      //Check deck while playing 5 or 7
+      // Check deck while playing 5 or 7
       const noTopCard = !this.gameStore.topCard;
       const playingTopCard = this.selectedCard?.id === this.gameStore.topCard?.id;
       const noSecondCard = !this.gameStore.secondCard;

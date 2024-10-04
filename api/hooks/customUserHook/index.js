@@ -47,7 +47,7 @@ module.exports = function userHook() {
             const res = err ? err : { message: 'Could not create user' };
             return reject(res);
           });
-      }); //End of returned promise
+      }); // End of returned promise
     },
 
     findUserById: function (id) {

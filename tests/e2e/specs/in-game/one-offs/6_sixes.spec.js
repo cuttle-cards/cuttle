@@ -15,7 +15,7 @@ describe('Sixes One-Offs', () => {
     cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
-      //Player is P0
+      // Player is P0
       p0Hand: [
         Card.ACE_OF_CLUBS,
         Card.SIX_OF_SPADES,

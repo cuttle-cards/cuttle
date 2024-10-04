@@ -55,10 +55,10 @@ module.exports = {
 
     switch (oneOff.rank) {
       case 1:
-        result = sails.helpers.gamestate.moves.resolve.ace(result);
+        result = sails.helpers.gameStates.moves.resolve.ace(result);
         break;
       case 2:
-        result = sails.helpers.gamestate.moves.resolve.two(result, playedBy);
+        result = sails.helpers.gameStates.moves.resolve.two(result, playedBy);
         break;
       case 3:
       case 4:

@@ -185,7 +185,7 @@ describe('Stalemates', () => {
     cy.drawCardOpponent();
     cy.log('Deck empty');
 
-    //Pass three times for stalemate
+    // Pass three times for stalemate
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
     cy.log('Should log the passing');

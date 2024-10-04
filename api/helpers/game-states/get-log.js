@@ -19,7 +19,7 @@ module.exports = {
   fn: function ({ game }, exits) {
     const getMessage = (row, i) => {
       const { moveType, playedCard, targetCard, resolved, deck, twos, discardedCards } = row;
-      const { convertStrToCard } = sails.helpers.gamestate;
+      const { convertStrToCard } = sails.helpers.gameStates;
 
       const getFullCardName = (card) => {
         const cardObject = convertStrToCard(card);
@@ -52,7 +52,7 @@ module.exports = {
           return `${player} scuttled ${opponent}'s ${targetCardName} 
         with the ${playedCardName}.`;
 
-        case MoveType.FACECARD:
+        case MoveType.FACE_CARD:
           return `${player} played the ${playedCardName}
         ${playedCard.rank === 8 ? ' as a glasses eight.' : '.'}`;
 
@@ -136,7 +136,7 @@ module.exports = {
         case MoveType.SEVEN_SCUTTLE:
           return `${player} scuttled ${opponent}'s ${targetCardName} with the ${playedCardName} from the top of the deck.`;
 
-        case MoveType.SEVEN_FACECARD:
+        case MoveType.SEVEN_FACE_CARD:
           return `${player} played the ${playedCardName} from the top of the deck ${
             playedCard.rank === 8 ? ' as a Glasses eight.' : '.'
           }`;

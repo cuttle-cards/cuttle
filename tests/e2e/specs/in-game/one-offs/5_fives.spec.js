@@ -187,10 +187,10 @@ describe('FIVES', () => {
           secondCard: Card.EIGHT_OF_HEARTS,
           deck: [],
         });
-        //player plays a card
+        // player plays a card
         cy.get('[data-player-hand-card=2-0]').click();
         cy.get('[data-move-choice=points]').click();
-        //opponent draws, leaving 1 card left in deck
+        // opponent draws, leaving 1 card left in deck
         cy.drawCardOpponent();
 
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);

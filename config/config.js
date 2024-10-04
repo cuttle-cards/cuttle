@@ -8,4 +8,4 @@ module.exports = {
   },
 
   keepResponseErrors: true,
-}; //End exports
+}; // End exports

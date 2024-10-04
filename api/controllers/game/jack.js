@@ -62,7 +62,7 @@ module.exports = function (req, res) {
         return Promise.reject({ message: 'game.snackbar.global.playFromHand' });
       }
       return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
-    }) //End changeAndSave()
+    }) // End changeAndSave()
     .then(function populateGame(values) {
       const [game] = values;
       return Promise.all([gameService.populateGame({ gameId: game.id }), game]);

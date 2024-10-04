@@ -75,7 +75,7 @@ module.exports.policies = {
   ],
   'game/seven/untargeted-one-off': ['isLoggedIn', 'isInGame', 'hasCardId'],
 
-  //GameStateApi
+  // GameStateApi
   'game/move': ['isLoggedIn', 'hasValidMoveBody'],
 
   /////////////////////////////////

@@ -41,6 +41,20 @@ module.exports = {
         ignoreUrls: true,
       },
     ],
+    'spaced-comment': [
+      'error',
+      'always',
+      {
+        'block': {
+          'markers': ['!'],  
+          'exceptions': ['*'] // Allow JSDoc comments
+        },
+        'line': {
+          'markers': ['/', '//'], 
+          'exceptions': ['*', '/'] // Allow comments starting with /
+        }
+      }
+    ],
     'vue/html-indent': ['error'],
     'vue/multi-word-component-names': ['error'],
     'prefer-destructuring': ['error'],

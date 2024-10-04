@@ -3,7 +3,7 @@ import { points } from '../fixtures/gameStates/points';
 import { resolveThree } from '../fixtures/gameStates/resolveThree';
 import { resolveNine } from '../fixtures/gameStates/resolveNine';
 
-//remove attributes added while creating the entry in the database
+// remove attributes added while creating the entry in the database
 function stripDbAttributes(obj) {
   const attributesToRemove = ['createdAt', 'id', 'updatedAt'];
   attributesToRemove.forEach((attr) => delete obj[attr]);
@@ -15,7 +15,7 @@ describe("Converting GameState's and GameStateRow's and emitting sockets for Poi
   });
 
   it('Converts GameState to GameStateRow (packing)', async () => {
-    const gameStateRow = await sails.helpers.gamestate.saveGamestate(points.gameState);
+    const gameStateRow = await sails.helpers.gameStates.saveGamestate(points.gameState);
 
     stripDbAttributes(gameStateRow);
     expect(gameStateRow).toEqual(points.gameStateRow);
@@ -29,12 +29,12 @@ describe("Converting GameState's and GameStateRow's and emitting sockets for Poi
   });
 
   it('Converts GameStateRow to GameState (unpacking)', () => {
-    const gameState = sails.helpers.gamestate.unpackGamestate(points.gameStateRow);
+    const gameState = sails.helpers.gameStates.unpackGamestate(points.gameStateRow);
     expect(points.gameState).toEqual(gameState);
   });
 
   it('Creates and Publishes socket event', async () => {
-    const socketEvent = await sails.helpers.gamestate.publishGameState(points.game, points.gameState);
+    const socketEvent = await sails.helpers.gameStates.publishGameState(points.game, points.gameState);
     stripDbAttributes(socketEvent.game);
     delete socketEvent.game.match.startTime;
     delete socketEvent.victory.currentMatch.startTime;
@@ -49,7 +49,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
   });
 
   it('Converts GameState to GameStateRow (packing)', async () => {
-    const gameStateRow = await sails.helpers.gamestate.saveGamestate(resolveThree.gameState);
+    const gameStateRow = await sails.helpers.gameStates.saveGamestate(resolveThree.gameState);
     stripDbAttributes(gameStateRow);
     expect(gameStateRow).toEqual(resolveThree.gameStateRow);
 
@@ -62,13 +62,13 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
   });
 
   it('Converts GameStateRow to GameState (unpacking)', async () => {
-    const gameState = await sails.helpers.gamestate.unpackGamestate(resolveThree.gameStateRow);
+    const gameState = await sails.helpers.gameStates.unpackGamestate(resolveThree.gameStateRow);
     stripDbAttributes(gameState);
     expect(gameState).toEqual(resolveThree.gameState);
   });
 
   it('Creates and Publishes socket event', async () => {
-    const socketEvent = await sails.helpers.gamestate.publishGameState(
+    const socketEvent = await sails.helpers.gameStates.publishGameState(
       resolveThree.game,
       resolveThree.gameState,
     );
@@ -83,7 +83,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
   });
 
   it('Converts GameState to GameStateRow (packing)', async () => {
-    const gameStateRow = await sails.helpers.gamestate.saveGamestate(resolveNine.gameState);
+    const gameStateRow = await sails.helpers.gameStates.saveGamestate(resolveNine.gameState);
     stripDbAttributes(gameStateRow);
     expect(gameStateRow).toEqual(resolveNine.gameStateRow);
 
@@ -96,13 +96,13 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
   });
 
   it('Converts GameStateRow to GameState (unpacking)', async () => {
-    const gameState = await sails.helpers.gamestate.unpackGamestate(resolveNine.gameStateRow);
+    const gameState = await sails.helpers.gameStates.unpackGamestate(resolveNine.gameStateRow);
     stripDbAttributes(gameState);
     expect(gameState).toEqual(resolveNine.gameState);
   });
 
   it('Creates and Publishes socket event', async () => {
-    const socketEvent = await sails.helpers.gamestate.publishGameState(
+    const socketEvent = await sails.helpers.gameStates.publishGameState(
       resolveNine.game,
       resolveNine.gameState,
     );
