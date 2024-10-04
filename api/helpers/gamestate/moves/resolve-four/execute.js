@@ -36,13 +36,15 @@ module.exports = {
 
     const cardIndex1 = player.hand.findIndex(({ id }) => id === cardId1);
 
-    discardedCards.push(player.hand.cardIndex1);
+    discardedCards.push(player.hand[cardIndex1]);
     result.scrap.push(...player.hand.splice(cardIndex1, 1));
   
-    const cardIndex2 = player.hand.findIndex(({ id }) => id === cardId2);
+    const cardIndex2 = cardId2 ? player.hand.findIndex(({ id }) => id === cardId2) : null;
 
-    discardedCards.push(player.hand.cardIndex2);
-    result.scrap.push(...player.hand.splice(cardIndex2, 1));
+    if (cardIndex2) {
+      discardedCards.push(player.hand[cardIndex2]);
+      result.scrap.push(...player.hand.splice(cardIndex2, 1));
+    }
 
     result.turn++;
 
