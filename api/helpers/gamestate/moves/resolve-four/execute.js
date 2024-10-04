@@ -50,6 +50,7 @@ module.exports = {
       phase: GamePhase.MAIN,
       playedBy,
       playedCard: null,
+      targetCard: null,
       discardedCards,
       resolved: result.oneOff,
       oneOff: null,
