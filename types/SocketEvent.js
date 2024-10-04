@@ -1,4 +1,6 @@
+import MoveType from './MoveType.json'
 export default {
+  ...MoveType,
   DEAL: 'deal',
   COUNTER: 'counter',
   DRAW: 'draw',
