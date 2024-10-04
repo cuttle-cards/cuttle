@@ -54,7 +54,7 @@ module.exports = function (req, res) {
                 message: 'game.snackbar.global.blockedByQueen',
               });
           }
-          //End queenCount validation
+          // End queenCount validation
           // Normal sevens
           if (target.points === opponent.id) {
             if (card.rank === 11) {
