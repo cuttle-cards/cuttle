@@ -39,20 +39,17 @@ module.exports = {
         throw new Error('game.snackbar.oneOffs.four.notResolvingFourPhase');
       }
 
-      const playerKey = playedBy ? 'p1' : 'p0';
+      const player = playedBy ? currentState.p1 : currentState.p0;
       const { cardId1, cardId2 } = requestedMove;
-      let selectedCard1, selectedCard2;
 
-      currentState[playerKey].hand.forEach(card =>{
-        if (card.id === cardId1) {selectedCard1 = card;}
-        else if (card.id === cardId2) {selectedCard2 = card;}
-      });
+      const selectedCard1 = player.hand.find(card => card.id === cardId1);
+      const selectedCard2 = player.hand.find(card => card.id === cardId2);
 
       if ((requestedMove.cardId1 && !selectedCard1) || (requestedMove.cardId2 && !selectedCard2)) {
         throw new Error('game.snackbar.oneOffs.four.mustSelectCards');
       }
 
-      if (!selectedCard2 && currentState[playerKey].hand.length > 1) {
+      if (!selectedCard2 && player.hand.length > 1) {
         throw new Error('game.snackbar.oneOffs.four.mustSelectCards');
       }
 
