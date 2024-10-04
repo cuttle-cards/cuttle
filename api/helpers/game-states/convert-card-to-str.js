@@ -10,7 +10,7 @@ function concatAttachtToId(card, cardOwner) {
     return '';
   }
 
-  //GameStateRow Format => (JH-p0,JC-p1,JD-p0)
+  // GameStateRow Format => (JH-p0,JC-p1,JD-p0)
 
   let opponent = cardOwner === 'p0' ? 'p1' : 'p0';
   // First player on the string owns the main card

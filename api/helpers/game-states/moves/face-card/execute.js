@@ -14,7 +14,7 @@ module.exports = {
     /**
      * @param { Object } requestedMove - Object describing the request to play a face card (req.body)
      * @param { String } requestedMove.cardId - Card Played being played as face card
-     * @param { MoveType.FACECARD } requestedMove.moveType - Specifies that this a face card move
+     * @param { MoveType.FACE_CARD } requestedMove.moveType - Specifies that this a face card move
      */
     requestedMove: {
       type: 'ref',

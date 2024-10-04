@@ -689,15 +689,15 @@ describe('Display correct dialog for unavailable game', () => {
   it('Shows unavailable game dialog, then return home', () => {
     cy.concedeOpponent();
     assertVictory();
-    //go home
+    // go home
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
-    //go back to game URL
+    // go back to game URL
     cy.get('@gameSummary').then(({ gameId }) => cy.visit(`/game/${gameId}`));
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
     cy.get('[data-cy="leave-unavailable-game-button"]').click();
     cy.location('pathname').should('equal', '/');
-    //go to random url
+    // go to random url
     cy.visit('/game/12345');
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
   });
@@ -779,7 +779,7 @@ describe('Reconnecting after game is over', () => {
 
     cy.get('#deck').should('contain', '(2)').click();
     cy.drawCardOpponent();
-    //Pass three times for stalemate
+    // Pass three times for stalemate
     cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
     cy.passOpponent();
     cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();

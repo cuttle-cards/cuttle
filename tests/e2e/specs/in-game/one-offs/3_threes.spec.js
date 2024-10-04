@@ -72,7 +72,7 @@ describe('Playing THREEs', () => {
     cy.get('[data-three-dialog-card=10-2]').click();
     cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
 
-    //check scrap card shows and then disappears
+    // check scrap card shows and then disappears
     cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
     cy.get('[data-cy="scrap-chosen-card"]').should('not.exist');
 
@@ -145,7 +145,7 @@ describe('Playing THREEs', () => {
 
     cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.exist');
 
-    //check scrap card shows and then disappears
+    // check scrap card shows and then disappears
     cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
     cy.get('[data-cy="scrap-chosen-card"]').should('not.exist');
 

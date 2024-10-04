@@ -1,5 +1,5 @@
 
-//Suit: ‘C’ (Clubs), ‘D’ (Diamonds), ‘H’ (Hearts), ‘S’ (Spades)
+// Suit: ‘C’ (Clubs), ‘D’ (Diamonds), ‘H’ (Hearts), ‘S’ (Spades)
 const suitMap = {
   'C': 0,
   'D': 1,
@@ -7,7 +7,7 @@ const suitMap = {
   'S': 3
 };
 
-//Rank: ‘A’ (Ace), ‘2’, ‘3’, ‘4’, ‘5’, ‘6’, ‘7’, ‘8’, ‘9’, ‘T’ (Ten), ‘J’ (Jack), ‘Q’ (Queen), ‘K’ (King)
+// Rank: ‘A’ (Ace), ‘2’, ‘3’, ‘4’, ‘5’, ‘6’, ‘7’, ‘8’, ‘9’, ‘T’ (Ten), ‘J’ (Jack), ‘Q’ (Queen), ‘K’ (King)
 const rankMap = {
   'A': 1,
   '2': 2,
@@ -106,12 +106,12 @@ module.exports = {
 
   fn: ({ str, isFrozen }, exits) => {
       try {
-            //remove whitespace
+            // remove whitespace
             str = str.replace(/\s+/g, '');
 
             // get content before parentheses if any
             const mainCardId = str.replace(/\(.*?\)/g, '');
-            //convert
+            // convert
             const maincard = convertIdToCard(mainCardId, isFrozen);
 
             // Handle attachments or return []
