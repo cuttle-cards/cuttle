@@ -39,7 +39,7 @@ module.exports = {
       attributesToConvert.forEach((attribute) => {
         const value = gameStateRow[attribute];
         if (value) {
-          const { convertStrToCard } = sails.helpers.gamestate;
+          const { convertStrToCard } = sails.helpers.gameStates;
           convertedData[attribute] = Array.isArray(value)
             ? value.map((cardStr) => {
                 // Is the card frozen
@@ -86,7 +86,7 @@ module.exports = {
         discardedCards: convertedData.discardedCards ?? null,
       };
 
-      const convertedGameState = sails.helpers.gamestate.validateGamestate(data);
+      const convertedGameState = sails.helpers.gameStates.validateGamestate(data);
 
       return exits.success(convertedGameState);
     } catch (err) {

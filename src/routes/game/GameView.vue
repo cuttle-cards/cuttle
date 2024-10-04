@@ -913,7 +913,7 @@ export default {
             index: deckIndex,
           });
         }
-      }catch(messageKey){
+      } catch(messageKey){
         this.handleError(messageKey);
       } finally {
         this.clearSelection();

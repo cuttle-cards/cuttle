@@ -13,7 +13,7 @@ describe('Clean-up of One-Off Targets', () => {
       p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
-      //player is p1
+      // player is p1
       p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS],
       p1Points: [Card.ACE_OF_DIAMONDS],
       p1FaceCards: [],
@@ -57,7 +57,7 @@ describe('Clean-up of One-Off Targets', () => {
       p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
-      //player is p1
+      // player is p1
       p1Hand: [Card.SIX_OF_HEARTS],
       p1Points: [Card.ACE_OF_DIAMONDS],
       p1FaceCards: [Card.QUEEN_OF_HEARTS],
@@ -105,7 +105,7 @@ describe('Clean-up of One-Off Targets', () => {
       p0Hand: [Card.TWO_OF_SPADES, Card.FIVE_OF_CLUBS, Card.TEN_OF_HEARTS],
       p0Points: [],
       p0FaceCards: [],
-      //player is p1
+      // player is p1
       p1Hand: [Card.SIX_OF_HEARTS, Card.JACK_OF_CLUBS],
       p1Points: [Card.ACE_OF_DIAMONDS],
       p1FaceCards: [],
@@ -172,7 +172,7 @@ describe('Clean-up of One-Off Targets', () => {
       p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
-      //player is p1
+      // player is p1
       p1Hand: [Card.SIX_OF_HEARTS, Card.TWO_OF_CLUBS],
       p1Points: [Card.ACE_OF_DIAMONDS],
       p1FaceCards: [],
@@ -192,7 +192,7 @@ describe('Clean-up of One-Off Targets', () => {
       p0Hand: [Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
       p0Points: [Card.TEN_OF_HEARTS],
       p0FaceCards: [],
-      //player is p1
+      // player is p1
       p1Hand: [Card.SIX_OF_HEARTS],
       p1Points: [Card.ACE_OF_DIAMONDS],
       p1FaceCards: [],

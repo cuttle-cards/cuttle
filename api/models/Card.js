@@ -37,7 +37,7 @@ module.exports = {
     faceCards: {
       model: 'user',
     },
-    //Used to order attachments
+    // Used to order attachments
     index: {
       type: 'number',
     },
@@ -52,7 +52,7 @@ module.exports = {
     },
 
     // Used to track if this card is targeted
-    //by a one-off
+    // by a one-off
     targeted: {
       model: 'game',
     },
