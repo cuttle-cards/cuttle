@@ -1,4 +1,4 @@
-import MoveType from './MoveType.json'
+import MoveType from './MoveType.json';
 export default {
   ...MoveType,
   RE_LOGIN: 'reLogin',
