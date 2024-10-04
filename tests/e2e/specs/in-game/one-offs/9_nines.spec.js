@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError } from '../../../support/helpers';
+import { assertGameState, assertSnackbar } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 import { SnackBarError } from '../../../fixtures/snackbarError';
 
@@ -86,7 +86,7 @@ describe('Playing NINES', () => {
         .click({ force: true });
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=9-3]').click();
-      assertSnackbarError(SnackBarError.ILLEGAL_SCUTTLE);
+      assertSnackbar(SnackBarError.ILLEGAL_SCUTTLE);
 
       // Player plays nine
       cy.get('[data-player-hand-card=9-2]').click(); // nine of hearts
@@ -451,7 +451,7 @@ describe('Playing NINES', () => {
         .should('have.class', 'v-card--disabled')
         .contains('This card is frozen')
         .click({ force: true }); //Break out into separate test case
-      assertSnackbarError(SnackBarError.FROZEN_CARD);
+      assertSnackbar(SnackBarError.FROZEN_CARD);
       cy.log('Correctly prevented player from re-playing frozen jack next turn');
       // Player attempts to play the returned seven immediately for scuttle
       cy.get('[data-player-hand-card=7-0]').click();
@@ -465,7 +465,7 @@ describe('Playing NINES', () => {
       // Player attempts to scuttle lower point card
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=3-0]').click();
-      assertSnackbarError(SnackBarError.FROZEN_CARD);
+      assertSnackbar(SnackBarError.FROZEN_CARD);
     });
 
     it('Opponent plays a NINE on a jack to steal back point card', () => {
@@ -529,7 +529,7 @@ describe('Playing NINES', () => {
 
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=1-3]').click();
-      assertSnackbarError(SnackBarError.FROZEN_CARD);
+      assertSnackbar(SnackBarError.FROZEN_CARD);
       cy.log('Correctly prevented player from re-playing frozen jack next turn');
 
       cy.get('[data-player-hand-card=10-1]').click();

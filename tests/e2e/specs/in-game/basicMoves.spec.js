@@ -1,9 +1,4 @@
-import {
-  assertCustomSnackBar,
-  assertGameState,
-  assertSnackbarError,
-  playOutOfTurn,
-} from '../../support/helpers';
+import { assertGameState, assertSnackbar, playOutOfTurn } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
 
@@ -75,14 +70,14 @@ describe('Game Basic Moves - P0 Perspective', () => {
       .click({ force: true });
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=1-1]').click();
-    assertSnackbarError(SnackBarError.ILLEGAL_SCUTTLE);
+    assertSnackbar(SnackBarError.ILLEGAL_SCUTTLE);
     cy.log('Could not scuttle with point card too low to target anything');
 
     // Player attempts illegal scuttle -- using card big enough to target something else
     cy.get('[data-player-hand-card=1-3]').click(); // 7 of clubs
     cy.get('[data-move-choice=scuttle]').click();
     cy.get('[data-opponent-point-card=6-2]').click(); // 6 of hearts
-    assertSnackbarError(SnackBarError.ILLEGAL_SCUTTLE);
+    assertSnackbar(SnackBarError.ILLEGAL_SCUTTLE);
     cy.log('Could not scuttle invalid target with point card that had alternative valid target');
 
     // Player scuttles 6 of diamonds with 7 of clubs
@@ -108,7 +103,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
       .click({ force: true });
     cy.get('[data-opponent-point-card=1-1]').click(); // ace of diamonds
     // Test that Error snackbar says its not your turn
-    assertSnackbarError(SnackBarError.NOT_YOUR_TURN);
+    assertSnackbar(SnackBarError.NOT_YOUR_TURN);
     cy.log('Could not scuttle out of turn');
 
     // Opponent scuttles 10 of hearts with 10 of spades
@@ -281,7 +276,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
       .click({ force: true });
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=1-1]').click();
-    assertSnackbarError('You cannot use a Jack while your opponent has a Queen');
+    assertSnackbar('You cannot use a Jack while your opponent has a Queen');
     cy.log('Cannot play jack now that opponent has queen');
   });
 
@@ -406,7 +401,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
     // Attempt to play out of turn
     cy.get('#deck').click();
     // Test that Error snackbar says its not your turn
-    assertSnackbarError(SnackBarError.NOT_YOUR_TURN);
+    assertSnackbar(SnackBarError.NOT_YOUR_TURN);
     // Opponent draws 2nd time
     cy.drawCardOpponent();
     // Opponent now has 7 cards in hand
@@ -422,7 +417,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
     // Player attempts to draw with full hand
     cy.get('#deck').click();
     // Test that Error snackbar for hand limit
-    assertSnackbarError('You are at the hand limit; you cannot draw.');
+    assertSnackbar('You are at the hand limit; you cannot draw.');
     // Player still has 8 cards in hand
     cy.get('[data-player-hand-card]').should('have.length', 8);
     // Opponent still has 8 cards in hand
@@ -444,7 +439,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
 
     cy.drawCardOpponent();
     cy.get('#deck').click();
-    assertCustomSnackBar('Deck exhausted; revealing player hands');
+    assertSnackbar('Deck exhausted; revealing player hands', 'surface-1');
 
     assertGameState(1, {
       p0Hand: [Card.QUEEN_OF_CLUBS, Card.FIVE_OF_CLUBS],
@@ -475,7 +470,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
     cy.drawCardOpponent();
     cy.get('#deck').click();
     cy.drawCardOpponent();
-    assertCustomSnackBar('Deck exhausted; revealing player hands');
+    assertSnackbar('Deck exhausted; revealing player hands', 'surface-1');
 
     assertGameState(1, {
       p0Hand: [Card.QUEEN_OF_CLUBS, Card.FIVE_OF_CLUBS, Card.TWO_OF_DIAMONDS],

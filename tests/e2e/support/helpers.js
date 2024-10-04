@@ -187,20 +187,10 @@ function pointsToWin(kingCount) {
   }
 }
 
-export function assertSnackbarError(message, snackName = 'game') {
+export function assertSnackbar(message, color = 'error', snackName = 'game') {
   cy.get(`[data-cy=${snackName}-snackbar] .v-snackbar__wrapper`)
     .should('be.visible')
-    .should('have.class', 'bg-error')
-    .find(`.v-snackbar__content`)
-    .should('contain', message)
-    .get('[data-cy=close-snackbar]')
-    .click();
-}
-
-export function assertCustomSnackBar(message, snackName = 'game') {
-  cy.get(`[data-cy=${snackName}-snackbar] .v-snackbar__wrapper`)
-    .should('be.visible')
-    .should('have.class', 'bg-surface-1')
+    .should('have.class', `bg-${color}`)
     .find(`.v-snackbar__content`)
     .should('contain', message)
     .get('[data-cy=close-snackbar]')
@@ -219,7 +209,7 @@ export function playOutOfTurn(moveName) {
     .should('contain', "It's not your turn")
     .click({ force: true });
   // Back end should fire error that move is illegal after click is forced
-  assertSnackbarError(SnackBarError.NOT_YOUR_TURN);
+  assertSnackbar(SnackBarError.NOT_YOUR_TURN);
   cy.log(`Correctly prevented attempt to play ${moveName} out of turn`);
 }
 

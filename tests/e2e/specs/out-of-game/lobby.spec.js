@@ -1,5 +1,5 @@
 import { myUser, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
-import { assertSnackbarError } from '../../support/helpers';
+import { assertSnackbar } from '../../support/helpers';
 import { SnackBarError } from '../../fixtures/snackbarError';
 import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
@@ -498,7 +498,7 @@ describe('Lobby invite links', () => {
 
   it('Navigates Home and shows error snackbar when user visits invalid invite link', function () {
     cy.visit('/lobby/100000');
-    assertSnackbarError(SnackBarError.CANT_FIND_GAME, 'newgame');
+    assertSnackbar(SnackBarError.CANT_FIND_GAME, 'newgame');
     cy.visit('/rules');
     cy.visit('/');
     cy.get(`[data-cy=newgame-snackbar] .v-snackbar__wrapper`).should('not.exist');
@@ -510,6 +510,6 @@ describe('Lobby invite links', () => {
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.get(`[data-cy-join-game=${this.gameSummary.gameId}]`).should('be.disabled');
     cy.visit(`/lobby/${this.gameSummary.gameId}`);
-    assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
+    assertSnackbar(SnackBarError.GAME_IS_FULL, 'newgame');
   });
 });
