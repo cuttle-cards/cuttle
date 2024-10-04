@@ -22,8 +22,6 @@ export function handleConnect() {
       return gameStore.requestSpectate(gameId);
     }
     case ROUTE_NAME_HOME:
-      const { useGameListStore } = require('@/stores/gameList');
-      const gameListStore = useGameListStore();
       return gameListStore.requestGameList();
     default:
       return;
