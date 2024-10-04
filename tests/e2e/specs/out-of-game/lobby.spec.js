@@ -498,7 +498,7 @@ describe('Lobby invite links', () => {
 
   it('Navigates Home and shows error snackbar when user visits invalid invite link', function () {
     cy.visit('/lobby/100000');
-    assertSnackbar(SnackBarError.CANT_FIND_GAME, 'newgame');
+    assertSnackbar(SnackBarError.CANT_FIND_GAME, 'error');
     cy.visit('/rules');
     cy.visit('/');
     cy.get(`[data-cy=newgame-snackbar] .v-snackbar__wrapper`).should('not.exist');
@@ -510,6 +510,6 @@ describe('Lobby invite links', () => {
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.get(`[data-cy-join-game=${this.gameSummary.gameId}]`).should('be.disabled');
     cy.visit(`/lobby/${this.gameSummary.gameId}`);
-    assertSnackbar(SnackBarError.GAME_IS_FULL, 'newgame');
+    assertSnackbar(SnackBarError.GAME_IS_FULL, 'error');
   });
 });
