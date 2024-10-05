@@ -249,11 +249,12 @@
         "playFromHand": "Vous ne pouez jouer que des cartes de votre main.",
         "blockedByQueen": "La Dame de votre adversaire empêche ses autres cartes d'être ciblées.",
         "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame.",
-        "notInMainPhase" : "Vous ne pouvez faire cela qu'en phase principale"
+        "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale"
       },
       "draw": {
         "deckIsEmpty": "La pioche est vide, vous ne pouvez pas piocher.",
-        "handLimit": "Votre limite de carte en main est atteinte !"
+        "handLimit": "Votre limite de carte en main est atteinte !",
+        "exhaustedDeck": "Paquet épuisé; révélation des mains des joueurs"
       },
       "faceCards": {
         "withoutTarget": "Seuls les Rois, Dames et Huits peuvent être joués sans cibler une carte."
@@ -506,5 +507,11 @@
     "404": {
       "title": "404 Non Trouvé"
     }
+  },
+  "announcement": {
+    "activatorText": "Mains révélées en fin de partie!",
+    "title": "Révélation",
+    "heading": "Simplification de la fin de partie",
+    "paragraph": "Lorsque le paquet est complètement épuisé (qu'il n'y a plus de cartes), vous pourrez désormais voir la main de votre adversaire ! Comme la défausse est visible publiquement, les joueurs ont toujours pu déduire les cartes qui se trouvent dans les mains de leurs adversaires une fois le paquet épuisé. Afin de rendre le jeu plus efficace, les joueurs pourront désormais voir les mains de leurs adversaires une fois le paquet vide. Cela permet aux joueurs de se concentrer sur la stratégie plutôt que sur la recherche dans la défausse. Bonne chance et amusez-vous bien !"
   }
 }

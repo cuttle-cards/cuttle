@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError } from '../../../support/helpers';
+import { assertGameState, assertSnackbar } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 import { SnackBarError } from '../../../fixtures/snackbarError';
 
@@ -114,7 +114,7 @@ describe('FOURS', () => {
       cy.get('[data-player-hand-card=4-0]').click(); // four of clubs
       cy.get('[data-move-choice=oneOff]').click();
 
-      assertSnackbarError(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
+      assertSnackbar(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
 
       assertGameState(0, {
         p0Hand: [Card.FOUR_OF_CLUBS],
