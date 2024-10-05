@@ -31,7 +31,7 @@
         />
       </div>
       <div v-if="announcementData.imgSrc" class="d-flex justify-center">
-        <img class="w-50" :src="announcementData.imgSrc">
+        <img class="w-75 mb-4" :src="announcementData.imgSrc">
       </div>
       <div v-for="(text,i) in announcementData.announcementText" :key="i" class="mb-4">
         <h2 v-if="text.heading">
