@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError, playOutOfTurn } from '../../../support/helpers';
+import { assertGameState, assertSnackbar, playOutOfTurn } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 import { SnackBarError } from '../../../fixtures/snackbarError';
 const { _ } = Cypress;
@@ -22,7 +22,7 @@ describe('Playing THREEs', () => {
     // Player plays three
     cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
     cy.get('[data-move-choice=oneOff]').click();
-    assertSnackbarError(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
+    assertSnackbar(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
   });
 
   it('Plays 3s successfully', () => {

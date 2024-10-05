@@ -1,4 +1,4 @@
-import { assertSnackbarError } from '../../support/helpers';
+import { assertSnackbar } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
@@ -171,7 +171,7 @@ describe('Home - Game List', () => {
         .click()
         .should('be.disabled');
 
-      assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
+      assertSnackbar(SnackBarError.GAME_IS_FULL, 'error', 'newgame');
     });
   });
 
@@ -293,7 +293,7 @@ describe('Home - Game List', () => {
           .its('cuttle.authStore')
           .then((store) => store.reconnectSocket());
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
-        assertSnackbarError('Unable to spectate game', 'newgame');
+        assertSnackbar('Unable to spectate game', 'error', 'newgame');
         // Spectate button should now be disabled
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
       });
@@ -558,7 +558,7 @@ describe('Home - Create Game', () => {
       .should('be.checked');
 
     cy.get('[data-cy=submit-create-game]').should('be.visible').click();
-    assertSnackbarError('Game name cannot exceed 50 characters', 'newgame');
+    assertSnackbar('Game name cannot exceed 50 characters', 'error', 'newgame');
   });
 
   it('Cancels create game dialog', () => {
@@ -593,7 +593,7 @@ describe('Home - Create Game', () => {
       .then((store) => {
         expect(store.openGames.length).to.eq(0, 'Game list should be empty in store, but is not');
       });
-    assertSnackbarError('Game name cannot be blank', 'newgame');
+    assertSnackbar('Game name cannot be blank', 'error', 'newgame');
   });
 
   it('Removes a game when both players are ready', () => {

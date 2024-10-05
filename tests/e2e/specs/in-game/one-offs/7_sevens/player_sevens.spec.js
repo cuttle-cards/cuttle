@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError } from '../../../../support/helpers';
+import { assertGameState, assertSnackbar } from '../../../../support/helpers';
 import { Card } from '../../../../fixtures/cards';
 import { SnackBarError } from '../../../../fixtures/snackbarError';
 
@@ -93,7 +93,7 @@ describe('Playing SEVENS', () => {
       .click({ force: true });
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=10-2]').click();
-    assertSnackbarError("Your opponent's queen prevents you from targeting their other cards");
+    assertSnackbar("Your opponent's queen prevents you from targeting their other cards");
 
     cy.get('[data-second-card=6-1]').should('exist').and('be.visible').click();
 
@@ -539,7 +539,7 @@ describe('Playing SEVENS', () => {
       // Should not allow playing 4 as one-off
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
-      assertSnackbarError(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
+      assertSnackbar(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
     });
   }); // End player seven one-off describe
 
