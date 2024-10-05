@@ -510,7 +510,7 @@
   },
   "announcement": {
     "activatorText": "¡Alerta de nueva función: Manos reveladas en el final del juego!",
-    "title": "Manos reveladas en el final del juego",
+    "title": "Revelación de partida",
     "heading": "Simplificación del final del juego",
     "paragraph": "¡Cuando el mazo se agote completamente (se quede sin cartas), ahora podrás ver la mano de tu oponente! Como el descarte es visible públicamente, los jugadores siempre han podido deducir qué cartas están en las manos de sus oponentes una vez que el mazo se agota. Para hacer que el juego sea más eficiente, ahora los jugadores podrán ver las manos de sus oponentes una vez que el mazo esté vacío. Esto permite que los jugadores se concentren en la estrategia, en lugar de revisar el descarte. ¡Buena suerte y que te diviertas!"
   }

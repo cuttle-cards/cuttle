@@ -510,7 +510,7 @@
   },
   "announcement": {
     "activatorText": "Nouvelle fonctionnalité : Mains révélées en fin de partie !",
-    "title": "Mains révélées en fin de partie",
+    "title": "Révélation de partie",
     "heading": "Simplification de la fin de partie",
     "paragraph": "Lorsque le paquet est complètement épuisé (qu'il n'y a plus de cartes), vous pourrez désormais voir la main de votre adversaire ! Comme la défausse est visible publiquement, les joueurs ont toujours pu déduire les cartes qui se trouvent dans les mains de leurs adversaires une fois le paquet épuisé. Afin de rendre le jeu plus efficace, les joueurs pourront désormais voir les mains de leurs adversaires une fois le paquet vide. Cela permet aux joueurs de se concentrer sur la stratégie plutôt que sur la recherche dans la défausse. Bonne chance et amusez-vous bien !"
   }
