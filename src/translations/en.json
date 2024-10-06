@@ -249,11 +249,12 @@
         "playFromHand": "You can only play a card that is in your hand",
         "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
         "blockedByMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen",
-        "notInMainPhase" : "You can only do that in the main phase"
+        "notInMainPhase": "You can only do that in the main phase"
       },
       "draw": {
         "deckIsEmpty": "The deck is empty; you cannot draw.",
-        "handLimit": "You are at the hand limit; you cannot draw."
+        "handLimit": "You are at the hand limit; you cannot draw.",
+        "exhaustedDeck": "Deck exhausted; revealing player hands"
       },
       "faceCards": {
         "withoutTarget": "Only Kings, Queens, and Eights may be played as Face Cards without a target"
@@ -508,5 +509,11 @@
     "404": {
       "title": "404 Not Found"
     }
+  },
+  "announcement": {
+    "activatorText": "New Feature: Hands Revealed in the Endgame!",
+    "title": "Endgame Reveal",
+    "heading": "Streamlining Endgame",
+    "paragraph": "When the deck is completely exhausted (runs out of cards), you will now be able to see your opponent's hand! Becuase the scrap is publically visible, players have always been able to deduce which cards are in their opponent's hands once the deck is exhausted. In order to make gameplay more efficient, players will now be able to see their opponents' hands once the deck is empty. This lets players focus on the strategy, rather than sifting through the scrap. Good luck and have fun!"
   }
 }

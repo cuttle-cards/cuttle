@@ -249,11 +249,12 @@
         "playFromHand": "Solo puedes jugar una carta que se encuentre en tu mano",
         "blockedByQueen": "La Reina de tu oponente evita que puedas seleccionar como objetivo sus otras cartas",
         "blockedByMultipleQueens": "No puedes jugar una carta de habilidad única con objetivo (Dos, Nueve) cuando tu oponente tiene más de una reina",
-        "notInMainPhase" : "Solo puedes hacer eso en la fase principal"
+        "notInMainPhase": "Solo puedes hacer eso en la fase principal"
       },
       "draw": {
         "deckIsEmpty": "El mazo está vacío; no puedes robar.",
-        "handLimit": "Tu mano ha alcanzado el límite; no puedes robar."
+        "handLimit": "Tu mano ha alcanzado el límite; no puedes robar.",
+        "exhaustedDeck": "Mazo agotado; revelando las manos de los jugadores"
       },
       "faceCards": {
         "withoutTarget": "Solo Reyes, Reinas y Ochos pueden ser jugados como cartas de realeza sin objetivo"
@@ -508,5 +509,11 @@
     "404": {
       "title": "404 No Encontrado"
     }
+  },
+  "announcement": {
+    "activatorText": "¡Manos reveladas en el final de partida!",
+    "title": "Revelación",
+    "heading": "Simplificación del final del juego",
+    "paragraph": "¡Cuando el mazo se agote completamente (se quede sin cartas), ahora podrás ver la mano de tu oponente! Como el descarte es visible públicamente, los jugadores siempre han podido deducir qué cartas están en las manos de sus oponentes una vez que el mazo se agota. Para hacer que el juego sea más eficiente, ahora los jugadores podrán ver las manos de sus oponentes una vez que el mazo esté vacío. Esto permite que los jugadores se concentren en la estrategia, en lugar de revisar el descarte. ¡Buena suerte y que te diviertas!"
   }
 }
