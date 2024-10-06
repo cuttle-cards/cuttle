@@ -155,7 +155,7 @@ module.exports = {
 
         // No other cards can be used for a one-off
         default:
-          throw new Error('You cannot play that card as a one-off without a target.');
+          throw new Error('You cannot play that card as a one-off');
       }
     } catch (err) {
       return exits.error(err);

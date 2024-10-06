@@ -1,23 +1,23 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Draw a card',
+  friendlyName: 'Pass',
 
-  description: 'Returns new GameState resulting from requested draw move',
+  description: 'Returns new GameState resulting from requested pass',
 
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest GameState before the requesting player draws a card',
+      description: 'The latest GameState before the requesting player pass a move',
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to draw (req.body)
-     * @param { MoveType.DRAW } requestedMove.moveType - Specifies that this a Draw move
+     * @param { Object } requestedMove - Object describing the request to pass (req.body)
+     * @param { MoveType.PASS } requestedMove.moveType - Specifies that this a Pass move
      */
     requestedMove: {
       type: 'ref',
-      description: 'The move being requested. Specifies moveType and which player is drawing',
+      description: 'The move being requested. Specifies moveType and which player is passing',
     },
     playedBy: {
       type: 'number',
@@ -28,9 +28,6 @@ module.exports = {
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
     let result = _.cloneDeep(currentState);
 
-    const player = playedBy ? result.p1 : result.p0;
-
-    player.hand.push(result.deck.shift());
     result.turn++;
 
     result = {
@@ -38,8 +35,9 @@ module.exports = {
       ...requestedMove,
       phase: GamePhase.MAIN,
       playedBy,
+      playedCard: null,
+      targetCard: null,
     };
-
     return exits.success(result);
   },
 };

@@ -34,18 +34,19 @@ module.exports = {
     const cardIndex = result.deck.findIndex(({ id }) => id === cardId);
     const [ playedCard ] = result.deck.splice(cardIndex, 1);
     const { oneOff } = result;
-
     player.points.push(playedCard);
+    result.scrap.push(oneOff);
     result.turn++;
 
     result = {
       ...result,
       ...requestedMove,
       phase: GamePhase.MAIN,
+      oneOff: null,
       playedBy,
       playedCard,
+      targetCard: null,
       resolved: oneOff,
-      oneOff: null,
     };
 
     return exits.success(result);

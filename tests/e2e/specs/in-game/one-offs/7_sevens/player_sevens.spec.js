@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError } from '../../../../support/helpers';
+import { assertGameState, assertSnackbar } from '../../../../support/helpers';
 import { Card } from '../../../../fixtures/cards';
 import { SnackBarError } from '../../../../fixtures/snackbarError';
 
@@ -93,7 +93,7 @@ describe('Playing SEVENS', () => {
       .click({ force: true });
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=10-2]').click();
-    assertSnackbarError("Your opponent's queen prevents you from targeting their other cards");
+    assertSnackbar("Your opponent's queen prevents you from targeting their other cards");
 
     cy.get('[data-second-card=6-1]').should('exist').and('be.visible').click();
 
@@ -539,7 +539,7 @@ describe('Playing SEVENS', () => {
       // Should not allow playing 4 as one-off
       cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
-      assertSnackbarError(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
+      assertSnackbar(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
     });
   }); // End player seven one-off describe
 
@@ -672,7 +672,7 @@ describe('Playing SEVENS', () => {
         scrap: [Card.JACK_OF_CLUBS, Card.TWO_OF_SPADES, Card.SEVEN_OF_CLUBS],
         topCard: Card.FOUR_OF_CLUBS,
       });
-    }); //End playing TWO on jacks from a seven
+    }); // End playing TWO on jacks from a seven
 
     it('Plays a NINE from a seven', () => {
       cy.skipOnGameStateApi();
@@ -763,43 +763,9 @@ describe('Playing SEVENS', () => {
         scrap: [Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
         topCard: Card.TWO_OF_SPADES,
       });
-    }); //End playing NINE on jacks from a seven
-    it('Disables move choices when selecting card in hand while resolving seven', () => {
-      cy.skipOnGameStateApi();
-      cy.setupGameAsP0();
-      cy.loadGameFixture(0, {
-        p0Hand: [Card.SEVEN_OF_CLUBS, Card.TWO_OF_CLUBS],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [],
-        p1Points: [Card.TEN_OF_CLUBS],
-        p1FaceCards: [Card.KING_OF_CLUBS],
-        topCard: Card.FOUR_OF_DIAMONDS,
-        secondCard: Card.NINE_OF_CLUBS,
-      });
-
-      cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
-
-      cy.get('[data-second-card=9-0]').should('exist').and('be.visible');
-      cy.get('[data-top-card=4-1]').should('exist').and('be.visible');
-
-      cy.get('[data-player-hand-card=2-0]').click();
-
-      cy.get('[data-move-choice=points]')
-        .should('have.class', 'v-card--disabled')
-        .contains('You must play one of the top two cards from the deck');
-
-      cy.get('[data-move-choice=scuttle]')
-        .should('have.class', 'v-card--disabled')
-        .contains('You must play one of the top two cards from the deck');
-
-      cy.get('[data-move-choice=targetedOneOff]')
-        .should('have.class', 'v-card--disabled')
-        .contains('You must play one of the top two cards from the deck');
-    }); // End disables moves choices
+    }); // End playing NINE on jacks from a seven
 
     it('Disables move choices when selecting card in hand while resolving seven', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
         p0Hand: [Card.SEVEN_OF_CLUBS, Card.TWO_OF_CLUBS],

@@ -1,24 +1,24 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Play Points',
+  friendlyName: 'Play Face Card',
 
-  description: 'Returns new GameState resulting from requested points move',
+  description: 'Returns new GameState resulting from requested Face Card move',
 
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest GameState before the requesting player plays a card for points',
+      description: 'The latest GameState before the requesting player plays a face card',
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to play points (req.body)
-     * @param { String } requestedMove.cardId - Card Played for points
-     * @param { MoveType.POINTS } requestedMove.moveType - Specifies that this a Points move
+     * @param { Object } requestedMove - Object describing the request to play a face card (req.body)
+     * @param { String } requestedMove.cardId - Card Played being played as face card
+     * @param { MoveType.FACE_CARD } requestedMove.moveType - Specifies that this a face card move
      */
     requestedMove: {
       type: 'ref',
-      description: 'The move being requested. Specifies which player is asking to play a card for points',
+      description: 'The move being requested. Specifies which player is asking to play a face card',
     },
     playedBy: {
       type: 'number',
@@ -33,7 +33,10 @@ module.exports = {
     const player = playedBy ? result.p1 : result.p0;
     const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
 
-    player.points.push(...player.hand.splice(cardIndex, 1));
+    const [ playedCard ] = player.hand.splice(cardIndex, 1);
+
+    player.faceCards.push(playedCard);
+
     result.turn++;
 
     result = {
@@ -41,7 +44,8 @@ module.exports = {
       ...requestedMove,
       phase: GamePhase.MAIN,
       playedBy,
-      playedCard: player.points.at(-1),
+      playedCard,
+      targetCard: null,
     };
 
     return exits.success(result);

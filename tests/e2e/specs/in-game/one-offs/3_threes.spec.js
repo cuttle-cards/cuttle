@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError, playOutOfTurn } from '../../../support/helpers';
+import { assertGameState, assertSnackbar, playOutOfTurn } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 import { SnackBarError } from '../../../fixtures/snackbarError';
 const { _ } = Cypress;
@@ -22,11 +22,10 @@ describe('Playing THREEs', () => {
     // Player plays three
     cy.get('[data-player-hand-card=3-0]').click(); // three of clubs
     cy.get('[data-move-choice=oneOff]').click();
-    assertSnackbarError(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
+    assertSnackbar(SnackBarError.ONE_OFF.THREE_EMPTY_SCRAP);
   });
 
   it('Plays 3s successfully', () => {
-    cy.skipOnGameStateApi();
     const scrap = [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS];
 
     // Set Up
@@ -72,7 +71,7 @@ describe('Playing THREEs', () => {
     cy.get('[data-three-dialog-card=10-2]').click();
     cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
 
-    //check scrap card shows and then disappears
+    // check scrap card shows and then disappears
     cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
     cy.get('[data-cy="scrap-chosen-card"]').should('not.exist');
 
@@ -104,7 +103,6 @@ describe('Playing THREEs', () => {
   });
 
   it('Opponent plays 3s successfully', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [Card.ACE_OF_SPADES],
@@ -145,7 +143,7 @@ describe('Playing THREEs', () => {
 
     cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.exist');
 
-    //check scrap card shows and then disappears
+    // check scrap card shows and then disappears
     cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
     cy.get('[data-cy="scrap-chosen-card"]').should('not.exist');
 

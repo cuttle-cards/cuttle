@@ -33,31 +33,36 @@ module.exports = {
     const { oneOff } = result;
 
     const fizzles = result.twos.length % 2 === 1;
-    // Move oneOff + twos into scrap and increment turn
-    result.scrap.push(result.oneOff);
+    
+    // Move twos into scrap
     result.scrap.push(...result.twos);
+    
     result = {
       ...result,
       ...requestedMove,
-      phase: GamePhase.MAIN,
       playedBy,
+      phase:GamePhase.MAIN,
       resolved: oneOff,
-      oneOff: null,
-      oneOffTarget: null,
-      oneOffTargetType: null,
       twos: [],
-      turn: result.turn + 1,
     };
 
     // If one-off fizzles, make no other changes
     if (fizzles) {
       result.moveType = MoveType.FIZZLE;
+      result.scrap.push(result.oneOff);
+      result.turn++;
       return exits.success(result);
     }
 
     switch (oneOff.rank) {
       case 1:
-        result = sails.helpers.gamestate.moves.resolve.ace(result);
+        result = sails.helpers.gameStates.moves.resolve.ace(result);
+        break;
+      case 2:
+        result = sails.helpers.gameStates.moves.resolve.two(result, playedBy);
+        break;
+      case 6:
+        result = sails.helpers.gameStates.moves.resolve.six(result);
         break;
       case 3:
       case 4:
@@ -67,14 +72,21 @@ module.exports = {
         // Each one has its own phase designated by the rank
         result = {
           ...result,
-          phase: oneOff.rank,
-          oneOff, // oneOff stays on the stack until next move
-          turn: result.turn - 1, // turn doesn't increment until the next move
+          phase: oneOff.rank
         };
-        break;
+        return exits.success(result);
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
+    
+    result.scrap.push(result.oneOff);
+    result = {
+      ...result,
+      oneOff: null,
+      oneOffTarget: null,
+      oneOffTargetType: null,
+      turn: result.turn + 1,
+    };
 
     return exits.success(result);
   },

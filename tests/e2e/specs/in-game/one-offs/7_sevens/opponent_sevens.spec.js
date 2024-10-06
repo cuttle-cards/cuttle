@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError } from '../../../../support/helpers';
+import { assertGameState, assertSnackbar } from '../../../../support/helpers';
 import { Card } from '../../../../fixtures/cards';
 import { SnackBarError } from '../../../../fixtures/snackbarError';
 
@@ -579,9 +579,9 @@ describe('Opponent playing SEVENS', () => {
       cy.get('[data-move-choice=jack]')
         .should('have.class', 'v-card--disabled')
         .contains('This card is frozen')
-        .click({ force: true }); //Break out into separate test case
+        .click({ force: true }); // Break out into separate test case
       cy.get('[data-opponent-point-card=1-0]').click();
-      assertSnackbarError(SnackBarError.FROZEN_CARD);
+      assertSnackbar(SnackBarError.FROZEN_CARD);
       cy.log('Successfully prevented player from playing the jack while it is frozen');
 
       // Player draws
