@@ -23,7 +23,9 @@ describe('Clean-up of One-Off Targets', () => {
     cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.ACE_OF_DIAMONDS, 'point');
 
     // Player resolves
-    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+    cy.get('#cannot-counter-dialog').should('be.visible')
+.get('[data-cy=cannot-counter-resolve]')
+.click();
 
     assertGameState(1, {
       p0Hand: [Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
@@ -182,9 +184,13 @@ describe('Clean-up of One-Off Targets', () => {
     cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.ACE_OF_DIAMONDS, 'point');
 
     // Player counters
-    cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
+    cy.get('#counter-dialog').should('be.visible')
+.get('[data-cy=counter]')
+.click();
 
-    cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-0]').click();
+    cy.get('#choose-two-dialog').should('be.visible')
+.get('[data-counter-dialog-card=2-0]')
+.click();
 
     cy.resolveOpponent();
     assertGameState(1, {

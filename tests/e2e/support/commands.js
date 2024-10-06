@@ -1130,7 +1130,8 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
       }
       // Play chosen card as one-off
       cy.get(`[data-player-hand-card=${card.rank}-${card.suit}]`).click();
-      cy.get('[data-move-choice=oneOff]').should('not.have.class', 'v-card--disabled').click();
+      cy.get('[data-move-choice=oneOff]').should('not.have.class', 'v-card--disabled')
+.click();
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();

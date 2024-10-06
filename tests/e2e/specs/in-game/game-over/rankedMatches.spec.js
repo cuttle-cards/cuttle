@@ -31,8 +31,11 @@ describe('Creating And Updating Ranked Matches', () => {
 
     // Set up season
     const [, diamondsSeason] = seasonFixtures;
-    diamondsSeason.startTime = dayjs.utc().subtract(2, 'week').subtract(1, 'day').toDate();
-    diamondsSeason.endTime = dayjs.utc().add(11, 'weeks').toDate();
+    diamondsSeason.startTime = dayjs.utc().subtract(2, 'week')
+.subtract(1, 'day')
+.toDate();
+    diamondsSeason.endTime = dayjs.utc().add(11, 'weeks')
+.toDate();
     cy.loadSeasonFixture([diamondsSeason]);
     // Sign up to players and store their id's for comparison to match data
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -46,16 +49,22 @@ describe('Creating And Updating Ranked Matches', () => {
           player1: this.playerOneId,
           player2: this.playerTwoId,
           winner: this.playerOneId,
-          startTime: dayjs.utc().subtract(1, 'week').subtract(1, 'day').toDate(),
-          endTime: dayjs.utc().subtract(1, 'week').subtract(1, 'day').toDate(),
+          startTime: dayjs.utc().subtract(1, 'week')
+.subtract(1, 'day')
+.toDate(),
+          endTime: dayjs.utc().subtract(1, 'week')
+.subtract(1, 'day')
+.toDate(),
         };
 
         const currentMatchWithDifferentOpponent = {
           player1: this.playerOneId,
           player2: this.playerThreeId,
           winner: null,
-          startTime: dayjs.utc().subtract(1, 'hour').toDate(),
-          endTime: dayjs.utc().subtract(1, 'hour').toDate(),
+          startTime: dayjs.utc().subtract(1, 'hour')
+.toDate(),
+          endTime: dayjs.utc().subtract(1, 'hour')
+.toDate(),
         };
 
         cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);
@@ -166,8 +175,12 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.setupGameAsP0(true, true);
     // Request stalemate
     cy.get('#game-menu-activator').click();
-    cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
-    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
+    cy.get('#game-menu').should('be.visible')
+.get('[data-cy=stalemate-initiate]')
+.click();
+    cy.get('#request-gameover-dialog').should('be.visible')
+.get('[data-cy=request-gameover-confirm]')
+.click();
     cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
     // Opponent confirms
     cy.stalemateOpponent();
@@ -205,14 +218,19 @@ describe('Creating And Updating Ranked Matches', () => {
     });
 
     cy.log('Drawing last two cards');
-    cy.get('#deck').should('contain', '(2)').click();
+    cy.get('#deck').should('contain', '(2)')
+.click();
     cy.drawCardOpponent();
     cy.log('Deck empty');
-    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#deck').should('contain', '(0)')
+.should('contain', 'PASS')
+.click();
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
-    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#deck').should('contain', '(0)')
+.should('contain', 'PASS')
+.click();
     assertStalemate();
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
@@ -239,14 +257,19 @@ describe('Creating And Updating Ranked Matches', () => {
     });
 
     cy.log('Drawing last two cards');
-    cy.get('#deck').should('contain', '(2)').click();
+    cy.get('#deck').should('contain', '(2)')
+.click();
     cy.drawCardOpponent();
     cy.log('Deck empty');
-    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#deck').should('contain', '(0)')
+.should('contain', 'PASS')
+.click();
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
-    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#deck').should('contain', '(0)')
+.should('contain', 'PASS')
+.click();
     assertStalemate();
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');

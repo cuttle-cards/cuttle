@@ -70,7 +70,8 @@ describe('Playing THREEs', () => {
 
     // Player selects a card from scrap
     cy.get('[data-three-dialog-card=10-2]').click();
-    cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
+    cy.get('[data-cy=three-resolve').should('not.be.disabled')
+.click();
 
     // check scrap card shows and then disappears
     cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
@@ -137,7 +138,8 @@ describe('Playing THREEs', () => {
     cy.playOneOffOpponent(Card.THREE_OF_CLUBS);
 
     // player resolves
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+.click();
 
     cy.get('#waiting-for-opponent-resolve-three-scrim').should('be.visible');
     // waiting for opponent to choose from scrap scrim
