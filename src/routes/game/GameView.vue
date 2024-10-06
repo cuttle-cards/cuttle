@@ -750,7 +750,7 @@ export default {
       });
     },
     topCard(newTopCard, oldTopCard) {
-      if (oldTopCard && !newTopCard) {
+      if (this.gameStore.id && oldTopCard && !newTopCard) {
         this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
       }
     }
