@@ -12,7 +12,6 @@ describe('Sixes One-Offs', () => {
   });
 
   it('Plays a six to destroy all face cards', () => {
-    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       // Player is P0
