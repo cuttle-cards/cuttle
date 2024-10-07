@@ -318,7 +318,8 @@ describe('Spectating Games', () => {
       // My user begins spectating, sees player3 in spectator list
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).click();
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
+.click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
@@ -328,7 +329,8 @@ describe('Spectating Games', () => {
         cy.setOpponentToSpectate(gameData.gameId);
       });
       // Player 4 now appears in spectator list
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '3').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '3')
+.click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username)
@@ -337,7 +339,8 @@ describe('Spectating Games', () => {
 
     it('Should display no spectators', () => {
       cy.setupGameAsP0();
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '0').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '0')
+.click();
       cy.get('[data-cy="spectate-list-menu"]').should('contain', 'Currently no spectators');
     });
 
@@ -347,7 +350,8 @@ describe('Spectating Games', () => {
       cy.get('@gameData').then((gameData) => {
         cy.setOpponentToSpectate(gameData.gameId);
       });
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
+.click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
@@ -367,7 +371,8 @@ describe('Spectating Games', () => {
       cy.location('pathname').should('eq', '/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).click();
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '1').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '1')
+.click();
       cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
     });
   });
@@ -427,7 +432,8 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
         cy.setOpponentToSpectate(game.id);
       });
 
-    cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+    cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
+.click();
     cy.get('[data-cy="spectate-list-menu"')
       .should('contain', 'myUsername')
       .should('contain', playerThree.username);
