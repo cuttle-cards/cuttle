@@ -37,7 +37,7 @@ module.exports = {
     const cardIndex1 = player.hand.findIndex(({ id }) => id === cardId1);
 
     discardedCards.push(player.hand[cardIndex1]);
-    result.scrap.push(...player.hand.splice(cardIndex1, 1));
+    result.scrap.push(result.oneOff, ...player.hand.splice(cardIndex1, 1));
   
     const cardIndex2 = cardId2 ? player.hand.findIndex(({ id }) => id === cardId2) : null;
 
