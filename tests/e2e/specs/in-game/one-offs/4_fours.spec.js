@@ -148,7 +148,6 @@ describe('FOURS', () => {
         p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_SPADES],
       });
       cy.log('Successfully prevented discarding with no cards selected');
 
@@ -163,7 +162,6 @@ describe('FOURS', () => {
         p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_SPADES],
       });
       cy.log('Successfully prevented discarding only 1 card');
 
@@ -178,7 +176,6 @@ describe('FOURS', () => {
         p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_SPADES],
       });
       cy.log('Successfully prevented discarding a card not in hand');
 
