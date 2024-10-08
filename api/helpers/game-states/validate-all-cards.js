@@ -18,6 +18,7 @@ module.exports = {
   fn: ({ gameState }, exits) => {
     const { p0, p1, deck, scrap, twos, oneOff } = gameState;
 
+    // put Cards and Attachments into a one dimensional array
     const flattenCards = (cards) => {
       return cards.flatMap((card) => [{ ...card, attachments: [] }, ...(card.attachments || [])]);
     };
