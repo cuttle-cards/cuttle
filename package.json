@@ -97,6 +97,8 @@
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "test:unit": "NODE_ENV=development vitest run",
+    "test:sails": "NODE_ENV=development vitest run --config tests/unit/vitest-sails.config.mjs",
+    "test": "npm run test:unit && npm run test:sails",
     "version:patch": "npm version patch",
     "version:minor": "npm version minor",
     "version:major": "npm version major",

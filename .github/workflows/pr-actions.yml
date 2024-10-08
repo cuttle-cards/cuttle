@@ -46,12 +46,12 @@ jobs:
       script: 'npm run lint'
 
   # Run Jest Unit Tests
-  test-unit:
+  test:
     uses: ./.github/workflows/run-npm-script.yml
     needs: draft
     with:
       label: 'Test: Unit'
-      script: 'npm run test:unit'
+      script: 'npm run test'
 
   # Run Cypress End to End Tests
   test-e2e:
