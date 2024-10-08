@@ -2,7 +2,7 @@ import os from 'os';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
-// vite.config.js
+// vite.config.mjs
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
