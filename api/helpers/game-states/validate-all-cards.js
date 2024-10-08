@@ -22,7 +22,7 @@ module.exports = {
       return cards.flatMap((card) => [{ ...card, attachments: [] }, ...(card.attachments || [])]);
     };
 
-    const allCards = [
+    const allCards = new Set([
       ...p0.hand,
       ...flattenCards(p0.points),
       ...flattenCards(p0.faceCards),
@@ -33,26 +33,30 @@ module.exports = {
       ...scrap,
       ...twos,
       ...(oneOff ?? []),
-    ];
+    ]);
 
-    DeckIds.forEach((id) => {
-      const firstIndex = allCards.findIndex((card) => id === card.id);
-      const lastIndex = allCards.findIndex((card) => id === card.id);
+    const cardIds = new Set();
+    const deckIds = new Set(DeckIds);
 
-      if (firstIndex !== lastIndex) {
-        throw new Error('Duplicate Card Found');
+    allCards.forEach((card) => {
+      if (card.attachments) {
+        throw new Error('Only Points and Face Cards can have attachments');
       }
 
-      if (lastIndex === -1) {
-        throw new Error('Missing Card in Game');
+      if (cardIds.has(card.id)) {
+        throw new Error('Duplicate Card');
       }
+
+      if (!deckIds.has(card.id)) {
+        throw new Error('Invalid Card');
+      }
+
+      cardIds.add(card.id);
     });
 
-    allCards.forEach(({ attachments }) => {
-      if (attachments.length) {
-        throw new Error('Only Points or FaceCards can have attachments');
-      }
-    });
+    if (cardIds.size !== deckIds.size) {
+      throw new Error('Card Missing');
+    }
 
     return exits.success();
   },
