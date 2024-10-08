@@ -17,7 +17,7 @@ async function initDevtools() {
     };
     document.head.appendChild(script);
   } catch (err) {
-    console.error('Error checking devtools availability:', err.message);
+    console.warn('Error checking devtools availability:', err.message);
   }
 }
 
