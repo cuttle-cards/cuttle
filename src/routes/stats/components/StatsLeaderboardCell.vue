@@ -107,14 +107,14 @@ export default {
     },
     chipText() {
       switch (this.selectedMetric) {
-        case Metrics.POINTS_AND_WINS:
-          return `W: ${this.wins}, P: ${this.points}`;
-        case Metrics.POINTS_ONLY:
-          return `${this.points}`;
-        case Metrics.WINS_ONLY:
-          return `${this.wins}`;
-        default:
-          return `W: ${this.wins}, P: ${this.points}`;
+      case Metrics.POINTS_AND_WINS:
+        return `W: ${this.wins}, P: ${this.points}`;
+      case Metrics.POINTS_ONLY:
+        return `${this.points}`;
+      case Metrics.WINS_ONLY:
+        return `${this.wins}`;
+      default:
+        return `W: ${this.wins}, P: ${this.points}`;
       }
     },
     colorForScore() {
@@ -137,28 +137,28 @@ export default {
     },
     colorForWeeklyScore() {
       switch (this.points) {
-        case 5:
-          return this.theme.firstPlace;
-        case 4:
-          return this.theme.secondPlace;
-        case 3:
-          return this.theme.thirdPlace;
-        case 2:
-          return 'primary';
-        case 1:
-          return 'neutral-darken-3';
-        default:
-          return '#000';
+      case 5:
+        return this.theme.firstPlace;
+      case 4:
+        return this.theme.secondPlace;
+      case 3:
+        return this.theme.thirdPlace;
+      case 2:
+        return 'primary';
+      case 1:
+        return 'neutral-darken-3';
+      default:
+        return '#000';
       }
     },
     variant() {
       switch (this.colorForScore) {
-        case this.theme.firstPlace:
-        case this.theme.secondPlace:
-        case this.theme.thirdPlace:
-          return 'elevated';
-        default:
-          return 'outlined';
+      case this.theme.firstPlace:
+      case this.theme.secondPlace:
+      case this.theme.thirdPlace:
+        return 'elevated';
+      default:
+        return 'outlined';
       }
     },
     /**

@@ -357,13 +357,13 @@ export const useGameStore = defineStore('game', {
     handleGameResponse: (jwres, resolve, reject) => {
       const authStore = useAuthStore();
       switch (jwres.statusCode) {
-        case 200:
-          return resolve();
-        case 403:
-          authStore.mustReauthenticate = true;
-          return reject(jwres.body.message);
-        default:
-          return reject(jwres.body.message);
+      case 200:
+        return resolve();
+      case 403:
+        authStore.mustReauthenticate = true;
+        return reject(jwres.body.message);
+      default:
+        return reject(jwres.body.message);
       }
     },
     transformGameUrl(slug) {
@@ -372,29 +372,29 @@ export const useGameStore = defineStore('game', {
       }
 
       switch (slug) {
-        case 'draw':
-        case 'points':
-        case 'faceCard':
-        case 'scuttle':
-        case 'untargetedOneOff':
-        case 'targetedOneOff':
-        case 'jack':
-        case 'counter':
-        case 'resolve':
-        case 'resolveThree':
-        case 'resolveFour':
-        case 'resolveFive':
-        case 'seven/points':
-        case 'seven/scuttle':
-        case 'seven/faceCard':
-        case 'seven/jack':
-        case 'seven/untargetedOneOff':
-        case 'seven/targetedOneOff':
-        case 'pass':
-          // add all the move-making ones here
-          return `/api/game/${this.id}/move`;
-        default:
-          return `/api/game/${slug}`;
+      case 'draw':
+      case 'points':
+      case 'faceCard':
+      case 'scuttle':
+      case 'untargetedOneOff':
+      case 'targetedOneOff':
+      case 'jack':
+      case 'counter':
+      case 'resolve':
+      case 'resolveThree':
+      case 'resolveFour':
+      case 'resolveFive':
+      case 'seven/points':
+      case 'seven/scuttle':
+      case 'seven/faceCard':
+      case 'seven/jack':
+      case 'seven/untargetedOneOff':
+      case 'seven/targetedOneOff':
+      case 'pass':
+        // add all the move-making ones here
+        return `/api/game/${this.id}/move`;
+      default:
+        return `/api/game/${slug}`;
       }
     },
     makeSocketRequest(slug, data, method = 'POST') {

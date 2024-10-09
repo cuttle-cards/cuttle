@@ -66,7 +66,7 @@ function setup() {
   // Select Clubs 2022 season
   cy.get('[data-cy=season-select]').click();
   cy.get('[role=listbox]').contains('Clubs 2022')
-.click();
+    .click();
 }
 
 describe('Stats Page Error States', () => {
@@ -119,7 +119,7 @@ describe('Stats Page', () => {
     cy.get('[data-players-lost-to=Player2-week-1]').should('contain', 'Player1');
     cy.get('[data-player-results=Player2-week-1]').should('contain', 'Player2 Week 1');
     cy.get('[data-player-results=Player2-week-1]').find('[data-cy=close-player-results]')
-.click();
+      .click();
     cy.get('[data-win-rate=Player2-week-1]').should('contain', '66%');
     cy.get('[data-win-rate=Player2-week-1]').should('contain', '2 Won');
     cy.get('[data-win-rate=Player2-week-1]').should('contain', '1 Lost');
@@ -139,21 +139,21 @@ describe('Stats Page', () => {
     cy.get('[data-win-rate=Player3-week-total]').should('contain', '6 Lost');
     cy.get('[data-win-rate=Player3-week-total]').should('contain', '9 Total');
     cy.get('[data-player-results=Player3-week-total]').find('[data-cy=close-player-results]')
-.click();
+      .click();
     cy.get('[data-players-beaten=Player3-week-total').should('not.exist');
     cy.get('[data-players-lost-to=Player3-week-total').should('not.exist');
 
     // Players should be sorted in rank order
     cy.get('[data-rank]').eq(0)
-.should('contain', '1');
+      .should('contain', '1');
     cy.get('[data-rank]').eq(1)
-.should('contain', '1');
+      .should('contain', '1');
     cy.get('[data-rank]').eq(2)
-.should('contain', '3');
+      .should('contain', '3');
     cy.get('[data-rank]').eq(3)
-.should('contain', '4');
+      .should('contain', '4');
     cy.get('[data-rank]').eq(4)
-.should('contain', '5');
+      .should('contain', '5');
 
     // Incomplete match should not contribute to points
     cy.get("[data-week-3='Player1']").should('not.exist');
@@ -168,7 +168,7 @@ describe('Stats Page', () => {
     cy.contains('Points Only').click();
     // Only points are displayed
     cy.get("[data-week-1='Player1']").contains('5')
-.should('not.contain', 'W:');
+      .should('not.contain', 'W:');
     cy.get('th').should('have.length', 16);
     // Switch to wins only
     cy.get('[data-cy=metric-select]').click();
@@ -176,7 +176,7 @@ describe('Stats Page', () => {
     cy.get('th').should('have.length', 16);
     // Only wins are displayed
     cy.get("[data-week-1='Player1']").contains('4')
-.should('not.contain', 'P:');
+      .should('not.contain', 'P:');
     cy.get("[points-1='Player1']").should('not.exist');
   });
 
@@ -188,29 +188,29 @@ describe('Stats Page', () => {
     // Deselect every week except week 1
     cy.get('[data-cy=week-select]').click();
     cy.get('[role=listbox]').contains('Week 2')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 3')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 4')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 5')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 6')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 7')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 8')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 9')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 10')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 11')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 12')
-.click();
+      .click();
     cy.get('[role=listbox]').contains('Week 13')
-.click();
+      .click();
     cy.get('body').type('{esc}');
 
     // Expect 5 columns: username, rank, total, week_1
@@ -226,7 +226,7 @@ describe('Stats Page', () => {
     // Switch season to diamonds 2022
     cy.get('[data-cy=season-select]').click();
     cy.get('[role=listbox]').contains('Diamonds 2022')
-.click();
+      .click();
 
     // Award cards should not display (no winners)
     cy.get('[data-tournament]').should('not.exist');
@@ -237,7 +237,7 @@ describe('Stats Page', () => {
     // Switch back to Clubs 2022
     cy.get('[data-cy=season-select]').click();
     cy.get('[role=listbox]').contains('Clubs 2022')
-.click();
+      .click();
     // Stats data table
     cy.get('[data-week-total=Player1]').should('contain', 'W: 7, P: 9');
     cy.get('[data-week-2=Player1]').should('contain', 'W: 3, P: 4');
@@ -246,14 +246,14 @@ describe('Stats Page', () => {
   it('Hides season that should not be available', () => {
     cy.get('[data-cy=season-select]').click();
     cy.get('[role=listbox]').contains('Future Spades Season')
-.should('not.exist');
+      .should('not.exist');
   });
 
   it('Hides stats table when matches are not available', () => {
     // Select World Championship
     cy.get('[data-cy=season-select]').click();
     cy.get('[role=listbox]').contains('World Championship Season')
-.click();
+      .click();
     cy.get('[data-cy=stats-leaderboard]').should('not.exist');
 
     const worldChampionshipSeason = seasonFixtures[seasonFixtures.length - 1];
@@ -280,9 +280,9 @@ describe('Stats Page', () => {
       cy.vueRoute(`/stats/${seasonOne.id}`);
       cy.location('pathname').should('contain', seasonOne.id);
       cy.get('[data-cy=season-select]').should('contain', seasonOne.name)
-.click();
+        .click();
       cy.get('[role=listbox]').contains(seasonTwo.name)
-.click();
+        .click();
       cy.location('pathname').should('contain', seasonTwo.id);
       cy.get('[data-cy=season-select]').should('contain', seasonTwo.name);
     });

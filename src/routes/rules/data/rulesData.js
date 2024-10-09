@@ -1,32 +1,32 @@
 import ScuttleSuitOrder from '../components/ScuttleSuitOrder.vue';
 
 const rules = [
-    {
-      title: 'rules.draw',
-      description: 'rules.drawDescription',
-      staticImg: '/img/rulesView/rules_action_draw.svg',
-    },
-    {
-      title: 'rules.points',
-      description: 'rules.pointsDescription',
-      staticImg: '/img/rulesView/rules_action_points.svg',
-    },
-    {
-      title: 'rules.scuttle',
-      description: 'rules.scuttleDescription',
-      staticImg: '/img/rulesView/rules_action_skull.svg',
-      childComponent: ScuttleSuitOrder,
-    },
-    {
-      title: 'rules.royal',
-      description: 'rules.royalDescription',
-      staticImg: '/img/rulesView/rules_action_royals.svg',
-    },
-    {
-      title: 'rules.oneoff',
-      description: 'rules.oneoffDescription',
-      staticImg: '/img/rulesView/rules_action_oneoffs.svg',
-    },
+  {
+    title: 'rules.draw',
+    description: 'rules.drawDescription',
+    staticImg: '/img/rulesView/rules_action_draw.svg',
+  },
+  {
+    title: 'rules.points',
+    description: 'rules.pointsDescription',
+    staticImg: '/img/rulesView/rules_action_points.svg',
+  },
+  {
+    title: 'rules.scuttle',
+    description: 'rules.scuttleDescription',
+    staticImg: '/img/rulesView/rules_action_skull.svg',
+    childComponent: ScuttleSuitOrder,
+  },
+  {
+    title: 'rules.royal',
+    description: 'rules.royalDescription',
+    staticImg: '/img/rulesView/rules_action_royals.svg',
+  },
+  {
+    title: 'rules.oneoff',
+    description: 'rules.oneoffDescription',
+    staticImg: '/img/rulesView/rules_action_oneoffs.svg',
+  },
 ];
 
 const royals = [

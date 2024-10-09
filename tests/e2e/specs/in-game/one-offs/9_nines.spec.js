@@ -277,8 +277,8 @@ describe('Playing NINES', () => {
       cy.playOneOffOpponent(Card.SIX_OF_HEARTS);
 
       cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(0, {
         p0Hand: [Card.JACK_OF_SPADES],
@@ -370,12 +370,12 @@ describe('Playing NINES', () => {
       cy.log('STEP 3- P0 counters');
 
       cy.get('#counter-dialog').should('be.visible')
-.get('[data-cy=counter]')
-.click();
+        .get('[data-cy=counter]')
+        .click();
 
       cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-counter-dialog-card=2-3]')
-.click();
+        .get('[data-counter-dialog-card=2-3]')
+        .click();
 
       // Wait for opponent to resolve
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
@@ -436,8 +436,8 @@ describe('Playing NINES', () => {
 
       // Player resolves
       cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -511,8 +511,8 @@ describe('Playing NINES', () => {
 
       // Player resolves
       cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(1, {
         p0Hand: [Card.ACE_OF_DIAMONDS],
@@ -588,8 +588,8 @@ describe('Playing NINES', () => {
       });
       cy.playTargetedOneOffOpponent(Card.NINE_OF_SPADES, Card.KING_OF_DIAMONDS, 'faceCard');
       cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       cy.get('[data-player-hand-card=9-2]').click();
       cy.get('[data-move-choice=targetedOneOff').click();

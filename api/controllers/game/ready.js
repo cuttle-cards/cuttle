@@ -11,18 +11,18 @@ module.exports = async function (req, res) {
     let bothReady = false;
     const gameUpdates = {};
     switch (pNum) {
-      case 0:
-        gameUpdates.p0Ready = !game.p0Ready;
-        if (game.p1Ready) {
-          bothReady = true;
-        }
-        break;
-      case 1:
-        gameUpdates.p1Ready = !game.p1Ready;
-        if (game.p0Ready) {
-          bothReady = true;
-        }
-        break;
+    case 0:
+      gameUpdates.p0Ready = !game.p0Ready;
+      if (game.p1Ready) {
+        bothReady = true;
+      }
+      break;
+    case 1:
+      gameUpdates.p1Ready = !game.p1Ready;
+      if (game.p0Ready) {
+        bothReady = true;
+      }
+      break;
     }
 
     // Start game if both players are ready

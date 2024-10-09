@@ -160,7 +160,7 @@ export default {
     showStatsUsageChart() {
       const gameCounts = this.selectedSeason.gameCounts || []; // Handle potential undefined value
       return gameCounts.length > 0 && !gameCounts.every((count) => count === 0);
-  },
+    },
     showSeasonChampions() {
       return (
         this.selectedSeason &&

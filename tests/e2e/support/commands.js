@@ -519,28 +519,28 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
       let foundTarget;
       let foundPointCard;
       switch (targetType) {
-        case 'point':
-          foundTarget = player.points.find((pointCard) => cardsMatch(pointCard, target));
-          break;
-        case 'faceCard':
-          foundTarget = player.faceCards.find((faceCard) => cardsMatch(faceCard, target));
-          break;
-        case 'jack':
-          player.points.forEach((pointCard) => {
-            pointCard.attachments.forEach((jack) => {
-              if (cardsMatch(jack, target)) {
-                foundTarget = jack;
-                foundPointCard = pointCard;
-              }
-            });
+      case 'point':
+        foundTarget = player.points.find((pointCard) => cardsMatch(pointCard, target));
+        break;
+      case 'faceCard':
+        foundTarget = player.faceCards.find((faceCard) => cardsMatch(faceCard, target));
+        break;
+      case 'jack':
+        player.points.forEach((pointCard) => {
+          pointCard.attachments.forEach((jack) => {
+            if (cardsMatch(jack, target)) {
+              foundTarget = jack;
+              foundPointCard = pointCard;
+            }
           });
-          break;
-        default:
-          throw new Error(
-            `Error playing ${printCard(
-              card,
-            )} as one-off from seven as opponent: invalid target type, ${targetType}`,
-          );
+        });
+        break;
+      default:
+        throw new Error(
+          `Error playing ${printCard(
+            card,
+          )} as one-off from seven as opponent: invalid target type, ${targetType}`,
+        );
       }
       if (!foundCard) {
         throw new Error(
@@ -681,19 +681,19 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
           },
         });
       }),
-        function handleResponse(res, jwres) {
-          try {
-            if (env && jwres.statusCode === 404) {
-              throw new Error('This action is not supported yet in GameState API');
-            }
-            if (jwres.statusCode !== 200) {
-              throw new Error(jwres.error.message);
-            }
-            return res;
-          } catch (err) {
-            return err;
+      function handleResponse(res, jwres) {
+        try {
+          if (env && jwres.statusCode === 404) {
+            throw new Error('This action is not supported yet in GameState API');
           }
-        };
+          if (jwres.statusCode !== 200) {
+            throw new Error(jwres.error.message);
+          }
+          return res;
+        } catch (err) {
+          return err;
+        }
+      };
     });
 });
 
@@ -980,28 +980,28 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
       }
       // Find target by suit & rank
       switch (targetType) {
-        case 'point':
-          foundTarget = player.points.find((pointCard) => cardsMatch(pointCard, target));
-          break;
-        case 'faceCard':
-          foundTarget = player.faceCards.find((faceCard) => cardsMatch(faceCard, target));
-          break;
-        case 'jack':
-          player.points.forEach((pointCard) => {
-            pointCard.attachments.forEach((jack) => {
-              if (cardsMatch(jack, target)) {
-                foundTarget = jack;
-                foundPointCard = pointCard;
-              }
-            });
+      case 'point':
+        foundTarget = player.points.find((pointCard) => cardsMatch(pointCard, target));
+        break;
+      case 'faceCard':
+        foundTarget = player.faceCards.find((faceCard) => cardsMatch(faceCard, target));
+        break;
+      case 'jack':
+        player.points.forEach((pointCard) => {
+          pointCard.attachments.forEach((jack) => {
+            if (cardsMatch(jack, target)) {
+              foundTarget = jack;
+              foundPointCard = pointCard;
+            }
           });
-          break;
-        default:
-          throw new Error(
-            `Error playing ${printCard(
-              card,
-            )} as one-off from seven as opponent: invalid target type, ${targetType}`,
-          );
+        });
+        break;
+      default:
+        throw new Error(
+          `Error playing ${printCard(
+            card,
+          )} as one-off from seven as opponent: invalid target type, ${targetType}`,
+        );
       }
       if (!foundTarget) {
         throw new Error(
@@ -1131,7 +1131,7 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
       // Play chosen card as one-off
       cy.get(`[data-player-hand-card=${card.rank}-${card.suit}]`).click();
       cy.get('[data-move-choice=oneOff]').should('not.have.class', 'v-card--disabled')
-.click();
+        .click();
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();

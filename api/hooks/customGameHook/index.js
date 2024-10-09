@@ -31,7 +31,7 @@ module.exports = function gameHook() {
     findOpenGames: function () {
       return new Promise(function (resolve, reject) {
         const recentUpdateThreshhold = dayjs.utc().subtract(1, 'day')
-.toDate();
+          .toDate();
         Game.find({
           status: gameService.GameStatus.CREATED,
           createdAt: { '>=': recentUpdateThreshhold },

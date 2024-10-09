@@ -24,8 +24,8 @@ describe('Clean-up of One-Off Targets', () => {
 
     // Player resolves
     cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+      .get('[data-cy=cannot-counter-resolve]')
+      .click();
 
     assertGameState(1, {
       p0Hand: [Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
@@ -185,12 +185,12 @@ describe('Clean-up of One-Off Targets', () => {
 
     // Player counters
     cy.get('#counter-dialog').should('be.visible')
-.get('[data-cy=counter]')
-.click();
+      .get('[data-cy=counter]')
+      .click();
 
     cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-counter-dialog-card=2-0]')
-.click();
+      .get('[data-counter-dialog-card=2-0]')
+      .click();
 
     cy.resolveOpponent();
     assertGameState(1, {

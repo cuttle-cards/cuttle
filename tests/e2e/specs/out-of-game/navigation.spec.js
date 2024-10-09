@@ -28,7 +28,7 @@ function verifyUnauthenticatedLinks() {
 
   // First time unauthenticated user sees 'Sign Up' link
   cy.get('[data-cy=login-link]').should('contain', 'Sign Up')
-.click();
+    .click();
   cy.location('pathname').should('equal', '/signup');
 
   // Sign Up, then log out and return to rules
@@ -41,7 +41,7 @@ function verifyUnauthenticatedLinks() {
 
   // Returning unauthenticated users sees 'Log In' link
   cy.get('[data-cy=login-link]').should('contain', 'Log In')
-.click();
+    .click();
   cy.location('pathname').should('equal', '/login');
 }
 

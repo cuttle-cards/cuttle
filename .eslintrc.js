@@ -55,6 +55,7 @@ module.exports = {
         }
       }
     ],
+    'indent': ['error', 2],
     'newline-per-chained-call': ['error', { ignoreChainWithDepth: 2 }],
     'vue/html-indent': ['error'],
     'vue/multi-word-component-names': ['error'],

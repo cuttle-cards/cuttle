@@ -55,28 +55,28 @@ module.exports = {
     }
 
     switch (oneOff.rank) {
-      case 1:
-        result = sails.helpers.gameStates.moves.resolve.ace(result);
-        break;
-      case 2:
-        result = sails.helpers.gameStates.moves.resolve.two(result, playedBy);
-        break;
-      case 6:
-        result = sails.helpers.gameStates.moves.resolve.six(result);
-        break;
-      case 3:
-      case 4:
-      case 5:
-      case 7:
-        // These one-offs require an additional user input after resolving
-        // Each one has its own phase designated by the rank
-        result = {
-          ...result,
-          phase: oneOff.rank
-        };
-        return exits.success(result);
-      default:
-        return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
+    case 1:
+      result = sails.helpers.gameStates.moves.resolve.ace(result);
+      break;
+    case 2:
+      result = sails.helpers.gameStates.moves.resolve.two(result, playedBy);
+      break;
+    case 6:
+      result = sails.helpers.gameStates.moves.resolve.six(result);
+      break;
+    case 3:
+    case 4:
+    case 5:
+    case 7:
+      // These one-offs require an additional user input after resolving
+      // Each one has its own phase designated by the rank
+      result = {
+        ...result,
+        phase: oneOff.rank
+      };
+      return exits.success(result);
+    default:
+      return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
     
     result.scrap.push(result.oneOff);

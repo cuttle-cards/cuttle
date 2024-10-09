@@ -486,15 +486,15 @@ export default {
     ////////////////////
     deckLogoWidth() {
       switch (this.$vuetify.display.name) {
-        case 'xs':
-          return 50;
-        case 'sm':
-          return 70;
-        case 'md':
-        case 'lg':
-        case 'xl':
-        default:
-          return 140;
+      case 'xs':
+        return 50;
+      case 'sm':
+        return 70;
+      case 'md':
+      case 'lg':
+      case 'xl':
+      default:
+        return 140;
       }
     },
     /////////////////////////////////////////////
@@ -557,33 +557,33 @@ export default {
     },
     playerPointsTransition() {
       switch (this.game.lastEventChange) {
-        case 'resolve':
-          // Different one-offs cause points to move in different directions
-          switch (this.game.lastEventOneOffRank) {
-            // Twos and Sixes swap control of points between players
-            case 2:
-            case 6:
-              return 'slide-above';
-            // For nines, transition direction depends on target type
-            case 9:
-              switch (this.game.lastEventTargetType) {
-                // Nine on jack causes points to swap control
-                case 'jack':
-                  return 'slide-above';
-                // Everything else expect cards to move back to hand
-                case 'point':
-                case 'faceCard':
-                default:
-                  return 'slide-below';
-              }
-            default:
-              return 'in-below-out-left';
-          }
-        case 'jack':
-        case 'sevenJack':
+      case 'resolve':
+        // Different one-offs cause points to move in different directions
+        switch (this.game.lastEventOneOffRank) {
+        // Twos and Sixes swap control of points between players
+        case 2:
+        case 6:
           return 'slide-above';
+          // For nines, transition direction depends on target type
+        case 9:
+          switch (this.game.lastEventTargetType) {
+          // Nine on jack causes points to swap control
+          case 'jack':
+            return 'slide-above';
+            // Everything else expect cards to move back to hand
+          case 'point':
+          case 'faceCard':
+          default:
+            return 'slide-below';
+          }
         default:
           return 'in-below-out-left';
+        }
+      case 'jack':
+      case 'sevenJack':
+        return 'slide-above';
+      default:
+        return 'in-below-out-left';
       }
     },
     playerFaceCardsTransition() {
@@ -600,33 +600,33 @@ export default {
     },
     opponentPointsTransition() {
       switch (this.game.lastEventChange) {
-        // Jacks cause point cards to switch control (from/towards player)
-        case 'jack':
-        case 'sevenJack':
+      // Jacks cause point cards to switch control (from/towards player)
+      case 'jack':
+      case 'sevenJack':
+        return 'slide-below';
+      case 'resolve':
+        // Different one-offs cause different direction transitions
+        switch (this.game.lastEventOneOffRank) {
+        // Twos and sixes caus point cards to switch control (from/towards player)
+        case 2:
+        case 6:
           return 'slide-below';
-        case 'resolve':
-          // Different one-offs cause different direction transitions
-          switch (this.game.lastEventOneOffRank) {
-            // Twos and sixes caus point cards to switch control (from/towards player)
-            case 2:
-            case 6:
-              return 'slide-below';
-            // Nine transitions depend on the target type
-            case 9:
-              switch (this.game.lastEventTargetType) {
-                // Nine on a jack switches point card control
-                case 'jack':
-                  return 'slide-below';
-                // Everything else returns cards to hand
-                default:
-                  return 'slide-above';
-              }
-            default:
-              return 'in-above-out-below';
+          // Nine transitions depend on the target type
+        case 9:
+          switch (this.game.lastEventTargetType) {
+          // Nine on a jack switches point card control
+          case 'jack':
+            return 'slide-below';
+            // Everything else returns cards to hand
+          default:
+            return 'slide-above';
           }
-        // Defaults to in above (opponent's hand) out below (to scrap)
         default:
           return 'in-above-out-below';
+        }
+        // Defaults to in above (opponent's hand) out below (to scrap)
+      default:
+        return 'in-above-out-below';
       }
     },
     opponentFaceCardsTransition() {
@@ -666,20 +666,20 @@ export default {
     },
     validFaceCardTargetIds() {
       switch (this.gameStore.opponentQueenCount) {
-        case 0: {
-          const opponentFaceCardIds = this.gameStore.opponent.faceCards.map((card) => card.id);
-          const opponentJackIds = [];
-          this.gameStore.opponent.points.forEach((card) => {
-            if (card.attachments.length > 0) {
-              opponentJackIds.push(card.attachments[card.attachments.length - 1].id);
-            }
-          });
-          return [...opponentFaceCardIds, ...opponentJackIds];
-        }
-        case 1:
-          return [this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id];
-        default:
-          return [];
+      case 0: {
+        const opponentFaceCardIds = this.gameStore.opponent.faceCards.map((card) => card.id);
+        const opponentJackIds = [];
+        this.gameStore.opponent.points.forEach((card) => {
+          if (card.attachments.length > 0) {
+            opponentJackIds.push(card.attachments[card.attachments.length - 1].id);
+          }
+        });
+        return [...opponentFaceCardIds, ...opponentJackIds];
+      }
+      case 1:
+        return [this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id];
+      default:
+        return [];
       }
     },
     validMoves() {
@@ -691,33 +691,33 @@ export default {
         return [];
       }
       switch (this.targetingMoveName) {
-        case 'scuttle':
-          return this.validScuttleIds;
-        case 'jack':
-          return this.gameStore.opponent.points.map((validTarget) => validTarget.id);
-        case 'targetedOneOff': {
-          // Twos and nines can target face cards
-          let res = [...this.validFaceCardTargetIds];
-          // Nines can additionally target points if opponent has no queens
-          if (selectedCard.rank === 9 && this.gameStore.opponentQueenCount === 0) {
-            res = [...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id)];
-          }
-          return res;
+      case 'scuttle':
+        return this.validScuttleIds;
+      case 'jack':
+        return this.gameStore.opponent.points.map((validTarget) => validTarget.id);
+      case 'targetedOneOff': {
+        // Twos and nines can target face cards
+        let res = [...this.validFaceCardTargetIds];
+        // Nines can additionally target points if opponent has no queens
+        if (selectedCard.rank === 9 && this.gameStore.opponentQueenCount === 0) {
+          res = [...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id)];
         }
-        default:
-          return [];
+        return res;
+      }
+      default:
+        return [];
       }
     },
     nineTarget() {
       switch (this.targetType) {
-        case 'point':
-          return this.nineTargetIndex !== null ? this.gameStore.opponent.points[this.nineTargetIndex] : null;
-        case 'faceCard':
-          return this.nineTargetIndex !== null
-            ? this.gameStore.opponent.faceCards[this.nineTargetIndex]
-            : null;
-        default:
-          return null;
+      case 'point':
+        return this.nineTargetIndex !== null ? this.gameStore.opponent.points[this.nineTargetIndex] : null;
+      case 'faceCard':
+        return this.nineTargetIndex !== null
+          ? this.gameStore.opponent.faceCards[this.nineTargetIndex]
+          : null;
+      default:
+        return null;
       }
     },
     // Sevens
@@ -846,18 +846,18 @@ export default {
      */
     pointsToWin(kingCount) {
       switch (kingCount) {
-        case 0:
-          return 21;
-        case 1:
-          return 14;
-        case 2:
-          return 10;
-        case 3:
-          return 5;
-        case 4:
-          return 0;
-        default:
-          return 21;
+      case 0:
+        return 21;
+      case 1:
+        return 14;
+      case 2:
+        return 10;
+      case 3:
+        return 5;
+      case 4:
+        return 0;
+      default:
+        return 21;
       }
     },
     //////////////////
@@ -897,7 +897,7 @@ export default {
       } finally {
         this.clearSelection();
       }
-},
+    },
     async playFaceCard() {
       this.clearOverlays();
       try {
@@ -908,10 +908,10 @@ export default {
             .requestPlayFaceCard(this.selectedCard.id);
         } else {
           await this.gameStore
-          .requestPlayFaceCardSeven({
-            cardId: this.cardSelectedFromDeck.id,
-            index: deckIndex,
-          });
+            .requestPlayFaceCardSeven({
+              cardId: this.cardSelectedFromDeck.id,
+              index: deckIndex,
+            });
         }
       } catch(messageKey){
         this.handleError(messageKey);
@@ -944,20 +944,20 @@ export default {
       let target;
       let jackedPointId;
       switch (targetType) {
-        case 'faceCard':
-          target = this.gameStore.opponent.faceCards[targetIndex];
-          break;
-        case 'point':
-          target = this.gameStore.opponent.points[targetIndex];
-          break;
-        case 'jack':
-          if (targetIndex < 0) {
-            // targeting the last jack attached to a point card
-            const targetJacks = this.gameStore.opponent.points[-targetIndex - 1].attachments;
-            target = targetJacks[targetJacks.length - 1];
-            jackedPointId = this.gameStore.opponent.points[-targetIndex - 1].id;
-          }
-          break;
+      case 'faceCard':
+        target = this.gameStore.opponent.faceCards[targetIndex];
+        break;
+      case 'point':
+        target = this.gameStore.opponent.points[targetIndex];
+        break;
+      case 'jack':
+        if (targetIndex < 0) {
+          // targeting the last jack attached to a point card
+          const targetJacks = this.gameStore.opponent.points[-targetIndex - 1].attachments;
+          target = targetJacks[targetJacks.length - 1];
+          jackedPointId = this.gameStore.opponent.points[-targetIndex - 1].id;
+        }
+        break;
       }
       if (this.gameStore.resolvingSeven) {
         const deckIndex = this.topCardIsSelected ? 0 : 1;
@@ -1022,29 +1022,29 @@ export default {
         cardRank = this.selectedCard.rank;
       }
       switch (cardRank) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 10:
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+      case 10:
+        this.scuttle(targetIndex);
+        return;
+      case 11:
+        this.playJack(targetIndex);
+        return;
+      case 9:
+        if (this.targetingMoveName === 'targetedOneOff') {
+          this.playTargetedOneOff(targetIndex, 'point');
+        } else {
           this.scuttle(targetIndex);
-          return;
-        case 11:
-          this.playJack(targetIndex);
-          return;
-        case 9:
-          if (this.targetingMoveName === 'targetedOneOff') {
-            this.playTargetedOneOff(targetIndex, 'point');
-          } else {
-            this.scuttle(targetIndex);
-          }
-          return;
-        default:
-          return;
+        }
+        return;
+      default:
+        return;
       }
     },
     targetOpponentFaceCard(targetIndex) {
@@ -1063,10 +1063,10 @@ export default {
 
       const targetType = targetIndex < 0 ? 'jack' : 'faceCard';
       switch (cardToPlay.rank) {
-        case 2:
-        case 9:
-          this.playTargetedOneOff(targetIndex, targetType);
-          return;
+      case 2:
+      case 9:
+        this.playTargetedOneOff(targetIndex, targetType);
+        return;
       }
     },
     playOneOff() {

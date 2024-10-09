@@ -4,9 +4,9 @@ import { computed } from 'vue';
 
 const props = defineProps({
   markdown: {
-      type: String,
-      default: '',
-    },
+    type: String,
+    default: '',
+  },
 });
 
 const text = computed(() => parse(props.markdown, {

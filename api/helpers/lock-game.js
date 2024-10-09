@@ -33,7 +33,7 @@ module.exports = {
       try {
         const now = dayjs.utc().toDate();
         const lockIsStaleTimeout = dayjs.utc().subtract(30, 'second')
-.toDate();
+          .toDate();
 
         // Lock game if unlocked or lock is expired
         await Game.updateOne({

@@ -60,11 +60,11 @@ describe('Countering One-Offs', () => {
     cy.get('#cannot-counter-dialog').should('not.exist');
     // Player counters
     cy.get('#counter-dialog').should('be.visible')
-.get('[data-cy=counter]')
-.click();
+      .get('[data-cy=counter]')
+      .click();
     cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-counter-dialog-card=2-3]')
-.click();
+      .get('[data-counter-dialog-card=2-3]')
+      .click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     // Opponent resolves
     cy.resolveOpponent();
@@ -96,8 +96,8 @@ describe('Countering One-Offs', () => {
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
     cy.get('#cannot-counter-dialog').should('not.exist');
     cy.get('#counter-dialog').should('be.visible')
-.get('[data-cy=decline-counter-resolve]')
-.click();
+      .get('[data-cy=decline-counter-resolve]')
+      .click();
 
     assertGameState(1, {
       p0Hand: [Card.FOUR_OF_SPADES],
@@ -135,12 +135,12 @@ describe('Countering One-Offs', () => {
 
     // Player initially chooses to counter
     cy.get('#counter-dialog').should('be.visible')
-.get('[data-cy=counter]')
-.click();
+      .get('[data-cy=counter]')
+      .click();
     // Player then cancels decision to counter
     cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-cy=cancel-counter]')
-.click();
+      .get('[data-cy=cancel-counter]')
+      .click();
 
     assertGameState(1, {
       // Opponent is P0
@@ -180,19 +180,19 @@ describe('Countering One-Offs', () => {
 
     // Player counters
     cy.get('#counter-dialog').should('be.visible')
-.get('[data-cy=counter]')
-.click();
+      .get('[data-cy=counter]')
+      .click();
     cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-counter-dialog-card=2-2]')
-.click();
+      .get('[data-counter-dialog-card=2-2]')
+      .click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     // Opponent counters back
     cy.counterOpponent(Card.TWO_OF_CLUBS);
 
     // Player cannot counter back
     cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+      .get('[data-cy=cannot-counter-resolve]')
+      .click();
 
     assertGameState(1, {
       // Opponent is P0
@@ -234,11 +234,11 @@ describe('Countering One-Offs', () => {
     // Player counters (1st counter)
     cy.log('Player counters (1st counter)');
     cy.get('#counter-dialog').should('be.visible')
-.get('[data-cy=counter]')
-.click();
+      .get('[data-cy=counter]')
+      .click();
     cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-counter-dialog-card=2-2]')
-.click();
+      .get('[data-counter-dialog-card=2-2]')
+      .click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     // Opponent counters back (2nd counter)
     cy.log('Opponent counters back (2nd counter)');
@@ -250,8 +250,8 @@ describe('Countering One-Offs', () => {
       .contains('Your opponent has played the 2♣️ to Counter your 2♥️', { includeShadowDom: true });
     cy.get('[data-cy=counter]').click();
     cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-counter-dialog-card=2-3]')
-.click();
+      .get('[data-counter-dialog-card=2-3]')
+      .click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     // Opponent resolves
     cy.resolveOpponent();
@@ -287,11 +287,11 @@ describe('Countering One-Offs', () => {
 
     // Player counters (1st counter)
     cy.get('#counter-dialog').should('be.visible')
-.get('[data-cy=counter]')
-.click();
+      .get('[data-cy=counter]')
+      .click();
     cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-counter-dialog-card=2-2]')
-.click();
+      .get('[data-counter-dialog-card=2-2]')
+      .click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.get('#waiting-for-opponent-counter-scrim [data-overlay-one-off=1-0]').should('exist');
     cy.get('#waiting-for-opponent-counter-scrim [data-overlay-counter=2-2]').should('exist');
@@ -299,11 +299,11 @@ describe('Countering One-Offs', () => {
     cy.counterOpponent(Card.TWO_OF_CLUBS);
     // Player counters again (3rd counter)
     cy.get('#counter-dialog').should('be.visible')
-.get('[data-cy=counter]')
-.click();
+      .get('[data-cy=counter]')
+      .click();
     cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-counter-dialog-card=2-3]')
-.click();
+      .get('[data-counter-dialog-card=2-3]')
+      .click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
     cy.get('#waiting-for-opponent-counter-scrim [data-overlay-one-off=1-0]').should('exist');
     cy.get('#waiting-for-opponent-counter-scrim [data-overlay-counter=2-2]').should('exist');
@@ -312,8 +312,8 @@ describe('Countering One-Offs', () => {
     cy.counterOpponent(Card.TWO_OF_DIAMONDS);
     // Player cannot counter back
     cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+      .get('[data-cy=cannot-counter-resolve]')
+      .click();
     assertGameState(1, {
       // Opponent is P0
       p0Hand: [],
@@ -384,8 +384,8 @@ describe('Countering One-Offs P0 Perspective', () => {
     // Opponent counters and player resolves
     cy.counterOpponent(Card.TWO_OF_SPADES);
     cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+      .get('[data-cy=cannot-counter-resolve]')
+      .click();
 
     // No longer player turn
     cy.get('[data-player-hand-card=4-3]').click(); // Four of Spades
@@ -435,8 +435,8 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.get('[data-cy=counter]').click();
 
     cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-counter-dialog-card=2-0]')
-.click();
+      .get('[data-counter-dialog-card=2-0]')
+      .click();
 
     // Opponent counters back (3rd counter)
     cy.log('Opponent counters (3rd counter)');
@@ -449,8 +449,8 @@ describe('Countering One-Offs P0 Perspective', () => {
       .contains('Your opponent has played the 2♠️ to Counter your 2♣️', { includeShadowDom: true });
     cy.get('[data-cy=counter]').click();
     cy.get('#choose-two-dialog').should('be.visible')
-.get('[data-counter-dialog-card=2-1]')
-.click();
+      .get('[data-counter-dialog-card=2-1]')
+      .click();
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
     cy.resolveOpponent();

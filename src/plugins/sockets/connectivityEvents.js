@@ -8,18 +8,18 @@ export function handleConnect() {
   const gameStore = useGameStore();
   // Request latest game state if socket reconnects during game
   switch (router.currentRoute.value.name) {
-    case ROUTE_NAME_GAME:
-      authStore.authenticated = null;
-      return authStore.requestStatus(router.currentRoute.value);
-    case ROUTE_NAME_SPECTATE: {
-      const gameId = Number(router.currentRoute.value.params.gameId);
-      if (!Number.isInteger(gameId)) {
-        router.push(ROUTE_NAME_HOME);
-        return;
-      }
-      return gameStore.requestSpectate(gameId);
-    }
-    default:
+  case ROUTE_NAME_GAME:
+    authStore.authenticated = null;
+    return authStore.requestStatus(router.currentRoute.value);
+  case ROUTE_NAME_SPECTATE: {
+    const gameId = Number(router.currentRoute.value.params.gameId);
+    if (!Number.isInteger(gameId)) {
+      router.push(ROUTE_NAME_HOME);
       return;
+    }
+    return gameStore.requestSpectate(gameId);
+  }
+  default:
+    return;
   }
 }

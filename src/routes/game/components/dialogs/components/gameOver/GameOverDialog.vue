@@ -129,10 +129,10 @@ export default {
     const rightPlayer = gameStore.isSpectating ? WhichPlayer.ORIGINAL_P1 : WhichPlayer.CURRENT_OPPONENT;
 
     const {
-        username: leftPlayerUsername,
-        rematch: leftPlayerRematch,
-        wins: leftPlayerWins,
-        wonMatch: leftPlayerWonMatch,
+      username: leftPlayerUsername,
+      rematch: leftPlayerRematch,
+      wins: leftPlayerWins,
+      wonMatch: leftPlayerWonMatch,
     } = usePlayerData(leftPlayer);
 
     const {
@@ -304,14 +304,14 @@ export default {
     },
     iconFromGameStatus(gameStatus) {
       switch (gameStatus) {
-        case 'W':
-          return 'mdi-thumb-up-outline';
-        case 'L':
-          return 'mdi-thumb-down-outline';
-        case 'I':
-          return 'mdi-account-clock-outline';
-        case 'D':
-          return 'mdi-handshake-outline';
+      case 'W':
+        return 'mdi-thumb-up-outline';
+      case 'L':
+        return 'mdi-thumb-down-outline';
+      case 'I':
+        return 'mdi-account-clock-outline';
+      case 'D':
+        return 'mdi-handshake-outline';
       }
     },
   },

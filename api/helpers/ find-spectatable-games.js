@@ -9,7 +9,7 @@ module.exports = {
 
   fn: async (_, exits) => {
     const recentUpdateThreshhold = dayjs.utc().subtract(5, 'minute')
-.toDate();
+      .toDate();
     try {
       const games = await Game.find({
         status: gameService.GameStatus.STARTED,

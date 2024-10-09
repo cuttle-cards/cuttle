@@ -72,7 +72,7 @@ export default {
     ThreeDialog,
     OpponentRequestedStalemateDialog,
     FiveDialog
-},
+  },
 
   emits: ['clear-selection', 'handle-error'],
   computed: {
@@ -146,7 +146,7 @@ export default {
     },
     counter(twoId) {
       this.gameStore.requestCounter(twoId).then(this.clearSelection)
-.catch(this.handleError);
+        .catch(this.handleError);
     },
     discard(cardIds) {
       const [cardId1] = cardIds;
@@ -161,11 +161,11 @@ export default {
     },
     resolve() {
       this.gameStore.requestResolve().then(this.clearSelection)
-.catch(this.handleError);
+        .catch(this.handleError);
     },
     resolveThree(cardId) {
       this.gameStore.requestResolveThree(cardId).then(this.clearSelection)
-.catch(this.handleError);
+        .catch(this.handleError);
     },
     resolveFive(cardId) {
       this.gameStore.requestResolveFive(cardId);

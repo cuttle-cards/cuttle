@@ -2,24 +2,24 @@ const GamePhase = require('../../../../../utils/GamePhase.json');
 
 function findTargetCard(targetId, targetType, opponent) {
   switch (targetType) {
-    case 'point':
-      return opponent.points.find(card => card.id === targetId);
+  case 'point':
+    return opponent.points.find(card => card.id === targetId);
 
-    case 'faceCard':
-      return opponent.faceCards.find(card => card.id === targetId);
+  case 'faceCard':
+    return opponent.faceCards.find(card => card.id === targetId);
 
-    case 'jack':
-      for (let point of opponent.points) {
-        for (let jack of point.attachments) {
-          if (jack.id === targetId) {
-            return jack;
-          }
+  case 'jack':
+    for (let point of opponent.points) {
+      for (let jack of point.attachments) {
+        if (jack.id === targetId) {
+          return jack;
         }
       }
-      return;
+    }
+    return;
 
-    default:
-      throw new Error(`Need a target type to find the ${targetId}`);
+  default:
+    throw new Error(`Need a target type to find the ${targetId}`);
   }
 }
 
@@ -82,80 +82,80 @@ module.exports = {
       }
 
       switch (playedCard.rank) {
-        // Ace and Six are always allowed
-        case 1:
-        case 6:
-          return exits.success();
+      // Ace and Six are always allowed
+      case 1:
+      case 6:
+        return exits.success();
 
         // 2 and 9 require legal target
-        case 2:
-        case 9:
-          {
-            const targetCard = findTargetCard(requestedMove.targetId, requestedMove.targetType, opponent);
-            // Must have target
-            if (!targetCard) {
-              throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
-            }
+      case 2:
+      case 9:
+      {
+        const targetCard = findTargetCard(requestedMove.targetId, requestedMove.targetType, opponent);
+        // Must have target
+        if (!targetCard) {
+          throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
+        }
 
-            if (playedCard.rank === 2 && !['faceCard', 'jack'].includes(requestedMove.targetType)) {
-              throw new Error('Twos can only target royals or glasses');
-            }
+        if (playedCard.rank === 2 && !['faceCard', 'jack'].includes(requestedMove.targetType)) {
+          throw new Error('Twos can only target royals or glasses');
+        }
 
-            const queenCount = opponent.faceCards.filter(
-              (faceCard) => faceCard.rank === 12
-            ).length;
+        const queenCount = opponent.faceCards.filter(
+          (faceCard) => faceCard.rank === 12
+        ).length;
 
-            // Legal if not blocked by opponent's queen(s)
-            switch (queenCount) {
-              // No queens => always allowed
-              case 0:
-                return exits.success();
+        // Legal if not blocked by opponent's queen(s)
+        switch (queenCount) {
+        // No queens => always allowed
+        case 0:
+          return exits.success();
 
-              // One queen => can only target the queen
-              case 1: {
-                if (targetCard.rank !== 12) {
-                  throw new Error('game.snackbar.global.blockedByQueen');
-                }
-                return exits.success();
-              }
-
-              // 2+ queens => Can't target at all
-              default:
-                throw new Error('game.snackbar.global.blockedByMultipleQueens');
-            }
-          }
-
-        // Three requires card(s) in scrap
-        case 3:
-          if (!currentState.scrap.length) {
-            throw new Error('game.snackbar.oneOffs.three.scrapIsEmpty');
+          // One queen => can only target the queen
+        case 1: {
+          if (targetCard.rank !== 12) {
+            throw new Error('game.snackbar.global.blockedByQueen');
           }
           return exits.success();
+        }
+
+        // 2+ queens => Can't target at all
+        default:
+          throw new Error('game.snackbar.global.blockedByMultipleQueens');
+        }
+      }
+
+      // Three requires card(s) in scrap
+      case 3:
+        if (!currentState.scrap.length) {
+          throw new Error('game.snackbar.oneOffs.three.scrapIsEmpty');
+        }
+        return exits.success();
 
         // Four requires opponent to have cards in hand
-        case 4:
-          if (!opponent.hand.length) {
-            throw new Error('game.snackbar.oneOffs.four.opponentHasNoCards');
-          }
-          return exits.success();
+      case 4:
+        if (!opponent.hand.length) {
+          throw new Error('game.snackbar.oneOffs.four.opponentHasNoCards');
+        }
+        return exits.success();
 
         // Five and sevens require cards in deck
-        case 5:
-          if (!currentState.deck.length) {
-            throw new Error('game.snackbar.oneOffs.emptyDeck');
-          }
-          return exits.success();
+      case 5:
+        if (!currentState.deck.length) {
+          throw new Error('game.snackbar.oneOffs.emptyDeck');
+        }
+        return exits.success();
 
         // Seven requires cards in deck
-        case 7:
-          if (!currentState.deck.length) {
-            throw new Error('game.snackbar.oneOffs.sevenWithEmptyDeck');
-          }
-          return exits.success();
+      case 7:
+        if (!currentState.deck.length) {
+          throw new Error('game.snackbar.oneOffs.sevenWithEmptyDeck');
+        }
+        return exits.success();
 
         // No other cards can be used for a one-off
-        default:
-          throw new Error('You cannot play that card as a one-off');
+      default:
+        throw new Error('You cannot play that card as a one-off');
       }
     } catch (err) {
       return exits.error(err);

@@ -214,8 +214,8 @@ describe('FOURS', () => {
       cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
       // Player cannot counter
       cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
       cy.log("Player resolves opponent's Four");
 
       // Four Dialog appears (you must discard)
@@ -246,8 +246,8 @@ describe('FOURS', () => {
       cy.playOneOffOpponent(Card.FOUR_OF_DIAMONDS);
       // Player cannot counter
       cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       // Choosing cards to discard
       cy.log('Choosing two cards to discard');
@@ -302,8 +302,8 @@ describe('FOURS', () => {
       cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
       // Player cannot counter
       cy.get('#cannot-counter-dialog').should('be.visible')
-.get('[data-cy=cannot-counter-resolve]')
-.click();
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       // Four Dialog appears (you must discard)
       cy.get('#four-discard-dialog').should('be.visible');

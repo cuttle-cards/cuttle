@@ -13,14 +13,14 @@ module.exports = async function (req, res) {
     // Verify whether user is in requested game and as which player
     let playedBy;
     switch (req.session.usr) {
-      case game.p0.id:
-        playedBy = 0;
-        break;
-      case game.p1.id:
-        playedBy = 1;
-        break;
-      default:
-        throw new Error('You are not a player in this game!');
+    case game.p0.id:
+      playedBy = 0;
+      break;
+    case game.p1.id:
+      playedBy = 1;
+      break;
+    default:
+      throw new Error('You are not a player in this game!');
     }
 
     validate(gameState, req.body, playedBy);

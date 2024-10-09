@@ -151,22 +151,22 @@ describe('Losing the game', () => {
 
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible')
-.get('[data-cy=concede-initiate]')
-.click();
+      .get('[data-cy=concede-initiate]')
+      .click();
 
     // Cancel Concede
     cy.get('#request-gameover-dialog').should('be.visible')
-.get('[data-cy=request-gameover-cancel]')
-.click();
+      .get('[data-cy=request-gameover-cancel]')
+      .click();
     cy.get('#request-gameover-dialog').should('not.be.visible');
     // Re-open concede menu and confirm concession
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible')
-.get('[data-cy=concede-initiate]')
-.click();
+      .get('[data-cy=concede-initiate]')
+      .click();
     cy.get('#request-gameover-dialog').should('be.visible')
-.get('[data-cy=request-gameover-confirm]')
-.click();
+      .get('[data-cy=request-gameover-confirm]')
+      .click();
     assertLoss();
     goHomeJoinNewGame();
   });
@@ -190,15 +190,15 @@ describe('Stalemates', () => {
 
     cy.log('Drawing last two cards');
     cy.get('#deck').should('contain', '(2)')
-.click();
+      .click();
     cy.drawCardOpponent();
     cy.log('Deck empty');
 
     // Pass three times for stalemate
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)')
-.should('contain', 'PASS')
-.click();
+      .should('contain', 'PASS')
+      .click();
     cy.log('Should log the passing');
     cy.get('#history').contains(`${myUser.username} passes`);
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
@@ -206,8 +206,8 @@ describe('Stalemates', () => {
     cy.get('#history').contains(`${opponentOne.username} passes`);
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)')
-.should('contain', 'PASS')
-.click();
+      .should('contain', 'PASS')
+      .click();
 
     assertStalemate();
     goHomeJoinNewGame();
@@ -232,15 +232,15 @@ describe('Stalemates', () => {
     cy.log('Drawing last two cards');
     cy.drawCardOpponent();
     cy.get('#deck').should('contain', '(1)')
-.click();
+      .click();
     cy.log('Deck empty');
 
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)')
-.should('contain', 'PASS')
-.click();
+      .should('contain', 'PASS')
+      .click();
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
 
@@ -256,8 +256,8 @@ describe('Stalemates', () => {
 
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
-.get('[data-cy=stalemate-initiate]')
-.click();
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       // Cancel Stalemate
       cy.get('#request-gameover-dialog')
         .should('be.visible')
@@ -268,8 +268,8 @@ describe('Stalemates', () => {
 
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
-.get('[data-cy=stalemate-initiate]')
-.click();
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       // Request Stalemate
       cy.get('#request-gameover-dialog')
         .should('be.visible')
@@ -307,8 +307,8 @@ describe('Stalemates', () => {
       // Request Stalemate
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
-.get('[data-cy=stalemate-initiate]')
-.click();
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       cy.get('#request-gameover-dialog')
         .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
@@ -322,8 +322,8 @@ describe('Stalemates', () => {
       // Player requests stalemate again -- process starts over
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
-.get('[data-cy=stalemate-initiate]')
-.click();
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       cy.get('#request-gameover-dialog')
         .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
@@ -380,8 +380,8 @@ describe('Stalemates', () => {
       // Request Stalemate
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
-.get('[data-cy=stalemate-initiate]')
-.click();
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       cy.get('#request-gameover-dialog')
         .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
@@ -404,8 +404,8 @@ describe('Stalemates', () => {
       cy.setupGameAsP1();
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
-.get('[data-cy=stalemate-initiate]')
-.click();
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       cy.get('#request-gameover-dialog')
         .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
@@ -440,9 +440,9 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
     cy.get('[data-top-card=4-0]').should('exist')
-.and('be.visible');
+      .and('be.visible');
     cy.get('[data-second-card=6-1]').should('exist')
-.and('be.visible');
+      .and('be.visible');
 
     cy.concedeOpponent();
     assertVictory();
@@ -477,11 +477,11 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
 
     cy.get('#game-menu-activator').click({ force: true });
     cy.get('#game-menu').should('be.visible')
-.get('[data-cy=concede-initiate]')
-.click();
+      .get('[data-cy=concede-initiate]')
+      .click();
     cy.get('#request-gameover-dialog').should('be.visible')
-.get('[data-cy=request-gameover-confirm]')
-.click();
+      .get('[data-cy=request-gameover-confirm]')
+      .click();
     assertLoss();
     goHomeJoinNewGame();
 
