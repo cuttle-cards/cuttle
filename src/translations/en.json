@@ -283,7 +283,10 @@
           "mustPickFromScrap": "You must pick a card from the scrap"
         },
         "four": {
-          "opponentHasNoCards": "You cannot play a 4 as a one-off while your opponent has no cards in hand"
+          "opponentHasNoCards": "You cannot play a 4 as a one-off while your opponent has no cards in hand",
+          "notYourTurn": "It's not your turn to discard",
+          "notResolvingFourPhase": "Can't discard unless your opponent played a four",
+          "mustSelectCards": "You must select two cards to discard"
         },
         "five": {
           "selectCardToDiscard": "You must select one card to discard",

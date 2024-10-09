@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { points } from '../fixtures/gameStates/points';
-import { resolveThree } from '../fixtures/gameStates/resolveThree';
-import { resolveNine } from '../fixtures/gameStates/resolveNine';
+import { points } from '../../fixtures/gameStates/points';
+import { resolveThree } from '../../fixtures/gameStates/resolveThree';
+import { resolveNine } from '../../fixtures/gameStates/resolveNine';
 
 // remove attributes added while creating the entry in the database
 function stripDbAttributes(obj) {
