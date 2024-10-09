@@ -187,7 +187,7 @@ export default {
       }
     },
     async refresh() {
-      await this.authStore.requestStatus();
+      await this.authStore.reconnectSocket();
     }
   },
 };
