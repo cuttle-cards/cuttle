@@ -31,8 +31,11 @@
           <v-list-item data-cy="stalemate-initiate" @click="shownDialog = 'stalemate'">
             {{ t('game.menus.gameMenu.stalemate') }}
           </v-list-item>
-          <TheLanguageSelector />
         </template>
+        <TheLanguageSelector />
+        <v-list-item data-cy="refesh" prepend-icon="mdi-refresh" @click="refresh">
+          {{ t('game.menus.gameMenu.refresh') }}
+        </v-list-item>
       </v-list>
     </v-menu>
 
@@ -74,6 +77,7 @@
 import { useI18n } from 'vue-i18n';
 import { mapStores } from 'pinia';
 import { useGameStore } from '@/stores/game';
+import { useAuthStore } from '@/stores/auth';
 import BaseDialog from '@/components/BaseDialog.vue';
 import RulesDialog from '@/routes/game/components/dialogs/components/RulesDialog.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
@@ -103,6 +107,7 @@ export default {
   },
   computed: {
     ...mapStores(useGameStore),
+    ...mapStores(useAuthStore),
     showEndGameDialog:{
       get() {
         return this.showConcedeDialog || this.showStalemateDialog;
@@ -181,6 +186,9 @@ export default {
         this.$router.push('/');
       }
     },
+    async refresh() {
+      await this.authStore.requestStatus();
+    }
   },
 };
 </script>
