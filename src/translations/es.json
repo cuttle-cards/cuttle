@@ -217,7 +217,7 @@
     },
     "menus": {
       "gameMenu": {
-        "refresh": "refrescar",
+        "refresh": "Refrescar",
         "rules": "Reglas",
         "concede": "Conceder",
         "stalemate": "Solicitud de empate",
