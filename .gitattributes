@@ -1,0 +1,31 @@
+# https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings
+
+# In order to get the file count in the repo, you can use something like this
+#     git ls-tree -r HEAD --name-only | sed -n 's/..*\.//p' | sort | uniq -c | sort -nr
+# This provides an easier way to tailor this file specifically to this repo
+
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# Text files that need LF line endings
+*.js text eol=lf
+*.vue text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.mjs text eol=lf
+*.mdx text eol=lf
+*.css text eol=lf
+
+# Binary files we shouldn't be touching
+*.svg binary
+*.png binary
+*.jpg binary
+*.mp3 binary
+*.webp binary
+*.pdf binary
+*.ico binary
+*.gif binary
+*.drawio binary
