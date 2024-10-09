@@ -31,7 +31,7 @@
       >
         <template #prepend>
           <v-list-item>
-            <h3>{{ t('game.history.title') }}</h3>
+            <h3>{{ t('gameStore.history.title') }}</h3>
             <template #append>
               <v-btn icon variant="text" @click.stop="showHistoryDrawer = !showHistoryDrawer">
                 <v-icon
@@ -125,7 +125,7 @@
 
       <!-- Opponent Score -->
       <h3 id="opponent-score" class="mb-3">
-        <span>{{ t('game.score.points') }}: {{ gameStore.opponentPointTotal }}</span>
+        <span>{{ t('gameStore.score.points') }}: {{ gameStore.opponentPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="opponentKingCount"
           :points-to-win="opponentPointsToWin"
@@ -147,13 +147,13 @@
                 ({{ deckLength }})
               </v-card-actions>
               <h1 v-if="deckLength === 0" id="empty-deck-text">
-                {{ t('game.pass') }}
+                {{ t('gameStore.pass') }}
               </h1>
             </template>
 
             <template v-if="gameStore.resolvingSeven">
               <p class="mt-2">
-                {{ t('game.playFromDeck') }}
+                {{ t('gameStore.playFromDeck') }}
               </p>
               <div class="d-flex">
                 <GameCard
@@ -189,10 +189,10 @@
                     data-cy="scrap-chosen-card"
                   />
                   <div v-else class="d-flex flex-column align-center scrapPile">
-                    <h3>{{ $t('game.scrap') }}</h3>
+                    <h3>{{ $t('gameStore.scrap') }}</h3>
                     <span>({{ scrap.length }})</span>
                     <v-btn variant="outlined" color="primary" class="mt-4">
-                      {{ $t('game.view') }}
+                      {{ $t('gameStore.view') }}
                     </v-btn>
                   </div>
                 </Transition>
@@ -299,7 +299,7 @@
         <div id="field-right">
           <div id="history" class="d-flex flex-column justify-start align-center elevation-10">
             <h3 class="history-title">
-              {{ $t('game.history.title') }}
+              {{ $t('gameStore.history.title') }}
             </h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
@@ -312,7 +312,7 @@
       </div>
 
       <h3 id="player-score">
-        <span>{{ t('game.score.points') }}: {{ gameStore.playerPointTotal }}</span>
+        <span>{{ t('gameStore.score.points') }}: {{ gameStore.playerPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="playerKingCount"
           :points-to-win="playerPointsToWin"
@@ -500,30 +500,27 @@ export default {
     /////////////////////////////////////////////
     // Game, Deck, Log, Scrap, and Spectators //
     ///////////////////////////////////////////
-    game() {
-      return this.gameStore;
-    },
     deck() {
-      return this.game.deck;
+      return this.gameStore.deck;
     },
     scrap() {
-      return this.game.scrap;
+      return this.gameStore.scrap;
     },
     logs() {
-      return this.game.log;
+      return this.gameStore.log;
     },
     deckLength() {
       let res = this.deck.length;
-      if (this.game.topCard) {
+      if (this.gameStore.topCard) {
         res++;
       }
-      if (this.game.secondCard) {
+      if (this.gameStore.secondCard) {
         res++;
       }
       return res;
     },
     spectatingUsers() {
-      return this.game.spectatingUsers;
+      return this.gameStore.spectatingUsers;
     },
     /////////////////
     // King Counts //
@@ -556,17 +553,17 @@ export default {
       return this.gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`;
     },
     playerPointsTransition() {
-      switch (this.game.lastEventChange) {
+      switch (this.gameStore.lastEventChange) {
         case 'resolve':
           // Different one-offs cause points to move in different directions
-          switch (this.game.lastEventOneOffRank) {
+          switch (this.gameStore.lastEventOneOffRank) {
             // Twos and Sixes swap control of points between players
             case 2:
             case 6:
               return 'slide-above';
             // For nines, transition direction depends on target type
             case 9:
-              switch (this.game.lastEventTargetType) {
+              switch (this.gameStore.lastEventTargetType) {
                 // Nine on jack causes points to swap control
                 case 'jack':
                   return 'slide-above';
@@ -589,9 +586,9 @@ export default {
     playerFaceCardsTransition() {
       // If a face card is bounced by a nine, slide down to player hand
       if (
-        this.game.lastEventChange === 'resolve' &&
-        this.game.lastEventOneOffRank === 9 &&
-        this.game.lastEventTargetType === 'faceCard'
+        this.gameStore.lastEventChange === 'resolve' &&
+        this.gameStore.lastEventOneOffRank === 9 &&
+        this.gameStore.lastEventTargetType === 'faceCard'
       ) {
         return 'slide-below';
       }
@@ -599,21 +596,21 @@ export default {
       return 'in-below-out-left';
     },
     opponentPointsTransition() {
-      switch (this.game.lastEventChange) {
+      switch (this.gameStore.lastEventChange) {
         // Jacks cause point cards to switch control (from/towards player)
         case 'jack':
         case 'sevenJack':
           return 'slide-below';
         case 'resolve':
           // Different one-offs cause different direction transitions
-          switch (this.game.lastEventOneOffRank) {
+          switch (this.gameStore.lastEventOneOffRank) {
             // Twos and sixes caus point cards to switch control (from/towards player)
             case 2:
             case 6:
               return 'slide-below';
             // Nine transitions depend on the target type
             case 9:
-              switch (this.game.lastEventTargetType) {
+              switch (this.gameStore.lastEventTargetType) {
                 // Nine on a jack switches point card control
                 case 'jack':
                   return 'slide-below';
@@ -632,9 +629,9 @@ export default {
     opponentFaceCardsTransition() {
       // If a face card is bounced by a nine, slide up to opponent's hand
       if (
-        this.game.lastEventChange === 'resolve' &&
-        this.game.lastEventOneOffRank === 9 &&
-        this.game.lastEventTargetType === 'faceCard'
+        this.gameStore.lastEventChange === 'resolve' &&
+        this.gameStore.lastEventOneOffRank === 9 &&
+        this.gameStore.lastEventTargetType === 'faceCard'
       ) {
         return 'slide-above';
       }
@@ -648,7 +645,7 @@ export default {
       return this.selectionIndex !== null ? this.gameStore.player.hand[this.selectionIndex] : null;
     },
     turnText() {
-      return this.t(this.gameStore.isPlayersTurn ? 'game.turn.yourTurn' : 'game.turn.opponentTurn');
+      return this.t(this.gameStore.isPlayersTurn ? 'gameStore.turn.yourTurn' : 'gameStore.turn.opponentTurn');
     },
     validScuttleIds() {
       const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
@@ -722,13 +719,13 @@ export default {
     },
     // Sevens
     playingFromDeck() {
-      return this.game.playingFromDeck;
+      return this.gameStore.playingFromDeck;
     },
     topCard() {
-      return this.game.topCard;
+      return this.gameStore.topCard;
     },
     secondCard() {
-      return this.game.secondCard;
+      return this.gameStore.secondCard;
     },
     cardSelectedFromDeck() {
       if (this.topCardIsSelected) {
