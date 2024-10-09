@@ -283,7 +283,10 @@
           "mustPickFromScrap": "Debes elegir una carta del mazo de descartes"
         },
         "four": {
-          "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano"
+          "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano",
+          "notYourTurn": "No es tu turno para descartar",
+          "notResolvingFourPhase": "No es posible descartar salvo que tu oponente haya jugado un cuatro",
+          "mustSelectCards": "Debes seleccionar dos cartas para descartar"
         },
         "five": {
           "selectCardToDiscard": "Debes seleccionar una carta para descartar",
