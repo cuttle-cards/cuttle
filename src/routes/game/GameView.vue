@@ -747,7 +747,7 @@ export default {
       });
     },
     topCard(newTopCard, oldTopCard) {
-      if (oldTopCard && !newTopCard) {
+      if (this.gameStore.id && oldTopCard && !newTopCard) {
         this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
       }
     }
@@ -1562,6 +1562,11 @@ export default {
   .field-points {
     .field-point-container {
       width: auto;
+
+      .jacks-container {
+        right: -25%;
+        width: auto;
+      }
     }
   }
 
