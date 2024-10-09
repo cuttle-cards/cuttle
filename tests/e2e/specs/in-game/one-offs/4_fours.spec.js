@@ -258,7 +258,6 @@ describe('FOURS', () => {
         p1Hand: [Card.TEN_OF_HEARTS, Card.SIX_OF_DIAMONDS],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.FOUR_OF_SPADES],
       });
       // Properly discard as expected
       cy.log('Choosing two cards to discard - second time');
