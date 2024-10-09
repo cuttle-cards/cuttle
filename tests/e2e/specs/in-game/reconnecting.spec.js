@@ -3,6 +3,45 @@ import { myUser, opponentOne } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
 
 describe('Reconnecting to a game', () => {
+  it('Refreshs Game from Game Menu', () => {
+    cy.setupGameAsP1();
+    cy.loadGameFixture(1, {
+      p0Hand: [Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS],
+      p0Points: [Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.TEN_OF_DIAMONDS],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+
+    cy.playPointsOpponent(Card.SEVEN_OF_DIAMONDS);
+
+    assertGameState(1, {
+      p0Hand: [Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS],
+      p0Points: [Card.SEVEN_OF_HEARTS],
+      p0FaceCards: [],
+      p1Hand: [Card.TEN_OF_DIAMONDS],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+
+    cy.get('#game-menu-activator').click();
+    cy.get('[data-cy=refresh]').click();
+
+    assertGameState(1, {
+      p0Hand: [Card.ACE_OF_CLUBS],
+      p0Points: [Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+      p0FaceCards: [],
+      p1Hand: [Card.TEN_OF_DIAMONDS],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+  });
+
   it('Persists session after refreshing the page', () => {
     cy.skipOnGameStateApi();
     cy.setupGameAsP0();
