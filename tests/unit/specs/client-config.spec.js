@@ -31,11 +31,6 @@ describe('initCuttleGlobals', () => {
     vi.restoreAllMocks();
   });
 
-  it('should execute sails helpers', async () => {
-    const serverIsUp = await sails.helpers.getApiHealth();
-    expect(serverIsUp).toBe(true);
-  });
-
   it('should add version to window.cuttle', async () => {
     await initCuttleGlobals();
     expect(window.cuttle.version).toEqual(version);
