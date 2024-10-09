@@ -1565,6 +1565,11 @@ export default {
   .field-points {
     .field-point-container {
       width: auto;
+
+      .jacks-container {
+        right: -25%;
+        width: auto;
+      }
     }
   }
 

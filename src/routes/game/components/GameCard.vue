@@ -314,5 +314,10 @@ export default {
       height: calc(10vh / 1.45);
     }
   }
+
+  .jack {
+    margin-bottom: -60%;
+    width: calc(10vh / 1.85);
+  }
 }
 </style>
