@@ -68,18 +68,18 @@ export default {
      */
     iconName() {
       switch (this.moveName) {
-        case 'Points':
-          return 'mdi-numeric';
-        case 'Scuttle':
-          return 'mdi-skull-crossbones';
-        case 'One-Off':
-          return 'mdi-delete';
-        case 'Glasses':
-          return 'mdi-sunglasses';
-        case 'Royal':
-          return 'mdi-crown';
-        default:
-          return null;
+      case 'Points':
+        return 'mdi-numeric';
+      case 'Scuttle':
+        return 'mdi-skull-crossbones';
+      case 'One-Off':
+        return 'mdi-delete';
+      case 'Glasses':
+        return 'mdi-sunglasses';
+      case 'Royal':
+        return 'mdi-crown';
+      default:
+        return null;
       }
     },
   },

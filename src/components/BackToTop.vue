@@ -20,10 +20,10 @@ const show = ref(false);
 
 const props = defineProps({
   parentModalId: {
-        type: String,
-        default: '',
-        required: false
-      },
+    type: String,
+    default: '',
+    required: false
+  },
 });
 function onScroll(e) {
   const scrollTopValue = props.parentModalId ? e.target.scrollTop : window.scrollY;

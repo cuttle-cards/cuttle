@@ -47,26 +47,26 @@ export default {
     },
     medalColor() {
       switch (this.place) {
-        case 1:
-          return this.theme.firstPlace;
-        case 2:
-          return this.theme.secondPlace;
-        case 3:
-          return this.theme.thirdPlace;
-        default:
-          return '#000';
+      case 1:
+        return this.theme.firstPlace;
+      case 2:
+        return this.theme.secondPlace;
+      case 3:
+        return this.theme.thirdPlace;
+      default:
+        return '#000';
       }
     },
     suffix() {
       switch (this.place) {
-        case 1:
-          return 'st';
-        case 2:
-          return 'nd';
-        case 3:
-          return 'rd';
-        default:
-          return 'th';
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
       }
     },
     placeWithSuffix() {

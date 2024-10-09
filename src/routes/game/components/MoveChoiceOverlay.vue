@@ -151,18 +151,18 @@ export default {
       const noSecondCard = !this.gameStore.secondCard;
 
       switch (this.selectedCard.rank) {
-        case 5:
-          if (noTopCard) {
-            oneOffDisabled = true;
-            oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
-          }
-          break;
-        case 7:
-          if (noTopCard || (playingTopCard && noSecondCard)) {
-            oneOffDisabled = true;
-            oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
-          }
-          break;
+      case 5:
+        if (noTopCard) {
+          oneOffDisabled = true;
+          oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
+        }
+        break;
+      case 7:
+        if (noTopCard || (playingTopCard && noSecondCard)) {
+          oneOffDisabled = true;
+          oneOffDisabledExplanation = this.t('game.moves.disabledMove.emptyDeck');
+        }
+        break;
       }
       
       return {
@@ -237,44 +237,44 @@ export default {
      */
     moveChoices() {
       switch (this.selectedCard.rank) {
-        case 1:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-          return [this.pointsMove, this.scuttleMove, this.oneOffMove];
-        case 2:
-        case 9:
-          return [this.pointsMove, this.scuttleMove, this.targetedOneOffMove];
-        case 8:
-          return [
-            this.pointsMove,
-            this.scuttleMove,
-            // Glasses
-            {
-              displayName: this.t('game.moves.glasses.displayName'),
-              eventName: 'faceCard',
-              moveDescription: this.t('game.moves.glasses.description'),
-              disabled: this.allMovesAreDisabled,
-              disabledExplanation: this.disabledText,
-            },
-          ];
-        case 10:
-          return [this.pointsMove, this.scuttleMove];
-        case 11:
-          return [this.jackMove];
-        case 12:
-        case 13:
-          return [
-            {
-              displayName: this.t('game.moves.royal.displayName'),
-              eventName: 'faceCard',
-              moveDescription: this.t(`game.moves.effects[${this.selectedCard.rank}]`) ,
-              disabled: this.allMovesAreDisabled,
-              disabledExplanation: this.disabledText,
-            },
-          ];
+      case 1:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        return [this.pointsMove, this.scuttleMove, this.oneOffMove];
+      case 2:
+      case 9:
+        return [this.pointsMove, this.scuttleMove, this.targetedOneOffMove];
+      case 8:
+        return [
+          this.pointsMove,
+          this.scuttleMove,
+          // Glasses
+          {
+            displayName: this.t('game.moves.glasses.displayName'),
+            eventName: 'faceCard',
+            moveDescription: this.t('game.moves.glasses.description'),
+            disabled: this.allMovesAreDisabled,
+            disabledExplanation: this.disabledText,
+          },
+        ];
+      case 10:
+        return [this.pointsMove, this.scuttleMove];
+      case 11:
+        return [this.jackMove];
+      case 12:
+      case 13:
+        return [
+          {
+            displayName: this.t('game.moves.royal.displayName'),
+            eventName: 'faceCard',
+            moveDescription: this.t(`game.moves.effects[${this.selectedCard.rank}]`) ,
+            disabled: this.allMovesAreDisabled,
+            disabledExplanation: this.disabledText,
+          },
+        ];
       }
       return [];
     },
@@ -300,13 +300,13 @@ export default {
         return '100%';
       }
       switch (this.moveChoices.length) {
-        case 1:
-          return '100%';
-        case 2:
-          return '50%';
-        case 3:
-        default:
-          return '30%';
+      case 1:
+        return '100%';
+      case 2:
+        return '50%';
+      case 3:
+      default:
+        return '30%';
       }
     },
   }, // End computed{}

@@ -31,21 +31,21 @@ module.exports = function (req, res) {
             if (card.rank === 2 || card.rank === 9) {
               const queenCount = userService.queenCount({ user: opponent });
               switch (queenCount) {
-                case 0:
+              case 0:
+                break;
+              case 1:
+                if (target.faceCards === opponent.id && target.rank === 12) {
+                  // break early
                   break;
-                case 1:
-                  if (target.faceCards === opponent.id && target.rank === 12) {
-                    // break early
-                    break;
-                  }
-                  return Promise.reject({
-                    message: 'game.snackbar.global.blockedByQueen',
-                  });
-                default:
-                  return Promise.reject({
-                    message:
+                }
+                return Promise.reject({
+                  message: 'game.snackbar.global.blockedByQueen',
+                });
+              default:
+                return Promise.reject({
+                  message:
                       'game.snackbar.global.blockedByMultipleQueens',
-                  });
+                });
               }
               if (player.frozenId !== card.id) {
                 // Move is valid -- make changes

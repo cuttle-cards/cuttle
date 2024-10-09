@@ -9,9 +9,9 @@ import es from '@/translations/es.json';
 import fr from '@/translations/fr.json';
 
 const messages = {
- en,
- es,
- fr,
+  en,
+  es,
+  fr,
 };
 
 const preferredLocale = getLocalStorage('preferredLocale');

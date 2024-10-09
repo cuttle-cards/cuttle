@@ -31,45 +31,45 @@ export function printCard(card) {
   }
   let res = '';
   switch (card.rank) {
-    case 1:
-      res += 'Ace';
-      break;
-    case 2:
-      res += 'Two';
-      break;
-    case 3:
-      res += 'Three';
-      break;
-    case 4:
-      res += 'Four';
-      break;
-    case 5:
-      res += 'Five';
-      break;
-    case 6:
-      res += 'Six';
-      break;
-    case 7:
-      res += 'Seven';
-      break;
-    case 8:
-      res += 'Eight';
-      break;
-    case 9:
-      res += 'Nine';
-      break;
-    case 10:
-      res += 'Ten';
-      break;
-    case 11:
-      res += 'Jack';
-      break;
-    case 12:
-      res += 'Queen';
-      break;
-    case 13:
-      res += 'King';
-      break;
+  case 1:
+    res += 'Ace';
+    break;
+  case 2:
+    res += 'Two';
+    break;
+  case 3:
+    res += 'Three';
+    break;
+  case 4:
+    res += 'Four';
+    break;
+  case 5:
+    res += 'Five';
+    break;
+  case 6:
+    res += 'Six';
+    break;
+  case 7:
+    res += 'Seven';
+    break;
+  case 8:
+    res += 'Eight';
+    break;
+  case 9:
+    res += 'Nine';
+    break;
+  case 10:
+    res += 'Ten';
+    break;
+  case 11:
+    res += 'Jack';
+    break;
+  case 12:
+    res += 'Queen';
+    break;
+  case 13:
+    res += 'King';
+    break;
   }
   res += ' of ';
   const suits = ['♣️', '♦️', '♥️', '♠️'];
@@ -172,18 +172,18 @@ function countKings(cards) {
  */
 function pointsToWin(kingCount) {
   switch (kingCount) {
-    case 0:
-      return 21;
-    case 1:
-      return 14;
-    case 2:
-      return 10;
-    case 3:
-      return 5;
-    case 4:
-      return 0;
-    default:
-      throw new Error(`Cannot count points to win for invalid kingcount: ${kingCount}`);
+  case 0:
+    return 21;
+  case 1:
+    return 14;
+  case 2:
+    return 10;
+  case 3:
+    return 5;
+  case 4:
+    return 0;
+  default:
+    throw new Error(`Cannot count points to win for invalid kingcount: ${kingCount}`);
   }
 }
 
@@ -389,7 +389,9 @@ function assertStoreMatchesFixture(fixture) {
 
 export function assertVictory(score = null) {
   cy.log('Asserting player victory');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible')
+    .get('[data-cy=victory-heading]')
+    .should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -404,7 +406,8 @@ export function assertVictory(score = null) {
           .should('contain', matchWinner ? 'Good Match!' : 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=victory-heading]').should('contain', 'You Won');
+        cy.get('#game-over-dialog').find('[data-cy=victory-heading]')
+          .should('contain', 'You Won');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -432,7 +435,9 @@ export function assertVictory(score = null) {
 
 export function assertLoss(score = null) {
   cy.log('Asserting player loss');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible')
+    .get('[data-cy=loss-heading]')
+    .should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -447,7 +452,8 @@ export function assertLoss(score = null) {
           .should('contain', matchWinner ? 'Good Match!' : 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=loss-heading]').should('contain', 'You Lose');
+        cy.get('#game-over-dialog').find('[data-cy=loss-heading]')
+          .should('contain', 'You Lose');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -493,7 +499,8 @@ export function assertStalemate(score = null) {
           .should('contain', 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=stalemate-heading]').should('contain', 'Stalemate');
+        cy.get('#game-over-dialog').find('[data-cy=stalemate-heading]')
+          .should('contain', 'Stalemate');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -524,29 +531,29 @@ export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, 
   let selectedScore;
   let matchIsOver = false;
   switch (winner) {
-    case 'p1':
-      headingDataCy = 'p1-wins-heading';
-      headingText = 'P1 Wins';
-      if (isRanked && p1Wins >= 2) {
-        matchIsOver = true;
-        headingText += ' Match';
-      }
-      selectedScore = '[data-cy=match-score-counter-wins]';
-      break;
-    case 'p2':
-      headingDataCy = 'p2-wins-heading';
-      headingText = 'P2 Wins';
-      if (isRanked && p2Wins >= 2) {
-        matchIsOver = true;
-        headingText += ' Match';
-      }
-      selectedScore = '[data-cy=match-score-counter-losses]';
-      break;
-    default:
-      headingDataCy = 'stalemate-heading';
-      headingText = 'Stalemate';
-      selectedScore = '[data-cy=match-score-counter-stalemates]';
-      break;
+  case 'p1':
+    headingDataCy = 'p1-wins-heading';
+    headingText = 'P1 Wins';
+    if (isRanked && p1Wins >= 2) {
+      matchIsOver = true;
+      headingText += ' Match';
+    }
+    selectedScore = '[data-cy=match-score-counter-wins]';
+    break;
+  case 'p2':
+    headingDataCy = 'p2-wins-heading';
+    headingText = 'P2 Wins';
+    if (isRanked && p2Wins >= 2) {
+      matchIsOver = true;
+      headingText += ' Match';
+    }
+    selectedScore = '[data-cy=match-score-counter-losses]';
+    break;
+  default:
+    headingDataCy = 'stalemate-heading';
+    headingText = 'Stalemate';
+    selectedScore = '[data-cy=match-score-counter-stalemates]';
+    break;
   }
   cy.log('Asserting P0 Win as Stalemate');
   cy.get('#game-over-dialog')
