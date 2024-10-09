@@ -57,13 +57,6 @@ export default defineConfig(({ mode }) => {
         usePolling: os.platform() === 'win32',
       },
     },
-    test: {
-      include: ['**/tests/unit/specs/**/*.spec.{j,t}s?(x)'],
-      threads: false,
-      globals: true,
-      environment: 'node',
-      setupFiles: ['tests/unit/setup.vitest.js'],
-    },
     build: {
       outDir: 'assets',
     },

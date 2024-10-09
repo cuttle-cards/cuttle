@@ -434,7 +434,6 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
   });
 
   it('Concede game while resolving a four', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.FOUR_OF_CLUBS],
       p0Points: [],
