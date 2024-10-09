@@ -33,7 +33,7 @@
           </v-list-item>
         </template>
         <TheLanguageSelector />
-        <v-list-item data-cy="refesh" prepend-icon="mdi-refresh" @click="refresh">
+        <v-list-item data-cy="refresh" prepend-icon="mdi-refresh" @click="refresh">
           {{ t('game.menus.gameMenu.refresh') }}
         </v-list-item>
       </v-list>
