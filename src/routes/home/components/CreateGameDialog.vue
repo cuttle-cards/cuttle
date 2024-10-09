@@ -119,10 +119,9 @@ export default {
           gameName: this.gameName,
           isRanked: this.isRanked,
         })
-        .then(() => {
-          this.gameName = '';
-          this.loading = false;
-          this.show = false;
+        .then((res) => {
+          const { gameId } = res;
+          this.$router.push(`/lobby/${gameId}`);
         })
         .catch(this.handleError);
     },
