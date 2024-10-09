@@ -1,4 +1,4 @@
-import GameStatus from '../../../../../utils/GameStatus.json';
+import GameStatus from '../../../../../types/GameStatus.json';
 import { assertLoss, assertVictory, assertStalemate } from '../../../support/helpers';
 import { seasonFixtures } from '../../../fixtures/statsFixtures';
 import { playerOne, playerTwo, playerThree } from '../../../fixtures/userFixtures';
