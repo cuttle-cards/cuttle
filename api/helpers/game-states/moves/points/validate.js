@@ -30,9 +30,9 @@ module.exports = {
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
-      const playerKey = playedBy ? 'p1' : 'p0';
+      const player = playedBy ? currentState.p1 : currentState.p0;
 
-      const playedCard = currentState[playerKey].hand.find(({ id }) => id === requestedMove.cardId);
+      const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.phase !== GamePhase.MAIN) {
         throw new Error('game.snackbar.global.notInMainPhase');
