@@ -4,6 +4,7 @@ import { Card } from '../../fixtures/cards';
 
 describe('Reconnecting to a game', () => {
   it('Refreshs Game from Game Menu', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS],
