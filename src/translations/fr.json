@@ -217,6 +217,7 @@
     },
     "menus": {
       "gameMenu": {
+        "refresh": "Actualiser",
         "rules": "Règles",
         "concede": "Déclarer forfait",
         "stalemate": "Proposer match nul",

@@ -217,6 +217,7 @@
     },
     "menus": {
       "gameMenu": {
+        "refresh": "Refresh",
         "rules": "Rules",
         "concede": "Concede",
         "stalemate": "Request Stalemate",
