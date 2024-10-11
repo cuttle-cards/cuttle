@@ -89,6 +89,20 @@ module.exports = function (req, res, next) {
       }
       return next();
 
+    case MoveType.SEVEN_SCUTTLE:
+      {
+        if (!cardId || !targetId) {
+          return res.badRequest({ message: 'Must specify a card' });
+        }
+  
+        const invalidCardId = [cardId, targetId].find((id) => !DeckIds.includes(id));
+
+        if (invalidCardId) {
+          return res.badRequest({ message: `${invalidCardId} is not a valid cardId` });
+        }
+      }
+      return next();
+
     default:
       return res.badRequest({ message: `Invalid moveType of ${req.body.moveType}` });
   }

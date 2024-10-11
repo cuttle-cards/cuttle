@@ -412,7 +412,7 @@ describe('Playing SEVENS', () => {
   }); // End seven face card describe
 
   it('Scuttles from a seven', () => {
-    cy.skipOnGameStateApi();
+    //cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
@@ -446,7 +446,7 @@ describe('Playing SEVENS', () => {
   }); // End scuttle from seven
 
   it('Scuttles using a NINE from a SEVEN', () => {
-    cy.skipOnGameStateApi();
+    //cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [Card.SEVEN_OF_CLUBS],
       p0Points: [],
