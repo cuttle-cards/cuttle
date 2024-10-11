@@ -81,7 +81,7 @@ export default {
       default: () => [],
     },
   },
-  emits: ['select-card'],
+  emits: [ 'select-card' ],
   setup() {
     const { t } = useI18n();
     return { t };
@@ -97,7 +97,7 @@ export default {
   },
   computed: {
     sortedCards() {
-      return this.sortByRank ? orderBy(this.cards, ['rank', 'suit']) : [...this.cards];
+      return this.sortByRank ? orderBy(this.cards, [ 'rank', 'suit' ]) : [ ...this.cards ];
     },
     dataSelectorName() {
       return `data-${this.dataSelectorPrefix}-card`;

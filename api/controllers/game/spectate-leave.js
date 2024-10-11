@@ -8,7 +8,7 @@ module.exports = async function (req, res) {
     });
 
     const game = await gameService.populateGame({ gameId: gameId });
-    Game.publish([game.id], {
+    Game.publish([ game.id ], {
       change: 'spectatorLeft',
       game,
     });

@@ -12,13 +12,13 @@ const gameStateRow = {
   turn: 3,
   phase: GamePhase.MAIN,
   p0Hand: [],
-  p0Points: ['AH', 'TH'],
+  p0Points: [ 'AH', 'TH' ],
   p0FaceCards: [],
-  p1Hand: ['JC'],
+  p1Hand: [ 'JC' ],
   p1Points: [],
   p1FaceCards: [],
-  deck: ['TC', '7D'],
-  scrap: ['9C'],
+  deck: [ 'TC', '7D' ],
+  scrap: [ '9C' ],
   oneOff: null,
   oneOffTarget: null,
   oneOffTargetType: null,
@@ -28,7 +28,7 @@ const gameStateRow = {
 };
 
 export const resolveNine = {
-  game: { ...gameFixture, gameStates: [gameStateRow] },
+  game: { ...gameFixture, gameStates: [ gameStateRow ] },
 
   gameStateRow,
 
@@ -42,16 +42,16 @@ export const resolveNine = {
     phase: GamePhase.MAIN,
     p0: {
       hand: [],
-      points: [Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS],
+      points: [ Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS ],
       faceCards: [],
     },
     p1: {
-      hand: [{ ...Card.JACK_OF_CLUBS, isFrozen: true }],
+      hand: [ { ...Card.JACK_OF_CLUBS, isFrozen: true } ],
       points: [],
       faceCards: [],
     },
-    deck: [Card.TEN_OF_CLUBS, Card.SEVEN_OF_DIAMONDS],
-    scrap: [Card.NINE_OF_CLUBS],
+    deck: [ Card.TEN_OF_CLUBS, Card.SEVEN_OF_DIAMONDS ],
+    scrap: [ Card.NINE_OF_CLUBS ],
     oneOff: null,
     oneOffTarget: null,
     oneOffTargetType: null,
@@ -95,7 +95,7 @@ export const resolveNine = {
       players: [
         {
           hand: [],
-          points: [Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS],
+          points: [ Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS ],
           faceCards: [],
           createdAt: '2024-07-14T12:59:45.813Z',
           updatedAt: '2024-07-14T12:59:51.528Z',
@@ -107,7 +107,7 @@ export const resolveNine = {
           frozenId: null,
         },
         {
-          hand: [{ ...Card.JACK_OF_CLUBS, isFrozen: true }],
+          hand: [ { ...Card.JACK_OF_CLUBS, isFrozen: true } ],
           points: [],
           faceCards: [],
           createdAt: '2024-07-14T12:59:47.709Z',
@@ -122,7 +122,7 @@ export const resolveNine = {
       ],
       rematchGame: null,
       resolved: Card.NINE_OF_CLUBS,
-      scrap: [Card.NINE_OF_CLUBS],
+      scrap: [ Card.NINE_OF_CLUBS ],
       secondCard: Card.SEVEN_OF_DIAMONDS,
       spectatingUsers: [],
       status: 2,

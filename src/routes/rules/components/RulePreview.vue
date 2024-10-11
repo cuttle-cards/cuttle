@@ -65,7 +65,7 @@ defineProps({
     },
 });
 
-const emit = defineEmits(['animate']);
+const emit = defineEmits([ 'animate' ]);
 
 const { t } = useI18n();
 

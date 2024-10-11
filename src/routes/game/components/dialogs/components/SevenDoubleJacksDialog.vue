@@ -69,7 +69,7 @@ export default {
       default: null,
     },
   },
-  emits: ['resolveSevenDoubleJacks'],
+  emits: [ 'resolveSevenDoubleJacks' ],
   setup() {
     const { t } = useI18n();
     return { t };

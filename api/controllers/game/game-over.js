@@ -8,7 +8,7 @@
 module.exports = function (req, res) {
   // Unsubscribe socket
   const { game: playedGameId, spectating: spectatedGameId } = req.session;
-  const gameIds = [playedGameId, spectatedGameId].filter((id) => Number.isInteger(id));
+  const gameIds = [ playedGameId, spectatedGameId ].filter((id) => Number.isInteger(id));
   Game.unsubscribe(req, gameIds);
   // Delete session data about game(s)
   delete req.session.game;

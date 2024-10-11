@@ -25,7 +25,7 @@ module.exports = {
       delete p0.encryptedPassword;
       const p1 = { ...game.p1, ...gameState.p1 };
       delete p1.encryptedPassword;
-      const players = [p0, p1];
+      const players = [ p0, p1 ];
 
       const countPasses = (function () {
         let numPasses = 0;
@@ -94,7 +94,7 @@ module.exports = {
           pNum,
           happened,
           // Conditionally included properties if truthy
-          ...(gameState.resolved && {oneOff: gameState.resolved}),
+          ...(gameState.resolved && { oneOff: gameState.resolved }),
           ...(chosenCard && { chosenCard }),
           ...(discardedCards && { discardedCards }),
         },
@@ -115,7 +115,7 @@ module.exports = {
         ...(discardedCards && { discardedCards }),
       };
 
-      Game.publish([game.id], fullSocketEvent);
+      Game.publish([ game.id ], fullSocketEvent);
 
       if (victory.gameOver) {
         sails.sockets.blast('gameFinished', { gameId: game.id });

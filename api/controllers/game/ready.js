@@ -2,7 +2,7 @@ module.exports = async function (req, res) {
   try {
     // Query for game and users
     const game =  await sails.helpers.lockGame(req.session.game);
-    const players = await User.find({game: req.session.game}).sort('pNum');
+    const players = await User.find({ game: req.session.game }).sort('pNum');
     const user = players[ req.session.pNum ];
     game.players = players;
 
@@ -33,14 +33,14 @@ module.exports = async function (req, res) {
       // Deal cards (also emits socket event)
       await Game.updateOne({ id: game.id }).set(gameUpdates);
 
-      await gameService.dealCards({...game, ...gameUpdates}, {});
+      await gameService.dealCards({ ...game, ...gameUpdates }, {});
 
     // Otherwise send socket message that player is ready
     } else {
 
       await Game.updateOne({ id: game.id }).set(gameUpdates);
 
-      Game.publish([game.id], {
+      Game.publish([ game.id ], {
         change: 'ready',
         userId: user.id,
         pNum: user.pNum,

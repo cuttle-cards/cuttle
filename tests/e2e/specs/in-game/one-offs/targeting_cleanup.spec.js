@@ -10,12 +10,12 @@ describe('Clean-up of One-Off Targets', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is p0
-      p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
       // player is p1
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
@@ -26,13 +26,13 @@ describe('Clean-up of One-Off Targets', () => {
     cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
     assertGameState(1, {
-      p0Hand: [Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [Card.NINE_OF_SPADES],
+      scrap: [ Card.NINE_OF_SPADES ],
     });
 
     // Player plays another point
@@ -54,13 +54,13 @@ describe('Clean-up of One-Off Targets', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is p0
-      p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
       // player is p1
-      p1Hand: [Card.SIX_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.QUEEN_OF_HEARTS],
+      p1Hand: [ Card.SIX_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.QUEEN_OF_HEARTS ],
     });
 
     // Opponent plays NINE
@@ -74,13 +74,13 @@ describe('Clean-up of One-Off Targets', () => {
       .click();
 
     assertGameState(1, {
-      p0Hand: [Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
-      scrap: [Card.NINE_OF_SPADES],
+      scrap: [ Card.NINE_OF_SPADES ],
     });
 
     // Player plays another point
@@ -102,12 +102,12 @@ describe('Clean-up of One-Off Targets', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is p0
-      p0Hand: [Card.TWO_OF_SPADES, Card.FIVE_OF_CLUBS, Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.TWO_OF_SPADES, Card.FIVE_OF_CLUBS, Card.TEN_OF_HEARTS ],
       p0Points: [],
       p0FaceCards: [],
       // player is p1
-      p1Hand: [Card.SIX_OF_HEARTS, Card.JACK_OF_CLUBS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.JACK_OF_CLUBS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
@@ -121,11 +121,11 @@ describe('Clean-up of One-Off Targets', () => {
     cy.get('[data-opponent-point-card=10-2]').click();
 
     assertGameState(1, {
-      p0Hand: [Card.TWO_OF_SPADES, Card.FIVE_OF_CLUBS],
+      p0Hand: [ Card.TWO_OF_SPADES, Card.FIVE_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
+      p1Hand: [ Card.SIX_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
       p1FaceCards: [],
       scrap: [],
     });
@@ -141,13 +141,13 @@ describe('Clean-up of One-Off Targets', () => {
       .click();
 
     assertGameState(1, {
-      p0Hand: [Card.FIVE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.FIVE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
-      scrap: [Card.TWO_OF_SPADES, Card.JACK_OF_CLUBS],
+      scrap: [ Card.TWO_OF_SPADES, Card.JACK_OF_CLUBS ],
     });
 
     // Player plays another point
@@ -169,12 +169,12 @@ describe('Clean-up of One-Off Targets', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is p0
-      p0Hand: [Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
       // player is p1
-      p1Hand: [Card.SIX_OF_HEARTS, Card.TWO_OF_CLUBS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.TWO_OF_CLUBS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
@@ -189,14 +189,14 @@ describe('Clean-up of One-Off Targets', () => {
     cy.resolveOpponent();
     assertGameState(1, {
       // Opponent is p0
-      p0Hand: [Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
       // player is p1
-      p1Hand: [Card.SIX_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
-      scrap: [Card.NINE_OF_SPADES, Card.TWO_OF_CLUBS],
+      scrap: [ Card.NINE_OF_SPADES, Card.TWO_OF_CLUBS ],
     });
 
     // Player plays another point

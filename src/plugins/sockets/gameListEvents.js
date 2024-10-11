@@ -47,5 +47,5 @@ export function handleIsRanked(evData) {
   const gameStore = useGameStore();
   gameStore.isRanked = evData.isRanked;
   gameStore.showIsRankedChangedAlert = true;
-  gameListStore.setIsRanked({gameId: evData.gameId,isRanked: evData.isRanked});
+  gameListStore.setIsRanked({ gameId: evData.gameId,isRanked: evData.isRanked });
 }
