@@ -12,10 +12,10 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to scuttle
+     * @param { Object } requestedMove - Object describing the request to scuttle from the top of the deck
      * @param { String } requestedMove.cardId - Card Played for scuttle
      * @param { String } requestedMove.targetId - Card Targeted for scuttle
-     * @param { MoveType.SEVEN_SCUTTLE } requestedMove.moveType - Specifies that this a scuttle
+     * @param { MoveType.SEVEN_SCUTTLE } requestedMove.moveType - Specifies that this a sevenScuttle
      */
     requestedMove: {
       type: 'ref',
@@ -36,23 +36,25 @@ module.exports = {
       const player = playedBy ? currentState.p1 : currentState.p0;
       const opponent = playedBy ? currentState.p0 : currentState.p1;
 
-      const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
+      const topTwoCards = currentState.deck.slice(0, 2);
+
+      const cardPlayedIndex = topTwoCards.findIndex(({ id }) => id === requestedMove.cardId);
+      if (cardPlayedIndex === -1) {
+        throw new Error('game.snackbar.seven.pickAndPlay');
+      }
+
       const targetCard = opponent.points.find(({ id }) => id === requestedMove.targetId);
 
       if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
-      if (currentState.phase !== GamePhase.MAIN) {
+      if (currentState.phase !== GamePhase.RESOLVING_SEVEN) {
         throw new Error('game.snackbar.global.notInMainPhase');
       }
 
       if (!playedCard) {
         throw new Error('game.snackbar.global.playFromHand');
-      }
-
-      if (playedCard.isFrozen) {
-        throw new Error('game.snackbar.global.cardFrozen');
       }
 
       if (playedCard.rank !== 7) {

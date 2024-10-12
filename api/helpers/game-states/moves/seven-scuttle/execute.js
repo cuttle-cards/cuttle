@@ -12,10 +12,10 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to play scuttle
+     * @param { Object } requestedMove - Object describing the request to scuttle from the top of the deck
      * @param { String } requestMove.cardId - Card Played 
      * @param { String } requestMove.targetId - Card Targeted
-     * @param { MoveType.SEVEN_SCUTTLE } requestedMove.moveType - Specifies that this a scuttle
+     * @param { MoveType.SEVEN_SCUTTLE } requestedMove.moveType - Specifies that this a sevenScuttle
      */
     requestedMove: {
       type: 'ref',
@@ -32,16 +32,15 @@ module.exports = {
 
     const { cardId, targetId } = requestedMove;
 
-    const player = playedBy ? result.p1 : result.p0;
     const opponent = playedBy ? result.p0 : result.p1;
 
-    const cardPlayedIndex = player.hand.findIndex(({ id }) => id === cardId);
-    const [ playedCard  ] = player.hand.splice(cardPlayedIndex, 1);
+    const cardIndex = result.deck.findIndex(({ id }) => id === cardId);
+    const [ playedCard ] = result.deck.splice(cardIndex, 1);
     
     const targetPlayedIndex = opponent.points.findIndex(({ id }) => id === targetId);
-    const [ targetCard ]= opponent.points.splice(targetPlayedIndex, 1);
+    const [ targetCard ] = opponent.points.splice(targetPlayedIndex, 1);
     
-    result.scrap.push(targetCard, playedCard );
+    result.scrap.push(targetCard, playedCard);
 
     result.turn++;
 
