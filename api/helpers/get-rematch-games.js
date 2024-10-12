@@ -1,6 +1,6 @@
 // Pull the logic into func outside fn to allow recursion w/o bumping into weirdness w/ sails' exits
 async function getRematchGames (game, priorRematchGames = []) {
-  const rematchGames = [game, ...priorRematchGames].map((matchGame) => {
+  const rematchGames = [ game, ...priorRematchGames ].map((matchGame) => {
     return {
       ...matchGame,
       // Get p0 and p1 id, whether populated or not
@@ -36,7 +36,7 @@ module.exports = {
     }
   },
 
-  fn: async ({game, priorRematchGames}, exits) => {
+  fn: async ({ game, priorRematchGames }, exits) => {
     const games  = await getRematchGames(game, priorRematchGames);
     return exits.success(games);
   }

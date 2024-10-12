@@ -72,7 +72,7 @@ export function printCard(card) {
       break;
   }
   res += ' of ';
-  const suits = ['♣️', '♦️', '♥️', '♠️'];
+  const suits = [ '♣️', '♦️', '♥️', '♠️' ];
   res += suits[card.suit];
   return res;
 }

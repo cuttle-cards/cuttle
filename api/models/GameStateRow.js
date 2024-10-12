@@ -28,7 +28,7 @@ module.exports = {
     // Which player made the move (0 if p0, 1 if p1)
     playedBy: {
       type: 'number',
-      isIn: [0, 1],
+      isIn: [ 0, 1 ],
       required: true,
     },
     moveType: {
@@ -72,7 +72,7 @@ module.exports = {
     phase: {
       type: 'number',
       required: true,
-      isIn: [1, 2, 3, 4, 5, 7],
+      isIn: [ 1, 2, 3, 4, 5, 7 ],
     },
     // Cards in p0’s hand
     p0Hand: {
@@ -135,7 +135,7 @@ module.exports = {
     oneOffTargetType: {
       type: 'string',
       allowNull: true,
-      isIn: ['point', 'jack', 'faceCard'],
+      isIn: [ 'point', 'jack', 'faceCard' ],
     },
     // Twos
     twos: {

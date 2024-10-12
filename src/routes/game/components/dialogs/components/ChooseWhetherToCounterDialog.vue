@@ -93,7 +93,7 @@ export default {
       required: true,
     },
   },
-  emits: ['choose-to-counter', 'resolve'],
+  emits: [ 'choose-to-counter', 'resolve' ],
   setup() {
     const { t } = useI18n();
     return { t };

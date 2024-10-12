@@ -47,9 +47,9 @@ module.exports = {
           // Match is between specified players
           {
             or: [
-              { and: [{ player1 }, { player2 }] },
+              { and: [ { player1 }, { player2 } ] },
               // case where args are reveresed from match
-              { and: [{ player1: player2 }, { player2: player1 }] },
+              { and: [ { player1: player2 }, { player2: player1 } ] },
             ],
           },
         ],

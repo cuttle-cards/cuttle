@@ -51,7 +51,7 @@ module.exports = async function (req, res) {
     } else {
       await Game.updateOne({ id: gameId }).set(gameUpdates);
     }
-    Game.publish([game.id], {
+    Game.publish([ game.id ], {
       change: 'requestStalemate',
       game,
       victory,

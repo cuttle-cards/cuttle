@@ -94,7 +94,7 @@ export default {
       default: false,
     },
   },
-  emits: ['error'],
+  emits: [ 'error' ],
   setup() {
     const { t } = useI18n();
     return { t };
@@ -139,7 +139,7 @@ export default {
     },
     spectateGame() {
       this.joiningGame = true;
-      if (this.gameStore.players.some(({username}) => username === this.authStore.username)) {
+      if (this.gameStore.players.some(({ username }) => username === this.authStore.username)) {
         this.$router.push(`/game/${this.gameId}`);
         return;
       }

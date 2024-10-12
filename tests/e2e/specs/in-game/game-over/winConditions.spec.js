@@ -20,8 +20,8 @@ describe('Winning the game', () => {
 
   it('Shows when player wins game with 21 points', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -33,7 +33,7 @@ describe('Winning the game', () => {
     cy.get('[data-move-choice=points]').click();
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.SEVEN_OF_CLUBS, Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Points: [ Card.SEVEN_OF_CLUBS, Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -46,13 +46,13 @@ describe('Winning the game', () => {
   it('Shows when player wins game with 14 points and one king', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.JACK_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.JACK_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       p1Hand: [],
-      p1Points: [Card.SEVEN_OF_CLUBS],
+      p1Points: [ Card.SEVEN_OF_CLUBS ],
       p1FaceCards: [],
-      scrap: [Card.TEN_OF_SPADES],
+      scrap: [ Card.TEN_OF_SPADES ],
     });
 
     // Play Jack of Clubs
@@ -62,12 +62,12 @@ describe('Winning the game', () => {
 
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.SEVEN_OF_CLUBS, Card.SEVEN_OF_DIAMONDS],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Points: [ Card.SEVEN_OF_CLUBS, Card.SEVEN_OF_DIAMONDS ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [Card.TEN_OF_SPADES],
+      scrap: [ Card.TEN_OF_SPADES ],
     });
     assertVictory();
     goHomeJoinNewGame();
@@ -76,9 +76,9 @@ describe('Winning the game', () => {
   it('Shows when player wins game with 0 points and four kings', () => {
     
     cy.loadGameFixture(0, {
-      p0Hand: [Card.KING_OF_HEARTS],
+      p0Hand: [ Card.KING_OF_HEARTS ],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS],
+      p0FaceCards: [ Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS ],
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
@@ -92,7 +92,7 @@ describe('Winning the game', () => {
     assertGameState(0, {
       p0Hand: [],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.KING_OF_HEARTS],
+      p0FaceCards: [ Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.KING_OF_HEARTS ],
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
@@ -104,8 +104,8 @@ describe('Winning the game', () => {
 
   it('Wins the game when opponent concedes', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -126,8 +126,8 @@ describe('Losing the game', () => {
   it('Shows when opponent wins with 21 points', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -141,8 +141,8 @@ describe('Losing the game', () => {
 
   it('Loses by conceding', () => {
     cy.loadGameFixture(1, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -169,8 +169,8 @@ describe('Stalemates', () => {
 
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -204,8 +204,8 @@ describe('Stalemates', () => {
 
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -399,8 +399,8 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
   it('Opponent concedes while seven oneOff is being resolved', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -419,7 +419,7 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
     goHomeJoinNewGame();
 
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [],
@@ -435,10 +435,10 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
 
   it('Concede game while resolving a four', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.FOUR_OF_CLUBS],
+      p0Hand: [ Card.FOUR_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p1Hand: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p1Points: [],
       p1FaceCards: [],
     });

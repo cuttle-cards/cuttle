@@ -22,7 +22,7 @@ module.exports = async function (req, res) {
       currentMatch,
     };
     
-    Game.publish([game.id], {
+    Game.publish([ game.id ], {
       change: 'concede',
       game,
       victory,
