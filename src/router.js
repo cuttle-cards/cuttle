@@ -1,10 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '@/routes/home/HomeView.vue';
-import LoginView from '@/routes/login/LoginView.vue';
-import LobbyView from '@/routes/lobby/LobbyView.vue';
-import GameView from '@/routes/game/GameView.vue';
-import RulesView from '@/routes/rules/RulesView.vue';
-import StatsView from '@/routes/stats/StatsView.vue';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 
@@ -49,6 +43,12 @@ const checkAndSubscribeToLobby = async (to) => {
       return { path: `/login/${gameId}` };
     }
 
+    // Check if the game exists
+    const gameExists = await gameStore.checkGameExists(gameId);
+    if (!gameExists) {
+      return { name: 'Home', query: { error: 'Game does not exist' } };
+    }
+
     if (gameStore.players.some(({ username }) => username === authStore.username)) {
       return true;
     }
@@ -63,14 +63,14 @@ const checkAndSubscribeToLobby = async (to) => {
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: HomeView,
+    name: ROUTE_NAME_HOME,
+    component: () => import('@/routes/home/HomeView.vue'),
     beforeEnter: mustBeAuthenticated,
   },
   {
     path: '/login/:lobbyRedirectId?',
     name: ROUTE_NAME_LOGIN,
-    component: LoginView,
+    component: () => import('@/routes/login/LoginView.vue'),
     meta: {
       hideNavigation: true,
     },
@@ -78,7 +78,7 @@ const routes = [
   {
     path: '/signup',
     name: ROUTE_NAME_SIGNUP,
-    component: LoginView,
+    component: () => import('@/routes/login/LoginView.vue'),
     meta: {
       hideNavigation: true,
     },
@@ -96,12 +96,12 @@ const routes = [
   {
     path: '/rules',
     name: ROUTE_NAME_RULES,
-    component: RulesView,
+    component: () => import('@/routes/rules/RulesView.vue'),
   },
   {
     name: ROUTE_NAME_LOBBY,
     path: '/lobby/:gameId?',
-    component: LobbyView,
+    component: () => import('@/routes/lobby/LobbyView.vue'),
     // TODO: Add logic to redirect if a given game does not exist
     beforeEnter: checkAndSubscribeToLobby,
     meta: {
@@ -111,7 +111,7 @@ const routes = [
   {
     name: ROUTE_NAME_GAME,
     path: '/game/:gameId?',
-    component: GameView,
+    component: () => import('@/routes/game/GameView.vue'),
     // TODO: Add logic to redirect if a given game does not exist
     // mustBeAuthenticated intentionally left off here
     // If a user refreshes the relogin modal will fire and allow them to continue playing
@@ -122,7 +122,7 @@ const routes = [
   {
     name: ROUTE_NAME_SPECTATE,
     path: '/spectate/:gameId?',
-    component: GameView,
+    component: () => import('@/routes/game/GameView.vue'),
     meta: {
       hideNavigation: true,
     },
@@ -130,7 +130,7 @@ const routes = [
   {
     path: '/stats/:seasonId?',
     name: ROUTE_NAME_STATS,
-    component: StatsView,
+    component: () => import('@/routes/stats/StatsView.vue'),
     beforeEnter: mustBeAuthenticated,
   },
   // Catch every other unsupported route
