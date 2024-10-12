@@ -5,7 +5,7 @@ import { resolveNine } from '../../fixtures/gameStates/resolveNine';
 
 // remove attributes added while creating the entry in the database
 function stripDbAttributes(obj) {
-  const attributesToRemove = ['createdAt', 'id', 'updatedAt'];
+  const attributesToRemove = [ 'createdAt', 'id', 'updatedAt' ];
   attributesToRemove.forEach((attr) => delete obj[attr]);
 }
 
@@ -23,7 +23,7 @@ describe("Converting GameState's and GameStateRow's and emitting sockets for Poi
     const dbGameStateRows = await GameStateRow.find({ gameId: gameStateRow.gameId });
     expect(dbGameStateRows.length).toEqual(1);
 
-    const [savedRow] = dbGameStateRows;
+    const [ savedRow ] = dbGameStateRows;
     stripDbAttributes(savedRow);
     expect(savedRow).toEqual(points.gameStateRow);
   });
@@ -56,7 +56,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
     const dbGameStateRows = await GameStateRow.find({ gameId: gameStateRow.gameId });
     expect(dbGameStateRows.length).toEqual(1);
 
-    const [savedRow] = dbGameStateRows;
+    const [ savedRow ] = dbGameStateRows;
     stripDbAttributes(savedRow);
     expect(savedRow).toEqual(resolveThree.gameStateRow);
   });
@@ -90,7 +90,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
     const dbGameStateRows = await GameStateRow.find({ gameId: gameStateRow.gameId });
     expect(dbGameStateRows.length).toEqual(1);
 
-    const [savedRow] = dbGameStateRows;
+    const [ savedRow ] = dbGameStateRows;
     stripDbAttributes(savedRow);
     expect(savedRow).toEqual(resolveNine.gameStateRow);
   });

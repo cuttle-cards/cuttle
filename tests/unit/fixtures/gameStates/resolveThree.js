@@ -12,13 +12,13 @@ const gameStateRow = {
   discardedCards: [],
   turn: 1,
   phase: GamePhase.MAIN,
-  p0Hand: ['TH'],
+  p0Hand: [ 'TH' ],
   p0Points: [],
   p0FaceCards: [],
-  p1Hand: ['TD'],
-  p1Points: ['AH'],
+  p1Hand: [ 'TD' ],
+  p1Points: [ 'AH' ],
   p1FaceCards: [],
-  deck: ['6S', '2H', 'AC'],
+  deck: [ '6S', '2H', 'AC' ],
   scrap: [],
   oneOff: null,
   oneOffTarget: null,
@@ -38,16 +38,16 @@ export const resolveThree = {
     turn: 1,
     phase: GamePhase.MAIN,
     p0: {
-      hand: [Card.TEN_OF_HEARTS],
+      hand: [ Card.TEN_OF_HEARTS ],
       points: [],
       faceCards: [],
     },
     p1: {
-      hand: [Card.TEN_OF_DIAMONDS],
-      points: [Card.ACE_OF_HEARTS],
+      hand: [ Card.TEN_OF_DIAMONDS ],
+      points: [ Card.ACE_OF_HEARTS ],
       faceCards: [],
     },
-    deck: [Card.SIX_OF_SPADES, Card.TWO_OF_HEARTS, Card.ACE_OF_CLUBS],
+    deck: [ Card.SIX_OF_SPADES, Card.TWO_OF_HEARTS, Card.ACE_OF_CLUBS ],
     scrap: [],
     oneOff: null,
     oneOffTarget: null,
@@ -61,7 +61,7 @@ export const resolveThree = {
 
   game: {
     ...gameFixture,
-    gameStates: [gameStateRow],
+    gameStates: [ gameStateRow ],
   },
 
   socket: {
@@ -75,7 +75,7 @@ export const resolveThree = {
     game: {
       players: [
         {
-          hand: [Card.TEN_OF_HEARTS],
+          hand: [ Card.TEN_OF_HEARTS ],
           points: [],
           faceCards: [],
           createdAt: '2024-07-14T12:59:45.813Z',
@@ -88,8 +88,8 @@ export const resolveThree = {
           frozenId: null,
         },
         {
-          hand: [Card.TEN_OF_DIAMONDS],
-          points: [Card.ACE_OF_HEARTS],
+          hand: [ Card.TEN_OF_DIAMONDS ],
+          points: [ Card.ACE_OF_HEARTS ],
           faceCards: [],
           createdAt: '2024-07-14T12:59:47.709Z',
           updatedAt: '2024-07-14T12:59:51.769Z',
@@ -101,7 +101,7 @@ export const resolveThree = {
           frozenId: null,
         },
       ],
-      deck: [Card.ACE_OF_CLUBS],
+      deck: [ Card.ACE_OF_CLUBS ],
       scrap: [],
       twos: [],
       spectatingUsers: [],
@@ -118,7 +118,7 @@ export const resolveThree = {
       oneOffTarget: null,
       oneOffTargetType: null,
       turn: 1,
-      log: ['myUsername took the 10♥️ from the Scrap pile to their hand.'],
+      log: [ 'myUsername took the 10♥️ from the Scrap pile to their hand.' ],
       turnStalemateWasRequestedByP0: -1,
       turnStalemateWasRequestedByP1: -1,
       chat: [],

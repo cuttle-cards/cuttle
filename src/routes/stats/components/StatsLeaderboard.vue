@@ -86,7 +86,7 @@ export default {
     return {
       sortBy: 'rank',
       selectedMetric: Metrics.POINTS_AND_WINS,
-      selectedWeeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      selectedWeeks: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ],
     };
   },
   computed: {
@@ -122,7 +122,7 @@ export default {
         const playerMatchesCount = Object.values(playerStats.matches).reduce(
           (totalCount, weekMatches) =>
             (totalCount += weekMatches.filter((match) =>
-              [Result.WON, Result.LOST].includes(match.result),
+              [ Result.WON, Result.LOST ].includes(match.result),
             ).length),
           0,
         );
@@ -322,8 +322,8 @@ export default {
       let playerMatches;
       // Aggregate all matches if looking at total
       if (weekNum === 'total') {
-        playerMatches = Object.entries(playerStats.matches).reduce((wins, [, matches]) => {
-          return [...wins, ...matches];
+        playerMatches = Object.entries(playerStats.matches).reduce((wins, [ , matches ]) => {
+          return [ ...wins, ...matches ];
         }, []);
         // Otherwise just show this week's matches
       } else {
@@ -340,7 +340,7 @@ export default {
           .sort((x, y) => {
             return y[1] - x[1];
           })
-          .map(([opponent, matches]) => `${opponent} (${matches})`);
+          .map(([ opponent, matches ]) => `${opponent} (${matches})`);
         // Otherwise just show each opponent's name
       } else {
         opponents = uniq(opponents);

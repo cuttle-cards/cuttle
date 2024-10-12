@@ -9,7 +9,7 @@ describe('Playing sevens at the end of the deck', () => {
       p0Hand: [],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.SEVEN_OF_CLUBS],
+      p1Hand: [ Card.SEVEN_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
       topCard: Card.FOUR_OF_CLUBS,
@@ -31,7 +31,7 @@ describe('Playing sevens at the end of the deck', () => {
   it('Plays the top card of the deck when there are two cards left', () => {
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [],
@@ -55,19 +55,19 @@ describe('Playing sevens at the end of the deck', () => {
 
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.FOUR_OF_CLUBS],
+      p0Points: [ Card.FOUR_OF_CLUBS ],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_DIAMONDS ],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [Card.SEVEN_OF_CLUBS],
+      scrap: [ Card.SEVEN_OF_CLUBS ],
     });
   });
 
   it('Plays the 2nd card in the deck when there are two cards left', () => {
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [],
@@ -91,12 +91,12 @@ describe('Playing sevens at the end of the deck', () => {
 
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.SIX_OF_DIAMONDS],
+      p0Points: [ Card.SIX_OF_DIAMONDS ],
       p0FaceCards: [],
-      p1Hand: [Card.FOUR_OF_CLUBS],
+      p1Hand: [ Card.FOUR_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [Card.SEVEN_OF_CLUBS],
+      scrap: [ Card.SEVEN_OF_CLUBS ],
     });
   });
 
@@ -106,12 +106,12 @@ describe('Playing sevens at the end of the deck', () => {
       p0Hand: [],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
+      p1Hand: [ Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
       topCard: Card.SIX_OF_HEARTS,
       secondCard: Card.SEVEN_OF_HEARTS,
-      deck: [Card.FIVE_OF_DIAMONDS],
+      deck: [ Card.FIVE_OF_DIAMONDS ],
     });
     cy.drawCardOpponent();
     cy.get('#deck').click();
@@ -127,7 +127,7 @@ describe('Playing sevens at the end of the deck', () => {
       p0Hand: [],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
+      p1Hand: [ Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
       topCard: Card.SIX_OF_HEARTS,

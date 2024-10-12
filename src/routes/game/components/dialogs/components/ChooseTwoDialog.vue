@@ -63,7 +63,7 @@ export default {
       required: true,
     },
   },
-  emits: ['counter', 'resolve'],
+  emits: [ 'counter', 'resolve' ],
   setup() {
     const { t } = useI18n();
     return { t };

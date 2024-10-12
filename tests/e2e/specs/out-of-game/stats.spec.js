@@ -80,7 +80,7 @@ describe('Stats Page', () => {
   beforeEach(setup);
 
   it('Displays Headers, Cards, and Table', () => {
-    const [seasonOne] = seasonFixtures;
+    const [ seasonOne ] = seasonFixtures;
     cy.get('[data-cy=selected-season-header]');
     cy.get('[data-cy=season-start-date').should('contain', dayjs(seasonOne.startTime).format('YYYY/MM/DD'));
     cy.get('[data-cy=season-end-date').should('contain', dayjs(seasonOne.endTime).format('YYYY/MM/DD'));
@@ -250,7 +250,7 @@ describe('Stats Page', () => {
 
   it('Navigates to correct season by Url, and changes url when season changes', () => {
     cy.get('@seasons').then((seasons) => {
-      const [seasonOne, seasonTwo] = seasons;
+      const [ seasonOne, seasonTwo ] = seasons;
       cy.vueRoute(`/stats/${seasonOne.id}`);
       cy.location('pathname').should('contain', seasonOne.id);
       cy.get('[data-cy=season-select]').should('contain', seasonOne.name).click();
