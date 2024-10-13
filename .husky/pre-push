@@ -1,3 +1,0 @@
-#!/bin/bash
-
-node tools/msg-bump-version.js

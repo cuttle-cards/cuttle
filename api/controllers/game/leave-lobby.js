@@ -1,9 +1,9 @@
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
-  Promise.all([promiseGame, promisePlayer])
+  Promise.all([ promiseGame, promisePlayer ])
     .then(function changeAndSave(values) {
-      const [game, player] = values;
+      const [ game, player ] = values;
       const gameUpdates = {};
       const playerUpdates = {
         pNum: null,
@@ -17,7 +17,7 @@ module.exports = function (req, res) {
       }
 
       // Unsubscribe user from updates to this game
-      Game.unsubscribe(req, [game.id]);
+      Game.unsubscribe(req, [ game.id ]);
 
       // Update records
       const updatePromises = [

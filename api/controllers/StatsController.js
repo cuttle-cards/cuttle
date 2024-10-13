@@ -137,8 +137,8 @@ function transformSeasonToDTO(season) {
   });
 
   // Remove zero-valued gameCounts + uniquePlayersPerWeek from the end
-  const gameCounts = [...originalGameCounts];
-  let uniquePlayersPerWeek = [...originalUniquePlayersPerWeek];
+  const gameCounts = [ ...originalGameCounts ];
+  let uniquePlayersPerWeek = [ ...originalUniquePlayersPerWeek ];
   if (gameCounts[gameCounts.length - 1] === 0) {
     gameCounts.pop();
     uniquePlayersPerWeek.pop();
@@ -159,16 +159,16 @@ module.exports = {
   getCurrentStats: async function (_req, res) {
     try {
       const seasons = await sails.helpers.getSeasonsWithoutRankings();
-      const [currentSeason] = seasons;
+      const [ currentSeason ] = seasons;
       const allUsers = User.find({
-        select: ['id', 'username'],
+        select: [ 'id', 'username' ],
       });
       const currentSeasonMatches = Match.find({
         startTime: { '>': currentSeason.startTime },
         endTime: { '<': currentSeason.endTime },
       });
       const currentSeasonGames = Game.find({
-        select: ['updatedAt', 'p0', 'p1'],
+        select: [ 'updatedAt', 'p0', 'p1' ],
         where: {
           status: gameService.GameStatus.FINISHED,
           updatedAt: {
@@ -177,7 +177,7 @@ module.exports = {
           },
         },
       });
-      const [users, matches, games] = await Promise.all([allUsers, currentSeasonMatches, currentSeasonGames]);
+      const [ users, matches, games ] = await Promise.all([ allUsers, currentSeasonMatches, currentSeasonGames ]);
       updateRankingsFromMatches(users, matches, currentSeason);
       computeUsageStats(games, currentSeason);
       seasons[0] = transformSeasonToDTO(currentSeason);
@@ -189,16 +189,16 @@ module.exports = {
   getSeasonStats: async function (req, res) {
     const seasonId = parseInt(req.params.seasonId);
     try {
-      const [requestedSeason] = await sails.helpers.getSeasonsWithoutRankings(seasonId);
+      const [ requestedSeason ] = await sails.helpers.getSeasonsWithoutRankings(seasonId);
       const allUsers = User.find({
-        select: ['id', 'username'],
+        select: [ 'id', 'username' ],
       });
       const requestedSeasonMatches = Match.find({
         startTime: { '>': requestedSeason.startTime },
         endTime: { '<': requestedSeason.endTime },
       });
       const requestedSeasonGames = Game.find({
-        select: ['updatedAt', 'p0', 'p1'],
+        select: [ 'updatedAt', 'p0', 'p1' ],
         where: {
           status: gameService.GameStatus.FINISHED,
           updatedAt: {
@@ -207,7 +207,7 @@ module.exports = {
           },
         },
       });
-      const [users, matches, games] = await Promise.all([
+      const [ users, matches, games ] = await Promise.all([
         allUsers,
         requestedSeasonMatches,
         requestedSeasonGames,

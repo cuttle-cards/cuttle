@@ -16,7 +16,7 @@ export async function handleInGameEvents(evData) {
 
   // No-op if the event's gameId doesn't match the url
   if (
-    ![SocketEvent.REMATCH, SocketEvent.NEW_GAME_FOR_REMATCH, SocketEvent.JOIN_REMATCH].includes(
+    ![ SocketEvent.REMATCH, SocketEvent.NEW_GAME_FOR_REMATCH, SocketEvent.JOIN_REMATCH ].includes(
       evData.change,
     ) &&
     (!urlGameId || Number(urlGameId) !== eventGameId)
@@ -142,7 +142,7 @@ export async function handleInGameEvents(evData) {
       // ignore if not currently in/spectating relevant game
       if (
         Number(urlGameId) !== evData.oldGameId ||
-        ![ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE].includes(currentRoute.name)
+        ![ ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE ].includes(currentRoute.name)
       ) {
         return;
       }

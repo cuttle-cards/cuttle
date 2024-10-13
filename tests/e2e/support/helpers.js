@@ -72,7 +72,7 @@ export function printCard(card) {
       break;
   }
   res += ' of ';
-  const suits = ['♣️', '♦️', '♥️', '♠️'];
+  const suits = [ '♣️', '♦️', '♥️', '♠️' ];
   res += suits[card.suit];
   return res;
 }
@@ -187,10 +187,10 @@ function pointsToWin(kingCount) {
   }
 }
 
-export function assertSnackbarError(message, snackName = 'game') {
+export function assertSnackbar(message, color = 'error', snackName = 'game') {
   cy.get(`[data-cy=${snackName}-snackbar] .v-snackbar__wrapper`)
     .should('be.visible')
-    .should('have.class', 'bg-error')
+    .should('have.class', `bg-${color}`)
     .find(`.v-snackbar__content`)
     .should('contain', message)
     .get('[data-cy=close-snackbar]')
@@ -209,7 +209,7 @@ export function playOutOfTurn(moveName) {
     .should('contain', "It's not your turn")
     .click({ force: true });
   // Back end should fire error that move is illegal after click is forced
-  assertSnackbarError(SnackBarError.NOT_YOUR_TURN);
+  assertSnackbar(SnackBarError.NOT_YOUR_TURN);
   cy.log(`Correctly prevented attempt to play ${moveName} out of turn`);
 }
 
@@ -277,7 +277,7 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
     } else {
       cy.get('[data-opponent-hand-card]').should('not.exist');
     }
-    if (playerHasGlasses || spectating) {
+    if (playerHasGlasses || spectating || fixture.topCard === null) {
       fixture.p1Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
@@ -293,7 +293,7 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
     } else {
       cy.get('[data-opponent-hand-card]').should('not.exist');
     }
-    if (playerHasGlasses) {
+    if (playerHasGlasses || fixture.topCard === null) {
       fixture.p0Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });

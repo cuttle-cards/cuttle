@@ -131,7 +131,7 @@ export default {
       this.loadingData = false;
       return next();
     }
-    [this.selectedSeason] = this.seasons;
+    [ this.selectedSeason ] = this.seasons;
     this.loadingData = false;
     next();
   },
@@ -201,7 +201,7 @@ export default {
         return;
       }
       this.loadingData = false;
-      [this.selectedSeason] = this.seasons;
+      [ this.selectedSeason ] = this.seasons;
     });
   },
   methods: {
@@ -217,7 +217,7 @@ export default {
       }
 
       // otherwise download rankings for selected season
-      io.socket.get(`/api/stats/seasons/${seasonId}`, ({gameCounts,rankings, uniquePlayersPerWeek}) => {
+      io.socket.get(`/api/stats/seasons/${seasonId}`, ({ gameCounts,rankings, uniquePlayersPerWeek }) => {
         if (!rankings) {
           this.error = true;
           this.selectedSeason = null;

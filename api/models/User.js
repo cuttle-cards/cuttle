@@ -26,7 +26,7 @@ module.exports = {
     pNum: {
       type: 'number',
       allowNull: true,
-      isIn: [0, 1],
+      isIn: [ 0, 1 ],
     },
     hand: {
       collection: 'card',

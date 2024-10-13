@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError } from '../../../support/helpers';
+import { assertGameState, assertSnackbar } from '../../../support/helpers';
 import { Card } from '../../../fixtures/cards';
 import { SnackBarError } from '../../../fixtures/snackbarError';
 
@@ -9,13 +9,12 @@ describe('FOURS', () => {
     });
 
     it('Plays a 4 to make opponent discard two cards of their choice', () => {
-      cy.skipOnGameStateApi();
       // Set Up
       cy.loadGameFixture(0, {
-        p0Hand: [Card.FOUR_OF_SPADES, Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_SPADES, Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -26,24 +25,23 @@ describe('FOURS', () => {
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
 
       assertGameState(0, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_DIAMONDS],
+        p1Hand: [ Card.ACE_OF_DIAMONDS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS],
+        scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS ],
       });
     });
 
     it('Plays a 4 to make opponent discard their only two cards', () => {
-      cy.skipOnGameStateApi();
       // Set Up
       cy.loadGameFixture(0, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -63,18 +61,17 @@ describe('FOURS', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+        scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
       });
     });
 
     it('Plays a 4 to make opponent discard the last card in their hand', () => {
-      cy.skipOnGameStateApi();
       // Set Up
       cy.loadGameFixture(0, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_HEARTS],
+        p1Hand: [ Card.ACE_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -94,14 +91,14 @@ describe('FOURS', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS],
+        scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS ],
       });
     });
 
     it('Prevents playing a 4 when opponent has no cards in hand', () => {
       // Set Up
       cy.loadGameFixture(0, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
@@ -114,10 +111,10 @@ describe('FOURS', () => {
       cy.get('[data-player-hand-card=4-0]').click(); // four of clubs
       cy.get('[data-move-choice=oneOff]').click();
 
-      assertSnackbarError(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
+      assertSnackbar(SnackBarError.ONE_OFF.FOUR_EMPTY_HAND);
 
       assertGameState(0, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
@@ -127,13 +124,12 @@ describe('FOURS', () => {
     });
 
     it('Prevents opponent from discarding illegally', () => {
-      cy.skipOnGameStateApi();
       // Set Up
       cy.loadGameFixture(0, {
-        p0Hand: [Card.FOUR_OF_SPADES, Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_SPADES, Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -146,13 +142,12 @@ describe('FOURS', () => {
       cy.discardOpponent(); // Discard with no selection
       cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
       assertGameState(0, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_SPADES],
       });
       cy.log('Successfully prevented discarding with no cards selected');
 
@@ -161,13 +156,12 @@ describe('FOURS', () => {
       cy.discardOpponent(Card.ACE_OF_HEARTS); // Only 1 card selected (should have 2)
       cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
       assertGameState(0, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_SPADES],
       });
       cy.log('Successfully prevented discarding only 1 card');
 
@@ -176,13 +170,12 @@ describe('FOURS', () => {
       cy.discardOpponent(Card.ACE_OF_HEARTS, Card.TEN_OF_SPADES); // Ten of spades not in hand
       cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
       assertGameState(0, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_SPADES],
       });
       cy.log('Successfully prevented discarding a card not in hand');
 
@@ -190,13 +183,13 @@ describe('FOURS', () => {
       cy.discardOpponent(Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS);
       cy.get('#waiting-for-opponent-discard-scrim').should('not.be.exist');
       assertGameState(0, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.TEN_OF_HEARTS],
+        p1Hand: [ Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+        scrap: [ Card.FOUR_OF_SPADES, Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
       });
     });
   });
@@ -207,12 +200,11 @@ describe('FOURS', () => {
     });
 
     it('Discards two cards when opponent plays a four, repeated fours', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.FOUR_OF_CLUBS, Card.FOUR_OF_DIAMONDS],
+        p0Hand: [ Card.FOUR_OF_CLUBS, Card.FOUR_OF_DIAMONDS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
+        p1Hand: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
         topCard: Card.SIX_OF_DIAMONDS,
@@ -235,13 +227,13 @@ describe('FOURS', () => {
       cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
 
       assertGameState(1, {
-        p0Hand: [Card.FOUR_OF_DIAMONDS],
+        p0Hand: [ Card.FOUR_OF_DIAMONDS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.TEN_OF_HEARTS],
+        p1Hand: [ Card.TEN_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS],
+        scrap: [ Card.FOUR_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS ],
         topCard: Card.SIX_OF_DIAMONDS,
       });
 
@@ -263,10 +255,9 @@ describe('FOURS', () => {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.TEN_OF_HEARTS, Card.SIX_OF_DIAMONDS],
+        p1Hand: [ Card.TEN_OF_HEARTS, Card.SIX_OF_DIAMONDS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.FOUR_OF_SPADES, Card.FOUR_OF_DIAMONDS],
       });
       // Properly discard as expected
       cy.log('Choosing two cards to discard - second time');
@@ -294,12 +285,11 @@ describe('FOURS', () => {
     });
 
     it('Discards last card when FOURd with one card in hand', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_DIAMONDS],
+        p1Hand: [ Card.ACE_OF_DIAMONDS ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -324,7 +314,7 @@ describe('FOURS', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
+        scrap: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
       });
     });
   });

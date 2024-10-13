@@ -8,7 +8,7 @@
  */
 module.exports = function (req, res, next) {
   // Only allow the request if running in development or staging environment
-  if (['development', 'staging'].includes(sails.config.environment)) {
+  if ([ 'development', 'staging' ].includes(sails.config.environment)) {
     return next();
   }
   return res.forbidden({

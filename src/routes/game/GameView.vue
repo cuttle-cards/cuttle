@@ -397,6 +397,7 @@
       <BaseSnackbar
         v-model="showSnackbar"
         :message="snackBarMessage"
+        :color="snackBarColor"
         data-cy="game-snackbar"
         @clear="clearSnackBar"
       />
@@ -455,6 +456,7 @@ export default {
     return {
       showSnackbar: false,
       snackBarMessage: '',
+      snackBarColor: 'error',
       selectionIndex: null, // when select a card set this value
       targeting: false,
       targetingMoveName: null,
@@ -477,9 +479,6 @@ export default {
       return {
         zIndex: this.isSpectating ? 2411 : 3 // Allows spectators to access game menu wrapper in any moment
       };
-    },
-    showOpponentHand() {
-      return this.gameStore.hasGlassesEight || this.isSpectating;
     },
 
     ////////////////////
@@ -672,10 +671,10 @@ export default {
               opponentJackIds.push(card.attachments[card.attachments.length - 1].id);
             }
           });
-          return [...opponentFaceCardIds, ...opponentJackIds];
+          return [ ...opponentFaceCardIds, ...opponentJackIds ];
         }
         case 1:
-          return [this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id];
+          return [ this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id ];
         default:
           return [];
       }
@@ -695,10 +694,10 @@ export default {
           return this.gameStore.opponent.points.map((validTarget) => validTarget.id);
         case 'targetedOneOff': {
           // Twos and nines can target face cards
-          let res = [...this.validFaceCardTargetIds];
+          let res = [ ...this.validFaceCardTargetIds ];
           // Nines can additionally target points if opponent has no queens
           if (selectedCard.rank === 9 && this.gameStore.opponentQueenCount === 0) {
-            res = [...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id)];
+            res = [ ...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id) ];
           }
           return res;
         }
@@ -737,6 +736,9 @@ export default {
       }
       return null;
     },
+    showOpponentHand() {
+      return this.gameStore.hasGlassesEight || this.isSpectating || !this.topCard;
+    },
   },
   watch: {
     logs: function () {
@@ -744,6 +746,11 @@ export default {
         this.scrollToLastLog();
       });
     },
+    topCard(newTopCard, oldTopCard) {
+      if (this.gameStore.id && oldTopCard && !newTopCard) {
+        this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
+      }
+    }
   },
   async mounted() {
     if (!this.authStore.authenticated) {
@@ -765,7 +772,13 @@ export default {
     handleError(messageKey) {
       this.snackBarMessage = this.t(messageKey);
       this.showSnackbar = true;
+      this.snackBarColor = 'error';
       this.clearSelection();
+    },
+    showCustomSnackbarMessage(messageKey) {
+      this.snackBarMessage = this.t(messageKey);
+      this.showSnackbar = true;
+      this.snackBarColor = 'surface-1';
     },
     clearOverlays() {
       this.nineTargetIndex = null;
@@ -847,59 +860,60 @@ export default {
     //////////////////
     // Player Moves //
     //////////////////
-    drawCard() {
+    async drawCard() {
       if (!this.gameStore.resolvingSeven) {
-        if (this.deckLength > 0) {
-          this.gameStore
-            .requestDrawCard()
-            .then(this.clearSelection)
-            .catch((messageKey) => {
-              this.handleError(messageKey);
-            });
-        } else {
-          this.gameStore
-            .requestPass()
-            .then(this.clearSelection)
-            .catch((messageKey) => {
-              this.handleError(messageKey);
-            });
+        try {
+          const drawCard = this.deckLength > 0;
+          if (!drawCard) {
+            await this.gameStore.requestPass();
+          } else {
+            await this.gameStore.requestDrawCard();
+          }
+        } catch (messageKey) {
+          this.handleError(messageKey);
+        } finally {
+          this.clearSelection();
         }
       }
     },
-    playPoints() {
+    async playPoints() {
       this.clearOverlays();
-      if (this.gameStore.resolvingSeven) {
-        const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore
-          .requestPlayPointsSeven({
+      try {
+        const { resolvingSeven } = this.gameStore;
+        if (!resolvingSeven) {
+          await this.gameStore.requestPlayPoints(this.selectedCard.id);
+        } else {
+          const deckIndex = this.topCardIsSelected ? 0 : 1;
+          await this.gameStore.requestPlayPointsSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
-          })
-          .then(this.clearSelection)
-          .catch(this.handleError);
-      } else {
-        this.gameStore
-          .requestPlayPoints(this.selectedCard.id)
-          .then(this.clearSelection)
-          .catch(this.handleError);
+          });
+        }
+      } catch (error) {
+        this.handleError(error);
+      } finally {
+        this.clearSelection();
       }
-    },
-    playFaceCard() {
+},
+    async playFaceCard() {
       this.clearOverlays();
-      if (this.gameStore.resolvingSeven) {
+      try {
+        const { resolvingSeven } = this.gameStore;
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore
+        if (!resolvingSeven) {
+          await this.gameStore
+            .requestPlayFaceCard(this.selectedCard.id);
+        } else {
+          await this.gameStore
           .requestPlayFaceCardSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
-          })
-          .then(this.clearSelection)
-          .catch(this.handleError);
-      } else {
-        this.gameStore
-          .requestPlayFaceCard(this.selectedCard.id)
-          .then(this.clearSelection)
-          .catch(this.handleError);
+          });
+        }
+      } catch(messageKey){
+        this.handleError(messageKey);
+      } finally {
+        this.clearSelection();
       }
     },
     scuttle(targetIndex) {
@@ -1548,6 +1562,11 @@ export default {
   .field-points {
     .field-point-container {
       width: auto;
+
+      .jacks-container {
+        right: -25%;
+        width: auto;
+      }
     }
   }
 

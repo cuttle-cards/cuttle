@@ -13,13 +13,13 @@ describe('FIVES', () => {
         // Setup
         cy.loadGameFixture(0, {
           // Player is P0
-          p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS],
-          p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-          p0FaceCards: [Card.KING_OF_SPADES],
+          p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS ],
+          p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+          p0FaceCards: [ Card.KING_OF_SPADES ],
           // Opponent is P1
-          p1Hand: [Card.ACE_OF_HEARTS],
-          p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          p1FaceCards: [Card.KING_OF_HEARTS],
+          p1Hand: [ Card.ACE_OF_HEARTS ],
+          p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+          p1FaceCards: [ Card.KING_OF_HEARTS ],
           // Deck
           topCard: Card.THREE_OF_CLUBS,
           secondCard: Card.EIGHT_OF_HEARTS,
@@ -42,7 +42,7 @@ describe('FIVES', () => {
         // Setup: player has one card in hand and only top & second card are in deck
         cy.loadGameFixture(0, {
           // Player is P0
-          p0Hand: [Card.FIVE_OF_CLUBS],
+          p0Hand: [ Card.FIVE_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
           // Opponent is P1
@@ -52,7 +52,7 @@ describe('FIVES', () => {
           // Deck
           topCard: Card.THREE_OF_CLUBS,
           secondCard: Card.EIGHT_OF_HEARTS,
-          deck: [Card.SEVEN_OF_CLUBS],
+          deck: [ Card.SEVEN_OF_CLUBS ],
         });
         cy.get('#deck').should('contain', '(3)');
 
@@ -62,13 +62,13 @@ describe('FIVES', () => {
         cy.get('[data-cy=submit-five-dialog]').click();
 
         assertGameState(0, {
-          p0Hand: [Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_CLUBS],
+          p0Hand: [ Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
           p1Hand: [],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [Card.FIVE_OF_CLUBS],
+          scrap: [ Card.FIVE_OF_CLUBS ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -82,7 +82,7 @@ describe('FIVES', () => {
         cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
-          p0Hand: [Card.FIVE_OF_CLUBS],
+          p0Hand: [ Card.FIVE_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
           // Opponent is P1
@@ -100,13 +100,13 @@ describe('FIVES', () => {
         cy.get('[data-cy=submit-five-dialog]').click();
 
         assertGameState(0, {
-          p0Hand: [Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS],
+          p0Hand: [ Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS ],
           p0Points: [],
           p0FaceCards: [],
           p1Hand: [],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [Card.FIVE_OF_CLUBS],
+          scrap: [ Card.FIVE_OF_CLUBS ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -132,12 +132,12 @@ describe('FIVES', () => {
           ],
           p0Points: [],
           p0FaceCards: [],
-          p1Hand: [Card.TWO_OF_HEARTS],
+          p1Hand: [ Card.TWO_OF_HEARTS ],
           p1Points: [],
           p1FaceCards: [],
           topCard: Card.THREE_OF_CLUBS,
           secondCard: Card.EIGHT_OF_HEARTS,
-          deck: [Card.ACE_OF_DIAMONDS],
+          deck: [ Card.ACE_OF_DIAMONDS ],
         });
         cy.get('#deck').should('contain', '(3)');
 
@@ -160,10 +160,10 @@ describe('FIVES', () => {
           ],
           p0Points: [],
           p0FaceCards: [],
-          p1Hand: [Card.TWO_OF_HEARTS],
+          p1Hand: [ Card.TWO_OF_HEARTS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [Card.FIVE_OF_CLUBS, Card.FIVE_OF_SPADES],
+          scrap: [ Card.FIVE_OF_CLUBS, Card.FIVE_OF_SPADES ],
           topCard: Card.ACE_OF_DIAMONDS,
           secondCard: null,
           deck: [],
@@ -175,7 +175,7 @@ describe('FIVES', () => {
         cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
-          p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS],
+          p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
           // Opponent is P1
@@ -199,13 +199,13 @@ describe('FIVES', () => {
         cy.get('[data-cy=submit-five-dialog]').click();
 
         assertGameState(0, {
-          p0Hand: [Card.FIVE_OF_HEARTS, Card.EIGHT_OF_HEARTS],
-          p0Points: [Card.TWO_OF_CLUBS],
+          p0Hand: [ Card.FIVE_OF_HEARTS, Card.EIGHT_OF_HEARTS ],
+          p0Points: [ Card.TWO_OF_CLUBS ],
           p0FaceCards: [],
-          p1Hand: [Card.THREE_OF_CLUBS],
+          p1Hand: [ Card.THREE_OF_CLUBS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS],
+          scrap: [ Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -216,11 +216,11 @@ describe('FIVES', () => {
         cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
-          p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS],
+          p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
           // Opponent is P1
-          p1Hand: [Card.FOUR_OF_CLUBS],
+          p1Hand: [ Card.FOUR_OF_CLUBS ],
           p1Points: [],
           p1FaceCards: [],
         });
@@ -248,7 +248,7 @@ describe('FIVES', () => {
         cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
-          p0Hand: [Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS],
+          p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
           // Opponent is P1
@@ -264,13 +264,13 @@ describe('FIVES', () => {
         cy.get('[data-cy=submit-five-dialog]').click();
 
         assertGameState(0, {
-          p0Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_CLUBS],
+          p0Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
           p1Hand: [],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS],
+          scrap: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -283,7 +283,7 @@ describe('FIVES', () => {
         cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
-          p0Hand: [Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS],
+          p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
           // Opponent is P1
@@ -292,7 +292,7 @@ describe('FIVES', () => {
           p1FaceCards: [],
           topCard: Card.FOUR_OF_CLUBS,
           secondCard: Card.ACE_OF_HEARTS,
-          deck: [Card.TWO_OF_HEARTS],
+          deck: [ Card.TWO_OF_HEARTS ],
         });
         cy.get('#deck').click();
         cy.drawCardOpponent();
@@ -302,13 +302,13 @@ describe('FIVES', () => {
         cy.get('[data-cy=submit-five-dialog]').click();
 
         assertGameState(0, {
-          p0Hand: [Card.FOUR_OF_CLUBS, Card.TWO_OF_HEARTS],
+          p0Hand: [ Card.FOUR_OF_CLUBS, Card.TWO_OF_HEARTS ],
           p0Points: [],
           p0FaceCards: [],
-          p1Hand: [Card.ACE_OF_HEARTS],
+          p1Hand: [ Card.ACE_OF_HEARTS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS],
+          scrap: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -329,7 +329,7 @@ describe('FIVES', () => {
           p1FaceCards: [],
           topCard: Card.FIVE_OF_SPADES,
           secondCard: Card.TWO_OF_HEARTS,
-          deck: [Card.THREE_OF_CLUBS],
+          deck: [ Card.THREE_OF_CLUBS ],
         });
         cy.get('#deck').click();
         cy.drawCardOpponent();
@@ -338,13 +338,13 @@ describe('FIVES', () => {
         cy.get('[data-cy=submit-five-dialog]').click();
 
         assertGameState(0, {
-          p0Hand: [Card.THREE_OF_CLUBS],
+          p0Hand: [ Card.THREE_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
-          p1Hand: [Card.TWO_OF_HEARTS],
+          p1Hand: [ Card.TWO_OF_HEARTS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [Card.FIVE_OF_SPADES],
+          scrap: [ Card.FIVE_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -358,7 +358,7 @@ describe('FIVES', () => {
 
         cy.loadGameFixture(0, {
           // Player is P0
-          p0Hand: [Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS],
+          p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
           // Opponent is P1
@@ -401,7 +401,7 @@ describe('FIVES', () => {
       it('Cannot resolve five without discarding when you have cards in hand', () => {
         cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
-          p0Hand: [Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS],
+          p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
           p0Points: [],
           p0FaceCards: [],
           p1Hand: [],
@@ -441,7 +441,7 @@ describe('FIVES', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         // Player is P0
-        p0Hand: [Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS],
+        p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         // Opponent is P1
@@ -451,7 +451,7 @@ describe('FIVES', () => {
         // Deck
         topCard: Card.THREE_OF_CLUBS,
         secondCard: Card.EIGHT_OF_HEARTS,
-        deck: [Card.SEVEN_OF_DIAMONDS],
+        deck: [ Card.SEVEN_OF_DIAMONDS ],
       });
       cy.playOneOffOpponent(Card.FIVE_OF_SPADES);
 
@@ -475,7 +475,7 @@ describe('FIVES', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS],
+        scrap: [ Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS ],
         topCard: null,
         secondCard: null,
         deck: [],
@@ -486,7 +486,7 @@ describe('FIVES', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         // Player is P0
-        p0Hand: [Card.FIVE_OF_SPADES],
+        p0Hand: [ Card.FIVE_OF_SPADES ],
         p0Points: [],
         p0FaceCards: [],
         // Opponent is P1
@@ -496,7 +496,7 @@ describe('FIVES', () => {
         // Deck
         topCard: Card.THREE_OF_CLUBS,
         secondCard: Card.EIGHT_OF_HEARTS,
-        deck: [Card.SEVEN_OF_DIAMONDS],
+        deck: [ Card.SEVEN_OF_DIAMONDS ],
       });
 
       cy.playOneOffOpponent(Card.FIVE_OF_SPADES);
@@ -506,13 +506,13 @@ describe('FIVES', () => {
       cy.get('#waiting-for-opponent-discard-scrim').should('contain', 'Opponent Skips Discarding');
       cy.resolveFiveOpponent();
       assertGameState(1, {
-        p0Hand: [Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+        p0Hand: [ Card.THREE_OF_CLUBS, Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.FIVE_OF_SPADES],
+        scrap: [ Card.FIVE_OF_SPADES ],
         topCard: null,
         secondCard: null,
         deck: [],

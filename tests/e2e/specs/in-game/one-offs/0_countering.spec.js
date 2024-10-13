@@ -9,13 +9,13 @@ describe('Countering One-Offs', () => {
   it('Displays the cannot counter modal and resolves stack when opponent plays a one-off if player has no twos', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
-      p1Hand: [Card.ACE_OF_HEARTS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Opponent plays ace of clubs
@@ -27,12 +27,12 @@ describe('Countering One-Offs', () => {
       .click();
 
     assertGameState(1, {
-      p0Hand: [Card.FOUR_OF_SPADES],
+      p0Hand: [ Card.FOUR_OF_SPADES ],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [
         Card.TEN_OF_SPADES,
         Card.ACE_OF_SPADES,
@@ -46,13 +46,13 @@ describe('Countering One-Offs', () => {
   it('Counters one-off with a two', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
-      p1Hand: [Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Opponent plays ace of clubs as one-off
@@ -66,27 +66,27 @@ describe('Countering One-Offs', () => {
     cy.resolveOpponent();
     assertGameState(1, {
       // Opponent is P0
-      p0Hand: [Card.FOUR_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.FOUR_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
-      p1Hand: [Card.ACE_OF_HEARTS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.TWO_OF_SPADES, Card.ACE_OF_CLUBS],
+      p1Hand: [ Card.ACE_OF_HEARTS ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.TWO_OF_SPADES, Card.ACE_OF_CLUBS ],
     });
   });
 
   it('Declining option to counter resolves stack', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
-      p1Hand: [Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
@@ -94,12 +94,12 @@ describe('Countering One-Offs', () => {
     cy.get('#counter-dialog').should('be.visible').get('[data-cy=decline-counter-resolve]').click();
 
     assertGameState(1, {
-      p0Hand: [Card.FOUR_OF_SPADES],
+      p0Hand: [ Card.FOUR_OF_SPADES ],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [
         Card.TEN_OF_SPADES,
         Card.ACE_OF_SPADES,
@@ -114,13 +114,13 @@ describe('Countering One-Offs', () => {
     // Setup
     cy.loadGameFixture(1, {
       // Opponent is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
-      p1Hand: [Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Opponent plays ace of clubs as one-off
@@ -134,13 +134,13 @@ describe('Countering One-Offs', () => {
 
     assertGameState(1, {
       // Opponent is P0
-      p0Hand: [Card.FOUR_OF_SPADES],
+      p0Hand: [ Card.FOUR_OF_SPADES ],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
-      p1Hand: [Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [
         Card.ACE_OF_CLUBS,
         Card.TEN_OF_SPADES,
@@ -155,13 +155,13 @@ describe('Countering One-Offs', () => {
     // Setup
     cy.loadGameFixture(1, {
       // Opponent is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
-      p1Hand: [Card.TWO_OF_HEARTS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.TWO_OF_HEARTS ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Opponent plays ace of clubs as one-off
@@ -182,11 +182,11 @@ describe('Countering One-Offs', () => {
       // Opponent is P0
       p0Hand: [],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
       p1Hand: [],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [
         Card.ACE_OF_CLUBS,
         Card.TWO_OF_HEARTS,
@@ -202,13 +202,13 @@ describe('Countering One-Offs', () => {
   it('Triple counters successfully', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
-      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Opponent plays ace of clubs as one-off
@@ -237,26 +237,26 @@ describe('Countering One-Offs', () => {
     assertGameState(1, {
       // Opponent is P0
       p0Hand: [],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
       p1Hand: [],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.ACE_OF_CLUBS, Card.TWO_OF_HEARTS, Card.TWO_OF_CLUBS, Card.TWO_OF_SPADES],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.ACE_OF_CLUBS, Card.TWO_OF_HEARTS, Card.TWO_OF_CLUBS, Card.TWO_OF_SPADES ],
     });
   });
 
   it('Quadruple counters successfully', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
-      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Opponent plays ace of clubs as one-off
@@ -286,11 +286,11 @@ describe('Countering One-Offs', () => {
       // Opponent is P0
       p0Hand: [],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Player is P1
       p1Hand: [],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [
         Card.ACE_OF_CLUBS,
         Card.TWO_OF_HEARTS,
@@ -308,13 +308,13 @@ describe('Countering One-Offs', () => {
   it('Cannot Counter When Opponent Has Queen', () => {
     cy.loadGameFixture(1, {
       // Opponent is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.QUEEN_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.QUEEN_OF_CLUBS ],
       // Player is P1
-      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Opponent plays ace of clubs as one-off
@@ -332,22 +332,21 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.setupGameAsP0();
   });
 
-  it('Can counter a three', () => {
-    cy.skipOnGameStateApi();
+  it('Increments turn when one-off fizzles', () => {
     cy.loadGameFixture(0, {
       // Player is P0
-      p0Hand: [Card.FIVE_OF_CLUBS, Card.FOUR_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.THREE_OF_CLUBS, Card.FOUR_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Opponent is P1
-      p1Hand: [Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES, Card.SIX_OF_CLUBS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.QUEEN_OF_CLUBS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TWO_OF_SPADES, Card.SIX_OF_CLUBS ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [],
+      scrap: [ Card.QUEEN_OF_CLUBS ],
     });
 
     // Player plays three of clubs as one-off
-    cy.get('[data-player-hand-card=5-0]').click();
+    cy.get('[data-player-hand-card=3-0]').click();
     cy.get('[data-move-choice=oneOff]').click();
 
     // Opponent counters and player resolves
@@ -355,43 +354,35 @@ describe('Countering One-Offs P0 Perspective', () => {
     cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
 
     // No longer player turn
-    cy.get('[data-player-hand-card=4-3]').click(); // king of clubs
+    cy.get('[data-player-hand-card=4-3]').click(); // Four of Spades
     playOutOfTurn('points');
 
-    // Opponent plays a Six
-    cy.playOneOffOpponent(Card.SIX_OF_CLUBS);
-    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+    // Opponent plays a six
+    cy.playPointsOpponent(Card.SIX_OF_CLUBS);
 
     assertGameState(0, {
       // Player is P0
-      p0Hand: [Card.FOUR_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [],
+      p0Hand: [ Card.FOUR_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Opponent is P1
-      p1Hand: [Card.ACE_OF_HEARTS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.ACE_OF_HEARTS ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.SIX_OF_CLUBS ],
       p1FaceCards: [],
-      scrap: [
-        Card.QUEEN_OF_CLUBS,
-        Card.FIVE_OF_CLUBS,
-        Card.KING_OF_SPADES,
-        Card.SIX_OF_CLUBS,
-        Card.KING_OF_HEARTS,
-        Card.TWO_OF_SPADES,
-      ],
+      scrap: [ Card.QUEEN_OF_CLUBS, Card.THREE_OF_CLUBS, Card.TWO_OF_SPADES ],
     });
   });
 
   it('Quadruple counters successfully - P0 Perspective', () => {
     cy.loadGameFixture(0, {
       // Player is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Opponent is P1
-      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Player plays ace of clubs as one-off
@@ -429,11 +420,11 @@ describe('Countering One-Offs P0 Perspective', () => {
       // Player is P0
       p0Hand: [],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       // Opponent is P1
       p1Hand: [],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [
         Card.ACE_OF_CLUBS,
         Card.TWO_OF_HEARTS,
@@ -451,13 +442,13 @@ describe('Countering One-Offs P0 Perspective', () => {
   it('Cannot Counter When Opponent Has Queen, dialog message', () => {
     cy.loadGameFixture(0, {
       // Player is P0
-      p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
       p0FaceCards: [],
       // Opponent is P1
-      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS, Card.QUEEN_OF_CLUBS],
+      p1Hand: [ Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS, Card.QUEEN_OF_CLUBS ],
     });
 
     // Player plays ace of clubs as one-off
@@ -487,7 +478,7 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
     it('Displays "Opponent May Counter" when player had neither glasses nor a queen', () => {
       cy.loadGameFixture(0, {
         // Player is P0
-        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         // Opponent is P1
@@ -523,11 +514,11 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
     it('Displays "Opponent May Counter" when player has glasses but opponent has a two in hand', () => {
       cy.loadGameFixture(0, {
         // Player is P0
-        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
         p0Points: [],
-        p0FaceCards: [Card.EIGHT_OF_DIAMONDS],
+        p0FaceCards: [ Card.EIGHT_OF_DIAMONDS ],
         // Opponent is P1
-        p1Hand: [Card.TWO_OF_SPADES],
+        p1Hand: [ Card.TWO_OF_SPADES ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -545,11 +536,11 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
     it('Displays "Opponent Must Resolve" when player has a queen', () => {
       cy.loadGameFixture(0, {
         // Player is P0
-        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
         p0Points: [],
-        p0FaceCards: [Card.QUEEN_OF_HEARTS],
+        p0FaceCards: [ Card.QUEEN_OF_HEARTS ],
         // Opponent is P1
-        p1Hand: [Card.TWO_OF_SPADES],
+        p1Hand: [ Card.TWO_OF_SPADES ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -565,9 +556,9 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
     it('Displays "Opponent Must Resolve" when player has glasses while opponent does not have a two in hand', () => {
       cy.loadGameFixture(0, {
         // Player is P0
-        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
         p0Points: [],
-        p0FaceCards: [Card.EIGHT_OF_DIAMONDS],
+        p0FaceCards: [ Card.EIGHT_OF_DIAMONDS ],
         // Opponent is P1
         p1Hand: [],
         p1Points: [],
@@ -585,11 +576,11 @@ describe('Opponent May Counter vs Opponent Must Resolve', () => {
     it('Display "Opponent Must Resolve" when player has a queen + glasses and their opponent does not have a 2 in hand', () => {
       cy.loadGameFixture(0, {
         // Player is P0
-        p0Hand: [Card.ACE_OF_CLUBS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
         p0Points: [],
-        p0FaceCards: [Card.EIGHT_OF_DIAMONDS, Card.QUEEN_OF_HEARTS],
+        p0FaceCards: [ Card.EIGHT_OF_DIAMONDS, Card.QUEEN_OF_HEARTS ],
         // Opponent is P1
-        p1Hand: [Card.TWO_OF_HEARTS],
+        p1Hand: [ Card.TWO_OF_HEARTS ],
         p1Points: [],
         p1FaceCards: [],
       });

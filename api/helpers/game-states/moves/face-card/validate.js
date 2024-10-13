@@ -50,7 +50,7 @@ module.exports = {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
-      if (![8, 12, 13].includes(playedCard.rank)) {
+      if (![ 8, 12, 13 ].includes(playedCard.rank)) {
         throw new Error('game.snackbar.faceCard.withoutTarget');
       }
 

@@ -30,10 +30,10 @@ describe('Creating And Updating Ranked Matches', () => {
     cy.visit('/');
 
     // Set up season
-    const [, diamondsSeason] = seasonFixtures;
+    const [ , diamondsSeason ] = seasonFixtures;
     diamondsSeason.startTime = dayjs.utc().subtract(2, 'week').subtract(1, 'day').toDate();
     diamondsSeason.endTime = dayjs.utc().add(11, 'weeks').toDate();
-    cy.loadSeasonFixture([diamondsSeason]);
+    cy.loadSeasonFixture([ diamondsSeason ]);
     // Sign up to players and store their id's for comparison to match data
     cy.signupOpponent(playerOne).as('playerOneId');
     cy.signupOpponent(playerThree).as('playerThreeId');
@@ -58,7 +58,7 @@ describe('Creating And Updating Ranked Matches', () => {
           endTime: dayjs.utc().subtract(1, 'hour').toDate(),
         };
 
-        cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);
+        cy.loadMatchFixtures([ oldMatchBetweenPlayers, currentMatchWithDifferentOpponent ]);
       });
     // Log in as playerOne
     cy.loginPlayer(playerOne);
@@ -123,7 +123,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // There should now be one match for the two players
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [, , currentMatch] = res.body;
+      const [ , , currentMatch ] = res.body;
       validateMatchResult(currentMatch, 1, this.playerOneId, this.playerTwoId);
       expect(currentMatch.endTime).to.eq(null);
       validateGameResult(currentMatch.games[0], this.playerOneId); // P0 should have won the first game
@@ -132,10 +132,10 @@ describe('Creating And Updating Ranked Matches', () => {
     // 2nd game: Player is now p0 and loses by points
     cy.setupGameAsP1(true, true);
     cy.loadGameFixture(1, {
-      p0Hand: [Card.ACE_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.THREE_OF_CLUBS],
+      p1Hand: [ Card.THREE_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -155,7 +155,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // The match for these two players should now have two games
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [, , currentMatch] = res.body;
+      const [ , , currentMatch ] = res.body;
       validateMatchResult(currentMatch, 2, this.playerOneId, this.playerTwoId);
       validateGameResult(currentMatch.games[0], this.playerOneId); // P0 should have won the first game
       validateGameResult(currentMatch.games[1], this.playerTwoId); // P1 should have won the first game
@@ -186,7 +186,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // Validate match data
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [, , currentMatch] = res.body;
+      const [ , , currentMatch ] = res.body;
       validateMatchResult(currentMatch, 3, this.playerOneId, this.playerTwoId);
       validateGameResult(currentMatch.games[2], null);
       cy.log('Match data is correct after third game', res);
@@ -195,8 +195,8 @@ describe('Creating And Updating Ranked Matches', () => {
     // 4th game: stalemate due to passing
     cy.setupGameAsP0(true, true);
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -220,7 +220,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // Validate match data
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [, , currentMatch] = res.body;
+      const [ , , currentMatch ] = res.body;
       validateMatchResult(currentMatch, 4, this.playerOneId, this.playerTwoId);
       validateGameResult(currentMatch.games[3], null);
       cy.log('Match data is correct after fourth game', res);
@@ -229,8 +229,8 @@ describe('Creating And Updating Ranked Matches', () => {
     // 5th Game: UNRANKED - does not affect match
     cy.setupGameAsP0(true, false);
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -254,7 +254,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // Validate match data
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [, , currentMatch] = res.body;
+      const [ , , currentMatch ] = res.body;
       validateMatchResult(currentMatch, 4, this.playerOneId, this.playerTwoId);
       validateGameResult(currentMatch.games[3], null);
       // Match is incomplete
@@ -265,8 +265,8 @@ describe('Creating And Updating Ranked Matches', () => {
     // 6th Game: player wins via points and wins match
     cy.setupGameAsP0(true, true);
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -284,7 +284,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // Validate match data
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [, , currentMatch] = res.body;
+      const [ , , currentMatch ] = res.body;
       validateMatchResult(currentMatch, 5, this.playerOneId, this.playerTwoId, this.playerOneId);
       validateGameResult(currentMatch.games[3], null);
       // Match is complete
@@ -300,7 +300,7 @@ describe('Creating And Updating Ranked Matches', () => {
     // Validate match data
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [oldMatch, , currentMatch] = res.body;
+      const [ oldMatch, , currentMatch ] = res.body;
 
       // Expect old match to have no games associated with it
       expect(oldMatch.games.length).to.eq(0);
