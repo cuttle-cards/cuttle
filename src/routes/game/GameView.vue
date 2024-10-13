@@ -645,7 +645,7 @@ export default {
       return this.selectionIndex !== null ? this.gameStore.player.hand[this.selectionIndex] : null;
     },
     turnText() {
-      return this.t(this.gameStore.isPlayersTurn ? 'gameStore.turn.yourTurn' : 'gameStore.turn.opponentTurn');
+      return this.t(this.gameStore.isPlayersTurn ? 'game.turn.yourTurn' : 'game.turn.opponentTurn');
     },
     validScuttleIds() {
       const selectedCard = this.gameStore.resolvingSeven ? this.cardSelectedFromDeck : this.selectedCard;
