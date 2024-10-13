@@ -20,7 +20,7 @@ module.exports = {
 
     // put Cards and Attachments into a one dimensional array
     const flattenCards = (cards) => {
-      return cards.flatMap((card) => [{ ...card, attachments: [] }, ...(card.attachments || [])]);
+      return cards.flatMap((card) => [ { ...card, attachments: [] }, ...(card.attachments || []) ]);
     };
 
     const allCards = new Set([
