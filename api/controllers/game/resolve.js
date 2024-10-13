@@ -219,11 +219,11 @@ module.exports = function (req, res) {
               case 'point': {
                 const targetCard = opPoints.find((point) => point.id === game.oneOffTarget.id);
                 if (!targetCard)
-                  {
-                    return Promise.reject({
-                      message: `Could not find target point card ${game.oneOffTarget.id} to return to opponent's hand`,
-                    });
-                  }
+                {
+                  return Promise.reject({
+                    message: `Could not find target point card ${game.oneOffTarget.id} to return to opponent's hand`,
+                  });
+                }
                 // Scrap all jacks attached to target
                 cardsToScrap = [ ...cardsToScrap, ...targetCard.attachments.map((jack) => jack.id) ];
                 updatePromises.push(

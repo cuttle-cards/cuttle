@@ -681,19 +681,19 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
           },
         });
       }),
-        function handleResponse(res, jwres) {
-          try {
-            if (env && jwres.statusCode === 404) {
-              throw new Error('This action is not supported yet in GameState API');
-            }
-            if (jwres.statusCode !== 200) {
-              throw new Error(jwres.error.message);
-            }
-            return res;
-          } catch (err) {
-            return err;
+      function handleResponse(res, jwres) {
+        try {
+          if (env && jwres.statusCode === 404) {
+            throw new Error('This action is not supported yet in GameState API');
           }
-        };
+          if (jwres.statusCode !== 200) {
+            throw new Error(jwres.error.message);
+          }
+          return res;
+        } catch (err) {
+          return err;
+        }
+      };
     });
 });
 
@@ -1130,7 +1130,8 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
       }
       // Play chosen card as one-off
       cy.get(`[data-player-hand-card=${card.rank}-${card.suit}]`).click();
-      cy.get('[data-move-choice=oneOff]').should('not.have.class', 'v-card--disabled').click();
+      cy.get('[data-move-choice=oneOff]').should('not.have.class', 'v-card--disabled')
+        .click();
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
