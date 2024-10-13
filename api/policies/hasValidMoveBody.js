@@ -89,8 +89,9 @@ module.exports = function (req, res, next) {
           return res.badRequest({ message: `${targetId} is not a valid targetId` });
         }
       }
-      return next();*/
+      return next();*/  
 
+      
     default:
       return res.badRequest({ message: `Invalid moveType of ${req.body.moveType}` });
   }

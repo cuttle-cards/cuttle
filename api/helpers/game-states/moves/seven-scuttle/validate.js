@@ -33,7 +33,6 @@ module.exports = {
 
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
-      const player = playedBy ? currentState.p1 : currentState.p0;
       const opponent = playedBy ? currentState.p0 : currentState.p1;
 
       const topTwoCards = currentState.deck.slice(0, 2);
@@ -58,14 +57,6 @@ module.exports = {
 
       if (playedCard.rank >= 11) {
         throw new Error('game.snackbar.sevenScuttle.mustPlaySeven');
-      }
-
-      if (targetCard.rank > playedCard.rank) {
-        throw new Error('game.snackbar.rankTooLow');
-      }
-
-      if (!playedCard) {
-        throw new Error('game.snackbar.global.playFromHand');
       }
 
       return exits.success();
