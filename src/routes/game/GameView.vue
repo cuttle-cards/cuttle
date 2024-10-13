@@ -31,7 +31,7 @@
       >
         <template #prepend>
           <v-list-item>
-            <h3>{{ t('gameStore.history.title') }}</h3>
+            <h3>{{ t('game.history.title') }}</h3>
             <template #append>
               <v-btn icon variant="text" @click.stop="showHistoryDrawer = !showHistoryDrawer">
                 <v-icon
@@ -125,7 +125,7 @@
 
       <!-- Opponent Score -->
       <h3 id="opponent-score" class="mb-3">
-        <span>{{ t('gameStore.score.points') }}: {{ gameStore.opponentPointTotal }}</span>
+        <span>{{ t('game.score.points') }}: {{ gameStore.opponentPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="opponentKingCount"
           :points-to-win="opponentPointsToWin"
@@ -147,13 +147,13 @@
                 ({{ deckLength }})
               </v-card-actions>
               <h1 v-if="deckLength === 0" id="empty-deck-text">
-                {{ t('gameStore.pass') }}
+                {{ t('game.pass') }}
               </h1>
             </template>
 
             <template v-if="gameStore.resolvingSeven">
               <p class="mt-2">
-                {{ t('gameStore.playFromDeck') }}
+                {{ t('game.playFromDeck') }}
               </p>
               <div class="d-flex">
                 <GameCard
@@ -189,10 +189,10 @@
                     data-cy="scrap-chosen-card"
                   />
                   <div v-else class="d-flex flex-column align-center scrapPile">
-                    <h3>{{ $t('gameStore.scrap') }}</h3>
+                    <h3>{{ $t('game.scrap') }}</h3>
                     <span>({{ scrap.length }})</span>
                     <v-btn variant="outlined" color="primary" class="mt-4">
-                      {{ $t('gameStore.view') }}
+                      {{ $t('game.view') }}
                     </v-btn>
                   </div>
                 </Transition>
@@ -299,7 +299,7 @@
         <div id="field-right">
           <div id="history" class="d-flex flex-column justify-start align-center elevation-10">
             <h3 class="history-title">
-              {{ $t('gameStore.history.title') }}
+              {{ $t('game.history.title') }}
             </h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
@@ -312,7 +312,7 @@
       </div>
 
       <h3 id="player-score">
-        <span>{{ t('gameStore.score.points') }}: {{ gameStore.playerPointTotal }}</span>
+        <span>{{ t('game.score.points') }}: {{ gameStore.playerPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="playerKingCount"
           :points-to-win="playerPointsToWin"
