@@ -17,6 +17,7 @@ module.exports = {
 
   fn: ({ gameState }, exits) => {
     const { p0, p1, deck, scrap, twos, oneOff } = gameState;
+    console.log(gameState);
 
     // put Cards and Attachments into a one dimensional array
     const flattenCards = (cards) => {
@@ -33,14 +34,14 @@ module.exports = {
       ...deck,
       ...scrap,
       ...twos,
-      ...(oneOff ?? []),
+      ...(oneOff ? [ oneOff ]: []),
     ]);
 
     const cardIds = new Set();
     const deckIds = new Set(DeckIds);
 
     allCards.forEach((card) => {
-      if (card.attachments) {
+      if (card.attachments.length) {
         throw new Error('Only Points and Face Cards can have attachments');
       }
 

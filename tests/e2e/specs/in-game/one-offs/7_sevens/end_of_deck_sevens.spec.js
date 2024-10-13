@@ -15,7 +15,7 @@ describe('Playing sevens at the end of the deck', () => {
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
       deck: [],
-    });
+    }, true);
 
     cy.get('#deck').should('contain', 2);
 
@@ -40,7 +40,7 @@ describe('Playing sevens at the end of the deck', () => {
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
       deck: [],
-    });
+    }, true);
 
     cy.get('#deck').should('contain', 2);
 
