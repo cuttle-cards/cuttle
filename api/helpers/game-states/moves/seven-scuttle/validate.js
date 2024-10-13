@@ -37,6 +37,7 @@ module.exports = {
 
       const topTwoCards = currentState.deck.slice(0, 2);
       const targetCard = opponent.points.find(({ id }) => id === requestedMove.targetId);
+      const playedCard = topTwoCards.find(({ id }) => id === requestedMove.cardId);
       const cardPlayedIndex = topTwoCards.findIndex(({ id }) => id === requestedMove.cardId);
       
       if (currentState.turn % 2 !== playedBy) {
