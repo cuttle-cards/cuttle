@@ -91,7 +91,7 @@ export default {
       default: null,
     },
   },
-  emits: ['points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel'],
+  emits: [ 'points', 'faceCard', 'scuttle', 'jack', 'oneOff', 'targetedOneOff', 'cancel' ],
   setup() {
     const { t } = useI18n();
     return { t };
@@ -116,7 +116,7 @@ export default {
       return '';
     },
     pointsMove() {
-      const pointsDescription = this.t('game.moves.points.description', {count: this.selectedCard.rank});
+      const pointsDescription = this.t('game.moves.points.description', { count: this.selectedCard.rank });
       return {
         displayName: this.t('game.moves.points.displayName'),
         eventName: 'points',
@@ -180,7 +180,7 @@ export default {
       if (!this.allMovesAreDisabled) {
         if (this.opponentQueenCount >= 2) {
           oneOffDisabled = true;
-          oneOffDisabledExplanation = this.t('game.moves.disabledMove.multipleQueens', {rank: this.selectedCard.rank});
+          oneOffDisabledExplanation = this.t('game.moves.disabledMove.multipleQueens', { rank: this.selectedCard.rank });
         } else {
           let validTargetExists;
           // Twos
@@ -243,10 +243,10 @@ export default {
         case 5:
         case 6:
         case 7:
-          return [this.pointsMove, this.scuttleMove, this.oneOffMove];
+          return [ this.pointsMove, this.scuttleMove, this.oneOffMove ];
         case 2:
         case 9:
-          return [this.pointsMove, this.scuttleMove, this.targetedOneOffMove];
+          return [ this.pointsMove, this.scuttleMove, this.targetedOneOffMove ];
         case 8:
           return [
             this.pointsMove,
@@ -261,9 +261,9 @@ export default {
             },
           ];
         case 10:
-          return [this.pointsMove, this.scuttleMove];
+          return [ this.pointsMove, this.scuttleMove ];
         case 11:
-          return [this.jackMove];
+          return [ this.jackMove ];
         case 12:
         case 13:
           return [

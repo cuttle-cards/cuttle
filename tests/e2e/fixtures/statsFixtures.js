@@ -15,22 +15,22 @@ const seasonFixtures = [
     fourthPlace: 'player4',
     bracketLink: 'https://github.com/cuttle-cards/cuttle',
     footageLink: 'https://github.com/cuttle-cards/cuttle-assets',
-    gameCounts: [50, 80, 100, 110],
-    uniqePlayersPerWeek: [10, 15, 17, 22],
+    gameCounts: [ 50, 80, 100, 110 ],
+    uniqePlayersPerWeek: [ 10, 15, 17, 22 ],
   },
   {
     name: 'Diamonds 2022',
     startTime: dayjs.utc('2022-02-16 18:00').toDate(),
     endTime: dayjs.utc('2022-03-16 18:00').toDate(),
-    gameCounts: [50, 80, 100, 110],
-    uniqePlayersPerWeek: [10, 15, 17, 22],
+    gameCounts: [ 50, 80, 100, 110 ],
+    uniqePlayersPerWeek: [ 10, 15, 17, 22 ],
   },
   {
     name: 'Current Season',
     startTime: dayjs.utc().subtract(2, 'week').toDate(),
     endTime: dayjs.utc().add(11, 'week').toDate(),
-    gameCounts: [50, 80, 100, 110],
-    uniqePlayersPerWeek: [10, 15, 17, 22],
+    gameCounts: [ 50, 80, 100, 110 ],
+    uniqePlayersPerWeek: [ 10, 15, 17, 22 ],
   },
   {
     name: 'Future Spades Season',
@@ -592,7 +592,7 @@ const gamesWithoutASeason = [
   },
 ];
 
-const gameFixtures = [...seasonOneGames, ...seasonTwoGames, ...seasonFourGames, ...gamesWithoutASeason];
+const gameFixtures = [ ...seasonOneGames, ...seasonTwoGames, ...seasonFourGames, ...gamesWithoutASeason ];
 
 const matchesFixture = [
   ...seasonOneMatches,

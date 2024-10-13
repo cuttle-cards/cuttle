@@ -37,7 +37,7 @@ module.exports = {
         // Lock game if unlocked or lock is expired
         await Game.updateOne({
           id: gameId,
-          or: [{ lock: null }, { lockedAt: { '<=': lockIsStaleTimeout } }],
+          or: [ { lock: null }, { lockedAt: { '<=': lockIsStaleTimeout } } ],
         }).set({ lock: uuId, lockedAt: now });
 
         // Re-fetch game and populate players and gamestates
