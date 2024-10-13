@@ -343,7 +343,7 @@ describe('Countering One-Offs P0 Perspective', () => {
       p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
       scrap: [ Card.QUEEN_OF_CLUBS ],
-    });
+    }, true);
 
     // Player plays three of clubs as one-off
     cy.get('[data-player-hand-card=3-0]').click();
