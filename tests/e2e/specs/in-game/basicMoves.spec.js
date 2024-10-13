@@ -435,7 +435,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
       topCard: Card.FIVE_OF_CLUBS,
       secondCard: Card.ACE_OF_CLUBS,
       deck: [],
-    });
+    }, true);
 
     cy.drawCardOpponent();
     cy.get('#deck').click();
@@ -465,7 +465,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
       topCard: Card.FIVE_OF_CLUBS,
       secondCard: Card.ACE_OF_CLUBS,
       deck: [ Card.TWO_OF_DIAMONDS ],
-    });
+    }, true);
 
     cy.drawCardOpponent();
     cy.get('#deck').click();
