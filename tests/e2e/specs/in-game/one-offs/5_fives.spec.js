@@ -368,7 +368,7 @@ describe('FIVES', () => {
           topCard: Card.FOUR_OF_CLUBS,
           secondCard: Card.ACE_OF_HEARTS,
           deck: [],
-        });
+        }, true);
         cy.get('#deck').click();
         cy.get('#deck').should('contain', '(1)');
 
