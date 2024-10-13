@@ -28,30 +28,28 @@ module.exports = {
   },
   sync: true,
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
+    const { cardId } = requestedMove;
     let result = _.cloneDeep(currentState);
 
-    const { cardId, targetId } = requestedMove;
-
-    const opponent = playedBy ? result.p0 : result.p1;
-
+    const player = playedBy ? result.p1 : result.p0;
     const cardIndex = result.deck.findIndex(({ id }) => id === cardId);
     const [ playedCard ] = result.deck.splice(cardIndex, 1);
-    
-    const targetPlayedIndex = opponent.points.findIndex(({ id }) => id === targetId);
-    const [ targetCard ] = opponent.points.splice(targetPlayedIndex, 1);
-    
-    result.scrap.push(targetCard, playedCard);
-
+    const { oneOff } = result;
+    player.points.push(playedCard);
+    result.scrap.push(oneOff);
     result.turn++;
 
     result = {
       ...result,
       ...requestedMove,
       phase: GamePhase.MAIN,
+      oneOff: null,
       playedBy,
       playedCard,
-      targetCard
+      targetCard: null,
+      resolved: oneOff,
     };
+    
     return exits.success(result);
   },
 };
