@@ -46,7 +46,8 @@ describe('Game View Layout', () => {
 
     // Player selects a card from scrap
     cy.get('[data-three-dialog-card=10-2]').click();
-    cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
+    cy.get('[data-cy=three-resolve').should('not.be.disabled')
+      .click();
 
     assertGameState(0, {
       p0Hand: [ Card.TEN_OF_HEARTS ],
@@ -162,7 +163,8 @@ describe('Game View Layout', () => {
     cy.get('#scrap').click();
 
     // Then-- Assert that the overlay that should show up does and that there are no cards in it
-    cy.get('#scrap-dialog').should('be.visible').should('contain', 'There are no cards in the scrap pile.');
+    cy.get('#scrap-dialog').should('be.visible')
+      .should('contain', 'There are no cards in the scrap pile.');
   });
 });
 
@@ -185,7 +187,9 @@ describe('Four dialogs layout', () => {
     // Opponent plays four
     cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
     // Player cannot counter
-    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+    cy.get('#cannot-counter-dialog').should('be.visible')
+      .get('[data-cy=cannot-counter-resolve]')
+      .click();
 
     // Four Dialog appears (you must discard)
     cy.get('#four-discard-dialog').should('be.visible');

@@ -62,9 +62,9 @@ import { computed, toRefs } from 'vue';
 
 const props = defineProps({
   variant:{
-      type:String,
-      default:'light'
-    }
+    type:String,
+    default:'light'
+  }
 });
 
 const route = useRoute();
