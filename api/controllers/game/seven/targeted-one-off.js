@@ -22,7 +22,7 @@ module.exports = function (req, res) {
     promisePoint,
   ])
     .then(function changeAndSave(values) {
-      const [game, player, opponent, card, target, targetType, point] = values;
+      const [ game, player, opponent, card, target, targetType, point ] = values;
       if (game.turn % 2 === player.pNum) {
         if (card.id === game.topCard.id || card.id === game.secondCard.id) {
           if (card.rank === 2 || card.rank === 9) {
@@ -74,7 +74,7 @@ module.exports = function (req, res) {
               Game.removeFromCollection(game.id, 'deck').members(cardsToRemoveFromDeck),
             ];
 
-            return Promise.all([game, ...updatePromises]);
+            return Promise.all([ game, ...updatePromises ]);
           }
         } else {
           return Promise.reject({
@@ -86,16 +86,16 @@ module.exports = function (req, res) {
       }
     })
     .then(function populateGame(values) {
-      const [game] = values;
-      return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
+      const [ game ] = values;
+      return Promise.all([ gameService.populateGame({ gameId: game.id }), game ]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel] = values;
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'sevenTargetedOneOff',
         game: fullGame,
         victory,

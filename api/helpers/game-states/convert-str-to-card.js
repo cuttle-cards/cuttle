@@ -54,7 +54,7 @@ function convertIdToCard (id, isFrozen) {
         throw new Error('Unrecognised suit ' + tempCard.suit);
       }
 
-    return { suit, rank, id , isFrozen , attachments:[]};
+    return { suit, rank, id , isFrozen , attachments:[] };
   }
 
   throw new Error('Unrecognised card identifier ' + id);
@@ -128,7 +128,7 @@ module.exports = {
                   return convertIdToCard(content[0] , false);
             });
 
-        return exits.success({...maincard, attachments: attachments});
+        return exits.success({ ...maincard, attachments: attachments });
       } catch (err) {
         return exits.error(err.message);
       }

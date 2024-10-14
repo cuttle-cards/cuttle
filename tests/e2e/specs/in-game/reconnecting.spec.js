@@ -3,13 +3,53 @@ import { myUser, opponentOne } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
 
 describe('Reconnecting to a game', () => {
+  it('Refreshs Game from Game Menu', () => {
+    cy.skipOnGameStateApi();
+    cy.setupGameAsP1();
+    cy.loadGameFixture(1, {
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS ],
+      p0Points: [ Card.SEVEN_OF_HEARTS ],
+      p0FaceCards: [],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+
+    cy.window()
+      .its('cuttle.authStore')
+      .then((store) => store.disconnectSocket());
+
+    cy.playPointsOpponent(Card.SEVEN_OF_DIAMONDS);
+
+    assertGameState(1, {
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS ],
+      p0Points: [ Card.SEVEN_OF_HEARTS ],
+      p0FaceCards: [],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+
+    cy.get('#game-menu-activator').click();
+    cy.get('[data-cy=refresh]').click();
+
+    assertGameState(1, {
+      p0Hand: [ Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
+      p0FaceCards: [],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [],
+      p1FaceCards: [],
+    });
+  });
+
   it('Persists session after refreshing the page', () => {
     cy.skipOnGameStateApi();
     cy.setupGameAsP0();
 
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -25,7 +65,7 @@ describe('Reconnecting to a game', () => {
 
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.ACE_OF_CLUBS],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.ACE_OF_CLUBS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -38,8 +78,8 @@ describe('Reconnecting to a game', () => {
     cy.setupGameAsP0();
 
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -55,7 +95,7 @@ describe('Reconnecting to a game', () => {
 
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.ACE_OF_CLUBS],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.ACE_OF_CLUBS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -69,11 +109,11 @@ describe('Reconnecting to a game', () => {
       cy.setupGameAsP1();
 
       cy.loadGameFixture(1, {
-        p0Hand: [Card.ACE_OF_CLUBS],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_DIAMONDS],
-        p1Points: [Card.SIX_OF_CLUBS],
+        p1Hand: [ Card.ACE_OF_DIAMONDS ],
+        p1Points: [ Card.SIX_OF_CLUBS ],
         p1FaceCards: [],
       });
 
@@ -91,10 +131,10 @@ describe('Reconnecting to a game', () => {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_DIAMONDS],
+        p1Hand: [ Card.ACE_OF_DIAMONDS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.SIX_OF_CLUBS],
+        scrap: [ Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.SIX_OF_CLUBS ],
       });
     });
 
@@ -103,12 +143,12 @@ describe('Reconnecting to a game', () => {
       cy.setupGameAsP1();
 
       cy.loadGameFixture(1, {
-        p0Hand: [Card.TWO_OF_CLUBS],
+        p0Hand: [ Card.TWO_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_CLUBS],
-        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SIX_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_CLUBS],
+        p1Hand: [ Card.ACE_OF_CLUBS ],
+        p1Points: [ Card.SEVEN_OF_DIAMONDS, Card.SIX_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_CLUBS ],
       });
 
       cy.playTargetedOneOffOpponent(Card.TWO_OF_CLUBS, Card.KING_OF_CLUBS, 'faceCard');
@@ -125,10 +165,10 @@ describe('Reconnecting to a game', () => {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_CLUBS],
-        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SIX_OF_HEARTS],
+        p1Hand: [ Card.ACE_OF_CLUBS ],
+        p1Points: [ Card.SEVEN_OF_DIAMONDS, Card.SIX_OF_HEARTS ],
         p1FaceCards: [],
-        scrap: [Card.TWO_OF_CLUBS, Card.KING_OF_CLUBS],
+        scrap: [ Card.TWO_OF_CLUBS, Card.KING_OF_CLUBS ],
       });
     });
 
@@ -136,10 +176,10 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
-        p0Hand: [Card.ACE_OF_CLUBS],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.TWO_OF_CLUBS],
+        p1Hand: [ Card.TWO_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -159,12 +199,12 @@ describe('Reconnecting to a game', () => {
 
       assertGameState(0, {
         p0Hand: [],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS],
+        scrap: [ Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS ],
       });
     });
 
@@ -172,8 +212,8 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
@@ -204,7 +244,7 @@ describe('Reconnecting to a game', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_CLUBS],
+        scrap: [ Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_CLUBS ],
       });
     });
 
@@ -212,12 +252,12 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_CLUBS],
+        p1FaceCards: [ Card.KING_OF_CLUBS ],
         topCard: Card.TWO_OF_CLUBS,
       });
 
@@ -233,12 +273,12 @@ describe('Reconnecting to a game', () => {
 
       assertGameState(1, {
         p0Hand: [],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.KING_OF_CLUBS, Card.TWO_OF_CLUBS, Card.SEVEN_OF_CLUBS],
+        scrap: [ Card.KING_OF_CLUBS, Card.TWO_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
       });
     });
 
@@ -247,11 +287,11 @@ describe('Reconnecting to a game', () => {
       cy.setupGameAsP1();
 
       cy.loadGameFixture(1, {
-        p0Hand: [Card.ACE_OF_CLUBS],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_DIAMONDS],
-        p1Points: [Card.SIX_OF_CLUBS],
+        p1Hand: [ Card.ACE_OF_DIAMONDS ],
+        p1Points: [ Card.SIX_OF_CLUBS ],
         p1FaceCards: [],
       });
 
@@ -268,10 +308,10 @@ describe('Reconnecting to a game', () => {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_DIAMONDS],
+        p1Hand: [ Card.ACE_OF_DIAMONDS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.SIX_OF_CLUBS],
+        scrap: [ Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.SIX_OF_CLUBS ],
       });
     });
   }); // End cannot counter dialog describe
@@ -281,11 +321,11 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.ACE_OF_CLUBS],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.TWO_OF_CLUBS],
-        p1Points: [Card.ACE_OF_DIAMONDS],
+        p1Hand: [ Card.TWO_OF_CLUBS ],
+        p1Points: [ Card.ACE_OF_DIAMONDS ],
         p1FaceCards: [],
       });
 
@@ -304,12 +344,12 @@ describe('Reconnecting to a game', () => {
 
       assertGameState(1, {
         p0Hand: [],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [],
-        p1Points: [Card.ACE_OF_DIAMONDS],
+        p1Points: [ Card.ACE_OF_DIAMONDS ],
         p1FaceCards: [],
-        scrap: [Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS],
+        scrap: [ Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS ],
       });
     });
 
@@ -317,12 +357,12 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.TWO_OF_SPADES],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.TWO_OF_SPADES ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.TWO_OF_CLUBS],
-        p1Points: [Card.ACE_OF_DIAMONDS],
-        p1FaceCards: [Card.KING_OF_CLUBS],
+        p1Hand: [ Card.TWO_OF_CLUBS ],
+        p1Points: [ Card.ACE_OF_DIAMONDS ],
+        p1FaceCards: [ Card.KING_OF_CLUBS ],
       });
 
       cy.playTargetedOneOffOpponent(Card.TWO_OF_SPADES, Card.KING_OF_CLUBS, 'faceCard');
@@ -343,12 +383,12 @@ describe('Reconnecting to a game', () => {
 
       assertGameState(1, {
         p0Hand: [],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [],
-        p1Points: [Card.ACE_OF_DIAMONDS],
-        p1FaceCards: [Card.KING_OF_CLUBS],
-        scrap: [Card.TWO_OF_CLUBS, Card.TWO_OF_SPADES],
+        p1Points: [ Card.ACE_OF_DIAMONDS ],
+        p1FaceCards: [ Card.KING_OF_CLUBS ],
+        scrap: [ Card.TWO_OF_CLUBS, Card.TWO_OF_SPADES ],
       });
     });
 
@@ -356,12 +396,12 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.TWO_OF_SPADES],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.TWO_OF_SPADES ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.TWO_OF_CLUBS],
-        p1Points: [Card.ACE_OF_DIAMONDS],
-        p1FaceCards: [Card.KING_OF_CLUBS],
+        p1Hand: [ Card.TWO_OF_CLUBS ],
+        p1Points: [ Card.ACE_OF_DIAMONDS ],
+        p1FaceCards: [ Card.KING_OF_CLUBS ],
       });
 
       cy.playTargetedOneOffOpponent(Card.TWO_OF_SPADES, Card.KING_OF_CLUBS, 'faceCard');
@@ -384,12 +424,12 @@ describe('Reconnecting to a game', () => {
 
       assertGameState(1, {
         p0Hand: [],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [],
-        p1Points: [Card.ACE_OF_DIAMONDS],
-        p1FaceCards: [Card.KING_OF_CLUBS],
-        scrap: [Card.TWO_OF_CLUBS, Card.TWO_OF_SPADES],
+        p1Points: [ Card.ACE_OF_DIAMONDS ],
+        p1FaceCards: [ Card.KING_OF_CLUBS ],
+        scrap: [ Card.TWO_OF_CLUBS, Card.TWO_OF_SPADES ],
       });
     });
 
@@ -397,11 +437,11 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
-        p0Hand: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES],
-        p0Points: [Card.SEVEN_OF_DIAMONDS],
+        p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS ],
         p0FaceCards: [],
-        p1Hand: [Card.TWO_OF_CLUBS],
-        p1Points: [Card.SEVEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+        p1Hand: [ Card.TWO_OF_CLUBS ],
+        p1Points: [ Card.SEVEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
         p1FaceCards: [],
       });
 
@@ -451,10 +491,10 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.TWO_OF_DIAMONDS],
+        p1Hand: [ Card.TWO_OF_DIAMONDS ],
         p1Points: [],
         p1FaceCards: [],
         topCard: Card.ACE_OF_CLUBS,
@@ -479,10 +519,10 @@ describe('Reconnecting to a game', () => {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.TWO_OF_DIAMONDS],
+        p1Hand: [ Card.TWO_OF_DIAMONDS ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.ACE_OF_CLUBS, Card.SEVEN_OF_CLUBS],
+        scrap: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS, Card.ACE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
       });
     });
 
@@ -490,12 +530,12 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.TWO_OF_DIAMONDS],
+        p1Hand: [ Card.TWO_OF_DIAMONDS ],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_CLUBS],
+        p1FaceCards: [ Card.KING_OF_CLUBS ],
         topCard: Card.TWO_OF_CLUBS,
       });
 
@@ -515,12 +555,12 @@ describe('Reconnecting to a game', () => {
 
       assertGameState(1, {
         p0Hand: [],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_CLUBS],
-        scrap: [Card.TWO_OF_DIAMONDS, Card.TWO_OF_CLUBS, Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [ Card.KING_OF_CLUBS ],
+        scrap: [ Card.TWO_OF_DIAMONDS, Card.TWO_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
       });
     });
   }); // End counter dialog describe
@@ -531,13 +571,13 @@ describe('Reconnecting to a game', () => {
         cy.skipOnGameStateApi();
         cy.setupGameAsP0();
         cy.loadGameFixture(0, {
-          p0Hand: [Card.THREE_OF_CLUBS],
-          p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+          p0Hand: [ Card.THREE_OF_CLUBS ],
+          p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
           p0FaceCards: [],
-          p1Hand: [Card.TWO_OF_DIAMONDS],
+          p1Hand: [ Card.TWO_OF_DIAMONDS ],
           p1Points: [],
-          p1FaceCards: [Card.KING_OF_CLUBS],
-          scrap: [Card.TWO_OF_CLUBS],
+          p1FaceCards: [ Card.KING_OF_CLUBS ],
+          scrap: [ Card.TWO_OF_CLUBS ],
         });
 
         cy.playOneOffAndResolveAsPlayer(Card.THREE_OF_CLUBS);
@@ -555,13 +595,13 @@ describe('Reconnecting to a game', () => {
         cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
 
         assertGameState(0, {
-          p0Hand: [Card.TWO_OF_CLUBS],
-          p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+          p0Hand: [ Card.TWO_OF_CLUBS ],
+          p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
           p0FaceCards: [],
-          p1Hand: [Card.TWO_OF_DIAMONDS],
+          p1Hand: [ Card.TWO_OF_DIAMONDS ],
           p1Points: [],
-          p1FaceCards: [Card.KING_OF_CLUBS],
-          scrap: [Card.THREE_OF_CLUBS],
+          p1FaceCards: [ Card.KING_OF_CLUBS ],
+          scrap: [ Card.THREE_OF_CLUBS ],
         });
       });
 
@@ -569,13 +609,13 @@ describe('Reconnecting to a game', () => {
         cy.skipOnGameStateApi();
         cy.setupGameAsP1();
         cy.loadGameFixture(1, {
-          p0Hand: [Card.THREE_OF_CLUBS],
-          p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+          p0Hand: [ Card.THREE_OF_CLUBS ],
+          p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
           p0FaceCards: [],
-          p1Hand: [Card.FOUR_OF_DIAMONDS],
+          p1Hand: [ Card.FOUR_OF_DIAMONDS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [Card.TWO_OF_CLUBS],
+          scrap: [ Card.TWO_OF_CLUBS ],
         });
 
         // Opponent plays 3 of clubs & it resolves
@@ -592,13 +632,13 @@ describe('Reconnecting to a game', () => {
 
         cy.get('#waiting-for-opponent-resolve-three-scrim').should('not.exist');
         assertGameState(1, {
-          p0Hand: [Card.TWO_OF_CLUBS],
-          p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+          p0Hand: [ Card.TWO_OF_CLUBS ],
+          p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
           p0FaceCards: [],
-          p1Hand: [Card.FOUR_OF_DIAMONDS],
+          p1Hand: [ Card.FOUR_OF_DIAMONDS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [Card.THREE_OF_CLUBS],
+          scrap: [ Card.THREE_OF_CLUBS ],
         });
       });
     }); // End 3's reconnect
@@ -607,10 +647,10 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS],
+        p1Hand: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -637,7 +677,7 @@ describe('Reconnecting to a game', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS],
+        scrap: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS ],
       });
     });
 
@@ -645,10 +685,10 @@ describe('Reconnecting to a game', () => {
       cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS],
+        p1Hand: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
         topCard: Card.TEN_OF_SPADES,
@@ -669,13 +709,13 @@ describe('Reconnecting to a game', () => {
 
       assertGameState(0, {
         p0Hand: [],
-        p0Points: [Card.TEN_OF_SPADES],
+        p0Points: [ Card.TEN_OF_SPADES ],
         p0FaceCards: [],
-        p1Hand: [Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS],
+        p1Hand: [ Card.THREE_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
         topCard: Card.NINE_OF_CLUBS,
-        scrap: [Card.SEVEN_OF_CLUBS],
+        scrap: [ Card.SEVEN_OF_CLUBS ],
       });
     });
   });
@@ -768,8 +808,8 @@ describe('Reconnecting after game is over', () => {
   it('Dialogs persist after refreshing when game is over by passing', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -791,10 +831,10 @@ describe('Reconnecting after game is over', () => {
   it('Dialogs persist after refreshing when game is over by points', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_CLUBS],
+      p1Hand: [ Card.ACE_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
       deck: [],
@@ -810,11 +850,11 @@ describe('Reconnecting after game is over', () => {
   it('Dialogs persist after refreshing when game is over by points playing jack', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.JACK_OF_DIAMONDS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.JACK_OF_DIAMONDS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_CLUBS],
-      p1Points: [Card.SEVEN_OF_CLUBS],
+      p1Hand: [ Card.ACE_OF_CLUBS ],
+      p1Points: [ Card.SEVEN_OF_CLUBS ],
       p1FaceCards: [],
       deck: [],
     });
@@ -830,8 +870,8 @@ describe('Reconnecting after game is over', () => {
   it('Dialogs persist after refreshing when game is over by points playing king', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.KING_OF_DIAMONDS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.KING_OF_DIAMONDS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -849,10 +889,10 @@ describe('Reconnecting after game is over', () => {
   it('Dialogs persist after refreshing when game is over by resolving one-off', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.JACK_OF_CLUBS],
+      p1Hand: [ Card.JACK_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
       deck: [],
@@ -874,10 +914,10 @@ describe('Reconnecting after game is over', () => {
   it('Dialogs persist after refreshing when game is over by resolving one-off from a seven', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.JACK_OF_CLUBS],
+      p1Hand: [ Card.JACK_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
       topCard: Card.KING_OF_DIAMONDS,
@@ -901,11 +941,11 @@ describe('Reconnecting after game is over', () => {
   it('Dialogs persist after refreshing when game is over by playing jack from a seven', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
-      p0Points: [Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+      p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
+      p0Points: [ Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
       p0FaceCards: [],
       p1Hand: [],
-      p1Points: [Card.SEVEN_OF_SPADES],
+      p1Points: [ Card.SEVEN_OF_SPADES ],
       p1FaceCards: [],
       topCard: Card.JACK_OF_DIAMONDS,
       deck: [],
@@ -925,8 +965,8 @@ describe('Reconnecting after game is over', () => {
   it('Dialogs persist after refreshing when game is over by playing points from a seven', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES],
-      p0Points: [Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
+      p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
+      p0Points: [ Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],

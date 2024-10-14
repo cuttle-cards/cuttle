@@ -74,7 +74,7 @@ export default {
     FiveDialog
 },
 
-  emits: ['clear-selection', 'handle-error'],
+  emits: [ 'clear-selection', 'handle-error' ],
   computed: {
     ...mapStores(useGameStore, useAuthStore),
     gameIsOver() {
@@ -148,7 +148,7 @@ export default {
       this.gameStore.requestCounter(twoId).then(this.clearSelection).catch(this.handleError);
     },
     discard(cardIds) {
-      const [cardId1] = cardIds;
+      const [ cardId1 ] = cardIds;
       const cardId2 = cardIds.length > 1 ? cardIds[1] : null;
       this.gameStore.requestDiscard({
         cardId1,

@@ -662,10 +662,10 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       let cardId1 = undefined;
       let cardId2 = undefined;
       if (card1) {
-        [cardId1] = getCardIds(game, [card1]);
+        [ cardId1 ] = getCardIds(game, [ card1 ]);
       }
       if (card2) {
-        [cardId2] = getCardIds(game, [card2]);
+        [ cardId2 ] = getCardIds(game, [ card2 ]);
       }
 
       const moveType = MoveType.RESOLVE_FOUR;
@@ -1197,11 +1197,11 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
       };
       // Get top card & second cards if specified
       if (fixture.topCard) {
-        const [topCardId] = getCardIds(game, [fixture.topCard]);
+        const [ topCardId ] = getCardIds(game, [ fixture.topCard ]);
         reqBody.topCardId = topCardId;
       }
       if (fixture.secondCard) {
-        const [secondCardId] = getCardIds(game, [fixture.secondCard]);
+        const [ secondCardId ] = getCardIds(game, [ fixture.secondCard ]);
         reqBody.secondCardId = secondCardId;
       }
       // Get scrap if specified

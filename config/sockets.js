@@ -25,7 +25,7 @@ module.exports.sockets = {
    * > https://sailsjs.com/docs/reference/web-sockets/socket-client           *
    *                                                                          *
    ***************************************************************************/
-  transports: ['websocket'],
+  transports: [ 'websocket' ],
   /***************************************************************************
    *                                                                          *
    * `beforeConnect`                                                          *

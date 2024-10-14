@@ -31,10 +31,10 @@ module.exports = function (req, res) {
   const findP0 = User.findOne({ id: req.body.p0Id }).populateAll();
   const findP1 = User.findOne({ id: req.body.p1Id }).populateAll();
 
-  return Promise.all([findGame, findP0, findP1])
+  return Promise.all([ findGame, findP0, findP1 ])
     .then(function resetGame(values) {
       // Put all cards back in deck
-      const [game, p0, p1] = values;
+      const [ game, p0, p1 ] = values;
 
       const oldP0Hand = p0.hand.map((card) => card.id);
       const oldP0Points = p0.points.map((card) => card.id);
@@ -62,11 +62,11 @@ module.exports = function (req, res) {
         User.replaceCollection(p1.id, 'faceCards').members([]),
       ];
 
-      return Promise.all([game, p0, p1, ...updatePromises]);
+      return Promise.all([ game, p0, p1, ...updatePromises ]);
     })
     .then(function placeCards(values) {
       // Load game according to fixture
-      const [game, p0, p1] = values;
+      const [ game, p0, p1 ] = values;
       let topCard = null;
       let secondCard = null;
       // Take top card from fixture if specified
@@ -110,10 +110,10 @@ module.exports = function (req, res) {
         Game.removeFromCollection(game.id, 'deck').members(allRequestedCards),
       ];
 
-      return Promise.all([game, ...updatePromises]);
+      return Promise.all([ game, ...updatePromises ]);
     })
     .then(async function removeCardsFromDeck(values) {
-      const [game] = values;
+      const [ game ] = values;
       // If deck was specified, delete all other cards from the deck
       const { deck } = req.body;
       if (deck) {
@@ -126,7 +126,7 @@ module.exports = function (req, res) {
     })
     .then(function publishAndRespond(game) {
       // Announce update through socket
-      Game.publish([game.id], {
+      Game.publish([ game.id ], {
         change: 'loadFixture',
         game,
       });

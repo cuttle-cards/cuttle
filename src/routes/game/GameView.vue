@@ -674,10 +674,10 @@ export default {
               opponentJackIds.push(card.attachments[card.attachments.length - 1].id);
             }
           });
-          return [...opponentFaceCardIds, ...opponentJackIds];
+          return [ ...opponentFaceCardIds, ...opponentJackIds ];
         }
         case 1:
-          return [this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id];
+          return [ this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id ];
         default:
           return [];
       }
@@ -697,10 +697,10 @@ export default {
           return this.gameStore.opponent.points.map((validTarget) => validTarget.id);
         case 'targetedOneOff': {
           // Twos and nines can target face cards
-          let res = [...this.validFaceCardTargetIds];
+          let res = [ ...this.validFaceCardTargetIds ];
           // Nines can additionally target points if opponent has no queens
           if (selectedCard.rank === 9 && this.gameStore.opponentQueenCount === 0) {
-            res = [...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id)];
+            res = [ ...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id) ];
           }
           return res;
         }
@@ -1565,6 +1565,11 @@ export default {
   .field-points {
     .field-point-container {
       width: auto;
+
+      .jacks-container {
+        right: -25%;
+        width: auto;
+      }
     }
   }
 

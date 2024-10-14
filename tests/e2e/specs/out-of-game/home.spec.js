@@ -367,8 +367,8 @@ describe('Home - Game List', () => {
       cy.log('Setup game end by passing');
       cy.setupGameAsSpectator();
       cy.loadGameFixture(0, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
@@ -402,11 +402,11 @@ describe('Home - Game List', () => {
       cy.log('Setup game end by P0 victory');
       cy.setupGameAsSpectator();
       cy.loadGameFixture(0, {
-        p0Hand: [Card.EIGHT_OF_SPADES],
-        p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.EIGHT_OF_SPADES ],
+        p0Points: [ Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.EIGHT_OF_HEARTS],
-        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
+        p1Hand: [ Card.EIGHT_OF_HEARTS ],
+        p1Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
         p1FaceCards: [],
       });
       cy.recoverSessionOpponent(playerOne);
@@ -421,11 +421,11 @@ describe('Home - Game List', () => {
       cy.log('Setup game end by P1 victory');
       cy.setupGameAsSpectator();
       cy.loadGameFixture(0, {
-        p0Hand: [Card.EIGHT_OF_SPADES],
-        p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.EIGHT_OF_SPADES ],
+        p0Points: [ Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.EIGHT_OF_HEARTS],
-        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
+        p1Hand: [ Card.EIGHT_OF_HEARTS ],
+        p1Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
         p1FaceCards: [],
       });
       cy.recoverSessionOpponent(playerOne);

@@ -24,7 +24,7 @@ module.exports = {
         return exits.success(gameStateRow);
 
     } catch (err) {
-        return exits.error({message: 'Error while Saving GameStateRow :' + err });
+        return exits.error({ message: 'Error while Saving GameStateRow :' + err });
     }
   }
 };
