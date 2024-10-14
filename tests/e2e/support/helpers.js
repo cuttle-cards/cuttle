@@ -389,7 +389,9 @@ function assertStoreMatchesFixture(fixture) {
 
 export function assertVictory(score = null) {
   cy.log('Asserting player victory');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible')
+    .get('[data-cy=victory-heading]')
+    .should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -404,7 +406,8 @@ export function assertVictory(score = null) {
           .should('contain', matchWinner ? 'Good Match!' : 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=victory-heading]').should('contain', 'You Won');
+        cy.get('#game-over-dialog').find('[data-cy=victory-heading]')
+          .should('contain', 'You Won');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -432,7 +435,9 @@ export function assertVictory(score = null) {
 
 export function assertLoss(score = null) {
   cy.log('Asserting player loss');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible')
+    .get('[data-cy=loss-heading]')
+    .should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -447,7 +452,8 @@ export function assertLoss(score = null) {
           .should('contain', matchWinner ? 'Good Match!' : 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=loss-heading]').should('contain', 'You Lose');
+        cy.get('#game-over-dialog').find('[data-cy=loss-heading]')
+          .should('contain', 'You Lose');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -493,7 +499,8 @@ export function assertStalemate(score = null) {
           .should('contain', 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=stalemate-heading]').should('contain', 'Stalemate');
+        cy.get('#game-over-dialog').find('[data-cy=stalemate-heading]')
+          .should('contain', 'Stalemate');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')

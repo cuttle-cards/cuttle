@@ -180,7 +180,9 @@ describe('Play TWOS', () => {
       cy.playTargetedOneOffOpponent(Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS, 'jack');
 
       // player resolves
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(0, {
         p0Hand: [ Card.SIX_OF_CLUBS ],
@@ -228,7 +230,9 @@ describe('Play TWOS', () => {
       cy.playTargetedOneOffOpponent(Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS, 'jack');
 
       // player resolves
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],

@@ -26,28 +26,28 @@ module.exports = function (req, res) {
                 switch (card.rank) {
                   case 3:
                     if (game.scrap.length < 1)
-                      {
-                        return Promise.reject({
-                          message: 'game.snackbar.oneOffs.three.scrapIsEmpty',
-                        });
-                      }
+                    {
+                      return Promise.reject({
+                        message: 'game.snackbar.oneOffs.three.scrapIsEmpty',
+                      });
+                    }
                     break;
                   case 4:
                     if (opponent.hand.length === 0)
-                      {
-                        return Promise.reject({
-                          message: 'You cannot play a 4 as a one-off while your opponent has no cards in hand',
-                        });
-                      }
+                    {
+                      return Promise.reject({
+                        message: 'You cannot play a 4 as a one-off while your opponent has no cards in hand',
+                      });
+                    }
                     break;
                   case 5:
                   case 7:
                     if (!game.topCard)
-                      {
-                        return Promise.reject({
-                          message: 'game.snackbar.oneOffs.emptyDeck',
-                        });
-                      }
+                    {
+                      return Promise.reject({
+                        message: 'game.snackbar.oneOffs.emptyDeck',
+                      });
+                    }
                     break;
                   default:
                     break;
@@ -107,10 +107,10 @@ module.exports = function (req, res) {
       });
       Game.publish([ fullGame.id ], {
         
-          change: 'oneOff',
-          game: fullGame,
-          pNum: req.session.pNum,
-          victory,
+        change: 'oneOff',
+        game: fullGame,
+        pNum: req.session.pNum,
+        victory,
        
       });
       return res.ok();
