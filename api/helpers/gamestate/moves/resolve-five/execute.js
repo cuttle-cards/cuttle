@@ -1,0 +1,59 @@
+const GamePhase = require('../../../../../utils/GamePhase.json');
+
+module.exports = {
+  friendlyName: 'Resolve Five',
+
+  description: 'Returns new GameState resulting from resolving a five',
+
+  inputs: {
+    currentState: {
+      type: 'ref',
+      description: 'The latest GameState before the requesting player resolves the five',
+      required: true,
+    },
+    /**
+     * @param { Object } requestedMove - Object describing the request to resolve five (req.body)
+     * @param { String } [requestedMove.cardId] - Optional card to discard (if player has cards in hand)
+     * @param { MoveType.RESOLVE_FIVE } requestedMove.moveType - Specifies that this is a Resolve Five move
+     */
+    requestedMove: {
+      type: 'ref',
+      description: 'The move being requested. Specifies the card to discard (optional if hand is empty).',
+    },
+    playedBy: {
+      type: 'number',
+      description: 'Player number of player resolving the five.',
+    },
+  },
+  sync: true, // synchronous helper
+  fn: ({ currentState, requestedMove, playedBy }, exits) => {
+    const { cardId } = requestedMove;
+    let result = _.cloneDeep(currentState);
+
+    const player = playedBy ? result.p1 : result.p0;
+    const opponent = playedBy ? result.p0 : result.p1;
+
+    // 1. Ak má hráč kartu na odhodenie (t.j. má nejaké karty v ruke), odhodíme ju do scrap
+    if (cardId) {
+      const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
+      const discardedCard = player.hand.splice(cardIndex, 1)[0];
+      result.scrap.push(discardedCard); // Pridáme kartu do scrap
+      result.discardedCards = result.discardedCards || [];
+      result.discardedCards.push(discardedCard);
+    }
+
+    // 2. Hráč potiahne až 3 karty, ale nesmie prekročiť limit 8 kariet
+    const cardsToDraw = Math.min(3, result.deck.length);
+    const spaceInHand = 8 - player.hand.length;
+    const actualCardsToDraw = Math.min(cardsToDraw, spaceInHand);
+
+    player.hand.push(...result.deck.splice(0, actualCardsToDraw));
+
+    // 3. Zvýšenie počtu ťahov a nastavenie fázy na MAIN
+    result.turn++;
+    result.phase = GamePhase.MAIN;
+
+    // 4. Vrátenie nového stavu hry
+    return exits.success(result);
+  },
+};
