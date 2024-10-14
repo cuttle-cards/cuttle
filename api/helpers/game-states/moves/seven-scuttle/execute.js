@@ -13,8 +13,8 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - Object describing the request to scuttle from the top of the deck
-     * @param { String } requestMove.cardId - Card Played 
-     * @param { String } requestMove.targetId - Card Targeted
+     * @param { String } requestedMove.cardId - Card Played 
+     * @param { String } requestedMove.targetId - Card Targeted
      * @param { MoveType.SEVEN_SCUTTLE } requestedMove.moveType - Specifies that this a sevenScuttle
      */
     requestedMove: {
@@ -28,28 +28,31 @@ module.exports = {
   },
   sync: true,
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
-    const { cardId } = requestedMove;
+    const { cardId, targetId } = requestedMove;
     let result = _.cloneDeep(currentState);
 
-    const player = playedBy ? result.p1 : result.p0;
-    const cardIndex = result.deck.findIndex(({ id }) => id === cardId);
-    const [ playedCard ] = result.deck.splice(cardIndex, 1);
-    const { oneOff } = result;
-    player.points.push(playedCard);
-    result.scrap.push(oneOff);
-    result.turn++;
+    const opponent = playedBy ? result.p0 : result.p1;
 
-    result = {
-      ...result,
-      ...requestedMove,
-      phase: GamePhase.MAIN,
-      oneOff: null,
-      playedBy,
-      playedCard,
-      targetCard: null,
-      resolved: oneOff,
-    };
-    
+    // Remove playedCard from the top of the deck
+    const cardIndex = result.deck.findIndex(({ id }) => id === cardId);
+    const [playedCard] = result.deck.splice(cardIndex, 1);
+
+    // Remove targetCard from opponent's points
+    const targetIndex = opponent.points.findIndex(({ id }) => id === targetId);
+    const [targetCard] = opponent.points.splice(targetIndex, 1);
+
+    // Move both cards to scrap
+    result.scrap.push(playedCard, targetCard);
+
+    // Handle seven one-off cleanup
+    const { oneOff } = result;
+    result.scrap.push(oneOff);
+    result.oneOff = null;
+    result.resolved = oneOff;
+
+    result.turn++;
+    result.phase = GamePhase.MAIN;
+
     return exits.success(result);
   },
 };

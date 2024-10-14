@@ -38,7 +38,6 @@ module.exports = {
       const topTwoCards = currentState.deck.slice(0, 2);
       const targetCard = opponent.points.find(({ id }) => id === requestedMove.targetId);
       const playedCard = topTwoCards.find(({ id }) => id === requestedMove.cardId);
-      const cardPlayedIndex = topTwoCards.findIndex(({ id }) => id === requestedMove.cardId);
       
       if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
@@ -48,7 +47,7 @@ module.exports = {
         throw new Error('game.snackbar.seven.pickAndPlay');
       }
 
-      if (cardPlayedIndex === -1) {
+      if (!playedCard) {
         throw new Error('game.snackbar.seven.pickAndPlay');
       }
 
