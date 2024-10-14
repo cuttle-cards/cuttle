@@ -1,7 +1,7 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Seven_Scuttle',
+  friendlyName: 'Seven Scuttle',
 
   description: 'Returns new GameState resulting from requested scuttle move',
 
