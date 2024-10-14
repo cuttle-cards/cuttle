@@ -44,7 +44,7 @@ module.exports = {
     // Move both cards to scrap
     result.scrap.push(playedCard, targetCard);
 
-    // Handle seven one-off cleanup
+    // Seven one-off cleanup
     const { oneOff } = result;
     result.scrap.push(oneOff);
     result.oneOff = null;

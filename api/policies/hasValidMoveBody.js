@@ -51,7 +51,7 @@ module.exports = function (req, res, next) {
       }
       return next();
 
-      case MoveType.JACK:
+      case MoveType.JACK: // jack funcionality was removed
       case MoveType.SCUTTLE:
       case MoveType.SEVEN_SCUTTLE:
       {
