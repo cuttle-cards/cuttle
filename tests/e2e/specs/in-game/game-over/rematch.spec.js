@@ -46,10 +46,10 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     window.localStorage.setItem('announcement', announcementData.id);
 
     // Set up season
-    const [, diamondsSeason] = seasonFixtures;
+    const [ , diamondsSeason ] = seasonFixtures;
     diamondsSeason.startTime = dayjs.utc().subtract(2, 'week').subtract(1, 'day').toDate();
     diamondsSeason.endTime = dayjs.utc().add(11, 'weeks').toDate();
-    cy.loadSeasonFixture([diamondsSeason]);
+    cy.loadSeasonFixture([ diamondsSeason ]);
     // Sign up to players and store their id's for comparison to match data
     cy.signupOpponent(playerOne).as('playerOneId');
     cy.signupOpponent(playerThree).as('playerThreeId');
@@ -74,7 +74,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
           endTime: dayjs.utc().subtract(1, 'hour').toDate(),
         };
 
-        cy.loadMatchFixtures([oldMatchBetweenPlayers, currentMatchWithDifferentOpponent]);
+        cy.loadMatchFixtures([ oldMatchBetweenPlayers, currentMatchWithDifferentOpponent ]);
       });
     // Log in as playerOne
     cy.loginPlayer(playerOne);
@@ -113,7 +113,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     // Match should be incomplete with one game
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [, , currentMatch] = res.body;
+      const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.startTime).to.not.eq(null);
@@ -131,7 +131,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     // Match should be incomplete with two games
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [, , currentMatch] = res.body;
+      const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.games.length).to.eq(2);
@@ -160,7 +160,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     // Match should be incomplete with three games
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [, , currentMatch] = res.body;
+      const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.games.length).to.eq(3);
@@ -189,7 +189,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     // Match should be completed with 4 games
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(3);
-      const [, , currentMatch] = res.body;
+      const [ , , currentMatch ] = res.body;
       expect(currentMatch.player1.id).to.eq(this.playerOneId);
       expect(currentMatch.player2.id).to.eq(this.playerTwoId);
       expect(currentMatch.games.length).to.eq(4);
@@ -280,10 +280,10 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     startRematchPlayerFirst();
     cy.get('[data-player-hand-card]').should('have.length', 5);
     cy.loadGameFixture(0, {
-      p0Hand: [Card.TEN_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+      p0Hand: [ Card.TEN_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.THREE_OF_CLUBS],
+      p1Hand: [ Card.THREE_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -297,10 +297,10 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.get('[data-player-hand-card]').should('have.length', 6);
 
     cy.loadGameFixture(1, {
-      p0Hand: [Card.TEN_OF_DIAMONDS],
+      p0Hand: [ Card.TEN_OF_DIAMONDS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TEN_OF_SPADES],
+      p1Hand: [ Card.TEN_OF_SPADES ],
       p1Points: [],
       p1FaceCards: [],
       topCard: Card.ACE_OF_CLUBS,
@@ -314,10 +314,10 @@ describe('Creating And Updating Casual Games With Rematch', () => {
     cy.log('Deck empty');
 
     assertGameState(1, {
-      p0Hand: [Card.TEN_OF_DIAMONDS, Card.ACE_OF_CLUBS],
+      p0Hand: [ Card.TEN_OF_DIAMONDS, Card.ACE_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TEN_OF_SPADES, Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_DIAMONDS ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -400,8 +400,8 @@ describe('Spectating Rematches', () => {
       cy.viewport(1920, 1080);
       cy.setupGameAsSpectator(true);
       window.localStorage.setItem('announcement', announcementData.id);
-      const [, , currentSeason] = seasonFixtures;
-      cy.loadSeasonFixture([currentSeason]);
+      const [ , , currentSeason ] = seasonFixtures;
+      cy.loadSeasonFixture([ currentSeason ]);
     });
 
     it('Specates a ranked match using rematch', () => {
@@ -409,10 +409,10 @@ describe('Spectating Rematches', () => {
       // Game 1: playerOne wins with points
       cy.log('Game 1: player1 wins with points');
       cy.loadGameFixture(0, {
-        p0Hand: [Card.TEN_OF_DIAMONDS],
-        p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+        p0Hand: [ Card.TEN_OF_DIAMONDS ],
+        p0Points: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
         p0FaceCards: [],
-        p1Hand: [Card.THREE_OF_CLUBS],
+        p1Hand: [ Card.THREE_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -451,10 +451,10 @@ describe('Spectating Rematches', () => {
       cy.recoverSessionOpponent(playerOne);
 
       cy.loadGameFixture(0, {
-        p0Hand: [Card.TEN_OF_DIAMONDS],
-        p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+        p0Hand: [ Card.TEN_OF_DIAMONDS ],
+        p0Points: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
         p0FaceCards: [],
-        p1Hand: [Card.THREE_OF_CLUBS],
+        p1Hand: [ Card.THREE_OF_CLUBS ],
         p1Points: [],
         p1FaceCards: [],
         deck: [],
@@ -508,9 +508,9 @@ describe('Spectating Rematches', () => {
       cy.get('[data-cy=player-username]').should('contain', playerOne.username);
       cy.recoverSessionOpponent(playerOne);
       cy.loadGameFixture(0, {
-        p0Hand: [Card.FOUR_OF_CLUBS],
-        p0Points: [Card.TEN_OF_HEARTS],
-        p0FaceCards: [Card.KING_OF_DIAMONDS],
+        p0Hand: [ Card.FOUR_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_HEARTS ],
+        p0FaceCards: [ Card.KING_OF_DIAMONDS ],
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],

@@ -5,9 +5,9 @@ module.exports = function (req, res) {
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
   const promiseTarget = cardService.findCard({ cardId: req.body.targetId });
-  Promise.all([promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget])
+  Promise.all([ promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget ])
     .then(function changeAndSave(values) {
-      const [game, player, opponent, card, target] = values;
+      const [ game, player, opponent, card, target ] = values;
       if (game.turn % 2 !== player.pNum) {
         return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
       }
@@ -35,7 +35,7 @@ module.exports = function (req, res) {
       const gameUpdates = {
         passes: 0,
         turn: game.turn + 1,
-        log: [...game.log, logMessage],
+        log: [ ...game.log, logMessage ],
         lastEvent: {
           change: 'scuttle',
         },
@@ -54,25 +54,25 @@ module.exports = function (req, res) {
         // Clear target's attachments
         Card.replaceCollection(target.id, 'attachments').members([]),
         // Remove card from player's hand
-        User.removeFromCollection(player.id, 'hand').members([card.id]),
+        User.removeFromCollection(player.id, 'hand').members([ card.id ]),
         // Remove target from opponent's points
-        User.removeFromCollection(opponent.id, 'points').members([target.id]),
+        User.removeFromCollection(opponent.id, 'points').members([ target.id ]),
         // Scrap cards
-        Game.addToCollection(game.id, 'scrap').members([...attachmentIds, card.id, target.id]),
+        Game.addToCollection(game.id, 'scrap').members([ ...attachmentIds, card.id, target.id ]),
       ];
       return Promise.all(updatePromises);
     })
     .then(function populateGame(values) {
-      const [game] = values;
-      return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
+      const [ game ] = values;
+      return Promise.all([ gameService.populateGame({ gameId: game.id }), game ]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel] = values;
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'scuttle',
         game: fullGame,
         victory,

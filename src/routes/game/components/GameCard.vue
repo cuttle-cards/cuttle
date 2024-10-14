@@ -93,7 +93,7 @@ export default {
     controlledBy: {
       type: String,
       default: '',
-      validator: (val) => ['', 'player', 'opponent'].includes(val),
+      validator: (val) => [ '', 'player', 'opponent' ].includes(val),
     },
     highElevation: {
       type: Boolean,
@@ -313,6 +313,11 @@ export default {
       max-width: 10vh;
       height: calc(10vh / 1.45);
     }
+  }
+
+  .jack {
+    margin-bottom: -60%;
+    width: calc(10vh / 1.85);
   }
 }
 </style>

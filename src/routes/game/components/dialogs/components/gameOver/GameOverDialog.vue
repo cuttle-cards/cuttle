@@ -268,7 +268,7 @@ export default {
         conceded: false,
         winner: null,
       });
-      await this.gameStore.requestRematch({gameId:this.gameStore.id, rematch: false});
+      await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: false });
       await this.gameStore.requestUnsubscribeFromGame();
     },
     async rematch() {
@@ -276,7 +276,7 @@ export default {
         if (this.gameStore.isSpectating) {
           return this.continueSpectating();
         }
-        await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: true});
+        await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: true });
       } catch (e) {
         this.showSnackbar = true;
         this.snackBarMessage = 'Error requesting rematch';

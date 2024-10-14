@@ -53,7 +53,7 @@ defineProps({
 });
 
 const menuItems = computed(() => {
-  return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT }, cyName: 'Log Out' }];
+  return [ { text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT }, cyName: 'Log Out' } ];
 });
 
 </script>

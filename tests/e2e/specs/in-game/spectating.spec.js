@@ -32,23 +32,23 @@ describe('Spectating Games', () => {
     cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     assertGameState(
       0,
       {
-        p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-        p0Points: [Card.TEN_OF_SPADES],
-        p0FaceCards: [Card.KING_OF_SPADES],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-        p1Points: [Card.TEN_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [ Card.KING_OF_SPADES ],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
@@ -60,12 +60,12 @@ describe('Spectating Games', () => {
     assertGameState(
       0,
       {
-        p0Hand: [Card.ACE_OF_CLUBS],
-        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-        p0FaceCards: [Card.KING_OF_SPADES],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-        p1Points: [Card.TEN_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+        p0FaceCards: [ Card.KING_OF_SPADES ],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
@@ -76,12 +76,12 @@ describe('Spectating Games', () => {
     assertGameState(
       0,
       {
-        p0Hand: [Card.ACE_OF_CLUBS],
-        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-        p0FaceCards: [Card.KING_OF_SPADES],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-        p1Points: [Card.TEN_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+        p0FaceCards: [ Card.KING_OF_SPADES ],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
@@ -93,12 +93,12 @@ describe('Spectating Games', () => {
     assertGameState(
       0,
       {
-        p0Hand: [Card.ACE_OF_CLUBS],
-        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-        p0FaceCards: [Card.KING_OF_SPADES],
-        p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-        p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+        p0FaceCards: [ Card.KING_OF_SPADES ],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
@@ -122,11 +122,11 @@ describe('Spectating Games', () => {
       0,
       {
         p0Hand: [],
-        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-        p0FaceCards: [Card.KING_OF_SPADES],
-        p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-        p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
+        p0FaceCards: [ Card.KING_OF_SPADES ],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
@@ -144,12 +144,12 @@ describe('Spectating Games', () => {
     cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_CLUBS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_CLUBS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     cy.recoverSessionOpponent(playerOne);
@@ -172,12 +172,12 @@ describe('Spectating Games', () => {
     cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_CLUBS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_CLUBS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     cy.window()
@@ -191,10 +191,10 @@ describe('Spectating Games', () => {
     cy.signupOpponent(opponentOne);
     cy.setupGameAsP0(true);
     cy.loadGameFixture(0, {
-      p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
+      p0Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
+      p1Hand: [ Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -207,10 +207,10 @@ describe('Spectating Games', () => {
     cy.wait(3000);
 
     assertGameState(0, {
-      p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
+      p0Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
+      p1Hand: [ Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -230,9 +230,9 @@ describe('Spectating Games', () => {
       ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_CLUBS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_CLUBS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     assertGameState(
@@ -248,9 +248,9 @@ describe('Spectating Games', () => {
         ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
-        p1Points: [Card.ACE_OF_CLUBS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p1Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+        p1Points: [ Card.ACE_OF_CLUBS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );

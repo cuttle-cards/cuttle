@@ -119,7 +119,7 @@ const multiplayer = {
     title: 'rules.3Players.title',
     text: 'rules.3Players.text',
     rulesDifference: 'rules.3Players.rules',
-    rules: ['rules.3Players.rule1', 'rules.3Players.rule2', 'rules.3Players.rule3', 'rules.3Players.rule4'],
+    rules: [ 'rules.3Players.rule1', 'rules.3Players.rule2', 'rules.3Players.rule3', 'rules.3Players.rule4' ],
   },
   '4Players': {
     title: 'rules.4Players.title',
@@ -155,7 +155,7 @@ const sectionTitles = [
   { id:'actions', title: 'rules.actions.title', href: '#actions' },
   { id:'royals', title: 'rules.royals.title', href: '#royals' },
   { id:'oneoffs', title: 'rules.oneoffs.title', href: '#oneoffs' },
-  { id: 'multiplayer', title: 'rules.multiplayerTitle', href: '#multiplayer'},
+  { id: 'multiplayer', title: 'rules.multiplayerTitle', href: '#multiplayer' },
   { id:'faq', title: 'rules.faq.title', href: '#faq' },
   { id: 'tournaments', title: 'rules.tournaments.title', href: '#tournaments' },
 ];

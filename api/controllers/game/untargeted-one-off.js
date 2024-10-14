@@ -6,9 +6,9 @@ module.exports = function (req, res) {
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
-  Promise.all([promiseGame, promisePlayer, promiseCard, promiseOpponent])
+  Promise.all([ promiseGame, promisePlayer, promiseCard, promiseOpponent ])
     .then(function changeAndSave(values) {
-      const [game, player, card, opponent] = values;
+      const [ game, player, card, opponent ] = values;
       if (game.turn % 2 === player.pNum) {
         // Check Turn
         if (!game.oneOff) {
@@ -70,10 +70,10 @@ module.exports = function (req, res) {
                   };
                   const updatePromises = [
                     Game.updateOne(game.id).set(gameUpdates),
-                    User.removeFromCollection(player.id, 'hand').members([card.id]),
+                    User.removeFromCollection(player.id, 'hand').members([ card.id ]),
                     User.updateOne(player.id).set(playerUpdates),
                   ];
-                  return Promise.all([game, ...updatePromises]);
+                  return Promise.all([ game, ...updatePromises ]);
                 }
                 return Promise.reject({
                   message: 'That card is frozen! You must wait a turn to play it',
@@ -97,7 +97,7 @@ module.exports = function (req, res) {
       }
     })
     .then(function populateGame(values) {
-      return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);
+      return Promise.all([ gameService.populateGame({ gameId: values[0].id }), values[0] ]);
     })
     .then(async function publishAndRespond(values) {
       const [ fullGame, gameModel ] = values;
@@ -105,7 +105,7 @@ module.exports = function (req, res) {
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         
           change: 'oneOff',
           game: fullGame,
