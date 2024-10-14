@@ -35,11 +35,11 @@ module.exports = {
 
     // Remove playedCard from the top of the deck
     const cardIndex = result.deck.findIndex(({ id }) => id === cardId);
-    const [playedCard] = result.deck.splice(cardIndex, 1);
+    const [ playedCard ] = result.deck.splice(cardIndex, 1);
 
     // Remove targetCard from opponent's points
     const targetIndex = opponent.points.findIndex(({ id }) => id === targetId);
-    const [targetCard] = opponent.points.splice(targetIndex, 1);
+    const [ targetCard ] = opponent.points.splice(targetIndex, 1);
 
     // Move both cards to scrap
     result.scrap.push(playedCard, targetCard);

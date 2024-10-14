@@ -51,9 +51,9 @@ module.exports = function (req, res, next) {
       }
       return next();
 
-      case MoveType.JACK: // jack funcionality was removed
-      case MoveType.SCUTTLE:
-      case MoveType.SEVEN_SCUTTLE:
+    case MoveType.JACK: // jack funcionality was removed
+    case MoveType.SCUTTLE:
+    case MoveType.SEVEN_SCUTTLE:
       {
         if (!cardId || !targetId) {
           return res.badRequest({ message: 'Must specify a card' });
