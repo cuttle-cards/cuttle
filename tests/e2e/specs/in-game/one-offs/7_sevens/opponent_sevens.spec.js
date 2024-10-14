@@ -22,13 +22,16 @@ describe('Opponent playing SEVENS', () => {
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
     // Player resolves
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+      .click();
     cy.log('Player resolves (could not counter');
 
     // Waiting for opponent
     cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
     // Deck cards appear but are not selectable
-    cy.get('[data-top-card=4-0]').should('exist').click({ force: true }).should('not.have.class', 'selected');
+    cy.get('[data-top-card=4-0]').should('exist')
+      .click({ force: true })
+      .should('not.have.class', 'selected');
     cy.get('[data-second-card=6-1]')
       .should('exist')
       .click({ force: true })
@@ -69,7 +72,8 @@ describe('Opponent playing SEVENS', () => {
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
     // Player resolves
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+      .click();
     cy.log('Player resolves (could not counter');
 
     // Waiting for opponent
@@ -119,7 +123,8 @@ describe('Opponent playing SEVENS', () => {
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
 
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+      .click();
     cy.log('Player resolves (could not counter');
 
     // Waiting for opponent
@@ -165,7 +170,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves (could not counter');
 
       // Waiting for opponent
@@ -212,7 +218,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves (could not counter');
 
       // Waiting for opponent
@@ -263,7 +270,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves (could not counter');
 
       // Waiting for opponent
@@ -315,7 +323,8 @@ describe('Opponent playing SEVENS', () => {
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
     // Player resolves
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+      .click();
     cy.log('Player resolves (could not counter');
 
     // Waiting for opponent
@@ -367,7 +376,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves seven of clubs (could not counter');
 
       // Waiting for opponent
@@ -375,7 +385,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 6 of diamonds
       cy.playOneOffFromSevenOpponent(Card.SIX_OF_DIAMONDS);
       cy.log('Player resolves six of diamonds (could not counter');
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -405,7 +416,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves seven of clubs (could not counter');
 
       // Waiting for opponent
@@ -413,7 +425,8 @@ describe('Opponent playing SEVENS', () => {
 
       // Opponent plays two of spades
       cy.playTargetedOneOffFromSevenOpponent(Card.TWO_OF_SPADES, Card.QUEEN_OF_CLUBS, 'faceCard');
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -459,7 +472,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves seven of clubs (could not counter');
 
       // Waiting for opponent
@@ -468,7 +482,8 @@ describe('Opponent playing SEVENS', () => {
       cy.playTargetedOneOffFromSevenOpponent(Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS, 'jack');
 
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -498,14 +513,16 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves seven of clubs (could not counter');
 
       // Waiting for opponent
       cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
 
       cy.playTargetedOneOffFromSevenOpponent(Card.NINE_OF_DIAMONDS, Card.QUEEN_OF_CLUBS, 'faceCard');
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -551,7 +568,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves seven of clubs (could not counter');
 
       // Waiting for opponent
@@ -560,7 +578,8 @@ describe('Opponent playing SEVENS', () => {
       cy.playTargetedOneOffFromSevenOpponent(Card.NINE_OF_CLUBS, Card.JACK_OF_CLUBS, 'jack');
 
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
 
       assertGameState(1, {
         p0Hand: [ Card.TEN_OF_DIAMONDS ],

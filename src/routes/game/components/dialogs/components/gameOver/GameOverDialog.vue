@@ -129,10 +129,10 @@ export default {
     const rightPlayer = gameStore.isSpectating ? WhichPlayer.ORIGINAL_P1 : WhichPlayer.CURRENT_OPPONENT;
 
     const {
-        username: leftPlayerUsername,
-        rematch: leftPlayerRematch,
-        wins: leftPlayerWins,
-        wonMatch: leftPlayerWonMatch,
+      username: leftPlayerUsername,
+      rematch: leftPlayerRematch,
+      wins: leftPlayerWins,
+      wonMatch: leftPlayerWonMatch,
     } = usePlayerData(leftPlayer);
 
     const {

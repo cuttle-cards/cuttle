@@ -47,9 +47,9 @@ const { t } = useI18n();
 
 defineProps({
   variant:{
-      type:String,
-      default:'light'
-    }
+    type:String,
+    default:'light'
+  }
 });
 
 const menuItems = computed(() => {

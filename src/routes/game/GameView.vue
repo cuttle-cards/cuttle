@@ -894,7 +894,7 @@ export default {
       } finally {
         this.clearSelection();
       }
-},
+    },
     async playFaceCard() {
       this.clearOverlays();
       try {
@@ -905,10 +905,10 @@ export default {
             .requestPlayFaceCard(this.selectedCard.id);
         } else {
           await this.gameStore
-          .requestPlayFaceCardSeven({
-            cardId: this.cardSelectedFromDeck.id,
-            index: deckIndex,
-          });
+            .requestPlayFaceCardSeven({
+              cardId: this.cardSelectedFromDeck.id,
+              index: deckIndex,
+            });
         }
       } catch(messageKey){
         this.handleError(messageKey);

@@ -59,7 +59,7 @@ export default {
       type: String,
       default: 'No Cards Yet',
     },
- /**
+    /**
      * Prefix used to identify where this card is in UI
      * Used to generate data-* selectors for e2e testing
      * @example 'scrap-dialog' for this prop
@@ -72,7 +72,7 @@ export default {
       default: '',
     },
 
-   /**
+    /**
      * List of ids of cards in list that are selected
      */
 
@@ -104,7 +104,7 @@ export default {
     },
   },
   methods: {
-      /**
+    /**
      * Format data selector for a specific card into object for v-bind
      * @example result: {'data-scrap-dialog-card': '1-3'}
      * ^^^ the ace of spades in the scrap dialog

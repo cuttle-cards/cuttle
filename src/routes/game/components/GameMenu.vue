@@ -87,7 +87,7 @@ export default {
     BaseDialog,
     RulesDialog,
     TheLanguageSelector
-},
+  },
   props: {
     isSpectating: {
       type: Boolean,
@@ -136,7 +136,7 @@ export default {
         return this.shownDialog === 'rules';
       },
       set(val) {
-      this.shownDialog = val ? 'rules' : '';
+        this.shownDialog = val ? 'rules' : '';
       }
     },
     showConcedeDialog(){ 

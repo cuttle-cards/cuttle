@@ -134,7 +134,7 @@ export default {
         this.joiningGame = false;
       })
         .catch(() => {
-        this.joiningGame = false;
+          this.joiningGame = false;
         });
     },
     spectateGame() {

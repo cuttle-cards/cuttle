@@ -24,7 +24,8 @@ describe('Playing sevens at the end of the deck', () => {
     cy.get('[data-top-card=6-1]').click();
     cy.get('[data-move-choice=points]').click();
 
-    cy.get('#deck').find('#empty-deck-text').should('contain', 'PASS');
+    cy.get('#deck').find('#empty-deck-text')
+      .should('contain', 'PASS');
     assertSnackbar('Deck exhausted; revealing player hands', 'surface-1');
   });
 
@@ -51,7 +52,8 @@ describe('Playing sevens at the end of the deck', () => {
     cy.get('#deck').should('contain', '(1)');
     cy.drawCardOpponent();
 
-    cy.get('#deck').find('#empty-deck-text').should('contain', 'PASS');
+    cy.get('#deck').find('#empty-deck-text')
+      .should('contain', 'PASS');
 
     assertGameState(0, {
       p0Hand: [],
@@ -87,7 +89,8 @@ describe('Playing sevens at the end of the deck', () => {
     cy.get('#deck').should('contain', '(1)');
     cy.drawCardOpponent();
 
-    cy.get('#deck').find('#empty-deck-text').should('contain', 'PASS');
+    cy.get('#deck').find('#empty-deck-text')
+      .should('contain', 'PASS');
 
     assertGameState(0, {
       p0Hand: [],
@@ -136,7 +139,8 @@ describe('Playing sevens at the end of the deck', () => {
     });
     cy.drawCardOpponent();
     cy.get('[data-player-hand-card=7-0]').click();
-    cy.get('[data-move-choice=oneOff').should('not.have.class', 'v-card--disabled').click();
+    cy.get('[data-move-choice=oneOff').should('not.have.class', 'v-card--disabled')
+      .click();
     cy.resolveOpponent();
     cy.get('[data-top-card=7-2]').click();
     cy.get('[data-move-choice=oneOff').should('have.class', 'v-card--disabled');
