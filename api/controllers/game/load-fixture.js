@@ -1,5 +1,3 @@
-const DeckIds = require('../../../utils/DeckIds.json');
-
 module.exports = function (req, res) {
   // Capture request data
   const p0HandCardIds = req.body.p0HandCardIds || [];
@@ -112,20 +110,14 @@ module.exports = function (req, res) {
         Game.removeFromCollection(game.id, 'deck').members(allRequestedCards),
       ];
 
-      return Promise.all([ game, ...updatePromises, allRequestedCards ]);
+      return Promise.all([ game, ...updatePromises ]);
     })
-    .then(async function fillScrap(values) {
+    .then(async function removeCardsFromDeck(values) {
       const [ game ] = values;
       // If deck was specified, delete all other cards from the deck
-      const { deck, scrapUnusedCards } = req.body;
-      if (scrapUnusedCards) {
-        const cardsToScrap = DeckIds
-          .map((id) => sails.helpers.gameStates.convertStrToCard(id))
-          .filter((cardObj) => 
-            !allRequestedCards.some((card) => card.rank === cardObj.rank && card.suit === cardObj.suit)
-          );
+      const { deck } = req.body;
+      if (deck) {
         await Game.replaceCollection(game.id, 'deck').members(deck);
-        await Game.addToCollection(game.id, 'scrap').members(cardsToScrap);
       }
       return game;
     })
