@@ -1216,6 +1216,7 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture, scrapUnusedCards = false
         reqBody.deck = deck;
       }
 
+      reqBody.scrapUnusedCards = scrapUnusedCards;
       cy.makeSocketRequest('game', 'loadFixture', reqBody);
       const playerHandLength = pNum === 0 ? p0HandCardIds.length : p1HandCardIds.length;
       cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
