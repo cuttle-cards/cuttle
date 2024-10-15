@@ -14,17 +14,17 @@ module.exports = {
   fn: async ({ gameState }, exits) => {
 
     try {
-        // validate and format
-        const gameStateCleaned = sails.helpers.gameStates.validateGamestate(gameState);
-        // convert
-        const gameStateRowData = sails.helpers.gameStates.packGamestate(gameStateCleaned);
-        // Save and fetch
-        const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
+      // validate and format
+      const gameStateCleaned = sails.helpers.gameStates.validateGamestate(gameState);
+      // convert
+      const gameStateRowData = sails.helpers.gameStates.packGamestate(gameStateCleaned);
+      // Save and fetch
+      const gameStateRow = await GameStateRow.create(gameStateRowData).fetch();
 
-        return exits.success(gameStateRow);
+      return exits.success(gameStateRow);
 
     } catch (err) {
-        return exits.error({ message: 'Error while Saving GameStateRow :' + err });
+      return exits.error({ message: 'Error while Saving GameStateRow :' + err });
     }
   }
 };

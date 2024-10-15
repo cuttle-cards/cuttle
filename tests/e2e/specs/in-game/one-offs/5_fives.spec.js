@@ -74,7 +74,8 @@ describe('FIVES', () => {
           deck: [],
         });
         // Deck should now be empty
-        cy.get('#deck').should('contain', '(0)').should('contain', 'PASS');
+        cy.get('#deck').should('contain', '(0)')
+          .should('contain', 'PASS');
         cy.get('[data-player-hand-card]').should('have.length', 3);
       });
 
@@ -112,7 +113,8 @@ describe('FIVES', () => {
           deck: [],
         });
 
-        cy.get('#deck').should('contain', '(0)').should('contain', 'PASS');
+        cy.get('#deck').should('contain', '(0)')
+          .should('contain', 'PASS');
         cy.get('[data-player-hand-card]').should('have.length', 2);
       });
 
@@ -227,7 +229,8 @@ describe('FIVES', () => {
 
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
         cy.get('[data-cy=five-discard-dialog]').should('be.visible');
-        cy.get('[data-cy=submit-five-dialog]').should('be.disabled').click({ force: true });
+        cy.get('[data-cy=submit-five-dialog]').should('be.disabled')
+          .click({ force: true });
         cy.get('[data-discard-card=2-0]').click();
         cy.get('[data-cy=submit-five-dialog]').click();
 
@@ -237,7 +240,8 @@ describe('FIVES', () => {
         cy.get('[data-opponent-point-card=4-0]').should('be.visible');
 
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_HEARTS);
-        cy.get('[data-cy=submit-five-dialog]').should('be.disabled').click({ force: true });
+        cy.get('[data-cy=submit-five-dialog]').should('be.disabled')
+          .click({ force: true });
 
         cy.get('[data-discard-card=1-0]').click();
         cy.get('[data-cy=submit-five-dialog]').click();
@@ -455,7 +459,8 @@ describe('FIVES', () => {
       });
       cy.playOneOffOpponent(Card.FIVE_OF_SPADES);
 
-      cy.get('[data-cy=cannot-counter-dialog]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-dialog]').should('be.visible')
+        .click();
       cy.get('[data-cy=cannot-counter-resolve]').click();
       cy.get('#waiting-for-opponent-discard-scrim').should('be.visible');
       cy.get('[data-cy=five-discard-dialog]').should('not.exist');
@@ -501,7 +506,8 @@ describe('FIVES', () => {
 
       cy.playOneOffOpponent(Card.FIVE_OF_SPADES);
 
-      cy.get('[data-cy=cannot-counter-dialog]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-dialog]').should('be.visible')
+        .click();
       cy.get('[data-cy=cannot-counter-resolve]').click();
       cy.get('#waiting-for-opponent-discard-scrim').should('contain', 'Opponent Skips Discarding');
       cy.resolveFiveOpponent();

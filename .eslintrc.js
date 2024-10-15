@@ -32,6 +32,7 @@ module.exports = {
   plugins: [ 'cypress', 'vitest', 'prettier' ],
   ignorePatterns: [ '/node_modules/*', '/assets/*' ],
   rules: {
+    'eol-last': [ 'error', 'always' ],
     'max-len': [
       'warn',
       {
@@ -57,6 +58,8 @@ module.exports = {
         }
       }
     ],
+    'newline-per-chained-call': [ 'error', { ignoreChainWithDepth: 2 } ],
+    'indent': [ 'error', 2, { SwitchCase: 1 } ],
     'vue/html-indent': [ 'error' ],
     'vue/multi-word-component-names': [ 'error' ],
     'prefer-destructuring': [ 'error' ],
