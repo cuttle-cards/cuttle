@@ -31,12 +31,13 @@ module.exports = {
     let result = _.cloneDeep(currentState);
 
     const player = playedBy ? result.p1 : result.p0;
-
+    
+    result.discardedCards = [];
+    
     if (cardId) {
       const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
       const [ discardedCard ] = player.hand.splice(cardIndex, 1);
       result.scrap.push(discardedCard); 
-      result.discardedCards = [];
       result.discardedCards.push(discardedCard);
     }
 
@@ -47,8 +48,8 @@ module.exports = {
     player.hand.push(...result.deck.splice(0, actualCardsToDraw));
 
     result.scrap.push(result.oneOff); 
+    result.resolved = result.oneoff;
     result.oneOff = null;
-    result.resolved = discardedCard; 
 
     result.turn++;
     result.phase = GamePhase.MAIN;

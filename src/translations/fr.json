@@ -285,6 +285,7 @@
         "five": {
           "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
           "incorrectCard": "Mauvaise carte jouée",
+          "wrongPhase": "Vous ne pouvez pas résoudre un cinq maintenant.",
           "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
         },
         "seven": {

@@ -37,7 +37,7 @@ module.exports = {
       }
 
       if (currentState.phase !== GamePhase.RESOLVING_FIVE) {
-        throw new Error('game.snackbar.oneOffs.wrongPhase');
+        throw new Error('game.snackbar.oneOffs.five.wrongPhase');
       }
 
       const playerHand = currentState[player].hand;

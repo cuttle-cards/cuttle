@@ -272,7 +272,6 @@
         "mustTargetPointCard": "You can only scuttle a card your opponent has played for points"
       },
       "oneOffs": {
-        "wrongPhase": "You can't resolve a five right now.",
         "oneOffInPlay": "There is already a one-off in play; you cannot play any card, except a two to counter.",
         "cantPlayWithoutATarget": "You cannot play that card as a ONE-OFF without a target",
         "onlyTwoOrNine": "You can only play a 2, or a 9 as targeted one-offs.",
@@ -286,7 +285,8 @@
         "five": {
           "selectCardToDiscard": "You must select one card to discard",
           "incorrectCard": "Incorrect card played",
-          "fiveDeckIsEmpty": "Cannot resolve 5 one-off with an empty deck"
+          "fiveDeckIsEmpty": "Cannot resolve 5 one-off with an empty deck",
+          "wrongPhase": "You can't resolve a five right now."
         },
         "seven": {
           "oneCardInDeck": "You cannot play a 7 as a ONE-OFF if it is the last card in the deck",
