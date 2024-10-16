@@ -215,7 +215,7 @@ describe('Creating And Updating Ranked Matches', () => {
       p1Points: [],
       p1FaceCards: [],
       deck: [],
-    });
+    }, true);
 
     cy.log('Drawing last two cards');
     cy.get('#deck').should('contain', '(2)')
@@ -254,7 +254,7 @@ describe('Creating And Updating Ranked Matches', () => {
       p1Points: [],
       p1FaceCards: [],
       deck: [],
-    });
+    }, true);
 
     cy.log('Drawing last two cards');
     cy.get('#deck').should('contain', '(2)')
