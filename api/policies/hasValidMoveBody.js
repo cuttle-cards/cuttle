@@ -16,8 +16,8 @@ module.exports = function (req, res, next) {
     case MoveType.PASS:
     case MoveType.DRAW:
     case MoveType.RESOLVE:
-    case MoveType.RESOLVE_FIVE: // Pridanie nového case
-      // Tieto ťahy nevyžadujú žiadne extra údaje
+    case MoveType.RESOLVE_FIVE: 
+      
       return next();
 
     case MoveType.POINTS:

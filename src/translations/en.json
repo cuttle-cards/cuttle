@@ -272,6 +272,7 @@
         "mustTargetPointCard": "You can only scuttle a card your opponent has played for points"
       },
       "oneOffs": {
+        "wrongPhase": "You can't resolve a five right now.",
         "oneOffInPlay": "There is already a one-off in play; you cannot play any card, except a two to counter.",
         "cantPlayWithoutATarget": "You cannot play that card as a ONE-OFF without a target",
         "onlyTwoOrNine": "You can only play a 2, or a 9 as targeted one-offs.",

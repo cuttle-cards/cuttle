@@ -25,35 +25,34 @@ module.exports = {
       description: 'Player number of player resolving the five.',
     },
   },
-  sync: true, // synchronous helper
+  sync: true,
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
     const { cardId } = requestedMove;
     let result = _.cloneDeep(currentState);
 
     const player = playedBy ? result.p1 : result.p0;
-    const opponent = playedBy ? result.p0 : result.p1;
 
-    // 1. Ak má hráč kartu na odhodenie (t.j. má nejaké karty v ruke), odhodíme ju do scrap
     if (cardId) {
       const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
-      const discardedCard = player.hand.splice(cardIndex, 1)[0];
-      result.scrap.push(discardedCard); // Pridáme kartu do scrap
-      result.discardedCards = result.discardedCards || [];
+      const [ discardedCard ] = player.hand.splice(cardIndex, 1);
+      result.scrap.push(discardedCard); 
+      result.discardedCards = [];
       result.discardedCards.push(discardedCard);
     }
 
-    // 2. Hráč potiahne až 3 karty, ale nesmie prekročiť limit 8 kariet
     const cardsToDraw = Math.min(3, result.deck.length);
     const spaceInHand = 8 - player.hand.length;
     const actualCardsToDraw = Math.min(cardsToDraw, spaceInHand);
 
     player.hand.push(...result.deck.splice(0, actualCardsToDraw));
 
-    // 3. Zvýšenie počtu ťahov a nastavenie fázy na MAIN
+    result.scrap.push(result.oneOff); 
+    result.oneOff = null;
+    result.resolved = discardedCard; 
+
     result.turn++;
     result.phase = GamePhase.MAIN;
 
-    // 4. Vrátenie nového stavu hry
     return exits.success(result);
   },
 };
