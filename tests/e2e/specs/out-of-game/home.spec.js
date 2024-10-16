@@ -379,7 +379,7 @@ describe('Home - Game List', () => {
         p1Points: [],
         p1FaceCards: [],
         deck: [],
-      });
+      }, true);
       // Draw last two card, both players pass until stalemate
       cy.get('#deck').should('contain', '(2)');
       cy.recoverSessionOpponent(playerOne);
