@@ -1195,6 +1195,7 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture, scrapUnusedCards = false
         p1PointCardIds,
         p0FaceCardIds,
         p1FaceCardIds,
+        scrapUnusedCards
       };
       // Get top card & second cards if specified
       if (fixture.topCard) {
@@ -1216,7 +1217,6 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture, scrapUnusedCards = false
         reqBody.deck = deck;
       }
 
-      reqBody.scrapUnusedCards = scrapUnusedCards;
       cy.makeSocketRequest('game', 'loadFixture', reqBody);
       const playerHandLength = pNum === 0 ? p0HandCardIds.length : p1HandCardIds.length;
       cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
