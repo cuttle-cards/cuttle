@@ -17,7 +17,6 @@ module.exports = {
 
   fn: ({ gameState }, exits) => {
     const { p0, p1, deck, scrap, twos, oneOff } = gameState;
-    console.log(gameState);
 
     // put Cards and Attachments into a one dimensional array
     const flattenCards = (cards) => {
@@ -46,7 +45,7 @@ module.exports = {
       }
 
       if (cardIds.has(card.id)) {
-        throw new Error('Duplicate Card');
+        throw new Error(`Duplicate Card ${card.id}`);
       }
 
       if (!deckIds.has(card.id)) {
