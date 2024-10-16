@@ -18,8 +18,8 @@ describe('Video Playground', () => {
 
   it('Plays Points', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
       p1Hand: [
         Card.THREE_OF_CLUBS,
@@ -28,7 +28,7 @@ describe('Video Playground', () => {
         Card.NINE_OF_DIAMONDS,
         Card.NINE_OF_HEARTS
       ],
-      p1Points: [Card.FIVE_OF_HEARTS],
+      p1Points: [ Card.FIVE_OF_HEARTS ],
       p1FaceCards: [],
     });
     cy.wait(1000);
@@ -41,8 +41,8 @@ describe('Video Playground', () => {
 
   it('Plays a King', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.KING_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.KING_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
       p1Hand: [
         Card.THREE_OF_CLUBS,
@@ -51,7 +51,7 @@ describe('Video Playground', () => {
         Card.NINE_OF_DIAMONDS,
         Card.NINE_OF_HEARTS
       ],
-      p1Points: [Card.QUEEN_OF_CLUBS],
+      p1Points: [ Card.QUEEN_OF_CLUBS ],
       p1FaceCards: [],
     });
     cy.wait(1000);
@@ -64,8 +64,8 @@ describe('Video Playground', () => {
 
   it('Scuttles', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.KING_OF_HEARTS, Card.SEVEN_OF_DIAMONDS],
-      p0Points: [Card.FOUR_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.KING_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
+      p0Points: [ Card.FOUR_OF_CLUBS ],
       p0FaceCards: [],
       p1Hand: [
         Card.THREE_OF_CLUBS,
@@ -74,7 +74,7 @@ describe('Video Playground', () => {
         Card.NINE_OF_DIAMONDS,
         Card.NINE_OF_HEARTS
       ],
-      p1Points: [Card.FIVE_OF_DIAMONDS, Card.TEN_OF_SPADES],
+      p1Points: [ Card.FIVE_OF_DIAMONDS, Card.TEN_OF_SPADES ],
       p1FaceCards: [],
     });
     cy.wait(1000);
@@ -90,8 +90,8 @@ describe('Video Playground', () => {
 
   it('Jacks', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.JACK_OF_CLUBS, Card.JACK_OF_DIAMONDS],
-      p0Points: [Card.FOUR_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.JACK_OF_CLUBS, Card.JACK_OF_DIAMONDS ],
+      p0Points: [ Card.FOUR_OF_CLUBS ],
       p0FaceCards: [],
       p1Hand: [
         Card.THREE_OF_CLUBS,
@@ -100,7 +100,7 @@ describe('Video Playground', () => {
         Card.NINE_OF_DIAMONDS,
         Card.JACK_OF_HEARTS
       ],
-      p1Points: [Card.FIVE_OF_DIAMONDS, Card.TEN_OF_SPADES],
+      p1Points: [ Card.FIVE_OF_DIAMONDS, Card.TEN_OF_SPADES ],
       p1FaceCards: [],
     });
     cy.wait(1000);
@@ -128,12 +128,12 @@ describe('Video Playground', () => {
 
   it('Play Queens', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_HEARTS, Card.FOUR_OF_SPADES],
+      p0Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_HEARTS, Card.FOUR_OF_SPADES ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.JACK_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
+      p1Hand: [ Card.JACK_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_CLUBS, Card.QUEEN_OF_SPADES],
+      p1FaceCards: [ Card.KING_OF_CLUBS, Card.QUEEN_OF_SPADES ],
     });
     cy.wait(1000);
 
@@ -172,8 +172,8 @@ describe('Video Playground', () => {
 
   it('Playing Aces', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_HEARTS],
-      p0Points: [Card.FOUR_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_HEARTS ],
+      p0Points: [ Card.FOUR_OF_CLUBS ],
       p0FaceCards: [],
       p1Hand: [
         Card.THREE_OF_CLUBS,
@@ -182,7 +182,7 @@ describe('Video Playground', () => {
         Card.NINE_OF_DIAMONDS,
         Card.JACK_OF_HEARTS
       ],
-      p1Points: [Card.EIGHT_OF_CLUBS, Card.TEN_OF_SPADES],
+      p1Points: [ Card.EIGHT_OF_CLUBS, Card.TEN_OF_SPADES ],
       p1FaceCards: [],
     });
     cy.wait(1000);
@@ -199,12 +199,12 @@ describe('Video Playground', () => {
   describe('Playing Twos', () => {
     it('Two to scrap a royal', () => {
       cy.loadGameFixture(0, {
-        p0Hand: [Card.ACE_OF_SPADES, Card.TWO_OF_HEARTS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_SPADES, Card.TWO_OF_HEARTS, Card.SEVEN_OF_HEARTS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.TEN_OF_SPADES],
+        p1Hand: [ Card.TEN_OF_SPADES ],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_DIAMONDS, Card.KING_OF_SPADES],
+        p1FaceCards: [ Card.KING_OF_DIAMONDS, Card.KING_OF_SPADES ],
       });
       cy.wait(2000);
 
@@ -220,10 +220,10 @@ describe('Video Playground', () => {
 
     it('Plays a 2 to counter opponent one-off', () => {
       cy.loadGameFixture(0, {
-        p0Hand: [Card.TWO_OF_HEARTS, Card.SEVEN_OF_HEARTS],
-        p0Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+        p0Hand: [ Card.TWO_OF_HEARTS, Card.SEVEN_OF_HEARTS ],
+        p0Points: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
         p0FaceCards: [],
-        p1Hand: [Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES],
+        p1Hand: [ Card.ACE_OF_CLUBS, Card.FOUR_OF_SPADES ],
         p1Points: [],
         p1FaceCards: [],
       });
@@ -274,9 +274,9 @@ describe('Video Playground', () => {
       ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_CLUBS, Card.EIGHT_OF_DIAMONDS, Card.QUEEN_OF_SPADES],
+      p1FaceCards: [ Card.KING_OF_CLUBS, Card.EIGHT_OF_DIAMONDS, Card.QUEEN_OF_SPADES ],
       scrap: [
         Card.SIX_OF_DIAMONDS,
         Card.TEN_OF_SPADES,
@@ -307,9 +307,9 @@ describe('Video Playground', () => {
         Card.SIX_OF_DIAMONDS,
         Card.NINE_OF_HEARTS,
       ],
-      p0Points: [Card.FIVE_OF_CLUBS],
+      p0Points: [ Card.FIVE_OF_CLUBS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_HEARTS, Card.JACK_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_HEARTS, Card.JACK_OF_SPADES ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -335,9 +335,9 @@ describe('Video Playground', () => {
         Card.QUEEN_OF_HEARTS,
       ],
       p0Points: [],
-      p0FaceCards: [Card.QUEEN_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
-      p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_HEARTS, Card.JACK_OF_SPADES],
-      p1Points: [Card.TEN_OF_SPADES],
+      p0FaceCards: [ Card.QUEEN_OF_CLUBS, Card.QUEEN_OF_DIAMONDS ],
+      p1Hand: [ Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_HEARTS, Card.JACK_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_SPADES ],
       p1FaceCards: [],
       topCard: Card.ACE_OF_CLUBS,
       secondCard: Card.TWO_OF_SPADES,
@@ -369,11 +369,11 @@ describe('Video Playground', () => {
         Card.JACK_OF_HEARTS,
         Card.QUEEN_OF_CLUBS,
       ],
-      p0Points: [Card.FIVE_OF_DIAMONDS, Card.TEN_OF_SPADES],
-      p0FaceCards: [Card.EIGHT_OF_SPADES],
-      p1Hand: [Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-      p1Points: [Card.FOUR_OF_CLUBS],
-      p1FaceCards: [Card.KING_OF_CLUBS, Card.EIGHT_OF_DIAMONDS],
+      p0Points: [ Card.FIVE_OF_DIAMONDS, Card.TEN_OF_SPADES ],
+      p0FaceCards: [ Card.EIGHT_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_SPADES, Card.SIX_OF_SPADES, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
+      p1Points: [ Card.FOUR_OF_CLUBS ],
+      p1FaceCards: [ Card.KING_OF_CLUBS, Card.EIGHT_OF_DIAMONDS ],
     });
 
     cy.get('[data-player-hand-card=11-0]').click();
@@ -411,10 +411,10 @@ describe('Video Playground', () => {
         Card.EIGHT_OF_CLUBS,
         Card.NINE_OF_HEARTS,
       ],
-      p0Points: [Card.NINE_OF_DIAMONDS],
+      p0Points: [ Card.NINE_OF_DIAMONDS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_HEARTS, Card.QUEEN_OF_CLUBS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_HEARTS, Card.QUEEN_OF_CLUBS ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
       p1FaceCards: [],
       topCard: Card.ACE_OF_CLUBS,
       secondCard: Card.JACK_OF_HEARTS,
@@ -447,9 +447,9 @@ describe('Video Playground', () => {
         Card.EIGHT_OF_CLUBS,
         Card.NINE_OF_HEARTS,
       ],
-      p0Points: [Card.NINE_OF_CLUBS],
+      p0Points: [ Card.NINE_OF_CLUBS ],
       p0FaceCards: [],
-      p1Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS, Card.TWO_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.QUEEN_OF_SPADES],
+      p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS, Card.TWO_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.QUEEN_OF_SPADES ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -464,11 +464,11 @@ describe('Video Playground', () => {
 
   it('Playing Nines', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.NINE_OF_CLUBS, Card.TEN_OF_SPADES],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.NINE_OF_CLUBS, Card.TEN_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.FIVE_OF_HEARTS, Card.SIX_OF_SPADES, Card.JACK_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_CLUBS],
+      p1Hand: [ Card.FIVE_OF_HEARTS, Card.SIX_OF_SPADES, Card.JACK_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_CLUBS ],
       p1FaceCards: [],
     });
     cy.get('[data-player-hand-card]').should('have.length', 3);

@@ -7,9 +7,9 @@ module.exports = function (req, res) {
   const promiseOpponent = userService.findUser({ userId: req.session.usr });
   const promisePlayerPoints = cardService.findPoints({ userId: req.body.opId });
   const promiseOpPoints = cardService.findPoints({ userId: req.session.usr });
-  Promise.all([promiseGame, promisePlayer, promiseOpponent, promisePlayerPoints, promiseOpPoints])
+  Promise.all([ promiseGame, promisePlayer, promiseOpponent, promisePlayerPoints, promiseOpPoints ])
     .then(function changeAndSave(values) {
-      const [game, player, opponent, playerPoints, opPoints] = values;
+      const [ game, player, opponent, playerPoints, opPoints ] = values;
       let happened = true;
       const opponentUpdates = {};
       let cardsToScrap = [];
@@ -37,7 +37,7 @@ module.exports = function (req, res) {
             if (playerPoints) {
               playerPoints.forEach(function (point) {
                 playerPointIds.push(point.id);
-                jackIds = [...jackIds, ...point.attachments.map((jack) => jack.id)];
+                jackIds = [ ...jackIds, ...point.attachments.map((jack) => jack.id) ];
               });
             }
 
@@ -45,10 +45,10 @@ module.exports = function (req, res) {
             if (opPoints) {
               opPoints.forEach(function (point) {
                 opponentPointIds.push(point.id);
-                jackIds = [...jackIds, ...point.attachments.map((jack) => jack.id)];
+                jackIds = [ ...jackIds, ...point.attachments.map((jack) => jack.id) ];
               });
             }
-            cardsToScrap = [...playerPointIds, ...opponentPointIds, ...jackIds];
+            cardsToScrap = [ ...playerPointIds, ...opponentPointIds, ...jackIds ];
             // Update log
             gameUpdates.log = [
               ...game.log,
@@ -56,7 +56,7 @@ module.exports = function (req, res) {
             ];
             updatePromises = [
               // Remove all jacks from point cards
-              Card.replaceCollection([...playerPointIds, ...opponentPointIds], 'attachments').members([]),
+              Card.replaceCollection([ ...playerPointIds, ...opponentPointIds ], 'attachments').members([]),
               // Scrap all point cards and jacks
               Game.addToCollection(game.id, 'scrap').members(cardsToScrap),
               // Remove player's points
@@ -79,7 +79,7 @@ module.exports = function (req, res) {
             switch (game.oneOffTargetType) {
               case 'faceCard':
                 updatePromises.push(
-                  User.removeFromCollection(opponent.id, 'faceCards').members([game.oneOffTarget.id]),
+                  User.removeFromCollection(opponent.id, 'faceCards').members([ game.oneOffTarget.id ]),
                 );
                 break;
               case 'jack':
@@ -90,7 +90,7 @@ module.exports = function (req, res) {
                     game.oneOffTarget.id,
                   ]),
                   // Place oneOff
-                  User.addToCollection(player.id, 'points').members([game.attachedToTarget.id]),
+                  User.addToCollection(player.id, 'points').members([ game.attachedToTarget.id ]),
                 ];
                 break;
             } // End switch(oneOffTargetType)
@@ -129,7 +129,7 @@ module.exports = function (req, res) {
           case 6: {
             const playerFaceCardIds = player.faceCards.map((faceCard) => faceCard.id);
             const opponentFaceCardIds = opponent.faceCards.map((faceCard) => faceCard.id);
-            cardsToScrap = [...cardsToScrap, ...playerFaceCardIds, ...opponentFaceCardIds];
+            cardsToScrap = [ ...cardsToScrap, ...playerFaceCardIds, ...opponentFaceCardIds ];
             updatePromises = [
               ...updatePromises,
               User.removeFromCollection(player.id, 'faceCards').members(playerFaceCardIds),
@@ -145,7 +145,7 @@ module.exports = function (req, res) {
                 // Collect all jacks for scrap
                 const jackCount = point.attachments.length;
                 const jacks = point.attachments.map((jack) => jack.id);
-                cardsToScrap = [...cardsToScrap, ...jacks];
+                cardsToScrap = [ ...cardsToScrap, ...jacks ];
                 // If odd number of jacks were attached, switch control
                 if (jackCount % 2 === 1) {
                   pointsGoingToOpponent.push(point.id);
@@ -158,7 +158,7 @@ module.exports = function (req, res) {
                 // Collect all jacks for scrap
                 const jackCount = point.attachments.length;
                 const jacks = point.attachments.map((jack) => jack.id);
-                cardsToScrap = [...cardsToScrap, ...jacks];
+                cardsToScrap = [ ...cardsToScrap, ...jacks ];
                 // If odd number of jacks were attached, switch control
                 if (jackCount % 2 === 1) {
                   pointsGoingToPlayer.push(point.id);
@@ -219,16 +219,16 @@ module.exports = function (req, res) {
               case 'point': {
                 const targetCard = opPoints.find((point) => point.id === game.oneOffTarget.id);
                 if (!targetCard)
-                  {
-                    return Promise.reject({
-                      message: `Could not find target point card ${game.oneOffTarget.id} to return to opponent's hand`,
-                    });
-                  }
+                {
+                  return Promise.reject({
+                    message: `Could not find target point card ${game.oneOffTarget.id} to return to opponent's hand`,
+                  });
+                }
                 // Scrap all jacks attached to target
-                cardsToScrap = [...cardsToScrap, ...targetCard.attachments.map((jack) => jack.id)];
+                cardsToScrap = [ ...cardsToScrap, ...targetCard.attachments.map((jack) => jack.id) ];
                 updatePromises.push(
                   // Remove card from opponent's points
-                  User.removeFromCollection(opponent.id, 'points').members([targetCard.id]),
+                  User.removeFromCollection(opponent.id, 'points').members([ targetCard.id ]),
                   // Clear jacks from target
                   Card.replaceCollection(targetCard.id, 'attachments').members([]),
                 );
@@ -241,7 +241,7 @@ module.exports = function (req, res) {
                     game.oneOffTarget.id,
                   ]),
                   // Return the stolen point card back to the player
-                  User.addToCollection(player.id, 'points').members([game.attachedToTarget.id]),
+                  User.addToCollection(player.id, 'points').members([ game.attachedToTarget.id ]),
                 );
                 gameUpdates.attachedToTarget = null;
                 break;
@@ -251,14 +251,14 @@ module.exports = function (req, res) {
       } // End if(happened)
 
       // Add twos to the cards to scrap
-      cardsToScrap = [...cardsToScrap, ...game.twos.map((two) => two.id)];
+      cardsToScrap = [ ...cardsToScrap, ...game.twos.map((two) => two.id) ];
       const { oneOff } = game;
-      if (![3,5].includes(oneOff.rank) || !happened) {
+      if (![ 3,5 ].includes(oneOff.rank) || !happened) {
         gameUpdates.oneOff = null;
         cardsToScrap.push(game.oneOff.id);
       }
       // Increment turn for anything except resolved three, four, five, and seven (which require follow up)
-      if (!happened || (happened && ![3, 4, 5, 7].includes(oneOff.rank))) {
+      if (!happened || (happened && ![ 3, 4, 5, 7 ].includes(oneOff.rank))) {
         gameUpdates = {
           ...gameUpdates,
           turn: game.turn + 1,
@@ -282,21 +282,21 @@ module.exports = function (req, res) {
         // Update opponent, as specified
         User.updateOne(opponent.id).set(opponentUpdates),
       ];
-      const dataToReturn = [game, oneOff, player.pNum, happened, ...updatePromises];
+      const dataToReturn = [ game, oneOff, player.pNum, happened, ...updatePromises ];
 
       return Promise.all(dataToReturn);
     }) // End changeAndSave
     .then(function populateGame(values) {
-      const [game, oneOff, pNum, happened] = values;
-      return Promise.all([gameService.populateGame({ gameId: game.id }), oneOff, pNum, happened, game]);
+      const [ game, oneOff, pNum, happened ] = values;
+      return Promise.all([ gameService.populateGame({ gameId: game.id }), oneOff, pNum, happened, game ]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, oneOff, pNum, happened, gameModel] = values;
+      const [ fullGame, oneOff, pNum, happened, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'resolve',
         oneOff,
         game: fullGame,

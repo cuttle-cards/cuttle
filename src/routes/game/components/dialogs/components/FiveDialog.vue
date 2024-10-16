@@ -48,7 +48,7 @@ const gameStore = useGameStore();
 const { player } = storeToRefs(gameStore);
 
 const selectedCard = ref();
-const emit = defineEmits(['resolve-five']);
+const emit = defineEmits([ 'resolve-five' ]);
 
 const disableButton = computed(() => !!player.value.hand.length && !selectedCard.value);
 const title = computed(() => t(player.value.hand.length ? 'game.dialogs.five.discardAndDraw' : 'game.dialogs.five.nice'));

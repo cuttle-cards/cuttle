@@ -69,7 +69,7 @@ export default {
     cardFaceName: {
       type: String,
       default: 'ready',
-      validator: (val) => ['ready', 'rematch'].includes(val),
+      validator: (val) => [ 'ready', 'rematch' ].includes(val),
     },
     gameStarted: {
       type: Boolean,

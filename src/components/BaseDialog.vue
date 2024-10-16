@@ -56,7 +56,7 @@ export default {
     variant: {
       type: String,
       default: 'dark',
-      validator: (val) => ['light', 'dark'].includes(val),
+      validator: (val) => [ 'light', 'dark' ].includes(val),
     },
     scrollable: {
       type: Boolean,
@@ -75,7 +75,7 @@ export default {
       default: 650,
     },
   },
-  emits: ['update:modelValue'],
+  emits: [ 'update:modelValue' ],
   computed: {
     show: {
       get() {

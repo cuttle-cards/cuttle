@@ -2,7 +2,7 @@ import os from 'os';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
-// vite.config.js
+// vite.config.mjs
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
@@ -56,13 +56,6 @@ export default defineConfig(({ mode }) => {
         // returns 'win32' for Windows, regardless of the architecture
         usePolling: os.platform() === 'win32',
       },
-    },
-    test: {
-      include: ['**/tests/unit/specs/**/*.spec.{j,t}s?(x)'],
-      threads: false,
-      globals: true,
-      environment: 'node',
-      setupFiles: ['tests/unit/setup.vitest.js'],
     },
     build: {
       outDir: 'assets',

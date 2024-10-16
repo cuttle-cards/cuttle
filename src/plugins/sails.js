@@ -42,7 +42,7 @@ if (!import.meta.env.PROD) {
   io.sails.url = import.meta.env.VITE_API_URL || 'http://localhost:1337';
 }
 
-io.sails.transports = ['websocket'];
+io.sails.transports = [ 'websocket' ];
 io.sails.useCORSRouteToGetCookie = false;
 io.sails.reconnection = true;
 

@@ -15,4 +15,16 @@ module.exports = {
       version: packageVersion,
     });
   },
+  getDevtoolsHealth: async function (req, res) {
+    const http = await import('http');
+    const alive = await new Promise((resolve) => {
+      const request = http.get('http://localhost:8098', () => {
+        resolve(true);
+      });
+      request.on('error', () => {
+        resolve(false);
+      });
+    });
+    return res.json({ alive });
+  },
 };

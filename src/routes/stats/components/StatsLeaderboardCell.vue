@@ -55,9 +55,9 @@ export default {
       required: true,
     },
     week: {
-      type: [Number, String],
+      type: [ Number, String ],
       required: true,
-      validator: (val) => ['total', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].includes(val),
+      validator: (val) => [ 'total', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ].includes(val),
     },
     selectedMetric: {
       type: Number,

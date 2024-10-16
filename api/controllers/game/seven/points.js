@@ -3,9 +3,9 @@ module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
-  Promise.all([promiseGame, promisePlayer, promiseCard])
+  Promise.all([ promiseGame, promisePlayer, promiseCard ])
     .then(function changeAndSave(values) {
-      const [game, player, card] = values;
+      const [ game, player, card ] = values;
       if (game.turn % 2 === player.pNum) {
         if (game.topCard.id === card.id || game.secondCard.id === card.id) {
           if (card.rank < 11) {
@@ -30,9 +30,9 @@ module.exports = function (req, res) {
             const updatePromises = [
               Game.updateOne(game.id).set(gameUpdates),
               Game.removeFromCollection(game.id, 'deck').members(cardsToRemoveFromDeck),
-              User.addToCollection(player.id, 'points').members([card.id]),
+              User.addToCollection(player.id, 'points').members([ card.id ]),
             ];
-            return Promise.all([game, ...updatePromises]);
+            return Promise.all([ game, ...updatePromises ]);
           }
           return Promise.reject({ message: 'game.snackbar.points.numberOnlyForPoints' });
         }
@@ -43,16 +43,16 @@ module.exports = function (req, res) {
       return Promise.reject({ message: "It's not your turn" });
     })
     .then(function populateGame(values) {
-      const [game] = values;
-      return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
+      const [ game ] = values;
+      return Promise.all([ gameService.populateGame({ gameId: game.id }), game ]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel] = values;
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'sevenPoints',
         game: fullGame,
         victory,

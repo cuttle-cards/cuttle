@@ -18,7 +18,7 @@ module.exports = async function (req, res) {
 
     await Game.updateOne({ id: game.id }).set(gameUpdates);
 
-    Game.publish([game.id], {
+    Game.publish([ game.id ], {
       change: 'rejectStalemate',
       game,
       victory,
