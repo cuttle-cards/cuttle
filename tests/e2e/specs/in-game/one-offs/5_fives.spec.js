@@ -53,7 +53,7 @@ describe('FIVES', () => {
           topCard: Card.THREE_OF_CLUBS,
           secondCard: Card.EIGHT_OF_HEARTS,
           deck: [ Card.SEVEN_OF_CLUBS ],
-        });
+        }, true);
         cy.get('#deck').should('contain', '(3)');
 
         // Player plays and resolves a 5
@@ -72,7 +72,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
         // Deck should now be empty
         cy.get('#deck').should('contain', '(0)')
           .should('contain', 'PASS');
@@ -94,7 +94,7 @@ describe('FIVES', () => {
           topCard: Card.THREE_OF_CLUBS,
           secondCard: Card.EIGHT_OF_HEARTS,
           deck: [],
-        });
+        }, true);
 
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_CLUBS);
         cy.get('[data-cy=five-discard-dialog]').should('be.visible');
@@ -111,7 +111,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
 
         cy.get('#deck').should('contain', '(0)')
           .should('contain', 'PASS');
@@ -139,8 +139,8 @@ describe('FIVES', () => {
           p1FaceCards: [],
           topCard: Card.THREE_OF_CLUBS,
           secondCard: Card.EIGHT_OF_HEARTS,
-          deck: [ Card.ACE_OF_DIAMONDS ],
-        });
+          deck: [ Card.ACE_OF_SPADES ],
+        }, true);
         cy.get('#deck').should('contain', '(3)');
 
         // Play 5 and resolve
@@ -166,10 +166,10 @@ describe('FIVES', () => {
           p1Points: [],
           p1FaceCards: [],
           scrap: [ Card.FIVE_OF_CLUBS, Card.FIVE_OF_SPADES ],
-          topCard: Card.ACE_OF_DIAMONDS,
+          topCard: Card.ACE_OF_SPADES,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
         cy.get('#deck').should('contain', '(1)');
       });
 
@@ -188,7 +188,7 @@ describe('FIVES', () => {
           topCard: Card.THREE_OF_CLUBS,
           secondCard: Card.EIGHT_OF_HEARTS,
           deck: [],
-        });
+        }, true);
         // player plays a card
         cy.get('[data-player-hand-card=2-0]').click();
         cy.get('[data-move-choice=points]').click();
@@ -211,7 +211,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
       });
 
       it('Plays multiple 5s', () => {
@@ -262,7 +262,7 @@ describe('FIVES', () => {
           topCard: Card.FOUR_OF_CLUBS,
           secondCard: Card.ACE_OF_CLUBS,
           deck: [],
-        });
+        }, true);
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
         cy.get('[data-discard-card=2-0]').click();
         cy.get('[data-cy=submit-five-dialog]').click();
@@ -278,7 +278,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
 
         cy.get('#deck').should('contain', 'PASS');
       });
@@ -297,7 +297,7 @@ describe('FIVES', () => {
           topCard: Card.FOUR_OF_CLUBS,
           secondCard: Card.ACE_OF_HEARTS,
           deck: [ Card.TWO_OF_HEARTS ],
-        });
+        }, true);
         cy.get('#deck').click();
         cy.drawCardOpponent();
         cy.get('#deck').should('contain', '(1)');
@@ -316,7 +316,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
         cy.get('#deck').should('contain', 'PASS');
       });
 
@@ -334,7 +334,7 @@ describe('FIVES', () => {
           topCard: Card.FIVE_OF_SPADES,
           secondCard: Card.TWO_OF_HEARTS,
           deck: [ Card.THREE_OF_CLUBS ],
-        });
+        }, true);
         cy.get('#deck').click();
         cy.drawCardOpponent();
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
@@ -352,7 +352,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
       });
     });
 
@@ -372,7 +372,7 @@ describe('FIVES', () => {
           topCard: Card.FOUR_OF_CLUBS,
           secondCard: Card.ACE_OF_HEARTS,
           deck: [],
-        });
+        }, true);
         cy.get('#deck').click();
         cy.get('#deck').should('contain', '(1)');
 
@@ -414,7 +414,7 @@ describe('FIVES', () => {
           topCard: Card.FOUR_OF_CLUBS,
           secondCard: Card.ACE_OF_HEARTS,
           deck: [],
-        });
+        }, true);
 
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
         cy.window()
@@ -456,7 +456,7 @@ describe('FIVES', () => {
         topCard: Card.THREE_OF_CLUBS,
         secondCard: Card.EIGHT_OF_HEARTS,
         deck: [ Card.SEVEN_OF_DIAMONDS ],
-      });
+      }, true);
       cy.playOneOffOpponent(Card.FIVE_OF_SPADES);
 
       cy.get('[data-cy=cannot-counter-dialog]').should('be.visible')
@@ -484,7 +484,7 @@ describe('FIVES', () => {
         topCard: null,
         secondCard: null,
         deck: [],
-      });
+      }, false, true);
     });
 
     it('plays five as opponent with nothing to discard', () => {
@@ -502,7 +502,7 @@ describe('FIVES', () => {
         topCard: Card.THREE_OF_CLUBS,
         secondCard: Card.EIGHT_OF_HEARTS,
         deck: [ Card.SEVEN_OF_DIAMONDS ],
-      });
+      }, true);
 
       cy.playOneOffOpponent(Card.FIVE_OF_SPADES);
 
@@ -522,7 +522,7 @@ describe('FIVES', () => {
         topCard: null,
         secondCard: null,
         deck: [],
-      });
+      }, false, true);
     });
   });
 });

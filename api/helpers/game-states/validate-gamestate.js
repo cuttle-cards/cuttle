@@ -88,6 +88,8 @@ module.exports = {
         resolved: gameState.resolved ?? null,
       };
 
+      sails.helpers.gameStates.validateAllCards(gameStateUpdated);
+
       return exits.success(gameStateUpdated);
     } catch (err) {
       return exits.error(err.message);
