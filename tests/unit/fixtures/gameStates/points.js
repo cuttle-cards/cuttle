@@ -5,14 +5,14 @@ import GameStatus from '../../../../utils/GameStatus.json';
 import { gameFixture } from '../Game';
 
 const gameStateRow = {
-  p0Hand: ['AS'],
-  p0Points: ['TS', '8D(JS-p0,JC-p1)'],
-  p0FaceCards: ['KS'],
-  p1Hand: ['AH', 'AD'],
-  p1Points: ['TH', 'AC'],
+  p0Hand: [ 'AS' ],
+  p0Points: [ 'TS', '8D(JS-p0,JC-p1)' ],
+  p0FaceCards: [ 'KS' ],
+  p1Hand: [ 'AH', 'AD' ],
+  p1Points: [ 'TH', 'AC' ],
   p1FaceCards: [],
-  deck: ['7S', '7C', 'KH'],
-  scrap: ['6C'],
+  deck: [ '7S', '7C', 'KH' ],
+  scrap: [ '6C' ],
   twos: [],
   discardedCards: [],
   playedCard: 'TS',
@@ -31,23 +31,23 @@ const gameStateRow = {
 export const points = {
   gameState: {
     p0: {
-      hand: [Card.ACE_OF_SPADES],
+      hand: [ Card.ACE_OF_SPADES ],
       points: [
         Card.TEN_OF_SPADES,
         {
           ...Card.EIGHT_OF_DIAMONDS,
-          attachments: [Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS],
+          attachments: [ Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS ],
         },
       ],
-      faceCards: [Card.KING_OF_SPADES],
+      faceCards: [ Card.KING_OF_SPADES ],
     },
     p1: {
-      hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      points: [Card.TEN_OF_HEARTS, Card.ACE_OF_CLUBS],
+      hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_CLUBS ],
       faceCards: [],
     },
-    deck: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_CLUBS, Card.KING_OF_HEARTS],
-    scrap: [Card.SIX_OF_CLUBS],
+    deck: [ Card.SEVEN_OF_SPADES, Card.SEVEN_OF_CLUBS, Card.KING_OF_HEARTS ],
+    scrap: [ Card.SIX_OF_CLUBS ],
     twos: [],
     discardedCards: [],
     oneOff: null,
@@ -67,7 +67,7 @@ export const points = {
 
   game: {
     ...gameFixture,
-    gameStates: [gameStateRow],
+    gameStates: [ gameStateRow ],
     status: GameStatus.FINISHED,
   },
 
@@ -80,15 +80,15 @@ export const points = {
     game: {
       players: [
         {
-          hand: [Card.ACE_OF_SPADES],
+          hand: [ Card.ACE_OF_SPADES ],
           points: [
             Card.TEN_OF_SPADES,
             {
               ...Card.EIGHT_OF_DIAMONDS,
-              attachments: [Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS],
+              attachments: [ Card.JACK_OF_SPADES, Card.JACK_OF_CLUBS ],
             },
           ],
-          faceCards: [Card.KING_OF_SPADES],
+          faceCards: [ Card.KING_OF_SPADES ],
           createdAt: '2024-07-14T12:59:45.813Z',
           updatedAt: '2024-07-14T12:59:51.528Z',
           id: 17,
@@ -99,8 +99,8 @@ export const points = {
           frozenId: null,
         },
         {
-          hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-          points: [Card.TEN_OF_HEARTS, Card.ACE_OF_CLUBS],
+          hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+          points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_CLUBS ],
           faceCards: [],
           createdAt: '2024-07-14T12:59:47.709Z',
           updatedAt: '2024-07-14T12:59:51.769Z',
@@ -131,7 +131,7 @@ export const points = {
         games: [
           {
             chat: [],
-            gameStates: [gameStateRow],
+            gameStates: [ gameStateRow ],
             isRanked: false,
             lock: null,
             lockedAt: null,
@@ -156,11 +156,11 @@ export const points = {
         winner: null,
       },
       winner: 0,
-      log: ['myUsername played the 10♠️ for points.'],
+      log: [ 'myUsername played the 10♠️ for points.' ],
       passes: 0,
       turn: 3,
-      deck: [Card.KING_OF_HEARTS],
-      scrap: [Card.SIX_OF_CLUBS],
+      deck: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.SIX_OF_CLUBS ],
       topCard: Card.SEVEN_OF_SPADES,
       secondCard: Card.SEVEN_OF_CLUBS,
       twos: [],
@@ -183,7 +183,7 @@ export const points = {
         games: [
           {
             chat: [],
-            gameStates: [gameStateRow],
+            gameStates: [ gameStateRow ],
             isRanked: false,
             lock: null,
             lockedAt: null,

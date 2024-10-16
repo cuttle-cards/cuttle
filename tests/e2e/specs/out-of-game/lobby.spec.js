@@ -1,5 +1,5 @@
 import { myUser, opponentOne, opponentTwo } from '../../fixtures/userFixtures';
-import { assertSnackbarError } from '../../support/helpers';
+import { assertSnackbar } from '../../support/helpers';
 import { SnackBarError } from '../../fixtures/snackbarError';
 import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
@@ -58,8 +58,10 @@ describe('Lobby - Page Content', () => {
   });
 
   it('Shows both players indicators', () => {
-    cy.get('[data-cy=my-indicator]').contains(myUser.username).should('not.contain', '@');
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
+    cy.get('[data-cy=my-indicator]').contains(myUser.username)
+      .should('not.contain', '@');
+    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]')
+      .should('exist');
     cy.get('[data-cy=opponent-indicator]').contains('Invite');
   });
 });
@@ -136,11 +138,11 @@ describe('Lobby - P0 Perspective', () => {
         cy.get('[data-cy=my-indicator]')
           .find('[data-cy="lobby-card-container"]')
           .should('not.have.class', 'ready');
-        //Return updated store state
+        // Return updated store state
         return cy.wrap(store);
       })
       .then((updatedGameState) => {
-        //Test updated store state
+        // Test updated store state
         expect(updatedGameState.p0Ready).to.eq(false); // Player not ready
       });
   });
@@ -172,24 +174,27 @@ describe('Lobby - P0 Perspective', () => {
         cy.signupOpponent(opponentOne);
         cy.subscribeOpponent(gameData.id);
 
-        //player ready, exit, join back
+        // player ready, exit, join back
         cy.get('[data-cy=ready-button]').click();
         cy.get('[data-cy=exit-button]').click();
-        cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
+        cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual')
+          .click();
         cy.get('[data-cy=my-indicator]')
           .find('[data-cy="lobby-card-container"]')
           .should('not.have.class', 'ready');
         expect(gameData.p0Ready).to.eq(false);
 
-        //opponent ready, exit, join back
+        // opponent ready, exit, join back
         cy.readyOpponent();
         cy.leaveLobbyOpponent();
-        cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('not.exist');
+        cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
+          .should('not.exist');
         expect(gameData.p1Ready).to.eq(false);
         expect(gameData.opponentIsReady).to.eq(null);
         cy.subscribeOpponent(gameData.id);
         expect(gameData.p1Ready).to.eq(false);
-        cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('exist');
+        cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
+          .should('exist');
       });
   });
 
@@ -197,12 +202,13 @@ describe('Lobby - P0 Perspective', () => {
     // Opponent subscribes & readies up
     cy.signupOpponent(opponentOne);
     cy.subscribeOpponent(this.gameSummary.gameId);
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('exist');
+    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
+      .should('exist');
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]')
       .find('[data-cy="lobby-card-container"]')
       .should('have.class', 'ready');
-    //Opponent un-readies
+    // Opponent un-readies
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]')
       .find('[data-cy="lobby-card-container"]')
@@ -255,11 +261,14 @@ describe('Lobby - P0 Perspective', () => {
       cy.get('[data-cy=my-indicator]').contains(myUser.username);
       cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
       cy.readyOpponent();
-      cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
+      cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]')
+        .should('exist');
 
       cy.reload();
-      cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
-      cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
+      cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-ready-card"]')
+        .should('exist');
+      cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-back-card"]')
+        .should('exist');
 
       cy.get('[data-cy=ready-button]').click();
       assertGameStarted();
@@ -292,26 +301,31 @@ describe('Lobby - P1 Perspective', () => {
 
   it('Shows when oppenent Readies/Unreadies', () => {
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('exist');
+    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
+      .should('exist');
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]')
       .find('[data-cy="lobby-card-container"]', { timeOut: 10000 })
       .should('have.class', 'ready');
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-card-container"]').should('exist');
-    //Opponent un-readies
+    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-card-container"]')
+      .should('exist');
+    // Opponent un-readies
     cy.readyOpponent();
     cy.get('[data-cy=opponent-indicator]')
       .find('[data-cy="lobby-card-container"]')
       .should('not.have.class', 'ready');
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-card-container"]').should('exist');
+    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-card-container"]')
+      .should('exist');
   });
 
   it('Shows when opponent leaves and rejoins', () => {
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('exist');
+    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
+      .should('exist');
     cy.leaveLobbyOpponent(); // Opponent leaves
     cy.contains('[data-cy=opponent-indicator]', 'Invite');
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('not.exist');
+    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
+      .should('not.exist');
     // Opponent joins again
     cy.window()
       .its('cuttle.gameStore')
@@ -335,7 +349,8 @@ describe('Lobby - P1 Perspective', () => {
       .contains('UNREADY');
     // Test: player indicator classes
     cy.get('[data-cy=my-indicator]').contains(myUser.username);
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('exist');
+    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
+      .should('exist');
     cy.window()
       .its('cuttle.gameStore')
       .then((store) => {
@@ -351,11 +366,11 @@ describe('Lobby - P1 Perspective', () => {
         cy.get('[data-cy=my-indicator]')
           .find('[data-cy="lobby-card-container"]')
           .should('not.have.class', 'ready');
-        //Return updated store state
+        // Return updated store state
         return cy.wrap(store);
       })
       .then((updatedGameState) => {
-        //Test updated store state
+        // Test updated store state
         expect(updatedGameState.p1Ready).to.eq(false); // Player not ready
       });
   });
@@ -364,23 +379,26 @@ describe('Lobby - P1 Perspective', () => {
     cy.window()
       .its('cuttle.gameStore')
       .then((gameData) => {
-        //player ready, exit, join back
+        // player ready, exit, join back
         cy.get('[data-cy=ready-button]').click();
         cy.get('[data-cy=exit-button]').click();
-        cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
+        cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual')
+          .click();
         cy.get('[data-cy=my-indicator]')
           .find('[data-cy="lobby-card-container"]')
           .should('not.have.class', 'ready');
         expect(gameData.p1Ready).to.equal(false);
 
-        //opponent ready, exit, join back
+        // opponent ready, exit, join back
         cy.readyOpponent();
         cy.leaveLobbyOpponent();
-        cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('not.exist');
+        cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
+          .should('not.exist');
         expect(gameData.p0Ready).to.equal(false);
         cy.subscribeOpponent(gameData.id);
         expect(gameData.p0Ready).to.eq(false);
-        cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]').should('exist');
+        cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
+          .should('exist');
       });
   });
 
@@ -412,15 +430,19 @@ describe('Lobby - P1 Perspective', () => {
   it('Reloads lobby after page refresh and loads user into the game when game has already started with one move made', () => {
     cy.skipOnGameStateApi();
     cy.get('[data-cy=ready-button]').click();
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
+    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]')
+      .should('exist');
 
     cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
+    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]')
+      .should('exist');
 
     cy.reload();
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
+    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]')
+      .should('exist');
     cy.get('[data-cy=opponent-indicator]').should('contain', opponentOne.username);
-    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]').should('exist');
+    cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-back-card"]')
+      .should('exist');
 
     // Disconnect socket and then opponent hits ready to start game
     cy.window()
@@ -498,7 +520,7 @@ describe('Lobby invite links', () => {
 
   it('Navigates Home and shows error snackbar when user visits invalid invite link', function () {
     cy.visit('/lobby/100000');
-    assertSnackbarError(SnackBarError.CANT_FIND_GAME, 'newgame');
+    assertSnackbar(SnackBarError.CANT_FIND_GAME, 'error', 'newgame');
     cy.visit('/rules');
     cy.visit('/');
     cy.get(`[data-cy=newgame-snackbar] .v-snackbar__wrapper`).should('not.exist');
@@ -510,6 +532,6 @@ describe('Lobby invite links', () => {
     cy.subscribeOpponent(this.gameSummary.gameId);
     cy.get(`[data-cy-join-game=${this.gameSummary.gameId}]`).should('be.disabled');
     cy.visit(`/lobby/${this.gameSummary.gameId}`);
-    assertSnackbarError(SnackBarError.GAME_IS_FULL, 'newgame');
+    assertSnackbar(SnackBarError.GAME_IS_FULL, 'error', 'newgame');
   });
 });

@@ -24,7 +24,7 @@ module.exports = function (req, res) {
     promisePoint,
   ])
     .then(function changeAndSave(values) {
-      const [game, player, opponent, card, target, targetType, point] = values;
+      const [ game, player, opponent, card, target, targetType, point ] = values;
       if (player.pNum === game.turn % 2) {
         if (!game.oneOff) {
           if (card.hand === player.id) {
@@ -72,10 +72,10 @@ module.exports = function (req, res) {
                 const updatePromises = [
                   Game.updateOne(game.id).set(gameUpdates),
                   // Remove one-off from player's hand
-                  User.removeFromCollection(player.id, 'hand').members([card.id]),
+                  User.removeFromCollection(player.id, 'hand').members([ card.id ]),
                   User.updateOne(player.id).set(playerUpdates),
                 ];
-                return Promise.all([game, ...updatePromises]);
+                return Promise.all([ game, ...updatePromises ]);
               }
               return Promise.reject({
                 message: 'game.snackbar.global.cardFrozen',
@@ -92,24 +92,24 @@ module.exports = function (req, res) {
         });
       }
       return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
-    }) //End changeAndSave()
+    }) // End changeAndSave()
     .then(function populateGame(values) {
-      return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);
+      return Promise.all([ gameService.populateGame({ gameId: values[0].id }), values[0] ]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel] = values;
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'targetedOneOff',
         game: fullGame,
         pNum: req.session.pNum,
         victory,
       });
       return res.ok();
-    }) //End publishAndRespond
+    }) // End publishAndRespond
     .catch(function failed(err) {
       return res.badRequest(err);
     });

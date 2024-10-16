@@ -54,7 +54,7 @@ export default {
       required: true,
     },
   },
-  emits: ['counter', 'resolve'],
+  emits: [ 'counter', 'resolve' ],
   data() {
     return {
       choseToCounter: false,

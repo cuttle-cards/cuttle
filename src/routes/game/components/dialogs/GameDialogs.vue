@@ -72,9 +72,9 @@ export default {
     ThreeDialog,
     OpponentRequestedStalemateDialog,
     FiveDialog
-},
+  },
 
-  emits: ['clear-selection', 'handle-error'],
+  emits: [ 'clear-selection', 'handle-error' ],
   computed: {
     ...mapStores(useGameStore, useAuthStore),
     gameIsOver() {
@@ -145,10 +145,11 @@ export default {
       this.$emit('clear-selection');
     },
     counter(twoId) {
-      this.gameStore.requestCounter(twoId).then(this.clearSelection).catch(this.handleError);
+      this.gameStore.requestCounter(twoId).then(this.clearSelection)
+        .catch(this.handleError);
     },
     discard(cardIds) {
-      const [cardId1] = cardIds;
+      const [ cardId1 ] = cardIds;
       const cardId2 = cardIds.length > 1 ? cardIds[1] : null;
       this.gameStore.requestDiscard({
         cardId1,
@@ -159,10 +160,12 @@ export default {
       this.$emit('handle-error');
     },
     resolve() {
-      this.gameStore.requestResolve().then(this.clearSelection).catch(this.handleError);
+      this.gameStore.requestResolve().then(this.clearSelection)
+        .catch(this.handleError);
     },
     resolveThree(cardId) {
-      this.gameStore.requestResolveThree(cardId).then(this.clearSelection).catch(this.handleError);
+      this.gameStore.requestResolveThree(cardId).then(this.clearSelection)
+        .catch(this.handleError);
     },
     resolveFive(cardId) {
       this.gameStore.requestResolveFive(cardId);

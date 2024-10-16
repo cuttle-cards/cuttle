@@ -8,7 +8,7 @@ import {
 } from '../../fixtures/userFixtures';
 import {
   assertGameState,
-  assertSnackbarError,
+  assertSnackbar,
   getCardId,
   assertGameOverAsSpectator,
   rematchPlayerAsSpectator,
@@ -32,23 +32,23 @@ describe('Spectating Games', () => {
     cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     assertGameState(
       0,
       {
-        p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-        p0Points: [Card.TEN_OF_SPADES],
-        p0FaceCards: [Card.KING_OF_SPADES],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-        p1Points: [Card.TEN_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES ],
+        p0FaceCards: [ Card.KING_OF_SPADES ],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
@@ -60,12 +60,12 @@ describe('Spectating Games', () => {
     assertGameState(
       0,
       {
-        p0Hand: [Card.ACE_OF_CLUBS],
-        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-        p0FaceCards: [Card.KING_OF_SPADES],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-        p1Points: [Card.TEN_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+        p0FaceCards: [ Card.KING_OF_SPADES ],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
@@ -76,12 +76,12 @@ describe('Spectating Games', () => {
     assertGameState(
       0,
       {
-        p0Hand: [Card.ACE_OF_CLUBS],
-        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-        p0FaceCards: [Card.KING_OF_SPADES],
-        p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-        p1Points: [Card.TEN_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+        p0FaceCards: [ Card.KING_OF_SPADES ],
+        p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
@@ -93,12 +93,12 @@ describe('Spectating Games', () => {
     assertGameState(
       0,
       {
-        p0Hand: [Card.ACE_OF_CLUBS],
-        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-        p0FaceCards: [Card.KING_OF_SPADES],
-        p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-        p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p0Hand: [ Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+        p0FaceCards: [ Card.KING_OF_SPADES ],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
@@ -122,11 +122,11 @@ describe('Spectating Games', () => {
       0,
       {
         p0Hand: [],
-        p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-        p0FaceCards: [Card.KING_OF_SPADES],
-        p1Hand: [Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS],
-        p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
+        p0FaceCards: [ Card.KING_OF_SPADES ],
+        p1Hand: [ Card.ACE_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_HEARTS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
@@ -144,12 +144,12 @@ describe('Spectating Games', () => {
     cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_CLUBS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_CLUBS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     cy.recoverSessionOpponent(playerOne);
@@ -172,12 +172,12 @@ describe('Spectating Games', () => {
     cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_CLUBS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_CLUBS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     cy.window()
@@ -191,10 +191,10 @@ describe('Spectating Games', () => {
     cy.signupOpponent(opponentOne);
     cy.setupGameAsP0(true);
     cy.loadGameFixture(0, {
-      p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
+      p0Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
+      p1Hand: [ Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -207,10 +207,10 @@ describe('Spectating Games', () => {
     cy.wait(3000);
 
     assertGameState(0, {
-      p0Hand: [Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS],
+      p0Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES],
+      p1Hand: [ Card.TWO_OF_HEARTS, Card.TWO_OF_SPADES ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -230,9 +230,9 @@ describe('Spectating Games', () => {
       ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_CLUBS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_CLUBS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     assertGameState(
@@ -248,55 +248,55 @@ describe('Spectating Games', () => {
         ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS],
-        p1Points: [Card.ACE_OF_CLUBS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p1Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+        p1Points: [ Card.ACE_OF_CLUBS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       },
       true,
     );
 
     // Can't draw
     cy.get('#deck').click();
-    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    assertSnackbar(SnackBarError.NOT_IN_GAME);
     cy.log('Correctly prevented from drawing from deck');
 
     // Can't play points
     cy.get('[data-player-hand-card=1-3]').click();
     cy.get('[data-move-choice=points]').click();
-    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    assertSnackbar(SnackBarError.NOT_IN_GAME);
     cy.log('Correctly prevented from playing points');
 
     // Can't scuttle
     cy.get('[data-player-hand-card=1-3]').click();
     cy.get('[data-move-choice=scuttle]').click();
     cy.get('[data-opponent-point-card=1-0]').click();
-    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    assertSnackbar(SnackBarError.NOT_IN_GAME);
     cy.log('Correctly prevented from scuttling');
 
     // Can't play royal
     cy.get('[data-player-hand-card=13-0]').click();
     cy.get('[data-move-choice=faceCard]').click();
-    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    assertSnackbar(SnackBarError.NOT_IN_GAME);
     cy.log('Correctly prevented from playing royal');
 
     // Can't play jack
     cy.get('[data-player-hand-card=11-1]').click();
     cy.get('[data-move-choice=jack]').click();
     cy.get('[data-opponent-point-card=1-0]').click();
-    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    assertSnackbar(SnackBarError.NOT_IN_GAME);
     cy.log('Correctly prevented from playing jack');
 
     // Can't play oneOff
     cy.get('[data-player-hand-card=1-3]').click();
     cy.get('[data-move-choice=oneOff]').click();
-    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    assertSnackbar(SnackBarError.NOT_IN_GAME);
     cy.log('Correctly prevented from untargeted one-off');
 
     // Can't play targeted oneOff
     cy.get('[data-player-hand-card=2-1]').click();
     cy.get('[data-move-choice=targetedOneOff]').click();
     cy.get('[data-opponent-face-card=13-2]').click();
-    assertSnackbarError(SnackBarError.NOT_IN_GAME);
+    assertSnackbar(SnackBarError.NOT_IN_GAME);
     cy.log('Correctly prevented from targeted one-off');
 
     // Can't resolve three
@@ -318,7 +318,8 @@ describe('Spectating Games', () => {
       // My user begins spectating, sees player3 in spectator list
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).click();
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
+        .click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
@@ -328,7 +329,8 @@ describe('Spectating Games', () => {
         cy.setOpponentToSpectate(gameData.gameId);
       });
       // Player 4 now appears in spectator list
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '3').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '3')
+        .click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username)
@@ -337,7 +339,8 @@ describe('Spectating Games', () => {
 
     it('Should display no spectators', () => {
       cy.setupGameAsP0();
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '0').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '0')
+        .click();
       cy.get('[data-cy="spectate-list-menu"]').should('contain', 'Currently no spectators');
     });
 
@@ -347,7 +350,8 @@ describe('Spectating Games', () => {
       cy.get('@gameData').then((gameData) => {
         cy.setOpponentToSpectate(gameData.gameId);
       });
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
+        .click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
@@ -367,7 +371,8 @@ describe('Spectating Games', () => {
       cy.location('pathname').should('eq', '/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).click();
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '1').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '1')
+        .click();
       cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
     });
   });
@@ -427,7 +432,8 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
         cy.setOpponentToSpectate(game.id);
       });
 
-    cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+    cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
+      .click();
     cy.get('[data-cy="spectate-list-menu"')
       .should('contain', 'myUsername')
       .should('contain', playerThree.username);
