@@ -33,30 +33,45 @@ module.exports = {
 
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
+      // Determine opponent (opponent is the other player)
       const opponent = playedBy ? currentState.p0 : currentState.p1;
 
+      // Get the top two cards from the deck
       const topTwoCards = currentState.deck.slice(0, 2);
       const targetCard = opponent.points.find(({ id }) => id === requestedMove.targetId);
       const playedCard = topTwoCards.find(({ id }) => id === requestedMove.cardId);
-      
+
+      // Check if it's the player's turn
       if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
+      // Check if the game phase is RESOLVING_SEVEN
       if (currentState.phase !== GamePhase.RESOLVING_SEVEN) {
         throw new Error('game.snackbar.seven.pickAndPlay');
       }
 
+      // Check if the playedCard is one of the top two cards
       if (!playedCard) {
         throw new Error('game.snackbar.seven.pickAndPlay');
       }
 
+      // Check if the playedCard is a number card (rank < 11)
+      if (playedCard.rank >= 11) {
+        throw new Error('game.snackbar.points.numberOnlyForPoints');
+      }
+
+      // Check if the targetCard is in the opponent's points
       if (!targetCard) {
         throw new Error('game.snackbar.scuttle.mustTargetPointCard');
       }
 
-      if (playedCard.rank >= 11) {
-        throw new Error('game.snackbar.sevenScuttle.mustPlaySeven');
+      if (playedCard.rank < targetCard.rank) {
+        throw new Error('game.snackbar.scuttle.rankTooLow');
+      }
+
+      if(playedCard.rank == targetCard.rank && playedCard.suit < targetCard.suit){
+        throw new Error('game.snackbar.scuttle.rankTooLow');
       }
 
       return exits.success();
