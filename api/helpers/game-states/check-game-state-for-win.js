@@ -1,4 +1,4 @@
-const GameStatus = require('../../../utils/GameStatus.json');
+const GameStatus = require('../../../types/GameStatus.json');
 
 module.exports = {
   friendlyName: 'Check Game State for win',
