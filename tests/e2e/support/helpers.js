@@ -302,9 +302,9 @@ function assertDomMatchesFixture(pNum, fixture, spectating, scrapUnusedCards = f
   // Test scrap (if provided)
   if (fixture.scrap) {
     const scrapLength = scrapUnusedCards ?
-      (52 - (Object.values(fixture).flat().length - fixture.scrap.length))
+      (52 - (Object.values(fixture).flat()
+        .filter(item => item !== null).length - fixture.scrap.length))
       : fixture.scrap.length;
-
     cy.get('#scrap').contains(`(${scrapLength})`);
   }
 }
