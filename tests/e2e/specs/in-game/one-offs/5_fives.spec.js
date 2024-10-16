@@ -118,7 +118,7 @@ describe('FIVES', () => {
         cy.get('[data-player-hand-card]').should('have.length', 2);
       });
 
-      it.only('Plays a 5 to draw two cards when already at hand limit (8)', () => {
+      it('Plays a 5 to draw two cards when already at hand limit (8)', () => {
         cy.skipOnGameStateApi();
         // Setup: there are three cards in the deck and player has a 5
         cy.loadGameFixture(0, {
@@ -139,7 +139,7 @@ describe('FIVES', () => {
           p1FaceCards: [],
           topCard: Card.THREE_OF_CLUBS,
           secondCard: Card.EIGHT_OF_HEARTS,
-          deck: [ Card.ACE_OF_DIAMONDS ],
+          deck: [ Card.ACE_OF_SPADES ],
         }, true);
         cy.get('#deck').should('contain', '(3)');
 
@@ -166,7 +166,7 @@ describe('FIVES', () => {
           p1Points: [],
           p1FaceCards: [],
           scrap: [ Card.FIVE_OF_CLUBS, Card.FIVE_OF_SPADES ],
-          topCard: Card.ACE_OF_DIAMONDS,
+          topCard: Card.ACE_OF_SPADES,
           secondCard: null,
           deck: [],
         }, false, true);
