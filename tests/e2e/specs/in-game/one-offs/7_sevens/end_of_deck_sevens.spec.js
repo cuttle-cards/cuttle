@@ -62,7 +62,7 @@ describe('Playing sevens at the end of the deck', () => {
       p1Points: [],
       p1FaceCards: [],
       scrap: [ Card.SEVEN_OF_CLUBS ],
-    });
+    },false, true);
   });
 
   it('Plays the 2nd card in the deck when there are two cards left', () => {
@@ -99,7 +99,7 @@ describe('Playing sevens at the end of the deck', () => {
       p1Points: [],
       p1FaceCards: [],
       scrap: [ Card.SEVEN_OF_CLUBS ],
-    });
+    }, false, true);
   });
 
   it('Cannot play seven one-off if deck is empty', () => {
