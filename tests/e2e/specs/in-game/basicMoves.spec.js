@@ -451,7 +451,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
       topCard: null,
       secondCard: null,
       deck: [],
-    });
+    }, true);
   });
 
   it('Opponent draws last card from deck, and displays snackbar for player', () => {
