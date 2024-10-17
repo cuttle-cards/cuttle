@@ -53,6 +53,17 @@ module.exports = {
     result.turn++;
     result.phase = GamePhase.MAIN;
 
+    result = {
+      ...result,
+      ...requestedMove,
+      phase: GamePhase.MAIN,
+      oneOff: null,
+      playedBy,
+      playedCard,
+      targetCard: null,
+      resolved: oneOff,
+    };
+
     return exits.success(result);
   },
 };
