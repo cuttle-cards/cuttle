@@ -32,6 +32,7 @@ module.exports = {
   plugins: [ 'cypress', 'vitest', 'prettier' ],
   ignorePatterns: [ '/node_modules/*', '/assets/*' ],
   rules: {
+    'eol-last': [ 'error', 'always' ],
     'max-len': [
       'warn',
       {
