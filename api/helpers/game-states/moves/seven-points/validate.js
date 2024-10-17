@@ -45,8 +45,8 @@ module.exports = {
         throw new Error('game.snackbar.seven.pickAndPlay');
       }
 
-      if (playedCard.rank > 10) {
-        throw new Error('game.snackbar.points.numberOnlyForPoints');
+      if (playedCard.rank >= 11) {
+        throw new Error('game.snackbar.sevenScuttle.mustPlaySeven');
       }
 
       return exits.success();
