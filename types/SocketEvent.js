@@ -2,7 +2,6 @@ import MoveType from './MoveType.json';
 export default {
   ...MoveType,
   RE_LOGIN: 'reLogin',
-  LOAD_FIXTURE: 'loadFixture',
   READY: 'ready',
   SET_IS_RANKED: 'setIsRanked',
   REJECT_STALEMATE: 'rejectStalemate',
@@ -14,4 +13,5 @@ export default {
   UPDATED: 'updated',
   REMATCH: 'rematch',
   NEW_GAME_FOR_REMATCH: 'newGameForRematch',
+  LOAD_FIXTURE: 'loadFixture',
 };
