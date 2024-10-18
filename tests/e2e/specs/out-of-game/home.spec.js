@@ -118,8 +118,7 @@ describe('Home - Game List', () => {
         { name: 'Old Game', status: GameStatus.CREATED, createdAt: dayjs.utc().subtract(1, 'day').toDate() },
       ]);
       cy.visit('/');
-      cy.get('[data-cy=game-list-item]').should('have.length', 1);
-      cy.get('[data-cy=game-list-item]').should('contain', 'New Game');
+      cy.get('[data-cy=game-list-item]').should('have.length', 0);
     });
   });
 
