@@ -53,6 +53,7 @@ module.exports.routes = {
   '/api/user/status': 'userController.status',
 
   'GET /api/health': 'HealthController.getHealth',
+  'GET /api/devtools-health': 'HealthController.getDevtoolsHealth',
 
   '/api/stats/seasons/current': 'StatsController.getCurrentStats',
   '/api/stats/seasons/:seasonId': 'StatsController.getSeasonStats',

@@ -50,7 +50,7 @@ export default {
       type: Boolean,
     },
   },
-  emits: ['discard'],
+  emits: [ 'discard' ],
   setup() {
     const { t } = useI18n();
     return { t };
@@ -93,7 +93,7 @@ export default {
     },
     discard() {
       if (this.readyToDiscard) {
-        this.$emit('discard', [...this.selectedIds]);
+        this.$emit('discard', [ ...this.selectedIds ]);
         this.selectedIds = [];
       }
     },

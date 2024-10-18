@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError, playOutOfTurn } from '../../support/helpers';
+import { assertGameState, assertSnackbar, playOutOfTurn } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { SnackBarError } from '../../fixtures/snackbarError';
 
@@ -10,12 +10,12 @@ describe('Game Basic Moves - P0 Perspective', () => {
   it('Plays Points', () => {
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Play points (ace of spades)
@@ -29,12 +29,12 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
     assertGameState(0, {
       // ace of spades moved from p0Hand to p0Points
-      p0Hand: [Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Opponent plays the ace of diamonds
@@ -42,24 +42,24 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
     assertGameState(0, {
       // ace of diamonds moved from p1Hand to p1Points
-      p0Hand: [Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS],
-      p1Points: [Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS ],
+      p1Points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
   });
 
   it('Scuttles as P0', () => {
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES, Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.TWO_OF_CLUBS, Card.TEN_OF_HEARTS],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.TEN_OF_CLUBS, Card.TEN_OF_SPADES],
-      p1Points: [Card.SIX_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.QUEEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES, Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.TWO_OF_CLUBS, Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.TEN_OF_CLUBS, Card.TEN_OF_SPADES ],
+      p1Points: [ Card.SIX_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.QUEEN_OF_HEARTS ],
     });
 
     // Player attempts illegal scuttle -- using card too small to target anything on field
@@ -70,14 +70,14 @@ describe('Game Basic Moves - P0 Perspective', () => {
       .click({ force: true });
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=1-1]').click();
-    assertSnackbarError(SnackBarError.ILLEGAL_SCUTTLE);
+    assertSnackbar(SnackBarError.ILLEGAL_SCUTTLE);
     cy.log('Could not scuttle with point card too low to target anything');
 
     // Player attempts illegal scuttle -- using card big enough to target something else
     cy.get('[data-player-hand-card=1-3]').click(); // 7 of clubs
     cy.get('[data-move-choice=scuttle]').click();
     cy.get('[data-opponent-point-card=6-2]').click(); // 6 of hearts
-    assertSnackbarError(SnackBarError.ILLEGAL_SCUTTLE);
+    assertSnackbar(SnackBarError.ILLEGAL_SCUTTLE);
     cy.log('Could not scuttle invalid target with point card that had alternative valid target');
 
     // Player scuttles 6 of diamonds with 7 of clubs
@@ -85,13 +85,13 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.get('[data-move-choice=scuttle]').click();
     cy.get('[data-opponent-point-card=6-2]').click(); // 6 of hearts
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES],
-      p0Points: [Card.TWO_OF_CLUBS, Card.TEN_OF_HEARTS],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.TEN_OF_CLUBS, Card.TEN_OF_SPADES],
-      p1Points: [Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.QUEEN_OF_HEARTS],
-      scrap: [Card.SEVEN_OF_CLUBS, Card.SIX_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES ],
+      p0Points: [ Card.TWO_OF_CLUBS, Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.TEN_OF_CLUBS, Card.TEN_OF_SPADES ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.QUEEN_OF_HEARTS ],
+      scrap: [ Card.SEVEN_OF_CLUBS, Card.SIX_OF_HEARTS ],
     });
     cy.log('Successfully scuttled as p0');
 
@@ -103,19 +103,19 @@ describe('Game Basic Moves - P0 Perspective', () => {
       .click({ force: true });
     cy.get('[data-opponent-point-card=1-1]').click(); // ace of diamonds
     // Test that Error snackbar says its not your turn
-    assertSnackbarError(SnackBarError.NOT_YOUR_TURN);
+    assertSnackbar(SnackBarError.NOT_YOUR_TURN);
     cy.log('Could not scuttle out of turn');
 
     // Opponent scuttles 10 of hearts with 10 of spades
     cy.scuttleOpponent(Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS);
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES],
-      p0Points: [Card.TWO_OF_CLUBS],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.TEN_OF_CLUBS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.QUEEN_OF_HEARTS],
-      scrap: [Card.SEVEN_OF_CLUBS, Card.SIX_OF_HEARTS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_SPADES ],
+      p0Points: [ Card.TWO_OF_CLUBS ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.TEN_OF_CLUBS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.QUEEN_OF_HEARTS ],
+      scrap: [ Card.SEVEN_OF_CLUBS, Card.SIX_OF_HEARTS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
     });
     cy.log('Opponent (p1) successfully scuttled');
 
@@ -125,12 +125,12 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=1-1]').click();
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_CLUBS],
-      p0Points: [Card.TWO_OF_CLUBS],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.TEN_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.TWO_OF_CLUBS ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.TEN_OF_CLUBS ],
       p1Points: [],
-      p1FaceCards: [Card.QUEEN_OF_HEARTS],
+      p1FaceCards: [ Card.QUEEN_OF_HEARTS ],
       scrap: [
         Card.SEVEN_OF_CLUBS,
         Card.SIX_OF_HEARTS,
@@ -144,12 +144,12 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
     cy.scuttleOpponent(Card.TEN_OF_CLUBS, Card.TWO_OF_CLUBS);
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_CLUBS ],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       p1Hand: [],
       p1Points: [],
-      p1FaceCards: [Card.QUEEN_OF_HEARTS],
+      p1FaceCards: [ Card.QUEEN_OF_HEARTS ],
       scrap: [
         Card.SEVEN_OF_CLUBS,
         Card.SIX_OF_HEARTS,
@@ -173,11 +173,11 @@ describe('Game Basic Moves - P0 Perspective', () => {
   it('Plays Kings', () => {
     // Setup
     cy.loadGameFixture(0, {
-      p0Hand: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.KING_OF_SPADES, Card.KING_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.KING_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.KING_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
@@ -186,11 +186,11 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.get('[data-move-choice=faceCard]').click();
 
     assertGameState(0, {
-      p0Hand: [Card.KING_OF_SPADES],
-      p0Points: [Card.TEN_OF_HEARTS],
-      p0FaceCards: [Card.KING_OF_CLUBS],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.KING_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p0Hand: [ Card.KING_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ Card.KING_OF_CLUBS ],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.KING_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
       scrap: [],
     });
@@ -203,12 +203,12 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.playFaceCardOpponent(Card.KING_OF_DIAMONDS);
 
     assertGameState(0, {
-      p0Hand: [Card.KING_OF_SPADES],
-      p0Points: [Card.TEN_OF_HEARTS],
-      p0FaceCards: [Card.KING_OF_CLUBS],
-      p1Hand: [Card.SIX_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_DIAMONDS],
+      p0Hand: [ Card.KING_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ Card.KING_OF_CLUBS ],
+      p1Hand: [ Card.SIX_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_DIAMONDS ],
       scrap: [],
     });
 
@@ -218,11 +218,11 @@ describe('Game Basic Moves - P0 Perspective', () => {
 
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.TEN_OF_HEARTS],
-      p0FaceCards: [Card.KING_OF_CLUBS, Card.KING_OF_SPADES],
-      p1Hand: [Card.SIX_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_DIAMONDS],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_SPADES ],
+      p1Hand: [ Card.SIX_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_DIAMONDS ],
       scrap: [],
     });
   });
@@ -230,11 +230,11 @@ describe('Game Basic Moves - P0 Perspective', () => {
   it('Plays Queens', () => {
     // Setup
     cy.loadGameFixture(0, {
-      p0Hand: [Card.QUEEN_OF_DIAMONDS, Card.QUEEN_OF_SPADES, Card.KING_OF_CLUBS, Card.JACK_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.QUEEN_OF_DIAMONDS, Card.QUEEN_OF_SPADES, Card.KING_OF_CLUBS, Card.JACK_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
@@ -243,11 +243,11 @@ describe('Game Basic Moves - P0 Perspective', () => {
     cy.get('[data-move-choice=faceCard]').click();
 
     assertGameState(0, {
-      p0Hand: [Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_HEARTS],
-      p0FaceCards: [Card.QUEEN_OF_SPADES],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p0Hand: [ Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ Card.QUEEN_OF_SPADES ],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
       scrap: [],
     });
@@ -259,12 +259,12 @@ describe('Game Basic Moves - P0 Perspective', () => {
     // Opponent plays queen of hearts
     cy.playFaceCardOpponent(Card.QUEEN_OF_HEARTS);
     assertGameState(0, {
-      p0Hand: [Card.QUEEN_OF_DIAMONDS, Card.KING_OF_CLUBS, Card.JACK_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_HEARTS],
-      p0FaceCards: [Card.QUEEN_OF_SPADES],
-      p1Hand: [Card.SIX_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.QUEEN_OF_HEARTS],
+      p0Hand: [ Card.QUEEN_OF_DIAMONDS, Card.KING_OF_CLUBS, Card.JACK_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ Card.QUEEN_OF_SPADES ],
+      p1Hand: [ Card.SIX_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.QUEEN_OF_HEARTS ],
       scrap: [],
     });
 
@@ -276,7 +276,7 @@ describe('Game Basic Moves - P0 Perspective', () => {
       .click({ force: true });
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=1-1]').click();
-    assertSnackbarError('You cannot use a Jack while your opponent has a Queen');
+    assertSnackbar('You cannot use a Jack while your opponent has a Queen');
     cy.log('Cannot play jack now that opponent has queen');
   });
 
@@ -291,9 +291,9 @@ describe('Game Basic Moves - P0 Perspective', () => {
       ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_CLUBS],
-      p1Points: [Card.ACE_OF_SPADES],
-      p1FaceCards: [Card.KING_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_CLUBS ],
+      p1Points: [ Card.ACE_OF_SPADES ],
+      p1FaceCards: [ Card.KING_OF_DIAMONDS ],
     });
 
     // Cancel decision to scuttle
@@ -338,9 +338,9 @@ describe('Game Basic Moves - P0 Perspective', () => {
       ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_CLUBS],
-      p1Points: [Card.ACE_OF_SPADES],
-      p1FaceCards: [Card.KING_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_CLUBS ],
+      p1Points: [ Card.ACE_OF_SPADES ],
+      p1FaceCards: [ Card.KING_OF_DIAMONDS ],
     });
 
     // Cancel selected card (close move-choice-overlay)
@@ -401,7 +401,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
     // Attempt to play out of turn
     cy.get('#deck').click();
     // Test that Error snackbar says its not your turn
-    assertSnackbarError(SnackBarError.NOT_YOUR_TURN);
+    assertSnackbar(SnackBarError.NOT_YOUR_TURN);
     // Opponent draws 2nd time
     cy.drawCardOpponent();
     // Opponent now has 7 cards in hand
@@ -417,11 +417,72 @@ describe('Game Basic Moves - P1 Perspective', () => {
     // Player attempts to draw with full hand
     cy.get('#deck').click();
     // Test that Error snackbar for hand limit
-    assertSnackbarError('You are at the hand limit; you cannot draw.');
+    assertSnackbar('You are at the hand limit; you cannot draw.');
     // Player still has 8 cards in hand
     cy.get('[data-player-hand-card]').should('have.length', 8);
     // Opponent still has 8 cards in hand
     cy.get('[data-opponent-hand-card]').should('have.length', 8);
+  });
+
+  it('draws last card from deck, and displays snackbar', () => {
+    cy.loadGameFixture(1, {
+      p0Hand: [ Card.QUEEN_OF_CLUBS ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.SIX_OF_HEARTS ],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.FIVE_OF_CLUBS,
+      secondCard: Card.ACE_OF_CLUBS,
+      deck: [],
+    });
+
+    cy.drawCardOpponent();
+    cy.get('#deck').click();
+    assertSnackbar('Deck exhausted; revealing player hands', 'surface-1');
+
+    assertGameState(1, {
+      p0Hand: [ Card.QUEEN_OF_CLUBS, Card.FIVE_OF_CLUBS ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.ACE_OF_CLUBS ],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: null,
+      secondCard: null,
+      deck: [],
+    });
+  });
+
+  it('Opponent draws last card from deck, and displays snackbar for player', () => {
+    cy.loadGameFixture(1, {
+      p0Hand: [ Card.QUEEN_OF_CLUBS ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.SIX_OF_HEARTS ],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: Card.FIVE_OF_CLUBS,
+      secondCard: Card.ACE_OF_CLUBS,
+      deck: [ Card.TWO_OF_DIAMONDS ],
+    });
+
+    cy.drawCardOpponent();
+    cy.get('#deck').click();
+    cy.drawCardOpponent();
+    assertSnackbar('Deck exhausted; revealing player hands', 'surface-1');
+
+    assertGameState(1, {
+      p0Hand: [ Card.QUEEN_OF_CLUBS, Card.FIVE_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+      p0Points: [],
+      p0FaceCards: [],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.ACE_OF_CLUBS ],
+      p1Points: [],
+      p1FaceCards: [],
+      topCard: null,
+      secondCard: null,
+      deck: [],
+    });
   });
 });
 
@@ -433,11 +494,11 @@ describe('Playing 8s', () => {
   it('Plays eights for points', () => {
     // Setup
     cy.loadGameFixture(0, {
-      p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
@@ -446,11 +507,11 @@ describe('Playing 8s', () => {
     cy.get('[data-move-choice=points]').click();
 
     assertGameState(0, {
-      p0Hand: [Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_HEARTS, Card.EIGHT_OF_SPADES],
+      p0Hand: [ Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_HEARTS, Card.EIGHT_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
@@ -462,11 +523,11 @@ describe('Playing 8s', () => {
   it('Plays eights for glasses', () => {
     // Setup
     cy.loadGameFixture(0, {
-      p0Hand: [Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.EIGHT_OF_SPADES, Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
@@ -475,11 +536,11 @@ describe('Playing 8s', () => {
     cy.get('[data-move-choice=faceCard]').click();
 
     assertGameState(0, {
-      p0Hand: [Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_HEARTS],
-      p0FaceCards: [Card.EIGHT_OF_SPADES],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
+      p0Hand: [ Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ Card.EIGHT_OF_SPADES ],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
     });
 
@@ -490,12 +551,12 @@ describe('Playing 8s', () => {
     // Opponent plays glasses eight
     cy.playFaceCardOpponent(Card.EIGHT_OF_CLUBS);
     assertGameState(0, {
-      p0Hand: [Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS],
-      p0Points: [Card.TEN_OF_HEARTS],
-      p0FaceCards: [Card.EIGHT_OF_SPADES],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.EIGHT_OF_CLUBS],
+      p0Hand: [ Card.EIGHT_OF_HEARTS, Card.KING_OF_CLUBS, Card.QUEEN_OF_DIAMONDS ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
+      p0FaceCards: [ Card.EIGHT_OF_SPADES ],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.EIGHT_OF_CLUBS ],
     });
   }); // End play glasses 8
 }); // End eights describe
@@ -508,12 +569,12 @@ describe('Play Jacks', () => {
   it('Player and Opponent plays Jacks on different cards', () => {
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Play jack of clubs on ten of hearts
@@ -522,12 +583,12 @@ describe('Play Jacks', () => {
     cy.get('[data-opponent-point-card=10-2]').click();
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
 
@@ -538,12 +599,12 @@ describe('Play Jacks', () => {
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_SPADES);
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_SPADES],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_SPADES ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
   });
@@ -551,12 +612,12 @@ describe('Play Jacks', () => {
   it('Quadruple jacks successfully', () => {
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Play jack of clubs on ten of hearts
@@ -565,12 +626,12 @@ describe('Play Jacks', () => {
     cy.get('[data-opponent-point-card=10-2]').click();
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-      p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
 
@@ -582,12 +643,12 @@ describe('Play Jacks', () => {
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_HEARTS);
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
 
@@ -597,12 +658,12 @@ describe('Play Jacks', () => {
     cy.get('[data-opponent-point-card=10-2]').click({ force: true });
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
 
@@ -612,12 +673,12 @@ describe('Play Jacks', () => {
     cy.playJackOpponent(Card.JACK_OF_SPADES, Card.TEN_OF_HEARTS);
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
   });

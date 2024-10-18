@@ -2,14 +2,14 @@
 module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
-  return Promise.all([promiseGame, promisePlayer])
+  return Promise.all([ promiseGame, promisePlayer ])
     .then(function changeAndSave(values) {
-      const [game, player] = values;
+      const [ game, player ] = values;
       const playerUpdates = {};
       let gameUpdates = {
         turn: game.turn + 1,
         passes: game.passes + 1,
-        log: [...game.log, `${player.username} passes`],
+        log: [ ...game.log, `${player.username} passes` ],
       };
       const updatePromises = [];
       if (game.turn % 2 === player.pNum) {
@@ -19,7 +19,7 @@ module.exports = function (req, res) {
           gameUpdates = {
             turn: game.turn + 1,
             passes: game.passes + 1,
-            log: [...game.log, `${player.username} passes`],
+            log: [ ...game.log, `${player.username} passes` ],
             lastEvent: {
               change: 'pass',
             },
@@ -33,12 +33,12 @@ module.exports = function (req, res) {
           Game.updateOne({ id: game.id }).set(gameUpdates),
           User.updateOne({ id: player.id }).set(playerUpdates),
         );
-        return Promise.all([game, ...updatePromises]);
+        return Promise.all([ game, ...updatePromises ]);
       }
       return Promise.reject({ message: "It's not your turn." });
     })
     .then(function populateGame(values) {
-      const [game] = values;
+      const [ game ] = values;
       return gameService.populateGame({ gameId: game.id });
     })
     .then(async function publishAndRespond(game) {
@@ -71,7 +71,7 @@ module.exports = function (req, res) {
         });
         await gameService.clearGame({ userId: req.session.usr });
       }
-      Game.publish([game.id], {
+      Game.publish([ game.id ], {
         change: 'pass',
         game,
         victory,

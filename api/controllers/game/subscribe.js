@@ -5,14 +5,14 @@ const userAPI = sails.hooks['customuserhook'];
 
 module.exports = function (req, res) {
   const { gameId } = req.body;
-  Game.subscribe(req, [gameId]);
+  Game.subscribe(req, [ gameId ]);
   const promiseClearOldGame = gameService.clearGame({ userId: req.session.usr });
   const promiseGame = gameAPI.findGame(req.body.gameId);
   const promiseUser = userAPI.findUser(req.session.usr);
-  Promise.all([promiseGame, promiseUser, promiseClearOldGame])
+  Promise.all([ promiseGame, promiseUser, promiseClearOldGame ])
     .then(async function success(arr) {
       // Catch promise values
-      const [game, user] = arr;
+      const [ game, user ] = arr;
 
       // Fast fail if game is full
       const gameIsFull = sails.helpers.isGameFull(game);
@@ -37,7 +37,7 @@ module.exports = function (req, res) {
       req.session.game = game.id;
       req.session.pNum = pNum;
       // Update models
-      const addPlayerToGame = Game.addToCollection(game.id, 'players').members([user.id]);
+      const addPlayerToGame = Game.addToCollection(game.id, 'players').members([ user.id ]);
       const updatePlayer = User.updateOne({ id: user.id }).set({ pNum });
 
       // Set game.p0 or game.p1 as requesting user's id
@@ -45,12 +45,12 @@ module.exports = function (req, res) {
       const pNumKey = `p${pNum}`;
       pNumUpdate[pNumKey] = user.id;
       game[pNumKey] = user.id;
-      const updateGame = Game.updateOne({id: game.id}).set(pNumUpdate);
+      const updateGame = Game.updateOne({ id: game.id }).set(pNumUpdate);
 
-      return Promise.all([game, updatePlayer, addPlayerToGame, updateGame]);
+      return Promise.all([ game, updatePlayer, addPlayerToGame, updateGame ]);
     })
     .then(function respond(values) {
-      const [game, user] = values;
+      const [ game, user ] = values;
       // Socket announcement that player joined game
       sails.sockets.blast(
         'join',

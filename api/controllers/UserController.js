@@ -71,13 +71,13 @@ module.exports = {
       req.session.loggedIn = true;
       req.session.usr = user.id;
       if (unpopulatedGame) {
-        Game.subscribe(req, [unpopulatedGame.id]);
+        Game.subscribe(req, [ unpopulatedGame.id ]);
         req.session.game = unpopulatedGame.id;
         req.session.pNum = user.pNum ?? undefined;
       }
       
       if (unpopulatedGame?.lastEvent?.victory) {
-        Game.publish([unpopulatedGame.id], {
+        Game.publish([ unpopulatedGame.id ], {
           change: unpopulatedGame.lastEvent.change,
           game: unpopulatedGame.lastEvent.game,
           victory: unpopulatedGame.lastEvent.victory
@@ -85,7 +85,7 @@ module.exports = {
       }
       
       if (populatedGame) {
-        Game.publish([populatedGame.id], {
+        Game.publish([ populatedGame.id ], {
           ...populatedGame.lastEvent,
           game: populatedGame,
         });

@@ -14,7 +14,7 @@ module.exports = async function (req, res) {
     const newGameId = oldGame?.rematchGame;
 
     const game = await gameService.populateGame({ gameId: newGameId });
-    Game.subscribe(req, [game.id]);
+    Game.subscribe(req, [ game.id ]);
 
     req.session.game = game.id;
     req.session.pNum = user.pNum;

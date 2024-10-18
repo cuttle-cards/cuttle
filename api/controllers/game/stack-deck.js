@@ -11,7 +11,7 @@ module.exports = function (req, res) {
       return gameService.populateGame({ gameId: game.id });
     })
     .then(function publishUpdate(game) {
-      Game.publish([game.id], {
+      Game.publish([ game.id ], {
         change: 'stackDeck',
         game,
       });

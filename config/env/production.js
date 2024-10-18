@@ -47,9 +47,9 @@ module.exports = {
     // port: sessionUrl.port,
     // pass: sessionUrl.password,
     // Required by heroku to use tls
-    // tls: {
-    //   rejectUnauthorized: false,
-    // },
+    tls: {
+      rejectUnauthorized: false,
+    },
   },
 
   sockets: {

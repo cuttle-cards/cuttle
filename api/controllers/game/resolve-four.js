@@ -7,9 +7,9 @@ module.exports = function (req, res) {
   if (Object.hasOwnProperty.call(req.body, 'cardId2')) {
     promiseCard2 = cardService.findCard({ cardId: req.body.cardId2 });
   }
-  Promise.all([promiseGame, promisePlayer, promiseCard1, promiseCard2])
+  Promise.all([ promiseGame, promisePlayer, promiseCard1, promiseCard2 ])
     .then(function changeAndSave(values) {
-      const [game, player, card1, card2] = values;
+      const [ game, player, card1, card2 ] = values;
       // Validate discard
       if (
         // missing both cards
@@ -23,7 +23,7 @@ module.exports = function (req, res) {
       ) {
         return Promise.reject({ message: 'You must select two cards to discard' });
       }
-      const cardsToScrap = [card1.id];
+      const cardsToScrap = [ card1.id ];
       const gameUpdates = {
         passes: 0,
         turn: game.turn + 1,
@@ -39,7 +39,7 @@ module.exports = function (req, res) {
           `${player.username} discarded the ${getCardName(card1)} and the ${getCardName(card2)}.`,
         ];
       } else {
-        gameUpdates.log = [...game.log, `${player.username} discarded the ${getCardName(card1)}.`];
+        gameUpdates.log = [ ...game.log, `${player.username} discarded the ${getCardName(card1)}.` ];
       }
       gameUpdates.lastEvent.discardedCards = cardsToScrap;
       
@@ -48,19 +48,19 @@ module.exports = function (req, res) {
         Game.addToCollection(game.id, 'scrap').members(cardsToScrap),
         User.removeFromCollection(player.id, 'hand').members(cardsToScrap),
       ];
-      return Promise.all([game,cardsToScrap, ...updatePromises]);
+      return Promise.all([ game,cardsToScrap, ...updatePromises ]);
     }) // End changeAndSave
     .then(function populateGame(values) {
-      const [game, cardsToScrap] = values;
-      return Promise.all([gameService.populateGame({ gameId: game.id }), game, cardsToScrap]);
+      const [ game, cardsToScrap ] = values;
+      return Promise.all([ gameService.populateGame({ gameId: game.id }), game, cardsToScrap ]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel, discardedCards] = values;
+      const [ fullGame, gameModel, discardedCards ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'resolveFour',
         game: fullGame,
         victory,

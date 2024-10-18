@@ -1,4 +1,4 @@
-import { assertGameState, assertSnackbarError } from '../../../../support/helpers';
+import { assertGameState, assertSnackbar } from '../../../../support/helpers';
 import { Card } from '../../../../fixtures/cards';
 import { SnackBarError } from '../../../../fixtures/snackbarError';
 
@@ -9,7 +9,7 @@ describe('Opponent playing SEVENS', () => {
 
   it('Opponent plays points from seven', () => {
     cy.loadGameFixture(1, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [],
@@ -22,13 +22,16 @@ describe('Opponent playing SEVENS', () => {
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
     // Player resolves
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+      .click();
     cy.log('Player resolves (could not counter');
 
     // Waiting for opponent
     cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
     // Deck cards appear but are not selectable
-    cy.get('[data-top-card=4-0]').should('exist').click({ force: true }).should('not.have.class', 'selected');
+    cy.get('[data-top-card=4-0]').should('exist')
+      .click({ force: true })
+      .should('not.have.class', 'selected');
     cy.get('[data-second-card=6-1]')
       .should('exist')
       .click({ force: true })
@@ -43,12 +46,12 @@ describe('Opponent playing SEVENS', () => {
 
     assertGameState(1, {
       p0Hand: [],
-      p0Points: [Card.FOUR_OF_CLUBS],
+      p0Points: [ Card.FOUR_OF_CLUBS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [Card.SEVEN_OF_CLUBS],
+      scrap: [ Card.SEVEN_OF_CLUBS ],
       topCard: Card.SIX_OF_DIAMONDS,
     });
   });
@@ -56,11 +59,11 @@ describe('Opponent playing SEVENS', () => {
   it('Opponent plays jack from seven', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [],
-      p1Points: [Card.TEN_OF_HEARTS],
+      p1Points: [ Card.TEN_OF_HEARTS ],
       p1FaceCards: [],
       topCard: Card.JACK_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
@@ -69,7 +72,8 @@ describe('Opponent playing SEVENS', () => {
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
     // Player resolves
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+      .click();
     cy.log('Player resolves (could not counter');
 
     // Waiting for opponent
@@ -92,12 +96,12 @@ describe('Opponent playing SEVENS', () => {
 
     assertGameState(1, {
       p0Hand: [],
-      p0Points: [Card.TEN_OF_HEARTS],
+      p0Points: [ Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [Card.SEVEN_OF_CLUBS],
+      scrap: [ Card.SEVEN_OF_CLUBS ],
       topCard: Card.SIX_OF_DIAMONDS,
     });
   });
@@ -106,7 +110,7 @@ describe('Opponent playing SEVENS', () => {
     cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [],
@@ -119,7 +123,8 @@ describe('Opponent playing SEVENS', () => {
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
 
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+      .click();
     cy.log('Player resolves (could not counter');
 
     // Waiting for opponent
@@ -143,7 +148,7 @@ describe('Opponent playing SEVENS', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [Card.SEVEN_OF_CLUBS, Card.JACK_OF_CLUBS],
+      scrap: [ Card.SEVEN_OF_CLUBS, Card.JACK_OF_CLUBS ],
       topCard: Card.JACK_OF_DIAMONDS,
     });
   });
@@ -152,11 +157,11 @@ describe('Opponent playing SEVENS', () => {
     it('Opponent plays king from seven (Top Card)', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
-        p1Points: [Card.TEN_OF_HEARTS],
+        p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         topCard: Card.KING_OF_CLUBS,
         secondCard: Card.SIX_OF_DIAMONDS,
@@ -165,7 +170,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves (could not counter');
 
       // Waiting for opponent
@@ -187,11 +193,11 @@ describe('Opponent playing SEVENS', () => {
       assertGameState(1, {
         p0Hand: [],
         p0Points: [],
-        p0FaceCards: [Card.KING_OF_CLUBS],
+        p0FaceCards: [ Card.KING_OF_CLUBS ],
         p1Hand: [],
-        p1Points: [Card.TEN_OF_HEARTS],
+        p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
-        scrap: [Card.SEVEN_OF_CLUBS],
+        scrap: [ Card.SEVEN_OF_CLUBS ],
         topCard: Card.SIX_OF_DIAMONDS,
       });
     }); // end opponent plays king from seven
@@ -199,11 +205,11 @@ describe('Opponent playing SEVENS', () => {
     it('Opponent plays queen from seven (Second Card)', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
-        p1Points: [Card.TEN_OF_HEARTS],
+        p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         topCard: Card.SIX_OF_DIAMONDS,
         secondCard: Card.QUEEN_OF_CLUBS,
@@ -212,7 +218,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves (could not counter');
 
       // Waiting for opponent
@@ -238,11 +245,11 @@ describe('Opponent playing SEVENS', () => {
       assertGameState(1, {
         p0Hand: [],
         p0Points: [],
-        p0FaceCards: [Card.QUEEN_OF_CLUBS],
+        p0FaceCards: [ Card.QUEEN_OF_CLUBS ],
         p1Hand: [],
-        p1Points: [Card.TEN_OF_HEARTS],
+        p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
-        scrap: [Card.SEVEN_OF_CLUBS],
+        scrap: [ Card.SEVEN_OF_CLUBS ],
         topCard: Card.SIX_OF_DIAMONDS,
       });
     }); // end opponent plays queen from seven
@@ -250,11 +257,11 @@ describe('Opponent playing SEVENS', () => {
     it('Opponent plays eight as glasses from seven (top card)', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
-        p1Points: [Card.TEN_OF_HEARTS],
+        p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
         topCard: Card.EIGHT_OF_CLUBS,
         secondCard: Card.SIX_OF_DIAMONDS,
@@ -263,7 +270,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves (could not counter');
 
       // Waiting for opponent
@@ -289,11 +297,11 @@ describe('Opponent playing SEVENS', () => {
       assertGameState(1, {
         p0Hand: [],
         p0Points: [],
-        p0FaceCards: [Card.EIGHT_OF_CLUBS],
+        p0FaceCards: [ Card.EIGHT_OF_CLUBS ],
         p1Hand: [],
-        p1Points: [Card.TEN_OF_HEARTS],
+        p1Points: [ Card.TEN_OF_HEARTS ],
         p1FaceCards: [],
-        scrap: [Card.SEVEN_OF_CLUBS],
+        scrap: [ Card.SEVEN_OF_CLUBS ],
         topCard: Card.SIX_OF_DIAMONDS,
       });
     }); // end opponent plays eight as glasses from seven
@@ -302,11 +310,11 @@ describe('Opponent playing SEVENS', () => {
   it('Opponent scuttles from seven (top card)', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [],
-      p1Points: [Card.NINE_OF_CLUBS],
+      p1Points: [ Card.NINE_OF_CLUBS ],
       p1FaceCards: [],
       topCard: Card.TEN_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
@@ -315,7 +323,8 @@ describe('Opponent playing SEVENS', () => {
     // Opponent plays 7 of clubs
     cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
     // Player resolves
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+      .click();
     cy.log('Player resolves (could not counter');
 
     // Waiting for opponent
@@ -345,7 +354,7 @@ describe('Opponent playing SEVENS', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [Card.SEVEN_OF_CLUBS, Card.TEN_OF_CLUBS, Card.NINE_OF_CLUBS],
+      scrap: [ Card.SEVEN_OF_CLUBS, Card.TEN_OF_CLUBS, Card.NINE_OF_CLUBS ],
       topCard: Card.SIX_OF_DIAMONDS,
     });
   }); // End opponent scuttles from seven
@@ -354,12 +363,12 @@ describe('Opponent playing SEVENS', () => {
     it('Opponent plays SIX from seven (top card)', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
-        p1FaceCards: [Card.QUEEN_OF_CLUBS, Card.KING_OF_HEARTS],
+        p1FaceCards: [ Card.QUEEN_OF_CLUBS, Card.KING_OF_HEARTS ],
         topCard: Card.SIX_OF_DIAMONDS,
         secondCard: Card.JACK_OF_CLUBS,
       });
@@ -367,7 +376,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves seven of clubs (could not counter');
 
       // Waiting for opponent
@@ -375,7 +385,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 6 of diamonds
       cy.playOneOffFromSevenOpponent(Card.SIX_OF_DIAMONDS);
       cy.log('Player resolves six of diamonds (could not counter');
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -384,7 +395,7 @@ describe('Opponent playing SEVENS', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.SIX_OF_DIAMONDS, Card.QUEEN_OF_CLUBS, Card.KING_OF_HEARTS, Card.SEVEN_OF_CLUBS],
+        scrap: [ Card.SIX_OF_DIAMONDS, Card.QUEEN_OF_CLUBS, Card.KING_OF_HEARTS, Card.SEVEN_OF_CLUBS ],
         topCard: Card.JACK_OF_CLUBS,
       });
     });
@@ -392,12 +403,12 @@ describe('Opponent playing SEVENS', () => {
     it('Opponent plays TWO from seven (second card)', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_HEARTS, Card.QUEEN_OF_CLUBS],
+        p1FaceCards: [ Card.KING_OF_HEARTS, Card.QUEEN_OF_CLUBS ],
         topCard: Card.JACK_OF_CLUBS,
         secondCard: Card.TWO_OF_SPADES,
       });
@@ -405,7 +416,8 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves seven of clubs (could not counter');
 
       // Waiting for opponent
@@ -413,7 +425,8 @@ describe('Opponent playing SEVENS', () => {
 
       // Opponent plays two of spades
       cy.playTargetedOneOffFromSevenOpponent(Card.TWO_OF_SPADES, Card.QUEEN_OF_CLUBS, 'faceCard');
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -421,8 +434,8 @@ describe('Opponent playing SEVENS', () => {
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_HEARTS],
-        scrap: [Card.QUEEN_OF_CLUBS, Card.TWO_OF_SPADES, Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.QUEEN_OF_CLUBS, Card.TWO_OF_SPADES, Card.SEVEN_OF_CLUBS ],
         topCard: Card.JACK_OF_CLUBS,
       });
     }); // End Opponent TWO from seven
@@ -430,12 +443,12 @@ describe('Opponent playing SEVENS', () => {
     it('Opponent plays TWO on jacks from seven (top card)', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.JACK_OF_CLUBS],
+        p1Hand: [ Card.JACK_OF_CLUBS ],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
         topCard: Card.TWO_OF_CLUBS,
         secondCard: Card.FOUR_OF_CLUBS,
       });
@@ -448,18 +461,19 @@ describe('Opponent playing SEVENS', () => {
       cy.get('[data-opponent-point-card=1-0]').click();
 
       assertGameState(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
-        p1Points: [Card.ACE_OF_CLUBS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p1Points: [ Card.ACE_OF_CLUBS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       });
 
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves seven of clubs (could not counter');
 
       // Waiting for opponent
@@ -468,16 +482,17 @@ describe('Opponent playing SEVENS', () => {
       cy.playTargetedOneOffFromSevenOpponent(Card.TWO_OF_CLUBS, Card.JACK_OF_CLUBS, 'jack');
 
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
-        p0Points: [Card.ACE_OF_CLUBS],
+        p0Points: [ Card.ACE_OF_CLUBS ],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_HEARTS],
-        scrap: [Card.JACK_OF_CLUBS, Card.TWO_OF_CLUBS, Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.JACK_OF_CLUBS, Card.TWO_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
         topCard: Card.FOUR_OF_CLUBS,
       });
     });
@@ -485,12 +500,12 @@ describe('Opponent playing SEVENS', () => {
     it('Opponent plays NINE from seven (top card)', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_HEARTS, Card.QUEEN_OF_CLUBS],
+        p1FaceCards: [ Card.KING_OF_HEARTS, Card.QUEEN_OF_CLUBS ],
         topCard: Card.NINE_OF_DIAMONDS,
         secondCard: Card.TWO_OF_SPADES,
       });
@@ -498,23 +513,25 @@ describe('Opponent playing SEVENS', () => {
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves seven of clubs (could not counter');
 
       // Waiting for opponent
       cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
 
       cy.playTargetedOneOffFromSevenOpponent(Card.NINE_OF_DIAMONDS, Card.QUEEN_OF_CLUBS, 'faceCard');
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.QUEEN_OF_CLUBS],
+        p1Hand: [ Card.QUEEN_OF_CLUBS ],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_HEARTS],
-        scrap: [Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.NINE_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
         topCard: Card.TWO_OF_SPADES,
       });
     }); // End Opponent NINE from seven
@@ -522,12 +539,12 @@ describe('Opponent playing SEVENS', () => {
     it('Opponent plays NINE on jacks from seven (second card)', () => {
       cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS, Card.TEN_OF_DIAMONDS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS, Card.TEN_OF_DIAMONDS ],
         p0Points: [],
         p0FaceCards: [],
-        p1Hand: [Card.JACK_OF_CLUBS],
+        p1Hand: [ Card.JACK_OF_CLUBS ],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
         topCard: Card.FOUR_OF_CLUBS,
         secondCard: Card.NINE_OF_CLUBS,
       });
@@ -540,18 +557,19 @@ describe('Opponent playing SEVENS', () => {
       cy.get('[data-opponent-point-card=1-0]').click();
 
       assertGameState(1, {
-        p0Hand: [Card.SEVEN_OF_CLUBS, Card.TEN_OF_DIAMONDS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS, Card.TEN_OF_DIAMONDS ],
         p0Points: [],
         p0FaceCards: [],
         p1Hand: [],
-        p1Points: [Card.ACE_OF_CLUBS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
+        p1Points: [ Card.ACE_OF_CLUBS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
       });
 
       // Opponent plays 7 of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
       cy.log('Player resolves seven of clubs (could not counter');
 
       // Waiting for opponent
@@ -560,16 +578,17 @@ describe('Opponent playing SEVENS', () => {
       cy.playTargetedOneOffFromSevenOpponent(Card.NINE_OF_CLUBS, Card.JACK_OF_CLUBS, 'jack');
 
       // Player resolves
-      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+      cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+        .click();
 
       assertGameState(1, {
-        p0Hand: [Card.TEN_OF_DIAMONDS],
-        p0Points: [Card.ACE_OF_CLUBS],
+        p0Hand: [ Card.TEN_OF_DIAMONDS ],
+        p0Points: [ Card.ACE_OF_CLUBS ],
         p0FaceCards: [],
-        p1Hand: [Card.JACK_OF_CLUBS],
+        p1Hand: [ Card.JACK_OF_CLUBS ],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_HEARTS],
-        scrap: [Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
         topCard: Card.FOUR_OF_CLUBS,
       });
 
@@ -581,20 +600,20 @@ describe('Opponent playing SEVENS', () => {
         .contains('This card is frozen')
         .click({ force: true }); // Break out into separate test case
       cy.get('[data-opponent-point-card=1-0]').click();
-      assertSnackbarError(SnackBarError.FROZEN_CARD);
+      assertSnackbar(SnackBarError.FROZEN_CARD);
       cy.log('Successfully prevented player from playing the jack while it is frozen');
 
       // Player draws
       cy.get('#deck').click();
 
       assertGameState(1, {
-        p0Hand: [Card.TEN_OF_DIAMONDS],
-        p0Points: [Card.ACE_OF_CLUBS],
+        p0Hand: [ Card.TEN_OF_DIAMONDS ],
+        p0Points: [ Card.ACE_OF_CLUBS ],
         p0FaceCards: [],
-        p1Hand: [Card.JACK_OF_CLUBS, Card.FOUR_OF_CLUBS],
+        p1Hand: [ Card.JACK_OF_CLUBS, Card.FOUR_OF_CLUBS ],
         p1Points: [],
-        p1FaceCards: [Card.KING_OF_HEARTS],
-        scrap: [Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
       });
 
       cy.playPointsOpponent(Card.TEN_OF_DIAMONDS);
@@ -607,12 +626,12 @@ describe('Opponent playing SEVENS', () => {
 
       assertGameState(1, {
         p0Hand: [],
-        p0Points: [Card.TEN_OF_DIAMONDS],
+        p0Points: [ Card.TEN_OF_DIAMONDS ],
         p0FaceCards: [],
-        p1Hand: [Card.FOUR_OF_CLUBS],
-        p1Points: [Card.ACE_OF_CLUBS],
-        p1FaceCards: [Card.KING_OF_HEARTS],
-        scrap: [Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS],
+        p1Hand: [ Card.FOUR_OF_CLUBS ],
+        p1Points: [ Card.ACE_OF_CLUBS ],
+        p1FaceCards: [ Card.KING_OF_HEARTS ],
+        scrap: [ Card.NINE_OF_CLUBS, Card.SEVEN_OF_CLUBS ],
       });
     });
   });

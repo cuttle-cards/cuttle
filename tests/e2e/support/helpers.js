@@ -72,7 +72,7 @@ export function printCard(card) {
       break;
   }
   res += ' of ';
-  const suits = ['♣️', '♦️', '♥️', '♠️'];
+  const suits = [ '♣️', '♦️', '♥️', '♠️' ];
   res += suits[card.suit];
   return res;
 }
@@ -187,10 +187,10 @@ function pointsToWin(kingCount) {
   }
 }
 
-export function assertSnackbarError(message, snackName = 'game') {
+export function assertSnackbar(message, color = 'error', snackName = 'game') {
   cy.get(`[data-cy=${snackName}-snackbar] .v-snackbar__wrapper`)
     .should('be.visible')
-    .should('have.class', 'bg-error')
+    .should('have.class', `bg-${color}`)
     .find(`.v-snackbar__content`)
     .should('contain', message)
     .get('[data-cy=close-snackbar]')
@@ -209,7 +209,7 @@ export function playOutOfTurn(moveName) {
     .should('contain', "It's not your turn")
     .click({ force: true });
   // Back end should fire error that move is illegal after click is forced
-  assertSnackbarError(SnackBarError.NOT_YOUR_TURN);
+  assertSnackbar(SnackBarError.NOT_YOUR_TURN);
   cy.log(`Correctly prevented attempt to play ${moveName} out of turn`);
 }
 
@@ -277,7 +277,7 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
     } else {
       cy.get('[data-opponent-hand-card]').should('not.exist');
     }
-    if (playerHasGlasses || spectating) {
+    if (playerHasGlasses || spectating || fixture.topCard === null) {
       fixture.p1Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
@@ -293,7 +293,7 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
     } else {
       cy.get('[data-opponent-hand-card]').should('not.exist');
     }
-    if (playerHasGlasses) {
+    if (playerHasGlasses || fixture.topCard === null) {
       fixture.p0Hand.forEach((card) => {
         cy.get(`[data-opponent-hand-card=${card.rank}-${card.suit}]`);
       });
@@ -389,7 +389,9 @@ function assertStoreMatchesFixture(fixture) {
 
 export function assertVictory(score = null) {
   cy.log('Asserting player victory');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible')
+    .get('[data-cy=victory-heading]')
+    .should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -404,7 +406,8 @@ export function assertVictory(score = null) {
           .should('contain', matchWinner ? 'Good Match!' : 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=victory-heading]').should('contain', 'You Won');
+        cy.get('#game-over-dialog').find('[data-cy=victory-heading]')
+          .should('contain', 'You Won');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -432,7 +435,9 @@ export function assertVictory(score = null) {
 
 export function assertLoss(score = null) {
   cy.log('Asserting player loss');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible')
+    .get('[data-cy=loss-heading]')
+    .should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -447,7 +452,8 @@ export function assertLoss(score = null) {
           .should('contain', matchWinner ? 'Good Match!' : 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=loss-heading]').should('contain', 'You Lose');
+        cy.get('#game-over-dialog').find('[data-cy=loss-heading]')
+          .should('contain', 'You Lose');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -493,7 +499,8 @@ export function assertStalemate(score = null) {
           .should('contain', 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=stalemate-heading]').should('contain', 'Stalemate');
+        cy.get('#game-over-dialog').find('[data-cy=stalemate-heading]')
+          .should('contain', 'Stalemate');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')

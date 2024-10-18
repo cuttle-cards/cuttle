@@ -12,7 +12,6 @@ describe('Sixes One-Offs', () => {
   });
 
   it('Plays a six to destroy all face cards', () => {
-    cy.skipOnGameStateApi();
     // Setup
     cy.loadGameFixture(0, {
       // Player is P0
@@ -23,12 +22,12 @@ describe('Sixes One-Offs', () => {
         Card.JACK_OF_CLUBS,
         Card.JACK_OF_HEARTS,
       ],
-      p0Points: [Card.THREE_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS],
+      p0Points: [ Card.THREE_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS ],
       // Opponent is P1
-      p1Hand: [Card.ACE_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-      p1Points: [Card.TWO_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
+      p1Points: [ Card.TWO_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Double Jack (control will remain unchanged when 6 resolves)
@@ -50,12 +49,12 @@ describe('Sixes One-Offs', () => {
     cy.playOneOffAndResolveAsPlayer(Card.SIX_OF_SPADES);
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_CLUBS, Card.SIX_OF_DIAMONDS],
-      p0Points: [Card.THREE_OF_SPADES, Card.ACE_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_CLUBS, Card.SIX_OF_DIAMONDS ],
+      p0Points: [ Card.THREE_OF_SPADES, Card.ACE_OF_SPADES ],
       p0FaceCards: [],
       // Opponent is P1
-      p1Hand: [Card.ACE_OF_HEARTS],
-      p1Points: [Card.TWO_OF_HEARTS, Card.ACE_OF_DIAMONDS],
+      p1Hand: [ Card.ACE_OF_HEARTS ],
+      p1Points: [ Card.TWO_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
       p1FaceCards: [],
       scrap: [
         Card.SIX_OF_SPADES,

@@ -216,8 +216,8 @@ export default {
       loading: false,
       showPass: false,
       isFormValid: false,
-      usernameRules: [this.isAlphaNumeric],
-      passwordRules: [this.has8OrMoreCharacters],
+      usernameRules: [ this.isAlphaNumeric ],
+      passwordRules: [ this.has8OrMoreCharacters ],
     };
   },
   computed: {
