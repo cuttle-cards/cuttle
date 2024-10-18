@@ -93,7 +93,8 @@ describe('Home - Game List', () => {
       cy.get('[data-cy=game-list-item]').should('have.length', 2);
       cy.signupOpponent(opponentOne);
       cy.createGameOpponent('Game made by other player');
-      cy.get('[data-cy=game-list-item]').should('have.length', 3).contains('Game made by other player');
+      cy.get('[data-cy=game-list-item]').should('have.length', 3)
+        .contains('Game made by other player');
     });
 
     it('Joins an open game', () => {
@@ -103,7 +104,8 @@ describe('Home - Game List', () => {
           expect(store.id).to.eq(null);
         });
       cy.createGamePlayer({ gameName: 'Test Game', isRanked: false });
-      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
+      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual')
+        .click();
       cy.location('pathname').should('contain', '/lobby');
       cy.window()
         .its('cuttle.gameStore')
@@ -115,7 +117,8 @@ describe('Home - Game List', () => {
     it('Does not show games older than 24 hours', () => {
       cy.loadFinishedGameFixtures([
         { name: 'New Game', status: GameStatus.CREATED },
-        { name: 'Old Game', status: GameStatus.CREATED, createdAt: dayjs.utc().subtract(1, 'day').toDate() },
+        { name: 'Old Game', status: GameStatus.CREATED, createdAt: dayjs.utc().subtract(1, 'day')
+          .toDate() },
       ]);
       cy.visit('/');
       cy.get('[data-cy=game-list-item]').should('have.length', 1);
@@ -133,7 +136,8 @@ describe('Home - Game List', () => {
       cy.signupOpponent(opponentOne);
       cy.subscribeOpponent(gameData.gameId);
       // Our user then joins through UI
-      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual').click();
+      cy.get('[data-cy=game-list-item]').contains('button.v-btn', 'Join Casual')
+        .click();
       // Should have redirected to lobby page and updated store
       cy.location('pathname').should('contain', '/lobby');
       cy.window()
@@ -262,7 +266,8 @@ describe('Home - Game List', () => {
         cy.readyOpponent(gameId);
 
         // Game appears as spectatable
-        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible').and('not.be.disabled');
+        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible')
+          .and('not.be.disabled');
         // Game finishes -- Can no longer spectate
         cy.concedeOpponent();
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
@@ -367,8 +372,8 @@ describe('Home - Game List', () => {
       cy.log('Setup game end by passing');
       cy.setupGameAsSpectator();
       cy.loadGameFixture(0, {
-        p0Hand: [Card.SEVEN_OF_CLUBS],
-        p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
         p1Hand: [],
         p1Points: [],
@@ -402,11 +407,11 @@ describe('Home - Game List', () => {
       cy.log('Setup game end by P0 victory');
       cy.setupGameAsSpectator();
       cy.loadGameFixture(0, {
-        p0Hand: [Card.EIGHT_OF_SPADES],
-        p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.EIGHT_OF_SPADES ],
+        p0Points: [ Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.EIGHT_OF_HEARTS],
-        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
+        p1Hand: [ Card.EIGHT_OF_HEARTS ],
+        p1Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
         p1FaceCards: [],
       });
       cy.recoverSessionOpponent(playerOne);
@@ -421,11 +426,11 @@ describe('Home - Game List', () => {
       cy.log('Setup game end by P1 victory');
       cy.setupGameAsSpectator();
       cy.loadGameFixture(0, {
-        p0Hand: [Card.EIGHT_OF_SPADES],
-        p0Points: [Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS],
+        p0Hand: [ Card.EIGHT_OF_SPADES ],
+        p0Points: [ Card.SEVEN_OF_SPADES, Card.SEVEN_OF_HEARTS ],
         p0FaceCards: [],
-        p1Hand: [Card.EIGHT_OF_HEARTS],
-        p1Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS],
+        p1Hand: [ Card.EIGHT_OF_HEARTS ],
+        p1Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_CLUBS ],
         p1FaceCards: [],
       });
       cy.recoverSessionOpponent(playerOne);
@@ -511,7 +516,8 @@ describe('Home - Create Game', () => {
       .find('[data-cy=game-name-input]')
       .should('be.visible')
       .type('test game');
-    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+    cy.get('[data-cy=submit-create-game]').should('be.visible')
+      .click();
 
     cy.get('[data-cy=create-game-dialog]').should('not.exist');
 
@@ -550,7 +556,8 @@ describe('Home - Create Game', () => {
 
     cy.toggleInput('[data-cy=create-game-ranked-switch]');
 
-    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+    cy.get('[data-cy=submit-create-game]').should('be.visible')
+      .click();
 
     cy.location('pathname').should('contain', '/lobby');
     cy.window()
@@ -592,7 +599,8 @@ describe('Home - Create Game', () => {
       .click({ force: true }) // Force to click hidden input inside switch
       .should('be.checked');
 
-    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+    cy.get('[data-cy=submit-create-game]').should('be.visible')
+      .click();
     assertSnackbar('Game name cannot exceed 50 characters', 'error', 'newgame');
   });
 
@@ -603,7 +611,8 @@ describe('Home - Create Game', () => {
       .find('[data-cy=game-name-input]')
       .should('be.visible')
       .type('test game');
-    cy.get('[data-cy=cancel-create-game]').should('be.visible').click();
+    cy.get('[data-cy=cancel-create-game]').should('be.visible')
+      .click();
     // Game name should be empty
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')
@@ -614,7 +623,8 @@ describe('Home - Create Game', () => {
 
   it('Does not create game without game name', () => {
     cy.get('[data-cy=create-game-btn]').click();
-    cy.get('[data-cy=submit-create-game]').should('be.visible').click();
+    cy.get('[data-cy=submit-create-game]').should('be.visible')
+      .click();
     // Test DOM
     cy.get('[data-cy=game-list-item]').should('have.length', 0); // No games appear
     // Test Store

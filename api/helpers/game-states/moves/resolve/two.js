@@ -68,8 +68,8 @@ module.exports = {
       const targetPlayedIndex = opponent.faceCards.findIndex(({ id }) => id === result.targetCard.id);
       opponent.faceCards.splice(targetPlayedIndex, 1);
     }
-      // add target card in scrap
-      result.scrap.push(result.targetCard);
+    // add target card in scrap
+    result.scrap.push(result.targetCard);
     
     return exits.success(result);
   },

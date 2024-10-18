@@ -105,7 +105,7 @@ export default {
       default: null,
     },
   },
-  emits: ['resolve'],
+  emits: [ 'resolve' ],
   setup() {
     const { t } = useI18n();
     return { t };

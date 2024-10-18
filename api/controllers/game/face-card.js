@@ -3,9 +3,9 @@ module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
-  Promise.all([promiseGame, promisePlayer, promiseCard])
+  Promise.all([ promiseGame, promisePlayer, promiseCard ])
     .then(function changeAndSave(values) {
-      const [game, player, card] = values;
+      const [ game, player, card ] = values;
       if (game.turn % 2 === player.pNum) {
         if (card.hand === player.id) {
           if ((card.rank >= 12 && card.rank <= 13) || card.rank === 8) {
@@ -17,7 +17,7 @@ module.exports = function (req, res) {
               }
               const gameUpdates = {
                 turn: game.turn + 1,
-                log: [...game.log, logEntry],
+                log: [ ...game.log, logEntry ],
                 passes: 0,
                 lastEvent: {
                   change: 'faceCard',
@@ -35,7 +35,7 @@ module.exports = function (req, res) {
                 User.addToCollection(player.id, 'faceCards').members(card.id),
               ];
 
-              return Promise.all([game, ...updatePromises]);
+              return Promise.all([ game, ...updatePromises ]);
             }
             return Promise.reject({
               message: 'game.snackbar.global.cardFrozen',
@@ -50,16 +50,16 @@ module.exports = function (req, res) {
       return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
     })
     .then(function populateGame(values) {
-      const [game] = values;
-      return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
+      const [ game ] = values;
+      return Promise.all([ gameService.populateGame({ gameId: game.id }), game ]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel] = values;
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'faceCard',
         game: fullGame,
         victory,

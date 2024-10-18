@@ -21,13 +21,13 @@ describe('Game View Layout', () => {
     cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.THREE_OF_CLUBS],
+      p0Hand: [ Card.THREE_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TEN_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
     });
 
     // Player plays three
@@ -46,16 +46,17 @@ describe('Game View Layout', () => {
 
     // Player selects a card from scrap
     cy.get('[data-three-dialog-card=10-2]').click();
-    cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
+    cy.get('[data-cy=three-resolve').should('not.be.disabled')
+      .click();
 
     assertGameState(0, {
-      p0Hand: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.TEN_OF_HEARTS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TEN_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES ],
     });
 
     // Player attempts to play out of turn
@@ -65,13 +66,13 @@ describe('Game View Layout', () => {
     cy.playPointsOpponent(Card.TEN_OF_DIAMONDS);
 
     assertGameState(0, {
-      p0Hand: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.TEN_OF_HEARTS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [],
-      p1Points: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES],
+      p1Points: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES ],
     });
   });
 
@@ -89,12 +90,12 @@ describe('Game View Layout', () => {
       Card.TWO_OF_DIAMONDS,
     ];
     cy.loadGameFixture(0, {
-      p0Hand: [Card.THREE_OF_CLUBS],
+      p0Hand: [ Card.THREE_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TEN_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap,
     });
 
@@ -148,12 +149,12 @@ describe('Game View Layout', () => {
   it('Clicking the scrap while empty shows that it is empty', () => {
     // Given-- the initial game state with 3 cards in the scrap
     cy.loadGameFixture(0, {
-      p0Hand: [Card.THREE_OF_CLUBS],
+      p0Hand: [ Card.THREE_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TEN_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
 
@@ -162,7 +163,8 @@ describe('Game View Layout', () => {
     cy.get('#scrap').click();
 
     // Then-- Assert that the overlay that should show up does and that there are no cards in it
-    cy.get('#scrap-dialog').should('be.visible').should('contain', 'There are no cards in the scrap pile.');
+    cy.get('#scrap-dialog').should('be.visible')
+      .should('contain', 'There are no cards in the scrap pile.');
   });
 });
 
@@ -174,10 +176,10 @@ describe('Four dialogs layout', () => {
   it('Four dialogs', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
-      p0Hand: [Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS],
+      p0Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS],
+      p1Hand: [ Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -185,7 +187,9 @@ describe('Four dialogs layout', () => {
     // Opponent plays four
     cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
     // Player cannot counter
-    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+    cy.get('#cannot-counter-dialog').should('be.visible')
+      .get('[data-cy=cannot-counter-resolve]')
+      .click();
 
     // Four Dialog appears (you must discard)
     cy.get('#four-discard-dialog').should('be.visible');
@@ -198,13 +202,13 @@ describe('Four dialogs layout', () => {
     cy.get('[data-cy=submit-four-dialog]').click(); // submit choice to discard
 
     assertGameState(1, {
-      p0Hand: [Card.ACE_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_HEARTS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TEN_OF_HEARTS],
+      p1Hand: [ Card.TEN_OF_HEARTS ],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [Card.FOUR_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS],
+      scrap: [ Card.FOUR_OF_CLUBS, Card.FOUR_OF_SPADES, Card.ACE_OF_DIAMONDS ],
     });
   });
 });
@@ -218,10 +222,10 @@ describe.skip('Aesthetic tests', () => {
     cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.EIGHT_OF_SPADES, Card.QUEEN_OF_DIAMONDS],
-      p0Points: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.ACE_OF_HEARTS],
-      p0FaceCards: [Card.KING_OF_HEARTS, Card.KING_OF_DIAMONDS, Card.KING_OF_CLUBS, Card.EIGHT_OF_HEARTS],
-      p1Hand: [Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS],
+      p0Hand: [ Card.EIGHT_OF_SPADES, Card.QUEEN_OF_DIAMONDS ],
+      p0Points: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.ACE_OF_HEARTS ],
+      p0FaceCards: [ Card.KING_OF_HEARTS, Card.KING_OF_DIAMONDS, Card.KING_OF_CLUBS, Card.EIGHT_OF_HEARTS ],
+      p1Hand: [ Card.SIX_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.EIGHT_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -231,12 +235,12 @@ describe.skip('Aesthetic tests', () => {
     cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Play jack of clubs on ten of hearts
@@ -245,12 +249,12 @@ describe.skip('Aesthetic tests', () => {
     cy.get('[data-opponent-point-card=10-2]').click();
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-      p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
 
@@ -261,12 +265,12 @@ describe.skip('Aesthetic tests', () => {
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_HEARTS);
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
 
@@ -276,12 +280,12 @@ describe.skip('Aesthetic tests', () => {
     cy.get('[data-opponent-point-card=10-2]').click({ force: true });
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.TEN_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
 
@@ -291,12 +295,12 @@ describe.skip('Aesthetic tests', () => {
     cy.playJackOpponent(Card.JACK_OF_SPADES, Card.TEN_OF_HEARTS);
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
   });
@@ -305,12 +309,12 @@ describe.skip('Aesthetic tests', () => {
     cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-      p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TWO_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
+      p0Points: [ Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TWO_OF_CLUBS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Play jack of clubs on ten of hearts
@@ -319,12 +323,12 @@ describe.skip('Aesthetic tests', () => {
     cy.get('[data-opponent-point-card=10-2]').click();
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-      p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TEN_OF_HEARTS, Card.TWO_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
+      p0Points: [ Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TEN_OF_HEARTS, Card.TWO_OF_CLUBS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
 
@@ -335,12 +339,12 @@ describe.skip('Aesthetic tests', () => {
     cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.TEN_OF_HEARTS);
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS],
-      p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TWO_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
+      p0Points: [ Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TWO_OF_CLUBS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
 
@@ -350,12 +354,12 @@ describe.skip('Aesthetic tests', () => {
     cy.get('[data-opponent-point-card=10-2]').click({ force: true });
 
     assertGameState(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.KING_OF_SPADES],
-      p0Points: [Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TEN_OF_HEARTS, Card.TWO_OF_CLUBS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.KING_OF_SPADES ],
+      p0Points: [ Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES, Card.TEN_OF_HEARTS, Card.TWO_OF_CLUBS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS, Card.JACK_OF_SPADES ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap: [],
     });
   });
@@ -364,12 +368,12 @@ describe.skip('Aesthetic tests', () => {
     cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.JACK_OF_CLUBS, Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
+      p0Hand: [ Card.JACK_OF_CLUBS, Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
-      p1Points: [Card.ACE_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS ],
+      p1Points: [ Card.ACE_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Play jack of clubs on ace of hearts
@@ -380,12 +384,12 @@ describe.skip('Aesthetic tests', () => {
     cy.playPointsOpponent(Card.ACE_OF_SPADES);
 
     assertGameState(0, {
-      p0Hand: [Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES],
-      p0Points: [Card.ACE_OF_HEARTS],
+      p0Hand: [ Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
+      p0Points: [ Card.ACE_OF_HEARTS ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
-      p1Points: [Card.ACE_OF_SPADES],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS ],
+      p1Points: [ Card.ACE_OF_SPADES ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Play jack
@@ -396,12 +400,12 @@ describe.skip('Aesthetic tests', () => {
     cy.playPointsOpponent(Card.ACE_OF_DIAMONDS);
 
     assertGameState(0, {
-      p0Hand: [Card.JACK_OF_HEARTS, Card.JACK_OF_SPADES],
-      p0Points: [Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES],
+      p0Hand: [ Card.JACK_OF_HEARTS, Card.JACK_OF_SPADES ],
+      p0Points: [ Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_CLUBS],
-      p1Points: [Card.ACE_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_CLUBS ],
+      p1Points: [ Card.ACE_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Play jack
@@ -412,12 +416,12 @@ describe.skip('Aesthetic tests', () => {
     cy.playPointsOpponent(Card.ACE_OF_CLUBS);
 
     assertGameState(0, {
-      p0Hand: [Card.JACK_OF_SPADES],
-      p0Points: [Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS],
+      p0Hand: [ Card.JACK_OF_SPADES ],
+      p0Points: [ Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS ],
       p0FaceCards: [],
       p1Hand: [],
-      p1Points: [Card.ACE_OF_CLUBS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Points: [ Card.ACE_OF_CLUBS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Play jack of spades on ace of clubs
@@ -427,11 +431,11 @@ describe.skip('Aesthetic tests', () => {
 
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS],
+      p0Points: [ Card.ACE_OF_HEARTS, Card.ACE_OF_SPADES, Card.ACE_OF_DIAMONDS, Card.ACE_OF_CLUBS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
   });
 });

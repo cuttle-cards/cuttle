@@ -9,12 +9,12 @@ describe('Websockets', () => {
   it('Recovers latest event data when socket reconnects', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Disconnect player's socket
@@ -30,12 +30,12 @@ describe('Websockets', () => {
     // Should see resulting update after socket reconnects
     assertGameState(1, {
       // ace of spades moved from p0Hand to p0Points
-      p0Hand: [Card.ACE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES, Card.ACE_OF_SPADES],
-      p0FaceCards: [Card.KING_OF_SPADES],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p0Hand: [ Card.ACE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES, Card.ACE_OF_SPADES ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
   });
 });

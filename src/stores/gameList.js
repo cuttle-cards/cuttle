@@ -32,7 +32,7 @@ export const useGameListStore = defineStore('gameList', {
       if (gameIndex < 0 || gameIndex > this.openGames.length) {
         return;
       }
-      const [startedGame] = this.openGames.splice(gameIndex, 1);
+      const [ startedGame ] = this.openGames.splice(gameIndex, 1);
       startedGame.status = GameStatus.STARTED;
       this.spectateGames.push(startedGame);
     },
@@ -62,7 +62,7 @@ export const useGameListStore = defineStore('gameList', {
         updatedGame.numPlayers = Math.max(0, updatedGame.numPlayers - 1);
       }
     },
-    setIsRanked({gameId, isRanked}) {
+    setIsRanked({ gameId, isRanked }) {
       const updatedGame = this.openGames.find((game) => game.id === gameId);
       if (updatedGame) {
         updatedGame.isRanked = isRanked;

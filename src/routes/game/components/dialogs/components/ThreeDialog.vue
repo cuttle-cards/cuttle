@@ -57,10 +57,10 @@ export default {
       required: true,
     },
   },
-  emits: ['resolveThree'],
+  emits: [ 'resolveThree' ],
   setup() {
-  const { t } = useI18n();
-  return { t };
+    const { t } = useI18n();
+    return { t };
   },
   data() {
     return {

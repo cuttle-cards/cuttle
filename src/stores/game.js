@@ -46,7 +46,7 @@ class GameCard {
         13: 'K',
       }[card.rank] ?? card.rank;
     // Stringify Suit
-    const str_suit = ['♣️', '♦️', '♥️', '♠️'][card.suit];
+    const str_suit = [ '♣️', '♦️', '♥️', '♠️' ][card.suit];
     this.createdAt = card.createdAt;
     this.updatedAt = card.updatedAt;
     this.id = card.id;
@@ -310,7 +310,7 @@ export const useGameStore = defineStore('game', {
         return;
       }
 
-      const [playedCard] = scuttlingPlayer.hand.splice(playedCardIndex, 1);
+      const [ playedCard ] = scuttlingPlayer.hand.splice(playedCardIndex, 1);
       const targetCard = scuttledPlayer.points[targetCardIndex];
       targetCard.scuttledBy = playedCard;
 

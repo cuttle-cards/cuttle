@@ -21,7 +21,7 @@ module.exports = {
         const match = sails.helpers.getCasualMatch(game);
         return exits.success(match);
       }
-      const [player1, player2] = game.players;
+      const [ player1, player2 ] = game.players;
       let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1.id, player2.id);
       if (!relevantMatch) {
         return exits.error(new Error('Could not add game to match'));
@@ -37,7 +37,7 @@ module.exports = {
       let numPlayer1Wins = 0;
       let numPlayer2Wins = 0;
 
-      for (const priorGame of [game, ...relevantMatch.games]) {
+      for (const priorGame of [ game, ...relevantMatch.games ]) {
         if (!priorGame.winner) {
           continue;
         }
@@ -48,7 +48,7 @@ module.exports = {
         }
       }
       // Add game to match
-      await Match.addToCollection(relevantMatch.id, 'games').members([game.id]);
+      await Match.addToCollection(relevantMatch.id, 'games').members([ game.id ]);
 
       // End the match if this game clinches it
       if (numPlayer1Wins >= 2) {

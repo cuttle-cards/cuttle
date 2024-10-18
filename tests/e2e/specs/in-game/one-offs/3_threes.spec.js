@@ -11,12 +11,12 @@ describe('Playing THREEs', () => {
   it('Plays 3s with no cards in scrap', () => {
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // Player plays three
@@ -26,16 +26,16 @@ describe('Playing THREEs', () => {
   });
 
   it('Plays 3s successfully', () => {
-    const scrap = [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS];
+    const scrap = [ Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS ];
 
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.THREE_OF_CLUBS],
+      p0Hand: [ Card.THREE_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TEN_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
       scrap,
     });
 
@@ -69,20 +69,21 @@ describe('Playing THREEs', () => {
 
     // Player selects a card from scrap
     cy.get('[data-three-dialog-card=10-2]').click();
-    cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
+    cy.get('[data-cy=three-resolve').should('not.be.disabled')
+      .click();
 
     // check scrap card shows and then disappears
     cy.get('[data-cy="scrap-chosen-card"]').should('be.visible');
     cy.get('[data-cy="scrap-chosen-card"]').should('not.exist');
 
     assertGameState(0, {
-      p0Hand: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.TEN_OF_HEARTS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.TEN_OF_DIAMONDS],
-      p1Points: [Card.ACE_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS],
+      p1Hand: [ Card.TEN_OF_DIAMONDS ],
+      p1Points: [ Card.ACE_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS ],
     });
 
     // Player attempts to play out of turn
@@ -92,25 +93,25 @@ describe('Playing THREEs', () => {
     cy.playPointsOpponent(Card.TEN_OF_DIAMONDS);
 
     assertGameState(0, {
-      p0Hand: [Card.TEN_OF_HEARTS],
+      p0Hand: [ Card.TEN_OF_HEARTS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [],
-      p1Points: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS],
+      p1Points: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS, Card.TEN_OF_SPADES, Card.FOUR_OF_CLUBS ],
     });
   });
 
   it('Opponent plays 3s successfully', () => {
     // Set Up
     cy.loadGameFixture(0, {
-      p0Hand: [Card.ACE_OF_SPADES],
-      p0Points: [Card.TEN_OF_SPADES],
+      p0Hand: [ Card.ACE_OF_SPADES ],
+      p0Points: [ Card.TEN_OF_SPADES ],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.THREE_OF_CLUBS],
-      p1Points: [Card.TEN_OF_HEARTS],
-      p1FaceCards: [Card.KING_OF_HEARTS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
+      p1Points: [ Card.TEN_OF_HEARTS ],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
     });
 
     // put some cards into scrap
@@ -125,17 +126,18 @@ describe('Playing THREEs', () => {
       p0Hand: [],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.THREE_OF_CLUBS],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.THREE_OF_CLUBS ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.ACE_OF_SPADES, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES ],
     });
 
     // opponent plays 3
     cy.playOneOffOpponent(Card.THREE_OF_CLUBS);
 
     // player resolves
-    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible').click();
+    cy.get('[data-cy=cannot-counter-resolve]').should('be.visible')
+      .click();
 
     cy.get('#waiting-for-opponent-resolve-three-scrim').should('be.visible');
     // waiting for opponent to choose from scrap scrim
@@ -151,10 +153,10 @@ describe('Playing THREEs', () => {
       p0Hand: [],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.ACE_OF_SPADES],
+      p1Hand: [ Card.ACE_OF_HEARTS, Card.TEN_OF_DIAMONDS, Card.ACE_OF_SPADES ],
       p1Points: [],
-      p1FaceCards: [Card.KING_OF_HEARTS],
-      scrap: [Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.THREE_OF_CLUBS],
+      p1FaceCards: [ Card.KING_OF_HEARTS ],
+      scrap: [ Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.THREE_OF_CLUBS ],
     });
   });
 });

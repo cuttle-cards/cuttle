@@ -87,7 +87,7 @@ import { getLocalStorage, setLocalStorage, LS_PREFERS_RANKED_NAME } from '_/util
 export default {
   name: 'CreateGameDialog',
   components: { StatsScoringDialog, BaseDialog },
-  emits: ['error'],
+  emits: [ 'error' ],
   setup() {
     const { t } = useI18n();
     return { t };

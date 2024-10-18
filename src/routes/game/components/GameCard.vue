@@ -93,7 +93,7 @@ export default {
     controlledBy: {
       type: String,
       default: '',
-      validator: (val) => ['', 'player', 'opponent'].includes(val),
+      validator: (val) => [ '', 'player', 'opponent' ].includes(val),
     },
     highElevation: {
       type: Boolean,

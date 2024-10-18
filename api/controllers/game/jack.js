@@ -5,9 +5,9 @@ module.exports = function (req, res) {
   const opponent = userService.findUser({ userId: req.body.opId });
   const card = cardService.findCard({ cardId: req.body.cardId });
   const target = cardService.findCard({ cardId: req.body.targetId });
-  Promise.all([game, player, opponent, card, target])
+  Promise.all([ game, player, opponent, card, target ])
     .then(function changeAndSave(values) {
-      const [game, player, opponent, card, target] = values;
+      const [ game, player, opponent, card, target ] = values;
       if (game.turn % 2 === player.pNum) {
         if (card.hand === player.id) {
           if (card.rank === 11) {
@@ -36,12 +36,12 @@ module.exports = function (req, res) {
                   const updatePromises = [
                     Game.updateOne(game.id).set(gameUpdates),
                     User.updateOne(player.id).set(playerUpdates),
-                    User.addToCollection(player.id, 'points').members([target.id]),
-                    User.removeFromCollection(player.id, 'hand').members([card.id]),
+                    User.addToCollection(player.id, 'points').members([ target.id ]),
+                    User.removeFromCollection(player.id, 'hand').members([ card.id ]),
                     Card.updateOne(card.id).set(cardUpdates),
-                    Card.addToCollection(target.id, 'attachments').members([card.id]),
+                    Card.addToCollection(target.id, 'attachments').members([ card.id ]),
                   ];
-                  return Promise.all([game, ...updatePromises]);
+                  return Promise.all([ game, ...updatePromises ]);
                 }
                 return Promise.reject({
                   message: 'game.snackbar.global.cardFrozen',
@@ -64,16 +64,16 @@ module.exports = function (req, res) {
       return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
     }) // End changeAndSave()
     .then(function populateGame(values) {
-      const [game] = values;
-      return Promise.all([gameService.populateGame({ gameId: game.id }), game]);
+      const [ game ] = values;
+      return Promise.all([ gameService.populateGame({ gameId: game.id }), game ]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel] = values;
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'jack',
         game: fullGame,
         victory,
