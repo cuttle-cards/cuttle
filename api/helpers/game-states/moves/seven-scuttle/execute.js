@@ -47,11 +47,7 @@ module.exports = {
     // Seven one-off cleanup
     const { oneOff } = result;
     result.scrap.push(oneOff);
-    result.oneOff = null;
-    result.resolved = oneOff;
-
     result.turn++;
-    result.phase = GamePhase.MAIN;
 
     result = {
       ...result,
