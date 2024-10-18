@@ -2,6 +2,7 @@ import MoveType from './MoveType.json';
 export default {
   ...MoveType,
   RE_LOGIN: 'reLogin',
+  LOAD_FIXTURE: 'loadFixture',
   READY: 'ready',
   SET_IS_RANKED: 'setIsRanked',
   REJECT_STALEMATE: 'rejectStalemate',

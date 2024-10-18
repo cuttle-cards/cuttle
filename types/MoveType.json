@@ -18,5 +18,5 @@
   "SEVEN_JACK": "sevenJack",
   "SEVEN_ONE_OFF": "sevenOneOff",
   "PASS": "pass",
-  "LOAD_FIXTURE": "loadFixture"
+  "LOADFIXTURE": "loadFixture"
 }
