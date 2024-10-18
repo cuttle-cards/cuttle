@@ -500,30 +500,27 @@ export default {
     /////////////////////////////////////////////
     // Game, Deck, Log, Scrap, and Spectators //
     ///////////////////////////////////////////
-    game() {
-      return this.gameStore;
-    },
     deck() {
-      return this.game.deck;
+      return this.gameStore.deck;
     },
     scrap() {
-      return this.game.scrap;
+      return this.gameStore.scrap;
     },
     logs() {
-      return this.game.log;
+      return this.gameStore.log;
     },
     deckLength() {
       let res = this.deck.length;
-      if (this.game.topCard) {
+      if (this.gameStore.topCard) {
         res++;
       }
-      if (this.game.secondCard) {
+      if (this.gameStore.secondCard) {
         res++;
       }
       return res;
     },
     spectatingUsers() {
-      return this.game.spectatingUsers;
+      return this.gameStore.spectatingUsers;
     },
     /////////////////
     // King Counts //
@@ -556,17 +553,17 @@ export default {
       return this.gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`;
     },
     playerPointsTransition() {
-      switch (this.game.lastEventChange) {
+      switch (this.gameStore.lastEventChange) {
         case 'resolve':
           // Different one-offs cause points to move in different directions
-          switch (this.game.lastEventOneOffRank) {
+          switch (this.gameStore.lastEventOneOffRank) {
             // Twos and Sixes swap control of points between players
             case 2:
             case 6:
               return 'slide-above';
             // For nines, transition direction depends on target type
             case 9:
-              switch (this.game.lastEventTargetType) {
+              switch (this.gameStore.lastEventTargetType) {
                 // Nine on jack causes points to swap control
                 case 'jack':
                   return 'slide-above';
@@ -589,9 +586,9 @@ export default {
     playerFaceCardsTransition() {
       // If a face card is bounced by a nine, slide down to player hand
       if (
-        this.game.lastEventChange === 'resolve' &&
-        this.game.lastEventOneOffRank === 9 &&
-        this.game.lastEventTargetType === 'faceCard'
+        this.gameStore.lastEventChange === 'resolve' &&
+        this.gameStore.lastEventOneOffRank === 9 &&
+        this.gameStore.lastEventTargetType === 'faceCard'
       ) {
         return 'slide-below';
       }
@@ -599,21 +596,21 @@ export default {
       return 'in-below-out-left';
     },
     opponentPointsTransition() {
-      switch (this.game.lastEventChange) {
+      switch (this.gameStore.lastEventChange) {
         // Jacks cause point cards to switch control (from/towards player)
         case 'jack':
         case 'sevenJack':
           return 'slide-below';
         case 'resolve':
           // Different one-offs cause different direction transitions
-          switch (this.game.lastEventOneOffRank) {
+          switch (this.gameStore.lastEventOneOffRank) {
             // Twos and sixes caus point cards to switch control (from/towards player)
             case 2:
             case 6:
               return 'slide-below';
             // Nine transitions depend on the target type
             case 9:
-              switch (this.game.lastEventTargetType) {
+              switch (this.gameStore.lastEventTargetType) {
                 // Nine on a jack switches point card control
                 case 'jack':
                   return 'slide-below';
@@ -632,9 +629,9 @@ export default {
     opponentFaceCardsTransition() {
       // If a face card is bounced by a nine, slide up to opponent's hand
       if (
-        this.game.lastEventChange === 'resolve' &&
-        this.game.lastEventOneOffRank === 9 &&
-        this.game.lastEventTargetType === 'faceCard'
+        this.gameStore.lastEventChange === 'resolve' &&
+        this.gameStore.lastEventOneOffRank === 9 &&
+        this.gameStore.lastEventTargetType === 'faceCard'
       ) {
         return 'slide-above';
       }
@@ -722,13 +719,13 @@ export default {
     },
     // Sevens
     playingFromDeck() {
-      return this.game.playingFromDeck;
+      return this.gameStore.playingFromDeck;
     },
     topCard() {
-      return this.game.topCard;
+      return this.gameStore.topCard;
     },
     secondCard() {
-      return this.game.secondCard;
+      return this.gameStore.secondCard;
     },
     cardSelectedFromDeck() {
       if (this.topCardIsSelected) {
