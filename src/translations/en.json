@@ -285,8 +285,8 @@
         "five": {
           "selectCardToDiscard": "You must select one card to discard",
           "incorrectCard": "Incorrect card played",
-          "fiveDeckIsEmpty": "Cannot resolve 5 one-off with an empty deck",
-          "wrongPhase": "You can't resolve a five right now."
+          "wrongPhase": "You can't resolve a five right now.",
+          "fiveDeckIsEmpty": "Cannot resolve 5 one-off with an empty deck"
         },
         "seven": {
           "oneCardInDeck": "You cannot play a 7 as a ONE-OFF if it is the last card in the deck",
