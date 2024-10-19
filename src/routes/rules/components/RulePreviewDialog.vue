@@ -51,7 +51,7 @@ const props = defineProps({
   },
 });
 
-defineEmits(['close']);
+defineEmits([ 'close' ]);
 
 const { t } = useI18n();
 

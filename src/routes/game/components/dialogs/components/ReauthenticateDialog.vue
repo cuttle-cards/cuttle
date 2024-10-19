@@ -102,9 +102,9 @@ export default {
     login() {
       this.isLoggingIn = true;
       this.authStore.requestReauthenticate({
-          username: this.username,
-          password: this.password,
-        })
+        username: this.username,
+        password: this.password,
+      })
         .then(() => {
           this.clearSnackBar();
           this.clearForm();

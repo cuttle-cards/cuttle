@@ -333,11 +333,11 @@ export default {
     isInModal : {
       type :Boolean,
       default: false
-      },
-      parentModalId : {
-        type:String,
-        default: ''
-      },
+    },
+    parentModalId : {
+      type:String,
+      default: ''
+    },
   },
   setup() {
     const goTo = useGoTo();
@@ -349,7 +349,7 @@ export default {
       goTo
     };
   },
-    data() {
+  data() {
     return {
       activeTitle: 'introduction',
       previewDialog: false,
@@ -400,8 +400,8 @@ export default {
     this.intersectConfig = this.isInModal ? {} : {
       handler: onIntersect,
       options: {
-          rootMargin: '-150px 0px -500px 0px',
-        }
+        rootMargin: '-150px 0px -500px 0px',
+      }
     };
     
   },

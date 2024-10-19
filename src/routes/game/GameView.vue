@@ -397,6 +397,7 @@
       <BaseSnackbar
         v-model="showSnackbar"
         :message="snackBarMessage"
+        :color="snackBarColor"
         data-cy="game-snackbar"
         @clear="clearSnackBar"
       />
@@ -455,6 +456,7 @@ export default {
     return {
       showSnackbar: false,
       snackBarMessage: '',
+      snackBarColor: 'error',
       selectionIndex: null, // when select a card set this value
       targeting: false,
       targetingMoveName: null,
@@ -478,9 +480,6 @@ export default {
         zIndex: this.isSpectating ? 2411 : 3 // Allows spectators to access game menu wrapper in any moment
       };
     },
-    showOpponentHand() {
-      return this.gameStore.hasGlassesEight || this.isSpectating;
-    },
 
     ////////////////////
     // Responsiveness //
@@ -501,30 +500,27 @@ export default {
     /////////////////////////////////////////////
     // Game, Deck, Log, Scrap, and Spectators //
     ///////////////////////////////////////////
-    game() {
-      return this.gameStore;
-    },
     deck() {
-      return this.game.deck;
+      return this.gameStore.deck;
     },
     scrap() {
-      return this.game.scrap;
+      return this.gameStore.scrap;
     },
     logs() {
-      return this.game.log;
+      return this.gameStore.log;
     },
     deckLength() {
       let res = this.deck.length;
-      if (this.game.topCard) {
+      if (this.gameStore.topCard) {
         res++;
       }
-      if (this.game.secondCard) {
+      if (this.gameStore.secondCard) {
         res++;
       }
       return res;
     },
     spectatingUsers() {
-      return this.game.spectatingUsers;
+      return this.gameStore.spectatingUsers;
     },
     /////////////////
     // King Counts //
@@ -557,17 +553,17 @@ export default {
       return this.gameStore.lastEventPlayerChoosing ? `threes-player` : `threes-opponent`;
     },
     playerPointsTransition() {
-      switch (this.game.lastEventChange) {
+      switch (this.gameStore.lastEventChange) {
         case 'resolve':
           // Different one-offs cause points to move in different directions
-          switch (this.game.lastEventOneOffRank) {
+          switch (this.gameStore.lastEventOneOffRank) {
             // Twos and Sixes swap control of points between players
             case 2:
             case 6:
               return 'slide-above';
             // For nines, transition direction depends on target type
             case 9:
-              switch (this.game.lastEventTargetType) {
+              switch (this.gameStore.lastEventTargetType) {
                 // Nine on jack causes points to swap control
                 case 'jack':
                   return 'slide-above';
@@ -590,9 +586,9 @@ export default {
     playerFaceCardsTransition() {
       // If a face card is bounced by a nine, slide down to player hand
       if (
-        this.game.lastEventChange === 'resolve' &&
-        this.game.lastEventOneOffRank === 9 &&
-        this.game.lastEventTargetType === 'faceCard'
+        this.gameStore.lastEventChange === 'resolve' &&
+        this.gameStore.lastEventOneOffRank === 9 &&
+        this.gameStore.lastEventTargetType === 'faceCard'
       ) {
         return 'slide-below';
       }
@@ -600,21 +596,21 @@ export default {
       return 'in-below-out-left';
     },
     opponentPointsTransition() {
-      switch (this.game.lastEventChange) {
+      switch (this.gameStore.lastEventChange) {
         // Jacks cause point cards to switch control (from/towards player)
         case 'jack':
         case 'sevenJack':
           return 'slide-below';
         case 'resolve':
           // Different one-offs cause different direction transitions
-          switch (this.game.lastEventOneOffRank) {
+          switch (this.gameStore.lastEventOneOffRank) {
             // Twos and sixes caus point cards to switch control (from/towards player)
             case 2:
             case 6:
               return 'slide-below';
             // Nine transitions depend on the target type
             case 9:
-              switch (this.game.lastEventTargetType) {
+              switch (this.gameStore.lastEventTargetType) {
                 // Nine on a jack switches point card control
                 case 'jack':
                   return 'slide-below';
@@ -633,9 +629,9 @@ export default {
     opponentFaceCardsTransition() {
       // If a face card is bounced by a nine, slide up to opponent's hand
       if (
-        this.game.lastEventChange === 'resolve' &&
-        this.game.lastEventOneOffRank === 9 &&
-        this.game.lastEventTargetType === 'faceCard'
+        this.gameStore.lastEventChange === 'resolve' &&
+        this.gameStore.lastEventOneOffRank === 9 &&
+        this.gameStore.lastEventTargetType === 'faceCard'
       ) {
         return 'slide-above';
       }
@@ -675,10 +671,10 @@ export default {
               opponentJackIds.push(card.attachments[card.attachments.length - 1].id);
             }
           });
-          return [...opponentFaceCardIds, ...opponentJackIds];
+          return [ ...opponentFaceCardIds, ...opponentJackIds ];
         }
         case 1:
-          return [this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id];
+          return [ this.gameStore.opponent.faceCards.find((card) => card.rank === 12).id ];
         default:
           return [];
       }
@@ -698,10 +694,10 @@ export default {
           return this.gameStore.opponent.points.map((validTarget) => validTarget.id);
         case 'targetedOneOff': {
           // Twos and nines can target face cards
-          let res = [...this.validFaceCardTargetIds];
+          let res = [ ...this.validFaceCardTargetIds ];
           // Nines can additionally target points if opponent has no queens
           if (selectedCard.rank === 9 && this.gameStore.opponentQueenCount === 0) {
-            res = [...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id)];
+            res = [ ...res, ...this.gameStore.opponent.points.map((validTarget) => validTarget.id) ];
           }
           return res;
         }
@@ -723,13 +719,13 @@ export default {
     },
     // Sevens
     playingFromDeck() {
-      return this.game.playingFromDeck;
+      return this.gameStore.playingFromDeck;
     },
     topCard() {
-      return this.game.topCard;
+      return this.gameStore.topCard;
     },
     secondCard() {
-      return this.game.secondCard;
+      return this.gameStore.secondCard;
     },
     cardSelectedFromDeck() {
       if (this.topCardIsSelected) {
@@ -740,6 +736,9 @@ export default {
       }
       return null;
     },
+    showOpponentHand() {
+      return this.gameStore.hasGlassesEight || this.isSpectating || !this.topCard;
+    },
   },
   watch: {
     logs: function () {
@@ -747,6 +746,11 @@ export default {
         this.scrollToLastLog();
       });
     },
+    topCard(newTopCard, oldTopCard) {
+      if (this.gameStore.id && oldTopCard && !newTopCard) {
+        this.showCustomSnackbarMessage('game.snackbar.draw.exhaustedDeck');
+      }
+    }
   },
   async mounted() {
     if (!this.authStore.authenticated) {
@@ -768,7 +772,13 @@ export default {
     handleError(messageKey) {
       this.snackBarMessage = this.t(messageKey);
       this.showSnackbar = true;
+      this.snackBarColor = 'error';
       this.clearSelection();
+    },
+    showCustomSnackbarMessage(messageKey) {
+      this.snackBarMessage = this.t(messageKey);
+      this.showSnackbar = true;
+      this.snackBarColor = 'surface-1';
     },
     clearOverlays() {
       this.nineTargetIndex = null;
@@ -850,59 +860,60 @@ export default {
     //////////////////
     // Player Moves //
     //////////////////
-    drawCard() {
+    async drawCard() {
       if (!this.gameStore.resolvingSeven) {
-        if (this.deckLength > 0) {
-          this.gameStore
-            .requestDrawCard()
-            .then(this.clearSelection)
-            .catch((messageKey) => {
-              this.handleError(messageKey);
-            });
-        } else {
-          this.gameStore
-            .requestPass()
-            .then(this.clearSelection)
-            .catch((messageKey) => {
-              this.handleError(messageKey);
-            });
+        try {
+          const drawCard = this.deckLength > 0;
+          if (!drawCard) {
+            await this.gameStore.requestPass();
+          } else {
+            await this.gameStore.requestDrawCard();
+          }
+        } catch (messageKey) {
+          this.handleError(messageKey);
+        } finally {
+          this.clearSelection();
         }
       }
     },
-    playPoints() {
+    async playPoints() {
       this.clearOverlays();
-      if (this.gameStore.resolvingSeven) {
-        const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore
-          .requestPlayPointsSeven({
+      try {
+        const { resolvingSeven } = this.gameStore;
+        if (!resolvingSeven) {
+          await this.gameStore.requestPlayPoints(this.selectedCard.id);
+        } else {
+          const deckIndex = this.topCardIsSelected ? 0 : 1;
+          await this.gameStore.requestPlayPointsSeven({
             cardId: this.cardSelectedFromDeck.id,
             index: deckIndex,
-          })
-          .then(this.clearSelection)
-          .catch(this.handleError);
-      } else {
-        this.gameStore
-          .requestPlayPoints(this.selectedCard.id)
-          .then(this.clearSelection)
-          .catch(this.handleError);
+          });
+        }
+      } catch (error) {
+        this.handleError(error);
+      } finally {
+        this.clearSelection();
       }
     },
-    playFaceCard() {
+    async playFaceCard() {
       this.clearOverlays();
-      if (this.gameStore.resolvingSeven) {
+      try {
+        const { resolvingSeven } = this.gameStore;
         const deckIndex = this.topCardIsSelected ? 0 : 1;
-        this.gameStore
-          .requestPlayFaceCardSeven({
-            cardId: this.cardSelectedFromDeck.id,
-            index: deckIndex,
-          })
-          .then(this.clearSelection)
-          .catch(this.handleError);
-      } else {
-        this.gameStore
-          .requestPlayFaceCard(this.selectedCard.id)
-          .then(this.clearSelection)
-          .catch(this.handleError);
+        if (!resolvingSeven) {
+          await this.gameStore
+            .requestPlayFaceCard(this.selectedCard.id);
+        } else {
+          await this.gameStore
+            .requestPlayFaceCardSeven({
+              cardId: this.cardSelectedFromDeck.id,
+              index: deckIndex,
+            });
+        }
+      } catch(messageKey){
+        this.handleError(messageKey);
+      } finally {
+        this.clearSelection();
       }
     },
     scuttle(targetIndex) {
@@ -1551,6 +1562,11 @@ export default {
   .field-points {
     .field-point-container {
       width: auto;
+
+      .jacks-container {
+        right: -25%;
+        width: auto;
+      }
     }
   }
 

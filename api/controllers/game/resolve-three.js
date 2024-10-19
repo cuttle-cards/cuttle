@@ -3,9 +3,9 @@ module.exports = function (req, res) {
   const promiseGame = gameService.findGame({ gameId: req.session.game });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
-  Promise.all([promiseGame, promisePlayer, promiseCard])
+  Promise.all([ promiseGame, promisePlayer, promiseCard ])
     .then(function changeAndSave(values) {
-      const [game, player, card] = values;
+      const [ game, player, card ] = values;
       const gameUpdates = {
         oneOff: null,
         resolving: null,
@@ -25,25 +25,25 @@ module.exports = function (req, res) {
         // Update game
         Game.updateOne(game.id).set(gameUpdates),
         // Scrap the three that just resolved
-        Game.addToCollection(game.id, 'scrap').members([game.oneOff.id]),
+        Game.addToCollection(game.id, 'scrap').members([ game.oneOff.id ]),
         // Return selected card to player's hand
-        User.addToCollection(player.id, 'hand').members([card.id]),
+        User.addToCollection(player.id, 'hand').members([ card.id ]),
         // Remove selected card from scrap
-        Game.removeFromCollection(game.id, 'scrap').members([card.id]),
+        Game.removeFromCollection(game.id, 'scrap').members([ card.id ]),
       ];
-      return Promise.all([game, card, ...updatePromises]);
+      return Promise.all([ game, card, ...updatePromises ]);
     })
     .then(function populateGame(values) {
-      const [game, card] = values;
-      return Promise.all([gameService.populateGame({ gameId: game.id }), game, card]);
+      const [ game, card ] = values;
+      return Promise.all([ gameService.populateGame({ gameId: game.id }), game, card ]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel, card] = values;
+      const [ fullGame, gameModel, card ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'resolveThree',
         game: fullGame,
         victory,

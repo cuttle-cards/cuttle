@@ -79,8 +79,8 @@ module.exports = {
       throw new Error({ message: 'Cannot populate game, because it does not have players collection' });
     }
 
-    //find users and points
-    const [p0, p1, spectatingUsers, p0Points, p1Points] = await Promise.all([
+    // find users and points
+    const [ p0, p1, spectatingUsers, p0Points, p1Points ] = await Promise.all([
       userService.findUser({ userId: game.players[0].id }),
       userService.findUser({ userId: game.players[1].id }),
       fetchSpectatorUsernames(game.id),
@@ -91,8 +91,8 @@ module.exports = {
     // then format results
     const populatedP0 = formatPlayerData(p0, p0Points);
     const populatedP1 = formatPlayerData(p1, p1Points);
-    return { ...game, players: [populatedP0, populatedP1], spectatingUsers };
-  }, //End populateGame()
+    return { ...game, players: [ populatedP0, populatedP1 ], spectatingUsers };
+  }, // End populateGame()
   /*
    ** Checks a game to determine if either player has won
    * @param options = {game: tmpGame, gameModel: GameModel}
@@ -105,7 +105,7 @@ module.exports = {
       currentMatch: null,
     };
     let { game } = options;
-    const [p0, p1] = game.players;
+    const [ p0, p1 ] = game.players;
     const p0Wins = userService.checkWin({ user: p0 });
     const p1Wins = userService.checkWin({ user: p1 });
     if (p0Wins || p1Wins) {
@@ -234,7 +234,7 @@ module.exports = {
   dealCards: function (game, gameUpdates) {
     // Use gamestate api if feature flag is set, otherwise legacy
     if (process.env.VITE_USE_GAMESTATE_API) {
-      return sails.helpers.gamestate.dealCards(game);
+      return sails.helpers.gameStates.dealCards(game);
     }
 
     return new Promise(function makeDeck(resolveMakeDeck) {
@@ -242,7 +242,7 @@ module.exports = {
       const p1 = game.players.find((player) => player.pNum === 1);
       const promiseFindP0 = userService.findUser({ userId: p0.id });
       const promiseFindP1 = userService.findUser({ userId: p1.id });
-      const data = [Promise.resolve(game), promiseFindP0, promiseFindP1];
+      const data = [ Promise.resolve(game), promiseFindP0, promiseFindP1 ];
       for (let suit = 0; suit < 4; suit++) {
         for (let rank = 1; rank < 14; rank++) {
           const promiseCard = cardService.createCard({
@@ -256,7 +256,7 @@ module.exports = {
       return resolveMakeDeck(Promise.all(data));
     })
       .then(function deal(values) {
-        const [game, p0, p1, ...deck] = values;
+        const [ game, p0, p1, ...deck ] = values;
 
         // Shuffle deck & map cards => their ids
         const shuffledDeck = _.shuffle(deck).map((card) => card.id);
@@ -289,13 +289,13 @@ module.exports = {
           Game.updateOne({ id: game.id }).set(gameUpdates),
         ];
 
-        return Promise.all([game, p0, p1, ...updatePromises]);
+        return Promise.all([ game, p0, p1, ...updatePromises ]);
       })
       .then(function getPopulatedGame(values) {
         return gameService.populateGame({ gameId: values[0].id });
       })
       .then(function publish(fullGame) {
-        Game.publish([fullGame.id], {
+        Game.publish([ fullGame.id ], {
           change: 'deal',
           game: fullGame,
         });

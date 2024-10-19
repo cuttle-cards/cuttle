@@ -5,11 +5,11 @@ module.exports = function (req, res) {
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
   const promiseTarget = req.body.targetId !== -1 ? 
-  cardService.findCard({ cardId: req.body.targetId }) : -1; // -1 for double jacks with no points to steal special case
-  let promises = [promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget];
+    cardService.findCard({ cardId: req.body.targetId }) : -1; // -1 for double jacks with no points to steal special case
+  let promises = [ promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget ];
   Promise.all(promises)
     .then(function changeAndSave(values) {
-      const [game, player, opponent, card, target] = values;
+      const [ game, player, opponent, card, target ] = values;
       let gameUpdates = {
         passes: 0,
         turn: game.turn + 1,
@@ -43,18 +43,18 @@ module.exports = function (req, res) {
             updatePromises = [
               Game.updateOne(game.id).set(gameUpdates),
               User.updateOne(player.id).set(playerUpdates),
-              Game.addToCollection(game.id, 'scrap').members([card.id]),
+              Game.addToCollection(game.id, 'scrap').members([ card.id ]),
               Game.removeFromCollection(game.id, 'deck').members(cardsToRemoveFromDeck),
             ];
-            return Promise.all([game, ...updatePromises]);
+            return Promise.all([ game, ...updatePromises ]);
           }
           const queenCount = userService.queenCount({ user: opponent });
           if(queenCount >= 1) {
             return Promise.reject({
-                message: 'game.snackbar.global.blockedByQueen',
-              });
+              message: 'game.snackbar.global.blockedByQueen',
+            });
           }
-          //End queenCount validation
+          // End queenCount validation
           // Normal sevens
           if (target.points === opponent.id) {
             if (card.rank === 11) {
@@ -82,11 +82,11 @@ module.exports = function (req, res) {
                 // Remove new second card fromd eck
                 Game.removeFromCollection(game.id, 'deck').members(cardsToRemoveFromDeck),
                 // Add jack to target's attachments
-                Card.addToCollection(target.id, 'attachments').members([card.id]),
+                Card.addToCollection(target.id, 'attachments').members([ card.id ]),
                 // Steal point card
-                User.addToCollection(player.id, 'points').members([target.id]),
+                User.addToCollection(player.id, 'points').members([ target.id ]),
               ];
-              return Promise.all([game, ...updatePromises]);
+              return Promise.all([ game, ...updatePromises ]);
             }
             return Promise.reject({
               message: 'game.snackbar.jack.stealOnlyWithJack',
@@ -101,15 +101,15 @@ module.exports = function (req, res) {
       return Promise.reject({ message: 'game.snackbar.global.notYourTurn' });
     })
     .then(function populateGame(values) {
-      return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);
+      return Promise.all([ gameService.populateGame({ gameId: values[0].id }), values[0] ]);
     })
     .then(async function publishAndRespond(values) {
-      const [fullGame, gameModel] = values;
+      const [ fullGame, gameModel ] = values;
       const victory = await gameService.checkWinGame({
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'sevenJack',
         game: fullGame,
         victory,

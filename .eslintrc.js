@@ -1,5 +1,5 @@
 const sharedTestRules = {
-  'import/no-unresolved': ['off'],
+  'import/no-unresolved': [ 'off' ],
 };
 
 const sailsGlobals = {
@@ -28,10 +28,11 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base'],
-  plugins: ['cypress', 'vitest', 'prettier'],
-  ignorePatterns: ['/node_modules/*', '/assets/*'],
+  extends: [ 'eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base' ],
+  plugins: [ 'cypress', 'vitest', 'prettier' ],
+  ignorePatterns: [ '/node_modules/*', '/assets/*' ],
   rules: {
+    'eol-last': [ 'error', 'always' ],
     'max-len': [
       'warn',
       {
@@ -41,9 +42,27 @@ module.exports = {
         ignoreUrls: true,
       },
     ],
-    'vue/html-indent': ['error'],
-    'vue/multi-word-component-names': ['error'],
-    'prefer-destructuring': ['error'],
+    'array-bracket-spacing': [ 'error', 'always' ],
+    'object-curly-spacing': [ 'error', 'always' ],
+    'spaced-comment': [
+      'error',
+      'always',
+      {
+        'block': {
+          'markers': [ '!' ],  
+          'exceptions': [ '*' ] // Allow JSDoc comments
+        },
+        'line': {
+          'markers': [ '/', '//' ], 
+          'exceptions': [ '*', '/' ] // Allow comments starting with /
+        }
+      }
+    ],
+    'newline-per-chained-call': [ 'error', { ignoreChainWithDepth: 2 } ],
+    'indent': [ 'error', 2, { SwitchCase: 1 } ],
+    'vue/html-indent': [ 'error' ],
+    'vue/multi-word-component-names': [ 'error' ],
+    'prefer-destructuring': [ 'error' ],
     'no-else-return': [
       'error',
       {
@@ -60,8 +79,8 @@ module.exports = {
     'no-case-declarations': 'error',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
-    semi: ['error', 'always'],
+    quotes: [ 'error', 'single', { avoidEscape: true, allowTemplateLiterals: true } ],
+    semi: [ 'error', 'always' ],
     curly: 'error',
     'vue/html-closing-bracket-newline': [
       'error',
@@ -91,8 +110,8 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/client/**/*.{j,t}s?(x)'],
-      extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:vue/recommended'],
+      files: [ '**/client/**/*.{j,t}s?(x)' ],
+      extends: [ 'eslint:recommended', 'plugin:prettier/recommended', 'plugin:vue/recommended' ],
       rules: {
         'no-undef': 'error',
         'no-prototype-builtins': 'error',
@@ -101,8 +120,8 @@ module.exports = {
     },
     // Storybook specific rules
     {
-      files: ['**/(.storybook|stories)/**/*.{j,t}s?(x)'],
-      extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:storybook/recommended'],
+      files: [ '**/(.storybook|stories)/**/*.{j,t}s?(x)' ],
+      extends: [ 'eslint:recommended', 'plugin:prettier/recommended', 'plugin:storybook/recommended' ],
       rules: {
         'no-undef': 'error',
         'no-prototype-builtins': 'error',
@@ -110,7 +129,7 @@ module.exports = {
     },
     // Sails specific rules
     {
-      files: ['**/api/**/*.{j,t}s?(x)'],
+      files: [ '**/api/**/*.{j,t}s?(x)' ],
       globals: sailsGlobals,
       rules: {
         'no-undef': 'error',
@@ -119,7 +138,7 @@ module.exports = {
     },
     // Vittest specific rules
     {
-      files: ['**/tests/unit/**/*.{j,t}s?(x)'],
+      files: [ '**/tests/unit/**/*.{j,t}s?(x)' ],
       globals: sailsGlobals,
       rules: {
         ...sharedTestRules,
@@ -127,7 +146,7 @@ module.exports = {
     },
     // Cypress specific rules
     {
-      files: ['**/tests/e2e/**/*.{j,t}s?(x)'],
+      files: [ '**/tests/e2e/**/*.{j,t}s?(x)' ],
       env: {
         'cypress/globals': true,
       },

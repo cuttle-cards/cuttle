@@ -384,7 +384,7 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
       }
 
       const cardId = foundCard.id;
-      const moveType = MoveType.FACECARD;
+      const moveType = MoveType.FACE_CARD;
       cy.makeSocketRequest('game', 'faceCard', { moveType, cardId });
     });
 });
@@ -662,14 +662,14 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       let cardId1 = undefined;
       let cardId2 = undefined;
       if (card1) {
-        [cardId1] = getCardIds(game, [card1]);
+        [ cardId1 ] = getCardIds(game, [ card1 ]);
       }
       if (card2) {
-        [cardId2] = getCardIds(game, [card2]);
+        [ cardId2 ] = getCardIds(game, [ card2 ]);
       }
 
       const moveType = MoveType.RESOLVE_FOUR;
-      //dont use makeSocketRequest due to edge case checking error on opponent side
+      // dont use makeSocketRequest due to edge case checking error on opponent side
       transformGameUrl('game', 'resolveFour').then((url) => {
         io.socket.request({
           method: 'post',
@@ -681,19 +681,19 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
           },
         });
       }),
-        function handleResponse(res, jwres) {
-          try {
-            if (env && jwres.statusCode === 404) {
-              throw new Error('This action is not supported yet in GameState API');
-            }
-            if (jwres.statusCode !== 200) {
-              throw new Error(jwres.error.message);
-            }
-            return res;
-          } catch (err) {
-            return err;
+      function handleResponse(res, jwres) {
+        try {
+          if (env && jwres.statusCode === 404) {
+            throw new Error('This action is not supported yet in GameState API');
           }
-        };
+          if (jwres.statusCode !== 200) {
+            throw new Error(jwres.error.message);
+          }
+          return res;
+        } catch (err) {
+          return err;
+        }
+      };
     });
 });
 
@@ -772,7 +772,7 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
 
       const cardId = foundCard.id;
       cy.makeSocketRequest('game', 'seven/faceCard', {
-        moveType: MoveType.SEVEN_FACECARD,
+        moveType: MoveType.SEVEN_FACE_CARD,
         cardId,
         index,
       });
@@ -1130,7 +1130,8 @@ Cypress.Commands.add('playOneOffAndResolveAsPlayer', (card) => {
       }
       // Play chosen card as one-off
       cy.get(`[data-player-hand-card=${card.rank}-${card.suit}]`).click();
-      cy.get('[data-move-choice=oneOff]').should('not.have.class', 'v-card--disabled').click();
+      cy.get('[data-move-choice=oneOff]').should('not.have.class', 'v-card--disabled')
+        .click();
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
       // Opponent does not counter (resolves stack)
       cy.resolveOpponent();
@@ -1197,11 +1198,11 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
       };
       // Get top card & second cards if specified
       if (fixture.topCard) {
-        const [topCardId] = getCardIds(game, [fixture.topCard]);
+        const [ topCardId ] = getCardIds(game, [ fixture.topCard ]);
         reqBody.topCardId = topCardId;
       }
       if (fixture.secondCard) {
-        const [secondCardId] = getCardIds(game, [fixture.secondCard]);
+        const [ secondCardId ] = getCardIds(game, [ fixture.secondCard ]);
         reqBody.secondCardId = secondCardId;
       }
       // Get scrap if specified

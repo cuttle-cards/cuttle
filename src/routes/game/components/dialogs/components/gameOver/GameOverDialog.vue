@@ -129,10 +129,10 @@ export default {
     const rightPlayer = gameStore.isSpectating ? WhichPlayer.ORIGINAL_P1 : WhichPlayer.CURRENT_OPPONENT;
 
     const {
-        username: leftPlayerUsername,
-        rematch: leftPlayerRematch,
-        wins: leftPlayerWins,
-        wonMatch: leftPlayerWonMatch,
+      username: leftPlayerUsername,
+      rematch: leftPlayerRematch,
+      wins: leftPlayerWins,
+      wonMatch: leftPlayerWonMatch,
     } = usePlayerData(leftPlayer);
 
     const {
@@ -268,7 +268,7 @@ export default {
         conceded: false,
         winner: null,
       });
-      await this.gameStore.requestRematch({gameId:this.gameStore.id, rematch: false});
+      await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: false });
       await this.gameStore.requestUnsubscribeFromGame();
     },
     async rematch() {
@@ -276,7 +276,7 @@ export default {
         if (this.gameStore.isSpectating) {
           return this.continueSpectating();
         }
-        await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: true});
+        await this.gameStore.requestRematch({ gameId: this.gameStore.id, rematch: true });
       } catch (e) {
         this.showSnackbar = true;
         this.snackBarMessage = 'Error requesting rematch';

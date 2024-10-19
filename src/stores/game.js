@@ -46,7 +46,7 @@ class GameCard {
         13: 'K',
       }[card.rank] ?? card.rank;
     // Stringify Suit
-    const str_suit = ['♣️', '♦️', '♥️', '♠️'][card.suit];
+    const str_suit = [ '♣️', '♦️', '♥️', '♠️' ][card.suit];
     this.createdAt = card.createdAt;
     this.updatedAt = card.updatedAt;
     this.id = card.id;
@@ -100,7 +100,7 @@ export const useGameStore = defineStore('game', {
     showResolveFour: false,
     waitingForOpponentToDiscard: false,
     lastEventDiscardedCards: null,
-    //fives
+    // fives
     showResolveFive: false,
     // Sevens
     playingFromDeck: false,
@@ -310,7 +310,7 @@ export const useGameStore = defineStore('game', {
         return;
       }
 
-      const [playedCard] = scuttlingPlayer.hand.splice(playedCardIndex, 1);
+      const [ playedCard ] = scuttlingPlayer.hand.splice(playedCardIndex, 1);
       const targetCard = scuttledPlayer.points[targetCardIndex];
       targetCard.scuttledBy = playedCard;
 
@@ -521,7 +521,7 @@ export const useGameStore = defineStore('game', {
       await this.makeSocketRequest('points', { moveType, cardId });
     },
     async requestPlayFaceCard(cardId) {
-      const moveType = MoveType.FACECARD;
+      const moveType = MoveType.FACE_CARD;
       await this.makeSocketRequest('faceCard', { moveType, cardId });
     },
     /**
@@ -664,7 +664,7 @@ export const useGameStore = defineStore('game', {
 
     async requestPlayFaceCardSeven({ index, cardId }) {
       await this.makeSocketRequest('seven/faceCard', {
-        moveType: MoveType.SEVEN_FACECARD,
+        moveType: MoveType.SEVEN_FACE_CARD,
         cardId,
         index,
       });

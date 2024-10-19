@@ -20,13 +20,13 @@ module.exports = function (req, res) {
   });
 
   // Make changes after finding records
-  Promise.all([pGame, pUser])
+  Promise.all([ pGame, pUser ])
     .then(function changeAndSave(values) {
-      const [game, user] = values;
-      const updatePromises = [game, User.addToCollection(user.id, 'hand').members(game.topCard.id)];
+      const [ game, user ] = values;
+      const updatePromises = [ game, User.addToCollection(user.id, 'hand').members(game.topCard.id) ];
       const gameUpdates = {
         topCard: null,
-        log: [...game.log, `${user.username} drew a card`],
+        log: [ ...game.log, `${user.username} drew a card` ],
         turn: game.turn + 1,
         lastEvent: {
           change: 'draw',
@@ -53,18 +53,18 @@ module.exports = function (req, res) {
       );
 
       return Promise.all(updatePromises);
-    }) //End changeAndSave
+    }) // End changeAndSave
     .then(function getPopulatedGame(values) {
-      const [game] = values;
+      const [ game ] = values;
       return gameService.populateGame({ gameId: game.id });
-    }) //End getPopulatedGame
+    }) // End getPopulatedGame
     .then(function publishAndRespond(fullGame) {
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         change: 'draw',
         game: fullGame,
       });
       return res.ok();
-    }) //End publishAndRespond
+    }) // End publishAndRespond
     .catch(function failed(err) {
       return res.badRequest(err);
     });
