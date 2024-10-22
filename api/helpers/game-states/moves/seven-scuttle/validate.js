@@ -70,7 +70,9 @@ module.exports = {
         throw new Error('game.snackbar.scuttle.rankTooLow');
       }
 
-      if(playedCard.rank == targetCard.rank && playedCard.suit < targetCard.suit){
+      const lowerRank = playedCard.rank < targetCard.rank;
+      const sameRankLowerSuit = playedCard.rank === targetCard.rank && playedCard.suit < targetCard.suit;
+      if (lowerRank || sameRankLowerSuit) {
         throw new Error('game.snackbar.scuttle.rankTooLow');
       }
 
