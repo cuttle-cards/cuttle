@@ -61,7 +61,7 @@ export default {
       default: '30%',
     },
   },
-  emits: ['choose-move'],
+  emits: [ 'choose-move' ],
   computed: {
     /**
      * Returns string name of which icon to display

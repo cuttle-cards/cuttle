@@ -47,13 +47,13 @@ const { t } = useI18n();
 
 defineProps({
   variant:{
-      type:String,
-      default:'light'
-    }
+    type:String,
+    default:'light'
+  }
 });
 
 const menuItems = computed(() => {
-  return [{ text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT }, cyName: 'Log Out' }];
+  return [ { text: t('global.logout'), icon: 'logout', page: { name: ROUTE_NAME_LOGOUT }, cyName: 'Log Out' } ];
 });
 
 </script>

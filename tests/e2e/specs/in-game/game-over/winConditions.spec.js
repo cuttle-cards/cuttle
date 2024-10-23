@@ -20,8 +20,8 @@ describe('Winning the game', () => {
 
   it('Shows when player wins game with 21 points', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -33,7 +33,7 @@ describe('Winning the game', () => {
     cy.get('[data-move-choice=points]').click();
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.SEVEN_OF_CLUBS, Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Points: [ Card.SEVEN_OF_CLUBS, Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -46,13 +46,13 @@ describe('Winning the game', () => {
   it('Shows when player wins game with 14 points and one king', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.JACK_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Hand: [ Card.JACK_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       p1Hand: [],
-      p1Points: [Card.SEVEN_OF_CLUBS],
+      p1Points: [ Card.SEVEN_OF_CLUBS ],
       p1FaceCards: [],
-      scrap: [Card.TEN_OF_SPADES],
+      scrap: [ Card.TEN_OF_SPADES ],
     });
 
     // Play Jack of Clubs
@@ -62,12 +62,12 @@ describe('Winning the game', () => {
 
     assertGameState(0, {
       p0Hand: [],
-      p0Points: [Card.SEVEN_OF_CLUBS, Card.SEVEN_OF_DIAMONDS],
-      p0FaceCards: [Card.KING_OF_SPADES],
+      p0Points: [ Card.SEVEN_OF_CLUBS, Card.SEVEN_OF_DIAMONDS ],
+      p0FaceCards: [ Card.KING_OF_SPADES ],
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
-      scrap: [Card.TEN_OF_SPADES],
+      scrap: [ Card.TEN_OF_SPADES ],
     });
     assertVictory();
     goHomeJoinNewGame();
@@ -76,9 +76,9 @@ describe('Winning the game', () => {
   it('Shows when player wins game with 0 points and four kings', () => {
     
     cy.loadGameFixture(0, {
-      p0Hand: [Card.KING_OF_HEARTS],
+      p0Hand: [ Card.KING_OF_HEARTS ],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS],
+      p0FaceCards: [ Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS ],
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
@@ -92,7 +92,7 @@ describe('Winning the game', () => {
     assertGameState(0, {
       p0Hand: [],
       p0Points: [],
-      p0FaceCards: [Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.KING_OF_HEARTS],
+      p0FaceCards: [ Card.KING_OF_SPADES, Card.KING_OF_CLUBS, Card.KING_OF_DIAMONDS, Card.KING_OF_HEARTS ],
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
@@ -104,8 +104,8 @@ describe('Winning the game', () => {
 
   it('Wins the game when opponent concedes', () => {
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -126,8 +126,8 @@ describe('Losing the game', () => {
   it('Shows when opponent wins with 21 points', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -141,8 +141,8 @@ describe('Losing the game', () => {
 
   it('Loses by conceding', () => {
     cy.loadGameFixture(1, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -150,15 +150,23 @@ describe('Losing the game', () => {
     });
 
     cy.get('#game-menu-activator').click();
-    cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
+    cy.get('#game-menu').should('be.visible')
+      .get('[data-cy=concede-initiate]')
+      .click();
 
     // Cancel Concede
-    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-cancel]').click();
+    cy.get('#request-gameover-dialog').should('be.visible')
+      .get('[data-cy=request-gameover-cancel]')
+      .click();
     cy.get('#request-gameover-dialog').should('not.be.visible');
     // Re-open concede menu and confirm concession
     cy.get('#game-menu-activator').click();
-    cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
-    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
+    cy.get('#game-menu').should('be.visible')
+      .get('[data-cy=concede-initiate]')
+      .click();
+    cy.get('#request-gameover-dialog').should('be.visible')
+      .get('[data-cy=request-gameover-confirm]')
+      .click();
     assertLoss();
     goHomeJoinNewGame();
   });
@@ -169,8 +177,8 @@ describe('Stalemates', () => {
 
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -181,20 +189,25 @@ describe('Stalemates', () => {
     });
 
     cy.log('Drawing last two cards');
-    cy.get('#deck').should('contain', '(2)').click();
+    cy.get('#deck').should('contain', '(2)')
+      .click();
     cy.drawCardOpponent();
     cy.log('Deck empty');
 
     // Pass three times for stalemate
     cy.get('#turn-indicator').contains('YOUR TURN');
-    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#deck').should('contain', '(0)')
+      .should('contain', 'PASS')
+      .click();
     cy.log('Should log the passing');
     cy.get('#history').contains(`${myUser.username} passes`);
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
     cy.get('#history').contains(`${opponentOne.username} passes`);
     cy.get('#turn-indicator').contains('YOUR TURN');
-    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#deck').should('contain', '(0)')
+      .should('contain', 'PASS')
+      .click();
 
     assertStalemate();
     goHomeJoinNewGame();
@@ -204,8 +217,8 @@ describe('Stalemates', () => {
 
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -218,13 +231,16 @@ describe('Stalemates', () => {
     cy.get('#deck').should('contain', '(2)');
     cy.log('Drawing last two cards');
     cy.drawCardOpponent();
-    cy.get('#deck').should('contain', '(1)').click();
+    cy.get('#deck').should('contain', '(1)')
+      .click();
     cy.log('Deck empty');
 
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
-    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#deck').should('contain', '(0)')
+      .should('contain', 'PASS')
+      .click();
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
 
@@ -239,7 +255,9 @@ describe('Stalemates', () => {
       cy.log('Game loaded');
 
       cy.get('#game-menu-activator').click();
-      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      cy.get('#game-menu').should('be.visible')
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       // Cancel Stalemate
       cy.get('#request-gameover-dialog')
         .should('be.visible')
@@ -249,7 +267,9 @@ describe('Stalemates', () => {
       cy.get('#request-gameover-dialog').should('not.be.visible');
 
       cy.get('#game-menu-activator').click();
-      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      cy.get('#game-menu').should('be.visible')
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       // Request Stalemate
       cy.get('#request-gameover-dialog')
         .should('be.visible')
@@ -286,7 +306,9 @@ describe('Stalemates', () => {
 
       // Request Stalemate
       cy.get('#game-menu-activator').click();
-      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      cy.get('#game-menu').should('be.visible')
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       cy.get('#request-gameover-dialog')
         .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
@@ -299,7 +321,9 @@ describe('Stalemates', () => {
 
       // Player requests stalemate again -- process starts over
       cy.get('#game-menu-activator').click();
-      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      cy.get('#game-menu').should('be.visible')
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       cy.get('#request-gameover-dialog')
         .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
@@ -355,7 +379,9 @@ describe('Stalemates', () => {
 
       // Request Stalemate
       cy.get('#game-menu-activator').click();
-      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      cy.get('#game-menu').should('be.visible')
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       cy.get('#request-gameover-dialog')
         .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
@@ -377,7 +403,9 @@ describe('Stalemates', () => {
     it('Player requests stalemate, then reloads before opponent accepts', () => {
       cy.setupGameAsP1();
       cy.get('#game-menu-activator').click();
-      cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
+      cy.get('#game-menu').should('be.visible')
+        .get('[data-cy=stalemate-initiate]')
+        .click();
       cy.get('#request-gameover-dialog')
         .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
@@ -399,8 +427,8 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
   it('Opponent concedes while seven oneOff is being resolved', () => {
     cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
-      p0Points: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
+      p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p0FaceCards: [],
       p1Hand: [],
       p1Points: [],
@@ -411,15 +439,17 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
 
     cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
-    cy.get('[data-top-card=4-0]').should('exist').and('be.visible');
-    cy.get('[data-second-card=6-1]').should('exist').and('be.visible');
+    cy.get('[data-top-card=4-0]').should('exist')
+      .and('be.visible');
+    cy.get('[data-second-card=6-1]').should('exist')
+      .and('be.visible');
 
     cy.concedeOpponent();
     assertVictory();
     goHomeJoinNewGame();
 
     cy.loadGameFixture(0, {
-      p0Hand: [Card.SEVEN_OF_CLUBS],
+      p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
       p1Hand: [],
@@ -434,12 +464,11 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
   });
 
   it('Concede game while resolving a four', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
-      p0Hand: [Card.FOUR_OF_CLUBS],
+      p0Hand: [ Card.FOUR_OF_CLUBS ],
       p0Points: [],
       p0FaceCards: [],
-      p1Hand: [Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS],
+      p1Hand: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
       p1Points: [],
       p1FaceCards: [],
     });
@@ -447,8 +476,12 @@ describe('Conceding while a oneOff is being resolved - prevents resolving oneOff
     cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_CLUBS);
 
     cy.get('#game-menu-activator').click({ force: true });
-    cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
-    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
+    cy.get('#game-menu').should('be.visible')
+      .get('[data-cy=concede-initiate]')
+      .click();
+    cy.get('#request-gameover-dialog').should('be.visible')
+      .get('[data-cy=request-gameover-confirm]')
+      .click();
     assertLoss();
     goHomeJoinNewGame();
 

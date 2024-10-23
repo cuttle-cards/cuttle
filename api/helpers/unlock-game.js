@@ -14,7 +14,7 @@ module.exports = {
   },
 
   fn: async ({ lock }, exits) => {
-    await Game.updateOne({ lock }).set({lock: null, lockedAt: null});
+    await Game.updateOne({ lock }).set({ lock: null, lockedAt: null });
     return exits.success();
   },
 };

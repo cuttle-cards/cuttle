@@ -22,12 +22,12 @@ module.exports = async function (req, res) {
       currentMatch,
     };
     
-    Game.publish([game.id], {
+    Game.publish([ game.id ], {
       change: 'concede',
       game,
       victory,
     });
-     // Set lastEvent in db with full game state + victory status  
+    // Set lastEvent in db with full game state + victory status  
     await Game.updateOne(req.session.game).set({
       lastEvent: {
         change: 'concede',

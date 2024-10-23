@@ -10,7 +10,7 @@ const DeckIds = require('../../utils/DeckIds.json');
  *
  */
 module.exports = function (req, res, next) {
-  const { moveType, cardId, targetId, targetType } = req.body;
+  const { moveType, cardId, cardId1, cardId2, targetId, targetType } = req.body;
 
   switch (moveType) {
     case MoveType.PASS:
@@ -23,6 +23,7 @@ module.exports = function (req, res, next) {
     case MoveType.FACE_CARD:
     case MoveType.SEVEN_POINTS:
     case MoveType.COUNTER:
+    case MoveType.RESOLVE_THREE:
       {
         if (!cardId) {
           return res.badRequest({ message: 'Must specify a card' });
@@ -33,6 +34,22 @@ module.exports = function (req, res, next) {
         }
       }
       return next();
+    
+    case MoveType.RESOLVE_FOUR:
+      {
+        if (!cardId1) {
+          return res.badRequest({ message: 'Must specify a card' });
+        }
+
+        if (!DeckIds.includes(cardId1)) {
+          return res.badRequest({ message: `${cardId1} is not a valid cardId` });
+        }
+
+        if (cardId2 && !DeckIds.includes(cardId2)) {
+          return res.badRequest({ message: `${cardId2} is not a valid cardId` });
+        }
+      }
+      return next();
 
     case MoveType.SCUTTLE:
       {
@@ -40,7 +57,7 @@ module.exports = function (req, res, next) {
           return res.badRequest({ message: 'Must specify a card' });
         }
 
-        const invalidCardId = [cardId, targetId].find((id) => !DeckIds.includes(id));
+        const invalidCardId = [ cardId, targetId ].find((id) => !DeckIds.includes(id));
 
         if (invalidCardId) {
           return res.badRequest({ message: `${invalidCardId} is not a valid cardId` });
@@ -58,10 +75,10 @@ module.exports = function (req, res, next) {
           return res.badRequest({ message: `${cardId} is not a valid cardId` });
         }
 
-        const [rankAsStr] = cardId;
-        const isTwoOrNine = ['2', '9'].includes(rankAsStr);
+        const [ rankAsStr ] = cardId;
+        const isTwoOrNine = [ '2', '9' ].includes(rankAsStr);
         const missingTarget =
-          !targetId || !DeckIds.includes(targetId) || !['point', 'jack', 'faceCard'].includes(targetType);
+          !targetId || !DeckIds.includes(targetId) || ![ 'point', 'jack', 'faceCard' ].includes(targetType);
         if (isTwoOrNine && missingTarget) {
           return res.badRequest({ message: 'You cannot play that one-off without a target' });
         }

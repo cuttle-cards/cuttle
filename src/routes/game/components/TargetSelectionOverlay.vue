@@ -56,7 +56,7 @@ export default {
       required: true,
     },
   },
-  emits: ['cancel'],
+  emits: [ 'cancel' ],
 };
 </script>
 

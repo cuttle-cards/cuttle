@@ -6,9 +6,9 @@ module.exports = function (req, res) {
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
-  Promise.all([promiseGame, promisePlayer, promiseCard, promiseOpponent])
+  Promise.all([ promiseGame, promisePlayer, promiseCard, promiseOpponent ])
     .then(function changeAndSave(values) {
-      const [game, player, card, opponent] = values;
+      const [ game, player, card, opponent ] = values;
       if (game.turn % 2 === player.pNum) {
         // Check Turn
         if (!game.oneOff) {
@@ -26,28 +26,28 @@ module.exports = function (req, res) {
                 switch (card.rank) {
                   case 3:
                     if (game.scrap.length < 1)
-                      {
-                        return Promise.reject({
-                          message: 'game.snackbar.oneOffs.three.scrapIsEmpty',
-                        });
-                      }
+                    {
+                      return Promise.reject({
+                        message: 'game.snackbar.oneOffs.three.scrapIsEmpty',
+                      });
+                    }
                     break;
                   case 4:
                     if (opponent.hand.length === 0)
-                      {
-                        return Promise.reject({
-                          message: 'You cannot play a 4 as a one-off while your opponent has no cards in hand',
-                        });
-                      }
+                    {
+                      return Promise.reject({
+                        message: 'You cannot play a 4 as a one-off while your opponent has no cards in hand',
+                      });
+                    }
                     break;
                   case 5:
                   case 7:
                     if (!game.topCard)
-                      {
-                        return Promise.reject({
-                          message: 'game.snackbar.oneOffs.emptyDeck',
-                        });
-                      }
+                    {
+                      return Promise.reject({
+                        message: 'game.snackbar.oneOffs.emptyDeck',
+                      });
+                    }
                     break;
                   default:
                     break;
@@ -70,10 +70,10 @@ module.exports = function (req, res) {
                   };
                   const updatePromises = [
                     Game.updateOne(game.id).set(gameUpdates),
-                    User.removeFromCollection(player.id, 'hand').members([card.id]),
+                    User.removeFromCollection(player.id, 'hand').members([ card.id ]),
                     User.updateOne(player.id).set(playerUpdates),
                   ];
-                  return Promise.all([game, ...updatePromises]);
+                  return Promise.all([ game, ...updatePromises ]);
                 }
                 return Promise.reject({
                   message: 'That card is frozen! You must wait a turn to play it',
@@ -97,7 +97,7 @@ module.exports = function (req, res) {
       }
     })
     .then(function populateGame(values) {
-      return Promise.all([gameService.populateGame({ gameId: values[0].id }), values[0]]);
+      return Promise.all([ gameService.populateGame({ gameId: values[0].id }), values[0] ]);
     })
     .then(async function publishAndRespond(values) {
       const [ fullGame, gameModel ] = values;
@@ -105,12 +105,12 @@ module.exports = function (req, res) {
         game: fullGame,
         gameModel,
       });
-      Game.publish([fullGame.id], {
+      Game.publish([ fullGame.id ], {
         
-          change: 'oneOff',
-          game: fullGame,
-          pNum: req.session.pNum,
-          victory,
+        change: 'oneOff',
+        game: fullGame,
+        pNum: req.session.pNum,
+        victory,
        
       });
       return res.ok();

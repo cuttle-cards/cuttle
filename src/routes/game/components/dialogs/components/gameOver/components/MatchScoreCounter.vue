@@ -45,7 +45,7 @@ const props = defineProps({
   latestResult: {
     type: String,
     required: true,
-    validator: (val) => ['Won', 'Lost', 'Stalemate'].includes(val),
+    validator: (val) => [ 'Won', 'Lost', 'Stalemate' ].includes(val),
   },
   isRanked: {
     type: Boolean,
