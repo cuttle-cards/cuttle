@@ -296,7 +296,8 @@
         },
         "seven": {
           "oneCardInDeck": "You cannot play a 7 as a ONE-OFF if it is the last card in the deck",
-          "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven."
+          "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven.",
+          "wrongPhase": "You can't play from the deck right now"
         }
       }
     }
