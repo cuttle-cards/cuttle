@@ -41,12 +41,10 @@ module.exports = {
     const targetIndex = opponent.points.findIndex(({ id }) => id === targetId);
     const [ targetCard ] = opponent.points.splice(targetIndex, 1);
 
-    // Move both cards to scrap
-    result.scrap.push(playedCard, targetCard);
-
-    // Seven one-off cleanup
+    // Move both cards to scrap and cleanup seven
     const { oneOff } = result;
-    result.scrap.push(oneOff);
+    result.scrap.push(oneOff, targetCard, playedCard);
+
     result.turn++;
 
     result = {
