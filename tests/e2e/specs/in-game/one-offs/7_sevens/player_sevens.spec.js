@@ -438,7 +438,6 @@ describe('Playing SEVENS', () => {
 
   describe('Scuttling with sevens', () => {
     it('Scuttles from a seven', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -473,7 +472,6 @@ describe('Playing SEVENS', () => {
     }); // End scuttle from seven
 
     it('Scuttles using a NINE from a SEVEN', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -508,7 +506,6 @@ describe('Playing SEVENS', () => {
     }); // End scuttle with NINE from seven
 
     it('Prevents illegal scuttles via sevens', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
