@@ -38,7 +38,7 @@ module.exports = {
       }
 
       if (currentState.phase !== GamePhase.RESOLVING_SEVEN) {
-        throw new Error('game.snackbar.seven.pickAndPlay');
+        throw new Error('game.snackbar.seven.wrongPhase');
       }
 
       if (!playedCard) {
