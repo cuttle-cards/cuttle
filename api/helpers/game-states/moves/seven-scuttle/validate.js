@@ -48,7 +48,7 @@ module.exports = {
 
       // Check if the game phase is RESOLVING_SEVEN
       if (currentState.phase !== GamePhase.RESOLVING_SEVEN) {
-        throw new Error('game.snackbar.seven.pickAndPlay');
+        throw new Error('game.snackbar.seven.wrongPhase');
       }
 
       // Check if the playedCard is one of the top two cards
