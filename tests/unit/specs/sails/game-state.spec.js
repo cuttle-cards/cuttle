@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { points } from '../../fixtures/gameStates/points';
 import { resolveThree } from '../../fixtures/gameStates/resolveThree';
 import { resolveNine } from '../../fixtures/gameStates/resolveNine';
+import { validationErrors } from '../../fixtures/gameStates/cardValidationErrors';
 
 // remove attributes added while creating the entry in the database
 function stripDbAttributes(obj) {
@@ -109,5 +110,27 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
 
     stripDbAttributes(socketEvent.game);
     expect(socketEvent).toEqual(resolveNine.socket);
+  });
+});
+
+describe('Throwing Errors on card validations',() => {
+  it('throws an error when a duplicate card is found', () => {
+    expect(() => sails.helpers.gameStates.validateAllCards(validationErrors.duplicateCard))
+      .toThrowError(/^Duplicate Card 7S$/);
+  });
+
+  it('throws an error when a invalid card is found', () => {
+    expect(() => sails.helpers.gameStates.validateAllCards(validationErrors.invalidCard))
+      .toThrowError(/^Invalid Card$/);
+  });
+
+  it('throws an error when a card is missing', () => {
+    expect(() => sails.helpers.gameStates.validateAllCards(validationErrors.missingCard))
+      .toThrowError(/^Card Missing$/);
+  });
+
+  it('throws an error when a card in the scrap has an attachment', () => {
+    expect(() => sails.helpers.gameStates.validateAllCards(validationErrors.scrapAttachments))
+      .toThrowError(/^Only Points Cards can have attachments$/);
   });
 });
