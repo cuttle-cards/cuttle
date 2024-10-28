@@ -41,7 +41,7 @@ module.exports = {
 
     allCards.forEach((card) => {
       if (card.attachments.length) {
-        throw new Error('Only Points and Face Cards can have attachments');
+        throw new Error('Only Points Cards can have attachments');
       }
 
       if (cardIds.has(card.id)) {
