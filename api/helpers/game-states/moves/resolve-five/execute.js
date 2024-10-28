@@ -29,9 +29,9 @@ module.exports = {
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
     const { cardId } = requestedMove;
     let result = _.cloneDeep(currentState);
-
     const player = playedBy ? result.p1 : result.p0;
     
+    result.scrap.push(result.oneOff);
     result.discardedCards = [];
     
     if (cardId) {
@@ -47,10 +47,6 @@ module.exports = {
 
     player.hand.push(...result.deck.splice(0, actualCardsToDraw));
 
-    result.scrap.push(result.oneOff); 
-    result.resolved = result.oneoff;
-    result.oneOff = null;
-
     result = {
       ...result,
       ...requestedMove,
@@ -60,6 +56,7 @@ module.exports = {
       targetCard: null,
       resolved: result.oneOff,
       oneOff: null,
+      turn: result.turn + 1,
     };
 
     return exits.success(result);
