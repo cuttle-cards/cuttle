@@ -24,7 +24,7 @@ module.exports = async function (req, res) {
       deck = [],
     } = req.body.fixture;
 
-    const { scrapUnusedCards } = req.body;
+    const { scrapUnusedCards = false } = req.body;
   
 
     const allFixtureCards = Object.values(req.body.fixture).flat();

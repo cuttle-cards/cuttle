@@ -4,7 +4,7 @@ module.exports = {
   friendlyName: 'Validate All Cards',
 
   description:
-    'Validate that all the cards are accounted for and there are no duplicates, and that only face and pointcards can have attachments',
+    'Validate that all the cards are accounted for and there are no duplicates, and that only point cards can have attachments',
 
   inputs: {
     gameState: {
@@ -26,10 +26,10 @@ module.exports = {
     const allCards = new Set([
       ...p0.hand,
       ...flattenCards(p0.points),
-      ...flattenCards(p0.faceCards),
+      ...p0.faceCards,
       ...p1.hand,
       ...flattenCards(p1.points),
-      ...flattenCards(p1.faceCards),
+      ...p1.faceCards,
       ...deck,
       ...scrap,
       ...twos,
