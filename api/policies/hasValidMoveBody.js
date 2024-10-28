@@ -51,7 +51,9 @@ module.exports = function (req, res, next) {
       }
       return next();
 
+    case MoveType.JACK:
     case MoveType.SCUTTLE:
+    case MoveType.SEVEN_SCUTTLE:
       {
         if (!cardId || !targetId) {
           return res.badRequest({ message: 'Must specify a card' });
@@ -84,25 +86,6 @@ module.exports = function (req, res, next) {
         }
       }
 
-      return next();
-
-    case MoveType.JACK:
-      {
-        if (!cardId) {
-          return res.badRequest({ message: 'Must specify a card' });
-        }
-        if (!targetId) {
-          return res.badRequest({ message: 'Must have a card targeted' });
-        }
-
-        if (!DeckIds.includes(cardId)) {
-          return res.badRequest({ message: `${cardId} is not a valid cardId` });
-        }
-
-        if (!DeckIds.includes(targetId)) {
-          return res.badRequest({ message: `${targetId} is not a valid targetId` });
-        }
-      }
       return next();
 
     default:

@@ -436,75 +436,109 @@ describe('Playing SEVENS', () => {
     }); // End seven glasses test
   }); // End seven face card describe
 
-  it('Scuttles from a seven', () => {
-    cy.skipOnGameStateApi();
-    cy.loadGameFixture(0, {
-      p0Hand: [ Card.SEVEN_OF_CLUBS ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [],
-      p1Points: [ Card.NINE_OF_CLUBS ],
-      p1FaceCards: [],
-      topCard: Card.TEN_OF_CLUBS,
-      secondCard: Card.SIX_OF_DIAMONDS,
+  describe('Scuttling with sevens', () => {
+    it('Scuttles from a seven', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [ Card.NINE_OF_CLUBS ],
+        p1FaceCards: [],
+        topCard: Card.TEN_OF_CLUBS,
+        secondCard: Card.SIX_OF_DIAMONDS,
+      });
+
+      cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+      cy.get('[data-second-card=6-1]').should('exist')
+        .and('be.visible');
+      cy.get('[data-top-card=10-0]').click();
+      cy.get('[data-move-choice=scuttle]').click();
+      // scuttles with 10 of clubs
+      cy.get('[data-opponent-point-card=9-0]').click();
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.SEVEN_OF_CLUBS, Card.TEN_OF_CLUBS, Card.NINE_OF_CLUBS ],
+        topCard: Card.SIX_OF_DIAMONDS,
+      });
+    }); // End scuttle from seven
+
+    it('Scuttles using a NINE from a SEVEN', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [ Card.NINE_OF_CLUBS ],
+        p1FaceCards: [],
+        topCard: Card.NINE_OF_DIAMONDS,
+        secondCard: Card.SIX_OF_DIAMONDS,
+      });
+
+      cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+      cy.get('[data-second-card=6-1]').should('exist')
+        .and('be.visible');
+      cy.get('[data-top-card=9-1]').click();
+      cy.get('[data-move-choice=scuttle]').click();
+      // scuttles with nine of diamonds
+      cy.get('[data-opponent-point-card=9-0]').click();
+
+      assertGameState(0, {
+        p0Hand: [],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [],
+        p1FaceCards: [],
+        scrap: [ Card.SEVEN_OF_CLUBS, Card.NINE_OF_DIAMONDS, Card.NINE_OF_CLUBS ],
+        topCard: Card.SIX_OF_DIAMONDS,
+      });
+    }); // End scuttle with NINE from seven
+
+    it('Prevents illegal scuttles via sevens', () => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.SEVEN_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [],
+        p1Points: [ Card.TWO_OF_HEARTS, Card.FIVE_OF_SPADES, Card.NINE_OF_CLUBS ],
+        p1FaceCards: [],
+        topCard: Card.FIVE_OF_DIAMONDS,
+        secondCard: Card.ACE_OF_SPADES,
+      });
+
+      // Player plays SEVEN one-off
+      cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+      cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+
+      // Scuttle is disabled for card too small to scuttle anything on the board
+      cy.get('[data-second-card=1-3]').click();
+      cy.get('[data-move-choice=scuttle]').should('have.class', 'v-card--disabled');
+      cy.get('[data-cy=cancel-move]').click();
+
+      // Illegal Scuttle - lower rank
+      cy.get('[data-top-card=5-1]').click();
+      cy.get('[data-move-choice=scuttle]').click();
+      cy.get('[data-opponent-point-card=9-0]').click({ force: true });
+      assertSnackbar(SnackBarError.ILLEGAL_SCUTTLE);
+
+      // Illegal Scuttle - same rank, lower suit
+      cy.get('[data-top-card=5-1]').click();
+      cy.get('[data-move-choice=scuttle]').click();
+      cy.get('[data-opponent-point-card=5-3]').click();
+      assertSnackbar(SnackBarError.ILLEGAL_SCUTTLE);
     });
-
-    cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
-
-    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
-    cy.get('[data-second-card=6-1]').should('exist')
-      .and('be.visible');
-    cy.get('[data-top-card=10-0]').click();
-    cy.get('[data-move-choice=scuttle]').click();
-    // scuttles with 10 of clubs
-    cy.get('[data-opponent-point-card=9-0]').click();
-
-    assertGameState(0, {
-      p0Hand: [],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [],
-      p1Points: [],
-      p1FaceCards: [],
-      scrap: [ Card.SEVEN_OF_CLUBS, Card.TEN_OF_CLUBS, Card.NINE_OF_CLUBS ],
-      topCard: Card.SIX_OF_DIAMONDS,
-    });
-  }); // End scuttle from seven
-
-  it('Scuttles using a NINE from a SEVEN', () => {
-    cy.skipOnGameStateApi();
-    cy.loadGameFixture(0, {
-      p0Hand: [ Card.SEVEN_OF_CLUBS ],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [],
-      p1Points: [ Card.NINE_OF_CLUBS ],
-      p1FaceCards: [],
-      topCard: Card.NINE_OF_DIAMONDS,
-      secondCard: Card.SIX_OF_DIAMONDS,
-    });
-
-    cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
-
-    cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
-    cy.get('[data-second-card=6-1]').should('exist')
-      .and('be.visible');
-    cy.get('[data-top-card=9-1]').click();
-    cy.get('[data-move-choice=scuttle]').click();
-    // scuttles with nine of diamonds
-    cy.get('[data-opponent-point-card=9-0]').click();
-
-    assertGameState(0, {
-      p0Hand: [],
-      p0Points: [],
-      p0FaceCards: [],
-      p1Hand: [],
-      p1Points: [],
-      p1FaceCards: [],
-      scrap: [ Card.SEVEN_OF_CLUBS, Card.NINE_OF_DIAMONDS, Card.NINE_OF_CLUBS ],
-      topCard: Card.SIX_OF_DIAMONDS,
-    });
-  }); // End scuttle from seven
+  }); // End seven scuttle describe()
 
   describe('Playing untargeted one-offs from a seven', () => {
     it('Plays an ACE from a seven', () => {

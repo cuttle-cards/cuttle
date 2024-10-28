@@ -296,7 +296,8 @@
         },
         "seven": {
           "oneCardInDeck": "No puedes jugar un 7 como carta de habilidad única si es la última carta del mazo",
-          "pickAndPlay": "Solo puedes jugar las cartas superiores del mazo mientras se resuelve un Siete"
+          "pickAndPlay": "Solo puedes jugar las cartas superiores del mazo mientras se resuelve un Siete",
+          "wrongPhase": "No puedes jugar desde el mazo en este momento"
         }
       }
     }
