@@ -30,7 +30,7 @@ module.exports = {
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
-      const player = playedBy ? currentState.p1 : currentState.p1;
+      const player = playedBy ? currentState.p1 : currentState.p0;
 
       if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
@@ -40,12 +40,11 @@ module.exports = {
         throw new Error('game.snackbar.oneOffs.five.wrongPhase');
       }
 
-      const playerHand = currentState[player].hand;
-      if (playerHand.length > 0 && !requestedMove.cardId) {
+      if (player.hand.length > 0 && !requestedMove.cardId) {
         throw new Error('game.snackbar.oneOffs.five.selectCardToDiscard');
       }
 
-      if (requestedMove.cardId && !playerHand.find(({ id }) => id === requestedMove.cardId)) {
+      if (requestedMove.cardId && !player.hand.find(({ id }) => id === requestedMove.cardId)) {
         throw new Error('You must discard a card from your hand');
       }
 
