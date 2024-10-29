@@ -301,7 +301,8 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
   }
   // Test scrap (if provided)
   if (fixture.scrap) {
-    const scrapLength =
+    // Check if deck is empty to determine where the rest of cards should go
+    const scrapLength = fixture.topCard ? fixture.scrap.length :
       52 - (Object.values(fixture).flat()
         .filter(item => item !== null).length - fixture.scrap.length);
     cy.get('#scrap').contains(`(${scrapLength})`);
