@@ -301,11 +301,7 @@ function assertDomMatchesFixture(pNum, fixture, spectating, scrapUnusedCards = f
   }
   // Test scrap (if provided)
   if (fixture.scrap) {
-    const scrapLength = scrapUnusedCards ?
-      (52 - (Object.values(fixture).flat()
-        .filter(item => item !== null).length - fixture.scrap.length))
-      : fixture.scrap.length;
-    cy.get('#scrap').contains(`(${scrapLength})`);
+    cy.get('#scrap').contains(`(${fixture.scrap.length})`);
   }
 }
 
@@ -615,8 +611,8 @@ export function rematchPlayerAsSpectator(userFixture, rematch = true) {
  * }
  * @param pNum: int [0, 1]
  */
-export function assertGameState(pNum, fixture, spectating = false, scrapUnusedCards=false) {
+export function assertGameState(pNum, fixture, spectating = false) {
   cy.log('Asserting game state:', fixture);
-  assertDomMatchesFixture(pNum, fixture, spectating, scrapUnusedCards);
+  assertDomMatchesFixture(pNum, fixture, spectating);
   assertStoreMatchesFixture(fixture);
 }

@@ -870,7 +870,7 @@ describe('Reconnecting after game is over', () => {
       p1Points: [],
       p1FaceCards: [],
       deck: [],
-    }, true);
+    });
 
     cy.get('#deck').should('contain', '(2)')
       .click();

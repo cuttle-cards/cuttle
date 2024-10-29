@@ -40,7 +40,7 @@ describe('Playing sevens at the end of the deck', () => {
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
       deck: [],
-    }, true);
+    });
 
     cy.get('#deck').should('contain', 2);
 
@@ -62,7 +62,7 @@ describe('Playing sevens at the end of the deck', () => {
       p1Points: [],
       p1FaceCards: [],
       scrap: [ Card.SEVEN_OF_CLUBS ],
-    },false, true);
+    });
   });
 
   it('Plays the 2nd card in the deck when there are two cards left', () => {
@@ -77,7 +77,7 @@ describe('Playing sevens at the end of the deck', () => {
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
       deck: [],
-    }, true);
+    });
 
     cy.get('#deck').should('contain', 2);
 
@@ -99,7 +99,7 @@ describe('Playing sevens at the end of the deck', () => {
       p1Points: [],
       p1FaceCards: [],
       scrap: [ Card.SEVEN_OF_CLUBS ],
-    }, false, true);
+    });
   });
 
   it('Cannot play seven one-off if deck is empty', () => {
@@ -114,7 +114,7 @@ describe('Playing sevens at the end of the deck', () => {
       topCard: Card.SIX_OF_HEARTS,
       secondCard: Card.SEVEN_OF_HEARTS,
       deck: [ Card.FIVE_OF_DIAMONDS ],
-    }, true);
+    });
     cy.drawCardOpponent();
     cy.get('#deck').click();
     cy.drawCardOpponent();
@@ -135,7 +135,7 @@ describe('Playing sevens at the end of the deck', () => {
       topCard: Card.SIX_OF_HEARTS,
       secondCard: Card.SEVEN_OF_HEARTS,
       deck: [],
-    }, true);
+    });
     cy.drawCardOpponent();
     cy.get('[data-player-hand-card=7-0]').click();
     cy.get('[data-move-choice=oneOff').should('not.have.class', 'v-card--disabled')

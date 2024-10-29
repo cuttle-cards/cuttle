@@ -1162,13 +1162,13 @@ Cypress.Commands.add('vueRoute', (route) => {
  *   deck?: {suit: number, rank: number}[] deletes all cards except these from the deck
  * }
  */
-Cypress.Commands.add('loadGameFixture', (pNum, fixture, scrapUnusedCards = false) => {
+Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
   if (env) {
     return cy
       .window()
       .its('cuttle.gameStore.id')
       .then(async (gameId) => {
-        await cy.makeSocketRequest(`game/${gameId}`, 'loadFixtureGameState', { fixture, scrapUnusedCards });
+        await cy.makeSocketRequest(`game/${gameId}`, 'loadFixtureGameState', { fixture });
         const playerHandLength = pNum === 0 ? fixture.p0Hand.length : fixture.p1Hand.length;
         cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
         return;
@@ -1195,7 +1195,6 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture, scrapUnusedCards = false
         p1PointCardIds,
         p0FaceCardIds,
         p1FaceCardIds,
-        scrapUnusedCards
       };
       // Get top card & second cards if specified
       if (fixture.topCard) {

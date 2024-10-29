@@ -186,7 +186,7 @@ describe('Stalemates', () => {
       deck: [],
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
-    }, true);
+    });
 
     cy.log('Drawing last two cards');
     cy.get('#deck').should('contain', '(2)')
@@ -226,7 +226,7 @@ describe('Stalemates', () => {
       deck: [],
       topCard: Card.FOUR_OF_CLUBS,
       secondCard: Card.SIX_OF_DIAMONDS,
-    }, true);
+    });
 
     cy.get('#deck').should('contain', '(2)');
     cy.log('Drawing last two cards');

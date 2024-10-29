@@ -322,7 +322,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
       topCard: Card.ACE_OF_CLUBS,
       secondCard: Card.ACE_OF_DIAMONDS,
       deck: [],
-    }, true);
+    });
 
     cy.log('Drawing last two cards');
     cy.drawCardOpponent();
@@ -337,7 +337,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
       p1Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_DIAMONDS ],
       p1Points: [],
       p1FaceCards: [],
-    }, false, true);
+    });
 
     // Players pass to end game
     cy.passOpponent();
@@ -486,7 +486,7 @@ describe('Spectating Rematches', () => {
         p1Points: [],
         p1FaceCards: [],
         deck: [],
-      }, true);
+      });
 
       cy.drawCardOpponent();
       cy.get('[data-player-hand-card]').should('have.length', 2);
