@@ -9,7 +9,6 @@ module.exports = function (req, res) {
   const scrapCardIds = req.body.scrapCardIds || [];
   const topCardId = req.body.topCardId || null;
   const secondCardId = req.body.secondCardId || null;
-  const { scrapUnusedCards } = req.body;
   // Aggregate list of all cards being requested
   const allRequestedCards = [
     ...p0HandCardIds,
@@ -118,7 +117,7 @@ module.exports = function (req, res) {
       // Get all Cards in deck, and move the unwanted ones to scrap
       const updatedGame = await Game.findOne({ id:game.id }).populate('deck');
       const { deck } = req.body;
-      if (deck && scrapUnusedCards) {
+      if (deck.length) {
         const cardsToScrap = updatedGame.deck.filter(card => !deck.some((id) => id === card.id))
           .map((card) => card.id);
         await Game.addToCollection(game.id, 'scrap').members(cardsToScrap);

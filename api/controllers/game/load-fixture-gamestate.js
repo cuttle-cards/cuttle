@@ -24,9 +24,6 @@ module.exports = async function (req, res) {
       deck = [],
     } = req.body.fixture;
 
-    const { scrapUnusedCards = false } = req.body;
-  
-
     const allFixtureCards = Object.values(req.body.fixture).flat();
 
     const fillWithUnusedCards = () => _.shuffle(
@@ -35,8 +32,8 @@ module.exports = async function (req, res) {
       ),
     );
 
-    const populatedDeck = scrapUnusedCards ? deck : [ ...deck, ...fillWithUnusedCards() ];
-    const populatedScrap = scrapUnusedCards ? [ ...scrap , ...fillWithUnusedCards() ] : scrap;
+    const populatedDeck = deck.length ? deck : [ ...deck, ...fillWithUnusedCards() ];
+    const populatedScrap = deck.length ? [ ...scrap , ...fillWithUnusedCards() ] : scrap;
 
     if (secondCard) {
       populatedDeck.unshift(secondCard);
