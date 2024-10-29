@@ -116,7 +116,7 @@ describe('Clean-up of One-Off Targets', () => {
     // Opponent plays POINT
     cy.playPointsOpponent(Card.TEN_OF_HEARTS);
 
-    // Play plays JACK
+    // Player plays JACK
     cy.get('[data-player-hand-card=11-0]').click();
     cy.get('[data-move-choice=jack]').click();
     cy.get('#player-hand-targeting').should('be.visible');

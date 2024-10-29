@@ -16,6 +16,7 @@ module.exports = function (req, res, next) {
     case MoveType.PASS:
     case MoveType.DRAW:
     case MoveType.RESOLVE:
+    case MoveType.RESOLVE_FIVE: 
       // These moves require no extra data
       return next();
 
