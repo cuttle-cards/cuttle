@@ -292,6 +292,7 @@
         "five": {
           "selectCardToDiscard": "You must select one card to discard",
           "incorrectCard": "Incorrect card played",
+          "wrongPhase": "You can't resolve a five right now.",
           "fiveDeckIsEmpty": "Cannot resolve 5 one-off with an empty deck"
         },
         "seven": {

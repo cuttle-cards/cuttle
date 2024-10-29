@@ -9,7 +9,6 @@ describe('FIVES', () => {
 
     describe('Legal FIVES', () => {
       it('Plays a 5 to discard 1 card, and draw 3', () => {
-        cy.skipOnGameStateApi();
         // Setup
         cy.loadGameFixture(0, {
           // Player is P0
@@ -38,7 +37,6 @@ describe('FIVES', () => {
       }); // End five one-off
 
       it('Plays a 5 to draw the last three cards in the deck with nothing to discard', () => {
-        cy.skipOnGameStateApi();
         // Setup: player has one card in hand and only top & second card are in deck
         cy.loadGameFixture(0, {
           // Player is P0
@@ -80,7 +78,6 @@ describe('FIVES', () => {
       });
 
       it('Plays a 5 with two cards left in the deck and nothing to discard', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.FIVE_OF_CLUBS ],
@@ -119,7 +116,6 @@ describe('FIVES', () => {
       });
 
       it('Plays a 5 to draw two cards when already at hand limit (8)', () => {
-        cy.skipOnGameStateApi();
         // Setup: there are three cards in the deck and player has a 5
         cy.loadGameFixture(0, {
           p0Hand: [
@@ -174,7 +170,6 @@ describe('FIVES', () => {
       });
 
       it('Draws only 1 card when last card in deck', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
@@ -215,7 +210,6 @@ describe('FIVES', () => {
       });
 
       it('Plays multiple 5s', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
@@ -249,7 +243,6 @@ describe('FIVES', () => {
       });
 
       it('Plays a 5 with card to discard and 2 cards left in deck', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
@@ -284,7 +277,6 @@ describe('FIVES', () => {
       });
 
       it('Plays a 5 with card to discard and 1 card left in deck', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
@@ -321,7 +313,6 @@ describe('FIVES', () => {
       });
 
       it('Plays a 5 with nothing to discard with 1 card in the deck', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [],
@@ -403,7 +394,6 @@ describe('FIVES', () => {
       });
 
       it('Cannot resolve five without discarding when you have cards in hand', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
           p0Points: [],
@@ -442,7 +432,6 @@ describe('FIVES', () => {
     });
 
     it('Plays 5 as opponent', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         // Player is P0
         p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
@@ -488,7 +477,6 @@ describe('FIVES', () => {
     });
 
     it('plays five as opponent with nothing to discard', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         // Player is P0
         p0Hand: [ Card.FIVE_OF_SPADES ],
