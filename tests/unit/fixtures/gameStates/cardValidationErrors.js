@@ -95,6 +95,7 @@ export const validationErrors = {
     phase: GamePhase.MAIN,
     targetCard: null,
   },
+  // Missing Card.ACE_OF_CLUBS
   missingCard: {
     p0: {
       hand: [ Card.ACE_OF_SPADES ],

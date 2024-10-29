@@ -126,7 +126,7 @@ describe('Throwing Errors on card validations',() => {
 
   it('throws an error when a card is missing', () => {
     expect(() => sails.helpers.gameStates.validateAllCards(validationErrors.missingCard))
-      .toThrowError(/^Card Missing$/);
+      .toThrowError(/^Missing Cards AC$/);
   });
 
   it('throws an error when a card in the scrap has an attachment', () => {

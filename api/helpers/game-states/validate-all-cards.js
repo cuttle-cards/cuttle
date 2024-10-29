@@ -56,7 +56,7 @@ module.exports = {
     });
 
     if (cardIds.size !== deckIds.size) {
-      throw new Error('Card Missing');
+      throw new Error(`Missing Cards ${[ ...deckIds.difference(cardIds) ].join(',')}`);
     }
 
     return exits.success();
