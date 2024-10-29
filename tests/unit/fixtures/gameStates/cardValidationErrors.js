@@ -3,6 +3,7 @@ import GamePhase from '../../../../utils/GamePhase.json';
 import MoveType from '../../../../utils/MoveType.json';
 
 export const validationErrors = {
+  // jack of clubs appears twice
   duplicateCard: {
     p0: {
       hand: [ Card.ACE_OF_SPADES ],
