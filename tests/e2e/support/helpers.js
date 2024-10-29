@@ -213,7 +213,7 @@ export function playOutOfTurn(moveName) {
   cy.log(`Correctly prevented attempt to play ${moveName} out of turn`);
 }
 
-function assertDomMatchesFixture(pNum, fixture, spectating, scrapUnusedCards = false) {
+function assertDomMatchesFixture(pNum, fixture, spectating) {
   const expectedP0Points = sumRanks(fixture.p0Points);
   const expectedP0PointsToWin = pointsToWin(countKings(fixture.p0FaceCards));
   const expectedP1Points = sumRanks(fixture.p1Points);
@@ -301,7 +301,10 @@ function assertDomMatchesFixture(pNum, fixture, spectating, scrapUnusedCards = f
   }
   // Test scrap (if provided)
   if (fixture.scrap) {
-    cy.get('#scrap').contains(`(${fixture.scrap.length})`);
+    const scrapLength =
+      52 - (Object.values(fixture).flat()
+        .filter(item => item !== null).length - fixture.scrap.length);
+    cy.get('#scrap').contains(`(${scrapLength})`);
   }
 }
 
