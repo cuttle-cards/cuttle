@@ -48,6 +48,7 @@ export const validationErrors = {
     phase: GamePhase.MAIN,
     targetCard: null,
   },
+  // p1 points contains invalid card
   invalidCard: {
     p0: {
       hand: [ Card.ACE_OF_SPADES ],
