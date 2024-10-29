@@ -435,7 +435,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
       topCard: Card.FIVE_OF_CLUBS,
       secondCard: Card.ACE_OF_CLUBS,
       deck: [],
-    }, true);
+    });
 
     cy.drawCardOpponent();
     cy.get('#deck').click();
@@ -451,7 +451,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
       topCard: null,
       secondCard: null,
       deck: [],
-    }, true);
+    });
   });
 
   it('Opponent draws last card from deck, and displays snackbar for player', () => {
@@ -465,7 +465,7 @@ describe('Game Basic Moves - P1 Perspective', () => {
       topCard: Card.FIVE_OF_CLUBS,
       secondCard: Card.ACE_OF_CLUBS,
       deck: [ Card.TWO_OF_DIAMONDS ],
-    }, true);
+    });
 
     cy.drawCardOpponent();
     cy.get('#deck').click();
