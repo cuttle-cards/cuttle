@@ -21,7 +21,7 @@ module.exports = async function (req, res) {
       topCard = null,
       secondCard = null,
       scrap = [],
-      deck = [],
+      deck,
     } = req.body.fixture;
 
     const allFixtureCards = Object.values(req.body.fixture).flat();
@@ -32,8 +32,8 @@ module.exports = async function (req, res) {
       ),
     );
 
-    const populatedDeck = deck.length ? deck : [ ...deck, ...fillWithUnusedCards() ];
-    const populatedScrap = deck.length ? [ ...scrap , ...fillWithUnusedCards() ] : scrap;
+    const populatedDeck = deck ? deck : fillWithUnusedCards() ;
+    const populatedScrap = deck ? [ ...scrap , ...fillWithUnusedCards() ] : scrap;
 
     if (secondCard) {
       populatedDeck.unshift(secondCard);
