@@ -213,7 +213,7 @@ export function playOutOfTurn(moveName) {
   cy.log(`Correctly prevented attempt to play ${moveName} out of turn`);
 }
 
-function assertDomMatchesFixture(pNum, fixture, spectating) {
+function assertDomMatchesFixture(pNum, fixture, spectating, scrapUnusedCards) {
   const expectedP0Points = sumRanks(fixture.p0Points);
   const expectedP0PointsToWin = pointsToWin(countKings(fixture.p0FaceCards));
   const expectedP1Points = sumRanks(fixture.p1Points);
@@ -302,9 +302,10 @@ function assertDomMatchesFixture(pNum, fixture, spectating) {
   // Test scrap (if provided)
   if (fixture.scrap) {
     // Check if deck is empty to determine where the rest of cards should go
-    const scrapLength = fixture.topCard ? fixture.scrap.length :
-      52 - (Object.values(fixture).flat()
-        .filter(item => item !== null).length - fixture.scrap.length);
+    const scrapLength = scrapUnusedCards ?
+      (52 - (Object.values(fixture).flat()
+        .filter(item => item !== null).length - fixture.scrap.length))
+      : fixture.scrap.length;
     cy.get('#scrap').contains(`(${scrapLength})`);
   }
 }
@@ -615,8 +616,8 @@ export function rematchPlayerAsSpectator(userFixture, rematch = true) {
  * }
  * @param pNum: int [0, 1]
  */
-export function assertGameState(pNum, fixture, spectating = false) {
+export function assertGameState(pNum, fixture, spectating = false, scrapUnusedCards = false) {
   cy.log('Asserting game state:', fixture);
-  assertDomMatchesFixture(pNum, fixture, spectating);
+  assertDomMatchesFixture(pNum, fixture, spectating, scrapUnusedCards);
   assertStoreMatchesFixture(fixture);
 }
