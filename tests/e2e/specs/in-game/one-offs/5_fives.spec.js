@@ -510,7 +510,7 @@ describe('FIVES', () => {
         topCard: null,
         secondCard: null,
         deck: [],
-      }), false, true;
+      }, false, true);
     });
   });
 });
