@@ -70,7 +70,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        },false, true);
         // Deck should now be empty
         cy.get('#deck').should('contain', '(0)')
           .should('contain', 'PASS');
@@ -108,7 +108,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
 
         cy.get('#deck').should('contain', '(0)')
           .should('contain', 'PASS');
@@ -165,7 +165,7 @@ describe('FIVES', () => {
           topCard: Card.ACE_OF_SPADES,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
         cy.get('#deck').should('contain', '(1)');
       });
 
@@ -206,7 +206,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
       });
 
       it('Plays multiple 5s', () => {
@@ -271,7 +271,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
 
         cy.get('#deck').should('contain', 'PASS');
       });
@@ -308,7 +308,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
         cy.get('#deck').should('contain', 'PASS');
       });
 
@@ -343,7 +343,7 @@ describe('FIVES', () => {
           topCard: null,
           secondCard: null,
           deck: [],
-        });
+        }, false, true);
       });
     });
 
@@ -473,7 +473,7 @@ describe('FIVES', () => {
         topCard: null,
         secondCard: null,
         deck: [],
-      });
+      }, false, true);
     });
 
     it('plays five as opponent with nothing to discard', () => {
@@ -510,7 +510,7 @@ describe('FIVES', () => {
         topCard: null,
         secondCard: null,
         deck: [],
-      });
+      }), false, true;
     });
   });
 });

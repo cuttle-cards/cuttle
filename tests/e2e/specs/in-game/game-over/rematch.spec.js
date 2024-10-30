@@ -337,7 +337,7 @@ describe('Creating And Updating Casual Games With Rematch', () => {
       p1Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_DIAMONDS ],
       p1Points: [],
       p1FaceCards: [],
-    });
+    }, false, true);
 
     // Players pass to end game
     cy.passOpponent();

@@ -321,7 +321,7 @@ describe('Playing SEVENS', () => {
         p1Points: [],
         p1FaceCards: [],
         scrap: [ Card.SEVEN_OF_CLUBS, Card.JACK_OF_CLUBS ],
-      });
+      }, false, true);
 
       cy.get('#deck').find('#empty-deck-text')
         .should('contain', 'PASS');
