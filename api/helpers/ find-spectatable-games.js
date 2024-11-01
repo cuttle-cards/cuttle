@@ -8,7 +8,8 @@ module.exports = {
   description: 'Finds all the games that are available to spectate',
 
   fn: async (_, exits) => {
-    const recentUpdateThreshhold = dayjs.utc().subtract(5, 'minute').toDate();
+    const recentUpdateThreshhold = dayjs.utc().subtract(5, 'minute')
+      .toDate();
     try {
       const games = await Game.find({
         status: gameService.GameStatus.STARTED,

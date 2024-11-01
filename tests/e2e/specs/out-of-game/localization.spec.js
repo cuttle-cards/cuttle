@@ -51,7 +51,8 @@ describe('Localization', () => {
     cy.get('[data-cy="opponent-indicator"]').should('contain', lang.lobby.invite);
     cy.get('[data-cy="ready-button"]').should('contain', lang.lobby.ready);
     cy.get('[data-cy="ready-button"]').click();
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
+    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]')
+      .should('exist');
     cy.get('[data-cy="ready-button"]').should('contain', lang.lobby.unready);
     cy.get('[data-cy="exit-button"]').should('contain', lang.lobby.exit);
     cy.get('h1').should('contain', lang.lobby.lobbyFor);

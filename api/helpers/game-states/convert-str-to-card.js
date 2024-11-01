@@ -41,20 +41,20 @@ function convertIdToCard (id, isFrozen) {
 
   if (idCard.length === 2) {
 
-      const tempCard = { rank: id[0], suit: id[1] };
+    const tempCard = { rank: id[0], suit: id[1] };
 
-      const suit = suitMap[tempCard.suit];
+    const suit = suitMap[tempCard.suit];
 
-      const rank = rankMap[tempCard.rank];
+    const rank = rankMap[tempCard.rank];
 
-      if (rank === undefined) {
-        throw new Error('Unrecognised rank ' + tempCard.rank);
-      }
-      if (suit === undefined) {
-        throw new Error('Unrecognised suit ' + tempCard.suit);
-      }
+    if (rank === undefined) {
+      throw new Error('Unrecognised rank ' + tempCard.rank);
+    }
+    if (suit === undefined) {
+      throw new Error('Unrecognised suit ' + tempCard.suit);
+    }
 
-    return { suit, rank, id , isFrozen , attachments:[]};
+    return { suit, rank, id , isFrozen , attachments:[] };
   }
 
   throw new Error('Unrecognised card identifier ' + id);
@@ -105,32 +105,32 @@ module.exports = {
   sync: true,
 
   fn: ({ str, isFrozen }, exits) => {
-      try {
-            // remove whitespace
-            str = str.replace(/\s+/g, '');
+    try {
+      // remove whitespace
+      str = str.replace(/\s+/g, '');
 
-            // get content before parentheses if any
-            const mainCardId = str.replace(/\(.*?\)/g, '');
-            // convert
-            const maincard = convertIdToCard(mainCardId, isFrozen);
+      // get content before parentheses if any
+      const mainCardId = str.replace(/\(.*?\)/g, '');
+      // convert
+      const maincard = convertIdToCard(mainCardId, isFrozen);
 
-            // Handle attachments or return []
-            // attachment format eg 4D(JC-p0, JD-p1)
-            // -> get content inside parentheses
-            const regex = /\(([^)]+)\)/;
-            const attachmentsString = str.match(regex);
-            // -> split using the comma
-            const attachmentsArray = attachmentsString ? attachmentsString[1].split(',') : [];
+      // Handle attachments or return []
+      // attachment format eg 4D(JC-p0, JD-p1)
+      // -> get content inside parentheses
+      const regex = /\(([^)]+)\)/;
+      const attachmentsString = str.match(regex);
+      // -> split using the comma
+      const attachmentsArray = attachmentsString ? attachmentsString[1].split(',') : [];
 
-            const attachments = attachmentsArray.map(element => {
-                  // -> split using the '-' -> [0]:before : card, [1]:player
-                  const content = element.split('-');
-                  return convertIdToCard(content[0] , false);
-            });
+      const attachments = attachmentsArray.map(element => {
+        // -> split using the '-' -> [0]:before : card, [1]:player
+        const content = element.split('-');
+        return convertIdToCard(content[0] , false);
+      });
 
-        return exits.success({...maincard, attachments: attachments});
-      } catch (err) {
-        return exits.error(err.message);
-      }
+      return exits.success({ ...maincard, attachments: attachments });
+    } catch (err) {
+      return exits.error(err.message);
     }
+  }
 };

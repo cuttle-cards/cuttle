@@ -15,7 +15,7 @@ module.exports = {
     let result = _.cloneDeep(currentState);
 
     // Scrap all points and all their attachments
-    for (let card of [ ...currentState.p0.points, ...currentState.p1.points]) {
+    for (let card of [ ...currentState.p0.points, ...currentState.p1.points ]) {
       result.scrap.push(card, ...card.attachments);
       card.attachments = [];
     }

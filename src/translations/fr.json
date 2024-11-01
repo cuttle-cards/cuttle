@@ -217,6 +217,7 @@
     },
     "menus": {
       "gameMenu": {
+        "refresh": "Actualiser",
         "rules": "Règles",
         "concede": "Déclarer forfait",
         "stalemate": "Proposer match nul",
@@ -283,16 +284,21 @@
           "mustPickFromScrap": "Vous devez choisir une carte de la défausse"
         },
         "four": {
-          "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main."
+          "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main.",
+          "notYourTurn": "Ce n'est pas à vous de défausser",
+          "notResolvingFourPhase": "Vous ne pouvez pas défausser à moins que votre adversaire n'ait joué un Quatre",
+          "mustSelectCards": "Vous devez sélectionner deux cartes à défausser"
         },
         "five": {
           "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
           "incorrectCard": "Mauvaise carte jouée",
+          "wrongPhase": "Vous ne pouvez pas résoudre un cinq maintenant.",
           "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
         },
         "seven": {
           "oneCardInDeck": "Impossible de jouer la capacité du Sept si c'était la dernière carte de la pioche.",
-          "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte de la pioche."
+          "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte de la pioche.",
+          "wrongPhase": "Vous ne pouvez pas jouer depuis le paquet pour le moment"
         }
       }
     }

@@ -90,40 +90,40 @@ module.exports = {
         // 2 and 9 require legal target
         case 2:
         case 9:
-          {
-            const targetCard = findTargetCard(requestedMove.targetId, requestedMove.targetType, opponent);
-            // Must have target
-            if (!targetCard) {
-              throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
-            }
+        {
+          const targetCard = findTargetCard(requestedMove.targetId, requestedMove.targetType, opponent);
+          // Must have target
+          if (!targetCard) {
+            throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
+          }
 
-            if (playedCard.rank === 2 && !['faceCard', 'jack'].includes(requestedMove.targetType)) {
-              throw new Error('Twos can only target royals or glasses');
-            }
+          if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
+            throw new Error('Twos can only target royals or glasses');
+          }
 
-            const queenCount = opponent.faceCards.filter(
-              (faceCard) => faceCard.rank === 12
-            ).length;
+          const queenCount = opponent.faceCards.filter(
+            (faceCard) => faceCard.rank === 12
+          ).length;
 
-            // Legal if not blocked by opponent's queen(s)
-            switch (queenCount) {
-              // No queens => always allowed
-              case 0:
-                return exits.success();
+          // Legal if not blocked by opponent's queen(s)
+          switch (queenCount) {
+            // No queens => always allowed
+            case 0:
+              return exits.success();
 
               // One queen => can only target the queen
-              case 1: {
-                if (targetCard.rank !== 12) {
-                  throw new Error('game.snackbar.global.blockedByQueen');
-                }
-                return exits.success();
+            case 1: {
+              if (targetCard.rank !== 12) {
+                throw new Error('game.snackbar.global.blockedByQueen');
               }
-
-              // 2+ queens => Can't target at all
-              default:
-                throw new Error('game.snackbar.global.blockedByMultipleQueens');
+              return exits.success();
             }
+
+            // 2+ queens => Can't target at all
+            default:
+              throw new Error('game.snackbar.global.blockedByMultipleQueens');
           }
+        }
 
         // Three requires card(s) in scrap
         case 3:
