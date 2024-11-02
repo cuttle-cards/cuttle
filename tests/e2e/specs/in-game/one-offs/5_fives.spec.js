@@ -66,11 +66,22 @@ describe('FIVES', () => {
           p1Hand: [],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_CLUBS ],
+          scrap: [ Card.FIVE_OF_CLUBS, Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS,
+            Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS,
+            Card.ACE_OF_HEARTS, Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS,
+            Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS,
+            Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+            Card.FIVE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES,
+            Card.NINE_OF_SPADES, Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
-        },false, true);
+        });
         // Deck should now be empty
         cy.get('#deck').should('contain', '(0)')
           .should('contain', 'PASS');
@@ -104,11 +115,21 @@ describe('FIVES', () => {
           p1Hand: [],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_CLUBS ],
+          scrap: [ Card.FIVE_OF_CLUBS, Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS,
+            Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.TWO_OF_DIAMONDS,
+            Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS,
+            Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS,
+            Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS,
+            Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS,
+            Card.KING_OF_HEARTS, Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+            Card.FIVE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
-        }, false, true);
+        });
 
         cy.get('#deck').should('contain', '(0)')
           .should('contain', 'PASS');
@@ -161,11 +182,21 @@ describe('FIVES', () => {
           p1Hand: [ Card.TWO_OF_HEARTS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_CLUBS, Card.FIVE_OF_SPADES ],
+          scrap: [ Card.FIVE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS, Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.NINE_OF_CLUBS,
+            Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.TWO_OF_DIAMONDS,
+            Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS,
+            Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS,
+            Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS,
+            Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS,
+            Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+            Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: Card.ACE_OF_SPADES,
           secondCard: null,
           deck: [],
-        }, false, true);
+        });
         cy.get('#deck').should('contain', '(1)');
       });
 
@@ -202,14 +233,25 @@ describe('FIVES', () => {
           p1Hand: [ Card.THREE_OF_CLUBS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS ],
+          scrap: [ Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS,
+            Card.ACE_OF_DIAMONDS, Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS,
+            Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS,
+            Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS,
+            Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS, Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS,
+            Card.FOUR_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS,
+            Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+            Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
-        }, false, true);
+        });
       });
 
-      it('Plays multiple 5s', () => {
+      it.only('Plays multiple 5s', () => {
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
@@ -267,11 +309,23 @@ describe('FIVES', () => {
           p1Hand: [],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
+          scrap: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS, Card.THREE_OF_CLUBS,
+            Card.FIVE_OF_CLUBS, Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS,
+            Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS,
+            Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS,
+            Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS,
+            Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS, Card.TWO_OF_HEARTS,
+            Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, Card.TEN_OF_HEARTS,
+            Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, Card.ACE_OF_SPADES,
+            Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.SIX_OF_SPADES,
+            Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, Card.TEN_OF_SPADES,
+            Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
-        }, false, true);
+        });
 
         cy.get('#deck').should('contain', 'PASS');
       });
@@ -304,11 +358,21 @@ describe('FIVES', () => {
           p1Hand: [ Card.ACE_OF_HEARTS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
+          scrap: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS, Card.ACE_OF_CLUBS, Card.THREE_OF_CLUBS,
+            Card.FIVE_OF_CLUBS, Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS,
+            Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS,
+            Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS,
+            Card.KING_OF_HEARTS, Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+            Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, Card.TEN_OF_SPADES,
+            Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
-        }, false, true);
+        });
         cy.get('#deck').should('contain', 'PASS');
       });
 
@@ -339,11 +403,21 @@ describe('FIVES', () => {
           p1Hand: [ Card.TWO_OF_HEARTS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_SPADES ],
+          scrap: [ Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS, Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS,
+            Card.ACE_OF_HEARTS, Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS,
+            Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES,
+            Card.FOUR_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
-        }, false, true);
+        });
       });
     });
 
@@ -469,11 +543,20 @@ describe('FIVES', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS ],
+        scrap: [ Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS,
+          Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS,
+          Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.TWO_OF_DIAMONDS,
+          Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS,
+          Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS, Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS,
+          Card.FOUR_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS, Card.TEN_OF_HEARTS,
+          Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, Card.ACE_OF_SPADES, Card.TWO_OF_SPADES,
+          Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES,
+          Card.NINE_OF_SPADES, Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
         topCard: null,
         secondCard: null,
         deck: [],
-      }, false, true);
+      });
     });
 
     it('plays five as opponent with nothing to discard', () => {
@@ -506,11 +589,21 @@ describe('FIVES', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.FIVE_OF_SPADES ],
+        scrap: [ Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS,
+          Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS,
+          Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.TWO_OF_DIAMONDS,
+          Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS,
+          Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS, Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS,
+          Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS,
+          Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, Card.ACE_OF_SPADES,
+          Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES,
+          Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES,
+          Card.KING_OF_SPADES ],
         topCard: null,
         secondCard: null,
         deck: [],
-      }, false, true);
+      });
     });
   });
 });
