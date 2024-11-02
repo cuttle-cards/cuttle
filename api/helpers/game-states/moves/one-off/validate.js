@@ -1,4 +1,4 @@
-const GamePhase = require('../../../../../utils/GamePhase.json');
+const GamePhase = require('../../../../../types/GamePhase.json');
 
 function findTargetCard(targetId, targetType, opponent) {
   switch (targetType) {

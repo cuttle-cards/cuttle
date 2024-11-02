@@ -1,5 +1,5 @@
 const userService = require('../../api/services/userService.js');
-const GameStatus = require('../../utils/GameStatus.json');
+const GameStatus = require('../../types/GameStatus.json');
 
 /**
  * @returns int <= 0 if card1 is lower rank or same rank & lower suit
