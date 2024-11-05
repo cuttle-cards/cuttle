@@ -6,7 +6,13 @@
     <p>
       <template v-for="(chunk, index) in paragraph" :key="`text-chunk-${index}`">
         <!-- Remote Link -->
-        <a v-if="chunk.url" :href="chunk.url" class="text-cyan-lighten-2 text-decoration-none">{{ t(chunk.text) }}</a>
+        <a
+          v-if="chunk.url"
+          :href="chunk.url"
+          class="text-cyan-lighten-2 font-weight-bold text-decoration-none"
+        >
+          {{ t(chunk.text) }}
+        </a>
         <!-- Plain text -->
         <template v-else>
           {{ t(chunk.text) }}
