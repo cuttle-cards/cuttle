@@ -2,7 +2,7 @@
   <BaseDialog
     id="announcement-dialog"
     v-model="show"
-    variant="light"
+    variant="dark"
     :opacity="1"
     data-cy="announcement-dialog"
     scrollable
