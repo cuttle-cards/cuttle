@@ -33,11 +33,8 @@
       <div v-if="announcementData.imgSrc" class="d-flex justify-center">
         <img class="w-75 mb-4" :src="announcementData.imgSrc">
       </div>
-      <div v-for="(text,i) in announcementData.announcementText" :key="i" class="mb-4">
-        <h2 v-if="text.heading">
-          {{ t(text.heading) }}
-        </h2>  
-        <p> {{ t(text.paragraph) }} </p>  
+      <div v-for="(text, i) in announcementData.announcementText" :key="i" class="mb-4">
+        <BaseParagraph :heading="text.heading" :paragraph="text.paragraph" />
       </div>  
     </template>
     <template #actions>
@@ -55,6 +52,7 @@
 
 <script setup>
 import BaseDialog from '@/components/BaseDialog.vue';
+import BaseParagraph from '@/components/BaseParagraph.vue';
 import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -73,7 +71,7 @@ const close = () => {
   preferenceSaved.value = true;
 };
 
-onMounted(() => {
+onMounted(() => { 
   if (getLocalStorage('announcement') !== announcementData.id) {
     show.value = true;
   }

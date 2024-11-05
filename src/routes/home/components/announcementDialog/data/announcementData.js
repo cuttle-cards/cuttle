@@ -1,13 +1,17 @@
+import { Card } from '../../../../../../tests/e2e/fixtures/cards';
+
 export const announcementData = {
-  id: 'opponentHandRevealed',
+  id: 'hearts2024Announcement',
   activatorText: 'announcement.activatorText',
   title: 'announcement.title',
-  imgSrc: './img/announcement/deck-exhausted.gif',
-  displayCards: [],
+  displayCards: [ Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, Card.ACE_OF_HEARTS ],
   announcementText: [
     {
       heading: 'announcement.heading',
-      paragraph: 'announcement.paragraph',
+      paragraph: [ 
+        { text: 'announcement.paragraph' },
+        { text: 'announcement.twitchLink', url: 'https://twitch.tv/cuttle_cards' }
+      ],
     },
   ],
 };
