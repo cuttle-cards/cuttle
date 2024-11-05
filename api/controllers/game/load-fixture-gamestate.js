@@ -24,7 +24,7 @@ module.exports = async function (req, res) {
       deck,
     } = req.body;
 
-    const allFixtureCards = Object.values(req.body.fixture).flat();
+    const allFixtureCards = Object.values(req.body).flat();
 
     const fillWithUnusedCards = () => _.shuffle(
       DeckIds.filter((id) => !allFixtureCards.some((card) => card?.id === id)).map((id) =>
