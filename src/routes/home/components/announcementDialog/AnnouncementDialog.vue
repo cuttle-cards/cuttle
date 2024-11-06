@@ -1,5 +1,6 @@
 <template>
   <BaseDialog
+    v-if="announcementIsActive"
     id="announcement-dialog"
     v-model="show"
     variant="dark"
@@ -51,17 +52,25 @@
 </template>
 
 <script setup>
-import BaseDialog from '@/components/BaseDialog.vue';
-import BaseParagraph from '@/components/BaseParagraph.vue';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import GameCard from '@/routes/game/components/GameCard.vue';
+import dayjs from 'dayjs';
 import { getLocalStorage, setLocalStorage } from '_/utils/local-storage-utils.js';
 import { announcementData } from './data/announcementData';
+import BaseDialog from '@/components/BaseDialog.vue';
+import BaseParagraph from '@/components/BaseParagraph.vue';
+import GameCard from '@/routes/game/components/GameCard.vue';
 
 const { t } = useI18n();
 const show = ref(false);
 const preferenceSaved= ref(false);
+
+const announcementIsActive = computed(() => {
+  const isAfterStartTime = announcementData.startTime ? dayjs().isAfter(dayjs(announcementData.startTime)) : true;
+  const isBeforeEndTime = announcementData.endTime ? dayjs().isBefore(dayjs(announcementData.endTime)) : true;
+
+  return isAfterStartTime && isBeforeEndTime;
+});
 
 const close = () => {
   if (!preferenceSaved.value) {
@@ -75,7 +84,6 @@ onMounted(() => {
   if (getLocalStorage('announcement') !== announcementData.id) {
     show.value = true;
   }
-
 });
 </script>
 
