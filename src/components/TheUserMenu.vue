@@ -7,6 +7,7 @@
         class="d-flex text-body-1 mr-md-16"
         v-bind="props"
         variant="text"
+        @click="toggleMenu"
       >
         <v-icon
           icon="mdi-account-circle" 
@@ -16,6 +17,10 @@
           class="mr-1"
         />
         {{ authStore.username }}
+        <v-icon
+          :icon="isOpen ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+          class="ml-1"
+        />
       </v-btn>
     </template>
     <v-list density="compact" class="bg-surface-2 text-surface-1">
@@ -35,7 +40,7 @@
 
 <script setup>
 import { useAuthStore } from '@/stores/auth';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ROUTE_NAME_LOGOUT } from '@/router.js';
 
@@ -44,6 +49,12 @@ import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
 const authStore = useAuthStore();
 
 const { t } = useI18n();
+
+const isOpen = ref(false);
+
+const toggleMenu = () => {
+  isOpen.value = !isOpen.value;
+};
 
 defineProps({
   variant:{
