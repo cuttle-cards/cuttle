@@ -27,14 +27,14 @@ module.exports = async function (req, res) {
     const allFixtureCards = new Set(Object.values(req.body).flat()
       .map(({ id }) => id));
 
-    const fillWithUnusedCards = (() => _.shuffle(
+    const unusedCards = _.shuffle(
       DeckIds.filter((id) => !allFixtureCards.has(id)).map((id) =>
         convertStrToCard(id),
       )
-    ))();
+    );
 
-    const populatedDeck = deck ?? fillWithUnusedCards ;
-    const populatedScrap = deck ? [ ...scrap , ...fillWithUnusedCards ] : scrap;
+    const populatedDeck = deck ?? unusedCards ;
+    const populatedScrap = deck ? [ ...scrap , ...unusedCards ] : scrap;
 
     if (secondCard) {
       populatedDeck.unshift(secondCard);
