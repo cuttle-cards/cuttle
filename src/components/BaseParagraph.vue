@@ -9,6 +9,7 @@
         <a
           v-if="chunk.url"
           :href="chunk.url"
+          target="_blank"
           class="text-cyan-lighten-2 font-weight-bold text-decoration-none"
         >
           {{ t(chunk.text) }}
