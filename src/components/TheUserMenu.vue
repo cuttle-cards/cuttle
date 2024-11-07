@@ -1,5 +1,8 @@
 <template>
-  <v-menu transition="slide-x-transition">
+  <v-menu
+    v-model="isOpen"
+    transition="slide-x-transition" 
+  >
     <template #activator="{ props }">
       <v-btn
         :color="variant === 'light' ? 'surface-1' : 'surface-2'"
@@ -7,7 +10,6 @@
         class="d-flex text-body-1 mr-md-16"
         v-bind="props"
         variant="text"
-        @click="toggleMenu"
       >
         <v-icon
           icon="mdi-account-circle" 
@@ -18,8 +20,9 @@
         />
         {{ authStore.username }}
         <v-icon
-          :icon="isOpen ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+          icon="mdi-chevron-down"
           class="ml-1"
+          :class="{ rotate: isOpen }"
         />
       </v-btn>
     </template>
@@ -52,10 +55,6 @@ const { t } = useI18n();
 
 const isOpen = ref(false);
 
-const toggleMenu = () => {
-  isOpen.value = !isOpen.value;
-};
-
 defineProps({
   variant:{
     type:String,
@@ -68,3 +67,11 @@ const menuItems = computed(() => {
 });
 
 </script>
+<style>
+
+.rotate {
+  transition: transform 0.3s ease-in-out;
+  transform: rotate(180deg);
+}
+
+</style>
