@@ -95,7 +95,7 @@ const invalidCard = {
   phase: GamePhase.MAIN,
   targetCard: null,
 };
-  // Missing Card.ACE_OF_CLUBS
+// Missing Card.ACE_OF_CLUBS
 const missingCard = {
   p0: {
     hand: [ Card.ACE_OF_SPADES ],
