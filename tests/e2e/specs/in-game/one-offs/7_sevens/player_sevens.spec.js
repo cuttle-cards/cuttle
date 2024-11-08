@@ -42,7 +42,6 @@ describe('Playing SEVENS', () => {
   });
 
   it('Plays jack from a seven', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
@@ -152,7 +151,6 @@ describe('Playing SEVENS', () => {
 
   describe('Plays jack from a seven - special case', () => {
     it('Plays jack from a seven - special case - double jacks with some points to steal should work as normal', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
