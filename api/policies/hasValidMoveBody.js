@@ -55,6 +55,7 @@ module.exports = function (req, res, next) {
     case MoveType.JACK:
     case MoveType.SCUTTLE:
     case MoveType.SEVEN_SCUTTLE:
+    case MoveType.SEVEN_JACK:
       {
         if (!cardId || !targetId) {
           return res.badRequest({ message: 'Must specify a card' });
