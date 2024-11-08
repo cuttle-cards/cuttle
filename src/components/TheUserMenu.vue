@@ -21,7 +21,7 @@
         {{ authStore.username }}
         <v-icon
           icon="mdi-chevron-down"
-          class="ml-1"
+          class="ml-1 chevron-icon"
           :class="{ rotate: isOpen }"
         />
       </v-btn>
@@ -67,11 +67,12 @@ const menuItems = computed(() => {
 });
 
 </script>
-<style>
-
-.rotate {
+<style scoped>
+.chevron-icon {
   transition: transform 0.3s ease-in-out;
-  transform: rotate(180deg);
 }
 
+.rotate {
+  transform: rotate(180deg);
+}
 </style>
