@@ -41,7 +41,7 @@ module.exports = {
 
     allCards.forEach((card) => {
       if (card.attachments.length) {
-        throw new Error(`${card.id} is not a points card, and cannot have attachments`);
+        throw new Error(`${card.id} is not a point card, and cannot have attachments`);
       }
 
       if (cardIds.has(card.id)) {
