@@ -3,7 +3,7 @@ import GamePhase from '../../../../utils/GamePhase.json';
 import MoveType from '../../../../utils/MoveType.json';
 
 
-// jack of clubs appears twice
+// Seven Of Spades appears twice
 const duplicateCard = {
   p0: {
     hand: [ Card.ACE_OF_SPADES ],
@@ -18,6 +18,7 @@ const duplicateCard = {
   },
   p1: {
     hand: [ Card.ACE_OF_HEARTS, Card.ACE_OF_DIAMONDS ],
+    // Extra seven of spades
     points: [ Card.TEN_OF_HEARTS, Card.ACE_OF_CLUBS, Card.SEVEN_OF_SPADES ],
     faceCards: [],
   },
