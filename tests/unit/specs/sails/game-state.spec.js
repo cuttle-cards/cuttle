@@ -121,7 +121,7 @@ describe('Throwing Errors on card validations',() => {
 
   it('throws an error when a invalid card is found', () => {
     expect(() => sails.helpers.gameStates.validateAllCards(invalidCard))
-      .toThrowError(/^Invalid Card$/);
+      .toThrowError(/^Invalid Card id HA$/);
   });
 
   it('throws an error when a card is missing', () => {
@@ -131,6 +131,6 @@ describe('Throwing Errors on card validations',() => {
 
   it('throws an error when a card in the scrap has an attachment', () => {
     expect(() => sails.helpers.gameStates.validateAllCards(scrapAttachments))
-      .toThrowError(/^Only Points Cards can have attachments$/);
+      .toThrowError(/^6C is not a points card, and cannot have attachments$/);
   });
 });

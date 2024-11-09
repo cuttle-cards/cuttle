@@ -41,7 +41,7 @@ module.exports = {
 
     allCards.forEach((card) => {
       if (card.attachments.length) {
-        throw new Error('Only Points Cards can have attachments');
+        throw new Error(`${card.id} is not a points card, and cannot have attachments`);
       }
 
       if (cardIds.has(card.id)) {
@@ -49,7 +49,7 @@ module.exports = {
       }
 
       if (!deckIds.has(card.id)) {
-        throw new Error('Invalid Card');
+        throw new Error(`Invalid Card id ${card.id}`);
       }
 
       cardIds.add(card.id);
