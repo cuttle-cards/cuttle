@@ -131,6 +131,6 @@ describe('Throwing Errors on card validations',() => {
 
   it('throws an error when a card in the scrap has an attachment', () => {
     expect(() => sails.helpers.gameStates.validateAllCards(scrapAttachments))
-      .toThrowError(/^6C is not a points card, and cannot have attachments$/);
+      .toThrowError(/^6C is not a point card, and cannot have attachments$/);
   });
 });
