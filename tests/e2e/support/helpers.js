@@ -360,11 +360,11 @@ function assertStoreMatchesFixture(fixture) {
       );
       // Scrap (if specified)
       if (fixture.scrap) {
-        expect(cardListsMatch(game.scrap, fixture.scrap)).to.eq(
+        expect(fixture.scrap.every(card => game.scrap.some(scrapCard => cardsMatch(card, scrapCard)))).to.eq(
           true,
           `Scrap should match fixture, but actual ${printCardList(
             game.scrap,
-          )} did not match fixture: ${printCardList(fixture.scrap)}`,
+          )} did not contain: ${printCardList(fixture.scrap)}`,
         );
       }
       // Top Card if specified

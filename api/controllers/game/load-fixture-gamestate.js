@@ -24,16 +24,17 @@ module.exports = async function (req, res) {
       deck,
     } = req.body;
 
-    const allFixtureCards = Object.values(req.body).flat();
+    const allFixtureCards = new Set(Object.values(req.body).flat()
+      .map(({ id }) => id));
 
-    // Populate deck with all cards except the cards in the fixture
-    const populatedDeck =
-      deck ??
-      _.shuffle(
-        DeckIds.filter((id) => !allFixtureCards.some((card) => card?.id === id)).map((id) =>
-          convertStrToCard(id),
-        ),
-      );
+    const unusedCards = _.shuffle(
+      DeckIds.filter((id) => !allFixtureCards.has(id)).map((id) =>
+        convertStrToCard(id),
+      )
+    );
+
+    const populatedDeck = deck ?? unusedCards ;
+    const populatedScrap = deck ? [ ...scrap , ...unusedCards ] : scrap;
 
     if (secondCard) {
       populatedDeck.unshift(secondCard);
@@ -54,7 +55,7 @@ module.exports = async function (req, res) {
         faceCards: p1FaceCards,
       },
       deck: populatedDeck,
-      scrap: scrap,
+      scrap: populatedScrap,
       twos: [],
       discardedCards: [],
       oneOff: null,
