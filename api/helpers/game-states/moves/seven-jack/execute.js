@@ -1,20 +1,20 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Play a Jack',
+  friendlyName: 'Play a Jack via a seven',
 
   description: 'Returns new GameState resulting from requested move',
 
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest gameState before playing Jack',
+      description: 'The latest gameState before playing Jack from the seven',
       required: true,
     },
     /**
      * @param { Object } requestedMove - The move being requested.
      * @param { String } requestedMove.cardId - Card Played (Jack)
-     * @param { String } [ requestedMove.targetId ] - Card targeted by Jack
+     * @param { String } [ requestedMove.targetId ] - Opponent's point card targeted by the jack
      */
     requestedMove: {
       type: 'ref',
@@ -37,11 +37,11 @@ module.exports = {
     const player = playedBy ? result.p1 : result.p0;
     const opponent = playedBy ? result.p0 : result.p1;
 
-    const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
+    const cardIndex = result.deck.findIndex(({ id }) => id === cardId);
     const targetIndex = opponent.points.findIndex(({ id }) => id === targetId);
 
     // Remove card from player's hand
-    const [ playedCard ] = player.hand.splice(cardIndex, 1);
+    const [ playedCard ] = result.deck.splice(cardIndex, 1);
 
     // Remove target card from oppponent's points
     const [ targetCard ] = opponent.points.splice(targetIndex, 1);
@@ -51,16 +51,21 @@ module.exports = {
 
     // Add targetCard to player's points
     player.points.push(targetCard);
+    // Scrap oneOff
+    const { oneOff } = result;
+    result.scrap.push(oneOff);
 
     result.turn++;
 
     result = {
       ...result,
       ...requestedMove,
+      phase: GamePhase.MAIN,
       playedBy,
       playedCard,
       targetCard,
-      phase: GamePhase.MAIN,
+      resolved: oneOff,
+      oneOff: null,
     };
 
     return exits.success(result);
