@@ -898,6 +898,51 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
     });
 });
 
+Cypress.Commands.add('sevenDiscardOpponent', (card) => {
+  if (!hasValidSuitAndRank(card)) {
+    throw new Error('Cannot play opponent points: Invalid card input');
+  }
+
+  Cypress.log({
+    displayName: 'Opponent seven discard',
+    name: 'Opponent discards jack from seven',
+    message: printCard(card),
+  });
+
+  return cy
+    .window()
+    .its('cuttle.gameStore')
+    .then((game) => {
+      const player = game.players[game.myPNum];
+      let foundCard;
+      let index;
+
+      if (cardsMatch(card, game.topCard)) {
+        foundCard = game.topCard;
+        index = 0;
+      } else if (cardsMatch(card, game.secondCard)) {
+        foundCard = game.secondCard;
+        index = 1;
+      } else {
+        throw new Error(
+          `Error playing ${printCard(
+            card,
+          )} for jack from seven as opponent: Could not find it in top two cards`,
+        );
+      }
+
+      const cardId = foundCard.id;
+
+      cy.makeSocketRequest('game', 'seven/jack', {
+        moveType: MoveType.SEVEN_DISCARD,
+        cardId,
+        index,
+        targetId: -1,
+        opId: player.id,
+      });
+    });
+});
+
 /**
  * @param card {suit: number, rank: number}
  */
