@@ -57,7 +57,6 @@ describe('Opponent playing SEVENS', () => {
   });
 
   it('Opponent plays jack from seven', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
