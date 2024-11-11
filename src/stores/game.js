@@ -654,12 +654,13 @@ export const useGameStore = defineStore('game', {
       this.myTurnToCounter = false;
 
       await this.makeSocketRequest('seven/jack', {
-        moveType: MoveType.SEVEN_JACK,
+        moveType: MoveType.SEVEN_DISCARD,
         cardId,
         index, // 0 if topCard, 1 if secondCard
-        targetId: -1, // -1 for the double jacks with no points to steal case
-        opId: this.opponent.id,
+        targetId: -1, // FIXME: Remove in #965
+        opId: this.opponent.id, // FIXME: Remove in #965
       });
+
     },
 
     async requestPlayFaceCardSeven({ index, cardId }) {
