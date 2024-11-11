@@ -56,7 +56,7 @@ module.exports = {
 
       // Top 2 cards must both be jacks
       if (topTwoCards.some((card) => card.rank !== 11)) {
-        throw new Error('game.snackbar.jack.stealOnlyPointCards');
+        throw new Error('game.snackbar.jack.mustBeDoubleJacks');
       }
 
       // Jacks must be unplayable due to queen or lack of points
