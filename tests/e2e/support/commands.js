@@ -870,9 +870,7 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
         );
       }
 
-      // -1 is the target naming convention for discarding a card
-      const discarding = target === -1;
-      const foundTarget = discarding ? -1 : player.points.find((pointCard) => cardsMatch(target, pointCard));
+      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
 
       if (!foundTarget) {
         throw new Error(
@@ -881,13 +879,8 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
       }
 
       const cardId = foundCard.id;
-      let targetId;
+      const targetId = foundTarget.id;
 
-      if (target !== -1) {
-        targetId = foundTarget.id;
-      } else {
-        targetId = -1;
-      }
       cy.makeSocketRequest('game', 'seven/jack', {
         moveType: MoveType.SEVEN_JACK,
         cardId,
