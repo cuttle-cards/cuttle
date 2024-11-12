@@ -1,4 +1,5 @@
 const GameStatus = require('../../../utils/GameStatus.json');
+const MoveType = require('../../../utils/MoveType.json');
 
 module.exports = {
   friendlyName: 'Check Game State for win',
@@ -51,8 +52,9 @@ module.exports = {
       currentMatch: null,
     };
 
-    const p0Wins = checkWin(0);
-    const p1Wins = checkWin(1);
+    const playerConceded = gameState.moveType === MoveType.CONCEDE;
+    const p0Wins = checkWin(0) || (playerConceded && gameState.playedBy === 1);
+    const p1Wins = checkWin(1) || (playerConceded && gameState.playedBy === 0);
 
     if (p0Wins || p1Wins || numPasses >= 3) {
       res.gameOver = true;
