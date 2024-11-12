@@ -25,6 +25,7 @@ export default {
   SEVEN_POINTS: 'sevenPoints',
   SEVEN_SCUTTLE: 'sevenScuttle',
   SEVEN_TARGETED_ONE_OFF: 'sevenTargetedOneOff',
+  CONCEDE: 'concede',
   SPECTATOR_JOINED: 'spectatorJoined',
   SPECTATOR_LEFT: 'spectatorLeft',
   TARGETED_ONE_OFF: 'targetedOneOff',

@@ -18,5 +18,6 @@
   "SEVEN_JACK": "sevenJack",
   "SEVEN_ONE_OFF": "sevenOneOff",
   "PASS": "pass",
+  "CONCEDE": "concede",
   "LOADFIXTURE": "loadFixture"
 }
