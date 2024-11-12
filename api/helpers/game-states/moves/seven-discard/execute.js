@@ -3,7 +3,7 @@ const GamePhase = require('../../../../../utils/GamePhase.json');
 module.exports = {
   friendlyName: 'Discard a Jack via a seven',
 
-  description: 'Returns new GameState resulting discarding the played card (due to being unable to play card to resolve a previous seven, when both of the top two cards were jacks which could not be played)',
+  description: 'Returns new GameState resulting in discarding the played card (due to being unable to play card to resolve a previous seven, when both of the top two cards were jacks which could not be played)',
 
   inputs: {
     currentState: {
