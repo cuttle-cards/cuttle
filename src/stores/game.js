@@ -700,7 +700,7 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestConcede() {
-      await this.makeSocketRequest('concede');
+      await this.makeSocketRequest('concede', { moveType: MoveType.CONCEDE });
     },
 
     async requestStalemate() {
