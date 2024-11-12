@@ -41,6 +41,7 @@ const transformGameUrl = (api, slug) => {
     'seven/untargetedOneOff',
     'seven/targetedOneOff',
     'pass',
+    'concede',
   ]);
 
   if (moveSlugs.has(slug)) {
@@ -1040,7 +1041,7 @@ Cypress.Commands.add('passOpponent', () => {
 });
 
 Cypress.Commands.add('concedeOpponent', () => {
-  cy.makeSocketRequest('game', 'concede', null);
+  cy.makeSocketRequest('game', 'concede', { moveType: MoveType.CONCEDE });
 });
 
 Cypress.Commands.add('stalemateOpponent', () => {
