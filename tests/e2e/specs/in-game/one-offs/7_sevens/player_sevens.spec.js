@@ -185,7 +185,6 @@ describe('Playing SEVENS', () => {
     });
 
     it('Plays jack from a seven - special case - double jacks with some points to steal but opponent has queen', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -233,7 +232,6 @@ describe('Playing SEVENS', () => {
     });
 
     it('Plays jack from a seven - special case - double jacks with no points to steal', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -281,7 +279,6 @@ describe('Playing SEVENS', () => {
     });
 
     it('Plays jack from a seven - special case - final card in deck is a jack with with no points on the board', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [],

@@ -1,20 +1,20 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Play a Jack via a seven',
+  friendlyName: 'Discard a Jack via a seven',
 
-  description: 'Returns new GameState resulting from requested move',
+  description: 'Returns new GameState resulting in discarding the played card (due to being unable to play card to resolve a previous seven, when both of the top two cards were jacks which could not be played)',
 
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest gameState before playing Jack from the seven',
+      description: 'The latest gameState before discarding Jack from the seven',
       required: true,
     },
     /**
      * @param { Object } requestedMove - The move being requested.
      * @param { String } requestedMove.cardId - Card Played (Jack)
-     * @param { String } [ requestedMove.targetId ] - Opponent's point card targeted by the jack
+     * @param { MoveType.SEVEN_DISCARD } requestedMove.moveType - Specifies that this a sevenDiscard
      */
     requestedMove: {
       type: 'ref',
@@ -32,28 +32,15 @@ module.exports = {
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
     let result = _.cloneDeep(currentState);
 
-    const { cardId, targetId } = requestedMove;
-
-    const player = playedBy ? result.p1 : result.p0;
-    const opponent = playedBy ? result.p0 : result.p1;
-
+    const { cardId } = requestedMove;
     const cardIndex = result.deck.findIndex(({ id }) => id === cardId);
-    const targetIndex = opponent.points.findIndex(({ id }) => id === targetId);
 
-    // Remove card from the deck
+    // Remove discarded card from the deck
     const [ playedCard ] = result.deck.splice(cardIndex, 1);
 
-    // Remove target card from oppponent's points
-    const [ targetCard ] = opponent.points.splice(targetIndex, 1);
-
-    // Add jack (playedCard) to targetCard's attachment
-    targetCard.attachments.push(playedCard);
-
-    // Add targetCard to player's points
-    player.points.push(targetCard);
-    // Scrap oneOff
+    // Scrap oneOff and playedCard
     const { oneOff } = result;
-    result.scrap.push(oneOff);
+    result.scrap.push(oneOff, playedCard);
 
     result.turn++;
 
@@ -63,7 +50,6 @@ module.exports = {
       phase: GamePhase.MAIN,
       playedBy,
       playedCard,
-      targetCard,
       resolved: oneOff,
       oneOff: null,
     };

@@ -298,7 +298,9 @@
         "seven": {
           "oneCardInDeck": "Impossible de jouer la capacité du Sept si c'était la dernière carte de la pioche.",
           "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte de la pioche.",
-          "wrongPhase": "Vous ne pouvez pas jouer depuis le paquet pour le moment"
+          "wrongPhase": "Vous ne pouvez pas jouer depuis le paquet pour le moment",
+          "mustBeDoubleJacks": "Vous ne pouvez pas défausser depuis un sept sauf si les deux cartes sont des valets",
+          "jacksMustBeUnplayable": "Vous ne pouvez pas défausser parce que les valets peuvent être joués"
         }
       }
     }

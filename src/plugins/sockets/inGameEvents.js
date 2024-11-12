@@ -120,6 +120,7 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.SEVEN_POINTS:
     case SocketEvent.SEVEN_FACE_CARD:
     case SocketEvent.SEVEN_JACK:
+    case SocketEvent.SEVEN_DISCARD:
     case SocketEvent.SEVEN_SCUTTLE:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       gameStore.playingFromDeck = false;

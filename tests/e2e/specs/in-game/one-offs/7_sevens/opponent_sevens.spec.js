@@ -106,7 +106,6 @@ describe('Opponent playing SEVENS', () => {
   });
 
   it('Plays jack from a seven - special case - opponent plays seven into double jacks with no points to steal', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -138,7 +137,7 @@ describe('Opponent playing SEVENS', () => {
       .click({ force: true })
       .should('not.have.class', 'selected');
 
-    cy.playJackFromSevenOpponent(Card.JACK_OF_CLUBS, -1);
+    cy.sevenDiscardOpponent(Card.JACK_OF_CLUBS);
 
     assertGameState(0, {
       p0Hand: [],
