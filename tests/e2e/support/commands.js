@@ -871,9 +871,7 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
         );
       }
 
-      // -1 is the target naming convention for discarding a card
-      const discarding = target === -1;
-      const foundTarget = discarding ? -1 : player.points.find((pointCard) => cardsMatch(target, pointCard));
+      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
 
       if (!foundTarget) {
         throw new Error(
@@ -882,18 +880,58 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
       }
 
       const cardId = foundCard.id;
-      let targetId;
+      const targetId = foundTarget.id;
 
-      if (target !== -1) {
-        targetId = foundTarget.id;
-      } else {
-        targetId = -1;
-      }
       cy.makeSocketRequest('game', 'seven/jack', {
         moveType: MoveType.SEVEN_JACK,
         cardId,
         index,
         targetId,
+        opId: player.id,
+      });
+    });
+});
+
+Cypress.Commands.add('sevenDiscardOpponent', (card) => {
+  if (!hasValidSuitAndRank(card)) {
+    throw new Error('Cannot play opponent points: Invalid card input');
+  }
+
+  Cypress.log({
+    displayName: 'Opponent seven discard',
+    name: 'Opponent discards jack from seven',
+    message: printCard(card),
+  });
+
+  return cy
+    .window()
+    .its('cuttle.gameStore')
+    .then((game) => {
+      const player = game.players[game.myPNum];
+      let foundCard;
+      let index;
+
+      if (cardsMatch(card, game.topCard)) {
+        foundCard = game.topCard;
+        index = 0;
+      } else if (cardsMatch(card, game.secondCard)) {
+        foundCard = game.secondCard;
+        index = 1;
+      } else {
+        throw new Error(
+          `Error playing ${printCard(
+            card,
+          )} for jack from seven as opponent: Could not find it in top two cards`,
+        );
+      }
+
+      const cardId = foundCard.id;
+
+      cy.makeSocketRequest('game', 'seven/jack', {
+        moveType: MoveType.SEVEN_DISCARD,
+        cardId,
+        index,
+        targetId: -1,
         opId: player.id,
       });
     });

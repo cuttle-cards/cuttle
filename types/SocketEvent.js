@@ -21,6 +21,7 @@ export default {
   SCUTTLE: 'scuttle',
   SEVEN_FACE_CARD: 'sevenFaceCard',
   SEVEN_JACK: 'sevenJack',
+  SEVEN_DISCARD: 'sevenDiscard',
   SEVEN_ONE_OFF: 'sevenOneOff',
   SEVEN_POINTS: 'sevenPoints',
   SEVEN_SCUTTLE: 'sevenScuttle',
