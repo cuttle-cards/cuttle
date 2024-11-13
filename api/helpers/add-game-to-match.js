@@ -22,10 +22,10 @@ module.exports = {
         return exits.success(match);
       }
 
-      const player1 = game.p0;
-      const player2 = game.p1;
+      const player1Id = game.p0;
+      const player2Id = game.p1;
 
-      let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1.id, player2.id);
+      let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1Id, player2Id);
       if (!relevantMatch) {
         return exits.error(new Error('Could not add game to match'));
       }
@@ -65,7 +65,7 @@ module.exports = {
           winner: relevantMatch.player2,
         });
       }
-      relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1.id, player2.id);
+      relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1Id, player2Id);
 
       return exits.success(relevantMatch);
     } catch (err) {
