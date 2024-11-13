@@ -21,7 +21,10 @@ module.exports = {
         const match = sails.helpers.getCasualMatch(game);
         return exits.success(match);
       }
-      const [ player1, player2 ] = game.players;
+
+      const player1 = game.p0;
+      const player2 = game.p1;
+
       let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1.id, player2.id);
       if (!relevantMatch) {
         return exits.error(new Error('Could not add game to match'));
