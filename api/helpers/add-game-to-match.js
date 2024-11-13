@@ -22,8 +22,8 @@ module.exports = {
         return exits.success(match);
       }
 
-      const player1Id = game.p0;
-      const player2Id = game.p1;
+      const player1Id = game.p0?.id ?? game.p0;
+      const player2Id = game.p1?.id ?? game.p1;
 
       let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1Id, player2Id);
       if (!relevantMatch) {
