@@ -96,6 +96,8 @@ module.exports = async function (req, res) {
       newGame.gameStates = [];
       newGame.p0 = newP0;
       newGame.p1 = newP1;
+      newGame.p0Ready = true;
+      newGame.p1Ready = true;
     } else {
       newGame.players = [ p0, p1 ];
     }
