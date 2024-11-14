@@ -22,14 +22,21 @@ module.exports = async function (req, res) {
     // Determine whether to start new game
     const oldPNum = game.p0.id === userId ? 0 : 1;
     const rematchVal = { [`p${oldPNum}Rematch`]: rematch };
-    const gameUpdates = {
-      ...rematchVal,
-      lastEvent: {
-        change: 'rematch',
-        game: { ...game.lastEvent.game, ...rematchVal },
-        victory: game.lastEvent.victory
-      }
-    };
+
+    let gameUpdates;
+
+    if (process.env.VITE_USE_GAMESTATE_API){
+      gameUpdates = { ...rematchVal };
+    } else {
+      gameUpdates = {
+        ...rematchVal,
+        lastEvent: {
+          change: 'rematch',
+          game: { ...game.lastEvent.game, ...rematchVal },
+          victory: game.lastEvent.victory
+        }
+      };
+    }
     const { p0Rematch, p1Rematch } = { ...game, ...gameUpdates };
     const bothWantToRematch = p0Rematch && p1Rematch;
 
@@ -76,26 +83,40 @@ module.exports = async function (req, res) {
     // Update old game's rematchGame & add players to new game
     gameUpdates.rematchGame = newGame.id;
     const { p0: newP1, p1: newP0 } = game;
-    const [ updatedGame, p0, p1 ] = await Promise.all([
-      Game.updateOne({ id: game.id }).set(gameUpdates),
+
+    const [ p0, p1 ] = await Promise.all([
       User.updateOne({ id: newP0.id }).set({ pNum: 0 }),
       User.updateOne({ id: newP1.id }).set({ pNum: 1 }),
+      Game.updateOne({ id: game.id }).set(gameUpdates),
       Game.replaceCollection(newGame.id, 'players').members([ newP0.id, newP1.id ]),
     ]);
 
+    
+    if (process.env.VITE_USE_GAMESTATE_API) {
+      newGame.gameStates = [];
+      newGame.p0 = newP0;
+      newGame.p1 = newP1;
+    } else {
+      newGame.players = [ p0, p1 ];
+    }
+    
     // Deal cards in new game
-    newGame.players = [ p0, p1 ];
     const newFullGame = await gameService.dealCards(newGame, {});
+    
+    let socketEvent;
+    if (process.env.VITE_USE_GAMESTATE_API) {
+      socketEvent = await sails.helpers.gameStates.createSocketEvent(newGame, newFullGame);
+    }
+    const socketGame = socketEvent.game ?? newFullGame;
 
     Game.publish([ game.id ], {
       change: 'newGameForRematch',
-      game: updatedGame,
-      pNum: oldPNum,
       oldGameId,
       gameId: newGame.id,
-      newGame: newFullGame,
+      newGame: socketGame,
     });
-
+    
+    
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
   } catch (err) {
