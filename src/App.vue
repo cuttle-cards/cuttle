@@ -36,7 +36,7 @@ export default {
     },
     variant() {
       const isHomeView = this.$router.currentRoute.value.name !== 'Stats';
-      return isHomeView ? 'light' : 'dark'; 
+      return isHomeView ? 'light' : 'dark';
     },
     showFooter() {
       return this.showNav && this.isSmallDevice && this.isAuthenticated;
