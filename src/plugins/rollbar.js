@@ -22,7 +22,9 @@ const config = {
     client: {
       javascript: {
         code_version: version,
-        source_map_enabled: true,
+        // It would be nice to add these eventuall, but we need to upload them separately during
+        // the build process
+        source_map_enabled: false,
       }
     },
   },
