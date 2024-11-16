@@ -109,7 +109,8 @@ module.exports = async function (req, res) {
     if (process.env.VITE_USE_GAMESTATE_API) {
       socketEvent = await sails.helpers.gameStates.createSocketEvent(newGame, newFullGame);
     }
-    const socketGame = socketEvent.game ?? newFullGame;
+    
+    const socketGame = socketEvent ?? newFullGame;
 
     Game.publish([ game.id ], {
       change: 'newGameForRematch',
