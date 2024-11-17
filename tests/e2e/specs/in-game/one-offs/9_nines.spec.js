@@ -239,7 +239,6 @@ describe('Playing NINES', () => {
       cy.get('#player-hand-targeting').should('be.visible');
       cy.get('[data-opponent-point-card=1-3]').click({ force: true });
 
-      // opponent plays points to pass turn
       // Opponent plays jack
       cy.playJackOpponent(Card.JACK_OF_DIAMONDS, Card.ACE_OF_SPADES);
 
