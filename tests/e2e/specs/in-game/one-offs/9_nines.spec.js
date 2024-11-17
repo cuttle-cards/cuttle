@@ -195,7 +195,7 @@ describe('Playing NINES', () => {
 
       // Should no longer see jack of clubs on screen
       cy.get('[data-player-face-card=11-0]').should('not.exist');
-    }); // End 9 on jack    cy.resolveOpponent();
+    }); // End 9 on jack 
 
     it('Plays a 9 on a triple jack to steal back jacked point card', () => {
       cy.loadGameFixture(0, {
