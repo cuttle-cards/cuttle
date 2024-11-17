@@ -327,10 +327,10 @@ describe('Playing NINES', () => {
       cy.resolveOpponent();
 
       assertGameState(0, {
-        p0Hand: [ Card.ACE_OF_SPADES ],
+        p0Hand: [  ],
         p0Points: [ Card.TEN_OF_SPADES ],
         p0FaceCards: [],
-        p1Hand: [ Card.NINE_OF_HEARTS ],
+        p1Hand: [ Card.NINE_OF_HEARTS, Card.ACE_OF_SPADES ],
         p1Points: [],
         p1FaceCards: [],
       });

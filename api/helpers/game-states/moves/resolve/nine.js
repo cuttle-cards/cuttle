@@ -28,8 +28,7 @@ module.exports = {
       const [ targetCard ] = opponent[`${result.oneOffTargetType}s`].splice(targetIndex, 1);
       
       // Send Card back to original owner
-      let originalOwner = targetCard.attachments.length % 2 !== 0 ? player : opponent;
-      originalOwner.hand.push({ ...targetCard, isFrozen: true, attachments: [] });
+      opponent.hand.push({ ...targetCard, isFrozen: true, attachments: [] });
       
       // scrap all attachments
       result.scrap.push(...targetCard.attachments);
