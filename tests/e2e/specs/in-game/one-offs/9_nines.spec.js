@@ -273,7 +273,7 @@ describe('Playing NINES', () => {
       });
     });
 
-    it('Plays a 9 on a triple jack to scrap all jack', () => {
+    it('Plays a 9 on a point card that has been triple jacked', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.ACE_OF_SPADES, Card.NINE_OF_CLUBS, Card.JACK_OF_SPADES ],
         p0Points: [ Card.TEN_OF_SPADES ],
