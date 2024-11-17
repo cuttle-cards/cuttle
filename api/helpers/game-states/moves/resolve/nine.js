@@ -43,7 +43,7 @@ module.exports = {
     // remove last attachment
     targetCard.attachments.pop();
 
-    // Push card that jack was removed from back to players points
+    // Card the jack was stealing goes back to other player
     player.points.push(
       {
         ...targetCard,
