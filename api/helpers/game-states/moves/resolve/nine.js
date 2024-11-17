@@ -23,11 +23,9 @@ module.exports = {
     const player = playedBy ? result.p0 : result.p1;
  
     if ([ 'point', 'faceCard' ].includes(result.oneOffTargetType)) {
-      
       const targetIndex = opponent[`${result.oneOffTargetType}s`].findIndex(({ id }) => id === result.targetCard.id);
       const [ targetCard ] = opponent[`${result.oneOffTargetType}s`].splice(targetIndex, 1);
       
-      // Send Card back to original owner
       opponent.hand.push({ ...targetCard, isFrozen: true, attachments: [] });
       
       // scrap all attachments
