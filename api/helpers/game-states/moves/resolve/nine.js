@@ -16,7 +16,7 @@ module.exports = {
   },
   sync: true, // synchronous helper
   fn: ({ currentState, playedBy }, exits) => {
-    let result = _.cloneDeep(currentState);
+    const result = _.cloneDeep(currentState);
 
     // the user who played the one off is the opposite of the one who is resolving it. 
     const opponent = playedBy ? result.p1 : result.p0;
