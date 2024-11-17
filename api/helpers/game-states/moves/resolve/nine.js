@@ -34,7 +34,7 @@ module.exports = {
       return exits.success(result);
     } 
     
-    // TargetType = Jack
+    // TargetType = jack
     // Find card that the jack is attached to
     const targetIndex = opponent.points.findIndex(({ attachments }) =>
       attachments.some(({ id }) => id === result.targetCard.id));
