@@ -13,9 +13,7 @@ const config = {
   // Only allow items to be sent from certain domains
   hostSafeList: [
     'cuttle.cards',
-    ...(!import.meta.env.PROD) ? [
-      'localhost',
-    ] : [],
+    // 'localhost', // Uncomment to log errors during development
   ],
   payload: {
     environment: import.meta.env.PROD ? 'production' : 'development',
