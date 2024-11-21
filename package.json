@@ -10,6 +10,7 @@
     "machinepack-passwords": "2.3.0",
     "marked": "10.0.0",
     "pinia": "2.2.4",
+    "rollbar": "^2.26.4",
     "sails": "1.5.12",
     "sails-disk": "2.1.2",
     "sails-hook-orm": "2.1.1",
