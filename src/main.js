@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import rollbar from '@/plugins/rollbar';
 import vuetify from '@/plugins/vuetify';
 import router from '@/router';
 import i18n from '@/i18n';
@@ -8,6 +9,12 @@ import App from '@/App.vue';
 const pinia = createPinia();
 
 const app = createApp(App);
+
+// Add rollbar to vue
+if (import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN) {
+  app.use(rollbar);
+}
+
 // Add router to vue
 app.use(router);
 
