@@ -1,3 +1,5 @@
+const TargetType = require('../../../../../utils/TargetType.json');
+
 module.exports = {
   friendlyName: 'Resolve Nine One-Off',
 
@@ -22,7 +24,7 @@ module.exports = {
     const opponent = playedBy ? result.p1 : result.p0;
     const player = playedBy ? result.p0 : result.p1;
  
-    if ([ 'point', 'faceCard' ].includes(result.oneOffTargetType)) {
+    if ([ TargetType.point, TargetType.faceCard ].includes(result.oneOffTargetType)) {
       const targetIndex = opponent[`${result.oneOffTargetType}s`].findIndex(({ id }) => id === result.targetCard.id);
       const [ targetCard ] = opponent[`${result.oneOffTargetType}s`].splice(targetIndex, 1);
       
