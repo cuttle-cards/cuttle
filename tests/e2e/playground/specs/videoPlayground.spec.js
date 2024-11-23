@@ -449,7 +449,8 @@ describe('Video Playground', () => {
       ],
       p0Points: [ Card.NINE_OF_CLUBS ],
       p0FaceCards: [],
-      p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS, Card.TWO_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.QUEEN_OF_SPADES ],
+      p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS,
+        Card.TWO_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.QUEEN_OF_SPADES ],
       p1Points: [],
       p1FaceCards: [],
     });
