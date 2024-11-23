@@ -333,7 +333,7 @@ describe('Playing NINES', () => {
         p1Hand: [ Card.NINE_OF_HEARTS, Card.ACE_OF_SPADES ],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [Card.JACK_OF_DIAMONDS, Card.JACK_OF_CLUBS, Card.JACK_OF_SPADES, Card.NINE_OF_CLUBS]
+        scrap: [ Card.JACK_OF_DIAMONDS, Card.JACK_OF_CLUBS, Card.JACK_OF_SPADES, Card.NINE_OF_CLUBS ]
       });
     });
 
