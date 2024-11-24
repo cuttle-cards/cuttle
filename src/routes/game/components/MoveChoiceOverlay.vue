@@ -102,7 +102,7 @@ export default {
     allMovesAreDisabled() {
       return (
         !this.isPlayersTurn ||
-        this.frozenId === this.selectedCard.id ||
+        this.frozenId === this.selectedCard.id || this.selectedCard.isFrozen ||
         (this.playingFromDeck && !this.cardSelectedFromDeck)
       );
     },

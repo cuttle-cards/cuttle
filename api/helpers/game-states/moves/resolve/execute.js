@@ -76,6 +76,9 @@ module.exports = {
           phase: oneOff.rank
         };
         return exits.success(result);
+      case 9:
+        result = sails.helpers.gameStates.moves.resolve.nine(result, playedBy);
+        break;
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
