@@ -27,6 +27,10 @@ module.exports = {
       ...(_.cloneDeep(currentState)),
       moveType: requestedMove.moveType, // MoveType.CONCEDE
       playedBy,
+      playedCard: null,
+      targetCard: null,
+      discardedCards: [],
+      resolved: null,
     };
 
     return exits.success(result);
