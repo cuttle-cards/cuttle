@@ -16,7 +16,7 @@ Cypress.Commands.add('skipOnGameStateApi', () => {
   }
 });
 
-const transformGameUrl = (api, slug) => {
+const transformGameUrl = (api, slug, gameId = null) => {
   if (!env) {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
@@ -45,17 +45,19 @@ const transformGameUrl = (api, slug) => {
   ]);
 
   if (moveSlugs.has(slug)) {
-    return cy
-      .window()
-      .its('cuttle.gameStore.id')
-      .then((gameId) => `/api/game/${gameId}/move/`);
+
+    return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/move/`) :
+      cy
+        .window()
+        .its('cuttle.gameStore.id')
+        .then((gameId) => `/api/game/${gameId}/move/`);
   }
 
   return Cypress.Promise.resolve(`/api/${api}/${slug}`);
 };
 
-Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => {
-  return transformGameUrl(api, slug).then((url) => {
+Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST', gameId = null) => {
+  return transformGameUrl(api, slug, gameId).then((url) => {
     return new Cypress.Promise((resolve, reject) => {
       io.socket.request(
         {
@@ -1078,8 +1080,8 @@ Cypress.Commands.add('passOpponent', () => {
   cy.makeSocketRequest('game', 'pass', { moveType });
 });
 
-Cypress.Commands.add('concedeOpponent', () => {
-  cy.makeSocketRequest('game', 'concede', { moveType: MoveType.CONCEDE });
+Cypress.Commands.add('concedeOpponent', (gameId = null) => {
+  cy.makeSocketRequest('game', 'concede', { moveType: MoveType.CONCEDE }, 'POST', gameId);
 });
 
 Cypress.Commands.add('stalemateOpponent', () => {
