@@ -25,7 +25,6 @@ module.exports = {
   },
 
   fn: async function ({ game, gameState, numPasses }, exits) {
-    
     const checkWin = (pNum) => {
       const player = pNum ? gameState.p1 : gameState.p0;
       const points = player.points?.reduce((sum, { rank }) => sum + rank, 0);
@@ -69,14 +68,16 @@ module.exports = {
         gameUpdates.winner = game.p1.id;
       }
 
-      await Game.updateOne({ id: game.id }).set(gameUpdates);
+      // Update game and add it to its match if this hasn't yet been done
+      if (game.status === GameStatus.STARTED) {
+        await Game.updateOne({ id: game.id }).set(gameUpdates);
+        game = {
+          ...game,
+          ...gameUpdates,
+        };
 
-      game = {
-        ...game,
-        ...gameUpdates,
-      };
-
-      res.currentMatch = await sails.helpers.addGameToMatch(game);
+        res.currentMatch = await sails.helpers.addGameToMatch(game);
+      }
     }
     return exits.success(res);
   },
