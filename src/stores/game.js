@@ -52,6 +52,7 @@ class GameCard {
     this.id = card.id;
     this.suit = card.suit;
     this.rank = card.rank;
+    this.isFrozen = card.isFrozen;
     this.name = str_rank + str_suit;
     this.attachments = card.attachments?.map((attachment) => createGameCard(attachment));
   }
