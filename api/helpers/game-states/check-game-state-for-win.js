@@ -71,13 +71,14 @@ module.exports = {
       // Update game and add it to its match if this hasn't yet been done
       if (game.status === GameStatus.STARTED) {
         await Game.updateOne({ id: game.id }).set(gameUpdates);
-        game = {
-          ...game,
-          ...gameUpdates,
-        };
-
-        res.currentMatch = await sails.helpers.addGameToMatch(game);
       }
+
+      game = {
+        ...game,
+        ...gameUpdates,
+      };
+
+      res.currentMatch = await sails.helpers.addGameToMatch(game);
     }
     return exits.success(res);
   },
