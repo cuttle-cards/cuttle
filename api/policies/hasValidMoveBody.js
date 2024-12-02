@@ -18,6 +18,7 @@ module.exports = function (req, res, next) {
     case MoveType.DRAW:
     case MoveType.RESOLVE:
     case MoveType.RESOLVE_FIVE: 
+    case MoveType.CONCEDE:
       return next();
 
     // These require a `cardId`

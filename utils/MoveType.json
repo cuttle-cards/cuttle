@@ -19,5 +19,6 @@
   "SEVEN_DISCARD": "sevenDiscard",
   "SEVEN_ONE_OFF": "sevenOneOff",
   "PASS": "pass",
+  "CONCEDE": "concede",
   "LOADFIXTURE": "loadFixture"
 }

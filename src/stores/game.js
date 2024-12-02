@@ -392,6 +392,7 @@ export const useGameStore = defineStore('game', {
         case 'seven/untargetedOneOff':
         case 'seven/targetedOneOff':
         case 'pass':
+        case 'concede':
           // add all the move-making ones here
           return `/api/game/${this.id}/move`;
         default:
@@ -701,7 +702,7 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestConcede() {
-      await this.makeSocketRequest('concede');
+      await this.makeSocketRequest('concede', { moveType: MoveType.CONCEDE });
     },
 
     async requestStalemate() {
