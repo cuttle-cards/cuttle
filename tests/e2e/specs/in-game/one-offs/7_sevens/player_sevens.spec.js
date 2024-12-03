@@ -404,7 +404,7 @@ describe('Playing SEVENS', () => {
       });
     }); // End seven queen test
 
-    it.only('Plays 8 as face card from a seven', () => {
+    it('Plays 8 as face card from a seven', () => {
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
