@@ -436,6 +436,7 @@ describe('Spectating Rematches', () => {
     });
 
     it('Specates a ranked match using rematch', () => {
+      cy.skipOnGameStateApi();
       // Game 1: playerOne wins with points
       cy.log('Game 1: player1 wins with points');
       cy.loadGameFixture(0, {
@@ -572,6 +573,7 @@ describe('Spectating Rematches', () => {
     });
 
     it('Shows when player1 declines rematch while spectating ranked match', () => {
+      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
@@ -579,6 +581,7 @@ describe('Spectating Rematches', () => {
     });
 
     it('Shows when player2 declines rematch while spectating ranked match', () => {
+      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true });
@@ -586,6 +589,7 @@ describe('Spectating Rematches', () => {
     });
 
     it('Spectates a ranked match where player 2 wins the match', () => {
+      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
