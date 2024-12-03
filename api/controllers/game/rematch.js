@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
     const { usr: userId } = req.session;
     const { gameId: oldGameId, rematch } = req.body;
 
-    let game =  await sails.helpers.lockGame(req.session.game);
+    let game = await sails.helpers.lockGame(req.session.game);
 
     // Early return if requesting user was not in the game
     if (!userId || ![ game.p0?.id, game.p1?.id ].includes(userId)) {
@@ -25,7 +25,7 @@ module.exports = async function (req, res) {
 
     let gameUpdates;
 
-    if (process.env.VITE_USE_GAMESTATE_API){
+    if (process.env.VITE_USE_GAMESTATE_API) {
       gameUpdates = { ...rematchVal };
     } else {
       gameUpdates = {
@@ -89,6 +89,7 @@ module.exports = async function (req, res) {
       User.updateOne({ id: newP1.id }).set({ pNum: 1 }),
       Game.updateOne({ id: game.id }).set(gameUpdates),
       Game.replaceCollection(newGame.id, 'players').members([ newP0.id, newP1.id ]),
+      process.env.VITE_USE_GAMESTATE_API ? Game.updateOne({ id: newGame.id }).set({ p0: newP0.id, p1: newP1.id }) : null
     ]);
 
     
@@ -116,7 +117,7 @@ module.exports = async function (req, res) {
       change: 'newGameForRematch',
       oldGameId,
       gameId: newGame.id,
-      newGame: socketGame,
+      newGame: socketGame.game,
     });
     
     
