@@ -153,7 +153,6 @@ describe('Opponent playing SEVENS', () => {
 
   describe('Opponent plays Face Cards from seven', () => {
     it('Opponent plays king from seven (Top Card)', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -201,7 +200,6 @@ describe('Opponent playing SEVENS', () => {
     }); // end opponent plays king from seven
 
     it('Opponent plays queen from seven (Second Card)', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -253,7 +251,6 @@ describe('Opponent playing SEVENS', () => {
     }); // end opponent plays queen from seven
 
     it('Opponent plays eight as glasses from seven (top card)', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],

@@ -1,9 +1,9 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Validate sevenPoints',
+  friendlyName: 'Validate sevenFaceCard',
 
-  description: 'Verifies whether a request to play points from the top of the deck when resolving a seven is legal, throwing explanatory error if not.',
+  description: 'Verifies whether a request to play a face card from the top of the deck when resolving a seven is legal, throwing explanatory error if not.',
 
   inputs: {
     currentState: {
@@ -12,9 +12,9 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to play points via seven
-     * @param { String } requestedMove.cardId - Card Played for points
-     * @param { MoveType.SEVEN_POINTS } requestedMove.moveType - Specifies that this a sevenPoints move
+     * @param { Object } requestedMove - Object describing the request to play face card via seven
+     * @param { String } requestedMove.cardId - Card Played as face card
+     * @param { MoveType.SEVEN_FACE_CARD } requestedMove.moveType - Specifies that this a sevenFaceCard move
      */
     requestedMove: {
       type: 'ref',
@@ -45,8 +45,8 @@ module.exports = {
         throw new Error('game.snackbar.seven.pickAndPlay');
       }
 
-      if (playedCard.rank > 10) {
-        throw new Error('game.snackbar.points.numberOnlyForPoints');
+      if (![ 8, 12, 13 ].includes(playedCard.rank)) {
+        throw new Error('game.snackbar.faceCard.withoutTarget');
       }
 
       return exits.success();
