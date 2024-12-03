@@ -14,7 +14,7 @@ module.exports = {
     /**
      * @param { Object } requestedMove - Object describing the request to play points via seven
      * @param { String } requestedMove.cardId - Card Played for points
-     * @param { MoveType.RESOLVE_SEVEN } requestedMove.moveType - Specifies that this a sevenPoints move
+     * @param { MoveType.SEVEN_POINTS } requestedMove.moveType - Specifies that this a sevenPoints move
      */
     requestedMove: {
       type: 'ref',
@@ -45,8 +45,8 @@ module.exports = {
         throw new Error('game.snackbar.seven.pickAndPlay');
       }
 
-      if (playedCard.rank >= 11) {
-        throw new Error('game.snackbar.sevenScuttle.mustPlaySeven');
+      if (playedCard.rank > 10) {
+        throw new Error('game.snackbar.points.numberOnlyForPoints');
       }
 
       return exits.success();
