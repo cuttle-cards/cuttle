@@ -89,10 +89,18 @@ module.exports = async function (req, res) {
       User.updateOne({ id: newP1.id }).set({ pNum: 1 }),
       Game.updateOne({ id: game.id }).set(gameUpdates),
       Game.replaceCollection(newGame.id, 'players').members([ newP0.id, newP1.id ]),
+      process.env.VITE_USE_GAMESTATE_API ? Game.updateOne({ id: newGame.id })
+        .set({ p0: newP0.id, p1: newP1.id, p0Ready: true, p1Ready: true }) : null
     ]);
 
-    
-    if (!process.env.VITE_USE_GAMESTATE_API) {
+    if (process.env.VITE_USE_GAMESTATE_API) {
+      newGame.gameStates = [];
+      newGame.p0 = newP0;
+      newGame.p1 = newP1;
+      newGame.p0Ready = true;
+      newGame.p1Ready = true;
+    }
+    else {
       newGame.players = [ p0, p1 ];
     }
     
@@ -101,10 +109,7 @@ module.exports = async function (req, res) {
     
     let socketEvent;
     if (process.env.VITE_USE_GAMESTATE_API) {
-      const gameStateGame = await Game.updateOne({ id: newGame.id })
-        .set({ p0: newP0.id, p1: newP1.id, p0Ready: true, p1Ready: true })
-        .populate('gameStates');
-      socketEvent = await sails.helpers.gameStates.createSocketEvent(gameStateGame, newFullGame);
+      socketEvent = await sails.helpers.gameStates.createSocketEvent(newGame, newFullGame);
     }
     
     const socketGame = socketEvent?.game ?? newFullGame;
