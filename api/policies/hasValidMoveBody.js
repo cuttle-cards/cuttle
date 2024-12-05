@@ -25,6 +25,7 @@ module.exports = function (req, res, next) {
     case MoveType.POINTS:
     case MoveType.FACE_CARD:
     case MoveType.SEVEN_POINTS:
+    case MoveType.SEVEN_FACE_CARD:
     case MoveType.COUNTER:
     case MoveType.RESOLVE_THREE:
     case MoveType.SEVEN_DISCARD:

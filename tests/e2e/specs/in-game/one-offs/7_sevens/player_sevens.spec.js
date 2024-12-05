@@ -337,7 +337,6 @@ describe('Playing SEVENS', () => {
 
   describe('Plays face cards from a seven', () => {
     it('Plays king from a seven', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -372,7 +371,6 @@ describe('Playing SEVENS', () => {
     }); // End seven king test
 
     it('Plays queen from a seven', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -407,7 +405,6 @@ describe('Playing SEVENS', () => {
     }); // End seven queen test
 
     it('Plays 8 as face card from a seven', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
