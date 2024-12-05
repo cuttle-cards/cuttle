@@ -61,6 +61,10 @@ module.exports = {
 
       const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
 
+      if (currentState.turn % 2 !== playedBy) {
+        throw new Error('game.snackbar.global.notYourTurn');
+      }
+
       if (currentState.phase !== GamePhase.MAIN) {
         throw new Error('game.snackbar.global.notInMainPhase');
       }
@@ -71,10 +75,6 @@ module.exports = {
 
       if (!playedCard) {
         throw new Error('game.snackbar.global.playFromHand');
-      }
-
-      if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
       }
 
       if (playedCard.isFrozen) {
