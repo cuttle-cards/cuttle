@@ -56,7 +56,7 @@ module.exports = {
     try {
       const topTwoCards = currentState.deck.slice(0, 2);
       const playedCard = topTwoCards.find(({ id }) => id === requestedMove.cardId);
-      const opponent = playedBy ? currentState.p0 : currentState.p0;
+      const opponent = playedBy ? currentState.p0 : currentState.p1;
 
       if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
