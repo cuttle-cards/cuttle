@@ -1061,7 +1061,7 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
       const targetId = foundTarget.id;
       const pointId = foundPointCard ? foundPointCard.id : null;
       cy.makeSocketRequest('game', 'seven/targetedOneOff', {
-        moveType: MoveType.SEVEN_TARGETED_ONE_OFF,
+        moveType: MoveType.SEVEN_ONE_OFF,
         cardId,
         index,
         targetId,
