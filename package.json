@@ -35,7 +35,8 @@
     "@storybook/vue": "7.6.0",
     "@storybook/vue3": "7.6.0",
     "@storybook/vue3-vite": "7.6.0",
-    "@vitejs/plugin-vue": "5.1.4",
+    "@types/jest": "^29.5.14",
+    "@vitejs/plugin-vue": "^5.2.1",
     "@vue/devtools": "7.4.6",
     "@vue/test-utils": "^2.4.6",
     "concurrently": "9.0.1",
@@ -56,6 +57,7 @@
     "rimraf": "6.0.1",
     "sass": "1.79.4",
     "storybook": "7.6.0",
+    "typescript": "^5.7.2",
     "vite": "5.4.8",
     "vite-plugin-vuetify": "^2.0.4",
     "vitest": "^0.34.6"
