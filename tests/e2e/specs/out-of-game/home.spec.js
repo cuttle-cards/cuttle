@@ -97,6 +97,12 @@ describe('Home - Game List', () => {
         .contains('Game made by other player');
     });
 
+    it('Displays "Empty" when there are no players', () => {
+      const players = [];
+      cy.createGamePlayer({ gameName: 'Game with no players', isRanked: false, players });
+      cy.get('[data-cy=game-list-item]').contains('Empty');
+    });
+
     it('Displays players\' usernames in the game list item', () => {
       const players = [
         { username: 'playerOne' },
