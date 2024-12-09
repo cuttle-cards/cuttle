@@ -100,14 +100,16 @@ export default {
     ...mapStores(useGameStore, useAuthStore, useGameListStore),
     playersText() {
       const numPlayers = this.players.length;
-      if (numPlayers === 0) {
-        return 'Empty';
-      } else if (numPlayers === 1) {
-        return `vs ${this.players[0].username}`;
-      } else if (numPlayers === 2) {
-        return `${this.players[0].username} vs ${this.players[1].username}`;
+      switch (numPlayers) {
+        case 0:
+          return 'Empty';
+        case 1:
+          return `vs ${this.players[0].username}`;
+        case 2:
+          return `${this.players[0].username} vs ${this.players[1].username}`;
+        default:
+          return '';
       }
-      return '';
     },
     joinButtonText() {
       return `${this.t('home.join')} ${this.isRanked ? this.t('global.ranked') : this.t('global.casual')}`;
