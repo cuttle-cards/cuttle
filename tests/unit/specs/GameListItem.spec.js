@@ -56,7 +56,7 @@ describe('GameListItem.vue', () => {
   it('displays player names when there are players', () => {
     const propsData = {
       name: 'Test Game',
-      players: ['aleph_one', 'SUBMARINO'],
+      players: [ 'aleph_one', 'SUBMARINO' ],
       gameId: 1,
       status: 0,
       isRanked: false,
