@@ -942,7 +942,7 @@ Cypress.Commands.add('sevenDiscardOpponent', (card) => {
  */
 Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play opponent one-ff from seven: Invalid card input');
+    throw new Error('Cannot play opponent one-off from seven: Invalid card input');
   }
   Cypress.log({
     displayName: 'Opponent seven one-off',
@@ -971,7 +971,7 @@ Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
       const playerId = game.players[game.myPNum].id;
       const cardId = foundCard.id;
       cy.makeSocketRequest('game', 'seven/untargetedOneOff', {
-        moveType: MoveType.SEVEN_UNTARGETED_ONE_OFF,
+        moveType: MoveType.SEVEN_ONE_OFF,
         cardId,
         index,
         opId: playerId,
@@ -1061,7 +1061,7 @@ Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targe
       const targetId = foundTarget.id;
       const pointId = foundPointCard ? foundPointCard.id : null;
       cy.makeSocketRequest('game', 'seven/targetedOneOff', {
-        moveType: MoveType.SEVEN_TARGETED_ONE_OFF,
+        moveType: MoveType.SEVEN_ONE_OFF,
         cardId,
         index,
         targetId,

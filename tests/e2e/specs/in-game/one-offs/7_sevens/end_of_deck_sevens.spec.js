@@ -143,7 +143,6 @@ describe('Playing sevens at the end of the deck', () => {
   });
 
   it('Cannot play last card of deck as 7 one-off when chaining sevens', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [],

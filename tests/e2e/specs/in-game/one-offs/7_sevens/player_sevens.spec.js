@@ -76,7 +76,6 @@ describe('Playing SEVENS', () => {
   });
 
   it('Cannot play jack from a seven if opponent has queen', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
@@ -122,7 +121,6 @@ describe('Playing SEVENS', () => {
   });
 
   it('Resets state after conceding during 7 resolve', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
@@ -544,7 +542,6 @@ describe('Playing SEVENS', () => {
 
   describe('Playing untargeted one-offs from a seven', () => {
     it('Plays an ACE from a seven', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -583,7 +580,6 @@ describe('Playing SEVENS', () => {
     });
 
     it('Cannot play 4 from seven when opponent has no cards in hand', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -613,7 +609,6 @@ describe('Playing SEVENS', () => {
 
   describe('Playing targeted one-offs from a seven', () => {
     it('Plays topCard TWO from a seven', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -653,7 +648,6 @@ describe('Playing SEVENS', () => {
     }); // End playing topCard TWO from seven
 
     it('Plays secondCard TWO from a seven', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -693,7 +687,6 @@ describe('Playing SEVENS', () => {
     }); // End playing topCard TWO from seven
 
     it('Plays TWO on jacks from a seven', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS ],
         p0Points: [],
@@ -749,7 +742,6 @@ describe('Playing SEVENS', () => {
     }); // End playing TWO on jacks from a seven
 
     it('Plays a NINE from a seven', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
         p0Points: [],
@@ -789,7 +781,6 @@ describe('Playing SEVENS', () => {
     }); // End playing NINE from seven
 
     it('Plays NINE on jacks from a seven', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS, Card.ACE_OF_CLUBS ],
         p0Points: [],
