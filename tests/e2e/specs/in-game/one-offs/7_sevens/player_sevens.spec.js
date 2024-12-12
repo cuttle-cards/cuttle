@@ -100,7 +100,7 @@ describe('Playing SEVENS', () => {
       .click({ force: true });
     cy.get('#player-hand-targeting').should('be.visible');
     cy.get('[data-opponent-point-card=10-2]').click();
-    assertSnackbar("Your opponent's queen prevents you from targeting their other cards");
+    assertSnackbar('You cannot use a Jack while your opponent has a Queen.');
 
     cy.get('[data-second-card=6-1]').should('exist')
       .and('be.visible')
