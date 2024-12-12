@@ -34,13 +34,13 @@ module.exports = {
   sync: true,
   fn: ({ targetId, targetType, player }, exits) => {
     switch (targetType) {
-      case 'point':
+      case TargetType.point:
         return exits.success(player.points.find(card => card.id === targetId));
   
-      case 'faceCard':
+      case TargetType.faceCard:
         return exits.success(player.faceCards.find(card => card.id === targetId));
   
-      case 'jack':
+      case TargetType.jack:
         for (let point of player.points) {
           for (let jack of point.attachments) {
             if (jack.id === targetId) {
