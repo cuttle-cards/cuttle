@@ -121,6 +121,7 @@ describe('Playing SEVENS', () => {
   });
 
   it('Resets state after conceding during 7 resolve', () => {
+    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [],
