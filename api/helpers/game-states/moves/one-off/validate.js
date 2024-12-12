@@ -76,7 +76,7 @@ module.exports = {
             throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
           }
 
-          if (playedCard.rank === 2 && !['faceCard', 'jack'].includes(requestedMove.targetType)) {
+          if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
             throw new Error('Twos can only target royals or glasses');
           }
 
