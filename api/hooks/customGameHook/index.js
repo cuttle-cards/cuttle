@@ -30,24 +30,37 @@ module.exports = function gameHook() {
     },
     findOpenGames: function () {
       return new Promise(function (resolve, reject) {
-        const recentUpdateThreshhold = dayjs.utc().subtract(1, 'day')
+        const recentUpdateThreshold = dayjs.utc().subtract(1, 'day')
           .toDate();
+    
         Game.find({
           status: gameService.GameStatus.CREATED,
-          createdAt: { '>=': recentUpdateThreshhold },
+          createdAt: { '>=': recentUpdateThreshold },
         })
-          .populate('players')
+          .populate('players') // Populate the players array
           .exec(function (error, games) {
             if (error) {
               return reject(error);
-            } else if (!games) {
+            } else if (!games || games.length === 0) {
               return reject({ message: "Can't find games" });
             }
-            const openGames = games.filter(({ players }) => players.length < 2);
-            return resolve(openGames);
+    
+            // Filter games with fewer than 2 players and transform the players array
+            const openGames = games
+              .filter(({ players }) => players.length < 2) // Keep games with fewer than 2 players
+              .map((game) => {
+                // Transform players array to include only id and username
+                game.players = game.players.map((player) => ({
+                  id: player.id, // Use 'id' since Sails.js generates it automatically
+                  username: player.username,
+                }));
+                return game; // Return the updated game object
+              });
+    
+            return resolve(openGames); // Resolve with transformed open games
           });
       });
-    },
+    },    
     findGame: function (id) {
       return new Promise(function (resolve, reject) {
         Game.findOne(id)

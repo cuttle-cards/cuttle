@@ -8,6 +8,7 @@ class GameSummary {
     this.id = obj.id ? obj.id : null;
     this.name = obj.name ? obj.name : null;
     this.numPlayers = Object.prototype.hasOwnProperty.call(obj, 'players') ? obj.players.length : 0;
+    this.players = Object.prototype.hasOwnProperty.call(obj, 'players') ? obj.players : [];
     this.status = Object.prototype.hasOwnProperty.call(obj, 'status') ? obj.status : GameStatus.ARCHIVED;
     this.isRanked = Object.prototype.hasOwnProperty.call(obj, 'isRanked') ? obj.isRanked : false;
     this.isOver = false;
@@ -53,6 +54,7 @@ export const useGameListStore = defineStore('gameList', {
       const updatedGame = this.openGames.find((game) => game.id === data.gameId);
       if (updatedGame) {
         updatedGame.numPlayers = Math.min(2, updatedGame.numPlayers + 1);
+        // updatedGame.players.push(data.newPlayer);
         updatedGame.status = data.newStatus;
       }
     },
