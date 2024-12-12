@@ -54,7 +54,7 @@ export const useGameListStore = defineStore('gameList', {
       const updatedGame = this.openGames.find((game) => game.id === data.gameId);
       if (updatedGame) {
         updatedGame.numPlayers = Math.min(2, updatedGame.numPlayers + 1);
-        // updatedGame.players.push(data.newPlayer);
+        updatedGame.players.push(data.newPlayer);
         updatedGame.status = data.newStatus;
       }
     },
@@ -62,6 +62,7 @@ export const useGameListStore = defineStore('gameList', {
       const updatedGame = this.openGames.find((game) => game.id === gameId);
       if (updatedGame) {
         updatedGame.numPlayers = Math.max(0, updatedGame.numPlayers - 1);
+        updatedGame.players.pop();
       }
     },
     setIsRanked({ gameId, isRanked }) {
