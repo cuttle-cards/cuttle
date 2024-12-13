@@ -30,7 +30,6 @@ module.exports = async function (req, res) {
         victory: game.lastEvent.victory
       }
     };
-
     const { p0Rematch, p1Rematch } = { ...game, ...gameUpdates };
     const bothWantToRematch = p0Rematch && p1Rematch;
 
@@ -77,7 +76,6 @@ module.exports = async function (req, res) {
     // Update old game's rematchGame & add players to new game
     gameUpdates.rematchGame = newGame.id;
     const { p0: newP1, p1: newP0 } = game;
-
     const [ updatedGame, p0, p1 ] = await Promise.all([
       Game.updateOne({ id: game.id }).set(gameUpdates),
       User.updateOne({ id: newP0.id }).set({ pNum: 0 }),
@@ -85,9 +83,8 @@ module.exports = async function (req, res) {
       Game.replaceCollection(newGame.id, 'players').members([ newP0.id, newP1.id ]),
     ]);
 
-    newGame.players = [ p0, p1 ];
-    
     // Deal cards in new game
+    newGame.players = [ p0, p1 ];
     const newFullGame = await gameService.dealCards(newGame, {});
 
     Game.publish([ game.id ], {
