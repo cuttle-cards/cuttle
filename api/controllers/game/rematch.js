@@ -95,7 +95,6 @@ module.exports = async function (req, res) {
       gameId: newGame.id,
       newGame: newFullGame,
     });
-    
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
   } catch (err) {
