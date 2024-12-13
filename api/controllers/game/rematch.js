@@ -82,7 +82,6 @@ module.exports = async function (req, res) {
       Game.updateOne({ id: game.id }).set(gameUpdates),
       User.updateOne({ id: newP0.id }).set({ pNum: 0 }),
       User.updateOne({ id: newP1.id }).set({ pNum: 1 }),
-      Game.updateOne({ id: game.id }).set(gameUpdates),
       Game.replaceCollection(newGame.id, 'players').members([ newP0.id, newP1.id ]),
     ]);
 
@@ -90,7 +89,7 @@ module.exports = async function (req, res) {
     
     // Deal cards in new game
     const newFullGame = await gameService.dealCards(newGame, {});
-    
+
     Game.publish([ game.id ], {
       change: 'newGameForRematch',
       game: updatedGame,
