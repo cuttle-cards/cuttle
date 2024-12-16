@@ -74,6 +74,7 @@ module.exports = async function (req, res) {
       Game.updateOne({ id: newGame.id })
         .set({ p0: newP0.id, p1: newP1.id, p0Ready: true, p1Ready: true }),
       Game.updateOne({ id: game.id }).set(gameUpdates),
+      Game.replaceCollection(newGame.id, 'players').members([ newP0.id, newP1.id ]),
     ]);
 
     updatedNewGame.gameStates = [];

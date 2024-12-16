@@ -96,8 +96,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
     cy.setupGameAsP0(true, true);
   });
 
-  it('Wins match played with Rematch/Continue Match button', function () {
-    cy.skipOnGameStateApi();
+  it.only('Wins match played with Rematch/Continue Match button', function () {
     // Game 1: Opponent concedes
     cy.log('Game 1: opponent concedes');
     cy.concedeOpponent();
