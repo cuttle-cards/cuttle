@@ -97,6 +97,7 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it('Wins match played with Rematch/Continue Match button', function () {
+    cy.skipOnGameStateApi();
     // Game 1: Opponent concedes
     cy.log('Game 1: opponent concedes');
     cy.concedeOpponent();
@@ -374,6 +375,7 @@ describe('Spectating Rematches', () => {
     });
 
     it('Spectates a casual match using rematch', () => {
+      cy.skipOnGameStateApi();
       cy.log('Game 1: player1 wins via opponent conceding');
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();

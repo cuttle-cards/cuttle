@@ -45,10 +45,11 @@ module.exports = async function (req, res) {
     const [ rematchGames, currentMatch ] = await Promise.all([
       sails.helpers.getRematchGames(game),
       Match.findOne({ id: game.match }),
-      User.find({ id: [ game.p0.id, game.p1.id ] }),
     ]);
+
     // Determine who was p0 and p1 in first game in the series
-    const [ { p0, p1 } ] = rematchGames;
+    const [ { p0: firstP0Id } ] = rematchGames;
+    const [ p0, p1 ] = game.p0.id === firstP0Id ? [ game.p0, game.p1 ] : [ game.p1, game.p0 ];
     // Get rematchGame win counts
     const player0Wins = rematchGames.filter(({ winner }) => winner === p0.id).length;
     const player1wins = rematchGames.filter(({ winner }) => winner === p1.id).length;
@@ -68,23 +69,23 @@ module.exports = async function (req, res) {
     // Update old game's rematchGame & add players to new game
     gameUpdates.rematchGame = newGame.id;
     const { p0: newP1, p1: newP0 } = game;
-
+    
     const [ updatedNewGame ] = await Promise.all([
-      Game.updateOne({ id: newGame.id }).set({ p0: newP0.id, p1: newP1.id, p0Ready: true, p1Ready: true })
-        .populate('gameStates'), 
-      User.updateOne({ id: newP0.id }).set({ pNum: 0 }),
-      User.updateOne({ id: newP1.id }).set({ pNum: 1 }),
+      Game.updateOne({ id: newGame.id })
+        .set({ p0: newP0.id, p1: newP1.id, p0Ready: true, p1Ready: true }),
       Game.updateOne({ id: game.id }).set(gameUpdates),
-      Game.replaceCollection(newGame.id, 'players').members([ newP0.id, newP1.id ]),
     ]);
 
+    updatedNewGame.gameStates = [];
+    updatedNewGame.p0 = { ...newP0 };
+    updatedNewGame.p1 = { ...newP1 };
     // Deal cards in new game
     const newFullGame = await gameService.dealCards(updatedNewGame, {});
-    const socketEvent = await sails.helpers.gameStates.createSocketEvent(newGame, newFullGame);
+    const socketEvent = await sails.helpers.gameStates.createSocketEvent(updatedNewGame, newFullGame);
 
     Game.publish([ game.id ], {
       change: 'newGameForRematch',
-      oldGameId,
+      oldGameId : Number(oldGameId),
       gameId: newGame.id,
       newGame: socketEvent.game
     });

@@ -395,6 +395,8 @@ export const useGameStore = defineStore('game', {
         case 'concede':
           // add all the move-making ones here
           return `/api/game/${this.id}/move`;
+        case 'rematch':
+          return `/api/game/${this.id}/rematch`;
         default:
           return `/api/game/${slug}`;
       }
