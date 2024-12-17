@@ -1,9 +1,10 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Validate request to play one-off',
+  friendlyName: 'Validate sevenOneOff',
 
-  description: 'Verifies whether a request to play one-off is legal, throwing explanatory error if not.',
+  description:
+    'Verifies whether a request to play a one-off from the top of the deck when resolving a seven is legal, throwing explanatory error if not.',
 
   inputs: {
     currentState: {
@@ -12,11 +13,9 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to play points
-     * @param { MoveType.ONE_OFF } requestedMove.moveType
-     * @param { String } requestedMove.cardId - Card Played for points
-     * @param { String } [ requestedMove.targetId ] - OPTIONAL target of one-off used for 2's and 9's
-     * @param { 'point' | 'faceCard' | 'jack' } [ requestedMove.targetType ] - OPTIONAL where one-off target is located
+     * @param { Object } requestedMove - Object describing the request to play one-off via seven
+     * @param { String } requestedMove.cardId - Card Played as one-off
+     * @param { MoveType.SEVEN_ONE_OFF } requestedMove.moveType - Specifies that this a sevenOneOff move
      */
     requestedMove: {
       type: 'ref',
@@ -32,29 +31,20 @@ module.exports = {
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
-      const player = playedBy ? currentState.p1 : currentState.p0;
+      const topTwoCards = currentState.deck.slice(0, 2);
+      const playedCard = topTwoCards.find(({ id }) => id === requestedMove.cardId);
       const opponent = playedBy ? currentState.p0 : currentState.p1;
-
-      const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.turn % 2 !== playedBy) {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
-      if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('game.snackbar.global.notInMainPhase');
-      }
-
-      if (currentState.oneOff) {
-        throw new Error('game.snackbar.oneOffs.oneOffInPlay');
+      if (currentState.phase !== GamePhase.RESOLVING_SEVEN) {
+        throw new Error('game.snackbar.seven.wrongPhase');
       }
 
       if (!playedCard) {
-        throw new Error('game.snackbar.global.playFromHand');
-      }
-
-      if (playedCard.isFrozen) {
-        throw new Error('game.snackbar.global.cardFrozen');
+        throw new Error('game.snackbar.seven.pickAndPlay');
       }
 
       switch (playedCard.rank) {
