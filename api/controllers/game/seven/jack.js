@@ -52,7 +52,7 @@ module.exports = function (req, res) {
           const queenCount = userService.queenCount({ user: opponent });
           if(queenCount >= 1) {
             return Promise.reject({
-              message: 'game.snackbar.global.blockedByQueen',
+              message: 'game.snackbar.jack.noJackWithQueen',
             });
           }
           // End queenCount validation
