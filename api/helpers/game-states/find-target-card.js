@@ -35,11 +35,11 @@ module.exports = {
   fn: ({ targetId, targetType, player }, exits) => {
     switch (targetType) {
       case TargetType.point:
-        return exits.success(player.points.find(card => card.id === targetId));
-  
+        return exits.success(player.points.find((card) => card.id === targetId) ?? null);
+
       case TargetType.faceCard:
-        return exits.success(player.faceCards.find(card => card.id === targetId));
-  
+        return exits.success(player.faceCards.find((card) => card.id === targetId) ?? null);
+
       case TargetType.jack:
         for (let point of player.points) {
           for (let jack of point.attachments) {
@@ -49,7 +49,7 @@ module.exports = {
           }
         }
         return exits.success(null);
-  
+
       default:
         return exits.success(null);
     }
