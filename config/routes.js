@@ -99,6 +99,7 @@ module.exports.routes = {
 
   // GameStateAPI
   'POST /api/game/:gameId/move': 'game/move',
+  'POST /api/game/:gameId/rematch': 'game/rematch-gamestate',
 
   // DEVELOPMENT ONLY
   '/api/game/stackDeck': 'game/stack-deck',
