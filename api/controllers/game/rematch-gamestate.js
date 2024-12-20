@@ -6,7 +6,7 @@
  * New game will be ranked/casual based on previous match
  * with name "firstPlayerUsername VS secondPlayerUsername {p0wins}-{p1Wins}-{stalemates}"
  */
-const gameAPI = sails.hooks['customgamehook'];
+const GameStatus = require('../../../utils/GameStatus.json');
 module.exports = async function (req, res) {
   try {
     const { usr: userId } = req.session;
@@ -60,29 +60,28 @@ module.exports = async function (req, res) {
     const shouldNewGameBeRanked = currentMatch?.winner ? false : game.isRanked;
 
     // Create new game
-    const newGame = await gameAPI.createGame(
-      newName,
-      shouldNewGameBeRanked,
-      gameService.GameStatus.STARTED,
-    );
+    const { p0: newP1, p1: newP0 } = game;
+    const newGame = await Game.create({
+      name: newName,
+      isRanked: shouldNewGameBeRanked,
+      status: GameStatus.STARTED,
+      p0: newP0.id,
+      p1: newP1.id,
+      p0Ready: true,
+      p1Ready: true,
+      players: [ newP0.id, newP1.id ]
+    }).fetch();
 
     // Update old game's rematchGame & add players to new game
     gameUpdates.rematchGame = newGame.id;
-    const { p0: newP1, p1: newP0 } = game;
-    
-    const [ updatedNewGame ] = await Promise.all([
-      Game.updateOne({ id: newGame.id })
-        .set({ p0: newP0.id, p1: newP1.id, p0Ready: true, p1Ready: true }),
-      Game.updateOne({ id: game.id }).set(gameUpdates),
-      Game.replaceCollection(newGame.id, 'players').members([ newP0.id, newP1.id ]),
-    ]);
-
-    updatedNewGame.gameStates = [];
-    updatedNewGame.p0 = { ...newP0 };
-    updatedNewGame.p1 = { ...newP1 };
+    await Game.updateOne({ id: game.id }).set(gameUpdates),
+   
+    newGame.gameStates = [];
+    newGame.p0 = { ...newP0 };
+    newGame.p1 = { ...newP1 };
     // Deal cards in new game
-    const newFullGame = await gameService.dealCards(updatedNewGame, {});
-    const socketEvent = await sails.helpers.gameStates.createSocketEvent(updatedNewGame, newFullGame);
+    const newFullGame = await gameService.dealCards(newGame, {});
+    const socketEvent = await sails.helpers.gameStates.createSocketEvent(newGame, newFullGame);
 
     Game.publish([ game.id ], {
       change: 'newGameForRematch',
