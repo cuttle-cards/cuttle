@@ -35,7 +35,7 @@ describe("Converting GameState's and GameStateRow's and emitting sockets for Poi
   });
 
   it('Creates and Publishes socket event', async () => {
-    const socketEvent = await sails.helpers.gameStates.publishGameState(points.game, points.gameState);
+    const socketEvent = await sails.helpers.gameStates.createSocketEvent(points.game, points.gameState);
     stripDbAttributes(socketEvent.game);
     delete socketEvent.game.match.startTime;
     delete socketEvent.victory.currentMatch.startTime;
@@ -69,7 +69,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
   });
 
   it('Creates and Publishes socket event', async () => {
-    const socketEvent = await sails.helpers.gameStates.publishGameState(
+    const socketEvent = await sails.helpers.gameStates.createSocketEvent(
       resolveThree.game,
       resolveThree.gameState,
     );
@@ -103,7 +103,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
   });
 
   it('Creates and Publishes socket event', async () => {
-    const socketEvent = await sails.helpers.gameStates.publishGameState(
+    const socketEvent = await sails.helpers.gameStates.createSocketEvent(
       resolveNine.game,
       resolveNine.gameState,
     );

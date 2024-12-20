@@ -6,30 +6,26 @@
  * New game will be ranked/casual based on previous match
  * with name "firstPlayerUsername VS secondPlayerUsername {p0wins}-{p1Wins}-{stalemates}"
  */
-const gameAPI = sails.hooks['customgamehook'];
+const GameStatus = require('../../../utils/GameStatus.json');
 module.exports = async function (req, res) {
   try {
     const { usr: userId } = req.session;
-    const { gameId: oldGameId, rematch } = req.body;
+    const { gameId: oldGameId } = req.params;
+    const { rematch } = req.body;
 
     let game = await sails.helpers.lockGame(req.session.game);
 
     // Early return if requesting user was not in the game
-    if (!userId || ![ game.p0?.id, game.p1?.id ].includes(userId)) {
-      return;
+    if (![ game.p0?.id, game.p1?.id ].includes(userId)) {
+      return res.forbidden({ message: `You aren't a player in this game` });
     }
 
     // Determine whether to start new game
     const oldPNum = game.p0.id === userId ? 0 : 1;
     const rematchVal = { [`p${oldPNum}Rematch`]: rematch };
-    const gameUpdates = {
-      ...rematchVal,
-      lastEvent: {
-        change: 'rematch',
-        game: { ...game.lastEvent.game, ...rematchVal },
-        victory: game.lastEvent.victory
-      }
-    };
+
+    let gameUpdates = { ...rematchVal };
+
     const { p0Rematch, p1Rematch } = { ...game, ...gameUpdates };
     const bothWantToRematch = p0Rematch && p1Rematch;
 
@@ -46,54 +42,52 @@ module.exports = async function (req, res) {
     }
 
     // Get all exisiting rematchGames to compute new game name & isRanked
-    const [ rematchGames, players, currentMatch ] = await Promise.all([
+    const [ rematchGames, currentMatch ] = await Promise.all([
       sails.helpers.getRematchGames(game),
-      User.find({ id: [ game.p0.id, game.p1.id ] }),
-      Match.findOne({ id: game.match })
+      Match.findOne({ id: game.match }),
     ]);
+
     // Determine who was p0 and p1 in first game in the series
-    const [ firstGame ] = rematchGames;
-    const seriesP0Id = firstGame.p0;
-    const seriesP1Id = firstGame.p1;
-    const seriesP0Username = players.find((player) => player.id === seriesP0Id).username;
-    const seriesP1Username = players.find((player) => player.id === seriesP1Id).username;
+    const [ { p0: firstP0Id } ] = rematchGames;
+    const [ p0, p1 ] = game.p0.id === firstP0Id ? [ game.p0, game.p1 ] : [ game.p1, game.p0 ];
     // Get rematchGame win counts
-    const player0Wins = rematchGames.filter(({ winner }) => winner === seriesP0Id).length;
-    const player1wins = rematchGames.filter(({ winner }) => winner === seriesP1Id).length;
+    const player0Wins = rematchGames.filter(({ winner }) => winner === p0.id).length;
+    const player1wins = rematchGames.filter(({ winner }) => winner === p1.id).length;
     const stalemates = rematchGames.filter(({ winner }) => !winner).length;
 
     // Set game name and isRanked
-    const newName = `${seriesP0Username} VS ${seriesP1Username} ${player0Wins}-${player1wins}-${stalemates}`;
+    const newName = `${p0.username} VS ${p1.username} ${player0Wins}-${player1wins}-${stalemates}`;
     const shouldNewGameBeRanked = currentMatch?.winner ? false : game.isRanked;
 
     // Create new game
-    const newGame = await gameAPI.createGame(
-      newName,
-      shouldNewGameBeRanked,
-      gameService.GameStatus.STARTED,
-    );
+    const { p0: newP1, p1: newP0 } = game;
+    const newGame = await Game.create({
+      name: newName,
+      isRanked: shouldNewGameBeRanked,
+      status: GameStatus.STARTED,
+      p0: newP0.id,
+      p1: newP1.id,
+      p0Ready: true,
+      p1Ready: true,
+      players: [ newP0.id, newP1.id ]
+    }).fetch();
 
     // Update old game's rematchGame & add players to new game
     gameUpdates.rematchGame = newGame.id;
-    const { p0: newP1, p1: newP0 } = game;
-    const [ updatedGame, p0, p1 ] = await Promise.all([
-      Game.updateOne({ id: game.id }).set(gameUpdates),
-      User.updateOne({ id: newP0.id }).set({ pNum: 0 }),
-      User.updateOne({ id: newP1.id }).set({ pNum: 1 }),
-      Game.replaceCollection(newGame.id, 'players').members([ newP0.id, newP1.id ]),
-    ]);
-
+    await Game.updateOne({ id: game.id }).set(gameUpdates),
+   
+    newGame.gameStates = [];
+    newGame.p0 = { ...newP0 };
+    newGame.p1 = { ...newP1 };
     // Deal cards in new game
-    newGame.players = [ p0, p1 ];
     const newFullGame = await gameService.dealCards(newGame, {});
+    const socketEvent = await sails.helpers.gameStates.createSocketEvent(newGame, newFullGame);
 
     Game.publish([ game.id ], {
       change: 'newGameForRematch',
-      game: updatedGame,
-      pNum: oldPNum,
-      oldGameId,
+      oldGameId : Number(oldGameId),
       gameId: newGame.id,
-      newGame: newFullGame,
+      newGame: socketEvent.game
     });
     
     await sails.helpers.unlockGame(game.lock);

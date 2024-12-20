@@ -9,7 +9,7 @@ module.exports = async function (req, res) {
       .populate('p0')
       .populate('p1');
 
-    const { publishGameState, saveGamestate, convertStrToCard } = sails.helpers.gameStates;
+    const { createSocketEvent, saveGamestate, convertStrToCard } = sails.helpers.gameStates;
 
     const {
       p0Hand,
@@ -73,7 +73,8 @@ module.exports = async function (req, res) {
     const gameStateRow = await saveGamestate(gameState);
     // add newest GameStateRow to game in memory instead of re-querying
     game.gameStates.push(gameStateRow);
-    await publishGameState(game, gameState);
+    const socketEvent = await createSocketEvent(game, gameState);
+    Game.publish([ game.id ], socketEvent);
 
     return res.ok(gameState);
   } catch (err) {

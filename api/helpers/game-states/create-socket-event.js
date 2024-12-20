@@ -1,9 +1,9 @@
 const MoveType = require('../../../utils/MoveType.json');
 
 module.exports = {
-  friendlyName: 'Publish Game State',
+  friendlyName: 'Create Socket Event',
 
-  description: 'Determines if the game has ended and sends a socket event based on the game status.',
+  description: 'Creates a Socket event, and blast game over if game is over',
 
   inputs: {
     game: {
@@ -114,8 +114,6 @@ module.exports = {
         ...(chosenCard && { chosenCard }),
         ...(discardedCards && { discardedCards }),
       };
-
-      Game.publish([ game.id ], fullSocketEvent);
 
       if (victory.gameOver) {
         sails.sockets.blast('gameFinished', { gameId: game.id });
