@@ -21,6 +21,13 @@ const transformGameUrl = (api, slug) => {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
 
+  if (slug === 'rematch') {
+    return cy
+      .window()
+      .its('cuttle.gameStore.id')
+      .then((gameId) => `/api/game/${gameId}/rematch`);
+  }
+
   const moveSlugs = new Set([
     'draw',
     'points',
