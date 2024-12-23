@@ -7,7 +7,7 @@ for (let attempt = 1; attempt <= attempts; attempt += 1) {
       cy.setupGameAsP0();
     });
 
-    it.only('playground noop', () => {
+    it('playground noop', () => {
       cy.get('[data-playground]').should('have.length', 0);
     });
   });
