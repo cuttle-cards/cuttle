@@ -77,6 +77,7 @@ module.exports = function (req, res, next) {
 
     // Requires `cardId`; additionally requires `targetId` and `targetType` if cardId specifies a 2 or 9
     case MoveType.ONE_OFF:
+    case MoveType.SEVEN_ONE_OFF:
       {
         if (!cardId) {
           return res.badRequest({ message: 'Must specify a card' });
