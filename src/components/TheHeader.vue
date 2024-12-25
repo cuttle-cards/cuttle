@@ -2,7 +2,7 @@
   <header>
     <v-toolbar data-cy="nav-drawer" :color="variant === 'light' ? 'surface-2' : 'surface-1'">
       <v-toolbar-title>
-        <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between" style="cursor: pointer">
+        <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between">
           <TheUserMenu v-if="authStore.authenticated" :variant="variant" />
           <v-btn
             v-else
@@ -14,7 +14,10 @@
           >
             {{ signupButtonText }}
           </v-btn>
-          <router-link :to="{ name: ROUTE_NAME_HOME }" style="display: contents;">
+          <router-link 
+            :to="{ name: ROUTE_NAME_HOME }"
+            class="logo-container"
+          >
             <img
               id="logo"
               alt="Cuttle logo"
@@ -98,9 +101,15 @@ const signupButtonLink = computed(() => {
 
 <style scoped>
 @media screen and (min-width: 960px) {
-  .desktop-logo {
+  .logo-container {
+    display: block;
     position: absolute;
-    left: calc(50% - 60px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .desktop-logo {
+    display: block;
   }
 }
 </style>
