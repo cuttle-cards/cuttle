@@ -25,6 +25,7 @@ module.exports = function (req, res, next) {
     case MoveType.POINTS:
     case MoveType.FACE_CARD:
     case MoveType.SEVEN_POINTS:
+    case MoveType.SEVEN_FACE_CARD:
     case MoveType.COUNTER:
     case MoveType.RESOLVE_THREE:
     case MoveType.SEVEN_DISCARD:
@@ -76,6 +77,7 @@ module.exports = function (req, res, next) {
 
     // Requires `cardId`; additionally requires `targetId` and `targetType` if cardId specifies a 2 or 9
     case MoveType.ONE_OFF:
+    case MoveType.SEVEN_ONE_OFF:
       {
         if (!cardId) {
           return res.badRequest({ message: 'Must specify a card' });

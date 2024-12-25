@@ -815,6 +815,7 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by conceded and opponent request rematch', () => {
+    cy.skipOnGameStateApi();
     cy.concedeOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
@@ -833,6 +834,7 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by conceded and player request rematch', () => {
+    cy.skipOnGameStateApi();
     cy.concedeOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();

@@ -52,6 +52,7 @@ class GameCard {
     this.id = card.id;
     this.suit = card.suit;
     this.rank = card.rank;
+    this.isFrozen = card.isFrozen;
     this.name = str_rank + str_suit;
     this.attachments = card.attachments?.map((attachment) => createGameCard(attachment));
   }
@@ -394,6 +395,8 @@ export const useGameStore = defineStore('game', {
         case 'concede':
           // add all the move-making ones here
           return `/api/game/${this.id}/move`;
+        case 'rematch':
+          return `/api/game/${this.id}/rematch`;
         default:
           return `/api/game/${slug}`;
       }
