@@ -69,6 +69,20 @@ describe('Navigation', () => {
       cy.reload();
       verifyAuthenticatedLinks();
     });
+
+    it('Navigates to Home when clicking logo on DESKTOP', () => {
+      cy.viewport(1920, 1080);
+      cy.visit('/stats'); 
+      cy.get('#logo').click();
+      cy.location('pathname').should('equal', '/');
+    });
+
+    it('Navigates to Home when clicking logo on MOBILE', () => {
+      cy.viewport('iphone-8');
+      cy.visit('/stats'); 
+      cy.get('#logo').click();
+      cy.location('pathname').should('equal', '/');
+    });
   });
 
   describe('Unauthenticated Navigation', () => {
@@ -85,5 +99,19 @@ describe('Navigation', () => {
       cy.viewport('iphone-8');
       verifyUnauthenticatedLinks();
     });
+
+    it('should not show logo when unauthenticated on DESKTOP', () => {
+      cy.viewport(1920, 1080);
+      cy.visit('/');
+      cy.get('#logo').should('not.exist');
+    });
+
+    it('should not show logo when unauthenticated on MOBILE', () => {
+      cy.viewport('iphone-8');
+      cy.visit('/');
+      cy.get('#logo').should('not.exist');
+    });
   });
 });
+
+

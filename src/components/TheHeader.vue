@@ -14,14 +14,16 @@
           >
             {{ signupButtonText }}
           </v-btn>
-          <img
-            id="logo"
-            alt="Cuttle logo"
-            :src="`/img/cuttle_logo_text_${logoColor}.svg`"
-            width="60"
-            height="60"
-            class="ma-md-auto desktop-logo"
-          >
+          <router-link :to="{ name: ROUTE_NAME_HOME }" style="display: contents;">
+            <img
+              id="logo"
+              alt="Cuttle logo"
+              :src="`/img/cuttle_logo_text_${logoColor}.svg`"
+              width="60"
+              height="60"
+              class="ma-md-auto desktop-logo"
+            >
+          </router-link>
         </div>
       </v-toolbar-title>
       <v-toolbar-items v-if="!smAndDown" class="hidden-xs">
@@ -54,7 +56,7 @@
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 import { getPageLinks } from '@/composables/navLink.js';
-import { ROUTE_NAME_SIGNUP, ROUTE_NAME_LOGIN } from '@/router.js';
+import { ROUTE_NAME_SIGNUP, ROUTE_NAME_LOGIN, ROUTE_NAME_HOME } from '@/router.js';
 import TheUserMenu from '@/components/TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 import { useRoute } from 'vue-router';
