@@ -268,7 +268,11 @@ export default {
         conceded: false,
         winner: null,
       });
-      await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: false });
+
+      if (!this.gameStore.isSpectating) {
+        await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: false });
+      }
+
       await this.gameStore.requestUnsubscribeFromGame();
     },
     async rematch() {

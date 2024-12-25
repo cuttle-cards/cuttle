@@ -15,7 +15,6 @@
       color="secondary"
       class="mt-4"
       data-cy="leave-unavailable-game-button"
-      :loading="leavingGame"
       @click="$router.push('/')"
     >
       Go Home
