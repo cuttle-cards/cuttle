@@ -2,7 +2,7 @@
   <header>
     <v-toolbar data-cy="nav-drawer" :color="variant === 'light' ? 'surface-2' : 'surface-1'">
       <v-toolbar-title>
-        <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between" style="cursor: pointer">
+        <div class="d-flex flex-md-row flex-row-reverse align-center justify-space-between">
           <TheUserMenu v-if="authStore.authenticated" :variant="variant" />
           <v-btn
             v-else
@@ -14,14 +14,19 @@
           >
             {{ signupButtonText }}
           </v-btn>
-          <img
-            id="logo"
-            alt="Cuttle logo"
-            :src="`/img/cuttle_logo_text_${logoColor}.svg`"
-            width="60"
-            height="60"
-            class="ma-md-auto desktop-logo"
+          <router-link 
+            :to="{ name: ROUTE_NAME_HOME }"
+            class="logo-container"
           >
+            <img
+              id="logo"
+              alt="Cuttle logo"
+              :src="`/img/cuttle_logo_text_${logoColor}.svg`"
+              width="60"
+              height="60"
+              class="ma-md-auto desktop-logo"
+            >
+          </router-link>
         </div>
       </v-toolbar-title>
       <v-toolbar-items v-if="!smAndDown" class="hidden-xs">
@@ -54,7 +59,7 @@
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 import { getPageLinks } from '@/composables/navLink.js';
-import { ROUTE_NAME_SIGNUP, ROUTE_NAME_LOGIN } from '@/router.js';
+import { ROUTE_NAME_SIGNUP, ROUTE_NAME_LOGIN, ROUTE_NAME_HOME } from '@/router.js';
 import TheUserMenu from '@/components/TheUserMenu.vue';
 import { useDisplay } from 'vuetify';
 import { useRoute } from 'vue-router';
@@ -96,9 +101,14 @@ const signupButtonLink = computed(() => {
 
 <style scoped>
 @media screen and (min-width: 960px) {
-  .desktop-logo {
+  .logo-container {
     position: absolute;
-    left: calc(50% - 60px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .desktop-logo {
+    display: block;
   }
 }
 </style>
