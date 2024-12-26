@@ -102,7 +102,6 @@ const signupButtonLink = computed(() => {
 <style scoped>
 @media screen and (min-width: 960px) {
   .logo-container {
-    display: block;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
