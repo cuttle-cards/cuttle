@@ -24,7 +24,7 @@ jobs:
           build: npm run build
 
       - name: Save build folder
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build
           if-no-files-found: error
@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download the build folder
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build
           path: assets
