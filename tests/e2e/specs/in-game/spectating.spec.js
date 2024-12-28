@@ -217,7 +217,6 @@ describe('Spectating Games', () => {
   });
 
   it('Prevents spectator from making moves', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [
