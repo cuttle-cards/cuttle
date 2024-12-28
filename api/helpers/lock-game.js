@@ -45,7 +45,8 @@ module.exports = {
         const updatedGame = await Game.findOne({ id: gameId })
           .populate('p0')
           .populate('p1')
-          .populate('gameStates', { sort: 'createdAt ASC' });
+          .populate('gameStates', { sort: 'createdAt ASC' })
+          .populate('spectatingUsers');
 
         // If we successfully wrote our uuid, resolve
         const newLock = updatedGame?.lock;

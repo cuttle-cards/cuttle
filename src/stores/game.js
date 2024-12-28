@@ -359,7 +359,7 @@ export const useGameStore = defineStore('game', {
       const authStore = useAuthStore();
       switch (jwres.statusCode) {
         case 200:
-          return resolve();
+          return resolve(jwres);
         case 403:
           authStore.mustReauthenticate = true;
           return reject(jwres.body.message);
@@ -445,24 +445,17 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestSpectate(gameId) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/spectate',
-          {
-            gameId,
-          },
-          (res, jwres) => {
-            if (jwres.statusCode === 200) {
-              this.myPNum = 0;
-              this.isSpectating = true;
-              this.updateGame(res);
-              return resolve();
-            }
-            const message = res.message ?? 'Unable to spectate game';
-            return reject(new Error(message));
-          },
-        );
-      });
+      // FIXME: Remove in #965
+      const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate` : 'spectate';
+      try {
+        const res = await this.makeSocketRequest(slug, { gameId });
+        this.myPNum = 0;
+        this.isSpectating = true;
+        this.updateGame(res.body);
+      } catch (err) {
+        const message = err.message ?? 'Unable to spectate game';
+        throw(new Error(message));
+      }
     },
     async requestSpectateLeave() {
       return new Promise((resolve, reject) => {
