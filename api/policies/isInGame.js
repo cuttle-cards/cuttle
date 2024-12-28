@@ -16,5 +16,6 @@ module.exports = function (req, res, next) {
     }
     return res.badRequest({ message: `Error with user's session: 'game' must be an integer` });
   }
-  return res.badRequest({ message: `You can't do that because you're not a player in this game` });
+
+  return res.forbidden({ message: `You are not a player in this game!` });
 };
