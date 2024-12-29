@@ -23,16 +23,13 @@ module.exports = async function (req, res) {
     Game.subscribe(req, [ gameId ]);
 
     // Add spectating users to table
-    await UserSpectatingGame.findOrCreate(
-      { gameSpectated: game.id, spectator: spectator.id },
-      { gameSpectated: game.id, spectator: spectator.id },
-    ).exec(async (_err, _record, wasCreated) => {
-      if (!wasCreated) {
-        await UserSpectatingGame.update({ gameSpectated: game.id, spectator: spectator.id }).set({
-          activelySpectating: true,
-        });
-      }
-    });
+    const spectatorAlreadyExisted = await UserSpectatingGame.updateOne(
+      { gameSpectated: game.id, spectator: spectator.id }
+    ).set({ activelySpectating: true });
+
+    if (!spectatorAlreadyExisted) {
+      await UserSpectatingGame.create({ gameSpectated: game.id, spectator: spectator.id });
+    }
 
     const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
     const gameState = unpackGamestate(game.gameStates.at(-1));

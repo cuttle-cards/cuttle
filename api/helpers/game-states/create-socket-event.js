@@ -56,13 +56,12 @@ module.exports = {
       const chosenCard = gameState.moveType === MoveType.RESOLVE_THREE ? gameState.targetCard : null;
       const pNum = playedBy;
 
-      const spectatingUsers = (
-        await UserSpectatingGame.find({
-          gameSpectated: game.id,
-        }).populate('spectator')
-      )
-        .filter(({ activelySpectating }) => activelySpectating === true)
-        .map(({ spectator }) => spectator.username);
+      // Fetch list of spectating usernames
+      let spectatingUsers = await UserSpectatingGame.find({
+        gameSpectated: game.id,
+      }).populate('spectator');
+      spectatingUsers = spectatingUsers.filter(({ activelySpectating }) => activelySpectating === true);
+      spectatingUsers = spectatingUsers.map(({ spectator }) => spectator.username);
 
       const socketGame = {
         players,
