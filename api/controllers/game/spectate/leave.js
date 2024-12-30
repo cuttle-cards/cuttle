@@ -20,6 +20,8 @@ module.exports = async function (req, res) {
       });
     }
 
+    Game.unsubscribe(req, [ gameId ]);
+
     return res.ok();
   } catch (err) {
     return res.badRequest(err);
