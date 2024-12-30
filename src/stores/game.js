@@ -454,7 +454,7 @@ export const useGameStore = defineStore('game', {
 
     async requestSpectate(gameId) {
       // FIXME: Remove in #965
-      const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate` : 'spectate';
+      const slug = `${gameId}/spectate/join`;
       try {
         const res = await this.makeSocketRequest(slug, { gameId });
         this.myPNum = 0;

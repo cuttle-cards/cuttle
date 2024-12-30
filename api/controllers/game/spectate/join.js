@@ -1,12 +1,17 @@
 module.exports = async function (req, res) {
-  const { gameId } = req.params;
+  let { gameId } = req.params;
   let game;
+  gameId = Number(gameId);
 
   try {
     const [ game, spectator ] = await Promise.all([
       sails.helpers.lockGame(req.params.gameId),
       User.findOne({ id: req.session.usr }),
     ]);
+
+    if (!game || !spectator) {
+      return res.notFound();
+    }
 
     // Can't spectate if you're a player in the game
     const { p0, p1 } = game;

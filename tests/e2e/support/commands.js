@@ -28,14 +28,6 @@ const transformGameUrl = (api, slug, gameId = null) => {
       .then((gameId) => `/api/game/${gameId}/rematch`);
   }
 
-  if (slug === 'spectate') {
-    return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/spectate/`) :
-      cy
-        .window()
-        .its('cuttle.gameStore.id')
-        .then((gameId) => `/api/game/${gameId}/spectate/`);
-  }
-
   const moveSlugs = new Set([
     'draw',
     'points',
@@ -264,7 +256,8 @@ Cypress.Commands.add('subscribeOpponent', (gameId) => {
 });
 
 Cypress.Commands.add('setOpponentToSpectate', (gameId) => {
-  cy.makeSocketRequest('game', 'spectate', { gameId }, 'POST', gameId);
+  const slug = `${gameId}/spectate/join`;
+  cy.makeSocketRequest('game', slug, { gameId }, 'POST');
 });
 
 Cypress.Commands.add('setOpponentToLeaveSpectate', (gameId) => {
