@@ -36,14 +36,6 @@ const transformGameUrl = (api, slug, gameId = null) => {
         .then((gameId) => `/api/game/${gameId}/spectate/`);
   }
 
-  if (slug === 'spectateLeave') {
-    return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/spectate-leave/`) :
-      cy
-        .window()
-        .its('cuttle.gameStore.id')
-        .then((gameId) => `/api/game/${gameId}/spectate-leave/`);
-  }
-
   const moveSlugs = new Set([
     'draw',
     'points',
@@ -276,7 +268,8 @@ Cypress.Commands.add('setOpponentToSpectate', (gameId) => {
 });
 
 Cypress.Commands.add('setOpponentToLeaveSpectate', (gameId) => {
-  cy.makeSocketRequest('game', 'spectateLeave', { gameId }, 'POST', gameId);
+  const slug = `${gameId}/spectate/leave/`;
+  cy.makeSocketRequest('game', slug, { gameId }, 'POST');
 });
 
 Cypress.Commands.add('readyOpponent', (id) => {
