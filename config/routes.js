@@ -61,7 +61,7 @@ module.exports.routes = {
   '/api/game/create': 'game/create',
   '/api/game/getList': 'game/get-list',
   '/api/game/subscribe': 'game/subscribe',
-  'POST /api/game/:gameId/spectate/join': 'game/spectate/join',
+  '/api/game/spectate': 'game/spectate',
   'POST /api/game/:gameId/spectate/leave': 'game/spectate/leave',
   '/api/game/reconnect': 'game/reconnect',
   '/api/game/ready': 'game/ready',
@@ -100,7 +100,7 @@ module.exports.routes = {
   // GameStateAPI
   'POST /api/game/:gameId/move': 'game/move',
   'POST /api/game/:gameId/rematch': 'game/rematch-gamestate',
-
+  'POST /api/game/:gameId/spectate/join': 'game/spectate/join',
 
   // DEVELOPMENT ONLY
   '/api/game/stackDeck': 'game/stack-deck',
