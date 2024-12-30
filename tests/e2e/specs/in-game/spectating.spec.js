@@ -399,7 +399,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     window.localStorage.setItem('announcement', announcementData.id);
   });
 
-  it.only('Spectate unranked games with rematch', function () {
+  it('Spectate unranked games with rematch', function () {
     // 1st game: Opponent concedes
     cy.recoverSessionOpponent(playerTwo);
     cy.concedeOpponent();
