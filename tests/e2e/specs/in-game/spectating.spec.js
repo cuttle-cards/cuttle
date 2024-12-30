@@ -399,8 +399,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
     window.localStorage.setItem('announcement', announcementData.id);
   });
 
-  it('Spectate unranked games with rematch', function () {
-    cy.skipOnGameStateApi();
+  it.only('Spectate unranked games with rematch', function () {
     // 1st game: Opponent concedes
     cy.recoverSessionOpponent(playerTwo);
     cy.concedeOpponent();
