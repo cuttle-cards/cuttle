@@ -101,6 +101,7 @@ module.exports.routes = {
   'POST /api/game/:gameId/move': 'game/move',
   'POST /api/game/:gameId/rematch': 'game/rematch-gamestate',
   'POST /api/game/:gameId/spectate': 'game/spectate-gamestate',
+  'POST /api/game/:gameId/spectate-leave': 'game/spectate-leave-gamestate',
 
   // DEVELOPMENT ONLY
   '/api/game/stackDeck': 'game/stack-deck',

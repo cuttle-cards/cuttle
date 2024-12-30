@@ -244,6 +244,14 @@ export const useGameStore = defineStore('game', {
       this.players.push(cloneDeep(player));
       this.players.sort((player, opponent) => player.pNum - opponent.pNum);
     },
+    addSpectator(username) {
+      const dedupedSpectators = new Set(this.spectatingUsers);
+      dedupedSpectators.add(username);
+      this.spectatingUsers = [ ...dedupedSpectators ];
+    },
+    removeSpectator(username) {
+      this.spectatingUsers = this.spectatingUsers.filter((spectator) => spectator !== username);
+    },
     resetState() {
       this.$reset();
     },
