@@ -181,12 +181,8 @@ export async function handleInGameEvents(evData) {
       break;
     }
     case SocketEvent.RE_LOGIN:
-      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
-      break;
     case SocketEvent.SPECTATOR_JOINED:
-      if (gameStore.id === evData.gameId) {
-        gameStore.addSpectator(evData.username);
-      }
+      gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
     case SocketEvent.SPECTATOR_LEFT:
       if (gameStore.id === evData.gameId) {
