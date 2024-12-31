@@ -21,54 +21,46 @@ const transformGameUrl = (api, slug, gameId = null) => {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
 
-  if (slug === 'rematch') {
-    return cy
-      .window()
-      .its('cuttle.gameStore.id')
-      .then((gameId) => `/api/game/${gameId}/rematch`);
-  }
-
-  if (slug === 'spectate') {
-    return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/spectate/join`) :
-      cy
+  switch (slug) {
+    case 'rematch':
+      return cy
         .window()
         .its('cuttle.gameStore.id')
-        .then((gameId) => `/api/game/${gameId}/spectate/join`);
+        .then((gameId) => `/api/game/${gameId}/rematch`);
+    case 'spectate':
+      return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/spectate/join`) :
+        cy
+          .window()
+          .its('cuttle.gameStore.id')
+          .then((gameId) => `/api/game/${gameId}/spectate/join`);
+    case'draw':
+    case'points':
+    case'faceCard':
+    case'scuttle':
+    case'untargetedOneOff':
+    case'targetedOneOff':
+    case'jack':
+    case'counter':
+    case'resolve':
+    case'resolveThree':
+    case'resolveFour':
+    case'resolveFive':
+    case'seven/points':
+    case'seven/scuttle':
+    case'seven/faceCard':
+    case'seven/jack':
+    case'seven/untargetedOneOff':
+    case'seven/targetedOneOff':
+    case'pass':
+    case'concede':
+      return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/move/`) :
+        cy
+          .window()
+          .its('cuttle.gameStore.id')
+          .then((gameId) => `/api/game/${gameId}/move/`);
+    default:
+      return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
-
-  const moveSlugs = new Set([
-    'draw',
-    'points',
-    'faceCard',
-    'scuttle',
-    'untargetedOneOff',
-    'targetedOneOff',
-    'jack',
-    'counter',
-    'resolve',
-    'resolveThree',
-    'resolveFour',
-    'resolveFive',
-    'seven/points',
-    'seven/scuttle',
-    'seven/faceCard',
-    'seven/jack',
-    'seven/untargetedOneOff',
-    'seven/targetedOneOff',
-    'pass',
-    'concede',
-  ]);
-
-  if (moveSlugs.has(slug)) {
-
-    return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/move/`) :
-      cy
-        .window()
-        .its('cuttle.gameStore.id')
-        .then((gameId) => `/api/game/${gameId}/move/`);
-  }
-
-  return Cypress.Promise.resolve(`/api/${api}/${slug}`);
 };
 
 Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST', gameId = null) => {
