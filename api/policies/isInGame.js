@@ -14,6 +14,7 @@ module.exports = function (req, res, next) {
     if (typeof req.session.game === 'number') {
       return next();
     }
+    // TODO #1094 - Translate errors
     return res.badRequest({ message: `Error with user's session: 'game' must be an integer` });
   }
 
