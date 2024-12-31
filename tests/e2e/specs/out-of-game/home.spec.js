@@ -300,12 +300,12 @@ describe('Home - Game List', () => {
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
         assertSnackbar('Unable to spectate game', 'error', 'newgame');
         // Spectate button should now be disabled
-        // cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
       });
       // Refresh page -- no games available to spectate
-      // cy.visit('/');
-      // cy.get('[data-cy-game-list-selector=spectate]').click();
-      // cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
+      cy.visit('/');
+      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
     });
 
     it('Shows ongoing games as available to spectate when user navigates to home page', () => {
