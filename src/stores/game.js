@@ -448,7 +448,7 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestSpectate(gameId) {
-      // FIXME: Remove in #965
+      // TODO #965 - Remove dynamic gamestate slug
       const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate/join` : 'spectate';
       try {
         const res = await this.makeSocketRequest(slug, { gameId });
@@ -657,8 +657,8 @@ export const useGameStore = defineStore('game', {
         moveType: MoveType.SEVEN_DISCARD,
         cardId,
         index, // 0 if topCard, 1 if secondCard
-        targetId: -1, // FIXME: Remove in #965
-        opId: this.opponent.id, // FIXME: Remove in #965
+        targetId: -1, // TODO #965 - remove this
+        opId: this.opponent.id, // TODO #965 - remove this
       });
 
     },
