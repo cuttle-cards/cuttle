@@ -456,7 +456,7 @@ export const useGameStore = defineStore('game', {
         this.isSpectating = true;
         this.updateGame(res.body);
       } catch (err) {
-        const message = err.message ?? 'Unable to spectate game';
+        const message = err?.message ?? 'Unable to spectate game';
         throw(new Error(message));
       }
     },
