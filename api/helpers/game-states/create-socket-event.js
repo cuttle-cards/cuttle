@@ -60,8 +60,9 @@ module.exports = {
       let spectatingUsers = await UserSpectatingGame.find({
         gameSpectated: game.id,
       }).populate('spectator');
-      spectatingUsers = spectatingUsers.filter(({ activelySpectating }) => activelySpectating === true);
-      spectatingUsers = spectatingUsers.map(({ spectator }) => spectator.username);
+      spectatingUsers = spectatingUsers
+        .filter(({ activelySpectating }) => activelySpectating === true)
+        .map(({ spectator }) => spectator.username);
 
       const socketGame = {
         players,
