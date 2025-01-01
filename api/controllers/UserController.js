@@ -84,6 +84,7 @@ module.exports = {
           pNum: user.pNum,
         });
       }
+      // FIXME: #965
       // Remove everything between here and catch AFTER gamestate is deployed
       const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
       const populatedGame =
