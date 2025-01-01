@@ -73,6 +73,7 @@ module.exports = {
         Game.subscribe(req, [ game.id ]);
         req.session.loggedIn = true;
         req.session.usr = user.id;
+        // FIXME: #965 - remove game and pNum
         req.session.game = game.id;
         req.session.pNum = user.pNum ?? undefined;
         Game.publish([ game.id ],socketEvent);
