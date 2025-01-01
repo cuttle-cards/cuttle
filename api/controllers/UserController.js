@@ -66,7 +66,9 @@ module.exports = {
 
       if (process.env.VITE_USE_GAMESTATE_API) {
         const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
-        const game = await Game.findOne(gameId).populate('gameStates');
+        const game = await Game.findOne(gameId).populate('gameStates')
+          .populate('p0')
+          .populate('p1');
         const gameObject = await unpackGamestate(game.gameStates.at(-1));
         const socketEvent = await createSocketEvent(game, gameObject);
         
