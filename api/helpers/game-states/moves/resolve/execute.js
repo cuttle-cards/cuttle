@@ -40,9 +40,12 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
-      playedBy,
       phase:GamePhase.MAIN,
+      playedBy,
+      playedCard: null,
+      targetCard: null,
       resolved: oneOff,
+      discardedCards: [],
       twos: [],
     };
 
