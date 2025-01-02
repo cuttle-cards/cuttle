@@ -3,11 +3,11 @@ module.exports = async function (req, res) {
   gameId = Number(gameId);
 
   try {
-    const [ game, spectator ] = await Promise.all([
+    const [ spectator, game ] = await Promise.all([
+      User.findOne({ id: req.session.usr }),
       Game.findOne(gameId).populate('gameStates')
         .populate('p0')
         .populate('p1'),
-      User.findOne({ id: req.session.usr }),
     ]);
 
     if (!spectator) {
