@@ -1,0 +1,3 @@
+User-agent: *
+Allow: https://www.cuttle.cards/signup
+Allow: https://www.cuttle.cards/rules
