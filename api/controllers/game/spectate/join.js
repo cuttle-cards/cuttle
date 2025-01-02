@@ -9,8 +9,12 @@ module.exports = async function (req, res) {
       User.findOne({ id: req.session.usr }),
     ]);
 
-    if (!game || !spectator) {
-      return res.notFound();
+    if (!spectator) {
+      return res.status(404).json({ message: `Couldn't find your user; please log out and log back in` });
+    }
+
+    if (!game) {
+      return res.status(404).json({ message: `Can't find game ${gameId}` });
     }
 
     // Can't spectate if you're a player in the game
