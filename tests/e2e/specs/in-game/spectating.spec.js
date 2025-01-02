@@ -217,7 +217,6 @@ describe('Spectating Games', () => {
   });
 
   it('Prevents spectator from making moves', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [
@@ -323,11 +322,15 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
+
+      cy.get('[data-player-hand-card]').should('have.length', 5);
+
       // Player 4 begins spectating
       cy.get('@gameData').then((gameData) => {
         cy.signupOpponent(playerFour);
         cy.setOpponentToSpectate(gameData.gameId);
       });
+      cy.get('[data-player-hand-card]').should('have.length', 5);
       // Player 4 now appears in spectator list
       cy.get('[data-cy="spectate-list-button"]').should('contain', '3')
         .click();
@@ -335,6 +338,8 @@ describe('Spectating Games', () => {
         .should('contain', 'myUsername')
         .should('contain', playerThree.username)
         .should('contain', playerFour.username);
+      cy.wait(500);
+      cy.get('[data-player-hand-card]').should('have.length', 5);
     });
 
     it('Should display no spectators', () => {
@@ -355,7 +360,9 @@ describe('Spectating Games', () => {
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
-      cy.setOpponentToLeaveSpectate();
+      cy.get('@gameData').then((gameData) => {
+        cy.setOpponentToLeaveSpectate(gameData.gameId);
+      });
       cy.get('[data-cy="spectate-list-menu"').should('not.contain', playerThree.username);
     });
 
@@ -395,7 +402,6 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
   });
 
   it('Spectate unranked games with rematch', function () {
-    cy.skipOnGameStateApi();
     // 1st game: Opponent concedes
     cy.recoverSessionOpponent(playerTwo);
     cy.concedeOpponent();
