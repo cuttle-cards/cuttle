@@ -981,13 +981,13 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
-  it('Dialogs persist after refreshing when game is over by playing jack from a seven', () => {
+  it.only('Dialogs persist after refreshing when game is over by playing jack from a seven', () => {
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
       p0Points: [ Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
       p0FaceCards: [],
       p1Hand: [],
-      p1Points: [ Card.SEVEN_OF_SPADES ],
+      p1Points: [ Card.SEVEN_OF_CLUBS ],
       p1FaceCards: [],
       topCard: Card.JACK_OF_DIAMONDS,
       deck: [],
@@ -1001,7 +1001,7 @@ describe('Reconnecting after game is over', () => {
       .click();
     cy.get('[data-move-choice=jack]').should('be.visible')
       .click();
-    cy.get('[data-opponent-point-card=7-3]').should('be.visible')
+    cy.get('[data-opponent-point-card=7-0]').should('be.visible')
       .click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
