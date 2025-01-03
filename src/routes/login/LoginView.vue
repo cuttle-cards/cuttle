@@ -195,6 +195,16 @@ export default {
     MarkdownContent,
     TheLanguageSelector
   },
+  head() {
+    return {
+      link: [
+        {
+          rel: 'canonical',
+          href: 'https://www.cuttle.cards/signup'
+        }
+      ]
+    }
+  },
   setup() {
     // Vuetify has its own translation layer that isn't very good
     // It seems to conflict with the namespace of vue-i18n so we need to import it at the component

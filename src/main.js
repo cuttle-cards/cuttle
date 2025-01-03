@@ -6,7 +6,7 @@ import router from '@/router';
 import i18n from '@/i18n';
 import { initCuttleGlobals } from '_/utils/config-utils';
 import App from '@/App.vue';
-import { createHead } from '@unhead/vue';
+import { createHead, VueHeadMixin } from '@unhead/vue';
 
 const pinia = createPinia();
 
@@ -36,6 +36,6 @@ app.use(i18n);
 initCuttleGlobals(app);
 
 // Add unHead to vue
-app.use(head);
+app.mixin(VueHeadMixin);
 
 app.mount('#app');
