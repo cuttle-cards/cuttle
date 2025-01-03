@@ -57,10 +57,12 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
+      phase: GamePhase.MAIN,
       playedBy,
       playedCard,
       targetCard,
-      phase: GamePhase.MAIN,
+      discardedCards: [],
+      resolved: null,
     };
 
     return exits.success(result);

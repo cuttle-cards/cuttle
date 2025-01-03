@@ -54,6 +54,8 @@ module.exports = {
       playedBy,
       playedCard,
       targetCard,
+      discardedCards: [],
+      resolved: null,
       oneOffTarget: targetCard,
       oneOffTargetType: requestedMove.targetType ?? null,
     };

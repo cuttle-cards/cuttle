@@ -25,7 +25,7 @@ module.exports = {
     const player = playedBy ? result.p0 : result.p1;
  
     if ([ TargetType.point, TargetType.faceCard ].includes(result.oneOffTargetType)) {
-      const targetIndex = opponent[`${result.oneOffTargetType}s`].findIndex(({ id }) => id === result.targetCard.id);
+      const targetIndex = opponent[`${result.oneOffTargetType}s`].findIndex(({ id }) => id === result.oneOffTarget.id);
       const [ targetCard ] = opponent[`${result.oneOffTargetType}s`].splice(targetIndex, 1);
       
       opponent.hand.push({ ...targetCard, isFrozen: true, attachments: [] });
@@ -39,7 +39,7 @@ module.exports = {
     // TargetType = jack
     // Find card that the jack is attached to
     const targetIndex = opponent.points.findIndex(({ attachments }) =>
-      attachments.some(({ id }) => id === result.targetCard.id));
+      attachments.some(({ id }) => id === result.oneOffTarget.id));
     const [ targetCard ] = opponent.points.splice(targetIndex, 1);
     
     // remove last attachment
@@ -52,7 +52,7 @@ module.exports = {
       });
     
     // Push jack back to opponents hand
-    opponent.hand.push({ ...result.targetCard, isFrozen: true, attachments: [] });
+    opponent.hand.push({ ...result.oneOffTarget, isFrozen: true, attachments: [] });
     return exits.success(result);
   },
 };
