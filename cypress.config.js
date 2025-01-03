@@ -4,7 +4,7 @@ const cypressConfig = {
   projectId: 'i8bxr8',
   // https://docs.cypress.io/guides/references/configuration#e2e
   e2e: {
-    baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
+    baseUrl: process.env.VITE_APP_URL || 'http://localhost:8080',
     specPattern: [ 'tests/e2e/specs/**/*.spec.js' ],
     excludeSpecPattern: [ 'test/e2e/specs/playground.spec.js' ],
     supportFile: 'tests/e2e/support/index.js',
