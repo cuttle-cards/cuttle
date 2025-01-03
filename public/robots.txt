@@ -1,6 +1,6 @@
 User-agent: *
-Allow: https://www.cuttle.cards/signup
-Allow: https://www.cuttle.cards/rules
-Disallow: https://www.cuttle.cards/stats
-Disallow: https://www.cuttle.cards/lobby/*
-Disallow: https://www.cuttle.cards/game/*
+Allow: /signup
+Allow: /rules
+Disallow: /stats
+Disallow: /lobby/*
+Disallow: /game/*
