@@ -43,7 +43,6 @@ module.exports = {
       phase:GamePhase.MAIN,
       playedBy,
       playedCard: null,
-      targetCard: null,
       resolved: oneOff,
       discardedCards: [],
       twos: [],
@@ -90,6 +89,7 @@ module.exports = {
     result = {
       ...result,
       oneOff: null,
+      targetCard: result.oneOffTarget,
       oneOffTarget: null,
       oneOffTargetType: null,
       turn: result.turn + 1,
