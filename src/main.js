@@ -6,9 +6,14 @@ import router from '@/router';
 import i18n from '@/i18n';
 import { initCuttleGlobals } from '_/utils/config-utils';
 import App from '@/App.vue';
+import { createHead } from '@unhead/vue';
+
 const pinia = createPinia();
 
 const app = createApp(App);
+
+// Create global head instance
+const head = createHead();
 
 // Add rollbar to vue
 if (import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN) {
@@ -29,5 +34,8 @@ app.use(i18n);
 
 // Add Cuttle window object
 initCuttleGlobals(app);
+
+// Add unHead to vue
+app.use(head);
 
 app.mount('#app');
