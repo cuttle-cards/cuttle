@@ -16,53 +16,55 @@ Cypress.Commands.add('skipOnGameStateApi', () => {
   }
 });
 
-const transformGameUrl = (api, slug) => {
+const transformGameUrl = (api, slug, gameId = null) => {
   if (!env) {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
 
-  if (slug === 'rematch') {
-    return cy
-      .window()
-      .its('cuttle.gameStore.id')
-      .then((gameId) => `/api/game/${gameId}/rematch`);
+  switch (slug) {
+    case 'rematch':
+      return cy
+        .window()
+        .its('cuttle.gameStore.id')
+        .then((gameId) => `/api/game/${gameId}/rematch`);
+    case 'spectate':
+      return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/spectate/join`) :
+        cy
+          .window()
+          .its('cuttle.gameStore.id')
+          .then((gameId) => `/api/game/${gameId}/spectate/join`);
+    case'draw':
+    case'points':
+    case'faceCard':
+    case'scuttle':
+    case'untargetedOneOff':
+    case'targetedOneOff':
+    case'jack':
+    case'counter':
+    case'resolve':
+    case'resolveThree':
+    case'resolveFour':
+    case'resolveFive':
+    case'seven/points':
+    case'seven/scuttle':
+    case'seven/faceCard':
+    case'seven/jack':
+    case'seven/untargetedOneOff':
+    case'seven/targetedOneOff':
+    case'pass':
+    case'concede':
+      return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/move/`) :
+        cy
+          .window()
+          .its('cuttle.gameStore.id')
+          .then((gameId) => `/api/game/${gameId}/move/`);
+    default:
+      return Cypress.Promise.resolve(`/api/${api}/${slug}`);
   }
-
-  const moveSlugs = new Set([
-    'draw',
-    'points',
-    'faceCard',
-    'scuttle',
-    'untargetedOneOff',
-    'targetedOneOff',
-    'jack',
-    'counter',
-    'resolve',
-    'resolveThree',
-    'resolveFour',
-    'resolveFive',
-    'seven/points',
-    'seven/scuttle',
-    'seven/faceCard',
-    'seven/jack',
-    'seven/untargetedOneOff',
-    'seven/targetedOneOff',
-    'pass',
-    'concede',
-  ]);
-
-  if (moveSlugs.has(slug)) {
-    return cy
-      .window()
-      .its('cuttle.gameStore.id')
-      .then((gameId) => `/api/game/${gameId}/move/`);
-  }
-
-  return Cypress.Promise.resolve(`/api/${api}/${slug}`);
 };
 
-Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST') => {
-  return transformGameUrl(api, slug).then((url) => {
+Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST', gameId = null) => {
+  return transformGameUrl(api, slug, gameId).then((url) => {
     return new Cypress.Promise((resolve, reject) => {
       io.socket.request(
         {
@@ -254,11 +256,12 @@ Cypress.Commands.add('subscribeOpponent', (gameId) => {
 });
 
 Cypress.Commands.add('setOpponentToSpectate', (gameId) => {
-  cy.makeSocketRequest('game', 'spectate', { gameId });
+  cy.makeSocketRequest('game', 'spectate', { gameId }, 'POST', gameId);
 });
 
-Cypress.Commands.add('setOpponentToLeaveSpectate', () => {
-  cy.makeSocketRequest('game', 'spectateLeave', null);
+Cypress.Commands.add('setOpponentToLeaveSpectate', (gameId) => {
+  const slug = `${gameId}/spectate/leave/`;
+  cy.makeSocketRequest('game', slug, { gameId }, 'POST');
 });
 
 Cypress.Commands.add('readyOpponent', (id) => {
@@ -1085,8 +1088,8 @@ Cypress.Commands.add('passOpponent', () => {
   cy.makeSocketRequest('game', 'pass', { moveType });
 });
 
-Cypress.Commands.add('concedeOpponent', () => {
-  cy.makeSocketRequest('game', 'concede', { moveType: MoveType.CONCEDE });
+Cypress.Commands.add('concedeOpponent', (gameId = null) => {
+  cy.makeSocketRequest('game', 'concede', { moveType: MoveType.CONCEDE }, 'POST', gameId);
 });
 
 Cypress.Commands.add('stalemateOpponent', () => {
