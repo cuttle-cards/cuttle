@@ -61,6 +61,7 @@ jobs:
           wait-on-timeout: 120
 
         env:
+          VITE_APP_URL: http://localhost:1337
           VITE_API_URL: http://localhost:1337
           CYPRESS_RECORD_KEY: ${{ secrets.record-key }}
           # pass GitHub token to allow accurately detecting a build vs a re-run build
