@@ -47,6 +47,7 @@ module.exports = {
       playedBy,
       playedCard: null,
       targetCard,
+      discardedCards: [],
       resolved: result.oneOff,
       oneOff: null,
     };
