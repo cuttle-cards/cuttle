@@ -26,9 +26,9 @@ module.exports = {
       // Combine game and gamestate users and delete passwords
       const p0 = { ...game.p0, ...gameState?.p0 };
       delete p0.encryptedPassword;
-      const p1 = { ...game.p1, ...gameState?.p1 };
+      const p1 = { ...game?.p1, ...gameState?.p1 };
       delete p1.encryptedPassword;
-      const players = [ p0, p1 ];
+      const players = game.p1 ? [ p0, p1 ] : [ p0 ];
 
       // Early return if not in game yet
       if (!gameState) {
