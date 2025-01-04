@@ -70,7 +70,7 @@ module.exports = {
           .populate('gameStates')
           .populate('p0')
           .populate('p1');
-        const gameObject = await unpackGamestate(game.gameStates.at(-1));
+        const gameObject = game.gameStates.length ? await unpackGamestate(game.gameStates.at(-1)) : null;
         const socketEvent = await createSocketEvent(game, gameObject);
         
         Game.subscribe(req, [ game.id ]);
