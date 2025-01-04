@@ -682,3 +682,11 @@ describe('Announcement Dialogs', () => {
     cy.get('[data-cy=announcement-dialog]').should('not.exist');
   });
 });
+
+// Check for canonical link in head
+describe('Canonical Link', () => {
+  it('Checks for the canonical link in the head meta data on login/signup page', () => {
+    cy.visit('/login');
+    cy.get('head link[rel="canonical"]').should('have.attr', 'href').and('contain', 'https://www.cuttle.cards/signup');
+  });
+});
