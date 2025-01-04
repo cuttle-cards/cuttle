@@ -80,10 +80,11 @@ module.exports = {
         req.session.pNum = user.pNum ?? undefined;
         Game.publish([ game.id ],socketEvent);
 
+        const pNum = game.p0?.id === user.id ? 0 : 1;
         return res.ok({
           game: socketEvent.game,
           username: user.username,
-          pNum: user.pNum,
+          pNum
         });
       }
       // FIXME: #965
