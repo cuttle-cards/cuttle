@@ -828,6 +828,7 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by stalemate', () => {
+    cy.skipOnGameStateApi();
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible')
       .get('[data-cy=stalemate-initiate]')
@@ -849,6 +850,8 @@ describe('Reconnecting after game is over', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
+      topCard: Card.TWO_OF_CLUBS,
+      secondCard: Card.ACE_OF_HEARTS,
       deck: [],
     });
 
@@ -934,7 +937,6 @@ describe('Reconnecting after game is over', () => {
       p1Hand: [ Card.JACK_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
-      deck: [],
     });
 
     cy.get('#deck').click();
