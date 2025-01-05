@@ -174,7 +174,8 @@ describe('Signing Up', () => {
 describe('Canonical Link', () => {
   it('Checks for the canonical link in the head meta data on login/signup page', () => {
     cy.visit('/login');
-    cy.get('head link[rel="canonical"]').should('have.attr', 'href')
+    cy.get('head link[rel="canonical"]')
+      .should('have.attr', 'href')
       .and('contain', '/signup');
   });
 });
