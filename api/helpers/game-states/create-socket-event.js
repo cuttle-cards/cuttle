@@ -20,7 +20,7 @@ module.exports = {
 
   fn: async function ({ game, gameState }, exits) {
     try {
-      if (!game.status === GameStatus.CREATED && !gameState) {
+      if (game.status !== GameStatus.CREATED && !gameState) {
         throw new Error('GameState Required to create socket event');
       }
       // Combine game and gamestate users and delete passwords
