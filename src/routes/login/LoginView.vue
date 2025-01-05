@@ -181,11 +181,11 @@ import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { useThemedLogo } from '@/composables/themedLogo';
 import { ROUTE_NAME_LOGIN, ROUTE_NAME_SIGNUP } from '@/router';
+import { useHead } from '@unhead/vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import MarkdownContent from '@/components/MarkdownContent.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
-import { useHead } from '@unhead/vue';
 
 
 export default {
