@@ -244,6 +244,9 @@ export const useGameStore = defineStore('game', {
       this.players.push(cloneDeep(player));
       this.players.sort((player, opponent) => player.pNum - opponent.pNum);
     },
+    removeSpectator(username) {
+      this.spectatingUsers = this.spectatingUsers.filter((spectator) => spectator !== username);
+    },
     resetState() {
       this.$reset();
     },
@@ -359,7 +362,7 @@ export const useGameStore = defineStore('game', {
       const authStore = useAuthStore();
       switch (jwres.statusCode) {
         case 200:
-          return resolve();
+          return resolve(jwres);
         case 403:
           authStore.mustReauthenticate = true;
           return reject(jwres.body.message);
@@ -445,24 +448,17 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestSpectate(gameId) {
-      return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/spectate',
-          {
-            gameId,
-          },
-          (res, jwres) => {
-            if (jwres.statusCode === 200) {
-              this.myPNum = 0;
-              this.isSpectating = true;
-              this.updateGame(res);
-              return resolve();
-            }
-            const message = res.message ?? 'Unable to spectate game';
-            return reject(new Error(message));
-          },
-        );
-      });
+      // TODO #965 - Remove dynamic gamestate slug
+      const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate/join` : 'spectate';
+      try {
+        const res = await this.makeSocketRequest(slug, { gameId });
+        this.myPNum = 0;
+        this.isSpectating = true;
+        this.updateGame(res.body);
+      } catch (err) {
+        const message = err?.message ?? 'Unable to spectate game';
+        throw(new Error(message));
+      }
     },
     async requestSpectateLeave() {
       return new Promise((resolve, reject) => {
@@ -661,8 +657,8 @@ export const useGameStore = defineStore('game', {
         moveType: MoveType.SEVEN_DISCARD,
         cardId,
         index, // 0 if topCard, 1 if secondCard
-        targetId: -1, // FIXME: Remove in #965
-        opId: this.opponent.id, // FIXME: Remove in #965
+        targetId: -1, // TODO #965 - remove this
+        opId: this.opponent.id, // TODO #965 - remove this
       });
 
     },

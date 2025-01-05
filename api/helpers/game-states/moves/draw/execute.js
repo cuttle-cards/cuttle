@@ -40,6 +40,8 @@ module.exports = {
       playedBy,
       playedCard: null,
       targetCard: null,
+      discardedCards: [],
+      resolved: null,
     };
 
     return exits.success(result);
