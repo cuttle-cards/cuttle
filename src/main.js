@@ -4,9 +4,9 @@ import rollbar from '@/plugins/rollbar';
 import vuetify from '@/plugins/vuetify';
 import router from '@/router';
 import i18n from '@/i18n';
+import { createHead } from '@unhead/vue';
 import { initCuttleGlobals } from '_/utils/config-utils';
 import App from '@/App.vue';
-import { createHead } from '@unhead/vue';
 
 const pinia = createPinia();
 
