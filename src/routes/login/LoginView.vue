@@ -185,6 +185,7 @@ import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import MarkdownContent from '@/components/MarkdownContent.vue';
 import BaseVideo from '@/components/BaseVideo.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
+import { useHead } from '@unhead/vue';
 
 
 export default {
@@ -195,16 +196,6 @@ export default {
     MarkdownContent,
     TheLanguageSelector
   },
-  head() {
-    return {
-      link: [
-        {
-          rel: 'canonical',
-          href: 'https://www.cuttle.cards/signup'
-        }
-      ]
-    }
-  },
   setup() {
     // Vuetify has its own translation layer that isn't very good
     // It seems to conflict with the namespace of vue-i18n so we need to import it at the component
@@ -212,6 +203,12 @@ export default {
     // I haven't found anything just yet
     const { t } = useI18n();
     const { logoSrc } = useThemedLogo();
+    useHead({
+      link: [ {
+        rel: 'canonical',
+        href: () => 'https://www.cuttle.cards/signup'
+      } ]
+    });
     return {
       t,
       logoSrc,
