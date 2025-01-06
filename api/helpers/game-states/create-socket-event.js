@@ -14,18 +14,18 @@ module.exports = {
     gameState: {
       type: 'ref',
       description: 'Game state object',
-      required: true
+      required: true,
     },
   },
 
   fn: async function ({ game, gameState }, exits) {
     try {
       // Combine game and gamestate users and delete passwords
-      const p0 = { ...game.p0, ...gameState?.p0 };
+      const p0 = { ...game.p0, ...gameState.p0 };
       delete p0.encryptedPassword;
-      const p1 = { ...game?.p1, ...gameState?.p1 };
+      const p1 = { ...game.p1, ...gameState.p1 };
       delete p1.encryptedPassword;
-      const players = game.p1 ? [ p0, p1 ] : [ p0 ];
+      const players = [ p0, p1 ];
 
       const countPasses = (function () {
         let numPasses = 0;
