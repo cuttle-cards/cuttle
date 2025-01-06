@@ -71,7 +71,9 @@ module.exports = {
           .populate('p0')
           .populate('p1');
         const gameObject = game.gameStates.length ? await unpackGamestate(game.gameStates.at(-1)) : null;
-        const socketEvent = await createSocketEvent(game, gameObject);
+        const socketEvent = game.gameStates.length ?
+          await createSocketEvent(game, gameObject)
+          : { game: { ...game, players: game.p1 ? [ game.p0, game.p1 ] : [ game.p0 ] } };
         
         Game.subscribe(req, [ game.id ]);
         req.session.usr = user.id;

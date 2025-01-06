@@ -1,5 +1,4 @@
 const MoveType = require('../../../utils/MoveType.json');
-const GameStatus = require('../../../utils/GameStatus.json');
 
 module.exports = {
   friendlyName: 'Create Socket Event',
@@ -15,28 +14,18 @@ module.exports = {
     gameState: {
       type: 'ref',
       description: 'Game state object',
+      required: true
     },
   },
 
   fn: async function ({ game, gameState }, exits) {
     try {
-      if (!game.status === GameStatus.CREATED && !gameState) {
-        throw new Error('GameState Required to create socket event');
-      }
       // Combine game and gamestate users and delete passwords
       const p0 = { ...game.p0, ...gameState?.p0 };
       delete p0.encryptedPassword;
       const p1 = { ...game?.p1, ...gameState?.p1 };
       delete p1.encryptedPassword;
       const players = game.p1 ? [ p0, p1 ] : [ p0 ];
-
-      // Early return if not in game yet
-      if (!gameState) {
-        return exits.success( {
-          game:
-            { ...game, players }
-        });
-      }
 
       const countPasses = (function () {
         let numPasses = 0;
