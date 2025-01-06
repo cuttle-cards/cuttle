@@ -28,7 +28,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  extends: [ 'eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base' ],
+  extends: [ 'eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base', 'plugin:mocha/recommended' ],
   plugins: [ 'cypress', 'vitest', 'prettier', 'mocha' ],
   ignorePatterns: [ '/node_modules/*', '/assets/*' ],
   rules: {
@@ -163,6 +163,7 @@ module.exports = {
       },
       rules: {
         ...sharedTestRules,
+        'mocha/no-mocha-arrows': 'off',
         'mocha/no-exclusive-tests': 'error'
       },
     },
