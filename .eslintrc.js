@@ -29,7 +29,7 @@ module.exports = {
     sourceType: 'module',
   },
   extends: [ 'eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base' ],
-  plugins: [ 'cypress', 'vitest', 'prettier' ],
+  plugins: [ 'cypress', 'vitest', 'prettier', 'mocha' ],
   ignorePatterns: [ '/node_modules/*', '/assets/*' ],
   rules: {
     'eol-last': [ 'error', 'always' ],
@@ -161,7 +161,10 @@ module.exports = {
         socket3: true,
         Promise: true,
       },
-      rules: sharedTestRules,
+      rules: {
+        ...sharedTestRules,
+        'mocha/no-exclusive-tests': 'error'
+      },
     },
   ],
 };

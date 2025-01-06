@@ -169,3 +169,14 @@ describe('Signing Up', () => {
     assertSnackbar('That username is already registered to another user; try logging in!', 'error', 'auth');
   });
 });
+
+// Check for canonical link in head
+describe('Canonical Link', () => {
+  it('Checks for the canonical link in the head meta data on login/signup page', () => {
+    cy.visit('/login');
+    cy.get('head link[rel="canonical"]')
+      .should('have.attr', 'href')
+      .and('contain', '/signup');
+  });
+});
+
