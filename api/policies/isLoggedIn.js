@@ -19,8 +19,6 @@ module.exports = function (req, res, next) {
 
   // User is not allowed
   // (default res.forbidden() behavior can be overridden in `config/403.js`)
-  return res.forbidden({
-    message: 'You must be logged in to perform this action.',
-    path,
-  });
+  return res.status(401)
+    .json('Please log in and try again');
 };
