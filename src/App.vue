@@ -160,6 +160,54 @@ export default {
   src: url('public/fonts/ptSerif/pt-serif-v18-cyrillic_cyrillic-ext_latin_latin-ext-700.woff2') format('woff2');
 }
 
+/* roboto-100 - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese */
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 100;
+  src: url('public/fonts/roboto/roboto-v32-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese-100.woff2') format('woff2');
+}
+/* roboto-300 - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese */
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url('public/fonts/roboto/roboto-v32-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese-300.woff2') format('woff2');
+}
+/* roboto-regular - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese */
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('public/fonts/roboto/roboto-v32-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese-regular.woff2') format('woff2');
+}
+/* roboto-500 - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese */
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url('public/fonts/roboto/roboto-v32-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese-500.woff2') format('woff2');
+}
+/* roboto-700 - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese */
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url('public/fonts/roboto/roboto-v32-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese-700.woff2') format('woff2');
+}
+/* roboto-900 - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese */
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  src: url('public/fonts/roboto/roboto-v32-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese-900.woff2') format('woff2');
+}
 @import '@/sass/typography';
 
 .gradient-text {
