@@ -9,7 +9,7 @@
  *
  */
 module.exports = function (req, res, next) {
-  const { session, path } = req;
+  const { session } = req;
   const userIsValid = session.usr && typeof session.usr === 'number';
   // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
