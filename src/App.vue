@@ -59,7 +59,106 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@400;600;700&family=Luckiest+Guy&family=Changa:wght@400;500;700&family=Libre+Baskerville:wght@400;700&family=PT+Serif:wght@400;700&display=swap');
+
+//use self hosted google fonts
+/* changa-regular - arabic_latin_latin-ext */
+@font-face {
+  font-display: swap;
+  font-family: 'Changa';
+  font-style: normal;
+  font-weight: 400;
+  src: url('public/fonts/changa/changa-v27-arabic_latin_latin-ext-500.woff2') format('woff2');
+}
+
+/* changa-500 - arabic_latin_latin-ext */
+@font-face {
+  font-display: swap;
+  font-family: 'Changa';
+  font-style: normal;
+  font-weight: 500;
+  src: url('public/fonts/changa/changa-v27-arabic_latin_latin-ext-500.woff2') format('woff2');
+}
+
+/* changa-700 - arabic_latin_latin-ext */
+@font-face {
+  font-display: swap;
+  font-family: 'Changa';
+  font-style: normal;
+  font-weight: 700;
+  src: url('public/fonts/changa/changa-v27-arabic_latin_latin-ext-700.woff2') format('woff2');
+}
+
+/* cormorant-infant-regular - cyrillic_cyrillic-ext_latin_latin-ext_vietnamese */
+@font-face {
+  font-display: swap;
+  font-family: 'Cormorant Infant';
+  font-style: normal;
+  font-weight: 400;
+  src: url('public/fonts/cormorantInfant/cormorant-infant-v17-cyrillic_cyrillic-ext_latin_latin-ext_vietnamese-regular.woff2') format('woff2');
+}
+
+/* cormorant-infant-600 - cyrillic_cyrillic-ext_latin_latin-ext_vietnamese */
+@font-face {
+  font-display: swap;
+  font-family: 'Cormorant Infant';
+  font-style: normal;
+  font-weight: 600;
+  src: url('public/fonts/cormorantInfant/cormorant-infant-v17-cyrillic_cyrillic-ext_latin_latin-ext_vietnamese-600.woff2') format('woff2');
+}
+
+/* cormorant-infant-700 - cyrillic_cyrillic-ext_latin_latin-ext_vietnamese */
+@font-face {
+  font-display: swap;
+  font-family: 'Cormorant Infant';
+  font-style: normal;
+  font-weight: 700;
+  src: url('public/fonts/cormorantInfant/cormorant-infant-v17-cyrillic_cyrillic-ext_latin_latin-ext_vietnamese-700.woff2') format('woff2');
+}
+
+/* libre-baskerville-regular - latin_latin-ext */
+@font-face {
+  font-display: swap;
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 400;
+  src: url('public/fonts/libreBaskerville/libre-baskerville-v14-latin_latin-ext-regular.woff2') format('woff2');
+}
+
+/* libre-baskerville-700 - latin_latin-ext */
+@font-face {
+  font-display: swap;
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 700;
+  src: url('public/fonts/libreBaskerville/libre-baskerville-v14-latin_latin-ext-700.woff2') format('woff2');
+}
+
+/* luckiest-guy-regular - latin_latin-ext */
+@font-face {
+  font-display: swap;
+  font-family: 'Luckiest Guy';
+  font-style: normal;
+  font-weight: 400;
+  src: url('public/fonts/luckiestGuy/luckiest-guy-v23-latin_latin-ext-regular.woff2') format('woff2');
+}
+
+/* pt-serif-regular - cyrillic_cyrillic-ext_latin_latin-ext */
+@font-face {
+  font-display: swap;
+  font-family: 'PT Serif';
+  font-style: normal;
+  font-weight: 400;
+  src: url('public/fonts/ptSerif/pt-serif-v18-cyrillic_cyrillic-ext_latin_latin-ext-regular.woff2') format('woff2');
+}
+
+/* pt-serif-700 - cyrillic_cyrillic-ext_latin_latin-ext */
+@font-face {
+  font-display: swap;
+  font-family: 'PT Serif';
+  font-style: normal;
+  font-weight: 700;
+  src: url('public/fonts/ptSerif/pt-serif-v18-cyrillic_cyrillic-ext_latin_latin-ext-700.woff2') format('woff2');
+}
 
 @import '@/sass/typography';
 
