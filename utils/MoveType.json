@@ -19,6 +19,9 @@
   "SEVEN_DISCARD": "sevenDiscard",
   "SEVEN_ONE_OFF": "sevenOneOff",
   "PASS": "pass",
+  "STALEMATE_REQUEST": "stalemateRequest",
+  "STALEMATE_REJECT": "stalemateReject",
+  "STALEMATE_ACCEPT": "stalemateAccept",
   "CONCEDE": "concede",
   "LOADFIXTURE": "loadFixture"
 }

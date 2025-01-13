@@ -19,6 +19,9 @@ module.exports = function (req, res, next) {
     case MoveType.RESOLVE:
     case MoveType.RESOLVE_FIVE: 
     case MoveType.CONCEDE:
+    case MoveType.STALEMATE_REQUEST:
+    case MoveType.STALEMATE_REJECT:
+    case MoveType.STALEMATE_ACCEPT:
       return next();
 
     // These require a `cardId`
