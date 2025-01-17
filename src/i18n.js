@@ -7,11 +7,12 @@ import { getLocalStorage } from '_/utils/local-storage-utils';
 import en from '@/translations/en.json';
 import es from '@/translations/es.json';
 import fr from '@/translations/fr.json';
-
+import de from '@/translations/de.json';
 const messages = {
   en,
   es,
   fr,
+  de,
 };
 
 const preferredLocale = getLocalStorage('preferredLocale');

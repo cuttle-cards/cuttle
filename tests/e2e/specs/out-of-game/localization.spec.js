@@ -2,6 +2,8 @@ import { myUser } from '../../fixtures/userFixtures';
 import es from '../../../../src/translations/es.json';
 import fr from '../../../../src/translations/fr.json';
 import en from '../../../../src/translations/en.json';
+import de from '../../../../src/translations/de.json';
+
 import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 describe('Localization', () => {
@@ -75,6 +77,13 @@ describe('Localization', () => {
     checkLoginTranslation(fr);
     checkLobbyTranslation(fr);
   });
+
+  it('Should check translation for German', () => {
+    checkAndChangeLanguage('de', de);
+    checkLoginTranslation(de);
+    checkLobbyTranslation(de);
+  });
+
 });
 
 describe('language files', () => {
@@ -92,6 +101,7 @@ describe('language files', () => {
   const enKeys = extractKeys(en).sort();
   const frKeys = extractKeys(fr).sort();
   const esKeys = extractKeys(es).sort();
+  const deKeys = extractKeys(de).sort();
 
   it('English should have no empty strings', () => {
     enKeys.forEach((key) => {
@@ -122,9 +132,24 @@ describe('language files', () => {
   });
 
   it('Spanish should have no empty strings', () => {
-    frKeys.forEach((key) => {
+    esKeys.forEach((key) => {
       const assertionMsg = `es.json should have nonempty value for key ${key}, but it value was empty`;
       expect(es[key]).to.not.eq('', assertionMsg);
     });
   });
+
+  it('German should have the same keys', () => {
+    for (let i = 0; i < enKeys.length; i++) {
+      const assertionMsg = `de.json should have the key ${enKeys[i]} for key number ${i}, but instead it had key ${deKeys[i]}`;
+      expect(enKeys[i]).to.eq(deKeys[i], assertionMsg);
+    }
+  });
+
+  it('German should have no empty strings', () => {
+    deKeys.forEach((key) => {
+      const assertionMsg = `de.json should have non-empty value for key ${key}, but it value was empty`;
+      expect(de[key]).to.not.eq('', assertionMsg);
+    });
+  });
+
 });
