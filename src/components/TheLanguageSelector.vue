@@ -11,12 +11,13 @@
       />
     </template>
 
-    <v-list data-cy="lang-list" density="compact" class="bg-surface-2 text-surface-1">
+    <v-list data-cy="lang-list" density="compact">
       <v-list-item
-        v-for="(lang, i) in $i18n.availableLocales"
+        v-for="(lang, i) in sortedLocales"
         :key="`${i}-${lang}`"
         :value="lang"
         :title="lang"
+        :class="lang === $i18n.locale ? dropdownActivatorClass : ''"
         :data-lang="lang"
         @click="changeLocale(lang)"
       />
@@ -28,7 +29,7 @@
 import { setLocalStorage } from '_/utils/local-storage-utils';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-const { locale } = useI18n();
+const { locale, availableLocales } = useI18n();
 
 const props = defineProps({
   variant: {
@@ -41,11 +42,29 @@ const props = defineProps({
   }
 });
 
+const sortedLocales = computed(() => {
+  const currentLang = locale.value;
+  return [ ...availableLocales ].sort((a, b) => {
+    if (a === currentLang){
+      return -1;
+    }
+    if (b === currentLang){
+      return 1;
+    }
+    return a.localeCompare(b);
+  });
+});
+
+
 const activatorClass = computed(() => props.variant === 'dark' ? `bg-surface-2 text-surface-1` : '');
+const dropdownActivatorClass = computed(() => props.variant === 'dark' ? `bg-red-lighten-4 text-surface-1` : '');
+
 const icons = computed(() => props.hasChevron ? { prepend: 'mdi-web', append: 'mdi-chevron-right' } : { prepend: 'mdi-web mr-2', append: '' });
+
 
 const changeLocale = (lang) => {
   locale.value = lang;
   setLocalStorage('preferredLocale', lang);
 };
 </script>
+
