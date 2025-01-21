@@ -11,13 +11,13 @@
       />
     </template>
 
-    <v-list data-cy="lang-list" density="compact">
+    <v-list data-cy="lang-list" density="compact" class="bg-surface-2 text-surface-1">
       <v-list-item
         v-for="(lang, i) in sortedLocales"
         :key="`${i}-${lang}`"
         :value="lang"
         :title="lang"
-        :class="lang === $i18n.locale ? dropdownActivatorClass : ''"
+        :active="lang === $i18n.locale"
         :data-lang="lang"
         @click="changeLocale(lang)"
       />
@@ -57,7 +57,6 @@ const sortedLocales = computed(() => {
 
 
 const activatorClass = computed(() => props.variant === 'dark' ? `bg-surface-2 text-surface-1` : '');
-const dropdownActivatorClass = computed(() => props.variant === 'dark' ? `bg-red-lighten-4 text-surface-1` : '');
 
 const icons = computed(() => props.hasChevron ? { prepend: 'mdi-web', append: 'mdi-chevron-right' } : { prepend: 'mdi-web mr-2', append: '' });
 
