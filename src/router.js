@@ -9,6 +9,7 @@ import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 
 export const ROUTE_NAME_GAME = 'Game';
+export const ROUTE_NAME_SPECTATE_LIST = 'SpectateList';
 export const ROUTE_NAME_SPECTATE = 'Spectate';
 export const ROUTE_NAME_HOME = 'Home';
 export const ROUTE_NAME_LOBBY = 'Lobby';
@@ -118,6 +119,11 @@ const routes = [
     meta: {
       hideNavigation: true,
     },
+  },
+  {
+    name: ROUTE_NAME_SPECTATE_LIST,
+    path: '/spectate-list',
+    component: HomeView,
   },
   {
     name: ROUTE_NAME_SPECTATE,

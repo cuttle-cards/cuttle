@@ -16,11 +16,11 @@
                 variant="text"
                 mandatory
               >
-                <v-btn :value="TABS.PLAY" data-cy-game-list-selector="play">
+                <v-btn to="/" data-cy-game-list-selector="play">
                   {{ t('global.play') }}
                 </v-btn>
 
-                <v-btn :value="TABS.SPECTATE" data-cy-game-list-selector="spectate">
+                <v-btn to="/spectate-list" data-cy-game-list-selector="spectate">
                   {{ t('home.spectate') }}
                 </v-btn>
               </v-btn-toggle>
@@ -55,7 +55,7 @@
               </v-row>
             </div>
             <v-window v-else v-model="tab" class="pa-4 overflow-y-auto">
-              <v-window-item :value="TABS.PLAY">
+              <v-window-item>
                 <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-surface-1">
                   {{ t('home.noGameslist') }}
                 </p>
@@ -72,7 +72,7 @@
                   />
                 </div>
               </v-window-item>
-              <v-window-item :value="TABS.SPECTATE">
+              <v-window-item>
                 <p
                   v-if="spectateGameList.length === 0"
                   data-cy="no-spectate-game-text"
