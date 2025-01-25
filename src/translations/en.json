@@ -250,8 +250,7 @@
         "playFromHand": "You can only play a card that is in your hand",
         "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
         "blockedByMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen",
-        "notInMainPhase": "You can only do that in the main phase",
-        "alreadyConsideringStalemate": "A stalemate has already been offered"
+        "notInMainPhase": "You can only do that in the main phase"
       },
       "draw": {
         "deckIsEmpty": "The deck is empty; you cannot draw.",
@@ -273,6 +272,11 @@
         "rankTooLow": "You can only scuttle if your card's rank is higher, or the rank is the same, and your suit is higher (Clubs < Diamonds < Hearts < Spades)",
         "mustUsePointCard": "You can only scuttle with an ace through ten",
         "mustTargetPointCard": "You can only scuttle a card your opponent has played for points"
+      },
+      "stalemate": {
+        "alreadyConsideringStalemate": "A stalemate has already been offered",
+        "noStalemateOffered": "Your opponent has not offered a stalemate",
+        "opponentConsideringStalemate": "Your opponent is considering your stalemate offer"
       },
       "oneOffs": {
         "oneOffInPlay": "There is already a one-off in play; you cannot play any card, except a two to counter.",
