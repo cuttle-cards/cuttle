@@ -54,8 +54,9 @@ module.exports = {
     const playerConceded = gameState.moveType === MoveType.CONCEDE;
     const p0Wins = checkWin(0) || (playerConceded && gameState.playedBy === 1);
     const p1Wins = checkWin(1) || (playerConceded && gameState.playedBy === 0);
+    const stalemate = numPasses >= 3 || gameState.moveType === MoveType.STALEMATE_ACCEPT;
 
-    if (p0Wins || p1Wins || numPasses >= 3) {
+    if (p0Wins || p1Wins || stalemate) {
       res.gameOver = true;
       const gameUpdates = {};
       gameUpdates.status = GameStatus.FINISHED;
