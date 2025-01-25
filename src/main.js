@@ -17,7 +17,8 @@ const head = createHead();
 
 // Add rollbar to vue
 if (import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN) {
-  app.use(rollbar);
+  // TODO #1129 - re-enable rollbar when it doesn't crash the tab
+  // app.use(rollbar);
 }
 
 // Add router to vue
