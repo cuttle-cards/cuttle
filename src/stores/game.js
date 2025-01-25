@@ -346,13 +346,8 @@ export const useGameStore = defineStore('game', {
       // Animate discard then update full game to animate draw
       if (discardedCards?.length) {
         await sleep(1000);
-        const opponentHandAfterDiscard = this.opponent.hand.filter(
-          (card) => !discardedCards.includes(card.id),
-        );
-        const playerHandAfterDiscard = this.player.hand.filter((card) => !discardedCards.includes(card.id));
-
-        this.opponent.hand = opponentHandAfterDiscard;
-        this.player.hand = playerHandAfterDiscard;
+        this.opponent.hand = this.opponent.hand.filter((card) => !discardedCards.includes(card.id));
+        this.player.hand = this.player.hand.filter((card) => !discardedCards.includes(card.id));
         await sleep(1000);
       }
 
