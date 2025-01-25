@@ -519,14 +519,10 @@
       }
     },
     "announcement": {
-      "activatorText": "Neue Funktion: Hände im Endspiel aufgedeckt!",
-      "title": "Endspiel-Enthüllung",
-      "heading": "Endspiel vereinfachen",
-      "paragraph": "Wenn das Deck vollständig erschöpft ist (keine Karten mehr vorhanden sind), kannst du jetzt die Hand deines Gegners sehen! Da der Ablagestapel öffentlich einsehbar ist, konnten Spieler schon immer ableiten, welche Karten sich in der Hand ihres Gegners befinden, sobald das Deck erschöpft ist. Um das Gameplay effizienter zu gestalten, können Spieler ab jetzt die Hände ihrer Gegner sehen, sobald das Deck leer ist. Dadurch können sich Spieler auf die Strategie konzentrieren, anstatt den Ablagestapel durchzugehen. Viel Glück und viel Spaß!"
-    }
+      "activatorText": "Spades 2024 Saisonmeisterschaft!",
+      "title": "Spades 2024",
+      "heading": "Saisonmeisterschaft",
+      "paragraph": "Die Spades 2024 Cuttle Saisonmeisterschaft findet an diesem Samstag, den 11. Januar, um 12 Uhr EST statt! Sehen Sie zu, wie die 8 besten Spieler der vergangenen Saison im Wettbewerb um den Titel des Spades-Saisonmeisters kämpfen! Sehen Sie es live auf ",
+      "twitchLink": "twitch.tv/cuttle_cards"
+    }  
   }
-  
-
-          
-          
-      
