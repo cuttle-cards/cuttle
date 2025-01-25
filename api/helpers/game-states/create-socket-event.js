@@ -108,8 +108,10 @@ module.exports = {
         },
       };
 
+      const change = [ MoveType.STALEMATE_REQUEST, MoveType.STALEMATE_ACCEPT ].includes(gameState.moveType) ? 'requestStalemate' : gameState.moveType;
+
       const fullSocketEvent = {
-        change: gameState.moveType,
+        change,
         game: socketGame,
         victory,
         happened,
