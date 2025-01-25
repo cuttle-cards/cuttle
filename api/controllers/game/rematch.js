@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
     const { usr: userId } = req.session;
     const { gameId: oldGameId, rematch } = req.body;
 
-    let game =  await sails.helpers.lockGame(req.session.game);
+    let game = await sails.helpers.lockGame(req.session.game);
 
     // Early return if requesting user was not in the game
     if (!userId || ![ game.p0?.id, game.p1?.id ].includes(userId)) {
@@ -95,7 +95,7 @@ module.exports = async function (req, res) {
       gameId: newGame.id,
       newGame: newFullGame,
     });
-
+    
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
   } catch (err) {

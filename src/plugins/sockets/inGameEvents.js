@@ -120,6 +120,7 @@ export async function handleInGameEvents(evData) {
     case SocketEvent.SEVEN_POINTS:
     case SocketEvent.SEVEN_FACE_CARD:
     case SocketEvent.SEVEN_JACK:
+    case SocketEvent.SEVEN_DISCARD:
     case SocketEvent.SEVEN_SCUTTLE:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       gameStore.playingFromDeck = false;
@@ -181,8 +182,12 @@ export async function handleInGameEvents(evData) {
     }
     case SocketEvent.RE_LOGIN:
     case SocketEvent.SPECTATOR_JOINED:
-    case SocketEvent.SPECTATOR_LEFT:
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
+      break;
+    case SocketEvent.SPECTATOR_LEFT:
+      if (gameStore.id === evData.gameId) {
+        gameStore.removeSpectator(evData.username);
+      }
       break;
     case SocketEvent.REQUEST_STALEMATE:
       // Show OpponentRequestedStalemateDialog if opponent requested stalemate

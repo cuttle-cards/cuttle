@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { points } from '../../fixtures/gameStates/points';
 import { resolveThree } from '../../fixtures/gameStates/resolveThree';
 import { resolveNine } from '../../fixtures/gameStates/resolveNine';
+import { duplicateCard, missingCard, scrapAttachments, invalidCard } from '../../fixtures/gameStates/cardValidationErrors';
 
 // remove attributes added while creating the entry in the database
 function stripDbAttributes(obj) {
@@ -34,7 +35,7 @@ describe("Converting GameState's and GameStateRow's and emitting sockets for Poi
   });
 
   it('Creates and Publishes socket event', async () => {
-    const socketEvent = await sails.helpers.gameStates.publishGameState(points.game, points.gameState);
+    const socketEvent = await sails.helpers.gameStates.createSocketEvent(points.game, points.gameState);
     stripDbAttributes(socketEvent.game);
     delete socketEvent.game.match.startTime;
     delete socketEvent.victory.currentMatch.startTime;
@@ -68,7 +69,7 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
   });
 
   it('Creates and Publishes socket event', async () => {
-    const socketEvent = await sails.helpers.gameStates.publishGameState(
+    const socketEvent = await sails.helpers.gameStates.createSocketEvent(
       resolveThree.game,
       resolveThree.gameState,
     );
@@ -102,12 +103,34 @@ describe('Converting GameState, and GameStateRow, and Publishing Socket for Reso
   });
 
   it('Creates and Publishes socket event', async () => {
-    const socketEvent = await sails.helpers.gameStates.publishGameState(
+    const socketEvent = await sails.helpers.gameStates.createSocketEvent(
       resolveNine.game,
       resolveNine.gameState,
     );
 
     stripDbAttributes(socketEvent.game);
     expect(socketEvent).toEqual(resolveNine.socket);
+  });
+});
+
+describe('Throwing Errors on card validations',() => {
+  it('throws an error when a duplicate card is found', () => {
+    expect(() => sails.helpers.gameStates.validateAllCards(duplicateCard))
+      .toThrowError(/^Duplicate Card 7S$/);
+  });
+
+  it('throws an error when a invalid card is found', () => {
+    expect(() => sails.helpers.gameStates.validateAllCards(invalidCard))
+      .toThrowError(/^Invalid Card id HA$/);
+  });
+
+  it('throws an error when a card is missing', () => {
+    expect(() => sails.helpers.gameStates.validateAllCards(missingCard))
+      .toThrowError(/^Missing Cards AC$/);
+  });
+
+  it('throws an error when a card in the scrap has an attachment', () => {
+    expect(() => sails.helpers.gameStates.validateAllCards(scrapAttachments))
+      .toThrowError(/^6C is not a point card, and cannot have attachments$/);
   });
 });

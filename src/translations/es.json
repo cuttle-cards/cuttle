@@ -298,7 +298,9 @@
         "seven": {
           "oneCardInDeck": "No puedes jugar un 7 como carta de habilidad única si es la última carta del mazo",
           "pickAndPlay": "Solo puedes jugar las cartas superiores del mazo mientras se resuelve un Siete",
-          "wrongPhase": "No puedes jugar desde el mazo en este momento"
+          "wrongPhase": "No puedes jugar desde el mazo en este momento",
+          "mustBeDoubleJacks": "No puedes descartar desde un siete a menos que ambas cartas sean jotas",
+          "jacksMustBeUnplayable": "No puedes descartar porque las jotas se pueden jugar"
         }
       }
     }

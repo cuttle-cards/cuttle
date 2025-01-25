@@ -97,7 +97,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it('Wins match played with Rematch/Continue Match button', function () {
-    cy.skipOnGameStateApi();
     // Game 1: Opponent concedes
     cy.log('Game 1: opponent concedes');
     cy.concedeOpponent();
@@ -217,7 +216,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it('Loses a ranked match played with the Rematch/Continue Match button', () => {
-    cy.skipOnGameStateApi();
     // Game 1 - Player concedes
     concedePlayer();
     assertLoss({ wins: 0, losses: 1, stalemates: 0 });
@@ -246,7 +244,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it('Shows when opponent declines continuing your ranked match', () => {
-    cy.skipOnGameStateApi();
     cy.concedeOpponent();
     assertVictory({ wins: 1, losses: 0, stalemates: 0 });
 
@@ -277,7 +274,6 @@ describe('Creating And Updating Casual Games With Rematch', () => {
   });
 
   it('Unranked games with rematch', function () {
-    cy.skipOnGameStateApi();
     // Game 1: Opponent concedes
     cy.concedeOpponent();
     assertVictory({ wins: 1, losses: 0, stalemates: 0 });
@@ -337,6 +333,18 @@ describe('Creating And Updating Casual Games With Rematch', () => {
       p1Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_DIAMONDS ],
       p1Points: [],
       p1FaceCards: [],
+      scrap: [ Card.TWO_OF_CLUBS, Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS,
+        Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS,
+        Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS,
+        Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS,
+        Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS,
+        Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS,
+        Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS,
+        Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS,
+        Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS,
+        Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+        Card.FIVE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES,
+        Card.NINE_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ]
     });
 
     // Players pass to end game
@@ -566,6 +574,7 @@ describe('Spectating Rematches', () => {
     });
 
     it('Shows when player1 declines rematch while spectating ranked match', () => {
+      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
@@ -573,6 +582,7 @@ describe('Spectating Rematches', () => {
     });
 
     it('Shows when player2 declines rematch while spectating ranked match', () => {
+      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true });

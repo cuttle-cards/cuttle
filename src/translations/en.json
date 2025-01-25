@@ -298,7 +298,9 @@
         "seven": {
           "oneCardInDeck": "You cannot play a 7 as a ONE-OFF if it is the last card in the deck",
           "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven.",
-          "wrongPhase": "You can't play from the deck right now"
+          "wrongPhase": "You can't play from the deck right now",
+          "mustBeDoubleJacks": "You can't discard from a seven unless both cards are jacks",
+          "jacksMustBeUnplayable": "You can't discard because the jacks can be played"
         }
       }
     }

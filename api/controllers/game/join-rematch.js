@@ -13,7 +13,7 @@ module.exports = async function (req, res) {
 
     const newGameId = oldGame?.rematchGame;
 
-    const game = await gameService.populateGame({ gameId: newGameId });
+    const game = await Game.findOne({ id: newGameId });
     Game.subscribe(req, [ game.id ]);
 
     req.session.game = game.id;

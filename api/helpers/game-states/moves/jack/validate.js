@@ -47,22 +47,22 @@ module.exports = {
         throw new Error('game.snackbar.global.notYourTurn');
       }
 
-      // PlayedCard must be in player's hand
+      // playedCard must be in player's hand
       if (!playedCard) {
         throw new Error('game.snackbar.global.playFromHand');
       }
 
-      // PlayedCard must be in player's hand
+      // playedCard must be a jack
       if (playedCard.rank !== 11) {
         throw new Error('game.snackbar.jack.stealOnlyPointCards');
       }
 
-      // Targetcard must be in opponent's points
+      // targetCard must be in opponent's points
       if (!targetCard) {
         throw new Error('game.snackbar.jack.stealOnlyPointCards');
       }
 
-      // PlayedCard must not be frozen
+      // playedCard must not be frozen
       if (playedCard.isFrozen) {
         throw new Error('game.snackbar.global.cardFrozen');
       }

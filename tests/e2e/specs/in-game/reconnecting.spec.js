@@ -4,7 +4,6 @@ import { Card } from '../../fixtures/cards';
 
 describe('Reconnecting to a game', () => {
   it('Refreshs Game from Game Menu', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [ Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS ],
@@ -44,7 +43,6 @@ describe('Reconnecting to a game', () => {
   });
 
   it('Persists session after refreshing the page', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
 
     cy.loadGameFixture(0, {
@@ -74,7 +72,6 @@ describe('Reconnecting to a game', () => {
   });
 
   it('Reconnects after refreshing the page', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
 
     cy.loadGameFixture(0, {
@@ -105,7 +102,6 @@ describe('Reconnecting to a game', () => {
 
   describe('Reconnecting into Cannot Counter Dialog', () => {
     it('oneOff - Reconnect into cannot counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
 
       cy.loadGameFixture(1, {
@@ -141,7 +137,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('targetedOneOff -- reconnect into cannot counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
 
       cy.loadGameFixture(1, {
@@ -177,7 +172,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('counter -- Reconnect into cannot counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.ACE_OF_CLUBS ],
@@ -215,7 +209,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('sevenOneOff -- Reconnect into cannot counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -259,7 +252,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('sevenTargetedOneOff -- Reconnect into cannot counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -297,7 +289,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('Opponent reconnects while player is in cannot-counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
 
       cy.loadGameFixture(1, {
@@ -334,7 +325,6 @@ describe('Reconnecting to a game', () => {
 
   describe('Reconnecting into Counter Dialog', () => {
     it('oneOff -- Reconnect into Counter Dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.ACE_OF_CLUBS ],
@@ -374,7 +364,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('targetedOneOff -- reconnect into counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.TWO_OF_SPADES ],
@@ -417,7 +406,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('targetedOneOff -- reconnect into waiting for opponent to counter overlay', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.TWO_OF_SPADES ],
@@ -462,7 +450,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('counter -- Reconnect into counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES ],
@@ -518,7 +505,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('sevenOneOff -- Reconnect into counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -561,7 +547,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('sevenTargetedOneOff -- Reconnect into counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -608,7 +593,6 @@ describe('Reconnecting to a game', () => {
   describe('Reconnecting into One-Off resolutions', () => {
     describe('Reconnecting into 3s', () => {
       it('Resolve 3 after reconnect -- Player fetches card', () => {
-        cy.skipOnGameStateApi();
         cy.setupGameAsP0();
         cy.loadGameFixture(0, {
           p0Hand: [ Card.THREE_OF_CLUBS ],
@@ -647,7 +631,6 @@ describe('Reconnecting to a game', () => {
       });
 
       it('Resolve opponents three after reconnect', () => {
-        cy.skipOnGameStateApi();
         cy.setupGameAsP1();
         cy.loadGameFixture(1, {
           p0Hand: [ Card.THREE_OF_CLUBS ],
@@ -687,7 +670,6 @@ describe('Reconnecting to a game', () => {
     }); // End 3's reconnect
 
     it('Resolve 4 after reconnect - Player discards', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],
@@ -727,7 +709,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('Resolve 7 after reconnect - Player', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -847,6 +828,7 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by stalemate', () => {
+    cy.skipOnGameStateApi();
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible')
       .get('[data-cy=stalemate-initiate]')
@@ -861,7 +843,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by passing', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -869,6 +850,8 @@ describe('Reconnecting after game is over', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
+      topCard: Card.TWO_OF_CLUBS,
+      secondCard: Card.ACE_OF_HEARTS,
       deck: [],
     });
 
@@ -889,7 +872,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by points', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -909,7 +891,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by points playing jack', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.JACK_OF_DIAMONDS ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -930,7 +911,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by points playing king', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.KING_OF_DIAMONDS ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -950,7 +930,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by resolving one-off', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -958,7 +937,6 @@ describe('Reconnecting after game is over', () => {
       p1Hand: [ Card.JACK_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
-      deck: [],
     });
 
     cy.get('#deck').click();
@@ -977,7 +955,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by resolving one-off from a seven', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -1007,13 +984,12 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by playing jack from a seven', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
       p0Points: [ Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
       p0FaceCards: [],
       p1Hand: [],
-      p1Points: [ Card.SEVEN_OF_SPADES ],
+      p1Points: [ Card.SEVEN_OF_CLUBS ],
       p1FaceCards: [],
       topCard: Card.JACK_OF_DIAMONDS,
       deck: [],
@@ -1027,7 +1003,7 @@ describe('Reconnecting after game is over', () => {
       .click();
     cy.get('[data-move-choice=jack]').should('be.visible')
       .click();
-    cy.get('[data-opponent-point-card=7-3]').should('be.visible')
+    cy.get('[data-opponent-point-card=7-0]').should('be.visible')
       .click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
@@ -1035,7 +1011,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by playing points from a seven', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
       p0Points: [ Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
@@ -1043,7 +1018,7 @@ describe('Reconnecting after game is over', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
-      topCard: Card.SEVEN_OF_SPADES,
+      topCard: Card.SEVEN_OF_CLUBS,
       deck: [],
     });
 
@@ -1051,7 +1026,7 @@ describe('Reconnecting after game is over', () => {
     cy.get('[data-move-choice=oneOff]').should('be.visible')
       .click();
     cy.resolveOpponent();
-    cy.get('[data-top-card=7-3]').click();
+    cy.get('[data-top-card=7-0]').click();
     cy.get('[data-move-choice=points]').should('be.visible')
       .click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
@@ -1060,7 +1035,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Brings player to the rematch game when player hits rematch, disconnects, then refreshes after opponent hit rematch and started game', () => {
-    cy.skipOnGameStateApi();
     cy.concedeOpponent();
 
     cy.get('[data-cy=gameover-rematch').should('not.be.disabled')
@@ -1113,7 +1087,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Brings player to the rematch game when player hits rematch, disconnects, then reconnects socket after opponent hit rematch and started game', () => {
-    cy.skipOnGameStateApi();
     cy.concedeOpponent();
 
     cy.get('[data-cy=gameover-rematch').should('not.be.disabled')

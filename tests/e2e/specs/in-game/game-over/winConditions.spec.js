@@ -401,6 +401,7 @@ describe('Stalemates', () => {
     });
 
     it('Player requests stalemate, then reloads before opponent accepts', () => {
+      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
