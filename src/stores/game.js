@@ -462,7 +462,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestSpectateLeave() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/api/game/spectateLeave', (res, jwres) => {
+        io.socket.post(`/api/game/${this.id}/spectate/leave`, (_res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
             return resolve();
