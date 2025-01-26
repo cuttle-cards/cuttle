@@ -42,10 +42,11 @@ export default {
       }
 
       const vueComponent = {
-        name: vm.$options?.name || 'AnonymousComponent',
-        props: vm.$props || {},
-        data: vm.$data || {},
-        attributes: vm.$attributes || {},
+        name: vm.$options?.name ?? 'AnonymousComponent',
+        props: vm.$props ?? {},
+        data: vm.$data ?? {},
+        attributes: vm.$attributes ?? {},
+        route: vm.$route ?? {},
       };
 
       rollbar.error(error, { vueComponent, info });
