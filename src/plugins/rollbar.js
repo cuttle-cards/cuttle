@@ -36,10 +36,19 @@ const rollbar = new Rollbar(config);
 export default {
   install(app) {
     app.config.errorHandler = (error, vm, info) => {
-      rollbar.error(error, { vueComponent: vm, info });
+
       if (app.config.devtools) {
         console.error(error);
       }
+
+      const vueComponent = {
+        name: vm.$options?.name || 'AnonymousComponent',
+        props: vm.$props || {},
+        data: vm.$data || {},
+        attributes: vm.$attributes || {},
+      };
+
+      rollbar.error(error, { vueComponent, info });
     };
     app.provide('rollbar', rollbar);
   },
