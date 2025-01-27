@@ -87,8 +87,8 @@ describe('Localization', () => {
 
   it('Should check translation for Ukrainian', () => {
     checkAndChangeLanguage('uk', uk);
-    checkLobbyTranslation(uk);
     checkLoginTranslation(uk);
+    checkLobbyTranslation(uk);
   });
 
 });

@@ -95,7 +95,7 @@
       "four": {
         "discardTwoCards": "Défaussez deux cartes",
         "discard": "Défausser",
-        "oppponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
+        "opponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
       "five": {
         "discardAndDraw": "Jeter et piocher",
