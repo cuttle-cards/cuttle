@@ -43,7 +43,7 @@ module.exports = {
     // Remove card from player's hand
     const [ playedCard ] = player.hand.splice(cardIndex, 1);
 
-    // Remove target card from oppponent's points
+    // Remove target card from opponent's points
     const [ targetCard ] = opponent.points.splice(targetIndex, 1);
 
     // Add jack (playedCard) to targetCard's attachment
