@@ -36,7 +36,7 @@ export default {
     },
     variant() {
       const isHomeView = this.$router.currentRoute.value.name !== 'Stats';
-      return isHomeView ? 'light' : 'dark'; 
+      return isHomeView ? 'light' : 'dark';
     },
     showFooter() {
       return this.showNav && this.isSmallDevice && this.isAuthenticated;
@@ -59,7 +59,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@400;600;700&family=Luckiest+Guy&family=Changa:wght@400;500;700&family=Libre+Baskerville:wght@400;700&family=PT+Serif:wght@400;700&display=swap');
 
 @import '@/sass/typography';
 

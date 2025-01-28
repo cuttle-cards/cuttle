@@ -5,7 +5,8 @@ module.exports = function (req, res) {
   const promiseOpponent = userService.findUser({ userId: req.body.opId });
   const promiseCard = cardService.findCard({ cardId: req.body.cardId });
   const promiseTarget = req.body.targetId !== -1 ? 
-    cardService.findCard({ cardId: req.body.targetId }) : -1; // -1 for double jacks with no points to steal special case
+    cardService.findCard({ cardId: req.body.targetId })
+    : -1; // -1 for double jacks with no points to steal special case
   let promises = [ promiseGame, promisePlayer, promiseOpponent, promiseCard, promiseTarget ];
   Promise.all(promises)
     .then(function changeAndSave(values) {
@@ -51,7 +52,7 @@ module.exports = function (req, res) {
           const queenCount = userService.queenCount({ user: opponent });
           if(queenCount >= 1) {
             return Promise.reject({
-              message: 'game.snackbar.global.blockedByQueen',
+              message: 'game.snackbar.jack.noJackWithQueen',
             });
           }
           // End queenCount validation

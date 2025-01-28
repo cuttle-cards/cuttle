@@ -1,3 +1,4 @@
+const TargetType = require('../../../../../utils/TargetType.json');
 module.exports = {
   friendlyName: 'Resolve Two One-Off',
 
@@ -25,7 +26,7 @@ module.exports = {
     const opponent = playedBy ? result.p1 : result.p0;
 
     // Checks if target card is facecard or jack
-    if (result.oneOffTargetType === 'jack') {
+    if (result.oneOffTargetType === TargetType.jack) {
 
       let pointCard = null;  // To store the point card when found
       let pointIndex = -1;   // To store the index of the point card in opponent's points

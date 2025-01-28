@@ -147,6 +147,9 @@ module.exports = {
           }
           return `${player} stole ${opponent}'s ${targetCardName} with the ${playedCardName} from the top of the deck.`;
 
+        case MoveType.SEVEN_DISCARD:
+          return `${player} discarded the ${playedCardName} since neither of the top two cards could be played.`;
+
         case MoveType.SEVEN_UNTARGETED_ONE_OFF:
           return `${player} played the ${playedCardName} from the top of the deck as a one-off to ${
             gameText.moves.effects[playedCard.rank]

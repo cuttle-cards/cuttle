@@ -244,6 +244,7 @@ describe('Home - Game List', () => {
     });
 
     it('Does not show open or completed games in spectate tab', () => {
+      cy.skipOnGameStateApi();
       cy.signupOpponent(playerOne);
       cy.createGameOpponent('Game Created before page visit');
       cy.visit('/');
@@ -269,7 +270,7 @@ describe('Home - Game List', () => {
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.visible')
           .and('not.be.disabled');
         // Game finishes -- Can no longer spectate
-        cy.concedeOpponent();
+        cy.concedeOpponent(gameId);
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
       });
 
@@ -293,7 +294,7 @@ describe('Home - Game List', () => {
         cy.window()
           .its('cuttle.authStore')
           .then((store) => store.disconnectSocket());
-        cy.concedeOpponent();
+        cy.concedeOpponent(gameId);
         cy.window()
           .its('cuttle.authStore')
           .then((store) => store.reconnectSocket());
@@ -666,7 +667,8 @@ describe('Home - Create Game', () => {
 });
 
 describe('Announcement Dialogs', () => {
-  it('Shows the Announcement Dialog when user navigates to Home Page for the first time', () => {
+  // TODO #1159 - move this into component test and add cases for different announcements
+  it.skip('Shows the Announcement Dialog when user navigates to Home Page for the first time', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);

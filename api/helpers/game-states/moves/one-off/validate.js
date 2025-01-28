@@ -1,33 +1,9 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
-function findTargetCard(targetId, targetType, opponent) {
-  switch (targetType) {
-    case 'point':
-      return opponent.points.find(card => card.id === targetId);
-
-    case 'faceCard':
-      return opponent.faceCards.find(card => card.id === targetId);
-
-    case 'jack':
-      for (let point of opponent.points) {
-        for (let jack of point.attachments) {
-          if (jack.id === targetId) {
-            return jack;
-          }
-        }
-      }
-      return;
-
-    default:
-      throw new Error(`Need a target type to find the ${targetId}`);
-  }
-}
-
 module.exports = {
   friendlyName: 'Validate request to play one-off',
 
-  description:
-    'Verifies whether a request to play one-off is legal, throwing explanatory error if not.',
+  description: 'Verifies whether a request to play one-off is legal, throwing explanatory error if not.',
 
   inputs: {
     currentState: {
@@ -61,6 +37,10 @@ module.exports = {
 
       const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
 
+      if (currentState.turn % 2 !== playedBy) {
+        throw new Error('game.snackbar.global.notYourTurn');
+      }
+
       if (currentState.phase !== GamePhase.MAIN) {
         throw new Error('game.snackbar.global.notInMainPhase');
       }
@@ -71,10 +51,6 @@ module.exports = {
 
       if (!playedCard) {
         throw new Error('game.snackbar.global.playFromHand');
-      }
-
-      if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
       }
 
       if (playedCard.isFrozen) {
@@ -89,9 +65,12 @@ module.exports = {
 
         // 2 and 9 require legal target
         case 2:
-        case 9:
-        {
-          const targetCard = findTargetCard(requestedMove.targetId, requestedMove.targetType, opponent);
+        case 9: {
+          const targetCard = sails.helpers.gameStates.findTargetCard(
+            requestedMove.targetId,
+            requestedMove.targetType,
+            opponent,
+          );
           // Must have target
           if (!targetCard) {
             throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
@@ -101,9 +80,7 @@ module.exports = {
             throw new Error('Twos can only target royals or glasses');
           }
 
-          const queenCount = opponent.faceCards.filter(
-            (faceCard) => faceCard.rank === 12
-          ).length;
+          const queenCount = opponent.faceCards.filter((faceCard) => faceCard.rank === 12).length;
 
           // Legal if not blocked by opponent's queen(s)
           switch (queenCount) {
@@ -111,7 +88,7 @@ module.exports = {
             case 0:
               return exits.success();
 
-              // One queen => can only target the queen
+            // One queen => can only target the queen
             case 1: {
               if (targetCard.rank !== 12) {
                 throw new Error('game.snackbar.global.blockedByQueen');

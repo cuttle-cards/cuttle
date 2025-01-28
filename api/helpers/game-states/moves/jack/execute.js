@@ -13,7 +13,7 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - The move being requested.
-     * @param { String } requestedMove.cardId - Card Played (Jack))
+     * @param { String } requestedMove.cardId - Card Played (Jack)
      * @param { String } [ requestedMove.targetId ] - Card targeted by Jack
      */
     requestedMove: {
@@ -43,10 +43,10 @@ module.exports = {
     // Remove card from player's hand
     const [ playedCard ] = player.hand.splice(cardIndex, 1);
 
-    // Remove target card from oppponent's points
+    // Remove target card from opponent's points
     const [ targetCard ] = opponent.points.splice(targetIndex, 1);
 
-    // Add jack(playedCard) to targetCard's attachment
+    // Add jack (playedCard) to targetCard's attachment
     targetCard.attachments.push(playedCard);
 
     // Add targetCard to player's points
@@ -57,10 +57,12 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
+      phase: GamePhase.MAIN,
       playedBy,
       playedCard,
       targetCard,
-      phase: GamePhase.MAIN,
+      discardedCards: [],
+      resolved: null,
     };
 
     return exits.success(result);

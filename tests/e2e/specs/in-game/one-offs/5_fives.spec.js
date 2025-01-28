@@ -9,7 +9,6 @@ describe('FIVES', () => {
 
     describe('Legal FIVES', () => {
       it('Plays a 5 to discard 1 card, and draw 3', () => {
-        cy.skipOnGameStateApi();
         // Setup
         cy.loadGameFixture(0, {
           // Player is P0
@@ -38,7 +37,6 @@ describe('FIVES', () => {
       }); // End five one-off
 
       it('Plays a 5 to draw the last three cards in the deck with nothing to discard', () => {
-        cy.skipOnGameStateApi();
         // Setup: player has one card in hand and only top & second card are in deck
         cy.loadGameFixture(0, {
           // Player is P0
@@ -68,7 +66,18 @@ describe('FIVES', () => {
           p1Hand: [],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_CLUBS ],
+          scrap: [ Card.FIVE_OF_CLUBS, Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS,
+            Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS,
+            Card.ACE_OF_HEARTS, Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS,
+            Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS,
+            Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+            Card.FIVE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES,
+            Card.NINE_OF_SPADES, Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -80,7 +89,6 @@ describe('FIVES', () => {
       });
 
       it('Plays a 5 with two cards left in the deck and nothing to discard', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.FIVE_OF_CLUBS ],
@@ -107,7 +115,17 @@ describe('FIVES', () => {
           p1Hand: [],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_CLUBS ],
+          scrap: [ Card.FIVE_OF_CLUBS, Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.FOUR_OF_CLUBS,
+            Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS,
+            Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.TWO_OF_DIAMONDS,
+            Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS,
+            Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS,
+            Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS,
+            Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS,
+            Card.KING_OF_HEARTS, Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+            Card.FIVE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -119,7 +137,6 @@ describe('FIVES', () => {
       });
 
       it('Plays a 5 to draw two cards when already at hand limit (8)', () => {
-        cy.skipOnGameStateApi();
         // Setup: there are three cards in the deck and player has a 5
         cy.loadGameFixture(0, {
           p0Hand: [
@@ -139,7 +156,7 @@ describe('FIVES', () => {
           p1FaceCards: [],
           topCard: Card.THREE_OF_CLUBS,
           secondCard: Card.EIGHT_OF_HEARTS,
-          deck: [ Card.ACE_OF_DIAMONDS ],
+          deck: [ Card.ACE_OF_SPADES ],
         });
         cy.get('#deck').should('contain', '(3)');
 
@@ -165,8 +182,18 @@ describe('FIVES', () => {
           p1Hand: [ Card.TWO_OF_HEARTS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_CLUBS, Card.FIVE_OF_SPADES ],
-          topCard: Card.ACE_OF_DIAMONDS,
+          scrap: [ Card.FIVE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS,
+            Card.FOUR_OF_CLUBS, Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.NINE_OF_CLUBS,
+            Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.TWO_OF_DIAMONDS,
+            Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS,
+            Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS,
+            Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS,
+            Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS,
+            Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+            Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
+          topCard: Card.ACE_OF_SPADES,
           secondCard: null,
           deck: [],
         });
@@ -174,7 +201,6 @@ describe('FIVES', () => {
       });
 
       it('Draws only 1 card when last card in deck', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
@@ -207,7 +233,18 @@ describe('FIVES', () => {
           p1Hand: [ Card.THREE_OF_CLUBS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS ],
+          scrap: [ Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS,
+            Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS,
+            Card.ACE_OF_DIAMONDS, Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS,
+            Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS,
+            Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS,
+            Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS, Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS,
+            Card.FOUR_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS,
+            Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS,
+            Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+            Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -215,7 +252,6 @@ describe('FIVES', () => {
       });
 
       it('Plays multiple 5s', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
@@ -229,8 +265,7 @@ describe('FIVES', () => {
 
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
         cy.get('[data-cy=five-discard-dialog]').should('be.visible');
-        cy.get('[data-cy=submit-five-dialog]').should('be.disabled')
-          .click({ force: true });
+        cy.get('[data-cy=submit-five-dialog]').should('be.disabled');
         cy.get('[data-discard-card=2-0]').click();
         cy.get('[data-cy=submit-five-dialog]').click();
 
@@ -240,8 +275,7 @@ describe('FIVES', () => {
         cy.get('[data-opponent-point-card=4-0]').should('be.visible');
 
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_HEARTS);
-        cy.get('[data-cy=submit-five-dialog]').should('be.disabled')
-          .click({ force: true });
+        cy.get('[data-cy=submit-five-dialog]').should('be.disabled');
 
         cy.get('[data-discard-card=1-0]').click();
         cy.get('[data-cy=submit-five-dialog]').click();
@@ -249,7 +283,6 @@ describe('FIVES', () => {
       });
 
       it('Plays a 5 with card to discard and 2 cards left in deck', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
@@ -274,7 +307,19 @@ describe('FIVES', () => {
           p1Hand: [],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
+          scrap: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS, Card.THREE_OF_CLUBS,
+            Card.FIVE_OF_CLUBS, Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS,
+            Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS,
+            Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS,
+            Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS,
+            Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS,
+            Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS, Card.TWO_OF_HEARTS,
+            Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, Card.TEN_OF_HEARTS,
+            Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, Card.ACE_OF_SPADES,
+            Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.SIX_OF_SPADES,
+            Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, Card.TEN_OF_SPADES,
+            Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -284,7 +329,6 @@ describe('FIVES', () => {
       });
 
       it('Plays a 5 with card to discard and 1 card left in deck', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
@@ -312,7 +356,17 @@ describe('FIVES', () => {
           p1Hand: [ Card.ACE_OF_HEARTS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
+          scrap: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS, Card.ACE_OF_CLUBS, Card.THREE_OF_CLUBS,
+            Card.FIVE_OF_CLUBS, Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS,
+            Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS,
+            Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS,
+            Card.KING_OF_HEARTS, Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+            Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, Card.TEN_OF_SPADES,
+            Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -321,7 +375,6 @@ describe('FIVES', () => {
       });
 
       it('Plays a 5 with nothing to discard with 1 card in the deck', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           // Player is P0
           p0Hand: [],
@@ -348,7 +401,17 @@ describe('FIVES', () => {
           p1Hand: [ Card.TWO_OF_HEARTS ],
           p1Points: [],
           p1FaceCards: [],
-          scrap: [ Card.FIVE_OF_SPADES ],
+          scrap: [ Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.FOUR_OF_CLUBS,
+            Card.FIVE_OF_CLUBS, Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS,
+            Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS,
+            Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS,
+            Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS,
+            Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS,
+            Card.ACE_OF_HEARTS, Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS,
+            Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS, Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS,
+            Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES,
+            Card.FOUR_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES,
+            Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
           topCard: null,
           secondCard: null,
           deck: [],
@@ -403,7 +466,6 @@ describe('FIVES', () => {
       });
 
       it('Cannot resolve five without discarding when you have cards in hand', () => {
-        cy.skipOnGameStateApi();
         cy.loadGameFixture(0, {
           p0Hand: [ Card.FIVE_OF_SPADES, Card.TWO_OF_CLUBS ],
           p0Points: [],
@@ -442,7 +504,6 @@ describe('FIVES', () => {
     });
 
     it('Plays 5 as opponent', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         // Player is P0
         p0Hand: [ Card.ACE_OF_CLUBS, Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.TWO_OF_CLUBS ],
@@ -480,7 +541,16 @@ describe('FIVES', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS ],
+        scrap: [ Card.FIVE_OF_SPADES, Card.FIVE_OF_HEARTS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS,
+          Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS,
+          Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.TWO_OF_DIAMONDS,
+          Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS,
+          Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS, Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS,
+          Card.FOUR_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS, Card.TEN_OF_HEARTS,
+          Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, Card.ACE_OF_SPADES, Card.TWO_OF_SPADES,
+          Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES,
+          Card.NINE_OF_SPADES, Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ],
         topCard: null,
         secondCard: null,
         deck: [],
@@ -488,7 +558,6 @@ describe('FIVES', () => {
     });
 
     it('plays five as opponent with nothing to discard', () => {
-      cy.skipOnGameStateApi();
       cy.loadGameFixture(1, {
         // Player is P0
         p0Hand: [ Card.FIVE_OF_SPADES ],
@@ -518,7 +587,17 @@ describe('FIVES', () => {
         p1Hand: [],
         p1Points: [],
         p1FaceCards: [],
-        scrap: [ Card.FIVE_OF_SPADES ],
+        scrap: [ Card.FIVE_OF_SPADES, Card.ACE_OF_CLUBS, Card.TWO_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS,
+          Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS, Card.TEN_OF_CLUBS,
+          Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS, Card.ACE_OF_DIAMONDS, Card.TWO_OF_DIAMONDS,
+          Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS, Card.SIX_OF_DIAMONDS,
+          Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS, Card.TEN_OF_DIAMONDS, Card.JACK_OF_DIAMONDS,
+          Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS, Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS,
+          Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS, Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.NINE_OF_HEARTS,
+          Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS, Card.ACE_OF_SPADES,
+          Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES,
+          Card.EIGHT_OF_SPADES, Card.NINE_OF_SPADES, Card.TEN_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES,
+          Card.KING_OF_SPADES ],
         topCard: null,
         secondCard: null,
         deck: [],

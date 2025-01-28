@@ -65,10 +65,11 @@ module.exports = {
         resolving: null,
       };
 
-      const { saveGamestate, publishGameState } = sails.helpers.gameStates;
+      const { saveGamestate, createSocketEvent } = sails.helpers.gameStates;
       const gameStateRow = await saveGamestate(newGameState);
       game.gameStates.push(gameStateRow);
-      await publishGameState(game, newGameState);
+      const socketEvent  = await createSocketEvent(game, newGameState);
+      Game.publish([ game.id ], socketEvent);
 
       return exits.success(newGameState);
     } catch (err) {

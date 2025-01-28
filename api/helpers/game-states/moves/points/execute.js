@@ -43,6 +43,8 @@ module.exports = {
       playedBy,
       playedCard: player.points.at(-1),
       targetCard: null,
+      discardedCards: [],
+      resolved: null,
     };
 
     return exits.success(result);

@@ -84,7 +84,7 @@
       "four": {
         "discardTwoCards": "Discard Two Cards",
         "discard": "Discard",
-        "oppponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
+        "opponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
       },
       "five": {
         "discardAndDraw": "Discard and Draw",
@@ -292,11 +292,15 @@
         "five": {
           "selectCardToDiscard": "You must select one card to discard",
           "incorrectCard": "Incorrect card played",
+          "wrongPhase": "You can't resolve a five right now.",
           "fiveDeckIsEmpty": "Cannot resolve 5 one-off with an empty deck"
         },
         "seven": {
           "oneCardInDeck": "You cannot play a 7 as a ONE-OFF if it is the last card in the deck",
-          "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven."
+          "pickAndPlay": "You can only play cards from the top of the deck while resolving a seven.",
+          "wrongPhase": "You can't play from the deck right now",
+          "mustBeDoubleJacks": "You can't discard from a seven unless both cards are jacks",
+          "jacksMustBeUnplayable": "You can't discard because the jacks can be played"
         }
       }
     }
@@ -515,9 +519,10 @@
     }
   },
   "announcement": {
-    "activatorText": "New Feature: Hands Revealed in the Endgame!",
-    "title": "Endgame Reveal",
-    "heading": "Streamlining Endgame",
-    "paragraph": "When the deck is completely exhausted (runs out of cards), you will now be able to see your opponent's hand! Becuase the scrap is publically visible, players have always been able to deduce which cards are in their opponent's hands once the deck is exhausted. In order to make gameplay more efficient, players will now be able to see their opponents' hands once the deck is empty. This lets players focus on the strategy, rather than sifting through the scrap. Good luck and have fun!"
+    "activatorText": "Spades 2024 Season Championship!",
+    "title": "Spades 2024",
+    "heading": "Season Championship",
+    "paragraph": "The Spades 2024 Cuttle Season Championship is today, Saturday January 25th at 12pm EST! Watch the top 8 players from the past season of competitive play battle it out for the title of Spades Season Champion! Watch it live at ",
+    "twitchLink": "twitch.tv/cuttle_cards"
   }
 }

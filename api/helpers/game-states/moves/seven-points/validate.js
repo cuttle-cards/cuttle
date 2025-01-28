@@ -14,7 +14,7 @@ module.exports = {
     /**
      * @param { Object } requestedMove - Object describing the request to play points via seven
      * @param { String } requestedMove.cardId - Card Played for points
-     * @param { MoveType.RESOLVE_SEVEN } requestedMove.moveType - Specifies that this a sevenPoints move
+     * @param { MoveType.SEVEN_POINTS } requestedMove.moveType - Specifies that this a sevenPoints move
      */
     requestedMove: {
       type: 'ref',
@@ -38,7 +38,7 @@ module.exports = {
       }
 
       if (currentState.phase !== GamePhase.RESOLVING_SEVEN) {
-        throw new Error('game.snackbar.seven.pickAndPlay');
+        throw new Error('game.snackbar.seven.wrongPhase');
       }
 
       if (!playedCard) {

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /signup
+Allow: /rules
+Disallow: /stats
+Disallow: /lobby/*
+Disallow: /game/*
