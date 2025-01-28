@@ -2,7 +2,7 @@
   <BaseDialog id="four-discard-dialog" v-model="show" :title="t('game.dialogs.four.discardTwoCards')">
     <template #body>
       <p class="mb-4">
-        {{ t('game.dialogs.four.oppponentHasResolved') }}
+        {{ t('game.dialogs.four.opponentHasResolved') }}
       </p>
       <!-- Cards in hand -->
       <div class="d-flex flex-wrap card-container">

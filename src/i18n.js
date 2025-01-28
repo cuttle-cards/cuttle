@@ -8,11 +8,14 @@ import en from '@/translations/en.json';
 import es from '@/translations/es.json';
 import fr from '@/translations/fr.json';
 import de from '@/translations/de.json';
+import uk from '@/translations/uk.json';
+
 const messages = {
   en,
   es,
   fr,
   de,
+  uk,
 };
 
 const preferredLocale = getLocalStorage('preferredLocale');
