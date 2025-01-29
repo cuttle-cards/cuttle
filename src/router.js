@@ -64,7 +64,7 @@ const checkAndSubscribeToLobby = async (to) => {
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: ROUTE_NAME_HOME,
     component: HomeView,
     beforeEnter: mustBeAuthenticated,
   },

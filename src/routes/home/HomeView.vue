@@ -16,11 +16,11 @@
                 variant="text"
                 mandatory
               >
-                <v-btn to="/" data-cy-game-list-selector="play">
+                <v-btn data-cy-game-list-selector="play" value="/">
                   {{ t('global.play') }}
                 </v-btn>
 
-                <v-btn to="/spectate-list" data-cy-game-list-selector="spectate">
+                <v-btn data-cy-game-list-selector="spectate" value="/spectate-list">
                   {{ t('home.spectate') }}
                 </v-btn>
               </v-btn-toggle>
@@ -55,7 +55,7 @@
               </v-row>
             </div>
             <v-window v-else v-model="tab" class="pa-4 overflow-y-auto">
-              <v-window-item>
+              <v-window-item value="/">
                 <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-surface-1">
                   {{ t('home.noGameslist') }}
                 </p>
@@ -72,7 +72,7 @@
                   />
                 </div>
               </v-window-item>
-              <v-window-item>
+              <v-window-item value="/spectate-list">
                 <p
                   v-if="spectateGameList.length === 0"
                   data-cy="no-spectate-game-text"
@@ -154,11 +154,6 @@ import HowItWorksDialog from '@/routes/home/components/HowItWorksDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
 
-const TABS = {
-  PLAY: 'play',
-  SPECTATE: 'spectate',
-};
-
 export default {
   name: 'HomeView',
   components: {
@@ -178,11 +173,10 @@ export default {
   },
   data() {
     return {
-      TABS,
-      tab: TABS.PLAY,
+      tab: '/',
       showSnackBar: false,
       snackBarMessage: '',
-      loadingData: true,
+      loadingData: true
     };
   },
   computed: {
@@ -198,6 +192,9 @@ export default {
     },
   },
   watch: {
+    tab(newVal){
+      this.gameListWindow(newVal);
+    },
     $route: {
       immediate: true,
       handler() {
@@ -211,8 +208,13 @@ export default {
   async created() {
     await this.gameListStore.requestGameList();
     this.loadingData = false;
+    this.tab = this.$route.path;
   },
   methods: {
+    gameListWindow(url){
+      this.$router.replace(url);
+      return this.tab = url;
+    },
     clearSnackBar() {
       this.snackMessage = '';
       this.showSnackBar = false;
