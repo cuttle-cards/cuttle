@@ -1,8 +1,9 @@
 <template>
   <BaseDialog
+    v-if="announcementIsActive"
     id="announcement-dialog"
     v-model="show"
-    variant="light"
+    variant="dark"
     :opacity="1"
     data-cy="announcement-dialog"
     scrollable
@@ -30,14 +31,11 @@
           :high-elevation="true"
         />
       </div>
-      <div v-if="announcementData.imgSrc" class="d-flex justify-center">
+      <div v-if="announcementData.imgSrc" class="d-flex justify-center mb-4 bg-surface-2 rounded">
         <img class="w-75 mb-4" :src="announcementData.imgSrc">
       </div>
-      <div v-for="(text,i) in announcementData.announcementText" :key="i" class="mb-4">
-        <h2 v-if="text.heading">
-          {{ t(text.heading) }}
-        </h2>  
-        <p> {{ t(text.paragraph) }} </p>  
+      <div v-for="(text, i) in announcementData.announcementText" :key="i" class="mb-4">
+        <BaseParagraph :heading="text.heading" :paragraph="text.paragraph" />
       </div>  
     </template>
     <template #actions>
@@ -54,16 +52,25 @@
 </template>
 
 <script setup>
-import BaseDialog from '@/components/BaseDialog.vue';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import GameCard from '@/routes/game/components/GameCard.vue';
+import dayjs from 'dayjs';
 import { getLocalStorage, setLocalStorage } from '_/utils/local-storage-utils.js';
 import { announcementData } from './data/announcementData';
+import BaseDialog from '@/components/BaseDialog.vue';
+import BaseParagraph from '@/components/BaseParagraph.vue';
+import GameCard from '@/routes/game/components/GameCard.vue';
 
 const { t } = useI18n();
 const show = ref(false);
 const preferenceSaved= ref(false);
+
+const announcementIsActive = computed(() => {
+  const isAfterStartTime = announcementData.startTime ? dayjs().isAfter(dayjs(announcementData.startTime)) : true;
+  const isBeforeEndTime = announcementData.endTime ? dayjs().isBefore(dayjs(announcementData.endTime)) : true;
+
+  return isAfterStartTime && isBeforeEndTime;
+});
 
 const close = () => {
   if (!preferenceSaved.value) {
@@ -73,11 +80,10 @@ const close = () => {
   preferenceSaved.value = true;
 };
 
-onMounted(() => {
+onMounted(() => { 
   if (getLocalStorage('announcement') !== announcementData.id) {
     show.value = true;
   }
-
 });
 </script>
 

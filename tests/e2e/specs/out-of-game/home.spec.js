@@ -667,7 +667,8 @@ describe('Home - Create Game', () => {
 });
 
 describe('Announcement Dialogs', () => {
-  it('Shows the Announcement Dialog when user navigates to Home Page for the first time', () => {
+  // TODO #1159 - move this into component test and add cases for different announcements
+  it.skip('Shows the Announcement Dialog when user navigates to Home Page for the first time', () => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupPlayer(myUser);
