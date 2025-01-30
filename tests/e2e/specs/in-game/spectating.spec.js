@@ -305,7 +305,7 @@ describe('Spectating Games', () => {
     // Can't resolve
   });
 
-  it.only('Removes current user (spectator) from the players list of spectators when current user leaves spectating', () => {
+  it('Removes current user (spectator) from the players list of spectators when current user leaves spectating', () => {
     cy.setupGameAsSpectator();
     cy.request('/api/test/spectator').then(({ body }) => {
       expect(body.length).to.eq(1);
