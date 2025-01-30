@@ -74,7 +74,7 @@ module.exports = {
     return res.ok();
   },
 
-  getGames: async function (req, res) {
+  getGames: async function (_req, res) {
     try {
       const games = await Game.find();
       return res.json(games);
@@ -83,7 +83,7 @@ module.exports = {
     }
   },
 
-  getMatches: async function (req, res) {
+  getMatches: async function (_req, res) {
     try {
       const matches = await Match.find()
         .populate('games')
@@ -95,4 +95,21 @@ module.exports = {
       return res.serverError(err);
     }
   },
+
+  getSpectators: async function(_req, res) {
+    try {
+      const spectators = await UserSpectatingGame.find({})
+        .populate('spectator');
+      const result = spectators.map(spectatingRecord => {
+        return {
+          ...spectatingRecord,
+          spectator: spectatingRecord.spectator.username
+        };
+      });
+
+      return res.json(result);
+    } catch (err) {
+      return res.serverError(err);
+    }
+  }
 };
