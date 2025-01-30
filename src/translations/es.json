@@ -95,7 +95,7 @@
       "four": {
         "discardTwoCards": "Descartar dos cartas",
         "discard": "Descartar",
-        "oppponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
+        "opponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
       },
       "five": {
         "discardAndDraw": "Descartar y robar",

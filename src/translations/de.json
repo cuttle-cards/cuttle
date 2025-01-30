@@ -84,7 +84,7 @@
       "four": {
         "discardTwoCards": "Zwei Karten abwerfen",
         "discard": "Abwerfen",
-        "oppponentHasResolved": "Dein Gegner hat einen Vier-Einmal-Abwurf gelöst. Du musst zwei Karten abwerfen. Klicke, um Karten auszuwählen."
+        "opponentHasResolved": "Dein Gegner hat einen Vier-Einmal-Abwurf gelöst. Du musst zwei Karten abwerfen. Klicke, um Karten auszuwählen."
       },
       "five": {
         "discardAndDraw": "Abwerfen und Ziehen",

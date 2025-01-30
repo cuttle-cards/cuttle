@@ -84,7 +84,7 @@
       "four": {
         "discardTwoCards": "Discard Two Cards",
         "discard": "Discard",
-        "oppponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
+        "opponentHasResolved": "Your Opponent has resolved a Four One-Off. You must discard two cards. Click to select cards to discard."
       },
       "five": {
         "discardAndDraw": "Discard and Draw",
