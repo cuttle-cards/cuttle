@@ -16,11 +16,11 @@
                 variant="text"
                 mandatory
               >
-                <v-btn data-cy-game-list-selector="play" :value="TABS.PLAY">
+                <v-btn :value="TABS.PLAY" data-cy-game-list-selector="play">
                   {{ t('global.play') }}
                 </v-btn>
 
-                <v-btn data-cy-game-list-selector="spectate" :value="TABS.SPECTATE">
+                <v-btn :value="TABS.SPECTATE" data-cy-game-list-selector="spectate">
                   {{ t('home.spectate') }}
                 </v-btn>
               </v-btn-toggle>
