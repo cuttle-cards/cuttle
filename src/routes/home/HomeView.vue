@@ -16,11 +16,11 @@
                 variant="text"
                 mandatory
               >
-                <v-btn data-cy-game-list-selector="play" value="/">
+                <v-btn data-cy-game-list-selector="play" :value="TABS.PLAY">
                   {{ t('global.play') }}
                 </v-btn>
 
-                <v-btn data-cy-game-list-selector="spectate" value="/spectate-list">
+                <v-btn data-cy-game-list-selector="spectate" :value="TABS.SPECTATE">
                   {{ t('home.spectate') }}
                 </v-btn>
               </v-btn-toggle>
@@ -55,7 +55,7 @@
               </v-row>
             </div>
             <v-window v-else v-model="tab" class="pa-4 overflow-y-auto">
-              <v-window-item value="/">
+              <v-window-item :value="TABS.PLAY">
                 <p v-if="playableGameList.length === 0" data-cy="text-if-no-game" class="text-surface-1">
                   {{ t('home.noGameslist') }}
                 </p>
@@ -72,7 +72,7 @@
                   />
                 </div>
               </v-window-item>
-              <v-window-item value="/spectate-list">
+              <v-window-item :value="TABS.SPECTATE">
                 <p
                   v-if="spectateGameList.length === 0"
                   data-cy="no-spectate-game-text"
@@ -154,6 +154,11 @@ import HowItWorksDialog from '@/routes/home/components/HowItWorksDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
 
+const TABS = {
+  PLAY: '/',
+  SPECTATE: '/spectate-list'
+};
+
 export default {
   name: 'HomeView',
   components: {
@@ -173,7 +178,8 @@ export default {
   },
   data() {
     return {
-      tab: '/',
+      TABS,
+      tab: TABS.PLAY,
       showSnackBar: false,
       snackBarMessage: '',
       loadingData: true
@@ -200,7 +206,7 @@ export default {
       handler() {
         if (this.$route.query?.error) {
           this.handleSubscribeError(Number(this.$route.query.gameId), this.t(this.$route.query.error));
-          this.$router.replace('/');
+          this.$router.push('/');
         }
       }
     }

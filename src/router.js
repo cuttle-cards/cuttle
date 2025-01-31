@@ -124,6 +124,7 @@ const routes = [
     name: ROUTE_NAME_SPECTATE_LIST,
     path: '/spectate-list',
     component: HomeView,
+    beforeEnter: mustBeAuthenticated
   },
   {
     name: ROUTE_NAME_SPECTATE,
