@@ -305,6 +305,25 @@ describe('Spectating Games', () => {
     // Can't resolve
   });
 
+  it('Removes current user (spectator) from the players list of spectators when current user leaves spectating', () => {
+    cy.setupGameAsSpectator();
+    cy.request('/api/test/spectator').then(({ body }) => {
+      expect(body.length).to.eq(1);
+      expect(body[0].spectator).to.eq(myUser.username);
+      expect(body[0].activelySpectating).to.eq(true);
+    });
+
+    cy.get('#game-menu-activator').click();
+    cy.get('[data-cy="stop-spectating"]').click();
+    cy.url().should('not.include', '/spectate');
+
+    cy.request('/api/test/spectator').then(({ body }) => {
+      expect(body.length).to.eq(1);
+      expect(body[0].spectator).to.eq(myUser.username);
+      expect(body[0].activelySpectating).to.eq(false);
+    });
+  });
+
   describe('Spectators Layout', () => {
     it('Display list of spectators and adds to list when new spectator joins', () => {
       cy.setupGameAsSpectator();

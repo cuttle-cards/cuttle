@@ -95,7 +95,7 @@
       "four": {
         "discardTwoCards": "Défaussez deux cartes",
         "discard": "Défausser",
-        "oppponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
+        "opponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
       "five": {
         "discardAndDraw": "Jeter et piocher",
@@ -519,9 +519,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Mains révélées en fin de partie!",
-    "title": "Révélation",
-    "heading": "Simplification de la fin de partie",
-    "paragraph": "Lorsque le paquet est complètement épuisé (qu'il n'y a plus de cartes), vous pourrez désormais voir la main de votre adversaire ! Comme la défausse est visible publiquement, les joueurs ont toujours pu déduire les cartes qui se trouvent dans les mains de leurs adversaires une fois le paquet épuisé. Afin de rendre le jeu plus efficace, les joueurs pourront désormais voir les mains de leurs adversaires une fois le paquet vide. Cela permet aux joueurs de se concentrer sur la stratégie plutôt que sur la recherche dans la défausse. Bonne chance et amusez-vous bien !"
+    "activatorText": "Championnat de la Saison Spades 2024 !",
+    "title": "Spades 2024",
+    "heading": "Championnat de la Saison",
+    "paragraph": "Le Championnat de la Saison Cuttle Spades 2024 a lieu aujourd'hui, samedi 25 janvier, à 12h EST ! Regardez les 8 meilleurs joueurs de la saison précédente de jeu compétitif s'affronter pour le titre de Champion de la Saison Spades ! Regardez-le en direct sur ",
+    "twitchLink": "twitch.tv/cuttle_cards"
   }
 }
