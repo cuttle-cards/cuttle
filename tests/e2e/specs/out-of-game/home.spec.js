@@ -666,20 +666,3 @@ describe('Home - Create Game', () => {
   });
 });
 
-describe('Announcement Dialogs', () => {
-  // TODO #1159 - move this into component test and add cases for different announcements
-  it.skip('Shows the Announcement Dialog when user navigates to Home Page for the first time', () => {
-    cy.wipeDatabase();
-    cy.visit('/');
-    cy.signupPlayer(myUser);
-    cy.vueRoute('/');
-
-    cy.get('[data-cy=announcement-dialog]').should('be.visible');
-    cy.get('[data-cy=announcement-dialog-close]').click();
-
-    cy.get('[data-cy=fannouncement-dialog]').should('not.exist');
-
-    cy.reload();
-    cy.get('[data-cy=announcement-dialog]').should('not.exist');
-  });
-});

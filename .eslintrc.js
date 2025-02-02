@@ -146,7 +146,7 @@ module.exports = {
     },
     // Cypress specific rules
     {
-      files: [ '**/tests/e2e/**/*.{j,t}s?(x)' ],
+      files: [ '**/tests/e2e/**/*.{j,t}s?(x)', '**/tests/component/**/*.{j,t}s?(x)' ],
       env: {
         'cypress/globals': true,
       },

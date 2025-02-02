@@ -2,12 +2,22 @@ const { defineConfig } = require('cypress');
 
 const cypressConfig = {
   projectId: 'i8bxr8',
+  viewportWidth: 1000,
+  viewportHeight: 600,
   // https://docs.cypress.io/guides/references/configuration#e2e
   e2e: {
     baseUrl: process.env.VITE_API_URL || 'http://localhost:8080',
     specPattern: [ 'tests/e2e/specs/**/*.spec.js' ],
     excludeSpecPattern: [ 'test/e2e/specs/playground.spec.js' ],
     supportFile: 'tests/e2e/support/index.js',
+  },
+  component: {
+    devServer: {
+      framework: 'vue',
+      bundler: 'vite',
+    },
+    specPattern: [ 'tests/component/specs/*.spec.js' ],
+    supportFile: 'tests/component/support/component.js'
   },
   env: {
     VITE_USE_GAMESTATE_API: process.env.VITE_USE_GAMESTATE_API,
