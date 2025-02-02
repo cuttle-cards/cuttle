@@ -18,13 +18,27 @@ import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
-
+import { h } from 'vue';
 import { mount } from 'cypress/vue';
 import i18n from '@/i18n';
 import vuetify from '@/plugins/vuetify';
+import { VApp, VMain } from 'vuetify/components';
 
-Cypress.Commands.add('mount', (component, options) =>
-  mount(component, { ...options, global: { plugins: [ i18n, vuetify ] } }));
 
+Cypress.Commands.add('mount', (component, options = {}) => {
+  return mount(
+    h(VApp, [
+      h(VMain, [
+        h(component, { ...options.props }) 
+      ]),
+    ]),
+    {
+      global: {
+        plugins: [ i18n, vuetify ],
+      },
+      ...options,
+    }
+  );
+});
 // Example use:
 // cy.mount(MyComponent)
