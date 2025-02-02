@@ -1,5 +1,5 @@
 <template>
-  <AnnouncementDialog />
+  <AnnouncementDialog :announcement-data="announcementData" />
   <div class="h-100 bg-surface-1">
     <v-container id="home-container" class="container">
       <h1 id="home-card-title">
@@ -153,6 +153,7 @@ import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import HowItWorksDialog from '@/routes/home/components/HowItWorksDialog.vue';
 import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
+import { announcementData } from './components/announcementDialog/data/announcementData';
 
 const TABS = {
   PLAY: 'play',
@@ -179,6 +180,7 @@ export default {
   data() {
     return {
       TABS,
+      announcementData,
       tab: TABS.PLAY,
       showSnackBar: false,
       snackBarMessage: '',
