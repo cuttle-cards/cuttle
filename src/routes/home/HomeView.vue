@@ -206,7 +206,7 @@ export default {
       handler() {
         if (this.$route.query?.error) {
           this.handleSubscribeError(Number(this.$route.query.gameId), this.t(this.$route.query.error));
-          this.$router.push('/');
+          this.$router.replace('/');
         }
       }
     }
