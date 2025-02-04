@@ -199,7 +199,7 @@ export default {
   },
   watch: {
     tab(newVal){
-      this.gameListWindow(newVal);
+      this.setGameListUrl(newVal);
     },
     $route: {
       immediate: true,
@@ -217,7 +217,7 @@ export default {
     this.tab = this.$route.path;
   },
   methods: {
-    gameListWindow(url){
+    setGameListUrl(url){
       this.$router.replace(url);
       return this.tab = url;
     },

@@ -69,6 +69,12 @@ const routes = [
     beforeEnter: mustBeAuthenticated,
   },
   {
+    name: ROUTE_NAME_SPECTATE_LIST,
+    path: '/spectate-list',
+    component: HomeView,
+    beforeEnter: mustBeAuthenticated
+  },
+  {
     path: '/login/:lobbyRedirectId?',
     name: ROUTE_NAME_LOGIN,
     component: LoginView,
@@ -119,12 +125,6 @@ const routes = [
     meta: {
       hideNavigation: true,
     },
-  },
-  {
-    name: ROUTE_NAME_SPECTATE_LIST,
-    path: '/spectate-list',
-    component: HomeView,
-    beforeEnter: mustBeAuthenticated
   },
   {
     name: ROUTE_NAME_SPECTATE,
