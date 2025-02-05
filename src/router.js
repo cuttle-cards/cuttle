@@ -9,6 +9,7 @@ import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
 
 export const ROUTE_NAME_GAME = 'Game';
+export const ROUTE_NAME_SPECTATE_LIST = 'SpectateList';
 export const ROUTE_NAME_SPECTATE = 'Spectate';
 export const ROUTE_NAME_HOME = 'Home';
 export const ROUTE_NAME_LOBBY = 'Lobby';
@@ -63,9 +64,15 @@ const checkAndSubscribeToLobby = async (to) => {
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: ROUTE_NAME_HOME,
     component: HomeView,
     beforeEnter: mustBeAuthenticated,
+  },
+  {
+    name: ROUTE_NAME_SPECTATE_LIST,
+    path: '/spectate-list',
+    component: HomeView,
+    beforeEnter: mustBeAuthenticated
   },
   {
     path: '/login/:lobbyRedirectId?',
