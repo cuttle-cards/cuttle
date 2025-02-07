@@ -7,7 +7,6 @@ describe('Clean-up of One-Off Targets', () => {
   });
 
   it('ONE-OFF Target should be removed after one-off resolves - target is POINTS', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is p0
       p0Hand: [ Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],
@@ -53,7 +52,6 @@ describe('Clean-up of One-Off Targets', () => {
   });
 
   it('ONE-OFF Target should be removed after one-off resolves - target is FACE CARD', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is p0
       p0Hand: [ Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],
@@ -101,7 +99,6 @@ describe('Clean-up of One-Off Targets', () => {
   });
 
   it('ONE-OFF Target should be removed after one-off resolves - target is JACK', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is p0
       p0Hand: [ Card.TWO_OF_SPADES, Card.FIVE_OF_CLUBS, Card.TEN_OF_HEARTS ],
@@ -168,7 +165,6 @@ describe('Clean-up of One-Off Targets', () => {
   });
 
   it('ONE-OFF Target should be removed after one-off is COUNTERED - target is POINTS', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       // Opponent is p0
       p0Hand: [ Card.NINE_OF_SPADES, Card.NINE_OF_HEARTS, Card.FIVE_OF_CLUBS ],

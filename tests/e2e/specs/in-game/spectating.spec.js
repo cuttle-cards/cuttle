@@ -29,7 +29,6 @@ describe('Spectating Games', () => {
   beforeEach(setup);
 
   it('Spectates a game', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
@@ -141,7 +140,6 @@ describe('Spectating Games', () => {
   });
 
   it('Correctly shows and hides dialogs and overlays', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
