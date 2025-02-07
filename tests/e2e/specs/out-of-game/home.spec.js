@@ -244,7 +244,6 @@ describe('Home - Game List', () => {
     });
 
     it('Does not show open or completed games in spectate tab', () => {
-      cy.skipOnGameStateApi();
       cy.signupOpponent(playerOne);
       cy.createGameOpponent('Game Created before page visit');
       cy.visit('/');
@@ -330,7 +329,6 @@ describe('Home - Game List', () => {
     });
 
     it('Disables spectate button if on home view before game finishes', () => {
-      cy.skipOnGameStateApi();
       cy.signupOpponent(playerOne);
       cy.signupOpponent(playerTwo);
 
