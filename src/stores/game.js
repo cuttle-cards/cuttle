@@ -391,6 +391,7 @@ export const useGameStore = defineStore('game', {
         case 'seven/targetedOneOff':
         case 'pass':
         case 'concede':
+        case 'stalemate':
           // add all the move-making ones here
           return `/api/game/${this.id}/move`;
         case 'rematch':
@@ -699,9 +700,15 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestStalemate() {
-      await this.makeSocketRequest('stalemate').then(() => {
+      debugger;
+      await this.makeSocketRequest('stalemate', { moveType: MoveType.STALEMATE_REQUEST }).then(() => {
+        debugger;
         this.consideringOpponentStalemateRequest = false;
-      });
+      })
+        .catch((err) => {
+          debugger;
+          console.log(err);
+        });
     },
 
     async rejectStalemate() {

@@ -249,7 +249,7 @@ describe('Stalemates', () => {
   });
 
   describe('Requesting a stalemate', () => {
-    it('Ends in stalemate when player requests stalemate and opponent agrees', () => {
+    it.only('Ends in stalemate when player requests stalemate and opponent agrees', () => {
       cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');

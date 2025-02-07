@@ -53,6 +53,7 @@ const transformGameUrl = (api, slug, gameId = null) => {
     case'seven/targetedOneOff':
     case'pass':
     case'concede':
+    case 'stalemate':
       return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/move/`) :
         cy
           .window()
@@ -1094,7 +1095,7 @@ Cypress.Commands.add('concedeOpponent', (gameId = null) => {
 
 Cypress.Commands.add('stalemateOpponent', () => {
   cy.log('Opponent requests/accepts stalemate');
-  cy.makeSocketRequest('game', 'stalemate', null);
+  cy.makeSocketRequest('game', 'stalemate', { moveType: MoveType.STALEMATE_REQUEST });
 });
 
 Cypress.Commands.add('rejectStalemateOpponent', () => {
