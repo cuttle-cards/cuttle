@@ -828,7 +828,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by stalemate', () => {
-    cy.skipOnGameStateApi();
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible')
       .get('[data-cy=stalemate-initiate]')
