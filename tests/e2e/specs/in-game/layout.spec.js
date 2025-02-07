@@ -18,7 +18,6 @@ describe('Game View Layout', () => {
   });
 
   it('Three dialogs', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [ Card.THREE_OF_CLUBS ],
@@ -174,7 +173,6 @@ describe('Four dialogs layout', () => {
   });
 
   it('Four dialogs', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       p0Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS ],
       p0Points: [],
@@ -219,7 +217,6 @@ describe.skip('Aesthetic tests', () => {
   });
 
   it('Many cards on field', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [ Card.EIGHT_OF_SPADES, Card.QUEEN_OF_DIAMONDS ],
@@ -232,7 +229,6 @@ describe.skip('Aesthetic tests', () => {
   });
 
   it('Quadruple jacks with a few cards', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
@@ -306,7 +302,6 @@ describe.skip('Aesthetic tests', () => {
   });
 
   it('Triple jacks on a card with multiple other cards', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
@@ -365,7 +360,6 @@ describe.skip('Aesthetic tests', () => {
   });
 
   it('Four cards, each with a jack', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [ Card.JACK_OF_CLUBS, Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],
