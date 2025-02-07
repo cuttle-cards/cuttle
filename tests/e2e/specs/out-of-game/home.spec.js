@@ -329,6 +329,7 @@ describe('Home - Game List', () => {
     });
 
     it('Disables spectate button if on home view before game finishes', () => {
+      cy.skipOnGameStateApi();
       cy.signupOpponent(playerOne);
       cy.signupOpponent(playerTwo);
 

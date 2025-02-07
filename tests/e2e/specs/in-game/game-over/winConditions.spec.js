@@ -370,6 +370,7 @@ describe('Stalemates', () => {
     });
 
     it('Cancels stalemate after an additional turn passes', () => {
+      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
       cy.log('Game loaded');
@@ -398,6 +399,7 @@ describe('Stalemates', () => {
     });
 
     it('Player requests stalemate, then reloads before opponent accepts', () => {
+      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')

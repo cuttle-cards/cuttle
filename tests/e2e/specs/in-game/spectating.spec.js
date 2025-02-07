@@ -167,6 +167,7 @@ describe('Spectating Games', () => {
   });
 
   it('Leaves a spectated game and joins another without processing extraneous updates', () => {
+    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES ],
