@@ -244,7 +244,6 @@ describe('Home - Game List', () => {
     });
 
     it('Does not show open or completed games in spectate tab', () => {
-      cy.skipOnGameStateApi();
       cy.signupOpponent(playerOne);
       cy.createGameOpponent('Game Created before page visit');
       cy.visit('/');
@@ -304,8 +303,7 @@ describe('Home - Game List', () => {
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
       });
       // Refresh page -- no games available to spectate
-      cy.visit('/');
-      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.reload();
       cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
     });
 
@@ -325,6 +323,7 @@ describe('Home - Game List', () => {
         cy.contains('[data-cy-join-game]', 'Join Casual').should('not.exist');
         // Existing game is available to spectate
         cy.get('[data-cy-game-list-selector=spectate]').click();
+        cy.reload();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
       });
     });
