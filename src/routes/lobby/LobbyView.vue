@@ -60,6 +60,8 @@
                   color="primary"
                   hide-details
                   @update:model-value="setIsRanked"
+                  @keydown.enter="toggleRanked"
+                  tabindex="0"
                 />
                 <v-icon
                   class="mr-2 mr-md-4"
@@ -148,6 +150,11 @@ async function setIsRanked() {
   await gameStore.requestSetIsRanked({
     isRanked: gameStore.isRanked,
   });
+}
+
+async function toggleRanked() {
+   gameStore.isRanked = !gameStore.isRanked;
+   setIsRanked();
 }
 
 async function leave() {
