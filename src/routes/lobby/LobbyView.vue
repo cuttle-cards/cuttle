@@ -59,9 +59,9 @@
                   data-cy="edit-game-ranked-switch"
                   color="primary"
                   hide-details
+                  tabindex="0"
                   @update:model-value="setIsRanked"
                   @keydown.enter="toggleRanked"
-                  tabindex="0"
                 />
                 <v-icon
                   class="mr-2 mr-md-4"
@@ -153,8 +153,8 @@ async function setIsRanked() {
 }
 
 async function toggleRanked() {
-   gameStore.isRanked = !gameStore.isRanked;
-   setIsRanked();
+  gameStore.isRanked = !gameStore.isRanked;
+  setIsRanked();
 }
 
 async function leave() {
