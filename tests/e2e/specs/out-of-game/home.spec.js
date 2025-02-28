@@ -477,7 +477,17 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
     cy.get('[data-cy=create-game-ranked-switch]').should('not.be.checked');
   });
-
+  it('Rejects game creation if gamename contains profanity', () => {
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('shitGame');
+    cy.get('[data-cy=submit-create-game]').should('be.visible')
+      .click();
+    cy.get('.v-snackbar__wrapper').contains('Please use respectful language');
+  }); 
   it('Creates a new game by hitting enter in text field', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')

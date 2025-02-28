@@ -12,12 +12,12 @@ module.exports = function (req, res, next) {
   const gameName = req.body.gameName?.trim() ?? '';
   // Check Profanity 
   if(hasProfanity(username) || hasProfanity(gameName)) {
-    return res.badRequest({ message: 'Please use respectful langauge' });
+    return res.badRequest({ message: 'Please use respectful language' });
   }
   return next();
 };
 
 function hasProfanity(userInput) {
-  return badWordsEn.some(word => userInput.toLowerCase().includes(word)) ? true : false;
+  return badWordsEn.some(word => userInput.toLowerCase().includes(word));
 }
 
