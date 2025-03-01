@@ -486,7 +486,7 @@ describe('Home - Create Game', () => {
       .type('shitGame');
     cy.get('[data-cy=submit-create-game]').should('be.visible')
       .click();
-    cy.get('.v-snackbar__wrapper').contains('Please use respectful language');
+    assertSnackbar('Please use respectful language', 'error', 'newgame');
   }); 
   it('Creates a new game by hitting enter in text field', () => {
     cy.get('[data-cy=create-game-btn]').click();
