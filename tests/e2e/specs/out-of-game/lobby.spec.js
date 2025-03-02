@@ -94,6 +94,32 @@ describe('Lobby - Page Content (Ranked)', () => {
     checkRanked(true);
     cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
   });
+
+  it('Toggles ranked/casual switch with "Enter" key', () => {
+    // Focus the ranked/casual switch
+    cy.get('[data-cy=edit-game-ranked-switch]').focus();
+
+    // Check the initial state (ranked mode)
+    checkRanked(true);
+    cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
+
+    // Simulate pressing the 'Enter' key
+    cy.get('[data-cy=edit-game-ranked-switch]').type('{enter}');
+
+    // Verify the switch toggles to casual mode
+    checkRanked(false);
+    cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
+    cy.contains('Game Mode changed to').should('exist');
+    cy.get('[data-cy="close-snackbar"]').click();
+
+    // Simulate pressing the 'Enter' key again
+    cy.get('[data-cy=edit-game-ranked-switch]').type('{enter}');
+
+    // Verify the switch toggles back to ranked mode
+    checkRanked(true);
+    cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
+    cy.contains('Game Mode changed to').should('exist');
+  });
 });
 
 describe('Lobby - P0 Perspective', () => {
