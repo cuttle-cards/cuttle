@@ -24,7 +24,7 @@ module.exports.policies = {
 
   UserController: {
     '*': false,
-    signup: [ 'hasValidUsername', 'hasValidPassword' ],
+    signup: [ 'hasValidUsername', 'hasValidPassword', 'hasNoProfanity' ],
     login: [ 'hasValidUsername', 'hasPassword' ],
     // reLogin does not require password intentionally-- if you are already logged in it will
     // not require a password to validate the session
@@ -34,7 +34,7 @@ module.exports.policies = {
   },
 
   'game/reconnect': [ 'isLoggedIn', 'isInGame' ],
-  'game/create': [ 'isLoggedIn', 'hasGameName' ],
+  'game/create': [ 'isLoggedIn', 'hasGameName', 'hasNoProfanity' ],
   'game/get-list': 'isLoggedIn',
   'game/subscribe': [ 'isLoggedIn', 'hasGameId' ],
   'game/spectate': [ 'isLoggedIn', 'hasGameId' ],
