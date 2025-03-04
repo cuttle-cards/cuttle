@@ -60,6 +60,7 @@
                   color="primary"
                   hide-details
                   @update:model-value="setIsRanked"
+                  @keydown.enter.stop="(e) => e.target.click()"
                 />
                 <v-icon
                   class="mr-2 mr-md-4"
