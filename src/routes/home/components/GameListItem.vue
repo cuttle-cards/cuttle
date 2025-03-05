@@ -6,7 +6,7 @@
           {{ name }}
         </p>
         <p v-if="!isSpectatable" class="text-surface-1">
-          {{ readyText }} {{ t('home.players') }}
+          {{ playersText }}
         </p>
       </v-col>
       <v-col lg="6" class="list-item__button pr-md-0">
@@ -81,6 +81,10 @@ export default {
       type: Number,
       required: true,
     },
+    players: {
+      type: Array,
+      required: true,
+    },
     isRanked: {
       type: Boolean,
       default: false,
@@ -109,8 +113,18 @@ export default {
     numPlayersReady() {
       return this.p0ready + this.p1ready;
     },
-    readyText() {
-      return `${this.numPlayers} / 2`;
+    playersText() {
+      const numPlayers = this.players.length;
+      switch (numPlayers) {
+        case 0:
+          return 'Empty';
+        case 1:
+          return `vs ${this.players[0].username}`;
+        case 2:
+          return `${this.players[0].username} vs ${this.players[1].username}`;
+        default:
+          return '';
+      }
     },
     joinButtonText() {
       return `${this.t('home.join')} ${this.isRanked ? this.t('global.ranked') : this.t('global.casual')}`;
