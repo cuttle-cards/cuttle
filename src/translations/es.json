@@ -519,10 +519,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Spades 2024 Season Championship!",
-    "title": "Spades 2024",
-    "heading": "Season Championship",
-    "paragraph": "¡El Campeonato de la Temporada Cuttle Spades 2024 es hoy, sábado 25 de enero a las 12pm EST! ¡Mira a los 8 mejores jugadores de la temporada pasada de juego competitivo luchar por el título de Campeón de la Temporada Spades! Míralo en vivo en ",
+    "activatorText": "¡Campeonato Mundial de Cuttle IV!",
+    "title": "Cuttle World Championship",
+    "heading": "Campeonato Mundial",
+    "paragraph": "¡El Campeonato Mundial de Cuttle IV es hoy, sábado 8 de marzo a las 12pm EST! Mira a los 8 mejores jugadores del último AÑO de juego competitivo enfrentarse por el título de Campeón Mundial de Cuttle y su elección entre los 8 increíbles mazos de premios donados por el jugador SUBMARINO. Míralo en vivo en ",
     "twitchLink": "twitch.tv/cuttle_cards"
   }
 }
