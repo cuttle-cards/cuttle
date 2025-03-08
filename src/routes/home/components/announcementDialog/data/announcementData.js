@@ -5,7 +5,7 @@ export const announcementData = {
   activatorText: 'announcement.activatorText',
   title: 'announcement.title',
   displayCards: [],
-  imgSrc: '/img/announcement/spades-2024-bracket.svg',
+  imgSrc: '/img/announcement/cuttle-world-championship-iv-bracket.svg',
   startTime: '2025-03-07',
   endTime: '2025-03-09',
   announcementText: [
