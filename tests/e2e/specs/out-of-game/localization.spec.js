@@ -3,7 +3,7 @@ import es from '../../../../src/translations/es.json';
 import fr from '../../../../src/translations/fr.json';
 import en from '../../../../src/translations/en.json';
 import de from '../../../../src/translations/de.json';
-import uk from '../../../../src/translations/uk.json';
+import ukr from '../../../../src/translations/ukr.json';
 
 import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
@@ -86,9 +86,9 @@ describe('Localization', () => {
   });
 
   it('Should check translation for Ukrainian', () => {
-    checkAndChangeLanguage('uk', uk);
-    checkLoginTranslation(uk);
-    checkLobbyTranslation(uk);
+    checkAndChangeLanguage('ukr', ukr);
+    checkLoginTranslation(ukr);
+    checkLobbyTranslation(ukr);
   });
 
 });
@@ -109,7 +109,7 @@ describe('language files', () => {
   const frKeys = extractKeys(fr).sort();
   const esKeys = extractKeys(es).sort();
   const deKeys = extractKeys(de).sort();
-  const ukKeys = extractKeys(uk).sort();
+  const ukrKeys = extractKeys(ukr).sort();
 
   it('English should have no empty strings', () => {
     enKeys.forEach((key) => {
@@ -162,15 +162,15 @@ describe('language files', () => {
 
   it('Ukrainian should have the same keys', () => {
     for (let i = 0; i < enKeys.length; i++) {
-      const assertionMsg = `uk.json should have the key ${enKeys[i]} for key number ${i}, but instead it had key ${ukKeys[i]}`;
-      expect(enKeys[i]).to.eq(ukKeys[i], assertionMsg);
+      const assertionMsg = `ukr.json should have the key ${enKeys[i]} for key number ${i}, but instead it had key ${ukrKeys[i]}`;
+      expect(enKeys[i]).to.eq(ukrKeys[i], assertionMsg);
     }
   });
 
   it('Ukrainian should have no empty strings', () => {
-    ukKeys.forEach((key) => {
-      const assertionMsg = `uk.json should have non-empty value for key ${key}, but it value was empty`;
-      expect(uk[key]).to.not.eq('', assertionMsg);
+    ukrKeys.forEach((key) => {
+      const assertionMsg = `ukr.json should have non-empty value for key ${key}, but it value was empty`;
+      expect(ukr[key]).to.not.eq('', assertionMsg);
     });
   });
 
