@@ -9,15 +9,15 @@ const badWordsEn = [
   'b!tch', 'b00bs', 'b17ch', 'b1tch', 'ballbag', 'balls', 'bastard', 'beastial', 'bellend',
   'bestial', 'bi+ch', 'biatch', 'bitch', 'bloody', 'blow job', 'blowjob', 'boiolas', 'bollock',
   'bollok', 'boner', 'boob', 'booobs', 'boooobs', 'booooobs', 'booooooobs', 'breasts', 'buceta',
-  'bugger', 'bum', 'bunny fucker', 'butthole', 'buttmunch', 'buttplug', 
+  'bugger', 'butthole', 'buttmunch', 'buttplug', 
   
   // C
   'c0ck', 'carpet muncher', 'cawk', 'chink', 'cipa', 'cl1t', 'clit', 'cnut', 'cock', 'cok', 'coon',
   'crap', 'cum', 'cunilingus', 'cunillingus', 'cunnilingus', 'cunt', 'cyalis', 'cyberfuc',
   
   // D
-  'd1ck', 'damn', 'dick', 'dildo', 'dink', 'dirsa', 'dlck', 'dog-fucker', 'doggin', 'donkeyribber',
-  'doosh', 'duche', 'dyke',
+  'd1ck', 'damn', 'dick', 'dildo', 'dink', 'dirsa', 'dlck', 'doggin', 'donkeyribber',
+  'doosh', 'douche', 'duche', 'dyke',
   
   // E
   'ejaculate', 'ejaculating', 'ejaculation', 'ejakulate',
@@ -55,7 +55,7 @@ const badWordsEn = [
   
   // P
   'p0rn', 'pawn', 'pecker', 'penis', 'phonesex', 'phuck', 'phuk', 'phuq', 'pigfucker', 'pimpis',
-  'piss', 'poop', 'porn', 'prick', 'pron', 'pube', 'pusse', 'pussi', 'pussy',
+  'piss', 'poop', 'porn', 'prick', 'pube', 'pusse', 'pussi', 'pussy',
   
   // R
   'rectum', 'retard', 'rimjaw', 'rimming',
