@@ -1,11 +1,13 @@
 import { useAuthStore } from '@/stores/auth';
 import { useGameStore } from '@/stores/game';
+import { useGameListStore } from '@/stores/gameList';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_HOME } from '@/router';
 
 export function handleConnect() {
   const authStore = useAuthStore();
   const gameStore = useGameStore();
+  const gameListStore = useGameListStore();
   // Request latest game state if socket reconnects during game
   switch (router.currentRoute.value.name) {
     case ROUTE_NAME_GAME:
@@ -19,6 +21,8 @@ export function handleConnect() {
       }
       return gameStore.requestSpectate(gameId);
     }
+    case ROUTE_NAME_HOME:
+      return gameListStore.requestGameList();
     default:
       return;
   }
