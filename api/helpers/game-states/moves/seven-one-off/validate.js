@@ -67,7 +67,7 @@ module.exports = {
           }
 
           if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
-            throw new Error('Twos can only target royals or glasses');
+            throw new Error('game.card.invalidTwoTarget');
           }
 
           const queenCount = opponent.faceCards.filter((faceCard) => faceCard.rank === 12).length;
@@ -122,7 +122,7 @@ module.exports = {
 
         // No other cards can be used for a one-off
         default:
-          throw new Error('You cannot play that card as a one-off');
+          throw new Error('game.card.invalidCardForOneOff');
       }
     } catch (err) {
       return exits.error(err);

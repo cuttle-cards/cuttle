@@ -63,20 +63,20 @@ module.exports = {
   populateGame: async function (options) {
     if (options) {
       if (!Object.hasOwnProperty.call(options, 'gameId') && !typeof options.gameId === 'number') {
-        throw new Error({ message: 'gameId is required and must be a number' });
+        throw new Error({ message: 'game.invalidGameID' });
       }
     } else {
-      throw new Error({ message: 'Cannot populate Game without GameId (options had no gameId)' });
+      throw new Error({ message: 'game.noGameIDPresentInOptions' });
     }
     // find game
     const game = await gameService.findGame({ gameId: options.gameId });
 
     if (game.players) {
       if (game.players.length < 2) {
-        throw new Error({ message: 'Cannot populate game without two players' });
+        throw new Error({ message: 'game.mustHaveTwoPlayers' });
       }
     } else {
-      throw new Error({ message: 'Cannot populate game, because it does not have players collection' });
+      throw new Error({ message: 'game.noPlayersCollection' });
     }
 
     // find users and points

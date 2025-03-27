@@ -33,7 +33,7 @@ function concatAttachtToId(card, cardOwner) {
  */
 function validateCardId(id) {
   if (!id || id.length !== 2) {
-    throw new Error('Invalid card ID');
+    throw new Error('game.card.invalidCardID');
   }
   return id;
 }

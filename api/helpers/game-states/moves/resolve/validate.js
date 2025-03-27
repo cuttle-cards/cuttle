@@ -33,11 +33,11 @@ module.exports = {
 
       // Must be COUNTERING phase
       if (currentState.phase !== GamePhase.COUNTERING) {
-        throw new Error(`Can only resolve during the countering phase`);
+        throw new Error(`game.phase.invalidResolvePhase`);
       }
 
       if (!currentState.oneOff) {
-        throw new Error('You cannot resolve unless there is a one-off pending');
+        throw new Error('game.phase.invalidResolvePhase');
       }
 
       // Must be your chance to resolve

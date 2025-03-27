@@ -1,15 +1,15 @@
 {
   "global": {
     "signup": "Registrarse",
-    "login": "Iniciar sesión",
-    "logout": "Cerrar sesión",
+    "login": "Iniciar sesi\u00f3n",
+    "logout": "Cerrar sesi\u00f3n",
     "rules": "Reglas",
     "play": "Jugar",
-    "stats": "Estadísticas",
+    "stats": "Estad\u00edsticas",
     "user": "Usuaria",
     "rank": "Rango",
     "username": "Nombre de usuario",
-    "password": "Contraseña",
+    "password": "Contrase\u00f1a",
     "cancel": "Cancelar",
     "ranked": "Competitivo",
     "casual": "Amistoso",
@@ -17,29 +17,29 @@
     "close": "Cerrar",
     "click": "Hacer clic",
     "playerReady": {
-      "playerDeclinedAlt": "{name} rechazó la tarjeta de revancha",
+      "playerDeclinedAlt": "{name} rechaz\u00f3 la tarjeta de revancha",
       "cardBackAlt": "Dorso de la tarjeta -- Esperando a {playerUsername}",
-      "readyAlt": "Frente de la tarjeta -- {playerUsername} está listo",
+      "readyAlt": "Frente de la tarjeta -- {playerUsername} est\u00e1 listo",
       "rematchAlt": "Frente de la tarjeta -- {playerUsername} quiere revancha"
     }
   },
   "login": {
-    "noAccount": "¿No tienes una cuenta?",
-    "haveAccount": "¿Ya tienes una cuenta?",
+    "noAccount": "\u00bfNo tienes una cuenta?",
+    "haveAccount": "\u00bfYa tienes una cuenta?",
     "title": "Bienvenido a Cuttle.Cards",
-    "subtitle": "¡El juego de cartas que te enganchará desde la primera mano!",
-    "formHeaderLogin": "¡Inicia sesión para comenzar!",
-    "formHeaderSignup": "Regístrate ahora para empezar a jugar y prepárate para sumergirte en el mundo de Cuttle.",
-    "quote": "\"Cuttle es un juego ágil y rápido construido completamente sobre excelentes mecánicas. Es el tipo de juego con el que, si lo hubiera conocido en la universidad, habría desgastado las barajas jugando sin parar.\"",
+    "subtitle": "\u00a1El juego de cartas que te enganchar\u00e1 desde la primera mano!",
+    "formHeaderLogin": "\u00a1Inicia sesi\u00f3n para comenzar!",
+    "formHeaderSignup": "Reg\u00edstrate ahora para empezar a jugar y prep\u00e1rate para sumergirte en el mundo de Cuttle.",
+    "quote": "\"Cuttle es un juego \u00e1gil y r\u00e1pido construido completamente sobre excelentes mec\u00e1nicas. Es el tipo de juego con el que, si lo hubiera conocido en la universidad, habr\u00eda desgastado las barajas jugando sin parar.\"",
     "quoteCite": "Richard Garfield - Creador de Magic: The Gathering",
-    "content": "Cuttle es un juego de batalla de cartas para 2 jugadores que se juega con una baraja de naipes estándar de 52 cartas. Tiene la sutileza estratégica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu habilidad en el juego de cartas más profundo bajo el mar!",
-    "content2": "Sé el primero en alcanzar 21 puntos en esta explosiva batalla de ingenio. Prepara una valiente ofensiva mientras frustras los planes de tu rival con malvados trucos. ¿Tienes lo necesario para convertirte en el Señor de las Profundidades?",
+    "content": "Cuttle es un juego de batalla de cartas para 2 jugadores que se juega con una baraja de naipes est\u00e1ndar de 52 cartas. Tiene la sutileza estrat\u00e9gica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo est\u00e1ndar, \u00a1y puedes jugarlo gratis! \u00a1Pon a prueba tu habilidad en el juego de cartas m\u00e1s profundo bajo el mar!",
+    "content2": "S\u00e9 el primero en alcanzar 21 puntos en esta explosiva batalla de ingenio. Prepara una valiente ofensiva mientras frustras los planes de tu rival con malvados trucos. \u00bfTienes lo necesario para convertirte en el Se\u00f1or de las Profundidades?",
     "readRules": "Leer las reglas",
-    "joinDiscord": "Únete a nuestra comunidad en Discord",
+    "joinDiscord": "\u00danete a nuestra comunidad en Discord",
     "snackbar": {
-      "usernameIsTaken": "Ese nombre de usuario ya está registrado; prueba a iniciar sesión",
+      "usernameIsTaken": "Ese nombre de usuario ya est\u00e1 registrado; prueba a iniciar sesi\u00f3n",
       "userNotFound": "No se pudo encontrar ese nombre de usuario; prueba a registrarte",
-      "wrongPassword": "El nombre de usuario y la contraseña no coinciden"
+      "wrongPassword": "El nombre de usuario y la contrase\u00f1a no coinciden"
     }
   },
   "lobby": {
@@ -48,7 +48,7 @@
     "unready": "NO ESTOY LISTO",
     "exit": "SALIR",
     "invite": "Invitar",
-    "rankedChangedAlert": "El modo de juego cambió a"
+    "rankedChangedAlert": "El modo de juego cambi\u00f3 a"
   },
   "game": {
     "resolve": "Resolver",
@@ -61,25 +61,25 @@
       "leaveGame": "Abandonar la partida",
       "opponentMayCounter": "El rival puede contrarrestar",
       "opponentMustResolve": "El rival debe resolver",
-      "opponentIsDiscarding": "El rival se está descartando",
+      "opponentIsDiscarding": "El rival se est\u00e1 descartando",
       "opponentSkipsDiscarding": "El oponente salta descartando",
-      "opponentChoosingFromScrap": "El rival está eligiendo del mazo de descarte",
-      "opponentPlayingFromDeck": "El rival está jugando desde el mazo",
+      "opponentChoosingFromScrap": "El rival est\u00e1 eligiendo del mazo de descarte",
+      "opponentPlayingFromDeck": "El rival est\u00e1 jugando desde el mazo",
       "opponentMustDiscardJack": "El rival debe descartar la Sota",
-      "opponentConsideringStalemate": "El rival está considerando la solicitud de empate",
+      "opponentConsideringStalemate": "El rival est\u00e1 considerando la solicitud de empate",
       "gameUnavailable": {
-        "title": "¡Ups!",
-        "content": "Parece que esta partida no está disponible."
+        "title": "\u00a1Ups!",
+        "content": "Parece que esta partida no est\u00e1 disponible."
       }
     },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Volver a conectarse a la partida",
-        "youHaveDisconnected": "Te has desconectado por inactividad. Inicia sesión de nuevo para reanudar.",
+        "youHaveDisconnected": "Te has desconectado por inactividad. Inicia sesi\u00f3n de nuevo para reanudar.",
         "username": "Nombre de usuario",
-        "password": "Contraseña",
+        "password": "Contrase\u00f1a",
         "leaveGame": "Abandonar la partida",
-        "login": "Iniciar sesión"
+        "login": "Iniciar sesi\u00f3n"
       },
       "scrapDialog": {
         "scrapPile": "Mazo de descarte",
@@ -88,32 +88,32 @@
       "cardListSortable": {
         "sort": {
           "label": "Ordenar",
-          "chronologically": "Cronológicamente",
+          "chronologically": "Cronol\u00f3gicamente",
           "rank": "Por Rango"
         }
       },
       "four": {
         "discardTwoCards": "Descartar dos cartas",
         "discard": "Descartar",
-        "opponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
+        "opponentHasResolved": "El rival ha usado la habilidad \u00danica del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
       },
       "five": {
         "discardAndDraw": "Descartar y robar",
-        "nice": "¡Bien!",
-        "resolveFive": "Has resuelto un 5 único. Elige una carta para descartar y luego robarás 3 cartas.",
-        "resolveFiveNoCards": "Has resuelto un 5 único, pero no tienes cartas en tu mano para descartar. Robas 3 cartas sin descartar. ¡Dulce!"
+        "nice": "\u00a1Bien!",
+        "resolveFive": "Has resuelto un 5 \u00fanico. Elige una carta para descartar y luego robar\u00e1s 3 cartas.",
+        "resolveFiveNoCards": "Has resuelto un 5 \u00fanico, pero no tienes cartas en tu mano para descartar. Robas 3 cartas sin descartar. \u00a1Dulce!"
       },
       "counterDialogs": {
         "counterTitle": "Oportunidad de contrarrestar",
         "chooseTwoTitle": "Elige dos",
         "cannotCounterTitle": "No se puede contrarrestar",
-        "selectCard": "¿Con qué Dos te gustaría contrarrestar? (Haz clic en la carta)",
+        "selectCard": "\u00bfCon qu\u00e9 Dos te gustar\u00eda contrarrestar? (Haz clic en la carta)",
         "opponentPlayed": "Tu rival ha jugado ",
-        "oneOff": "como una habilidad Única",
+        "oneOff": "como una habilidad \u00danica",
         "target": "con el objetivo ",
         "toCounter": "para contrarrestar",
         "counter": "contrarrestar",
-        "playTwo": "¿Te gustaría jugar un Dos para contrarrestar?",
+        "playTwo": "\u00bfTe gustar\u00eda jugar un Dos para contrarrestar?",
         "cannotCounter": "No puedes contrarrestar porque ",
         "reasons": {
           "opponentWithQueen": "tu rival tiene una Reina",
@@ -124,8 +124,8 @@
         "title": "Seleccione una carta del mazo de descarte"
       },
       "opponentRequestedStalemateDialog": {
-        "title": "¿Aceptar el empate?",
-        "opponentHasRequested": "Tu rival ha solicitado un empate por llegar a un punto muerto. Si aceptas, el juego terminará en empate.",
+        "title": "\u00bfAceptar el empate?",
+        "opponentHasRequested": "Tu rival ha solicitado un empate por llegar a un punto muerto. Si aceptas, el juego terminar\u00e1 en empate.",
         "reject": "Rechazar la solicitud",
         "accept": "Aceptar el empate"
       },
@@ -136,11 +136,11 @@
       },
       "gameOverDialog": {
         "game": "Partida",
-        "you": "Tú",
-        "youWin": "Tú ganas",
+        "you": "T\u00fa",
+        "youWin": "T\u00fa ganas",
         "youWinTheMatch": "Has ganado la partida",
         "won": "ganado",
-        "youLose": "Tú pierdes",
+        "youLose": "T\u00fa pierdes",
         "youLoseTheMatch": "Has perdido la partida",
         "lost": "perdida",
         "draw": "empate",
@@ -151,21 +151,21 @@
         "yourGameAgainst": "tu partida contra",
         "finished": "Finalizada",
         "inProgress": "En Curso",
-        "goHome": "Volver al menú",
+        "goHome": "Volver al men\u00fa",
         "rematch": "revanche",
         "matchStatus": {
           "playerLeft": "Jugador se ha ido",
           "waitingForPlayers": "Esperando a los jugadores",
-          "goodMatch": "¡Buena Partida!",
-          "continueSpectating": "¿Continuar como espectador?",
+          "goodMatch": "\u00a1Buena Partida!",
+          "continueSpectating": "\u00bfContinuar como espectador?",
           "opponentLeft": "Rival se ha ido",
           "waitingForOpponent": "Esperando al Rival",
-          "continueMatch": "¿Continuar la Partida?",
-          "rematch?": "¿Revancha?",
+          "continueMatch": "\u00bfContinuar la Partida?",
+          "rematch?": "\u00bfRevancha?",
           "rankedIconAlt": "Icono de Partida Clasificatoria (Espadas Cruzadas)",
-          "casualIconAlt": "Icône de Match Décontracté (Mug)",
-          "wonTheMatch": "ganó la partida",
-          "lostTheMatch": "perdió la partida"
+          "casualIconAlt": "Ic\u00f4ne de Match D\u00e9contract\u00e9 (Mug)",
+          "wonTheMatch": "gan\u00f3 la partida",
+          "lostTheMatch": "perdi\u00f3 la partida"
         }
       }
     },
@@ -173,9 +173,9 @@
       "disabledMove": {
         "topTwo": "Debes jugar una de las dos cartas superiores del mazo",
         "notTurn": "No es tu turno",
-        "frozenCard": "Esta carta está bloqueada",
-        "emptyDeck": "No se puede jugar con el mazo vacío",
-        "multipleQueens": "No puedes jugar un {rank} mientras tu rival tenga 2 o más Reinas",
+        "frozenCard": "Esta carta est\u00e1 bloqueada",
+        "emptyDeck": "No se puede jugar con el mazo vac\u00edo",
+        "multipleQueens": "No puedes jugar un {rank} mientras tu rival tenga 2 o m\u00e1s Reinas",
         "noRoyals": "No hay Figuras para tomar como objetivo",
         "noRoyalsOrPoints": "No hay cartas de puntos ni Figuras para tomar como objetivo"
       },
@@ -192,19 +192,19 @@
         "1": "Descarta todas las cartas de puntos en juego",
         "2": "Descarta la Figura o las Gafas Ocho objetivo",
         "3": "Elige una carta del mazo de descarte y ponla en tu mano",
-        "4": "Tu rival descarta dos cartas de su mano a su elección",
+        "4": "Tu rival descarta dos cartas de su mano a su elecci\u00f3n",
         "5": "Descarta 1 carta y roba hasta 3.",
         "6": "Descarta todas las Figuras y Gafas Ocho en juego",
         "7": "Revela las dos primeras cartas del mazo de robo y elige una de ellas para jugarla como quieras",
         "8": "Puedes ver las cartas de la mano de tu rival (hasta que esta carta se descarte)",
-        "9": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno.",
+        "9": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su pr\u00f3ximo turno.",
         "10": "Sin efecto",
         "11": "Juega sobre una carta de puntos objetivo para robarla",
-        "12": "Tus otras cartas no pueden ser objetivo de habilidades Únicas (pero sí pueden ser hundidas por cartas de puntos más altas)",
+        "12": "Tus otras cartas no pueden ser objetivo de habilidades \u00danicas (pero s\u00ed pueden ser hundidas por cartas de puntos m\u00e1s altas)",
         "13": "Reduce la cantidad de puntos que necesitas para ganar (1K: 14 puntos, 2K: 10 puntos, 3K: 5 puntos, 4K: 0 puntos)"
       },
       "jack": {
-        "description": "Roba una carta de puntos del rival y colócala en tu campo",
+        "description": "Roba una carta de puntos del rival y col\u00f3cala en tu campo",
         "disabled": "No puedes robar una carta de puntos del rival mientras tenga una Reina"
       },
       "glasses": {
@@ -222,9 +222,9 @@
         "concede": "Conceder",
         "stalemate": "Solicitud de empate",
         "cancel": "Cancelar",
-        "home": "Volver al menú",
-        "concedeDialog": "El juego terminará y tu rival ganará.",
-        "stalemateDialog": "Si tu rival acepta, la partida terminará en empate. La solicitud se anulará si el rival la rechaza o cualquiera de los dos jugadores realiza un movimiento."
+        "home": "Volver al men\u00fa",
+        "concedeDialog": "El juego terminar\u00e1 y tu rival ganar\u00e1.",
+        "stalemateDialog": "Si tu rival acepta, la partida terminar\u00e1 en empate. La solicitud se anular\u00e1 si el rival la rechaza o cualquiera de los dos jugadores realiza un movimiento."
       },
       "spectatorListMenu": {
         "spectators": "Espectadores",
@@ -238,23 +238,25 @@
     },
     "turn": {
       "yourTurn": "TU TURNO",
-      "opponentTurn": "TURNO DEL RIVAL"
+      "opponentTurn": "TURNO DEL RIVAL",
+      "invalidTurn": "El giro no puede estar vac\u00edo y debe ser un n\u00famero",
+      "invalidMustWaitForOpponentToCounter": "Esperando que el oponente contrarrestar"
     },
     "history": {
       "title": "Historial"
     },
     "snackbar": {
       "global": {
-        "notYourTurn": "¡No es tu turno!",
-        "cardFrozen": "¡Esa carta está bloqueada! Debes esperar a tu turno para jugarla.",
+        "notYourTurn": "\u00a1No es tu turno!",
+        "cardFrozen": "\u00a1Esa carta est\u00e1 bloqueada! Debes esperar a tu turno para jugarla.",
         "playFromHand": "Solo puedes jugar una carta que se encuentre en tu mano",
         "blockedByQueen": "La Reina de tu oponente evita que puedas seleccionar como objetivo sus otras cartas",
-        "blockedByMultipleQueens": "No puedes jugar una carta de habilidad única con objetivo (Dos, Nueve) cuando tu oponente tiene más de una reina",
+        "blockedByMultipleQueens": "No puedes jugar una carta de habilidad \u00fanica con objetivo (Dos, Nueve) cuando tu oponente tiene m\u00e1s de una reina",
         "notInMainPhase": "Solo puedes hacer eso en la fase principal"
       },
       "draw": {
-        "deckIsEmpty": "El mazo está vacío; no puedes robar.",
-        "handLimit": "Tu mano ha alcanzado el límite; no puedes robar.",
+        "deckIsEmpty": "El mazo est\u00e1 vac\u00edo; no puedes robar.",
+        "handLimit": "Tu mano ha alcanzado el l\u00edmite; no puedes robar.",
         "exhaustedDeck": "Mazo agotado; revelando las manos de los jugadores"
       },
       "faceCards": {
@@ -269,22 +271,22 @@
         "noJackWithQueen": "No puedes usar una Sota mientras tu oponente tiene una Reina."
       },
       "scuttle": {
-        "rankTooLow": "Solo puedes hundir si el rango de tu carta es mayor, o si el rango es igual y tu palo es mayor (Tréboles < Diamantes < Corazones < Picas)",
+        "rankTooLow": "Solo puedes hundir si el rango de tu carta es mayor, o si el rango es igual y tu palo es mayor (Tr\u00e9boles < Diamantes < Corazones < Picas)",
         "mustUsePointCard": "Solo puedes hundir con una carta de rango As hasta Diez",
         "mustTargetPointCard": "Solo puedes hundir una carta que tu oponente haya jugado como puntos"
       },
       "oneOffs": {
-        "oneOffInPlay": "Ya hay en juego una carta de habilidad única; no puedes jugar ninguna carta, excepto un Dos para contrarrestar.",
-        "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad única sin un objetivo",
-        "onlyTwoOrNine": "Solo puedes jugar un 2 o un 9 como cartas de habilidad única con objetivo",
+        "oneOffInPlay": "Ya hay en juego una carta de habilidad \u00fanica; no puedes jugar ninguna carta, excepto un Dos para contrarrestar.",
+        "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad \u00fanica sin un objetivo",
+        "onlyTwoOrNine": "Solo puedes jugar un 2 o un 9 como cartas de habilidad \u00fanica con objetivo",
         "emptyDeck": "No puedes jugar ese uno por uno a menos que haya cartas en el mazo",
         "three": {
-          "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad única si hay cartas en el mazo de descarte",
+          "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad \u00fanica si hay cartas en el mazo de descarte",
           "notResolvingThreePhase": "Se puede elegir del mazo de descartes al resolver un 3",
           "mustPickFromScrap": "Debes elegir una carta del mazo de descartes"
         },
         "four": {
-          "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad única mientras tu oponente no tenga cartas en su mano",
+          "opponentHasNoCards": "No puedes jugar un 4 como carta de habilidad \u00fanica mientras tu oponente no tenga cartas en su mano",
           "notYourTurn": "No es tu turno para descartar",
           "notResolvingFourPhase": "No es posible descartar salvo que tu oponente haya jugado un cuatro",
           "mustSelectCards": "Debes seleccionar dos cartas para descartar"
@@ -293,41 +295,72 @@
           "selectCardToDiscard": "Debes seleccionar una carta para descartar",
           "incorrectCard": "Carta incorrecta jugada",
           "wrongPhase": "No puedes resolver un cinco en este momento.",
-          "fiveDeckIsEmpty": "No se puede resolver la habilidad única de un 5 con un mazo vacío"
+          "fiveDeckIsEmpty": "No se puede resolver la habilidad \u00fanica de un 5 con un mazo vac\u00edo"
         },
         "seven": {
-          "oneCardInDeck": "No puedes jugar un 7 como carta de habilidad única si es la última carta del mazo",
+          "oneCardInDeck": "No puedes jugar un 7 como carta de habilidad \u00fanica si es la \u00faltima carta del mazo",
           "pickAndPlay": "Solo puedes jugar las cartas superiores del mazo mientras se resuelve un Siete",
           "wrongPhase": "No puedes jugar desde el mazo en este momento",
           "mustBeDoubleJacks": "No puedes descartar desde un siete a menos que ambas cartas sean jotas",
           "jacksMustBeUnplayable": "No puedes descartar porque las jotas se pueden jugar"
         }
       }
-    }
+    },
+    "hasNotStarted": "El juego a\u00fan no ha comenzado",
+    "player": {
+      "isNotPlayerInCurrentGame": "\u00a1No eres un jugador en este juego!",
+      "invalidPlayedBy": "El atributo Playby debe ser un n\u00famero en [0,1]"
+    },
+    "card": {
+      "invalidCardID": "ID de tarjeta no v\u00e1lida",
+      "unrecognizedRank": "Rango no reconocido",
+      "unrecognizedSuit": "Traje no reconocido",
+      "unrecognizedCardID": "Identificador de tarjeta no reconocido",
+      "cannotHaveAttachments": "no es una tarjeta de puntos y no puede tener archivos adjuntos",
+      "invalidTwoTarget": "Dos solo pueden atacar a los reales o anteojos",
+      "invalidCardForOneOff": "No puedes jugar esa carta como un \u00fanico"
+    },
+    "hand": {
+      "missingCards": "Tarjetas faltantes"
+    },
+    "invalidGameID": "El gameid no puede estar vac\u00edo y debe ser un n\u00famero",
+    "move": {
+      "invalidMoveType": "El tipo de movimiento no puede estar vac\u00edo y debe ser una cadena"
+    },
+    "phase": {
+      "invalidPhase": "La fase debe ser un n\u00famero en [1, 2, 3, 4, 5, 7]",
+      "invalidCounterPhase": "Solo puede contrarrestar durante la fase de contrarrestar",
+      "invalidCounterNoOneOff": "No puedes contrarrestar a menos que haya un solo pendiente",
+      "invalidCounterWaitingForOpponent": "Esperando que el oponente contrarrestar",
+      "invalidResolvePhase": "Solo puede resolverse durante la fase de contrarrestar"
+    },
+    "noGameIDPresentInOptions": "No se puede completar el juego sin GameId (las opciones no ten\u00edan GameId)",
+    "mustHaveTwoPlayers": "No se puede completar el juego sin dos jugadores",
+    "noPlayersCollection": "No se puede completar el juego, porque no tiene recolecci\u00f3n de jugadores"
   },
   "home": {
     "howItWorks": {
-      "button": "Cómo funciona",
-      "title": "¿Buscando partida?",
-      "content": "Nuestras sesiones de juego semanales están abiertas a todo el mundo:",
-      "wednesday": "Miércoles por la noche a las 8:30 p.m. EST (1:30 a.m. GMT)",
+      "button": "C\u00f3mo funciona",
+      "title": "\u00bfBuscando partida?",
+      "content": "Nuestras sesiones de juego semanales est\u00e1n abiertas a todo el mundo:",
+      "wednesday": "Mi\u00e9rcoles por la noche a las 8:30 p.m. EST (1:30 a.m. GMT)",
       "thursday": "Jueves a las 12 p.m. EST (5 p.m. GMT)",
-      "findMatch": "¿No encuentras partida? Únete a nuestro",
-      "content2": "para chatear con otros jugadores y ver quién está disponible para jugar en cualquier momento.",
-      "playSolo": "¿Quieres jugar solo? Prueba",
+      "findMatch": "\u00bfNo encuentras partida? \u00danete a nuestro",
+      "content2": "para chatear con otros jugadores y ver qui\u00e9n est\u00e1 disponible para jugar en cualquier momento.",
+      "playSolo": "\u00bfQuieres jugar solo? Prueba",
       "playAI": "jugar contra la IA",
       "mettle": "para aprender y poner a prueba tus habilidades.",
-      "learnMore": "¿Quieres aprender más? Echa un vistazo a nuestra página",
+      "learnMore": "\u00bfQuieres aprender m\u00e1s? Echa un vistazo a nuestra p\u00e1gina",
       "about": "acerca del juego",
       "about2": "para aprender las reglas y leer sobre el proyecto cuttle.cards.",
       "okayButton": "ok"
     },
     "snackbar": {
-      "cannotJoin": "No puede unirme a ese juego porque ya está lleno.",
+      "cannotJoin": "No puede unirme a ese juego porque ya est\u00e1 lleno.",
       "spectateTwoPlayers": "Solo puede ver un juego en curso con dos jugadores.",
       "cantFindGame": "no puede encontrar el juego",
-      "invalidLobbyNumber": "Número de lobby no válido",
-      "cannotSpectate": "No puede ver el juego porque estás jugando."
+      "invalidLobbyNumber": "N\u00famero de lobby no v\u00e1lido",
+      "cannotSpectate": "No puede ver el juego porque est\u00e1s jugando."
     },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",
@@ -343,42 +376,42 @@
     "join": "Unirse"
   },
   "rules": {
-    "introduction": "Introducción",
+    "introduction": "Introducci\u00f3n",
     "actions": {
       "title": "Comportamiento",
-      "clubs": "Tréboles",
+      "clubs": "Tr\u00e9boles",
       "diamonds": "Diamantes",
       "hearts": "Corazones",
       "spades": "Picas",
-      "weakest": "más débil",
-      "strongest": "más fuerte"
+      "weakest": "m\u00e1s d\u00e9bil",
+      "strongest": "m\u00e1s fuerte"
     },
-    "howToPlay": "Cómo jugar",
-    "cuttleTitle": "¿Qué es Cuttle?",
-    "cuttleText": "Cuttle es un juego de batalla de cartas para 2 jugadores que se juega con una baraja de naipes estándar de 52 cartas. Tiene la sutileza estratégica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo estándar, ¡y puedes jugarlo gratis! ¡Pon a prueba tu habilidad en el juego de cartas más profundo bajo el mar!",
+    "howToPlay": "C\u00f3mo jugar",
+    "cuttleTitle": "\u00bfQu\u00e9 es Cuttle?",
+    "cuttleText": "Cuttle es un juego de batalla de cartas para 2 jugadores que se juega con una baraja de naipes est\u00e1ndar de 52 cartas. Tiene la sutileza estrat\u00e9gica de los juegos de cartas coleccionables como Magic, con el equilibrio elegante de un mazo est\u00e1ndar, \u00a1y puedes jugarlo gratis! \u00a1Pon a prueba tu habilidad en el juego de cartas m\u00e1s profundo bajo el mar!",
     "rulesTitle": "Reglas de Cuttle",
     "preview": {
       "watchVideo": "Ver Video",
-      "imgAlt": "Cómo jugar {title} en Cuttle"
+      "imgAlt": "C\u00f3mo jugar {title} en Cuttle"
     },
     "rulesReadText": "Lee la",
     "rulesPreviewGif": "vista previa animada de {title} en Cuttle",
-    "rulesWatchText": "oficial o mira el tutorial de cuttle.cards a continuación para aprender las reglas y familiarizarte con el flujo del juego.",
+    "rulesWatchText": "oficial o mira el tutorial de cuttle.cards a continuaci\u00f3n para aprender las reglas y familiarizarte con el flujo del juego.",
     "goalTitle": "Objetivo",
-    "goalText": "El objetivo es ser el primer jugador en tener 21 o más puntos en cartas de puntos sobre tu campo. El primer jugador que llegue a la meta gana inmediatamente.",
+    "goalText": "El objetivo es ser el primer jugador en tener 21 o m\u00e1s puntos en cartas de puntos sobre tu campo. El primer jugador que llegue a la meta gana inmediatamente.",
     "playTitle": "Turno",
     "playText-1": "Un jugador (tradicionalmente el crupier) recibe 6 cartas y su oponente recibe 5. El jugador con 5 cartas juega primero.",
     "playText-2": "En tu turno debes realizar exactamente una de las siguientes acciones:",
     "draw": "Robar",
-    "drawDescription": "Roba una carta del mazo. No puedes superar el límite de 8 cartas en la mano. Si no quedan cartas en el mazo, puedes pasar. Tres pases consecutivos, la partida acaba en empate",
+    "drawDescription": "Roba una carta del mazo. No puedes superar el l\u00edmite de 8 cartas en la mano. Si no quedan cartas en el mazo, puedes pasar. Tres pases consecutivos, la partida acaba en empate",
     "points": "Puntos",
-    "pointsDescription": "Juega una carta de puntos de tu mano. Vale su clasificación en puntos y dura hasta que se hunda.",
+    "pointsDescription": "Juega una carta de puntos de tu mano. Vale su clasificaci\u00f3n en puntos y dura hasta que se hunda.",
     "scuttle": "Hundir",
-    "scuttleDescription": "Desecha la carta de puntos de un oponente con una más grande de tu mano. Los lazos los rompe el traje:",
+    "scuttleDescription": "Desecha la carta de puntos de un oponente con una m\u00e1s grande de tu mano. Los lazos los rompe el traje:",
     "royal": "Figuras",
     "royalDescription": "Juega una Figura en tu campo para obtener un beneficio, que permanece mientras la carta siga en juego.",
-    "oneoff": "Habilidades Únicas",
-    "oneoffDescription": "Descarta una carta de puntos para obtener un efecto único según su valor.",
+    "oneoff": "Habilidades \u00danicas",
+    "oneoffDescription": "Descarta una carta de puntos para obtener un efecto \u00fanico seg\u00fan su valor.",
     "glasses": "Gafas",
     "glassesDescription": "Juega un Ocho para revelar la mano de tu rival (dura mientras la carta siga en juego).",
     "royals": {
@@ -387,7 +420,7 @@
       "king": "Rey",
       "kingDescription": "Reduce la cantidad de puntos que necesitas para ganar. (1K: 14 puntos, 2K: 10 puntos, 3K: 5 puntos, 4K: 0 puntos)",
       "queen": "Reina",
-      "queenDescription": "Protege tus otras cartas de ser objetivo de habilidades Únicas de otras cartas. Esto protege tus cartas contra Doses (ambos efectos), Nueves y Sotas.",
+      "queenDescription": "Protege tus otras cartas de ser objetivo de habilidades \u00danicas de otras cartas. Esto protege tus cartas contra Doses (ambos efectos), Nueves y Sotas.",
       "queenDescription2": "No protege contra ases, seises o hundimiento.",
       "jack": "Sota (Jota)",
       "jackDescription": "Juega sobre una carta de puntos objetivo para robarla. La carta de puntos regresa al rival si la Sota se descarta o si se usa otra Sota para recuperarla.",
@@ -395,118 +428,118 @@
       "eightDescription": "Juega un 'Ocho de Gafas' para revelar la mano de tu oponente. Esto cuenta como un Real y dura hasta ser desechado."
     },
     "oneoffs": {
-      "title": "Habilidades Únicas",
-      "text": "Las cartas de puntos (excepto los Ochos y Dieces) se pueden descartar para obtener un efecto único según su valor. Siempre que se juega una habilidad Única, el otro jugador puede contrarrestarla usando un Dos para cancelar el efecto.",
+      "title": "Habilidades \u00danicas",
+      "text": "Las cartas de puntos (excepto los Ochos y Dieces) se pueden descartar para obtener un efecto \u00fanico seg\u00fan su valor. Siempre que se juega una habilidad \u00danica, el otro jugador puede contrarrestarla usando un Dos para cancelar el efecto.",
       "ace": "As",
       "aceDescription": "Descarta todas las cartas de puntos en juego sobre el campo.",
       "two": "Dos - Tarjeta de efectos multiusos",
-      "twoE1Description": "Efecto 1: Contrarresta el efecto único objetivo. Los contraataques pueden jugarse durante el turno de tu oponente.",
+      "twoE1Description": "Efecto 1: Contrarresta el efecto \u00fanico objetivo. Los contraataques pueden jugarse durante el turno de tu oponente.",
       "twoE2Description": "Efecto 2: Elimina el objetivo Royal o Glasses Eight.",
       "three": "Tres",
       "threeDescription": "Elige una carta del mazo de descarte y ponla en tu mano.",
       "four": "Cuatro",
-      "fourDescription": "Tu rival descarta dos cartas de su mano a su elección.",
+      "fourDescription": "Tu rival descarta dos cartas de su mano a su elecci\u00f3n.",
       "five": "Cinco",
-      "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja hasta el límite de mano de 8 cartas.",
+      "fiveDescription": "Descarta una carta y luego roba hasta tres cartas de la baraja hasta el l\u00edmite de mano de 8 cartas.",
       "six": "Seis",
       "sixDescription": "Descarta todas las Figuras y Gafas Ocho en juego sobre el campo.",
       "seven": "Siete",
       "sevenDescription": "Revela las dos primeras cartas del mazo a ambos jugadores y elige una para jugar como desees.",
       "nine": "Nueve",
-      "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su próximo turno",
+      "nineDescription": "Devuelve la carta objetivo a la mano de su controlador. No puede volver a jugarla en su pr\u00f3ximo turno",
       "ten": "Diez",
       "tenDescription": "Sin efecto."
     },
     "readyToPlay": {
-      "readyToPlay": "¿Listo para jugar?",
+      "readyToPlay": "\u00bfListo para jugar?",
       "findGame": "Encuentra una partida",
-      "signUp": "Inicia sesión para jugar online"
+      "signUp": "Inicia sesi\u00f3n para jugar online"
     },
     "multiplayerTitle": "Variantes multijugador",
-    "multiplayerText1": "Actualmente, solo está disponible Cuttle para 2 jugadores en ",
-    "multiplayerText2": "sin embargo, Cuttle se puede jugar con 2, 3 o 4 jugadores. Cuttle, para 3 y 4 jugadores, tiene ligeras variaciones en las reglas para optimizar el equilibrio del juego y al mismo tiempo cambiar el ritmo y la sensación. ¡Pruébalo la próxima vez que juegues a Cuttle en grupo!",
+    "multiplayerText1": "Actualmente, solo est\u00e1 disponible Cuttle para 2 jugadores en ",
+    "multiplayerText2": "sin embargo, Cuttle se puede jugar con 2, 3 o 4 jugadores. Cuttle, para 3 y 4 jugadores, tiene ligeras variaciones en las reglas para optimizar el equilibrio del juego y al mismo tiempo cambiar el ritmo y la sensaci\u00f3n. \u00a1Pru\u00e9balo la pr\u00f3xima vez que juegues a Cuttle en grupo!",
     "3Players": {
       "title": "Cuttle para 3 jugadores: Cutthroat",
-      "text": "Cutthroat es una versión 1 contra 1 contra 1 de ritmo brutal, llena de traición y momentos cruciales.",
+      "text": "Cutthroat es una versi\u00f3n 1 contra 1 contra 1 de ritmo brutal, llena de traici\u00f3n y momentos cruciales.",
       "rules": "Las reglas son las mismas que las anteriores con los siguientes cambios:",
-      "rule1": "La condición de victoria se reduce. Los jugadores necesitan 14 puntos para ganar de forma predeterminada, 9 puntos con un Rey en juego, 5 con dos Reyes en juego, y con 3 Reyes en juego se gana inmediatamente (el objetivo se convierte en cero).",
+      "rule1": "La condici\u00f3n de victoria se reduce. Los jugadores necesitan 14 puntos para ganar de forma predeterminada, 9 puntos con un Rey en juego, 5 con dos Reyes en juego, y con 3 Reyes en juego se gana inmediatamente (el objetivo se convierte en cero).",
       "rule2": "Para comenzar a jugar, reparte 5 cartas a cada jugador y el jugador a la izquierda quien reparte juega primero. El jugador que reparte gira en el sentido de las agujas del reloj en cada partida.",
       "rule3": "Baraja dos comodines (Jokers) en el mazo. Los comodines cuentan como Figuras con el efecto \"Roba una Figura objetivo\", similar a la Sota.",
-      "rule4": "El límite de cartas en la mano se reduce a 7 (de 8)."
+      "rule4": "El l\u00edmite de cartas en la mano se reduce a 7 (de 8)."
     },
     "4Players": {
       "title": "Cuttle de 4 jugadores: 2v2",
-      "text": "Cuttle para 4 jugadores es un juego de equipo de 2 contra 2. Cada jugador se sienta frente a su compañero. Un equipo gana si cualquiera de los dos jugadores alcanza su respectivo objetivo, pero los jugadores no comparten cartas en su mano o campo (los puntos se cuentan por separado y tus Figuras no afectan directamente a tu compañero).",
-      "rules": "Por lo demás, las reglas son similares a las de Cuttle 1 contra 1, con los siguientes cambios:",
-      "rule1": "Cada jugador recibe 5 cartas, comienza el jugador a la izquierda de quien reparte y continúa en el sentido de las agujas del reloj.",
+      "text": "Cuttle para 4 jugadores es un juego de equipo de 2 contra 2. Cada jugador se sienta frente a su compa\u00f1ero. Un equipo gana si cualquiera de los dos jugadores alcanza su respectivo objetivo, pero los jugadores no comparten cartas en su mano o campo (los puntos se cuentan por separado y tus Figuras no afectan directamente a tu compa\u00f1ero).",
+      "rules": "Por lo dem\u00e1s, las reglas son similares a las de Cuttle 1 contra 1, con los siguientes cambios:",
+      "rule1": "Cada jugador recibe 5 cartas, comienza el jugador a la izquierda de quien reparte y contin\u00faa en el sentido de las agujas del reloj.",
       "rule2": "Baraja dos comodines (Jokers) en el mazo. Los comodines cuentan como Figuras con el efecto \"Roba una Figura objetivo\", similar a la Sota. Al igual que las Sotas, pueden transferir el control de una Figura de cualquier jugador a cualquier otro jugador.",
-      "rule3": "El límite de cartas en la mano se reduce a 7 (de 8).",
-      "rule4": "Se pueden jugar Sotas para transferir el control de cualquier carta de puntos a cualquier otro jugador. Por lo tanto, puedes \"robarte\" puntos a ti mismo (o a cualquier otra persona) para dárselos a tu compañero, potencialmente ganando en tu turno con sus puntos (su objetivo aún está determinado por la cantidad de Reyes en su propio campo).",
-      "rule5": "Se pueden jugar Nueves para obtener un efecto alternativo similar: siempre que un rival juegue una Figura, puedes jugar inmediatamente un Nueve en respuesta para devolver esa carta a la mano de su propietario inmediatamente, evitando que se produzca su efecto. Hacerlo puede hacerse fuera de turno y no gasta tu turno, pero no impide que el propietario del objetivo vuelva a jugar la carta en su siguiente turno. Alternativamente, aún puedes jugar un Nueve para obtener su efecto único original en tu turno (gastando tu turno para hacerlo), para devolver una carta a la mano de su controlador y evitar que juegue esa carta en su próximo turno."
+      "rule3": "El l\u00edmite de cartas en la mano se reduce a 7 (de 8).",
+      "rule4": "Se pueden jugar Sotas para transferir el control de cualquier carta de puntos a cualquier otro jugador. Por lo tanto, puedes \"robarte\" puntos a ti mismo (o a cualquier otra persona) para d\u00e1rselos a tu compa\u00f1ero, potencialmente ganando en tu turno con sus puntos (su objetivo a\u00fan est\u00e1 determinado por la cantidad de Reyes en su propio campo).",
+      "rule5": "Se pueden jugar Nueves para obtener un efecto alternativo similar: siempre que un rival juegue una Figura, puedes jugar inmediatamente un Nueve en respuesta para devolver esa carta a la mano de su propietario inmediatamente, evitando que se produzca su efecto. Hacerlo puede hacerse fuera de turno y no gasta tu turno, pero no impide que el propietario del objetivo vuelva a jugar la carta en su siguiente turno. Alternativamente, a\u00fan puedes jugar un Nueve para obtener su efecto \u00fanico original en tu turno (gastando tu turno para hacerlo), para devolver una carta a la mano de su controlador y evitar que juegue esa carta en su pr\u00f3ximo turno."
     },
     "faq": {
       "title": "FAQ",
-      "twoCounter": "¿Puedo jugar un Dos para contrarrestar una carta de puntos? ¿Y para impedir que me hundan una carta de puntos?",
-      "twoCounterAnswer": "¡No! Los Doses solo pueden contrarrestar las habilidades Únicas. Puedes jugar un Dos para destruir una Figura o unas Gafas Ocho, pero esto gasta tu turno, a diferencia de si se usa para contrarrestar.",
-      "queenProtectTwo": "¿Las Reinas protegen contra el la habilidad de contrarrestar del Dos?",
-      "queenProtectTwoAnswer": "¡Sí! Las Reinas protegen a tus cartas de ser objetivos, cuando una carta aplica un efecto a una carta específica. Esto significa que tus otras cartas (no la propia Reina) están protegidas contra Doses (cualquier efecto), Nueves y Sotas.",
-      "queenProtectScuttle": "¿Las Reinas protegen contra el hundimiento? ¿Y contra las habilidades Únicas de Ases y Seises?",
-      "queenProtectScuttleAnswer": "¡No! Hundir no cuenta como una habilidad con objetivo, ni tampoco los efectos \"barremesa\" de los Ases y Seises. Las Reinas solo protegen contra los efectos de Doses, Nueves y Sotas.",
-      "twoOnTwo": "¿Puedo contrarrestar un Dos con otro Dos?",
-      "twoOnTwoAnswer": "¡Por supuesto! Jugar un Dos para contrarrestar es una habilidad Única, que se puede contrarrestar con otro Dos. Los contraataques sucesivos crean jugadas emocionantes y momentos estratégicos esenciales.",
-      "kingWin": "¿Puedo ganar jugando un Rey?",
-      "kingWinAnswer": "¡Sí! Si cumples con la cantidad requerida de puntos, ganas inmediatamente. Esto significa que si juegas un Rey cuando ya tienes suficientes puntos para alcanzar el nuevo límite, ganas en ese turno.",
-      "aceDestruction": "Si juego un As o un Seis, ¿mis cartas también se destruyen?",
-      "aceDestructionAnswer": "Sí. Los Ases y los Seises destruyen todas las cartas de puntos y todas las Figuras y Gafas Ocho, respectivamente. Eso incluye cualquiera que tengas. ¡Intenta evitar destruir demasiadas cartas propias!",
-      "revealNoPoints": "Mi Siete reveló dos Sotas y mi rival no tiene puntos. ¿Qué sucede?",
+      "twoCounter": "\u00bfPuedo jugar un Dos para contrarrestar una carta de puntos? \u00bfY para impedir que me hundan una carta de puntos?",
+      "twoCounterAnswer": "\u00a1No! Los Doses solo pueden contrarrestar las habilidades \u00danicas. Puedes jugar un Dos para destruir una Figura o unas Gafas Ocho, pero esto gasta tu turno, a diferencia de si se usa para contrarrestar.",
+      "queenProtectTwo": "\u00bfLas Reinas protegen contra el la habilidad de contrarrestar del Dos?",
+      "queenProtectTwoAnswer": "\u00a1S\u00ed! Las Reinas protegen a tus cartas de ser objetivos, cuando una carta aplica un efecto a una carta espec\u00edfica. Esto significa que tus otras cartas (no la propia Reina) est\u00e1n protegidas contra Doses (cualquier efecto), Nueves y Sotas.",
+      "queenProtectScuttle": "\u00bfLas Reinas protegen contra el hundimiento? \u00bfY contra las habilidades \u00danicas de Ases y Seises?",
+      "queenProtectScuttleAnswer": "\u00a1No! Hundir no cuenta como una habilidad con objetivo, ni tampoco los efectos \"barremesa\" de los Ases y Seises. Las Reinas solo protegen contra los efectos de Doses, Nueves y Sotas.",
+      "twoOnTwo": "\u00bfPuedo contrarrestar un Dos con otro Dos?",
+      "twoOnTwoAnswer": "\u00a1Por supuesto! Jugar un Dos para contrarrestar es una habilidad \u00danica, que se puede contrarrestar con otro Dos. Los contraataques sucesivos crean jugadas emocionantes y momentos estrat\u00e9gicos esenciales.",
+      "kingWin": "\u00bfPuedo ganar jugando un Rey?",
+      "kingWinAnswer": "\u00a1S\u00ed! Si cumples con la cantidad requerida de puntos, ganas inmediatamente. Esto significa que si juegas un Rey cuando ya tienes suficientes puntos para alcanzar el nuevo l\u00edmite, ganas en ese turno.",
+      "aceDestruction": "Si juego un As o un Seis, \u00bfmis cartas tambi\u00e9n se destruyen?",
+      "aceDestructionAnswer": "S\u00ed. Los Ases y los Seises destruyen todas las cartas de puntos y todas las Figuras y Gafas Ocho, respectivamente. Eso incluye cualquiera que tengas. \u00a1Intenta evitar destruir demasiadas cartas propias!",
+      "revealNoPoints": "Mi Siete revel\u00f3 dos Sotas y mi rival no tiene puntos. \u00bfQu\u00e9 sucede?",
       "revealNoPointsAnswer": "Si es imposible jugar ambas cartas reveladas por un Siete (es decir, se revelan dos Sotas y tu rival no tiene cartas de puntos en juego), elige una de las dos Sotas para descartarla y coloca la otra nuevamente en la parte superior del mazo.",
-      "revealOneLeft": "¿Qué pasa si juego un Siete y solo queda una carta en la baraja?",
-      "revealOneLeftAnswer": "Muestra solo la carta que queda y continúa jugando como de costumbre. De manera similar a la situación anterior, si revelas una Sota y tu rival no tiene ninguna carta de puntos en juego, esa Sota se descarta.",
-      "emptyHandFive": "¿Qué pasa cuando juego un cinco con una mano vacía?",
-      "emptyHandFiveAnswer": "Si no tienes otras cartas en la mano cuando juegas un 5, simplemente saltas el descarte y robas tres cartas. Esto puede ser una jugada poderosa, pero arriesgada. Si funciona, terminas con dos cartas más de las que comenzaste en ese turno, pero si te la contrarrestan, ¡podrías quedarte sin cartas!",
-      "deckExhaust": "¿Qué pasa cuando se agota el mazo de robo?",
-      "deckExhaustAnswer": "Cuando no quedan cartas en el mazo, los jugadores pueden pasar su turno en lugar de robar. Si hay tres pases consecutivos, es decir, el jugador 1 pasa, el jugador 2 pasa y luego el jugador 1 pasa nuevamente, el juego termina en un punto muerto y ningún jugador gana.",
-      "whereToPlay": "¿Dónde puedo jugar a Cuttle?",
-      "whereToPlayAnswer": "Puedes jugar a Cuttle en cualquier lugar donde tengas una baraja de cartas y un amigo. Si quieres jugar online, solo hay un lugar: ¡cuttle.cards!"
+      "revealOneLeft": "\u00bfQu\u00e9 pasa si juego un Siete y solo queda una carta en la baraja?",
+      "revealOneLeftAnswer": "Muestra solo la carta que queda y contin\u00faa jugando como de costumbre. De manera similar a la situaci\u00f3n anterior, si revelas una Sota y tu rival no tiene ninguna carta de puntos en juego, esa Sota se descarta.",
+      "emptyHandFive": "\u00bfQu\u00e9 pasa cuando juego un cinco con una mano vac\u00eda?",
+      "emptyHandFiveAnswer": "Si no tienes otras cartas en la mano cuando juegas un 5, simplemente saltas el descarte y robas tres cartas. Esto puede ser una jugada poderosa, pero arriesgada. Si funciona, terminas con dos cartas m\u00e1s de las que comenzaste en ese turno, pero si te la contrarrestan, \u00a1podr\u00edas quedarte sin cartas!",
+      "deckExhaust": "\u00bfQu\u00e9 pasa cuando se agota el mazo de robo?",
+      "deckExhaustAnswer": "Cuando no quedan cartas en el mazo, los jugadores pueden pasar su turno en lugar de robar. Si hay tres pases consecutivos, es decir, el jugador 1 pasa, el jugador 2 pasa y luego el jugador 1 pasa nuevamente, el juego termina en un punto muerto y ning\u00fan jugador gana.",
+      "whereToPlay": "\u00bfD\u00f3nde puedo jugar a Cuttle?",
+      "whereToPlayAnswer": "Puedes jugar a Cuttle en cualquier lugar donde tengas una baraja de cartas y un amigo. Si quieres jugar online, solo hay un lugar: \u00a1cuttle.cards!"
     },
     "tournaments": {
       "title": "Torneos",
-      "competitiveCuttle1": "El Cuttle Competitivo se divide en 4 temporadas por año, una por palo: Tréboles, Diamantes, Corazones y Picas. Al final de cada temporada, los 8 mejores jugadores participan en un torneo de campeonato de eliminación doble y los campeones son aclamados permanentemente en el sitio.",
-      "competitiveCuttle2": "Cada temporada se divide en 13 semanas. Para cada semana, contamos el número de partidas clasificatorias mejor de 2 de 3 que cada jugador gana contra oponentes únicos (ignorando los empates) y asignamos puntos a los jugadores según su posición semanal.",
-      "championPlayer": "Jugador Campeón",
+      "competitiveCuttle1": "El Cuttle Competitivo se divide en 4 temporadas por a\u00f1o, una por palo: Tr\u00e9boles, Diamantes, Corazones y Picas. Al final de cada temporada, los 8 mejores jugadores participan en un torneo de campeonato de eliminaci\u00f3n doble y los campeones son aclamados permanentemente en el sitio.",
+      "competitiveCuttle2": "Cada temporada se divide en 13 semanas. Para cada semana, contamos el n\u00famero de partidas clasificatorias mejor de 2 de 3 que cada jugador gana contra oponentes \u00fanicos (ignorando los empates) y asignamos puntos a los jugadores seg\u00fan su posici\u00f3n semanal.",
+      "championPlayer": "Jugador Campe\u00f3n",
       "secondPlacePlayer": "Jugador Segundo Lugar",
       "thirdPlacePlayer": "Jugador Tercer Lugar",
-      "exampleImgExplanation": "Ejemplo de página de estadísticas / torneo",
+      "exampleImgExplanation": "Ejemplo de p\u00e1gina de estad\u00edsticas / torneo",
       "scoring": {
         "numPoints": "1 Punto | {count} Puntos",
-        "firstPlace": "El jugador con más victorias obtiene 5 puntos por semana",
+        "firstPlace": "El jugador con m\u00e1s victorias obtiene 5 puntos por semana",
         "secondPlace": "El jugador con la segunda mayor cantidad de victorias obtiene 4 puntos por semana",
         "thirdPlace": "El jugador con la tercera mayor cantidad de victorias obtiene 3 puntos por semana",
-        "oneWin": "Cada otro jugador que ganó al menos una partida obtiene 2 puntos por semana",
-        "completedMatch": "Cada otro jugador que completó una partida sin ganar obtiene 1 punto por semana"
+        "oneWin": "Cada otro jugador que gan\u00f3 al menos una partida obtiene 2 puntos por semana",
+        "completedMatch": "Cada otro jugador que complet\u00f3 una partida sin ganar obtiene 1 punto por semana"
       }
     }
   },
   "stats": {
     "error": {
-      "oops": "¡Ups!",
-      "message": "Hubo un problema al cargar la tabla de clasificación. Actualiza la página o selecciona otra temporada para volver a intentarlo."
+      "oops": "\u00a1Ups!",
+      "message": "Hubo un problema al cargar la tabla de clasificaci\u00f3n. Actualiza la p\u00e1gina o selecciona otra temporada para volver a intentarlo."
     },
     "siteUsage": "Uso del sitio",
     "weeklyRankings": "Clasificaciones semanales",
     "season": {
       "select": "Seleccionar temporada",
       "champions": "Campeones de temporada",
-      "tournamentBracket": "aquí para ver el cuadro oficial del torneo",
-      "tournamentFootage": "aquí para ver las imágenes oficiales del torneo",
+      "tournamentBracket": "aqu\u00ed para ver el cuadro oficial del torneo",
+      "tournamentFootage": "aqu\u00ed para ver las im\u00e1genes oficiales del torneo",
       "playByPlay": "con comentarios jugada por jugada."
     },
     "winRate": "Ratio de victorias",
     "wins": "Gana",
-    "losses": "Pérdidas",
+    "losses": "P\u00e9rdidas",
     "results": "Resultados",
     "week": "Semana",
-    "selectMetric": "Seleccionar métrica",
+    "selectMetric": "Seleccionar m\u00e9trica",
     "selectWeeks": "Seleccionar semanas",
     "seasonTotal": "Total de la temporada",
     "pointsAndWins": "Puntos y victorias",
@@ -519,10 +552,10 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Campeonato Mundial de Cuttle IV!",
+    "activatorText": "\u00a1Campeonato Mundial de Cuttle IV!",
     "title": "Cuttle World Championship",
     "heading": "Campeonato Mundial",
-    "paragraph": "¡El Campeonato Mundial de Cuttle IV es hoy, sábado 8 de marzo a las 12pm EST! Mira a los 8 mejores jugadores del último AÑO de juego competitivo enfrentarse por el título de Campeón Mundial de Cuttle y su elección entre los 8 increíbles mazos de premios donados por el jugador SUBMARINO. Míralo en vivo en ",
+    "paragraph": "\u00a1El Campeonato Mundial de Cuttle IV es hoy, s\u00e1bado 8 de marzo a las 12pm EST! Mira a los 8 mejores jugadores del \u00faltimo A\u00d1O de juego competitivo enfrentarse por el t\u00edtulo de Campe\u00f3n Mundial de Cuttle y su elecci\u00f3n entre los 8 incre\u00edbles mazos de premios donados por el jugador SUBMARINO. M\u00edralo en vivo en ",
     "twitchLink": "twitch.tv/cuttle_cards"
   }
 }

@@ -7,7 +7,7 @@ module.exports = async function (req, res) {
     game = await sails.helpers.lockGame(req.params.gameId);
     const gameState = unpackGamestate(game.gameStates.at(-1));
     if (!game.gameStates.length || !gameState) {
-      throw new Error({ message: 'Game has not yet started' });
+      throw new Error({ message: 'game.hasNotStarted' });
     }
 
     // Verify whether user is in requested game and as which player
@@ -20,7 +20,7 @@ module.exports = async function (req, res) {
         playedBy = 1;
         break;
       default:
-        throw new Error('You are not a player in this game!');
+        throw new Error('game.player.isNotPlayerInCurrentGame');
     }
 
     validate(gameState, req.body, playedBy);

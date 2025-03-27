@@ -41,22 +41,22 @@ module.exports = {
 
     allCards.forEach((card) => {
       if (card.attachments.length) {
-        throw new Error(`${card.id} is not a point card, and cannot have attachments`);
+        throw new Error(`${card.id}` + ' ' + `game.card.cannotHaveAttachments`);
       }
 
       if (cardIds.has(card.id)) {
-        throw new Error(`Duplicate Card ${card.id}`);
+        throw new Error(`game.card.duplicateCard ${card.id}`);
       }
 
       if (!deckIds.has(card.id)) {
-        throw new Error(`Invalid Card id ${card.id}`);
+        throw new Error(`game.card.invalidCardID ${card.id}`);
       }
 
       cardIds.add(card.id);
     });
 
     if (cardIds.size !== deckIds.size) {
-      throw new Error(`Missing Cards ${[ ...deckIds.difference(cardIds) ].join(',')}`);
+      throw new Error(`game.hand.missingCards ${[ ...deckIds.difference(cardIds) ].join(',')}`);
     }
 
     return exits.success();

@@ -77,7 +77,7 @@ module.exports = {
           }
 
           if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
-            throw new Error('Twos can only target royals or glasses');
+            throw new Error('game.card.invalidTwoTarget');
           }
 
           const queenCount = opponent.faceCards.filter((faceCard) => faceCard.rank === 12).length;
