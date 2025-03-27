@@ -238,7 +238,9 @@
     },
     "turn": {
       "yourTurn": "YOUR TURN",
-      "opponentTurn": "OPPONENT'S TURN"
+      "opponentTurn": "OPPONENT'S TURN",
+      "invalidTurn": "The turn cannot be empty and must be a number",
+      "invalidMustWaitForOpponentToCounter": "Waiting for opponent to counter"
     },
     "history": {
       "title": "History"
@@ -303,7 +305,42 @@
           "jacksMustBeUnplayable": "You can't discard because the jacks can be played"
         }
       }
-    }
+    },
+    "hasNotStarted": "Game has not yet started",
+    "player": {
+      "isNotPlayerInCurrentGame": "You are not a player in this game!",
+      "invalidPlayedBy": "The playedBy attribute must be a number in [0,1]",
+      "mustDiscard": "You must discard a card from your hand"
+    },
+    "card": {
+      "invalidCardID": "Invalid card ID",
+      "unrecognizedRank": "Unrecognized rank",
+      "unrecognizedSuit": "Unrecognised suit",
+      "unrecognizedCardID": "Unrecognised card identifier",
+      "cannotHaveAttachments": "is not a point card, and cannot have attachments",
+      "invalidTwoTarget": "Twos can only target royals or glasses",
+      "invalidCardForOneOff": "You cannot play that card as a one-off",
+      "cannotPlayAsOneOff": "You cannot play that card as a one-off"
+    },
+    "hand": {
+      "missingCards": "Missing Cards"
+    },
+    "invalidGameID": "The gameId cannot be empty and must be a number",
+    "move": {
+      "invalidMoveType": "The MoveType cannot be empty and must be a string"
+    },
+    "phase": {
+      "invalidPhase": "The phase must be a number in [1, 2, 3, 4, 5, 7]",
+      "invalidCounterPhase": "Can only counter during the countering phase",
+      "invalidCounterNoOneOff": "You cannot counter unless there is a one-off pending",
+      "invalidCounterWaitingForOpponent": "Waiting for opponent to counter",
+      "invalidResolvePhase": "Can only resolve during the countering phase"
+    },
+    "noGameIDPresentInOptions": "Cannot populate Game without GameId (options had no gameId)",
+    "mustHaveTwoPlayers": "Cannot populate game without two players",
+    "noPlayersCollection": "Cannot populate game, because it does not have players collection",
+    "cannotFindOpposingTarget": "Can't find target on opponent's board:",
+    "waitingForOpponentToCounter": "Waiting for opponent to counter"
   },
   "home": {
     "howItWorks": {

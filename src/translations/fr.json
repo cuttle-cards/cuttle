@@ -2,8 +2,8 @@
   "global": {
     "signup": "S'inscrire",
     "login": "Se connecter",
-    "logout": "Se déconnecter",
-    "rules": "Règles",
+    "logout": "Se d\u00e9connecter",
+    "rules": "R\u00e8gles",
     "play": "Jouer",
     "stats": "Statistiques",
     "user": "Utilisatrice",
@@ -11,61 +11,61 @@
     "username": "Nom d'utilisateur",
     "password": "Mot de passe",
     "cancel": "Annuler",
-    "ranked": "Classée",
+    "ranked": "Class\u00e9e",
     "casual": "Classique",
     "your": "ton",
     "close": "Fermer",
     "click": "Cliquez sur",
     "playerReady": {
-      "playerDeclinedAlt": "${playerUsername} a décliné la carte de revanche",
+      "playerDeclinedAlt": "${playerUsername} a d\u00e9clin\u00e9 la carte de revanche",
       "cardBackAlt": "Dos de la carte -- En attente de l'adversaire",
-      "readyAlt": "Face de la carte -- {playerUsername} est prêt",
+      "readyAlt": "Face de la carte -- {playerUsername} est pr\u00eat",
       "rematchAlt": "Face de la carte -- {playerUsername} veut une revanche"
     }
   },
   "login": {
     "noAccount": "Vous n'avez pas de compte?",
-    "haveAccount": "Vous avez déjà un compte?",
+    "haveAccount": "Vous avez d\u00e9j\u00e0 un compte?",
     "title": "Bienvenue sur Cuttle.Cards",
-    "subtitle": "Le jeu de cartes dont vous serez mordus dès la première main!",
+    "subtitle": "Le jeu de cartes dont vous serez mordus d\u00e8s la premi\u00e8re main!",
     "formHeaderLogin": "Connectez-vous pour commencer!",
-    "formHeaderSignup": "Inscrivez-vous maintenant pour commencer à jouer et préparez-vous à plonger dans le monde de Cuttle.",
-    "quote": "\"Cuttle est un jeu vif et rapide construit sur d'excellentes mécaniques. C'est le genre de jeu (si je l'avais connu à l'université) qui m'aurait fait user plein de paquets de cartes.\"",
-    "quoteCite": "Richard Garfield - Créateur de Magic: The Gathering",
-    "content": "Cuttle est un jeu de cartes de bataille pour 2 joueurs, joué avec un jeu de 52 cartes standard. Il possède la subtilité stratégique des jeux de cartes à collectionner comme Magic, avec l'équilibre élégant d'un jeu de cartes standard. Vous pouvez même y jouer gratuitement! Testez votre bravoure dans le jeu de cartes le plus intense des abysses!",
-    "content2": "Soyez le premier à marquer 21 points dans cette exaltante bataille d'intelligence. Montez une offensive vaillante tout en perturbant votre adversaire avec des astuces fourbes. Avez-vous ce qu'il faut pour conquérir les profondeurs?",
-    "readRules": "Lire les règles",
-    "joinDiscord": "Rejoignez notre communauté sur Discord.",
+    "formHeaderSignup": "Inscrivez-vous maintenant pour commencer \u00e0 jouer et pr\u00e9parez-vous \u00e0 plonger dans le monde de Cuttle.",
+    "quote": "\"Cuttle est un jeu vif et rapide construit sur d'excellentes m\u00e9caniques. C'est le genre de jeu (si je l'avais connu \u00e0 l'universit\u00e9) qui m'aurait fait user plein de paquets de cartes.\"",
+    "quoteCite": "Richard Garfield - Cr\u00e9ateur de Magic: The Gathering",
+    "content": "Cuttle est un jeu de cartes de bataille pour 2 joueurs, jou\u00e9 avec un jeu de 52 cartes standard. Il poss\u00e8de la subtilit\u00e9 strat\u00e9gique des jeux de cartes \u00e0 collectionner comme Magic, avec l'\u00e9quilibre \u00e9l\u00e9gant d'un jeu de cartes standard. Vous pouvez m\u00eame y jouer gratuitement! Testez votre bravoure dans le jeu de cartes le plus intense des abysses!",
+    "content2": "Soyez le premier \u00e0 marquer 21 points dans cette exaltante bataille d'intelligence. Montez une offensive vaillante tout en perturbant votre adversaire avec des astuces fourbes. Avez-vous ce qu'il faut pour conqu\u00e9rir les profondeurs?",
+    "readRules": "Lire les r\u00e8gles",
+    "joinDiscord": "Rejoignez notre communaut\u00e9 sur Discord.",
     "snackbar": {
-      "usernameIsTaken": "Ce pseudo est déjà enregistré. Essayez de vous connecter!",
+      "usernameIsTaken": "Ce pseudo est d\u00e9j\u00e0 enregistr\u00e9. Essayez de vous connecter!",
       "userNotFound": "Ce pseudo est inconnu au bataillon. Inscrivez vous!",
       "wrongPassword": "Le pseudo et le mot de passe ne correspondent pas."
     }
   },
   "lobby": {
     "lobbyFor": "Vestibule de ",
-    "ready": "PRÊT",
-    "unready": "PAS PRÊT",
+    "ready": "PR\u00caT",
+    "unready": "PAS PR\u00caT",
     "exit": "SORTIR",
     "invite": "Inviter",
-    "rankedChangedAlert": "Mode de jeu modifié à"
+    "rankedChangedAlert": "Mode de jeu modifi\u00e9 \u00e0"
   },
   "game": {
-    "resolve": "Résoudre",
-    "scrap": "Écarter",
+    "resolve": "R\u00e9soudre",
+    "scrap": "\u00c9carter",
     "view": "Regarder",
     "pass": "PASSER",
     "playFromDeck": "Jouer depuis la pioche",
     "overlays": {
-      "waitingForGameToStart": "En attendant le début du jeu",
+      "waitingForGameToStart": "En attendant le d\u00e9but du jeu",
       "leaveGame": "Quitter le jeu",
       "opponentMayCounter": "L'adversaire peut contrer",
-      "opponentMustResolve": "L'adversaire doit résoudre",
-      "opponentIsDiscarding": "L'adversaire défausse une carte",
-      "opponentSkipsDiscarding": "L'adversaire saute la défausse",
-      "opponentChoosingFromScrap": "L'adversaire choisit une carte à partir de la défausse",
+      "opponentMustResolve": "L'adversaire doit r\u00e9soudre",
+      "opponentIsDiscarding": "L'adversaire d\u00e9fausse une carte",
+      "opponentSkipsDiscarding": "L'adversaire saute la d\u00e9fausse",
+      "opponentChoosingFromScrap": "L'adversaire choisit une carte \u00e0 partir de la d\u00e9fausse",
       "opponentPlayingFromDeck": "Adversaire jouant depuis la pioche",
-      "opponentMustDiscardJack": "L'adversaire doit défausser un valet",
+      "opponentMustDiscardJack": "L'adversaire doit d\u00e9fausser un valet",
       "opponentConsideringStalemate": "L'adversaire envisage une demande d'impasse",
       "gameUnavailable": {
         "title": "Oops!",
@@ -75,15 +75,15 @@
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Reconnectez-vous au jeu.",
-        "youHaveDisconnected": "Vous avez été déconnecté pour cause d'inactivité. Connectez-vous à nouveau pour reprendre votre session.",
+        "youHaveDisconnected": "Vous avez \u00e9t\u00e9 d\u00e9connect\u00e9 pour cause d'inactivit\u00e9. Connectez-vous \u00e0 nouveau pour reprendre votre session.",
         "username": "Nom d'utilisateur",
         "password": "Mot de passe",
         "leaveGame": "Quitter le jeu",
         "login": "Se connecter"
       },
       "scrapDialog": {
-        "scrapPile": "Défausse",
-        "noCards": "Il n'y a aucune carte dans la défausse."
+        "scrapPile": "D\u00e9fausse",
+        "noCards": "Il n'y a aucune carte dans la d\u00e9fausse."
       },
       "cardListSortable": {
         "sort": {
@@ -93,23 +93,23 @@
         }
       },
       "four": {
-        "discardTwoCards": "Défaussez deux cartes",
-        "discard": "Défausser",
-        "opponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
+        "discardTwoCards": "D\u00e9faussez deux cartes",
+        "discard": "D\u00e9fausser",
+        "opponentHasResolved": "Votre adversaire a jou\u00e9 un quatre en attaque. Vous devez d\u00e9fausser deux cartes. Cliquez pour s\u00e9lectionner les cartes \u00e0 d\u00e9fausser."
       },
       "five": {
         "discardAndDraw": "Jeter et piocher",
         "nice": "Bon!",
-        "resolveFive": "Vous avez résolu un 5 ponctuel. Choisissez une carte à défausser et vous piocherez ensuite 3 cartes",
-        "resolveFiveNoCards": "Vous avez résolu un problème ponctuel de 5, mais vous n'avez aucune carte en main à défausser. Vous piochez 3 cartes sans les défausser. Sympa!"
+        "resolveFive": "Vous avez r\u00e9solu un 5 ponctuel. Choisissez une carte \u00e0 d\u00e9fausser et vous piocherez ensuite 3 cartes",
+        "resolveFiveNoCards": "Vous avez r\u00e9solu un probl\u00e8me ponctuel de 5, mais vous n'avez aucune carte en main \u00e0 d\u00e9fausser. Vous piochez 3 cartes sans les d\u00e9fausser. Sympa!"
       },
       "counterDialogs": {
         "counterTitle": "Chance de contrer",
         "chooseTwoTitle": "Choisissez un deux",
         "cannotCounterTitle": "Impossible de contrer",
         "selectCard": "Avec quel deux souhaitez-vous contrer? (Cliquez sur la carte)",
-        "opponentPlayed": "Votre adversaire a joué le ",
-        "oneOff": "comme un éphémère",
+        "opponentPlayed": "Votre adversaire a jou\u00e9 le ",
+        "oneOff": "comme un \u00e9ph\u00e9m\u00e8re",
         "target": "ciblant ",
         "toCounter": "contrer",
         "counter": "contrer",
@@ -121,25 +121,25 @@
         }
       },
       "threeDialog": {
-        "title": "Sélectionnez une carte dans la défausse"
+        "title": "S\u00e9lectionnez une carte dans la d\u00e9fausse"
       },
       "opponentRequestedStalemateDialog": {
         "title": "Accepter l'impasse?",
-        "opponentHasRequested": "Votre adversaire a demandé une impasse. Si vous acceptez, la partie se terminera par un nul.",
+        "opponentHasRequested": "Votre adversaire a demand\u00e9 une impasse. Si vous acceptez, la partie se terminera par un nul.",
         "reject": "Rejeter la demande",
         "accept": "Accepter l'impasse"
       },
       "sevenDoubleJacksDialog": {
-        "title": "Sélectionnez une carte",
-        "cannotMove": "On dirait bien que vous ne pouvez pas jouer. Sélectionnez un valet à défausser.",
+        "title": "S\u00e9lectionnez une carte",
+        "cannotMove": "On dirait bien que vous ne pouvez pas jouer. S\u00e9lectionnez un valet \u00e0 d\u00e9fausser.",
         "resolve": "Continuer"
       },
       "gameOverDialog": {
         "game": "Jeu",
         "you": "Toi",
         "youWin": "Vous gagnez",
-        "youWinTheMatch": "Vouz avez gagné la partie",
-        "won": "gagné",
+        "youWinTheMatch": "Vouz avez gagn\u00e9 la partie",
+        "won": "gagn\u00e9",
         "youLose": "Vous perdez",
         "youLoseTheMatch": "Vous avez perdu la partie",
         "lost": "perdu",
@@ -157,55 +157,55 @@
           "playerLeft": "Joueur parti",
           "waitingForPlayers": "En attente de joueurs",
           "goodMatch": "Bon match !",
-          "continueSpectating": "Continuer à observer ?",
+          "continueSpectating": "Continuer \u00e0 observer ?",
           "opponentLeft": "Votre adversaire peft",
           "waitingForOpponent": "En attente de l'adversaire",
           "continueMatch": "Continuer le match ?",
           "rematch?": "Revanche ?",
-          "rankedIconAlt": "Icône de Match Classé (Épées Croisées)",
-          "casualIconAlt": "Icône de Match Décontracté (Mug)",
-          "wonTheMatch": "a gagné le match",
+          "rankedIconAlt": "Ic\u00f4ne de Match Class\u00e9 (\u00c9p\u00e9es Crois\u00e9es)",
+          "casualIconAlt": "Ic\u00f4ne de Match D\u00e9contract\u00e9 (Mug)",
+          "wonTheMatch": "a gagn\u00e9 le match",
           "lostTheMatch": "a perdu le match"
         }
       }
     },
     "moves": {
       "disabledMove": {
-        "topTwo": "Vous devez jouer l'une des deux premières cartes de la pioche",
+        "topTwo": "Vous devez jouer l'une des deux premi\u00e8res cartes de la pioche",
         "notTurn": "Ce n'est pas votre tour",
-        "frozenCard": "Cette carte est gelée",
+        "frozenCard": "Cette carte est gel\u00e9e",
         "emptyDeck": "On ne peut pas jouer avec la pioche vide",
         "multipleQueens": "Vous ne pouvez pas jouer un {rank} lorsque votre adversaire a deux ou plusieurs reines",
-        "noRoyals": "Il n'y a pas de rois à cibler",
-        "noRoyalsOrPoints": "Il n'y a pas de cartes à points ni de rois à cibler"
+        "noRoyals": "Il n'y a pas de rois \u00e0 cibler",
+        "noRoyalsOrPoints": "Il n'y a pas de cartes \u00e0 points ni de rois \u00e0 cibler"
       },
       "points": {
         "displayName": "Points",
         "description": "Gagnez 1 point | Gagnez {count} points"
       },
       "scuttle": {
-        "description": "Écartez une carte de moindre valeur en points",
-        "disabled": "Vous ne pouvez écarter que des cartes de points plus faibles",
-        "disabledNoPoints": "Votre adversaire n'a pas de cartes de points à écarter"
+        "description": "\u00c9cartez une carte de moindre valeur en points",
+        "disabled": "Vous ne pouvez \u00e9carter que des cartes de points plus faibles",
+        "disabledNoPoints": "Votre adversaire n'a pas de cartes de points \u00e0 \u00e9carter"
       },
       "effects": {
-        "1": "Élimine tous les points.",
-        "2": "Cible et élimine une figure ou un huit en lunettes.",
-        "3": "Récupérez un carte dans la défausse.",
-        "4": "Votre adversaire défausse deux cartes de son choix.",
-        "5": "Défaussez 1 carte et piochez-en jusqu'à 3",
-        "6": "Élimine toutes les figures et les huit en lunettes.",
-        "7": "Dévoilez deux cartes de la pioche et jouez en une.",
-        "8": "Révèle la main de votre adversaire.",
-        "9": "L'adversaire reprend en main la carte ciblée qui est gelée pour un tour.",
+        "1": "\u00c9limine tous les points.",
+        "2": "Cible et \u00e9limine une figure ou un huit en lunettes.",
+        "3": "R\u00e9cup\u00e9rez un carte dans la d\u00e9fausse.",
+        "4": "Votre adversaire d\u00e9fausse deux cartes de son choix.",
+        "5": "D\u00e9faussez 1 carte et piochez-en jusqu'\u00e0 3",
+        "6": "\u00c9limine toutes les figures et les huit en lunettes.",
+        "7": "D\u00e9voilez deux cartes de la pioche et jouez en une.",
+        "8": "R\u00e9v\u00e8le la main de votre adversaire.",
+        "9": "L'adversaire reprend en main la carte cibl\u00e9e qui est gel\u00e9e pour un tour.",
         "10": "Aucune tactique.",
-        "11": "Cible et vole une carte à points.",
-        "12": "Protège vos cartes à points des attaques tactiques",
-        "13": "Réduit votre objectif de points. (1K: 14 pts, 2K: 10 pts, 3K: 5 pts, 4K: 0 pts)"
+        "11": "Cible et vole une carte \u00e0 points.",
+        "12": "Prot\u00e8ge vos cartes \u00e0 points des attaques tactiques",
+        "13": "R\u00e9duit votre objectif de points. (1K: 14 pts, 2K: 10 pts, 3K: 5 pts, 4K: 0 pts)"
       },
       "jack": {
-        "description": "Vole une carte à points de votre adversaire",
-        "disabled": "Impossible de voler une carte à points quand elle est protégée par une Reine"
+        "description": "Vole une carte \u00e0 points de votre adversaire",
+        "disabled": "Impossible de voler une carte \u00e0 points quand elle est prot\u00e9g\u00e9e par une Reine"
       },
       "glasses": {
         "displayName": "Lunettes",
@@ -218,13 +218,13 @@
     "menus": {
       "gameMenu": {
         "refresh": "Actualiser",
-        "rules": "Règles",
-        "concede": "Déclarer forfait",
+        "rules": "R\u00e8gles",
+        "concede": "D\u00e9clarer forfait",
         "stalemate": "Proposer match nul",
         "cancel": "Annuler",
         "home": "Accueil",
         "concedeDialog": "Le jeu se termine et votre adversaire l'emporte.",
-        "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par un nul. La demande sera annulée si l'adversaire refuse ou si l'un des deux joueurs joue un coup."
+        "stalemateDialog": "Si votre adversaire accepte, la partie se terminera par un nul. La demande sera annul\u00e9e si l'adversaire refuse ou si l'un des deux joueurs joue un coup."
       },
       "spectatorListMenu": {
         "spectators": "Spectateurs",
@@ -238,7 +238,9 @@
     },
     "turn": {
       "yourTurn": "VOTRE TOUR",
-      "opponentTurn": "TOUR DE L'ADVERSAIRE"
+      "opponentTurn": "TOUR DE L'ADVERSAIRE",
+      "invalidTurn": "Le virage ne peut pas \u00eatre vide et doit \u00eatre un nombre",
+      "invalidMustWaitForOpponentToCounter": "En attendant que l'adversaire contrecarre"
     },
     "history": {
       "title": "Historique"
@@ -246,95 +248,130 @@
     "snackbar": {
       "global": {
         "notYourTurn": "Ce n'est pas votre tour !",
-        "cardFrozen": "Cette carte est gelée ! Vous ne pourrez la jouer qu'au prochain tour.",
+        "cardFrozen": "Cette carte est gel\u00e9e ! Vous ne pourrez la jouer qu'au prochain tour.",
         "playFromHand": "Vous ne pouez jouer que des cartes de votre main.",
-        "blockedByQueen": "La Dame de votre adversaire empêche ses autres cartes d'être ciblées.",
-        "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame.",
+        "blockedByQueen": "La Dame de votre adversaire emp\u00eache ses autres cartes d'\u00eatre cibl\u00e9es.",
+        "blockedByMultipleQueens": "Impossible de jouer une capacit\u00e9 cible (2 ou 9) quand votre adversaire a plus d'une dame.",
         "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale"
       },
       "draw": {
         "deckIsEmpty": "La pioche est vide, vous ne pouvez pas piocher.",
         "handLimit": "Votre limite de carte en main est atteinte !",
-        "exhaustedDeck": "Paquet épuisé; révélation des mains des joueurs"
+        "exhaustedDeck": "Paquet \u00e9puis\u00e9; r\u00e9v\u00e9lation des mains des joueurs"
       },
       "faceCards": {
-        "withoutTarget": "Seuls les Rois, Dames et Huits peuvent être joués sans cibler une carte."
+        "withoutTarget": "Seuls les Rois, Dames et Huits peuvent \u00eatre jou\u00e9s sans cibler une carte."
       },
       "points": {
-        "numberOnlyForPoints": "Les cartes numériques ne peuvent être jouées que pour les points."
+        "numberOnlyForPoints": "Les cartes num\u00e9riques ne peuvent \u00eatre jou\u00e9es que pour les points."
       },
       "jack": {
         "stealOnlyWithJack": "Vous ne pouvez voler une carte points de votre adversaire qu'avec un Valet.",
-        "stealOnlyPointCards": "Seules les cartes à points peuvent être volées.",
+        "stealOnlyPointCards": "Seules les cartes \u00e0 points peuvent \u00eatre vol\u00e9es.",
         "noJackWithQueen": "Vous ne pouvez pas jouer un Valet car votre adversaire a une Reine."
       },
       "scuttle": {
-        "rankTooLow": "Pour faire un scuttle, votre carte doit être d'un rang ou une couleur plus élevé que la carte ciblée. (trèfle < carreau < coeur < pique)",
-        "mustUsePointCard": "Les scuttles ne se font qu'avec des cartes à points.",
-        "mustTargetPointCard": "Les scuttles ne peuvent cibler que les cartes à points."
+        "rankTooLow": "Pour faire un scuttle, votre carte doit \u00eatre d'un rang ou une couleur plus \u00e9lev\u00e9 que la carte cibl\u00e9e. (tr\u00e8fle < carreau < coeur < pique)",
+        "mustUsePointCard": "Les scuttles ne se font qu'avec des cartes \u00e0 points.",
+        "mustTargetPointCard": "Les scuttles ne peuvent cibler que les cartes \u00e0 points."
       },
       "oneOffs": {
-        "oneOffInPlay": "Une capacité est en cours d'exécution, vous ne pouvez jouer qu'un deux pour contrer.",
-        "cantPlayWithoutATarget": "La capacité de cette carte nécessite de cibler une carte.",
-        "onlyTwoOrNine": "La capacité du Deux et du Neuf nécessite de cibler une carte.",
-        "emptyDeck": "Vous ne pouvez pas jouer cette carte à moins qu'il n'y ait des cartes dans la pioche",
+        "oneOffInPlay": "Une capacit\u00e9 est en cours d'ex\u00e9cution, vous ne pouvez jouer qu'un deux pour contrer.",
+        "cantPlayWithoutATarget": "La capacit\u00e9 de cette carte n\u00e9cessite de cibler une carte.",
+        "onlyTwoOrNine": "La capacit\u00e9 du Deux et du Neuf n\u00e9cessite de cibler une carte.",
+        "emptyDeck": "Vous ne pouvez pas jouer cette carte \u00e0 moins qu'il n'y ait des cartes dans la pioche",
         "three": {
-          "scrapIsEmpty": "La capacité du Trois n'est possible que si la défausse n'est pas vide.",
-          "notResolvingThreePhase": "Peut choisir parmi le défausse en résolvant un 3.",
-          "mustPickFromScrap": "Vous devez choisir une carte de la défausse"
+          "scrapIsEmpty": "La capacit\u00e9 du Trois n'est possible que si la d\u00e9fausse n'est pas vide.",
+          "notResolvingThreePhase": "Peut choisir parmi le d\u00e9fausse en r\u00e9solvant un 3.",
+          "mustPickFromScrap": "Vous devez choisir une carte de la d\u00e9fausse"
         },
         "four": {
-          "opponentHasNoCards": "La capacité du Quatre n'est possible que si votre adversaire a des cartes en main.",
-          "notYourTurn": "Ce n'est pas à vous de défausser",
-          "notResolvingFourPhase": "Vous ne pouvez pas défausser à moins que votre adversaire n'ait joué un Quatre",
-          "mustSelectCards": "Vous devez sélectionner deux cartes à défausser"
+          "opponentHasNoCards": "La capacit\u00e9 du Quatre n'est possible que si votre adversaire a des cartes en main.",
+          "notYourTurn": "Ce n'est pas \u00e0 vous de d\u00e9fausser",
+          "notResolvingFourPhase": "Vous ne pouvez pas d\u00e9fausser \u00e0 moins que votre adversaire n'ait jou\u00e9 un Quatre",
+          "mustSelectCards": "Vous devez s\u00e9lectionner deux cartes \u00e0 d\u00e9fausser"
         },
         "five": {
-          "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
-          "incorrectCard": "Mauvaise carte jouée",
-          "wrongPhase": "Vous ne pouvez pas résoudre un cinq maintenant.",
-          "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
+          "selectCardToDiscard": "Vous devez s\u00e9lectionner une carte \u00e0 d\u00e9fausser",
+          "incorrectCard": "Mauvaise carte jou\u00e9e",
+          "wrongPhase": "Vous ne pouvez pas r\u00e9soudre un cinq maintenant.",
+          "fiveDeckIsEmpty": "Impossible de r\u00e9soudre 5 points ponctuels avec un deck vide"
         },
         "seven": {
-          "oneCardInDeck": "Impossible de jouer la capacité du Sept si c'était la dernière carte de la pioche.",
-          "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte de la pioche.",
+          "oneCardInDeck": "Impossible de jouer la capacit\u00e9 du Sept si c'\u00e9tait la derni\u00e8re carte de la pioche.",
+          "pickAndPlay": "Apr\u00e8s avoir jou\u00e9 un Sept, vous ne pouvez jouer qu'une carte de la pioche.",
           "wrongPhase": "Vous ne pouvez pas jouer depuis le paquet pour le moment",
-          "mustBeDoubleJacks": "Vous ne pouvez pas défausser depuis un sept sauf si les deux cartes sont des valets",
-          "jacksMustBeUnplayable": "Vous ne pouvez pas défausser parce que les valets peuvent être joués"
+          "mustBeDoubleJacks": "Vous ne pouvez pas d\u00e9fausser depuis un sept sauf si les deux cartes sont des valets",
+          "jacksMustBeUnplayable": "Vous ne pouvez pas d\u00e9fausser parce que les valets peuvent \u00eatre jou\u00e9s"
         }
       }
-    }
+    },
+    "hasNotStarted": "Le jeu n'a pas encore commenc\u00e9",
+    "player": {
+      "isNotPlayerInCurrentGame": "Vous n'\u00eates pas un joueur dans ce jeu!",
+      "invalidPlayedBy": "L'attribut jou\u00e9 doit \u00eatre un nombre dans [0,1]",
+      "mustDiscard": "Vous devez jeter une carte de votre main"
+    },
+    "card": {
+      "invalidCardID": "ID de carte non valide",
+      "unrecognizedRank": "Rang non reconnu",
+      "unrecognizedSuit": "Costume non reconnu",
+      "unrecognizedCardID": "Identifiant de carte non reconnu",
+      "cannotHaveAttachments": "n'est pas une carte de point et ne peut pas avoir de pi\u00e8ces jointes",
+      "invalidTwoTarget": "Les deux ne peuvent cibler que les Royals ou les lunettes",
+      "invalidCardForOneOff": "Vous ne pouvez pas jouer cette carte comme un seul-off",
+      "cannotPlayAsOneOff": "Vous ne pouvez pas jouer cette carte comme un seul-off"
+    },
+    "hand": {
+      "missingCards": "Cartes manquantes"
+    },
+    "invalidGameID": "Le jeu ne peut pas \u00eatre vide et doit \u00eatre un num\u00e9ro",
+    "move": {
+      "invalidMoveType": "Le moveType ne peut pas \u00eatre vide et doit \u00eatre une cha\u00eene"
+    },
+    "phase": {
+      "invalidPhase": "La phase doit \u00eatre un nombre dans [1, 2, 3, 4, 5, 7]",
+      "invalidCounterPhase": "Ne peut contrer que pendant la phase de contre-mise en \u0153uvre",
+      "invalidCounterNoOneOff": "Vous ne pouvez pas contrer s'il y a une seule fois",
+      "invalidCounterWaitingForOpponent": "En attendant que l'adversaire contrecarre",
+      "invalidResolvePhase": "Ne peut r\u00e9soudre que pendant la phase de contre-mise"
+    },
+    "noGameIDPresentInOptions": "Impossible de remplir le jeu sans gameid (les options n'avaient pas de jeu)",
+    "mustHaveTwoPlayers": "Ne peut pas remplir le jeu sans deux joueurs",
+    "noPlayersCollection": "Impossible de remplir le jeu, car il n'a pas de collection de joueurs",
+    "cannotFindOpposingTarget": "Impossible de trouver une cible sur le conseil d'administration de l'adversaire:",
+    "waitingForOpponentToCounter": "En attendant que l'adversaire contrecarre"
   },
   "home": {
     "howItWorks": {
-      "button": "Comment ça fonctionne.",
-      "title": "Vous cherchez à jouer?",
-      "content": "Nos séances de jeu hebdomadaires sont ouvertes à tous:",
-      "wednesday": "Le mercredi soir à 20h30 HNE",
-      "thursday": "Le jeudi à 12h00 HNE",
+      "button": "Comment \u00e7a fonctionne.",
+      "title": "Vous cherchez \u00e0 jouer?",
+      "content": "Nos s\u00e9ances de jeu hebdomadaires sont ouvertes \u00e0 tous:",
+      "wednesday": "Le mercredi soir \u00e0 20h30 HNE",
+      "thursday": "Le jeudi \u00e0 12h00 HNE",
       "findMatch": "Vous ne trouvez pas de parties? Rejoignez-nous sur ",
       "content2": "Pour discuter avec d'autres joueurs et voir qui est disponible pour jouer.",
       "playSolo": "Envie de jouer en solo? Essayez de ",
       "playAI": "jouer contre l'IA",
       "mettle": " pour apprendre les bases et tester votre courage.",
       "learnMore": "Vous voulez en savoir plus? Consultez notre ",
-      "about": "à propos de la page",
-      "about2": "pour apprendre les règles et en savoir plus sur le projet cuttle.cards.",
+      "about": "\u00e0 propos de la page",
+      "about2": "pour apprendre les r\u00e8gles et en savoir plus sur le projet cuttle.cards.",
       "okayButton": "d'accord"
     },
     "snackbar": {
-      "cannotJoin": "vous ne pouvez pas rejoindre ce jeu car il est déjà complet",
+      "cannotJoin": "vous ne pouvez pas rejoindre ce jeu car il est d\u00e9j\u00e0 complet",
       "spectateTwoPlayers": "Vous ne pouvez regarder qu'une partie en cours avec deux joueurs.",
       "cantFindGame": "Je ne trouve pas le jeu",
-      "invalidLobbyNumber": "Numéro de lobby invalide",
+      "invalidLobbyNumber": "Num\u00e9ro de lobby invalide",
       "cannotSpectate": "Impossible d'etre spectateur parce que vous jouez"
     },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",
     "noGameslist": "Aucune partie active",
-    "noSpectatelist": "Aucune partie disponible à regarder",
-    "openCreateGame": "Créer une partie",
-    "submitCreateGame": "Créer la partie",
+    "noSpectatelist": "Aucune partie disponible \u00e0 regarder",
+    "openCreateGame": "Cr\u00e9er une partie",
+    "submitCreateGame": "Cr\u00e9er la partie",
     "players": "joueurs",
     "playAiContent": "Envie de jouer en solo? Essayer de ",
     "playAiLink": "jouer contre l'IA",
@@ -346,168 +383,168 @@
     "introduction": "Introduction",
     "actions": {
       "title": "Actions",
-      "clubs": "Trèfles",
+      "clubs": "Tr\u00e8fles",
       "diamonds": "Carreaux",
-      "hearts": "Cœurs",
+      "hearts": "C\u0153urs",
       "spades": "Piques",
       "weakest": "moins fort",
       "strongest": "le plus fort"
     },
     "howToPlay": "Comment jouer",
     "cuttleTitle": "Qu'est-ce que Cuttle?",
-    "cuttleText": "Cuttle est un jeu de cartes de combat à deux joueurs joué avec un jeu de cartes standard de 52 cartes. Il présente la nuance stratégique des jeux de cartes à collectionner comme Magic, avec l'équilibre élégant d'un jeu standard. Vous pouvez même y jouer gratuitement! Testez votre courage dans le jeu de cartes le plus intense des abysses!",
-    "rulesTitle": "Règles de Cuttle",
+    "cuttleText": "Cuttle est un jeu de cartes de combat \u00e0 deux joueurs jou\u00e9 avec un jeu de cartes standard de 52 cartes. Il pr\u00e9sente la nuance strat\u00e9gique des jeux de cartes \u00e0 collectionner comme Magic, avec l'\u00e9quilibre \u00e9l\u00e9gant d'un jeu standard. Vous pouvez m\u00eame y jouer gratuitement! Testez votre courage dans le jeu de cartes le plus intense des abysses!",
+    "rulesTitle": "R\u00e8gles de Cuttle",
     "preview": {
-      "watchVideo": "Regarder la vidéo",
+      "watchVideo": "Regarder la vid\u00e9o",
       "imgAlt": "Comment jouer {title} dans Cuttle"
     },
     "rulesReadText": "Lisez l'officiel",
-    "rulesPreviewGif": "Aperçu animé de {title} dans Cuttle",
-    "rulesWatchText": "Ou regardez le tutoriel vidéo de cuttle.cards ci-dessous pour apprendre les règles et vous familiariser avec le déroulement du jeu.",
+    "rulesPreviewGif": "Aper\u00e7u anim\u00e9 de {title} dans Cuttle",
+    "rulesWatchText": "Ou regardez le tutoriel vid\u00e9o de cuttle.cards ci-dessous pour apprendre les r\u00e8gles et vous familiariser avec le d\u00e9roulement du jeu.",
     "goalTitle": "objectif",
-    "goalText": "L'objectif est d'être le premier joueur à atteindre ou dépasser 21 points. Le premier joueur à atteindre l'objectif gagne immédiatement.",
+    "goalText": "L'objectif est d'\u00eatre le premier joueur \u00e0 atteindre ou d\u00e9passer 21 points. Le premier joueur \u00e0 atteindre l'objectif gagne imm\u00e9diatement.",
     "playTitle": "Jouer",
-    "playText-1": "Un joueur (traditionnellement le croupier) reçoit 6 cartes et son adversaire en reçoit 5. Le joueur avec 5 cartes commence.",
-    "playText-2": "À votre tour, vous devez effectuer exactement l’une des actions suivantes :",
+    "playText-1": "Un joueur (traditionnellement le croupier) re\u00e7oit 6 cartes et son adversaire en re\u00e7oit 5. Le joueur avec 5 cartes commence.",
+    "playText-2": "\u00c0 votre tour, vous devez effectuer exactement l\u2019une des actions suivantes :",
     "draw": "Piocher",
-    "drawDescription": "Prenez une carte de la pioche. Vous ne pouvez pas avoir plus de 8 cartes en main. S'il n'y a plus de cartes dans la pioche, vous pouvez passer. Trois passes consécutives entraine un match nul.",
+    "drawDescription": "Prenez une carte de la pioche. Vous ne pouvez pas avoir plus de 8 cartes en main. S'il n'y a plus de cartes dans la pioche, vous pouvez passer. Trois passes cons\u00e9cutives entraine un match nul.",
     "points": "Points",
-    "pointsDescription": "Les cartes à points (de 1 à 10) peuvent être posées dans votre zone pour accumuler des points et tenter d'atteindre l'objectif. Les cartes à points peuvent être éliminées par certaines cartes tactiques ou par un scuttle.",
+    "pointsDescription": "Les cartes \u00e0 points (de 1 \u00e0 10) peuvent \u00eatre pos\u00e9es dans votre zone pour accumuler des points et tenter d'atteindre l'objectif. Les cartes \u00e0 points peuvent \u00eatre \u00e9limin\u00e9es par certaines cartes tactiques ou par un scuttle.",
     "scuttle": "Scuttle",
-    "scuttleDescription": "Supprimez la carte à points d'un adversaire grâce à une carte plus élevée. Les égalités sont brisées par la couleur :",
+    "scuttleDescription": "Supprimez la carte \u00e0 points d'un adversaire gr\u00e2ce \u00e0 une carte plus \u00e9lev\u00e9e. Les \u00e9galit\u00e9s sont bris\u00e9es par la couleur :",
     "royal": "Figures",
-    "royalDescription": "Posez un Roi pour réduire votre objectif de points. Si ce roi est détruit, votre objectif augmente à nouveau.",
-    "oneoff": "Capacité tactique",
-    "oneoffDescription": "Jouez une carte à points pour sa capacité tactique.  Chaque valeur correspond à une capacité différente et non persistante.  Seul le Huit a une capacité qui persiste tant qu'il n'est pas éliminé.",
+    "royalDescription": "Posez un Roi pour r\u00e9duire votre objectif de points. Si ce roi est d\u00e9truit, votre objectif augmente \u00e0 nouveau.",
+    "oneoff": "Capacit\u00e9 tactique",
+    "oneoffDescription": "Jouez une carte \u00e0 points pour sa capacit\u00e9 tactique.  Chaque valeur correspond \u00e0 une capacit\u00e9 diff\u00e9rente et non persistante.  Seul le Huit a une capacit\u00e9 qui persiste tant qu'il n'est pas \u00e9limin\u00e9.",
     "glasses": "Huit en lunettes",
-    "glassesDescription": "Jouez un Huit en Lunette pour révéler la main de votre adversaire. L'effet du Huit en Lunettes reste active tant que cette carte n'est pas éliminée.",
+    "glassesDescription": "Jouez un Huit en Lunette pour r\u00e9v\u00e9ler la main de votre adversaire. L'effet du Huit en Lunettes reste active tant que cette carte n'est pas \u00e9limin\u00e9e.",
     "royals": {
       "title": "Figures",
-      "text": "Les figures (Rois, Dames et Valets) peuvent être posés pour des capacités persistantes qui reste en vigueur jusqu'à ce que la carten'est pas éliminée. Chaque figure a une capacité différente.",
+      "text": "Les figures (Rois, Dames et Valets) peuvent \u00eatre pos\u00e9s pour des capacit\u00e9s persistantes qui reste en vigueur jusqu'\u00e0 ce que la carten'est pas \u00e9limin\u00e9e. Chaque figure a une capacit\u00e9 diff\u00e9rente.",
       "king": "Roi",
-      "kingDescription": "Il réduit le nombre de points dont vous avez besoin pour gagner (21, 14, 10, 5, 0 points avec 0, 1, 2, 3, 4 rois).",
+      "kingDescription": "Il r\u00e9duit le nombre de points dont vous avez besoin pour gagner (21, 14, 10, 5, 0 points avec 0, 1, 2, 3, 4 rois).",
       "queen": "Reine",
-      "queenDescription": "Elle protège vos autres cartes des attaques du 2, du 9 et des valets.",
-      "queenDescription2": "Ne protège pas contre les As, les Six ou le Sabordage.",
+      "queenDescription": "Elle prot\u00e8ge vos autres cartes des attaques du 2, du 9 et des valets.",
+      "queenDescription2": "Ne prot\u00e8ge pas contre les As, les Six ou le Sabordage.",
       "jack": "Valet",
-      "jackDescription": "Il vous permet de cibler et voler une carte à points à votre adversaire. Il peut la récupérer en la volant à son tour (avec un autre valet) ou en détruisant votre valet avec une capacité tactique.",
+      "jackDescription": "Il vous permet de cibler et voler une carte \u00e0 points \u00e0 votre adversaire. Il peut la r\u00e9cup\u00e9rer en la volant \u00e0 son tour (avec un autre valet) ou en d\u00e9truisant votre valet avec une capacit\u00e9 tactique.",
       "eight": "Huit",
-      "eightDescription": "Jouez un 'Huit Lunettes' pour révéler la main de votre adversaire. Cela compte comme un Royal et dure jusqu'à être écarté."
+      "eightDescription": "Jouez un 'Huit Lunettes' pour r\u00e9v\u00e9ler la main de votre adversaire. Cela compte comme un Royal et dure jusqu'\u00e0 \u00eatre \u00e9cart\u00e9."
     },
     "oneoffs": {
-      "title": "Capacité",
-      "text": "Les cartes numériques (sauf 8 et 10) ont toutes des capacités tactiques. Lorsqu'elles sont jouées, l'adversaire peut contrer l'attaque avec un Deux. ",
+      "title": "Capacit\u00e9",
+      "text": "Les cartes num\u00e9riques (sauf 8 et 10) ont toutes des capacit\u00e9s tactiques. Lorsqu'elles sont jou\u00e9es, l'adversaire peut contrer l'attaque avec un Deux. ",
       "ace": "As",
-      "aceDescription": "Il supprime toutes les cartes à points de la table.",
+      "aceDescription": "Il supprime toutes les cartes \u00e0 points de la table.",
       "two": "Two - Multi Use Effect Card",
-      "twoE1Description": "Effet 1: Contrecarrez l'effet unique ciblé. Les contres peuvent être joués pendant le tour de votre adversaire.",
+      "twoE1Description": "Effet 1: Contrecarrez l'effet unique cibl\u00e9. Les contres peuvent \u00eatre jou\u00e9s pendant le tour de votre adversaire.",
       "twoE2Description": "Effet 2 : Retirez la cible Royal ou Glasses Eight.",
       "three": "Trois",
-      "threeDescription": "Vous permet de récupérer de la défausse une carte de votre choix.",
+      "threeDescription": "Vous permet de r\u00e9cup\u00e9rer de la d\u00e9fausse une carte de votre choix.",
       "four": "Quatre",
-      "fourDescription": "Votre adversaire doit défausse deux cartes de son choix.",
+      "fourDescription": "Votre adversaire doit d\u00e9fausse deux cartes de son choix.",
       "five": "Cinq",
-      "fiveDescription": "Défaussez une carte, puis piochez jusqu'à trois cartes du jeu jusqu'à la limite de 8 cartes en main.",
+      "fiveDescription": "D\u00e9faussez une carte, puis piochez jusqu'\u00e0 trois cartes du jeu jusqu'\u00e0 la limite de 8 cartes en main.",
       "six": "Six",
-      "sixDescription": "Élimine toutes les figures et les huit en lunettes de la table.",
+      "sixDescription": "\u00c9limine toutes les figures et les huit en lunettes de la table.",
       "seven": "Sept",
-      "sevenDescription": "Révélez les deux premières cartes du deck aux deux joueurs et choisissez-en une à jouer comme vous le souhaitez.",
+      "sevenDescription": "R\u00e9v\u00e9lez les deux premi\u00e8res cartes du deck aux deux joueurs et choisissez-en une \u00e0 jouer comme vous le souhaitez.",
       "nine": "Neuf",
-      "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer à son prochain tour.",
+      "nineDescription": "Ciblez une carte active de votre adversaire pour la renvoyer dans sa main. Il pne pourra pas la jouer \u00e0 son prochain tour.",
       "ten": "Dix",
       "tenDescription": "Aucun effet."
     },
     "readyToPlay": {
-      "readyToPlay": "Prêt à jouer ?",
+      "readyToPlay": "Pr\u00eat \u00e0 jouer ?",
       "findGame": "Trouver une partie",
       "signUp": "Inscrivez-vous pour jouer en ligne"
     },
     "multiplayerTitle": "Variantes multijoueurs",
-    "multiplayerText1": "Actuellement, seule la cuttle à 2 joueurs est disponible sur ",
-    "multiplayerText2": "cependant, Cuttle peut être joué avec 2 à 4 joueurs. Cuttle, pour 3 et 4 joueurs, présente de légères variations dans les règles pour optimiser l'équilibre et le rythme du jeu. Essayez-les la prochaine fois que vous jouerez à Cuttle en groupe!",
+    "multiplayerText1": "Actuellement, seule la cuttle \u00e0 2 joueurs est disponible sur ",
+    "multiplayerText2": "cependant, Cuttle peut \u00eatre jou\u00e9 avec 2 \u00e0 4 joueurs. Cuttle, pour 3 et 4 joueurs, pr\u00e9sente de l\u00e9g\u00e8res variations dans les r\u00e8gles pour optimiser l'\u00e9quilibre et le rythme du jeu. Essayez-les la prochaine fois que vous jouerez \u00e0 Cuttle en groupe!",
     "3Players": {
-      "title": "Cuttle à 3 joueurs: Coupe gorge",
+      "title": "Cuttle \u00e0 3 joueurs: Coupe gorge",
       "text": "Coupe gorge est une version 1v1v1, pleine de trahisons et de rebondissements.",
-      "rules": "Les règles sont les mêmes que ci-dessus mais avec les modifications suivantes:",
-      "rule1": "La condition de victoire est réduite. Les joueurs ont besoin de 14 points pour gagner par défaut, de 9 points avec un roi en jeu ou de 5 points avec deux rois. 3 rois en jeu vous fait gagner immédiatement (l'objectif étant de zéro point).",
-      "rule2": "Un joueur distribue 5 cartes à chacun et le joueur à sa gauche commence. Les joueurs distribue à tour de rôle et dans le sens horaire.",
-      "rule3": "Se joue avec un paquet de 54 cartes comprenant les deux jokers qui ont la capacité de voler une carte Figure active à un adversaire.",
-      "rule4": "Votre main est limitée à 7 cartes (au lien de 8)."
+      "rules": "Les r\u00e8gles sont les m\u00eames que ci-dessus mais avec les modifications suivantes:",
+      "rule1": "La condition de victoire est r\u00e9duite. Les joueurs ont besoin de 14 points pour gagner par d\u00e9faut, de 9 points avec un roi en jeu ou de 5 points avec deux rois. 3 rois en jeu vous fait gagner imm\u00e9diatement (l'objectif \u00e9tant de z\u00e9ro point).",
+      "rule2": "Un joueur distribue 5 cartes \u00e0 chacun et le joueur \u00e0 sa gauche commence. Les joueurs distribue \u00e0 tour de r\u00f4le et dans le sens horaire.",
+      "rule3": "Se joue avec un paquet de 54 cartes comprenant les deux jokers qui ont la capacit\u00e9 de voler une carte Figure active \u00e0 un adversaire.",
+      "rule4": "Votre main est limit\u00e9e \u00e0 7 cartes (au lien de 8)."
     },
     "4Players": {
-      "title": "Cuttle à 4 joueurs: 2v2",
-      "text": "Cuttle pour 4 joueurs est un jeu d'équipe 2 contre 2. Chaque joueur est assis en face de son partenaire. Votre équipe gagne si vous ou votre partenaire atteignez vos objectifs respectifs, mais les joueurs ne partagent pas de cartes en main ou sur la table (les points sont comptés séparément et vos cartes Figures n'affectent pas directement votre partenaire).",
-      "rules": "Les règles sont les mêmes que celles de Cuttle 1v1 mais avec les changements suivants:",
-      "rule1": "Un joueur distribue 5 cartes à chacun et le joueur à sa gauche commence. Les joueurs distribue à tour de rôle et dans le sens horaire.",
-      "rule2": "Se joue avec un paquet de 54 cartes comprenant les deux jokers qui ont la capacité de transférer un carte Figure d'un joueur vers n'importe quel joueur.",
-      "rule3": "Votre main est limitée à 7 cartes (au lien de 8).",
-      "rule4": "Les valets peuvent être joués pour transférer n'importe quelle carte à points à n'importe quel autre joueur. Par conséquent, vous pouvez 'voler' des points à vous-même (ou à n'importe qui d'autre) pour les donner à votre partenaire, gagnant potentiellement à votre tour avec leurs points (leur objectif est toujours déterminé par le nombre de  rois sur le terrain).",
-      "rule5": "Le Neuf a une capacité supplémentaire. Il peut être joué pour contrer une carte figure jouée par un adversaire. Ainsi joué, le Neuf n'empêche pas cet adversaire de rejouer la même carte à son prochain tour.  Si vous jouez un Neuf à votre tour (son effet habituel est appliqué. L'adversaire reprend en main la carte ciblée et n'a pas le droit de la jouer à son prochain tour."
+      "title": "Cuttle \u00e0 4 joueurs: 2v2",
+      "text": "Cuttle pour 4 joueurs est un jeu d'\u00e9quipe 2 contre 2. Chaque joueur est assis en face de son partenaire. Votre \u00e9quipe gagne si vous ou votre partenaire atteignez vos objectifs respectifs, mais les joueurs ne partagent pas de cartes en main ou sur la table (les points sont compt\u00e9s s\u00e9par\u00e9ment et vos cartes Figures n'affectent pas directement votre partenaire).",
+      "rules": "Les r\u00e8gles sont les m\u00eames que celles de Cuttle 1v1 mais avec les changements suivants:",
+      "rule1": "Un joueur distribue 5 cartes \u00e0 chacun et le joueur \u00e0 sa gauche commence. Les joueurs distribue \u00e0 tour de r\u00f4le et dans le sens horaire.",
+      "rule2": "Se joue avec un paquet de 54 cartes comprenant les deux jokers qui ont la capacit\u00e9 de transf\u00e9rer un carte Figure d'un joueur vers n'importe quel joueur.",
+      "rule3": "Votre main est limit\u00e9e \u00e0 7 cartes (au lien de 8).",
+      "rule4": "Les valets peuvent \u00eatre jou\u00e9s pour transf\u00e9rer n'importe quelle carte \u00e0 points \u00e0 n'importe quel autre joueur. Par cons\u00e9quent, vous pouvez 'voler' des points \u00e0 vous-m\u00eame (ou \u00e0 n'importe qui d'autre) pour les donner \u00e0 votre partenaire, gagnant potentiellement \u00e0 votre tour avec leurs points (leur objectif est toujours d\u00e9termin\u00e9 par le nombre de  rois sur le terrain).",
+      "rule5": "Le Neuf a une capacit\u00e9 suppl\u00e9mentaire. Il peut \u00eatre jou\u00e9 pour contrer une carte figure jou\u00e9e par un adversaire. Ainsi jou\u00e9, le Neuf n'emp\u00eache pas cet adversaire de rejouer la m\u00eame carte \u00e0 son prochain tour.  Si vous jouez un Neuf \u00e0 votre tour (son effet habituel est appliqu\u00e9. L'adversaire reprend en main la carte cibl\u00e9e et n'a pas le droit de la jouer \u00e0 son prochain tour."
     },
     "faq": {
       "title": "FAQ",
-      "twoCounter": "Puis-je jouer un deux pour contrer une carte à points ou un scuttle?",
-      "twoCounterAnswer": "Non! Les Deux ne peuvent pas contrer que les carte à points. Ils ne peuvent que contrer les attaques spéciales ou détruire une carte figure active.",
-      "queenProtectTwo": "Les reines protègent-elles contre une contre-attaque avec un deux?",
-      "queenProtectTwoAnswer": "Oui! Les reines empêchent vos autres cartes d'être ciblées par des attaques.  Elles ont protégées des attaques des Deux (les deux effets), les Neufs et les Valets.",
-      "queenProtectScuttle": "Les Reines protègent-elles contre le scuttle, les As et les Six?",
-      "queenProtectScuttleAnswer": "Non! Les Reines protègent uniquement contre les effets desDeux, des Neufs et des Valets.",
+      "twoCounter": "Puis-je jouer un deux pour contrer une carte \u00e0 points ou un scuttle?",
+      "twoCounterAnswer": "Non! Les Deux ne peuvent pas contrer que les carte \u00e0 points. Ils ne peuvent que contrer les attaques sp\u00e9ciales ou d\u00e9truire une carte figure active.",
+      "queenProtectTwo": "Les reines prot\u00e8gent-elles contre une contre-attaque avec un deux?",
+      "queenProtectTwoAnswer": "Oui! Les reines emp\u00eachent vos autres cartes d'\u00eatre cibl\u00e9es par des attaques.  Elles ont prot\u00e9g\u00e9es des attaques des Deux (les deux effets), les Neufs et les Valets.",
+      "queenProtectScuttle": "Les Reines prot\u00e8gent-elles contre le scuttle, les As et les Six?",
+      "queenProtectScuttleAnswer": "Non! Les Reines prot\u00e8gent uniquement contre les effets desDeux, des Neufs et des Valets.",
       "twoOnTwo": "Puis-je contrer un Deux avec un Deux?",
-      "twoOnTwoAnswer": "Oui bien sûr! On peut contrer un Deux avec un Deux. Ce genre de rebondissements donne lieu à des partie trépidentes! ",
+      "twoOnTwoAnswer": "Oui bien s\u00fbr! On peut contrer un Deux avec un Deux. Ce genre de rebondissements donne lieu \u00e0 des partie tr\u00e9pidentes! ",
       "kingWin": "Puis-je gagner en jouant un Roi?",
-      "kingWinAnswer": "Oui! Si vous atteignez le nombre de points requis, vous gagnez immédiatement. Cela signifie que si vous jouez un Roi alors que vous avez déjà suffisamment de points pour atteindre la nouvelle limite, vous gagnez la parie.",
-      "aceDestruction": "Si je joue un As ou un Six, mes cartes sont-elles également détruites?",
-      "aceDestructionAnswer": "Oui, les as détruisent toutes les cartes à points, même les vôtres. Ainsi, les Sixs détruisent toutes les Figures et les 8 en Lunettes de la table.",
-      "revealNoPoints": "Mon Sept a révélé deux Valets et mon adversaire n'a aucun point. Qu'est-ce qui se passe?",
-      "revealNoPointsAnswer": "Si les deux cartes révélées par un Sept sont impossibles à jouer, (c'est-à-dire que vous révélez deux Valets et que votre adversaire n'a aucune carte à points en jeu), vous défaussez une de ces deux cartes et remettez l'autre sur le dessus de la pioche.",
+      "kingWinAnswer": "Oui! Si vous atteignez le nombre de points requis, vous gagnez imm\u00e9diatement. Cela signifie que si vous jouez un Roi alors que vous avez d\u00e9j\u00e0 suffisamment de points pour atteindre la nouvelle limite, vous gagnez la parie.",
+      "aceDestruction": "Si je joue un As ou un Six, mes cartes sont-elles \u00e9galement d\u00e9truites?",
+      "aceDestructionAnswer": "Oui, les as d\u00e9truisent toutes les cartes \u00e0 points, m\u00eame les v\u00f4tres. Ainsi, les Sixs d\u00e9truisent toutes les Figures et les 8 en Lunettes de la table.",
+      "revealNoPoints": "Mon Sept a r\u00e9v\u00e9l\u00e9 deux Valets et mon adversaire n'a aucun point. Qu'est-ce qui se passe?",
+      "revealNoPointsAnswer": "Si les deux cartes r\u00e9v\u00e9l\u00e9es par un Sept sont impossibles \u00e0 jouer, (c'est-\u00e0-dire que vous r\u00e9v\u00e9lez deux Valets et que votre adversaire n'a aucune carte \u00e0 points en jeu), vous d\u00e9faussez une de ces deux cartes et remettez l'autre sur le dessus de la pioche.",
       "revealOneLeft": "Que se passe-t-il si je joue un Sept et qu'il ne reste qu'une seule carte dans la pioche?",
-      "revealOneLeftAnswer": "Révélez cette dernière carte et continuez à jouer comme d'habitude. Semblable à la situation précédente, si vous révélez un valet et que votre adversaire n'a aucune carte à points en jeu, ce valet est défaussé.",
+      "revealOneLeftAnswer": "R\u00e9v\u00e9lez cette derni\u00e8re carte et continuez \u00e0 jouer comme d'habitude. Semblable \u00e0 la situation pr\u00e9c\u00e9dente, si vous r\u00e9v\u00e9lez un valet et que votre adversaire n'a aucune carte \u00e0 points en jeu, ce valet est d\u00e9fauss\u00e9.",
       "emptyHandFive": "Que se passe-t-il lorsque je joue un cinq avec une main vide ?",
-      "emptyHandFiveAnswer": "Si vous n'avez pas d'autres cartes en main lorsque vous jouez un 5, vous sautez simplement la phase de défausse et piochez trois cartes. Cela peut être un jeu puissant, mais risqué. Si cela fonctionne, vous vous retrouvez avec deux cartes de plus que celles avec lesquelles vous avez commencé ce tour, mais si cela est contré, vous pourriez vous retrouver sans cartes !",
+      "emptyHandFiveAnswer": "Si vous n'avez pas d'autres cartes en main lorsque vous jouez un 5, vous sautez simplement la phase de d\u00e9fausse et piochez trois cartes. Cela peut \u00eatre un jeu puissant, mais risqu\u00e9. Si cela fonctionne, vous vous retrouvez avec deux cartes de plus que celles avec lesquelles vous avez commenc\u00e9 ce tour, mais si cela est contr\u00e9, vous pourriez vous retrouver sans cartes !",
       "deckExhaust": "Que se passe-t-il lorsqu'il n'y a plus de carte dans la pioch ?",
-      "deckExhaustAnswer": "Lorsqu'il n'y a plus de cartes dans la pioche, les joueurs peuvent passer leur tour au lieu de piocher. S'il y a trois passes consécutives, c'est-à-dire que le joueur 1 passe, le joueur 2 passe, puis le joueur 1 passe à nouveau, la partie se termine par une impasse et il y a égalité.",
-      "whereToPlay": "Où puis-je jouer à Cuttle?",
-      "whereToPlayAnswer": "Vous pouvez jouer à Cuttle partout où vous avez un jeu de cartes et un ami. Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit: cuttle.cards"
+      "deckExhaustAnswer": "Lorsqu'il n'y a plus de cartes dans la pioche, les joueurs peuvent passer leur tour au lieu de piocher. S'il y a trois passes cons\u00e9cutives, c'est-\u00e0-dire que le joueur 1 passe, le joueur 2 passe, puis le joueur 1 passe \u00e0 nouveau, la partie se termine par une impasse et il y a \u00e9galit\u00e9.",
+      "whereToPlay": "O\u00f9 puis-je jouer \u00e0 Cuttle?",
+      "whereToPlayAnswer": "Vous pouvez jouer \u00e0 Cuttle partout o\u00f9 vous avez un jeu de cartes et un ami. Si vous souhaitez jouer en ligne, il n'y a qu'un seul endroit: cuttle.cards"
     },
     "tournaments": {
       "title": "Tournois",
-      "competitiveCuttle1": "Le Cuttle Compétitif est divisé en 4 saisons par an, une par couleur : Trèfle, Carreau, Cœur et Pique. À la fin de chaque saison, les 8 meilleurs joueurs participent à un tournoi de championnat à double élimination et les champions sont acclamés de façon permanente sur le site.",
-      "competitiveCuttle2": "Chaque saison est divisée en 13 semaines. Pour chaque semaine, nous comptons le nombre de matchs classés au meilleur des 2/3 que chaque joueur remporte contre des adversaires uniques (en ignorant les matchs nuls) et attribuons des points aux joueurs en fonction de leur classement hebdomadaire.",
+      "competitiveCuttle1": "Le Cuttle Comp\u00e9titif est divis\u00e9 en 4 saisons par an, une par couleur : Tr\u00e8fle, Carreau, C\u0153ur et Pique. \u00c0 la fin de chaque saison, les 8 meilleurs joueurs participent \u00e0 un tournoi de championnat \u00e0 double \u00e9limination et les champions sont acclam\u00e9s de fa\u00e7on permanente sur le site.",
+      "competitiveCuttle2": "Chaque saison est divis\u00e9e en 13 semaines. Pour chaque semaine, nous comptons le nombre de matchs class\u00e9s au meilleur des 2/3 que chaque joueur remporte contre des adversaires uniques (en ignorant les matchs nuls) et attribuons des points aux joueurs en fonction de leur classement hebdomadaire.",
       "championPlayer": "Joueur Champion",
-      "secondPlacePlayer": "Joueur Deuxième Place",
-      "thirdPlacePlayer": "Joueur Troisième Place",
+      "secondPlacePlayer": "Joueur Deuxi\u00e8me Place",
+      "thirdPlacePlayer": "Joueur Troisi\u00e8me Place",
       "exampleImgExplanation": "Exemple de page de statistiques / tournoi",
       "scoring": {
         "numPoints": "1 Point | {count} Points",
         "firstPlace": "Le joueur avec le plus de victoires obtient 5 points pour la semaine",
-        "secondPlace": "Le joueur avec le 2ème plus grand nombre de victoires obtient 4 points pour la semaine",
-        "thirdPlace": "Le joueur avec le 3ème plus grand nombre de victoires obtient 3 points pour la semaine",
-        "oneWin": "Chaque autre joueur ayant remporté au moins un match obtient 2 points pour la semaine",
-        "completedMatch": "Chaque autre joueur ayant terminé un match sans gagner obtient 1 point pour la semaine"
+        "secondPlace": "Le joueur avec le 2\u00e8me plus grand nombre de victoires obtient 4 points pour la semaine",
+        "thirdPlace": "Le joueur avec le 3\u00e8me plus grand nombre de victoires obtient 3 points pour la semaine",
+        "oneWin": "Chaque autre joueur ayant remport\u00e9 au moins un match obtient 2 points pour la semaine",
+        "completedMatch": "Chaque autre joueur ayant termin\u00e9 un match sans gagner obtient 1 point pour la semaine"
       }
     }
   },
   "stats": {
     "error": {
       "oops": "Oops!",
-      "message": "Un problème est survenu lors du chargement du classement. Actualisez la page ou sélectionnez une autre saison pour réessayer."
+      "message": "Un probl\u00e8me est survenu lors du chargement du classement. Actualisez la page ou s\u00e9lectionnez une autre saison pour r\u00e9essayer."
     },
     "siteUsage": "Utilisation du site",
     "weeklyRankings": "Classements hebdomadaires",
     "season": {
-      "select": "Sélectionnez la saison",
+      "select": "S\u00e9lectionnez la saison",
       "champions": "Champions de la saison",
       "tournamentBracket": "ici pour voir le tableau officiel du tournoi",
       "tournamentFootage": "ici pour regarder les images officielles du tournoi",
       "playByPlay": "avec commentaire play-by-play."
     },
-    "winRate": "Taux de réussite",
+    "winRate": "Taux de r\u00e9ussite",
     "wins": "Gagne",
     "losses": "Pertes",
-    "results": "Résultats",
+    "results": "R\u00e9sultats",
     "week": "Semaine",
-    "selectMetric": "Sélectionnez une métrique",
-    "selectWeeks": "Sélectionnez des semaines",
+    "selectMetric": "S\u00e9lectionnez une m\u00e9trique",
+    "selectWeeks": "S\u00e9lectionnez des semaines",
     "seasonTotal": "Total de la saison",
     "pointsAndWins": "Points and Wins",
     "pointsOnly": "Points seulement",
@@ -515,14 +552,14 @@
   },
   "error": {
     "404": {
-      "title": "404 Non Trouvé"
+      "title": "404 Non Trouv\u00e9"
     }
   },
   "announcement": {
     "activatorText": "Championnat du Monde de Cuttle IV !",
     "title": "Cuttle World Championship",
     "heading": "Championnat du Monde",
-    "paragraph": "Le Championnat du Monde de Cuttle IV a lieu aujourd'hui, samedi 8 mars à 12h EST ! Regardez les 8 meilleurs joueurs de l'année passée de jeu compétitif s'affronter pour le titre de Champion du Monde de Cuttle et leur choix parmi les 8 incroyables decks de récompense offerts par le joueur SUBMARINO. Regardez-le en direct sur ",
+    "paragraph": "Le Championnat du Monde de Cuttle IV a lieu aujourd'hui, samedi 8 mars \u00e0 12h EST ! Regardez les 8 meilleurs joueurs de l'ann\u00e9e pass\u00e9e de jeu comp\u00e9titif s'affronter pour le titre de Champion du Monde de Cuttle et leur choix parmi les 8 incroyables decks de r\u00e9compense offerts par le joueur SUBMARINO. Regardez-le en direct sur ",
     "twitchLink": "twitch.tv/cuttle_cards"
   }
 }

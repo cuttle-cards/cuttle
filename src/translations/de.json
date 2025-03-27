@@ -14,13 +14,13 @@
     "ranked": "Rangliste",
     "casual": "Freizeit",
     "your": "Ihr",
-    "close": "Schließen",
+    "close": "Schlie\u00dfen",
     "click": "Klicken",
     "playerReady": {
-      "playerDeclinedAlt": "{playerUsername} hat das Rückspiel abgelehnt (Kartenzurückseite)",
-      "cardBackAlt": "Kartenzurückseite -- Wartet auf {playerUsername}",
+      "playerDeclinedAlt": "{playerUsername} hat das R\u00fcckspiel abgelehnt (Kartenzur\u00fcckseite)",
+      "cardBackAlt": "Kartenzur\u00fcckseite -- Wartet auf {playerUsername}",
       "readyAlt": "Kartenfront -- {playerUsername} ist bereit",
-      "rematchAlt": "Kartenfront -- {playerUsername} möchte ein Rückspiel"
+      "rematchAlt": "Kartenfront -- {playerUsername} m\u00f6chte ein R\u00fcckspiel"
     }
   },
   "login": {
@@ -30,52 +30,52 @@
     "subtitle": "Das Kartenspiel, das dich vom ersten Spiel an fesseln wird!",
     "formHeaderLogin": "Melde dich an, um loszulegen!",
     "formHeaderSignup": "Melde dich jetzt an, um zu spielen und dich auf die Welt von Cuttle vorzubereiten.",
-    "quote": "\"Cuttle ist ein scharfes, schnelles Spiel, das vollständig auf exzellenten Mechaniken basiert. Es ist das Spiel - hätte ich es im College gekannt - ich hätte die Decks durchgespielt.\"",
+    "quote": "\"Cuttle ist ein scharfes, schnelles Spiel, das vollst\u00e4ndig auf exzellenten Mechaniken basiert. Es ist das Spiel - h\u00e4tte ich es im College gekannt - ich h\u00e4tte die Decks durchgespielt.\"",
     "quoteCite": "Richard Garfield - Erfinder von Magic: The Gathering",
-    "content": "Cuttle ist ein Zwei-Spieler-Kartenspiel, das mit einem Standard-52-Karten-Deck gespielt wird. Es hat die strategische Nuance von Sammelkartenspielen wie Magic, mit dem eleganten Gleichgewicht eines Standard-Decks – und du kannst es kostenlos spielen! Teste dein Können im tiefsten Kartenspiel unter dem Meer!",
-    "content2": "Sei der Erste, der 21 Punkte in diesem explosiven Kampf der Intelligenz erreicht. Führe eine tapfere Offensive durch, während du deinen Gegner mit hinterhältigen Tricks störst. Hast du das Zeug, der Herr der Tiefe zu werden?",
+    "content": "Cuttle ist ein Zwei-Spieler-Kartenspiel, das mit einem Standard-52-Karten-Deck gespielt wird. Es hat die strategische Nuance von Sammelkartenspielen wie Magic, mit dem eleganten Gleichgewicht eines Standard-Decks \u2013 und du kannst es kostenlos spielen! Teste dein K\u00f6nnen im tiefsten Kartenspiel unter dem Meer!",
+    "content2": "Sei der Erste, der 21 Punkte in diesem explosiven Kampf der Intelligenz erreicht. F\u00fchre eine tapfere Offensive durch, w\u00e4hrend du deinen Gegner mit hinterh\u00e4ltigen Tricks st\u00f6rst. Hast du das Zeug, der Herr der Tiefe zu werden?",
     "readRules": "Lies die Regeln",
     "joinDiscord": "Tritt unserer Discord-Community bei",
     "snackbar": {
       "usernameIsTaken": "Dieser Benutzername ist bereits einem anderen Benutzer zugeordnet; versuche dich anzumelden!",
       "userNotFound": "Dieser Benutzer konnte mit diesem Benutzernamen nicht gefunden werden. Versuche dich anzumelden!",
-      "wrongPassword": "Benutzername und Passwort stimmen nicht überein"
+      "wrongPassword": "Benutzername und Passwort stimmen nicht \u00fcberein"
     }
   },
   "lobby": {
-    "lobbyFor": "Lobby für",
+    "lobbyFor": "Lobby f\u00fcr",
     "ready": "BEREIT",
     "unready": "NICHT BEREIT",
     "exit": "VERLASSEN",
     "invite": "Einladen",
-    "rankedChangedAlert": "Spielmodus geändert zu"
+    "rankedChangedAlert": "Spielmodus ge\u00e4ndert zu"
   },
   "game": {
-    "resolve": "Lösen",
+    "resolve": "L\u00f6sen",
     "scrap": "Schrotten",
     "view": "Ansehen",
-    "pass": "ÜBERGEBEN",
+    "pass": "\u00dcBERGEBEN",
     "playFromDeck": "Vom Deck spielen",
     "overlays": {
       "waitingForGameToStart": "Wartet darauf, dass das Spiel startet",
       "leaveGame": "Spiel verlassen",
       "opponentMayCounter": "Gegner kann kontern",
-      "opponentMustResolve": "Gegner muss lösen",
+      "opponentMustResolve": "Gegner muss l\u00f6sen",
       "opponentIsDiscarding": "Gegner wirft ab",
-      "opponentSkipsDiscarding": "Gegner überspringt das Abwerfen",
-      "opponentChoosingFromScrap": "Gegner wählt eine Karte aus dem Abwurf",
+      "opponentSkipsDiscarding": "Gegner \u00fcberspringt das Abwerfen",
+      "opponentChoosingFromScrap": "Gegner w\u00e4hlt eine Karte aus dem Abwurf",
       "opponentPlayingFromDeck": "Gegner spielt vom Deck",
       "opponentMustDiscardJack": "Gegner muss Buben abwerfen",
-      "opponentConsideringStalemate": "Gegner überlegt ein Patt zu erklären",
+      "opponentConsideringStalemate": "Gegner \u00fcberlegt ein Patt zu erkl\u00e4ren",
       "gameUnavailable": {
         "title": "Ups!",
-        "content": "Es scheint, dass dieses Spiel nicht verfügbar ist."
+        "content": "Es scheint, dass dieses Spiel nicht verf\u00fcgbar ist."
       }
     },
     "dialogs": {
       "reauthentication": {
         "reconnectToGame": "Mit Spiel verbinden",
-        "youHaveDisconnected": "Du hast dich aufgrund von Inaktivität abgemeldet. Melde dich erneut an, um deine Sitzung fortzusetzen",
+        "youHaveDisconnected": "Du hast dich aufgrund von Inaktivit\u00e4t abgemeldet. Melde dich erneut an, um deine Sitzung fortzusetzen",
         "username": "Benutzername",
         "password": "Passwort",
         "leaveGame": "Spiel verlassen",
@@ -84,13 +84,13 @@
       "four": {
         "discardTwoCards": "Zwei Karten abwerfen",
         "discard": "Abwerfen",
-        "opponentHasResolved": "Dein Gegner hat einen Vier-Einmal-Abwurf gelöst. Du musst zwei Karten abwerfen. Klicke, um Karten auszuwählen."
+        "opponentHasResolved": "Dein Gegner hat einen Vier-Einmal-Abwurf gel\u00f6st. Du musst zwei Karten abwerfen. Klicke, um Karten auszuw\u00e4hlen."
       },
       "five": {
         "discardAndDraw": "Abwerfen und Ziehen",
-        "nice": "Schön!",
-        "resolveFive": "Du hast einen Fünf-Einmal-Abwurf gelöst. Wähle eine Karte zum Abwerfen und ziehe dann 3 Karten.",
-        "resolveFiveNoCards": "Du hast einen Fünf-Einmal-Abwurf gelöst, aber keine Karten in der Hand, die du abwerfen kannst. Du ziehst 3 Karten ohne abzuwerfen. Süß!"
+        "nice": "Sch\u00f6n!",
+        "resolveFive": "Du hast einen F\u00fcnf-Einmal-Abwurf gel\u00f6st. W\u00e4hle eine Karte zum Abwerfen und ziehe dann 3 Karten.",
+        "resolveFiveNoCards": "Du hast einen F\u00fcnf-Einmal-Abwurf gel\u00f6st, aber keine Karten in der Hand, die du abwerfen kannst. Du ziehst 3 Karten ohne abzuwerfen. S\u00fc\u00df!"
       },
       "scrapDialog": {
         "scrapPile": "Schrottablage",
@@ -105,15 +105,15 @@
       },
       "counterDialogs": {
         "counterTitle": "Chance zu kontern",
-        "chooseTwoTitle": "Wähle Zwei",
+        "chooseTwoTitle": "W\u00e4hle Zwei",
         "cannotCounterTitle": "Kann nicht kontern",
-        "selectCard": "Mit welchen zwei Karten möchtest du kontern? (Klicke auf die Karte)",
+        "selectCard": "Mit welchen zwei Karten m\u00f6chtest du kontern? (Klicke auf die Karte)",
         "opponentPlayed": "Dein Gegner hat die ",
         "oneOff": "als One-Off gespielt",
         "target": "zielend auf ",
         "toCounter": "zum Kontern",
         "counter": "kontern",
-        "playTwo": "Möchtest du eine Zwei spielen, um zu kontern?",
+        "playTwo": "M\u00f6chtest du eine Zwei spielen, um zu kontern?",
         "cannotCounter": "Du kannst nicht kontern, weil ",
         "reasons": {
           "opponentWithQueen": "dein Gegner hat eine Dame",
@@ -121,7 +121,7 @@
         }
       },
       "threeDialog": {
-        "title": "Wähle eine Karte aus dem Abwurfstapel"
+        "title": "W\u00e4hle eine Karte aus dem Abwurfstapel"
       },
       "opponentRequestedStalemateDialog": {
         "title": "Stalemate akzeptieren?",
@@ -130,9 +130,9 @@
         "accept": "Stalemate akzeptieren"
       },
       "sevenDoubleJacksDialog": {
-        "title": "Wähle eine Karte",
-        "cannotMove": "Hoppla! Es scheint, dass du keinen Zug machen kannst. Wähle einen Buben zum Abwerfen.",
-        "resolve": "Lösen"
+        "title": "W\u00e4hle eine Karte",
+        "cannotMove": "Hoppla! Es scheint, dass du keinen Zug machen kannst. W\u00e4hle einen Buben zum Abwerfen.",
+        "resolve": "L\u00f6sen"
       },
       "gameOverDialog": {
         "game": "Spiel",
@@ -141,7 +141,7 @@
         "youWinTheMatch": "Geschafft!",
         "won": "gewonnen",
         "youLose": "Du hast verloren",
-        "youLoseTheMatch": "Überlegen verloren...",
+        "youLoseTheMatch": "\u00dcberlegen verloren...",
         "lost": "verloren",
         "draw": "Unentschieden",
         "p1Wins": "P1 gewinnt",
@@ -151,16 +151,16 @@
         "yourGameAgainst": "dein Spiel gegen",
         "finished": "Beendet",
         "inProgress": "Im Gange",
-        "goHome": "Zurück zur Startseite",
+        "goHome": "Zur\u00fcck zur Startseite",
         "rematch": "Revanche",
         "matchStatus": {
           "playerLeft": "Spieler ist gegangen - klicke, um zur Startseite zu gehen.",
           "waitingForPlayers": "Warten auf Spieler",
           "goodMatch": "Gutes Spiel!",
-          "continueSpectating": "Möchtest du weiterhin zuschauen?",
+          "continueSpectating": "M\u00f6chtest du weiterhin zuschauen?",
           "opponentLeft": "Gegner ist gegangen - klicke, um zur Startseite zu gehen.",
           "waitingForOpponent": "Warten auf Gegner",
-          "continueMatch": "Möchtest du das Spiel fortsetzen?",
+          "continueMatch": "M\u00f6chtest du das Spiel fortsetzen?",
           "rematch?": "Rematch?",
           "rankedIconAlt": "Ranked Match Icon (Durchgestrichene Schwerter)",
           "casualIconAlt": "Casual Match Icon (Kaffeetasse)",
@@ -175,9 +175,9 @@
         "notTurn": "Es ist nicht dein Zug",
         "frozenCard": "Diese Karte ist eingefroren",
         "emptyDeck": "Kann nicht mit leerem Deck gespielt werden",
-        "multipleQueens": "Du kannst keine {rank} spielen, während dein Gegner zwei oder mehr Damen hat",
-        "noRoyals": "Es gibt keine Könige oder Damen als Ziel",
-        "noRoyalsOrPoints": "Es gibt keine Punktkarten oder Könige als Ziel"
+        "multipleQueens": "Du kannst keine {rank} spielen, w\u00e4hrend dein Gegner zwei oder mehr Damen hat",
+        "noRoyals": "Es gibt keine K\u00f6nige oder Damen als Ziel",
+        "noRoyalsOrPoints": "Es gibt keine Punktkarten oder K\u00f6nige als Ziel"
       },
       "points": {
         "displayName": "Punkte",
@@ -190,22 +190,22 @@
       },
       "effects": {
         "1": "Alle Punktkarten abwerfen",
-        "2": "Ziel-König oder Gläser Acht abwerfen",
-        "3": "Wähle 1 Karte aus dem Abwurfstapel und lege sie auf deine Hand",
+        "2": "Ziel-K\u00f6nig oder Gl\u00e4ser Acht abwerfen",
+        "3": "W\u00e4hle 1 Karte aus dem Abwurfstapel und lege sie auf deine Hand",
         "4": "Dein Gegner wirft zwei Karten seiner Wahl ab",
         "5": "Werfe 1 Karte ab und ziehe bis zu 3 Karten",
-        "6": "Alle Könige und Gläser Acht abwerfen",
-        "7": "Spiele eine der obersten zwei Karten des Decks und lege die andere zurück (beide sind aufgedeckt)",
-        "8": "Dein Gegner spielt mit offener Hand (seine Karten sind für dich sichtbar)",
-        "9": "Gib die Zielkarte zurück in die Hand des Besitzers. Sie kann sie im nächsten Zug nicht spielen",
+        "6": "Alle K\u00f6nige und Gl\u00e4ser Acht abwerfen",
+        "7": "Spiele eine der obersten zwei Karten des Decks und lege die andere zur\u00fcck (beide sind aufgedeckt)",
+        "8": "Dein Gegner spielt mit offener Hand (seine Karten sind f\u00fcr dich sichtbar)",
+        "9": "Gib die Zielkarte zur\u00fcck in die Hand des Besitzers. Sie kann sie im n\u00e4chsten Zug nicht spielen",
         "10": "Kein Effekt",
         "11": "Spiele auf eine Ziel-Punktkarte, um sie zu stehlen",
-        "12": "Deine anderen Karten können nur durch Abwerfaktionen angegriffen werden",
-        "13": "Reduziert die Punktzahl, die du für den Sieg benötigst. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)"
+        "12": "Deine anderen Karten k\u00f6nnen nur durch Abwerfaktionen angegriffen werden",
+        "13": "Reduziert die Punktzahl, die du f\u00fcr den Sieg ben\u00f6tigst. (1K: 14pts, 2K: 10pts, 3K: 5pts, 4K: 0pts)"
       },
       "jack": {
         "description": "Stehle eine Punktkarte des Gegners",
-        "disabled": "Du kannst die Punktkarten deines Gegners nicht stehlen, während sie eine Dame haben"
+        "disabled": "Du kannst die Punktkarten deines Gegners nicht stehlen, w\u00e4hrend sie eine Dame haben"
       },
       "glasses": {
         "displayName": "Brille",
@@ -234,11 +234,13 @@
     "score": {
       "points": "PUNKTE",
       "goal": "ZIEL",
-      "kings": "0 Könige | 1 König | {count} Könige"
+      "kings": "0 K\u00f6nige | 1 K\u00f6nig | {count} K\u00f6nige"
     },
     "turn": {
       "yourTurn": "DEIN ZUG",
-      "opponentTurn": "ZUG DES GEGNERS"
+      "opponentTurn": "ZUG DES GEGNERS",
+      "invalidTurn": "Die Kurve kann nicht leer sein und muss eine Zahl sein",
+      "invalidMustWaitForOpponentToCounter": "Warten auf den Gegner, um zu kontern"
     },
     "history": {
       "title": "Verlauf"
@@ -255,10 +257,10 @@
       "draw": {
         "deckIsEmpty": "Das Deck ist leer; du kannst nicht ziehen.",
         "handLimit": "Du hast das Handlimit erreicht; du kannst nicht ziehen.",
-        "exhaustedDeck": "Deck erschöpft; Kartenhände der Spieler werden angezeigt"
+        "exhaustedDeck": "Deck ersch\u00f6pft; Kartenh\u00e4nde der Spieler werden angezeigt"
       },
       "faceCards": {
-        "withoutTarget": "Nur Könige, Damen und Achten können als Gesichtskarten ohne Ziel gespielt werden"
+        "withoutTarget": "Nur K\u00f6nige, Damen und Achten k\u00f6nnen als Gesichtskarten ohne Ziel gespielt werden"
       },
       "points": {
         "numberOnlyForPoints": "Du kannst nur eine Zahlenkarte als Punktkarte spielen."
@@ -266,79 +268,114 @@
       "jack": {
         "stealOnlyWithJack": "Du kannst nur mit einem Buben die Punktkarten deines Gegners stehlen",
         "stealOnlyPointCards": "Du kannst nur die Punktkarten deines Gegners stehlen",
-        "noJackWithQueen": "Du kannst keinen Buben verwenden, während dein Gegner eine Dame hat."
+        "noJackWithQueen": "Du kannst keinen Buben verwenden, w\u00e4hrend dein Gegner eine Dame hat."
       },
       "scuttle": {
-        "rankTooLow": "Du kannst nur scutteln, wenn der Rang deiner Karte höher ist oder der Rang der gleiche ist und dein Farbsymbol höher (Kreuz < Karo < Herz < Pik)",
+        "rankTooLow": "Du kannst nur scutteln, wenn der Rang deiner Karte h\u00f6her ist oder der Rang der gleiche ist und dein Farbsymbol h\u00f6her (Kreuz < Karo < Herz < Pik)",
         "mustUsePointCard": "Du kannst nur mit einer Karte von Ass bis Zehn scutteln",
         "mustTargetPointCard": "Du kannst nur eine Punktkarte scutteln, die dein Gegner gespielt hat"
       },
       "oneOffs": {
-        "oneOffInPlay": "Es ist bereits ein One-Off im Spiel; du kannst keine Karte spielen, außer einer Zwei zum Kontern.",
+        "oneOffInPlay": "Es ist bereits ein One-Off im Spiel; du kannst keine Karte spielen, au\u00dfer einer Zwei zum Kontern.",
         "cantPlayWithoutATarget": "Du kannst diese Karte nicht als ONE-OFF ohne Ziel spielen",
         "onlyTwoOrNine": "Du kannst nur eine 2 oder eine 9 als Ziel-One-Off spielen.",
         "emptyDeck": "Du kannst dieses One-Off nicht spielen, es sei denn, es gibt Karten im Deck",
         "three": {
           "scrapIsEmpty": "Du kannst nur eine 3 als One-Off spielen, wenn es Karten im Abwurfstapel gibt",
-          "notResolvingThreePhase": "Kann aus dem Abwurfstapel auswählen, indem eine 3 aufgelöst wird",
-          "mustPickFromScrap": "Du musst eine Karte aus dem Abwurfstapel wählen"
+          "notResolvingThreePhase": "Kann aus dem Abwurfstapel ausw\u00e4hlen, indem eine 3 aufgel\u00f6st wird",
+          "mustPickFromScrap": "Du musst eine Karte aus dem Abwurfstapel w\u00e4hlen"
         },
         "four": {
-          "opponentHasNoCards": "Du kannst keine 4 als One-Off spielen, während dein Gegner keine Karten auf der Hand hat",
+          "opponentHasNoCards": "Du kannst keine 4 als One-Off spielen, w\u00e4hrend dein Gegner keine Karten auf der Hand hat",
           "notYourTurn": "Es ist nicht dein Zug zum Abwerfen",
           "notResolvingFourPhase": "Kann nicht abgeworfen werden, es sei denn, dein Gegner hat eine 4 gespielt",
-          "mustSelectCards": "Du musst zwei Karten zum Abwerfen auswählen"
+          "mustSelectCards": "Du musst zwei Karten zum Abwerfen ausw\u00e4hlen"
         },
         "five": {
-          "selectCardToDiscard": "Du musst eine Karte zum Abwerfen auswählen",
+          "selectCardToDiscard": "Du musst eine Karte zum Abwerfen ausw\u00e4hlen",
           "incorrectCard": "Falsche Karte gespielt",
-          "wrongPhase": "Du kannst eine Fünf gerade nicht auflösen.",
-          "fiveDeckIsEmpty": "Kann keine 5-One-Off mit leerem Deck auflösen"
+          "wrongPhase": "Du kannst eine F\u00fcnf gerade nicht aufl\u00f6sen.",
+          "fiveDeckIsEmpty": "Kann keine 5-One-Off mit leerem Deck aufl\u00f6sen"
         },
         "seven": {
           "oneCardInDeck": "Du kannst eine 7 als ONE-OFF nicht spielen, wenn es die letzte Karte im Deck ist",
-          "pickAndPlay": "Du kannst nur Karten von oben des Decks spielen, während du eine sieben auflöst.",
+          "pickAndPlay": "Du kannst nur Karten von oben des Decks spielen, w\u00e4hrend du eine sieben aufl\u00f6st.",
           "wrongPhase": "Du kannst jetzt nicht vom Deck spielen",
           "mustBeDoubleJacks": "Du kannst keine Karten von einer Sieben abwerfen, es sei denn, beide Karten sind Buben",
-          "jacksMustBeUnplayable": "Du kannst nicht abwerfen, weil die Buben gespielt werden können"
+          "jacksMustBeUnplayable": "Du kannst nicht abwerfen, weil die Buben gespielt werden k\u00f6nnen"
         }
       }
-    }
+    },
+    "hasNotStarted": "Das Spiel hat noch nicht begonnen",
+    "player": {
+      "isNotPlayerInCurrentGame": "Du bist kein Spieler in diesem Spiel!",
+      "invalidPlayedBy": "Das gespielte Attribut muss eine Zahl in [0,1] sein",
+      "mustDiscard": "Sie m\u00fcssen eine Karte von Ihrer Hand wegwerfen"
+    },
+    "card": {
+      "invalidCardID": "Ung\u00fcltige Karten -ID",
+      "unrecognizedRank": "Unerkannter Rang",
+      "unrecognizedSuit": "Unerkannter Anzug",
+      "unrecognizedCardID": "Unerkannter Kartenkennung",
+      "cannotHaveAttachments": "ist keine Punktkarte und kann keine Anh\u00e4nge haben",
+      "invalidTwoTarget": "Zwei k\u00f6nnen nur Royals oder Brillen abzielen",
+      "invalidCardForOneOff": "Sie k\u00f6nnen diese Karte nicht als einmalig spielen",
+      "cannotPlayAsOneOff": "Sie k\u00f6nnen diese Karte nicht als einmalig spielen"
+    },
+    "hand": {
+      "missingCards": "Fehlende Karten"
+    },
+    "invalidGameID": "Die GameID kann nicht leer sein und muss eine Nummer sein",
+    "move": {
+      "invalidMoveType": "Der Movetype kann nicht leer sein und muss eine Zeichenfolge sein"
+    },
+    "phase": {
+      "invalidPhase": "Die Phase muss eine Zahl in [1, 2, 3, 4, 5, 7] sein",
+      "invalidCounterPhase": "Kann nur w\u00e4hrend der Gegenphase entgegenkommen",
+      "invalidCounterNoOneOff": "Sie k\u00f6nnen nicht kontert, es sei denn, es gibt ein einmaliges anh\u00e4ngig",
+      "invalidCounterWaitingForOpponent": "Warten auf den Gegner, um zu kontern",
+      "invalidResolvePhase": "Kann nur w\u00e4hrend der Gegenphase aufl\u00f6sen"
+    },
+    "noGameIDPresentInOptions": "Spiel kann ohne GameId nicht bev\u00f6lkert werden (Optionen hatten kein GameId)",
+    "mustHaveTwoPlayers": "Ohne zwei Spieler kann das Spiel nicht bev\u00f6lkern",
+    "noPlayersCollection": "Ich kann das Spiel nicht bev\u00f6lkern, weil es keine Spielersammlung gibt",
+    "cannotFindOpposingTarget": "Ich kann kein Ziel im Vorstand des Gegners finden:",
+    "waitingForOpponentToCounter": "Warten auf den Gegner, um zu kontern"
   },
   "home": {
     "howItWorks": {
       "button": "Wie es funktioniert",
-      "title": "Möchtest du spielen?",
-      "content": "Unsere wöchentlichen Spielsessions stehen allen offen:",
+      "title": "M\u00f6chtest du spielen?",
+      "content": "Unsere w\u00f6chentlichen Spielsessions stehen allen offen:",
       "wednesday": "Mittwochabends um 20:30 Uhr MEZ",
       "thursday": "Donnerstags um 12:00 Uhr MEZ",
       "findMatch": "Kein Match gefunden? Trete uns bei auf",
-      "content2": "um mit anderen Spielern zu chatten und zu sehen, wer jederzeit verfügbar ist.",
-      "playSolo": "Möchtest du solo spielen? Probiere",
+      "content2": "um mit anderen Spielern zu chatten und zu sehen, wer jederzeit verf\u00fcgbar ist.",
+      "playSolo": "M\u00f6chtest du solo spielen? Probiere",
       "playAI": "gegen die KI zu spielen",
-      "mettle": "um die Grundlagen zu lernen und dein Können zu testen.",
-      "learnMore": "Möchtest du mehr erfahren? Schau dir unsere",
-      "about": "Über-uns-Seite",
-      "about2": "an, um die Regeln zu lernen und mehr über das Projekt cuttle.cards zu erfahren.",
+      "mettle": "um die Grundlagen zu lernen und dein K\u00f6nnen zu testen.",
+      "learnMore": "M\u00f6chtest du mehr erfahren? Schau dir unsere",
+      "about": "\u00dcber-uns-Seite",
+      "about2": "an, um die Regeln zu lernen und mehr \u00fcber das Projekt cuttle.cards zu erfahren.",
       "okayButton": "Okay"
     },
     "snackbar": {
       "cannotJoin": "Kann diesem Spiel nicht beitreten, da es bereits voll ist",
       "spectateTwoPlayers": "Du kannst nur ein laufendes Spiel mit zwei Spielern beobachten",
       "cantFindGame": "Spiel nicht gefunden",
-      "invalidLobbyNumber": "Ungültige Lobby-Nummer",
+      "invalidLobbyNumber": "Ung\u00fcltige Lobby-Nummer",
       "cannotSpectate": "Spiel kann nicht beobachtet werden, da du gerade spielst"
     },
     "gameFinder": "Spiel-Suche",
     "spectate": "BEOBACHTEN",
     "noGameslist": "Keine aktiven Spiele",
-    "noSpectatelist": "Keine Spiele zum Beobachten verfügbar",
+    "noSpectatelist": "Keine Spiele zum Beobachten verf\u00fcgbar",
     "openCreateGame": "Spiel erstellen",
     "submitCreateGame": "Spiel erstellen",
     "players": "Spieler",
-    "playAiContent": "Möchtest du solo spielen? Probiere",
+    "playAiContent": "M\u00f6chtest du solo spielen? Probiere",
     "playAiLink": "gegen die KI zu spielen",
-    "playAiContent2": "um die Grundlagen zu lernen und dein Können zu testen.",
+    "playAiContent2": "um die Grundlagen zu lernen und dein K\u00f6nnen zu testen.",
     "gameName": "Spielname",
     "join": "Beitreten"
   },
@@ -350,12 +387,12 @@
       "diamonds": "Karo",
       "hearts": "Herz",
       "spades": "Pik",
-      "weakest": "Schwächste",
-      "strongest": "Stärkste"
+      "weakest": "Schw\u00e4chste",
+      "strongest": "St\u00e4rkste"
     },
     "howToPlay": "Wie man spielt",
     "cuttleTitle": "Was ist Cuttle?",
-    "cuttleText": "Cuttle ist ein Zwei-Spieler-Kartenspiel, das mit einem Standard-52-Karten-Deck gespielt wird. Es hat die strategische    Nuance von Sammelkartenspielen wie Magic, mit der eleganten Balance eines Standarddecks – und du kannst es kostenlos spielen! Teste dein Können im tiefsten Kartenspiel unter dem Meer!",
+    "cuttleText": "Cuttle ist ein Zwei-Spieler-Kartenspiel, das mit einem Standard-52-Karten-Deck gespielt wird. Es hat die strategische    Nuance von Sammelkartenspielen wie Magic, mit der eleganten Balance eines Standarddecks \u2013 und du kannst es kostenlos spielen! Teste dein K\u00f6nnen im tiefsten Kartenspiel unter dem Meer!",
     "rulesTitle": "Regeln von Cuttle",
     "preview": {
       "watchVideo": "Video ansehen",
@@ -363,57 +400,57 @@
     },
     "rulesReadText": "Lies die offiziellen",
     "rulesPreviewGif": "Animierte Vorschau von {title} in Cuttle",
-    "rulesWatchText": "oder sieh dir das Video-Tutorial von cuttle.cards unten an, um die Regeln zu lernen und ein Gefühl für den Spielverlauf zu bekommen.",
+    "rulesWatchText": "oder sieh dir das Video-Tutorial von cuttle.cards unten an, um die Regeln zu lernen und ein Gef\u00fchl f\u00fcr den Spielverlauf zu bekommen.",
     "goalTitle": "Ziel",
     "goalText": "Das Ziel ist es, der erste Spieler zu sein, der 21 oder mehr Punkte auf seinem Spielfeld hat. Der erste Spieler, der das Ziel erreicht, gewinnt sofort.",
     "playTitle": "Spiel",
-    "playText-1": "Ein Spieler (traditionell der Geber) erhält 6 Karten, und sein Gegner erhält 5 Karten. Der Spieler mit 5 Karten beginnt.",
-    "playText-2": "In deinem Zug musst du genau eine der folgenden Aktionen ausführen:",
+    "playText-1": "Ein Spieler (traditionell der Geber) erh\u00e4lt 6 Karten, und sein Gegner erh\u00e4lt 5 Karten. Der Spieler mit 5 Karten beginnt.",
+    "playText-2": "In deinem Zug musst du genau eine der folgenden Aktionen ausf\u00fchren:",
     "draw": "Ziehen",
-    "drawDescription": "Nimm eine Karte vom Stapel. Du darfst nicht mehr als 8 Karten auf der Hand haben. Wenn keine Karten mehr im Stapel sind, kannst du passen. Drei aufeinanderfolgende Pässe enden das Spiel unentschieden.",
+    "drawDescription": "Nimm eine Karte vom Stapel. Du darfst nicht mehr als 8 Karten auf der Hand haben. Wenn keine Karten mehr im Stapel sind, kannst du passen. Drei aufeinanderfolgende P\u00e4sse enden das Spiel unentschieden.",
     "points": "Punkte",
-    "pointsDescription": "Spiele eine Zahlenkarte aus deiner Hand. Sie zählt so viele Punkte wie ihr Wert und bleibt, bis sie entfernt wird.",
+    "pointsDescription": "Spiele eine Zahlenkarte aus deiner Hand. Sie z\u00e4hlt so viele Punkte wie ihr Wert und bleibt, bis sie entfernt wird.",
     "scuttle": "Angreifen",
-    "scuttleDescription": "Entferne eine Punktekarte deines Gegners mit einer höheren Karte aus deiner Hand. Bei Gleichstand entscheidet die Farbe:",
-    "royal": "Königliche",
-    "royalDescription": "Spiele eine Königliche-Karte auf das Spielfeld für einen dauerhaften Effekt – solange sie im Spiel bleibt.",
+    "scuttleDescription": "Entferne eine Punktekarte deines Gegners mit einer h\u00f6heren Karte aus deiner Hand. Bei Gleichstand entscheidet die Farbe:",
+    "royal": "K\u00f6nigliche",
+    "royalDescription": "Spiele eine K\u00f6nigliche-Karte auf das Spielfeld f\u00fcr einen dauerhaften Effekt \u2013 solange sie im Spiel bleibt.",
     "oneoff": "Einmalig",
-    "oneoffDescription": "Entferne eine Zahlenkarte für einen Effekt basierend auf dem Wert der Karte.",
+    "oneoffDescription": "Entferne eine Zahlenkarte f\u00fcr einen Effekt basierend auf dem Wert der Karte.",
     "glasses": "Brille",
     "glassesDescription": "Spiele eine Acht, um die Hand deines Gegners aufzudecken (bleibt, bis sie entfernt wird).",
     "royals": {
-      "title": "Königliche",
-      "text": "Königliche (Könige, Damen und Buben) können auf das Spielfeld gespielt werden, um einen anhaltenden Vorteil zu erzielen, der in Kraft bleibt, bis die Karte entsorgt wird. Jede königliche Karte bietet einen anderen Effekt.",
-      "king": "König",
-      "kingDescription": "Reduziert die Anzahl der Punkte, die du zum Gewinnen benötigst (21, 14, 10, 5, 0 Punkte mit 0, 1, 2, 3, 4 Königen).",
+      "title": "K\u00f6nigliche",
+      "text": "K\u00f6nigliche (K\u00f6nige, Damen und Buben) k\u00f6nnen auf das Spielfeld gespielt werden, um einen anhaltenden Vorteil zu erzielen, der in Kraft bleibt, bis die Karte entsorgt wird. Jede k\u00f6nigliche Karte bietet einen anderen Effekt.",
+      "king": "K\u00f6nig",
+      "kingDescription": "Reduziert die Anzahl der Punkte, die du zum Gewinnen ben\u00f6tigst (21, 14, 10, 5, 0 Punkte mit 0, 1, 2, 3, 4 K\u00f6nigen).",
       "queen": "Dame",
-      "queenDescription": "Schützt deine anderen Karten davor, von den Effekten anderer Karten ins Visier genommen zu werden. Dies schützt deine Karten vor 2en (beide Effekte), 9en und Buben.",
-      "queenDescription2": "Schützt nicht vor Assen, Sechsen oder Scuttlen.",
+      "queenDescription": "Sch\u00fctzt deine anderen Karten davor, von den Effekten anderer Karten ins Visier genommen zu werden. Dies sch\u00fctzt deine Karten vor 2en (beide Effekte), 9en und Buben.",
+      "queenDescription2": "Sch\u00fctzt nicht vor Assen, Sechsen oder Scuttlen.",
       "jack": "Bube",
-      "jackDescription": "Spiele einen Buben auf die Punktkarte eines Gegners, um sie zu stehlen. Die Punktkarte geht zurück zum Gegner, wenn der Bube entsorgt wird oder wenn ein anderer Bube verwendet wird, um sie zurückzuholen.",
+      "jackDescription": "Spiele einen Buben auf die Punktkarte eines Gegners, um sie zu stehlen. Die Punktkarte geht zur\u00fcck zum Gegner, wenn der Bube entsorgt wird oder wenn ein anderer Bube verwendet wird, um sie zur\u00fcckzuholen.",
       "eight": "Acht",
-      "eightDescription": "Spiele eine 'Brillen-Acht', um die Hand deines Gegners zu enthüllen. Dies zählt als eine königliche Karte und bleibt bis zur Entsorgung im Spiel."
+      "eightDescription": "Spiele eine 'Brillen-Acht', um die Hand deines Gegners zu enth\u00fcllen. Dies z\u00e4hlt als eine k\u00f6nigliche Karte und bleibt bis zur Entsorgung im Spiel."
     },
     "oneoffs": {
       "title": "Einmal-Effekte",
-      "text": "Zahlenkarten (außer 8er und 10er) können für einen Einmal-Effekt gespielt werden, der die Karte für einen Effekt entsprechend ihres Wertes entfernt. Wann immer ein Einmal-Effekt gespielt wird, kann der andere Spieler mit einer Zwei kontern, um den Effekt zu annullieren.",
+      "text": "Zahlenkarten (au\u00dfer 8er und 10er) k\u00f6nnen f\u00fcr einen Einmal-Effekt gespielt werden, der die Karte f\u00fcr einen Effekt entsprechend ihres Wertes entfernt. Wann immer ein Einmal-Effekt gespielt wird, kann der andere Spieler mit einer Zwei kontern, um den Effekt zu annullieren.",
       "ace": "Ass",
       "aceDescription": "Entferne alle Punkte-Karten auf dem Spielfeld.",
       "two": "Zwei - Karte mit mehreren Effekten",
-      "twoE1Description": "Effekt 1: Kontere einen Einmal-Effekt. Konter können während des Zuges deines Gegners gespielt werden.",
+      "twoE1Description": "Effekt 1: Kontere einen Einmal-Effekt. Konter k\u00f6nnen w\u00e4hrend des Zuges deines Gegners gespielt werden.",
       "twoE2Description": "Effekt 2: Entferne eine Royal-Karte oder eine Brillen-Acht.",
       "three": "Drei",
-      "threeDescription": "Wähle eine Karte aus dem Ablagestapel und nimm sie auf die Hand.",
+      "threeDescription": "W\u00e4hle eine Karte aus dem Ablagestapel und nimm sie auf die Hand.",
       "four": "Vier",
       "fourDescription": "Dein Gegner legt zwei Karten seiner Wahl ab.",
-      "five": "Fünf",
+      "five": "F\u00fcnf",
       "fiveDescription": "Lege eine Karte ab und ziehe dann bis zu drei Karten vom Stapel, bis zur Handkartenobergrenze von 8.",
       "six": "Sechs",
       "sixDescription": "Entferne alle Royals und Brillen-Achten auf dem Spielfeld.",
       "seven": "Sieben",
-      "sevenDescription": "Zeige die obersten zwei Karten des Stapels beiden Spielern und wähle eine, die du nach Belieben spielst.",
+      "sevenDescription": "Zeige die obersten zwei Karten des Stapels beiden Spielern und w\u00e4hle eine, die du nach Belieben spielst.",
       "nine": "Neun",
-      "nineDescription": "Gib eine Karte vom Spielfeld deines Gegners auf dessen Hand zurück. Sie darf in der nächsten Runde nicht gespielt werden.",
+      "nineDescription": "Gib eine Karte vom Spielfeld deines Gegners auf dessen Hand zur\u00fcck. Sie darf in der n\u00e4chsten Runde nicht gespielt werden.",
       "ten": "Zehn",
       "tenDescription": "Kein Effekt."
     },
@@ -423,91 +460,91 @@
       "findGame": "Finde ein Spiel"
     },
     "multiplayerTitle": "Mehrspieler-Varianten",
-    "multiplayerText1": "Derzeit ist nur 2-Spieler-Cuttle verfügbar auf ",
-    "multiplayerText2": "Cuttle kann jedoch mit 2-4 Spielern gespielt werden. 3- und 4-Spieler-Cuttle haben jeweils leichte Regeländerungen, um die Spielbalance zu optimieren und das Tempo und die Atmosphäre zu verändern. Probier sie aus, wenn du das nächste Mal Cuttle in einer Gruppe spielst!",
+    "multiplayerText1": "Derzeit ist nur 2-Spieler-Cuttle verf\u00fcgbar auf ",
+    "multiplayerText2": "Cuttle kann jedoch mit 2-4 Spielern gespielt werden. 3- und 4-Spieler-Cuttle haben jeweils leichte Regel\u00e4nderungen, um die Spielbalance zu optimieren und das Tempo und die Atmosph\u00e4re zu ver\u00e4ndern. Probier sie aus, wenn du das n\u00e4chste Mal Cuttle in einer Gruppe spielst!",
     "3Players": {
       "title": "3-Spieler-Cuttle: Cutthroat",
       "text": "Cutthroat ist eine extrem schnelle 1v1v1-Version von Cuttle, voller Verrat und entscheidender Momente!",
-      "rules": "Die Regeln sind dieselben wie oben mit folgenden Änderungen:",
-      "rule1": "Die Siegbedingung ist reduziert. Spieler benötigen standardmäßig 14 Punkte zum Gewinnen, 9 Punkte mit einem König im Spiel, 5 Punkte mit zwei Königen im Spiel, und drei Könige im Spiel führen sofort zum Sieg (Ziel wird Null).",
-      "rule2": "Zu Beginn erhält jeder Spieler 5 Karten, und der Spieler links vom Geber beginnt. Der Geber rotiert im Uhrzeigersinn jedes Spiel.",
-      "rule3": "Mische zwei Joker in das Deck. Joker zählen als Royals mit dem Effekt 'Stehle eine Royal-Karte'.",
+      "rules": "Die Regeln sind dieselben wie oben mit folgenden \u00c4nderungen:",
+      "rule1": "Die Siegbedingung ist reduziert. Spieler ben\u00f6tigen standardm\u00e4\u00dfig 14 Punkte zum Gewinnen, 9 Punkte mit einem K\u00f6nig im Spiel, 5 Punkte mit zwei K\u00f6nigen im Spiel, und drei K\u00f6nige im Spiel f\u00fchren sofort zum Sieg (Ziel wird Null).",
+      "rule2": "Zu Beginn erh\u00e4lt jeder Spieler 5 Karten, und der Spieler links vom Geber beginnt. Der Geber rotiert im Uhrzeigersinn jedes Spiel.",
+      "rule3": "Mische zwei Joker in das Deck. Joker z\u00e4hlen als Royals mit dem Effekt 'Stehle eine Royal-Karte'.",
       "rule4": "Das Handkartenlimit ist auf 7 (statt 8) reduziert."
     },
     "4Players": {
       "title": "4-Spieler-Cuttle: 2v2",
-      "text": "4-Spieler-Cuttle ist ein 2v2-Teamspiel. Jeder Spieler sitzt seinem Partner gegenüber. Dein Team gewinnt, wenn entweder du oder dein Partner das jeweilige Ziel erreicht, aber Spieler teilen keine Karten auf ihrer Hand oder ihrem Spielfeld (Punkte werden separat gezählt, und deine Royals beeinflussen deinen Partner nicht direkt).",
-      "rules": "Die Regeln entsprechen ansonsten dem 1v1-Cuttle, wobei der Spielverlauf im Uhrzeigersinn links vom Geber beginnt, mit den folgenden weiteren Änderungen:",
-      "rule1": "Jeder Spieler erhält 5 Karten. Das Spiel beginnt links vom Geber und verläuft im Uhrzeigersinn.",
-      "rule2": "Mische zwei Joker in das Deck. Joker zählen als Royals mit dem Effekt 'Stehle eine Royal-Karte'. Ähnlich wie Buben können sie eine Royal von einem Spieler zu einem anderen transferieren.",
+      "text": "4-Spieler-Cuttle ist ein 2v2-Teamspiel. Jeder Spieler sitzt seinem Partner gegen\u00fcber. Dein Team gewinnt, wenn entweder du oder dein Partner das jeweilige Ziel erreicht, aber Spieler teilen keine Karten auf ihrer Hand oder ihrem Spielfeld (Punkte werden separat gez\u00e4hlt, und deine Royals beeinflussen deinen Partner nicht direkt).",
+      "rules": "Die Regeln entsprechen ansonsten dem 1v1-Cuttle, wobei der Spielverlauf im Uhrzeigersinn links vom Geber beginnt, mit den folgenden weiteren \u00c4nderungen:",
+      "rule1": "Jeder Spieler erh\u00e4lt 5 Karten. Das Spiel beginnt links vom Geber und verl\u00e4uft im Uhrzeigersinn.",
+      "rule2": "Mische zwei Joker in das Deck. Joker z\u00e4hlen als Royals mit dem Effekt 'Stehle eine Royal-Karte'. \u00c4hnlich wie Buben k\u00f6nnen sie eine Royal von einem Spieler zu einem anderen transferieren.",
       "rule3": "Das Handkartenlimit ist auf 7 (statt 8) reduziert.",
-      "rule4": "Buben können gespielt werden, um eine Punktekarte von einem beliebigen Spieler zu einem anderen zu übertragen. Du kannst daher Punkte von dir selbst (oder anderen) 'stehlen', um sie deinem Partner zu geben und möglicherweise mit deren Punkten in deinem Zug zu gewinnen (ihr Ziel wird weiterhin durch die Anzahl ihrer eigenen Könige auf dem Spielfeld bestimmt).",
-      "rule5": "Neuner können für einen alternativen ähnlichen Effekt gespielt werden. Immer wenn ein Gegner eine Royal spielt, kannst du sofort einen Neuner als Antwort spielen, um diese Karte sofort auf die Hand des Besitzers zurückzugeben und ihren Effekt zu verhindern. Dies kann außerhalb des Zuges erfolgen, kostet keinen Zug, verhindert jedoch nicht, dass der Besitzer die Karte in seinem nächsten Zug erneut spielt. Alternativ kannst du weiterhin einen Neuner für seinen ursprünglichen Einmal-Effekt in deinem Zug spielen (dein Zug wird dafür genutzt), um eine Karte auf die Hand ihres Besitzers zurückzugeben und zu verhindern, dass sie in der nächsten Runde gespielt wird."
+      "rule4": "Buben k\u00f6nnen gespielt werden, um eine Punktekarte von einem beliebigen Spieler zu einem anderen zu \u00fcbertragen. Du kannst daher Punkte von dir selbst (oder anderen) 'stehlen', um sie deinem Partner zu geben und m\u00f6glicherweise mit deren Punkten in deinem Zug zu gewinnen (ihr Ziel wird weiterhin durch die Anzahl ihrer eigenen K\u00f6nige auf dem Spielfeld bestimmt).",
+      "rule5": "Neuner k\u00f6nnen f\u00fcr einen alternativen \u00e4hnlichen Effekt gespielt werden. Immer wenn ein Gegner eine Royal spielt, kannst du sofort einen Neuner als Antwort spielen, um diese Karte sofort auf die Hand des Besitzers zur\u00fcckzugeben und ihren Effekt zu verhindern. Dies kann au\u00dferhalb des Zuges erfolgen, kostet keinen Zug, verhindert jedoch nicht, dass der Besitzer die Karte in seinem n\u00e4chsten Zug erneut spielt. Alternativ kannst du weiterhin einen Neuner f\u00fcr seinen urspr\u00fcnglichen Einmal-Effekt in deinem Zug spielen (dein Zug wird daf\u00fcr genutzt), um eine Karte auf die Hand ihres Besitzers zur\u00fcckzugeben und zu verhindern, dass sie in der n\u00e4chsten Runde gespielt wird."
     },
     "faq": {
       "title": "FAQ",
       "twoCounter": "Kann ich eine Zwei spielen, um eine Punktkarte zu kontern? Und was ist mit einem Scuttle?",
-      "twoCounterAnswer": "Nein! Zweien können nur One-Offs kontern. Du kannst eine Zwei spielen, um eine Royal- oder Brillen-Acht zu zerstören, aber dies zählt als dein Zug, anders als beim Kontern.",
-      "queenProtectTwo": "Schützen Damen vor einem Konter mit einer Zwei?",
-      "queenProtectTwoAnswer": "Ja! Damen schützen vor dem Anvisieren, wenn eine Karte einen einzigartigen Effekt auf eine bestimmte Karte ausübt. Das bedeutet, dass deine anderen Karten (außer die Dame selbst) gegen Zweien (beide Effekte), Neunen und Buben geschützt sind.",
-      "queenProtectScuttle": "Schützen Damen vor Scuttling? Was ist mit Assen und Sechsen?",
-      "queenProtectScuttleAnswer": "Nein! Scuttling zählt nicht als Anvisieren, und auch die board-wiping Effekte von Assen oder Sechsen nicht. Damen schützen nur vor den Effekten von Zweien, Neunen und Buben.",
+      "twoCounterAnswer": "Nein! Zweien k\u00f6nnen nur One-Offs kontern. Du kannst eine Zwei spielen, um eine Royal- oder Brillen-Acht zu zerst\u00f6ren, aber dies z\u00e4hlt als dein Zug, anders als beim Kontern.",
+      "queenProtectTwo": "Sch\u00fctzen Damen vor einem Konter mit einer Zwei?",
+      "queenProtectTwoAnswer": "Ja! Damen sch\u00fctzen vor dem Anvisieren, wenn eine Karte einen einzigartigen Effekt auf eine bestimmte Karte aus\u00fcbt. Das bedeutet, dass deine anderen Karten (au\u00dfer die Dame selbst) gegen Zweien (beide Effekte), Neunen und Buben gesch\u00fctzt sind.",
+      "queenProtectScuttle": "Sch\u00fctzen Damen vor Scuttling? Was ist mit Assen und Sechsen?",
+      "queenProtectScuttleAnswer": "Nein! Scuttling z\u00e4hlt nicht als Anvisieren, und auch die board-wiping Effekte von Assen oder Sechsen nicht. Damen sch\u00fctzen nur vor den Effekten von Zweien, Neunen und Buben.",
       "twoOnTwo": "Kann ich eine Zwei mit einer Zwei kontern?",
-      "twoOnTwoAnswer": "Ja, absolut! Das Spielen einer Zwei zum Kontern ist ein One-Off, der mit einer weiteren Zwei gekontert werden kann. Gestapelte Konter sorgen für spannende Spielzüge und entscheidende strategische Momente.",
-      "kingWin": "Kann ich durch das Spielen eines Königs gewinnen?",
-      "kingWinAnswer": "Ja! Wenn du die erforderliche Punktzahl erreichst, gewinnst du sofort. Das bedeutet, wenn du einen König spielst und bereits genug Punkte hast, um das neue Limit zu erreichen, gewinnst du in diesem Zug.",
-      "aceDestruction": "Wenn ich ein Ass oder eine Sechs spiele, werden meine Karten ebenfalls zerstört?",
-      "aceDestructionAnswer": "Ja. Asse und Sechsen zerstören alle Punktkarten bzw. alle Royals und Brillen-Achten auf dem Spielfeld. Dazu gehören auch deine eigenen Karten. Versuche, nicht zu viele deiner eigenen Karten zu zerstören!",
+      "twoOnTwoAnswer": "Ja, absolut! Das Spielen einer Zwei zum Kontern ist ein One-Off, der mit einer weiteren Zwei gekontert werden kann. Gestapelte Konter sorgen f\u00fcr spannende Spielz\u00fcge und entscheidende strategische Momente.",
+      "kingWin": "Kann ich durch das Spielen eines K\u00f6nigs gewinnen?",
+      "kingWinAnswer": "Ja! Wenn du die erforderliche Punktzahl erreichst, gewinnst du sofort. Das bedeutet, wenn du einen K\u00f6nig spielst und bereits genug Punkte hast, um das neue Limit zu erreichen, gewinnst du in diesem Zug.",
+      "aceDestruction": "Wenn ich ein Ass oder eine Sechs spiele, werden meine Karten ebenfalls zerst\u00f6rt?",
+      "aceDestructionAnswer": "Ja. Asse und Sechsen zerst\u00f6ren alle Punktkarten bzw. alle Royals und Brillen-Achten auf dem Spielfeld. Dazu geh\u00f6ren auch deine eigenen Karten. Versuche, nicht zu viele deiner eigenen Karten zu zerst\u00f6ren!",
       "revealNoPoints": "Meine Sieben hat zwei Buben aufgedeckt, und mein Gegner hat keine Punkte. Was passiert?",
-      "revealNoPointsAnswer": "Wenn es unmöglich ist, beide Karten zu spielen, die durch eine Sieben aufgedeckt wurden (z. B. zwei Buben aufdecken, während dein Gegner keine Punktkarten im Spiel hat), wähle eine Karte zum Ablegen aus und lege die andere zurück auf den Stapel.",
+      "revealNoPointsAnswer": "Wenn es unm\u00f6glich ist, beide Karten zu spielen, die durch eine Sieben aufgedeckt wurden (z. B. zwei Buben aufdecken, w\u00e4hrend dein Gegner keine Punktkarten im Spiel hat), w\u00e4hle eine Karte zum Ablegen aus und lege die andere zur\u00fcck auf den Stapel.",
       "revealOneLeft": "Was passiert, wenn ich eine Sieben spiele und nur noch eine Karte im Deck ist?",
-      "revealOneLeftAnswer": "Decke einfach die eine Karte auf und spiele normal weiter. Ähnlich wie oben, wenn du einen Buben aufdeckst und dein Gegner keine Punktkarten im Spiel hat, wird dieser Bube abgelegt.",
-      "emptyHandFive": "Was passiert, wenn ich eine Fünf spiele und sonst keine Karten auf der Hand habe?",
-      "emptyHandFiveAnswer": "Wenn du keine anderen Karten auf der Hand hast, wenn du eine Fünf spielst, überspringst du das Ablegen und ziehst drei Karten. Dies kann ein mächtiger, aber riskanter Zug sein. Wenn es funktioniert, hast du zwei Karten mehr, als du in diesem Zug hattest. Wenn es gekontert wird, könntest du jedoch ohne Karten dastehen!",
-      "deckExhaust": "Was passiert, wenn das Deck erschöpft ist?",
-      "deckExhaustAnswer": "Wenn keine Karten mehr im Deck sind, können Spieler in ihrem Zug passen, anstatt zu ziehen. Wenn es drei aufeinanderfolgende Pässe gibt, also Spieler 1 passt, Spieler 2 passt und dann Spieler 1 erneut passt, endet das Spiel in einem Unentschieden, und kein Spieler gewinnt.",
+      "revealOneLeftAnswer": "Decke einfach die eine Karte auf und spiele normal weiter. \u00c4hnlich wie oben, wenn du einen Buben aufdeckst und dein Gegner keine Punktkarten im Spiel hat, wird dieser Bube abgelegt.",
+      "emptyHandFive": "Was passiert, wenn ich eine F\u00fcnf spiele und sonst keine Karten auf der Hand habe?",
+      "emptyHandFiveAnswer": "Wenn du keine anderen Karten auf der Hand hast, wenn du eine F\u00fcnf spielst, \u00fcberspringst du das Ablegen und ziehst drei Karten. Dies kann ein m\u00e4chtiger, aber riskanter Zug sein. Wenn es funktioniert, hast du zwei Karten mehr, als du in diesem Zug hattest. Wenn es gekontert wird, k\u00f6nntest du jedoch ohne Karten dastehen!",
+      "deckExhaust": "Was passiert, wenn das Deck ersch\u00f6pft ist?",
+      "deckExhaustAnswer": "Wenn keine Karten mehr im Deck sind, k\u00f6nnen Spieler in ihrem Zug passen, anstatt zu ziehen. Wenn es drei aufeinanderfolgende P\u00e4sse gibt, also Spieler 1 passt, Spieler 2 passt und dann Spieler 1 erneut passt, endet das Spiel in einem Unentschieden, und kein Spieler gewinnt.",
       "whereToPlay": "Wo kann ich Cuttle spielen?",
-      "whereToPlayAnswer": "Du kannst Cuttle überall spielen, wo du ein Kartendeck und einen Freund hast. Wenn du online spielen möchtest, gibt es nur einen Ort: cuttle.cards"
+      "whereToPlayAnswer": "Du kannst Cuttle \u00fcberall spielen, wo du ein Kartendeck und einen Freund hast. Wenn du online spielen m\u00f6chtest, gibt es nur einen Ort: cuttle.cards"
     },
     "tournaments": {
       "title": "Turniere",
       "competitiveCuttle1": "Competitive Cuttle ist in 4 Jahreszeiten unterteilt, eine pro Farbe: Kreuz, Karo, Herz und Pik. Am Ende jeder Saison spielen die 8 besten Spieler ein Double-Elimination-Meisterschaftsturnier, und die Champions werden dauerhaft auf der Seite geehrt.",
-      "competitiveCuttle2": "Jede Saison ist in 13 Wochen unterteilt. In jeder Woche zählen wir die Anzahl der besten 2/3 Ranglistenspiele, die jeder Spieler gegen einzigartige Gegner gewinnt (Unentschieden werden ignoriert), und vergeben Punkte basierend auf der wöchentlichen Rangliste.",
+      "competitiveCuttle2": "Jede Saison ist in 13 Wochen unterteilt. In jeder Woche z\u00e4hlen wir die Anzahl der besten 2/3 Ranglistenspiele, die jeder Spieler gegen einzigartige Gegner gewinnt (Unentschieden werden ignoriert), und vergeben Punkte basierend auf der w\u00f6chentlichen Rangliste.",
       "championPlayer": "Champion-Spieler",
       "secondPlacePlayer": "Zweitplatzierter Spieler",
       "thirdPlacePlayer": "Drittplatzierter Spieler",
-      "exampleImgExplanation": "Beispiel für eine Statistik-/Turnierseite",
+      "exampleImgExplanation": "Beispiel f\u00fcr eine Statistik-/Turnierseite",
       "scoring": {
         "numPoints": "1 Punkt | {count} Punkte",
-        "firstPlace": "Der Spieler mit den meisten Siegen erhält 5 Punkte für die Woche",
-        "secondPlace": "Der Spieler mit den zweitmeisten Siegen erhält 4 Punkte für die Woche",
-        "thirdPlace": "Der Spieler mit den drittmeisten Siegen erhält 3 Punkte für die Woche",
-        "oneWin": "Jeder andere Spieler, der mindestens ein Spiel gewonnen hat, erhält 2 Punkte für die Woche",
-        "completedMatch": "Jeder andere Spieler, der ein Spiel abgeschlossen hat, ohne zu gewinnen, erhält 1 Punkt für die Woche"
+        "firstPlace": "Der Spieler mit den meisten Siegen erh\u00e4lt 5 Punkte f\u00fcr die Woche",
+        "secondPlace": "Der Spieler mit den zweitmeisten Siegen erh\u00e4lt 4 Punkte f\u00fcr die Woche",
+        "thirdPlace": "Der Spieler mit den drittmeisten Siegen erh\u00e4lt 3 Punkte f\u00fcr die Woche",
+        "oneWin": "Jeder andere Spieler, der mindestens ein Spiel gewonnen hat, erh\u00e4lt 2 Punkte f\u00fcr die Woche",
+        "completedMatch": "Jeder andere Spieler, der ein Spiel abgeschlossen hat, ohne zu gewinnen, erh\u00e4lt 1 Punkt f\u00fcr die Woche"
       }
     }
   },
   "stats": {
     "error": {
       "oops": "Ups!",
-      "message": "Beim Laden der Bestenliste ist ein Problem aufgetreten. Aktualisiere die Seite oder wähle eine andere Saison, um es erneut zu versuchen."
+      "message": "Beim Laden der Bestenliste ist ein Problem aufgetreten. Aktualisiere die Seite oder w\u00e4hle eine andere Saison, um es erneut zu versuchen."
     },
     "siteUsage": "Seitenbenutzung",
-    "weeklyRankings": "Wöchentliche Ranglisten",
+    "weeklyRankings": "W\u00f6chentliche Ranglisten",
     "season": {
-      "select": "Saison auswählen",
+      "select": "Saison ausw\u00e4hlen",
       "champions": "Saison-Champions",
       "tournamentBracket": "hier, um das offizielle Turnier-Bracket zu sehen",
       "tournamentFootage": "hier, um die offiziellen Turnieraufnahmen anzusehen",
-      "playByPlay": "mit Spiel-für-Spiel-Kommentaren."
+      "playByPlay": "mit Spiel-f\u00fcr-Spiel-Kommentaren."
     },
     "winRate": "Gewinnrate",
     "wins": "Siege",
     "losses": "Niederlagen",
     "results": "Ergebnisse",
     "week": "Woche",
-    "selectMetric": "Metrik auswählen",
-    "selectWeeks": "Wochen auswählen",
+    "selectMetric": "Metrik ausw\u00e4hlen",
+    "selectWeeks": "Wochen ausw\u00e4hlen",
     "seasonTotal": "Saisongesamt",
     "pointsAndWins": "Punkte und Siege",
     "pointsOnly": "Nur Punkte",
@@ -522,7 +559,7 @@
     "activatorText": "Cuttle-Weltmeisterschaft IV!",
     "title": "Cuttle World Championship",
     "heading": "Weltmeisterschaft",
-    "paragraph": "Die Cuttle-Weltmeisterschaft IV findet heute, am Samstag, den 8. März um 12 Uhr EST statt! Seht zu, wie die 8 besten Spieler des vergangenen JAHRES des kompetitiven Spiels um den Titel des Cuttle-Weltmeisters kämpfen und sich eines der 8 unglaublichen Preiskartendecks aussuchen, die von Spieler SUBMARINO gespendet wurden. Seht es live auf ",
+    "paragraph": "Die Cuttle-Weltmeisterschaft IV findet heute, am Samstag, den 8. M\u00e4rz um 12 Uhr EST statt! Seht zu, wie die 8 besten Spieler des vergangenen JAHRES des kompetitiven Spiels um den Titel des Cuttle-Weltmeisters k\u00e4mpfen und sich eines der 8 unglaublichen Preiskartendecks aussuchen, die von Spieler SUBMARINO gespendet wurden. Seht es live auf ",
     "twitchLink": "twitch.tv/cuttle_cards"
   }
 }
