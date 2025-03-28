@@ -36,14 +36,14 @@ module.exports = function gameHook() {
           status: gameService.GameStatus.CREATED,
           createdAt: { '>=': recentUpdateThreshhold },
         })
-          .populate('players')
+          .populate('players', { select: [ 'id', 'username' ] })
           .exec(function (error, games) {
             if (error) {
               return reject(error);
             } else if (!games) {
               return reject({ message: "Can't find games" });
             }
-            const openGames = games.filter(({ players }) => players.length < 2);
+            const openGames = games;
             return resolve(openGames);
           });
       });

@@ -66,7 +66,7 @@
                     :p1ready="game.p1Ready ? 1 : 0"
                     :game-id="game.id"
                     :status="game.status"
-                    :num-players="game.numPlayers"
+                    :players="game.players"
                     :is-ranked="game.isRanked"
                     @error="handleSubscribeError(game.id, $event)"
                   />
@@ -87,7 +87,7 @@
                     :p1ready="game.p1Ready ? 1 : 0"
                     :game-id="game.id"
                     :status="game.status"
-                    :num-players="game.numPlayers"
+                    :players="game.players"
                     :is-ranked="game.isRanked"
                     :is-spectatable="true"
                     :disable-spectate="game.isOver"
