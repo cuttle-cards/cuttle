@@ -507,14 +507,14 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')
-      .should('include.text', '1 / 2 players');
+      .should('include.text', `vs ${myUser.username}`);
 
     // Test store
     cy.window()
       .its('cuttle.gameListStore.openGames')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
-        expect(games[0].numPlayers).to.eq(1, 'Expect 1 players in game in store');
+        expect(games[0].players.length).to.eq(1, 'Expect 1 players in game in store');
         expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED');
       });
   });
@@ -544,15 +544,15 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')
-      .should('include.text', '1 / 2 players');
+      .should('include.text', `vs ${myUser.username}`);
     // Test store
     cy.window()
       .its('cuttle.gameListStore.openGames')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
-        expect(games[0].numPlayers).to.eq(1, 'Expect 1 player in gameLists game in store');
+        expect(games[0].players.length).to.eq(1, 'Expect 1 player in gameLists game in store');
         expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED');
-        expect(games[0].isRanked).to.eq(false, 'Expect game to be ranked');
+        expect(games[0].isRanked).to.eq(false, 'Expect game to be casual');
       });
   });
 
@@ -582,14 +582,14 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')
-      .should('include.text', '1 / 2 players');
+      .should('include.text', `vs ${myUser.username}`);
 
     // Test store
     cy.window()
       .its('cuttle.gameListStore.openGames')
       .then((games) => {
         expect(games.length).to.eq(1, 'Expect exactly 1 game in store');
-        expect(games[0].numPlayers).to.eq(1, 'Expect 1 player in gameLists game in store');
+        expect(games[0].players.length).to.eq(1, 'Expect 1 player in gameLists game in store');
         expect(games[0].status).to.eq(GameStatus.CREATED, 'Expect game to have status CREATED');
         expect(games[0].isRanked).to.eq(true, 'Expect game to be ranked');
       });
@@ -671,6 +671,79 @@ describe('Home - Create Game', () => {
 
       // The game should go away after the ready
       cy.get('[data-cy=game-list-item]').should('have.length', 0);
+    });
+  });
+  it('Does not remove a game when both players are not ready', () => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
+      // Sign up first user and subscribe them to game
+      cy.signupOpponent(opponentOne);
+      cy.subscribeOpponent(gameData.gameId);
+      // The game should exist
+      cy.get('[data-cy=game-list-item]').should('have.length', 1);
+
+      // Sign up second user and subscribe them to game
+      cy.signupOpponent(opponentTwo);
+      cy.subscribeOpponent(gameData.gameId);
+      // The game should still be there after the second player joins
+      cy.get('[data-cy=game-list-item]').should('have.length', 1);
+    });
+  });
+  it('Shows usernames of both players currently in a casual game', () => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
+      // Sign up first user and subscribe them to game
+      cy.signupOpponent(opponentOne);
+      cy.subscribeOpponent(gameData.gameId);
+
+      // Sign up second user and subscribe them to game
+      cy.signupOpponent(opponentTwo);
+      cy.subscribeOpponent(gameData.gameId);
+
+      cy.get('[data-cy=game-list-item]')
+        .should('have.length', 1)
+        .should('include.text', 'Test Game')
+        .should('include.text', `${opponentOne.username} vs ${opponentTwo.username}`);
+    });
+  });
+  it('Shows usernames of both players currently in a ranked game', () => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: true }).then((gameData) => {
+      // Sign up first user and subscribe them to game
+      cy.signupOpponent(opponentOne);
+      cy.subscribeOpponent(gameData.gameId);
+
+      // Sign up second user and subscribe them to game
+      cy.signupOpponent(opponentTwo);
+      cy.subscribeOpponent(gameData.gameId);
+
+      cy.get('[data-cy=game-list-item]')
+        .should('have.length', 1)
+        .should('include.text', 'Test Game')
+        .should('include.text', `${opponentOne.username} vs ${opponentTwo.username}`);
+    });
+  });
+  it('Shows `Empty` as a placeholder when no player is currently in a casual game', () => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: false }).then((gameData) => {
+      // Sign up first user and make them join the game
+      cy.signupOpponent(opponentOne);
+      cy.get(`[data-cy-join-game=${gameData.gameId}]`).click();
+      cy.get('[data-cy=exit-button]').click();
+      
+      cy.get('[data-cy=game-list-item]')
+        .should('have.length', 1)
+        .should('include.text', 'Test Game')
+        .should('include.text', `Empty`);
+    });
+  });
+  it('Shows `Empty` as a placeholder when no player is currently in a ranked game', () => {
+    cy.createGamePlayer({ gameName: 'Test Game', isRanked: true }).then((gameData) => {
+      // Sign up first user and make them join the game
+      cy.signupOpponent(opponentOne);
+      cy.get(`[data-cy-join-game=${gameData.gameId}]`).click();
+      cy.get('[data-cy=exit-button]').click();
+      
+      cy.get('[data-cy=game-list-item]')
+        .should('have.length', 1)
+        .should('include.text', 'Test Game')
+        .should('include.text', `Empty`);
     });
   });
 });
