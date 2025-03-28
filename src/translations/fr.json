@@ -309,7 +309,8 @@
     "hasNotStarted": "Le jeu n'a pas encore commenc\u00e9",
     "player": {
       "isNotPlayerInCurrentGame": "Vous n'\u00eates pas un joueur dans ce jeu!",
-      "invalidPlayedBy": "L'attribut jou\u00e9 doit \u00eatre un nombre dans [0,1]"
+      "invalidPlayedBy": "L'attribut jou\u00e9 doit \u00eatre un nombre dans [0,1]",
+      "mustDiscard": "Vous devez jeter une carte de votre main"
     },
     "card": {
       "invalidCardID": "ID de carte non valide",
@@ -318,7 +319,8 @@
       "unrecognizedCardID": "Identifiant de carte non reconnu",
       "cannotHaveAttachments": "n'est pas une carte de point et ne peut pas avoir de pi\u00e8ces jointes",
       "invalidTwoTarget": "Les deux ne peuvent cibler que les Royals ou les lunettes",
-      "invalidCardForOneOff": "Vous ne pouvez pas jouer cette carte comme un seul-off"
+      "invalidCardForOneOff": "Vous ne pouvez pas jouer cette carte comme un seul-off",
+      "cannotPlayAsOneOff": "Vous ne pouvez pas jouer cette carte comme un seul-off"
     },
     "hand": {
       "missingCards": "Cartes manquantes"
@@ -336,7 +338,9 @@
     },
     "noGameIDPresentInOptions": "Impossible de remplir le jeu sans gameid (les options n'avaient pas de jeu)",
     "mustHaveTwoPlayers": "Ne peut pas remplir le jeu sans deux joueurs",
-    "noPlayersCollection": "Impossible de remplir le jeu, car il n'a pas de collection de joueurs"
+    "noPlayersCollection": "Impossible de remplir le jeu, car il n'a pas de collection de joueurs",
+    "cannotFindOpposingTarget": "Impossible de trouver une cible sur le conseil d'administration de l'adversaire:",
+    "waitingForOpponentToCounter": "En attendant que l'adversaire contrecarre"
   },
   "home": {
     "howItWorks": {

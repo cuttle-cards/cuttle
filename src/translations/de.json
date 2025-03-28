@@ -309,7 +309,8 @@
     "hasNotStarted": "Das Spiel hat noch nicht begonnen",
     "player": {
       "isNotPlayerInCurrentGame": "Du bist kein Spieler in diesem Spiel!",
-      "invalidPlayedBy": "Das gespielte Attribut muss eine Zahl in [0,1] sein"
+      "invalidPlayedBy": "Das gespielte Attribut muss eine Zahl in [0,1] sein",
+      "mustDiscard": "Sie m\u00fcssen eine Karte von Ihrer Hand wegwerfen"
     },
     "card": {
       "invalidCardID": "Ung\u00fcltige Karten -ID",
@@ -318,7 +319,8 @@
       "unrecognizedCardID": "Unerkannter Kartenkennung",
       "cannotHaveAttachments": "ist keine Punktkarte und kann keine Anh\u00e4nge haben",
       "invalidTwoTarget": "Zwei k\u00f6nnen nur Royals oder Brillen abzielen",
-      "invalidCardForOneOff": "Sie k\u00f6nnen diese Karte nicht als einmalig spielen"
+      "invalidCardForOneOff": "Sie k\u00f6nnen diese Karte nicht als einmalig spielen",
+      "cannotPlayAsOneOff": "Sie k\u00f6nnen diese Karte nicht als einmalig spielen"
     },
     "hand": {
       "missingCards": "Fehlende Karten"
@@ -336,7 +338,9 @@
     },
     "noGameIDPresentInOptions": "Spiel kann ohne GameId nicht bev\u00f6lkert werden (Optionen hatten kein GameId)",
     "mustHaveTwoPlayers": "Ohne zwei Spieler kann das Spiel nicht bev\u00f6lkern",
-    "noPlayersCollection": "Ich kann das Spiel nicht bev\u00f6lkern, weil es keine Spielersammlung gibt"
+    "noPlayersCollection": "Ich kann das Spiel nicht bev\u00f6lkern, weil es keine Spielersammlung gibt",
+    "cannotFindOpposingTarget": "Ich kann kein Ziel im Vorstand des Gegners finden:",
+    "waitingForOpponentToCounter": "Warten auf den Gegner, um zu kontern"
   },
   "home": {
     "howItWorks": {

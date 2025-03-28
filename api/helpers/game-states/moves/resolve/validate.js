@@ -43,7 +43,7 @@ module.exports = {
       // Must be your chance to resolve
       const yourTurnToResolve = sails.helpers.gameStates.yourTurnToCounter(currentState, playedBy);
       if (!yourTurnToResolve) {
-        throw new Error('Waiting for opponent to counter');
+        throw new Error('game.waitingForOpponentToCounter');
       }
 
       return exits.success();

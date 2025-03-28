@@ -309,7 +309,8 @@
     "hasNotStarted": "Game has not yet started",
     "player": {
       "isNotPlayerInCurrentGame": "You are not a player in this game!",
-      "invalidPlayedBy": "The playedBy attribute must be a number in [0,1]"
+      "invalidPlayedBy": "The playedBy attribute must be a number in [0,1]",
+      "mustDiscard": "You must discard a card from your hand"
     },
     "card": {
       "invalidCardID": "Invalid card ID",
@@ -318,7 +319,8 @@
       "unrecognizedCardID": "Unrecognised card identifier",
       "cannotHaveAttachments": "is not a point card, and cannot have attachments",
       "invalidTwoTarget": "Twos can only target royals or glasses",
-      "invalidCardForOneOff": "You cannot play that card as a one-off"
+      "invalidCardForOneOff": "You cannot play that card as a one-off",
+      "cannotPlayAsOneOff": "You cannot play that card as a one-off"
     },
     "hand": {
       "missingCards": "Missing Cards"
@@ -336,7 +338,9 @@
     },
     "noGameIDPresentInOptions": "Cannot populate Game without GameId (options had no gameId)",
     "mustHaveTwoPlayers": "Cannot populate game without two players",
-    "noPlayersCollection": "Cannot populate game, because it does not have players collection"
+    "noPlayersCollection": "Cannot populate game, because it does not have players collection",
+    "cannotFindOpposingTarget": "Can't find target on opponent's board:",
+    "waitingForOpponentToCounter": "Waiting for opponent to counter"
   },
   "home": {
     "howItWorks": {

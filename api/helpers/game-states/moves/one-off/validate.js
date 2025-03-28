@@ -73,7 +73,7 @@ module.exports = {
           );
           // Must have target
           if (!targetCard) {
-            throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
+            throw new Error('game.cannotFindOpposingTarget' + ' ' + requestedMove.targetId);
           }
 
           if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
@@ -132,7 +132,7 @@ module.exports = {
 
         // No other cards can be used for a one-off
         default:
-          throw new Error('You cannot play that card as a one-off');
+          throw new Error('game.card.cannotPlayAsOneOff');
       }
     } catch (err) {
       return exits.error(err);

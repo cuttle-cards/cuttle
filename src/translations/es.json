@@ -309,7 +309,8 @@
     "hasNotStarted": "El juego a\u00fan no ha comenzado",
     "player": {
       "isNotPlayerInCurrentGame": "\u00a1No eres un jugador en este juego!",
-      "invalidPlayedBy": "El atributo Playby debe ser un n\u00famero en [0,1]"
+      "invalidPlayedBy": "El atributo Playby debe ser un n\u00famero en [0,1]",
+      "mustDiscard": "Debes descartar una tarjeta de tu mano"
     },
     "card": {
       "invalidCardID": "ID de tarjeta no v\u00e1lida",
@@ -318,7 +319,8 @@
       "unrecognizedCardID": "Identificador de tarjeta no reconocido",
       "cannotHaveAttachments": "no es una tarjeta de puntos y no puede tener archivos adjuntos",
       "invalidTwoTarget": "Dos solo pueden atacar a los reales o anteojos",
-      "invalidCardForOneOff": "No puedes jugar esa carta como un \u00fanico"
+      "invalidCardForOneOff": "No puedes jugar esa carta como un \u00fanico",
+      "cannotPlayAsOneOff": "No puedes jugar esa carta como un \u00fanico"
     },
     "hand": {
       "missingCards": "Tarjetas faltantes"
@@ -336,7 +338,9 @@
     },
     "noGameIDPresentInOptions": "No se puede completar el juego sin GameId (las opciones no ten\u00edan GameId)",
     "mustHaveTwoPlayers": "No se puede completar el juego sin dos jugadores",
-    "noPlayersCollection": "No se puede completar el juego, porque no tiene recolecci\u00f3n de jugadores"
+    "noPlayersCollection": "No se puede completar el juego, porque no tiene recolecci\u00f3n de jugadores",
+    "cannotFindOpposingTarget": "No puedo encontrar a Target en el tablero del oponente:",
+    "waitingForOpponentToCounter": "Esperando que el oponente contrarrestar"
   },
   "home": {
     "howItWorks": {
