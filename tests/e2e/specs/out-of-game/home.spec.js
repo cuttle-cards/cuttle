@@ -244,7 +244,6 @@ describe('Home - Game List', () => {
     });
 
     it('Does not show open or completed games in spectate tab', () => {
-      cy.skipOnGameStateApi();
       cy.signupOpponent(playerOne);
       cy.createGameOpponent('Game Created before page visit');
       cy.visit('/');
@@ -304,8 +303,7 @@ describe('Home - Game List', () => {
         cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
       });
       // Refresh page -- no games available to spectate
-      cy.visit('/');
-      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.reload();
       cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
     });
 
@@ -325,6 +323,7 @@ describe('Home - Game List', () => {
         cy.contains('[data-cy-join-game]', 'Join Casual').should('not.exist');
         // Existing game is available to spectate
         cy.get('[data-cy-game-list-selector=spectate]').click();
+        cy.reload();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
       });
     });
@@ -478,7 +477,17 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=create-game-dialog]').should('be.visible');
     cy.get('[data-cy=create-game-ranked-switch]').should('not.be.checked');
   });
-
+  it('Rejects game creation if gamename contains profanity', () => {
+    cy.get('[data-cy=create-game-btn]').click();
+    cy.get('[data-cy=create-game-dialog]')
+      .should('be.visible')
+      .find('[data-cy=game-name-input]')
+      .should('be.visible')
+      .type('shitGame');
+    cy.get('[data-cy=submit-create-game]').should('be.visible')
+      .click();
+    assertSnackbar('Please use respectful language', 'error', 'newgame');
+  }); 
   it('Creates a new game by hitting enter in text field', () => {
     cy.get('[data-cy=create-game-btn]').click();
     cy.get('[data-cy=create-game-dialog]')

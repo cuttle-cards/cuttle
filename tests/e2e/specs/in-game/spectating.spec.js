@@ -29,7 +29,6 @@ describe('Spectating Games', () => {
   beforeEach(setup);
 
   it('Spectates a game', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
@@ -141,7 +140,6 @@ describe('Spectating Games', () => {
   });
 
   it('Correctly shows and hides dialogs and overlays', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
@@ -303,6 +301,25 @@ describe('Spectating Games', () => {
     // Can't resolve seven
     // Can't counter
     // Can't resolve
+  });
+
+  it('Removes current user (spectator) from the players list of spectators when current user leaves spectating', () => {
+    cy.setupGameAsSpectator();
+    cy.request('/api/test/spectator').then(({ body }) => {
+      expect(body.length).to.eq(1);
+      expect(body[0].spectator).to.eq(myUser.username);
+      expect(body[0].activelySpectating).to.eq(true);
+    });
+
+    cy.get('#game-menu-activator').click();
+    cy.get('[data-cy="stop-spectating"]').click();
+    cy.url().should('not.include', '/spectate');
+
+    cy.request('/api/test/spectator').then(({ body }) => {
+      expect(body.length).to.eq(1);
+      expect(body[0].spectator).to.eq(myUser.username);
+      expect(body[0].activelySpectating).to.eq(false);
+    });
   });
 
   describe('Spectators Layout', () => {

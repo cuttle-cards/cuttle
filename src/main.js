@@ -1,9 +1,9 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-// import rollbar from '@/plugins/rollbar';
+import i18n from '@/plugins/i18n';
+import rollbar from '@/plugins/rollbar';
 import vuetify from '@/plugins/vuetify';
 import router from '@/router';
-import i18n from '@/i18n';
 import { createHead } from '@unhead/vue';
 import { initCuttleGlobals } from '_/utils/config-utils';
 import App from '@/App.vue';
@@ -18,7 +18,7 @@ const head = createHead();
 // Add rollbar to vue
 if (import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN) {
   // TODO #1129 - re-enable rollbar when it doesn't crash the tab
-  // app.use(rollbar);
+  app.use(rollbar);
 }
 
 // Add router to vue
