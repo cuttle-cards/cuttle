@@ -1,3 +1,5 @@
+const GamePhase = require('../../../utils/GamePhase.json');
+
 function validateGameId(param) {
   if (param === null || param === undefined || Number.isNaN(param)) {
     throw new Error('The gameId cannot be empty and must be a number');
@@ -20,16 +22,12 @@ function validateTurn(param) {
 }
 
 function validatePhase(param) {
-  if (
-    param === null ||
-    param === undefined ||
-    Number.isNaN(param) ||
-    param < 0 ||
-    (param > 5 && param !== 7)
-  ) {
-    throw new Error('The phase must be a number in [1, 2, 3, 4, 5, 7]');
+  const phases = Object.values(GamePhase);
+  if (phases.includes(param)) {
+    return param;
   }
-  return param;
+
+  throw new Error(`The phase must be a number in ${phases}`);
 }
 
 function validatePlayedBy(param) {
