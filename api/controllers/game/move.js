@@ -23,7 +23,7 @@ module.exports = async function (req, res) {
         throw new Error('You are not a player in this game!');
     }
 
-    validate(gameState, req.body, playedBy);
+    validate(gameState, req.body, playedBy, game.gameStates);
     const updatedState = execute(gameState, req.body, playedBy);
     const gameStateRow = await saveGamestate(updatedState);
     game.gameStates.push(gameStateRow);

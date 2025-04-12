@@ -1,4 +1,4 @@
-import { assertGameState, assertLoss, assertVictory, assertStalemate } from '../../../support/helpers';
+import { assertGameState, assertLoss, assertVictory, assertStalemate, assertSnackbar } from '../../../support/helpers';
 import { myUser, opponentOne } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
 
@@ -171,7 +171,7 @@ describe('Losing the game', () => {
 });
 
 describe('Stalemates', () => {
-  it.only('Passes three times for a stalemate', () => {
+  it('Passes three times for a stalemate', () => {
 
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
@@ -302,7 +302,7 @@ describe('Stalemates', () => {
       assertStalemate();
     });
 
-    it('Cancels the stalemate when player requests a stalemate and opponent rejects', () => {
+    it.only('Prevents requesting a stalemate after opponent rejects stalemate request', () => {
       cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
@@ -331,21 +331,8 @@ describe('Stalemates', () => {
         .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
         .click();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
-
-      // Opponent rejects stalemate
-      cy.rejectStalemateOpponent();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
-
-      // Opponent requests stalemate - Does not immediately stalemate
-      cy.stalemateOpponent();
-      // Player accepts stalemate
-      cy.get('#opponent-requested-stalemate-dialog')
-        .should('be.visible')
-        .find('[data-cy=accept-stalemate]')
-        .click();
-
-      assertStalemate();
+      
+      assertSnackbar('Stalemate request was already rejecteed this turn');
     });
 
     it('Cancels the stalemate when opponent requests and player rejects', () => {
