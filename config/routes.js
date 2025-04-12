@@ -91,6 +91,7 @@ module.exports.routes = {
   '/api/game/over': 'game/game-over',
   '/api/game/concede': 'game/concede',
   '/api/game/stalemate': 'game/stalemate',
+  '/api/game/stalemate-accept': 'game/stalemate',
   '/api/game/reject-stalemate': 'game/stalemate-reject',
   '/api/game/rematch': 'game/rematch',
   '/api/game/join-rematch': 'game/join-rematch',

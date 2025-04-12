@@ -31,7 +31,7 @@ module.exports = {
   fn: ({ currentState, playedBy }, exits) => {
     try {
       // Must not already be considering a stalemate
-      if (currentState.phase !== GamePhase.STALEMATE_REQUEST) {
+      if (currentState.phase !== GamePhase.CONSIDERING_STALEMATE) {
         throw new Error('game.snackbar.stalemate.noStalemateOffered');
       }
 
