@@ -284,6 +284,7 @@ describe('Stalemates', () => {
     // TODO: can't request stalemate while your own is pending
     // TODO: rejecting stalemate continues where we left off
     // TODO: can't request stalemate twice in one turn
+    // TODO: can't accept your own stalemate request
 
     it('Ends in a stalemate when opponent requests a stalemate and player agrees', () => {
       cy.setupGameAsP1();

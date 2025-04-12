@@ -393,6 +393,7 @@ export const useGameStore = defineStore('game', {
         case 'concede':
         case 'stalemate':
         case 'stalemate-accept':
+        case 'stalemate-reject':
           // add all the move-making ones here
           return `/api/game/${this.id}/move`;
         case 'rematch':
@@ -711,9 +712,8 @@ export const useGameStore = defineStore('game', {
     },
 
     async rejectStalemate() {
-      await this.makeSocketRequest('reject-stalemate').then(() => {
-        this.consideringOpponentStalemateRequest = false;
-      });
+      await this.makeSocketRequest('stalemate-reject', { moveType: MoveType.STALEMATE_REJECT });
+      this.consideringOpponentStalemateRequest = false;
     },
 
     async requestUnsubscribeFromGame() {
