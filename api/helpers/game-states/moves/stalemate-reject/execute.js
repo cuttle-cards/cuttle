@@ -33,14 +33,16 @@ module.exports = {
     }
   },
   sync: true,
-  fn: ({ currentState, requestedMove, playedBy }, exits) => {
+  fn: ({ currentState, requestedMove, playedBy, priorStates }, exits) => {
     let result = _.cloneDeep(currentState);
+
+    const phase = priorStates.at(-2)?.phase ?? GamePhase.MAIN;
 
     result = {
       ...result,
       ...requestedMove,
       playedBy,
-      phase: GamePhase.MAIN,
+      phase,
       playedCard: null,
       targetCard: null,
       discardedCards: [],
