@@ -302,7 +302,7 @@ describe('Stalemates', () => {
       assertStalemate();
     });
 
-    it.only('Prevents requesting a stalemate after opponent rejects stalemate request', () => {
+    it.only('Requires waiting a turn to request stalemate after opponent rejects prior stalemate request', () => {
       cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
@@ -322,7 +322,7 @@ describe('Stalemates', () => {
       cy.rejectStalemateOpponent();
       cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
 
-      // Player requests stalemate again -- process starts over
+      // Player requests stalemate again -- not allowed this turn
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
         .get('[data-cy=stalemate-initiate]')
@@ -333,6 +333,24 @@ describe('Stalemates', () => {
         .click();
       
       assertSnackbar('Stalemate request was already rejecteed this turn');
+
+      // Draw card to take turn
+      cy.get('#deck').click();
+      cy.get('#turn-indicator').contains("OPPONENT'S TURN");
+
+      // Request stalemate again - now allowed
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible')
+        .get('[data-cy=stalemate-initiate]')
+        .click();
+      cy.get('#request-gameover-dialog')
+        .should('be.visible')
+        .get('[data-cy=request-gameover-confirm]')
+        .click();
+
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+      cy.acceptStalemateOpponent();
+      assertStalemate();
     });
 
     it('Cancels the stalemate when opponent requests and player rejects', () => {
