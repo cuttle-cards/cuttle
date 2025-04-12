@@ -9,7 +9,7 @@ module.exports = function (req, res) {
       let gameUpdates = {
         turn: game.turn + 1,
         passes: game.passes + 1,
-        log: [ ...game.log, `${player.username} passes` ],
+        log: [ ...game.log, `${player.username} passed` ],
       };
       const updatePromises = [];
       if (game.turn % 2 === player.pNum) {
@@ -19,7 +19,7 @@ module.exports = function (req, res) {
           gameUpdates = {
             turn: game.turn + 1,
             passes: game.passes + 1,
-            log: [ ...game.log, `${player.username} passes` ],
+            log: [ ...game.log, `${player.username} passed` ],
             lastEvent: {
               change: 'pass',
             },

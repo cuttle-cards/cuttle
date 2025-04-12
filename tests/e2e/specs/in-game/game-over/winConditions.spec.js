@@ -171,7 +171,7 @@ describe('Losing the game', () => {
 });
 
 describe('Stalemates', () => {
-  it('Passes three times for a stalemate', () => {
+  it.only('Passes three times for a stalemate', () => {
 
     cy.setupGameAsP0();
     cy.loadGameFixture(0, {
@@ -198,10 +198,10 @@ describe('Stalemates', () => {
       .should('contain', 'PASS')
       .click();
     cy.log('Should log the passing');
-    cy.get('#history').contains(`${myUser.username} passes`);
+    cy.get('#history').contains(`${myUser.username} passed`);
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
-    cy.get('#history').contains(`${opponentOne.username} passes`);
+    cy.get('#history').contains(`${opponentOne.username} passed`);
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)')
       .should('contain', 'PASS')
@@ -247,7 +247,7 @@ describe('Stalemates', () => {
   });
 
   describe('Requesting a stalemate', () => {
-    it.only('Ends in stalemate when player requests stalemate and opponent agrees', () => {
+    it('Ends in stalemate when player requests stalemate and opponent agrees', () => {
       cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
@@ -282,6 +282,8 @@ describe('Stalemates', () => {
 
     // TODO: can't request stalemate while one is pending
     // TODO: can't request stalemate while your own is pending
+    // TODO: rejecting stalemate continues where we left off
+    // TODO: can't request stalemate twice in one turn
 
     it('Ends in a stalemate when opponent requests a stalemate and player agrees', () => {
       cy.setupGameAsP1();
@@ -415,7 +417,7 @@ describe('Stalemates', () => {
       cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
       cy.reload();
       cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
-      cy.stalemateOpponent();
+      cy.acceptStalemateOpponent();
       assertStalemate();
     });
   });
