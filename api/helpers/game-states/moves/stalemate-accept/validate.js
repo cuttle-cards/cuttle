@@ -35,11 +35,12 @@ module.exports = {
   sync: true,
   fn: ({ currentState, playedBy }, exits) => {
     try {
-      // Must not already be considering a stalemate
+      // Must already be considering a stalemate
       if (currentState.phase !== GamePhase.CONSIDERING_STALEMATE) {
         throw new Error('game.snackbar.stalemate.noStalemateOffered');
       }
 
+      // Cannot accept your own stalemate request
       if (currentState.playedBy === playedBy) {
         throw new Error('game.snackbar.stalemate.opponentConsideringStalemate');
       }
