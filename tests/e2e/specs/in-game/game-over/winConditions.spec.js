@@ -276,9 +276,12 @@ describe('Stalemates', () => {
 
       cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
 
-      cy.stalemateOpponent();
+      cy.acceptStalemateOpponent();
       assertStalemate();
     });
+
+    // TODO: can't request stalemate while one is pending
+    // TODO: can't request stalemate while your own is pending
 
     it('Ends in a stalemate when opponent requests a stalemate and player agrees', () => {
       cy.setupGameAsP1();
