@@ -13,7 +13,7 @@ module.exports = {
     },
     /**
      * @param { Object } requestedMove - Object describing the request for stalemate
-     * @param { MoveType.STALEMATE_ACCDEPT } requestedMove.moveType - Specifies that this accepts a stalemate offer
+     * @param { MoveType.STALEMATE_ACCEPT } requestedMove.moveType - Specifies that this accepts a stalemate offer
      * @param { 1 | 0 } requestedMove.playedBy - Which player is requesting a stalemate
      */
     requestedMove: {
