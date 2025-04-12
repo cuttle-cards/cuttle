@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const MoveType = require('../../../../../utils/MoveType.json');
 
 module.exports = {
   friendlyName: 'Validate request for Stalemate',
@@ -30,11 +31,19 @@ module.exports = {
       type: 'ref',
       description: "List of packed gameStateRows for this game's prior states",
       required: true,
-    }
+    },
   },
   sync: true,
-  fn: ({ currentState }, exits) => {
+  fn: ({ currentState, priorStates }, exits) => {
     try {
+      if (
+        priorStates.some(
+          (state) => state.moveType === MoveType.STALEMATE_REQUEST && state.turn === currentState.turn,
+        )
+      ) {
+        throw new Error('game.snackbar.stalemate.previousStalemateRejected');
+      }
+
       // Must not already be considering a stalemate
       if (currentState.phase === GamePhase.STALEMATE_REQUEST) {
         throw new Error('game.snackbar.global.alreadyConsideringStalemate');

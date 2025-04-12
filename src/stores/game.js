@@ -701,12 +701,8 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestStalemate() {
-      await this.makeSocketRequest('stalemate', { moveType: MoveType.STALEMATE_REQUEST }).then(() => {
-        this.consideringOpponentStalemateRequest = false;
-      })
-        .catch((err) => {
-          console.log(err);
-        });
+      await this.makeSocketRequest('stalemate', { moveType: MoveType.STALEMATE_REQUEST });
+      this.consideringOpponentStalemateRequest = false;
     },
 
     async acceptStalemate() {
