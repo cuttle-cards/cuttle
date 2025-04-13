@@ -38,7 +38,7 @@ export function handleLeftGame(evData) {
   if (evData.id === gameStore.id) {
     gameStore.opponentLeft();
   } else {
-    gameListStore.otherLeftGame(evData.id);
+    gameListStore.otherLeftGame(evData.id, evData.playerId);
   }
 }
 

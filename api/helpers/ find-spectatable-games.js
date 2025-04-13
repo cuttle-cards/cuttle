@@ -14,7 +14,8 @@ module.exports = {
       const games = await Game.find({
         status: gameService.GameStatus.STARTED,
         updatedAt: { '>=': recentUpdateThreshhold },
-      });
+      })
+        .populate('players', { select: [ 'id', 'username' ] });
       return exits.success(games);
     } catch (err) {
       return exits.error(err);
