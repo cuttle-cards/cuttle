@@ -56,10 +56,10 @@ export const useGameListStore = defineStore('gameList', {
         updatedGame.status = data.newStatus;
       }
     },
-    otherLeftGame(gameId) {
+    otherLeftGame(gameId, playerId) {
       const updatedGame = this.openGames.find((game) => game.id === gameId);
       if (updatedGame) {
-        updatedGame.players.pop();
+        updatedGame.players = updatedGame.players.filter(player => player.id !== playerId);
       }
     },
     setIsRanked({ gameId, isRanked }) {

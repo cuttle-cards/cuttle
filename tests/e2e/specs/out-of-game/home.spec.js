@@ -686,6 +686,8 @@ describe('Home - Create Game', () => {
       cy.subscribeOpponent(gameData.gameId);
       // The game should still be there after the second player joins
       cy.get('[data-cy=game-list-item]').should('have.length', 1);
+      // Join button should now be disabled (game full)
+      cy.get(`[data-cy-join-game=${gameData.gameId}]`).should('be.disabled');
     });
   });
   it('Shows usernames of both players currently in a casual game', () => {
