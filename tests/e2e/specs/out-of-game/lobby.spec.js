@@ -94,6 +94,24 @@ describe('Lobby - Page Content (Ranked)', () => {
     checkRanked(true);
     cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
   });
+
+  it('Changes games to ranked and casual on pressing Enter', () => {
+    cy.get('[data-cy=edit-game-ranked-switch] input')
+      .focus()
+      .type('{enter}');
+    // Set To Casual Mode
+    cy.contains('Game Mode changed to').should('exist');
+    cy.get('[data-cy="close-snackbar"]').click();
+    cy.contains('Game Mode changed to').should('not.exist');
+    checkRanked(false);
+    cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
+    // Set To Ranked Mode
+    cy.get('[data-cy=edit-game-ranked-switch] input')
+      .focus()
+      .type('{enter}');
+    checkRanked(true);
+    cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
+  });
 });
 
 describe('Lobby - P0 Perspective', () => {
