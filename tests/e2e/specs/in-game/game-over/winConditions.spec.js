@@ -280,12 +280,6 @@ describe('Stalemates', () => {
       assertStalemate();
     });
 
-    // TODO: can't request stalemate while one is pending
-    // TODO: can't request stalemate while your own is pending
-    // TODO: rejecting stalemate continues where we left off
-    // TODO: can't request stalemate twice in one turn
-    // TODO: can't accept your own stalemate request
-
     it('Ends in a stalemate when opponent requests a stalemate and player agrees', () => {
       cy.setupGameAsP1();
       cy.get('[data-player-hand-card]').should('have.length', 6);
@@ -427,8 +421,42 @@ describe('Stalemates', () => {
         scrap: [ Card.SEVEN_OF_CLUBS ]
       });
     });
-  });
-});
+
+    describe('Illegal stalemate requests', () => {
+      // TODO: #965 test that you can't request stalemate while your opponent's stalemate req is pending
+      // TODO: can't request stalemate while your own is pending
+      // TODO: can't request stalemate twice in one turn
+      // TODO: can't accept your own stalemate request
+      it.only('Rejects request to initiate stalemate while you already have a stalemate request pending', () => {
+        cy.setupGameAsP0();
+
+        // Player requests stalemate
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible')
+          .get('[data-cy=stalemate-initiate]')
+          .click();
+        cy.get('#request-gameover-dialog')
+          .should('be.visible')
+          .get('[data-cy=request-gameover-confirm]')
+          .click();
+        cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+
+        // Force store to request stalemate again; should 400
+        cy.window()
+          .its('cuttle.gameStore')
+          .then(async (store) => {
+            try {
+              await store.requestStalemate();
+              // Fail test if backend allows request
+              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+            } catch (err) {
+              expect(err).to.eq('game.snackbar.stalemate.previousStalemateRejected');
+            }
+          });
+      });
+    });
+  }); // End describe requesting stalemates
+}); // End describe stalemates
 
 describe('Conceding while a oneOff is being resolved - prevents resolving oneOff state from persisting to new game', () => {
   beforeEach(() => {
