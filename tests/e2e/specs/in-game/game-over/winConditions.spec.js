@@ -424,10 +424,8 @@ describe('Stalemates', () => {
 
     describe('Illegal stalemate requests', () => {
       // TODO: #965 test that you can't request stalemate while your opponent's stalemate req is pending
-      // TODO: can't request stalemate while your own is pending
-      // TODO: can't request stalemate twice in one turn
-      // TODO: can't accept your own stalemate request
-      it.only('Rejects request to initiate stalemate while you already have a stalemate request pending', () => {
+
+      it('Rejects request to initiate stalemate while you already have a stalemate request pending', () => {
         cy.setupGameAsP0();
 
         // Player requests stalemate
@@ -451,6 +449,39 @@ describe('Stalemates', () => {
               expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.previousStalemateRejected');
+            }
+          });
+      });
+
+      it('Prevents player from accepting their own stalemate request', () => {
+        cy.setupGameAsP0();
+
+        // Player requests stalemate
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible')
+          .get('[data-cy=stalemate-initiate]')
+          .click();
+        cy.get('#request-gameover-dialog')
+          .should('be.visible')
+          .get('[data-cy=request-gameover-confirm]')
+          .click();
+        cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+
+        // Force store to request stalemate again; should 400
+        cy.window()
+          .its('cuttle.gameStore')
+          .then(async (store) => {
+            try {
+              await store.acceptStalemate();
+              // Fail test if backend allows request
+              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+            } catch (err) {
+              // TODO #965 - expect only opponentConsideringStalemate error
+              const errors = [
+                'game.snackbar.stalemate.previousStalemateRejected',
+                'game.snackbar.stalemate.opponentConsideringStalemate',
+              ];
+              expect(err).to.be.oneOf(errors);
             }
           });
       });
