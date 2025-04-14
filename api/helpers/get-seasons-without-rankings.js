@@ -22,7 +22,8 @@ module.exports = {
         sort: 'startTime DESC',
       }).populateAll();
     if (!seasons.length) {
-      return exits.error(new Error('Could not find requested season data'));
+      return exits.error(
+        new Error('other.seasonDataNotFound'));
     }
     return exits.success(
       seasons.map((season) => {

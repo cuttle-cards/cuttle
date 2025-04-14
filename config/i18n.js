@@ -18,7 +18,7 @@ module.exports.i18n = {
    * Which locales are supported?                                             *
    *                                                                          *
    ***************************************************************************/
-  // locales: ['en', 'es', 'fr', 'de'],
+  // locales: ['en', 'es', 'fr', 'de', 'ukr'],
   /****************************************************************************
    *                                                                           *
    * What is the default locale for the site? Note that this setting will be   *

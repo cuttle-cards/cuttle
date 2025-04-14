@@ -33,17 +33,17 @@ module.exports = {
 
       // Must be COUNTERING phase
       if (currentState.phase !== GamePhase.COUNTERING) {
-        throw new Error(`Can only resolve during the countering phase`);
+        throw new Error('game.other.notInCounteringPhase');
       }
 
       if (!currentState.oneOff) {
-        throw new Error('You cannot resolve unless there is a one-off pending');
+        throw new Error('game.other.pendingOneOff');
       }
 
       // Must be your chance to resolve
       const yourTurnToResolve = sails.helpers.gameStates.yourTurnToCounter(currentState, playedBy);
       if (!yourTurnToResolve) {
-        throw new Error('Waiting for opponent to counter');
+        throw new Error('game.other.waitingForCounter');
       }
 
       return exits.success();

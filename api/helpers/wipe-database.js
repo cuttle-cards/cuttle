@@ -6,7 +6,7 @@ module.exports = {
   fn: async (_, exits) => {
     try {
       if (![ 'development', 'staging' ].includes(sails.config.environment)) {
-        return exits.error({ message: 'Error: This action is only permitted in development or staging' });
+        return exits.error("other.dontWipeDbOnProd");
       }
 
       await Promise.all([

@@ -1,20 +1,20 @@
 function validateGameId(param) {
   if (param === null || param === undefined || Number.isNaN(param)) {
-    throw new Error('The gameId cannot be empty and must be a number');
+    throw new Error("game.other.gameIdMustBeNumber");
   }
   return param;
 }
 
 function validateMoveType(param) {
   if (param === null || param === undefined || !param.length) {
-    throw new Error('The MoveType cannot be empty and must be a string');
+    throw new Error("game.other.moveTypeMustBeString");
   }
   return param;
 }
 
 function validateTurn(param) {
   if (param === null || param === undefined || Number.isNaN(param)) {
-    throw new Error('The turn cannot be empty and must be a number');
+    throw new Error("game.other.turnMustBeNumber");
   }
   return param;
 }
@@ -27,14 +27,14 @@ function validatePhase(param) {
     param < 0 ||
     (param > 5 && param !== 7)
   ) {
-    throw new Error('The phase must be a number in [1, 2, 3, 4, 5, 7]');
+    throw new Error("game.other.phaseIsInvalid");
   }
   return param;
 }
 
 function validatePlayedBy(param) {
   if (![ 0, 1 ].includes(param)) {
-    throw new Error('The playedBy attribute must be a number in [0,1]');
+    throw new Error("game.other.playedByIsInvalid");
   }
   return param;
 }
@@ -92,7 +92,7 @@ module.exports = {
 
       return exits.success(gameStateUpdated);
     } catch (err) {
-      return exits.error(err.message);
+      return exits.error(sails.__('other.gameLockTimeOut', { gameId} ))
     }
   },
 };
