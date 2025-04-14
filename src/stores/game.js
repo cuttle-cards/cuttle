@@ -208,7 +208,7 @@ export const useGameStore = defineStore('game', {
       this.lastEventPlayerChoosing = newGame.lastEvent?.pNum === this.myPNum ?? null;
       this.lastEventDiscardedCards = newGame.lastEvent?.discardedCards ?? null;
       this.waitingForOpponentToStalemate =
-        (newGame.lastEvent?.requestedByPNum === this.myPNum && !newGame.gameIsOver) ?? false;
+        (newGame.lastEvent?.playedBy === this.myPNum && !newGame.gameIsOver) ?? false;
       this.id = newGame.id ?? this.id;
       this.turn = newGame.turn ?? this.turn;
       // this.chat = cloneDeep(newGame.chat);

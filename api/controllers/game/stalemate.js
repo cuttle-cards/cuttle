@@ -28,7 +28,7 @@ module.exports = async function (req, res) {
       currentMatch: null,
     };
 
-    gameUpdates.lastEvent = { change: 'stalemateRequest', requestedByPNum: pNum };
+    gameUpdates.lastEvent = { change: 'stalemateRequest', playedBy: pNum };
     // End in stalemate if both players requested stalemate this turn
     if (playerStalemateVal === opponentStalemateVal && opponentStalemateVal === game.turn) {
       gameUpdates = {
@@ -56,11 +56,11 @@ module.exports = async function (req, res) {
     } else {
       await Game.updateOne({ id: gameId }).set(gameUpdates);
     }
-    Game.publish([game.id], {
+    Game.publish([ game.id ], {
       change: 'stalemateRequest',
       game,
       victory,
-      requestedByPNum: pNum,
+      playedBy: pNum,
     });
 
     return res.ok();

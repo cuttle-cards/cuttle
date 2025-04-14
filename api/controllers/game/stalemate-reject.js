@@ -15,7 +15,7 @@ module.exports = async function (req, res) {
       change: 'stalemateReject',
       game,
       victory,
-      requestedByPNum: req.session.pNum,
+      playedBy: req.session.pNum,
     });
 
     return res.ok();
