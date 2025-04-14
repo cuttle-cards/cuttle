@@ -369,7 +369,7 @@ describe('Stalemates', () => {
       cy.get('#opponent-requested-stalemate-dialog').should('not.be.visible');
     });
 
-    it.only('Player requests stalemate, then reloads before opponent accepts', () => {
+    it('Player requests stalemate, then reloads before opponent accepts', () => {
       cy.setupGameAsP1();
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
