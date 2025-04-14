@@ -129,7 +129,7 @@ module.exports = {
 
       return exits.success(fullSocketEvent);
     } catch (err) {
-      return exits.error(sails.__('game.other.socketEmitError', {message: err.message} ))
+      return exits.error(sails.__('game.other.socketEmitError', { message: err.message } ));
     }
   },
 };

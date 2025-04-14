@@ -60,6 +60,6 @@ module.exports = {
         return exits.error(err);
       }
     }
-    return exits.error(sails.__('other.gameLockTimeOut', {gameId} ))
+    return exits.error(sails.__('other.gameLockTimeOut', { gameId } ));
   },
 };

@@ -73,11 +73,11 @@ module.exports = {
           );
           // Must have target
           if (!targetCard) {
-            throw new Error(sails.__('game.snackbar.oneOffs.cantFindTarget', {target: requestedMove.targetId}));
+            throw new Error(sails.__('game.snackbar.oneOffs.cantFindTarget', { target: requestedMove.targetId }));
           }
 
           if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
-            throw new Error("game.snackbar.oneOffs.twoInvalidTarget");
+            throw new Error('game.snackbar.oneOffs.twoInvalidTarget');
           }
 
           const queenCount = opponent.faceCards.filter((faceCard) => faceCard.rank === 12).length;
@@ -132,7 +132,7 @@ module.exports = {
 
         // No other cards can be used for a one-off
         default:
-          throw new Error("game.snackbar.oneOffs.cantPlayAsOneOff");
+          throw new Error('game.snackbar.oneOffs.cantPlayAsOneOff');
       }
     } catch (err) {
       return exits.error(err);
