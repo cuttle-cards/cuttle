@@ -273,6 +273,12 @@
         "mustUsePointCard": "Solo puedes hundir con una carta de rango As hasta Diez",
         "mustTargetPointCard": "Solo puedes hundir una carta que tu oponente haya jugado como puntos"
       },
+      "stalemate": {
+        "alreadyConsideringStalemate": "Ya se ha ofrecido un empate",
+        "noStalemateOffered": "Tu oponente no ha ofrecido un empate",
+        "opponentConsideringStalemate": "Tu oponente está considerando tu oferta de empate",
+        "previousStalemateRejected": "La solicitud de empate ya fue rechazada en este turno"
+      },
       "oneOffs": {
         "oneOffInPlay": "Ya hay en juego una carta de habilidad única; no puedes jugar ninguna carta, excepto un Dos para contrarrestar.",
         "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad única sin un objetivo",
