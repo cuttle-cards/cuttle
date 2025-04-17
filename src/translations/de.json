@@ -246,6 +246,9 @@
     "snackbar": {
       "global": {
         "notYourTurn": "Es ist nicht dein Zug!",
+        "notCounteringPhase": "Kontern ist nur während der Konterphase möglich",
+        "noOneOffPending": "Du kannst nicht kontern, es sei denn, ein One-Off ist anhängig",
+        "waitForOpponent": "Warte auf den Gegner zum Kontern",
         "cardFrozen": "Diese Karte ist eingefroren! Du musst einen Zug warten, um sie zu spielen.",
         "playFromHand": "Du kannst nur eine Karte spielen, die in deiner Hand ist",
         "blockedByQueen": "Die Dame deines Gegners verhindert, dass du seine anderen Karten anvisierst",
@@ -278,6 +281,9 @@
         "cantPlayWithoutATarget": "Du kannst diese Karte nicht als ONE-OFF ohne Ziel spielen",
         "onlyTwoOrNine": "Du kannst nur eine 2 oder eine 9 als Ziel-One-Off spielen.",
         "emptyDeck": "Du kannst dieses One-Off nicht spielen, es sei denn, es gibt Karten im Deck",
+        "cantFindTarget": "Kann {target} auf dem Spielfeld des Gegners nicht finden",
+        "twoInvalidTarget": "Zweien können nur auf Königliche oder Gläser zielen",
+        "cantPlayAsOneOff": "Du kannst diese Karte nicht als One-Off spielen",
         "three": {
           "scrapIsEmpty": "Du kannst nur eine 3 als One-Off spielen, wenn es Karten im Abwurfstapel gibt",
           "notResolvingThreePhase": "Kann aus dem Abwurfstapel auswählen, indem eine 3 aufgelöst wird",
@@ -291,6 +297,7 @@
         },
         "five": {
           "selectCardToDiscard": "Du musst eine Karte zum Abwerfen auswählen",
+          "invalidCardtoDiscard": "Du musst eine Karte aus deiner Hand abwerfen",
           "incorrectCard": "Falsche Karte gespielt",
           "wrongPhase": "Du kannst eine Fünf gerade nicht auflösen.",
           "fiveDeckIsEmpty": "Kann keine 5-One-Off mit leerem Deck auflösen"
@@ -303,6 +310,20 @@
           "jacksMustBeUnplayable": "Du kannst nicht abwerfen, weil die Buben gespielt werden können"
         }
       }
+    },
+    "other": {
+      "notInCounteringPhase": "Auflösen ist nur während der Konterphase möglich",
+      "pendingOneOff": "Du kannst nicht auflösen, es sei denn, ein One-Off ist anhängig",
+      "waitingForCounter": "Warte auf den Gegner zum Kontern",
+      "moveTypeMustBeString": "Der MoveType darf nicht leer sein und muss eine Zeichenkette sein",
+      "turnMustBeNumber": "Die Runde darf nicht leer sein und muss eine Zahl sein",
+      "phaseIsInvalid": "Die Phase muss eine Zahl in [1, 2, 3, 4, 5, 7] sein",
+      "playedByIsInvalid": "Das playedBy-Attribut muss eine Zahl in [0,1] sein",
+      "errorUnpackCards": "Fehler beim Entpacken der Karten",
+      "gameStatusInvalid": "Das Spiel hat noch nicht begonnen oder ist beendet",
+      "missingDotGameStates": "Spiel wurde nicht mit der .gameStates-Sammlung gefüllt",
+      "cardsAlreadyDealt": "Karten wurden bereits ausgeteilt",
+      "gameIdMustBeNumber": "Die gameId darf nicht leer sein und muss eine Zahl sein"
     }
   },
   "home": {
@@ -524,5 +545,10 @@
     "heading": "Weltmeisterschaft",
     "paragraph": "Die Cuttle-Weltmeisterschaft IV findet heute, am Samstag, den 8. März um 12 Uhr EST statt! Seht zu, wie die 8 besten Spieler des vergangenen JAHRES des kompetitiven Spiels um den Titel des Cuttle-Weltmeisters kämpfen und sich eines der 8 unglaublichen Preiskartendecks aussuchen, die von Spieler SUBMARINO gespendet wurden. Seht es live auf ",
     "twitchLink": "twitch.tv/cuttle_cards"
+  },
+  "other": {
+    "addGameToMatch": "Spiel konnte nicht zum Match hinzugefügt werden",
+    "dontWipeDbOnProd": "Fehler: Diese Aktion ist nur in Entwicklung oder Staging erlaubt",
+    "seasonDataNotFound": "Angeforderte Saisondaten konnten nicht gefunden werden"
   }
 }

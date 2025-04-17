@@ -246,6 +246,9 @@
     "snackbar": {
       "global": {
         "notYourTurn": "It's not your turn!",
+        "notCounteringPhase": "Can only counter during the countering phase",
+        "noOneOffPending": "You cannot counter unless there is a one-off pending",
+        "waitForOpponent": "Waiting for opponent to counter",
         "cardFrozen": "That card is frozen! You must wait a turn to play it.",
         "playFromHand": "You can only play a card that is in your hand",
         "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
@@ -278,6 +281,8 @@
         "cantPlayWithoutATarget": "You cannot play that card as a ONE-OFF without a target",
         "onlyTwoOrNine": "You can only play a 2, or a 9 as targeted one-offs.",
         "emptyDeck": "You can't play that one-off unless there are cards in the deck",
+        "twoInvalidTarget": "Twos can only target royals or glasses",
+        "cantPlayAsOneOff": "You cannot play that card as a one-off",
         "three": {
           "scrapIsEmpty": "You can only play a 3 as a one-off if there are cards in the scrap pile",
           "notResolvingThreePhase": "Can pick from scrap by resolving a 3",
@@ -291,6 +296,7 @@
         },
         "five": {
           "selectCardToDiscard": "You must select one card to discard",
+          "invalidCardtoDiscard": "You must discard a card from your hand",
           "incorrectCard": "Incorrect card played",
           "wrongPhase": "You can't resolve a five right now.",
           "fiveDeckIsEmpty": "Cannot resolve 5 one-off with an empty deck"
@@ -303,6 +309,20 @@
           "jacksMustBeUnplayable": "You can't discard because the jacks can be played"
         }
       }
+    },
+    "other": {
+      "notInCounteringPhase": "Can only resolve during the countering phase",
+      "pendingOneOff": "You cannot resolve unless there is a one-off pending",
+      "waitingForCounter": "Waiting for opponent to counter",
+      "moveTypeMustBeString": "The MoveType cannot be empty and must be a string",
+      "turnMustBeNumber": "The turn cannot be empty and must be a number",
+      "phaseIsInvalid": "The phase must be a number in [1, 2, 3, 4, 5, 7]",
+      "playedByIsInvalid": "The playedBy attribute must be a number in [0,1]",
+      "errorUnpackCards": "Error at unpacking cards",
+      "gameStatusInvalid": "Game has not yet started or is over",
+      "missingDotGameStates": "Game was not populated with .gameStates collection",
+      "cardsAlreadyDealt": "Cards are already dealt",
+      "gameIdMustBeNumber": "The gameId cannot be empty and must be a number"
     }
   },
   "home": {
@@ -524,5 +544,10 @@
     "heading": "World Championship IV",
     "paragraph": "The Cuttle World Championship IV is today, Saturday March 8th at 12pm EST! Watch the top 8 players from the past YEAR of competitive play battle it out for the title of Cuttle World Champion and their pick from the 8 incredible prize decks donated by player SUBMARINO! Watch it live at ",
     "twitchLink": "twitch.tv/cuttle_cards"
+  },
+  "other": {
+    "addGameToMatch": "Could not add game to match",
+    "dontWipeDbOnProd": "Error: This action is only permitted in development or staging",
+    "seasonDataNotFound": "Could not find requested season data"
   }
 }
