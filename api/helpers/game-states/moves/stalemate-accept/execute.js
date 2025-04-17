@@ -12,9 +12,9 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request for stalemate
+     * @param { Object } requestedMove - Object describing the request to accept a stalemate offer
      * @param { MoveType.STALEMATE_ACCEPT } requestedMove.moveType - Specifies that this accepts a stalemate offer
-     * @param { 1 | 0 } requestedMove.playedBy - Which player is requesting a stalemate
+     * @param { 1 | 0 } requestedMove.playedBy - Which player is accepting a stalemate
      */
     requestedMove: {
       type: 'ref',

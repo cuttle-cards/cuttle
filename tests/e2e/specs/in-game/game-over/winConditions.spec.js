@@ -327,7 +327,7 @@ describe('Stalemates', () => {
         .get('[data-cy=request-gameover-confirm]')
         .click();
       
-      assertSnackbar('Stalemate request was already rejecteed this turn');
+      assertSnackbar('Stalemate request was already rejected this turn');
 
       // Draw card to take turn
       cy.get('#deck').click();

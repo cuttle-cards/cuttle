@@ -36,6 +36,7 @@ module.exports = {
   sync: true,
   fn: ({ currentState, priorStates }, exits) => {
     try {
+      // Can't request stalemate more than once per turn
       if (
         priorStates.some(
           (state) => state.moveType === MoveType.STALEMATE_REQUEST && state.turn === currentState.turn,
