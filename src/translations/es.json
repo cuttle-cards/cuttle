@@ -281,7 +281,6 @@
         "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad única sin un objetivo",
         "onlyTwoOrNine": "Solo puedes jugar un 2 o un 9 como cartas de habilidad única con objetivo",
         "emptyDeck": "No puedes jugar ese uno por uno a menos que haya cartas en el mazo",
-        "cantFindTarget": "No se puede encontrar {target} en el tablero del oponente",
         "twoInvalidTarget": "Los doses solo pueden apuntar a figuras reales o copas",
         "cantPlayAsOneOff": "No puedes jugar esa carta como 'one-off'",
         "three": {
@@ -315,16 +314,11 @@
       "notInCounteringPhase": "Solo se puede resolver durante la fase de contraataque",
       "pendingOneOff": "No puedes resolver a menos que haya un 'one-off' pendiente",
       "waitingForCounter": "Esperando a que el oponente contraataque",
-      "cardIsNotOneOff": "{rank} no es un rango 'one-off' válido",
       "moveTypeMustBeString": "El MoveType no puede estar vacío y debe ser una cadena de texto",
       "turnMustBeNumber": "El turno no puede estar vacío y debe ser un número",
       "phaseIsInvalid": "La fase debe ser un número en [1, 2, 3, 4, 5, 7]",
       "playedByIsInvalid": "El atributo playedBy debe ser un número en [0,1]",
-      "errorUnpackCards": "Error al desempaquetar las cartas: {message}",
-      "unrecognisedRank": "Rango no reconocido: {rank}",
-      "unrecognisedSuit": "Palo no reconocido: {suit}",
-      "unrecognisedCardId": "Identificador de carta no reconocido: {id}",
-      "socketEmitError": "Error al emitir el socket: {message}",
+      "errorUnpackCards": "Error al desempaquetar las cartas",
       "gameStatusInvalid": "El juego aún no ha comenzado o ha terminado",
       "missingDotGameStates": "El juego no se rellenó con la colección .gameStates",
       "cardsAlreadyDealt": "Las cartas ya han sido repartidas",
@@ -553,7 +547,6 @@
   },
   "other": {
     "addGameToMatch": "No se pudo agregar el juego a la partida",
-    "gameLockTimeOut": "Tiempo de espera agotado al adquirir el bloqueo para el juego {gameId}",
     "dontWipeDbOnProd": "Error: Esta acción solo está permitida en desarrollo o pruebas (staging)",
     "seasonDataNotFound": "No se pudieron encontrar los datos de la temporada solicitados"
   }

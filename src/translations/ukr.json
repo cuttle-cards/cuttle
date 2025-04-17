@@ -281,7 +281,6 @@
         "cantPlayWithoutATarget": "Ви не можете зіграти цю картку як ONE-OFF без націлення",
         "onlyTwoOrNine": "Ви можете зіграти тільки двійку або дев’ятку як картки з націленням ONE-OFF.",
         "emptyDeck": "Ви не можете зіграти цю картку ONE-OFF, якщо в колоді немає карток",
-        "cantFindTarget": "Неможливо знайти {target} на дошці суперника",
         "twoInvalidTarget": "Двійки можуть цілитися лише в королівські карти або келихи",
         "cantPlayAsOneOff": "Ви не можете зіграти цю карту як 'one-off'",
         "three": {
@@ -315,16 +314,11 @@
       "notInCounteringPhase": "Вирішити можна лише під час фази контратаки",
       "pendingOneOff": "Ви не можете вирішити, якщо немає активного 'one-off'",
       "waitingForCounter": "Очікування контратаки суперника",
-      "cardIsNotOneOff": "{rank} не є дійсним рангом 'one-off'",
       "moveTypeMustBeString": "MoveType не може бути порожнім і має бути рядком",
       "turnMustBeNumber": "Хід не може бути порожнім і має бути числом",
       "phaseIsInvalid": "Фаза має бути числом з [1, 2, 3, 4, 5, 7]",
       "playedByIsInvalid": "Атрибут playedBy має бути числом з [0,1]",
-      "errorUnpackCards": "Помилка при розпакуванні карт: {message}",
-      "unrecognisedRank": "Нерозпізнаний ранг: {rank}",
-      "unrecognisedSuit": "Нерозпізнана масть: {suit}",
-      "unrecognisedCardId": "Нерозпізнаний ідентифікатор карти: {id}",
-      "socketEmitError": "Помилка при відправці сокета: {message}",
+      "errorUnpackCards": "Помилка при розпакуванні карт",
       "gameStatusInvalid": "Гра ще не почалася або закінчена",
       "missingDotGameStates": "Гра не була заповнена колекцією .gameStates",
       "cardsAlreadyDealt": "Карти вже роздані",
@@ -553,7 +547,6 @@
   },
   "other": {
     "addGameToMatch": "Не вдалося додати гру до матчу",
-    "gameLockTimeOut": "Час очікування на отримання блокування для гри {gameId} вичерпано",
     "dontWipeDbOnProd": "Помилка: Ця дія дозволена лише в середовищі розробки або тестовому середовищі (staging)",
     "seasonDataNotFound": "Не вдалося знайти запитані дані сезону"
   }

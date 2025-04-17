@@ -48,16 +48,16 @@ function convertIdToCard (id, isFrozen) {
     const rank = rankMap[tempCard.rank];
 
     if (rank === undefined) {
-      throw new Error(sails.__('game.other.unrecognisedRank', { rank: tempCard.rank }));
+      throw new Error('Unrecognised rank ' + tempCard.rank);
     }
     if (suit === undefined) {
-      throw new Error(sails.__('game.other.unrecognisedSuit', { suit: tempCard.suit }));
+      throw new Error('Unrecognised suit ' + tempCard.suit);
     }
 
     return { suit, rank, id , isFrozen , attachments:[] };
   }
 
-  throw new Error(sails.__('game.other.unrecognisedCardId', { id }));
+  throw new Error('Unrecognised card identifier ' + id);
 }
 
 /**

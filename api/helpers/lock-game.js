@@ -60,6 +60,6 @@ module.exports = {
         return exits.error(err);
       }
     }
-    return exits.error(sails.__('other.gameLockTimeOut', { gameId } ));
+    return exits.error(`Timed out aquiring lock for game ${gameId}`);
   },
 };

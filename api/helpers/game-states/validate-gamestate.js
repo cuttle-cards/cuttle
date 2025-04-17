@@ -92,7 +92,6 @@ module.exports = {
 
       return exits.success(gameStateUpdated);
     } catch (err) {
-      // error is untranslated?
       return exits.error(err.message);
     }
   },

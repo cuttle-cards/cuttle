@@ -71,7 +71,7 @@ module.exports = {
 
       return exits.success(cardId + attachments);
     } catch (err) {
-      return exits.error(sails.__('game.other.errorUnpackCards', { message: err.message } ));
+      return exits.error(sails.__('game.other.errorUnpackCards'));
     }
   },
 };

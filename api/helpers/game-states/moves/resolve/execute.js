@@ -82,7 +82,7 @@ module.exports = {
         result = sails.helpers.gameStates.moves.resolve.nine(result, playedBy);
         break;
       default:
-        return exits.error(sails.__('game.other.cardIsNotOneOff', { rank: oneOff.rank } ));
+        return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
     
     result.scrap.push(result.oneOff);

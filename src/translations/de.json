@@ -315,16 +315,11 @@
       "notInCounteringPhase": "Auflösen ist nur während der Konterphase möglich",
       "pendingOneOff": "Du kannst nicht auflösen, es sei denn, ein One-Off ist anhängig",
       "waitingForCounter": "Warte auf den Gegner zum Kontern",
-      "cardIsNotOneOff": "{rank} ist kein gültiger One-Off-Rang",
       "moveTypeMustBeString": "Der MoveType darf nicht leer sein und muss eine Zeichenkette sein",
       "turnMustBeNumber": "Die Runde darf nicht leer sein und muss eine Zahl sein",
       "phaseIsInvalid": "Die Phase muss eine Zahl in [1, 2, 3, 4, 5, 7] sein",
       "playedByIsInvalid": "Das playedBy-Attribut muss eine Zahl in [0,1] sein",
-      "errorUnpackCards": "Fehler beim Entpacken der Karten: {message}",
-      "unrecognisedRank": "Nicht erkannter Rang: {rank}",
-      "unrecognisedSuit": "Nicht erkannte Farbe: {suit}",
-      "unrecognisedCardId": "Nicht erkannter Karten-Identifikator: {id}",
-      "socketEmitError": "Fehler beim Senden des Sockets: {message}",
+      "errorUnpackCards": "Fehler beim Entpacken der Karten",
       "gameStatusInvalid": "Das Spiel hat noch nicht begonnen oder ist beendet",
       "missingDotGameStates": "Spiel wurde nicht mit der .gameStates-Sammlung gefüllt",
       "cardsAlreadyDealt": "Karten wurden bereits ausgeteilt",
@@ -553,7 +548,6 @@
   },
   "other": {
     "addGameToMatch": "Spiel konnte nicht zum Match hinzugefügt werden",
-    "gameLockTimeOut": "Zeitüberschreitung beim Erwerb der Sperre für Spiel {gameId}",
     "dontWipeDbOnProd": "Fehler: Diese Aktion ist nur in Entwicklung oder Staging erlaubt",
     "seasonDataNotFound": "Angeforderte Saisondaten konnten nicht gefunden werden"
   }

@@ -63,7 +63,7 @@ module.exports = {
           );
           // Must have target
           if (!targetCard) {
-            throw new Error(sails.__('game.snackbar.oneOffs.cantFindTarget', { target: requestedMove.targetId }));
+            throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
           }
 
           if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
