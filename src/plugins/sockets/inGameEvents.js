@@ -193,7 +193,8 @@ export async function handleInGameEvents(evData) {
       // Show OpponentRequestedStalemateDialog if opponent requested stalemate
       //   and game is not yet over
       gameStore.consideringOpponentStalemateRequest =
-        !evData.victory.gameOver && evData.requestedByPNum !== gameStore.myPNum;
+        !evData.victory.gameOver && evData.playedBy !== gameStore.myPNum;
+      gameStore.waitingForOpponentToStalemate = !evData.victory.gameOver && evData.playedBy === gameStore.myPNum;
       break;
     case SocketEvent.REJECT_STALEMATE:
       gameStore.consideringOpponentStalemateRequest = false;

@@ -1,27 +1,30 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Draw a card',
+  friendlyName: 'Execute request for Stalemate',
 
-  description: 'Returns new GameState resulting from requested draw move',
+  description: 'Submits a request for a statlemate',
 
   inputs: {
     currentState: {
       type: 'ref',
-      description: 'The latest GameState before the requesting player draws a card',
+      descriptions: 'Object containing the current game state',
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to draw (req.body)
-     * @param { MoveType.DRAW } requestedMove.moveType - Specifies that this a Draw move
+     * @param { Object } requestedMove - Object describing the request for stalemate
+     * @param { MoveType.STALEMATE_REQUEST } requestedMove.moveType - Specifies that this a request for a stalemate
+     * @param { 1 | 0 } requestedMove.playedBy - Which player is requesting a stalemate
      */
     requestedMove: {
       type: 'ref',
-      description: 'The move being requested. Specifies moveType and which player is drawing',
+      description: 'Object containing data needed for current move',
+      required: true,
     },
     playedBy: {
       type: 'number',
-      description: 'Player number of player requesting move.',
+      description: 'Player number of player requesting move',
+      required: true,
     },
     priorStates: {
       type: 'ref',
@@ -29,20 +32,15 @@ module.exports = {
       required: true,
     }
   },
-  sync: true, // synchronous helper
+  sync: true,
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
     let result = _.cloneDeep(currentState);
-
-    const player = playedBy ? result.p1 : result.p0;
-
-    player.hand.push(result.deck.shift());
-    result.turn++;
 
     result = {
       ...result,
       ...requestedMove,
-      phase: GamePhase.MAIN,
       playedBy,
+      phase: GamePhase.CONSIDERING_STALEMATE,
       playedCard: null,
       targetCard: null,
       discardedCards: [],

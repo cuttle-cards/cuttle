@@ -6,12 +6,17 @@ module.exports = async function (req, res) {
   try {
     const { game: gameId, pNum, usr: userId } = req.session;
     // Track which turn each player most recently requested stalemate
-    let game = await Game.findOne({ id: gameId })
-      .populate('players', { sort: 'pNum' });
+    let game = await Game.findOne({ id: gameId }).populate('players', { sort: 'pNum' });
     let gameUpdates = {};
     const keyPrefix = 'turnStalemateWasRequestedByP';
     const playerStalemateKey = `${keyPrefix}${pNum}`;
     const playerStalemateVal = game.turn;
+
+    // Error if this player already requested stalemate this turn
+    if (game[playerStalemateKey] === game.turn) {
+      throw new Error('game.snackbar.stalemate.previousStalemateRejected');
+    }
+
     gameUpdates[playerStalemateKey] = playerStalemateVal;
     const opponentStalemateKey = `${keyPrefix}${(pNum + 1) % 2}`;
     const opponentStalemateVal = game[opponentStalemateKey];
@@ -23,7 +28,7 @@ module.exports = async function (req, res) {
       currentMatch: null,
     };
 
-    gameUpdates.lastEvent = { change: 'requestStalemate', requestedByPNum: pNum };
+    gameUpdates.lastEvent = { change: 'stalemateRequest', playedBy: pNum };
     // End in stalemate if both players requested stalemate this turn
     if (playerStalemateVal === opponentStalemateVal && opponentStalemateVal === game.turn) {
       gameUpdates = {
@@ -33,33 +38,33 @@ module.exports = async function (req, res) {
         status: gameService.GameStatus.FINISHED,
         winner: null,
       };
-      
+
       await Game.updateOne({ id: gameId }).set(gameUpdates);
-      game = await gameService.populateGame({ gameId }); 
-      
+      game = await gameService.populateGame({ gameId });
+
       victory.gameOver = true;
       victory.currentMatch = await sails.helpers.addGameToMatch(game);
-      
+
       await Game.updateOne({ id: gameId }).set({
         lastEvent: {
-          change: 'requestStalemate',
+          change: 'stalemateRequest',
           game: game,
-          victory
-        }
-      });      
+          victory,
+        },
+      });
       await gameService.clearGame({ userId });
     } else {
       await Game.updateOne({ id: gameId }).set(gameUpdates);
     }
     Game.publish([ game.id ], {
-      change: 'requestStalemate',
+      change: 'stalemateRequest',
       game,
       victory,
-      requestedByPNum: pNum,
+      playedBy: pNum,
     });
 
     return res.ok();
   } catch (err) {
-    return res.badRequest(err);
+    return res.badRequest({ message: err?.message ?? err ?? 'Could not request stalemate' });
   }
 };

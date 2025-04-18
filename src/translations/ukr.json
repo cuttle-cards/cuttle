@@ -273,6 +273,12 @@
         "mustUsePointCard": "Ви можете робити скраб тільки карткою від аса до десяти",
         "mustTargetPointCard": "Ви можете зробити скраб тільки карткою, яку суперник використав для очок"
       },
+      "stalemate": {
+        "alreadyConsideringStalemate": "Нічия вже була запропонована",
+        "noStalemateOffered": "Ваш опонент не запропонував нічию",
+        "opponentConsideringStalemate": "Ваш опонент розглядає вашу пропозицію нічиєї",
+        "previousStalemateRejected": "Запит на нічию вже було відхилено цього ходу"
+      },
       "oneOffs": {
         "oneOffInPlay": "Вже є одна картка ONE-OFF на полі; ви не можете зіграти будь-яку іншу картку, крім двійки для контратаки.",
         "cantPlayWithoutATarget": "Ви не можете зіграти цю картку як ONE-OFF без націлення",

@@ -273,6 +273,12 @@
         "mustUsePointCard": "Du kannst nur mit einer Karte von Ass bis Zehn scutteln",
         "mustTargetPointCard": "Du kannst nur eine Punktkarte scutteln, die dein Gegner gespielt hat"
       },
+      "stalemate": {
+        "alreadyConsideringStalemate": "Ein Patt wurde bereits angeboten",
+        "noStalemateOffered": "Dein Gegner hat kein Patt angeboten",
+        "opponentConsideringStalemate": "Dein Gegner erwägt dein Patt-Angebot",
+        "previousStalemateRejected": "Die Patt-Anfrage wurde in dieser Runde bereits abgelehnt"
+      },
       "oneOffs": {
         "oneOffInPlay": "Es ist bereits ein One-Off im Spiel; du kannst keine Karte spielen, außer einer Zwei zum Kontern.",
         "cantPlayWithoutATarget": "Du kannst diese Karte nicht als ONE-OFF ohne Ziel spielen",

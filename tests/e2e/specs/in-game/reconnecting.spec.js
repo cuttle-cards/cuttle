@@ -828,7 +828,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by stalemate', () => {
-    cy.skipOnGameStateApi();
     cy.get('#game-menu-activator').click();
     cy.get('#game-menu').should('be.visible')
       .get('[data-cy=stalemate-initiate]')
@@ -836,7 +835,9 @@ describe('Reconnecting after game is over', () => {
     cy.get('#request-gameover-dialog').should('be.visible')
       .get('[data-cy=request-gameover-confirm]')
       .click();
-    cy.stalemateOpponent();
+    cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+
+    cy.acceptStalemateOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');

@@ -1,9 +1,9 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
 module.exports = {
-  friendlyName: 'Validate request to Pass',
+  friendlyName: 'Validate request to reject pending stalemate offer',
 
-  description: 'Verifies whether a request to pass a move is legal, throwing explanatory error if not.',
+  description: 'Verifies request to reject stalemate offer is legal, throwing explanatory error if not.',
 
   inputs: {
     currentState: {
@@ -12,9 +12,9 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { Object } requestedMove - Object describing the request to pass
-     * @param { MoveType.PASS } requestedMove.moveType - Specifies that this a passing move
-     * @param { 1 | 0 } requestedMove.playedBy - Which player is passing
+     * @param { Object } requestedMove - Object describing the request for stalemate
+     * @param { MoveType.STALEMATE_REJECT } requestedMove.moveType - Specifies that this a to reject a stalemate offer
+     * @param { 1 | 0 } requestedMove.playedBy - Which player is rejecting the stalemate
      */
     requestedMove: {
       type: 'ref',
@@ -35,14 +35,14 @@ module.exports = {
   sync: true,
   fn: ({ currentState, playedBy }, exits) => {
     try {
-      // Must be your turn
-      if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+      // Must already be considering a stalemate
+      if (currentState.phase !== GamePhase.CONSIDERING_STALEMATE) {
+        throw new Error('game.snackbar.stalemate.noStalemateOffered');
       }
 
-      // Must be MAIN phase of the turn
-      if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('game.snackbar.global.notInMainPhase');
+      // Cannot reject your own stalemate request
+      if (currentState.playedBy === playedBy) {
+        throw new Error('game.snackbar.stalemate.opponentConsideringStalemate');
       }
 
       return exits.success();

@@ -360,12 +360,13 @@ describe('Home - Game List', () => {
       // make sure button is still enabled after 1 person stalemates
       cy.get('@stalemateGameId').then(function () {
         cy.get(`[data-cy-spectate-game=${this.stalemateGameId}]`).should('be.not.disabled');
-        cy.stalemateOpponent();
+        cy.acceptStalemateOpponent();
         cy.get(`[data-cy-spectate-game=${this.stalemateGameId}]`).should('be.disabled');
         cy.log('Game ended by stalemate - successfully disabled spectate button');
       });
 
       cy.reload();
+
       cy.get('[data-cy-game-list-selector=spectate]').click();
 
       // Finished by pass
@@ -390,10 +391,10 @@ describe('Home - Game List', () => {
       cy.get('#deck').should('contain', '(0)');
       cy.recoverSessionOpponent(playerOne);
       cy.passOpponent();
-      cy.get('#history').should('contain', `${playerOne.username} passes`);
+      cy.get('#history').should('contain', `${playerOne.username} passed`);
       cy.recoverSessionOpponent(playerTwo);
       cy.passOpponent();
-      cy.get('#history').should('contain', `${playerTwo.username} passes`);
+      cy.get('#history').should('contain', `${playerTwo.username} passed`);
       cy.recoverSessionOpponent({ username: myUser.username, password: myUser.password });
       cy.vueRoute('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();

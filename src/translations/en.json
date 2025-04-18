@@ -273,6 +273,12 @@
         "mustUsePointCard": "You can only scuttle with an ace through ten",
         "mustTargetPointCard": "You can only scuttle a card your opponent has played for points"
       },
+      "stalemate": {
+        "alreadyConsideringStalemate": "A stalemate has already been offered",
+        "noStalemateOffered": "Your opponent has not offered a stalemate",
+        "opponentConsideringStalemate": "Your opponent is considering your stalemate offer",
+        "previousStalemateRejected": "Stalemate request was already rejected this turn"
+      },
       "oneOffs": {
         "oneOffInPlay": "There is already a one-off in play; you cannot play any card, except a two to counter.",
         "cantPlayWithoutATarget": "You cannot play that card as a ONE-OFF without a target",
