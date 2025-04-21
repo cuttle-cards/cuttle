@@ -1095,19 +1095,19 @@ Cypress.Commands.add('concedeOpponent', (gameId = null) => {
   cy.makeSocketRequest('game', 'concede', { moveType: MoveType.CONCEDE }, 'POST', gameId);
 });
 
-Cypress.Commands.add('stalemateOpponent', () => {
+Cypress.Commands.add('stalemateOpponent', (gameId = null) => {
   cy.log('Opponent requests stalemate');
-  cy.makeSocketRequest('game', 'stalemate', { moveType: MoveType.STALEMATE_REQUEST });
+  cy.makeSocketRequest('game', 'stalemate', { moveType: MoveType.STALEMATE_REQUEST }, 'POST', gameId);
 });
 
-Cypress.Commands.add('acceptStalemateOpponent', () => {
+Cypress.Commands.add('acceptStalemateOpponent', (gameId = null) => {
   cy.log('Opponent accepts stalemate');
-  cy.makeSocketRequest('game', 'stalemate-accept', { moveType: MoveType.STALEMATE_ACCEPT });
+  cy.makeSocketRequest('game', 'stalemate-accept', { moveType: MoveType.STALEMATE_ACCEPT }, 'POST', gameId);
 });
 
-Cypress.Commands.add('rejectStalemateOpponent', () => {
+Cypress.Commands.add('rejectStalemateOpponent', (gameId = null) => {
   cy.log('Opponent rejects stalemate request');
-  cy.makeSocketRequest('game', 'stalemate-reject', { moveType: MoveType.STALEMATE_REJECT });
+  cy.makeSocketRequest('game', 'stalemate-reject', { moveType: MoveType.STALEMATE_REJECT }, 'POST', gameId);
 });
 
 Cypress.Commands.add('reconnectOpponent', (opponent) => {
