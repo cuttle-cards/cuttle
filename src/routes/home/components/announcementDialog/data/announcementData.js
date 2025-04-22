@@ -1,13 +1,13 @@
 // import { Card } from '../../../../../../tests/e2e/fixtures/cards';
 
 export const announcementData = {
-  id: 'worldChampionshipIVAnnouncement',
+  id: 'clubs2025Announcement1',
   activatorText: 'announcement.activatorText',
   title: 'announcement.title',
   displayCards: [],
-  imgSrc: '/img/announcement/cuttle-world-championship-iv-bracket.svg',
-  startTime: '2025-03-07',
-  endTime: '2025-03-09',
+  imgSrc: '/img/announcement/clubs_2025_cuttle_season_championship.svg',
+  startTime: '2025-04-021',
+  endTime: '2025-04-27',
   announcementText: [
     {
       heading: 'announcement.heading',
