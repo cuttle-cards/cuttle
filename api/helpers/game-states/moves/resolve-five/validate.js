@@ -45,7 +45,7 @@ module.exports = {
       }
 
       if (requestedMove.cardId && !player.hand.find(({ id }) => id === requestedMove.cardId)) {
-        throw new Error('You must discard a card from your hand');
+        throw new Error('game.snackbar.oneOffs.five.invalidCardToDiscard');
       }
 
       if (currentState.deck.length === 0) {

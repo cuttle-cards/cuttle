@@ -27,7 +27,7 @@ module.exports = {
 
       let relevantMatch = await sails.helpers.findOrCreateCurrentMatch(player1Id, player2Id);
       if (!relevantMatch) {
-        return exits.error(new Error('Could not add game to match'));
+        return exits.error(new Error('game.snackbar.global.addGameToMatch'));
       }
       if (relevantMatch.endTime || relevantMatch.winner) {
         // Set game back to unranked if the player match already finished

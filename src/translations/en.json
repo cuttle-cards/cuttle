@@ -246,10 +246,22 @@
     "snackbar": {
       "global": {
         "notYourTurn": "It's not your turn!",
+        "notCounteringPhase": "Can only counter during the countering phase",
+        "noOneOffPending": "You cannot counter unless there is a one-off pending",
+        "waitForOpponent": "Waiting for opponent to counter",
         "cardFrozen": "That card is frozen! You must wait a turn to play it.",
         "playFromHand": "You can only play a card that is in your hand",
         "blockedByQueen": "Your opponent's queen prevents you from targeting their other cards",
         "blockedByMultipleQueens": "You cannot play a Targeted One-Off (Two, Nine) when your opponent has more than one Queen",
+        "addGameToMatch": "Could not add game to match",
+        "moveTypeMustBeString": "The MoveType cannot be empty and must be a string",
+        "turnMustBeNumber": "The turn cannot be empty and must be a number",
+        "phaseIsInvalid": "The phase must be a number in [1, 2, 3, 4, 5, 7]",
+        "playedByIsInvalid": "The playedBy attribute must be a number in [0,1]",
+        "gameStatusInvalid": "Game has not yet started or is over",
+        "missingDotGameStates": "Game was not populated with .gameStates collection",
+        "cardsAlreadyDealt": "Cards are already dealt",
+        "gameIdMustBeNumber": "The gameId cannot be empty and must be a number",
         "notInMainPhase": "You can only do that in the main phase"
       },
       "draw": {
@@ -273,11 +285,20 @@
         "mustUsePointCard": "You can only scuttle with an ace through ten",
         "mustTargetPointCard": "You can only scuttle a card your opponent has played for points"
       },
+      "counter": {
+        "notInCounteringPhase": "Can only resolve during the countering phase"
+      },
+      "resolve": {
+        "waitingForCounter": "Waiting for opponent to counter",
+        "pendingOneOff": "You cannot resolve unless there is a one-off pending"
+      },
       "oneOffs": {
         "oneOffInPlay": "There is already a one-off in play; you cannot play any card, except a two to counter.",
         "cantPlayWithoutATarget": "You cannot play that card as a ONE-OFF without a target",
         "onlyTwoOrNine": "You can only play a 2, or a 9 as targeted one-offs.",
         "emptyDeck": "You can't play that one-off unless there are cards in the deck",
+        "twoInvalidTarget": "Twos can only target royals or glasses",
+        "cantPlayAsOneOff": "You cannot play that card as a one-off",
         "three": {
           "scrapIsEmpty": "You can only play a 3 as a one-off if there are cards in the scrap pile",
           "notResolvingThreePhase": "Can pick from scrap by resolving a 3",
@@ -291,6 +312,7 @@
         },
         "five": {
           "selectCardToDiscard": "You must select one card to discard",
+          "invalidCardtoDiscard": "You must discard a card from your hand",
           "incorrectCard": "Incorrect card played",
           "wrongPhase": "You can't resolve a five right now.",
           "fiveDeckIsEmpty": "Cannot resolve 5 one-off with an empty deck"
@@ -490,6 +512,7 @@
   "stats": {
     "error": {
       "oops": "Oops!",
+      "seasonDataNotFound": "Could not find requested season data",
       "message": "There was a problem loading the leaderboard. Refresh the page or select another season to try again."
     },
     "siteUsage": "Site Usage",
@@ -516,7 +539,8 @@
   "error": {
     "404": {
       "title": "404 Not Found"
-    }
+    },
+    "dontWipeDbOnProd": "Error: This action is only permitted in development or staging"
   },
   "announcement": {
     "activatorText": "Cuttle World Championship IV!",
