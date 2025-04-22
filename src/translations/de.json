@@ -246,10 +246,22 @@
     "snackbar": {
       "global": {
         "notYourTurn": "Es ist nicht dein Zug!",
+        "notCounteringPhase": "Kontern ist nur während der Konterphase möglich",
+        "noOneOffPending": "Du kannst nicht kontern, es sei denn, ein One-Off ist anhängig",
+        "waitForOpponent": "Warte auf den Gegner zum Kontern",
         "cardFrozen": "Diese Karte ist eingefroren! Du musst einen Zug warten, um sie zu spielen.",
         "playFromHand": "Du kannst nur eine Karte spielen, die in deiner Hand ist",
         "blockedByQueen": "Die Dame deines Gegners verhindert, dass du seine anderen Karten anvisierst",
         "blockedByMultipleQueens": "Du kannst kein Ziel-One-Off (Zwei, Neun) spielen, wenn dein Gegner mehr als eine Dame hat",
+        "addGameToMatch": "Spiel konnte nicht zum Match hinzugefügt werden",
+        "moveTypeMustBeString": "Der MoveType darf nicht leer sein und muss eine Zeichenkette sein",
+        "turnMustBeNumber": "Die Runde darf nicht leer sein und muss eine Zahl sein",
+        "phaseIsInvalid": "Die Phase muss eine Zahl in [1, 2, 3, 4, 5, 7] sein",
+        "playedByIsInvalid": "Das playedBy-Attribut muss eine Zahl in [0,1] sein",
+        "gameStatusInvalid": "Das Spiel hat noch nicht begonnen oder ist beendet",
+        "missingDotGameStates": "Spiel wurde nicht mit der .gameStates-Sammlung gefüllt",
+        "cardsAlreadyDealt": "Karten wurden bereits ausgeteilt",
+        "gameIdMustBeNumber": "Die gameId darf nicht leer sein und muss eine Zahl sein",
         "notInMainPhase": "Du kannst das nur in der Hauptphase tun"
       },
       "draw": {
@@ -273,11 +285,20 @@
         "mustUsePointCard": "Du kannst nur mit einer Karte von Ass bis Zehn scutteln",
         "mustTargetPointCard": "Du kannst nur eine Punktkarte scutteln, die dein Gegner gespielt hat"
       },
+      "counter": {
+        "notInCounteringPhase": "Auflösen ist nur während der Konterphase möglich"
+      },
+      "resolve": {
+        "pendingOneOff": "Du kannst nicht auflösen, es sei denn, ein One-Off ist anhängig",
+        "waitingForCounter": "Warte auf den Gegner zum Kontern"
+      },
       "oneOffs": {
         "oneOffInPlay": "Es ist bereits ein One-Off im Spiel; du kannst keine Karte spielen, außer einer Zwei zum Kontern.",
         "cantPlayWithoutATarget": "Du kannst diese Karte nicht als ONE-OFF ohne Ziel spielen",
         "onlyTwoOrNine": "Du kannst nur eine 2 oder eine 9 als Ziel-One-Off spielen.",
         "emptyDeck": "Du kannst dieses One-Off nicht spielen, es sei denn, es gibt Karten im Deck",
+        "twoInvalidTarget": "Zweien können nur auf Königliche oder Gläser zielen",
+        "cantPlayAsOneOff": "Du kannst diese Karte nicht als One-Off spielen",
         "three": {
           "scrapIsEmpty": "Du kannst nur eine 3 als One-Off spielen, wenn es Karten im Abwurfstapel gibt",
           "notResolvingThreePhase": "Kann aus dem Abwurfstapel auswählen, indem eine 3 aufgelöst wird",
@@ -291,6 +312,7 @@
         },
         "five": {
           "selectCardToDiscard": "Du musst eine Karte zum Abwerfen auswählen",
+          "invalidCardtoDiscard": "Du musst eine Karte aus deiner Hand abwerfen",
           "incorrectCard": "Falsche Karte gespielt",
           "wrongPhase": "Du kannst eine Fünf gerade nicht auflösen.",
           "fiveDeckIsEmpty": "Kann keine 5-One-Off mit leerem Deck auflösen"
@@ -303,7 +325,8 @@
           "jacksMustBeUnplayable": "Du kannst nicht abwerfen, weil die Buben gespielt werden können"
         }
       }
-    }
+    },
+    "other": {}
   },
   "home": {
     "howItWorks": {
@@ -490,6 +513,7 @@
   "stats": {
     "error": {
       "oops": "Ups!",
+      "seasonDataNotFound": "Angeforderte Saisondaten konnten nicht gefunden werden",
       "message": "Beim Laden der Bestenliste ist ein Problem aufgetreten. Aktualisiere die Seite oder wähle eine andere Saison, um es erneut zu versuchen."
     },
     "siteUsage": "Seitenbenutzung",
@@ -516,7 +540,8 @@
   "error": {
     "404": {
       "title": "404 Nicht gefunden"
-    }
+    },
+    "dontWipeDbOnProd": "Fehler: Diese Aktion ist nur in Entwicklung oder Staging erlaubt"
   },
   "announcement": {
     "activatorText": "Cuttle-Weltmeisterschaft IV!",

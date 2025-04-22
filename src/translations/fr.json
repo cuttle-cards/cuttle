@@ -246,10 +246,22 @@
     "snackbar": {
       "global": {
         "notYourTurn": "Ce n'est pas votre tour !",
+        "notCounteringPhase": "On ne peut contrer que pendant la phase de contre",
+        "noOneOffPending": "Vous ne pouvez pas contrer sauf si un 'one-off' est en attente",
+        "waitForOpponent": "En attente du contre de l'adversaire",
         "cardFrozen": "Cette carte est gelée ! Vous ne pourrez la jouer qu'au prochain tour.",
         "playFromHand": "Vous ne pouez jouer que des cartes de votre main.",
         "blockedByQueen": "La Dame de votre adversaire empêche ses autres cartes d'être ciblées.",
         "blockedByMultipleQueens": "Impossible de jouer une capacité cible (2 ou 9) quand votre adversaire a plus d'une dame.",
+        "addGameToMatch": "Impossible d'ajouter la partie au match",
+        "moveTypeMustBeString": "Le MoveType ne peut pas être vide et doit être une chaîne de caractères",
+        "turnMustBeNumber": "Le tour ne peut pas être vide et doit être un nombre",
+        "phaseIsInvalid": "La phase doit être un nombre parmi [1, 2, 3, 4, 5, 7]",
+        "playedByIsInvalid": "L'attribut playedBy doit être un nombre parmi [0,1]",
+        "gameStatusInvalid": "La partie n'a pas encore commencé ou est terminée",
+        "missingDotGameStates": "La partie n'a pas été remplie avec la collection .gameStates",
+        "cardsAlreadyDealt": "Les cartes ont déjà été distribuées",
+        "gameIdMustBeNumber": "Le gameId ne peut pas être vide et doit être un nombre",
         "notInMainPhase": "Vous ne pouvez faire cela qu'en phase principale"
       },
       "draw": {
@@ -273,11 +285,20 @@
         "mustUsePointCard": "Les scuttles ne se font qu'avec des cartes à points.",
         "mustTargetPointCard": "Les scuttles ne peuvent cibler que les cartes à points."
       },
+      "counter": {
+        "notInCounteringPhase": "On ne peut résoudre que pendant la phase de contre"
+      },
+      "resolve": {
+        "pendingOneOff": "Vous ne pouvez pas résoudre sauf si un 'one-off' est en attente",
+        "waitingForCounter": "En attente du contre de l'adversaire"
+      },
       "oneOffs": {
         "oneOffInPlay": "Une capacité est en cours d'exécution, vous ne pouvez jouer qu'un deux pour contrer.",
         "cantPlayWithoutATarget": "La capacité de cette carte nécessite de cibler une carte.",
         "onlyTwoOrNine": "La capacité du Deux et du Neuf nécessite de cibler une carte.",
         "emptyDeck": "Vous ne pouvez pas jouer cette carte à moins qu'il n'y ait des cartes dans la pioche",
+        "twoInvalidTarget": "Les deux ne peuvent cibler que les figures royales ou les verres",
+        "cantPlayAsOneOff": "Vous ne pouvez pas jouer cette carte comme 'one-off'",
         "three": {
           "scrapIsEmpty": "La capacité du Trois n'est possible que si la défausse n'est pas vide.",
           "notResolvingThreePhase": "Peut choisir parmi le défausse en résolvant un 3.",
@@ -291,6 +312,7 @@
         },
         "five": {
           "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
+          "invalidCardtoDiscard": "Vous devez défausser une carte de votre main",
           "incorrectCard": "Mauvaise carte jouée",
           "wrongPhase": "Vous ne pouvez pas résoudre un cinq maintenant.",
           "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
@@ -490,6 +512,7 @@
   "stats": {
     "error": {
       "oops": "Oops!",
+      "seasonDataNotFound": "Impossible de trouver les données de saison demandées",
       "message": "Un problème est survenu lors du chargement du classement. Actualisez la page ou sélectionnez une autre saison pour réessayer."
     },
     "siteUsage": "Utilisation du site",
@@ -516,7 +539,8 @@
   "error": {
     "404": {
       "title": "404 Non Trouvé"
-    }
+    },
+    "dontWipeDbOnProd": "Erreur : Cette action n'est autorisée qu'en développement ou en préproduction (staging)"
   },
   "announcement": {
     "activatorText": "Championnat du Monde de Cuttle IV !",

@@ -246,10 +246,22 @@
     "snackbar": {
       "global": {
         "notYourTurn": "¡No es tu turno!",
+        "notCounteringPhase": "Solo se puede contraatacar durante la fase de contraataque",
+        "noOneOffPending": "No puedes contraatacar a menos que haya un 'one-off' pendiente",
+        "waitForOpponent": "Esperando a que el oponente contraataque",
         "cardFrozen": "¡Esa carta está bloqueada! Debes esperar a tu turno para jugarla.",
         "playFromHand": "Solo puedes jugar una carta que se encuentre en tu mano",
         "blockedByQueen": "La Reina de tu oponente evita que puedas seleccionar como objetivo sus otras cartas",
         "blockedByMultipleQueens": "No puedes jugar una carta de habilidad única con objetivo (Dos, Nueve) cuando tu oponente tiene más de una reina",
+        "addGameToMatch": "No se pudo agregar el juego a la partida",
+        "moveTypeMustBeString": "El MoveType no puede estar vacío y debe ser una cadena de texto",
+        "turnMustBeNumber": "El turno no puede estar vacío y debe ser un número",
+        "phaseIsInvalid": "La fase debe ser un número en [1, 2, 3, 4, 5, 7]",
+        "playedByIsInvalid": "El atributo playedBy debe ser un número en [0,1]",
+        "gameStatusInvalid": "El juego aún no ha comenzado o ha terminado",
+        "missingDotGameStates": "El juego no se rellenó con la colección .gameStates",
+        "cardsAlreadyDealt": "Las cartas ya han sido repartidas",
+        "gameIdMustBeNumber": "El gameId no puede estar vacío y debe ser un número",
         "notInMainPhase": "Solo puedes hacer eso en la fase principal"
       },
       "draw": {
@@ -273,11 +285,20 @@
         "mustUsePointCard": "Solo puedes hundir con una carta de rango As hasta Diez",
         "mustTargetPointCard": "Solo puedes hundir una carta que tu oponente haya jugado como puntos"
       },
+      "counter": {
+        "notInCounteringPhase": "Solo se puede resolver durante la fase de contraataque"
+      },
+      "resolve": {
+        "pendingOneOff": "No puedes resolver a menos que haya un 'one-off' pendiente",
+        "waitingForCounter": "Esperando a que el oponente contraataque"
+      },
       "oneOffs": {
         "oneOffInPlay": "Ya hay en juego una carta de habilidad única; no puedes jugar ninguna carta, excepto un Dos para contrarrestar.",
         "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad única sin un objetivo",
         "onlyTwoOrNine": "Solo puedes jugar un 2 o un 9 como cartas de habilidad única con objetivo",
         "emptyDeck": "No puedes jugar ese uno por uno a menos que haya cartas en el mazo",
+        "twoInvalidTarget": "Los doses solo pueden apuntar a figuras reales o copas",
+        "cantPlayAsOneOff": "No puedes jugar esa carta como 'one-off'",
         "three": {
           "scrapIsEmpty": "Solo puedes jugar un 3 como carta de habilidad única si hay cartas en el mazo de descarte",
           "notResolvingThreePhase": "Se puede elegir del mazo de descartes al resolver un 3",
@@ -291,6 +312,7 @@
         },
         "five": {
           "selectCardToDiscard": "Debes seleccionar una carta para descartar",
+          "invalidCardtoDiscard": "Debes descartar una carta de tu mano",
           "incorrectCard": "Carta incorrecta jugada",
           "wrongPhase": "No puedes resolver un cinco en este momento.",
           "fiveDeckIsEmpty": "No se puede resolver la habilidad única de un 5 con un mazo vacío"
@@ -490,6 +512,7 @@
   "stats": {
     "error": {
       "oops": "¡Ups!",
+      "seasonDataNotFound": "No se pudieron encontrar los datos de la temporada solicitados",
       "message": "Hubo un problema al cargar la tabla de clasificación. Actualiza la página o selecciona otra temporada para volver a intentarlo."
     },
     "siteUsage": "Uso del sitio",
@@ -516,7 +539,8 @@
   "error": {
     "404": {
       "title": "404 No Encontrado"
-    }
+    },
+    "dontWipeDbOnProd": "Error: Esta acción solo está permitida en desarrollo o pruebas (staging)"
   },
   "announcement": {
     "activatorText": "¡Campeonato Mundial de Cuttle IV!",
