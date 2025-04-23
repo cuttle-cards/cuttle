@@ -1,13 +1,22 @@
 // import { Card } from '../../../../../../tests/e2e/fixtures/cards';
 
 export const announcementData = {
+<<<<<<< HEAD
   id: 'clubs2025Announcement2',
+=======
+  id: 'clubs2025Announcement1',
+>>>>>>> main
   activatorText: 'announcement.activatorText',
   title: 'announcement.title',
   displayCards: [],
   imgSrc: '/img/announcement/clubs_2025_cuttle_season_championship.svg',
+<<<<<<< HEAD
   startTime: '2025-04-020',
   endTime: '2025-04-22',
+=======
+  startTime: '2025-04-021',
+  endTime: '2025-04-27',
+>>>>>>> main
   announcementText: [
     {
       heading: 'announcement.heading',
