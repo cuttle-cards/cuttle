@@ -373,8 +373,7 @@ describe('Spectating Rematches', () => {
       window.localStorage.setItem('announcement', announcementData.id);
     });
 
-    it('Spectates a casual match using rematch', () => {
-      cy.skipOnGameStateApi();
+    it.only('Spectates a casual match using rematch', () => {
       cy.log('Game 1: player1 wins via opponent conceding');
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
@@ -415,7 +414,7 @@ describe('Spectating Rematches', () => {
       cy.stalemateOpponent();
 
       cy.recoverSessionOpponent(playerOne);
-      cy.stalemateOpponent();
+      cy.acceptStalemateOpponent();
 
       cy.get('[data-cy=gameover-rematch').should('not.be.disabled');
 
