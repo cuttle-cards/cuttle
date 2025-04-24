@@ -350,8 +350,8 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
     });
 });
 
-Cypress.Commands.add('playPointsById', (cardId) => {
-  cy.makeSocketRequest('game', 'points', { cardId });
+Cypress.Commands.add('playPointsById', (cardId, gameId = null) => {
+  cy.makeSocketRequest('game', 'points', { cardId, moveType: MoveType.POINTS }, 'POST', gameId);
 });
 
 /**
