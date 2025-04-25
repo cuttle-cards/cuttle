@@ -588,8 +588,8 @@ export function rematchPlayerAsSpectator(userFixture, rematch = true) {
 
       cy.wrap(cardSelector).as('whichPlayer');
     });
-
   cy.recoverSessionOpponent(userFixture);
+
   cy.wait(1000);
   cy.url().then((url) => {
     const oldGameId = Number(url.split('/').pop());
