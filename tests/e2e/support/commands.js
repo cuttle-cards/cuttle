@@ -10,12 +10,6 @@ io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
 const env = Cypress.env('VITE_USE_GAMESTATE_API');
 
-Cypress.Commands.add('skipOnGameStateApi', () => {
-  if (env) {
-    cy.state('runnable').ctx.skip();
-  }
-});
-
 const transformGameUrl = (api, slug, gameId = null) => {
   if (!env) {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
