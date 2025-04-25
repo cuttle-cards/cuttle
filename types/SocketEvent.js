@@ -13,6 +13,7 @@ export default {
   SET_IS_RANKED: 'setIsRanked',
   REJECT_STALEMATE: 'stalemateReject',
   REQUEST_STALEMATE: 'stalemateRequest',
+  ACCEPT_STALEMATE: 'stalemateAccept',
   RESOLVE: 'resolve',
   FIZZLE: 'fizzle',
   RESOLVE_THREE: 'resolveThree',

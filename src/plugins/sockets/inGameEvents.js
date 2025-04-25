@@ -196,6 +196,7 @@ export async function handleInGameEvents(evData) {
         !evData.victory.gameOver && evData.playedBy !== gameStore.myPNum;
       gameStore.waitingForOpponentToStalemate = !evData.victory.gameOver && evData.playedBy === gameStore.myPNum;
       break;
+    case SocketEvent.ACCEPT_STALEMATE:
     case SocketEvent.REJECT_STALEMATE:
       gameStore.consideringOpponentStalemateRequest = false;
       gameStore.waitingForOpponentToStalemate = false;
