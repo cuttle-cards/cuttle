@@ -577,7 +577,7 @@ describe('Spectating Rematches', () => {
       cy.url().should('not.include', '/spectate');
     });
 
-    it.only('Shows when player1 declines rematch while spectating ranked match', () => {
+    it('Shows when player1 declines rematch while spectating ranked match', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
@@ -585,15 +585,13 @@ describe('Spectating Rematches', () => {
     });
 
     it('Shows when player2 declines rematch while spectating ranked match', () => {
-      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true });
       rematchPlayerAsSpectator(playerTwo, false);
     });
 
-    it('Spectates a ranked match where player 2 wins the match', () => {
-      cy.skipOnGameStateApi();
+    it.only('Spectates a ranked match where player 2 wins the match', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
