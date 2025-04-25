@@ -435,7 +435,7 @@ describe('Spectating Rematches', () => {
       cy.loadSeasonFixture([ currentSeason ]);
     });
 
-    it.only('Specates a ranked match using rematch', () => {
+    it('Specates a ranked match using rematch', () => {
       // Game 1: playerOne wins with points
       cy.log('Game 1: player1 wins with points');
       cy.loadGameFixture(0, {
@@ -577,8 +577,7 @@ describe('Spectating Rematches', () => {
       cy.url().should('not.include', '/spectate');
     });
 
-    it('Shows when player1 declines rematch while spectating ranked match', () => {
-      cy.skipOnGameStateApi();
+    it.only('Shows when player1 declines rematch while spectating ranked match', () => {
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
