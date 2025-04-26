@@ -525,10 +525,10 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Campeonato de Temporada de Clubs 2025!",
+    "activatorText": "¡Campeonato de Temporada de Clubs 2025 HOY!",
     "title": "Campeonato de Clubs 2025",
-    "heading": "Campeonato de Temporada de Cuttle",
-    "paragraph": "¡El Campeonato de Temporada de Cuttle de Clubs 2025 es este sábado, 26 de abril a las 12:30pm EST! Mira a los 8 mejores jugadores de la temporada pasada de partidas clasificadas competir en una eliminatoria doble por el título de Campeón de la Temporada de Cuttle de Clubs 2025. Míralo en vivo en ",
+    "heading": "¡El Campeonato es Hoy!",
+    "paragraph": "¡El Campeonato de Temporada de Cuttle de Clubs 2025 es HOY, 26 de abril a las 12:30pm EST! Mira a los 8 mejores jugadores de la temporada pasada de partidas clasificadas competir en una eliminatoria doble por el título de Campeón de la Temporada de Cuttle de Clubs 2025. Míralo en vivo en ",
     "twitchLink": "twitch.tv/cuttle_cards"
   }
 }
