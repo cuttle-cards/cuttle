@@ -6,7 +6,7 @@ export const announcementData = {
   title: 'announcement.title',
   displayCards: [],
   imgSrc: '/img/announcement/clubs_2025_cuttle_season_championship.svg',
-  startTime: '2025-04-020',
+  startTime: '2025-04-20',
   endTime: '2025-04-27',
   announcementText: [
     {
