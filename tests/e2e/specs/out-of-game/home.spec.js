@@ -332,8 +332,6 @@ describe('Home - Game List', () => {
       cy.signupOpponent(playerOne);
       cy.signupOpponent(playerTwo);
 
-      // Navigate to homepage and select spectate tab
-      // cy.visit('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
 
       // Finished by conceded
