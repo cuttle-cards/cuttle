@@ -7,11 +7,11 @@ export const announcementData = {
   displayCards: [],
   imgSrc: '/img/announcement/clubs_2025_cuttle_season_championship.svg',
   startTime: '2025-04-020',
-  endTime: '2025-04-22',
+  endTime: '2025-04-27',
   announcementText: [
     {
       heading: 'announcement.heading',
-      paragraph: [ 
+      paragraph: [
         { text: 'announcement.paragraph' },
         { text: 'announcement.twitchLink', url: 'https://twitch.tv/cuttle_cards' }
       ],
