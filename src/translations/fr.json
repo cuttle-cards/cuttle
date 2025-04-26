@@ -525,10 +525,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Championnat du Monde de Cuttle IV !",
-    "title": "Cuttle World Championship",
-    "heading": "Championnat du Monde",
-    "paragraph": "Le Championnat du Monde de Cuttle IV a lieu aujourd'hui, samedi 8 mars à 12h EST ! Regardez les 8 meilleurs joueurs de l'année passée de jeu compétitif s'affronter pour le titre de Champion du Monde de Cuttle et leur choix parmi les 8 incroyables decks de récompense offerts par le joueur SUBMARINO. Regardez-le en direct sur ",
+    "activatorText": "Championnat de la saison 2025 des Clubs AUJOURD'HUI !",
+    "title": "Championnat des Clubs 2025",
+    "heading": "Championnat aujourd'hui !",
+    "paragraph": "Le Championnat de saison de Cuttle des Clubs 2025 a lieu AUJOURD'HUI, samedi 26 avril à 12h30 EST ! Regardez les 8 meilleurs joueurs de la saison classée précédente s'affronter dans un tournoi à double élimination pour le titre de Champion de la saison 2025 de Cuttle des Clubs ! Regardez-le en direct sur ",
     "twitchLink": "twitch.tv/cuttle_cards"
   }
 }
