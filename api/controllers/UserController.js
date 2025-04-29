@@ -61,17 +61,27 @@ module.exports = {
       if (!loggedIn) {
         await passwordAPI.checkPass(password, user.encryptedPassword);
       }
+
+      req.session.usr = user.id;
       // Query for game if user is in one
       const gameId = (user.game ?? req.session.game) ?? null;
 
       if (process.env.VITE_USE_GAMESTATE_API && gameId) {
         const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
-        const game = await Game.findOne(gameId)
+        const game = await Game.findOne({ id: gameId })
           .populate('gameStates')
           .populate('p0')
           .populate('p1');
-        const gameObject = game.gameStates.length ? await unpackGamestate(game.gameStates.at(-1)) : null;
-        const socketEvent = game.gameStates.length ?
+
+
+        if (!game) {
+          return res.ok({
+            username: user.username
+          });
+        }
+
+        const gameObject = game.gameStates?.length ? await unpackGamestate(game.gameStates.at(-1)) : null;
+        const socketEvent = game?.gameStates?.length ?
           await createSocketEvent(game, gameObject)
           : { game: { ...game, players: game.p1 ? [ game.p0, game.p1 ] : [ game.p0 ] } };
         
@@ -80,7 +90,6 @@ module.exports = {
         req.session.game = game.id;
         req.session.pNum = user.pNum ?? undefined;
         Game.publish([ game.id ], socketEvent);
-        req.session.usr = user.id;
 
         const pNum = game.p0?.id === user.id ? 0 : 1;
         return res.ok({
@@ -97,7 +106,7 @@ module.exports = {
           ? await gameService.populateGame({ gameId })
           : null;
       req.session.loggedIn = true;
-      req.session.usr = user.id;
+
       if (unpopulatedGame) {
         Game.subscribe(req, [ unpopulatedGame.id ]);
         req.session.game = unpopulatedGame.id;
