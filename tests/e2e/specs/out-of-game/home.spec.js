@@ -322,6 +322,7 @@ describe('Home - Game List', () => {
         // No open games appear
         cy.contains('[data-cy-join-game]', 'Join Casual').should('not.exist');
         // Existing game is available to spectate
+        cy.wait(500);
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.reload();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
@@ -444,6 +445,7 @@ describe('Home - Game List', () => {
     });
   });
 });
+
 describe('Home - Create Game', () => {
   beforeEach(setup);
 
