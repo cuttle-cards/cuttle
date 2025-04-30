@@ -47,7 +47,7 @@ module.exports = async function (req, res) {
 
       await Game.updateOne({ id: gameId }).set({
         lastEvent: {
-          change: 'stalemateRequest',
+          change: 'stalemateAccept',
           game: game,
           victory,
         },

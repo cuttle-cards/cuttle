@@ -166,8 +166,7 @@ describe('Spectating Games', () => {
     cy.get('.v-overlay').should('not.exist');
   });
 
-  it('Leaves a spectated game and joins another without processing extraneous updates', () => {
-    cy.skipOnGameStateApi();
+  it('Leaves a spectated game and joins another without processing extraneous updates', function() {
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES ],
@@ -199,7 +198,7 @@ describe('Spectating Games', () => {
 
     cy.recoverSessionOpponent(playerOne);
     cy.get('@aceOfSpades').then((aceOfSpadesId) => {
-      cy.playPointsById(aceOfSpadesId);
+      cy.playPointsById(aceOfSpadesId, this.gameData.gameId);
     });
 
     cy.wait(3000);

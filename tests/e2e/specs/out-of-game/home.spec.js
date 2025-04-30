@@ -322,6 +322,7 @@ describe('Home - Game List', () => {
         // No open games appear
         cy.contains('[data-cy-join-game]', 'Join Casual').should('not.exist');
         // Existing game is available to spectate
+        cy.wait(500);
         cy.get('[data-cy-game-list-selector=spectate]').click();
         cy.reload();
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
@@ -329,45 +330,41 @@ describe('Home - Game List', () => {
     });
 
     it('Disables spectate button if on home view before game finishes', () => {
-      cy.skipOnGameStateApi();
       cy.signupOpponent(playerOne);
       cy.signupOpponent(playerTwo);
 
-      // Navigate to homepage and select spectate tab
-      cy.visit('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
 
       // Finished by conceded
       cy.log('Setup game end by conceding');
       setupGameBetweenTwoUnseenPlayers('conceded');
-      cy.concedeOpponent();
-      cy.get('@concededGameId').then(function () {
-        cy.get(`[data-cy-spectate-game=${this.concededGameId}]`).should('be.disabled');
+      cy.get('@concededGameId').then((concededGameId) => {
+        cy.concedeOpponent(concededGameId);
+        cy.get(`[data-cy-spectate-game=${concededGameId}]`).should('be.disabled');
       });
       cy.log('Game ended by conceding - successfully disabled spectate button');
 
       // Navigate to homepage and select spectate tab
       cy.reload();
-      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.url().should('include', '/spectate-list');
 
       // Finished by stalemate
       cy.log('Setup game end by stalemate');
       setupGameBetweenTwoUnseenPlayers('stalemate');
 
-      cy.stalemateOpponent();
-      cy.recoverSessionOpponent(playerOne);
-
+      
       // make sure button is still enabled after 1 person stalemates
-      cy.get('@stalemateGameId').then(function () {
-        cy.get(`[data-cy-spectate-game=${this.stalemateGameId}]`).should('be.not.disabled');
-        cy.acceptStalemateOpponent();
-        cy.get(`[data-cy-spectate-game=${this.stalemateGameId}]`).should('be.disabled');
+      cy.get('@stalemateGameId').then(function (stalemateGameId) {
+        cy.stalemateOpponent(stalemateGameId);
+        cy.recoverSessionOpponent(playerOne);
+        cy.get(`[data-cy-spectate-game=${stalemateGameId}]`).should('be.not.disabled');
+        cy.acceptStalemateOpponent(stalemateGameId);
+        cy.get(`[data-cy-spectate-game=${stalemateGameId}]`).should('be.disabled');
         cy.log('Game ended by stalemate - successfully disabled spectate button');
       });
 
       cy.reload();
-
-      cy.get('[data-cy-game-list-selector=spectate]').click();
+      cy.url().should('include', '/spectate-list');
 
       // Finished by pass
       cy.log('Setup game end by passing');
@@ -380,6 +377,8 @@ describe('Home - Game List', () => {
         p1Points: [],
         p1FaceCards: [],
         deck: [],
+        topCard: Card.ACE_OF_CLUBS,
+        secondCard: Card.FOUR_OF_HEARTS,
       });
       // Draw last two card, both players pass until stalemate
       cy.get('#deck').should('contain', '(2)');
@@ -446,6 +445,7 @@ describe('Home - Game List', () => {
     });
   });
 });
+
 describe('Home - Create Game', () => {
   beforeEach(setup);
 

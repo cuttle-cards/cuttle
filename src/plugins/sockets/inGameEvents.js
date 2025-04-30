@@ -189,14 +189,15 @@ export async function handleInGameEvents(evData) {
         gameStore.removeSpectator(evData.username);
       }
       break;
-    case SocketEvent.REQUEST_STALEMATE:
+    case SocketEvent.STALEMATE_REQUEST:
       // Show OpponentRequestedStalemateDialog if opponent requested stalemate
       //   and game is not yet over
       gameStore.consideringOpponentStalemateRequest =
         !evData.victory.gameOver && evData.playedBy !== gameStore.myPNum;
       gameStore.waitingForOpponentToStalemate = !evData.victory.gameOver && evData.playedBy === gameStore.myPNum;
       break;
-    case SocketEvent.REJECT_STALEMATE:
+    case SocketEvent.STALEMATE_ACCEPT:
+    case SocketEvent.STALEMATE_REJECT:
       gameStore.consideringOpponentStalemateRequest = false;
       gameStore.waitingForOpponentToStalemate = false;
       break;

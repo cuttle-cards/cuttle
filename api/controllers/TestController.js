@@ -10,14 +10,14 @@ const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 
 module.exports = {
-  wipeDatabase: function (_req, res) {
-    return sails.helpers.wipeDatabase()
-      .then(() => {
-        return res.ok();
-      })
-      .catch((err) => {
-        return res.badRequest(err);
-      });
+  wipeDatabase: async function (_req, res) {
+    try {
+      await sails.helpers.wipeDatabase();
+
+      return res.ok();
+    } catch (err) {
+      return res.badRequest(err);
+    }
   },
 
   setBadSession: function (req, res) {

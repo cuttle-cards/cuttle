@@ -61,26 +61,36 @@ module.exports = {
       if (!loggedIn) {
         await passwordAPI.checkPass(password, user.encryptedPassword);
       }
+
+      req.session.usr = user.id;
+      req.session.loggedIn = true;
       // Query for game if user is in one
       const gameId = (user.game ?? req.session.game) ?? null;
 
-      if (process.env.VITE_USE_GAMESTATE_API) {
+      if (process.env.VITE_USE_GAMESTATE_API && gameId) {
         const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
-        const game = await Game.findOne(gameId)
+        const game = await Game.findOne({ id: gameId })
           .populate('gameStates')
           .populate('p0')
           .populate('p1');
-        const gameObject = game.gameStates.length ? await unpackGamestate(game.gameStates.at(-1)) : null;
-        const socketEvent = game.gameStates.length ?
+
+
+        if (!game) {
+          return res.ok({
+            username: user.username
+          });
+        }
+
+        const gameObject = game.gameStates?.length ? await unpackGamestate(game.gameStates.at(-1)) : null;
+        const socketEvent = game?.gameStates?.length ?
           await createSocketEvent(game, gameObject)
           : { game: { ...game, players: game.p1 ? [ game.p0, game.p1 ] : [ game.p0 ] } };
         
         Game.subscribe(req, [ game.id ]);
-        req.session.usr = user.id;
-        // FIXME: #965 - remove game and pNum
+        // TODO #965 - remove game and pNum
         req.session.game = game.id;
         req.session.pNum = user.pNum ?? undefined;
-        Game.publish([ game.id ],socketEvent);
+        Game.publish([ game.id ], socketEvent);
 
         const pNum = game.p0?.id === user.id ? 0 : 1;
         return res.ok({
@@ -89,15 +99,14 @@ module.exports = {
           pNum
         });
       }
-      // FIXME: #965
+      // TODO #965
       // Remove everything between here and catch AFTER gamestate is deployed
       const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
       const populatedGame =
         unpopulatedGame?.status === GameStatus.STARTED
           ? await gameService.populateGame({ gameId })
           : null;
-      req.session.loggedIn = true;
-      req.session.usr = user.id;
+
       if (unpopulatedGame) {
         Game.subscribe(req, [ unpopulatedGame.id ]);
         req.session.game = unpopulatedGame.id;
