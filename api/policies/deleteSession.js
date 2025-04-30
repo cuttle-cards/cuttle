@@ -4,5 +4,5 @@ module.exports = function (req, res) {
   delete req.session.usr;
   delete req.session.loggedIn;
   delete req.session.game;
-  return res.badRequest('Session Deleted for testing');
+  return res.ok('Session Deleted for testing');
 };
