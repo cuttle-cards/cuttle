@@ -63,6 +63,7 @@ module.exports = {
       }
 
       req.session.usr = user.id;
+      req.session.loggedIn = true;
       // Query for game if user is in one
       const gameId = (user.game ?? req.session.game) ?? null;
 
@@ -105,7 +106,6 @@ module.exports = {
         unpopulatedGame?.status === GameStatus.STARTED
           ? await gameService.populateGame({ gameId })
           : null;
-      req.session.loggedIn = true;
 
       if (unpopulatedGame) {
         Game.subscribe(req, [ unpopulatedGame.id ]);
