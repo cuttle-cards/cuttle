@@ -568,7 +568,6 @@ describe('Spectating Rematches', () => {
       cy.get('[data-cy=opponent-match-result] [data-cy-result-img=lost]').should('be.visible');
 
       // The stalemate dialog should disappear
-      cy.wait(1000);
       cy.get('#opponent-requested-stalemate-dialog').should('not.exist');
 
       // Go home
