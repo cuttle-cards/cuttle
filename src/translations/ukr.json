@@ -277,7 +277,8 @@
         "alreadyConsideringStalemate": "Нічия вже була запропонована",
         "noStalemateOffered": "Ваш опонент не запропонував нічию",
         "opponentConsideringStalemate": "Ваш опонент розглядає вашу пропозицію нічиєї",
-        "previousStalemateRejected": "Запит на нічию вже було відхилено цього ходу"
+        "previousStalemateRejected": "Запит на нічию вже було відхилено цього ходу",
+        "wrongPhase": "Ви не можете запросити нічию під час інших ходів"
       },
       "oneOffs": {
         "oneOffInPlay": "Вже є одна картка ONE-OFF на полі; ви не можете зіграти будь-яку іншу картку, крім двійки для контратаки.",

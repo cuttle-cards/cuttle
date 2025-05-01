@@ -380,48 +380,6 @@ describe('Stalemates', () => {
       assertStalemate();
     });
 
-    it('Rejects a stalemate while resolving a seven', () => {
-      cy.setupGameAsP0();
-      cy.loadGameFixture(0, {
-        p0Hand: [ Card.SEVEN_OF_CLUBS ],
-        p0Points: [],
-        p0FaceCards: [],
-        p1Hand: [],
-        p1Points: [],
-        p1FaceCards: [],
-        topCard: Card.FOUR_OF_CLUBS,
-        secondCard: Card.SIX_OF_DIAMONDS,
-      });
-  
-      cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
-  
-      cy.get('[data-top-card=4-0]').should('exist')
-        .and('be.visible');
-
-      cy.stalemateOpponent();
-
-      cy.get('#opponent-requested-stalemate-dialog')
-        .should('be.visible')
-        .find('[data-cy=reject-stalemate]')
-        .click();
-
-      cy.get('#opponent-requested-stalemate-dialog')
-        .should('not.exist');
-
-      cy.get('[data-second-card=6-1]').click();
-      cy.get('[data-move-choice=points]').click();
-
-      assertGameState(0, {
-        p0Hand: [],
-        p0Points: [ Card.SIX_OF_DIAMONDS ],
-        p0FaceCards: [],
-        p1Hand: [],
-        p1Points: [],
-        p1FaceCards: [],
-        scrap: [ Card.SEVEN_OF_CLUBS ]
-      });
-    });
-
     describe('Illegal stalemate requests', () => {
       // TODO: #965 test that you can't request stalemate while your opponent's stalemate req is pending
 
@@ -485,7 +443,80 @@ describe('Stalemates', () => {
             }
           });
       });
-    });
+
+      it('Prevents users from requesting a stalemate while resolving a seven', () => {
+        cy.setupGameAsP0();
+        cy.loadGameFixture(0, {
+          p0Hand: [ Card.SEVEN_OF_CLUBS ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.FOUR_OF_CLUBS,
+          secondCard: Card.SIX_OF_DIAMONDS,
+        });
+    
+        cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+    
+        cy.get('[data-top-card=4-0]').should('exist')
+          .and('be.visible');
+  
+        // Force store to request stalemate; should 400
+        cy.window()
+          .its('cuttle.gameStore')
+          .then(async (store) => {
+            try {
+              await store.requestStalemate();
+              // Fail test if backend allows request
+              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during 7 resolution, but got 200 response');
+            } catch (err) {
+              expect(err).to.eq('game.snackbar.stalemate.wrongPhase');
+            }
+          });
+  
+        cy.get('[data-second-card=6-1]').click();
+        cy.get('[data-move-choice=points]').click();
+  
+        assertGameState(0, {
+          p0Hand: [],
+          p0Points: [ Card.SIX_OF_DIAMONDS ],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+          scrap: [ Card.SEVEN_OF_CLUBS ]
+        });
+      });
+  
+      it('Prevents users from requesting a stalemate during countering', () => {
+        cy.setupGameAsP1();
+        cy.loadGameFixture(1, {
+          p0Hand: [ Card.ACE_OF_CLUBS ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+        });
+  
+        cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
+        cy.get('#cannot-counter-dialog').should('be.visible');
+  
+        // Force store to request stalemate; should 400
+        cy.window()
+          .its('cuttle.gameStore')
+          .then(async (store) => {
+            try {
+              await store.requestStalemate();
+              // Fail test if backend allows request
+              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+            } catch (err) {
+              expect(err).to.eq('game.snackbar.stalemate.wrongPhase');
+            }
+          });
+      });
+    }); // End describe illegal stalemates
   }); // End describe requesting stalemates
 }); // End describe stalemates
 

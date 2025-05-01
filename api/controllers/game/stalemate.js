@@ -6,7 +6,12 @@ module.exports = async function (req, res) {
   try {
     const { game: gameId, pNum, usr: userId } = req.session;
     // Track which turn each player most recently requested stalemate
-    let game = await Game.findOne({ id: gameId }).populate('players', { sort: 'pNum' });
+    let game = await Game.findOne({ id: gameId })
+      .populate('players', { sort: 'pNum' })
+      .populate('oneOff')
+      .populate('resolving')
+      .populate('twos');
+
     let gameUpdates = {};
     const keyPrefix = 'turnStalemateWasRequestedByP';
     const playerStalemateKey = `${keyPrefix}${pNum}`;
@@ -15,6 +20,11 @@ module.exports = async function (req, res) {
     // Error if this player already requested stalemate this turn
     if (game[playerStalemateKey] === game.turn) {
       throw new Error('game.snackbar.stalemate.previousStalemateRejected');
+    }
+
+    // Error if in the middle of another move/phase
+    if (game.oneOff || game.resolving || game.twos.length) {
+      throw new Error('game.snackbar.stalemate.wrongPhase');
     }
 
     gameUpdates[playerStalemateKey] = playerStalemateVal;

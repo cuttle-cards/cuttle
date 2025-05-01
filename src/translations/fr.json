@@ -277,7 +277,8 @@
         "alreadyConsideringStalemate": "Une proposition de match nul a déjà été faite",
         "noStalemateOffered": "Votre adversaire n'a pas proposé de match nul",
         "opponentConsideringStalemate": "Votre adversaire envisage votre offre de match nul",
-        "previousStalemateRejected": "La demande de match nul a déjà été rejetée ce tour"
+        "previousStalemateRejected": "La demande de match nul a déjà été rejetée ce tour",
+        "wrongPhase": "Vous ne pouvez pas demander la nulle pendant d'autres mouvements"
       },
       "oneOffs": {
         "oneOffInPlay": "Une capacité est en cours d'exécution, vous ne pouvez jouer qu'un deux pour contrer.",
