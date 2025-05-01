@@ -236,7 +236,7 @@ Cypress.Commands.add('loginPlayer', (player) => {
 });
 
 Cypress.Commands.add('createGameOpponent', (name) => {
-  cy.makeSocketRequest('game', 'create', {
+  cy.makeSocketRequest('game', '', {
     gameName: name,
   });
 });
