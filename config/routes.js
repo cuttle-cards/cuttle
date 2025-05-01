@@ -59,7 +59,7 @@ module.exports.routes = {
   '/api/stats/seasons/:seasonId': 'StatsController.getSeasonStats',
 
   'POST /api/game/': 'game/create',
-  'GET /api/game/getList': 'game/get-list',
+  'GET /api/game/list': 'game/get-list',
   '/api/game/subscribe': 'game/subscribe',
   '/api/game/spectate': 'game/spectate',
   'POST /api/game/:gameId/spectate/leave': 'game/spectate/leave',

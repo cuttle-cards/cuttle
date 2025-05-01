@@ -73,7 +73,7 @@ export const useGameListStore = defineStore('gameList', {
     },
     requestGameList() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/api/game/getList', (resData, jwres) => {
+        io.socket.get('/api/game/list', (resData, jwres) => {
           if (jwres.statusCode === 200) {
             const openGames = cloneDeep(resData.openGames);
             const spectateGames = cloneDeep(resData.spectatableGames);
