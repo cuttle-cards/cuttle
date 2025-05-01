@@ -277,7 +277,8 @@
         "alreadyConsideringStalemate": "Ein Patt wurde bereits angeboten",
         "noStalemateOffered": "Dein Gegner hat kein Patt angeboten",
         "opponentConsideringStalemate": "Dein Gegner erwägt dein Patt-Angebot",
-        "previousStalemateRejected": "Die Patt-Anfrage wurde in dieser Runde bereits abgelehnt"
+        "previousStalemateRejected": "Die Patt-Anfrage wurde in dieser Runde bereits abgelehnt",
+        "wrongPhase": "Sie können während anderer Züge kein Remis verlangen"
       },
       "oneOffs": {
         "oneOffInPlay": "Es ist bereits ein One-Off im Spiel; du kannst keine Karte spielen, außer einer Zwei zum Kontern.",

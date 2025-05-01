@@ -277,7 +277,8 @@
         "alreadyConsideringStalemate": "Ya se ha ofrecido un empate",
         "noStalemateOffered": "Tu oponente no ha ofrecido un empate",
         "opponentConsideringStalemate": "Tu oponente está considerando tu oferta de empate",
-        "previousStalemateRejected": "La solicitud de empate ya fue rechazada en este turno"
+        "previousStalemateRejected": "La solicitud de empate ya fue rechazada en este turno",
+        "wrongPhase": "No puedes solicitar tablas durante otros movimientos"
       },
       "oneOffs": {
         "oneOffInPlay": "Ya hay en juego una carta de habilidad única; no puedes jugar ninguna carta, excepto un Dos para contrarrestar.",
