@@ -444,7 +444,7 @@ describe('Stalemates', () => {
           });
       });
 
-      it('Rejects a stalemate while resolving a seven', () => {
+      it('Prevents users from requesting a stalemate while resolving a seven', () => {
         cy.setupGameAsP0();
         cy.loadGameFixture(0, {
           p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -489,7 +489,7 @@ describe('Stalemates', () => {
         });
       });
   
-      it('Rejects a stalemate during countering', () => {
+      it('Prevents users from requesting a stalemate during countering', () => {
         cy.setupGameAsP1();
         cy.loadGameFixture(1, {
           p0Hand: [ Card.ACE_OF_CLUBS ],
