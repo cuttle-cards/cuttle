@@ -17,13 +17,14 @@ module.exports = async function (req, res) {
     const playerStalemateKey = `${keyPrefix}${pNum}`;
     const playerStalemateVal = game.turn;
 
-    // Error if in the middle of another move/phase
-    if (game.oneOff || game.resolving || game.twos.length) {
-      throw new Error('game.snackbar.stalemate.wrongPhase');
-    }
     // Error if this player already requested stalemate this turn
     if (game[playerStalemateKey] === game.turn) {
       throw new Error('game.snackbar.stalemate.previousStalemateRejected');
+    }
+
+    // Error if in the middle of another move/phase
+    if (game.oneOff || game.resolving || game.twos.length) {
+      throw new Error('game.snackbar.stalemate.wrongPhase');
     }
 
     gameUpdates[playerStalemateKey] = playerStalemateVal;

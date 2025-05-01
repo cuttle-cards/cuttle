@@ -42,11 +42,6 @@ module.exports = {
         throw new Error('game.snackbar.stalemate.alreadyConsideringStalemate');
       }
 
-      // Must be in main phase
-      if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('game.snackbar.stalemate.wrongPhase');
-      }
-
       // Can't request stalemate more than once per turn
       if (
         priorStates.some(
@@ -55,6 +50,12 @@ module.exports = {
       ) {
         throw new Error('game.snackbar.stalemate.previousStalemateRejected');
       }
+
+      // Must be in main phase
+      if (currentState.phase !== GamePhase.MAIN) {
+        throw new Error('game.snackbar.stalemate.wrongPhase');
+      }
+
 
       return exits.success();
     } catch (err) {
