@@ -425,7 +425,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestSubscribe(gameId) {
       return new Promise((resolve, reject) => {
-        io.socket.get(
+        io.socket.post(
           '/api/game/subscribe',
           {
             gameId,

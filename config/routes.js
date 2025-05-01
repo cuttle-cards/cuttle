@@ -60,7 +60,7 @@ module.exports.routes = {
 
   'POST /api/game/': 'game/create',
   'GET /api/game/list': 'game/get-list',
-  '/api/game/subscribe': 'game/subscribe',
+  'POST /api/game/subscribe': 'game/subscribe',
   '/api/game/spectate': 'game/spectate',
   'POST /api/game/:gameId/spectate/leave': 'game/spectate/leave',
   '/api/game/reconnect': 'game/reconnect',
