@@ -43,7 +43,7 @@ module.exports = {
       }
 
       // Must be in main phase
-      if (currentState.phase !== GamePhase.main) {
+      if (currentState.phase !== GamePhase.MAIN) {
         throw new Error('game.snackbar.stalemate.wrongPhase');
       }
 
