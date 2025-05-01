@@ -39,7 +39,7 @@ module.exports = {
 
       // Must not already be considering a stalemate
       if (currentState.phase === GamePhase.STALEMATE_REQUEST) {
-        throw new Error('game.snackbar.global.alreadyConsideringStalemate');
+        throw new Error('game.snackbar.stalemate.alreadyConsideringStalemate');
       }
 
       // Must be in main phase
