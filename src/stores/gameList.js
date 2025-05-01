@@ -86,8 +86,8 @@ export const useGameListStore = defineStore('gameList', {
     },
     requestCreateGame({ gameName, isRanked = false }) {
       return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/create',
+        io.socket.post(
+          '/api/game',
           {
             gameName,
             isRanked,

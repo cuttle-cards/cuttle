@@ -58,8 +58,8 @@ module.exports.routes = {
   '/api/stats/seasons/current': 'StatsController.getCurrentStats',
   '/api/stats/seasons/:seasonId': 'StatsController.getSeasonStats',
 
-  '/api/game/create': 'game/create',
-  '/api/game/getList': 'game/get-list',
+  'POST /api/game/': 'game/create',
+  'GET /api/game/getList': 'game/get-list',
   '/api/game/subscribe': 'game/subscribe',
   '/api/game/spectate': 'game/spectate',
   'POST /api/game/:gameId/spectate/leave': 'game/spectate/leave',
