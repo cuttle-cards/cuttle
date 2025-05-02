@@ -265,8 +265,8 @@ Cypress.Commands.add('readyOpponent', (id) => {
   cy.makeSocketRequest(`game/${id}`, 'ready');
 });
 
-Cypress.Commands.add('setIsRankedOpponent', (isRanked) => {
-  cy.makeSocketRequest('game', 'setIsRanked', { isRanked });
+Cypress.Commands.add('setIsRankedOpponent', (gameId, isRanked) => {
+  cy.makeSocketRequest(`game/${gameId}`, 'is-ranked', { isRanked }, 'PATCH');
 });
 
 Cypress.Commands.add('toggleInput', (selector, checked = false) => {

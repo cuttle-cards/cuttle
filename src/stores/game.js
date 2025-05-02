@@ -492,8 +492,8 @@ export const useGameStore = defineStore('game', {
     },
     async requestSetIsRanked({ isRanked }) {
       return new Promise((resolve, reject) => {
-        io.socket.post(
-          '/api/game/setIsRanked',
+        io.socket.patch(
+          `/api/game/${this.id}/is-ranked`,
           {
             isRanked,
           },

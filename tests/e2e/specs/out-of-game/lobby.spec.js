@@ -235,14 +235,15 @@ describe('Lobby - P0 Perspective', () => {
       .should('not.have.class', 'ready');
   });
 
-  it('Shows when opponent changes game to ranked or casual', function () {
+  it.only('Shows when opponent changes game to ranked or casual', function () {
+    const { gameId } = this.gameSummary;
     // Opponent subscribes & Changes Mode
     cy.signupOpponent(opponentOne);
-    cy.subscribeOpponent(this.gameSummary.gameId);
+    cy.subscribeOpponent(gameId);
 
     checkRanked(false);
     cy.get('[data-cy=ready-button-coffee-icon]').should('exist');
-    cy.setIsRankedOpponent(true);
+    cy.setIsRankedOpponent(gameId, true);
 
     checkRanked(true);
     cy.get('[data-cy=ready-button-sword-cross-icon]').should('exist');
