@@ -182,21 +182,21 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
   });
   cy.log('Finished setting up game as p1');
 });
-Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
+Cypress.Commands.add('setupGameAsSpectator', (isRanked = false, gameIdAlias = 'gameId') => {
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  cy.createGamePlayer({ gameName: 'Spectator Game', isRanked }).then((gameData) => {
+  cy.createGamePlayer({ gameName: 'Spectator Game', isRanked }).then(({ gameId }) => {
     // Test that JOIN button starts enabled
     cy.get('[data-cy-join-game]').should('not.be.disabled');
     // Sign up 2 users and subscribe them to game
     cy.signupOpponent(playerOne);
-    cy.subscribeOpponent(gameData.gameId);
+    cy.subscribeOpponent(gameId);
     // Opponents start game, it appears as spectatable
-    cy.readyOpponent(gameData.gameId);
+    cy.readyOpponent(gameId);
     cy.signupOpponent(playerTwo);
-    cy.subscribeOpponent(gameData.gameId);
+    cy.subscribeOpponent(gameId);
     cy.get('[data-cy-join-game]').should('be.disabled');
 
     // Switch to spectate tab
@@ -204,8 +204,8 @@ Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
     cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
 
     // The other game starts -- should now appear in spectate list
-    cy.readyOpponent(gameData.gameId);
-    cy.wrap(gameData).as('gameData');
+    cy.readyOpponent(gameId);
+    cy.wrap(gameId).as(gameIdAlias);
     cy.get('[data-cy-spectate-game]').click();
     cy.url().should('include', '/spectate/');
     cy.window()
