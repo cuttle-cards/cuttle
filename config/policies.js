@@ -89,6 +89,6 @@ module.exports.policies = {
 
   TestController: {
     '*': 'developmentOrStagingOnly',
-    'wipeDatabase': 'deleteSession'
+    'wipeDatabase': [ 'developmentOrStagingOnly', 'deleteSession' ],
   },
 };
