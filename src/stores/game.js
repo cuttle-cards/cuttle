@@ -482,7 +482,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestReady() {
       return new Promise((resolve, reject) => {
-        io.socket.post('/api/game/ready', (res, jwres) => {
+        io.socket.post(`/api/game/${this.id}/ready`, (res, jwres) => {
           if (jwres.statusCode === 200) {
             return resolve(res);
           }

@@ -763,7 +763,7 @@ describe('Display correct dialog for unavailable game', () => {
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
     // go back to game URL
-    cy.get('@gameSummary').then(({ gameId }) => cy.visit(`/game/${gameId}`));
+    cy.get('@gameId').then((gameId) => cy.visit(`/game/${gameId}`));
     cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
     cy.get('[data-cy="leave-unavailable-game-button"]').click();
     cy.location('pathname').should('equal', '/');

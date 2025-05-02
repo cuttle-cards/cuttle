@@ -131,24 +131,24 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     cy.visit('/');
     cy.signupPlayer(myUser);
   }
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then(({ gameId }) => {
     cy.window()
       .its('cuttle.gameStore')
-      .then((store) => store.requestSubscribe(gameSummary.gameId));
-    cy.log(`Subscribed to game ${gameSummary.gameId}`);
-    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
-    cy.wrap(gameSummary).as('gameSummary');
+      .then((store) => store.requestSubscribe(gameId));
+    cy.log(`Subscribed to game ${gameId}`);
+    cy.vueRoute(`/lobby/${gameId}`);
+    cy.wrap(gameId).as('gameId');
     cy.get('[data-cy=ready-button]').click();
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
     }
     try {
-      cy.subscribeOpponent(gameSummary.gameId);
+      cy.subscribeOpponent(gameId);
     } catch {
       cy.recoverSessionOpponent(opponentOne);
-      cy.subscribeOpponent(gameSummary.gameId);
+      cy.subscribeOpponent(gameId);
     }
-    cy.readyOpponent();
+    cy.readyOpponent(gameId);
     // Asserting 5 cards in players hand confirms game has loaded
     cy.get('#player-hand-cards .player-card').should('have.length', 5);
   });
@@ -160,22 +160,22 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
     cy.visit('/');
     cy.signupPlayer(myUser);
   }
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then(({ gameId }) => {
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
     }
     try {
-      cy.subscribeOpponent(gameSummary.gameId);
+      cy.subscribeOpponent(gameId);
     } catch {
       cy.recoverSessionOpponent(opponentOne);
-      cy.subscribeOpponent(gameSummary.gameId);
+      cy.subscribeOpponent(gameId);
     }
-    cy.readyOpponent();
+    cy.readyOpponent(gameId);
     cy.window()
       .its('cuttle.gameStore')
-      .then((store) => store.requestSubscribe(gameSummary.gameId));
-    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
-    cy.wrap(gameSummary).as('gameSummary');
+      .then((store) => store.requestSubscribe(gameId));
+    cy.vueRoute(`/lobby/${gameId}`);
+    cy.wrap(gameId).as('gameId');
     cy.get('[data-cy=ready-button]').click();
     // Asserting 6 cards in players hand confirms game has loaded
     cy.get('#player-hand-cards .player-card').should('have.length', 6);
@@ -262,7 +262,7 @@ Cypress.Commands.add('setOpponentToLeaveSpectate', (gameId) => {
 });
 
 Cypress.Commands.add('readyOpponent', (id) => {
-  cy.makeSocketRequest('game', 'ready', { id });
+  cy.makeSocketRequest(`game/${id}`, 'ready');
 });
 
 Cypress.Commands.add('setIsRankedOpponent', (isRanked) => {

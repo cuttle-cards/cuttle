@@ -206,7 +206,7 @@ describe('Home - Game List', () => {
     cy.setupGameAsP1(true);
     cy.vueRoute('/');
     cy.get('[data-cy-game-list-selector=spectate]').click();
-    cy.get('@gameSummary').then(({ gameId }) => {
+    cy.get('@gameId').then((gameId) => {
       cy.get(`[data-cy-join-game=${gameId}]`).click();
       cy.url().should('include', `/game/${gameId}`);
     });
