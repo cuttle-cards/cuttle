@@ -45,19 +45,22 @@ module.exports.routes = {
    *                                                                          *
    ***************************************************************************/
 
-  // '/'                             :   'userController.homepage',
+  // App health
+  'GET /api/health': 'HealthController.getHealth',
+  'GET /api/devtools-health': 'HealthController.getDevtoolsHealth',
+
+  // Users
   '/api/user/signup': 'userController.signup',
   '/api/user/login': 'userController.login',
   '/api/user/reLogin': 'userController.reLogin',
   '/api/user/logout': 'userController.logout',
   '/api/user/status': 'userController.status',
 
-  'GET /api/health': 'HealthController.getHealth',
-  'GET /api/devtools-health': 'HealthController.getDevtoolsHealth',
-
+  // Stats
   '/api/stats/seasons/current': 'StatsController.getCurrentStats',
   '/api/stats/seasons/:seasonId': 'StatsController.getSeasonStats',
 
+  // Games
   'POST /api/game': 'game/create',
   'GET /api/game/list': 'game/get-list',
   'POST /api/game/:gameId/subscribe': 'game/subscribe',
@@ -102,13 +105,10 @@ module.exports.routes = {
   'POST /api/game/:gameId/rematch': 'game/rematch-gamestate',
   'POST /api/game/:gameId/spectate/join': 'game/spectate/join',
 
-  // DEVELOPMENT ONLY
-  '/api/game/stackDeck': 'game/stack-deck',
-  '/api/game/loadFixture': 'game/load-fixture',
+  
+  // Testing helpers - DEVELOPMENT ONLY
   'POST /api/game/:gameId/loadFixtureGameState': 'game/load-fixture-gamestate',
-  '/api/game/clear': 'game/clear-game',
-
-  // Testing helpers
+  '/api/game/loadFixture': 'game/load-fixture',
   '/api/test/wipeDatabase': 'TestController.wipeDatabase',
   '/api/test/badSession': 'TestController.setBadSession',
   '/api/test/loadSeasonFixture': 'TestController.loadSeasonFixture',
