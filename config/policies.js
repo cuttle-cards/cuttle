@@ -33,7 +33,6 @@ module.exports.policies = {
     status: true,
   },
 
-  'game/reconnect': [ 'isLoggedIn', 'isInGame' ],
   'game/create': [ 'isLoggedIn', 'hasGameName', 'hasNoProfanity' ],
   'game/get-list': 'isLoggedIn',
   'game/subscribe': [ 'isLoggedIn', 'hasGameId' ],

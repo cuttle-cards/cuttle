@@ -63,7 +63,6 @@ module.exports.routes = {
   'POST /api/game/subscribe': 'game/subscribe',
   '/api/game/spectate': 'game/spectate', // TODO #965: remove
   'POST /api/game/:gameId/spectate/leave': 'game/spectate/leave',
-  '/api/game/reconnect': 'game/reconnect',
   '/api/game/ready': 'game/ready',
   '/api/game/setIsRanked': 'game/set-is-ranked',
   '/api/game/leaveLobby': 'game/leave-lobby',
