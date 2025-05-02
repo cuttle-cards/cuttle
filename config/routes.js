@@ -97,7 +97,6 @@ module.exports.routes = {
   '/api/game/stalemate-reject': 'game/stalemate-reject',
   '/api/game/rematch': 'game/rematch',
   '/api/game/join-rematch': 'game/join-rematch',
-  '/api/game/chat': 'game/chat',
   '/api/game/gameData': 'game/game-data',
 
   // GameStateAPI
