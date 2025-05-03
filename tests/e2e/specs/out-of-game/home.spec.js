@@ -508,7 +508,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')
-      .should('include.text', '1 / 2 players');
+      .should('include.text', 'vs');
 
     // Test store
     cy.window()
@@ -545,7 +545,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')
-      .should('include.text', '1 / 2 players');
+      .should('include.text', 'vs');
     // Test store
     cy.window()
       .its('cuttle.gameListStore.openGames')
@@ -583,7 +583,7 @@ describe('Home - Create Game', () => {
     cy.get('[data-cy=game-list-item]')
       .should('have.length', 1)
       .should('include.text', 'test game')
-      .should('include.text', '1 / 2 players');
+      .should('include.text', 'vs');
 
     // Test store
     cy.window()
