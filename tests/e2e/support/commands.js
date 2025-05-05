@@ -10,12 +10,6 @@ io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
 const env = Cypress.env('VITE_USE_GAMESTATE_API');
 
-Cypress.Commands.add('skipOnGameStateApi', () => {
-  if (env) {
-    cy.state('runnable').ctx.skip();
-  }
-});
-
 const transformGameUrl = (api, slug, gameId = null) => {
   if (!env) {
     return Cypress.Promise.resolve(`/api/${api}/${slug}`);
@@ -53,6 +47,9 @@ const transformGameUrl = (api, slug, gameId = null) => {
     case'seven/targetedOneOff':
     case'pass':
     case'concede':
+    case 'stalemate':
+    case 'stalemate-accept':
+    case 'stalemate-reject':
       return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/move/`) :
         cy
           .window()
@@ -347,8 +344,8 @@ Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
     });
 });
 
-Cypress.Commands.add('playPointsById', (cardId) => {
-  cy.makeSocketRequest('game', 'points', { cardId });
+Cypress.Commands.add('playPointsById', (cardId, gameId = null) => {
+  cy.makeSocketRequest('game', 'points', { cardId, moveType: MoveType.POINTS }, 'POST', gameId);
 });
 
 /**
@@ -1092,14 +1089,19 @@ Cypress.Commands.add('concedeOpponent', (gameId = null) => {
   cy.makeSocketRequest('game', 'concede', { moveType: MoveType.CONCEDE }, 'POST', gameId);
 });
 
-Cypress.Commands.add('stalemateOpponent', () => {
-  cy.log('Opponent requests/accepts stalemate');
-  cy.makeSocketRequest('game', 'stalemate', null);
+Cypress.Commands.add('stalemateOpponent', (gameId = null) => {
+  cy.log('Opponent requests stalemate');
+  cy.makeSocketRequest('game', 'stalemate', { moveType: MoveType.STALEMATE_REQUEST }, 'POST', gameId);
 });
 
-Cypress.Commands.add('rejectStalemateOpponent', () => {
+Cypress.Commands.add('acceptStalemateOpponent', (gameId = null) => {
+  cy.log('Opponent accepts stalemate');
+  cy.makeSocketRequest('game', 'stalemate-accept', { moveType: MoveType.STALEMATE_ACCEPT }, 'POST', gameId);
+});
+
+Cypress.Commands.add('rejectStalemateOpponent', (gameId = null) => {
   cy.log('Opponent rejects stalemate request');
-  cy.makeSocketRequest('game', 'reject-stalemate', null);
+  cy.makeSocketRequest('game', 'stalemate-reject', { moveType: MoveType.STALEMATE_REJECT }, 'POST', gameId);
 });
 
 Cypress.Commands.add('reconnectOpponent', (opponent) => {

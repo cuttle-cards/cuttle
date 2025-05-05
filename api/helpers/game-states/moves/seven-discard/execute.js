@@ -26,6 +26,11 @@ module.exports = {
       description: '0 or 1 for whether p0 or p1 is making the move',
       required: true,
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true,
 

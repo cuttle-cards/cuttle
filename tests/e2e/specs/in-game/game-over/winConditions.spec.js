@@ -1,4 +1,4 @@
-import { assertGameState, assertLoss, assertVictory, assertStalemate } from '../../../support/helpers';
+import { assertGameState, assertLoss, assertVictory, assertStalemate, assertSnackbar } from '../../../support/helpers';
 import { myUser, opponentOne } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
 
@@ -198,10 +198,10 @@ describe('Stalemates', () => {
       .should('contain', 'PASS')
       .click();
     cy.log('Should log the passing');
-    cy.get('#history').contains(`${myUser.username} passes`);
+    cy.get('#history').contains(`${myUser.username} passed`);
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
-    cy.get('#history').contains(`${opponentOne.username} passes`);
+    cy.get('#history').contains(`${opponentOne.username} passed`);
     cy.get('#turn-indicator').contains('YOUR TURN');
     cy.get('#deck').should('contain', '(0)')
       .should('contain', 'PASS')
@@ -276,7 +276,7 @@ describe('Stalemates', () => {
 
       cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
 
-      cy.stalemateOpponent();
+      cy.acceptStalemateOpponent();
       assertStalemate();
     });
 
@@ -297,7 +297,7 @@ describe('Stalemates', () => {
       assertStalemate();
     });
 
-    it('Cancels the stalemate when player requests a stalemate and opponent rejects', () => {
+    it('Requires waiting a turn to request stalemate after opponent rejects prior stalemate request', () => {
       cy.setupGameAsP0();
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.log('Game loaded');
@@ -317,7 +317,7 @@ describe('Stalemates', () => {
       cy.rejectStalemateOpponent();
       cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
 
-      // Player requests stalemate again -- process starts over
+      // Player requests stalemate again -- not allowed this turn
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
         .get('[data-cy=stalemate-initiate]')
@@ -326,27 +326,30 @@ describe('Stalemates', () => {
         .should('be.visible')
         .get('[data-cy=request-gameover-confirm]')
         .click();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+      
+      assertSnackbar('Stalemate request was already rejected this turn');
 
-      // Opponent rejects stalemate
-      cy.rejectStalemateOpponent();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
+      // Draw card to take turn
+      cy.get('#deck').click();
+      cy.get('#turn-indicator').contains("OPPONENT'S TURN");
 
-      // Opponent requests stalemate - Does not immediately stalemate
-      cy.stalemateOpponent();
-      // Player accepts stalemate
-      cy.get('#opponent-requested-stalemate-dialog')
+      // Request stalemate again - now allowed
+      cy.get('#game-menu-activator').click();
+      cy.get('#game-menu').should('be.visible')
+        .get('[data-cy=stalemate-initiate]')
+        .click();
+      cy.get('#request-gameover-dialog')
         .should('be.visible')
-        .find('[data-cy=accept-stalemate]')
+        .get('[data-cy=request-gameover-confirm]')
         .click();
 
+      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+      cy.acceptStalemateOpponent();
       assertStalemate();
     });
 
     it('Cancels the stalemate when opponent requests and player rejects', () => {
       cy.setupGameAsP1();
-      cy.get('[data-player-hand-card]').should('have.length', 6);
-      cy.log('Game loaded');
 
       // Opponent requests stalemate
       cy.stalemateOpponent();
@@ -358,48 +361,9 @@ describe('Stalemates', () => {
         .click();
 
       cy.get('#opponent-requested-stalemate-dialog').should('not.be.visible');
-
-      // Opponent requests stalemate again
-      cy.stalemateOpponent();
-
-      // Player rejects stalemate
-      cy.get('#opponent-requested-stalemate-dialog')
-        .should('be.visible')
-        .find('[data-cy=reject-stalemate]')
-        .click();
-    });
-
-    it('Cancels stalemate after an additional turn passes', () => {
-      cy.skipOnGameStateApi();
-      cy.setupGameAsP1();
-      cy.get('[data-player-hand-card]').should('have.length', 6);
-      cy.log('Game loaded');
-
-      // Request Stalemate
-      cy.get('#game-menu-activator').click();
-      cy.get('#game-menu').should('be.visible')
-        .get('[data-cy=stalemate-initiate]')
-        .click();
-      cy.get('#request-gameover-dialog')
-        .should('be.visible')
-        .get('[data-cy=request-gameover-confirm]')
-        .click();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
-
-      cy.drawCardOpponent();
-      cy.get('#waiting-for-opponent-stalemate-scrim').should('not.exist');
-
-      // Opponent requests stalemate
-      cy.stalemateOpponent();
-      // Player rejects stalemate
-      cy.get('#opponent-requested-stalemate-dialog')
-        .should('be.visible')
-        .find('[data-cy=reject-stalemate]')
-        .click();
     });
 
     it('Player requests stalemate, then reloads before opponent accepts', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.get('#game-menu-activator').click();
       cy.get('#game-menu').should('be.visible')
@@ -412,11 +376,149 @@ describe('Stalemates', () => {
       cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
       cy.reload();
       cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
-      cy.stalemateOpponent();
+      cy.acceptStalemateOpponent();
       assertStalemate();
     });
-  });
-});
+
+    describe('Illegal stalemate requests', () => {
+      // TODO: #965 test that you can't request stalemate while your opponent's stalemate req is pending
+
+      it('Rejects request to initiate stalemate while you already have a stalemate request pending', () => {
+        cy.setupGameAsP0();
+
+        // Player requests stalemate
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible')
+          .get('[data-cy=stalemate-initiate]')
+          .click();
+        cy.get('#request-gameover-dialog')
+          .should('be.visible')
+          .get('[data-cy=request-gameover-confirm]')
+          .click();
+        cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+
+        // Force store to request stalemate again; should 400
+        cy.window()
+          .its('cuttle.gameStore')
+          .then(async (store) => {
+            try {
+              await store.requestStalemate();
+              // Fail test if backend allows request
+              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+            } catch (err) {
+              expect(err).to.eq('game.snackbar.stalemate.previousStalemateRejected');
+            }
+          });
+      });
+
+      it('Prevents player from accepting their own stalemate request', () => {
+        cy.setupGameAsP0();
+
+        // Player requests stalemate
+        cy.get('#game-menu-activator').click();
+        cy.get('#game-menu').should('be.visible')
+          .get('[data-cy=stalemate-initiate]')
+          .click();
+        cy.get('#request-gameover-dialog')
+          .should('be.visible')
+          .get('[data-cy=request-gameover-confirm]')
+          .click();
+        cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+
+        // Force store to request stalemate again; should 400
+        cy.window()
+          .its('cuttle.gameStore')
+          .then(async (store) => {
+            try {
+              await store.acceptStalemate();
+              // Fail test if backend allows request
+              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
+            } catch (err) {
+              // TODO #965 - expect only opponentConsideringStalemate error
+              const errors = [
+                'game.snackbar.stalemate.previousStalemateRejected',
+                'game.snackbar.stalemate.opponentConsideringStalemate',
+              ];
+              expect(err).to.be.oneOf(errors);
+            }
+          });
+      });
+
+      it('Prevents users from requesting a stalemate while resolving a seven', () => {
+        cy.setupGameAsP0();
+        cy.loadGameFixture(0, {
+          p0Hand: [ Card.SEVEN_OF_CLUBS ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.FOUR_OF_CLUBS,
+          secondCard: Card.SIX_OF_DIAMONDS,
+        });
+    
+        cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
+    
+        cy.get('[data-top-card=4-0]').should('exist')
+          .and('be.visible');
+  
+        // Force store to request stalemate; should 400
+        cy.window()
+          .its('cuttle.gameStore')
+          .then(async (store) => {
+            try {
+              await store.requestStalemate();
+              // Fail test if backend allows request
+              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during 7 resolution, but got 200 response');
+            } catch (err) {
+              expect(err).to.eq('game.snackbar.stalemate.wrongPhase');
+            }
+          });
+  
+        cy.get('[data-second-card=6-1]').click();
+        cy.get('[data-move-choice=points]').click();
+  
+        assertGameState(0, {
+          p0Hand: [],
+          p0Points: [ Card.SIX_OF_DIAMONDS ],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+          scrap: [ Card.SEVEN_OF_CLUBS ]
+        });
+      });
+  
+      it('Prevents users from requesting a stalemate during countering', () => {
+        cy.setupGameAsP1();
+        cy.loadGameFixture(1, {
+          p0Hand: [ Card.ACE_OF_CLUBS ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+        });
+  
+        cy.playOneOffOpponent(Card.ACE_OF_CLUBS);
+        cy.get('#cannot-counter-dialog').should('be.visible');
+  
+        // Force store to request stalemate; should 400
+        cy.window()
+          .its('cuttle.gameStore')
+          .then(async (store) => {
+            try {
+              await store.requestStalemate();
+              // Fail test if backend allows request
+              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+            } catch (err) {
+              expect(err).to.eq('game.snackbar.stalemate.wrongPhase');
+            }
+          });
+      });
+    }); // End describe illegal stalemates
+  }); // End describe requesting stalemates
+}); // End describe stalemates
 
 describe('Conceding while a oneOff is being resolved - prevents resolving oneOff state from persisting to new game', () => {
   beforeEach(() => {

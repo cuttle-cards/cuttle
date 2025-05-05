@@ -111,7 +111,6 @@ describe('Creating And Updating Ranked Matches', () => {
   });
 
   it('Creates a match when two players play a ranked game for the first time this week', function () {
-    cy.skipOnGameStateApi();
     // There should be two matches initially (one from last week and one with a different opponent)
     cy.request('http://localhost:1337/api/test/match').then((res) => {
       expect(res.body.length).to.eq(2);
@@ -183,8 +182,9 @@ describe('Creating And Updating Ranked Matches', () => {
       .click();
     cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
     // Opponent confirms
-    cy.stalemateOpponent();
+    cy.acceptStalemateOpponent();
     assertStalemate();
+
     cy.window()
       .its('cuttle.gameStore')
       .then((game) => {
@@ -214,6 +214,8 @@ describe('Creating And Updating Ranked Matches', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
+      topCard: Card.SIX_OF_SPADES,
+      secondCard: Card.FOUR_OF_CLUBS,
       deck: [],
     });
 
@@ -253,6 +255,8 @@ describe('Creating And Updating Ranked Matches', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
+      topCard: Card.SIX_OF_SPADES,
+      secondCard: Card.FOUR_OF_CLUBS,
       deck: [],
     });
 

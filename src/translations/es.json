@@ -273,6 +273,13 @@
         "mustUsePointCard": "Solo puedes hundir con una carta de rango As hasta Diez",
         "mustTargetPointCard": "Solo puedes hundir una carta que tu oponente haya jugado como puntos"
       },
+      "stalemate": {
+        "alreadyConsideringStalemate": "Ya se ha ofrecido un empate",
+        "noStalemateOffered": "Tu oponente no ha ofrecido un empate",
+        "opponentConsideringStalemate": "Tu oponente está considerando tu oferta de empate",
+        "previousStalemateRejected": "La solicitud de empate ya fue rechazada en este turno",
+        "wrongPhase": "No puedes solicitar tablas durante otros movimientos"
+      },
       "oneOffs": {
         "oneOffInPlay": "Ya hay en juego una carta de habilidad única; no puedes jugar ninguna carta, excepto un Dos para contrarrestar.",
         "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad única sin un objetivo",
@@ -519,10 +526,10 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Campeonato Mundial de Cuttle IV!",
-    "title": "Cuttle World Championship",
-    "heading": "Campeonato Mundial",
-    "paragraph": "¡El Campeonato Mundial de Cuttle IV es hoy, sábado 8 de marzo a las 12pm EST! Mira a los 8 mejores jugadores del último AÑO de juego competitivo enfrentarse por el título de Campeón Mundial de Cuttle y su elección entre los 8 increíbles mazos de premios donados por el jugador SUBMARINO. Míralo en vivo en ",
+    "activatorText": "¡Campeonato de Temporada de Clubs 2025 HOY!",
+    "title": "Campeonato de Clubs 2025",
+    "heading": "¡El Campeonato es Hoy!",
+    "paragraph": "¡El Campeonato de Temporada de Cuttle de Clubs 2025 es HOY, 26 de abril a las 12:30pm EST! Mira a los 8 mejores jugadores de la temporada pasada de partidas clasificadas competir en una eliminatoria doble por el título de Campeón de la Temporada de Cuttle de Clubs 2025. Míralo en vivo en ",
     "twitchLink": "twitch.tv/cuttle_cards"
   }
 }

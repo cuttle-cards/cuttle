@@ -208,7 +208,10 @@ export const useGameStore = defineStore('game', {
       this.lastEventPlayerChoosing = newGame.lastEvent?.pNum === this.myPNum ?? null;
       this.lastEventDiscardedCards = newGame.lastEvent?.discardedCards ?? null;
       this.waitingForOpponentToStalemate =
-        (newGame.lastEvent?.requestedByPNum === this.myPNum && !newGame.gameIsOver) ?? false;
+        (
+          newGame.lastEvent.change === MoveType.STALEMATE_REQUEST &&
+          newGame.lastEvent?.playedBy === this.myPNum && !newGame.gameIsOver
+        ) ?? false;
       this.id = newGame.id ?? this.id;
       this.turn = newGame.turn ?? this.turn;
       // this.chat = cloneDeep(newGame.chat);
@@ -391,6 +394,9 @@ export const useGameStore = defineStore('game', {
         case 'seven/targetedOneOff':
         case 'pass':
         case 'concede':
+        case 'stalemate':
+        case 'stalemate-accept':
+        case 'stalemate-reject':
           // add all the move-making ones here
           return `/api/game/${this.id}/move`;
         case 'rematch':
@@ -699,15 +705,18 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestStalemate() {
-      await this.makeSocketRequest('stalemate').then(() => {
-        this.consideringOpponentStalemateRequest = false;
-      });
+      await this.makeSocketRequest('stalemate', { moveType: MoveType.STALEMATE_REQUEST });
+      this.consideringOpponentStalemateRequest = false;
+    },
+
+    async acceptStalemate() {
+      await this.makeSocketRequest('stalemate-accept', { moveType: MoveType.STALEMATE_ACCEPT });
+      this.consideringOpponentStalemateRequest = false;
     },
 
     async rejectStalemate() {
-      await this.makeSocketRequest('reject-stalemate').then(() => {
-        this.consideringOpponentStalemateRequest = false;
-      });
+      await this.makeSocketRequest('stalemate-reject', { moveType: MoveType.STALEMATE_REJECT });
+      this.consideringOpponentStalemateRequest = false;
     },
 
     async requestUnsubscribeFromGame() {

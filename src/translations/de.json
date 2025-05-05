@@ -273,6 +273,13 @@
         "mustUsePointCard": "Du kannst nur mit einer Karte von Ass bis Zehn scutteln",
         "mustTargetPointCard": "Du kannst nur eine Punktkarte scutteln, die dein Gegner gespielt hat"
       },
+      "stalemate": {
+        "alreadyConsideringStalemate": "Ein Patt wurde bereits angeboten",
+        "noStalemateOffered": "Dein Gegner hat kein Patt angeboten",
+        "opponentConsideringStalemate": "Dein Gegner erwägt dein Patt-Angebot",
+        "previousStalemateRejected": "Die Patt-Anfrage wurde in dieser Runde bereits abgelehnt",
+        "wrongPhase": "Sie können während anderer Züge kein Remis verlangen"
+      },
       "oneOffs": {
         "oneOffInPlay": "Es ist bereits ein One-Off im Spiel; du kannst keine Karte spielen, außer einer Zwei zum Kontern.",
         "cantPlayWithoutATarget": "Du kannst diese Karte nicht als ONE-OFF ohne Ziel spielen",
@@ -519,10 +526,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Cuttle-Weltmeisterschaft IV!",
-    "title": "Cuttle World Championship",
-    "heading": "Weltmeisterschaft",
-    "paragraph": "Die Cuttle-Weltmeisterschaft IV findet heute, am Samstag, den 8. März um 12 Uhr EST statt! Seht zu, wie die 8 besten Spieler des vergangenen JAHRES des kompetitiven Spiels um den Titel des Cuttle-Weltmeisters kämpfen und sich eines der 8 unglaublichen Preiskartendecks aussuchen, die von Spieler SUBMARINO gespendet wurden. Seht es live auf ",
+    "activatorText": "Clubs 2025 Saisonmeisterschaft HEUTE!",
+    "title": "Clubs 2025 Meisterschaft",
+    "heading": "Meisterschaft heute!",
+    "paragraph": "Die Clubs 2025 Cuttle Saisonmeisterschaft findet HEUTE, am 26. April um 12:30 Uhr EST statt! Sieh dir an, wie die Top 8 Spieler der letzten Ranglistensaison in einem Double-Elimination-Turnier um den Titel des Clubs 2025 Cuttle Saisonmeisters kämpfen! Schau live zu auf ",
     "twitchLink": "twitch.tv/cuttle_cards"
   }
 }
