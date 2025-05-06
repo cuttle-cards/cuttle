@@ -447,7 +447,7 @@ export const useGameStore = defineStore('game', {
 
     async requestSpectate(gameId) {
       // TODO #965 - Remove dynamic gamestate slug
-      const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate/join` : 'spectate';
+      const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate` : 'spectate';
       try {
         const res = await this.makeSocketRequest(slug, { gameId });
         this.myPNum = 0;
@@ -460,7 +460,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestSpectateLeave() {
       return new Promise((resolve, reject) => {
-        io.socket.post(`/api/game/${this.id}/spectate/leave`, (_res, jwres) => {
+        io.socket.delete(`/api/game/${this.id}/spectate`, (_res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
             return resolve();
