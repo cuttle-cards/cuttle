@@ -64,7 +64,7 @@ module.exports.routes = {
   'POST /api/game': 'game/create',
   'GET /api/game/list': 'game/get-list',
   'POST /api/game/:gameId/subscribe': 'game/subscribe',
-  '/api/game/spectate': 'game/spectate', // TODO #965: remove
+  'POST /api/game/spectate': 'game/spectate', // TODO #965: remove
   'POST /api/game/:gameId/spectate/leave': 'game/spectate/leave',
   'POST /api/game/:gameId/ready': 'game/ready',
   'PATCH /api/game/:gameId/is-ranked': 'game/set-is-ranked',
