@@ -102,14 +102,14 @@ Cypress.Commands.add('refreshOpponentSocket', () => {
 
 Cypress.Commands.add('setBadSession', () => {
   return new Cypress.Promise((resolve) => {
-    io.socket.get('/api/test/badSession', function () {
+    io.socket.put('/api/test/bad-session', function () {
       return resolve();
     });
   });
 });
 
 Cypress.Commands.add('loadSeasonFixture', (season) => {
-  cy.makeSocketRequest('test', 'loadSeasonFixture', season);
+  cy.makeSocketRequest('test', 'seasons', season);
 });
 
 Cypress.Commands.add('loadMatchFixtures', (matches) => {
