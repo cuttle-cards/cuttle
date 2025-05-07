@@ -31,6 +31,9 @@ module.exports.routes = {
   'DELETE /api/game/:gameId/spectate': 'game/spectate/leave',
   'POST /api/game/:gameId/ready': 'game/ready',
   'PATCH /api/game/:gameId/is-ranked': 'game/set-is-ranked',
+  'POST /api/game/:gameId/move': 'game/move',
+  'POST /api/game/:gameId/rematch': 'game/rematch-gamestate',
+  'POST /api/game/:gameId/spectate': 'game/spectate/join',
 
   // TODO #965: remove these
   'POST /api/game/spectate': 'game/spectate', // TODO #965: remove
@@ -47,7 +50,6 @@ module.exports.routes = {
   '/api/game/resolveFour': 'game/resolve-four',
   '/api/game/resolveThree': 'game/resolve-three',
   '/api/game/resolveFive': 'game/resolve-five',
-  // Resolving Sevens
   '/api/game/seven/points': 'game/seven/points',
   '/api/game/seven/faceCard': 'game/seven/face-card',
   '/api/game/seven/scuttle': 'game/seven/scuttle',
@@ -62,12 +64,6 @@ module.exports.routes = {
   '/api/game/rematch': 'game/rematch',
   '/api/game/join-rematch': 'game/join-rematch',
   // TODO #965: End of routes to remove in #965
-  
-  // GameStateAPI
-  'POST /api/game/:gameId/move': 'game/move',
-  'POST /api/game/:gameId/rematch': 'game/rematch-gamestate',
-  'POST /api/game/:gameId/spectate': 'game/spectate/join',
-
   
   // Testing helpers - DEVELOPMENT ONLY
   'POST /api/game/:gameId/loadFixtureGameState': 'game/load-fixture-gamestate',
