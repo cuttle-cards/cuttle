@@ -96,12 +96,11 @@ module.exports.routes = {
   '/api/game/stalemate': 'game/stalemate',
   '/api/game/stalemate-accept': 'game/stalemate',
   '/api/game/stalemate-reject': 'game/stalemate-reject',
-  // TODO #965: End of routes to remove in #965
-
   '/api/game/rematch': 'game/rematch',
   '/api/game/join-rematch': 'game/join-rematch',
   '/api/game/gameData': 'game/game-data',
-
+  // TODO #965: End of routes to remove in #965
+  
   // GameStateAPI
   'POST /api/game/:gameId/move': 'game/move',
   'POST /api/game/:gameId/rematch': 'game/rematch-gamestate',
