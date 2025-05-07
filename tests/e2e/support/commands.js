@@ -88,7 +88,10 @@ Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST', gam
 // Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
 
 Cypress.Commands.add('wipeDatabase', () => {
-  cy.request('localhost:1337/api/test/wipeDatabase');
+  cy.request({
+    method: 'DELETE',
+    url: 'localhost:1337/api/test/wipe-database'
+  });
   cy.log('Wiped database');
 });
 

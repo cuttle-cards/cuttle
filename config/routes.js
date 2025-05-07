@@ -68,7 +68,7 @@ module.exports.routes = {
   
   // Testing helpers - DEVELOPMENT ONLY
   'POST /api/game/:gameId/game-state': 'game/load-fixture-gamestate',
-  '/api/test/wipeDatabase': 'TestController.wipeDatabase',
+  'DELETE /api/test/wipe-database': 'TestController.wipeDatabase',
   '/api/test/badSession': 'TestController.setBadSession',
   '/api/test/loadSeasonFixture': 'TestController.loadSeasonFixture',
   '/api/test/loadMatchFixtures': 'TestController.loadMatchFixtures',
