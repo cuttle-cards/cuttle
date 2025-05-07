@@ -71,7 +71,7 @@ module.exports.routes = {
   'DELETE /api/test/wipe-database': 'TestController.wipeDatabase',
   'PUT /api/test/bad-session': 'TestController.setBadSession',
   'POST /api/test/seasons': 'TestController.loadSeasonFixture',
-  '/api/test/loadMatchFixtures': 'TestController.loadMatchFixtures',
+  'POST /api/test/matches': 'TestController.loadMatchFixtures',
   '/api/test/loadFinishedGameFixtures': 'TestController.loadFinishedGameFixtures',
   '/api/test/game': 'TestController.getGames',
   '/api/test/match': 'TestController.getMatches',
