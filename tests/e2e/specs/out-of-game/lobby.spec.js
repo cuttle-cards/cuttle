@@ -177,7 +177,7 @@ describe('Lobby - P0 Perspective', () => {
         // Test that opponent's username appears in indicator
         cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
         // Opponent leaves
-        cy.leaveLobbyOpponent();
+        cy.leaveLobbyOpponent(gameData.id);
         cy.contains('[data-cy=opponent-indicator]', 'Invite');
         // Opponent joins again
         cy.subscribeOpponent(gameData.id);
@@ -205,7 +205,7 @@ describe('Lobby - P0 Perspective', () => {
 
         // opponent ready, exit, join back
         cy.readyOpponent(gameId);
-        cy.leaveLobbyOpponent();
+        cy.leaveLobbyOpponent(gameId);
         cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
           .should('not.exist');
         expect(gameData.p1Ready).to.eq(false);
@@ -348,11 +348,12 @@ describe('Lobby - P1 Perspective', () => {
       .should('exist');
   });
 
-  it('Shows when opponent leaves and rejoins', () => {
+  it('Shows when opponent leaves and rejoins', function () {
+    const { gameId } = this.gameSummary;
     cy.contains('[data-cy=opponent-indicator]', opponentOne.username);
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
       .should('exist');
-    cy.leaveLobbyOpponent(); // Opponent leaves
+    cy.leaveLobbyOpponent(gameId); // Opponent leaves
     cy.contains('[data-cy=opponent-indicator]', 'Invite');
     cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
       .should('not.exist');
@@ -421,7 +422,7 @@ describe('Lobby - P1 Perspective', () => {
 
         // opponent ready, exit, join back
         cy.readyOpponent(gameData.id);
-        cy.leaveLobbyOpponent();
+        cy.leaveLobbyOpponent(gameData.id);
         cy.get('[data-cy=opponent-indicator]').find('[data-cy="lobby-card-container"]')
           .should('not.exist');
         expect(gameData.p0Ready).to.equal(false);
