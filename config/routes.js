@@ -73,7 +73,7 @@ module.exports.routes = {
   'POST /api/test/seasons': 'TestController.loadSeasonFixture',
   'POST /api/test/matches': 'TestController.loadMatchFixtures',
   'POST /api/test/games': 'TestController.loadFinishedGameFixtures',
-  '/api/test/game': 'TestController.getGames',
+  'GET /api/test/game': 'TestController.getGames',
   '/api/test/match': 'TestController.getMatches',
   'GET /api/test/spectator' : 'TestController.getSpectators',
 
