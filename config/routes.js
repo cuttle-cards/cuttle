@@ -64,11 +64,13 @@ module.exports.routes = {
   'POST /api/game': 'game/create',
   'GET /api/game': 'game/get-list',
   'POST /api/game/:gameId/subscribe': 'game/subscribe',
-  'POST /api/game/spectate': 'game/spectate', // TODO #965: remove
   'DELETE /api/game/:gameId/spectate': 'game/spectate/leave',
   'POST /api/game/:gameId/ready': 'game/ready',
   'PATCH /api/game/:gameId/is-ranked': 'game/set-is-ranked',
   '/api/game/leaveLobby': 'game/leave-lobby',
+
+  // TODO #965: remove these
+  'POST /api/game/spectate': 'game/spectate', // TODO #965: remove
   '/api/game/draw': 'game/draw',
   '/api/game/pass': 'game/pass',
   '/api/game/points': 'game/points',
@@ -82,7 +84,6 @@ module.exports.routes = {
   '/api/game/resolveFour': 'game/resolve-four',
   '/api/game/resolveThree': 'game/resolve-three',
   '/api/game/resolveFive': 'game/resolve-five',
-
   // Resolving Sevens
   '/api/game/seven/points': 'game/seven/points',
   '/api/game/seven/faceCard': 'game/seven/face-card',
@@ -95,6 +96,8 @@ module.exports.routes = {
   '/api/game/stalemate': 'game/stalemate',
   '/api/game/stalemate-accept': 'game/stalemate',
   '/api/game/stalemate-reject': 'game/stalemate-reject',
+  // TODO #965: End of routes to remove in #965
+
   '/api/game/rematch': 'game/rematch',
   '/api/game/join-rematch': 'game/join-rematch',
   '/api/game/gameData': 'game/game-data',
