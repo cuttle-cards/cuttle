@@ -66,7 +66,7 @@ module.exports.routes = {
   // TODO #965: End of routes to remove in #965
   
   // Testing helpers - DEVELOPMENT ONLY
-  'POST /api/game/:gameId/loadFixtureGameState': 'game/load-fixture-gamestate',
+  'POST /api/game/:gameId/game-state': 'game/load-fixture-gamestate',
   '/api/game/loadFixture': 'game/load-fixture',
   '/api/test/wipeDatabase': 'TestController.wipeDatabase',
   '/api/test/badSession': 'TestController.setBadSession',
