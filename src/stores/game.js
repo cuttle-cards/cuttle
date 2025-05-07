@@ -471,7 +471,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestLeaveLobby() {
       return new Promise((resolve, reject) => {
-        io.socket.post('/api/game/leaveLobby', (res, jwres) => {
+        io.socket.post(`/api/game/${this.id}/leave`, (res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
             return resolve();
