@@ -279,7 +279,7 @@ Cypress.Commands.add('toggleInput', (selector, checked = false) => {
 });
 
 Cypress.Commands.add('leaveLobbyOpponent', (id) => {
-  cy.makeSocketRequest(`game/${id}`, 'leave', { id });
+  cy.makeSocketRequest(`game/${id}`, 'leave');
 });
 
 /**

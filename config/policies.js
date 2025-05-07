@@ -41,7 +41,7 @@ module.exports.policies = {
   'game/spectate': [ 'isLoggedIn' ],
   'game/ready': [ 'isLoggedIn', 'hasGameId', 'isInGame' ],
   'game/set-is-ranked': 'isInGame',
-  'game/leave-lobby': [ 'isSocket', 'isLoggedIn', 'isInGame' ],
+  'game/leave-lobby': [ 'isSocket', 'isLoggedIn', 'hasGameId' ],
   'game/draw': [ 'isLoggedIn', 'isInGame' ],
   'game/pass': [ 'isLoggedIn', 'isInGame' ],
   'game/points': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],

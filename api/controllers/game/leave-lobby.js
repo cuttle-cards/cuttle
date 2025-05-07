@@ -1,5 +1,6 @@
 module.exports = function (req, res) {
-  const promiseGame = gameService.findGame({ gameId: req.session.game });
+  const { gameId } = req.params;
+  const promiseGame = gameService.findGame({ gameId });
   const promisePlayer = userService.findUser({ userId: req.session.usr });
   Promise.all([ promiseGame, promisePlayer ])
     .then(function changeAndSave(values) {
