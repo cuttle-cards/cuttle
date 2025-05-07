@@ -12,7 +12,6 @@ module.exports = function (req, res, next) {
   let { gameId } = req.params;
   gameId = Number(gameId);
   if (Number.isInteger(gameId)) {
-    req.params.gameId = gameId; // cast to integer
     return next();
   }
 
