@@ -66,7 +66,7 @@ module.exports = async function (req, res) {
       }
     }
 
-    const message = err.raw?.message ?? err?.message ?? err;
+    const message = err?.raw?.message ?? err?.message ?? err;
     switch (err?.code) {
       case 'FORBIDDEN':
         return res.forbidden({ message });
