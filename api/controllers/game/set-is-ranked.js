@@ -2,12 +2,18 @@ module.exports = async function (req, res) {
   try {
     const { isRanked } = req.body;
 
-    const game = await gameService.findGame({ gameId: req.session.game });
+    const game = await gameService.findGame({ gameId: req.params.gameId });
+
+    // Must be in this game
+    const playerIds = [ game.p0?.id, game.p1?.id ].filter((val) => !!val);
+    if (!playerIds.includes(req.session.usr)) {
+      throw new Error('You are not a player in this game!');
+    }
   
     const gameUpdates = { isRanked };
 
     await Game.updateOne({ id: game.id }).set(gameUpdates);
-    
+
     sails.sockets.blast('setIsRanked', { gameId: game.id, isRanked: isRanked });
     
     return res.ok();
