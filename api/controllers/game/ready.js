@@ -1,28 +1,32 @@
+const ForbiddenError = require('../../errors/forbiddenError');
+
 module.exports = async function (req, res) {
+  // Query for game
+  const game =  await sails.helpers.lockGame(req.session.game);
   try {
-    // Query for game and users
-    const game =  await sails.helpers.lockGame(req.session.game);
-    const players = await User.find({ game: req.session.game }).sort('pNum');
-    const user = players[ req.session.pNum ];
-    game.players = players;
+    game.players = [ game.p0, game.p1 ];
 
     // Determine who is ready
-    let { pNum } = user;
+    let pNum;
     let bothReady = false;
     const gameUpdates = {};
-    switch (pNum) {
-      case 0:
+    switch (req.session.usr) {
+      case game.p0.id:
+        pNum = 0;
         gameUpdates.p0Ready = !game.p0Ready;
         if (game.p1Ready) {
           bothReady = true;
         }
         break;
-      case 1:
+      case game.p1.id:
+        pNum = 1;
         gameUpdates.p1Ready = !game.p1Ready;
         if (game.p0Ready) {
           bothReady = true;
         }
         break;
+      default:
+        throw new ForbiddenError('You are not a player in this game!');
     }
 
     // Start game if both players are ready
@@ -42,8 +46,8 @@ module.exports = async function (req, res) {
 
       Game.publish([ game.id ], {
         change: 'ready',
-        userId: user.id,
-        pNum: user.pNum,
+        userId: req.session.usr,
+        pNum,
         gameId: game.id,
       });
 
@@ -53,7 +57,21 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    const message = err.raw?.message ?? err;
-    return res.badRequest({ message });
+    // ensure the game is unlocked
+    if (game?.lock) {
+      try {
+        await sails.helpers.unlockGame(game.lock);
+      } catch (err) {
+        // fall through for generic error handling
+      }
+    }
+
+    const message = err?.raw?.message ?? err?.message ?? err;
+    switch (err?.code) {
+      case 'FORBIDDEN':
+        return res.forbidden({ message });
+      default:
+        return res.badRequest({ message });
+    }
   }
 };

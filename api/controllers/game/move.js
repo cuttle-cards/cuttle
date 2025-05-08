@@ -1,4 +1,6 @@
 // Request to make a move
+const ForbiddenError = require('../../errors/forbiddenError');
+
 module.exports = async function (req, res) {
   let game;
   try {
@@ -20,7 +22,7 @@ module.exports = async function (req, res) {
         playedBy = 1;
         break;
       default:
-        throw new Error('You are not a player in this game!');
+        throw new ForbiddenError('You are not a player in this game!');
     }
 
     validate(gameState, req.body, playedBy, game.gameStates);
@@ -33,7 +35,7 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    // unlock game if failing due to validation
+    // ensure the game is unlocked
     if (game?.lock) {
       try {
         await sails.helpers.unlockGame(game.lock);
@@ -41,6 +43,12 @@ module.exports = async function (req, res) {
         // fall through for generic error handling
       }
     }
-    return res.badRequest({ message: err.message });
+
+    switch (err?.code) {
+      case 'FORBIDDEN':
+        return res.forbidden({ message: err.message });
+      default:
+        return res.badRequest({ message: err.message });
+    }
   }
 };

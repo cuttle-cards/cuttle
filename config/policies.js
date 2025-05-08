@@ -33,14 +33,15 @@ module.exports.policies = {
     status: true,
   },
 
-  'game/reconnect': [ 'isLoggedIn', 'isInGame' ],
   'game/create': [ 'isLoggedIn', 'hasGameName', 'hasNoProfanity' ],
   'game/get-list': 'isLoggedIn',
   'game/subscribe': [ 'isLoggedIn', 'hasGameId' ],
-  'game/spectate': [ 'isLoggedIn', 'hasGameId' ],
-  'game/ready': [ 'isLoggedIn', 'isInGame' ],
-  'game/set-is-ranked': 'isInGame',
-  'game/leave-lobby': [ 'isSocket', 'isLoggedIn', 'isInGame' ],
+  'game/spectate/join': [ 'isLoggedIn', 'hasGameId' ],
+  'game/spectate/leave': [ 'isLoggedIn', 'hasGameId' ],
+  'game/spectate': [ 'isLoggedIn' ],
+  'game/ready': [ 'isLoggedIn', 'hasGameId', 'isInGame' ],
+  'game/set-is-ranked': [ 'isLoggedIn', 'hasGameId' ],
+  'game/leave-lobby': [ 'isSocket', 'isLoggedIn', 'hasGameId' ],
   'game/draw': [ 'isLoggedIn', 'isInGame' ],
   'game/pass': [ 'isLoggedIn', 'isInGame' ],
   'game/points': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],
@@ -58,9 +59,7 @@ module.exports.policies = {
   'game/stalemate': [ 'isLoggedIn', 'isInGame' ],
   'game/stalemate-reject': [ 'isLoggedIn', 'isInGame' ],
   'game/game-over': [ 'isLoggedIn' ],
-  'game/chat': [ 'isLoggedIn', 'isInGame' ],
   'game/game-data': [ 'isLoggedIn', 'isInGame' ],
-
   'game/seven/face-card': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],
   'game/seven/jack': [ 'isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId' ],
   'game/seven/points': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],
@@ -76,11 +75,11 @@ module.exports.policies = {
   'game/seven/untargeted-one-off': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],
 
   // GameStateApi
-  'game/move': [ 'isLoggedIn', 'hasValidMoveBody' ],
+  'game/move': [ 'isLoggedIn', 'hasValidMoveBody', 'hasGameId' ],
   'game/rematch-gamestate': 'isLoggedIn',
 
   /////////////////////////////////
-  // DEVELOPMENT Or Staging ONLY //
+  // DEVELOPMENT OR STAGING ONLY //
   /////////////////////////////////
   'game/stack-deck': 'developmentOrStagingOnly',
   'game/clear-game': 'developmentOrStagingOnly',

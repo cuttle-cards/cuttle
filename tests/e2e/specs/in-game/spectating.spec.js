@@ -167,7 +167,7 @@ describe('Spectating Games', () => {
   });
 
   it('Leaves a spectated game and joins another without processing extraneous updates', function() {
-    cy.setupGameAsSpectator();
+    cy.setupGameAsSpectator(false, 'spectatedGameId'); // alias to tell gameId's apart
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES ],
       p0Points: [],
@@ -196,9 +196,10 @@ describe('Spectating Games', () => {
       p1FaceCards: [],
     });
 
+    // Player in previously spectated game makes move
     cy.recoverSessionOpponent(playerOne);
     cy.get('@aceOfSpades').then((aceOfSpadesId) => {
-      cy.playPointsById(aceOfSpadesId, this.gameData.gameId);
+      cy.playPointsById(aceOfSpadesId, this.spectatedGameId);
     });
 
     cy.wait(3000);
@@ -327,8 +328,8 @@ describe('Spectating Games', () => {
       cy.vueRoute('/');
       // Player 3 spectates player1 vs player2
       cy.signupOpponent(playerThree);
-      cy.get('@gameData').then((gameData) => {
-        cy.setOpponentToSpectate(gameData.gameId);
+      cy.get('@gameId').then((gameId) => {
+        cy.setOpponentToSpectate(gameId);
       });
       // My user begins spectating, sees player3 in spectator list
       cy.get('[data-cy-game-list-selector=spectate]').click();
@@ -342,9 +343,9 @@ describe('Spectating Games', () => {
       cy.get('[data-player-hand-card]').should('have.length', 5);
 
       // Player 4 begins spectating
-      cy.get('@gameData').then((gameData) => {
+      cy.get('@gameId').then((gameId) => {
         cy.signupOpponent(playerFour);
-        cy.setOpponentToSpectate(gameData.gameId);
+        cy.setOpponentToSpectate(gameId);
       });
       cy.get('[data-player-hand-card]').should('have.length', 5);
       // Player 4 now appears in spectator list
@@ -368,16 +369,16 @@ describe('Spectating Games', () => {
     it('Should remove spectators from list after leaving', () => {
       cy.setupGameAsSpectator();
       cy.signupOpponent(playerThree);
-      cy.get('@gameData').then((gameData) => {
-        cy.setOpponentToSpectate(gameData.gameId);
+      cy.get('@gameId').then((gameId) => {
+        cy.setOpponentToSpectate(gameId);
       });
       cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
         .click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
-      cy.get('@gameData').then((gameData) => {
-        cy.setOpponentToLeaveSpectate(gameData.gameId);
+      cy.get('@gameId').then((gameId) => {
+        cy.setOpponentToLeaveSpectate(gameId);
       });
       cy.get('[data-cy="spectate-list-menu"').should('not.contain', playerThree.username);
     });

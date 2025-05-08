@@ -22,11 +22,11 @@ const transformGameUrl = (api, slug, gameId = null) => {
         .its('cuttle.gameStore.id')
         .then((gameId) => `/api/game/${gameId}/rematch`);
     case 'spectate':
-      return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/spectate/join`) :
+      return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/spectate`) :
         cy
           .window()
           .its('cuttle.gameStore.id')
-          .then((gameId) => `/api/game/${gameId}/spectate/join`);
+          .then((gameId) => `/api/game/${gameId}/spectate`);
     case'draw':
     case'points':
     case'faceCard':
@@ -88,7 +88,10 @@ Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST', gam
 // Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
 
 Cypress.Commands.add('wipeDatabase', () => {
-  cy.request('localhost:1337/api/test/wipeDatabase');
+  cy.request({
+    method: 'DELETE',
+    url: 'localhost:1337/api/test/wipe-database'
+  });
   cy.log('Wiped database');
 });
 
@@ -99,26 +102,26 @@ Cypress.Commands.add('refreshOpponentSocket', () => {
 
 Cypress.Commands.add('setBadSession', () => {
   return new Cypress.Promise((resolve) => {
-    io.socket.get('/api/test/badSession', function () {
+    io.socket.put('/api/test/bad-session', function () {
       return resolve();
     });
   });
 });
 
 Cypress.Commands.add('loadSeasonFixture', (season) => {
-  cy.makeSocketRequest('test', 'loadSeasonFixture', season);
+  cy.makeSocketRequest('test', 'seasons', season);
 });
 
 Cypress.Commands.add('loadMatchFixtures', (matches) => {
-  cy.makeSocketRequest('test', 'loadMatchFixtures', matches);
+  cy.makeSocketRequest('test', 'matches', matches);
 });
 
 Cypress.Commands.add('loadFinishedGameFixtures', (games) => {
-  cy.makeSocketRequest('test', 'loadFinishedGameFixtures', games);
+  cy.makeSocketRequest('test', 'games', games);
 });
 
 Cypress.Commands.add('requestGameList', () => {
-  cy.makeSocketRequest('game', 'getList');
+  cy.makeSocketRequest('game', '', {}, 'GET');
 });
 
 /**
@@ -131,24 +134,24 @@ Cypress.Commands.add('setupGameAsP0', (alreadyAuthenticated = false, isRanked = 
     cy.visit('/');
     cy.signupPlayer(myUser);
   }
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then(({ gameId }) => {
     cy.window()
       .its('cuttle.gameStore')
-      .then((store) => store.requestSubscribe(gameSummary.gameId));
-    cy.log(`Subscribed to game ${gameSummary.gameId}`);
-    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
-    cy.wrap(gameSummary).as('gameSummary');
+      .then((store) => store.requestSubscribe(gameId));
+    cy.log(`Subscribed to game ${gameId}`);
+    cy.vueRoute(`/lobby/${gameId}`);
+    cy.wrap(gameId).as('gameId');
     cy.get('[data-cy=ready-button]').click();
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
     }
     try {
-      cy.subscribeOpponent(gameSummary.gameId);
+      cy.subscribeOpponent(gameId);
     } catch {
       cy.recoverSessionOpponent(opponentOne);
-      cy.subscribeOpponent(gameSummary.gameId);
+      cy.subscribeOpponent(gameId);
     }
-    cy.readyOpponent();
+    cy.readyOpponent(gameId);
     // Asserting 5 cards in players hand confirms game has loaded
     cy.get('#player-hand-cards .player-card').should('have.length', 5);
   });
@@ -160,43 +163,43 @@ Cypress.Commands.add('setupGameAsP1', (alreadyAuthenticated = false, isRanked = 
     cy.visit('/');
     cy.signupPlayer(myUser);
   }
-  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then((gameSummary) => {
+  cy.createGamePlayer({ gameName: 'Test Game', isRanked }).then(({ gameId }) => {
     if (!alreadyAuthenticated) {
       cy.signupOpponent(opponentOne);
     }
     try {
-      cy.subscribeOpponent(gameSummary.gameId);
+      cy.subscribeOpponent(gameId);
     } catch {
       cy.recoverSessionOpponent(opponentOne);
-      cy.subscribeOpponent(gameSummary.gameId);
+      cy.subscribeOpponent(gameId);
     }
-    cy.readyOpponent();
+    cy.readyOpponent(gameId);
     cy.window()
       .its('cuttle.gameStore')
-      .then((store) => store.requestSubscribe(gameSummary.gameId));
-    cy.vueRoute(`/lobby/${gameSummary.gameId}`);
-    cy.wrap(gameSummary).as('gameSummary');
+      .then((store) => store.requestSubscribe(gameId));
+    cy.vueRoute(`/lobby/${gameId}`);
+    cy.wrap(gameId).as('gameId');
     cy.get('[data-cy=ready-button]').click();
     // Asserting 6 cards in players hand confirms game has loaded
     cy.get('#player-hand-cards .player-card').should('have.length', 6);
   });
   cy.log('Finished setting up game as p1');
 });
-Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
+Cypress.Commands.add('setupGameAsSpectator', (isRanked = false, gameIdAlias = 'gameId') => {
   cy.wipeDatabase();
   cy.visit('/');
   cy.signupPlayer(myUser);
   cy.vueRoute('/');
-  cy.createGamePlayer({ gameName: 'Spectator Game', isRanked }).then((gameData) => {
+  cy.createGamePlayer({ gameName: 'Spectator Game', isRanked }).then(({ gameId }) => {
     // Test that JOIN button starts enabled
     cy.get('[data-cy-join-game]').should('not.be.disabled');
     // Sign up 2 users and subscribe them to game
     cy.signupOpponent(playerOne);
-    cy.subscribeOpponent(gameData.gameId);
+    cy.subscribeOpponent(gameId);
     // Opponents start game, it appears as spectatable
-    cy.readyOpponent(gameData.gameId);
+    cy.readyOpponent(gameId);
     cy.signupOpponent(playerTwo);
-    cy.subscribeOpponent(gameData.gameId);
+    cy.subscribeOpponent(gameId);
     cy.get('[data-cy-join-game]').should('be.disabled');
 
     // Switch to spectate tab
@@ -204,8 +207,8 @@ Cypress.Commands.add('setupGameAsSpectator', (isRanked = false) => {
     cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
 
     // The other game starts -- should now appear in spectate list
-    cy.readyOpponent(gameData.gameId);
-    cy.wrap(gameData).as('gameData');
+    cy.readyOpponent(gameId);
+    cy.wrap(gameId).as(gameIdAlias);
     cy.get('[data-cy-spectate-game]').click();
     cy.url().should('include', '/spectate/');
     cy.window()
@@ -236,7 +239,7 @@ Cypress.Commands.add('loginPlayer', (player) => {
 });
 
 Cypress.Commands.add('createGameOpponent', (name) => {
-  cy.makeSocketRequest('game', 'create', {
+  cy.makeSocketRequest('game', '', {
     gameName: name,
   });
 });
@@ -249,7 +252,7 @@ Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
 });
 
 Cypress.Commands.add('subscribeOpponent', (gameId) => {
-  cy.makeSocketRequest('game', 'subscribe', { gameId });
+  cy.makeSocketRequest(`game/${gameId}`, 'subscribe');
 });
 
 Cypress.Commands.add('setOpponentToSpectate', (gameId) => {
@@ -257,16 +260,16 @@ Cypress.Commands.add('setOpponentToSpectate', (gameId) => {
 });
 
 Cypress.Commands.add('setOpponentToLeaveSpectate', (gameId) => {
-  const slug = `${gameId}/spectate/leave/`;
-  cy.makeSocketRequest('game', slug, { gameId }, 'POST');
+  const slug = `${gameId}/spectate`;
+  cy.makeSocketRequest('game', slug, { gameId }, 'DELETE');
 });
 
 Cypress.Commands.add('readyOpponent', (id) => {
-  cy.makeSocketRequest('game', 'ready', { id });
+  cy.makeSocketRequest(`game/${id}`, 'ready');
 });
 
-Cypress.Commands.add('setIsRankedOpponent', (isRanked) => {
-  cy.makeSocketRequest('game', 'setIsRanked', { isRanked });
+Cypress.Commands.add('setIsRankedOpponent', (gameId, isRanked) => {
+  cy.makeSocketRequest(`game/${gameId}`, 'is-ranked', { isRanked }, 'PATCH');
 });
 
 Cypress.Commands.add('toggleInput', (selector, checked = false) => {
@@ -279,7 +282,7 @@ Cypress.Commands.add('toggleInput', (selector, checked = false) => {
 });
 
 Cypress.Commands.add('leaveLobbyOpponent', (id) => {
-  cy.makeSocketRequest('game', 'leaveLobby', { id });
+  cy.makeSocketRequest(`game/${id}`, 'leave');
 });
 
 /**
@@ -1219,7 +1222,7 @@ Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
       .window()
       .its('cuttle.gameStore.id')
       .then(async (gameId) => {
-        await cy.makeSocketRequest(`game/${gameId}`, 'loadFixtureGameState',  fixture );
+        await cy.makeSocketRequest(`game/${gameId}`, 'game-state',  fixture );
         const playerHandLength = pNum === 0 ? fixture.p0Hand.length : fixture.p1Hand.length;
         cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
         return;

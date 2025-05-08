@@ -425,11 +425,8 @@ export const useGameStore = defineStore('game', {
     },
     async requestSubscribe(gameId) {
       return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/subscribe',
-          {
-            gameId,
-          },
+        io.socket.post(
+          `/api/game/${gameId}/subscribe`,
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.resetState();
@@ -450,7 +447,7 @@ export const useGameStore = defineStore('game', {
 
     async requestSpectate(gameId) {
       // TODO #965 - Remove dynamic gamestate slug
-      const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate/join` : 'spectate';
+      const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate` : 'spectate';
       try {
         const res = await this.makeSocketRequest(slug, { gameId });
         this.myPNum = 0;
@@ -463,7 +460,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestSpectateLeave() {
       return new Promise((resolve, reject) => {
-        io.socket.post(`/api/game/${this.id}/spectate/leave`, (_res, jwres) => {
+        io.socket.delete(`/api/game/${this.id}/spectate`, (_res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
             return resolve();
@@ -474,7 +471,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestLeaveLobby() {
       return new Promise((resolve, reject) => {
-        io.socket.post('/api/game/leaveLobby', (res, jwres) => {
+        io.socket.post(`/api/game/${this.id}/leave`, (res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
             return resolve();
@@ -485,7 +482,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestReady() {
       return new Promise((resolve, reject) => {
-        io.socket.post('/api/game/ready', (res, jwres) => {
+        io.socket.post(`/api/game/${this.id}/ready`, (res, jwres) => {
           if (jwres.statusCode === 200) {
             return resolve(res);
           }
@@ -495,8 +492,8 @@ export const useGameStore = defineStore('game', {
     },
     async requestSetIsRanked({ isRanked }) {
       return new Promise((resolve, reject) => {
-        io.socket.post(
-          '/api/game/setIsRanked',
+        io.socket.patch(
+          `/api/game/${this.id}/is-ranked`,
           {
             isRanked,
           },
