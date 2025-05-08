@@ -17,7 +17,8 @@ module.exports = async function (req, res) {
     let game = await sails.helpers.lockGame(req.session.game);
 
     // Early return if requesting user was not in the game
-    if (![ game.p0?.id, game.p1?.id ].includes(userId)) {
+    const playerIds = [ game.p0?.id, game.p1?.id ].filter((val) => !!val);
+    if (!playerIds.includes(userId)) {
       return res.forbidden({ message: `You aren't a player in this game` });
     }
 
