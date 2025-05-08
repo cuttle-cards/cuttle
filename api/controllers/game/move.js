@@ -1,4 +1,6 @@
 // Request to make a move
+const ForbiddenError = require('../../errors/forbiddenError');
+
 module.exports = async function (req, res) {
   let game;
   try {
@@ -20,7 +22,7 @@ module.exports = async function (req, res) {
         playedBy = 1;
         break;
       default:
-        return res.forbidden({ message: 'You are not a player in this game!' });
+        throw new ForbiddenError('You are not a player in this game!');
     }
 
     validate(gameState, req.body, playedBy, game.gameStates);
@@ -41,6 +43,12 @@ module.exports = async function (req, res) {
         // fall through for generic error handling
       }
     }
-    return res.badRequest({ message: err.message });
+
+    switch (err?.code) {
+      case 'FORBIDDEN':
+        return res.forbidden({ message: err.message });
+      default:
+        return res.badRequest({ message: err.message });
+    }
   }
 };
