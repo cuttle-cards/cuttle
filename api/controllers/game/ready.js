@@ -1,7 +1,9 @@
+const ForbiddenError = require('../../errors/forbiddenError');
+
 module.exports = async function (req, res) {
+  // Query for game
+  const game =  await sails.helpers.lockGame(req.session.game);
   try {
-    // Query for game and users
-    const game =  await sails.helpers.lockGame(req.session.game);
     game.players = [ game.p0, game.p1 ];
 
     // Determine who is ready
@@ -24,7 +26,7 @@ module.exports = async function (req, res) {
         }
         break;
       default:
-        return res.forbidden({ message: 'You are not a player in this game!' });
+        throw new ForbiddenError('You are not a player in this game!');
     }
 
     // Start game if both players are ready
@@ -55,7 +57,15 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    const message = err.raw?.message ?? err;
+    // ensure the game is unlocked
+    if (game?.lock) {
+      try {
+        await sails.helpers.unlockGame(game.lock);
+      } catch (err) {
+        // fall through for generic error handling
+      }
+    }
+    const message = err.raw?.message ?? err?.message ?? err;
     return res.badRequest({ message });
   }
 };
