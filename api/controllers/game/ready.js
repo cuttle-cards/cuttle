@@ -2,27 +2,29 @@ module.exports = async function (req, res) {
   try {
     // Query for game and users
     const game =  await sails.helpers.lockGame(req.session.game);
-    const players = await User.find({ game: req.session.game }).sort('pNum');
-    const user = players[ req.session.pNum ];
-    game.players = players;
+    game.players = [ game.p0, game.p1 ];
 
     // Determine who is ready
-    let { pNum } = user;
+    let pNum;
     let bothReady = false;
     const gameUpdates = {};
-    switch (pNum) {
-      case 0:
+    switch (req.session.usr) {
+      case game.p0.id:
+        pNum = 0;
         gameUpdates.p0Ready = !game.p0Ready;
         if (game.p1Ready) {
           bothReady = true;
         }
         break;
-      case 1:
+      case game.p1.id:
+        pNum = 1;
         gameUpdates.p1Ready = !game.p1Ready;
         if (game.p0Ready) {
           bothReady = true;
         }
         break;
+      default:
+        throw new Error('You are not a player in this game!');
     }
 
     // Start game if both players are ready
@@ -42,8 +44,8 @@ module.exports = async function (req, res) {
 
       Game.publish([ game.id ], {
         change: 'ready',
-        userId: user.id,
-        pNum: user.pNum,
+        userId: req.session.usr,
+        pNum,
         gameId: game.id,
       });
 
