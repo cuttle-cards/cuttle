@@ -27,13 +27,13 @@ module.exports.routes = {
   'POST /api/game': 'game/create',
   'GET /api/game': 'game/get-list',
   'POST /api/game/:gameId/subscribe': 'game/subscribe',
-  'POST /api/game/:gameId/leave': 'game/leave-lobby',
+  'POST /api/game/:gameId/spectate': 'game/spectate/join',
   'DELETE /api/game/:gameId/spectate': 'game/spectate/leave',
+  'POST /api/game/:gameId/leave': 'game/leave-lobby',
   'POST /api/game/:gameId/ready': 'game/ready',
   'PATCH /api/game/:gameId/is-ranked': 'game/set-is-ranked',
   'POST /api/game/:gameId/move': 'game/move',
   'POST /api/game/:gameId/rematch': 'game/rematch-gamestate',
-  'POST /api/game/:gameId/spectate': 'game/spectate/join',
 
   // TODO #965: remove these
   'POST /api/game/spectate': 'game/spectate', // TODO #965: remove
