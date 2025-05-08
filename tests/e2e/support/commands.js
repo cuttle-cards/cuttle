@@ -210,12 +210,12 @@ Cypress.Commands.add('setupGameAsSpectator', (isRanked = false, gameIdAlias = 'g
     cy.readyOpponent(gameId);
     cy.wrap(gameId).as(gameIdAlias);
     cy.get('[data-cy-spectate-game]').click();
-    // cy.url().should('include', '/spectate/');
-    // cy.window()
-    //   .its('cuttle.gameStore')
-    //   .then((game) => {
-    //     expect(game.id).to.not.eq(null);
-    //   });
+    cy.url().should('include', '/spectate/');
+    cy.window()
+      .its('cuttle.gameStore')
+      .then((game) => {
+        expect(game.id).to.not.eq(null);
+      });
   });
 });
 
