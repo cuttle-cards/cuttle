@@ -65,7 +65,13 @@ module.exports = async function (req, res) {
         // fall through for generic error handling
       }
     }
+
     const message = err.raw?.message ?? err?.message ?? err;
-    return res.badRequest({ message });
+    switch (err?.code) {
+      case 'FORBIDDEN':
+        return res.forbidden({ message });
+      default:
+        return res.badRequest({ message });
+    }
   }
 };
