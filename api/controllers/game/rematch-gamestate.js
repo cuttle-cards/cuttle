@@ -1,3 +1,4 @@
+// TODO #965: rename this to `rematch`
 /**
  * Endpoint to request/decline playing again
  * If both players accept rematch, creates
