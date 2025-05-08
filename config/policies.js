@@ -40,7 +40,7 @@ module.exports.policies = {
   'game/spectate/leave': [ 'isLoggedIn', 'hasGameId' ],
   'game/spectate': [ 'isLoggedIn' ],
   'game/ready': [ 'isLoggedIn', 'hasGameId', 'isInGame' ],
-  'game/set-is-ranked': 'isInGame',
+  'game/set-is-ranked': [ 'isLoggedIn', 'hasGameId' ],
   'game/leave-lobby': [ 'isSocket', 'isLoggedIn', 'hasGameId' ],
   'game/draw': [ 'isLoggedIn', 'isInGame' ],
   'game/pass': [ 'isLoggedIn', 'isInGame' ],
@@ -79,7 +79,7 @@ module.exports.policies = {
   'game/rematch-gamestate': 'isLoggedIn',
 
   /////////////////////////////////
-  // DEVELOPMENT Or Staging ONLY //
+  // DEVELOPMENT OR STAGING ONLY //
   /////////////////////////////////
   'game/stack-deck': 'developmentOrStagingOnly',
   'game/clear-game': 'developmentOrStagingOnly',
