@@ -24,7 +24,7 @@ module.exports = async function (req, res) {
         }
         break;
       default:
-        throw new Error('You are not a player in this game!');
+        return res.forbidden({ message: 'You are not a player in this game!' });
     }
 
     // Start game if both players are ready

@@ -16,7 +16,7 @@ module.exports = async function (req, res) {
         gameUpdates.p1 = null;
         break;
       default:
-        throw new Error('You are not a player in this game!');
+        return res.forbidden({ message: 'You are not a player in this game!' });
     }
 
     Game.unsubscribe(req, [ game.id ]);

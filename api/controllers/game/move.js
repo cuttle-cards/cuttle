@@ -20,7 +20,7 @@ module.exports = async function (req, res) {
         playedBy = 1;
         break;
       default:
-        throw new Error('You are not a player in this game!');
+        return res.forbidden({ message: 'You are not a player in this game!' });
     }
 
     validate(gameState, req.body, playedBy, game.gameStates);

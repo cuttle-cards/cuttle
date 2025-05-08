@@ -7,7 +7,7 @@ module.exports = async function (req, res) {
     // Must be in this game
     const playerIds = [ game.p0, game.p1 ].filter((val) => !!val);
     if (!playerIds.includes(req.session.usr)) {
-      throw new Error('You are not a player in this game!');
+      return res.forbidden({ message: 'You are not a player in this game!' });
     }
   
     const gameUpdates = { isRanked };
