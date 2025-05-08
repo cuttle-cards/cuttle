@@ -44,7 +44,9 @@ module.exports = {
       .populate('twos', { sort: 'updatedAt' })
       .populate('oneOffTarget')
       .populate('attachedToTarget')
-      .populate('spectatingUsers');
+      .populate('spectatingUsers')
+      .populate('p0')
+      .populate('p1');
   },
 
   /*
