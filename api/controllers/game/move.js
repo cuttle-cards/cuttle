@@ -35,7 +35,7 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    // unlock game if failing due to validation
+    // ensure the game is unlocked
     if (game?.lock) {
       try {
         await sails.helpers.unlockGame(game.lock);
