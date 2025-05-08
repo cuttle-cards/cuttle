@@ -7,11 +7,11 @@ module.exports = async function (req, res) {
   
     const gameUpdates = {};
     switch (req.session.usr) {
-      case game.p0.id:
+      case game.p0:
         gameUpdates.p0Ready = false;
         gameUpdates.p0 = null;
         break;
-      case game.p1.id:
+      case game.p1:
         gameUpdates.p1Ready = false;
         gameUpdates.p1 = null;
         break;

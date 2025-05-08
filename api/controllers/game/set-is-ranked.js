@@ -5,7 +5,7 @@ module.exports = async function (req, res) {
     const game = await gameService.findGame({ gameId: req.params.gameId });
 
     // Must be in this game
-    const playerIds = [ game.p0?.id, game.p1?.id ].filter((val) => !!val);
+    const playerIds = [ game.p0, game.p1 ].filter((val) => !!val);
     if (!playerIds.includes(req.session.usr)) {
       throw new Error('You are not a player in this game!');
     }
