@@ -59,11 +59,14 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    // ensure the game is unlocked
+    ///////////////////
+    // Handle Errors //
+    ///////////////////
+    // Ensure the game is unlocked
     try {
       await sails.helpers.unlockGame(game.lock);
     } catch (err) {
-      // fall through for generic error handling
+      // Swallow if unlockGame errors, then respond based on error type
     }
 
     const message = err?.raw?.message ?? err?.message ?? err;

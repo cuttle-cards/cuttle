@@ -50,6 +50,9 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
+    ///////////////////
+    // Handle Errors //
+    ///////////////////
     // Ensure the game is unlocked
     try {
       await sails.helpers.unlockGame(game.lock);
