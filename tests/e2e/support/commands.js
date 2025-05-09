@@ -687,9 +687,6 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       }),
       function handleResponse(res, jwres) {
         try {
-          if (env && jwres.statusCode === 404) {
-            throw new Error('This action is not supported yet in GameState API');
-          }
           if (jwres.statusCode !== 200) {
             throw new Error(jwres.error.message);
           }
