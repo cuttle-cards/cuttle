@@ -67,7 +67,7 @@ module.exports = {
       // Query for game if user is in one
       const gameId = (user.game ?? req.session.game) ?? null;
 
-      if (process.env.VITE_USE_GAMESTATE_API && gameId) {
+      if (gameId) {
         const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
         const game = await Game.findOne({ id: gameId })
           .populate('gameStates')
@@ -99,41 +99,6 @@ module.exports = {
           pNum
         });
       }
-      // TODO #965
-      // Remove everything between here and catch AFTER gamestate is deployed
-      const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
-      const populatedGame =
-        unpopulatedGame?.status === GameStatus.STARTED
-          ? await gameService.populateGame({ gameId })
-          : null;
-
-      if (unpopulatedGame) {
-        Game.subscribe(req, [ unpopulatedGame.id ]);
-        req.session.game = unpopulatedGame.id;
-        req.session.pNum = user.pNum ?? undefined;
-      }
-      
-      if (unpopulatedGame?.lastEvent?.victory) {
-        Game.publish([ unpopulatedGame.id ], {
-          change: unpopulatedGame.lastEvent.change,
-          game: unpopulatedGame.lastEvent.game,
-          victory: unpopulatedGame.lastEvent.victory
-        });
-      }
-      
-      if (populatedGame) {
-        Game.publish([ populatedGame.id ], {
-          ...populatedGame.lastEvent,
-          game: populatedGame,
-        });
-      }
-
-      const game = unpopulatedGame?.lastEvent?.game ?? (populatedGame ?? unpopulatedGame);
-      return res.ok({
-        game,
-        username: user.username,
-        pNum: user.pNum,
-      });
       
     } catch (err) {
       return res.badRequest(err);
