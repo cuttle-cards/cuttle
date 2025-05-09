@@ -61,10 +61,9 @@ module.exports.routes = {
   '/api/game/stalemate': 'game/stalemate',
   '/api/game/stalemate-accept': 'game/stalemate',
   '/api/game/stalemate-reject': 'game/stalemate-reject',
-  '/api/game/rematch': 'game/rematch',
-  '/api/game/join-rematch': 'game/join-rematch',
   '/api/game/loadFixture': 'game/load-fixture',
   // TODO #965: End of routes to remove in #965
+  '/api/game/join-rematch': 'game/join-rematch',
   
   // Testing helpers - DEVELOPMENT ONLY
   'POST /api/game/:gameId/game-state': 'game/load-fixture-gamestate',
