@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to resolve five',
@@ -38,23 +39,23 @@ module.exports = {
       const player = playedBy ? currentState.p1 : currentState.p0;
 
       if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
       if (currentState.phase !== GamePhase.RESOLVING_FIVE) {
-        throw new Error('game.snackbar.oneOffs.five.wrongPhase');
+        throw new BadRequestError('game.snackbar.oneOffs.five.wrongPhase');
       }
 
       if (player.hand.length > 0 && !requestedMove.cardId) {
-        throw new Error('game.snackbar.oneOffs.five.selectCardToDiscard');
+        throw new BadRequestError('game.snackbar.oneOffs.five.selectCardToDiscard');
       }
 
       if (requestedMove.cardId && !player.hand.find(({ id }) => id === requestedMove.cardId)) {
-        throw new Error('You must discard a card from your hand');
+        throw new BadRequestError('You must discard a card from your hand');
       }
 
       if (currentState.deck.length === 0) {
-        throw new Error('game.snackbar.oneOffs.five.fiveDeckIsEmpty');
+        throw new BadRequestError('game.snackbar.oneOffs.five.fiveDeckIsEmpty');
       }
 
       return exits.success();
