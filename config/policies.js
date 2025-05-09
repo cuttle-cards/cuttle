@@ -39,7 +39,7 @@ module.exports.policies = {
   'game/spectate/join': [ 'isLoggedIn', 'hasGameId' ],
   'game/spectate/leave': [ 'isLoggedIn', 'hasGameId' ],
   'game/spectate': [ 'isLoggedIn' ],
-  'game/ready': [ 'isLoggedIn', 'hasGameId', 'isInGame' ],
+  'game/ready': [ 'isLoggedIn', 'hasGameId' ],
   'game/set-is-ranked': [ 'isLoggedIn', 'hasGameId' ],
   'game/leave-lobby': [ 'isSocket', 'isLoggedIn', 'hasGameId' ],
   'game/game-over': [ 'isLoggedIn' ],
