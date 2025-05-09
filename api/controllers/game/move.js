@@ -1,6 +1,7 @@
 // Request to make a move
 const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
+const BadRequestError = require('../../errors/badRequestError');
 
 module.exports = async function (req, res) {
   let game;
@@ -10,7 +11,7 @@ module.exports = async function (req, res) {
     game = await sails.helpers.lockGame(req.params.gameId);
     const gameState = unpackGamestate(game.gameStates.at(-1));
     if (!game.gameStates.length || !gameState) {
-      throw new Error({ message: 'Game has not yet started' });
+      throw new BadRequestError({ message: 'Game has not yet started' });
     }
 
     // Verify whether user is in requested game and as which player
