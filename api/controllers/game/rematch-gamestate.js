@@ -8,13 +8,15 @@
  * with name "firstPlayerUsername VS secondPlayerUsername {p0wins}-{p1Wins}-{stalemates}"
  */
 const GameStatus = require('../../../utils/GameStatus.json');
+
+let game;
 module.exports = async function (req, res) {
   try {
     const { usr: userId } = req.session;
     const { gameId: oldGameId } = req.params;
     const { rematch } = req.body;
 
-    let game = await sails.helpers.lockGame(req.session.game);
+    game = await sails.helpers.lockGame(req.session.game);
 
     // Early return if requesting user was not in the game
     const playerIds = [ game.p0?.id, game.p1?.id ].filter((val) => !!val);
@@ -95,6 +97,12 @@ module.exports = async function (req, res) {
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
   } catch (err) {
+    // ensure the game is unlocked
+    try {
+      await sails.helpers.unlockGame(game.lock);
+    } catch (err) {
+      // fall through for generic error handling
+    }
     const message = err.raw?.message ?? err;
     return res.badRequest({ message });
   }

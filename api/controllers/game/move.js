@@ -37,12 +37,10 @@ module.exports = async function (req, res) {
     return res.ok();
   } catch (err) {
     // ensure the game is unlocked
-    if (game?.lock) {
-      try {
-        await sails.helpers.unlockGame(game.lock);
-      } catch (err) {
-        // fall through for generic error handling
-      }
+    try {
+      await sails.helpers.unlockGame(game.lock);
+    } catch (err) {
+      // fall through for generic error handling
     }
 
     const message = err?.message ?? err ?? 'Error making move';
