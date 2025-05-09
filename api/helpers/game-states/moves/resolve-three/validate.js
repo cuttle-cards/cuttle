@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to resolve a three',
@@ -38,15 +39,15 @@ module.exports = {
       const cardExists = currentState.scrap.find(card => card.id === requestedMove.cardId);
 
       if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
       if (currentState.phase !== GamePhase.RESOLVING_THREE) {
-        throw new Error('game.snackbar.oneOffs.three.notResolvingThreePhase');
+        throw new BadRequestError('game.snackbar.oneOffs.three.notResolvingThreePhase');
       }
 
       if (!cardExists) {
-        throw new Error('game.snackbar.oneOffs.three.mustPickFromScrap');
+        throw new BadRequestError('game.snackbar.oneOffs.three.mustPickFromScrap');
       }
 
       return exits.success();
