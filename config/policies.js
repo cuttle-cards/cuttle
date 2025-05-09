@@ -42,37 +42,7 @@ module.exports.policies = {
   'game/ready': [ 'isLoggedIn', 'hasGameId', 'isInGame' ],
   'game/set-is-ranked': [ 'isLoggedIn', 'hasGameId' ],
   'game/leave-lobby': [ 'isSocket', 'isLoggedIn', 'hasGameId' ],
-  'game/draw': [ 'isLoggedIn', 'isInGame' ],
-  'game/pass': [ 'isLoggedIn', 'isInGame' ],
-  'game/points': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],
-  'game/face-card': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],
-  'game/scuttle': [ 'isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId' ],
-  'game/jack': [ 'isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId' ],
-  'game/untargeted-one-off': [ 'isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId' ],
-  'game/targeted-one-off': [ 'isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId', 'hasTargetType' ],
-  'game/counter': [ 'isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId' ],
-  'game/resolve': [ 'isLoggedIn', 'isInGame', 'hasOpId' ],
-  'game/resolve-four': [ 'isLoggedIn', 'isInGame', 'hasCardIdOne' ],
-  'game/resolve-five': [ 'isLoggedIn', 'isInGame' ],
-  'game/resolve-three': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],
-  'game/concede': [ 'isLoggedIn', 'isInGame' ],
-  'game/stalemate': [ 'isLoggedIn', 'isInGame' ],
-  'game/stalemate-reject': [ 'isLoggedIn', 'isInGame' ],
   'game/game-over': [ 'isLoggedIn' ],
-  'game/game-data': [ 'isLoggedIn', 'isInGame' ],
-  'game/seven/face-card': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],
-  'game/seven/jack': [ 'isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId' ],
-  'game/seven/points': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],
-  'game/seven/scuttle': [ 'isLoggedIn', 'isInGame', 'hasCardId', 'hasOpId', 'hasTargetId' ],
-  'game/seven/targeted-one-off': [
-    'isLoggedIn',
-    'isInGame',
-    'hasCardId',
-    'hasOpId',
-    'hasTargetId',
-    'hasTargetType',
-  ],
-  'game/seven/untargeted-one-off': [ 'isLoggedIn', 'isInGame', 'hasCardId' ],
 
   // GameStateApi
   'game/move': [ 'isLoggedIn', 'hasValidMoveBody', 'hasGameId' ],
@@ -81,8 +51,6 @@ module.exports.policies = {
   /////////////////////////////////
   // DEVELOPMENT OR STAGING ONLY //
   /////////////////////////////////
-  'game/stack-deck': 'developmentOrStagingOnly',
-  'game/clear-game': 'developmentOrStagingOnly',
   'game/load-fixture': 'developmentOrStagingOnly',
   'game/load-fixture-gamestate': 'developmentOrStagingOnly',
 

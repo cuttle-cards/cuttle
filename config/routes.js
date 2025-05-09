@@ -35,34 +35,6 @@ module.exports.routes = {
   'POST /api/game/:gameId/move': 'game/move',
   'POST /api/game/:gameId/rematch': 'game/rematch-gamestate',
 
-  // TODO #965: remove these
-  'POST /api/game/spectate': 'game/spectate', // TODO #965: remove
-  '/api/game/draw': 'game/draw',
-  '/api/game/pass': 'game/pass',
-  '/api/game/points': 'game/points',
-  '/api/game/faceCard': 'game/face-card',
-  '/api/game/scuttle': 'game/scuttle',
-  '/api/game/jack': 'game/jack',
-  '/api/game/untargetedOneOff': 'game/untargeted-one-off',
-  '/api/game/targetedOneOff': 'game/targeted-one-off',
-  '/api/game/counter': 'game/counter',
-  '/api/game/resolve': 'game/resolve',
-  '/api/game/resolveFour': 'game/resolve-four',
-  '/api/game/resolveThree': 'game/resolve-three',
-  '/api/game/resolveFive': 'game/resolve-five',
-  '/api/game/seven/points': 'game/seven/points',
-  '/api/game/seven/faceCard': 'game/seven/face-card',
-  '/api/game/seven/scuttle': 'game/seven/scuttle',
-  '/api/game/seven/jack': 'game/seven/jack',
-  '/api/game/seven/untargetedOneOff': 'game/seven/untargeted-one-off',
-  '/api/game/seven/targetedOneOff': 'game/seven/targeted-one-off',
-  '/api/game/over': 'game/game-over',
-  '/api/game/concede': 'game/concede',
-  '/api/game/stalemate': 'game/stalemate',
-  '/api/game/stalemate-accept': 'game/stalemate',
-  '/api/game/stalemate-reject': 'game/stalemate-reject',
-  '/api/game/loadFixture': 'game/load-fixture',
-  // TODO #965: End of routes to remove in #965
   '/api/game/join-rematch': 'game/join-rematch',
   
   // Testing helpers - DEVELOPMENT ONLY
