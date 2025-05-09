@@ -7,6 +7,8 @@
  * with name "firstPlayerUsername VS secondPlayerUsername {p0wins}-{p1Wins}-{stalemates}"
  */
 const gameAPI = sails.hooks['customgamehook'];
+const CustomErrorType = require('../../errors/customErrorType');
+const ForbiddenError = require('../../errors/forbiddenError');
 
 let game;
 module.exports = async function (req, res) {
@@ -18,7 +20,7 @@ module.exports = async function (req, res) {
 
     // Early return if requesting user was not in the game
     if (!userId || ![ game.p0?.id, game.p1?.id ].includes(userId)) {
-      return;
+      throw new ForbiddenError('You are not a player in this game!');
     }
 
     // Determine whether to start new game
@@ -101,13 +103,23 @@ module.exports = async function (req, res) {
     await sails.helpers.unlockGame(game.lock);
     return res.ok({ newGameId: newGame.id });
   } catch (err) {
-    // ensure the game is unlocked
+    ///////////////////
+    // Handle Errors //
+    ///////////////////
+    // Ensure the game is unlocked
     try {
       await sails.helpers.unlockGame(game.lock);
     } catch (err) {
-      // fall through for generic error handling
+      // Swallow if unlockGame errors, then respond based on error type
     }
+
+    // Respond based on error code
     const message = err.raw?.message ?? err;
-    return res.badRequest({ message });
+    switch (err?.code) {
+      case CustomErrorType.FORBIDDEN:
+        return res.forbidden({ message });
+      default:
+        return res.serverError({ message });
+    }
   }
 };
