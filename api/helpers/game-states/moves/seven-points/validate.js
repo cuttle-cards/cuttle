@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate sevenPoints',
@@ -39,19 +40,19 @@ module.exports = {
       const playedCard = topTwoCards.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
       if (currentState.phase !== GamePhase.RESOLVING_SEVEN) {
-        throw new Error('game.snackbar.seven.wrongPhase');
+        throw new BadRequestError('game.snackbar.seven.wrongPhase');
       }
 
       if (!playedCard) {
-        throw new Error('game.snackbar.seven.pickAndPlay');
+        throw new BadRequestError('game.snackbar.seven.pickAndPlay');
       }
 
       if (playedCard.rank > 10) {
-        throw new Error('game.snackbar.points.numberOnlyForPoints');
+        throw new BadRequestError('game.snackbar.points.numberOnlyForPoints');
       }
 
       return exits.success();
