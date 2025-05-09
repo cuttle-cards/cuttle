@@ -1,7 +1,9 @@
+const CustomErrorType = require('./customErrorType');
+
 class ForbiddenError extends Error {
   constructor(message) {
     super(message);
-    this.code = 'FORBIDDEN';
+    this.code = CustomErrorType.FORBIDDEN;
   }
 }
 

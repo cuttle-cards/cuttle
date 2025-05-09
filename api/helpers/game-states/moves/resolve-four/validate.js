@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to resolve a four',
@@ -37,11 +38,11 @@ module.exports = {
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
     try {
       if (currentState.turn % 2 === playedBy) {
-        throw new Error('game.snackbar.oneOffs.four.notYourTurn');
+        throw new BadRequestError('game.snackbar.oneOffs.four.notYourTurn');
       }
 
       if (currentState.phase !== GamePhase.RESOLVING_FOUR) {
-        throw new Error('game.snackbar.oneOffs.four.notResolvingFourPhase');
+        throw new BadRequestError('game.snackbar.oneOffs.four.notResolvingFourPhase');
       }
 
       const player = playedBy ? currentState.p1 : currentState.p0;
@@ -51,11 +52,11 @@ module.exports = {
       const selectedCard2 = player.hand.find(card => card.id === cardId2);
 
       if ((requestedMove.cardId1 && !selectedCard1) || (requestedMove.cardId2 && !selectedCard2)) {
-        throw new Error('game.snackbar.oneOffs.four.mustSelectCards');
+        throw new BadRequestError('game.snackbar.oneOffs.four.mustSelectCards');
       }
 
       if (!selectedCard2 && player.hand.length > 1) {
-        throw new Error('game.snackbar.oneOffs.four.mustSelectCards');
+        throw new BadRequestError('game.snackbar.oneOffs.four.mustSelectCards');
       }
 
       return exits.success();

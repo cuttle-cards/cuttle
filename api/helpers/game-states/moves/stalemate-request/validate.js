@@ -1,5 +1,6 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 const MoveType = require('../../../../../utils/MoveType.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request for Stalemate',
@@ -39,7 +40,7 @@ module.exports = {
 
       // Must not already be considering a stalemate
       if (currentState.phase === GamePhase.STALEMATE_REQUEST) {
-        throw new Error('game.snackbar.stalemate.alreadyConsideringStalemate');
+        throw new BadRequestError('game.snackbar.stalemate.alreadyConsideringStalemate');
       }
 
       // Can't request stalemate more than once per turn
@@ -48,12 +49,12 @@ module.exports = {
           (state) => state.moveType === MoveType.STALEMATE_REQUEST && state.turn === currentState.turn,
         )
       ) {
-        throw new Error('game.snackbar.stalemate.previousStalemateRejected');
+        throw new BadRequestError('game.snackbar.stalemate.previousStalemateRejected');
       }
 
       // Must be in main phase
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('game.snackbar.stalemate.wrongPhase');
+        throw new BadRequestError('game.snackbar.stalemate.wrongPhase');
       }
 
 

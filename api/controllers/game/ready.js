@@ -1,4 +1,6 @@
+const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
+
 
 module.exports = async function (req, res) {
   // Query for game
@@ -57,21 +59,22 @@ module.exports = async function (req, res) {
 
     return res.ok();
   } catch (err) {
-    // ensure the game is unlocked
-    if (game?.lock) {
-      try {
-        await sails.helpers.unlockGame(game.lock);
-      } catch (err) {
-        // fall through for generic error handling
-      }
+    ///////////////////
+    // Handle Errors //
+    ///////////////////
+    // Ensure the game is unlocked
+    try {
+      await sails.helpers.unlockGame(game.lock);
+    } catch (err) {
+      // Swallow if unlockGame errors, then respond based on error type
     }
 
     const message = err?.raw?.message ?? err?.message ?? err;
     switch (err?.code) {
-      case 'FORBIDDEN':
+      case CustomErrorType.FORBIDDEN:
         return res.forbidden({ message });
       default:
-        return res.badRequest({ message });
+        return res.serverError({ message });
     }
   }
 };
