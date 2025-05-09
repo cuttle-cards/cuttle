@@ -71,7 +71,7 @@ module.exports = async function (req, res) {
       case CustomErrorType.FORBIDDEN:
         return res.forbidden({ message });
       default:
-        return res.badRequest({ message });
+        return res.serverError({ message });
     }
   }
 };
