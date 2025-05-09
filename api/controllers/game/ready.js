@@ -39,7 +39,7 @@ module.exports = async function (req, res) {
       // Deal cards (also emits socket event)
       await Game.updateOne({ id: game.id }).set(gameUpdates);
 
-      await gameService.dealCards({ ...game, ...gameUpdates }, {});
+      await sails.helpers.gameStates.dealCards({ ...game, ...gameUpdates });
 
     // Otherwise send socket message that player is ready
     } else {

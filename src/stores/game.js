@@ -369,10 +369,6 @@ export const useGameStore = defineStore('game', {
       }
     },
     transformGameUrl(slug) {
-      if (import.meta.env.VITE_USE_GAMESTATE_API !== 'true') {
-        return `/api/game/${slug}`;
-      }
-
       switch (slug) {
         case 'draw':
         case 'points':
@@ -415,9 +411,6 @@ export const useGameStore = defineStore('game', {
             data,
           },
           (_res, jwres) => {
-            if (import.meta.env.VITE_USE_GAMESTATE_API === 'true' && jwres.statusCode === 404) {
-              reject('This action is not supported yet in GameState API');
-            }
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -446,8 +439,7 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestSpectate(gameId) {
-      // TODO #965 - Remove dynamic gamestate slug
-      const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate` : 'spectate';
+      const slug = `${gameId}/spectate`;
       try {
         const res = await this.makeSocketRequest(slug, { gameId });
         this.myPNum = 0;
