@@ -44,11 +44,14 @@ module.exports = async function (req, res) {
       }
     }
 
+    const message = err?.message ?? err ?? 'Error making move';
     switch (err?.code) {
       case 'FORBIDDEN':
-        return res.forbidden({ message: err.message });
+        return res.forbidden({ message });
+      case 'BAD_REQUEST':
+        return res.badRequest({ message });
       default:
-        return res.badRequest({ message: err.message });
+        return res.serverError({ message });
     }
   }
 };
