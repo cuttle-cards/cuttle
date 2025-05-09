@@ -6,10 +6,12 @@ const BadRequestError = require('../../errors/badRequestError');
 module.exports = async function (req, res) {
   let game;
   try {
+    // Fetch and format relevant game data
     const { saveGamestate, createSocketEvent, unpackGamestate } = sails.helpers.gameStates;
     const { execute, validate } = sails.helpers.gameStates.moves[req.body.moveType];
     game = await sails.helpers.lockGame(req.params.gameId);
     const gameState = unpackGamestate(game.gameStates.at(-1));
+
     if (!game.gameStates.length || !gameState) {
       throw new BadRequestError({ message: 'Game has not yet started' });
     }
