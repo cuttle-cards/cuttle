@@ -1,7 +1,7 @@
 /**
  * TestController
  *
- * @description :: Server-side actions for handling incoming requests.
+ * @description :: Server-side actions for handling testing-only requests e.g wiping db
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
