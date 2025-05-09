@@ -1,7 +1,9 @@
+const CustomErrorType = require('./customErrorType');
+
 class BadRequestError extends Error {
   constructor(message) {
     super(message);
-    this.code = 'BAD_REQUEST';
+    this.code = CustomErrorType.BAD_REQUEST;
   }
 }
 

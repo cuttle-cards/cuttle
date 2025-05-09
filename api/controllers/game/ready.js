@@ -1,4 +1,6 @@
+const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
+
 
 module.exports = async function (req, res) {
   // Query for game
@@ -68,7 +70,7 @@ module.exports = async function (req, res) {
 
     const message = err?.raw?.message ?? err?.message ?? err;
     switch (err?.code) {
-      case 'FORBIDDEN':
+      case CustomErrorType.FORBIDDEN:
         return res.forbidden({ message });
       default:
         return res.badRequest({ message });

@@ -1,4 +1,5 @@
 // Request to make a move
+const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
 
 module.exports = async function (req, res) {
@@ -46,9 +47,9 @@ module.exports = async function (req, res) {
 
     const message = err?.message ?? err ?? 'Error making move';
     switch (err?.code) {
-      case 'FORBIDDEN':
+      case CustomErrorType.FORBIDDEN:
         return res.forbidden({ message });
-      case 'BAD_REQUEST':
+      case CustomErrorType.BAD_REQUEST:
         return res.badRequest({ message });
       default:
         return res.serverError({ message });
