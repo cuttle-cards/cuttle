@@ -17,9 +17,8 @@ module.exports = {
 
     const gameIsFull =
       game.status !== gameService.GameStatus.CREATED ||
-      game.players.length >= 2 || 
-      game.log.length > 0 || 
-      !_.isEqual(game.lastEvent, {});
+      (game.p0 && game.p1) ||
+      game.gameStates?.length;
 
     return exits.success(gameIsFull);
   },
