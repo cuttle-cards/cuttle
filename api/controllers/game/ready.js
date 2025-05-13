@@ -3,8 +3,10 @@ const ForbiddenError = require('../../errors/forbiddenError');
 
 
 module.exports = async function (req, res) {
+  // TODO #965 handle error in lock game
   // Query for game
-  const game =  await sails.helpers.lockGame(req.session.game);
+  const { gameId } = req.params;
+  const game =  await sails.helpers.lockGame(gameId);
   try {
     game.players = [ game.p0, game.p1 ];
 
