@@ -419,7 +419,7 @@ export const useGameStore = defineStore('game', {
     async requestSubscribe(gameId) {
       return new Promise((resolve, reject) => {
         io.socket.post(
-          `/api/game/${gameId}/subscribe`,
+          `/api/game/${gameId}/join`,
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.resetState();

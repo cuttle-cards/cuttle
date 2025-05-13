@@ -245,7 +245,7 @@ Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
 });
 
 Cypress.Commands.add('subscribeOpponent', (gameId) => {
-  cy.makeSocketRequest(`game/${gameId}`, 'subscribe');
+  cy.makeSocketRequest(`game/${gameId}`, 'join');
 });
 
 Cypress.Commands.add('setOpponentToSpectate', (gameId) => {
