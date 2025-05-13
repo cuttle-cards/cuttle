@@ -73,7 +73,6 @@ module.exports = {
           .populate('p0')
           .populate('p1');
 
-
         if (!game) {
           return res.ok({
             username: user.username
