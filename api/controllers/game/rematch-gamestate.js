@@ -18,6 +18,7 @@ module.exports = async function (req, res) {
     const { gameId: oldGameId } = req.params;
     const { rematch } = req.body;
 
+    // TODO #965 - remove use of session.game
     game = await sails.helpers.lockGame(req.session.game);
 
     // Early return if requesting user was not in the game
