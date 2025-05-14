@@ -61,6 +61,13 @@ const checkAndSubscribeToLobby = async (to) => {
   }
 };
 
+const getGameState = (to) => {
+  const gameStore = useGameStore();
+  const gameId = parseInt(to.params.gameId);
+  const gameStateIndex = parseInt(to.query.gameStateIndex ?? -1);
+  return gameStore.requestGameState(gameId, gameStateIndex);
+};
+
 const routes = [
   {
     path: '/',
@@ -119,6 +126,7 @@ const routes = [
     name: ROUTE_NAME_GAME,
     path: '/game/:gameId?',
     component: GameView,
+    beforeEnter: getGameState,
     // TODO: Add logic to redirect if a given game does not exist
     // mustBeAuthenticated intentionally left off here
     // If a user refreshes the relogin modal will fire and allow them to continue playing

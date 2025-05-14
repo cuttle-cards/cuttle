@@ -438,6 +438,24 @@ export const useGameStore = defineStore('game', {
       });
     },
 
+    async requestGameState(gameId, gameStateIndex = -1) {
+      const authStore = useAuthStore();
+      io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
+        return new Promise((resolve, reject) => {
+          switch (jwres.statusCode) {
+            case 200:
+              this.resetPNumIfNullThenUpdateGame(res.game);
+              return resolve(res);
+            case 401:
+              authStore.mustReauthenticate = true;
+              return reject(jwres.body.message);
+            default:
+              return reject(jwres.body.message);
+          }
+        });
+      });
+    },
+
     async requestSpectate(gameId) {
       const slug = `${gameId}/spectate`;
       try {

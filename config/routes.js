@@ -26,6 +26,7 @@ module.exports.routes = {
   // Games
   'POST /api/game': 'game/create',
   'GET /api/game': 'game/get-list',
+  'GET /api/game/:gameId': 'game/get-game',
   'POST /api/game/:gameId/join': 'game/join',
   'POST /api/game/:gameId/spectate': 'game/spectate/join',
   'DELETE /api/game/:gameId/spectate': 'game/spectate/leave',
