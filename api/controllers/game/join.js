@@ -3,7 +3,8 @@ const NotFoundError = require('../../errors/notFoundError');
 const CustomErrorType = require('../../errors/customErrorType.js');
 
 module.exports = async function (req, res) {
-  const { gameId } = req.params;
+  let { gameId } = req.params;
+  gameId = Number(gameId);
   const { usr: userId } = req.session;
   let game;
   let user;
