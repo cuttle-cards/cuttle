@@ -97,6 +97,8 @@ module.exports = {
           pNum
         });
       }
+
+      return res.ok({ username: user.username });
       
     } catch (err) {
       return res.badRequest(err);
