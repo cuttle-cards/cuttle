@@ -39,6 +39,11 @@ module.exports = async function(req, res) {
 
   } catch (err) {
     const message = err?.raw?.message ?? err?.message ?? err;
-    return res.serverError(message);
+    switch (err?.code) {
+      case CustomErrorType.NOT_FOUND:
+        return res.status(404).json({ message });
+      default:
+        return res.serverError(message);
+    }
   }
 };
