@@ -47,7 +47,7 @@ module.exports.policies = {
 
   // GameStateApi
   'game/move': [ 'isLoggedIn', 'hasValidMoveBody', 'hasGameId' ],
-  'game/rematch-gamestate': 'isLoggedIn',
+  'game/rematch-gamestate': [ 'isLoggedIn', 'hasGameId' ],
 
   /////////////////////////////////
   // DEVELOPMENT OR STAGING ONLY //
