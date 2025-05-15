@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
 import { sleep } from '../util/sleep';
+import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 
 /**
  * @returns number of queens a given player has
@@ -444,7 +445,8 @@ export const useGameStore = defineStore('game', {
         return new Promise((resolve, reject) => {
           switch (jwres.statusCode) {
             case 200:
-              this.resetPNumIfNullThenUpdateGame(res.game);
+              this.resetPNumIfNull(res.game);
+              handleInGameEvents(res);
               return resolve(res);
             case 401:
               authStore.mustReauthenticate = true;
