@@ -1099,7 +1099,7 @@ Cypress.Commands.add('rejectStalemateOpponent', (gameId = null) => {
 
 Cypress.Commands.add('reconnectOpponent', (opponent) => {
   cy.log('Opponent Reconnects');
-  cy.makeSocketRequest('user', 'relogin', {
+  cy.makeSocketRequest('user', 'reLogin', {
     username: opponent.username,
     password: opponent.password,
   });
