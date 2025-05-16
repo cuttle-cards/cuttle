@@ -445,9 +445,8 @@ export const useGameStore = defineStore('game', {
         return new Promise((resolve, reject) => {
           switch (jwres.statusCode) {
             case 200:
-              this.resetPNumIfNull(res.game);
-              handleInGameEvents(res);
-              return resolve(res);
+              this.resetPNumIfNullThenUpdateGame(res.game);
+              return handleInGameEvents(res).then(() => res);
             case 401:
               authStore.mustReauthenticate = true;
               return reject(jwres.body.message);
