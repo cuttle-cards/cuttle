@@ -28,26 +28,6 @@ module.exports = function gameHook() {
           });
       });
     },
-    findOpenGames: function () {
-      return new Promise(function (resolve, reject) {
-        const recentUpdateThreshhold = dayjs.utc().subtract(1, 'day')
-          .toDate();
-        Game.find({
-          status: gameService.GameStatus.CREATED,
-          createdAt: { '>=': recentUpdateThreshhold },
-        })
-          .populate('players')
-          .exec(function (error, games) {
-            if (error) {
-              return reject(error);
-            } else if (!games) {
-              return reject({ message: "Can't find games" });
-            }
-            const openGames = games.filter(({ players }) => players.length < 2);
-            return resolve(openGames);
-          });
-      });
-    },
     findGame: function (id) {
       return new Promise(function (resolve, reject) {
         Game.findOne(id)
