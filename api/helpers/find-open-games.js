@@ -1,6 +1,7 @@
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
+const GameStatus = require('../../utils/GameStatus');
 
 module.exports = {
   friendlyName: 'Find Open Games',
@@ -12,7 +13,7 @@ module.exports = {
       .toDate();
     try {
       let games = await Game.find({
-        status: gameService.GameStatus.CREATED,
+        status: GameStatus.CREATED,
         updatedAt: { '>=': recentUpdateThreshhold },
       })
         .populate('p0')

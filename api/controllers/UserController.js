@@ -123,7 +123,8 @@ module.exports = {
     try {
       // If the user is logged in, see if we can find them first to verify they exist
       const { username } = await userAPI.findUser(id);
-      const game = gameId ? await gameService.findGame({ gameId }) : null;
+      // TODO: 965 remove this and clean up requestStatus()
+      const game = gameId ? await Game.findOne({ id: gameId }) : null;
       return res.ok({
         id,
         username,

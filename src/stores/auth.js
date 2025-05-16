@@ -100,6 +100,8 @@ export const useAuthStore = defineStore('auth', {
         if (username) {
           this.authSuccess(username);
         }
+
+        // TODO #965 clean this up
         // If the user is currently authenticated and part of a game, we need to resubscribe them
         // The sequencing here is a little interesting, but this is what happens to get a user back
         // in to a game in progress:

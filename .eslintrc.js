@@ -5,7 +5,6 @@ const sharedTestRules = {
 const sailsGlobals = {
   _: true,
   sails: true,
-  gameService: true,
   userService: true,
   // Models
   Card: true,

@@ -1,12 +1,14 @@
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
+const GameStatus = require('../../../utils/GameStatus');
+
 module.exports = function gameHook() {
   //////////////
   // Game API //
   //////////////
   return {
-    createGame: function (gameName, isRanked = false, status = gameService.GameStatus.CREATED) {
+    createGame: function (gameName, isRanked = false, status = GameStatus.CREATED) {
       return new Promise(function (resolve, reject) {
         Game.create({
           name: gameName,
