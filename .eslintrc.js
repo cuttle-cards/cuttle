@@ -5,7 +5,6 @@ const sharedTestRules = {
 const sailsGlobals = {
   _: true,
   sails: true,
-  cardService: true,
   gameService: true,
   userService: true,
   // Models
@@ -152,7 +151,6 @@ module.exports = {
       },
       globals: {
         badRequest: true,
-        cardService: true,
         io: true,
         ready1: true,
         request: true,
