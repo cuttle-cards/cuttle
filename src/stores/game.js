@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
 import { sleep } from '../util/sleep';
+import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 
 /**
  * @returns number of queens a given player has
@@ -369,10 +370,6 @@ export const useGameStore = defineStore('game', {
       }
     },
     transformGameUrl(slug) {
-      if (import.meta.env.VITE_USE_GAMESTATE_API !== 'true') {
-        return `/api/game/${slug}`;
-      }
-
       switch (slug) {
         case 'draw':
         case 'points':
@@ -415,9 +412,6 @@ export const useGameStore = defineStore('game', {
             data,
           },
           (_res, jwres) => {
-            if (import.meta.env.VITE_USE_GAMESTATE_API === 'true' && jwres.statusCode === 404) {
-              reject('This action is not supported yet in GameState API');
-            }
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -426,7 +420,7 @@ export const useGameStore = defineStore('game', {
     async requestSubscribe(gameId) {
       return new Promise((resolve, reject) => {
         io.socket.post(
-          `/api/game/${gameId}/subscribe`,
+          `/api/game/${gameId}/join`,
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.resetState();
@@ -445,9 +439,26 @@ export const useGameStore = defineStore('game', {
       });
     },
 
+    async requestGameState(gameId, gameStateIndex = -1) {
+      const authStore = useAuthStore();
+      io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
+        return new Promise((resolve, reject) => {
+          switch (jwres.statusCode) {
+            case 200:
+              this.resetPNumIfNullThenUpdateGame(res.game);
+              return handleInGameEvents(res).then(() => res);
+            case 401:
+              authStore.mustReauthenticate = true;
+              return reject(jwres.body.message);
+            default:
+              return reject(jwres.body.message);
+          }
+        });
+      });
+    },
+
     async requestSpectate(gameId) {
-      // TODO #965 - Remove dynamic gamestate slug
-      const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate` : 'spectate';
+      const slug = `${gameId}/spectate`;
       try {
         const res = await this.makeSocketRequest(slug, { gameId });
         this.myPNum = 0;

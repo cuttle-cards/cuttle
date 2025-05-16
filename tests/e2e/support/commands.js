@@ -8,12 +8,8 @@ import MoveType from '../../../utils/MoveType.json';
 const io = require('sails.io.js')(require('socket.io-client'));
 io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
-const env = Cypress.env('VITE_USE_GAMESTATE_API');
 
 const transformGameUrl = (api, slug, gameId = null) => {
-  if (!env) {
-    return Cypress.Promise.resolve(`/api/${api}/${slug}`);
-  }
 
   switch (slug) {
     case 'rematch':
@@ -70,9 +66,6 @@ Cypress.Commands.add('makeSocketRequest', (api, slug, data, method = 'POST', gam
           data,
         },
         function handleResponse(res, jwres) {
-          if (env && jwres.statusCode === 404) {
-            reject('This action is not supported yet in GameState API');
-          }
           if (jwres.statusCode !== 200) {
             return reject(jwres.error.message);
           }
@@ -252,7 +245,7 @@ Cypress.Commands.add('createGamePlayer', ({ gameName, isRanked }) => {
 });
 
 Cypress.Commands.add('subscribeOpponent', (gameId) => {
-  cy.makeSocketRequest(`game/${gameId}`, 'subscribe');
+  cy.makeSocketRequest(`game/${gameId}`, 'join');
 });
 
 Cypress.Commands.add('setOpponentToSpectate', (gameId) => {
@@ -694,9 +687,6 @@ Cypress.Commands.add('discardOpponent', (card1, card2) => {
       }),
       function handleResponse(res, jwres) {
         try {
-          if (env && jwres.statusCode === 404) {
-            throw new Error('This action is not supported yet in GameState API');
-          }
           if (jwres.statusCode !== 200) {
             throw new Error(jwres.error.message);
           }
@@ -1109,7 +1099,7 @@ Cypress.Commands.add('rejectStalemateOpponent', (gameId = null) => {
 
 Cypress.Commands.add('reconnectOpponent', (opponent) => {
   cy.log('Opponent Reconnects');
-  cy.makeSocketRequest('user', 'relogin', {
+  cy.makeSocketRequest('user', 'reLogin', {
     username: opponent.username,
     password: opponent.password,
   });
@@ -1217,61 +1207,13 @@ Cypress.Commands.add('vueRoute', (route) => {
  * }
  */
 Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
-  if (env) {
-    return cy
-      .window()
-      .its('cuttle.gameStore.id')
-      .then(async (gameId) => {
-        await cy.makeSocketRequest(`game/${gameId}`, 'game-state',  fixture );
-        const playerHandLength = pNum === 0 ? fixture.p0Hand.length : fixture.p1Hand.length;
-        cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
-        return;
-      });
-  }
-
   return cy
     .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const p0HandCardIds = getCardIds(game, fixture.p0Hand);
-      const p0PointCardIds = getCardIds(game, fixture.p0Points);
-      const p0FaceCardIds = getCardIds(game, fixture.p0FaceCards);
-      const p1HandCardIds = getCardIds(game, fixture.p1Hand);
-      const p1PointCardIds = getCardIds(game, fixture.p1Points);
-      const p1FaceCardIds = getCardIds(game, fixture.p1FaceCards);
-      // build request body
-      let reqBody = {
-        p0Id: game.players[0].id,
-        p1Id: game.players[1].id,
-        p0HandCardIds,
-        p1HandCardIds,
-        p0PointCardIds,
-        p1PointCardIds,
-        p0FaceCardIds,
-        p1FaceCardIds,
-      };
-      // Get top card & second cards if specified
-      if (fixture.topCard) {
-        const [ topCardId ] = getCardIds(game, [ fixture.topCard ]);
-        reqBody.topCardId = topCardId;
-      }
-      if (fixture.secondCard) {
-        const [ secondCardId ] = getCardIds(game, [ fixture.secondCard ]);
-        reqBody.secondCardId = secondCardId;
-      }
-      // Get scrap if specified
-      if (fixture.scrap) {
-        const scrapCardIds = getCardIds(game, fixture.scrap);
-        reqBody.scrapCardIds = scrapCardIds;
-      }
-
-      if (fixture.deck) {
-        const deck = getCardIds(game, fixture.deck);
-        reqBody.deck = deck;
-      }
-
-      cy.makeSocketRequest('game', 'loadFixture', reqBody);
-      const playerHandLength = pNum === 0 ? p0HandCardIds.length : p1HandCardIds.length;
+    .its('cuttle.gameStore.id')
+    .then(async (gameId) => {
+      await cy.makeSocketRequest(`game/${gameId}`, 'game-state',  fixture );
+      const playerHandLength = pNum === 0 ? fixture.p0Hand.length : fixture.p1Hand.length;
       cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
+      return;
     });
 });

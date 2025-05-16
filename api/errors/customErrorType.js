@@ -10,4 +10,5 @@
 module.exports = {
   FORBIDDEN: 'FORBIDDEN',
   BAD_REQUEST: 'BAD_REQUEST',
+  NOT_FOUND: 'NOT_FOUND',
 };

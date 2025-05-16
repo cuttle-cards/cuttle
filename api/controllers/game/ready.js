@@ -1,10 +1,12 @@
 const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
-
+const GameStatus = require('../../../utils/GameStatus');
 
 module.exports = async function (req, res) {
+  // TODO #965 handle error in lock game
   // Query for game
-  const game =  await sails.helpers.lockGame(req.session.game);
+  const { gameId } = req.params;
+  const game =  await sails.helpers.lockGame(gameId);
   try {
     game.players = [ game.p0, game.p1 ];
 
@@ -35,11 +37,11 @@ module.exports = async function (req, res) {
     if (bothReady) {
       // Inform all clients this game has started
       sails.sockets.blast('gameStarted', { gameId: game.id });
-      gameUpdates.status = gameService.GameStatus.STARTED;
+      gameUpdates.status = GameStatus.STARTED;
       // Deal cards (also emits socket event)
       await Game.updateOne({ id: game.id }).set(gameUpdates);
 
-      await gameService.dealCards({ ...game, ...gameUpdates }, {});
+      await sails.helpers.gameStates.dealCards({ ...game, ...gameUpdates });
 
     // Otherwise send socket message that player is ready
     } else {

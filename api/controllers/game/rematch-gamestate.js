@@ -18,7 +18,7 @@ module.exports = async function (req, res) {
     const { gameId: oldGameId } = req.params;
     const { rematch } = req.body;
 
-    game = await sails.helpers.lockGame(req.session.game);
+    game = await sails.helpers.lockGame(oldGameId);
 
     // Early return if requesting user was not in the game
     const playerIds = [ game.p0?.id, game.p1?.id ].filter((val) => !!val);
@@ -86,7 +86,7 @@ module.exports = async function (req, res) {
     newGame.p0 = { ...newP0 };
     newGame.p1 = { ...newP1 };
     // Deal cards in new game
-    const newFullGame = await gameService.dealCards(newGame, {});
+    const newFullGame = await sails.helpers.gameStates.dealCards(newGame);
     const socketEvent = await sails.helpers.gameStates.createSocketEvent(newGame, newFullGame);
 
     Game.publish([ game.id ], {

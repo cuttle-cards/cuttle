@@ -1,6 +1,7 @@
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
+const GameStatus = require('../../utils/GameStatus');
 
 module.exports = {
   friendlyName: 'Find Spectatable Games',
@@ -12,7 +13,7 @@ module.exports = {
       .toDate();
     try {
       const games = await Game.find({
-        status: gameService.GameStatus.STARTED,
+        status: GameStatus.STARTED,
         updatedAt: { '>=': recentUpdateThreshhold },
       });
       return exits.success(games);
