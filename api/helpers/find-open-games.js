@@ -14,7 +14,7 @@ module.exports = {
     try {
       let games = await Game.find({
         status: GameStatus.CREATED,
-        updatedAt: { '>=': recentUpdateThreshhold },
+        createdAt: { '>=': recentUpdateThreshhold },
       })
         .populate('p0')
         .populate('p1');
