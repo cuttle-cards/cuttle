@@ -171,7 +171,7 @@ module.exports = {
       const currentSeasonGames = Game.find({
         select: [ 'updatedAt', 'p0', 'p1' ],
         where: {
-          status: GameStatus,
+          status: GameStatus.FINISHED,
           updatedAt: {
             '>': currentSeason.startTime,
             '<': currentSeason.endTime,
