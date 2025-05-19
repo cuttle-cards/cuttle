@@ -22,6 +22,14 @@ module.exports = async function (req, res) {
       throw new NotFoundError(`Can't find user ${ userId }`);
     }
 
+    const players = [];
+    if (game.p0) {
+      players.push({ username: game.p0.username, pNum: 0 });
+    }
+    if (game.p1) {
+      players.push({ username: game.p1.username, pNum: 1 });
+    }
+    game.players = players;
     // Player already in game; re-subscribe and early return
     if ([ game.p0?.id, game.p1?.id ].includes(userId)) {
       Game.subscribe(req, [ gameId ]);

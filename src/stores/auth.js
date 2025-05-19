@@ -81,8 +81,7 @@ export const useAuthStore = defineStore('auth', {
       }
 
       const { name } = route;
-      const isLobby = name === ROUTE_NAME_LOBBY;
-      const isGame = name === ROUTE_NAME_GAME;
+
       const isSpectating = name === ROUTE_NAME_SPECTATE;
 
       try {
@@ -117,14 +116,6 @@ export const useAuthStore = defineStore('auth', {
         if (!gameId && isSpectating) {
           const { gameId } = route.params;
           gameStore.requestSpectate(Number(gameId));
-        }
-        if (gameId && (isGame || isLobby)) {
-          await this.requestReauthenticate({ username }).then(({ game }) => {
-            gameStore.updateGame(game);
-            if (Number(router.currentRoute.value.params.gameId !== game.id)) {
-              router.push(`${isGame ? '/game/' : '/lobby/'}${game.id}`);
-            }
-          });
         }
 
         return;

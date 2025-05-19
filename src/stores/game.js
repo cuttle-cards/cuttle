@@ -243,11 +243,6 @@ export const useGameStore = defineStore('game', {
       this.players.push(cloneDeep(newPlayer));
       this.players.sort((player, opponent) => player.pNum - opponent.pNum);
     },
-    successfullyJoined(player) {
-      // Add player, sort by pNum
-      this.players.push(cloneDeep(player));
-      this.players.sort((player, opponent) => player.pNum - opponent.pNum);
-    },
     removeSpectator(username) {
       this.spectatingUsers = this.spectatingUsers.filter((spectator) => spectator !== username);
     },
@@ -426,10 +421,6 @@ export const useGameStore = defineStore('game', {
               this.resetState();
               this.myPNum = res.pNum;
               this.updateGame(res.game);
-              this.successfullyJoined({
-                username: res.username,
-                pNum: res.pNum,
-              });
               return resolve();
             }
             const message = res.message ?? 'error subscribing';
