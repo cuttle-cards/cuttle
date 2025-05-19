@@ -25,8 +25,9 @@ module.exports = async function (req, res) {
     // Player already in game; re-subscribe and early return
     if ([ game.p0?.id, game.p1?.id ].includes(userId)) {
       Game.subscribe(req, [ gameId ]);
+      const pNum = user.id === game.p0.id ? 0 : 1;
       await sails.helpers.unlockGame(game.lock);
-      return res.ok();
+      return res.ok({ game, username: user.username, pNum });
     }
 
     // Fast fail if game is full
