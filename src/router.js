@@ -7,6 +7,7 @@ import RulesView from '@/routes/rules/RulesView.vue';
 import StatsView from '@/routes/stats/StatsView.vue';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import GameStatus from '_/utils/GameStatus.json';
 
 export const ROUTE_NAME_GAME = 'Game';
 export const ROUTE_NAME_SPECTATE_LIST = 'SpectateList';
@@ -54,7 +55,10 @@ const checkAndSubscribeToLobby = async (to) => {
       return true;
     }
 
-    await gameStore.requestSubscribe(gameId);
+    const { game } = await gameStore.requestSubscribe(gameId);
+    if (game.status === GameStatus.STARTED) {
+      return { path: `/game/${gameId}` };
+    }
     return true;
   } catch (err) {
     return { name: 'Home', query: { gameId: gameId, error: err.message } };

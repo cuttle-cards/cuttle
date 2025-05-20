@@ -421,7 +421,7 @@ export const useGameStore = defineStore('game', {
               this.resetState();
               this.myPNum = res.pNum;
               this.updateGame(res.game);
-              return resolve();
+              return resolve(res);
             }
             const message = res.message ?? 'error subscribing';
             return reject(new Error(message));
