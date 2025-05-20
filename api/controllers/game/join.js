@@ -50,10 +50,12 @@ module.exports = async function (req, res) {
     if (!game.p0) {
       pNum = 0;
       gameUpdates = { p0: userId };
+      game.players.push({ username: user.username, pNum: 0 });
     // Second player is p1
     } else if (!game.p1) {
       pNum = 1;
       gameUpdates = { p1: userId };
+      game.players.push({ username: user.username, pNum: 1 });
       sails.sockets.blast('gameFull', { id: game.id });
     }
 
