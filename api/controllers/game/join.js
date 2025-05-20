@@ -15,7 +15,7 @@ module.exports = async function (req, res) {
     ]);
     
     if (!game) {
-      throw new NotFoundError(`Can't find Game ${ gameId }`);
+      throw new NotFoundError(`Can't find game ${ gameId }`);
     }
 
     if (!user) {

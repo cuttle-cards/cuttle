@@ -47,6 +47,9 @@ module.exports = {
           .populate('p1')
           .populate('gameStates', { sort: 'createdAt ASC' });
 
+        if (!updatedGame) {
+          return exits.success(null);
+        }
         // If we successfully wrote our uuid, resolve
         const newLock = updatedGame?.lock;
         if (newLock === uuId) {
@@ -60,6 +63,6 @@ module.exports = {
         return exits.error(err);
       }
     }
-    return exits.error(`Timed out aquiring lock for game ${gameId}`);
+    return exits.error(new Error(`Timed out aquiring lock for game ${gameId}`));
   },
 };
