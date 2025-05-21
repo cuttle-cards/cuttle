@@ -68,6 +68,7 @@ const checkAndSubscribeToLobby = async (to) => {
 const getGameState = (to) => {
   const gameStore = useGameStore();
   const gameId = parseInt(to.params.gameId);
+  gameStore.id = gameId;
   const gameStateIndex = parseInt(to.query.gameStateIndex ?? -1);
   return gameStore.requestGameState(gameId, gameStateIndex);
 };
