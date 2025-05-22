@@ -93,14 +93,6 @@ Cypress.Commands.add('refreshOpponentSocket', () => {
   io.socket.reconnect();
 });
 
-Cypress.Commands.add('setBadSession', () => {
-  return new Cypress.Promise((resolve) => {
-    io.socket.put('/api/test/bad-session', function () {
-      return resolve();
-    });
-  });
-});
-
 Cypress.Commands.add('loadSeasonFixture', (season) => {
   cy.makeSocketRequest('test', 'seasons', season);
 });

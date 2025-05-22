@@ -20,11 +20,6 @@ module.exports = {
     }
   },
 
-  // TODO #965 remove this + test?
-  setBadSession: function (req, res) {
-    return res.ok();
-  },
-
   loadSeasonFixture: async function (req, res) {
     try {
       // transform timestamps to `Date` objects, as sails-disk doesn't support ISO timestamp strings
