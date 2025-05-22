@@ -64,7 +64,7 @@ module.exports = {
       req.session.usr = user.id;
       req.session.loggedIn = true;
       // Query for game if user is in one
-      const gameId = (user.game ?? req.session.game) ?? null;
+      const gameId = user.game ?? null;
 
       if (gameId) {
         const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
@@ -85,9 +85,6 @@ module.exports = {
           : { game: { ...game, players: game.p1 ? [ game.p0, game.p1 ] : [ game.p0 ] } };
         
         Game.subscribe(req, [ game.id ]);
-        // TODO #965 - remove game and pNum
-        req.session.game = game.id;
-        req.session.pNum = user.pNum ?? undefined;
         Game.publish([ game.id ], socketEvent);
 
         const pNum = game.p0?.id === user.id ? 0 : 1;

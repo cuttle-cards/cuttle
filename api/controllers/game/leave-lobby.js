@@ -35,9 +35,6 @@ module.exports = async function (req, res) {
   
     await Promise.all(updatePromises);
   
-    // Remove session data for game
-    delete req.session.game;
-    delete req.session.pNum;
     // Publish update to all users, then respond w/ 200
     sails.sockets.blast('leftGame', { id: game.id }, req);
     return res.ok();

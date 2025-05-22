@@ -20,8 +20,8 @@ module.exports = {
     }
   },
 
+  // TODO #965 remove this + test?
   setBadSession: function (req, res) {
-    req.session.game = -3;
     return res.ok();
   },
 

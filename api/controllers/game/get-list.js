@@ -1,5 +1,4 @@
 module.exports = async function (req, res) {
-  // HANDLE REQ.SESSION.GAME = GAME ID CASE
   sails.sockets.join(req, 'GameList');
   try {
     const [ openGames, spectatableGames ] = await Promise.all([
