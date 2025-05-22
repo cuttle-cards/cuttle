@@ -5,15 +5,16 @@ import SocketEvent from '_/types/SocketEvent';
 import { sleep } from '@/util/sleep';
 
 // Handles socket updates of game data
-export async function handleInGameEvents(evData) {
+export async function handleInGameEvents(evData, allowNavigation = true) {
   const gameStore = useGameStore();
-  await router.isReady();
+  // TODO #965: is this needed?
+  // await router.isReady();
+
   const currentRoute = router.currentRoute.value;
 
   const { gameId: urlGameId } = currentRoute.params;
   const eventGameId = evData.game?.id ?? evData.gameId;
   const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
-
   // No-op if the event's gameId doesn't match the url
   if (
     ![ SocketEvent.REMATCH, SocketEvent.NEW_GAME_FOR_REMATCH, SocketEvent.JOIN_REMATCH ].includes(
@@ -206,7 +207,7 @@ export async function handleInGameEvents(evData) {
   // Validate current route & navigate if incorrect
   const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
   const shouldNavigate = currentRoute.name === ROUTE_NAME_LOBBY;
-  if (shouldNavigate) {
+  if (allowNavigation && shouldNavigate) {
     router.push({
       name: targetRouteName,
       params: {
@@ -214,4 +215,5 @@ export async function handleInGameEvents(evData) {
       },
     });
   }
+  return;
 }

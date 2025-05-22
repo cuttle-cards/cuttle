@@ -65,12 +65,22 @@ const checkAndSubscribeToLobby = async (to) => {
   }
 };
 
-const getGameState = (to) => {
+const getGameState = async (to) => {
   const gameStore = useGameStore();
   const gameId = parseInt(to.params.gameId);
   gameStore.id = gameId;
   const gameStateIndex = parseInt(to.query.gameStateIndex ?? -1);
-  return gameStore.requestGameState(gameId, gameStateIndex);
+  try {
+    const response = await gameStore.requestGameState(gameId, gameStateIndex);
+    if (response?.victory?.gameOver && response.game.rematchGame) {
+      await gameStore.requestGameState(response.game.rematchGame);
+      gameStore.myPNum = (gameStore.myPNum + 1) % 2;
+      return { name: to.name, params: { gameId: response.game.rematchGame } };
+    }
+  } catch (err) {
+    return { name: 'Home', query: { gameId: gameId, error: err.message } };
+  }
+  return;
 };
 
 const routes = [
