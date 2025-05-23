@@ -20,5 +20,5 @@ module.exports = function (req, res, next) {
   // User is not allowed
   // (default res.forbidden() behavior can be overridden in `config/403.js`)
   return res.status(401)
-    .json('Please log in and try again');
+    .json({ message: 'Please log in and try again' });
 };
