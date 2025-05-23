@@ -71,7 +71,7 @@ const getGameState = async (to) => {
   gameStore.id = gameId;
   const gameStateIndex = parseInt(to.query.gameStateIndex ?? -1);
   try {
-    const response = await gameStore.requestGameState(gameId, gameStateIndex);
+    const response = await gameStore.requestGameState(gameId, gameStateIndex, to);
     if (response?.victory?.gameOver && response.game.rematchGame) {
       await gameStore.requestGameState(response.game.rematchGame);
       gameStore.myPNum = (gameStore.myPNum + 1) % 2;

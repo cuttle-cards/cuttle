@@ -5,16 +5,17 @@ import SocketEvent from '_/types/SocketEvent';
 import { sleep } from '@/util/sleep';
 
 // Handles socket updates of game data
-export async function handleInGameEvents(evData, allowNavigation = true) {
+export async function handleInGameEvents(evData, newRoute = null) {
   const gameStore = useGameStore();
   // TODO #965: is this needed?
   // await router.isReady();
 
-  const currentRoute = router.currentRoute.value;
+  const targetRoute = newRoute ?? router.currentRoute.value;
 
-  const { gameId: urlGameId } = currentRoute.params;
+  const { gameId: urlGameId } = targetRoute.params;
   const eventGameId = evData.game?.id ?? evData.gameId;
-  const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
+  const isSpectating = targetRoute.name === ROUTE_NAME_SPECTATE;
+
   // No-op if the event's gameId doesn't match the url
   if (
     ![ SocketEvent.REMATCH, SocketEvent.NEW_GAME_FOR_REMATCH, SocketEvent.JOIN_REMATCH ].includes(
@@ -144,7 +145,7 @@ export async function handleInGameEvents(evData, allowNavigation = true) {
       // ignore if not currently in/spectating relevant game
       if (
         Number(urlGameId) !== evData.oldGameId ||
-        ![ ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE ].includes(currentRoute.name)
+        ![ ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE ].includes(targetRoute.name)
       ) {
         return;
       }
@@ -159,9 +160,9 @@ export async function handleInGameEvents(evData, allowNavigation = true) {
       // wait for card flip animations
       await sleep(500);
 
-      const { gameId: oldGameId } = currentRoute.params;
+      const { gameId: oldGameId } = targetRoute.params;
 
-      if (currentRoute.name === ROUTE_NAME_SPECTATE) {
+      if (targetRoute.name === ROUTE_NAME_SPECTATE) {
         await gameStore.requestSpectate(evData.gameId);
       } else {
         await gameStore.requestJoinRematch({ oldGameId });
@@ -170,7 +171,7 @@ export async function handleInGameEvents(evData, allowNavigation = true) {
       }
 
       router.push({
-        name: currentRoute.name,
+        name: targetRoute.name,
         params: {
           gameId: evData.gameId,
         },
@@ -206,8 +207,8 @@ export async function handleInGameEvents(evData, allowNavigation = true) {
 
   // Validate current route & navigate if incorrect
   const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
-  const shouldNavigate = currentRoute.name === ROUTE_NAME_LOBBY;
-  if (allowNavigation && shouldNavigate) {
+  const shouldNavigate = targetRoute.name === ROUTE_NAME_LOBBY;
+  if (!newRoute && shouldNavigate) {
     router.push({
       name: targetRouteName,
       params: {
