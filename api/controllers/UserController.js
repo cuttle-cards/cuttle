@@ -8,7 +8,6 @@
 //////////////////
 // DEPENDENCIES //
 //////////////////
-const GameStatus = require('../../utils/GameStatus.json');
 const userAPI = sails.hooks['customuserhook'];
 const passwordAPI = sails.hooks['custompasswordhook'];
 
@@ -65,15 +64,14 @@ module.exports = {
       req.session.usr = user.id;
       req.session.loggedIn = true;
       // Query for game if user is in one
-      const gameId = (user.game ?? req.session.game) ?? null;
+      const gameId = user.game ?? null;
 
-      if (process.env.VITE_USE_GAMESTATE_API && gameId) {
+      if (gameId) {
         const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
         const game = await Game.findOne({ id: gameId })
           .populate('gameStates')
           .populate('p0')
           .populate('p1');
-
 
         if (!game) {
           return res.ok({
@@ -87,9 +85,6 @@ module.exports = {
           : { game: { ...game, players: game.p1 ? [ game.p0, game.p1 ] : [ game.p0 ] } };
         
         Game.subscribe(req, [ game.id ]);
-        // TODO #965 - remove game and pNum
-        req.session.game = game.id;
-        req.session.pNum = user.pNum ?? undefined;
         Game.publish([ game.id ], socketEvent);
 
         const pNum = game.p0?.id === user.id ? 0 : 1;
@@ -99,41 +94,8 @@ module.exports = {
           pNum
         });
       }
-      // TODO #965
-      // Remove everything between here and catch AFTER gamestate is deployed
-      const unpopulatedGame = gameId ? await gameService.findGame({ gameId }) : null;
-      const populatedGame =
-        unpopulatedGame?.status === GameStatus.STARTED
-          ? await gameService.populateGame({ gameId })
-          : null;
 
-      if (unpopulatedGame) {
-        Game.subscribe(req, [ unpopulatedGame.id ]);
-        req.session.game = unpopulatedGame.id;
-        req.session.pNum = user.pNum ?? undefined;
-      }
-      
-      if (unpopulatedGame?.lastEvent?.victory) {
-        Game.publish([ unpopulatedGame.id ], {
-          change: unpopulatedGame.lastEvent.change,
-          game: unpopulatedGame.lastEvent.game,
-          victory: unpopulatedGame.lastEvent.victory
-        });
-      }
-      
-      if (populatedGame) {
-        Game.publish([ populatedGame.id ], {
-          ...populatedGame.lastEvent,
-          game: populatedGame,
-        });
-      }
-
-      const game = unpopulatedGame?.lastEvent?.game ?? (populatedGame ?? unpopulatedGame);
-      return res.ok({
-        game,
-        username: user.username,
-        pNum: user.pNum,
-      });
+      return res.ok({ username: user.username });
       
     } catch (err) {
       return res.badRequest(err);
@@ -158,7 +120,8 @@ module.exports = {
     try {
       // If the user is logged in, see if we can find them first to verify they exist
       const { username } = await userAPI.findUser(id);
-      const game = gameId ? await gameService.findGame({ gameId }) : null;
+      // TODO: 965 remove this and clean up requestStatus()
+      const game = gameId ? await Game.findOne({ id: gameId }) : null;
       return res.ok({
         id,
         username,

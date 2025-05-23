@@ -3,6 +3,5 @@
 module.exports = function (req, res, next) {
   delete req.session.usr;
   delete req.session.loggedIn;
-  delete req.session.game;
   return next();
 };

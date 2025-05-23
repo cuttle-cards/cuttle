@@ -485,9 +485,9 @@ describe('Lobby - P1 Perspective', () => {
 
     // Reload the page -- should bring user into the game
     cy.reload();
-    assertGameStarted(false); // skip hand size assertion
     cy.get('[data-player-hand-card]').should('have.length', 6);
     cy.get('[data-opponent-hand-card]').should('have.length', 6);
+    assertGameStarted(false); // skip hand size assertion
   });
 });
 

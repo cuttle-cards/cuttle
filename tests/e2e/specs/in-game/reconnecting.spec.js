@@ -1,4 +1,4 @@
-import { assertGameState, assertVictory } from '../../support/helpers';
+import { assertGameState, assertVictory, assertSnackbar } from '../../support/helpers';
 import { myUser, opponentOne } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
 
@@ -751,12 +751,16 @@ describe('Reconnecting to a game', () => {
   });
 });
 
-describe('Display correct dialog for unavailable game', () => {
+describe('Unavailable games', () => {
   beforeEach(() => {
-    cy.setupGameAsP0();
+    cy.wipeDatabase();
+    cy.visit('/');
+    cy.signupPlayer(myUser);
+    cy.signupOpponent(opponentOne);
   });
-
-  it('Shows unavailable game dialog, then return home', () => {
+  
+  it('Shows GameOverDialog when you have left and revisit same game', () => {
+    cy.setupGameAsP0(true);
     cy.concedeOpponent();
     assertVictory();
     // go home
@@ -764,12 +768,19 @@ describe('Display correct dialog for unavailable game', () => {
     cy.url().should('not.include', '/game');
     // go back to game URL
     cy.get('@gameId').then((gameId) => cy.visit(`/game/${gameId}`));
-    cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
-    cy.get('[data-cy="leave-unavailable-game-button"]').click();
+    cy.get('#game-over-dialog').should('be.visible');
+    cy.get('[data-cy=my-rematch-indicator]')
+      .find('[data-cy="player-declined-rematch"]');
+    cy.get('[data-cy=gameover-go-home]').click();
+
     cy.location('pathname').should('equal', '/');
+  });
+  
+  it('Navigates home with error message for game id not found', ()=> {
     // go to random url
     cy.visit('/game/12345');
-    cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
+    assertSnackbar('Could not load game 12345', 'error', 'newgame');
+    cy.url().should('not.include', '/game/12345');
   });
 });
 

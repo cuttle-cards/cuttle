@@ -11,9 +11,7 @@ module.exports = function (req, res) {
   const gameIds = [ playedGameId, spectatedGameId ].filter((id) => Number.isInteger(id));
   Game.unsubscribe(req, gameIds);
   // Delete session data about game(s)
-  delete req.session.game;
   delete req.session.spectating;
-  delete req.session.pNum;
 
   return res.ok();
 };

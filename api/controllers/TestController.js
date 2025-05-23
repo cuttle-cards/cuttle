@@ -20,11 +20,6 @@ module.exports = {
     }
   },
 
-  setBadSession: function (req, res) {
-    req.session.game = -3;
-    return res.ok();
-  },
-
   loadSeasonFixture: async function (req, res) {
     try {
       // transform timestamps to `Date` objects, as sails-disk doesn't support ISO timestamp strings
