@@ -61,7 +61,7 @@ const checkAndSubscribeToLobby = async (to) => {
     }
     return true;
   } catch (err) {
-    return { name: 'Home', query: { gameId: gameId, error: err.message } };
+    return { name: 'Home', query: { gameId: gameId, error: err?.message ?? `Could not load game ${gameId}` } };
   }
 };
 
@@ -78,7 +78,7 @@ const getGameState = async (to) => {
       return { name: to.name, params: { gameId: response.game.rematchGame } };
     }
   } catch (err) {
-    return { name: 'Home', query: { gameId: gameId, error: err.message } };
+    return { name: 'Home', query: { gameId: gameId, error: err?.message ?? `Could not load game ${gameId}` } };
   }
   return;
 };

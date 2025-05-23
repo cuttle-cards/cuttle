@@ -442,7 +442,8 @@ export const useGameStore = defineStore('game', {
               });
             case 401:
               authStore.mustReauthenticate = true;
-              return reject(jwres.body.message);
+              // resolve so we can navigate to gameview & login there
+              return resolve(jwres.body.message);
             default:
               return reject(jwres.body.message);
           }
