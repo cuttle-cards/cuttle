@@ -534,7 +534,7 @@ export const useGameStore = defineStore('game', {
     async requestScuttle(cardData) {
       const moveType = MoveType.SCUTTLE;
       const { cardId, targetId } = cardData;
-      await this.makeSocketRequest('scuttle', { moveType, cardId, targetId, opId: this.opponent.id });
+      await this.makeSocketRequest('scuttle', { moveType, cardId, targetId });
     },
 
     async requestPlayOneOff(cardId) {
@@ -542,7 +542,6 @@ export const useGameStore = defineStore('game', {
       await this.makeSocketRequest('untargetedOneOff', {
         moveType,
         cardId,
-        opId: this.opponent.id
       });
       this.waitingForOpponentToCounter = true;
       return Promise.resolve();
@@ -556,7 +555,6 @@ export const useGameStore = defineStore('game', {
         targetId,
         pointId,
         targetType,
-        opId: this.opponent.id,
       });
       this.waitingForOpponentToCounter = true;
     },
@@ -568,7 +566,6 @@ export const useGameStore = defineStore('game', {
         moveType,
         cardId,
         targetId,
-        opId: this.opponent.id,
       });
     },
 
@@ -587,7 +584,7 @@ export const useGameStore = defineStore('game', {
     async requestResolve() {
       this.myTurnToCounter = false;
       const moveType = MoveType.RESOLVE;
-      await this.makeSocketRequest('resolve', { moveType, opId: this.opponent.id });
+      await this.makeSocketRequest('resolve', { moveType });
     },
 
     async requestResolveThree(cardId) {
@@ -597,7 +594,6 @@ export const useGameStore = defineStore('game', {
       await this.makeSocketRequest('resolveThree', {
         moveType,
         cardId,
-        opId: this.opponent.id,
       });
       this.waitingForOpponentToCounter = false;
     },
@@ -617,7 +613,6 @@ export const useGameStore = defineStore('game', {
       await this.makeSocketRequest('counter', {
         moveType,
         cardId: twoId,
-        opId: this.opponent.id
       });
       this.waitingForOpponentToCounter = true;
     },
@@ -639,7 +634,6 @@ export const useGameStore = defineStore('game', {
         cardId,
         index,
         targetId,
-        opId: this.opponent.id,
       });
     },
 
@@ -649,7 +643,6 @@ export const useGameStore = defineStore('game', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
         targetId,
-        opId: this.opponent.id,
       });
     },
 
@@ -660,8 +653,6 @@ export const useGameStore = defineStore('game', {
         moveType: MoveType.SEVEN_DISCARD,
         cardId,
         index, // 0 if topCard, 1 if secondCard
-        targetId: -1, // TODO #965 - remove this
-        opId: this.opponent.id, // TODO #965 - remove this
       });
 
     },
@@ -679,7 +670,6 @@ export const useGameStore = defineStore('game', {
         moveType: MoveType.SEVEN_ONE_OFF,
         cardId,
         index, // 0 if topCard, 1 if secondCard
-        opId: this.opponent.id,
       });
       this.waitingForOpponentToCounter = true;
     },
@@ -692,7 +682,6 @@ export const useGameStore = defineStore('game', {
         pointId,
         targetType,
         index, // 0 if topCard, 1 if secondCard
-        opId: this.opponent.id,
       });
       this.waitingForOpponentToCounter = true;
     },
