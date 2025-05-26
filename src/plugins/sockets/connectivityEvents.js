@@ -13,7 +13,13 @@ export async function handleConnect() {
       await authStore.requestStatus(router.currentRoute.value);
       const gameId = Number(router.currentRoute.value.params.gameId);
       const gameStateIndex = Number(router.currentRoute.value.query.gameStateIndex ?? -1);
-      return gameStore.requestGameState(gameId, gameStateIndex);
+      const response = await gameStore.requestGameState(gameId, gameStateIndex);
+      if (response?.victory?.gameOver && response.game.rematchGame) {
+        await gameStore.requestGameState(response.game.rematchGame);
+        gameStore.myPNum = (gameStore.myPNum + 1) % 2;
+        router.push({ name: ROUTE_NAME_GAME, params: { gameId: response.game.rematchGame } });
+      }
+      return;
     }
     case ROUTE_NAME_SPECTATE: {
       const gameId = Number(router.currentRoute.value.params.gameId);
