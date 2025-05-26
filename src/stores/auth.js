@@ -99,18 +99,6 @@ export const useAuthStore = defineStore('auth', {
           this.authSuccess(username);
         }
 
-        // TODO #965 clean this up
-        // If the user is currently authenticated and part of a game, we need to resubscribe them
-        // The sequencing here is a little interesting, but this is what happens to get a user back
-        // in to a game in progress:
-        //     - `requestStatus` is dispatched when the browser hits the site
-        //     - `UserController.status` is called by the action
-        //     - `requestReauthenticate` is dispatched
-        //     - `UserController.reLogin` is called
-        //     - `gameService.populateGame` is called
-        //     - `Game.subscribe` is called
-        //     - `Game.publish` is called
-
         const gameStore = useGameStore();
         if (!gameId && isSpectating) {
           const { gameId } = route.params;
