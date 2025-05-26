@@ -7,8 +7,6 @@ import { sleep } from '@/util/sleep';
 // Handles socket updates of game data
 export async function handleInGameEvents(evData, newRoute = null) {
   const gameStore = useGameStore();
-  // TODO #965: is this needed?
-  // await router.isReady();
 
   const targetRoute = newRoute ?? router.currentRoute.value;
 
