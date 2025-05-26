@@ -411,7 +411,7 @@ describe('Home - Game List', () => {
       cy.vueRoute('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
-      cy.playPointsSpectator(Card.EIGHT_OF_SPADES, 0);
+      cy.playPointsSpectator(Card.EIGHT_OF_SPADES);
       cy.get(`[data-cy-spectate-game]`).should('be.disabled');
       cy.log('Game ended by P0 Victory - successfully disabled spectate button');
 
@@ -432,7 +432,7 @@ describe('Home - Game List', () => {
       cy.vueRoute('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
-      cy.playPointsSpectator(Card.EIGHT_OF_HEARTS, 1);
+      cy.playPointsSpectator(Card.EIGHT_OF_HEARTS);
       cy.get(`[data-cy-spectate-game]`).should('be.disabled');
       cy.log('Game ended by P1 Victory - successfully disabled spectate button');
     });
