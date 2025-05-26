@@ -765,52 +765,21 @@ Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
  */
 Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play opponent points: Invalid card input');
+    throw new Error(`Cannot scuttle via seven with invalid card ${card}`);
+  }
+  if (!hasValidSuitAndRank(target)) {
+    throw new Error(`Cannot scuttle via seven with invalid card ${target}`);
   }
   Cypress.log({
     displayName: 'Opponent seven scuttle',
     name: 'Opponent scuttles from seven',
     message: printCard(card),
   });
-  // TODO #965 - remove lookup in store
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const player = game.players[game.myPNum];
-      const opponent = game.players[(game.myPNum + 1) % 2];
-      let foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
-      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
-
-      let index;
-      if (cardsMatch(card, game.topCard)) {
-        foundCard = game.topCard;
-        index = 0;
-      } else if (cardsMatch(card, game.secondCard)) {
-        foundCard = game.secondCard;
-        index = 1;
-      } else {
-        throw new Error(
-          `Error playing ${printCard(
-            card,
-          )} for jack from seven as opponent: Could not find it in top two cards`,
-        );
-      }
-      if (!foundTarget) {
-        throw new Error(
-          `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`,
-        );
-      }
-
-      const cardId = foundCard.id;
-      const targetId = foundTarget.id;
-      cy.makeSocketRequest('game', 'seven/scuttle', {
-        moveType: MoveType.SEVEN_SCUTTLE,
-        cardId,
-        index,
-        targetId,
-      });
-    });
+  cy.makeSocketRequest('game', 'seven/scuttle', {
+    moveType: MoveType.SEVEN_SCUTTLE,
+    cardId: card.id,
+    targetId: target.id,
+  });
 });
 
 /**
