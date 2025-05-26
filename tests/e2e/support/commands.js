@@ -290,22 +290,11 @@ Cypress.Commands.add('drawCardOpponent', () => {
  */
 Cypress.Commands.add('playPointsOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play opponent points: Invalid card input');
+    throw new Error(`Cannot play opponent points with invalid card ${card}`);
   }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then(({ opponent }) => {
-      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
-      if (!foundCard) {
-        throw new Error(
-          `Error playing opponents points: could not find ${card.rank} of ${card.suit} in opponent hand`,
-        );
-      }
-      const cardId = foundCard.id;
-      const moveType = MoveType.POINTS;
-      cy.makeSocketRequest('game', 'points', { moveType, cardId });
-    });
+  const cardId = card.id;
+  const moveType = MoveType.POINTS;
+  cy.makeSocketRequest('game', 'points', { moveType, cardId });
 });
 
 /**
@@ -466,7 +455,6 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
     .window()
     .its('cuttle.gameStore')
     .then((game) => {
-      const playerId = game.players[game.myPNum].id;
       const opponent = game.players[(game.myPNum + 1) % 2];
       const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       if (!foundCard) {
@@ -505,7 +493,6 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
     .its('cuttle.gameStore')
     .then((game) => {
       const player = game.players[game.myPNum];
-      const playerId = player.id;
       const opponent = game.players[(game.myPNum + 1) % 2];
       const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
       let foundTarget;
