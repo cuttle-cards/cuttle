@@ -34,7 +34,7 @@ module.exports.routes = {
   'POST /api/game/:gameId/ready': 'game/ready',
   'PATCH /api/game/:gameId/is-ranked': 'game/set-is-ranked',
   'POST /api/game/:gameId/move': 'game/move',
-  'POST /api/game/:gameId/rematch': 'game/rematch-gamestate',
+  'POST /api/game/:gameId/rematch': 'game/rematch',
 
   '/api/game/join-rematch': 'game/join-rematch',
   
