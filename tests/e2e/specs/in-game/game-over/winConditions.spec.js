@@ -381,7 +381,6 @@ describe('Stalemates', () => {
     });
 
     describe('Illegal stalemate requests', () => {
-      // TODO: #965 test that you can't request stalemate while your opponent's stalemate req is pending
 
       it('Rejects request to initiate stalemate while you already have a stalemate request pending', () => {
         cy.setupGameAsP0();
@@ -508,6 +507,28 @@ describe('Stalemates', () => {
               expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
             } catch (err) {
               expect(err).to.eq('game.snackbar.stalemate.wrongPhase');
+            }
+          });
+      });
+
+      it('Prevents requesting a new stalemate when your opponent just requested a stalemate from you', () => {
+        cy.setupGameAsP0();
+
+        cy.stalemateOpponent();
+
+        cy.get('#opponent-requested-stalemate-dialog')
+          .should('be.visible');
+
+        // Force store to request stalemate; should 400
+        cy.window()
+          .its('cuttle.gameStore')
+          .then(async (store) => {
+            try {
+              await store.requestStalemate();
+              // Fail test if backend allows request
+              expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate during countering phase, but got 200 response');
+            } catch (err) {
+              expect(err).to.eq('game.snackbar.stalemate.alreadyConsideringStalemate');
             }
           });
       });
