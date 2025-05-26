@@ -434,12 +434,7 @@ describe('Stalemates', () => {
               // Fail test if backend allows request
               expect(true).to.eq(false, 'Expected 400 error when requesting to initiate stalemate while one is already in progress but came back 200');
             } catch (err) {
-              // TODO #965 - expect only opponentConsideringStalemate error
-              const errors = [
-                'game.snackbar.stalemate.previousStalemateRejected',
-                'game.snackbar.stalemate.opponentConsideringStalemate',
-              ];
-              expect(err).to.be.oneOf(errors);
+              expect(err).to.eq('game.snackbar.stalemate.opponentConsideringStalemate');
             }
           });
       });
