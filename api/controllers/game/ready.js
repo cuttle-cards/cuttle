@@ -3,11 +3,11 @@ const ForbiddenError = require('../../errors/forbiddenError');
 const GameStatus = require('../../../utils/GameStatus');
 
 module.exports = async function (req, res) {
-  // TODO #965 handle error in lock game
   // Query for game
   const { gameId } = req.params;
-  const game =  await sails.helpers.lockGame(gameId);
+  let game;
   try {
+    game =  await sails.helpers.lockGame(gameId);
     game.players = [ game.p0, game.p1 ];
 
     // Determine who is ready
@@ -66,7 +66,7 @@ module.exports = async function (req, res) {
     ///////////////////
     // Ensure the game is unlocked
     try {
-      await sails.helpers.unlockGame(game.lock);
+      await sails.helpers.unlockGame(game?.lock);
     } catch (err) {
       // Swallow if unlockGame errors, then respond based on error type
     }
