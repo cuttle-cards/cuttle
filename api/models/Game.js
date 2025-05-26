@@ -21,10 +21,6 @@ module.exports = {
     status: {
       type: 'number',
     },
-    players: {
-      collection: 'user',
-      via: 'game',
-    },
     p0Ready: {
       type: 'boolean',
       defaultsTo: false,

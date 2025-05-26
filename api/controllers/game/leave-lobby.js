@@ -28,9 +28,6 @@ module.exports = async function (req, res) {
       Game.updateOne({ id: game.id }).set(gameUpdates),
   
       User.updateOne({ id: player.id }).set(playerUpdates),
-  
-      // Todo #965 remove .players
-      Game.removeFromCollection(game.id, 'players').members(player.id),
     ];
   
     await Promise.all(updatePromises);
