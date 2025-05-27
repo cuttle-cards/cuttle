@@ -559,7 +559,10 @@ Cypress.Commands.add('scuttleFromSevenOpponent', (card, target) => {
  */
 Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play opponent points: Invalid card input');
+    throw new Error(`Cannot play jack via seven with invalid card ${card}`);
+  }
+  if (!hasValidSuitAndRank(target)) {
+    throw new Error(`Cannot play jack via seven with invalid card ${target}`);
   }
 
   Cypress.log({
@@ -568,46 +571,14 @@ Cypress.Commands.add('playJackFromSevenOpponent', (card, target) => {
     message: printCard(card),
   });
 
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const player = game.players[game.myPNum];
-      let foundCard;
+  const cardId = card.id;
+  const targetId = target.id;
 
-      let index;
-      if (cardsMatch(card, game.topCard)) {
-        foundCard = game.topCard;
-        index = 0;
-      } else if (cardsMatch(card, game.secondCard)) {
-        foundCard = game.secondCard;
-        index = 1;
-      } else {
-        throw new Error(
-          `Error playing ${printCard(
-            card,
-          )} for jack from seven as opponent: Could not find it in top two cards`,
-        );
-      }
-
-      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
-
-      if (!foundTarget) {
-        throw new Error(
-          `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`,
-        );
-      }
-
-      const cardId = foundCard.id;
-      const targetId = foundTarget.id;
-
-      cy.makeSocketRequest('game', 'seven/jack', {
-        moveType: MoveType.SEVEN_JACK,
-        cardId,
-        index,
-        targetId,
-      });
-    });
+  cy.makeSocketRequest('game', 'seven/jack', {
+    moveType: MoveType.SEVEN_JACK,
+    cardId,
+    targetId,
+  });
 });
 
 Cypress.Commands.add('sevenDiscardOpponent', (card) => {
