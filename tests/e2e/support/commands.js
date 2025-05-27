@@ -331,23 +331,12 @@ Cypress.Commands.add('playOneOffSpectator', (card) => {
  */
 Cypress.Commands.add('playFaceCardOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play opponent Face Card: Invalid card input');
+    throw new Error(`Cannot play opponent Face Card with invalid card: ${card}`);
   }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then(({ opponent }) => {
-      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
-      if (!foundCard) {
-        throw new Error(
-          `Error playing opponents Face Card: could not find ${card.rank} of ${card.suit} in opponent hand`,
-        );
-      }
 
-      const cardId = foundCard.id;
-      const moveType = MoveType.FACE_CARD;
-      cy.makeSocketRequest('game', 'faceCard', { moveType, cardId });
-    });
+  const cardId = card.id;
+  const moveType = MoveType.FACE_CARD;
+  cy.makeSocketRequest('game', 'faceCard', { moveType, cardId });
 });
 
 /**
