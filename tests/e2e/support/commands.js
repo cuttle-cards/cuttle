@@ -463,42 +463,30 @@ Cypress.Commands.add('resolveOpponent', () => {
  * @param card2 {suit: number, rank: number} OPTIONAL
  */
 Cypress.Commands.add('discardOpponent', (card1, card2) => {
-  cy.window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      let cardId1 = undefined;
-      let cardId2 = undefined;
-      if (card1) {
-        [ cardId1 ] = getCardIds(game, [ card1 ]);
-      }
-      if (card2) {
-        [ cardId2 ] = getCardIds(game, [ card2 ]);
-      }
 
-      const moveType = MoveType.RESOLVE_FOUR;
-      // dont use makeSocketRequest due to edge case checking error on opponent side
-      transformGameUrl('game', 'resolveFour').then((url) => {
-        io.socket.request({
-          method: 'post',
-          url,
-          data: {
-            moveType,
-            cardId1,
-            cardId2,
-          },
-        });
-      }),
-      function handleResponse(res, jwres) {
-        try {
-          if (jwres.statusCode !== 200) {
-            throw new Error(jwres.error.message);
-          }
-          return res;
-        } catch (err) {
-          return err;
-        }
-      };
+  const moveType = MoveType.RESOLVE_FOUR;
+  // dont use makeSocketRequest due to edge case checking error on opponent side
+  transformGameUrl('game', 'resolveFour').then((url) => {
+    io.socket.request({
+      method: 'post',
+      url,
+      data: {
+        moveType,
+        cardId1: card1?.id,
+        cardId2: card2?.id,
+      },
     });
+  }),
+  function handleResponse(res, jwres) {
+    try {
+      if (jwres.statusCode !== 200) {
+        throw new Error(jwres.error.message);
+      }
+      return res;
+    } catch (err) {
+      return err;
+    }
+  };
 });
 
 /**
