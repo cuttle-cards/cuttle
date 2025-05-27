@@ -317,25 +317,13 @@ Cypress.Commands.add('playPointsById', (cardId, gameId = null) => {
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('playOneOffSpectator', (card, pNum) => {
+Cypress.Commands.add('playOneOffSpectator', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play opponent one-off as spectator: Invalid card input');
+    throw new Error(`Cannot play opponent one-off as spectator with invalid card: ${card}`);
   }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const foundCard = game.players[pNum].hand.find((handCard) => cardsMatch(card, handCard));
-      if (!foundCard) {
-        throw new Error(
-          `Error playing one-off while spectating: could not find ${card.rank} of ${card.suit} in specified player's hand`,
-        );
-      }
-
-      const moveType = MoveType.ONE_OFF;
-      const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'untargetedOneOff', { moveType, cardId });
-    });
+  const moveType = MoveType.ONE_OFF;
+  const cardId = card.id;
+  cy.makeSocketRequest('game', 'untargetedOneOff', { moveType, cardId });
 });
 
 /**
