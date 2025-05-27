@@ -433,10 +433,6 @@ Cypress.Commands.add('counterOpponent', (card) => {
 });
 
 Cypress.Commands.add('resolveFiveOpponent', (card) => {
-  if (!hasValidSuitAndRank(card)) {
-    throw new Error(`Cannot resolve five with invalid card ${card}`);
-  }
-
   const moveType = MoveType.RESOLVE_FIVE;
   const cardId = card?.id ?? null;
   cy.makeSocketRequest('game', 'resolveFive', { moveType, cardId });
