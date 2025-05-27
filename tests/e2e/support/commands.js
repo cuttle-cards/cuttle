@@ -514,40 +514,20 @@ Cypress.Commands.add('playPointsFromSevenOpponent', (card) => {
  */
 Cypress.Commands.add('playFaceCardFromSevenOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play opponent face card: Invalid card input');
+    throw new Error(`Cannot play face card from seven with invalid card ${card}`);
   }
+
   Cypress.log({
     displayName: 'Opponent seven face card',
     name: 'Opponent plays face card from seven',
     message: printCard(card),
   });
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      let foundCard;
-      let index;
-      if (cardsMatch(card, game.topCard)) {
-        foundCard = game.topCard;
-        index = 0;
-      } else if (cardsMatch(card, game.secondCard)) {
-        foundCard = game.secondCard;
-        index = 1;
-      } else {
-        throw new Error(
-          `Error playing face card: ${printCard(
-            card,
-          )} from seven as opponent: Could not find it in top two cards`,
-        );
-      }
 
-      const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'seven/faceCard', {
-        moveType: MoveType.SEVEN_FACE_CARD,
-        cardId,
-        index,
-      });
-    });
+  const cardId = card.id;
+  cy.makeSocketRequest('game', 'seven/faceCard', {
+    moveType: MoveType.SEVEN_FACE_CARD,
+    cardId,
+  });
 });
 
 /**
