@@ -268,6 +268,7 @@ describe('FIVES', () => {
         cy.get('[data-cy=submit-five-dialog]').should('be.disabled');
         cy.get('[data-discard-card=2-0]').click();
         cy.get('[data-cy=submit-five-dialog]').click();
+        cy.get('[data-cy=five-discard-dialog]').should('not.exist');
 
         cy.get('[data-player-hand-card]').should('have.length', 5);
 
@@ -279,6 +280,7 @@ describe('FIVES', () => {
 
         cy.get('[data-discard-card=1-0]').click();
         cy.get('[data-cy=submit-five-dialog]').click();
+        cy.get('[data-cy=five-discard-dialog]').should('not.exist');
         cy.get('[data-player-hand-card]', { timeout: 6000 }).should('have.length', 6);
       });
 
