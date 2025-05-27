@@ -604,39 +604,19 @@ Cypress.Commands.add('sevenDiscardOpponent', (card) => {
  */
 Cypress.Commands.add('playOneOffFromSevenOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play opponent one-off from seven: Invalid card input');
+    throw new Error(`Cannot play one-off via seven with invalid card ${card}`);
   }
   Cypress.log({
     displayName: 'Opponent seven one-off',
     name: 'Opponent plays one-off from seven',
     message: printCard(card),
   });
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      let foundCard;
-      let index;
-      if (cardsMatch(card, game.topCard)) {
-        foundCard = game.topCard;
-        index = 0;
-      } else if (cardsMatch(card, game.secondCard)) {
-        foundCard = game.secondCard;
-        index = 1;
-      } else {
-        throw new Error(
-          `Error playing ${printCard(
-            card,
-          )} as one-off from seven as opponent: Could not find it in top two cards`,
-        );
-      }
-      const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'seven/untargetedOneOff', {
-        moveType: MoveType.SEVEN_ONE_OFF,
-        cardId,
-        index,
-      });
-    });
+
+  const cardId = card.id;
+  cy.makeSocketRequest('game', 'seven/untargetedOneOff', {
+    moveType: MoveType.SEVEN_ONE_OFF,
+    cardId,
+  });
 });
 
 Cypress.Commands.add('playTargetedOneOffFromSevenOpponent', (card, target, targetType) => {
