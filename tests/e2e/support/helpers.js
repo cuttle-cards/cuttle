@@ -122,16 +122,6 @@ export function getCardId(game, card) {
   );
 }
 
-/**
- * @param game: game obj from $store
- * @param suitAndRankList: {suit: number, rank: number}[]
- * @returns lit of ids of specified cards
- * * @throws error if any card missing in game
- */
-export function getCardIds(game, suitAndRankList) {
-  return suitAndRankList.map((card) => getCardId(game, card));
-}
-
 function cardSortComparator(card1, card2) {
   let res = card1.rank - card2.rank;
   if (res === 0) {
