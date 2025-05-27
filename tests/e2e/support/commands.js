@@ -345,11 +345,11 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
  */
 Cypress.Commands.add('playJackOpponent', (card, target) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error(`Cannot play opponent face card with invalid card ${card}`);
+    throw new Error(`Cannot play jack as opponent with invalid card ${card}`);
   }
 
   if (!hasValidSuitAndRank(target)) {
-    throw new Error(`Cannot play opponent face card with invalid target ${target}`);
+    throw new Error(`Cannot play jack as opponent with invalid target ${target}`);
   }
 
   const moveType = MoveType.JACK;
@@ -369,33 +369,19 @@ Cypress.Commands.add('playJackOpponent', (card, target) => {
  */
 Cypress.Commands.add('scuttleOpponent', (card, target) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot scuttle as opponent: Invalid card input');
+    throw new Error(`Cannot scuttle as opponent with invalid card ${card}`);
   }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const player = game.players[game.myPNum];
-      const opponent = game.players[(game.myPNum + 1) % 2];
-      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
-      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
-      if (!foundCard) {
-        throw new Error(
-          `Error scuttling as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`,
-        );
-      }
-      if (!foundTarget) {
-        throw new Error(
-          `Error scuttling as opponent: could not find ${target.rank} of ${target.suit} in player's points`,
-        );
-      }
-      const moveType = MoveType.SCUTTLE;
-      cy.makeSocketRequest('game', 'scuttle', {
-        moveType,
-        cardId: foundCard.id,
-        targetId: foundTarget.id,
-      });
-    });
+
+  if (!hasValidSuitAndRank(target)) {
+    throw new Error(`Cannotscuttle as opponent with invalid target ${target}`);
+  }
+
+  const moveType = MoveType.SCUTTLE;
+  cy.makeSocketRequest('game', 'scuttle', {
+    moveType,
+    cardId: card.id,
+    targetId: target.id,
+  });
 });
 
 Cypress.Commands.add('playOneOffOpponent', (card) => {
