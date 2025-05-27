@@ -403,69 +403,20 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
  */
 Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play targeted one-off as opponent: Invalid card input');
+    throw new Error(`Cannot play targeted one-off with invalid card ${card}`);
   }
-  if (!hasValidSuitAndRank(target)) {
-    throw new Error('Cannot play targeted one-off as opponent: Invalid target input');
-  }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const player = game.players[game.myPNum];
-      const opponent = game.players[(game.myPNum + 1) % 2];
-      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
-      let foundTarget;
-      let foundPointCard;
-      switch (targetType) {
-        case 'point':
-          foundTarget = player.points.find((pointCard) => cardsMatch(pointCard, target));
-          break;
-        case 'faceCard':
-          foundTarget = player.faceCards.find((faceCard) => cardsMatch(faceCard, target));
-          break;
-        case 'jack':
-          player.points.forEach((pointCard) => {
-            pointCard.attachments.forEach((jack) => {
-              if (cardsMatch(jack, target)) {
-                foundTarget = jack;
-                foundPointCard = pointCard;
-              }
-            });
-          });
-          break;
-        default:
-          throw new Error(
-            `Error playing ${printCard(
-              card,
-            )} as one-off from seven as opponent: invalid target type, ${targetType}`,
-          );
-      }
-      if (!foundCard) {
-        throw new Error(
-          `Error playing targeted one-off as opponent: could not find ${printCard(card)} in opponent hand`,
-        );
-      }
-      if (!foundTarget) {
-        throw new Error(
-          `Error playing targeted one-off as opponent: could not find ${printCard(target)} in player field`,
-        );
-      }
-      if (targetType === 'jack' && !foundPointCard) {
-        throw new Error(
-          'Error playing targeted one-off as opponent: could not find point card in player field',
-        );
-      }
 
-      const moveType = MoveType.ONE_OFF;
-      cy.makeSocketRequest('game', 'targetedOneOff', {
-        moveType,
-        targetId: foundTarget.id,
-        cardId: foundCard.id,
-        pointId: foundPointCard ? foundPointCard.id : null,
-        targetType,
-      });
-    });
+  if (!hasValidSuitAndRank(target)) {
+    throw new Error(`Cannot play targeted one-off with invalid target ${target}`);
+  }
+
+  const moveType = MoveType.ONE_OFF;
+  cy.makeSocketRequest('game', 'targetedOneOff', {
+    moveType,
+    targetId: target.id,
+    cardId: card.id,
+    targetType,
+  });
 });
 
 /**
