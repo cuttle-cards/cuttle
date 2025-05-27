@@ -364,6 +364,7 @@ export const useGameStore = defineStore('game', {
           return reject(jwres.body.message);
       }
     },
+    // TODO #1198: clean this up to remove the unused slugs
     transformGameUrl(slug) {
       switch (slug) {
         case 'draw':

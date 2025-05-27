@@ -9,6 +9,7 @@ const io = require('sails.io.js')(require('socket.io-client'));
 io.sails.url = 'localhost:1337';
 io.sails.useCORSRouteToGetCookie = false;
 
+// TODO #1198: clean this up to remove the unused slugs
 const transformGameUrl = (api, slug, gameId = null) => {
 
   switch (slug) {
