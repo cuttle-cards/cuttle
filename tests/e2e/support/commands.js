@@ -386,31 +386,14 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
 
 Cypress.Commands.add('playOneOffOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot scuttle as opponent: Invalid card input');
+    throw new Error(`Cannot play one-off as opponent with invalid card ${card}`);
   }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const opponent = game.players[(game.myPNum + 1) % 2];
-      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
-      if (!foundCard) {
-        throw new Error(
-          `Error playing untargetted one-off as opponent: could not find ${printCard(card)} in opponent hand`,
-        );
-      }
-      if (foundCard.rank >= 8) {
-        throw new Error(
-          `Error playing untargetted one-off as opponent: ${printCard(card)} is not a valid oneOff`,
-        );
-      }
 
-      const moveType = MoveType.ONE_OFF;
-      cy.makeSocketRequest('game', 'untargetedOneOff', {
-        moveType,
-        cardId: foundCard.id,
-      });
-    });
+  const moveType = MoveType.ONE_OFF;
+  cy.makeSocketRequest('game', 'untargetedOneOff', {
+    moveType,
+    cardId: card.id,
+  });
 });
 
 /**
