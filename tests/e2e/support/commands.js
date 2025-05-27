@@ -424,24 +424,12 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
  */
 Cypress.Commands.add('counterOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play counter as opponent: Invalid card input');
+    throw new Error(`Cannot play targeted one-off with invalid card ${card}`);
   }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const opponent = game.players[(game.myPNum + 1) % 2];
-      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
-      if (!foundCard) {
-        throw new Error(
-          `Error countering as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`,
-        );
-      }
 
-      const moveType = MoveType.COUNTER;
-      const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'counter', { moveType, cardId });
-    });
+  const moveType = MoveType.COUNTER;
+  const cardId = card.id;
+  cy.makeSocketRequest('game', 'counter', { moveType, cardId });
 });
 
 Cypress.Commands.add('resolveFiveOpponent', (card) => {
