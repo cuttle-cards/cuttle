@@ -424,7 +424,7 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
  */
 Cypress.Commands.add('counterOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error(`Cannot play targeted one-off with invalid card ${card}`);
+    throw new Error(`Cannot counter one-off with invalid card ${card}`);
   }
 
   const moveType = MoveType.COUNTER;
@@ -433,24 +433,13 @@ Cypress.Commands.add('counterOpponent', (card) => {
 });
 
 Cypress.Commands.add('resolveFiveOpponent', (card) => {
-  if (card && !hasValidSuitAndRank(card)) {
-    throw new Error('Cannot resolve five as opponent: Invalid card input');
+  if (!hasValidSuitAndRank(card)) {
+    throw new Error(`Cannot resolve five with invalid card ${card}`);
   }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const foundCard = card ? game.opponent.hand.find((handCard) => cardsMatch(card, handCard)) : null;
-      if (card && !foundCard) {
-        throw new Error(
-          `Error resolving three as opponent: could not find ${card.rank} of ${card.suit} in opponent hand`,
-        );
-      }
 
-      const moveType = MoveType.RESOLVE_FIVE;
-      const cardId = foundCard?.id ?? null;
-      cy.makeSocketRequest('game', 'resolveFive', { moveType, cardId });
-    });
+  const moveType = MoveType.RESOLVE_FIVE;
+  const cardId = card?.id ?? null;
+  cy.makeSocketRequest('game', 'resolveFive', { moveType, cardId });
 });
 
 Cypress.Commands.add('resolveThreeOpponent', (card) => {
