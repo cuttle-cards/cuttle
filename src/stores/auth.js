@@ -88,7 +88,7 @@ export const useAuthStore = defineStore('auth', {
           credentials: 'include',
         });
         const status = await response.json();
-        const { authenticated, username, gameId } = status;
+        const { authenticated, username } = status;
         // If the user is not authenticated, we're done here
         if (!authenticated) {
           this.clearAuth();
@@ -100,7 +100,7 @@ export const useAuthStore = defineStore('auth', {
         }
 
         const gameStore = useGameStore();
-        if (!gameId && isSpectating) {
+        if (isSpectating) {
           const { gameId } = route.params;
           gameStore.requestSpectate(Number(gameId));
         }
