@@ -345,37 +345,22 @@ Cypress.Commands.add('playFaceCardOpponent', (card) => {
  */
 Cypress.Commands.add('playJackOpponent', (card, target) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play opponent face card: Invalid card input');
+    throw new Error(`Cannot play opponent face card with invalid card ${card}`);
   }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const player = game.players[game.myPNum];
-      const opponent = game.players[(game.myPNum + 1) % 2];
-      const foundCard = opponent.hand.find((handCard) => cardsMatch(card, handCard));
-      const foundTarget = player.points.find((pointCard) => cardsMatch(target, pointCard));
-      if (!foundCard) {
-        throw new Error(
-          `Error playing opponents jack: could not find ${card.rank} of ${card.suit} in opponent hand`,
-        );
-      }
-      if (!foundTarget) {
-        throw new Error(
-          `Error playing opponents jack: could not find ${target.rank} of ${target.suit} in player points`,
-        );
-      }
 
-      const moveType = MoveType.JACK;
-      const cardId = foundCard.id;
-      const targetId = foundTarget.id;
+  if (!hasValidSuitAndRank(target)) {
+    throw new Error(`Cannot play opponent face card with invalid target ${target}`);
+  }
 
-      cy.makeSocketRequest('game', 'jack', {
-        moveType,
-        cardId,
-        targetId,
-      });
-    });
+  const moveType = MoveType.JACK;
+  const cardId = card.id;
+  const targetId = target.id;
+
+  cy.makeSocketRequest('game', 'jack', {
+    moveType,
+    cardId,
+    targetId,
+  });
 });
 
 /**
