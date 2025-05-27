@@ -300,25 +300,14 @@ Cypress.Commands.add('playPointsOpponent', (card) => {
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('playPointsSpectator', (card, pNum) => {
+Cypress.Commands.add('playPointsSpectator', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot play opponent points: Invalid card input');
+    throw new Error(`Cannot play points as spectator with invalid card: ${card}`);
   }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const foundCard = game.players[pNum].hand.find((handCard) => cardsMatch(card, handCard));
-      if (!foundCard) {
-        throw new Error(
-          `Error playing points while spectating: could not find ${card.rank} of ${card.suit} in specified player's hand`,
-        );
-      }
 
-      const moveType = MoveType.POINTS;
-      const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'points', { moveType, cardId });
-    });
+  const moveType = MoveType.POINTS;
+  const cardId = card.id;
+  cy.makeSocketRequest('game', 'points', { moveType, cardId });
 });
 
 Cypress.Commands.add('playPointsById', (cardId, gameId = null) => {
