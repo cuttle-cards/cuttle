@@ -444,23 +444,12 @@ Cypress.Commands.add('resolveFiveOpponent', (card) => {
 
 Cypress.Commands.add('resolveThreeOpponent', (card) => {
   if (!hasValidSuitAndRank(card)) {
-    throw new Error('Cannot resolve three as opponent: Invalid card input');
+    throw new Error(`Cannot resolve three with invalid card ${card}`);
   }
-  return cy
-    .window()
-    .its('cuttle.gameStore')
-    .then((game) => {
-      const foundCard = game.scrap.find((scrapCard) => cardsMatch(card, scrapCard));
-      if (!foundCard) {
-        throw new Error(
-          `Error resolving three as opponent: could not find ${card.rank} of ${card.suit} in scrap`,
-        );
-      }
 
-      const moveType = MoveType.RESOLVE_THREE;
-      const cardId = foundCard.id;
-      cy.makeSocketRequest('game', 'resolveThree', { moveType, cardId });
-    });
+  const moveType = MoveType.RESOLVE_THREE;
+  const cardId = card.id;
+  cy.makeSocketRequest('game', 'resolveThree', { moveType, cardId });
 });
 
 Cypress.Commands.add('resolveOpponent', () => {
