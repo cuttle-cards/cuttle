@@ -1,7 +1,7 @@
 module.exports = async function (req, res) {
   try {
     const { gameId } = req.params;
-    const promiseGame = gameService.findGame({ gameId });
+    const promiseGame = Game.findOne({ id: gameId });
     const promisePlayer = userService.findUser({ userId: req.session.usr });
     const [ game, player ] = await Promise.all([ promiseGame, promisePlayer ]);
   
@@ -28,15 +28,10 @@ module.exports = async function (req, res) {
       Game.updateOne({ id: game.id }).set(gameUpdates),
   
       User.updateOne({ id: player.id }).set(playerUpdates),
-  
-      Game.removeFromCollection(game.id, 'players').members(player.id),
     ];
   
     await Promise.all(updatePromises);
   
-    // Remove session data for game
-    delete req.session.game;
-    delete req.session.pNum;
     // Publish update to all users, then respond w/ 200
     sails.sockets.blast('leftGame', { id: game.id }, req);
     return res.ok();

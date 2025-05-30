@@ -2,7 +2,7 @@ module.exports = async function (req, res) {
   try {
     const { isRanked } = req.body;
 
-    const game = await gameService.findGame({ gameId: req.params.gameId });
+    const game = await Game.findOne({ id: req.params.gameId });
 
     // Must be in this game
     const playerIds = [ game.p0, game.p1 ].filter((val) => !!val);

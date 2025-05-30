@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
-import { ROUTE_NAME_LOBBY, ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE } from '@/router';
+import { ROUTE_NAME_SPECTATE } from '@/router';
 import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '_/utils/local-storage-utils.js';
 import { useGameStore } from '@/stores/game';
-import router from '@/router.js';
 
 // TODO Figure out how to reconsolidate this with backend
 const getPlayerPnumByUsername = (players, username) => {
@@ -63,7 +62,7 @@ export const useAuthStore = defineStore('auth', {
             if (jwres.statusCode === 200) {
               const gameStore = useGameStore();
               this.mustReauthenticate = false;
-              const pNum = res.pNum ?? getPlayerPnumByUsername(gameStore.players, this.username);
+              const pNum = getPlayerPnumByUsername(gameStore.players, this.username);
 
               gameStore.myPNum = pNum;
               return resolve(res);
@@ -81,8 +80,7 @@ export const useAuthStore = defineStore('auth', {
       }
 
       const { name } = route;
-      const isLobby = name === ROUTE_NAME_LOBBY;
-      const isGame = name === ROUTE_NAME_GAME;
+
       const isSpectating = name === ROUTE_NAME_SPECTATE;
 
       try {
@@ -90,7 +88,7 @@ export const useAuthStore = defineStore('auth', {
           credentials: 'include',
         });
         const status = await response.json();
-        const { authenticated, username, gameId } = status;
+        const { authenticated, username } = status;
         // If the user is not authenticated, we're done here
         if (!authenticated) {
           this.clearAuth();
@@ -100,29 +98,11 @@ export const useAuthStore = defineStore('auth', {
         if (username) {
           this.authSuccess(username);
         }
-        // If the user is currently authenticated and part of a game, we need to resubscribe them
-        // The sequencing here is a little interesting, but this is what happens to get a user back
-        // in to a game in progress:
-        //     - `requestStatus` is dispatched when the browser hits the site
-        //     - `UserController.status` is called by the action
-        //     - `requestReauthenticate` is dispatched
-        //     - `UserController.reLogin` is called
-        //     - `gameService.populateGame` is called
-        //     - `Game.subscribe` is called
-        //     - `Game.publish` is called
 
         const gameStore = useGameStore();
-        if (!gameId && isSpectating) {
+        if (isSpectating) {
           const { gameId } = route.params;
           gameStore.requestSpectate(Number(gameId));
-        }
-        if (gameId && (isGame || isLobby)) {
-          await this.requestReauthenticate({ username }).then(({ game }) => {
-            gameStore.updateGame(game);
-            if (Number(router.currentRoute.value.params.gameId !== game.id)) {
-              router.push(`${isGame ? '/game/' : '/lobby/'}${game.id}`);
-            }
-          });
         }
 
         return;

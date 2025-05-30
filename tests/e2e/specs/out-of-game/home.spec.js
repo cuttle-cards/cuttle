@@ -62,13 +62,6 @@ describe('Home - Page Content', () => {
     cy.contains('p', 'Log In to get Started!');
     cy.get('[data-nav=Home]').should('not.exist');
   });
-
-  it('Sends list of games when session data includes invalid game id', () => {
-    cy.signupOpponent(opponentOne);
-    cy.setBadSession();
-    cy.requestGameList();
-    cy.requestGameList();
-  });
 });
 
 describe('Home - Game List', () => {
@@ -418,7 +411,7 @@ describe('Home - Game List', () => {
       cy.vueRoute('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
-      cy.playPointsSpectator(Card.EIGHT_OF_SPADES, 0);
+      cy.playPointsSpectator(Card.EIGHT_OF_SPADES);
       cy.get(`[data-cy-spectate-game]`).should('be.disabled');
       cy.log('Game ended by P0 Victory - successfully disabled spectate button');
 
@@ -439,7 +432,7 @@ describe('Home - Game List', () => {
       cy.vueRoute('/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).should('be.not.disabled');
-      cy.playPointsSpectator(Card.EIGHT_OF_HEARTS, 1);
+      cy.playPointsSpectator(Card.EIGHT_OF_HEARTS);
       cy.get(`[data-cy-spectate-game]`).should('be.disabled');
       cy.log('Game ended by P1 Victory - successfully disabled spectate button');
     });

@@ -448,7 +448,7 @@ describe('Spectating Rematches', () => {
       });
 
       cy.recoverSessionOpponent(playerOne);
-      cy.playPointsSpectator(Card.TEN_OF_DIAMONDS, 0);
+      cy.playPointsSpectator(Card.TEN_OF_DIAMONDS);
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true });
 
       // playerOne rematches, then spectator, then playerTwo
@@ -559,7 +559,7 @@ describe('Spectating Rematches', () => {
       });
 
       cy.recoverSessionOpponent(playerOne);
-      cy.playPointsSpectator(Card.FOUR_OF_CLUBS, 0);
+      cy.playPointsSpectator(Card.FOUR_OF_CLUBS);
 
       assertGameOverAsSpectator({ p1Wins: 2, p2Wins: 1, stalemates: 2, winner: 'p1', isRanked: true });
 

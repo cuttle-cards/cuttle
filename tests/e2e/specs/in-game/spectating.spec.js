@@ -54,7 +54,7 @@ describe('Spectating Games', () => {
 
     // P0 plays ace of spades
     cy.recoverSessionOpponent(playerOne);
-    cy.playPointsSpectator(Card.ACE_OF_SPADES, 0);
+    cy.playPointsSpectator(Card.ACE_OF_SPADES);
 
     assertGameState(
       0,
@@ -87,7 +87,7 @@ describe('Spectating Games', () => {
 
     // P1 plays Ace of hearts -- UI updates accordingly
     cy.recoverSessionOpponent(playerTwo);
-    cy.playPointsSpectator(Card.ACE_OF_HEARTS, 1);
+    cy.playPointsSpectator(Card.ACE_OF_HEARTS);
 
     assertGameState(
       0,
@@ -109,7 +109,7 @@ describe('Spectating Games', () => {
 
     // P0 plays ace of clubs
     cy.recoverSessionOpponent(playerOne);
-    cy.playPointsSpectator(Card.ACE_OF_CLUBS, 0);
+    cy.playPointsSpectator(Card.ACE_OF_CLUBS);
 
     // Reconnect the socket
     cy.window()
@@ -132,7 +132,7 @@ describe('Spectating Games', () => {
 
     // P1 plays the Eight of Diamonds and wins
     cy.recoverSessionOpponent(playerTwo);
-    cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS, 1);
+    cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS);
 
     assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: false });
     cy.get('[data-cy=gameover-go-home]').click();
@@ -151,14 +151,14 @@ describe('Spectating Games', () => {
     });
 
     cy.recoverSessionOpponent(playerOne);
-    cy.playOneOffSpectator(Card.ACE_OF_SPADES, 0);
+    cy.playOneOffSpectator(Card.ACE_OF_SPADES);
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
     cy.recoverSessionOpponent(playerTwo);
     cy.resolveOpponent();
     cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
-    cy.playOneOffSpectator(Card.ACE_OF_DIAMONDS, 1);
+    cy.playOneOffSpectator(Card.ACE_OF_DIAMONDS);
     cy.get('#cannot-counter-dialog').should('be.visible');
     cy.recoverSessionOpponent(playerOne);
     cy.resolveOpponent();
