@@ -374,7 +374,7 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
   }
 
   if (!hasValidSuitAndRank(target)) {
-    throw new Error(`Cannotscuttle as opponent with invalid target ${target}`);
+    throw new Error(`Cannot scuttle as opponent with invalid target ${target}`);
   }
 
   const moveType = MoveType.SCUTTLE;
