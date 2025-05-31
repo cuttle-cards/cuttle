@@ -47,6 +47,7 @@ describe('Rewatching finished games', () => {
       cy.visit(`/spectate/${gameId}`);
 
       cy.get('[data-player-hand-card]').should('have.length', 5);
+      cy.get('[data-cy=history-log]').should('have.length', 0);
 
     //   assertGameState(0, {
     //     p0Hand: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
