@@ -1,4 +1,5 @@
 import { SnackBarError } from '../fixtures/snackbarError';
+import { playerOne, playerTwo } from '../fixtures/userFixtures';
 
 export function hasValidSuitAndRank(card) {
   if (!Object.prototype.hasOwnProperty.call(card, 'rank')) {
@@ -513,6 +514,18 @@ export function assertStalemate(score = null) {
         .should('contain', `T: ${stalemates}`)
         .should('have.class', 'selected');
     });
+}
+
+export function setupGameBetweenTwoUnseenPlayers(gameName) {
+  cy.createGameOpponent(gameName).then(({ gameId }) => {
+    cy.wrap(gameId).as(`${gameName}GameId`);
+    cy.recoverSessionOpponent(playerOne);
+    cy.subscribeOpponent(gameId);
+    cy.readyOpponent(gameId);
+    cy.recoverSessionOpponent(playerTwo);
+    cy.subscribeOpponent(gameId);
+    cy.readyOpponent(gameId);
+  });
 }
 
 export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, isRanked }) {

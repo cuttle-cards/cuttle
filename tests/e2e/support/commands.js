@@ -281,21 +281,21 @@ Cypress.Commands.add('recoverSessionOpponent', (userFixture) => {
   cy.makeSocketRequest('user', 'reLogin', userFixture);
 });
 
-Cypress.Commands.add('drawCardOpponent', () => {
+Cypress.Commands.add('drawCardOpponent', (gameId = null) => {
   const moveType = MoveType.DRAW;
-  cy.makeSocketRequest('game', 'draw', { moveType });
+  cy.makeSocketRequest('game', 'draw', { moveType }, 'POST', gameId);
 });
 
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('playPointsOpponent', (card) => {
+Cypress.Commands.add('playPointsOpponent', (card, gameId = null) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error(`Cannot play opponent points with invalid card ${card}`);
   }
   const cardId = card.id;
   const moveType = MoveType.POINTS;
-  cy.makeSocketRequest('game', 'points', { moveType, cardId });
+  cy.makeSocketRequest('game', 'points', { moveType, cardId }, 'POST', gameId);
 });
 
 /**
@@ -773,12 +773,19 @@ Cypress.Commands.add('vueRoute', (route) => {
  *   deck?: {suit: number, rank: number}[] deletes all cards except these from the deck
  * }
  */
-Cypress.Commands.add('loadGameFixture', (pNum, fixture) => {
-  return cy
+Cypress.Commands.add('loadGameFixture', (pNum, fixture, gameId = null) => {
+  if (gameId) {
+    cy.makeSocketRequest(`game/${gameId}`, 'game-state',  fixture ).then(() => {
+      return;
+    });
+    return;
+  }
+
+  cy
     .window()
     .its('cuttle.gameStore.id')
-    .then(async (gameId) => {
-      await cy.makeSocketRequest(`game/${gameId}`, 'game-state',  fixture );
+    .then(async (gameIdFromStore) => {
+      await cy.makeSocketRequest(`game/${gameIdFromStore}`, 'game-state',  fixture );
       const playerHandLength = pNum === 0 ? fixture.p0Hand.length : fixture.p1Hand.length;
       cy.get('[data-player-hand-card]').should('have.length', playerHandLength);
       return;

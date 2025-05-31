@@ -80,7 +80,6 @@ export const useAuthStore = defineStore('auth', {
       }
 
       const { name } = route;
-
       const isSpectating = name === ROUTE_NAME_SPECTATE;
 
       try {
@@ -101,8 +100,10 @@ export const useAuthStore = defineStore('auth', {
 
         const gameStore = useGameStore();
         if (isSpectating) {
-          const { gameId } = route.params;
-          gameStore.requestSpectate(Number(gameId));
+          let { gameId } = route.params;
+          gameId = Number(gameId);
+          await gameStore.requestSpectate(gameId);
+          gameStore.id = gameId;
         }
 
         return;

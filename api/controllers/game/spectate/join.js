@@ -26,8 +26,8 @@ module.exports = async function (req, res) {
       return res.forbidden({ message: 'home.snackbar.cannotSpectate' });
     }
 
-    // Can't spectate if the game is not active
-    if (game.status !== GameStatus.STARTED || !p0 || !p1) {
+    // Can't spectate if the game hasn't started
+    if (game.status === GameStatus.CREATED || !p0 || !p1) {
       return res.badRequest({ message: 'home.snackbar.spectateTwoPlayers' });
     }
 
@@ -44,7 +44,9 @@ module.exports = async function (req, res) {
     }
 
     const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
-    const gameState = unpackGamestate(game.gameStates.at(-1));
+    // Show first gamestate for finished games, last for live ones
+    const gameStateIndex = [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(game.status) ? 0 : -1;
+    const gameState = unpackGamestate(game.gameStates.at(gameStateIndex));
     const socketEvent = await createSocketEvent(game, gameState);
     Game.publish([ game.id ], socketEvent);
 

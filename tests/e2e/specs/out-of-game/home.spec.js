@@ -1,4 +1,4 @@
-import { assertSnackbar } from '../../support/helpers';
+import { assertSnackbar, setupGameBetweenTwoUnseenPlayers } from '../../support/helpers';
 import { Card } from '../../fixtures/cards';
 import { myUser, opponentOne, opponentTwo, playerOne, playerTwo } from '../../fixtures/userFixtures';
 import { SnackBarError } from '../../fixtures/snackbarError';
@@ -23,17 +23,7 @@ function assertSuccessfulJoin(gameState) {
   cy.contains('h5', `${gameState.name}`);
 }
 
-function setupGameBetweenTwoUnseenPlayers(gameName) {
-  cy.createGameOpponent(gameName).then(({ gameId }) => {
-    cy.wrap(gameId).as(`${gameName}GameId`);
-    cy.recoverSessionOpponent(playerOne);
-    cy.subscribeOpponent(gameId);
-    cy.readyOpponent(gameId);
-    cy.recoverSessionOpponent(playerTwo);
-    cy.subscribeOpponent(gameId);
-    cy.readyOpponent(gameId);
-  });
-}
+
 
 describe('Home - Page Content', () => {
   beforeEach(setup);
