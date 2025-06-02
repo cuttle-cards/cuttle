@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
+// import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
@@ -238,6 +240,11 @@ export const useGameStore = defineStore('game', {
       this.p0Rematch = newGame.p0Rematch ?? null;
       this.p1Rematch = newGame.p1Rematch ?? null;
       this.gameIsOver = newGame.gameIsOver ?? false;
+
+      const gameHistoryStore = useGameHistoryStore();
+      gameHistoryStore.gameStates = newGame.gameStates ?? [];
+      console.log(gameHistoryStore.gameStates);
+      console.log(gameHistoryStore.currentGameState);
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));

@@ -56,6 +56,18 @@ module.exports = {
       const chosenCard = gameState.moveType === MoveType.RESOLVE_THREE ? gameState.targetCard : null;
       const pNum = playedBy;
 
+      // Include formatted prior gameStates
+      const gameStates = game.gameStates.map((priorGameState) => {
+        return _.pick(priorGameState, [
+          'createdAt',
+          'moveType',
+          'playedBy',
+          'playedCard',
+          'targetCard',
+          'discardedCards',
+        ]);
+      });
+
       // Fetch list of spectating usernames
       let spectatingUsers = await UserSpectatingGame.find({
         gameSpectated: game.id,
@@ -106,6 +118,7 @@ module.exports = {
           ...(chosenCard && { chosenCard }),
           ...(discardedCards && { discardedCards }),
         },
+        gameStates,
       };
 
       const change = gameState.moveType;
