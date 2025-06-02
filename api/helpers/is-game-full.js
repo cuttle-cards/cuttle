@@ -1,3 +1,5 @@
+const GameStatus = require('../../utils/GameStatus');
+
 module.exports = {
   friendlyName: 'Is Game Full?',
 
@@ -16,10 +18,9 @@ module.exports = {
   fn: ({ game }, exits) => {
 
     const gameIsFull =
-      game.status !== gameService.GameStatus.CREATED ||
-      game.players.length >= 2 || 
-      game.log.length > 0 || 
-      !_.isEqual(game.lastEvent, {});
+      game.status !== GameStatus.CREATED ||
+      (game.p0 && game.p1) ||
+      game.gameStates?.length;
 
     return exits.success(gameIsFull);
   },

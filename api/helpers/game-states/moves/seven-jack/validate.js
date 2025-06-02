@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to seven-jack',
@@ -27,6 +28,11 @@ module.exports = {
       description: 'Player number of player requesting the move',
       required: true,
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
 
   sync: true,
@@ -43,33 +49,33 @@ module.exports = {
 
       // Check if it's the player's turn
       if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
       // Check if the game phase is RESOLVING_SEVEN
       if (currentState.phase !== GamePhase.RESOLVING_SEVEN) {
-        throw new Error('game.snackbar.seven.wrongPhase');
+        throw new BadRequestError('game.snackbar.seven.wrongPhase');
       }
 
       // Check if the playedCard is one of the top two cards
       if (!playedCard) {
-        throw new Error('game.snackbar.seven.pickAndPlay');
+        throw new BadRequestError('game.snackbar.seven.pickAndPlay');
       }
 
       // playedCard must be a jack
       if (playedCard.rank !== 11) {
-        throw new Error('game.snackbar.jack.stealOnlyPointCards');
+        throw new BadRequestError('game.snackbar.jack.stealOnlyPointCards');
       }
 
       // targetCard must be in opponent's points
       if (!targetCard) {
-        throw new Error('game.snackbar.jack.stealOnlyPointCards');
+        throw new BadRequestError('game.snackbar.jack.stealOnlyPointCards');
       }
 
       // Can't jack if opponent has queen
       const queenCount = opponent.faceCards.filter(({ rank }) => rank === 12).length;
       if (queenCount > 0) {
-        throw new Error('game.snackbar.jack.noJackWithQueen');
+        throw new BadRequestError('game.snackbar.jack.noJackWithQueen');
       }
 
       return exits.success();

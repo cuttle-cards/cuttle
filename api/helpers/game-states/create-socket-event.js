@@ -108,8 +108,10 @@ module.exports = {
         },
       };
 
+      const change = gameState.moveType;
+
       const fullSocketEvent = {
-        change: gameState.moveType,
+        change,
         game: socketGame,
         victory,
         happened,

@@ -1,5 +1,6 @@
 const dayjs = require('dayjs');
 const Result = require('../../types/Result.es5');
+const GameStatus = require('../../utils/GameStatus');
 
 /////////////
 // Helpers //
@@ -170,7 +171,7 @@ module.exports = {
       const currentSeasonGames = Game.find({
         select: [ 'updatedAt', 'p0', 'p1' ],
         where: {
-          status: gameService.GameStatus.FINISHED,
+          status: GameStatus.FINISHED,
           updatedAt: {
             '>': currentSeason.startTime,
             '<': currentSeason.endTime,
@@ -200,7 +201,7 @@ module.exports = {
       const requestedSeasonGames = Game.find({
         select: [ 'updatedAt', 'p0', 'p1' ],
         where: {
-          status: gameService.GameStatus.FINISHED,
+          status: GameStatus.FINISHED,
           updatedAt: {
             '>': requestedSeason.startTime,
             '<': requestedSeason.endTime,

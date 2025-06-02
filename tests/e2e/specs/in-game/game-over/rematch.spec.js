@@ -374,7 +374,6 @@ describe('Spectating Rematches', () => {
     });
 
     it('Spectates a casual match using rematch', () => {
-      cy.skipOnGameStateApi();
       cy.log('Game 1: player1 wins via opponent conceding');
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
@@ -415,7 +414,7 @@ describe('Spectating Rematches', () => {
       cy.stalemateOpponent();
 
       cy.recoverSessionOpponent(playerOne);
-      cy.stalemateOpponent();
+      cy.acceptStalemateOpponent();
 
       cy.get('[data-cy=gameover-rematch').should('not.be.disabled');
 
@@ -437,7 +436,6 @@ describe('Spectating Rematches', () => {
     });
 
     it('Specates a ranked match using rematch', () => {
-      cy.skipOnGameStateApi();
       // Game 1: playerOne wins with points
       cy.log('Game 1: player1 wins with points');
       cy.loadGameFixture(0, {
@@ -450,7 +448,7 @@ describe('Spectating Rematches', () => {
       });
 
       cy.recoverSessionOpponent(playerOne);
-      cy.playPointsSpectator(Card.TEN_OF_DIAMONDS, 0);
+      cy.playPointsSpectator(Card.TEN_OF_DIAMONDS);
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true });
 
       // playerOne rematches, then spectator, then playerTwo
@@ -494,6 +492,8 @@ describe('Spectating Rematches', () => {
         p1Points: [],
         p1FaceCards: [],
         deck: [],
+        topCard: Card.FOUR_OF_HEARTS,
+        secondCard: Card.FIVE_OF_CLUBS,
       });
 
       cy.drawCardOpponent();
@@ -530,7 +530,7 @@ describe('Spectating Rematches', () => {
       cy.stalemateOpponent();
       cy.get('#opponent-requested-stalemate-dialog').should('be.visible');
       cy.recoverSessionOpponent(playerTwo);
-      cy.stalemateOpponent();
+      cy.acceptStalemateOpponent();
 
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 1, stalemates: 2, winner: null, isRanked: true });
 
@@ -559,13 +559,16 @@ describe('Spectating Rematches', () => {
       });
 
       cy.recoverSessionOpponent(playerOne);
-      cy.playPointsSpectator(Card.FOUR_OF_CLUBS, 0);
+      cy.playPointsSpectator(Card.FOUR_OF_CLUBS);
 
       assertGameOverAsSpectator({ p1Wins: 2, p2Wins: 1, stalemates: 2, winner: 'p1', isRanked: true });
 
       cy.get('[data-cy=player-match-result] [data-cy-result-img=won]').should('be.visible');
 
       cy.get('[data-cy=opponent-match-result] [data-cy-result-img=lost]').should('be.visible');
+
+      // The stalemate dialog should disappear
+      cy.get('#opponent-requested-stalemate-dialog').should('not.exist');
 
       // Go home
       cy.get('[data-cy=gameover-rematch').should('not.exist');
@@ -574,7 +577,6 @@ describe('Spectating Rematches', () => {
     });
 
     it('Shows when player1 declines rematch while spectating ranked match', () => {
-      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
@@ -582,7 +584,6 @@ describe('Spectating Rematches', () => {
     });
 
     it('Shows when player2 declines rematch while spectating ranked match', () => {
-      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true });
@@ -590,7 +591,6 @@ describe('Spectating Rematches', () => {
     });
 
     it('Spectates a ranked match where player 2 wins the match', () => {
-      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });

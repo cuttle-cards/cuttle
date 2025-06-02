@@ -15,9 +15,6 @@ module.exports = {
       type: 'string',
       required: true,
     },
-    game: {
-      model: 'game',
-    },
     /**
      * Index of this user within a Game's players collection
      * @value null iff not in game

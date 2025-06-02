@@ -83,6 +83,12 @@ const linkColor = computed(() => variant.value === 'light' ? 'text-surface-1' : 
 const logoColor = computed(() => variant.value === 'light' ? 'brown' : 'white');
 
 const tabColor = (page) => {
+
+  // highlight tab when spectate list tab 
+  if(route.name === 'SpectateList') {
+    return page === 'Home' ? 'text-newPrimary' : linkColor.value;
+  }
+
   return route.name === page ? 'text-newPrimary' : linkColor.value;
 };
 

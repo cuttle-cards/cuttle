@@ -40,7 +40,8 @@ module.exports = {
       let numPlayer1Wins = 0;
       let numPlayer2Wins = 0;
 
-      for (const priorGame of [ game, ...relevantMatch.games ]) {
+      const priorGames = _.uniqBy([ game, ...relevantMatch.games ], 'id');
+      for (const priorGame of priorGames) {
         if (!priorGame.winner) {
           continue;
         }

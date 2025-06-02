@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to play Jack',
@@ -26,6 +27,11 @@ module.exports = {
       description: 'Player number of player requesting move',
       required: true,
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true,
 
@@ -39,38 +45,38 @@ module.exports = {
 
       // GameState phase should be MAIN
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('game.snackbar.global.notInMainPhase');
+        throw new BadRequestError('game.snackbar.global.notInMainPhase');
       }
 
       // Must be player's turn
       if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
       // playedCard must be in player's hand
       if (!playedCard) {
-        throw new Error('game.snackbar.global.playFromHand');
+        throw new BadRequestError('game.snackbar.global.playFromHand');
       }
 
       // playedCard must be a jack
       if (playedCard.rank !== 11) {
-        throw new Error('game.snackbar.jack.stealOnlyPointCards');
+        throw new BadRequestError('game.snackbar.jack.stealOnlyPointCards');
       }
 
       // targetCard must be in opponent's points
       if (!targetCard) {
-        throw new Error('game.snackbar.jack.stealOnlyPointCards');
+        throw new BadRequestError('game.snackbar.jack.stealOnlyPointCards');
       }
 
       // playedCard must not be frozen
       if (playedCard.isFrozen) {
-        throw new Error('game.snackbar.global.cardFrozen');
+        throw new BadRequestError('game.snackbar.global.cardFrozen');
       }
 
       // Can't jack if opponent has queen
       const queenCount = opponent.faceCards.filter(({ rank }) => rank === 12).length;
       if (queenCount > 0) {
-        throw new Error('game.snackbar.jack.noJackWithQueen');
+        throw new BadRequestError('game.snackbar.jack.noJackWithQueen');
       }
 
       return exits.success();

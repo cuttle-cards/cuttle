@@ -273,6 +273,13 @@
         "mustUsePointCard": "You can only scuttle with an ace through ten",
         "mustTargetPointCard": "You can only scuttle a card your opponent has played for points"
       },
+      "stalemate": {
+        "alreadyConsideringStalemate": "A stalemate has already been offered",
+        "noStalemateOffered": "Your opponent has not offered a stalemate",
+        "opponentConsideringStalemate": "Your opponent is considering your stalemate offer",
+        "previousStalemateRejected": "Stalemate request was already rejected this turn",
+        "wrongPhase": "You can't request a stalemate during other moves"
+      },
       "oneOffs": {
         "oneOffInPlay": "There is already a one-off in play; you cannot play any card, except a two to counter.",
         "cantPlayWithoutATarget": "You cannot play that card as a ONE-OFF without a target",
@@ -519,10 +526,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Spades 2024 Season Championship!",
-    "title": "Spades 2024",
-    "heading": "Season Championship",
-    "paragraph": "The Spades 2024 Cuttle Season Championship is today, Saturday January 25th at 12pm EST! Watch the top 8 players from the past season of competitive play battle it out for the title of Spades Season Champion! Watch it live at ",
+    "activatorText": "Clubs 2025 Season Championship TODAY!",
+    "title": "Clubs 2025 Championship",
+    "heading": "Championship Today!",
+    "paragraph": "The Clubs 2025 Cuttle Season Championship is Today, April 26th at 12:30pm EST! Watch the top 8 players from the past season of ranked play compete in a double elimination showdown for the title of Clubs 2025 Cuttle Season Champion! Watch it live at ",
     "twitchLink": "twitch.tv/cuttle_cards"
   }
 }

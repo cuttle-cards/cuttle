@@ -9,7 +9,7 @@
     <template v-else>
       <div id="game-menu-wrapper" class="d-flex flex-column flex-sm-row align-center" :style="menuWrapperStyle">
         <SpectatorListMenu :spectating-users="spectatingUsers" :vuetify-display="$vuetify" />
-        <GameMenu :is-spectating="isSpectating" />
+        <GameMenu :is-spectating="isSpectating" @handle-error="handleError" />
         <v-icon
           v-if="$vuetify.display.xs"
           color="white"

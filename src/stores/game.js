@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
 import { sleep } from '../util/sleep';
+import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
 
 /**
  * @returns number of queens a given player has
@@ -208,7 +209,10 @@ export const useGameStore = defineStore('game', {
       this.lastEventPlayerChoosing = newGame.lastEvent?.pNum === this.myPNum ?? null;
       this.lastEventDiscardedCards = newGame.lastEvent?.discardedCards ?? null;
       this.waitingForOpponentToStalemate =
-        (newGame.lastEvent?.requestedByPNum === this.myPNum && !newGame.gameIsOver) ?? false;
+        (
+          newGame.lastEvent.change === MoveType.STALEMATE_REQUEST &&
+          newGame.lastEvent?.playedBy === this.myPNum && !newGame.gameIsOver
+        ) ?? false;
       this.id = newGame.id ?? this.id;
       this.turn = newGame.turn ?? this.turn;
       // this.chat = cloneDeep(newGame.chat);
@@ -237,11 +241,6 @@ export const useGameStore = defineStore('game', {
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
-      this.players.sort((player, opponent) => player.pNum - opponent.pNum);
-    },
-    successfullyJoined(player) {
-      // Add player, sort by pNum
-      this.players.push(cloneDeep(player));
       this.players.sort((player, opponent) => player.pNum - opponent.pNum);
     },
     removeSpectator(username) {
@@ -365,11 +364,8 @@ export const useGameStore = defineStore('game', {
           return reject(jwres.body.message);
       }
     },
+    // TODO #1198: clean this up to remove the unused slugs
     transformGameUrl(slug) {
-      if (import.meta.env.VITE_USE_GAMESTATE_API !== 'true') {
-        return `/api/game/${slug}`;
-      }
-
       switch (slug) {
         case 'draw':
         case 'points':
@@ -391,6 +387,9 @@ export const useGameStore = defineStore('game', {
         case 'seven/targetedOneOff':
         case 'pass':
         case 'concede':
+        case 'stalemate':
+        case 'stalemate-accept':
+        case 'stalemate-reject':
           // add all the move-making ones here
           return `/api/game/${this.id}/move`;
         case 'rematch':
@@ -409,9 +408,6 @@ export const useGameStore = defineStore('game', {
             data,
           },
           (_res, jwres) => {
-            if (import.meta.env.VITE_USE_GAMESTATE_API === 'true' && jwres.statusCode === 404) {
-              reject('This action is not supported yet in GameState API');
-            }
             return this.handleGameResponse(jwres, resolve, reject);
           },
         );
@@ -419,21 +415,14 @@ export const useGameStore = defineStore('game', {
     },
     async requestSubscribe(gameId) {
       return new Promise((resolve, reject) => {
-        io.socket.get(
-          '/api/game/subscribe',
-          {
-            gameId,
-          },
+        io.socket.post(
+          `/api/game/${gameId}/join`,
           (res, jwres) => {
             if (jwres.statusCode === 200) {
               this.resetState();
               this.myPNum = res.pNum;
               this.updateGame(res.game);
-              this.successfullyJoined({
-                username: res.username,
-                pNum: res.pNum,
-              });
-              return resolve();
+              return resolve(res);
             }
             const message = res.message ?? 'error subscribing';
             return reject(new Error(message));
@@ -442,9 +431,29 @@ export const useGameStore = defineStore('game', {
       });
     },
 
+    requestGameState(gameId, gameStateIndex = -1, route = null) {
+      const authStore = useAuthStore();
+      return new Promise((resolve, reject) => {
+        io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
+          switch (jwres.statusCode) {
+            case 200:
+              this.resetPNumIfNullThenUpdateGame(res.game);
+              return handleInGameEvents(res, route).then(() => {
+                return resolve(res);
+              });
+            case 401:
+              authStore.mustReauthenticate = true;
+              // resolve so we can navigate to gameview & login there
+              return resolve(jwres.body.message);
+            default:
+              return reject(jwres.body.message);
+          }
+        });
+      });
+    },
+
     async requestSpectate(gameId) {
-      // TODO #965 - Remove dynamic gamestate slug
-      const slug = import.meta.env.VITE_USE_GAMESTATE_API === 'true' ? `${gameId}/spectate/join` : 'spectate';
+      const slug = `${gameId}/spectate`;
       try {
         const res = await this.makeSocketRequest(slug, { gameId });
         this.myPNum = 0;
@@ -457,7 +466,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestSpectateLeave() {
       return new Promise((resolve, reject) => {
-        io.socket.get('/api/game/spectateLeave', (res, jwres) => {
+        io.socket.delete(`/api/game/${this.id}/spectate`, (_res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
             return resolve();
@@ -468,7 +477,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestLeaveLobby() {
       return new Promise((resolve, reject) => {
-        io.socket.post('/api/game/leaveLobby', (res, jwres) => {
+        io.socket.post(`/api/game/${this.id}/leave`, (res, jwres) => {
           if (jwres.statusCode === 200) {
             this.resetState();
             return resolve();
@@ -479,7 +488,7 @@ export const useGameStore = defineStore('game', {
     },
     async requestReady() {
       return new Promise((resolve, reject) => {
-        io.socket.post('/api/game/ready', (res, jwres) => {
+        io.socket.post(`/api/game/${this.id}/ready`, (res, jwres) => {
           if (jwres.statusCode === 200) {
             return resolve(res);
           }
@@ -489,8 +498,8 @@ export const useGameStore = defineStore('game', {
     },
     async requestSetIsRanked({ isRanked }) {
       return new Promise((resolve, reject) => {
-        io.socket.post(
-          '/api/game/setIsRanked',
+        io.socket.patch(
+          `/api/game/${this.id}/is-ranked`,
           {
             isRanked,
           },
@@ -526,7 +535,7 @@ export const useGameStore = defineStore('game', {
     async requestScuttle(cardData) {
       const moveType = MoveType.SCUTTLE;
       const { cardId, targetId } = cardData;
-      await this.makeSocketRequest('scuttle', { moveType, cardId, targetId, opId: this.opponent.id });
+      await this.makeSocketRequest('scuttle', { moveType, cardId, targetId });
     },
 
     async requestPlayOneOff(cardId) {
@@ -534,7 +543,6 @@ export const useGameStore = defineStore('game', {
       await this.makeSocketRequest('untargetedOneOff', {
         moveType,
         cardId,
-        opId: this.opponent.id
       });
       this.waitingForOpponentToCounter = true;
       return Promise.resolve();
@@ -548,7 +556,6 @@ export const useGameStore = defineStore('game', {
         targetId,
         pointId,
         targetType,
-        opId: this.opponent.id,
       });
       this.waitingForOpponentToCounter = true;
     },
@@ -560,7 +567,6 @@ export const useGameStore = defineStore('game', {
         moveType,
         cardId,
         targetId,
-        opId: this.opponent.id,
       });
     },
 
@@ -579,7 +585,7 @@ export const useGameStore = defineStore('game', {
     async requestResolve() {
       this.myTurnToCounter = false;
       const moveType = MoveType.RESOLVE;
-      await this.makeSocketRequest('resolve', { moveType, opId: this.opponent.id });
+      await this.makeSocketRequest('resolve', { moveType });
     },
 
     async requestResolveThree(cardId) {
@@ -589,7 +595,6 @@ export const useGameStore = defineStore('game', {
       await this.makeSocketRequest('resolveThree', {
         moveType,
         cardId,
-        opId: this.opponent.id,
       });
       this.waitingForOpponentToCounter = false;
     },
@@ -609,7 +614,6 @@ export const useGameStore = defineStore('game', {
       await this.makeSocketRequest('counter', {
         moveType,
         cardId: twoId,
-        opId: this.opponent.id
       });
       this.waitingForOpponentToCounter = true;
     },
@@ -631,7 +635,6 @@ export const useGameStore = defineStore('game', {
         cardId,
         index,
         targetId,
-        opId: this.opponent.id,
       });
     },
 
@@ -641,7 +644,6 @@ export const useGameStore = defineStore('game', {
         cardId,
         index, // 0 if topCard, 1 if secondCard
         targetId,
-        opId: this.opponent.id,
       });
     },
 
@@ -652,8 +654,6 @@ export const useGameStore = defineStore('game', {
         moveType: MoveType.SEVEN_DISCARD,
         cardId,
         index, // 0 if topCard, 1 if secondCard
-        targetId: -1, // TODO #965 - remove this
-        opId: this.opponent.id, // TODO #965 - remove this
       });
 
     },
@@ -671,7 +671,6 @@ export const useGameStore = defineStore('game', {
         moveType: MoveType.SEVEN_ONE_OFF,
         cardId,
         index, // 0 if topCard, 1 if secondCard
-        opId: this.opponent.id,
       });
       this.waitingForOpponentToCounter = true;
     },
@@ -684,7 +683,6 @@ export const useGameStore = defineStore('game', {
         pointId,
         targetType,
         index, // 0 if topCard, 1 if secondCard
-        opId: this.opponent.id,
       });
       this.waitingForOpponentToCounter = true;
     },
@@ -699,15 +697,18 @@ export const useGameStore = defineStore('game', {
     },
 
     async requestStalemate() {
-      await this.makeSocketRequest('stalemate').then(() => {
-        this.consideringOpponentStalemateRequest = false;
-      });
+      await this.makeSocketRequest('stalemate', { moveType: MoveType.STALEMATE_REQUEST });
+      this.consideringOpponentStalemateRequest = false;
+    },
+
+    async acceptStalemate() {
+      await this.makeSocketRequest('stalemate-accept', { moveType: MoveType.STALEMATE_ACCEPT });
+      this.consideringOpponentStalemateRequest = false;
     },
 
     async rejectStalemate() {
-      await this.makeSocketRequest('reject-stalemate').then(() => {
-        this.consideringOpponentStalemateRequest = false;
-      });
+      await this.makeSocketRequest('stalemate-reject', { moveType: MoveType.STALEMATE_REJECT });
+      this.consideringOpponentStalemateRequest = false;
     },
 
     async requestUnsubscribeFromGame() {

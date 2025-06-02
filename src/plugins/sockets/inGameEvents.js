@@ -5,14 +5,14 @@ import SocketEvent from '_/types/SocketEvent';
 import { sleep } from '@/util/sleep';
 
 // Handles socket updates of game data
-export async function handleInGameEvents(evData) {
+export async function handleInGameEvents(evData, newRoute = null) {
   const gameStore = useGameStore();
-  await router.isReady();
-  const currentRoute = router.currentRoute.value;
 
-  const { gameId: urlGameId } = currentRoute.params;
+  const targetRoute = newRoute ?? router.currentRoute.value;
+
+  const { gameId: urlGameId } = targetRoute.params;
   const eventGameId = evData.game?.id ?? evData.gameId;
-  const isSpectating = currentRoute.name === ROUTE_NAME_SPECTATE;
+  const isSpectating = targetRoute.name === ROUTE_NAME_SPECTATE;
 
   // No-op if the event's gameId doesn't match the url
   if (
@@ -143,7 +143,7 @@ export async function handleInGameEvents(evData) {
       // ignore if not currently in/spectating relevant game
       if (
         Number(urlGameId) !== evData.oldGameId ||
-        ![ ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE ].includes(currentRoute.name)
+        ![ ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE ].includes(targetRoute.name)
       ) {
         return;
       }
@@ -158,9 +158,9 @@ export async function handleInGameEvents(evData) {
       // wait for card flip animations
       await sleep(500);
 
-      const { gameId: oldGameId } = currentRoute.params;
+      const { gameId: oldGameId } = targetRoute.params;
 
-      if (currentRoute.name === ROUTE_NAME_SPECTATE) {
+      if (targetRoute.name === ROUTE_NAME_SPECTATE) {
         await gameStore.requestSpectate(evData.gameId);
       } else {
         await gameStore.requestJoinRematch({ oldGameId });
@@ -169,7 +169,7 @@ export async function handleInGameEvents(evData) {
       }
 
       router.push({
-        name: currentRoute.name,
+        name: targetRoute.name,
         params: {
           gameId: evData.gameId,
         },
@@ -189,13 +189,15 @@ export async function handleInGameEvents(evData) {
         gameStore.removeSpectator(evData.username);
       }
       break;
-    case SocketEvent.REQUEST_STALEMATE:
+    case SocketEvent.STALEMATE_REQUEST:
       // Show OpponentRequestedStalemateDialog if opponent requested stalemate
       //   and game is not yet over
       gameStore.consideringOpponentStalemateRequest =
-        !evData.victory.gameOver && evData.requestedByPNum !== gameStore.myPNum;
+        !evData.victory.gameOver && evData.playedBy !== gameStore.myPNum;
+      gameStore.waitingForOpponentToStalemate = !evData.victory.gameOver && evData.playedBy === gameStore.myPNum;
       break;
-    case SocketEvent.REJECT_STALEMATE:
+    case SocketEvent.STALEMATE_ACCEPT:
+    case SocketEvent.STALEMATE_REJECT:
       gameStore.consideringOpponentStalemateRequest = false;
       gameStore.waitingForOpponentToStalemate = false;
       break;
@@ -203,8 +205,8 @@ export async function handleInGameEvents(evData) {
 
   // Validate current route & navigate if incorrect
   const targetRouteName = isSpectating ? ROUTE_NAME_SPECTATE : ROUTE_NAME_GAME;
-  const shouldNavigate = currentRoute.name === ROUTE_NAME_LOBBY;
-  if (shouldNavigate) {
+  const shouldNavigate = targetRoute.name === ROUTE_NAME_LOBBY;
+  if (!newRoute && shouldNavigate) {
     router.push({
       name: targetRouteName,
       params: {
@@ -212,4 +214,5 @@ export async function handleInGameEvents(evData) {
       },
     });
   }
+  return;
 }

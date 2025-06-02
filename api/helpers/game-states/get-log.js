@@ -124,7 +124,7 @@ module.exports = {
 
         case MoveType.RESOLVE_FIVE:
           if (discardedCards.length) {
-            return `${player} discards the ${getFullCardName(
+            return `${player} discarded the ${getFullCardName(
               discardedCards[0],
             )} and ${getResolveFiveMessage()}`;
           }
@@ -161,7 +161,16 @@ module.exports = {
           }, targeting the ${targetCardName}.`;
 
         case MoveType.PASS:
-          return `${player} passes.`;
+          return `${player} passed.`;
+
+        case MoveType.STALEMATE_REQUEST:
+          return `${player} requested a stalemate`;
+
+        case MoveType.STALEMATE_ACCEPT:
+          return `${player} accepted ${opponent}'s offer for a stalemate`;
+
+        case MoveType.STALEMATE_REJECT:
+          return `${player} rejected ${opponent}'s offer for a stalemate`;
       }
     };
 

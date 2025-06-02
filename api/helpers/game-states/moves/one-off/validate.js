@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to play one-off',
@@ -28,6 +29,11 @@ module.exports = {
       description: 'Player number of player requesting move',
       required: true,
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
@@ -38,23 +44,23 @@ module.exports = {
       const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('game.snackbar.global.notInMainPhase');
+        throw new BadRequestError('game.snackbar.global.notInMainPhase');
       }
 
       if (currentState.oneOff) {
-        throw new Error('game.snackbar.oneOffs.oneOffInPlay');
+        throw new BadRequestError('game.snackbar.oneOffs.oneOffInPlay');
       }
 
       if (!playedCard) {
-        throw new Error('game.snackbar.global.playFromHand');
+        throw new BadRequestError('game.snackbar.global.playFromHand');
       }
 
       if (playedCard.isFrozen) {
-        throw new Error('game.snackbar.global.cardFrozen');
+        throw new BadRequestError('game.snackbar.global.cardFrozen');
       }
 
       switch (playedCard.rank) {
@@ -73,11 +79,11 @@ module.exports = {
           );
           // Must have target
           if (!targetCard) {
-            throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
+            throw new BadRequestError(`Can't find the ${requestedMove.targetId} on opponent's board`);
           }
 
           if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
-            throw new Error('Twos can only target royals or glasses');
+            throw new BadRequestError('Twos can only target royals or glasses');
           }
 
           const queenCount = opponent.faceCards.filter((faceCard) => faceCard.rank === 12).length;
@@ -91,21 +97,21 @@ module.exports = {
             // One queen => can only target the queen
             case 1: {
               if (targetCard.rank !== 12) {
-                throw new Error('game.snackbar.global.blockedByQueen');
+                throw new BadRequestError('game.snackbar.global.blockedByQueen');
               }
               return exits.success();
             }
 
             // 2+ queens => Can't target at all
             default:
-              throw new Error('game.snackbar.global.blockedByMultipleQueens');
+              throw new BadRequestError('game.snackbar.global.blockedByMultipleQueens');
           }
         }
 
         // Three requires card(s) in scrap
         case 3:
           if (!currentState.scrap.length) {
-            throw new Error('game.snackbar.oneOffs.three.scrapIsEmpty');
+            throw new BadRequestError('game.snackbar.oneOffs.three.scrapIsEmpty');
           }
           return exits.success();
 
@@ -119,20 +125,20 @@ module.exports = {
         // Five and sevens require cards in deck
         case 5:
           if (!currentState.deck.length) {
-            throw new Error('game.snackbar.oneOffs.emptyDeck');
+            throw new BadRequestError('game.snackbar.oneOffs.emptyDeck');
           }
           return exits.success();
 
         // Seven requires cards in deck
         case 7:
           if (!currentState.deck.length) {
-            throw new Error('game.snackbar.oneOffs.sevenWithEmptyDeck');
+            throw new BadRequestError('game.snackbar.oneOffs.sevenWithEmptyDeck');
           }
           return exits.success();
 
         // No other cards can be used for a one-off
         default:
-          throw new Error('You cannot play that card as a one-off');
+          throw new BadRequestError('You cannot play that card as a one-off');
       }
     } catch (err) {
       return exits.error(err);

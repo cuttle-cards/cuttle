@@ -273,6 +273,13 @@
         "mustUsePointCard": "Les scuttles ne se font qu'avec des cartes à points.",
         "mustTargetPointCard": "Les scuttles ne peuvent cibler que les cartes à points."
       },
+      "stalemate": {
+        "alreadyConsideringStalemate": "Une proposition de match nul a déjà été faite",
+        "noStalemateOffered": "Votre adversaire n'a pas proposé de match nul",
+        "opponentConsideringStalemate": "Votre adversaire envisage votre offre de match nul",
+        "previousStalemateRejected": "La demande de match nul a déjà été rejetée ce tour",
+        "wrongPhase": "Vous ne pouvez pas demander la nulle pendant d'autres mouvements"
+      },
       "oneOffs": {
         "oneOffInPlay": "Une capacité est en cours d'exécution, vous ne pouvez jouer qu'un deux pour contrer.",
         "cantPlayWithoutATarget": "La capacité de cette carte nécessite de cibler une carte.",
@@ -519,10 +526,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Championnat de la Saison Spades 2024 !",
-    "title": "Spades 2024",
-    "heading": "Championnat de la Saison",
-    "paragraph": "Le Championnat de la Saison Cuttle Spades 2024 a lieu aujourd'hui, samedi 25 janvier, à 12h EST ! Regardez les 8 meilleurs joueurs de la saison précédente de jeu compétitif s'affronter pour le titre de Champion de la Saison Spades ! Regardez-le en direct sur ",
+    "activatorText": "Championnat de la saison 2025 des Clubs AUJOURD'HUI !",
+    "title": "Championnat des Clubs 2025",
+    "heading": "Championnat aujourd'hui !",
+    "paragraph": "Le Championnat de saison de Cuttle des Clubs 2025 a lieu AUJOURD'HUI, samedi 26 avril à 12h30 EST ! Regardez les 8 meilleurs joueurs de la saison classée précédente s'affronter dans un tournoi à double élimination pour le titre de Champion de la saison 2025 de Cuttle des Clubs ! Regardez-le en direct sur ",
     "twitchLink": "twitch.tv/cuttle_cards"
   }
 }

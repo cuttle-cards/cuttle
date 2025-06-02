@@ -24,6 +24,11 @@ module.exports = {
       type: 'number',
       description: 'Player number of player resolving the five.',
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true,
   fn: ({ currentState, requestedMove, playedBy }, exits) => {

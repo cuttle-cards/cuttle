@@ -88,7 +88,7 @@ export default {
     async acceptStalemate() {
       this.loadingAccept = true;
       try {
-        await this.gameStore.requestStalemate();
+        await this.gameStore.acceptStalemate();
       } finally {
         this.loadingAccept = false;
         this.show = false;
