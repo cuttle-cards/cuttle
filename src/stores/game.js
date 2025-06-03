@@ -243,10 +243,6 @@ export const useGameStore = defineStore('game', {
     
       const gameHistoryStore = useGameHistoryStore();
       gameHistoryStore.gameStates = newGame.gameStates ?? [];
-      console.log(this.log);
-      console.log(gameHistoryStore.gameStates);
-      console.log(gameHistoryStore.currentGameState);
-      console.log(gameHistoryStore.log);
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));

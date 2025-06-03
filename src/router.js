@@ -87,8 +87,21 @@ const setupSpectate = async (to) => {
   const gameStore = useGameStore();
   let { gameId } = to.params;
   gameId = Number(gameId);
+  const { gameStateIndex } = to.query;
+
   await gameStore.requestSpectate(gameId);
   gameStore.id = gameId;
+  // Default to first gameState if unspecified
+  if (!gameStateIndex) {
+    return {
+      ...to,
+      query: {
+        ...to.query,
+        gameStateIndex: 0,
+      },
+    };
+  }
+  return;
 };
 
 const routes = [
