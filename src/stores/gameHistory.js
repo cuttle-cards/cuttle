@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import  { useGameStore } from '@/stores/game';
+import { ROUTE_NAME_SPECTATE } from '@/router';
 
 export const useGameHistoryStore = defineStore('gameHistory', () => {
   // Dependencies
@@ -49,12 +50,28 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
       [ ...gameStore.log ] : 
       gameStore.log.slice(0, currentGameStateIndex.value + 1);
   });
-  
+
+  const showPlaybackControls = computed(() => {
+    return route.name === ROUTE_NAME_SPECTATE;
+  });
+
+  const canGoToPreviousState = computed(() => {
+    return gameStates.value.length >= 2 && 
+      (currentGameStateIndex.value === -1 || currentGameStateIndex.value > 0);
+  });
+
+  const canGoToNextState = computed(() => {
+    return currentGameStateIndex.value >= 0 && currentGameStateIndex.value < gameStates.value.length - 1;
+  });
+
   return {
     gameStates,
     currentGameStateIndex,
     currentGameState,
     priorGameStates,
     log,
+    showPlaybackControls,
+    canGoToPreviousState,
+    canGoToNextState,
   };
 });

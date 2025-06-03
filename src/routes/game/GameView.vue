@@ -317,6 +317,7 @@
       </div>
 
       <h3 id="player-score">
+        <PlaybackControls v-if="gameHistoryStore.showPlaybackControls" />
         <span>{{ t('game.score.points') }}: {{ gameStore.playerPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="playerKingCount"
@@ -438,6 +439,7 @@ import GameUnavailableView from '@/routes/game/components/GameUnavailableView.vu
 import TargetSelectionOverlay from '@/routes/game/components/TargetSelectionOverlay.vue';
 import ScrapDialog from '@/routes/game/components/dialogs/components/ScrapDialog.vue';
 import SpectatorListMenu from '@/routes/game/components/SpectatorListMenu.vue';
+import PlaybackControls from './components/PlaybackControls.vue';
 
 export default {
   name: 'GameView',
@@ -453,6 +455,7 @@ export default {
     UsernameToolTip,
     BaseSnackbar,
     SpectatorListMenu,
+    PlaybackControls,
   },
   setup() {
     const { t } = useI18n();
@@ -502,9 +505,9 @@ export default {
           return 140;
       }
     },
-    /////////////////////////////////////////////
+    ////////////////////////////////////////////
     // Game, Deck, Log, Scrap, and Spectators //
-    ///////////////////////////////////////////
+    ////////////////////////////////////////////
     deck() {
       return this.gameStore.deck;
     },

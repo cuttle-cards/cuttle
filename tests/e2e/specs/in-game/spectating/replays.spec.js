@@ -49,6 +49,9 @@ describe('Rewatching finished games', () => {
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.get('[data-cy=history-log]').should('have.length', 1);
 
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-forward]')
+        .click();
     //   assertGameState(0, {
     //     p0Hand: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
     //     p0Points: [],
