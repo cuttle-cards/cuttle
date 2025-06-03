@@ -25,7 +25,7 @@ module.exports = async function(req, res) {
 
     const {  unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
 
-    const gameStateIndex = Number(req.params.gameStateIndex ?? -1);
+    const gameStateIndex = Number(req.query.gameStateIndex ?? -1);
     const packedGameState = game.gameStates.at(gameStateIndex);
 
     if (!packedGameState) {
