@@ -27,7 +27,7 @@ module.exports = {
       };
 
       const player = game[`p${row.playedBy}`]?.username;
-      const opponent = game[`p${row.playedBy % 2}`]?.username;
+      const opponent = game[`p${(row.playedBy + 1) % 2}`]?.username;
 
       const playedCardName = playedCard ? getFullCardName(playedCard) : null;
       const targetCardName = targetCard ? getFullCardName(targetCard) : null;
@@ -42,6 +42,8 @@ module.exports = {
       };
 
       switch (moveType) {
+        case MoveType.DEAL:
+          return `${player} dealt; ${opponent} will go first`;
         case MoveType.DRAW:
           return `${player} drew a card.`;
 
@@ -171,6 +173,9 @@ module.exports = {
 
         case MoveType.STALEMATE_REJECT:
           return `${player} rejected ${opponent}'s offer for a stalemate`;
+
+        case MoveType.LOADFIXTURE:
+          return `${player} set the game into a custom state of their choosing`;
       }
     };
 
