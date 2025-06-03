@@ -426,6 +426,7 @@ import { mapStores } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import UsernameToolTip from '@/routes/game/components/UsernameToolTip.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
@@ -475,8 +476,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useGameStore),
-    ...mapStores(useAuthStore),
+    ...mapStores(useAuthStore, useGameStore, useGameHistoryStore),
     isSpectating() {
       return this.gameStore.isSpectating;
     },
@@ -512,7 +512,7 @@ export default {
       return this.gameStore.scrap;
     },
     logs() {
-      return this.gameStore.log;
+      return this.gameHistoryStore.log;
     },
     deckLength() {
       let res = this.deck.length;

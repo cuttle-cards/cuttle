@@ -2,13 +2,16 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import  { useGameStore } from '@/stores/game';
 
 export const useGameHistoryStore = defineStore('gameHistory', () => {
+  // Dependencies
+  const route = useRoute();
+  const gameStore = useGameStore();
+
   // State
   const gameStates = ref([]);
   
-  // Get the current route
-  const route = useRoute();
   
   // Reactive getter for the current game state index from route query
   const currentGameStateIndex = computed(() => {
@@ -36,8 +39,15 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   });
 
   const priorGameStates = computed(() => {
-    const sliceIndex = currentGameStateIndex.value === -1 ? 0 : currentGameStateIndex.value + 1;
-    return gameStates.value.slice(sliceIndex);
+    return currentGameStateIndex.value === -1 ? 
+      [ ...gameStates.value ] : 
+      gameStates.value.slice(0, currentGameStateIndex.value + 1);
+  });
+
+  const log = computed(() => {
+    return currentGameStateIndex.value === -1 ? 
+      [ ...gameStore.log ] : 
+      gameStore.log.slice(0, currentGameStateIndex.value + 1);
   });
   
   return {
@@ -45,5 +55,6 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
     currentGameStateIndex,
     currentGameState,
     priorGameStates,
+    log,
   };
 });
