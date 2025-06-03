@@ -83,6 +83,14 @@ const getGameState = async (to) => {
   return;
 };
 
+const setupSpectate = async (to) => {
+  const gameStore = useGameStore();
+  let { gameId } = to.params;
+  gameId = Number(gameId);
+  await gameStore.requestSpectate(gameId);
+  gameStore.id = gameId;
+};
+
 const routes = [
   {
     path: '/',
@@ -156,6 +164,7 @@ const routes = [
     meta: {
       hideNavigation: true,
     },
+    beforeEnter: setupSpectate,
   },
   {
     path: '/stats/:seasonId?',
@@ -198,11 +207,11 @@ const router = createRouter({
   },
 });
 
-router.beforeEach(async (to, _from, next) => {
+router.beforeEach(async (_to, _from, next) => {
   const authStore = useAuthStore();
   // Make sure we try and reestablish a player's session if one exists
   // We do this before the route resolves to preempt the reauth/logout logic
-  await authStore.requestStatus(to);
+  await authStore.requestStatus();
 
   next();
 });

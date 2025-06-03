@@ -73,14 +73,11 @@ export const useAuthStore = defineStore('auth', {
         );
       });
     },
-    async requestStatus(route) {
+    async requestStatus() {
       // If we've authenticated before, fast fail
       if (this.authenticated !== null) {
         return;
       }
-
-      const { name } = route;
-      const isSpectating = name === ROUTE_NAME_SPECTATE;
 
       try {
         const response = await fetch('/api/user/status', {
@@ -96,14 +93,6 @@ export const useAuthStore = defineStore('auth', {
         // If the user is authenticated and has a username, add it to the store
         if (username) {
           this.authSuccess(username);
-        }
-
-        const gameStore = useGameStore();
-        if (isSpectating) {
-          let { gameId } = route.params;
-          gameId = Number(gameId);
-          await gameStore.requestSpectate(gameId);
-          gameStore.id = gameId;
         }
 
         return;
