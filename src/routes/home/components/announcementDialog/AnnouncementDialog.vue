@@ -56,14 +56,20 @@ import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { getLocalStorage, setLocalStorage } from '_/utils/local-storage-utils.js';
-import { announcementData } from './data/announcementData';
+// import { announcementData } from './data/announcementData';
 import BaseDialog from '@/components/BaseDialog.vue';
 import BaseParagraph from '@/components/BaseParagraph.vue';
 import GameCard from '@/routes/game/components/GameCard.vue';
 
 const { t } = useI18n();
 const show = ref(false);
-const preferenceSaved= ref(false);
+const preferenceSaved = ref(false);
+const { announcementData } = defineProps({
+  announcementData: {
+    type: Object,
+    default: null
+  },
+});
 
 const announcementIsActive = computed(() => {
   const isAfterStartTime = announcementData.startTime ? dayjs().isAfter(dayjs(announcementData.startTime)) : true;
