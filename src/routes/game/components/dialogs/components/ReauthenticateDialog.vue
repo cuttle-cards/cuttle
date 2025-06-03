@@ -55,6 +55,7 @@
 <script>
 import { mapStores } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { useGameStore } from '@/stores/game';
 import BaseDialog from '@/components/BaseDialog.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import { useI18n } from 'vue-i18n';
@@ -85,7 +86,7 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useAuthStore),
+    ...mapStores(useAuthStore, useGameStore),
     show: {
       get() {
         return this.modelValue;
@@ -99,18 +100,21 @@ export default {
     submit() {
       this.$refs.form.requestSubmit();
     },
-    login() {
+    async login() {
       this.isLoggingIn = true;
-      this.authStore.requestReauthenticate({
+      try {
+        await this.authStore.requestReauthenticate({
           username: this.username,
           password: this.password,
-        })
-        .then(() => {
-          this.clearSnackBar();
-          this.clearForm();
-          this.isLoggingIn = false;
-        })
-        .catch(this.handleError);
+        });
+
+        await this.gameStore.requestGameState(this.gameStore.id);
+        this.clearSnackBar();
+        this.clearForm();
+        this.isLoggingIn = false;
+      } catch (err) {
+        this.handleError(err);
+      }
     },
     handleError(message) {
       this.showSnackBar = true;

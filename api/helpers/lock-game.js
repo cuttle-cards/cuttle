@@ -32,7 +32,8 @@ module.exports = {
     for (let numAttempts = 0; numAttempts < MAX_ATTEMPTS; numAttempts++) {
       try {
         const now = dayjs.utc().toDate();
-        const lockIsStaleTimeout = dayjs.utc().subtract(30, 'second').toDate();
+        const lockIsStaleTimeout = dayjs.utc().subtract(30, 'second')
+          .toDate();
 
         // Lock game if unlocked or lock is expired
         await Game.updateOne({
@@ -46,6 +47,9 @@ module.exports = {
           .populate('p1')
           .populate('gameStates', { sort: 'createdAt ASC' });
 
+        if (!updatedGame) {
+          return exits.success(null);
+        }
         // If we successfully wrote our uuid, resolve
         const newLock = updatedGame?.lock;
         if (newLock === uuId) {
@@ -59,6 +63,6 @@ module.exports = {
         return exits.error(err);
       }
     }
-    return exits.error(`Timed out aquiring lock for game ${gameId}`);
+    return exits.error(new Error(`Timed out aquiring lock for game ${gameId}`));
   },
 };

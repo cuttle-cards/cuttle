@@ -87,13 +87,14 @@ export default {
     BaseDialog,
     RulesDialog,
     TheLanguageSelector
-},
+  },
   props: {
     isSpectating: {
       type: Boolean,
       required: true,
     },
   },
+  emits: [ 'handle-error' ],
   setup() {
     const { t } = useI18n();
     return { t };
@@ -136,7 +137,7 @@ export default {
         return this.shownDialog === 'rules';
       },
       set(val) {
-      this.shownDialog = val ? 'rules' : '';
+        this.shownDialog = val ? 'rules' : '';
       }
     },
     showConcedeDialog(){ 
@@ -173,6 +174,7 @@ export default {
         this.gameStore.waitingForOpponentToStalemate = true;
       } catch (e) {
         this.gameStore.waitingForOpponentToStalemate = false;
+        this.$emit('handle-error', e ?? 'Error requesting stalemate');
       }
       this.loading = false;
       this.shownDialog = '';

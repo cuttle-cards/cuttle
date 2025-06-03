@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to play face card',
@@ -26,6 +27,11 @@ module.exports = {
       description: 'Player number of player requesting move',
       required: true,
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
@@ -35,23 +41,23 @@ module.exports = {
       const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
 
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('game.snackbar.global.notInMainPhase');
+        throw new BadRequestError('game.snackbar.global.notInMainPhase');
       }
 
       if (!playedCard) {
-        throw new Error('game.snackbar.global.playFromHand');
+        throw new BadRequestError('game.snackbar.global.playFromHand');
       }
 
       if (playedCard.isFrozen) {
-        throw new Error('game.snackbar.global.cardFrozen');
+        throw new BadRequestError('game.snackbar.global.cardFrozen');
       }
 
       if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
       if (![ 8, 12, 13 ].includes(playedCard.rank)) {
-        throw new Error('game.snackbar.faceCard.withoutTarget');
+        throw new BadRequestError('game.snackbar.faceCard.withoutTarget');
       }
 
       return exits.success();

@@ -95,7 +95,7 @@
       "four": {
         "discardTwoCards": "Descartar dos cartas",
         "discard": "Descartar",
-        "oppponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
+        "opponentHasResolved": "El rival ha usado la habilidad Única del Cuatro. Debes descartar dos cartas. Haz clic para seleccionar las cartas para descartar."
       },
       "five": {
         "discardAndDraw": "Descartar y robar",
@@ -273,6 +273,13 @@
         "mustUsePointCard": "Solo puedes hundir con una carta de rango As hasta Diez",
         "mustTargetPointCard": "Solo puedes hundir una carta que tu oponente haya jugado como puntos"
       },
+      "stalemate": {
+        "alreadyConsideringStalemate": "Ya se ha ofrecido un empate",
+        "noStalemateOffered": "Tu oponente no ha ofrecido un empate",
+        "opponentConsideringStalemate": "Tu oponente está considerando tu oferta de empate",
+        "previousStalemateRejected": "La solicitud de empate ya fue rechazada en este turno",
+        "wrongPhase": "No puedes solicitar tablas durante otros movimientos"
+      },
       "oneOffs": {
         "oneOffInPlay": "Ya hay en juego una carta de habilidad única; no puedes jugar ninguna carta, excepto un Dos para contrarrestar.",
         "cantPlayWithoutATarget": "No puedes jugar un 1 como carta de habilidad única sin un objetivo",
@@ -292,11 +299,15 @@
         "five": {
           "selectCardToDiscard": "Debes seleccionar una carta para descartar",
           "incorrectCard": "Carta incorrecta jugada",
+          "wrongPhase": "No puedes resolver un cinco en este momento.",
           "fiveDeckIsEmpty": "No se puede resolver la habilidad única de un 5 con un mazo vacío"
         },
         "seven": {
           "oneCardInDeck": "No puedes jugar un 7 como carta de habilidad única si es la última carta del mazo",
-          "pickAndPlay": "Solo puedes jugar las cartas superiores del mazo mientras se resuelve un Siete"
+          "pickAndPlay": "Solo puedes jugar las cartas superiores del mazo mientras se resuelve un Siete",
+          "wrongPhase": "No puedes jugar desde el mazo en este momento",
+          "mustBeDoubleJacks": "No puedes descartar desde un siete a menos que ambas cartas sean jotas",
+          "jacksMustBeUnplayable": "No puedes descartar porque las jotas se pueden jugar"
         }
       }
     }
@@ -515,9 +526,10 @@
     }
   },
   "announcement": {
-    "activatorText": "¡Manos reveladas en el final de partida!",
-    "title": "Revelación",
-    "heading": "Simplificación del final del juego",
-    "paragraph": "¡Cuando el mazo se agote completamente (se quede sin cartas), ahora podrás ver la mano de tu oponente! Como el descarte es visible públicamente, los jugadores siempre han podido deducir qué cartas están en las manos de sus oponentes una vez que el mazo se agota. Para hacer que el juego sea más eficiente, ahora los jugadores podrán ver las manos de sus oponentes una vez que el mazo esté vacío. Esto permite que los jugadores se concentren en la estrategia, en lugar de revisar el descarte. ¡Buena suerte y que te diviertas!"
+    "activatorText": "¡Campeonato de Temporada de Clubs 2025 HOY!",
+    "title": "Campeonato de Clubs 2025",
+    "heading": "¡El Campeonato es Hoy!",
+    "paragraph": "¡El Campeonato de Temporada de Cuttle de Clubs 2025 es HOY, 26 de abril a las 12:30pm EST! Mira a los 8 mejores jugadores de la temporada pasada de partidas clasificadas competir en una eliminatoria doble por el título de Campeón de la Temporada de Cuttle de Clubs 2025. Míralo en vivo en ",
+    "twitchLink": "twitch.tv/cuttle_cards"
   }
 }

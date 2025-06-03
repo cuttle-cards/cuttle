@@ -29,7 +29,6 @@ describe('Spectating Games', () => {
   beforeEach(setup);
 
   it('Spectates a game', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.ACE_OF_CLUBS ],
@@ -55,7 +54,7 @@ describe('Spectating Games', () => {
 
     // P0 plays ace of spades
     cy.recoverSessionOpponent(playerOne);
-    cy.playPointsSpectator(Card.ACE_OF_SPADES, 0);
+    cy.playPointsSpectator(Card.ACE_OF_SPADES);
 
     assertGameState(
       0,
@@ -88,7 +87,7 @@ describe('Spectating Games', () => {
 
     // P1 plays Ace of hearts -- UI updates accordingly
     cy.recoverSessionOpponent(playerTwo);
-    cy.playPointsSpectator(Card.ACE_OF_HEARTS, 1);
+    cy.playPointsSpectator(Card.ACE_OF_HEARTS);
 
     assertGameState(
       0,
@@ -110,7 +109,7 @@ describe('Spectating Games', () => {
 
     // P0 plays ace of clubs
     cy.recoverSessionOpponent(playerOne);
-    cy.playPointsSpectator(Card.ACE_OF_CLUBS, 0);
+    cy.playPointsSpectator(Card.ACE_OF_CLUBS);
 
     // Reconnect the socket
     cy.window()
@@ -133,7 +132,7 @@ describe('Spectating Games', () => {
 
     // P1 plays the Eight of Diamonds and wins
     cy.recoverSessionOpponent(playerTwo);
-    cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS, 1);
+    cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS);
 
     assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: false });
     cy.get('[data-cy=gameover-go-home]').click();
@@ -141,7 +140,6 @@ describe('Spectating Games', () => {
   });
 
   it('Correctly shows and hides dialogs and overlays', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.THREE_OF_CLUBS ],
@@ -153,14 +151,14 @@ describe('Spectating Games', () => {
     });
 
     cy.recoverSessionOpponent(playerOne);
-    cy.playOneOffSpectator(Card.ACE_OF_SPADES, 0);
+    cy.playOneOffSpectator(Card.ACE_OF_SPADES);
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
     cy.recoverSessionOpponent(playerTwo);
     cy.resolveOpponent();
     cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
-    cy.playOneOffSpectator(Card.ACE_OF_DIAMONDS, 1);
+    cy.playOneOffSpectator(Card.ACE_OF_DIAMONDS);
     cy.get('#cannot-counter-dialog').should('be.visible');
     cy.recoverSessionOpponent(playerOne);
     cy.resolveOpponent();
@@ -168,9 +166,8 @@ describe('Spectating Games', () => {
     cy.get('.v-overlay').should('not.exist');
   });
 
-  it('Leaves a spectated game and joins another without processing extraneous updates', () => {
-    cy.skipOnGameStateApi();
-    cy.setupGameAsSpectator();
+  it('Leaves a spectated game and joins another without processing extraneous updates', function() {
+    cy.setupGameAsSpectator(false, 'spectatedGameId'); // alias to tell gameId's apart
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES ],
       p0Points: [],
@@ -199,9 +196,10 @@ describe('Spectating Games', () => {
       p1FaceCards: [],
     });
 
+    // Player in previously spectated game makes move
     cy.recoverSessionOpponent(playerOne);
     cy.get('@aceOfSpades').then((aceOfSpadesId) => {
-      cy.playPointsById(aceOfSpadesId);
+      cy.playPointsById(aceOfSpadesId, this.spectatedGameId);
     });
 
     cy.wait(3000);
@@ -217,7 +215,6 @@ describe('Spectating Games', () => {
   });
 
   it('Prevents spectator from making moves', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
       p0Hand: [
@@ -306,52 +303,83 @@ describe('Spectating Games', () => {
     // Can't resolve
   });
 
+  it('Removes current user (spectator) from the players list of spectators when current user leaves spectating', () => {
+    cy.setupGameAsSpectator();
+    cy.request('/api/test/spectator').then(({ body }) => {
+      expect(body.length).to.eq(1);
+      expect(body[0].spectator).to.eq(myUser.username);
+      expect(body[0].activelySpectating).to.eq(true);
+    });
+
+    cy.get('#game-menu-activator').click();
+    cy.get('[data-cy="stop-spectating"]').click();
+    cy.url().should('not.include', '/spectate');
+
+    cy.request('/api/test/spectator').then(({ body }) => {
+      expect(body.length).to.eq(1);
+      expect(body[0].spectator).to.eq(myUser.username);
+      expect(body[0].activelySpectating).to.eq(false);
+    });
+  });
+
   describe('Spectators Layout', () => {
     it('Display list of spectators and adds to list when new spectator joins', () => {
       cy.setupGameAsSpectator();
       cy.vueRoute('/');
       // Player 3 spectates player1 vs player2
       cy.signupOpponent(playerThree);
-      cy.get('@gameData').then((gameData) => {
-        cy.setOpponentToSpectate(gameData.gameId);
+      cy.get('@gameId').then((gameId) => {
+        cy.setOpponentToSpectate(gameId);
       });
       // My user begins spectating, sees player3 in spectator list
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).click();
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
+        .click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
+
+      cy.get('[data-player-hand-card]').should('have.length', 5);
+
       // Player 4 begins spectating
-      cy.get('@gameData').then((gameData) => {
+      cy.get('@gameId').then((gameId) => {
         cy.signupOpponent(playerFour);
-        cy.setOpponentToSpectate(gameData.gameId);
+        cy.setOpponentToSpectate(gameId);
       });
+      cy.get('[data-player-hand-card]').should('have.length', 5);
       // Player 4 now appears in spectator list
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '3').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '3')
+        .click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username)
         .should('contain', playerFour.username);
+      cy.wait(500);
+      cy.get('[data-player-hand-card]').should('have.length', 5);
     });
 
     it('Should display no spectators', () => {
       cy.setupGameAsP0();
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '0').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '0')
+        .click();
       cy.get('[data-cy="spectate-list-menu"]').should('contain', 'Currently no spectators');
     });
 
     it('Should remove spectators from list after leaving', () => {
       cy.setupGameAsSpectator();
       cy.signupOpponent(playerThree);
-      cy.get('@gameData').then((gameData) => {
-        cy.setOpponentToSpectate(gameData.gameId);
+      cy.get('@gameId').then((gameId) => {
+        cy.setOpponentToSpectate(gameId);
       });
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
+        .click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
-      cy.setOpponentToLeaveSpectate();
+      cy.get('@gameId').then((gameId) => {
+        cy.setOpponentToLeaveSpectate(gameId);
+      });
       cy.get('[data-cy="spectate-list-menu"').should('not.contain', playerThree.username);
     });
 
@@ -367,7 +395,8 @@ describe('Spectating Games', () => {
       cy.location('pathname').should('eq', '/');
       cy.get('[data-cy-game-list-selector=spectate]').click();
       cy.get(`[data-cy-spectate-game]`).click();
-      cy.get('[data-cy="spectate-list-button"]').should('contain', '1').click();
+      cy.get('[data-cy="spectate-list-button"]').should('contain', '1')
+        .click();
       cy.get('[data-cy="spectate-list-menu"').should('contain', 'myUsername');
     });
   });
@@ -390,7 +419,6 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
   });
 
   it('Spectate unranked games with rematch', function () {
-    cy.skipOnGameStateApi();
     // 1st game: Opponent concedes
     cy.recoverSessionOpponent(playerTwo);
     cy.concedeOpponent();
@@ -427,7 +455,8 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
         cy.setOpponentToSpectate(game.id);
       });
 
-    cy.get('[data-cy="spectate-list-button"]').should('contain', '2').click();
+    cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
+      .click();
     cy.get('[data-cy="spectate-list-menu"')
       .should('contain', 'myUsername')
       .should('contain', playerThree.username);

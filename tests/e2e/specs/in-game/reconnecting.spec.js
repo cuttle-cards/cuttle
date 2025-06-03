@@ -1,10 +1,9 @@
-import { assertGameState, assertVictory } from '../../support/helpers';
+import { assertGameState, assertVictory, assertSnackbar } from '../../support/helpers';
 import { myUser, opponentOne } from '../../fixtures/userFixtures';
 import { Card } from '../../fixtures/cards';
 
 describe('Reconnecting to a game', () => {
   it('Refreshs Game from Game Menu', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP1();
     cy.loadGameFixture(1, {
       p0Hand: [ Card.ACE_OF_CLUBS, Card.SEVEN_OF_DIAMONDS ],
@@ -44,7 +43,6 @@ describe('Reconnecting to a game', () => {
   });
 
   it('Persists session after refreshing the page', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
 
     cy.loadGameFixture(0, {
@@ -74,7 +72,6 @@ describe('Reconnecting to a game', () => {
   });
 
   it('Reconnects after refreshing the page', () => {
-    cy.skipOnGameStateApi();
     cy.setupGameAsP0();
 
     cy.loadGameFixture(0, {
@@ -105,7 +102,6 @@ describe('Reconnecting to a game', () => {
 
   describe('Reconnecting into Cannot Counter Dialog', () => {
     it('oneOff - Reconnect into cannot counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
 
       cy.loadGameFixture(1, {
@@ -125,7 +121,9 @@ describe('Reconnecting to a game', () => {
       cy.reload();
 
       // Cannot counter dialog appears again
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -139,7 +137,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('targetedOneOff -- reconnect into cannot counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
 
       cy.loadGameFixture(1, {
@@ -159,7 +156,9 @@ describe('Reconnecting to a game', () => {
       cy.reload();
 
       // Cannot counter dialog appears again
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -173,7 +172,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('counter -- Reconnect into cannot counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.ACE_OF_CLUBS ],
@@ -195,7 +193,9 @@ describe('Reconnecting to a game', () => {
       cy.reload();
 
       // Cannot counter - resolve
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(0, {
         p0Hand: [],
@@ -209,7 +209,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('sevenOneOff -- Reconnect into cannot counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -223,7 +222,9 @@ describe('Reconnecting to a game', () => {
 
       // Opponent plays seven of clubs and player resolves
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
       // Opponent plays Ace of clubs from seven
       cy.get('#waiting-for-opponent-play-from-deck-scrim').should('be.visible');
 
@@ -235,7 +236,9 @@ describe('Reconnecting to a game', () => {
       // Player reconnects and cannot counter
       cy.reload();
 
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -249,7 +252,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('sevenTargetedOneOff -- Reconnect into cannot counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -262,14 +264,18 @@ describe('Reconnecting to a game', () => {
       });
 
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
       // Opponent plays two of clubs
       cy.playTargetedOneOffFromSevenOpponent(Card.TWO_OF_CLUBS, Card.KING_OF_CLUBS, 'faceCard');
 
       // Player reconnects and cannot counter
       cy.reload();
 
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -283,7 +289,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('Opponent reconnects while player is in cannot-counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
 
       cy.loadGameFixture(1, {
@@ -302,7 +307,9 @@ describe('Reconnecting to a game', () => {
       cy.reconnectOpponent(opponentOne);
 
       // Cannot counter dialog appears again
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -318,7 +325,6 @@ describe('Reconnecting to a game', () => {
 
   describe('Reconnecting into Counter Dialog', () => {
     it('oneOff -- Reconnect into Counter Dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.ACE_OF_CLUBS ],
@@ -336,9 +342,13 @@ describe('Reconnecting to a game', () => {
       // Reload page
       cy.reload();
 
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
+      cy.get('#counter-dialog').should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
 
-      cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-0]').click();
+      cy.get('#choose-two-dialog').should('be.visible')
+        .get('[data-counter-dialog-card=2-0]')
+        .click();
 
       cy.resolveOpponent();
 
@@ -354,7 +364,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('targetedOneOff -- reconnect into counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.TWO_OF_SPADES ],
@@ -372,8 +381,12 @@ describe('Reconnecting to a game', () => {
       // Reload page & counter
       cy.reload();
 
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
-      cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-0]').click();
+      cy.get('#counter-dialog').should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
+      cy.get('#choose-two-dialog').should('be.visible')
+        .get('[data-counter-dialog-card=2-0]')
+        .click();
 
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
@@ -393,7 +406,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('targetedOneOff -- reconnect into waiting for opponent to counter overlay', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.TWO_OF_SPADES ],
@@ -408,8 +420,12 @@ describe('Reconnecting to a game', () => {
 
       cy.get('#counter-dialog').should('be.visible');
 
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
-      cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-0]').click();
+      cy.get('#counter-dialog').should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
+      cy.get('#choose-two-dialog').should('be.visible')
+        .get('[data-counter-dialog-card=2-0]')
+        .click();
 
       cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
@@ -434,7 +450,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('counter -- Reconnect into counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_SPADES ],
@@ -466,7 +481,9 @@ describe('Reconnecting to a game', () => {
         .should('be.visible')
         .contains('Your opponent has played the 2♣️ to Counter', { includeShadowDom: true });
       cy.get('[data-cy=counter]').click();
-      cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-3]').click();
+      cy.get('#choose-two-dialog').should('be.visible')
+        .get('[data-counter-dialog-card=2-3]')
+        .click();
 
       cy.resolveOpponent();
       assertGameState(0, {
@@ -488,7 +505,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('sevenOneOff -- Reconnect into counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -502,7 +518,9 @@ describe('Reconnecting to a game', () => {
 
       // Opponent plays seven of clubs and player resolves
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=decline-counter-resolve]').click();
+      cy.get('#counter-dialog').should('be.visible')
+        .get('[data-cy=decline-counter-resolve]')
+        .click();
 
       cy.get('#counter-dialog').should('not.exist');
       // Opponent plays the ace of clubs off top of deck
@@ -513,7 +531,9 @@ describe('Reconnecting to a game', () => {
       cy.reload();
 
       // Player can counter but declines
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=decline-counter-resolve]').click();
+      cy.get('#counter-dialog').should('be.visible')
+        .get('[data-cy=decline-counter-resolve]')
+        .click();
 
       assertGameState(1, {
         p0Hand: [],
@@ -527,7 +547,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('sevenTargetedOneOff -- Reconnect into counter dialog', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -541,15 +560,21 @@ describe('Reconnecting to a game', () => {
 
       // Opponent plays seven of clubs
       cy.playOneOffOpponent(Card.SEVEN_OF_CLUBS);
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=decline-counter-resolve]').click();
+      cy.get('#counter-dialog').should('be.visible')
+        .get('[data-cy=decline-counter-resolve]')
+        .click();
       cy.playTargetedOneOffFromSevenOpponent(Card.TWO_OF_CLUBS, Card.KING_OF_CLUBS, 'faceCard');
 
       // Reconnect & proceed
       cy.reload();
 
       // Player counters
-      cy.get('#counter-dialog').should('be.visible').get('[data-cy=counter]').click();
-      cy.get('#choose-two-dialog').should('be.visible').get('[data-counter-dialog-card=2-1]').click();
+      cy.get('#counter-dialog').should('be.visible')
+        .get('[data-cy=counter]')
+        .click();
+      cy.get('#choose-two-dialog').should('be.visible')
+        .get('[data-counter-dialog-card=2-1]')
+        .click();
 
       cy.resolveOpponent();
 
@@ -568,7 +593,6 @@ describe('Reconnecting to a game', () => {
   describe('Reconnecting into One-Off resolutions', () => {
     describe('Reconnecting into 3s', () => {
       it('Resolve 3 after reconnect -- Player fetches card', () => {
-        cy.skipOnGameStateApi();
         cy.setupGameAsP0();
         cy.loadGameFixture(0, {
           p0Hand: [ Card.THREE_OF_CLUBS ],
@@ -592,7 +616,8 @@ describe('Reconnecting to a game', () => {
 
         // Player two of clubs from scrap
         cy.get('[data-three-dialog-card=2-0]').click();
-        cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
+        cy.get('[data-cy=three-resolve').should('not.be.disabled')
+          .click();
 
         assertGameState(0, {
           p0Hand: [ Card.TWO_OF_CLUBS ],
@@ -606,7 +631,6 @@ describe('Reconnecting to a game', () => {
       });
 
       it('Resolve opponents three after reconnect', () => {
-        cy.skipOnGameStateApi();
         cy.setupGameAsP1();
         cy.loadGameFixture(1, {
           p0Hand: [ Card.THREE_OF_CLUBS ],
@@ -620,7 +644,9 @@ describe('Reconnecting to a game', () => {
 
         // Opponent plays 3 of clubs & it resolves
         cy.playOneOffOpponent(Card.THREE_OF_CLUBS);
-        cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+        cy.get('#cannot-counter-dialog').should('be.visible')
+          .get('[data-cy=cannot-counter-resolve]')
+          .click();
         cy.get('#waiting-for-opponent-resolve-three-scrim').should('be.visible');
 
         // Disconnect & Reconnect
@@ -644,7 +670,6 @@ describe('Reconnecting to a game', () => {
     }); // End 3's reconnect
 
     it('Resolve 4 after reconnect - Player discards', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP1();
       cy.loadGameFixture(1, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],
@@ -657,7 +682,9 @@ describe('Reconnecting to a game', () => {
 
       // Opponent plays four of clubs, player resolves
       cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
-      cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+      cy.get('#cannot-counter-dialog').should('be.visible')
+        .get('[data-cy=cannot-counter-resolve]')
+        .click();
 
       // Disconnect & Reconnect
       cy.reload();
@@ -682,7 +709,6 @@ describe('Reconnecting to a game', () => {
     });
 
     it('Resolve 7 after reconnect - Player', () => {
-      cy.skipOnGameStateApi();
       cy.setupGameAsP0();
       cy.loadGameFixture(0, {
         p0Hand: [ Card.SEVEN_OF_CLUBS ],
@@ -697,14 +723,18 @@ describe('Reconnecting to a game', () => {
 
       cy.playOneOffAndResolveAsPlayer(Card.SEVEN_OF_CLUBS);
 
-      cy.get('[data-top-card=10-3]').should('exist').and('be.visible');
+      cy.get('[data-top-card=10-3]').should('exist')
+        .and('be.visible');
 
       // Disconnect & Reconnect
       cy.reload();
 
       // Play off top of deck as normal
-      cy.get('[data-second-card=9-0]').should('exist').and('be.visible');
-      cy.get('[data-top-card=10-3]').should('exist').and('be.visible').click();
+      cy.get('[data-second-card=9-0]').should('exist')
+        .and('be.visible');
+      cy.get('[data-top-card=10-3]').should('exist')
+        .and('be.visible')
+        .click();
       cy.get('[data-move-choice=points]').click();
 
       assertGameState(0, {
@@ -721,25 +751,36 @@ describe('Reconnecting to a game', () => {
   });
 });
 
-describe('Display correct dialog for unavailable game', () => {
+describe('Unavailable games', () => {
   beforeEach(() => {
-    cy.setupGameAsP0();
+    cy.wipeDatabase();
+    cy.visit('/');
+    cy.signupPlayer(myUser);
+    cy.signupOpponent(opponentOne);
   });
-
-  it('Shows unavailable game dialog, then return home', () => {
+  
+  it('Shows GameOverDialog when you have left and revisit same game', () => {
+    cy.setupGameAsP0(true);
     cy.concedeOpponent();
     assertVictory();
     // go home
     cy.get('[data-cy=gameover-go-home]').click();
     cy.url().should('not.include', '/game');
     // go back to game URL
-    cy.get('@gameSummary').then(({ gameId }) => cy.visit(`/game/${gameId}`));
-    cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
-    cy.get('[data-cy="leave-unavailable-game-button"]').click();
+    cy.get('@gameId').then((gameId) => cy.visit(`/game/${gameId}`));
+    cy.get('#game-over-dialog').should('be.visible');
+    cy.get('[data-cy=my-rematch-indicator]')
+      .find('[data-cy="player-declined-rematch"]');
+    cy.get('[data-cy=gameover-go-home]').click();
+
     cy.location('pathname').should('equal', '/');
+  });
+  
+  it('Navigates home with error message for game id not found', ()=> {
     // go to random url
     cy.visit('/game/12345');
-    cy.get("[data-cy='unavailable-game-overlay']").should('be.visible');
+    assertSnackbar('Could not load game 12345', 'error', 'newgame');
+    cy.url().should('not.include', '/game/12345');
   });
 });
 
@@ -751,8 +792,10 @@ describe('Reauthenticating in game', () => {
   it('Re-login using reauthenticate dialog', () => {
     cy.clearCookies();
     cy.reload();
-    cy.get('[data-cy=username]').click().type(myUser.username);
-    cy.get('[data-cy=password]').click().type(myUser.password);
+    cy.get('[data-cy=username]').click()
+      .type(myUser.username);
+    cy.get('[data-cy=password]').click()
+      .type(myUser.password);
     cy.get('[data-cy=login]').click();
     cy.get('#deck').should('be.visible');
   });
@@ -797,16 +840,21 @@ describe('Reconnecting after game is over', () => {
 
   it('Dialogs persist after refreshing when game is over by stalemate', () => {
     cy.get('#game-menu-activator').click();
-    cy.get('#game-menu').should('be.visible').get('[data-cy=stalemate-initiate]').click();
-    cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
-    cy.stalemateOpponent();
+    cy.get('#game-menu').should('be.visible')
+      .get('[data-cy=stalemate-initiate]')
+      .click();
+    cy.get('#request-gameover-dialog').should('be.visible')
+      .get('[data-cy=request-gameover-confirm]')
+      .click();
+    cy.get('#waiting-for-opponent-stalemate-scrim').should('be.visible');
+
+    cy.acceptStalemateOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
   it('Dialogs persist after refreshing when game is over by passing', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -814,22 +862,28 @@ describe('Reconnecting after game is over', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
+      topCard: Card.TWO_OF_CLUBS,
+      secondCard: Card.ACE_OF_HEARTS,
       deck: [],
     });
 
-    cy.get('#deck').should('contain', '(2)').click();
+    cy.get('#deck').should('contain', '(2)')
+      .click();
     cy.drawCardOpponent();
     // Pass three times for stalemate
-    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#deck').should('contain', '(0)')
+      .should('contain', 'PASS')
+      .click();
     cy.passOpponent();
-    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#deck').should('contain', '(0)')
+      .should('contain', 'PASS')
+      .click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
   it('Dialogs persist after refreshing when game is over by points', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SEVEN_OF_CLUBS ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -841,14 +895,14 @@ describe('Reconnecting after game is over', () => {
     });
 
     cy.get('[data-player-hand-card=7-0]').click();
-    cy.get('[data-move-choice=points]').should('be.visible').click();
+    cy.get('[data-move-choice=points]').should('be.visible')
+      .click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
   it('Dialogs persist after refreshing when game is over by points playing jack', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.JACK_OF_DIAMONDS ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -860,7 +914,8 @@ describe('Reconnecting after game is over', () => {
     });
 
     cy.get('[data-player-hand-card=11-1]').click();
-    cy.get('[data-move-choice=jack]').should('be.visible').click();
+    cy.get('[data-move-choice=jack]').should('be.visible')
+      .click();
     cy.get('[data-opponent-point-card=7-0]').click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
@@ -868,7 +923,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by points playing king', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.KING_OF_DIAMONDS ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -880,14 +934,14 @@ describe('Reconnecting after game is over', () => {
     });
 
     cy.get('[data-player-hand-card=13-1]').click();
-    cy.get('[data-move-choice=faceCard]').should('be.visible').click();
+    cy.get('[data-move-choice=faceCard]').should('be.visible')
+      .click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
   it('Dialogs persist after refreshing when game is over by resolving one-off', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -895,16 +949,17 @@ describe('Reconnecting after game is over', () => {
       p1Hand: [ Card.JACK_OF_CLUBS ],
       p1Points: [],
       p1FaceCards: [],
-      deck: [],
     });
 
     cy.get('#deck').click();
     cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.SEVEN_OF_HEARTS);
     cy.get('[data-player-hand-card=7-3]').click();
-    cy.get('[data-move-choice=points]').should('be.visible').click();
+    cy.get('[data-move-choice=points]').should('be.visible')
+      .click();
     cy.drawCardOpponent();
     cy.get('[data-player-hand-card=6-1]').click();
-    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible')
+      .click();
     cy.resolveOpponent();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
@@ -912,7 +967,6 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Dialogs persist after refreshing when game is over by resolving one-off from a seven', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
       p0Points: [ Card.SEVEN_OF_DIAMONDS, Card.SEVEN_OF_HEARTS ],
@@ -926,44 +980,49 @@ describe('Reconnecting after game is over', () => {
     });
 
     cy.get('[data-player-hand-card=6-1]').click();
-    cy.get('[data-move-choice=points]').should('be.visible').click();
+    cy.get('[data-move-choice=points]').should('be.visible')
+      .click();
     cy.playJackOpponent(Card.JACK_OF_CLUBS, Card.SIX_OF_DIAMONDS);
     cy.get('[data-player-hand-card=7-3]').click();
-    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible')
+      .click();
     cy.resolveOpponent();
     cy.get('[data-top-card=13-1]').click();
-    cy.get('[data-move-choice=faceCard]').should('be.visible').click();
+    cy.get('[data-move-choice=faceCard]').should('be.visible')
+      .click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
   it('Dialogs persist after refreshing when game is over by playing jack from a seven', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
       p0Points: [ Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
       p0FaceCards: [],
       p1Hand: [],
-      p1Points: [ Card.SEVEN_OF_SPADES ],
+      p1Points: [ Card.SEVEN_OF_CLUBS ],
       p1FaceCards: [],
       topCard: Card.JACK_OF_DIAMONDS,
       deck: [],
     });
 
     cy.get('[data-player-hand-card=7-3]').click();
-    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible')
+      .click();
     cy.resolveOpponent();
-    cy.get('[data-top-card=11-1]').should('be.visible').click();
-    cy.get('[data-move-choice=jack]').should('be.visible').click();
-    cy.get('[data-opponent-point-card=7-3]').should('be.visible').click();
+    cy.get('[data-top-card=11-1]').should('be.visible')
+      .click();
+    cy.get('[data-move-choice=jack]').should('be.visible')
+      .click();
+    cy.get('[data-opponent-point-card=7-0]').should('be.visible')
+      .click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
   it('Dialogs persist after refreshing when game is over by playing points from a seven', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(0, {
       p0Hand: [ Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_SPADES ],
       p0Points: [ Card.SEVEN_OF_HEARTS, Card.SEVEN_OF_DIAMONDS ],
@@ -971,25 +1030,27 @@ describe('Reconnecting after game is over', () => {
       p1Hand: [],
       p1Points: [],
       p1FaceCards: [],
-      topCard: Card.SEVEN_OF_SPADES,
+      topCard: Card.SEVEN_OF_CLUBS,
       deck: [],
     });
 
     cy.get('[data-player-hand-card=7-3]').click();
-    cy.get('[data-move-choice=oneOff]').should('be.visible').click();
+    cy.get('[data-move-choice=oneOff]').should('be.visible')
+      .click();
     cy.resolveOpponent();
-    cy.get('[data-top-card=7-3]').click();
-    cy.get('[data-move-choice=points]').should('be.visible').click();
+    cy.get('[data-top-card=7-0]').click();
+    cy.get('[data-move-choice=points]').should('be.visible')
+      .click();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
     cy.reload();
     cy.get('[data-cy=game-over-dialog]').should('be.visible');
   });
 
   it('Brings player to the rematch game when player hits rematch, disconnects, then refreshes after opponent hit rematch and started game', () => {
-    cy.skipOnGameStateApi();
     cy.concedeOpponent();
 
-    cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click();
+    cy.get('[data-cy=gameover-rematch').should('not.be.disabled')
+      .click();
 
     cy.get('[data-cy=my-rematch-indicator]')
       .find('[data-cy="lobby-card-container"]')
@@ -1038,10 +1099,10 @@ describe('Reconnecting after game is over', () => {
   });
 
   it('Brings player to the rematch game when player hits rematch, disconnects, then reconnects socket after opponent hit rematch and started game', () => {
-    cy.skipOnGameStateApi();
     cy.concedeOpponent();
 
-    cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click();
+    cy.get('[data-cy=gameover-rematch').should('not.be.disabled')
+      .click();
 
     cy.get('[data-cy=my-rematch-indicator]')
       .find('[data-cy="lobby-card-container"]')

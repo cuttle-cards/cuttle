@@ -129,10 +129,10 @@ export default {
     const rightPlayer = gameStore.isSpectating ? WhichPlayer.ORIGINAL_P1 : WhichPlayer.CURRENT_OPPONENT;
 
     const {
-        username: leftPlayerUsername,
-        rematch: leftPlayerRematch,
-        wins: leftPlayerWins,
-        wonMatch: leftPlayerWonMatch,
+      username: leftPlayerUsername,
+      rematch: leftPlayerRematch,
+      wins: leftPlayerWins,
+      wonMatch: leftPlayerWonMatch,
     } = usePlayerData(leftPlayer);
 
     const {
@@ -268,7 +268,11 @@ export default {
         conceded: false,
         winner: null,
       });
-      await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: false });
+
+      if (!this.gameStore.isSpectating) {
+        await this.gameStore.requestRematch({ gameId:this.gameStore.id, rematch: false });
+      }
+
       await this.gameStore.requestUnsubscribeFromGame();
     },
     async rematch() {

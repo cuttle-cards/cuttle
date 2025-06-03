@@ -24,6 +24,11 @@ module.exports = {
       type: 'number',
       description: 'Player number of player requesting move.',
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true, // synchronous helper
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
@@ -47,6 +52,7 @@ module.exports = {
       playedBy,
       playedCard: null,
       targetCard,
+      discardedCards: [],
       resolved: result.oneOff,
       oneOff: null,
     };

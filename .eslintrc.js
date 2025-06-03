@@ -5,8 +5,6 @@ const sharedTestRules = {
 const sailsGlobals = {
   _: true,
   sails: true,
-  cardService: true,
-  gameService: true,
   userService: true,
   // Models
   Card: true,
@@ -29,9 +27,10 @@ module.exports = {
     sourceType: 'module',
   },
   extends: [ 'eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:vuetify/base' ],
-  plugins: [ 'cypress', 'vitest', 'prettier' ],
+  plugins: [ 'cypress', 'vitest', 'prettier', 'mocha' ],
   ignorePatterns: [ '/node_modules/*', '/assets/*' ],
   rules: {
+    'eol-last': [ 'error', 'always' ],
     'max-len': [
       'warn',
       {
@@ -57,6 +56,8 @@ module.exports = {
         }
       }
     ],
+    'newline-per-chained-call': [ 'error', { ignoreChainWithDepth: 2 } ],
+    'indent': [ 'error', 2, { SwitchCase: 1 } ],
     'vue/html-indent': [ 'error' ],
     'vue/multi-word-component-names': [ 'error' ],
     'prefer-destructuring': [ 'error' ],
@@ -149,7 +150,6 @@ module.exports = {
       },
       globals: {
         badRequest: true,
-        cardService: true,
         io: true,
         ready1: true,
         request: true,
@@ -158,7 +158,10 @@ module.exports = {
         socket3: true,
         Promise: true,
       },
-      rules: sharedTestRules,
+      rules: {
+        ...sharedTestRules,
+        'mocha/no-exclusive-tests': 'error'
+      },
     },
   ],
 };

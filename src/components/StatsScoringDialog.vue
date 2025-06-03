@@ -106,7 +106,7 @@ export default {
     activatorColor:{
       type: String,
       default: 'primary',
-  }
+    }
   },
   data() {
     return {

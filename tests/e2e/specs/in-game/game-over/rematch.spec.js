@@ -18,9 +18,11 @@ function startRematchPlayerFirst() {
     .find('[data-cy="lobby-card-container"]')
     .should('not.have.class', 'ready');
 
-  cy.get('[data-cy=gameover-rematch]').click().should('be.disabled');
+  cy.get('[data-cy=gameover-rematch]').click()
+    .should('be.disabled');
 
-  cy.get('[data-cy=continue-match-banner]').should('be.visible').should('contain', 'Waiting for Opponent');
+  cy.get('[data-cy=continue-match-banner]').should('be.visible')
+    .should('contain', 'Waiting for Opponent');
 
   cy.get('[data-cy=my-rematch-indicator]')
     .find('[data-cy="lobby-card-container"]')
@@ -34,8 +36,12 @@ function startRematchPlayerFirst() {
 
 function concedePlayer() {
   cy.get('#game-menu-activator').click({ force: true });
-  cy.get('#game-menu').should('be.visible').get('[data-cy=concede-initiate]').click();
-  cy.get('#request-gameover-dialog').should('be.visible').get('[data-cy=request-gameover-confirm]').click();
+  cy.get('#game-menu').should('be.visible')
+    .get('[data-cy=concede-initiate]')
+    .click();
+  cy.get('#request-gameover-dialog').should('be.visible')
+    .get('[data-cy=request-gameover-confirm]')
+    .click();
 }
 
 describe('Creating And Updating Ranked Matches With Rematch', () => {
@@ -47,8 +53,11 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
 
     // Set up season
     const [ , diamondsSeason ] = seasonFixtures;
-    diamondsSeason.startTime = dayjs.utc().subtract(2, 'week').subtract(1, 'day').toDate();
-    diamondsSeason.endTime = dayjs.utc().add(11, 'weeks').toDate();
+    diamondsSeason.startTime = dayjs.utc().subtract(2, 'week')
+      .subtract(1, 'day')
+      .toDate();
+    diamondsSeason.endTime = dayjs.utc().add(11, 'weeks')
+      .toDate();
     cy.loadSeasonFixture([ diamondsSeason ]);
     // Sign up to players and store their id's for comparison to match data
     cy.signupOpponent(playerOne).as('playerOneId');
@@ -62,16 +71,22 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
           player1: this.playerOneId,
           player2: this.playerTwoId,
           winner: this.playerOneId,
-          startTime: dayjs.utc().subtract(1, 'week').subtract(1, 'day').toDate(),
-          endTime: dayjs.utc().subtract(1, 'week').subtract(1, 'day').toDate(),
+          startTime: dayjs.utc().subtract(1, 'week')
+            .subtract(1, 'day')
+            .toDate(),
+          endTime: dayjs.utc().subtract(1, 'week')
+            .subtract(1, 'day')
+            .toDate(),
         };
 
         const currentMatchWithDifferentOpponent = {
           player1: this.playerOneId,
           player2: this.playerThreeId,
           winner: null,
-          startTime: dayjs.utc().subtract(1, 'hour').toDate(),
-          endTime: dayjs.utc().subtract(1, 'hour').toDate(),
+          startTime: dayjs.utc().subtract(1, 'hour')
+            .toDate(),
+          endTime: dayjs.utc().subtract(1, 'hour')
+            .toDate(),
         };
 
         cy.loadMatchFixtures([ oldMatchBetweenPlayers, currentMatchWithDifferentOpponent ]);
@@ -82,12 +97,12 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it('Wins match played with Rematch/Continue Match button', function () {
-    cy.skipOnGameStateApi();
     // Game 1: Opponent concedes
     cy.log('Game 1: opponent concedes');
     cy.concedeOpponent();
     assertVictory({ wins: 1, losses: 0, stalemates: 0 });
-    cy.get('[data-cy=match-score-counter-wins]').should('contain', 1).should('have.class', 'selected');
+    cy.get('[data-cy=match-score-counter-wins]').should('contain', 1)
+      .should('have.class', 'selected');
 
     // Neither player has requested rematch yet
     cy.get('[data-cy=my-rematch-indicator]')
@@ -201,7 +216,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it('Loses a ranked match played with the Rematch/Continue Match button', () => {
-    cy.skipOnGameStateApi();
     // Game 1 - Player concedes
     concedePlayer();
     assertLoss({ wins: 0, losses: 1, stalemates: 0 });
@@ -230,7 +244,6 @@ describe('Creating And Updating Ranked Matches With Rematch', () => {
   });
 
   it('Shows when opponent declines continuing your ranked match', () => {
-    cy.skipOnGameStateApi();
     cy.concedeOpponent();
     assertVictory({ wins: 1, losses: 0, stalemates: 0 });
 
@@ -261,7 +274,6 @@ describe('Creating And Updating Casual Games With Rematch', () => {
   });
 
   it('Unranked games with rematch', function () {
-    cy.skipOnGameStateApi();
     // Game 1: Opponent concedes
     cy.concedeOpponent();
     assertVictory({ wins: 1, losses: 0, stalemates: 0 });
@@ -310,7 +322,8 @@ describe('Creating And Updating Casual Games With Rematch', () => {
 
     cy.log('Drawing last two cards');
     cy.drawCardOpponent();
-    cy.get('#deck').should('contain', '(1)').click();
+    cy.get('#deck').should('contain', '(1)')
+      .click();
     cy.log('Deck empty');
 
     assertGameState(1, {
@@ -320,12 +333,26 @@ describe('Creating And Updating Casual Games With Rematch', () => {
       p1Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_DIAMONDS ],
       p1Points: [],
       p1FaceCards: [],
+      scrap: [ Card.TWO_OF_CLUBS, Card.THREE_OF_CLUBS, Card.FOUR_OF_CLUBS, Card.FIVE_OF_CLUBS,
+        Card.SIX_OF_CLUBS, Card.SEVEN_OF_CLUBS, Card.EIGHT_OF_CLUBS, Card.NINE_OF_CLUBS,
+        Card.TEN_OF_CLUBS, Card.JACK_OF_CLUBS, Card.QUEEN_OF_CLUBS, Card.KING_OF_CLUBS,
+        Card.TWO_OF_DIAMONDS, Card.THREE_OF_DIAMONDS, Card.FOUR_OF_DIAMONDS, Card.FIVE_OF_DIAMONDS,
+        Card.SIX_OF_DIAMONDS, Card.SEVEN_OF_DIAMONDS, Card.EIGHT_OF_DIAMONDS, Card.NINE_OF_DIAMONDS,
+        Card.JACK_OF_DIAMONDS, Card.QUEEN_OF_DIAMONDS, Card.KING_OF_DIAMONDS, Card.ACE_OF_HEARTS,
+        Card.TWO_OF_HEARTS, Card.THREE_OF_HEARTS, Card.FOUR_OF_HEARTS, Card.FIVE_OF_HEARTS,
+        Card.SIX_OF_HEARTS, Card.SEVEN_OF_HEARTS, Card.EIGHT_OF_HEARTS, Card.NINE_OF_HEARTS,
+        Card.TEN_OF_HEARTS, Card.JACK_OF_HEARTS, Card.QUEEN_OF_HEARTS, Card.KING_OF_HEARTS,
+        Card.ACE_OF_SPADES, Card.TWO_OF_SPADES, Card.THREE_OF_SPADES, Card.FOUR_OF_SPADES,
+        Card.FIVE_OF_SPADES, Card.SIX_OF_SPADES, Card.SEVEN_OF_SPADES, Card.EIGHT_OF_SPADES,
+        Card.NINE_OF_SPADES, Card.JACK_OF_SPADES, Card.QUEEN_OF_SPADES, Card.KING_OF_SPADES ]
     });
 
     // Players pass to end game
     cy.passOpponent();
     cy.get('#turn-indicator').contains('YOUR TURN');
-    cy.get('#deck').should('contain', '(0)').should('contain', 'PASS').click();
+    cy.get('#deck').should('contain', '(0)')
+      .should('contain', 'PASS')
+      .click();
     cy.get('#turn-indicator').contains("OPPONENT'S TURN");
     cy.passOpponent();
 
@@ -347,7 +374,6 @@ describe('Spectating Rematches', () => {
     });
 
     it('Spectates a casual match using rematch', () => {
-      cy.skipOnGameStateApi();
       cy.log('Game 1: player1 wins via opponent conceding');
       cy.recoverSessionOpponent(playerTwo);
       cy.concedeOpponent();
@@ -359,7 +385,9 @@ describe('Spectating Rematches', () => {
 
       // Wait to confirm dialog stays open
       cy.wait(1000);
-      cy.get('#game-over-dialog').should('be.visible').find('[data-cy=gameover-rematch]').click();
+      cy.get('#game-over-dialog').should('be.visible')
+        .find('[data-cy=gameover-rematch]')
+        .click();
 
       // Game 2
       cy.log('Game 2: player1 wins via concede again');
@@ -368,9 +396,12 @@ describe('Spectating Rematches', () => {
       cy.concedeOpponent();
 
       assertGameOverAsSpectator({ p1Wins: 2, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
-      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click().should('be.disabled');
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled')
+        .click()
+        .should('be.disabled');
 
-      cy.get('[data-cy=continue-match-banner]').should('be.visible').should('contain', 'Waiting for Players');
+      cy.get('[data-cy=continue-match-banner]').should('be.visible')
+        .should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
       rematchPlayerAsSpectator(playerTwo);
@@ -383,7 +414,7 @@ describe('Spectating Rematches', () => {
       cy.stalemateOpponent();
 
       cy.recoverSessionOpponent(playerOne);
-      cy.stalemateOpponent();
+      cy.acceptStalemateOpponent();
 
       cy.get('[data-cy=gameover-rematch').should('not.be.disabled');
 
@@ -405,7 +436,6 @@ describe('Spectating Rematches', () => {
     });
 
     it('Specates a ranked match using rematch', () => {
-      cy.skipOnGameStateApi();
       // Game 1: playerOne wins with points
       cy.log('Game 1: player1 wins with points');
       cy.loadGameFixture(0, {
@@ -418,15 +448,18 @@ describe('Spectating Rematches', () => {
       });
 
       cy.recoverSessionOpponent(playerOne);
-      cy.playPointsSpectator(Card.TEN_OF_DIAMONDS, 0);
+      cy.playPointsSpectator(Card.TEN_OF_DIAMONDS);
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: true });
 
       // playerOne rematches, then spectator, then playerTwo
       rematchPlayerAsSpectator(playerTwo);
 
-      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click().should('be.disabled');
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled')
+        .click()
+        .should('be.disabled');
 
-      cy.get('[data-cy=continue-match-banner]').should('be.visible').should('contain', 'Waiting for Players');
+      cy.get('[data-cy=continue-match-banner]').should('be.visible')
+        .should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
 
@@ -442,7 +475,8 @@ describe('Spectating Rematches', () => {
       rematchPlayerAsSpectator(playerTwo);
       rematchPlayerAsSpectator(playerOne);
 
-      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click();
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled')
+        .click();
 
       // Game 3: stalemate via passes
       cy.log('Game 3: stalemate via passes');
@@ -458,6 +492,8 @@ describe('Spectating Rematches', () => {
         p1Points: [],
         p1FaceCards: [],
         deck: [],
+        topCard: Card.FOUR_OF_HEARTS,
+        secondCard: Card.FIVE_OF_CLUBS,
       });
 
       cy.drawCardOpponent();
@@ -477,9 +513,12 @@ describe('Spectating Rematches', () => {
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 1, stalemates: 1, winner: null, isRanked: true });
 
       // Specator requests rematch, then players
-      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click().should('be.disabled');
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled')
+        .click()
+        .should('be.disabled');
 
-      cy.get('[data-cy=continue-match-banner]').should('be.visible').should('contain', 'Waiting for Players');
+      cy.get('[data-cy=continue-match-banner]').should('be.visible')
+        .should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
       rematchPlayerAsSpectator(playerTwo);
@@ -491,14 +530,17 @@ describe('Spectating Rematches', () => {
       cy.stalemateOpponent();
       cy.get('#opponent-requested-stalemate-dialog').should('be.visible');
       cy.recoverSessionOpponent(playerTwo);
-      cy.stalemateOpponent();
+      cy.acceptStalemateOpponent();
 
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 1, stalemates: 2, winner: null, isRanked: true });
 
       // Specator requests rematch, then players
-      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click().should('be.disabled');
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled')
+        .click()
+        .should('be.disabled');
 
-      cy.get('[data-cy=continue-match-banner]').should('be.visible').should('contain', 'Waiting for Players');
+      cy.get('[data-cy=continue-match-banner]').should('be.visible')
+        .should('contain', 'Waiting for Players');
 
       rematchPlayerAsSpectator(playerOne);
       rematchPlayerAsSpectator(playerTwo);
@@ -517,13 +559,16 @@ describe('Spectating Rematches', () => {
       });
 
       cy.recoverSessionOpponent(playerOne);
-      cy.playPointsSpectator(Card.FOUR_OF_CLUBS, 0);
+      cy.playPointsSpectator(Card.FOUR_OF_CLUBS);
 
       assertGameOverAsSpectator({ p1Wins: 2, p2Wins: 1, stalemates: 2, winner: 'p1', isRanked: true });
 
       cy.get('[data-cy=player-match-result] [data-cy-result-img=won]').should('be.visible');
 
       cy.get('[data-cy=opponent-match-result] [data-cy-result-img=lost]').should('be.visible');
+
+      // The stalemate dialog should disappear
+      cy.get('#opponent-requested-stalemate-dialog').should('not.exist');
 
       // Go home
       cy.get('[data-cy=gameover-rematch').should('not.exist');
@@ -546,7 +591,6 @@ describe('Spectating Rematches', () => {
     });
 
     it('Spectates a ranked match where player 2 wins the match', () => {
-      cy.skipOnGameStateApi();
       cy.recoverSessionOpponent(playerOne);
       cy.concedeOpponent();
       assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: true });
@@ -555,7 +599,8 @@ describe('Spectating Rematches', () => {
       rematchPlayerAsSpectator(playerOne);
       rematchPlayerAsSpectator(playerTwo);
 
-      cy.get('[data-cy=gameover-rematch').should('not.be.disabled').click();
+      cy.get('[data-cy=gameover-rematch').should('not.be.disabled')
+        .click();
 
       cy.get('[data-cy=player-username]').should('contain', playerTwo.username);
       cy.recoverSessionOpponent(playerOne);

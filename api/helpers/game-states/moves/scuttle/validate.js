@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to scuttle',
@@ -27,6 +28,11 @@ module.exports = {
       description: 'Player number of player requesting move',
       required: true,
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
@@ -38,34 +44,34 @@ module.exports = {
       const targetCard = opponent.points.find(({ id }) => id === requestedMove.targetId);
 
       if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('game.snackbar.global.notInMainPhase');
+        throw new BadRequestError('game.snackbar.global.notInMainPhase');
       }
 
       if (!playedCard) {
-        throw new Error('game.snackbar.global.playFromHand');
+        throw new BadRequestError('game.snackbar.global.playFromHand');
       }
 
       if (playedCard.isFrozen) {
-        throw new Error('game.snackbar.global.cardFrozen');
+        throw new BadRequestError('game.snackbar.global.cardFrozen');
       }
 
       if (playedCard.rank > 10) {
-        throw new Error('game.snackbar.points.numberOnlyForPoints');
+        throw new BadRequestError('game.snackbar.points.numberOnlyForPoints');
       }
 
       if (!targetCard) {
-        throw new Error('game.snackbar.scuttle.mustTargetPointCard');
+        throw new BadRequestError('game.snackbar.scuttle.mustTargetPointCard');
       }
 
       const lowerRank = playedCard.rank < targetCard.rank;
       const sameRankLowerSuit = playedCard.rank === targetCard.rank && playedCard.suit < targetCard.suit;
 
       if (lowerRank || sameRankLowerSuit) {
-        throw new Error('game.snackbar.scuttle.rankTooLow');
+        throw new BadRequestError('game.snackbar.scuttle.rankTooLow');
       }
 
       return exits.success();

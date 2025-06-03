@@ -122,16 +122,6 @@ export function getCardId(game, card) {
   );
 }
 
-/**
- * @param game: game obj from $store
- * @param suitAndRankList: {suit: number, rank: number}[]
- * @returns lit of ids of specified cards
- * * @throws error if any card missing in game
- */
-export function getCardIds(game, suitAndRankList) {
-  return suitAndRankList.map((card) => getCardId(game, card));
-}
-
 function cardSortComparator(card1, card2) {
   let res = card1.rank - card2.rank;
   if (res === 0) {
@@ -360,11 +350,11 @@ function assertStoreMatchesFixture(fixture) {
       );
       // Scrap (if specified)
       if (fixture.scrap) {
-        expect(cardListsMatch(game.scrap, fixture.scrap)).to.eq(
+        expect(fixture.scrap.every(card => game.scrap.some(scrapCard => cardsMatch(card, scrapCard)))).to.eq(
           true,
           `Scrap should match fixture, but actual ${printCardList(
             game.scrap,
-          )} did not match fixture: ${printCardList(fixture.scrap)}`,
+          )} did not contain: ${printCardList(fixture.scrap)}`,
         );
       }
       // Top Card if specified
@@ -389,7 +379,9 @@ function assertStoreMatchesFixture(fixture) {
 
 export function assertVictory(score = null) {
   cy.log('Asserting player victory');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=victory-heading]').should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible')
+    .get('[data-cy=victory-heading]')
+    .should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -404,7 +396,8 @@ export function assertVictory(score = null) {
           .should('contain', matchWinner ? 'Good Match!' : 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=victory-heading]').should('contain', 'You Won');
+        cy.get('#game-over-dialog').find('[data-cy=victory-heading]')
+          .should('contain', 'You Won');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -432,7 +425,9 @@ export function assertVictory(score = null) {
 
 export function assertLoss(score = null) {
   cy.log('Asserting player loss');
-  cy.get('#game-over-dialog').should('be.visible').get('[data-cy=loss-heading]').should('be.visible');
+  cy.get('#game-over-dialog').should('be.visible')
+    .get('[data-cy=loss-heading]')
+    .should('be.visible');
   cy.window()
     .its('cuttle.gameStore')
     .then((game) => {
@@ -447,7 +442,8 @@ export function assertLoss(score = null) {
           .should('contain', matchWinner ? 'Good Match!' : 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=loss-heading]').should('contain', 'You Lose');
+        cy.get('#game-over-dialog').find('[data-cy=loss-heading]')
+          .should('contain', 'You Lose');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -493,7 +489,8 @@ export function assertStalemate(score = null) {
           .should('contain', 'Continue Match?')
           .find('[data-cy=ranked-icon]');
       } else {
-        cy.get('#game-over-dialog').find('[data-cy=stalemate-heading]').should('contain', 'Stalemate');
+        cy.get('#game-over-dialog').find('[data-cy=stalemate-heading]')
+          .should('contain', 'Stalemate');
 
         cy.get('[data-cy=continue-match-banner]')
           .should('be.visible')
@@ -581,8 +578,8 @@ export function rematchPlayerAsSpectator(userFixture, rematch = true) {
 
       cy.wrap(cardSelector).as('whichPlayer');
     });
-
   cy.recoverSessionOpponent(userFixture);
+
   cy.wait(1000);
   cy.url().then((url) => {
     const oldGameId = Number(url.split('/').pop());

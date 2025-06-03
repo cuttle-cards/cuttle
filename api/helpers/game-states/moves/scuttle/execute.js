@@ -25,6 +25,11 @@ module.exports = {
       type: 'number',
       description: 'Player number of player requesting move.',
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true, // synchronous helper
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
@@ -39,7 +44,7 @@ module.exports = {
     const cardPlayedIndex = player.hand.findIndex(({ id }) => id === cardId);
     const [ playedCard  ] = player.hand.splice(cardPlayedIndex, 1);
     
-    // remove target card from oppponent points
+    // remove target card from opponent points
     const targetPlayedIndex = opponent.points.findIndex(({ id }) => id === targetId);
     const [ targetCard ]= opponent.points.splice(targetPlayedIndex, 1);
     
@@ -54,7 +59,9 @@ module.exports = {
       phase: GamePhase.MAIN,
       playedBy,
       playedCard,
-      targetCard
+      targetCard,
+      discardedCards: [],
+      resolved: null,
     };
     return exits.success(result);
   },

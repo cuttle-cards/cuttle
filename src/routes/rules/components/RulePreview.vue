@@ -44,25 +44,25 @@ import { useI18n } from 'vue-i18n';
 
 defineProps({
   title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    description2: {
-      type: String,
-      default: '',
-    },
-    staticImg: {
-      type: String,
-      required: true,
-    },
-    hasVideo: {
-      type: Boolean,
-      default: true,
-    },
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  description2: {
+    type: String,
+    default: '',
+  },
+  staticImg: {
+    type: String,
+    required: true,
+  },
+  hasVideo: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const emit = defineEmits([ 'animate' ]);

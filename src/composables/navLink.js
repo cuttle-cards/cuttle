@@ -14,11 +14,11 @@ export function getPageLinks() {
   return computed(() => {
     const { authenticated } = authStore;
     return authenticated ?
-    [
-      { text: t('global.play'), icon: 'play', page: { name: ROUTE_NAME_HOME }, cyName: 'Play' },
-      { text: t('global.stats'), icon: 'chart-bar', page: { name: ROUTE_NAME_STATS }, cyName: 'Stats' },
-      { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES }, cyName: 'About' },
-    ] : [];
+      [
+        { text: t('global.play'), icon: 'play', page: { name: ROUTE_NAME_HOME }, cyName: 'Play' },
+        { text: t('global.stats'), icon: 'chart-bar', page: { name: ROUTE_NAME_STATS }, cyName: 'Stats' },
+        { text: t('global.rules'), icon: 'information', page: { name: ROUTE_NAME_RULES }, cyName: 'About' },
+      ] : [];
   });
 }
 

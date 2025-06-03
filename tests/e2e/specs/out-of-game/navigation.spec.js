@@ -27,7 +27,8 @@ function verifyUnauthenticatedLinks() {
   cy.get('[data-cy=Stats]').should('not.exist');
 
   // First time unauthenticated user sees 'Sign Up' link
-  cy.get('[data-cy=login-link]').should('contain', 'Sign Up').click();
+  cy.get('[data-cy=login-link]').should('contain', 'Sign Up')
+    .click();
   cy.location('pathname').should('equal', '/signup');
 
   // Sign Up, then log out and return to rules
@@ -39,7 +40,8 @@ function verifyUnauthenticatedLinks() {
   cy.location('pathname').should('equal', '/rules');
 
   // Returning unauthenticated users sees 'Log In' link
-  cy.get('[data-cy=login-link]').should('contain', 'Log In').click();
+  cy.get('[data-cy=login-link]').should('contain', 'Log In')
+    .click();
   cy.location('pathname').should('equal', '/login');
 }
 
@@ -67,6 +69,20 @@ describe('Navigation', () => {
       cy.reload();
       verifyAuthenticatedLinks();
     });
+
+    it('Navigates to Home when clicking logo on DESKTOP', () => {
+      cy.viewport(1920, 1080);
+      cy.visit('/stats'); 
+      cy.get('#logo').click();
+      cy.location('pathname').should('equal', '/');
+    });
+
+    it('Navigates to Home when clicking logo on MOBILE', () => {
+      cy.viewport('iphone-8');
+      cy.visit('/stats'); 
+      cy.get('#logo').click();
+      cy.location('pathname').should('equal', '/');
+    });
   });
 
   describe('Unauthenticated Navigation', () => {
@@ -83,5 +99,19 @@ describe('Navigation', () => {
       cy.viewport('iphone-8');
       verifyUnauthenticatedLinks();
     });
+
+    it('should not show logo when unauthenticated on DESKTOP', () => {
+      cy.viewport(1920, 1080);
+      cy.visit('/');
+      cy.get('#logo').should('not.exist');
+    });
+
+    it('should not show logo when unauthenticated on MOBILE', () => {
+      cy.viewport('iphone-8');
+      cy.visit('/');
+      cy.get('#logo').should('not.exist');
+    });
   });
 });
+
+

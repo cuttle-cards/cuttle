@@ -18,7 +18,6 @@ describe('Game View Layout', () => {
   });
 
   it('Three dialogs', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [ Card.THREE_OF_CLUBS ],
@@ -46,7 +45,8 @@ describe('Game View Layout', () => {
 
     // Player selects a card from scrap
     cy.get('[data-three-dialog-card=10-2]').click();
-    cy.get('[data-cy=three-resolve').should('not.be.disabled').click();
+    cy.get('[data-cy=three-resolve').should('not.be.disabled')
+      .click();
 
     assertGameState(0, {
       p0Hand: [ Card.TEN_OF_HEARTS ],
@@ -162,7 +162,8 @@ describe('Game View Layout', () => {
     cy.get('#scrap').click();
 
     // Then-- Assert that the overlay that should show up does and that there are no cards in it
-    cy.get('#scrap-dialog').should('be.visible').should('contain', 'There are no cards in the scrap pile.');
+    cy.get('#scrap-dialog').should('be.visible')
+      .should('contain', 'There are no cards in the scrap pile.');
   });
 });
 
@@ -172,7 +173,6 @@ describe('Four dialogs layout', () => {
   });
 
   it('Four dialogs', () => {
-    cy.skipOnGameStateApi();
     cy.loadGameFixture(1, {
       p0Hand: [ Card.FOUR_OF_CLUBS, Card.ACE_OF_HEARTS ],
       p0Points: [],
@@ -185,7 +185,9 @@ describe('Four dialogs layout', () => {
     // Opponent plays four
     cy.playOneOffOpponent(Card.FOUR_OF_CLUBS);
     // Player cannot counter
-    cy.get('#cannot-counter-dialog').should('be.visible').get('[data-cy=cannot-counter-resolve]').click();
+    cy.get('#cannot-counter-dialog').should('be.visible')
+      .get('[data-cy=cannot-counter-resolve]')
+      .click();
 
     // Four Dialog appears (you must discard)
     cy.get('#four-discard-dialog').should('be.visible');
@@ -215,7 +217,6 @@ describe.skip('Aesthetic tests', () => {
   });
 
   it('Many cards on field', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [ Card.EIGHT_OF_SPADES, Card.QUEEN_OF_DIAMONDS ],
@@ -228,7 +229,6 @@ describe.skip('Aesthetic tests', () => {
   });
 
   it('Quadruple jacks with a few cards', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
@@ -302,7 +302,6 @@ describe.skip('Aesthetic tests', () => {
   });
 
   it('Triple jacks on a card with multiple other cards', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES, Card.JACK_OF_CLUBS, Card.KING_OF_SPADES, Card.JACK_OF_HEARTS ],
@@ -361,7 +360,6 @@ describe.skip('Aesthetic tests', () => {
   });
 
   it('Four cards, each with a jack', () => {
-    cy.skipOnGameStateApi();
     // Set Up
     cy.loadGameFixture(0, {
       p0Hand: [ Card.JACK_OF_CLUBS, Card.JACK_OF_HEARTS, Card.JACK_OF_DIAMONDS, Card.JACK_OF_SPADES ],

@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to draw a card',
@@ -26,6 +27,11 @@ module.exports = {
       description: 'Player number of player requesting move',
       required: true,
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true,
   fn: ({ currentState, playedBy }, exits) => {
@@ -33,23 +39,23 @@ module.exports = {
 
       // Must be MAIN phase of the turn
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('game.snackbar.global.notInMainPhase');
+        throw new BadRequestError('game.snackbar.global.notInMainPhase');
       }
 
       // Must be your turn
       if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
       // Must be under hand limit of 8
       const player = playedBy ? currentState.p1 : currentState.p0;
       if (player.hand.length >= 8) {
-        throw new Error('game.snackbar.draw.handLimit');
+        throw new BadRequestError('game.snackbar.draw.handLimit');
       }
 
       // Deck must have cards
       if (!currentState.deck.length) {
-        throw new Error('game.snackbar.draw.deckIsEmpty');
+        throw new BadRequestError('game.snackbar.draw.deckIsEmpty');
       }
 
       return exits.success();

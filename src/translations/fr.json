@@ -95,7 +95,7 @@
       "four": {
         "discardTwoCards": "Défaussez deux cartes",
         "discard": "Défausser",
-        "oppponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
+        "opponentHasResolved": "Votre adversaire a joué un quatre en attaque. Vous devez défausser deux cartes. Cliquez pour sélectionner les cartes à défausser."
       },
       "five": {
         "discardAndDraw": "Jeter et piocher",
@@ -273,6 +273,13 @@
         "mustUsePointCard": "Les scuttles ne se font qu'avec des cartes à points.",
         "mustTargetPointCard": "Les scuttles ne peuvent cibler que les cartes à points."
       },
+      "stalemate": {
+        "alreadyConsideringStalemate": "Une proposition de match nul a déjà été faite",
+        "noStalemateOffered": "Votre adversaire n'a pas proposé de match nul",
+        "opponentConsideringStalemate": "Votre adversaire envisage votre offre de match nul",
+        "previousStalemateRejected": "La demande de match nul a déjà été rejetée ce tour",
+        "wrongPhase": "Vous ne pouvez pas demander la nulle pendant d'autres mouvements"
+      },
       "oneOffs": {
         "oneOffInPlay": "Une capacité est en cours d'exécution, vous ne pouvez jouer qu'un deux pour contrer.",
         "cantPlayWithoutATarget": "La capacité de cette carte nécessite de cibler une carte.",
@@ -292,11 +299,15 @@
         "five": {
           "selectCardToDiscard": "Vous devez sélectionner une carte à défausser",
           "incorrectCard": "Mauvaise carte jouée",
+          "wrongPhase": "Vous ne pouvez pas résoudre un cinq maintenant.",
           "fiveDeckIsEmpty": "Impossible de résoudre 5 points ponctuels avec un deck vide"
         },
         "seven": {
           "oneCardInDeck": "Impossible de jouer la capacité du Sept si c'était la dernière carte de la pioche.",
-          "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte de la pioche."
+          "pickAndPlay": "Après avoir joué un Sept, vous ne pouvez jouer qu'une carte de la pioche.",
+          "wrongPhase": "Vous ne pouvez pas jouer depuis le paquet pour le moment",
+          "mustBeDoubleJacks": "Vous ne pouvez pas défausser depuis un sept sauf si les deux cartes sont des valets",
+          "jacksMustBeUnplayable": "Vous ne pouvez pas défausser parce que les valets peuvent être joués"
         }
       }
     }
@@ -515,9 +526,10 @@
     }
   },
   "announcement": {
-    "activatorText": "Mains révélées en fin de partie!",
-    "title": "Révélation",
-    "heading": "Simplification de la fin de partie",
-    "paragraph": "Lorsque le paquet est complètement épuisé (qu'il n'y a plus de cartes), vous pourrez désormais voir la main de votre adversaire ! Comme la défausse est visible publiquement, les joueurs ont toujours pu déduire les cartes qui se trouvent dans les mains de leurs adversaires une fois le paquet épuisé. Afin de rendre le jeu plus efficace, les joueurs pourront désormais voir les mains de leurs adversaires une fois le paquet vide. Cela permet aux joueurs de se concentrer sur la stratégie plutôt que sur la recherche dans la défausse. Bonne chance et amusez-vous bien !"
+    "activatorText": "Championnat de la saison 2025 des Clubs AUJOURD'HUI !",
+    "title": "Championnat des Clubs 2025",
+    "heading": "Championnat aujourd'hui !",
+    "paragraph": "Le Championnat de saison de Cuttle des Clubs 2025 a lieu AUJOURD'HUI, samedi 26 avril à 12h30 EST ! Regardez les 8 meilleurs joueurs de la saison classée précédente s'affronter dans un tournoi à double élimination pour le titre de Champion de la saison 2025 de Cuttle des Clubs ! Regardez-le en direct sur ",
+    "twitchLink": "twitch.tv/cuttle_cards"
   }
 }

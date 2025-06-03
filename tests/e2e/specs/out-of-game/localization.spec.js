@@ -2,6 +2,9 @@ import { myUser } from '../../fixtures/userFixtures';
 import es from '../../../../src/translations/es.json';
 import fr from '../../../../src/translations/fr.json';
 import en from '../../../../src/translations/en.json';
+import de from '../../../../src/translations/de.json';
+import ukr from '../../../../src/translations/ukr.json';
+
 import { announcementData } from '../../../../src/routes/home/components/announcementDialog/data/announcementData';
 
 describe('Localization', () => {
@@ -51,7 +54,8 @@ describe('Localization', () => {
     cy.get('[data-cy="opponent-indicator"]').should('contain', lang.lobby.invite);
     cy.get('[data-cy="ready-button"]').should('contain', lang.lobby.ready);
     cy.get('[data-cy="ready-button"]').click();
-    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]').should('exist');
+    cy.get('[data-cy=my-indicator]').find('[data-cy="lobby-ready-card"]')
+      .should('exist');
     cy.get('[data-cy="ready-button"]').should('contain', lang.lobby.unready);
     cy.get('[data-cy="exit-button"]').should('contain', lang.lobby.exit);
     cy.get('h1').should('contain', lang.lobby.lobbyFor);
@@ -74,6 +78,19 @@ describe('Localization', () => {
     checkLoginTranslation(fr);
     checkLobbyTranslation(fr);
   });
+
+  it('Should check translation for German', () => {
+    checkAndChangeLanguage('de', de);
+    checkLoginTranslation(de);
+    checkLobbyTranslation(de);
+  });
+
+  it('Should check translation for Ukrainian', () => {
+    checkAndChangeLanguage('ukr', ukr);
+    checkLoginTranslation(ukr);
+    checkLobbyTranslation(ukr);
+  });
+
 });
 
 describe('language files', () => {
@@ -91,6 +108,8 @@ describe('language files', () => {
   const enKeys = extractKeys(en).sort();
   const frKeys = extractKeys(fr).sort();
   const esKeys = extractKeys(es).sort();
+  const deKeys = extractKeys(de).sort();
+  const ukrKeys = extractKeys(ukr).sort();
 
   it('English should have no empty strings', () => {
     enKeys.forEach((key) => {
@@ -121,9 +140,38 @@ describe('language files', () => {
   });
 
   it('Spanish should have no empty strings', () => {
-    frKeys.forEach((key) => {
+    esKeys.forEach((key) => {
       const assertionMsg = `es.json should have nonempty value for key ${key}, but it value was empty`;
       expect(es[key]).to.not.eq('', assertionMsg);
     });
   });
+
+  it('German should have the same keys', () => {
+    for (let i = 0; i < enKeys.length; i++) {
+      const assertionMsg = `de.json should have the key ${enKeys[i]} for key number ${i}, but instead it had key ${deKeys[i]}`;
+      expect(enKeys[i]).to.eq(deKeys[i], assertionMsg);
+    }
+  });
+
+  it('German should have no empty strings', () => {
+    deKeys.forEach((key) => {
+      const assertionMsg = `de.json should have non-empty value for key ${key}, but it value was empty`;
+      expect(de[key]).to.not.eq('', assertionMsg);
+    });
+  });
+
+  it('Ukrainian should have the same keys', () => {
+    for (let i = 0; i < enKeys.length; i++) {
+      const assertionMsg = `ukr.json should have the key ${enKeys[i]} for key number ${i}, but instead it had key ${ukrKeys[i]}`;
+      expect(enKeys[i]).to.eq(ukrKeys[i], assertionMsg);
+    }
+  });
+
+  it('Ukrainian should have no empty strings', () => {
+    ukrKeys.forEach((key) => {
+      const assertionMsg = `ukr.json should have non-empty value for key ${key}, but it value was empty`;
+      expect(ukr[key]).to.not.eq('', assertionMsg);
+    });
+  });
+
 });

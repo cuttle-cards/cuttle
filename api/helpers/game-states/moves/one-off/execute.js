@@ -1,28 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
 
-function findTargetCard(targetId, targetType, opponent) {
-  switch (targetType) {
-    case 'point':
-      return opponent.points.find(({ id }) => id === targetId);
-
-    case 'faceCard':
-      return opponent.faceCards.find(({ id }) => id === targetId);
-
-    case 'jack':
-      for (let point of opponent.points) {
-        for (let jack of point.attachments) {
-          if (jack.id === targetId) {
-            return jack;
-          }
-        }
-      }
-      return;
-
-    default:
-      return null;
-  }
-}
-
 module.exports = {
   friendlyName: 'Play One-Off',
 
@@ -35,8 +12,8 @@ module.exports = {
       required: true,
     },
     /**
-     * @param { Object } requestedMove - The move being requested. 
-     * Specifies that the move is a one-off, which card is being played, 
+     * @param { Object } requestedMove - The move being requested.
+     * Specifies that the move is a one-off, which card is being played,
      * and if applicable, what target and targetType
      * @param { MoveType.ONE_OFF } requestedMove.moveType
      * @param { String } requestedMove.cardId - Card Played for points
@@ -51,6 +28,11 @@ module.exports = {
       type: 'number',
       description: 'Player number of player requesting move.',
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true, // synchronous helper
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
@@ -63,8 +45,11 @@ module.exports = {
     const cardIndex = player.hand.findIndex(({ id }) => id === cardId);
     const [ playedCard ] = player.hand.splice(cardIndex, 1);
 
-    const targetCard = findTargetCard(requestedMove.targetId, requestedMove.targetType, opponent);
-
+    const targetCard = requestedMove.targetId ? sails.helpers.gameStates.findTargetCard(
+      requestedMove.targetId,
+      requestedMove.targetType,
+      opponent,
+    ) : null;
 
     result = {
       ...result,
@@ -74,6 +59,8 @@ module.exports = {
       playedBy,
       playedCard,
       targetCard,
+      discardedCards: [],
+      resolved: null,
       oneOffTarget: targetCard,
       oneOffTargetType: requestedMove.targetType ?? null,
     };

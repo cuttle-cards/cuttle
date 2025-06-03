@@ -1,7 +1,7 @@
 /**
  * TestController
  *
- * @description :: Server-side actions for handling incoming requests.
+ * @description :: Server-side actions for handling testing-only requests e.g wiping db
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
@@ -10,19 +10,14 @@ const utc = require('dayjs/plugin/utc');
 dayjs.extend(utc);
 
 module.exports = {
-  wipeDatabase: function (_req, res) {
-    return sails.helpers.wipeDatabase()
-      .then(() => {
-        return res.ok();
-      })
-      .catch((err) => {
-        return res.badRequest(err);
-      });
-  },
+  wipeDatabase: async function (_req, res) {
+    try {
+      await sails.helpers.wipeDatabase();
 
-  setBadSession: function (req, res) {
-    req.session.game = -3;
-    return res.ok();
+      return res.ok();
+    } catch (err) {
+      return res.badRequest(err);
+    }
   },
 
   loadSeasonFixture: async function (req, res) {
@@ -74,7 +69,7 @@ module.exports = {
     return res.ok();
   },
 
-  getGames: async function (req, res) {
+  getGames: async function (_req, res) {
     try {
       const games = await Game.find();
       return res.json(games);
@@ -83,7 +78,7 @@ module.exports = {
     }
   },
 
-  getMatches: async function (req, res) {
+  getMatches: async function (_req, res) {
     try {
       const matches = await Match.find()
         .populate('games')
@@ -95,4 +90,21 @@ module.exports = {
       return res.serverError(err);
     }
   },
+
+  getSpectators: async function(_req, res) {
+    try {
+      const spectators = await UserSpectatingGame.find({})
+        .populate('spectator');
+      const result = spectators.map(spectatingRecord => {
+        return {
+          ...spectatingRecord,
+          spectator: spectatingRecord.spectator.username
+        };
+      });
+
+      return res.json(result);
+    } catch (err) {
+      return res.serverError(err);
+    }
+  }
 };

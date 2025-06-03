@@ -134,7 +134,7 @@ export default {
         this.joiningGame = false;
       })
         .catch(() => {
-        this.joiningGame = false;
+          this.joiningGame = false;
         });
     },
     spectateGame() {
@@ -151,7 +151,7 @@ export default {
         })
         .catch((error) => {
           this.joiningGame = false;
-          this.$emit('error', error);
+          this.$emit('error', this.t(error?.message ?? error));
           this.gameListStore.gameFinished(this.gameId);
         });
     },

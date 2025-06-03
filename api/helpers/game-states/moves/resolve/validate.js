@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to resolve pending one-off and counters',
@@ -26,6 +27,11 @@ module.exports = {
       description: 'Player number of player requesting move',
       required: true,
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true,
   fn: ({ currentState, playedBy }, exits) => {
@@ -33,17 +39,17 @@ module.exports = {
 
       // Must be COUNTERING phase
       if (currentState.phase !== GamePhase.COUNTERING) {
-        throw new Error(`Can only resolve during the countering phase`);
+        throw new BadRequestError(`Can only resolve during the countering phase`);
       }
 
       if (!currentState.oneOff) {
-        throw new Error('You cannot resolve unless there is a one-off pending');
+        throw new BadRequestError('You cannot resolve unless there is a one-off pending');
       }
 
       // Must be your chance to resolve
       const yourTurnToResolve = sails.helpers.gameStates.yourTurnToCounter(currentState, playedBy);
       if (!yourTurnToResolve) {
-        throw new Error('Waiting for opponent to counter');
+        throw new BadRequestError('Waiting for opponent to counter');
       }
 
       return exits.success();

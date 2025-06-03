@@ -13,17 +13,25 @@ module.exports = function (req, res, next) {
   const { moveType, cardId, cardId1, cardId2, targetId, targetType } = req.body;
 
   switch (moveType) {
+    // These moves require no extra data
     case MoveType.PASS:
     case MoveType.DRAW:
     case MoveType.RESOLVE:
-      // These moves require no extra data
+    case MoveType.RESOLVE_FIVE: 
+    case MoveType.CONCEDE:
+    case MoveType.STALEMATE_REQUEST:
+    case MoveType.STALEMATE_REJECT:
+    case MoveType.STALEMATE_ACCEPT:
       return next();
 
+    // These require a `cardId`
     case MoveType.POINTS:
     case MoveType.FACE_CARD:
     case MoveType.SEVEN_POINTS:
+    case MoveType.SEVEN_FACE_CARD:
     case MoveType.COUNTER:
     case MoveType.RESOLVE_THREE:
+    case MoveType.SEVEN_DISCARD:
       {
         if (!cardId) {
           return res.badRequest({ message: 'Must specify a card' });
@@ -34,7 +42,8 @@ module.exports = function (req, res, next) {
         }
       }
       return next();
-    
+
+    // Requires `card1` and optionally accepts `card2`
     case MoveType.RESOLVE_FOUR:
       {
         if (!cardId1) {
@@ -51,7 +60,11 @@ module.exports = function (req, res, next) {
       }
       return next();
 
+    // These require `cardId` and `targetId`
+    case MoveType.JACK:
     case MoveType.SCUTTLE:
+    case MoveType.SEVEN_SCUTTLE:
+    case MoveType.SEVEN_JACK:
       {
         if (!cardId || !targetId) {
           return res.badRequest({ message: 'Must specify a card' });
@@ -65,7 +78,9 @@ module.exports = function (req, res, next) {
       }
       return next();
 
+    // Requires `cardId`; additionally requires `targetId` and `targetType` if cardId specifies a 2 or 9
     case MoveType.ONE_OFF:
+    case MoveType.SEVEN_ONE_OFF:
       {
         if (!cardId) {
           return res.badRequest({ message: 'Must specify a card' });
@@ -84,25 +99,6 @@ module.exports = function (req, res, next) {
         }
       }
 
-      return next();
-
-    case MoveType.JACK:
-      {
-        if (!cardId) {
-          return res.badRequest({ message: 'Must specify a card' });
-        }
-        if (!targetId) {
-          return res.badRequest({ message: 'Must have a card targeted' });
-        }
-
-        if (!DeckIds.includes(cardId)) {
-          return res.badRequest({ message: `${cardId} is not a valid cardId` });
-        }
-
-        if (!DeckIds.includes(targetId)) {
-          return res.badRequest({ message: `${targetId} is not a valid targetId` });
-        }
-      }
       return next();
 
     default:

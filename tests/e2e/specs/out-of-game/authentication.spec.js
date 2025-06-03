@@ -168,4 +168,22 @@ describe('Signing Up', () => {
     assertFailedAuth('/signup');
     assertSnackbar('That username is already registered to another user; try logging in!', 'error', 'auth');
   });
+  it('Rejects signup if username contains profanity', () => {
+    cy.get('[data-cy=username]').type('shitUser');
+    cy.get('[data-cy=password]').type('password123');
+    cy.get('[data-cy=submit]').click();
+    assertFailedAuth('/signup');
+    assertSnackbar('Please use respectful language', 'error', 'auth');
+  }); 
 });
+
+// Check for canonical link in head
+describe('Canonical Link', () => {
+  it('Checks for the canonical link in the head meta data on login/signup page', () => {
+    cy.visit('/login');
+    cy.get('head link[rel="canonical"]')
+      .should('have.attr', 'href')
+      .and('contain', '/signup');
+  });
+});
+

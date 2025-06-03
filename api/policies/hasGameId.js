@@ -9,11 +9,11 @@
 module.exports = function (req, res, next) {
   // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
-  if (typeof req?.body?.gameId === 'number') {
+  let { gameId } = req.params;
+  gameId = Number(gameId);
+  if (Number.isInteger(gameId)) {
     return next();
   }
 
-  // User is not allowed
-  // (default res.forbidden() behavior can be overridden in `config/403.js`)
   return res.badRequest({ message: 'Error: Request missing required paramater gameId' });
 };

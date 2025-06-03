@@ -25,6 +25,11 @@ module.exports = {
       type: 'number',
       description: 'Player number of player requesting move.',
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true, // synchronous helper
   fn: ({ currentState, requestedMove, playedBy }, exits) => {
@@ -40,9 +45,11 @@ module.exports = {
     result = {
       ...result,
       ...requestedMove,
-      playedBy,
       phase:GamePhase.MAIN,
+      playedBy,
+      playedCard: null,
       resolved: oneOff,
+      discardedCards: [],
       twos: [],
     };
 
@@ -50,6 +57,7 @@ module.exports = {
     if (fizzles) {
       result.moveType = MoveType.FIZZLE;
       result.scrap.push(result.oneOff);
+      result.oneOff = null;
       result.turn++;
       return exits.success(result);
     }
@@ -75,6 +83,9 @@ module.exports = {
           phase: oneOff.rank
         };
         return exits.success(result);
+      case 9:
+        result = sails.helpers.gameStates.moves.resolve.nine(result, playedBy);
+        break;
       default:
         return exits.error(new Error(`${oneOff.rank} is not a valid one-off rank`));
     }
@@ -83,6 +94,7 @@ module.exports = {
     result = {
       ...result,
       oneOff: null,
+      targetCard: result.oneOffTarget,
       oneOffTarget: null,
       oneOffTargetType: null,
       turn: result.turn + 1,

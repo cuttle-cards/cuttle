@@ -1,4 +1,5 @@
 const GameStatus = require('../../../utils/GameStatus.json');
+const MoveType = require('../../../utils/MoveType.json');
 
 module.exports = {
   friendlyName: 'Check Game State for win',
@@ -24,7 +25,6 @@ module.exports = {
   },
 
   fn: async function ({ game, gameState, numPasses }, exits) {
-    
     const checkWin = (pNum) => {
       const player = pNum ? gameState.p1 : gameState.p0;
       const points = player.points?.reduce((sum, { rank }) => sum + rank, 0);
@@ -51,10 +51,12 @@ module.exports = {
       currentMatch: null,
     };
 
-    const p0Wins = checkWin(0);
-    const p1Wins = checkWin(1);
+    const playerConceded = gameState.moveType === MoveType.CONCEDE;
+    const p0Wins = checkWin(0) || (playerConceded && gameState.playedBy === 1);
+    const p1Wins = checkWin(1) || (playerConceded && gameState.playedBy === 0);
+    const stalemate = numPasses >= 3 || gameState.moveType === MoveType.STALEMATE_ACCEPT;
 
-    if (p0Wins || p1Wins || numPasses >= 3) {
+    if (p0Wins || p1Wins || stalemate) {
       res.gameOver = true;
       const gameUpdates = {};
       gameUpdates.status = GameStatus.FINISHED;
@@ -67,7 +69,10 @@ module.exports = {
         gameUpdates.winner = game.p1.id;
       }
 
-      await Game.updateOne({ id: game.id }).set(gameUpdates);
+      // Update game and add it to its match if this hasn't yet been done
+      if (game.status === GameStatus.STARTED) {
+        await Game.updateOne({ id: game.id }).set(gameUpdates);
+      }
 
       game = {
         ...game,

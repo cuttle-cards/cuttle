@@ -1,33 +1,10 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
-
-function findTargetCard(targetId, targetType, opponent) {
-  switch (targetType) {
-    case 'point':
-      return opponent.points.find(card => card.id === targetId);
-
-    case 'faceCard':
-      return opponent.faceCards.find(card => card.id === targetId);
-
-    case 'jack':
-      for (let point of opponent.points) {
-        for (let jack of point.attachments) {
-          if (jack.id === targetId) {
-            return jack;
-          }
-        }
-      }
-      return;
-
-    default:
-      throw new Error(`Need a target type to find the ${targetId}`);
-  }
-}
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to play one-off',
 
-  description:
-    'Verifies whether a request to play one-off is legal, throwing explanatory error if not.',
+  description: 'Verifies whether a request to play one-off is legal, throwing explanatory error if not.',
 
   inputs: {
     currentState: {
@@ -52,6 +29,11 @@ module.exports = {
       description: 'Player number of player requesting move',
       required: true,
     },
+    priorStates: {
+      type: 'ref',
+      description: "List of packed gameStateRows for this game's prior states",
+      required: true,
+    }
   },
   sync: true,
   fn: ({ requestedMove, currentState, playedBy }, exits) => {
@@ -61,24 +43,24 @@ module.exports = {
 
       const playedCard = player.hand.find(({ id }) => id === requestedMove.cardId);
 
+      if (currentState.turn % 2 !== playedBy) {
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
+      }
+
       if (currentState.phase !== GamePhase.MAIN) {
-        throw new Error('game.snackbar.global.notInMainPhase');
+        throw new BadRequestError('game.snackbar.global.notInMainPhase');
       }
 
       if (currentState.oneOff) {
-        throw new Error('game.snackbar.oneOffs.oneOffInPlay');
+        throw new BadRequestError('game.snackbar.oneOffs.oneOffInPlay');
       }
 
       if (!playedCard) {
-        throw new Error('game.snackbar.global.playFromHand');
-      }
-
-      if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.playFromHand');
       }
 
       if (playedCard.isFrozen) {
-        throw new Error('game.snackbar.global.cardFrozen');
+        throw new BadRequestError('game.snackbar.global.cardFrozen');
       }
 
       switch (playedCard.rank) {
@@ -89,46 +71,47 @@ module.exports = {
 
         // 2 and 9 require legal target
         case 2:
-        case 9:
-          {
-            const targetCard = findTargetCard(requestedMove.targetId, requestedMove.targetType, opponent);
-            // Must have target
-            if (!targetCard) {
-              throw new Error(`Can't find the ${requestedMove.targetId} on opponent's board`);
-            }
-
-            if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
-              throw new Error('Twos can only target royals or glasses');
-            }
-
-            const queenCount = opponent.faceCards.filter(
-              (faceCard) => faceCard.rank === 12
-            ).length;
-
-            // Legal if not blocked by opponent's queen(s)
-            switch (queenCount) {
-              // No queens => always allowed
-              case 0:
-                return exits.success();
-
-              // One queen => can only target the queen
-              case 1: {
-                if (targetCard.rank !== 12) {
-                  throw new Error('game.snackbar.global.blockedByQueen');
-                }
-                return exits.success();
-              }
-
-              // 2+ queens => Can't target at all
-              default:
-                throw new Error('game.snackbar.global.blockedByMultipleQueens');
-            }
+        case 9: {
+          const targetCard = sails.helpers.gameStates.findTargetCard(
+            requestedMove.targetId,
+            requestedMove.targetType,
+            opponent,
+          );
+          // Must have target
+          if (!targetCard) {
+            throw new BadRequestError(`Can't find the ${requestedMove.targetId} on opponent's board`);
           }
+
+          if (playedCard.rank === 2 && ![ 'faceCard', 'jack' ].includes(requestedMove.targetType)) {
+            throw new BadRequestError('Twos can only target royals or glasses');
+          }
+
+          const queenCount = opponent.faceCards.filter((faceCard) => faceCard.rank === 12).length;
+
+          // Legal if not blocked by opponent's queen(s)
+          switch (queenCount) {
+            // No queens => always allowed
+            case 0:
+              return exits.success();
+
+            // One queen => can only target the queen
+            case 1: {
+              if (targetCard.rank !== 12) {
+                throw new BadRequestError('game.snackbar.global.blockedByQueen');
+              }
+              return exits.success();
+            }
+
+            // 2+ queens => Can't target at all
+            default:
+              throw new BadRequestError('game.snackbar.global.blockedByMultipleQueens');
+          }
+        }
 
         // Three requires card(s) in scrap
         case 3:
           if (!currentState.scrap.length) {
-            throw new Error('game.snackbar.oneOffs.three.scrapIsEmpty');
+            throw new BadRequestError('game.snackbar.oneOffs.three.scrapIsEmpty');
           }
           return exits.success();
 
@@ -142,20 +125,20 @@ module.exports = {
         // Five and sevens require cards in deck
         case 5:
           if (!currentState.deck.length) {
-            throw new Error('game.snackbar.oneOffs.emptyDeck');
+            throw new BadRequestError('game.snackbar.oneOffs.emptyDeck');
           }
           return exits.success();
 
         // Seven requires cards in deck
         case 7:
           if (!currentState.deck.length) {
-            throw new Error('game.snackbar.oneOffs.sevenWithEmptyDeck');
+            throw new BadRequestError('game.snackbar.oneOffs.sevenWithEmptyDeck');
           }
           return exits.success();
 
         // No other cards can be used for a one-off
         default:
-          throw new Error('You cannot play that card as a one-off');
+          throw new BadRequestError('You cannot play that card as a one-off');
       }
     } catch (err) {
       return exits.error(err);

@@ -155,8 +155,8 @@ import GameStatus from '_/utils/GameStatus.json';
 import AnnouncementDialog from './components/announcementDialog/AnnouncementDialog.vue';
 
 const TABS = {
-  PLAY: 'play',
-  SPECTATE: 'spectate',
+  PLAY: '/',
+  SPECTATE: '/spectate-list'
 };
 
 export default {
@@ -182,7 +182,7 @@ export default {
       tab: TABS.PLAY,
       showSnackBar: false,
       snackBarMessage: '',
-      loadingData: true,
+      loadingData: true
     };
   },
   computed: {
@@ -198,6 +198,9 @@ export default {
     },
   },
   watch: {
+    tab(newVal){
+      this.setGameListUrl(newVal);
+    },
     $route: {
       immediate: true,
       handler() {
@@ -211,8 +214,13 @@ export default {
   async created() {
     await this.gameListStore.requestGameList();
     this.loadingData = false;
+    this.tab = this.$route.path;
   },
   methods: {
+    setGameListUrl(url){
+      this.$router.replace(url);
+      return this.tab = url;
+    },
     clearSnackBar() {
       this.snackMessage = '';
       this.showSnackBar = false;

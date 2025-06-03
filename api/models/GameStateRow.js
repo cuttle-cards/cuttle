@@ -1,3 +1,4 @@
+const GamePhase = require('../../utils/GamePhase.json');
 /**
  * GameState.js
  *
@@ -72,7 +73,7 @@ module.exports = {
     phase: {
       type: 'number',
       required: true,
-      isIn: [ 1, 2, 3, 4, 5, 7 ],
+      isIn: Object.values(GamePhase),
     },
     // Cards in p0’s hand
     p0Hand: {
