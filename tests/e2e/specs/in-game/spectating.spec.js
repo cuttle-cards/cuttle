@@ -54,7 +54,7 @@ describe('Spectating Games', () => {
 
     // P0 plays ace of spades
     cy.recoverSessionOpponent(playerOne);
-    cy.playPointsSpectator(Card.ACE_OF_SPADES, 0);
+    cy.playPointsSpectator(Card.ACE_OF_SPADES);
 
     assertGameState(
       0,
@@ -87,7 +87,7 @@ describe('Spectating Games', () => {
 
     // P1 plays Ace of hearts -- UI updates accordingly
     cy.recoverSessionOpponent(playerTwo);
-    cy.playPointsSpectator(Card.ACE_OF_HEARTS, 1);
+    cy.playPointsSpectator(Card.ACE_OF_HEARTS);
 
     assertGameState(
       0,
@@ -109,7 +109,7 @@ describe('Spectating Games', () => {
 
     // P0 plays ace of clubs
     cy.recoverSessionOpponent(playerOne);
-    cy.playPointsSpectator(Card.ACE_OF_CLUBS, 0);
+    cy.playPointsSpectator(Card.ACE_OF_CLUBS);
 
     // Reconnect the socket
     cy.window()
@@ -132,7 +132,7 @@ describe('Spectating Games', () => {
 
     // P1 plays the Eight of Diamonds and wins
     cy.recoverSessionOpponent(playerTwo);
-    cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS, 1);
+    cy.playPointsSpectator(Card.EIGHT_OF_DIAMONDS);
 
     assertGameOverAsSpectator({ p1Wins: 0, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: false });
     cy.get('[data-cy=gameover-go-home]').click();
@@ -151,14 +151,14 @@ describe('Spectating Games', () => {
     });
 
     cy.recoverSessionOpponent(playerOne);
-    cy.playOneOffSpectator(Card.ACE_OF_SPADES, 0);
+    cy.playOneOffSpectator(Card.ACE_OF_SPADES);
     cy.get('#waiting-for-opponent-counter-scrim').should('be.visible');
 
     cy.recoverSessionOpponent(playerTwo);
     cy.resolveOpponent();
     cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
 
-    cy.playOneOffSpectator(Card.ACE_OF_DIAMONDS, 1);
+    cy.playOneOffSpectator(Card.ACE_OF_DIAMONDS);
     cy.get('#cannot-counter-dialog').should('be.visible');
     cy.recoverSessionOpponent(playerOne);
     cy.resolveOpponent();
@@ -167,7 +167,7 @@ describe('Spectating Games', () => {
   });
 
   it('Leaves a spectated game and joins another without processing extraneous updates', function() {
-    cy.setupGameAsSpectator();
+    cy.setupGameAsSpectator(false, 'spectatedGameId'); // alias to tell gameId's apart
     cy.loadGameFixture(0, {
       p0Hand: [ Card.ACE_OF_SPADES ],
       p0Points: [],
@@ -196,9 +196,10 @@ describe('Spectating Games', () => {
       p1FaceCards: [],
     });
 
+    // Player in previously spectated game makes move
     cy.recoverSessionOpponent(playerOne);
     cy.get('@aceOfSpades').then((aceOfSpadesId) => {
-      cy.playPointsById(aceOfSpadesId, this.gameData.gameId);
+      cy.playPointsById(aceOfSpadesId, this.spectatedGameId);
     });
 
     cy.wait(3000);
@@ -327,8 +328,8 @@ describe('Spectating Games', () => {
       cy.vueRoute('/');
       // Player 3 spectates player1 vs player2
       cy.signupOpponent(playerThree);
-      cy.get('@gameData').then((gameData) => {
-        cy.setOpponentToSpectate(gameData.gameId);
+      cy.get('@gameId').then((gameId) => {
+        cy.setOpponentToSpectate(gameId);
       });
       // My user begins spectating, sees player3 in spectator list
       cy.get('[data-cy-game-list-selector=spectate]').click();
@@ -342,9 +343,9 @@ describe('Spectating Games', () => {
       cy.get('[data-player-hand-card]').should('have.length', 5);
 
       // Player 4 begins spectating
-      cy.get('@gameData').then((gameData) => {
+      cy.get('@gameId').then((gameId) => {
         cy.signupOpponent(playerFour);
-        cy.setOpponentToSpectate(gameData.gameId);
+        cy.setOpponentToSpectate(gameId);
       });
       cy.get('[data-player-hand-card]').should('have.length', 5);
       // Player 4 now appears in spectator list
@@ -368,16 +369,16 @@ describe('Spectating Games', () => {
     it('Should remove spectators from list after leaving', () => {
       cy.setupGameAsSpectator();
       cy.signupOpponent(playerThree);
-      cy.get('@gameData').then((gameData) => {
-        cy.setOpponentToSpectate(gameData.gameId);
+      cy.get('@gameId').then((gameId) => {
+        cy.setOpponentToSpectate(gameId);
       });
       cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
         .click();
       cy.get('[data-cy="spectate-list-menu"')
         .should('contain', 'myUsername')
         .should('contain', playerThree.username);
-      cy.get('@gameData').then((gameData) => {
-        cy.setOpponentToLeaveSpectate(gameData.gameId);
+      cy.get('@gameId').then((gameId) => {
+        cy.setOpponentToLeaveSpectate(gameId);
       });
       cy.get('[data-cy="spectate-list-menu"').should('not.contain', playerThree.username);
     });

@@ -1,7 +1,7 @@
 /**
  * TestController
  *
- * @description :: Server-side actions for handling incoming requests.
+ * @description :: Server-side actions for handling testing-only requests e.g wiping db
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
@@ -18,11 +18,6 @@ module.exports = {
     } catch (err) {
       return res.badRequest(err);
     }
-  },
-
-  setBadSession: function (req, res) {
-    req.session.game = -3;
-    return res.ok();
   },
 
   loadSeasonFixture: async function (req, res) {

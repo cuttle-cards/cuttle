@@ -11,17 +11,6 @@ const cypressConfig = {
     excludeSpecPattern: [ 'test/e2e/specs/playground.spec.js' ],
     supportFile: 'tests/e2e/support/index.js',
   },
-  component: {
-    devServer: {
-      framework: 'vue',
-      bundler: 'vite',
-    },
-    specPattern: [ 'tests/component/specs/*.spec.js' ],
-    supportFile: 'tests/component/support/component.js'
-  },
-  env: {
-    VITE_USE_GAMESTATE_API: process.env.VITE_USE_GAMESTATE_API,
-  },
   // Retry tests 2 times headlessly, no retries in UI
   retries: {
     runMode: 2,

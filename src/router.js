@@ -7,6 +7,7 @@ import RulesView from '@/routes/rules/RulesView.vue';
 import StatsView from '@/routes/stats/StatsView.vue';
 import { useGameStore } from '@/stores/game';
 import { useAuthStore } from '@/stores/auth';
+import GameStatus from '_/utils/GameStatus.json';
 
 export const ROUTE_NAME_GAME = 'Game';
 export const ROUTE_NAME_SPECTATE_LIST = 'SpectateList';
@@ -54,11 +55,32 @@ const checkAndSubscribeToLobby = async (to) => {
       return true;
     }
 
-    await gameStore.requestSubscribe(gameId);
+    const { game } = await gameStore.requestSubscribe(gameId);
+    if (game.status === GameStatus.STARTED) {
+      return { path: `/game/${gameId}` };
+    }
     return true;
   } catch (err) {
-    return { name: 'Home', query: { gameId: gameId, error: err.message } };
+    return { name: 'Home', query: { gameId: gameId, error: err?.message ?? `Could not load game ${gameId}` } };
   }
+};
+
+const getGameState = async (to) => {
+  const gameStore = useGameStore();
+  const gameId = parseInt(to.params.gameId);
+  gameStore.id = gameId;
+  const gameStateIndex = parseInt(to.query.gameStateIndex ?? -1);
+  try {
+    const response = await gameStore.requestGameState(gameId, gameStateIndex, to);
+    if (response?.victory?.gameOver && response.game.rematchGame) {
+      await gameStore.requestGameState(response.game.rematchGame);
+      gameStore.myPNum = (gameStore.myPNum + 1) % 2;
+      return { name: to.name, params: { gameId: response.game.rematchGame } };
+    }
+  } catch (err) {
+    return { name: 'Home', query: { gameId: gameId, error: err?.message ?? `Could not load game ${gameId}` } };
+  }
+  return;
 };
 
 const routes = [
@@ -119,6 +141,7 @@ const routes = [
     name: ROUTE_NAME_GAME,
     path: '/game/:gameId?',
     component: GameView,
+    beforeEnter: getGameState,
     // TODO: Add logic to redirect if a given game does not exist
     // mustBeAuthenticated intentionally left off here
     // If a user refreshes the relogin modal will fire and allow them to continue playing

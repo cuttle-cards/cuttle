@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to seven-scuttle',
@@ -48,37 +49,37 @@ module.exports = {
 
       // Check if it's the player's turn
       if (currentState.turn % 2 !== playedBy) {
-        throw new Error('game.snackbar.global.notYourTurn');
+        throw new BadRequestError('game.snackbar.global.notYourTurn');
       }
 
       // Check if the game phase is RESOLVING_SEVEN
       if (currentState.phase !== GamePhase.RESOLVING_SEVEN) {
-        throw new Error('game.snackbar.seven.wrongPhase');
+        throw new BadRequestError('game.snackbar.seven.wrongPhase');
       }
 
       // Check if the playedCard is one of the top two cards
       if (!playedCard) {
-        throw new Error('game.snackbar.seven.pickAndPlay');
+        throw new BadRequestError('game.snackbar.seven.pickAndPlay');
       }
 
       // Check if the playedCard is a number card (rank < 11)
       if (playedCard.rank >= 11) {
-        throw new Error('game.snackbar.points.numberOnlyForPoints');
+        throw new BadRequestError('game.snackbar.points.numberOnlyForPoints');
       }
 
       // Check if the targetCard is in the opponent's points
       if (!targetCard) {
-        throw new Error('game.snackbar.scuttle.mustTargetPointCard');
+        throw new BadRequestError('game.snackbar.scuttle.mustTargetPointCard');
       }
 
       if (playedCard.rank < targetCard.rank) {
-        throw new Error('game.snackbar.scuttle.rankTooLow');
+        throw new BadRequestError('game.snackbar.scuttle.rankTooLow');
       }
 
       const lowerRank = playedCard.rank < targetCard.rank;
       const sameRankLowerSuit = playedCard.rank === targetCard.rank && playedCard.suit < targetCard.suit;
       if (lowerRank || sameRankLowerSuit) {
-        throw new Error('game.snackbar.scuttle.rankTooLow');
+        throw new BadRequestError('game.snackbar.scuttle.rankTooLow');
       }
 
       return exits.success();

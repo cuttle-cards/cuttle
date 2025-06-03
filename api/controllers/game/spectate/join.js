@@ -1,3 +1,5 @@
+const GameStatus = require('../../../../utils/GameStatus');
+
 module.exports = async function (req, res) {
   let { gameId } = req.params;
   gameId = Number(gameId);
@@ -25,7 +27,7 @@ module.exports = async function (req, res) {
     }
 
     // Can't spectate if the game is not active
-    if (game.status !== gameService.GameStatus.STARTED || !p0 || !p1) {
+    if (game.status !== GameStatus.STARTED || !p0 || !p1) {
       return res.badRequest({ message: 'home.snackbar.spectateTwoPlayers' });
     }
 

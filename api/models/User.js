@@ -15,9 +15,6 @@ module.exports = {
       type: 'string',
       required: true,
     },
-    game: {
-      model: 'game',
-    },
     /**
      * Index of this user within a Game's players collection
      * @value null iff not in game
@@ -39,13 +36,6 @@ module.exports = {
     faceCards: {
       collection: 'card',
       via: 'faceCards',
-    },
-    /**
-     * Id of a card in player's hand that cannot be played this turn
-     * @value null iff no card is frozen
-     */
-    frozenId: {
-      model: 'card',
     },
     rank: {
       type: 'number',

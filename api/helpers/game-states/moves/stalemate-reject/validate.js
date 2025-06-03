@@ -1,4 +1,5 @@
 const GamePhase = require('../../../../../utils/GamePhase.json');
+const BadRequestError = require('../../../../errors/badRequestError');
 
 module.exports = {
   friendlyName: 'Validate request to reject pending stalemate offer',
@@ -37,12 +38,12 @@ module.exports = {
     try {
       // Must already be considering a stalemate
       if (currentState.phase !== GamePhase.CONSIDERING_STALEMATE) {
-        throw new Error('game.snackbar.stalemate.noStalemateOffered');
+        throw new BadRequestError('game.snackbar.stalemate.noStalemateOffered');
       }
 
       // Cannot reject your own stalemate request
       if (currentState.playedBy === playedBy) {
-        throw new Error('game.snackbar.stalemate.opponentConsideringStalemate');
+        throw new BadRequestError('game.snackbar.stalemate.opponentConsideringStalemate');
       }
 
       return exits.success();
