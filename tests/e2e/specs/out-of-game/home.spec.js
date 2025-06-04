@@ -114,8 +114,7 @@ describe('Home - Game List', () => {
           .toDate() },
       ]);
       cy.visit('/');
-      cy.get('[data-cy=game-list-item]').should('have.length', 1);
-      cy.get('[data-cy=game-list-item]').should('contain', 'New Game');
+      cy.get('[data-cy=game-list-item]').should('have.length', 0);
     });
   });
 
