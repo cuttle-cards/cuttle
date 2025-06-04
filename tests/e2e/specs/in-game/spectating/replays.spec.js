@@ -57,6 +57,7 @@ describe('Rewatching finished games', () => {
         .click();
 
       cy.url().should('contain', '?gameStateIndex=1');
+      cy.get('[data-cy=history-log]').should('have.length', 2);
 
       assertGameState(0, {
         p0Hand: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
@@ -80,6 +81,7 @@ describe('Rewatching finished games', () => {
         .click();
 
       cy.url().should('contain', '?gameStateIndex=2');
+      cy.get('[data-cy=history-log]').should('have.length', 3);
 
       assertGameState(0, {
         p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
@@ -103,6 +105,7 @@ describe('Rewatching finished games', () => {
         .click();
 
       cy.url().should('contain', '?gameStateIndex=3');
+      cy.get('[data-cy=history-log]').should('have.length', 4);
 
       assertGameState(0, {
         p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
@@ -127,6 +130,7 @@ describe('Rewatching finished games', () => {
         .click();
 
       cy.url().should('contain', '?gameStateIndex=2');
+      cy.get('[data-cy=history-log]').should('have.length', 3);
 
       assertGameState(0, {
         p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
@@ -143,6 +147,17 @@ describe('Rewatching finished games', () => {
         p1Points: [],
         p1FaceCards: [],
       });
-    });
+
+      // skip backward to state 0
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=skip-backward]')
+        .click();
+
+      cy.url().should('contain', '?gameStateIndex=0');
+      cy.get('[data-cy=history-log]').should('have.length', 1);
+      cy.get('[data-player-hand-card]').should('have.length', 5);
+      
+
+    }); // end it('Watches a finished game clicking through the moves one at a time')
   });
 });
