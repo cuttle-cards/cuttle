@@ -1,7 +1,13 @@
 <template>
   <menu data-cy="playback-controls">
     <v-btn variant="text" icon="mdi-skip-backward" data-cy="skip-backward" />
-    <v-btn variant="text" icon="mdi-step-backward" data-cy="step-backward" />
+    <v-btn
+      :disabled="!gameHistoryStore.canGoToPreviousState"
+      variant="text"
+      icon="mdi-step-backward"
+      data-cy="step-backward"
+      @click="stepBackward"
+    />
     <v-btn
       :disabled="!gameHistoryStore.canGoToNextState"
       variant="text"
@@ -22,6 +28,17 @@ import { useGameStore } from '@/stores/game';
 const router = useRouter();
 const gameHistoryStore = useGameHistoryStore();
 const gameStore = useGameStore();
+
+function stepBackward() {
+  const route = router.currentRoute.value;
+  router.push({
+    ...route,
+    query: {
+      ...route.query,
+      gameStateIndex: gameHistoryStore.currentGameStateIndex - 1,
+    },
+  });  
+}
 
 function stepForward() {
   const route = router.currentRoute.value;

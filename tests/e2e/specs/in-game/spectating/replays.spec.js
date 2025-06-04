@@ -25,6 +25,8 @@ describe('Rewatching finished games', () => {
         ],
         p1Points: [],
         p1FaceCards: [],
+        topCard: Card.SEVEN_OF_HEARTS,
+        secondCard: Card.FOUR_OF_HEARTS,
       }, gameId);
 
       cy.recoverSessionOpponent(playerOne);
@@ -49,25 +51,90 @@ describe('Rewatching finished games', () => {
       cy.get('[data-player-hand-card]').should('have.length', 5);
       cy.get('[data-cy=history-log]').should('have.length', 1);
 
+      // Step forward to state 1 (loaded fixture)
       cy.get('[data-cy=playback-controls]')
         .find('[data-cy=step-forward]')
         .click();
-    //   assertGameState(0, {
-    //     p0Hand: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
-    //     p0Points: [],
-    //     p0FaceCards: [],
-    //     p1Hand: [
-    //       Card.TWO_OF_CLUBS,
-    //       Card.TWO_OF_DIAMONDS,
-    //       Card.TWO_OF_HEARTS,
-    //       Card.TWO_OF_SPADES,
-    //       Card.THREE_OF_CLUBS,
-    //       Card.THREE_OF_DIAMONDS
-    //     ],
-    //     p1Points: [],
-    //     p1FaceCards: [],
-    //   });
-    });
 
+      assertGameState(0, {
+        p0Hand: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.TWO_OF_CLUBS,
+          Card.TWO_OF_DIAMONDS,
+          Card.TWO_OF_HEARTS,
+          Card.TWO_OF_SPADES,
+          Card.THREE_OF_CLUBS,
+          Card.THREE_OF_DIAMONDS
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      // Step forward to state 2 (p0 points)
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-forward]')
+        .click();
+
+      assertGameState(0, {
+        p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_CLUBS ],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.TWO_OF_CLUBS,
+          Card.TWO_OF_DIAMONDS,
+          Card.TWO_OF_HEARTS,
+          Card.TWO_OF_SPADES,
+          Card.THREE_OF_CLUBS,
+          Card.THREE_OF_DIAMONDS
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      // Step forward to state 3 (p1 draw)
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-forward]')
+        .click();
+    
+      assertGameState(0, {
+        p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_CLUBS ],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.TWO_OF_CLUBS,
+          Card.TWO_OF_DIAMONDS,
+          Card.TWO_OF_HEARTS,
+          Card.TWO_OF_SPADES,
+          Card.THREE_OF_CLUBS,
+          Card.THREE_OF_DIAMONDS,
+          Card.SEVEN_OF_HEARTS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      // Step backward to state 2 again (p0 points)
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-backward]')
+        .click();
+
+      assertGameState(0, {
+        p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_CLUBS ],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.TWO_OF_CLUBS,
+          Card.TWO_OF_DIAMONDS,
+          Card.TWO_OF_HEARTS,
+          Card.TWO_OF_SPADES,
+          Card.THREE_OF_CLUBS,
+          Card.THREE_OF_DIAMONDS
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+    });
   });
 });
