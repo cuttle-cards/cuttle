@@ -56,6 +56,8 @@ describe('Rewatching finished games', () => {
         .find('[data-cy=step-forward]')
         .click();
 
+      cy.url().should('contain', '?gameStateIndex=1');
+
       assertGameState(0, {
         p0Hand: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
         p0Points: [],
@@ -77,6 +79,8 @@ describe('Rewatching finished games', () => {
         .find('[data-cy=step-forward]')
         .click();
 
+      cy.url().should('contain', '?gameStateIndex=2');
+
       assertGameState(0, {
         p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
         p0Points: [ Card.TEN_OF_CLUBS ],
@@ -97,7 +101,9 @@ describe('Rewatching finished games', () => {
       cy.get('[data-cy=playback-controls]')
         .find('[data-cy=step-forward]')
         .click();
-    
+
+      cy.url().should('contain', '?gameStateIndex=3');
+
       assertGameState(0, {
         p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
         p0Points: [ Card.TEN_OF_CLUBS ],
@@ -119,6 +125,8 @@ describe('Rewatching finished games', () => {
       cy.get('[data-cy=playback-controls]')
         .find('[data-cy=step-backward]')
         .click();
+
+      cy.url().should('contain', '?gameStateIndex=2');
 
       assertGameState(0, {
         p0Hand: [ Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS, Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
