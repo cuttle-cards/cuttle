@@ -1,6 +1,7 @@
 <template>
   <menu data-cy="playback-controls">
     <v-btn variant="text" icon="mdi-skip-backward" data-cy="skip-backward" />
+    <!-- Step backward -->
     <v-btn
       :disabled="!gameHistoryStore.canGoToPreviousState"
       variant="text"
@@ -8,6 +9,8 @@
       data-cy="step-backward"
       @click="stepBackward"
     />
+
+    <!-- Step forward -->
     <v-btn
       :disabled="!gameHistoryStore.canGoToNextState"
       variant="text"
