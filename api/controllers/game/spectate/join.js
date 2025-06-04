@@ -7,7 +7,8 @@ module.exports = async function (req, res) {
   try {
     const [ spectator, game ] = await Promise.all([
       User.findOne({ id: req.session.usr }),
-      Game.findOne(gameId).populate('gameStates')
+      Game.findOne(gameId)
+        .populate('gameStates')
         .populate('p0')
         .populate('p1'),
     ]);
@@ -29,6 +30,10 @@ module.exports = async function (req, res) {
     // Can't spectate if the game hasn't started
     if (game.status === GameStatus.CREATED || !p0 || !p1) {
       return res.badRequest({ message: 'home.snackbar.spectateTwoPlayers' });
+    }
+
+    if (!game.gameStates.length) {
+      return res.badRequest({ message: 'home.snackbar.spectateNoGamestates' });
     }
 
     // Subscribe socket to game

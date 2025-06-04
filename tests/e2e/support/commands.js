@@ -209,7 +209,7 @@ Cypress.Commands.add('signupOpponent', (opponent) => {
   cy.makeSocketRequest('user', 'signup', {
     username: opponent.username,
     password: opponent.password,
-  });
+  }).as(`${opponent.username}Id`);
 });
 Cypress.Commands.add('signupPlayer', (player) => {
   cy.window()

@@ -334,7 +334,8 @@
       "spectateTwoPlayers": "You can only spectate an ongoing game with two players",
       "cantFindGame": "Can't find game",
       "invalidLobbyNumber": "Invalid Lobby Number",
-      "cannotSpectate": "Cannot spectate game because you are playing"
+      "cannotSpectate": "Cannot spectate game because you are playing",
+      "spectateNoGamestates": "Cannot spectate: game is too old"
     },
     "gameFinder": "Game Finder",
     "spectate": "SPECTATE",

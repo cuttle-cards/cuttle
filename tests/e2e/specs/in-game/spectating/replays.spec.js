@@ -1,13 +1,22 @@
-import { setupGameBetweenTwoUnseenPlayers, assertGameState, assertGameOverAsSpectator } from '../../../support/helpers';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+import { setupGameBetweenTwoUnseenPlayers, assertGameState, assertGameOverAsSpectator, assertSnackbar } from '../../../support/helpers';
 import { myUser, playerOne, playerTwo } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
+import GameStatus from '../../../../../utils/GameStatus.json';
+
+dayjs.extend(utc);
 
 describe('Rewatching finished games', () => {
-  it('Watches a finished game clicking through the moves one at a time', () => {
+  beforeEach(() => {
     cy.wipeDatabase();
     cy.visit('/');
     cy.signupOpponent(playerOne);
     cy.signupOpponent(playerTwo);
+  });
+
+  it('Watches a finished game clicking through the moves one at a time', () => {
     setupGameBetweenTwoUnseenPlayers('replay');
 
     cy.get('@replayGameId').then((gameId) => {
@@ -184,6 +193,34 @@ describe('Rewatching finished games', () => {
       });
 
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
-    }); // end it('Watches a finished game clicking through the moves one at a time')
+    });
+  }); // end it('Watches a finished game clicking through the moves one at a time')
+
+  it.only('Prevents spectating a game that has no gamestates', function() {
+    cy.loadFinishedGameFixtures([
+      {
+        name: 'Game predating game state API',
+        status: GameStatus.FINISHED,
+        createdAt: dayjs
+          .utc()
+          .subtract(1, 'year')
+          .toDate(),
+        p0: this[`${playerOne.username}Id`],
+        p1: this[`${playerTwo.username}Id`],
+      },
+    ]);
+
+    cy.request('/api/test/game').then((res) => {
+      expect(res.status).to.eq(200);
+      expect(res.body?.length).to.eq(1);
+
+      const [ game ] = res.body;
+
+      cy.signupPlayer(myUser);
+      cy.visit(`/spectate/${game.id}`);
+
+      assertSnackbar('Cannot spectate: game is too old', 'error', 'newgame');
+      cy.url().should('not.include', `/spectate/${game.id}`);
+    });
   });
-});
+}); // describe
