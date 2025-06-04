@@ -24,7 +24,13 @@
       data-cy="step-forward"
       @click="goToState(currentGameStateIndex + 1)"
     />
-    <v-btn variant="text" icon="mdi-skip-forward" data-cy="skip-forward" />
+    <v-btn
+      :disabled="!gameHistoryStore.canGoToNextState"
+      variant="text"
+      icon="mdi-skip-forward"
+      data-cy="skip-forward"
+      @click="goToState(-1)"
+    />
   </menu>
 </template>
 

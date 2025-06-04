@@ -1,4 +1,4 @@
-import { setupGameBetweenTwoUnseenPlayers, assertGameState } from '../../../support/helpers';
+import { setupGameBetweenTwoUnseenPlayers, assertGameState, assertGameOverAsSpectator } from '../../../support/helpers';
 import { myUser, playerOne, playerTwo } from '../../../fixtures/userFixtures';
 import { Card } from '../../../fixtures/cards';
 
@@ -157,7 +157,33 @@ describe('Rewatching finished games', () => {
       cy.get('[data-cy=history-log]').should('have.length', 1);
       cy.get('[data-player-hand-card]').should('have.length', 5);
       
+      // skip forward to state -1 (end of game)
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=skip-forward]')
+        .click();
 
+      cy.url().should('contain', '?gameStateIndex=-1');
+      cy.get('[data-cy=history-log]').should('have.length', 7);
+
+      assertGameState(0, {
+        p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS ],
+        p0Points: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS, Card.TEN_OF_HEARTS ],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.TWO_OF_CLUBS,
+          Card.TWO_OF_DIAMONDS,
+          Card.TWO_OF_HEARTS,
+          Card.TWO_OF_SPADES,
+          Card.THREE_OF_CLUBS,
+          Card.THREE_OF_DIAMONDS,
+          Card.SEVEN_OF_HEARTS,
+          Card.FOUR_OF_HEARTS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+
+      assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
     }); // end it('Watches a finished game clicking through the moves one at a time')
   });
 });
