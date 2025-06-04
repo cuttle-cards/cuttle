@@ -5,7 +5,7 @@
       variant="text"
       icon="mdi-skip-backward"
       data-cy="skip-backward"
-      @click="skipBackward"
+      @click="goToState(0)"
     />
     <!-- Step backward -->
     <v-btn
@@ -13,7 +13,7 @@
       variant="text"
       icon="mdi-step-backward"
       data-cy="step-backward"
-      @click="stepBackward"
+      @click="goToState(currentGameStateIndex - 1)"
     />
 
     <!-- Step forward -->
@@ -22,14 +22,14 @@
       variant="text"
       icon="mdi-step-forward"
       data-cy="step-forward"
-      @click="stepForward"
+      @click="goToState(currentGameStateIndex + 1)"
     />
     <v-btn variant="text" icon="mdi-skip-forward" data-cy="skip-forward" />
   </menu>
 </template>
 
 <script setup>
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import { useGameStore } from '@/stores/game';
@@ -38,37 +38,17 @@ const router = useRouter();
 const gameHistoryStore = useGameHistoryStore();
 const gameStore = useGameStore();
 
-function skipBackward() {
-  const route = router.currentRoute.value;
-  router.push({
-    ...route,
-    query: {
-      ...route.query,
-      gameStateIndex: 0,
-    },
-  });
-}
+const currentGameStateIndex = computed(() => gameHistoryStore.currentGameStateIndex);
 
-function stepBackward() {
+function goToState(gameStateIndex) {
   const route = router.currentRoute.value;
   router.push({
     ...route,
     query: {
       ...route.query,
-      gameStateIndex: gameHistoryStore.currentGameStateIndex - 1,
+      gameStateIndex,
     },
-  });
-}
-
-function stepForward() {
-  const route = router.currentRoute.value;
-  router.push({
-    ...route,
-    query: {
-      ...route.query,
-      gameStateIndex: gameHistoryStore.currentGameStateIndex + 1,
-    },
-  });
+  });  
 }
 
 watch(() => gameHistoryStore.currentGameStateIndex, async (newVal) => {
