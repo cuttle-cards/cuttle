@@ -31,6 +31,8 @@ describe('FIVES', () => {
 
         cy.get('#deck').should('contain', '(39)');
         cy.get('[data-player-hand-card]').should('have.length', 4);
+
+        cy.get('[data-cy=history-log]').should('contain', 'myUsername discarded the A♣️ and drew 3 cards');
         // Attempt to plays five out of turn
         cy.get('[data-player-hand-card=5-2]').click(); // five of hearts
         playOutOfTurn('oneOff');
@@ -82,6 +84,8 @@ describe('FIVES', () => {
           secondCard: null,
           deck: [],
         });
+
+        cy.get('[data-cy=history-log]').should('contain', 'myUsername skipped discarding (empty hand) and drew 3 cards');
         // Deck should now be empty
         cy.get('#deck').should('contain', '(0)')
           .should('contain', 'PASS');
