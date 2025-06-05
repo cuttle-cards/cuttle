@@ -8,7 +8,7 @@ describe('FIVES', () => {
     });
 
     describe('Legal FIVES', () => {
-      it('Plays a 5 to discard 1 card, and draw 3', () => {
+      it.only('Plays a 5 to discard 1 card, and draw 3', () => {
         // Setup
         cy.loadGameFixture(0, {
           // Player is P0
@@ -31,6 +31,8 @@ describe('FIVES', () => {
 
         cy.get('#deck').should('contain', '(39)');
         cy.get('[data-player-hand-card]').should('have.length', 4);
+
+        cy.get('#history').should('contain', 'myUsername discarded the A♣️ and draws 3 cards');
         // Attempt to plays five out of turn
         cy.get('[data-player-hand-card=5-2]').click(); // five of hearts
         playOutOfTurn('oneOff');

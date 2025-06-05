@@ -35,8 +35,9 @@ module.exports = {
 
       const getResolveFiveMessage = () => {
         const previousRow = game.gameStates[i - 1] ?? null;
-        const amountOfCardsDrawn =
-          row[`p${row.playedBy}Hand`]?.length - previousRow[`p${row.playedBy}Hand`?.length];
+        let amountOfCardsDrawn =
+          row[`p${row.playedBy}Hand`]?.length - previousRow[`p${row.playedBy}Hand`]?.length;
+        amountOfCardsDrawn += row.discardedCards.length; // account for discarded cards in num drawn
 
         return amountOfCardsDrawn === 1 ? `draws 1 card` : `draws ${amountOfCardsDrawn} cards`;
       };
