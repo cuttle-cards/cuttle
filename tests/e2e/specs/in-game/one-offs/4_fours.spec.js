@@ -25,7 +25,7 @@ describe('FOURS', () => {
       // Opponent chooses two cards to discard
       cy.discardOpponent(Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS);
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
-
+      cy.get('[data-cy=history-log]').should('contain', 'definitelyNotTheGovernment6969 discarded the A♥️ and the 10♥️.');
       assertGameState(0, {
         p0Hand: [ Card.FOUR_OF_CLUBS ],
         p0Points: [],

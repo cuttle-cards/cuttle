@@ -120,7 +120,7 @@ module.exports = {
 
         case MoveType.RESOLVE_FOUR:
           return `${player} discarded the ${getFullCardName(discardedCards[0])} ${
-            discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}` : '.'
+            discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}.` : '.'
           }`;
 
         case MoveType.RESOLVE_FIVE:
