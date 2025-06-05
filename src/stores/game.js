@@ -490,7 +490,7 @@ export const useGameStore = defineStore('game', {
       return new Promise((resolve, reject) => {
         io.socket.post(`/api/game/${this.id}/ready`, (res, jwres) => {
           if (jwres.statusCode === 200) {
-            return resolve(res);
+            return resolve();
           } else if (jwres.statusCode === 400 && res.code === 'ALREADY_STARTED') {
             return resolve(this.id);
           }
