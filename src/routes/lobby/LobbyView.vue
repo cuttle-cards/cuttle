@@ -146,7 +146,7 @@ async function ready() {
     await gameStore.requestReady();
   } catch (err) {
     // If game has already started; navigate to GameView
-    if (err?.code === 'GAME_ALREADY_STARTED') {
+    if (err?.code === 'CONFLICT') {
       router.push({
         name: ROUTE_NAME_GAME,
         params: {
