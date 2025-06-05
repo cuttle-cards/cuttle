@@ -108,6 +108,7 @@ import { playAudio } from '@/util/audio.js';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
+import { ROUTE_NAME_GAME } from '_/src/router';
 
 // Deps
 const { t } = useI18n();
@@ -141,7 +142,19 @@ const opponentUsername = computed(() => gameStore.opponentUsername);
 // Methods
 async function ready() {
   readying.value = true;
-  await gameStore.requestReady();
+  try {
+    await gameStore.requestReady();
+  } catch (err) {
+    // If game has already started; navigate to GameView
+    if (err?.code === 'CONFLICT') {
+      router.push({
+        name: ROUTE_NAME_GAME,
+        params: {
+          gameId: err.gameId,
+        },
+      });
+    }
+  }
   readying.value = false;
 }
 
