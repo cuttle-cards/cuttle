@@ -20,6 +20,8 @@ describe('FOURS', () => {
       });
 
       cy.playOneOffAndResolveAsPlayer(Card.FOUR_OF_SPADES);
+
+      cy.get('[data-cy=history-log]').should('contain', 'The 4♠️ one-off resolves; definitelyNotTheGovernment6969 must discard two cards.');
       // Opponent chooses two cards to discard
       cy.discardOpponent(Card.ACE_OF_HEARTS, Card.TEN_OF_HEARTS);
       cy.get('#waiting-for-opponent-discard-scrim').should('not.exist');
