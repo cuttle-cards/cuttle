@@ -142,16 +142,20 @@ const opponentUsername = computed(() => gameStore.opponentUsername);
 // Methods
 async function ready() {
   readying.value = true;
-  const gameAlreadyStartedId = await gameStore.requestReady();
-  readying.value = false;
-  if (gameAlreadyStartedId) {
-    router.push({
-      name: ROUTE_NAME_GAME,
-      params: {
-        gameId: gameAlreadyStartedId,
-      },
-    });
+  try {
+    await gameStore.requestReady();
+  } catch (err) {
+    // If game has already started; navigate to GameView
+    if (err?.code === 'GAME_ALREADY_STARTED') {
+      router.push({
+        name: ROUTE_NAME_GAME,
+        params: {
+          gameId: err.gameId,
+        },
+      });
+    }
   }
+  readying.value = false;
 }
 
 async function setIsRanked() {

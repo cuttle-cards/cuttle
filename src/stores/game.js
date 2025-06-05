@@ -5,7 +5,6 @@ import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
-
 /**
  * @returns number of queens a given player has
  * @param player is the player object
@@ -491,8 +490,10 @@ export const useGameStore = defineStore('game', {
         io.socket.post(`/api/game/${this.id}/ready`, (res, jwres) => {
           if (jwres.statusCode === 200) {
             return resolve();
-          } else if (jwres.statusCode === 400 && res.code === 'ALREADY_STARTED') {
-            return resolve(this.id);
+          }
+          // If game has already started, throw specific signal so lobbyview can handle it
+          if (jwres.statusCode === 409) {
+            return reject({ message: res.message, gameId: this.id, code: res.code });
           }
           return reject(new Error('Error readying for game'));
         });

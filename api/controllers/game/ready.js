@@ -1,6 +1,6 @@
 const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
-const BadRequestError = require('../../errors/badRequestError');
+const GameAlreadyStartedError = require('../../errors/gameAlreadyStartedError');
 const GameStatus = require('../../../utils/GameStatus');
 
 module.exports = async function (req, res) {
@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
     game.players = [ game.p0, game.p1 ];
 
     if (game.status !== GameStatus.CREATED || (game.p0Ready && game.p1Ready)) {
-      throw new BadRequestError('This game has already started');
+      throw new GameAlreadyStartedError(Number(gameId));
     }
 
     // Determine who is ready
@@ -78,8 +78,10 @@ module.exports = async function (req, res) {
 
     const message = err?.raw?.message ?? err?.message ?? err;
     switch (err?.code) {
-      case CustomErrorType.BAD_REQUEST:
-        return res.badRequest({ message, code: 'ALREADY_STARTED' });
+      // Special 409 conflict response if game has already started
+      // lets client know to navigate to GameView
+      case CustomErrorType.GAME_ALREADY_STARTED:
+        return res.status(409).json({ code: err.code, message: err.message, gameId: err.gameId });
       case CustomErrorType.FORBIDDEN:
         return res.forbidden({ message });
       default:
