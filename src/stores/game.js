@@ -1,6 +1,8 @@
+import { useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 import { cloneDeep } from 'lodash';
+import { ROUTE_NAME_GAME } from '@/router';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
 import { sleep } from '../util/sleep';
@@ -491,6 +493,8 @@ export const useGameStore = defineStore('game', {
         io.socket.post(`/api/game/${this.id}/ready`, (res, jwres) => {
           if (jwres.statusCode === 200) {
             return resolve(res);
+          } else if (jwres.statusCode === 400 && res.code === 'ALREADY_STARTED') {
+            return resolve(this.id);
           }
           return reject(new Error('Error readying for game'));
         });

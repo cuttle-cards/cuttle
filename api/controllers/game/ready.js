@@ -1,5 +1,6 @@
 const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
+const BadRequestError = require('../../errors/badRequestError');
 const GameStatus = require('../../../utils/GameStatus');
 
 module.exports = async function (req, res) {
@@ -9,6 +10,10 @@ module.exports = async function (req, res) {
   try {
     game =  await sails.helpers.lockGame(gameId);
     game.players = [ game.p0, game.p1 ];
+
+    if (game.status !== GameStatus.CREATED || (game.p0Ready && game.p1Ready)) {
+      throw new BadRequestError('This game has already started');
+    }
 
     // Determine who is ready
     let pNum;
@@ -73,6 +78,8 @@ module.exports = async function (req, res) {
 
     const message = err?.raw?.message ?? err?.message ?? err;
     switch (err?.code) {
+      case CustomErrorType.BAD_REQUEST:
+        return res.badRequest({ message, code: 'ALREADY_STARTED' });
       case CustomErrorType.FORBIDDEN:
         return res.forbidden({ message });
       default:

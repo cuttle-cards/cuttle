@@ -108,6 +108,7 @@ import { playAudio } from '@/util/audio.js';
 import PlayerReadyIndicator from '@/components/PlayerReadyIndicator.vue';
 import BaseSnackbar from '@/components/BaseSnackbar.vue';
 import TheLanguageSelector from '@/components/TheLanguageSelector.vue';
+import { ROUTE_NAME_GAME } from '_/src/router';
 
 // Deps
 const { t } = useI18n();
@@ -141,8 +142,16 @@ const opponentUsername = computed(() => gameStore.opponentUsername);
 // Methods
 async function ready() {
   readying.value = true;
-  await gameStore.requestReady();
+  const gameAlreadyStartedId = await gameStore.requestReady();
   readying.value = false;
+  if (gameAlreadyStartedId) {
+    router.push({
+      name: ROUTE_NAME_GAME,
+      params: {
+        gameId: gameAlreadyStartedId,
+      },
+    });
+  }
 }
 
 async function setIsRanked() {
