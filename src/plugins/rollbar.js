@@ -51,6 +51,6 @@ export default {
 
       rollbar.error(error, { vueComponent, info });
     };
-    // app.provide('rollbar', rollbar);
+    app.provide('rollbar', rollbar);
   },
 };
