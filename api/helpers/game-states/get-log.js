@@ -39,7 +39,7 @@ module.exports = {
           row[`p${row.playedBy}Hand`]?.length - previousRow[`p${row.playedBy}Hand`]?.length;
         amountOfCardsDrawn += row.discardedCards.length; // account for discarded cards in num drawn
 
-        return amountOfCardsDrawn === 1 ? `draws 1 card` : `draws ${amountOfCardsDrawn} cards`;
+        return amountOfCardsDrawn === 1 ? `drew 1 card` : `drew ${amountOfCardsDrawn} cards`;
       };
 
       switch (moveType) {
@@ -129,7 +129,7 @@ module.exports = {
               discardedCards[0],
             )} and ${getResolveFiveMessage()}`;
           }
-          return `${player} ${getResolveFiveMessage()}`;
+          return `${player} skipped discarding (empty hand) and ${getResolveFiveMessage()}`;
 
         case MoveType.SEVEN_POINTS:
           return `${player} played the ${playedCardName} from the top of the deck for points.`;
