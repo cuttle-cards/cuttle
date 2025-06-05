@@ -27,7 +27,7 @@ module.exports = {
       };
 
       const player = game[`p${row.playedBy}`]?.username;
-      const opponent = game[`p${row.playedBy % 2}`]?.username;
+      const opponent = game[`p${(row.playedBy + 1) % 2}`]?.username;
 
       const playedCardName = playedCard ? getFullCardName(playedCard) : null;
       const targetCardName = targetCard ? getFullCardName(targetCard) : null;
@@ -92,11 +92,11 @@ module.exports = {
             case 2:
               return `The ${resolvedCardName} resolves; the ${targetCardName} is scrapped.`;
             case 3:
-              return `The ${resolvedCardName} one-off resolves; ${player} will draw one card of their choice from the Scrap pile.`;
+              return `The ${resolvedCardName} one-off resolves; ${opponent} will draw one card of their choice from the Scrap pile.`;
             case 4:
-              return `The ${resolvedCardName} one-off resolves; ${opponent} must discard two cards.`;
+              return `The ${resolvedCardName} one-off resolves; ${player} must discard two cards.`;
             case 5:
-              return `The ${resolvedCardName} one-off resolves; ${player} must discard 1 card, and will draw up to 3.`;
+              return `The ${resolvedCardName} one-off resolves; ${opponent} must discard 1 card, and will draw up to 3.`;
             case 6:
               return `The ${resolvedCardName} one-off resolves; all Royals and Glasses are scrapped.`;
 
@@ -111,7 +111,7 @@ module.exports = {
               )} and ${getFullCardName(deck[1])}.`;
 
             case 9:
-              return `The ${resolvedCardName} one-off resolves, returning the ${targetCardName} to ${opponent}'s hand. It cannot be played next turn.`;
+              return `The ${resolvedCardName} one-off resolves, returning the ${targetCardName} to ${player}'s hand. It cannot be played next turn.`;
           }
           break;
 
@@ -120,7 +120,7 @@ module.exports = {
 
         case MoveType.RESOLVE_FOUR:
           return `${player} discarded the ${getFullCardName(discardedCards[0])} ${
-            discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}` : '.'
+            discardedCards.length > 1 ? `and the ${getFullCardName(discardedCards[1])}.` : '.'
           }`;
 
         case MoveType.RESOLVE_FIVE:

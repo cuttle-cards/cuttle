@@ -25,6 +25,7 @@ describe('FIVES', () => {
         });
         // Player plays five
         cy.playOneOffAndResolveAsPlayer(Card.FIVE_OF_SPADES);
+        cy.get('[data-cy=history-log]').should('contain', 'The 5♠️ one-off resolves; myUsername must discard 1 card, and will draw up to 3.');
         cy.get('[data-cy=five-discard-dialog]').should('be.visible');
         cy.get('[data-discard-card=1-0]').click();
         cy.get('[data-cy=submit-five-dialog]').click();
