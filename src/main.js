@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import i18n from '@/plugins/i18n';
-import rollbar from '@/plugins/rollbar';
+// import rollbar from '@/plugins/rollbar';
 import vuetify from '@/plugins/vuetify';
 import router from '@/router';
 import { createHead } from '@unhead/vue';
