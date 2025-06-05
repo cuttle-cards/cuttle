@@ -303,7 +303,12 @@
             </h3>
             <v-divider />
             <div id="history-logs" ref="logsContainer" class="d-flex flex-column">
-              <p v-for="(log, index) in logs" :key="index" class="my-2">
+              <p
+                v-for="(log, index) in logs"
+                :key="index"
+                class="my-2"
+                data-cy="history-log"
+              >
                 {{ log }}
               </p>
             </div>
