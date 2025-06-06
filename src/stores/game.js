@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
+import GameStatus from '../../utils/GameStatus.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
+
 /**
  * @returns number of queens a given player has
  * @param player is the player object
@@ -223,9 +226,9 @@ export const useGameStore = defineStore('game', {
       this.p1Ready = newGame.p1Ready ?? this.p1Ready;
       this.passes = newGame.passes ?? this.passes;
       this.players =
-        newGame.players?.map((player) =>
-          setPlayers(player, this.myPNum, this.hasGlassesEight, this.isSpectating),
-        ) ?? this.players;
+      newGame.players?.map((player) =>
+        setPlayers(player, this.myPNum, this.hasGlassesEight, this.isSpectating),
+      ) ?? this.players;
       this.spectatingUsers = newGame.spectatingUsers ?? this.spectatingUsers;
       this.twos = newGame.twos?.map((card) => createGameCard(card)) ?? this.twos;
       this.topCard = createGameCard(newGame.topCard) ?? null;
@@ -236,7 +239,12 @@ export const useGameStore = defineStore('game', {
       this.currentMatch = newGame.currentMatch ?? this.currentMatch;
       this.p0Rematch = newGame.p0Rematch ?? null;
       this.p1Rematch = newGame.p1Rematch ?? null;
+      this.rematchGameId = newGame.rematchGame ?? null;
       this.gameIsOver = newGame.gameIsOver ?? false;
+      this.status = newGame.status ?? GameStatus.ARCHIVED;
+    
+      const gameHistoryStore = useGameHistoryStore();
+      gameHistoryStore.gameStates = newGame.gameStates ?? [];
     },
     opponentJoined(newPlayer) {
       this.players.push(cloneDeep(newPlayer));
@@ -459,7 +467,7 @@ export const useGameStore = defineStore('game', {
         this.isSpectating = true;
         this.updateGame(res.body);
       } catch (err) {
-        const message = err?.message ?? 'Unable to spectate game';
+        const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
         throw(new Error(message));
       }
     },

@@ -171,6 +171,16 @@ export const resolveThree = {
       winner: null,
       topCard: Card.ACE_OF_CLUBS,
       secondCard: Card.TWO_OF_CLUBS,
+      gameStates:  [
+        {
+          discardedCards:  [],
+          moveType: 'resolveThree',
+          playedBy: 0,
+          playedCard: null,
+          resolved: '3S',
+          targetCard: 'TH',
+        },
+      ],
     },
     victory: {
       conceded: false,

@@ -334,7 +334,8 @@
       "spectateTwoPlayers": "Vous ne pouvez regarder qu'une partie en cours avec deux joueurs.",
       "cantFindGame": "Je ne trouve pas le jeu",
       "invalidLobbyNumber": "Numéro de lobby invalide",
-      "cannotSpectate": "Impossible d'etre spectateur parce que vous jouez"
+      "cannotSpectate": "Impossible d'etre spectateur parce que vous jouez",
+      "spectateNoGamestates": "Observation impossible : la partie est trop ancienne"
     },
     "gameFinder": "Recherche de partie",
     "spectate": "SPECTATEUR",

@@ -334,7 +334,8 @@
       "spectateTwoPlayers": "Solo puede ver un juego en curso con dos jugadores.",
       "cantFindGame": "no puede encontrar el juego",
       "invalidLobbyNumber": "Número de lobby no válido",
-      "cannotSpectate": "No puede ver el juego porque estás jugando."
+      "cannotSpectate": "No puede ver el juego porque estás jugando.",
+      "spectateNoGamestates": "No se puede observar: la partida es demasiado antigua"
     },
     "gameFinder": "Buscador de partidas",
     "spectate": "ESPECTAR",

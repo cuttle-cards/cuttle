@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
-import { ROUTE_NAME_SPECTATE } from '@/router';
 import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '_/utils/local-storage-utils.js';
 import { useGameStore } from '@/stores/game';
 
@@ -73,15 +72,11 @@ export const useAuthStore = defineStore('auth', {
         );
       });
     },
-    async requestStatus(route) {
+    async requestStatus() {
       // If we've authenticated before, fast fail
       if (this.authenticated !== null) {
         return;
       }
-
-      const { name } = route;
-
-      const isSpectating = name === ROUTE_NAME_SPECTATE;
 
       try {
         const response = await fetch('/api/user/status', {
@@ -97,12 +92,6 @@ export const useAuthStore = defineStore('auth', {
         // If the user is authenticated and has a username, add it to the store
         if (username) {
           this.authSuccess(username);
-        }
-
-        const gameStore = useGameStore();
-        if (isSpectating) {
-          const { gameId } = route.params;
-          gameStore.requestSpectate(Number(gameId));
         }
 
         return;

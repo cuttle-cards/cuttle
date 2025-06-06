@@ -83,6 +83,47 @@ const getGameState = async (to) => {
   return;
 };
 
+const setupSpectate = async (to) => {
+  const gameStore = useGameStore();
+  let { gameId } = to.params;
+  gameId = Number(gameId);
+  const { gameStateIndex } = to.query;
+  const isValidGameStateIndex = 
+    gameStateIndex !== undefined && 
+    Number.isInteger(Number(gameStateIndex)) && 
+    (Number(gameStateIndex) === -1 || Number(gameStateIndex) >= 0);
+  try {
+    await gameStore.requestSpectate(gameId, gameStateIndex);
+    gameStore.id = gameId;
+    if (isValidGameStateIndex) {
+      return;
+    }
+    // Default to latest gameState if game is ongoing
+    if (gameStore.status === GameStatus.STARTED) {
+      return {
+        ...to,
+        query: {
+          ...to.query,
+          gameStateIndex: -1,
+        },
+        replace: true,
+      };
+    }
+    // Default to first state otherwise
+    return {
+      ...to,
+      query: {
+        ...to.query,
+        gameStateIndex: 0,
+      },
+      replace: true,
+    };
+  } catch (err) {
+    return { name: 'Home', query: { gameId: gameId, error: err?.message ?? err ?? `Could not spectate game ${gameId}` } };
+  }
+
+};
+
 const routes = [
   {
     path: '/',
@@ -156,6 +197,7 @@ const routes = [
     meta: {
       hideNavigation: true,
     },
+    beforeEnter: setupSpectate,
   },
   {
     path: '/stats/:seasonId?',
@@ -198,11 +240,11 @@ const router = createRouter({
   },
 });
 
-router.beforeEach(async (to, _from, next) => {
+router.beforeEach(async (_to, _from, next) => {
   const authStore = useAuthStore();
   // Make sure we try and reestablish a player's session if one exists
   // We do this before the route resolves to preempt the reauth/logout logic
-  await authStore.requestStatus(to);
+  await authStore.requestStatus();
 
   next();
 });
