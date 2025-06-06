@@ -281,13 +281,9 @@ describe('Home - Game List', () => {
           .its('cuttle.authStore')
           .then((store) => store.reconnectSocket());
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
-        assertSnackbar('Unable to spectate game', 'error', 'newgame');
-        // Spectate button should now be disabled
-        cy.get(`[data-cy-spectate-game=${gameId}]`).should('be.disabled');
+        cy.url().should('contain', `/spectate/${gameId}?gameStateIndex=0`);
+        cy.get('[data-player-hand-card]').should('have.length', 5);
       });
-      // Refresh page -- no games available to spectate
-      cy.reload();
-      cy.get('[data-cy=no-spectate-game-text]').should('contain', 'No Games Available to Spectate');
     });
 
     it('Shows ongoing games as available to spectate when user navigates to home page', () => {
