@@ -1,5 +1,5 @@
 <template>
-  <menu data-cy="playback-controls">
+  <menu id="playback-controls" data-cy="playback-controls">
     <v-btn
       :disabled="!gameHistoryStore.canGoToPreviousState"
       variant="text"
@@ -62,3 +62,14 @@ watch(() => gameHistoryStore.currentGameStateIndex, async (newVal) => {
   await gameStore.requestGameState(gameStore.id, newVal);
 });
 </script>
+
+<style scoped>
+#playback-controls {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  bottom: 0;
+  background-color: rgba(var(--v-theme-surface-1)) !important;
+  width: 100%;
+}
+</style>

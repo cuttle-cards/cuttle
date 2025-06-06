@@ -317,7 +317,6 @@
       </div>
 
       <h3 id="player-score">
-        <PlaybackControls v-if="gameHistoryStore.showPlaybackControls" />
         <span>{{ t('game.score.points') }}: {{ gameStore.playerPointTotal }}</span>
         <ScoreGoalToolTip
           :king-count="playerKingCount"
@@ -418,6 +417,7 @@
         @target="beginTargeting"
       />
       <GameDialogs @clear-selection="clearSelection" @handle-error="handleError" />
+      <PlaybackControls v-if="gameHistoryStore.showPlaybackControls" />
     </template>
   </div>
 </template>
