@@ -440,6 +440,7 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
       .then((game) => {
         cy.expect(game.p0Rematch).to.be.true;
         cy.expect(game.p1Rematch).to.be.true;
+        cy.wrap(game.rematchGameId).as('rematchGameId');
       });
 
     cy.signupOpponent(playerThree);
@@ -448,11 +449,10 @@ describe('Creating And Updating Unranked Matches With Rematch - Spectating', () 
 
     cy.get('[data-cy=player-username]').should('contain', playerTwo.username);
 
-    cy.window()
-      .its('cuttle.gameStore')
-      .then((game) => {
-        cy.url({ timeout: 10000 }).should('include', `/spectate/${game.id}`);
-        cy.setOpponentToSpectate(game.id);
+    cy.get('@rematchGameId')
+      .then((rematchGameId) => {
+        cy.url({ timeout: 10000 }).should('include', `/spectate/${rematchGameId}`);
+        cy.setOpponentToSpectate(rematchGameId);
       });
 
     cy.get('[data-cy="spectate-list-button"]').should('contain', '2')
