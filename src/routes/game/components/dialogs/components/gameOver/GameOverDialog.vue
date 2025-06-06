@@ -291,17 +291,26 @@ export default {
       this.gameStore.iWantToContinueSpectating = true;
       if (this.gameStore.p0Rematch && this.gameStore.p1Rematch) {
         this.gameStore.iWantToContinueSpectating = false;
-        await this.gameStore.requestSpectate(this.gameStore.rematchGameId);
-        const gameStateIndex = this.gameStore.status === GameStatus.STARTED ? -1 : 0;
-        this.$router.push({
-          name: this.$router.currentRoute.name,
-          params: {
-            gameId: this.gameStore.rematchGameId,
-          },
-          query: {
-            gameStateIndex,
-          },
-        });
+        let rematchGameId;
+        try {
+          ({ rematchGameId } = this.gameStore);
+          await this.gameStore.requestSpectate(rematchGameId);
+          const gameStateIndex = this.gameStore.status === GameStatus.STARTED ? -1 : 0;
+          this.$router.push({
+            name: this.$router.currentRoute.name,
+            params: {
+              gameId: rematchGameId,
+            },
+            query: {
+              gameStateIndex,
+            },
+          });
+        } catch (err) {
+          this.$router.push({
+            name: 'Home',
+            query: { gameId: rematchGameId, error: err?.message ?? err ?? `Could not spectate game ${rematchGameId}`
+            } });
+        }
       }
       return;
     },

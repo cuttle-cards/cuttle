@@ -88,21 +88,36 @@ const setupSpectate = async (to) => {
   let { gameId } = to.params;
   gameId = Number(gameId);
   const { gameStateIndex } = to.query;
-
+  const isValidGameStateIndex = 
+    gameStateIndex !== undefined && 
+    Number.isInteger(Number(gameStateIndex)) && 
+    (Number(gameStateIndex) === -1 || Number(gameStateIndex) >= 0);
   try {
-    await gameStore.requestSpectate(gameId);
+    await gameStore.requestSpectate(gameId, gameStateIndex);
     gameStore.id = gameId;
-    // Default to first gameState if unspecified
-    if (!gameStateIndex) {
+    if (isValidGameStateIndex) {
+      return;
+    }
+    // Default to latest gameState if game is ongoing
+    if (gameStore.status === GameStatus.STARTED) {
       return {
         ...to,
         query: {
           ...to.query,
-          gameStateIndex: 0,
+          gameStateIndex: -1,
         },
+        replace: true,
       };
     }
-    return;
+    // Default to first state otherwise
+    return {
+      ...to,
+      query: {
+        ...to.query,
+        gameStateIndex: 0,
+      },
+      replace: true,
+    };
   } catch (err) {
     return { name: 'Home', query: { gameId: gameId, error: err?.message ?? err ?? `Could not spectate game ${gameId}` } };
   }
