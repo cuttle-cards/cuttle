@@ -166,6 +166,9 @@ module.exports = {
         case MoveType.PASS:
           return `${player} passed.`;
 
+        case MoveType.CONCEDE:
+          return `${player} conceded`;
+
         case MoveType.STALEMATE_REQUEST:
           return `${player} requested a stalemate`;
 

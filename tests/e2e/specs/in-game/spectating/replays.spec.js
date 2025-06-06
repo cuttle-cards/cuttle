@@ -244,7 +244,9 @@ describe('Rewatching finished games', () => {
         .find('[data-cy=step-forward]')
         .click();
       cy.url().should('contain', '?gameStateIndex=2');
-      cy.get('[data-cy=history-log]').should('have.length', 3);
+      cy.get('[data-cy=history-log]')
+        .should('have.length', 3)
+        .should('contain', 'Player1 conceded');
 
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: false, rematchWasDeclined: true });
     });
