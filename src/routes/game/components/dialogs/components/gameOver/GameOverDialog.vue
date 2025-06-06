@@ -292,11 +292,14 @@ export default {
       if (this.gameStore.p0Rematch && this.gameStore.p1Rematch) {
         this.gameStore.iWantToContinueSpectating = false;
         await this.gameStore.requestSpectate(this.gameStore.rematchGameId);
-
+        const gameStateIndex = this.gameStore.status === GameStatus.STARTED ? -1 : 0;
         this.$router.push({
           name: this.$router.currentRoute.name,
           params: {
             gameId: this.gameStore.rematchGameId,
+          },
+          query: {
+            gameStateIndex,
           },
         });
       }

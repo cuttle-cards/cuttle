@@ -5,8 +5,10 @@ import { useGameHistoryStore } from '@/stores/gameHistory';
 import { cloneDeep } from 'lodash';
 import { io } from '@/plugins/sails.js';
 import MoveType from '../../utils/MoveType.json';
+import GameStatus from '../../utils/GameStatus.json';
 import { sleep } from '../util/sleep';
 import { handleInGameEvents } from '@/plugins/sockets/inGameEvents';
+
 /**
  * @returns number of queens a given player has
  * @param player is the player object
@@ -238,7 +240,9 @@ export const useGameStore = defineStore('game', {
       this.currentMatch = newGame.currentMatch ?? this.currentMatch;
       this.p0Rematch = newGame.p0Rematch ?? null;
       this.p1Rematch = newGame.p1Rematch ?? null;
+      this.rematchGameId = newGame.rematchGame ?? null;
       this.gameIsOver = newGame.gameIsOver ?? false;
+      this.status = newGame.status ?? GameStatus.ARCHIVED;
     
       const gameHistoryStore = useGameHistoryStore();
       gameHistoryStore.gameStates = newGame.gameStates ?? [];

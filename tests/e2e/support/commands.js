@@ -13,11 +13,12 @@ io.sails.useCORSRouteToGetCookie = false;
 const transformGameUrl = (api, slug, gameId = null) => {
 
   switch (slug) {
-    case 'rematch':
-      return cy
-        .window()
-        .its('cuttle.gameStore.id')
-        .then((gameId) => `/api/game/${gameId}/rematch`);
+    case 'rematch': 
+      return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/rematch`)  :
+        cy
+          .window()
+          .its('cuttle.gameStore.id')
+          .then((gameId) => `/api/game/${gameId}/rematch`);
     case 'spectate':
       return gameId ? Cypress.Promise.resolve(`/api/game/${gameId}/spectate`) :
         cy
@@ -690,7 +691,11 @@ Cypress.Commands.add('rematchAndJoinRematchOpponent', ({ gameId }) => {
  *  is originalP0 ('my') or originalP1 ('opponent'). For use when spectating
  */
 Cypress.Commands.add('rematchOpponent', ({ gameId, rematch, whichPlayer, skipDomAssertion }) => {
-  cy.makeSocketRequest('game', 'rematch', { gameId, rematch });
+  cy.makeSocketRequest('game', 'rematch', { rematch }, 'POST', gameId).then((res) => {
+    if (res?.newGameId) {
+      cy.wrap(res.newGameId).as(`game${gameId}RematchId`);
+    }
+  });
 
   if (skipDomAssertion) {
     return;

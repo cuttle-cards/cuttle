@@ -16,7 +16,7 @@ describe('Rewatching finished games', () => {
     cy.signupOpponent(playerTwo);
   });
 
-  it('Watches a finished game clicking through the moves one at a time', () => {
+  it.only('Watches a finished game clicking through the moves one at a time', () => {
     setupGameBetweenTwoUnseenPlayers('replay');
 
     cy.get('@replayGameId').then((gameId) => {
@@ -52,6 +52,28 @@ describe('Rewatching finished games', () => {
 
       cy.recoverSessionOpponent(playerOne);
       cy.playPointsOpponent(Card.TEN_OF_HEARTS, gameId);
+
+      // Both players rematch and create new game
+      cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
+      cy.recoverSessionOpponent(playerTwo);
+      cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
+      cy.get(`@game${gameId}RematchId`).then((rematchGameId) => {
+        cy.loadGameFixture(0, {
+          p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+          p1Points: [],
+          p1FaceCards: [],
+          topCard: Card.SEVEN_OF_HEARTS,
+          secondCard: Card.FOUR_OF_HEARTS,
+        }, rematchGameId);
+
+        cy.recoverSessionOpponent(playerOne);
+        cy.concedeOpponent(rematchGameId);
+        cy.rematchOpponent({ gameId: rematchGameId, rematch: false, skipDomAssertion: true });
+      });
+
 
       cy.visit('/');
       cy.signupPlayer(myUser);
@@ -193,10 +215,16 @@ describe('Rewatching finished games', () => {
       });
 
       assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
+
+      // Navigate to next game
+      cy.get('[data-cy=gameover-rematch]').click();
+
+      // Should start on the first state since game is finished
+      cy.url().should('contain', '?gameStateIndex=0');
     });
   }); // end it('Watches a finished game clicking through the moves one at a time')
 
-  it.only('Prevents spectating a game that has no gamestates', function() {
+  it('Prevents spectating a game that has no gamestates', function() {
     cy.loadFinishedGameFixtures([
       {
         name: 'Game predating game state API',
