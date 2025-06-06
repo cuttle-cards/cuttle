@@ -10,6 +10,7 @@
         data-cy="skip-backward"
         @click="goToState(0)"
       />
+
       <!-- Step backward -->
       <v-btn
         :disabled="!gameHistoryStore.canGoToPreviousState"
