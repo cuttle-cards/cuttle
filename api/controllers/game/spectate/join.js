@@ -21,9 +21,9 @@ module.exports = async function (req, res) {
       return res.status(404).json({ message: `Can't find game ${gameId}` });
     }
 
-    // Can't spectate if you're a player in the game
+    // Can't spectate if you're a player in an ongoing game
     const { p0, p1 } = game;
-    if ([ p0?.id, p1?.id ].includes(( id ) => id === spectator.id)) {
+    if (game.status === GameStatus.STARTED && [ p0?.id, p1?.id ].includes(spectator.id)) {
       return res.forbidden({ message: 'home.snackbar.cannotSpectate' });
     }
 

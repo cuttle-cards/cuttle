@@ -28,6 +28,15 @@ function setup() {
 describe('Spectating Games', () => {
   beforeEach(setup);
 
+  it('Prevents spectating your own game while it\'s ongoing', () => {
+    cy.setupGameAsP0();
+    cy.get('@gameId').then((gameId) => {
+      cy.visit(`/spectate/${gameId}`);
+      cy.url().should('not.include', `/spectate/${gameId}`);
+      assertSnackbar(`Cannot spectate game because you are playing`, 'error', 'newgame');
+    });
+  });
+
   it('Spectates a game', () => {
     cy.setupGameAsSpectator();
     cy.loadGameFixture(0, {
