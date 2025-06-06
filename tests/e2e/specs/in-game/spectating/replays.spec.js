@@ -16,7 +16,7 @@ describe('Rewatching finished games', () => {
     cy.signupOpponent(playerTwo);
   });
 
-  it.only('Watches a finished game clicking through the moves one at a time', () => {
+  it('Watches a finished game clicking through the moves one at a time', () => {
     setupGameBetweenTwoUnseenPlayers('replay');
 
     cy.get('@replayGameId').then((gameId) => {
@@ -221,6 +221,32 @@ describe('Rewatching finished games', () => {
 
       // Should start on the first state since game is finished
       cy.url().should('contain', '?gameStateIndex=0');
+
+      // Step forward to game 2 state 1 (loaded game fixture)
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-forward]')
+        .click();
+      cy.url().should('contain', '?gameStateIndex=1');
+      cy.get('[data-cy=history-log]').should('have.length', 2);
+
+      assertGameState(0, {
+        p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.SEVEN_OF_HEARTS,
+        secondCard: Card.FOUR_OF_HEARTS,
+      });
+
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-forward]')
+        .click();
+      cy.url().should('contain', '?gameStateIndex=2');
+      cy.get('[data-cy=history-log]').should('have.length', 3);
+
+      assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 1, stalemates: 0, winner: 'p2', isRanked: false, rematchWasDeclined: true });
     });
   }); // end it('Watches a finished game clicking through the moves one at a time')
 

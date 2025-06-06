@@ -528,7 +528,7 @@ export function setupGameBetweenTwoUnseenPlayers(gameName) {
   });
 }
 
-export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, isRanked }) {
+export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, isRanked, rematchWasDeclined }) {
   let headingDataCy;
   let headingText;
   let selectedScore;
@@ -573,11 +573,13 @@ export function assertGameOverAsSpectator({ p1Wins, p2Wins, stalemates, winner, 
   cy.get(selectedScore).should('have.class', 'selected');
 
   const isRankedIcon = isRanked ? 'ranked-icon' : 'casual-icon';
-  const bannerMessage = matchIsOver ? 'Good Match!' : 'Continue Spectating?';
+  const rankedIconVisibility = rematchWasDeclined ? 'not.exist' : 'be.visible';
+  const bannerMessage = matchIsOver ? 'Good Match!' : rematchWasDeclined ? 'Player left - click to go home.' : 'Continue Spectating?';
   cy.get('[data-cy=continue-match-banner]')
     .should('be.visible')
     .should('contain', bannerMessage)
-    .find(`[data-cy=${isRankedIcon}]`);
+    .find(`[data-cy=${isRankedIcon}]`)
+    .should(rankedIconVisibility);
 }
 
 export function rematchPlayerAsSpectator(userFixture, rematch = true) {
