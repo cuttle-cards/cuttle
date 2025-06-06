@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { io, reconnectSockets } from '@/plugins/sails.js';
-import { ROUTE_NAME_SPECTATE } from '@/router';
 import { getLocalStorage, setLocalStorage, LS_IS_RETURNING_USER_NAME } from '_/utils/local-storage-utils.js';
 import { useGameStore } from '@/stores/game';
 
