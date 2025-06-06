@@ -65,6 +65,7 @@ module.exports = {
           'playedCard',
           'targetCard',
           'discardedCards',
+          'resolved',
         ]);
       });
 

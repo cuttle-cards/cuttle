@@ -200,6 +200,16 @@ export const points = {
         happened: true,
         pNum: 0,
       },
+      gameStates:  [
+        {
+          discardedCards:  [],
+          moveType: MoveType.POINTS,
+          playedBy: 0,
+          playedCard: 'TS',
+          resolved: null,
+          targetCard: null,
+        },
+      ],
     },
     victory: {
       gameOver: true,
