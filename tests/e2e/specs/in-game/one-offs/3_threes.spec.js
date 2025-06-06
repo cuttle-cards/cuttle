@@ -48,6 +48,7 @@ describe('Playing THREEs', () => {
     cy.resolveOpponent();
 
     cy.get('#waiting-for-opponent-counter-scrim').should('not.exist');
+    cy.get('[data-cy="history-log"]').should('contain', 'The 3♣️ one-off resolves; myUsername will draw one card of their choice from the Scrap pile.');
 
     cy.get('#three-dialog').should('be.visible');
     // resolve button should be disabled
