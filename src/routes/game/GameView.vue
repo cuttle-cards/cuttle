@@ -342,7 +342,7 @@
             :class="{ 'my-turn': gameStore.isPlayersTurn }"
           >
             <UsernameToolTip
-              v-if="$vuetify.display.smAndUp"
+              v-if="$vuetify.display.smAndUp && !gameHistoryStore.showPlaybackControls"
               id="player-username-container"
               key="player-username"
               :username="gameStore.playerUsername"
