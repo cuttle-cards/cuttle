@@ -84,7 +84,7 @@ watch(() => gameHistoryStore.currentGameStateIndex, async (newVal) => {
   bottom: 0;
   background-color: rgba(var(--v-theme-surface-1)) !important;
   width: 100%;
-  z-index: 2401; /* 1 greater than v-dialog's z-index */
+  z-index: 2411; /* 1 greater than v-dialog's z-index */
 }
 
 #playback-controls-button-wrapper {
