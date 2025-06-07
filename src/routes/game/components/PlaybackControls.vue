@@ -17,7 +17,7 @@
         variant="text"
         icon="mdi-step-backward"
         data-cy="step-backward"
-        @click="goToState(currentGameStateIndex - 1)"
+        @click="goToState(previousGameStateIndex)"
       />
 
       <!-- Step forward -->
@@ -53,6 +53,11 @@ const gameHistoryStore = useGameHistoryStore();
 const gameStore = useGameStore();
 
 const currentGameStateIndex = computed(() => gameHistoryStore.currentGameStateIndex);
+
+const previousGameStateIndex = computed(() => currentGameStateIndex.value === -1 ?
+  gameHistoryStore.gameStates.length - 2 :
+  currentGameStateIndex.value - 1
+);
 
 function goToState(gameStateIndex) {
   const route = router.currentRoute.value;

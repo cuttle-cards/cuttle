@@ -273,9 +273,69 @@ describe('Rewatching finished games', () => {
       cy.loginPlayer(playerOne);
       rewatchCasualMatch(this.replayGameId);
     });
+
+    it.only('Steps and skips backwards from latest state (-1)', function () {
+
+      cy.visit('/');
+      cy.signupPlayer(myUser);
+      cy.visit(`/spectate/${this.replayGameId}?gameStateIndex=-1`);
+
+      cy.url().should('contain', '?gameStateIndex=-1');
+      cy.get('[data-cy=playback-controls]')
+        .find('[data-cy=step-backward]')
+        .should('be.visible')
+        .click();
+
+      cy.url().should('contain', '?gameStateIndex=5');
+
+      assertGameState(0, {
+        p0Hand: [ Card.TEN_OF_SPADES, Card.ACE_OF_CLUBS, Card.TEN_OF_HEARTS ],
+        p0Points: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS ],
+        p0FaceCards: [],
+        p1Hand: [
+          Card.TWO_OF_CLUBS,
+          Card.TWO_OF_DIAMONDS,
+          Card.TWO_OF_HEARTS,
+          Card.TWO_OF_SPADES,
+          Card.THREE_OF_CLUBS,
+          Card.THREE_OF_DIAMONDS,
+          Card.SEVEN_OF_HEARTS,
+          Card.FOUR_OF_HEARTS,
+        ],
+        p1Points: [],
+        p1FaceCards: [],
+      });
+    });
   });
 
 
+  it('Navigates directly to a particular state of a finished game', () => {
+
+  });
+
+  it('Allows navigating across states when dialogs and overlays appear', () => {
+    setupGameBetweenTwoUnseenPlayers('replay');
+    cy.get('@replayGameId').then((gameId) => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.ACE_OF_CLUBS, Card.TWO_OF_HEARTS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TWO_OF_DIAMONDS ],
+        p1Points: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS ],
+        p1FaceCards: [],
+        topCard: Card.SEVEN_OF_HEARTS,
+        secondCard: Card.FOUR_OF_HEARTS,
+      }, gameId);
+
+      cy.recoverSessionOpponent(playerOne);
+      cy.playOneOffOpponent(Card.ACE_OF_CLUBS, gameId);
+
+      // Spectate
+      cy.visit('/');
+      cy.signupPlayer(myUser);
+      cy.visit(`/spectate/${gameId}`);
+    });
+  });
   
   describe('Error handling', () => {
     it('Prevents spectating a game that has no gamestates', function() {
