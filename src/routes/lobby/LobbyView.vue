@@ -57,7 +57,7 @@
                   class="mx-md-4 pl-2 flex-shrink-0"
                   :label="gameStore.isRanked ? t('global.ranked') : t('global.casual')"
                   data-cy="edit-game-ranked-switch"
-                  color="primary"
+                  color="newPrimary"
                   hide-details
                   @update:model-value="setIsRanked"
                   @keydown.enter.stop="(e) => e.target.click()"
