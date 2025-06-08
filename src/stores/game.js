@@ -463,10 +463,10 @@ export const useGameStore = defineStore('game', {
     async requestSpectate(gameId, gameStateIndex = 0, route = null) {
       const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
       try {
-        this.resetState();
         const res = await this.makeSocketRequest(slug, {});
         this.myPNum = 0;
         this.isSpectating = true;
+        this.id = gameId;
         return handleInGameEvents(res.body, route);
       } catch (err) {
         const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;

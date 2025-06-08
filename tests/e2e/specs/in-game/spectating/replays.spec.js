@@ -447,7 +447,7 @@ describe('Rewatching finished games', () => {
       });
     });
 
-    it.only('Prevents making moves in finished games', function () {
+    it('Prevents making moves in finished games', function () {
       createAndPlayGameWithOneOffs();
       cy.visit('/');
       cy.loginPlayer(playerOne);
