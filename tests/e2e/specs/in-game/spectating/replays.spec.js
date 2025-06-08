@@ -338,7 +338,7 @@ describe('Rewatching finished games', () => {
       cy.visit('/');
     });
 
-    it.only('Navigates directly to a particular state of a finished game', () => {
+    it('Navigates directly to a particular state of a finished game', () => {
       cy.loginPlayer(playerOne);
       cy.get('@replayGameId').then((gameId) => {
         cy.visit(`/spectate/${gameId}?gameStateIndex=2`);
@@ -447,8 +447,16 @@ describe('Rewatching finished games', () => {
       });
     });
 
-    it('Prevents making moves in finished games', () => {
+    it.only('Prevents making moves in finished games', function () {
+      createAndPlayGameWithOneOffs();
+      cy.visit('/');
+      cy.loginPlayer(playerOne);
+      cy.get('@replayGameId').then((gameId) => {
+        cy.visit(`/spectate/${gameId}`);
+      });
 
+      cy.get('#deck').click();
+      assertSnackbar('Can\'t make move: this game is over');
     });
   }); // describe('Error Handling')
 }); // describe('Rewatching finished games')

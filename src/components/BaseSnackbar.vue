@@ -10,6 +10,7 @@
     class="base-snackbar"
     position="fixed"
     location="bottom"
+    z-index="2412"
     :data-cy="dataCy"
     @update:model-value="$emit('update:modelValue', $event)"
   >

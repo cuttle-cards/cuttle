@@ -2,6 +2,8 @@
 const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
 const BadRequestError = require('../../errors/badRequestError');
+const ConflictError = require('../../errors/conflictError');
+const GameStatus = require('../../../utils/GameStatus');
 
 module.exports = async function (req, res) {
   let game;
@@ -18,7 +20,7 @@ module.exports = async function (req, res) {
     // Validate Request //
     //////////////////////
     // Game must be in progress
-    if (!game.gameStates.length || !gameState) {
+    if (!game?.gameStates?.length || !gameState) {
       throw new BadRequestError({ message: 'Game has not yet started' });
     }
 
@@ -33,6 +35,10 @@ module.exports = async function (req, res) {
         break;
       default:
         throw new ForbiddenError('You are not a player in this game!');
+    }
+
+    if ([ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(game.status)) {
+      throw new ConflictError('game', game.id, 'Can\'t make move: this game is over');
     }
 
     // Move must be legal in current state
@@ -66,6 +72,8 @@ module.exports = async function (req, res) {
         return res.forbidden({ message });
       case CustomErrorType.BAD_REQUEST:
         return res.badRequest({ message });
+      case CustomErrorType.CONFLICT:
+        return res.status(409).json({ message });
       default:
         return res.serverError({ message });
     }
