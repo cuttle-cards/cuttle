@@ -147,7 +147,7 @@ export default {
         .requestSpectate(this.gameId)
         .then(() => {
           this.joiningGame = false;
-          this.$router.push(`/spectate/${this.gameId}`);
+          this.$router.push(`/spectate/${this.gameId}?gameStateIndex=-1`);
         })
         .catch((error) => {
           this.joiningGame = false;

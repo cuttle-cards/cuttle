@@ -444,6 +444,7 @@ export const useGameStore = defineStore('game', {
         io.socket.get(`/api/game/${gameId}?gameStateIndex=${gameStateIndex}`, (res, jwres) => {
           switch (jwres.statusCode) {
             case 200:
+              this.resetState();
               this.resetPNumIfNullThenUpdateGame(res.game);
               return handleInGameEvents(res, route).then(() => {
                 return resolve(res);
@@ -459,13 +460,14 @@ export const useGameStore = defineStore('game', {
       });
     },
 
-    async requestSpectate(gameId) {
-      const slug = `${gameId}/spectate`;
+    async requestSpectate(gameId, gameStateIndex = 0, route = null) {
+      const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
       try {
-        const res = await this.makeSocketRequest(slug, { gameId });
+        this.resetState();
+        const res = await this.makeSocketRequest(slug, {});
         this.myPNum = 0;
         this.isSpectating = true;
-        this.updateGame(res.body);
+        return handleInGameEvents(res.body, route);
       } catch (err) {
         const message = err?.message ?? err ?? `Unable to spectate game ${gameId}`;
         throw(new Error(message));

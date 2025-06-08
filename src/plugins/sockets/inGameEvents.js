@@ -13,7 +13,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
   const { gameId: urlGameId } = targetRoute.params;
   const eventGameId = evData.game?.id ?? evData.gameId;
   const isSpectating = targetRoute.name === ROUTE_NAME_SPECTATE;
-
   // No-op if the event's gameId doesn't match the url
   if (
     ![ SocketEvent.REMATCH, SocketEvent.NEW_GAME_FOR_REMATCH, SocketEvent.JOIN_REMATCH ].includes(

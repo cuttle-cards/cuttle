@@ -49,17 +49,31 @@ module.exports = async function (req, res) {
     }
 
     const { unpackGamestate, createSocketEvent } = sails.helpers.gameStates;
-    // Show first gamestate for finished games, last for live ones
-    const gameStateIndex = [ GameStatus.FINISHED, GameStatus.ARCHIVED ].includes(game.status) ? 0 : -1;
+    // Default to first gamestate for finished games, last for live ones
+    const gameStateIndex = Number(
+      req.query.gameStateIndex ?? (
+        [ GameStatus.FINISHED, GameStatus.ARCHIVED ]
+          .includes(game.status) ? 0 : -1
+      )
+    );
+
+    const packedGameState = game.gameStates.at(gameStateIndex);
+    if (!packedGameState) {
+      return res
+        .status(404)
+        .json({
+          message: `Could not find game state ${gameStateIndex} for game ${game.id}`
+        });
+    }
     const gameState = unpackGamestate(game.gameStates.at(gameStateIndex));
     const socketEvent = await createSocketEvent(game, gameState);
     Game.publish([ game.id ], socketEvent);
 
 
-    return res.ok(socketEvent.game);
+    return res.ok(socketEvent);
 
   } catch (err) {
 
-    return res.badRequest(err);
+    return res.serverError(err);
   }
 };

@@ -386,7 +386,7 @@ Cypress.Commands.add('scuttleOpponent', (card, target) => {
   });
 });
 
-Cypress.Commands.add('playOneOffOpponent', (card) => {
+Cypress.Commands.add('playOneOffOpponent', (card, gameId = null) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error(`Cannot play one-off as opponent with invalid card ${card}`);
   }
@@ -395,7 +395,7 @@ Cypress.Commands.add('playOneOffOpponent', (card) => {
   cy.makeSocketRequest('game', 'untargetedOneOff', {
     moveType,
     cardId: card.id,
-  });
+  }, 'POST', gameId);
 });
 
 /**
@@ -424,14 +424,14 @@ Cypress.Commands.add('playTargetedOneOffOpponent', (card, target, targetType) =>
 /**
  * @param card {suit: number, rank: number}
  */
-Cypress.Commands.add('counterOpponent', (card) => {
+Cypress.Commands.add('counterOpponent', (card, gameId = null) => {
   if (!hasValidSuitAndRank(card)) {
     throw new Error(`Cannot counter one-off with invalid card ${card}`);
   }
 
   const moveType = MoveType.COUNTER;
   const cardId = card.id;
-  cy.makeSocketRequest('game', 'counter', { moveType, cardId });
+  cy.makeSocketRequest('game', 'counter', { moveType, cardId }, 'POST', gameId);
 });
 
 Cypress.Commands.add('resolveFiveOpponent', (card) => {
@@ -450,9 +450,9 @@ Cypress.Commands.add('resolveThreeOpponent', (card) => {
   cy.makeSocketRequest('game', 'resolveThree', { moveType, cardId });
 });
 
-Cypress.Commands.add('resolveOpponent', () => {
+Cypress.Commands.add('resolveOpponent', (gameId = null) => {
   const moveType = MoveType.RESOLVE;
-  cy.makeSocketRequest('game', 'resolve', { moveType });
+  cy.makeSocketRequest('game', 'resolve', { moveType }, 'POST', gameId);
 });
 
 /**
