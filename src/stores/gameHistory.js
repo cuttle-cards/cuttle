@@ -4,6 +4,7 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import  { useGameStore } from '@/stores/game';
 import { ROUTE_NAME_SPECTATE } from '@/router';
+import GameStatus from '../../utils/GameStatus.json';
 
 export const useGameHistoryStore = defineStore('gameHistory', () => {
   // Dependencies
@@ -54,7 +55,7 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   });
 
   const showPlaybackControls = computed(() => {
-    return isSpectating.value;
+    return isSpectating.value && [GameStatus.FINISHED, GameStatus.ARCHIVED].includes(gameStore.status);
   });
 
   const canGoToPreviousState = computed(() => {
