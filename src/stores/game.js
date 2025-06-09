@@ -81,7 +81,6 @@ export const useGameStore = defineStore('game', {
     rematchGameId: null,
     passes: 0,
     players: [],
-    isSpectating: false,
     spectatingUsers: [],
     scrap: [],
     turn: 0,
@@ -285,11 +284,15 @@ export const useGameStore = defineStore('game', {
     },
     resetPNumIfNull(game) {
       const authStore = useAuthStore();
+      const gameHistoryStore = useGameHistoryStore();
       // Set my pNum if it is null
       if (this.myPNum === null) {
         let myPNum = game.players.findIndex(({ username }) => username === authStore.username);
         if (myPNum === -1) {
           myPNum = null;
+        }
+        if (gameHistoryStore.isSpectating) {
+          myPNum = 0;
         }
         this.myPNum = myPNum;
       }
@@ -465,7 +468,6 @@ export const useGameStore = defineStore('game', {
       try {
         const res = await this.makeSocketRequest(slug, {});
         this.myPNum = 0;
-        this.isSpectating = true;
         this.id = gameId;
         return handleInGameEvents(res.body, route);
       } catch (err) {

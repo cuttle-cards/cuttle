@@ -12,6 +12,8 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
 
   // State
   const gameStates = ref([]);
+
+  const isSpectating = computed(() => route.name === ROUTE_NAME_SPECTATE);
   
   
   // Reactive getter for the current game state index from route query
@@ -52,7 +54,7 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
   });
 
   const showPlaybackControls = computed(() => {
-    return route.name === ROUTE_NAME_SPECTATE;
+    return isSpectating.value;
   });
 
   const canGoToPreviousState = computed(() => {
@@ -66,6 +68,7 @@ export const useGameHistoryStore = defineStore('gameHistory', () => {
 
   return {
     gameStates,
+    isSpectating,
     currentGameStateIndex,
     currentGameState,
     priorGameStates,

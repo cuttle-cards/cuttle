@@ -481,7 +481,7 @@ export default {
   computed: {
     ...mapStores(useAuthStore, useGameStore, useGameHistoryStore),
     isSpectating() {
-      return this.gameStore.isSpectating;
+      return this.gameHistoryStore.isSpectating;
     },
     menuWrapperStyle() {
       return {

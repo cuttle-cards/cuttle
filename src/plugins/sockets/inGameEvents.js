@@ -1,4 +1,5 @@
 import { useGameStore } from '@/stores/game';
+import { useGameHistoryStore } from '@/stores/gameHistory';
 import router from '@/router.js';
 import { ROUTE_NAME_GAME, ROUTE_NAME_SPECTATE, ROUTE_NAME_LOBBY } from '@/router';
 import SocketEvent from '_/types/SocketEvent';
@@ -7,6 +8,7 @@ import { sleep } from '@/util/sleep';
 // Handles socket updates of game data
 export async function handleInGameEvents(evData, newRoute = null) {
   const gameStore = useGameStore();
+  const gameHistoryStore = useGameHistoryStore();
 
   const targetRoute = newRoute ?? router.currentRoute.value;
 
@@ -37,7 +39,6 @@ export async function handleInGameEvents(evData, newRoute = null) {
       // Update state
       if (isSpectating) {
         gameStore.myPNum = 0; // always spectate as p0
-        gameStore.isSpectating = true;
       }
       gameStore.resetPNumIfNullThenUpdateGame(evData.game);
       break;
@@ -150,7 +151,7 @@ export async function handleInGameEvents(evData, newRoute = null) {
       gameStore.p1Rematch = true;
       gameStore.rematchGameId = evData.gameId;
       // stop early if spectating and haven't yet chosen to continue spectating
-      if (gameStore.isSpectating && !gameStore.iWantToContinueSpectating) {
+      if (gameHistoryStore.isSpectating && !gameStore.iWantToContinueSpectating) {
         return;
       }
 

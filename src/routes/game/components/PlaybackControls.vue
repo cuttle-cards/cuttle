@@ -73,7 +73,6 @@ function goToState(gameStateIndex) {
 watch(() => gameHistoryStore.currentGameStateIndex, async (newVal) => {
   await gameStore.requestGameState(gameStore.id, newVal);
   gameStore.myPNum = 0;
-  gameStore.isSpectating = true;
 });
 </script>
 
