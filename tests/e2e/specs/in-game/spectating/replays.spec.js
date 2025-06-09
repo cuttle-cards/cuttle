@@ -395,8 +395,6 @@ describe('Rewatching finished games', () => {
           p1Hand: [ Card.TWO_OF_DIAMONDS ],
           p1Points: [ Card.TEN_OF_CLUBS, Card.TEN_OF_DIAMONDS ],
           p1FaceCards: [],
-          topCard: Card.SEVEN_OF_HEARTS,
-          secondCard: Card.FOUR_OF_HEARTS,
         });
 
         // Step forward to state 2: play ace one-off
