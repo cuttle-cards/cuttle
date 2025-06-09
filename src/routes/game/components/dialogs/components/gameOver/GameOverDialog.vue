@@ -296,16 +296,19 @@ export default {
         let rematchGameId;
         try {
           ({ rematchGameId } = this.gameStore);
-          await this.gameStore.requestSpectate(rematchGameId);
-          const gameStateIndex = this.gameStore.status === GameStatus.STARTED ? -1 : 0;
-          this.$router.push({
+          const route = {
             name: this.$router.currentRoute.name,
             params: {
               gameId: rematchGameId,
             },
+          };
+          await this.gameStore.requestSpectate(rematchGameId, null, route);
+          const gameStateIndex = this.gameStore.status === GameStatus.STARTED ? -1 : 0;
+          this.$router.push({
+            ...route,
             query: {
               gameStateIndex,
-            },
+            }
           });
         } catch (err) {
           this.$router.push({
