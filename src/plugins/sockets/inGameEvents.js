@@ -1,3 +1,4 @@
+import GameStatus from '../../../utils/GameStatus.json';
 import { useGameStore } from '@/stores/game';
 import { useGameHistoryStore } from '@/stores/gameHistory';
 import router from '@/router.js';
@@ -160,20 +161,24 @@ export async function handleInGameEvents(evData, newRoute = null) {
 
       const { gameId: oldGameId } = targetRoute.params;
 
+      const route = {
+        name: targetRoute.name,
+        params: {
+          gameId: evData.gameId,
+        },
+      };
       if (targetRoute.name === ROUTE_NAME_SPECTATE) {
-        await gameStore.requestSpectate(evData.gameId);
+        await gameStore.requestSpectate(evData.gameId, null, route);
+        route.query = {
+          gameStateIndex: gameStore.status === GameStatus.STARTED ? -1 : 0,
+        };
       } else {
         await gameStore.requestJoinRematch({ oldGameId });
         gameStore.myPNum = null;
         gameStore.resetPNumIfNullThenUpdateGame(evData.newGame);
       }
 
-      router.push({
-        name: targetRoute.name,
-        params: {
-          gameId: evData.gameId,
-        },
-      });
+      router.push(route);
 
       gameStore.iWantToContinueSpectating = false;
       gameStore.p0Rematch = null;
