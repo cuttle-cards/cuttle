@@ -121,7 +121,6 @@ const setupSpectate = async (to) => {
   } catch (err) {
     return { name: 'Home', query: { gameId: gameId, error: err?.message ?? err ?? `Could not spectate game ${gameId}` } };
   }
-
 };
 
 const routes = [
