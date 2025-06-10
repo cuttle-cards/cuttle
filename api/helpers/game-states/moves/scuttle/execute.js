@@ -46,10 +46,11 @@ module.exports = {
     
     // remove target card from opponent points
     const targetPlayedIndex = opponent.points.findIndex(({ id }) => id === targetId);
-    const [ targetCard ]= opponent.points.splice(targetPlayedIndex, 1);
+    const [ targetCard ] = opponent.points.splice(targetPlayedIndex, 1);
     
     // move both cards into scrap
-    result.scrap.push(targetCard, playedCard );
+    result.scrap.push(playedCard, ...targetCard.attachments, targetCard);
+    targetCard.attachments = [];
 
     result.turn++;
 

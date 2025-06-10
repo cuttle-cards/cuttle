@@ -1,5 +1,6 @@
 const CustomErrorType = require('../../errors/customErrorType');
 const ForbiddenError = require('../../errors/forbiddenError');
+const ConflictError = require('../../errors/conflictError');
 const GameStatus = require('../../../utils/GameStatus');
 
 module.exports = async function (req, res) {
@@ -9,6 +10,10 @@ module.exports = async function (req, res) {
   try {
     game =  await sails.helpers.lockGame(gameId);
     game.players = [ game.p0, game.p1 ];
+
+    if (game.status !== GameStatus.CREATED || (game.p0Ready && game.p1Ready)) {
+      throw new ConflictError('Game', Number(gameId));
+    }
 
     // Determine who is ready
     let pNum;
@@ -73,6 +78,10 @@ module.exports = async function (req, res) {
 
     const message = err?.raw?.message ?? err?.message ?? err;
     switch (err?.code) {
+      // Special 409 conflict response if game has already started
+      // lets client know to navigate to GameView
+      case CustomErrorType.CONFLICT:
+        return res.status(409).json({ code: err.code, message: err.message, gameId: err.gameId });
       case CustomErrorType.FORBIDDEN:
         return res.forbidden({ message });
       default:
