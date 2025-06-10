@@ -271,6 +271,25 @@ function createAndPlayGameWithOneOffs() {
     cy.resolveOpponent(gameId);
 
     cy.concedeOpponent(gameId); // TODO
+    cy.recoverSessionOpponent(playerOne);
+    cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
+    cy.recoverSessionOpponent(playerTwo);
+    cy.rematchOpponent({ gameId, rematch: true, skipDomAssertion: true });
+    cy.get(`@game${gameId}RematchId`).then((rematchGameId) => {
+      cy.loadGameFixture(0, {
+        p0Hand: [ Card.ACE_OF_CLUBS, Card.ACE_OF_DIAMONDS ],
+        p0Points: [],
+        p0FaceCards: [],
+        p1Hand: [ Card.TWO_OF_CLUBS, Card.TWO_OF_DIAMONDS ],
+        p1Points: [],
+        p1FaceCards: [],
+        topCard: Card.SEVEN_OF_HEARTS,
+        secondCard: Card.FOUR_OF_HEARTS,
+      }, rematchGameId);
+      cy.recoverSessionOpponent(playerOne);
+      cy.concedeOpponent(rematchGameId);
+      cy.rematchOpponent({ gameId: rematchGameId, rematch: false, skipDomAssertion: true });
+    });
   });
 }
 
@@ -411,6 +430,31 @@ describe('Rewatching finished games', () => {
 
         // Step forward to state 5
         cy.get('[data-cy=step-forward]').click();
+        cy.url().should('contain', '?gameStateIndex=5');
+        assertGameState(0, {
+          p0Hand: [],
+          p0Points: [],
+          p0FaceCards: [],
+          p1Hand: [],
+          p1Points: [],
+          p1FaceCards: [],
+          scrap: [
+            Card.ACE_OF_CLUBS,
+            Card.TWO_OF_HEARTS,
+            Card.TWO_OF_DIAMONDS,
+            Card.TEN_OF_CLUBS,
+            Card.TEN_OF_DIAMONDS,
+          ]
+        });
+
+        // Step forward to state 6: gameover
+        cy.get('[data-cy=step-forward]').click();
+        cy.url().should('contain', '?gameStateIndex=6');
+        assertGameOverAsSpectator({ p1Wins: 1, p2Wins: 0, stalemates: 0, winner: 'p1', isRanked: false });
+
+        cy.get('[data-cy=gameover-rematch]').click();
+        cy.wait(1000);
+        cy.get('#game-over-dialog').should('not.exist');
       });
     });
   });

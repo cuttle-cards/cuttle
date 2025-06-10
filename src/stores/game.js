@@ -466,6 +466,7 @@ export const useGameStore = defineStore('game', {
     async requestSpectate(gameId, gameStateIndex = 0, route = null) {
       const slug = `${gameId}/spectate?gameStateIndex=${gameStateIndex}`;
       try {
+        this.resetState();
         const res = await this.makeSocketRequest(slug, {});
         this.myPNum = 0;
         this.id = gameId;
