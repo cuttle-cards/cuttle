@@ -281,7 +281,7 @@ describe('Home - Game List', () => {
           .its('cuttle.authStore')
           .then((store) => store.reconnectSocket());
         cy.get(`[data-cy-spectate-game=${gameId}]`).click();
-        cy.url().should('contain', `/spectate/${gameId}?gameStateIndex=0`);
+        cy.url().should('contain', `/spectate/${gameId}?gameStateIndex=-1`);
         cy.get('[data-player-hand-card]').should('have.length', 5);
       });
     });
